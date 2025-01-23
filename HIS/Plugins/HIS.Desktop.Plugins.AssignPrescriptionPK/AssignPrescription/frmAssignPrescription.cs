@@ -10706,7 +10706,7 @@ o.SERVICE_ID == medi.SERVICE_ID && o.TDL_INTRUCTION_TIME.ToString().Substring(0,
                 }
                 else
                 {
-                    var TestIndexData = BackendDataWorker.Get<HIS_TEST_INDEX>().Where(o => o.IS_TO_CALCULATE_EGFR == 1).ToList();
+                    var TestIndexData = BackendDataWorker.Get<HIS_TEST_INDEX>().ToList();
                     if (TestIndexData != null && TestIndexData.Count > 0)
                     {
                         if (SereServTeinData == null || SereServTeinData.Count == 0 || !SereServTeinData.Exists(o => o.TDL_TREATMENT_ID == treatmentId))
@@ -10714,11 +10714,11 @@ o.SERVICE_ID == medi.SERVICE_ID && o.TDL_INTRUCTION_TIME.ToString().Substring(0,
                             CommonParam param = new CommonParam();
                             HisSereServTeinView1Filter filter = new HisSereServTeinView1Filter();
                             filter.TREATMENT_IDs = new List<long>() { treatmentId };
-                            var SereServTeinDataTmp = new BackendAdapter(param).Get<List<V_HIS_SERE_SERV_TEIN_1>>("/api/HisSereServTein/GetView1", ApiConsumers.MosConsumer, filter, param);
-                            if (SereServTeinDataTmp != null && SereServTeinDataTmp.Count > 0)
+                            filter.TEST_INDEX_IDs = TestIndexData.Where(p => (new List<long>() { 1, 2, 3 }).Exists(o => o == p.TEST_INDEX_TYPE) || p.IS_TO_CALCULATE_EGFR == 1).Select(o => o.ID).ToList();
+                            SereServTeinData = new BackendAdapter(param).Get<List<V_HIS_SERE_SERV_TEIN_1>>("/api/HisSereServTein/GetView1", ApiConsumers.MosConsumer, filter, param);
+                            if (SereServTeinData != null && SereServTeinData.Count > 0)
                             {
-                                SereServTeinData = SereServTeinDataTmp.Where(p => TestIndexData.Select(o => o.ID).ToList().Exists(o => o == p.TEST_INDEX_ID)).ToList();
-                                var SereServTestType = SereServTeinDataTmp.Where(p => (new List<long>() { 1, 2, 3 }).Exists(o => o == p.TEST_INDEX_TYPE)).ToList();
+                                var SereServTestType = SereServTeinData.Where(p => (new List<long>() { 1, 2, 3 }).Exists(o => o == p.TEST_INDEX_TYPE)).ToList();
                                 if (SereServTestType.Exists(o => o.TEST_INDEX_TYPE == 3 && !string.IsNullOrEmpty(o.VALUE)) && SereServTestType.Exists(o => (o.TEST_INDEX_TYPE == 1 || o.TEST_INDEX_TYPE == 2) && !string.IsNullOrEmpty(o.VALUE)))
                                 {
                                     var ListNotNullvalue = SereServTestType.Where(o => (o.TEST_INDEX_TYPE == 1 || o.TEST_INDEX_TYPE == 2) && !string.IsNullOrEmpty(o.VALUE)).OrderByDescending(o => o.MODIFY_TIME).ToList().FirstOrDefault();
@@ -10752,10 +10752,11 @@ o.SERVICE_ID == medi.SERVICE_ID && o.TDL_INTRUCTION_TIME.ToString().Substring(0,
                                 }
                             }
                         }
+                        TestIndexData = TestIndexData.Where(o => o.IS_TO_CALCULATE_EGFR == 1).ToList();
                         Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData("dữ liệu SereServTeinData: " + Inventec.Common.Logging.LogUtil.GetMemberName(() => SereServTeinData), SereServTeinData));
-                        if (SereServTeinData != null && SereServTeinData.Count > 0 && InstructionTime > 0)
+                        if (SereServTeinData != null && SereServTeinData.Count > 0 && InstructionTime > 0 && TestIndexData != null && TestIndexData.Count > 0)
                         {
-                            var DataSereServTeins = SereServTeinData.Where(o => !String.IsNullOrEmpty(o.VALUE) && o.TDL_INTRUCTION_TIME < InstructionTime).OrderByDescending(o => o.TDL_INTRUCTION_TIME).ThenByDescending(o => o.ID).ToList();
+                            var DataSereServTeins = SereServTeinData.Where(o => TestIndexData.Exists(p => p.ID == o.TEST_INDEX_ID) && !String.IsNullOrEmpty(o.VALUE) && o.TDL_INTRUCTION_TIME < InstructionTime).OrderByDescending(o => o.TDL_INTRUCTION_TIME).ThenByDescending(o => o.ID).ToList();
                             if (DataSereServTeins != null && DataSereServTeins.Count > 0)
                             {
                                 var DataSereServTein = DataSereServTeins.FirstOrDefault();

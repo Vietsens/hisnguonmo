@@ -975,22 +975,22 @@ namespace HIS.Desktop.Plugins.AggrExpMestPrintFilter
                 {
                     if (IntructionTimeFrom != null)
                     {
-                        _ExpMests_Print_Temp = _ExpMests_Print.Where(o => IntructionTimeFrom <= o.TDL_INTRUCTION_TIME).ToList();
+                        _ExpMests_Print_Temp = _ExpMests_Print_Temp.Where(o => IntructionTimeFrom <= o.TDL_INTRUCTION_TIME).ToList();
                     }
                     if (IntructionTimeTo != null)
                     {
-                        _ExpMests_Print_Temp = _ExpMests_Print.Where(o => o.TDL_INTRUCTION_TIME <= IntructionTimeTo).ToList();
+                        _ExpMests_Print_Temp = _ExpMests_Print_Temp.Where(o => o.TDL_INTRUCTION_TIME <= IntructionTimeTo).ToList();
                     }
                 }
                 else
                 {
                     if (IntructionTimeFrom != null)
                     {
-                        _ExpMests_Print_Temp = _ExpMests_Print.Where(o => IntructionTimeFrom <= o.TDL_USE_TIME).ToList();
+                        _ExpMests_Print_Temp = _ExpMests_Print_Temp.Where(o => IntructionTimeFrom <= o.TDL_USE_TIME).ToList();
                     }
                     if (IntructionTimeTo != null)
                     {
-                        _ExpMests_Print_Temp = _ExpMests_Print.Where(o => o.TDL_USE_TIME <= IntructionTimeTo).ToList();
+                        _ExpMests_Print_Temp = _ExpMests_Print_Temp.Where(o => o.TDL_USE_TIME <= IntructionTimeTo).ToList();
                     }
                 }
                 if (_ExpMests_Print_Temp != null && _ExpMests_Print_Temp.Count > 0)
