@@ -57,6 +57,7 @@ namespace HIS.Desktop.Plugins.CallPatientV8
 
         HIS.Desktop.Library.CacheClient.ControlStateWorker controlStateWorker;
         List<HIS.Desktop.Library.CacheClient.ControlStateRDO> currentControlStateRDO;
+        Inventec.Desktop.Common.Modules.Module module;
         public frmChooseRoomForWaitingScreen(Inventec.Desktop.Common.Modules.Module module)
             : base(module)
         {
@@ -70,6 +71,7 @@ namespace HIS.Desktop.Plugins.CallPatientV8
                 }
             }
             InitializeComponent();
+            this.module = module;
             this.roomId = module.RoomId;
         }
 
@@ -299,7 +301,7 @@ namespace HIS.Desktop.Plugins.CallPatientV8
                 this.positionHandleControl = -1;
                 if (!dxValidationProviderControl.Validate())
                     return;
-                aFrmWaitingScreenQy = new frmWaitingScreen_V48(HisServiceReq, ServiceReqSttADOs.Where(o=>o.checkStt).ToList(), this.roomSelecteds, planTimeFrom, planTimeTo, memContent.Text.Trim());
+                aFrmWaitingScreenQy = new frmWaitingScreen_V48(HisServiceReq, ServiceReqSttADOs.Where(o => o.checkStt).ToList(), this.roomSelecteds, planTimeFrom, planTimeTo, memContent.Text.Trim(), module);
                 //if (this.currentRoom != null)
                 //{
                 //    aFrmWaitingScreenQy.room = this.currentRoom;
