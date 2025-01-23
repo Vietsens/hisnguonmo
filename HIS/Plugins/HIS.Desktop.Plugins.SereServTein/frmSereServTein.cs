@@ -16,7 +16,6 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 using DevExpress.Data;
-using DevExpress.XtraEditors;
 using DevExpress.XtraGrid.Views.Base;
 using DevExpress.XtraGrid.Views.Grid;
 using HIS.Desktop.ApiConsumer;
@@ -27,6 +26,7 @@ using HIS.Desktop.LocalStorage.ConfigSystem;
 using HIS.Desktop.LocalStorage.HisConfig;
 using HIS.Desktop.LocalStorage.LocalData;
 using HIS.Desktop.Print;
+//using IMSys.DbConfig.HIS_RS;
 using Inventec.Common.Adapter;
 using Inventec.Common.Logging;
 using Inventec.Common.SignLibrary;
@@ -67,7 +67,7 @@ namespace HIS.Desktop.Plugins.SereServTein
         List<ADO.ImageADO> imageLoad;
         internal HIS_TREATMENT currentTreatment { get; set; }
         internal HIS_DHST currentDhst { get; set; }
-		///cmt để đẩy code. xem lại việc cũ ở lần đẩy dưới
+        ///cmt để đẩy code. xem lại việc cũ ở lần đẩy dưới
 
         bool isNotLoadWhileChangeControlStateInFirst;
         HIS.Desktop.Library.CacheClient.ControlStateWorker controlStateWorker;
@@ -388,12 +388,14 @@ namespace HIS.Desktop.Plugins.SereServTein
                     filterSereServTeinToCheck.TEST_INDEX_IDs = testIndexIds;
                     LogSystem.Debug("HisSereServTeinFilter: " + LogUtil.TraceData("HisSereServTeinFilter", filterSereServTeinToCheck));
                     var sereServTeinToCheck = new BackendAdapter(param).Get<List<HIS_SERE_SERV_TEIN>>("/api/HisSereServTein/Get", ApiConsumers.MosConsumer, filterSereServTeinToCheck, param);
-                    
+                    var age = Age(currentTreatment.TDL_PATIENT_DOB);
+                    var ctStr = age >= 17 ? "(CrCl)" : "(eGFR)";
+
                     if (sereServTeinToCheck != null && sereServTeinToCheck.Count() > 0)
                     {
-                        
+
                         var sereServTein = sereServTeinToCheck.Where(o => !String.IsNullOrEmpty(o.VALUE) && o.TDL_SERVICE_REQ_ID == this.currentServiceReq.ID).FirstOrDefault();
-                        
+
                         if (sereServTein != null)
                         {
                             LogSystem.Debug("có chỉ số được đánh dấu là để tính mức lọc cầu thận. sereServTein: " + LogUtil.TraceData("sereServTein", sereServTein));
@@ -408,7 +410,7 @@ namespace HIS.Desktop.Plugins.SereServTein
                                     if (testIndex.CONVERT_RATIO_MLCT.HasValue)
                                         chiso *= (testIndex.CONVERT_RATIO_MLCT ?? 0);
                                     decimal mlct = Inventec.Common.Calculate.Calculation.MucLocCauThan(currentTreatment.TDL_PATIENT_DOB, currentDhst.WEIGHT ?? 0, currentDhst.HEIGHT ?? 0, chiso, currentTreatment.TDL_PATIENT_GENDER_ID == IMSys.DbConfig.HIS_RS.HIS_GENDER.ID__MALE);
-                                    lblMlct.Text = mlct > 0 ? mlct.ToString() : "";
+                                    lblMlct.Text = mlct > 0 ? mlct.ToString() + ctStr : "";
 
                                 }
                             }
@@ -425,7 +427,10 @@ namespace HIS.Desktop.Plugins.SereServTein
                                 var View1Tein = new BackendAdapter(param).Get<List<V_HIS_SERE_SERV_TEIN_1>>("/api/HisSereServTein/GetView1", ApiConsumers.MosConsumer, teFilter, param);
                                 if (View1Tein != null && View1Tein.Count > 0)
                                 {
+                                    //tinh uACR/uPCR
+                                    this.CalculationCR(View1Tein, TestIndexDatas);
 
+                                    //tinh mlct
                                     var SSTein = View1Tein.Where(o => !String.IsNullOrEmpty(o.VALUE) && o.TDL_INTRUCTION_TIME < currentServiceReq.INTRUCTION_TIME).OrderByDescending(s => s.TDL_INTRUCTION_TIME).ThenByDescending(o => o.ID).FirstOrDefault();
 
                                     if (SSTein != null)
@@ -441,11 +446,13 @@ namespace HIS.Desktop.Plugins.SereServTein
                                                 if (testIndex.CONVERT_RATIO_MLCT.HasValue)
                                                     chiso *= (testIndex.CONVERT_RATIO_MLCT ?? 0);
                                                 decimal mlct = Inventec.Common.Calculate.Calculation.MucLocCauThan(currentTreatment.TDL_PATIENT_DOB, currentDhst.WEIGHT ?? 0, currentDhst.HEIGHT ?? 0, chiso, currentTreatment.TDL_PATIENT_GENDER_ID == IMSys.DbConfig.HIS_RS.HIS_GENDER.ID__MALE);
-                                                lblMlct.Text = mlct > 0 ? mlct.ToString() : "";
+                                                lblMlct.Text = mlct > 0 ? mlct.ToString() + ctStr : "";
 
                                             }
                                         }
                                     }
+
+
                                 }
                             }
                             catch (Exception e)
@@ -467,7 +474,10 @@ namespace HIS.Desktop.Plugins.SereServTein
                             var View1Tein = new BackendAdapter(param).Get<List<V_HIS_SERE_SERV_TEIN_1>>("/api/HisSereServTein/GetView1", ApiConsumers.MosConsumer, teFilter, param);
                             if (View1Tein != null && View1Tein.Count > 0)
                             {
+                                //tinh uACR/uPCR
+                                this.CalculationCR(View1Tein, TestIndexDatas);
 
+                                //tinh mlct
                                 var SSTein = View1Tein.Where(o => !String.IsNullOrEmpty(o.VALUE) && o.TDL_INTRUCTION_TIME < currentServiceReq.INTRUCTION_TIME).OrderByDescending(s => s.TDL_INTRUCTION_TIME).ThenByDescending(o => o.ID).FirstOrDefault();
 
                                 if (SSTein != null)
@@ -483,7 +493,7 @@ namespace HIS.Desktop.Plugins.SereServTein
                                             if (testIndex.CONVERT_RATIO_MLCT.HasValue)
                                                 chiso *= (testIndex.CONVERT_RATIO_MLCT ?? 0);
                                             decimal mlct = Inventec.Common.Calculate.Calculation.MucLocCauThan(currentTreatment.TDL_PATIENT_DOB, currentDhst.WEIGHT ?? 0, currentDhst.HEIGHT ?? 0, chiso, currentTreatment.TDL_PATIENT_GENDER_ID == IMSys.DbConfig.HIS_RS.HIS_GENDER.ID__MALE);
-                                            lblMlct.Text = mlct > 0 ? mlct.ToString() : "";
+                                            lblMlct.Text = mlct > 0 ? mlct.ToString() + ctStr : "";
 
                                         }
                                     }
@@ -534,6 +544,77 @@ namespace HIS.Desktop.Plugins.SereServTein
                 gridControlSereServTein.DataSource = lstHisSereServTeinSDO;
                 WaitingManager.Hide();
                 Inventec.Common.Logging.LogSystem.Debug("LoadDataToGridV2.5");
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+                WaitingManager.Hide();
+            }
+        }
+
+        private void CalculationCR(List<V_HIS_SERE_SERV_TEIN_1> lstVSereServTein1, List<HIS_TEST_INDEX> testIndex)
+        {
+            try
+            {
+                //Nếu trong các kết quả xét nghiệm có chỉ số dịch vụ xét nghiệm dùng để để tính uACR hoặc uPCR thì sử dụng kết quả của chỉ số đó để tính luôn
+                var lstViewTeinCR = lstVSereServTein1.Where(o => o.TEST_INDEX_TYPE.HasValue && o.TDL_SERVICE_REQ_ID == this.currentSereServ.SERVICE_REQ_ID &&
+                (o.TEST_INDEX_TYPE == IMSys.DbConfig.HIS_RS.TEST_INDEX_TYPE.CREATININ_NIEU
+                || o.TEST_INDEX_TYPE == IMSys.DbConfig.HIS_RS.TEST_INDEX_TYPE.PROTEIN_NIEU
+                || o.TEST_INDEX_TYPE == IMSys.DbConfig.HIS_RS.TEST_INDEX_TYPE.ALBUMIN_NIEU)).OrderByDescending(o => o.MODIFY_TIME).ToList();
+
+                //Chỉ số Albumin niệu(TEST_INDEX_TYPE = 1)
+                V_HIS_SERE_SERV_TEIN_1 ssTT1 = null;
+                //Chỉ số Protein niệu(TEST_INDEX_TYPE = 2)
+                V_HIS_SERE_SERV_TEIN_1 ssTT2 = null;
+                //Chỉ số Creatinin niệu(TEST_INDEX_TYPE = 3)
+                V_HIS_SERE_SERV_TEIN_1 ssTT3 = null;
+
+                if (lstViewTeinCR != null && lstViewTeinCR.Count > 0)
+                {
+                    ssTT1 = lstViewTeinCR.Where(o => o.TEST_INDEX_TYPE == IMSys.DbConfig.HIS_RS.TEST_INDEX_TYPE.ALBUMIN_NIEU).FirstOrDefault();
+                    ssTT2 = lstViewTeinCR.Where(o => o.TEST_INDEX_TYPE == IMSys.DbConfig.HIS_RS.TEST_INDEX_TYPE.PROTEIN_NIEU).FirstOrDefault();
+                    ssTT3 = lstViewTeinCR.Where(o => o.TEST_INDEX_TYPE == IMSys.DbConfig.HIS_RS.TEST_INDEX_TYPE.CREATININ_NIEU).FirstOrDefault();
+                }
+                if (ssTT3 == null || (ssTT1 == null && ssTT2 == null))
+                {
+                    var lstSSTein = lstVSereServTein1.Where(o => !String.IsNullOrEmpty(o.VALUE) && o.TDL_INTRUCTION_TIME < currentServiceReq.INTRUCTION_TIME &&
+                    (o.TEST_INDEX_TYPE == IMSys.DbConfig.HIS_RS.TEST_INDEX_TYPE.CREATININ_NIEU
+                    || o.TEST_INDEX_TYPE == IMSys.DbConfig.HIS_RS.TEST_INDEX_TYPE.PROTEIN_NIEU
+                || o.TEST_INDEX_TYPE == IMSys.DbConfig.HIS_RS.TEST_INDEX_TYPE.ALBUMIN_NIEU)).OrderByDescending(s => s.TDL_INTRUCTION_TIME).ThenByDescending(o => o.ID).ToList();
+                    if (ssTT3 == null)
+                    {
+                        ssTT3 = lstSSTein.Where(o => o.TEST_INDEX_TYPE == IMSys.DbConfig.HIS_RS.TEST_INDEX_TYPE.CREATININ_NIEU).FirstOrDefault();
+                    }
+                    if (ssTT1 == null && ssTT2 == null)
+                    {
+                        ssTT1 = lstSSTein.Where(o => o.TEST_INDEX_TYPE == IMSys.DbConfig.HIS_RS.TEST_INDEX_TYPE.ALBUMIN_NIEU).FirstOrDefault();
+                        ssTT2 = lstSSTein.Where(o => o.TEST_INDEX_TYPE == IMSys.DbConfig.HIS_RS.TEST_INDEX_TYPE.PROTEIN_NIEU).FirstOrDefault();
+                    }
+                }
+
+                //thuc hien tinh uACR/uPCR
+                if ((ssTT3 != null && (ssTT1 != null || ssTT2 != null)))
+                {
+                    decimal chiso;
+                    string ssTeinVL3 = ssTT3.VALUE.Replace(".", System.Globalization.CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator)
+                     .Replace(",", System.Globalization.CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator);
+                    HIS_TEST_INDEX index3 = testIndex.Where(o => o.ID == ssTT3.TEST_INDEX_ID).FirstOrDefault();
+                    decimal sstt3 = index3 != null && index3.CONVERT_RATIO_TYPE.HasValue ? Decimal.Parse(ssTeinVL3) * index3.CONVERT_RATIO_TYPE.Value : Decimal.Parse(ssTeinVL3);
+
+                    string ssTeinVL12 = ssTT1 != null ? ssTT1.VALUE.Replace(".", System.Globalization.CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator)
+                     .Replace(",", System.Globalization.CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator) : ssTT2.VALUE.Replace(".", System.Globalization.CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator)
+                     .Replace(",", System.Globalization.CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator);
+
+                    if (Decimal.TryParse(ssTeinVL12, out chiso))
+                    {
+                        HIS_TEST_INDEX index12 = ssTT1 != null ? testIndex.Where(o => o.ID == ssTT1.TEST_INDEX_ID).FirstOrDefault() : testIndex.Where(o => o.ID == ssTT2.TEST_INDEX_ID).FirstOrDefault();
+                        if (index12.CONVERT_RATIO_TYPE.HasValue)
+                            chiso *= (index12.CONVERT_RATIO_TYPE.Value);
+                        decimal cr = chiso / sstt3;
+                        //lblMlct.Text = cr > 0 ? cr.ToString() : "";
+                    }
+
+                }
             }
             catch (Exception ex)
             {

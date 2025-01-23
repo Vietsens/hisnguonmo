@@ -273,6 +273,7 @@ namespace HIS.Desktop.Plugins.HisEmrCoverType
             {
                 ValidMaxlengthTextBox(txtEmrCode, 20);
                 ValidMaxlengthTextBox(txtEmrName, 500);
+                ValidMaxlengthTextBox(txtNum, int.MaxValue);
                 ValidOnlyMaxlengthTextBox(txtGroup, 100);
             }
             catch (Exception ex)
@@ -349,7 +350,7 @@ namespace HIS.Desktop.Plugins.HisEmrCoverType
                 this.Text = Inventec.Common.Resource.Get.Value("frmHisEmrCoverType.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
             }
             catch (Exception ex)
-            {
+            { 
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
@@ -411,7 +412,7 @@ namespace HIS.Desktop.Plugins.HisEmrCoverType
                     UpdateDTOFromDataForm(ref updateDTO);
                     Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => updateDTO), updateDTO));
                     updateDTO.IS_ACTIVE = IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE;
-                    var resultData = new BackendAdapter(param).Post<MOS.EFMODEL.DataModels.HIS_DESK>(HisRequestUriStore.MOSHIS_EMRCOVER_TYPE_CREATE, ApiConsumers.MosConsumer, updateDTO, param);
+                    var resultData = new BackendAdapter(param).Post<MOS.EFMODEL.DataModels.HIS_EMR_COVER_TYPE>(HisRequestUriStore.MOSHIS_EMRCOVER_TYPE_CREATE, ApiConsumers.MosConsumer, updateDTO, param);
                     if (resultData != null)
                     {
                         success = true;
@@ -421,10 +422,10 @@ namespace HIS.Desktop.Plugins.HisEmrCoverType
                 }
                 else
                 {
-                    Inventec.Common.Mapper.DataObjectMapper.Map<MOS.EFMODEL.DataModels.HIS_EMR_COVER_TYPE>(currentData, updateDTO);
+                    Inventec.Common.Mapper.DataObjectMapper.Map<MOS.EFMODEL.DataModels.HIS_EMR_COVER_TYPE>(updateDTO, currentData);
                     UpdateDTOFromDataForm(ref updateDTO);
                     Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => updateDTO), updateDTO));
-                    var resultData = new BackendAdapter(param).Post<MOS.EFMODEL.DataModels.HIS_DESK>(HisRequestUriStore.MOSHIS_EMRCOVER_TYPE_UPDATE, ApiConsumers.MosConsumer, updateDTO, param);
+                    var resultData = new BackendAdapter(param).Post<MOS.EFMODEL.DataModels.HIS_EMR_COVER_TYPE>(HisRequestUriStore.MOSHIS_EMRCOVER_TYPE_UPDATE, ApiConsumers.MosConsumer, updateDTO, param);
                     if (resultData != null)
                     {
                         success = true;
@@ -518,7 +519,7 @@ namespace HIS.Desktop.Plugins.HisEmrCoverType
         private void ChangedDataRow(MOS.EFMODEL.DataModels.HIS_EMR_COVER_TYPE data)
         {
             try
-            {
+            { 
                 if (data != null)
                 {
                     FillDataToEditorControl(data);
@@ -581,16 +582,18 @@ namespace HIS.Desktop.Plugins.HisEmrCoverType
                 DevExpress.XtraGrid.Views.Grid.GridView view = sender as DevExpress.XtraGrid.Views.Grid.GridView;
                 if (e.RowHandle >= 0)
                 {
+                    //HIS_EMR_COVER_TYPE data = (HIS_EMR_COVER_TYPE)((IList)((BaseView)sender).DataSource)[e.RowHandle];
 
-                    HIS_EMR_COVER_TYPE data = (HIS_EMR_COVER_TYPE)((IList)((BaseView)sender).DataSource)[e.RowHandle];
                     if (e.Column.FieldName == "IS_LOCK")
                     {
-                        e.RepositoryItem = (data.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE ? repositorybtnUnlock : repositorybtnLock);
+                        short? isLock = (short?)gridViewFormList.GetRowCellValue(e.RowHandle, "IS_ACTIVE");
+                        e.RepositoryItem = (isLock == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE ? repositorybtnUnlock : repositorybtnLock);
                     }
 
                     if (e.Column.FieldName == "DELETE")
                     {
-                        e.RepositoryItem = (data.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE ? repositoryDelete : repositoryUnDelete);
+                        short? isDelete = (short?)gridViewFormList.GetRowCellValue(e.RowHandle, "IS_ACTIVE");
+                        e.RepositoryItem = (isDelete == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE ? repositoryDelete : repositoryUnDelete);
                     }
                 }
             }
@@ -608,7 +611,6 @@ namespace HIS.Desktop.Plugins.HisEmrCoverType
                 {
                     MOS.EFMODEL.DataModels.HIS_EMR_COVER_TYPE pData = (MOS.EFMODEL.DataModels.HIS_EMR_COVER_TYPE)((IList)((BaseView)sender).DataSource)[e.ListSourceRowIndex];
                     DevExpress.XtraGrid.Views.Grid.GridView view = sender as DevExpress.XtraGrid.Views.Grid.GridView;
-                    short status = Inventec.Common.TypeConvert.Parse.ToInt16((pData.IS_ACTIVE ?? -1).ToString());
                     if (e.Column.FieldName == "STT")
                     {
                         e.Value = e.ListSourceRowIndex + 1 + startPage; //+ ((pagingGrid.CurrentPage - 1) * pagingGrid.PageSize);
@@ -617,8 +619,7 @@ namespace HIS.Desktop.Plugins.HisEmrCoverType
                     {
                         try
                         {
-                            string createTime = (view.GetRowCellValue(e.ListSourceRowIndex, "CREATE_TIME") ?? "").ToString();
-                            e.Value = Inventec.Common.DateTime.Convert.TimeNumberToTimeString(Inventec.Common.TypeConvert.Parse.ToInt64(createTime));
+                            e.Value = Inventec.Common.DateTime.Convert.TimeNumberToTimeString(pData.CREATE_TIME ?? 0);
 
                         }
                         catch (Exception ex)
@@ -630,8 +631,7 @@ namespace HIS.Desktop.Plugins.HisEmrCoverType
                     {
                         try
                         {
-                            string MODIFY_TIME = (view.GetRowCellValue(e.ListSourceRowIndex, "MODIFY_TIME") ?? "").ToString();
-                            e.Value = Inventec.Common.DateTime.Convert.TimeNumberToTimeString(Inventec.Common.TypeConvert.Parse.ToInt64(MODIFY_TIME));
+                            e.Value = Inventec.Common.DateTime.Convert.TimeNumberToTimeString(pData.MODIFY_TIME ?? 0);
 
                         }
                         catch (Exception ex)
@@ -643,7 +643,7 @@ namespace HIS.Desktop.Plugins.HisEmrCoverType
                     {
                         try
                         {
-                            if (status == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE)
+                            if (pData.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE)
                                 e.Value = "Hoạt động";
                             else
                                 e.Value = "Tạm khóa";
@@ -654,7 +654,6 @@ namespace HIS.Desktop.Plugins.HisEmrCoverType
                         }
                     }
 
-                    gridControlFormList.RefreshDataSource();
                 }
             }
             catch (Exception ex)
@@ -807,6 +806,54 @@ namespace HIS.Desktop.Plugins.HisEmrCoverType
             try
             {
                 FillDataToGridControl();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void gridViewFormList_RowCellStyle(object sender, DevExpress.XtraGrid.Views.Grid.RowCellStyleEventArgs e)
+        {
+            try
+            {
+                DevExpress.XtraGrid.Views.Grid.GridView view = sender as DevExpress.XtraGrid.Views.Grid.GridView;
+                if (e.RowHandle >= 0)
+                {
+                    HIS_EMR_COVER_TYPE data = (HIS_EMR_COVER_TYPE)gridViewFormList.GetRow(e.RowHandle);
+                    if (e.Column.FieldName == "IS_ACTIVE_STR")
+                    {
+                        if (data.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__FALSE)
+                            e.Appearance.ForeColor = Color.Red;
+                        else
+                            e.Appearance.ForeColor = Color.Green;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void txtKeyword_KeyUp(object sender, KeyEventArgs e)
+        {
+            try
+            {
+                if (e.KeyCode == Keys.Enter)
+                {
+                    btnSearch_Click(null, null);
+                }
+                else if (e.KeyCode == Keys.Down)
+                {
+                    gridViewFormList.Focus();
+                    gridViewFormList.FocusedRowHandle = 0;
+                    var rowData = (MOS.EFMODEL.DataModels.HIS_EMR_COVER_TYPE)gridViewFormList.GetFocusedRow();
+                    if (rowData != null)
+                    {
+                        ChangedDataRow(rowData);
+                    }
+                }
             }
             catch (Exception ex)
             {
