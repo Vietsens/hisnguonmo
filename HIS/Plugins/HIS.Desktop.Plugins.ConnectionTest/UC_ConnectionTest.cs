@@ -279,12 +279,12 @@ namespace HIS.Desktop.Plugins.ConnectionTest
             try
             {
                 string config = HisConfigs.Get<string>("HIS.Desktop.Plugins.ConnectionTest.IsRequiredMachine");
-                if(config == "1")
+                if (config == "1")
                 {
                     chkCon.Checked = true;
                     chkCon.Enabled = chkWarn.Enabled = false;
                 }
-                else if(config == "2")
+                else if (config == "2")
                 {
                     chkWarn.Checked = true;
                     chkCon.Enabled = chkWarn.Enabled = false;
@@ -348,7 +348,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
         {
             try
             {
-                lstDepart = BackendDataWorker.Get<HIS_DEPARTMENT>().Where(o=>o.IS_ACTIVE ==1).ToList();
+                lstDepart = BackendDataWorker.Get<HIS_DEPARTMENT>().Where(o => o.IS_ACTIVE == 1).ToList();
             }
             catch (Exception ex)
             {
@@ -382,7 +382,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                     {
                         DateKQ.DateTime = currentTimer;
                     }
-                } 
+                }
                 DateKQ.ToolTip = ConvertStringTime(DateKQ);
             }
             catch (Exception ex)
@@ -2810,7 +2810,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                             }
                         }
                         var testIndFist = currentTestIndexs.FirstOrDefault(o => o.TEST_INDEX_CODE == lstResultItem[0].TEST_INDEX_CODE);
-                        LogSystem.Debug("lstResultItem.Count "+ lstResultItem.Count+ " ; IS_NOT_SHOW_SERVICE: "+testIndFist.IS_NOT_SHOW_SERVICE+ " ; testIndFist: "+LogUtil.TraceData("testIndFist", testIndFist));
+                        LogSystem.Debug("lstResultItem.Count " + lstResultItem.Count + " ; IS_NOT_SHOW_SERVICE: " + testIndFist.IS_NOT_SHOW_SERVICE + " ; testIndFist: " + LogUtil.TraceData("testIndFist", testIndFist));
                         if (lstResultItem != null
                             && lstResultItem.Count == 1
                             && testIndFist != null && testIndFist.IS_NOT_SHOW_SERVICE == 1)
@@ -2964,7 +2964,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
             string result = "";
             try
             {
-                if(data != null)
+                if (data != null)
                 {
                     LogSystem.Debug("Xu ly gia tri moi");
                     LogSystem.Debug("ProcessValue 1");
@@ -2977,11 +2977,11 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                     {
                         LogSystem.Debug("ProcessValue 1.2");
                         var rs = new BackendAdapter(new CommonParam()).Get<List<HIS_TEST_INDEX>>("api/HisTestIndex/Get", ApiConsumers.MosConsumer, new HisTestIndexFilter() { KEY_WORD = data.TEST_INDEX_CODE }, null);
-                        if(rs != null)
+                        if (rs != null)
                         {
                             LogSystem.Debug("ProcessValue 1.2.1");
                             var testIndex = rs.Where(s => s.TEST_INDEX_CODE == data.TEST_INDEX_CODE && s.DEFAULT_VALUE != null).FirstOrDefault();
-                            if(testIndex != null)
+                            if (testIndex != null)
                             {
                                 LogSystem.Debug("ProcessValue 1.2.2");
                                 result = testIndex.DEFAULT_VALUE;
@@ -2990,8 +2990,8 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                         LogSystem.Debug("result: " + result);
                     }
                 }
-                
-                
+
+
             }
             catch (Exception ex)
             {
@@ -7687,17 +7687,25 @@ namespace HIS.Desktop.Plugins.ConnectionTest
         {
             Thread tSereServ = new Thread(new ParameterizedThreadStart(GetSereServ));
             Thread tTreatmentBedRoom = new Thread(new ParameterizedThreadStart(GetTreatmentBedRoom));
+            Thread tSereServTein = new Thread(new ParameterizedThreadStart(GetSereServTein));
+            Thread tHisDhst = new Thread(new ParameterizedThreadStart(GetHisDhst));
             try
             {
                 tSereServ.Start(param);
                 tTreatmentBedRoom.Start(param);
+                tSereServTein.Start(param);
+                tHisDhst.Start(param);
                 tSereServ.Join();
                 tTreatmentBedRoom.Join();
+                tSereServTein.Join();
+                tHisDhst.Join();
             }
             catch (Exception ex)
             {
                 tSereServ.Abort();
                 tTreatmentBedRoom.Abort();
+                tSereServTein.Abort();
+                tHisDhst.Abort();
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
 
@@ -7725,6 +7733,8 @@ namespace HIS.Desktop.Plugins.ConnectionTest
         }
 
         List<HIS_SERE_SERV> SereServList = new List<HIS_SERE_SERV>();
+        List<V_HIS_SERE_SERV_TEIN_1> lstSereServTein1 = new List<V_HIS_SERE_SERV_TEIN_1>();
+        List<HIS_DHST> hisdhst = new List<HIS_DHST>();
         private void GetSereServ(object obj)
         {
             try
@@ -7733,6 +7743,53 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                 HisSereServFilter filter = new HisSereServFilter();
                 filter.TDL_SERVICE_REQ_CODE_EXACT = data.SERVICE_REQ_CODE;
                 SereServList = new Inventec.Common.Adapter.BackendAdapter(new CommonParam()).Get<List<HIS_SERE_SERV>>("api/HisSereServ/Get", ApiConsumers.MosConsumer, filter, null);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+
+        }
+
+        private void GetSereServTein(object obj)
+        {
+            try
+            {
+                lstSereServTein1.Clear();
+                HIS_SERVICE_REQ data = (HIS_SERVICE_REQ)obj;
+                var TestIndexDataMLCT = BackendDataWorker.Get<HIS_TEST_INDEX>().Where(o => o.IS_TO_CALCULATE_EGFR == 1 || o.TEST_INDEX_TYPE.HasValue).ToList();
+                if (TestIndexDataMLCT != null && TestIndexDataMLCT.Count > 0)
+                {
+
+                    if (TestIndexDataMLCT != null && TestIndexDataMLCT.Count > 0)
+                    {
+                        CommonParam paramv1 = new CommonParam();
+                        HisSereServTeinView1Filter view1filter = new HisSereServTeinView1Filter();
+                        view1filter.TREATMENT_IDs = new List<long> { data.TREATMENT_ID };
+                        view1filter.TEST_INDEX_IDs = TestIndexDataMLCT.Select(s => s.ID).ToList();
+                        lstSereServTein1 = new BackendAdapter(paramv1).Get<List<V_HIS_SERE_SERV_TEIN_1>>("/api/HisSereServTein/GetView1", ApiConsumers.MosConsumer, view1filter, paramv1);
+                        if (lstSereServTein1 != null && lstSereServTein1.Count > 0)
+                        {
+                            lstSereServTein1 = lstSereServTein1.Where(o => o.TDL_INTRUCTION_TIME <= data.INTRUCTION_TIME).ToList();
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+
+        }
+        private void GetHisDhst(object obj)
+        {
+            try
+            {
+                hisdhst.Clear();
+                HIS_SERVICE_REQ data = (HIS_SERVICE_REQ)obj;
+                MOS.Filter.HisDhstFilter DhstFilter = new HisDhstFilter();
+                DhstFilter.TREATMENT_ID = data.TREATMENT_ID;
+                hisdhst = new BackendAdapter(new CommonParam()).Get<List<HIS_DHST>>("api/HisDhst/Get", ApiConsumer.ApiConsumers.MosConsumer, DhstFilter, null);
             }
             catch (Exception ex)
             {
@@ -9691,13 +9748,13 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                 cboDepart.Properties.View.ClearColumnsFilter();
 
                 if (_StatusSelecteds != null && _StatusSelecteds.Count > 0)
-                   {
-                      cboDepart.Properties.Buttons[1].Visible = true;
-                   }
-                   else
-                   {
-                      cboDepart.Properties.Buttons[1].Visible = false;
-                   }
+                {
+                    cboDepart.Properties.Buttons[1].Visible = true;
+                }
+                else
+                {
+                    cboDepart.Properties.Buttons[1].Visible = false;
+                }
 
             }
             catch (Exception ex)
@@ -9785,7 +9842,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                         statusName += item.DEPARTMENT_NAME + ", ";
                     }
                 }
-              
+
                 e.DisplayText = statusName;
             }
             catch (Exception ex)
@@ -9822,7 +9879,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                 }
                 InitCheck(cboRoom, SelectionGrid__StatusRoom);
                 InitCombo(cboRoom, lstRoom, "ROOM_NAME", "ROOM_CODE", "Phòng");
-                
+
             }
             catch (Exception ex)
             {
@@ -9843,7 +9900,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                         statusName += item.ROOM_NAME + ", ";
                     }
                 }
-               
+
                 e.DisplayText = statusName;
             }
             catch (Exception ex)
@@ -9857,9 +9914,9 @@ namespace HIS.Desktop.Plugins.ConnectionTest
             try
             {
                 //LoadDefaulRoom();
-               
+
                 cboRoom.Properties.View.ClearColumnsFilter();
-               if (_StatusSelectedRooms != null && _StatusSelectedRooms.Count > 0)
+                if (_StatusSelectedRooms != null && _StatusSelectedRooms.Count > 0)
                 {
                     cboRoom.Properties.Buttons[1].Visible = true;
                 }
