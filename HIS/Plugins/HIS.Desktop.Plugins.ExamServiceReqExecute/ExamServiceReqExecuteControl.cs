@@ -4975,20 +4975,19 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             try
             {
                 string strIsToCalculateEgfr = "";
-                var TestIndexData = BackendDataWorker.Get<HIS_TEST_INDEX>().Where(o => o.IS_TO_CALCULATE_EGFR == 1).ToList();
-
+                var TestIndexData = BackendDataWorker.Get<HIS_TEST_INDEX>().ToList();
                 if (TestIndexData != null && TestIndexData.Count > 0)
                 {
                     List<V_HIS_SERE_SERV_TEIN_1> SereServTeinData = null;
                     CommonParam param = new CommonParam();
                     HisSereServTeinView1Filter filter = new HisSereServTeinView1Filter();
                     filter.TREATMENT_IDs = new List<long>() { treatmentId };
-                    var SereServTeinDataTmp = new BackendAdapter(param).Get<List<V_HIS_SERE_SERV_TEIN_1>>("/api/HisSereServTein/GetView1", ApiConsumers.MosConsumer, filter, param);
+                    filter.TEST_INDEX_IDs = TestIndexData.Where(p => (new List<long>() { 1, 2, 3 }).Exists(o => o == p.TEST_INDEX_TYPE) || p.IS_TO_CALCULATE_EGFR == 1).Select(o => o.ID).ToList();
+                    SereServTeinData = new BackendAdapter(param).Get<List<V_HIS_SERE_SERV_TEIN_1>>("/api/HisSereServTein/GetView1", ApiConsumers.MosConsumer, filter, param);
 
-                    if (SereServTeinDataTmp != null && SereServTeinDataTmp.Count > 0)
+                    if (SereServTeinData != null && SereServTeinData.Count > 0)
                     {
-                        SereServTeinData = SereServTeinDataTmp.Where(p => TestIndexData.Select(o => o.ID).ToList().Exists(o => o == p.TEST_INDEX_ID)).ToList();
-                        var SereServTestType = SereServTeinDataTmp.Where(p => (new List<long>() { 1, 2, 3 }).Exists(o => o == p.TEST_INDEX_TYPE)).ToList();
+                        var SereServTestType = SereServTeinData.Where(p => (new List<long>() { 1, 2, 3 }).Exists(o => o == p.TEST_INDEX_TYPE)).ToList();
                         if (SereServTestType.Exists(o => o.TEST_INDEX_TYPE == 3 && !string.IsNullOrEmpty(o.VALUE)) && SereServTestType.Exists(o => (o.TEST_INDEX_TYPE == 1 || o.TEST_INDEX_TYPE == 2) && !string.IsNullOrEmpty(o.VALUE)))
                         {
                             var ListNotNullvalue = SereServTestType.Where(o => (o.TEST_INDEX_TYPE == 1 || o.TEST_INDEX_TYPE == 2) && !string.IsNullOrEmpty(o.VALUE)).OrderByDescending(o => o.MODIFY_TIME).ToList().FirstOrDefault();
@@ -5021,9 +5020,10 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
 
                         }
                     }
+                    TestIndexData = TestIndexData.Where(o => o.IS_TO_CALCULATE_EGFR == 1).ToList();
                     if (SereServTeinData != null && SereServTeinData.Count > 0)
                     {
-                        var DataSereServTein = SereServTeinData.Where(o => !String.IsNullOrEmpty(o.VALUE)).OrderByDescending(o => o.MODIFY_TIME).ThenByDescending(o => o.ID).FirstOrDefault();
+                        var DataSereServTein = SereServTeinData.Where(o => TestIndexData.Exists(p => p.ID == o.TEST_INDEX_ID) && !String.IsNullOrEmpty(o.VALUE)).OrderByDescending(o => o.MODIFY_TIME).ThenByDescending(o => o.ID).FirstOrDefault();
                         var testIndex = TestIndexData.FirstOrDefault(o => o.ID == (DataSereServTein.TEST_INDEX_ID ?? 0));
                         if (testIndex != null)
                         {
