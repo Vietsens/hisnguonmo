@@ -858,7 +858,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                 var Creatinin = lstSereServTein1.Where(o => o.TEST_INDEX_TYPE == 3 && !string.IsNullOrEmpty(o.VALUE)).OrderByDescending(o => o.MODIFY_TIME).ToList().FirstOrDefault();
                 if (Creatinin != null)
                 {
-                    var ListNotNullvalue = lstSereServTein1.Where(o => (o.TEST_INDEX_TYPE == 1 || o.TEST_INDEX_TYPE == 2) && !string.IsNullOrEmpty(o.VALUE)).OrderByDescending(o => o.MODIFY_TIME).ToList().FirstOrDefault();
+                    var ListNotNullvalue = lstSereServTein1.Where(o => (o.TEST_INDEX_TYPE == 1 || o.TEST_INDEX_TYPE == 2) && !string.IsNullOrEmpty(o.VALUE)).OrderByDescending(o => o.TDL_INTRUCTION_TIME).ThenByDescending(o => o.MODIFY_TIME).ThenBy(o => o.TEST_INDEX_TYPE).ThenByDescending(o => o.ID).FirstOrDefault();
                     if (ListNotNullvalue != null)
                     {
                         decimal chiso;
@@ -875,7 +875,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                         if (Decimal.TryParse(ssTeinCR, out chisocre) && Creatinin.CONVERT_RATIO_TYPE.HasValue)
                         {
                             chisocre *= (Creatinin.CONVERT_RATIO_TYPE ?? 0);
-                        } 
+                        }
 
                         if (chisocre > 0)
                         {
