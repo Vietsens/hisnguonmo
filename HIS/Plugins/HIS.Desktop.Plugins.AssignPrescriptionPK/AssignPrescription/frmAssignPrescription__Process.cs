@@ -4386,7 +4386,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                 }
 
                 var mediMate = this.mediMatyTypeADOs != null ? this.mediMatyTypeADOs.FirstOrDefault(o => !String.IsNullOrEmpty(o.TUTORIAL)) : null;
-                if (!String.IsNullOrEmpty(txtLadder.Text) && mediMate != null)
+                if (mediMate != null)
                     return;
                 string serviceUnitName = "";
                 bool isUse = false;
@@ -4592,7 +4592,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                             }
                         }
                     }
-                    this.txtTutorial.Text = huongDan.ToString().Replace("  ", " ").Replace(", ,", ",");
+                    this.txtTutorial.Text = string.IsNullOrEmpty(huongDan.ToString()) ? this.txtTutorial.Text : huongDan.ToString().Replace("  ", " ").Replace(", ,", ",");
                 }
             }
             catch (Exception ex)
