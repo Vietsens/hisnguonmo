@@ -65,10 +65,11 @@ namespace HIS.Desktop.Plugins.CallPatientV8
         long planTimeFrom, planTimeTo;
         string content;
         const string moduleLink = "HIS.Desktop.Plugins.CallPatientV8";
-
-        public frmWaitingScreen_V48(MOS.EFMODEL.DataModels.HIS_SERVICE_REQ HisServiceReq, List<ServiceReqSttADO> ServiceReqStts, List<V_HIS_EXECUTE_ROOM> roomSelecteds, long planTimeFrom, long planTimeTo, string content)
+        Inventec.Desktop.Common.Modules.Module module;
+        public frmWaitingScreen_V48(MOS.EFMODEL.DataModels.HIS_SERVICE_REQ HisServiceReq, List<ServiceReqSttADO> ServiceReqStts, List<V_HIS_EXECUTE_ROOM> roomSelecteds, long planTimeFrom, long planTimeTo, string content, Inventec.Desktop.Common.Modules.Module module) : base(module)
         {
             InitializeComponent();
+            this.module = module;
             this.hisServiceReq = HisServiceReq;
             this.serviceReqStts = ServiceReqStts;
             this.roomSelecteds = roomSelecteds;
@@ -430,6 +431,7 @@ namespace HIS.Desktop.Plugins.CallPatientV8
         {
             try
             {
+                InitRestoreLayoutGridViewFromXml(gridViewWaitingCls);
                 if (this.roomSelecteds == null || this.roomSelecteds.Count() == 0)
                     return;
 
