@@ -37,13 +37,15 @@ namespace HIS.Desktop.Plugins.Bordereau.ChoosePatientType
         List<SereServADO> sereServADOSelecteds { get; set; }
         DelegateSelectData refeshData { get; set; }
         List<V_HIS_PATIENT_TYPE_ALTER> patientTypeAlters { get; set; }
-
-        public frmChoosePatientType(List<SereServADO> _sereServADOSelecteds, List<V_HIS_PATIENT_TYPE_ALTER> _patientTypeAlters, DelegateSelectData _refeshData)
+        public string AllowAssignOffListMedicineMaterialHeinCardNumberPrefix { get; private set; }
+        V_HIS_TREATMENT currentTreatment { get; set; }
+        public frmChoosePatientType(V_HIS_TREATMENT currentTreatment, List<SereServADO> _sereServADOSelecteds, List<V_HIS_PATIENT_TYPE_ALTER> _patientTypeAlters, DelegateSelectData _refeshData)
         {
             InitializeComponent();
             SetCaptionByLanguageKey();
             try
             {
+                this.currentTreatment = currentTreatment;
                 this.sereServADOSelecteds = _sereServADOSelecteds;
                 this.refeshData = _refeshData;
                 this.patientTypeAlters = _patientTypeAlters;
@@ -95,7 +97,7 @@ namespace HIS.Desktop.Plugins.Bordereau.ChoosePatientType
             try
             {
                 this.Icon = Icon.ExtractAssociatedIcon(System.IO.Path.Combine(Inventec.Desktop.Common.LocalStorage.Location.ApplicationStoreLocation.ApplicationDirectory, System.Configuration.ConfigurationSettings.AppSettings["Inventec.Desktop.Icon"]));
-
+                AllowAssignOffListMedicineMaterialHeinCardNumberPrefix = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>("MOS.BHYT.ALLOW_ASSIGN_OFF_LIST_MEDICINE_MATERIAL__HEIN_CARD_NUMBER_PREFIX");
                 LoadComboPatientType();
 
 
