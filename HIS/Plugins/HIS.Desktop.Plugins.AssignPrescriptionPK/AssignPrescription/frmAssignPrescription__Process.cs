@@ -4385,9 +4385,6 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                     return;
                 }
 
-                var mediMate = this.mediMatyTypeADOs != null ? this.mediMatyTypeADOs.FirstOrDefault(o => !String.IsNullOrEmpty(o.TUTORIAL)) : null;
-                if (mediMate != null)
-                    return;
                 string serviceUnitName = "";
                 bool isUse = false;
                 if (this.currentMedicineTypeADOForEdit != null)

@@ -8336,6 +8336,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
             this.lciARCPCR.Size = new System.Drawing.Size(181, 25);
             this.lciARCPCR.Text = "uACR:";
             this.lciARCPCR.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.lciARCPCR.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
             this.lciARCPCR.TextSize = new System.Drawing.Size(69, 20);
             this.lciARCPCR.TextToControlDistance = 5;
             // 

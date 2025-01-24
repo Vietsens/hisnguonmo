@@ -7542,6 +7542,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             this.lciARCPCR.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lciARCPCR.TextSize = new System.Drawing.Size(80, 20);
             this.lciARCPCR.TextToControlDistance = 5;
+            this.lciARCPCR.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
             // 
             // ExamServiceReqExecuteControl
             // 

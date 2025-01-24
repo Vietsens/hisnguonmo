@@ -92,6 +92,8 @@ namespace HIS.Desktop.Plugins.Bordereau
         internal long? numOrder;
         internal PrintOption.PayType payOption = PrintOption.PayType.ALL;
 
+        public string AllowAssignOffListMedicineMaterialHeinCardNumberPrefix { get; private set; }
+
         bool AllowCheckIsNoExecute = false;
         bool AutoClosePrintAndForm = false;
         string cboPayTypeDefault = null;
