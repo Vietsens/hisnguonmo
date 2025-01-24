@@ -2944,14 +2944,10 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                     }
                     else
                     {
-                        var rs = new BackendAdapter(new CommonParam()).Get<List<HIS_TEST_INDEX>>("api/HisTestIndex/Get", ApiConsumers.MosConsumer, new HisTestIndexFilter() { KEY_WORD = data.TEST_INDEX_CODE }, null);
-                        if (rs != null)
+                        var testIndex = BackendDataWorker.Get<V_HIS_TEST_INDEX>().FirstOrDefault(s => s.TEST_INDEX_CODE == data.TEST_INDEX_CODE && s.DEFAULT_VALUE != null);
+                        if (testIndex != null)
                         {
-                            var testIndex = rs.Where(s => s.TEST_INDEX_CODE == data.TEST_INDEX_CODE && s.DEFAULT_VALUE != null).FirstOrDefault();
-                            if (testIndex != null)
-                            {
-                                result = testIndex.DEFAULT_VALUE;
-                            }
+                            result = testIndex.DEFAULT_VALUE;
                         }
                     }
                 }
