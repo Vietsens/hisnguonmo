@@ -1,3 +1,14 @@
+### Release 2.347.0
+* Bổ sung thông tin đối tượng bệnh nhân trong thông tin giao dịch
+* Bổ sung thông tin eGFR và uACR và tần xuất theo dõi bệnh thận mạn
+* Cho phép chỉ định thuốc ngoài danh mục cho đầu thẻ công an, quân đội
+
+### Release 2.346.0
+* Bổ sung tính năng cho phép Thiết lập hiển thị Vỏ bệnh án, phiếu vỏ bệnh án
+* Bổ sung thông tin cách dùng cho từng thuốc khi kê đơn phục vụ XML 
+* Bổ sung chức năng màn hình chờ phòng mổ
+* Sửa dữ liệu cho phù hợp với quy định 130, 4750/QĐ-BYT và QĐ 3176/QĐ-BYT
+
 ### Release 2.345.0
 * Bổ sung thông tin phục vụ giấy chuyển tuyến theo Thông tư 01 ngày 01/01/2025
 * Hiển thị máy xử lý theo thiết lập khoa phòng tại chức năng xử lý phẫu thuật thủ thuật
