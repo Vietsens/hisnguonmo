@@ -125,8 +125,8 @@ namespace HIS.Desktop.Plugins.CreateTransReqQR.CreateTransReqQR
         {
             try
             {
-                LoadCom();
                 StopTimer(GetModuleLink(), "timerInitForm");
+                LoadCom();
                 LoadSereServByTreatment();
             }
             catch (Exception ex)
