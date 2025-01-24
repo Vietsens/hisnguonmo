@@ -166,8 +166,8 @@ namespace HIS.Desktop.Plugins.ListSurgMisuByTreatment.Run
                     {
                         List<long> lstID = sereServData.Select(o => o.ID).ToList();
                         hisSereServExtFilter.SERE_SERV_IDs = lstID;
+                        lstSereServExts = new BackendAdapter(new CommonParam()).Get<List<HIS_SERE_SERV_EXT>>("api/HisSereServExt/Get", ApiConsumer.ApiConsumers.MosConsumer, hisSereServExtFilter, null);
                     }
-                    lstSereServExts = new BackendAdapter(new CommonParam()).Get<List<HIS_SERE_SERV_EXT>>("api/HisSereServExt/Get", ApiConsumer.ApiConsumers.MosConsumer, hisSereServExtFilter, null);
                     gridControl.DataSource = null;
                     gridControl.DataSource = sereServData;
 
