@@ -66,11 +66,11 @@
     <Reference Include="HIS.Desktop.Controls.Session">
       <HintPath>..\..\..\..\lib\HIS\HIS.UC.UCTransPati\HIS.Desktop.Controls.Session.dll</HintPath>
     </Reference>
-    <Reference Include="HIS.Desktop.Library.CacheClient">
-      <HintPath>..\..\..\..\..\histest\histest\x64\ReferencedAssemblies\HIS.Desktop.Library.CacheClient.dll</HintPath>
-    </Reference>
     <Reference Include="HIS.Desktop.LibraryMessage">
       <HintPath>..\..\..\..\lib\HIS\HIS.UC.UCPatientRaw\HIS.Desktop.LibraryMessage.dll</HintPath>
+    </Reference>
+    <Reference Include="HIS.Desktop.Plugins.Library.PrintBordereau">
+      <HintPath>..\..\..\..\lib\HIS\HIS.Desktop.Plugins.Library.PrintBordereau\HIS.Desktop.Plugins.Library.PrintBordereau.dll</HintPath>
     </Reference>
     <Reference Include="HIS.Desktop.Print">
       <HintPath>..\..\..\..\lib\HIS\HIS.Desktop.Print\HIS.Desktop.Print.dll</HintPath>
@@ -435,9 +435,9 @@
       <Project>{2115dfe8-7545-4e23-aa30-276716394f87}</Project>
       <Name>HIS.Desktop.Utilities</Name>
     </ProjectReference>
-    <ProjectReference Include="..\HIS.Desktop.Plugins.Library.PrintBordereau\HIS.Desktop.Plugins.Library.PrintBordereau.csproj">
-      <Project>{3a497f48-6aee-4534-b372-f4431993c6c4}</Project>
-      <Name>HIS.Desktop.Plugins.Library.PrintBordereau</Name>
+    <ProjectReference Include="..\HIS.Desktop.Library.CacheClient\HIS.Desktop.Library.CacheClient.csproj">
+      <Project>{64837e01-803d-4f1e-9dfc-d34b38ea78f9}</Project>
+      <Name>HIS.Desktop.Library.CacheClient</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup />

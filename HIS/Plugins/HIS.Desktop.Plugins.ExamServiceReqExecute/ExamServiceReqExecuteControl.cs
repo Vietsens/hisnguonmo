@@ -4975,6 +4975,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             try
             {
                 string strIsToCalculateEgfr = "";
+                List<long> ACRPCRList = new List<long>() { IMSys.DbConfig.HIS_RS.TEST_INDEX_TYPE.ALBUMIN_NIEU, IMSys.DbConfig.HIS_RS.TEST_INDEX_TYPE.PROTEIN_NIEU, IMSys.DbConfig.HIS_RS.TEST_INDEX_TYPE.CREATININ_NIEU };
                 var TestIndexData = BackendDataWorker.Get<HIS_TEST_INDEX>().ToList();
                 if (TestIndexData != null && TestIndexData.Count > 0)
                 {
@@ -4982,15 +4983,15 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                     CommonParam param = new CommonParam();
                     HisSereServTeinView1Filter filter = new HisSereServTeinView1Filter();
                     filter.TREATMENT_IDs = new List<long>() { treatmentId };
-                    filter.TEST_INDEX_IDs = TestIndexData.Where(p => (new List<long>() { 1, 2, 3 }).Exists(o => o == p.TEST_INDEX_TYPE) || p.IS_TO_CALCULATE_EGFR == 1).Select(o => o.ID).ToList();
+                    filter.TEST_INDEX_IDs = TestIndexData.Where(p => ACRPCRList.Exists(o => o == p.TEST_INDEX_TYPE) || p.IS_TO_CALCULATE_EGFR == 1).Select(o => o.ID).ToList();
                     SereServTeinData = new BackendAdapter(param).Get<List<V_HIS_SERE_SERV_TEIN_1>>("/api/HisSereServTein/GetView1", ApiConsumers.MosConsumer, filter, param);
 
                     if (SereServTeinData != null && SereServTeinData.Count > 0)
                     {
-                        var SereServTestType = SereServTeinData.Where(p => (new List<long>() { 1, 2, 3 }).Exists(o => o == p.TEST_INDEX_TYPE)).ToList();
-                        if (SereServTestType.Exists(o => o.TEST_INDEX_TYPE == 3 && !string.IsNullOrEmpty(o.VALUE)) && SereServTestType.Exists(o => (o.TEST_INDEX_TYPE == 1 || o.TEST_INDEX_TYPE == 2) && !string.IsNullOrEmpty(o.VALUE)))
+                        var SereServTestType = SereServTeinData.Where(p => ACRPCRList.Exists(o => o == p.TEST_INDEX_TYPE)).ToList();
+                        if (SereServTestType.Exists(o => o.TEST_INDEX_TYPE == IMSys.DbConfig.HIS_RS.TEST_INDEX_TYPE.CREATININ_NIEU && !string.IsNullOrEmpty(o.VALUE)) && SereServTestType.Exists(o => (o.TEST_INDEX_TYPE == IMSys.DbConfig.HIS_RS.TEST_INDEX_TYPE.ALBUMIN_NIEU || o.TEST_INDEX_TYPE == IMSys.DbConfig.HIS_RS.TEST_INDEX_TYPE.PROTEIN_NIEU) && !string.IsNullOrEmpty(o.VALUE)))
                         {
-                            var ListNotNullvalue = SereServTestType.Where(o => (o.TEST_INDEX_TYPE == 1 || o.TEST_INDEX_TYPE == 2) && !string.IsNullOrEmpty(o.VALUE)).OrderByDescending(o => o.MODIFY_TIME).ToList().FirstOrDefault();
+                            var ListNotNullvalue = SereServTestType.Where(o => (o.TEST_INDEX_TYPE == IMSys.DbConfig.HIS_RS.TEST_INDEX_TYPE.ALBUMIN_NIEU || o.TEST_INDEX_TYPE == IMSys.DbConfig.HIS_RS.TEST_INDEX_TYPE.PROTEIN_NIEU) && !string.IsNullOrEmpty(o.VALUE)).OrderByDescending(o => o.MODIFY_TIME).ThenBy(o => o.TEST_INDEX_TYPE).ToList().FirstOrDefault();
                             if (ListNotNullvalue != null)
                             {
                                 var testIndex = TestIndexData.FirstOrDefault(o => o.ID == (ListNotNullvalue.TEST_INDEX_ID ?? 0));
@@ -5002,7 +5003,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                                 {
                                     if (testIndex.CONVERT_RATIO_TYPE.HasValue)
                                         chiso *= (testIndex.CONVERT_RATIO_TYPE ?? 0);
-                                    var Creatinin = SereServTestType.Where(o => o.TEST_INDEX_TYPE == 3 && !string.IsNullOrEmpty(o.VALUE)).OrderByDescending(o => o.MODIFY_TIME).ToList().FirstOrDefault();
+                                    var Creatinin = SereServTestType.Where(o => o.TEST_INDEX_TYPE == IMSys.DbConfig.HIS_RS.TEST_INDEX_TYPE.CREATININ_NIEU && !string.IsNullOrEmpty(o.VALUE)).OrderByDescending(o => o.MODIFY_TIME).ToList().FirstOrDefault();
                                     var testIndexCreatinin = TestIndexData.FirstOrDefault(o => o.ID == (Creatinin.TEST_INDEX_ID ?? 0));
                                     decimal chisotestIndexCreatinin;
                                     string ssTeintestIndexCreatininVL = Creatinin.VALUE.Replace(".", System.Globalization.CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator)
@@ -5012,7 +5013,8 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                                     {
                                         if (testIndexCreatinin.CONVERT_RATIO_TYPE.HasValue)
                                             chisotestIndexCreatinin *= (testIndexCreatinin.CONVERT_RATIO_TYPE ?? 0);
-                                        lciARCPCR.Text = ListNotNullvalue.TEST_INDEX_TYPE == 1 ? "uACR" : "uPCR";
+                                        lciARCPCR.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
+                                        lciARCPCR.Text = ListNotNullvalue.TEST_INDEX_TYPE == IMSys.DbConfig.HIS_RS.TEST_INDEX_TYPE.ALBUMIN_NIEU ? "uACR:" : "uPCR:";
                                         lblARCPCR.Text = (chiso / chisotestIndexCreatinin).ToString();
                                     }
                                 }

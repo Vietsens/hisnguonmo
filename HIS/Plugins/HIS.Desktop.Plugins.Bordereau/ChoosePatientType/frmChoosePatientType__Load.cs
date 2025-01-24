@@ -144,8 +144,8 @@ namespace HIS.Desktop.Plugins.Bordereau.ChoosePatientType
                             var medicineType = checkMedicine != null
                                 ? BackendDataWorker.Get<V_HIS_MEDICINE_TYPE>().FirstOrDefault(o => o.ID == checkMedicine.MEDICINE_TYPE_ID)
                                 : null;
-                            if (medicineType != null && !String.IsNullOrWhiteSpace(medicineType.ACTIVE_INGR_BHYT_CODE)
-                                && (medicineType.HEIN_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_HEIN_SERVICE_TYPE.ID__TH_TDM || medicineType.HEIN_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_HEIN_SERVICE_TYPE.ID__TH_TL || medicineType.HEIN_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_HEIN_SERVICE_TYPE.ID__TH_UT))
+                            if (medicineType != null && (!String.IsNullOrEmpty(medicineType.ACTIVE_INGR_BHYT_CODE) || !string.IsNullOrEmpty(AllowAssignOffListMedicineMaterialHeinCardNumberPrefix) && !string.IsNullOrEmpty(currentTreatment.TDL_HEIN_CARD_NUMBER) && AllowAssignOffListMedicineMaterialHeinCardNumberPrefix.Split(',').ToList().Contains(currentTreatment.TDL_HEIN_CARD_NUMBER.Substring(0, 2)))
+                                && (medicineType.HEIN_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_HEIN_SERVICE_TYPE.ID__TH_TDM || medicineType.HEIN_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_HEIN_SERVICE_TYPE.ID__TH_TL || medicineType.HEIN_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_HEIN_SERVICE_TYPE.ID__TH_UT || (!string.IsNullOrEmpty(AllowAssignOffListMedicineMaterialHeinCardNumberPrefix) && !string.IsNullOrEmpty(currentTreatment.TDL_HEIN_CARD_NUMBER) && AllowAssignOffListMedicineMaterialHeinCardNumberPrefix.Split(',').ToList().Contains(currentTreatment.TDL_HEIN_CARD_NUMBER.Substring(0, 2)) && medicineType.HEIN_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_HEIN_SERVICE_TYPE.ID__TH_NDM)))
                             {
                                 JoinTwoList(ref patientTypeMediMatyIds, ref patientTypeAllowMetiTemps);
                             }
@@ -170,7 +170,7 @@ namespace HIS.Desktop.Plugins.Bordereau.ChoosePatientType
                                 : null;
                             if (materialType != null && !String.IsNullOrWhiteSpace(materialType.HEIN_SERVICE_BHYT_CODE)
                                 && !String.IsNullOrWhiteSpace(materialType.HEIN_SERVICE_BHYT_NAME)
-                                && (materialType.HEIN_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_HEIN_SERVICE_TYPE.ID__VT_TT || materialType.HEIN_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_HEIN_SERVICE_TYPE.ID__VT_TDM || materialType.HEIN_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_HEIN_SERVICE_TYPE.ID__VT_TL))
+                                && (materialType.HEIN_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_HEIN_SERVICE_TYPE.ID__VT_TT || materialType.HEIN_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_HEIN_SERVICE_TYPE.ID__VT_TDM || materialType.HEIN_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_HEIN_SERVICE_TYPE.ID__VT_TL || (!string.IsNullOrEmpty(AllowAssignOffListMedicineMaterialHeinCardNumberPrefix) && !string.IsNullOrEmpty(currentTreatment.TDL_HEIN_CARD_NUMBER) && AllowAssignOffListMedicineMaterialHeinCardNumberPrefix.Split(',').ToList().Contains(currentTreatment.TDL_HEIN_CARD_NUMBER.Substring(0, 2)) && materialType.HEIN_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_HEIN_SERVICE_TYPE.ID__VT_NDM)))
                             {
                                 JoinTwoList(ref patientTypeMediMatyIds, ref patientTypeAllowMetiTemps);
                             }
