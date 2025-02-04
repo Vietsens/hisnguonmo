@@ -256,7 +256,7 @@ namespace HIS.Desktop.Plugins.TestServiceReqExcute
                     var Creatinin = lstSereServTein1.Where(o => o.TEST_INDEX_TYPE == 3 && !string.IsNullOrEmpty(o.VALUE)).OrderByDescending(o => o.MODIFY_TIME).ToList().FirstOrDefault();
                     if (Creatinin != null)
                     {
-                        var ListNotNullvalue = lstSereServTein1.Where(o => (o.TEST_INDEX_TYPE == 1 || o.TEST_INDEX_TYPE == 2) && !string.IsNullOrEmpty(o.VALUE)).OrderByDescending(o => o.MODIFY_TIME).ToList().FirstOrDefault();
+                        var ListNotNullvalue = lstSereServTein1.Where(o => (o.TEST_INDEX_TYPE == 1 || o.TEST_INDEX_TYPE == 2) && !string.IsNullOrEmpty(o.VALUE)).OrderByDescending(o => o.TDL_INTRUCTION_TIME).ThenByDescending(o => o.MODIFY_TIME).ThenBy(o => o.TEST_INDEX_TYPE).ThenByDescending(o => o.ID).FirstOrDefault();
                         if (ListNotNullvalue != null)
                         {
                             decimal chiso;
@@ -268,20 +268,23 @@ namespace HIS.Desktop.Plugins.TestServiceReqExcute
 
                             if (Decimal.TryParse(ssTeinVL, out chiso) && ListNotNullvalue.CONVERT_RATIO_TYPE.HasValue)
                             {
-                                chiso *= (ListNotNullvalue.CONVERT_RATIO_MLCT ?? 0);
+                                chiso *= (ListNotNullvalue.CONVERT_RATIO_TYPE ?? 0);
                             }
                             if (Decimal.TryParse(ssTeinCR, out chisocre) && Creatinin.CONVERT_RATIO_TYPE.HasValue)
                             {
-                                chisocre *= (Creatinin.CONVERT_RATIO_MLCT ?? 0);
+                                chisocre *= (Creatinin.CONVERT_RATIO_TYPE ?? 0);
                             }
 
-                            if (ListNotNullvalue.TEST_INDEX_TYPE == IMSys.DbConfig.HIS_RS.TEST_INDEX_TYPE.ALBUMIN_NIEU)
+                            if (chisocre > 0)
                             {
-                                mlctado.UACR = chiso / chisocre + "";
-                            }
-                            else if (ListNotNullvalue.TEST_INDEX_TYPE == IMSys.DbConfig.HIS_RS.TEST_INDEX_TYPE.PROTEIN_NIEU)
-                            {
-                                mlctado.UPCR = chiso / chisocre + "";
+                                if (ListNotNullvalue.TEST_INDEX_TYPE == IMSys.DbConfig.HIS_RS.TEST_INDEX_TYPE.ALBUMIN_NIEU)
+                                {
+                                    mlctado.UACR = chiso / chisocre + "";
+                                }
+                                else if (ListNotNullvalue.TEST_INDEX_TYPE == IMSys.DbConfig.HIS_RS.TEST_INDEX_TYPE.PROTEIN_NIEU)
+                                {
+                                    mlctado.UPCR = chiso / chisocre + "";
+                                }
                             }
                         }
                     }
