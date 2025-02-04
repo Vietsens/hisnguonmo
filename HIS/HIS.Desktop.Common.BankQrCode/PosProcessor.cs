@@ -81,8 +81,8 @@ namespace HIS.Desktop.Common.BankQrCode
                 this.PortName = portName;
                 this.DtrEnable = true;
                 this.RtsEnable = true;
-                this.ReadTimeout = 3000;
-                this.WriteTimeout = 3000;
+                this.ReadTimeout = 7000;
+                this.WriteTimeout = 5000;
                 this.DataReceived += PosProcessor_DataReceived;
             }
             catch (Exception ex)
