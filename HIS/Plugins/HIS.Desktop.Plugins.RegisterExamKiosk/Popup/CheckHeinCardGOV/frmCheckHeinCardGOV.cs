@@ -40,6 +40,13 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using HIS.Desktop.Plugins.RegisterExamKiosk.Popup.InformationObject;
+using Inventec.Common.QrCodeBHYT;
+using HIS.Desktop.Plugins.Library.CheckHeinGOV;
+using Inventec.Common.Logging;
+using MOS.Filter;
+using Inventec.Core;
+using Inventec.Common.Adapter;
+using His.Bhyt.InsuranceExpertise;
 
 namespace HIS.Desktop.Plugins.RegisterExamKiosk.Popup.CheckHeinCardGOV
 {
@@ -57,8 +64,9 @@ namespace HIS.Desktop.Plugins.RegisterExamKiosk.Popup.CheckHeinCardGOV
         System.Threading.Thread CloseThread;
         int loopCount = HisConfigCFG.timeWaitingMilisecond / 50;
         List<HIS_PATIENT_TYPE> hisPatientType;
-
+        //long patientTypeBhyt = 0;
         private bool stopThread;
+        HIS_EMPLOYEE currentEmployee = null;
 
         public frmCheckHeinCardGOV(ResultHistoryLDO resultHistoryLDO, HIS.Desktop.Common.DelegateSelectData _registerDataInformation, HIS.Desktop.Common.DelegateSelectData _registerData, HIS.Desktop.Common.DelegateRefreshData _setNull, DelegateCloseForm_Uc closingForm, HisPatientForKioskSDO _PatientForKiosk)
         {
@@ -146,8 +154,8 @@ namespace HIS.Desktop.Plugins.RegisterExamKiosk.Popup.CheckHeinCardGOV
 
                     btnSinglePrint.BackColor = Color.Teal;
                     btnSinglePrint.Font = new Font("Microsoft Sans Serif", 17, FontStyle.Regular);
-                    btnSinglePrint.Click += new System.EventHandler(this.btnCustomBurtton_Click);
                     btnSinglePrint.Tag = hisPatientType[i].ID;
+                    btnSinglePrint.Click += new System.EventHandler(this.btnCustomBurtton_Click);
                     btnSinglePrint.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
                     btnSinglePrint.ForeColor = Color.White;
 
@@ -203,8 +211,144 @@ namespace HIS.Desktop.Plugins.RegisterExamKiosk.Popup.CheckHeinCardGOV
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
+        List<string> connectInfors = new List<string>();
+        string api = "";
+        string nameCb = "";
+        string cccdCb = "";
+        public void checkConfig()
+        {
+            try
+            {
+                HisConfigCHECKHEINCARD.LoadConfig();
+                string connect_infor = HisConfigCHECKHEINCARD.CHECK_HEIN_CARD_BHXH__API;
+                CheckEmploy();
+                var employee = currentEmployee;
+                if (!string.IsNullOrEmpty(connect_infor))
+                {
 
-        private void btnCustomBurtton_Click(object sender, EventArgs e)
+                    connectInfors = connect_infor.Split('|').ToList();
+                    api = connectInfors.Count > 0 ? connectInfors[0] : string.Empty;
+
+                    nameCb = connectInfors.Count > 1 && !string.IsNullOrEmpty(connectInfors[1]) ? connectInfors[1] : employee.TDL_USERNAME;
+                    cccdCb = connectInfors.Count > 2 && !string.IsNullOrEmpty(connectInfors[2]) ? connectInfors[2] : employee.IDENTIFICATION_NUMBER;
+
+                    LogSystem.Debug("BHXHLoginCFG.OFFICERNAME: " + connectInfors[1]);
+                    LogSystem.Debug("BHXHLoginCFG.CCCDOFFICER: " + connectInfors[2]);
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+
+        }
+        public void CheckEmploy()
+        {
+            try
+            {
+                if (currentEmployee == null)
+                {
+                    CommonParam param = new CommonParam();
+                    MOS.Filter.HisEmployeeFilter hisEmployeeFilter = new HisEmployeeFilter();
+                    hisEmployeeFilter.LOGINNAME__EXACT = Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName();
+                    currentEmployee = new BackendAdapter(param).Get<List<HIS_EMPLOYEE>>("api/HisEmployee/Get", ApiConsumer.ApiConsumers.MosConsumer, hisEmployeeFilter, param).FirstOrDefault();
+                }
+
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+
+        }
+
+        private async Task<ResultHistoryLDO> CheckHanSDTheBHYT(HeinCardData dataHein)
+        {
+            ResultHistoryLDO reult = null;
+            string name = "";
+            string cccd = "";
+            try
+            {
+                checkConfig();
+                WaitingManager.Show();
+                if (String.IsNullOrEmpty(dataHein.PatientName)
+                    || String.IsNullOrEmpty(dataHein.Dob)
+                    || String.IsNullOrEmpty(dataHein.HeinCardNumber))
+                {
+                    Inventec.Common.Logging.LogSystem.Info("Khong goi cong BHXH check thong tin the do du lieu truyen vao chua du du lieu bat buoc___" + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => dataHein), dataHein));
+                    return reult;
+                }
+                Inventec.Common.Logging.LogSystem.Debug(String.Format("Tên cán bộ:{0}", nameCb));
+                Inventec.Common.Logging.LogSystem.Debug(String.Format("CCCD cán bộ:{0}", cccdCb));
+                Inventec.Common.Logging.LogSystem.Debug(String.Format("Tên api:{0}", api));
+
+
+
+                CommonParam param = new CommonParam();
+                ApiInsuranceExpertise apiInsuranceExpertise = new ApiInsuranceExpertise();
+                apiInsuranceExpertise.ApiEgw = api;
+                CheckHistoryLDO checkHistoryLDO = new CheckHistoryLDO();
+                checkHistoryLDO.maThe = dataHein.HeinCardNumber;
+                checkHistoryLDO.ngaySinh = dataHein.Dob;
+                checkHistoryLDO.hoTen = Inventec.Common.String.Convert.HexToUTF8Fix(dataHein.PatientName);
+                checkHistoryLDO.hoTen = (String.IsNullOrEmpty(checkHistoryLDO.hoTen) ? dataHein.PatientName : checkHistoryLDO.hoTen);
+                checkHistoryLDO.hoTenCb = nameCb;
+                checkHistoryLDO.cccdCb = cccdCb;
+                Inventec.Common.Logging.LogSystem.Info("CheckHanSDTheBHYT => 1");
+                WaitingManager.Show();
+                reult = await apiInsuranceExpertise.CheckHistory(BHXHLoginCFG.USERNAME, BHXHLoginCFG.PASSWORD, BHXHLoginCFG.ADDRESS, checkHistoryLDO, BHXHLoginCFG.ADDRESS_OPTION);
+                WaitingManager.Hide();
+                Inventec.Common.Logging.LogSystem.Info("CheckHanSDTheBHYT => 2");
+                Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => reult), reult));
+                if (reult != null && reult.dsLichSuKT2018 != null && reult.dsLichSuKT2018.Count > 0)
+                {
+                    var maxData = reult.dsLichSuKCB2018 != null && reult.dsLichSuKCB2018.Count > 0 ? reult.dsLichSuKCB2018.Max(p => Int64.Parse(p.ngayRa)) : 0;
+                    var IsShowMess = reult.dsLichSuKT2018.Exists(o => (maxData > 0 ? Int64.Parse(o.thoiGianKT) > maxData : false) && !o.userKT.Contains(HIS.Desktop.LocalStorage.BackendData.BranchDataWorker.Branch.HEIN_MEDI_ORG_CODE) && (new List<string>() { "000", "001", "002", "003" }.Contains(o.maLoi)));
+                    if (IsShowMess)
+                    {
+                        reult.message = "Thẻ BHYT có thông tin kiểm tra thẻ chưa ra viện.";
+                    }
+                }
+                WaitingManager.Hide();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+            return reult;
+        }
+
+        private async Task<bool> CheckCardBHYT()
+        {
+            try
+            {
+                HeinCardData mapdata = new HeinCardData();
+                mapdata.Address = this.PatientForKiosk.ADDRESS;
+                mapdata.Dob = this.PatientForKiosk.DOB.ToString();
+                mapdata.Gender = this.PatientForKiosk.GENDER_ID.ToString();
+                mapdata.HeinCardNumber = this.PatientForKiosk.HeinCardNumber;
+                mapdata.PatientName = this.PatientForKiosk.VIR_PATIENT_NAME;
+                mapdata.MediOrgCode = this.PatientForKiosk.HeinMediOrgCode;
+                //mapdata.FromDate = Inventec.Common.DateTime.Convert.TimeNumberToDateString(this.PatientForKiosk.HeinCardFromTime ?? 0);
+                //mapdata.ToDate = Inventec.Common.DateTime.Convert.TimeNumberToDateString(this.PatientForKiosk.HeinCardToTime ?? 0);
+                //mapdata.IssueDate\
+                //this.CheckTheChuaRaVien(mapdata);
+                ResultHistoryLDO ResultDataADO = await CheckHanSDTheBHYT(mapdata);
+                if (ResultDataADO != null && HIS.Desktop.Plugins.Library.RegisterConfig.HisConfigCFG.WarningInvalidCheckHistoryHeinCard && ResultDataADO.message == "Thẻ BHYT có thông tin kiểm tra thẻ chưa ra viện.")
+                {
+                    DevExpress.XtraEditors.XtraMessageBox.Show("Thẻ BHYT có thông tin kiểm tra thẻ chưa ra viện. Vui lòng đăng ký tại quầy tiếp đón.");
+                    return false;
+                }
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+                return false;
+            }
+        }
+
+        private async void btnCustomBurtton_Click(object sender, EventArgs e)
         {
             try
             {
@@ -218,24 +362,46 @@ namespace HIS.Desktop.Plugins.RegisterExamKiosk.Popup.CheckHeinCardGOV
                 }
                 else
                 {
-                    var currentBranch = BackendDataWorker.Get<HIS_BRANCH>().FirstOrDefault(o => o.ID == WorkPlace.GetBranchId());
+                    bool IsContinue = await CheckCardBHYT();
+                    if (IsContinue == true)
+                    {
+                        var currentBranch = BackendDataWorker.Get<HIS_BRANCH>().FirstOrDefault(o => o.ID == WorkPlace.GetBranchId());
+                        if (!String.IsNullOrWhiteSpace(resultHistoryLDO.maDKBD)
+                            && (resultHistoryLDO.maDKBD == currentBranch.HEIN_MEDI_ORG_CODE || ValidSysMediOrgCode(currentBranch.SYS_MEDI_ORG_CODE, resultHistoryLDO.maDKBD) || ValidSysMediOrgCode(currentBranch.ACCEPT_HEIN_MEDI_ORG_CODE, resultHistoryLDO.maDKBD)))
+                        {
+                            HisExamRegisterKioskSDO sdoData = new HisExamRegisterKioskSDO();
+                            sdoData.RightRouteCode = MOS.LibraryHein.Bhyt.HeinRightRoute.HeinRightRouteCode.TRUE;
+                            this.Close();
+                            if (this.registerDataInformation != null)
+                                this.registerDataInformation(sdoData);
+                            if (this.registerData != null)
+                                this.registerData(data.Tag);
+                        }
+                        else
+                        {
+                            frmInformationObject frm = new frmInformationObject(this.PatientForKiosk, resultHistoryLDO, SelectedPatientType, SelectedInformationData);
+                            frm.ShowDialog();
+                        }
+                    }
 
-                    if (!String.IsNullOrWhiteSpace(resultHistoryLDO.maDKBD)
-                        && (resultHistoryLDO.maDKBD == currentBranch.HEIN_MEDI_ORG_CODE || ValidSysMediOrgCode(currentBranch.SYS_MEDI_ORG_CODE, resultHistoryLDO.maDKBD) || ValidSysMediOrgCode(currentBranch.ACCEPT_HEIN_MEDI_ORG_CODE, resultHistoryLDO.maDKBD)))
-                    {
-                        HisExamRegisterKioskSDO sdoData = new HisExamRegisterKioskSDO();
-                        sdoData.RightRouteCode = MOS.LibraryHein.Bhyt.HeinRightRoute.HeinRightRouteCode.TRUE;
-                        this.Close();
-                        if (this.registerDataInformation != null)
-                            this.registerDataInformation(sdoData);
-                        if (this.registerData != null)
-                            this.registerData(data.Tag);
-                    }
-                    else
-                    {
-                        frmInformationObject frm = new frmInformationObject(this.PatientForKiosk, resultHistoryLDO, SelectedPatientType, SelectedInformationData);
-                        frm.ShowDialog();
-                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private async Task CheckTheChuaRaVien(HeinCardData card)
+        {
+            try
+            {
+                if (card == null) card = new HeinCardData();
+                HeinGOVManager heinGOVManager = new HeinGOVManager(ResourceMessage.GoiSangCongBHXHTraVeMaLoi);
+                ResultDataADO ResultDataADO = await heinGOVManager.Check(card, null, true, card.Address, DateTime.Now, true, true);
+                if (ResultDataADO != null && ResultDataADO.ResultHistoryLDO != null && HIS.Desktop.Plugins.Library.RegisterConfig.HisConfigCFG.WarningInvalidCheckHistoryHeinCard && ResultDataADO.ResultHistoryLDO.message == "Thẻ BHYT có thông tin kiểm tra thẻ chưa ra viện.")
+                {
+                    DevExpress.XtraEditors.XtraMessageBox.Show("Thẻ BHYT có thông tin kiểm tra thẻ chưa ra viện. Vui lòng đăng ký tại quầy tiếp đón.");
                 }
             }
             catch (Exception ex)
@@ -465,7 +631,7 @@ namespace HIS.Desktop.Plugins.RegisterExamKiosk.Popup.CheckHeinCardGOV
                         loopCount--;
                     }
 
-                    this.Invoke(new MethodInvoker(delegate() { this.Close(); }));
+                    this.Invoke(new MethodInvoker(delegate () { this.Close(); }));
                     if (DelegateClose != null)
                     {
                         DelegateClose(null);
