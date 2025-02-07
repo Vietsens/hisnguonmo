@@ -210,6 +210,7 @@ namespace MPS.Processor.Mps000037
                     ListAdo = ListAdo.OrderBy(o => o.ID).ThenBy(p => p.SERVICE_NAME).ToList();
                     objectTag.AddObjectData(store, "ServiceReqType", srTypeList.Count > 0 ? srTypeList.OrderBy(o => o.SERVICE_REQ_TYPE_NAME).ToList() : new List<HIS_SERVICE_REQ_TYPE>());
                     objectTag.AddObjectData(store, "ServiceReq", srList.Count > 0 ? srList.OrderBy(o => o.SERVICE_REQ_TYPE_NAME).ThenBy(o => o.INTRUCTION_TIME).ToList() : new List<V_HIS_SERVICE_REQ>());
+                    var Rooms = ListAdo.Select(o => new {o.SERVICE_REQ_ID, o.TDL_EXECUTE_ROOM_ID, o.TDL_SERVICE_TYPE_ID,o.SERVICE_PARENT_ID,o.REQUEST_ROOM_NAME }).ToList();
                     objectTag.AddObjectData(store, "Services", ListAdo);
                     objectTag.AddRelationship(store, "ServiceReqType", "ServiceReq", "ID", "SERVICE_REQ_TYPE_ID");
                     objectTag.AddRelationship(store, "ServiceReq", "Services", "ID", "SERVICE_REQ_ID");
@@ -218,9 +219,15 @@ namespace MPS.Processor.Mps000037
 
                     objectTag.AddObjectData(store, "ServicesType", serviceTypeGroup);
                     objectTag.AddObjectData(store, "ServicesParent", servcieParent);
+                    objectTag.AddObjectData(store, "ServicesRoom", Rooms);
                     objectTag.AddRelationship(store, "ServicesType", "ServicesParent", "TDL_SERVICE_TYPE_ID", "SERVICE_TYPE_ID");
                     objectTag.AddRelationship(store, "ServicesType", "Services", "TDL_SERVICE_TYPE_ID", "TDL_SERVICE_TYPE_ID");
+                    objectTag.AddRelationship(store, "ServicesType", "ServicesRoom", "TDL_SERVICE_TYPE_ID", "TDL_SERVICE_TYPE_ID");
                     objectTag.AddRelationship(store, "ServicesParent", "Services", "ID", "SERVICE_PARENT_ID");
+                    objectTag.AddRelationship(store, "ServicesParent", "ServicesRoom", "ID", "SERVICE_PARENT_ID");
+                    objectTag.AddRelationship(store, "ServicesRoom", "Services", "REQUEST_ROOM_NAME", "REQUEST_ROOM_NAME");
+
+                    objectTag.SetUserFunction(store, "FuncSameTitleCol", new CustomerFuncMergeSameData());
                 }
 
                 result = true;
@@ -550,7 +557,39 @@ namespace MPS.Processor.Mps000037
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
+        class CustomerFuncMergeSameData : TFlexCelUserFunction
+        {
+            string Name;
+            public override object Evaluate(object[] parameters)
+            {
+                if (parameters == null || parameters.Length < 1)
+                    throw new ArgumentException("Bad parameter count in call to Orders() user-defined function");
+                bool result = false;
+                try
+                {
+                    string _Name = parameters[0].ToString();
+                    if (_Name != null)
+                    {
+                        if (Name == _Name)
+                        {
+                            return true;
+                        }
+                        else
+                        {
+                            Name = _Name;
+                            return false;
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    return false;
+                    Inventec.Common.Logging.LogSystem.Debug(ex);
+                }
 
+                return result;
+            }
+        }
         class CustomerFuncRownumberData : TFlexCelUserFunction
         {
             public CustomerFuncRownumberData()

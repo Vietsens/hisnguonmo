@@ -91,6 +91,9 @@ namespace MPS.Processor.Mps000047
 
                         System.Reflection.PropertyInfo piConCenTra = typeof(ExpMestAggregatePrintByPageADO).GetProperty("CONCENTRA" + i);
                         singleValueDictionary.Add("CONCENTRA" + i, piConCenTra.GetValue(item));
+
+                        System.Reflection.PropertyInfo piMedicineUF = typeof(ExpMestAggregatePrintByPageADO).GetProperty("MEDICINE_USE_FORM_NAME" + i);
+                        singleValueDictionary.Add("MEDICINE_USE_FORM_NAME" + i, piMedicineUF.GetValue(item));
                     }
 
 
@@ -114,6 +117,11 @@ namespace MPS.Processor.Mps000047
                     item.ExpMestAggregatePrintADOs = item.ExpMestAggregatePrintADOs.OrderBy(o => o.PATIENT_CODE).ToList();
 
                     objectTag.AddObjectData(store, "Patients", item.ExpMestAggregatePrintADOs);
+
+
+                    item.ExpMestAggregateReqRoomPrintADOs = item.ExpMestAggregateReqRoomPrintADOs.OrderBy(o => o.PATIENT_CODE).ToList();
+
+                    objectTag.AddObjectData(store, "PatientRooms", item.ExpMestAggregateReqRoomPrintADOs);
                     result = true;
                 }
             }
@@ -141,7 +149,21 @@ namespace MPS.Processor.Mps000047
 
             return result;
         }
+        string GetMediUseForm(long serviceId)
+        {
+            string result = "";
+            try
+            {
+                result = rdo.MedicineExpmestTypeADOs.FirstOrDefault(o => o.SERVICE_ID == serviceId).MEDICINE_USE_FORM_NAME;
+            }
+            catch (Exception ex)
+            {
+                result = "";
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
 
+            return result;
+        }
         string GetConCenTra(long serviceId)
         {
             string result = "";
@@ -253,7 +275,6 @@ namespace MPS.Processor.Mps000047
                 List<long> distinctDates = medicineExpmestTypeADOs.OrderBy(o => o.MEDICINE_TYPE_NAME)
                     .Select(o => o.SERVICE_ID)
                     .Distinct().ToList();
-                var trainGroups = medicineExpmestTypeADOs.GroupBy(o => new { o.Patient, o.TreatmentId });
                 int index = 0;
                 while (index < distinctDates.Count)
                 {
@@ -273,9 +294,14 @@ namespace MPS.Processor.Mps000047
                         if (piConCenTra != null)
                             piConCenTra.SetValue(sdo, index < distinctDates.Count ? GetConCenTra(distinctDates[index]) : "");
 
+                        System.Reflection.PropertyInfo piMedicineUF = typeof(ExpMestAggregatePrintByPageADO).GetProperty("MEDICINE_USE_FORM_NAME" + i);
+                        if (piMedicineUF != null)
+                            piMedicineUF.SetValue(sdo, index < distinctDates.Count ? GetMediUseForm(distinctDates[index]) : "");
+
                         index++;
                     }
 
+                    var trainGroups = medicineExpmestTypeADOs.GroupBy(o => new { o.Patient, o.TreatmentId });
                     List<ExpMestAggregatePrintADO> trainPrints = new List<ExpMestAggregatePrintADO>();
                     foreach (var group in trainGroups)
                     {
@@ -313,6 +339,46 @@ namespace MPS.Processor.Mps000047
                         trainPrints.Add(trainPrint);
                     }
                     sdo.ExpMestAggregatePrintADOs = trainPrints.OrderBy(o => o.BED_ROOM_NAMEs).ThenBy(o => o.VIR_PATIENT_NAME).ToList();
+
+                    var trainGroupsRoom = medicineExpmestTypeADOs.GroupBy(o => new { o.Patient, o.TreatmentId,o.REQ_ROOM_ID });
+                    List<ExpMestAggregatePrintADO> trainPrintsRoom = new List<ExpMestAggregatePrintADO>();
+                    foreach (var group in trainGroupsRoom)
+                    {
+                        ExpMestAggregatePrintADO trainPrint = new ExpMestAggregatePrintADO();
+                        List<Mps000047ADO> trains = group.ToList();
+
+                        if (group.Key.Patient != null)
+                        {
+                            trainPrint.PATIENT_ID = group.Key.Patient.ID;
+                            trainPrint.PATIENT_CODE = group.Key.Patient.PATIENT_CODE;
+                            trainPrint.VIR_PATIENT_NAME = group.Key.Patient.VIR_PATIENT_NAME;
+                            trainPrint.DOB = group.Key.Patient.DOB;
+                            trainPrint.GENDER_NAME = group.Key.Patient.GENDER_NAME;
+                            trainPrint.AGE = AgeUtil.CalculateFullAge(group.Key.Patient.DOB);
+                            trainPrint.TREATMENT_CODE = group.FirstOrDefault().TREATMENT_CODE;
+                        }
+                        trainPrint.BED_ROOM_NAMEs = GetBedRoomByPatient(group.Key.TreatmentId);
+                        trainPrint.REQ_ROOM_NAME = group.FirstOrDefault().REQ_ROOM_NAME;
+                        string bedCode = "", bedName = "";
+                        GetBedByTreatment(group.Key.TreatmentId, ref bedCode, ref bedName);
+                        trainPrint.BED_CODE = bedCode;
+                        trainPrint.BED_NAME = bedName;
+
+                        for (int i = 1; i <= rdo.keyColumnSize; i++)
+                        {
+                            System.Reflection.PropertyInfo piServiceId = typeof(ExpMestAggregatePrintByPageADO).GetProperty("SERVICE_ID" + i);
+                            System.Reflection.PropertyInfo piAmount = typeof(ExpMestAggregatePrintADO).GetProperty("AMOUNT" + i);
+                            if (piServiceId != null && piAmount != null)
+                            {
+                                decimal? amount = trains.Where(o => o.SERVICE_ID == (long)(piServiceId.GetValue(sdo))).Sum(o => o.AMOUNT);
+                                amount = (amount == 0 ? null : amount);
+                                piAmount.SetValue(trainPrint, amount);
+                            }
+                        }
+
+                        trainPrintsRoom.Add(trainPrint);
+                    }
+                    sdo.ExpMestAggregateReqRoomPrintADOs = trainPrintsRoom.OrderBy(o => o.BED_ROOM_NAMEs).ThenBy(o => o.VIR_PATIENT_NAME).ToList();
                     result.Add(sdo);
                 }
             }
