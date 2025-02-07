@@ -15,12 +15,15 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+using HIS.Desktop.ApiConsumer;
 using HIS.Desktop.LocalStorage.BackendData;
 using HIS.Desktop.LocalStorage.HisConfig;
 using HIS.Desktop.Plugins.Library.PrintTreatmentEndTypeExt;
+using Inventec.Common.Adapter;
 using Inventec.Core;
 using Inventec.Desktop.Common.Message;
 using MOS.EFMODEL.DataModels;
+using MOS.Filter;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -312,6 +315,24 @@ namespace HIS.Desktop.Plugins.Library.PrintTreatmentFinish
             }
             return result;
         }
+        private void LoadServiceReq(long id)
+        {
+            try
+            {
+                CommonParam param = new CommonParam();
+                HisServiceReqFilter filter = new HisServiceReqFilter();
+                filter.IS_ACTIVE = 1;
+                filter.TREATMENT_ID = id;
+                var dt = new BackendAdapter(param).Get<List<HIS_SERVICE_REQ>>("api/HisServiceReq/Get", ApiConsumers.MosConsumer, filter, param);
+                if (dt != null && dt.Count > 0)
+                    HisServiceReq = dt.FirstOrDefault(o => o.EXAM_END_TYPE == 3);
+            }
+            catch (Exception ex)
+            {
+                WaitingManager.Hide();
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
 
         private bool ProcessDataBeforePrint()
         {
@@ -367,6 +388,8 @@ namespace HIS.Desktop.Plugins.Library.PrintTreatmentFinish
                 {
                     HisTreatment = GetCurrentHistreatment(HisTreatment.ID);
                 }
+                if (HisServiceReq == null)
+                    LoadServiceReq(HisTreatment.ID);
                 EmrDataStore.treatmentCode = HisTreatment.TREATMENT_CODE;
                 HisMediRecord = GetMediRecord(HisTreatment.MEDI_RECORD_ID);
             }
