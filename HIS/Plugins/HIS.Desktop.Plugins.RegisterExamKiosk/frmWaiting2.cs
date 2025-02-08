@@ -4,6 +4,7 @@ using His.Bhyt.InsuranceExpertise.LDO;
 using HIS.Desktop.Common;
 using HIS.Desktop.LocalStorage.BackendData;
 using HIS.Desktop.LocalStorage.HisConfig;
+using HIS.Desktop.Plugins.Library.CheckHeinGOV;
 using HIS.Desktop.Plugins.RegisterExamKiosk.ADO;
 using HIS.Desktop.Plugins.RegisterExamKiosk.Config;
 using HIS.Desktop.Plugins.RegisterExamKiosk.Popup;
@@ -182,7 +183,8 @@ namespace HIS.Desktop.Plugins.RegisterExamKiosk
         }
         private void LoadConfigurations()
         {
-            AppConfigs.LoadConfig();
+            HIS.Desktop.Plugins.Library.RegisterConfig.HisConfigCFG.LoadConfig();
+            HIS.Desktop.Plugins.Library.RegisterConfig.AppConfigs.LoadConfig();
             checkConfig();
             CheckEmploy();
             getImageFromFile(); // Assuming this loads images into listImage
@@ -397,7 +399,7 @@ namespace HIS.Desktop.Plugins.RegisterExamKiosk
         string api = "";
         string nameCb = "";
         string cccdCb = "";
-        private void checkConfig()
+        public void checkConfig()
         {
             try
             {
@@ -1192,7 +1194,8 @@ namespace HIS.Desktop.Plugins.RegisterExamKiosk
         {
             try
             {
-                long keyCheck = AppConfigs.CheDoTuDongCheckThongTinTheBHYT;
+                //long keyCheck = AppConfigs.CheDoTuDongCheckThongTinTheBHYT;
+                long keyCheck = HIS.Desktop.Plugins.Library.RegisterConfig.AppConfigs.CheDoTuDongCheckThongTinTheBHYT;
                 if (keyCheck > 0)
                 {
                     ResultHistoryLDO rsIns = null;
@@ -1665,8 +1668,6 @@ namespace HIS.Desktop.Plugins.RegisterExamKiosk
                         filter.CMND_NUMBER__EXACT = txtInput;
 
                     Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData("filter____api/HisPatient/GetInformationForKiosk____", filter));
-
-
                     this.PatientData.PatientForKiosk = GetPatientInfoByFilter(filter);
 
                     if (this.PatientData.PatientForKiosk == null)
@@ -1681,7 +1682,26 @@ namespace HIS.Desktop.Plugins.RegisterExamKiosk
                     }
                     else
                     {
+                        //HeinCardData mapdata = new HeinCardData();
+                        //mapdata.Address = this.PatientData.PatientForKiosk.ADDRESS;
+                        //mapdata.Dob = this.PatientData.PatientForKiosk.DOB.ToString();
+                        ////mapdata.FineYearMonthDate = this.PatientData.PatientForKiosk.yea;
+                        //mapdata.Gender = this.PatientData.PatientForKiosk.GENDER_ID.ToString();
+                        //mapdata.HeinCardNumber = this.PatientData.PatientForKiosk.HeinCardNumber;
+                        ////mapdata.IssueDate = this.PatientData.PatientForKiosk.I;
+                        ////mapdata.FromDate = this.PatientData.PatientForKiosk.InDate.ToString();
+                        ////mapdata.LiveAreaCode = this.PatientData.PatientForKiosk.LiveAreaCode;
+                        ////mapdata.ManagerCodeBHXH = this.PatientData.PatientForKiosk.
+                        ////mapdata.MediOrgCode = this.PatientData.PatientForKiosk.HeinMediOrgCode;
+                        //    //mapdata.ParentName = this.PatientData.PatientForKiosk.parent
+                        // mapdata.PatientName = this.PatientData.PatientForKiosk.VIR_PATIENT_NAME;
+                        //mapdata.MediOrgCode = this.PatientData.PatientForKiosk.HeinMediOrgCode;
+                        ////mapdata.ToDate = this.PatientData.PatientForKiosk
+
+                        //this.CheckTheChuaRaVien(mapdata, filter);
+
                         OpenFormByPatientData();
+
                     }
                 }
                 WaitingManager.Hide();
@@ -1693,7 +1713,6 @@ namespace HIS.Desktop.Plugins.RegisterExamKiosk
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
-
         private void LoadDefaultScreenSaver()
         {
             try
@@ -1797,6 +1816,23 @@ namespace HIS.Desktop.Plugins.RegisterExamKiosk
             return false;
         }
 
+        private async Task CheckTheChuaRaVien(HeinCardData card, HisPatientAdvanceFilter filter)
+        {
+            try
+            {
+                if (card == null) card = new HeinCardData();
+                HeinGOVManager heinGOVManager = new HeinGOVManager(ResourceMessage.GoiSangCongBHXHTraVeMaLoi);
+                ResultDataADO ResultDataADO = await heinGOVManager.Check(card, null, true, card.Address, DateTime.Now, true, true);
+                if (ResultDataADO != null && ResultDataADO.ResultHistoryLDO != null && HIS.Desktop.Plugins.Library.RegisterConfig.HisConfigCFG.WarningInvalidCheckHistoryHeinCard && ResultDataADO.ResultHistoryLDO.message == "Thẻ BHYT có thông tin kiểm tra thẻ chưa ra viện.")
+                {
+                    DevExpress.XtraEditors.XtraMessageBox.Show(ResultDataADO.ResultHistoryLDO.message);
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
         private async Task CheckHanSDTheBHYTVaCccd(HeinCardData card, HisPatientAdvanceFilter filter)
         {
             try
@@ -1812,6 +1848,26 @@ namespace HIS.Desktop.Plugins.RegisterExamKiosk
                 {
                     rsIns = this.PatientData.HeinInfo;
                 }
+
+                //if (card == null) card = new HeinCardData();
+                //card.Address = this.PatientData.PatientForKiosk.ADDRESS;
+                //card.Dob = this.PatientData.PatientForKiosk.DOB.ToString();
+                //card.Gender = this.PatientData.PatientForKiosk.GENDER_ID.ToString();
+                //card.HeinCardNumber = this.PatientData.PatientForKiosk.HeinCardNumber;
+                //card.PatientName = this.PatientData.PatientForKiosk.VIR_PATIENT_NAME;
+                //card.MediOrgCode = this.PatientData.PatientForKiosk.HeinMediOrgCode;
+                ////this.CheckTheChuaRaVien(card, filter);
+
+                //bool continueCheckHistoryHeinCard = true;
+                //HeinGOVManager heinGOVManager = new HeinGOVManager(ResourceMessage.GoiSangCongBHXHTraVeMaLoi);
+                //ResultDataADO ResultDataADO = await heinGOVManager.Check(card, null, true, card.Address, DateTime.Now, true, true);
+                //if (ResultDataADO != null && ResultDataADO.ResultHistoryLDO != null && HIS.Desktop.Plugins.Library.RegisterConfig.HisConfigCFG.WarningInvalidCheckHistoryHeinCard &&  ResultDataADO.ResultHistoryLDO.message == "Thẻ BHYT có thông tin kiểm tra thẻ chưa ra viện.")
+                //{
+                //    continueCheckHistoryHeinCard = false;
+                //    DevExpress.XtraEditors.XtraMessageBox.Show(ResultDataADO.ResultHistoryLDO.message);
+                //}
+
+
                 Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => rsIns), rsIns));
                 if (rsIns != null && (rsIns.maKetQua == "000" || (!String.IsNullOrEmpty(rsIns.maTheMoi) && (!rsIns.maThe.Equals(rsIns.maTheMoi) || rsIns.maKetQua == "004"))))
                 {
