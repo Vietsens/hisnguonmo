@@ -1,3 +1,8 @@
+### Release 2.348.0
+* Bổ sung chặn tiếp đón trên kios trong trường hợp bệnh nhân đã thực hiện kiểm tra thẻ BHYT tại viện khác
+* Sửa thông tin mặc định trong màn hình thông tin bổ sung xử lý PTTT
+* Sửa mẫu phiếu tra đối trong trường hợp lọc theo thời gian dự trù
+
 ### Release 2.347.0
 * Bổ sung thông tin đối tượng bệnh nhân trong thông tin giao dịch
 * Bổ sung thông tin eGFR và uACR và tần xuất theo dõi bệnh thận mạn
