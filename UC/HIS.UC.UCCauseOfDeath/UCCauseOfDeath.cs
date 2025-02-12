@@ -879,10 +879,10 @@ namespace HIS.UC.UCCauseOfDeath
                         ado.ICD_CODE = ado.ICD_CODE;
                         ado.ICD_NAME = ado.ICD_CODE;
                     }
-                    if (e.Column.FieldName == "Date")
-                    {
-                        ado.HAPPEN_TIME = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(ado.Date);
-                    }
+                    //if (e.Column.FieldName == "Date")
+                    //{
+                    //    ado.HAPPEN_TIME = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(ado.Date);
+                    //}
                     if (e.Column.FieldName == "SERVICE_UNIT_NAME")
                     {
                         ado.UNIT_NAME = ado.SERVICE_UNIT_NAME;
@@ -903,10 +903,10 @@ namespace HIS.UC.UCCauseOfDeath
                 var ado = (EventsCausesDeathADO)this.gridView1.GetFocusedRow();
                 if (ado != null)
                 {
-                    if (e.Column.FieldName == "Date")
-                    {
-                        ado.HAPPEN_TIME = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(ado.Date);
-                    }
+                    //if (e.Column.FieldName == "Date")
+                    //{
+                    //    ado.HAPPEN_TIME = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(ado.Date);
+                    //}
                     if (e.Column.FieldName == "SERVICE_UNIT_NAME")
                     {
                         ado.UNIT_NAME = ado.SERVICE_UNIT_NAME;
@@ -927,10 +927,10 @@ namespace HIS.UC.UCCauseOfDeath
                 var ado = (EventsCausesDeathADO)this.gridView2.GetFocusedRow();
                 if (ado != null)
                 {
-                    if (e.Column.FieldName == "Date")
-                    {
-                        ado.HAPPEN_TIME = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(ado.Date);
-                    }
+                    //if (e.Column.FieldName == "Date")
+                    //{
+                    //    ado.HAPPEN_TIME = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(ado.Date);
+                    //}
                     if (e.Column.FieldName == "SERVICE_UNIT_NAME")
                     {
                         ado.UNIT_NAME = ado.SERVICE_UNIT_NAME;

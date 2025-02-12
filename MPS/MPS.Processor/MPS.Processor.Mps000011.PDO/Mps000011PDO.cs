@@ -31,7 +31,7 @@ namespace MPS.Processor.Mps000011.PDO
         public const string printTypeCode = "Mps000011";
 
         public V_HIS_PATIENT_TYPE_ALTER PatyAlterBhyt { get; set; }
-        public V_HIS_TREATMENT currentTreatment { get; set; }
+        public HIS_TREATMENT currentTreatment { get; set; }
         public List<TranPatiReasonADO> tranpatiReasonADOs { get; set; }
         public HIS_TRAN_PATI_FORM tranPatiForms { get; set; }
         public PatientADO PatientADO { get; set; }
@@ -41,12 +41,13 @@ namespace MPS.Processor.Mps000011.PDO
 
         public HIS_SERVICE_REQ _ServiceReq { get; set; }
         public HIS_DHST _Dhst { get; set; }
+        public HIS_TREATMENT_EXT _TreatmentExt { get; set; }
         public Mps000011PDO() { }
 
         public Mps000011PDO(
             PatientADO patientADO,
             V_HIS_PATIENT_TYPE_ALTER patientTypeAlter,
-            V_HIS_TREATMENT hisTreatment,
+            HIS_TREATMENT hisTreatment,
             List<TranPatiReasonADO> tranpatiReasonADOs,
             HIS_TRAN_PATI_FORM tranPatiForms,
             Mps000011ADO _Mps000011ADO,
@@ -72,7 +73,7 @@ namespace MPS.Processor.Mps000011.PDO
         public Mps000011PDO(
             PatientADO patientADO,
             V_HIS_PATIENT_TYPE_ALTER patientTypeAlter,
-            V_HIS_TREATMENT hisTreatment,
+            HIS_TREATMENT hisTreatment,
             List<TranPatiReasonADO> tranpatiReasonADOs,
             HIS_TRAN_PATI_FORM tranPatiForms,
             Mps000011ADO _Mps000011ADO,
@@ -100,7 +101,7 @@ namespace MPS.Processor.Mps000011.PDO
         public Mps000011PDO(
          PatientADO patientADO,
          V_HIS_PATIENT_TYPE_ALTER patientTypeAlter,
-         V_HIS_TREATMENT hisTreatment,
+         HIS_TREATMENT hisTreatment,
          List<TranPatiReasonADO> tranpatiReasonADOs,
          HIS_TRAN_PATI_FORM tranPatiForms,
          Mps000011ADO _Mps000011ADO,
@@ -129,7 +130,7 @@ namespace MPS.Processor.Mps000011.PDO
         public Mps000011PDO(
           PatientADO patientADO,
           V_HIS_PATIENT_TYPE_ALTER patientTypeAlter,
-          V_HIS_TREATMENT hisTreatment,
+          HIS_TREATMENT hisTreatment,
           List<TranPatiReasonADO> tranpatiReasonADOs,
           HIS_TRAN_PATI_FORM tranPatiForms,
           Mps000011ADO _Mps000011ADO,
@@ -156,7 +157,7 @@ namespace MPS.Processor.Mps000011.PDO
         public Mps000011PDO(
             PatientADO patientADO,
             V_HIS_PATIENT_TYPE_ALTER patientTypeAlter,
-            V_HIS_TREATMENT hisTreatment,
+            HIS_TREATMENT hisTreatment,
             List<TranPatiReasonADO> tranpatiReasonADOs,
             HIS_TRAN_PATI_FORM tranPatiForms,
             Mps000011ADO _Mps000011ADO,
@@ -184,7 +185,7 @@ namespace MPS.Processor.Mps000011.PDO
         public Mps000011PDO(
             PatientADO patientADO,
             V_HIS_PATIENT_TYPE_ALTER patientTypeAlter,
-            V_HIS_TREATMENT hisTreatment,
+            HIS_TREATMENT hisTreatment,
             List<TranPatiReasonADO> tranpatiReasonADOs,
             HIS_TRAN_PATI_FORM tranPatiForms,
             Mps000011ADO _Mps000011ADO,
@@ -214,7 +215,7 @@ namespace MPS.Processor.Mps000011.PDO
         public Mps000011PDO(
          PatientADO patientADO,
          V_HIS_PATIENT_TYPE_ALTER patientTypeAlter,
-         V_HIS_TREATMENT hisTreatment,
+         HIS_TREATMENT hisTreatment,
          List<TranPatiReasonADO> tranpatiReasonADOs,
          HIS_TRAN_PATI_FORM tranPatiForms,
          Mps000011ADO _Mps000011ADO,
@@ -245,7 +246,7 @@ namespace MPS.Processor.Mps000011.PDO
         public Mps000011PDO(
           PatientADO patientADO,
           V_HIS_PATIENT_TYPE_ALTER patientTypeAlter,
-          V_HIS_TREATMENT hisTreatment,
+          HIS_TREATMENT hisTreatment,
           List<TranPatiReasonADO> tranpatiReasonADOs,
           HIS_TRAN_PATI_FORM tranPatiForms,
           Mps000011ADO _Mps000011ADO,

@@ -316,6 +316,7 @@ namespace HIS.Desktop.Plugins.Register.Run
                 valid = valid && validPatientInfo && validPatientPlusInfo && validPhoneNumber;
                 valid = valid && this.AlertExpriedTimeHeinCardBhyt();
                 valid = valid && this.BlockingInvalidBhyt();
+                valid = valid && this.CheckRRCodeTTFee(true);
                 try
                 {
                     departmentId = BackendDataWorker.Get<MOS.EFMODEL.DataModels.V_HIS_ROOM>().FirstOrDefault(o => o.ID == currentModule.RoomId).DEPARTMENT_ID;
