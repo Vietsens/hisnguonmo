@@ -2788,33 +2788,43 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                     //var arrPatientTypeCode = this.servicePatyAllows[data.SERVICE_ID].Select(o => o.PATIENT_TYPE_CODE).Distinct().ToList();
                     if (this.currentPatientTypeWithPatientTypeAlter != null && this.currentPatientTypeWithPatientTypeAlter.Count > 0)
                     {
-                        GridCheckMarksSelection gridCheckMark = cboMediStockExport.Properties.Tag as GridCheckMarksSelection;
-                        List<long> mediStockSelecteds = new List<long>();
-                        if (gridCheckMark != null)
+                        if (data.SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__THUOC)
                         {
-                            foreach (MOS.EFMODEL.DataModels.V_HIS_MEST_ROOM rv in gridCheckMark.Selection)
+                            //1 thuốc được coi là "Có đủ thông tin BHYT" khi thỏa mãn:
+                            //Khai báo đủ các thông tin: mã hoạt chất BHYT (ACTIVE_INGR_BHYT_CODE) và nhóm BHYT thuộc 1 trong các loại: "Thuốc trong danh mục", "Thuốc thanh toán theo tỷ lệ" hoặc "Thuốc ung thư, chống thải ghép"
+                            //(bỏ, ko check "số đăng ký")
+                            var sv = BackendDataWorker.Get<V_HIS_MEDICINE_TYPE>().Where(o => o.SERVICE_ID == data.SERVICE_ID).FirstOrDefault();
+                            if (sv != null)
                             {
-                                mediStockSelecteds.Add(rv.MEDI_STOCK_ID);
+                                data.SERVICE_ID = sv.SERVICE_ID;
+                                data.SERVICE_TYPE_ID = sv.SERVICE_TYPE_ID;
+                                data.ACTIVE_INGR_BHYT_CODE = sv.ACTIVE_INGR_BHYT_CODE;
+                                data.HEIN_SERVICE_TYPE_ID = sv.HEIN_SERVICE_TYPE_ID;
+                                data.HEIN_SERVICE_TYPE_CODE = sv.HEIN_SERVICE_TYPE_CODE;
+                                data.HEIN_SERVICE_BHYT_CODE = sv.HEIN_SERVICE_BHYT_CODE;
+                                data.HEIN_SERVICE_BHYT_NAME = sv.HEIN_SERVICE_BHYT_NAME;
                             }
                         }
-                        else if (cboMediStockExport.EditValue != null)
+                        else if (data.SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__VT)
                         {
-                            mediStockSelecteds.Add(Inventec.Common.TypeConvert.Parse.ToInt64(cboMediStockExport.EditValue.ToString()));
+                            var sv = BackendDataWorker.Get<V_HIS_MATERIAL_TYPE>().Where(o => o.SERVICE_ID == data.SERVICE_ID).FirstOrDefault();
+                            if (sv != null)
+                            {
+                                data.SERVICE_ID = sv.SERVICE_ID;
+                                data.SERVICE_TYPE_ID = sv.SERVICE_TYPE_ID;
+                                data.HEIN_SERVICE_TYPE_ID = sv.HEIN_SERVICE_TYPE_ID;
+                                data.HEIN_SERVICE_TYPE_CODE = sv.HEIN_SERVICE_TYPE_CODE;
+                                data.HEIN_SERVICE_BHYT_CODE = sv.HEIN_SERVICE_BHYT_CODE;
+                                data.HEIN_SERVICE_BHYT_NAME = sv.HEIN_SERVICE_BHYT_NAME;
+                            }
                         }
-
-
-                        if (mediStockSelecteds == null || mediStockSelecteds.Count == 0)
-                            throw new Exception("mediStockSelecteds null");
-
-                        List<MOS.EFMODEL.DataModels.HIS_MEST_PATIENT_TYPE> lstMestPatientType = BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_MEST_PATIENT_TYPE>();
-                        if (lstMestPatientType == null || lstMestPatientType.Count == 0)
-                            throw new Exception("Khong load duoc HIS_MEST_PATIENT_TYPE");
-
-                        List<long> mediStockInMestPatientTypeIds = lstMestPatientType.Where(o => mediStockSelecteds.Contains(o.MEDI_STOCK_ID)).Select(o => o.PATIENT_TYPE_ID).ToList();
-
+                        var dt = IsFullHeinInfo(data);
+                        List<HIS_PATIENT_TYPE> listSource = currentPatientTypeWithPatientTypeAlter;
+                        if (!dt)
+                            listSource = listSource.Where(o => o.ID != HisConfigCFG.PatientTypeId__BHYT).ToList();
                         //List<MOS.EFMODEL.DataModels.HIS_PATIENT_TYPE> dataCombo = this.currentPatientTypeWithPatientTypeAlter.Where(o => arrPatientTypeCode.Contains(o.PATIENT_TYPE_CODE) && mediStockInMestPatientTypeIds.Contains(o.ID)).ToList();
 
-                        this.InitComboPatientType(patientTypeCombo, this.currentPatientTypeWithPatientTypeAlter);
+                        this.InitComboPatientType(patientTypeCombo, listSource);
                     }
                     else
                     {
