@@ -15,6 +15,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+using DevExpress.XtraEditors;
 using DevExpress.XtraTab;
 using HIS.Desktop.ADO;
 using HIS.Desktop.ApiConsumer;
@@ -1842,7 +1843,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
 
                             if (SickLeaveDay != null && SickLeaveDay > 30)
                             {
-                                MessageBox.Show("Số ngày nghỉ không được vượt quá 30 ngày", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                                XtraMessageBox.Show("Số ngày nghỉ không được vượt quá 30 ngày", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                                 treatmentFinishProcessor.FocusControl(ucTreatmentFinish);
                                 IsReturn = true;
                                 return false;
@@ -1863,7 +1864,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                                 if (dt != null && dt.Count > 0)
                                 {
                                     var treatmentCheck = dt.OrderByDescending(o => o.OUT_TIME).ToList()[0];
-                                    MessageBox.Show(String.Format("Ngày nghỉ ốm giao với ngày nghỉ ốm được cấp của đợt khám trước đó: {0} (nghỉ từ {1} - {2})", treatmentCheck.TREATMENT_CODE,
+                                    XtraMessageBox.Show(String.Format("Ngày nghỉ ốm giao với ngày nghỉ ốm được cấp của đợt khám trước đó: {0} (nghỉ từ {1} - {2})", treatmentCheck.TREATMENT_CODE,
                                             Inventec.Common.DateTime.Convert.TimeNumberToDateString(treatmentCheck.SICK_LEAVE_FROM ?? 0),
                                             Inventec.Common.DateTime.Convert.TimeNumberToDateString(treatmentCheck.SICK_LEAVE_TO ?? 0)), "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                                     treatmentFinishProcessor.FocusControl(ucTreatmentFinish);
@@ -1872,6 +1873,15 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                                 }
                             }
 
+                        }
+                        if (treatmentFinish.TreatmentFinishSDO.ProgramId > 0)
+                        {
+                            var Program = BackendDataWorker.Get<HIS_PROGRAM>().FirstOrDefault(o => o.ID == treatmentFinish.TreatmentFinishSDO.ProgramId);
+                            if (Program != null && Program.AUTO_CHANGE_TO_OUT_PATIENT == 1 && (string.IsNullOrEmpty(txtSubclinical.Text.Trim()) || string.IsNullOrEmpty(txtTreatmentInstruction.Text.Trim())))
+                            {
+                                DevExpress.XtraEditors.XtraMessageBox.Show("Bạn chưa nhập \"Phương pháp điều trị\" hoặc \"Tóm tắt kết quả cận lâm sàng\".", ResourceMessage.ThongBao);
+                                return false;
+                            }
                         }
                         serviceReqUpdateSDO.NotePatient = treatmentFinish.Note;
                         serviceReqUpdateSDO.TreatmentFinishSDO = treatmentFinish.TreatmentFinishSDO;
