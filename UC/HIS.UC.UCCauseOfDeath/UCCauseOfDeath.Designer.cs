@@ -45,6 +45,14 @@ namespace HIS.UC.UCCauseOfDeath
         /// </summary>
         private void InitializeComponent()
         {
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject21 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject22 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject23 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject24 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject25 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject26 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject27 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject28 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject1 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject2 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject3 = new DevExpress.Utils.SerializableAppearanceObject();
@@ -61,14 +69,6 @@ namespace HIS.UC.UCCauseOfDeath
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject14 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject15 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject16 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject17 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject18 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject19 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject20 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject21 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject22 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject23 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject24 = new DevExpress.Utils.SerializableAppearanceObject();
             this.layoutControl1 = new DevExpress.XtraLayout.LayoutControl();
             this.labelControl7 = new DevExpress.XtraEditors.LabelControl();
             this.cboDeathMainCauseCode = new DevExpress.XtraEditors.GridLookUpEdit();
@@ -153,13 +153,14 @@ namespace HIS.UC.UCCauseOfDeath
             this.repIcdMutilT2 = new Inventec.Desktop.CustomControl.RepositoryItemCustomGridLookUpEdit();
             this.customGridViewWithFilterMultiColumn1 = new Inventec.Desktop.CustomControl.CustomGridViewWithFilterMultiColumn();
             this.gridColumn8 = new DevExpress.XtraGrid.Columns.GridColumn();
-            this.repDateT2 = new DevExpress.XtraEditors.Repository.RepositoryItemDateEdit();
+            this.repNumber2 = new DevExpress.XtraEditors.Repository.RepositoryItemSpinEdit();
             this.gridColumn9 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.repUnitNameT2 = new DevExpress.XtraEditors.Repository.RepositoryItemGridLookUpEdit();
             this.gridView4 = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.gridColumn10 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.repAddT2 = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
             this.repEditT2 = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
+            this.repDateT2 = new DevExpress.XtraEditors.Repository.RepositoryItemDateEdit();
             this.gridControl1 = new DevExpress.XtraGrid.GridControl();
             this.gridView1 = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.gridColumn1 = new DevExpress.XtraGrid.Columns.GridColumn();
@@ -167,13 +168,14 @@ namespace HIS.UC.UCCauseOfDeath
             this.repIcdMutilT1 = new Inventec.Desktop.CustomControl.RepositoryItemCustomGridLookUpEdit();
             this.repositoryItemCustomGridLookUpEdit1View = new Inventec.Desktop.CustomControl.CustomGridViewWithFilterMultiColumn();
             this.gridColumn3 = new DevExpress.XtraGrid.Columns.GridColumn();
-            this.repDate = new DevExpress.XtraEditors.Repository.RepositoryItemDateEdit();
+            this.repNumber = new DevExpress.XtraEditors.Repository.RepositoryItemSpinEdit();
             this.gridColumn4 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.repUnitNameT1 = new DevExpress.XtraEditors.Repository.RepositoryItemGridLookUpEdit();
             this.repositoryItemGridLookUpEdit1View = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.gridColumn5 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.repEditT1 = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
             this.repAddT1 = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
+            this.repDate = new DevExpress.XtraEditors.Repository.RepositoryItemDateEdit();
             this.repView = new DevExpress.XtraEditors.Repository.RepositoryItemTextEdit();
             this.chkDeathType3 = new DevExpress.XtraEditors.CheckEdit();
             this.chkDeathType2 = new DevExpress.XtraEditors.CheckEdit();
@@ -339,22 +341,24 @@ namespace HIS.UC.UCCauseOfDeath
             ((System.ComponentModel.ISupportInitialize)(this.gridView2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.repIcdMutilT2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.customGridViewWithFilterMultiColumn1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.repDateT2)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.repDateT2.CalendarTimeProperties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repNumber2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.repUnitNameT2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridView4)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.repAddT2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.repEditT2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repDateT2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repDateT2.CalendarTimeProperties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridControl1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridView1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.repIcdMutilT1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemCustomGridLookUpEdit1View)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.repDate)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.repDate.CalendarTimeProperties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repNumber)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.repUnitNameT1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemGridLookUpEdit1View)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.repEditT1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.repAddT1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repDate)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repDate.CalendarTimeProperties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.repView)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.chkDeathType3.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.chkDeathType2.Properties)).BeginInit();
@@ -716,7 +720,7 @@ namespace HIS.UC.UCCauseOfDeath
             this.spnMotherAge.Location = new System.Drawing.Point(691, 838);
             this.spnMotherAge.Name = "spnMotherAge";
             this.spnMotherAge.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo, "", -1, true, false, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject1, serializableAppearanceObject2, serializableAppearanceObject3, serializableAppearanceObject4, "", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo, "", -1, true, false, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject21, serializableAppearanceObject22, serializableAppearanceObject23, serializableAppearanceObject24, "", null, null, true)});
             this.spnMotherAge.Properties.IsFloatValue = false;
             this.spnMotherAge.Properties.Mask.EditMask = "N00";
             this.spnMotherAge.Properties.MaxValue = new decimal(new int[] {
@@ -738,7 +742,7 @@ namespace HIS.UC.UCCauseOfDeath
             this.spnFetalAge.Location = new System.Drawing.Point(377, 838);
             this.spnFetalAge.Name = "spnFetalAge";
             this.spnFetalAge.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo, "", -1, true, false, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject5, serializableAppearanceObject6, serializableAppearanceObject7, serializableAppearanceObject8, "", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo, "", -1, true, false, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject25, serializableAppearanceObject26, serializableAppearanceObject27, serializableAppearanceObject28, "", null, null, true)});
             this.spnFetalAge.Properties.IsFloatValue = false;
             this.spnFetalAge.Properties.Mask.EditMask = "N00";
             this.spnFetalAge.Properties.MaxValue = new decimal(new int[] {
@@ -760,7 +764,7 @@ namespace HIS.UC.UCCauseOfDeath
             this.spnInfantWeight.Location = new System.Drawing.Point(691, 814);
             this.spnInfantWeight.Name = "spnInfantWeight";
             this.spnInfantWeight.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo, "", -1, true, false, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject9, serializableAppearanceObject10, serializableAppearanceObject11, serializableAppearanceObject12, "", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo, "", -1, true, false, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject1, serializableAppearanceObject2, serializableAppearanceObject3, serializableAppearanceObject4, "", null, null, true)});
             this.spnInfantWeight.Properties.IsFloatValue = false;
             this.spnInfantWeight.Properties.Mask.EditMask = "N00";
             this.spnInfantWeight.Properties.MaxValue = new decimal(new int[] {
@@ -782,7 +786,7 @@ namespace HIS.UC.UCCauseOfDeath
             this.spnInfantAge.Location = new System.Drawing.Point(377, 814);
             this.spnInfantAge.Name = "spnInfantAge";
             this.spnInfantAge.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo, "", -1, true, false, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject13, serializableAppearanceObject14, serializableAppearanceObject15, serializableAppearanceObject16, "", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo, "", -1, true, false, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject5, serializableAppearanceObject6, serializableAppearanceObject7, serializableAppearanceObject8, "", null, null, true)});
             this.spnInfantAge.Properties.IsFloatValue = false;
             this.spnInfantAge.Properties.Mask.EditMask = "N00";
             this.spnInfantAge.Properties.MaxValue = new decimal(new int[] {
@@ -1440,7 +1444,8 @@ namespace HIS.UC.UCCauseOfDeath
             this.repAddT2,
             this.repDateT2,
             this.repIcdMutilT2,
-            this.repUnitNameT2});
+            this.repUnitNameT2,
+            this.repNumber2});
             this.gridControl2.Size = new System.Drawing.Size(984, 85);
             this.gridControl2.TabIndex = 14;
             this.gridControl2.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
@@ -1466,7 +1471,7 @@ namespace HIS.UC.UCCauseOfDeath
             // 
             this.gridColumn6.AppearanceHeader.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold);
             this.gridColumn6.AppearanceHeader.Options.UseFont = true;
-            this.gridColumn6.Caption = "Nguyên nhân tử vong (chuỗi sự kiện dẫn đến tử vong)";
+            this.gridColumn6.Caption = "Bệnh lý, nguy cơ quan trọng khác góp phần gây tử vong";
             this.gridColumn6.FieldName = "CAUSE_NAME";
             this.gridColumn6.Name = "gridColumn6";
             this.gridColumn6.Visible = true;
@@ -1517,27 +1522,23 @@ namespace HIS.UC.UCCauseOfDeath
             this.gridColumn8.AppearanceHeader.Options.UseTextOptions = true;
             this.gridColumn8.AppearanceHeader.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
             this.gridColumn8.Caption = "Thời gian";
-            this.gridColumn8.ColumnEdit = this.repDateT2;
-            this.gridColumn8.FieldName = "Date";
+            this.gridColumn8.ColumnEdit = this.repNumber2;
+            this.gridColumn8.FieldName = "HAPPEN_TIME";
             this.gridColumn8.Name = "gridColumn8";
             this.gridColumn8.ShowButtonMode = DevExpress.XtraGrid.Views.Base.ShowButtonModeEnum.ShowAlways;
             this.gridColumn8.Visible = true;
             this.gridColumn8.VisibleIndex = 2;
             this.gridColumn8.Width = 201;
             // 
-            // repDateT2
+            // repNumber2
             // 
-            this.repDateT2.AutoHeight = false;
-            this.repDateT2.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            this.repNumber2.AutoHeight = false;
+            this.repNumber2.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
-            this.repDateT2.CalendarTimeProperties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
-            this.repDateT2.DisplayFormat.FormatString = "dd/MM/yyyy";
-            this.repDateT2.DisplayFormat.FormatType = DevExpress.Utils.FormatType.Custom;
-            this.repDateT2.EditFormat.FormatString = "dd/MM/yyyy";
-            this.repDateT2.EditFormat.FormatType = DevExpress.Utils.FormatType.DateTime;
-            this.repDateT2.Mask.EditMask = "dd/MM/yyyy";
-            this.repDateT2.Name = "repDateT2";
+            this.repNumber2.IsFloatValue = false;
+            this.repNumber2.Mask.EditMask = "N00";
+            this.repNumber2.MaxLength = 9999;
+            this.repNumber2.Name = "repNumber2";
             // 
             // gridColumn9
             // 
@@ -1547,7 +1548,7 @@ namespace HIS.UC.UCCauseOfDeath
             this.gridColumn9.AppearanceHeader.Options.UseFont = true;
             this.gridColumn9.AppearanceHeader.Options.UseTextOptions = true;
             this.gridColumn9.AppearanceHeader.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
-            this.gridColumn9.Caption = "Đơn vị tính";
+            this.gridColumn9.Caption = "Đơn vị thời gian";
             this.gridColumn9.ColumnEdit = this.repUnitNameT2;
             this.gridColumn9.FieldName = "SERVICE_UNIT_NAME";
             this.gridColumn9.Name = "gridColumn9";
@@ -1609,6 +1610,20 @@ namespace HIS.UC.UCCauseOfDeath
             this.repEditT2.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             this.repEditT2.Click += new System.EventHandler(this.repEditT2_Click);
             // 
+            // repDateT2
+            // 
+            this.repDateT2.AutoHeight = false;
+            this.repDateT2.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
+            this.repDateT2.CalendarTimeProperties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
+            this.repDateT2.DisplayFormat.FormatString = "dd/MM/yyyy";
+            this.repDateT2.DisplayFormat.FormatType = DevExpress.Utils.FormatType.Custom;
+            this.repDateT2.EditFormat.FormatString = "dd/MM/yyyy";
+            this.repDateT2.EditFormat.FormatType = DevExpress.Utils.FormatType.DateTime;
+            this.repDateT2.Mask.EditMask = "dd/MM/yyyy";
+            this.repDateT2.Name = "repDateT2";
+            // 
             // gridControl1
             // 
             this.gridControl1.Location = new System.Drawing.Point(2, 90);
@@ -1621,7 +1636,8 @@ namespace HIS.UC.UCCauseOfDeath
             this.repDate,
             this.repIcdMutilT1,
             this.repUnitNameT1,
-            this.repView});
+            this.repView,
+            this.repNumber});
             this.gridControl1.Size = new System.Drawing.Size(984, 140);
             this.gridControl1.TabIndex = 13;
             this.gridControl1.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
@@ -1698,27 +1714,27 @@ namespace HIS.UC.UCCauseOfDeath
             this.gridColumn3.AppearanceHeader.Options.UseTextOptions = true;
             this.gridColumn3.AppearanceHeader.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
             this.gridColumn3.Caption = "Thời gian";
-            this.gridColumn3.ColumnEdit = this.repDate;
-            this.gridColumn3.FieldName = "Date";
+            this.gridColumn3.ColumnEdit = this.repNumber;
+            this.gridColumn3.FieldName = "HAPPEN_TIME";
             this.gridColumn3.Name = "gridColumn3";
             this.gridColumn3.ShowButtonMode = DevExpress.XtraGrid.Views.Base.ShowButtonModeEnum.ShowAlways;
             this.gridColumn3.Visible = true;
             this.gridColumn3.VisibleIndex = 2;
             this.gridColumn3.Width = 202;
             // 
-            // repDate
+            // repNumber
             // 
-            this.repDate.AutoHeight = false;
-            this.repDate.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            this.repNumber.AutoHeight = false;
+            this.repNumber.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
-            this.repDate.CalendarTimeProperties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
-            this.repDate.DisplayFormat.FormatString = "dd/MM/yyyy";
-            this.repDate.DisplayFormat.FormatType = DevExpress.Utils.FormatType.Custom;
-            this.repDate.EditFormat.FormatString = "dd/MM/yyyy";
-            this.repDate.EditFormat.FormatType = DevExpress.Utils.FormatType.Custom;
-            this.repDate.Mask.EditMask = "dd/MM/yyyy";
-            this.repDate.Name = "repDate";
+            this.repNumber.IsFloatValue = false;
+            this.repNumber.Mask.EditMask = "N00";
+            this.repNumber.MaxValue = new decimal(new int[] {
+            9999,
+            0,
+            0,
+            0});
+            this.repNumber.Name = "repNumber";
             // 
             // gridColumn4
             // 
@@ -1728,7 +1744,7 @@ namespace HIS.UC.UCCauseOfDeath
             this.gridColumn4.AppearanceHeader.Options.UseFont = true;
             this.gridColumn4.AppearanceHeader.Options.UseTextOptions = true;
             this.gridColumn4.AppearanceHeader.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
-            this.gridColumn4.Caption = "Đơn vị tính";
+            this.gridColumn4.Caption = "Đơn vị thời gian";
             this.gridColumn4.ColumnEdit = this.repUnitNameT1;
             this.gridColumn4.FieldName = "SERVICE_UNIT_NAME";
             this.gridColumn4.Name = "gridColumn4";
@@ -1789,6 +1805,20 @@ namespace HIS.UC.UCCauseOfDeath
             this.repAddT1.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             this.repAddT1.Click += new System.EventHandler(this.repAddT1_Click);
             // 
+            // repDate
+            // 
+            this.repDate.AutoHeight = false;
+            this.repDate.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
+            this.repDate.CalendarTimeProperties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
+            this.repDate.DisplayFormat.FormatString = "dd/MM/yyyy";
+            this.repDate.DisplayFormat.FormatType = DevExpress.Utils.FormatType.Custom;
+            this.repDate.EditFormat.FormatString = "dd/MM/yyyy";
+            this.repDate.EditFormat.FormatType = DevExpress.Utils.FormatType.Custom;
+            this.repDate.Mask.EditMask = "dd/MM/yyyy";
+            this.repDate.Name = "repDate";
+            // 
             // repView
             // 
             this.repView.AutoHeight = false;
@@ -1840,7 +1870,7 @@ namespace HIS.UC.UCCauseOfDeath
             this.spnAbsentDay.Name = "spnAbsentDay";
             this.spnAbsentDay.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
             this.spnAbsentDay.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo, "", -1, true, false, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject17, serializableAppearanceObject18, serializableAppearanceObject19, serializableAppearanceObject20, "", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo, "", -1, true, false, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject9, serializableAppearanceObject10, serializableAppearanceObject11, serializableAppearanceObject12, "", null, null, true)});
             this.spnAbsentDay.Properties.MaxValue = new decimal(new int[] {
             9999,
             0,
@@ -1861,7 +1891,7 @@ namespace HIS.UC.UCCauseOfDeath
             this.spnIcuBed.Name = "spnIcuBed";
             this.spnIcuBed.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
             this.spnIcuBed.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo, "", -1, true, false, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject21, serializableAppearanceObject22, serializableAppearanceObject23, serializableAppearanceObject24, "", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo, "", -1, true, false, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject13, serializableAppearanceObject14, serializableAppearanceObject15, serializableAppearanceObject16, "", null, null, true)});
             this.spnIcuBed.Properties.MaxValue = new decimal(new int[] {
             9999,
             0,
@@ -2906,22 +2936,24 @@ namespace HIS.UC.UCCauseOfDeath
             ((System.ComponentModel.ISupportInitialize)(this.gridView2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.repIcdMutilT2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.customGridViewWithFilterMultiColumn1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.repDateT2.CalendarTimeProperties)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.repDateT2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repNumber2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.repUnitNameT2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridView4)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.repAddT2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.repEditT2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repDateT2.CalendarTimeProperties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repDateT2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridControl1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridView1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.repIcdMutilT1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemCustomGridLookUpEdit1View)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.repDate.CalendarTimeProperties)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.repDate)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repNumber)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.repUnitNameT1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemGridLookUpEdit1View)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.repEditT1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.repAddT1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repDate.CalendarTimeProperties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repDate)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.repView)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.chkDeathType3.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.chkDeathType2.Properties)).EndInit();
@@ -3213,5 +3245,7 @@ namespace HIS.UC.UCCauseOfDeath
         private DevExpress.XtraLayout.EmptySpaceItem emptySpaceItem3;
         private DevExpress.XtraLayout.EmptySpaceItem emptySpaceItem9;
         private DevExpress.XtraLayout.EmptySpaceItem emptySpaceItem10;
+        private DevExpress.XtraEditors.Repository.RepositoryItemSpinEdit repNumber;
+        private DevExpress.XtraEditors.Repository.RepositoryItemSpinEdit repNumber2;
     }
 }
