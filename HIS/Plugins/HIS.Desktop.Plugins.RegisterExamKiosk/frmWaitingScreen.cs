@@ -1728,7 +1728,74 @@ namespace HIS.Desktop.Plugins.RegisterExamKiosk
                         card.HeinCardNumber = rsIns.maThe;
                         this.PatientData.PatientForKiosk = MapDataFromCard(card);
                     }
+                    DateTime dTheDen = DateTime.MinValue;
+                    if (!string.IsNullOrEmpty(rsIns.gtTheDen))
+                    {
+                        if (DateTime.TryParseExact(rsIns.gtTheDen, "dd/MM/yyyy", System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None, out dTheDen))
+                        {
+                            long? ToTime = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(dTheDen);
+                            if (this.PatientData.CardInfo != null)
+                            {
+                                Inventec.Common.Logging.LogSystem.Warn("fromTime__1_" + ToTime);
+                                this.PatientData.CardInfo.HeinCardToTime = ToTime;
+                            }
 
+                            if (this.PatientData.PatientForKiosk != null)
+                            {
+                                Inventec.Common.Logging.LogSystem.Warn("fromTime__2_" + ToTime);
+                                this.PatientData.PatientForKiosk.HeinCardToTime = ToTime;
+                            }
+                        }
+                    }
+                    DateTime dTheTuMoi = DateTime.MinValue;
+                    if (!string.IsNullOrEmpty(rsIns.gtTheTuMoi))
+                    {
+                        DateTime d;
+                        if (DateTime.TryParseExact(rsIns.gtTheTuMoi, "dd/MM/yyyy", System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None, out dTheTuMoi))
+                        {
+                            //Gắn giá trị thẻ mới
+                        }
+                    }
+
+                    string mathe = "";
+                    if (!String.IsNullOrWhiteSpace(rsIns.maTheMoi) && dTheTuMoi != DateTime.MinValue && Int64.Parse(DateTime.Now.ToString("yyyyMMdd000000")) >= Int64.Parse(dTheTuMoi.ToString("yyyyMMdd000000")))
+                    {
+                        mathe = rsIns.maTheMoi;
+                        long? fromTime = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(dTheTuMoi);
+                        if (this.PatientData.CardInfo != null)
+                        {
+                            this.PatientData.CardInfo.HeinCardFromTime = fromTime;
+                        }
+
+                        if (this.PatientData.PatientForKiosk != null)
+                        {
+                            this.PatientData.PatientForKiosk.HeinCardFromTime = fromTime;
+                        }
+
+                        if (!string.IsNullOrEmpty(rsIns.gtTheDenMoi))
+                        {
+                            DateTime d;
+                            if (DateTime.TryParseExact(rsIns.gtTheDenMoi, "dd/MM/yyyy", System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None, out dTheDen))
+                            {
+                                long? ToTime = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(dTheDen);
+                                if (this.PatientData.CardInfo != null)
+                                {
+                                    this.PatientData.CardInfo.HeinCardToTime = ToTime;
+                                }
+
+                                if (this.PatientData.PatientForKiosk != null)
+                                {
+                                    this.PatientData.PatientForKiosk.HeinCardToTime = ToTime;
+                                }
+                            }
+                        }
+                    }
+                    else
+                    {
+                        mathe = rsIns.maThe;
+                    }
+                    this.PatientData.PatientForKiosk.HeinAddress = rsIns.diaChi;
+                    this.PatientData.PatientForKiosk.HeinCardNumber = mathe;
                     if (!String.IsNullOrWhiteSpace(rsIns.gtTheTu) && rsIns.gtTheTu.Split('/') != null && rsIns.gtTheTu.Split('/').Count() > 2)
                     {
                         this.PatientData.PatientForKiosk.HeinCardFromTime = Int64.Parse(rsIns.gtTheTu.Split('/')[2] + rsIns.gtTheTu.Split('/')[1] + rsIns.gtTheTu.Split('/')[0] + "000000");
