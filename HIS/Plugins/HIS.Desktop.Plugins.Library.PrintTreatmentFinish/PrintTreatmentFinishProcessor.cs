@@ -35,6 +35,7 @@ namespace HIS.Desktop.Plugins.Library.PrintTreatmentFinish
 {
     public class PrintTreatmentFinishProcessor
     {
+        private static HIS_TREATMENT_EXT TreatmentExt { get; set; }
         private static HIS_TREATMENT HisTreatment { get; set; }
         private static HIS_MEDI_RECORD HisMediRecord { get; set; }
         private static HIS_PATIENT HisPatient { get; set; }
@@ -261,7 +262,7 @@ namespace HIS.Desktop.Plugins.Library.PrintTreatmentFinish
                             new PrintMps000010(printCode, fileName, ref result, VHisPatient, HisTreatment, VHisPatientTypeAlter, PreviewType, roomId, HisMediRecord, HisServiceReq);
                             break;
                         case MPS.Processor.Mps000011.PDO.Mps000011PDO.printTypeCode:
-                            new PrintMps000011(printCode, fileName, ref result, VHisPatient, HisTreatment, VHisPatientTypeAlter, printNow, roomId, HisServiceReq);
+                            new PrintMps000011(printCode, fileName, ref result, VHisPatient, HisTreatment, VHisPatientTypeAlter, printNow, roomId, HisServiceReq, TreatmentExt);
                             break;
                         case MPS.Processor.Mps000268.PDO.Mps000268PDO.printTypeCode:
                             new PrintMps000268(printCode, fileName, ref result, VHisPatient, HisTreatment, this.CurrentBranch, printNow, roomId);
@@ -390,6 +391,11 @@ namespace HIS.Desktop.Plugins.Library.PrintTreatmentFinish
                 }
                 if (HisServiceReq == null)
                     LoadServiceReq(HisTreatment.ID);
+                HisTreatmentExtFilter filter = new HisTreatmentExtFilter();
+                filter.TREATMENT_ID = HisTreatment.ID;
+                TreatmentExt = new Inventec.Common.Adapter.BackendAdapter(new CommonParam()).Get<List<HIS_TREATMENT_EXT>>("api/HisTreatmentExt/Get", ApiConsumer.ApiConsumers.MosConsumer, filter,
+                    HIS.Desktop.Controls.Session.SessionManager.ActionLostToken, null).FirstOrDefault();
+
                 EmrDataStore.treatmentCode = HisTreatment.TREATMENT_CODE;
                 HisMediRecord = GetMediRecord(HisTreatment.MEDI_RECORD_ID);
             }
