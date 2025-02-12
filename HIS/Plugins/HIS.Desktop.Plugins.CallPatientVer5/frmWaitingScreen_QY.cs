@@ -670,7 +670,7 @@ namespace HIS.Desktop.Plugins.CallPatientVer5
                 if (string.IsNullOrEmpty(_displayConfig.Content))
                 {
                     layoutControlItem19.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
-                    layoutControlItem27.Size = new System.Drawing.Size(layoutControlItem27.Width + layoutControlItem19.Width, layoutControlItem27.Height);
+                    layoutControlItem27.Size = new System.Drawing.Size(layoutControlItem27.Width, layoutControlItem19.Height + layoutControlItem27.Height);
                 }
 
                 gridColumnUTExam.AppearanceCell.Font = new Font(new FontFamily("Arial"), (float)_displayConfig.SizeList, FontStyle.Bold);
