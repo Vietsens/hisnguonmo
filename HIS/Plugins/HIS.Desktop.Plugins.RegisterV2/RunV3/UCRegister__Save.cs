@@ -487,7 +487,8 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
                     && validDeposit
                     && validPhoneNumber
                     && validGuarantee
-                    && validIsBlockBhyt;
+                    && validIsBlockBhyt
+                    && CheckRRCodeTTFee(true);
 
                 valid = valid && this.AlertExpriedTimeHeinCardBhyt();
 
