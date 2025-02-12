@@ -89,5 +89,8 @@ namespace MPS.Processor.Mps000011
         internal const string DOCTOR_USERNAME = "DOCTOR_USERNAME";
         internal const string TRAN_PATI_HOSPITAL_LOGINNAME = "TRAN_PATI_HOSPITAL_LOGINNAME";
         internal const string TRAN_PATI_HOSPITAL_USERNAME = "TRAN_PATI_HOSPITAL_USERNAME";
+        internal const string SURGERY_NAME = "SURGERY_NAME";
+        internal const string SURGERY_BEGIN_TIME = "SURGERY_BEGIN_TIME ";
+        internal const string SURGERY_END_TIME = "SURGERY_END_TIME ";
     }
 }

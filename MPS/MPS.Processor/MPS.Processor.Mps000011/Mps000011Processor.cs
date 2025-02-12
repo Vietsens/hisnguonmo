@@ -166,8 +166,8 @@ namespace MPS.Processor.Mps000011
                         SetSingleKey(new KeyValue(Mps000011ExtendSingleKey.CLOSE_TIME_SEPARATE_STR, Inventec.Common.DateTime.Convert.TimeNumberToTimeString(rdo.currentTreatment.OUT_TIME.Value)));
 
                     SetSingleKey(new KeyValue(Mps000011ExtendSingleKey.MEDI_ORG_TO_NAME, rdo.currentTreatment.MEDI_ORG_NAME));
-                    SetSingleKey(new KeyValue(Mps000011ExtendSingleKey.DAU_HIEU_LAM_SANG, rdo.currentTreatment.CLINICAL_NOTE));
-                    SetSingleKey(new KeyValue(Mps000011ExtendSingleKey.XET_NGHIEM, rdo.currentTreatment.SUBCLINICAL_RESULT));
+                    SetSingleKey(new KeyValue(Mps000011ExtendSingleKey.DAU_HIEU_LAM_SANG, rdo._TreatmentExt != null ? rdo._TreatmentExt.CLINICAL_NOTE : ""));
+                    SetSingleKey(new KeyValue(Mps000011ExtendSingleKey.XET_NGHIEM, rdo._TreatmentExt != null ? rdo._TreatmentExt.SUBCLINICAL_RESULT : ""));
                     SetSingleKey(new KeyValue(Mps000011ExtendSingleKey.THUOC_DA_DUNG, rdo.currentTreatment.TREATMENT_METHOD));
                     SetSingleKey(new KeyValue(Mps000011ExtendSingleKey.HUONG_DIEU_TRI, rdo.currentTreatment.TREATMENT_DIRECTION));
                     SetSingleKey(new KeyValue(Mps000011ExtendSingleKey.TINH_TRANG, rdo.currentTreatment.PATIENT_CONDITION));
@@ -241,7 +241,7 @@ namespace MPS.Processor.Mps000011
 
 
                 AddObjectKeyIntoListkey<PatientADO>(rdo.PatientADO, false);
-                AddObjectKeyIntoListkey<V_HIS_TREATMENT>(rdo.currentTreatment, false);
+                AddObjectKeyIntoListkey<HIS_TREATMENT>(rdo.currentTreatment, false);
                 AddObjectKeyIntoListkey<V_HIS_PATIENT_TYPE_ALTER>(rdo.PatyAlterBhyt, false);
                 AddObjectKeyIntoListkey<Mps000011ADO>(rdo.Mps000011ADO, false);
                 AddObjectKeyIntoListkey<HIS_TRAN_PATI_TECH>(rdo._TranPatiTech, false);
