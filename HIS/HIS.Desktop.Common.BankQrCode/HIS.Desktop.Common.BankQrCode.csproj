@@ -59,6 +59,10 @@
     <Reference Include="MOS.EFMODEL">
       <HintPath>..\..\..\Lib\MOS\MOS.EFMODEL.dll</HintPath>
     </Reference>
+    <Reference Include="MOS.SDO, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\lib\MOS\MOS.SDO.dll</HintPath>
+    </Reference>
     <Reference Include="MOS.TDO">
       <HintPath>..\..\..\lib\MOS\MOS.TDO.dll</HintPath>
     </Reference>

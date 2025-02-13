@@ -22,6 +22,7 @@ using Inventec.Common.BankQrCode.ADO;
 using Inventec.Common.QRCoder;
 using Inventec.Core;
 using MOS.EFMODEL.DataModels;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -38,34 +39,70 @@ namespace HIS.Desktop.Common.BankQrCode
             if (data != null)
             {
                 bool IsQrDynamic = false;
-                List<string> banks = new List<string>() { "MBB", "VCB","CTG" };
-                if (string.IsNullOrEmpty(data.QR_TEXT) && configValue != null && configValue.Count > 0 && banks.Exists(o => configValue.Exists(p=>p.KEY.IndexOf(string.Format(".{0}Info", o)) > -1)))
+                bool IsGenQrBidvApi = false;
+                MOS.TDO.QrPaymentGenerateResultTDO QrBidv = null;
+                #region "BIDV"
+                if (configValue != null && configValue.Count > 0 && configValue.Exists(p => p.KEY.IndexOf(string.Format(".{0}Info", "BIDV")) > -1))
                 {
-                    if (configValue.Count == 1)
+                    var configBIDV = configValue.FirstOrDefault(p => p.KEY.IndexOf(string.Format(".{0}Info", "BIDV")) > -1);
+                    if (configBIDV != null && !string.IsNullOrEmpty(configBIDV.VALUE) && configBIDV.VALUE.IndexOf("GenQrMethod") > -1)
                     {
-                        CommonParam param = new CommonParam();
-                        MOS.TDO.QrPaymentGenerateTDO tdo = new MOS.TDO.QrPaymentGenerateTDO();
-                        tdo.TransReqId = data.ID;
-                        tdo.Bank = configValue[0].KEY.Contains("MBB") ? "MBB" : configValue[0].KEY.Contains("VCB") ? "VCB" : "CTG";
-                        tdo.BankConfig = configValue[0].VALUE;
-                        data = new Inventec.Common.Adapter.BackendAdapter(param).Post<HIS_TRANS_REQ>("api/HisTransReq/QrPaymentGenerate", ApiConsumers.MosConsumer, tdo, param);
-                        if (data == null)
+                        JObject jsonObject = JObject.Parse(configBIDV.VALUE);
+                        string genQrMethod = jsonObject["GenQrMethod"].ToString();
+                        if (genQrMethod == "OPEN_API")
                         {
-                            XtraMessageBox.Show(param.GetMessage());
-                            return null;
+                            CommonParam param = new CommonParam();
+                            MOS.TDO.QrPaymentGenerateTDO tdo = new MOS.TDO.QrPaymentGenerateTDO();
+                            tdo.TransReqId = data.ID;
+                            tdo.Bank = "BIDV";
+                            tdo.BankConfig = configBIDV.VALUE;
+                            QrBidv = new Inventec.Common.Adapter.BackendAdapter(param).Post<QrPaymentGenerateResultTDO>("api/HisTransReq/QrPaymentGenerateImg", ApiConsumers.MosConsumer, tdo, param);
+                            if (QrBidv == null)
+                            {
+                                XtraMessageBox.Show(param.GetMessage());
+                                return null;
+                            }
+                            else
+                            {
+                                IsGenQrBidvApi = true;
+                            }
                         }
                     }
-                    else
+                }
+                #endregion
+                #region "MBB", "VCB", "CTG"
+                else
+                {
+                    List<string> banks = new List<string>() { "MBB", "VCB", "CTG" };
+                    if (string.IsNullOrEmpty(data.QR_TEXT) && configValue != null && configValue.Count > 0 && banks.Exists(o => configValue.Exists(p => p.KEY.IndexOf(string.Format(".{0}Info", o)) > -1)))
                     {
-                        configValue = configValue.Where(o => !banks.Exists(p => o.KEY.IndexOf(p) > -1)).ToList();
+                        if (configValue.Count == 1)
+                        {
+                            CommonParam param = new CommonParam();
+                            MOS.TDO.QrPaymentGenerateTDO tdo = new MOS.TDO.QrPaymentGenerateTDO();
+                            tdo.TransReqId = data.ID;
+                            tdo.Bank = configValue[0].KEY.Contains("MBB") ? "MBB" : configValue[0].KEY.Contains("VCB") ? "VCB" : "CTG";
+                            tdo.BankConfig = configValue[0].VALUE;
+                            data = new Inventec.Common.Adapter.BackendAdapter(param).Post<HIS_TRANS_REQ>("api/HisTransReq/QrPaymentGenerate", ApiConsumers.MosConsumer, tdo, param);
+                            if (data == null)
+                            {
+                                XtraMessageBox.Show(param.GetMessage());
+                                return null;
+                            }
+                        }
+                        else
+                        {
+                            configValue = configValue.Where(o => !banks.Exists(p => o.KEY.IndexOf(p) > -1)).ToList();
+                        }
+                    }
+                    if (data != null && !string.IsNullOrEmpty(data.QR_TEXT))
+                    {
+                        configValue = new List<HIS_CONFIG>();
+                        configValue.Add(new HIS_CONFIG() { KEY = "DYNAMIC", VALUE = data.QR_TEXT });
+                        IsQrDynamic = true;
                     }
                 }
-                if (data != null && !string.IsNullOrEmpty(data.QR_TEXT))
-                {
-                    configValue = new List<HIS_CONFIG>();
-                    configValue.Add(new HIS_CONFIG() { KEY = "DYNAMIC", VALUE = data.QR_TEXT });
-                    IsQrDynamic = true;
-                }
+                #endregion
 
                 if (configValue != null && configValue.Count > 0)
                 {
@@ -88,20 +125,27 @@ namespace HIS.Desktop.Common.BankQrCode
                                 inputData.SystemConfig = value;
                                 inputData.Purpose = data.TDL_TREATMENT_CODE;
                                 BankQrCodeProcessor bankQrCode = new BankQrCodeProcessor(inputData);
-                                ResultQrCode qrData = IsQrDynamic ? new ResultQrCode() { Data = config.VALUE } : bankQrCode.GetQrCode(bankType);
-                                DicContentBank[data.TRANS_REQ_CODE] = qrData.Data;
-                                if (!String.IsNullOrWhiteSpace(qrData.Data))
+                                if (IsGenQrBidvApi && QrBidv != null && QrBidv.TransReqId == data.ID)
                                 {
-                                    QRCodeGenerator qrGenerator = new QRCodeGenerator();
-                                    QRCodeData qrCodeData = qrGenerator.CreateQrCode(qrData.Data, QRCodeGenerator.ECCLevel.Q);
-                                    BitmapByteQRCode qrCode = new BitmapByteQRCode(qrCodeData);
-                                    byte[] qrCodeImage = qrCode.GetGraphic(20);
-                                    result[key] = qrCodeImage;
+                                    result[key] = Convert.FromBase64String(QrBidv.ImgQrBase64);
                                 }
                                 else
                                 {
-                                    Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => inputData), inputData));
-                                    Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => qrData), qrData));
+                                    ResultQrCode qrData = IsQrDynamic ? new ResultQrCode() { Data = config.VALUE } : bankQrCode.GetQrCode(bankType);
+                                    DicContentBank[data.TRANS_REQ_CODE] = qrData.Data;
+                                    if (!String.IsNullOrWhiteSpace(qrData.Data))
+                                    {
+                                        QRCodeGenerator qrGenerator = new QRCodeGenerator();
+                                        QRCodeData qrCodeData = qrGenerator.CreateQrCode(qrData.Data, QRCodeGenerator.ECCLevel.Q);
+                                        BitmapByteQRCode qrCode = new BitmapByteQRCode(qrCodeData);
+                                        byte[] qrCodeImage = qrCode.GetGraphic(20);
+                                        result[key] = qrCodeImage;
+                                    }
+                                    else
+                                    {
+                                        Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => inputData), inputData));
+                                        Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => qrData), qrData));
+                                    }
                                 }
                             }
                         }, config);
