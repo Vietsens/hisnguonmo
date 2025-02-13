@@ -4417,7 +4417,8 @@ o.SERVICE_ID == medi.SERVICE_ID && o.TDL_INTRUCTION_TIME.ToString().Substring(0,
             {
                 //if (!String.IsNullOrEmpty(spinTrua.Text))
                 this.CalculateAmount();
-                this.SetHuongDanFromSoLuongNgay();
+                if (!IsSetByMedicineTut)
+                    this.SetHuongDanFromSoLuongNgay();
             }
             catch (Exception ex)
             {
@@ -4446,7 +4447,8 @@ o.SERVICE_ID == medi.SERVICE_ID && o.TDL_INTRUCTION_TIME.ToString().Substring(0,
             {
                 //if (!String.IsNullOrEmpty(spinToi.Text))
                 this.CalculateAmount();
-                this.SetHuongDanFromSoLuongNgay();
+                if (!IsSetByMedicineTut)
+                    this.SetHuongDanFromSoLuongNgay();
             }
             catch (Exception ex)
             {
@@ -4497,7 +4499,8 @@ o.SERVICE_ID == medi.SERVICE_ID && o.TDL_INTRUCTION_TIME.ToString().Substring(0,
             {
                 //if (!String.IsNullOrEmpty(spinChieu.Text))
                 this.CalculateAmount();
-                this.SetHuongDanFromSoLuongNgay();
+                if (!IsSetByMedicineTut)
+                    this.SetHuongDanFromSoLuongNgay();
             }
             catch (Exception ex)
             {
@@ -4633,7 +4636,8 @@ o.SERVICE_ID == medi.SERVICE_ID && o.TDL_INTRUCTION_TIME.ToString().Substring(0,
             {
                 //if (!String.IsNullOrEmpty(spinSang.Text))
                 this.CalculateAmount();
-                this.SetHuongDanFromSoLuongNgay();
+                if(!IsSetByMedicineTut)
+                    this.SetHuongDanFromSoLuongNgay();
             }
             catch (Exception ex)
             {

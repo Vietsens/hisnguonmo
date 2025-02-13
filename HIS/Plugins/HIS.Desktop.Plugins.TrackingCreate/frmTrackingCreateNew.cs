@@ -3095,7 +3095,7 @@ namespace HIS.Desktop.Plugins.TrackingCreate
 
                 HisTrackingADO = LoadTrackingOld();
                 InitComboTrackingOld(HisTrackingADO);
-
+                WaitingManager.Hide();
                 #region Show message
                 MessageManager.Show(this.ParentForm, param, success);
                 SessionManager.ProcessTokenLost(param);
@@ -3702,9 +3702,9 @@ namespace HIS.Desktop.Plugins.TrackingCreate
                     if(result && ServiceReqIcdOption == "1")
                     {
                         WaitingManager.Hide();
-                        if (Encoding.UTF8.GetByteCount((trackingSDOs.Tracking.ICD_CODE ?? "") + (trackingSDOs.Tracking.ICD_SUB_CODE ?? "")) > 100 && XtraMessageBox.Show(this, "Mã chẩn đoán phụ nhập quá 100 ký tự", "Thông Báo", MessageBoxButtons.YesNo) == DialogResult.Yes)
+                        if (Encoding.UTF8.GetByteCount((trackingSDOs.Tracking.ICD_CODE ?? "") + (trackingSDOs.Tracking.ICD_SUB_CODE ?? "")) > 100 && XtraMessageBox.Show(this, "Mã chẩn đoán phụ nhập quá 100 ký tự", "Thông Báo", MessageBoxButtons.OK) == DialogResult.OK)
                             result = false;
-                        if (result && Encoding.UTF8.GetByteCount((trackingSDOs.Tracking.TRADITIONAL_ICD_CODE ?? "") + (trackingSDOs.Tracking.TRADITIONAL_ICD_SUB_CODE ?? "")) > 255)
+                        if (result && Encoding.UTF8.GetByteCount((trackingSDOs.Tracking.TRADITIONAL_ICD_CODE ?? "") + (trackingSDOs.Tracking.TRADITIONAL_ICD_SUB_CODE ?? "")) > 255 && XtraMessageBox.Show(this, "Mã chẩn đoán YHCT phụ nhập quá 255 ký tự", "Thông Báo", MessageBoxButtons.OK) == DialogResult.OK)
                             result = false;
                         if(result && Encoding.UTF8.GetByteCount((trackingSDOs.Tracking.ICD_NAME ?? "") + (trackingSDOs.Tracking.ICD_TEXT ?? "")) > 1500)
                             result = false;
