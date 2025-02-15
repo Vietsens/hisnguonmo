@@ -392,7 +392,7 @@ namespace HIS.Desktop.Plugins.TreatmentFinish.CloseTreatment
                     var mediOrgName = listMediOrg.FirstOrDefault(o => o.MEDI_ORG_CODE == currentTreatmentFinishSDO.TransferOutMediOrgCode);
                     if (mediOrgName != null)
                     {
-                        cboMediOrgName.EditValue = mediOrgName.MEDI_ORG_CODE;
+                        cboMediOrgName.EditValue = mediOrgName.ID;
                         txtMediOrgCode.Text = mediOrgName.MEDI_ORG_CODE;
                         lblMediOrgAddress.Text = mediOrgName.ADDRESS;
                     }

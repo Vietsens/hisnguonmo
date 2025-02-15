@@ -51,6 +51,9 @@ namespace HIS.Desktop.Plugins.CallPatientVer5.Template
             try
             {
                 lblCaption.Appearance.ForeColor = ado.ColorTittle;
+                lblStt.BackColor = ado.ColorBackround;
+                lblPatient.BackColor = ado.ColorBackround;
+                lblPriority.BackColor = ado.ColorBackround;
                 lblCaption.Appearance.BackColor = ado.ColorBackround;
                 if (Temp == Temp.Now)
                 {
