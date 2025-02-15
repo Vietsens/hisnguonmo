@@ -410,6 +410,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                 Inventec.Common.Logging.LogSystem.Info("frmAssignPrescription.ProcessSaveData.1");
                 IsValidForSave = true;
                 bool valid = true;
+                ListExpMestMedicineAntibioticRequired = null;
                 this.positionHandleControl = -1;
                 this.resultDataPrescription = null;
                 List<HIS_SERVICE_REQ> lstserviceReqResult = null;
