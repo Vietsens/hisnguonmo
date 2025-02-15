@@ -33,5 +33,14 @@ namespace HIS.Desktop.Plugins.HisTrackingList.Config
                 return result;
             }
         }
+
+        internal static string Config_TrackingList_CheckServiceReqWhenDeleteTracking
+        {
+            get
+            {
+                var result = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(ConfigKeyss.DB_CODE__HIS_DESKTOP_PLUGINS_HIS_TRACKING_LIST_CHECK_SERVICE_REQ_WHEN_DELETE_TRACKING);
+                return result;
+            }
+        }
     }
 }

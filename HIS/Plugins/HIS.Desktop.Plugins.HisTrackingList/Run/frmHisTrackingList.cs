@@ -624,6 +624,7 @@ namespace HIS.Desktop.Plugins.HisTrackingList.Run
                     GridView view = sender as GridView;
                     GridViewInfo viewInfo = view.GetViewInfo() as GridViewInfo;
                     GridHitInfo hi = view.CalcHitInfo(e.Location);
+
                     if (hi.HitTest == GridHitTest.RowCell)
                     {
                         long departmentId = WorkPlace.WorkPlaceSDO.FirstOrDefault(p => p.RoomId == this.currentModule.RoomId).DepartmentId;
@@ -681,21 +682,114 @@ namespace HIS.Desktop.Plugins.HisTrackingList.Run
                                     bool isShowMessage = true;
                                     if (!WarningAlreadyExistEmrDocument(row, ref isShowMessage))
                                         return;
-                                    if (!isShowMessage || DevExpress.XtraEditors.XtraMessageBox.Show(
-                                    MessageUtil.GetMessage(LibraryMessage.Message.Enum.HeThongTBCuaSoThongBaoBanCoMuonHuyDuLieuKhong),
-                                    MessageUtil.GetMessage(LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaThongBao),
-                                    MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                                    //if (!isShowMessage || DevExpress.XtraEditors.XtraMessageBox.Show(
+                                    //MessageUtil.GetMessage(LibraryMessage.Message.Enum.HeThongTBCuaSoThongBaoBanCoMuonHuyDuLieuKhong),
+                                    //MessageUtil.GetMessage(LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaThongBao),
+                                    //MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                                    //{
+
+                                    //    //bool success = false;
+                                    //    //CommonParam param = new CommonParam();
+                                    //    //var rs = new BackendAdapter(param).Post<bool>(HisRequestUriStore.HIS_TRACKING_DELETE, ApiConsumers.MosConsumer, row.ID, param);
+                                    //    //if (rs)
+                                    //    //{
+                                    //    //    success = true;
+                                    //    //    //Load lại tracking
+                                    //    //    LoadDataTrackingList();
+                                    //    //}
+                                    //    //MessageManager.Show(this.ParentForm, param, success);
+                                    //}
+                                    bool success = false;
+                                    CommonParam param = new CommonParam();
+                                    if (HisConfigCFG.Config_TrackingList_CheckServiceReqWhenDeleteTracking == "1")
                                     {
-                                        bool success = false;
-                                        CommonParam param = new CommonParam();
-                                        var rs = new BackendAdapter(param).Post<bool>(HisRequestUriStore.HIS_TRACKING_DELETE, ApiConsumers.MosConsumer, row.ID, param);
-                                        if (rs)
+                                        var dataTricking = (V_HIS_TRACKING)gridViewTrackings.GetRow(hi.RowHandle);
+                                        if (dataTricking != null)
                                         {
-                                            success = true;
-                                            //Load lại tracking
-                                            LoadDataTrackingList();
+                                            this.vHisTrackingPrint = new List<V_HIS_TRACKING>();
+                                            this.vHisTrackingPrint.Add(row);
                                         }
-                                        MessageManager.Show(this.ParentForm, param, success);
+                                        var servicereq = dicServiceReqs.Values.Where(service => vHisTrackingPrint.Any(tracking => tracking.ID == service.TRACKING_ID)
+                                        || vHisTrackingPrint.Any(tracking => tracking.ID == service.USED_FOR_TRACKING_ID)).ToList();
+                                        if (servicereq.Any())
+                                        {
+
+                                            string serviceCodes = string.Join(", ", servicereq.Select(s => s.SERVICE_REQ_CODE));
+
+                                            string message = $"Tờ điều trị có gắn y lệnh {serviceCodes}.";
+                                            MessageBox.Show(message, "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                                        }
+                                        else
+                                        {
+                                            var rs = new BackendAdapter(param).Post<bool>(HisRequestUriStore.HIS_TRACKING_DELETE, ApiConsumers.MosConsumer, row.ID, param);
+                                            if (rs)
+                                            {
+                                                success = true;
+                                                //Load lại tracking
+                                                LoadDataTrackingList();
+                                            }
+                                            MessageManager.Show(this.ParentForm, param, success);
+                                        }
+                                    }
+                                    else if (HisConfigCFG.Config_TrackingList_CheckServiceReqWhenDeleteTracking == "2")
+                                    {
+                                        var dataTricking = (V_HIS_TRACKING)gridViewTrackings.GetRow(hi.RowHandle);
+                                        if (dataTricking != null)     
+                                        {
+                                            this.vHisTrackingPrint = new List<V_HIS_TRACKING>();
+                                            this.vHisTrackingPrint.Add(row);
+                                        }
+
+                                        var servicereq = dicServiceReqs.Values.Where(service => vHisTrackingPrint.Any(tracking => tracking.ID == service.TRACKING_ID)
+                                        || vHisTrackingPrint.Any(tracking => tracking.ID == service.USED_FOR_TRACKING_ID)).ToList();
+                                        if (servicereq.Any())
+                                        {
+                                            string serviceCodes = string.Join(", ", servicereq.Select(s => s.SERVICE_REQ_CODE));     
+
+                                            string message = $"Tờ điều trị có gắn y lệnh {serviceCodes}. Bạn có muốn tiếp tục?";
+                                            DialogResult result = MessageBox.Show(message, "Cảnh báo", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+
+                                            if (result == DialogResult.Yes)
+                                            {
+                                                var rs = new BackendAdapter(param).Post<bool>(HisRequestUriStore.HIS_TRACKING_DELETE, ApiConsumers.MosConsumer, row.ID, param);
+                                                if (rs)
+                                                {
+                                                    success = true;
+                                                    //Load lại tracking
+                                                    LoadDataTrackingList();
+                                                }
+                                                MessageManager.Show(this.ParentForm, param, success);
+                                            }
+                                        }
+                                        else
+                                        {
+                                            var rs = new BackendAdapter(param).Post<bool>(HisRequestUriStore.HIS_TRACKING_DELETE, ApiConsumers.MosConsumer, row.ID, param);
+                                            if (rs)
+                                            {
+                                                success = true;
+                                                //Load lại tracking
+                                                LoadDataTrackingList();
+                                            }
+                                            MessageManager.Show(this.ParentForm, param, success);
+                                        }
+                                    }
+                                    else
+                                    {
+                                        if (!isShowMessage || DevExpress.XtraEditors.XtraMessageBox.Show(
+                                            MessageUtil.GetMessage(LibraryMessage.Message.Enum.HeThongTBCuaSoThongBaoBanCoMuonHuyDuLieuKhong),
+                                            MessageUtil.GetMessage(LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaThongBao),
+                                            MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                                        {
+                                            
+                                            var rs = new BackendAdapter(param).Post<bool>(HisRequestUriStore.HIS_TRACKING_DELETE, ApiConsumers.MosConsumer, row.ID, param);
+                                            if (rs)
+                                            {
+                                                success = true;
+                                                //Load lại tracking
+                                                LoadDataTrackingList();
+                                            }
+                                            MessageManager.Show(this.ParentForm, param, success);
+                                        }
                                     }
                                 }
                             }
@@ -1566,7 +1660,11 @@ namespace HIS.Desktop.Plugins.HisTrackingList.Run
                     }
 
                     btnTemplate.DropDownControl = menuTemplate;
-                    ucViewEmrDocument1.SetMenu(menuTemplate);
+                    if (ucViewEmrDocument1 != null)
+                    {
+                        ucViewEmrDocument1.SetMenu(menuTemplate);
+                    }
+                    
                 }
             }
             catch (Exception ex)
