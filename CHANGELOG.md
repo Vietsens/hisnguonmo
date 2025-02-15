@@ -1,3 +1,10 @@
+### Release 2.349.0
+* Bổ sung option theo đối tượng bệnh nhân tính tiền công khám theo công thức của BHYT
+* Bổ sung cấu hình cảnh báo bệnh nhân trái tuyến cần thu tiền khám
+* Bổ sung màn hình chờ khám
+* Sửa thông tin thời gian trong thông tin tử vong
+* Đồng bộ thông tin giữa tờ điều trị và y lệnh tương ứng.
+
 ### Release 2.348.0
 * Bổ sung chặn tiếp đón trên kios trong trường hợp bệnh nhân đã thực hiện kiểm tra thẻ BHYT tại viện khác
 * Sửa thông tin mặc định trong màn hình thông tin bổ sung xử lý PTTT
