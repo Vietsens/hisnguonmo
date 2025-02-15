@@ -22,6 +22,7 @@ using Inventec.Common.BankQrCode.ADO;
 using Inventec.Common.QRCoder;
 using Inventec.Core;
 using MOS.EFMODEL.DataModels;
+using MOS.TDO;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
@@ -42,9 +43,9 @@ namespace HIS.Desktop.Common.BankQrCode
                 bool IsGenQrBidvApi = false;
                 MOS.TDO.QrPaymentGenerateResultTDO QrBidv = null;
                 #region "BIDV"
-                if (configValue != null && configValue.Count > 0 && configValue.Exists(p => p.KEY.IndexOf(string.Format(".{0}Info", "BIDV")) > -1))
+                if (configValue != null && configValue.Count > 0 && configValue.Exists(p => p.KEY.Replace(" ", "").IndexOf(string.Format(".{0}Info", "BIDV")) > -1))
                 {
-                    var configBIDV = configValue.FirstOrDefault(p => p.KEY.IndexOf(string.Format(".{0}Info", "BIDV")) > -1);
+                    var configBIDV = configValue.FirstOrDefault(p => p.KEY.Replace(" ", "").IndexOf(string.Format(".{0}Info", "BIDV")) > -1);
                     if (configBIDV != null && !string.IsNullOrEmpty(configBIDV.VALUE) && configBIDV.VALUE.IndexOf("GenQrMethod") > -1)
                     {
                         JObject jsonObject = JObject.Parse(configBIDV.VALUE);
@@ -74,7 +75,7 @@ namespace HIS.Desktop.Common.BankQrCode
                 else
                 {
                     List<string> banks = new List<string>() { "MBB", "VCB", "CTG" };
-                    if (string.IsNullOrEmpty(data.QR_TEXT) && configValue != null && configValue.Count > 0 && banks.Exists(o => configValue.Exists(p => p.KEY.IndexOf(string.Format(".{0}Info", o)) > -1)))
+                    if (string.IsNullOrEmpty(data.QR_TEXT) && configValue != null && configValue.Count > 0 && banks.Exists(o => configValue.Exists(p => p.KEY.Replace(" ", "").IndexOf(string.Format(".{0}Info", o)) > -1)))
                     {
                         if (configValue.Count == 1)
                         {
@@ -127,7 +128,7 @@ namespace HIS.Desktop.Common.BankQrCode
                                 BankQrCodeProcessor bankQrCode = new BankQrCodeProcessor(inputData);
                                 if (IsGenQrBidvApi && QrBidv != null && QrBidv.TransReqId == data.ID)
                                 {
-                                    result[key] = Convert.FromBase64String(QrBidv.ImgQrBase64);
+                                    result[key] = Convert.FromBase64String(ConvertString(QrBidv.ImgQrBase64));
                                 }
                                 else
                                 {
@@ -164,6 +165,25 @@ namespace HIS.Desktop.Common.BankQrCode
             return result;
         }
 
+        private static string ConvertString(string imgBase64)
+        {
+            try
+            {
+                int n = imgBase64.Length % 4;
+                if (n > 0)
+                {
+                    for (int i = 0; i < (4 - n); i++)
+                    {
+                        imgBase64 += "=";
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+            return imgBase64;
+        }
         private static string GetTemplateKey(string key, ref ProvinceType bankType)
         {
             string result = null;
