@@ -49,9 +49,9 @@ namespace HIS.Desktop.Plugins.RegisterExamKiosk
                         {
                             cardsdo.DistrictCode = splitAdress.DistrictCode;
                             cardsdo.DistrictName = splitAdress.DistrictName;
+                            cardsdo.CommuneCode = splitAdress.CommuneCode;
                             cardsdo.CommuneName = splitAdress.CommuneName;
-                            cardsdo.CommuneName = splitAdress.CommuneName;
-                            cardsdo.ProvinceName = splitAdress.ProvinceName;
+                            cardsdo.ProvinceCode = splitAdress.ProvinceCode;
                             cardsdo.ProvinceName = splitAdress.ProvinceName;
                             cardsdo.Address = splitAdress.Address;
                         }
@@ -64,9 +64,9 @@ namespace HIS.Desktop.Plugins.RegisterExamKiosk
                         {
                             cardsdo.HtDistrictCode = splitAdress.DistrictCode;
                             cardsdo.HtDistrictName = splitAdress.DistrictName;
+                            cardsdo.HtCommuneCode = splitAdress.CommuneCode;
                             cardsdo.HtCommuneName = splitAdress.CommuneName;
-                            cardsdo.HtCommuneName = splitAdress.CommuneName;
-                            cardsdo.HtProvinceName = splitAdress.ProvinceName;
+                            cardsdo.HtProvinceCode = splitAdress.ProvinceCode;
                             cardsdo.HtProvinceName = splitAdress.ProvinceName;
                             cardsdo.HtAddress = splitAdress.Address;
                         }
