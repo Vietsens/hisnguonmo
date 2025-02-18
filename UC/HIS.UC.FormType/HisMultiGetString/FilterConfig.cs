@@ -144,6 +144,8 @@ namespace HIS.UC.FormType.HisMultiGetString
                         FilterTypeCode = "HIS_MY_SURG_ROOM";
                     else if (_jsonOutput.Contains("EXAM_ROOM_ID"))////)
                         FilterTypeCode = "HIS_EXAM_ROOM";
+                    else if (_jsonOutput.Contains("CLINICAL_ROOM_ID"))////)
+                        FilterTypeCode = "HIS_CLINICAL_ROOM";
                     else if (_jsonOutput.Contains("SURG_ROOM_ID"))////)
                         FilterTypeCode = "HIS_SURG_ROOM";
                     else if (_jsonOutput.Contains("MEDICINE_TYPE_ID"))////)
@@ -397,6 +399,8 @@ namespace HIS.UC.FormType.HisMultiGetString
                         FilterTypeCode = "HIS_SURG_ROOM";
                     else if (_jsonOutput.Contains("EXAM_ROOM_CODE"))////)
                         FilterTypeCode = "HIS_EXAM_ROOM";
+                    else if (_jsonOutput.Contains("CLINICAL_ROOM_CODE"))////)
+                        FilterTypeCode = "HIS_CLINICAL_ROOM";
                     else if (_jsonOutput.Contains("MEDICINE_TYPE_CODE"))////)
                         FilterTypeCode = "HIS_MEDICINE_TYPE";
                     else if (_jsonOutput.Contains("MATERIAL_TYPE_CODE"))////)

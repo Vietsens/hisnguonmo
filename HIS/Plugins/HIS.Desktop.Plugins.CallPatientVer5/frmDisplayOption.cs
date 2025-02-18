@@ -426,6 +426,7 @@ namespace HIS.Desktop.Plugins.CallPatientVer5
                             cboSizeSTT.EditValue = ado.SizeSTT;
                             cboSizeContentSTT.EditValue = ado.SizeContentSTT;
                             txtTitleSTTNext.Text = ado.TitleSTTNext;
+                            cboColorSTT.EditValue = ado.ColorSTT;
                             cboColorSTTNext.EditValue = ado.ColorSTTNext;
                             txtContent.Text = ado.Content;
                             cboSizeList.EditValue = ado.SizeList;
@@ -434,6 +435,11 @@ namespace HIS.Desktop.Plugins.CallPatientVer5
                             chkIsShowCol.Checked = ado.IsShowCol;
                             chkIsNotInDebt.Checked = ado.IsNotInDebt;
                             chkTitleSTTNext.Checked = !string.IsNullOrEmpty(txtTitleSTTNext.Text.Trim());
+                            if(!chkTitleSTTNext.Checked)
+                            {
+                                txtTitleSTTNext.ReadOnly = true;
+                                cboColorSTTNext.ReadOnly = true;
+                            }    
                         }
                     }
                 }
