@@ -57,8 +57,9 @@ using DevExpress.XtraEditors.Controls;
 using Inventec.Common.Controls.EditorLoader;
 using SDA.EFMODEL.DataModels;
 using DevExpress.XtraGrid.Columns;
+using Inventec.Common.Address;
 
-namespace HIS.Desktop.Plugins.RegisterExamKiosk.Popup.RegisterExemKiosk
+namespace HIS.Desktop.Plugins.RegisterExamKiosk.Popup.RegisterExamKiosk
 {
     public partial class frmRegisterExamKiosk : HIS.Desktop.Utility.FormBase
     {
@@ -1053,7 +1054,7 @@ namespace HIS.Desktop.Plugins.RegisterExamKiosk.Popup.RegisterExemKiosk
                 if (examServiceReqRegisterResultSDO != null)
                 {
                     //LogSystem.Debug("-----------Update Patient");
-                    //UpdatePatient(sdo.CardSDO, examServiceReqRegisterResultSDO.HisPatientProfile.HisPatient);
+                    UpdatePatient(sdo.CardSDO, examServiceReqRegisterResultSDO.HisPatientProfile.HisPatient);
                     hisCardPatientSdo.PatientId = examServiceReqRegisterResultSDO.HisPatientProfile.HisPatient.ID;
                     hisCardPatientSdo.PatientCode = examServiceReqRegisterResultSDO.HisPatientProfile.HisPatient.PATIENT_CODE;
                     success = true;
@@ -1103,30 +1104,63 @@ namespace HIS.Desktop.Plugins.RegisterExamKiosk.Popup.RegisterExemKiosk
         {
             try
             {
-                CommonParam paramPatient = new CommonParam();
-                HisPatientUpdateSDO patientUpdateSdo = new MOS.SDO.HisPatientUpdateSDO();
-
-                patientUpdateSdo.HisPatient = new HIS_PATIENT();
-                patientUpdateSdo.HisPatient = patient;
-                patientUpdateSdo.HisPatient.HT_COMMUNE_CODE = cardSdo.HtCommuneCode;
-                patientUpdateSdo.HisPatient.HT_DISTRICT_CODE = cardSdo.HtDistrictCode;
-                patientUpdateSdo.HisPatient.HT_PROVINCE_CODE = cardSdo.HtProvinceCode;
-                patientUpdateSdo.HisPatient.HT_COMMUNE_NAME = cardSdo.HtCommuneName;
-                patientUpdateSdo.HisPatient.HT_DISTRICT_NAME = cardSdo.HtDistrictName;
-                patientUpdateSdo.HisPatient.HT_PROVINCE_NAME = cardSdo.HtProvinceName;
-                LogSystem.Debug("Update Patient Data: " + LogUtil.TraceData("__HisPatientSdo: ", patientUpdateSdo));
-                var resultData = new BackendAdapter(paramPatient).Post<HIS_PATIENT>("api/HisPatient/UpdateSdo", ApiConsumers.MosConsumer, patientUpdateSdo, paramPatient);
-                if (resultData != null)
+                string address = patient.VIR_ADDRESS ?? patient.TDL_HEIN_CARD_ADDRESS;
+                bool updateAddress = !string.IsNullOrWhiteSpace(address) && (string.IsNullOrWhiteSpace(patient.DISTRICT_CODE) || string.IsNullOrWhiteSpace(patient.COMMUNE_CODE) || string.IsNullOrWhiteSpace(patient.PROVINCE_CODE));
+                bool updateHtAddress = diffString(patient.HT_COMMUNE_CODE, cardSdo.HtCommuneCode) || diffString(patient.HT_PROVINCE_CODE, cardSdo.HtProvinceCode) || diffString(patient.HT_DISTRICT_CODE, cardSdo.HtDistrictCode);
+                if (updateAddress || updateHtAddress)
                 {
-                    Inventec.Common.Logging.LogSystem.Debug("Update Patient Result" + LogUtil.TraceData("__HisPatientSdo Result: ", resultData));
+                    AddressProcessor addressProcessor = new AddressProcessor(BackendDataWorker.Get<V_SDA_PROVINCE>(), BackendDataWorker.Get<V_SDA_DISTRICT>(), BackendDataWorker.Get<V_SDA_COMMUNE>());
+                    AddressADO addressADO = addressProcessor.SplitFromFullAddress(address);
+                    bool flag2 = addressADO != null && !string.IsNullOrEmpty(addressADO.ProvinceName) && !string.IsNullOrEmpty(addressADO.DistrictName) && !string.IsNullOrEmpty(addressADO.CommuneName);
+                    if (flag2)
+                    {
+                        patient.DISTRICT_CODE = addressADO.DistrictCode;
+                        patient.DISTRICT_NAME = addressADO.DistrictName;
+                        patient.COMMUNE_CODE = addressADO.CommuneCode;
+                        patient.COMMUNE_NAME = addressADO.CommuneName;
+                        patient.PROVINCE_CODE = addressADO.ProvinceCode;
+                        patient.PROVINCE_NAME = addressADO.ProvinceName;
+                        patient.ADDRESS = addressADO.Address;
+                    }
+
+                    if (updateHtAddress)
+                    {
+                        patient.HT_COMMUNE_CODE = cardSdo.HtCommuneCode;
+                        patient.HT_DISTRICT_CODE = cardSdo.HtDistrictCode;
+                        patient.HT_PROVINCE_CODE = cardSdo.HtProvinceCode;
+                        patient.HT_COMMUNE_NAME = cardSdo.HtCommuneName;
+                        patient.HT_DISTRICT_NAME = cardSdo.HtDistrictName;
+                        patient.HT_PROVINCE_NAME = cardSdo.HtProvinceName;
+                    }
+
+                    CommonParam paramPatient = new CommonParam();
+                    HisPatientUpdateSDO patientUpdateSdo = new MOS.SDO.HisPatientUpdateSDO();
+                    patientUpdateSdo.HisPatient = new HIS_PATIENT();
+                    patientUpdateSdo.HisPatient = patient;
+                    LogSystem.Debug("Update Patient Data: " + LogUtil.TraceData("__HisPatientSdo: ", patientUpdateSdo));
+                    var resultData = new BackendAdapter(paramPatient).Post<HIS_PATIENT>("api/HisPatient/UpdateSdo", ApiConsumers.MosConsumer, patientUpdateSdo, paramPatient);
+                    if (resultData != null)
+                    {
+                        Inventec.Common.Logging.LogSystem.Debug("Update Patient Result" + LogUtil.TraceData("__HisPatientSdo Result: ", resultData));
+                    }
+                    else
+                    {
+                        LogSystem.Debug("Update Patient Faild: " + LogUtil.TraceData("__HisPatientSdo: ", patientUpdateSdo));
+                    }
                 }
-                else LogSystem.Debug("Update Patient Faild: " + LogUtil.TraceData("__HisPatientSdo: ", patientUpdateSdo));
             }
             catch (Exception ex)
             {
-
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
+        }
+
+        private bool diffString(string string1, string string2)
+        {
+            string check1 = String.IsNullOrWhiteSpace(string1) ? "" : string1.ToLower();
+            string check2 = String.IsNullOrWhiteSpace(string2) ? "" : string2.ToLower();
+
+            return check1 != check2;
         }
 
         private void button1_Click(object sender, EventArgs e)

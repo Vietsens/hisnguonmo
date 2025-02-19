@@ -24,7 +24,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using HIS.Desktop.Plugins.RegisterExamKiosk.Popup.RegisterExemKiosk;
+using HIS.Desktop.Plugins.RegisterExamKiosk.Popup.RegisterExamKiosk;
 using MOS.EFMODEL.DataModels;
 using MOS.Filter;
 using Inventec.Core;
