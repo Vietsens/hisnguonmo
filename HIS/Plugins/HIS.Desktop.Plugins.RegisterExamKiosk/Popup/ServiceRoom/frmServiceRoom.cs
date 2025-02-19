@@ -493,6 +493,7 @@ namespace HIS.Desktop.Plugins.RegisterExamKiosk.Popup.ServiceRoom
                     HisPatientUpdateSDO patientUpdateSdo = new MOS.SDO.HisPatientUpdateSDO();
                     patientUpdateSdo.HisPatient = new HIS_PATIENT();
                     patientUpdateSdo.HisPatient = patient;
+                    patientUpdateSdo.UpdateTreatment = true;
                     LogSystem.Debug("Update Patient Data: " + LogUtil.TraceData("__HisPatientSdo: ", patientUpdateSdo));
                     var resultData = new BackendAdapter(paramPatient).Post<HIS_PATIENT>("api/HisPatient/UpdateSdo", ApiConsumers.MosConsumer, patientUpdateSdo, paramPatient);
                     if (resultData != null)
