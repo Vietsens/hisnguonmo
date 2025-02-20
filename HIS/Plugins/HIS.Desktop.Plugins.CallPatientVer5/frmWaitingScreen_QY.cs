@@ -97,8 +97,6 @@ namespace HIS.Desktop.Plugins.CallPatientVer5
                 //Start all timer
                 StartAllTimer();
                 lblSrollText.Text = "";
-                //Set color Form
-                setFromConfigToControl();
                 RegisterTimer(ModuleLink, "timerAutoLoadDataPatient", WaitingScreenCFG.TIMER_FOR_AUTO_LOAD_WAITING_SCREENS * 1000, StartTheadWaitingPatientToCall);
                 StartTimer(ModuleLink, "timerAutoLoadDataPatient");
                 timerForHightLightCallPatientLayout.Interval = WaitingScreenCFG.TIMER_FOR_HIGHT_LIGHT_CALL_PATIENT * 1000;
@@ -107,6 +105,8 @@ namespace HIS.Desktop.Plugins.CallPatientVer5
                 InitRestoreLayoutGridViewFromXml(gridViewWaitingCls);
                 InitRestoreLayoutGridViewFromXml(gridViewWatingExams);
 
+                //Set color Form
+                setFromConfigToControl();
             }
             catch (Exception ex)
             {
