@@ -18,11 +18,14 @@
 using HIS.Desktop.LibraryMessage;
 using HIS.Desktop.LocalStorage.BackendData;
 using HIS.Desktop.Plugins.BidCreate.Forms;
+using HIS.UC.MaterialType;
+using HIS.UC.MedicineType;
 using Inventec.Common.Logging;
 using Inventec.Desktop.Common.Message;
 using MOS.EFMODEL.DataModels;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -80,6 +83,49 @@ namespace HIS.Desktop.Plugins.BidCreate
                             txtBidName.Text = bid.BID_NAME;
                             txtBidNumber.Text = bid.BID_NUMBER;
                             txtBID.Text = bid.BID_EXTRA_CODE;
+
+                            string ToTime = null;
+                            foreach (var item in ImpMestListProcessor)
+                            {
+                                ToTime = item.VALID_TO_TIME;
+
+                                if (!string.IsNullOrEmpty(ToTime))
+                                {
+                                    break;
+                                }
+                            }
+
+                            string FromTime = null;
+                            foreach (var item in ImpMestListProcessor)
+                            {
+                                FromTime = item.VALID_FROM_TIME;
+
+                                if (!string.IsNullOrEmpty(ToTime))
+                                {
+                                    break;
+                                }
+                            }
+
+                            if (!string.IsNullOrWhiteSpace(FromTime) && 
+                                DateTime.TryParseExact(FromTime, "dd/MM/yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime dateFromValue))
+                            {
+                                dtFromTime.DateTime = dateFromValue;
+                            }
+                            else
+                            {
+                                dtFromTime.EditValue = null;
+                            }
+
+                            if (!string.IsNullOrWhiteSpace(ToTime) &&
+                                DateTime.TryParseExact(ToTime, "dd/MM/yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime dateToValue))
+                            {
+                                dtToTime.DateTime = dateToValue;
+                            }
+                            else
+                            {
+                                dtToTime.EditValue = null;
+                            }
+
                             if (!String.IsNullOrEmpty(bid.BID_YEAR))
                             {
                                 bool valid = true;
@@ -152,6 +198,39 @@ namespace HIS.Desktop.Plugins.BidCreate
 
                     var medicineType = new ADO.MedicineTypeADO();
                     Inventec.Common.Mapper.DataObjectMapper.Map<ADO.MedicineTypeADO>(medicineType, medicineTypeImport);
+
+                    if (!string.IsNullOrWhiteSpace(medicineType.VALID_FROM_TIME) &&
+                        !DateTime.TryParseExact(medicineType.VALID_FROM_TIME, "dd/MM/yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out _))
+                    {
+                        medicineType.ErrorDescriptions.Add("Định dạng thời gian từ không hợp lệ.");
+                    }
+                    else
+                    {
+                        medicineType.VALID_FROM_TIME = medicineTypeImport.VALID_FROM_TIME;
+                    }     
+
+                    if (!string.IsNullOrWhiteSpace(medicineType.VALID_TO_TIME) &&
+                        !DateTime.TryParseExact(medicineType.VALID_TO_TIME, "dd/MM/yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out _))
+                    {
+                        medicineType.ErrorDescriptions.Add("Định dạng thời gian đến không hợp lệ.");
+                    }
+                    else
+                    {
+                        medicineType.VALID_TO_TIME = medicineTypeImport.VALID_TO_TIME;
+                    }
+
+                    if (DateTime.TryParseExact(medicineType.VALID_FROM_TIME, "dd/MM/yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime dateFromValue) &&
+                        DateTime.TryParseExact(medicineType.VALID_TO_TIME, "dd/MM/yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime dateToValue) )
+                    {
+                        long? fromValue = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(dateFromValue);
+                        long? toValue = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(dateToValue);
+
+                        if (fromValue > toValue)
+                        {
+                            medicineType.ErrorDescriptions.Add("Thời gian từ không được lớn hơn thời gian đến");
+                        }
+                    }
+
 
                     if (medicineTypeNotExist == null && bloodTypeNotExist == null)
                     {
@@ -471,6 +550,38 @@ namespace HIS.Desktop.Plugins.BidCreate
 
                     var medicineType = new ADO.MedicineTypeADO();
                     Inventec.Common.Mapper.DataObjectMapper.Map<ADO.MedicineTypeADO>(medicineType, materialTypeImport);
+
+                    if (!string.IsNullOrWhiteSpace(medicineType.VALID_TO_TIME) &&
+                        !DateTime.TryParseExact(medicineType.VALID_TO_TIME, "dd/MM/yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out _))
+                    {
+                        medicineType.ErrorDescriptions.Add("Định dạng thời gian đến không hợp lệ.");
+                    }
+                    else
+                    {
+                        medicineType.VALID_TO_TIME = materialTypeImport.VALID_TO_TIME;
+                    }
+
+                    if (!string.IsNullOrWhiteSpace(medicineType.VALID_FROM_TIME) &&
+                        !DateTime.TryParseExact(medicineType.VALID_FROM_TIME, "dd/MM/yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out _))
+                    {
+                        medicineType.ErrorDescriptions.Add("Định dạng thời gian từ không hợp lệ.");
+                    }
+                    else
+                    {
+                        medicineType.VALID_FROM_TIME = materialTypeImport.VALID_FROM_TIME;
+                    }
+
+                    if (DateTime.TryParseExact(medicineType.VALID_FROM_TIME, "dd/MM/yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime dateFromValue) &&
+                        DateTime.TryParseExact(medicineType.VALID_TO_TIME, "dd/MM/yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime dateToValue))
+                    {
+                        long? fromValue = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(dateFromValue);
+                        long? toValue = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(dateToValue);
+
+                        if (fromValue > toValue)
+                        {
+                            medicineType.ErrorDescriptions.Add("Thời gian từ không được lớn hơn thời gian đến");
+                        }
+                    }
 
                     if (!String.IsNullOrWhiteSpace(materialTypeImport.MEDICINE_TYPE_CODE)
                         && !String.IsNullOrWhiteSpace(materialTypeImport.MATERIAL_TYPE_MAP_CODE))
