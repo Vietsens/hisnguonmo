@@ -75,6 +75,7 @@ using HIS.Desktop.Plugins.AssignPrescriptionPK.MessageBoxForm;
 using System.Threading;
 using HIS.UC.Icd;
 using HIS.UC.Icd.ADO;
+using DevExpress.XtraGrid;
 
 namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
 {
@@ -1129,7 +1130,6 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                 this.isNotLoadMediMatyByMediStockInitForm = false;
                 this.IsHandlerWhileOpionGroupSelectedIndexChanged = false;
                 this.isNotLoadWhileChangeInstructionTimeInFirst = false;
-
                 this.InitMenuToButtonPrint();
                 LogSystem.Debug("frmAssignPrescription_Load. 7");
 
@@ -1157,6 +1157,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
+
         private void InitTimerReloadTreatmentFinishTime()
         {
             try
@@ -3248,6 +3249,7 @@ o.SERVICE_ID == medi.SERVICE_ID && o.TDL_INTRUCTION_TIME.ToString().Substring(0,
                 if (this.actionType == GlobalVariables.ActionAdd
                     || this.actionType == GlobalVariables.ActionEdit)
                 {
+                    this.btnAdd.Focus();
                     this.btnAdd_TabMedicine_Click(null, null);
                 }
             }
@@ -4432,7 +4434,9 @@ o.SERVICE_ID == medi.SERVICE_ID && o.TDL_INTRUCTION_TIME.ToString().Substring(0,
             {
                 if (e.KeyCode == Keys.Enter)
                 {
-                    //this.FocusShowpopup(this.cboHtu, true);
+                    this.cboHtu.Focus();
+                    this.cboHtu.SelectAll();
+                    ShowHtuPopup();
                 }
             }
             catch (Exception ex)
@@ -4636,7 +4640,7 @@ o.SERVICE_ID == medi.SERVICE_ID && o.TDL_INTRUCTION_TIME.ToString().Substring(0,
             {
                 //if (!String.IsNullOrEmpty(spinSang.Text))
                 this.CalculateAmount();
-                if(!IsSetByMedicineTut)
+                if (!IsSetByMedicineTut)
                     this.SetHuongDanFromSoLuongNgay();
             }
             catch (Exception ex)
@@ -4784,30 +4788,7 @@ o.SERVICE_ID == medi.SERVICE_ID && o.TDL_INTRUCTION_TIME.ToString().Substring(0,
                 }
                 else if (e.Button.Kind == ButtonPredefines.Combo)
                 {
-                    if (!string.IsNullOrEmpty(cboHtu.Text))
-                    {
-                        if (DataHtuListShow != null && DataHtuListShow.Count > 0)
-                        {
-                            foreach (var item in DataHtuListShow)
-                            {
-                                if (DataHtuList.Exists(o => o.ID == item.ID && o.IsChecked))
-                                    item.IsChecked = true;
-                                else
-                                    item.IsChecked = false;
-                            }
-                        }
-                        DataHtuListShow = DataHtuListShow.OrderByDescending(o => o.IsChecked ? 1 : 0).ToList();
-                    }
-                    else
-                    {
-                        DataHtuListShow.ForEach(o => o.IsChecked = false);
-                    }
-
-                    gridControlHtu.DataSource = null;
-                    gridControlHtu.DataSource = DataHtuListShow;
-                    //popupContainerHtu.Visible = true;
-                    Rectangle buttonBounds = new Rectangle(cboHtu.Bounds.X, cboHtu.Bounds.Y, cboHtu.Bounds.Width, cboHtu.Bounds.Height);
-                    popupContainerHtu.ShowPopup(new Point(buttonBounds.X, buttonBounds.Bottom + 245));
+                    ShowHtuPopup();
                 }
             }
             catch (NullReferenceException ex)
@@ -4822,6 +4803,42 @@ o.SERVICE_ID == medi.SERVICE_ID && o.TDL_INTRUCTION_TIME.ToString().Substring(0,
 
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
+        }
+        private void ShowHtuPopup()
+        {
+            try
+            {
+                if (!string.IsNullOrEmpty(cboHtu.Text))
+                {
+                    if (DataHtuListShow != null && DataHtuListShow.Count > 0)
+                    {
+                        foreach (var item in DataHtuListShow)
+                        {
+                            if (DataHtuList.Exists(o => o.ID == item.ID && o.IsChecked))
+                                item.IsChecked = true;
+                            else
+                                item.IsChecked = false;
+                        }
+                    }
+                    DataHtuListShow = DataHtuListShow.OrderByDescending(o => o.IsChecked ? 1 : 0).ToList();
+                }
+                else
+                {
+                    DataHtuListShow.ForEach(o => o.IsChecked = false);
+                }
+
+                gridControlHtu.DataSource = null;
+                gridControlHtu.DataSource = DataHtuList;
+                Rectangle buttonBounds = new Rectangle(cboHtu.Bounds.X, cboHtu.Bounds.Y, cboHtu.Bounds.Width, cboHtu.Bounds.Height);
+                popupContainerHtu.ShowPopup(new Point(buttonBounds.X, buttonBounds.Bottom + 245));
+                gridControlHtu.Focus();
+                gridViewHtu.FocusedColumn = gridColumn30;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+
         }
 
         private void cboHtu_Leave(object sender, EventArgs e)
@@ -5087,7 +5104,7 @@ o.SERVICE_ID == medi.SERVICE_ID && o.TDL_INTRUCTION_TIME.ToString().Substring(0,
             {
                 if (e.KeyCode == Keys.Enter || e.KeyCode == Keys.Tab)
                 {
-                    btnAdd.Focus();
+                    memHtu.Focus();
                     if (e.KeyCode == Keys.Enter)
                         e.Handled = true;
                 }
@@ -10726,7 +10743,7 @@ o.SERVICE_ID == medi.SERVICE_ID && o.TDL_INTRUCTION_TIME.ToString().Substring(0,
                                 var SereServTestType = SereServTeinData.Where(p => ACRPCRList.Exists(o => o == p.TEST_INDEX_TYPE)).ToList();
                                 if (SereServTestType.Exists(o => o.TEST_INDEX_TYPE == IMSys.DbConfig.HIS_RS.TEST_INDEX_TYPE.CREATININ_NIEU && !string.IsNullOrEmpty(o.VALUE)) && SereServTestType.Exists(o => (o.TEST_INDEX_TYPE == IMSys.DbConfig.HIS_RS.TEST_INDEX_TYPE.ALBUMIN_NIEU || o.TEST_INDEX_TYPE == IMSys.DbConfig.HIS_RS.TEST_INDEX_TYPE.PROTEIN_NIEU) && !string.IsNullOrEmpty(o.VALUE)))
                                 {
-                                    var ListNotNullvalue = SereServTestType.Where(o => (o.TEST_INDEX_TYPE == IMSys.DbConfig.HIS_RS.TEST_INDEX_TYPE.ALBUMIN_NIEU || o.TEST_INDEX_TYPE == IMSys.DbConfig.HIS_RS.TEST_INDEX_TYPE.PROTEIN_NIEU) && !string.IsNullOrEmpty(o.VALUE)).OrderByDescending(o => o.MODIFY_TIME).ThenBy(o=> o.TEST_INDEX_TYPE).ToList().FirstOrDefault();
+                                    var ListNotNullvalue = SereServTestType.Where(o => (o.TEST_INDEX_TYPE == IMSys.DbConfig.HIS_RS.TEST_INDEX_TYPE.ALBUMIN_NIEU || o.TEST_INDEX_TYPE == IMSys.DbConfig.HIS_RS.TEST_INDEX_TYPE.PROTEIN_NIEU) && !string.IsNullOrEmpty(o.VALUE)).OrderByDescending(o => o.MODIFY_TIME).ThenBy(o => o.TEST_INDEX_TYPE).ToList().FirstOrDefault();
                                     if (ListNotNullvalue != null)
                                     {
                                         var testIndex = TestIndexData.FirstOrDefault(o => o.ID == (ListNotNullvalue.TEST_INDEX_ID ?? 0));
@@ -12280,9 +12297,104 @@ o.SERVICE_ID == medi.SERVICE_ID && o.TDL_INTRUCTION_TIME.ToString().Substring(0,
             }
         }
 
-        private void btnChooseHtu_Click(object sender, EventArgs e)
+        private void gridControlHtu_ProcessGridKey(object sender, KeyEventArgs e)
         {
-            cboHtu_Closed(null, null);
+            try
+            {
+                if (e.KeyCode == Keys.Space)
+                {
+                    if (this.gridViewHtu.IsEditing)
+                        this.gridViewHtu.CloseEditor();
+
+                    if (this.gridViewHtu.FocusedRowModified)
+                        this.gridViewHtu.UpdateCurrentRow();
+                    var dt = gridViewHtu.GetFocusedRow() as HtuADO;
+                    dt.IsChecked = !dt.IsChecked;
+                    gridControlHtu.RefreshDataSource();
+                }
+                else if (e.KeyCode == Keys.Enter)
+                {
+                    cboHtu_Closed(null, null);
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void gridViewHtu_CellValueChanged(object sender, CellValueChangedEventArgs e)
+        {
+            try
+            {
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+        System.Windows.Forms.Timer pressKey;
+        private void memHtu_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
+        {
+
+            try
+            {
+                pressKey = new System.Windows.Forms.Timer();
+                pressKey.Interval = 100;
+                pressKey.Tick += PressKey_Tick;
+                if (e.KeyCode == Keys.Enter)
+                    pressKey.Start();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void PressKey_Tick(object sender, EventArgs e)
+        {
+            pressKey.Stop();
+            btnAdd.Select();
+        }
+
+        private void popupContainerHtu_Leave(object sender, EventArgs e)
+        {
+
+            try
+            {
+                if (DataHtuList != null && DataHtuList.Count > 0 && DataHtuList.Exists(o => o.IsChecked))
+                {
+                    cboHtu.Text = string.Join(", ", DataHtuList.Where(o => o.IsChecked).Select(o => o.HTU_NAME));
+                }
+                else
+                    cboHtu.Text = null;
+                if (string.IsNullOrEmpty(cboHtu.Text))
+                    this.cboHtu.Properties.Buttons[1].Visible = true;
+                this.SetHuongDanFromSoLuongNgay();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+
+        }
+
+        private void repCheck_CheckedChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                var dt = gridViewHtu.GetFocusedRow() as HtuADO;
+                CheckEdit chk = sender as CheckEdit;
+                foreach (var item in DataHtuList)
+                {
+                    if (item.ID == dt.ID)
+                        item.IsChecked = chk.Checked;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
         }
 
         internal bool CheckValidMaterial(bool IsCheckList = false)
