@@ -138,7 +138,7 @@ namespace HIS.Desktop.Plugins.ExpMestOtherExport
                                 MediMateTypeADO ado = new MediMateTypeADO();
                                 ado.SERVICE_ID = item.SERVICE_ID ?? 0;
                                 ado.MEDI_MATE_TYPE_CODE = item.MEDICINE_TYPE_CODE;
-                               // ado.CONCENTRA = item.CONCENTRA;
+                                //ado.CONCENTRA = item.CONCENTRA;
                                 ado.MEDI_MATE_TYPE_NAME = item.MEDICINE_TYPE_NAME;
                                 ado.SERVICE_UNIT_NAME = item.SERVICE_UNIT_NAME;
                                 ado.MEDI_MATE_TYPE_ID = item.MEDICINE_TYPE_ID ?? 0;
