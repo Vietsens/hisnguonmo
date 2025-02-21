@@ -486,7 +486,7 @@
   </data>
   <data name="UCExpMestOtherExport.gridColumn_ExpMestDetail_MediMateTypeName.Caption" xml:space="preserve">
     <value>Name</value>
-    <comment>Tên</comment>
+    <comment>Tên (Hàm lượng)</comment>
   </data>
   <data name="UCExpMestOtherExport.gridColumn_ExpMestDetail_NationalName.Caption" xml:space="preserve">
     <value>Country of Origin</value>
