@@ -119,11 +119,20 @@ namespace HIS.Desktop.Plugins.EmpUser
             updateDTOEmployee.TDL_USERNAME = txtUserName.Text.Trim();
             updateDTOEmployee.DIPLOMA = txtDiploma.Text.Trim();
 
+            if (txtVCong.Text.Length > 0)// thêm chỗ này
+            {
+                updateDTOEmployee.VCONG_LOGINNAME = txtVCong.Text.Trim();
+            }
+            else
+            {     
+                updateDTOEmployee.VCONG_LOGINNAME = null;
+            }
+
             if (txtEmail.Text.Length > 0)
                 updateDTOEmployee.TDL_EMAIL = txtEmail.Text.Trim();
             else
                 updateDTOEmployee.TDL_EMAIL = null;
-
+                   
             if (txtMobile.Text.Length > 0)
                 updateDTOEmployee.TDL_MOBILE = txtMobile.Text.Trim();
             else
@@ -132,7 +141,7 @@ namespace HIS.Desktop.Plugins.EmpUser
             if (dtDOB.EditValue != null && dtDOB.DateTime != DateTime.MinValue)
             {
                 updateDTOEmployee.DOB = Inventec.Common.TypeConvert.Parse.ToInt64(dtDOB.DateTime.ToString("yyyyMMdd") + "000000");
-            }
+            }   
             else
             {
                 updateDTOEmployee.DOB = null;
@@ -658,6 +667,7 @@ namespace HIS.Desktop.Plugins.EmpUser
                 {
                     HIS_EMPLOYEE emp = new HIS_EMPLOYEE();
                     //set edit layout
+                    txtVCong.Text = currentDataEmp.VCONG_LOGINNAME;
                     txtLoginName.Text = currentDataEmp.LOGINNAME;
                     txtUserName.Text = currentDataEmp.TDL_USERNAME;
                     txtMobile.Text = currentDataEmp.TDL_MOBILE;
@@ -680,7 +690,7 @@ namespace HIS.Desktop.Plugins.EmpUser
                         checkDoctor.Checked = false;
                     if (currentDataEmp.IS_SERVICE_REQ_EXAM != null && currentDataEmp.IS_SERVICE_REQ_EXAM == 1)
                     {
-                        chkWorkOnly.Checked = true;
+                        chkWorkOnly.Checked = true;   
                     }
                     else
                         chkWorkOnly.Checked = false;
@@ -794,6 +804,7 @@ namespace HIS.Desktop.Plugins.EmpUser
                         formatFrm.EditValue = null;
                     }
                 }
+                txtVCong.Text = "";
                 txtLoginName.Text = "";
                 txtUserName.Text = "";
                 txtEmail.Text = "";
@@ -863,6 +874,7 @@ namespace HIS.Desktop.Plugins.EmpUser
                 ValidationEmail(txtEmail);
                 ValidationGreatThanZeroControl(this.spinMaxBhytServiceReqPerDay);
                 ValidationGreatThanZeroControl(this.spnMaxServiceReqPerDay);
+                validMalength(this.txtVCong, 50);
                 validMalength(this.txtERXName, 100);
                 validMalength(this.txtERXName, 100);
                 validMalength(this.txtERXPassword, 400);

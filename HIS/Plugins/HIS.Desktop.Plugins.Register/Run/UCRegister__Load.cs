@@ -991,7 +991,7 @@ namespace HIS.Desktop.Plugins.Register.Run
 
                     }
                     mainHeinProcessor.SetResultDataADOBhyt(ucHeinBHYT, this.ResultDataADO);
-                    if (this.ResultDataADO != null)
+                    if (this.ResultDataADO != null && this.ResultDataADO.ResultHistoryLDO != null)
                     {
                         //Trường hợp tìm kiếm BN theo qrocde & BN có số thẻ bhyt mới, cần tìm kiếm BN theo số thẻ mới này & người dùng chọn lấy thông tin thẻ mới => tìm kiếm Bn theo số thẻ mới
                         if (!String.IsNullOrEmpty(this._HeinCardData.HeinCardNumber))
