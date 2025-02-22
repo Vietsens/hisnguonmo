@@ -1,3 +1,11 @@
+### Release 2.350.0
+* Bổ sung thông tin nhập khẩu thầu
+* Tiếp đón sử dụng QR CCCD và QR BHYT trên cùng 1 điều kiện lọc
+* Bổ sung thông tin thuốc tại màn hình xuất khác
+* Tích hợp hệ thống vcong.vn
+* Tự động tách địa chỉ 3 cấp khi tiếp đón bệnh nhân mới trên kios sử dụng QR CCCD hoặc QR thẻ BHYT
+* Sửa danh sách hình thức thanh toán tại màn hình tạm ứng dịch vụ
+
 ### Release 2.349.0
 * Bổ sung option theo đối tượng bệnh nhân tính tiền công khám theo công thức của BHYT
 * Bổ sung cấu hình cảnh báo bệnh nhân trái tuyến cần thu tiền khám
