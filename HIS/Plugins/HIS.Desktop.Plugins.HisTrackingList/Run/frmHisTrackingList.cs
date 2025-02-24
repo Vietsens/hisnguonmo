@@ -821,12 +821,12 @@ namespace HIS.Desktop.Plugins.HisTrackingList.Run
                             }
                             #endregion
                         }
-                        else if (hi.Column.FieldName != "DX$CheckboxSelectorColumn") //tên của cột check chọn
+                        else if (hi.Column.FieldName == "DX$CheckboxSelectorColumn") //tên của cột check chọn
                         {
                             #region Emr document
                             //Inventec.Common.Logging.LogSystem.Info("lcgEmrDocument.Expanded: " + lcgEmrDocument.Expanded);
                             if (lcgEmrDocument.Expanded)
-                            {
+                            {    
                                 var row = (V_HIS_TRACKING)gridViewTrackings.GetRow(hi.RowHandle);
                                 if (row != null)
                                 {
@@ -1660,10 +1660,11 @@ namespace HIS.Desktop.Plugins.HisTrackingList.Run
                     }
 
                     btnTemplate.DropDownControl = menuTemplate;
-                    if (ucViewEmrDocument1 != null)
-                    {
                         ucViewEmrDocument1.SetMenu(menuTemplate);
-                    }
+                    //if (ucViewEmrDocument1 != null)
+                    //{
+                    //    ucViewEmrDocument1.SetMenu(menuTemplate);
+                    //}
                     
                 }
             }
