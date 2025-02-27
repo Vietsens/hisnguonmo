@@ -963,7 +963,7 @@ namespace HIS.Desktop.Plugins.Register.Run
                             if ((strValue.Trim().Length > 12 && strValue.Trim().Contains('|')) || (strValue.Trim().Length == 12 && !string.IsNullOrEmpty(txtPatientName.Text) && (!string.IsNullOrEmpty(txtPatientDob.Text) || dtPatientDob.EditValue != null)) || (strValue.Trim().Length == 9 || strValue.Trim().Length == 12))
                             {
                                 isReadQrCccdData = true;
-                                WaitingManager.Hide();
+                                WaitingManager.Show();
                                 this.ProcessSearchByCode(strValue);
                                 e.Handled = true;
                                 if (strValue.Trim().Length > 12 && strValue.Trim().Contains('|'))
