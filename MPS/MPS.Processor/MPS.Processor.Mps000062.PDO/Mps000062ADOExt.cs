@@ -42,6 +42,8 @@ namespace MPS.Processor.Mps000062.PDO
         public short Num_Order { get; set; }
         public long? MIXED_INFUSION { get; set; }
         public string ACTIVE_INGR_BHYT_CODE { get; set; }
+        public string ACTIVE_INGR_BHYT_NAME { get; set; }
+        public string CONCENTRA { get; set; }
     }
 
     public class SingleKeyTracking
@@ -739,6 +741,10 @@ namespace MPS.Processor.Mps000062.PDO
         public string MEDICINE_LINE_NAME { get; set; }
         public string MEDICINE_GROUP_NAME { get; set; }
         public string DOSAGE_FORM_NAME { get; set; }
+        public long? MEDICINE_GROUP_ID { get; set; }
+        public string ACTIVE_INGR_BHYT_CODE { get; set; }
+        public string ACTIVE_INGR_BHYT_NAME { get; set; }
+        public string CONCENTRA { get; set; }
         public ServiceReqMetyADO() { }
         public ServiceReqMetyADO(HIS_SERVICE_REQ_METY data, long trackingId, List<HIS_SERVICE_REQ> ServiceReqs)
         {
