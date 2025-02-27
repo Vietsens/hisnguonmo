@@ -158,16 +158,6 @@ namespace HIS.Desktop.Plugins.RegisterExamKiosk.Popup.RegisterExamKiosk
                 getServices();
                 SetDefaultControl();
                 MapHisCardPatientSdo();
-
-                if (hisCardPatientSdo != null && !string.IsNullOrEmpty(hisCardPatientSdo.HeinAddress) && string.IsNullOrEmpty(hisCardPatientSdo.Address))
-                    hisCardPatientSdo.Address = hisCardPatientSdo.HeinAddress;
-                Inventec.Common.Logging.LogSystem.Debug("hisCardPatientSdo__2_" + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => hisCardPatientSdo), hisCardPatientSdo));
-                if (hisCardPatientSdo.CareerId == null)
-                {
-                    var career = BackendDataWorker.Get<HIS_CAREER>().FirstOrDefault(o => o.CAREER_CODE == HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(HisConfigCFG.HIS_CAREER_CODE__BASE));
-                    if (career != null)
-                        hisCardPatientSdo.CareerId = career.ID;
-                }
                 loadInfoPatient(hisCardPatientSdo);
                 getRoomExam();
                 if (this.listExecuteRoom != null && this.listExecuteRoom.Count > 0)
@@ -237,7 +227,26 @@ namespace HIS.Desktop.Plugins.RegisterExamKiosk.Popup.RegisterExamKiosk
                     this.hisCardPatientSdo.MpsNationalCode = patientForKioskSDO.MPS_NATIONAL_CODE;
                     this.hisCardPatientSdo.HtCommuneCode = patientForKioskSDO.HT_COMMUNE_CODE;
                     this.hisCardPatientSdo.HtDistrictCode = patientForKioskSDO.HT_DISTRICT_CODE;
-                    this.hisCardPatientSdo.HtProvinceCode = patientForKioskSDO.HT_PROVINCE_CODE;
+                    this.hisCardPatientSdo.HtProvinceCode = patientForKioskSDO.HT_PROVINCE_CODE; 
+                    this.hisCardPatientSdo.EthnicCode = patientForKioskSDO.ETHNIC_CODE;
+                }
+
+                if (hisCardPatientSdo != null && !string.IsNullOrEmpty(hisCardPatientSdo.HeinAddress) && string.IsNullOrEmpty(hisCardPatientSdo.Address))
+                    hisCardPatientSdo.Address = hisCardPatientSdo.HeinAddress;
+                Inventec.Common.Logging.LogSystem.Debug("hisCardPatientSdo__2_" + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => hisCardPatientSdo), hisCardPatientSdo));
+                if (hisCardPatientSdo.CareerId == null)
+                {
+                    var career = BackendDataWorker.Get<HIS_CAREER>().FirstOrDefault(o => o.CAREER_CODE == HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(HisConfigCFG.HIS_CAREER_CODE__BASE));
+                    if (career != null)
+                        hisCardPatientSdo.CareerId = career.ID;
+                }
+                if (hisCardPatientSdo != null && (string.IsNullOrEmpty(hisCardPatientSdo.EthnicName) || string.IsNullOrEmpty(hisCardPatientSdo.EthnicCode)))
+                {
+                    var EthenicKey = BackendDataWorker.Get<SDA_ETHNIC>().FirstOrDefault(o => o.ETHNIC_CODE == HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(HisConfigCFG.ETHNIC_CODE__BASE) && o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE);
+                    if (EthenicKey != null) {
+                        hisCardPatientSdo.EthnicName = EthenicKey.ETHNIC_NAME;
+                        hisCardPatientSdo.EthnicCode = EthenicKey.ETHNIC_CODE;
+                    }
                 }
             }
             catch (Exception ex)
