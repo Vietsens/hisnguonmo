@@ -90,6 +90,14 @@ namespace HIS.Desktop.Plugins.HisMedicalContractCreate.Run
                 noteValidate.ErrorText = string.Format(Resources.ResourceLanguageManager.NhapQuaMaxlength, "4000");
                 noteValidate.ErrorType = DevExpress.XtraEditors.DXErrorProvider.ErrorType.Warning;
                 dxValidationProviderContract.SetValidationRule(txtNote, noteValidate);
+
+                ControlMaxLengthValidationRule QDThauValidate = new ControlMaxLengthValidationRule();
+                QDThauValidate.editor = txtQDThau;
+                QDThauValidate.maxLength = 50;
+                QDThauValidate.IsRequired = false;
+                QDThauValidate.ErrorText = string.Format(Resources.ResourceLanguageManager.NhapQuaMaxlength, "50");
+                QDThauValidate.ErrorType = DevExpress.XtraEditors.DXErrorProvider.ErrorType.Warning;
+                dxValidationProviderContract.SetValidationRule(txtQDThau, QDThauValidate);
             }
             catch (Exception ex)
             {
@@ -129,6 +137,14 @@ namespace HIS.Desktop.Plugins.HisMedicalContractCreate.Run
                 concentraValidate.ErrorText = string.Format(Resources.ResourceLanguageManager.NhapQuaMaxlength, "4000");
                 concentraValidate.ErrorType = DevExpress.XtraEditors.DXErrorProvider.ErrorType.Warning;
                 dxValidationProviderContract.SetValidationRule(txtConcentra, concentraValidate);
+
+                ControlMaxLengthValidationRule QDThauValidate = new ControlMaxLengthValidationRule();
+                QDThauValidate.editor = txtQDThau;
+                QDThauValidate.maxLength = 50;
+                QDThauValidate.IsRequired = false;
+                QDThauValidate.ErrorText = string.Format(Resources.ResourceLanguageManager.NhapQuaMaxlength, "50");
+                QDThauValidate.ErrorType = DevExpress.XtraEditors.DXErrorProvider.ErrorType.Warning;
+                dxValidationProviderContract.SetValidationRule(txtQDThau, QDThauValidate);
             }
             catch (Exception ex)
             {
