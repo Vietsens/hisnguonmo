@@ -432,15 +432,7 @@ namespace HIS.Desktop.Utilities.RemoteSupport
                     long? fileLogSize = null;
                     long? imgCaptureSize = null;
                     long attFileSize = 0;
-                    if (chkAttackLog.Checked && !String.IsNullOrEmpty(fileLog) && File.Exists(fileLog))
-                    {
-                        FileHolder fileHolder = new FileHolder();
-                        fileHolder.Content = new MemoryStream(File.ReadAllBytes(fileLog));
-                        fileHolder.FileName = "LogSystem.txt";
-                        files.Add(fileHolder);
 
-                        fileLogSize = fileHolder.Content.Length;
-                    }
                     if (chkAttackWImage.Checked)
                     {
                         if (this.imgCaptureMyScreen == null || this.imgCaptureMyScreen.Length == 0)
@@ -458,6 +450,16 @@ namespace HIS.Desktop.Utilities.RemoteSupport
                         }
                     }
 
+                    if (chkAttackLog.Checked && !String.IsNullOrEmpty(fileLog) && File.Exists(fileLog))
+                    {
+                        FileHolder fileHolder = new FileHolder();
+                        fileHolder.Content = new MemoryStream(File.ReadAllBytes(fileLog));
+                        fileHolder.FileName = "LogSystem.txt";
+                        files.Add(fileHolder);
+
+                        fileLogSize = fileHolder.Content.Length;
+                    }
+
                     if(lstAttachFileAdo != null && lstAttachFileAdo.Count > 0)
                     {
                         foreach (var item in lstAttachFileAdo)
@@ -472,6 +474,8 @@ namespace HIS.Desktop.Utilities.RemoteSupport
                     }
                     Inventec.Common.Logging.LogSystem.Debug(string.Format("dung lượng file log: {0}, dung lượng ảnh chụp màn hình: {1}, dung lượng file đính kèm: {2}, địa chỉ FSS: {3}", fileLogSize, imgCaptureSize, attFileSize, HIS.Desktop.LocalStorage.ConfigSystem.ConfigSystems.URI_API_FSS_FOR_CRM));
                     string fileContent = "";
+                    string formatImg = "<img src=\"{0}\">";
+                    string formatFile = "<a href=\"{0}\">{1}</a>";
                     if (files.Count > 0)
                     {
                         var fileResults = Inventec.Fss.Client.FileUpload.UploadFile(GlobalVariables.APPLICATION_CODE, "", files, false, HIS.Desktop.LocalStorage.ConfigSystem.ConfigSystems.URI_API_FSS_FOR_CRM);
@@ -480,16 +484,18 @@ namespace HIS.Desktop.Utilities.RemoteSupport
                         if (fileResults != null && fileResults.Count > 0)
                         {
                             fileContent += "\r\n\r\n";
+                            List<string> imgList = new List<string>() { ".jpg",".jpeg",".png",".gif",".webp"};
                             foreach (var f in fileResults)
                             {
-                                if (f.Url.EndsWith(".txt"))
+                                if(imgList.Exists(o=> f.Url.ToLower().EndsWith(o)))
                                 {
-                                    fileContent += String.Format("{0}{1}", HIS.Desktop.LocalStorage.ConfigSystem.ConfigSystems.URI_API_FSS_FOR_CRM, f.Url.Replace("\\", "/"));
+                                    fileContent += string.Format(formatImg, String.Format("{0}{1}", HIS.Desktop.LocalStorage.ConfigSystem.ConfigSystems.URI_API_FSS_FOR_CRM, f.Url.Replace("\\", "/")));
                                 }
                                 else
                                 {
-                                    fileContent += " ![](" + String.Format("{0}{1}", HIS.Desktop.LocalStorage.ConfigSystem.ConfigSystems.URI_API_FSS_FOR_CRM, f.Url) + ")";
+                                    fileContent += string.Format(formatFile, String.Format("{0}{1}", HIS.Desktop.LocalStorage.ConfigSystem.ConfigSystems.URI_API_FSS_FOR_CRM, f.Url.Replace("\\", "/")), f.OriginalName);
                                 }
+                                fileContent += "\r\n";
                             }
                         }
                         else
@@ -501,7 +507,7 @@ namespace HIS.Desktop.Utilities.RemoteSupport
                             return;
                         }
                     }
-                    remoteSupport.nội_dung = String.Format("{0}{1}", txtDescription.Text, fileContent);
+                    remoteSupport.nội_dung = String.Format("{0}\r\n{1}", txtDescription.Text, fileContent);
                     remoteSupport.tổ_chức_yêu_cầu_id = HisConfigs.Get<string>(CONFIG_KEY__VPLUS_CUSTOMER_INFO);
                     remoteSupport.người_yêu_cầu = currentEmployee.VCONG_LOGINNAME;
                     remoteSupport.anydesk = !string.IsNullOrEmpty(yourAnydeskID) ? yourAnydeskID : "…";
