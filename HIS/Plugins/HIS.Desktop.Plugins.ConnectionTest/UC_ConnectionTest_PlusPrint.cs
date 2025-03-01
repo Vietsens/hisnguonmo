@@ -1841,7 +1841,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                         PrintData.ShowPrintLog = (MPS.ProcessorBase.PrintConfig.DelegateShowPrintLog)CallModuleShowPrintLog;
                         PrintData.eventPrint = CallApiCountPrint;
                         result = MPS.MpsPrinter.Run(PrintData);
-                    }
+                    }RIG
                     #endregion
                 }
             }
@@ -1859,6 +1859,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                 {
                     success = true;
                     rowSample.PRINT_COUNT = rs.PRINT_COUNT;
+                    this.gridControlSample.RefreshDataSource();
                 }
                 WaitingManager.Hide();
             }

@@ -21,6 +21,7 @@ using System.Diagnostics;
 using System.IO;
 using System.IO.Ports;
 using System.Runtime.InteropServices;
+using System.ServiceModel;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -72,6 +73,7 @@ namespace HIS.Desktop.Common.BankQrCode
         private bool IsDisposePort = false;
         private bool IsFirstConnection = false;
         public static bool IsConnectDevice = false;
+        private bool? ReconnectService = null;
         IPOS.WCFService.Client.IPOSClientManager clienManager = null;
         public PosProcessor(string portName, DelegateSendMessage delegateSend)
         {
@@ -138,6 +140,7 @@ namespace HIS.Desktop.Common.BankQrCode
                 {
                     if (!CheckDataReceived && delegateSend != null && !IsDisposePort)
                     {
+                        IsConnectDevice = false;
                         delegateSend(CheckDataReceived, MessageError = "Không nhận được phản hồi từ thiết bị IPOS. Vui lòng khởi động và kết nối lại tới thiết bị.");
                     }
                 });
@@ -168,6 +171,7 @@ namespace HIS.Desktop.Common.BankQrCode
                     {
                         Inventec.Common.Logging.LogSystem.Info("Read Result");
                         var key = this.ReadChar();//Kết nối đúng thiết bị sẽ không nhảy vào Exception
+                        IsConnectDevice = true;
                         Inventec.Common.Logging.LogSystem.Info("Result valid, ConnectPort Success");
                         return true;
                     }
@@ -188,6 +192,7 @@ namespace HIS.Desktop.Common.BankQrCode
             }
             Inventec.Common.Logging.LogSystem.Info("ConnectPort Fail");
             CheckDataReceived = true;
+            IsConnectDevice = false;
             messageError = string.Format("Kết nối tới thiết bị IPOS thất bại. Vui lòng kiểm tra lại kết nối cổng {0}", this.PortName);
             IsFirstConnection = false;
             DisposePort();
@@ -215,6 +220,7 @@ namespace HIS.Desktop.Common.BankQrCode
             Inventec.Common.Logging.LogSystem.Info("ConnectPort Fail");
             return false;
         }
+
         public void SendDevice(string dataSend)
         {
             try
@@ -222,13 +228,38 @@ namespace HIS.Desktop.Common.BankQrCode
                 MessageError = null;
                 if (IsConnectDevice)
                 {
-                    if (!string.IsNullOrEmpty(dataSend))
+                    try
                     {
-                        clienManager.PlayAudio(dataSend == PosStatic.PAYMENT_SUCCESSS ? (byte)1 : (byte)0);
-                        dataSend = dataSend == PosStatic.PAYMENT_SUCCESSS ? null : dataSend;
+                        if (!string.IsNullOrEmpty(dataSend))
+                        {
+                            try
+                            {
+                                clienManager.PlayAudio(dataSend == PosStatic.PAYMENT_SUCCESSS ? (byte)1 : (byte)0);
+                                dataSend = dataSend == PosStatic.PAYMENT_SUCCESSS ? null : dataSend;
+                            }
+                            catch (Exception ex)
+                            {
+                                Inventec.Common.Logging.LogSystem.Error("Phiên bản hiện tại không có môi trường phù hợp hoặc file mpos phiên bản thấp");
+                            }
+                        }
+                        var dt = clienManager.GenQr(dataSend);
+                        delegateSend(dt.Success, MessageError = dt.MessageError);
                     }
-                    var dt = clienManager.GenQr(dataSend);
-                    delegateSend(dt.Success, MessageError = dt.MessageError);
+                    catch (CommunicationObjectFaultedException ex)
+                    {
+                        if(ReconnectService.HasValue && ReconnectService.Value)
+                        {
+                            ReconnectService = null;
+                            IsConnectDevice = false;
+                            delegateSend(false, MessageError = "Không nhận được phản hồi từ thiết bị IPOS. Vui lòng khởi động và kết nối lại tới thiết bị.");
+                            return;
+                        }    
+                        clienManager = new IPOS.WCFService.Client.IPOSClientManager();
+                        clienManager.SetupDevice();
+                        SendDevice(dataSend);
+                        ReconnectService = true;
+                        Inventec.Common.Logging.LogSystem.Error("Khởi tạo lại service để kết nối");
+                    }
                 }
             }
             catch (Exception ex)
@@ -292,6 +323,7 @@ namespace HIS.Desktop.Common.BankQrCode
                 if (this.IsOpen)
                 {
                     this.IsDisposePort = true;
+                    IsConnectDevice = false;
                     this.Send(null);
                     this.Close();
                     this.Dispose();
@@ -369,6 +401,10 @@ namespace HIS.Desktop.Common.BankQrCode
             }
             return valid;
         }
+        internal bool GetStateConnectDevice()
+        {
+            return IsConnectDevice;
+        }
     }
 
     public static class PosStatic
@@ -434,6 +470,6 @@ namespace HIS.Desktop.Common.BankQrCode
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
-        public static bool IsOpenPos() { return IsConnected; }
+        public static bool IsOpenPos() { return Pos != null ? Pos.GetStateConnectDevice() : false; }
     }
 }

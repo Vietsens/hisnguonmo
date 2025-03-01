@@ -48,6 +48,9 @@ namespace HIS.Desktop.Plugins.RegisterExamKiosk.Popup.RegisterExamKiosk
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmRegisterExamKiosk));
             this.layoutControl1 = new DevExpress.XtraLayout.LayoutControl();
             this.layoutControl3 = new DevExpress.XtraLayout.LayoutControl();
+            this.cboEthenic = new DevExpress.XtraEditors.GridLookUpEdit();
+            this.gridView1 = new DevExpress.XtraGrid.Views.Grid.GridView();
+            this.label15 = new System.Windows.Forms.Label();
             this.cboNational = new DevExpress.XtraEditors.GridLookUpEdit();
             this.gridLookUpEdit2View = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.label14 = new System.Windows.Forms.Label();
@@ -117,6 +120,8 @@ namespace HIS.Desktop.Plugins.RegisterExamKiosk.Popup.RegisterExamKiosk
             this.layoutControlItem39 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem40 = new DevExpress.XtraLayout.LayoutControlItem();
             this.emptySpaceItem3 = new DevExpress.XtraLayout.EmptySpaceItem();
+            this.layoutControlItem41 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.layoutControlItem42 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControl2 = new DevExpress.XtraLayout.LayoutControl();
             this.btnTamthu = new System.Windows.Forms.Button();
             this.btnThanhtoan = new System.Windows.Forms.Button();
@@ -140,6 +145,8 @@ namespace HIS.Desktop.Plugins.RegisterExamKiosk.Popup.RegisterExamKiosk
             this.layoutControl1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl3)).BeginInit();
             this.layoutControl3.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.cboEthenic.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gridView1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboNational.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridLookUpEdit2View)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboCareer.Properties)).BeginInit();
@@ -183,6 +190,8 @@ namespace HIS.Desktop.Plugins.RegisterExamKiosk.Popup.RegisterExamKiosk
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem39)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem40)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem3)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem41)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem42)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl2)).BeginInit();
             this.layoutControl2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.Root)).BeginInit();
@@ -212,6 +221,8 @@ namespace HIS.Desktop.Plugins.RegisterExamKiosk.Popup.RegisterExamKiosk
             // 
             // layoutControl3
             // 
+            this.layoutControl3.Controls.Add(this.cboEthenic);
+            this.layoutControl3.Controls.Add(this.label15);
             this.layoutControl3.Controls.Add(this.cboNational);
             this.layoutControl3.Controls.Add(this.label14);
             this.layoutControl3.Controls.Add(this.label12);
@@ -248,9 +259,41 @@ namespace HIS.Desktop.Plugins.RegisterExamKiosk.Popup.RegisterExamKiosk
             this.layoutControl3.TabIndex = 5;
             this.layoutControl3.Text = "layoutControl3";
             // 
+            // cboEthenic
+            // 
+            this.cboEthenic.Location = new System.Drawing.Point(766, 157);
+            this.cboEthenic.Name = "cboEthenic";
+            this.cboEthenic.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.False;
+            this.cboEthenic.Properties.Appearance.Font = new System.Drawing.Font("Tahoma", 12F);
+            this.cboEthenic.Properties.Appearance.Options.UseFont = true;
+            this.cboEthenic.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
+            this.cboEthenic.Properties.NullText = "";
+            this.cboEthenic.Properties.View = this.gridView1;
+            this.cboEthenic.Size = new System.Drawing.Size(239, 26);
+            this.cboEthenic.StyleController = this.layoutControl3;
+            this.cboEthenic.TabIndex = 34;
+            // 
+            // gridView1
+            // 
+            this.gridView1.FocusRectStyle = DevExpress.XtraGrid.Views.Grid.DrawFocusRectStyle.RowFocus;
+            this.gridView1.Name = "gridView1";
+            this.gridView1.OptionsSelection.EnableAppearanceFocusedCell = false;
+            this.gridView1.OptionsView.ShowGroupPanel = false;
+            // 
+            // label15
+            // 
+            this.label15.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label15.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(64)))), ((int)(((byte)(0)))));
+            this.label15.Location = new System.Drawing.Point(665, 157);
+            this.label15.Name = "label15";
+            this.label15.Size = new System.Drawing.Size(97, 26);
+            this.label15.TabIndex = 33;
+            this.label15.Text = "Dân tộc:";
+            this.label15.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
             // cboNational
             // 
-            this.cboNational.EditValue = "";
             this.cboNational.Location = new System.Drawing.Point(438, 157);
             this.cboNational.Name = "cboNational";
             this.cboNational.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.False;
@@ -673,7 +716,9 @@ namespace HIS.Desktop.Plugins.RegisterExamKiosk.Popup.RegisterExamKiosk
             this.layoutControlItem38,
             this.layoutControlItem39,
             this.layoutControlItem40,
-            this.emptySpaceItem3});
+            this.emptySpaceItem3,
+            this.layoutControlItem41,
+            this.layoutControlItem42});
             this.layoutControlGroup2.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup2.Name = "Root";
             this.layoutControlGroup2.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
@@ -966,10 +1011,28 @@ namespace HIS.Desktop.Plugins.RegisterExamKiosk.Popup.RegisterExamKiosk
             // emptySpaceItem3
             // 
             this.emptySpaceItem3.AllowHotTrack = false;
-            this.emptySpaceItem3.Location = new System.Drawing.Point(663, 155);
+            this.emptySpaceItem3.Location = new System.Drawing.Point(1007, 155);
             this.emptySpaceItem3.Name = "emptySpaceItem3";
-            this.emptySpaceItem3.Size = new System.Drawing.Size(703, 30);
+            this.emptySpaceItem3.Size = new System.Drawing.Size(359, 30);
             this.emptySpaceItem3.TextSize = new System.Drawing.Size(0, 0);
+            // 
+            // layoutControlItem41
+            // 
+            this.layoutControlItem41.Control = this.label15;
+            this.layoutControlItem41.Location = new System.Drawing.Point(663, 155);
+            this.layoutControlItem41.Name = "layoutControlItem41";
+            this.layoutControlItem41.Size = new System.Drawing.Size(101, 30);
+            this.layoutControlItem41.TextSize = new System.Drawing.Size(0, 0);
+            this.layoutControlItem41.TextVisible = false;
+            // 
+            // layoutControlItem42
+            // 
+            this.layoutControlItem42.Control = this.cboEthenic;
+            this.layoutControlItem42.Location = new System.Drawing.Point(764, 155);
+            this.layoutControlItem42.Name = "layoutControlItem42";
+            this.layoutControlItem42.Size = new System.Drawing.Size(243, 30);
+            this.layoutControlItem42.TextSize = new System.Drawing.Size(0, 0);
+            this.layoutControlItem42.TextVisible = false;
             // 
             // layoutControl2
             // 
@@ -1237,6 +1300,8 @@ namespace HIS.Desktop.Plugins.RegisterExamKiosk.Popup.RegisterExamKiosk
             this.layoutControl1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl3)).EndInit();
             this.layoutControl3.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.cboEthenic.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gridView1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboNational.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridLookUpEdit2View)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboCareer.Properties)).EndInit();
@@ -1280,6 +1345,8 @@ namespace HIS.Desktop.Plugins.RegisterExamKiosk.Popup.RegisterExamKiosk
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem39)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem40)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem3)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem41)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem42)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl2)).EndInit();
             this.layoutControl2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.Root)).EndInit();
@@ -1390,5 +1457,10 @@ namespace HIS.Desktop.Plugins.RegisterExamKiosk.Popup.RegisterExamKiosk
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem39;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem40;
         private DevExpress.XtraLayout.EmptySpaceItem emptySpaceItem3;
+        private DevExpress.XtraEditors.GridLookUpEdit cboEthenic;
+        private DevExpress.XtraGrid.Views.Grid.GridView gridView1;
+        private System.Windows.Forms.Label label15;
+        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem41;
+        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem42;
     }
 }
