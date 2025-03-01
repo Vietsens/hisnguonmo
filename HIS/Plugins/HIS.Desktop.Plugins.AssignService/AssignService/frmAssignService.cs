@@ -2375,7 +2375,10 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
 								//{
 								sereServADO.TDL_EXECUTE_ROOM_ID = executeRoomId;
 								//}
-							}
+								sereServADO.SERVICE_CONDITION_ID = null;
+								sereServADO.SERVICE_CONDITION_NAME = null;
+
+                            }
 							this.VerifyWarningOverCeiling();
 							this.ValidServiceDetailProcessing(sereServADO);
 							this.ProcessNoDifferenceHeinServicePrice(sereServADO);
@@ -2406,7 +2409,22 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
 								try
 								{
 									var dataCondition = BranchDataWorker.ServicePatyWithListPatientType(sereServADO.SERVICE_ID, new List<long> { (sereServADO.PATIENT_TYPE_ID > 0 ? sereServADO.PATIENT_TYPE_ID : this.currentHisPatientTypeAlter != null ? this.currentHisPatientTypeAlter.PATIENT_TYPE_ID : 0) });
-									if (dataCondition != null && dataCondition.Count > 0)
+
+                                    long instructionTime = this.intructionTimeSelecteds != null && this.intructionTimeSelecteds.Count > 0 ? this.intructionTimeSelecteds.FirstOrDefault() : 0;
+									List<V_HIS_SERVICE_PATY> dataSource = new List<V_HIS_SERVICE_PATY>(); 
+									long? intructionNumByType = null;
+                                    List<HIS_SERE_SERV> sameServiceType = this.sereServWithTreatment != null ? this.sereServWithTreatment.Where(o => o.TDL_SERVICE_TYPE_ID == sereServADO.SERVICE_TYPE_ID).ToList() : null;
+                                    List<HIS_SERE_SERV> sameService = this.sereServWithTreatment != null ? this.sereServWithTreatment.Where(o => o.SERVICE_ID == sereServADO.SERVICE_ID).ToList() : null;
+                                    intructionNumByType = sameServiceType != null ? (long)sameServiceType.Count() + 1 : 1;
+                                    var intructionNum = sameService != null ? (long)sameService.Count() + 1 : 1;
+                                    foreach (var con in dataCondition)
+                                    {
+                                        var dt = MOS.ServicePaty.ServicePatyUtil.GetApplied(new List<V_HIS_SERVICE_PATY>() { con }, sereServADO.TDL_EXECUTE_BRANCH_ID, sereServADO.TDL_EXECUTE_ROOM_ID, this.requestRoom.ID, this.requestRoom.DEPARTMENT_ID, instructionTime, this.currentHisTreatment.IN_TIME, sereServADO.SERVICE_ID, sereServADO.PATIENT_TYPE_ID, intructionNum, intructionNumByType, sereServADO.PackagePriceId, con.SERVICE_CONDITION_ID, this.currentHisTreatment.TDL_PATIENT_CLASSIFY_ID, null);
+                                        if (dt != null)
+                                            dataSource.Add(dt);
+                                    }
+									dataCondition = dataSource;
+                                    if (dataCondition != null && dataCondition.Count > 0)
 									{
 										dataCondition = dataCondition.Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE && o.SERVICE_CONDITION_ID.HasValue && o.SERVICE_CONDITION_ID > 0 && o.SERVICE_ID == sereServADO.SERVICE_ID).ToList();
 										if (dataCondition != null && dataCondition.Count > 0)
@@ -8369,11 +8387,23 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
 						ButtonEdit editor = sender as ButtonEdit;
 						Rectangle buttonPosition = new Rectangle(editor.Bounds.X, editor.Bounds.Y, editor.Bounds.Width, editor.Bounds.Height);
 						popupControlContainerCondition.ShowPopup(new Point(buttonPosition.X + 532, buttonPosition.Bottom + 160));
-
-						var dataCondition = BranchDataWorker.ServicePatyWithListPatientType(this.currentRowSereServADO.SERVICE_ID, new List<long> { (this.currentRowSereServADO.PATIENT_TYPE_ID > 0 ? this.currentRowSereServADO.PATIENT_TYPE_ID : this.currentHisPatientTypeAlter.PATIENT_TYPE_ID) });
+                        long instructionTime = this.intructionTimeSelecteds != null && this.intructionTimeSelecteds.Count > 0 ? this.intructionTimeSelecteds.FirstOrDefault() : 0;
+                        var dataCondition = BranchDataWorker.ServicePatyWithListPatientType(this.currentRowSereServADO.SERVICE_ID, new List<long> { (this.currentRowSereServADO.PATIENT_TYPE_ID > 0 ? this.currentRowSereServADO.PATIENT_TYPE_ID : this.currentHisPatientTypeAlter.PATIENT_TYPE_ID) });
 						if (dataCondition != null && dataCondition.Count > 0)
 						{
-							dataCondition = dataCondition.Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE && o.SERVICE_CONDITION_ID.HasValue && o.SERVICE_CONDITION_ID > 0).ToList();
+							List<V_HIS_SERVICE_PATY> dataSource = new List<V_HIS_SERVICE_PATY>();
+                            long? intructionNumByType = null;
+                            List<HIS_SERE_SERV> sameServiceType = this.sereServWithTreatment != null ? this.sereServWithTreatment.Where(o => o.TDL_SERVICE_TYPE_ID == currentRowSereServADO.SERVICE_TYPE_ID).ToList() : null;
+                            List<HIS_SERE_SERV> sameService = this.sereServWithTreatment != null ? this.sereServWithTreatment.Where(o => o.SERVICE_ID == currentRowSereServADO.SERVICE_ID).ToList() : null;
+                            intructionNumByType = sameServiceType != null ? (long)sameServiceType.Count() + 1 : 1;
+                            var intructionNum = sameService != null ? (long)sameService.Count() + 1 : 1;
+                            foreach (var item in dataCondition)
+							{
+                                var dt = MOS.ServicePaty.ServicePatyUtil.GetApplied(new List<V_HIS_SERVICE_PATY>() { item }, currentRowSereServADO.TDL_EXECUTE_BRANCH_ID, currentRowSereServADO.TDL_EXECUTE_ROOM_ID, this.requestRoom.ID, this.requestRoom.DEPARTMENT_ID, instructionTime, this.currentHisTreatment.IN_TIME, currentRowSereServADO.SERVICE_ID, currentRowSereServADO.PATIENT_TYPE_ID, intructionNum, intructionNumByType, currentRowSereServADO.PackagePriceId, item.SERVICE_CONDITION_ID, this.currentHisTreatment.TDL_PATIENT_CLASSIFY_ID, null);
+								if (dt != null)
+									dataSource.Add(dt);
+                            }
+                            dataCondition = dataSource.Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE && o.SERVICE_CONDITION_ID.HasValue && o.SERVICE_CONDITION_ID > 0).ToList();
 							if (dataCondition != null && dataCondition.Count > 0)
 							{
 								List<V_HIS_SERVICE_PATY> dataConditionTmps = new List<V_HIS_SERVICE_PATY>();
