@@ -149,6 +149,8 @@ namespace HIS.Desktop.Plugins.RegisterExamKiosk.Popup.RegisterExamKiosk
                 LoadPatientype();
                 LoadDataGridLookUpEdit(cboCareer, "CAREER_CODE", "Mã", "CAREER_NAME", "Tên", "ID", BackendDataWorker.Get<HIS_CAREER>().Where(o => o.IS_ACTIVE == 1).ToList());
                 LoadDataGridLookUpEdit(cboNational, "NATIONAL_CODE", "Mã", "NATIONAL_NAME", "Tên", "NATIONAL_NAME", BackendDataWorker.Get<SDA_NATIONAL>().Where(o => o.IS_ACTIVE == 1).ToList());
+
+                LoadDataGridLookUpEdit(cboEthenic, "ETHNIC_CODE", "Mã", "ETHNIC_NAME", "Tên", "ETHNIC_CODE", BackendDataWorker.Get<SDA_ETHNIC>().Where(o => o.IS_ACTIVE == 1).ToList());
                 WaitingManager.Show();
                 LoadVisiblePrimaryPatientType();
                 LoadVisibleButton();
@@ -650,6 +652,18 @@ namespace HIS.Desktop.Plugins.RegisterExamKiosk.Popup.RegisterExamKiosk
                         if (nationalKey != null)
                             cboNational.EditValue = nationalKey.NATIONAL_NAME;
                     }
+                    if (!string.IsNullOrEmpty(data.EthnicName))
+                    {
+                        var ethnic = BackendDataWorker.Get<SDA_ETHNIC>().FirstOrDefault(o => o.IS_ACTIVE == 1 && o.ETHNIC_NAME == data.EthnicName);
+                        cboEthenic.EditValue = ethnic != null ? data.EthnicCode : null;
+                    }
+
+                    if (cboEthenic.EditValue == null || string.IsNullOrEmpty(cboEthenic.EditValue.ToString()))
+                    {
+                        var ethnicKey = BackendDataWorker.Get<SDA_ETHNIC>().FirstOrDefault(o => o.ETHNIC_CODE == HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(HisConfigCFG.ETHNIC_CODE__BASE));
+                        if (ethnicKey != null)
+                            cboEthenic.EditValue = ethnicKey.ETHNIC_CODE;
+                    }
                 }
             }
             catch (Exception ex)
@@ -767,6 +781,12 @@ namespace HIS.Desktop.Plugins.RegisterExamKiosk.Popup.RegisterExamKiosk
                 var nal = BackendDataWorker.Get<SDA_NATIONAL>().FirstOrDefault(o => o.NATIONAL_NAME == cboNational.EditValue.ToString());
                 hisCardPatientSdo.NationalCode = nal != null ? nal.NATIONAL_CODE : "";
                 hisCardPatientSdo.MpsNationalCode = nal != null ? nal.MPS_NATIONAL_CODE : "";
+                if (cboEthenic.EditValue != null)
+                {
+                    hisCardPatientSdo.EthnicCode = cboEthenic.EditValue.ToString();
+                    var eth = BackendDataWorker.Get<SDA_ETHNIC>().FirstOrDefault(o => o.ETHNIC_CODE == cboEthenic.EditValue.ToString());
+                    hisCardPatientSdo.EthnicName = eth != null ? eth.ETHNIC_NAME : "";
+                }
                 PrimaryTypeId = -1;
                 if (HisConfigCFG.PrimaryPatientType == 2 && radioGroup1.SelectedIndex == -1)
                 {
