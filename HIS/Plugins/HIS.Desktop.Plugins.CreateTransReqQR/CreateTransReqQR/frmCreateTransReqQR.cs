@@ -2287,7 +2287,8 @@ namespace HIS.Desktop.Plugins.CreateTransReqQR.CreateTransReqQR
                 {
                     if ((IsConnectOld && !IsSuccess) || !IsConnectOld)
                     {
-                        XtraMessageBox.Show(Message);
+                        if (!string.IsNullOrEmpty(Message))
+                            XtraMessageBox.Show(Message);
                         IsConnectOld = false;
                     }
                     IsConnectCom = false;
