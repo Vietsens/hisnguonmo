@@ -367,6 +367,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
             this.gridColumn11 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn13 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn14 = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gridColumn33 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.DuyetE = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
             this.DuyetD = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
             this.HuyDuyetE = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
@@ -391,6 +392,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
             this.repositoryHuyDuyetKetQuaE = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
             this.repositoryHuyDuyetKetQuaD = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
             this.repositoryHuyChapNhan = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
+            this.repCountPrint = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
             this.cboUserKQ = new HIS.Desktop.Utilities.Extensions.CustomGridLookUpEdit();
             this.cboUserKQView = new HIS.Desktop.Utilities.Extensions.CustomGridView();
             this.layoutControlGroup1 = new DevExpress.XtraLayout.LayoutControlGroup();
@@ -454,8 +456,6 @@ namespace HIS.Desktop.Plugins.ConnectionTest
             this.timer2 = new System.Windows.Forms.Timer(this.components);
             this.dxErrorProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXErrorProvider(this.components);
             this.imageCollection2 = new DevExpress.Utils.ImageCollection(this.components);
-            this.gridColumn33 = new DevExpress.XtraGrid.Columns.GridColumn();
-            this.repCountPrint = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
             this.layoutControl1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.cboRoom.Properties)).BeginInit();
@@ -611,6 +611,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
             ((System.ComponentModel.ISupportInitialize)(this.repositoryHuyDuyetKetQuaE)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryHuyDuyetKetQuaD)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryHuyChapNhan)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repCountPrint)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboUserKQ.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboUserKQView)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup1)).BeginInit();
@@ -668,7 +669,6 @@ namespace HIS.Desktop.Plugins.ConnectionTest
             ((System.ComponentModel.ISupportInitialize)(this.dxValidationProviderEditorInfo)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxErrorProvider1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.imageCollection2)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.repCountPrint)).BeginInit();
             this.SuspendLayout();
             // 
             // layoutControl1
@@ -2566,6 +2566,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
             this.gridColumn6,
             this.gridColumnBarCode,
             this.gridColumn8,
+            this.gridColumn33,
             this.gridColumn20,
             this.gridColumn27,
             this.gridColumn31,
@@ -2589,8 +2590,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
             this.gridColumn19,
             this.gridColumn11,
             this.gridColumn13,
-            this.gridColumn14,
-            this.gridColumn33});
+            this.gridColumn14});
             this.gridViewSample.GridControl = this.gridControlSample;
             this.gridViewSample.Name = "gridViewSample";
             this.gridViewSample.OptionsBehavior.EditorShowMode = DevExpress.Utils.EditorShowMode.MouseDownFocused;
@@ -2743,7 +2743,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
             this.gridColumn16.Name = "gridColumn16";
             this.gridColumn16.OptionsColumn.ShowCaption = false;
             this.gridColumn16.Visible = true;
-            this.gridColumn16.VisibleIndex = 10;
+            this.gridColumn16.VisibleIndex = 9;
             this.gridColumn16.Width = 20;
             // 
             // gridColumn18
@@ -3043,6 +3043,17 @@ namespace HIS.Desktop.Plugins.ConnectionTest
             this.gridColumn14.VisibleIndex = 37;
             this.gridColumn14.Width = 100;
             // 
+            // gridColumn33
+            // 
+            this.gridColumn33.FieldName = "PRINT_COUNT_IC";
+            this.gridColumn33.Fixed = DevExpress.XtraGrid.Columns.FixedStyle.Left;
+            this.gridColumn33.MaxWidth = 20;
+            this.gridColumn33.Name = "gridColumn33";
+            this.gridColumn33.OptionsColumn.ShowCaption = false;
+            this.gridColumn33.Visible = true;
+            this.gridColumn33.VisibleIndex = 10;
+            this.gridColumn33.Width = 20;
+            // 
             // DuyetE
             // 
             this.DuyetE.AutoHeight = false;
@@ -3245,6 +3256,14 @@ namespace HIS.Desktop.Plugins.ConnectionTest
             this.repositoryHuyChapNhan.Name = "repositoryHuyChapNhan";
             this.repositoryHuyChapNhan.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             this.repositoryHuyChapNhan.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.repositoryHuyChapNhan_ButtonClick);
+            // 
+            // repCountPrint
+            // 
+            this.repCountPrint.AutoHeight = false;
+            this.repCountPrint.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("repCountPrint.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject109, serializableAppearanceObject110, serializableAppearanceObject111, serializableAppearanceObject112, "", null, null, true)});
+            this.repCountPrint.Name = "repCountPrint";
+            this.repCountPrint.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             // 
             // cboUserKQ
             // 
@@ -3993,24 +4012,6 @@ namespace HIS.Desktop.Plugins.ConnectionTest
             // 
             this.imageCollection2.ImageStream = ((DevExpress.Utils.ImageCollectionStreamer)(resources.GetObject("imageCollection2.ImageStream")));
             // 
-            // gridColumn33
-            // 
-            this.gridColumn33.Caption = " ";
-            this.gridColumn33.FieldName = "PRINT_COUNT_IC";
-            this.gridColumn33.Fixed = DevExpress.XtraGrid.Columns.FixedStyle.Left;
-            this.gridColumn33.MaxWidth = 20;
-            this.gridColumn33.Name = "gridColumn33";
-            this.gridColumn33.Visible = true;
-            this.gridColumn33.VisibleIndex = 9;
-            this.gridColumn33.Width = 20;
-            // 
-            // repCountPrint
-            // 
-            this.repCountPrint.AutoHeight = false;
-            this.repCountPrint.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("repCountPrint.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject109, serializableAppearanceObject110, serializableAppearanceObject111, serializableAppearanceObject112, "", null, null, true)});
-            this.repCountPrint.Name = "repCountPrint";
-            // 
             // UC_ConnectionTest
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -4175,6 +4176,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
             ((System.ComponentModel.ISupportInitialize)(this.repositoryHuyDuyetKetQuaE)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryHuyDuyetKetQuaD)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryHuyChapNhan)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repCountPrint)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboUserKQ.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboUserKQView)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup1)).EndInit();
@@ -4232,7 +4234,6 @@ namespace HIS.Desktop.Plugins.ConnectionTest
             ((System.ComponentModel.ISupportInitialize)(this.dxValidationProviderEditorInfo)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxErrorProvider1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.imageCollection2)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.repCountPrint)).EndInit();
             this.ResumeLayout(false);
 
         }
