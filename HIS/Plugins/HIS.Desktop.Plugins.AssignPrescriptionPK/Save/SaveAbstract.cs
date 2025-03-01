@@ -930,9 +930,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.Save
                     pres.PreviousUsingCount = item.PREVIOUS_USING_COUNT;
                     if (item.SERVICE_CONDITION_ID.HasValue && item.SERVICE_CONDITION_ID.Value > 0)
                         pres.ServiceConditionId = item.SERVICE_CONDITION_ID;
-                    if (this.SereServParentId > 0)
-                        pres.SereServParentId = this.SereServParentId;
-                    else pres.SereServParentId = item.SereServParentId;
+                    pres.SereServParentId = item.SereServParentId;
 
                     pres.MixedInfusion = item.MIXED_INFUSION;
                     pres.IsMixedMain = item.IS_MIXED_MAIN;
@@ -1030,8 +1028,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.Save
                     {
                         pres.EquipmentSetId = item.EQUIPMENT_SET_ID ?? 0;
                     }
-                    if (this.SereServParentId > 0)
-                        pres.SereServParentId = this.SereServParentId;
+                    pres.SereServParentId = item.SereServParentId;
                     if (item.SERVICE_CONDITION_ID.HasValue && item.SERVICE_CONDITION_ID.Value > 0)
                         pres.ServiceConditionId = item.SERVICE_CONDITION_ID;
 
@@ -1108,8 +1105,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.Save
                     {
                         pres.EquipmentSetId = item.EQUIPMENT_SET_ID ?? 0;
                     }
-                    if (this.SereServParentId > 0)
-                        pres.SereServParentId = this.SereServParentId;
+                    pres.SereServParentId = item.SereServParentId;
                     if (item.SERVICE_CONDITION_ID.HasValue && item.SERVICE_CONDITION_ID.Value > 0)
                         pres.ServiceConditionId = item.SERVICE_CONDITION_ID;
                     if (item.OTHER_PAY_SOURCE_ID.HasValue && item.OTHER_PAY_SOURCE_ID.Value > 0)

@@ -86,7 +86,6 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.Save
         protected long prescriptionTypeId { get; set; }
         protected long? DrugStoreId { get; set; }
         protected long? ExpMestReasonId { get; set; }
-
         protected CommonParam Param { get; set; }
 
         protected SaveAbstract(CommonParam param,
@@ -243,11 +242,9 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.Save
                     pres.NumOfDays = GetNumOfDays(item);
                     pres.NumOrder = item.NUM_ORDER;
                     pres.MediStockId = item.MEDI_STOCK_ID ?? 0;
-                    if (this.SereServParentId > 0)
-                        pres.SereServParentId = this.SereServParentId;
+                    pres.SereServParentId = item.SereServParentId;
                     if (item.OTHER_PAY_SOURCE_ID.HasValue && item.OTHER_PAY_SOURCE_ID.Value > 0)
                         pres.OtherPaySourceId = item.OTHER_PAY_SOURCE_ID;
-
                     pres.HtuText = item.HTU_TEXT;
                     if (this.ExpMestReasonId == null)
                     {
@@ -307,9 +304,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.Save
                     }
                     if (item.OTHER_PAY_SOURCE_ID.HasValue && item.OTHER_PAY_SOURCE_ID.Value > 0)
                         pres.OtherPaySourceId = item.OTHER_PAY_SOURCE_ID;
-                    if (this.SereServParentId > 0)
-                        pres.SereServParentId = this.SereServParentId;
-
+                    pres.SereServParentId = this.SereServParentId;
                     if (this.ExpMestReasonId == null)
                     {
                         pres.ExpMestReasonId = item.EXP_MEST_REASON_ID;

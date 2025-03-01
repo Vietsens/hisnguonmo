@@ -139,6 +139,11 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.Save.Update
         {
             try
             {
+                long? sereServParentId = null;
+                if(prescriptionSDO.Medicines != null && prescriptionSDO.Medicines.Count > 0)
+                    sereServParentId = prescriptionSDO.Medicines.Exists(o => o.SereServParentId != null) ? prescriptionSDO.Medicines.FirstOrDefault(o => o.SereServParentId != null).SereServParentId : null;
+                if (prescriptionSDO.Materials != null && prescriptionSDO.Materials.Count > 0)
+                    sereServParentId = prescriptionSDO.Materials.Exists(o => o.SereServParentId != null) ? prescriptionSDO.Materials.FirstOrDefault(o => o.SereServParentId != null).SereServParentId : null;
                 if (prescriptionSDO.Materials.Count > 0
                     || prescriptionSDO.Medicines.Count > 0
                     )
@@ -167,6 +172,16 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.Save.Update
                         {
                             item.SereServParentId = frmAssignPrescription.currentSereServInEkip.ID;
                         }
+                    }
+
+                    foreach (var item in prescriptionSDO.Materials)
+                    {
+                        item.SereServParentId = sereServParentId;
+                    }
+
+                    foreach (var item in prescriptionSDO.Medicines)
+                    {
+                        item.SereServParentId = sereServParentId;
                     }
                 }
             }
