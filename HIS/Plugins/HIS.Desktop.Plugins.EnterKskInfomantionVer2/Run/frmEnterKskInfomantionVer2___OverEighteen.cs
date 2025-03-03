@@ -341,44 +341,44 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                 obj.MEDICINE_USING = txtMedicineUsing.Text;
                 obj.MATERNITY_HISTORY = txtMaternityHistory.Text;
                 //DHST
-                obj.DHST_RANK = cboDhstRank2.EditValue != null ? Int64.Parse(cboDhstRank2.EditValue.ToString()) : 0;
+                obj.DHST_RANK = cboDhstRank2.EditValue != null ? (long?)Int64.Parse(cboDhstRank2.EditValue.ToString()) : null;
                 obj.EXAM_CIRCULATION = txtExamCirculation2.Text;
-                obj.EXAM_CIRCULATION_RANK = cboExamCirculationRank2.EditValue != null ? Int64.Parse(cboExamCirculationRank2.EditValue.ToString()) : 0;
+                obj.EXAM_CIRCULATION_RANK = cboExamCirculationRank2.EditValue != null ? (long?)Int64.Parse(cboExamCirculationRank2.EditValue.ToString()) : null;
                 obj.EXAM_RESPIRATORY = txtExamRespiratory2.Text;
-                obj.EXAM_RESPIRATORY_RANK = cboExamRespiratoryRank2.EditValue != null ? Int64.Parse(cboExamRespiratoryRank2.EditValue.ToString()) : 0;
+                obj.EXAM_RESPIRATORY_RANK = cboExamRespiratoryRank2.EditValue != null ? (long?)Int64.Parse(cboExamRespiratoryRank2.EditValue.ToString()) : null;
                 obj.EXAM_DIGESTION = txtExamDigestion2.Text;
-                obj.EXAM_DIGESTION_RANK = cboExamDigestionRank2.EditValue != null ? Int64.Parse(cboExamDigestionRank2.EditValue.ToString()) : 0;
+                obj.EXAM_DIGESTION_RANK = cboExamDigestionRank2.EditValue != null ? (long?)Int64.Parse(cboExamDigestionRank2.EditValue.ToString()) : null;
                 obj.EXAM_KIDNEY_UROLOGY = txtExamKidneyUrology2.Text;
-                obj.EXAM_KIDNEY_UROLOGY_RANK = cboExamKidneyUrologyRank2.EditValue != null ? Int64.Parse(cboExamKidneyUrologyRank2.EditValue.ToString()) : 0;
+                obj.EXAM_KIDNEY_UROLOGY_RANK = cboExamKidneyUrologyRank2.EditValue != null ? (long?)Int64.Parse(cboExamKidneyUrologyRank2.EditValue.ToString()) : null;
                 obj.EXAM_NEUROLOGICAL = txtExamNeurological2.Text;
-                obj.EXAM_NEUROLOGICAL_RANK = cboExamNeurologicalRank2.EditValue != null ? Int64.Parse(cboExamNeurologicalRank2.EditValue.ToString()) : 0;
+                obj.EXAM_NEUROLOGICAL_RANK = cboExamNeurologicalRank2.EditValue != null ? (long?)Int64.Parse(cboExamNeurologicalRank2.EditValue.ToString()) : null;
                 obj.EXAM_MUSCLE_BONE = txtExamMuscleBone2.Text;
-                obj.EXAM_MUSCLE_BONE_RANK = cboExamMuscleBoneRank2.EditValue != null ? Int64.Parse(cboExamMuscleBoneRank2.EditValue.ToString()) : 0;
+                obj.EXAM_MUSCLE_BONE_RANK = cboExamMuscleBoneRank2.EditValue != null ? (long?)Int64.Parse(cboExamMuscleBoneRank2.EditValue.ToString()) : null;
                 obj.EXAM_MENTAL = txtExamMental2.Text;
-                obj.EXAM_MENTAL_RANK = cboExamMentalRank2.EditValue != null ? Int64.Parse(cboExamMentalRank2.EditValue.ToString()) : 0;
+                obj.EXAM_MENTAL_RANK = cboExamMentalRank2.EditValue != null ? (long?)Int64.Parse(cboExamMentalRank2.EditValue.ToString()) : null;
                 obj.EXAM_SURGERY = txtExamSurgery2.Text;
-                obj.EXAM_SURGERY_RANK = cboExamSurgeryRank2.EditValue != null ? Int64.Parse(cboExamSurgeryRank2.EditValue.ToString()) : 0;
+                obj.EXAM_SURGERY_RANK = cboExamSurgeryRank2.EditValue != null ? (long?)Int64.Parse(cboExamSurgeryRank2.EditValue.ToString()) : null;
                 obj.EXAM_DERMATOLOGY = txtExamDernatology2.Text;
-                obj.EXAM_DERMATOLOGY_RANK = cboExamDernatologyRank2.EditValue != null ? Int64.Parse(cboExamDernatologyRank2.EditValue.ToString()) : 0;
+                obj.EXAM_DERMATOLOGY_RANK = cboExamDernatologyRank2.EditValue != null ? (long?)Int64.Parse(cboExamDernatologyRank2.EditValue.ToString()) : null;
                 obj.EXAM_OBSTETRIC = txtExamObstetric2.Text;
-                obj.EXAM_OBSTETRIC_RANK = cboExamObstetricRank2.EditValue != null ? Int64.Parse(cboExamObstetricRank2.EditValue.ToString()) : 0;
+                obj.EXAM_OBSTETRIC_RANK = cboExamObstetricRank2.EditValue != null ? (long?)Int64.Parse(cboExamObstetricRank2.EditValue.ToString()) : null;
 
                 obj.EXAM_EYESIGHT_RIGHT = txtExamEyeSightRight2.Text;
                 obj.EXAM_EYESIGHT_LEFT = txtExamEyeSightLeft2.Text;
                 obj.EXAM_EYESIGHT_GLASS_RIGHT = txtExamEyeSightGlassRight2.Text;
                 obj.EXAM_EYESIGHT_GLASS_LEFT = txtExamEyeSightGlassLeft2.Text;
                 obj.EXAM_EYE_DISEASE = txtExamEyeDisease2.Text;
-                obj.EXAM_EYE_RANK = cboExamEyeRank2.EditValue != null ? Int64.Parse(cboExamEyeRank2.EditValue.ToString()) : 0;
+                obj.EXAM_EYE_RANK = cboExamEyeRank2.EditValue != null ? (long?)Int64.Parse(cboExamEyeRank2.EditValue.ToString()) : null;
                 obj.EXAM_ENT_LEFT_NORMAL = txtExamEntLeftNormal2.Text;
                 obj.EXAM_ENT_LEFT_WHISPER = txtExamEntLeftWhisper2.Text;
                 obj.EXAM_ENT_RIGHT_NORMAL = txtExamEntRightNomal2.Text;
                 obj.EXAM_ENT_RIGHT_WHISPER = txtExamEntRightWhisper2.Text;
                 obj.EXAM_ENT_DISEASE = txtExamEntDisease2.Text;
-                obj.EXAM_ENT_RANK = cboExamEntDiseaseRank2.EditValue != null ? Int64.Parse(cboExamEntDiseaseRank2.EditValue.ToString()) : 0;
+                obj.EXAM_ENT_RANK = cboExamEntDiseaseRank2.EditValue != null ? (long?)Int64.Parse(cboExamEntDiseaseRank2.EditValue.ToString()) : null;
                 obj.EXAM_STOMATOLOGY_UPPER = txtExamStomatologyUpper2.Text;
                 obj.EXAM_STOMATOLOGY_LOWER = txtExamStomatologyLower2.Text;
                 obj.EXAM_STOMATOLOGY_DISEASE = txtExamStomatologyDisease2.Text;
-                obj.EXAM_STOMATOLOGY_RANK = cboExamStomatologyRank2.EditValue != null ? Int64.Parse(cboExamStomatologyRank2.EditValue.ToString()) : 0;
+                obj.EXAM_STOMATOLOGY_RANK = cboExamStomatologyRank2.EditValue != null ? (long?)Int64.Parse(cboExamStomatologyRank2.EditValue.ToString()) : null;
                 obj.TEST_BLOOD_HC = txtTestBloodHc2.Text;
                 obj.TEST_BLOOD_BC = txtTestBloodTc2.Text;
                 obj.TEST_BLOOD_TC = txtTestBloodBc2.Text;
@@ -392,11 +392,11 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                 obj.TEST_URINE_PROTEIN = txtTestUrineProtein2.Text;
                 obj.TEST_URINE_OTHER = txtTestUrineOther2.Text;
                 obj.RESULT_DIIM = txtResultDiim2.Text;
-                obj.HEALTH_EXAM_RANK_ID = cboHealthExamRank2.EditValue != null ? Int64.Parse(cboHealthExamRank2.EditValue.ToString()) : 0;
+                obj.HEALTH_EXAM_RANK_ID = cboHealthExamRank2.EditValue != null ? (long?)Int64.Parse(cboHealthExamRank2.EditValue.ToString()) : null;
                 obj.DISEASES = txtDiseases2.Text;
                 obj.HEALTH_EXAM_RANK_DESCRIPTION = txtHealthExamRankDescription2.Text.Trim();
                 obj.EXAM_OEND = txtExamOend2.Text.Trim();
-                obj.EXAM_OEND_RANK = cboExamOend2.EditValue != null ? Int64.Parse(cboExamOend2.EditValue.ToString()) : 0;
+                obj.EXAM_OEND_RANK = cboExamOend2.EditValue != null ? (long?)Int64.Parse(cboExamOend2.EditValue.ToString()) : null;
             }
             catch (Exception ex)
             {

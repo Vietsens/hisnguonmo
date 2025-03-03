@@ -418,7 +418,7 @@ namespace HIS.Desktop.Plugins.TestServiceReqExcute
 
 
                         var listSereServTeinByServServ = lstSereServTeinItem.Where(o => o.SERE_SERV_ID == item.ID).ToList();
-                        var machineSereServ = lstSereServTeinItem.Where(o => o.MACHINE_ID.HasValue).ToList();
+                        var machineSereServ = lstSereServTeinItem.Where(o => o.MACHINE_ID.HasValue && o.SERE_SERV_ID == item.ID).ToList();
                         if (machineSereServ != null && machineSereServ.Count > 0 && machineSereServ[0].MACHINE_ID != null)
                             hisSereServTeinSDO.MACHINE_ID = machineSereServ[0].MACHINE_ID;
 
@@ -478,6 +478,17 @@ namespace HIS.Desktop.Plugins.TestServiceReqExcute
                                 if (!String.IsNullOrEmpty(ssTein.VALUE))
                                 {
                                     hisSereServTein.VALUE = ssTein.VALUE;
+                                }
+                                else
+                                {
+                                    if (string.IsNullOrEmpty(hisSereServTeinSDO.VALUE))
+                                    {
+                                        var data = _TestIndexs.Where(o => o.TEST_INDEX_CODE == hisSereServTeinSDO.TEST_INDEX_CODE).FirstOrDefault();
+                                        if (data != null && !string.IsNullOrEmpty(data.DEFAULT_VALUE))
+                                        {
+                                            hisSereServTein.VALUE = data.DEFAULT_VALUE;
+                                        }
+                                    }
                                 }
                                 //hisSereServTein.DESCRIPTION = ssTein.DESCRIPTION;
                                 hisSereServTein.SERE_SERV_ID = ssTein.SERE_SERV_ID;
@@ -574,7 +585,6 @@ namespace HIS.Desktop.Plugins.TestServiceReqExcute
                     var testIndexRangeAll = BackendDataWorker.Get<V_HIS_TEST_INDEX_RANGE>();
                     foreach (var hisSereServTeinSDO in lstHisSereServTeinSDO)
                     {
-
                         V_HIS_TEST_INDEX_RANGE testIndexRange = new V_HIS_TEST_INDEX_RANGE();
                         testIndexRange = GetTestIndexRange(this.currentServiceReq.TDL_PATIENT_DOB, this.genderId, hisSereServTeinSDO.TEST_INDEX_ID ?? 0, ref this.testIndexRangeAll);
                         if (testIndexRange != null)

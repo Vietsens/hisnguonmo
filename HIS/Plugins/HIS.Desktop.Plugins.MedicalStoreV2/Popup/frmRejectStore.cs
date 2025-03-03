@@ -152,7 +152,7 @@ namespace HIS.Desktop.Plugins.MedicalStoreV2.Popup
             {
                 ValidateMaxLength validateMaxLength = new ValidateMaxLength();
                 validateMaxLength.textEdit = txtRejectStoreReason;
-                validateMaxLength.maxLength = 500;
+                validateMaxLength.maxLength = 4000;
                 dxValidationProvider1.SetValidationRule(txtRejectStoreReason, validateMaxLength);
             }
             catch (Exception ex)

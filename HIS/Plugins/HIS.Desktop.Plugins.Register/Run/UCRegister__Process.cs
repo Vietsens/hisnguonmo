@@ -316,6 +316,7 @@ namespace HIS.Desktop.Plugins.Register.Run
                 valid = valid && validPatientInfo && validPatientPlusInfo && validPhoneNumber;
                 valid = valid && this.AlertExpriedTimeHeinCardBhyt();
                 valid = valid && this.BlockingInvalidBhyt();
+                valid = valid && this.CheckRRCodeTTFee(true);
                 try
                 {
                     departmentId = BackendDataWorker.Get<MOS.EFMODEL.DataModels.V_HIS_ROOM>().FirstOrDefault(o => o.ID == currentModule.RoomId).DEPARTMENT_ID;
@@ -378,6 +379,16 @@ namespace HIS.Desktop.Plugins.Register.Run
                 dataPatientProfile.HisPatientTypeAlter = new MOS.EFMODEL.DataModels.HIS_PATIENT_TYPE_ALTER();
                 //Đồng bộ dữ liệu thay đổi từ uchein sang đối tượng dữ liệu phục vụ làm đầu vào cho gọi api
                 this.mainHeinProcessor.UpdateDataFormIntoPatientTypeAlter(this.ucHeinBHYT, dataPatientProfile);
+
+
+                if (this.ResultDataADO != null && ResultDataADO.ResultHistoryLDO != null && HIS.Desktop.Plugins.Library.RegisterConfig.HisConfigCFG.WarningInvalidCheckHistoryHeinCard && ResultDataADO.ResultHistoryLDO.message == "Thẻ BHYT có thông tin kiểm tra thẻ chưa ra viện.")
+                {
+                    DialogResult drReslt = DevExpress.XtraEditors.XtraMessageBox.Show(ResultDataADO.ResultHistoryLDO.message + " Bạn có muốn tiếp tục?", "Thông báo", MessageBoxButtons.YesNo);
+                    if (drReslt == DialogResult.No)
+                    {
+                        return false;
+                    }
+                }
 
                 //không kiểm tra nếu có check vào thẻ tạm
                 if (this.cboPatientType.EditValue != null && Inventec.Common.TypeConvert.Parse.ToInt64((this.cboPatientType.EditValue ?? "0").ToString()) == HisConfigCFG.PatientTypeId__BHYT && (HisConfigCFG.IsBlockingInvalidBhyt == ((int)HisConfigCFG.OptionKey.Option1).ToString() || HisConfigCFG.IsBlockingInvalidBhyt == ((int)HisConfigCFG.OptionKey.Option2).ToString())

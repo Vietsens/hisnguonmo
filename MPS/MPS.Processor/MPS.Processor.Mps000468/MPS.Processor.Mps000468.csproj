@@ -31,7 +31,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="AutoMapper">
-      <HintPath>..\..\..\..\FE\YTE\DESKTOP\HIS\ReferencedAssemblies\AutoMapper.dll</HintPath>
+      <HintPath>..\..\..\..\lib\MPSv2\MPS.ProcessorBase\AutoMapper.dll</HintPath>
     </Reference>
     <Reference Include="IMSys.DbConfig.HIS_RS">
       <HintPath>..\..\..\..\LIB\IMSys.DbConfig\IMSys.DbConfig.HIS_RS\IMSys.DbConfig.HIS_RS.dll</HintPath>
@@ -88,10 +88,10 @@
       <HintPath>..\..\..\..\LIB\MOS\MOS.LibraryHein.Bhyt.dll</HintPath>
     </Reference>
     <Reference Include="MPS">
-      <HintPath>..\..\..\..\LIB\MPS\MPS.dll</HintPath>
+      <HintPath>..\..\..\..\lib\MPSv2\MPS\MPS.dll</HintPath>
     </Reference>
     <Reference Include="MPS.Processor.Mps000468.PDO">
-      <HintPath>..\MPS.Processor.Mps000468.PDO\bin\Debug\MPS.Processor.Mps000468.PDO.dll</HintPath>
+      <HintPath>..\..\..\..\lib\MPSv2\MPS.PDO\MPS.Processor.Mps000468.PDO.dll</HintPath>
     </Reference>
     <Reference Include="MPS.ProcessorBase">
       <HintPath>..\..\..\..\LIB\MPSv2\MPS.ProcessorBase\MPS.ProcessorBase.dll</HintPath>
@@ -113,11 +113,11 @@
     <Compile Include="TestLisResultADO.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\FE\YTE\DESKTOP\HIS\HIS.Desktop.ApiConsumer\HIS.Desktop.ApiConsumer.csproj">
+    <ProjectReference Include="..\..\..\HIS\HIS.Desktop.ApiConsumer\HIS.Desktop.ApiConsumer.csproj">
       <Project>{861bfedb-026f-4b6f-a3cf-32843ae8c03d}</Project>
       <Name>HIS.Desktop.ApiConsumer</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\..\FE\YTE\DESKTOP\HIS\HIS.Desktop.Common\HIS.Desktop.Common.csproj">
+    <ProjectReference Include="..\..\..\HIS\HIS.Desktop.Common\HIS.Desktop.Common.csproj">
       <Project>{59fdcba7-0f9f-4257-b95a-e37a1ccfe107}</Project>
       <Name>HIS.Desktop.Common</Name>
     </ProjectReference>

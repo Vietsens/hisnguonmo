@@ -1,3 +1,99 @@
+### Release 2.350.0
+* Bổ sung thông tin nhập khẩu thầu
+* Tiếp đón sử dụng QR CCCD và QR BHYT trên cùng 1 điều kiện lọc
+* Bổ sung thông tin thuốc tại màn hình xuất khác
+* Tích hợp hệ thống vcong.vn
+* Tự động tách địa chỉ 3 cấp khi tiếp đón bệnh nhân mới trên kios sử dụng QR CCCD hoặc QR thẻ BHYT
+* Sửa danh sách hình thức thanh toán tại màn hình tạm ứng dịch vụ
+
+### Release 2.349.0
+* Bổ sung option theo đối tượng bệnh nhân tính tiền công khám theo công thức của BHYT
+* Bổ sung cấu hình cảnh báo bệnh nhân trái tuyến cần thu tiền khám
+* Bổ sung màn hình chờ khám
+* Sửa thông tin thời gian trong thông tin tử vong
+* Đồng bộ thông tin giữa tờ điều trị và y lệnh tương ứng.
+
+### Release 2.348.0
+* Bổ sung chặn tiếp đón trên kios trong trường hợp bệnh nhân đã thực hiện kiểm tra thẻ BHYT tại viện khác
+* Sửa thông tin mặc định trong màn hình thông tin bổ sung xử lý PTTT
+* Sửa mẫu phiếu tra đối trong trường hợp lọc theo thời gian dự trù
+* Sửa lỗi thay đổi thông tin mã chẩn đoán trên phiếu hẹn khám
+
+### Release 2.347.0
+* Bổ sung thông tin đối tượng bệnh nhân trong thông tin giao dịch
+* Bổ sung thông tin eGFR và uACR và tần xuất theo dõi bệnh thận mạn
+* Cho phép chỉ định thuốc ngoài danh mục cho đầu thẻ công an, quân đội
+
+### Release 2.346.0
+* Bổ sung tính năng cho phép Thiết lập hiển thị Vỏ bệnh án, phiếu vỏ bệnh án
+* Bổ sung thông tin cách dùng cho từng thuốc khi kê đơn phục vụ XML 
+* Bổ sung chức năng màn hình chờ phòng mổ
+* Sửa dữ liệu cho phù hợp với quy định 130, 4750/QĐ-BYT và QĐ 3176/QĐ-BYT
+
+### Release 2.345.0
+* Bổ sung thông tin phục vụ giấy chuyển tuyến theo Thông tư 01 ngày 01/01/2025
+* Hiển thị máy xử lý theo thiết lập khoa phòng tại chức năng xử lý phẫu thuật thủ thuật
+* Bổ sung điều kiện lọc và hiển thị thông tin theo ngày dự trù trên phiếu tra đối và tổng hợp phiếu lĩnh
+* Chỉnh lại thông tin khám sức khỏe lái xe theo thông tư 36
+* Bổ sung thông tin trạng thái kết thúc điều trị trong thông tin xét nghiệm
+
+### Release 2.344.0
+* Cho phép gọi bệnh nhân theo tên tại phòng thu ngân qua hệ thống CPA
+* Tích hợp thiết bị IPOS hiển thị QR thanh toán mới
+* Sửa lại chức năng đổi phòng khám để tránh sai thời gian y lệnh
+* Sửa dữ liệu cho phù hợp với quy định 130, 4750/QĐ-BYT và QĐ 3176/QĐ-BYT
+
+### Release 2.343.0
+* Bổ sung thông tin thầu khi nhập khẩu thuốc/vật tư
+* Bổ sung cấu hình tự động khóa giao dịch khi thanh toán QR tại thu ngân.
+* Sửa dữ liệu cho phù hợp với quy định của XML 130 và QĐ 3176/QĐ-BYT
+* Bổ sung ký dữ liệu XML 13,14,15 trong XML 130 và QĐ 3176/QĐ-BYT
+
+### Release 2.342.0
+* Bổ sung thông tin ghi chú tiếp đón vào hồ sơ phục vụ phân biệt gói dịch vụ tại viện
+* Áp dụng cấu hình thực hiện in tách đơn thuốc trong nhóm thuốc, Thực phẩm chức năng và còn lại
+* Sửa lỗi kết thúc điều trị tại chức năng xử lý khám đối với hồ sơ điều trị ngoại trú
+* Sửa dữ liệu cho phù hợp với quy định của XML 130 và QĐ 4750/QĐ-BYT
+
+### Release 2.341.0
+* Sửa dữ liệu cho phù hợp với quy định của XML 130 và QĐ 4750/QĐ-BYT
+* Kiểm tra lại thông tin thẻ BHYT khi xử lý bệnh nhân hẹn khám
+* Tích hợp hóa đơn nháp hệ thống hóa đơn điện tử VIETTEL
+
+### Release 2.340.0
+* Bổ sung thông tin người ký thay Trưởng khoa, giám đốc bệnh viện vào phiếu xác nhận PTTT
+* Thêm tính năng chỉ định suất ăn tại nhà ăn
+* Thêm danh sách key thông tin y lệnh vào phiếu chỉ định tổng hợp.
+* Sửa lỗi liên quan đến ký số dữ liệu XML theo quyết định 3700/BHXH-CNTT
+
+### Release 2.339.0
+* Sửa màn hình chờ lấy mẫu để phân biệt bệnh nhân ưu tiên, đã lấy mẫu, chưa lấy mẫu
+* Sửa đổi bổ sung chuẩn dữ liệu đầu ra theo quyết định 3176/QĐ-BYT ngày 29/10/2024 về sửa đổi bổ sung QĐ 4750 và QĐ 130
+* Bổ sung Cảnh báo khám cùng ngày CSKCB khác
+* Bổ sung thông tin giường vào chức năng thông tin giao ban
+* Bổ sung ký số dữ liệu XML theo quyết định 3700/BHXH-CNTT
+
+### Release 2.338.0
+* Thêm thông tin chẩn đoán phân biệt vào tờ điều trị
+* Sửa lỗi ký số USB ký giấy chứng sinh, chứng tử gửi BYT
+* Sửa thứ tự hiển thị dịch vụ trên tờ điều trị repx
+* Không giới hạn ký tự đối với các thông tin quá trình bệnh lý và diễn biến lâm sàng phục vụ XML 130 và QĐ 4750/QĐ-BYT
+
+### Release 2.337.0
+* Bổ sung xử lý hiển thị ảnh chữ ký của bác sĩ trên phiếu kết quả khám sức khỏe
+* Bổ sung chặn số lượng bệnh kèm theo vượt quá 12 mã bệnh
+* Bổ sung xác nhận bệnh nhân sử dụng thuốc theo từng buổi trong ngày
+* Sửa độ dài các trường dữ liệu cho phù hợp với quy định của XML 130 và QĐ 4750/QĐ-BYT
+
+### Release 2.336.0
+* Sửa lại số thứ tự phòng khám không đánh số đối với y lệnh là đơn thuốc
+* Bổ sung xem thông tin sơ đồ bệnh viện, bảng giá dịch vụ trên chức năng kios
+* Bổ sung thông tin có giấy công tác, giấy tạm trú... đi kèm thẻ BHYT
+* Bổ sung thiết lập thành phần tham gia PT/TT theo đúng thông tư 50/2014
+* Bổ sung thông tin thời gian bắt đầu, người xử lý gửi kèm bản tin HL7 2.7 sang hệ thống PACS
+* Sửa thông tin ngày thực hiện y lệnh thuốc trong XML 2, mã bệnh bị quá ký tự trong các bảng XML phục vụ XML 130 và QĐ 4750/QĐ-BYT
+* Sửa mẫu repx tờ điều trị bổ sung thông tin dòng thuốc, thông tin bổ sung cho danh sách dự trù.
+
 ### Release 2.335.0
 * Bổ sung tính năng Danh sách đặt lịch hẹn khám
 * Bổ sung tính năng xuất XML gộp

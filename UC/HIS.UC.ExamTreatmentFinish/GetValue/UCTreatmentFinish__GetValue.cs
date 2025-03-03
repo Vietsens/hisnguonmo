@@ -90,7 +90,7 @@ namespace HIS.UC.ExamTreatmentFinish.Run
                             treatment = ExamTreatmentFinishInitADO.Treatment;
                         }
 
-                        EndTypeForm.FormTransfer form = new EndTypeForm.FormTransfer(this.moduleData, treatment, UpdateExamTreatmentFinish);
+                        EndTypeForm.FormTransfer form = new EndTypeForm.FormTransfer(this.moduleData, treatment, UpdateExamTreatmentFinish,this._treatmentext);
                         form.ShowDialog();
                         return null;
                     }
@@ -327,6 +327,7 @@ namespace HIS.UC.ExamTreatmentFinish.Run
                 ExamTreatmentFinish.Advise = txtAdviseNew.Text;
                 ExamTreatmentFinish.Conclusion = txtConclusionNew.Text;
                 ExamTreatmentFinish.Note = memNote.Text.Trim();
+                //ExamTreatmentFinish.TreatmentFinishSDO.ClinicalNote = this._treatmentext.CLINICAL_NOTE;
                 if (ucSecondaryIcd != null)
                 {
                     var subIcd = subIcdProcessor.GetValue(ucSecondaryIcd);

@@ -878,14 +878,14 @@ namespace HIS.Desktop.Plugins.BedHistory
                     CommonParam param = new CommonParam();
                     Inventec.Common.Logging.LogSystem.Debug("Du lieu goi den api: HisBedLog/TakeBedsInUse. TakeBedsInUseSDO: " + Inventec.Common.Logging.LogUtil.TraceData("TakeBedsInUseSDO", sdo));
                     List<HIS_BED_LOG> dataBedLogs = new BackendAdapter(param).Post<List<HIS_BED_LOG>>("/api/HisBedLog/TakeBedsInUse", ApiConsumers.MosConsumer, sdo, param);
-                    
+
                     if (dataBedLogs != null && dataBedLogs.Count > 0)
                     {
                         Inventec.Common.Logging.LogSystem.Debug("Du lieu goi den api tra ve: HisBedLog/TakeBedsInUse. dataBedLogs: " + Inventec.Common.Logging.LogUtil.TraceData("dataBedLogs", dataBedLogs.Select(s => s.BED_ID).ToList()));
 
                         foreach (var itemADO in result)
                         {
-                            
+
                             //var dataByBedLogs_onStartTime = dataBedLogs.Where(p => p.BED_ID == itemADO.ID && p.START_TIME <= startTimeFilter && (!p.FINISH_TIME.HasValue || (p.FINISH_TIME.HasValue && p.FINISH_TIME.Value >= startTimeFilter))).ToList() ?? new List<HIS_BED_LOG>();
                             //List<HIS_BED_LOG> dataByBedLogs_onFinishTime = new List<HIS_BED_LOG>();
                             //if (finishTimeFilter != null)
@@ -894,7 +894,7 @@ namespace HIS.Desktop.Plugins.BedHistory
                             //    ||(p.S)).ToList() ?? new List<HIS_BED_LOG>();
                             //else
                             //    dataByBedLogs_onFinishTime = dataBedLogs.Where(p => p.BED_ID == itemADO.ID && (!p.FINISH_TIME.HasValue || (p.FINISH_TIME.HasValue && p.FINISH_TIME.Value >= startTimeFilter))).ToList() ?? new List<HIS_BED_LOG>();
-                            
+
                             //lọc thời gian mới
                             // Lấy danh sách log theo startTimeFilter
                             var dataByBedLogs_onStartTime = dataBedLogs
@@ -937,7 +937,7 @@ namespace HIS.Desktop.Plugins.BedHistory
                             {
                                 itemADO.BedLogFinishIds = dataByBedLogs_onFinishTime.Select(o => o.ID).ToList();
                             }
-                            
+
                             if (dataByBedLogs != null && dataByBedLogs.Count > 0)
                             {
                                 if (itemADO.MAX_CAPACITY.HasValue)
@@ -951,7 +951,7 @@ namespace HIS.Desktop.Plugins.BedHistory
                                     itemADO.IsKey = 1;
                                 itemADO.BedLogAllIds = dataByBedLogs.Select(o => o.ID).ToList();
                                 itemADO.AMOUNT = dataByBedLogs.Count;
-                                
+
                                 itemADO.AMOUNT_STR = dataByBedLogs.Count + "/" + itemADO.MAX_CAPACITY;
                                 itemADO.TREATMENT_BED_ROOM_IDs = dataByBedLogs.Select(o => o.TREATMENT_BED_ROOM_ID).ToList();
                                 dicTreatmentBedRoom[itemADO.ID] = itemADO.TREATMENT_BED_ROOM_IDs;
@@ -979,7 +979,7 @@ namespace HIS.Desktop.Plugins.BedHistory
                     //    }
                     //    CommonParam param = new CommonParam();
                     //    var dataBedLogs = new BackendAdapter(param).Get<List<HIS_BED_LOG>>("api/HisBedLog/Get", ApiConsumer.ApiConsumers.MosConsumer, filter, param);
-                        
+
                     //}
                 }
             }
@@ -1331,6 +1331,12 @@ namespace HIS.Desktop.Plugins.BedHistory
                                 ado.SERVICE_CONDITION_ID = null;
                             }
                         }
+                        if (!BreakServiceCondition)
+                        {
+                            var data = gridControlBedServiceType.DataSource as List<HisBedServiceTypeADO>;
+                            if (data != null && data.Count > 0)
+                                CountTimeBed();
+                        }
 
                     }
                     else if (e.Column.FieldName == "finishTime")
@@ -1349,12 +1355,18 @@ namespace HIS.Desktop.Plugins.BedHistory
                             ProcessSaveBedLog(ado);
                         }
                         if (!BreakServiceCondition)
+                        {
                             RefeshDataToCboBed(0, ado, false);
+                            var data = gridControlBedServiceType.DataSource as List<HisBedServiceTypeADO>;
+                            if (data != null && data.Count > 0)
+                                CountTimeBed();
+                        }
 
                     }
                     else if (e.Column.FieldName == "IsChecked")
                     {
-                        listCurrentBedLog.Where(s => s.ID == ado.ID).ForEach(o => {
+                        listCurrentBedLog.Where(s => s.ID == ado.ID).ForEach(o =>
+                        {
                             o.START_TIME = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(ado.startTime) ?? 0;
                             o.FINISH_TIME = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(ado.finishTime);
                             o.BED_ID = ado.BED_ID;
@@ -1363,7 +1375,7 @@ namespace HIS.Desktop.Plugins.BedHistory
                         });
                         CheckErrorDataBedLog(ado);
                         //if ((ado.ErrorTypeStartTime == ErrorType.Warning && ado.ErrorMessageStartTime == ResourceMessage.ERROR_OVERLAP_START_TIME) || (ado.ErrorTypeFinishTime == ErrorType.Warning && ado.ErrorMessageFinishTime == ResourceMessage.ERROR_OVERLAP_START_TIME)) return;
-                        
+
                         if (!ado.IsSave && !ado.Error)
                         {
                             ProcessSaveBedLog(ado, ado.IsChecked);
@@ -1383,8 +1395,8 @@ namespace HIS.Desktop.Plugins.BedHistory
                         }
                         //if (ado.Error) return;
                         var exitsBed = bedLogChecks.FirstOrDefault(s => s.BED_ID == ado.BED_ID && s.START_TIME != ado.START_TIME);
-                        
-                        if(exitsBed!= null)
+
+                        if (exitsBed != null)
                         {
                             var adoStart = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(ado.startTime);
                             var adoFinish = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(ado.finishTime);
@@ -1426,7 +1438,7 @@ namespace HIS.Desktop.Plugins.BedHistory
                         }
                         if (!BreakServiceCondition)
                             CountTimeBed();
-                        
+
                         var data = gridControlBedServiceType.DataSource;
                         //gridControlBedHistory.RefreshDataSource();
 
@@ -1617,92 +1629,123 @@ namespace HIS.Desktop.Plugins.BedHistory
         {
             try
             {
+                Inventec.Common.Logging.LogSystem.Debug("CheckWarningTimeOverLap. 1");
+                Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData("HisBedHistoryADO", ado));
                 var vHisBedLogs = new List<HisBedHistoryADO>();
                 bool isWarning = false;
                 List<ADO.HisBedHistoryADO> A = new List<ADO.HisBedHistoryADO>();
                 List<ADO.HisBedHistoryADO> B = new List<ADO.HisBedHistoryADO>();
+                if (ListServiceReqForSereServs == null || dataBedADOs == null)
+                {
+                    throw new ArgumentNullException("ListServiceReqForSereServs hoặc dataBedADOs khong duoc null");
+                }
                 if (this.listCurrentBedLog != null && this.listCurrentBedLog.Count() > 0)
                 {
-                    vHisBedLogs = (from r in this.listCurrentBedLog select new ADO.HisBedHistoryADO(r, LocalStorage.LocalData.GlobalVariables.ActionEdit, true, ListServiceReqForSereServs, dataBedADOs)).ToList();
+                    Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData("listCurrentBedLog", listCurrentBedLog));
+                    vHisBedLogs = listCurrentBedLog
+                                .Where(r => r != null)
+                                .Select(r => new ADO.HisBedHistoryADO(r, LocalStorage.LocalData.GlobalVariables.ActionEdit, true, ListServiceReqForSereServs, dataBedADOs))
+                                .ToList();
+                }
+                Inventec.Common.Logging.LogSystem.Debug("CheckWarningTimeOverLap. 2");
+                Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData("vHisBedLogs", vHisBedLogs));
+                if (vHisBedLogs != null)
+                {
                     vHisBedLogs = vHisBedLogs.Where(o => o.ID != ado.ID).ToList();
-                }
-                var newBed = bedLogChecks.Where(o => o.ID == 0 && o != ado).ToList();
-                if (newBed.Count > 0) vHisBedLogs.AddRange(newBed);
+                    Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData("bedLogChecks", bedLogChecks));
+                    var newBed = bedLogChecks != null ? bedLogChecks.Where(o => o.ID == 0 && o != ado).ToList() : new List<HisBedHistoryADO>();
+                    Inventec.Common.Logging.LogSystem.Debug("CheckWarningTimeOverLap. 2.1");
+                    if (newBed.Count > 0) vHisBedLogs.AddRange(newBed);
 
-                if (vHisBedLogs.Count() == 0) return;
-
-                if (ado.finishTime == null)
-                {
-                    A = vHisBedLogs.Where(o => o.startTime <= ado.startTime).ToList();
-                    if (A == null || A.Count() == 0) return;
-                    B = A.Where(o => o.finishTime == null || o.finishTime > ado.startTime).ToList();
-                    isWarning = B != null && B.Count() > 0;
-
-                }
-                else
-                {
-                    A = vHisBedLogs.Where(o => o.startTime < ado.finishTime).ToList();
-                    if (A == null || A.Count() == 0) return;
-                    if (A.Exists(o => o.finishTime == null)) isWarning = true;
+                    if (vHisBedLogs.Count() == 0) return;
+                    Inventec.Common.Logging.LogSystem.Debug("CheckWarningTimeOverLap. 2.2");
+                    if (ado.finishTime == null)
+                    {
+                        A = vHisBedLogs.Where(o => o.startTime <= ado.startTime).ToList();
+                        if (A == null || A.Count() == 0) return;
+                        B = A.Where(o => o.finishTime == null || o.finishTime > ado.startTime).ToList();
+                        isWarning = B != null && B.Count() > 0;
+                        Inventec.Common.Logging.LogSystem.Debug("CheckWarningTimeOverLap. 2.2.1");
+                    }
                     else
                     {
+<<<<<<< .mine
+                        Inventec.Common.Logging.LogSystem.Debug("CheckWarningTimeOverLap. 2.2.2");
+                        A = vHisBedLogs.Where(o => o.startTime < ado.finishTime).ToList();
+                        if (A == null || A.Count() == 0) return;
+                        Inventec.Common.Logging.LogSystem.Debug("CheckWarningTimeOverLap. 2.2.3");
+                        if (A.Exists(o => o.finishTime == null)) isWarning = true;
+                        else
+=======
                         B = A.Where(o => o.finishTime > ado.startTime).ToList();
                         if (B == null || B.Count() == 0) return;
                         //if (B.Exists(o => o.finishTime >= ado.finishTime || o.startTime <= ado.startTime)) isWarning = true; logic check cu
-                        foreach(var _b in B)
-                        {
-                            var adoStart = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(ado.startTime);
-                            var adoFinish = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(ado.finishTime);
-                            //if((adoStart >= exitsBed.START_TIME && adoStart <= exitsBed.FINISH_TIME) 
-                            //    || (adoFinish >= exitsBed.START_TIME && adoFinish <= exitsBed.FINISH_TIME)
-                            //    )
-                            //{
+                        foreach (var _b in B)
 
-                            //}
-                            if (adoStart <= _b.START_TIME)
+
+>>>>>>> .theirs
+                        {
+                            Inventec.Common.Logging.LogSystem.Debug("CheckWarningTimeOverLap. 2.2.4");
+                            B = A.Where(o => o.finishTime > ado.startTime).ToList();
+                            if (B == null || B.Count() == 0) return;
+                            //if (B.Exists(o => o.finishTime >= ado.finishTime || o.startTime <= ado.startTime)) isWarning = true; logic check cu
+                            Inventec.Common.Logging.LogSystem.Debug("CheckWarningTimeOverLap. 2.2.5");
+                            foreach (var _b in B)
                             {
-                                // start time nhỏ hơn hoặc bằng thời gian bắt đầu của giường cũ
-                                if (adoFinish >= _b.START_TIME || adoFinish >= _b.FINISH_TIME)
+                                var adoStart = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(ado.startTime);
+                                var adoFinish = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(ado.finishTime);
+                                //if((adoStart >= exitsBed.START_TIME && adoStart <= exitsBed.FINISH_TIME) 
+                                //    || (adoFinish >= exitsBed.START_TIME && adoFinish <= exitsBed.FINISH_TIME)
+                                //    )
+                                //{
+
+                                //}
+                                if (adoStart <= _b.START_TIME)
                                 {
-                                    // Bao trọn hoặc chồng lên thời gian giường cũ
-                                    if (adoFinish >= _b.FINISH_TIME)
+                                    // start time nhỏ hơn hoặc bằng thời gian bắt đầu của giường cũ
+                                    if (adoFinish >= _b.START_TIME || adoFinish >= _b.FINISH_TIME)
                                     {
-                                        // Nếu bao trọn cả khoảng thời gian của giường cũ
-                                        isWarning = true;
-                                    }
-                                    else
-                                    {
-                                        // Chỉ chồng lên thời gian bắt đầu
-                                        isWarning = true;
+                                        // Bao trọn hoặc chồng lên thời gian giường cũ
+                                        if (adoFinish >= _b.FINISH_TIME)
+                                        {
+                                            // Nếu bao trọn cả khoảng thời gian của giường cũ
+                                            isWarning = true;
+                                        }
+                                        else
+                                        {
+                                            // Chỉ chồng lên thời gian bắt đầu
+                                            isWarning = true;
+                                        }
                                     }
                                 }
-                            }
-                            else
-                            {
-                                // start time lớn hơn thời gian bắt đầu của giường cũ
-                                if (adoStart <= _b.FINISH_TIME)
+                                else
                                 {
-                                    // Chồng lên thời gian kết thúc của giường cũ
-                                    isWarning = true;
+                                    // start time lớn hơn thời gian bắt đầu của giường cũ
+                                    if (adoStart <= _b.FINISH_TIME)
+                                    {
+                                        // Chồng lên thời gian kết thúc của giường cũ
+                                        isWarning = true;
+                                    }
                                 }
                             }
                         }
                     }
-                }
-
-                if (isWarning)
-                {
-                    if (ado.startTime != null)
+                    Inventec.Common.Logging.LogSystem.Debug("CheckWarningTimeOverLap. 3");
+                    if (isWarning)
                     {
-                        ado.ErrorTypeStartTime = ErrorType.Warning;
-                        ado.ErrorMessageStartTime = ResourceMessage.ERROR_OVERLAP_START_TIME;
-                    }
-                    if (ado.finishTime != null)
-                    {
-                        ado.ErrorTypeFinishTime = ErrorType.Warning;
-                        ado.ErrorMessageFinishTime = ResourceMessage.ERROR_OVERLAP_FINISH_TIME;
+                        if (ado.startTime != null)
+                        {
+                            ado.ErrorTypeStartTime = ErrorType.Warning;
+                            ado.ErrorMessageStartTime = ResourceMessage.ERROR_OVERLAP_START_TIME;
+                        }
+                        if (ado.finishTime != null)
+                        {
+                            ado.ErrorTypeFinishTime = ErrorType.Warning;
+                            ado.ErrorMessageFinishTime = ResourceMessage.ERROR_OVERLAP_FINISH_TIME;
+                        }
                     }
                 }
+                Inventec.Common.Logging.LogSystem.Debug("CheckWarningTimeOverLap. end");
 
 
             }
@@ -1996,16 +2039,16 @@ namespace HIS.Desktop.Plugins.BedHistory
                             {
                                 foreach (var item in this.bedLogChecks)
                                 {
-                                    
+
                                     item.IsChecked = true;
                                     CheckErrorDataBedLog(item);
-                                    if (item.Error 
-                                           || !string.IsNullOrEmpty(item.ErrorMessageStartTime) 
-                                           || ! string.IsNullOrEmpty(item.ErrorMessageFinishTime)
+                                    if (item.Error
+                                           || !string.IsNullOrEmpty(item.ErrorMessageStartTime)
+                                           || !string.IsNullOrEmpty(item.ErrorMessageFinishTime)
                                            || !string.IsNullOrEmpty(item.ErrorMessageBebServiceTypeId)
                                            || !string.IsNullOrEmpty(item.ErrorMessageBedId)
                                            || !string.IsNullOrEmpty(item.ErrorMessagePatientTypeId)
-                                           || !string.IsNullOrEmpty(item.ErrorMessagePrimaryPatientTypeId) 
+                                           || !string.IsNullOrEmpty(item.ErrorMessagePrimaryPatientTypeId)
                                            || item.ErrorTypeStartTime == ErrorType.Warning
                                            || item.ErrorTypeFinishTime == ErrorType.Warning)
                                     {
@@ -2108,7 +2151,7 @@ namespace HIS.Desktop.Plugins.BedHistory
                     MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
                 {
                     bool IsRemoveShareCount = false;
-                    
+
                     if (deleteVhisBedLog.ID > 0)
                     {
                         if (IsShareBed == "1" && deleteVhisBedLog.SHARE_COUNT > 1 && DevExpress.XtraEditors.XtraMessageBox.Show("Giường hiện tại có nằm ghép. Bạn có muốn cập nhật thông tin nằm ghép của bệnh nhân khác không?", ResourceMessage.ThongBao, MessageBoxButtons.YesNo) == DialogResult.Yes)
@@ -2138,9 +2181,9 @@ namespace HIS.Desktop.Plugins.BedHistory
                             RemoveShareCount(lstbedLogIds);
                         }
                     }
-                    
-                    
-                    
+
+
+
 
                     if (bedLogChecks == null || bedLogChecks.Count <= 0)
                     {
@@ -2497,7 +2540,7 @@ namespace HIS.Desktop.Plugins.BedHistory
                                     cbo.ShowPopup();
                                     return;
                                 }
-                                
+
                             }
                             else
                             {
@@ -3239,7 +3282,7 @@ namespace HIS.Desktop.Plugins.BedHistory
                                 cbo.ShowPopup();
                                 return;
                             }
-                            
+
                         }
                         else
                         {
@@ -4281,7 +4324,7 @@ namespace HIS.Desktop.Plugins.BedHistory
             {
                 if (bebHistoryAdos != null && bebHistoryAdos.Count > 0)
                 {
-                    foreach(var bed in bebHistoryAdos)
+                    foreach (var bed in bebHistoryAdos)
                     {
                         ADO.HisBedServiceTypeADO bedServiceType = new ADO.HisBedServiceTypeADO();
                         decimal tongSoNgayGiuong = 0;
@@ -4322,7 +4365,7 @@ namespace HIS.Desktop.Plugins.BedHistory
                             bedServiceType.IsSplitDayOrResult = true;
                         result.Add(bedServiceType);
                     }
-                    
+
                 }
             }
             catch (Exception ex)

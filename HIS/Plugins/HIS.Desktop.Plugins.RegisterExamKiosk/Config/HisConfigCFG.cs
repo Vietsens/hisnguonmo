@@ -40,6 +40,7 @@ namespace HIS.Desktop.Plugins.RegisterExamKiosk.Config
         public const string CONFIG_KEY__DoNotAllowToEditDefaultRouteType = "HIS.Desktop.Plugins.RegisterExamKiosk.DoNotAllowToEditDefaultRouteType";
         public const string HIS_CAREER_CODE__BASE = "EXE.HIS_CAREER_CODE__BASE";
         public const string NATIONAL_CODE__BASE = "EXE.NATIONAL_CODE_BASE";
+        public const string ETHNIC_CODE__BASE = "EXE.ETHNIC_CODE_BASE";
         public const string CONFIG_KEY__IdentityNumberOption = "HIS.Desktop.Plugins.RegisterExamKiosk.IdentityNumberOption";
 
         private const string CONFIG_KEY__USER_NAME = "MOS.VVN.USER_NAME";

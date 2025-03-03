@@ -38,7 +38,7 @@
     <Reference Include="DevExpress.XtraGrid.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
     <Reference Include="DevExpress.XtraLayout.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
     <Reference Include="HIS.Desktop.Common">
-      <HintPath>..\..\..\..\LIB\HIS\ReferencedAssemblies\HIS.Desktop.Common.dll</HintPath>
+      <HintPath>..\..\..\..\lib_1\HIS\HIS.Desktop.Common\HIS.Desktop.Common.dll</HintPath>
     </Reference>
     <Reference Include="IMSys.DbConfig.HIS_RS">
       <HintPath>..\..\..\..\LIB\MOS\IMSys.DbConfig.HIS_RS.dll</HintPath>

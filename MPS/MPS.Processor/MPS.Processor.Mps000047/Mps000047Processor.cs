@@ -88,6 +88,12 @@ namespace MPS.Processor.Mps000047
                     {
                         System.Reflection.PropertyInfo piMedicineTypeName = typeof(ExpMestAggregatePrintByPageADO).GetProperty("MEDICINE_TYPE_NAME" + i);
                         singleValueDictionary.Add("MEDICINE_TYPE_NAME" + i, piMedicineTypeName.GetValue(item));
+
+                        System.Reflection.PropertyInfo piConCenTra = typeof(ExpMestAggregatePrintByPageADO).GetProperty("CONCENTRA" + i);
+                        singleValueDictionary.Add("CONCENTRA" + i, piConCenTra.GetValue(item));
+
+                        System.Reflection.PropertyInfo piMedicineUF = typeof(ExpMestAggregatePrintByPageADO).GetProperty("MEDICINE_USE_FORM_NAME" + i);
+                        singleValueDictionary.Add("MEDICINE_USE_FORM_NAME" + i, piMedicineUF.GetValue(item));
                     }
 
 
@@ -111,6 +117,11 @@ namespace MPS.Processor.Mps000047
                     item.ExpMestAggregatePrintADOs = item.ExpMestAggregatePrintADOs.OrderBy(o => o.PATIENT_CODE).ToList();
 
                     objectTag.AddObjectData(store, "Patients", item.ExpMestAggregatePrintADOs);
+
+
+                    item.ExpMestAggregateReqRoomPrintADOs = item.ExpMestAggregateReqRoomPrintADOs.OrderBy(o => o.PATIENT_CODE).ToList();
+
+                    objectTag.AddObjectData(store, "PatientRooms", item.ExpMestAggregateReqRoomPrintADOs);
                     result = true;
                 }
             }
@@ -138,7 +149,36 @@ namespace MPS.Processor.Mps000047
 
             return result;
         }
+        string GetMediUseForm(long serviceId)
+        {
+            string result = "";
+            try
+            {
+                result = rdo.MedicineExpmestTypeADOs.FirstOrDefault(o => o.SERVICE_ID == serviceId).MEDICINE_USE_FORM_NAME;
+            }
+            catch (Exception ex)
+            {
+                result = "";
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
 
+            return result;
+        }
+        string GetConCenTra(long serviceId)
+        {
+            string result = "";
+            try
+            {
+                result = rdo.MedicineExpmestTypeADOs.FirstOrDefault(o => o.SERVICE_ID == serviceId).CONCENTRA;
+            }
+            catch (Exception ex)
+            {
+                result = "";
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+
+            return result;
+        }
 //        Các bước lấy ra dữ liệu buồng như sau:
 //- B1: Lấy ra dữ liệu buồng của hồ sơ điều trị đó và tương ứng với khoa (V_HIS_TREATMENT_BED_ROOM có DEPARTMENT_ID tương ứng với khoa, TREATMENT_ID tương ứng với hồ sơ điều trị)
 //- B2: Kiểm tra, trong dữ liệu buồng có được ở B1, nếu tồn tại V_HIS_TREATMENT_BED_ROOM có REMOVE_TIME null thì lấy V_HIS_TREATMENT_BED_ROOM có ADD_TIME lớn nhất mà REMOVE_TIME null
@@ -235,7 +275,6 @@ namespace MPS.Processor.Mps000047
                 List<long> distinctDates = medicineExpmestTypeADOs.OrderBy(o => o.MEDICINE_TYPE_NAME)
                     .Select(o => o.SERVICE_ID)
                     .Distinct().ToList();
-                var trainGroups = medicineExpmestTypeADOs.GroupBy(o => new { o.Patient, o.TreatmentId });
                 int index = 0;
                 while (index < distinctDates.Count)
                 {
@@ -251,9 +290,18 @@ namespace MPS.Processor.Mps000047
                         if (piMedicineTypeId != null)
                             piMedicineTypeId.SetValue(sdo, index < distinctDates.Count ? distinctDates[index] : 0);
 
+                        System.Reflection.PropertyInfo piConCenTra = typeof(ExpMestAggregatePrintByPageADO).GetProperty("CONCENTRA" + i);
+                        if (piConCenTra != null)
+                            piConCenTra.SetValue(sdo, index < distinctDates.Count ? GetConCenTra(distinctDates[index]) : "");
+
+                        System.Reflection.PropertyInfo piMedicineUF = typeof(ExpMestAggregatePrintByPageADO).GetProperty("MEDICINE_USE_FORM_NAME" + i);
+                        if (piMedicineUF != null)
+                            piMedicineUF.SetValue(sdo, index < distinctDates.Count ? GetMediUseForm(distinctDates[index]) : "");
+
                         index++;
                     }
 
+                    var trainGroups = medicineExpmestTypeADOs.GroupBy(o => new { o.Patient, o.TreatmentId });
                     List<ExpMestAggregatePrintADO> trainPrints = new List<ExpMestAggregatePrintADO>();
                     foreach (var group in trainGroups)
                     {
@@ -291,6 +339,46 @@ namespace MPS.Processor.Mps000047
                         trainPrints.Add(trainPrint);
                     }
                     sdo.ExpMestAggregatePrintADOs = trainPrints.OrderBy(o => o.BED_ROOM_NAMEs).ThenBy(o => o.VIR_PATIENT_NAME).ToList();
+
+                    var trainGroupsRoom = medicineExpmestTypeADOs.GroupBy(o => new { o.Patient, o.TreatmentId,o.REQ_ROOM_ID });
+                    List<ExpMestAggregatePrintADO> trainPrintsRoom = new List<ExpMestAggregatePrintADO>();
+                    foreach (var group in trainGroupsRoom)
+                    {
+                        ExpMestAggregatePrintADO trainPrint = new ExpMestAggregatePrintADO();
+                        List<Mps000047ADO> trains = group.ToList();
+
+                        if (group.Key.Patient != null)
+                        {
+                            trainPrint.PATIENT_ID = group.Key.Patient.ID;
+                            trainPrint.PATIENT_CODE = group.Key.Patient.PATIENT_CODE;
+                            trainPrint.VIR_PATIENT_NAME = group.Key.Patient.VIR_PATIENT_NAME;
+                            trainPrint.DOB = group.Key.Patient.DOB;
+                            trainPrint.GENDER_NAME = group.Key.Patient.GENDER_NAME;
+                            trainPrint.AGE = AgeUtil.CalculateFullAge(group.Key.Patient.DOB);
+                            trainPrint.TREATMENT_CODE = group.FirstOrDefault().TREATMENT_CODE;
+                        }
+                        trainPrint.BED_ROOM_NAMEs = GetBedRoomByPatient(group.Key.TreatmentId);
+                        trainPrint.REQ_ROOM_NAME = group.FirstOrDefault().REQ_ROOM_NAME;
+                        string bedCode = "", bedName = "";
+                        GetBedByTreatment(group.Key.TreatmentId, ref bedCode, ref bedName);
+                        trainPrint.BED_CODE = bedCode;
+                        trainPrint.BED_NAME = bedName;
+
+                        for (int i = 1; i <= rdo.keyColumnSize; i++)
+                        {
+                            System.Reflection.PropertyInfo piServiceId = typeof(ExpMestAggregatePrintByPageADO).GetProperty("SERVICE_ID" + i);
+                            System.Reflection.PropertyInfo piAmount = typeof(ExpMestAggregatePrintADO).GetProperty("AMOUNT" + i);
+                            if (piServiceId != null && piAmount != null)
+                            {
+                                decimal? amount = trains.Where(o => o.SERVICE_ID == (long)(piServiceId.GetValue(sdo))).Sum(o => o.AMOUNT);
+                                amount = (amount == 0 ? null : amount);
+                                piAmount.SetValue(trainPrint, amount);
+                            }
+                        }
+
+                        trainPrintsRoom.Add(trainPrint);
+                    }
+                    sdo.ExpMestAggregateReqRoomPrintADOs = trainPrintsRoom.OrderBy(o => o.BED_ROOM_NAMEs).ThenBy(o => o.VIR_PATIENT_NAME).ToList();
                     result.Add(sdo);
                 }
             }
@@ -305,6 +393,8 @@ namespace MPS.Processor.Mps000047
                 {
                     var minTime = rdo._ExpMests_Print.Min(p => p.TDL_INTRUCTION_TIME ?? 0);
                     var maxTime = rdo._ExpMests_Print.Max(p => p.TDL_INTRUCTION_TIME ?? 0);
+                    SetSingleKey(new KeyValue(Mps000047ExtendSingleKey.MIN_USE_TIME, (rdo._ExpMests_Print.Min(p => p.TDL_USE_TIME ?? 0))));
+                    SetSingleKey(new KeyValue(Mps000047ExtendSingleKey.MAX_USE_TIME, (rdo._ExpMests_Print.Max(p => p.TDL_USE_TIME ?? 0))));
                     SetSingleKey(new KeyValue(Mps000047ExtendSingleKey.MIN_INTRUCTION_DATE_DISPLAY, Inventec.Common.DateTime.Convert.TimeNumberToDateString(minTime)));
                     SetSingleKey(new KeyValue(Mps000047ExtendSingleKey.MIN_INTRUCTION_TIME_DISPLAY, Inventec.Common.DateTime.Convert.TimeNumberToTimeString(minTime)));
                     SetSingleKey(new KeyValue(Mps000047ExtendSingleKey.MIN_INTRUCTION_DATE_SEPARATE_DISPLAY, Inventec.Common.DateTime.Convert.TimeNumberToDateStringSeparateString(minTime)));
@@ -319,6 +409,8 @@ namespace MPS.Processor.Mps000047
                 SetSingleKey(new KeyValue(Mps000047ExtendSingleKey.CREATE_TIME_STR, Inventec.Common.DateTime.Convert.TimeNumberToTimeStringWithoutSecond(rdo.AggrExpMest.CREATE_TIME ?? 0)));
                 SetSingleKey(new KeyValue(Mps000047ExtendSingleKey.CREATE_DATE_STR, Inventec.Common.DateTime.Convert.TimeNumberToDateString(rdo.AggrExpMest.CREATE_TIME ?? 0)));
                 SetSingleKey(new KeyValue(Mps000047ExtendSingleKey.CREATE_DATE_SEPARATE_STR, Inventec.Common.DateTime.Convert.TimeNumberToDateStringSeparateString(rdo.AggrExpMest.CREATE_TIME ?? 0)));
+
+                SetSingleKey(new KeyValue(Mps000047ExtendSingleKey.TimeFilterOption, rdo.TimeFilterOption ));
             }
             catch (Exception ex)
             {

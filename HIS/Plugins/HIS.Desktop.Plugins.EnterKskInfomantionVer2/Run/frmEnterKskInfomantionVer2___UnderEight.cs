@@ -188,7 +188,11 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                         txtExamRespiratory3.Text = currentServiceReq.PART_EXAM_RESPIRATORY;
                         txtExamDigestion3.Text = currentServiceReq.PART_EXAM_DIGESTION;
                         txtExamKidneyUrology3.Text = currentServiceReq.PART_EXAM_KIDNEY_UROLOGY;
-                        txtExamNeuroMental3.Text = currentServiceReq.PART_EXAM_NEUROLOGICAL + " - " + currentServiceReq.PART_EXAM_MENTAL;
+                        txtExamNeuroMental3.Text = "";
+                        if (!string.IsNullOrEmpty(currentServiceReq.PART_EXAM_NEUROLOGICAL))
+                            txtExamNeuroMental3.Text = currentServiceReq.PART_EXAM_NEUROLOGICAL;
+                        if (!string.IsNullOrEmpty(currentServiceReq.PART_EXAM_MENTAL))
+                            txtExamNeuroMental3.Text += " - " + currentServiceReq.PART_EXAM_MENTAL;
 
                         txtExamEyeSightRight3.Text = currentServiceReq.PART_EXAM_EYESIGHT_RIGHT;
                         txtExamEyeSightLeft3.Text = currentServiceReq.PART_EXAM_EYESIGHT_LEFT;
@@ -450,35 +454,35 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                 obj.MEDICINE_USING = txtMedicineUsing3.Text;
                 obj.MATERNITY_HISTORY = txtMarternityHistory3.Text;
                 //DHST
-                obj.DHST_RANK = cboDhstRank3.EditValue != null ? Int64.Parse(cboDhstRank3.EditValue.ToString()) : 0;
+                obj.DHST_RANK = cboDhstRank3.EditValue != null ? (long?)Int64.Parse(cboDhstRank3.EditValue.ToString()) : null;
                 obj.EXAM_CIRCULATION = txtExamCirculation3.Text;
-                obj.EXAM_CIRCULATION_RANK = cboExamCirculationRank3.EditValue != null ? Int64.Parse(cboExamCirculationRank3.EditValue.ToString()) : 0;
+                obj.EXAM_CIRCULATION_RANK = cboExamCirculationRank3.EditValue != null ? (long?)Int64.Parse(cboExamCirculationRank3.EditValue.ToString()) : null;
                 obj.EXAM_RESPIRATORY = txtExamRespiratory3.Text;
-                obj.EXAM_RESPIRATORY_RANK = cboExamRespiratoryRank3.EditValue != null ? Int64.Parse(cboExamRespiratoryRank3.EditValue.ToString()) : 0;
+                obj.EXAM_RESPIRATORY_RANK = cboExamRespiratoryRank3.EditValue != null ? (long?)Int64.Parse(cboExamRespiratoryRank3.EditValue.ToString()) : null;
                 obj.EXAM_DIGESTION = txtExamDigestion3.Text;
-                obj.EXAM_DIGESTION_RANK = cboExamDigestionRank3.EditValue != null ? Int64.Parse(cboExamDigestionRank3.EditValue.ToString()) : 0;
+                obj.EXAM_DIGESTION_RANK = cboExamDigestionRank3.EditValue != null ? (long?)Int64.Parse(cboExamDigestionRank3.EditValue.ToString()) : null;
                 obj.EXAM_KIDNEY_UROLOGY = txtExamKidneyUrology3.Text;
-                obj.EXAM_KIDNEY_UROLOGY_RANK = cboExamKidneyUrologyRank3.EditValue != null ? Int64.Parse(cboExamKidneyUrologyRank3.EditValue.ToString()) : 0;
+                obj.EXAM_KIDNEY_UROLOGY_RANK = cboExamKidneyUrologyRank3.EditValue != null ? (long?)Int64.Parse(cboExamKidneyUrologyRank3.EditValue.ToString()) : null;
                 obj.EXAM_NEURO_MENTAL = txtExamNeuroMental3.Text;
-                obj.EXAM_NEURO_MENTAL_RANK = cboExamNeuroMental3.EditValue != null ? Int64.Parse(cboExamNeuroMental3.EditValue.ToString()) : 0;
+                obj.EXAM_NEURO_MENTAL_RANK = cboExamNeuroMental3.EditValue != null ? (long?)Int64.Parse(cboExamNeuroMental3.EditValue.ToString()) : null;
                 obj.EXAM_CLINICAL_OTHER = txtExamClinicalOther3.Text;
-                obj.EXAM_CLINICAL_OTHER_RANK = cboExamClinicalOther3.EditValue != null ? Int64.Parse(cboExamClinicalOther3.EditValue.ToString()) : 0;
+                obj.EXAM_CLINICAL_OTHER_RANK = cboExamClinicalOther3.EditValue != null ? (long?)Int64.Parse(cboExamClinicalOther3.EditValue.ToString()) : null;
                 obj.EXAM_EYESIGHT_RIGHT = txtExamEyeSightRight3.Text;
                 obj.EXAM_EYESIGHT_LEFT = txtExamEyeSightLeft3.Text;
                 obj.EXAM_EYESIGHT_GLASS_RIGHT = txtExamEyeSightGlassRight3.Text;
                 obj.EXAM_EYESIGHT_GLASS_LEFT = txtExamEyeSightGlassLeft3.Text;
                 obj.EXAM_EYE_DISEASE = txtExamEyeDisease3.Text;
-                obj.EXAM_EYE_RANK = cboExamEyeRank3.EditValue != null ? Int64.Parse(cboExamEyeRank3.EditValue.ToString()) : 0;
+                obj.EXAM_EYE_RANK = cboExamEyeRank3.EditValue != null ? (long?)Int64.Parse(cboExamEyeRank3.EditValue.ToString()) : null;
                 obj.EXAM_ENT_LEFT_NORMAL = txtExamEntLeftNormal3.Text;
                 obj.EXAM_ENT_LEFT_WHISPER = txtExamEntLeftWhisper3.Text;
                 obj.EXAM_ENT_RIGHT_NORMAL = txtExamEntRightNomal3.Text;
                 obj.EXAM_ENT_RIGHT_WHISPER = txtExamEntRightWhisper3.Text;
                 obj.EXAM_ENT_DISEASE = txtExamEntDisease3.Text;
-                obj.EXAM_ENT_RANK = cboExamEntDiseaseRank3.EditValue != null ? Int64.Parse(cboExamEntDiseaseRank3.EditValue.ToString()) : 0;
+                obj.EXAM_ENT_RANK = cboExamEntDiseaseRank3.EditValue != null ? (long?)Int64.Parse(cboExamEntDiseaseRank3.EditValue.ToString()) : null;
                 obj.EXAM_STOMATOLOGY_UPPER = txtExamStomatologyUpper3.Text;
                 obj.EXAM_STOMATOLOGY_LOWER = txtExamStomatologyLower3.Text;
                 obj.EXAM_STOMATOLOGY_DISEASE = txtExamStomatologyDisease3.Text;
-                obj.EXAM_STOMATOLOGY_RANK = cboExamStomatologyRank3.EditValue != null ? Int64.Parse(cboExamStomatologyRank3.EditValue.ToString()) : 0;
+                obj.EXAM_STOMATOLOGY_RANK = cboExamStomatologyRank3.EditValue != null ? (long?)Int64.Parse(cboExamStomatologyRank3.EditValue.ToString()) : null;
                 obj.RESULT_SUBCLINICAL = txtResultSubclinical3.Text;
                 obj.NORMAL_HEALTH = txtNormalHealth3.Text;
                 obj.PROBLEM_HEALTH = txtProblemHealth3.Text;

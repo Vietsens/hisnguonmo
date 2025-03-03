@@ -70,6 +70,10 @@ namespace HIS.Desktop.Plugins.TransactionBill
                     {
                         txtBuyerAccountNumber.Text = data.TDL_PATIENT_ACCOUNT_NUMBER ?? "";
                         txtBuyerAddress.Text = data.TDL_PATIENT_ADDRESS ?? "";
+                        if (chkAddressBhyt.Checked && resultPatientType != null && !string.IsNullOrEmpty(resultPatientType.ADDRESS))
+                        {
+                            txtBuyerAddress.Text = resultPatientType.ADDRESS;
+                        }
                         txtBuyerName.Text = data.TDL_PATIENT_NAME ?? "";
                         txtBuyerTaxCode.Text = data.TDL_PATIENT_TAX_CODE ?? "";
                         if (data.TDL_PATIENT_WORK_PLACE_ID.HasValue)

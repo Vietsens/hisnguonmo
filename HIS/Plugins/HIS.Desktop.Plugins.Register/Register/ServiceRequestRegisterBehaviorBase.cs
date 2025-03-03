@@ -405,7 +405,7 @@ namespace HIS.Desktop.Plugins.Register.Register
                 int idx = this.patientName.LastIndexOf(" ");
                 this.patientProfile.HisPatient.FIRST_NAME = (idx > -1 ? this.patientName.Substring(idx).Trim() : this.patientName);
                 this.patientProfile.HisPatient.LAST_NAME = (idx > -1 ? this.patientName.Substring(0, idx).Trim() : "");
-
+                this.patientProfile.HisPatient.BRANCH_ID = WorkPlace.GetBranchId();
                 this.patientProfile.HisPatient.PROVINCE_CODE = this.provinceCode;
                 this.patientProfile.HisPatient.DOB = this.dob;
                 this.patientProfile.HisPatient.GENDER_ID = this.GenderId;

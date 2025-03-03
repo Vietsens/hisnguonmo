@@ -916,6 +916,7 @@ namespace HIS.Desktop.Plugins.Register.Run
                 //Lay gia tri ma nhap vao
                 if (data != null)
                 {
+                    WaitingManager.Show();
                     CccdCardData cccdCard = new CccdCardData();
                     this.ResultDataADO = null;
                     this._HeinCardData = null;
@@ -977,7 +978,6 @@ namespace HIS.Desktop.Plugins.Register.Run
                             FillDataAfterFindQrCodeNoExistsCard(_HeinCardData);
                     }
                     //this.CheckheinCardFromHeinInsuranceApi(this._HeinCardData);
-                    WaitingManager.Show();
                     if (!(data is CccdCardData))
                     {
                         HeinGOVManager heinGOVManager = new HeinGOVManager(ResourceMessage.GoiSangCongBHXHTraVeMaLoi);
@@ -991,7 +991,7 @@ namespace HIS.Desktop.Plugins.Register.Run
 
                     }
                     mainHeinProcessor.SetResultDataADOBhyt(ucHeinBHYT, this.ResultDataADO);
-                    if (this.ResultDataADO != null)
+                    if (this.ResultDataADO != null && this.ResultDataADO.ResultHistoryLDO != null)
                     {
                         //Trường hợp tìm kiếm BN theo qrocde & BN có số thẻ bhyt mới, cần tìm kiếm BN theo số thẻ mới này & người dùng chọn lấy thông tin thẻ mới => tìm kiếm Bn theo số thẻ mới
                         if (!String.IsNullOrEmpty(this._HeinCardData.HeinCardNumber))

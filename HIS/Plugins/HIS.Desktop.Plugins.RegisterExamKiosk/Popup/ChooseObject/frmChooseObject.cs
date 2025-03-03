@@ -38,18 +38,22 @@ namespace HIS.Desktop.Plugins.RegisterExamKiosk.Popup.ChooseObject
     {
         HIS.Desktop.Common.DelegateSelectData registerData;
         string cancelId = "-1";
-
+        HIS.Desktop.Common.DelegateCloseForm_Uc DelegateClose;
+        System.Threading.Thread CloseThread;
         public frmChooseObject()
         {
             InitializeComponent();
         }
 
-        public frmChooseObject(HIS.Desktop.Common.DelegateSelectData _registerData)
+        public frmChooseObject(HIS.Desktop.Common.DelegateSelectData _registerData, HIS.Desktop.Common.DelegateCloseForm_Uc closeForm_Uc)
         {
             InitializeComponent();
             try
             {
                 this.registerData = _registerData;
+                this.DelegateClose = closeForm_Uc;
+                CloseThread = new System.Threading.Thread(ClosingForm);
+                CloseThread.Start();
                 string iconPath = System.IO.Path.Combine(HIS.Desktop.LocalStorage.Location.ApplicationStoreLocation.ApplicationStartupPath, System.Configuration.ConfigurationSettings.AppSettings["Inventec.Desktop.Icon"]);
                 this.Icon = Icon.ExtractAssociatedIcon(iconPath);
             }
@@ -87,6 +91,7 @@ namespace HIS.Desktop.Plugins.RegisterExamKiosk.Popup.ChooseObject
         {
             try
             {
+                stopThread = true;
                 var hisPatientType = BackendDataWorker.Get<HIS_PATIENT_TYPE>().Where(o => o.IS_ACTIVE == 1 && o.IS_NOT_USE_FOR_PATIENT != 1 && o.ID != HisConfigCFG.PATIENT_TYPE_ID__BHYT && o.IS_NOT_FOR_KIOSK != 1 && o.IS_NOT_USE_FOR_PAYMENT != 1).OrderByDescending(o => o.ID).ToList();
                 for (int i = 0; i < hisPatientType.Count; i++)
                 {
@@ -128,9 +133,13 @@ namespace HIS.Desktop.Plugins.RegisterExamKiosk.Popup.ChooseObject
                 tileCelcel.Tag = this.cancelId;
                 tileCelcel.AppearanceItem.Normal.ForeColor = Color.White;
                 tileGroup1.Items.Add(tileCelcel);
+                stopThread = false;
+                ResetLoopCount();
             }
             catch (Exception ex)
             {
+                stopThread = false;
+                ResetLoopCount();
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
@@ -139,6 +148,7 @@ namespace HIS.Desktop.Plugins.RegisterExamKiosk.Popup.ChooseObject
         {
             try
             {
+                stopThread = true;
                 if (e.Item.Tag.ToString() != this.cancelId)
                 {
                     if (this.registerData != null)
@@ -146,9 +156,13 @@ namespace HIS.Desktop.Plugins.RegisterExamKiosk.Popup.ChooseObject
                     Inventec.Common.Logging.LogSystem.Debug("__________________*****" + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => e.Item.Tag), e.Item.Tag));
                 }
                 this.Close();
+                stopThread = false;
+                ResetLoopCount();
             }
             catch (Exception ex)
             {
+                stopThread = false;
+                ResetLoopCount();
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
@@ -157,14 +171,19 @@ namespace HIS.Desktop.Plugins.RegisterExamKiosk.Popup.ChooseObject
         {
             try
             {
+                stopThread = true;
                 var data = sender as Button;
                 this.Close();
                 if (this.registerData != null)
                     this.registerData(data.Tag);
                 Inventec.Common.Logging.LogSystem.Debug("__________________*****" + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => data.Tag), data.Tag));
+                stopThread = false;
+                ResetLoopCount();
             }
             catch (Exception ex)
             {
+                stopThread = false;
+                ResetLoopCount();
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
@@ -193,6 +212,56 @@ namespace HIS.Desktop.Plugins.RegisterExamKiosk.Popup.ChooseObject
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+        public bool stopThread = false;
+        private void ClosingForm()
+        {
+            try
+            {
+                if (HisConfigCFG.timeWaitingMilisecond > 0)
+                {
+                    bool time_out = false;
+                    ResetLoopCount();
+                    while (!time_out)
+                    {
+                        if (stopThread)
+                        {
+                            ResetLoopCount();
+                        }
+                        if (loopCount <= 0)
+                        {
+                            time_out = true;
+                        }
+
+                        System.Threading.Thread.Sleep(50);
+                        loopCount--;
+                    }
+
+                    this.Invoke(new MethodInvoker(delegate () { this.Close(); }));
+                    if (DelegateClose != null)
+                    {
+                        DelegateClose(null);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+        int loopCount = HisConfigCFG.timeWaitingMilisecond / 50;
+        private void ResetLoopCount()
+        {
+            try
+            {
+                this.loopCount = HisConfigCFG.timeWaitingMilisecond / 50;
+
+                Inventec.Common.Logging.LogSystem.Info("ResetLoopCount");
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
     }

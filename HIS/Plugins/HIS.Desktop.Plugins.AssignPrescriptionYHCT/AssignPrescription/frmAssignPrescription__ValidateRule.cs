@@ -24,6 +24,7 @@ using HIS.Desktop.LocalStorage.LocalData;
 using HIS.Desktop.Plugins.AssignPrescriptionYHCT.ADO;
 using HIS.Desktop.Plugins.AssignPrescriptionYHCT.Config;
 using HIS.Desktop.Plugins.AssignPrescriptionYHCT.Resources;
+using HIS.Desktop.Plugins.AssignPrescriptionYHCT.ValidateRule;
 using Inventec.Core;
 using Inventec.Desktop.Common.Controls.ValidationRule;
 using Inventec.Desktop.Common.LibraryMessage;
@@ -108,13 +109,33 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
                     this.lciExpMestReason.AppearanceItemCaption.ForeColor = System.Drawing.Color.Maroon;
                     //this.cboExpMestReason.Properties.Buttons[1].Visible = false;
                 }
+
+                this.dxValidationProviderControl.SetValidationRule(txtAdvise, null);
+                this.ValidMaxLengthControl(this.txtAdvise, false, 1024);
+                ValidateHtu();
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
+        private void ValidMaxLengthControl(BaseEdit txt, bool IsRequired, int maxlength)
+        {
 
+            try
+            {
+                ValidateMaxLength valid = new ValidateMaxLength();
+                valid.maxLength = maxlength;
+                valid.textEdit = txt;
+                valid.IsRequired = IsRequired;
+                this.dxValidationProviderControl.SetValidationRule(txt, valid);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+
+        }
         bool ValidExpMestReason()
         {
             bool valid = true;
@@ -148,7 +169,14 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
             }
             return valid;
         }
-
+        private void ValidateHtu()
+        {
+            ControlMaxLengthValidationRule validate = new ControlMaxLengthValidationRule();
+            validate.editor = memHtu;
+            validate.maxLength = 1024;
+            validate.ErrorType = DevExpress.XtraEditors.DXErrorProvider.ErrorType.Warning;
+            this.dxValidProviderBoXung.SetValidationRule(memHtu, validate);
+        }
         private void ValidateTutorial()
         {
             ControlMaxLengthValidationRule validate = new ControlMaxLengthValidationRule();
@@ -157,6 +185,15 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
             validate.IsRequired = true;
             validate.ErrorType = DevExpress.XtraEditors.DXErrorProvider.ErrorType.Warning;
             this.dxValidProviderBoXung.SetValidationRule(txtHuongDan, validate);
+        }
+        private void ValidateMaxLengthControl(BaseControl control, bool IsRequire, int maxLength)
+        {
+            ControlMaxLengthValidationRule validate = new ControlMaxLengthValidationRule();
+            validate.editor = control;
+            validate.maxLength = maxLength;
+            validate.IsRequired = IsRequire;
+            validate.ErrorType = DevExpress.XtraEditors.DXErrorProvider.ErrorType.Warning;
+            this.dxValidationProviderControl.SetValidationRule(control, validate);
         }
 
         private void ValidateLookupWithTextEdit(LookUpEdit cbo, TextEdit textEdit, DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider dxValidationProviderEditor)

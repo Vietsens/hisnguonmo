@@ -45,6 +45,7 @@ namespace HIS.Desktop.Plugins.Transaction
         /// </summary>
         private async void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject1 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject2 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject3 = new DevExpress.Utils.SerializableAppearanceObject();
@@ -196,7 +197,7 @@ namespace HIS.Desktop.Plugins.Transaction
             this.repositoryItemImgIsLockFee = new DevExpress.XtraEditors.Repository.RepositoryItemImageEdit();
             this.repositoryItemImgIsLockHein = new DevExpress.XtraEditors.Repository.RepositoryItemImageEdit();
             this.ButtonEdit_TemporaryLock = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
-            this.toolTipController2 = new DevExpress.Utils.ToolTipController();
+            this.toolTipController2 = new DevExpress.Utils.ToolTipController(this.components);
             this.ucPaging1 = new Inventec.UC.Paging.UcPaging();
             this.txtFromNumber = new DevExpress.XtraEditors.SpinEdit();
             this.txtToNumber = new DevExpress.XtraEditors.SpinEdit();
@@ -264,11 +265,11 @@ namespace HIS.Desktop.Plugins.Transaction
             this.layoutControlItem9 = new DevExpress.XtraLayout.LayoutControlItem();
             this.lciChkIsInDebt = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem39 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.imageCollection1 = new DevExpress.Utils.ImageCollection();
-            this.dxValidationProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider();
-            this.imageCollection2 = new DevExpress.Utils.ImageCollection();
-            this.toolTipController1 = new DevExpress.Utils.ToolTipController();
-            this.timerInitForm = new System.Windows.Forms.Timer();
+            this.imageCollection1 = new DevExpress.Utils.ImageCollection(this.components);
+            this.dxValidationProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider(this.components);
+            this.imageCollection2 = new DevExpress.Utils.ImageCollection(this.components);
+            this.toolTipController1 = new DevExpress.Utils.ToolTipController(this.components);
+            this.timerInitForm = new System.Windows.Forms.Timer(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
             this.layoutControl1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.txtInCode.Properties)).BeginInit();
@@ -1309,14 +1310,14 @@ namespace HIS.Desktop.Plugins.Transaction
             // lblSTT
             // 
             this.lblSTT.ForeColor = System.Drawing.Color.Blue;
-            this.lblSTT.Location = new System.Drawing.Point(383, 548);
+            this.lblSTT.Location = new System.Drawing.Point(362, 548);
             this.lblSTT.Name = "lblSTT";
-            this.lblSTT.Size = new System.Drawing.Size(45, 22);
+            this.lblSTT.Size = new System.Drawing.Size(66, 22);
             this.lblSTT.TabIndex = 30;
             // 
             // btnRecallPatient
             // 
-            this.btnRecallPatient.Location = new System.Drawing.Point(303, 546);
+            this.btnRecallPatient.Location = new System.Drawing.Point(282, 546);
             this.btnRecallPatient.Name = "btnRecallPatient";
             this.btnRecallPatient.Size = new System.Drawing.Size(76, 26);
             this.btnRecallPatient.StyleController = this.layoutControl2;
@@ -1328,7 +1329,7 @@ namespace HIS.Desktop.Plugins.Transaction
             // 
             this.btnCallPatient.Location = new System.Drawing.Point(218, 546);
             this.btnCallPatient.Name = "btnCallPatient";
-            this.btnCallPatient.Size = new System.Drawing.Size(81, 26);
+            this.btnCallPatient.Size = new System.Drawing.Size(60, 26);
             this.btnCallPatient.StyleController = this.layoutControl2;
             this.btnCallPatient.TabIndex = 28;
             this.btnCallPatient.Text = "Gọi (F8)";
@@ -1576,7 +1577,7 @@ namespace HIS.Desktop.Plugins.Transaction
             this.gridColumn_Treatment_HeinCardNumber.Caption = "Số thẻ BHYT";
             this.gridColumn_Treatment_HeinCardNumber.FieldName = "TDL_HEIN_CARD_NUMBER";
             this.gridColumn_Treatment_HeinCardNumber.Name = "gridColumn_Treatment_HeinCardNumber";
-            this.gridColumn_Treatment_HeinCardNumber.OptionsColumn.AllowEdit = false;
+            this.gridColumn_Treatment_HeinCardNumber.OptionsColumn.ReadOnly = true;
             this.gridColumn_Treatment_HeinCardNumber.Visible = true;
             this.gridColumn_Treatment_HeinCardNumber.VisibleIndex = 10;
             this.gridColumn_Treatment_HeinCardNumber.Width = 120;
@@ -1862,7 +1863,7 @@ namespace HIS.Desktop.Plugins.Transaction
             this.layoutControlItem33.MinSize = new System.Drawing.Size(51, 26);
             this.layoutControlItem33.Name = "layoutControlItem33";
             this.layoutControlItem33.Padding = new DevExpress.XtraLayout.Utils.Padding(2, 2, 0, 0);
-            this.layoutControlItem33.Size = new System.Drawing.Size(85, 26);
+            this.layoutControlItem33.Size = new System.Drawing.Size(64, 26);
             this.layoutControlItem33.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
             this.layoutControlItem33.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem33.TextVisible = false;
@@ -1870,7 +1871,7 @@ namespace HIS.Desktop.Plugins.Transaction
             // layoutControlItem34
             // 
             this.layoutControlItem34.Control = this.btnRecallPatient;
-            this.layoutControlItem34.Location = new System.Drawing.Point(301, 546);
+            this.layoutControlItem34.Location = new System.Drawing.Point(280, 546);
             this.layoutControlItem34.MaxSize = new System.Drawing.Size(0, 26);
             this.layoutControlItem34.MinSize = new System.Drawing.Size(80, 26);
             this.layoutControlItem34.Name = "layoutControlItem34";
@@ -1911,9 +1912,9 @@ namespace HIS.Desktop.Plugins.Transaction
             // layoutControlItem42
             // 
             this.layoutControlItem42.Control = this.lblSTT;
-            this.layoutControlItem42.Location = new System.Drawing.Point(381, 546);
+            this.layoutControlItem42.Location = new System.Drawing.Point(360, 546);
             this.layoutControlItem42.Name = "layoutControlItem42";
-            this.layoutControlItem42.Size = new System.Drawing.Size(49, 26);
+            this.layoutControlItem42.Size = new System.Drawing.Size(70, 26);
             this.layoutControlItem42.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem42.TextVisible = false;
             // 

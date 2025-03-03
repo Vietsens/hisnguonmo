@@ -1015,7 +1015,11 @@ namespace HIS.Desktop.Plugins.HisMediStock.HisMediStock
                 {
                     Parent.QR_CONFIG_JSON = txtTLQR.Text.Trim();
                 }
-                if (cboRooomTN.EditValue != null)
+                if (cboRooomTN.EditValue == null )
+                {
+                    Parent.DEFAULT_CASHIER_ROOM_ID = null;
+                }
+                else 
                 {
                     Parent.DEFAULT_CASHIER_ROOM_ID = Inventec.Common.TypeConvert.Parse.ToInt64(cboRooomTN.EditValue.ToString());
                 }

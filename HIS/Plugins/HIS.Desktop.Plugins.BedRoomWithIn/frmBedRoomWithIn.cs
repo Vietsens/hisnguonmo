@@ -196,9 +196,10 @@ namespace HIS.Desktop.Plugins.BedRoomWithIn
                 FillDataToControlForm();
                 SetEnableControlTime();
                 this.SpNamGhep.EditValue = null;
+                LoadDataReasonNt();
                 Validation();
                 loadDoctor();
-                LoadDataReasonNt();
+                
 
                 WaitingManager.Hide();
             }
@@ -247,8 +248,8 @@ namespace HIS.Desktop.Plugins.BedRoomWithIn
                 ValidationSingleControl(dtLogTime, dxValidationProvider2);
                 lciTime.AppearanceItemCaption.ForeColor = Color.Maroon;
                 ValidateGridLookupWithTextEdit(cboTreatmentType, txtTreatmentTypeCode, dxValidationProvider2);
-                
-                ValidationSingleControl(txtReasonNt, dxValidationProvider2);
+                if(this.lciReasonNt.Visibility == DevExpress.XtraLayout.Utils.LayoutVisibility.Always)
+                    ValidationSingleControl(txtReasonNt, dxValidationProvider2);
                 layoutControlItem2.AppearanceItemCaption.ForeColor = Color.Maroon;
                 if (Config.IsRequiredChooseRoom == "1")
                 {
@@ -799,7 +800,13 @@ namespace HIS.Desktop.Plugins.BedRoomWithIn
                 {
                     this.currentTreatment = _Treatment;
                     LoadDataToComboPATIENT_CLASSIFY(cboPATIENT_CLASSIFY, null);
-                    cboPatientReceive.EditValue = _Treatment.TDL_PATIENT_TYPE_ID;
+                    if (_Treatment.TDL_PATIENT_TYPE_ID != null)
+                    {
+                        var ex = BackendDataWorker.Get<HIS_PATIENT_TYPE>().FirstOrDefault(s => s.ID == _Treatment.TDL_PATIENT_TYPE_ID);
+                        cboPatientReceive.EditValue = _Treatment.TDL_PATIENT_TYPE_ID;
+                        txtPatientReceive.Text = ex == null ? "": ex.PATIENT_TYPE_CODE;
+                    }
+
                     lblSoVaoVien.Text = _Treatment.IN_CODE;
                     labelName.Text = _Treatment.TDL_PATIENT_NAME;
                     labelGender.Text = _Treatment.TDL_PATIENT_GENDER_NAME;
@@ -2363,6 +2370,11 @@ namespace HIS.Desktop.Plugins.BedRoomWithIn
             bool valid = true;
             try
             {
+                if (dataBedADOs == null)
+                {
+                    LogSystem.Debug("dataBedADOs is null");
+                    return valid;
+                }
                 HisBedADO row = (dataBedADOs ?? new List<HisBedADO>()).FirstOrDefault(o => o.ID == Inventec.Common.TypeConvert.Parse.ToInt64((cboBed.EditValue ?? "").ToString()));
                 if (row == null || (row != null && row.IS_BED_STRETCHER != 1))
                     return valid;

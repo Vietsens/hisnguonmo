@@ -764,10 +764,11 @@ namespace MPS.Processor.Mps000014
             }
         }
 
-        private void SetSingleKey()
+        private void SetSingleKey()    
         {
             try
             {
+                AddObjectKeyIntoListkey<MLCTADO>(rdo.mLCTADO, false);
                 if (rdo._PatyAlterBhyt != null && !String.IsNullOrWhiteSpace(rdo._PatyAlterBhyt.HEIN_CARD_NUMBER))
                 {
                     SetSingleKey(new KeyValue(Mps000014ExtendSingleKey.HEIN_CARD_NUMBER, rdo._PatyAlterBhyt.HEIN_CARD_NUMBER));

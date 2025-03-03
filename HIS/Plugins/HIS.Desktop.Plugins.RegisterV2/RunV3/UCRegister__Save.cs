@@ -195,7 +195,6 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
                                     && this.currentHisExamServiceReqResultSDO.ServiceReqs != null
                                     && this.currentHisExamServiceReqResultSDO.ServiceReqs.Count > 0)
                                 {
-                                    ProcessSaveAddressNow_ucPlusInfo1();
                                     this.resultHisPatientProfileSDO = this.currentHisExamServiceReqResultSDO.HisPatientProfile;
                                     this.ExamRegisterSuccess(param);
                                     if (this.currentHisExamServiceReqResultSDO.ServiceReqs.Count > 0 && HIS.Desktop.Plugins.Library.RegisterConfig.AppConfigs.IsDangKyQuaTongDai == "1")
@@ -258,7 +257,6 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
                                 
                                 if (this.resultHisPatientProfileSDO != null)
                                 {
-                                    ProcessSaveAddressNow_ucPlusInfo1();
                                     this.PatientProfileSuccess(param);
                                     success = true;
                                 }
@@ -340,77 +338,7 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
             return true;
-        }
-
-        private void ProcessSaveAddressNow_ucPlusInfo1()
-        {
-            try
-            {
-                CommonParam param = new CommonParam();
-                bool success = false;
-                HIS_PATIENT updateDTO = new HIS_PATIENT();
-                if (this.currentPatientSDO != null && this.currentPatientSDO.ID > 0)
-                {
-                    LoadCurrentPatient(this.currentPatientSDO.ID, ref updateDTO);
-
-                    UpdateDTOFromDataForm_ucPlusInfo1(ref updateDTO);
-
-                    var resultData = new BackendAdapter(param).Post<MOS.EFMODEL.DataModels.HIS_PATIENT>("api/HisPatient/Update", ApiConsumers.MosConsumer, updateDTO, param);
-                    if (resultData != null)
-                    {
-                        success = true;
-                    }
-
-                    if (success)
-                    {
-                        BackendDataWorker.Reset<MOS.EFMODEL.DataModels.HIS_PATIENT>();
-                    }
-                    else
-                    {
-                        MessageManager.Show("Lưu Thông tin bệnh nhân thất bại!");
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                Inventec.Common.Logging.LogSystem.Error(ex);
-            }
-        }
-
-        private void LoadCurrentPatient(long currentId, ref HIS_PATIENT currentDTO)
-        {
-            try
-            {
-                CommonParam param = new CommonParam();
-                MOS.Filter.HisPatientFilter filter = new MOS.Filter.HisPatientFilter();
-                filter.ID = currentId;
-                currentDTO = new BackendAdapter(param).Get<List<MOS.EFMODEL.DataModels.HIS_PATIENT>>("api/HisPatient/Get", ApiConsumers.MosConsumer, filter, param).FirstOrDefault();
-            }
-            catch (Exception ex)
-            {
-                Inventec.Common.Logging.LogSystem.Warn(ex);
-            }
-        }
-
-        private void UpdateDTOFromDataForm_ucPlusInfo1(ref HIS_PATIENT updateDTO)
-        {
-            try
-            {
-                UCPlusInfoADO patientPlusInformationInfoValue = ucPlusInfo1.GetValue();
-
-                updateDTO.HT_ADDRESS = patientPlusInformationInfoValue.HT_ADDRESS;
-                updateDTO.HT_PROVINCE_NAME = patientPlusInformationInfoValue.HT_PROVINCE_NAME;
-                updateDTO.HT_DISTRICT_NAME = patientPlusInformationInfoValue.HT_DISTRICT_NAME;
-                updateDTO.HT_COMMUNE_NAME = patientPlusInformationInfoValue.HT_COMMUNE_NAME;
-                updateDTO.HT_PROVINCE_CODE = patientPlusInformationInfoValue.HT_PROVINCE_CODE;
-                updateDTO.HT_DISTRICT_CODE = patientPlusInformationInfoValue.HT_DISTRICT_CODE;
-                updateDTO.HT_COMMUNE_CODE = patientPlusInformationInfoValue.HT_COMMUNE_CODE;
-            }
-            catch (Exception ex)
-            {
-                Inventec.Common.Logging.LogSystem.Warn(ex);
-            }
-        }
+        }      
 
         private bool CheckValidateForSave(CommonParam param)
         {
@@ -559,7 +487,8 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
                     && validDeposit
                     && validPhoneNumber
                     && validGuarantee
-                    && validIsBlockBhyt;
+                    && validIsBlockBhyt
+                    && CheckRRCodeTTFee(true);
 
                 valid = valid && this.AlertExpriedTimeHeinCardBhyt();
 
@@ -594,7 +523,15 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
                 bool valid = true;
                 UCPatientRawADO patientRawADO = ucPatientRaw1.GetValue();
                 var heindata = ucHeinInfo1.GetValue();
-                    if (patientRawADO.PATIENTTYPE_ID == HisConfigCFG.PatientTypeId__BHYT && (HisConfigCFG.IsBlockingInvalidBhyt == ((int)HisConfigCFG.OptionKey.Option1).ToString() || HisConfigCFG.IsBlockingInvalidBhyt == ((int)HisConfigCFG.OptionKey.Option2).ToString()) && heindata != null && !CheckBhytWhiteListAcceptNoCheckBHYT(heindata.HisPatientTypeAlter.HEIN_CARD_NUMBER) && heindata.HisPatientTypeAlter.HAS_BIRTH_CERTIFICATE != MOS.LibraryHein.Bhyt.HeinHasBirthCertificate.HeinHasBirthCertificateCode.TRUE)
+                if (this.ucPatientRaw1.ResultDataADO != null && this.ucPatientRaw1.ResultDataADO.ResultHistoryLDO != null && HIS.Desktop.Plugins.Library.RegisterConfig.HisConfigCFG.WarningInvalidCheckHistoryHeinCard && this.ucPatientRaw1.ResultDataADO.ResultHistoryLDO.message == "Thẻ BHYT có thông tin kiểm tra thẻ chưa ra viện.")
+                {
+                    DialogResult drReslt = DevExpress.XtraEditors.XtraMessageBox.Show(this.ucPatientRaw1.ResultDataADO.ResultHistoryLDO.message + " Bạn có muốn tiếp tục?", ResourceMessage.ThongBao, MessageBoxButtons.YesNo);
+                    if (drReslt == DialogResult.No)
+                    {
+                        return false;
+                    }
+                }
+                if (patientRawADO.PATIENTTYPE_ID == HisConfigCFG.PatientTypeId__BHYT && (HisConfigCFG.IsBlockingInvalidBhyt == ((int)HisConfigCFG.OptionKey.Option1).ToString() || HisConfigCFG.IsBlockingInvalidBhyt == ((int)HisConfigCFG.OptionKey.Option2).ToString()) && heindata != null && !CheckBhytWhiteListAcceptNoCheckBHYT(heindata.HisPatientTypeAlter.HEIN_CARD_NUMBER) && heindata.HisPatientTypeAlter.HAS_BIRTH_CERTIFICATE != MOS.LibraryHein.Bhyt.HeinHasBirthCertificate.HeinHasBirthCertificateCode.TRUE)
                 {
                     if (this.ucPatientRaw1.ResultDataADO == null)//thẻ không hợp lệ
                     {

@@ -153,7 +153,9 @@ namespace Inventec.Desktop.Plugins.ExecuteRoom
                 }
 
                 emrInputAdo.roomId = roomId;
-
+                emrInputAdo.DepartmentId = HIS.Desktop.LocalStorage.LocalData.WorkPlace.WorkPlaceSDO.FirstOrDefault(o => o.RoomId == roomId).DepartmentId;
+                emrInputAdo.TreatmentTypeId = serviceReqRightClick.TDL_TREATMENT_TYPE_ID;
+                emrInputAdo.Treatment = treatment;
                 emrMenuPopupProcessor.InitMenu(menu, barManager, emrInputAdo);
 
                 BarButtonItem itemSummaryInforTreatmentRecords = new BarButtonItem(barManager, Inventec.Common.Resource.Get.Value("UCExecuteRoom.btnSummaryInforTreatmentRecords.Text", ResourceLangManager.LanguageUCExecuteRoom, LanguageManager.GetCulture()), 1);

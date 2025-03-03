@@ -117,11 +117,278 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="frmCheckHeinCardGOV.btnCancel.Text" xml:space="preserve">
+    <value>CANCEL</value>
+  </data>
+  <data name="frmCheckHeinCardGOV.gridColumn1.Caption" xml:space="preserve">
+    <value>Profile code</value>
+  </data>
+  <data name="frmCheckHeinCardGOV.gridColumn2.Caption" xml:space="preserve">
+    <value>CSKCB code</value>
+  </data>
+  <data name="frmCheckHeinCardGOV.gridColumn3.Caption" xml:space="preserve">
+    <value>Name of health care facility</value>
+  </data>
+  <data name="frmCheckHeinCardGOV.gridColumn4.Caption" xml:space="preserve">
+    <value>From date</value>
+  </data>
+  <data name="frmCheckHeinCardGOV.gridColumn5.Caption" xml:space="preserve">
+    <value>Come day</value>
+  </data>
+  <data name="frmCheckHeinCardGOV.gridColumn6.Caption" xml:space="preserve">
+    <value>Disease name</value>
+  </data>
+  <data name="frmCheckHeinCardGOV.gridColumn7.Caption" xml:space="preserve">
+    <value>Status</value>
+  </data>
+  <data name="frmCheckHeinCardGOV.gridColumn8.Caption" xml:space="preserve">
+    <value>Result</value>
+  </data>
+  <data name="frmCheckHeinCardGOV.label1.Text" xml:space="preserve">
+    <value>Medical examination and treatment history</value>
+  </data>
+  <data name="frmCheckHeinCardGOV.layoutControl1.Text" xml:space="preserve">
+    <value>layoutControl1</value>
+  </data>
+  <data name="frmCheckHeinCardGOV.layoutControl2.Text" xml:space="preserve">
+    <value>layoutControl2</value>
+  </data>
+  <data name="frmCheckHeinCardGOV.layoutControlButton.Text" xml:space="preserve">
+    <value>layoutControl3</value>
+  </data>
+  <data name="frmCheckHeinCardGOV.layoutControlItem10.Text" xml:space="preserve">
+    <value>Incoming card value:</value>
+  </data>
+  <data name="frmCheckHeinCardGOV.layoutControlItem11.Text" xml:space="preserve">
+    <value>Area code:</value>
+  </data>
+  <data name="frmCheckHeinCardGOV.layoutControlItem12.Text" xml:space="preserve">
+    <value>Date of completion of 5 years:</value>
+  </data>
+  <data name="frmCheckHeinCardGOV.layoutControlItem16.Text" xml:space="preserve">
+    <value>Name of registered medical examination:</value>
+  </data>
+  <data name="frmCheckHeinCardGOV.layoutControlItem3.Text" xml:space="preserve">
+    <value>Full name:</value>
+  </data>
+  <data name="frmCheckHeinCardGOV.layoutControlItem4.Text" xml:space="preserve">
+    <value>Sex:</value>
+  </data>
+  <data name="frmCheckHeinCardGOV.layoutControlItem5.Text" xml:space="preserve">
+    <value>Result:</value>
+  </data>
+  <data name="frmCheckHeinCardGOV.layoutControlItem6.Text" xml:space="preserve">
+    <value>Address:</value>
+  </data>
+  <data name="frmCheckHeinCardGOV.layoutControlItem7.Text" xml:space="preserve">
+    <value>Registration code:</value>
+  </data>
+  <data name="frmCheckHeinCardGOV.layoutControlItem8.Text" xml:space="preserve">
+    <value>Social insurance agency:</value>
+  </data>
+  <data name="frmCheckHeinCardGOV.layoutControlItem9.Text" xml:space="preserve">
+    <value>Magnetic card value:</value>
+  </data>
+  <data name="frmCheckHeinCardGOV.Text" xml:space="preserve">
+    <value>Check medical history</value>
+  </data>
+  <data name="frmChooseObject.label1.Text" xml:space="preserve">
+    <value>The system cannot find health insurance card information. \r\n</value>
+  </data>
+  <data name="frmChooseObject.layoutControl1.Text" xml:space="preserve">
+    <value>layoutControl1</value>
+  </data>
+  <data name="frmChooseObject.Text" xml:space="preserve">
+    <value>Select the subject to be examined</value>
+  </data>
+  <data name="frmChooseObject.tileControl1.Text" xml:space="preserve">
+    <value>tileControl1</value>
+  </data>
+  <data name="frmDetail.btnThoat.Text" xml:space="preserve">
+    <value>Exit</value>
+  </data>
+  <data name="frmDetail.gridColumn1.Caption" xml:space="preserve">
+    <value>Treatment code</value>
+  </data>
+  <data name="frmDetail.gridColumn2.Caption" xml:space="preserve">
+    <value>Date of examination</value>
+  </data>
+  <data name="frmDetail.gridColumn3.Caption" xml:space="preserve">
+    <value>Day of admission</value>
+  </data>
+  <data name="frmDetail.gridColumn4.Caption" xml:space="preserve">
+    <value>Hospital discharge date</value>
+  </data>
+  <data name="frmDetail.gridColumn5.Caption" xml:space="preserve">
+    <value>Disease information</value>
+  </data>
+  <data name="frmDetail.layoutControl1.Text" xml:space="preserve">
+    <value>layoutControl1</value>
+  </data>
+  <data name="frmDetail.Text" xml:space="preserve">
+    <value>Medical examination history</value>
+  </data>
+  <data name="frmInformationObject.btnSave.Text" xml:space="preserve">
+    <value>Save</value>
+  </data>
+  <data name="frmInformationObject.label1.Text" xml:space="preserve">
+    <value>Fix</value>
+  </data>
+  <data name="frmInformationObject.layoutControl1.Text" xml:space="preserve">
+    <value>layoutControl1</value>
+  </data>
+  <data name="frmInformationObject.layoutControlItem1.Text" xml:space="preserve">
+    <value>Left route:</value>
+  </data>
+  <data name="frmInformationObject.layoutControlItem13.Text" xml:space="preserve">
+    <value>From:</value>
+  </data>
+  <data name="frmInformationObject.layoutControlItem15.Text" xml:space="preserve">
+    <value>Arrive:</value>
+  </data>
+  <data name="frmInformationObject.layoutControlItem16.Text" xml:space="preserve">
+    <value>Transit:</value>
+  </data>
+  <data name="frmInformationObject.layoutControlItem17.Text" xml:space="preserve">
+    <value>Transfer form:</value>
+  </data>
+  <data name="frmInformationObject.layoutControlItem18.Text" xml:space="preserve">
+    <value>Reason for transfer:</value>
+  </data>
+  <data name="frmInformationObject.layoutControlItem2.Text" xml:space="preserve">
+    <value>Appointment:</value>
+  </data>
+  <data name="frmInformationObject.layoutControlItem3.Text" xml:space="preserve">
+    <value>Throughline:</value>
+  </data>
+  <data name="frmInformationObject.layoutControlItem4.Text" xml:space="preserve">
+    <value>Emergency:</value>
+  </data>
+  <data name="frmInformationObject.layoutControlItem5.Text" xml:space="preserve">
+    <value>Introduce:</value>
+  </data>
+  <data name="frmInformationObject.layoutControlItem6.Text" xml:space="preserve">
+    <value>Transit number:</value>
+  </data>
+  <data name="frmInformationObject.layoutControlItem7.Text" xml:space="preserve">
+    <value>Where to move to:</value>
+  </data>
+  <data name="frmInformationObject.layoutControlItem9.Text" xml:space="preserve">
+    <value>Main diagnosis:</value>
+  </data>
+  <data name="frmInformationObject.Text" xml:space="preserve">
+    <value>Route type information</value>
+  </data>
+  <data name="frmInputSave.btnSave.Text" xml:space="preserve">
+    <value>Save</value>
+  </data>
+  <data name="frmInputSave.layoutControl1.Text" xml:space="preserve">
+    <value>layoutControl1</value>
+  </data>
+  <data name="frmInputSave.layoutControlItem1.Text" xml:space="preserve">
+    <value>Where to move to:</value>
+  </data>
+  <data name="frmInputSave.layoutControlItem2.Text" xml:space="preserve">
+    <value>Main disease:</value>
+  </data>
+  <data name="frmInputSave.layoutControlItem3.Text" xml:space="preserve">
+    <value>Transfer form:</value>
+  </data>
+  <data name="frmInputSave.layoutControlItem4.Text" xml:space="preserve">
+    <value>Reason for transfer:</value>
+  </data>
+  <data name="frmInputSave.layoutControlItem6.Text" xml:space="preserve">
+    <value>Where to move to:</value>
+  </data>
+  <data name="frmInputSave.layoutControlItem7.Text" xml:space="preserve">
+    <value>Main disease:</value>
+  </data>
+  <data name="frmInputSave.layoutControlItem8.Text" xml:space="preserve">
+    <value>Transfer form:</value>
+  </data>
+  <data name="frmInputSave.layoutControlItem9.Text" xml:space="preserve">
+    <value>Reason for transfer:</value>
+  </data>
+  <data name="frmInputSave.Text" xml:space="preserve">
+    <value>Enter information</value>
+  </data>
+  <data name="frmInputSave1.btnSave.Text" xml:space="preserve">
+    <value>Save</value>
+  </data>
+  <data name="frmInputSave1.layoutControl1.Text" xml:space="preserve">
+    <value>layoutControl1</value>
+  </data>
+  <data name="frmInputSave1.layoutControl2.Text" xml:space="preserve">
+    <value>layoutControl2</value>
+  </data>
+  <data name="frmInputSave1.layoutControlItem1.Text" xml:space="preserve">
+    <value>Hospital transfer number:</value>
+  </data>
+  <data name="frmInputSave1.layoutControlItem2.Text" xml:space="preserve">
+    <value>Case:</value>
+  </data>
+  <data name="frmInputSave1.layoutControlItem4.Text" xml:space="preserve">
+    <value>Where to move to:</value>
+  </data>
+  <data name="frmInputSave1.Text" xml:space="preserve">
+    <value>Enter information</value>
+  </data>
+  <data name="frmRegisteredExam.label1.Text" xml:space="preserve">
+    <value>Registration information is available:</value>
+  </data>
+  <data name="frmRegisteredExam.label11.Text" xml:space="preserve">
+    <value>Missing:</value>
+  </data>
+  <data name="frmRegisteredExam.label2.Text" xml:space="preserve">
+    <value>Clinic:</value>
+  </data>
+  <data name="frmRegisteredExam.label3.Text" xml:space="preserve">
+    <value>Time:</value>
+  </data>
+  <data name="frmRegisteredExam.label4.Text" xml:space="preserve">
+    <value>Examination order number:</value>
+  </data>
+  <data name="frmRegisteredExam.label5.Text" xml:space="preserve">
+    <value>Examination request:</value>
+  </data>
+  <data name="frmRegisteredExam.label6.Text" xml:space="preserve">
+    <value>Patients need to pay:</value>
+  </data>
+  <data name="frmRegisteredExam.label7.Text" xml:space="preserve">
+    <value>Card account balance:</value>
+  </data>
+  <data name="frmRegisteredExam.label8.Text" xml:space="preserve">
+    <value>Do you want to pay and print the examination form?</value>
+  </data>
+  <data name="frmRegisteredExam.label9.Text" xml:space="preserve">
+    <value>Closed patients:</value>
+  </data>
+  <data name="frmRegisteredExam.layoutControl1.Text" xml:space="preserve">
+    <value>layoutControl1</value>
+  </data>
+  <data name="frmRegisteredExam.lblHospitalInfo.Text" xml:space="preserve">
+    <value>WELCOME TO SMART HOSPITAL</value>
+  </data>
+  <data name="frmRegisteredExam.lblHospitalInfo1.Text" xml:space="preserve">
+    <value>Automatic medical examination registration service by card</value>
+  </data>
+  <data name="frmRegisteredExam.Text" xml:space="preserve">
+    <value>Registered medical examination</value>
+  </data>
+  <data name="frmRegisteredExam.tileControl.Text" xml:space="preserve">
+    <value>tileControl1</value>
+  </data>
   <data name="frmRegisterExamKiosk.btnDetail.Text" xml:space="preserve">
     <value>Medical history</value>
   </data>
   <data name="frmRegisterExamKiosk.btnEnd.Text" xml:space="preserve">
     <value>Finish</value>
+  </data>
+  <data name="frmRegisterExamKiosk.btnTamthu.Text" xml:space="preserve">
+    <value>Temporary withdrawal of services</value>
+  </data>
+  <data name="frmRegisterExamKiosk.btnThanhtoan.Text" xml:space="preserve">
+    <value>Pay</value>
   </data>
   <data name="frmRegisterExamKiosk.button1.Text" xml:space="preserve">
     <value>In stock registered through 19006888</value>
@@ -132,11 +399,26 @@
   <data name="frmRegisterExamKiosk.label10.Text" xml:space="preserve">
     <value>Full name:</value>
   </data>
+  <data name="frmRegisterExamKiosk.label11.Text" xml:space="preserve">
+    <value>Account balance:</value>
+  </data>
+  <data name="frmRegisterExamKiosk.label12.Text" xml:space="preserve">
+    <value>Job:</value>
+  </data>
   <data name="frmRegisterExamKiosk.label13.Text" xml:space="preserve">
     <value>Address:</value>
   </data>
+  <data name="frmRegisterExamKiosk.label14.Text" xml:space="preserve">
+    <value>Nationality:</value>
+  </data>
+  <data name="frmRegisterExamKiosk.label2.Text" xml:space="preserve">
+    <value>Prioritize:</value>
+  </data>
   <data name="frmRegisterExamKiosk.label3.Text" xml:space="preserve">
     <value>Sex:</value>
+  </data>
+  <data name="frmRegisterExamKiosk.label4.Text" xml:space="preserve">
+    <value>Collect later:</value>
   </data>
   <data name="frmRegisterExamKiosk.label5.Text" xml:space="preserve">
     <value>Health Insurance Card:</value>
@@ -144,8 +426,14 @@
   <data name="frmRegisterExamKiosk.label6.Text" xml:space="preserve">
     <value>DK where KCB:</value>
   </data>
+  <data name="frmRegisterExamKiosk.label7.Text" xml:space="preserve">
+    <value>Chronic:</value>
+  </data>
   <data name="frmRegisterExamKiosk.label8.Text" xml:space="preserve">
     <value>Birthday:</value>
+  </data>
+  <data name="frmRegisterExamKiosk.label9.Text" xml:space="preserve">
+    <value>Surcharge:</value>
   </data>
   <data name="frmRegisterExamKiosk.layoutControl1.Text" xml:space="preserve">
     <value>layoutControl1</value>
@@ -180,6 +468,135 @@
   <data name="frmServiceRoom.tileControl1.Text" xml:space="preserve">
     <value>tileControl1</value>
   </data>
+  <data name="frmWaiting2.btnConfirm.Text" xml:space="preserve">
+    <value>Register for examination</value>
+  </data>
+  <data name="frmWaiting2.label1.Text" xml:space="preserve">
+    <value>CCCD card information</value>
+  </data>
+  <data name="frmWaiting2.label10.Text" xml:space="preserve">
+    <value>Sex:</value>
+  </data>
+  <data name="frmWaiting2.label11.Text" xml:space="preserve">
+    <value>Nation:</value>
+  </data>
+  <data name="frmWaiting2.label12.Text" xml:space="preserve">
+    <value>Expiration date:</value>
+  </data>
+  <data name="frmWaiting2.label2.Text" xml:space="preserve">
+    <value>Please swipe your card or enter CCCD, ID card, patient code</value>
+  </data>
+  <data name="frmWaiting2.label21.Text" xml:space="preserve">
+    <value>Identification photo</value>
+  </data>
+  <data name="frmWaiting2.label3.Text" xml:space="preserve">
+    <value>CCCD Number:</value>
+  </data>
+  <data name="frmWaiting2.label4.Text" xml:space="preserve">
+    <value>Date of birth:</value>
+  </data>
+  <data name="frmWaiting2.label5.Text" xml:space="preserve">
+    <value>Nationality:</value>
+  </data>
+  <data name="frmWaiting2.label6.Text" xml:space="preserve">
+    <value>Date of issue:</value>
+  </data>
+  <data name="frmWaiting2.label7.Text" xml:space="preserve">
+    <value>Camera</value>
+  </data>
+  <data name="frmWaiting2.label9.Text" xml:space="preserve">
+    <value>Full name:</value>
+  </data>
+  <data name="frmWaiting2.layoutControl1.Text" xml:space="preserve">
+    <value>layoutControl1</value>
+  </data>
+  <data name="frmWaiting2.lblCapPer.Text" xml:space="preserve">
+    <value>Match rate:</value>
+  </data>
+  <data name="frmWaiting2.lblCccdCode.Text" xml:space="preserve">
+    <value>186615770125</value>
+  </data>
+  <data name="frmWaiting2.lblDate.Text" xml:space="preserve">
+    <value>May 31, 2000</value>
+  </data>
+  <data name="frmWaiting2.lblDob.Text" xml:space="preserve">
+    <value>October 10, 1986</value>
+  </data>
+  <data name="frmWaiting2.lblEthe.Text" xml:space="preserve">
+    <value>Terrible</value>
+  </data>
+  <data name="frmWaiting2.lblExpried.Text" xml:space="preserve">
+    <value>May 31, 2050</value>
+  </data>
+  <data name="frmWaiting2.lblGenderName.Text" xml:space="preserve">
+    <value>Male</value>
+  </data>
+  <data name="frmWaiting2.lblMessage.Text" xml:space="preserve">
+    <value>Smart medical examination registration system</value>
+  </data>
+  <data name="frmWaiting2.lblName.Text" xml:space="preserve">
+    <value>Nguyen Van An</value>
+  </data>
+  <data name="frmWaiting2.lblNational.Text" xml:space="preserve">
+    <value>Vietnam</value>
+  </data>
+  <data name="frmWaiting2.lblPer.Text" xml:space="preserve">
+    <value>70%</value>
+  </data>
+  <data name="frmWaiting2.pnSimpleButton1.Text" xml:space="preserve">
+    <value>CONTINUE</value>
+  </data>
+  <data name="frmWaiting2.Text" xml:space="preserve">
+    <value>frmWaiting2</value>
+  </data>
+  <data name="frmWaiting2.txtNumberInput.Properties.NullText" xml:space="preserve">
+    <value>Enter number</value>
+  </data>
+  <data name="frmWaiting2.txtNumberInput.Properties.NullValuePrompt" xml:space="preserve">
+    <value>Enter number</value>
+  </data>
+  <data name="frmWaitingScreen.btnCancel.Text" xml:space="preserve">
+    <value>CANCEL</value>
+  </data>
+  <data name="frmWaitingScreen.btnConfirm.Text" xml:space="preserve">
+    <value>CONFIRM</value>
+  </data>
+  <data name="frmWaitingScreen.label1.Text" xml:space="preserve">
+    <value>CCCD card information</value>
+  </data>
+  <data name="frmWaitingScreen.label10.Text" xml:space="preserve">
+    <value>Sex:</value>
+  </data>
+  <data name="frmWaitingScreen.label11.Text" xml:space="preserve">
+    <value>Nation:</value>
+  </data>
+  <data name="frmWaitingScreen.label12.Text" xml:space="preserve">
+    <value>Expiration date:</value>
+  </data>
+  <data name="frmWaitingScreen.label2.Text" xml:space="preserve">
+    <value>PLEASE SWINK YOUR CARD OR ENTER YOUR CARD NUMBER</value>
+  </data>
+  <data name="frmWaitingScreen.label21.Text" xml:space="preserve">
+    <value>Identification photo</value>
+  </data>
+  <data name="frmWaitingScreen.label3.Text" xml:space="preserve">
+    <value>CCCD Number:</value>
+  </data>
+  <data name="frmWaitingScreen.label4.Text" xml:space="preserve">
+    <value>Date of birth:</value>
+  </data>
+  <data name="frmWaitingScreen.label5.Text" xml:space="preserve">
+    <value>Nationality:</value>
+  </data>
+  <data name="frmWaitingScreen.label6.Text" xml:space="preserve">
+    <value>Date of issue:</value>
+  </data>
+  <data name="frmWaitingScreen.label7.Text" xml:space="preserve">
+    <value>Camera</value>
+  </data>
+  <data name="frmWaitingScreen.label9.Text" xml:space="preserve">
+    <value>Full name:</value>
+  </data>
   <data name="frmWaitingScreen.layoutControl1.Text" xml:space="preserve">
     <value>layoutControl1</value>
   </data>
@@ -189,7 +606,58 @@
   <data name="frmWaitingScreen.layoutControl3.Text" xml:space="preserve">
     <value>layoutControl3</value>
   </data>
+  <data name="frmWaitingScreen.lblCapPer.Text" xml:space="preserve">
+    <value>Match rate:</value>
+  </data>
+  <data name="frmWaitingScreen.lblCccdCode.Text" xml:space="preserve">
+    <value>186615770125</value>
+  </data>
+  <data name="frmWaitingScreen.lblDate.Text" xml:space="preserve">
+    <value>May 31, 2000</value>
+  </data>
+  <data name="frmWaitingScreen.lblDob.Text" xml:space="preserve">
+    <value>October 10, 1986</value>
+  </data>
+  <data name="frmWaitingScreen.lblEthe.Text" xml:space="preserve">
+    <value>Terrible</value>
+  </data>
+  <data name="frmWaitingScreen.lblExpried.Text" xml:space="preserve">
+    <value>May 31, 2050</value>
+  </data>
+  <data name="frmWaitingScreen.lblGenderName.Text" xml:space="preserve">
+    <value>Male</value>
+  </data>
+  <data name="frmWaitingScreen.lblMessage.Text" xml:space="preserve">
+    <value>SMART CARD MEDICAL EXAMINATION AND TREATMENT REGISTRATION SYSTEM.</value>
+  </data>
+  <data name="frmWaitingScreen.lblName.Text" xml:space="preserve">
+    <value>Nguyen Van An</value>
+  </data>
+  <data name="frmWaitingScreen.lblNational.Text" xml:space="preserve">
+    <value>Vietnam</value>
+  </data>
+  <data name="frmWaitingScreen.lblPer.Text" xml:space="preserve">
+    <value>70%</value>
+  </data>
+  <data name="frmWaitingScreen.pnSimpleButton1.Text" xml:space="preserve">
+    <value>CONTINUE</value>
+  </data>
   <data name="frmWaitingScreen.Text" xml:space="preserve">
     <value>Screen saver</value>
+  </data>
+  <data name="WebViewer.btnClose.Text" xml:space="preserve">
+    <value>Close</value>
+  </data>
+  <data name="WebViewer.layoutControl1.Text" xml:space="preserve">
+    <value>layoutControl1</value>
+  </data>
+  <data name="WebViewer.lblTime.Text" xml:space="preserve">
+    <value>labelControl1</value>
+  </data>
+  <data name="WebViewer.Text" xml:space="preserve">
+    <value>WebViewer</value>
+  </data>
+  <data name="WebViewer.webControl.Text" xml:space="preserve">
+    <value>webControl1</value>
   </data>
 </root>

@@ -39,10 +39,13 @@ namespace HIS.Desktop.Plugins.HisKskDriverCreate.Run
                 ValidationControlMaxLength(this.dtConclusionTime, null, true);
                 ValidationControlMaxLength(this.cboConclusion, null, true);
                 ValidationControlMaxLength(this.cboLicenesClass, null, true);
-                ValidationControlMaxLength(this.cboConclusionName, null, true);
+                ValidationControlMaxLength(this.cboConclusionName, null, true); 
                 ValidationControlMaxLength(this.txtReasonBadHeathly, 250, false);
                 ValidationControlMaxLength(this.txtSickCondition, 250, false);
-                ValidationControlConcentration();
+                //if (spConcentration.EditValue != null && chkMgKhi.Checked == false && chkMgMau.Checked == false)
+                //{
+                //    ValidationControlConcentration();
+                //}
                 ValidationSingleControl(this.txtCccdCmnd, dxValidationProvider1, GetErrorValidCccdCmnd, IsValidCccdCmndHc);
                 
             }

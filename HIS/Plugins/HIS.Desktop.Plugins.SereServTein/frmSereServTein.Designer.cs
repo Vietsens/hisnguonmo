@@ -45,21 +45,19 @@ namespace HIS.Desktop.Plugins.SereServTein
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmSereServTein));
             this.layoutControl1 = new DevExpress.XtraLayout.LayoutControl();
             this.xtraTabControl1 = new DevExpress.XtraTab.XtraTabControl();
             this.xtraTabPageTestIndex = new DevExpress.XtraTab.XtraTabPage();
             this.layoutControl2 = new DevExpress.XtraLayout.LayoutControl();
-            this.popupControlContainer1 = new DevExpress.XtraBars.PopupControlContainer();
+            this.lblACRPRC = new DevExpress.XtraEditors.LabelControl();
+            this.popupControlContainer1 = new DevExpress.XtraBars.PopupControlContainer(this.components);
             this.layoutControl4 = new DevExpress.XtraLayout.LayoutControl();
             this.chkPrint96 = new DevExpress.XtraEditors.CheckEdit();
-            this.barManager1 = new DevExpress.XtraBars.BarManager();
+            this.barManager1 = new DevExpress.XtraBars.BarManager(this.components);
             this.bar1 = new DevExpress.XtraBars.Bar();
             this.barButtonItem__Print = new DevExpress.XtraBars.BarButtonItem();
-            this.barDockControlTop = new DevExpress.XtraBars.BarDockControl();
-            this.barDockControlBottom = new DevExpress.XtraBars.BarDockControl();
-            this.barDockControlLeft = new DevExpress.XtraBars.BarDockControl();
-            this.barDockControlRight = new DevExpress.XtraBars.BarDockControl();
             this.chkPrint14 = new DevExpress.XtraEditors.CheckEdit();
             this.layoutControlGroup4 = new DevExpress.XtraLayout.LayoutControlGroup();
             this.layoutControlItem13 = new DevExpress.XtraLayout.LayoutControlItem();
@@ -67,7 +65,7 @@ namespace HIS.Desktop.Plugins.SereServTein
             this.btnSetting = new DevExpress.XtraEditors.SimpleButton();
             this.lblNote = new System.Windows.Forms.Label();
             this.lblDescription = new System.Windows.Forms.Label();
-            this.lblMlct = new System.Windows.Forms.Label();
+            this.lblMlct = new DevExpress.XtraEditors.LabelControl();
             this.lblConclude = new System.Windows.Forms.Label();
             this.btnVanBanDaKy = new DevExpress.XtraEditors.SimpleButton();
             this.chkInTach = new DevExpress.XtraEditors.CheckEdit();
@@ -91,7 +89,6 @@ namespace HIS.Desktop.Plugins.SereServTein
             this.layoutControlGroup2 = new DevExpress.XtraLayout.LayoutControlGroup();
             this.layoutControlItem1 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem3 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.emptySpaceItem1 = new DevExpress.XtraLayout.EmptySpaceItem();
             this.layoutControlItem5 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem6 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem999 = new DevExpress.XtraLayout.LayoutControlItem();
@@ -99,6 +96,7 @@ namespace HIS.Desktop.Plugins.SereServTein
             this.layoutControlItem9 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem11 = new DevExpress.XtraLayout.LayoutControlItem();
             this.lciSetting = new DevExpress.XtraLayout.LayoutControlItem();
+            this.lciACRPRC = new DevExpress.XtraLayout.LayoutControlItem();
             this.xtraTabPageOther = new DevExpress.XtraTab.XtraTabPage();
             this.layoutControl3 = new DevExpress.XtraLayout.LayoutControl();
             this.btnPrintServiceReq = new DevExpress.XtraEditors.SimpleButton();
@@ -115,6 +113,10 @@ namespace HIS.Desktop.Plugins.SereServTein
             this.emptySpaceItem2 = new DevExpress.XtraLayout.EmptySpaceItem();
             this.layoutControlGroup1 = new DevExpress.XtraLayout.LayoutControlGroup();
             this.layoutControlItem2 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.barDockControlTop = new DevExpress.XtraBars.BarDockControl();
+            this.barDockControlBottom = new DevExpress.XtraBars.BarDockControl();
+            this.barDockControlLeft = new DevExpress.XtraBars.BarDockControl();
+            this.barDockControlRight = new DevExpress.XtraBars.BarDockControl();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
             this.layoutControl1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.xtraTabControl1)).BeginInit();
@@ -141,7 +143,6 @@ namespace HIS.Desktop.Plugins.SereServTein
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem3)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem5)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem6)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem999)).BeginInit();
@@ -149,6 +150,7 @@ namespace HIS.Desktop.Plugins.SereServTein
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem9)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem11)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciSetting)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciACRPRC)).BeginInit();
             this.xtraTabPageOther.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl3)).BeginInit();
             this.layoutControl3.SuspendLayout();
@@ -197,6 +199,7 @@ namespace HIS.Desktop.Plugins.SereServTein
             // 
             // layoutControl2
             // 
+            this.layoutControl2.Controls.Add(this.lblACRPRC);
             this.layoutControl2.Controls.Add(this.popupControlContainer1);
             this.layoutControl2.Controls.Add(this.btnSetting);
             this.layoutControl2.Controls.Add(this.lblNote);
@@ -215,6 +218,15 @@ namespace HIS.Desktop.Plugins.SereServTein
             this.layoutControl2.Size = new System.Drawing.Size(1062, 432);
             this.layoutControl2.TabIndex = 0;
             this.layoutControl2.Text = "layoutControl2";
+            // 
+            // lblACRPRC
+            // 
+            this.lblACRPRC.AutoSizeMode = DevExpress.XtraEditors.LabelAutoSizeMode.None;
+            this.lblACRPRC.Location = new System.Drawing.Point(380, 408);
+            this.lblACRPRC.Name = "lblACRPRC";
+            this.lblACRPRC.Size = new System.Drawing.Size(139, 20);
+            this.lblACRPRC.StyleController = this.layoutControl2;
+            this.lblACRPRC.TabIndex = 16;
             // 
             // popupControlContainer1
             // 
@@ -258,10 +270,6 @@ namespace HIS.Desktop.Plugins.SereServTein
             // 
             this.barManager1.Bars.AddRange(new DevExpress.XtraBars.Bar[] {
             this.bar1});
-            this.barManager1.DockControls.Add(this.barDockControlTop);
-            this.barManager1.DockControls.Add(this.barDockControlBottom);
-            this.barManager1.DockControls.Add(this.barDockControlLeft);
-            this.barManager1.DockControls.Add(this.barDockControlRight);
             this.barManager1.Form = this;
             this.barManager1.Items.AddRange(new DevExpress.XtraBars.BarItem[] {
             this.barButtonItem__Print});
@@ -285,34 +293,6 @@ namespace HIS.Desktop.Plugins.SereServTein
             this.barButtonItem__Print.ItemShortcut = new DevExpress.XtraBars.BarShortcut((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.P));
             this.barButtonItem__Print.Name = "barButtonItem__Print";
             this.barButtonItem__Print.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.barButtonItem__Print_ItemClick);
-            // 
-            // barDockControlTop
-            // 
-            this.barDockControlTop.CausesValidation = false;
-            this.barDockControlTop.Dock = System.Windows.Forms.DockStyle.Top;
-            this.barDockControlTop.Location = new System.Drawing.Point(0, 0);
-            this.barDockControlTop.Size = new System.Drawing.Size(1072, 29);
-            // 
-            // barDockControlBottom
-            // 
-            this.barDockControlBottom.CausesValidation = false;
-            this.barDockControlBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.barDockControlBottom.Location = new System.Drawing.Point(0, 493);
-            this.barDockControlBottom.Size = new System.Drawing.Size(1072, 0);
-            // 
-            // barDockControlLeft
-            // 
-            this.barDockControlLeft.CausesValidation = false;
-            this.barDockControlLeft.Dock = System.Windows.Forms.DockStyle.Left;
-            this.barDockControlLeft.Location = new System.Drawing.Point(0, 29);
-            this.barDockControlLeft.Size = new System.Drawing.Size(0, 464);
-            // 
-            // barDockControlRight
-            // 
-            this.barDockControlRight.CausesValidation = false;
-            this.barDockControlRight.Dock = System.Windows.Forms.DockStyle.Right;
-            this.barDockControlRight.Location = new System.Drawing.Point(1072, 29);
-            this.barDockControlRight.Size = new System.Drawing.Size(0, 464);
             // 
             // chkPrint14
             // 
@@ -392,12 +372,13 @@ namespace HIS.Desktop.Plugins.SereServTein
             // 
             // lblMlct
             // 
+            this.lblMlct.AutoSizeMode = DevExpress.XtraEditors.LabelAutoSizeMode.None;
             this.lblMlct.Location = new System.Drawing.Point(67, 408);
             this.lblMlct.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lblMlct.Name = "lblMlct";
-            this.lblMlct.Size = new System.Drawing.Size(224, 22);
+            this.lblMlct.Size = new System.Drawing.Size(244, 20);
+            this.lblMlct.StyleController = this.layoutControl2;
             this.lblMlct.TabIndex = 11;
-            this.lblMlct.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // lblConclude
             // 
@@ -408,9 +389,9 @@ namespace HIS.Desktop.Plugins.SereServTein
             // 
             // btnVanBanDaKy
             // 
-            this.btnVanBanDaKy.Location = new System.Drawing.Point(772, 408);
+            this.btnVanBanDaKy.Location = new System.Drawing.Point(802, 408);
             this.btnVanBanDaKy.Name = "btnVanBanDaKy";
-            this.btnVanBanDaKy.Size = new System.Drawing.Size(146, 22);
+            this.btnVanBanDaKy.Size = new System.Drawing.Size(131, 22);
             this.btnVanBanDaKy.StyleController = this.layoutControl2;
             this.btnVanBanDaKy.TabIndex = 8;
             this.btnVanBanDaKy.Text = "Văn bản đã ký";
@@ -418,11 +399,11 @@ namespace HIS.Desktop.Plugins.SereServTein
             // 
             // chkInTach
             // 
-            this.chkInTach.Location = new System.Drawing.Point(610, 408);
+            this.chkInTach.Location = new System.Drawing.Point(523, 408);
             this.chkInTach.MenuManager = this.barManager1;
             this.chkInTach.Name = "chkInTach";
             this.chkInTach.Properties.Caption = "In tách";
-            this.chkInTach.Size = new System.Drawing.Size(158, 19);
+            this.chkInTach.Size = new System.Drawing.Size(275, 19);
             this.chkInTach.StyleController = this.layoutControl2;
             this.chkInTach.TabIndex = 7;
             this.chkInTach.CheckedChanged += new System.EventHandler(this.chkInTach_CheckedChanged);
@@ -616,9 +597,9 @@ namespace HIS.Desktop.Plugins.SereServTein
             // 
             // btnPrint
             // 
-            this.btnPrint.Location = new System.Drawing.Point(922, 408);
+            this.btnPrint.Location = new System.Drawing.Point(937, 408);
             this.btnPrint.Name = "btnPrint";
-            this.btnPrint.Size = new System.Drawing.Size(110, 22);
+            this.btnPrint.Size = new System.Drawing.Size(95, 22);
             this.btnPrint.StyleController = this.layoutControl2;
             this.btnPrint.TabIndex = 6;
             this.btnPrint.Text = "In (Ctrl P)";
@@ -631,14 +612,14 @@ namespace HIS.Desktop.Plugins.SereServTein
             this.layoutControlGroup2.Items.AddRange(new DevExpress.XtraLayout.BaseLayoutItem[] {
             this.layoutControlItem1,
             this.layoutControlItem3,
-            this.emptySpaceItem1,
             this.layoutControlItem5,
             this.layoutControlItem6,
             this.layoutControlItem999,
             this.layoutControlItem10,
             this.layoutControlItem9,
             this.layoutControlItem11,
-            this.lciSetting});
+            this.lciSetting,
+            this.lciACRPRC});
             this.layoutControlGroup2.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup2.Name = "Root";
             this.layoutControlGroup2.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
@@ -657,35 +638,27 @@ namespace HIS.Desktop.Plugins.SereServTein
             // layoutControlItem3
             // 
             this.layoutControlItem3.Control = this.btnPrint;
-            this.layoutControlItem3.Location = new System.Drawing.Point(920, 406);
+            this.layoutControlItem3.Location = new System.Drawing.Point(935, 406);
             this.layoutControlItem3.Name = "layoutControlItem3";
-            this.layoutControlItem3.Size = new System.Drawing.Size(114, 26);
+            this.layoutControlItem3.Size = new System.Drawing.Size(99, 26);
             this.layoutControlItem3.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem3.TextVisible = false;
-            // 
-            // emptySpaceItem1
-            // 
-            this.emptySpaceItem1.AllowHotTrack = false;
-            this.emptySpaceItem1.Location = new System.Drawing.Point(293, 406);
-            this.emptySpaceItem1.Name = "emptySpaceItem1";
-            this.emptySpaceItem1.Size = new System.Drawing.Size(315, 26);
-            this.emptySpaceItem1.TextSize = new System.Drawing.Size(0, 0);
             // 
             // layoutControlItem5
             // 
             this.layoutControlItem5.Control = this.chkInTach;
-            this.layoutControlItem5.Location = new System.Drawing.Point(608, 406);
+            this.layoutControlItem5.Location = new System.Drawing.Point(521, 406);
             this.layoutControlItem5.Name = "layoutControlItem5";
-            this.layoutControlItem5.Size = new System.Drawing.Size(162, 26);
+            this.layoutControlItem5.Size = new System.Drawing.Size(279, 26);
             this.layoutControlItem5.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem5.TextVisible = false;
             // 
             // layoutControlItem6
             // 
             this.layoutControlItem6.Control = this.btnVanBanDaKy;
-            this.layoutControlItem6.Location = new System.Drawing.Point(770, 406);
+            this.layoutControlItem6.Location = new System.Drawing.Point(800, 406);
             this.layoutControlItem6.Name = "layoutControlItem6";
-            this.layoutControlItem6.Size = new System.Drawing.Size(150, 26);
+            this.layoutControlItem6.Size = new System.Drawing.Size(135, 26);
             this.layoutControlItem6.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem6.TextVisible = false;
             // 
@@ -712,7 +685,7 @@ namespace HIS.Desktop.Plugins.SereServTein
             this.layoutControlItem10.Location = new System.Drawing.Point(0, 406);
             this.layoutControlItem10.Name = "layoutControlItem10";
             this.layoutControlItem10.OptionsToolTip.ToolTip = "Mức lọc cầu thận";
-            this.layoutControlItem10.Size = new System.Drawing.Size(293, 26);
+            this.layoutControlItem10.Size = new System.Drawing.Size(313, 26);
             this.layoutControlItem10.Text = "MLCT:";
             this.layoutControlItem10.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem10.TextSize = new System.Drawing.Size(60, 20);
@@ -756,6 +729,20 @@ namespace HIS.Desktop.Plugins.SereServTein
             this.lciSetting.Size = new System.Drawing.Size(28, 26);
             this.lciSetting.TextSize = new System.Drawing.Size(0, 0);
             this.lciSetting.TextVisible = false;
+            // 
+            // lciACRPRC
+            // 
+            this.lciACRPRC.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.lciACRPRC.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.lciACRPRC.Control = this.lblACRPRC;
+            this.lciACRPRC.Location = new System.Drawing.Point(313, 406);
+            this.lciACRPRC.Name = "lciACRPRC";
+            this.lciACRPRC.Size = new System.Drawing.Size(208, 26);
+            this.lciACRPRC.Text = "lciACRPRC:";
+            this.lciACRPRC.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.lciACRPRC.TextSize = new System.Drawing.Size(60, 20);
+            this.lciACRPRC.TextToControlDistance = 5;
+            this.lciACRPRC.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
             // 
             // xtraTabPageOther
             // 
@@ -929,6 +916,34 @@ namespace HIS.Desktop.Plugins.SereServTein
             this.layoutControlItem2.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem2.TextVisible = false;
             // 
+            // barDockControlTop
+            // 
+            this.barDockControlTop.CausesValidation = false;
+            this.barDockControlTop.Dock = System.Windows.Forms.DockStyle.Top;
+            this.barDockControlTop.Location = new System.Drawing.Point(0, 29);
+            this.barDockControlTop.Size = new System.Drawing.Size(1072, 0);
+            // 
+            // barDockControlBottom
+            // 
+            this.barDockControlBottom.CausesValidation = false;
+            this.barDockControlBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.barDockControlBottom.Location = new System.Drawing.Point(0, 493);
+            this.barDockControlBottom.Size = new System.Drawing.Size(1072, 0);
+            // 
+            // barDockControlLeft
+            // 
+            this.barDockControlLeft.CausesValidation = false;
+            this.barDockControlLeft.Dock = System.Windows.Forms.DockStyle.Left;
+            this.barDockControlLeft.Location = new System.Drawing.Point(0, 29);
+            this.barDockControlLeft.Size = new System.Drawing.Size(0, 464);
+            // 
+            // barDockControlRight
+            // 
+            this.barDockControlRight.CausesValidation = false;
+            this.barDockControlRight.Dock = System.Windows.Forms.DockStyle.Right;
+            this.barDockControlRight.Location = new System.Drawing.Point(1072, 29);
+            this.barDockControlRight.Size = new System.Drawing.Size(0, 464);
+            // 
             // frmSereServTein
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -974,7 +989,6 @@ namespace HIS.Desktop.Plugins.SereServTein
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem3)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem5)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem6)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem999)).EndInit();
@@ -982,6 +996,7 @@ namespace HIS.Desktop.Plugins.SereServTein
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem9)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem11)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciSetting)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciACRPRC)).EndInit();
             this.xtraTabPageOther.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl3)).EndInit();
             this.layoutControl3.ResumeLayout(false);
@@ -1027,7 +1042,6 @@ namespace HIS.Desktop.Plugins.SereServTein
         private DevExpress.XtraLayout.LayoutControlGroup layoutControlGroup2;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem1;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem3;
-        private DevExpress.XtraLayout.EmptySpaceItem emptySpaceItem1;
         private DevExpress.XtraTab.XtraTabPage xtraTabPageOther;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem2;
         private DevExpress.XtraLayout.LayoutControl layoutControl3;
@@ -1057,7 +1071,7 @@ namespace HIS.Desktop.Plugins.SereServTein
 		private DevExpress.XtraGrid.Columns.GridColumn gridColumn9;
 		private System.Windows.Forms.Label lblConclude;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem999;
-        private System.Windows.Forms.Label lblMlct;
+        private DevExpress.XtraEditors.LabelControl lblMlct;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem10;
         private System.Windows.Forms.Label lblNote;
         private System.Windows.Forms.Label lblDescription;
@@ -1072,5 +1086,7 @@ namespace HIS.Desktop.Plugins.SereServTein
         private DevExpress.XtraLayout.LayoutControlGroup layoutControlGroup4;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem13;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem14;
+        private DevExpress.XtraEditors.LabelControl lblACRPRC;
+        private DevExpress.XtraLayout.LayoutControlItem lciACRPRC;
     }
 }

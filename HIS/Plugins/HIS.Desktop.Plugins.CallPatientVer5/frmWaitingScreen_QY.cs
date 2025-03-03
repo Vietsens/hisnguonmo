@@ -24,6 +24,8 @@ using HIS.Desktop.LocalStorage.BackendData;
 using HIS.Desktop.LocalStorage.BackendData.ADO;
 using HIS.Desktop.LocalStorage.ConfigApplication;
 using HIS.Desktop.LocalStorage.Location;
+using HIS.Desktop.Plugins.CallPatientVer5.Class;
+using HIS.Desktop.Plugins.CallPatientVer5.Template;
 using HIS.Desktop.Utility;
 using Inventec.Common.Adapter;
 using Inventec.Common.Logging;
@@ -59,18 +61,17 @@ namespace HIS.Desktop.Plugins.CallPatientVer5
         List<long> serviceReqForClsIds = null;
         List<long> serviceReqSttIds = null;
         int countPatient = 0;
-        bool _IsNotInDebt = false;
+        DisplayOptionADO _displayConfig = null;
         internal long roomId = 0;
         Inventec.Desktop.Common.Modules.Module _module;
 
-
-        public frmWaitingScreen_QY9(MOS.EFMODEL.DataModels.HIS_SERVICE_REQ HisServiceReq, List<MOS.EFMODEL.DataModels.HIS_SERVICE_REQ_STT> ServiceReqStts, bool IsNotInDebt, Inventec.Desktop.Common.Modules.Module module)
+        public frmWaitingScreen_QY9(MOS.EFMODEL.DataModels.HIS_SERVICE_REQ HisServiceReq, List<MOS.EFMODEL.DataModels.HIS_SERVICE_REQ_STT> ServiceReqStts, DisplayOptionADO ado, Inventec.Desktop.Common.Modules.Module module)
             : base(module)
         {
             InitializeComponent();
             this.hisServiceReq = HisServiceReq;
             this.serviceReqStts = ServiceReqStts;
-            this._IsNotInDebt = IsNotInDebt;
+            this._displayConfig = ado;
             this._module = module;
             //this.roomId = module.RoomId;
         }
@@ -79,7 +80,6 @@ namespace HIS.Desktop.Plugins.CallPatientVer5
             InitializeComponent();
             this.hisServiceReq = HisServiceReq;
             this.serviceReqStts = ServiceReqStts;
-            this._IsNotInDebt = IsNotInDebt;
 
         }
         private void frmWaitingScreen_QY_Load(object sender, EventArgs e)
@@ -87,7 +87,7 @@ namespace HIS.Desktop.Plugins.CallPatientVer5
             try
             {
                 var employee = BackendDataWorker.Get<HIS_EMPLOYEE>().FirstOrDefault(o => o.LOGINNAME == Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName());
-                lblDoctorName.Text = string.Format("{0}{1}", employee != null && !string.IsNullOrEmpty(employee.TITLE) ? employee.TITLE + ": " : "", Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName().ToUpper());
+                lblDoctorName.Text = string.Format("{0}{1}", employee != null && !string.IsNullOrEmpty(employee.TITLE) ? employee.TITLE.ToUpper() + ": " : "", Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetUserName().ToUpper());
 
                 //lblRoomName.Text = (room != null) ? (room.ROOM_NAME).ToUpper() : "";
                 FillDataToGridWaitingPatient(serviceReqStts);
@@ -97,8 +97,6 @@ namespace HIS.Desktop.Plugins.CallPatientVer5
                 //Start all timer
                 StartAllTimer();
                 lblSrollText.Text = "";
-                //Set color Form
-                setFromConfigToControl();
                 RegisterTimer(ModuleLink, "timerAutoLoadDataPatient", WaitingScreenCFG.TIMER_FOR_AUTO_LOAD_WAITING_SCREENS * 1000, StartTheadWaitingPatientToCall);
                 StartTimer(ModuleLink, "timerAutoLoadDataPatient");
                 timerForHightLightCallPatientLayout.Interval = WaitingScreenCFG.TIMER_FOR_HIGHT_LIGHT_CALL_PATIENT * 1000;
@@ -107,6 +105,8 @@ namespace HIS.Desktop.Plugins.CallPatientVer5
                 InitRestoreLayoutGridViewFromXml(gridViewWaitingCls);
                 InitRestoreLayoutGridViewFromXml(gridViewWatingExams);
 
+                //Set color Form
+                setFromConfigToControl();
             }
             catch (Exception ex)
             {
@@ -408,14 +408,18 @@ namespace HIS.Desktop.Plugins.CallPatientVer5
 
                 //ten benh vien
                 organizationName = WaitingScreenCFG.ORGANIZATION_NAME;
-
+                if (string.IsNullOrEmpty(organizationName))
+                {
+                    layoutControlItem4.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+                }
                 //mau background
                 List<int> parentBackColorCodes = WaitingScreenCFG.PARENT_BACK_COLOR_CODES;
                 if (parentBackColorCodes != null && parentBackColorCodes.Count == 3)
                 {
                     layoutControl11.BackColor = System.Drawing.Color.FromArgb(parentBackColorCodes[0], parentBackColorCodes[1], parentBackColorCodes[2]);
                     layoutControlGroup1.AppearanceGroup.BackColor = System.Drawing.Color.FromArgb(parentBackColorCodes[0], parentBackColorCodes[1], parentBackColorCodes[2]);
-                    layoutControlGroup2.AppearanceGroup.BackColor = System.Drawing.Color.FromArgb(parentBackColorCodes[0], parentBackColorCodes[1], parentBackColorCodes[2]);
+                    layoutControlItem9.AppearanceItemCaption.BackColor = System.Drawing.Color.FromArgb(parentBackColorCodes[0], parentBackColorCodes[1], parentBackColorCodes[2]);
+                    layoutControlItem9.AppearanceItemCaption.BackColor = System.Drawing.Color.FromArgb(parentBackColorCodes[0], parentBackColorCodes[1], parentBackColorCodes[2]);
                     layoutControlGroup3.AppearanceGroup.BackColor = System.Drawing.Color.FromArgb(parentBackColorCodes[0], parentBackColorCodes[1], parentBackColorCodes[2]);
                     layoutControlGroup4.AppearanceGroup.BackColor = System.Drawing.Color.FromArgb(parentBackColorCodes[0], parentBackColorCodes[1], parentBackColorCodes[2]);
                     layoutControlGroup5.AppearanceGroup.BackColor = System.Drawing.Color.FromArgb(parentBackColorCodes[0], parentBackColorCodes[1], parentBackColorCodes[2]);
@@ -594,13 +598,84 @@ namespace HIS.Desktop.Plugins.CallPatientVer5
 
                 lblMoibenhnhan.Font = new System.Drawing.Font(new FontFamily("Arial"), WaitingScreenCFG.FONT_SIZE__LABEL_SO_THU_TU_BENH_NHAN_DANG_DUOC_GOI, FontStyle.Bold);
                 lblSoThuTuBenhNhan.Font = new System.Drawing.Font(new FontFamily("Arial"), WaitingScreenCFG.FONT_SIZE__SO_THU_TU_BENH_NHAN_DANG_DUOC_GOI, FontStyle.Bold);
-                lblKhambenh.Font = new System.Drawing.Font(new FontFamily("Arial"), WaitingScreenCFG.FONT_SIZE__LABEL_SO_THU_TU_BENH_NHAN_DANG_DUOC_GOI, FontStyle.Bold);
 
                 lblPatientName.Font = new System.Drawing.Font(new FontFamily("Arial"), WaitingScreenCFG.FONT_SIZE__TEN_BENH_NHAN_DANG_DUOC_GOI, FontStyle.Bold);
 
                 lblWatingCls.Font = new System.Drawing.Font(new FontFamily("Arial"), WaitingScreenCFG.FONT_SIZE__DANH_SACH_CHO, FontStyle.Bold);
                 lblWatingExams.Font = new System.Drawing.Font(new FontFamily("Arial"), WaitingScreenCFG.FONT_SIZE__DANH_SACH_CHO, FontStyle.Bold);
 
+
+                lblPatientName.Appearance.ForeColor = _displayConfig.ColorSTT;
+                lblSoThuTuBenhNhan.Appearance.ForeColor = _displayConfig.ColorSTT;
+
+                lblSoThuTuBenhNhan.Appearance.Font = new Font(new FontFamily("Arial"), (float)_displayConfig.SizeSTT, FontStyle.Bold);
+
+                lblPatientName.Appearance.Font = new Font(new FontFamily("Arial"), (float)_displayConfig.SizeContentSTT, FontStyle.Bold);
+                lblUT.Appearance.Font = new Font(new FontFamily("Arial"), (float)_displayConfig.SizeContentSTT, FontStyle.Bold);
+
+                if (string.IsNullOrEmpty(_displayConfig.Content))
+                    layoutControlItem17.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+                lbtPlease.Text = _displayConfig.Content;
+                lblUT.Appearance.ForeColor = _displayConfig.ColorPriority;
+                // màu chữ của header danh sách bệnh nhân
+
+                gridColumnUT.AppearanceHeader.ForeColor = _displayConfig.ColorList;
+                gridColumnAge.AppearanceHeader.ForeColor = _displayConfig.ColorList;
+                gridColumnFirstName.AppearanceHeader.ForeColor = _displayConfig.ColorList;
+                gridColumnSTT.AppearanceHeader.ForeColor = _displayConfig.ColorList;
+
+                gridColumnUT.AppearanceHeader.Font = new Font(new FontFamily("Arial"), (float)_displayConfig.SizeList, FontStyle.Bold);
+                gridColumnAge.AppearanceHeader.Font = new Font(new FontFamily("Arial"), (float)_displayConfig.SizeList, FontStyle.Bold);
+                gridColumnFirstName.AppearanceHeader.Font = new Font(new FontFamily("Arial"), (float)_displayConfig.SizeList, FontStyle.Bold);
+                gridColumnSTT.AppearanceHeader.Font = new Font(new FontFamily("Arial"), (float)_displayConfig.SizeList, FontStyle.Bold);
+
+                // màu chữ của body danh sách bệnh nhân
+
+                gridColumnUT.AppearanceCell.ForeColor = _displayConfig.ColorList;
+                gridColumnAge.AppearanceCell.ForeColor = _displayConfig.ColorList;
+                gridColumnFirstName.AppearanceCell.ForeColor = _displayConfig.ColorList;
+                gridColumnSTT.AppearanceCell.ForeColor = _displayConfig.ColorList;
+
+                gridColumnUT.AppearanceCell.Font = new Font(new FontFamily("Arial"), (float)_displayConfig.SizeList, FontStyle.Bold);
+                gridColumnAge.AppearanceCell.Font = new Font(new FontFamily("Arial"), (float)_displayConfig.SizeList, FontStyle.Bold);
+                gridColumnFirstName.AppearanceCell.Font = new Font(new FontFamily("Arial"), (float)_displayConfig.SizeList, FontStyle.Bold);
+                gridColumnSTT.AppearanceCell.Font = new Font(new FontFamily("Arial"), (float)_displayConfig.SizeList, FontStyle.Bold);
+
+
+
+
+                // màu chữ của header danh sách bệnh nhân
+
+                gridColumnUTExam.AppearanceHeader.ForeColor = _displayConfig.ColorList;
+                gridColumnAgeExam.AppearanceHeader.ForeColor = _displayConfig.ColorList;
+                gridColumnFirstNameExam.AppearanceHeader.ForeColor = _displayConfig.ColorList;
+                gridColumnSTTExam.AppearanceHeader.ForeColor = _displayConfig.ColorList;
+
+                gridColumnUTExam.AppearanceHeader.Font = new Font(new FontFamily("Arial"), (float)_displayConfig.SizeList, FontStyle.Bold);
+                gridColumnAgeExam.AppearanceHeader.Font = new Font(new FontFamily("Arial"), (float)_displayConfig.SizeList, FontStyle.Bold);
+                gridColumnFirstNameExam.AppearanceHeader.Font = new Font(new FontFamily("Arial"), (float)_displayConfig.SizeList, FontStyle.Bold);
+                gridColumnSTTExam.AppearanceHeader.Font = new Font(new FontFamily("Arial"), (float)_displayConfig.SizeList, FontStyle.Bold);
+
+                // màu chữ của body danh sách bệnh nhân
+
+                gridColumnUTExam.AppearanceCell.ForeColor = _displayConfig.ColorList;
+                gridColumnAgeExam.AppearanceCell.ForeColor = _displayConfig.ColorList;
+                gridColumnFirstNameExam.AppearanceCell.ForeColor = _displayConfig.ColorList;
+                gridColumnSTTExam.AppearanceCell.ForeColor = _displayConfig.ColorList;
+
+                gridViewWaitingCls.OptionsView.ShowColumnHeaders = _displayConfig.IsShowCol;
+                gridViewWatingExams.OptionsView.ShowColumnHeaders = _displayConfig.IsShowCol;
+                lbtPlease.Text = _displayConfig.Content;
+                if (string.IsNullOrEmpty(_displayConfig.Content))
+                {
+                    layoutControlItem19.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+                    layoutControlItem27.Size = new System.Drawing.Size(layoutControlItem27.Width, layoutControlItem19.Height + layoutControlItem27.Height);
+                }
+
+                gridColumnUTExam.AppearanceCell.Font = new Font(new FontFamily("Arial"), (float)_displayConfig.SizeList, FontStyle.Bold);
+                gridColumnAgeExam.AppearanceCell.Font = new Font(new FontFamily("Arial"), (float)_displayConfig.SizeList, FontStyle.Bold);
+                gridColumnFirstNameExam.AppearanceCell.Font = new Font(new FontFamily("Arial"), (float)_displayConfig.SizeList, FontStyle.Bold);
+                gridColumnSTTExam.AppearanceCell.Font = new Font(new FontFamily("Arial"), (float)_displayConfig.SizeList, FontStyle.Bold);
             }
             catch (Exception ex)
             {
@@ -639,7 +714,7 @@ namespace HIS.Desktop.Plugins.CallPatientVer5
                             {
                                 var priority = BackendDataWorker.Get<HIS_PRIORITY_TYPE>().Where(o => o.ID == uutien).ToList();
                                 if (priority != null)
-                                    e.Value = "UT";
+                                    e.Value = "ƯT";
                             }
 
                         }
@@ -683,12 +758,12 @@ namespace HIS.Desktop.Plugins.CallPatientVer5
                         }
                         if (e.Column.FieldName == "UT_STR")
                         {
-                            long uutien = data.PRIORITY_TYPE_ID ?? 0;
+                            long uutien = data.PRIORITY ?? 0;
                             if (uutien > 0)
                             {
                                 var priority = BackendDataWorker.Get<HIS_PRIORITY_TYPE>().Where(o => o.ID == uutien).ToList();
                                 if (priority != null)
-                                    e.Value = "UT";
+                                    e.Value = "ƯT";
                             }
 
                         }
@@ -712,12 +787,11 @@ namespace HIS.Desktop.Plugins.CallPatientVer5
                 GridView View = sender as GridView;
                 if (e.RowHandle >= 0)
                 {
-                    int serviceReqStt = Inventec.Common.TypeConvert.Parse.ToInt16((View.GetRowCellValue(e.RowHandle, "SERVICE_REQ_STT_NAME") ?? "").ToString());
-                    if (serviceReqStt == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_STT.ID__CXL && newStatusForceColorCodes != null && newStatusForceColorCodes.Count == 3)
+                    int uutien = Inventec.Common.TypeConvert.Parse.ToInt16((View.GetRowCellValue(e.RowHandle, "PRIORITY") ?? "").ToString());
+                    if (uutien > 0)
                     {
-                        e.Appearance.Font = new System.Drawing.Font("Tahoma", 22);
                         e.HighPriority = true;
-                        e.Appearance.ForeColor = System.Drawing.Color.FromArgb(newStatusForceColorCodes[0], newStatusForceColorCodes[1], newStatusForceColorCodes[2]);
+                        e.Appearance.ForeColor = _displayConfig.ColorPriority;
                     }
                 }
             }
@@ -740,7 +814,6 @@ namespace HIS.Desktop.Plugins.CallPatientVer5
                 this.layoutControl4.Text = Inventec.Common.Resource.Get.Value("frmWaitingScreen_QY9.layoutControl4.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.lblDoctorName.Text = Inventec.Common.Resource.Get.Value("frmWaitingScreen_QY9.lblUserName.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 //this.lblRoomName.Text = Inventec.Common.Resource.Get.Value("frmWaitingScreen_QY9.lblRoomName.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                this.layoutControl3.Text = Inventec.Common.Resource.Get.Value("frmWaitingScreen_QY9.layoutControl3.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.lblWatingCls.Text = Inventec.Common.Resource.Get.Value("frmWaitingScreen_QY9.lblWatingCls.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.lblWatingExams.Text = Inventec.Common.Resource.Get.Value("frmWaitingScreen_QY9.lblWatingExams.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.layoutControl2.Text = Inventec.Common.Resource.Get.Value("frmWaitingScreen_QY9.layoutControl2.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
@@ -789,7 +862,7 @@ namespace HIS.Desktop.Plugins.CallPatientVer5
                     }
                 }
 
-                if (this._IsNotInDebt)
+                if (this._displayConfig.IsNotInDebt)
                 {
                     searchMVC.IS_NOT_IN_DEBT = true;
                 }
@@ -910,47 +983,6 @@ namespace HIS.Desktop.Plugins.CallPatientVer5
         {
             try
             {
-                //if (serviceReq1 == null || serviceReq1.Count == 0)
-                //{
-                //    gridControlWatingExams.DataSource = null;
-                //    gridControlWaitingCls.DataSource = null;
-                //    return;
-                //}
-                //List<HIS_SERVICE_REQ> serviceReqLeft = new List<HIS_SERVICE_REQ>();
-                //List<HIS_SERVICE_REQ> serviceReqRightResult = new List<HIS_SERVICE_REQ>();
-
-                ////if (WaitingScreenCFG.PatientNotCLS == "1" && serviceReq1 != null && serviceReq1.Count > 0)
-                ////{
-                ////    serviceReqRight = serviceReq1.Where(o => o.SERVICE_REQ_STT_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_STT.ID__DXL).Take(countPatient).OrderBy(p => p.START_TIME).ToList();
-                ////    List<long> treatmentIdRight = (serviceReqRight != null && serviceReqRight.Count > 0) ? serviceReqRight.Select(o => o.TREATMENT_ID).Distinct().ToList() : new List<long>();
-                ////    gridlistleft = serviceReq1.Where(o => serviceReqSttIds.Contains(o.SERVICE_REQ_STT_ID) && !treatmentIdRight.Contains(o.TREATMENT_ID)).ToList().Take(countPatient).ToList();
-                ////}
-                ////else
-                ////{
-                ////serviceReqRight1 = serviceReq1.Where(o => o.IS_WAIT_CHILD != 1 && o.SERVICE_REQ_STT_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_STT.ID__DXL).Take(countPatient).ToList();
-                ////Những bệnh nhân đã hoàn thành khám và tất cả cận lâm sàng
-                //serviceReqLeft = serviceReq1.Where(o => o.IS_WAIT_CHILD != 1 && o.SERVICE_REQ_STT_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_STT.ID__DXL).Take(countPatient).ToList();
-                //serviceReqRightResult = serviceReq1.Where(o => o.IS_WAIT_CHILD != 1 && o.SERVICE_REQ_STT_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_STT.ID__DXL && o.HAS_CHILD == 1).Take(countPatient).ToList();
-                //serviceReqForClsIds.Clear();
-                //serviceReqForClsIds = serviceReqLeft.Select(o => o.ID).ToList();
-                ////serviceReqForClsIds1 = serviceReqRight1.Select(o => o.ID).ToList();
-
-                //serviceReqLeft = serviceReq1.Where(o => !serviceReqForClsIds.Contains(o.ID) && serviceReqSttIds.Contains(o.SERVICE_REQ_STT_ID)).ToList().Take(countPatient).ToList();
-                //long startDay = Inventec.Common.TypeConvert.Parse.ToInt64((Inventec.Common.DateTime.Get.StartDay() ?? 0).ToString());
-                //long endDay = Inventec.Common.TypeConvert.Parse.ToInt64((Inventec.Common.DateTime.Get.StartDay() ?? 0).ToString());
-                //serviceReqLeft = serviceReqLeft.Where(o => o.INTRUCTION_DATE >= startDay && o.INTRUCTION_DATE <= endDay).ToList();
-                ////}
-                //gridControlWatingExams.BeginUpdate();
-                //gridControlWatingExams.DataSource = serviceReqLeft.ToList();
-                //gridControlWaitingCls.DataSource = serviceReqRightResult;
-                //gridControlWatingExams.EndUpdate();
-
-
-                //---------------
-
-
-
-
                 if (serviceReq1 == null || serviceReq1.Count == 0)
                 {
                     gridControlWatingExams.DataSource = null;
@@ -966,13 +998,13 @@ namespace HIS.Desktop.Plugins.CallPatientVer5
                 {
                     serviceReqRight = serviceReq1.Where(o => o.SERVICE_REQ_STT_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_STT.ID__DXL).Take(countPatient).OrderBy(p => p.START_TIME).ToList();
                     List<long> treatmentIdRight = (serviceReqRight != null && serviceReqRight.Count > 0) ? serviceReqRight.Select(o => o.TREATMENT_ID).Distinct().ToList() : new List<long>();
-                    gridlistleft = serviceReq1.Where(o => serviceReqSttIds.Contains(o.SERVICE_REQ_STT_ID) && !treatmentIdRight.Contains(o.TREATMENT_ID)).ToList();
+                    gridlistleft = serviceReq1.Where(o => serviceReqSttIds.Contains(o.SERVICE_REQ_STT_ID) && !treatmentIdRight.Contains(o.TREATMENT_ID) && !lstCalled.Exists(p => p.ID == o.ID)).ToList();
                 }
                 else
                 {
                     serviceReqRight = serviceReq1.Where(o => o.IS_WAIT_CHILD != 1 && o.HAS_CHILD == 1 && o.SERVICE_REQ_STT_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_STT.ID__DXL).ToList();
 
-                    gridlistleft = serviceReq1.Where(o => serviceReqSttIds.Contains(o.SERVICE_REQ_STT_ID)).ToList();
+                    gridlistleft = serviceReq1.Where(o => serviceReqSttIds.Contains(o.SERVICE_REQ_STT_ID) && !lstCalled.Exists(p=>p.ID == o.ID)).ToList();
                 }
                 gridControlWatingExams.BeginUpdate();
                 gridControlWatingExams.DataSource = gridlistleft;
@@ -1089,7 +1121,7 @@ namespace HIS.Desktop.Plugins.CallPatientVer5
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
-
+        List<HIS_SERVICE_REQ> lstCalled = new List<HIS_SERVICE_REQ>();
         private void SetDataToLabelMoiBenhNhanChild()
         {
             try
@@ -1097,7 +1129,11 @@ namespace HIS.Desktop.Plugins.CallPatientVer5
                 ServiceReq1ADO serviceReq1ADO = new ServiceReq1ADO();
                 ServiceReq1ADO PatientIsCall = (this.serviceReqStts != null && this.serviceReqStts.Count > 0) ? CallPatientDataWorker.DicCallPatient[room.ID].FirstOrDefault(o => o.CallPatientSTT) : null;
                 serviceReq1ADO = PatientIsCall;
-                SetDataToCurrentPatientCall(serviceReq1ADO);
+                if (serviceReqStatics.FirstOrDefault(o => o.ID == serviceReq1ADO.ID) != null && !lstCalled.Exists(o=>o.ID == serviceReq1ADO.ID))
+                {
+                    lstCalled.Add(serviceReqStatics.FirstOrDefault(o => o.ID == serviceReq1ADO.ID));
+                    SetDataToCurrentPatientCall(serviceReq1ADO);
+                }
             }
             catch (Exception ex)
             {
@@ -1111,13 +1147,14 @@ namespace HIS.Desktop.Plugins.CallPatientVer5
             {
                 if (serviceReq1ADO != null)
                 {
-                    lblPatientName.Text = serviceReq1ADO.TDL_PATIENT_NAME;
+                    lblPatientName.Text = string.Format("{0} ({1})", serviceReq1ADO.TDL_PATIENT_NAME, serviceReq1ADO.TDL_PATIENT_DOB.ToString().Substring(0, 4));
                     lblSoThuTuBenhNhan.Text = serviceReq1ADO.NUM_ORDER + "";
-                    if (serviceReq1ADO.PRIORITY_TYPE_ID != null && serviceReq1ADO.PRIORITY_TYPE_ID > 0)
+                    if (serviceReq1ADO.PRIORITY != null && serviceReq1ADO.PRIORITY > 0)
                     {
-                        var priority = BackendDataWorker.Get<HIS_PRIORITY_TYPE>().Where(o => o.ID == serviceReq1ADO.PRIORITY_TYPE_ID).ToList();
-                        if (priority != null)
-                            lblUT.Text = "Trường hợp ưu tiên: " + priority.FirstOrDefault().PRIORITY_TYPE_NAME;
+                        lblUT.Text = "(ƯT)";
+                        //var priority = BackendDataWorker.Get<HIS_PRIORITY_TYPE>().Where(o => o.ID == serviceReq1ADO.PRIORITY_TYPE_ID).ToList();
+                        //if (priority != null)
+                        //    lblUT.Text = "Trường hợp ưu tiên: " + priority.FirstOrDefault().PRIORITY_TYPE_NAME;
                     }
                     else
                         lblUT.Text = "";
@@ -1281,7 +1318,7 @@ namespace HIS.Desktop.Plugins.CallPatientVer5
                 hisServiceReqFilter.ORDER_DIRECTION1 = "ASC";
                 hisServiceReqFilter.ORDER_DIRECTION2 = "DESC";
                 hisServiceReqFilter.ORDER_DIRECTION3 = "ASC";
-                if (this._IsNotInDebt)
+                if (this._displayConfig.IsNotInDebt)
                 {
                     hisServiceReqFilter.IS_NOT_IN_DEBT = true;
                 }
@@ -1304,8 +1341,6 @@ namespace HIS.Desktop.Plugins.CallPatientVer5
                 {
                     CallPatientDataWorker.DicCallPatient[room.ID] = new List<ServiceReq1ADO>();
                 }
-                lblPatientName.Text = "";
-                lblSoThuTuBenhNhan.Text = "";
 
                 #region Process has exception
                 SessionManager.ProcessTokenLost(param);
@@ -1389,6 +1424,27 @@ namespace HIS.Desktop.Plugins.CallPatientVer5
                 //StopTimer(ModuleLink, "timerForScrollTextBottom");
                 //StopTimer(ModuleLink, "Timer");
                 //StopTimer(ModuleLink, "timer1");
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void gridViewWatingExams_RowStyle(object sender, RowStyleEventArgs e)
+        {
+            try
+            {
+                GridView View = sender as GridView;
+                if (e.RowHandle >= 0)
+                {
+                    int uutien = Inventec.Common.TypeConvert.Parse.ToInt16((View.GetRowCellValue(e.RowHandle, "PRIORITY") ?? "").ToString());
+                    if (uutien > 0)
+                    {
+                        e.HighPriority = true;
+                        e.Appearance.ForeColor = _displayConfig.ColorPriority;
+                    }
+                }
             }
             catch (Exception ex)
             {

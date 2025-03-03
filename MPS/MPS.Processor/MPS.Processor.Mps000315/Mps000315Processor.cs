@@ -38,7 +38,7 @@ namespace MPS.Processor.Mps000315
         List<ServiceReqAdo> ServiceReqAdos { get; set; }
         List<TreatmentAdo> TreatmentAdos { get; set; }
         List<SereServResultAdo> SereServResultAdos { get; set; }
-
+        HIS_KSK_GENERAL hkg { get; set; }
         public Mps000315Processor(CommonParam param, PrintData printData)
             : base(param, printData)
         {
@@ -130,8 +130,6 @@ namespace MPS.Processor.Mps000315
                 objectTag.AddObjectData(store, "Patient", rdo._KSK_Patients);
                 objectTag.AddObjectData(store, "KskGeneral", rdo._KskGeneral);
 
-
-
                 result = true;
             }
             catch (Exception ex)
@@ -180,6 +178,12 @@ namespace MPS.Processor.Mps000315
                     //
                     if(rdo._KSK_ServiceReqs.Count == 1)
                         AddObjectKeyIntoListkey<V_HIS_SERVICE_REQ>(rdo._KSK_ServiceReqs[0], false);
+                }
+                //set single key
+                if (rdo._KskGeneral != null && rdo._KskGeneral.Count > 0)
+                {
+                    if (rdo._KskGeneral.Count == 1)
+                        AddObjectKeyIntoListkey<HIS_KSK_GENERAL>(rdo._KskGeneral[0], false);
                 }
 
                 TreatmentAdos = new List<TreatmentAdo>();

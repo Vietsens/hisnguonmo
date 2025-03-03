@@ -37,6 +37,8 @@ using HIS.Desktop.Plugins.Library.CheckHeinGOV;
 using CHC.WCFClient.CheckHeinCardService;
 using SDA.EFMODEL.DataModels;
 using HeinCardData = Inventec.Common.QrCodeBHYT.HeinCardData;
+using DevExpress.XtraEditors;
+using MOS.SDO;
 
 namespace HIS.Desktop.Plugins.RegisterV2.Run2
 {
@@ -231,7 +233,7 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
 
 
                     }
-
+                    CheckRRCodeTTFee(false);
                     if (HisConfigCFG.IsCheckExamHistory
                         && this.ucPatientRaw1.ResultDataADO.ResultHistoryLDO != null)
                     {
@@ -247,6 +249,7 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
 
                     }
 
+
                     Inventec.Common.Logging.LogSystem.Debug("CheckTTProcessResultData 3");
                     Inventec.Common.Logging.LogSystem.Debug("CheckHanSDTheBHYT => 3");
                 }
@@ -256,6 +259,26 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
+
+        private bool CheckRRCodeTTFee(bool IsSave)
+        {
+            bool result = true;
+            try
+            {
+                var dt = ucHeinInfo1.GetValue();
+                if (dt.HisPatientTypeAlter.RIGHT_ROUTE_CODE == MOS.LibraryHein.Bhyt.HeinRightRoute.HeinRightRouteCode.FALSE && HIS.Desktop.LocalStorage.BackendData.BranchDataWorker.Branch.IS_WARNING_WRONG_ROUTE_FEE == 1)
+                {
+                    result = IsSave ? XtraMessageBox.Show("Bệnh nhân trái tuyến cần thu tiền khám. Bạn có muốn tiếp tục không?", "Thông báo", MessageBoxButtons.YesNo) == DialogResult.Yes : XtraMessageBox.Show("Bệnh nhân trái tuyến cần thu tiền khám.", "Thông báo", MessageBoxButtons.OK) == DialogResult.OK;
+                }
+
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+            return result;
+        }
+
 
         private bool CheckChangeInfo(HeinCardData dataHein, ResultHistoryLDO rsIns, bool isHasNewCard)
         {

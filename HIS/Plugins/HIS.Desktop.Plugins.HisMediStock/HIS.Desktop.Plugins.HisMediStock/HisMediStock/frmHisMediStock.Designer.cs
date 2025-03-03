@@ -1199,7 +1199,6 @@ namespace HIS.Desktop.Plugins.HisMediStock.HisMediStock
             // 
             // cboRooomTN
             // 
-            this.cboRooomTN.EditValue = "";
             this.cboRooomTN.Location = new System.Drawing.Point(107, 507);
             this.cboRooomTN.MenuManager = this.barManager1;
             this.cboRooomTN.Name = "cboRooomTN";

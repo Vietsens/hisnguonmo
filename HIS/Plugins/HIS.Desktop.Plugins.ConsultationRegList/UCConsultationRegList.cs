@@ -38,8 +38,6 @@ using System.Collections;
 using Inventec.Desktop.Common.Message;
 using Inventec.Core;
 using MOS.Filter;
-using VSK.Filter;
-using VSK.EFMODEL;
 using Inventec.Common.Adapter;
 using Inventec.Desktop.Common.LanguageManager;
 using HIS.Desktop.Utilities.Extensions;
@@ -231,8 +229,8 @@ namespace HIS.Desktop.Plugins.ConsultationRegList
                 }
                 else
                 {
-                    filter.ORDER_FIELD = "MODIFY_TIME";
-                    filter.ORDER_DIRECTION = "DESC";
+                    filter.ORDER_FIELD = "NUM_ORDER";
+                    filter.ORDER_DIRECTION = "ASC";
                     filter.KEY_WORD = txtKeyWord.Text.Trim();
                     if (dtCreateTimeFrom.EditValue != null && dtCreateTimeFrom.DateTime != DateTime.MinValue)
                         filter.REGISTER_DATE_FROM = Inventec.Common.TypeConvert.Parse.ToInt64(
@@ -307,18 +305,27 @@ namespace HIS.Desktop.Plugins.ConsultationRegList
                     }
                     else if (e.Column.FieldName == "Status")
                     {
-                        if (data.REGISTER_STT_ID == 1)
+                        if (data.REGISTER_STT_ID == 1) // Yeu cau
                         {
                             e.Value = imageList1.Images[0];
                         }
-                        else if (data.REGISTER_STT_ID == 2)
+                        else if (data.REGISTER_STT_ID == 2)// dang xu ly
                         {
                             e.Value = imageList1.Images[1];
                         }
-                        else if (data.REGISTER_STT_ID == 3)
+                        else if (data.REGISTER_STT_ID == 5)//huy
                         {
                             e.Value = imageList1.Images[2];
                         }
+                        else if (data.REGISTER_STT_ID == 4)//khong lien lac duoc
+                        {
+                            e.Value = imageList1.Images[3];
+                        }
+                        else//hoan thanh
+                        {
+                        }
+
+
                     }
                     else if (e.Column.FieldName == "DOB_STR")
                     {
@@ -673,6 +680,10 @@ namespace HIS.Desktop.Plugins.ConsultationRegList
                                 }
                                 else if (sttId == 3)
                                     text = "Hoàn thành";
+                                else if(sttId == 4)
+                                    text = "Không liên lạc được";
+                                else if (sttId == 5)
+                                    text = "Hủy";
                             }
                             lastInfo = new ToolTipControlInfo(new DevExpress.XtraGrid.GridToolTipInfo(view, new DevExpress.XtraGrid.Views.Base.CellToolTipInfo(info.RowHandle, info.Column, "Text")), text);
                         }
@@ -723,11 +734,62 @@ namespace HIS.Desktop.Plugins.ConsultationRegList
                                 Inventec.Common.Logging.LogSystem.Error(ex);
                             }
                         }
+                        else if (e.Column.FieldName == "DONT_CONTACT")
+                        {
+                            try
+                            {
+                                if (data.REGISTER_STT_ID == 2)
+                                    e.RepositoryItem = repoNotContactE;
+                                else
+                                    e.RepositoryItem = repoNotContactD;
+                            }
+                            catch (Exception ex)
+                            {
+                                Inventec.Common.Logging.LogSystem.Error(ex);
+                            }
+                        }
+
                     }
                 }
             }
             catch (Exception ex)
             {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void repoNotContactE_ButtonClick(object sender, DevExpress.XtraEditors.Controls.ButtonPressedEventArgs e)
+        {
+            try
+            {
+                CommonParam param = new CommonParam();
+                bool rs = false;
+                
+                var row = (V_HIS_CONSULTATION_REG)gridView1.GetFocusedRow();
+                if (MessageBox.Show(this, "Bạn muốn cập nhật tư vấn \"Không liên lạc được\"?",
+                    "Thông báo", MessageBoxButtons.YesNo) == DialogResult.Yes)
+                {
+
+                    WaitingManager.Show();
+                    HIS_CONSULTATION_REG obj = new HIS_CONSULTATION_REG();
+                    Inventec.Common.Mapper.DataObjectMapper.Map<HIS_CONSULTATION_REG>(obj, row);
+                    obj.REGISTER_STT_ID = 4;
+
+                    Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => obj), obj));
+                    var rsObj = new Inventec.Common.Adapter.BackendAdapter(param).Post<HIS_CONSULTATION_REG>("api/HisConsultationReg/Update", ApiConsumers.MosConsumer, obj, param);
+                    rs = rsObj != null;
+                    if (rs)
+                    {
+                        FillDataToGrid();
+                    }
+                    WaitingManager.Hide();
+                    MessageManager.Show(this.ParentForm, param, rs);
+                }
+
+            }
+            catch (Exception ex)
+            {
+
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }

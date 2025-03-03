@@ -202,7 +202,13 @@ namespace HIS.Desktop.Plugins.TreatmentList
                 }
 
                 emrInputAdo.roomId = roomId;
+                emrInputAdo.DepartmentId = HIS.Desktop.LocalStorage.LocalData.WorkPlace.WorkPlaceSDO.FirstOrDefault(o => o.RoomId == roomId).DepartmentId; 
+                emrInputAdo.TreatmentTypeId = _TreatmentPoppupPrint.TDL_TREATMENT_TYPE_ID;
 
+                var treatment = new HIS_TREATMENT();
+                Inventec.Common.Mapper.DataObjectMapper.Map<HIS_TREATMENT>(treatment, _TreatmentPoppupPrint);
+                treatment.ID = _TreatmentPoppupPrint.ID;
+                emrInputAdo.Treatment = treatment;
                 emrMenuPopupProcessor.InitMenu(this._Menu, this._BarManager, emrInputAdo);
 
                 #region -------

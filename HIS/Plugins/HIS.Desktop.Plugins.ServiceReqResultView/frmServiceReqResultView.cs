@@ -50,6 +50,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -138,12 +139,12 @@ namespace HIS.Desktop.Plugins.ServiceReqResultView
                 zoomFactor();
                 LoadDataBySereServId();
 
-                Task[] taskall = new Task[4];
+                Task[] taskall = new Task[3];
 
-                taskall[0] = Task.Factory.StartNew(() => { GetServiceReq(); });
-                taskall[1] = Task.Factory.StartNew(() => { LoadTreatmentWithPaty(); });
-                taskall[2] = Task.Factory.StartNew(() => { GetPatientById(); });
-                taskall[3] = Task.Factory.StartNew(() => { KiemTraThongTinPhieuKetQuaDienTu(); });
+                //taskall[0] = Task.Factory.StartNew(() => { GetServiceReq(); });
+                taskall[0] = Task.Factory.StartNew(() => { LoadTreatmentWithPaty(); });
+                taskall[1] = Task.Factory.StartNew(() => { GetPatientById(); });
+                taskall[2] = Task.Factory.StartNew(() => { KiemTraThongTinPhieuKetQuaDienTu(); });
                 Task.WaitAll(taskall);
 
                 Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData("this.listEmrDocument", this.listEmrDocument));
@@ -244,6 +245,7 @@ namespace HIS.Desktop.Plugins.ServiceReqResultView
                 if (rs != null && rs.Count > 0)
                 {
                     sereServ = rs[0];
+                    GetServiceReq();
                     SereServClickRow(rs[0]);
                     Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData("this.sereServ", this.sereServ));
                 }
@@ -372,19 +374,41 @@ namespace HIS.Desktop.Plugins.ServiceReqResultView
                         var user_names = sereServExt.SUBCLINICAL_RESULT_USERNAME;
                         if (!string.IsNullOrEmpty(login_names) && !string.IsNullOrEmpty(user_names))
                         {
-                            var loginName = login_names.Split(',').ToList();
-                            var username = user_names.Split(',').ToList();
-                            string ptv = "";
+                            var loginName = login_names.Split(';').ToList();
+                            var username = user_names.Split(';').ToList();
+                            string ktv = "";
                             for(int i = 0; i < loginName.Count; i++)
                             {
-                                ptv += "" + loginName[i] + "-" + username[i];
-                                ptv += ";";
+                                ktv += "" + loginName[i] + "-" + username[i];
+                                ktv += ";";
                             }
-                            if (ptv.EndsWith(";"))
+                            if (ktv.EndsWith(";"))
                             {
-                                ptv = ptv.TrimEnd(';');
+                                ktv = ktv.TrimEnd(';');
                             }
-                            txtPtv.Text = ptv;
+                            txtktv.Text = ktv;
+                        }
+
+                        if (currentServiceReq != null)
+                        {
+                            var login_extnames = currentServiceReq.EXECUTE_LOGINNAME;
+                            var user_extnames = currentServiceReq.EXECUTE_USERNAME;
+                            if (!string.IsNullOrEmpty(login_extnames) && !string.IsNullOrEmpty(user_extnames))
+                            {
+                                var loginNameExt = login_extnames.Split(';').ToList();
+                                var usernameExt = user_extnames.Split(';').ToList();
+                                string ptv = "";
+                                for (int i = 0; i < loginNameExt.Count; i++)
+                                {
+                                    ptv += "" + loginNameExt[i] + "-" + usernameExt[i];
+                                    ptv += ";";
+                                }
+                                if (ptv.EndsWith(";"))
+                                {
+                                    ptv = ptv.TrimEnd(';');
+                                }
+                                txtPtv.Text = ptv;
+                            }
                         }
                     }
                     else
@@ -446,15 +470,16 @@ namespace HIS.Desktop.Plugins.ServiceReqResultView
                                 {
                                     if (item.Contains("idChiDinh"))
                                     {
-                                        url = url.Replace(item, idChiDinh);
+                                        url = url.Replace(":idChiDinh", idChiDinh);
+                                        //url = Regex.Replace(url, @":idChiDinh\w*", idChiDinh);
                                     }
                                     else if (item.Contains("idBenhNhan"))
                                     {
-                                        url = url.Replace(item, idBenhNhan);
+                                        url = url.Replace(":idBenhNhan", idBenhNhan);
                                     }
                                     else if (item.Contains("idDotVaoVien"))
                                     {
-                                        url = url.Replace(item, idDotVaoVien);
+                                        url = url.Replace(":idDotVaoVien", idDotVaoVien);
                                     }
                                 }
                                 isSense = true;
@@ -2382,15 +2407,15 @@ namespace HIS.Desktop.Plugins.ServiceReqResultView
                                 {
                                     if (item.Contains("idChiDinh"))
                                     {
-                                        url = url.Replace(item, idChiDinh);
+                                        url = url.Replace(":idChiDinh", idChiDinh);
                                     }
                                     else if (item.Contains("idBenhNhan"))
                                     {
-                                        url = url.Replace(item, idBenhNhan);
+                                        url = url.Replace(":idBenhNhan", idBenhNhan);
                                     }
                                     else if (item.Contains("idDotVaoVien"))
                                     {
-                                        url = url.Replace(item, idDotVaoVien);
+                                        url = url.Replace(":idDotVaoVien", idDotVaoVien);
                                     }
                                 }
 

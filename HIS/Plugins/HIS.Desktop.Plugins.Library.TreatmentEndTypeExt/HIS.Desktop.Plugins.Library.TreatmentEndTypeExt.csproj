@@ -202,6 +202,7 @@
     <Compile Include="Validation\ValidBhxhCode.cs" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Properties\licenses.licx" />
     <EmbeddedResource Include="Resources\Lang.en.resx" />
     <EmbeddedResource Include="Resources\Lang.vi.resx" />
     <EmbeddedResource Include="SickLeave\frmSickLeave.resx">

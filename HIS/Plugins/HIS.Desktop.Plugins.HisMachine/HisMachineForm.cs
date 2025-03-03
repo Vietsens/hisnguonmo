@@ -545,6 +545,19 @@ namespace HIS.Desktop.Plugins.HisMachine
             CommonParam param = new CommonParam();
             try
             {
+                if (IsRequiredSourceName)
+                {
+                    if (string.IsNullOrWhiteSpace(txtSourceName.Text))
+                    {
+                        dxErrorProvider1.SetError(txtSourceName, "Trường dữ liệu bắt buộc", ErrorType.Warning);
+                    }
+                    else
+                    {
+                        dxErrorProvider1.SetError(txtSourceName, "", ErrorType.None);
+                    }
+                }
+                else dxErrorProvider1.SetError(txtSourceName, "", ErrorType.None);
+                if (dxErrorProvider1.HasErrors) return;
                 bool success = false;
                 if (!btnEdit.Enabled && !btnAdd.Enabled)
                     return;
@@ -787,6 +800,7 @@ namespace HIS.Desktop.Plugins.HisMachine
                 currentDTO.MANUFACTURER_NAME = txtManufacturerName.Text.Trim();
                 currentDTO.NATIONAL_NAME = txtNationalName.Text.Trim();
                 currentDTO.CIRCULATION_NUMBER = txtCirculationNumber.Text.Trim();
+                currentDTO.SOURCE_NAME = txtSourceName.Text;
                 if (cboDepartment.EditValue != null)
                     currentDTO.DEPARTMENT_ID = Inventec.Common.TypeConvert.Parse.ToInt64(cboDepartment.EditValue.ToString());
                 else
@@ -1242,6 +1256,7 @@ namespace HIS.Desktop.Plugins.HisMachine
                     txtManufacturedYear.Text = data.MANUFACTURED_YEAR != null ? data.MANUFACTURED_YEAR.ToString() : "";
                     txtUsedYear.Text = data.USED_YEAR != null ? data.USED_YEAR.ToString() : null;
                     txtCirculationNumber.Text = data.CIRCULATION_NUMBER;
+                    txtSourceName.Text = data.SOURCE_NAME;
                     cboDepartment.EditValue = data.DEPARTMENT_ID;
 
                 }
@@ -1512,11 +1527,27 @@ namespace HIS.Desktop.Plugins.HisMachine
                 if (cboSource.EditValue != null)
                 {
                     cboSource.Properties.Buttons[1].Visible = true;
+                    
                 }
                 else
                 {
                     cboSource.Properties.Buttons[1].Visible = false;
                 }
+                SetValidateSourceName(Convert.ToInt64(cboSource.SelectedIndex));
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+        private bool IsRequiredSourceName = false;
+        private void SetValidateSourceName(long value)
+        {
+            try
+            {
+                this.layoutControlItemSourceName.AppearanceItemCaption.ForeColor = value == 2 ? Color.Maroon : Color.Black;
+                IsRequiredSourceName = value == 2;
+                
             }
             catch (Exception ex)
             {

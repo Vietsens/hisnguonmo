@@ -577,53 +577,7 @@ namespace HIS.Desktop.Plugins.PublicMedicineByPhased
                     int index = 0;
                     this.dayCountData = distinctDates.Count;
                     int dayPageSize = (int)(Inventec.Common.Number.Convert.RoundUpValue(((double)this.dayCountData / (double)Config.Config.congKhaiThuoc_DaySize), 0));
-                    //#region ThuatToan
-                    //// thực hiện gán thuốc 10 ngày liên tiếp
-                    //// số ngày nhiều hơn 10 sẽ in thêm 1 bản tạo thêm 1 Mps000088ADO
-                    //while (index < distinctDates.Count)
-                    //{
-                    //    MPS.Processor.Mps000088.PDO.Mps000088ADO sdo = new MPS.Processor.Mps000088.PDO.Mps000088ADO();
-                    //    sdo.Day1 = index < distinctDates.Count ? Inventec.Common.DateTime.Convert.TimeNumberToDateString(distinctDates[index++]) : "";
-                    //    sdo.Day2 = index < distinctDates.Count ? Inventec.Common.DateTime.Convert.TimeNumberToDateString(distinctDates[index++]) : "";
-                    //    sdo.Day3 = index < distinctDates.Count ? Inventec.Common.DateTime.Convert.TimeNumberToDateString(distinctDates[index++]) : "";
-                    //    sdo.Day4 = index < distinctDates.Count ? Inventec.Common.DateTime.Convert.TimeNumberToDateString(distinctDates[index++]) : "";
-                    //    sdo.Day5 = index < distinctDates.Count ? Inventec.Common.DateTime.Convert.TimeNumberToDateString(distinctDates[index++]) : "";
-                    //    sdo.Day6 = index < distinctDates.Count ? Inventec.Common.DateTime.Convert.TimeNumberToDateString(distinctDates[index++]) : "";
-                    //    sdo.Day7 = index < distinctDates.Count ? Inventec.Common.DateTime.Convert.TimeNumberToDateString(distinctDates[index++]) : "";
-                    //    sdo.Day8 = index < distinctDates.Count ? Inventec.Common.DateTime.Convert.TimeNumberToDateString(distinctDates[index++]) : "";
-                    //    sdo.Day9 = index < distinctDates.Count ? Inventec.Common.DateTime.Convert.TimeNumberToDateString(distinctDates[index++]) : "";
-                    //    sdo.Day10 = index < distinctDates.Count ? Inventec.Common.DateTime.Convert.TimeNumberToDateString(distinctDates[index++]) : "";
-                    //    var mps000088pdo = new List<MPS.Processor.Mps000088.PDO.Mps000088ByMediEndMate>();
-                    //    foreach (var group in sereServGroups)
-                    //    {
-                    //        if (group.AMOUNT <= 0)
-                    //            continue;
-                    //        string date = Inventec.Common.DateTime.Convert.TimeNumberToDateString(group.INTRUCTION_DATE);
-                    //        if (date != sdo.Day1 && date != sdo.Day2 && date != sdo.Day3 && date != sdo.Day4 && date != sdo.Day5 && date != sdo.Day6 && date != sdo.Day7 && date != sdo.Day8 && date != sdo.Day9 && date != sdo.Day10)
-                    //        {
-                    //            continue;
-                    //        }
-
-                    //        MPS.Processor.Mps000088.PDO.Mps000088ByMediEndMate sereServPrint = new MPS.Processor.Mps000088.PDO.Mps000088ByMediEndMate();
-                    //        Inventec.Common.Mapper.DataObjectMapper.Map<MPS.Processor.Mps000088.PDO.Mps000088ByMediEndMate>(sereServPrint, group);
-                    //        sereServPrint.Service_Type_Id = group.Service_Type_Id;
-                    //        var amount = group.AMOUNT.ToString();
-                    //        sereServPrint.Day1 = date == sdo.Day1 ? amount : "";
-                    //        sereServPrint.Day2 = date == sdo.Day2 ? amount : "";
-                    //        sereServPrint.Day3 = date == sdo.Day3 ? amount : "";
-                    //        sereServPrint.Day4 = date == sdo.Day4 ? amount : "";
-                    //        sereServPrint.Day5 = date == sdo.Day5 ? amount : "";
-                    //        sereServPrint.Day6 = date == sdo.Day6 ? amount : "";
-                    //        sereServPrint.Day7 = date == sdo.Day7 ? amount : "";
-                    //        sereServPrint.Day8 = date == sdo.Day8 ? amount : "";
-                    //        sereServPrint.Day9 = date == sdo.Day9 ? amount : "";
-                    //        sereServPrint.Day10 = date == sdo.Day10 ? amount : "";
-                    //        mps000088pdo.Add(sereServPrint);
-                    //    }
-                    //#endregion
-                    //    sdo.Mps000088ByMediEndMateADOs = mps000088pdo;
-                    //    mps000088ADO.Add(sdo);
-                    //}
+                   
 
                     int indexYear = 0;
                     int d = 0;
@@ -648,66 +602,7 @@ namespace HIS.Desktop.Plugins.PublicMedicineByPhased
                                 info.SetValue(sdo, j < distinctDatesInPage.Count ? TimeNumberToDateString(distinctDatesInPage[j]) : "");
                             }
                         }
-                        //sdo.Day1 = index < distinctDatesInPage.Count ? TimeNumberToDateString(distinctDatesInPage[index++]) : "";
-                        //sdo.Day2 = index < distinctDatesInPage.Count ? TimeNumberToDateString(distinctDatesInPage[index++]) : "";
-                        //sdo.Day3 = index < distinctDatesInPage.Count ? TimeNumberToDateString(distinctDatesInPage[index++]) : "";
-                        //sdo.Day4 = index < distinctDatesInPage.Count ? TimeNumberToDateString(distinctDatesInPage[index++]) : "";
-                        //sdo.Day5 = index < distinctDatesInPage.Count ? TimeNumberToDateString(distinctDatesInPage[index++]) : "";
-                        //sdo.Day6 = index < distinctDatesInPage.Count ? TimeNumberToDateString(distinctDatesInPage[index++]) : "";
-                        //sdo.Day7 = index < distinctDatesInPage.Count ? TimeNumberToDateString(distinctDatesInPage[index++]) : "";
-                        //sdo.Day8 = index < distinctDatesInPage.Count ? TimeNumberToDateString(distinctDatesInPage[index++]) : "";
-                        //sdo.Day9 = index < distinctDatesInPage.Count ? TimeNumberToDateString(distinctDatesInPage[index++]) : "";
-                        //sdo.Day10 = index < distinctDatesInPage.Count ? TimeNumberToDateString(distinctDatesInPage[index++]) : "";
-                        //sdo.Day11 = index < distinctDatesInPage.Count ? TimeNumberToDateString(distinctDatesInPage[index++]) : "";
-                        //sdo.Day12 = index < distinctDatesInPage.Count ? TimeNumberToDateString(distinctDatesInPage[index++]) : "";
-                        //sdo.Day13 = index < distinctDatesInPage.Count ? TimeNumberToDateString(distinctDatesInPage[index++]) : "";
-                        //sdo.Day14 = index < distinctDatesInPage.Count ? TimeNumberToDateString(distinctDatesInPage[index++]) : "";
-                        //sdo.Day15 = index < distinctDatesInPage.Count ? TimeNumberToDateString(distinctDatesInPage[index++]) : "";
-                        //sdo.Day16 = index < distinctDatesInPage.Count ? TimeNumberToDateString(distinctDatesInPage[index++]) : "";
-                        //sdo.Day17 = index < distinctDatesInPage.Count ? TimeNumberToDateString(distinctDatesInPage[index++]) : "";
-                        //sdo.Day18 = index < distinctDatesInPage.Count ? TimeNumberToDateString(distinctDatesInPage[index++]) : "";
-                        //sdo.Day19 = index < distinctDatesInPage.Count ? TimeNumberToDateString(distinctDatesInPage[index++]) : "";
-                        //sdo.Day20 = index < distinctDatesInPage.Count ? TimeNumberToDateString(distinctDatesInPage[index++]) : "";
-                        //sdo.Day21 = index < distinctDatesInPage.Count ? TimeNumberToDateString(distinctDatesInPage[index++]) : "";
-                        //sdo.Day22 = index < distinctDatesInPage.Count ? TimeNumberToDateString(distinctDatesInPage[index++]) : "";
-                        //sdo.Day23 = index < distinctDatesInPage.Count ? TimeNumberToDateString(distinctDatesInPage[index++]) : "";
-                        //sdo.Day24 = index < distinctDatesInPage.Count ? TimeNumberToDateString(distinctDatesInPage[index++]) : "";
-                        //sdo.Day25 = index < distinctDatesInPage.Count ? TimeNumberToDateString(distinctDatesInPage[index++]) : "";
-                        //sdo.Day26 = index < distinctDatesInPage.Count ? TimeNumberToDateString(distinctDatesInPage[index++]) : "";
-                        //sdo.Day27 = index < distinctDatesInPage.Count ? TimeNumberToDateString(distinctDatesInPage[index++]) : "";
-                        //sdo.Day28 = index < distinctDatesInPage.Count ? TimeNumberToDateString(distinctDatesInPage[index++]) : "";
-                        //sdo.Day29 = index < distinctDatesInPage.Count ? TimeNumberToDateString(distinctDatesInPage[index++]) : "";
-                        //sdo.Day30 = index < distinctDatesInPage.Count ? TimeNumberToDateString(distinctDatesInPage[index++]) : "";
-                        //sdo.Day31 = index < distinctDatesInPage.Count ? TimeNumberToDateString(distinctDatesInPage[index++]) : "";
-                        //sdo.Day32 = index < distinctDatesInPage.Count ? TimeNumberToDateString(distinctDatesInPage[index++]) : "";
-                        //sdo.Day33 = index < distinctDatesInPage.Count ? TimeNumberToDateString(distinctDatesInPage[index++]) : "";
-                        //sdo.Day34 = index < distinctDatesInPage.Count ? TimeNumberToDateString(distinctDatesInPage[index++]) : "";
-                        //sdo.Day35 = index < distinctDatesInPage.Count ? TimeNumberToDateString(distinctDatesInPage[index++]) : "";
-                        //sdo.Day36 = index < distinctDatesInPage.Count ? TimeNumberToDateString(distinctDatesInPage[index++]) : "";
-                        //sdo.Day37 = index < distinctDatesInPage.Count ? TimeNumberToDateString(distinctDatesInPage[index++]) : "";
-                        //sdo.Day38 = index < distinctDatesInPage.Count ? TimeNumberToDateString(distinctDatesInPage[index++]) : "";
-                        //sdo.Day39 = index < distinctDatesInPage.Count ? TimeNumberToDateString(distinctDatesInPage[index++]) : "";
-                        //sdo.Day40 = index < distinctDatesInPage.Count ? TimeNumberToDateString(distinctDatesInPage[index++]) : "";
-                        //sdo.Day41 = index < distinctDatesInPage.Count ? TimeNumberToDateString(distinctDatesInPage[index++]) : "";
-                        //sdo.Day42 = index < distinctDatesInPage.Count ? TimeNumberToDateString(distinctDatesInPage[index++]) : "";
-                        //sdo.Day43 = index < distinctDatesInPage.Count ? TimeNumberToDateString(distinctDatesInPage[index++]) : "";
-                        //sdo.Day44 = index < distinctDatesInPage.Count ? TimeNumberToDateString(distinctDatesInPage[index++]) : "";
-                        //sdo.Day45 = index < distinctDatesInPage.Count ? TimeNumberToDateString(distinctDatesInPage[index++]) : "";
-                        //sdo.Day46 = index < distinctDatesInPage.Count ? TimeNumberToDateString(distinctDatesInPage[index++]) : "";
-                        //sdo.Day47 = index < distinctDatesInPage.Count ? TimeNumberToDateString(distinctDatesInPage[index++]) : "";
-                        //sdo.Day48 = index < distinctDatesInPage.Count ? TimeNumberToDateString(distinctDatesInPage[index++]) : "";
-                        //sdo.Day49 = index < distinctDatesInPage.Count ? TimeNumberToDateString(distinctDatesInPage[index++]) : "";
-                        //sdo.Day50 = index < distinctDatesInPage.Count ? TimeNumberToDateString(distinctDatesInPage[index++]) : "";
-                        //sdo.Day51 = index < distinctDatesInPage.Count ? TimeNumberToDateString(distinctDatesInPage[index++]) : "";
-                        //sdo.Day52 = index < distinctDatesInPage.Count ? TimeNumberToDateString(distinctDatesInPage[index++]) : "";
-                        //sdo.Day53 = index < distinctDatesInPage.Count ? TimeNumberToDateString(distinctDatesInPage[index++]) : "";
-                        //sdo.Day54 = index < distinctDatesInPage.Count ? TimeNumberToDateString(distinctDatesInPage[index++]) : "";
-                        //sdo.Day55 = index < distinctDatesInPage.Count ? TimeNumberToDateString(distinctDatesInPage[index++]) : "";
-                        //sdo.Day56 = index < distinctDatesInPage.Count ? TimeNumberToDateString(distinctDatesInPage[index++]) : "";
-                        //sdo.Day57 = index < distinctDatesInPage.Count ? TimeNumberToDateString(distinctDatesInPage[index++]) : "";
-                        //sdo.Day58 = index < distinctDatesInPage.Count ? TimeNumberToDateString(distinctDatesInPage[index++]) : "";
-                        //sdo.Day59 = index < distinctDatesInPage.Count ? TimeNumberToDateString(distinctDatesInPage[index++]) : "";
-                        //sdo.Day60 = index < distinctDatesInPage.Count ? TimeNumberToDateString(distinctDatesInPage[index++]) : "";
+                       
                         #endregion
 
                         #region ---Day and year---

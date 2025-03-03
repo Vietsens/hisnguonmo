@@ -262,6 +262,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                 DateKQ.ToolTip = ConvertStringTime(DateKQ);
                 DateLM.ToolTip = ConvertStringTime(DateLM);
                 GetTimeSystem();
+                EnableControlWarning();
                 RegisterTimer(currentModule.ModuleLink, "timer1", timer1.Interval, timer1_Tick);
                 StartTimer(currentModule.ModuleLink, "timer1");
                 RegisterTimer(currentModule.ModuleLink, "timer2", timer2.Interval, timer2_Tick);
@@ -269,6 +270,34 @@ namespace HIS.Desktop.Plugins.ConnectionTest
             }
             catch (Exception ex)
             {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void EnableControlWarning()
+        {
+            try
+            {
+                string config = HisConfigs.Get<string>("HIS.Desktop.Plugins.ConnectionTest.IsRequiredMachine");
+                if (config == "1")
+                {
+                    chkCon.Checked = true;
+                    chkCon.Enabled = chkWarn.Enabled = false;
+                }
+                else if (config == "2")
+                {
+                    chkWarn.Checked = true;
+                    chkCon.Enabled = chkWarn.Enabled = false;
+                }
+                else
+                {
+                    chkCon.Enabled = chkWarn.Enabled = true;
+                    chkCon.Checked = chkWarn.Checked = false;
+                }
+            }
+            catch (Exception ex)
+            {
+
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
@@ -319,7 +348,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
         {
             try
             {
-                lstDepart = BackendDataWorker.Get<HIS_DEPARTMENT>().Where(o=>o.IS_ACTIVE ==1).ToList();
+                lstDepart = BackendDataWorker.Get<HIS_DEPARTMENT>().Where(o => o.IS_ACTIVE == 1).ToList();
             }
             catch (Exception ex)
             {
@@ -353,7 +382,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                     {
                         DateKQ.DateTime = currentTimer;
                     }
-                } 
+                }
                 DateKQ.ToolTip = ConvertStringTime(DateKQ);
             }
             catch (Exception ex)
@@ -736,6 +765,15 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                                     text = "Duyệt kết quả";
                                 }
                             }
+
+                            if(info.Column.FieldName == "PRINT_COUNT_IC")
+                            {
+                                var printCount = ((LisSampleADO)view.GetRow(lastRowHandle)).PRINT_COUNT;
+                                if (printCount > 0)
+                                {
+                                    text = string.Format("Đã in {0} lần", printCount);
+                                }
+                            }    
                             lastInfo = new ToolTipControlInfo(new DevExpress.XtraGrid.GridToolTipInfo(view, new DevExpress.XtraGrid.Views.Base.CellToolTipInfo(info.RowHandle, info.Column, "Text")), text);
                         }
                         e.Info = lastInfo;
@@ -1270,6 +1308,13 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                         else
                         {
                             e.RepositoryItem = repositoryDuyetKetQuaD;
+                        }
+                    }
+                    else if (e.Column.FieldName == "PRINT_COUNT_IC")
+                    {
+                        if ((data.PRINT_COUNT != null && data.PRINT_COUNT > 0 ))
+                        {
+                            e.RepositoryItem = repCountPrint;
                         }
                     }
                 }
@@ -2693,76 +2738,61 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                         testIndexRanges = BackendDataWorker.Get<V_HIS_TEST_INDEX_RANGE>().Where(o => testIndexCodes.Contains(o.TEST_INDEX_CODE)).ToList();
                     }
                 }
+
+                // lay lis_sample
+                this.rowSample = (LisSampleADO)gridViewSample.GetFocusedRow();
                 genderId = LoadGenderId();
                 lstLisResultADOs = new List<TestLisResultADO>();
                 if (currentTestIndexs != null && currentTestIndexs.Count > 0)
                 {
                     var groupListResult = _LisResults.GroupBy(o => o.SERVICE_CODE).ToList();
-                    LisSampleFilter samFilter = new LisSampleFilter();
-                    HisSereServFilter ssFilter = new HisSereServFilter();
-                    //List<long> ids = new List<long>();
-                    //foreach (var item in _LisResults)
-                    //{
-                    //    if (item.SAMPLE_ID != null)
-                    //    {
-                    //        if (item.SAMPLE_ID > 0)
-                    //        {
-                    //            ids.Add(item.SAMPLE_ID ?? 0);
-                    //        }
-                    //    }
-                    //}
-                    //samFilter.IDs = ids;
 
-                    // lay lis_sample
-                    var ado_ = (LisSampleADO)gridViewSample.GetFocusedRow();
                     List<HIS_SERE_SERV> dataSereServs = new List<HIS_SERE_SERV>();
-                    List<LIS_SAMPLE> datas = new List<LIS_SAMPLE>();
-                    if (!String.IsNullOrEmpty(ado_.SERVICE_REQ_CODE))
+                    if (this.rowSample != null && !String.IsNullOrEmpty(this.rowSample.SERVICE_REQ_CODE))
                     {
-
-                        List<String> string_ = new List<String>();
-                        string_.Add(ado_.SERVICE_REQ_CODE);
-                        samFilter.SERVICE_REQ_CODEs = string_;
-                        datas = new Inventec.Common.Adapter.BackendAdapter(new CommonParam()).Get<List<LIS_SAMPLE>>("api/LisSample/Get", ApiConsumers.LisConsumer, samFilter, null);
+                        HisSereServFilter ssFilter = new HisSereServFilter();
                         // lay sereServ tu y lenh
-                        ssFilter.TDL_SERVICE_REQ_CODE_EXACT = ado_.SERVICE_REQ_CODE;
+                        ssFilter.TDL_SERVICE_REQ_CODE_EXACT = this.rowSample.SERVICE_REQ_CODE;
                         dataSereServs = new Inventec.Common.Adapter.BackendAdapter(new CommonParam()).Get<List<HIS_SERE_SERV>>("api/HisSereServ/Get", ApiConsumers.MosConsumer, ssFilter, null);
                     }
+
                     foreach (var group in groupListResult)
                     {
                         TestLisResultADO hisSereServTeinSDO = new TestLisResultADO();
                         var fistGroup = group.FirstOrDefault();
-                        hisSereServTeinSDO.IS_PARENT = 1;
-                        hisSereServTeinSDO.TEST_INDEX_CODE = fistGroup != null ? fistGroup.SERVICE_CODE : "";
-                        hisSereServTeinSDO.TEST_INDEX_NAME = fistGroup != null ? fistGroup.SERVICE_NAME : "";
-                        hisSereServTeinSDO.SERVICE_CODE = fistGroup != null ? fistGroup.SERVICE_CODE : "";
-                        hisSereServTeinSDO.SERVICE_NAME = fistGroup != null ? fistGroup.SERVICE_NAME : "";
-                        hisSereServTeinSDO.SERVICE_RESULT_ID = fistGroup != null ? (long?)fistGroup.SERVICE_RESULT_ID : null;
-                        hisSereServTeinSDO.ID = fistGroup.ID;
-                        hisSereServTeinSDO.IS_NO_EXECUTE = fistGroup.IS_NO_EXECUTE;
-                        hisSereServTeinSDO.PARENT_ID = ".";
-                        hisSereServTeinSDO.MODIFIER = "";
-                        hisSereServTeinSDO.CHILD_ID = fistGroup.ID + ".";
-                        hisSereServTeinSDO.SERVICE_NUM_ORDER = fistGroup.SERVICE_NUM_ORDER;
-                        hisSereServTeinSDO.IS_RUN_AGAIN = fistGroup.IS_RUN_AGAIN;
-                        hisSereServTeinSDO.IS_RUNNING = fistGroup.IS_RUNNING;
-                        hisSereServTeinSDO.RERUN = fistGroup.IS_RUN_AGAIN == 1;
-                        // lay sereServ
-                        if (dataSereServs != null && dataSereServs.Count() > 0)
+                        if (fistGroup != null)
                         {
-                            var ss = dataSereServs.FirstOrDefault(o => o.TDL_SERVICE_CODE == fistGroup.SERVICE_CODE);
-                            if (ss != null)
+                            hisSereServTeinSDO.IS_PARENT = 1;
+                            hisSereServTeinSDO.TEST_INDEX_CODE = fistGroup.SERVICE_CODE;
+                            hisSereServTeinSDO.TEST_INDEX_NAME = fistGroup.SERVICE_NAME;
+                            hisSereServTeinSDO.SERVICE_CODE = fistGroup.SERVICE_CODE;
+                            hisSereServTeinSDO.SERVICE_NAME = fistGroup.SERVICE_NAME;
+                            hisSereServTeinSDO.SERVICE_RESULT_ID = fistGroup.SERVICE_RESULT_ID;
+                            hisSereServTeinSDO.ID = fistGroup.ID;
+                            hisSereServTeinSDO.IS_NO_EXECUTE = fistGroup.IS_NO_EXECUTE;
+                            hisSereServTeinSDO.PARENT_ID = ".";
+                            hisSereServTeinSDO.MODIFIER = "";
+                            hisSereServTeinSDO.CHILD_ID = fistGroup.ID + ".";
+                            hisSereServTeinSDO.SERVICE_NUM_ORDER = fistGroup.SERVICE_NUM_ORDER;
+                            hisSereServTeinSDO.IS_RUN_AGAIN = fistGroup.IS_RUN_AGAIN;
+                            hisSereServTeinSDO.IS_RUNNING = fistGroup.IS_RUNNING;
+                            hisSereServTeinSDO.RERUN = fistGroup.IS_RUN_AGAIN == 1;
+                            // lay sereServ
+                            if (dataSereServs != null && dataSereServs.Count() > 0)
                             {
-                                hisSereServTeinSDO.PATIENT_TYPE_ID_BY_SERE_SERV = (long?)ss.PATIENT_TYPE_ID;
-                                hisSereServTeinSDO.IS_CONFIRM_NO_EXCUTE = ss.IS_CONFIRM_NO_EXCUTE;
-                            }
-                            else
-                            {
-                                hisSereServTeinSDO.PATIENT_TYPE_ID_BY_SERE_SERV = null;
-                                hisSereServTeinSDO.IS_CONFIRM_NO_EXCUTE = null;
+                                var ss = dataSereServs.FirstOrDefault(o => o.TDL_SERVICE_CODE == fistGroup.SERVICE_CODE);
+                                if (ss != null)
+                                {
+                                    hisSereServTeinSDO.PATIENT_TYPE_ID_BY_SERE_SERV = (long?)ss.PATIENT_TYPE_ID;
+                                    hisSereServTeinSDO.IS_CONFIRM_NO_EXCUTE = ss.IS_CONFIRM_NO_EXCUTE;
+                                }
+                                else
+                                {
+                                    hisSereServTeinSDO.PATIENT_TYPE_ID_BY_SERE_SERV = null;
+                                    hisSereServTeinSDO.IS_CONFIRM_NO_EXCUTE = null;
+                                }
                             }
                         }
-
 
                         //Lay machine_id
                         var lstResultItem = group.ToList();
@@ -2781,12 +2811,11 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                             }
                         }
                         var testIndFist = currentTestIndexs.FirstOrDefault(o => o.TEST_INDEX_CODE == lstResultItem[0].TEST_INDEX_CODE);
-
+                        //LogSystem.Debug("lstResultItem.Count " + lstResultItem.Count + " ; IS_NOT_SHOW_SERVICE: " + testIndFist.IS_NOT_SHOW_SERVICE + " ; testIndFist: " + LogUtil.TraceData("testIndFist", testIndFist));
                         if (lstResultItem != null
                             && lstResultItem.Count == 1
                             && testIndFist != null && testIndFist.IS_NOT_SHOW_SERVICE == 1)
                         {
-
                             hisSereServTeinSDO.HAS_ONE_CHILD = 1;
                             hisSereServTeinSDO.CHILD_ID = lstResultItem[0].ID + "." + lstResultItem[0].ID;
                             hisSereServTeinSDO.MODIFIER = lstResultItem[0].MODIFIER;
@@ -2797,7 +2826,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                             hisSereServTeinSDO.SAMPLE_SERVICE_ID = lstResultItem[0].SAMPLE_SERVICE_ID;
                             hisSereServTeinSDO.SAMPLE_SERVICE_STT_ID = lstResultItem[0].SAMPLE_SERVICE_STT_ID;
                             hisSereServTeinSDO.MODIFIER = lstResultItem[0].MODIFIER;
-                            hisSereServTeinSDO.VALUE_RANGE = lstResultItem[0].VALUE;
+                            hisSereServTeinSDO.VALUE_RANGE = ProcessValue(lstResultItem[0]);
                             hisSereServTeinSDO.LIS_RESULT_ID = lstResultItem[0].ID;
                             hisSereServTeinSDO.ID = lstResultItem[0].ID;
                             hisSereServTeinSDO.SAMPLE_ID = lstResultItem[0].SAMPLE_ID;
@@ -2814,12 +2843,6 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                             hisSereServTeinSDO.IS_RUNNING = lstResultItem[0].IS_RUNNING;
                             hisSereServTeinSDO.RESULT_DESCRIPTION = lstResultItem[0].RESULT_DESCRIPTION;
                             hisSereServTeinSDO.IS_NOT_SHOW_SERVICE = testIndFist.IS_NOT_SHOW_SERVICE;
-                            //if (datas != null && datas.Count > 0 && fistGroup.SAMPLE_ID != null)
-                            //{
-                            //    hisSereServTeinSDO.ADDRESS = datas.FirstOrDefault(o => o.ADDRESS != null).ADDRESS;
-                            //}
-
-                            //hisSereServTeinSDO.RERUN = lstResultItem[0].IS_RUNNING == 1;
                         }
                         lstLisResultADOs.Add(hisSereServTeinSDO);
 
@@ -2853,10 +2876,8 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                                 hisSereServTein.TEST_INDEX_CODE = ssTein.TEST_INDEX_CODE;
                                 hisSereServTein.TEST_INDEX_NAME = ssTein.TEST_INDEX_NAME;
                                 hisSereServTein.MODIFIER = "";
-                                hisSereServTeinSDO.SAMPLE_SERVICE_ID = ssTein.SAMPLE_SERVICE_ID;
-                                hisSereServTeinSDO.SAMPLE_SERVICE_STT_ID = ssTein.SAMPLE_SERVICE_STT_ID;
                                 hisSereServTein.MODIFIER = ssTein.MODIFIER;
-                                hisSereServTein.VALUE_RANGE = ssTein.VALUE;
+                                hisSereServTein.VALUE_RANGE = ProcessValue(ssTein);
                                 hisSereServTein.LIS_RESULT_ID = ssTein.ID;
                                 hisSereServTein.MACHINE_ID = ssTein.MACHINE_ID.HasValue ? ssTein.MACHINE_ID : ssTein.SERVICE_MACHINE_ID;
                                 hisSereServTein.MACHINE_ID_OLD = ssTein.MACHINE_ID.HasValue ? ssTein.MACHINE_ID : ssTein.SERVICE_MACHINE_ID;
@@ -2868,14 +2889,11 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                                 hisSereServTein.SERVICE_NUM_ORDER = ssTein.SERVICE_NUM_ORDER;
                                 hisSereServTein.OLD_VALUE = ssTein.OLD_VALUE;
                                 hisSereServTein.DESCRIPTION = "";
+                                hisSereServTeinSDO.SAMPLE_SERVICE_ID = ssTein.SAMPLE_SERVICE_ID;
+                                hisSereServTeinSDO.SAMPLE_SERVICE_STT_ID = ssTein.SAMPLE_SERVICE_STT_ID;
                                 hisSereServTeinSDO.SAMPLE_STT_ID = ssTein.SAMPLE_STT_ID;
                                 hisSereServTeinSDO.IS_RUN_AGAIN = ssTein.IS_RUN_AGAIN;
                                 hisSereServTeinSDO.IS_RUNNING = ssTein.IS_RUNNING;
-                                //hisSereServTeinSDO.RERUN = ssTein.IS_RUNNING == 1;
-                                //if (datas != null && datas.Count > 0 && fistGroup.SAMPLE_ID != null)
-                                //{
-                                //    hisSereServTeinSDO.ADDRESS = datas.FirstOrDefault(o => o.ADDRESS != null).ADDRESS;
-                                //}
                                 hisSereServTein.NOTE = ssTein.DESCRIPTION;
                                 lstLisResultADOs.Add(hisSereServTein);
                             }
@@ -2885,7 +2903,6 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                 // gán test index range
                 if (lstLisResultADOs != null && lstLisResultADOs.Count > 0)
                 {
-
                     foreach (var hisSereServTeinSDO in lstLisResultADOs)
                     {
                         V_HIS_TEST_INDEX_RANGE testIndexRange = new V_HIS_TEST_INDEX_RANGE();
@@ -2928,6 +2945,35 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                 WaitingManager.Hide();
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
+        }
+
+        private string ProcessValue(V_LIS_RESULT data)
+        {
+            string result = "";
+            try
+            {
+                if (data != null)
+                {
+                    if (!string.IsNullOrEmpty(data.VALUE))
+                    {
+                        result = data.VALUE;
+                    }
+                    else
+                    {
+                        var testIndex = BackendDataWorker.Get<V_HIS_TEST_INDEX>().FirstOrDefault(s => s.TEST_INDEX_CODE == data.TEST_INDEX_CODE && s.DEFAULT_VALUE != null);
+                        if (testIndex != null)
+                        {
+                            result = testIndex.DEFAULT_VALUE;
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+            return result;
         }
 
         List<List<TestLisResultADO>> SplitList(List<TestLisResultADO> me, int size = 44)
@@ -4731,6 +4777,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                     {
                         ((TestLisResultADO)data).Item_Edit_Value = 1;
                     }
+
 
                 }
                 else if (e.Column.FieldName == "NOTE")
@@ -7615,17 +7662,25 @@ namespace HIS.Desktop.Plugins.ConnectionTest
         {
             Thread tSereServ = new Thread(new ParameterizedThreadStart(GetSereServ));
             Thread tTreatmentBedRoom = new Thread(new ParameterizedThreadStart(GetTreatmentBedRoom));
+            Thread tSereServTein = new Thread(new ParameterizedThreadStart(GetSereServTein));
+            Thread tHisDhst = new Thread(new ParameterizedThreadStart(GetHisDhst));
             try
             {
                 tSereServ.Start(param);
                 tTreatmentBedRoom.Start(param);
+                tSereServTein.Start(param);
+                tHisDhst.Start(param);
                 tSereServ.Join();
                 tTreatmentBedRoom.Join();
+                tSereServTein.Join();
+                tHisDhst.Join();
             }
             catch (Exception ex)
             {
                 tSereServ.Abort();
                 tTreatmentBedRoom.Abort();
+                tSereServTein.Abort();
+                tHisDhst.Abort();
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
 
@@ -7653,6 +7708,8 @@ namespace HIS.Desktop.Plugins.ConnectionTest
         }
 
         List<HIS_SERE_SERV> SereServList = new List<HIS_SERE_SERV>();
+        List<V_HIS_SERE_SERV_TEIN_1> lstSereServTein1 = new List<V_HIS_SERE_SERV_TEIN_1>();
+        List<HIS_DHST> hisdhst = new List<HIS_DHST>();
         private void GetSereServ(object obj)
         {
             try
@@ -7661,6 +7718,53 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                 HisSereServFilter filter = new HisSereServFilter();
                 filter.TDL_SERVICE_REQ_CODE_EXACT = data.SERVICE_REQ_CODE;
                 SereServList = new Inventec.Common.Adapter.BackendAdapter(new CommonParam()).Get<List<HIS_SERE_SERV>>("api/HisSereServ/Get", ApiConsumers.MosConsumer, filter, null);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+
+        }
+
+        private void GetSereServTein(object obj)
+        {
+            try
+            {
+                lstSereServTein1.Clear();
+                HIS_SERVICE_REQ data = (HIS_SERVICE_REQ)obj;
+                var TestIndexDataMLCT = BackendDataWorker.Get<HIS_TEST_INDEX>().Where(o => o.IS_TO_CALCULATE_EGFR == 1 || o.TEST_INDEX_TYPE.HasValue).ToList();
+                if (TestIndexDataMLCT != null && TestIndexDataMLCT.Count > 0)
+                {
+
+                    if (TestIndexDataMLCT != null && TestIndexDataMLCT.Count > 0)
+                    {
+                        CommonParam paramv1 = new CommonParam();
+                        HisSereServTeinView1Filter view1filter = new HisSereServTeinView1Filter();
+                        view1filter.TREATMENT_IDs = new List<long> { data.TREATMENT_ID };
+                        view1filter.TEST_INDEX_IDs = TestIndexDataMLCT.Select(s => s.ID).ToList();
+                        lstSereServTein1 = new BackendAdapter(paramv1).Get<List<V_HIS_SERE_SERV_TEIN_1>>("/api/HisSereServTein/GetView1", ApiConsumers.MosConsumer, view1filter, paramv1);
+                        if (lstSereServTein1 != null && lstSereServTein1.Count > 0)
+                        {
+                            lstSereServTein1 = lstSereServTein1.Where(o => o.TDL_INTRUCTION_TIME <= data.INTRUCTION_TIME).ToList();
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+
+        }
+        private void GetHisDhst(object obj)
+        {
+            try
+            {
+                hisdhst.Clear();
+                HIS_SERVICE_REQ data = (HIS_SERVICE_REQ)obj;
+                MOS.Filter.HisDhstFilter DhstFilter = new HisDhstFilter();
+                DhstFilter.TREATMENT_ID = data.TREATMENT_ID;
+                hisdhst = new BackendAdapter(new CommonParam()).Get<List<HIS_DHST>>("api/HisDhst/Get", ApiConsumer.ApiConsumers.MosConsumer, DhstFilter, null);
             }
             catch (Exception ex)
             {
@@ -9619,13 +9723,13 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                 cboDepart.Properties.View.ClearColumnsFilter();
 
                 if (_StatusSelecteds != null && _StatusSelecteds.Count > 0)
-                   {
-                      cboDepart.Properties.Buttons[1].Visible = true;
-                   }
-                   else
-                   {
-                      cboDepart.Properties.Buttons[1].Visible = false;
-                   }
+                {
+                    cboDepart.Properties.Buttons[1].Visible = true;
+                }
+                else
+                {
+                    cboDepart.Properties.Buttons[1].Visible = false;
+                }
 
             }
             catch (Exception ex)
@@ -9713,7 +9817,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                         statusName += item.DEPARTMENT_NAME + ", ";
                     }
                 }
-              
+
                 e.DisplayText = statusName;
             }
             catch (Exception ex)
@@ -9750,7 +9854,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                 }
                 InitCheck(cboRoom, SelectionGrid__StatusRoom);
                 InitCombo(cboRoom, lstRoom, "ROOM_NAME", "ROOM_CODE", "Phòng");
-                
+
             }
             catch (Exception ex)
             {
@@ -9771,7 +9875,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                         statusName += item.ROOM_NAME + ", ";
                     }
                 }
-               
+
                 e.DisplayText = statusName;
             }
             catch (Exception ex)
@@ -9785,9 +9889,9 @@ namespace HIS.Desktop.Plugins.ConnectionTest
             try
             {
                 //LoadDefaulRoom();
-               
+
                 cboRoom.Properties.View.ClearColumnsFilter();
-               if (_StatusSelectedRooms != null && _StatusSelectedRooms.Count > 0)
+                if (_StatusSelectedRooms != null && _StatusSelectedRooms.Count > 0)
                 {
                     cboRoom.Properties.Buttons[1].Visible = true;
                 }

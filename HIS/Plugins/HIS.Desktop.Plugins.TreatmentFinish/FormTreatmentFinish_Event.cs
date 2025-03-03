@@ -480,7 +480,7 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
                     hisTreatmentFinishSDO.HrmKskCode = txtKskCode.Text.Trim();
                 if (this.ucIcdCause != null)
                 {
-                    var icdValue = this.IcdCauseProcessor.GetValue(this.ucIcdCause, HIS.UC.Icd.ADO.Template.NoFocus);
+                    var icdValue = this.IcdCauseProcessor.GetValue(this.ucIcdCause, Template.NoFocus);
                     if (icdValue != null && icdValue is UC.Icd.ADO.IcdInputADO)
                     {
                         hisTreatmentFinishSDO.IcdCauseCode = ((UC.Icd.ADO.IcdInputADO)icdValue).ICD_CODE;
@@ -490,7 +490,7 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
 
                 if (this.ucIcdYhct != null)
                 {
-                    var icdValue = this.icdYhctProcessor.GetValue(this.ucIcdYhct, HIS.UC.Icd.ADO.Template.NoFocus);
+                    var icdValue = this.icdYhctProcessor.GetValue(this.ucIcdYhct, Template.NoFocus);
                     if (icdValue != null && icdValue is UC.Icd.ADO.IcdInputADO)
                     {
                         hisTreatmentFinishSDO.TraditionalIcdCode = ((UC.Icd.ADO.IcdInputADO)icdValue).ICD_CODE;
@@ -602,6 +602,18 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
                     hisTreatmentFinishSDO.HospitalizeReasonCode = null;
                     hisTreatmentFinishSDO.HospitalizeReasonName = txtHosReasonNt.Text.Trim();
                 }
+                if (cboCareer.EditValue != null)
+                {
+                    hisTreatmentFinishSDO.CareerId = (long)cboCareer.EditValue;
+                }
+
+                if (currentTreatmentFinishSDO != null)
+                {
+                    hisTreatmentFinishSDO.SurgeryName = currentTreatmentFinishSDO.SurgeryName;
+                    hisTreatmentFinishSDO.SurgeryBeginTime = currentTreatmentFinishSDO.SurgeryBeginTime;
+                    hisTreatmentFinishSDO.SurgeryEndTime = currentTreatmentFinishSDO.SurgeryEndTime;
+                    hisTreatmentFinishSDO.Valid1Year = currentTreatmentFinishSDO.Valid1Year;
+                }
             }
             catch (Exception ex)
             {
@@ -618,7 +630,7 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
                 currentTreatmentFinishSDO = new MOS.SDO.HisTreatmentFinishSDO();
                 currentTreatmentFinishSDO.TreatmentId = data.ID;
                 currentTreatmentFinishSDO.Advise = data.ADVISE;
-                currentTreatmentFinishSDO.ClinicalNote = data.CLINICAL_NOTE;
+                currentTreatmentFinishSDO.ClinicalNote = this.currentTreatmentExt != null ? this.currentTreatmentExt.CLINICAL_NOTE:"";
                 currentTreatmentFinishSDO.DeathCauseId = data.DEATH_CAUSE_ID;
                 currentTreatmentFinishSDO.DeathTime = data.DEATH_TIME;
                 currentTreatmentFinishSDO.DeathWithinId = data.DEATH_WITHIN_ID;
@@ -630,7 +642,7 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
                 currentTreatmentFinishSDO.IcdText = data.ICD_TEXT;
                 currentTreatmentFinishSDO.MainCause = data.MAIN_CAUSE;
                 currentTreatmentFinishSDO.PatientCondition = data.PATIENT_CONDITION;
-                currentTreatmentFinishSDO.SubclinicalResult = data.SUBCLINICAL_RESULT;
+                currentTreatmentFinishSDO.SubclinicalResult = this.currentTreatmentExt != null ? this.currentTreatmentExt.SUBCLINICAL_RESULT:"";
                 currentTreatmentFinishSDO.Surgery = data.SURGERY;
                 currentTreatmentFinishSDO.TranPatiFormId = data.TRAN_PATI_FORM_ID;
                 currentTreatmentFinishSDO.TranPatiReasonId = data.TRAN_PATI_REASON_ID;
@@ -712,6 +724,17 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
                 currentTreatmentFinishSDO.DeathCertIssuerUsername = data.DEATH_CERT_ISSUER_USERNAME;
                 currentTreatmentFinishSDO.DeathDocumentTypeCode = data.DEATH_DOCUMENT_TYPE_CODE;              
                 currentTreatmentFinishSDO.DeathStatus = data.DEATH_STATUS;
+                currentTreatmentFinishSDO.SurgeryName = data.SURGERY_NAME;
+                currentTreatmentFinishSDO.SurgeryBeginTime = data.SURGERY_BEGIN_TIME;
+                currentTreatmentFinishSDO.SurgeryEndTime = data.SURGERY_END_TIME;
+                if (data.VALID_1_YEAR == 1)
+                {
+                    currentTreatmentFinishSDO.Valid1Year = true;
+                }
+                else
+                {
+                    currentTreatmentFinishSDO.Valid1Year = false;
+                }
             }
             catch (Exception ex)
             {

@@ -708,6 +708,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.VNPT
 
                         if (notShowTaxBreakdown)
                         {
+                            product.ProdPrice = String.Format("{0:0.####}", Math.Round((item.ProdPrice ?? 0) + (item.ProdQuantity.HasValue && item.ProdQuantity.Value > 0 ? (item.TaxAmount ?? 0) / (item.ProdQuantity ?? 0) : 0), 4) + "");
                             product.VATAmount = "";
                             product.VATRate = "-4";
                         }
@@ -741,12 +742,13 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.VNPT
                             {
                                 product.VATRate = ((long)item.TaxConvert).ToString();
                             }
+
+                            product.ProdPrice = String.Format("{0:0.####}", item.ProdPrice ?? 0);
                         }
 
                         product.Total = Math.Round(item.Amount, 0, MidpointRounding.AwayFromZero).ToString();
                         totalAmount += item.Amount;
                         SumVATAmount += item.TaxAmount ?? 0;
-                        product.ProdPrice = String.Format("{0:0.####}", item.ProdPrice ?? 0);
 
                         products.Add(product);
                     }
@@ -771,6 +773,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.VNPT
 
                     if (notShowTaxBreakdown)
                     {
+                        product.ProdPrice = String.Format("{0:0.####}", Math.Round((item.ProdPrice ?? 0) + (item.ProdQuantity.HasValue && item.ProdQuantity.Value > 0 ? (item.TaxAmount ?? 0) / (item.ProdQuantity ?? 0) : 0), 4) + "");
                         product.VATAmount = "";
                         product.VATRate = "-4";
                     }
@@ -804,12 +807,13 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.VNPT
                         {
                             product.VATRate = ((long)item.TaxConvert).ToString();
                         }
+
+                        product.ProdPrice = String.Format("{0:0.####}", item.ProdPrice ?? 0);
                     }
 
                     product.Total = Math.Round(item.Amount, 0, MidpointRounding.AwayFromZero).ToString();
                     totalAmount += item.Amount;
                     SumVATAmount += item.TaxAmount ?? 0;
-                    product.ProdPrice = String.Format("{0:0.####}", item.ProdPrice ?? 0);
 
                     products.Add(product);
                 }
@@ -930,7 +934,8 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.VNPT
 
 
                 int count = 1;
-                if (listProductVAT != null) {
+                if (listProductVAT != null)
+                {
                     List<ProductBasePlus> listProductBasePlus = (List<ProductBasePlus>)listProductVAT;
 
                     if (listProductBasePlus == null || listProductBasePlus.Count == 0)

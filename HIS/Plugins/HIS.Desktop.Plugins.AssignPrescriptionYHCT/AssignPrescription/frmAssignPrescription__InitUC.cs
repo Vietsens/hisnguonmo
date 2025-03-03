@@ -115,6 +115,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
                 ado.Width = 275;
                 ado.IsValidate = true;
                 ado.NotAutoInitData = true;
+                ado.UseCapSoBABNCT = true;
                 ado.AutoFinishServiceIds = HisConfigCFG.autoFinishServiceIds;
                 ado.IsCheckBedService = HisConfigCFG.isCheckBedService;
                 ado.IsCheckFinishTime = HisConfigCFG.IsCheckFinishTime;
@@ -122,6 +123,10 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
                 ado.MustFinishAllServicesBeforeFinishTreatment = HisConfigCFG.mustFinishAllServicesBeforeFinishTreatment;
                 ado.TreatmentEndAppointmentTimeDefault = HisConfigCFG.TreatmentEndAppointmentTimeDefault;
                 ado.TreatmentEndHasAppointmentTimeDefault = HisConfigCFG.TreatmentEndHasAppointmentTimeDefault;
+                ado.WorkingRoomId = (this.currentModule != null ? this.currentModule.RoomId : 0);
+                ado.WorkingDepartmentId = this.currentWorkPlace != null ? this.currentWorkPlace.DepartmentId : 0;
+                var dataRoom = BackendDataWorker.Get<V_HIS_ROOM>().FirstOrDefault(o => o.ID == this.currentModule.RoomId);
+                ado.IsBlockOrder = dataRoom.IS_BLOCK_NUM_ORDER == 1 ? true : false;
                 ado.LanguageInputADO = new UC.TreatmentFinish.ADO.LanguageInputADO();
                 ado.LanguageInputADO.gBoxTreatmentFinishInfo__Text = Inventec.Common.Resource.Get.Value("gBoxTreatmentFinishInfo__Text", Resources.ResourceLanguageManager.LanguagefrmAssignPrescription, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
                 ado.LanguageInputADO.lciAppointmentTime__Text = Inventec.Common.Resource.Get.Value("lciAppointmentTime__Text", Resources.ResourceLanguageManager.LanguagefrmAssignPrescription, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());

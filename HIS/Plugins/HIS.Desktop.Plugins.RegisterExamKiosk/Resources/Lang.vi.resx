@@ -117,23 +117,279 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="frmWaitingScreen.layoutControl1.Text" xml:space="preserve">
+  <data name="frmCheckHeinCardGOV.btnCancel.Text" xml:space="preserve">
+    <value>HỦY BỎ</value>
+  </data>
+  <data name="frmCheckHeinCardGOV.gridColumn1.Caption" xml:space="preserve">
+    <value>Mã hồ sơ</value>
+  </data>
+  <data name="frmCheckHeinCardGOV.gridColumn2.Caption" xml:space="preserve">
+    <value>Mã CSKCB</value>
+  </data>
+  <data name="frmCheckHeinCardGOV.gridColumn3.Caption" xml:space="preserve">
+    <value>Tên CSKCB</value>
+  </data>
+  <data name="frmCheckHeinCardGOV.gridColumn4.Caption" xml:space="preserve">
+    <value>Từ ngày</value>
+  </data>
+  <data name="frmCheckHeinCardGOV.gridColumn5.Caption" xml:space="preserve">
+    <value>Đến ngày</value>
+  </data>
+  <data name="frmCheckHeinCardGOV.gridColumn6.Caption" xml:space="preserve">
+    <value>Tên bệnh</value>
+  </data>
+  <data name="frmCheckHeinCardGOV.gridColumn7.Caption" xml:space="preserve">
+    <value>Tình trạng</value>
+  </data>
+  <data name="frmCheckHeinCardGOV.gridColumn8.Caption" xml:space="preserve">
+    <value>Kết quả</value>
+  </data>
+  <data name="frmCheckHeinCardGOV.label1.Text" xml:space="preserve">
+    <value>Lịch sử khám chữa bệnh</value>
+  </data>
+  <data name="frmCheckHeinCardGOV.layoutControl1.Text" xml:space="preserve">
     <value>layoutControl1</value>
   </data>
-  <data name="frmWaitingScreen.layoutControl3.Text" xml:space="preserve">
-    <value>layoutControl3</value>
-  </data>
-  <data name="frmWaitingScreen.layoutControl2.Text" xml:space="preserve">
+  <data name="frmCheckHeinCardGOV.layoutControl2.Text" xml:space="preserve">
     <value>layoutControl2</value>
   </data>
-  <data name="frmWaitingScreen.Text" xml:space="preserve">
-    <value>Màn hình chờ</value>
+  <data name="frmCheckHeinCardGOV.layoutControlButton.Text" xml:space="preserve">
+    <value>layoutControl3</value>
+  </data>
+  <data name="frmCheckHeinCardGOV.layoutControlItem10.Text" xml:space="preserve">
+    <value>Giá trị thẻ đến:</value>
+  </data>
+  <data name="frmCheckHeinCardGOV.layoutControlItem11.Text" xml:space="preserve">
+    <value>Mã khu vực:</value>
+  </data>
+  <data name="frmCheckHeinCardGOV.layoutControlItem12.Text" xml:space="preserve">
+    <value>Ngày đủ 5 năm:</value>
+  </data>
+  <data name="frmCheckHeinCardGOV.layoutControlItem16.Text" xml:space="preserve">
+    <value>Tên ĐK KCB BĐ:</value>
+  </data>
+  <data name="frmCheckHeinCardGOV.layoutControlItem3.Text" xml:space="preserve">
+    <value>Họ tên:</value>
+  </data>
+  <data name="frmCheckHeinCardGOV.layoutControlItem4.Text" xml:space="preserve">
+    <value>Giới tính:</value>
+  </data>
+  <data name="frmCheckHeinCardGOV.layoutControlItem5.Text" xml:space="preserve">
+    <value>Kết quả:</value>
+  </data>
+  <data name="frmCheckHeinCardGOV.layoutControlItem6.Text" xml:space="preserve">
+    <value>Địa chỉ:</value>
+  </data>
+  <data name="frmCheckHeinCardGOV.layoutControlItem7.Text" xml:space="preserve">
+    <value>Mã ĐKBĐ:</value>
+  </data>
+  <data name="frmCheckHeinCardGOV.layoutControlItem8.Text" xml:space="preserve">
+    <value>Cơ quan BHXH:</value>
+  </data>
+  <data name="frmCheckHeinCardGOV.layoutControlItem9.Text" xml:space="preserve">
+    <value>Giá trị thẻ từ:</value>
+  </data>
+  <data name="frmCheckHeinCardGOV.Text" xml:space="preserve">
+    <value>Kiểm tra lịch sử khám chữa bệnh</value>
+  </data>
+  <data name="frmChooseObject.label1.Text" xml:space="preserve">
+    <value>Hệ thống không tìm thấy thông tin thẻ BHYT. 
+Bạn có thể đăng ký khám với các diện đối tượng sau:</value>
+  </data>
+  <data name="frmChooseObject.layoutControl1.Text" xml:space="preserve">
+    <value>layoutControl1</value>
+  </data>
+  <data name="frmChooseObject.Text" xml:space="preserve">
+    <value>Chọn diện đối tượng khám</value>
+  </data>
+  <data name="frmChooseObject.tileControl1.Text" xml:space="preserve">
+    <value>tileControl1</value>
+  </data>
+  <data name="frmDetail.btnThoat.Text" xml:space="preserve">
+    <value>Thoát</value>
+  </data>
+  <data name="frmDetail.gridColumn1.Caption" xml:space="preserve">
+    <value>Mã điều trị</value>
+  </data>
+  <data name="frmDetail.gridColumn2.Caption" xml:space="preserve">
+    <value>Ngày khám</value>
+  </data>
+  <data name="frmDetail.gridColumn3.Caption" xml:space="preserve">
+    <value>Ngày vào viện</value>
+  </data>
+  <data name="frmDetail.gridColumn4.Caption" xml:space="preserve">
+    <value>Ngày ra viện</value>
+  </data>
+  <data name="frmDetail.gridColumn5.Caption" xml:space="preserve">
+    <value>Thông tin bệnh</value>
+  </data>
+  <data name="frmDetail.layoutControl1.Text" xml:space="preserve">
+    <value>layoutControl1</value>
+  </data>
+  <data name="frmDetail.Text" xml:space="preserve">
+    <value>Lịch sử khám bệnh</value>
+  </data>
+  <data name="frmInformationObject.btnSave.Text" xml:space="preserve">
+    <value>Lưu</value>
+  </data>
+  <data name="frmInformationObject.label1.Text" xml:space="preserve">
+    <value>Sửa</value>
+  </data>
+  <data name="frmInformationObject.layoutControl1.Text" xml:space="preserve">
+    <value>layoutControl1</value>
+  </data>
+  <data name="frmInformationObject.layoutControlItem1.Text" xml:space="preserve">
+    <value>Trái tuyến:</value>
+  </data>
+  <data name="frmInformationObject.layoutControlItem13.Text" xml:space="preserve">
+    <value>Từ:</value>
+  </data>
+  <data name="frmInformationObject.layoutControlItem15.Text" xml:space="preserve">
+    <value>Đến:</value>
+  </data>
+  <data name="frmInformationObject.layoutControlItem16.Text" xml:space="preserve">
+    <value>Chuyển tuyến:</value>
+  </data>
+  <data name="frmInformationObject.layoutControlItem17.Text" xml:space="preserve">
+    <value>Hình thức chuyển:</value>
+  </data>
+  <data name="frmInformationObject.layoutControlItem18.Text" xml:space="preserve">
+    <value>Lý do chuyển:</value>
+  </data>
+  <data name="frmInformationObject.layoutControlItem2.Text" xml:space="preserve">
+    <value>Hẹn khám:</value>
+  </data>
+  <data name="frmInformationObject.layoutControlItem3.Text" xml:space="preserve">
+    <value>Thông tuyến:</value>
+  </data>
+  <data name="frmInformationObject.layoutControlItem4.Text" xml:space="preserve">
+    <value>Cấp cứu:</value>
+  </data>
+  <data name="frmInformationObject.layoutControlItem5.Text" xml:space="preserve">
+    <value>Giới thiệu:</value>
+  </data>
+  <data name="frmInformationObject.layoutControlItem6.Text" xml:space="preserve">
+    <value>Số chuyển tuyến:</value>
+  </data>
+  <data name="frmInformationObject.layoutControlItem7.Text" xml:space="preserve">
+    <value>Nơi chuyển đến:</value>
+  </data>
+  <data name="frmInformationObject.layoutControlItem9.Text" xml:space="preserve">
+    <value>Chẩn đoán chính:</value>
+  </data>
+  <data name="frmInformationObject.Text" xml:space="preserve">
+    <value>Thông tin loại tuyến</value>
+  </data>
+  <data name="frmInputSave.btnSave.Text" xml:space="preserve">
+    <value>Lưu</value>
+  </data>
+  <data name="frmInputSave.layoutControl1.Text" xml:space="preserve">
+    <value>layoutControl1</value>
+  </data>
+  <data name="frmInputSave.layoutControlItem1.Text" xml:space="preserve">
+    <value>Nơi chuyển đến:</value>
+  </data>
+  <data name="frmInputSave.layoutControlItem2.Text" xml:space="preserve">
+    <value>Bệnh chính:</value>
+  </data>
+  <data name="frmInputSave.layoutControlItem3.Text" xml:space="preserve">
+    <value>Hình thức chuyển:</value>
+  </data>
+  <data name="frmInputSave.layoutControlItem4.Text" xml:space="preserve">
+    <value>Lý do chuyển:</value>
+  </data>
+  <data name="frmInputSave.layoutControlItem6.Text" xml:space="preserve">
+    <value>Nơi chuyển đến:</value>
+  </data>
+  <data name="frmInputSave.layoutControlItem7.Text" xml:space="preserve">
+    <value>Bệnh chính:</value>
+  </data>
+  <data name="frmInputSave.layoutControlItem8.Text" xml:space="preserve">
+    <value>Hình thức chuyển:</value>
+  </data>
+  <data name="frmInputSave.layoutControlItem9.Text" xml:space="preserve">
+    <value>Lý do chuyển:</value>
+  </data>
+  <data name="frmInputSave.Text" xml:space="preserve">
+    <value>Nhập thông tin</value>
+  </data>
+  <data name="frmInputSave1.btnSave.Text" xml:space="preserve">
+    <value>Lưu</value>
+  </data>
+  <data name="frmInputSave1.layoutControl1.Text" xml:space="preserve">
+    <value>layoutControl1</value>
+  </data>
+  <data name="frmInputSave1.layoutControl2.Text" xml:space="preserve">
+    <value>layoutControl2</value>
+  </data>
+  <data name="frmInputSave1.layoutControlItem1.Text" xml:space="preserve">
+    <value>Số chuyển viện:</value>
+  </data>
+  <data name="frmInputSave1.layoutControlItem2.Text" xml:space="preserve">
+    <value>Trường hợp:</value>
+  </data>
+  <data name="frmInputSave1.layoutControlItem4.Text" xml:space="preserve">
+    <value>Nơi chuyển đến:</value>
+  </data>
+  <data name="frmInputSave1.Text" xml:space="preserve">
+    <value>Nhập thông tin</value>
+  </data>
+  <data name="frmRegisteredExam.label1.Text" xml:space="preserve">
+    <value>Đã có thông tin đăng ký khám:</value>
+  </data>
+  <data name="frmRegisteredExam.label11.Text" xml:space="preserve">
+    <value>Còn thiếu:</value>
+  </data>
+  <data name="frmRegisteredExam.label2.Text" xml:space="preserve">
+    <value>Phòng khám:</value>
+  </data>
+  <data name="frmRegisteredExam.label3.Text" xml:space="preserve">
+    <value>Thời gian:</value>
+  </data>
+  <data name="frmRegisteredExam.label4.Text" xml:space="preserve">
+    <value>Số thứ tự khám:</value>
+  </data>
+  <data name="frmRegisteredExam.label5.Text" xml:space="preserve">
+    <value>Yêu cầu khám:</value>
+  </data>
+  <data name="frmRegisteredExam.label6.Text" xml:space="preserve">
+    <value>Người bệnh cần thanh toán:</value>
+  </data>
+  <data name="frmRegisteredExam.label7.Text" xml:space="preserve">
+    <value>Số dư tài khoản thẻ:</value>
+  </data>
+  <data name="frmRegisteredExam.label8.Text" xml:space="preserve">
+    <value>Bạn có muốn thanh toán, in phiếu khám không?</value>
+  </data>
+  <data name="frmRegisteredExam.label9.Text" xml:space="preserve">
+    <value>Người bệnh đã đóng:</value>
+  </data>
+  <data name="frmRegisteredExam.layoutControl1.Text" xml:space="preserve">
+    <value>layoutControl1</value>
+  </data>
+  <data name="frmRegisteredExam.lblHospitalInfo.Text" xml:space="preserve">
+    <value>CHÀO MỪNG BẠN ĐẾN VỚI BỆNH VIỆN THÔNG MINH</value>
+  </data>
+  <data name="frmRegisteredExam.lblHospitalInfo1.Text" xml:space="preserve">
+    <value>Dịch vụ đăng ký khám bệnh tự động bằng thẻ</value>
+  </data>
+  <data name="frmRegisteredExam.Text" xml:space="preserve">
+    <value>Công khám đã đăng ký</value>
+  </data>
+  <data name="frmRegisteredExam.tileControl.Text" xml:space="preserve">
+    <value>tileControl1</value>
   </data>
   <data name="frmRegisterExamKiosk.btnDetail.Text" xml:space="preserve">
     <value>Lịch sử khám bệnh</value>
   </data>
   <data name="frmRegisterExamKiosk.btnEnd.Text" xml:space="preserve">
     <value>Kết thúc</value>
+  </data>
+  <data name="frmRegisterExamKiosk.btnTamthu.Text" xml:space="preserve">
+    <value>Tạm thu dịch vụ</value>
+  </data>
+  <data name="frmRegisterExamKiosk.btnThanhtoan.Text" xml:space="preserve">
+    <value>Thanh toán</value>
   </data>
   <data name="frmRegisterExamKiosk.button1.Text" xml:space="preserve">
     <value>In phiếu đã đăng ký qua 19006888</value>
@@ -144,11 +400,26 @@
   <data name="frmRegisterExamKiosk.label10.Text" xml:space="preserve">
     <value>Họ tên:</value>
   </data>
+  <data name="frmRegisterExamKiosk.label11.Text" xml:space="preserve">
+    <value>Số dư tài khoản:</value>
+  </data>
+  <data name="frmRegisterExamKiosk.label12.Text" xml:space="preserve">
+    <value>Nghề nghiệp:</value>
+  </data>
   <data name="frmRegisterExamKiosk.label13.Text" xml:space="preserve">
     <value>Địa chỉ:</value>
   </data>
+  <data name="frmRegisterExamKiosk.label14.Text" xml:space="preserve">
+    <value>Quốc tịch:</value>
+  </data>
+  <data name="frmRegisterExamKiosk.label2.Text" xml:space="preserve">
+    <value>Ưu tiên:</value>
+  </data>
   <data name="frmRegisterExamKiosk.label3.Text" xml:space="preserve">
     <value>Giới tính:</value>
+  </data>
+  <data name="frmRegisterExamKiosk.label4.Text" xml:space="preserve">
+    <value>Thu sau:</value>
   </data>
   <data name="frmRegisterExamKiosk.label5.Text" xml:space="preserve">
     <value>Thẻ BHYT:</value>
@@ -156,8 +427,14 @@
   <data name="frmRegisterExamKiosk.label6.Text" xml:space="preserve">
     <value>Nơi ĐK KCB:</value>
   </data>
+  <data name="frmRegisterExamKiosk.label7.Text" xml:space="preserve">
+    <value>Mãn tính:</value>
+  </data>
   <data name="frmRegisterExamKiosk.label8.Text" xml:space="preserve">
     <value>Ngày sinh:</value>
+  </data>
+  <data name="frmRegisterExamKiosk.label9.Text" xml:space="preserve">
+    <value>Phụ thu:</value>
   </data>
   <data name="frmRegisterExamKiosk.layoutControl1.Text" xml:space="preserve">
     <value>layoutControl1</value>
@@ -192,10 +469,196 @@
   <data name="frmServiceRoom.tileControl1.Text" xml:space="preserve">
     <value>tileControl1</value>
   </data>
-  <data name="frmCheckHeinCardGOV.Text" xml:space="preserve">
-    <value>Kiểm tra lịch sử khám chữa bệnh</value>
+  <data name="frmWaiting2.btnConfirm.Text" xml:space="preserve">
+    <value>Đăng ký khám</value>
   </data>
-  <data name="frmChooseObject.Text" xml:space="preserve">
-    <value>Chọn diện đối tượng khám</value>
+  <data name="frmWaiting2.label1.Text" xml:space="preserve">
+    <value>Thông tin thẻ CCCD</value>
+  </data>
+  <data name="frmWaiting2.label10.Text" xml:space="preserve">
+    <value>Giới tính:</value>
+  </data>
+  <data name="frmWaiting2.label11.Text" xml:space="preserve">
+    <value>Dân tộc:</value>
+  </data>
+  <data name="frmWaiting2.label12.Text" xml:space="preserve">
+    <value>Ngày hết hạn:</value>
+  </data>
+  <data name="frmWaiting2.label2.Text" xml:space="preserve">
+    <value>Xin mời quẹt thẻ hoặc nhập CCCD, CMND, mã bệnh nhân</value>
+  </data>
+  <data name="frmWaiting2.label21.Text" xml:space="preserve">
+    <value>Ảnh căn cước</value>
+  </data>
+  <data name="frmWaiting2.label3.Text" xml:space="preserve">
+    <value>Số CCCD:</value>
+  </data>
+  <data name="frmWaiting2.label4.Text" xml:space="preserve">
+    <value>Ngày sinh:</value>
+  </data>
+  <data name="frmWaiting2.label5.Text" xml:space="preserve">
+    <value>Quốc tịch:</value>
+  </data>
+  <data name="frmWaiting2.label6.Text" xml:space="preserve">
+    <value>Ngày cấp:</value>
+  </data>
+  <data name="frmWaiting2.label7.Text" xml:space="preserve">
+    <value>Camera</value>
+  </data>
+  <data name="frmWaiting2.label9.Text" xml:space="preserve">
+    <value>Họ tên:</value>
+  </data>
+  <data name="frmWaiting2.layoutControl1.Text" xml:space="preserve">
+    <value>layoutControl1</value>
+  </data>
+  <data name="frmWaiting2.lblCapPer.Text" xml:space="preserve">
+    <value>Tỉ lệ trùng khớp:</value>
+  </data>
+  <data name="frmWaiting2.lblCccdCode.Text" xml:space="preserve">
+    <value>186615770125</value>
+  </data>
+  <data name="frmWaiting2.lblDate.Text" xml:space="preserve">
+    <value>31/05/2000</value>
+  </data>
+  <data name="frmWaiting2.lblDob.Text" xml:space="preserve">
+    <value>10/10/1986</value>
+  </data>
+  <data name="frmWaiting2.lblEthe.Text" xml:space="preserve">
+    <value>Kinh</value>
+  </data>
+  <data name="frmWaiting2.lblExpried.Text" xml:space="preserve">
+    <value>31/05/2050</value>
+  </data>
+  <data name="frmWaiting2.lblGenderName.Text" xml:space="preserve">
+    <value>Nam</value>
+  </data>
+  <data name="frmWaiting2.lblMessage.Text" xml:space="preserve">
+    <value>Hệ thống đăng ký khám bệnh thông minh</value>
+  </data>
+  <data name="frmWaiting2.lblName.Text" xml:space="preserve">
+    <value>Nguyễn Văn An</value>
+  </data>
+  <data name="frmWaiting2.lblNational.Text" xml:space="preserve">
+    <value>Việt Nam</value>
+  </data>
+  <data name="frmWaiting2.lblPer.Text" xml:space="preserve">
+    <value>70%</value>
+  </data>
+  <data name="frmWaiting2.pnSimpleButton1.Text" xml:space="preserve">
+    <value>TIẾP TỤC</value>
+  </data>
+  <data name="frmWaiting2.Text" xml:space="preserve">
+    <value>frmWaiting2</value>
+  </data>
+  <data name="frmWaiting2.txtNumberInput.Properties.NullText" xml:space="preserve">
+    <value>Nhập số</value>
+  </data>
+  <data name="frmWaiting2.txtNumberInput.Properties.NullValuePrompt" xml:space="preserve">
+    <value>Nhập số</value>
+  </data>
+  <data name="frmWaitingScreen.btnCancel.Text" xml:space="preserve">
+    <value>HỦY BỎ</value>
+  </data>
+  <data name="frmWaitingScreen.btnConfirm.Text" xml:space="preserve">
+    <value>XÁC NHẬN</value>
+  </data>
+  <data name="frmWaitingScreen.label1.Text" xml:space="preserve">
+    <value>Thông tin thẻ CCCD</value>
+  </data>
+  <data name="frmWaitingScreen.label10.Text" xml:space="preserve">
+    <value>Giới tính:</value>
+  </data>
+  <data name="frmWaitingScreen.label11.Text" xml:space="preserve">
+    <value>Dân tộc:</value>
+  </data>
+  <data name="frmWaitingScreen.label12.Text" xml:space="preserve">
+    <value>Ngày hết hạn:</value>
+  </data>
+  <data name="frmWaitingScreen.label2.Text" xml:space="preserve">
+    <value>XIN MỜI QUẸT THẺ HOẶC NHẬP SỐ THẺ</value>
+  </data>
+  <data name="frmWaitingScreen.label21.Text" xml:space="preserve">
+    <value>Ảnh căn cước</value>
+  </data>
+  <data name="frmWaitingScreen.label3.Text" xml:space="preserve">
+    <value>Số CCCD:</value>
+  </data>
+  <data name="frmWaitingScreen.label4.Text" xml:space="preserve">
+    <value>Ngày sinh:</value>
+  </data>
+  <data name="frmWaitingScreen.label5.Text" xml:space="preserve">
+    <value>Quốc tịch:</value>
+  </data>
+  <data name="frmWaitingScreen.label6.Text" xml:space="preserve">
+    <value>Ngày cấp:</value>
+  </data>
+  <data name="frmWaitingScreen.label7.Text" xml:space="preserve">
+    <value>Camera</value>
+  </data>
+  <data name="frmWaitingScreen.label9.Text" xml:space="preserve">
+    <value>Họ tên:</value>
+  </data>
+  <data name="frmWaitingScreen.layoutControl1.Text" xml:space="preserve">
+    <value>layoutControl1</value>
+  </data>
+  <data name="frmWaitingScreen.layoutControl2.Text" xml:space="preserve">
+    <value>layoutControl2</value>
+  </data>
+  <data name="frmWaitingScreen.layoutControl3.Text" xml:space="preserve">
+    <value>layoutControl3</value>
+  </data>
+  <data name="frmWaitingScreen.lblCapPer.Text" xml:space="preserve">
+    <value>Tỉ lệ trùng khớp:</value>
+  </data>
+  <data name="frmWaitingScreen.lblCccdCode.Text" xml:space="preserve">
+    <value>186615770125</value>
+  </data>
+  <data name="frmWaitingScreen.lblDate.Text" xml:space="preserve">
+    <value>31/05/2000</value>
+  </data>
+  <data name="frmWaitingScreen.lblDob.Text" xml:space="preserve">
+    <value>10/10/1986</value>
+  </data>
+  <data name="frmWaitingScreen.lblEthe.Text" xml:space="preserve">
+    <value>Kinh</value>
+  </data>
+  <data name="frmWaitingScreen.lblExpried.Text" xml:space="preserve">
+    <value>31/05/2050</value>
+  </data>
+  <data name="frmWaitingScreen.lblGenderName.Text" xml:space="preserve">
+    <value>Nam</value>
+  </data>
+  <data name="frmWaitingScreen.lblMessage.Text" xml:space="preserve">
+    <value>HỆ THỐNG ĐĂNG KÝ KHÁM CHỮA BỆNH THẺ THÔNG MINH.</value>
+  </data>
+  <data name="frmWaitingScreen.lblName.Text" xml:space="preserve">
+    <value>Nguyễn Văn An</value>
+  </data>
+  <data name="frmWaitingScreen.lblNational.Text" xml:space="preserve">
+    <value>Việt Nam</value>
+  </data>
+  <data name="frmWaitingScreen.lblPer.Text" xml:space="preserve">
+    <value>70%</value>
+  </data>
+  <data name="frmWaitingScreen.pnSimpleButton1.Text" xml:space="preserve">
+    <value>TIẾP TỤC</value>
+  </data>
+  <data name="frmWaitingScreen.Text" xml:space="preserve">
+    <value>Màn hình chờ</value>
+  </data>
+  <data name="WebViewer.btnClose.Text" xml:space="preserve">
+    <value>Đóng</value>
+  </data>
+  <data name="WebViewer.layoutControl1.Text" xml:space="preserve">
+    <value>layoutControl1</value>
+  </data>
+  <data name="WebViewer.lblTime.Text" xml:space="preserve">
+    <value>labelControl1</value>
+  </data>
+  <data name="WebViewer.Text" xml:space="preserve">
+    <value>WebViewer</value>
+  </data>
+  <data name="WebViewer.webControl.Text" xml:space="preserve">
+    <value>webControl1</value>
   </data>
 </root>

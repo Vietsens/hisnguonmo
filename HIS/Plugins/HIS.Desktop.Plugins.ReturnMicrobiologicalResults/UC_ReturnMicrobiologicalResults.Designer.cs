@@ -45,6 +45,7 @@ namespace HIS.Desktop.Plugins.ReturnMicrobiologicalResults
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(UC_ReturnMicrobiologicalResults));
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject1 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject2 = new DevExpress.Utils.SerializableAppearanceObject();
@@ -164,7 +165,7 @@ namespace HIS.Desktop.Plugins.ReturnMicrobiologicalResults
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject116 = new DevExpress.Utils.SerializableAppearanceObject();
             this.layoutControl1 = new DevExpress.XtraLayout.LayoutControl();
             this.cboRoom = new DevExpress.XtraEditors.GridLookUpEdit();
-            this.barManager1 = new DevExpress.XtraBars.BarManager();
+            this.barManager1 = new DevExpress.XtraBars.BarManager(this.components);
             this.barDockControlTop = new DevExpress.XtraBars.BarDockControl();
             this.barDockControlBottom = new DevExpress.XtraBars.BarDockControl();
             this.barDockControlLeft = new DevExpress.XtraBars.BarDockControl();
@@ -368,14 +369,14 @@ namespace HIS.Desktop.Plugins.ReturnMicrobiologicalResults
             this.emptySpaceItem1 = new DevExpress.XtraLayout.EmptySpaceItem();
             this.layoutControlItem25 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem26 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.imageCollection1 = new DevExpress.Utils.ImageCollection();
-            this.imageListIcon = new System.Windows.Forms.ImageList();
-            this.toolTipControllerGrid = new DevExpress.Utils.ToolTipController();
-            this.toolTipController1 = new DevExpress.Utils.ToolTipController();
-            this.imageList1 = new System.Windows.Forms.ImageList();
-            this.dxValidationProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider();
-            this.timer1 = new System.Windows.Forms.Timer();
-            this.timer2 = new System.Windows.Forms.Timer();
+            this.imageCollection1 = new DevExpress.Utils.ImageCollection(this.components);
+            this.imageListIcon = new System.Windows.Forms.ImageList(this.components);
+            this.toolTipControllerGrid = new DevExpress.Utils.ToolTipController(this.components);
+            this.toolTipController1 = new DevExpress.Utils.ToolTipController(this.components);
+            this.imageList1 = new System.Windows.Forms.ImageList(this.components);
+            this.dxValidationProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider(this.components);
+            this.timer1 = new System.Windows.Forms.Timer(this.components);
+            this.timer2 = new System.Windows.Forms.Timer(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
             this.layoutControl1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.cboRoom.Properties)).BeginInit();

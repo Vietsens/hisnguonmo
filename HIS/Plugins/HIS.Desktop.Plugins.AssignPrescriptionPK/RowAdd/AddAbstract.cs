@@ -100,9 +100,11 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.Add
         protected CommonParam Param { get; set; }
         protected MediMatyTypeADO medicineTypeSDO { get; set; }
 
-        protected long HtuId { get; set; }
+        protected List<long> HtuIds { get; set; }
+        protected long HtuIdNotCheckAcinInteractive { get; set; }
         protected long MedicineUseFormId { get; set; }
         protected string Tutorial { get; set; }
+        protected string HtuText { get; set; }
         protected bool IsExpend { get; set; }
         protected bool IsDisableExpend { get; set; }
         protected decimal? UseDays { get; set; }
@@ -164,8 +166,10 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.Add
             this.MediMatyTypeADOs = frmAssignPrescription.mediMatyTypeADOs;
             this.MediStockD1SDOs = frmAssignPrescription.mediStockD1ADOs;
             this.MedicineUseFormId = Inventec.Common.TypeConvert.Parse.ToInt64((frmAssignPrescription.cboMedicineUseForm.EditValue ?? "0").ToString());
-            this.HtuId = Inventec.Common.TypeConvert.Parse.ToInt64((frmAssignPrescription.cboHtu.EditValue ?? "0").ToString());
+            this.HtuIds = frmAssignPrescription.DataHtuList.Exists(o=>o.IsChecked) ? frmAssignPrescription.DataHtuList.Where(o => o.IsChecked).Select(o=>o.ID).ToList() : null;
+            this.HtuIdNotCheckAcinInteractive = frmAssignPrescription.DataHtuList.Exists(o => o.IsChecked && o.CHECK_ACIN_INTERACTIVE != 1) ? frmAssignPrescription.DataHtuList.Where(o => o.IsChecked && o.CHECK_ACIN_INTERACTIVE != 1).OrderBy(o => o.NUM_ORDER).ToList()[0].ID : 0;
             this.Tutorial = frmAssignPrescription.txtTutorial.Text.Trim();
+            this.HtuText = frmAssignPrescription.memHtu.Text.Trim();
             this.UseDays = frmAssignPrescription.spinSoLuongNgay.Value;
 
             if (!String.IsNullOrEmpty(frmAssignPrescription.spinSang.Text))
@@ -268,12 +272,15 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.Add
             if (!String.IsNullOrEmpty(this.BreathTime))
                 medicineTypeSDO.BREATH_TIME = this.BreathTime;
             medicineTypeSDO.TUTORIAL = this.Tutorial;
+            medicineTypeSDO.HTU_TEXT = this.HtuText;
             medicineTypeSDO.IsExpend = this.IsExpend;
             medicineTypeSDO.IsDisableExpend = this.IsDisableExpend;
             if (this.MedicineUseFormId > 0)
                 medicineTypeSDO.MEDICINE_USE_FORM_ID = this.MedicineUseFormId;
-            if (this.HtuId > 0)
-                medicineTypeSDO.HTU_ID = this.HtuId;
+            if (this.HtuIds != null && this.HtuIds.Count > 0)
+                medicineTypeSDO.HTU_IDs = this.HtuIds;
+            if(this.HtuIdNotCheckAcinInteractive > 0)
+                medicineTypeSDO.HTU_ID_NOT_CHECK_ACIN_INTERACTIVE = this.HtuIdNotCheckAcinInteractive;
             if (frmAssignPrescription.currentMedicineTypeADOForEdit != null)
             {
                 if (frmAssignPrescription.currentMedicineTypeADOForEdit.LAST_EXP_PRICE.HasValue || frmAssignPrescription.currentMedicineTypeADOForEdit.LAST_EXP_VAT_RATIO.HasValue)
@@ -864,6 +871,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.Add
                 medicineTypeSDO__Category__SameMediAcin.Chieu = this.Chieu;
                 medicineTypeSDO__Category__SameMediAcin.Toi = this.Toi;
                 medicineTypeSDO__Category__SameMediAcin.TUTORIAL = this.Tutorial;
+                medicineTypeSDO__Category__SameMediAcin.HTU_TEXT = this.HtuText;
                 UpdateUseTimeInDataRow(medicineTypeSDO__Category__SameMediAcin);
                 medicineTypeSDO__Category__SameMediAcin.IsOutKtcFee = this.IsOutKtcFee;
                 medicineTypeSDO__Category__SameMediAcin.IsStent = this.IsStent;
@@ -899,6 +907,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.Add
                 medicineTypeSDO__Category__SameMediAcin.Chieu = this.Chieu;
                 medicineTypeSDO__Category__SameMediAcin.Toi = this.Toi;
                 medicineTypeSDO__Category__SameMediAcin.TUTORIAL = this.Tutorial;
+                medicineTypeSDO__Category__SameMediAcin.HTU_TEXT = this.HtuText;
                 //UpdateUseTimeInDataRow(medicineTypeSDO__Category__SameMediAcin);
                 //medicineTypeSDO__Category__SameMediAcin.IsOutKtcFee = this.IsOutKtcFee;
                 //medicineTypeSDO__Category__SameMediAcin.IsStent = this.IsStent;
@@ -936,6 +945,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.Add
                 medicineTypeSDO__Category__SameMediAcin.Chieu = this.Chieu;
                 medicineTypeSDO__Category__SameMediAcin.Toi = this.Toi;
                 medicineTypeSDO__Category__SameMediAcin.TUTORIAL = this.Tutorial;
+                medicineTypeSDO__Category__SameMediAcin.HTU_TEXT = this.HtuText;
                 UpdateUseTimeInDataRow(medicineTypeSDO__Category__SameMediAcin);
                 medicineTypeSDO__Category__SameMediAcin.IsOutKtcFee = this.IsOutKtcFee;
                 medicineTypeSDO__Category__SameMediAcin.IsStent = this.IsStent;

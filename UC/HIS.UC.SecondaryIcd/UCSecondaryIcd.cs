@@ -44,6 +44,7 @@ namespace HIS.UC.SecondaryIcd
         private string[] icdSeparators = new string[] { ";" };
         int positionHandleControlLeft = -1;
         DelegateGetIcdMain GetIcdMain { get; set; }
+        
 
         private List<HIS_ICD> ListHisIcds { get; set; }
         private List<V_HIS_ICD> ListViewHisIcds { get; set; }
@@ -82,6 +83,7 @@ namespace HIS.UC.SecondaryIcd
                     {
                         this.checkICD = data.delegateCheckICD;
                     }
+
                     if (data != null && !String.IsNullOrEmpty(data.TextLblIcd))
                     {
                         this.lciIcdSubCode.Text = data.TextLblIcd;
@@ -323,6 +325,25 @@ namespace HIS.UC.SecondaryIcd
             }
             return result;
         }
+        internal void SetError(string error)
+        {
+            try
+            {
+                if (!string.IsNullOrWhiteSpace(error))
+                {
+                    dxErrorProvider1.SetError(txtIcdSubCode, error, DevExpress.XtraEditors.DXErrorProvider.ErrorType.Warning);
+                }
+                else
+                {
+                    dxErrorProvider1.SetError(txtIcdSubCode, "", DevExpress.XtraEditors.DXErrorProvider.ErrorType.None);
+                }
+            }
+            catch (Exception ex)
+            {
+
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
 
         public bool GetValidateWithMessage(List<string> errorEmpty, List<string> errorOther)
         {
@@ -420,7 +441,7 @@ namespace HIS.UC.SecondaryIcd
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
-
+        
         private void txtIcdSubCode_KeyUp(object sender, KeyEventArgs e)
         {
             try
@@ -755,6 +776,7 @@ namespace HIS.UC.SecondaryIcd
         {
             try
             {
+                dxErrorProvider1.ClearErrors();
                 ValdateSecondaryIcd();
             }
             catch (Exception ex)

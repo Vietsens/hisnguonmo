@@ -48,6 +48,7 @@
     <Reference Include="DevExpress.XtraGrid.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
     <Reference Include="DevExpress.XtraLayout.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
     <Reference Include="DevExpress.XtraPrinting.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
+    <Reference Include="DevExpress.XtraTreeList.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
     <Reference Include="EMR.EFMODEL">
       <HintPath>..\..\..\..\lib\EMR\EMR.EFMODEL.dll</HintPath>
     </Reference>
@@ -60,11 +61,59 @@
     <Reference Include="HIS.Common.Treatment">
       <HintPath>..\..\..\..\lib\HIS\HIS.Common\HIS.Common.Treatment\HIS.Common.Treatment.dll</HintPath>
     </Reference>
+    <Reference Include="HIS.Desktop.Common, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\lib\HIS\HIS.Desktop.Common\HIS.Desktop.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="HIS.Desktop.LocalStorage.BackendData, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\Test_HIS\histest\x64\ReferencedAssemblies\HIS.Desktop.LocalStorage.BackendData.dll</HintPath>
+    </Reference>
+    <Reference Include="HIS.Desktop.LocalStorage.LocalData, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\Test_HIS\histest\x64\ReferencedAssemblies\HIS.Desktop.LocalStorage.LocalData.dll</HintPath>
+    </Reference>
     <Reference Include="HIS.Desktop.Plugins.Library.CheckHeinGOV">
       <HintPath>..\..\..\..\lib\HIS\HIS.Desktop.Plugins.Library.CheckHeinGOV\HIS.Desktop.Plugins.Library.CheckHeinGOV.dll</HintPath>
     </Reference>
     <Reference Include="HIS.Desktop.Plugins.Library.CheckIcd">
       <HintPath>..\..\..\..\lib\HIS\HIS.Desktop.Plugins.Library.CheckIcd\HIS.Desktop.Plugins.Library.CheckIcd.dll</HintPath>
+    </Reference>
+    <Reference Include="HIS.Desktop.Plugins.Library.EmrGenerate, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\Test_HIS\histest\x64\ReferencedAssemblies\HIS.Desktop.Plugins.Library.EmrGenerate.dll</HintPath>
+    </Reference>
+    <Reference Include="HIS.Desktop.Plugins.Library.FormMedicalRecord, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\Test_HIS\histest\x64\ReferencedAssemblies\HIS.Desktop.Plugins.Library.FormMedicalRecord.dll</HintPath>
+    </Reference>
+    <Reference Include="HIS.Desktop.Plugins.Library.PrintOtherForm, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\Test_HIS\histest\x64\ReferencedAssemblies\HIS.Desktop.Plugins.Library.PrintOtherForm.dll</HintPath>
+    </Reference>
+    <Reference Include="HIS.Desktop.Plugins.Library.PrintTestTotal, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\Test_HIS\histest\x64\ReferencedAssemblies\HIS.Desktop.Plugins.Library.PrintTestTotal.dll</HintPath>
+    </Reference>
+    <Reference Include="HIS.Desktop.Plugins.Library.PrintTreatmentEndTypeExt, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\Test_HIS\histest\x64\ReferencedAssemblies\HIS.Desktop.Plugins.Library.PrintTreatmentEndTypeExt.dll</HintPath>
+    </Reference>
+    <Reference Include="HIS.Desktop.Plugins.Library.PrintTreatmentFinish, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\Test_HIS\histest\x64\ReferencedAssemblies\HIS.Desktop.Plugins.Library.PrintTreatmentFinish.dll</HintPath>
+    </Reference>
+    <Reference Include="HIS.Desktop.Plugins.Library.RegisterConfig, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\Test_HIS\histest\x64\ReferencedAssemblies\HIS.Desktop.Plugins.Library.RegisterConfig.dll</HintPath>
+    </Reference>
+    <Reference Include="HIS.Desktop.Plugins.Library.TreatmentEndTypeExt, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\Test_HIS\histest\x64\ReferencedAssemblies\HIS.Desktop.Plugins.Library.TreatmentEndTypeExt.dll</HintPath>
+    </Reference>
+    <Reference Include="HIS.Desktop.Print, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\Test_HIS\histest\x64\ReferencedAssemblies\HIS.Desktop.Print.dll</HintPath>
     </Reference>
     <Reference Include="HIS.UC.Death">
       <HintPath>..\..\..\..\lib\HIS\HIS.UC.Death\HIS.UC.Death.dll</HintPath>
@@ -135,8 +184,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\lib\Inventec.Common\Inventec.Common.ThreadCustom\Inventec.Common.ThreadCustom.dll</HintPath>
     </Reference>
-    <Reference Include="Inventec.Common.TypeConvert">
-      <HintPath>..\..\..\..\lib\Inventec.Common\Inventec.Common.TypeConvert\Inventec.Common.TypeConvert.dll</HintPath>
+    <Reference Include="Inventec.Common.TypeConvert, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\histest\histest\x64\ReferencedAssemblies\Inventec.Common.TypeConvert.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Common.WebApiClient">
       <HintPath>..\..\..\..\lib\Inventec.Common\Inventec.Common.WebApiClient\Inventec.Common.WebApiClient.dll</HintPath>
@@ -181,16 +231,18 @@
     </Reference>
     <Reference Include="MOS.EFMODEL, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\LIB\MOS\MOS.EFMODEL.dll</HintPath>
+      <HintPath>..\..\..\..\lib\MOS\MOS.EFMODEL.dll</HintPath>
     </Reference>
-    <Reference Include="MOS.Filter">
+    <Reference Include="MOS.Filter, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\lib\MOS\MOS.Filter.dll</HintPath>
     </Reference>
     <Reference Include="MOS.LibraryHein.Bhyt, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\lib\MOS\MOS.LibraryHein.Bhyt.dll</HintPath>
     </Reference>
-    <Reference Include="MOS.SDO">
+    <Reference Include="MOS.SDO, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\lib\MOS\MOS.SDO.dll</HintPath>
     </Reference>
     <Reference Include="MOS.UTILITY">
@@ -413,6 +465,7 @@
     </EmbeddedResource>
     <EmbeddedResource Include="CloseTreatment\FormDeath.resx">
       <DependentUpon>FormDeath.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="CloseTreatment\UCTimes.resx">
       <DependentUpon>UCTimes.cs</DependentUpon>
@@ -462,10 +515,6 @@
       <Project>{ee6bba16-7e46-49bd-9707-a2069e480302}</Project>
       <Name>HIS.Desktop.ApplicationFont</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\HIS.Desktop.Common\HIS.Desktop.Common.csproj">
-      <Project>{59fdcba7-0f9f-4257-b95a-e37a1ccfe107}</Project>
-      <Name>HIS.Desktop.Common</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\HIS.Desktop.Control.Session\HIS.Desktop.Controls.Session.csproj">
       <Project>{9b4b505c-afa1-4974-8ac8-503f748bd5a2}</Project>
       <Name>HIS.Desktop.Controls.Session</Name>
@@ -473,10 +522,6 @@
     <ProjectReference Include="..\..\HIS.Desktop.LibraryMessage\HIS.Desktop.LibraryMessage.csproj">
       <Project>{48d9a44a-7120-4c9b-8923-b1af16b1992f}</Project>
       <Name>HIS.Desktop.LibraryMessage</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\HIS.Desktop.LocalStorage.BackendData\HIS.Desktop.LocalStorage.BackendData.csproj">
-      <Project>{86709a9c-a149-4ebb-a817-1bf8f4f4bc07}</Project>
-      <Name>HIS.Desktop.LocalStorage.BackendData</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\HIS.Desktop.LocalStorage.ConfigApplication\HIS.Desktop.LocalStorage.ConfigApplication.csproj">
       <Project>{3a2c932a-9d3a-483b-89a0-9f9c8225b283}</Project>
@@ -490,10 +535,6 @@
       <Project>{d1e5461b-8a8e-46f7-9aee-5c1b327e5f2b}</Project>
       <Name>HIS.Desktop.LocalStorage.HisConfig</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\HIS.Desktop.LocalStorage.LocalData\HIS.Desktop.LocalStorage.LocalData.csproj">
-      <Project>{e036edf5-788c-4892-8d8f-6b1c16dcbd21}</Project>
-      <Name>HIS.Desktop.LocalStorage.LocalData</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\HIS.Desktop.LocalStorage.Location\HIS.Desktop.LocalStorage.Location.csproj">
       <Project>{67e93829-79bd-407e-a4dd-b46cebb55a41}</Project>
       <Name>HIS.Desktop.LocalStorage.Location</Name>
@@ -501,10 +542,6 @@
     <ProjectReference Include="..\..\HIS.Desktop.ModuleExt\HIS.Desktop.ModuleExt.csproj">
       <Project>{168b4cc6-8447-41da-b034-a02f336168e4}</Project>
       <Name>HIS.Desktop.ModuleExt</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\HIS.Desktop.Print\HIS.Desktop.Print.csproj">
-      <Project>{aeeca321-fd65-407a-8d70-ba5362883b87}</Project>
-      <Name>HIS.Desktop.Print</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\HIS.Desktop.Utility\HIS.Desktop.Utilities.csproj">
       <Project>{2aad22db-2166-4be8-ae52-335b21dc03fc}</Project>
@@ -514,68 +551,14 @@
       <Project>{64837e01-803d-4f1e-9dfc-d34b38ea78f9}</Project>
       <Name>HIS.Desktop.Library.CacheClient</Name>
     </ProjectReference>
-    <ProjectReference Include="..\HIS.Desktop.Plugins.Library.EmrGenerate\HIS.Desktop.Plugins.Library.EmrGenerate.csproj">
-      <Project>{0aedfd21-7195-4fdb-a3ef-035640df48f3}</Project>
-      <Name>HIS.Desktop.Plugins.Library.EmrGenerate</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\HIS.Desktop.Plugins.Library.FormMedicalRecord\HIS.Desktop.Plugins.Library.FormMedicalRecord.csproj">
-      <Project>{c154dfeb-1051-4c3d-a0a8-04ae3b1b2b2a}</Project>
-      <Name>HIS.Desktop.Plugins.Library.FormMedicalRecord</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\HIS.Desktop.Plugins.Library.PrintOtherForm\HIS.Desktop.Plugins.Library.PrintOtherForm.csproj">
-      <Project>{9729afdc-ae9f-46d2-bdfe-eabd60343b6f}</Project>
-      <Name>HIS.Desktop.Plugins.Library.PrintOtherForm</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\HIS.Desktop.Plugins.Library.PrintTestTotal\HIS.Desktop.Plugins.Library.PrintTestTotal.csproj">
-      <Project>{1ebfc969-8c09-414f-8153-481522873e17}</Project>
-      <Name>HIS.Desktop.Plugins.Library.PrintTestTotal</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\HIS.Desktop.Plugins.Library.PrintTreatmentEndTypeExt\HIS.Desktop.Plugins.Library.PrintTreatmentEndTypeExt.csproj">
-      <Project>{93eeaca6-da7a-4045-ad8e-48e4fae36f00}</Project>
-      <Name>HIS.Desktop.Plugins.Library.PrintTreatmentEndTypeExt</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\HIS.Desktop.Plugins.Library.PrintTreatmentFinish\HIS.Desktop.Plugins.Library.PrintTreatmentFinish.csproj">
-      <Project>{74a53da7-c004-4103-a72c-ca0b57798441}</Project>
-      <Name>HIS.Desktop.Plugins.Library.PrintTreatmentFinish</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\HIS.Desktop.Plugins.Library.RegisterConfig\HIS.Desktop.Plugins.Library.RegisterConfig.csproj">
-      <Project>{9247dd49-482c-4227-88df-616a8aaf3f38}</Project>
-      <Name>HIS.Desktop.Plugins.Library.RegisterConfig</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\HIS.Desktop.Plugins.Library.TreatmentEndTypeExt\HIS.Desktop.Plugins.Library.TreatmentEndTypeExt.csproj">
-      <Project>{1b07baeb-f145-400d-b3c6-94957934a3a9}</Project>
-      <Name>HIS.Desktop.Plugins.Library.TreatmentEndTypeExt</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\dau tích-02.jpg" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>echo PREBUILDSTEP for $(ProjectName)
-
-echo Copying files from $(ProjectDir)bin\$(Configuration) to $(SolutionDir)\$(SolutionName)\bin\$(Configuration)\ReferencedAssemblies
-
-if not exist "$(SolutionDir)\$(SolutionName)\bin\$(Configuration)\ReferencedAssemblies" mkdir "$(SolutionDir)\$(SolutionName)\bin\$(Configuration)\ReferencedAssemblies"
-
-xcopy "$(ProjectDir)bin\$(Configuration)\*.dll" "$(SolutionDir)\$(SolutionName)\bin\$(Configuration)\ReferencedAssemblies" /i /d /y
-xcopy "$(TargetDir)$(TargetName).dll" "$(SolutionDir)$(SolutionName)\bin\Debug\Plugins\Module" /Y /I
-xcopy "$(ProjectDir)bin\$(Configuration)\vi\*.dll" "$(SolutionDir)\$(SolutionName)\bin\$(Configuration)\vi" /Y /I
-xcopy "$(ProjectDir)bin\$(Configuration)\en\*.dll" "$(SolutionDir)\$(SolutionName)\bin\$(Configuration)\en" /Y /I
-
-if errorlevel 1 goto BuildEventFailed
-
-if errorlevel 1 goto BuildEventFailed
-
-REM Exit properly because the build will not fail
-REM unless the final step exits with an error code
-
-goto BuildEventOK
-:BuildEventFailed
-echo PREBUILDSTEP for $(ProjectName) FAILED
-exit 1
-:BuildEventOK
-echo PREBUILDSTEP for $(ProjectName) COMPLETED OK</PostBuildEvent>
+    <PostBuildEvent>
+    </PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

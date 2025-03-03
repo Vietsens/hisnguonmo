@@ -30,4 +30,9 @@ namespace HIS.Desktop.Plugins.AggrExpMestPrintFilter.ADO
         public List<V_HIS_EXP_MEST_MATERIAL> _ExpMestMaterials { get; set; }
         public List<V_HIS_EXP_MEST_MEDICINE> _ExpMestMedicines { get; set; }
     }
+    public class FilterTimeADO
+    {
+        public long Id { get; set; }
+        public string TimeName { get; set; }
+    }
 }

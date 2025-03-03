@@ -45,6 +45,7 @@
     <Reference Include="AutoMapper">
       <HintPath>..\..\..\..\lib\MOS\AutoMapper.dll</HintPath>
     </Reference>
+    <Reference Include="DevExpress.Charts.v15.2.Core, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
     <Reference Include="DevExpress.Data.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\..\LIBRARY\DevLib\DevExpress.Data.v15.2.dll</HintPath>
@@ -59,10 +60,13 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\..\LIBRARY\DevLib\DevExpress.Utils.v15.2.dll</HintPath>
     </Reference>
+    <Reference Include="DevExpress.Utils.v15.2.UI, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
     <Reference Include="DevExpress.XtraBars.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\..\LIBRARY\DevLib\DevExpress.XtraBars.v15.2.dll</HintPath>
     </Reference>
+    <Reference Include="DevExpress.XtraCharts.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
+    <Reference Include="DevExpress.XtraCharts.v15.2.Wizard, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
     <Reference Include="DevExpress.XtraEditors.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\..\LIBRARY\DevLib\DevExpress.XtraEditors.v15.2.dll</HintPath>
@@ -83,6 +87,7 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\..\LIBRARY\DevLib\DevExpress.XtraTreeList.v15.2.dll</HintPath>
     </Reference>
+    <Reference Include="DevExpress.XtraVerticalGrid.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
     <Reference Include="HIS.Common.Treatment, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\lib\HIS\HIS.Common\HIS.Common.Treatment\HIS.Common.Treatment.dll</HintPath>
@@ -142,9 +147,6 @@
     <Reference Include="HIS.UC.DateEditor, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\lib\HIS\HIS.UC.DateEditor\HIS.UC.DateEditor.dll</HintPath>
-    </Reference>
-    <Reference Include="HIS.UC.ExamTreatmentFinish">
-      <HintPath>..\..\..\..\lib\HIS\HIS.UC.ExamTreatmentFinish\HIS.UC.ExamTreatmentFinish.dll</HintPath>
     </Reference>
     <Reference Include="HIS.UC.Icd">
       <HintPath>..\..\..\..\lib\HIS\His.UC.Icd\HIS.UC.Icd.dll</HintPath>
@@ -409,6 +411,7 @@
   <ItemGroup>
     <Compile Include="ADO\AdviseFormADO.cs" />
     <Compile Include="ADO\ConfigADO.cs" />
+    <Compile Include="ADO\HtuADO.cs" />
     <Compile Include="ADO\IcdCheckADO.cs" />
     <Compile Include="ADO\IcdServiceADO.cs" />
     <Compile Include="ADO\MedicineAcinInteractiveWarnADO.cs" />
@@ -872,6 +875,7 @@
     <EmbeddedResource Include="MixedInfusion\frmMixedInfusion.resx">
       <DependentUpon>frmMixedInfusion.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Properties\licenses.licx" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <SubType>Designer</SubType>

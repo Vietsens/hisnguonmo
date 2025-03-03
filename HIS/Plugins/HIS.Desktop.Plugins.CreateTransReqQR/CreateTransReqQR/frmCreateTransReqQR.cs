@@ -126,8 +126,8 @@ namespace HIS.Desktop.Plugins.CreateTransReqQR.CreateTransReqQR
             try
             {
                 StopTimer(GetModuleLink(), "timerInitForm");
-                LoadSereServByTreatment();
                 LoadCom();
+                LoadSereServByTreatment();
             }
             catch (Exception ex)
             {
@@ -140,6 +140,7 @@ namespace HIS.Desktop.Plugins.CreateTransReqQR.CreateTransReqQR
             try
             {
                 var dataCom = SerialPort.GetPortNames().ToList();
+                comQRs.Add(new ComQR() { comName = "SDK Model" });
                 foreach (var data in dataCom)
                 {
                     comQRs.Add(new ComQR() { comName = data });
@@ -922,11 +923,12 @@ namespace HIS.Desktop.Plugins.CreateTransReqQR.CreateTransReqQR
                         if (currentTransReq.TRANS_REQ_STT_ID != IMSys.DbConfig.HIS_RS.HIS_TRANS_REQ_STT.ID__REQUEST)
                         {
                             cboPayForm.Enabled = false;
-                            if (PosStatic.IsOpenPos())
-                                PosStatic.SendData(null);
+
                             timerReloadTransReq.Stop();
                             if (currentTransReq.TRANS_REQ_STT_ID == IMSys.DbConfig.HIS_RS.HIS_TRANS_REQ_STT.ID__FINISHED)
                             {
+                                if (PosStatic.IsOpenPos())
+                                    PosStatic.SendData(PosStatic.PAYMENT_SUCCESSS);
                                 pbQr.EditValue = global::HIS.Desktop.Plugins.CreateTransReqQR.Properties.Resources.check;
 
                                 btnNew.Enabled = btnCreate.Enabled = false;
@@ -1021,6 +1023,8 @@ namespace HIS.Desktop.Plugins.CreateTransReqQR.CreateTransReqQR
                             {
                                 pbQr.EditValue = global::HIS.Desktop.Plugins.CreateTransReqQR.Properties.Resources.delete;
                             }
+                            if (PosStatic.IsOpenPos())
+                                PosStatic.SendData(null);
                         }
                     }
                 }
@@ -1108,34 +1112,31 @@ namespace HIS.Desktop.Plugins.CreateTransReqQR.CreateTransReqQR
             try
             {
                 timerReloadTransReq.Stop();
-                //var lstCheckBank = new List<string>() { "MBB", "VCB" };
-                //if (string.IsNullOrEmpty(inputTransReq.BankName) || !lstCheckBank.Contains(inputTransReq.BankName))
-                //{
-                if (currentTransReq != null)
+                var lstCheckBank = new List<string>() { "VCB", "MBB", "CTG" };
+                if (string.IsNullOrEmpty(inputTransReq.BankName) || !lstCheckBank.Contains(inputTransReq.BankName))
+                {
+                    if (currentTransReq != null)
+                    {
+                        {
+                            IsCheckNode = false;
+                            CallApiCancelTransReq();
+                        }
+
+                    }
+                }
+                else if (lstCheckBank.Contains(inputTransReq.BankName) && currentTransReq != null && lstCheckBank.Exists(o => inputTransReq.ConfigValue.KEY.Contains(o)))
                 {
                     {
                         IsCheckNode = false;
-                        CallApiCancelTransReq();
+                        CommonParam param = new CommonParam();
+                        MOS.SDO.QrPaymentCancelSDO tdo = new MOS.SDO.QrPaymentCancelSDO();
+                        tdo.Bank = inputTransReq.BankName;
+                        tdo.TransReqId = currentTransReq.ID;
+                        tdo.BankConfig = inputTransReq.ConfigValue.VALUE;
+                        Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => tdo), tdo));
+                        var IsCancel = new Inventec.Common.Adapter.BackendAdapter(param).Post<bool>("api/HisTransReq/QrPaymentCancel", ApiConsumers.MosConsumer, tdo, param);
                     }
-
                 }
-                //}
-                //else if (lstCheckBank.Contains(inputTransReq.BankName) && currentTransReq != null && lstCheckBank.Exists(o => inputTransReq.ConfigValue.KEY.Contains(o)))
-                //{
-                //    {
-                //        IsCheckNode = false;
-                //        CommonParam param = new CommonParam();
-                //        MOS.TDO.QrPaymentCancelTDO tdo = new MOS.TDO.QrPaymentCancelTDO();
-                //        tdo.Bank = inputTransReq.BankName;
-                //        tdo.TransReqId = currentTransReq.ID;
-                //        dynamic bank = new System.Dynamic.ExpandoObject();
-                //        bank.BANK = tdo.Bank;
-                //        bank.VALUE = inputTransReq.ConfigValue.VALUE;
-                //        tdo.BankConfig = Newtonsoft.Json.JsonConvert.SerializeObject(bank);
-                //        Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => tdo), tdo));
-                //        var IsCancel = new Inventec.Common.Adapter.BackendAdapter(param).Post<bool>("api/HisTransReq/QrPaymentCancel", ApiConsumers.MosConsumer, tdo, param);
-                //    }
-                //}
 
 
                 QrCodeProcessor.DicContentBank = new Dictionary<string, string>();
@@ -1167,7 +1168,7 @@ namespace HIS.Desktop.Plugins.CreateTransReqQR.CreateTransReqQR
                 if (PosStatic.IsOpenPos())
                 {
                     if (QrCodeProcessor.DicContentBank.ContainsKey(currentTransReq.TRANS_REQ_CODE))
-                        PosStatic.SendData(QrCodeProcessor.DicContentBank[currentTransReq.TRANS_REQ_CODE]);
+                        PosStatic.SendData(QrCodeProcessor.DicContentBank[currentTransReq.TRANS_REQ_CODE] + (cboCom.EditValue.ToString() == "SDK Model" ? ("|" + lblAmount.Text + " VNĐ|" + (lblPatientName.Text.Split(' ').ToList().Count > 2 ? string.Join(" ", lblPatientName.Text.Split(' ').ToList().Take(3)) + "\r\n" + string.Join(" ", lblPatientName.Text.Split(' ').ToList().Skip(3).Take(10)) : lblPatientName.Text)) : ""));
                     else
                         PosStatic.SendData(null);
                 }
@@ -1214,7 +1215,7 @@ namespace HIS.Desktop.Plugins.CreateTransReqQR.CreateTransReqQR
                     else if (currentTransReq.TRANS_REQ_STT_ID == IMSys.DbConfig.HIS_RS.HIS_TRANS_REQ_STT.ID__CANCEL && (inputTransReq.TransReqId == CreateReqType.Deposit || inputTransReq.TransReqId == CreateReqType.Transaction) && (inputTransReq.Transaction != null || (inputTransReq.Transactions != null && inputTransReq.Transactions.Count > 0)))
                     {
                         HisTransactionViewFilter tvf = new HisTransactionViewFilter();
-                        tvf.IDs = inputTransReq.Transaction != null ? new List<long>() { inputTransReq.Transaction.ID } : (inputTransReq.Transactions != null && inputTransReq.Transactions.Count > 0 ? inputTransReq.Transactions.Select(o=>o.ID).ToList() : null);
+                        tvf.IDs = inputTransReq.Transaction != null ? new List<long>() { inputTransReq.Transaction.ID } : (inputTransReq.Transactions != null && inputTransReq.Transactions.Count > 0 ? inputTransReq.Transactions.Select(o => o.ID).ToList() : null);
                         transactionPrintList = new Inventec.Common.Adapter.BackendAdapter(new CommonParam()).Get<List<V_HIS_TRANSACTION>>("api/HisTransaction/GetView", ApiConsumers.MosConsumer, tvf, null);
                         transactionPrint = transactionPrintList[0];
                     }
@@ -2132,9 +2133,12 @@ namespace HIS.Desktop.Plugins.CreateTransReqQR.CreateTransReqQR
                         return;
                     }
                 }
-                if (PosStatic.IsOpenPos())
+                else
                 {
-                    PosStatic.SendData(null);
+                    if (PosStatic.IsOpenPos())
+                    {
+                        PosStatic.SendData(null);
+                    }
                 }
                 if (frmSubSc != null)
                     frmSubSc.Close();
@@ -2206,7 +2210,7 @@ namespace HIS.Desktop.Plugins.CreateTransReqQR.CreateTransReqQR
                     string messError = null;
                     if (!PosStatic.IsOpenPos())
                     {
-                        if (PosStatic.OpenPos(cboCom.EditValue.ToString(), GetRecivedMessageDevice, ref messError))
+                        if (PosStatic.OpenPos(cboCom.EditValue.ToString() == "SDK Model" ? OptionPos.Library : OptionPos.Port, !IsConnectOld, cboCom.EditValue.ToString(), GetRecivedMessageDevice, ref messError))
                         {
                             cboCom.Enabled = false;
                             btnConnect.Text = "Ngắt kết nối";
@@ -2215,7 +2219,7 @@ namespace HIS.Desktop.Plugins.CreateTransReqQR.CreateTransReqQR
 
                             Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => currentTransReq), currentTransReq));
                             if (currentTransReq != null && QrCodeProcessor.DicContentBank.ContainsKey(currentTransReq.TRANS_REQ_CODE))
-                                PosStatic.SendData(QrCodeProcessor.DicContentBank[currentTransReq.TRANS_REQ_CODE]);
+                                PosStatic.SendData(QrCodeProcessor.DicContentBank[currentTransReq.TRANS_REQ_CODE] + (cboCom.EditValue.ToString() == "SDK Model" ? ("|" + lblAmount.Text + " VNĐ|" + (lblPatientName.Text.Split(' ').ToList().Count > 2 ? string.Join(" ", lblPatientName.Text.Split(' ').ToList().Take(3)) + "\r\n" + string.Join(" ", lblPatientName.Text.Split(' ').ToList().Skip(3).Take(10)) : lblPatientName.Text)) : ""));
                             else
                                 PosStatic.SendData(null);
                         }
@@ -2283,7 +2287,8 @@ namespace HIS.Desktop.Plugins.CreateTransReqQR.CreateTransReqQR
                 {
                     if ((IsConnectOld && !IsSuccess) || !IsConnectOld)
                     {
-                        XtraMessageBox.Show(Message);
+                        if (!string.IsNullOrEmpty(Message))
+                            XtraMessageBox.Show(Message);
                         IsConnectOld = false;
                     }
                     IsConnectCom = false;
@@ -2575,7 +2580,7 @@ namespace HIS.Desktop.Plugins.CreateTransReqQR.CreateTransReqQR
                             if (PosStatic.IsOpenPos())
                                 PosStatic.SendData(null);
                             btnNew.Enabled = btnCreate.Enabled = false;
-                            btnPrint.Enabled = true; 
+                            btnPrint.Enabled = true;
                             cboPayForm.Enabled = false;
                             CallApiCancelTransReq();
                             InitPopupMenuOther();

@@ -1061,6 +1061,14 @@ listTL, lstSereServResult, DelegateSuccess);
                             return false;
                         }
                     }
+                    if (this.ResultDataADO != null && ResultDataADO.ResultHistoryLDO != null && HIS.Desktop.Plugins.Library.RegisterConfig.HisConfigCFG.WarningInvalidCheckHistoryHeinCard && ResultDataADO.ResultHistoryLDO.message == "Thẻ BHYT có thông tin kiểm tra thẻ chưa ra viện.")
+                    {
+                        DialogResult drReslt = DevExpress.XtraEditors.XtraMessageBox.Show(ResultDataADO.ResultHistoryLDO.message + " Bạn có muốn tiếp tục?", ResourceMessage.ThongBao, MessageBoxButtons.YesNo);
+                        if (drReslt == DialogResult.No)
+                        {
+                            return false;
+                        }
+                    }
                     if (dataPatientProfile != null && dataPatientProfile.HisPatientTypeAlter.HAS_BIRTH_CERTIFICATE != MOS.LibraryHein.Bhyt.HeinHasBirthCertificate.HeinHasBirthCertificateCode.TRUE)
                     {
                         if (this.ResultDataADO != null && ResultDataADO.ResultHistoryLDO != null)

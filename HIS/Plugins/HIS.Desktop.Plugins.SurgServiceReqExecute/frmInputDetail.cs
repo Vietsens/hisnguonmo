@@ -1072,9 +1072,9 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
                 textEdit1.Text = eyeSurgDesc.MO_VAO_TP_KINH_TUYEN;
                 //- Mo_vao_tp_kinh_tuyen: (gio)
                 if (eyeSurgDesc.MO_VAO_TP_KICH_THUOC != null)
-                    spinEdit2.EditValue = eyeSurgDesc.MO_VAO_TP_KICH_THUOC;
+                    txtkichthuoc.EditValue = eyeSurgDesc.MO_VAO_TP_KICH_THUOC;
                 else
-                    spinEdit2.EditValue = 2.2f;
+                    txtkichthuoc.EditValue = "";///////////////////////////////////////// ==> vừa sửa ở đây
                 //- Mo_vao_tp_kich_thuoc: (mm)
 
                 checkEdit12.Checked = (eyeSurgDesc.MO_VAO_TP_RACH_PHU == null || eyeSurgDesc.MO_VAO_TP_RACH_PHU == 1);
@@ -1112,20 +1112,20 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
                 //- Cach_day_nhan: 1: bang nuoc, 2: bang chat nhay
 
                 if (eyeSurgDesc.TAN_NHAN_NANG_LUONG != null)
-                    spinEdit3.EditValue = eyeSurgDesc.TAN_NHAN_NANG_LUONG;
+                    txtNangLuong.EditValue = eyeSurgDesc.TAN_NHAN_NANG_LUONG;
                 else
-                    spinEdit3.EditValue = 50;
+                    txtNangLuong.EditValue = "";///////////////////////////////// ==> vừa sửa ở đây
                 //- Tan_nhan_nang_luong: (%)
 
                 if (eyeSurgDesc.TAN_NHAN_LUC_HUT != null)
-                    spinEdit5.EditValue = eyeSurgDesc.TAN_NHAN_LUC_HUT;
+                    txtLucHut.EditValue = eyeSurgDesc.TAN_NHAN_LUC_HUT;
                 else
-                    spinEdit5.EditValue = 380;
+                    txtLucHut.EditValue = "";////////////////////////////// ==> vừa sửa ở đây
                 //- Tan_nhan_luc_hut: (mmHg)
                 if (eyeSurgDesc.TAN_NHAN_TOC_DO_DC != null)
                     textEdit7.EditValue = eyeSurgDesc.TAN_NHAN_TOC_DO_DC;
                 else
-                    textEdit7.EditValue = 30;
+                    textEdit7.EditValue = "";///////////////////////////// ==> vừa sửa ở đây
                 //- Tan_nhan_toc_do_dc:
 
                 if (eyeSurgDesc.HUT_CHAT_T3 == null || eyeSurgDesc.HUT_CHAT_T3 == 1)
@@ -1168,14 +1168,17 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
                 //- Rach_bao_sau: 0: khong; 1: co
 
                 if (eyeSurgDesc.CAT_BAO_SAU == null || eyeSurgDesc.CAT_BAO_SAU == 0)
+                {
                     raRBSCBSKhong.Checked = true;
+                    eyeSurgDesc.CAT_BAO_SAU_CACH_THUC = 0;//////////////// ==> sửa ở đây
+                }
                 else if (eyeSurgDesc.CAT_BAO_SAU == 1)
                     raRBSCBSCo.Checked = true;
                 //- Cat_bao_sau: 0: khong, 1: co
 
                 if (eyeSurgDesc.CAT_BAO_SAU_CACH_THUC == 1)
                     raRBSCBSCatBangKeo.Checked = true;
-                else //if (eyeSurgDesc.CAT_BAO_SAU_CACH_THUC == 2)
+                else if (eyeSurgDesc.CAT_BAO_SAU_CACH_THUC == 2)
                     raRBSCBSMayCatDK.Checked = true;
                 //- Cat_bao_sau_cach_thuc: 1: bang keo, 2: may cat DK
 
@@ -1219,7 +1222,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
                     raTiemMatCNC.Checked = true;
                 //- Tiem_mat_tt_bo_sung: 1: tien phong, 2: duoi km, 3: CNC
                 if (eyeSurgDesc.TIEM_MAT_THUOC == null)
-                    txtLoaiThuocForraTiemMat.Text = "vancomycin";
+                    txtLoaiThuocForraTiemMat.Text = "";////////////////////////// ==> vừa sửa ở đây
                 else
                     txtLoaiThuocForraTiemMat.Text = eyeSurgDesc.TIEM_MAT_THUOC;
                 //- Tiem_mat_thuoc:
@@ -1230,7 +1233,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
                     raTraMatMo.Checked = true;
                 //- Tra_mat: 1: dung dich, 2: mong
                 if (eyeSurgDesc.TRA_MAT_THUOC == null)
-                    txtLoaiThuocForraTraMat.Text = "Vigamox 0.5% 5ml";
+                    txtLoaiThuocForraTraMat.Text = "";////////////////////////// ==> vừa sửa ở đây
                 else
                     txtLoaiThuocForraTraMat.Text = eyeSurgDesc.TRA_MAT_THUOC;
                 //- Tra_mat_thuoc:
@@ -2346,7 +2349,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
 
                 eyeSurgDesc.MO_VAO_TP_KINH_TUYEN = textEdit1.Text;
                 //- Mo_vao_tp_kinh_tuyen: (gio)
-                eyeSurgDesc.MO_VAO_TP_KICH_THUOC = spinEdit2.EditValue != null ? (decimal?)spinEdit2.Value : null;
+                eyeSurgDesc.MO_VAO_TP_KICH_THUOC = txtkichthuoc.EditValue != null ? (decimal?)txtkichthuoc.EditValue : null;
                 //- Mo_vao_tp_kich_thuoc: (mm)
 
                 eyeSurgDesc.MO_VAO_TP_RACH_PHU = checkEdit12.Checked ? (short?)1 : (short?)0;
@@ -2395,9 +2398,9 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
                     eyeSurgDesc.CACH_DAY_NHAN = null;
                 //- Cach_day_nhan: 1: bang nuoc, 2: bang chat nhay
 
-                eyeSurgDesc.TAN_NHAN_NANG_LUONG = spinEdit3.EditValue != null ? (decimal?)spinEdit3.Value : null;
+                eyeSurgDesc.TAN_NHAN_NANG_LUONG = txtNangLuong.EditValue != null ? (decimal?)txtNangLuong.EditValue : null;
 
-                eyeSurgDesc.TAN_NHAN_LUC_HUT = spinEdit5.EditValue != null ? (decimal?)spinEdit5.Value : null;
+                eyeSurgDesc.TAN_NHAN_LUC_HUT = txtLucHut.EditValue != null ? (decimal?)txtLucHut.EditValue : null;
                 //- Tan_nhan_luc_hut: (mmHg)
 
                 eyeSurgDesc.TAN_NHAN_TOC_DO_DC = textEdit7.Text;
@@ -2448,7 +2451,11 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
                 //- Rach_bao_sau: 0: khong; 1: co
 
                 if (raRBSCBSKhong.Checked)
+                {
                     eyeSurgDesc.CAT_BAO_SAU = 0;
+                    eyeSurgDesc.CAT_BAO_SAU_CACH_THUC = 0;
+                }
+                    
                 else if (raRBSCBSCo.Checked)
                     eyeSurgDesc.CAT_BAO_SAU = 1;
                 else
@@ -2460,7 +2467,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
                 else if (raRBSCBSMayCatDK.Checked)
                     eyeSurgDesc.CAT_BAO_SAU_CACH_THUC = 2;
                 else
-                    eyeSurgDesc.CAT_BAO_SAU_CACH_THUC = null;
+                    eyeSurgDesc.CAT_BAO_SAU_CACH_THUC = 0;////////////////////////////// ==> mới sửa chỗ này
                 //- Cat_bao_sau_cach_thuc: 1: bang keo, 2: may cat DK
 
                 if (raRBSCMMNVKhong.Checked)
@@ -4424,6 +4431,8 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
                 if (raRBSCBSKhong.Checked)
                 {
                     raRBSCBSCo.Checked = false;
+                    raRBSCBSCatBangKeo.Checked = false;
+                    raRBSCBSMayCatDK.Checked = false;
                 }
             }
             catch (Exception ex)
@@ -4529,6 +4538,9 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
                 if (raTiemMatKhong.Checked)
                 {
                     raTiemMatCo.Checked = false;
+                    raTiemMatTienPhong.Checked = false;
+                    raTiemMatDuoiKM.Checked = false;
+                    raTiemMatCNC.Checked = false;
                 }
             }
             catch (Exception ex)
@@ -7762,6 +7774,38 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void spinKichThuocRachForraRachBaoSau_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar))
+            {
+                e.Handled = true; // Ngăn nhập ký tự không phải số
+            }
+        }
+
+        private void txtkichthuoc_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar))
+            {
+                e.Handled = true; // Ngăn nhập ký tự không phải số
+            }
+        }
+
+        private void txtNangLuong_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar))
+            {
+                e.Handled = true; // Ngăn nhập ký tự không phải số
+            }
+        }
+
+        private void txtLucHut_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar))
+            {
+                e.Handled = true; // Ngăn nhập ký tự không phải số
             }
         }
     }

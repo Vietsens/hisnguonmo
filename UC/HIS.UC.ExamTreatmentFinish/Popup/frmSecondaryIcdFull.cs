@@ -66,7 +66,7 @@ namespace HIS.UC.ExamTreatmentFinish
                 this.icdCodes = icdCodes;
                 this.icdNames = icdNames;
                 string[] codes = this.icdCodes.Split(IcdUtil.seperator.ToCharArray());
-                icdAdoChecks = (from m in BackendDataWorker.Get<HIS_ICD>() select new IcdADO(m, codes)).ToList();
+                icdAdoChecks = (from m in BackendDataWorker.Get<HIS_ICD>().Where(s=>s.IS_TRADITIONAL != 1) select new IcdADO(m, codes)).ToList();
                 limit = (int)_limit;
             }
             catch (Exception ex)

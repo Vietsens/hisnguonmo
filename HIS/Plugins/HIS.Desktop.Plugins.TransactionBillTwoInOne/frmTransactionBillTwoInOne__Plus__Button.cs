@@ -533,12 +533,27 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
                         btnSavePrint.Enabled = false;
                         ddBtnPrint.Enabled = true;
                         var exits = rs.Where(s => s.PAY_FORM_ID == 8 && s.IS_ACTIVE == 0);
-                        if(exits != null)
+                        if(isLuuKy)
                         {
-                            this.listTranToQR = exits.ToList() ;
-                            btnQR.Enabled = true;
-                            CreateQR(exits.ToList(), false);
+                            if (isCreateQRContinue && (long)cboPayForm.EditValue == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__QR)
+                            {
+
+                                this.listTranToQR = exits.ToList();
+                                btnQR.Enabled = true;
+                                CreateQR(exits.ToList(), false);
+                            }
                         }
+                        else
+                        {
+
+                            if (exits != null && (long)cboPayForm.EditValue == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__QR)
+                            {
+                                this.listTranToQR = exits.ToList();
+                                btnQR.Enabled = true;
+                                CreateQR(exits.ToList(), false);
+                            }
+                        }
+                        
                         //AddLastAccountToLocal();
                         bool resetReceipt = false;
                         bool resetInvoice = false;
@@ -546,9 +561,11 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
                         {
                             if (isLuuKy && TransactionBillConfig.InvoiceTypeCreate == invoiceTypeCreate__CreateInvoiceVnpt && item.TRANSACTION_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TRANSACTION_TYPE.ID__TT)
                             {
-                                //Tao hoa don dien thu ben thu3 
-                                ElectronicBillResult electronicBillResult = TaoHoaDonDienTuBenThu3CungCap(item);
-                                if (electronicBillResult == null || !electronicBillResult.Success)
+                                //Tao hoa don dien thu ben thu3
+                                ElectronicBillResult electronicBillResult = null;
+                                if ((long)cboPayForm.EditValue != IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__QR)
+                                     electronicBillResult = TaoHoaDonDienTuBenThu3CungCap(item);
+                                if ((long)cboPayForm.EditValue != IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__QR && (electronicBillResult == null || !electronicBillResult.Success))
                                 {
                                     param.Messages.Add("Tạo hóa đơn điện tử thất bại");
                                     if (electronicBillResult.Messages != null && electronicBillResult.Messages.Count > 0)
@@ -1837,13 +1854,18 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
-
+        public bool isCreateQRContinue = true;
         private void BtnSaveAndSign_Click(object sender, EventArgs e)
         {
             try
             {
                 if (!BtnSaveAndSign.Enabled)
                     return;
+                if((long)cboPayForm.EditValue == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__QR && MessageBox.Show(this,"Thanh toán QR chưa thể tự động tạo hóa đơn điện tử, bạn có muốn tiếp tục?","Thông báo", MessageBoxButtons.YesNo) == DialogResult.No)
+                {
+                    isCreateQRContinue = false;
+                    return;
+                }
                 SetEnableButtonSave(false);
                 ValidControl();
                 positionHandleControl = -1;

@@ -137,17 +137,20 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\LIB\Inventec.Desktop\Inventec.Desktop.Core\Inventec.Desktop.Core.dll</HintPath>
     </Reference>
-    <Reference Include="MOS.EFMODEL">
-      <HintPath>..\..\..\..\LIB\MOS\MOS.EFMODEL.dll</HintPath>
+    <Reference Include="MOS.EFMODEL, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\lib\MOS\MOS.EFMODEL.dll</HintPath>
     </Reference>
-    <Reference Include="MOS.Filter">
-      <HintPath>..\..\..\..\LIB\MOS\MOS.Filter.dll</HintPath>
+    <Reference Include="MOS.Filter, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\lib\MOS\MOS.Filter.dll</HintPath>
     </Reference>
     <Reference Include="MOS.LibraryHein.Bhyt">
       <HintPath>..\..\..\..\LIB\MOS\MOS.LibraryHein.Bhyt.dll</HintPath>
     </Reference>
-    <Reference Include="MOS.SDO">
-      <HintPath>..\..\..\..\LIB\MOS\MOS.SDO.dll</HintPath>
+    <Reference Include="MOS.SDO, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\lib\MOS\MOS.SDO.dll</HintPath>
     </Reference>
     <Reference Include="MPS, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -156,9 +159,8 @@
     <Reference Include="MPS.Processor.Mps000046.PDO">
       <HintPath>..\..\..\..\LIB\MPSv2\MPS.PDO\MPS.Processor.Mps000046.PDO.dll</HintPath>
     </Reference>
-    <Reference Include="MPS.Processor.Mps000047.PDO, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\LIB\MPSv2\MPS.PDO\MPS.Processor.Mps000047.PDO.dll</HintPath>
+    <Reference Include="MPS.Processor.Mps000047.PDO">
+      <HintPath>..\..\..\MPS\MPS.Processor\MPS.Processor.Mps000047.PDO\bin\Debug\MPS.Processor.Mps000047.PDO.dll</HintPath>
     </Reference>
     <Reference Include="MPS.Processor.Mps000049.PDO">
       <HintPath>..\..\..\..\LIB\MPSv2\MPS.PDO\MPS.Processor.Mps000049.PDO.dll</HintPath>
@@ -178,8 +180,9 @@
     <Reference Include="MPS.Processor.Mps000239.PDO">
       <HintPath>..\..\..\..\LIB\MPSv2\MPS.PDO\MPS.Processor.Mps000239.PDO.dll</HintPath>
     </Reference>
-    <Reference Include="MPS.Processor.Mps000247.PDO">
-      <HintPath>..\..\..\..\LIB\MPSv2\MPS.PDO\MPS.Processor.Mps000247.PDO.dll</HintPath>
+    <Reference Include="MPS.Processor.Mps000247.PDO, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\lib\MPSv2\MPS.PDO\MPS.Processor.Mps000247.PDO.dll</HintPath>
     </Reference>
     <Reference Include="MPS.Processor.Mps000325.PDO">
       <HintPath>..\..\..\..\LIB\MPSv2\MPS.PDO\MPS.Processor.Mps000325.PDO.dll</HintPath>

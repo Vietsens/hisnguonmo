@@ -377,7 +377,7 @@ namespace HIS.Desktop.Plugins.Bordereau
                     patientTypeChoose = null;
                     primariPatientType = null;
                     dicOtherPaySource = null;
-                    frmChoosePatientType frmChoosePatientType = new frmChoosePatientType(sereServADOSelecteds, currentHisPatientTypeAlters, ReLoadChoosePatientType);
+                    frmChoosePatientType frmChoosePatientType = new frmChoosePatientType(currentTreatment, sereServADOSelecteds, currentHisPatientTypeAlters, ReLoadChoosePatientType);
                     frmChoosePatientType.ShowDialog();
 
                     if (!patientTypeChoose.HasValue || patientTypeChoose == 0)
@@ -401,7 +401,7 @@ namespace HIS.Desktop.Plugins.Bordereau
                     patientTypeChoose = null;
                     primariPatientType = null;
                     dicOtherPaySource = null;
-                    frmChoosePatientType frmChoosePatientType = new frmChoosePatientType(sereServADOSelecteds, currentHisPatientTypeAlters, ReLoadChoosePatientType);
+                    frmChoosePatientType frmChoosePatientType = new frmChoosePatientType(currentTreatment, sereServADOSelecteds, currentHisPatientTypeAlters, ReLoadChoosePatientType);
                     frmChoosePatientType.ShowDialog();
 
                     if (!patientTypeChoose.HasValue || patientTypeChoose == 0)

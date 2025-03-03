@@ -30,9 +30,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="HIS.Desktop.LocalStorage.ConfigApplication">
-      <HintPath>..\..\..\..\FE\YTE\DESKTOP\HIS\HIS.Desktop\bin\Debug\HIS.Desktop.LocalStorage.ConfigApplication.dll</HintPath>
-    </Reference>
     <Reference Include="IMSys.DbConfig.HIS_RS">
       <HintPath>..\..\..\..\LIB\IMSys.DbConfig\IMSys.DbConfig.HIS_RS\IMSys.DbConfig.HIS_RS.dll</HintPath>
     </Reference>
@@ -70,6 +67,12 @@
     <Compile Include="Mps000116PDO.cs" />
     <Compile Include="Mps000116PDO_PublicKey.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\HIS\HIS.Desktop.LocalStorage.ConfigApplication\HIS.Desktop.LocalStorage.ConfigApplication.csproj">
+      <Project>{3a2c932a-9d3a-483b-89a0-9f9c8225b283}</Project>
+      <Name>HIS.Desktop.LocalStorage.ConfigApplication</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

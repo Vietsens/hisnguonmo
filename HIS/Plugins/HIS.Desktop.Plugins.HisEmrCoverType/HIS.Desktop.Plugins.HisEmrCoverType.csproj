@@ -1,0 +1,191 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{176E3064-DDEE-442B-BC5E-10F22043B99D}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>HIS.Desktop.Plugins.HisEmrCoverType</RootNamespace>
+    <AssemblyName>HIS.Desktop.Plugins.HisEmrCoverType</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="DevExpress.Data.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
+    <Reference Include="DevExpress.Printing.v15.2.Core, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
+    <Reference Include="DevExpress.Sparkline.v15.2.Core, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
+    <Reference Include="DevExpress.Utils.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
+    <Reference Include="DevExpress.XtraEditors.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
+    <Reference Include="DevExpress.XtraGrid.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.XtraLayout.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.XtraPrinting.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
+    <Reference Include="DevExpress.XtraTreeList.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="HIS.Desktop.ApiConsumer">
+      <HintPath>..\..\..\..\lib\Inventec.UC\Inventec.UC.ListReports\HIS.Desktop.ApiConsumer.dll</HintPath>
+    </Reference>
+    <Reference Include="HIS.Desktop.Common">
+      <HintPath>..\..\..\..\lib\HIS\HIS.Desktop.Common\HIS.Desktop.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="HIS.Desktop.Controls.Session">
+      <HintPath>..\..\..\..\lib\HIS\HIS.UC.UCTransPati\HIS.Desktop.Controls.Session.dll</HintPath>
+    </Reference>
+    <Reference Include="HIS.Desktop.LibraryMessage">
+      <HintPath>..\..\..\..\lib\HIS\HIS.UC.WorkPlace\HIS.Desktop.LibraryMessage.dll</HintPath>
+    </Reference>
+    <Reference Include="HIS.Desktop.LocalStorage.ConfigApplication">
+      <HintPath>..\..\..\..\lib\Inventec.UC\Inventec.UC.ListReports\HIS.Desktop.LocalStorage.ConfigApplication.dll</HintPath>
+    </Reference>
+    <Reference Include="HIS.Desktop.LocalStorage.LocalData">
+      <HintPath>..\..\..\..\lib\HIS\HIS.Desktop.LocalStorage.LocalData\HIS.Desktop.LocalStorage.LocalData.dll</HintPath>
+    </Reference>
+    <Reference Include="HIS.Desktop.LocalStorage.Location">
+      <HintPath>..\..\..\..\lib\HIS\HIS.Desktop.Plugins.Library.EmrGenerate\HIS.Desktop.LocalStorage.Location.dll</HintPath>
+    </Reference>
+    <Reference Include="HIS.Desktop.Utility">
+      <HintPath>..\..\..\..\..\histest\histest\x64\ReferencedAssemblies\HIS.Desktop.Utility.dll</HintPath>
+    </Reference>
+    <Reference Include="IMSys.DbConfig.HIS_RS">
+      <HintPath>..\..\..\..\lib\IMSys.DbConfig\IMSys.DbConfig.HIS_RS\IMSys.DbConfig.HIS_RS.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Common.Adapter">
+      <HintPath>..\..\..\..\lib\Inventec.Common\Inventec.Common.Adapter\Inventec.Common.Adapter.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Common.DateTime">
+      <HintPath>..\..\..\..\..\histest\histest\x64\ReferencedAssemblies\Inventec.Common.DateTime.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Common.Logging">
+      <HintPath>..\..\..\..\lib\Inventec.Common\Inventec.Common.Logging\Inventec.Common.Logging.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Common.Mapper">
+      <HintPath>..\..\..\..\..\histest\histest\x64\ReferencedAssemblies\Inventec.Common.Mapper.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Common.Resource">
+      <HintPath>..\..\..\..\lib\Inventec.Common\Inventec.Common.Resource\Inventec.Common.Resource.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Common.TypeConvert">
+      <HintPath>..\..\..\..\..\histest\histest\x64\ReferencedAssemblies\Inventec.Common.TypeConvert.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Common.WebApiClient">
+      <HintPath>..\..\..\..\lib\Inventec.Common\Inventec.Common.WebApiClient\Inventec.Common.WebApiClient.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Core">
+      <HintPath>..\..\..\..\lib\Inventec.Core\Inventec.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Desktop.Common.Controls">
+      <HintPath>..\..\..\..\..\histest\histest\x64\ReferencedAssemblies\Inventec.Desktop.Common.Controls.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Desktop.Common.LanguageManager">
+      <HintPath>..\..\..\..\lib\Inventec.Desktop\Inventec.Desktop.Common.LanguageManager\Inventec.Desktop.Common.LanguageManager.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Desktop.Common.Message">
+      <HintPath>..\..\..\..\lib\Inventec.Desktop\Inventec.Desktop.Common.Message\Inventec.Desktop.Common.Message.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Desktop.Common.Modules">
+      <HintPath>..\..\..\..\lib\Inventec.Desktop\Inventec.Desktop.Common.Module\Inventec.Desktop.Common.Modules.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Desktop.Core">
+      <HintPath>..\..\..\..\lib\Inventec.Desktop\Inventec.Desktop.Core\Inventec.Desktop.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.UC.Paging">
+      <HintPath>..\..\..\..\..\histest\histest\x64\ReferencedAssemblies\Inventec.UC.Paging.dll</HintPath>
+    </Reference>
+    <Reference Include="MOS.EFMODEL">
+      <HintPath>..\..\..\..\lib\MOS\MOS.EFMODEL.dll</HintPath>
+    </Reference>
+    <Reference Include="MOS.Filter">
+      <HintPath>..\..\..\..\lib\MOS\MOS.Filter.dll</HintPath>
+    </Reference>
+    <Reference Include="MOS.SDO">
+      <HintPath>..\..\..\..\lib\MOS\MOS.SDO.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="frmHisEmrCoverType.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmHisEmrCoverType.Designer.cs">
+      <DependentUpon>frmHisEmrCoverType.cs</DependentUpon>
+    </Compile>
+    <Compile Include="HisEmrCoverTypeProcessor.cs" />
+    <Compile Include="HisEmrCoverType\HisEmrCoverTypeBehavior.cs" />
+    <Compile Include="HisEmrCoverType\HisEmrCoverTypeFactory.cs" />
+    <Compile Include="HisEmrCoverType\IHisEmrCoverType.cs" />
+    <Compile Include="HisRequestUriStore.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Resources\ResourceLanguageManager.cs" />
+    <Compile Include="Validate\ValidateMaxLength.cs" />
+    <Compile Include="Validate\ValidateOnlyCheckMaxLength.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="frmHisEmrCoverType.resx">
+      <DependentUpon>frmHisEmrCoverType.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\licenses.licx" />
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Lang.en.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Lang.vi.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Lock-Unlock-icon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Lock-Lock-icon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\delete_16x16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\delete_16x1614.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\delete_16x1616.png" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

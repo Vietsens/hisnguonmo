@@ -753,6 +753,7 @@ namespace HIS.Desktop.Plugins.Register.Run
 
         private void txtPatientCode_KeyDown(object sender, KeyEventArgs e)
         {
+            string OldTypeFind = this.typeCodeFind;
             try
             {
                 if (e.KeyCode == Keys.Enter)
@@ -766,6 +767,21 @@ namespace HIS.Desktop.Plugins.Register.Run
                     if (!String.IsNullOrEmpty(strValue))
                     {
                         LogSystem.Debug("txtPatientCode_KeyDown");
+
+                        if (strValue.Contains("|"))
+                        {
+                            var dataFirst = strValue.Split('|')[0];
+                            if (dataFirst.Length == 10 || dataFirst.Length == 15)
+                            {
+                                this.typeCodeFind = typeCodeFind__MaBN;
+
+                            }
+                            else if (dataFirst.Length == 12)
+                            {
+                                this.typeCodeFind = typeCodeFind__CCCDCMND;
+                            }
+                        }
+
                         CommonParam param = new CommonParam();
                         WaitingManager.Show();
                         //Trường hợp tìm kiếm BN theo mã BN hoặc theo qrcode
@@ -947,7 +963,7 @@ namespace HIS.Desktop.Plugins.Register.Run
                             if ((strValue.Trim().Length > 12 && strValue.Trim().Contains('|')) || (strValue.Trim().Length == 12 && !string.IsNullOrEmpty(txtPatientName.Text) && (!string.IsNullOrEmpty(txtPatientDob.Text) || dtPatientDob.EditValue != null)) || (strValue.Trim().Length == 9 || strValue.Trim().Length == 12))
                             {
                                 isReadQrCccdData = true;
-                                WaitingManager.Hide();
+                                WaitingManager.Show();
                                 this.ProcessSearchByCode(strValue);
                                 e.Handled = true;
                                 if (strValue.Trim().Length > 12 && strValue.Trim().Contains('|'))
@@ -982,6 +998,10 @@ namespace HIS.Desktop.Plugins.Register.Run
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+            finally
+            {
+                this.typeCodeFind = OldTypeFind;
             }
         }
 

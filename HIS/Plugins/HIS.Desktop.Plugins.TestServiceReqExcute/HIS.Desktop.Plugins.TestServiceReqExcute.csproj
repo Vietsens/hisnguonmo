@@ -59,9 +59,6 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\lib\HIS\HIS.UC.Service\HIS.Desktop.LocalStorage.HisConfig.dll</HintPath>
     </Reference>
-    <Reference Include="HIS.Desktop.Plugins.Library.EmrGenerate">
-      <HintPath>..\..\..\..\lib\HIS\ReferencedAssemblies\HIS.Desktop.Plugins.Library.EmrGenerate.dll</HintPath>
-    </Reference>
     <Reference Include="IMSys.DbConfig.HIS_RS">
       <HintPath>..\..\..\..\lib\IMSys.DbConfig\IMSys.DbConfig.HIS_RS\IMSys.DbConfig.HIS_RS.dll</HintPath>
     </Reference>
@@ -74,6 +71,9 @@
     <Reference Include="Inventec.Common.BarcodeLib, Version=1.0.0.19, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\lib\Inventec.Common\Inventec.Common.BarcodeLib\Inventec.Common.BarcodeLib.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Common.Calculate">
+      <HintPath>..\..\..\..\LIB\Inventec.Common\Inventec.Common.Calculate\Inventec.Common.Calculate.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Common.Controls.EditorLoader">
       <HintPath>..\..\..\..\lib\Inventec.Common\Inventec.Common.Controls.EditorLoader\Inventec.Common.Controls.EditorLoader.dll</HintPath>
@@ -282,6 +282,10 @@
     <ProjectReference Include="..\HIS.Desktop.Library.CacheClient\HIS.Desktop.Library.CacheClient.csproj">
       <Project>{64837e01-803d-4f1e-9dfc-d34b38ea78f9}</Project>
       <Name>HIS.Desktop.Library.CacheClient</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\HIS.Desktop.Plugins.Library.EmrGenerate\HIS.Desktop.Plugins.Library.EmrGenerate.csproj">
+      <Project>{0aedfd21-7195-4fdb-a3ef-035640df48f3}</Project>
+      <Name>HIS.Desktop.Plugins.Library.EmrGenerate</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

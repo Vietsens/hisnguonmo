@@ -89,9 +89,6 @@
     <Reference Include="HIS.Desktop.Plugins.Library.EmrGenerate">
       <HintPath>..\..\..\..\lib\HIS\HIS.Desktop.Plugins.Library.EmrGenerate\HIS.Desktop.Plugins.Library.EmrGenerate.dll</HintPath>
     </Reference>
-    <Reference Include="HIS.Desktop.Plugins.SurgServiceReqExecute">
-      <HintPath>..\HIS.Desktop.Plugins.SurgServiceReqExecute\obj\Debug\HIS.Desktop.Plugins.SurgServiceReqExecute.dll</HintPath>
-    </Reference>
     <Reference Include="HIS.Desktop.Utility">
       <HintPath>..\..\..\..\lib\HIS\HIS.Desktop.Utilities\HIS.Desktop.Utility.dll</HintPath>
     </Reference>
@@ -112,6 +109,9 @@
     </Reference>
     <Reference Include="Inventec.Common.Adapter">
       <HintPath>..\..\..\..\LIB\Inventec.Common\Inventec.Common.Adapter\Inventec.Common.Adapter.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Common.Calculate">
+      <HintPath>..\..\..\..\LIB\Inventec.Common\Inventec.Common.Calculate\Inventec.Common.Calculate.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Common.Controls.EditorLoader">
       <HintPath>..\..\..\..\LIB\Inventec.Common\Inventec.Common.Controls.EditorLoader\Inventec.Common.Controls.EditorLoader.dll</HintPath>
@@ -178,7 +178,7 @@
       <HintPath>..\..\..\..\LIB\Inventec.Desktop\Inventec.Desktop.Core\Inventec.Desktop.Core.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Desktop.CustomControl">
-      <HintPath>..\..\..\UC\HIS.UC.ExamTreatmentFinish\bin\Debug\Inventec.Desktop.CustomControl.dll</HintPath>
+      <HintPath>..\..\..\..\LIB\Inventec.Desktop.CustomControl\Inventec.Desktop.CustomControl.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Fss.Client, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>

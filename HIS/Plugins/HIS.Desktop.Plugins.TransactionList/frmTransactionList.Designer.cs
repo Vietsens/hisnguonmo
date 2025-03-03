@@ -45,7 +45,12 @@ namespace HIS.Desktop.Plugins.TransactionList
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmTransactionList));
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject81 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject82 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject83 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject84 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject1 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject2 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject3 = new DevExpress.Utils.SerializableAppearanceObject();
@@ -128,7 +133,7 @@ namespace HIS.Desktop.Plugins.TransactionList
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject80 = new DevExpress.Utils.SerializableAppearanceObject();
             this.layoutControl1 = new DevExpress.XtraLayout.LayoutControl();
             this.txtTransactionCode = new DevExpress.XtraEditors.TextEdit();
-            this.barManager1 = new DevExpress.XtraBars.BarManager();
+            this.barManager1 = new DevExpress.XtraBars.BarManager(this.components);
             this.bar1 = new DevExpress.XtraBars.Bar();
             this.bbtnRCFind = new DevExpress.XtraBars.BarButtonItem();
             this.bbtnRCRefresh = new DevExpress.XtraBars.BarButtonItem();
@@ -137,6 +142,10 @@ namespace HIS.Desktop.Plugins.TransactionList
             this.barButtonItem1 = new DevExpress.XtraBars.BarButtonItem();
             this.bbtnCodePayQr = new DevExpress.XtraBars.BarButtonItem();
             this.bbtnCodeTransaction = new DevExpress.XtraBars.BarButtonItem();
+            this.barDockControlTop = new DevExpress.XtraBars.BarDockControl();
+            this.barDockControlBottom = new DevExpress.XtraBars.BarDockControl();
+            this.barDockControlLeft = new DevExpress.XtraBars.BarDockControl();
+            this.barDockControlRight = new DevExpress.XtraBars.BarDockControl();
             this.txtCodePayQr = new DevExpress.XtraEditors.TextEdit();
             this.layoutControl7 = new DevExpress.XtraLayout.LayoutControl();
             this.btnWarning = new DevExpress.XtraEditors.SimpleButton();
@@ -222,6 +231,8 @@ namespace HIS.Desktop.Plugins.TransactionList
             this.grdColDelete = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn_Transaction_CancelTransaction = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn_UnrejectCancellation = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gridColumn18 = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.repositoryItemBtnChangePay = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
             this.gridColumn_Restore = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumnHDDT = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn_Transaction_ChangeLock = new DevExpress.XtraGrid.Columns.GridColumn();
@@ -302,11 +313,7 @@ namespace HIS.Desktop.Plugins.TransactionList
             this.layoutControlItem13 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem20 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem24 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.barDockControlTop = new DevExpress.XtraBars.BarDockControl();
-            this.barDockControlBottom = new DevExpress.XtraBars.BarDockControl();
-            this.barDockControlLeft = new DevExpress.XtraBars.BarDockControl();
-            this.barDockControlRight = new DevExpress.XtraBars.BarDockControl();
-            this.popupMenu1 = new DevExpress.XtraBars.PopupMenu();
+            this.popupMenu1 = new DevExpress.XtraBars.PopupMenu(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
             this.layoutControl1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.txtTransactionCode.Properties)).BeginInit();
@@ -387,6 +394,7 @@ namespace HIS.Desktop.Plugins.TransactionList
             ((System.ComponentModel.ISupportInitialize)(this.txtKeyword.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridControlTransaction)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridViewTransaction)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repositoryItemBtnChangePay)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemBtnCancelTran)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemBtnCancelTranDisable)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemBtnLock)).BeginInit();
@@ -466,6 +474,10 @@ namespace HIS.Desktop.Plugins.TransactionList
             // 
             this.barManager1.Bars.AddRange(new DevExpress.XtraBars.Bar[] {
             this.bar1});
+            this.barManager1.DockControls.Add(this.barDockControlTop);
+            this.barManager1.DockControls.Add(this.barDockControlBottom);
+            this.barManager1.DockControls.Add(this.barDockControlLeft);
+            this.barManager1.DockControls.Add(this.barDockControlRight);
             this.barManager1.Form = this;
             this.barManager1.Items.AddRange(new DevExpress.XtraBars.BarItem[] {
             this.bbtnRCFind,
@@ -549,6 +561,34 @@ namespace HIS.Desktop.Plugins.TransactionList
             this.bbtnCodeTransaction.ItemShortcut = new DevExpress.XtraBars.BarShortcut(System.Windows.Forms.Keys.F4);
             this.bbtnCodeTransaction.Name = "bbtnCodeTransaction";
             this.bbtnCodeTransaction.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.bbtnCodeTransaction_ItemClick);
+            // 
+            // barDockControlTop
+            // 
+            this.barDockControlTop.CausesValidation = false;
+            this.barDockControlTop.Dock = System.Windows.Forms.DockStyle.Top;
+            this.barDockControlTop.Location = new System.Drawing.Point(0, 0);
+            this.barDockControlTop.Size = new System.Drawing.Size(1304, 29);
+            // 
+            // barDockControlBottom
+            // 
+            this.barDockControlBottom.CausesValidation = false;
+            this.barDockControlBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.barDockControlBottom.Location = new System.Drawing.Point(0, 733);
+            this.barDockControlBottom.Size = new System.Drawing.Size(1304, 0);
+            // 
+            // barDockControlLeft
+            // 
+            this.barDockControlLeft.CausesValidation = false;
+            this.barDockControlLeft.Dock = System.Windows.Forms.DockStyle.Left;
+            this.barDockControlLeft.Location = new System.Drawing.Point(0, 29);
+            this.barDockControlLeft.Size = new System.Drawing.Size(0, 704);
+            // 
+            // barDockControlRight
+            // 
+            this.barDockControlRight.CausesValidation = false;
+            this.barDockControlRight.Dock = System.Windows.Forms.DockStyle.Right;
+            this.barDockControlRight.Location = new System.Drawing.Point(1304, 29);
+            this.barDockControlRight.Size = new System.Drawing.Size(0, 704);
             // 
             // txtCodePayQr
             // 
@@ -1483,7 +1523,8 @@ namespace HIS.Desktop.Plugins.TransactionList
             this.repositoryItemButtonEdit1,
             this.repositoryItemUnrejectCancellation,
             this.repositoryItemUnrejectCancellationDis,
-            this.repQr});
+            this.repQr,
+            this.repositoryItemBtnChangePay});
             this.gridControlTransaction.Size = new System.Drawing.Size(1039, 674);
             this.gridControlTransaction.TabIndex = 4;
             this.gridControlTransaction.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
@@ -1498,6 +1539,7 @@ namespace HIS.Desktop.Plugins.TransactionList
             this.grdColDelete,
             this.gridColumn_Transaction_CancelTransaction,
             this.gridColumn_UnrejectCancellation,
+            this.gridColumn18,
             this.gridColumn_Restore,
             this.gridColumnHDDT,
             this.gridColumn_Transaction_ChangeLock,
@@ -1633,6 +1675,26 @@ namespace HIS.Desktop.Plugins.TransactionList
             this.gridColumn_UnrejectCancellation.VisibleIndex = 6;
             this.gridColumn_UnrejectCancellation.Width = 25;
             // 
+            // gridColumn18
+            // 
+            this.gridColumn18.Caption = "Đổi hình thức";
+            this.gridColumn18.FieldName = "ChangePayForm";
+            this.gridColumn18.Fixed = DevExpress.XtraGrid.Columns.FixedStyle.Left;
+            this.gridColumn18.Name = "gridColumn18";
+            this.gridColumn18.OptionsColumn.ShowCaption = false;
+            this.gridColumn18.Visible = true;
+            this.gridColumn18.VisibleIndex = 7;
+            this.gridColumn18.Width = 23;
+            // 
+            // repositoryItemBtnChangePay
+            // 
+            this.repositoryItemBtnChangePay.AutoHeight = false;
+            this.repositoryItemBtnChangePay.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("repositoryItemBtnChangePay.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject81, serializableAppearanceObject82, serializableAppearanceObject83, serializableAppearanceObject84, "Đổi hình thức thanh toán", null, null, true)});
+            this.repositoryItemBtnChangePay.Name = "repositoryItemBtnChangePay";
+            this.repositoryItemBtnChangePay.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
+            this.repositoryItemBtnChangePay.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.repositoryItemBtnChangePay_ButtonClick);
+            // 
             // gridColumn_Restore
             // 
             this.gridColumn_Restore.Caption = "Khôi phục";
@@ -1643,7 +1705,7 @@ namespace HIS.Desktop.Plugins.TransactionList
             this.gridColumn_Restore.ToolTip = "Khôi phục";
             this.gridColumn_Restore.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumn_Restore.Visible = true;
-            this.gridColumn_Restore.VisibleIndex = 7;
+            this.gridColumn_Restore.VisibleIndex = 8;
             this.gridColumn_Restore.Width = 25;
             // 
             // gridColumnHDDT
@@ -1657,7 +1719,7 @@ namespace HIS.Desktop.Plugins.TransactionList
             this.gridColumnHDDT.ToolTip = "In hóa đơn điện tử";
             this.gridColumnHDDT.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumnHDDT.Visible = true;
-            this.gridColumnHDDT.VisibleIndex = 8;
+            this.gridColumnHDDT.VisibleIndex = 9;
             this.gridColumnHDDT.Width = 30;
             // 
             // gridColumn_Transaction_ChangeLock
@@ -1670,7 +1732,7 @@ namespace HIS.Desktop.Plugins.TransactionList
             this.gridColumn_Transaction_ChangeLock.OptionsColumn.ShowCaption = false;
             this.gridColumn_Transaction_ChangeLock.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumn_Transaction_ChangeLock.Visible = true;
-            this.gridColumn_Transaction_ChangeLock.VisibleIndex = 9;
+            this.gridColumn_Transaction_ChangeLock.VisibleIndex = 10;
             this.gridColumn_Transaction_ChangeLock.Width = 25;
             // 
             // gridColumn_Transaction_TransactionCode
@@ -1683,7 +1745,7 @@ namespace HIS.Desktop.Plugins.TransactionList
             this.gridColumn_Transaction_TransactionCode.Name = "gridColumn_Transaction_TransactionCode";
             this.gridColumn_Transaction_TransactionCode.OptionsColumn.AllowEdit = false;
             this.gridColumn_Transaction_TransactionCode.Visible = true;
-            this.gridColumn_Transaction_TransactionCode.VisibleIndex = 11;
+            this.gridColumn_Transaction_TransactionCode.VisibleIndex = 12;
             this.gridColumn_Transaction_TransactionCode.Width = 90;
             // 
             // gridColumn_Transaction_Amount
@@ -1699,7 +1761,7 @@ namespace HIS.Desktop.Plugins.TransactionList
             this.gridColumn_Transaction_Amount.OptionsColumn.AllowEdit = false;
             this.gridColumn_Transaction_Amount.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumn_Transaction_Amount.Visible = true;
-            this.gridColumn_Transaction_Amount.VisibleIndex = 12;
+            this.gridColumn_Transaction_Amount.VisibleIndex = 13;
             this.gridColumn_Transaction_Amount.Width = 100;
             // 
             // gridColumn8
@@ -1711,7 +1773,7 @@ namespace HIS.Desktop.Plugins.TransactionList
             this.gridColumn8.ToolTip = "Trạng thái giao dịch";
             this.gridColumn8.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumn8.Visible = true;
-            this.gridColumn8.VisibleIndex = 13;
+            this.gridColumn8.VisibleIndex = 14;
             this.gridColumn8.Width = 120;
             // 
             // gridColumn6
@@ -1722,7 +1784,7 @@ namespace HIS.Desktop.Plugins.TransactionList
             this.gridColumn6.OptionsColumn.AllowEdit = false;
             this.gridColumn6.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumn6.Visible = true;
-            this.gridColumn6.VisibleIndex = 14;
+            this.gridColumn6.VisibleIndex = 15;
             this.gridColumn6.Width = 91;
             // 
             // gridColumn5
@@ -1733,7 +1795,7 @@ namespace HIS.Desktop.Plugins.TransactionList
             this.gridColumn5.OptionsColumn.AllowEdit = false;
             this.gridColumn5.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumn5.Visible = true;
-            this.gridColumn5.VisibleIndex = 15;
+            this.gridColumn5.VisibleIndex = 16;
             this.gridColumn5.Width = 89;
             // 
             // gridColumn4
@@ -1744,7 +1806,7 @@ namespace HIS.Desktop.Plugins.TransactionList
             this.gridColumn4.OptionsColumn.AllowEdit = false;
             this.gridColumn4.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumn4.Visible = true;
-            this.gridColumn4.VisibleIndex = 16;
+            this.gridColumn4.VisibleIndex = 17;
             this.gridColumn4.Width = 87;
             // 
             // gridColumn3
@@ -1754,7 +1816,7 @@ namespace HIS.Desktop.Plugins.TransactionList
             this.gridColumn3.Name = "gridColumn3";
             this.gridColumn3.OptionsColumn.AllowEdit = false;
             this.gridColumn3.Visible = true;
-            this.gridColumn3.VisibleIndex = 17;
+            this.gridColumn3.VisibleIndex = 18;
             this.gridColumn3.Width = 108;
             // 
             // gridColumn2
@@ -1765,7 +1827,7 @@ namespace HIS.Desktop.Plugins.TransactionList
             this.gridColumn2.OptionsColumn.AllowEdit = false;
             this.gridColumn2.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumn2.Visible = true;
-            this.gridColumn2.VisibleIndex = 18;
+            this.gridColumn2.VisibleIndex = 19;
             this.gridColumn2.Width = 109;
             // 
             // gridColumn9
@@ -1776,7 +1838,7 @@ namespace HIS.Desktop.Plugins.TransactionList
             this.gridColumn9.OptionsColumn.AllowEdit = false;
             this.gridColumn9.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumn9.Visible = true;
-            this.gridColumn9.VisibleIndex = 19;
+            this.gridColumn9.VisibleIndex = 20;
             this.gridColumn9.Width = 100;
             // 
             // gc_SwipeAmount
@@ -1788,7 +1850,7 @@ namespace HIS.Desktop.Plugins.TransactionList
             this.gc_SwipeAmount.ToolTip = "Số tiền quẹt thẻ";
             this.gc_SwipeAmount.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gc_SwipeAmount.Visible = true;
-            this.gc_SwipeAmount.VisibleIndex = 20;
+            this.gc_SwipeAmount.VisibleIndex = 21;
             this.gc_SwipeAmount.Width = 110;
             // 
             // gc_TransferAmuont
@@ -1800,7 +1862,7 @@ namespace HIS.Desktop.Plugins.TransactionList
             this.gc_TransferAmuont.ToolTip = "Số tiền chuyển khoản";
             this.gc_TransferAmuont.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gc_TransferAmuont.Visible = true;
-            this.gc_TransferAmuont.VisibleIndex = 21;
+            this.gc_TransferAmuont.VisibleIndex = 22;
             this.gc_TransferAmuont.Width = 110;
             // 
             // gridColumn_Transaction_PayFormName
@@ -1812,7 +1874,7 @@ namespace HIS.Desktop.Plugins.TransactionList
             this.gridColumn_Transaction_PayFormName.Name = "gridColumn_Transaction_PayFormName";
             this.gridColumn_Transaction_PayFormName.OptionsColumn.AllowEdit = false;
             this.gridColumn_Transaction_PayFormName.Visible = true;
-            this.gridColumn_Transaction_PayFormName.VisibleIndex = 22;
+            this.gridColumn_Transaction_PayFormName.VisibleIndex = 23;
             this.gridColumn_Transaction_PayFormName.Width = 110;
             // 
             // gridColumn_TRANSACTION_BANK_NAME
@@ -1823,7 +1885,7 @@ namespace HIS.Desktop.Plugins.TransactionList
             this.gridColumn_TRANSACTION_BANK_NAME.OptionsColumn.AllowEdit = false;
             this.gridColumn_TRANSACTION_BANK_NAME.OptionsColumn.AllowSort = DevExpress.Utils.DefaultBoolean.False;
             this.gridColumn_TRANSACTION_BANK_NAME.Visible = true;
-            this.gridColumn_TRANSACTION_BANK_NAME.VisibleIndex = 23;
+            this.gridColumn_TRANSACTION_BANK_NAME.VisibleIndex = 24;
             this.gridColumn_TRANSACTION_BANK_NAME.Width = 100;
             // 
             // gridColumn_Transaction_Tig_TransactionCode
@@ -1834,7 +1896,7 @@ namespace HIS.Desktop.Plugins.TransactionList
             this.gridColumn_Transaction_Tig_TransactionCode.FieldName = "TIG_TRANSACTION_CODE";
             this.gridColumn_Transaction_Tig_TransactionCode.Name = "gridColumn_Transaction_Tig_TransactionCode";
             this.gridColumn_Transaction_Tig_TransactionCode.Visible = true;
-            this.gridColumn_Transaction_Tig_TransactionCode.VisibleIndex = 24;
+            this.gridColumn_Transaction_Tig_TransactionCode.VisibleIndex = 25;
             this.gridColumn_Transaction_Tig_TransactionCode.Width = 90;
             // 
             // gridColumn_Transaction_TransactionTypeName
@@ -1846,7 +1908,7 @@ namespace HIS.Desktop.Plugins.TransactionList
             this.gridColumn_Transaction_TransactionTypeName.Name = "gridColumn_Transaction_TransactionTypeName";
             this.gridColumn_Transaction_TransactionTypeName.OptionsColumn.AllowEdit = false;
             this.gridColumn_Transaction_TransactionTypeName.Visible = true;
-            this.gridColumn_Transaction_TransactionTypeName.VisibleIndex = 25;
+            this.gridColumn_Transaction_TransactionTypeName.VisibleIndex = 26;
             // 
             // gridColumn_Transaction_DerectlyBilling
             // 
@@ -1856,7 +1918,7 @@ namespace HIS.Desktop.Plugins.TransactionList
             this.gridColumn_Transaction_DerectlyBilling.OptionsColumn.AllowEdit = false;
             this.gridColumn_Transaction_DerectlyBilling.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumn_Transaction_DerectlyBilling.Visible = true;
-            this.gridColumn_Transaction_DerectlyBilling.VisibleIndex = 26;
+            this.gridColumn_Transaction_DerectlyBilling.VisibleIndex = 27;
             this.gridColumn_Transaction_DerectlyBilling.Width = 110;
             // 
             // gridColumn_Transaction_Cashier
@@ -1869,7 +1931,7 @@ namespace HIS.Desktop.Plugins.TransactionList
             this.gridColumn_Transaction_Cashier.OptionsColumn.AllowEdit = false;
             this.gridColumn_Transaction_Cashier.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumn_Transaction_Cashier.Visible = true;
-            this.gridColumn_Transaction_Cashier.VisibleIndex = 27;
+            this.gridColumn_Transaction_Cashier.VisibleIndex = 28;
             this.gridColumn_Transaction_Cashier.Width = 120;
             // 
             // gridColumn_Transaction_TransactionTime
@@ -1885,7 +1947,7 @@ namespace HIS.Desktop.Plugins.TransactionList
             this.gridColumn_Transaction_TransactionTime.ToolTip = "Thời gian giao dịch";
             this.gridColumn_Transaction_TransactionTime.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumn_Transaction_TransactionTime.Visible = true;
-            this.gridColumn_Transaction_TransactionTime.VisibleIndex = 28;
+            this.gridColumn_Transaction_TransactionTime.VisibleIndex = 29;
             this.gridColumn_Transaction_TransactionTime.Width = 120;
             // 
             // gridColumn_Transaction_CashierRoomName
@@ -1897,7 +1959,7 @@ namespace HIS.Desktop.Plugins.TransactionList
             this.gridColumn_Transaction_CashierRoomName.Name = "gridColumn_Transaction_CashierRoomName";
             this.gridColumn_Transaction_CashierRoomName.OptionsColumn.AllowEdit = false;
             this.gridColumn_Transaction_CashierRoomName.Visible = true;
-            this.gridColumn_Transaction_CashierRoomName.VisibleIndex = 29;
+            this.gridColumn_Transaction_CashierRoomName.VisibleIndex = 30;
             this.gridColumn_Transaction_CashierRoomName.Width = 120;
             // 
             // gridColumn_Transaction_TransReqCode
@@ -1909,7 +1971,7 @@ namespace HIS.Desktop.Plugins.TransactionList
             this.gridColumn_Transaction_TransReqCode.Name = "gridColumn_Transaction_TransReqCode";
             this.gridColumn_Transaction_TransReqCode.OptionsColumn.AllowEdit = false;
             this.gridColumn_Transaction_TransReqCode.Visible = true;
-            this.gridColumn_Transaction_TransReqCode.VisibleIndex = 30;
+            this.gridColumn_Transaction_TransReqCode.VisibleIndex = 31;
             this.gridColumn_Transaction_TransReqCode.Width = 110;
             // 
             // gridColumn_Transaction_NumOrder
@@ -1924,7 +1986,7 @@ namespace HIS.Desktop.Plugins.TransactionList
             this.gridColumn_Transaction_NumOrder.FieldName = "NUM_ORDER";
             this.gridColumn_Transaction_NumOrder.Name = "gridColumn_Transaction_NumOrder";
             this.gridColumn_Transaction_NumOrder.Visible = true;
-            this.gridColumn_Transaction_NumOrder.VisibleIndex = 31;
+            this.gridColumn_Transaction_NumOrder.VisibleIndex = 32;
             this.gridColumn_Transaction_NumOrder.Width = 80;
             // 
             // gridColumn_Transaction_AccountBookCode
@@ -1936,7 +1998,7 @@ namespace HIS.Desktop.Plugins.TransactionList
             this.gridColumn_Transaction_AccountBookCode.Name = "gridColumn_Transaction_AccountBookCode";
             this.gridColumn_Transaction_AccountBookCode.OptionsColumn.AllowEdit = false;
             this.gridColumn_Transaction_AccountBookCode.Visible = true;
-            this.gridColumn_Transaction_AccountBookCode.VisibleIndex = 32;
+            this.gridColumn_Transaction_AccountBookCode.VisibleIndex = 33;
             this.gridColumn_Transaction_AccountBookCode.Width = 65;
             // 
             // gridColumn_Transaction_AccountBookName
@@ -1948,7 +2010,7 @@ namespace HIS.Desktop.Plugins.TransactionList
             this.gridColumn_Transaction_AccountBookName.Name = "gridColumn_Transaction_AccountBookName";
             this.gridColumn_Transaction_AccountBookName.OptionsColumn.AllowEdit = false;
             this.gridColumn_Transaction_AccountBookName.Visible = true;
-            this.gridColumn_Transaction_AccountBookName.VisibleIndex = 33;
+            this.gridColumn_Transaction_AccountBookName.VisibleIndex = 34;
             this.gridColumn_Transaction_AccountBookName.Width = 120;
             // 
             // gridColumn14
@@ -1958,7 +2020,7 @@ namespace HIS.Desktop.Plugins.TransactionList
             this.gridColumn14.Name = "gridColumn14";
             this.gridColumn14.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumn14.Visible = true;
-            this.gridColumn14.VisibleIndex = 34;
+            this.gridColumn14.VisibleIndex = 35;
             this.gridColumn14.Width = 120;
             // 
             // gridColumn15
@@ -1968,7 +2030,7 @@ namespace HIS.Desktop.Plugins.TransactionList
             this.gridColumn15.Name = "gridColumn15";
             this.gridColumn15.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumn15.Visible = true;
-            this.gridColumn15.VisibleIndex = 35;
+            this.gridColumn15.VisibleIndex = 36;
             this.gridColumn15.Width = 120;
             // 
             // gridColumn16
@@ -1978,7 +2040,7 @@ namespace HIS.Desktop.Plugins.TransactionList
             this.gridColumn16.Name = "gridColumn16";
             this.gridColumn16.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumn16.Visible = true;
-            this.gridColumn16.VisibleIndex = 36;
+            this.gridColumn16.VisibleIndex = 37;
             this.gridColumn16.Width = 100;
             // 
             // gridColumn_Transaction_TreatmentCode
@@ -1990,7 +2052,7 @@ namespace HIS.Desktop.Plugins.TransactionList
             this.gridColumn_Transaction_TreatmentCode.Name = "gridColumn_Transaction_TreatmentCode";
             this.gridColumn_Transaction_TreatmentCode.OptionsColumn.AllowEdit = false;
             this.gridColumn_Transaction_TreatmentCode.Visible = true;
-            this.gridColumn_Transaction_TreatmentCode.VisibleIndex = 37;
+            this.gridColumn_Transaction_TreatmentCode.VisibleIndex = 38;
             this.gridColumn_Transaction_TreatmentCode.Width = 90;
             // 
             // gridColumn_Transaction_VirPatientName
@@ -2002,7 +2064,7 @@ namespace HIS.Desktop.Plugins.TransactionList
             this.gridColumn_Transaction_VirPatientName.Name = "gridColumn_Transaction_VirPatientName";
             this.gridColumn_Transaction_VirPatientName.OptionsColumn.AllowEdit = false;
             this.gridColumn_Transaction_VirPatientName.Visible = true;
-            this.gridColumn_Transaction_VirPatientName.VisibleIndex = 38;
+            this.gridColumn_Transaction_VirPatientName.VisibleIndex = 39;
             this.gridColumn_Transaction_VirPatientName.Width = 90;
             // 
             // gridColumn_Transaction_Dob
@@ -2017,7 +2079,7 @@ namespace HIS.Desktop.Plugins.TransactionList
             this.gridColumn_Transaction_Dob.OptionsColumn.AllowEdit = false;
             this.gridColumn_Transaction_Dob.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumn_Transaction_Dob.Visible = true;
-            this.gridColumn_Transaction_Dob.VisibleIndex = 39;
+            this.gridColumn_Transaction_Dob.VisibleIndex = 40;
             this.gridColumn_Transaction_Dob.Width = 80;
             // 
             // gridColumn_Transaction_GenderName
@@ -2031,7 +2093,7 @@ namespace HIS.Desktop.Plugins.TransactionList
             this.gridColumn_Transaction_GenderName.Name = "gridColumn_Transaction_GenderName";
             this.gridColumn_Transaction_GenderName.OptionsColumn.AllowEdit = false;
             this.gridColumn_Transaction_GenderName.Visible = true;
-            this.gridColumn_Transaction_GenderName.VisibleIndex = 40;
+            this.gridColumn_Transaction_GenderName.VisibleIndex = 41;
             this.gridColumn_Transaction_GenderName.Width = 55;
             // 
             // gridColumn_Transaction_PatientCode
@@ -2043,7 +2105,7 @@ namespace HIS.Desktop.Plugins.TransactionList
             this.gridColumn_Transaction_PatientCode.Name = "gridColumn_Transaction_PatientCode";
             this.gridColumn_Transaction_PatientCode.OptionsColumn.AllowEdit = false;
             this.gridColumn_Transaction_PatientCode.Visible = true;
-            this.gridColumn_Transaction_PatientCode.VisibleIndex = 41;
+            this.gridColumn_Transaction_PatientCode.VisibleIndex = 42;
             this.gridColumn_Transaction_PatientCode.Width = 90;
             // 
             // gridColumn13
@@ -2054,7 +2116,7 @@ namespace HIS.Desktop.Plugins.TransactionList
             this.gridColumn13.OptionsColumn.AllowEdit = false;
             this.gridColumn13.OptionsColumn.AllowSort = DevExpress.Utils.DefaultBoolean.True;
             this.gridColumn13.Visible = true;
-            this.gridColumn13.VisibleIndex = 42;
+            this.gridColumn13.VisibleIndex = 43;
             // 
             // gridColumn12
             // 
@@ -2064,7 +2126,7 @@ namespace HIS.Desktop.Plugins.TransactionList
             this.gridColumn12.OptionsColumn.AllowEdit = false;
             this.gridColumn12.OptionsColumn.AllowSort = DevExpress.Utils.DefaultBoolean.True;
             this.gridColumn12.Visible = true;
-            this.gridColumn12.VisibleIndex = 43;
+            this.gridColumn12.VisibleIndex = 44;
             // 
             // gridColumn11
             // 
@@ -2074,7 +2136,7 @@ namespace HIS.Desktop.Plugins.TransactionList
             this.gridColumn11.OptionsColumn.AllowEdit = false;
             this.gridColumn11.OptionsColumn.AllowSort = DevExpress.Utils.DefaultBoolean.True;
             this.gridColumn11.Visible = true;
-            this.gridColumn11.VisibleIndex = 44;
+            this.gridColumn11.VisibleIndex = 45;
             // 
             // gridColumn10
             // 
@@ -2084,7 +2146,7 @@ namespace HIS.Desktop.Plugins.TransactionList
             this.gridColumn10.OptionsColumn.AllowEdit = false;
             this.gridColumn10.OptionsColumn.AllowSort = DevExpress.Utils.DefaultBoolean.True;
             this.gridColumn10.Visible = true;
-            this.gridColumn10.VisibleIndex = 45;
+            this.gridColumn10.VisibleIndex = 46;
             // 
             // gridColumn_Transaction_NationalTransactionCode
             // 
@@ -2093,7 +2155,7 @@ namespace HIS.Desktop.Plugins.TransactionList
             this.gridColumn_Transaction_NationalTransactionCode.Name = "gridColumn_Transaction_NationalTransactionCode";
             this.gridColumn_Transaction_NationalTransactionCode.OptionsColumn.AllowEdit = false;
             this.gridColumn_Transaction_NationalTransactionCode.Visible = true;
-            this.gridColumn_Transaction_NationalTransactionCode.VisibleIndex = 46;
+            this.gridColumn_Transaction_NationalTransactionCode.VisibleIndex = 47;
             this.gridColumn_Transaction_NationalTransactionCode.Width = 90;
             // 
             // gridColumn_Transaction_CreateTime
@@ -2108,7 +2170,7 @@ namespace HIS.Desktop.Plugins.TransactionList
             this.gridColumn_Transaction_CreateTime.OptionsColumn.AllowEdit = false;
             this.gridColumn_Transaction_CreateTime.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumn_Transaction_CreateTime.Visible = true;
-            this.gridColumn_Transaction_CreateTime.VisibleIndex = 47;
+            this.gridColumn_Transaction_CreateTime.VisibleIndex = 48;
             this.gridColumn_Transaction_CreateTime.Width = 120;
             // 
             // gridColumn_Transaction_Creator
@@ -2120,7 +2182,7 @@ namespace HIS.Desktop.Plugins.TransactionList
             this.gridColumn_Transaction_Creator.Name = "gridColumn_Transaction_Creator";
             this.gridColumn_Transaction_Creator.OptionsColumn.AllowEdit = false;
             this.gridColumn_Transaction_Creator.Visible = true;
-            this.gridColumn_Transaction_Creator.VisibleIndex = 48;
+            this.gridColumn_Transaction_Creator.VisibleIndex = 49;
             // 
             // gridColumn_Transaction_ModifyTime
             // 
@@ -2134,7 +2196,7 @@ namespace HIS.Desktop.Plugins.TransactionList
             this.gridColumn_Transaction_ModifyTime.OptionsColumn.AllowEdit = false;
             this.gridColumn_Transaction_ModifyTime.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumn_Transaction_ModifyTime.Visible = true;
-            this.gridColumn_Transaction_ModifyTime.VisibleIndex = 49;
+            this.gridColumn_Transaction_ModifyTime.VisibleIndex = 50;
             this.gridColumn_Transaction_ModifyTime.Width = 120;
             // 
             // gridColumn_Transaction_Modifier
@@ -2146,7 +2208,7 @@ namespace HIS.Desktop.Plugins.TransactionList
             this.gridColumn_Transaction_Modifier.Name = "gridColumn_Transaction_Modifier";
             this.gridColumn_Transaction_Modifier.OptionsColumn.AllowEdit = false;
             this.gridColumn_Transaction_Modifier.Visible = true;
-            this.gridColumn_Transaction_Modifier.VisibleIndex = 50;
+            this.gridColumn_Transaction_Modifier.VisibleIndex = 51;
             // 
             // gridColumn1
             // 
@@ -2167,7 +2229,7 @@ namespace HIS.Desktop.Plugins.TransactionList
             this.gridColumn17.Name = "gridColumn17";
             this.gridColumn17.OptionsColumn.ShowCaption = false;
             this.gridColumn17.Visible = true;
-            this.gridColumn17.VisibleIndex = 10;
+            this.gridColumn17.VisibleIndex = 11;
             this.gridColumn17.Width = 25;
             // 
             // repositoryItemBtnCancelTran
@@ -2354,7 +2416,7 @@ namespace HIS.Desktop.Plugins.TransactionList
             this.repQr.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("repQr.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject77, serializableAppearanceObject78, serializableAppearanceObject79, serializableAppearanceObject80, "Thanh toán bằng QR", null, null, true)});
             this.repQr.Name = "repQr";
-            //this.repQr.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.repQr_ButtonClick);
+            this.repQr.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.repQr_ButtonClick);
             // 
             // layoutControlGroup1
             // 
@@ -2491,34 +2553,6 @@ namespace HIS.Desktop.Plugins.TransactionList
             this.layoutControlItem24.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem24.TextVisible = false;
             // 
-            // barDockControlTop
-            // 
-            this.barDockControlTop.CausesValidation = false;
-            this.barDockControlTop.Dock = System.Windows.Forms.DockStyle.Top;
-            this.barDockControlTop.Location = new System.Drawing.Point(0, 29);
-            this.barDockControlTop.Size = new System.Drawing.Size(1304, 0);
-            // 
-            // barDockControlBottom
-            // 
-            this.barDockControlBottom.CausesValidation = false;
-            this.barDockControlBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.barDockControlBottom.Location = new System.Drawing.Point(0, 733);
-            this.barDockControlBottom.Size = new System.Drawing.Size(1304, 0);
-            // 
-            // barDockControlLeft
-            // 
-            this.barDockControlLeft.CausesValidation = false;
-            this.barDockControlLeft.Dock = System.Windows.Forms.DockStyle.Left;
-            this.barDockControlLeft.Location = new System.Drawing.Point(0, 29);
-            this.barDockControlLeft.Size = new System.Drawing.Size(0, 704);
-            // 
-            // barDockControlRight
-            // 
-            this.barDockControlRight.CausesValidation = false;
-            this.barDockControlRight.Dock = System.Windows.Forms.DockStyle.Right;
-            this.barDockControlRight.Location = new System.Drawing.Point(1304, 29);
-            this.barDockControlRight.Size = new System.Drawing.Size(0, 704);
-            // 
             // popupMenu1
             // 
             this.popupMenu1.Manager = this.barManager1;
@@ -2624,6 +2658,7 @@ namespace HIS.Desktop.Plugins.TransactionList
             ((System.ComponentModel.ISupportInitialize)(this.txtKeyword.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridControlTransaction)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridViewTransaction)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repositoryItemBtnChangePay)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemBtnCancelTran)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemBtnCancelTranDisable)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemBtnLock)).EndInit();
@@ -2848,5 +2883,7 @@ namespace HIS.Desktop.Plugins.TransactionList
         private DevExpress.XtraGrid.Columns.GridColumn gridColumn17;
         private DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit repQr;
         private DevExpress.XtraBars.PopupMenu popupMenu1;
+        private DevExpress.XtraGrid.Columns.GridColumn gridColumn18;
+        private DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit repositoryItemBtnChangePay;
     }
 }

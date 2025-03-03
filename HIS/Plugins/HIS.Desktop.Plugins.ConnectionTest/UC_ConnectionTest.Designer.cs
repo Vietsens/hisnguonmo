@@ -161,6 +161,10 @@ namespace HIS.Desktop.Plugins.ConnectionTest
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject106 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject107 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject108 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject109 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject110 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject111 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject112 = new DevExpress.Utils.SerializableAppearanceObject();
             this.layoutControl1 = new DevExpress.XtraLayout.LayoutControl();
             this.cboRoom = new DevExpress.XtraEditors.GridLookUpEdit();
             this.barManager1 = new DevExpress.XtraBars.BarManager(this.components);
@@ -363,6 +367,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
             this.gridColumn11 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn13 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn14 = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gridColumn33 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.DuyetE = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
             this.DuyetD = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
             this.HuyDuyetE = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
@@ -387,6 +392,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
             this.repositoryHuyDuyetKetQuaE = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
             this.repositoryHuyDuyetKetQuaD = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
             this.repositoryHuyChapNhan = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
+            this.repCountPrint = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
             this.cboUserKQ = new HIS.Desktop.Utilities.Extensions.CustomGridLookUpEdit();
             this.cboUserKQView = new HIS.Desktop.Utilities.Extensions.CustomGridView();
             this.layoutControlGroup1 = new DevExpress.XtraLayout.LayoutControlGroup();
@@ -605,6 +611,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
             ((System.ComponentModel.ISupportInitialize)(this.repositoryHuyDuyetKetQuaE)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryHuyDuyetKetQuaD)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryHuyChapNhan)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repCountPrint)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboUserKQ.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboUserKQView)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup1)).BeginInit();
@@ -2534,7 +2541,8 @@ namespace HIS.Desktop.Plugins.ConnectionTest
             this.repositoryHuyDuyetKetQuaE,
             this.repositoryHuyDuyetKetQuaD,
             this.repositoryItemChkApproveList,
-            this.repositoryHuyChapNhan});
+            this.repositoryHuyChapNhan,
+            this.repCountPrint});
             this.gridControlSample.Size = new System.Drawing.Size(620, 336);
             this.gridControlSample.TabIndex = 10;
             this.gridControlSample.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
@@ -2558,6 +2566,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
             this.gridColumn6,
             this.gridColumnBarCode,
             this.gridColumn8,
+            this.gridColumn33,
             this.gridColumn20,
             this.gridColumn27,
             this.gridColumn31,
@@ -2758,7 +2767,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
             this.gridColumn6.MinWidth = 50;
             this.gridColumn6.Name = "gridColumn6";
             this.gridColumn6.Visible = true;
-            this.gridColumn6.VisibleIndex = 10;
+            this.gridColumn6.VisibleIndex = 11;
             this.gridColumn6.Width = 110;
             // 
             // gridColumnBarCode
@@ -2769,7 +2778,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
             this.gridColumnBarCode.MinWidth = 50;
             this.gridColumnBarCode.Name = "gridColumnBarCode";
             this.gridColumnBarCode.Visible = true;
-            this.gridColumnBarCode.VisibleIndex = 11;
+            this.gridColumnBarCode.VisibleIndex = 12;
             this.gridColumnBarCode.Width = 90;
             // 
             // gridColumn8
@@ -2780,7 +2789,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
             this.gridColumn8.Name = "gridColumn8";
             this.gridColumn8.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumn8.Visible = true;
-            this.gridColumn8.VisibleIndex = 12;
+            this.gridColumn8.VisibleIndex = 13;
             this.gridColumn8.Width = 150;
             // 
             // gridColumn20
@@ -2790,7 +2799,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
             this.gridColumn20.Name = "gridColumn20";
             this.gridColumn20.OptionsColumn.AllowEdit = false;
             this.gridColumn20.Visible = true;
-            this.gridColumn20.VisibleIndex = 13;
+            this.gridColumn20.VisibleIndex = 14;
             this.gridColumn20.Width = 90;
             // 
             // gridColumn27
@@ -2800,7 +2809,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
             this.gridColumn27.Name = "gridColumn27";
             this.gridColumn27.OptionsColumn.AllowEdit = false;
             this.gridColumn27.Visible = true;
-            this.gridColumn27.VisibleIndex = 14;
+            this.gridColumn27.VisibleIndex = 15;
             this.gridColumn27.Width = 90;
             // 
             // gridColumn31
@@ -2809,7 +2818,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
             this.gridColumn31.FieldName = "TREATMENT_CODE";
             this.gridColumn31.Name = "gridColumn31";
             this.gridColumn31.Visible = true;
-            this.gridColumn31.VisibleIndex = 15;
+            this.gridColumn31.VisibleIndex = 16;
             this.gridColumn31.Width = 100;
             // 
             // gridColumn15
@@ -2819,7 +2828,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
             this.gridColumn15.Name = "gridColumn15";
             this.gridColumn15.OptionsColumn.AllowEdit = false;
             this.gridColumn15.Visible = true;
-            this.gridColumn15.VisibleIndex = 16;
+            this.gridColumn15.VisibleIndex = 17;
             this.gridColumn15.Width = 88;
             // 
             // gridColumn9
@@ -2829,7 +2838,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
             this.gridColumn9.Name = "gridColumn9";
             this.gridColumn9.OptionsColumn.AllowEdit = false;
             this.gridColumn9.Visible = true;
-            this.gridColumn9.VisibleIndex = 17;
+            this.gridColumn9.VisibleIndex = 18;
             this.gridColumn9.Width = 100;
             // 
             // gridColumn10
@@ -2839,7 +2848,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
             this.gridColumn10.Name = "gridColumn10";
             this.gridColumn10.OptionsColumn.AllowEdit = false;
             this.gridColumn10.Visible = true;
-            this.gridColumn10.VisibleIndex = 18;
+            this.gridColumn10.VisibleIndex = 19;
             this.gridColumn10.Width = 100;
             // 
             // gridColumn24
@@ -2849,7 +2858,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
             this.gridColumn24.Name = "gridColumn24";
             this.gridColumn24.OptionsColumn.AllowEdit = false;
             this.gridColumn24.Visible = true;
-            this.gridColumn24.VisibleIndex = 19;
+            this.gridColumn24.VisibleIndex = 20;
             this.gridColumn24.Width = 150;
             // 
             // gridColumn22
@@ -2860,7 +2869,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
             this.gridColumn22.OptionsColumn.AllowEdit = false;
             this.gridColumn22.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumn22.Visible = true;
-            this.gridColumn22.VisibleIndex = 20;
+            this.gridColumn22.VisibleIndex = 21;
             this.gridColumn22.Width = 110;
             // 
             // gridColumn26
@@ -2871,7 +2880,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
             this.gridColumn26.OptionsColumn.AllowEdit = false;
             this.gridColumn26.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumn26.Visible = true;
-            this.gridColumn26.VisibleIndex = 21;
+            this.gridColumn26.VisibleIndex = 22;
             // 
             // gridColumn29
             // 
@@ -2881,7 +2890,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
             this.gridColumn29.OptionsColumn.AllowEdit = false;
             this.gridColumn29.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumn29.Visible = true;
-            this.gridColumn29.VisibleIndex = 22;
+            this.gridColumn29.VisibleIndex = 23;
             this.gridColumn29.Width = 110;
             // 
             // gridColumn25
@@ -2892,7 +2901,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
             this.gridColumn25.OptionsColumn.AllowEdit = false;
             this.gridColumn25.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumn25.Visible = true;
-            this.gridColumn25.VisibleIndex = 27;
+            this.gridColumn25.VisibleIndex = 28;
             // 
             // gridColumn23
             // 
@@ -2902,7 +2911,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
             this.gridColumn23.OptionsColumn.AllowEdit = false;
             this.gridColumn23.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumn23.Visible = true;
-            this.gridColumn23.VisibleIndex = 23;
+            this.gridColumn23.VisibleIndex = 24;
             this.gridColumn23.Width = 110;
             // 
             // gridColumn30
@@ -2912,7 +2921,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
             this.gridColumn30.Name = "gridColumn30";
             this.gridColumn30.OptionsColumn.AllowEdit = false;
             this.gridColumn30.Visible = true;
-            this.gridColumn30.VisibleIndex = 24;
+            this.gridColumn30.VisibleIndex = 25;
             this.gridColumn30.Width = 120;
             // 
             // gridColumn32
@@ -2922,7 +2931,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
             this.gridColumn32.Name = "gridColumn32";
             this.gridColumn32.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumn32.Visible = true;
-            this.gridColumn32.VisibleIndex = 25;
+            this.gridColumn32.VisibleIndex = 26;
             this.gridColumn32.Width = 120;
             // 
             // gridColumn12
@@ -2936,7 +2945,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
             this.gridColumn12.OptionsFilter.AllowFilter = false;
             this.gridColumn12.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumn12.Visible = true;
-            this.gridColumn12.VisibleIndex = 26;
+            this.gridColumn12.VisibleIndex = 27;
             // 
             // gridColumn28
             // 
@@ -2945,7 +2954,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
             this.gridColumn28.Name = "gridColumn28";
             this.gridColumn28.OptionsColumn.AllowEdit = false;
             this.gridColumn28.Visible = true;
-            this.gridColumn28.VisibleIndex = 28;
+            this.gridColumn28.VisibleIndex = 29;
             this.gridColumn28.Width = 90;
             // 
             // gridColumn17
@@ -2960,7 +2969,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
             this.gridColumn17.OptionsColumn.AllowEdit = false;
             this.gridColumn17.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumn17.Visible = true;
-            this.gridColumn17.VisibleIndex = 29;
+            this.gridColumn17.VisibleIndex = 30;
             this.gridColumn17.Width = 90;
             // 
             // gridColumnGenderName
@@ -2971,7 +2980,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
             this.gridColumnGenderName.OptionsColumn.AllowEdit = false;
             this.gridColumnGenderName.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumnGenderName.Visible = true;
-            this.gridColumnGenderName.VisibleIndex = 30;
+            this.gridColumnGenderName.VisibleIndex = 31;
             // 
             // gridColumn21
             // 
@@ -2980,7 +2989,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
             this.gridColumn21.Name = "gridColumn21";
             this.gridColumn21.OptionsColumn.AllowEdit = false;
             this.gridColumn21.Visible = true;
-            this.gridColumn21.VisibleIndex = 31;
+            this.gridColumn21.VisibleIndex = 32;
             this.gridColumn21.Width = 150;
             // 
             // gridColumn7
@@ -2989,7 +2998,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
             this.gridColumn7.FieldName = "PATIENT_CODE";
             this.gridColumn7.Name = "gridColumn7";
             this.gridColumn7.Visible = true;
-            this.gridColumn7.VisibleIndex = 32;
+            this.gridColumn7.VisibleIndex = 33;
             this.gridColumn7.Width = 100;
             // 
             // gridColumn19
@@ -2999,7 +3008,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
             this.gridColumn19.Name = "gridColumn19";
             this.gridColumn19.OptionsColumn.AllowEdit = false;
             this.gridColumn19.Visible = true;
-            this.gridColumn19.VisibleIndex = 33;
+            this.gridColumn19.VisibleIndex = 34;
             this.gridColumn19.Width = 100;
             // 
             // gridColumn11
@@ -3010,7 +3019,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
             this.gridColumn11.OptionsColumn.AllowEdit = false;
             this.gridColumn11.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumn11.Visible = true;
-            this.gridColumn11.VisibleIndex = 34;
+            this.gridColumn11.VisibleIndex = 35;
             this.gridColumn11.Width = 120;
             // 
             // gridColumn13
@@ -3021,7 +3030,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
             this.gridColumn13.OptionsColumn.AllowEdit = false;
             this.gridColumn13.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumn13.Visible = true;
-            this.gridColumn13.VisibleIndex = 35;
+            this.gridColumn13.VisibleIndex = 36;
             this.gridColumn13.Width = 120;
             // 
             // gridColumn14
@@ -3031,8 +3040,19 @@ namespace HIS.Desktop.Plugins.ConnectionTest
             this.gridColumn14.Name = "gridColumn14";
             this.gridColumn14.OptionsColumn.AllowEdit = false;
             this.gridColumn14.Visible = true;
-            this.gridColumn14.VisibleIndex = 36;
+            this.gridColumn14.VisibleIndex = 37;
             this.gridColumn14.Width = 100;
+            // 
+            // gridColumn33
+            // 
+            this.gridColumn33.FieldName = "PRINT_COUNT_IC";
+            this.gridColumn33.Fixed = DevExpress.XtraGrid.Columns.FixedStyle.Left;
+            this.gridColumn33.MaxWidth = 20;
+            this.gridColumn33.Name = "gridColumn33";
+            this.gridColumn33.OptionsColumn.ShowCaption = false;
+            this.gridColumn33.Visible = true;
+            this.gridColumn33.VisibleIndex = 10;
+            this.gridColumn33.Width = 20;
             // 
             // DuyetE
             // 
@@ -3236,6 +3256,14 @@ namespace HIS.Desktop.Plugins.ConnectionTest
             this.repositoryHuyChapNhan.Name = "repositoryHuyChapNhan";
             this.repositoryHuyChapNhan.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             this.repositoryHuyChapNhan.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.repositoryHuyChapNhan_ButtonClick);
+            // 
+            // repCountPrint
+            // 
+            this.repCountPrint.AutoHeight = false;
+            this.repCountPrint.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("repCountPrint.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject109, serializableAppearanceObject110, serializableAppearanceObject111, serializableAppearanceObject112, "", null, null, true)});
+            this.repCountPrint.Name = "repCountPrint";
+            this.repCountPrint.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             // 
             // cboUserKQ
             // 
@@ -4148,6 +4176,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
             ((System.ComponentModel.ISupportInitialize)(this.repositoryHuyDuyetKetQuaE)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryHuyDuyetKetQuaD)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryHuyChapNhan)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repCountPrint)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboUserKQ.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboUserKQView)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup1)).EndInit();
@@ -4501,5 +4530,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
         private DevExpress.XtraGrid.Views.Grid.GridView gridView4;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem43;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem44;
+        private DevExpress.XtraGrid.Columns.GridColumn gridColumn33;
+        private DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit repCountPrint;
     }
 }

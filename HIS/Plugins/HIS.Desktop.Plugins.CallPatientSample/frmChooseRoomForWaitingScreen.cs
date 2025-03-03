@@ -190,10 +190,11 @@ namespace HIS.Desktop.Plugins.CallPatientSample
                         }
                     }
                 }
+                bool isTach = chkTach.Checked;
                 this.positionHandleControl = -1;
                 if (!dxValidationProviderControl.Validate())
                     return;
-                aFrmWaitingScreenQy = new frmWaitingScreenSample22(this.currentModule, listSample, sampleSttIds, this.room);
+                aFrmWaitingScreenQy = new frmWaitingScreenSample22(this.currentModule, listSample, sampleSttIds, this.room,isTach);
 
                 if (aFrmWaitingScreenQy != null && tgExtendMonitor.IsOn)
                 {
@@ -321,5 +322,39 @@ namespace HIS.Desktop.Plugins.CallPatientSample
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
+
+        private void gridViewExecuteStatus_CellValueChanged(object sender, CellValueChangedEventArgs e)
+        {
+        }
+
+        private void CheckEditStt_CheckedChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                CheckEdit checkEdit = sender as CheckEdit;
+                if (checkEdit != null && gridViewExecuteStatus.FocusedRowHandle >= 0)
+                {
+                    var focusedRow = gridViewExecuteStatus.GetFocusedRow() as LisSampleSttADO;
+                    if (focusedRow != null)
+                    {
+                        focusedRow.checkStt = checkEdit.Checked;
+                    }
+                }
+
+                List<LisSampleSttADO> serviceReqSttSdos = new List<LisSampleSttADO>();
+                if (gridControlExecuteStatus.DataSource != null)
+                {
+                    serviceReqSttSdos = (List<LisSampleSttADO>)gridControlExecuteStatus.DataSource;
+                }
+                int checkedRowCount = serviceReqSttSdos.Count(s => s.checkStt);
+                chkTach.Enabled = checkedRowCount >= 2;
+                if (checkedRowCount < 2) chkTach.Checked = false;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
     }
 }

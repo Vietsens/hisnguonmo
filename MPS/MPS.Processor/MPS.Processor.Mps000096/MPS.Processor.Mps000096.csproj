@@ -31,10 +31,10 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="AutoMapper">
-      <HintPath>..\..\..\..\FE\YTE\DESKTOP\HIS\ReferencedAssemblies\AutoMapper.dll</HintPath>
+      <HintPath>..\..\..\..\lib_1\MPSv2\MPS\AutoMapper.dll</HintPath>
     </Reference>
     <Reference Include="HIS.Desktop.ApiConsumer">
-      <HintPath>..\..\..\..\LIB\HIS\ReferencedAssemblies\HIS.Desktop.ApiConsumer.dll</HintPath>
+      <HintPath>..\..\..\..\lib_1\HIS\HIS.Desktop.IsAdmin\HIS.Desktop.ApiConsumer.dll</HintPath>
     </Reference>
     <Reference Include="IMSys.DbConfig.HIS_RS">
       <HintPath>..\..\..\..\LIB\IMSys.DbConfig\IMSys.DbConfig.HIS_RS\IMSys.DbConfig.HIS_RS.dll</HintPath>
@@ -93,7 +93,7 @@
       <HintPath>..\..\..\..\LIB\MOS\MOS.LibraryHein.Bhyt.dll</HintPath>
     </Reference>
     <Reference Include="MPS.Processor.Mps000096.PDO">
-      <HintPath>..\MPS.Processor.Mps000096.PDO\bin\Debug\MPS.Processor.Mps000096.PDO.dll</HintPath>
+      <HintPath>..\..\..\..\lib_1\MPSv2\MPS.PDO\MPS.Processor.Mps000096.PDO.dll</HintPath>
     </Reference>
     <Reference Include="MPS.ProcessorBase">
       <HintPath>..\..\..\..\LIB\MPSv2\MPS.ProcessorBase\MPS.ProcessorBase.dll</HintPath>

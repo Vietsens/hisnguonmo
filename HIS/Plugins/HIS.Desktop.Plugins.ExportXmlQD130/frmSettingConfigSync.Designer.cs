@@ -59,6 +59,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
             this.barDockControlLeft = new DevExpress.XtraBars.BarDockControl();
             this.barDockControlRight = new DevExpress.XtraBars.BarDockControl();
             this.layoutControl1 = new DevExpress.XtraLayout.LayoutControl();
+            this.chkXML3176 = new DevExpress.XtraEditors.CheckEdit();
             this.txtFolder = new DevExpress.XtraEditors.ButtonEdit();
             this.chkDontSend = new DevExpress.XtraEditors.CheckEdit();
             this.chkCollinearXML = new DevExpress.XtraEditors.CheckEdit();
@@ -91,9 +92,11 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
             this.layoutControlItem4 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem6 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem5 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.layoutControlItem8 = new DevExpress.XtraLayout.LayoutControlItem();
             ((System.ComponentModel.ISupportInitialize)(this.barManager1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
             this.layoutControl1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.chkXML3176.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtFolder.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.chkDontSend.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.chkCollinearXML.Properties)).BeginInit();
@@ -125,16 +128,13 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem4)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem6)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem5)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem8)).BeginInit();
             this.SuspendLayout();
             // 
             // barManager1
             // 
             this.barManager1.Bars.AddRange(new DevExpress.XtraBars.Bar[] {
             this.bar1});
-            this.barManager1.DockControls.Add(this.barDockControlTop);
-            this.barManager1.DockControls.Add(this.barDockControlBottom);
-            this.barManager1.DockControls.Add(this.barDockControlLeft);
-            this.barManager1.DockControls.Add(this.barDockControlRight);
             this.barManager1.Form = this;
             this.barManager1.Items.AddRange(new DevExpress.XtraBars.BarItem[] {
             this.bbtnSave});
@@ -163,8 +163,8 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
             // 
             this.barDockControlTop.CausesValidation = false;
             this.barDockControlTop.Dock = System.Windows.Forms.DockStyle.Top;
-            this.barDockControlTop.Location = new System.Drawing.Point(0, 0);
-            this.barDockControlTop.Size = new System.Drawing.Size(389, 29);
+            this.barDockControlTop.Location = new System.Drawing.Point(0, 29);
+            this.barDockControlTop.Size = new System.Drawing.Size(389, 0);
             // 
             // barDockControlBottom
             // 
@@ -189,6 +189,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
             // 
             // layoutControl1
             // 
+            this.layoutControl1.Controls.Add(this.chkXML3176);
             this.layoutControl1.Controls.Add(this.txtFolder);
             this.layoutControl1.Controls.Add(this.chkDontSend);
             this.layoutControl1.Controls.Add(this.chkCollinearXML);
@@ -209,6 +210,16 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
             this.layoutControl1.Size = new System.Drawing.Size(389, 246);
             this.layoutControl1.TabIndex = 5;
             this.layoutControl1.Text = "layoutControl1";
+            // 
+            // chkXML3176
+            // 
+            this.chkXML3176.Location = new System.Drawing.Point(230, 170);
+            this.chkXML3176.MenuManager = this.barManager1;
+            this.chkXML3176.Name = "chkXML3176";
+            this.chkXML3176.Properties.Caption = "XML 3176";
+            this.chkXML3176.Size = new System.Drawing.Size(157, 19);
+            this.chkXML3176.StyleController = this.layoutControl1;
+            this.chkXML3176.TabIndex = 23;
             // 
             // txtFolder
             // 
@@ -236,11 +247,11 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
             // 
             // chkCollinearXML
             // 
-            this.chkCollinearXML.Location = new System.Drawing.Point(97, 170);
+            this.chkCollinearXML.Location = new System.Drawing.Point(47, 170);
             this.chkCollinearXML.MenuManager = this.barManager1;
             this.chkCollinearXML.Name = "chkCollinearXML";
             this.chkCollinearXML.Properties.Caption = "XML thông tuyến";
-            this.chkCollinearXML.Size = new System.Drawing.Size(290, 19);
+            this.chkCollinearXML.Size = new System.Drawing.Size(179, 19);
             this.chkCollinearXML.StyleController = this.layoutControl1;
             this.chkCollinearXML.TabIndex = 19;
             this.chkCollinearXML.CheckedChanged += new System.EventHandler(this.chkCollinearXML_CheckedChanged);
@@ -427,7 +438,8 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
             this.layoutControlItem3,
             this.layoutControlItem4,
             this.layoutControlItem6,
-            this.layoutControlItem5});
+            this.layoutControlItem5,
+            this.layoutControlItem8});
             this.layoutControlGroup1.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup1.Name = "layoutControlGroup1";
             this.layoutControlGroup1.OptionsItemText.TextToControlDistance = 4;
@@ -565,10 +577,10 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
             this.layoutControlItem4.Control = this.chkCollinearXML;
             this.layoutControlItem4.Location = new System.Drawing.Point(0, 168);
             this.layoutControlItem4.Name = "layoutControlItem4";
-            this.layoutControlItem4.Size = new System.Drawing.Size(389, 24);
+            this.layoutControlItem4.Size = new System.Drawing.Size(228, 24);
             this.layoutControlItem4.Text = " ";
             this.layoutControlItem4.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
-            this.layoutControlItem4.TextSize = new System.Drawing.Size(90, 20);
+            this.layoutControlItem4.TextSize = new System.Drawing.Size(40, 20);
             this.layoutControlItem4.TextToControlDistance = 5;
             // 
             // layoutControlItem6
@@ -594,6 +606,15 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
             this.layoutControlItem5.TextSize = new System.Drawing.Size(90, 20);
             this.layoutControlItem5.TextToControlDistance = 5;
             // 
+            // layoutControlItem8
+            // 
+            this.layoutControlItem8.Control = this.chkXML3176;
+            this.layoutControlItem8.Location = new System.Drawing.Point(228, 168);
+            this.layoutControlItem8.Name = "layoutControlItem8";
+            this.layoutControlItem8.Size = new System.Drawing.Size(161, 24);
+            this.layoutControlItem8.TextSize = new System.Drawing.Size(0, 0);
+            this.layoutControlItem8.TextVisible = false;
+            // 
             // frmSettingConfigSync
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -617,6 +638,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
             ((System.ComponentModel.ISupportInitialize)(this.barManager1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).EndInit();
             this.layoutControl1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.chkXML3176.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtFolder.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.chkDontSend.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.chkCollinearXML.Properties)).EndInit();
@@ -648,6 +670,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem4)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem6)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem5)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem8)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -694,5 +717,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem6;
         private DevExpress.XtraEditors.ButtonEdit txtFolder;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem5;
+        private DevExpress.XtraEditors.CheckEdit chkXML3176;
+        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem8;
     }
 }

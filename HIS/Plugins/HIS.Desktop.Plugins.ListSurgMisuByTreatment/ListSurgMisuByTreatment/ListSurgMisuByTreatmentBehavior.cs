@@ -35,6 +35,7 @@ namespace HIS.Desktop.Plugins.ListSurgMisuByTreatment.ListSurgMisuByTreatment
         Inventec.Desktop.Common.Modules.Module currentModule;
         long treatmentId;
         long patientTypeId;
+        HIS.Desktop.Common.DelegateLoadPTTT loadPTTT;
 
         public ListSurgMisuByTreatmentBehavior()
             : base()
@@ -68,17 +69,26 @@ namespace HIS.Desktop.Plugins.ListSurgMisuByTreatment.ListSurgMisuByTreatment
                         {
                             currentModule = (Inventec.Desktop.Common.Modules.Module)item;
                         }
+                        else if (item is HIS.Desktop.Common.DelegateLoadPTTT)
+                        {
+                            loadPTTT = (HIS.Desktop.Common.DelegateLoadPTTT)item;
+                        }
+                    }
                         if (currentModule != null && treatmentId > 0 && patientTypeId > 0)
                         {
                             result = new HIS.Desktop.Plugins.ListSurgMisuByTreatment.Run.frmListSurgMisuByTreatment(currentModule, treatmentId,patientTypeId);
-                            break;
+                            //break;
+                        }
+                        else if (currentModule != null && treatmentId > 0 && loadPTTT != null)
+                        {
+                            result = new HIS.Desktop.Plugins.ListSurgMisuByTreatment.Run.frmListSurgMisuByTreatment(currentModule, treatmentId, loadPTTT);
+                            //break;
                         }
                         else if (currentModule != null && treatmentId > 0)
                         {
                             result = new HIS.Desktop.Plugins.ListSurgMisuByTreatment.Run.frmListSurgMisuByTreatment(currentModule, treatmentId);
-                            break;
+                            //break;
                         }
-                    }
                 }
             }
             catch (Exception ex)

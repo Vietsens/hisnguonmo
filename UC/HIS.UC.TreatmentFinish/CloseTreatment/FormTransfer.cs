@@ -21,6 +21,7 @@ using DevExpress.XtraGrid.Columns;
 using HIS.Desktop.ApiConsumer;
 using HIS.Desktop.LocalStorage.BackendData;
 using HIS.Desktop.LocalStorage.LocalData;
+using HIS.Desktop.Utility;
 using HIS.UC.TreatmentFinish.ADO;
 using Inventec.Common.Adapter;
 using Inventec.Common.Controls.EditorLoader;
@@ -65,6 +66,7 @@ namespace HIS.UC.TreatmentFinish.CloseTreatment
 
         internal const string ModuleLink_HisTranPatiTemp = "HIS.Desktop.Plugins.HisTranPatiTemp";
         List<V_HIS_EMPLOYEE> selected = new List<V_HIS_EMPLOYEE>();
+        private long WorkingRoomId { get; set; }
         #endregion
 
         #region Construct
@@ -73,7 +75,7 @@ namespace HIS.UC.TreatmentFinish.CloseTreatment
             InitializeComponent();
         }
 
-        public FormTransfer(TreatmentEndInputADO _treatmentEndInputADO)
+        public FormTransfer(TreatmentEndInputADO _treatmentEndInputADO, long roomId)
             : this()
         {
             try
@@ -82,6 +84,7 @@ namespace HIS.UC.TreatmentFinish.CloseTreatment
                 {
                     this.treatmentEndInputADO = _treatmentEndInputADO;
                     this.hisTreatment = this.treatmentEndInputADO.Treatment;
+                    this.WorkingRoomId = roomId;
                 }
             }
             catch (Exception ex)
@@ -146,8 +149,14 @@ namespace HIS.UC.TreatmentFinish.CloseTreatment
                             txtTranPatiReason.Text = tranPatiReason.TRAN_PATI_REASON_CODE;
                         }
                     }
-                    txtDauHieuLamSang.Text = treatment.CLINICAL_NOTE;
-                    txtXetNghiem.Text = treatment.SUBCLINICAL_RESULT;
+                    HisTreatmentExtFilter filter = new HisTreatmentExtFilter();
+                    filter.TREATMENT_ID = treatment.ID;
+                    var treatmentExt = new BackendAdapter(new CommonParam()).Get<List<HIS_TREATMENT_EXT>>("api/HisTreatmentExt/Get", ApiConsumers.MosConsumer, filter, null);
+                    if (treatmentExt != null)
+                    {
+                        txtDauHieuLamSang.Text = treatmentExt[0].CLINICAL_NOTE;
+                        txtXetNghiem.Text = treatmentExt[0].SUBCLINICAL_RESULT;
+                    }
                     txtTinhTrangNguoiBenh.Text = treatment.PATIENT_CONDITION;
                     txtPhuongTienVanChuyen.Text = treatment.TRANSPORT_VEHICLE;
                     if (treatment != null && !string.IsNullOrEmpty(treatment.TRANSPORTER_LOGINNAMES))
@@ -184,12 +193,50 @@ namespace HIS.UC.TreatmentFinish.CloseTreatment
                     }
                     txtPPKTThuoc.Text = treatment.TREATMENT_METHOD;
                     txtHuongDieuTri.Text = treatment.TREATMENT_DIRECTION;
+                    memPttt.Text = treatment.SURGERY_NAME;
+                    if (treatment.SURGERY_BEGIN_TIME.HasValue)
+                        dteBegin.DateTime = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(treatment.SURGERY_BEGIN_TIME ?? 0) ?? DateTime.MinValue;
+
+                    if (treatment.SURGERY_END_TIME.HasValue)
+                        dteEnd.DateTime = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(treatment.SURGERY_END_TIME ?? 0) ?? DateTime.MinValue;
+                    chkValid1Year.Checked = treatment.VALID_1_YEAR == 1;
+                    txtUsedMedicine.Text = treatment.USED_MEDICINE;
                 }
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
+        }
+
+        private string GetUsedMedicine(long treatmentId)
+        {
+            string rs = "";
+            try
+            {
+                CommonParam param = new CommonParam();
+                HisExpMestMedicineViewFilter filter = new HisExpMestMedicineViewFilter();
+                filter.TDL_TREATMENT_ID = treatmentId;
+                filter.EXP_MEST_STT_ID = IMSys.DbConfig.HIS_RS.HIS_EXP_MEST_STT.ID__DONE;
+
+                var expMestMedicine = new BackendAdapter(param).Get<List<V_HIS_EXP_MEST_MEDICINE>>("api/HisExpMestMedicine/GetView", HIS.Desktop.ApiConsumer.ApiConsumers.MosConsumer, filter, param);
+
+                if (expMestMedicine != null && expMestMedicine.Count > 0)
+                {
+                    var expMestMedicineGroup = expMestMedicine.GroupBy(o => o.MEDICINE_TYPE_ID).ToList();
+                    foreach (var group in expMestMedicineGroup)
+                    {
+                        rs += group.First().MEDICINE_TYPE_NAME + (!string.IsNullOrEmpty(group.First().CONCENTRA) ? "(" + group.First().CONCENTRA + ");" : ";");
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+                return "";
+            }
+
+            return rs;
         }
 
         private void SetIcon()
@@ -402,7 +449,7 @@ namespace HIS.UC.TreatmentFinish.CloseTreatment
                     {
                         selected = selected.Distinct(new Compare()).ToList();
                         string displayText = String.Join(", ", selected.Select(s => s.TDL_USERNAME).ToList());
-                        cboTransporterLoginName.Text = displayText;                       
+                        cboTransporterLoginName.Text = displayText;
                     }
                     txtPPKTThuoc.Text = currentTreatmentFinishSDO.TreatmentMethod;
                     txtHuongDieuTri.Text = currentTreatmentFinishSDO.TreatmentDirection;
@@ -425,12 +472,12 @@ namespace HIS.UC.TreatmentFinish.CloseTreatment
                 CommonBaseEditor.ValidateGridLookupWithTextEdit(this.cboTranPatiReason, this.txtTranPatiReason, this.dxValidationProviderControl);
                 CommonBaseEditor.ValidateGridLookupWithTextEdit(this.cboTranPatiForm, this.txtTranPatiForm, this.dxValidationProviderControl);
                 CommonBaseEditor.ValidateGridLookupWithTextEditSpecial(this.cboTransporterLoginName, txtTransporterLoginName, this.dxValidationProviderControl);
-                ValidationControlMaxLength(txtDauHieuLamSang, 500, true);
+                ValidationControlMaxLength(txtDauHieuLamSang, 4000, true);
                 ValidationControlMaxLength(txtHuongDieuTri, 200, true);
                 //ValidationControlMaxLength(txtNguoiHoTong, 50);
                 ValidationControlMaxLength(txtTinhTrangNguoiBenh, 3000);
                 ValidationControlMaxLength(txtPhuongTienVanChuyen, 200, true);
-                ValidationControlMaxLength(txtXetNghiem, 500);
+                ValidationControlMaxLength(txtXetNghiem, 4000, true);
                 ValidationControlMaxLength(txtPPKTThuoc, 200, true);
             }
             catch (Exception ex)
@@ -908,10 +955,10 @@ namespace HIS.UC.TreatmentFinish.CloseTreatment
                 if (selected != null && selected.Count > 0)
                 {
                     var lst = selected.Where(o => !string.IsNullOrEmpty(o.LOGINNAME));
-                    if(lst != null && lst.Count() > 0)
+                    if (lst != null && lst.Count() > 0)
                     {
                         lstLoginNames = lst.Select(o => o.LOGINNAME).ToList();
-                    }    
+                    }
                 }
                 currentTreatmentFinishSDO.TransporterLoginnames = lstLoginNames != null && lstLoginNames.Count > 0 ? string.Join(";", lstLoginNames) : null;
                 currentTreatmentFinishSDO.Transporter = selected != null && selected.Count > 0 ? string.Join(";", selected.Select(o => o.TDL_USERNAME)) : null;
@@ -922,6 +969,14 @@ namespace HIS.UC.TreatmentFinish.CloseTreatment
                     currentTreatmentFinishSDO.TranPatiHospitalLoginname = cboLoginName.EditValue.ToString();
                     currentTreatmentFinishSDO.TranPatiHospitalUsername = cboLoginName.Text.ToString();
                 }
+
+                currentTreatmentFinishSDO.UsedMedicine = txtUsedMedicine.Text.Trim();
+                currentTreatmentFinishSDO.SurgeryName = memPttt.Text.Trim();
+                if (dteBegin.EditValue != null && dteBegin.DateTime != DateTime.MinValue)
+                    currentTreatmentFinishSDO.SurgeryBeginTime = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(dteBegin.DateTime);
+                if (dteEnd.EditValue != null && dteEnd.DateTime != DateTime.MinValue)
+                    currentTreatmentFinishSDO.SurgeryEndTime = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(dteEnd.DateTime);
+                currentTreatmentFinishSDO.Valid1Year = chkValid1Year.Checked;
                 if (MyGetData != null)
                     MyGetData(currentTreatmentFinishSDO);
                 this.Close();
@@ -1323,7 +1378,7 @@ namespace HIS.UC.TreatmentFinish.CloseTreatment
 
                 if (hisTreatment != null && !string.IsNullOrEmpty(hisTreatment.TRANSPORTER))
                 {
-                    var splt = hisTreatment.TRANSPORTER.Split(new string[] { ";" },StringSplitOptions.RemoveEmptyEntries );
+                    var splt = hisTreatment.TRANSPORTER.Split(new string[] { ";" }, StringSplitOptions.RemoveEmptyEntries);
                     foreach (var item in splt)
                     {
                         if (selected.FirstOrDefault(o => !string.IsNullOrEmpty(o.LOGINNAME) && o.TDL_USERNAME == item.Trim()) != null)
@@ -1636,6 +1691,53 @@ namespace HIS.UC.TreatmentFinish.CloseTreatment
                     }
                     txtTransporterLoginName.Text = string.Join(", ", selected.Select(o => o.TDL_USERNAME));
                 }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+
+        }
+
+        private void memPttt_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
+        {
+            try
+            {
+                if (e.KeyCode == Keys.F1 && WorkingRoomId > 0)
+                {
+                    Inventec.Desktop.Common.Modules.Module moduleData = GlobalVariables.currentModuleRaws.Where(o => o.ModuleLink == "HIS.Desktop.Plugins.ListSurgMisuByTreatment").FirstOrDefault();
+                    if (moduleData == null) Inventec.Common.Logging.LogSystem.Error("khong tim thay moduleLink = HIS.Desktop.Plugins.ListSurgMisuByTreatment");
+                    if (moduleData.IsPlugin && moduleData.ExtensionInfo != null && hisTreatment != null)
+                    {
+                        List<object> listArgs = new List<object>();
+                        listArgs.Add(hisTreatment.ID);
+                        listArgs.Add(new List<long>() { IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__PT, IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__TT });
+                        listArgs.Add((HIS.Desktop.Common.DelegateLoadPTTT)UpdateData);
+                        var extenceInstance = PluginInstance.GetPluginInstance(HIS.Desktop.Utility.PluginInstance.GetModuleWithWorkingRoom(moduleData, this.WorkingRoomId, BackendDataWorker.Get<V_HIS_ROOM>().FirstOrDefault(o=>o.ID == this.WorkingRoomId).ROOM_TYPE_ID), listArgs);
+
+                        if (extenceInstance == null) throw new ArgumentNullException("moduleData is null");
+                        ((Form)extenceInstance).ShowDialog();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+        private void UpdateData(string namePTTT, DateTime? startTime, DateTime? finishTime)
+        {
+            try
+            {
+                memPttt.Text = namePTTT;
+                if (startTime.HasValue)
+                    dteBegin.DateTime = startTime.Value;
+                else
+                    dteBegin.EditValue = null;
+                if (finishTime.HasValue)
+                    dteEnd.DateTime = finishTime.Value;
+                else
+                    dteEnd.EditValue = null;
             }
             catch (Exception ex)
             {

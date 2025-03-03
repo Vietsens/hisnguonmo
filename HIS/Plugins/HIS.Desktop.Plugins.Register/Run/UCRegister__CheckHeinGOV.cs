@@ -30,6 +30,7 @@ using Inventec.Common.Logging;
 using HIS.Desktop.Plugins.Library.CheckHeinGOV;
 using MOS.SDO;
 using SDA.EFMODEL.DataModels;
+using DevExpress.XtraEditors;
 
 namespace HIS.Desktop.Plugins.Register.Run
 {
@@ -196,7 +197,7 @@ namespace HIS.Desktop.Plugins.Register.Run
                             this.mainHeinProcessor.FillDataAfterCheckBHYT(this.ucHeinBHYT, dataHein);
                         }
                     }
-
+                    CheckRRCodeTTFee(false);
                     if (HisConfigCFG.IsCheckExamHistory && (this.ResultDataADO.IsShowQuestionWhileChangeHeinTime__Choose || this.ResultDataADO.SuccessWithoutMessage))
                     {
                         Inventec.Common.Logging.LogSystem.Debug("Mo form lich su voi data rsIns");
@@ -211,6 +212,25 @@ namespace HIS.Desktop.Plugins.Register.Run
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
+        }
+        private bool CheckRRCodeTTFee(bool IsSave)
+        {
+            bool result = true;
+            try
+            {
+                HisPatientProfileSDO dataPatientProfile = new HisPatientProfileSDO();
+                this.mainHeinProcessor.UpdateDataFormIntoPatientTypeAlter(this.ucHeinBHYT, dataPatientProfile);
+                if (dataPatientProfile.HisPatientTypeAlter.RIGHT_ROUTE_CODE == MOS.LibraryHein.Bhyt.HeinRightRoute.HeinRightRouteCode.FALSE && HIS.Desktop.LocalStorage.BackendData.BranchDataWorker.Branch.IS_WARNING_WRONG_ROUTE_FEE == 1)
+                {
+                    result = IsSave ? XtraMessageBox.Show("Bệnh nhân trái tuyến cần thu tiền khám. Bạn có muốn tiếp tục không?", "Thông báo", MessageBoxButtons.YesNo) == DialogResult.Yes : XtraMessageBox.Show("Bệnh nhân trái tuyến cần thu tiền khám.", "Thông báo", MessageBoxButtons.OK) == DialogResult.OK;
+                }               
+                        
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+            return result;
         }
 
         bool CheckChangeInfo(HeinCardData dataHein, ResultHistoryLDO rsIns, bool isHasNewCard)

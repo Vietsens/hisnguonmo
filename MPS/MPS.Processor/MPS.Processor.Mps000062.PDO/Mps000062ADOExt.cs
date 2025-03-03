@@ -42,6 +42,8 @@ namespace MPS.Processor.Mps000062.PDO
         public short Num_Order { get; set; }
         public long? MIXED_INFUSION { get; set; }
         public string ACTIVE_INGR_BHYT_CODE { get; set; }
+        public string ACTIVE_INGR_BHYT_NAME { get; set; }
+        public string CONCENTRA { get; set; }
     }
 
     public class SingleKeyTracking
@@ -196,10 +198,11 @@ namespace MPS.Processor.Mps000062.PDO
 
         //New
         public string MATERIAL___DATA { get; set; }
-
+        public string MATERIAL_HTU___DATA { get; set; }
         public string MATERIAL_DuTru___DATA { get; set; } // vật tư dự trù
-
+        public string MATERIAL_DuTru_HTU___DATA { get; set; }
         public string MATERIAL_THDT___DATA { get; set; } // vật tư thực hiện dự trù
+        public string MATERIAL_THDT_HTU___DATA { get; set; } // vật tư thực hiện dự trù
         /// <summary>
         /// Liều 1 thang x " + DAY_COUNT+ TUTORIAL_REMEDY
         /// </summary>
@@ -216,6 +219,8 @@ namespace MPS.Processor.Mps000062.PDO
         ///<#if(<#Medicines.REMEDY_COUNT;> = 0;;<#Medicines.Amount_By_Remedy_Count;><#Medicines.SERVICE_UNIT_NAME;> )> <#if(<#Medicines.REMEDY_COUNT;> = 0;<#if(<#Medicines.AMOUNT;> = 0;;   <#Medicines.AMOUNT;>  <#Medicines.SERVICE_UNIT_NAME;>)>;)> <#Row Height(Autofit)>
         /// </summary>
         public string MEDICINES___DATA { get; set; }
+
+        public string MEDICINES_HTU___DATA { get; set; }
         /// <summary>
         /// <#Medicines.NUMBER_H_N;><#Medicines.MEDICINE_TYPE_NAME;> <#Medicines.CONCENTRA;> <#if(<#Medicines.REMEDY_COUNT;> = 0;<#if(<#Medicines.AMOUNT;> = 0;;   x<#Medicines.AMOUNT;>  <#Medicines.SERVICE_UNIT_NAME;>   <#Medicines.MEDICINE_USE_FORM_NAME;> )>;<#Medicines.Amount_By_Remedy_Count;> <#Medicines.SERVICE_UNIT_NAME;>)><#if(<#Medicines.PRESCRIPTION_TYPE_ID;> =2;;
         ///<#Medicines.TUTORIAL;>)><#Row Height(Autofit)>
@@ -233,6 +238,7 @@ namespace MPS.Processor.Mps000062.PDO
         public string MEDICINES_DONG___DATA { get; set; } //thuốc đông y
         public string MEDICINES_DONG_DETAIL___DATA { get; set; } //Chi tiết thuốc đông y
 
+        public string MEDICINES_DONG_HTU___DATA { get; set; } //Chi tiết thuốc đông y
         public string MEDICINES_NO_CONCENTRA__DATA { get; set; } //Bỏ hàm lượng khỏi tên thuốc 
         public string MEDI_DUTRU_NO_CONCENTRA { get; set; } //Bỏ hàm lượng khỏi tên thuốc đối với thuốc dự trù
         public string MEDI_THDT_NO_CONCENTRA { get; set; } //Bỏ hàm lượng khỏi tên thuốc đối với thuốc thực hiện dự trù
@@ -264,20 +270,34 @@ namespace MPS.Processor.Mps000062.PDO
         public string BLOOD___DATA { get; set; }
         public string MEDICAL_INSTRUCTION___DATA { get; set; }
         public string MEDICINES_INFUSION___DATA { get; set; }
+        public string MEDICINES_INFUSION_HTU___DATA { get; set; }
         public string MEDICINES_INFUSION_DATA_WITH_BOLD_NAME { get; set; } // thuốc pha truyền có in đậm tên thuốc
         public string MEDICINES_DuTru___DATA { get; set; } // hiển thị các thuốc dự trù
+        public string MEDICINES_DuTru_HTU___DATA { get; set; }
         public string MEDICINES_THDT___DATA { get; set; } // hiển thị các thuốc thực hiện dự trù
+        public string MEDICINES_THDT_HTU___DATA { get; set; }
         public string MEDICINES_INFUSION_DuTru___DATA { get; set; } // thuốc pha truyền dự trù
+        public string MEDICINES_INFUSION_DuTru_HTU___DATA { get; set; }
         public string MEDICINES_INFUSION_THDT___DATA { get; set; } // thuốc pha truyền thực hiện dự trù
+        public string MEDICINES_INFUSION_THDT_HTU___DATA { get; set; }
         public string MEDICINES_OutStock_DuTru__DATA { get; set; } // thuốc mua ngoài dự trù
+        public string MEDICINES_OutStock_DuTru_HTU__DATA { get; set; }
         public string MEDICINES_OutStock_THDT__DATA { get; set; } // thuốc mua ngoài thực hiện dự trù
+        public string MEDICINES_OutStock_THDT_HTU__DATA { get; set; }
 
         public string MEDICINES_MERGE___DATA { get; set; } // thuốc pha truyền và thuốc không pha truyền
+        public string MEDICINES_MERGE_HTU___DATA { get; set; } 
         public string MEDICINES_MERGE_DUTRU___DATA { get; set; } // thuốc dự trù pha truyền và thuốc dự trù không pha truyền
+        public string MEDICINES_MERGE_DUTRU_HTU___DATA { get; set; }
         /// <summary>
         /// Tổng hợp chi tiết của MEDICINES___DATA, MEDICINES_DuTru___DATA,  MEDICINES_THDT___DATA
         /// </summary>
         public string MEDICINES_MERGE_DETAIL___DATA { get; set; }
+        public string MEDICINES_MERGE_DETAIL_HTU___DATA { get; set; }
+        /// <summary>
+        /// Key tạo dữ liệu gồm dịch vụ CLS và dịch vụ TT các trường hợp không dự trù, dự trù, thực hiện dự trù
+        /// </summary>
+        public string SERVICE_MERGE_X01___DATA { get; set; }
         public string SERVICE_CLS_DuTru___DATA { get; set; }
         public string SERVICE_CLS_DuTru_X01___DATA { get; set; }
         public string SERVICE_CLS_THDT___DATA { get; set; }
@@ -721,6 +741,10 @@ namespace MPS.Processor.Mps000062.PDO
         public string MEDICINE_LINE_NAME { get; set; }
         public string MEDICINE_GROUP_NAME { get; set; }
         public string DOSAGE_FORM_NAME { get; set; }
+        public long? MEDICINE_GROUP_ID { get; set; }
+        public string ACTIVE_INGR_BHYT_CODE { get; set; }
+        public string ACTIVE_INGR_BHYT_NAME { get; set; }
+        public string CONCENTRA { get; set; }
         public ServiceReqMetyADO() { }
         public ServiceReqMetyADO(HIS_SERVICE_REQ_METY data, long trackingId, List<HIS_SERVICE_REQ> ServiceReqs)
         {
@@ -819,7 +843,11 @@ namespace MPS.Processor.Mps000062.PDO
         public long? REQ_BLOOD_RH_ID { get; set; }
         public long? REQ_BLOOD_TYPE_ID { get; set; }
         public long? USE_TIME { get; set; }
-
+        public long? NUM_ORDER_SERVICE_TYPE { get; set; }
+        public bool IsGoupService { get; set; }
+        public long? SERVICE_PARENT_ID { get; set; }
+        public long? SERVICE_NUM_ORDER { get; set; }
+        public List<ServiceCLS> serviceSplits { get; set; }
         public ServiceCLS() { }
 
         public ServiceCLS(HIS_SERE_SERV data)
@@ -829,6 +857,7 @@ namespace MPS.Processor.Mps000062.PDO
                 if (data != null)
                 {
                     Inventec.Common.Mapper.DataObjectMapper.Map<ServiceCLS>(this, data);
+                    serviceSplits = new List<ServiceCLS>();
                 }
             }
             catch (Exception ex)

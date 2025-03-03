@@ -138,6 +138,7 @@ namespace HIS.Desktop.Plugins.Library.PrintPrescription
                         List<ExpMestMedicineSDO> lstMedicineExpmestTypeADO = new List<ExpMestMedicineSDO>();
                         List<ExpMestMedicineSDO> lstMedicineExpmestTypeTuTucADO = new List<ExpMestMedicineSDO>();
                         List<ExpMestMedicineSDO> lstMedicineExpmestTypeThuocHuongThanADO = new List<ExpMestMedicineSDO>();
+                        List<ExpMestMedicineSDO> listTThuongNgoaiKho = new List<ExpMestMedicineSDO>();
                         var listGayNghien = new List<ExpMestMedicineSDO>();
                         var listCoChuaDuocChatGN = new List<ExpMestMedicineSDO>();
                         var listCoChuaDuocChatHT = new List<ExpMestMedicineSDO>();
@@ -323,6 +324,44 @@ namespace HIS.Desktop.Plugins.Library.PrintPrescription
                                 lstMedicineExpmestTypeADO = lstMedicineExpmestTypeADO.Except(listSPHoTro).ToList();
                             }
                         }
+                        else if(keyPrintType == 3)
+                        {
+                            //Danh sach thuoc huong than,gây nghiện
+                            lstMedicineExpmestTypeThuocHuongThanADO = lstMedicineExpmestTypeADO.Where(o =>
+                                o.IS_NEUROLOGICAL == IS_TRUE || o.IS_ADDICTIVE == IS_TRUE
+                                ).ToList();
+
+                            listHuongThan = lstMedicineExpmestTypeADO.Where(o => o.IS_NEUROLOGICAL == IS_TRUE).ToList();
+                            listGayNghien = lstMedicineExpmestTypeADO.Where(o => o.IS_ADDICTIVE == IS_TRUE).ToList();
+
+                            List<ExpMestMedicineSDO> lstMedicineExpmestTypeKhongChua_GN_HT_ADO = new List<ExpMestMedicineSDO>();
+                            //Bo thuoc huong than gay nghien ra khoi danh sach thuoc tong hop
+                            if (lstMedicineExpmestTypeThuocHuongThanADO != null && lstMedicineExpmestTypeThuocHuongThanADO.Count > 0)
+                            {
+                                lstMedicineExpmestTypeKhongChua_GN_HT_ADO = lstMedicineExpmestTypeADO.Except(lstMedicineExpmestTypeThuocHuongThanADO).ToList();
+                            }
+                            else
+                            {
+                                lstMedicineExpmestTypeKhongChua_GN_HT_ADO.AddRange(lstMedicineExpmestTypeADO);
+                            }
+
+                            //Lấy ra danh sách thuốc thường trong kho không chứa thuốc gây nghiện, hướng thần
+                            if (lstMedicineExpmestTypeKhongChua_GN_HT_ADO != null && lstMedicineExpmestTypeKhongChua_GN_HT_ADO.Count > 0)
+                            {
+                                lstMedicineExpmestTypeADO = lstMedicineExpmestTypeKhongChua_GN_HT_ADO.Where(o => o.Type == 1 || o.Type == 2).ToList();
+                            }
+
+                            //Lọc bỏ danh sách thuốc thường trong kho
+                            if (lstMedicineExpmestTypeADO != null && lstMedicineExpmestTypeADO.Count > 0)
+                            {
+                                lstMedicineExpmestTypeKhongChua_GN_HT_ADO = lstMedicineExpmestTypeKhongChua_GN_HT_ADO.Except(lstMedicineExpmestTypeADO).ToList();
+                            }
+                            if (lstMedicineExpmestTypeKhongChua_GN_HT_ADO != null && lstMedicineExpmestTypeKhongChua_GN_HT_ADO.Count > 0)
+                            {
+                                listSPHoTro = lstMedicineExpmestTypeKhongChua_GN_HT_ADO.Where(o => o.IS_FUNCTIONAL_FOOD == IS_TRUE || o.Type == 4).ToList();
+                                listTThuongNgoaiKho = lstMedicineExpmestTypeKhongChua_GN_HT_ADO.Except(listSPHoTro).ToList();
+                            }
+                        }
 
                         var room = BackendDataWorker.Get<V_HIS_MEDI_STOCK>().FirstOrDefault(o => o.ID == item.MEDI_STOCK_ID);
                         mediStockName = room != null ? room.MEDI_STOCK_NAME : "";
@@ -395,7 +434,40 @@ namespace HIS.Desktop.Plugins.Library.PrintPrescription
                             //PrintData(printTypeCode, fileName, mps000044RDO, printNow, ref result);
                         }
                         #endregion
+                        #region in thuong NK
+                        if (listTThuongNgoaiKho != null && listTThuongNgoaiKho.Count > 0)
+                        {
+                            List<MPS.Processor.Mps000044.PDO.ExpMestMedicineSDO> ExpMestMedicineSDO = new List<MPS.Processor.Mps000044.PDO.ExpMestMedicineSDO>();
+                            var group = listTThuongNgoaiKho.GroupBy(o => new { o.MEDICINE_TYPE_ID, o.MEDICINE_TYPE_NAME });
+                            foreach (var aitem in group)
+                            {
+                                MPS.Processor.Mps000044.PDO.ExpMestMedicineSDO ado = new MPS.Processor.Mps000044.PDO.ExpMestMedicineSDO();
+                                Inventec.Common.Mapper.DataObjectMapper.Map<MPS.Processor.Mps000044.PDO.ExpMestMedicineSDO>(ado, aitem.First());
+                                ado.AMOUNT = aitem.Sum(o => o.AMOUNT);
+                                ExpMestMedicineSDO.Add(ado);
+                            }
+                            //Lọc thuốc theo thứ tự
+                            ExpMestMedicineSDO = ExpMestMedicineSDO.OrderBy(o => o.NUM_ORDER ?? 99999).ToList();
+                            mps000044ADO.KEY_NAME_TITLES = "NK";
 
+
+                            MPS.Processor.Mps000044.PDO.Mps000044PDO mps000044RDO = new MPS.Processor.Mps000044.PDO.Mps000044PDO(
+                               vHisPatientTypeAlter,
+                               hisDhst,
+                               HisPrescriptionSDOPrintPlus,
+                               ExpMestMedicineSDO,
+                               mps000044ADO,
+                               hisTreatment,
+                               keyOrderListData,
+                               item,
+                               hisServiceReq_CurentExam,
+                               transReq,
+                               _lstConfig
+                               );
+
+                            Print.PrintData(printTypeCode, fileName, mps000044RDO, printNow, treatmentCode, ref result, this.currentModule != null ? currentModule.RoomId : 0, previewType, lstMedicineExpmestTypeADO.Count, this.SavedData);
+                        }
+                        #endregion
                         #region gay nghien
                         if (listGayNghien != null && listGayNghien.Count > 0)
                         {

@@ -33,6 +33,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.TreeView;
 
 namespace His.UC.UCHein.Design.TemplateHeinBHYT1
 {
@@ -1423,8 +1424,23 @@ namespace His.UC.UCHein.Design.TemplateHeinBHYT1
                                     || MOS.LibraryHein.Bhyt.HeinLevel.HeinLevelCode.COMMUNE == this.HeinLevelCodeCurrent);
                     this.SetEnableControlHein(rightRoute ? RightRouterFactory.RIGHT_ROUTER : RightRouterFactory.WRONG_ROUTER__CHOICE_RIGHT, true);
                 }
+                ValidateRightRouteType(false);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+        private void ValidateRightRouteType(bool LoadDefault = true)
+        {
 
-                if (!this.isCallByRegistor && rdoRightRoute.Checked && this.cboDKKCBBD.EditValue != null && ((this.patientTypeAlterOld != null && this.patientTypeAlterOld.TREATMENT_ID > 0 && (string)this.cboDKKCBBD.EditValue != BackendDataWorker.Get<HIS_BRANCH>().FirstOrDefault(o => o.ID == His.UC.UCHein.HisTreatment.HisTreatmentGet.GetById(this.patientTypeAlterOld.TREATMENT_ID).BRANCH_ID).HEIN_MEDI_ORG_CODE) || (this.entity.HisTreatment != null && this.entity.HisTreatment.ID > 0 && (string)this.cboDKKCBBD.EditValue != BackendDataWorker.Get<HIS_BRANCH>().FirstOrDefault(o => o.ID == entity.HisTreatment.BRANCH_ID).HEIN_MEDI_ORG_CODE)) && this.cboNoiSong.EditValue == null)
+            try
+            {//&& !chkTt46.Checked
+                var treatment = this.patientTypeAlterOld != null && this.patientTypeAlterOld.TREATMENT_ID > 0 ? His.UC.UCHein.HisTreatment.HisTreatmentGet.GetById(this.patientTypeAlterOld.TREATMENT_ID) : (this.entity.HisTreatment != null && this.entity.HisTreatment.ID > 0) ? this.entity.HisTreatment : null;
+                if (LoadDefault)
+                    SetDefaultRightCode();
+                if (!this.isCallByRegistor && rdoRightRoute.Checked && this.cboDKKCBBD.EditValue != null && (string)this.cboDKKCBBD.EditValue != BackendDataWorker.Get<HIS_BRANCH>().FirstOrDefault(o => o.ID == treatment.BRANCH_ID).HEIN_MEDI_ORG_CODE && this.cboNoiSong.EditValue == null && !chkHasAbsentLetter.Checked && !chkHasWorkingLetter.Checked && !chkTt46.Checked && (!ValidAcceptHeinMediOrgCode((string)this.cboDKKCBBD.EditValue, BackendDataWorker.Get<HIS_BRANCH>().FirstOrDefault(o => o.ID == treatment.BRANCH_ID).ACCEPT_HEIN_MEDI_ORG_CODE)
+                        && !ValidSysMediOrgCode((string)this.cboDKKCBBD.EditValue, BackendDataWorker.Get<HIS_BRANCH>().FirstOrDefault(o => o.ID == treatment.BRANCH_ID).SYS_MEDI_ORG_CODE)))
                     ValidRightRouteType();
                 else
                 {
@@ -1436,6 +1452,23 @@ namespace His.UC.UCHein.Design.TemplateHeinBHYT1
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
+
+        }
+        private bool SetDefaultRightCode()
+        {
+            bool result = false;
+            try
+            {
+                var treatment = this.patientTypeAlterOld != null && this.patientTypeAlterOld.TREATMENT_ID > 0 ? His.UC.UCHein.HisTreatment.HisTreatmentGet.GetById(this.patientTypeAlterOld.TREATMENT_ID) : (this.entity.HisTreatment != null && this.entity.HisTreatment.ID > 0) ? this.entity.HisTreatment : null;
+                if (ValidAcceptHeinMediOrgCode((string)this.cboDKKCBBD.EditValue, BackendDataWorker.Get<HIS_BRANCH>().FirstOrDefault(o => o.ID == treatment.BRANCH_ID).ACCEPT_HEIN_MEDI_ORG_CODE)
+                        || ValidSysMediOrgCode((string)this.cboDKKCBBD.EditValue, BackendDataWorker.Get<HIS_BRANCH>().FirstOrDefault(o => o.ID == treatment.BRANCH_ID).SYS_MEDI_ORG_CODE))
+                    rdoRightRoute.Checked = result = true;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+            return result;
         }
 
         private void rdoRightRoute_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
@@ -2052,13 +2085,6 @@ namespace His.UC.UCHein.Design.TemplateHeinBHYT1
                 {
                     this.dxValidationProvider1.SetValidationRule(this.txtHeinRightRouteCode, null);
                     this.lblRightRouteType.AppearanceItemCaption.ForeColor = Color.Black;
-                }
-                if (!this.isCallByRegistor && rdoRightRoute.Checked && this.cboDKKCBBD.EditValue != null && ((this.patientTypeAlterOld != null && this.patientTypeAlterOld.TREATMENT_ID > 0 && (string)this.cboDKKCBBD.EditValue != BackendDataWorker.Get<HIS_BRANCH>().FirstOrDefault(o => o.ID == His.UC.UCHein.HisTreatment.HisTreatmentGet.GetById(this.patientTypeAlterOld.TREATMENT_ID).BRANCH_ID).HEIN_MEDI_ORG_CODE) || (this.entity.HisTreatment != null && this.entity.HisTreatment.ID > 0 && (string)this.cboDKKCBBD.EditValue != BackendDataWorker.Get<HIS_BRANCH>().FirstOrDefault(o => o.ID == entity.HisTreatment.BRANCH_ID).HEIN_MEDI_ORG_CODE)) && this.cboNoiSong.EditValue == null)
-                    ValidRightRouteType();
-                else
-                {
-                    lblRightRouteType.AppearanceItemCaption.ForeColor = System.Drawing.Color.Black;
-                    dxValidationProvider1.SetValidationRule(txtHeinRightRouteCode, null);
                 }
                 ResetValidationRightRoute_Present();
             }

@@ -170,7 +170,8 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
         public List<MOS.EFMODEL.DataModels.HIS_BRANCH> hisBranchs;
         public List<MOS.EFMODEL.DataModels.HIS_TREATMENT_TYPE> hisTreatmentTypes;
         HIS_PATIENT currentPatient;
-
+        HIS_TREATMENT_EXT currentTreatmentExt = new HIS_TREATMENT_EXT();
+        public List<HIS_CAREER> careers;
 
         bool isFinished = false;
         #endregion
@@ -295,6 +296,7 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
                 Inventec.Common.Logging.LogSystem.Error("TreatmentFinish 1");
                 LoadDataFromRam();
                 InitComboHisHospitalizeReason();
+                ValidatecboCareer();
                 Config.ConfigKey.GetConfigKey();
                 ProcessCheckMaterialInvoice();
                 Inventec.Common.Logging.LogSystem.Error("CreateThreadGetData 2");
@@ -308,10 +310,11 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
                 SetEndOrder();
 
                 SetDefaultValueControl();
-
+                LoadDataToComboCareer();
 
                 LoadDataEye(currentHisTreatment);
                 LoadComboControls();
+                LoadDataTreatmentExt();
                 FillDataCurrentTreatment(currentHisTreatment);
 
                 TaskLoadBedLog();
@@ -343,6 +346,43 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
+        private void LoadDataTreatmentExt()
+        {
+            try
+            {
+                if (currentHisTreatment == null) return;
+                List<HIS_TREATMENT_EXT> listTreatmentExt = null;
+                MOS.Filter.HisTreatmentExtFilter filter = new MOS.Filter.HisTreatmentExtFilter();
+                filter.TREATMENT_ID = currentHisTreatment.ID;
+                listTreatmentExt = new BackendAdapter(new CommonParam()).Get<List<HIS_TREATMENT_EXT>>("api/HisTreatmentExt/Get", ApiConsumers.MosConsumer, filter, null);
+
+                if (listTreatmentExt != null) currentTreatmentExt = listTreatmentExt.FirstOrDefault();
+            }
+            catch (Exception ex)
+            {
+
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void LoadDataToComboCareer()
+        {
+            try
+            {
+                careers = BackendDataWorker.Get<HIS_CAREER>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE).ToList();
+
+                List<ColumnInfo> columnInfos = new List<ColumnInfo>();
+                columnInfos.Add(new ColumnInfo("CAREER_CODE", "", 50, 1));
+                columnInfos.Add(new ColumnInfo("CAREER_NAME", "", 150, 2));
+                ControlEditorADO controlEditorADO = new ControlEditorADO("CAREER_NAME", "ID", columnInfos, false, 200);
+                ControlEditorLoader.Load(cboCareer, careers, controlEditorADO);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
         private void SetCaptionByLanguageKey()
         {
             try
@@ -1176,7 +1216,15 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
                         cboResult.EditValue = null;
 
                     }
-
+                    if (!string.IsNullOrEmpty(data.TDL_PATIENT_CAREER_CODE))
+                    {
+                        var currentCareer = careers.Where(o => o.CAREER_CODE == data.TDL_PATIENT_CAREER_CODE).FirstOrDefault();
+                        cboCareer.EditValue = currentCareer.ID;
+                    }
+                    else
+                    {
+                        cboCareer.EditValue = null;
+                    }
                     cboTTExt.EditValue = data.TREATMENT_END_TYPE_EXT_ID;
                     if (data.TREATMENT_END_TYPE_EXT_ID != null)
                     {
@@ -1361,8 +1409,9 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
                     {
                         txtHosReasonNt.Text = data.HOSPITALIZE_REASON_NAME;
                     }
-                    LoadSoNgayDieuTri();
                     FillDataToControlsForm();
+                    LoadSoNgayDieuTri();
+
                 }
             }
             catch (Exception ex)
@@ -1505,6 +1554,7 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
                 this.txtEyeTensionLeft.ReadOnly = true;
                 this.txtEyeTensionRight.ReadOnly = true;
                 this.txtKskCode.ReadOnly = true;
+                this.cboCareer.ReadOnly = true;
             }
             catch (Exception ex)
             {
@@ -1547,9 +1597,10 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
             try
             {
                 HIS_SERVICE_REQ examServiceReq = null;
-                if (!String.IsNullOrWhiteSpace(currentHisTreatment.CLINICAL_NOTE))
+
+                if (this.currentTreatmentExt != null && !String.IsNullOrWhiteSpace(this.currentTreatmentExt.CLINICAL_NOTE))
                 {
-                    txtDauHieuLamSang.Text = currentHisTreatment.CLINICAL_NOTE;
+                    txtDauHieuLamSang.Text = this.currentTreatmentExt.CLINICAL_NOTE;
                 }
                 else
                 {
@@ -1566,9 +1617,9 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
                     }
                 }
 
-                if (!String.IsNullOrWhiteSpace(currentHisTreatment.SUBCLINICAL_RESULT))
+                if (this.currentTreatmentExt != null && !String.IsNullOrWhiteSpace(this.currentTreatmentExt.SUBCLINICAL_RESULT))
                 {
-                    txtKetQuaXetNghiem.Text = currentHisTreatment.SUBCLINICAL_RESULT;
+                    txtKetQuaXetNghiem.Text = this.currentTreatmentExt.SUBCLINICAL_RESULT;
                 }
                 else
                 {
@@ -1612,7 +1663,7 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
             }
         }
 
-        private async Task LoadSoNgayDieuTri()
+        private void LoadSoNgayDieuTri()
         {
             try
             {
@@ -2429,6 +2480,42 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
                 IsContinue = IsContinue && CheckBedLog(true);
                 if (!IsContinue)
                     return;
+
+                GetValueUC();
+                if (Inventec.Common.String.CountVi.Count(codeCheckCD) > 100)
+                {
+                    XtraMessageBox.Show("Mã chẩn đoán phụ nhập quá 100 ký tự.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+                if (Inventec.Common.String.CountVi.Count(nameCheckCD) > 1500)
+                {
+                    XtraMessageBox.Show("Tên chẩn đoán phụ nhập quá 1500 ký tự.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+                if (Inventec.Common.String.CountVi.Count(codeCheckCDYHCT) > 255)
+                {
+                    XtraMessageBox.Show("Mã chẩn đoán YHCT phụ nhập quá 255 ký tự.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+                if (!string.IsNullOrEmpty(codeCheckSubICD))
+                {
+                    var checkICDSubCode = codeCheckSubICD.Split(';').ToList();
+                    if (checkICDSubCode != null && checkICDSubCode.Count > 12)
+                    {
+                        if (Config.ConfigKey.IsCheckSubIcdExceedLimit == "1")
+                        {
+                            XtraMessageBox.Show("Chẩn đoán phụ nhập quá 12 mã bệnh. Vui lòng kiểm tra lại.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                            return;
+                        }
+                        else if (Config.ConfigKey.IsCheckSubIcdExceedLimit == "2")
+                        {
+                            if (DevExpress.XtraEditors.XtraMessageBox.Show("Chẩn đoán phụ nhập quá 12 mã bệnh. Bạn có muốn tiếp tục không?",
+                               "Thông báo",
+                              MessageBoxButtons.YesNo) == DialogResult.No)
+                                return;
+                        }
+                    }
+                }
                 List<WarningADO> warningADONew = new List<WarningADO>();
                 if ((ConfigKey.MustChooseSeviceExamOption == "1" || ConfigKey.MustChooseSeviceExamOption == "2") && !this.CheckMustChooseSeviceExamOption()) return;
                 if (!this.CheckAssignServiceBed_ForSave(ValidationDataType.PopupMessage, ref warningADONew))
@@ -2871,6 +2958,75 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
         {
             LogTheadInSessionInfo(saveTemp, "btnSaveTemp_Click");
         }
+        //sua lai viec 181736
+        string codeCheckCD = "";
+        string nameCheckCD = "";
+        string codeCheckCDYHCT = "";
+        string codeCheckSubICD = "";
+        private void GetValueUC()
+        {
+            try
+            {
+                codeCheckCD = "";
+                nameCheckCD = "";
+                codeCheckCDYHCT = "";
+                codeCheckSubICD = "";
+                if (ucSecondaryIcd != null)
+                {
+                    var subIcd = subIcdProcessor.GetValue(ucSecondaryIcd);
+                    if (subIcd != null && subIcd is SecondaryIcdDataADO)
+                    {
+                        codeCheckSubICD += ((SecondaryIcdDataADO)subIcd).ICD_SUB_CODE;
+                        codeCheckCD += ((SecondaryIcdDataADO)subIcd).ICD_SUB_CODE;
+                        nameCheckCD += ((SecondaryIcdDataADO)subIcd).ICD_TEXT;
+                    }
+                }
+                if (ucIcd != null)
+                {
+                    var icdValue = icdProcessor.GetValue(ucIcd);
+                    if (icdValue is IcdInputADO)
+                    {
+                        codeCheckCD += ((IcdInputADO)icdValue).ICD_CODE;
+                        nameCheckCD += ((IcdInputADO)icdValue).ICD_NAME;
+                    }
+                }
+                if (ucSecondaryIcdYhct != null)
+                {
+                    var subIcdYHCT = subIcdYhctProcessor.GetValue(ucSecondaryIcdYhct);
+                    var icd = BackendDataWorker.Get<HIS_ICD>()
+                        .Where(s => s.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE && s.IS_TRADITIONAL == 1).ToList();
+                    if (subIcdYHCT != null && subIcdYHCT is SecondaryIcdDataADO)
+                    {
+                        codeCheckCDYHCT = ((SecondaryIcdDataADO)subIcdYHCT).ICD_SUB_CODE;
+                        if (!string.IsNullOrEmpty(codeCheckCDYHCT))
+                        {
+                            foreach (var item in codeCheckCDYHCT.Split(new string[] { ";" }, StringSplitOptions.RemoveEmptyEntries).ToList())
+                            {
+                                if (!icd.Exists(o => o.ICD_CODE == item))
+                                {
+                                    MessageBox.Show("Chẩn đoán YHCT phụ không có trong danh mục");
+                                    throw new InvalidOperationException("Chẩn đoán YHCT phụ không có trong danh mục"); // Ném ngoại lệ khi có lỗi
+                                }
+                            }
+                        }
+
+                    }
+                }
+                if (ucIcdYhct != null)
+                {
+                    var IcdYHCT = icdYhctProcessor.GetValue(ucIcdYhct, Template.NoFocus);
+                    if (IcdYHCT != null && IcdYHCT is IcdInputADO)
+                    {
+                        codeCheckCDYHCT += ((IcdInputADO)IcdYHCT).ICD_CODE;
+                    }
+                }
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
         private async void saveTemp()
         {
             try
@@ -2883,6 +3039,39 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
                 valid = this.IsValiICDCause();
                 valid = dxValidationProvider.Validate() && valid;
                 if (!valid) return;
+                GetValueUC();
+                if (Inventec.Common.String.CountVi.Count(codeCheckCD) > 100)
+                {
+                    XtraMessageBox.Show("Mã chẩn đoán phụ nhập quá 100 ký tự.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+                if (Inventec.Common.String.CountVi.Count(nameCheckCD) > 1500)
+                {
+                    XtraMessageBox.Show("Tên chẩn đoán phụ nhập quá 1500 ký tự.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+                if (Inventec.Common.String.CountVi.Count(codeCheckCDYHCT) > 255)
+                {
+                    XtraMessageBox.Show("Mã chẩn đoán YHCT phụ nhập quá 255 ký tự.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
+                var checkICDSubCode = codeCheckSubICD.Split(';').ToList();
+                if (checkICDSubCode != null && checkICDSubCode.Count > 12)
+                {
+                    if (Config.ConfigKey.IsCheckSubIcdExceedLimit == "1")
+                    {
+                        XtraMessageBox.Show("Chẩn đoán phụ nhập quá 12 mã bệnh. Vui lòng kiểm tra lại.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        return;
+                    }
+                    else if (Config.ConfigKey.IsCheckSubIcdExceedLimit == "2")
+                    {
+                        if (DevExpress.XtraEditors.XtraMessageBox.Show("Chẩn đoán phụ nhập quá 12 mã bệnh. Bạn có muốn tiếp tục không?",
+                           "Thông báo",
+                          MessageBoxButtons.YesNo) == DialogResult.No)
+                            return;
+                    }
+                }
                 HIS.Desktop.Plugins.Library.CheckIcd.CheckIcdManager check = new Desktop.Plugins.Library.CheckIcd.CheckIcdManager(null, currentHisTreatment);
                 string message = null;
                 if (CheckIcdWhenSave == "1" || CheckIcdWhenSave == "2")
@@ -4808,6 +4997,39 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
                     return;
                 }
 
+                GetValueUC();
+                if (Inventec.Common.String.CountVi.Count(codeCheckCD) > 100)
+                {
+                    XtraMessageBox.Show("Mã chẩn đoán phụ nhập quá 100 ký tự.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+                if (Inventec.Common.String.CountVi.Count(nameCheckCD) > 1500)
+                {
+                    XtraMessageBox.Show("Tên chẩn đoán phụ nhập quá 1500 ký tự.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+                if (Inventec.Common.String.CountVi.Count(codeCheckCDYHCT) > 255)
+                {
+                    XtraMessageBox.Show("Mã chẩn đoán YHCT phụ nhập quá 255 ký tự.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+                var checkICDSubCode = codeCheckSubICD.Split(';').ToList();
+                if (checkICDSubCode != null && checkICDSubCode.Count > 12)
+                {
+                    if (Config.ConfigKey.IsCheckSubIcdExceedLimit == "1")
+                    {
+                        XtraMessageBox.Show("Chẩn đoán phụ nhập quá 12 mã bệnh. Vui lòng kiểm tra lại.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        return;
+                    }
+                    else if (Config.ConfigKey.IsCheckSubIcdExceedLimit == "2")
+                    {
+                        if (DevExpress.XtraEditors.XtraMessageBox.Show("Chẩn đoán phụ nhập quá 12 mã bệnh. Bạn có muốn tiếp tục không?",
+                           "Thông báo",
+                          MessageBoxButtons.YesNo) == DialogResult.No)
+                            return;
+                    }
+                }
+
                 frmWarning form = new frmWarning(DelegateCheckSkipMethod, this.warningADOs, this._isSkipWarningForSave);
                 form.ShowDialog();
             }
@@ -5632,7 +5854,7 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
             try
             {
                 List<MOS.EFMODEL.DataModels.HIS_HOSPITALIZE_REASON> datas = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_HOSPITALIZE_REASON>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE).ToList();
-                InitComboHisHospitalizeReason(datas); 
+                InitComboHisHospitalizeReason(datas);
                 cboHosReason.EditValue = null;
                 dxValidationProvider.SetValidationRule(txtHosReasonNt, null);
                 if (currentHisTreatment.TDL_TREATMENT_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__DTNGOAITRU || currentHisTreatment.TDL_TREATMENT_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__DTNOITRU)
@@ -5720,6 +5942,22 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
                 validRule.ErrorText = "Trường dữ liệu bắt buộc";
                 validRule.ErrorType = ErrorType.Warning;
                 dxValidationProvider.SetValidationRule(this.txtHosReasonNt, validRule);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void ValidatecboCareer()
+        {
+            try
+            {
+                ControlEditValidationRule validRule = new ControlEditValidationRule();
+                validRule.editor = this.cboCareer;
+                validRule.ErrorText = "Trường dữ liệu bắt buộc";
+                validRule.ErrorType = ErrorType.Warning;
+                dxValidationProvider.SetValidationRule(this.cboCareer, validRule);
             }
             catch (Exception ex)
             {

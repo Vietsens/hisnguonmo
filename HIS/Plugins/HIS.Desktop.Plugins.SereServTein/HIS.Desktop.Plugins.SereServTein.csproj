@@ -178,7 +178,7 @@
       <HintPath>..\..\..\..\LIB\LIS\LIS.Filter.dll</HintPath>
     </Reference>
     <Reference Include="MOS.EFMODEL">
-      <HintPath>..\..\..\..\LIB\MOS\MOS.EFMODEL.dll</HintPath>
+      <HintPath>..\..\..\..\lib\MOS\MOS.EFMODEL.dll</HintPath>
     </Reference>
     <Reference Include="MOS.Filter">
       <HintPath>..\..\..\..\LIB\MOS\MOS.Filter.dll</HintPath>

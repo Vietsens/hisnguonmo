@@ -318,7 +318,14 @@ namespace HIS.Desktop.Plugins.PublicMedicineByPhased
                                     if (checkIsNoExcute) break;
                                     //AutoMapper.Mapper.CreateMap<V_HIS_EXP_MEST_MEDICINE, ExpMestMediAndMateADO>();
                                     //expMedi = AutoMapper.Mapper.Map<ExpMestMediAndMateADO>(itemGroups[0]);
-                                    expMedi.INTRUCTION_DATE = serviceReq.USE_TIME ?? serviceReq.INTRUCTION_DATE;
+                                    if(serviceReq.USE_TIME.HasValue)
+                                    {
+                                        expMedi.INTRUCTION_DATE = Int64.Parse(serviceReq.USE_TIME.Value.ToString().Substring(0,8) + "000000");
+                                    }
+                                    else
+                                    {
+                                        expMedi.INTRUCTION_DATE = serviceReq.INTRUCTION_DATE;
+                                    }  
                                     expMedi.INTRUCTION_TIME = serviceReq.USE_TIME ?? serviceReq.INTRUCTION_TIME;
                                     expMedi.REQ_DEPARTMENT_ID = serviceReq.REQUEST_DEPARTMENT_ID;
                                     expMedi.TYPE = 1;
@@ -407,8 +414,15 @@ namespace HIS.Desktop.Plugins.PublicMedicineByPhased
                                     expMate.MEDICINE_TYPE_NAME = itemGroups[0].MATERIAL_TYPE_NAME;
                                     expMate.MEDICINE_TYPE_CODE = itemGroups[0].MATERIAL_TYPE_CODE;
                                     expMate.MEDICINE_TYPE_ID = itemGroups[0].MATERIAL_TYPE_ID;
-                                    expMate.MEDICINE_ID = itemGroups[0].MATERIAL_ID;
-                                    expMate.INTRUCTION_DATE = serviceReq.USE_TIME ?? serviceReq.INTRUCTION_DATE;
+                                    expMate.MEDICINE_ID = itemGroups[0].MATERIAL_ID; 
+                                    if (serviceReq.USE_TIME.HasValue)
+                                    {
+                                        expMate.INTRUCTION_DATE = Int64.Parse(serviceReq.USE_TIME.Value.ToString().Substring(0, 8) + "000000");
+                                    }
+                                    else
+                                    {
+                                        expMate.INTRUCTION_DATE = serviceReq.INTRUCTION_DATE;
+                                    }
                                     expMate.INTRUCTION_TIME = serviceReq.USE_TIME ?? serviceReq.INTRUCTION_TIME;
                                     expMate.Service_Type_Id = IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__VT;
                                     expMate.AMOUNT = _AMOUNT;
@@ -501,7 +515,14 @@ namespace HIS.Desktop.Plugins.PublicMedicineByPhased
                                         expMestBlood.PRICE = itemGroups[0].PRICE;
                                         expMestBlood.MEDICINE_TYPE_ID = itemGroups[0].BLOOD_TYPE_ID;
                                         expMestBlood.MEDICINE_ID = itemGroups[0].BLOOD_ID;
-                                        expMestBlood.INTRUCTION_DATE = serviceReq.USE_TIME ?? serviceReq.INTRUCTION_DATE;
+                                        if (serviceReq.USE_TIME.HasValue)
+                                        {
+                                            expMestBlood.INTRUCTION_DATE = Int64.Parse(serviceReq.USE_TIME.Value.ToString().Substring(0, 8) + "000000");
+                                        }
+                                        else
+                                        {
+                                            expMestBlood.INTRUCTION_DATE = serviceReq.INTRUCTION_DATE;
+                                        }
                                         expMestBlood.INTRUCTION_TIME = serviceReq.USE_TIME ?? serviceReq.INTRUCTION_TIME;
                                         expMestBlood.MEDICINE_TYPE_CODE = itemGroups[0].BLOOD_TYPE_CODE;
                                         expMestBlood.MEDICINE_TYPE_NAME = itemGroups[0].BLOOD_TYPE_NAME;

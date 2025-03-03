@@ -18,6 +18,7 @@
 using HIS.Desktop.LocalStorage.BackendData;
 using HIS.Desktop.LocalStorage.HisConfig;
 using HIS.Desktop.LocalStorage.LocalData;
+using Inventec.Common.Adapter;
 using Inventec.Core;
 using Inventec.Desktop.Common.Message;
 using MOS.EFMODEL.DataModels;
@@ -35,7 +36,7 @@ namespace HIS.Desktop.Plugins.Library.PrintTreatmentFinish
         MPS.Processor.Mps000011.PDO.Mps000011PDO mps000011RDO { get; set; }
         bool printNow { get; set; }
 
-        public PrintMps000011(string printTypeCode, string fileName, ref bool result, MOS.EFMODEL.DataModels.V_HIS_PATIENT HisPatient, MOS.EFMODEL.DataModels.HIS_TREATMENT HisTreatment, MOS.EFMODEL.DataModels.V_HIS_PATIENT_TYPE_ALTER VHisPatientTypeAlter, bool _printNow, long? roomId, HIS_SERVICE_REQ ServiceReq)
+        public PrintMps000011(string printTypeCode, string fileName, ref bool result, MOS.EFMODEL.DataModels.V_HIS_PATIENT HisPatient, MOS.EFMODEL.DataModels.HIS_TREATMENT HisTreatment, MOS.EFMODEL.DataModels.V_HIS_PATIENT_TYPE_ALTER VHisPatientTypeAlter, bool _printNow, long? roomId, HIS_SERVICE_REQ ServiceReq, HIS_TREATMENT_EXT TreatmentExt)
         {
             try
             {
@@ -173,7 +174,7 @@ namespace HIS.Desktop.Plugins.Library.PrintTreatmentFinish
                     {
                         _TranPatiTech = tranPatiTechs.FirstOrDefault(p => p.ID == HisTreatment.TRAN_PATI_TECH_ID);
                     }
-
+                    
                     mps000011RDO = new MPS.Processor.Mps000011.PDO.Mps000011PDO(
                         patientADO,
                        VHisPatientTypeAlter,
@@ -186,7 +187,7 @@ namespace HIS.Desktop.Plugins.Library.PrintTreatmentFinish
                        ServiceReq,
                        GetDhst(ServiceReq, HisTreatment)
                        );
-
+                    mps000011RDO._TreatmentExt = TreatmentExt;
                     result = Print.RunPrint(printTypeCode, fileName, mps000011RDO, (Inventec.Common.FlexCelPrint.DelegateEventLog)EventLogPrint, result, _printNow, roomId);
                 }
             }

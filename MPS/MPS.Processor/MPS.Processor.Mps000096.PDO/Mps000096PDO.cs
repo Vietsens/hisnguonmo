@@ -221,5 +221,25 @@ namespace MPS.Processor.Mps000096.PDO
             this.ListSampleType = lstSampleType;
             this.ListTestSampleType = lstTestSampleType;
         }
+
+        public Mps000096PDO(HIS_PATIENT_TYPE_ALTER patientTypeAlter, HIS_TREATMENT currentTreatment, V_LIS_SAMPLE currentSample, HIS_SERVICE_REQ currentServiceReq, List<V_HIS_TEST_INDEX> lstTestIndexs, List<V_LIS_RESULT> lstLisResult, List<V_HIS_TEST_INDEX_RANGE> testIndexRanges, long gerderId, List<V_HIS_SERVICE> listService, HIS_PATIENT patient, [Optional] V_HIS_SERVICE serviceParent, V_HIS_TREATMENT_BED_ROOM currentTreatBedRoom, List<HIS_SERE_SERV> ListSereServ, List<LIS_SAMPLE_TYPE> lstSampleType, List<HIS_TEST_SAMPLE_TYPE> lstTestSampleType, List<MLCTADO> lstMLCTADO)
+        {
+            this.PatientTypeAlter = patientTypeAlter;
+            this.currentTreatment = currentTreatment;
+            this.currentSample = currentSample;
+            this.currentServiceReq = currentServiceReq;
+            this.lstTestIndex = lstTestIndexs;
+            this.lstLisResult = lstLisResult;
+            this.testIndexRangeAll = testIndexRanges;
+            this.ServiceParent = serviceParent;
+            this.genderId = gerderId;
+            this.ListTestService = listService;
+            this.currentPatient = patient;
+            this.currentTreatBedRoom = currentTreatBedRoom;
+            this.ListSereServ = ListSereServ;
+            this.ListSampleType = lstSampleType;
+            this.ListTestSampleType = lstTestSampleType;
+            this.ListMlctado = lstMLCTADO;
+        }
     }
 }

@@ -272,7 +272,6 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.ADO
             {
                 this.IsEdit = isEdit;
                 Inventec.Common.Mapper.DataObjectMapper.Map<MediMatyTypeADO>(this, inputData);
-
                 this.SERVICE_TYPE_ID = IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__THUOC;
                 this.PATIENT_TYPE_ID = inputData.PATIENT_TYPE_ID;
                 this.PATIENT_TYPE_CODE = inputData.PATIENT_TYPE_CODE;
@@ -286,6 +285,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.ADO
                 this.IsOutKtcFee = ((inputData.IS_OUT_PARENT_FEE ?? 0) == GlobalVariables.CommonNumberTrue);
                 this.IsKHBHYT = false;
 
+                this.TUTORIAL = inputData.TUTORIAL;
                 this.TotalPrice = ((inputData.PRICE ?? 0) * inputData.AMOUNT) * (1 + (inputData.VAT_RATIO ?? 0));
                 var checkMatyInStock = AssignPrescriptionWorker.Instance.MediMatyCreateWorker.getDataAmountOutOfStock(this, inputData.SERVICE_ID, inputData.MEDI_STOCK_ID);
                 MediMatyTypeADO checkMediMatyTypeADO = new MediMatyTypeADO();
@@ -387,7 +387,6 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.ADO
             try
             {
                 Inventec.Common.Mapper.DataObjectMapper.Map<MediMatyTypeADO>(this, inputData);
-
                 this.SERVICE_TYPE_ID = IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__THUOC;
                 this.PATIENT_TYPE_ID = inputData.PATIENT_TYPE_ID;
                 this.PATIENT_TYPE_CODE = inputData.PATIENT_TYPE_CODE;
@@ -400,7 +399,8 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.ADO
                 this.IsExpend = ((inputData.IS_EXPEND ?? -1) == GlobalVariables.CommonNumberTrue ? true : false);
                 this.IsOutKtcFee = ((inputData.IS_OUT_PARENT_FEE ?? 0) == GlobalVariables.CommonNumberTrue);
                 this.IsKHBHYT = false;
-                
+
+                this.TUTORIAL = inputData.TUTORIAL;
                 if (serviceReq.REMEDY_COUNT > 0)
                 {
                     this.RemedyCount = serviceReq.REMEDY_COUNT;
@@ -508,7 +508,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.ADO
                 this.MEDICINE_TYPE_CODE = inputData.MATERIAL_TYPE_CODE;
                 this.MEDICINE_TYPE_NAME = inputData.MATERIAL_TYPE_NAME;
                 this.MEDICINE_USE_FORM_NAME = "";
-                this.TUTORIAL = "";
+                this.TUTORIAL = inputData.TUTORIAL;
                 this.DataType = HIS.Desktop.LocalStorage.BackendData.ADO.MedicineMaterialTypeComboADO.VATTU;
                 this.IsExpend = ((inputData.IS_EXPEND ?? -1) == GlobalVariables.CommonNumberTrue ? true : false);
                 this.IsOutKtcFee = ((inputData.IS_OUT_PARENT_FEE ?? 0) == GlobalVariables.CommonNumberTrue);
@@ -516,7 +516,6 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.ADO
                 {
                     this.EQUIPMENT_SET_ID = inputData.EQUIPMENT_SET_ID.Value;
                 }
-
 
                 this.TotalPrice = ((inputData.PRICE ?? 0) * inputData.AMOUNT) * (1 + (inputData.VAT_RATIO ?? 0));
 
@@ -751,7 +750,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.ADO
                     this.MEDICINE_TYPE_NAME = inputData.MEDICINE_TYPE_NAME;
                     this.DataType = HIS.Desktop.LocalStorage.BackendData.ADO.MedicineMaterialTypeComboADO.THUOC_TUTUC;
                 }
-
+                this.HTU_TEXT = inputData.HTU_TEXT;
                 //Chi dinh tu man hinh phau thuat, thu thuat
                 if ((AssignPrescriptionWorker.Instance.MediMatyCreateWorker.getIsAutoCheckExpend() == true && this.HEIN_SERVICE_TYPE_ID != IMSys.DbConfig.HIS_RS.HIS_HEIN_SERVICE_TYPE.ID__VT_TT))
                     this.IsExpend = true;
@@ -806,6 +805,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.ADO
                     this.DataType = HIS.Desktop.LocalStorage.BackendData.ADO.MedicineMaterialTypeComboADO.THUOC_TUTUC;
                 }
 
+                this.HTU_TEXT = inputData.HTU_TEXT;
                 //Chi dinh tu man hinh phau thuat, thu thuat
                 if ((AssignPrescriptionWorker.Instance.MediMatyCreateWorker.getIsAutoCheckExpend() == true && this.HEIN_SERVICE_TYPE_ID != IMSys.DbConfig.HIS_RS.HIS_HEIN_SERVICE_TYPE.ID__VT_TT))
                     this.IsExpend = true;
@@ -865,9 +865,10 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.ADO
                     this.SERVICE_UNIT_NAME = inputData.UNIT_NAME;
                     this.MEDICINE_TYPE_NAME = inputData.MATERIAL_TYPE_NAME;
                 }
+                this.TUTORIAL = inputData.TUTORIAL;
+                this.HTU_TEXT = inputData.HTU_TEXT;
                 this.SERVICE_REQ_ID = inputData.SERVICE_REQ_ID;
                 this.SERVICE_REQ_METY_MATY_ID = inputData.ID;
-
                 this.DataType = HIS.Desktop.LocalStorage.BackendData.ADO.MedicineMaterialTypeComboADO.VATTU_DM;
                 this.AMOUNT = inputData.AMOUNT;
                 if (isEdit)
@@ -999,6 +1000,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.ADO
         public long? EXP_MEST_REASON_ID { get; set; }
         public string EXP_MEST_REASON_CODE { get; set; }
         public string EXP_MEST_REASON_NAME { get; set; }
+        public string HTU_TEXT { get; set; }
         public bool IsDisableExpend { get; set; }
         public DevExpress.XtraEditors.DXErrorProvider.ErrorType ErrorTypeAmount { get; set; }
         public string ErrorMessageAmount { get; set; }

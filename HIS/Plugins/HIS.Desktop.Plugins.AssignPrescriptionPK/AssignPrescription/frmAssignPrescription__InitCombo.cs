@@ -29,6 +29,7 @@ using Inventec.Common.Logging;
 using Inventec.Core;
 using MOS.EFMODEL.DataModels;
 using MOS.Filter;
+using MOS.SDO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -42,6 +43,9 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
     {
         List<long> mediStockId__Cabinets;
         List<long> mediStockId__Bloods;
+
+        public List<HtuADO> DataHtuList { get; private set; }
+        public List<HtuADO> DataHtuListShow { get; private set; }
         private async Task InitComboHtu(List<MOS.EFMODEL.DataModels.HIS_HTU> data)
         {
             try
@@ -60,23 +64,33 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                     if (htus != null) BackendDataWorker.UpdateToRam(typeof(MOS.EFMODEL.DataModels.HIS_HTU), htus, long.Parse(DateTime.Now.ToString("yyyyMMddHHmmss")));
                 }
 
-                List<ColumnInfo> columnInfos = new List<ColumnInfo>();
-                columnInfos.Add(new ColumnInfo("HTU_NAME", "", 200, 2));
-                ControlEditorADO controlEditorADO = new ControlEditorADO("HTU_NAME", "ID", columnInfos, false, 200);
                 if (data != null)
                 {
                     data = data.OrderBy(o => o.NUM_ORDER).ToList();
                 }
                 else
                     data = htus.OrderBy(o => o.NUM_ORDER).ToList();
-                ControlEditorLoader.Load(cboHtu, data, controlEditorADO);
+                data.ForEach(o => o.CHECK_ACIN_INTERACTIVE = o.CHECK_ACIN_INTERACTIVE == 0 || o.CHECK_ACIN_INTERACTIVE == null ? Int16.MaxValue : (short)o.CHECK_ACIN_INTERACTIVE);
+                AutoMapper.Mapper.CreateMap<HIS_HTU, HtuADO>();
+                List<long> IdsCheck = new List<long>();
+                if (DataHtuList != null && DataHtuList.Count > 0 && DataHtuList.FirstOrDefault(o => o.IsChecked) != null)
+                {
+                    IdsCheck.AddRange(DataHtuList.Where(o => o.IsChecked).Select(o => o.ID).ToList());
+                }
+                DataHtuList = AutoMapper.Mapper.Map<List<HtuADO>>(data);
+                DataHtuList.ForEach(o => o.IsChecked = IdsCheck.Exists(p => p == o.ID));
+                DataHtuList = DataHtuList.OrderByDescending(o => o.IsChecked ? 1 : 0).ThenByDescending(o=>o.ID).ToList();
+                AutoMapper.Mapper.CreateMap<HtuADO, HtuADO>();
+                DataHtuListShow = AutoMapper.Mapper.Map<List<HtuADO>>(DataHtuList);
+                DataHtuListShow = DataHtuListShow.OrderByDescending(o => o.IsChecked ? 1 : 0).ThenByDescending(o => o.ID).ToList();
+                gridControlHtu.DataSource = null;
+                gridControlHtu.DataSource = DataHtuList;
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
-
         private async Task InitComboNhaThuoc()
         {
             try
@@ -101,7 +115,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                 else if (actionType == GlobalVariables.ActionEdit)
                 {
                     InitializeComboNhaThuocNoCheck(mediStockAllows);
-                    if(HisConfigCFG.IsAutoCreateSaleExpMest || HisConfigCFG.IsDrugStoreComboboxOption)
+                    if (HisConfigCFG.IsAutoCreateSaleExpMest || HisConfigCFG.IsDrugStoreComboboxOption)
                         cboNhaThuoc.Enabled = false;
                 }
                 if (this.currentMediStockNhaThuocSelecteds != null && this.currentMediStockNhaThuocSelecteds.Count > 0)
@@ -610,67 +624,68 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
             {
 
                 this.currentWorkingMestRooms = new List<MOS.EFMODEL.DataModels.V_HIS_MEST_ROOM>();
-                Action myaction = () => {
+                Action myaction = () =>
+                {
                     List<V_HIS_MEST_ROOM> mestRooms = new List<V_HIS_MEST_ROOM>();
 
-                var ExecuteRoom = BackendDataWorker.Get<V_HIS_EXECUTE_ROOM>().Where(o => o.ROOM_ID == (this.currentModule != null ? this.currentModule.RoomId : 0) && o.IS_EXAM == 1).FirstOrDefault();
-                if (HisConfigCFG.MestRoomOption == 1 && ExecuteRoom != null && !GlobalStore.IsCabinet)
-                {
-                    CommonParam paramReq = new CommonParam();
-                    HisServiceReqFilter ReqFilter = new HisServiceReqFilter();
-                    ReqFilter.TREATMENT_ID = treatmentId;
-                    ReqFilter.SERVICE_REQ_TYPE_ID = IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__KH;
-                    ReqFilter.IS_MAIN_EXAM = true;
-
-                    var ServiceReq = new BackendAdapter(paramReq).Get<List<HIS_SERVICE_REQ>>(HisRequestUriStore.HIS_SERVICE_REQ_GET, ApiConsumers.MosConsumer, ReqFilter, paramReq).FirstOrDefault();
-
-                    if (ServiceReq != null)
+                    var ExecuteRoom = BackendDataWorker.Get<V_HIS_EXECUTE_ROOM>().Where(o => o.ROOM_ID == (this.currentModule != null ? this.currentModule.RoomId : 0) && o.IS_EXAM == 1).FirstOrDefault();
+                    if (HisConfigCFG.MestRoomOption == 1 && ExecuteRoom != null && !GlobalStore.IsCabinet)
                     {
-                        mestRooms = BackendDataWorker.Get<MOS.EFMODEL.DataModels.V_HIS_MEST_ROOM>().Where(o => o.ROOM_ID == ServiceReq.EXECUTE_ROOM_ID).ToList();
+                        CommonParam paramReq = new CommonParam();
+                        HisServiceReqFilter ReqFilter = new HisServiceReqFilter();
+                        ReqFilter.TREATMENT_ID = treatmentId;
+                        ReqFilter.SERVICE_REQ_TYPE_ID = IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__KH;
+                        ReqFilter.IS_MAIN_EXAM = true;
+
+                        var ServiceReq = new BackendAdapter(paramReq).Get<List<HIS_SERVICE_REQ>>(HisRequestUriStore.HIS_SERVICE_REQ_GET, ApiConsumers.MosConsumer, ReqFilter, paramReq).FirstOrDefault();
+
+                        if (ServiceReq != null)
+                        {
+                            mestRooms = BackendDataWorker.Get<MOS.EFMODEL.DataModels.V_HIS_MEST_ROOM>().Where(o => o.ROOM_ID == ServiceReq.EXECUTE_ROOM_ID).ToList();
+                        }
                     }
-                }
-                else
-                {
-                    mestRooms = BackendDataWorker.Get<MOS.EFMODEL.DataModels.V_HIS_MEST_ROOM>().Where(o => o.ROOM_ID == GetRoomId()).ToList();
-                }
-                List<V_HIS_MEDI_STOCK> medistocks = new List<V_HIS_MEDI_STOCK>();
-
-                var listmedistocks = BackendDataWorker.Get<MOS.EFMODEL.DataModels.V_HIS_MEDI_STOCK>();
-
-                currentTreatment = GetTreatment(this.treatmentId);
-
-                if (currentTreatment != null && currentTreatment.TDL_PATIENT_CLASSIFY_ID != null)
-                {
-                    var data = listmedistocks.Where(o => String.IsNullOrEmpty(o.PATIENT_CLASSIFY_IDS) || (!String.IsNullOrEmpty(o.PATIENT_CLASSIFY_IDS) && o.PATIENT_CLASSIFY_IDS.Split(',').ToList().Contains(currentTreatment.TDL_PATIENT_CLASSIFY_ID.ToString()))).ToList();
-                    medistocks.AddRange(data);
-                }
-                else
-                {
-                    medistocks.AddRange(listmedistocks.Where(o => String.IsNullOrEmpty(o.PATIENT_CLASSIFY_IDS)).ToList());
-                }
-
-                //var medistocks = BackendDataWorker.Get<MOS.EFMODEL.DataModels.V_HIS_MEDI_STOCK>();
-                var mediStockId__Actives = medistocks.Where(
-                    o => (o.IS_ACTIVE == null
-                        || o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE)
-                        && ((o.IS_NEW_MEDICINE ?? 0) == 1 || ((o.IS_NEW_MEDICINE ?? 0) != 1 && (o.IS_TRADITIONAL_MEDICINE ?? 0) != 1))).Select(o => o.ID).ToList();
-                mestRooms = mestRooms.Where(o => mediStockId__Actives != null && mediStockId__Actives.Contains(o.MEDI_STOCK_ID)).ToList();
-                List<MOS.EFMODEL.DataModels.HIS_MEST_PATIENT_TYPE> lstMestPatientType = BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_MEST_PATIENT_TYPE>();
-                List<long> mediStockInMestPatientTypeIds = null;
-                if (patienTypeId > 0)
-                    mediStockInMestPatientTypeIds = lstMestPatientType.Where(o => o.PATIENT_TYPE_ID == patienTypeId).Select(o => o.MEDI_STOCK_ID).Distinct().ToList();
-                else
-                {
-                    if (this.currentPatientTypeWithPatientTypeAlter != null)
+                    else
                     {
-                        var patientTypeIdAllows = this.currentPatientTypeWithPatientTypeAlter.Select(o => o.ID).ToList();
-                        mediStockInMestPatientTypeIds = lstMestPatientType.Where(o => patientTypeIdAllows != null && patientTypeIdAllows.Contains(o.PATIENT_TYPE_ID)).Select(o => o.MEDI_STOCK_ID).Distinct().ToList();
+                        mestRooms = BackendDataWorker.Get<MOS.EFMODEL.DataModels.V_HIS_MEST_ROOM>().Where(o => o.ROOM_ID == GetRoomId()).ToList();
                     }
-                }
+                    List<V_HIS_MEDI_STOCK> medistocks = new List<V_HIS_MEDI_STOCK>();
 
-                this.currentWorkingMestRooms = mestRooms
-                    .Where(o => mediStockInMestPatientTypeIds != null && mediStockInMestPatientTypeIds.Contains(o.MEDI_STOCK_ID)).ToList();
-                Inventec.Common.Logging.LogSystem.Debug("Loc kho theo mestPatientTypeIds: so luong kho tim thay = " + this.currentWorkingMestRooms.Count);
+                    var listmedistocks = BackendDataWorker.Get<MOS.EFMODEL.DataModels.V_HIS_MEDI_STOCK>();
+
+                    currentTreatment = GetTreatment(this.treatmentId);
+
+                    if (currentTreatment != null && currentTreatment.TDL_PATIENT_CLASSIFY_ID != null)
+                    {
+                        var data = listmedistocks.Where(o => String.IsNullOrEmpty(o.PATIENT_CLASSIFY_IDS) || (!String.IsNullOrEmpty(o.PATIENT_CLASSIFY_IDS) && o.PATIENT_CLASSIFY_IDS.Split(',').ToList().Contains(currentTreatment.TDL_PATIENT_CLASSIFY_ID.ToString()))).ToList();
+                        medistocks.AddRange(data);
+                    }
+                    else
+                    {
+                        medistocks.AddRange(listmedistocks.Where(o => String.IsNullOrEmpty(o.PATIENT_CLASSIFY_IDS)).ToList());
+                    }
+
+                    //var medistocks = BackendDataWorker.Get<MOS.EFMODEL.DataModels.V_HIS_MEDI_STOCK>();
+                    var mediStockId__Actives = medistocks.Where(
+                        o => (o.IS_ACTIVE == null
+                            || o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE)
+                            && ((o.IS_NEW_MEDICINE ?? 0) == 1 || ((o.IS_NEW_MEDICINE ?? 0) != 1 && (o.IS_TRADITIONAL_MEDICINE ?? 0) != 1))).Select(o => o.ID).ToList();
+                    mestRooms = mestRooms.Where(o => mediStockId__Actives != null && mediStockId__Actives.Contains(o.MEDI_STOCK_ID)).ToList();
+                    List<MOS.EFMODEL.DataModels.HIS_MEST_PATIENT_TYPE> lstMestPatientType = BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_MEST_PATIENT_TYPE>();
+                    List<long> mediStockInMestPatientTypeIds = null;
+                    if (patienTypeId > 0)
+                        mediStockInMestPatientTypeIds = lstMestPatientType.Where(o => o.PATIENT_TYPE_ID == patienTypeId).Select(o => o.MEDI_STOCK_ID).Distinct().ToList();
+                    else
+                    {
+                        if (this.currentPatientTypeWithPatientTypeAlter != null)
+                        {
+                            var patientTypeIdAllows = this.currentPatientTypeWithPatientTypeAlter.Select(o => o.ID).ToList();
+                            mediStockInMestPatientTypeIds = lstMestPatientType.Where(o => patientTypeIdAllows != null && patientTypeIdAllows.Contains(o.PATIENT_TYPE_ID)).Select(o => o.MEDI_STOCK_ID).Distinct().ToList();
+                        }
+                    }
+
+                    this.currentWorkingMestRooms = mestRooms
+                        .Where(o => mediStockInMestPatientTypeIds != null && mediStockInMestPatientTypeIds.Contains(o.MEDI_STOCK_ID)).ToList();
+                    Inventec.Common.Logging.LogSystem.Debug("Loc kho theo mestPatientTypeIds: so luong kho tim thay = " + this.currentWorkingMestRooms.Count);
                 };
                 Task task = new Task(myaction);
                 task.Start();
@@ -710,12 +725,12 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                 //{
                 if (mediStockId__Cabinets == null || mediStockId__Cabinets.Count == 0)
                 {
-                    mediStockId__Cabinets = BackendDataWorker.Get<MOS.EFMODEL.DataModels.V_HIS_MEDI_STOCK>().Where(o => (o.IS_CABINET ?? 0) == GlobalVariables.CommonNumberTrue).Select(o => o.ID).ToList();        
+                    mediStockId__Cabinets = BackendDataWorker.Get<MOS.EFMODEL.DataModels.V_HIS_MEDI_STOCK>().Where(o => (o.IS_CABINET ?? 0) == GlobalVariables.CommonNumberTrue).Select(o => o.ID).ToList();
                 }
                 if (mediStockId__Bloods == null || mediStockId__Bloods.Count == 0)
-				{
+                {
                     mediStockId__Bloods = BackendDataWorker.Get<MOS.EFMODEL.DataModels.V_HIS_MEDI_STOCK>().Where(o => (o.IS_BLOOD ?? 0) == GlobalVariables.CommonNumberTrue).Select(o => o.ID).ToList();
-                }                    
+                }
                 mestRoomTemps = mestRoomTemps.Where(o => !mediStockId__Bloods.Contains(o.MEDI_STOCK_ID)).ToList();
                 if (GlobalStore.IsCabinet)
                 {
@@ -1311,7 +1326,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
             }
             catch (Exception ex)
             {
-                Inventec.Common.Logging.LogSystem.Error(ex);                
+                Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
 

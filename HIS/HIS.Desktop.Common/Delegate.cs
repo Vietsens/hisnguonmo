@@ -38,4 +38,5 @@ namespace HIS.Desktop.Common
     public delegate void DelegateCloseForm_Uc(object data);
     public delegate void DelegateSelectDatas(object data1, object data2);
     public delegate void DelegateImpTime(long? impTime);
+    public delegate void DelegateLoadPTTT(string namePTTT, DateTime? startTime, DateTime? finishTime);
 }

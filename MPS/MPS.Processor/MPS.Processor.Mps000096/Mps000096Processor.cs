@@ -47,6 +47,7 @@ namespace MPS.Processor.Mps000096
         List<TestLisResultADO> ListTestChild = new List<TestLisResultADO>();
         List<V_HIS_SERVICE> ListServiceParent = new List<V_HIS_SERVICE>();
         List<TestLisResultADO> ListTestParentService = new List<TestLisResultADO>();
+        
 
         public void SetBarcodeKey()
         {
@@ -151,8 +152,9 @@ namespace MPS.Processor.Mps000096
 
         public void SetSingleKey()
         {
-            try
+            try      
             {
+                AddObjectKeyIntoListkey<MLCTADO>(rdo.mLCTADOs, false);
                 if (rdo.currentSample != null && String.IsNullOrWhiteSpace(rdo.currentSample.SERVICE_REQ_CODE))
                 {
                     SetSingleKey(new KeyValue(Mps000096ExtendSingleKey.TDL_PATIENT_NAME, rdo.currentSample.LAST_NAME + " " + rdo.currentSample.FIRST_NAME));
@@ -164,8 +166,8 @@ namespace MPS.Processor.Mps000096
                     }
                     else if (rdo.currentSample.GENDER_CODE == "02")
                     {
-                        SetSingleKey(new KeyValue(Mps000096ExtendSingleKey.GENDER_NAME, "Nam"));
-                    }
+                        SetSingleKey(new KeyValue(Mps000096ExtendSingleKey.GENDER_NAME, "Nam"));      
+                    }    
                     else if (rdo.currentSample.GENDER_CODE == "03")
                     {
                         SetSingleKey(new KeyValue(Mps000096ExtendSingleKey.GENDER_NAME, "Không xác định"));
@@ -754,6 +756,8 @@ namespace MPS.Processor.Mps000096
                         hisSereServTeinSDO.CHILD_ID = firstItem.ID + ".";
                         hisSereServTeinSDO.SERVICE_NUM_ORDER = firstItem.SERVICE_NUM_ORDER;
                         hisSereServTeinSDO.RESULT_DESCRIPTION = firstItem.RESULT_DESCRIPTION;
+                        hisSereServTeinSDO.ISO_PROCESS_CODE = firstItem.TDL_ISO_PROCESS_CODE;
+                        hisSereServTeinSDO.IS_MEET_ISO_STANDARD = firstItem.TDL_IS_MEET_ISO_STANDARD;
 
                         V_HIS_SERVICE service = rdo.ListTestService != null ? rdo.ListTestService.FirstOrDefault(o => o.SERVICE_CODE == group.Key.SERVICE_CODE) : null;
                         V_HIS_SERVICE parent = null;

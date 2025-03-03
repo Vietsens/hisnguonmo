@@ -15,12 +15,15 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+using HIS.Desktop.ApiConsumer;
 using HIS.Desktop.LocalStorage.BackendData;
 using HIS.Desktop.LocalStorage.HisConfig;
 using HIS.Desktop.Plugins.Library.PrintTreatmentEndTypeExt;
+using Inventec.Common.Adapter;
 using Inventec.Core;
 using Inventec.Desktop.Common.Message;
 using MOS.EFMODEL.DataModels;
+using MOS.Filter;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -32,6 +35,7 @@ namespace HIS.Desktop.Plugins.Library.PrintTreatmentFinish
 {
     public class PrintTreatmentFinishProcessor
     {
+        private static HIS_TREATMENT_EXT TreatmentExt { get; set; }
         private static HIS_TREATMENT HisTreatment { get; set; }
         private static HIS_MEDI_RECORD HisMediRecord { get; set; }
         private static HIS_PATIENT HisPatient { get; set; }
@@ -258,7 +262,7 @@ namespace HIS.Desktop.Plugins.Library.PrintTreatmentFinish
                             new PrintMps000010(printCode, fileName, ref result, VHisPatient, HisTreatment, VHisPatientTypeAlter, PreviewType, roomId, HisMediRecord, HisServiceReq);
                             break;
                         case MPS.Processor.Mps000011.PDO.Mps000011PDO.printTypeCode:
-                            new PrintMps000011(printCode, fileName, ref result, VHisPatient, HisTreatment, VHisPatientTypeAlter, printNow, roomId, HisServiceReq);
+                            new PrintMps000011(printCode, fileName, ref result, VHisPatient, HisTreatment, VHisPatientTypeAlter, printNow, roomId, HisServiceReq, TreatmentExt);
                             break;
                         case MPS.Processor.Mps000268.PDO.Mps000268PDO.printTypeCode:
                             new PrintMps000268(printCode, fileName, ref result, VHisPatient, HisTreatment, this.CurrentBranch, printNow, roomId);
@@ -311,6 +315,24 @@ namespace HIS.Desktop.Plugins.Library.PrintTreatmentFinish
                 result = false;
             }
             return result;
+        }
+        private void LoadServiceReq(long id)
+        {
+            try
+            {
+                CommonParam param = new CommonParam();
+                HisServiceReqFilter filter = new HisServiceReqFilter();
+                filter.IS_ACTIVE = 1;
+                filter.TREATMENT_ID = id;
+                var dt = new BackendAdapter(param).Get<List<HIS_SERVICE_REQ>>("api/HisServiceReq/Get", ApiConsumers.MosConsumer, filter, param);
+                if (dt != null && dt.Count > 0)
+                    HisServiceReq = dt.FirstOrDefault(o => o.EXAM_END_TYPE == 3);
+            }
+            catch (Exception ex)
+            {
+                WaitingManager.Hide();
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
         }
 
         private bool ProcessDataBeforePrint()
@@ -367,6 +389,13 @@ namespace HIS.Desktop.Plugins.Library.PrintTreatmentFinish
                 {
                     HisTreatment = GetCurrentHistreatment(HisTreatment.ID);
                 }
+                if (HisServiceReq == null)
+                    LoadServiceReq(HisTreatment.ID);
+                HisTreatmentExtFilter filter = new HisTreatmentExtFilter();
+                filter.TREATMENT_ID = HisTreatment.ID;
+                TreatmentExt = new Inventec.Common.Adapter.BackendAdapter(new CommonParam()).Get<List<HIS_TREATMENT_EXT>>("api/HisTreatmentExt/Get", ApiConsumer.ApiConsumers.MosConsumer, filter,
+                    HIS.Desktop.Controls.Session.SessionManager.ActionLostToken, null).FirstOrDefault();
+
                 EmrDataStore.treatmentCode = HisTreatment.TREATMENT_CODE;
                 HisMediRecord = GetMediRecord(HisTreatment.MEDI_RECORD_ID);
             }

@@ -86,7 +86,6 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.Save
         protected long prescriptionTypeId { get; set; }
         protected long? DrugStoreId { get; set; }
         protected long? ExpMestReasonId { get; set; }
-
         protected CommonParam Param { get; set; }
 
         protected SaveAbstract(CommonParam param,
@@ -243,11 +242,10 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.Save
                     pres.NumOfDays = GetNumOfDays(item);
                     pres.NumOrder = item.NUM_ORDER;
                     pres.MediStockId = item.MEDI_STOCK_ID ?? 0;
-                    if (this.SereServParentId > 0)
-                        pres.SereServParentId = this.SereServParentId;
+                    pres.SereServParentId = item.SereServParentId;
                     if (item.OTHER_PAY_SOURCE_ID.HasValue && item.OTHER_PAY_SOURCE_ID.Value > 0)
                         pres.OtherPaySourceId = item.OTHER_PAY_SOURCE_ID;
-
+                    pres.HtuText = item.HTU_TEXT;
                     if (this.ExpMestReasonId == null)
                     {
                         pres.ExpMestReasonId = item.EXP_MEST_REASON_ID;
@@ -298,16 +296,15 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.Save
                     pres.IsOutParentFee = (item.IsOutKtcFee.HasValue && item.IsOutKtcFee.Value);
                     pres.NumOrder = item.NUM_ORDER;
                     pres.MediStockId = item.MEDI_STOCK_ID ?? 0;
-
+                    pres.Tutorial = item.TUTORIAL;
+                    pres.HtuText = item.HTU_TEXT;
                     if (item.EQUIPMENT_SET_ID.HasValue && item.EQUIPMENT_SET_ID.Value > 0)
                     {
                         pres.EquipmentSetId = item.EQUIPMENT_SET_ID ?? 0;
                     }
                     if (item.OTHER_PAY_SOURCE_ID.HasValue && item.OTHER_PAY_SOURCE_ID.Value > 0)
                         pres.OtherPaySourceId = item.OTHER_PAY_SOURCE_ID;
-                    if (this.SereServParentId > 0)
-                        pres.SereServParentId = this.SereServParentId;
-
+                    pres.SereServParentId = this.SereServParentId;
                     if (this.ExpMestReasonId == null)
                     {
                         pres.ExpMestReasonId = item.EXP_MEST_REASON_ID;
@@ -353,6 +350,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.Save
                     //mety.SERVICE_REQ_ID = item.SERVICE_REQ_ID;
                     //mety.ID = item.SERVICE_REQ_METY_MATY_ID;
 
+                    mety.HtuText = item.HTU_TEXT;
                     var checkPresExists = this.ServiceReqMeties
                         .FirstOrDefault(o => o.MedicineTypeId == mety.MedicineTypeId
                             && o.MedicineUseFormId == mety.MedicineUseFormId
@@ -374,6 +372,8 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.Save
                     //maty.SERVICE_REQ_ID = item.SERVICE_REQ_ID;
                     //maty.ID = item.SERVICE_REQ_METY_MATY_ID;
 
+                    maty.Tutorial = item.TUTORIAL;
+                    maty.HtuText = item.HTU_TEXT;
                     var checkPresExists = this.ServiceReqMaties
                         .FirstOrDefault(o => o.MaterialTypeId == maty.MaterialTypeId
                             && o.ExpMestReasonId == maty.ExpMestReasonId
@@ -395,6 +395,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.Save
                     //orty.SERVICE_REQ_ID = item.SERVICE_REQ_ID;
                     orty.UseTimeTo = item.UseTimeTo;
 
+                    orty.HtuText = item.HTU_TEXT;
                     var checkPresExists = this.ServiceReqMeties
                         .FirstOrDefault(o => o.MedicineTypeName == orty.MedicineTypeName
                             && o.MedicineUseFormId == orty.MedicineUseFormId
@@ -444,7 +445,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.Save
                     {
                         pres.ExpMestReasonId = this.ExpMestReasonId;
                     }
-
+                    pres.HtuText = item.HTU_TEXT;
                     //đối tượng thanh toán, hao phí... khiến cho 2 dòng có cùng loại thuốc nhưng các trường thông tin khác không giống nhau hoàn toàn thì vẫn gửi lên server như bình thường hiện tại.
                     //Còn trường hợp 2 dòng giống hệt nhau thì client khi gửi lên server nên gộp lại thành 1 dòng số lượng.
                     var checkPresExists = this.InPatientPresMedicineSDOs
@@ -500,6 +501,8 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.Save
                         pres.ExpMestReasonId = this.ExpMestReasonId;
                     }
 
+                    pres.Tutorial = item.TUTORIAL;
+                    pres.HtuText = item.HTU_TEXT;
                     //đối tượng thanh toán, hao phí... khiến cho 2 dòng có cùng loại thuốc nhưng các trường thông tin khác không giống nhau hoàn toàn thì vẫn gửi lên server như bình thường hiện tại.
                     //Còn trường hợp 2 dòng giống hệt nhau thì client khi gửi lên server nên gộp lại thành 1 dòng số lượng.
                     var checkPresExists = this.InPatientPresMaterialSDOs
@@ -535,6 +538,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.Save
                     mety.Tutorial = item.TUTORIAL;
                     mety.UseTimeTo = item.UseTimeTo;
 
+                    mety.HtuText = item.HTU_TEXT;
                     var checkPresExists = this.ServiceReqMeties
                         .FirstOrDefault(o => o.MedicineTypeId == mety.MedicineTypeId
                             && o.MedicineUseFormId == mety.MedicineUseFormId
@@ -561,7 +565,8 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.Save
                     maty.MaterialTypeName = item.MEDICINE_TYPE_NAME;
                     maty.UnitName = item.SERVICE_UNIT_NAME;
                     maty.NumOrder = item.NUM_ORDER;
-
+                    maty.Tutorial = item.TUTORIAL;
+                    maty.HtuText = item.HTU_TEXT;
                     var checkPresExists = this.ServiceReqMaties
                         .FirstOrDefault(o => o.MaterialTypeId == maty.MaterialTypeId
                             && o.ExpMestReasonId == maty.ExpMestReasonId
@@ -589,7 +594,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.Save
                     orty.MedicineUseFormId = item.MEDICINE_USE_FORM_ID;
                     orty.Tutorial = item.TUTORIAL;
                     orty.UseTimeTo = item.UseTimeTo;
-
+                    orty.HtuText = item.HTU_TEXT;
                     var checkPresExists = this.ServiceReqMeties
                         .FirstOrDefault(o => o.MedicineTypeName == orty.MedicineTypeName
                             && o.MedicineUseFormId == orty.MedicineUseFormId

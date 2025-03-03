@@ -135,6 +135,24 @@ namespace MPS.Processor.Mps000037
                     }
 
                     ExecuteRoomGroups = (ExecuteRoomGroups != null && ExecuteRoomGroups.Count > 0) ? ExecuteRoomGroups.OrderBy(o => o.EXECUTE_ROOM_NAME).ThenBy(p => p.EXECUTE_DEPARTMENT_NAME).ToList() : ExecuteRoomGroups;
+                    var grType = ListAdo.GroupBy(o => o.TDL_SERVICE_TYPE_ID).ToList();
+
+                    List<HIS_SERVICE_REQ_TYPE> srTypeList = new List<HIS_SERVICE_REQ_TYPE>();
+                    List<V_HIS_SERVICE_REQ> srList = new List<V_HIS_SERVICE_REQ>();
+                    foreach (var item in grType)
+                    {
+                        //Tạo key ServiceReqType và ServiceReq
+                        if (rdo.ListServiceReqType != null && rdo.ListServiceReqType.Count > 0)
+                            srTypeList.Add(rdo.ListServiceReqType.FirstOrDefault(o => o.ID == item.Key));
+
+                        var grServiceReq = item.GroupBy(o => o.SERVICE_REQ_ID).ToList();
+                        if (rdo.ListServiceReqPrint != null && rdo.ListServiceReqPrint.Count > 0 && rdo.ListServiceReqPrint.Exists(o => grServiceReq.Exists(p => p.Key == o.ID)))
+                        {
+                            srList.AddRange(rdo.ListServiceReqPrint.Where(o => grServiceReq.Exists(p => p.Key == o.ID)));
+                        }
+                    }
+                    objectTag.AddObjectData(store, "ServiceReqType", srTypeList.Count > 0 ? srTypeList.OrderBy(o => o.SERVICE_REQ_TYPE_NAME).ToList() : new List<HIS_SERVICE_REQ_TYPE>());
+                    objectTag.AddObjectData(store, "ServiceReq", srList.Count > 0 ? srList.OrderBy(o => o.SERVICE_REQ_TYPE_NAME).ThenBy(o => o.INTRUCTION_TIME).ToList() : new List<V_HIS_SERVICE_REQ>());
                     objectTag.AddObjectData(store, "Services", ListAdo);
                     objectTag.AddObjectData(store, "ExecuteRoomGroups", ExecuteRoomGroups);
                     objectTag.AddRelationship(store, "ExecuteRoomGroups", "Services", "HEIN_SERVICE_TYPE_NAME", "HEIN_SERVICE_TYPE_NAME");
@@ -151,8 +169,20 @@ namespace MPS.Processor.Mps000037
                     var serviceTypeGroup = new List<SereServGroupPlusADO>();
                     var servcieParent = new List<V_HIS_SERVICE>();
                     var grType = ListAdo.GroupBy(o => o.TDL_SERVICE_TYPE_ID).ToList();
+                    List<HIS_SERVICE_REQ_TYPE> srTypeList = new List<HIS_SERVICE_REQ_TYPE>();
+                    List<V_HIS_SERVICE_REQ> srList = new List<V_HIS_SERVICE_REQ>();
                     foreach (var item in grType)
                     {
+                        //Tạo key ServiceReqType và ServiceReq
+                        if (rdo.ListServiceReqType != null && rdo.ListServiceReqType.Count > 0)
+                            srTypeList.Add(rdo.ListServiceReqType.FirstOrDefault(o => o.ID == item.Key));
+
+                        var grServiceReq = item.GroupBy(o => o.SERVICE_REQ_ID).ToList();
+                        if (rdo.ListServiceReqPrint != null && rdo.ListServiceReqPrint.Count > 0 && rdo.ListServiceReqPrint.Exists(o => grServiceReq.Exists(p => p.Key == o.ID)))
+                        {
+                            srList.AddRange(rdo.ListServiceReqPrint.Where(o => grServiceReq.Exists(p => p.Key == o.ID)));
+                        }
+                        //
                         serviceTypeGroup.Add(item.First());
 
                         var grParent = item.GroupBy(o => o.SERVICE_PARENT_ID).ToList();
@@ -178,15 +208,26 @@ namespace MPS.Processor.Mps000037
                     }
 
                     ListAdo = ListAdo.OrderBy(o => o.ID).ThenBy(p => p.SERVICE_NAME).ToList();
+                    objectTag.AddObjectData(store, "ServiceReqType", srTypeList.Count > 0 ? srTypeList.OrderBy(o => o.SERVICE_REQ_TYPE_NAME).ToList() : new List<HIS_SERVICE_REQ_TYPE>());
+                    objectTag.AddObjectData(store, "ServiceReq", srList.Count > 0 ? srList.OrderBy(o => o.SERVICE_REQ_TYPE_NAME).ThenBy(o => o.INTRUCTION_TIME).ToList() : new List<V_HIS_SERVICE_REQ>());
+                    var Rooms = ListAdo.Select(o => new {o.SERVICE_REQ_ID, o.TDL_EXECUTE_ROOM_ID, o.TDL_SERVICE_TYPE_ID,o.SERVICE_PARENT_ID,o.REQUEST_ROOM_NAME }).ToList();
                     objectTag.AddObjectData(store, "Services", ListAdo);
+                    objectTag.AddRelationship(store, "ServiceReqType", "ServiceReq", "ID", "SERVICE_REQ_TYPE_ID");
+                    objectTag.AddRelationship(store, "ServiceReq", "Services", "ID", "SERVICE_REQ_ID");
                     objectTag.AddObjectData(store, "ExecuteRoomGroups", ExecuteRoomGroups);
                     objectTag.AddRelationship(store, "ExecuteRoomGroups", "Services", "TDL_EXECUTE_ROOM_ID", "TDL_EXECUTE_ROOM_ID");
 
                     objectTag.AddObjectData(store, "ServicesType", serviceTypeGroup);
                     objectTag.AddObjectData(store, "ServicesParent", servcieParent);
+                    objectTag.AddObjectData(store, "ServicesRoom", Rooms);
                     objectTag.AddRelationship(store, "ServicesType", "ServicesParent", "TDL_SERVICE_TYPE_ID", "SERVICE_TYPE_ID");
                     objectTag.AddRelationship(store, "ServicesType", "Services", "TDL_SERVICE_TYPE_ID", "TDL_SERVICE_TYPE_ID");
+                    objectTag.AddRelationship(store, "ServicesType", "ServicesRoom", "TDL_SERVICE_TYPE_ID", "TDL_SERVICE_TYPE_ID");
                     objectTag.AddRelationship(store, "ServicesParent", "Services", "ID", "SERVICE_PARENT_ID");
+                    objectTag.AddRelationship(store, "ServicesParent", "ServicesRoom", "ID", "SERVICE_PARENT_ID");
+                    objectTag.AddRelationship(store, "ServicesRoom", "Services", "REQUEST_ROOM_NAME", "REQUEST_ROOM_NAME");
+
+                    objectTag.SetUserFunction(store, "FuncSameTitleCol", new CustomerFuncMergeSameData());
                 }
 
                 result = true;
@@ -433,6 +474,7 @@ namespace MPS.Processor.Mps000037
 
                     string estimateTimeOrder = string.Join(" --> ", order);
                     SetSingleKey(new KeyValue(Mps000037ExtendSingleKey.ESTIMATE_TIME_ORDER, estimateTimeOrder));
+                    SetSingleKey(new KeyValue(Mps000037ExtendSingleKey.MIN_ASSIGN_TURN_CODE, rdo.ListServiceReqPrint.Min(o => o.ASSIGN_TURN_CODE)));
                 }
 
                 AddObjectKeyIntoListkey<V_HIS_PATIENT_TYPE_ALTER>(rdo.V_HIS_PATIENT_TYPE_ALTER, false);
@@ -515,7 +557,39 @@ namespace MPS.Processor.Mps000037
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
+        class CustomerFuncMergeSameData : TFlexCelUserFunction
+        {
+            string Name;
+            public override object Evaluate(object[] parameters)
+            {
+                if (parameters == null || parameters.Length < 1)
+                    throw new ArgumentException("Bad parameter count in call to Orders() user-defined function");
+                bool result = false;
+                try
+                {
+                    string _Name = parameters[0].ToString();
+                    if (_Name != null)
+                    {
+                        if (Name == _Name)
+                        {
+                            return true;
+                        }
+                        else
+                        {
+                            Name = _Name;
+                            return false;
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    return false;
+                    Inventec.Common.Logging.LogSystem.Debug(ex);
+                }
 
+                return result;
+            }
+        }
         class CustomerFuncRownumberData : TFlexCelUserFunction
         {
             public CustomerFuncRownumberData()

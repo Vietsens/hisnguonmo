@@ -31,6 +31,7 @@ using HIS.Desktop.Print;
 using HIS.Desktop.Utilities.Extentions;
 using Inventec.Common.Adapter;
 using Inventec.Common.Controls.EditorLoader;
+using Inventec.Common.Logging;
 using Inventec.Core;
 using Inventec.Desktop.Common.Message;
 using MOS.EFMODEL.DataModels;
@@ -439,6 +440,7 @@ namespace HIS.Desktop.Plugins.RepayService.RepayService
             //LoadPayForm();
             //InitComboPayForm();
             //LoadDataToComboRepayReason();
+            SetDefaultPayFormForUser();
             LoadPatientType();
             LoadCashierRoom();
             LoadAccountBook();
@@ -699,8 +701,14 @@ namespace HIS.Desktop.Plugins.RepayService.RepayService
             {
                 MOS.Filter.HisPayFormFilter Filter = new HisPayFormFilter();
                 Filter.IS_ACTIVE = IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE;
-                ListPayForm = new Inventec.Common.Adapter.BackendAdapter(new CommonParam()).Get<List<HIS_PAY_FORM>>("api/HisPayForm/Get", ApiConsumer.ApiConsumers.MosConsumer, Filter, new
-                 CommonParam());
+                ListPayForm = new Inventec.Common.Adapter.BackendAdapter(new CommonParam())
+                    .Get<List<HIS_PAY_FORM>>("api/HisPayForm/Get", ApiConsumer.ApiConsumers.MosConsumer, Filter, new CommonParam());
+                cboPayForm.EditValue = ListPayForm;
+                foreach (var item in ListPayForm)
+                {
+                    LogSystem.Info($"ListPayForm : {item.ID}");
+                }
+                //ListPayForm = ListPayForm.Where(p => p.IS_ACTIVE == 1).ToList();
             }
             catch (Exception ex)
             {
@@ -975,27 +983,40 @@ namespace HIS.Desktop.Plugins.RepayService.RepayService
         {
             try
             {
-                if (cboPayForm.EditValue != null)
-                    return;
+                cboPayForm.EditValue = null;
+
+                BackendDataWorker.Reset<HIS_PAY_FORM>();
+                //if (cboPayForm.EditValue != null)
+                //    return;
 
                 if (BackendDataWorker.IsExistsKey<HIS_PAY_FORM>())
                 {
                     ListPayForm = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<HIS_PAY_FORM>();
                 }
-                else
+                else      
                 {
                     CommonParam paramCommon = new CommonParam();
-                    dynamic filter = new System.Dynamic.ExpandoObject();
-                    ListPayForm = await new Inventec.Common.Adapter.BackendAdapter(paramCommon).GetAsync<List<MOS.EFMODEL.DataModels.HIS_PAY_FORM>>("api/HisPayForm/Get", ApiConsumers.MosConsumer, filter, paramCommon);
+                    //dynamic filter = new System.Dynamic.ExpandoObject();
+                    MOS.Filter.HisPayFormFilter Filter = new HisPayFormFilter();
+                    Filter.IS_ACTIVE = IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE;
+                    ListPayForm = await new Inventec.Common.Adapter.BackendAdapter(paramCommon).GetAsync<List<MOS.EFMODEL.DataModels.HIS_PAY_FORM>>("api/HisPayForm/Get", ApiConsumers.MosConsumer, Filter, paramCommon);
 
-                    if (ListPayForm != null) BackendDataWorker.UpdateToRam(typeof(MOS.EFMODEL.DataModels.HIS_PAY_FORM), ListPayForm, long.Parse(DateTime.Now.ToString("yyyyMMddHHmmss")));
+                    if (ListPayForm != null)
+                        ListPayForm = ListPayForm.Where(p => p.IS_ACTIVE == 1).ToList();
+                    BackendDataWorker.UpdateToRam(typeof(MOS.EFMODEL.DataModels.HIS_PAY_FORM), ListPayForm, long.Parse(DateTime.Now.ToString("yyyyMMddHHmmss")));
+
+                    foreach (var item in ListPayForm)
+                    {
+                        LogSystem.Info($"------------------------------------- {item.ID}");
+                    }
                 }
 
                 InitComboPayForm();
 
                 if (ListPayForm != null && ListPayForm.Count > 0)
                 {
-                    var PayFormMinByCode = ListPayForm.OrderBy(o => o.PAY_FORM_CODE);
+                    var filteredPayForms = ListPayForm.Where(p => p.IS_ACTIVE == 1).ToList();
+                    var PayFormMinByCode = filteredPayForms.OrderBy(o => o.PAY_FORM_CODE);
                     var payFormDefault = PayFormMinByCode.FirstOrDefault();
                     if (payFormDefault != null)
                     {
@@ -1003,6 +1024,7 @@ namespace HIS.Desktop.Plugins.RepayService.RepayService
                     }
                 }
             }
+                                    
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);

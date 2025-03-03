@@ -47,6 +47,7 @@ namespace MPS.Processor.Mps000455
                 //objectTag.AddObjectData(store, "ServiceReq", new List<V_HIS_SERVICE_REQ>() { rdo.HisServiceReq });
                 //objectTag.AddObjectData(store, "KskDriverCar", new List<HIS_KSK_DRIVER_CAR>() { rdo.HisKskDriverCar });
                 SetSingleKey();
+                SetSignatureKeyImageByCFG();
                 objectTag.AddObjectData(store, "ExamRank",  rdo.examRank );
                 singleTag.ProcessData(store, singleValueDictionary);
                 barCodeTag.ProcessData(store, dicImage);
