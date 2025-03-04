@@ -661,6 +661,7 @@ namespace HIS.Desktop.Plugins.EmrDocument
                 {
                     TreatmentCheckViewerSDO data = new TreatmentCheckViewerSDO();
                     data.TreatmentId = treatments[0].ID;
+                    data.IsRoomLT = room != null ? room.ROOM_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_ROOM_TYPE.ID__LT : false;
                     data.RoomCode = room != null ? room.ROOM_CODE : null;
                     data.DepartmentCode = room != null ? room.DEPARTMENT_CODE : null;
                     var resultData = new BackendAdapter(paramCommon).Post<bool>("api/EmrTreatment/CheckViewer", ApiConsumers.EmrConsumer, data, paramCommon);
@@ -1537,7 +1538,7 @@ namespace HIS.Desktop.Plugins.EmrDocument
             sdo.IsShowWatermark = IsShowWatermark;
             sdo.RoomCode = room != null ? room.ROOM_CODE : null;
             sdo.DepartmentCode = room != null ? room.DEPARTMENT_CODE : null;
-
+            sdo.IsRoomLT = room != null ? room.ROOM_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_ROOM_TYPE.ID__LT : false;
             Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => sdo), sdo));
             return new BackendAdapter(paramCommon).Post<List<EmrDocumentFileSDO>>("api/EmrDocument/DownloadFile", ApiConsumers.EmrConsumer, sdo, paramCommon);
         }

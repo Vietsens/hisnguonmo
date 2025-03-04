@@ -916,6 +916,7 @@ namespace HIS.Desktop.Plugins.Register.Run
                 //Lay gia tri ma nhap vao
                 if (data != null)
                 {
+                    WaitingManager.Show();
                     CccdCardData cccdCard = new CccdCardData();
                     this.ResultDataADO = null;
                     this._HeinCardData = null;
@@ -977,7 +978,6 @@ namespace HIS.Desktop.Plugins.Register.Run
                             FillDataAfterFindQrCodeNoExistsCard(_HeinCardData);
                     }
                     //this.CheckheinCardFromHeinInsuranceApi(this._HeinCardData);
-                    WaitingManager.Show();
                     if (!(data is CccdCardData))
                     {
                         HeinGOVManager heinGOVManager = new HeinGOVManager(ResourceMessage.GoiSangCongBHXHTraVeMaLoi);

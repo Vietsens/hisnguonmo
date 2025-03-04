@@ -765,6 +765,15 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                                     text = "Duyệt kết quả";
                                 }
                             }
+
+                            if(info.Column.FieldName == "PRINT_COUNT_IC")
+                            {
+                                var printCount = ((LisSampleADO)view.GetRow(lastRowHandle)).PRINT_COUNT;
+                                if (printCount > 0)
+                                {
+                                    text = string.Format("Đã in {0} lần", printCount);
+                                }
+                            }    
                             lastInfo = new ToolTipControlInfo(new DevExpress.XtraGrid.GridToolTipInfo(view, new DevExpress.XtraGrid.Views.Base.CellToolTipInfo(info.RowHandle, info.Column, "Text")), text);
                         }
                         e.Info = lastInfo;
@@ -1299,6 +1308,13 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                         else
                         {
                             e.RepositoryItem = repositoryDuyetKetQuaD;
+                        }
+                    }
+                    else if (e.Column.FieldName == "PRINT_COUNT_IC")
+                    {
+                        if ((data.PRINT_COUNT != null && data.PRINT_COUNT > 0 ))
+                        {
+                            e.RepositoryItem = repCountPrint;
                         }
                     }
                 }

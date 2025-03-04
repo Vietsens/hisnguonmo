@@ -102,7 +102,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
         HIS_IMP_MEST_TYPE currentImpMestType = null;
 
         List<MaterialTypeADO> listMaterialType = new List<MaterialTypeADO>();
-        List<MedicineTypeADO> listMedicineType = new List<MedicineTypeADO>();
+        List<MedicineTypeADO> listMedicineType = new List<MedicineTypeADO>();        
 
         VHisServiceADO currrentServiceAdo = null;
         ResultImpMestADO resultADO = null;
