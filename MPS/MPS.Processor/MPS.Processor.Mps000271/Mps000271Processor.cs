@@ -1,4 +1,4 @@
-/* IVT
+﻿/* IVT
  * @Project : hisnguonmo
  * Copyright (C) 2017 INVENTEC
  *  
@@ -51,6 +51,9 @@ namespace MPS.Processor.Mps000271
                 Inventec.Common.FlexCellExport.ProcessObjectTag objectTag = new Inventec.Common.FlexCellExport.ProcessObjectTag();
                 store.ReadTemplate(System.IO.Path.GetFullPath(fileName));
                 SetSingleKey();
+                //lấy số lần in
+                SetNumOrderKey(GetNumOrderPrint(ProcessUniqueCodeData()));
+
                 singleTag.ProcessData(store, singleValueDictionary);
                 if (rdo.mps000271Ado != null && rdo.mps000271Ado.transfusions != null && rdo.mps000271Ado.transfusions.Count > 0)
                 {
@@ -67,6 +70,43 @@ namespace MPS.Processor.Mps000271
 
             return result;
         }
+
+        public override string ProcessUniqueCodeData()
+        {
+            string result = "";
+            try
+            {
+                if (rdo != null && rdo.treatment != null)
+                {
+                    string printCode = "Mps000271";
+                    string treatmentCode = "TREATMENT_CODE:" + (rdo.treatment != null ? rdo.treatment.TREATMENT_CODE : "");
+                    string expMestCode = "EXP_MEST_CODE:" + (rdo.expMestBlood != null ? rdo.expMestBlood.EXP_MEST_CODE : "");
+
+                    List<string> transfusionDetails = new List<string>();
+                    if (rdo.transfusions != null && rdo.transfusions.Count > 0)
+                    {
+                        foreach (var t in rdo.transfusions.OrderBy(t => t.ID))
+                        {
+                            transfusionDetails.Add(string.Format("HIS_TRANSFUSION:{0}", t.ID));
+                        }
+                    }
+
+                    List<string> parts = new List<string> { printCode, treatmentCode, expMestCode };
+                    parts.AddRange(transfusionDetails);
+                    parts.RemoveAll(string.IsNullOrWhiteSpace);
+
+                    result = string.Join(" ", parts);
+                }
+            }
+            catch (Exception ex)
+            {
+                result = "";
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+            return result;
+        }
+
+
         void SetSingleKey()
         {
             try

@@ -1,4 +1,4 @@
-/* IVT
+﻿/* IVT
  * @Project : hisnguonmo
  * Copyright (C) 2017 INVENTEC
  *  
@@ -23,5 +23,8 @@ namespace MPS.Processor.Mps000271
     {
         internal const string CURRENT_ROOM_NAME = "CURRENT_ROOM_NAME";
         internal const string CURRENT_DEPARTMENT_NAME = "CURRENT_DEPARTMENT_NAME";
+
+        //Bổ sung 
+
     }
 }
