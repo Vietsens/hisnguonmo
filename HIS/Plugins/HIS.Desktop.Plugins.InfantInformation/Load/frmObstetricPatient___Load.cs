@@ -338,7 +338,7 @@ namespace HIS.Desktop.Plugins.InfantInformation
                         chkInfantcheck.Checked = false;
 
                     chkIsSurgery.Checked = data.IS_SURGERY == 1 ? true : false;
-                    txtHeinCardTmp.Text = data.HEIN_CARD_NUMBER_TMP;
+                    txtHeinCardTmp.Text = data.HEIN_CARD_NUMBER_TMP.ToUpper();
                     txtInfantMonth.EditValue = data.MONTH_COUNT;
                     txtInfantWeek.EditValue = data.WEEK_COUNT;
                     spnInfantHeight.EditValue = data.HEIGHT;

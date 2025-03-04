@@ -1895,7 +1895,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                 this.dxValidationProvider2.RemoveControlError(txtBidNumber);//20
 
                 ValidBidControl(txtBid, lciBid, false, 4, true);
-                ValidBidControl(txtBidNumber, lciBidNumber, false, 30);
+                ValidBidControl(txtBidNumber, lciBidNumber, false, 50);
                 ValidBidControl(txtBidGroupCode, layoutControlItem6, false, 4);
                 ValidBidControl(txtBidYear, layoutControlItem8, false, 20);
 
@@ -1904,7 +1904,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                     if (IsValidateInfoBid && this.currrentServiceAdo != null)
                     {
                         ValidBidControl(txtBid, lciBid, true, 4, true);
-                        ValidBidControl(txtBidNumber, lciBidNumber, true, 30);
+                        ValidBidControl(txtBidNumber, lciBidNumber, true, 50);
                         ValidBidControl(txtBidGroupCode, layoutControlItem6, this.currrentServiceAdo.IsMedicine, 4);
                         ValidBidControl(txtBidYear, layoutControlItem8, !this.currrentServiceAdo.IsMedicine, 20);
                     }

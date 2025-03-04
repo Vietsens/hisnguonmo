@@ -184,7 +184,6 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.Add
             medicineTypeSDO.OTHER_PAY_SOURCE_ID = frmAssignPrescription.currentMedicineTypeADOForEdit != null ? frmAssignPrescription.currentMedicineTypeADOForEdit.OTHER_PAY_SOURCE_ID : null;
             medicineTypeSDO.OTHER_PAY_SOURCE_CODE = frmAssignPrescription.currentMedicineTypeADOForEdit != null ? frmAssignPrescription.currentMedicineTypeADOForEdit.OTHER_PAY_SOURCE_CODE : "";
             medicineTypeSDO.OTHER_PAY_SOURCE_NAME = frmAssignPrescription.currentMedicineTypeADOForEdit != null ? frmAssignPrescription.currentMedicineTypeADOForEdit.OTHER_PAY_SOURCE_NAME : "";
-
             medicineTypeSDO.IsExpend = this.IsExpend;
             medicineTypeSDO.IsDisableExpend = this.IsDisableExpend;
             if (this.MedicineUseFormId > 0)
