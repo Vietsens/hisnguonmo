@@ -76,26 +76,36 @@ namespace MPS.Processor.Mps000271
             string result = "";
             try
             {
-                if (rdo != null && rdo.treatment != null)
+                if (rdo != null && rdo.mps000271Ado != null && rdo.mps000271Ado.treatment != null)
                 {
+                    // Mã biểu in
                     string printCode = "Mps000271";
-                    string treatmentCode = "TREATMENT_CODE:" + (rdo.treatment != null ? rdo.treatment.TREATMENT_CODE : "");
-                    string expMestCode = "EXP_MEST_CODE:" + (rdo.expMestBlood != null ? rdo.expMestBlood.EXP_MEST_CODE : "");
-
+                    string treatmentCode = "TREATMENT_CODE:" +
+                        (rdo.mps000271Ado.treatment.TREATMENT_CODE != null ? rdo.mps000271Ado.treatment.TREATMENT_CODE : "");
+                    string expMestCode = "EXP_MEST_CODE:" +
+                        (rdo.mps000271Ado.expMestBlood != null && rdo.mps000271Ado.expMestBlood.EXP_MEST_CODE != null
+                        ? rdo.mps000271Ado.expMestBlood.EXP_MEST_CODE
+                        : "");
                     List<string> transfusionDetails = new List<string>();
-                    if (rdo.transfusions != null && rdo.transfusions.Count > 0)
+                    if (rdo.mps000271Ado.transfusions != null && rdo.mps000271Ado.transfusions.Count > 0)
                     {
-                        foreach (var t in rdo.transfusions.OrderBy(t => t.ID))
+                        transfusionDetails = rdo.mps000271Ado.transfusions
+                            .OrderBy(t => t.ID)
+                            .Select(t => "HIS_TRANSFUSION:" + t.ID)
+                            .ToList();
+                    }
+                    List<string> parts = new List<string> { printCode, treatmentCode, expMestCode };
+                    parts.AddRange(transfusionDetails);
+                    List<string> validParts = new List<string>();
+                    foreach (string part in parts)
+                    {
+                        if (!string.IsNullOrWhiteSpace(part))
                         {
-                            transfusionDetails.Add(string.Format("HIS_TRANSFUSION:{0}", t.ID));
+                            validParts.Add(part);
                         }
                     }
 
-                    List<string> parts = new List<string> { printCode, treatmentCode, expMestCode };
-                    parts.AddRange(transfusionDetails);
-                    parts.RemoveAll(string.IsNullOrWhiteSpace);
-
-                    result = string.Join(" ", parts);
+                    result = string.Join(" ", validParts);
                 }
             }
             catch (Exception ex)
