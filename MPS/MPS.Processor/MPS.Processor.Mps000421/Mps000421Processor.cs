@@ -265,14 +265,21 @@ namespace MPS.Processor.Mps000421
                     string expMestCode = "EXP_MEST_CODE:" + (rdo.ExpMest?.EXP_MEST_CODE ?? "");
 
                     // Danh sách mã túi máu (BLOOD_CODE)
-                    string bloodCode = "BLOOD_CODE:";
+                    List<string> bloodCodes = new List<string>();
                     if (rdo.ExpMestBlood != null && rdo.ExpMestBlood.Count > 0)
                     {
-                        bloodCode += string.Join(",", rdo.ExpMestBlood.Select(b => b.BLOOD_CODE)) + ",";
+                        bloodCodes = rdo.ExpMestBlood
+                            .Select(b => "BLOOD_CODE:" + b.BLOOD_CODE).ToList();
                     }
-                    else
+
+                    // Danh sách tổng hợp truyền máu (V_HIS_TRANSFUSION_SUM)
+                    List<string> transfusionSums = new List<string>();
+                    if (rdo.TransFusionSum != null && rdo.TransFusionSum.Count > 0)
                     {
-                        bloodCode += "";
+                        transfusionSums = rdo.TransFusionSum
+                            .OrderBy(t => t.ID)
+                            .Select(t => "HIS_TRANSFUSION_SUM:" + t.ID)
+                            .ToList();
                     }
 
                     // Danh sách truyền máu HIS_TRANSFUSION, sắp xếp theo ID tăng dần
@@ -286,7 +293,8 @@ namespace MPS.Processor.Mps000421
                     }
 
                     // Ghép tất cả các phần tử thành chuỗi kết quả
-                    List<string> parts = new List<string> { printCode, treatmentCode, expMestCode, bloodCode };
+                    List<string> parts = new List<string> { printCode, treatmentCode, expMestCode };
+                    parts.AddRange(bloodCodes);
                     parts.AddRange(transfusionDetails);
                     parts.RemoveAll(string.IsNullOrWhiteSpace); // Loại bỏ phần tử rỗng
 

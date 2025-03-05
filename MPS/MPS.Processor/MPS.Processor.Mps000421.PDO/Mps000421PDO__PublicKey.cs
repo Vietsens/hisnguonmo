@@ -38,6 +38,7 @@ namespace MPS.Processor.Mps000421.PDO
         public List<V_HIS_EXP_BLTY_SERVICE> ExpBltyService { get; set; }
         public List<HIS_EXP_MEST> ListExpMest { get; set; }
         public List<HIS_TRANSFUSION> TransFusions { get; set; }
+        public List<HIS_TRANSFUSION_SUM> TransFusionSum { get; set; }
     }
 
 }
