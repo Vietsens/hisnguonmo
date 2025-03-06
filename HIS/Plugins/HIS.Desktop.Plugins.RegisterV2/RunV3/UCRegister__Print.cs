@@ -43,6 +43,7 @@ using HIS.Desktop.LocalStorage.HisConfig;
 using MPS.Processor.Mps000001.PDO;
 using HIS.Desktop.Plugins.RegisterV2.Process;
 using MOS.SDO;
+using MPS.Processor.Mps000309.PDO;
 
 namespace HIS.Desktop.Plugins.RegisterV2.Run2
 {
@@ -585,29 +586,16 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
 
                 WaitingManager.Hide();
                 MPS.ProcessorBase.Core.PrintData PrintData = null;
-                if (GlobalVariables.dicPrinter.ContainsKey(printTypeCode) && !String.IsNullOrEmpty(GlobalVariables.dicPrinter[printTypeCode]))
+
+                Inventec.Common.SignLibrary.ADO.InputADO inputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode(resultHisPatientProfileSDO.HisTreatment.TREATMENT_CODE, printTypeCode, currentModule.RoomId);
+                if (ConfigApplications.CheDoInChoCacChucNangTrongPhanMem == 2)
                 {
-                    if (ConfigApplications.CheDoInChoCacChucNangTrongPhanMem == 2)
-                    {
-                        PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000358PDO, MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow, GlobalVariables.dicPrinter[printTypeCode]);
-                    }
-                    else
-                    {
-                        PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000358PDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show, GlobalVariables.dicPrinter[printTypeCode]);
-                    }
+                    PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000358PDO, MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow, GlobalVariables.dicPrinter.ContainsKey(printTypeCode) && !string.IsNullOrEmpty(GlobalVariables.dicPrinter[printTypeCode]) ? GlobalVariables.dicPrinter[printTypeCode] : "") { EmrInputADO = inputADO };
                 }
                 else
                 {
-                    if (ConfigApplications.CheDoInChoCacChucNangTrongPhanMem == 2)
-                    {
-                        PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000358PDO, MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow, "");
-                    }
-                    else
-                    {
-                        PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000358PDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show, "");
-                    }
+                    PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000358PDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show, GlobalVariables.dicPrinter.ContainsKey(printTypeCode) && !string.IsNullOrEmpty(GlobalVariables.dicPrinter[printTypeCode]) ? GlobalVariables.dicPrinter[printTypeCode] : "", 1, false, true) { EmrInputADO = inputADO };
                 }
-                PrintData.EmrInputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode(resultHisPatientProfileSDO.HisTreatment.TREATMENT_CODE, printTypeCode, currentModule.RoomId);
                 result = MPS.MpsPrinter.Run(PrintData);
             }
             catch (Exception ex)
@@ -677,27 +665,14 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
 
                 WaitingManager.Hide();
                 MPS.ProcessorBase.Core.PrintData PrintData = null;
-                if (GlobalVariables.dicPrinter.ContainsKey(printTypeCode) && !String.IsNullOrEmpty(GlobalVariables.dicPrinter[printTypeCode]))
+                Inventec.Common.SignLibrary.ADO.InputADO inputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode(resultHisPatientProfileSDO.HisTreatment.TREATMENT_CODE, printTypeCode, currentModule.RoomId);
+                if (ConfigApplications.CheDoInChoCacChucNangTrongPhanMem == 2)
                 {
-                    if (ConfigApplications.CheDoInChoCacChucNangTrongPhanMem == 2)
-                    {
-                        PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000309PDO, MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow, GlobalVariables.dicPrinter[printTypeCode]);
-                    }
-                    else
-                    {
-                        PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000309PDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show, GlobalVariables.dicPrinter[printTypeCode]);
-                    }
+                    PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000309PDO, MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow, GlobalVariables.dicPrinter.ContainsKey(printTypeCode) && !string.IsNullOrEmpty(GlobalVariables.dicPrinter[printTypeCode]) ? GlobalVariables.dicPrinter[printTypeCode] : "") { EmrInputADO = inputADO };
                 }
                 else
                 {
-                    if (ConfigApplications.CheDoInChoCacChucNangTrongPhanMem == 2)
-                    {
-                        PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000309PDO, MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow, "");
-                    }
-                    else
-                    {
-                        PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000309PDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show, "");
-                    }
+                    PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000309PDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show, GlobalVariables.dicPrinter.ContainsKey(printTypeCode) && !string.IsNullOrEmpty(GlobalVariables.dicPrinter[printTypeCode]) ? GlobalVariables.dicPrinter[printTypeCode] : "", 1, false, true) { EmrInputADO = inputADO };
                 }
                 result = MPS.MpsPrinter.Run(PrintData);
             }
@@ -769,27 +744,15 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
                     );
                 WaitingManager.Hide();
                 MPS.ProcessorBase.Core.PrintData PrintData = null;
-                if (GlobalVariables.dicPrinter.ContainsKey(printTypeCode) && !String.IsNullOrEmpty(GlobalVariables.dicPrinter[printTypeCode]))
+
+                Inventec.Common.SignLibrary.ADO.InputADO inputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode(treatment4.TREATMENT_CODE, printTypeCode, currentModule.RoomId);
+                if (ConfigApplications.CheDoInChoCacChucNangTrongPhanMem == 2)
                 {
-                    if (ConfigApplications.CheDoInChoCacChucNangTrongPhanMem == 2)
-                    {
-                        PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000178RDO, MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow, GlobalVariables.dicPrinter[printTypeCode]);
-                    }
-                    else
-                    {
-                        PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000178RDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show, GlobalVariables.dicPrinter[printTypeCode]);
-                    }
+                    PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000178RDO, MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow, GlobalVariables.dicPrinter.ContainsKey(printTypeCode) && !string.IsNullOrEmpty(GlobalVariables.dicPrinter[printTypeCode]) ? GlobalVariables.dicPrinter[printTypeCode] : "") { EmrInputADO = inputADO };
                 }
                 else
                 {
-                    if (ConfigApplications.CheDoInChoCacChucNangTrongPhanMem == 2)
-                    {
-                        PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000178RDO, MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow, "");
-                    }
-                    else
-                    {
-                        PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000178RDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show, "");
-                    }
+                    PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000178RDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show, GlobalVariables.dicPrinter.ContainsKey(printTypeCode) && !string.IsNullOrEmpty(GlobalVariables.dicPrinter[printTypeCode]) ? GlobalVariables.dicPrinter[printTypeCode] : "", 1, false, true) { EmrInputADO = inputADO };
                 }
                 result = MPS.MpsPrinter.Run(PrintData);
             }
