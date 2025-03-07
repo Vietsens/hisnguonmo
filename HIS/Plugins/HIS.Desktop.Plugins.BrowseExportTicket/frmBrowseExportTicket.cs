@@ -1550,6 +1550,14 @@ namespace HIS.Desktop.Plugins.BrowseExportTicket
                     Inventec.Common.Mapper.DataObjectMapper.Map<V_HIS_EXP_MEST>(curExpMest, data);
                     listBloods = new List<V_HIS_EXP_MEST_BLOOD>();
 
+                    HisTransfusionSumViewFilter filter = new HisTransfusionSumViewFilter();
+                    filter.EXP_MEST_BLOOD_IDs = listBloods.Select(o => o.ID).ToList();
+                    List<V_HIS_TRANSFUSION_SUM> v_HIS_TRANSFUSION_SUMs = new BackendAdapter(new CommonParam()).Get<List<V_HIS_TRANSFUSION_SUM>>("/api/HisTransfusionSum/GetView", ApiConsumers.MosConsumer, filter, null);
+
+                    HisTransfusionFilter filterTrans = new HisTransfusionFilter();
+                    filterTrans.IDs = v_HIS_TRANSFUSION_SUMs.Select(o => o.ID).ToList();
+                    List<HIS_TRANSFUSION> hIS_TRANSFUSION = new BackendAdapter(new CommonParam()).Get<List<HIS_TRANSFUSION>>("/api/HisTransfusion/GetView", ApiConsumers.MosConsumer, filterTrans, null);
+
                     if (this.rsSave.ExpBloods != null)
                     {
                         foreach (var item in this.rsSave.ExpBloods)
@@ -1566,13 +1574,21 @@ namespace HIS.Desktop.Plugins.BrowseExportTicket
                     HisExpBltyServiceViewFilter BltyServicefilter = new HisExpBltyServiceViewFilter();
                     BltyServicefilter.EXP_MEST_ID = data.ID;
                     ExpBltyService = new BackendAdapter(new CommonParam()).Get<List<V_HIS_EXP_BLTY_SERVICE>>("api/HisExpBltyService/GetView", ApiConsumer.ApiConsumers.MosConsumer, BltyServicefilter, new CommonParam());
+                    HisExpMestFilter chmsFilter = new HisExpMestFilter();
+                    chmsFilter.ID = expMestId;
+                    List<HIS_EXP_MEST> ChmsExpMests = new List<HIS_EXP_MEST>();
+                    ChmsExpMests = new BackendAdapter(new CommonParam()).Get<List<HIS_EXP_MEST>>(
+                        "api/HisExpMest/Get", ApiConsumers.MosConsumer, chmsFilter, null);
                     WaitingManager.Hide();
                     MPS.Processor.Mps000421.PDO.Mps000421PDO pdo = new MPS.Processor.Mps000421.PDO.Mps000421PDO(
                      treatment,
                      patients,
                      curExpMest,
                      listBloods,
-                     ExpBltyService
+                     ExpBltyService,
+                     v_HIS_TRANSFUSION_SUMs,
+                     ChmsExpMests,
+                     hIS_TRANSFUSION
                      );
                     MPS.ProcessorBase.Core.PrintData PrintData = null;
 
@@ -3052,6 +3068,19 @@ namespace HIS.Desktop.Plugins.BrowseExportTicket
 
                 Inventec.Common.SignLibrary.ADO.InputADO inputADO = new EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode(this.expMest != null ? this.expMest.TDL_TREATMENT_CODE : "", printTypeCode, this.currentModuleBase.RoomId);
 
+                HisTransfusionSumViewFilter filter = new HisTransfusionSumViewFilter();
+                filter.EXP_MEST_BLOOD_IDs = expMestBloods.Select(o => o.ID).ToList();
+                List<V_HIS_TRANSFUSION_SUM> v_HIS_TRANSFUSION_SUMs = new BackendAdapter(new CommonParam()).Get<List<V_HIS_TRANSFUSION_SUM>>("/api/HisTransfusionSum/GetView", ApiConsumers.MosConsumer, filter, null);
+
+                HisTransfusionFilter filterTrans = new HisTransfusionFilter();
+                filterTrans.IDs = v_HIS_TRANSFUSION_SUMs.Select(o => o.ID).ToList();
+                List<HIS_TRANSFUSION> hIS_TRANSFUSION = new BackendAdapter(new CommonParam()).Get<List<HIS_TRANSFUSION>>("/api/HisTransfusion/GetView", ApiConsumers.MosConsumer, filterTrans, null);
+
+                HisExpMestFilter chmsFilter = new HisExpMestFilter();
+                chmsFilter.ID = expMestId;
+                List<HIS_EXP_MEST> ChmsExpMests = new List<HIS_EXP_MEST>();
+                ChmsExpMests = new BackendAdapter(new CommonParam()).Get<List<HIS_EXP_MEST>>(
+                    "api/HisExpMest/Get", ApiConsumers.MosConsumer, chmsFilter, null);
 
                 WaitingManager.Hide();
                 foreach (var item in expMestBloods)
@@ -3065,7 +3094,10 @@ namespace HIS.Desktop.Plugins.BrowseExportTicket
                         patients,
                         curExpMest,
                         list,
-                        listService);
+                        listService,
+                        v_HIS_TRANSFUSION_SUMs,  
+                        ChmsExpMests,
+                        hIS_TRANSFUSION);
 
                     printData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000421PDO, MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow, "");
 

@@ -1448,6 +1448,15 @@ namespace HIS.Desktop.Plugins.HisCheckBeforeTransfusionBlood
                 bloodViewFilter.EXP_MEST_ID = this.ExpMestId.Value;
                 List<V_HIS_EXP_MEST_BLOOD> expMestBloods = new BackendAdapter(new CommonParam()).Get<List<V_HIS_EXP_MEST_BLOOD>>("/api/HisExpMestBlood/GetView", ApiConsumers.MosConsumer, bloodViewFilter, null);
 
+                HisTransfusionSumViewFilter filter = new HisTransfusionSumViewFilter();
+                filter.EXP_MEST_BLOOD_IDs = expMestBloods.Select(o => o.ID).ToList();
+                List<V_HIS_TRANSFUSION_SUM> v_HIS_TRANSFUSION_SUMs = new BackendAdapter(new CommonParam()).Get<List<V_HIS_TRANSFUSION_SUM>>("/api/HisTransfusionSum/GetView", ApiConsumers.MosConsumer, filter, null);
+
+                HisTransfusionFilter filterTrans = new HisTransfusionFilter();
+                filterTrans.IDs = v_HIS_TRANSFUSION_SUMs.Select(o => o.ID).ToList();
+                List<HIS_TRANSFUSION> hIS_TRANSFUSION = new BackendAdapter(new CommonParam()).Get<List<HIS_TRANSFUSION>>("/api/HisTransfusion/GetView", ApiConsumers.MosConsumer, filterTrans, null);
+
+
                 HisExpBltyServiceViewFilter bltyServiceFilter = new HisExpBltyServiceViewFilter();
                 bltyServiceFilter.EXP_MEST_ID = this.ExpMestId.Value;
                 List<V_HIS_EXP_BLTY_SERVICE> expBltyServices = new BackendAdapter(new CommonParam()).Get<List<V_HIS_EXP_BLTY_SERVICE>>("/api/HisExpBltyService/GetView", ApiConsumers.MosConsumer, bltyServiceFilter, null);
@@ -1495,7 +1504,7 @@ namespace HIS.Desktop.Plugins.HisCheckBeforeTransfusionBlood
                     list.Add(item);
                     List<V_HIS_EXP_BLTY_SERVICE> listService = expBltyServices != null ? expBltyServices.ToList() : null;
 
-                    MPS.Processor.Mps000421.PDO.Mps000421PDO mps000421PDO = new MPS.Processor.Mps000421.PDO.Mps000421PDO(treatment, this.CurrentPatient, this.expMest, list, listService,listExp);
+                    MPS.Processor.Mps000421.PDO.Mps000421PDO mps000421PDO = new MPS.Processor.Mps000421.PDO.Mps000421PDO(treatment, this.CurrentPatient, this.expMest, list, listService, v_HIS_TRANSFUSION_SUMs, listExp, hIS_TRANSFUSION );
 
                     if (HIS.Desktop.LocalStorage.ConfigApplication.ConfigApplications.CheDoInChoCacChucNangTrongPhanMem == 2)
                     {
@@ -1801,6 +1810,15 @@ namespace HIS.Desktop.Plugins.HisCheckBeforeTransfusionBlood
                 bloodViewFilter.EXP_MEST_ID = this.ExpMestId.Value;
                 List<V_HIS_EXP_MEST_BLOOD> expMestBloods = new BackendAdapter(new CommonParam()).Get<List<V_HIS_EXP_MEST_BLOOD>>("/api/HisExpMestBlood/GetView", ApiConsumers.MosConsumer, bloodViewFilter, null);
 
+                HisTransfusionSumViewFilter filter = new HisTransfusionSumViewFilter();
+                filter.EXP_MEST_BLOOD_IDs = expMestBloods.Select(o => o.ID).ToList();
+                List<V_HIS_TRANSFUSION_SUM> v_HIS_TRANSFUSION_SUMs = new BackendAdapter(new CommonParam()).Get<List<V_HIS_TRANSFUSION_SUM>>("/api/HisTransfusionSum/GetView", ApiConsumers.MosConsumer, filter, null);
+
+                HisTransfusionFilter filterTrans = new HisTransfusionFilter();
+                filterTrans.IDs = v_HIS_TRANSFUSION_SUMs.Select(o => o.ID).ToList();
+                List<HIS_TRANSFUSION> hIS_TRANSFUSION = new BackendAdapter(new CommonParam()).Get<List<HIS_TRANSFUSION>>("/api/HisTransfusion/GetView", ApiConsumers.MosConsumer, filterTrans, null);
+
+
                 HisExpBltyServiceViewFilter bltyServiceFilter = new HisExpBltyServiceViewFilter();
                 bltyServiceFilter.EXP_MEST_ID = this.ExpMestId.Value;
                 List<V_HIS_EXP_BLTY_SERVICE> expBltyServices = new BackendAdapter(new CommonParam()).Get<List<V_HIS_EXP_BLTY_SERVICE>>("/api/HisExpBltyService/GetView", ApiConsumers.MosConsumer, bltyServiceFilter, null);
@@ -1846,14 +1864,14 @@ namespace HIS.Desktop.Plugins.HisCheckBeforeTransfusionBlood
                             bloodCode = "BLOOD_CODE:" + item.BLOOD_CODE;
                         }
                         inputADO.HisCode = String.Format("{0} {1} {2} {3}", printTypeCode, treatmentCode, expMestCode, bloodCode);
-                    }
+                    }   
 
                     
                     list.Add(item);  
                 }
                 List<V_HIS_EXP_BLTY_SERVICE> listService = expBltyServices != null ? expBltyServices.ToList() : null;
                 //MPS.Processor.Mps000421.PDO.Mps000421PDO mps000421PDO = new MPS.Processor.Mps000421.PDO.Mps000421PDO(treatment, this.CurrentPatient, this.expMest, list, listService);
-                MPS.Processor.Mps000421.PDO.Mps000421PDO mps000421PDO = new MPS.Processor.Mps000421.PDO.Mps000421PDO(treatment, this.CurrentPatient, this.expMest, list, listService, listExp);
+                MPS.Processor.Mps000421.PDO.Mps000421PDO mps000421PDO = new MPS.Processor.Mps000421.PDO.Mps000421PDO(treatment, this.CurrentPatient, this.expMest, list, listService, v_HIS_TRANSFUSION_SUMs, listExp, hIS_TRANSFUSION );
                 if (HIS.Desktop.LocalStorage.ConfigApplication.ConfigApplications.CheDoInChoCacChucNangTrongPhanMem == 2)
                 {
                     printData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000421PDO, MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow, "");
