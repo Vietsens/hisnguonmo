@@ -3533,7 +3533,8 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                         filter.FEE_LOCK_TIME_FROM = Inventec.Common.DateTime.Get.StartDay();
                         filter.FEE_LOCK_TIME_TO = Convert.ToInt64(DateTime.Now.ToString("yyyyMMddHHmmss"));
                     }
-
+                    if (configSync.isCheckCollinearXml)
+                        filter.XML130_RESULT = null;
                     filter.HAS_XML130_RESULT = false;
                     LogSystem.Debug("Treatment Filter: " + LogUtil.TraceData("Filter", filter));
                     result = new BackendAdapter(new CommonParam()).Get<List<V_HIS_TREATMENT_1>>("api/HisTreatment/GetView1", ApiConsumers.MosConsumer, filter, null);
@@ -3588,6 +3589,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                 isXML130 = true;
                 isXML3176 = false;
                 await XML130();
+                FillDataToGridTreatment();
             }
             catch (Exception ex)
             {
@@ -3663,7 +3665,6 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                     else
                         MessageManager.Show(this.ParentForm, paramUpdateXml130, true);
 
-                    FillDataToGridTreatment();
                 }
                 WaitingManager.Hide();
             }
@@ -5171,6 +5172,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                 isAutoSignXML3176 = false;
                 showMessSusscess = true;
                 await XML130();
+                FillDataToGridTreatment();
             }
             catch (Exception ex)
             {

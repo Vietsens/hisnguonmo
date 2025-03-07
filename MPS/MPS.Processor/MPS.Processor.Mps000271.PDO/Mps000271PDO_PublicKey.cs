@@ -41,6 +41,9 @@ namespace MPS.Processor.Mps000271.PDO
     {
         public Mps000271ADO mps000271Ado { get; set; }
         public SingleKey singleKey { get; set; }
+        public V_HIS_TREATMENT treatment { get; set; }
+        public V_HIS_EXP_MEST_BLOOD expMestBlood { get; set; }
+        public List<HIS_TRANSFUSION> transfusions { get; set; }
     }
 
     public class Mps000271ADO
