@@ -163,6 +163,18 @@ namespace SAR.Desktop.Plugins.SarPrintType
             this.layoutControlItem3 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem35 = new DevExpress.XtraLayout.LayoutControlItem();
             this.lcEditorInfo = new DevExpress.XtraLayout.LayoutControl();
+            this.popupControlContainerSetSignature = new DevExpress.XtraBars.PopupControlContainer(this.components);
+            this.btnSetSignature = new DevExpress.XtraEditors.SimpleButton();
+            this.layoutControl6 = new DevExpress.XtraLayout.LayoutControl();
+            this.gridControlSetSignature = new DevExpress.XtraGrid.GridControl();
+            this.gridViewSetSignature = new DevExpress.XtraGrid.Views.Grid.GridView();
+            this.gridColumn35 = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gridColumn36 = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gridColumn37 = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.repoBtnAddSetSignature = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
+            this.repoBtnDeleteSetSignature = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
+            this.layoutControlGroup1 = new DevExpress.XtraLayout.LayoutControlGroup();
+            this.layoutControlItem54 = new DevExpress.XtraLayout.LayoutControlItem();
             this.popupControlContainerNumCopyByKeyCFG = new DevExpress.XtraBars.PopupControlContainer(this.components);
             this.btnNumCopyByKeyCFG = new DevExpress.XtraEditors.SimpleButton();
             this.gridControlNumCopyByKeyCFG = new DevExpress.XtraGrid.GridControl();
@@ -173,6 +185,17 @@ namespace SAR.Desktop.Plugins.SarPrintType
             this.gridColumn34 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.resBtnAddNumCopyByKeyCFG = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
             this.resBtnDeleteNumCopyByKeyCFG = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
+            this.btnPopUpSetSignature = new DevExpress.XtraEditors.SimpleButton();
+            this.memoSetSignature = new DevExpress.XtraEditors.MemoEdit();
+            this.popupControlContainerMappingEMR = new DevExpress.XtraBars.PopupControlContainer(this.components);
+            this.btnMappingEMR = new DevExpress.XtraEditors.SimpleButton();
+            this.gridControlMappingEMR = new DevExpress.XtraGrid.GridControl();
+            this.gridViewMappingEMR = new DevExpress.XtraGrid.Views.Grid.GridView();
+            this.gridColumnNameEMR = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gridColumnKey = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gridColAdd = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.repositoryBtnAdd = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
+            this.repositoryBtnDelete = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
             this.popupContainerGenSignatureByKeyCFG = new DevExpress.XtraBars.PopupControlContainer(this.components);
             this.btnGenSignatureByKeyCFG = new DevExpress.XtraEditors.SimpleButton();
             this.gridControlGenSignatureByKeyCFG = new DevExpress.XtraGrid.GridControl();
@@ -189,15 +212,6 @@ namespace SAR.Desktop.Plugins.SarPrintType
             this.cboEmrDocumentType = new DevExpress.XtraEditors.GridLookUpEdit();
             this.gridView5 = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.chkIS_PRINT_EXCEPTION_REASON = new DevExpress.XtraEditors.CheckEdit();
-            this.popupControlContainerMappingEMR = new DevExpress.XtraBars.PopupControlContainer(this.components);
-            this.btnMappingEMR = new DevExpress.XtraEditors.SimpleButton();
-            this.gridControlMappingEMR = new DevExpress.XtraGrid.GridControl();
-            this.gridViewMappingEMR = new DevExpress.XtraGrid.Views.Grid.GridView();
-            this.gridColumnNameEMR = new DevExpress.XtraGrid.Columns.GridColumn();
-            this.gridColumnKey = new DevExpress.XtraGrid.Columns.GridColumn();
-            this.gridColAdd = new DevExpress.XtraGrid.Columns.GridColumn();
-            this.repositoryBtnAdd = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
-            this.repositoryBtnDelete = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
             this.memoGenSignatureEnable = new DevExpress.XtraEditors.MemoEdit();
             this.btnPopUpGenSignatureEnable = new DevExpress.XtraEditors.SimpleButton();
             this.btnPopUpDisablePrintByKeyCFG = new DevExpress.XtraEditors.SimpleButton();
@@ -246,21 +260,19 @@ namespace SAR.Desktop.Plugins.SarPrintType
             this.layoutControlItem40 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem41 = new DevExpress.XtraLayout.LayoutControlItem();
             this.emptySpaceItem5 = new DevExpress.XtraLayout.EmptySpaceItem();
-            this.layoutControlItem43 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.layoutControlItem44 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem45 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.emptySpaceItem6 = new DevExpress.XtraLayout.EmptySpaceItem();
             this.layoutControlItem46 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.emptySpaceItem7 = new DevExpress.XtraLayout.EmptySpaceItem();
             this.layoutControlItem47 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.emptySpaceItem8 = new DevExpress.XtraLayout.EmptySpaceItem();
-            this.layoutControlItem48 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem50 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem14 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem49 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.layoutControlItem42 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem51 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.emptySpaceItem1 = new DevExpress.XtraLayout.EmptySpaceItem();
+            this.layoutControlItem42 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.layoutControlItem48 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.layoutControlItem44 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.layoutControlItem43 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.layoutControlItem52 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.layoutControlItem53 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlGroup3 = new DevExpress.XtraLayout.LayoutControlGroup();
             this.layoutControlItem4 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem5 = new DevExpress.XtraLayout.LayoutControlItem();
@@ -370,12 +382,29 @@ namespace SAR.Desktop.Plugins.SarPrintType
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem35)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lcEditorInfo)).BeginInit();
             this.lcEditorInfo.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.popupControlContainerSetSignature)).BeginInit();
+            this.popupControlContainerSetSignature.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControl6)).BeginInit();
+            this.layoutControl6.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.gridControlSetSignature)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gridViewSetSignature)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repoBtnAddSetSignature)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repoBtnDeleteSetSignature)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem54)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.popupControlContainerNumCopyByKeyCFG)).BeginInit();
             this.popupControlContainerNumCopyByKeyCFG.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gridControlNumCopyByKeyCFG)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridViewNumCopyByKeyCFG)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.resBtnAddNumCopyByKeyCFG)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.resBtnDeleteNumCopyByKeyCFG)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.memoSetSignature.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.popupControlContainerMappingEMR)).BeginInit();
+            this.popupControlContainerMappingEMR.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.gridControlMappingEMR)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gridViewMappingEMR)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repositoryBtnAdd)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repositoryBtnDelete)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.popupContainerGenSignatureByKeyCFG)).BeginInit();
             this.popupContainerGenSignatureByKeyCFG.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gridControlGenSignatureByKeyCFG)).BeginInit();
@@ -388,12 +417,6 @@ namespace SAR.Desktop.Plugins.SarPrintType
             ((System.ComponentModel.ISupportInitialize)(this.cboEmrDocumentType.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridView5)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.chkIS_PRINT_EXCEPTION_REASON.Properties)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.popupControlContainerMappingEMR)).BeginInit();
-            this.popupControlContainerMappingEMR.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.gridControlMappingEMR)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.gridViewMappingEMR)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.repositoryBtnAdd)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.repositoryBtnDelete)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.memoGenSignatureEnable.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.memoDisablePrintByKeyCFG.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.memoMappingEMR.Properties)).BeginInit();
@@ -433,21 +456,19 @@ namespace SAR.Desktop.Plugins.SarPrintType
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem40)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem41)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem5)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem43)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem44)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem45)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem6)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem46)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem7)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem47)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem8)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem48)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem50)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem14)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem49)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem42)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem51)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem42)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem48)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem44)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem43)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem52)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem53)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem4)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem5)).BeginInit();
@@ -1195,9 +1216,12 @@ namespace SAR.Desktop.Plugins.SarPrintType
             // 
             // lcEditorInfo
             // 
+            this.lcEditorInfo.Controls.Add(this.popupControlContainerSetSignature);
+            this.lcEditorInfo.Controls.Add(this.popupControlContainerNumCopyByKeyCFG);
+            this.lcEditorInfo.Controls.Add(this.btnPopUpSetSignature);
+            this.lcEditorInfo.Controls.Add(this.memoSetSignature);
             this.lcEditorInfo.Controls.Add(this.popupControlContainerMappingEMR);
             this.lcEditorInfo.Controls.Add(this.popupContainerGenSignatureByKeyCFG);
-            this.lcEditorInfo.Controls.Add(this.popupControlContainerNumCopyByKeyCFG);
             this.lcEditorInfo.Controls.Add(this.btnPopUpNumCopyByKeyCFG);
             this.lcEditorInfo.Controls.Add(this.memoNumCopyByKeyCFG);
             this.lcEditorInfo.Controls.Add(this.cboEmrDocumentGroup);
@@ -1237,12 +1261,137 @@ namespace SAR.Desktop.Plugins.SarPrintType
             this.lcEditorInfo.TabIndex = 2;
             this.lcEditorInfo.Text = "layoutControl5";
             // 
+            // popupControlContainerSetSignature
+            // 
+            this.popupControlContainerSetSignature.AutoSize = true;
+            this.popupControlContainerSetSignature.BorderStyle = DevExpress.XtraEditors.Controls.BorderStyles.NoBorder;
+            this.popupControlContainerSetSignature.Controls.Add(this.btnSetSignature);
+            this.popupControlContainerSetSignature.Controls.Add(this.layoutControl6);
+            this.popupControlContainerSetSignature.Location = new System.Drawing.Point(13, 456);
+            this.popupControlContainerSetSignature.Manager = this.barManager1;
+            this.popupControlContainerSetSignature.Name = "popupControlContainerSetSignature";
+            this.popupControlContainerSetSignature.Size = new System.Drawing.Size(402, 166);
+            this.popupControlContainerSetSignature.TabIndex = 59;
+            this.popupControlContainerSetSignature.Visible = false;
+            // 
+            // btnSetSignature
+            // 
+            this.btnSetSignature.Location = new System.Drawing.Point(312, 132);
+            this.btnSetSignature.Name = "btnSetSignature";
+            this.btnSetSignature.Size = new System.Drawing.Size(75, 23);
+            this.btnSetSignature.TabIndex = 1;
+            this.btnSetSignature.Text = "Đồng ý";
+            this.btnSetSignature.Click += new System.EventHandler(this.btnSetSignature_Click);
+            // 
+            // layoutControl6
+            // 
+            this.layoutControl6.Controls.Add(this.gridControlSetSignature);
+            this.layoutControl6.Dock = System.Windows.Forms.DockStyle.Top;
+            this.layoutControl6.Location = new System.Drawing.Point(0, 0);
+            this.layoutControl6.Name = "layoutControl6";
+            this.layoutControl6.Root = this.layoutControlGroup1;
+            this.layoutControl6.Size = new System.Drawing.Size(402, 120);
+            this.layoutControl6.TabIndex = 0;
+            this.layoutControl6.Text = "layoutControl6";
+            // 
+            // gridControlSetSignature
+            // 
+            this.gridControlSetSignature.Location = new System.Drawing.Point(2, 2);
+            this.gridControlSetSignature.MainView = this.gridViewSetSignature;
+            this.gridControlSetSignature.MenuManager = this.barManager1;
+            this.gridControlSetSignature.Name = "gridControlSetSignature";
+            this.gridControlSetSignature.RepositoryItems.AddRange(new DevExpress.XtraEditors.Repository.RepositoryItem[] {
+            this.repoBtnAddSetSignature,
+            this.repoBtnDeleteSetSignature});
+            this.gridControlSetSignature.Size = new System.Drawing.Size(398, 116);
+            this.gridControlSetSignature.TabIndex = 4;
+            this.gridControlSetSignature.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
+            this.gridViewSetSignature});
+            // 
+            // gridViewSetSignature
+            // 
+            this.gridViewSetSignature.Columns.AddRange(new DevExpress.XtraGrid.Columns.GridColumn[] {
+            this.gridColumn35,
+            this.gridColumn36,
+            this.gridColumn37});
+            this.gridViewSetSignature.GridControl = this.gridControlSetSignature;
+            this.gridViewSetSignature.Name = "gridViewSetSignature";
+            this.gridViewSetSignature.OptionsView.ShowGroupPanel = false;
+            this.gridViewSetSignature.RowCellClick += new DevExpress.XtraGrid.Views.Grid.RowCellClickEventHandler(this.gridViewSetSignature_RowCellClick);
+            this.gridViewSetSignature.CustomRowCellEdit += new DevExpress.XtraGrid.Views.Grid.CustomRowCellEditEventHandler(this.gridViewSetSignature_CustomRowCellEdit);
+            // 
+            // gridColumn35
+            // 
+            this.gridColumn35.Caption = "Key";
+            this.gridColumn35.FieldName = "Key";
+            this.gridColumn35.Name = "gridColumn35";
+            this.gridColumn35.Visible = true;
+            this.gridColumn35.VisibleIndex = 0;
+            this.gridColumn35.Width = 126;
+            // 
+            // gridColumn36
+            // 
+            this.gridColumn36.Caption = "Thứ tự";
+            this.gridColumn36.FieldName = "Num";
+            this.gridColumn36.Name = "gridColumn36";
+            this.gridColumn36.Visible = true;
+            this.gridColumn36.VisibleIndex = 1;
+            this.gridColumn36.Width = 126;
+            // 
+            // gridColumn37
+            // 
+            this.gridColumn37.FieldName = "AddAndDelete";
+            this.gridColumn37.Name = "gridColumn37";
+            this.gridColumn37.OptionsColumn.ShowCaption = false;
+            this.gridColumn37.Visible = true;
+            this.gridColumn37.VisibleIndex = 2;
+            this.gridColumn37.Width = 25;
+            // 
+            // repoBtnAddSetSignature
+            // 
+            this.repoBtnAddSetSignature.AutoHeight = false;
+            this.repoBtnAddSetSignature.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Plus)});
+            this.repoBtnAddSetSignature.Name = "repoBtnAddSetSignature";
+            this.repoBtnAddSetSignature.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
+            this.repoBtnAddSetSignature.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.repoBtnAddSetSignature_ButtonClick);
+            // 
+            // repoBtnDeleteSetSignature
+            // 
+            this.repoBtnDeleteSetSignature.AutoHeight = false;
+            this.repoBtnDeleteSetSignature.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Minus)});
+            this.repoBtnDeleteSetSignature.Name = "repoBtnDeleteSetSignature";
+            this.repoBtnDeleteSetSignature.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
+            this.repoBtnDeleteSetSignature.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.repoBtnDeleteSetSignature_ButtonClick);
+            // 
+            // layoutControlGroup1
+            // 
+            this.layoutControlGroup1.EnableIndentsWithoutBorders = DevExpress.Utils.DefaultBoolean.True;
+            this.layoutControlGroup1.GroupBordersVisible = false;
+            this.layoutControlGroup1.Items.AddRange(new DevExpress.XtraLayout.BaseLayoutItem[] {
+            this.layoutControlItem54});
+            this.layoutControlGroup1.Location = new System.Drawing.Point(0, 0);
+            this.layoutControlGroup1.Name = "layoutControlGroup1";
+            this.layoutControlGroup1.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
+            this.layoutControlGroup1.Size = new System.Drawing.Size(402, 120);
+            this.layoutControlGroup1.TextVisible = false;
+            // 
+            // layoutControlItem54
+            // 
+            this.layoutControlItem54.Control = this.gridControlSetSignature;
+            this.layoutControlItem54.Location = new System.Drawing.Point(0, 0);
+            this.layoutControlItem54.Name = "layoutControlItem54";
+            this.layoutControlItem54.Size = new System.Drawing.Size(402, 120);
+            this.layoutControlItem54.TextSize = new System.Drawing.Size(0, 0);
+            this.layoutControlItem54.TextVisible = false;
+            // 
             // popupControlContainerNumCopyByKeyCFG
             // 
             this.popupControlContainerNumCopyByKeyCFG.BorderStyle = DevExpress.XtraEditors.Controls.BorderStyles.NoBorder;
             this.popupControlContainerNumCopyByKeyCFG.Controls.Add(this.btnNumCopyByKeyCFG);
             this.popupControlContainerNumCopyByKeyCFG.Controls.Add(this.gridControlNumCopyByKeyCFG);
-            this.popupControlContainerNumCopyByKeyCFG.Location = new System.Drawing.Point(4, 596);
+            this.popupControlContainerNumCopyByKeyCFG.Location = new System.Drawing.Point(36, 303);
             this.popupControlContainerNumCopyByKeyCFG.Manager = this.barManager1;
             this.popupControlContainerNumCopyByKeyCFG.Name = "popupControlContainerNumCopyByKeyCFG";
             this.popupControlContainerNumCopyByKeyCFG.Size = new System.Drawing.Size(341, 149);
@@ -1340,6 +1489,119 @@ namespace SAR.Desktop.Plugins.SarPrintType
             this.resBtnDeleteNumCopyByKeyCFG.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             this.resBtnDeleteNumCopyByKeyCFG.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.resBtnDeleteNumCopyByKeyCFG_ButtonClick);
             // 
+            // btnPopUpSetSignature
+            // 
+            this.btnPopUpSetSignature.Image = ((System.Drawing.Image)(resources.GetObject("btnPopUpSetSignature.Image")));
+            this.btnPopUpSetSignature.Location = new System.Drawing.Point(404, 634);
+            this.btnPopUpSetSignature.Name = "btnPopUpSetSignature";
+            this.btnPopUpSetSignature.Size = new System.Drawing.Size(24, 22);
+            this.btnPopUpSetSignature.StyleController = this.lcEditorInfo;
+            this.btnPopUpSetSignature.TabIndex = 58;
+            this.btnPopUpSetSignature.Click += new System.EventHandler(this.btnPopUpSetSignature_Click);
+            this.btnPopUpSetSignature.ChangeUICues += new System.Windows.Forms.UICuesEventHandler(this.btnPopUpSetSignature_ChangeUICues);
+            // 
+            // memoSetSignature
+            // 
+            this.memoSetSignature.Enabled = false;
+            this.memoSetSignature.Location = new System.Drawing.Point(172, 634);
+            this.memoSetSignature.MenuManager = this.barManager1;
+            this.memoSetSignature.Name = "memoSetSignature";
+            this.memoSetSignature.Size = new System.Drawing.Size(228, 45);
+            this.memoSetSignature.StyleController = this.lcEditorInfo;
+            this.memoSetSignature.TabIndex = 57;
+            // 
+            // popupControlContainerMappingEMR
+            // 
+            this.popupControlContainerMappingEMR.AutoSize = true;
+            this.popupControlContainerMappingEMR.BorderStyle = DevExpress.XtraEditors.Controls.BorderStyles.NoBorder;
+            this.popupControlContainerMappingEMR.Controls.Add(this.btnMappingEMR);
+            this.popupControlContainerMappingEMR.Controls.Add(this.gridControlMappingEMR);
+            this.popupControlContainerMappingEMR.Location = new System.Drawing.Point(13, 163);
+            this.popupControlContainerMappingEMR.Manager = this.barManager1;
+            this.popupControlContainerMappingEMR.Name = "popupControlContainerMappingEMR";
+            this.popupControlContainerMappingEMR.Size = new System.Drawing.Size(423, 134);
+            this.popupControlContainerMappingEMR.TabIndex = 49;
+            this.popupControlContainerMappingEMR.Visible = false;
+            // 
+            // btnMappingEMR
+            // 
+            this.btnMappingEMR.Location = new System.Drawing.Point(342, 108);
+            this.btnMappingEMR.Name = "btnMappingEMR";
+            this.btnMappingEMR.Size = new System.Drawing.Size(75, 23);
+            this.btnMappingEMR.TabIndex = 1;
+            this.btnMappingEMR.Text = "Đồng ý";
+            this.btnMappingEMR.Click += new System.EventHandler(this.btnMappingEMR_Click);
+            // 
+            // gridControlMappingEMR
+            // 
+            this.gridControlMappingEMR.Location = new System.Drawing.Point(2, 3);
+            this.gridControlMappingEMR.MainView = this.gridViewMappingEMR;
+            this.gridControlMappingEMR.MenuManager = this.barManager1;
+            this.gridControlMappingEMR.Name = "gridControlMappingEMR";
+            this.gridControlMappingEMR.RepositoryItems.AddRange(new DevExpress.XtraEditors.Repository.RepositoryItem[] {
+            this.repositoryBtnAdd,
+            this.repositoryBtnDelete});
+            this.gridControlMappingEMR.Size = new System.Drawing.Size(415, 101);
+            this.gridControlMappingEMR.TabIndex = 0;
+            this.gridControlMappingEMR.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
+            this.gridViewMappingEMR});
+            // 
+            // gridViewMappingEMR
+            // 
+            this.gridViewMappingEMR.Columns.AddRange(new DevExpress.XtraGrid.Columns.GridColumn[] {
+            this.gridColumnNameEMR,
+            this.gridColumnKey,
+            this.gridColAdd});
+            this.gridViewMappingEMR.GridControl = this.gridControlMappingEMR;
+            this.gridViewMappingEMR.Name = "gridViewMappingEMR";
+            this.gridViewMappingEMR.OptionsView.ShowGroupPanel = false;
+            this.gridViewMappingEMR.CustomRowCellEdit += new DevExpress.XtraGrid.Views.Grid.CustomRowCellEditEventHandler(this.gridViewMappingEMR_CustomRowCellEdit);
+            // 
+            // gridColumnNameEMR
+            // 
+            this.gridColumnNameEMR.Caption = "Tên cột trên hệ thống EMR";
+            this.gridColumnNameEMR.FieldName = "EmrColumn";
+            this.gridColumnNameEMR.Name = "gridColumnNameEMR";
+            this.gridColumnNameEMR.Visible = true;
+            this.gridColumnNameEMR.VisibleIndex = 0;
+            this.gridColumnNameEMR.Width = 140;
+            // 
+            // gridColumnKey
+            // 
+            this.gridColumnKey.Caption = "Key để lấy dữ liệu";
+            this.gridColumnKey.FieldName = "Key";
+            this.gridColumnKey.Name = "gridColumnKey";
+            this.gridColumnKey.Visible = true;
+            this.gridColumnKey.VisibleIndex = 1;
+            this.gridColumnKey.Width = 234;
+            // 
+            // gridColAdd
+            // 
+            this.gridColAdd.FieldName = "BtnAddAndDelete";
+            this.gridColAdd.Name = "gridColAdd";
+            this.gridColAdd.OptionsColumn.ShowCaption = false;
+            this.gridColAdd.Visible = true;
+            this.gridColAdd.VisibleIndex = 2;
+            this.gridColAdd.Width = 23;
+            // 
+            // repositoryBtnAdd
+            // 
+            this.repositoryBtnAdd.AutoHeight = false;
+            this.repositoryBtnAdd.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Plus)});
+            this.repositoryBtnAdd.Name = "repositoryBtnAdd";
+            this.repositoryBtnAdd.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
+            this.repositoryBtnAdd.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.repositoryBtnAdd_ButtonClick);
+            // 
+            // repositoryBtnDelete
+            // 
+            this.repositoryBtnDelete.AutoHeight = false;
+            this.repositoryBtnDelete.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Minus)});
+            this.repositoryBtnDelete.Name = "repositoryBtnDelete";
+            this.repositoryBtnDelete.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
+            this.repositoryBtnDelete.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.repositoryBtnDelete_ButtonClick);
+            // 
             // popupContainerGenSignatureByKeyCFG
             // 
             this.popupContainerGenSignatureByKeyCFG.AutoSize = true;
@@ -1347,7 +1609,7 @@ namespace SAR.Desktop.Plugins.SarPrintType
             this.popupContainerGenSignatureByKeyCFG.BorderStyle = DevExpress.XtraEditors.Controls.BorderStyles.NoBorder;
             this.popupContainerGenSignatureByKeyCFG.Controls.Add(this.btnGenSignatureByKeyCFG);
             this.popupContainerGenSignatureByKeyCFG.Controls.Add(this.gridControlGenSignatureByKeyCFG);
-            this.popupContainerGenSignatureByKeyCFG.Location = new System.Drawing.Point(85, 325);
+            this.popupContainerGenSignatureByKeyCFG.Location = new System.Drawing.Point(4, 21);
             this.popupContainerGenSignatureByKeyCFG.Manager = this.barManager1;
             this.popupContainerGenSignatureByKeyCFG.Name = "popupContainerGenSignatureByKeyCFG";
             this.popupContainerGenSignatureByKeyCFG.Size = new System.Drawing.Size(423, 134);
@@ -1440,7 +1702,7 @@ namespace SAR.Desktop.Plugins.SarPrintType
             // 
             this.btnPopUpNumCopyByKeyCFG.Image = ((System.Drawing.Image)(resources.GetObject("btnPopUpNumCopyByKeyCFG.Image")));
             this.btnPopUpNumCopyByKeyCFG.ImageLocation = DevExpress.XtraEditors.ImageLocation.MiddleCenter;
-            this.btnPopUpNumCopyByKeyCFG.Location = new System.Drawing.Point(404, 622);
+            this.btnPopUpNumCopyByKeyCFG.Location = new System.Drawing.Point(404, 585);
             this.btnPopUpNumCopyByKeyCFG.Name = "btnPopUpNumCopyByKeyCFG";
             this.btnPopUpNumCopyByKeyCFG.Size = new System.Drawing.Size(24, 22);
             this.btnPopUpNumCopyByKeyCFG.StyleController = this.lcEditorInfo;
@@ -1450,11 +1712,11 @@ namespace SAR.Desktop.Plugins.SarPrintType
             // 
             // memoNumCopyByKeyCFG
             // 
-            this.memoNumCopyByKeyCFG.Location = new System.Drawing.Point(172, 648);
+            this.memoNumCopyByKeyCFG.Location = new System.Drawing.Point(172, 585);
             this.memoNumCopyByKeyCFG.MenuManager = this.barManager1;
             this.memoNumCopyByKeyCFG.Name = "memoNumCopyByKeyCFG";
             this.memoNumCopyByKeyCFG.Properties.ReadOnly = true;
-            this.memoNumCopyByKeyCFG.Size = new System.Drawing.Size(256, 31);
+            this.memoNumCopyByKeyCFG.Size = new System.Drawing.Size(228, 45);
             this.memoNumCopyByKeyCFG.StyleController = this.lcEditorInfo;
             this.memoNumCopyByKeyCFG.TabIndex = 54;
             // 
@@ -1518,105 +1780,13 @@ namespace SAR.Desktop.Plugins.SarPrintType
             this.chkIS_PRINT_EXCEPTION_REASON.TabIndex = 51;
             this.chkIS_PRINT_EXCEPTION_REASON.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.chkIS_PRINT_EXCEPTION_REASON_PreviewKeyDown);
             // 
-            // popupControlContainerMappingEMR
-            // 
-            this.popupControlContainerMappingEMR.AutoSize = true;
-            this.popupControlContainerMappingEMR.BorderStyle = DevExpress.XtraEditors.Controls.BorderStyles.NoBorder;
-            this.popupControlContainerMappingEMR.Controls.Add(this.btnMappingEMR);
-            this.popupControlContainerMappingEMR.Controls.Add(this.gridControlMappingEMR);
-            this.popupControlContainerMappingEMR.Location = new System.Drawing.Point(7, 432);
-            this.popupControlContainerMappingEMR.Manager = this.barManager1;
-            this.popupControlContainerMappingEMR.Name = "popupControlContainerMappingEMR";
-            this.popupControlContainerMappingEMR.Size = new System.Drawing.Size(423, 134);
-            this.popupControlContainerMappingEMR.TabIndex = 49;
-            this.popupControlContainerMappingEMR.Visible = false;
-            // 
-            // btnMappingEMR
-            // 
-            this.btnMappingEMR.Location = new System.Drawing.Point(342, 108);
-            this.btnMappingEMR.Name = "btnMappingEMR";
-            this.btnMappingEMR.Size = new System.Drawing.Size(75, 23);
-            this.btnMappingEMR.TabIndex = 1;
-            this.btnMappingEMR.Text = "Đồng ý";
-            this.btnMappingEMR.Click += new System.EventHandler(this.btnMappingEMR_Click);
-            // 
-            // gridControlMappingEMR
-            // 
-            this.gridControlMappingEMR.Location = new System.Drawing.Point(2, 3);
-            this.gridControlMappingEMR.MainView = this.gridViewMappingEMR;
-            this.gridControlMappingEMR.MenuManager = this.barManager1;
-            this.gridControlMappingEMR.Name = "gridControlMappingEMR";
-            this.gridControlMappingEMR.RepositoryItems.AddRange(new DevExpress.XtraEditors.Repository.RepositoryItem[] {
-            this.repositoryBtnAdd,
-            this.repositoryBtnDelete});
-            this.gridControlMappingEMR.Size = new System.Drawing.Size(415, 101);
-            this.gridControlMappingEMR.TabIndex = 0;
-            this.gridControlMappingEMR.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
-            this.gridViewMappingEMR});
-            // 
-            // gridViewMappingEMR
-            // 
-            this.gridViewMappingEMR.Columns.AddRange(new DevExpress.XtraGrid.Columns.GridColumn[] {
-            this.gridColumnNameEMR,
-            this.gridColumnKey,
-            this.gridColAdd});
-            this.gridViewMappingEMR.GridControl = this.gridControlMappingEMR;
-            this.gridViewMappingEMR.Name = "gridViewMappingEMR";
-            this.gridViewMappingEMR.OptionsView.ShowGroupPanel = false;
-            this.gridViewMappingEMR.CustomRowCellEdit += new DevExpress.XtraGrid.Views.Grid.CustomRowCellEditEventHandler(this.gridViewMappingEMR_CustomRowCellEdit);
-            // 
-            // gridColumnNameEMR
-            // 
-            this.gridColumnNameEMR.Caption = "Tên cột trên hệ thống EMR";
-            this.gridColumnNameEMR.FieldName = "EmrColumn";
-            this.gridColumnNameEMR.Name = "gridColumnNameEMR";
-            this.gridColumnNameEMR.Visible = true;
-            this.gridColumnNameEMR.VisibleIndex = 0;
-            this.gridColumnNameEMR.Width = 140;
-            // 
-            // gridColumnKey
-            // 
-            this.gridColumnKey.Caption = "Key để lấy dữ liệu";
-            this.gridColumnKey.FieldName = "Key";
-            this.gridColumnKey.Name = "gridColumnKey";
-            this.gridColumnKey.Visible = true;
-            this.gridColumnKey.VisibleIndex = 1;
-            this.gridColumnKey.Width = 234;
-            // 
-            // gridColAdd
-            // 
-            this.gridColAdd.FieldName = "BtnAddAndDelete";
-            this.gridColAdd.Name = "gridColAdd";
-            this.gridColAdd.OptionsColumn.ShowCaption = false;
-            this.gridColAdd.Visible = true;
-            this.gridColAdd.VisibleIndex = 2;
-            this.gridColAdd.Width = 23;
-            // 
-            // repositoryBtnAdd
-            // 
-            this.repositoryBtnAdd.AutoHeight = false;
-            this.repositoryBtnAdd.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Plus)});
-            this.repositoryBtnAdd.Name = "repositoryBtnAdd";
-            this.repositoryBtnAdd.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
-            this.repositoryBtnAdd.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.repositoryBtnAdd_ButtonClick);
-            // 
-            // repositoryBtnDelete
-            // 
-            this.repositoryBtnDelete.AutoHeight = false;
-            this.repositoryBtnDelete.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Minus)});
-            this.repositoryBtnDelete.Name = "repositoryBtnDelete";
-            this.repositoryBtnDelete.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
-            this.repositoryBtnDelete.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.repositoryBtnDelete_ButtonClick);
-            // 
             // memoGenSignatureEnable
             // 
-            this.memoGenSignatureEnable.Location = new System.Drawing.Point(172, 586);
+            this.memoGenSignatureEnable.Location = new System.Drawing.Point(172, 536);
             this.memoGenSignatureEnable.MenuManager = this.barManager1;
             this.memoGenSignatureEnable.Name = "memoGenSignatureEnable";
             this.memoGenSignatureEnable.Properties.ReadOnly = true;
-            this.memoGenSignatureEnable.Size = new System.Drawing.Size(256, 32);
+            this.memoGenSignatureEnable.Size = new System.Drawing.Size(228, 45);
             this.memoGenSignatureEnable.StyleController = this.lcEditorInfo;
             this.memoGenSignatureEnable.TabIndex = 48;
             // 
@@ -1624,9 +1794,9 @@ namespace SAR.Desktop.Plugins.SarPrintType
             // 
             this.btnPopUpGenSignatureEnable.Image = ((System.Drawing.Image)(resources.GetObject("btnPopUpGenSignatureEnable.Image")));
             this.btnPopUpGenSignatureEnable.ImageLocation = DevExpress.XtraEditors.ImageLocation.MiddleCenter;
-            this.btnPopUpGenSignatureEnable.Location = new System.Drawing.Point(403, 560);
+            this.btnPopUpGenSignatureEnable.Location = new System.Drawing.Point(404, 536);
             this.btnPopUpGenSignatureEnable.Name = "btnPopUpGenSignatureEnable";
-            this.btnPopUpGenSignatureEnable.Size = new System.Drawing.Size(25, 22);
+            this.btnPopUpGenSignatureEnable.Size = new System.Drawing.Size(24, 22);
             this.btnPopUpGenSignatureEnable.StyleController = this.lcEditorInfo;
             this.btnPopUpGenSignatureEnable.TabIndex = 47;
             this.btnPopUpGenSignatureEnable.Click += new System.EventHandler(this.btnPopUpGenSignatureEnable_Click);
@@ -1635,9 +1805,9 @@ namespace SAR.Desktop.Plugins.SarPrintType
             // 
             this.btnPopUpDisablePrintByKeyCFG.Image = ((System.Drawing.Image)(resources.GetObject("btnPopUpDisablePrintByKeyCFG.Image")));
             this.btnPopUpDisablePrintByKeyCFG.ImageLocation = DevExpress.XtraEditors.ImageLocation.MiddleCenter;
-            this.btnPopUpDisablePrintByKeyCFG.Location = new System.Drawing.Point(403, 499);
+            this.btnPopUpDisablePrintByKeyCFG.Location = new System.Drawing.Point(404, 487);
             this.btnPopUpDisablePrintByKeyCFG.Name = "btnPopUpDisablePrintByKeyCFG";
-            this.btnPopUpDisablePrintByKeyCFG.Size = new System.Drawing.Size(25, 22);
+            this.btnPopUpDisablePrintByKeyCFG.Size = new System.Drawing.Size(24, 22);
             this.btnPopUpDisablePrintByKeyCFG.StyleController = this.lcEditorInfo;
             this.btnPopUpDisablePrintByKeyCFG.TabIndex = 46;
             this.btnPopUpDisablePrintByKeyCFG.Text = " ";
@@ -1647,9 +1817,9 @@ namespace SAR.Desktop.Plugins.SarPrintType
             // 
             this.btnPopupMappingEMR.Image = ((System.Drawing.Image)(resources.GetObject("btnPopupMappingEMR.Image")));
             this.btnPopupMappingEMR.ImageLocation = DevExpress.XtraEditors.ImageLocation.MiddleCenter;
-            this.btnPopupMappingEMR.Location = new System.Drawing.Point(403, 439);
+            this.btnPopupMappingEMR.Location = new System.Drawing.Point(404, 438);
             this.btnPopupMappingEMR.Name = "btnPopupMappingEMR";
-            this.btnPopupMappingEMR.Size = new System.Drawing.Size(25, 22);
+            this.btnPopupMappingEMR.Size = new System.Drawing.Size(24, 22);
             this.btnPopupMappingEMR.StyleController = this.lcEditorInfo;
             this.btnPopupMappingEMR.TabIndex = 45;
             this.btnPopupMappingEMR.Text = " ";
@@ -1657,29 +1827,29 @@ namespace SAR.Desktop.Plugins.SarPrintType
             // 
             // memoDisablePrintByKeyCFG
             // 
-            this.memoDisablePrintByKeyCFG.Location = new System.Drawing.Point(172, 525);
+            this.memoDisablePrintByKeyCFG.Location = new System.Drawing.Point(172, 487);
             this.memoDisablePrintByKeyCFG.MenuManager = this.barManager1;
             this.memoDisablePrintByKeyCFG.Name = "memoDisablePrintByKeyCFG";
             this.memoDisablePrintByKeyCFG.Properties.ReadOnly = true;
-            this.memoDisablePrintByKeyCFG.Size = new System.Drawing.Size(256, 31);
+            this.memoDisablePrintByKeyCFG.Size = new System.Drawing.Size(228, 45);
             this.memoDisablePrintByKeyCFG.StyleController = this.lcEditorInfo;
             this.memoDisablePrintByKeyCFG.TabIndex = 44;
             // 
             // memoMappingEMR
             // 
-            this.memoMappingEMR.Location = new System.Drawing.Point(172, 465);
+            this.memoMappingEMR.Location = new System.Drawing.Point(172, 438);
             this.memoMappingEMR.Margin = new System.Windows.Forms.Padding(2);
             this.memoMappingEMR.MenuManager = this.barManager1;
             this.memoMappingEMR.Name = "memoMappingEMR";
             this.memoMappingEMR.Properties.ReadOnly = true;
-            this.memoMappingEMR.Size = new System.Drawing.Size(256, 30);
+            this.memoMappingEMR.Size = new System.Drawing.Size(228, 45);
             this.memoMappingEMR.StyleController = this.lcEditorInfo;
             this.memoMappingEMR.TabIndex = 43;
             // 
             // labelControl2
             // 
             this.labelControl2.AutoSizeMode = DevExpress.XtraEditors.LabelAutoSizeMode.None;
-            this.labelControl2.Location = new System.Drawing.Point(173, 422);
+            this.labelControl2.Location = new System.Drawing.Point(173, 421);
             this.labelControl2.Name = "labelControl2";
             this.labelControl2.Size = new System.Drawing.Size(255, 13);
             this.labelControl2.StyleController = this.lcEditorInfo;
@@ -1691,7 +1861,7 @@ namespace SAR.Desktop.Plugins.SarPrintType
             this.txtDoNotAllowPrintAccount.Location = new System.Drawing.Point(172, 395);
             this.txtDoNotAllowPrintAccount.MenuManager = this.barManager1;
             this.txtDoNotAllowPrintAccount.Name = "txtDoNotAllowPrintAccount";
-            this.txtDoNotAllowPrintAccount.Size = new System.Drawing.Size(256, 23);
+            this.txtDoNotAllowPrintAccount.Size = new System.Drawing.Size(256, 22);
             this.txtDoNotAllowPrintAccount.StyleController = this.lcEditorInfo;
             this.txtDoNotAllowPrintAccount.TabIndex = 40;
             this.txtDoNotAllowPrintAccount.KeyUp += new System.Windows.Forms.KeyEventHandler(this.txtDoNotAllowPrintAccount_KeyUp);
@@ -1930,21 +2100,19 @@ namespace SAR.Desktop.Plugins.SarPrintType
             this.layoutControlItem40,
             this.layoutControlItem41,
             this.emptySpaceItem5,
-            this.layoutControlItem43,
-            this.layoutControlItem44,
             this.layoutControlItem45,
-            this.emptySpaceItem6,
             this.layoutControlItem46,
-            this.emptySpaceItem7,
             this.layoutControlItem47,
-            this.emptySpaceItem8,
-            this.layoutControlItem48,
             this.layoutControlItem50,
             this.layoutControlItem14,
             this.layoutControlItem49,
-            this.layoutControlItem42,
             this.layoutControlItem51,
-            this.emptySpaceItem1});
+            this.layoutControlItem42,
+            this.layoutControlItem48,
+            this.layoutControlItem44,
+            this.layoutControlItem43,
+            this.layoutControlItem52,
+            this.layoutControlItem53});
             this.layoutControlGroup4.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup4.Name = "Root";
             this.layoutControlGroup4.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
@@ -2171,7 +2339,7 @@ namespace SAR.Desktop.Plugins.SarPrintType
             this.layoutControlItem40.Control = this.txtDoNotAllowPrintAccount;
             this.layoutControlItem40.Location = new System.Drawing.Point(0, 393);
             this.layoutControlItem40.Name = "layoutControlItem40";
-            this.layoutControlItem40.Size = new System.Drawing.Size(430, 27);
+            this.layoutControlItem40.Size = new System.Drawing.Size(430, 26);
             this.layoutControlItem40.Text = " ";
             this.layoutControlItem40.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem40.TextSize = new System.Drawing.Size(170, 20);
@@ -2180,7 +2348,7 @@ namespace SAR.Desktop.Plugins.SarPrintType
             // layoutControlItem41
             // 
             this.layoutControlItem41.Control = this.labelControl2;
-            this.layoutControlItem41.Location = new System.Drawing.Point(171, 420);
+            this.layoutControlItem41.Location = new System.Drawing.Point(171, 419);
             this.layoutControlItem41.Name = "layoutControlItem41";
             this.layoutControlItem41.Size = new System.Drawing.Size(259, 17);
             this.layoutControlItem41.TextSize = new System.Drawing.Size(0, 0);
@@ -2189,103 +2357,37 @@ namespace SAR.Desktop.Plugins.SarPrintType
             // emptySpaceItem5
             // 
             this.emptySpaceItem5.AllowHotTrack = false;
-            this.emptySpaceItem5.Location = new System.Drawing.Point(0, 420);
+            this.emptySpaceItem5.Location = new System.Drawing.Point(0, 419);
             this.emptySpaceItem5.Name = "emptySpaceItem5";
             this.emptySpaceItem5.Size = new System.Drawing.Size(171, 17);
             this.emptySpaceItem5.TextSize = new System.Drawing.Size(0, 0);
             // 
-            // layoutControlItem43
-            // 
-            this.layoutControlItem43.AppearanceItemCaption.Options.UseTextOptions = true;
-            this.layoutControlItem43.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
-            this.layoutControlItem43.Control = this.memoMappingEMR;
-            this.layoutControlItem43.Location = new System.Drawing.Point(0, 463);
-            this.layoutControlItem43.Name = "layoutControlItem43";
-            this.layoutControlItem43.Size = new System.Drawing.Size(430, 34);
-            this.layoutControlItem43.Text = "Ánh xạ dữ liệu EMR:";
-            this.layoutControlItem43.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
-            this.layoutControlItem43.TextSize = new System.Drawing.Size(165, 20);
-            this.layoutControlItem43.TextToControlDistance = 5;
-            // 
-            // layoutControlItem44
-            // 
-            this.layoutControlItem44.AppearanceItemCaption.Options.UseTextOptions = true;
-            this.layoutControlItem44.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
-            this.layoutControlItem44.AppearanceItemCaption.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
-            this.layoutControlItem44.Control = this.memoDisablePrintByKeyCFG;
-            this.layoutControlItem44.Location = new System.Drawing.Point(0, 523);
-            this.layoutControlItem44.Name = "layoutControlItem44";
-            this.layoutControlItem44.Size = new System.Drawing.Size(430, 35);
-            this.layoutControlItem44.Text = "Cấu hình chặn in dựa theo dữ liệu trên phiếu:";
-            this.layoutControlItem44.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
-            this.layoutControlItem44.TextSize = new System.Drawing.Size(165, 20);
-            this.layoutControlItem44.TextToControlDistance = 5;
-            // 
             // layoutControlItem45
             // 
             this.layoutControlItem45.Control = this.btnPopupMappingEMR;
-            this.layoutControlItem45.Location = new System.Drawing.Point(401, 437);
+            this.layoutControlItem45.Location = new System.Drawing.Point(402, 436);
             this.layoutControlItem45.Name = "layoutControlItem45";
-            this.layoutControlItem45.Size = new System.Drawing.Size(29, 26);
+            this.layoutControlItem45.Size = new System.Drawing.Size(28, 49);
             this.layoutControlItem45.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem45.TextVisible = false;
-            // 
-            // emptySpaceItem6
-            // 
-            this.emptySpaceItem6.AllowHotTrack = false;
-            this.emptySpaceItem6.Location = new System.Drawing.Point(0, 437);
-            this.emptySpaceItem6.Name = "emptySpaceItem6";
-            this.emptySpaceItem6.Size = new System.Drawing.Size(401, 26);
-            this.emptySpaceItem6.TextSize = new System.Drawing.Size(0, 0);
             // 
             // layoutControlItem46
             // 
             this.layoutControlItem46.Control = this.btnPopUpDisablePrintByKeyCFG;
-            this.layoutControlItem46.Location = new System.Drawing.Point(401, 497);
+            this.layoutControlItem46.Location = new System.Drawing.Point(402, 485);
             this.layoutControlItem46.Name = "layoutControlItem46";
-            this.layoutControlItem46.Size = new System.Drawing.Size(29, 26);
+            this.layoutControlItem46.Size = new System.Drawing.Size(28, 49);
             this.layoutControlItem46.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem46.TextVisible = false;
-            // 
-            // emptySpaceItem7
-            // 
-            this.emptySpaceItem7.AllowHotTrack = false;
-            this.emptySpaceItem7.Location = new System.Drawing.Point(0, 497);
-            this.emptySpaceItem7.Name = "emptySpaceItem7";
-            this.emptySpaceItem7.Size = new System.Drawing.Size(401, 26);
-            this.emptySpaceItem7.TextSize = new System.Drawing.Size(0, 0);
             // 
             // layoutControlItem47
             // 
             this.layoutControlItem47.Control = this.btnPopUpGenSignatureEnable;
-            this.layoutControlItem47.Location = new System.Drawing.Point(401, 558);
+            this.layoutControlItem47.Location = new System.Drawing.Point(402, 534);
             this.layoutControlItem47.Name = "layoutControlItem47";
-            this.layoutControlItem47.Size = new System.Drawing.Size(29, 26);
+            this.layoutControlItem47.Size = new System.Drawing.Size(28, 49);
             this.layoutControlItem47.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem47.TextVisible = false;
-            // 
-            // emptySpaceItem8
-            // 
-            this.emptySpaceItem8.AllowHotTrack = false;
-            this.emptySpaceItem8.Location = new System.Drawing.Point(0, 558);
-            this.emptySpaceItem8.Name = "emptySpaceItem8";
-            this.emptySpaceItem8.Size = new System.Drawing.Size(401, 26);
-            this.emptySpaceItem8.TextSize = new System.Drawing.Size(0, 0);
-            // 
-            // layoutControlItem48
-            // 
-            this.layoutControlItem48.AppearanceItemCaption.Options.UseTextOptions = true;
-            this.layoutControlItem48.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
-            this.layoutControlItem48.AppearanceItemCaption.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
-            this.layoutControlItem48.Control = this.memoGenSignatureEnable;
-            this.layoutControlItem48.Location = new System.Drawing.Point(0, 584);
-            this.layoutControlItem48.Name = "layoutControlItem48";
-            this.layoutControlItem48.Size = new System.Drawing.Size(430, 36);
-            this.layoutControlItem48.StartNewLine = true;
-            this.layoutControlItem48.Text = "Cấu hình sinh key chữ ký dựa vào key tài khoản:";
-            this.layoutControlItem48.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
-            this.layoutControlItem48.TextSize = new System.Drawing.Size(165, 20);
-            this.layoutControlItem48.TextToControlDistance = 5;
             // 
             // layoutControlItem50
             // 
@@ -2324,36 +2426,93 @@ namespace SAR.Desktop.Plugins.SarPrintType
             this.layoutControlItem49.TextSize = new System.Drawing.Size(170, 20);
             this.layoutControlItem49.TextToControlDistance = 5;
             // 
+            // layoutControlItem51
+            // 
+            this.layoutControlItem51.Control = this.btnPopUpNumCopyByKeyCFG;
+            this.layoutControlItem51.Location = new System.Drawing.Point(402, 583);
+            this.layoutControlItem51.Name = "layoutControlItem51";
+            this.layoutControlItem51.Size = new System.Drawing.Size(28, 49);
+            this.layoutControlItem51.TextSize = new System.Drawing.Size(0, 0);
+            this.layoutControlItem51.TextVisible = false;
+            // 
             // layoutControlItem42
             // 
             this.layoutControlItem42.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem42.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem42.AppearanceItemCaption.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
             this.layoutControlItem42.Control = this.memoNumCopyByKeyCFG;
-            this.layoutControlItem42.Location = new System.Drawing.Point(0, 646);
+            this.layoutControlItem42.Location = new System.Drawing.Point(0, 583);
             this.layoutControlItem42.Name = "layoutControlItem42";
-            this.layoutControlItem42.Size = new System.Drawing.Size(430, 35);
+            this.layoutControlItem42.Size = new System.Drawing.Size(402, 49);
             this.layoutControlItem42.Text = "Cấu hình số bản in dựa theo dữ liệu trên phiếu:";
             this.layoutControlItem42.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
-            this.layoutControlItem42.TextSize = new System.Drawing.Size(165, 20);
+            this.layoutControlItem42.TextSize = new System.Drawing.Size(165, 45);
             this.layoutControlItem42.TextToControlDistance = 5;
             // 
-            // layoutControlItem51
+            // layoutControlItem48
             // 
-            this.layoutControlItem51.Control = this.btnPopUpNumCopyByKeyCFG;
-            this.layoutControlItem51.Location = new System.Drawing.Point(402, 620);
-            this.layoutControlItem51.Name = "layoutControlItem51";
-            this.layoutControlItem51.Size = new System.Drawing.Size(28, 26);
-            this.layoutControlItem51.TextSize = new System.Drawing.Size(0, 0);
-            this.layoutControlItem51.TextVisible = false;
+            this.layoutControlItem48.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.layoutControlItem48.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.layoutControlItem48.AppearanceItemCaption.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
+            this.layoutControlItem48.Control = this.memoGenSignatureEnable;
+            this.layoutControlItem48.Location = new System.Drawing.Point(0, 534);
+            this.layoutControlItem48.Name = "layoutControlItem48";
+            this.layoutControlItem48.Size = new System.Drawing.Size(402, 49);
+            this.layoutControlItem48.StartNewLine = true;
+            this.layoutControlItem48.Text = "Cấu hình sinh key chữ ký dựa vào key tài khoản:";
+            this.layoutControlItem48.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.layoutControlItem48.TextSize = new System.Drawing.Size(165, 45);
+            this.layoutControlItem48.TextToControlDistance = 5;
             // 
-            // emptySpaceItem1
+            // layoutControlItem44
             // 
-            this.emptySpaceItem1.AllowHotTrack = false;
-            this.emptySpaceItem1.Location = new System.Drawing.Point(0, 620);
-            this.emptySpaceItem1.Name = "emptySpaceItem1";
-            this.emptySpaceItem1.Size = new System.Drawing.Size(402, 26);
-            this.emptySpaceItem1.TextSize = new System.Drawing.Size(0, 0);
+            this.layoutControlItem44.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.layoutControlItem44.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.layoutControlItem44.AppearanceItemCaption.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
+            this.layoutControlItem44.Control = this.memoDisablePrintByKeyCFG;
+            this.layoutControlItem44.Location = new System.Drawing.Point(0, 485);
+            this.layoutControlItem44.Name = "layoutControlItem44";
+            this.layoutControlItem44.Size = new System.Drawing.Size(402, 49);
+            this.layoutControlItem44.Text = "Cấu hình chặn in dựa theo dữ liệu trên phiếu:";
+            this.layoutControlItem44.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.layoutControlItem44.TextSize = new System.Drawing.Size(165, 45);
+            this.layoutControlItem44.TextToControlDistance = 5;
+            // 
+            // layoutControlItem43
+            // 
+            this.layoutControlItem43.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.layoutControlItem43.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.layoutControlItem43.Control = this.memoMappingEMR;
+            this.layoutControlItem43.Location = new System.Drawing.Point(0, 436);
+            this.layoutControlItem43.Name = "layoutControlItem43";
+            this.layoutControlItem43.Size = new System.Drawing.Size(402, 49);
+            this.layoutControlItem43.Text = "Ánh xạ dữ liệu EMR:";
+            this.layoutControlItem43.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.layoutControlItem43.TextSize = new System.Drawing.Size(165, 45);
+            this.layoutControlItem43.TextToControlDistance = 5;
+            // 
+            // layoutControlItem52
+            // 
+            this.layoutControlItem52.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.layoutControlItem52.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.layoutControlItem52.AppearanceItemCaption.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
+            this.layoutControlItem52.Control = this.memoSetSignature;
+            this.layoutControlItem52.Location = new System.Drawing.Point(0, 632);
+            this.layoutControlItem52.Name = "layoutControlItem52";
+            this.layoutControlItem52.Size = new System.Drawing.Size(402, 49);
+            this.layoutControlItem52.Text = "Cấu hình thiết lập người ký dựa theo dữ liệu trên phiếu:";
+            this.layoutControlItem52.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.layoutControlItem52.TextSize = new System.Drawing.Size(165, 45);
+            this.layoutControlItem52.TextToControlDistance = 5;
+            // 
+            // layoutControlItem53
+            // 
+            this.layoutControlItem53.Control = this.btnPopUpSetSignature;
+            this.layoutControlItem53.Location = new System.Drawing.Point(402, 632);
+            this.layoutControlItem53.Name = "layoutControlItem53";
+            this.layoutControlItem53.Size = new System.Drawing.Size(28, 49);
+            this.layoutControlItem53.TextSize = new System.Drawing.Size(0, 0);
+            this.layoutControlItem53.TextVisible = false;
             // 
             // layoutControlGroup3
             // 
@@ -3245,12 +3404,29 @@ namespace SAR.Desktop.Plugins.SarPrintType
             ((System.ComponentModel.ISupportInitialize)(this.lcEditorInfo)).EndInit();
             this.lcEditorInfo.ResumeLayout(false);
             this.lcEditorInfo.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.popupControlContainerSetSignature)).EndInit();
+            this.popupControlContainerSetSignature.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControl6)).EndInit();
+            this.layoutControl6.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.gridControlSetSignature)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gridViewSetSignature)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repoBtnAddSetSignature)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repoBtnDeleteSetSignature)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem54)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.popupControlContainerNumCopyByKeyCFG)).EndInit();
             this.popupControlContainerNumCopyByKeyCFG.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.gridControlNumCopyByKeyCFG)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridViewNumCopyByKeyCFG)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.resBtnAddNumCopyByKeyCFG)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.resBtnDeleteNumCopyByKeyCFG)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.memoSetSignature.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.popupControlContainerMappingEMR)).EndInit();
+            this.popupControlContainerMappingEMR.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.gridControlMappingEMR)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gridViewMappingEMR)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repositoryBtnAdd)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repositoryBtnDelete)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.popupContainerGenSignatureByKeyCFG)).EndInit();
             this.popupContainerGenSignatureByKeyCFG.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.gridControlGenSignatureByKeyCFG)).EndInit();
@@ -3263,12 +3439,6 @@ namespace SAR.Desktop.Plugins.SarPrintType
             ((System.ComponentModel.ISupportInitialize)(this.cboEmrDocumentType.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridView5)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.chkIS_PRINT_EXCEPTION_REASON.Properties)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.popupControlContainerMappingEMR)).EndInit();
-            this.popupControlContainerMappingEMR.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.gridControlMappingEMR)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.gridViewMappingEMR)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.repositoryBtnAdd)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.repositoryBtnDelete)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.memoGenSignatureEnable.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.memoDisablePrintByKeyCFG.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.memoMappingEMR.Properties)).EndInit();
@@ -3308,21 +3478,19 @@ namespace SAR.Desktop.Plugins.SarPrintType
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem40)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem41)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem5)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem43)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem44)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem45)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem6)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem46)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem7)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem47)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem8)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem48)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem50)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem14)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem49)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem42)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem51)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem42)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem48)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem44)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem43)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem52)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem53)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup3)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem4)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem5)).EndInit();
@@ -3563,14 +3731,11 @@ namespace SAR.Desktop.Plugins.SarPrintType
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem44;
         private DevExpress.XtraEditors.SimpleButton btnPopupMappingEMR;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem45;
-        private DevExpress.XtraLayout.EmptySpaceItem emptySpaceItem6;
         private DevExpress.XtraEditors.MemoEdit memoGenSignatureEnable;
         private DevExpress.XtraEditors.SimpleButton btnPopUpGenSignatureEnable;
         private DevExpress.XtraEditors.SimpleButton btnPopUpDisablePrintByKeyCFG;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem46;
-        private DevExpress.XtraLayout.EmptySpaceItem emptySpaceItem7;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem47;
-        private DevExpress.XtraLayout.EmptySpaceItem emptySpaceItem8;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem48;
         private DevExpress.XtraBars.PopupControlContainer popupControlContainerMappingEMR;
         private DevExpress.XtraEditors.SimpleButton btnMappingEMR;
@@ -3614,7 +3779,6 @@ namespace SAR.Desktop.Plugins.SarPrintType
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem42;
         private DevExpress.XtraEditors.SimpleButton btnPopUpNumCopyByKeyCFG;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem51;
-        private DevExpress.XtraLayout.EmptySpaceItem emptySpaceItem1;
         private DevExpress.XtraBars.PopupControlContainer popupControlContainerNumCopyByKeyCFG;
         private DevExpress.XtraGrid.GridControl gridControlNumCopyByKeyCFG;
         private DevExpress.XtraGrid.Views.Grid.GridView gridViewNumCopyByKeyCFG;
@@ -3625,5 +3789,21 @@ namespace SAR.Desktop.Plugins.SarPrintType
         private DevExpress.XtraEditors.SimpleButton btnNumCopyByKeyCFG;
         private DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit resBtnAddNumCopyByKeyCFG;
         private DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit resBtnDeleteNumCopyByKeyCFG;
+        private DevExpress.XtraEditors.SimpleButton btnPopUpSetSignature;
+        private DevExpress.XtraEditors.MemoEdit memoSetSignature;
+        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem52;
+        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem53;
+        private DevExpress.XtraBars.PopupControlContainer popupControlContainerSetSignature;
+        private DevExpress.XtraLayout.LayoutControl layoutControl6;
+        private DevExpress.XtraGrid.GridControl gridControlSetSignature;
+        private DevExpress.XtraGrid.Views.Grid.GridView gridViewSetSignature;
+        private DevExpress.XtraGrid.Columns.GridColumn gridColumn35;
+        private DevExpress.XtraGrid.Columns.GridColumn gridColumn36;
+        private DevExpress.XtraGrid.Columns.GridColumn gridColumn37;
+        private DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit repoBtnAddSetSignature;
+        private DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit repoBtnDeleteSetSignature;
+        private DevExpress.XtraLayout.LayoutControlGroup layoutControlGroup1;
+        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem54;
+        private DevExpress.XtraEditors.SimpleButton btnSetSignature;
     }
 }
