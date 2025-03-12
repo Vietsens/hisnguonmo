@@ -64,6 +64,7 @@ using HIS.Desktop.LocalStorage.HisConfig;
 using System.Reflection;
 using EMR.SDO;
 using System.IO;
+using DevExpress.XtraEditors;
 
 namespace HIS.Desktop.Plugins.BedRoomPartial
 {
@@ -746,13 +747,18 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
                 {
                     if (cboPatientFilter.EditValue != null && (long)cboPatientFilter.EditValue == 2)
                     {
-                        if (dtFrom.EditValue != null && dtFrom.DateTime != DateTime.MinValue)
+                        
+                        if (dtFrom.EditValue != null && dtTo.EditValue != null && dtFrom.DateTime != DateTime.MinValue && dtTo.DateTime != DateTime.MinValue)
                         {
-                            treatFilter.NO_PRESCRIPTION_FROM = Convert.ToInt64(dtFrom.DateTime.ToString("yyyyMMdd") + "000000");
-                        }
-                        if (dtTo.EditValue != null && dtTo.DateTime != DateTime.MinValue)
-                        {
-                            treatFilter.NO_PRESCRIPTION_TO = Convert.ToInt64(dtTo.DateTime.ToString("yyyyMMdd") + "235959");
+                            
+                            if (dtFrom.EditValue != null && dtFrom.DateTime != DateTime.MinValue)
+                            {
+                                treatFilter.NO_PRESCRIPTION_FROM = Convert.ToInt64(dtFrom.DateTime.ToString("yyyyMMdd") + "000000");
+                            }
+                            if (dtTo.EditValue != null && dtTo.DateTime != DateTime.MinValue)
+                            {
+                                treatFilter.NO_PRESCRIPTION_TO = Convert.ToInt64(dtTo.DateTime.ToString("yyyyMMdd") + "235959");
+                            }
                         }
                     }
                     else
@@ -1900,9 +1906,26 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
         }
 
         private void LogThreadSessionSearch()
-        {
+        {   
             try
             {
+                if ((dtTo.DateTime.Date - dtFrom.DateTime.Date).TotalDays > 90)
+                {
+                    XtraMessageBox.Show("Khoảng thời gian tìm kiếm quá dài, vui lòng chọn tối đa 3 tháng!",
+                                    "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
+                if (dtTo.DateTime.Date > DateTime.Now)
+                {
+                    XtraMessageBox.Show("Khoảng thời gian tìm kiếm quá dài, vui lòng chọn tối đa 3 tháng!",
+                                    "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    dtTo.EditValue = DateTime.Now;
+                }
+                if (dtFrom.DateTime.Date > DateTime.Now)
+                {
+                    dtFrom.EditValue = DateTime.Now;
+                }
                 treeListDateTime.DataSource = null;
                 LoadDataSereServByTreatmentId(null);
                 FillDataToLableControl(null);
