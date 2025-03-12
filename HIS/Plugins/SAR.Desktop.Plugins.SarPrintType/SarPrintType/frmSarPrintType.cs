@@ -2597,10 +2597,30 @@ namespace SAR.Desktop.Plugins.SarPrintType
                     {
                         SetSignatureByKeyCFGADO SetSig = new SetSignatureByKeyCFGADO();
                         SetSig.Edit = 0;
+                        SetSig.Num = 1;
                         ados.Add(SetSig);
                     }
-               
-                    gridControlSetSignature.DataSource = ados.OrderByDescending(o => o.Edit).ToList();
+                    else if (ados.Count == 1)
+                    {
+                        foreach (var item in ados)
+                        {
+                            item.Edit = 0;
+                        }
+                    }
+                    else
+                    {
+                        ados[0].Edit = 0;
+                        ados[0].Num = 1;
+
+                        // Các hàng tiếp theo Num tăng dần
+                        for (int i = 1; i < ados.Count; i++)
+                        {
+                            ados[i].Edit = 1;
+                            ados[i].Num = ados[i - 1].Num + 1;
+                        }
+                    }
+
+                    gridControlSetSignature.DataSource = ados.OrderBy(o => o.Edit).ToList();
                 }
                 else
                 {
@@ -2624,9 +2644,10 @@ namespace SAR.Desktop.Plugins.SarPrintType
         {
             try
             {
+                List<SetSignatureByKeyCFGADO> SetSigAdoTemps = new List<SetSignatureByKeyCFGADO>();
                 var SetSig = gridControlSetSignature.DataSource as List<SetSignatureByKeyCFGADO>;
                 SetSignatureByKeyCFGADO SetSigAdoTemp = new SetSignatureByKeyCFGADO();
-                long MaxNum = SetSig.Any() ? SetSig.Max(x => x.Num) : 0;
+                long? MaxNum = SetSig.Any() ? SetSig.Max(x => x.Num) : 0;
                 SetSigAdoTemp.Num = MaxNum + 1;
                 SetSigAdoTemp.Edit = 1;
                 SetSig.Add(SetSigAdoTemp);
@@ -2705,21 +2726,44 @@ namespace SAR.Desktop.Plugins.SarPrintType
                 {
                     if (!String.IsNullOrEmpty(item.Key) && item.Num != null)
                     {
+                        var invalidRows = listObject.Where(x => string.IsNullOrEmpty(x.Key) || x.Num == null).ToList();
+
+                        if (invalidRows.Count > 0)
+                        {
+                            XtraMessageBox.Show("Có hàng chứa dữ liệu không hợp lệ: Key hoặc Num bị null/trống!", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            return;
+                        }
+
                         var CountKey = listObject.GroupBy(x => x.Key.Trim())
                                       .Where(g => g.Count() > 1)
                                       .Select(g => g.Key)
                                       .ToList();
-                        if (CountKey.Count > 0)
+
+                        var CountNum = listObject
+                                            .GroupBy(x => x.Num)
+                                            .Where(g => g.Count() > 1 && g.Key != null)
+                                            .Select(g => g.Key)
+                                            .ToList();
+
+                        if (CountNum.Count > 0)
                         {
-                            MessageBox.Show("Có Key bị trùng: " + string.Join(", ", CountKey), "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            XtraMessageBox.Show("Có thứ tự bị trùng: " + string.Join(", ", CountNum), "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
                             return;
                         }
-                        else
+
+                        if (CountKey.Count > 0)
                         {
-                            var listObjectTemp = new { Key = item.Key.Trim(), Num = item.Num };
-                            listObjectTemps.Add(listObjectTemp);
+                            XtraMessageBox.Show("Có Key bị trùng: " + string.Join(", ", CountKey), "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            return;
                         }
-                        
+                        if (true)
+                        {
+
+                        }
+
+                        var listObjectTemp = new { Key = item.Key.Trim(), Num = item.Num };
+                        listObjectTemps.Add(listObjectTemp);
+
                     }
                     else if(String.IsNullOrEmpty(item.Key) && item.Num == null)
                     {
@@ -2727,10 +2771,10 @@ namespace SAR.Desktop.Plugins.SarPrintType
                     }
                     else
                     {
-                        MessageBox.Show("Hàng có dữ liệu không hợp lệ: Key hoặc Num đang bị null!", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        XtraMessageBox.Show("Hàng có dữ liệu không hợp lệ: Key hoặc Num đang bị null!", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
                         return;
                     }
-                }
+                }     
                 string jsonString = Newtonsoft.Json.JsonConvert.SerializeObject(listObjectTemps);
                 if (jsonString == "[]")
                 {
@@ -2741,7 +2785,7 @@ namespace SAR.Desktop.Plugins.SarPrintType
                     memoSetSignature.Text = jsonString;
                 }
 
-                PopupContainerBarControl control = popupControlContainerNumCopyByKeyCFG.Parent as PopupContainerBarControl;
+                PopupContainerBarControl control = popupControlContainerSetSignature.Parent as PopupContainerBarControl;
                 control.ClosePopup();
             }
             catch (Exception ex)
