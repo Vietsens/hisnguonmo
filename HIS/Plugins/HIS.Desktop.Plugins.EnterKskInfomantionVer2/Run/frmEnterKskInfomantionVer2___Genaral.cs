@@ -31,6 +31,7 @@ using Inventec.Common.Adapter;
 using Inventec.Core;
 using HIS.Desktop.ApiConsumer;
 using DevExpress.XtraEditors.Controls;
+using HIS.Desktop.LocalStorage.BackendData;
 namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
 {
     public partial class frmEnterKskInfomantionVer2
@@ -82,6 +83,13 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                 SetDataCboRank(cboExamStomatologyRank);
                 SetDataCboRank(cboExamDernatologyRank);
                 SetDataCboRank(cboHealthExamRank);
+                SetDataCboExamLoginName(cboExecuteLoginName);
+                SetDataCboExamLoginName(cboExamCirculationLoginName);
+                SetDataCboExamLoginName(cboExamEyeLoginName);
+                SetDataCboExamLoginName(cboExamEntLoginName);
+                SetDataCboExamLoginName(cboExamStomatologyLoginName);
+                SetDataCboExamLoginName(cboExamSubclinicalLoginName);
+                SetDataCboExamLoginName(cboConcluderLoginName);
                 FillDataGenaral();
             }
             catch (Exception ex)
@@ -212,8 +220,15 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                                 spnBloodPressureMin.EditValue = dhstGeneral.BLOOD_PRESSURE_MIN;
                                 //txtVirBmi.Text = currentDhst.VIR_BMI!=null ? currentDhst.VIR_BMI.ToString() : "";
                                 FillNoteBMI(spnHeight, spnWeight, txtVirBmi);
+                                cboExecuteLoginName.EditValue = dhstGeneral.EXECUTE_LOGINNAME;
                             }
                         }
+                        cboExamCirculationLoginName.EditValue = currentKskGeneral.EXAM_CIRCULATION_LOGINNAME;
+                        cboExamEyeLoginName.EditValue = currentKskGeneral.EXAM_EYE_LOGINNAME;
+                        cboExamEntLoginName.EditValue = currentKskGeneral.EXAM_ENT_LOGINNAME;
+                        cboExamStomatologyLoginName.EditValue = currentKskGeneral.EXAM_STOMATOLOGY_LOGINNAME;
+                        cboExamSubclinicalLoginName.EditValue = currentKskGeneral.EXAM_SUBCLINICAL_LOGINNAME;
+                        cboConcluderLoginName.EditValue = currentKskGeneral.CONCLUDER_LOGINNAME;
                     }
                     else
                     {
@@ -377,6 +392,14 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                 obj.HEALTH_EXAM_RANK_ID = cboHealthExamRank.EditValue != null ? (long?)Int64.Parse(cboHealthExamRank.EditValue.ToString()) : null;
                 obj.DISEASES = txtDiseases.Text;
                 obj.NOW_WORK_FROM = ((this.dtpStart.EditValue != null) ? Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(new DateTime?(this.dtpStart.DateTime)) : null);
+
+                obj.EXAM_CIRCULATION_LOGINNAME = cboExamCirculationLoginName.EditValue != null ? cboExamCirculationLoginName.EditValue.ToString() : null;
+                obj.EXAM_EYE_LOGINNAME = cboExamEyeLoginName.EditValue != null ? cboExamEyeLoginName.EditValue.ToString() : null;
+                obj.EXAM_ENT_LOGINNAME = cboExamEntLoginName.EditValue != null ? cboExamEntLoginName.EditValue.ToString() : null;
+                obj.EXAM_STOMATOLOGY_LOGINNAME = cboExamStomatologyLoginName.EditValue != null ? cboExamStomatologyLoginName.EditValue.ToString() : null;
+                obj.EXAM_SUBCLINICAL_LOGINNAME = cboExamSubclinicalLoginName.EditValue != null ? cboExamSubclinicalLoginName.EditValue.ToString() : null;
+                obj.CONCLUDER_LOGINNAME = cboConcluderLoginName.EditValue != null ? cboConcluderLoginName.EditValue.ToString() : null;
+
             }
             catch (Exception ex)
             {
@@ -403,6 +426,8 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                 if (spnWeight.EditValue != null)
                     obj.WEIGHT = Inventec.Common.Number.Get.RoundCurrency(spnWeight.Value, 2);
 
+                obj.EXECUTE_LOGINNAME = cboExecuteLoginName.EditValue != null ? cboExecuteLoginName.EditValue.ToString() : null;
+                obj.EXECUTE_USERNAME = obj.EXECUTE_LOGINNAME != null ? BackendDataWorker.Get<V_HIS_EMPLOYEE>().FirstOrDefault(o => o.LOGINNAME == obj.EXECUTE_LOGINNAME).TDL_USERNAME : null;
             }
             catch (Exception ex)
             {

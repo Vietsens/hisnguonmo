@@ -47,16 +47,17 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                 InitComboLicenseClass4();
                 SetDataCboRank(cboExamRespiratoryRank4);
                 SetDataCboRank(cboNeurologicalRank4);
-                SetDataCboRank(cboExamRespiratoryRank3);
                 SetDataCboRank(cboExamMuscleBoneRank4);
-                SetDataCboRank(cboExamNeuroMental3);
-                SetDataCboRank(cboExamKidneyUrologyRank3);
                 SetDataCboRank(cboExamOendRank4);
                 SetDataCboRank(cboExamMentalRank4);
                 SetDataCboRank(cboExamEyeRank4);
                 SetDataCboRank(cboExamEntDiseaseRank4);
                 SetDataCboRank(cboExamCardiovascularRank4);
                 SetDataCboRank(cboExamMaternityRank4);
+                SetDataCboExamLoginName(cboExamEyeLoginName4);
+                SetDataCboExamLoginName(cboExamEntLoginName4);
+                SetDataCboExamLoginName(cboExamCardiovascularLoginName4);
+                SetDataCboExamLoginName(cboExamSubclinicalLoginName4);
                 FillDataUnderPeriodDriver();
             }
             catch (Exception ex)
@@ -172,6 +173,12 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                         txtResultSubclinical4.Text = currentKskPeriodDriver.RESULT_SUBCLINICAL;
                         txtNoteSubclinical4.Text = currentKskPeriodDriver.NOTE_SUBCLINICAL;
                         txtConclude4.Text = currentKskPeriodDriver.CONCLUDE;
+
+
+                        cboExamEyeLoginName4.EditValue = currentKskPeriodDriver.EXAM_EYE_LOGINNAME;
+                        cboExamEntLoginName4.EditValue = currentKskPeriodDriver.EXAM_ENT_LOGINNAME;
+                        cboExamCardiovascularLoginName4.EditValue = currentKskPeriodDriver.EXAM_CARDIOVASCULAR_LOGINNAME;
+                        cboExamSubclinicalLoginName4.EditValue = currentKskPeriodDriver.EXAM_SUBCLINICAL_LOGINNAME;
 
                         HisPeriodDriverDityFilter dityFilter = new HisPeriodDriverDityFilter();
                         dityFilter.KSK_PERIOD_DRIVER_ID = currentKskPeriodDriver.ID;
@@ -463,6 +470,10 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                 obj.NOTE_SUBCLINICAL = txtNoteSubclinical4.Text;
                 obj.CONCLUDE = txtConclude4.Text;
 
+                obj.EXAM_EYE_LOGINNAME = cboExamEyeLoginName4.EditValue != null ? cboExamEyeLoginName4.EditValue.ToString() : null;
+                obj.EXAM_ENT_LOGINNAME = cboExamEntLoginName4.EditValue != null ? cboExamEntLoginName4.EditValue.ToString() : null;
+                obj.EXAM_CARDIOVASCULAR_LOGINNAME = cboExamCardiovascularLoginName4.EditValue != null ? cboExamCardiovascularLoginName4.EditValue.ToString() : null;
+                obj.EXAM_SUBCLINICAL_LOGINNAME = cboExamSubclinicalLoginName4.EditValue != null ? cboExamSubclinicalLoginName4.EditValue.ToString() : null;
             }
             catch (Exception ex)
             {
