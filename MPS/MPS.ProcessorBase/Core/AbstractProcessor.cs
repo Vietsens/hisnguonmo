@@ -273,6 +273,7 @@ namespace MPS.ProcessorBase.Core
             {
                 if (this.printType != null && !String.IsNullOrWhiteSpace(this.printType.GEN_SIGNER_BY_KEY_CFG) && singleValueDictionary != null && singleValueDictionary.Count > 0)
                 {
+                    //Inventec.Common.Logging.LogSystem.Info("GEN_SIGNER_BY_KEY_CFG: " + this.printType.GEN_SIGNER_BY_KEY_CFG);
                     List<SignerByConfigADO> numCopyList = Newtonsoft.Json.JsonConvert.DeserializeObject<List<SignerByConfigADO>>(this.printType.GEN_SIGNER_BY_KEY_CFG);
                     if (numCopyList != null && numCopyList.Count > 0)
                     {
@@ -282,7 +283,7 @@ namespace MPS.ProcessorBase.Core
                         foreach (var item in numCopyList)
                         {
                             string loginname = "";
-                            if (singleValueDictionary.ContainsKey(item.Key))
+                            if (singleValueDictionary.ContainsKey(item.Key) && singleValueDictionary[item.Key] != null)
                             {
                                 loginname = singleValueDictionary[item.Key].ToString();
                             }
