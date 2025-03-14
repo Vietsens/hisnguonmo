@@ -33,6 +33,9 @@
     <Reference Include="IMSys.DbConfig.HIS_RS">
       <HintPath>..\..\..\Lib\IMSys.DbConfig\IMSys.DbConfig.HIS_RS\IMSys.DbConfig.HIS_RS.dll</HintPath>
     </Reference>
+    <Reference Include="Inventec.Common.Logging">
+      <HintPath>..\..\..\lib\Inventec.Common\Inventec.Common.Logging\Inventec.Common.Logging.dll</HintPath>
+    </Reference>
     <Reference Include="MOS.EFMODEL">
       <HintPath>..\..\..\Lib\MOS\MOS.EFMODEL.dll</HintPath>
     </Reference>
