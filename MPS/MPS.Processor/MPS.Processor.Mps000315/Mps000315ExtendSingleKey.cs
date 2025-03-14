@@ -27,6 +27,7 @@ namespace MPS.Processor.Mps000315
     class Mps000315ExtendSingleKey : CommonKey
     {
         internal const string DOB_STR = "DOB_STR";
+        internal const string DHST_LOGINNAME = "DHST_LOGINNAME";
         
     }
 }
