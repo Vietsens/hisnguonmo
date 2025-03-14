@@ -667,6 +667,7 @@ namespace SAR.Desktop.Plugins.SarPrintType
                     memoDisablePrintByKeyCFG.Text = data.DISABLE_PRINT_BY_KEY_CFG;
                     memoGenSignatureEnable.Text = data.GEN_SIGNATURE_BY_KEY_CFG;
                     memoNumCopyByKeyCFG.Text = data.NUM_COPY_BY_KEY_CFG;
+                    memoSetSignature.Text = data.GEN_SIGNER_BY_KEY_CFG;
                     //btnPopUpGenSignatureEnable.Enabled = data.GEN_SIGNATURE_ENABLE == 1 ? true : false;
 
 
@@ -732,6 +733,7 @@ namespace SAR.Desktop.Plugins.SarPrintType
                 memoMappingEMR.Text = "";
                 memoGenSignatureEnable.Text = "";
                 memoNumCopyByKeyCFG.Text = "";
+                memoSetSignature.Text = "";
             }
             catch (Exception ex)
             {
@@ -1040,6 +1042,7 @@ namespace SAR.Desktop.Plugins.SarPrintType
                 currentDTO.DISABLE_PRINT_BY_KEY_CFG = memoDisablePrintByKeyCFG.Text;
                 currentDTO.GEN_SIGNATURE_BY_KEY_CFG = memoGenSignatureEnable.Text;
                 currentDTO.NUM_COPY_BY_KEY_CFG = memoNumCopyByKeyCFG.Text;
+                currentDTO.GEN_SIGNER_BY_KEY_CFG = memoSetSignature.Text;
             }
             catch (Exception ex)
             {
@@ -1062,6 +1065,7 @@ namespace SAR.Desktop.Plugins.SarPrintType
                 ValidationMaxlength(memoDisablePrintByKeyCFG, 4000);
                 ValidationMaxlength(memoGenSignatureEnable, 4000);
                 ValidationMaxlength(memoNumCopyByKeyCFG, 4000);
+                ValidationMaxlength(memoSetSignature, 4000);
                 //ValidationSingleControl1();
 
             }
@@ -2569,6 +2573,219 @@ namespace SAR.Desktop.Plugins.SarPrintType
                 }
 
                 PopupContainerBarControl control = popupControlContainerNumCopyByKeyCFG.Parent as PopupContainerBarControl;
+                control.ClosePopup();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void btnPopUpSetSignature_ChangeUICues(object sender, UICuesEventArgs e)
+        {
+
+        }
+
+        private void btnPopUpSetSignature_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (!String.IsNullOrWhiteSpace(memoSetSignature.Text))
+                {
+                    List<SetSignatureByKeyCFGADO> ados = Newtonsoft.Json.JsonConvert.DeserializeObject<List<SetSignatureByKeyCFGADO>>(memoSetSignature.Text);
+                    if (ados == null || ados.Count == 0)
+                    {
+                        SetSignatureByKeyCFGADO SetSig = new SetSignatureByKeyCFGADO();
+                        SetSig.Edit = 0;
+                        SetSig.Num = 1;
+                        ados.Add(SetSig);
+                    }
+                    else if (ados.Count == 1)
+                    {
+                        foreach (var item in ados)
+                        {
+                            item.Edit = 0;
+                        }
+                    }
+                    else
+                    {
+                        ados[0].Edit = 0;
+                        ados[0].Num = 1;
+
+                        // Các hàng tiếp theo Num tăng dần
+                        for (int i = 1; i < ados.Count; i++)
+                        {
+                            ados[i].Edit = 1;
+                            ados[i].Num = ados[i - 1].Num + 1;
+                        }
+                    }
+
+                    gridControlSetSignature.DataSource = ados.OrderBy(o => o.Edit).ToList();
+                }
+                else
+                {
+                    List<SetSignatureByKeyCFGADO> ados = new List<SetSignatureByKeyCFGADO>();
+                    SetSignatureByKeyCFGADO SetSig = new SetSignatureByKeyCFGADO();
+                    SetSig.Edit = 0;
+                    SetSig.Num = 1;
+                    ados.Add(SetSig);
+                    gridControlSetSignature.DataSource = ados;
+                }
+                Rectangle buttonPosition = new Rectangle(btnPopUpSetSignature.Bounds.X, btnPopUpSetSignature.Bounds.Y, btnPopUpSetSignature.Bounds.Width, btnPopUpSetSignature.Bounds.Height);
+                popupControlContainerSetSignature.ShowPopup(new Point(buttonPosition.X + 480, buttonPosition.Bottom + popupControlContainerSetSignature.Bounds.Height - 10));
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void repoBtnAddSetSignature_ButtonClick(object sender, ButtonPressedEventArgs e)
+        {
+            try
+            {
+                List<SetSignatureByKeyCFGADO> SetSigAdoTemps = new List<SetSignatureByKeyCFGADO>();
+                var SetSig = gridControlSetSignature.DataSource as List<SetSignatureByKeyCFGADO>;
+                SetSignatureByKeyCFGADO SetSigAdoTemp = new SetSignatureByKeyCFGADO();
+                long? MaxNum = SetSig.Any() ? SetSig.Max(x => x.Num) : 0;
+                SetSigAdoTemp.Num = MaxNum + 1;
+                SetSigAdoTemp.Edit = 1;
+                SetSig.Add(SetSigAdoTemp);
+
+                gridControlSetSignature.DataSource = null;
+                gridControlSetSignature.DataSource = SetSig;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void repoBtnDeleteSetSignature_ButtonClick(object sender, ButtonPressedEventArgs e)
+        {
+            try
+            {
+                CommonParam param = new CommonParam();
+                var SetSigs = gridControlSetSignature.DataSource as List<SetSignatureByKeyCFGADO>;
+                var SetSig = (SetSignatureByKeyCFGADO)gridViewSetSignature.GetFocusedRow();
+                if (SetSig != null)
+                {
+                    if (SetSigs.Count > 0)
+                    {
+                        SetSigs.Remove(SetSig);
+                        for (int i = 0; i < SetSigs.Count; i++)
+                        {
+                            SetSigs[i].Num = i + 1; // Gán Num từ 1 đến n
+                        }
+                        gridControlSetSignature.DataSource = null;
+                        gridControlSetSignature.DataSource = SetSigs;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void gridViewSetSignature_RowCellClick(object sender, DevExpress.XtraGrid.Views.Grid.RowCellClickEventArgs e)
+        {
+
+        }
+
+        private void gridViewSetSignature_CustomRowCellEdit(object sender, DevExpress.XtraGrid.Views.Grid.CustomRowCellEditEventArgs e)
+        {
+            try
+            {
+                if (e.Column.FieldName == "AddAndDelete")
+                {
+                    SetSignatureByKeyCFGADO data = (SetSignatureByKeyCFGADO)((IList)((BaseView)sender).DataSource)[e.RowHandle];
+                    if (data.Edit == 0)
+                    {
+                        e.RepositoryItem = repoBtnAddSetSignature;
+                    }
+                    else
+                    {
+                        e.RepositoryItem = repoBtnDeleteSetSignature;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void btnSetSignature_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                List<SetSignatureByKeyCFGADO> listObject = gridControlSetSignature.DataSource as List<SetSignatureByKeyCFGADO>;
+                var listObjectTemps = new List<Object>();
+                foreach (var item in listObject)
+                {
+                    if (!String.IsNullOrEmpty(item.Key) && item.Num != null)
+                    {
+                        var invalidRows = listObject.Where(x => string.IsNullOrEmpty(x.Key) || x.Num == null).ToList();
+
+                        if (invalidRows.Count > 0)
+                        {
+                            XtraMessageBox.Show("Có hàng chứa dữ liệu không hợp lệ: Key hoặc Num bị null/trống!", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            return;
+                        }
+
+                        var CountKey = listObject.GroupBy(x => x.Key.Trim())
+                                      .Where(g => g.Count() > 1)
+                                      .Select(g => g.Key)
+                                      .ToList();
+
+                        var CountNum = listObject
+                                            .GroupBy(x => x.Num)
+                                            .Where(g => g.Count() > 1 && g.Key != null)
+                                            .Select(g => g.Key)
+                                            .ToList();
+
+                        if (CountNum.Count > 0)
+                        {
+                            XtraMessageBox.Show("Có thứ tự bị trùng: " + string.Join(", ", CountNum), "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            return;
+                        }
+
+                        if (CountKey.Count > 0)
+                        {
+                            XtraMessageBox.Show("Có Key bị trùng: " + string.Join(", ", CountKey), "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            return;
+                        }
+                        if (true)
+                        {
+
+                        }
+
+                        var listObjectTemp = new { Key = item.Key.Trim(), Num = item.Num };
+                        listObjectTemps.Add(listObjectTemp);
+
+                    }
+                    else if(String.IsNullOrEmpty(item.Key) && item.Num == null)
+                    {
+                        continue;
+                    }
+                    else
+                    {
+                        XtraMessageBox.Show("Hàng có dữ liệu không hợp lệ: Key hoặc Num đang bị null!", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        return;
+                    }
+                }     
+                string jsonString = Newtonsoft.Json.JsonConvert.SerializeObject(listObjectTemps);
+                if (jsonString == "[]")
+                {
+                    memoSetSignature.Text = null;
+                }
+                else
+                {
+                    memoSetSignature.Text = jsonString;
+                }
+
+                PopupContainerBarControl control = popupControlContainerSetSignature.Parent as PopupContainerBarControl;
                 control.ClosePopup();
             }
             catch (Exception ex)

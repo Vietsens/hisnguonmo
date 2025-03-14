@@ -384,7 +384,12 @@ namespace HIS.Desktop.Plugins.PublicServices_NT
                                 //Review
                                 Service_NT_ADO ado = new Service_NT_ADO();
                                 ado.SERVICE_NAME = item.TDL_SERVICE_NAME;
-                                ado.INTRUCTION_DATE = item.TDL_INTRUCTION_DATE;
+                                //ado.INTRUCTION_DATE = item.TDL_INTRUCTION_DATE;
+                                //Dangth
+                                ado.INTRUCTION_DATE = dicServiceReq.ContainsKey(item.SERVICE_REQ_ID ?? 0)
+                                ? (dicServiceReq[item.SERVICE_REQ_ID ?? 0].USE_TIME ?? item.TDL_INTRUCTION_DATE)
+                                : item.TDL_INTRUCTION_DATE;
+                                //Dangth
                                 ado.SERVICE_TYPE_ID = item.TDL_SERVICE_TYPE_ID;
                                 ado.SERVICE_ID = item.SERVICE_ID;
                                 ado.PRICE = item.PRICE;

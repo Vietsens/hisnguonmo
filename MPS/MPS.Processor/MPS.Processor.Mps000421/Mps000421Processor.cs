@@ -253,18 +253,52 @@ namespace MPS.Processor.Mps000421
             string result = "";
             try
             {
-                if (rdo != null && rdo.Treatment != null && rdo.ExpMest != null)
+                if (rdo != null && rdo.Treatment != null)
                 {
-                    string treatmentCode = "TREATMENT_CODE:" + rdo.Treatment.TREATMENT_CODE;
-                    string expMestCode = "EXP_MEST_CODE:" + rdo.ExpMest.EXP_MEST_CODE;
-                    string bloodCode = "";
+                    // Mã biểu in
+                    string printCode = "Mps000421";
+
+                    // Mã điều trị
+                    string treatmentCode = "TREATMENT_CODE:" + (rdo.Treatment.TREATMENT_CODE ?? "");
+
+                    // Mã phiếu xuất máu
+                    string expMestCode = "EXP_MEST_CODE:" + (rdo.ExpMest?.EXP_MEST_CODE ?? "");
+
+                    // Danh sách mã túi máu (BLOOD_CODE)
+                    List<string> bloodCodes = new List<string>();
                     if (rdo.ExpMestBlood != null && rdo.ExpMestBlood.Count > 0)
                     {
-                        string bloodCodeStr = String.Join(",", rdo.ExpMestBlood.OrderBy(o => o.BLOOD_CODE).Where(o =>!String.IsNullOrWhiteSpace(o.BLOOD_CODE)).Select(o => o.BLOOD_CODE));
-                        bloodCode = "BLOOD_CODE:" + bloodCodeStr;
+                        bloodCodes = rdo.ExpMestBlood
+                            .Select(b => "BLOOD_CODE:" + b.BLOOD_CODE).ToList();
                     }
 
-                    result = String.Format("{0} {1} {2} {3}", printTypeCode, treatmentCode, expMestCode, bloodCode);
+                    // Danh sách tổng hợp truyền máu (V_HIS_TRANSFUSION_SUM)
+                    List<string> transfusionSums = new List<string>();
+                    if (rdo.TransFusionSum != null && rdo.TransFusionSum.Count > 0)
+                    {
+                        transfusionSums = rdo.TransFusionSum
+                            .OrderBy(t => t.ID)
+                            .Select(t => "HIS_TRANSFUSION_SUM:" + t.ID)
+                            .ToList();
+                    }
+
+                    // Danh sách truyền máu HIS_TRANSFUSION, sắp xếp theo ID tăng dần
+                    List<string> transfusionDetails = new List<string>();
+                    if (rdo.TransFusions != null && rdo.TransFusions.Count > 0)
+                    {
+                        transfusionDetails = rdo.TransFusions
+                            .OrderBy(t => t.ID)
+                            .Select(t => "HIS_TRANSFUSION:" + t.ID + ",")
+                            .ToList();
+                    }
+
+                    // Ghép tất cả các phần tử thành chuỗi kết quả
+                    List<string> parts = new List<string> { printCode, treatmentCode, expMestCode };
+                    parts.AddRange(bloodCodes);
+                    parts.AddRange(transfusionDetails);
+                    parts.RemoveAll(string.IsNullOrWhiteSpace); // Loại bỏ phần tử rỗng
+
+                    result = string.Join(" ", parts);
                 }
             }
             catch (Exception ex)
@@ -274,6 +308,7 @@ namespace MPS.Processor.Mps000421
             }
             return result;
         }
+
 
         class CalculateMergerData : TFlexCelUserFunction
         {

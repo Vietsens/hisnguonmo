@@ -1,4 +1,4 @@
-/* IVT
+﻿/* IVT
  * @Project : hisnguonmo
  * Copyright (C) 2017 INVENTEC
  *  
@@ -51,6 +51,9 @@ namespace MPS.Processor.Mps000271
                 Inventec.Common.FlexCellExport.ProcessObjectTag objectTag = new Inventec.Common.FlexCellExport.ProcessObjectTag();
                 store.ReadTemplate(System.IO.Path.GetFullPath(fileName));
                 SetSingleKey();
+                //lấy số lần in
+                SetNumOrderKey(GetNumOrderPrint(ProcessUniqueCodeData()));
+
                 singleTag.ProcessData(store, singleValueDictionary);
                 if (rdo.mps000271Ado != null && rdo.mps000271Ado.transfusions != null && rdo.mps000271Ado.transfusions.Count > 0)
                 {
@@ -67,6 +70,53 @@ namespace MPS.Processor.Mps000271
 
             return result;
         }
+
+        public override string ProcessUniqueCodeData()
+        {
+            string result = "";
+            try
+            {
+                if (rdo != null && rdo.mps000271Ado != null && rdo.mps000271Ado.treatment != null)
+                {
+                    // Mã biểu in
+                    string printCode = "Mps000271";
+                    string treatmentCode = "TREATMENT_CODE:" +
+                        (rdo.mps000271Ado.treatment.TREATMENT_CODE != null ? rdo.mps000271Ado.treatment.TREATMENT_CODE : "");
+                    string expMestCode = "EXP_MEST_CODE:" +
+                        (rdo.mps000271Ado.expMestBlood != null && rdo.mps000271Ado.expMestBlood.EXP_MEST_CODE != null
+                        ? rdo.mps000271Ado.expMestBlood.EXP_MEST_CODE
+                        : "");
+                    List<string> transfusionDetails = new List<string>();
+                    if (rdo.mps000271Ado.transfusions != null && rdo.mps000271Ado.transfusions.Count > 0)
+                    {
+                        transfusionDetails = rdo.mps000271Ado.transfusions
+                            .OrderBy(t => t.ID)
+                            .Select(t => "HIS_TRANSFUSION:" + t.ID)
+                            .ToList();
+                    }
+                    List<string> parts = new List<string> { printCode, treatmentCode, expMestCode };
+                    parts.AddRange(transfusionDetails);
+                    List<string> validParts = new List<string>();
+                    foreach (string part in parts)
+                    {
+                        if (!string.IsNullOrWhiteSpace(part))
+                        {
+                            validParts.Add(part);
+                        }
+                    }
+
+                    result = string.Join(" ", validParts);
+                }
+            }
+            catch (Exception ex)
+            {
+                result = "";
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+            return result;
+        }
+
+
         void SetSingleKey()
         {
             try

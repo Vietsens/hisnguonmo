@@ -34,6 +34,7 @@ using HIS.Desktop.Plugins.EnterKskInfomantionVer2.ADO;
 using DevExpress.XtraGrid.Views.Base;
 using System.Collections;
 using DevExpress.XtraEditors.Controls;
+using HIS.Desktop.LocalStorage.BackendData;
 namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
 {
     public partial class frmEnterKskInfomantionVer2
@@ -56,6 +57,12 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                 SetDataCboRank(cboExamEntDiseaseRank3);
                 SetDataCboRank(cboExamStomatologyRank3);
                 SetDataCboRank(cboExamClinicalOther3);
+                SetDataCboExamLoginName(cboExecuteLoginName3);
+                SetDataCboExamLoginName(cboExamCirculationLoginName3);
+                SetDataCboExamLoginName(cboExamEyeLoginName3);
+                SetDataCboExamLoginName(cboExamEntLoginName3);
+                SetDataCboExamLoginName(cboExamSubclinicalLoginName3);
+                SetDataCboExamLoginName(cboExamStomatologyLoginName3);
                 FillDataUnderEighteen();
             }
             catch (Exception ex)
@@ -176,8 +183,14 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                                 spnBloodPressureMin3.EditValue = dhstUnderEighteen.BLOOD_PRESSURE_MIN;
                                 //txtVirBmi.Text = currentDhst.VIR_BMI!=null ? currentDhst.VIR_BMI.ToString() : "";
                                 FillNoteBMI(spnHeight3, spnWeight3, txtVirBmi3);
+                                cboExecuteLoginName3.EditValue = dhstUnderEighteen.EXECUTE_LOGINNAME;
                             }
                         }
+                        cboExamCirculationLoginName3.EditValue = currentKskGeneral.EXAM_CIRCULATION_LOGINNAME;
+                        cboExamEyeLoginName3.EditValue = currentKskGeneral.EXAM_EYE_LOGINNAME;
+                        cboExamEntLoginName3.EditValue = currentKskGeneral.EXAM_ENT_LOGINNAME;
+                        cboExamStomatologyLoginName3.EditValue = currentKskGeneral.EXAM_STOMATOLOGY_LOGINNAME;
+                        cboExamSubclinicalLoginName3.EditValue = currentKskGeneral.EXAM_SUBCLINICAL_LOGINNAME;
                     }
                     else
                     {
@@ -486,6 +499,13 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                 obj.RESULT_SUBCLINICAL = txtResultSubclinical3.Text;
                 obj.NORMAL_HEALTH = txtNormalHealth3.Text;
                 obj.PROBLEM_HEALTH = txtProblemHealth3.Text;
+
+
+                obj.EXAM_CIRCULATION_LOGINNAME = cboExamCirculationLoginName3.EditValue != null ? cboExamCirculationLoginName3.EditValue.ToString() : null;
+                obj.EXAM_EYE_LOGINNAME = cboExamEyeLoginName3.EditValue != null ? cboExamEyeLoginName3.EditValue.ToString() : null;
+                obj.EXAM_ENT_LOGINNAME = cboExamEntLoginName3.EditValue != null ? cboExamEntLoginName3.EditValue.ToString() : null;
+                obj.EXAM_STOMATOLOGY_LOGINNAME = cboExamStomatologyLoginName3.EditValue != null ? cboExamStomatologyLoginName3.EditValue.ToString() : null;
+                obj.EXAM_SUBCLINICAL_LOGINNAME = cboExamSubclinicalLoginName3.EditValue != null ? cboExamSubclinicalLoginName3.EditValue.ToString() : null;
             }
             catch (Exception ex)
             {
@@ -512,6 +532,8 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                 if (spnWeight3.EditValue != null)
                     obj.WEIGHT = Inventec.Common.Number.Get.RoundCurrency(spnWeight3.Value, 2);
 
+                obj.EXECUTE_LOGINNAME = cboExecuteLoginName3.EditValue != null ? cboExecuteLoginName3.EditValue.ToString() : null;
+                obj.EXECUTE_USERNAME = obj.EXECUTE_LOGINNAME != null ? BackendDataWorker.Get<V_HIS_EMPLOYEE>().FirstOrDefault(o=>o.LOGINNAME == obj.EXECUTE_LOGINNAME).TDL_USERNAME : null;
             }
             catch (Exception ex)
             {

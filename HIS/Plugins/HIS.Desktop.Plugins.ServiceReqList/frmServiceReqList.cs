@@ -4216,9 +4216,50 @@ namespace HIS.Desktop.Plugins.ServiceReqList
         {
             try
             {
-                WaitingManager.Show();
-                FillDataToGrid();
-                WaitingManager.Hide();
+                if (string.IsNullOrWhiteSpace(txtServiceReqCode.Text) && string.IsNullOrWhiteSpace(txtTreatmentCode.Text))
+                {
+                    if (dtIntructionTimeFrom.EditValue != null)
+                    {
+                        if (dtIntructionTimeTo.EditValue != null)
+                        {
+                            if ((dtIntructionTimeTo.DateTime.Date - dtIntructionTimeFrom.DateTime.Date).TotalDays > 90)
+                            {
+                                XtraMessageBox.Show("Khoảng thời gian tìm kiếm quá dài, vui lòng chọn tối đa 3 tháng!",
+                                    "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                                return;
+                            }
+                            WaitingManager.Show();
+                            FillDataToGrid();
+                            WaitingManager.Hide();
+                        }
+                        else
+                        {
+                            dtIntructionTimeTo.EditValue = DateTime.Now;
+                            if ((dtIntructionTimeTo.DateTime.Date - dtIntructionTimeFrom.DateTime.Date).TotalDays > 90)
+                            {
+                                XtraMessageBox.Show("Khoảng thời gian tìm kiếm quá dài, vui lòng chọn tối đa 3 tháng!",
+                                    "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                                return;
+                            }
+                            WaitingManager.Show();
+                            FillDataToGrid();
+                            WaitingManager.Hide();
+                        }
+                    }
+                    else
+                    {
+                        XtraMessageBox.Show("Thời gian từ không được bỏ trống",
+                                    "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        return;
+                    }
+                }
+                else
+                {
+                    WaitingManager.Show();
+                    FillDataToGrid();
+                    WaitingManager.Hide();
+                }
+                
             }
             catch (Exception ex)
             {

@@ -1,3 +1,17 @@
+### Release 2.352.0
+* Cho phép ký số tự động mẫu tạm ứng dịch vụ
+* Bổ sung cấu hình thiết lập dữ liệu hiển thị Thông tin GIAY_CHUYEN_TUYEN đáp ứng quy định 130, 4750/QĐ-BYT và QĐ 3176/QĐ-BYT
+* Cho phép ngày chỉ định bằng ngày dự trù khi chỉ định dịch vụ
+* Sửa chức năng buồng bệnh điều kiện lọc bệnh nhân chưa được kê đơn trong khoảng ngày
+
+### Release 2.351.0
+* Sửa lại cơ chế hiển thị "Điều kiện" khi chỉ định dịch vụ
+* Bổ sung trạng thái in kết quả xét nghiệm
+* Bổ sung chỉ định đơn YHCT tại chức năng xử lý CLS, PTTT
+* Sửa chức năng tạo yêu cầu khách hàng tích hợp hệ thống mới
+* Mặc định dân tộc Kinh khi tiếp đón ở chức năng kios
+* Chỉnh sửa chức năng Xem mượn bệnh án cho phép hiển thị dữ liệu của nhiều kho cùng lúc
+
 ### Release 2.350.0
 * Bổ sung thông tin nhập khẩu thầu
 * Tiếp đón sử dụng QR CCCD và QR BHYT trên cùng 1 điều kiện lọc

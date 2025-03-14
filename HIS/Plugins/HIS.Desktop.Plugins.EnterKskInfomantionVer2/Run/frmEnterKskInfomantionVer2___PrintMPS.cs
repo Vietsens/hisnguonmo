@@ -341,8 +341,9 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                 else
                 {
                     Inventec.Common.SignLibrary.ADO.InputADO inputADO = new EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode(currentServiceReq != null ? currentServiceReq.TREATMENT_CODE : "", printTypeCode, this.currentModule != null ? currentModule.RoomId : 0);
-
-                    result = MPS.MpsPrinter.Run(new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, data, MPS.ProcessorBase.PrintConfig.PreviewType.Show, printerName) { EmrInputADO = inputADO });
+                    result = MPS.MpsPrinter.Run(new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, data, 
+                        IsSignEmr ? MPS.ProcessorBase.PrintConfig.PreviewType.EmrShow : MPS.ProcessorBase.PrintConfig.PreviewType.Show, printerName) { EmrInputADO = inputADO });
+                    IsSignEmr = false;
                 }
             }
             catch (Exception ex)

@@ -207,10 +207,6 @@ namespace HIS.Desktop.Plugins.DepositService.DepositService
                 PrintGlobalStore.LoadCurrentPatientTypeAlter(currentHisTreatment.ID, 0, ref currentHisPatientTypeAlter);
                 string levelCode = HIS.Desktop.LocalStorage.HisConfig.HisHeinLevelCFG.HEIN_LEVEL_CODE__CURRENT;
                 string ratio_text = ((new MOS.LibraryHein.Bhyt.BhytHeinProcessor().GetDefaultHeinRatio(currentHisPatientTypeAlter.HEIN_TREATMENT_TYPE_CODE, currentHisPatientTypeAlter.HEIN_CARD_NUMBER, currentHisPatientTypeAlter.LEVEL_CODE, currentHisPatientTypeAlter.RIGHT_ROUTE_CODE) ?? 0) * 100) + "";
-                Inventec.Common.Logging.LogSystem.Debug("------- KAKA du lieu sereServNotHitechADOs " + LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => sereServNotHitechADOs), sereServNotHitechADOs));
-                Inventec.Common.Logging.LogSystem.Debug("------- KAKA du lieu sereServHitechADOs " + LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => sereServHitechADOs), sereServHitechADOs));
-                Inventec.Common.Logging.LogSystem.Debug("------- KAKA du lieu sereServVTTTADOs " + LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => sereServVTTTADOs), sereServVTTTADOs));
-                Inventec.Common.Logging.LogSystem.Debug("------- KAKA du lieu dereDetails " + LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => dereDetails), dereDetails));
                 Inventec.Common.SignLibrary.ADO.InputADO inputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode((currentHisTreatment != null ? currentHisTreatment.TREATMENT_CODE : ""), printTypeCode, moduleData.RoomId);
 
                 MPS.Processor.Mps000102.PDO.Mps000102PDO pdo = new MPS.Processor.Mps000102.PDO.Mps000102PDO(
@@ -236,28 +232,15 @@ namespace HIS.Desktop.Plugins.DepositService.DepositService
                         );
 
                 MPS.ProcessorBase.Core.PrintData PrintData = null;
-                if (GlobalVariables.dicPrinter.ContainsKey(printTypeCode) && !String.IsNullOrEmpty(GlobalVariables.dicPrinter[printTypeCode]))
+                if (isPrintNow)
                 {
-                    if (isPrintNow)
-                    {
-                        PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, pdo, MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow, GlobalVariables.dicPrinter[printTypeCode]) { EmrInputADO = inputADO };
-                    }
-                    else
-                    {
-                        PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, pdo, MPS.ProcessorBase.PrintConfig.PreviewType.ShowDialog, GlobalVariables.dicPrinter[printTypeCode], 1, false, true) { EmrInputADO = inputADO };
-                    }
+                    PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, pdo, MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow, GlobalVariables.dicPrinter.ContainsKey(printTypeCode) && !string.IsNullOrEmpty(GlobalVariables.dicPrinter[printTypeCode]) ? GlobalVariables.dicPrinter[printTypeCode] : "") { EmrInputADO = inputADO };
                 }
                 else
                 {
-                    if (isPrintNow)
-                    {
-                        PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, pdo, MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow, "");
-                    }
-                    else
-                    {
-                        PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, pdo, MPS.ProcessorBase.PrintConfig.PreviewType.ShowDialog, "", 1, false, true);
-                    }
+                    PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, pdo, MPS.ProcessorBase.PrintConfig.PreviewType.Show, GlobalVariables.dicPrinter.ContainsKey(printTypeCode) && !string.IsNullOrEmpty(GlobalVariables.dicPrinter[printTypeCode]) ? GlobalVariables.dicPrinter[printTypeCode] : "", 1, false, true) { EmrInputADO = inputADO };
                 }
+               
                 PrintData.ShowPrintLog = (MPS.ProcessorBase.PrintConfig.DelegateShowPrintLog)CallModuleShowPrintLog;
                 result = MPS.MpsPrinter.Run(PrintData);
                 //if (isPrintNow)

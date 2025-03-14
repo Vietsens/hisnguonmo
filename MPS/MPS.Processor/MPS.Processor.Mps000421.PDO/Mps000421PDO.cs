@@ -36,11 +36,12 @@ namespace MPS.Processor.Mps000421.PDO
     /// </summary>
     public partial class Mps000421PDO : RDOBase
     {
-        public Mps000421PDO(V_HIS_TREATMENT treatment, V_HIS_PATIENT patient, V_HIS_EXP_MEST expmest, List<V_HIS_EXP_MEST_BLOOD> expmestblood, List<V_HIS_EXP_BLTY_SERVICE> expbltyservice, List<HIS_EXP_MEST> ListExpMest) : this(treatment, patient, expmest, expmestblood, expbltyservice)
+        public Mps000421PDO(V_HIS_TREATMENT treatment, V_HIS_PATIENT patient, V_HIS_EXP_MEST expmest, List<V_HIS_EXP_MEST_BLOOD> expmestblood, List<V_HIS_EXP_BLTY_SERVICE> expbltyservice, List<V_HIS_TRANSFUSION_SUM> transFusionSum, List<HIS_EXP_MEST> ListExpMest, List<HIS_TRANSFUSION> TransFusions) : this(treatment, patient, expmest, expmestblood, expbltyservice, transFusionSum)
         {
             this.ListExpMest = ListExpMest;
+            this.TransFusions = TransFusions;
         }
-        public Mps000421PDO(V_HIS_TREATMENT treatment, V_HIS_PATIENT patient, V_HIS_EXP_MEST expmest, List<V_HIS_EXP_MEST_BLOOD> expmestblood, List<V_HIS_EXP_BLTY_SERVICE> expbltyservice)
+        public Mps000421PDO(V_HIS_TREATMENT treatment, V_HIS_PATIENT patient, V_HIS_EXP_MEST expmest, List<V_HIS_EXP_MEST_BLOOD> expmestblood, List<V_HIS_EXP_BLTY_SERVICE> expbltyservice, List<V_HIS_TRANSFUSION_SUM> transFusionSum)
         {
             try
             {
@@ -49,6 +50,7 @@ namespace MPS.Processor.Mps000421.PDO
                 this.ExpMest = expmest;
                 this.ExpMestBlood = expmestblood;
                 this.ExpBltyService = expbltyservice;
+                this.TransFusionSum = TransFusionSum;
             }
             catch (Exception ex)
             {

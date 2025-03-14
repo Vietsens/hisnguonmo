@@ -1675,7 +1675,9 @@ namespace HIS.Desktop.Plugins.HistoryMaterial.HistoryMaterial
                                     else
                                         item.MEDI_STOCK_NAME__STR = "";
                                 }
-                                else if (item.EXP_MEST_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_EXP_MEST_TYPE.ID__DPK || item.EXP_MEST_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_EXP_MEST_TYPE.ID__DDT)
+                                else if (item.EXP_MEST_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_EXP_MEST_TYPE.ID__DPK 
+                                    || item.EXP_MEST_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_EXP_MEST_TYPE.ID__DDT
+                                    || item.EXP_MEST_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_EXP_MEST_TYPE.ID__DTT )
                                 {
                                     var expMestEdit = expMest.FirstOrDefault(o => o.ID == item.MEST_ID);
                                     item.MEDI_STOCK_NAME__STR = expMestEdit != null ? expMestEdit.TDL_TREATMENT_CODE + "-" + expMestEdit.TDL_PATIENT_NAME : "";
