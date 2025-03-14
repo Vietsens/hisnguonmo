@@ -15,21 +15,16 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-using DevExpress.Utils.Gesture;
 using Inventec.Common.QRCoder;
 using Inventec.Common.SignLibrary;
 using Inventec.Common.SignLibrary.ADO;
+using Inventec.Common.SignLibrary.DTO;
 using Inventec.Core;
-using MPS.ProcessorBase.Core.PrintException;
 using SAR.EFMODEL.DataModels;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 
 namespace MPS.ProcessorBase.Core
 {
@@ -124,6 +119,8 @@ namespace MPS.ProcessorBase.Core
                         {
                             return false;
                         }
+
+                        emrInputADO.SignerConfigs = ProcessSignerConfigs();
                     }
                     this.printDataBase.EmrInputADO = emrInputADO;
                     //proc = System.Diagnostics.Process.GetCurrentProcess();
@@ -265,6 +262,46 @@ namespace MPS.ProcessorBase.Core
                 Inventec.Common.Logging.LogSystem.Error(ex);
 
                 result = false;
+            }
+            return result;
+        }
+
+        private List<SignerConfigDTO> ProcessSignerConfigs()
+        {
+            List<SignerConfigDTO> result = null;
+            try
+            {
+                if (this.printType != null && !String.IsNullOrWhiteSpace(this.printType.GEN_SIGNER_BY_KEY_CFG) && singleValueDictionary != null && singleValueDictionary.Count > 0)
+                {
+                    List<SignerByConfigADO> numCopyList = Newtonsoft.Json.JsonConvert.DeserializeObject<List<SignerByConfigADO>>(this.printType.GEN_SIGNER_BY_KEY_CFG);
+                    if (numCopyList != null && numCopyList.Count > 0)
+                    {
+                        numCopyList = numCopyList.OrderBy(x => x.Num).ToList();
+                        result = new List<SignerConfigDTO>();
+                        long numOrder = 1;
+                        foreach (var item in numCopyList)
+                        {
+                            string loginname = "";
+                            if (singleValueDictionary.ContainsKey(item.Key) && singleValueDictionary[item.Key] != null)
+                            {
+                                loginname = singleValueDictionary[item.Key].ToString();
+                            }
+
+                            if (!String.IsNullOrEmpty(loginname) && !result.Exists(o => o.Loginname == loginname))
+                            {
+                                SignerConfigDTO dto = new SignerConfigDTO();
+                                dto.Loginname = loginname;
+                                dto.NumOrder = numOrder;
+                                result.Add(dto);
+                                numOrder++;
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
             }
             return result;
         }

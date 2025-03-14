@@ -2363,36 +2363,43 @@ namespace HIS.Desktop.Plugins.ServiceReqResultView
                                     }
                                 }
 
-                                HIS_PATIENT patient = GetPatientById(sereServ.TDL_PATIENT_ID);
-
-                                url = string.Format("http://{0}{1}", address.Address, address.Api);
-
-                                if (address.Api.Trim().StartsWith("http"))
+                                if (!String.IsNullOrWhiteSpace(sereServExt.JSON_FORM_ID) && sereServExt.JSON_FORM_ID.StartsWith("http"))
                                 {
-                                    url = address.Api;
+                                    url = sereServExt.JSON_FORM_ID;
                                 }
-
-                                string idChiDinh = sereServ.ID.ToString();
-                                string idBenhNhan = patient.PATIENT_CODE;
-                                string idDotVaoVien = sereServ.TDL_TREATMENT_CODE;
-                                string PACS_BASE_URI = ConfigSystems.URI_API_PACS;
-
-                                url = url.Replace("<#PACS_BASE_URI;>", PACS_BASE_URI);
-                                var urlSplit = address.Api.Split('=', '&');
-                                var keyUrl = urlSplit.Where(o => o.Contains(":")).ToList();
-                                foreach (var item in keyUrl)
+                                else
                                 {
-                                    if (item.Contains("idChiDinh"))
+                                    HIS_PATIENT patient = GetPatientById(sereServ.TDL_PATIENT_ID);
+
+                                    url = string.Format("http://{0}{1}", address.Address, address.Api);
+
+                                    if (address.Api.Trim().StartsWith("http"))
                                     {
-                                        url = url.Replace(":idChiDinh", idChiDinh);
+                                        url = address.Api;
                                     }
-                                    else if (item.Contains("idBenhNhan"))
+
+                                    string idChiDinh = sereServ.ID.ToString();
+                                    string idBenhNhan = patient.PATIENT_CODE;
+                                    string idDotVaoVien = sereServ.TDL_TREATMENT_CODE;
+                                    string PACS_BASE_URI = ConfigSystems.URI_API_PACS;
+
+                                    url = url.Replace("<#PACS_BASE_URI;>", PACS_BASE_URI);
+                                    var urlSplit = address.Api.Split('=', '&');
+                                    var keyUrl = urlSplit.Where(o => o.Contains(":")).ToList();
+                                    foreach (var item in keyUrl)
                                     {
-                                        url = url.Replace(":idBenhNhan", idBenhNhan);
-                                    }
-                                    else if (item.Contains("idDotVaoVien"))
-                                    {
-                                        url = url.Replace(":idDotVaoVien", idDotVaoVien);
+                                        if (item.Contains("idChiDinh"))
+                                        {
+                                            url = url.Replace(":idChiDinh", idChiDinh);
+                                        }
+                                        else if (item.Contains("idBenhNhan"))
+                                        {
+                                            url = url.Replace(":idBenhNhan", idBenhNhan);
+                                        }
+                                        else if (item.Contains("idDotVaoVien"))
+                                        {
+                                            url = url.Replace(":idDotVaoVien", idDotVaoVien);
+                                        }
                                     }
                                 }
 

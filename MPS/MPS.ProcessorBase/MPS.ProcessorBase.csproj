@@ -181,6 +181,7 @@
     <Compile Include="Core\ProcessorBase.cs" />
     <Compile Include="Core\ProcessorFactory.cs" />
     <Compile Include="Core\RDOBase.cs" />
+    <Compile Include="Core\SignerByConfigADO.cs" />
     <Compile Include="EmrBusiness\frmChooseBusiness.cs">
       <SubType>Form</SubType>
     </Compile>

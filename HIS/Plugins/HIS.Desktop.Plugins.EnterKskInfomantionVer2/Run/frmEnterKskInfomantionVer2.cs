@@ -115,6 +115,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             NDC_5
         }
         public ENameOtherItem? NameOtherItem { get; set; }
+        public bool IsSignEmr { get; set; }
         #endregion
 
         Inventec.Desktop.Common.Modules.Module currentModule;
@@ -490,7 +491,26 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
-
+        private void SetDataCboExamLoginName(DevExpress.XtraEditors.GridLookUpEdit cbo)
+        {
+            try
+            {
+                CommonParam param = new CommonParam();
+                var data = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<V_HIS_EMPLOYEE>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE).ToList();
+                List<ColumnInfo> columnInfos = new List<ColumnInfo>();
+                columnInfos.Add(new ColumnInfo("LOGINNAME", "Tên đăng nhập", 100, 1));
+                columnInfos.Add(new ColumnInfo("TDL_USERNAME", "Họ tên", 150, 2));
+                columnInfos.Add(new ColumnInfo("DEPARTMENT_NAME", "Khoa", 150, 3));
+                ControlEditorADO controlEditorADO = new ControlEditorADO("LOGINNAME", "LOGINNAME", columnInfos, true, 400);
+                ControlEditorLoader.Load(cbo, data, controlEditorADO);
+                cbo.Properties.ImmediatePopup = true;
+                cbo.Properties.PopupFormMinSize = new System.Drawing.Size(400, cbo.Properties.PopupFormSize.Height);
+            }
+            catch (System.Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
         private void FillNoteBMI(DevExpress.XtraEditors.SpinEdit spinHeight, DevExpress.XtraEditors.SpinEdit spinWeight, System.Windows.Forms.Label txtBMI)
         {
             try
@@ -920,5 +940,36 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             }
         }
 
+        private void ClearData_ButtonClick(object sender, ButtonPressedEventArgs e)
+        {
+            try
+            {
+                if(e.Button.Kind == ButtonPredefines.Delete) {
+                    var cbo = sender as GridLookUpEdit;
+                    if (cbo != null)
+                        cbo.EditValue = null;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+
+        }
+
+        private void btnSaveAndSign_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                IsSignEmr = true;
+                btnSave_Click(null, null);
+                btnPrint_Click(null, null);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+
+        }
     }
 }
