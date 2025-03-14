@@ -927,6 +927,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
 
                     this.btnAdd.Focus();
 
+                    Inventec.Common.Logging.LogSystem.Warn("MaterialTypeTSD_RowClick");
                     //this.currentMedicineTypeADOForEdit.IsAllowOdd = this.GetIsAllowOdd(this.currentMedicineTypeADOForEdit.ID, this.currentMedicineTypeADOForEdit.SERVICE_TYPE_ID);
 
                     ///Khoi tao cbo PatientType va set gia tri mac dinh theo service
