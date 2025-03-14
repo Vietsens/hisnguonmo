@@ -3249,6 +3249,7 @@ o.SERVICE_ID == medi.SERVICE_ID && o.TDL_INTRUCTION_TIME.ToString().Substring(0,
                 if (this.actionType == GlobalVariables.ActionAdd
                     || this.actionType == GlobalVariables.ActionEdit)
                 {
+                    Inventec.Common.Logging.LogSystem.Warn("bbtnBoSung_ItemClick");
                     this.btnAdd.Focus();
                     this.btnAdd_TabMedicine_Click(null, null);
                 }
@@ -4902,6 +4903,7 @@ o.SERVICE_ID == medi.SERVICE_ID && o.TDL_INTRUCTION_TIME.ToString().Substring(0,
                     long chidinhnhanh = ConfigApplicationWorker.Get<long>(AppConfigKeys.CONFIG_KEY__CHI_DINH_NHANH_THUOC_VAT_TU);
                     if (chidinhnhanh == 1)
                     {
+                        Inventec.Common.Logging.LogSystem.Warn("spinAmount_KeyDown");
                         this.btnAdd.Focus();
                         e.Handled = true;
                     }
@@ -4954,6 +4956,7 @@ o.SERVICE_ID == medi.SERVICE_ID && o.TDL_INTRUCTION_TIME.ToString().Substring(0,
         {
             try
             {
+                Inventec.Common.Logging.LogSystem.Warn("txtMedicineTypeOther_Leave");
                 this.btnAdd.Enabled = true;
             }
             catch (Exception ex)
@@ -12336,14 +12339,15 @@ o.SERVICE_ID == medi.SERVICE_ID && o.TDL_INTRUCTION_TIME.ToString().Substring(0,
         System.Windows.Forms.Timer pressKey;
         private void memHtu_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
         {
-
             try
             {
-                pressKey = new System.Windows.Forms.Timer();
-                pressKey.Interval = 100;
-                pressKey.Tick += PressKey_Tick;
                 if (e.KeyCode == Keys.Enter)
+                {
+                    pressKey = new System.Windows.Forms.Timer();
+                    pressKey.Interval = 100;
+                    pressKey.Tick += PressKey_Tick;
                     pressKey.Start();
+                }
             }
             catch (Exception ex)
             {
@@ -12353,6 +12357,7 @@ o.SERVICE_ID == medi.SERVICE_ID && o.TDL_INTRUCTION_TIME.ToString().Substring(0,
 
         private void PressKey_Tick(object sender, EventArgs e)
         {
+            Inventec.Common.Logging.LogSystem.Warn("PressKey_Tick");
             pressKey.Stop();
             btnAdd.Select();
         }
