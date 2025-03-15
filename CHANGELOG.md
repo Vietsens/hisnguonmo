@@ -1,3 +1,9 @@
+### Release 2.353.0
+* Cho phép cấu hình thiết lập ký tự động theo từng biểu in
+* Cho phép nhập phần thập phân đến 6 chữ số của số lượng trong định mức bào chế thuốc
+* Công khai dịch vụ theo thời gian dự trù
+* Điều chỉnh cồn khám cấp cứu theo thông tư
+
 ### Release 2.352.0
 * Cho phép ký số tự động mẫu tạm ứng dịch vụ
 * Bổ sung cấu hình thiết lập dữ liệu hiển thị Thông tin GIAY_CHUYEN_TUYEN đáp ứng quy định 130, 4750/QĐ-BYT và QĐ 3176/QĐ-BYT
