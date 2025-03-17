@@ -84,10 +84,6 @@
     <Reference Include="HIS.Desktop.Plugins.Library.AlertHospitalFeeNotBHYT">
       <HintPath>..\..\..\..\lib\HIS\HIS.Desktop.Plugins.Library.AlertHospitalFeeNotBHYT\HIS.Desktop.Plugins.Library.AlertHospitalFeeNotBHYT.dll</HintPath>
     </Reference>
-    <Reference Include="HIS.Desktop.Plugins.Library.HisSyncToHid, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\HIS.Desktop.Plugins.Library.HisSyncToHid.dll</HintPath>
-    </Reference>
     <Reference Include="HIS.Desktop.Plugins.Library.PrintServiceReq, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\lib\HIS\HIS.Desktop.Plugins.Library.PrintServiceReq\HIS.Desktop.Plugins.Library.PrintServiceReq.dll</HintPath>
@@ -367,6 +363,12 @@
     <Compile Include="Choice\frmKeyConfig.Designer.cs">
       <DependentUpon>frmKeyConfig.cs</DependentUpon>
     </Compile>
+    <Compile Include="Choice\frmPersonSelect.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Choice\frmPersonSelect.Designer.cs">
+      <DependentUpon>frmPersonSelect.cs</DependentUpon>
+    </Compile>
     <Compile Include="Choice\frmServiceReqChoice.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -626,6 +628,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Choice\frmPatientChoice.resx">
       <DependentUpon>frmPatientChoice.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Choice\frmPersonSelect.resx">
+      <DependentUpon>frmPersonSelect.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Choice\frmServiceReqChoice.resx">
       <DependentUpon>frmServiceReqChoice.cs</DependentUpon>

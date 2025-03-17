@@ -181,33 +181,15 @@
     <Compile Include="ADO\TreeSereServADO.cs" />
     <Compile Include="Base\HisConfigKeys.cs" />
     <Compile Include="Base\PrintTypeWorker.cs" />
-    <Compile Include="frmOtherFormAssTreatment__Pluss__Mps100002.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="frmOtherFormAssTreatment__Pluss__Mps100003.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="frmOtherFormAssTreatment__Pluss__Mps100004.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="frmOtherFormAssTreatment__Pluss__Mps100005.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="frmOtherFormAssTreatment__Pluss__SereServ.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="frmOtherFormAssTreatment__Process-73494.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="frmOtherFormAssTreatment__SetDicParam.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="frmOtherFormAssTreatment__Load.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="frmOtherFormAssTreatment.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="frmOtherFormAssTreatment__Pluss__Mps100002.cs" />
+    <Compile Include="frmOtherFormAssTreatment__Pluss__Mps100003.cs" />
+    <Compile Include="frmOtherFormAssTreatment__Pluss__Mps100004.cs" />
+    <Compile Include="frmOtherFormAssTreatment__Pluss__Mps100005.cs" />
+    <Compile Include="frmOtherFormAssTreatment__Pluss__SereServ.cs" />
+    <Compile Include="frmOtherFormAssTreatment__Process-73494.cs" />
+    <Compile Include="frmOtherFormAssTreatment__SetDicParam.cs" />
+    <Compile Include="frmOtherFormAssTreatment__Load.cs" />
+    <Compile Include="frmOtherFormAssTreatment.cs" />
     <Compile Include="frmOtherFormAssTreatment.Designer.cs">
       <DependentUpon>frmOtherFormAssTreatment.cs</DependentUpon>
     </Compile>

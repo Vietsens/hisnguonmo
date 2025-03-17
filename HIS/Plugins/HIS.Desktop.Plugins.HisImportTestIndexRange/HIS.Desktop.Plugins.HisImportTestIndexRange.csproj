@@ -117,9 +117,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ADO\ImportTestIndexRangeADO.cs" />
-    <Compile Include="frmImportTestIndexRange.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="frmImportTestIndexRange.cs" />
     <Compile Include="frmImportTestIndexRange.Designer.cs">
       <DependentUpon>frmImportTestIndexRange.cs</DependentUpon>
     </Compile>

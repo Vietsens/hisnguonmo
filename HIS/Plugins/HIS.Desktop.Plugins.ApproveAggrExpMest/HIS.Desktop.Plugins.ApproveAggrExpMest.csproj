@@ -223,18 +223,12 @@
     <Compile Include="ApproveAggrExpMest\AggregateExpMestPrintFilter\ExpMestAggregateListPopupMenuProcessor.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="ApproveAggrExpMest\frmApproveAggrExpMestPlus_Print.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="ApproveAggrExpMest\frmApproveAggrExpMest.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="ApproveAggrExpMest\frmApproveAggrExpMestPlus_Print.cs" />
+    <Compile Include="ApproveAggrExpMest\frmApproveAggrExpMest.cs" />
     <Compile Include="ApproveAggrExpMest\frmApproveAggrExpMest.Designer.cs">
       <DependentUpon>frmApproveAggrExpMest.cs</DependentUpon>
     </Compile>
-    <Compile Include="ApproveAggrExpMest\frmApproveAggrExpMestPlus__InitResource.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="ApproveAggrExpMest\frmApproveAggrExpMestPlus__InitResource.cs" />
     <Compile Include="Base\GlobalStore.cs" />
     <Compile Include="Base\RequestUri.cs" />
     <Compile Include="Delegate.cs" />

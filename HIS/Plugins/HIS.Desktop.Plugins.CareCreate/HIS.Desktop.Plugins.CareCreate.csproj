@@ -207,9 +207,7 @@
     <Compile Include="Base\DhstConstant.cs" />
     <Compile Include="Base\ResourceLangManager.cs" />
     <Compile Include="ChartDhstProcess.cs" />
-    <Compile Include="DHST\frmDhst.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="DHST\frmDhst.cs" />
     <Compile Include="DHST\frmDhst.Designer.cs">
       <DependentUpon>frmDhst.cs</DependentUpon>
     </Compile>
@@ -219,42 +217,22 @@
     <Compile Include="frmCareTemp.Designer.cs">
       <DependentUpon>frmCareTemp.cs</DependentUpon>
     </Compile>
-    <Compile Include="FrmCare\frmCareNew__Plus__Print.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="FrmCare\frmCareNew__Plus__SaveCare.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="FrmCare\frmCareNew__Plus__SaveDHST.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="FrmCare\frmCareNew.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="FrmCare\frmCareNew__Plus__Print.cs" />
+    <Compile Include="FrmCare\frmCareNew__Plus__SaveCare.cs" />
+    <Compile Include="FrmCare\frmCareNew__Plus__SaveDHST.cs" />
+    <Compile Include="FrmCare\frmCareNew.cs" />
     <Compile Include="FrmCare\frmCareNew.Designer.cs">
       <DependentUpon>frmCareNew.cs</DependentUpon>
     </Compile>
-    <Compile Include="FrmCare\frmCareNew__Plus_ProcessData.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="FrmCare\frmCareNew__Plus_Load.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="FrmCare\frmCareNew__Plus_LoadCareType.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="FrmCare\frmCareNew__Plus_LoadIcdProcess.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="FrmCare\frmCareNew__Plus__Validation.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="FrmCare\frmCareNew__Plus_ProcessData.cs" />
+    <Compile Include="FrmCare\frmCareNew__Plus_Load.cs" />
+    <Compile Include="FrmCare\frmCareNew__Plus_LoadCareType.cs" />
+    <Compile Include="FrmCare\frmCareNew__Plus_LoadIcdProcess.cs" />
+    <Compile Include="FrmCare\frmCareNew__Plus__Validation.cs" />
     <Compile Include="FrmCare\ValidationRule\CareExecuteTime__ValidationRule.cs" />
     <Compile Include="CareCreateProcessor.cs" />
     <Compile Include="Delegate\DelegateUC.cs" />
-    <Compile Include="frmHisCareCreate.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="frmHisCareCreate.cs" />
     <Compile Include="frmHisCareCreate.Designer.cs">
       <DependentUpon>frmHisCareCreate.cs</DependentUpon>
     </Compile>

@@ -207,9 +207,7 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="Resource\ResourceLanguageManager.cs" />
-    <Compile Include="EmrSignerForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="EmrSignerForm.cs" />
     <Compile Include="EmrSignerForm.Designer.cs">
       <DependentUpon>EmrSignerForm.cs</DependentUpon>
     </Compile>

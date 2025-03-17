@@ -42,7 +42,7 @@ using HIS.Desktop.Plugins.Library.RegisterConfig;
 using HID.Filter;
 using HID.EFMODEL.DataModels;
 using HIS.Desktop.LocalStorage.BackendData;
-using HIS.Desktop.Plugins.Library.HisSyncToHid;
+using HIS.Desktop.Plugins.RegisterV2.Choice;
 
 namespace HIS.Desktop.Plugins.RegisterV2.Register
 {

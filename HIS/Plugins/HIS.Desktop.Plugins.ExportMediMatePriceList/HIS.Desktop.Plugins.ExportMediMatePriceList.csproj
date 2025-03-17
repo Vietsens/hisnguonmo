@@ -124,9 +124,7 @@
     <Compile Include="ExportPriceList\IExportPriceList.cs" />
     <Compile Include="ExportPriceList\ExportPriceListBehavior.cs" />
     <Compile Include="ExportPriceList\ExportPriceListFactory.cs" />
-    <Compile Include="frmExportPriceList.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="frmExportPriceList.cs" />
     <Compile Include="frmExportPriceList.Designer.cs">
       <DependentUpon>frmExportPriceList.cs</DependentUpon>
     </Compile>

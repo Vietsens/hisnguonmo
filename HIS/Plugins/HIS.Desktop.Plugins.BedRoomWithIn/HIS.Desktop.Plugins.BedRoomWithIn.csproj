@@ -170,20 +170,12 @@
     <Compile Include="ADO\HisBedADO.cs" />
     <Compile Include="ADO\HisBedRoomV1.cs" />
     <Compile Include="ADO\ServicePatyConditionADO.cs" />
-    <Compile Include="frmBedRoomWithIn_Validate.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="frmBedRoomWithIn_Validate.cs" />
     <Compile Include="Config.cs" />
-    <Compile Include="frmBedRoomWithIn__Pluss__Save.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="frmBedRoomWithIn__Pluss__FillCbo.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="frmBedRoomWithIn__Pluss__Save.cs" />
+    <Compile Include="frmBedRoomWithIn__Pluss__FillCbo.cs" />
     <Compile Include="Resources\ResourceLanguageManager.cs" />
-    <Compile Include="frmBedRoomWithIn.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="frmBedRoomWithIn.cs" />
     <Compile Include="frmBedRoomWithIn.Designer.cs">
       <DependentUpon>frmBedRoomWithIn.cs</DependentUpon>
     </Compile>

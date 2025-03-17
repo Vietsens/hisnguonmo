@@ -128,9 +128,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="UsingAccountBookProcessor.cs" />
-    <Compile Include="frmRequestForUsingAccountBook.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="frmRequestForUsingAccountBook.cs" />
     <Compile Include="frmRequestForUsingAccountBook.Designer.cs">
       <DependentUpon>frmRequestForUsingAccountBook.cs</DependentUpon>
     </Compile>

@@ -154,15 +154,11 @@
     <Compile Include="Base\HisCommonImpMestTypeInfo.cs" />
     <Compile Include="Base\HisConfigCFG.cs" />
     <Compile Include="Base\PaySttADO.cs" />
-    <Compile Include="frmHisImportMestMedicine.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="frmHisImportMestMedicine.cs" />
     <Compile Include="frmHisImportMestMedicine.Designer.cs">
       <DependentUpon>frmHisImportMestMedicine.cs</DependentUpon>
     </Compile>
-    <Compile Include="frmMessage.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="frmMessage.cs" />
     <Compile Include="frmMessage.Designer.cs">
       <DependentUpon>frmMessage.cs</DependentUpon>
     </Compile>
@@ -181,15 +177,11 @@
     <Compile Include="Resources\ResourceLanguageManager.cs" />
     <Compile Include="Resources\ResourceMessage.cs" />
     <Compile Include="RightMouseClickProcessor.cs" />
-    <Compile Include="UCHisImportMestMedicine.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
+    <Compile Include="UCHisImportMestMedicine.cs" />
     <Compile Include="UCHisImportMestMedicine.Designer.cs">
       <DependentUpon>UCHisImportMestMedicine.cs</DependentUpon>
     </Compile>
-    <Compile Include="UCHisImportMestMedicine_Event.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
+    <Compile Include="UCHisImportMestMedicine_Event.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="frmHisImportMestMedicine.resx">

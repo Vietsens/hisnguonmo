@@ -142,15 +142,11 @@
     <Compile Include="ADO\DataStoreADO.cs" />
     <Compile Include="ADO\Status.cs" />
     <Compile Include="ADO\TreatmentADO.cs" />
-    <Compile Include="Borrow\TreatmentBorrow.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="Borrow\TreatmentBorrow.cs" />
     <Compile Include="Borrow\TreatmentBorrow.Designer.cs">
       <DependentUpon>TreatmentBorrow.cs</DependentUpon>
     </Compile>
-    <Compile Include="ChooseStore\ChooseStore_TIM.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="ChooseStore\ChooseStore_TIM.cs" />
     <Compile Include="ChooseStore\ChooseStore_TIM.Designer.cs">
       <DependentUpon>ChooseStore_TIM.cs</DependentUpon>
     </Compile>

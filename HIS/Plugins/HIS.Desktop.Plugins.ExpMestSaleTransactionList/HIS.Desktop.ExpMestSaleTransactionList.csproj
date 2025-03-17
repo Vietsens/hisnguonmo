@@ -232,19 +232,13 @@
   <ItemGroup>
     <Compile Include="Config\HisConfigCFG.cs" />
     <Compile Include="Config\TransactionCancelCFG.cs" />
-    <Compile Include="frmControl\frmExpMest.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="frmControl\frmExpMest.cs" />
     <Compile Include="frmControl\frmExpMest.Designer.cs">
       <DependentUpon>frmExpMest.cs</DependentUpon>
     </Compile>
-    <Compile Include="frmExpMestSaleTransactionList__Plus_Print.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="frmExpMestSaleTransactionList__Plus_Print.cs" />
     <Compile Include="ExpMestSaleTransactionListProcessor.cs" />
-    <Compile Include="frmExpMestSaleTransactionList.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="frmExpMestSaleTransactionList.cs" />
     <Compile Include="frmExpMestSaleTransactionList.Designer.cs">
       <DependentUpon>frmExpMestSaleTransactionList.cs</DependentUpon>
     </Compile>

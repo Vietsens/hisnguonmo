@@ -107,9 +107,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="frmServiceReqSampleInfo.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="frmServiceReqSampleInfo.cs" />
     <Compile Include="frmServiceReqSampleInfo.Designer.cs">
       <DependentUpon>frmServiceReqSampleInfo.cs</DependentUpon>
     </Compile>

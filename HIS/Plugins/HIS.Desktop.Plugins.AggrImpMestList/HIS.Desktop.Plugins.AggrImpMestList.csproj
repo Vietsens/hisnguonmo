@@ -161,9 +161,7 @@
     </Compile>
     <Compile Include="Resources\ResourceLanguageManager.cs" />
     <Compile Include="Resources\ResourceMessage.cs" />
-    <Compile Include="UCAggrImpMestList.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
+    <Compile Include="UCAggrImpMestList.cs" />
     <Compile Include="UCAggrImpMestList.Designer.cs">
       <DependentUpon>UCAggrImpMestList.cs</DependentUpon>
     </Compile>

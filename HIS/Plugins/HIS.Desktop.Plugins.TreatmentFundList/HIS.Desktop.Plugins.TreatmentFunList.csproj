@@ -154,9 +154,7 @@
     <Compile Include="Base\InvoiceSysType.cs" />
     <Compile Include="Base\ResourceLangManager.cs" />
     <Compile Include="Base\ResourceMessageLang.cs" />
-    <Compile Include="frmTreatmentList.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="frmTreatmentList.cs" />
     <Compile Include="frmTreatmentList.Designer.cs">
       <DependentUpon>frmTreatmentList.cs</DependentUpon>
     </Compile>

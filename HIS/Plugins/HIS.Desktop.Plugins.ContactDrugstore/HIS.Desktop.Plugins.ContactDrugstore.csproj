@@ -128,9 +128,7 @@
     <Compile Include="ADO\AgeUtil.cs" />
     <Compile Include="ADO\DataADO.cs" />
     <Compile Include="ADO\FilterADO.cs" />
-    <Compile Include="frmContactDrugstore.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="frmContactDrugstore.cs" />
     <Compile Include="frmContactDrugstore.Designer.cs">
       <DependentUpon>frmContactDrugstore.cs</DependentUpon>
     </Compile>

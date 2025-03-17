@@ -110,9 +110,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="MaterialUpdatePorcessor.cs" />
-    <Compile Include="FormMaterialUpdate.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="FormMaterialUpdate.cs" />
     <Compile Include="FormMaterialUpdate.Designer.cs">
       <DependentUpon>FormMaterialUpdate.cs</DependentUpon>
     </Compile>

@@ -179,9 +179,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Resources\ResourceLanguageManager.cs" />
     <Compile Include="Resources\ResourceMessage.cs" />
-    <Compile Include="UCInfantInformationList.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
+    <Compile Include="UCInfantInformationList.cs" />
     <Compile Include="UCInfantInformationList.Designer.cs">
       <DependentUpon>UCInfantInformationList.cs</DependentUpon>
     </Compile>

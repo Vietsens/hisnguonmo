@@ -468,7 +468,8 @@ namespace HIS.Desktop.Modules.Login
         {
             try
             {
-                var services = BackendDataWorkerSet.Set<MOS.EFMODEL.DataModels.V_HIS_SERVICE>();
+                var vservices = BackendDataWorkerSet.Set<MOS.EFMODEL.DataModels.V_HIS_SERVICE>();
+                var services = BackendDataWorkerSet.Set<MOS.EFMODEL.DataModels.HIS_SERVICE>();
                 LoadDataWorkerLog(ref i, 0, (services != null ? services.Count : 0), new MOS.EFMODEL.DataModels.V_HIS_SERVICE().GetType().ToString());
             }
             catch (Exception ex)
@@ -481,7 +482,8 @@ namespace HIS.Desktop.Modules.Login
         {
             try
             {
-                var serviceRooms = BackendDataWorkerSet.Set<MOS.EFMODEL.DataModels.V_HIS_SERVICE_ROOM>();
+                var vserviceRooms = BackendDataWorkerSet.Set<MOS.EFMODEL.DataModels.V_HIS_SERVICE_ROOM>();
+                var serviceRooms = BackendDataWorkerSet.Set<MOS.EFMODEL.DataModels.HIS_SERVICE_ROOM>();                
                 LoadDataWorkerLog(ref i, 0, (serviceRooms != null ? serviceRooms.Count : 0), new MOS.EFMODEL.DataModels.V_HIS_SERVICE_ROOM().GetType().ToString());
             }
             catch (Exception ex)
@@ -508,6 +510,7 @@ namespace HIS.Desktop.Modules.Login
             try
             {
                 var icds = BackendDataWorkerSet.Set<MOS.EFMODEL.DataModels.HIS_ICD>();
+                var vicds = BackendDataWorkerSet.Set<MOS.EFMODEL.DataModels.V_HIS_ICD>();
                 LoadDataWorkerLog(ref i, 0, (icds != null ? icds.Count : 0), new MOS.EFMODEL.DataModels.HIS_ICD().GetType().ToString());
             }
             catch (Exception ex)
@@ -522,6 +525,20 @@ namespace HIS.Desktop.Modules.Login
             {
                 var useRooms = BackendDataWorkerSet.Set<MOS.EFMODEL.DataModels.V_HIS_USER_ROOM>();
                 LoadDataWorkerLog(ref i, 0, (useRooms != null ? useRooms.Count : 0), new MOS.EFMODEL.DataModels.V_HIS_USER_ROOM().GetType().ToString());
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void LoadExecuteRooms()
+        {
+            try
+            {
+                var executeRooms = BackendDataWorkerSet.Set<MOS.EFMODEL.DataModels.HIS_EXECUTE_ROOM>();
+                var vexecuteRooms = BackendDataWorkerSet.Set<MOS.EFMODEL.DataModels.V_HIS_EXECUTE_ROOM>();
+                LoadDataWorkerLog(ref i, 0, (executeRooms != null ? executeRooms.Count : 0), new MOS.EFMODEL.DataModels.HIS_EXECUTE_ROOM().GetType().ToString());
             }
             catch (Exception ex)
             {
@@ -981,6 +998,7 @@ namespace HIS.Desktop.Modules.Login
                     methods.Add(BackendDataWorker.InitDataCacheLocal);
                     methods.Add(LoadServiceRooms);
                     methods.Add(LoadUseRooms);
+                    methods.Add(LoadExecuteRooms);
                     methods.Add(LoadServices);
                     methods.Add(LoadServicePatys);
                     methods.Add(LoadIcds);

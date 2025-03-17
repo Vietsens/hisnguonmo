@@ -164,18 +164,12 @@
     <Compile Include="MRSummaryDetail\IMRSummaryDetail.cs" />
     <Compile Include="MRSummaryDetail\MRSummaryDetailBehavior.cs" />
     <Compile Include="MRSummaryDetail\MRSummaryDetailFactory.cs" />
-    <Compile Include="Run\frmMRSummaryDetail.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="Run\frmMRSummaryDetail.cs" />
     <Compile Include="Run\frmMRSummaryDetail.Designer.cs">
       <DependentUpon>frmMRSummaryDetail.cs</DependentUpon>
     </Compile>
-    <Compile Include="Run\frmMRSummaryDetail_InitCombo.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Run\frmMRSummaryDetail_Print.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="Run\frmMRSummaryDetail_InitCombo.cs" />
+    <Compile Include="Run\frmMRSummaryDetail_Print.cs" />
     <Compile Include="Validation\SpinValidationRule.cs" />
     <Compile Include="Validation\ExpiredDateValidationRule.cs" />
   </ItemGroup>

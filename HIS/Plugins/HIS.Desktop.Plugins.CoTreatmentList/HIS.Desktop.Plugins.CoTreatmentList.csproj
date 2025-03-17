@@ -144,9 +144,7 @@
   <ItemGroup>
     <Compile Include="Base\ResourceLangManager.cs" />
     <Compile Include="Resources\ResourceLanguageManager.cs" />
-    <Compile Include="UCCoTreatmentList.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
+    <Compile Include="UCCoTreatmentList.cs" />
     <Compile Include="UCCoTreatmentList.Designer.cs">
       <DependentUpon>UCCoTreatmentList.cs</DependentUpon>
     </Compile>

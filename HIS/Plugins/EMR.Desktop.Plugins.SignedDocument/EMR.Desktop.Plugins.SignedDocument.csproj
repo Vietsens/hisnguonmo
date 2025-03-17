@@ -181,9 +181,7 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="frmSignedDocument.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="frmSignedDocument.cs" />
     <Compile Include="frmSignedDocument.Designer.cs">
       <DependentUpon>frmSignedDocument.cs</DependentUpon>
     </Compile>

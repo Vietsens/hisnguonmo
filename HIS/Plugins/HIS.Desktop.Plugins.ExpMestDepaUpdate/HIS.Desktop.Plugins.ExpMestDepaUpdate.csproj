@@ -154,24 +154,16 @@
     <Compile Include="Base\ResourceMessageLang.cs" />
     <Compile Include="Config\CheckCabinetCounterCFG.cs" />
     <Compile Include="ExpMestDepaUpdateProcessor.cs" />
-    <Compile Include="frmExpMestDepaUpdate.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="frmExpMestDepaUpdate.cs" />
     <Compile Include="frmExpMestDepaUpdate.Designer.cs">
       <DependentUpon>frmExpMestDepaUpdate.cs</DependentUpon>
     </Compile>
     <Compile Include="ExpMestDepaUpdate\ExpMestDepaUpdateBehavior.cs" />
     <Compile Include="ExpMestDepaUpdate\ExpMestDepaUpdateFactory.cs" />
     <Compile Include="ExpMestDepaUpdate\IExpMestDepaUpdate.cs" />
-    <Compile Include="frmExpMestDepaUpdate__Plus__Button.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="frmExpMestDepaUpdate__Plus__Control.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="frmExpMestDepaUpdate__Plus__TreeList.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="frmExpMestDepaUpdate__Plus__Button.cs" />
+    <Compile Include="frmExpMestDepaUpdate__Plus__Control.cs" />
+    <Compile Include="frmExpMestDepaUpdate__Plus__TreeList.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>

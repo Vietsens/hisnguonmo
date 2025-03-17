@@ -181,15 +181,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="Run\UCLisSampleList.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
+    <Compile Include="Run\UCLisSampleList.cs" />
     <Compile Include="Run\UCLisSampleList.Designer.cs">
       <DependentUpon>UCLisSampleList.cs</DependentUpon>
     </Compile>
-    <Compile Include="Run\UCLisSampleList_PlusPrint.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
+    <Compile Include="Run\UCLisSampleList_PlusPrint.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\HIS.Desktop.ADO\HIS.Desktop.ADO.csproj">

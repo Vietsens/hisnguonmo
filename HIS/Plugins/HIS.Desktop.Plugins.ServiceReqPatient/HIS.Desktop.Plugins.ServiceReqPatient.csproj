@@ -217,15 +217,11 @@
     </Compile>
     <Compile Include="Resource\ResourceLanguageManager.cs" />
     <Compile Include="ServiceReqMedicineProcesser.cs" />
-    <Compile Include="ServiceReqPatientForm\ServiceReqPatientForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="ServiceReqPatientForm\ServiceReqPatientForm.cs" />
     <Compile Include="ServiceReqPatientForm\ServiceReqPatientForm.Designer.cs">
       <DependentUpon>ServiceReqPatientForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="ServiceReqPatientForm\ServiceReqPatientForm_Print.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="ServiceReqPatientForm\ServiceReqPatientForm_Print.cs" />
     <Compile Include="ValidateSprin1.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -267,14 +267,17 @@ namespace HIS.Desktop.Plugins.ServiceExecute
         {
             try
             {
+                Inventec.Common.Logging.LogSystem.Debug("UCServiceExecute_Load.1");
                 if (!Directory.Exists(FolderSaveImage))
                     Directory.CreateDirectory(FolderSaveImage);
 
                 GetDataFromRam();
                 isNotLoadWhileChangeControlStateInFirst = true;
                 LoadKeysFromlanguage();
+                Inventec.Common.Logging.LogSystem.Debug("UCServiceExecute_Load.2");
                 this.LoadExecuteRoleUser();
                 timerLoadEkip.Enabled = true;
+                Inventec.Common.Logging.LogSystem.Debug("UCServiceExecute_Load.3");
                 RegisterTimer(moduleData.ModuleLink, "timerLoadEkip", timerLoadEkip.Interval, timerLoadEkip_Tick);
                 StartTimer(moduleData.ModuleLink, "timerLoadEkip");
                 SetDefaultValueControl();
@@ -282,9 +285,13 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                 InitControlState();
                 InitDrButtonOther();
                 CreateThreadLoadDataDefault();
+                Inventec.Common.Logging.LogSystem.Debug("UCServiceExecute_Load.4");
                 FillDataCombo();
+                Inventec.Common.Logging.LogSystem.Debug("UCServiceExecute_Load.5");
                 FillDataToGrid();
+                Inventec.Common.Logging.LogSystem.Debug("UCServiceExecute_Load.6");
                 ProcessPatientInfo();
+                Inventec.Common.Logging.LogSystem.Debug("UCServiceExecute_Load.7");
                 bool sereServFileResult = false;
                 if (listServiceADO != null && listServiceADO.Count > 0)
                 {
@@ -294,7 +301,7 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                 {
                     LoadDataImageLocal();
                 }
-
+                Inventec.Common.Logging.LogSystem.Debug("UCServiceExecute_Load.8");
                 SetDisable();
                 ValidNumberOfFilm();
                 ValidBeginTime();
@@ -305,20 +312,21 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                     btnTuTruc.Enabled = false;
                 }
                 SetEnableControlWithExecuterParam();
+                Inventec.Common.Logging.LogSystem.Debug("UCServiceExecute_Load.9");
                 LoadDataToCombo();
                 EnableControlCamera(false);
-
+                Inventec.Common.Logging.LogSystem.Debug("UCServiceExecute_Load.10");
                 CheckValidPress();
                 InitCameraDefault();
                 isNotLoadWhileChangeControlStateInFirst = false;
                 this.ProcessCustomizeUI();
-                this.listHisTextLib = BackendDataWorker.Get<HIS_TEXT_LIB>();
                 InitBarContentLibrary(this.listHisTextLib);
                 GetTimeSystem();
                 RegisterTimer(moduleData.ModuleLink, "timer1", timer1.Interval, timer1_Tick);
                 StartTimer(moduleData.ModuleLink, "timer1");
                 RegisterTimer(moduleData.ModuleLink, "timerDoubleClick", timerDoubleClick.Interval, timerDoubleClick_Tick);
                 DisableFinishConfig();
+                Inventec.Common.Logging.LogSystem.Debug("UCServiceExecute_Load.11");
             }
             catch (Exception ex)
             {
@@ -443,9 +451,15 @@ namespace HIS.Desktop.Plugins.ServiceExecute
         {
             try
             {
+                Inventec.Common.Logging.LogSystem.Debug("GetDataFromRam.1");
                 lstService = BackendDataWorker.Get<V_HIS_SERVICE>().ToList();
                 lstDepartment = BackendDataWorker.Get<HIS_DEPARTMENT>().Where(o => o.IS_ACTIVE == 1).ToList();
                 lstExecuteRole = BackendDataWorker.Get<HIS_EXECUTE_ROLE>().Where(o => o.IS_ACTIVE == 1 && o.IS_DISABLE_IN_EKIP != 1).ToList().ToList();
+
+                ListMachine = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<HIS_MACHINE>();
+                ListServiceMachine = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<HIS_SERVICE_MACHINE>();
+                this.listHisTextLib = BackendDataWorker.Get<HIS_TEXT_LIB>();
+                Inventec.Common.Logging.LogSystem.Debug("GetDataFromRam.2");
             }
             catch (Exception ex)
             {
@@ -1326,7 +1340,6 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                 }
                 var workingRoomIds = WorkPlace.GetRoomIds();
 
-                ListMachine = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<HIS_MACHINE>();
                 if (ListMachine != null && ListMachine.Count > 0)
                     ListMachine =
                         (from m in ListMachine
@@ -1334,7 +1347,6 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                          where m.IS_ACTIVE == 1 && m.ROOM_IDS != null && ("," + m.ROOM_IDS + ",").Contains("," + n.ToString() + ",")
                          select m).Distinct().ToList();
 
-                ListServiceMachine = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<HIS_SERVICE_MACHINE>();
                 if (ListServiceMachine != null && ListServiceMachine.Count > 0)
                     ListServiceMachine = ListServiceMachine.Where(o => o.IS_ACTIVE == 1).ToList();
 
