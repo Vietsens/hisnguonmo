@@ -204,18 +204,10 @@
     <Compile Include="AppointmentServiceProcessor.cs" />
     <Compile Include="Config\AppConfigKeys.cs" />
     <Compile Include="Config\HisConfigCFG.cs" />
-    <Compile Include="frmAppointmentService__Dispose.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="frmAppointmentService__Load.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="frmAppointmentService__InitTree.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="frmAppointmentService.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="frmAppointmentService__Dispose.cs" />
+    <Compile Include="frmAppointmentService__Load.cs" />
+    <Compile Include="frmAppointmentService__InitTree.cs" />
+    <Compile Include="frmAppointmentService.cs" />
     <Compile Include="frmAppointmentService.Designer.cs">
       <DependentUpon>frmAppointmentService.cs</DependentUpon>
     </Compile>

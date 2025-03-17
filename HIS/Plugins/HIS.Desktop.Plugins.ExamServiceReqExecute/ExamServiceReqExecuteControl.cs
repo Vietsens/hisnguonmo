@@ -79,6 +79,7 @@ using System.ComponentModel;
 using System.Drawing;
 using System.Linq;
 using System.Reflection;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace HIS.Desktop.Plugins.ExamServiceReqExecute
@@ -232,6 +233,8 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
         internal UserControl ucSecondaryIcdYHCT;
         internal SecondaryIcdProcessor subIcdProcessor;
         internal SecondaryIcdProcessor subIcdProcessorYHCT;
+
+        bool isLoadedMLCT;
         #endregion
 
         #region Construct - Load
@@ -301,6 +304,9 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                 if (isTimeServer) this.currentTime = param.Now;
 
                 LoadTreatmentByPatient();
+
+                LoadTreatmentHistoryTogrid();
+
                 LoadDataTreatmentExt();
                 LoadCurrentPatient();
                 Inventec.Common.Logging.LogSystem.Debug("ExamServiceReqExecuteControl_Load .3");
@@ -323,16 +329,8 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                 this.DHSTLoadDataDefault();
                 Inventec.Common.Logging.LogSystem.Debug("ExamServiceReqExecuteControl_Load .5");
 
-                LoadTreatmentHistory();
-                if (this.TreatmentHistorys != null && this.TreatmentHistorys.Count > 0)
-                {
-                    this.xtraTabControlInfo.SelectedTabPage = this.xtraTabPageExamHistory;
-                }
-                else
-                {
-                    this.xtraTabControlInfo.SelectedTabPage = this.xtraTabPageExamExecute;
-                }
-                this.SetTabPageVisible(tabControlDetailData);
+                //LoadTreatmentHistory();
+
 
                 Inventec.Common.Logging.LogSystem.Debug("ExamServiceReqExecuteControl_Load .6");
                 this.FillDataToComboNextTreatmentInst();
@@ -351,25 +349,64 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                 InitCombo();
                 InitContraindicationCheck();
 
-                FillDatatoComboContraindication();
+                //FillDatatoComboContraindication();
                 this.ProcessCustomizeUI();
+                Inventec.Common.Logging.LogSystem.Debug("ExamServiceReqExecuteControl_Load .10");
                 RegisterTimer(moduleData.ModuleLink, "timerInitForm", 5000, InitForm);
                 StartTimer(moduleData.ModuleLink, "timerInitForm");
                 EnableRadioExamFinish();
                 ValidHospitalizationReason();
+                Inventec.Common.Logging.LogSystem.Debug("ExamServiceReqExecuteControl_Load .11");
                 RegisterTimer(moduleData.ModuleLink, "timerSetText", 500, SetText);
                 StartTimer(moduleData.ModuleLink, "timerSetText");
+                Inventec.Common.Logging.LogSystem.Debug("ExamServiceReqExecuteControl_Load .12");
                 ModuleList();
                 EnableViaKeyDisablePartExamByExecutor();
                 FillDatatoCDYHCT();
                 isWarning = false;
                 checkIcdManager = new CheckIcdManager(DlgIcdSubCode, treatment);
+                Inventec.Common.Logging.LogSystem.Debug("ExamServiceReqExecuteControl_Load .13");
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
+
+        private void InitForm()
+        {
+            try
+            {
+                Inventec.Common.Logging.LogSystem.Debug("timer1_Tick .1");
+                StopTimer(moduleData.ModuleLink, "timerInitForm");
+                //this.timerRefreshExamFinish.Start();
+                //List<Action> methods = new List<Action>();
+                //methods.Add(LoadMediRecord);
+                //methods.Add(LoadPatientProgram);
+                //methods.Add(LoadDataStore);
+                //ThreadCustomManager.MultipleThreadWithJoin(methods);
+                LoadDataStore();
+                LoadMediRecord();
+                LoadPatientProgram();
+                isFinishLoad = true;
+                if (this.ucTreatmentFinish != null && this.treatmentFinishProcessor != null)
+                {
+                    this.treatmentFinishProcessor.UpdateProgramData(this.ucTreatmentFinish, PatientProgramList, DataStoreList);
+                }
+
+                //this.LoadTreatmentHistoryTogrid();//TODO
+                this.FillDataAllergenic();
+                this.FillDataToButtonPrintAndAutoPrint();
+                this.InitDrButtonOther();
+                LoadgridControlDKPresent();
+                Inventec.Common.Logging.LogSystem.Debug("timer1_Tick .2");
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
         private void LoadDataTreatmentExt()
         {
             try
@@ -897,13 +934,13 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             }
         }
 
-        private void InitCombo()
+        private async Task InitCombo()
         {
             try
             {
                 HisContraindicationFilter filter = new HisContraindicationFilter();
                 filter.IS_ACTIVE = IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE;
-                datas = new BackendAdapter(new CommonParam()).Get<List<HIS_CONTRAINDICATION>>("api/HisContraindication/Get", ApiConsumers.MosConsumer, filter, null);
+                datas = await new BackendAdapter(new CommonParam()).GetAsync<List<HIS_CONTRAINDICATION>>("api/HisContraindication/Get", ApiConsumers.MosConsumer, filter, null);
                 cboContraindication.Properties.DataSource = datas;
                 cboContraindication.Properties.DisplayMember = "CONTRAINDICATION_NAME";
                 cboContraindication.Properties.ValueMember = "ID";
@@ -911,7 +948,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
 
                 col2.VisibleIndex = 1;
                 col2.Width = 350;
-                col2.Caption = "Tất cả";
+                col2.Caption = "Tất cả";//TODO đang fix code
                 cboContraindication.Properties.PopupFormWidth = 350;
                 cboContraindication.Properties.View.OptionsView.ShowColumnHeaders = true;
                 cboContraindication.Properties.View.OptionsSelection.MultiSelect = true;
@@ -986,40 +1023,6 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                     }
                 }
                 e.DisplayText = display;
-            }
-            catch (Exception ex)
-            {
-                Inventec.Common.Logging.LogSystem.Warn(ex);
-            }
-        }
-
-        private void InitForm()
-        {
-            try
-            {
-                Inventec.Common.Logging.LogSystem.Debug("timer1_Tick .1");
-                StopTimer(moduleData.ModuleLink, "timerInitForm");
-                //this.timerRefreshExamFinish.Start();
-                //List<Action> methods = new List<Action>();
-                //methods.Add(LoadMediRecord);
-                //methods.Add(LoadPatientProgram);
-                //methods.Add(LoadDataStore);
-                //ThreadCustomManager.MultipleThreadWithJoin(methods);
-                LoadDataStore();
-                LoadMediRecord();
-                LoadPatientProgram();
-                isFinishLoad = true;
-                if (this.ucTreatmentFinish != null && this.treatmentFinishProcessor != null)
-                {
-                    this.treatmentFinishProcessor.UpdateProgramData(this.ucTreatmentFinish, PatientProgramList, DataStoreList);
-                }
-
-                this.LoadTreatmentHistoryTogrid();//TODO
-                this.FillDataAllergenic();
-                this.FillDataToButtonPrintAndAutoPrint();
-                this.InitDrButtonOther();
-                LoadgridControlDKPresent();
-                Inventec.Common.Logging.LogSystem.Debug("timer1_Tick .2");
             }
             catch (Exception ex)
             {
@@ -2357,7 +2360,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                         treatmentFinishInitADO.ListEventsCausesDeath = dtEventsCausesDeath;
                     }
                     if (this.isTimeServer) treatmentFinishInitADO.Treatment.OUT_TIME = loadParam().Now;
-                    this.ucTreatmentFinish = (UserControl)treatmentFinishProcessor.Run(treatmentFinishInitADO,this.currentTreatmentExt);
+                    this.ucTreatmentFinish = (UserControl)treatmentFinishProcessor.Run(treatmentFinishInitADO, this.currentTreatmentExt);
                     LoadUCToPanelExecuteExt(this.ucTreatmentFinish, chkTreatmentFinish);
 
                     if (treatment.TDL_TREATMENT_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__DTNOITRU
@@ -2866,7 +2869,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                     hisServiceReqSDO.IsFinish = true;
 
                     //ngant muon sua thanh null khi loi hoac co thong bao
-                    if(hisServiceReqSDO.TreatmentFinishSDO.TreatmentFinishTime > 0) hisServiceReqSDO.FinishTime = hisServiceReqSDO.TreatmentFinishSDO.TreatmentFinishTime;
+                    if (hisServiceReqSDO.TreatmentFinishSDO.TreatmentFinishTime > 0) hisServiceReqSDO.FinishTime = hisServiceReqSDO.TreatmentFinishSDO.TreatmentFinishTime;
                 }
                 else if (HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<int>("HIS.HIS_SERVICE_REQ.EXAM.AUTO_FINISH_AFTER_UNFINISH") == 1 && HisServiceReqView.IS_AUTO_FINISHED == 1)
                 {
@@ -3341,8 +3344,8 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                     isNotCheckValidateIcdUC = true;
                     result = treatmentFinishProcessor.Validate(ucTreatmentFinish, isNotCheckValidateIcdUC);
 
-                    
-                    
+
+
                 }
 
             }
@@ -3361,7 +3364,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                 ///kiểm tra chẩn đoán phụ và chẩn đoán phụ ra viện (nếu có) nếu vuoptjq quá 12 mã thì cảnh báo
 
                 var config = HisConfigs.Get<string>("HIS.Desktop.Plugins.IsCheckSubIcdExceedLimit");
-                
+
                 if (config == "1")
                 {
                     string[] arrIcdExtraCodes = this.txtIcdSubCode.Text.Trim().Split(this.icdSeparators, StringSplitOptions.RemoveEmptyEntries);
@@ -4970,10 +4973,16 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
         ///++ Nam: [(140-tuổi)x Cân nặng x 1,23 x 1,73]/(Chỉ số x Diện tích da) (cân nặng người dùng nhập ở màn hình xử lý khám).
         ///++ Nữ: [(140-tuổi)x Cân nặng x 1,04 x 1,73]/(Chỉ số x Diện tích da) (cân nặng người dùng nhập ở màn hình xử lý khám).
         /// </summary>
-        private void LoadMLCT()
+        private async Task LoadMLCT()
         {
             try
             {
+                if (isLoadedMLCT)
+                {
+                    return;
+                }
+                Inventec.Common.Logging.LogSystem.Debug("run LoadMLCT");
+
                 string strIsToCalculateEgfr = "";
                 List<long> ACRPCRList = new List<long>() { IMSys.DbConfig.HIS_RS.TEST_INDEX_TYPE.ALBUMIN_NIEU, IMSys.DbConfig.HIS_RS.TEST_INDEX_TYPE.PROTEIN_NIEU, IMSys.DbConfig.HIS_RS.TEST_INDEX_TYPE.CREATININ_NIEU };
                 var TestIndexData = BackendDataWorker.Get<HIS_TEST_INDEX>().ToList();
@@ -4984,7 +4993,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                     HisSereServTeinView1Filter filter = new HisSereServTeinView1Filter();
                     filter.TREATMENT_IDs = new List<long>() { treatmentId };
                     filter.TEST_INDEX_IDs = TestIndexData.Where(p => ACRPCRList.Exists(o => o == p.TEST_INDEX_TYPE) || p.IS_TO_CALCULATE_EGFR == 1).Select(o => o.ID).ToList();
-                    SereServTeinData = new BackendAdapter(param).Get<List<V_HIS_SERE_SERV_TEIN_1>>("/api/HisSereServTein/GetView1", ApiConsumers.MosConsumer, filter, param);
+                    SereServTeinData = await new BackendAdapter(param).GetAsync<List<V_HIS_SERE_SERV_TEIN_1>>("/api/HisSereServTein/GetView1", ApiConsumers.MosConsumer, filter, param);
 
                     if (SereServTeinData != null && SereServTeinData.Count > 0)
                     {

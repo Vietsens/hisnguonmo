@@ -160,9 +160,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ADO\MedicineTypeImportADO.cs" />
-    <Compile Include="FormLoad\frmMedicineType.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="FormLoad\frmMedicineType.cs" />
     <Compile Include="FormLoad\frmMedicineType.Designer.cs">
       <DependentUpon>frmMedicineType.cs</DependentUpon>
     </Compile>

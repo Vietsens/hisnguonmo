@@ -154,9 +154,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ADO\ChuyenTuyenADO.cs" />
-    <Compile Include="HisTranPatiToInfo.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="HisTranPatiToInfo.cs" />
     <Compile Include="HisTranPatiToInfo.Designer.cs">
       <DependentUpon>HisTranPatiToInfo.cs</DependentUpon>
     </Compile>

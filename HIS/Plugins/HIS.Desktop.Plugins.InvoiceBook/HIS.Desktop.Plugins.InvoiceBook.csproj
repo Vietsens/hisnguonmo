@@ -286,24 +286,14 @@
     <Compile Include="Resources\ResourceLanguageManager.cs" />
     <Compile Include="Resources\ResourceMessage.cs" />
     <Compile Include="TotalNextPage.cs" />
-    <Compile Include="UCInvoiceBook.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
+    <Compile Include="UCInvoiceBook.cs" />
     <Compile Include="UCInvoiceBook.Designer.cs">
       <DependentUpon>UCInvoiceBook.cs</DependentUpon>
     </Compile>
-    <Compile Include="UCInvoiceBook_Event.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="UCInvoiceBook_Method.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="UCInvoiceBook_ProcessData.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="UCInvoiceBook_Validate.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
+    <Compile Include="UCInvoiceBook_Event.cs" />
+    <Compile Include="UCInvoiceBook_Method.cs" />
+    <Compile Include="UCInvoiceBook_ProcessData.cs" />
+    <Compile Include="UCInvoiceBook_Validate.cs" />
     <Compile Include="ValidateControl\FromNumOrderValidationRule.cs" />
     <Compile Include="ValidateControl\SymbolCodeValidationRule.cs" />
     <Compile Include="ValidateControl\TemplateCodeValidationRule.cs" />

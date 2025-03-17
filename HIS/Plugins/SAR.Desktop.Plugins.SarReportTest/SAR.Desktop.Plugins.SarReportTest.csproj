@@ -146,9 +146,7 @@
     <Compile Include="HisRequestUriStore.cs" />
     <Compile Include="SarReportTestProcessor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SarReportTest\frmSarReportTest.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="SarReportTest\frmSarReportTest.cs" />
     <Compile Include="SarReportTest\frmSarReportTest.Designer.cs">
       <DependentUpon>frmSarReportTest.cs</DependentUpon>
     </Compile>

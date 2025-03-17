@@ -233,9 +233,7 @@
     <Compile Include="ChartDhstProcess.cs" />
     <Compile Include="Config\HisConfigCFG.cs" />
     <Compile Include="HisCareSumProcessor.cs" />
-    <Compile Include="HisCareSum\frmHisCareSum.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="HisCareSum\frmHisCareSum.cs" />
     <Compile Include="HisCareSum\frmHisCareSum.Designer.cs">
       <DependentUpon>frmHisCareSum.cs</DependentUpon>
     </Compile>

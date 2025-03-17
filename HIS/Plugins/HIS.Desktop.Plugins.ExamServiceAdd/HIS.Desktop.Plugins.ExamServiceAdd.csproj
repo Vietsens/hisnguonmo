@@ -127,9 +127,7 @@
     <Compile Include="ExamServiceAdd\ExamServiceAddBehavior.cs" />
     <Compile Include="ExamServiceAdd\ExamServiceAddFactory.cs" />
     <Compile Include="ExamServiceAdd\IExamServiceAdd.cs" />
-    <Compile Include="FormExamServiceAdd.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="FormExamServiceAdd.cs" />
     <Compile Include="FormExamServiceAdd.Designer.cs">
       <DependentUpon>FormExamServiceAdd.cs</DependentUpon>
     </Compile>

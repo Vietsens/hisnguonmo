@@ -188,15 +188,9 @@
     <Compile Include="ADO\TreeSereServADO.cs" />
     <Compile Include="Config\Config.cs" />
     <Compile Include="Config\ControlStateConstant.cs" />
-    <Compile Include="frmContentSubclinical__Pluss__Load.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="frmContentSubclinical__Pluss__TreeSS.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="frmContentSubclinical.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="frmContentSubclinical__Pluss__Load.cs" />
+    <Compile Include="frmContentSubclinical__Pluss__TreeSS.cs" />
+    <Compile Include="frmContentSubclinical.cs" />
     <Compile Include="frmContentSubclinical.Designer.cs">
       <DependentUpon>frmContentSubclinical.cs</DependentUpon>
     </Compile>

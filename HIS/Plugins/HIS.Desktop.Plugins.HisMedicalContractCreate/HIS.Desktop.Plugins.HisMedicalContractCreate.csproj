@@ -160,21 +160,13 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="Resources\ResourceLanguageManager.cs" />
-    <Compile Include="Run\FormHisMedicalContractCreate.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="Run\FormHisMedicalContractCreate.cs" />
     <Compile Include="Run\FormHisMedicalContractCreate.Designer.cs">
       <DependentUpon>FormHisMedicalContractCreate.cs</DependentUpon>
     </Compile>
-    <Compile Include="Run\FormHisMedicalContractCreate_Load.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Run\FormHisMedicalContractCreate_Processor.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Run\FormHisMedicalContractCreate_Validation.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="Run\FormHisMedicalContractCreate_Load.cs" />
+    <Compile Include="Run\FormHisMedicalContractCreate_Processor.cs" />
+    <Compile Include="Run\FormHisMedicalContractCreate_Validation.cs" />
     <Compile Include="Run\UC_LoadEdit.cs">
       <SubType>UserControl</SubType>
     </Compile>

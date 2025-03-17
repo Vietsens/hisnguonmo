@@ -299,36 +299,18 @@
     <Compile Include="AssignServiceTestProcessor.cs" />
     <Compile Include="AssignService\AssignServiceBehavior.cs" />
     <Compile Include="AssignService\AssignServiceFactory.cs" />
-    <Compile Include="AssignService\frmAssignService__Save.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="AssignService\frmAssignService__Print.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="AssignService\frmAssignService__TabIndex.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="AssignService\frmAssignService__Load.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="AssignService\frmAssignService__InitCombo.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="AssignService\frmAssignService__BuildTree.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="AssignService\frmAssignService__Validate.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="AssignService\frmAssignService.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="AssignService\frmAssignService__Save.cs" />
+    <Compile Include="AssignService\frmAssignService__Print.cs" />
+    <Compile Include="AssignService\frmAssignService__TabIndex.cs" />
+    <Compile Include="AssignService\frmAssignService__Load.cs" />
+    <Compile Include="AssignService\frmAssignService__InitCombo.cs" />
+    <Compile Include="AssignService\frmAssignService__BuildTree.cs" />
+    <Compile Include="AssignService\frmAssignService__Validate.cs" />
+    <Compile Include="AssignService\frmAssignService.cs" />
     <Compile Include="AssignService\frmAssignService.Designer.cs">
       <DependentUpon>frmAssignService.cs</DependentUpon>
     </Compile>
-    <Compile Include="AssignService\frmDetail.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="AssignService\frmDetail.cs" />
     <Compile Include="AssignService\frmDetail.Designer.cs">
       <DependentUpon>frmDetail.cs</DependentUpon>
     </Compile>

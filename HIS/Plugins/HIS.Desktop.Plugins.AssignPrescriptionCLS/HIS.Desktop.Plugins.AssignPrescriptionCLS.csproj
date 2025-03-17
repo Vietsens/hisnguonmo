@@ -345,15 +345,9 @@
     <Compile Include="ADO\StringUtil.cs" />
     <Compile Include="ADO\TrackingADO.cs" />
     <Compile Include="AssignPrescription\AssignPrescriptionCheck.cs" />
-    <Compile Include="AssignPrescription\frmAssignPrescription__InitUCDate.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="AssignPrescription\frmAssignPrescription__InitUCIcdSub.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="AssignPrescription\frmAssignPrescription__InitUCIcd.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="AssignPrescription\frmAssignPrescription__InitUCDate.cs" />
+    <Compile Include="AssignPrescription\frmAssignPrescription__InitUCIcdSub.cs" />
+    <Compile Include="AssignPrescription\frmAssignPrescription__InitUCIcd.cs" />
     <Compile Include="AssignPrescription\frmChoiceSingleDate.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -366,27 +360,17 @@
     <Compile Include="AssignPrescription\frmIsExpendType.Designer.cs">
       <DependentUpon>frmIsExpendType.cs</DependentUpon>
     </Compile>
-    <Compile Include="AssignPrescription\frmAssignPrescription__InitMenuMouseRight.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="AssignPrescription\frmAssignPrescription__Check.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="AssignPrescription\frmAssignPrescription__Tutorial.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="AssignPrescription\frmAssignPrescription__SearchHightLight.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="AssignPrescription\frmAssignPrescription__InitMenuMouseRight.cs" />
+    <Compile Include="AssignPrescription\frmAssignPrescription__Check.cs" />
+    <Compile Include="AssignPrescription\frmAssignPrescription__Tutorial.cs" />
+    <Compile Include="AssignPrescription\frmAssignPrescription__SearchHightLight.cs" />
     <Compile Include="AssignPrescription\frmEditDayNum.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="AssignPrescription\frmEditDayNum.Designer.cs">
       <DependentUpon>frmEditDayNum.cs</DependentUpon>
     </Compile>
-    <Compile Include="AssignPrescription\ChooseMediStock\frmWorkingMediStock.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="AssignPrescription\ChooseMediStock\frmWorkingMediStock.cs" />
     <Compile Include="AssignPrescription\ChooseMediStock\frmWorkingMediStock.Designer.cs">
       <DependentUpon>frmWorkingMediStock.cs</DependentUpon>
     </Compile>
@@ -422,12 +406,8 @@
     <Compile Include="Validate\ValidateRule\IcdValidationRuleControl.cs" />
     <Compile Include="Validate\ValidateRule\ValidateMaxlength.cs" />
     <Compile Include="Worker\AssignPrescriptionWorker.cs" />
-    <Compile Include="AssignPrescription\frmAssignPrescription__InitUC.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="AssignPrescription\frmAssignPrescription__Printv2.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="AssignPrescription\frmAssignPrescription__InitUC.cs" />
+    <Compile Include="AssignPrescription\frmAssignPrescription__Printv2.cs" />
     <Compile Include="CommonBaseEditor.cs" />
     <Compile Include="Worker\WarningOddConvertWorker.cs" />
     <Compile Include="Worker\ExpMestWorker.cs" />
@@ -438,48 +418,24 @@
     <Compile Include="ADO\ThoiDiemADO.cs" />
     <Compile Include="ADO\threadMedicineADO.cs" />
     <Compile Include="ADO\VaoLucADO.cs" />
-    <Compile Include="AssignPrescription\frmAssignPrescription__Save.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="AssignPrescription\frmAssignPrescription__Process.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="AssignPrescription\frmAssignPrescription__Save.cs" />
+    <Compile Include="AssignPrescription\frmAssignPrescription__Process.cs" />
     <Compile Include="AssignPrescriptionProcessor.cs" />
     <Compile Include="AssignPrescription\AssignPrescriptionBehavior.cs" />
     <Compile Include="AssignPrescription\AssignPrescriptionFactory.cs" />
-    <Compile Include="AssignPrescription\frmAssignPrescription__Edit.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="AssignPrescription\frmAssignPrescription__MediStockD1SDO.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="AssignPrescription\frmAssignPrescription__ValidDataForSave.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="AssignPrescription\frmAssignPrescription__MedicineType.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="AssignPrescription\frmAssignPrescription__TabIndex.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="AssignPrescription\frmAssignPrescription__Load.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="AssignPrescription\frmAssignPrescription__InitCombo.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="AssignPrescription\frmAssignPrescription__ValidateRule.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="AssignPrescription\frmAssignPrescription.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="AssignPrescription\frmAssignPrescription__Edit.cs" />
+    <Compile Include="AssignPrescription\frmAssignPrescription__MediStockD1SDO.cs" />
+    <Compile Include="AssignPrescription\frmAssignPrescription__ValidDataForSave.cs" />
+    <Compile Include="AssignPrescription\frmAssignPrescription__MedicineType.cs" />
+    <Compile Include="AssignPrescription\frmAssignPrescription__TabIndex.cs" />
+    <Compile Include="AssignPrescription\frmAssignPrescription__Load.cs" />
+    <Compile Include="AssignPrescription\frmAssignPrescription__InitCombo.cs" />
+    <Compile Include="AssignPrescription\frmAssignPrescription__ValidateRule.cs" />
+    <Compile Include="AssignPrescription\frmAssignPrescription.cs" />
     <Compile Include="AssignPrescription\frmAssignPrescription.Designer.cs">
       <DependentUpon>frmAssignPrescription.cs</DependentUpon>
     </Compile>
-    <Compile Include="AssignPrescription\frmHisExpMestTemplateCreate.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="AssignPrescription\frmHisExpMestTemplateCreate.cs" />
     <Compile Include="AssignPrescription\frmHisExpMestTemplateCreate.Designer.cs">
       <DependentUpon>frmHisExpMestTemplateCreate.cs</DependentUpon>
     </Compile>

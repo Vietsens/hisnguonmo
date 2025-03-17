@@ -284,15 +284,11 @@
     <Compile Include="ServiceExecute\ServiceExecuteFactory.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="UCServiceExecute.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
+    <Compile Include="UCServiceExecute.cs" />
     <Compile Include="UCServiceExecute.Designer.cs">
       <DependentUpon>UCServiceExecute.cs</DependentUpon>
     </Compile>
-    <Compile Include="UCServiceExecute_Dispose.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
+    <Compile Include="UCServiceExecute_Dispose.cs" />
     <Compile Include="Validation\EndTimeValidationRule.cs" />
     <Compile Include="Validation\FilmValidationRule.cs" />
     <Compile Include="Validation\BeginTimeValidationRule.cs" />

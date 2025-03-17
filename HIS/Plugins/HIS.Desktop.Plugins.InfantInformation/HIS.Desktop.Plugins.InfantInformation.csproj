@@ -244,20 +244,14 @@
     <Compile Include="ComboADO.cs" />
     <Compile Include="Config\HisConfigCFG.cs" />
     <Compile Include="Delegate\DelegateUC.cs" />
-    <Compile Include="frmInfantInformation.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="frmInfantInformation.cs" />
     <Compile Include="frmInfantInformation.Designer.cs">
       <DependentUpon>frmInfantInformation.cs</DependentUpon>
     </Compile>
-    <Compile Include="frmInfantInformation___Process.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="frmInfantInformation___Process.cs" />
     <Compile Include="InfantInformationProcessor.cs" />
     <Compile Include="KeyboardWorker.cs" />
-    <Compile Include="Load\frmObstetricPatient___Load.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="Load\frmObstetricPatient___Load.cs" />
     <Compile Include="InfantInformation\InfantInformationBehavior.cs" />
     <Compile Include="InfantInformation\InfantInformationFactory.cs" />
     <Compile Include="InfantInformation\IInfantInformation.cs" />
@@ -278,9 +272,7 @@
     </Compile>
     <Compile Include="Validate\CboHisBirthSertBookValidationRule.cs" />
     <Compile Include="Validate\CMTvalidation.cs" />
-    <Compile Include="Validate\frmObstetricPatient___Validate.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="Validate\frmObstetricPatient___Validate.cs" />
     <Compile Include="Validate\InfantValidationRule.cs" />
     <Compile Include="Validate\MonthValidationRule1.cs">
       <SubType>Code</SubType>

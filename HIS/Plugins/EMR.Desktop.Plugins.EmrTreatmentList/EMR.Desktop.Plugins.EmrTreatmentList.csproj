@@ -148,9 +148,7 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="Resources\ResourceLanguageManager.cs" />
-    <Compile Include="UcEmrTreatmentList.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
+    <Compile Include="UcEmrTreatmentList.cs" />
     <Compile Include="UcEmrTreatmentList.Designer.cs">
       <DependentUpon>UcEmrTreatmentList.cs</DependentUpon>
     </Compile>

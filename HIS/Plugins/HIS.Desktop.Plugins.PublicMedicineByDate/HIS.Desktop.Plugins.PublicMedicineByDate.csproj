@@ -169,15 +169,11 @@
     <Compile Include="PublicMedicineByDate\IPublicMedicineByDateCreate.cs" />
     <Compile Include="PublicMedicineByDate\PublicMedicineByDateBehavior.cs" />
     <Compile Include="PublicMedicineByDate\PublicMedicineByDateFactory.cs" />
-    <Compile Include="Run\frmPublicMedicinesByDate.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="Run\frmPublicMedicinesByDate.cs" />
     <Compile Include="Run\frmPublicMedicinesByDate.Designer.cs">
       <DependentUpon>frmPublicMedicinesByDate.cs</DependentUpon>
     </Compile>
-    <Compile Include="Run\frmPublicMedicinesByDate__Pluss_Print.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="Run\frmPublicMedicinesByDate__Pluss_Print.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Resources\Lang.en.resx" />

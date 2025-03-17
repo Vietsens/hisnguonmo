@@ -110,9 +110,7 @@
     <Compile Include="MediStockMetyList\MediStockMetyListFactory.cs" />
     <Compile Include="Resources\ResourceLanguageManager.cs" />
     <Compile Include="Resources\ResourceMessage.cs" />
-    <Compile Include="UCMediStockMetyList.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
+    <Compile Include="UCMediStockMetyList.cs" />
     <Compile Include="UCMediStockMetyList.Designer.cs">
       <DependentUpon>UCMediStockMetyList.cs</DependentUpon>
     </Compile>

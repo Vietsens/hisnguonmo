@@ -142,9 +142,7 @@
     <Compile Include="BedADO.cs" />
     <Compile Include="HisRequestUriStore.cs" />
     <Compile Include="HisInventoryContentProcessor.cs" />
-    <Compile Include="HisInventoryContent\frmHisInventoryContent.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="HisInventoryContent\frmHisInventoryContent.cs" />
     <Compile Include="HisInventoryContent\frmHisInventoryContent.Designer.cs">
       <DependentUpon>frmHisInventoryContent.cs</DependentUpon>
     </Compile>

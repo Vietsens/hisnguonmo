@@ -118,9 +118,7 @@
     <Compile Include="Base\Config.cs" />
     <Compile Include="Enum\DichVu.cs" />
     <Compile Include="Enum\DienDieuTri.cs" />
-    <Compile Include="FormReportCountTreatment.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="FormReportCountTreatment.cs" />
     <Compile Include="FormReportCountTreatment.Designer.cs">
       <DependentUpon>FormReportCountTreatment.cs</DependentUpon>
     </Compile>

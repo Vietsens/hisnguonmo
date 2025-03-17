@@ -154,9 +154,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="frmServSegr.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="frmServSegr.cs" />
     <Compile Include="frmServSegr.Designer.cs">
       <DependentUpon>frmServSegr.cs</DependentUpon>
     </Compile>
@@ -171,9 +169,7 @@
     <Compile Include="HisServSegr\HisServSegrFactoty.cs" />
     <Compile Include="Resources\ResourceLanguageManager.cs" />
     <Compile Include="Resources\ResourceMessage.cs" />
-    <Compile Include="ucServSegr.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
+    <Compile Include="ucServSegr.cs" />
     <Compile Include="ucServSegr.Designer.cs">
       <DependentUpon>ucServSegr.cs</DependentUpon>
     </Compile>

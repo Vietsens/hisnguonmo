@@ -140,9 +140,7 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="Resources\ResourceLanguageManager.cs" />
-    <Compile Include="UCDepartmentTranReceive.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
+    <Compile Include="UCDepartmentTranReceive.cs" />
     <Compile Include="UCDepartmentTranReceive.Designer.cs">
       <DependentUpon>UCDepartmentTranReceive.cs</DependentUpon>
     </Compile>

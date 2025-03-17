@@ -153,9 +153,7 @@
     <Compile Include="ADO\TrackingADO.cs" />
     <Compile Include="Base\ResourceLangManager.cs" />
     <Compile Include="Base\ResourceMessageLang.cs" />
-    <Compile Include="frmMobaBloodCreate.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="frmMobaBloodCreate.cs" />
     <Compile Include="frmMobaBloodCreate.Designer.cs">
       <DependentUpon>frmMobaBloodCreate.cs</DependentUpon>
     </Compile>

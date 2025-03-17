@@ -82,15 +82,11 @@
     <Compile Include="CallPatientNumOrder\ICallPatientNumOrder.cs" />
     <Compile Include="Config\ConfigADO.cs" />
     <Compile Include="Config\HisConfigCFG.cs" />
-    <Compile Include="frmConfigForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="frmConfigForm.cs" />
     <Compile Include="frmConfigForm.Designer.cs">
       <DependentUpon>frmConfigForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="frmWaitingScreenNumOrder.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="frmWaitingScreenNumOrder.cs" />
     <Compile Include="frmWaitingScreenNumOrder.Designer.cs">
       <DependentUpon>frmWaitingScreenNumOrder.cs</DependentUpon>
     </Compile>

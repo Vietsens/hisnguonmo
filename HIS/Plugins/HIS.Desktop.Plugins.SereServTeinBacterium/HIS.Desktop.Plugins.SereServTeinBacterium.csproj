@@ -228,9 +228,7 @@
     <Compile Include="ADO\HisSereServTeinSDO.cs" />
     <Compile Include="ADO\ImageADO.cs" />
     <Compile Include="ADO\SenseADO.cs" />
-    <Compile Include="frmSereServTeinBacterium.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="frmSereServTeinBacterium.cs" />
     <Compile Include="frmSereServTeinBacterium.Designer.cs">
       <DependentUpon>frmSereServTeinBacterium.cs</DependentUpon>
     </Compile>

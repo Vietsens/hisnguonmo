@@ -124,9 +124,7 @@
   <ItemGroup>
     <Compile Include="ADO\MaterialTypeADO.cs" />
     <Compile Include="HisExpMestLaboratoryProcessor.cs" />
-    <Compile Include="HisExpMestLaboratory\FormLaboratory.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="HisExpMestLaboratory\FormLaboratory.cs" />
     <Compile Include="HisExpMestLaboratory\FormLaboratory.Designer.cs">
       <DependentUpon>FormLaboratory.cs</DependentUpon>
     </Compile>

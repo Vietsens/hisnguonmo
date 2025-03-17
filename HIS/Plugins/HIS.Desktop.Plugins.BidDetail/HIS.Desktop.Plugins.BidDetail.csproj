@@ -119,9 +119,7 @@
     <Compile Include="BidDetail\BidDetailBehavior.cs" />
     <Compile Include="BidDetail\BidDetailFactory.cs" />
     <Compile Include="BidDetail\IBidDetail.cs" />
-    <Compile Include="FormBidDetail.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="FormBidDetail.cs" />
     <Compile Include="FormBidDetail.Designer.cs">
       <DependentUpon>FormBidDetail.cs</DependentUpon>
     </Compile>

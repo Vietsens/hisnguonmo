@@ -169,8 +169,8 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
                 chkAutoCreateBill = null;
                 chkPrintPatientCard = null;
                 layoutControlItem19 = null;
-                if (ucCheckTT1 != null)
-                    ucCheckTT1.DisposeControl();
+                //if (ucCheckTT1 != null)//TODO phuongdt comment
+                //    ucCheckTT1.DisposeControl();//TODO phuongdt comment
                 ucCheckTT1 = null;
                 lcibtnDepositRequest = null;
                 btnDepositRequest = null;
@@ -189,22 +189,22 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
                 layoutControlItem23 = null;
                 ucImageInfo1 = null;
                 layoutControlItem21 = null;
-                if (ucRelativeInfo1 != null)
-                    ucRelativeInfo1.DisposeControl();
+                //if (ucRelativeInfo1 != null)//TODO phuongdt comment
+                //    ucRelativeInfo1.DisposeControl();//TODO phuongdt comment
                 ucRelativeInfo1 = null;
                 layoutControlItem20 = null;
-                if (ucOtherServiceReqInfo1 != null)
-                    ucOtherServiceReqInfo1.DisposeControl();
+                //if (ucOtherServiceReqInfo1 != null)//TODO phuongdt comment
+                //    ucOtherServiceReqInfo1.DisposeControl();//TODO phuongdt comment
                 ucOtherServiceReqInfo1 = null;
                 lciUCHeinInfo = null;
                 layoutControlItem18 = null;
-                if (ucAddressCombo1 != null)
-                    ucAddressCombo1.DisposeControl();
+                //if (ucAddressCombo1 != null)//TODO phuongdt comment
+                //    ucAddressCombo1.DisposeControl();//TODO phuongdt comment
                 ucAddressCombo1 = null;
                 ucHeinInfo1 = null;
                 pnlServiceRoomInfomation = null;
-                if (ucPatientRaw1 != null)
-                    ucPatientRaw1.DisposeControl();
+                //if (ucPatientRaw1 != null)//TODO phuongdt comment
+                //    ucPatientRaw1.DisposeControl();//TODO phuongdt comment
                 ucPatientRaw1 = null;
                 layoutControlItem16 = null;
                 layoutControlItem15 = null;

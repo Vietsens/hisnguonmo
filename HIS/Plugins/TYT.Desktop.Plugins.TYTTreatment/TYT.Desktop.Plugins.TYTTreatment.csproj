@@ -178,9 +178,7 @@
     <Compile Include="TYTTreatment\ITYTTreatment.cs" />
     <Compile Include="TYTTreatment\TYTTreatmentBehavior.cs" />
     <Compile Include="TYTTreatment\TYTTreatmentFactory.cs" />
-    <Compile Include="UCTYTTreatment.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
+    <Compile Include="UCTYTTreatment.cs" />
     <Compile Include="UCTYTTreatment.Designer.cs">
       <DependentUpon>UCTYTTreatment.cs</DependentUpon>
     </Compile>

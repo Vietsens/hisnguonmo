@@ -160,9 +160,7 @@
     <Compile Include="Base\ResourceMessageManager.cs" />
     <Compile Include="ModuleLinkString.cs" />
     <Compile Include="TransactionBillOtherProcessor.cs" />
-    <Compile Include="frmTransactionBillOther.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="frmTransactionBillOther.cs" />
     <Compile Include="frmTransactionBillOther.Designer.cs">
       <DependentUpon>frmTransactionBillOther.cs</DependentUpon>
     </Compile>

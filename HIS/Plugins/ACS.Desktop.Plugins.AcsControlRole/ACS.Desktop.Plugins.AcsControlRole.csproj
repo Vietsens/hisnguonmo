@@ -110,9 +110,7 @@
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
     <Compile Include="RamData.cs" />
-    <Compile Include="UCAcsControlRole.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
+    <Compile Include="UCAcsControlRole.cs" />
     <Compile Include="UCAcsControlRole.Designer.cs">
       <DependentUpon>UCAcsControlRole.cs</DependentUpon>
     </Compile>

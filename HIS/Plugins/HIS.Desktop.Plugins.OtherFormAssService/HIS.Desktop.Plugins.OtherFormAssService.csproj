@@ -168,9 +168,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="frmOtherFormAssService.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="frmOtherFormAssService.cs" />
     <Compile Include="frmOtherFormAssService.Designer.cs">
       <DependentUpon>frmOtherFormAssService.cs</DependentUpon>
     </Compile>

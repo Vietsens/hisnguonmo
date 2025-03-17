@@ -223,22 +223,12 @@
     </Compile>
     <Compile Include="Resources\ResourceLanguageManager.cs" />
     <Compile Include="Resources\ResourceMessage.cs" />
-    <Compile Include="Run\UCExpMestAggregate__Dispose.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Run\UCExpMestAggregate__Pluss__Load.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
+    <Compile Include="Run\UCExpMestAggregate__Dispose.cs" />
+    <Compile Include="Run\UCExpMestAggregate__Pluss__Load.cs" />
     <Compile Include="Run\ExpMestAggregateListPopupMenuProcessor.cs" />
-    <Compile Include="Run\UCExpMestAggregate__Pluss__Print.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Run\UCExpMestAggregate__Pluss__Process.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Run\UCExpMestAggregate.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
+    <Compile Include="Run\UCExpMestAggregate__Pluss__Print.cs" />
+    <Compile Include="Run\UCExpMestAggregate__Pluss__Process.cs" />
+    <Compile Include="Run\UCExpMestAggregate.cs" />
     <Compile Include="Run\UCExpMestAggregate.Designer.cs">
       <DependentUpon>UCExpMestAggregate.cs</DependentUpon>
     </Compile>
