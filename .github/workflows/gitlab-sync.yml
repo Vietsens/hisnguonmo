@@ -1,0 +1,35 @@
+name: Sync GitLab to GitHub (Every Sunday)
+
+on:
+  schedule:
+    - cron: '0 0 * * 0'  # Chạy vào 00:00 Chủ Nhật hàng tuần (UTC)
+
+  workflow_dispatch:  # Cho phép chạy thủ công
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout GitHub repository
+        uses: actions/checkout@v4
+
+      - name: Mirror GitLab repository (Commits from 3 months ago)
+        env:
+          GITLAB_URL: "https://gitlab.vietsens.vn/ivt-dev/frontend/hisnguonmo.git"
+          GITLAB_ACCESS_TOKEN: ${{ secrets.GITLAB_ACCESS_TOKEN }}
+        run: |
+          set -e  # Nếu lỗi xảy ra, dừng workflow
+          git clone --mirror $GITLAB_URL repo.git
+          cd repo.git
+          
+          THREE_MONTHS_AGO=$(date -d "3 months ago" --iso-8601)
+          COMMITS=$(git log --since="$THREE_MONTHS_AGO" --pretty=format:"%H")
+        
+          for commit in $COMMITS; do
+            git cherry-pick $commit || echo "Bỏ qua commit lỗi: $commit"
+          done
+
+          # Đẩy lên GitHub
+          git remote set-url --push origin https://gitlab.vietsens.vn/ivt-dev/frontend/hisnguonmo.git
+          git push --force
