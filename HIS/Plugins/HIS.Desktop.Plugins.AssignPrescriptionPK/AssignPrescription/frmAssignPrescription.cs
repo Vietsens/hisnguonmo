@@ -12336,30 +12336,19 @@ o.SERVICE_ID == medi.SERVICE_ID && o.TDL_INTRUCTION_TIME.ToString().Substring(0,
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
-        System.Windows.Forms.Timer pressKey;
-        private void memHtu_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
+        private void memHtu_KeyDown(object sender, KeyEventArgs e)
         {
             try
             {
                 if (e.KeyCode == Keys.Enter)
                 {
-                    pressKey = new System.Windows.Forms.Timer();
-                    pressKey.Interval = 100;
-                    pressKey.Tick += PressKey_Tick;
-                    pressKey.Start();
+                    btnAdd.Select();
                 }
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
-        }
-
-        private void PressKey_Tick(object sender, EventArgs e)
-        {
-            Inventec.Common.Logging.LogSystem.Warn("PressKey_Tick");
-            pressKey.Stop();
-            btnAdd.Select();
         }
 
         private void popupContainerHtu_Leave(object sender, EventArgs e)
