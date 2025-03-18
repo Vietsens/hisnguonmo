@@ -166,18 +166,10 @@
     <Compile Include="BidUpdateProcessor.cs" />
     <Compile Include="Config\HisConfigCFG.cs" />
     <Compile Include="DelegateEdit.cs" />
-    <Compile Include="frmBidUpdate_Task.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="frmBidUpdate_Import.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="frmBidUpdate_Validation.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="frmBidUpdate.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="frmBidUpdate_Task.cs" />
+    <Compile Include="frmBidUpdate_Import.cs" />
+    <Compile Include="frmBidUpdate_Validation.cs" />
+    <Compile Include="frmBidUpdate.cs" />
     <Compile Include="frmBidUpdate.Designer.cs">
       <DependentUpon>frmBidUpdate.cs</DependentUpon>
     </Compile>

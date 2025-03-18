@@ -150,9 +150,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ADO\MachineImportADO.cs" />
-    <Compile Include="FormLoad\frmMachine.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="FormLoad\frmMachine.cs" />
     <Compile Include="FormLoad\frmMachine.Designer.cs">
       <DependentUpon>frmMachine.cs</DependentUpon>
     </Compile>

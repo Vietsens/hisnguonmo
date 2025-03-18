@@ -46,8 +46,9 @@ namespace MPS.Processor.Mps000453
                 Inventec.Common.FlexCellExport.ProcessBarCodeTag barCodeTag = new Inventec.Common.FlexCellExport.ProcessBarCodeTag();
                 store.ReadTemplate(System.IO.Path.GetFullPath(fileName));
                 //objectTag.AddObjectData(store, "ServiceReq", new List<V_HIS_SERVICE_REQ>() { rdo.HisServiceReq });
-                //objectTag.AddObjectData(store, "KskUnderEighteen", new List<HIS_KSK_UNDER_EIGHTEEN>() { rdo.HisKskUnderEighteen });
-                //objectTag.AddObjectData(store, "Dhst", new List<HIS_DHST>() { rdo.HisDhst });
+                objectTag.AddObjectData(store, "KskUnderEighteen", new List<HIS_KSK_UNDER_EIGHTEEN>() { rdo.HisKskUnderEighteen });
+                objectTag.AddObjectData(store, "Dhst", new List<HIS_DHST>() { rdo.HisDhst });
+                objectTag.AddRelationship(store, "KskUnderEighteen", "Dhst", "DHST_ID", "ID");
                 SetSingleKey();
                 SetSignatureKeyImageByCFG();
 
@@ -60,6 +61,7 @@ namespace MPS.Processor.Mps000453
                 objectTag.AddObjectData(store, "KskUneiVaty", rdo.lstUneiVaty);
                 objectTag.AddRelationship(store, "KskUneiVaty", "VaccineType", "VACCINE_TYPE_ID", "ID");
                 objectTag.AddObjectData(store, "ExamRank", rdo.examRank);
+
                 singleTag.ProcessData(store, singleValueDictionary);
                 barCodeTag.ProcessData(store, dicImage);
                 result = true;
@@ -87,6 +89,10 @@ namespace MPS.Processor.Mps000453
                 } if (rdo.HisDhst != null)
                 {
                     AddObjectKeyIntoListkey<HIS_DHST>(rdo.HisDhst, false);
+                }
+                if (rdo.HisDhst != null)
+                {
+                    SetSingleKey((new KeyValue(Mps000453ExtendSingleKey.DHST_LOGINNAME, rdo.HisDhst.EXECUTE_LOGINNAME)));
                 }
             }
             catch (Exception ex)

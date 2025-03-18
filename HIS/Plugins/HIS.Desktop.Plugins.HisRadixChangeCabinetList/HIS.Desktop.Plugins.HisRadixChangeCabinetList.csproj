@@ -187,15 +187,11 @@
     </Compile>
     <Compile Include="Resources\ResourceLanguageManager.cs" />
     <Compile Include="Resources\ResourceMessage.cs" />
-    <Compile Include="UCHisRadixChangeCabinet.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
+    <Compile Include="UCHisRadixChangeCabinet.cs" />
     <Compile Include="UCHisRadixChangeCabinet.Designer.cs">
       <DependentUpon>UCHisRadixChangeCabinet.cs</DependentUpon>
     </Compile>
-    <Compile Include="UCHisRadixChangeCabinet_Event.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
+    <Compile Include="UCHisRadixChangeCabinet_Event.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Properties\licenses.licx" />

@@ -181,9 +181,7 @@
     <Compile Include="ADO\MediStockPeriodADO.cs" />
     <Compile Include="ADO\MestPeriodMediMateADO.cs" />
     <Compile Include="Base\ResourceLangManager.cs" />
-    <Compile Include="CreatePeriod\frmCreatePeriodNew.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="CreatePeriod\frmCreatePeriodNew.cs" />
     <Compile Include="CreatePeriod\frmCreatePeriodNew.Designer.cs">
       <DependentUpon>frmCreatePeriodNew.cs</DependentUpon>
     </Compile>
@@ -216,9 +214,7 @@
     <Compile Include="UCMediStockPeriod__Plus__Print.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="CreatePeriod\frmCreatePeriod.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="CreatePeriod\frmCreatePeriod.cs" />
     <Compile Include="CreatePeriod\frmCreatePeriod.Designer.cs">
       <DependentUpon>frmCreatePeriod.cs</DependentUpon>
     </Compile>

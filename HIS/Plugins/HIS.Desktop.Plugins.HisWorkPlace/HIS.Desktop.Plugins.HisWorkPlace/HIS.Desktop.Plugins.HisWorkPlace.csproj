@@ -155,9 +155,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="HisWorkPlaceProcessor.cs" />
-    <Compile Include="HisWorkPlace\frmHisWorkPlace.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="HisWorkPlace\frmHisWorkPlace.cs" />
     <Compile Include="HisWorkPlace\frmHisWorkPlace.Designer.cs">
       <DependentUpon>frmHisWorkPlace.cs</DependentUpon>
     </Compile>

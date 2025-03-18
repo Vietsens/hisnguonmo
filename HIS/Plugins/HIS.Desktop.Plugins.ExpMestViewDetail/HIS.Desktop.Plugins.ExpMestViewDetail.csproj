@@ -408,15 +408,9 @@
     <Compile Include="AppConfigKeys.cs" />
     <Compile Include="Config\HisConfigCFG.cs" />
     <Compile Include="ControlCode.cs" />
-    <Compile Include="ExpMestViewDetail\frmExpMestViewDetailPlus_Print.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="ExpMestViewDetail\frmExpMestViewDetailPlus__Load.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="ExpMestViewDetail\frmExpMestViewDetail.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="ExpMestViewDetail\frmExpMestViewDetailPlus_Print.cs" />
+    <Compile Include="ExpMestViewDetail\frmExpMestViewDetailPlus__Load.cs" />
+    <Compile Include="ExpMestViewDetail\frmExpMestViewDetail.cs" />
     <Compile Include="ExpMestViewDetail\frmExpMestViewDetail.Designer.cs">
       <DependentUpon>frmExpMestViewDetail.cs</DependentUpon>
     </Compile>
@@ -424,12 +418,8 @@
     <Compile Include="ExpMestViewDetailProcessor.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="ExpMestViewDetail\frmExpMestViewDetailPlus_Validation.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="ExpMestViewDetail\frmExpMestViewDetail__InitResource.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="ExpMestViewDetail\frmExpMestViewDetailPlus_Validation.cs" />
+    <Compile Include="ExpMestViewDetail\frmExpMestViewDetail__InitResource.cs" />
     <Compile Include="ExpMestViewDetail\IExpMestViewDetail.cs" />
     <Compile Include="ExpMestViewDetail\ExpMestViewDetailBehavior.cs" />
     <Compile Include="ExpMestViewDetail\ExpMestViewDetailFactory.cs" />

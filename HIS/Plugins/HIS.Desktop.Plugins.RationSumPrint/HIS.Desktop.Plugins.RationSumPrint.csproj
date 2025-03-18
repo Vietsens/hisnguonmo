@@ -134,9 +134,7 @@
     <Compile Include="RationSumPrint\RationSumPrintBehavior.cs" />
     <Compile Include="RationSumPrint\RationSumPrintFactory.cs" />
     <Compile Include="RationSumPrint\IRationSumPrint.cs" />
-    <Compile Include="frmRationSumPrint.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="frmRationSumPrint.cs" />
     <Compile Include="frmRationSumPrint.Designer.cs">
       <DependentUpon>frmRationSumPrint.cs</DependentUpon>
     </Compile>

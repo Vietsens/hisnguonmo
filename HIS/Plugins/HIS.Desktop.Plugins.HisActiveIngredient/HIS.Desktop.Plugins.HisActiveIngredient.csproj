@@ -154,9 +154,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="HisActiveIngredientProcessor.cs" />
-    <Compile Include="HisActiveIngredient\frmHisActiveIngredient.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="HisActiveIngredient\frmHisActiveIngredient.cs" />
     <Compile Include="HisActiveIngredient\frmHisActiveIngredient.Designer.cs">
       <DependentUpon>frmHisActiveIngredient.cs</DependentUpon>
     </Compile>

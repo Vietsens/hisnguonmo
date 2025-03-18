@@ -179,9 +179,7 @@
     <Compile Include="Base\GlobalStore.cs" />
     <Compile Include="Base\HisTransactionCFG.cs" />
     <Compile Include="Base\Mrs00249Filter.cs" />
-    <Compile Include="FormReportTime.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="FormReportTime.cs" />
     <Compile Include="FormReportTime.Designer.cs">
       <DependentUpon>FormReportTime.cs</DependentUpon>
     </Compile>
@@ -195,18 +193,12 @@
     </Compile>
     <Compile Include="Base\ResourceLanguageManager.cs" />
     <Compile Include="ResourceMessage.cs" />
-    <Compile Include="UCHisAccountBookList.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
+    <Compile Include="UCHisAccountBookList.cs" />
     <Compile Include="UCHisAccountBookList.Designer.cs">
       <DependentUpon>UCHisAccountBookList.cs</DependentUpon>
     </Compile>
-    <Compile Include="UCHisAccountBookList_Event.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="UCHisAccountBookList_Validation.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
+    <Compile Include="UCHisAccountBookList_Event.cs" />
+    <Compile Include="UCHisAccountBookList_Validation.cs" />
     <Compile Include="Validation\checkValidationRule.cs" />
     <Compile Include="Validation\CodeValidationRule.cs" />
     <Compile Include="Validation\CountValidationRule.cs" />

@@ -153,7 +153,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                 {
                     isThan16YearOld = true;
                 }
-                if(IsThan16YearOldByTreatment())
+                if (IsThan16YearOldByTreatment())
                 {
                     lessthan16YearOld = true;
                 }
@@ -230,7 +230,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             return valid;
         }
 
-        private void ValidateControlSpinEditWeight(DevExpress.XtraEditors.SpinEdit control, bool Option,bool IsRequired)
+        private void ValidateControlSpinEditWeight(DevExpress.XtraEditors.SpinEdit control, bool Option, bool IsRequired)
         {
             try
             {
@@ -350,6 +350,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             {
                 if (dhst != null)
                 {
+                    isLoadedMLCT = true;
                     if (dhst.EXECUTE_TIME != null)
                         dtExecuteTime.DateTime = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(dhst.EXECUTE_TIME ?? 0) ?? DateTime.Now;
                     else
@@ -369,7 +370,9 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                         spinSPO2.EditValue = null;
                     txtNote.Text = dhst.NOTE;
 
-                    LoadMLCT();
+                    //LoadMLCT();
+
+                    isLoadedMLCT = false;
                 }
             }
             catch (Exception ex)
@@ -383,10 +386,12 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             {
                 if (dhst != null)
                 {
+                    isLoadedMLCT = true;
                     spinHeight.EditValue = dhst.HEIGHT;
                     spinWeight.EditValue = dhst.WEIGHT;
-                   
-                    LoadMLCT();
+
+                    //LoadMLCT();
+                    isLoadedMLCT = false;
                 }
             }
             catch (Exception ex)
@@ -451,8 +456,8 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             {
 
                 UcDHSTValidateControl();//TODO
-                //this.dhstProcessor.SetValidate(this.ucDHST, true);
-
+                                        //this.dhstProcessor.SetValidate(this.ucDHST, true);
+                isLoadedMLCT = true;
 
                 dtExecuteTime.DateTime = DateTime.Now;
                 spinBloodPressureMin.EditValue = null;
@@ -466,6 +471,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                 spinWeight.EditValue = null;
                 spinSPO2.EditValue = null;
                 txtNote.Text = "";
+                isLoadedMLCT = false;
             }
             catch (Exception ex)
             {

@@ -166,9 +166,7 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="Resource\ResourceLanguageManager.cs" />
-    <Compile Include="HisHeinServiceTypeForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="HisHeinServiceTypeForm.cs" />
     <Compile Include="HisHeinServiceTypeForm.Designer.cs">
       <DependentUpon>HisHeinServiceTypeForm.cs</DependentUpon>
     </Compile>

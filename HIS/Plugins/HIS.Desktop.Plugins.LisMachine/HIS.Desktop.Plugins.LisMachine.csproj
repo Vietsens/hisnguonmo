@@ -156,9 +156,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="LisMachineProcessor.cs" />
-    <Compile Include="LisMachine\frmLisMachine.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="LisMachine\frmLisMachine.cs" />
     <Compile Include="LisMachine\frmLisMachine.Designer.cs">
       <DependentUpon>frmLisMachine.cs</DependentUpon>
     </Compile>

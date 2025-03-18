@@ -141,9 +141,7 @@
     <Compile Include="frmChangeMedicine.Designer.cs">
       <DependentUpon>frmChangeMedicine.cs</DependentUpon>
     </Compile>
-    <Compile Include="frmVaccination.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="frmVaccination.cs" />
     <Compile Include="frmVaccination.Designer.cs">
       <DependentUpon>frmVaccination.cs</DependentUpon>
     </Compile>

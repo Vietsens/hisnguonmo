@@ -155,9 +155,7 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="Resources\ResourceMessage.cs" />
-    <Compile Include="UCExportXml2076.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
+    <Compile Include="UCExportXml2076.cs" />
     <Compile Include="UCExportXml2076.Designer.cs">
       <DependentUpon>UCExportXml2076.cs</DependentUpon>
     </Compile>

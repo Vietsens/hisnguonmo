@@ -15,6 +15,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+using HIS.Desktop.LocalStorage.BackendData;
 using Inventec.Core;
 using MOS.EFMODEL.DataModels;
 using MPS.Processor.Mps000315.ADO;
@@ -120,6 +121,9 @@ namespace MPS.Processor.Mps000315
 
                 objectTag.AddRelationship(store, "KskDriver", "ServiceReq", "SERVICE_REQ_ID", "ID");
                 objectTag.AddRelationship(store, "KskDriver", "Treatment", "TDL_TREATMENT_ID", "ID");
+
+                objectTag.AddRelationship(store, "KskGeneral", "Dhst", "DHST_ID", "ID");
+
 
                 if (rdo._KSK_HealthExamRank == null)
                 {
@@ -236,6 +240,11 @@ namespace MPS.Processor.Mps000315
                     }
                 }
                 // AddObjectKeyIntoListkey<V_HIS_TREATMENT>(rdo._KSK_Treatments);
+                
+                if (rdo._KSK_Dhsts != null)
+                {
+                    SetSingleKey((new KeyValue(Mps000315ExtendSingleKey.DHST_LOGINNAME, rdo._KSK_Dhsts.FirstOrDefault().EXECUTE_LOGINNAME)));
+                }
             }
             catch (Exception ex)
             {

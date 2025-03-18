@@ -136,9 +136,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ADO\ServiceADO.cs" />
-    <Compile Include="frmMain.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="frmMain.cs" />
     <Compile Include="frmMain.Designer.cs">
       <DependentUpon>frmMain.cs</DependentUpon>
     </Compile>

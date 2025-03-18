@@ -127,9 +127,7 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="TestHistoryProcesor.cs" />
-    <Compile Include="frmTestHistory.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="frmTestHistory.cs" />
     <Compile Include="frmTestHistory.Designer.cs">
       <DependentUpon>frmTestHistory.cs</DependentUpon>
     </Compile>

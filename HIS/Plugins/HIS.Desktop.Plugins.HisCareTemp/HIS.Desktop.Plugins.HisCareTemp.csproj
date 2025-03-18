@@ -122,9 +122,7 @@
     <Compile Include="CareTemp\CareTempBehavior.cs" />
     <Compile Include="CareTemp\CareTempFactory.cs" />
     <Compile Include="CareTemp\ICareTemp.cs" />
-    <Compile Include="FormCareTemp.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="FormCareTemp.cs" />
     <Compile Include="FormCareTemp.Designer.cs">
       <DependentUpon>FormCareTemp.cs</DependentUpon>
     </Compile>

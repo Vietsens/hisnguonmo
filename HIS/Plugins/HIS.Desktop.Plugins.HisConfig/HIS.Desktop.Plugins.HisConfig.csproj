@@ -164,9 +164,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="HisConfigProcessor.cs" />
-    <Compile Include="HisConfig\frmHisConfig.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="HisConfig\frmHisConfig.cs" />
     <Compile Include="HisConfig\frmHisConfig.Designer.cs">
       <DependentUpon>frmHisConfig.cs</DependentUpon>
     </Compile>

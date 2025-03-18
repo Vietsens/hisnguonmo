@@ -153,9 +153,7 @@
     <Compile Include="Base\AttackADOTemp.cs" />
     <Compile Include="Base\HisTreatmentFileADO.cs" />
     <Compile Include="Base\ImageADO.cs" />
-    <Compile Include="frmTreatmentFile.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="frmTreatmentFile.cs" />
     <Compile Include="frmTreatmentFile.Designer.cs">
       <DependentUpon>frmTreatmentFile.cs</DependentUpon>
     </Compile>

@@ -202,9 +202,7 @@
     <Compile Include="EmrRequestUriStore.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="frmAcsUser.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="frmAcsUser.cs" />
     <Compile Include="frmAcsUser.Designer.cs">
       <DependentUpon>frmAcsUser.cs</DependentUpon>
     </Compile>
@@ -215,9 +213,7 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="Resource\ResourceLanguageManager.cs" />
-    <Compile Include="EmrDocumentTypeForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="EmrDocumentTypeForm.cs" />
     <Compile Include="EmrDocumentTypeForm.Designer.cs">
       <DependentUpon>EmrDocumentTypeForm.cs</DependentUpon>
     </Compile>

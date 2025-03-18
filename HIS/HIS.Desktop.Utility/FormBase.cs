@@ -135,14 +135,27 @@ namespace HIS.Desktop.Utility
             {
                 if (this.currentModuleBase != null)
                 {
-                    frmRemoteSupportCreate frmRemoteSupportCreate = new frmRemoteSupportCreate(currentModuleBase);
-                    frmRemoteSupportCreate.ShowDialog();
+                    OpenPopupRemoteDesktopSoftware(currentModuleBase);
                 }
                 else
                 {
-                    frmRemoteSupportCreate frmRemoteSupportCreate = new frmRemoteSupportCreate(GlobalVariables.CurrentModuleSelected);
-                    frmRemoteSupportCreate.ShowDialog();
+                    OpenPopupRemoteDesktopSoftware(GlobalVariables.CurrentModuleSelected);
                 }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void OpenPopupRemoteDesktopSoftware(Inventec.Desktop.Common.Modules.Module moduleBase)
+        {
+            try
+            {
+                frmRemoteSupportCreate frmRemoteSupportCreate = new frmRemoteSupportCreate(moduleBase);
+                frmRemoteSupportCreate.ShowDialog();
+                //frmChatbox frmChatbox = new frmChatbox(moduleBase);
+                //frmChatbox.ShowDialog();
             }
             catch (Exception ex)
             {

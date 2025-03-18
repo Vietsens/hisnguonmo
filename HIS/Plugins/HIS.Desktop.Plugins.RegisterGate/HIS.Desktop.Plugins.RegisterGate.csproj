@@ -128,9 +128,7 @@
     <Compile Include="RegisterGateForm\IRegisterGate.cs" />
     <Compile Include="RegisterGateForm\RegisterGateBehavior.cs" />
     <Compile Include="RegisterGateForm\RegisterGateFactory.cs" />
-    <Compile Include="RegisterGateForm\RegisterGateForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="RegisterGateForm\RegisterGateForm.cs" />
     <Compile Include="RegisterGateForm\RegisterGateForm.Designer.cs">
       <DependentUpon>RegisterGateForm.cs</DependentUpon>
     </Compile>

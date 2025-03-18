@@ -180,30 +180,16 @@
     <Compile Include="Run\IRun.cs" />
     <Compile Include="Run\RunBehavior.cs" />
     <Compile Include="Run\RunFactory.cs" />
-    <Compile Include="SickLeave\frmSickLeave__Validate.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="SickLeave\frmSickLeave__Proccess.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="SickLeave\frmSickLeave__Check.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="SickLeave\frmSickLeave__SetValue.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="SickLeave\frmSickLeave__Load.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="SickLeave\frmSickLeave.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="SickLeave\frmSickLeave__Validate.cs" />
+    <Compile Include="SickLeave\frmSickLeave__Proccess.cs" />
+    <Compile Include="SickLeave\frmSickLeave__Check.cs" />
+    <Compile Include="SickLeave\frmSickLeave__SetValue.cs" />
+    <Compile Include="SickLeave\frmSickLeave__Load.cs" />
+    <Compile Include="SickLeave\frmSickLeave.cs" />
     <Compile Include="SickLeave\frmSickLeave.Designer.cs">
       <DependentUpon>frmSickLeave.cs</DependentUpon>
     </Compile>
-    <Compile Include="Surgery\frmSurgery.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="Surgery\frmSurgery.cs" />
     <Compile Include="Surgery\frmSurgery.Designer.cs">
       <DependentUpon>frmSurgery.cs</DependentUpon>
     </Compile>

@@ -117,21 +117,13 @@
     <Compile Include="AggrApprove\AggrApproveBehaviorFactory.cs" />
     <Compile Include="AggrApprove\IAggrApprove.cs" />
     <Compile Include="AggrApproveProcessor.cs" />
-    <Compile Include="frmAggrApprove__Print.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="frmAggrApprove_Control.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="frmAggrApprove.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="frmAggrApprove__Print.cs" />
+    <Compile Include="frmAggrApprove_Control.cs" />
+    <Compile Include="frmAggrApprove.cs" />
     <Compile Include="frmAggrApprove.Designer.cs">
       <DependentUpon>frmAggrApprove.cs</DependentUpon>
     </Compile>
-    <Compile Include="frmAggrApprove__Load.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="frmAggrApprove__Load.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
