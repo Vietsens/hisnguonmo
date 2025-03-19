@@ -497,7 +497,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.BKAV
                     product.Qty = (double)(item.ProdQuantity ?? 0);
                     product.ItemName = item.ProdName ?? "";
                     product.UnitName = item.ProdUnit ?? "";
-                    product.TaxRateID = item.TaxRateID;
+                    product.TaxRateID = item.TaxRateID > 0 ? item.TaxRateID : Base.ProviderType.tax_KCT;
                     product.Amount = (double)item.Amount;
                     product.Price = (double)(item.ProdPrice ?? 0);
 
