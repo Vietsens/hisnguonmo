@@ -326,6 +326,10 @@ namespace HIS.UC.FormType.HisMultiGetString
                 {
                     datasuft = Config.HisFormTypeConfig.HisConfig.Select(o => new DataGet { ID = o.ID, CODE = o.KEY.Replace("HIS.Desktop.Plugins.PaymentQrCode.", "").Replace("Info", ""), NAME = "Ngân hàng " + o.KEY.Replace("HIS.Desktop.Plugins.PaymentQrCode.","").Replace("Info","") }).ToList();
                 }
+                else if (value == "HIS_MEDICINE_LINE")
+                {
+                    datasuft = Config.HisFormTypeConfig.HisMedicineLine.Select(o => new DataGet { ID = o.ID, CODE = o.MEDICINE_LINE_CODE, NAME = o.MEDICINE_LINE_NAME }).ToList();
+                }
                 datasuft = datasuft.OrderBy(o => o.NAME).ToList();
             }
             catch (Exception ex)
