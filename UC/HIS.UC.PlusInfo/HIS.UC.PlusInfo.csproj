@@ -32,6 +32,8 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Accessibility" />
+    <Reference Include="ACS.EFMODEL, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+    <Reference Include="ACS.SDO, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
     <Reference Include="AutoMapper">
       <HintPath>..\..\..\..\..\..\RELEASE\MOS\AutoMapper.dll</HintPath>
     </Reference>
@@ -203,6 +205,12 @@
     <Compile Include="ClassGlobal\ResourceMessage.cs" />
     <Compile Include="Config\UCPlusInfoConfig.cs" />
     <Compile Include="ClassGlobal\GlobalStore.cs" />
+    <Compile Include="Design\UCCheckBoxCCCD.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Design\UCCheckBoxCCCD.Designer.cs">
+      <DependentUpon>UCCheckBoxCCCD.cs</DependentUpon>
+    </Compile>
     <Compile Include="Design\UCExamHistory.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -477,6 +485,9 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Design\UCCheckBoxCCCD.resx">
+      <DependentUpon>UCCheckBoxCCCD.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Design\UCExamHistory.resx">
       <DependentUpon>UCExamHistory.cs</DependentUpon>
     </EmbeddedResource>
@@ -576,6 +587,7 @@
     <EmbeddedResource Include="Popup\frmTreatmentDetail.resx">
       <DependentUpon>frmTreatmentDetail.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Properties\licenses.licx" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>

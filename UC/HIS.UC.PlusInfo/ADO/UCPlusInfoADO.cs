@@ -79,7 +79,7 @@ namespace HIS.UC.PlusInfo.ADO
 
         public string TAX_CODE { get; set; }
         public string MPS_NATIONAL_CODE { get; set; }
-        
+        public bool IsCheckBoxCCCD { get; set; }
         public WorkPlaceADO workPlaceADO { get; set; }
     }
 }
