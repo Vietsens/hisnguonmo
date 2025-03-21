@@ -59,5 +59,6 @@ namespace HIS.Desktop.Plugins.Register.ADO
         public string NATIONAL_NAME { get; set; }
         public bool IsPatientOld { get; set; }
         public bool IsEdited { get; set; }
+        public bool IsNoCCCD { get;set; }
     }
 }

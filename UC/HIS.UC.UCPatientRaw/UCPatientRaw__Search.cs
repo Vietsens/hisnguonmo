@@ -50,7 +50,7 @@ namespace HIS.UC.UCPatientRaw
 		DataResultADO dataResult = new DataResultADO();
 		string hrmEmployeeCode = "";
 		string oldValue = "";
-		async void SearchPatientByCodeOrQrCode(string strValue)
+		public async void SearchPatientByCodeOrQrCode(string strValue)
         {
             string OldTypeFind = this.typeCodeFind;
             try
@@ -365,7 +365,7 @@ namespace HIS.UC.UCPatientRaw
 					#region ---- CMND/CCCD
 					else if (this.typeCodeFind == ResourceMessage.typeCodeFind__MaCMCC)
 					{
-						if (!((strValue.Trim().Length > 12 && strValue.Trim().Contains("|")) || (strValue.Trim().Length == 12 && !string.IsNullOrEmpty(txtPatientName.Text) && (!string.IsNullOrEmpty(txtPatientDob.Text) || dtPatientDob.EditValue != null))))
+						if (!((strValue.Trim().Length > 12 && strValue.Trim().Contains("|")) || (strValue.Trim().Length == 12 && !string.IsNullOrEmpty(txtPatientName.Text) && (!string.IsNullOrEmpty(txtPatientDob.Text) || dtPatientDob.EditValue != null))) || ((strValue.Trim().Length == 12 || strValue.Trim().Length == 9) && !strValue.Trim().Contains("|")))
 						{
 								param = new CommonParam();
 								HisPatientAdvanceFilter filter = new HisPatientAdvanceFilter();
