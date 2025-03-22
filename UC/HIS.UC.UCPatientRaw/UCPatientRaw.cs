@@ -93,7 +93,7 @@ namespace HIS.UC.UCPatientRaw
 		HisPatientSDO currentPatientSDO { get; set; }
 		List<HisPatientSDO> currentSearchedPatients;
 		HIS_PATIENT_TYPE currentPatientType;
-		internal string typeCodeFind = ResourceMessage.typeCodeFind__MaBN;
+		public string typeCodeFind = ResourceMessage.typeCodeFind__MaBN;
         internal long? typeReceptionForm = null;
 
 		internal bool isDobTextEditKeyEnter;

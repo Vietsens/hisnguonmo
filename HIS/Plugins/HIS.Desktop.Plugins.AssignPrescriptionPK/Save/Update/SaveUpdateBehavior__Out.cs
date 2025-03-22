@@ -112,6 +112,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.Save.Update
                 prescriptionSDO.TreatmentId = this.TreatmentId;
                 prescriptionSDO.ClientSessionKey = GlobalStore.ClientSessionKey;
                 prescriptionSDO.PrescriptionPhaseNum = (short?)this.PrescriptionPhaseNum;
+                prescriptionSDO.HisGfrAlertLogs = AlertLogSDOs;
                 if (this.ParentServiceReqId > 0)
                     prescriptionSDO.ParentServiceReqId = this.ParentServiceReqId;
 

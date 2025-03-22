@@ -19,7 +19,9 @@ using DevExpress.XtraEditors;
 using DevExpress.XtraEditors.DXErrorProvider;
 using DevExpress.XtraEditors.ViewInfo;
 using DevExpress.XtraGrid.Columns;
+using DevExpress.XtraLayout;
 using HIS.Desktop.LocalStorage.BackendData;
+using HIS.Desktop.Plugins.Register.ValidationRule;
 using Inventec.Common.Controls.EditorLoader;
 using Inventec.Common.Controls.PopupLoader;
 using Inventec.Desktop.Common.Controls.ValidationRule;
@@ -42,13 +44,34 @@ namespace HIS.Desktop.Plugins.Register.PatientExtend
             try
             {
                 ValidationSingleControl(txtCmndNumber, dxValidationProviderControl, "Dữ liệu không đúng định dạng, CMND/CCCD phải 9 hoặc 12 ký tự", ValidCmnd);
+                if (!patientInformation.IsNoCCCD && (HIS.Desktop.Plugins.Library.RegisterConfig.HisConfigCFG.CHECK_DUPLICATION == "1" || HIS.Desktop.Plugins.Library.RegisterConfig.HisConfigCFG.CHECK_DUPLICATION == "2"))
+                {
+                    layoutControlItem25.AppearanceItemCaption.ForeColor = Color.Maroon;
+                    ValidateMaxlengthTextEdit(this.txtCmndNumber, 12, true);
+                }
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
-
+        private void ValidateMaxlengthTextEdit(DevExpress.XtraEditors.TextEdit txtEdit, int maxlength, bool isVali = false)
+        {
+            try
+            {
+                TextEditMaxLengthValidationRule _rule = new TextEditMaxLengthValidationRule();
+                _rule.txtEdit = txtEdit;
+                _rule.maxlength = maxlength;
+                _rule.isVali = isVali;
+                _rule.ErrorText = Inventec.Desktop.Common.LibraryMessage.MessageUtil.GetMessage(Inventec.Desktop.Common.LibraryMessage.Message.Enum.TruongDuLieuBatBuoc);
+                _rule.ErrorType = ErrorType.Warning;
+                this.dxValidationProviderControl.SetValidationRule(txtEdit, _rule);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
         bool ValidCmnd()
         {
             try

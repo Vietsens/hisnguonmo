@@ -147,6 +147,8 @@ namespace HIS.UC.FormType.HisMultiGetString
                         FilterTypeCode = "HIS_MATERIAL";
                     else if (_jsonOutput.Contains("BLOOD_TYPE_ID"))
                         FilterTypeCode = "HIS_BLOOD_TYPE";
+                    else if (_jsonOutput.Contains("MEDICINE_LINE_ID"))
+                        FilterTypeCode = "HIS_MEDICINE_LINE";
                     else if (_jsonOutput.Contains("CASHIER_LOGINNAME"))
                         FilterTypeCode = "HIS_CASHIER_LOGINNAME";
                     //else if (JSONOUTPUT.Contains("BED_ROOM_ID"))

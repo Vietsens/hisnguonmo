@@ -8303,7 +8303,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
             this.memHtu.Size = new System.Drawing.Size(642, 20);
             this.memHtu.StyleController = this.layoutControl1;
             this.memHtu.TabIndex = 32;
-            this.memHtu.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.memHtu_PreviewKeyDown);
+            this.memHtu.KeyDown += new System.Windows.Forms.KeyEventHandler(this.memHtu_KeyDown);
             // 
             // frmAssignPrescription
             // 

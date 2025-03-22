@@ -45,6 +45,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.Save.Create
                 prescriptionSDO.TreatmentId = this.TreatmentId;
                 prescriptionSDO.IsTemporaryPres = (short?)this.IsTemporaryPres;
                 prescriptionSDO.PrescriptionPhaseNum = (short?)this.PrescriptionPhaseNum;
+                prescriptionSDO.HisGfrAlertLogs = AlertLogSDOs;
                 this.ProcessPrescriptionUpdateSDO(prescriptionSDO);
                 this.ProcessPrescriptionUpdateSDOICD(prescriptionSDO);
                 this.ProcessPrescriptionSDOForSereServInKip(prescriptionSDO);

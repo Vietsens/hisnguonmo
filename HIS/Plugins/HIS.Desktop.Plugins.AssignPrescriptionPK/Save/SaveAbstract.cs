@@ -148,6 +148,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.Save
         protected long? ProgramId { get; set; }
         protected short? IsTemporaryPres { get; set; }
         protected long? PrescriptionPhaseNum { get; set; }
+        protected List<HisGfrAlertLogSDO> AlertLogSDOs { get; set; }
         protected CommonParam Param { get; set; }
 
         protected SaveAbstract(CommonParam param,
@@ -316,6 +317,8 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.Save
             {
                 this.ExpMestReasonId = (long?)frmAssignPrescription.cboExpMestReason.EditValue;
             }
+            AutoMapper.Mapper.CreateMap<AlertLogADO, HisGfrAlertLogSDO>();
+            AlertLogSDOs = AutoMapper.Mapper.Map<List<HisGfrAlertLogSDO>>(frmAssignPrescription.AlertLogsSdo);
         }
 
         protected void InitBase()

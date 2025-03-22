@@ -101,7 +101,7 @@ namespace HIS.UC.PlusInfo
         internal Design.UCHrmKskCode ucHrmKskCode;
         internal Design.UCTaxCode ucTaxCode;
         internal Design.UCExamHistory ucExamHistory;
-
+        internal Design.UCCheckBoxCCCD ucCheckBoxCCCD;
         #endregion
 
         #region Constructor - Load
@@ -644,7 +644,12 @@ namespace HIS.UC.PlusInfo
                         ucExamHistory.FocusNextControl(this.FocusNextUserControl);
                         this.listControl.Add(ucExamHistory);
                         break;
-
+                    case ChoiceControl.UcCheckBoxCCCD:
+                        ucCheckBoxCCCD = new Design.UCCheckBoxCCCD(ReloadFeildNameValid);
+                        ucCheckBoxCCCD.TabIndex = tagIndex;
+                        ucCheckBoxCCCD.FocusNextControl(this.FocusNextUserControl);
+                        this.listControl.Add(ucCheckBoxCCCD);
+                        break;
                     default:
                         break;
 
@@ -654,6 +659,20 @@ namespace HIS.UC.PlusInfo
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void ReloadFeildNameValid(bool isReload)
+        {
+            try
+            {
+                if (ucCmndNumber1 != null) {
+                    ucCmndNumber1.ReloadValidFeild(!isReload);
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
 

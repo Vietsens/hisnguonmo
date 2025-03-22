@@ -67,7 +67,8 @@ namespace HIS.UC.AddressCombo
                     }
                     var district = BackendDataWorker.Get<SDA.EFMODEL.DataModels.V_SDA_DISTRICT>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.SDA_RS.COMMON.IS_ACTIVE__TRUE).ToList().FirstOrDefault(o => ((o.INITIAL_NAME + " " + o.DISTRICT_NAME) == data.District_Name || o.DISTRICT_NAME == data.District_Name || o.DISTRICT_CODE == data.District_Code) && o.PROVINCE_NAME == data.Province_Name);
                     if (district != null)
-                    {
+                    {   
+                        this.LoadHuyenCombo("", district.PROVINCE_CODE, false);
                         this.txtDistrictCode.Text = district.DISTRICT_CODE;
                         this.cboDistrict.EditValue = district.DISTRICT_CODE;
                     }
@@ -192,7 +193,7 @@ namespace HIS.UC.AddressCombo
                 this.currentPatientSDO = null;
                 this.ResetRequiredField();
                 this.IsValidateAddressCombo(HIS.Desktop.Plugins.Library.RegisterConfig.HisConfigCFG.Validate__T_H_X);
-                this.SetDefaultDataToControl(false);
+                this.SetDefaultDataToControl(true);
             }
             catch (Exception ex)
             {

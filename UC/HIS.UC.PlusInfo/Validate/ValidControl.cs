@@ -96,6 +96,7 @@ namespace HIS.UC.PlusInfo.Validate
     class Validate_CMND_Control : DevExpress.XtraEditors.DXErrorProvider.ValidationRule
     {
         internal DevExpress.XtraEditors.TextEdit txtCMND;
+        internal bool IsRequired;
 
         public override bool Validate(Control control, object value)
         {
@@ -152,6 +153,11 @@ namespace HIS.UC.PlusInfo.Validate
                     }
 
                 }
+                else if(IsRequired)
+                {
+                    this.ErrorText = HIS.UC.PlusInfo.Validate.MessageUtil.GetMessage(His.UC.LibraryMessage.Message.Enum.TruongDuLieuBatBuoc);
+                    return valid;
+                }    
                 valid = true;
             }
             catch (Exception ex)

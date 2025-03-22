@@ -43,6 +43,7 @@ using HIS.UC.UCServiceRoomInfo;
 using HID.Filter;
 using HID.EFMODEL.DataModels;
 using HIS.UC.PlusInfo.ADO;
+using HIS.UC.UCPatientRaw;
 
 namespace HIS.Desktop.Plugins.RegisterV2.Run2
 {
@@ -108,8 +109,8 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
                     string MessageGender = null;
                     string gender = null;
                     List<string> lstServiceName = new List<string>();
-                    if (serviceReqDetailSDOs != null && serviceReqDetailSDOs.Count > 0 && serviceReqDetailSDOs.Where(o=>o.ServiceId > 0) != null && serviceReqDetailSDOs.Where(o => o.ServiceId > 0).ToList().Count > 0)
-					{
+                    if (serviceReqDetailSDOs != null && serviceReqDetailSDOs.Count > 0 && serviceReqDetailSDOs.Where(o => o.ServiceId > 0) != null && serviceReqDetailSDOs.Where(o => o.ServiceId > 0).ToList().Count > 0)
+                    {
                         foreach (var item in serviceReqDetailSDOs.Where(o => o.ServiceId > 0))
                         {
                             var service = lstService.FirstOrDefault(o => o.ID == item.ServiceId);
@@ -161,21 +162,24 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
                             }
                         }
 
-                            
+
                         if (lstServiceName != null && lstServiceName.Count > 0)
                         {
 
-                            MessageGender += "Dịch vụ " +String.Join(", ", lstServiceName)+" không cho phép chỉ định đối với bệnh nhân giới tính " + gender + "\r\n";
+                            MessageGender += "Dịch vụ " + String.Join(", ", lstServiceName) + " không cho phép chỉ định đối với bệnh nhân giới tính " + gender + "\r\n";
                             XtraMessageBox.Show(MessageGender, HIS.Desktop.LibraryMessage.MessageUtil.GetMessage(LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaThongBao), MessageBoxButtons.OK);
                             return;
                         }
 
                         if (!string.IsNullOrEmpty(Message))
-						{
+                        {
                             XtraMessageBox.Show(Message, HIS.Desktop.LibraryMessage.MessageUtil.GetMessage(LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaThongBao), MessageBoxButtons.OK);
                             return;
-						}                            
-                    }                        
+                        }
+                    }
+
+                    if (!CheckDuplicateCCCD())
+                        return;
 
                     try
                     {
@@ -186,7 +190,7 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
                             case UCServiceRequestRegisterFactorySaveType.REGISTER:
                                 this.currentHisExamServiceReqResultSDO = delegacy.Execute<HisServiceReqExamRegisterResultSDO>();
                                 Inventec.Common.Logging.LogSystem.Debug("Save.1");
-                                
+
 
                                 if (this.currentHisExamServiceReqResultSDO != null
                                     && this.currentHisExamServiceReqResultSDO.HisPatientProfile != null
@@ -205,7 +209,7 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
                                     ServiceReqList = currentHisExamServiceReqResultSDO.ServiceReqs;
                                     //Cau hinh in tu dong sau khi luu thanh cong
                                     this.isPrintNow = printNow;
-                                   
+
 
                                     if ((this.isSaveWithRoomHasConfigAllowNotChooseService || printNow) && (chkPrintExam.Checked || chkSignExam.Checked))
                                         this.Print(true);
@@ -254,7 +258,7 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
                             case UCServiceRequestRegisterFactorySaveType.PROFILE:
                                 this.resultHisPatientProfileSDO = delegacy.Execute<HisPatientProfileSDO>();
                                 Inventec.Common.Logging.LogSystem.Debug("Save.2");
-                                
+
                                 if (this.resultHisPatientProfileSDO != null)
                                 {
                                     this.PatientProfileSuccess(param);
@@ -310,6 +314,46 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
+        private bool CheckDuplicateCCCD()
+        {
+            bool result = true;
+            try
+            {
+                if ((HIS.Desktop.Plugins.Library.RegisterConfig.HisConfigCFG.CHECK_DUPLICATION == "1" || HIS.Desktop.Plugins.Library.RegisterConfig.HisConfigCFG.CHECK_DUPLICATION == "2") && (!string.IsNullOrEmpty(ucPlusInfo1.GetValue().CMND_NUMBER) || !string.IsNullOrEmpty(ucPlusInfo1.GetValue().CCCD_NUMBER) || !string.IsNullOrEmpty(ucPlusInfo1.GetValue().PASSPORT_NUMBER)))
+                {
+                    var data = ucPlusInfo1.GetValue().CMND_NUMBER ?? ucPlusInfo1.GetValue().CCCD_NUMBER ?? ucPlusInfo1.GetValue().PASSPORT_NUMBER;
+                    HisPatientAdvanceFilter filter = new HisPatientAdvanceFilter();
+                    if (data.Length == 9)
+                    {
+                        filter.CMND_NUMBER__EXACT = data;
+                    }
+                    else
+                    {
+                        filter.CCCD_NUMBER__EXACT = data;
+                    }
+                    CommonParam param = new CommonParam();
+                    var patients = (new BackendAdapter(param).Get<List<HisPatientSDO>>(RequestUriStore.HIS_PATIENT_GETSDOADVANCE, ApiConsumers.MosConsumer, filter, HIS.Desktop.Controls.Session.SessionManager.ActionLostToken, param));
+                    if (patients != null && patients.Count > 0)
+                    {
+                        if ((ucPatientRaw1.patientTD3 != null && !string.IsNullOrEmpty(ucPatientRaw1.patientTD3.PATIENT_CODE) && !patients.Exists(o => o.PATIENT_CODE == ucPatientRaw1.patientTD3.PATIENT_CODE)) || ucPatientRaw1.patientTD3 == null || string.IsNullOrEmpty(ucPatientRaw1.patientTD3.PATIENT_CODE))
+                        {
+                            if ((HIS.Desktop.Plugins.Library.RegisterConfig.HisConfigCFG.CHECK_DUPLICATION == "1" && XtraMessageBox.Show(string.Format("Số CCCD {0} đã được sử dụng bởi bệnh nhân có mã {1}", data, patients.OrderByDescending(o => o.PATIENT_CODE).ToList()[0].PATIENT_CODE), "Thông báo", MessageBoxButtons.OK) == DialogResult.OK) || (HIS.Desktop.Plugins.Library.RegisterConfig.HisConfigCFG.CHECK_DUPLICATION == "2" && XtraMessageBox.Show(string.Format("Số CCCD {0} đã được sử dụng bởi bệnh nhân có mã {1}", data, patients.OrderByDescending(o => o.PATIENT_CODE).ToList()[0].PATIENT_CODE), "Cảnh báo", MessageBoxButtons.YesNo) == DialogResult.No))
+                            {
+                                ucPatientRaw1.typeCodeFind = HIS.UC.UCPatientRaw.ResourceMessage.typeCodeFind__MaCMCC;
+                                ucPatientRaw1.SearchPatientByCodeOrQrCode(data);
+                                result = false;
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+
+            return result;
+        }
 
         private bool BlockingHeinLevelCode()
         {
@@ -338,7 +382,7 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
             return true;
-        }      
+        }
 
         private bool CheckValidateForSave(CommonParam param)
         {
@@ -414,8 +458,8 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
 
                 if (chkAutoDeposit.Checked)
                 {
-                   
-                    if (cboCashierRoom.EditValue == null && (GlobalVariables.SessionInfo==null ||(GlobalVariables.SessionInfo!=null && GlobalVariables.SessionInfo.CashierWorkingRoomId ==null)))
+
+                    if (cboCashierRoom.EditValue == null && (GlobalVariables.SessionInfo == null || (GlobalVariables.SessionInfo != null && GlobalVariables.SessionInfo.CashierWorkingRoomId == null)))
                     {
                         MessageBox.Show(ResourceMessage.BanChuaChonPhongThuNgan, ResourceMessage.TieuDeCuaSoThongBaoLaCanhBao, MessageBoxButtons.OK);
                         validDeposit = false;
@@ -432,7 +476,7 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
                     }
                 }
 
-                string phoneNumber = ucAddressCombo1.GetValue().Phone;                  
+                string phoneNumber = ucAddressCombo1.GetValue().Phone;
                 if (!string.IsNullOrEmpty(phoneNumber))
                 {
                     if (phoneNumber.Length < 10 || phoneNumber.Length > 10)
@@ -441,15 +485,16 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
                         this.ucAddressCombo1.FocusPhoneNumber();
                         validPhoneNumber = false;
                     }
-				}
-				else
-				{
-                    if(HisConfigCFG.PhoneRequired == "1")
-					{
+                }
+                else
+                {
+                    if (HisConfigCFG.PhoneRequired == "1")
+                    {
                         MessageBox.Show("Bạn chưa nhập Điện thoại", ResourceMessage.ThongBao, MessageBoxButtons.OK);
                         this.ucAddressCombo1.FocusPhoneNumber();
                         validPhoneNumber = false;
-                    }else if (HisConfigCFG.PhoneRequired == "2")
+                    }
+                    else if (HisConfigCFG.PhoneRequired == "2")
                     {
                         if (MessageBox.Show("Bạn chưa nhập Điện thoại. Bạn có muốn tiếp tục?", ResourceMessage.ThongBao, MessageBoxButtons.YesNo) == DialogResult.No)
                         {
@@ -777,7 +822,7 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
                         this.ucPatientRaw1.SetPatientCodeAfterSavePatient(resultHisPatientProfileSDO.HisPatient.PATIENT_CODE);
                         if (resultHisPatientProfileSDO.HisPatientTypeAlter.HAS_BIRTH_CERTIFICATE == MOS.LibraryHein.Bhyt.HeinHasBirthCertificate.HeinHasBirthCertificateCode.TRUE || resultHisPatientProfileSDO.HisPatientTypeAlter.IS_TEMP_QN == 1)
                             ucHeinInfo1.ChangeDataHeinInsuranceInfoByPatientTypeAlter(this.resultHisPatientProfileSDO.HisPatientTypeAlter);
-                        
+
                         if (!HisConfigCFG.IsManualInCode && !String.IsNullOrEmpty(this.resultHisPatientProfileSDO.HisTreatment.IN_CODE))
                         {
                             this.ucOtherServiceReqInfo1.SetValueIncode(this.resultHisPatientProfileSDO.HisTreatment.IN_CODE);

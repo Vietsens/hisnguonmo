@@ -2522,5 +2522,26 @@ namespace HIS.UC.FormType.Config
                 hisConfig = value;
             }
         }
+        private static List<MOS.EFMODEL.DataModels.HIS_MEDICINE_LINE> hisMedicineLine;
+
+        public static List<MOS.EFMODEL.DataModels.HIS_MEDICINE_LINE> HisMedicineLine
+        {
+            get
+            {
+                if (FormTypeDelegate.ProcessFormType != null) FormTypeDelegate.ProcessFormType(typeof(MOS.EFMODEL.DataModels.HIS_MEDICINE_LINE));
+                if (hisMedicineLine == null || hisMedicineLine.Count == 0)
+                {
+                    CommonParam param = new CommonParam();
+                    MOS.Filter.HisMedicineLineFilter filter = new MOS.Filter.HisMedicineLineFilter();
+                    filter.IS_ACTIVE = IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE;
+                    hisMedicineLine = BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_MEDICINE_LINE>("/api/HisMedicineLine/Get", ApiConsumerStore.MosConsumer, filter);
+                }
+                return hisMedicineLine.Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE).ToList();
+            }
+            set
+            {
+                hisMedicineLine = value;
+            }
+        }
     }
 }

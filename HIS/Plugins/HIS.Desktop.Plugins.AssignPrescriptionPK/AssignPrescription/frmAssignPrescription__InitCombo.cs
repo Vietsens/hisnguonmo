@@ -481,7 +481,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                     if (datas != null) BackendDataWorker.UpdateToRam(typeof(ACS.EFMODEL.DataModels.ACS_USER), datas, long.Parse(DateTime.Now.ToString("yyyyMMddHHmmss")));
                 }
                 string loginName = Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName();
-                List<HIS_EMPLOYEE> employees = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<HIS_EMPLOYEE>();
+                List<HIS_EMPLOYEE> employees = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<HIS_EMPLOYEE>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE).ToList();
                 if (HisConfigCFG.UserMustHaveDiploma)
                 {
                     var loginnames = employees.Where(o => !string.IsNullOrEmpty(o.DIPLOMA)).Select(o => o.LOGINNAME).ToList();
@@ -493,7 +493,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                     var loginnames = employees.Where(o => o.DEPARTMENT_ID == this.currentWorkPlace.DepartmentId).Select(o => o.LOGINNAME).ToList();
                     datas = datas != null ? datas.Where(o => loginnames.Contains(o.LOGINNAME)).ToList() : null;
                 }
-
+                datas = datas.Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE).ToList();
                 List<ColumnInfo> columnInfos = new List<ColumnInfo>();
                 columnInfos.Add(new ColumnInfo("LOGINNAME", "", 150, 1));
                 columnInfos.Add(new ColumnInfo("USERNAME", "", 250, 2));
