@@ -49,10 +49,11 @@ namespace HIS.UC.UCPatientRaw
 		public HisPatientSDO patientTD3;
 		DataResultADO dataResult = new DataResultADO();
 		string hrmEmployeeCode = "";
-		string oldValue = "";
+        public string oldValue = "";
+		public string oldTypeFind = "";
 		public async void SearchPatientByCodeOrQrCode(string strValue)
         {
-            string OldTypeFind = this.typeCodeFind;
+            oldTypeFind = this.typeCodeFind;
             try
 			{
 				this.isAlertTreatmentEndInDay = false;
@@ -733,7 +734,7 @@ namespace HIS.UC.UCPatientRaw
 			}
 			finally
 			{
-				typeCodeFind = OldTypeFind;
+				typeCodeFind = oldTypeFind;
 			}
 		}
         private void MapHeinCardToPatientSDO()

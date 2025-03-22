@@ -341,7 +341,8 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
                             {
                                 ucPatientRaw1.typeCodeFind = HIS.UC.UCPatientRaw.ResourceMessage.typeCodeFind__MaCMCC;
                                 ucPatientRaw1.SearchPatientByCodeOrQrCode(data);
-                                result = false;
+                                ucPatientRaw1.typeCodeFind = ucPatientRaw1.oldTypeFind;
+                              result = false;
                             }
                         }
                     }
