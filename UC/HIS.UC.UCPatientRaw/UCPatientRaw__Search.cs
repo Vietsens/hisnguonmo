@@ -50,8 +50,8 @@ namespace HIS.UC.UCPatientRaw
 		DataResultADO dataResult = new DataResultADO();
 		string hrmEmployeeCode = "";
         public string oldValue = "";
-		public string oldTypeFind = "";
-		public async void SearchPatientByCodeOrQrCode(string strValue)
+		public string oldTypeFind = ResourceMessage.typeCodeFind__MaBN;
+        public async void SearchPatientByCodeOrQrCode(string strValue, string keyTypeFind = null)
         {
             oldTypeFind = this.typeCodeFind;
             try
@@ -62,7 +62,9 @@ namespace HIS.UC.UCPatientRaw
 				this.hrmEmployeeCode = "";
 				this.dataResult = new DataResultADO();
 				oldValue = strValue;
-				if (!String.IsNullOrEmpty(strValue))
+				if (!string.IsNullOrEmpty(keyTypeFind))
+					typeCodeFind = keyTypeFind;
+                if (!String.IsNullOrEmpty(strValue))
 				{
 					LogSystem.Debug("txtPatientCode_KeyDown");
 					CommonParam param = new CommonParam();

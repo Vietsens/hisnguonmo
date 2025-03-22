@@ -339,10 +339,8 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
                         {
                             if ((HIS.Desktop.Plugins.Library.RegisterConfig.HisConfigCFG.CHECK_DUPLICATION == "1" && XtraMessageBox.Show(string.Format("Số CCCD {0} đã được sử dụng bởi bệnh nhân có mã {1}", data, patients.OrderByDescending(o => o.PATIENT_CODE).ToList()[0].PATIENT_CODE), "Thông báo", MessageBoxButtons.OK) == DialogResult.OK) || (HIS.Desktop.Plugins.Library.RegisterConfig.HisConfigCFG.CHECK_DUPLICATION == "2" && XtraMessageBox.Show(string.Format("Số CCCD {0} đã được sử dụng bởi bệnh nhân có mã {1}", data, patients.OrderByDescending(o => o.PATIENT_CODE).ToList()[0].PATIENT_CODE), "Cảnh báo", MessageBoxButtons.YesNo) == DialogResult.No))
                             {
-                                ucPatientRaw1.typeCodeFind = HIS.UC.UCPatientRaw.ResourceMessage.typeCodeFind__MaCMCC;
-                                ucPatientRaw1.SearchPatientByCodeOrQrCode(data);
-                                ucPatientRaw1.typeCodeFind = ucPatientRaw1.oldTypeFind;
-                              result = false;
+                                ucPatientRaw1.SearchPatientByCodeOrQrCode(data, HIS.UC.UCPatientRaw.ResourceMessage.typeCodeFind__MaCMCC);
+                                result = false;
                             }
                         }
                     }
