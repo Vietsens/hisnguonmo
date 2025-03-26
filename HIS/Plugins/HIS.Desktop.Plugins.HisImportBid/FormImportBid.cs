@@ -1178,6 +1178,10 @@ namespace HIS.Desktop.Plugins.HisImportBid
                 {
                     messageErr.Add(Resources.ResourceLanguageManager.MaQDThauQuaDai);
                 }
+                if (!string.IsNullOrEmpty(item.BID_NUMBER) && Inventec.Common.String.CheckString.IsOverMaxLengthUTF8(item.BID_NUMBER, 50))
+                {
+                    messageErr.Add("Thông tin quyết định thầu có độ dài quá 50");
+                }
                 int dem = 0;
                 if (item.MONTH_LIFESPAN != null)
                 {
