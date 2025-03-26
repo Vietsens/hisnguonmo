@@ -48,6 +48,7 @@ namespace HIS.UC.PlusInfo.Design
         #region Constructor - Load
 
         public UCWorkPlace(Inventec.Desktop.Common.Modules.Module module, DelegateFocusMoveout __dlgFocusNextUserControl)
+            : base("UCPlusInfo", "UCWorkPlace")
         {
             try
             {

@@ -82,6 +82,8 @@ namespace HIS.UC.FormType.HisMultiGetString
                             FilterTypeCode = "HIS_EXT_CASHIER_ROOM";
                         else if (_jsonOutput.Contains("PARENT_SERVICE_ID"))
                             FilterTypeCode = "HIS_PARENT_SERVICE";
+                        else if (_jsonOutput.Contains("PARENT_SERVICE_RAW_MEDICINAL_HERBS_ID"))/// 24/02/2025
+                            FilterTypeCode = "HIS_PARENT_SERVICE_RAW_MEDICINAL_HERBS";
                         else if (_jsonOutput.Contains("CHILD_SERVICE_ID"))
                             FilterTypeCode = "HIS_CHILD_SERVICE";
                         else if (_jsonOutput.Contains("MEST_ROOM_ID"))
@@ -145,6 +147,8 @@ namespace HIS.UC.FormType.HisMultiGetString
                         FilterTypeCode = "HIS_MATERIAL";
                     else if (_jsonOutput.Contains("BLOOD_TYPE_ID"))
                         FilterTypeCode = "HIS_BLOOD_TYPE";
+                    else if (_jsonOutput.Contains("MEDICINE_LINE_ID"))
+                        FilterTypeCode = "HIS_MEDICINE_LINE";
                     else if (_jsonOutput.Contains("CASHIER_LOGINNAME"))
                         FilterTypeCode = "HIS_CASHIER_LOGINNAME";
                     //else if (JSONOUTPUT.Contains("BED_ROOM_ID"))
@@ -161,6 +165,8 @@ namespace HIS.UC.FormType.HisMultiGetString
                         FilterTypeCode = "HIS_MY_SURG_ROOM";
                     else if (_jsonOutput.Contains("EXAM_ROOM_ID"))////)
                         FilterTypeCode = "HIS_EXAM_ROOM";
+                    else if (_jsonOutput.Contains("CLINICAL_ROOM_ID"))////)
+                        FilterTypeCode = "HIS_CLINICAL_ROOM";
                     else if (_jsonOutput.Contains("SURG_ROOM_ID"))////)
                         FilterTypeCode = "HIS_SURG_ROOM";
                     else if (_jsonOutput.Contains("MEDICINE_TYPE_ID"))////)
@@ -205,6 +211,8 @@ namespace HIS.UC.FormType.HisMultiGetString
                         FilterTypeCode = "HIS_PROGRAM";
                     else if (_jsonOutput.Contains("PATIENT_TYPE_ID"))////)
                         FilterTypeCode = "HIS_PATIENT_TYPE";
+                    else if (_jsonOutput.Contains("PATIENT_RAW_MEDICINAL_HERBS_TYPE_ID")) /// 24/02/2025
+                        FilterTypeCode = "HIS_PATIENT_RAW_MEDICINAL_HERBS_TYPE";
                     else if (_jsonOutput.Contains("IMP_MEST_TYPE_ID"))////)
                         FilterTypeCode = "HIS_IMP_MEST_TYPE";
                     else if (_jsonOutput.Contains("IMP_MEST_STT_ID"))////)
@@ -335,8 +343,8 @@ namespace HIS.UC.FormType.HisMultiGetString
                         if (_jsonOutput.Contains("LOGINNAME_DOCTOR") && _jsonOutput.Contains("\"DEPARTMENT\""))////)
                             FilterTypeCode = "ACS_USER_DOCTOR_DEPA";
                         else if (_jsonOutput.Contains("DOCTOR_LOGINNAME") && _jsonOutput.Contains("\"DEPARTMENT\""))////)
-                                FilterTypeCode = "ACS_USER_DOCTOR_DEPA";
-                       
+                            FilterTypeCode = "ACS_USER_DOCTOR_DEPA";
+
                     }
                     else if (_jsonOutput.StartsWith("\"CURRENTBRANCH_"))
                     {
@@ -355,6 +363,8 @@ namespace HIS.UC.FormType.HisMultiGetString
                             FilterTypeCode = "HIS_EXT_CASHIER_ROOM";
                         else if (_jsonOutput.Contains("PARENT_SERVICE_CODE"))
                             FilterTypeCode = "HIS_PARENT_SERVICE";
+                        else if (_jsonOutput.Contains("PARENT_SERVICE_RAW_MEDICINAL_HERBS_CODE"))// 24/02/2025
+                            FilterTypeCode = "HIS_PARENT_SERVICE_RAW_MEDICINAL_HERBS";
                         else if (_jsonOutput.Contains("CHILD_SERVICE_CODE"))
                             FilterTypeCode = "HIS_CHILD_SERVICE";
                         else if (_jsonOutput.Contains("MEST_ROOM_CODE"))
@@ -371,7 +381,11 @@ namespace HIS.UC.FormType.HisMultiGetString
                             FilterTypeCode = "HIS_TREATMENT_BED_ROOM";
                         else if (_jsonOutput.Contains("SERVICE_ROOM_CODE"))
                             FilterTypeCode = "HIS_SERVICE_ROOM";
+                        else if (_jsonOutput.Contains("QR_BANK_CODE"))
+                            FilterTypeCode = "HIS_CONFIG";
                     }
+                    else if (_jsonOutput.Contains("QR_BANK_CODE"))
+                        FilterTypeCode = "HIS_CONFIG";
                     else if (_jsonOutput.Contains("ACCIDENT_RESULT_CODE"))
                         FilterTypeCode = "HIS_ACCIDENT_RESULT";
                     else if (_jsonOutput.Contains("SERVICE_UNIT_CODE"))
@@ -410,6 +424,8 @@ namespace HIS.UC.FormType.HisMultiGetString
                         FilterTypeCode = "HIS_SURG_ROOM";
                     else if (_jsonOutput.Contains("EXAM_ROOM_CODE"))////)
                         FilterTypeCode = "HIS_EXAM_ROOM";
+                    else if (_jsonOutput.Contains("CLINICAL_ROOM_CODE"))////)
+                        FilterTypeCode = "HIS_CLINICAL_ROOM";
                     else if (_jsonOutput.Contains("MEDICINE_TYPE_CODE"))////)
                         FilterTypeCode = "HIS_MEDICINE_TYPE";
                     else if (_jsonOutput.Contains("MATERIAL_TYPE_CODE"))////)
@@ -450,6 +466,8 @@ namespace HIS.UC.FormType.HisMultiGetString
                         FilterTypeCode = "HIS_PROGRAM";
                     else if (_jsonOutput.Contains("PATIENT_TYPE_CODE"))////)
                         FilterTypeCode = "HIS_PATIENT_TYPE";
+                    else if (_jsonOutput.Contains("PATIENT_RAW_MEDICINAL_HERBS_TYPE_CODE"))
+                        FilterTypeCode = "HIS_PATIENT_RAW_MEDICINAL_HERBS_TYPE";
                     else if (_jsonOutput.Contains("IMP_MEST_TYPE_CODE"))////)
                         FilterTypeCode = "HIS_IMP_MEST_TYPE";
                     else if (_jsonOutput.Contains("IMP_MEST_STT_CODE"))////)

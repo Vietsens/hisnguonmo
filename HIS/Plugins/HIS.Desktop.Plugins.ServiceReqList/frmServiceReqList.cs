@@ -3802,7 +3802,7 @@ namespace HIS.Desktop.Plugins.ServiceReqList
                                         HisSereServViewFilter ssfilter = new HisSereServViewFilter();
                                         ssfilter.SERVICE_REQ_ID = data.PARENT_ID;
                                         var listSereServ = new BackendAdapter(new CommonParam()).Get<List<V_HIS_SERE_SERV>>("api/HisSereServ/GetView", ApiConsumers.MosConsumer, ssfilter, HIS.Desktop.Controls.Session.SessionManager.ActionLostToken, null);
-                                        if (listSereServ != null && listSereServ.Count > 0)
+                                        if (listSereServ != null && listSereServ.Count > 0 && listSereServ.FirstOrDefault().TDL_SERVICE_TYPE_ID != IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__KH && listSereServ.FirstOrDefault().TDL_SERVICE_TYPE_ID != IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__G)
                                             assignServiceADO.SereServ = listSereServ.FirstOrDefault();
                                     }
                                     CallModule("HIS.Desktop.Plugins.AssignPrescriptionPK", sendObj);
@@ -4216,9 +4216,50 @@ namespace HIS.Desktop.Plugins.ServiceReqList
         {
             try
             {
-                WaitingManager.Show();
-                FillDataToGrid();
-                WaitingManager.Hide();
+                if (string.IsNullOrWhiteSpace(txtServiceReqCode.Text) && string.IsNullOrWhiteSpace(txtTreatmentCode.Text))
+                {
+                    if (dtIntructionTimeFrom.EditValue != null)
+                    {
+                        if (dtIntructionTimeTo.EditValue != null)
+                        {
+                            if ((dtIntructionTimeTo.DateTime.Date - dtIntructionTimeFrom.DateTime.Date).TotalDays > 90)
+                            {
+                                XtraMessageBox.Show("Khoảng thời gian tìm kiếm quá dài, vui lòng chọn tối đa 3 tháng!",
+                                    "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                                return;
+                            }
+                            WaitingManager.Show();
+                            FillDataToGrid();
+                            WaitingManager.Hide();
+                        }
+                        else
+                        {
+                            dtIntructionTimeTo.EditValue = DateTime.Now;
+                            if ((dtIntructionTimeTo.DateTime.Date - dtIntructionTimeFrom.DateTime.Date).TotalDays > 90)
+                            {
+                                XtraMessageBox.Show("Khoảng thời gian tìm kiếm quá dài, vui lòng chọn tối đa 3 tháng!",
+                                    "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                                return;
+                            }
+                            WaitingManager.Show();
+                            FillDataToGrid();
+                            WaitingManager.Hide();
+                        }
+                    }
+                    else
+                    {
+                        XtraMessageBox.Show("Thời gian từ không được bỏ trống",
+                                    "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        return;
+                    }
+                }
+                else
+                {
+                    WaitingManager.Show();
+                    FillDataToGrid();
+                    WaitingManager.Hide();
+                }
+                
             }
             catch (Exception ex)
             {

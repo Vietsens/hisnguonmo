@@ -52,12 +52,13 @@ namespace HIS.UC.PlusInfo.Design
         #region Contructor - Load
 
         public UCCMND()
+            : base("UCPlusInfo", "UCCMND")
         {
             try
             {
                 InitializeComponent();
 
-                this.ValidRelativeCMNDNumberLenght();
+                this.ValidRelativeCMNDNumberLenght(false);
                 this.txtCMND.TabIndex = this.TabIndex;
                 //this.SetCaptionByLanguageKey();
                 SetCaptionByLanguageKeyNew();
@@ -222,12 +223,13 @@ namespace HIS.UC.PlusInfo.Design
             return valid;
         }
 
-        private void ValidRelativeCMNDNumberLenght()
+        private void ValidRelativeCMNDNumberLenght(bool IsRequired)
         {
             try
             {
                 Validate_CMND_Control oDobDateRule = new Validate_CMND_Control();
                 oDobDateRule.txtCMND = this.txtCMND;
+                oDobDateRule.IsRequired = IsRequired;
                 oDobDateRule.ErrorType = ErrorType.Warning;
                 this.dxValidationProviderCMND.SetValidationRule(this.txtCMND, oDobDateRule);
             }
@@ -235,6 +237,29 @@ namespace HIS.UC.PlusInfo.Design
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
+        }
+        internal void ReloadValidFeild(bool IsReload)
+        {
+
+            try
+            {
+                Inventec.Desktop.Controls.ControlWorker.ValidationProviderRemoveControlError(this.dxValidationProviderCMND, this.dxErrorProviderControl);
+                if (IsReload)
+                {
+                    lciCMND.AppearanceItemCaption.ForeColor = Color.Maroon;
+                }
+                else
+                {
+                    lciCMND.AppearanceItemCaption.ForeColor = Color.Black;
+                }
+                ValidRelativeCMNDNumberLenght(IsReload);
+            }
+
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+
         }
 
         #endregion

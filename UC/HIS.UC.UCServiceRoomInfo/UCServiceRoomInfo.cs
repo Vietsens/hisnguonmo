@@ -64,11 +64,13 @@ namespace HIS.UC.UCServiceRoomInfo
 
         #region Constructor - Load
         public UCServiceRoomInfo()
+            : base("HIS.Desktop.Plugins.RegisterV2", "UCServiceRoomInfo")
         {
-            InitializeComponent();
             try
             {
-                this.CreateExamServiceRoomInfoPanel();
+                Inventec.Common.Logging.LogSystem.Debug("UCServiceRoomInfo .1");
+                InitializeComponent();
+                Inventec.Common.Logging.LogSystem.Debug("UCServiceRoomInfo .2");
             }
             catch (Exception ex)
             {
@@ -80,6 +82,22 @@ namespace HIS.UC.UCServiceRoomInfo
         {
             try
             {
+                Inventec.Common.Logging.LogSystem.Debug("UCServiceRoomInfo_Load .1");
+                this.CreateExamServiceRoomInfoPanel();
+                InitFieldFromAsync();
+                Inventec.Common.Logging.LogSystem.Debug("UCServiceRoomInfo_Load .2");
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        public async Task InitFieldFromAsync()
+        {
+            try
+            {
+                Inventec.Common.Logging.LogSystem.Debug("UCServiceRoomInfo.InitFieldFromAsync .1");
                 SetCaptionByLanguageKey();
                 LoadComboPatientType();
                 LoadComboPatientTypePrimary();
@@ -88,9 +106,11 @@ namespace HIS.UC.UCServiceRoomInfo
             }
             catch (Exception ex)
             {
-                Inventec.Common.Logging.LogSystem.Error(ex);
+                Inventec.Common.Logging.LogSystem.Warn(ex);
             }
+            Inventec.Common.Logging.LogSystem.Debug("UCServiceRoomInfo.InitFieldFromAsync .2");
         }
+
         /// <summary>
         ///Hàm xét ngôn ngữ cho giao diện UCServiceRoomInfo
         /// </summary>
@@ -668,7 +688,7 @@ namespace HIS.UC.UCServiceRoomInfo
 
                     if (HIS.Desktop.Plugins.Library.RegisterConfig.HisConfigCFG.IsShowingExamRoomInArea && roomWorking != null && roomWorking.AREA_ID.HasValue && roomWorking.AREA_ID > 0)
                     {
-                        var _RoomIdSameAreas = BackendDataWorker.Get<HIS_ROOM>().Where(p => p.AREA_ID == null || p.AREA_ID == roomWorking.AREA_ID).Select(p => p.ID).ToList();
+                        var _RoomIdSameAreas = BackendDataWorker.Get<V_HIS_ROOM>().Where(p => p.AREA_ID == null || p.AREA_ID == roomWorking.AREA_ID).Select(p => p.ID).ToList();
                         dataExecuteRooms = dataExecuteRooms.Where(p => _RoomIdSameAreas.Contains(p.ROOM_ID)
                         ).ToList();
                     }

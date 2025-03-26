@@ -255,7 +255,7 @@ namespace HIS.Desktop.Plugins.CallPatientVer5
                     }
                 }
 
-                aFrmWaitingScreenQy = new frmWaitingScreen_QY9(HisServiceReq, serviceReqStts, chkIsNotInDebt.Checked, _module);
+                aFrmWaitingScreenQy = new frmWaitingScreen_QY9(HisServiceReq, serviceReqStts, new Class.DisplayOptionADO(), _module);
                 if (roomId != 0)
                 {
                     MOS.EFMODEL.DataModels.V_HIS_ROOM data = BackendDataWorker.Get<MOS.EFMODEL.DataModels.V_HIS_ROOM>().FirstOrDefault(o => o.ID == roomId);

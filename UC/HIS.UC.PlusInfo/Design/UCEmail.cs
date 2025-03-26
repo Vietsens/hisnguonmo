@@ -50,6 +50,7 @@ namespace HIS.UC.PlusInfo.Design
         #region Contructor
 
         public UCEmail()
+            : base("UCPlusInfo", "UCEmail")
         {
             try
             {

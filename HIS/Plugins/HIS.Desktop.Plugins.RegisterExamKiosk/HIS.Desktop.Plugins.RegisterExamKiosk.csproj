@@ -36,7 +36,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="AutoMapper">
-      <HintPath>..\..\..\..\..\histest\histest\x64\ReferencedAssemblies\AutoMapper.dll</HintPath>
+      <HintPath>..\..\..\..\lib\Library packages\AutoMapper 4.0.4\AutoMapper.dll</HintPath>
     </Reference>
     <Reference Include="CARD.WCF.Service.TapCardService">
       <HintPath>..\..\..\..\lib\WCF\CARD.WCF\TapCardService\4.5\CARD.WCF.Service.TapCardService.dll</HintPath>
@@ -57,29 +57,51 @@
     <Reference Include="DevExpress.XtraPrinting.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
     <Reference Include="DevExpress.XtraTreeList.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
     <Reference Include="DevExpress.XtraVerticalGrid.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
+    <Reference Include="EO.Base">
+      <HintPath>..\..\..\..\lib\Library packages\EO.WebBrowser.20.3.34\EO.Base.dll</HintPath>
+    </Reference>
+    <Reference Include="EO.Pdf">
+      <HintPath>..\..\..\..\lib\Library packages\EO.WebBrowser.20.3.34\EO.Pdf.dll</HintPath>
+    </Reference>
+    <Reference Include="EO.Pdf.Mvc">
+      <HintPath>..\..\..\..\lib\Library packages\EO.WebBrowser.20.3.34\EO.Pdf.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="EO.Pdf.WinForm">
+      <HintPath>..\..\..\..\lib\Library packages\EO.WebBrowser.20.3.34\EO.Pdf.WinForm.dll</HintPath>
+    </Reference>
+    <Reference Include="EO.Pdf.Wpf">
+      <HintPath>..\..\..\..\lib\Library packages\EO.WebBrowser.20.3.34\EO.Pdf.Wpf.dll</HintPath>
+    </Reference>
+    <Reference Include="EO.Web">
+      <HintPath>..\..\..\..\lib\Library packages\EO.WebBrowser.20.3.34\EO.Web.dll</HintPath>
+    </Reference>
+    <Reference Include="EO.Web.Design">
+      <HintPath>..\..\..\..\lib\Library packages\EO.WebBrowser.20.3.34\EO.Web.Design.dll</HintPath>
+    </Reference>
+    <Reference Include="EO.WebBrowser">
+      <HintPath>..\..\..\..\lib\Library packages\EO.WebBrowser.20.3.34\EO.WebBrowser.dll</HintPath>
+    </Reference>
+    <Reference Include="EO.WebBrowser.WinForm">
+      <HintPath>..\..\..\..\lib\Library packages\EO.WebBrowser.20.3.34\EO.WebBrowser.WinForm.dll</HintPath>
+    </Reference>
+    <Reference Include="EO.WebBrowser.Wpf">
+      <HintPath>..\..\..\..\lib\Library packages\EO.WebBrowser.20.3.34\EO.WebBrowser.Wpf.dll</HintPath>
+    </Reference>
+    <Reference Include="EO.WebEngine">
+      <HintPath>..\..\..\..\lib\Library packages\EO.WebBrowser.20.3.34\EO.WebEngine.dll</HintPath>
+    </Reference>
     <Reference Include="His.Bhyt.InsuranceExpertise">
-      <HintPath>..\..\..\..\..\histest\histest\x64\ReferencedAssemblies\His.Bhyt.InsuranceExpertise.dll</HintPath>
+      <HintPath>..\..\..\..\lib\HIS\His.Bhyt.InsuranceExpertise\His.Bhyt.InsuranceExpertise.dll</HintPath>
     </Reference>
-    <Reference Include="HIS.Desktop.ModuleExt">
-      <HintPath>..\..\..\..\..\histest\histest\x64\ReferencedAssemblies\HIS.Desktop.ModuleExt.dll</HintPath>
-    </Reference>
-    <Reference Include="HIS.Desktop.Plugins.Library.CheckHeinGOV">
-      <HintPath>..\..\..\..\lib\HIS\HIS.Desktop.Plugins.Library.CheckHeinGOV\HIS.Desktop.Plugins.Library.CheckHeinGOV.dll</HintPath>
+    <Reference Include="HIS.Desktop.Plugins.Library.CheckHeinGOV, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\LIB\HIS\HIS.Desktop.Plugins.Library.CheckHeinGOV\HIS.Desktop.Plugins.Library.CheckHeinGOV.dll</HintPath>
     </Reference>
     <Reference Include="HIS.Desktop.Plugins.Library.PrintServiceReq">
       <HintPath>..\..\..\..\lib\HIS\HIS.Desktop.Plugins.Library.PrintServiceReq\HIS.Desktop.Plugins.Library.PrintServiceReq.dll</HintPath>
     </Reference>
     <Reference Include="HIS.Desktop.Plugins.Library.PrintServiceReqTreatment">
       <HintPath>..\..\..\..\lib\HIS\HIS.Desktop.Plugins.Library.PrintServiceReqTreatment\HIS.Desktop.Plugins.Library.PrintServiceReqTreatment.dll</HintPath>
-    </Reference>
-    <Reference Include="HIS.Desktop.Plugins.Library.RegisterConnectHrm">
-      <HintPath>..\..\..\..\..\histest\histest\x64\ReferencedAssemblies\HIS.Desktop.Plugins.Library.RegisterConnectHrm.dll</HintPath>
-    </Reference>
-    <Reference Include="HIS.Desktop.Print">
-      <HintPath>..\..\..\..\..\histest\histest\x64\ReferencedAssemblies\HIS.Desktop.Print.dll</HintPath>
-    </Reference>
-    <Reference Include="HIS.Desktop.Utility">
-      <HintPath>..\..\..\..\..\histest\histest\x64\ReferencedAssemblies\HIS.Desktop.Utility.dll</HintPath>
     </Reference>
     <Reference Include="HIS.UC.Icd">
       <HintPath>..\..\..\..\lib\HIS\His.UC.Icd\HIS.UC.Icd.dll</HintPath>
@@ -89,6 +111,9 @@
     </Reference>
     <Reference Include="Inventec.Common.Adapter">
       <HintPath>..\..\..\..\lib\Inventec.Common\Inventec.Common.Adapter\Inventec.Common.Adapter.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Common.Address">
+      <HintPath>..\..\..\..\LIB\Inventec.Common\Inventec.Common.Address\Inventec.Common.Address.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Common.BarcodeLib">
       <HintPath>..\..\..\..\lib\Inventec.Common\Inventec.Common.BarcodeLib\Inventec.Common.BarcodeLib.dll</HintPath>
@@ -104,6 +129,10 @@
     </Reference>
     <Reference Include="Inventec.Common.FlexCelExport">
       <HintPath>..\..\..\..\lib\Inventec.Common\Inventec.Common.FlexCelExport\Inventec.Common.FlexCelExport.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Common.FlexCelPrint, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\lib\Inventec.Common\Inventec.Common.FlexCelPrint\Inventec.Common.FlexCelPrint.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Common.LocalStorage.SdaConfig">
       <HintPath>..\..\..\..\lib\Inventec.Common\Inventec.Common.LocalStorage.SdaConfig\Inventec.Common.LocalStorage.SdaConfig.dll</HintPath>
@@ -148,7 +177,7 @@
       <HintPath>..\..\..\..\lib\Inventec.Core\Inventec.Core.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.CustomControls">
-      <HintPath>..\..\..\..\..\histest\histest\x64\ReferencedAssemblies\Inventec.CustomControls.dll</HintPath>
+      <HintPath>..\..\..\..\LIB\Inventec.CustomControls\Inventec.CustomControls.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Desktop.Common.LanguageManager">
       <HintPath>..\..\..\..\lib\Inventec.Desktop\Inventec.Desktop.Common.LanguageManager\Inventec.Desktop.Common.LanguageManager.dll</HintPath>
@@ -166,7 +195,7 @@
       <HintPath>..\..\..\..\lib\Inventec.Desktop\Inventec.Desktop.Core\Inventec.Desktop.Core.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Desktop.CustomControl">
-      <HintPath>..\..\..\..\..\histest\histest\x64\ReferencedAssemblies\Inventec.Desktop.CustomControl.dll</HintPath>
+      <HintPath>..\..\..\..\lib\Inventec.Desktop.CustomControl\Inventec.Desktop.CustomControl.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Desktop.Plugins.Plugin">
       <HintPath>..\..\..\..\lib\Inventec.Desktop\Inventec.Desktop.Plugins.Plugin\Inventec.Desktop.Plugins.Plugin.dll</HintPath>
@@ -216,9 +245,9 @@
     <Reference Include="MPS.ProcessorBase">
       <HintPath>..\..\..\..\lib\MPSv2\MPS.ProcessorBase\MPS.ProcessorBase.dll</HintPath>
     </Reference>
-    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+    <Reference Include="Newtonsoft.Json, Version=13.0.1.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\ReferencedAssemblies\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\..\..\..\lib\Library packages\Newtonsoft.Json.6.0.8\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="SDA.EFMODEL">
       <HintPath>..\..\..\..\lib\SDA\SDA.EFMODEL.dll</HintPath>
@@ -239,7 +268,7 @@
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="WcfCCCD">
-      <HintPath>..\..\..\..\..\histest\histest\x64\ReferencedAssemblies\WcfCCCD.dll</HintPath>
+      <HintPath>..\..\..\..\LIB\WCF\WcfCCCD\WcfCCCD.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -258,6 +287,12 @@
     <Compile Include="Config\CheckHeinCardCFG.cs" />
     <Compile Include="Config\HisConfigCFG.cs" />
     <Compile Include="Config\HisConfigCHECKHEINCARD.cs" />
+    <Compile Include="frmWaiting2.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmWaiting2.Designer.cs">
+      <DependentUpon>frmWaiting2.cs</DependentUpon>
+    </Compile>
     <Compile Include="frmWaitingScreen.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -320,8 +355,15 @@
     <Compile Include="Popup\ServiceRoom\frmServiceRoom.Designer.cs">
       <DependentUpon>frmServiceRoom.cs</DependentUpon>
     </Compile>
+    <Compile Include="Popup\WebViewer.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Popup\WebViewer.Designer.cs">
+      <DependentUpon>WebViewer.cs</DependentUpon>
+    </Compile>
     <Compile Include="PrintCode.cs" />
     <Compile Include="PrintKiosk.cs" />
+    <Compile Include="ProcessRegisterAddress.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ResourceMessage.cs" />
     <Compile Include="Resources\ResourceLanguageManager.cs" />
@@ -329,6 +371,9 @@
     <Compile Include="WaitingScreen\IWaitingScreen.cs" />
     <Compile Include="WaitingScreen\WaitingScreenBehavior.cs" />
     <Compile Include="WaitingScreen\WaitingScreenFactory.cs" />
+    <EmbeddedResource Include="frmWaiting2.resx">
+      <DependentUpon>frmWaiting2.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="frmWaitingScreen.resx">
       <DependentUpon>frmWaitingScreen.cs</DependentUpon>
     </EmbeddedResource>
@@ -359,6 +404,9 @@
     <EmbeddedResource Include="Popup\ServiceRoom\frmServiceRoom.resx">
       <DependentUpon>frmServiceRoom.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Popup\WebViewer.resx">
+      <DependentUpon>WebViewer.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -373,6 +421,8 @@
     <EmbeddedResource Include="Resources\Lang.vi.resx">
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <None Include="app.config" />
+    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -431,6 +481,22 @@
     <ProjectReference Include="..\..\HIS.Desktop.LocalStorage.Location\HIS.Desktop.LocalStorage.Location.csproj">
       <Project>{67e93829-79bd-407e-a4dd-b46cebb55a41}</Project>
       <Name>HIS.Desktop.LocalStorage.Location</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\HIS.Desktop.ModuleExt\HIS.Desktop.ModuleExt.csproj">
+      <Project>{168b4cc6-8447-41da-b034-a02f336168e4}</Project>
+      <Name>HIS.Desktop.ModuleExt</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\HIS.Desktop.Print\HIS.Desktop.Print.csproj">
+      <Project>{aeeca321-fd65-407a-8d70-ba5362883b87}</Project>
+      <Name>HIS.Desktop.Print</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\HIS.Desktop.Utility\HIS.Desktop.Utilities.csproj">
+      <Project>{2aad22db-2166-4be8-ae52-335b21dc03fc}</Project>
+      <Name>HIS.Desktop.Utilities</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\HIS.Desktop.Plugins.Library.RegisterConfig\HIS.Desktop.Plugins.Library.RegisterConfig.csproj">
+      <Project>{9247dd49-482c-4227-88df-616a8aaf3f38}</Project>
+      <Name>HIS.Desktop.Plugins.Library.RegisterConfig</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

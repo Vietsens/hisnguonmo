@@ -361,7 +361,9 @@ namespace HIS.Desktop.Plugins.Transaction
         {
             try
             {
-                if (!btnDepositService.Enabled || this.currentTreatment == null)
+                //thinhdt2
+                // sua lai kiem tra nut
+                if (!btnRepayService.Enabled || this.currentTreatment == null)
                     return;
                 Inventec.Desktop.Common.Modules.Module moduleData = GlobalVariables.currentModuleRaws.Where(o => o.ModuleLink == "HIS.Desktop.Plugins.RepayService").FirstOrDefault();
                 if (moduleData == null) throw new NullReferenceException("Not found module by ModuleLink = 'HIS.Desktop.Plugins.RepayService'");

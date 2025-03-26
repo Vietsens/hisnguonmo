@@ -27,10 +27,11 @@ using System.Windows.Forms;
 using HIS.UC.UCRelativeInfo.ADO;
 using HIS.UC.UCRelativeInfo.Valid;
 using DevExpress.XtraEditors.DXErrorProvider;
+using HIS.Desktop.Utility;
 
 namespace HIS.UC.UCRelativeInfo
 {
-    public partial class UCRelativeInfo : UserControl
+    public partial class UCRelativeInfo : UserControlBase
     {
         #region Outside Validate
 

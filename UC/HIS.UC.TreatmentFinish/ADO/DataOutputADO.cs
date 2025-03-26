@@ -97,5 +97,12 @@ namespace HIS.UC.TreatmentFinish.ADO
         public string MotherName { get; set; }
         public string FatherName { get; set; }
         public string TransporterLoginnames { get; set; }
+        public string HospitalizeReasonName { get; set; }
+        public string HospitalizeReasonCode { get; set; }
+        public string SurgeryName { get; set; }
+        public long? SurgeryBeginTime { get; set; }
+        public long? SurgeryEndTime { get; set; }
+        public string UsedMedicine { get; set; }
+
     }
 }

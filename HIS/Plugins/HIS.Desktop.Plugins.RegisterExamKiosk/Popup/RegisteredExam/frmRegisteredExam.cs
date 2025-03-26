@@ -25,7 +25,7 @@ using HIS.Desktop.Plugins.RegisterExamKiosk.ADO;
 using HIS.Desktop.Plugins.RegisterExamKiosk.Config;
 using HIS.Desktop.Plugins.RegisterExamKiosk.Popup.CheckHeinCardGOV;
 using HIS.Desktop.Plugins.RegisterExamKiosk.Popup.ChooseObject;
-using HIS.Desktop.Plugins.RegisterExamKiosk.Popup.RegisterExemKiosk;
+using HIS.Desktop.Plugins.RegisterExamKiosk.Popup.RegisterExamKiosk;
 using Inventec.Common.Adapter;
 using Inventec.Common.QrCodeBHYT;
 using Inventec.Core;
@@ -56,8 +56,9 @@ namespace HIS.Desktop.Plugins.RegisterExamKiosk.Popup.RegisteredExam
         Action OpenFormByPatientData;
         HisPatientForKioskSDO patientForKioskSDO;
         bool IsEmergency;
-
-        public frmRegisteredExam(Inventec.Desktop.Common.Modules.Module module, InformationObjectADO _PatientSdo, HIS.Desktop.Common.DelegateSelectData selectDataPatientType, Action _OpenFormByPatientData, HisPatientForKioskSDO _patientForKioskSDO, bool _IsEmergency)
+        HIS.Desktop.Common.DelegateCloseForm_Uc DelegateClose;
+        System.Threading.Thread CloseThread;
+        public frmRegisteredExam(Inventec.Desktop.Common.Modules.Module module, InformationObjectADO _PatientSdo, HIS.Desktop.Common.DelegateSelectData selectDataPatientType, Action _OpenFormByPatientData, HisPatientForKioskSDO _patientForKioskSDO, bool _IsEmergency, HIS.Desktop.Common.DelegateCloseForm_Uc closeForm_Uc)
             : base(module)
         {
             InitializeComponent();
@@ -68,6 +69,9 @@ namespace HIS.Desktop.Plugins.RegisterExamKiosk.Popup.RegisteredExam
             this.OpenFormByPatientData = _OpenFormByPatientData;
             this.patientForKioskSDO = _patientForKioskSDO;
             this.IsEmergency = _IsEmergency;
+            this.DelegateClose = closeForm_Uc;
+            CloseThread = new System.Threading.Thread(ClosingForm);
+            CloseThread.Start();
             try
             {
                 string iconPath = System.IO.Path.Combine(HIS.Desktop.LocalStorage.Location.ApplicationStoreLocation.ApplicationStartupPath, System.Configuration.ConfigurationSettings.AppSettings["Inventec.Desktop.Icon"]);
@@ -83,7 +87,10 @@ namespace HIS.Desktop.Plugins.RegisterExamKiosk.Popup.RegisteredExam
         {
             try
             {
+                stopThread = true;
                 PrintProcess();
+                stopThread = false;
+                ResetLoopCount();
             }
             catch (Exception ex)
             {
@@ -109,7 +116,7 @@ namespace HIS.Desktop.Plugins.RegisterExamKiosk.Popup.RegisteredExam
         {
             try
             {
-
+                stopThread = true;
                 //IN
                 var groupPrint = new TileGroup();
                 groupPrint.Text = "IN PHIẾU KHÁM";
@@ -201,9 +208,13 @@ namespace HIS.Desktop.Plugins.RegisterExamKiosk.Popup.RegisteredExam
                 tileFinish.AppearanceItem.Normal.BackColor = Color.Red;
                 groupFinish.Items.Add(tileFinish);
                 tileControl.Groups.Add(groupFinish);
+                stopThread = false;
+                ResetLoopCount();
             }
             catch (Exception ex)
             {
+                stopThread = false;
+                ResetLoopCount();
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
@@ -212,14 +223,18 @@ namespace HIS.Desktop.Plugins.RegisterExamKiosk.Popup.RegisteredExam
         {
             try
             {
+                stopThread = true;
                 CommonParam param = new CommonParam();
                 HisTreatmentFilter filter = new HisTreatmentFilter();
                 filter.ID = this.currentPatientSdo.TreatmentId ?? -1;
                 var apirs = new BackendAdapter(param).Get<List<HIS_TREATMENT>>("api/HisTreatment/Get", ApiConsumer.ApiConsumers.MosConsumer, filter, param);
                 this.currentTreatment = apirs != null ? apirs.FirstOrDefault() : null;
+                stopThread = false;
+                ResetLoopCount();
             }
             catch (Exception ex)
             {
+                stopThread = false;
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
@@ -228,6 +243,7 @@ namespace HIS.Desktop.Plugins.RegisterExamKiosk.Popup.RegisteredExam
         {
             try
             {
+                stopThread = true;
                 decimal totalPatientPrice = 0;
                 decimal patientPaid = 0;
                 decimal patientMissing = 0;
@@ -269,10 +285,12 @@ namespace HIS.Desktop.Plugins.RegisterExamKiosk.Popup.RegisteredExam
                 lblTotalPatientPrice.Text = totalPatientPrice.ToString() + " đ";
                 lblPatientPaid.Text = Math.Round(patientPaid).ToString() + " đ";
                 LoadDataTile(patientMissing, balance);
-
+                stopThread = false;
+                ResetLoopCount();
             }
             catch (Exception ex)
             {
+                stopThread = false;
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
@@ -317,6 +335,7 @@ namespace HIS.Desktop.Plugins.RegisterExamKiosk.Popup.RegisteredExam
         {
             try
             {
+                stopThread = true;
                 if (currentPatientSdo.TreatmentId == null)
                 {
                     return;
@@ -342,9 +361,12 @@ namespace HIS.Desktop.Plugins.RegisterExamKiosk.Popup.RegisteredExam
                     printKiosk.RunPrint();
 
                 }
+                stopThread = false;
+                ResetLoopCount();
             }
             catch (Exception ex)
             {
+                stopThread = false;
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
@@ -353,6 +375,7 @@ namespace HIS.Desktop.Plugins.RegisterExamKiosk.Popup.RegisteredExam
         {
             try
             {
+                stopThread = true;
                 WaitingManager.Show();
                 CommonParam param = new CommonParam();
                 bool success = false;
@@ -379,9 +402,12 @@ namespace HIS.Desktop.Plugins.RegisterExamKiosk.Popup.RegisteredExam
                 WaitingManager.Hide();
 
                 MessageManager.Show(this, param, success);
+                stopThread = false;
+                ResetLoopCount();
             }
             catch (Exception ex)
             {
+                stopThread = false;
                 WaitingManager.Hide();
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
@@ -404,6 +430,7 @@ namespace HIS.Desktop.Plugins.RegisterExamKiosk.Popup.RegisteredExam
         {
             try
             {
+                
                 this.Close();
             }
             catch (Exception ex)
@@ -416,6 +443,7 @@ namespace HIS.Desktop.Plugins.RegisterExamKiosk.Popup.RegisteredExam
         {
             try
             {
+                stopThread = true;
                 if (patientForKioskSDO != null)
                 {
                     string message = "";
@@ -474,10 +502,63 @@ namespace HIS.Desktop.Plugins.RegisterExamKiosk.Popup.RegisteredExam
                     this.Close();
                     this.OpenFormByPatientData();
                 }
+                stopThread = false;
+                ResetLoopCount();
             }
             catch (Exception ex)
             {
+                stopThread = false;
                 Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+        bool stopThread = false;
+        private void ClosingForm()
+        {
+            try
+            {
+                if (HisConfigCFG.timeWaitingMilisecond > 0)
+                {
+                    bool time_out = false;
+                    ResetLoopCount();
+                    while (!time_out)
+                    {
+                        if (stopThread)
+                        {
+                            ResetLoopCount();
+                        }
+                        if (loopCount <= 0)
+                        {
+                            time_out = true;
+                        }
+
+                        System.Threading.Thread.Sleep(50);
+                        loopCount--;
+                    }
+
+                    this.Invoke(new MethodInvoker(delegate () { this.Close(); }));
+                    if (DelegateClose != null)
+                    {
+                        DelegateClose(null);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+        int loopCount = HisConfigCFG.timeWaitingMilisecond / 50;
+        private void ResetLoopCount()
+        {
+            try
+            {
+                this.loopCount = HisConfigCFG.timeWaitingMilisecond / 50;
+
+                Inventec.Common.Logging.LogSystem.Info("ResetLoopCount");
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
     }

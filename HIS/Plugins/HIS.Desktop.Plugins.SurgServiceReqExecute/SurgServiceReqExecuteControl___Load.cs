@@ -65,7 +65,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
                 this.chkServiceCode.Properties.Caption = Inventec.Common.Resource.Get.Value("SurgServiceReqExecuteControl.chkServiceCode.Properties.Caption", Base.ResourceLangManager.LanguageUCSurgServiceReqExecute, LanguageManager.GetCulture());
                 this.btnSavePtttTemp.ToolTip = Inventec.Common.Resource.Get.Value("SurgServiceReqExecuteControl.btnSavePtttTemp.ToolTip", Base.ResourceLangManager.LanguageUCSurgServiceReqExecute, LanguageManager.GetCulture());
                 this.cboPtttTemp.Properties.NullText = Inventec.Common.Resource.Get.Value("SurgServiceReqExecuteControl.cboPtttTemp.Properties.NullText", Base.ResourceLangManager.LanguageUCSurgServiceReqExecute, LanguageManager.GetCulture());
-                this.dropDownButtonGPBL.Text = Inventec.Common.Resource.Get.Value("SurgServiceReqExecuteControl.dropDownButtonGPBL.Text", Base.ResourceLangManager.LanguageUCSurgServiceReqExecute, LanguageManager.GetCulture());
+                //this.dropDownButtonGPBL.Text = Inventec.Common.Resource.Get.Value("SurgServiceReqExecuteControl.dropDownButtonGPBL.Text", Base.ResourceLangManager.LanguageUCSurgServiceReqExecute, LanguageManager.GetCulture());
                 this.dropDownButtonGPBL.ToolTip = Inventec.Common.Resource.Get.Value("SurgServiceReqExecuteControl.dropDownButtonGPBL.ToolTip", Base.ResourceLangManager.LanguageUCSurgServiceReqExecute, LanguageManager.GetCulture());
                 this.gridColumn2.Caption = Inventec.Common.Resource.Get.Value("SurgServiceReqExecuteControl.gridColumn2.Caption", Base.ResourceLangManager.LanguageUCSurgServiceReqExecute, LanguageManager.GetCulture());
                 this.gridColumn8.Caption = Inventec.Common.Resource.Get.Value("SurgServiceReqExecuteControl.gridColumn8.Caption", Base.ResourceLangManager.LanguageUCSurgServiceReqExecute, LanguageManager.GetCulture());
@@ -90,8 +90,8 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
                 this.grdColNumber.Caption = Inventec.Common.Resource.Get.Value("SurgServiceReqExecuteControl.grdColNumber.Caption", Base.ResourceLangManager.LanguageUCSurgServiceReqExecute, LanguageManager.GetCulture());
                 this.grdColObjectPay.Caption = Inventec.Common.Resource.Get.Value("SurgServiceReqExecuteControl.grdColObjectPay.Caption", Base.ResourceLangManager.LanguageUCSurgServiceReqExecute, LanguageManager.GetCulture());
                 this.gridColumnMaty.Caption = Inventec.Common.Resource.Get.Value("SurgServiceReqExecuteControl.gridColumnMaty.Caption", Base.ResourceLangManager.LanguageUCSurgServiceReqExecute, LanguageManager.GetCulture());
-                this.btnAssignPre.Text = Inventec.Common.Resource.Get.Value("SurgServiceReqExecuteControl.btnAssignPre.Text", Base.ResourceLangManager.LanguageUCSurgServiceReqExecute, LanguageManager.GetCulture());
-                this.ddbPhatSinh.Text = Inventec.Common.Resource.Get.Value("SurgServiceReqExecuteControl.ddbPhatSinh.Text", Base.ResourceLangManager.LanguageUCSurgServiceReqExecute, LanguageManager.GetCulture());
+                //this.btnAssignPre.Text = Inventec.Common.Resource.Get.Value("SurgServiceReqExecuteControl.btnAssignPre.Text", Base.ResourceLangManager.LanguageUCSurgServiceReqExecute, LanguageManager.GetCulture());
+                //this.ddbPhatSinh.Text = Inventec.Common.Resource.Get.Value("SurgServiceReqExecuteControl.ddbPhatSinh.Text", Base.ResourceLangManager.LanguageUCSurgServiceReqExecute, LanguageManager.GetCulture());
                 this.ddbPhatSinh.ToolTip = Inventec.Common.Resource.Get.Value("SurgServiceReqExecuteControl.ddbPhatSinh.ToolTip", Base.ResourceLangManager.LanguageUCSurgServiceReqExecute, LanguageManager.GetCulture());
                 this.layoutControlGroup1.Text = Inventec.Common.Resource.Get.Value("SurgServiceReqExecuteControl.layoutControlGroup1.Text", Base.ResourceLangManager.LanguageUCSurgServiceReqExecute, LanguageManager.GetCulture());
                 this.layoutControlGroup2.Text = Inventec.Common.Resource.Get.Value("SurgServiceReqExecuteControl.layoutControlGroup2.Text", Base.ResourceLangManager.LanguageUCSurgServiceReqExecute, LanguageManager.GetCulture());
@@ -807,9 +807,8 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
                     {
                         V_HIS_SERE_SERV_PTTT pttt = hisSereServPttt.FirstOrDefault(o => o.ID == item.ID);
                         if (pttt != null)
-                            pttt = item;//gán lại để cập nhật dữ liệu mới nhất
-                        else
-                            hisSereServPttt.Add(item);
+                            hisSereServPttt.Remove(pttt);//gán lại để cập nhật dữ liệu mới nhất
+                        hisSereServPttt.Add(item);
                     }
                 }
                 if (dicSereServCopy != null && dicSereServCopy.Count > 0 && dicSereServCopy.ContainsKey(sereServ.ID))
@@ -919,6 +918,16 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
                     }
 
                     this.txtMANNER.Text = this.sereServPTTT.MANNER;
+
+                    if (!string.IsNullOrEmpty(sereServPTTT.SUBS_DIRECTOR_LOGINNAME) && lstReAcsUserADO.Exists(o => o.LOGINNAME == sereServPTTT.SUBS_DIRECTOR_LOGINNAME))
+                    {
+                        cboHospSubs.EditValue = sereServPTTT.SUBS_DIRECTOR_LOGINNAME;
+                    }
+
+                    if (!string.IsNullOrEmpty(sereServPTTT.SUBS_HEAD_LOGINNAME) && lstReAcsUserADO.Exists(o => o.LOGINNAME == sereServPTTT.SUBS_HEAD_LOGINNAME))
+                    {
+                        cboEndDeptSubs.EditValue = sereServPTTT.SUBS_HEAD_LOGINNAME;
+                    }
                 }
                 else
                 {
@@ -1041,6 +1050,16 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
                             txtBanMoCode.Text = "";
                             cboBanMo.EditValue = null;
                         }
+                    }
+
+                    if (!string.IsNullOrEmpty(this.sereServPTTT.SUBS_DIRECTOR_LOGINNAME) && lstReAcsUserADO.Exists(o => o.LOGINNAME == this.sereServPTTT.SUBS_DIRECTOR_LOGINNAME))
+                    {
+                        cboHospSubs.EditValue = this.sereServPTTT.SUBS_DIRECTOR_LOGINNAME;
+                    }
+
+                    if (!string.IsNullOrEmpty(this.sereServPTTT.SUBS_HEAD_LOGINNAME) && lstReAcsUserADO.Exists(o => o.LOGINNAME == this.sereServPTTT.SUBS_HEAD_LOGINNAME))
+                    {
+                        cboEndDeptSubs.EditValue = this.sereServPTTT.SUBS_HEAD_LOGINNAME;
                     }
                 }
                 else if (this.sereServ != null && !this.sereServ.EKIP_ID.HasValue)
@@ -1742,6 +1761,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
                         btnAssignBlood.Enabled = false;
                         btnTuTruc.Enabled = false;
                         btnAssignPre.Enabled = false;
+                        btnPresYhct.Enabled = false;
                     }
                     else if (HisConfigKeys.CheckPermissonOption == "1" && this.serviceReq.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__PT)
                     {
@@ -1842,6 +1862,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
                             btnAssignBlood.Enabled = true;
                             btnTuTruc.Enabled = true;
                             btnAssignPre.Enabled = true;
+                            btnPresYhct.Enabled = true;
                             dropDownButtonGPBL.Enabled = true;
                             ddbPhatSinh.Enabled = true;
                             btnSwapService.Enabled = true;
@@ -1948,6 +1969,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
                             btnAssignBlood.Enabled = false;
                             btnTuTruc.Enabled = false;
                             btnAssignPre.Enabled = false;
+                            btnPresYhct.Enabled = false;
                             dropDownButtonGPBL.Enabled = false;
                             ddbPhatSinh.Enabled = false;
                             btnSwapService.Enabled = false;
@@ -2049,6 +2071,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
                             btnAssignBlood.Enabled = enable;
                             btnTuTruc.Enabled = enable;
                             btnAssignPre.Enabled = enable;
+                            btnPresYhct.Enabled = enable;
                             dropDownButtonGPBL.Enabled = enable;
                             ddbPhatSinh.Enabled = enable;
                             btnSwapService.Enabled = enable;
@@ -2146,6 +2169,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
                             btnAssignBlood.Enabled = true;
                             btnTuTruc.Enabled = true;
                             btnAssignPre.Enabled = true;
+                            btnPresYhct.Enabled = true;
                             dropDownButtonGPBL.Enabled = true;
                             ddbPhatSinh.Enabled = true;
                             btnSwapService.Enabled = true;
@@ -2238,6 +2262,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
                         btnAssignBlood.Enabled = true;
                         btnTuTruc.Enabled = true;
                         btnAssignPre.Enabled = true;
+                        btnPresYhct.Enabled = true;
                         dropDownButtonGPBL.Enabled = true;
                         ddbPhatSinh.Enabled = true;
                         btnSwapService.Enabled = true;
@@ -3130,7 +3155,8 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
                 {
                     var data = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<HIS_MACHINE>().Where(o =>
                         o.IS_ACTIVE == 1
-                        && o.MACHINE_CODE.Contains(searchCode)).ToList();
+                        && o.MACHINE_CODE.Contains(searchCode)
+                        && ("," + o.ROOM_IDS + ",").Contains("," + this.Module.RoomId + ",")).ToList();
                     if (data != null)
                     {
                         if (data.Count == 1)
@@ -3375,6 +3401,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
                     //btnSwapService.Enabled = false;
                     ddbPhatSinh.Enabled = false;
                     btnAssignPre.Enabled = false;
+                    btnPresYhct.Enabled = false;
                     btnSave.Enabled = false;
                     btnFinish.Enabled = false;
                     EnableICD(false, txtIcdCode1, txtIcd1, cboIcd1, chkIcd1);
@@ -3438,6 +3465,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
                     //btnSwapService.Enabled = true;
                     ddbPhatSinh.Enabled = true;
                     btnAssignPre.Enabled = true;
+                    btnPresYhct.Enabled = true;
                     btnSave.Enabled = true;
                     btnFinish.Enabled = !(HisConfigKeys.allowFinishWhenAccountIsDoctor == "1" && BackendDataWorker.Get<HIS_EMPLOYEE>().Where(o => o.LOGINNAME == Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName()).FirstOrDefault().IS_DOCTOR != 1);
 

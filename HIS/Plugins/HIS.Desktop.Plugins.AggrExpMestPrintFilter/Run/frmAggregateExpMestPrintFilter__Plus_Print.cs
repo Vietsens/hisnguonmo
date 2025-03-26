@@ -291,7 +291,13 @@ namespace HIS.Desktop.Plugins.AggrExpMestPrintFilter
                         LoadPhieuTraDoiBuCoSo(printTypeCode, fileName, ref result);
                         break;
                     case "Mps000247":
-                        print = new Run.PrintNow(this.currrentModule);
+                        long chooseTimeType = 1;
+                        if (cboChooseTime.EditValue != null && cboChooseTime.EditValue is long)
+                        {
+                            chooseTimeType = (long)cboChooseTime.EditValue;
+                        }
+                        
+                        print = new Run.PrintNow(this.currrentModule, chooseTimeType);
                         print._AggrExpMests = this._AggrExpMests.OrderBy(o => o.EXP_MEST_CODE).ToList();
                         print.printNow = this.chkPrintNow.Checked;
 
@@ -320,7 +326,7 @@ namespace HIS.Desktop.Plugins.AggrExpMestPrintFilter
                         if (RoomDTO3s != null && RoomDTO3s.Count > 0)
                             this.reqRoomIds = RoomDTO3s.Select(p => p.ID).ToList();
 
-                        print.InTraDoiTongHop6282(printTypeCode, fileName, ref result, true, this.serviceUnitIds, this.useFormIds, this.reqRoomIds, IntructionTimeFrom, IntructionTimeTo, chkMedicine.Checked, chkMaterial.Checked, chkIsChemicalSustance.Checked, this.department);
+                        print.InTraDoiTongHop6282(printTypeCode, fileName, ref result, true, this.serviceUnitIds, this.useFormIds, this.reqRoomIds, IntructionTimeFrom, IntructionTimeTo, chkMedicine.Checked, chkMaterial.Checked, chkIsChemicalSustance.Checked, this.department, chooseTimeType);
                         this.CountMediMatePrinted = this.TotalMediMatePrint;
                         break;
 
@@ -958,15 +964,34 @@ namespace HIS.Desktop.Plugins.AggrExpMestPrintFilter
                     //IntructionTimeTo = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(dtIntructionTimeTo.DateTime) ?? null;
                     IntructionTimeTo = Inventec.Common.TypeConvert.Parse.ToInt64(Convert.ToDateTime(dtIntructionTimeTo.EditValue).ToString("yyyyMMdd") + "235959");
                 }
-                List<HIS_EXP_MEST> _ExpMests_Print_Temp = null;
-                if (IntructionTimeFrom != null && IntructionTimeTo != null)
+                long chooseTimeType = 1;
+                if (cboChooseTime.EditValue != null && cboChooseTime.EditValue is long)
                 {
-                    _ExpMests_Print_Temp = _ExpMests_Print.Where(o => IntructionTimeFrom <= o.TDL_INTRUCTION_TIME && o.TDL_INTRUCTION_TIME <= IntructionTimeTo).ToList();
+                    chooseTimeType = (long)cboChooseTime.EditValue;
+                }
+                List<HIS_EXP_MEST> _ExpMests_Print_Temp = _ExpMests_Print;
+
+                if (chooseTimeType == 1)
+                {
+                    if (IntructionTimeFrom != null)
+                    {
+                        _ExpMests_Print_Temp = _ExpMests_Print_Temp.Where(o => IntructionTimeFrom <= o.TDL_INTRUCTION_TIME).ToList();
+                    }
+                    if (IntructionTimeTo != null)
+                    {
+                        _ExpMests_Print_Temp = _ExpMests_Print_Temp.Where(o => o.TDL_INTRUCTION_TIME <= IntructionTimeTo).ToList();
+                    }
                 }
                 else
                 {
-                    _ExpMests_Print_Temp = _ExpMests_Print;
-
+                    if (IntructionTimeFrom != null)
+                    {
+                        _ExpMests_Print_Temp = _ExpMests_Print_Temp.Where(o => IntructionTimeFrom <= o.TDL_USE_TIME).ToList();
+                    }
+                    if (IntructionTimeTo != null)
+                    {
+                        _ExpMests_Print_Temp = _ExpMests_Print_Temp.Where(o => o.TDL_USE_TIME <= IntructionTimeTo).ToList();
+                    }
                 }
                 if (_ExpMests_Print_Temp != null && _ExpMests_Print_Temp.Count > 0)
                 {
@@ -1029,7 +1054,6 @@ namespace HIS.Desktop.Plugins.AggrExpMestPrintFilter
                     BedLogList = new BackendAdapter(param).Get<List<V_HIS_BED_LOG>>("api/HisBedLog/GetView", ApiConsumer.ApiConsumers.MosConsumer, bedLogFilter, param);
 
                 }
-
                 List<MPS.Processor.Mps000047.PDO.Mps000047ADO> listMps000047ADO = new List<MPS.Processor.Mps000047.PDO.Mps000047ADO>();
 
                 #region ------T-------------------------
@@ -1043,13 +1067,22 @@ namespace HIS.Desktop.Plugins.AggrExpMestPrintFilter
                         {
                             query = query.Where(o => expMests.Select(p => p.ID).Contains(o.EXP_MEST_ID ?? 0)).ToList();
                         }
+                        else
+                        {
+                            query = new List<V_HIS_EXP_MEST_MEDICINE>();
+                        }
+                    }
+                    else
+                    {
+                        query = new List<V_HIS_EXP_MEST_MEDICINE>();
                     }
 
                     query = query.Where(p => Check(p)).ToList();
                     var Groups = query.GroupBy(g => new
                     {
                         g.MEDICINE_TYPE_ID,
-                        g.EXP_MEST_ID
+                        g.EXP_MEST_ID,
+                        g.REQ_ROOM_ID
                     }).Select(p => p.ToList()).ToList();
                     foreach (var itemGr in Groups)
                     {
@@ -1071,8 +1104,11 @@ namespace HIS.Desktop.Plugins.AggrExpMestPrintFilter
                             ado.SERVICE_UNIT_CODE = data.SERVICE_UNIT_CODE;
                             ado.SERVICE_UNIT_NAME = data.SERVICE_UNIT_NAME;
                             ado.SERVICE_ID = data.SERVICE_ID;
+                            ado.CONCENTRA = data.CONCENTRA;
+                            ado.MEDICINE_USE_FORM_NAME = data.MEDICINE_USE_FORM_NAME;
                         }
-
+                        ado.REQ_ROOM_ID = itemGr[0].REQ_ROOM_ID;
+                        ado.REQ_ROOM_NAME = RoomDTO3s.FirstOrDefault(o => o.ID == ado.REQ_ROOM_ID).ROOM_NAME;
                         if (this.aggrExpMest.EXP_MEST_STT_ID == IMSys.DbConfig.HIS_RS.HIS_EXP_MEST_STT.ID__EXECUTE
                             || this.aggrExpMest.EXP_MEST_STT_ID == IMSys.DbConfig.HIS_RS.HIS_EXP_MEST_STT.ID__DONE)
                         {
@@ -1127,13 +1163,22 @@ namespace HIS.Desktop.Plugins.AggrExpMestPrintFilter
                         {
                             query = query.Where(o => expMests.Select(p => p.ID).Contains(o.EXP_MEST_ID ?? 0)).ToList();
                         }
+                        else
+                        {
+                            query = new List<V_HIS_EXP_MEST_MATERIAL>();
+                        }
+                    }
+                    else
+                    {
+                        query = new List<V_HIS_EXP_MEST_MATERIAL>();
                     }
                     query = query.Where(p => Check(p)).ToList();
 
                     var Groups = query.GroupBy(g => new
                     {
                         g.MATERIAL_TYPE_ID,
-                        g.EXP_MEST_ID
+                        g.EXP_MEST_ID,
+                        g.REQ_ROOM_ID
                     }).Select(p => p.ToList()).ToList();
                     foreach (var itemGr in Groups)
                     {
@@ -1156,6 +1201,8 @@ namespace HIS.Desktop.Plugins.AggrExpMestPrintFilter
                             ado.SERVICE_ID = data.SERVICE_ID;
                         }
 
+                        ado.REQ_ROOM_ID = itemGr[0].REQ_ROOM_ID;
+                        ado.REQ_ROOM_NAME = RoomDTO3s.FirstOrDefault(o => o.ID == ado.REQ_ROOM_ID).ROOM_NAME;
                         if (this.aggrExpMest.EXP_MEST_STT_ID == IMSys.DbConfig.HIS_RS.HIS_EXP_MEST_STT.ID__EXECUTE
                             || this.aggrExpMest.EXP_MEST_STT_ID == IMSys.DbConfig.HIS_RS.HIS_EXP_MEST_STT.ID__DONE)
                         {
@@ -1231,7 +1278,12 @@ namespace HIS.Desktop.Plugins.AggrExpMestPrintFilter
                     }
                 }
                 dicMedi = dicMedi.OrderByDescending(p => p.Key).ToDictionary(p => p.Key, p => p.Value);
-
+                if (dicMedi.Count == 0)
+                {
+                    WaitingManager.Hide();
+                    XtraMessageBox.Show("Phiếu lĩnh không có thuốc, vật tư thỏa mãn điều kiện lọc.");
+                    return;
+                }
                 foreach (var item in dicMedi)
                 {
                     Inventec.Common.SignLibrary.ADO.InputADO inputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode((this.aggrExpMest != null ? this.aggrExpMest.TDL_TREATMENT_CODE : ""), printTypeCode, this.currrentModule.RoomId);
@@ -1242,7 +1294,8 @@ namespace HIS.Desktop.Plugins.AggrExpMestPrintFilter
                      this.department,
                      vHisTreatmentBedRooms,
                      BedLogList,
-                     keyColumnSize
+                     keyColumnSize,
+                     chooseTimeType
                  );
                     WaitingManager.Hide();
                     Run.Print.PrintData(printTypeCode, fileName, mps000047RDO, this.chkPrintNow.Checked, inputADO, ref result, this.currrentModule.RoomId, false, false, 1, SetDataGroup);
@@ -2001,6 +2054,8 @@ namespace HIS.Desktop.Plugins.AggrExpMestPrintFilter
                         {
                             result = result && true;
                         }
+                        else
+                            result = false;
                     }
                 }
             }
@@ -2033,6 +2088,8 @@ namespace HIS.Desktop.Plugins.AggrExpMestPrintFilter
                         {
                             result = result && true;
                         }
+                        else
+                            result = false;
                     }
                 }
             }

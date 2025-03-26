@@ -663,10 +663,6 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
                 //if (this.mainHeinProcessor != null && this.ucHeinBHYT != null)
                 //    this.mainHeinProcessor.ResetValidationControl(this.ucHeinBHYT);
 
-                //Lấy danh sách id các đối tượng thanh toán được phép chuyển đổi từ đối tượng bệnh nhân
-                GlobalStore.PatientTypeIdAllows = (!String.IsNullOrEmpty(patientTypeCode) ? BackendDataWorker.Get<MOS.EFMODEL.DataModels.V_HIS_PATIENT_TYPE_ALLOW>()
-                    .Where(o => o.PATIENT_TYPE_CODE == patientTypeCode)
-                    .Select(o => o.PATIENT_TYPE_ALLOW_ID).ToList() : null);
 
                 Inventec.Common.Logging.LogSystem.Debug("t3.2: end process ChoiceTemplateHeinCard");
             }

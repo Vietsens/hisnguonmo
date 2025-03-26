@@ -31,6 +31,7 @@ using Inventec.Common.Adapter;
 using Inventec.Core;
 using HIS.Desktop.ApiConsumer;
 using DevExpress.XtraEditors.Controls;
+using HIS.Desktop.LocalStorage.BackendData;
 namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
 {
     public partial class frmEnterKskInfomantionVer2
@@ -82,6 +83,13 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                 SetDataCboRank(cboExamStomatologyRank);
                 SetDataCboRank(cboExamDernatologyRank);
                 SetDataCboRank(cboHealthExamRank);
+                SetDataCboExamLoginName(cboExecuteLoginName);
+                SetDataCboExamLoginName(cboExamCirculationLoginName);
+                SetDataCboExamLoginName(cboExamEyeLoginName);
+                SetDataCboExamLoginName(cboExamEntLoginName);
+                SetDataCboExamLoginName(cboExamStomatologyLoginName);
+                SetDataCboExamLoginName(cboExamSubclinicalLoginName);
+                SetDataCboExamLoginName(cboConcluderLoginName);
                 FillDataGenaral();
             }
             catch (Exception ex)
@@ -212,8 +220,15 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                                 spnBloodPressureMin.EditValue = dhstGeneral.BLOOD_PRESSURE_MIN;
                                 //txtVirBmi.Text = currentDhst.VIR_BMI!=null ? currentDhst.VIR_BMI.ToString() : "";
                                 FillNoteBMI(spnHeight, spnWeight, txtVirBmi);
+                                cboExecuteLoginName.EditValue = dhstGeneral.EXECUTE_LOGINNAME;
                             }
                         }
+                        cboExamCirculationLoginName.EditValue = currentKskGeneral.EXAM_CIRCULATION_LOGINNAME;
+                        cboExamEyeLoginName.EditValue = currentKskGeneral.EXAM_EYE_LOGINNAME;
+                        cboExamEntLoginName.EditValue = currentKskGeneral.EXAM_ENT_LOGINNAME;
+                        cboExamStomatologyLoginName.EditValue = currentKskGeneral.EXAM_STOMATOLOGY_LOGINNAME;
+                        cboExamSubclinicalLoginName.EditValue = currentKskGeneral.EXAM_SUBCLINICAL_LOGINNAME;
+                        cboConcluderLoginName.EditValue = currentKskGeneral.CONCLUDER_LOGINNAME;
                     }
                     else
                     {
@@ -309,74 +324,82 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                 obj.HISTORY_DISEASE_OCCU_TWO = txtDiseaseOccuTwo.Text;
                 obj.HISTORY_DISEASE_OCCU_TWO_YEAR = spnDiseaseOccuTwoYear.EditValue != null ? spnDiseaseOccuTwoYear.EditValue.ToString() : null;
 
-                if (spnRecentWordOneYear.EditValue != null) obj.RECENT_WORK_ONE_YEAR = Int64.Parse(spnRecentWordOneYear.EditValue.ToString());
-                if (spnRecentWorkOneMonth.EditValue != null) obj.RECENT_WORK_ONE_MONTH = Int64.Parse(spnRecentWorkOneMonth.EditValue.ToString());
-                if (spnRecentWorkTwoYear.EditValue != null) obj.RECENT_WORK_TWO_YEAR = Int64.Parse(spnRecentWorkTwoYear.EditValue.ToString());
-                if (spnRecentWorkTwoMonth.EditValue != null) obj.RECENT_WORK_TWO_MONTH = Int64.Parse(spnRecentWorkTwoMonth.EditValue.ToString());
+                if (spnRecentWordOneYear.EditValue != null) obj.RECENT_WORK_ONE_YEAR = (long?)Int64.Parse(spnRecentWordOneYear.EditValue.ToString());
+                if (spnRecentWorkOneMonth.EditValue != null) obj.RECENT_WORK_ONE_MONTH = (long?)Int64.Parse(spnRecentWorkOneMonth.EditValue.ToString());
+                if (spnRecentWorkTwoYear.EditValue != null) obj.RECENT_WORK_TWO_YEAR = (long?)Int64.Parse(spnRecentWorkTwoYear.EditValue.ToString());
+                if (spnRecentWorkTwoMonth.EditValue != null) obj.RECENT_WORK_TWO_MONTH = (long?)Int64.Parse(spnRecentWorkTwoMonth.EditValue.ToString());
 
                 obj.RECENT_WORK_ONE_FROM = (dteRecentWorkOneFrom.EditValue != null) ? Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(dteRecentWorkOneFrom.DateTime) : null;
                 obj.RECENT_WORK_ONE_TO = (dteRecentWorkOneTo.EditValue != null) ? Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(dteRecentWorkOneTo.DateTime) : null;
                 obj.RECENT_WORK_TWO_FROM = (dteRecentWorkTwoFrom.EditValue != null) ? Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(dteRecentWorkTwoFrom.DateTime) : null;
                 obj.RECENT_WORK_TWO_TO = (dteRecentWorkTwoTo.EditValue != null) ? Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(dteRecentWorkTwoTo.DateTime) : null;
-             
+
                 obj.PATHOLOGICAL_HISTORY = txtPathologicalHistory.Text;
-                obj.DHST_RANK = cboDhstRank.EditValue != null ? Int64.Parse(cboDhstRank.EditValue.ToString()) : 0;
+                obj.DHST_RANK = cboDhstRank.EditValue != null ? (long?)Int64.Parse(cboDhstRank.EditValue.ToString()) : null;
                 obj.EXAM_CIRCULATION = txtExamCirculation.Text;
-                obj.EXAM_CIRCULATION_RANK = cboExamCirculationRank.EditValue != null ? Int64.Parse(cboExamCirculationRank.EditValue.ToString()) : 0;
-              
+                obj.EXAM_CIRCULATION_RANK = cboExamCirculationRank.EditValue != null ? (long?)Int64.Parse(cboExamCirculationRank.EditValue.ToString()) : null;
+
                 obj.EXAM_RESPIRATORY = txtExamRespiratory.Text;
-                obj.EXAM_RESPIRATORY_RANK = cboExamRespiratoryRank.EditValue != null ? Int64.Parse(cboExamRespiratoryRank.EditValue.ToString()) : 0;
+                obj.EXAM_RESPIRATORY_RANK = cboExamRespiratoryRank.EditValue != null ? (long?)Int64.Parse(cboExamRespiratoryRank.EditValue.ToString()) : null;
                 obj.EXAM_DIGESTION = txtExamDigestion.Text;
-                obj.EXAM_DIGESTION_RANK = cboExamDigestionRank.EditValue != null ? Int64.Parse(cboExamDigestionRank.EditValue.ToString()) : 0;
-              
+                obj.EXAM_DIGESTION_RANK = cboExamDigestionRank.EditValue != null ? (long?)Int64.Parse(cboExamDigestionRank.EditValue.ToString()) : null;
+
                 obj.EXAM_KIDNEY_UROLOGY = txtExamKidneyUrology.Text;
-                obj.EXAM_KIDNEY_UROLOGY_RANK = cboExamKidneyUrologyRank.EditValue != null ? Int64.Parse(cboExamKidneyUrologyRank.EditValue.ToString()) : 0;
+                obj.EXAM_KIDNEY_UROLOGY_RANK = cboExamKidneyUrologyRank.EditValue != null ? (long?)Int64.Parse(cboExamKidneyUrologyRank.EditValue.ToString()) : null;
                 obj.EXAM_NEUROLOGICAL = txtExamNeurological.Text;
-                obj.EXAM_NEUROLOGICAL_RANK = cboExamNeurologicalRank.EditValue != null ? Int64.Parse(cboExamNeurologicalRank.EditValue.ToString()) : 0;
-                
+                obj.EXAM_NEUROLOGICAL_RANK = cboExamNeurologicalRank.EditValue != null ? (long?)Int64.Parse(cboExamNeurologicalRank.EditValue.ToString()) : null;
+
                 obj.EXAM_MUSCLE_BONE = txtExamMuscleBone.Text;
-                obj.EXAM_MUSCLE_BONE_RANK = cboExamMuscleBoneRank.EditValue != null ? Int64.Parse(cboExamMuscleBoneRank.EditValue.ToString()) : 0;
+                obj.EXAM_MUSCLE_BONE_RANK = cboExamMuscleBoneRank.EditValue != null ? (long?)Int64.Parse(cboExamMuscleBoneRank.EditValue.ToString()) : null;
                 obj.EXAM_MENTAL = txtExamMental.Text;
-                obj.EXAM_MENTAL_RANK = cboExamMentalRank.EditValue != null ? Int64.Parse(cboExamMentalRank.EditValue.ToString()) : 0;
-                
+                obj.EXAM_MENTAL_RANK = cboExamMentalRank.EditValue != null ? (long?)Int64.Parse(cboExamMentalRank.EditValue.ToString()) : null;
+
                 obj.EXAM_SURGERY = txtExamSurgery.Text;
-                obj.EXAM_SURGERY_RANK = cboExamSurgeryRank.EditValue != null ? Int64.Parse(cboExamSurgeryRank.EditValue.ToString()) : 0;
+                obj.EXAM_SURGERY_RANK = cboExamSurgeryRank.EditValue != null ? (long?)Int64.Parse(cboExamSurgeryRank.EditValue.ToString()) : null;
                 obj.EXAM_DERMATOLOGY = txtExamDernatology.Text;
-                obj.EXAM_DERMATOLOGY_RANK = cboExamDernatologyRank.EditValue != null ? Int64.Parse(cboExamDernatologyRank.EditValue.ToString()) : 0;
-                
+                obj.EXAM_DERMATOLOGY_RANK = cboExamDernatologyRank.EditValue != null ? (long?)Int64.Parse(cboExamDernatologyRank.EditValue.ToString()) : null;
+
                 obj.EXAM_OBSTETRIC = txtExamObstetric.Text;
-                obj.EXAM_OBSTETRIC_RANK = cboExamObstetricRank.EditValue != null ? Int64.Parse(cboExamObstetricRank.EditValue.ToString()) : 0;
+                obj.EXAM_OBSTETRIC_RANK = cboExamObstetricRank.EditValue != null ? (long?)Int64.Parse(cboExamObstetricRank.EditValue.ToString()) : null;
                 obj.EXAM_OEND = txtExamOend.Text;
-                obj.EXAM_OEND_RANK = cboExamOendRank.EditValue != null ? Int64.Parse(cboExamOendRank.EditValue.ToString()) : 0;
-                
+                obj.EXAM_OEND_RANK = cboExamOendRank.EditValue != null ? (long?)Int64.Parse(cboExamOendRank.EditValue.ToString()) : null;
+
                 obj.EXAM_DERMATOLOGY = txtExamDernatology.Text;
-                obj.EXAM_DERMATOLOGY_RANK = cboExamDernatologyRank.EditValue != null ? Int64.Parse(cboExamDernatologyRank.EditValue.ToString()) : 0;
+                obj.EXAM_DERMATOLOGY_RANK = cboExamDernatologyRank.EditValue != null ? (long?)Int64.Parse(cboExamDernatologyRank.EditValue.ToString()) : null;
                 obj.EXAM_EYESIGHT_RIGHT = txtExamEyeSightRight.Text;
                 obj.EXAM_EYESIGHT_LEFT = txtExamEyeSightLeft.Text;
-            
+
                 obj.EXAM_EYESIGHT_GLASS_RIGHT = txtExamEyeSightGlassRight.Text;
                 obj.EXAM_EYESIGHT_GLASS_LEFT = txtExamEyeSightGlassLeft.Text;
                 obj.EXAM_EYE_DISEASE = txtExamEyeDisease.Text;
-                obj.EXAM_EYE_RANK = cboExamEyeRank.EditValue != null ? Int64.Parse(cboExamEyeRank.EditValue.ToString()) : 0;
-                
+                obj.EXAM_EYE_RANK = cboExamEyeRank.EditValue != null ? (long?)Int64.Parse(cboExamEyeRank.EditValue.ToString()) : null;
+
                 obj.EXAM_ENT_LEFT_NORMAL = txtExamEntLeftNormal.Text;
                 obj.EXAM_ENT_LEFT_WHISPER = txtExamEntLeftWhisper.Text;
                 obj.EXAM_ENT_RIGHT_NORMAL = txtExamEntRightNomal.Text;
                 obj.EXAM_ENT_RIGHT_WHISPER = txtExamEntRightWhisper.Text;
-                
+
                 obj.EXAM_ENT_DISEASE = txtExamEntDisease.Text;
-                obj.EXAM_ENT_RANK = cboExamEntDiseaseRank.EditValue != null ? Int64.Parse(cboExamEntDiseaseRank.EditValue.ToString()) : 0;
+                obj.EXAM_ENT_RANK = cboExamEntDiseaseRank.EditValue != null ? (long?)Int64.Parse(cboExamEntDiseaseRank.EditValue.ToString()) : null;
                 obj.EXAM_STOMATOLOGY_UPPER = txtExamStomatologyUpper.Text;
                 obj.EXAM_STOMATOLOGY_LOWER = txtExamStomatologyLower.Text;
-                
+
                 obj.EXAM_STOMATOLOGY_DISEASE = txtExamStomatologyDisease.Text;
-                obj.EXAM_STOMATOLOGY_RANK = cboExamStomatologyRank.EditValue != null ? Int64.Parse(cboExamStomatologyRank.EditValue.ToString()) : 0;
+                obj.EXAM_STOMATOLOGY_RANK = cboExamStomatologyRank.EditValue != null ? (long?)Int64.Parse(cboExamStomatologyRank.EditValue.ToString()) : null;
                 obj.RESULT_SUBCLINICAL = txtResultSubclinical.Text;
                 obj.NOTE_SUBCLINICAL = txtNoteSubclinical.Text;
-                
-                obj.HEALTH_EXAM_RANK_ID = cboHealthExamRank.EditValue != null ? Int64.Parse(cboHealthExamRank.EditValue.ToString()) : 0;
+
+                obj.HEALTH_EXAM_RANK_ID = cboHealthExamRank.EditValue != null ? (long?)Int64.Parse(cboHealthExamRank.EditValue.ToString()) : null;
                 obj.DISEASES = txtDiseases.Text;
                 obj.NOW_WORK_FROM = ((this.dtpStart.EditValue != null) ? Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(new DateTime?(this.dtpStart.DateTime)) : null);
+
+                obj.EXAM_CIRCULATION_LOGINNAME = cboExamCirculationLoginName.EditValue != null ? cboExamCirculationLoginName.EditValue.ToString() : null;
+                obj.EXAM_EYE_LOGINNAME = cboExamEyeLoginName.EditValue != null ? cboExamEyeLoginName.EditValue.ToString() : null;
+                obj.EXAM_ENT_LOGINNAME = cboExamEntLoginName.EditValue != null ? cboExamEntLoginName.EditValue.ToString() : null;
+                obj.EXAM_STOMATOLOGY_LOGINNAME = cboExamStomatologyLoginName.EditValue != null ? cboExamStomatologyLoginName.EditValue.ToString() : null;
+                obj.EXAM_SUBCLINICAL_LOGINNAME = cboExamSubclinicalLoginName.EditValue != null ? cboExamSubclinicalLoginName.EditValue.ToString() : null;
+                obj.CONCLUDER_LOGINNAME = cboConcluderLoginName.EditValue != null ? cboConcluderLoginName.EditValue.ToString() : null;
+
             }
             catch (Exception ex)
             {
@@ -403,6 +426,8 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                 if (spnWeight.EditValue != null)
                     obj.WEIGHT = Inventec.Common.Number.Get.RoundCurrency(spnWeight.Value, 2);
 
+                obj.EXECUTE_LOGINNAME = cboExecuteLoginName.EditValue != null ? cboExecuteLoginName.EditValue.ToString() : null;
+                obj.EXECUTE_USERNAME = obj.EXECUTE_LOGINNAME != null ? BackendDataWorker.Get<V_HIS_EMPLOYEE>().FirstOrDefault(o => o.LOGINNAME == obj.EXECUTE_LOGINNAME).TDL_USERNAME : null;
             }
             catch (Exception ex)
             {

@@ -24,10 +24,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using HIS.Desktop.Utility;
 
 namespace HIS.UC.UCOtherServiceReqInfo
 {
-    public partial class UCOtherServiceReqInfo : UserControl
+    public partial class UCOtherServiceReqInfo : UserControlBase
     {
         #region Outside Focus UserControl
 

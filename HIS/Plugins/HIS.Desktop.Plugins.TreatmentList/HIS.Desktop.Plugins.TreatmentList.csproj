@@ -66,7 +66,7 @@
     <Reference Include="DevExpress.XtraTreeList.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
     <Reference Include="DevExpress.XtraVerticalGrid.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
     <Reference Include="EMR_MAIN">
-      <HintPath>..\..\..\..\..\histest\histest\x64\ReferencedAssemblies\EMR_MAIN.dll</HintPath>
+      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\EMR_MAIN.dll</HintPath>
     </Reference>
     <Reference Include="His.Bhyt.ExportXml">
       <HintPath>..\..\..\..\LIB\HIS\His.Bhyt.ExportXml\His.Bhyt.ExportXml.dll</HintPath>
@@ -75,15 +75,18 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\LIB\HIS\HIS.Common\HIS.Common.Treatment\HIS.Common.Treatment.dll</HintPath>
     </Reference>
+    <Reference Include="HIS.Desktop.IsAdmin">
+      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\HIS.Desktop.IsAdmin.dll</HintPath>
+    </Reference>
     <Reference Include="HIS.Desktop.Plugins.InformationAllowGoHome">
-      <HintPath>..\..\..\..\..\histest\histest\x64\Plugins\Module\HIS.Desktop.Plugins.InformationAllowGoHome.dll</HintPath>
+      <HintPath>..\..\..\..\histest\x64\Plugins\Module\HIS.Desktop.Plugins.InformationAllowGoHome.dll</HintPath>
     </Reference>
     <Reference Include="HIS.Desktop.Plugins.Library.EmrGenerate, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\LIB\HIS\HIS.Desktop.Plugins.Library.EmrGenerate\HIS.Desktop.Plugins.Library.EmrGenerate.dll</HintPath>
     </Reference>
     <Reference Include="HIS.Desktop.Plugins.Library.FormMedicalRecord">
-      <HintPath>..\..\..\..\..\histest\histest\x64\ReferencedAssemblies\HIS.Desktop.Plugins.Library.FormMedicalRecord.dll</HintPath>
+      <HintPath>..\..\..\..\lib\HIS\HIS.Desktop.Plugins.Library.FormMedicalRecord\HIS.Desktop.Plugins.Library.FormMedicalRecord.dll</HintPath>
     </Reference>
     <Reference Include="HIS.Desktop.Plugins.Library.FormOtherTreatment">
       <HintPath>..\..\..\..\LIB\HIS\HIS.Desktop.Plugins.Library.FormOtherTreatment\HIS.Desktop.Plugins.Library.FormOtherTreatment.dll</HintPath>
@@ -95,10 +98,10 @@
       <HintPath>..\..\..\..\LIB\HIS\HIS.Desktop.Plugins.Library.PrintOtherForm\HIS.Desktop.Plugins.Library.PrintOtherForm.dll</HintPath>
     </Reference>
     <Reference Include="HIS.Desktop.Plugins.Library.PrintPatientUpdate">
-      <HintPath>..\..\..\..\..\histest\histest\x64\ReferencedAssemblies\HIS.Desktop.Plugins.Library.PrintPatientUpdate.dll</HintPath>
+      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\HIS.Desktop.Plugins.Library.PrintPatientUpdate.dll</HintPath>
     </Reference>
     <Reference Include="HIS.Desktop.Plugins.Library.PrintPrescription">
-      <HintPath>..\..\..\..\..\histest\histest\x64\ReferencedAssemblies\HIS.Desktop.Plugins.Library.PrintPrescription.dll</HintPath>
+      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\HIS.Desktop.Plugins.Library.PrintPrescription.dll</HintPath>
     </Reference>
     <Reference Include="HIS.Desktop.Plugins.Library.PrintPublicMedicines">
       <HintPath>..\..\..\..\LIB\HIS\HIS.Desktop.Plugins.Library.PrintPublicMedicines\HIS.Desktop.Plugins.Library.PrintPublicMedicines.dll</HintPath>
@@ -273,10 +276,10 @@
       <HintPath>..\..\..\..\LIB\MPSv2\MPS.PDO\MPS.Processor.Mps000010.PDO.dll</HintPath>
     </Reference>
     <Reference Include="MPS.Processor.Mps000011.PDO">
-      <HintPath>..\..\..\..\LIB\MPSv2\MPS.PDO\MPS.Processor.Mps000011.PDO.dll</HintPath>
+      <HintPath>..\..\..\..\lib\MPSv2\MPS.PDO\MPS.Processor.Mps000011.PDO.dll</HintPath>
     </Reference>
     <Reference Include="MPS.Processor.Mps000026.PDO">
-      <HintPath>..\..\..\..\..\histest\histest\x64\ReferencedAssemblies\MPS.Processor.Mps000026.PDO.dll</HintPath>
+      <HintPath>..\..\..\..\lib\MPSv2\MPS.PDO\MPS.Processor.Mps000026.PDO.dll</HintPath>
     </Reference>
     <Reference Include="MPS.Processor.Mps000174.PDO, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -311,13 +314,13 @@
       <HintPath>..\..\..\..\LIB\MPSv2\MPS.PDO\MPS.Processor.Mps000434.PDO.dll</HintPath>
     </Reference>
     <Reference Include="MPS.Processor.Mps000450.PDO">
-      <HintPath>..\..\..\..\..\histest\histest\x64\ReferencedAssemblies\MPS.Processor.Mps000450.PDO.dll</HintPath>
+      <HintPath>..\..\..\..\lib\MPSv2\MPS.PDO\MPS.Processor.Mps000450.PDO.dll</HintPath>
     </Reference>
     <Reference Include="MPS.Processor.Mps000451.PDO">
-      <HintPath>..\..\..\..\..\histest\histest\x64\ReferencedAssemblies\MPS.Processor.Mps000451.PDO.dll</HintPath>
+      <HintPath>..\..\..\..\lib\MPSv2\MPS.PDO\MPS.Processor.Mps000451.PDO.dll</HintPath>
     </Reference>
     <Reference Include="MPS.Processor.Mps000461.PDO">
-      <HintPath>..\..\..\..\..\histest\histest\x64\ReferencedAssemblies\MPS.Processor.Mps000461.PDO.dll</HintPath>
+      <HintPath>..\..\..\..\lib\MPSv2\MPS.PDO\MPS.Processor.Mps000461.PDO.dll</HintPath>
     </Reference>
     <Reference Include="MPS.Processor.Mps000473.PDO">
       <HintPath>..\..\..\..\LIB\MPSv2\MPS.PDO\MPS.Processor.Mps000473.PDO.dll</HintPath>
@@ -489,10 +492,6 @@
     <ProjectReference Include="..\..\HIS.Desktop.EventLog\HIS.Desktop.EventLog.csproj">
       <Project>{306cbc95-d95a-48e1-941e-f3ecc0cbee34}</Project>
       <Name>HIS.Desktop.EventLog</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\HIS.Desktop.IsAdmin\HIS.Desktop.IsAdmin.csproj">
-      <Project>{4ab09efc-8f70-4cca-9e6d-693f44a7d29f}</Project>
-      <Name>HIS.Desktop.IsAdmin</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\HIS.Desktop.LibraryMessage\HIS.Desktop.LibraryMessage.csproj">
       <Project>{48d9a44a-7120-4c9b-8923-b1af16b1992f}</Project>

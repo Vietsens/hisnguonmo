@@ -49,8 +49,9 @@
     <Reference Include="CHC.WCFClient">
       <HintPath>..\..\..\..\LIB\WCF\CHC.WCF\Client\CHC.WCFClient.dll</HintPath>
     </Reference>
-    <Reference Include="CPA.WCFClient.CallPatientClient">
-      <HintPath>..\..\..\..\LIB\WCF\CPA.WCF\Client\CallPatient\CPA.WCFClient.CallPatientClient.dll</HintPath>
+    <Reference Include="CPA.WCFClient.CallPatientClient, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\Test_HIS\histest\x64\ReferencedAssemblies\CPA.WCFClient.CallPatientClient.dll</HintPath>
     </Reference>
     <Reference Include="DevExpress.Data.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
     <Reference Include="DevExpress.Images.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
@@ -66,9 +67,6 @@
     <Reference Include="HIS.Common.Treatment">
       <HintPath>..\..\..\..\LIB\HIS\HIS.Common\HIS.Common.Treatment\HIS.Common.Treatment.dll</HintPath>
     </Reference>
-    <Reference Include="HIS.Desktop.LocalStorage.LisConfig">
-      <HintPath>..\..\..\TEST\HIS\x64\ReferencedAssemblies\HIS.Desktop.LocalStorage.LisConfig.dll</HintPath>
-    </Reference>
     <Reference Include="HIS.Desktop.Plugins.Library.EmrGenerate">
       <HintPath>..\..\..\..\LIB\HIS\HIS.Desktop.Plugins.Library.EmrGenerate\HIS.Desktop.Plugins.Library.EmrGenerate.dll</HintPath>
     </Reference>
@@ -79,7 +77,7 @@
       <HintPath>..\..\..\..\LIB\HIS\HIS.UC.SereServTree\HIS.UC.SereServTree.dll</HintPath>
     </Reference>
     <Reference Include="HIS.UC.TotalPriceInfo">
-      <HintPath>..\..\..\TEST\HIS\x64\ReferencedAssemblies\HIS.UC.TotalPriceInfo.dll</HintPath>
+      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\HIS.UC.TotalPriceInfo.dll</HintPath>
     </Reference>
     <Reference Include="HIS.UC.TreatmentInfo">
       <HintPath>..\..\..\..\LIB\HIS\HIS.UC.TreatmentInfo\HIS.UC.TreatmentInfo.dll</HintPath>
@@ -126,8 +124,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\LIB\Inventec.Common\Inventec.Common.TypeConvert\Inventec.Common.TypeConvert.dll</HintPath>
     </Reference>
-    <Reference Include="Inventec.Common.WebApiClient">
-      <HintPath>..\..\..\..\LIB\Inventec.Common\Inventec.Common.WebApiClient\Inventec.Common.WebApiClient.dll</HintPath>
+    <Reference Include="Inventec.Common.WebApiClient, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\Inventec.Common.WebApiClient.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Core">
       <HintPath>..\..\..\..\LIB\Inventec.Core\Inventec.Core.dll</HintPath>
@@ -337,6 +336,10 @@
     <ProjectReference Include="..\..\HIS.Desktop.LocalStorage.HisConfig\HIS.Desktop.LocalStorage.HisConfig.csproj">
       <Project>{d1e5461b-8a8e-46f7-9aee-5c1b327e5f2b}</Project>
       <Name>HIS.Desktop.LocalStorage.HisConfig</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\HIS.Desktop.LocalStorage.LisConfig\HIS.Desktop.LocalStorage.LisConfig.csproj">
+      <Project>{10821b01-1a57-4c91-9dbb-6ac222dada22}</Project>
+      <Name>HIS.Desktop.LocalStorage.LisConfig</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\HIS.Desktop.LocalStorage.LocalData\HIS.Desktop.LocalStorage.LocalData.csproj">
       <Project>{e036edf5-788c-4892-8d8f-6b1c16dcbd21}</Project>

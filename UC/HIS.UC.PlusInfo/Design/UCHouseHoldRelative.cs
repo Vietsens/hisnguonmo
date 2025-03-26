@@ -55,6 +55,7 @@ namespace HIS.UC.PlusInfo.Design
         #region Contructor
 
         public UCHouseHoldRelative()
+            : base("UCPlusInfo", "UCHouseHoldRelative")
         {
             try
             {

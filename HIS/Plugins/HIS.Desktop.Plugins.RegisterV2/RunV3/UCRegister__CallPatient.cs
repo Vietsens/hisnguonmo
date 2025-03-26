@@ -344,7 +344,7 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
 					{
 						if (HIS.Desktop.Plugins.Library.RegisterConfig.HisConfigCFG.CallCpaOption == 2)
 						{
-							int[] nums = await this.clienttManager.AsyncCallNumOrderPlus(int.Parse(txtGate), int.Parse(this.txtStepNumber.Text));
+							int[] nums = await this.clienttManager.AsyncCallNumOrderPlusString(txtGate, int.Parse(this.txtStepNumber.Text));
 							if (nums != null && nums.Length > 0)
 							{
 								await this.CallModuleCallPatientNumOrder(nums.LastOrDefault().ToString());
@@ -352,7 +352,7 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
 						}
 						else
 						{
-							this.clienttManager.CallNumOrder(int.Parse(txtGate), int.Parse(this.txtStepNumber.Text));
+							this.clienttManager.CallNumOrderString(txtGate, int.Parse(this.txtStepNumber.Text));
 
 						}
 
@@ -363,7 +363,7 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
 						if (Int64.Parse(numSttNow) < Int64.Parse(numTotal))
 						{
 							var numSend = Int64.Parse(numTotal) - Int64.Parse(numSttNow);
-							this.clienttManager.CallNumOrder(int.Parse(txtGate), (int)numSend);
+							this.clienttManager.CallNumOrderString(txtGate, (int)numSend);
 
 							CeateThreadGetPatient();
 						}
@@ -625,7 +625,7 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
 					if (HIS.Desktop.Plugins.Library.RegisterConfig.HisConfigCFG.CallCpaOption == 2)
 					{
 
-						int[] nums = await this.clienttManager.AsyncRecallNumOrderPlus(int.Parse(txtGate), int.Parse(txtStepNumber.Text));
+						int[] nums = await this.clienttManager.AsyncRecallNumOrderPlusString(txtGate, int.Parse(txtStepNumber.Text));
 						if (nums != null && nums.Length > 0)
 						{
 							await this.CallModuleCallPatientNumOrder(nums.LastOrDefault().ToString());
@@ -633,7 +633,7 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
 					}
 					else
 					{
-						this.clienttManager.RecallNumOrder(int.Parse(txtGate), int.Parse(txtStepNumber.Text));
+						this.clienttManager.RecallNumOrderString(txtGate, int.Parse(txtStepNumber.Text));
 					}
 
 					CeateThreadGetPatient();

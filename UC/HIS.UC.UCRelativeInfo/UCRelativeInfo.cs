@@ -36,7 +36,7 @@ using HIS.Desktop.LocalStorage.LocalData;
 
 namespace HIS.UC.UCRelativeInfo
 {
-    public partial class UCRelativeInfo : UserControl
+    public partial class UCRelativeInfo : UserControlBase
     {
         DelegateFocusNextUserControl dlgFocusNextUserControl;
         int positionHandleControl = -1;
@@ -47,23 +47,43 @@ namespace HIS.UC.UCRelativeInfo
         #region Constructor
 
         public UCRelativeInfo()
+            : base("HIS.Desktop.Plugins.RegisterV2", "UCRelativeInfo")
         {
+            Inventec.Common.Logging.LogSystem.Debug("UCRelativeInfo .1");
             InitializeComponent();
+            Inventec.Common.Logging.LogSystem.Debug("UCRelativeInfo .2");
         }
 
         private void UCRelativeInfo_Load(object sender, EventArgs e)
         {
             try
             {
-                SetCaptionByLanguageKey();
-                this.SetValidateControl(false);
-                SetCaptionByLanguageKeyNew();
+                Inventec.Common.Logging.LogSystem.Debug("UCRelativeInfo_Load .1");
+                //InitFieldFromAsync();
+                Inventec.Common.Logging.LogSystem.Debug("UCRelativeInfo_Load .2");
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
+
+        public async Task InitFieldFromAsync()
+        {
+            try
+            {
+                Inventec.Common.Logging.LogSystem.Debug("UCRelativeInfo_InitFieldFromAsync .1");
+                //SetCaptionByLanguageKey();
+                this.SetValidateControl(false);
+                SetCaptionByLanguageKeyNew();
+                Inventec.Common.Logging.LogSystem.Debug("UCRelativeInfo_InitFieldFromAsync .2");
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
         /// <summary>
         ///Hàm xét ngôn ngữ cho giao diện UCRelativeInfo
         /// </summary>
@@ -73,20 +93,32 @@ namespace HIS.UC.UCRelativeInfo
             {
                 ////Khoi tao doi tuong resource
                 Resources.ResourceLanguageManager.LanguageResource = new ResourceManager("HIS.UC.UCRelativeInfo.Resources.Lang", typeof(UCRelativeInfo).Assembly);
-
+                Inventec.Common.Logging.LogSystem.Debug("SetCaptionByLanguageKeyNew .1");
                 ////Gan gia tri cho cac control editor co Text/Caption/ToolTip/NullText/NullValuePrompt/FindNullPrompt
                 this.layoutControl1.Text = Inventec.Common.Resource.Get.Value("UCRelativeInfo.layoutControl1.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                Inventec.Common.Logging.LogSystem.Debug("SetCaptionByLanguageKeyNew .2");
                 this.chkCapGiayNghiOm.Properties.Caption = Inventec.Common.Resource.Get.Value("UCRelativeInfo.chkCapGiayNghiOm.Properties.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                toolTipItem2.Text = Inventec.Common.Resource.Get.Value("toolTipItem2.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                Inventec.Common.Logging.LogSystem.Debug("SetCaptionByLanguageKeyNew .3");
+                //toolTipItem2.Text = Inventec.Common.Resource.Get.Value("toolTipItem2.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                Inventec.Common.Logging.LogSystem.Debug("SetCaptionByLanguageKeyNew .4");
                 this.lcgHomePerson.Text = Inventec.Common.Resource.Get.Value("UCRelativeInfo.lcgHomePerson.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                Inventec.Common.Logging.LogSystem.Debug("SetCaptionByLanguageKeyNew .5");
                 this.lciHomPerson.Text = Inventec.Common.Resource.Get.Value("UCRelativeInfo.lciHomPerson.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                Inventec.Common.Logging.LogSystem.Debug("SetCaptionByLanguageKeyNew .6");
                 this.lciRelative.Text = Inventec.Common.Resource.Get.Value("UCRelativeInfo.lciRelative.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                Inventec.Common.Logging.LogSystem.Debug("SetCaptionByLanguageKeyNew .7");
                 this.lciAddress.Text = Inventec.Common.Resource.Get.Value("UCRelativeInfo.lciAddress.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                Inventec.Common.Logging.LogSystem.Debug("SetCaptionByLanguageKeyNew .8");
                 this.lciCMND.Text = Inventec.Common.Resource.Get.Value("UCRelativeInfo.lciCMND.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                Inventec.Common.Logging.LogSystem.Debug("SetCaptionByLanguageKeyNew .9");
                 this.lciFortxtRelativePhone.Text = Inventec.Common.Resource.Get.Value("UCRelativeInfo.lciFortxtRelativePhone.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                Inventec.Common.Logging.LogSystem.Debug("SetCaptionByLanguageKeyNew .10");
                 this.lciForchkCapGiayNghiOm.OptionsToolTip.ToolTip = Inventec.Common.Resource.Get.Value("UCRelativeInfo.lciForchkCapGiayNghiOm.OptionsToolTip.ToolTip", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                Inventec.Common.Logging.LogSystem.Debug("SetCaptionByLanguageKeyNew .11");
                 this.lciForchkCapGiayNghiOm.Text = Inventec.Common.Resource.Get.Value("UCRelativeInfo.lciForchkCapGiayNghiOm.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                Inventec.Common.Logging.LogSystem.Debug("SetCaptionByLanguageKeyNew .12");
                 this.lciFather.Text = Inventec.Common.Resource.Get.Value("UCRelativeInfo.lciFather.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                Inventec.Common.Logging.LogSystem.Debug("SetCaptionByLanguageKeyNew .13");
                 this.lciMother.Text = Inventec.Common.Resource.Get.Value("UCRelativeInfo.lciMother.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
             }
             catch (Exception ex)

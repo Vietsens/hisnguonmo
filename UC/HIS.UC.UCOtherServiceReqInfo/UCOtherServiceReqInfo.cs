@@ -50,7 +50,7 @@ using HIS.Desktop.Plugins.Library.RegisterConfig;
 
 namespace HIS.UC.UCOtherServiceReqInfo
 {
-    public partial class UCOtherServiceReqInfo : UserControl
+    public partial class UCOtherServiceReqInfo : UserControlBase
     {
         Action<object> dlgFocusNextUserControl;
         Action<bool> dlgHeinRightRouteType;
@@ -77,16 +77,14 @@ namespace HIS.UC.UCOtherServiceReqInfo
         #region Constructor - Load
 
         public UCOtherServiceReqInfo()
+            : base("HIS.Desktop.Plugins.RegisterV2", "UCOtherServiceReqInfo")
         {
+            Inventec.Common.Logging.LogSystem.Debug("UCOtherServiceReqInfo .1");
             InitializeComponent();
             try
             {
-                this.SetCaptionByLanguageKeyNew();
-                this._HisTreatment = new HIS_TREATMENT();
-                this.txtIntructionTime.Text = DateTime.Now.ToString("dd/MM/yyyy HH:mm");
-                this.dtIntructionTime.EditValue = DateTime.Now;
-                this.txtSTTPriority.EditValue = null;
                 HisConfig.LoadConfig();
+                Inventec.Common.Logging.LogSystem.Debug("UCOtherServiceReqInfo .2");
             }
             catch (Exception ex)
             {
@@ -98,33 +96,55 @@ namespace HIS.UC.UCOtherServiceReqInfo
         {
             try
             {
+                Inventec.Common.Logging.LogSystem.Debug("UCOtherServiceReqInfo_Load .1");
+                this._HisTreatment = new HIS_TREATMENT();
+                this.txtIntructionTime.Text = DateTime.Now.ToString("dd/MM/yyyy HH:mm");
+                this.dtIntructionTime.EditValue = DateTime.Now;
+                this.txtSTTPriority.EditValue = null;
                 HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Reset<MOS.EFMODEL.DataModels.HIS_OTHER_PAY_SOURCE>();
                 this._IsAutoSetOweType = ((HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>("HIS.Desktop.Plugins.Register.IsAutoSetOweTypeInCaseOfUsingFund")).Trim() == "1");
                 InitControlState();
-                this.LoadEmergencyWtimes();
-                this.LoadPriorityType();
-                this.LoadTreatmentTypes();
-                this.LoadOweTypes();
-                this.LoadFunds();
-                this.LoadPatientClassify();
-                this.LoadGuarantee();
-                this.LoadOtherPaySource();
-                this.InitComboHisHospitalizeReason();
-                this.ValidateIntructionTime();
                 this.LoadBranch();
-                this.SetHeinRighRouteTypeByTime();
+
+                this.SetCaptionByLanguageKeyNew();
+                this.ValidateIntructionTime();
                 this.ValidateFrmFun();
                 this.ValidateTreatmentType();
                 this.ValidateNumOrderPriority();
                 this.ValidateMaxlength(txtGuaranteeReason, 500);
                 this.ValidateMaxlength(txtNote, 1000);
-
+                Inventec.Common.Logging.LogSystem.Debug("UCOtherServiceReqInfo_Load .2");
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
+
+        public async Task InitFieldFromAsync()
+        {
+            try
+            {
+                Inventec.Common.Logging.LogSystem.Debug("UCOtherServiceReqInfo.InitFieldFromAsync .1");
+
+                await this.LoadEmergencyWtimes();
+                await this.LoadPriorityType();
+                await this.LoadTreatmentTypes();
+                await this.LoadOweTypes();
+                await this.LoadFunds();
+                await this.LoadPatientClassify();
+                await this.LoadGuarantee();
+                this.LoadOtherPaySource();
+                this.InitComboHisHospitalizeReason();
+                this.SetHeinRighRouteTypeByTime();
+                Inventec.Common.Logging.LogSystem.Debug("UCOtherServiceReqInfo.InitFieldFromAsync .2");
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }           
+        }
+
         /// <summary>
         ///Hàm xét ngôn ngữ cho giao diện UCOtherServiceReqInfo
         /// </summary>
@@ -134,7 +154,6 @@ namespace HIS.UC.UCOtherServiceReqInfo
             {
                 ////Khoi tao doi tuong resource
                 Resources.ResourceLanguageManager.LanguageResource = new ResourceManager("HIS.UC.UCOtherServiceReqInfo.Resources.Lang", typeof(UCOtherServiceReqInfo).Assembly);
-
                 ////Gan gia tri cho cac control editor co Text/Caption/ToolTip/NullText/NullValuePrompt/FindNullPrompt
                 this.lcUCOtherServiceReqInfo.Text = Inventec.Common.Resource.Get.Value("UCOtherServiceReqInfo.lcUCOtherServiceReqInfo.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.chkTuberculosis.Properties.Caption = Inventec.Common.Resource.Get.Value("UCOtherServiceReqInfo.chkTuberculosis.Properties.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
@@ -143,9 +162,9 @@ namespace HIS.UC.UCOtherServiceReqInfo
                 this.cboOtherPaySource.Properties.NullText = Inventec.Common.Resource.Get.Value("UCOtherServiceReqInfo.cboOtherPaySource.Properties.NullText", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.chkCapMaMS.Properties.Caption = Inventec.Common.Resource.Get.Value("UCOtherServiceReqInfo.chkCapMaMS.Properties.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.cboPriorityType.Properties.NullText = Inventec.Common.Resource.Get.Value("UCOtherServiceReqInfo.cboPriorityType.Properties.NullText", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                toolTipItem1.Text = Inventec.Common.Resource.Get.Value("toolTipItem1.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                //toolTipItem1.Text = Inventec.Common.Resource.Get.Value("toolTipItem1.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.cboPriorityType.ToolTip = Inventec.Common.Resource.Get.Value("UCOtherServiceReqInfo.cboPriorityType.ToolTip", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                toolTipItem2.Text = Inventec.Common.Resource.Get.Value("toolTipItem2.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                //toolTipItem2.Text = Inventec.Common.Resource.Get.Value("toolTipItem2.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.btnAddCTT.ToolTip = Inventec.Common.Resource.Get.Value("UCOtherServiceReqInfo.btnAddCTT.ToolTip", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.cboCTT.Properties.NullText = Inventec.Common.Resource.Get.Value("UCOtherServiceReqInfo.cboCTT.Properties.NullText", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.chkIsChronic.Properties.Caption = Inventec.Common.Resource.Get.Value("UCOtherServiceReqInfo.chkIsChronic.Properties.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
@@ -1320,25 +1339,28 @@ namespace HIS.UC.UCOtherServiceReqInfo
                     lciFortxtIncode.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
                     dxValidationUCOtherReqInfo.SetValidationRule(txtIncode, null);
                 }
-                var source = cboTreatmentType.Properties.DataSource as List<MOS.EFMODEL.DataModels.HIS_TREATMENT_TYPE>;
-                if (source != null && source.FirstOrDefault(o => o.ID == treatmentTypeId).HEIN_TREATMENT_TYPE_CODE == MOS.LibraryHein.Bhyt.HeinRightRoute.HeinRightRouteCode.TRUE)
-                {
-                    layoutControlItem8.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
-                    ValidateTextHosReason();
-                }
-                else
-                {
-                    layoutControlItem8.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
-                    dxValidationUCOtherReqInfo.SetValidationRule(txtHosReason, null);
-                }
+
                 cboHosReason.EditValue = null;
+                dxValidationUCOtherReqInfo.SetValidationRule(txtHosReason, null);
                 dxValidationUCOtherReqInfo.SetValidationRule(txtHosReasonNt, null);
                 lciHosReason.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
                 lciHosReason.AppearanceItemCaption.ForeColor = Color.Black;
                 if (cboTreatmentType.EditValue != null)
                 {
                     var type = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_TREATMENT_TYPE>().FirstOrDefault(o => o.ID == treatmentTypeId);
-                    lciHosReason.Visibility = type != null && type.HEIN_TREATMENT_TYPE_CODE == MOS.LibraryHein.Bhyt.HeinTreatmentType.HeinTreatmentTypeCode.TREAT ? DevExpress.XtraLayout.Utils.LayoutVisibility.Always : DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+                    lciHosReason.Visibility = layoutControlItem8.Visibility = type != null && (type.ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__DTNGOAITRU || type.ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__DTBANNGAY || type.ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__DTNOITRU) ? DevExpress.XtraLayout.Utils.LayoutVisibility.Always : DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+
+                    if (layoutControlItem8.Visible)
+                    {
+                        ValidateTextHosReason();
+                    }
+
+                    if (layoutControlItem8.Visible && lciHosReason.Visible && ((TreatmentByPatientSdo != null && TreatmentByPatientSdo.IS_CHRONIC == 1) || (this.patientSdo != null && !string.IsNullOrEmpty(this.patientSdo.AppointmentCode))))
+                    {
+                        txtHosReason.Text = TreatmentByPatientSdo.HOSPITALIZATION_REASON;
+                        txtHosReasonNt.Text = TreatmentByPatientSdo.ICD_NAME;
+                    }
+
                     if (HisConfigCFG.InHospitalizationReasonRequired && lciHosReason.Visible)
                     {
                         lciHosReason.AppearanceItemCaption.ForeColor = Color.Maroon;

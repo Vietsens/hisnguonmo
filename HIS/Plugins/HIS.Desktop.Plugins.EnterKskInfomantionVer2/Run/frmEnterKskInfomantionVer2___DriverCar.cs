@@ -52,6 +52,10 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                 SetDataCboRank(cboExamEyeRank5);
                 SetDataCboRank(cboExamEntDiseaseRank5);
                 SetDataCboRank(cboExamCardiovascularRank5);
+                SetDataCboExamLoginName(cboExamCardiovascularLoginName5);
+                SetDataCboExamLoginName(cboExamEyeLoginName5);
+                SetDataCboExamLoginName(cboExamEntLoginName5);
+                SetDataCboExamLoginName(cboExamSubclinicalLoginName5);
                 FillDataDriverCar();
             }
             catch (Exception ex)
@@ -158,7 +162,10 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                         txtNoteSubclinical5.Text = currentKskDriverCar.NOTE_SUBCLINICAL;
                         txtConclude5.Text = currentKskDriverCar.CONCLUDE;
                         txtDiseases5.Text = currentKskDriverCar.DISEASES;
-
+                        cboExamEyeLoginName5.EditValue = currentKskDriverCar.EXAM_EYE_LOGINNAME;
+                        cboExamEntLoginName5.EditValue = currentKskDriverCar.EXAM_ENT_LOGINNAME;
+                        cboExamCardiovascularLoginName5.EditValue = currentKskDriverCar.EXAM_CARDIOVASCULAR_LOGINNAME;
+                        cboExamSubclinicalLoginName5.EditValue = currentKskDriverCar.EXAM_SUBCLINICAL_LOGINNAME;
                     }
                     else
                     {
@@ -209,7 +216,6 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
-
         private HIS_KSK_DRIVER_CAR GetValueDriverCar()
         {
             HIS_KSK_DRIVER_CAR obj = new HIS_KSK_DRIVER_CAR();
@@ -217,7 +223,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             {
                 if (currentKskDriverCar != null)
                     obj.ID = currentKskDriverCar.ID;
-                obj.LICENSE_CLASS = cboLicenseClass.EditValue!=null ? cboLicenseClass.EditValue.ToString() : null;
+                obj.LICENSE_CLASS = cboLicenseClass.EditValue != null ? cboLicenseClass.EditValue.ToString() : null;
                 obj.HISTORY_DISEASE_ONE = txtDiseaseOne5.Text;
                 obj.HISTORY_DISEASE_ONE_YEAR = spnDiseaseOccuOneYear5.EditValue != null ? spnDiseaseOccuOneYear5.EditValue.ToString() : null;
                 obj.HISTORY_DISEASE_TWO = txtDiseaseTwo5.Text;
@@ -228,25 +234,25 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                 obj.HISTORY_DISEASE_FOUR_YEAR = spnDiseaseFour5.EditValue != null ? spnDiseaseFour5.EditValue.ToString() : null;
                 obj.EXAM_NEUROLOGICAL = txtExamNeurological5.Text;
                 obj.EXAM_NEUROLOGICAL_CONCLUDE = txtExamNeurologicalConclude5.Text;
-                obj.EXAM_NEUROLOGICAL_RANK = cboExamNeurologicalRank5.EditValue != null ? Int64.Parse(cboExamNeurologicalRank5.EditValue.ToString()) : 0;
+                obj.EXAM_NEUROLOGICAL_RANK = cboExamNeurologicalRank5.EditValue != null ? (long?)Int64.Parse(cboExamNeurologicalRank5.EditValue.ToString()) : null;
                 obj.EXAM_MUSCLE_BONE = txtExamMuscleBone5.Text;
                 obj.EXAM_MUSCLE_BONE_CONCLUDE = txtExamMuscleBoneConclude5.Text;
-                obj.EXAM_MUSCLE_BONE_RANK = cboExamMuscleBoneRank5.EditValue != null ? Int64.Parse(cboExamMuscleBoneRank5.EditValue.ToString()) : 0;
+                obj.EXAM_MUSCLE_BONE_RANK = cboExamMuscleBoneRank5.EditValue != null ? (long?)Int64.Parse(cboExamMuscleBoneRank5.EditValue.ToString()) : null;
                 obj.EXAM_MENTAL = txtExamMental5.Text;
                 obj.EXAM_MENTAL_CONCLUDE = txtExamMentalConclude5.Text;
-                obj.EXAM_MENTAL_RANK = cboExamMentalRank5.EditValue != null ? Int64.Parse(cboExamMentalRank5.EditValue.ToString()) : 0;
+                obj.EXAM_MENTAL_RANK = cboExamMentalRank5.EditValue != null ? (long?)Int64.Parse(cboExamMentalRank5.EditValue.ToString()) : null;
                 obj.EXAM_RESPIRATORY = txtExamRespiratory5.Text;
                 obj.EXAM_RESPIRATORY_CONCLUDE = txtExamRespiratoryConclude5.Text;
-                obj.EXAM_RESPIRATORY_RANK = cboExamRespiratoryRank5.EditValue != null ? Int64.Parse(cboExamRespiratoryRank5.EditValue.ToString()) : 0;
+                obj.EXAM_RESPIRATORY_RANK = cboExamRespiratoryRank5.EditValue != null ? (long?)Int64.Parse(cboExamRespiratoryRank5.EditValue.ToString()) : null;
                 obj.EXAM_OEND = txtExamOend5.Text;
                 obj.EXAM_OEND_CONCLUDE = txtExamOendConclude5.Text;
-                obj.EXAM_OEND_RANK = cboExamOendRank5.EditValue != null ? Int64.Parse(cboExamOendRank5.EditValue.ToString()) : 0;
+                obj.EXAM_OEND_RANK = cboExamOendRank5.EditValue != null ? (long?)Int64.Parse(cboExamOendRank5.EditValue.ToString()) : null;
                 obj.EXAM_MATERNITY = txtExamMaternity5.Text;
                 obj.EXAM_MATERNITY_CONCLUDE = txtExamMaternityConclude5.Text;
-                obj.EXAM_MATERNITY_RANK = cboExamMaternityRank5.EditValue != null ? Int64.Parse(cboExamMaternityRank5.EditValue.ToString()) : 0;
+                obj.EXAM_MATERNITY_RANK = cboExamMaternityRank5.EditValue != null ? (long?)Int64.Parse(cboExamMaternityRank5.EditValue.ToString()) : null;
                 obj.EXAM_EYE_DISEASE = txtExamEyeDisease5.Text;
                 obj.EXAM_EYE_CONCLUDE = txtExamEyeConclude5.Text;
-                obj.EXAM_EYE_RANK = cboExamEyeRank5.EditValue != null ? Int64.Parse(cboExamEyeRank5.EditValue.ToString()) : 0;
+                obj.EXAM_EYE_RANK = cboExamEyeRank5.EditValue != null ? (long?)Int64.Parse(cboExamEyeRank5.EditValue.ToString()) : null;
                 obj.EXAM_EYESIGHT_RIGHT = txtExamEyeSightRight5.Text;
                 obj.EXAM_EYESIGHT_LEFT = txtExamEyeSightLeft5.Text;
                 obj.EXAM_EYESIGHT_GLASS_RIGHT = txtExamEyeSightGlassRight5.Text;
@@ -257,24 +263,24 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                 obj.EXAM_EYEFIELD_HORI_LIMIT = txtExamEyeFieldHoriLimit5.Text;
                 obj.EXAM_EYEFIELD_VERT_NORMAL = txtExamEyeFieldVertNormal5.Text;
                 obj.EXAM_EYEFIELD_VERT_LIMIT = txtExamEyeFieldVertLimit5.Text;
-                obj.EXAM_EYECOLOR_IS_NORMAL = chkExamEyeFieldIsNormal5.Checked ? (short?)1 : 0;
-                obj.EXAM_EYECOLOR_IS_BLIND = chkExamEyeFieldIsBlind5.Checked ? (short?)1 : 0;
-                obj.EXAM_EYECOLOR_IS_BLIND_RED = chkExamEyeFieldIsRed5.Checked ? (short?)1 : 0;
-                obj.EXAM_EYECOLOR_IS_BLIND_GREEN = chkExamEyeFieldIsGreen5.Checked ? (short?)1 : 0;
-                obj.EXAM_EYECOLOR_IS_BLIND_YELOW = chkExamEyeFieldIsYellow5.Checked ? (short?)1 : 0;
+                obj.EXAM_EYECOLOR_IS_NORMAL = chkExamEyeFieldIsNormal5.Checked ? (short?)1 : null;
+                obj.EXAM_EYECOLOR_IS_BLIND = chkExamEyeFieldIsBlind5.Checked ? (short?)1 : null;
+                obj.EXAM_EYECOLOR_IS_BLIND_RED = chkExamEyeFieldIsRed5.Checked ? (short?)1 : null;
+                obj.EXAM_EYECOLOR_IS_BLIND_GREEN = chkExamEyeFieldIsGreen5.Checked ? (short?)1 : null;
+                obj.EXAM_EYECOLOR_IS_BLIND_YELOW = chkExamEyeFieldIsYellow5.Checked ? (short?)1 : null;
                 obj.EXAM_ENT_LEFT_NORMAL = txtExamEntLeftNormal5.Text;
                 obj.EXAM_ENT_LEFT_WHISPER = txtExamEntLeftWhisper5.Text;
                 obj.EXAM_ENT_RIGHT_NORMAL = txtExamEntRightNomal5.Text;
                 obj.EXAM_ENT_RIGHT_WHISPER = txtExamEntRightWhisper5.Text;
                 obj.EXAM_ENT_DISEASE = txtExamEntDisease5.Text;
                 obj.EXAM_ENT_CONCLUDE = txtExamEntDiseaseConclude5.Text;
-                obj.EXAM_ENT_RANK = cboExamEntDiseaseRank5.EditValue != null ? Int64.Parse(cboExamEntDiseaseRank5.EditValue.ToString()) : 0;
+                obj.EXAM_ENT_RANK = cboExamEntDiseaseRank5.EditValue != null ? (long?)Int64.Parse(cboExamEntDiseaseRank5.EditValue.ToString()) : null;
                 obj.EXAM_CARDIOVASCULAR = txtExamCardiovascular5.Text;
                 obj.EXAM_CARDIOVASCULAR_CONCLUDE = txtExamCardiovascularConclude5.Text;
-                obj.EXAM_CARDIOVASCULAR_RANK = cboExamCardiovascularRank5.EditValue != null ? Int64.Parse(cboExamCardiovascularRank5.EditValue.ToString()) : 0;
-                obj.EXAM_CARDIOVASCULAR_BLOOD_MAX = spnExamCardiovascularBloodMax5.EditValue != null ? Int64.Parse(spnExamCardiovascularBloodMax5.EditValue.ToString()) : 0;
-                obj.EXAM_CARDIOVASCULAR_BLOOD_MIN = spnExamCardiovascularBloodMin5.EditValue != null ? Int64.Parse(spnExamCardiovascularBloodMin5.EditValue.ToString()) : 0;
-                obj.EXAM_CARDIOVASCULAR_PULSE = spnExamCardiovascularPulse5.EditValue != null ? Int64.Parse(spnExamCardiovascularPulse5.EditValue.ToString()) : 0;
+                obj.EXAM_CARDIOVASCULAR_RANK = cboExamCardiovascularRank5.EditValue != null ? (long?)Int64.Parse(cboExamCardiovascularRank5.EditValue.ToString()) : null;
+                obj.EXAM_CARDIOVASCULAR_BLOOD_MAX = spnExamCardiovascularBloodMax5.EditValue != null ? (long?)Int64.Parse(spnExamCardiovascularBloodMax5.EditValue.ToString()) : null;
+                obj.EXAM_CARDIOVASCULAR_BLOOD_MIN = spnExamCardiovascularBloodMin5.EditValue != null ? (long?)Int64.Parse(spnExamCardiovascularBloodMin5.EditValue.ToString()) : null;
+                obj.EXAM_CARDIOVASCULAR_PULSE = spnExamCardiovascularPulse5.EditValue != null ? (long?)Int64.Parse(spnExamCardiovascularPulse5.EditValue.ToString()) : null;
                 obj.TEST_MORPHIN_HEROIN = txtMorphineHeroin5.Text;
                 obj.TEST_AMPHETAMIN = txtAmphetamin5.Text;
                 obj.TEST_METHAMPHETAMIN = txtTestMethamphetamin5.Text;
@@ -284,6 +290,11 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                 obj.NOTE_SUBCLINICAL = txtNoteSubclinical5.Text;
                 obj.CONCLUDE = txtConclude5.Text;
                 obj.DISEASES = txtDiseases5.Text;
+
+                obj.EXAM_EYE_LOGINNAME = cboExamEyeLoginName5.EditValue != null ? cboExamEyeLoginName5.EditValue.ToString() : null;
+                obj.EXAM_ENT_LOGINNAME = cboExamEntLoginName5.EditValue != null ? cboExamEntLoginName5.EditValue.ToString() : null;
+                obj.EXAM_CARDIOVASCULAR_LOGINNAME = cboExamCardiovascularLoginName5.EditValue != null ? cboExamCardiovascularLoginName5.EditValue.ToString() : null;
+                obj.EXAM_SUBCLINICAL_LOGINNAME = cboExamSubclinicalLoginName5.EditValue != null ? cboExamSubclinicalLoginName5.EditValue.ToString() : null;
             }
             catch (Exception ex)
             {

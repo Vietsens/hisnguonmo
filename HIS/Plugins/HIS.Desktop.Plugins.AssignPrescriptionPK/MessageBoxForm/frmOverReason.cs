@@ -26,6 +26,7 @@ using Inventec.Common.Controls.EditorLoader;
 using Inventec.Desktop.Common.Controls.ValidationRule;
 using Inventec.Desktop.Common.LibraryMessage;
 using MOS.EFMODEL.DataModels;
+using MOS.SDO;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -49,16 +50,20 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.MessageBoxForm
         MediMatyTypeADO Data;
         bool IsUpdateGrid;
         bool IsAssignPres;
+        Action<MOS.SDO.HisGfrAlertLogSDO> ActionSendAlert { get; set; }
         List<HIS_MEDICINE_SERVICE> MedicineServices;
         decimal MLCT = 0;
         HIS_MEDICINE_SERVICE Ms = null;
         long treatmentId = 0;
         decimal AmountInDay = 0;
-        public frmOverReason(List<HIS_MEDICINE_SERVICE> MedicineServices, string content, Action<TreatmentOverReason> reason, Action<bool> IsYes, MediMatyTypeADO Data, bool IsUpdateGrid, bool IsAssignPres, long treatmentId, decimal MLCT = 0, HIS_MEDICINE_SERVICE Ms = null, decimal AmountInDay = 0)
+        DateTime dtWarningTime = DateTime.MinValue;
+        bool IsWarning = false;
+        public frmOverReason(List<HIS_MEDICINE_SERVICE> MedicineServices, string content, Action<TreatmentOverReason> reason, Action<bool> IsYes, MediMatyTypeADO Data, bool IsUpdateGrid, bool IsAssignPres, long treatmentId, Action<HisGfrAlertLogSDO> ActionSendAlert = null, decimal MLCT = 0, HIS_MEDICINE_SERVICE Ms = null, decimal AmountInDay = 0)
         {
             InitializeComponent();
             try
             {
+                this.ActionSendAlert = ActionSendAlert;
                 this.AmountInDay = AmountInDay;
                 this.IsUpdateGrid = IsUpdateGrid;
                 this.content = content;
@@ -103,13 +108,16 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.MessageBoxForm
                 InitComboReason();
                 if (IsAssignPres)
                 {
-                    lblTitle.Text = "Thuốc {4}\r\nMLCT của bệnh nhân là {0}\r\n{1}.\r\n{2}Bạn có muốn {3} không?\r\nTrong trường hợp chọn \"Có\", vui lòng nhập lý do.\r\n";
-                    lblTitle.Text = string.Format(lblTitle.Text, Math.Round(MLCT, 4), Ms.WARNING_CONTENT, (Ms.AMOUNT_INDAY_FROM ?? 0) == 0 ? "" : string.Format("Vượt liều {0}\r\n", Math.Round((Data.AMOUNT ?? 0) - (Ms.AMOUNT_INDAY_FROM ?? 0) * (Data.UseDays ?? 1) + AmountInDay, 2)), content, Data.MEDICINE_TYPE_NAME);
+                    dtWarningTime = DateTime.Now;
+                    lblTitle.Text = "Thuốc {4}\r\nMức lọc cầu thận của bệnh nhân là {0}\r\n{1}.\r\n{2}Bạn có muốn {3} không?\r\nTrong trường hợp chọn \"Có\", vui lòng nhập lý do.\r\n";
+                    lblTitle.Text = string.Format(lblTitle.Text, Math.Round(MLCT, 4), Ms.WARNING_CONTENT, (Ms.AMOUNT_INDAY_FROM ?? 0) == 0 ? "" : string.Format("Bạn đang kê vượt liều {0}\r\n", Math.Round((Data.AMOUNT ?? 0) - (Ms.AMOUNT_INDAY_FROM ?? 0) * (Data.UseDays ?? 1) + AmountInDay, 2)), content, Data.MEDICINE_TYPE_NAME);
                     if ((Ms.AMOUNT_INDAY_FROM ?? 0) <= 0)
                         pbImage.Image = global::HIS.Desktop.Plugins.AssignPrescriptionPK.Properties.Resources.block;
                     else
+                    {
+                        IsWarning = true;
                         pbImage.Image = global::HIS.Desktop.Plugins.AssignPrescriptionPK.Properties.Resources.warning;
-
+                    }
                     if (!string.IsNullOrEmpty(Data.OVER_KIDNEY_REASON))
 
                         memReason.Text = Data.OVER_KIDNEY_REASON;
@@ -214,6 +222,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.MessageBoxForm
                 positionHandleControl = -1;
                 dxValidationProvider1.SetValidationRule(memReason, null);
                 dxValidationProvider1.SetValidationRule(cboReason, null);
+                string reasonStr = null;
                 if ((cboReason.EditValue == null || cboReason.EditValue == "") && string.IsNullOrEmpty(memReason.Text.Trim()))
                 {
                     ValidationGridLookupControl(cboReason, dxValidationProvider1);
@@ -230,12 +239,13 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.MessageBoxForm
                     {
                         if (string.IsNullOrEmpty(memReason.Text.Trim()))
                         {
+                            reasonStr = string.Format("{0}", data.OVERDOSE_REASON_NAME);
                             reason(new TreatmentOverReason() { overReason = data.OVERDOSE_REASON_NAME, overReasonId = data.ID, treatmentId = this.treatmentId });
                             goto End;
                         }
                         else
                         {
-                            string reasonStr = string.Format("{0}; {1}", data.OVERDOSE_REASON_NAME, memReason.Text.Trim());
+                            reasonStr = string.Format("{0}; {1}", data.OVERDOSE_REASON_NAME, memReason.Text.Trim());
                             if (Encoding.UTF8.GetByteCount(reasonStr.Trim()) > 2000)
                             {
                                 ValidationSingleControl(memReason, dxValidationProvider1, false);
@@ -269,6 +279,8 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.MessageBoxForm
                 reason(new TreatmentOverReason() { overReason = memReason.Text.Trim(), treatmentId = this.treatmentId });
             End:
                 IsYes(true);
+                if (ActionSendAlert != null)
+                    ActionSendAlert(GetAlert(true, reasonStr));
                 this.Close();
             }
             catch (Exception ex)
@@ -290,12 +302,44 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.MessageBoxForm
                 else
                     reason(new TreatmentOverReason());
                 IsYes(false);
+                string dataString = memReason.Text.Trim();
+                if (cboReason.EditValue != null && cboReason.EditValue != "")
+                {
+                    var data = OverDoseReason.FirstOrDefault(o => o.ID == Int64.Parse(cboReason.EditValue.ToString()));
+                    if (data != null)
+                    {
+                        if (string.IsNullOrEmpty(memReason.Text.Trim()))
+                        {
+                            dataString = data.OVERDOSE_REASON_NAME;
+                        }
+                        else
+                        {
+                            dataString = string.Format("{0}; {1}", data.OVERDOSE_REASON_NAME, memReason.Text.Trim());
+                        }
+                    }
+                }
+                if (ActionSendAlert != null)
+                    ActionSendAlert(GetAlert(false, dataString));
                 this.Close();
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
+        }
+
+        private HisGfrAlertLogSDO GetAlert(bool IsYes, string data = null)
+        {
+
+            try
+            {
+                return new HisGfrAlertLogSDO() { MedicineTypeId = Data.ID, WarningTime = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(dtWarningTime), WarningContent = lblTitle.Text, WarningType = IsWarning ? "V" : "C", Overdose = IsWarning ? (decimal?)Math.Round((Data.AMOUNT ?? 0) - (Ms.AMOUNT_INDAY_FROM ?? 0) * (Data.UseDays ?? 1) + AmountInDay, 2) : 0, DoctorDecides = IsWarning ? IsYes ? "Có" : "Không" : null, OverKidneyReason = IsWarning ? (data ?? memReason.Text.Trim()) : null };
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+            return null;
         }
 
     }

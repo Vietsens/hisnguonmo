@@ -645,6 +645,7 @@ namespace HIS.Desktop.Plugins.RegisterV2.Register
                 this.patientProfile.HisPatient.HOUSEHOLD_CODE = this.houseHold_Code;
                 this.patientProfile.HisPatient.HOUSEHOLD_RELATION_NAME = this.hoseHold_Relative;
                 this.patientProfile.HisPatient.IS_HIV = this.IsHiv ? (short?)1 : null;
+                this.patientProfile.HisPatient.BRANCH_ID = WorkPlace.GetBranchId();
                 //Kiểm tra số ký tự nhập vào trường CMND để phân biệt là nhập theo CMND hay theo thẻ căn cước công dân. Nhập 9 ký tự số => CMND, nhập 12 ký tự số => căn cước
                 if (!String.IsNullOrEmpty(this.cMNDNumber))
                {                   
@@ -716,6 +717,8 @@ namespace HIS.Desktop.Plugins.RegisterV2.Register
                 this.patientProfile.IsChronic = this.chkChronic;
                 if (this.chkChronic)
                     this.patientProfile.HisPatient.IS_CHRONIC = 1;
+                else
+                    this.patientProfile.HisPatient.IS_CHRONIC = null;
                 this.patientProfile.HisPatient.IS_TUBERCULOSIS = chkTuberculosis ? (short?)1 : 0;
                 this.patientProfile.ImgAvatarData = this.img_avatar;
                 this.patientProfile.ImgBhytData = this.img_BHYT;

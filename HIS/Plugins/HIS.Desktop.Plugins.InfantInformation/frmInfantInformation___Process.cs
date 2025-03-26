@@ -309,7 +309,7 @@ namespace HIS.Desktop.Plugins.InfantInformation
                     currentDTO.EthnicName = null;
                 }
                 currentDTO.IsSurgery = chkIsSurgery.Checked ? (short?)1 : null;
-                currentDTO.HeinCardNumberTmp = txtHeinCardTmp.Text;
+                currentDTO.HeinCardNumberTmp = txtHeinCardTmp.Text.ToUpper();
 
                 currentDTO.MotherAddress = txtAddress.Text.Trim();
                 currentDTO.Note = txtNote.Text.Trim();

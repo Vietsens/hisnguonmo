@@ -2502,5 +2502,46 @@ namespace HIS.UC.FormType.Config
                 hisWorkingShifts = value;
             }
         }
+        private static List<MOS.EFMODEL.DataModels.HIS_CONFIG> hisConfig;
+        public static List<MOS.EFMODEL.DataModels.HIS_CONFIG> HisConfig
+        {
+            get
+            {
+                if (FormTypeDelegate.ProcessFormType != null) FormTypeDelegate.ProcessFormType(typeof(MOS.EFMODEL.DataModels.HIS_CONFIG));
+                if (hisConfig == null || hisConfig.Count == 0)
+                {
+                    CommonParam param = new CommonParam();
+                    MOS.Filter.HisConfigFilter filter = new MOS.Filter.HisConfigFilter();
+                    filter.IS_ACTIVE = IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE;
+                    hisConfig = BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_CONFIG>("/api/HisConfig/Get", ApiConsumerStore.MosConsumer, filter);
+                }
+                return hisConfig.Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE && o.KEY.StartsWith("HIS.Desktop.Plugins.PaymentQrCode")).ToList();
+            }
+            set
+            {
+                hisConfig = value;
+            }
+        }
+        private static List<MOS.EFMODEL.DataModels.HIS_MEDICINE_LINE> hisMedicineLine;
+
+        public static List<MOS.EFMODEL.DataModels.HIS_MEDICINE_LINE> HisMedicineLine
+        {
+            get
+            {
+                if (FormTypeDelegate.ProcessFormType != null) FormTypeDelegate.ProcessFormType(typeof(MOS.EFMODEL.DataModels.HIS_MEDICINE_LINE));
+                if (hisMedicineLine == null || hisMedicineLine.Count == 0)
+                {
+                    CommonParam param = new CommonParam();
+                    MOS.Filter.HisMedicineLineFilter filter = new MOS.Filter.HisMedicineLineFilter();
+                    filter.IS_ACTIVE = IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE;
+                    hisMedicineLine = BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_MEDICINE_LINE>("/api/HisMedicineLine/Get", ApiConsumerStore.MosConsumer, filter);
+                }
+                return hisMedicineLine.Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE).ToList();
+            }
+            set
+            {
+                hisMedicineLine = value;
+            }
+        }
     }
 }

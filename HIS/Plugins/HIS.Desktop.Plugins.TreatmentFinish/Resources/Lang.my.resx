@@ -165,6 +165,12 @@
   <data name="FormAppointment.layoutControlItem9.Text" xml:space="preserve">
     <value> </value>
   </data>
+  <data name="FormAppointment.lblKhongCanhBaoNgayNghi.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>စနေနှင့် တနင်္ဂနွေနေ့များတွင် ရက်ချိန်းသတိပေးချက်များကို မဖော်ပြပါနှင့်</value>
+  </data>
+  <data name="FormAppointment.lblKhongCanhBaoNgayNghi.Text" xml:space="preserve">
+    <value>အားလပ်ရက်သတိပေးချက်မရှိပါ-</value>
+  </data>
   <data name="FormAppointment.lblStt.Text" xml:space="preserve">
     <value>၀ယ်တယ်။</value>
   </data>
@@ -222,8 +228,17 @@
   <data name="FormTransfer.bar1.Text" xml:space="preserve">
     <value>ကိရိယာများ</value>
   </data>
+  <data name="FormTransfer.bar2.Text" xml:space="preserve">
+    <value>ကိရိယာများ</value>
+  </data>
+  <data name="FormTransfer.barButtonItem1.Caption" xml:space="preserve">
+    <value>Ctrl S</value>
+  </data>
   <data name="FormTransfer.barButtonItemSave.Caption" xml:space="preserve">
     <value>Ctrl S</value>
+  </data>
+  <data name="FormTransfer.barButtonItemShowSurgMisu.Caption" xml:space="preserve">
+    <value>F1</value>
   </data>
   <data name="FormTransfer.btnSave.Text" xml:space="preserve">
     <value>Save (Ctrl S)</value>
@@ -234,14 +249,71 @@
   <data name="FormTransfer.layoutControl1.Text" xml:space="preserve">
     <value>အပြင်အဆင်ထိန်းချုပ်မှု ၁</value>
   </data>
+  <data name="FormTransfer.layoutControl2.Text" xml:space="preserve">
+    <value>အပြင်အဆင်ထိန်းချုပ်မှု ၁</value>
+  </data>
   <data name="FormTransfer.layoutControlItem1.Text" xml:space="preserve">
     <value>ဆေးသုံးတယ်။</value>
+  </data>
+  <data name="FormTransfer.layoutControlItem11.Text" xml:space="preserve">
+    <value>ဦးတည်ရာ-</value>
+  </data>
+  <data name="FormTransfer.layoutControlItem13.Text" xml:space="preserve">
+    <value>ဝန်ဆောင်မှုပေးသူ-</value>
+  </data>
+  <data name="FormTransfer.layoutControlItem15.Text" xml:space="preserve">
+    <value>အကြောင်းရင်း-</value>
+  </data>
+  <data name="FormTransfer.layoutControlItem16.Text" xml:space="preserve">
+    <value>သယ်ယူပို့ဆောင်ရေးနည်းလမ်းများ</value>
+  </data>
+  <data name="FormTransfer.layoutControlItem18.Text" xml:space="preserve">
+    <value>လိပ်စာ-</value>
   </data>
   <data name="FormTransfer.layoutControlItem2.Text" xml:space="preserve">
     <value>ပရော်ဖက်ရှင်နယ် အကြောင်းပြချက်များ-</value>
   </data>
+  <data name="FormTransfer.layoutControlItem20.Text" xml:space="preserve">
+    <value>ကုသမှုလမ်းညွှန်</value>
+  </data>
+  <data name="FormTransfer.layoutControlItem21.Text" xml:space="preserve">
+    <value>ကုသမှုနည်းလမ်းများ</value>
+  </data>
+  <data name="FormTransfer.layoutControlItem22.Text" xml:space="preserve">
+    <value>အစ:</value>
+  </data>
+  <data name="FormTransfer.layoutControlItem23.Text" xml:space="preserve">
+    <value>ပုံစံ-</value>
+  </data>
+  <data name="FormTransfer.layoutControlItem25.Text" xml:space="preserve">
+    <value>ပရော်ဖက်ရှင်နယ် အကြောင်းပြချက်များ-</value>
+  </data>
+  <data name="FormTransfer.layoutControlItem26.Text" xml:space="preserve">
+    <value>ပရော်ဖက်ရှင်နယ် အကြောင်းပြချက်များ-</value>
+  </data>
+  <data name="FormTransfer.layoutControlItem27.Text" xml:space="preserve">
+    <value>လူနာအခြေအနေ</value>
+  </data>
+  <data name="FormTransfer.layoutControlItem28.Text" xml:space="preserve">
+    <value>နမူနာ-</value>
+  </data>
   <data name="FormTransfer.layoutControlItem3.Text" xml:space="preserve">
     <value>ပရော်ဖက်ရှင်နယ် အကြောင်းပြချက်များ-</value>
+  </data>
+  <data name="FormTransfer.layoutControlItem31.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>ဆေးရုံလွှဲပြောင်းရေးဖောင်တွင် လက်မှတ်ရေးထိုးရန် အခွင့်အာဏာရှိသူကို ရွေးချယ်ပါ။</value>
+  </data>
+  <data name="FormTransfer.layoutControlItem31.Text" xml:space="preserve">
+    <value>လက်မှတ်ရေးထိုးခဲ့သည်-</value>
+  </data>
+  <data name="FormTransfer.layoutControlItem33.Text" xml:space="preserve">
+    <value>ဝန်ဆောင်မှုပေးသူ-</value>
+  </data>
+  <data name="FormTransfer.layoutControlItem34.Text" xml:space="preserve">
+    <value>ခွဲစိတ်မှု၊ လုပ်ထုံးလုပ်နည်းများ</value>
+  </data>
+  <data name="FormTransfer.layoutControlItem35.Text" xml:space="preserve">
+    <value>အဆုံး:</value>
   </data>
   <data name="FormTransfer.layoutControlItem8.OptionsToolTip.ToolTip" xml:space="preserve">
     <value>ဆေးရုံလွှဲပြောင်းရေးဖောင်တွင် လက်မှတ်ရေးထိုးရန် အခွင့်အာဏာရှိသူကို ရွေးချယ်ပါ။</value>
@@ -279,8 +351,17 @@
   <data name="FormTransfer.lciTranPatiTemp.Text" xml:space="preserve">
     <value>နမူနာ:</value>
   </data>
+  <data name="FormTransfer.simpleButton1.Text" xml:space="preserve">
+    <value>ပုံစံခွက်ကို သိမ်းဆည်းပါ။</value>
+  </data>
+  <data name="FormTransfer.simpleButton2.Text" xml:space="preserve">
+    <value>Save (Ctrl S)</value>
+  </data>
   <data name="FormTransfer.Text" xml:space="preserve">
     <value>ဆေးရုံလွှဲပြောင်းသတင်းအချက်အလက်</value>
+  </data>
+  <data name="FormTransfer.txtSurgeryName.Properties.NullText" xml:space="preserve">
+    <value>ဝန်ဆောင်မှုကိုရွေးချယ်ရန် F1 ကိုနှိပ်ပါ။</value>
   </data>
   <data name="FormTreatmentFinish.bar1.Text" xml:space="preserve">
     <value>ကိရိယာများ</value>
@@ -417,6 +498,9 @@
   <data name="FormTreatmentFinish.layoutControlItem46.Text" xml:space="preserve">
     <value>အစားထိုးလက်မှတ်ထိုးသူ-</value>
   </data>
+  <data name="FormTreatmentFinish.layoutControlItem47.Text" xml:space="preserve">
+    <value>အလုပ်-</value>
+  </data>
   <data name="FormTreatmentFinish.layoutControlItem5.Text" xml:space="preserve">
     <value>ဆေးရုံလွှဲပြောင်းနံပါတ်-</value>
   </data>
@@ -545,6 +629,12 @@
   </data>
   <data name="FormTreatmentFinish.lciEyeTensionRight.Text" xml:space="preserve">
     <value>ညာဘက်အတွင်းသားဖိအား-</value>
+  </data>
+  <data name="FormTreatmentFinish.lciHosReason.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>တက်ရတဲ့အကြောင်းရင်း</value>
+  </data>
+  <data name="FormTreatmentFinish.lciHosReason.Text" xml:space="preserve">
+    <value>NT ဝင်ရောက်ရခြင်းအကြောင်းအရင်း-</value>
   </data>
   <data name="FormTreatmentFinish.lciKetQuaXetNghiem.Text" xml:space="preserve">
     <value>ဓာတ်ခွဲခန်းနှင့် paraclinical ရလဒ်များ</value>
@@ -974,13 +1064,5 @@
   </data>
   <data name="TruongThongTinCoDoDaiVuotQuaGioiHan" xml:space="preserve">
     <value>ဒေတာအကွက်၏ အရှည်သည် စာလုံးရေ 2000 ထက်မပိုပါ။</value>
-  </data>
-  <data name="FormAppointment.lblKhongCanhBaoNgayNghi.OptionsToolTip.ToolTip" xml:space="preserve">
-    <value>စနေနှင့် တနင်္ဂနွေနေ့များတွင် ရက်ချိန်းသတိပေးချက်များကို မဖော်ပြပါနှင့်</value>
-    <comment>Không hiển thị thông báo hẹn khám vào thứ 7, chủ nhật</comment>
-  </data>
-  <data name="FormAppointment.lblKhongCanhBaoNgayNghi.Text" xml:space="preserve">
-    <value>အားလပ်ရက်သတိပေးချက်မရှိပါ-</value>
-    <comment>Không cảnh báo ngày nghỉ:</comment>
   </data>
 </root>

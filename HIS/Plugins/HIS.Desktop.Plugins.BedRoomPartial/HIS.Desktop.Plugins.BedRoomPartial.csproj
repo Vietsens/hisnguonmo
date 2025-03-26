@@ -38,7 +38,7 @@
       <HintPath>..\..\..\..\LIB\Library packages\Aspose.Total for .NET July 2019\Aspose.Pdf.11.1.1\lib\net2.0\Aspose.Pdf.dll</HintPath>
     </Reference>
     <Reference Include="AutoMapper">
-      <HintPath>..\..\..\..\LIB\HIS\ReferencedAssemblies\AutoMapper.dll</HintPath>
+      <HintPath>..\..\..\..\lib_1\MOS\AutoMapper.dll</HintPath>
     </Reference>
     <Reference Include="DevExpress.Data.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
     <Reference Include="DevExpress.Images.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
@@ -64,17 +64,21 @@
       <HintPath>..\..\..\..\LIB\EMR\EMR.SDO.dll</HintPath>
     </Reference>
     <Reference Include="EMR_MAIN">
-      <HintPath>..\..\..\..\LIB\EMRLinksoft\EMR_MAIN.dll</HintPath>
+      <HintPath>..\..\..\..\..\Test_HIS\histest\x64\ReferencedAssemblies\EMR_MAIN.dll</HintPath>
     </Reference>
     <Reference Include="HIS.Common.Treatment, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\LIB\HIS\HIS.Common\HIS.Common.Treatment\HIS.Common.Treatment.dll</HintPath>
     </Reference>
-    <Reference Include="HIS.Desktop.Plugins.Library.EmrLinkSoft">
-      <HintPath>..\..\..\TEST\HIS\x64\ReferencedAssemblies\HIS.Desktop.Plugins.Library.EmrLinkSoft.dll</HintPath>
+    <Reference Include="HIS.Desktop.IsAdmin">
+      <HintPath>..\..\..\..\lib_1\HIS\HIS.Desktop.IsAdmin\HIS.Desktop.IsAdmin.dll</HintPath>
     </Reference>
-    <Reference Include="HIS.Desktop.Plugins.Library.FormMedicalRecord">
-      <HintPath>..\HIS.Desktop.Plugins.Library.FormMedicalRecord\bin\Debug\HIS.Desktop.Plugins.Library.FormMedicalRecord.dll</HintPath>
+    <Reference Include="HIS.Desktop.Plugins.Library.EmrLinkSoft">
+      <HintPath>..\..\..\..\..\Test_HIS\histest\x64\ReferencedAssemblies\HIS.Desktop.Plugins.Library.EmrLinkSoft.dll</HintPath>
+    </Reference>
+    <Reference Include="HIS.Desktop.Plugins.Library.FormMedicalRecord, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\lib_1\HIS\HIS.Desktop.Plugins.Library.FormMedicalRecord\HIS.Desktop.Plugins.Library.FormMedicalRecord.dll</HintPath>
     </Reference>
     <Reference Include="HIS.Desktop.Plugins.Library.OtherForm">
       <HintPath>..\..\..\..\LIB\HIS\HIS.Desktop.Plugins.Library.OtherForm\HIS.Desktop.Plugins.Library.OtherForm.dll</HintPath>
@@ -88,6 +92,9 @@
     </Reference>
     <Reference Include="HIS.Desktop.Plugins.Library.PrintTestTotal">
       <HintPath>..\..\..\..\LIB\HIS\HIS.Desktop.Plugins.Library.PrintTestTotal\HIS.Desktop.Plugins.Library.PrintTestTotal.dll</HintPath>
+    </Reference>
+    <Reference Include="HIS.Desktop.Utility">
+      <HintPath>..\..\..\..\lib_1\HIS\HIS.Desktop.Utilities\HIS.Desktop.Utility.dll</HintPath>
     </Reference>
     <Reference Include="HIS.UC.ViewEmrDocument">
       <HintPath>..\..\..\..\LIB\HIS\HIS.UC.ViewEmrDocument\HIS.UC.ViewEmrDocument.dll</HintPath>
@@ -169,7 +176,7 @@
       <HintPath>..\..\..\..\LIB\Inventec.Desktop\Inventec.Desktop.Core\Inventec.Desktop.Core.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Desktop.CustomControl">
-      <HintPath>..\..\..\..\..\LIB\Inventec.Desktop.CustomControl\Inventec.Desktop.CustomControl.dll</HintPath>
+      <HintPath>..\..\..\..\lib_1\Inventec.Desktop.CustomControl\Inventec.Desktop.CustomControl.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Fss.Client, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -309,6 +316,7 @@
       <DependentUpon>FrmFollow.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Include="Properties\licenses.licx" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -368,10 +376,6 @@
       <Project>{306cbc95-d95a-48e1-941e-f3ecc0cbee34}</Project>
       <Name>HIS.Desktop.EventLog</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\HIS.Desktop.IsAdmin\HIS.Desktop.IsAdmin.csproj">
-      <Project>{4ab09efc-8f70-4cca-9e6d-693f44a7d29f}</Project>
-      <Name>HIS.Desktop.IsAdmin</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\HIS.Desktop.LibraryMessage\HIS.Desktop.LibraryMessage.csproj">
       <Project>{48d9a44a-7120-4c9b-8923-b1af16b1992f}</Project>
       <Name>HIS.Desktop.LibraryMessage</Name>
@@ -408,10 +412,6 @@
       <Project>{aeeca321-fd65-407a-8d70-ba5362883b87}</Project>
       <Name>HIS.Desktop.Print</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\HIS.Desktop.Utility\HIS.Desktop.Utilities.csproj">
-      <Project>{2aad22db-2166-4be8-ae52-335b21dc03fc}</Project>
-      <Name>HIS.Desktop.Utilities</Name>
-    </ProjectReference>
     <ProjectReference Include="..\HIS.Desktop.Library.CacheClient\HIS.Desktop.Library.CacheClient.csproj">
       <Project>{64837e01-803d-4f1e-9dfc-d34b38ea78f9}</Project>
       <Name>HIS.Desktop.Library.CacheClient</Name>
@@ -422,15 +422,13 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\phieu-tra.png" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Resources\phieu-linh.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\notImage.jpg" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Resources\phieu-tra.png" />
     <Content Include="Resources\y-te.png" />
     <None Include="Resources\y-te1.png" />
   </ItemGroup>

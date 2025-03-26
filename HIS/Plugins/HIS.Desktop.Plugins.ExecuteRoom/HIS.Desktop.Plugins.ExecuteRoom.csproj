@@ -54,23 +54,48 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\LIB\WCF\CPA.WCF\Client\CallPatient\CPA.WCFClient.CallPatientClient.dll</HintPath>
     </Reference>
-    <Reference Include="DevExpress.Data.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
-    <Reference Include="DevExpress.Images.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\ReferencedAssemblies\DevLib\DevExpress.Images.v15.2.dll</HintPath>
+    <Reference Include="DevExpress.Data.v15.2">
+      <HintPath>..\..\..\..\lib\DEVEXPRESS\DevExpress.Data.v15.2.dll</HintPath>
     </Reference>
-    <Reference Include="DevExpress.Pdf.v15.2.Core, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
-    <Reference Include="DevExpress.Pdf.v15.2.Drawing, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
-    <Reference Include="DevExpress.Printing.v15.2.Core, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
-    <Reference Include="DevExpress.Sparkline.v15.2.Core, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
-    <Reference Include="DevExpress.Utils.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
-    <Reference Include="DevExpress.XtraBars.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
-    <Reference Include="DevExpress.XtraEditors.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
-    <Reference Include="DevExpress.XtraGrid.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
-    <Reference Include="DevExpress.XtraLayout.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
-    <Reference Include="DevExpress.XtraPdfViewer.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
-    <Reference Include="DevExpress.XtraPrinting.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
-    <Reference Include="DevExpress.XtraTreeList.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.Images.v15.2">
+      <HintPath>..\..\..\..\lib\DEVEXPRESS\DevExpress.Images.v15.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Pdf.v15.2.Core">
+      <HintPath>..\..\..\..\lib\DEVEXPRESS\DevExpress.Pdf.v15.2.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Pdf.v15.2.Drawing">
+      <HintPath>..\..\..\..\lib\DEVEXPRESS\DevExpress.Pdf.v15.2.Drawing.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Printing.v15.2.Core">
+      <HintPath>..\..\..\..\lib\DEVEXPRESS\DevExpress.Printing.v15.2.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Sparkline.v15.2.Core">
+      <HintPath>..\..\..\..\lib\DEVEXPRESS\DevExpress.Sparkline.v15.2.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Utils.v15.2">
+      <HintPath>..\..\..\..\lib\DEVEXPRESS\DevExpress.Utils.v15.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.XtraBars.v15.2">
+      <HintPath>..\..\..\..\lib\DEVEXPRESS\DevExpress.XtraBars.v15.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.XtraEditors.v15.2">
+      <HintPath>..\..\..\..\lib\DEVEXPRESS\DevExpress.XtraEditors.v15.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.XtraGrid.v15.2">
+      <HintPath>..\..\..\..\lib\DEVEXPRESS\DevExpress.XtraGrid.v15.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.XtraLayout.v15.2">
+      <HintPath>..\..\..\..\lib\DEVEXPRESS\DevExpress.XtraLayout.v15.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.XtraPdfViewer.v15.2">
+      <HintPath>..\..\..\..\lib\DEVEXPRESS\DevExpress.XtraPdfViewer.v15.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.XtraPrinting.v15.2">
+      <HintPath>..\..\..\..\lib\DEVEXPRESS\DevExpress.XtraPrinting.v15.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.XtraTreeList.v15.2">
+      <HintPath>..\..\..\..\lib\DEVEXPRESS\DevExpress.XtraTreeList.v15.2.dll</HintPath>
+    </Reference>
     <Reference Include="EMR.EFMODEL">
       <HintPath>..\..\..\..\LIB\EMR\EMR.EFMODEL.dll</HintPath>
     </Reference>
@@ -83,8 +108,18 @@
     <Reference Include="EMR.URI">
       <HintPath>..\..\..\..\LIB\EMR\EMR.URI.dll</HintPath>
     </Reference>
+    <Reference Include="His.Bhyt.InsuranceExpertise">
+      <HintPath>..\..\..\..\lib\HIS\His.Bhyt.InsuranceExpertise\His.Bhyt.InsuranceExpertise.dll</HintPath>
+    </Reference>
+    <Reference Include="HIS.Desktop.Plugins.Library.CheckHeinGOV">
+      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\HIS.Desktop.Plugins.Library.CheckHeinGOV.dll</HintPath>
+    </Reference>
     <Reference Include="HIS.Desktop.Plugins.Library.EmrGenerate">
       <HintPath>..\..\..\..\LIB\HIS\HIS.Desktop.Plugins.Library.EmrGenerate\HIS.Desktop.Plugins.Library.EmrGenerate.dll</HintPath>
+    </Reference>
+    <Reference Include="HIS.Desktop.Plugins.Library.FormMedicalRecord, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\lib\HIS\HIS.Desktop.Plugins.Library.FormMedicalRecord\HIS.Desktop.Plugins.Library.FormMedicalRecord.dll</HintPath>
     </Reference>
     <Reference Include="HIS.Desktop.Plugins.Library.MediStockExpend">
       <HintPath>..\..\..\..\LIB\HIS\HIS.Desktop.Plugins.Library.MediStockExpend\HIS.Desktop.Plugins.Library.MediStockExpend.dll</HintPath>
@@ -93,7 +128,7 @@
       <HintPath>..\..\..\..\LIB\HIS\HIS.Desktop.Plugins.Library.OtherTreatmentHistory\HIS.Desktop.Plugins.Library.OtherTreatmentHistory.dll</HintPath>
     </Reference>
     <Reference Include="HIS.UC.TreeSereServ7V2">
-      <HintPath>..\..\..\..\..\histest\histest\x64\ReferencedAssemblies\HIS.UC.TreeSereServ7V2.dll</HintPath>
+      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\HIS.UC.TreeSereServ7V2.dll</HintPath>
     </Reference>
     <Reference Include="HIS.UC.ViewEmrDocument, Version=1.5.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -131,6 +166,9 @@
     <Reference Include="Inventec.Common.Mapper, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\LIB\HIS\HIS.UC.WorkPlace\Inventec.Common.Mapper.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Common.QrCodeBHYT ">
+      <HintPath>..\..\..\..\lib\Inventec.Common\Inventec.Common.QrCodeBHYT\Inventec.Common.QrCodeBHYT .dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Common.Resource">
       <HintPath>..\..\..\..\LIB\Inventec.Common\Inventec.Common.Resource\Inventec.Common.Resource.dll</HintPath>
@@ -446,9 +484,9 @@
       <Project>{64837e01-803d-4f1e-9dfc-d34b38ea78f9}</Project>
       <Name>HIS.Desktop.Library.CacheClient</Name>
     </ProjectReference>
-    <ProjectReference Include="..\HIS.Desktop.Plugins.Library.FormMedicalRecord\HIS.Desktop.Plugins.Library.FormMedicalRecord.csproj">
-      <Project>{c154dfeb-1051-4c3d-a0a8-04ae3b1b2b2a}</Project>
-      <Name>HIS.Desktop.Plugins.Library.FormMedicalRecord</Name>
+    <ProjectReference Include="..\HIS.Desktop.Plugins.Library.RegisterConfig\HIS.Desktop.Plugins.Library.RegisterConfig.csproj">
+      <Project>{9247dd49-482c-4227-88df-616a8aaf3f38}</Project>
+      <Name>HIS.Desktop.Plugins.Library.RegisterConfig</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

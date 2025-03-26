@@ -66,6 +66,10 @@ namespace MPS.Processor.Mps000116.PDO
         public decimal? MEDICINE_GROUP_NUM_ORDER { get; set; }
         public decimal? MEDICINE_USE_FORM_NUM_ORDER { get; set; }
         public decimal? NUM_ORDER { get; set; }
+        public short? MORNING_IS_USED { get; set; }
+        public short? NOON_IS_USED { get; set; }
+        public short? AFTERNOON_IS_USED { get; set; }
+        public short? EVENING_IS_USED { get; set; }
 
         public Mps000116ADO() { }
 
@@ -94,6 +98,10 @@ namespace MPS.Processor.Mps000116.PDO
                     this.AFTERNOON = datas[0].AFTERNOON;
                     this.EVENING = datas[0].EVENING;
                     this.CONCENTRA = datas[0].CONCENTRA;
+                    this.MORNING_IS_USED = datas[0].MORNING_IS_USED;
+                    this.NOON_IS_USED = datas[0].NOON_IS_USED;
+                    this.AFTERNOON_IS_USED = datas[0].AFTERNOON_IS_USED;
+                    this.EVENING_IS_USED = datas[0].EVENING_IS_USED;
                     this.VAT_RATIO = datas[0].VAT_RATIO;
                     this.MEDICINE_GROUP_NUM_ORDER = datas[0].MEDICINE_GROUP_NUM_ORDER;
                     this.MEDICINE_USE_FORM_NUM_ORDER = datas[0].MEDICINE_USE_FORM_NUM_ORDER;
@@ -155,6 +163,8 @@ namespace MPS.Processor.Mps000116.PDO
                     this.AMOUNT = datas.Sum(p => p.AMOUNT);
                     this.TypeId = 2;
                     this.TYPE_NAME = "Tự mua";
+                    this.VIR_PRICE = datas.Sum(o => o.PRICE ?? 0);
+                    this.TOTAL_PRICE = datas.Sum(o => o.AMOUNT * (o.PRICE ?? 0));
                     this.TOTAL_PRICE_STR = this.ConvertNumberToString(this.TOTAL_PRICE ?? 0);
                     this.VIR_PRICE_STR = this.ConvertNumberToString(this.VIR_PRICE ?? 0);
                     this.NUM_ORDER = datas[0].NUM_ORDER;
@@ -194,6 +204,8 @@ namespace MPS.Processor.Mps000116.PDO
                     this.SPEED = datas[0].SPEED;
                     this.TypeId = 1;
                     this.TYPE_NAME = "Tự mua";
+                    this.VIR_PRICE = datas.Sum(o => o.PRICE ?? 0);
+                    this.TOTAL_PRICE= datas.Sum(o => o.AMOUNT * (o.PRICE ?? 0));
                     this.TOTAL_PRICE_STR = this.ConvertNumberToString(this.TOTAL_PRICE ?? 0);
                     this.VIR_PRICE_STR = this.ConvertNumberToString(this.VIR_PRICE ?? 0);
                     this.MORNING = datas[0].MORNING;

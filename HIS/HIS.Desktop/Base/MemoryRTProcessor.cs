@@ -53,13 +53,13 @@ namespace HIS.Desktop.Base
                     else
                     {
                         Inventec.Common.Logging.LogSystem.Info("Gọi hàm giải phóng bộ nhớ lớn(LargeObjectHeapCompactionMode) cho HIS");
-                        //GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
+                        GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
                         GC.Collect();
                     }
                 }
                 else if (strDisposeAfterProcess == "2")
                 {
-                    //GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
+                    GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
                     GC.Collect();
                 }
             }

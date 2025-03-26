@@ -1747,15 +1747,16 @@ namespace HIS.Desktop.Plugins.HisCashierRoom.HisCashierRoom
                     if (!string.IsNullOrEmpty(selectedBank))
                     {
                         repositoryItemCboBank.Properties.Buttons[1].Visible = true;
-                        // Tìm cấu hình tương ứng trong listConfig
-                        var config = lstKey.FirstOrDefault(c => c.KEY.Contains(selectedBank));
+                        VALUE = "";
+                        //// Tìm cấu hình tương ứng trong listConfig
+                        //var config = lstKey.FirstOrDefault(c => c.KEY.Contains(selectedBank));
 
-                        if (config != null)
-                        {
-                            // Cập nhật giá trị cấu hình vào ô "Cấu hình"
-                            gridViewSetTTQR.SetRowCellValue(1, "Value", config.VALUE);
-                            VALUE = config.VALUE;
-                        }
+                        //if (config != null)
+                        //{
+                        //    // Cập nhật giá trị cấu hình vào ô "Cấu hình"
+                        //    gridViewSetTTQR.SetRowCellValue(1, "Value", config.VALUE);
+                        //    VALUE = config.VALUE;
+                        //}
 
                     }
                 }

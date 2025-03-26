@@ -45,10 +45,6 @@
     <Reference Include="DevExpress.XtraGrid.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
     <Reference Include="DevExpress.XtraLayout.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
     <Reference Include="DevExpress.XtraPrinting.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
-    <Reference Include="HIS.Desktop.Library.CacheClient, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\TEST\HIS\x64\ReferencedAssemblies\HIS.Desktop.Library.CacheClient.dll</HintPath>
-    </Reference>
     <Reference Include="IMSys.DbConfig.HIS_RS">
       <HintPath>..\..\..\..\LIB\IMSys.DbConfig\IMSys.DbConfig.HIS_RS\IMSys.DbConfig.HIS_RS.dll</HintPath>
     </Reference>
@@ -129,6 +125,10 @@
     <Reference Include="MOS.TDO">
       <HintPath>..\..\..\..\LIB\MOS\MOS.TDO.dll</HintPath>
     </Reference>
+    <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\lib\Library packages\Newtonsoft.Json.6.0.8\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="SDA.EFMODEL, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\LIB\SDA\SDA.EFMODEL.dll</HintPath>
@@ -161,6 +161,7 @@
     <Compile Include="CallPatient\CallPatienFactory.cs" />
     <Compile Include="CallPatient\ICallPatien.cs" />
     <Compile Include="ChooseRoomForWaitingScreenProcess.cs" />
+<<<<<<< HEAD
     <Compile Include="frmChooseRoomForWaitingScreen.cs" />
     <Compile Include="frmChooseRoomForWaitingScreen.Designer.cs">
       <DependentUpon>frmChooseRoomForWaitingScreen.cs</DependentUpon>
@@ -170,19 +171,63 @@
       <DependentUpon>frmWaitingScreen.cs</DependentUpon>
     </Compile>
     <Compile Include="frmWaitingScreen_QY.cs" />
+=======
+    <Compile Include="Class\DisplayOptionADO.cs" />
+    <Compile Include="Class\ServiceReq1ADOWorker.cs" />
+    <Compile Include="frmChooseRoomForWaitingScreen.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmChooseRoomForWaitingScreen.Designer.cs">
+      <DependentUpon>frmChooseRoomForWaitingScreen.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmDisplayOption.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmDisplayOption.Designer.cs">
+      <DependentUpon>frmDisplayOption.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmWaitingScreen.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmWaitingScreen.Designer.cs">
+      <DependentUpon>frmWaitingScreen.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmWaitingScreen_QY_New.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmWaitingScreen_QY_New.Designer.cs">
+      <DependentUpon>frmWaitingScreen_QY_New.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmWaitingScreen_QY.cs">
+      <SubType>Form</SubType>
+    </Compile>
+>>>>>>> remotes/origin/Develop
     <Compile Include="frmWaitingScreen_QY.Designer.cs">
       <DependentUpon>frmWaitingScreen_QY.cs</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Resources\ResourceLanguageManager.cs" />
     <Compile Include="RoomWaitingScreenValidation.cs" />
+    <Compile Include="Template\UcCallStt.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Template\UcCallStt.Designer.cs">
+      <DependentUpon>UcCallStt.cs</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="frmChooseRoomForWaitingScreen.resx">
       <DependentUpon>frmChooseRoomForWaitingScreen.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="frmDisplayOption.resx">
+      <DependentUpon>frmDisplayOption.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="frmWaitingScreen.resx">
       <DependentUpon>frmWaitingScreen.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmWaitingScreen_QY_New.resx">
+      <DependentUpon>frmWaitingScreen_QY_New.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="frmWaitingScreen_QY.resx">
@@ -193,6 +238,9 @@
     <EmbeddedResource Include="Resources\Lang.en.resx" />
     <EmbeddedResource Include="Resources\Lang.vi.resx">
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Template\UcCallStt.resx">
+      <DependentUpon>UcCallStt.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
@@ -256,10 +304,12 @@
       <Project>{2aad22db-2166-4be8-ae52-335b21dc03fc}</Project>
       <Name>HIS.Desktop.Utilities</Name>
     </ProjectReference>
+    <ProjectReference Include="..\HIS.Desktop.Library.CacheClient\HIS.Desktop.Library.CacheClient.csproj">
+      <Project>{64837e01-803d-4f1e-9dfc-d34b38ea78f9}</Project>
+      <Name>HIS.Desktop.Library.CacheClient</Name>
+    </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Class\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>echo PREBUILDSTEP for $(ProjectName)

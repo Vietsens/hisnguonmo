@@ -45,7 +45,10 @@ namespace HIS.Desktop.Plugins.CallPatientSample
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.layoutControl1 = new DevExpress.XtraLayout.LayoutControl();
+            this.chkTach = new DevExpress.XtraEditors.CheckEdit();
+            this.chkIsNotInDebt = new DevExpress.XtraEditors.CheckEdit();
             this.layoutControl3 = new DevExpress.XtraLayout.LayoutControl();
             this.tgExtendMonitor = new DevExpress.XtraEditors.ToggleSwitch();
             this.layoutControlGroup2 = new DevExpress.XtraLayout.LayoutControlGroup();
@@ -63,12 +66,14 @@ namespace HIS.Desktop.Plugins.CallPatientSample
             this.layoutControlGroup1 = new DevExpress.XtraLayout.LayoutControlGroup();
             this.layoutControlItem1 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem2 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.dxErrorProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXErrorProvider();
-            this.dxValidationProviderControl = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider();
-            this.chkIsNotInDebt = new DevExpress.XtraEditors.CheckEdit();
             this.layoutControlItem3 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.layoutControlItem4 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.dxErrorProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXErrorProvider(this.components);
+            this.dxValidationProviderControl = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
             this.layoutControl1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.chkTach.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chkIsNotInDebt.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl3)).BeginInit();
             this.layoutControl3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.tgExtendMonitor.Properties)).BeginInit();
@@ -85,14 +90,15 @@ namespace HIS.Desktop.Plugins.CallPatientSample
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem3)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem4)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxErrorProvider1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxValidationProviderControl)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.chkIsNotInDebt.Properties)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem3)).BeginInit();
             this.SuspendLayout();
             // 
             // layoutControl1
             // 
+            this.layoutControl1.Controls.Add(this.chkTach);
             this.layoutControl1.Controls.Add(this.chkIsNotInDebt);
             this.layoutControl1.Controls.Add(this.layoutControl3);
             this.layoutControl1.Controls.Add(this.layoutControl2);
@@ -103,6 +109,27 @@ namespace HIS.Desktop.Plugins.CallPatientSample
             this.layoutControl1.Size = new System.Drawing.Size(424, 245);
             this.layoutControl1.TabIndex = 0;
             this.layoutControl1.Text = "layoutControl1";
+            // 
+            // chkTach
+            // 
+            this.chkTach.Enabled = false;
+            this.chkTach.Location = new System.Drawing.Point(2, 192);
+            this.chkTach.Name = "chkTach";
+            this.chkTach.Properties.Caption = "Hiển thị tách danh sách";
+            this.chkTach.Size = new System.Drawing.Size(420, 19);
+            this.chkTach.StyleController = this.layoutControl1;
+            this.chkTach.TabIndex = 7;
+            this.chkTach.ToolTip = "Hiển thị tách thành 2 danh sách ”Đã lấy mẫu\" và “Chưa lấy mẫu";
+            // 
+            // chkIsNotInDebt
+            // 
+            this.chkIsNotInDebt.Location = new System.Drawing.Point(2, 169);
+            this.chkIsNotInDebt.Name = "chkIsNotInDebt";
+            this.chkIsNotInDebt.Properties.Caption = "Chỉ hiển thị bệnh nhân đã đóng tiền";
+            this.chkIsNotInDebt.Size = new System.Drawing.Size(420, 19);
+            this.chkIsNotInDebt.StyleController = this.layoutControl1;
+            this.chkIsNotInDebt.TabIndex = 6;
+            this.chkIsNotInDebt.CheckedChanged += new System.EventHandler(this.chkIsNotInDebt_CheckedChanged);
             // 
             // layoutControl3
             // 
@@ -161,7 +188,7 @@ namespace HIS.Desktop.Plugins.CallPatientSample
             this.layoutControl2.Location = new System.Drawing.Point(2, 2);
             this.layoutControl2.Name = "layoutControl2";
             this.layoutControl2.Root = this.Root;
-            this.layoutControl2.Size = new System.Drawing.Size(420, 186);
+            this.layoutControl2.Size = new System.Drawing.Size(420, 163);
             this.layoutControl2.TabIndex = 4;
             this.layoutControl2.Text = "layoutControl2";
             // 
@@ -172,7 +199,7 @@ namespace HIS.Desktop.Plugins.CallPatientSample
             this.gridControlExecuteStatus.Name = "gridControlExecuteStatus";
             this.gridControlExecuteStatus.RepositoryItems.AddRange(new DevExpress.XtraEditors.Repository.RepositoryItem[] {
             this.CheckEditStt});
-            this.gridControlExecuteStatus.Size = new System.Drawing.Size(416, 182);
+            this.gridControlExecuteStatus.Size = new System.Drawing.Size(416, 159);
             this.gridControlExecuteStatus.TabIndex = 4;
             this.gridControlExecuteStatus.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
             this.gridViewExecuteStatus});
@@ -187,6 +214,7 @@ namespace HIS.Desktop.Plugins.CallPatientSample
             this.gridViewExecuteStatus.Name = "gridViewExecuteStatus";
             this.gridViewExecuteStatus.OptionsView.ShowGroupPanel = false;
             this.gridViewExecuteStatus.OptionsView.ShowIndicator = false;
+            this.gridViewExecuteStatus.CellValueChanged += new DevExpress.XtraGrid.Views.Base.CellValueChangedEventHandler(this.gridViewExecuteStatus_CellValueChanged);
             this.gridViewExecuteStatus.CustomUnboundColumnData += new DevExpress.XtraGrid.Views.Base.CustomColumnDataEventHandler(this.gridViewExecuteStatus_CustomUnboundColumnData);
             // 
             // gridColumn1
@@ -205,6 +233,7 @@ namespace HIS.Desktop.Plugins.CallPatientSample
             // 
             this.CheckEditStt.AutoHeight = false;
             this.CheckEditStt.Name = "CheckEditStt";
+            this.CheckEditStt.CheckedChanged += new System.EventHandler(this.CheckEditStt_CheckedChanged);
             // 
             // gridColumn2
             // 
@@ -235,7 +264,7 @@ namespace HIS.Desktop.Plugins.CallPatientSample
             this.Root.Location = new System.Drawing.Point(0, 0);
             this.Root.Name = "Root";
             this.Root.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
-            this.Root.Size = new System.Drawing.Size(420, 186);
+            this.Root.Size = new System.Drawing.Size(420, 163);
             this.Root.TextVisible = false;
             // 
             // layoutControlItem7
@@ -243,7 +272,7 @@ namespace HIS.Desktop.Plugins.CallPatientSample
             this.layoutControlItem7.Control = this.gridControlExecuteStatus;
             this.layoutControlItem7.Location = new System.Drawing.Point(0, 0);
             this.layoutControlItem7.Name = "layoutControlItem7";
-            this.layoutControlItem7.Size = new System.Drawing.Size(420, 186);
+            this.layoutControlItem7.Size = new System.Drawing.Size(420, 163);
             this.layoutControlItem7.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem7.TextVisible = false;
             // 
@@ -254,7 +283,8 @@ namespace HIS.Desktop.Plugins.CallPatientSample
             this.layoutControlGroup1.Items.AddRange(new DevExpress.XtraLayout.BaseLayoutItem[] {
             this.layoutControlItem1,
             this.layoutControlItem2,
-            this.layoutControlItem3});
+            this.layoutControlItem3,
+            this.layoutControlItem4});
             this.layoutControlGroup1.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup1.Name = "layoutControlGroup1";
             this.layoutControlGroup1.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
@@ -266,7 +296,7 @@ namespace HIS.Desktop.Plugins.CallPatientSample
             this.layoutControlItem1.Control = this.layoutControl2;
             this.layoutControlItem1.Location = new System.Drawing.Point(0, 0);
             this.layoutControlItem1.Name = "layoutControlItem1";
-            this.layoutControlItem1.Size = new System.Drawing.Size(424, 190);
+            this.layoutControlItem1.Size = new System.Drawing.Size(424, 167);
             this.layoutControlItem1.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem1.TextVisible = false;
             // 
@@ -279,6 +309,24 @@ namespace HIS.Desktop.Plugins.CallPatientSample
             this.layoutControlItem2.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem2.TextVisible = false;
             // 
+            // layoutControlItem3
+            // 
+            this.layoutControlItem3.Control = this.chkIsNotInDebt;
+            this.layoutControlItem3.Location = new System.Drawing.Point(0, 167);
+            this.layoutControlItem3.Name = "layoutControlItem3";
+            this.layoutControlItem3.Size = new System.Drawing.Size(424, 23);
+            this.layoutControlItem3.TextSize = new System.Drawing.Size(0, 0);
+            this.layoutControlItem3.TextVisible = false;
+            // 
+            // layoutControlItem4
+            // 
+            this.layoutControlItem4.Control = this.chkTach;
+            this.layoutControlItem4.Location = new System.Drawing.Point(0, 190);
+            this.layoutControlItem4.Name = "layoutControlItem4";
+            this.layoutControlItem4.Size = new System.Drawing.Size(424, 23);
+            this.layoutControlItem4.TextSize = new System.Drawing.Size(0, 0);
+            this.layoutControlItem4.TextVisible = false;
+            // 
             // dxErrorProvider1
             // 
             this.dxErrorProvider1.ContainerControl = this;
@@ -286,25 +334,6 @@ namespace HIS.Desktop.Plugins.CallPatientSample
             // dxValidationProviderControl
             // 
             this.dxValidationProviderControl.ValidationFailed += new DevExpress.XtraEditors.DXErrorProvider.ValidationFailedEventHandler(this.dxValidationProviderControl_ValidationFailed);
-            // 
-            // chkIsNotInDebt
-            // 
-            this.chkIsNotInDebt.Location = new System.Drawing.Point(2, 192);
-            this.chkIsNotInDebt.Name = "chkIsNotInDebt";
-            this.chkIsNotInDebt.Properties.Caption = "Chỉ hiển thị bệnh nhân đã đóng tiền";
-            this.chkIsNotInDebt.Size = new System.Drawing.Size(420, 19);
-            this.chkIsNotInDebt.StyleController = this.layoutControl1;
-            this.chkIsNotInDebt.TabIndex = 6;
-            this.chkIsNotInDebt.CheckedChanged += new System.EventHandler(this.chkIsNotInDebt_CheckedChanged);
-            // 
-            // layoutControlItem3
-            // 
-            this.layoutControlItem3.Control = this.chkIsNotInDebt;
-            this.layoutControlItem3.Location = new System.Drawing.Point(0, 190);
-            this.layoutControlItem3.Name = "layoutControlItem3";
-            this.layoutControlItem3.Size = new System.Drawing.Size(424, 23);
-            this.layoutControlItem3.TextSize = new System.Drawing.Size(0, 0);
-            this.layoutControlItem3.TextVisible = false;
             // 
             // frmChooseRoomForWaitingScreen
             // 
@@ -319,6 +348,8 @@ namespace HIS.Desktop.Plugins.CallPatientSample
             this.Controls.SetChildIndex(this.layoutControl1, 0);
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).EndInit();
             this.layoutControl1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.chkTach.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chkIsNotInDebt.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl3)).EndInit();
             this.layoutControl3.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.tgExtendMonitor.Properties)).EndInit();
@@ -335,10 +366,10 @@ namespace HIS.Desktop.Plugins.CallPatientSample
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem3)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem4)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxErrorProvider1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxValidationProviderControl)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.chkIsNotInDebt.Properties)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem3)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -368,5 +399,7 @@ namespace HIS.Desktop.Plugins.CallPatientSample
         private DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider dxValidationProviderControl;
         private DevExpress.XtraEditors.CheckEdit chkIsNotInDebt;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem3;
+        private DevExpress.XtraEditors.CheckEdit chkTach;
+        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem4;
     }
 }

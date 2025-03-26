@@ -77,7 +77,6 @@ namespace HIS.UC.AddressCombo
                     this.dxValidationProviderControl.RemoveControlError(invalidControls[i]);
                 }
                 this.dxErrorProviderControl.ClearErrors();
-                this.ClearValidate();
             }
             catch (Exception ex)
             {

@@ -458,7 +458,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                 lcgDHST = null;
                 layoutControlItem63 = null;
                 lciLeatherArea = null;
-                lciBMIDisplay = null;
+                //lciBMIDisplay = null;
                 lciMLCT = null;
                 lciNote = null;
                 layoutControlItem62 = null;
@@ -543,7 +543,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                 labelControl9 = null;
                 labelControl10 = null;
                 labelControl12 = null;
-                lblBmiDisplayText = null;
+                //lblBmiDisplayText = null;
                 dtExecuteTime = null;
                 labelControl2 = null;
                 spinSPO2 = null;

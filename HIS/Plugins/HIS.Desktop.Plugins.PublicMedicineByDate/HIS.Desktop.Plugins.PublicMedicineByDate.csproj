@@ -143,9 +143,8 @@
     <Reference Include="MPS.Processor.Mps000116">
       <HintPath>..\..\..\..\LIB\MPSv2\MPS.Processor\MPS.Processor.Mps000116.dll</HintPath>
     </Reference>
-    <Reference Include="MPS.Processor.Mps000116.PDO, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\TEST\HIS\x64\ReferencedAssemblies\MPS.Processor.Mps000116.PDO.dll</HintPath>
+    <Reference Include="MPS.Processor.Mps000116.PDO">
+      <HintPath>..\..\..\..\lib\MPSv2\MPS.PDO\MPS.Processor.Mps000116.PDO.dll</HintPath>
     </Reference>
     <Reference Include="MPS.ProcessorBase, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -177,7 +176,6 @@
     <Compile Include="Run\frmPublicMedicinesByDate__Pluss_Print.cs" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Properties\licenses.licx" />
     <EmbeddedResource Include="Resources\Lang.en.resx" />
     <EmbeddedResource Include="Resources\Lang.vi.resx" />
     <EmbeddedResource Include="Run\frmPublicMedicinesByDate.resx">

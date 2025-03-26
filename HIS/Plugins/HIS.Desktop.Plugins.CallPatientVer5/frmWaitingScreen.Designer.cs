@@ -268,12 +268,12 @@ namespace HIS.Desktop.Plugins.CallPatientVer5
             // 
             // gridViewWaitingPatient
             // 
-            this.gridViewWaitingPatient.Appearance.Empty.BackColor = System.Drawing.Color.Azure;
+            this.gridViewWaitingPatient.Appearance.Empty.BackColor = System.Drawing.Color.White;
             this.gridViewWaitingPatient.Appearance.Empty.BackColor2 = System.Drawing.Color.Transparent;
             this.gridViewWaitingPatient.Appearance.Empty.BorderColor = System.Drawing.Color.Transparent;
             this.gridViewWaitingPatient.Appearance.Empty.Options.UseBackColor = true;
             this.gridViewWaitingPatient.Appearance.Empty.Options.UseBorderColor = true;
-            this.gridViewWaitingPatient.Appearance.FocusedCell.BackColor = System.Drawing.Color.Azure;
+            this.gridViewWaitingPatient.Appearance.FocusedCell.BackColor = System.Drawing.Color.White;
             this.gridViewWaitingPatient.Appearance.FocusedCell.BackColor2 = System.Drawing.Color.Transparent;
             this.gridViewWaitingPatient.Appearance.FocusedCell.Options.UseBackColor = true;
             this.gridViewWaitingPatient.Appearance.FocusedRow.BackColor = System.Drawing.Color.Transparent;

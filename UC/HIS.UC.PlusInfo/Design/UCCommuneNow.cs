@@ -48,6 +48,7 @@ namespace HIS.UC.PlusInfo.Design
         #region Constructor - Load
 
         public UCCommuneNow()
+            : base("UCPlusInfo", "UCCommuneNow")
         {
             try
             {

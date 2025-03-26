@@ -167,7 +167,7 @@
       <HintPath>..\..\..\..\LIB\MPSv2\MPS.PDO\MPS.Processor.Mps000347.PDO.dll</HintPath>
     </Reference>
     <Reference Include="MPS.Processor.Mps000421.PDO">
-      <HintPath>..\..\..\..\LIB\MPSv2\MPS.PDO\MPS.Processor.Mps000421.PDO.dll</HintPath>
+      <HintPath>..\..\..\..\lib_1\MPSv2\MPS.PDO\MPS.Processor.Mps000421.PDO.dll</HintPath>
     </Reference>
     <Reference Include="MPS.ProcessorBase">
       <HintPath>..\..\..\..\LIB\MPSv2\MPS.ProcessorBase\MPS.ProcessorBase.dll</HintPath>
@@ -244,7 +244,6 @@
     <EmbeddedResource Include="frmReplace.resx">
       <DependentUpon>frmReplace.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Properties\licenses.licx" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>

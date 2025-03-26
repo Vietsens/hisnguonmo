@@ -25,6 +25,7 @@ using HIS.UC.SecondaryIcd.Reload;
 using HIS.UC.SecondaryIcd.ResetValidate;
 using HIS.UC.SecondaryIcd.Run;
 using HIS.UC.SecondaryIcd.SetAttachIcd;
+using HIS.UC.SecondaryIcd.SetError;
 using HIS.UC.SecondaryIcd.SetValue;
 using Inventec.Core;
 using MOS.EFMODEL.DataModels;
@@ -220,6 +221,18 @@ namespace HIS.UC.SecondaryIcd
             try
             {
                 ISetValue behavior = SetValueFactory.MakeISetValue(param, (control == null ? (UserControl)uc : control), data);
+                if (behavior != null) behavior.Run();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+        public void SetError(UserControl control, string data)
+        {
+            try
+            {
+                ISetError behavior = SetErrorFactory.MakeISetError(param, (control == null ? (UserControl)uc : control), data);
                 if (behavior != null) behavior.Run();
             }
             catch (Exception ex)

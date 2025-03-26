@@ -133,14 +133,14 @@
       <HintPath>..\..\..\..\LIB\Inventec.UC\Inventec.UC.Login\Inventec.UC.Login.dll</HintPath>
     </Reference>
     <Reference Include="MOS.EFMODEL">
-      <HintPath>..\..\..\..\LIB\MOS\MOS.EFMODEL.dll</HintPath>
+      <HintPath>..\..\..\..\..\svn\RELEASE\MRSv3\MOS.EFMODEL.dll</HintPath>
     </Reference>
     <Reference Include="MOS.Filter, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\LIB\MOS\MOS.Filter.dll</HintPath>
     </Reference>
     <Reference Include="MOS.SDO">
-      <HintPath>..\..\..\..\LIB\MOS\MOS.SDO.dll</HintPath>
+      <HintPath>..\..\..\..\lib\MOS\MOS.SDO.dll</HintPath>
     </Reference>
     <Reference Include="MOS.TDO">
       <HintPath>..\..\..\..\LIB\MOS\MOS.TDO.dll</HintPath>
@@ -148,6 +148,9 @@
     <Reference Include="MPS, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\LIB\MPSv2\MPS\MPS.dll</HintPath>
+    </Reference>
+    <Reference Include="MPS.Processor.Mps000088.PDO">
+      <HintPath>..\..\..\..\lib\MPSv2\MPS.PDO\MPS.Processor.Mps000088.PDO.dll</HintPath>
     </Reference>
     <Reference Include="MPS.ProcessorBase, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -183,7 +186,6 @@
     <Compile Include="Run\frmPublicMedicineByPhased__Plus__ Load.cs" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Properties\licenses.licx" />
     <EmbeddedResource Include="Resources\Lang.en.resx">
       <SubType>Designer</SubType>
     </EmbeddedResource>
@@ -194,10 +196,6 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\..\..\REPORT\MPSv2\MPS.Processor\MPS.Processor.Mps000088.PDO\MPS.Processor.Mps000088.PDO.csproj">
-      <Project>{936750fa-3366-485e-be12-f9d8241816fe}</Project>
-      <Name>MPS.Processor.Mps000088.PDO</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\HIS.Desktop.ADO\HIS.Desktop.ADO.csproj">
       <Project>{808c25cd-0925-417f-bbf9-caf9604da879}</Project>
       <Name>HIS.Desktop.ADO</Name>

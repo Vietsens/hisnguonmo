@@ -467,14 +467,14 @@ namespace HIS.Desktop.Plugins.Register.Run
             }
         }
 
-        private void ValidateMaxlengthTextEdit(DevExpress.XtraEditors.TextEdit txtEdit, int maxlength)
+        private void ValidateMaxlengthTextEdit(DevExpress.XtraEditors.TextEdit txtEdit, int maxlength, bool isVali = false)
         {
             try
             {
                 TextEditMaxLengthValidationRule _rule = new TextEditMaxLengthValidationRule();
                 _rule.txtEdit = txtEdit;
                 _rule.maxlength = maxlength;
-                _rule.isVali = false;
+                _rule.isVali = isVali;
                 _rule.ErrorText = Inventec.Desktop.Common.LibraryMessage.MessageUtil.GetMessage(Inventec.Desktop.Common.LibraryMessage.Message.Enum.TruongDuLieuBatBuoc);
                 _rule.ErrorType = ErrorType.Warning;
                 this.dxValidationProviderControl.SetValidationRule(txtEdit, _rule);

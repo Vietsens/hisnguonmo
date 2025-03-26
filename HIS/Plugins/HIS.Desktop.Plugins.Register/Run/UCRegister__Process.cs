@@ -17,15 +17,18 @@
  */
 using DevExpress.Utils;
 using DevExpress.XtraEditors;
+using HIS.Desktop.ApiConsumer;
 using HIS.Desktop.LocalStorage.BackendData;
 using HIS.Desktop.LocalStorage.LocalData;
 using HIS.Desktop.Plugins.Library.RegisterConfig;
 using HIS.Desktop.Utility;
 using HIS.UC.KskContract.ADO;
+using Inventec.Common.Adapter;
 using Inventec.Common.Logging;
 using Inventec.Core;
 using Inventec.Desktop.Common.Message;
 using MOS.EFMODEL.DataModels;
+using MOS.Filter;
 using MOS.SDO;
 using SDA.EFMODEL.DataModels;
 using System;
@@ -33,6 +36,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
+using System.Windows.Markup;
 
 namespace HIS.Desktop.Plugins.Register.Run
 {
@@ -316,6 +320,8 @@ namespace HIS.Desktop.Plugins.Register.Run
                 valid = valid && validPatientInfo && validPatientPlusInfo && validPhoneNumber;
                 valid = valid && this.AlertExpriedTimeHeinCardBhyt();
                 valid = valid && this.BlockingInvalidBhyt();
+                valid = valid && this.CheckRRCodeTTFee(true);
+                valid = valid && this.CheckDuplicateCCCD();
                 try
                 {
                     departmentId = BackendDataWorker.Get<MOS.EFMODEL.DataModels.V_HIS_ROOM>().FirstOrDefault(o => o.ID == currentModule.RoomId).DEPARTMENT_ID;
@@ -332,6 +338,56 @@ namespace HIS.Desktop.Plugins.Register.Run
 
             return valid;
         }
+        private bool CheckDuplicateCCCD()
+        {
+            bool result = true;
+            try
+            {
+                if ((HIS.Desktop.Plugins.Library.RegisterConfig.HisConfigCFG.CHECK_DUPLICATION == "1" || HIS.Desktop.Plugins.Library.RegisterConfig.HisConfigCFG.CHECK_DUPLICATION == "2") &&  patientInformation != null && !string.IsNullOrEmpty(patientInformation.CMND_NUMBER))
+                {
+                    var data = patientInformation.CMND_NUMBER.Trim();
+                    HisPatientAdvanceFilter filter = new HisPatientAdvanceFilter();
+                    if (data.Length == 9)
+                    {
+                        filter.CMND_NUMBER__EXACT = data;
+                    }
+                    else
+                    {
+                        filter.CCCD_NUMBER__EXACT = data;
+                    }
+                    CommonParam param = new CommonParam();
+                    var patients = (new BackendAdapter(param).Get<List<HisPatientSDO>>(RequestUriStore.HIS_PATIENT_GETSDOADVANCE, ApiConsumers.MosConsumer, filter, HIS.Desktop.Controls.Session.SessionManager.ActionLostToken, param));
+                    if (patients != null && patients.Count > 0)
+                    {
+                        if (currentPatientSDO == null || string.IsNullOrEmpty(currentPatientSDO.PATIENT_CODE) || (currentPatientSDO != null && !string.IsNullOrEmpty(currentPatientSDO.PATIENT_CODE) && !patients.Exists(o => o.PATIENT_CODE == currentPatientSDO.PATIENT_CODE)))
+                        {
+                            if ((HIS.Desktop.Plugins.Library.RegisterConfig.HisConfigCFG.CHECK_DUPLICATION == "1" && XtraMessageBox.Show(string.Format("Số CCCD {0} đã được sử dụng bởi bệnh nhân có mã {1}", data, patients.OrderByDescending(o => o.PATIENT_CODE).ToList()[0].PATIENT_CODE), "Thông báo", MessageBoxButtons.OK) == DialogResult.OK) || (HIS.Desktop.Plugins.Library.RegisterConfig.HisConfigCFG.CHECK_DUPLICATION == "2" && XtraMessageBox.Show(string.Format("Số CCCD {0} đã được sử dụng bởi bệnh nhân có mã {1}", data, patients.OrderByDescending(o => o.PATIENT_CODE).ToList()[0].PATIENT_CODE), "Cảnh báo", MessageBoxButtons.YesNo) == DialogResult.No))
+                            {
+                                string oldTypeFind = typeCodeFind;
+                                this.typeCodeFind = typeCodeFind__CCCDCMND;
+                                txtPatientName.Text = null;
+                                dtPatientDob.EditValue = null;
+                                txtPatientDob.Text = null;
+                                SearchPatientByCodeOrQrCode(data);
+                                typeCodeFind = oldTypeFind;
+                                result = false;
+                            } 
+                        }
+                    }
+                }else if((HIS.Desktop.Plugins.Library.RegisterConfig.HisConfigCFG.CHECK_DUPLICATION == "1" || HIS.Desktop.Plugins.Library.RegisterConfig.HisConfigCFG.CHECK_DUPLICATION == "2") && !chkNoCCCD.Checked)
+                {
+                    XtraMessageBox.Show("Thiếu thông tin trường CMT/CCCD/HC", "Thông báo");
+                    result = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+
+            return result;
+        }
+
 
         private bool CheckUseBhytAllow()
         {
@@ -378,6 +434,16 @@ namespace HIS.Desktop.Plugins.Register.Run
                 dataPatientProfile.HisPatientTypeAlter = new MOS.EFMODEL.DataModels.HIS_PATIENT_TYPE_ALTER();
                 //Đồng bộ dữ liệu thay đổi từ uchein sang đối tượng dữ liệu phục vụ làm đầu vào cho gọi api
                 this.mainHeinProcessor.UpdateDataFormIntoPatientTypeAlter(this.ucHeinBHYT, dataPatientProfile);
+
+
+                if (this.ResultDataADO != null && ResultDataADO.ResultHistoryLDO != null && HIS.Desktop.Plugins.Library.RegisterConfig.HisConfigCFG.WarningInvalidCheckHistoryHeinCard && ResultDataADO.ResultHistoryLDO.message == "Thẻ BHYT có thông tin kiểm tra thẻ chưa ra viện.")
+                {
+                    DialogResult drReslt = DevExpress.XtraEditors.XtraMessageBox.Show(ResultDataADO.ResultHistoryLDO.message + " Bạn có muốn tiếp tục?", "Thông báo", MessageBoxButtons.YesNo);
+                    if (drReslt == DialogResult.No)
+                    {
+                        return false;
+                    }
+                }
 
                 //không kiểm tra nếu có check vào thẻ tạm
                 if (this.cboPatientType.EditValue != null && Inventec.Common.TypeConvert.Parse.ToInt64((this.cboPatientType.EditValue ?? "0").ToString()) == HisConfigCFG.PatientTypeId__BHYT && (HisConfigCFG.IsBlockingInvalidBhyt == ((int)HisConfigCFG.OptionKey.Option1).ToString() || HisConfigCFG.IsBlockingInvalidBhyt == ((int)HisConfigCFG.OptionKey.Option2).ToString())

@@ -55,6 +55,8 @@ using DevExpress.XtraEditors;
 using DevExpress.XtraTab;
 using DevExpress.Utils;
 using EMR.SDO;
+using Inventec.Common.QrCodeBHYT;
+using HIS.Desktop.Plugins.Library.CheckHeinGOV;
 //using static Aspose.Pdf.Operator;
 
 namespace HIS.Desktop.Plugins.ExecuteRoom
@@ -358,7 +360,7 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
                 Inventec.Common.Logging.LogSystem.Debug("HIS.Desktop.Plugins.ExecuteRoom FillDataToGridServiceReq hisServiceReqFilter" + Inventec.Common.Logging.LogUtil.TraceData("", hisServiceReqFilter));
                 Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData("hisServiceReqFilter  #######" + Inventec.Common.Logging.LogUtil.GetMemberName(() => hisServiceReqFilter), hisServiceReqFilter));
 
-                apiResult = new BackendAdapter(paramCommon)
+                apiResult = new Inventec.Common.Adapter.BackendAdapter(paramCommon)
                     .GetRO<List<L_HIS_SERVICE_REQ>>("api/HisServiceReq/GetLView", ApiConsumers.MosConsumer, hisServiceReqFilter, paramCommon);
 
                 gridControlServiceReq.DataSource = null;
@@ -575,6 +577,9 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
             }
         }
 
+        /// <summary>
+        /// bỏ đi, không load toàn bộ giao diện lên nếu chưa hiển thị ra, chuyển sang dạng lazyload từng phần cần trước, phần nào dùng đến thì load sau
+        /// </summary>
         private void AddOrtherUc()
         {
             try
@@ -827,7 +832,7 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
             }
         }
 
-        private void LoadPatientFromServiceReq(L_HIS_SERVICE_REQ serviceReq)
+        private async Task LoadPatientFromServiceReq(L_HIS_SERVICE_REQ serviceReq)
         {
             try
             {
@@ -922,21 +927,21 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
                         }
 
                     }
-                    if (currentTreatment4 != null)
-                    {
-                        lbHopitalizeDepartment.Text = currentTreatment4.HOPITALIZE_DEPARTMENT_NAME;
-                        lbTransferInMediOrg.Text = currentTreatment4.MEDI_ORG_NAME;
-                    }
-                    else
-                    {
-                        lbHopitalizeDepartment.Text = "";
-                        lbTransferInMediOrg.Text = "";
-                    }
+                    //if (currentTreatment4 != null)
+                    //{
+                    //    lbHopitalizeDepartment.Text = currentTreatment4.HOPITALIZE_DEPARTMENT_NAME;
+                    //    lbTransferInMediOrg.Text = currentTreatment4.MEDI_ORG_NAME;
+                    //}
+                    //else
+                    //{
+                    //    lbHopitalizeDepartment.Text = "";
+                    //    lbTransferInMediOrg.Text = "";
+                    //}
                     HisPatientTypeAlterViewFilter filterPatienTypeAlter = new HisPatientTypeAlterViewFilter();
                     filterPatienTypeAlter.TREATMENT_ID = serviceReq.TREATMENT_ID;
-                    this.currentPatientTypeAlter = new BackendAdapter(param)
-                        .Get<List<MOS.EFMODEL.DataModels.V_HIS_PATIENT_TYPE_ALTER>>("/api/HisPatientTypeAlter/GetView", ApiConsumers.MosConsumer, filterPatienTypeAlter, param).OrderByDescending(o => o.ID).ThenByDescending(o => o.LOG_TIME).FirstOrDefault();
-
+                    var currentPatientTypeAlters = await new Inventec.Common.Adapter.BackendAdapter(param)
+                        .GetAsync<List<MOS.EFMODEL.DataModels.V_HIS_PATIENT_TYPE_ALTER>>("/api/HisPatientTypeAlter/GetView", ApiConsumers.MosConsumer, filterPatienTypeAlter, param);
+                    this.currentPatientTypeAlter = currentPatientTypeAlters != null ? currentPatientTypeAlters.OrderByDescending(o => o.ID).ThenByDescending(o => o.LOG_TIME).FirstOrDefault() : null;
                     //Mức hưởng BHYT
                     if (this.currentPatientTypeAlter != null &&
                         !String.IsNullOrEmpty(this.currentPatientTypeAlter.HEIN_CARD_NUMBER))
@@ -1026,7 +1031,7 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
             return imageDefaultPath;
         }
 
-        private void LoadTreeListSereServChild(L_HIS_SERVICE_REQ serviceReq)
+        private async Task LoadTreeListSereServChild(L_HIS_SERVICE_REQ serviceReq)
         {
             try
             {
@@ -1059,11 +1064,11 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
                         "RECEIVE_SAMPLE_TIME"
                     };
 
-                        var data_ = new BackendAdapter(param_)
-                            .GetRO<List<HIS_SERVICE_REQ>>("api/HisServiceReq/GetDynamic", ApiConsumers.MosConsumer, filter_, param_);
-                        if (data_ != null && data_.Data.Count() > 0)
+                        var data_ = await new BackendAdapter(param_)
+                            .GetAsync<List<HIS_SERVICE_REQ>>("api/HisServiceReq/GetDynamic", ApiConsumers.MosConsumer, filter_, param_);
+                        if (data_ != null && data_.Count > 0)
                         {
-                            foreach (var item in data_.Data)
+                            foreach (var item in data_)
                             {
                                 foreach (var item_ in sereServ7s)
                                 {
@@ -1093,7 +1098,7 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
                             #region TabKhamBenh
                             HisServiceReqFilter filter = new HisServiceReqFilter();
                             filter.ID = serviceReq.ID;
-                            var data = new BackendAdapter(param).Get<List<HIS_SERVICE_REQ>>("api/HisServiceReq/Get", ApiConsumers.MosConsumer, filter, param);
+                            var data = await new BackendAdapter(param).GetAsync<List<HIS_SERVICE_REQ>>("api/HisServiceReq/Get", ApiConsumers.MosConsumer, filter, param);
                             if (data != null && data.Count > 0)
                             {
                                 HIS_SERVICE_REQ currentHisServiceReq = data.FirstOrDefault();
@@ -1117,7 +1122,7 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
                                     #region DHST
                                     HisDhstFilter dhstFilter = new HisDhstFilter();
                                     dhstFilter.ID = currentHisServiceReq.DHST_ID;
-                                    var dataDHST = new BackendAdapter(param).Get<List<HIS_DHST>>("api/HisDhst/Get", ApiConsumers.MosConsumer, dhstFilter, param);
+                                    var dataDHST = await new BackendAdapter(param).GetAsync<List<HIS_DHST>>("api/HisDhst/Get", ApiConsumers.MosConsumer, dhstFilter, param);
                                     if (data != null && data.Count > 0)
                                     {
                                         HIS_DHST currentDhst = dataDHST.FirstOrDefault();
@@ -1221,6 +1226,17 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
                                     if (checkServiceType[j] == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__KH)
                                     {
                                         xtraTabPage18.PageVisible = true;
+                                        if (p16 == null || u16 == null)
+                                        {
+                                            p16 = new TreeSereServ7V2Processor();
+                                            u16 = (UserControl)p16.Run(InitTreeSereServ(true, true));
+                                            if (u14 != null)
+                                            {
+                                                xtraScrollableControl17.Controls.Add(u16);
+                                                u16.Dock = DockStyle.Fill;
+                                            }
+                                        }
+
                                         p16.Reload(u16, newList, srChild);
                                         xtraTabPage18.Text = "Khám " + p16.GetTitleCount(u16);
 
@@ -1228,90 +1244,244 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
                                     else if (checkServiceType[j] == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__XN)
                                     {
                                         xtraTabPage4.PageVisible = true;
+                                        if (p1 == null || u1 == null)
+                                        {
+                                            p1 = new TreeSereServ7V2Processor();
+                                            u1 = (UserControl)p1.Run(InitTreeSereServ(true, false));
+                                            if (u1 != null)
+                                            {
+                                                xtraScrollableControl2.Controls.Add(u1);
+                                                u1.Dock = DockStyle.Fill;
+                                            }
+                                        }
+
                                         p1.Reload(u1, newList, srChild);
                                         xtraTabPage4.Text = "Xét nghiệm " + p1.GetTitleCount(u1);
                                     }
                                     else if (checkServiceType[j] == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__CDHA)
                                     {
                                         xtraTabPage5.PageVisible = true;
+                                        if (p2 == null || u2 == null)
+                                        {
+                                            p2 = new TreeSereServ7V2Processor();
+                                            u2 = (UserControl)p2.Run(InitTreeSereServ(true, false));
+                                            if (u2 != null)
+                                            {
+                                                xtraScrollableControl3.Controls.Add(u2);
+                                                u2.Dock = DockStyle.Fill;
+                                            }
+                                        }
+
                                         p2.Reload(u2, newList, srChild);
                                         xtraTabPage5.Text = "Chẩn đoán hình ảnh " + p2.GetTitleCount(u2);
                                     }
                                     else if (checkServiceType[j] == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__TT)
                                     {
                                         xtraTabPage6.PageVisible = true;
+                                        if (p3 == null || u3 == null)
+                                        {
+                                            p3 = new TreeSereServ7V2Processor();
+                                            u3 = (UserControl)p3.Run(InitTreeSereServ(true, false));
+                                            if (u3 != null)
+                                            {
+                                                xtraScrollableControl4.Controls.Add(u3);
+                                                u3.Dock = DockStyle.Fill;
+                                            }
+
+                                        }
                                         p3.Reload(u3, newList, srChild);
                                         xtraTabPage6.Text = "Thủ thuật " + p3.GetTitleCount(u3);
                                     }
                                     else if (checkServiceType[j] == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__TDCN)
                                     {
                                         xtraTabPage7.PageVisible = true;
+                                        if (p4 == null || u4 == null)
+                                        {
+                                            p4 = new TreeSereServ7V2Processor();
+                                            u4 = (UserControl)p4.Run(InitTreeSereServ(true, false));
+                                            if (u4 != null)
+                                            {
+                                                xtraScrollableControl5.Controls.Add(u4);
+                                                u4.Dock = DockStyle.Fill;
+                                            }
+                                        }
                                         p4.Reload(u4, newList, srChild);
                                         xtraTabPage7.Text = "Thăm dò chức năng " + p4.GetTitleCount(u4);
                                     }
                                     else if (checkServiceType[j] == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__THUOC)
                                     {
                                         xtraTabPage8.PageVisible = true;
+                                        if (p5 == null || u5 == null)
+                                        {
+                                            p5 = new TreeSereServ7V2Processor();
+                                            u5 = (UserControl)p5.Run(InitTreeSereServ(true, false));
+                                            if (u5 != null)
+                                            {
+                                                xtraScrollableControl6.Controls.Add(u5);
+                                                u5.Dock = DockStyle.Fill;
+                                            }
+                                        }
                                         p5.Reload(u5, newList, srChild);
                                         xtraTabPage8.Text = "Thuốc " + p5.GetTitleCount(u5);
                                     }
                                     else if (checkServiceType[j] == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__VT)
                                     {
                                         xtraTabPage9.PageVisible = true;
+                                        if (p6 == null || u6 == null)
+                                        {
+                                            p6 = new TreeSereServ7V2Processor();
+                                            u6 = (UserControl)p6.Run(InitTreeSereServ(true, false));
+                                            if (u6 != null)
+                                            {
+                                                xtraScrollableControl7.Controls.Add(u6);
+                                                u6.Dock = DockStyle.Fill;
+                                            }
+                                        }
                                         p6.Reload(u6, newList, srChild);
                                         xtraTabPage9.Text = "Vật tư " + p6.GetTitleCount(u6);
                                     }
                                     else if (checkServiceType[j] == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__G)
                                     {
                                         xtraTabPage10.PageVisible = true;
+                                        if (p7 == null || u7 == null)
+                                        {
+                                            p7 = new TreeSereServ7V2Processor();
+                                            u7 = (UserControl)p7.Run(InitTreeSereServ(true, false));
+                                            if (u7 != null)
+                                            {
+                                                xtraScrollableControl8.Controls.Add(u7);
+                                                u7.Dock = DockStyle.Fill;
+                                            }
+                                        }
                                         p7.Reload(u7, newList, srChild);
                                         xtraTabPage10.Text = "Giường " + p7.GetTitleCount(u7);
                                     }
                                     else if (checkServiceType[j] == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__NS)
                                     {
                                         xtraTabPage11.PageVisible = true;
+                                        if (p8 == null || u8 == null)
+                                        {
+                                            p8 = new TreeSereServ7V2Processor();
+                                            u8 = (UserControl)p8.Run(InitTreeSereServ(true, false));
+                                            if (u8 != null)
+                                            {
+                                                xtraScrollableControl9.Controls.Add(u8);
+                                                u8.Dock = DockStyle.Fill;
+                                            }
+                                        }
                                         p8.Reload(u8, newList, srChild);
                                         xtraTabPage11.Text = "Nội soi " + p8.GetTitleCount(u8);
                                     }
                                     else if (checkServiceType[j] == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__SA)
                                     {
                                         xtraTabPage12.PageVisible = true;
+                                        if (p9 == null || u9 == null)
+                                        {
+                                            p9 = new TreeSereServ7V2Processor();
+                                            u9 = (UserControl)p9.Run(InitTreeSereServ(true, false));
+                                            if (u9 != null)
+                                            {
+                                                xtraScrollableControl10.Controls.Add(u9);
+                                                u9.Dock = DockStyle.Fill;
+                                            }
+                                        }
                                         p9.Reload(u9, newList, srChild);
                                         xtraTabPage12.Text = "Siêu âm " + p9.GetTitleCount(u9);
                                     }
                                     else if (checkServiceType[j] == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__PT)
                                     {
                                         xtraTabPage3.PageVisible = true;
+                                        if (p10 == null || u10 == null)
+                                        {
+                                            p10 = new TreeSereServ7V2Processor();
+                                            u10 = (UserControl)p10.Run(InitTreeSereServ(true, false));
+                                            if (u10 != null)
+                                            {
+                                                xtraScrollableControl11.Controls.Add(u10);
+                                                u10.Dock = DockStyle.Fill;
+                                            }
+                                        }
                                         p10.Reload(u10, newList, srChild);
                                         xtraTabPage3.Text = "Phẫu thuật " + p10.GetTitleCount(u10);
                                     }
                                     else if (checkServiceType[j] == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__KHAC)
                                     {
                                         xtraTabPage13.PageVisible = true;
+                                        if (p11 == null || u11 == null)
+                                        {
+                                            p11 = new TreeSereServ7V2Processor();
+                                            u11 = (UserControl)p11.Run(InitTreeSereServ(true, false));
+                                            if (u11 != null)
+                                            {
+                                                xtraScrollableControl12.Controls.Add(u11);
+                                                u11.Dock = DockStyle.Fill;
+                                            }
+                                        }
                                         p11.Reload(u11, newList, srChild);
                                         xtraTabPage13.Text = "Khác " + p11.GetTitleCount(u11);
                                     }
                                     else if (checkServiceType[j] == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__PHCN)
                                     {
                                         xtraTabPage14.PageVisible = true;
+                                        if (p12 == null || u12 == null)
+                                        {
+                                            p12 = new TreeSereServ7V2Processor();
+                                            u12 = (UserControl)p12.Run(InitTreeSereServ(true, false));
+                                            if (u12 != null)
+                                            {
+                                                xtraScrollableControl13.Controls.Add(u12);
+                                                u12.Dock = DockStyle.Fill;
+                                            }
+                                        }
                                         p12.Reload(u12, newList, srChild);
                                         xtraTabPage14.Text = "Phục hồi chức năng " + p12.GetTitleCount(u12);
                                     }
                                     else if (checkServiceType[j] == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__GPBL)
                                     {
                                         xtraTabPage16.PageVisible = true;
+                                        if (p14 == null || u14 == null)
+                                        {
+                                            p14 = new TreeSereServ7V2Processor();
+                                            u14 = (UserControl)p14.Run(InitTreeSereServ(true, false));
+                                            if (u14 != null)
+                                            {
+                                                xtraScrollableControl15.Controls.Add(u14);
+                                                u14.Dock = DockStyle.Fill;
+                                            }
+
+                                        }
                                         p14.Reload(u14, newList, srChild);
                                         xtraTabPage16.Text = "Giải phẫu bệnh lý " + p14.GetTitleCount(u14);
                                     }
                                     else if (checkServiceType[j] == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__MAU)
                                     {
                                         xtraTabPage15.PageVisible = true;
+                                        if (p13 == null || u13 == null)
+                                        {
+                                            p13 = new TreeSereServ7V2Processor();
+                                            u13 = (UserControl)p13.Run(InitTreeSereServ(true, false));
+                                            if (u13 != null)
+                                            {
+                                                xtraScrollableControl14.Controls.Add(u13);
+                                                u13.Dock = DockStyle.Fill;
+                                            }
+                                        }
                                         p13.Reload(u13, newList, srChild);
                                         xtraTabPage15.Text = "Máu " + p13.GetTitleCount(u13);
                                     }
                                     else if (checkServiceType[j] == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__AN)
                                     {
                                         xtraTabPage17.PageVisible = true;
+                                        if (p15 == null || u15 == null)
+                                        {
+                                            p15 = new TreeSereServ7V2Processor();
+                                            u15 = (UserControl)p15.Run(InitTreeSereServ(true, false));
+                                            if (u15 != null)
+                                            {
+                                                xtraScrollableControl16.Controls.Add(u15);
+                                                u15.Dock = DockStyle.Fill;
+                                            }
+                                        }
                                         p15.Reload(u15, newList, srChild);
                                         xtraTabPage17.Text = "Suất ăn " + p15.GetTitleCount(u15);
                                     }
@@ -1356,6 +1526,8 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
 
                 this.ucViewEmrDocumentReq.ReloadDocument(new List<EmrDocumentFileSDO>());
                 this.ucViewEmrDocumentResult.ReloadDocument(new List<EmrDocumentFileSDO>());
+
+                Inventec.Common.Logging.LogSystem.Debug("LoadTreeListSereServChild.2");
             }
             catch (Exception ex)
             {
@@ -1417,10 +1589,11 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
             return serviceReqChilds;
         }
 
-        private void LoadSereServServiceReq(L_HIS_SERVICE_REQ serviceReq)
+        private async Task LoadSereServServiceReq(L_HIS_SERVICE_REQ serviceReq)
         {
             try
             {
+                Inventec.Common.Logging.LogSystem.Debug("LoadSereServServiceReq.1");
                 InitRestoreLayoutGridViewFromXml(gridViewSereServServiceReq);
                 gridControlSereServServiceReq.DataSource = null;
                 sereServ6s = new List<SereServ6ADO>();
@@ -1439,7 +1612,7 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
                             CommonParam param = new CommonParam();
                             HisSereServExtFilter extFilter = new HisSereServExtFilter();
                             extFilter.SERE_SERV_IDs = sereServByServiceReqs.Select(s => s.ID).ToList();
-                            lstExt = new BackendAdapter(param).Get<List<HIS_SERE_SERV_EXT>>("api/HisSereServExt/Get", ApiConsumers.MosConsumer, extFilter, param);
+                            lstExt = await new BackendAdapter(param).GetAsync<List<HIS_SERE_SERV_EXT>>("api/HisSereServExt/Get", ApiConsumers.MosConsumer, extFilter, param);
                             Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData("lstExV_HIS_SERE_SERV_6t: ", lstExt));
                         }
 
@@ -1485,6 +1658,7 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
                     gridControlSereServServiceReq.DataSource = sereServ6s;
                     gridViewSereServServiceReq.EndDataUpdate();
                 }
+                Inventec.Common.Logging.LogSystem.Debug("LoadSereServServiceReq.2");
             }
             catch (Exception ex)
             {
@@ -1556,21 +1730,42 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
             }
         }
 
+        /// <summary>
+        /// Gọi api và đổ dữ liệu vào vùng panel bên phải gồm: các tab page chi tiết dịch vụ(khám, xét nghiệm,...); vùng thông tin bệnh nhân, vùng thông tin văn bản,...
+        /// </summary>
+        /// <param name="serviceReq"></param>
         private void LoadDataToPanelRight(L_HIS_SERVICE_REQ serviceReq)
         {
             try
             {
                 WaitingManager.Show();
-                List<Action> methods = new List<Action>();
-                methods.Add(LoadSereServByTreatment);
-                methods.Add(LoadServiceReqByTreatment);
-                methods.Add(LoadTreatment4ByServiceReq);
-                ThreadCustomManager.MultipleThreadWithJoin(methods);
-                WaitingManager.Hide();
-                LoadPatientFromServiceReq(serviceReq);
-                LoadSereServServiceReq(serviceReq);
-                LoadTreeListSereServChild(serviceReq);
+                //Bỏ code này đi, không gọi theo multi thread không hiệu quả, cần tách code gọi bất đồng bộ async từng vùng giao diện
+                //List<Action> methods = new List<Action>();
+                //Inventec.Common.Logging.LogSystem.Debug("LoadSereServByTreatment");
+                //methods.Add(LoadSereServByTreatment);
+                //Inventec.Common.Logging.LogSystem.Debug("LoadServiceReqByTreatment");
+                //methods.Add(LoadServiceReqByTreatment);
+                //Inventec.Common.Logging.LogSystem.Debug("LoadTreatment4ByServiceReq");
+                //methods.Add(LoadTreatment4ByServiceReq);
+                //ThreadCustomManager.MultipleThreadWithJoin(methods);
 
+
+                Inventec.Common.Logging.LogSystem.Debug("LoadSereServByTreatment");
+                //Gọi hàm bất đồng bộ không await để cho phép chúng chạy mà không chờ đợi vẫn chạy các hàm tiếp sau
+                //Lưu ý Không dùng Task.Run(...) trường hợp này vì có thể gây lỗi
+                LoadSereServByTreatment();
+
+                Inventec.Common.Logging.LogSystem.Debug("LoadTreatment4ByServiceReq");
+                //Gọi hàm bất đồng bộ không await để cho phép chúng chạy mà không chờ đợi vẫn chạy các hàm tiếp sau
+                //Lưu ý Không dùng Task.Run(...) trường hợp này vì có thể gây lỗi
+                LoadTreatment4ByServiceReq();
+
+                Inventec.Common.Logging.LogSystem.Debug("LoadPatientFromServiceReq");
+                //Gọi hàm bất đồng bộ không await để cho phép chúng chạy mà không chờ đợi vẫn chạy các hàm tiếp sau
+                //Lưu ý Không dùng Task.Run(...) trường hợp này vì có thể gây lỗi
+                LoadPatientFromServiceReq(serviceReq);
+
+                WaitingManager.Hide();
             }
             catch (Exception ex)
             {
@@ -1760,7 +1955,369 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
         {
             try
             {
-                LogTheadInSessionInfo(() => LoadModuleExecuteService_Action(serviceReqInput), "ProcessServiceReq");
+                LogTheadInSessionInfo(() => LoadModuleExecuteService_ActionAsync(serviceReqInput), "ProcessServiceReq");
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+        private string ProcessDate(string date)
+        {
+            string result = "";
+            try
+            {
+                if (!string.IsNullOrEmpty(date))
+                {
+                    if (date.Length == 4)
+                    {
+                        result = date;
+                    }
+                    else if (date.Length == 6)
+                    {
+                        result = new StringBuilder().Append(date.Substring(0, 2)).Append("/").Append(date.Substring(2, 4))
+                            .ToString();
+                    }
+                    else if (date.Length == 8)
+                    {
+                        result = new StringBuilder().Append(date.Substring(0, 2)).Append("/").Append(date.Substring(2, 2))
+                            .Append("/")
+                            .Append(date.Substring(4, 4))
+                            .ToString();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                LogSystem.Warn(ex);
+            }
+
+            return result;
+        }
+
+        private async Task LoadModuleExecuteService_ActionAsync(L_HIS_SERVICE_REQ serviceReqInput)
+        {
+            try
+            {
+                if (serviceReqInput != null)
+                {
+                    if (!string.IsNullOrEmpty(serviceReqInput.NOTE))
+                    {
+                        XtraMessageBox.Show(serviceReqInput.NOTE, Inventec.Desktop.Common.LibraryMessage.MessageUtil.GetMessage(Inventec.Desktop.Common.LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaThongBao));
+                    }
+
+                    long dtNow = (long)Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(DateTime.Now);
+                    if (serviceReqInput.INTRUCTION_TIME != null && HisConfigCFG.StartTimeMustBeGreaterThanInstructionTime == "1" && dtNow < serviceReqInput.INTRUCTION_TIME)
+                    {
+                        MessageBox.Show("Thời gian bắt đầu không được nhỏ hơn thời gian y lệnh", Inventec.Desktop.Common.LibraryMessage.MessageUtil.GetMessage(Inventec.Desktop.Common.LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaThongBao));
+                        return;
+                    }
+                    else if (serviceReqInput.INTRUCTION_TIME != null && HisConfigCFG.StartTimeMustBeGreaterThanInstructionTime == "2" && serviceReqInput.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__KH && dtNow < serviceReqInput.INTRUCTION_TIME)
+                    {
+                        MessageBox.Show("Thời gian bắt đầu không được nhỏ hơn thời gian y lệnh", Inventec.Desktop.Common.LibraryMessage.MessageUtil.GetMessage(Inventec.Desktop.Common.LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaThongBao));
+                        return;
+                    }
+
+                    long dtFrom = Inventec.Common.TypeConvert.Parse.ToInt64(Convert.ToDateTime(DateTime.Now).ToString("yyyyMMdd") + "000000");
+                    long dtTo = Inventec.Common.TypeConvert.Parse.ToInt64(Convert.ToDateTime(DateTime.Now).ToString("yyyyMMdd") + "232359");
+
+                    if (serviceReqInput.INTRUCTION_TIME != null && dtFrom <= serviceReqInput.INTRUCTION_TIME && serviceReqInput.INTRUCTION_TIME <= dtTo)
+                    {
+                        bool serviceReqCount = false;
+                        if (HisConfigCFG.RequestLimitWarningOption == "2")
+                            serviceReqCount = LoadServiceReqCountByDesk();
+                        else
+                            serviceReqCount = LoadServiceReqCount();
+
+
+
+                        //CommonParam param = new CommonParam();
+                        //HisServiceReqViewFilter Filter = new HisServiceReqViewFilter();
+                        //Filter.ID = serviceReqInput.ID;
+
+                        //var data = new BackendAdapter(param).Get<List<V_HIS_SERVICE_REQ>>("api/HisServiceReq/GetView", ApiConsumers.MosConsumer, Filter, param);
+
+                        if (serviceReqInput.SERVICE_REQ_STT_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_STT.ID__CXL && serviceReqCount)
+                        {
+                            DialogResult myResult;
+                            Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(HisConfigCFG.WarningOverExam)), HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(HisConfigCFG.WarningOverExam)));
+
+                            if (HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(HisConfigCFG.WarningOverExam) == "1")
+                            {
+                                string WaringString = "";
+                                if (HisConfigCFG.RequestLimitWarningOption == "2")
+                                {
+                                    if (desk != null && serviceReqInput.TDL_PATIENT_TYPE_ID == HisConfigCFG.PatientTypeId__BHYT)
+                                    {
+                                        long deskCount = desk != null && desk.MAX_REQ_PER_DAY.HasValue ? desk.MAX_REQ_PER_DAY.Value : 0;
+                                        WaringString = String.Format("Bàn đã khám quá {0} bệnh nhân trong ngày, bạn có muốn tiếp tục?", deskCount);
+                                    }
+                                }
+                                else
+                                {
+                                    if (employee.MAX_SERVICE_REQ_PER_DAY.HasValue)
+                                    {
+                                        WaringString = "Đã khám đủ số lượng bn cho phép trong ngày, bạn có chắc chắn muốn tiếp tục xử lý hay không?";
+                                    }
+                                    else
+                                    {
+                                        WaringString = ResourceMessage.DaKhamDuSoLuongBNBHYTChoPhepTrongNgay;
+                                    }
+                                }
+                                if (!String.IsNullOrWhiteSpace(WaringString))
+                                {
+                                    myResult = MessageBox.Show(WaringString, Inventec.Desktop.Common.LibraryMessage.MessageUtil.GetMessage(Inventec.Desktop.Common.LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaThongBao), MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+                                    if (myResult == DialogResult.No)
+                                    {
+                                        return;
+                                    }
+                                }
+
+                            }
+                            //Bổ sung xử lý chặn ko cho người dùng vào màn hình xử lý khi key cấu hình WarningOverBHYT=2
+                            if (HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(HisConfigCFG.WarningOverExam) == "2")
+                            {
+                                string WaringString = "";
+                                if (HisConfigCFG.RequestLimitWarningOption == "2")
+                                {
+                                    if (desk != null && serviceReqInput.TDL_PATIENT_TYPE_ID == HisConfigCFG.PatientTypeId__BHYT)
+                                    {
+                                        long deskCount = desk != null && desk.MAX_REQ_PER_DAY.HasValue ? desk.MAX_REQ_PER_DAY.Value : 0;
+                                        WaringString = String.Format("Bàn đã khám quá {0} bệnh nhân trong ngày", deskCount);
+                                    }
+                                }
+                                else
+                                {
+                                    if (employee.MAX_SERVICE_REQ_PER_DAY.HasValue)
+                                    {
+                                        WaringString = "Bạn đã xử lý quá " + employee.MAX_SERVICE_REQ_PER_DAY + " yêu cầu trong ngày";
+                                    }
+                                    else
+                                    {
+                                        if (this.executeRoom.IS_EXAM != 1 || (this.executeRoom.IS_EXAM == 1 && serviceReqInput.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__KH))
+                                            WaringString = "Bạn đã xử lý quá " + employee.MAX_BHYT_SERVICE_REQ_PER_DAY + " yêu cầu BHYT trong ngày";
+                                    }
+                                }
+                                if (!String.IsNullOrWhiteSpace(WaringString))
+                                {
+                                    MessageBox.Show(WaringString, Inventec.Desktop.Common.LibraryMessage.MessageUtil.GetMessage(Inventec.Desktop.Common.LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaThongBao), MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                                    return;
+                                }
+                            }
+                        }
+                    }
+
+                    if (HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(HisConfigCFG.LockExecuteCFG) == "1" && serviceReqInput.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__CDHA)
+                    {
+                        var services = listServices;
+                        CommonParam param = new CommonParam();
+                        List<ADOserserv7> sereServInServiceReqs = new List<ADOserserv7>();
+                        if (this.SereServCurrentTreatment == null || this.SereServCurrentTreatment.Count == 0 || !this.SereServCurrentTreatment.Any(o => o.SERVICE_REQ_ID == serviceReqInput.ID))
+                        {
+                            HisSereServFilter sereServFilter = new HisSereServFilter();
+                            sereServFilter.ORDER_FIELD = "SERVICE_NUM_ORDER";
+                            sereServFilter.ORDER_DIRECTION = "DESC";
+                            sereServFilter.TREATMENT_ID = serviceReqInput.TREATMENT_ID;
+                            //sereServFilter.SERVICE_REQ_ID = serviceReqInput.ID;
+                            //sereServFilter.TDL_SERVICE_TYPE_ID = IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__CDHA;
+                            sereServFilter.IS_ACTIVE = IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE;
+                            this.SereServCurrentTreatment = await new BackendAdapter(param)
+                                .GetAsync<List<ADOserserv7>>("api/HisSereServ/Get", ApiConsumers.MosConsumer, sereServFilter, param);
+                        }
+
+                        Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => SereServCurrentTreatment), SereServCurrentTreatment));
+                        sereServInServiceReqs = this.SereServCurrentTreatment != null ? this.SereServCurrentTreatment.Where(o => o.SERVICE_REQ_ID == serviceReqInput.ID && o.TDL_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__CDHA).ToList() : null;
+
+                        List<long> listId = sereServInServiceReqs != null ? sereServInServiceReqs.Select(o => o.ID).ToList() : null;
+
+                        param = new CommonParam();
+                        MOS.Filter.HisSereServExtFilter sereServExtFilter = new MOS.Filter.HisSereServExtFilter();
+                        sereServExtFilter.SERE_SERV_IDs = listId;
+                        sereServExtFilter.IS_ACTIVE = IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE;
+                        var sereServExts = listId != null ? await new Inventec.Common.Adapter.BackendAdapter(new CommonParam()).GetAsync<List<MOS.EFMODEL.DataModels.HIS_SERE_SERV_EXT>>("api/HisSereServExt/Get", ApiConsumer.ApiConsumers.MosConsumer, sereServExtFilter, HIS.Desktop.Controls.Session.SessionManager.ActionLostToken, null) : null;
+
+                        List<string> serviceWarnMustHavePress = new List<string>();
+                        foreach (var itemss in sereServInServiceReqs)
+                        {
+                            var itemssext = (sereServExts != null && sereServExts.Count > 0) ? sereServExts.Where(o => o.SERE_SERV_ID == itemss.ID).FirstOrDefault() : null;
+                            if (itemssext == null || (itemssext != null && (itemssext.NUMBER_OF_FILM ?? 0) <= 0))
+                            {
+                                serviceWarnMustHavePress.Add(itemss.TDL_SERVICE_NAME);
+                            }
+                        }
+
+                        if (serviceWarnMustHavePress.Count > 0)
+                        {
+                            DevExpress.XtraEditors.XtraMessageBox.Show(string.Format(ResourceMessage.DichVuChuaKeThuocVatTu, string.Join(",", serviceWarnMustHavePress)));
+                            //Inventec.Common.Logging.LogSystem.Warn(string.Format(ResourceMessage.DichVuChuaKeThuocVatTu, string.Join(",", serviceWarnMustHavePress)) + "____" + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => sereServInServiceReqs), sereServInServiceReqs));
+                            return;
+                        }
+                        Inventec.Common.Logging.LogSystem.Warn(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => serviceWarnMustHavePress), serviceWarnMustHavePress) + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => sereServInServiceReqs), sereServInServiceReqs));
+                    }
+                    Inventec.Common.Logging.LogSystem.Debug("LoadModuleExecuteService. 1");
+
+                    if (HisConfigCFG.IsCheckHeinCard && !string.IsNullOrEmpty(serviceReqInput.TDL_HEIN_CARD_NUMBER) && serviceReqInput.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__KH && serviceReqInput.START_TIME == null && serviceReqInput.CREATE_TIME < Int64.Parse(DateTime.Now.ToString("yyyyMMdd") + "000000"))
+                    {
+                        if (this.SereServCurrentTreatment == null || this.SereServCurrentTreatment.Count == 0 || !this.SereServCurrentTreatment.Any(o => o.SERVICE_REQ_ID == serviceReqInput.ID))
+                        {
+                            HisSereServFilter sereServFilter = new HisSereServFilter();
+                            sereServFilter.ORDER_FIELD = "SERVICE_NUM_ORDER";
+                            sereServFilter.ORDER_DIRECTION = "DESC";
+                            sereServFilter.TREATMENT_ID = serviceReqInput.TREATMENT_ID;
+                            //sereServFilter.SERVICE_REQ_ID = serviceReqInput.ID;
+                            //sereServFilter.TDL_SERVICE_TYPE_ID = IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__CDHA;
+                            sereServFilter.IS_ACTIVE = IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE;
+                            this.SereServCurrentTreatment = await new BackendAdapter(new CommonParam())
+                                .GetAsync<List<ADOserserv7>>("api/HisSereServ/Get", ApiConsumers.MosConsumer, sereServFilter, null);
+                        }
+                        if (SereServCurrentTreatment != null && SereServCurrentTreatment.Count > 0 && SereServCurrentTreatment.Exists(o => o.SERVICE_REQ_ID == serviceReqInput.ID && o.PATIENT_TYPE_ID == HisConfigCFG.PatientTypeId__BHYT))
+                        {
+                            HIS.Desktop.Plugins.Library.RegisterConfig.AppConfigs.LoadConfig();
+                            HIS.Desktop.Plugins.Library.RegisterConfig.BHXHLoginCFG.LoadConfig();
+                            if (currentTreatment4 == null)
+                                LoadTreatment4ByServiceReq();
+                            if (currentTreatment4.TDL_TREATMENT_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__KHAM)
+                            {
+                                HeinCardData heinCardDataForCheckGOV = new HeinCardData();
+                                heinCardDataForCheckGOV.PatientName = currentTreatment4.TDL_PATIENT_NAME;
+                                heinCardDataForCheckGOV.Address = currentTreatment4.TDL_PATIENT_ADDRESS;
+                                heinCardDataForCheckGOV.Dob = currentTreatment4.TDL_PATIENT_IS_HAS_NOT_DAY_DOB == 1 ? currentTreatment4.TDL_PATIENT_DOB.ToString().Substring(0, 4) : ProcessDate(currentTreatment4.TDL_PATIENT_DOB.ToString().Substring(6, 2) + currentTreatment4.TDL_PATIENT_DOB.ToString().Substring(4, 2) + currentTreatment4.TDL_PATIENT_DOB.ToString().Substring(0, 4));
+                                heinCardDataForCheckGOV.Gender = currentTreatment4.TDL_PATIENT_GENDER_NAME;
+
+                                heinCardDataForCheckGOV.HeinCardNumber = currentTreatment4.TDL_HEIN_CARD_NUMBER;
+                                heinCardDataForCheckGOV.FromDate = ProcessDate(currentTreatment4.TDL_HEIN_CARD_FROM_TIME.HasValue ? currentTreatment4.TDL_HEIN_CARD_FROM_TIME.ToString().Substring(6, 2) + currentTreatment4.TDL_HEIN_CARD_FROM_TIME.ToString().Substring(4, 2) + currentTreatment4.TDL_HEIN_CARD_FROM_TIME.ToString().Substring(0, 4) : null);
+                                heinCardDataForCheckGOV.MediOrgCode = currentTreatment4.TDL_HEIN_MEDI_ORG_CODE;
+                                HeinGOVManager heinGOVManager = new HeinGOVManager(null);
+                                var ResultDataADO = await heinGOVManager.Check(heinCardDataForCheckGOV, null, false, null, DateTime.Now, false, false);
+                                if (ResultDataADO != null && (ResultDataADO.ResultHistoryLDO.maKetQua != "000" && ResultDataADO.ResultHistoryLDO.maKetQua != "003" && ResultDataADO.ResultHistoryLDO.maKetQua != "004") && !string.IsNullOrEmpty(ResultDataADO.ResultHistoryLDO.ghiChu))
+                                {
+                                    XtraMessageBox.Show(ResultDataADO.ResultHistoryLDO.ghiChu, "Thông báo");
+                                    List<object> listArgs = new List<object>();
+                                    Inventec.Desktop.Common.Modules.Module moduleData = GlobalVariables.currentModuleRaws.Where(o => o.ModuleLink == "HIS.Desktop.Plugins.CallPatientTypeAlter").FirstOrDefault();
+                                    if (moduleData == null) Inventec.Common.Logging.LogSystem.Error("khong tim thay moduleLink = HIS.Desktop.Plugins.CallPatientTypeAlter");
+                                    if (moduleData.IsPlugin && moduleData.ExtensionInfo != null)
+                                    {
+                                        PatientTypeDepartmentADO a = new PatientTypeDepartmentADO();
+
+                                        a.patientTypeAlter = PatientTYpeAlterView(serviceReqInput);
+                                        a.CREATE_TIME = a.patientTypeAlter.CREATE_TIME;
+                                        a.LOG_TIME = a.patientTypeAlter.LOG_TIME;
+                                        a.MODIFY_TIME = a.patientTypeAlter.MODIFY_TIME;
+                                        a.TREATMENT_ID = a.patientTypeAlter.TREATMENT_ID;
+                                        a.CREATOR = a.patientTypeAlter.CREATOR;
+                                        a.MODIFIER = a.patientTypeAlter.MODIFIER;
+                                        a.Id = a.patientTypeAlter.DEPARTMENT_TRAN_ID.ToString();
+
+                                        listArgs.Add(a);
+                                        listArgs.Add(this.currentModule);
+                                        listArgs.Add(true);
+                                        listArgs.Add((RefeshReference)ReloadData);
+                                        var extenceInstance = HIS.Desktop.Utility.PluginInstance.GetPluginInstance(HIS.Desktop.Utility.PluginInstance.GetModuleWithWorkingRoom(moduleData, roomId, roomTypeId), listArgs);
+                                        if (extenceInstance == null) throw new ArgumentNullException("moduleData is null");
+                                        ((Form)extenceInstance).ShowDialog();
+                                    }
+                                    return;
+                                }
+                            }
+                        }
+                    }
+                    if (serviceReqInput.SERVICE_REQ_STT_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_STT.ID__CXL)
+                    {
+                        Inventec.Common.Logging.LogSystem.Debug("LoadModuleExecuteService. 2");
+                        //Bắt đầu
+                        bool isStart = false;
+                        StartEvent(ref isStart, serviceReqInput);
+                        if (isStart == false)
+                            return;
+                    }
+                    Inventec.Common.Logging.LogSystem.Debug("LoadModuleExecuteService. 3");
+
+                    V_HIS_SERVICE_REQ serviceReqDynamic = GetDynamicData(serviceReqInput);
+
+                    //Get module link
+                    if (serviceReqInput.EXE_SERVICE_MODULE_ID.HasValue)
+                    {
+                        List<HIS_EXE_SERVICE_MODULE> exeServiceModules = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<HIS_EXE_SERVICE_MODULE>();
+                        HIS_EXE_SERVICE_MODULE exeServiceModule = exeServiceModules != null && exeServiceModules.Count > 0 ?
+                            exeServiceModules.FirstOrDefault(o => o.ID == serviceReqInput.EXE_SERVICE_MODULE_ID.Value) : null;
+                        if (exeServiceModule == null)
+                        {
+                            MessageBox.Show("Không tìm thấy module!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                            Inventec.Common.Logging.LogSystem.Error(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => exeServiceModules), exeServiceModules));
+                            return;
+                        }
+                        Inventec.Common.Logging.LogSystem.Debug("LoadModuleExecuteService. 4");
+                        Inventec.Desktop.Common.Modules.Module moduleData = GlobalVariables.currentModuleRaws
+                               .Where(o => o.ModuleLink == exeServiceModule.MODULE_LINK).FirstOrDefault();
+                        if (moduleData == null) Inventec.Common.Logging.LogSystem.Error("khong tim thay moduleLink = " + exeServiceModule.MODULE_LINK);
+                        if (moduleData.IsPlugin && moduleData.ExtensionInfo != null)
+                        {
+                            List<object> listArgs = new List<object>();
+                            Inventec.Desktop.Common.Modules.Module currentModule = new Inventec.Desktop.Common.Modules.Module();
+                            currentModule = HIS.Desktop.Utility.PluginInstance.GetModuleWithWorkingRoom(moduleData, roomId, roomTypeId);
+                            string dob = serviceReqDynamic.TDL_PATIENT_DOB > 0 ? serviceReqDynamic.TDL_PATIENT_DOB.ToString().Substring(0, 4) : Inventec.Common.DateTime.Convert.TimeNumberToDateString(serviceReqDynamic.TDL_PATIENT_DOB);
+                            //Neu la xu ly kham can phai reload thong tin module
+                            if (exeServiceModule.MODULE_LINK == ModuleLink.MODULE_LINK__CDHA_TDCN_NS_SA_GPBL)
+                            {
+                                ServiceExecuteADO serviceExecute = new ServiceExecuteADO(serviceReqDynamic, ReLoadExecuteRoom);
+                                listArgs.Add(serviceExecute);
+
+                                var extenceInstance = HIS.Desktop.Utility.PluginInstance.GetPluginInstance(currentModule, listArgs);
+                                if (extenceInstance == null) throw new ArgumentNullException("moduleData is null");
+                                HIS.Desktop.ModuleExt.TabControlBaseProcess.TabCreating(SessionManager.GetTabControlMain(), currentModule.ExtensionInfo.Code + serviceReqDynamic.SERVICE_REQ_CODE, serviceReqDynamic.SERVICE_REQ_CODE + " - " + serviceReqDynamic.TDL_PATIENT_NAME + " - " + dob + " - " + serviceReqDynamic.TDL_PATIENT_GENDER_NAME, (System.Windows.Forms.UserControl)extenceInstance, currentModule, SaveDataBeforeCloseV2);
+                            }
+                            else if (exeServiceModule.MODULE_LINK == ModuleLink.MODULE_LINK__XU_LY_KHAM)
+                            {
+
+                                Inventec.Common.Logging.LogSystem.Debug("LoadModuleExecuteService. 4.1");
+                                listArgs.Add(serviceReqDynamic);
+                                listArgs.Add(SereServCurrentTreatment);
+                                listArgs.Add((DelegateSelectData)ReLoadServiceReq);
+
+                                object extenceInstance = null;
+                                string pageName = "";
+                                //var pluginInstanceADO = PluginInstanceInitWorker.GetAvailaiblePlugin(ModuleLink.MODULE_LINK__XU_LY_KHAM);
+                                //if (pluginInstanceADO != null && pluginInstanceADO.PluginInstance != null)
+                                //{
+                                //    Inventec.Common.Logging.LogSystem.Debug("LoadModuleExecuteService. 4.2");
+                                //    extenceInstance = pluginInstanceADO.PluginInstance;
+                                //    HIS.Desktop.Utility.PluginInstance.InitLoadPluginWithExistsInstance(extenceInstance, currentModule, listArgs);
+                                //    pageName = pluginInstanceADO.PluginName + "__" + serviceReq.SERVICE_REQ_CODE + "__AvailaiblePlugin";
+
+                                //    PluginInstanceInitWorker.UpdatePlugin(pluginInstanceADO.PluginName, extenceInstance, true);
+
+                                //    HIS.Desktop.ModuleExt.TabControlBaseProcess.OpenPluginPage(SessionManager.GetTabControlMain(), currentModule, serviceReq.SERVICE_REQ_CODE + " - " + serviceReq.TDL_PATIENT_NAME, pluginInstanceADO.PluginName);
+                                //    Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => pageName), pageName));
+                                //}
+                                //else
+                                //{
+                                Inventec.Common.Logging.LogSystem.Debug("LoadModuleExecuteService. 4.3");
+                                extenceInstance = HIS.Desktop.Utility.PluginInstance.GetPluginInstance(currentModule, listArgs);
+                                pageName = currentModule.ExtensionInfo.Code + serviceReqDynamic.SERVICE_REQ_CODE;
+                                if (extenceInstance == null) throw new ArgumentNullException("moduleData is null");
+                                Inventec.Common.Logging.LogSystem.Debug("LoadModuleExecuteService. 4.4");
+                                Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => pageName), pageName));
+                                HIS.Desktop.ModuleExt.TabControlBaseProcess.TabCreating(SessionManager.GetTabControlMain(), pageName, serviceReqDynamic.SERVICE_REQ_CODE + " - " + serviceReqDynamic.TDL_PATIENT_NAME + " - " + dob + " - " + serviceReqDynamic.TDL_PATIENT_GENDER_NAME, (System.Windows.Forms.UserControl)extenceInstance, currentModule, SaveDataBeforeClose);
+                                //}                           
+
+                            }
+                            else
+                            {
+                                listArgs.Add(serviceReqDynamic);
+                                listArgs.Add((DelegateSelectData)ReLoadServiceReq);
+                                var extenceInstance = HIS.Desktop.Utility.PluginInstance.GetPluginInstance(currentModule, listArgs);
+                                if (extenceInstance == null) throw new ArgumentNullException("moduleData is null");
+                                HIS.Desktop.ModuleExt.TabControlBaseProcess.TabCreating(SessionManager.GetTabControlMain(), currentModule.ExtensionInfo.Code + serviceReqDynamic.SERVICE_REQ_CODE, serviceReqDynamic.SERVICE_REQ_CODE + " - " + serviceReqDynamic.TDL_PATIENT_NAME + " - " + dob + " - " + serviceReqDynamic.TDL_PATIENT_GENDER_NAME, (System.Windows.Forms.UserControl)extenceInstance, currentModule);
+                            }
+                        }
+                    }
+                    else
+                    {
+                        MessageBox.Show("Chưa gán Module Link tương ứng với yêu cầu!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        return;
+                    }
+                    Inventec.Common.Logging.LogSystem.Debug("LoadModuleExecuteService. 5");
+                }
             }
             catch (Exception ex)
             {
@@ -1768,263 +2325,26 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
             }
         }
 
-        private void LoadModuleExecuteService_Action(L_HIS_SERVICE_REQ serviceReqInput)
+        private V_HIS_PATIENT_TYPE_ALTER PatientTYpeAlterView(L_HIS_SERVICE_REQ serviceReq)
         {
             try
             {
-                if (!string.IsNullOrEmpty(serviceReqInput.NOTE))
-                {
-                    XtraMessageBox.Show(serviceReqInput.NOTE, Inventec.Desktop.Common.LibraryMessage.MessageUtil.GetMessage(Inventec.Desktop.Common.LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaThongBao));
-                }
-
-                long dtNow = (long)Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(DateTime.Now);
-                if (HisConfigCFG.StartTimeMustBeGreaterThanInstructionTime == "1" && dtNow < serviceReqInput.INTRUCTION_TIME)
-                {
-                    MessageBox.Show("Thời gian bắt đầu không được nhỏ hơn thời gian y lệnh", Inventec.Desktop.Common.LibraryMessage.MessageUtil.GetMessage(Inventec.Desktop.Common.LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaThongBao));
-                    return;
-                }
-                else if (HisConfigCFG.StartTimeMustBeGreaterThanInstructionTime == "2" && serviceReqInput.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__KH && dtNow < serviceReqInput.INTRUCTION_TIME)
-                {
-                    MessageBox.Show("Thời gian bắt đầu không được nhỏ hơn thời gian y lệnh", Inventec.Desktop.Common.LibraryMessage.MessageUtil.GetMessage(Inventec.Desktop.Common.LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaThongBao));
-                    return;
-                }
-
-                long dtFrom = Inventec.Common.TypeConvert.Parse.ToInt64(Convert.ToDateTime(DateTime.Now).ToString("yyyyMMdd") + "000000");
-                long dtTo = Inventec.Common.TypeConvert.Parse.ToInt64(Convert.ToDateTime(DateTime.Now).ToString("yyyyMMdd") + "232359");
-
-                if (dtFrom <= serviceReqInput.INTRUCTION_TIME && serviceReqInput.INTRUCTION_TIME <= dtTo)
-                {
-                    bool serviceReqCount = false;
-                    if (HisConfigCFG.RequestLimitWarningOption == "2")
-                        serviceReqCount = LoadServiceReqCountByDesk();
-                    else
-                        serviceReqCount = LoadServiceReqCount();
-
-
-
-                    //CommonParam param = new CommonParam();
-                    //HisServiceReqViewFilter Filter = new HisServiceReqViewFilter();
-                    //Filter.ID = serviceReqInput.ID;
-
-                    //var data = new BackendAdapter(param).Get<List<V_HIS_SERVICE_REQ>>("api/HisServiceReq/GetView", ApiConsumers.MosConsumer, Filter, param);
-
-                    if (serviceReqInput.SERVICE_REQ_STT_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_STT.ID__CXL && serviceReqCount)
-                    {
-                        DialogResult myResult;
-                        Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(HisConfigCFG.WarningOverExam)), HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(HisConfigCFG.WarningOverExam)));
-
-                        if (HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(HisConfigCFG.WarningOverExam) == "1")
-                        {
-                            string WaringString = "";
-                            if (HisConfigCFG.RequestLimitWarningOption == "2")
-                            {
-                                if (desk != null && serviceReqInput.TDL_PATIENT_TYPE_ID == HisConfigCFG.PatientTypeId__BHYT)
-                                {
-                                    long deskCount = desk != null && desk.MAX_REQ_PER_DAY.HasValue ? desk.MAX_REQ_PER_DAY.Value : 0;
-                                    WaringString = String.Format("Bàn đã khám quá {0} bệnh nhân trong ngày, bạn có muốn tiếp tục?", deskCount);
-                                }
-                            }
-                            else
-                            {
-                                if (employee.MAX_SERVICE_REQ_PER_DAY.HasValue)
-                                {
-                                    WaringString = "Đã khám đủ số lượng bn cho phép trong ngày, bạn có chắc chắn muốn tiếp tục xử lý hay không?";
-                                }
-                                else
-                                {
-                                    WaringString = ResourceMessage.DaKhamDuSoLuongBNBHYTChoPhepTrongNgay;
-                                }
-                            }
-                            if (!String.IsNullOrWhiteSpace(WaringString))
-                            {
-                                myResult = MessageBox.Show(WaringString, Inventec.Desktop.Common.LibraryMessage.MessageUtil.GetMessage(Inventec.Desktop.Common.LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaThongBao), MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
-                                if (myResult == DialogResult.No)
-                                {
-                                    return;
-                                }
-                            }
-
-                        }
-                        //Bổ sung xử lý chặn ko cho người dùng vào màn hình xử lý khi key cấu hình WarningOverBHYT=2
-                        if (HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(HisConfigCFG.WarningOverExam) == "2")
-                        {
-                            string WaringString = "";
-                            if (HisConfigCFG.RequestLimitWarningOption == "2")
-                            {
-                                if (desk != null && serviceReqInput.TDL_PATIENT_TYPE_ID == HisConfigCFG.PatientTypeId__BHYT)
-                                {
-                                    long deskCount = desk != null && desk.MAX_REQ_PER_DAY.HasValue ? desk.MAX_REQ_PER_DAY.Value : 0;
-                                    WaringString = String.Format("Bàn đã khám quá {0} bệnh nhân trong ngày", deskCount);
-                                }
-                            }
-                            else
-                            {
-                                if (employee.MAX_SERVICE_REQ_PER_DAY.HasValue)
-                                {
-                                    WaringString = "Bạn đã xử lý quá " + employee.MAX_SERVICE_REQ_PER_DAY + " yêu cầu trong ngày";
-                                }
-                                else
-                                {
-                                    if (this.executeRoom.IS_EXAM != 1 || (this.executeRoom.IS_EXAM == 1 && serviceReqInput.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__KH))
-                                        WaringString = "Bạn đã xử lý quá " + employee.MAX_BHYT_SERVICE_REQ_PER_DAY + " yêu cầu BHYT trong ngày";
-                                }
-                            }
-                            if (!String.IsNullOrWhiteSpace(WaringString))
-                            {
-                                MessageBox.Show(WaringString, Inventec.Desktop.Common.LibraryMessage.MessageUtil.GetMessage(Inventec.Desktop.Common.LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaThongBao), MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                                return;
-                            }
-                        }
-                    }
-                }
-                if (HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(HisConfigCFG.LockExecuteCFG) == "1" && serviceReqInput.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__CDHA)
-                {
-                    var services = listServices;
-                    CommonParam param = new CommonParam();
-                    List<ADOserserv7> sereServInServiceReqs = new List<ADOserserv7>();
-                    if (this.SereServCurrentTreatment == null || this.SereServCurrentTreatment.Count == 0 || !this.SereServCurrentTreatment.Any(o => o.SERVICE_REQ_ID == serviceReqInput.ID))
-                    {
-                        HisSereServFilter sereServFilter = new HisSereServFilter();
-                        sereServFilter.ORDER_FIELD = "SERVICE_NUM_ORDER";
-                        sereServFilter.ORDER_DIRECTION = "DESC";
-                        sereServFilter.TREATMENT_ID = serviceReqInput.TREATMENT_ID;
-                        //sereServFilter.SERVICE_REQ_ID = serviceReqInput.ID;
-                        //sereServFilter.TDL_SERVICE_TYPE_ID = IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__CDHA;
-                        sereServFilter.IS_ACTIVE = IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE;
-                        this.SereServCurrentTreatment = new BackendAdapter(param)
-                            .Get<List<ADOserserv7>>("api/HisSereServ/Get", ApiConsumers.MosConsumer, sereServFilter, param);
-                    }
-
-                    Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => SereServCurrentTreatment), SereServCurrentTreatment));
-                    sereServInServiceReqs = this.SereServCurrentTreatment != null ? this.SereServCurrentTreatment.Where(o => o.SERVICE_REQ_ID == serviceReqInput.ID && o.TDL_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__CDHA).ToList() : null;
-
-                    List<long> listId = sereServInServiceReqs != null ? sereServInServiceReqs.Select(o => o.ID).ToList() : null;
-
-                    param = new CommonParam();
-                    MOS.Filter.HisSereServExtFilter sereServExtFilter = new MOS.Filter.HisSereServExtFilter();
-                    sereServExtFilter.SERE_SERV_IDs = listId;
-                    sereServExtFilter.IS_ACTIVE = IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE;
-                    var sereServExts = listId != null ? new Inventec.Common.Adapter.BackendAdapter(new CommonParam()).Get<List<MOS.EFMODEL.DataModels.HIS_SERE_SERV_EXT>>("api/HisSereServExt/Get", ApiConsumer.ApiConsumers.MosConsumer, sereServExtFilter, HIS.Desktop.Controls.Session.SessionManager.ActionLostToken, null) : null;
-
-                    List<string> serviceWarnMustHavePress = new List<string>();
-                    foreach (var itemss in sereServInServiceReqs)
-                    {
-                        var itemssext = (sereServExts != null && sereServExts.Count > 0) ? sereServExts.Where(o => o.SERE_SERV_ID == itemss.ID).FirstOrDefault() : null;
-                        if (itemssext == null || (itemssext != null && (itemssext.NUMBER_OF_FILM ?? 0) <= 0))
-                        {
-                            serviceWarnMustHavePress.Add(itemss.TDL_SERVICE_NAME);
-                        }
-                    }
-
-                    if (serviceWarnMustHavePress.Count > 0)
-                    {
-                        DevExpress.XtraEditors.XtraMessageBox.Show(string.Format(ResourceMessage.DichVuChuaKeThuocVatTu, string.Join(",", serviceWarnMustHavePress)));
-                        //Inventec.Common.Logging.LogSystem.Warn(string.Format(ResourceMessage.DichVuChuaKeThuocVatTu, string.Join(",", serviceWarnMustHavePress)) + "____" + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => sereServInServiceReqs), sereServInServiceReqs));
-                        return;
-                    }
-                    Inventec.Common.Logging.LogSystem.Warn(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => serviceWarnMustHavePress), serviceWarnMustHavePress) + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => sereServInServiceReqs), sereServInServiceReqs));
-                }
-                Inventec.Common.Logging.LogSystem.Debug("LoadModuleExecuteService. 1");
-                if (serviceReqInput.SERVICE_REQ_STT_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_STT.ID__CXL)
-                {
-                    Inventec.Common.Logging.LogSystem.Debug("LoadModuleExecuteService. 2");
-                    //Bắt đầu
-                    bool isStart = false;
-                    StartEvent(ref isStart, serviceReqInput);
-                    if (isStart == false)
-                        return;
-                }
-                Inventec.Common.Logging.LogSystem.Debug("LoadModuleExecuteService. 3");
-
-                V_HIS_SERVICE_REQ serviceReqDynamic = GetDynamicData(serviceReqInput);
-                //Get module link
-                if (serviceReqInput.EXE_SERVICE_MODULE_ID.HasValue)
-                {
-                    List<HIS_EXE_SERVICE_MODULE> exeServiceModules = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<HIS_EXE_SERVICE_MODULE>();
-                    HIS_EXE_SERVICE_MODULE exeServiceModule = exeServiceModules != null && exeServiceModules.Count > 0 ?
-                        exeServiceModules.FirstOrDefault(o => o.ID == serviceReqInput.EXE_SERVICE_MODULE_ID.Value) : null;
-                    if (exeServiceModule == null)
-                    {
-                        MessageBox.Show("Không tìm thấy module!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                        Inventec.Common.Logging.LogSystem.Error(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => exeServiceModules), exeServiceModules));
-                        return;
-                    }
-                    Inventec.Common.Logging.LogSystem.Debug("LoadModuleExecuteService. 4");
-                    Inventec.Desktop.Common.Modules.Module moduleData = GlobalVariables.currentModuleRaws
-                           .Where(o => o.ModuleLink == exeServiceModule.MODULE_LINK).FirstOrDefault();
-                    if (moduleData == null) Inventec.Common.Logging.LogSystem.Error("khong tim thay moduleLink = " + exeServiceModule.MODULE_LINK);
-                    if (moduleData.IsPlugin && moduleData.ExtensionInfo != null)
-                    {
-                        List<object> listArgs = new List<object>();
-                        Inventec.Desktop.Common.Modules.Module currentModule = new Inventec.Desktop.Common.Modules.Module();
-                        currentModule = HIS.Desktop.Utility.PluginInstance.GetModuleWithWorkingRoom(moduleData, roomId, roomTypeId);
-                        string dob = serviceReqDynamic.TDL_PATIENT_DOB > 0 ? serviceReqDynamic.TDL_PATIENT_DOB.ToString().Substring(0, 4) : Inventec.Common.DateTime.Convert.TimeNumberToDateString(serviceReqDynamic.TDL_PATIENT_DOB);
-                        //Neu la xu ly kham can phai reload thong tin module
-                        if (exeServiceModule.MODULE_LINK == ModuleLink.MODULE_LINK__CDHA_TDCN_NS_SA_GPBL)
-                        {
-                            ServiceExecuteADO serviceExecute = new ServiceExecuteADO(serviceReqDynamic, ReLoadExecuteRoom);
-                            listArgs.Add(serviceExecute);
-
-                            var extenceInstance = HIS.Desktop.Utility.PluginInstance.GetPluginInstance(currentModule, listArgs);
-                            if (extenceInstance == null) throw new ArgumentNullException("moduleData is null");
-                            HIS.Desktop.ModuleExt.TabControlBaseProcess.TabCreating(SessionManager.GetTabControlMain(), currentModule.ExtensionInfo.Code + serviceReqDynamic.SERVICE_REQ_CODE, serviceReqDynamic.SERVICE_REQ_CODE + " - " + serviceReqDynamic.TDL_PATIENT_NAME + " - " + dob + " - " + serviceReqDynamic.TDL_PATIENT_GENDER_NAME, (System.Windows.Forms.UserControl)extenceInstance, currentModule, SaveDataBeforeCloseV2);
-                        }
-                        else if (exeServiceModule.MODULE_LINK == ModuleLink.MODULE_LINK__XU_LY_KHAM)
-                        {
-
-                            Inventec.Common.Logging.LogSystem.Debug("LoadModuleExecuteService. 4.1");
-                            listArgs.Add(serviceReqDynamic);
-                            listArgs.Add(SereServCurrentTreatment);
-                            listArgs.Add((DelegateSelectData)ReLoadServiceReq);
-
-                            object extenceInstance = null;
-                            string pageName = "";
-                            //var pluginInstanceADO = PluginInstanceInitWorker.GetAvailaiblePlugin(ModuleLink.MODULE_LINK__XU_LY_KHAM);
-                            //if (pluginInstanceADO != null && pluginInstanceADO.PluginInstance != null)
-                            //{
-                            //    Inventec.Common.Logging.LogSystem.Debug("LoadModuleExecuteService. 4.2");
-                            //    extenceInstance = pluginInstanceADO.PluginInstance;
-                            //    HIS.Desktop.Utility.PluginInstance.InitLoadPluginWithExistsInstance(extenceInstance, currentModule, listArgs);
-                            //    pageName = pluginInstanceADO.PluginName + "__" + serviceReq.SERVICE_REQ_CODE + "__AvailaiblePlugin";
-
-                            //    PluginInstanceInitWorker.UpdatePlugin(pluginInstanceADO.PluginName, extenceInstance, true);
-
-                            //    HIS.Desktop.ModuleExt.TabControlBaseProcess.OpenPluginPage(SessionManager.GetTabControlMain(), currentModule, serviceReq.SERVICE_REQ_CODE + " - " + serviceReq.TDL_PATIENT_NAME, pluginInstanceADO.PluginName);
-                            //    Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => pageName), pageName));
-                            //}
-                            //else
-                            //{
-                            Inventec.Common.Logging.LogSystem.Debug("LoadModuleExecuteService. 4.3");
-                            extenceInstance = HIS.Desktop.Utility.PluginInstance.GetPluginInstance(currentModule, listArgs);
-                            pageName = currentModule.ExtensionInfo.Code + serviceReqDynamic.SERVICE_REQ_CODE;
-                            if (extenceInstance == null) throw new ArgumentNullException("moduleData is null");
-                            Inventec.Common.Logging.LogSystem.Debug("LoadModuleExecuteService. 4.4");
-                            Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => pageName), pageName));
-                            HIS.Desktop.ModuleExt.TabControlBaseProcess.TabCreating(SessionManager.GetTabControlMain(), pageName, serviceReqDynamic.SERVICE_REQ_CODE + " - " + serviceReqDynamic.TDL_PATIENT_NAME + " - " + dob + " - " + serviceReqDynamic.TDL_PATIENT_GENDER_NAME, (System.Windows.Forms.UserControl)extenceInstance, currentModule, SaveDataBeforeClose);
-                            //}                           
-
-                        }
-                        else
-                        {
-                            listArgs.Add(serviceReqDynamic);
-                            listArgs.Add((DelegateSelectData)ReLoadServiceReq);
-                            var extenceInstance = HIS.Desktop.Utility.PluginInstance.GetPluginInstance(currentModule, listArgs);
-                            if (extenceInstance == null) throw new ArgumentNullException("moduleData is null");
-                            HIS.Desktop.ModuleExt.TabControlBaseProcess.TabCreating(SessionManager.GetTabControlMain(), currentModule.ExtensionInfo.Code + serviceReqDynamic.SERVICE_REQ_CODE, serviceReqDynamic.SERVICE_REQ_CODE + " - " + serviceReqDynamic.TDL_PATIENT_NAME + " - " + dob + " - " + serviceReqDynamic.TDL_PATIENT_GENDER_NAME, (System.Windows.Forms.UserControl)extenceInstance, currentModule);
-                        }
-                    }
-                }
-                else
-                {
-                    MessageBox.Show("Chưa gán Module Link tương ứng với yêu cầu!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    return;
-                }
-                Inventec.Common.Logging.LogSystem.Debug("LoadModuleExecuteService. 5");
+                CommonParam param = new Inventec.Core.CommonParam();
+                HisPatientTypeAlterViewFilter filterPatienTypeAlter = new HisPatientTypeAlterViewFilter();
+                filterPatienTypeAlter.TREATMENT_ID = serviceReq.TREATMENT_ID;
+                return new Inventec.Common.Adapter.BackendAdapter(param)
+                    .Get<List<MOS.EFMODEL.DataModels.V_HIS_PATIENT_TYPE_ALTER>>("/api/HisPatientTypeAlter/GetView", ApiConsumers.MosConsumer, filterPatienTypeAlter, param).OrderByDescending(o => o.ID).ThenByDescending(o => o.LOG_TIME).FirstOrDefault();
             }
             catch (Exception ex)
             {
-                Inventec.Common.Logging.LogSystem.Warn(ex);
+                Inventec.Common.Logging.LogSystem.Error(ex);
             }
+            return null;
+        }
+        private void ReloadData()
+        {
+            LoadTreatment4ByServiceReq();
+            btnFind_Click(null, null);
         }
 
         //private void LoadModuleExecuteService__Old(string moduleLink, L_HIS_SERVICE_REQ serviceReqInput)
@@ -2638,7 +2958,7 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
                         Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => sdo), sdo));
                         documents = new BackendAdapter(paramCommon).Post<List<EmrDocumentFileSDO>>("api/EmrDocument/DownloadFile", ApiConsumers.EmrConsumer, sdo, paramCommon);
                         Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => paramCommon), paramCommon));
-                        Inventec.Common.Logging.LogSystem.Debug("document__"+(documents != null && documents.Count > 0));
+                        Inventec.Common.Logging.LogSystem.Debug("document__" + (documents != null && documents.Count > 0));
                     }
 
                     if (xtraTabDocument.SelectedTabPage == xtraTabDocumentReq)

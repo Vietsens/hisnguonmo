@@ -1056,14 +1056,16 @@ Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture()
             {
                 CommonParam param = new CommonParam();
                 var rowData = (SDA.EFMODEL.DataModels.SDA_LANGUAGE)gridView1.GetFocusedRow();
-                if (MessageBox.Show(HIS.Desktop.LibraryMessage.MessageUtil.GetMessage(HIS.Desktop.LibraryMessage.Message.Enum.HeThongTBCuaSoThongBaoBanCoMuonXoaDuLieuKhong), "", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                if (MessageBox.Show(HIS.Desktop.LibraryMessage.MessageUtil.GetMessage
+                    (HIS.Desktop.LibraryMessage.Message.Enum.HeThongTBCuaSoThongBaoBanCoMuonXoaDuLieuKhong), "", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
                 {
                    
 
                     if (rowData != null)
                     {
                         bool success = false;
-                        success = new BackendAdapter(param).Post<bool>(SdaRequestUriStore.SDA_LANGUAGE_DELETE, ApiConsumers.SdaConsumer, rowData.ID, param);
+                        success = new BackendAdapter(param).Post<bool>(SdaRequestUriStore.SDA_LANGUAGE_DELETE,
+                            ApiConsumers.SdaConsumer, rowData.ID, param);
                         if (success)
                         {
                             FillDataToControl();

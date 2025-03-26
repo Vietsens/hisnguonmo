@@ -49,6 +49,7 @@ namespace HIS.UC.PlusInfo.Design
         #region Constructor - Load
 
         public UCDistrictNow()
+            : base("UCPlusInfo", "UCDistrictNow")
         {
             try
             {

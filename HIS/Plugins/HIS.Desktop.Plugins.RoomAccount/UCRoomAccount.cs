@@ -51,6 +51,7 @@ using Inventec.Desktop.Common.LanguageManager;
 using DevExpress.XtraBars;
 using MOS.SDO;
 using HIS.UC.Room.Popup;
+using HIS.Desktop.ApiConsumer;
 
 namespace HIS.Desktop.Plugins.RoomAccount
 {
@@ -864,6 +865,30 @@ namespace HIS.Desktop.Plugins.RoomAccount
 
                 }
                 lstRoomADOs = lstRoomADOs.OrderByDescending(p => p.check1).ToList();
+
+                if (lstRoomADOs != null && lstRoomADOs.Count > 0)
+                {
+                    CommonParam paramCommon = new CommonParam();
+                    Inventec.Core.ApiResultObject<List<MOS.EFMODEL.DataModels.V_HIS_DATA_STORE>> apiResult = null;
+                    HisDataStoreViewFilter filter = new HisDataStoreViewFilter();
+                    apiResult = new BackendAdapter(paramCommon).GetRO<List<MOS.EFMODEL.DataModels.V_HIS_DATA_STORE>>("api/HisDataStore/GetView", ApiConsumers.MosConsumer, filter, paramCommon);
+                    if (apiResult != null)
+                    {
+                        var rsdata = (List<MOS.EFMODEL.DataModels.V_HIS_DATA_STORE>)apiResult.Data;
+                        foreach (var item in rsdata)
+                        {
+                            foreach (var subitem in lstRoomADOs)
+                            {
+                                if (item.ROOM_ID == subitem.ID)
+                                {
+                                    subitem.IS_ACTIVE = item.IS_ACTIVE;
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                    lstRoomADOs = lstRoomADOs.Where(o => o.IS_ACTIVE == 1).ToList();
+                }
 
                 if (ucGridControlRoom != null)
                 {

@@ -1,4 +1,21 @@
-﻿using SDA.EFMODEL.DataModels;
+/* IVT
+ * @Project : hisnguonmo
+ * Copyright (C) 2017 INVENTEC
+ *  
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *  
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.See the
+ * GNU General Public License for more details.
+ *  
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ */
+using SDA.EFMODEL.DataModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,9 +34,9 @@ namespace Inventec.Common.Address
 
         public AddressProcessor(List<V_SDA_PROVINCE> vSdaProvince, List<V_SDA_DISTRICT> vSdaDistrict, List<V_SDA_COMMUNE> vSdaCommune)
         {
-            if (vSdaProvince != null) VSdaProvince = vSdaProvince;
-            if (vSdaDistrict != null) VSdaDistrict = vSdaDistrict;
-            if (vSdaCommune != null) VSdaCommune = vSdaCommune;
+            if (vSdaProvince != null) VSdaProvince = vSdaProvince.Where(o => o.IS_ACTIVE == 1).ToList();
+            if (vSdaDistrict != null) VSdaDistrict = vSdaDistrict.Where(o => o.IS_ACTIVE == 1).ToList();
+            if (vSdaCommune != null) VSdaCommune = vSdaCommune.Where(o => o.IS_ACTIVE == 1).ToList();
         }
 
         /// <summary>
@@ -78,15 +95,25 @@ namespace Inventec.Common.Address
                             //Lấy ra tất cả các trường hợp
                             List<V_SDA_DISTRICT> existDistrict = districts.Where(o => lowerPath.Contains(string.Format(formatCheck, o.DISTRICT_NAME.ToLower())) || lowerPath.Contains(string.Format(formatCheck, (o.INITIAL_NAME ?? "").ToLower() + " " + o.DISTRICT_NAME.ToLower()))).ToList();
 
-                            //Nếu có 1 huyện thỏa mãn thì lấy luôn huyện tương ứng
-                            if (existDistrict != null && existDistrict.Count == 1)
+                            //khác đơn vị hành chính sẽ không lấy được.
+                            if (existDistrict == null || existDistrict.Count <= 0)
                             {
-                                district = existDistrict.First();
+                                Inventec.Common.Logging.LogSystem.Debug("Có sai khác đơn vị hành chính: "+ lowerPath);
+                                existDistrict = districts.Where(o => lowerPath.Contains(o.DISTRICT_NAME.ToLower())).ToList();
                             }
-                            else
+
+                            if (existDistrict.Count > 0)
                             {
-                                //Nếu có nhiều hơn 1 huyện thỏa mãn thì vẫn lấy tạm ra 1 huyện bất kỳ.
-                                district = existDistrict.First();
+                                //Nếu có 1 huyện thỏa mãn thì lấy luôn huyện tương ứng
+                                if (existDistrict.Count == 1)
+                                {
+                                    district = existDistrict.First();
+                                }
+                                else
+                                {
+                                    //Nếu có nhiều hơn 1 huyện thỏa mãn thì vẫn lấy tạm ra 1 huyện bất kỳ.
+                                    district = existDistrict.OrderByDescending(o => o.ID).First();
+                                }
                             }
 
                             if (district != null)
@@ -120,7 +147,29 @@ namespace Inventec.Common.Address
                                 communes = communes.Where(o => districts.Exists(e => e.ID == o.DISTRICT_ID)).ToList();
                             }
 
-                            commune = communes.FirstOrDefault(o => lowerPath.Contains(string.Format(formatCheck, o.COMMUNE_NAME.ToLower())) || lowerPath.Contains(string.Format(formatCheck, (o.INITIAL_NAME ?? "").ToLower() + " " + o.COMMUNE_NAME.ToLower())));
+                            //Lấy ra tất cả các trường hợp
+                            List<V_SDA_COMMUNE> existCommunes = communes.Where(o => lowerPath.Contains(string.Format(formatCheck, o.COMMUNE_NAME.ToLower())) || lowerPath.Contains(string.Format(formatCheck, (o.INITIAL_NAME ?? "").ToLower() + " " + o.COMMUNE_NAME.ToLower()))).ToList();
+
+                            //khác đơn vị hành chính sẽ không lấy được.
+                            if (existCommunes == null || existCommunes.Count <= 0)
+                            {
+                                Inventec.Common.Logging.LogSystem.Debug("Có sai khác đơn vị hành chính: " + lowerPath);
+                                existCommunes = communes.Where(o => lowerPath.Contains(o.COMMUNE_NAME.ToLower())).ToList();
+                            }
+
+                            if (existCommunes.Count > 0)
+                            {
+                                //Nếu có 1 huyện thỏa mãn thì lấy luôn huyện tương ứng
+                                if (existCommunes.Count == 1)
+                                {
+                                    commune = existCommunes.First();
+                                }
+                                else
+                                {
+                                    //Nếu có nhiều hơn 1 huyện thỏa mãn thì vẫn lấy tạm ra 1 huyện bất kỳ.
+                                    commune = existCommunes.OrderByDescending(o => o.ID).First();
+                                }
+                            }
 
                             if (commune != null)
                             {

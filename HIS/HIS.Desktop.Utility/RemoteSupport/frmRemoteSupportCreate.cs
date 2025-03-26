@@ -69,6 +69,11 @@ namespace HIS.Desktop.Utilities.RemoteSupport
         System.Windows.Forms.Timer timerHideWindowsAnydesk;
         byte[] imgCaptureMyScreen;
         List<FileAttachADO> lstAttachFileAdo = new List<FileAttachADO>();
+
+        string ModuleLink = "HIS.Desktop.Utilities.RemoteSupport";
+        HIS.Desktop.Library.CacheClient.ControlStateWorker controlStateWorker;
+        List<HIS.Desktop.Library.CacheClient.ControlStateRDO> currentControlStateRDO;
+        bool IsInitForm = false;
         public frmRemoteSupportCreate()
             : this(null)
         {
@@ -119,17 +124,17 @@ namespace HIS.Desktop.Utilities.RemoteSupport
 
             return false;
         }
-
+        System.Windows.Forms.Timer timerCheck = new Timer();
         private void frmRemoteSupportCreate_Load(object sender, EventArgs e)
         {
             try
             {
-                this.txtModuleLink.Text = (currentModule != null ? currentModule.ModuleLink : "");
-                this.txtPhone.Text = Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetUserData().Mobile;
-                this.txtContactInfo.Text = String.Format("IP: {0}, Tài khoản phần mềm: {1}-{2}", Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginAddress(), Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName(), Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetUserName());
+                timerCheck.Interval = 100;
+                timerCheck.Tick += TimerCheck_Tick;
                 GetEmployee();
-                InitComboDepartment();
-
+                timerCheck.Start();
+                InitControlState();
+                this.txtContactInfo.Text = String.Format("IP: {0}, Tài khoản phần mềm: {1}-{2}, Điện thoại: {3}, Phiên bản: {4}", Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginAddress(), Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName(), Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetUserName(), currentEmployee.TDL_MOBILE, GlobalString.VersionApp);
 
 
                 this.GetAnydeskID();
@@ -203,6 +208,30 @@ namespace HIS.Desktop.Utilities.RemoteSupport
             }
         }
 
+        private void TimerCheck_Tick(object sender, EventArgs e)
+        {
+            try
+            {
+                timerCheck.Stop();
+                string value = HisConfigs.Get<string>(CONFIG_KEY__VPLUS_CUSTOMER_INFO);
+                if(string.IsNullOrEmpty(value))
+                {
+                    MessageManager.Show("Vui lòng khai báo cấu hình hệ thống \"HIS.Desktop.VPLUS_CUSTOMER_INFO\" để sử dụng tính năng này!");
+                    this.Close();
+                }
+                if (string.IsNullOrEmpty(this.currentEmployee.VCONG_LOGINNAME))
+                {
+                    MessageManager.Show("Tài khoản của bạn chưa thế tạo yêu cầu do chưa có thông tin tài khoản trên hệ thống V+. Vui lòng bổ sung để sử dụng tính năng này");
+                    this.Close();
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+
+        }
+
         private void GetEmployee()
         {
             try
@@ -221,30 +250,6 @@ namespace HIS.Desktop.Utilities.RemoteSupport
             catch (Exception ex)
             {
                 LogSystem.Warn(ex);
-            }
-        }
-
-        private void InitComboDepartment()
-        {
-            try
-            {
-                CommonParam param = new CommonParam();
-                HisDepartmentFilter filter = new HisDepartmentFilter();
-                filter.BRANCH_ID = HIS.Desktop.LocalStorage.BackendData.BranchDataWorker.Branch.ID;
-                filter.ORDER_DIRECTION = "DESC";
-                lstDepartment = new BackendAdapter(param).Get<List<HIS_DEPARTMENT>>("api/HisDepartment/Get", ApiConsumers.MosConsumer, filter, param).ToList();
-                List<ColumnInfo> columnInfos = new List<ColumnInfo>();
-                columnInfos.Add(new ColumnInfo("DEPARTMENT_CODE", "Mã khoa", 100, 1));
-                columnInfos.Add(new ColumnInfo("DEPARTMENT_NAME", "Tên khoa", 250, 2));
-                ControlEditorADO controlEditorADO = new ControlEditorADO("DEPARTMENT_NAME", "ID", columnInfos, true, 350);
-                ControlEditorLoader.Load(cboDepartment, lstDepartment, controlEditorADO);
-
-                if (currentEmployee != null && currentEmployee.DEPARTMENT_ID != null)
-                    cboDepartment.EditValue = currentEmployee.DEPARTMENT_ID;
-            }
-            catch (Exception ex)
-            {
-                Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
 
@@ -325,7 +330,7 @@ namespace HIS.Desktop.Utilities.RemoteSupport
         {
             CommonValidateMaxLength validateMaxLengthTitle = new CommonValidateMaxLength();
             validateMaxLengthTitle.textEdit = txtTitle;
-            validateMaxLengthTitle.maxLength = 300;
+            validateMaxLengthTitle.maxLength = 150;
             validateMaxLengthTitle.ErrorType = DevExpress.XtraEditors.DXErrorProvider.ErrorType.Warning;
             validateMaxLengthTitle.isValidNull = true;
             dxValidationProviderEditorInfo.SetValidationRule(txtTitle, validateMaxLengthTitle);
@@ -333,20 +338,14 @@ namespace HIS.Desktop.Utilities.RemoteSupport
 
             ValidationSingleControl(txtDescription, dxValidationProviderEditorInfo, "", null);
 
-            CommonNumberEditValidationRule numberEditValidationRule = new CommonNumberEditValidationRule();
-            numberEditValidationRule.numberEdit = txtPhone;
-            numberEditValidationRule.ErrorType = DevExpress.XtraEditors.DXErrorProvider.ErrorType.Warning;
-            numberEditValidationRule.ErrorText = "Số điện thoại không hợp lệ";
-            dxValidationProviderEditorInfo.SetValidationRule(txtPhone, numberEditValidationRule);
 
-            ValidationSingleControl(cboDepartment, dxValidationProviderEditorInfo);
+            CommonValidateMaxLength validateMaxLengthDes = new CommonValidateMaxLength();
+            validateMaxLengthDes.textEdit = txtContactInfo;
+            validateMaxLengthDes.maxLength = 400;
+            validateMaxLengthDes.ErrorType = DevExpress.XtraEditors.DXErrorProvider.ErrorType.Warning;
+            validateMaxLengthDes.isValidNull = true;
+            dxValidationProviderEditorInfo.SetValidationRule(txtContactInfo, validateMaxLengthDes);
 
-            //CommonValidateMaxLength validateMaxLengthDes = new CommonValidateMaxLength();
-            ////validateMaxLengthDes.textEdit = txtDescription;
-            //validateMaxLengthDes.maxLength = 500;
-            //validateMaxLengthDes.ErrorType = DevExpress.XtraEditors.DXErrorProvider.ErrorType.Warning;
-            //validateMaxLengthDes.isValidNull = true;
-            //dxValidationProviderEditorInfo.SetValidationRule(txtDescription, validateMaxLengthDes);
         }
 
         protected void ValidationSingleControl(Control control, DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider dxValidationProviderEditor, string messageErr, IsValidControl isValidControl)
@@ -422,29 +421,6 @@ namespace HIS.Desktop.Utilities.RemoteSupport
                         return;
                     }
 
-                    string customerCode = "";
-                    string customerName = "";
-                    string customerInfo = HisConfigs.Get<string>(CONFIG_KEY__VPLUS_CUSTOMER_INFO);
-                    if (!String.IsNullOrEmpty(customerInfo))
-                    {
-                        var cusInfoArr = customerInfo.Split(new string[] { ";" }, StringSplitOptions.RemoveEmptyEntries);
-                        if (cusInfoArr != null && cusInfoArr.Length > 2)
-                        {
-                            customerCode = cusInfoArr[0];
-                            customerName = cusInfoArr[1];
-                            stt_sản_phẩm = cusInfoArr[2];
-                            stt_phần_mềm = cusInfoArr[3];
-                        }
-                    }
-
-                    if (String.IsNullOrEmpty(customerCode) || String.IsNullOrEmpty(customerName) || String.IsNullOrEmpty(stt_sản_phẩm) || String.IsNullOrEmpty(stt_phần_mềm))
-                    {
-                        MessageManager.Show("Vui lòng khai báo cấu hình hệ thống \"Thông tin khách hàng của hệ thống V+ Vietsens\" để sử dụng tính năng này!");
-                        Inventec.Common.Logging.LogSystem.Info("Vui lòng khai báo mã partner trên hệ thống CRM Vietsens để sử dụng tính năng này!" + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => customerCode), customerCode)
-                            + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => customerName), customerName) + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => stt_phần_mềm), stt_phần_mềm) + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => stt_sản_phẩm), stt_sản_phẩm));
-                        WaitingManager.Hide();
-                        return;
-                    }
 
                     dynamic remoteSupport = new System.Dynamic.ExpandoObject();
 
@@ -456,7 +432,25 @@ namespace HIS.Desktop.Utilities.RemoteSupport
                     long? fileLogSize = null;
                     long? imgCaptureSize = null;
                     long attFileSize = 0;
-                    if (!String.IsNullOrEmpty(fileLog) && File.Exists(fileLog))
+
+                    if (chkAttackWImage.Checked)
+                    {
+                        if (this.imgCaptureMyScreen == null || this.imgCaptureMyScreen.Length == 0)
+                        {
+                            this.imgCaptureMyScreen = CaptureMyScreen();
+                        }
+                        if (this.imgCaptureMyScreen != null)
+                        {
+                            FileHolder fileHolder = new FileHolder();
+                            fileHolder.Content = new MemoryStream(this.imgCaptureMyScreen);
+                            fileHolder.FileName = "imgCaptureMyScreen.png";
+                            files.Add(fileHolder);
+
+                            imgCaptureSize = fileHolder.Content.Length;
+                        }
+                    }
+
+                    if (chkAttackLog.Checked && !String.IsNullOrEmpty(fileLog) && File.Exists(fileLog))
                     {
                         FileHolder fileHolder = new FileHolder();
                         fileHolder.Content = new MemoryStream(File.ReadAllBytes(fileLog));
@@ -464,19 +458,6 @@ namespace HIS.Desktop.Utilities.RemoteSupport
                         files.Add(fileHolder);
 
                         fileLogSize = fileHolder.Content.Length;
-                    }
-                    if (this.imgCaptureMyScreen == null || this.imgCaptureMyScreen.Length == 0)
-                    {
-                        this.imgCaptureMyScreen = CaptureMyScreen();
-                    }
-                    if (this.imgCaptureMyScreen != null)
-                    {
-                        FileHolder fileHolder = new FileHolder();
-                        fileHolder.Content = new MemoryStream(this.imgCaptureMyScreen);
-                        fileHolder.FileName = "imgCaptureMyScreen.png";
-                        files.Add(fileHolder);
-
-                        imgCaptureSize = fileHolder.Content.Length;
                     }
 
                     if(lstAttachFileAdo != null && lstAttachFileAdo.Count > 0)
@@ -493,6 +474,8 @@ namespace HIS.Desktop.Utilities.RemoteSupport
                     }
                     Inventec.Common.Logging.LogSystem.Debug(string.Format("dung lượng file log: {0}, dung lượng ảnh chụp màn hình: {1}, dung lượng file đính kèm: {2}, địa chỉ FSS: {3}", fileLogSize, imgCaptureSize, attFileSize, HIS.Desktop.LocalStorage.ConfigSystem.ConfigSystems.URI_API_FSS_FOR_CRM));
                     string fileContent = "";
+                    string formatImg = "<img src=\"{0}\">";
+                    string formatFile = "<a href=\"{0}\">{1}</a>";
                     if (files.Count > 0)
                     {
                         var fileResults = Inventec.Fss.Client.FileUpload.UploadFile(GlobalVariables.APPLICATION_CODE, "", files, false, HIS.Desktop.LocalStorage.ConfigSystem.ConfigSystems.URI_API_FSS_FOR_CRM);
@@ -501,16 +484,18 @@ namespace HIS.Desktop.Utilities.RemoteSupport
                         if (fileResults != null && fileResults.Count > 0)
                         {
                             fileContent += "\r\n\r\n";
+                            List<string> imgList = new List<string>() { ".jpg",".jpeg",".png",".gif",".webp"};
                             foreach (var f in fileResults)
                             {
-                                if (f.Url.EndsWith(".txt"))
+                                if(imgList.Exists(o=> f.Url.ToLower().EndsWith(o)))
                                 {
-                                    fileContent += String.Format("{0}{1}", HIS.Desktop.LocalStorage.ConfigSystem.ConfigSystems.URI_API_FSS_FOR_CRM, f.Url.Replace("\\", "/"));
+                                    fileContent += string.Format(formatImg, String.Format("{0}{1}", HIS.Desktop.LocalStorage.ConfigSystem.ConfigSystems.URI_API_FSS_FOR_CRM, f.Url.Replace("\\", "/")));
                                 }
                                 else
                                 {
-                                    fileContent += " ![](" + String.Format("{0}{1}", HIS.Desktop.LocalStorage.ConfigSystem.ConfigSystems.URI_API_FSS_FOR_CRM, f.Url) + ")";
+                                    fileContent += string.Format(formatFile, String.Format("{0}{1}", HIS.Desktop.LocalStorage.ConfigSystem.ConfigSystems.URI_API_FSS_FOR_CRM, f.Url.Replace("\\", "/")), f.OriginalName);
                                 }
+                                fileContent += "\r\n";
                             }
                         }
                         else
@@ -522,20 +507,15 @@ namespace HIS.Desktop.Utilities.RemoteSupport
                             return;
                         }
                     }
-                    remoteSupport.nội_dung = String.Format("{0}{1}", txtDescription.Text, fileContent);
-                    remoteSupport.mã_khách_hàng = HIS.Desktop.LocalStorage.BackendData.BranchDataWorker.Branch.HEIN_MEDI_ORG_CODE;
-                    remoteSupport.stt_khách_hàng = customerCode;
-                    remoteSupport.stt_sản_phẩm = stt_sản_phẩm;
-                    remoteSupport.stt_phần_mềm = stt_phần_mềm;
-                    remoteSupport.người_dùng_cuối = String.Format("{0}:{1}:{2}", customerCode, stt_sản_phẩm, Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName());
-                    remoteSupport.bộ_phận = lstDepartment.Where(o => o.ID == Inventec.Common.TypeConvert.Parse.ToInt64(cboDepartment.EditValue.ToString())).First().DEPARTMENT_NAME;
+                    remoteSupport.nội_dung = String.Format("{0}\r\n{1}", txtDescription.Text, fileContent);
+                    remoteSupport.tổ_chức_yêu_cầu_id = HisConfigs.Get<string>(CONFIG_KEY__VPLUS_CUSTOMER_INFO);
+                    remoteSupport.người_yêu_cầu = currentEmployee.VCONG_LOGINNAME;
                     remoteSupport.anydesk = !string.IsNullOrEmpty(yourAnydeskID) ? yourAnydeskID : "…";
-                    remoteSupport.mã_chức_năng = txtModuleLink.Text;
-                    remoteSupport.thông_tin_liên_lạc = String.Format("Số điện thoại liên hệ: {0}, {1}", txtPhone.Text, txtContactInfo.Text);
+                    remoteSupport.thông_tin_liên_lạc = txtContactInfo.Text;
                     bool cReateSuccess = false;
 
                     CommonParam param = new CommonParam();
-                    var resultRemoteSupport = new BackendAdapter(param).PostWithouApiParam<string>("/ords/vietsens/yckh/yckh/", ApiConsumers.CrmConsumer, param, remoteSupport, 0, null);
+                    var resultRemoteSupport = new BackendAdapter(param).PostWithouApiParam<string>("/ords/vplus/viec/viec/", ApiConsumers.CrmConsumer, param, remoteSupport, 0, null);
                     cReateSuccess = true;
 
                     Inventec.Common.Logging.LogSystem.Info("Gọi api tạo yêu cầu hỗ trợ " + (cReateSuccess ? "thành công" : "thất bại") + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => resultRemoteSupport), resultRemoteSupport) + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => param), param) + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => remoteSupport), remoteSupport));
@@ -543,15 +523,6 @@ namespace HIS.Desktop.Utilities.RemoteSupport
                     {
                         cReateSuccess = false;
                         param.Messages.Add(resultRemoteSupport);
-                    }
-                    else
-                    {
-                        if (currentEmployee != null && (currentEmployee.DEPARTMENT_ID == null || currentEmployee.DEPARTMENT_ID != Inventec.Common.TypeConvert.Parse.ToInt64(cboDepartment.EditValue.ToString())))
-                        {
-                            currentEmployee.DEPARTMENT_ID = Inventec.Common.TypeConvert.Parse.ToInt64(cboDepartment.EditValue.ToString());
-                            var rs = new BackendAdapter(new CommonParam()).Post<HIS_EMPLOYEE>("api/HisEmployee/Update", ApiConsumers.MosConsumer, currentEmployee, null);
-                            cReateSuccess = rs != null;
-                        }
                     }
                     WaitingManager.Hide();
                     MessageManager.Show(this, param, cReateSuccess);
@@ -619,7 +590,7 @@ namespace HIS.Desktop.Utilities.RemoteSupport
                 {
                     Type t = appender.GetType();
                     // Get the file name from the first FileAppender found and return
-                    if (t.Equals(typeof(log4net.Appender.FileAppender)) || t.Equals(typeof(log4net.Appender.RollingFileAppender)))
+                    if ((t.Equals(typeof(log4net.Appender.FileAppender)) || t.Equals(typeof(log4net.Appender.RollingFileAppender))) && ((log4net.Appender.FileAppender)appender).File.ToLower().Contains("logsystem.txt"))
                     {
                         filename = ((log4net.Appender.FileAppender)appender).File;
                         break;
@@ -762,46 +733,6 @@ namespace HIS.Desktop.Utilities.RemoteSupport
             }
         }
 
-        private void txtPhone_EditValueChanged(object sender, EventArgs e)
-        {
-            try
-            {
-                if (!String.IsNullOrEmpty(txtPhone.Text) && txtPhone.Text != Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetUserData().Mobile)
-                {
-
-                    if (txtPhone.Text.Trim().Length >= 9 && txtPhone.Text.Trim().Length <= 12)
-                    {
-                        CommonParam param = new CommonParam();
-                        bool success = false;
-                        ACS_USER updateDTO = new ACS_USER();
-                        AcsUserFilter filter = new AcsUserFilter();
-                        filter.LOGINNAME = Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetUserData().LoginName;
-                        updateDTO = new BackendAdapter(param).Get<List<ACS_USER>>
-                          ("api/AcsUser/Get", ApiConsumers.AcsConsumer, filter, param).FirstOrDefault();
-                        if (updateDTO == null)
-                        {
-                            Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => filter), filter) + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => updateDTO), updateDTO));
-                            Inventec.Common.Logging.LogSystem.Warn("Không tìm thấy tài khoản người dùng hợp lệ, vui lòng liên hệ quản trị hệ thống để được hỗ trợ");
-                            MessageManager.Show("Không tìm thấy tài khoản người dùng hợp lệ, vui lòng liên hệ quản trị hệ thống để được hỗ trợ");
-                            return;
-                        }
-                        updateDTO.MOBILE = txtPhone.Text.Trim();
-                        var resultData = new BackendAdapter(param).Post<ACS_USER>
-                          ("api/AcsUser/Update", ApiConsumers.AcsConsumer, updateDTO, param);
-                        if (resultData != null)
-                        {
-                            success = true;
-                            Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.SetMobileUser(updateDTO.MOBILE);
-                            //MessageManager.Show(this, param, success);
-                        }
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                Inventec.Common.Logging.LogSystem.Warn(ex);
-            }
-        }
 
         private void bbtnResetPassword_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
         {
@@ -889,6 +820,99 @@ namespace HIS.Desktop.Utilities.RemoteSupport
             catch (Exception ex)
             {
                 LogSystem.Error(ex);
+            }
+        }
+
+        private void chkAttackLog_CheckedChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                if (IsInitForm)
+                    return;
+                HIS.Desktop.Library.CacheClient.ControlStateRDO csAddOrUpdate = (this.currentControlStateRDO != null && this.currentControlStateRDO.Count > 0) ? this.currentControlStateRDO.Where(o => o.KEY == chkAttackLog.Name && o.MODULE_LINK == this.ModuleLink).FirstOrDefault() : null;
+                if (csAddOrUpdate != null)
+                {
+                    csAddOrUpdate.VALUE = (chkAttackLog.Checked ? "1" : "");
+                }
+                else
+                {
+                    csAddOrUpdate = new HIS.Desktop.Library.CacheClient.ControlStateRDO();
+                    csAddOrUpdate.KEY = chkAttackLog.Name;
+                    csAddOrUpdate.VALUE = (chkAttackLog.Checked ? "1" : "");
+                    csAddOrUpdate.MODULE_LINK = this.ModuleLink;
+                    if (this.currentControlStateRDO == null)
+                        this.currentControlStateRDO = new List<HIS.Desktop.Library.CacheClient.ControlStateRDO>();
+                    this.currentControlStateRDO.Add(csAddOrUpdate);
+                }
+                this.controlStateWorker.SetData(this.currentControlStateRDO);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+
+
+        }
+
+        private void chkAttackWImage_CheckedChanged(object sender, EventArgs e)
+        {
+
+            try
+            {
+                if (IsInitForm)
+                    return;
+                HIS.Desktop.Library.CacheClient.ControlStateRDO csAddOrUpdate = (this.currentControlStateRDO != null && this.currentControlStateRDO.Count > 0) ? this.currentControlStateRDO.Where(o => o.KEY == chkAttackWImage.Name && o.MODULE_LINK == this.ModuleLink).FirstOrDefault() : null;
+                if (csAddOrUpdate != null)
+                {
+                    csAddOrUpdate.VALUE = (chkAttackWImage.Checked ? "1" : "");
+                }
+                else
+                {
+                    csAddOrUpdate = new HIS.Desktop.Library.CacheClient.ControlStateRDO();
+                    csAddOrUpdate.KEY = chkAttackWImage.Name;
+                    csAddOrUpdate.VALUE = (chkAttackWImage.Checked ? "1" : "");
+                    csAddOrUpdate.MODULE_LINK = this.ModuleLink;
+                    if (this.currentControlStateRDO == null)
+                        this.currentControlStateRDO = new List<HIS.Desktop.Library.CacheClient.ControlStateRDO>();
+                    this.currentControlStateRDO.Add(csAddOrUpdate);
+                }
+                this.controlStateWorker.SetData(this.currentControlStateRDO);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+
+        }
+
+        private void InitControlState()
+        {
+            try
+            {
+                chkAttackLog.Checked = true;
+                chkAttackWImage.Checked = false;
+                this.controlStateWorker = new HIS.Desktop.Library.CacheClient.ControlStateWorker();
+                this.currentControlStateRDO = controlStateWorker.GetData(this.ModuleLink);
+                IsInitForm = true;
+                if (this.currentControlStateRDO != null && this.currentControlStateRDO.Count > 0)
+                {
+                    foreach (var item_ in this.currentControlStateRDO)
+                    {
+                        if (item_.KEY == chkAttackLog.Name)
+                        {
+                           chkAttackLog.Checked = item_.VALUE == "1";
+                        }
+                        if (item_.KEY == chkAttackWImage.Name)
+                        {
+                            chkAttackWImage.Checked = item_.VALUE == "1";
+                        }
+                    }
+                }
+                IsInitForm = false;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
 

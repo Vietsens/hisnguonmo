@@ -45,6 +45,7 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmTransactionBillTwoInOne));
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject1 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject2 = new DevExpress.Utils.SerializableAppearanceObject();
@@ -58,7 +59,7 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject10 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject11 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject12 = new DevExpress.Utils.SerializableAppearanceObject();
-            this.barManager1 = new DevExpress.XtraBars.BarManager();
+            this.barManager1 = new DevExpress.XtraBars.BarManager(this.components);
             this.bar1 = new DevExpress.XtraBars.Bar();
             this.bbtnRCSave = new DevExpress.XtraBars.BarButtonItem();
             this.bbtnRCNew = new DevExpress.XtraBars.BarButtonItem();
@@ -74,7 +75,7 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
             this.layoutControl1 = new DevExpress.XtraLayout.LayoutControl();
             this.btnQR = new DevExpress.XtraEditors.SimpleButton();
             this.cboPayForm = new DevExpress.XtraEditors.LookUpEdit();
-            this.popupControlContainer1 = new DevExpress.XtraBars.PopupControlContainer();
+            this.popupControlContainer1 = new DevExpress.XtraBars.PopupControlContainer(this.components);
             this.layoutControl7 = new DevExpress.XtraLayout.LayoutControl();
             this.btnCancel = new DevExpress.XtraEditors.SimpleButton();
             this.btnOk = new DevExpress.XtraEditors.SimpleButton();
@@ -333,11 +334,11 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
             this.layoutControlItem53 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem57 = new DevExpress.XtraLayout.LayoutControlItem();
             this.lciQR = new DevExpress.XtraLayout.LayoutControlItem();
-            this.dxValidationProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider();
-            this.bindingSource1 = new System.Windows.Forms.BindingSource();
-            this.bindingSource2 = new System.Windows.Forms.BindingSource();
-            this.timerInitForm = new System.Windows.Forms.Timer();
-            this.popupMenu1 = new DevExpress.XtraBars.PopupMenu();
+            this.dxValidationProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider(this.components);
+            this.bindingSource1 = new System.Windows.Forms.BindingSource(this.components);
+            this.bindingSource2 = new System.Windows.Forms.BindingSource(this.components);
+            this.timerInitForm = new System.Windows.Forms.Timer(this.components);
+            this.popupMenu1 = new DevExpress.XtraBars.PopupMenu(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.barManager1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
             this.layoutControl1.SuspendLayout();
@@ -547,6 +548,10 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
             // 
             this.barManager1.Bars.AddRange(new DevExpress.XtraBars.Bar[] {
             this.bar1});
+            this.barManager1.DockControls.Add(this.barDockControlTop);
+            this.barManager1.DockControls.Add(this.barDockControlBottom);
+            this.barManager1.DockControls.Add(this.barDockControlLeft);
+            this.barManager1.DockControls.Add(this.barDockControlRight);
             this.barManager1.Form = this;
             this.barManager1.Items.AddRange(new DevExpress.XtraBars.BarItem[] {
             this.bbtnRCSave,
@@ -626,8 +631,8 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
             // 
             this.barDockControlTop.CausesValidation = false;
             this.barDockControlTop.Dock = System.Windows.Forms.DockStyle.Top;
-            this.barDockControlTop.Location = new System.Drawing.Point(0, 29);
-            this.barDockControlTop.Size = new System.Drawing.Size(1291, 0);
+            this.barDockControlTop.Location = new System.Drawing.Point(0, 0);
+            this.barDockControlTop.Size = new System.Drawing.Size(1291, 29);
             // 
             // barDockControlBottom
             // 

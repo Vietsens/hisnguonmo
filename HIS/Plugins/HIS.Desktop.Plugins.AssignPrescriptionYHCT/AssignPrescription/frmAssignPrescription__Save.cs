@@ -47,6 +47,7 @@ using HIS.Desktop.LibraryMessage;
 using HIS.UC.Icd.ADO;
 using HIS.UC.SecondaryIcd.ADO;
 using HIS.Desktop.LocalStorage.HisConfig;
+using System.Text;
 
 namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
 {
@@ -677,6 +678,52 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
                         return;
                         
                     }
+                }
+
+                string codeIcd = "";
+                string nameIcd = "";
+                var icdValue = (IcdInputADO)this.icdProcessor.GetValue(this.ucIcd);
+                var icdValueSecond = (SecondaryIcdDataADO)this.subIcdProcessor.GetValue(this.ucSecondaryIcd);
+                var icdYHCT = (IcdInputADO)this.icdProcessorYHCT.GetValue(this.ucIcdYHCT);
+                var icdSecondYHCT = (SecondaryIcdDataADO)subIcdProcessorYHCT.GetValue(this.ucSecondaryIcdYHCT);
+                if (icdValue != null)
+                {
+                    codeIcd = icdValue.ICD_CODE;
+                    nameIcd = icdValue.ICD_NAME;
+                }
+                if (icdValueSecond != null)
+                {
+                    codeIcd += icdValueSecond.ICD_SUB_CODE;
+                    nameIcd += icdValueSecond.ICD_TEXT;
+                }
+                if (!string.IsNullOrEmpty(codeIcd) && codeIcd.Length > 100)
+                {
+                    isValid = false;
+                    XtraMessageBox.Show(string.Format("Mã chẩn đoán phụ nhập quá {0} ký tự", 100));
+                    return;
+                }
+
+                if (!string.IsNullOrEmpty(nameIcd) && Encoding.UTF8.GetByteCount(nameIcd) > 1500)
+                {
+                    isValid = false;
+                    XtraMessageBox.Show(string.Format("Tên chẩn đoán phụ nhập quá {0} ký tự", 1500));
+                    return;
+                }
+
+                string codeIcdYhct = "";
+                if (icdYHCT != null)
+                {
+                    codeIcdYhct = icdYHCT.ICD_CODE;
+                }
+                if (icdSecondYHCT != null)
+                {
+                    codeIcdYhct += icdSecondYHCT.ICD_SUB_CODE;
+                }
+                if (!string.IsNullOrEmpty(codeIcdYhct) && codeIcdYhct.Length > 255)
+                {
+                    isValid = false;
+                    XtraMessageBox.Show(string.Format("Mã chẩn đoán YHCT phụ nhập quá {0} ký tự", 255));
+                    return;
                 }
                 valid = valid && isValid;
 

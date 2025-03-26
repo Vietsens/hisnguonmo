@@ -45,6 +45,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.Save.Create
                 prescriptionSDO.TreatmentId = this.TreatmentId;
                 prescriptionSDO.IsTemporaryPres = (short?)this.IsTemporaryPres;
                 prescriptionSDO.PrescriptionPhaseNum = (short?)this.PrescriptionPhaseNum;
+                prescriptionSDO.HisGfrAlertLogs = AlertLogSDOs;
                 this.ProcessPrescriptionUpdateSDO(prescriptionSDO);
                 this.ProcessPrescriptionUpdateSDOICD(prescriptionSDO);
                 this.ProcessPrescriptionSDOForSereServInKip(prescriptionSDO);
@@ -167,6 +168,11 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.Save.Create
                         {
                             item.SereServParentId = frmAssignPrescription.currentSereServ.ID;
                         }
+
+                        foreach (var item in frmAssignPrescription.mediMatyTypeADOs)
+                        {
+                            item.SereServParentId = frmAssignPrescription.currentSereServ.ID;
+                        }
                     }
 
                     if (frmAssignPrescription.currentSereServInEkip != null)
@@ -182,6 +188,11 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.Save.Create
                         }
 
                         foreach (var item in prescriptionSDO.SerialNumbers)
+                        {
+                            item.SereServParentId = frmAssignPrescription.currentSereServInEkip.ID;
+                        }
+
+                        foreach (var item in frmAssignPrescription.mediMatyTypeADOs)
                         {
                             item.SereServParentId = frmAssignPrescription.currentSereServInEkip.ID;
                         }

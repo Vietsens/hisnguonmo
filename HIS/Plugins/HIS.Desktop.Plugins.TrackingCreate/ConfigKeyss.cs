@@ -31,6 +31,9 @@ namespace HIS.Desktop.Plugins.TrackingCreate
         public const string DBCODE__HIS_DESKTOP_PLUGINS_TRACKING_IS_PRINT_MERGE = "HIS.Desktop.Plugins.EmrDocument.IsPrintMerge";
         public const string DBCODE__HIS_DESKTOP_PLUGINS_TRACKING_SHOWLASTEST_DHST =  "HIS.Desktop.Plugins.Tracking.ShowLastestDhst";
         public const string DBCODE__HIS_DESKTOP_PLUGINS_TRACKING_CREATE_OPTION = "HIS.Desktop.Plugins.TrackingCreate.CreateOption";
+        public const string DBCODE__HIS_DESKTOP_PLUGINS_StartTimeMustBeGreaterThanInstructionTime = "HIS.Desktop.Plugins.StartTimeMustBeGreaterThanInstructionTime";
+        public const string DBCODE__HIS_DESKTOP_PLUGINS_ASSIGN_SERVICE_SIMULTANEITY_OPTION = "MOS.HIS_SERVICE_REQ.ASSIGN_SERVICE_SIMULTANEITY_OPTION";
+        public const string DBCODE__HIS_DESKTOP_PLUGINS_IsCheckSubIcdExceedLimit = "HIS.Desktop.Plugins.IsCheckSubIcdExceedLimit";
         public const string DBCODE__HIS_DESKTOP_PLUGINS_TRACKING_CRETATE_UPDATE_TREATMENT_ICD = "HIS.Desktop.Plugins.TrackingCreate.UpdateTreatmentIcd";
         public const string DBCODE__HIS_DESKTOP_PLUGINS_TRACKINGPRINT_USED_DAY_COUNTING_OPTION = "HIS.Desktop.Plugins.TrackingPrint.UsedDayCountingOption";
         public const string DBCODE__HIS_DESKTOP_PLUGINS_TRACKING_CRETATE_IS_MINE_CHECKED_BY_DEFAULT = "HIS.Desktop.Plugins.TrackingCreate.IsMineCheckedByDefault";

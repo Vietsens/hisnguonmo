@@ -102,7 +102,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
         HIS_IMP_MEST_TYPE currentImpMestType = null;
 
         List<MaterialTypeADO> listMaterialType = new List<MaterialTypeADO>();
-        List<MedicineTypeADO> listMedicineType = new List<MedicineTypeADO>();
+        List<MedicineTypeADO> listMedicineType = new List<MedicineTypeADO>();        
 
         VHisServiceADO currrentServiceAdo = null;
         ResultImpMestADO resultADO = null;
@@ -333,7 +333,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
-        
+
         private void CreateThreadLoadData()
         {
             Thread threadLoadMedicineType = new Thread(new ThreadStart(LoadMedicineType));
@@ -341,10 +341,10 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
             Thread threadGetBids = new Thread(new ThreadStart(GetBid));
             Thread threadGetSupplier = new Thread(new ThreadStart(GetSupplier));
             Thread threadGetContract = new Thread(new ThreadStart(GetContract));
-            
+
             try
             {
-                
+
                 threadGetBids.Start();
                 threadGetSupplier.Start();
                 threadGetContract.Start();
@@ -760,7 +760,6 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
         {
             try
             {
-                this.CheckDocumentNumberV2(txtDocumentNumber.Text.Trim(), txtkyHieuHoaDon.Text);
             }
             catch (Exception ex)
             {
@@ -825,7 +824,6 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
         {
             try
             {
-                this.CheckDocumentNumberV2(txtDocumentNumber.Text.Trim(), txtkyHieuHoaDon.Text);
             }
             catch (Exception ex)
             {
@@ -879,7 +877,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                     CommonParam param = new CommonParam();
                     Inventec.Common.Logging.LogSystem.Error("this.currentSupplier.ID_____" + this.currentSupplier.ID);
                     List<V_HIS_BID_1> bid = new List<V_HIS_BID_1>();
-                   
+
                     if (currentSupplier.ID > 0)
                     {
                         bid = listBids.Where(o => o.SUPPLIER_IDS != null && ("," + o.SUPPLIER_IDS + ",").Contains("," + currentSupplier.ID + ",")).ToList();
@@ -890,7 +888,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                         bid = listBids;
                         this.currentSupplier = null;
                     }
-                   
+
                     if (IsShowingApprovalBid)
                     {
                         bid = bid.Where(o => o.IS_ACTIVE == 1 && o.APPROVAL_TIME != null).ToList();
@@ -910,7 +908,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                         materialProcessor.SetEditValueBid(this.ucMedicineTypeTree, null);
                         medicineProcessor.SetEditValueBid(this.ucMedicineTypeTree, null);
                     }
-                 
+
                 }
                 else
                 {
@@ -1987,7 +1985,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                     return;
                 }
                 if (!ShowMessValidPrice()) return;
-                
+
                 if (ShowMessValidDocumentAndDate())
                     return;
 
@@ -2325,7 +2323,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                 {
                     this.currrentServiceAdo.HisMedicine.AMOUNT = this.currrentServiceAdo.IMP_AMOUNT;
 
-                    
+
                     this.currrentServiceAdo.HisMedicine.IMP_PRICE = this.currrentServiceAdo.IMP_PRICE;
                     this.currrentServiceAdo.HisMedicine.IMP_VAT_RATIO = this.currrentServiceAdo.IMP_VAT_RATIO;
                     this.currrentServiceAdo.HisMedicine.TAX_RATIO = this.currrentServiceAdo.TAX_RATIO;
@@ -2374,17 +2372,17 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                     //check warning
                     // neu canh bao ma chon co -> thi them du lieu duoc nhap
                     // neu chon khong thi map du lieu lo thuoc/vat tu lay ra duoc
-                        
+
                     this.currrentServiceAdo.HisMedicine.MEDICINE_REGISTER_NUMBER = this.currrentServiceAdo.REGISTER_NUMBER;
                     this.currrentServiceAdo.HisMedicine.HEIN_SERVICE_BHYT_NAME = this.currrentServiceAdo.heinServiceBhytName;
                     this.currrentServiceAdo.HisMedicine.PACKING_TYPE_NAME = this.currrentServiceAdo.packingTypeName;
-                    
+
                     this.currrentServiceAdo.HisMedicine.NATIONAL_NAME = this.currrentServiceAdo.NATIONAL_NAME;
                     this.currrentServiceAdo.HisMedicine.CONCENTRA = this.currrentServiceAdo.CONCENTRA;
-                    
+
                     this.currrentServiceAdo.HisMedicine.MANUFACTURER_ID = this.currrentServiceAdo.MANUFACTURER_ID;
-                    
-                    
+
+
                     this.currrentServiceAdo.HisMedicine.ACTIVE_INGR_BHYT_NAME = this.currrentServiceAdo.activeIngrBhytName;
                     this.currrentServiceAdo.HisMedicine.DOSAGE_FORM = this.currrentServiceAdo.dosageForm;
                     this.currrentServiceAdo.HisMedicine.MEDICINE_USE_FORM_ID = this.currrentServiceAdo.medicineUseFormId;
@@ -2516,7 +2514,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                         this.currrentServiceAdo.HisMaterial.TDL_BID_NUMBER = this.currrentServiceAdo.TDL_BID_NUMBER;
                     }
 
-                    this.currrentServiceAdo.TT_THAU = this.currrentServiceAdo.HisMaterial.TT_THAU = this.currrentServiceAdo.HisMaterial.INFORMATION_BID == 3 ? string.Format("{0}{1}", !string.IsNullOrEmpty(this.currrentServiceAdo.TDL_BID_EXTRA_CODE) ? this.currrentServiceAdo.TDL_BID_EXTRA_CODE +";" : null, !string.IsNullOrEmpty(this.currrentServiceAdo.TDL_BID_YEAR) ? this.currrentServiceAdo.TDL_BID_YEAR : null) : this.currrentServiceAdo.HisMaterial.INFORMATION_BID == 4 ? string.Format("{0}{1}{2}", !string.IsNullOrEmpty(this.currrentServiceAdo.TDL_BID_EXTRA_CODE) ? this.currrentServiceAdo.TDL_BID_EXTRA_CODE + ";" : null, !string.IsNullOrEmpty(this.currrentServiceAdo.TDL_BID_PACKAGE_CODE) ? this.currrentServiceAdo.TDL_BID_PACKAGE_CODE + ";" : null, !string.IsNullOrEmpty(this.currrentServiceAdo.TDL_BID_YEAR) ? this.currrentServiceAdo.TDL_BID_YEAR : null) : string.Format("{0}{1}{2}{3}", !string.IsNullOrEmpty(this.currrentServiceAdo.TDL_BID_EXTRA_CODE) ? this.currrentServiceAdo.TDL_BID_EXTRA_CODE + ";" : null, !string.IsNullOrEmpty(this.currrentServiceAdo.TDL_BID_PACKAGE_CODE) ? this.currrentServiceAdo.TDL_BID_PACKAGE_CODE + ";" : null,!string.IsNullOrEmpty(this.currrentServiceAdo.TDL_BID_GROUP_CODE) ? this.currrentServiceAdo.TDL_BID_GROUP_CODE + ";" : null,!string.IsNullOrEmpty(this.currrentServiceAdo.TDL_BID_YEAR) ? this.currrentServiceAdo.TDL_BID_YEAR : null);
+                    this.currrentServiceAdo.TT_THAU = this.currrentServiceAdo.HisMaterial.TT_THAU = this.currrentServiceAdo.HisMaterial.INFORMATION_BID == 3 ? string.Format("{0}{1}", !string.IsNullOrEmpty(this.currrentServiceAdo.TDL_BID_EXTRA_CODE) ? this.currrentServiceAdo.TDL_BID_EXTRA_CODE + ";" : null, !string.IsNullOrEmpty(this.currrentServiceAdo.TDL_BID_YEAR) ? this.currrentServiceAdo.TDL_BID_YEAR : null) : this.currrentServiceAdo.HisMaterial.INFORMATION_BID == 4 ? string.Format("{0}{1}{2}", !string.IsNullOrEmpty(this.currrentServiceAdo.TDL_BID_EXTRA_CODE) ? this.currrentServiceAdo.TDL_BID_EXTRA_CODE + ";" : null, !string.IsNullOrEmpty(this.currrentServiceAdo.TDL_BID_PACKAGE_CODE) ? this.currrentServiceAdo.TDL_BID_PACKAGE_CODE + ";" : null, !string.IsNullOrEmpty(this.currrentServiceAdo.TDL_BID_YEAR) ? this.currrentServiceAdo.TDL_BID_YEAR : null) : string.Format("{0}{1}{2}{3}", !string.IsNullOrEmpty(this.currrentServiceAdo.TDL_BID_EXTRA_CODE) ? this.currrentServiceAdo.TDL_BID_EXTRA_CODE + ";" : null, !string.IsNullOrEmpty(this.currrentServiceAdo.TDL_BID_PACKAGE_CODE) ? this.currrentServiceAdo.TDL_BID_PACKAGE_CODE + ";" : null, !string.IsNullOrEmpty(this.currrentServiceAdo.TDL_BID_GROUP_CODE) ? this.currrentServiceAdo.TDL_BID_GROUP_CODE + ";" : null, !string.IsNullOrEmpty(this.currrentServiceAdo.TDL_BID_YEAR) ? this.currrentServiceAdo.TDL_BID_YEAR : null);
 
                     this.currrentServiceAdo.BidId = materialProcessor.GetBid(this.ucMaterialTypeTree);
                     if (this.currentBid != null && this.currrentServiceAdo.BidId == null)
@@ -2545,7 +2543,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                     this.currrentServiceAdo.HisMaterial.MATERIAL_REGISTER_NUMBER = this.currrentServiceAdo.REGISTER_NUMBER;
                     this.currrentServiceAdo.HisMaterial.NATIONAL_NAME = this.currrentServiceAdo.NATIONAL_NAME;
                     this.currrentServiceAdo.HisMaterial.CONCENTRA = this.currrentServiceAdo.CONCENTRA;
-                    
+
                     this.currrentServiceAdo.HisMaterial.MANUFACTURER_ID = this.currrentServiceAdo.MANUFACTURER_ID;
 
                     this.currrentServiceAdo.HisMaterial.BID_MATERIAL_TYPE_CODE = this.currrentServiceAdo.packingTypeName;
@@ -2728,7 +2726,8 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
             try
             {
                 positionHandleControl = -1;
-                if (!btnSave.Enabled || !dxValidationProvider1.Validate() || this.listServiceADO.Count <= 0)
+                if (!btnSave.Enabled || !dxValidationProvider1.Validate() || this.listServiceADO.Count <= 0 ||
+                !this.CheckDocumentNumberV2(txtDocumentNumber.Text.Trim(), txtkyHieuHoaDon.Text))
                     return;
 
                 //Check thieu chinh sách giá
@@ -3517,7 +3516,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                     {
                         this.currrentServiceAdo.HisMaterialPatys = new List<HIS_MATERIAL_PATY>();
                     }
-                     
+
                     List<string> mes2 = new List<string>();
                     foreach (var paty in this.currrentServiceAdo.VHisServicePatys)
                     {
@@ -5265,6 +5264,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
+                Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
 
@@ -5448,7 +5448,8 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                         {
                             data.HisMaterial.PACKAGE_NUMBER = data.PACKAGE_NUMBER;
                         }
-                    }else if(e.Column.FieldName == "TT_THAU")
+                    }
+                    else if (e.Column.FieldName == "TT_THAU")
                     {
                         if (data.IsMedicine)
                         {
@@ -5458,7 +5459,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                         {
                             data.HisMaterial.TT_THAU = data.TT_THAU;
                         }
-                    }    
+                    }
                 }
             }
             catch (Exception ex)
@@ -5747,12 +5748,12 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                         HisBidMedicineTypeViewFilter mediFilter = new HisBidMedicineTypeViewFilter();
                         mediFilter.BID_ID = this.currentBid.ID;
                         mediFilter.IS_ACTIVE = 1;
-                         listBidMedicine = new Inventec.Common.Adapter.BackendAdapter(new CommonParam()).Get<List<V_HIS_BID_MEDICINE_TYPE>>(HisRequestUriStore.HIS_BID_MEDICINE_TYPE_GETVIEW, ApiConsumers.MosConsumer, mediFilter, null);
+                        listBidMedicine = new Inventec.Common.Adapter.BackendAdapter(new CommonParam()).Get<List<V_HIS_BID_MEDICINE_TYPE>>(HisRequestUriStore.HIS_BID_MEDICINE_TYPE_GETVIEW, ApiConsumers.MosConsumer, mediFilter, null);
 
                         HisBidMaterialTypeViewFilter mateFilter = new HisBidMaterialTypeViewFilter();
                         mateFilter.BID_ID = this.currentBid.ID;
                         mateFilter.IS_ACTIVE = 1;
-                         listBidMaterial = new Inventec.Common.Adapter.BackendAdapter(new CommonParam()).Get<List<V_HIS_BID_MATERIAL_TYPE>>(HisRequestUriStore.HIS_BID_MATERIAL_TYPE_GETVIEW, ApiConsumers.MosConsumer, mateFilter, null);
+                        listBidMaterial = new Inventec.Common.Adapter.BackendAdapter(new CommonParam()).Get<List<V_HIS_BID_MATERIAL_TYPE>>(HisRequestUriStore.HIS_BID_MATERIAL_TYPE_GETVIEW, ApiConsumers.MosConsumer, mateFilter, null);
 
                         this.currentSupplierForEdit = supplier;
                         //if(cboBi)
@@ -5769,7 +5770,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                             SetDataSourceGridControlMediMateMedicine();
                         }
 
-                        if (listBidMaterial != null && listBidMaterial.Count > 0) 
+                        if (listBidMaterial != null && listBidMaterial.Count > 0)
                         {
                             dicBidMaterial.Clear();
                             List<V_HIS_BID_MATERIAL_TYPE> lstBidMate = listBidMaterial.Where(o => o.BID_ID == currentBid.ID).ToList();
@@ -5777,11 +5778,11 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
 
                             foreach (var item in lstBidMate)
                             {
-                                dicBidMaterial[Base.StaticMethod.GetTypeKey(item.MATERIAL_TYPE_ID ??0 , item.BID_GROUP_CODE)] = item;
+                                dicBidMaterial[Base.StaticMethod.GetTypeKey(item.MATERIAL_TYPE_ID ?? 0, item.BID_GROUP_CODE)] = item;
                             }
                             SetDataSourceGridControlMediMateMaterial();
                         }
-                        return;  
+                        return;
 
                     }
                     Supplier_RowClick(supplier);

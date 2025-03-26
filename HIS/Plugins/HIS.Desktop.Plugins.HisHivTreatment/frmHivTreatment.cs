@@ -836,7 +836,35 @@ namespace HIS.Desktop.Plugins.HisHivTreatment
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
+        private void InitComboGroupPatient()
+        {
+            List<HIS_HIV_GROUP_PATIENT> result = new List<HIS_HIV_GROUP_PATIENT>();
+            try
+            {
+                CommonParam param = new CommonParam();
+                MOS.Filter.HisHivGroupPatientFilter filter = new MOS.Filter.HisHivGroupPatientFilter()
+                {
+                    IS_ACTIVE = 1
+                };
+                var rs = new BackendAdapter(param).Get<List<HIS_HIV_GROUP_PATIENT>>("api/HisHivGroupPatient/Get", ApiConsumers.MosConsumer, filter, param);
+                if(rs != null)
+                {
+                    result = rs;
+                }
+                List<ColumnInfo> columnInfos = new List<ColumnInfo>();
+                columnInfos.Add(new ColumnInfo("HIV_GROUP_PATIENT_CODE", "", 30, 1));
+                columnInfos.Add(new ColumnInfo("HIV_GROUP_PATIENT_NAME", "", 270, 2));
+                ControlEditorADO controlEditorADO = new ControlEditorADO("HIV_GROUP_PATIENT_NAME", "HIV_GROUP_PATIENT_CODE", columnInfos, false, 300);
+                controlEditorADO.ImmediatePopup = true;
+                ControlEditorLoader.Load(cboGroupPatient, result, controlEditorADO);
+            }
+            catch (Exception ex)
+            {
 
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+            
+        }
         public void FillDataToControlsForm()
         {
             try
@@ -853,7 +881,8 @@ namespace HIS.Desktop.Plugins.HisHivTreatment
                 FillDataToGridLookupEdit(this.cboTestPcrResult, comboAdo.listTestPcrResult());
                 FillDataToGridLookupEdit(this.cboHivTreatment, comboAdo.listHivTreatment());
                 FillDataToGridLookupEdit(this.cboRegimenHivReason, comboAdo.listRegimenHivReason());
-                FillDataToGridLookupEdit(this.cboGroupPatient, comboAdo.listGroupPatient());
+                InitComboGroupPatient();
+                //FillDataToGridLookupEdit(this.cboGroupPatient, GetDataGroup());
                 FillDataToGridLookupEdit(this.cboClinicalStage, comboAdo.listClinicalStage());
                 FillDataToGridLookupEdit(this.cboTuberculosisTreatmentResult, comboAdo.listTuberculosisTreatmentResult());
                 FillDataToGridLookupEdit(this.cboTuberculosisScreening, comboAdo.listTuberculosisScreening());
@@ -1222,7 +1251,7 @@ namespace HIS.Desktop.Plugins.HisHivTreatment
                     hivTreatmentDTO.REGIMEN_HIV_REASON = null;
 
                 if (cboGroupPatient.EditValue != null)
-                    hivTreatmentDTO.GROUP_PATIENT = Inventec.Common.TypeConvert.Parse.ToInt16(cboGroupPatient.EditValue.ToString());
+                    hivTreatmentDTO.GROUP_PATIENT = cboGroupPatient.EditValue.ToString();
                 else
                     hivTreatmentDTO.GROUP_PATIENT = null;
 

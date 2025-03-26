@@ -41,6 +41,7 @@ namespace MPS.Processor.Mps000011.PDO
 
         public HIS_SERVICE_REQ _ServiceReq { get; set; }
         public HIS_DHST _Dhst { get; set; }
+        public HIS_TREATMENT_EXT _TreatmentExt { get; set; }
         public Mps000011PDO() { }
 
         public Mps000011PDO(

@@ -34,6 +34,7 @@ namespace MPS.Processor.Mps000047.PDO
         public List<V_HIS_TREATMENT_BED_ROOM> vHisTreatmentBedRooms { get; set; }
         public List<V_HIS_BED_LOG> _listBedLog { get; set; }
         public long keyColumnSize { get; set; }
+        public long TimeFilterOption { get; set; }
 
         public Mps000047PDO() { }
 
@@ -86,7 +87,33 @@ namespace MPS.Processor.Mps000047.PDO
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
-
+        public Mps000047PDO(
+         List<Mps000047ADO> medicineExpmestTypeADOs,
+         V_HIS_EXP_MEST aggrExpMest,
+          List<HIS_EXP_MEST> _expMests_Print,
+         HIS_DEPARTMENT department,
+          List<V_HIS_TREATMENT_BED_ROOM> vHisTreatmentBedRooms,
+           List<V_HIS_BED_LOG> listBedLog,
+           long _keyColumnSize,
+           long _TimeFilterOption
+          )
+        {
+            try
+            {
+                this.MedicineExpmestTypeADOs = medicineExpmestTypeADOs;
+                this.AggrExpMest = aggrExpMest;
+                this._ExpMests_Print = _expMests_Print;
+                this.Department = department;
+                this.vHisTreatmentBedRooms = vHisTreatmentBedRooms;
+                this._listBedLog = listBedLog;
+                keyColumnSize = _keyColumnSize;
+                this.TimeFilterOption = _TimeFilterOption;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
     }
 
     public class Mps000047ADO
@@ -123,7 +150,10 @@ namespace MPS.Processor.Mps000047.PDO
         public V_HIS_PATIENT Patient { get; set; }
         public long TreatmentId { get; set; }
         public string TREATMENT_CODE { get; set; }
-
+        public string CONCENTRA { get; set; }
+        public string MEDICINE_USE_FORM_NAME { get; set; }
+        public long REQ_ROOM_ID { get; set; }
+        public string REQ_ROOM_NAME { get; set; }
 
     }
 
@@ -331,11 +361,214 @@ namespace MPS.Processor.Mps000047.PDO
         public string MEDICINE_TYPE_NAME99 { get; set; }
         public string MEDICINE_TYPE_NAME100 { get; set; }
 
+        public string CONCENTRA1 { get; set; }
+        public string CONCENTRA2 { get; set; }
+        public string CONCENTRA3 { get; set; }
+        public string CONCENTRA4 { get; set; }
+        public string CONCENTRA5 { get; set; }
+        public string CONCENTRA6 { get; set; }
+        public string CONCENTRA7 { get; set; }
+        public string CONCENTRA8 { get; set; }
+        public string CONCENTRA9 { get; set; }
+        public string CONCENTRA10 { get; set; }
+        public string CONCENTRA11 { get; set; }
+        public string CONCENTRA12 { get; set; }
+        public string CONCENTRA13 { get; set; }
+        public string CONCENTRA14 { get; set; }
+        public string CONCENTRA15 { get; set; }
+        public string CONCENTRA16 { get; set; }
+        public string CONCENTRA17 { get; set; }
+        public string CONCENTRA18 { get; set; }
+        public string CONCENTRA19 { get; set; }
+        public string CONCENTRA20 { get; set; }
+        public string CONCENTRA21 { get; set; }
+        public string CONCENTRA22 { get; set; }
+        public string CONCENTRA23 { get; set; }
+        public string CONCENTRA24 { get; set; }
+        public string CONCENTRA25 { get; set; }
+        public string CONCENTRA26 { get; set; }
+        public string CONCENTRA27 { get; set; }
+        public string CONCENTRA28 { get; set; }
+        public string CONCENTRA29 { get; set; }
+        public string CONCENTRA30 { get; set; }
+        public string CONCENTRA31 { get; set; }
+        public string CONCENTRA32 { get; set; }
+        public string CONCENTRA33 { get; set; }
+        public string CONCENTRA34 { get; set; }
+        public string CONCENTRA35 { get; set; }
+        public string CONCENTRA36 { get; set; }
+        public string CONCENTRA37 { get; set; }
+        public string CONCENTRA38 { get; set; }
+        public string CONCENTRA39 { get; set; }
+        public string CONCENTRA40 { get; set; }
+        public string CONCENTRA41 { get; set; }
+        public string CONCENTRA42 { get; set; }
+        public string CONCENTRA43 { get; set; }
+        public string CONCENTRA44 { get; set; }
+        public string CONCENTRA45 { get; set; }
+        public string CONCENTRA46 { get; set; }
+        public string CONCENTRA47 { get; set; }
+        public string CONCENTRA48 { get; set; }
+        public string CONCENTRA49 { get; set; }
+        public string CONCENTRA50 { get; set; }
+        public string CONCENTRA51 { get; set; }
+        public string CONCENTRA52 { get; set; }
+        public string CONCENTRA53 { get; set; }
+        public string CONCENTRA54 { get; set; }
+        public string CONCENTRA55 { get; set; }
+        public string CONCENTRA56 { get; set; }
+        public string CONCENTRA57 { get; set; }
+        public string CONCENTRA58 { get; set; }
+        public string CONCENTRA59 { get; set; }
+        public string CONCENTRA60 { get; set; }
+        public string CONCENTRA61 { get; set; }
+        public string CONCENTRA62 { get; set; }
+        public string CONCENTRA63 { get; set; }
+        public string CONCENTRA64 { get; set; }
+        public string CONCENTRA65 { get; set; }
+        public string CONCENTRA66 { get; set; }
+        public string CONCENTRA67 { get; set; }
+        public string CONCENTRA68 { get; set; }
+        public string CONCENTRA69 { get; set; }
+        public string CONCENTRA70 { get; set; }
+        public string CONCENTRA71 { get; set; }
+        public string CONCENTRA72 { get; set; }
+        public string CONCENTRA73 { get; set; }
+        public string CONCENTRA74 { get; set; }
+        public string CONCENTRA75 { get; set; }
+        public string CONCENTRA76 { get; set; }
+        public string CONCENTRA77 { get; set; }
+        public string CONCENTRA78 { get; set; }
+        public string CONCENTRA79 { get; set; }
+        public string CONCENTRA80 { get; set; }
+        public string CONCENTRA81 { get; set; }
+        public string CONCENTRA82 { get; set; }
+        public string CONCENTRA83 { get; set; }
+        public string CONCENTRA84 { get; set; }
+        public string CONCENTRA85 { get; set; }
+        public string CONCENTRA86 { get; set; }
+        public string CONCENTRA87 { get; set; }
+        public string CONCENTRA88 { get; set; }
+        public string CONCENTRA89 { get; set; }
+        public string CONCENTRA90 { get; set; }
+        public string CONCENTRA91 { get; set; }
+        public string CONCENTRA92 { get; set; }
+        public string CONCENTRA93 { get; set; }
+        public string CONCENTRA94 { get; set; }
+        public string CONCENTRA95 { get; set; }
+        public string CONCENTRA96 { get; set; }
+        public string CONCENTRA97 { get; set; }
+        public string CONCENTRA98 { get; set; }
+        public string CONCENTRA99 { get; set; }
+        public string CONCENTRA100 { get; set; }
+
+        public string MEDICINE_USE_FORM_NAME1 { get; set; }
+        public string MEDICINE_USE_FORM_NAME2 { get; set; }
+        public string MEDICINE_USE_FORM_NAME3 { get; set; }
+        public string MEDICINE_USE_FORM_NAME4 { get; set; }
+        public string MEDICINE_USE_FORM_NAME5 { get; set; }
+        public string MEDICINE_USE_FORM_NAME6 { get; set; }
+        public string MEDICINE_USE_FORM_NAME7 { get; set; }
+        public string MEDICINE_USE_FORM_NAME8 { get; set; }
+        public string MEDICINE_USE_FORM_NAME9 { get; set; }
+        public string MEDICINE_USE_FORM_NAME10 { get; set; }
+        public string MEDICINE_USE_FORM_NAME11 { get; set; }
+        public string MEDICINE_USE_FORM_NAME12 { get; set; }
+        public string MEDICINE_USE_FORM_NAME13 { get; set; }
+        public string MEDICINE_USE_FORM_NAME14 { get; set; }
+        public string MEDICINE_USE_FORM_NAME15 { get; set; }
+        public string MEDICINE_USE_FORM_NAME16 { get; set; }
+        public string MEDICINE_USE_FORM_NAME17 { get; set; }
+        public string MEDICINE_USE_FORM_NAME18 { get; set; }
+        public string MEDICINE_USE_FORM_NAME19 { get; set; }
+        public string MEDICINE_USE_FORM_NAME20 { get; set; }
+        public string MEDICINE_USE_FORM_NAME21 { get; set; }
+        public string MEDICINE_USE_FORM_NAME22 { get; set; }
+        public string MEDICINE_USE_FORM_NAME23 { get; set; }
+        public string MEDICINE_USE_FORM_NAME24 { get; set; }
+        public string MEDICINE_USE_FORM_NAME25 { get; set; }
+        public string MEDICINE_USE_FORM_NAME26 { get; set; }
+        public string MEDICINE_USE_FORM_NAME27 { get; set; }
+        public string MEDICINE_USE_FORM_NAME28 { get; set; }
+        public string MEDICINE_USE_FORM_NAME29 { get; set; }
+        public string MEDICINE_USE_FORM_NAME30 { get; set; }
+        public string MEDICINE_USE_FORM_NAME31 { get; set; }
+        public string MEDICINE_USE_FORM_NAME32 { get; set; }
+        public string MEDICINE_USE_FORM_NAME33 { get; set; }
+        public string MEDICINE_USE_FORM_NAME34 { get; set; }
+        public string MEDICINE_USE_FORM_NAME35 { get; set; }
+        public string MEDICINE_USE_FORM_NAME36 { get; set; }
+        public string MEDICINE_USE_FORM_NAME37 { get; set; }
+        public string MEDICINE_USE_FORM_NAME38 { get; set; }
+        public string MEDICINE_USE_FORM_NAME39 { get; set; }
+        public string MEDICINE_USE_FORM_NAME40 { get; set; }
+        public string MEDICINE_USE_FORM_NAME41 { get; set; }
+        public string MEDICINE_USE_FORM_NAME42 { get; set; }
+        public string MEDICINE_USE_FORM_NAME43 { get; set; }
+        public string MEDICINE_USE_FORM_NAME44 { get; set; }
+        public string MEDICINE_USE_FORM_NAME45 { get; set; }
+        public string MEDICINE_USE_FORM_NAME46 { get; set; }
+        public string MEDICINE_USE_FORM_NAME47 { get; set; }
+        public string MEDICINE_USE_FORM_NAME48 { get; set; }
+        public string MEDICINE_USE_FORM_NAME49 { get; set; }
+        public string MEDICINE_USE_FORM_NAME50 { get; set; }
+        public string MEDICINE_USE_FORM_NAME51 { get; set; }
+        public string MEDICINE_USE_FORM_NAME52 { get; set; }
+        public string MEDICINE_USE_FORM_NAME53 { get; set; }
+        public string MEDICINE_USE_FORM_NAME54 { get; set; }
+        public string MEDICINE_USE_FORM_NAME55 { get; set; }
+        public string MEDICINE_USE_FORM_NAME56 { get; set; }
+        public string MEDICINE_USE_FORM_NAME57 { get; set; }
+        public string MEDICINE_USE_FORM_NAME58 { get; set; }
+        public string MEDICINE_USE_FORM_NAME59 { get; set; }
+        public string MEDICINE_USE_FORM_NAME60 { get; set; }
+        public string MEDICINE_USE_FORM_NAME61 { get; set; }
+        public string MEDICINE_USE_FORM_NAME62 { get; set; }
+        public string MEDICINE_USE_FORM_NAME63 { get; set; }
+        public string MEDICINE_USE_FORM_NAME64 { get; set; }
+        public string MEDICINE_USE_FORM_NAME65 { get; set; }
+        public string MEDICINE_USE_FORM_NAME66 { get; set; }
+        public string MEDICINE_USE_FORM_NAME67 { get; set; }
+        public string MEDICINE_USE_FORM_NAME68 { get; set; }
+        public string MEDICINE_USE_FORM_NAME69 { get; set; }
+        public string MEDICINE_USE_FORM_NAME70 { get; set; }
+        public string MEDICINE_USE_FORM_NAME71 { get; set; }
+        public string MEDICINE_USE_FORM_NAME72 { get; set; }
+        public string MEDICINE_USE_FORM_NAME73 { get; set; }
+        public string MEDICINE_USE_FORM_NAME74 { get; set; }
+        public string MEDICINE_USE_FORM_NAME75 { get; set; }
+        public string MEDICINE_USE_FORM_NAME76 { get; set; }
+        public string MEDICINE_USE_FORM_NAME77 { get; set; }
+        public string MEDICINE_USE_FORM_NAME78 { get; set; }
+        public string MEDICINE_USE_FORM_NAME79 { get; set; }
+        public string MEDICINE_USE_FORM_NAME80 { get; set; }
+        public string MEDICINE_USE_FORM_NAME81 { get; set; }
+        public string MEDICINE_USE_FORM_NAME82 { get; set; }
+        public string MEDICINE_USE_FORM_NAME83 { get; set; }
+        public string MEDICINE_USE_FORM_NAME84 { get; set; }
+        public string MEDICINE_USE_FORM_NAME85 { get; set; }
+        public string MEDICINE_USE_FORM_NAME86 { get; set; }
+        public string MEDICINE_USE_FORM_NAME87 { get; set; }
+        public string MEDICINE_USE_FORM_NAME88 { get; set; }
+        public string MEDICINE_USE_FORM_NAME89 { get; set; }
+        public string MEDICINE_USE_FORM_NAME90 { get; set; }
+        public string MEDICINE_USE_FORM_NAME91 { get; set; }
+        public string MEDICINE_USE_FORM_NAME92 { get; set; }
+        public string MEDICINE_USE_FORM_NAME93 { get; set; }
+        public string MEDICINE_USE_FORM_NAME94 { get; set; }
+        public string MEDICINE_USE_FORM_NAME95 { get; set; }
+        public string MEDICINE_USE_FORM_NAME96 { get; set; }
+        public string MEDICINE_USE_FORM_NAME97 { get; set; }
+        public string MEDICINE_USE_FORM_NAME98 { get; set; }
+        public string MEDICINE_USE_FORM_NAME99 { get; set; }
+        public string MEDICINE_USE_FORM_NAME100 { get; set; }
         public List<ExpMestAggregatePrintADO> ExpMestAggregatePrintADOs { get; set; }
+        public List<ExpMestAggregatePrintADO> ExpMestAggregateReqRoomPrintADOs { get; set; }
     }
 
     public class ExpMestAggregatePrintADO
     {
+        public string REQ_ROOM_NAME { get; set; }
         public long PATIENT_ID { get; set; }
         public string VIR_PATIENT_NAME { get; set; }
         public string PATIENT_CODE { get; set; }

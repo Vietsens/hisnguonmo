@@ -91,6 +91,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.Edit
         protected bool IsMultiDateState { get; set; }
         protected List<long> IntructionTimeSelecteds { get; set; }
         protected string Tutorial { get; set; }
+        protected string HtuText { get; set; }
         protected string AtcCodes { get; set; }
         protected string AtcGroupCodes { get; set; }
         protected short DoNotRequiredUseForm { get; set; }
@@ -136,6 +137,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.Edit
                 this.IntructionTimeSelecteds = frmAssignPrescription.intructionTimeSelecteds;
             }
             this.Tutorial = frmAssignPrescription.txtHuongDan.Text.Trim();
+            this.HtuText = frmAssignPrescription.memHtu.Text.Trim();
             this.DataRow = dataRow;
             this.LstExpMestMedicine = frmAssignPrescription.LstExpMestMedicine;
             this.AtcCodes = frmAssignPrescription.currentMedicineTypeADOForEdit.ATC_CODES;
@@ -175,6 +177,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.Edit
                 medicineTypeSDO.TUTORIAL = this.Tutorial;
                 medicineTypeSDO.ATC_CODES = this.AtcCodes;
                 medicineTypeSDO.ATC_GROUP_CODES = this.AtcGroupCodes;
+                medicineTypeSDO.HTU_TEXT = this.HtuText;
             }
         }
 

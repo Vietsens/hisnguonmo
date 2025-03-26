@@ -362,6 +362,7 @@ namespace HIS.Desktop.Plugins.Transaction
                         this.clienttManager = new CPA.WCFClient.CallPatientClient.CallPatientClientManager();
 
                     string gateCode = this.txtGateNumber.Text.Trim().Split(':')[0];
+
                     int[] nums = await this.clienttManager.AsyncRecallNumOrderPlus(int.Parse(gateCode), int.Parse(txtStepNumber.Text));
                     if (nums != null && nums.Length > 0)
                     {
@@ -467,6 +468,7 @@ namespace HIS.Desktop.Plugins.Transaction
             var strCallsplit = callPatientFormat.Split(new string[] { "<#", ";>" }, System.StringSplitOptions.RemoveEmptyEntries);
             if (strCallsplit.ToList().Count > 0)
             {
+                string gateCode = !string.IsNullOrEmpty(this.txtGateNumber.Text) ? this.txtGateNumber.Text.Trim().Split(':')[0] : "";
                 foreach (var word in strCallsplit)
                 {
                     var checkKey = KEY_SINGLE.FirstOrDefault(o => o == word.ToUpper());
@@ -475,7 +477,12 @@ namespace HIS.Desktop.Plugins.Transaction
                         var strWordsplit = word.Split(new string[] { ",", ";", ".", "-", ":", "/" }, System.StringSplitOptions.RemoveEmptyEntries);
                         foreach (var item in strWordsplit)
                         {
-                            Inventec.Speech.SpeechPlayer.SpeakSingle(item.Trim());
+                            if (configKeyCallPatientByCPA == "1")
+                            {
+                                clienttManager.CallTextData(gateCode, item.Trim());
+                            }
+                            else
+                                Inventec.Speech.SpeechPlayer.SpeakSingle(item.Trim());
                         }
                     }
                     else
@@ -483,20 +490,45 @@ namespace HIS.Desktop.Plugins.Transaction
                         switch (word)
                         {
                             case "PATIENT_NAME":
-                                Inventec.Speech.SpeechPlayer.Speak(patientName);
+                                if (configKeyCallPatientByCPA == "1")
+                                {
+                                    clienttManager.CallTextData(gateCode, patientName.Trim());
+                                }
+                                else
+                                    Inventec.Speech.SpeechPlayer.Speak(patientName.Trim());
                                 break;
                             case "ROOM_NAME":
                                 if (!string.IsNullOrEmpty(examRoomName))
-                                    Inventec.Speech.SpeechPlayer.SpeakSingle(examRoomName);
+                                {
+                                    if (configKeyCallPatientByCPA == "1")
+                                    {
+                                        clienttManager.CallTextData(gateCode, examRoomName.Trim());
+                                    }
+                                    else
+                                        Inventec.Speech.SpeechPlayer.SpeakSingle(examRoomName.Trim());
+                                }
                                 break;
                             case "GATE_NUMBER":
-                                Inventec.Speech.SpeechPlayer.SpeakSingle(txtGateNumber.Text);
+                                if (configKeyCallPatientByCPA == "1")
+                                {
+                                    clienttManager.CallTextData(gateCode, txtGateNumber.Text);
+                                }
+                                else
+                                    Inventec.Speech.SpeechPlayer.SpeakSingle(txtGateNumber.Text);
                                 break;
                             case "GATE_NAME":
                                 if (!string.IsNullOrEmpty(txtGateNumber.Text.Trim()))
                                 {
-                                    Inventec.Speech.SpeechPlayer.SpeakSingle("Quầy thu ngân số");
-                                    Inventec.Speech.SpeechPlayer.SpeakSingle(txtGateNumber.Text);
+                                    if (configKeyCallPatientByCPA == "1")
+                                    {
+                                        clienttManager.CallTextData(gateCode, "Quầy thu ngân số");
+                                        clienttManager.CallTextData(gateCode, txtGateNumber.Text);
+                                    }
+                                    else
+                                    {
+                                        Inventec.Speech.SpeechPlayer.SpeakSingle("Quầy thu ngân số");
+                                        Inventec.Speech.SpeechPlayer.SpeakSingle(txtGateNumber.Text);
+                                    }
                                 }
                                 break;
                             default:

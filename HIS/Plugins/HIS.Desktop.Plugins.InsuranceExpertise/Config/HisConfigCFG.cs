@@ -32,14 +32,14 @@ namespace HIS.Desktop.Plugins.InsuranceExpertise.Config
         private const string MOS_GENERATE_STORE_BORDEREAU_CODE_WHEN_LOCK_HEIN = "MOS.HIS_TREATMENT.GENERATE_STORE_BORDEREAU_CODE_WHEN_LOCK_HEIN";
         private const string MOS_STORE_BORDEREAU_CODE_OPTION = "MOS.HIS_TREATMENT.STORE_BORDEREAU_CODE_OPTION";
         private const string CONFIG_KEY = "MOS.HIS_TREATMENT.AUTO_LOCK_AFTER_HEIN_APPROVAL";
-        public static bool isGenerateStoreBordereauCodeWhenLockHein;
+        public static string isGenerateStoreBordereauCodeWhenLockHein;
         public static string OptionStoreBordereauCode;
         internal static void LoadConfig()
         {
 
             try
             {
-                isGenerateStoreBordereauCodeWhenLockHein = GetValue(MOS_GENERATE_STORE_BORDEREAU_CODE_WHEN_LOCK_HEIN) == "1";
+                isGenerateStoreBordereauCodeWhenLockHein = GetValue(MOS_GENERATE_STORE_BORDEREAU_CODE_WHEN_LOCK_HEIN);
                 OptionStoreBordereauCode = GetValue(MOS_STORE_BORDEREAU_CODE_OPTION);
                 AutoLockAfterApprovalBHYTCFG.IsAutoLockAfterApprovalBHYT = GetValue(CONFIG_KEY) == "1";
             }

@@ -16,11 +16,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 using DevExpress.XtraEditors;
-using DevExpress.XtraLayout.Utils;
 using DevExpress.XtraRichEdit;
 using DevExpress.XtraRichEdit.API.Native;
-using EMR.EFMODEL.DataModels;
-using EMR.Filter;
 using EMR.SDO;
 using HIS.Desktop.ApiConsumer;
 using HIS.Desktop.Controls.Session;
@@ -30,7 +27,6 @@ using HIS.Desktop.LocalStorage.LocalData;
 using HIS.Desktop.Print;
 using HIS.Desktop.Utility;
 using Inventec.Common.Adapter;
-using Inventec.Common.RichEditor.DAL;
 using Inventec.Common.SignLibrary;
 using Inventec.Common.SignLibrary.ADO;
 using Inventec.Core;
@@ -42,14 +38,11 @@ using MOS.SDO;
 using MPS.ProcessorBase.EmrBusiness;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
 using System.Drawing;
-using System.Drawing.Drawing2D;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -66,10 +59,8 @@ namespace HIS.Desktop.Plugins.ServiceReqResultView
         MOS.EFMODEL.DataModels.HIS_SERVICE_REQ currentServiceReq;
         Dictionary<string, object> dicParam;
         Dictionary<string, Image> dicImage;
-        //Common.DelegateRefresh RefreshData;
         List<string> keyPrint = new List<string>() { "<#CONCLUDE_PRINT;>", "<#NOTE_PRINT;>", "<#DESCRIPTION_PRINT;>", "<#CURRENT_USERNAME_PRINT;>" };
         private string UserName = Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetUserName();
-        //internal int ActionType = 0;
 
         const string license_code = "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";
 
@@ -85,7 +76,6 @@ namespace HIS.Desktop.Plugins.ServiceReqResultView
         List<HIS.Desktop.Library.CacheClient.ControlStateRDO> currentControlStateRDO;
         const string moduleLink = "HIS.Desktop.Plugins.ServiceReqResultView";
         bool isContineuCheckbox = false;
-
         Task taskForm_Load = null;
         bool isLoadingForm = false;
 
@@ -138,15 +128,14 @@ namespace HIS.Desktop.Plugins.ServiceReqResultView
                 zoomFactor();
                 LoadDataBySereServId();
 
-                Task[] taskall = new Task[4];
+                Task[] taskall = new Task[3];
 
-                taskall[0] = Task.Factory.StartNew(() => { GetServiceReq(); });
-                taskall[1] = Task.Factory.StartNew(() => { LoadTreatmentWithPaty(); });
-                taskall[2] = Task.Factory.StartNew(() => { GetPatientById(); });
-                taskall[3] = Task.Factory.StartNew(() => { KiemTraThongTinPhieuKetQuaDienTu(); });
+                taskall[0] = Task.Factory.StartNew(() => { LoadTreatmentWithPaty(); });
+                taskall[1] = Task.Factory.StartNew(() => { GetPatientById(); });
+                taskall[2] = Task.Factory.StartNew(() => { KiemTraThongTinPhieuKetQuaDienTu(); });
                 Task.WaitAll(taskall);
 
-                Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData("this.listEmrDocument", this.listEmrDocument));
+                //Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData("this.listEmrDocument", this.listEmrDocument));
                 Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData("this.isShowEmrDocument", this.isShowEmrDocument));
                 if (this.isShowEmrDocument)
                 {
@@ -196,15 +185,14 @@ namespace HIS.Desktop.Plugins.ServiceReqResultView
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
+
         private void GeneratePopupMenu()
         {
             try
             {
                 DevExpress.Utils.Menu.DXPopupMenu menu = new DevExpress.Utils.Menu.DXPopupMenu();
-
                 menu.Items.Add(new DevExpress.Utils.Menu.DXMenuItem("Phiếu thủ thuật phẫu thuật", new EventHandler((u, v) => PrintProcess(PrintType.IN_PHIEU_PHAU_THUAT_THU_THUAT))));
                 menu.Items.Add(new DevExpress.Utils.Menu.DXMenuItem("Phiếu in kết quả", new EventHandler(btnPrint_Click)));
-
                 btnDropDownPrint.DropDownControl = menu;
             }
             catch (Exception ex)
@@ -212,6 +200,7 @@ namespace HIS.Desktop.Plugins.ServiceReqResultView
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
+
         private void zoomFactor()
         {
             try
@@ -244,6 +233,7 @@ namespace HIS.Desktop.Plugins.ServiceReqResultView
                 if (rs != null && rs.Count > 0)
                 {
                     sereServ = rs[0];
+                    GetServiceReq();
                     SereServClickRow(rs[0]);
                     Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData("this.sereServ", this.sereServ));
                 }
@@ -257,6 +247,7 @@ namespace HIS.Desktop.Plugins.ServiceReqResultView
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
+
         bool FormatValid(string format)
         {
             string allowableLetters = "\r";
@@ -271,22 +262,21 @@ namespace HIS.Desktop.Plugins.ServiceReqResultView
 
             return check;
         }
+
         bool FormatValid_(string format)
         {
             string allowableLetters = "\n";
 
             bool check = false;
-            //foreach (char c in format)
-            //{
             if (format.Contains(allowableLetters))
                 check = true;
             else
             {
                 check = false;
             }
-            //}
             return check;
         }
+
         private void SereServClickRow(V_HIS_SERE_SERV_4 sereServ)
         {
             try
@@ -304,8 +294,6 @@ namespace HIS.Desktop.Plugins.ServiceReqResultView
 
                         if (sereServExt.CONCLUDE != "" && sereServExt.CONCLUDE != null)
                         {
-
-
                             string tempConclude = "";
                             if (sereServExt.CONCLUDE.Contains("<br/>") || FormatValid(sereServExt.CONCLUDE) || FormatValid_(sereServExt.CONCLUDE))
                             {
@@ -347,7 +335,7 @@ namespace HIS.Desktop.Plugins.ServiceReqResultView
                                 {
                                     tempNote = sereServExt.NOTE.Replace("<br/>", "\r\n");
                                 }
-                                //tempNote = sereServExt.NOTE.Replace("<br/>", "\r\n");
+
                                 txtNote.Text = tempNote;
                             }
                             else
@@ -363,8 +351,8 @@ namespace HIS.Desktop.Plugins.ServiceReqResultView
                         {
                             lblEndTime.Text = Inventec.Common.DateTime.Convert.TimeNumberToTimeStringWithoutSecond(sereServExt.END_TIME ?? 0);
                         }
-                        
-                        lblNumFilm.Text = ""+(sereServExt.NUMBER_OF_FILM??0);
+
+                        lblNumFilm.Text = "" + (sereServExt.NUMBER_OF_FILM ?? 0);
                         var size = BackendDataWorker.Get<HIS_FILM_SIZE>().Where(s => s.ID == sereServExt.FILM_SIZE_ID).FirstOrDefault();
                         lblSizeFilm.Text = size != null ? size.FILM_SIZE_NAME : "";
                         txtDesciptions.Text = sereServExt.DESCRIPTION;
@@ -372,19 +360,41 @@ namespace HIS.Desktop.Plugins.ServiceReqResultView
                         var user_names = sereServExt.SUBCLINICAL_RESULT_USERNAME;
                         if (!string.IsNullOrEmpty(login_names) && !string.IsNullOrEmpty(user_names))
                         {
-                            var loginName = login_names.Split(',').ToList();
-                            var username = user_names.Split(',').ToList();
-                            string ptv = "";
-                            for(int i = 0; i < loginName.Count; i++)
+                            var loginName = login_names.Split(';').ToList();
+                            var username = user_names.Split(';').ToList();
+                            string ktv = "";
+                            for (int i = 0; i < loginName.Count; i++)
                             {
-                                ptv += "" + loginName[i] + "-" + username[i];
-                                ptv += ";";
+                                ktv += "" + loginName[i] + "-" + username[i];
+                                ktv += ";";
                             }
-                            if (ptv.EndsWith(";"))
+                            if (ktv.EndsWith(";"))
                             {
-                                ptv = ptv.TrimEnd(';');
+                                ktv = ktv.TrimEnd(';');
                             }
-                            txtPtv.Text = ptv;
+                            txtktv.Text = ktv;
+                        }
+
+                        if (currentServiceReq != null)
+                        {
+                            var login_extnames = currentServiceReq.EXECUTE_LOGINNAME;
+                            var user_extnames = currentServiceReq.EXECUTE_USERNAME;
+                            if (!string.IsNullOrEmpty(login_extnames) && !string.IsNullOrEmpty(user_extnames))
+                            {
+                                var loginNameExt = login_extnames.Split(';').ToList();
+                                var usernameExt = user_extnames.Split(';').ToList();
+                                string ptv = "";
+                                for (int i = 0; i < loginNameExt.Count; i++)
+                                {
+                                    ptv += "" + loginNameExt[i] + "-" + usernameExt[i];
+                                    ptv += ";";
+                                }
+                                if (ptv.EndsWith(";"))
+                                {
+                                    ptv = ptv.TrimEnd(';');
+                                }
+                                txtPtv.Text = ptv;
+                            }
                         }
                     }
                     else
@@ -425,36 +435,43 @@ namespace HIS.Desktop.Plugins.ServiceReqResultView
                             }
                             else if (address != null && !String.IsNullOrWhiteSpace(address.Api))
                             {
-                                HIS_PATIENT patient = GetPatientById(sereServ.TDL_PATIENT_ID);
-
-                                url = string.Format("http://{0}{1}", address.Address, address.Api);
-
-                                if (address.Api.Trim().StartsWith("http"))
+                                if (!String.IsNullOrWhiteSpace(sereServExt.JSON_FORM_ID) && sereServExt.JSON_FORM_ID.StartsWith("http"))
                                 {
-                                    url = address.Api;
+                                    url = sereServExt.JSON_FORM_ID;
                                 }
-
-                                string idChiDinh = sereServ.ID.ToString();
-                                string idBenhNhan = patient.PATIENT_CODE;
-                                string idDotVaoVien = sereServ.TDL_TREATMENT_CODE;
-                                string PACS_BASE_URI = ConfigSystems.URI_API_PACS;
-
-                                url = url.Replace("<#PACS_BASE_URI;>", PACS_BASE_URI);
-                                var urlSplit = address.Api.Split('=', '&');
-                                var keyUrl = urlSplit.Where(o => o.Contains(":")).ToList();
-                                foreach (var item in keyUrl)
+                                else
                                 {
-                                    if (item.Contains("idChiDinh"))
+                                    HIS_PATIENT patient = GetPatientById(sereServ.TDL_PATIENT_ID);
+
+                                    url = string.Format("http://{0}{1}", address.Address, address.Api);
+
+                                    if (address.Api.Trim().StartsWith("http"))
                                     {
-                                        url = url.Replace(item, idChiDinh);
+                                        url = address.Api;
                                     }
-                                    else if (item.Contains("idBenhNhan"))
+
+                                    string idChiDinh = sereServ.ID.ToString();
+                                    string idBenhNhan = patient.PATIENT_CODE;
+                                    string idDotVaoVien = sereServ.TDL_TREATMENT_CODE;
+                                    string PACS_BASE_URI = ConfigSystems.URI_API_PACS;
+
+                                    url = url.Replace("<#PACS_BASE_URI;>", PACS_BASE_URI);
+                                    var urlSplit = address.Api.Split('=', '&');
+                                    var keyUrl = urlSplit.Where(o => o.Contains(":")).ToList();
+                                    foreach (var item in keyUrl)
                                     {
-                                        url = url.Replace(item, idBenhNhan);
-                                    }
-                                    else if (item.Contains("idDotVaoVien"))
-                                    {
-                                        url = url.Replace(item, idDotVaoVien);
+                                        if (item.Contains("idChiDinh"))
+                                        {
+                                            url = url.Replace(":idChiDinh", idChiDinh);
+                                        }
+                                        else if (item.Contains("idBenhNhan"))
+                                        {
+                                            url = url.Replace(":idBenhNhan", idBenhNhan);
+                                        }
+                                        else if (item.Contains("idDotVaoVien"))
+                                        {
+                                            url = url.Replace(":idDotVaoVien", idDotVaoVien);
+                                        }
                                     }
                                 }
                                 isSense = true;
@@ -462,11 +479,7 @@ namespace HIS.Desktop.Plugins.ServiceReqResultView
                             else if (address != null && String.IsNullOrWhiteSpace(address.Api))
                             {
                                 XtraMessageBox.Show("Chưa cấu hình địa chỉ xem kết quả");
-                                // xtraTabHis.Hide();
                             }
-                            //else if (address == null) { 
-
-                            //}
                         }
                     }
                     catch (Exception ex)
@@ -883,7 +896,6 @@ namespace HIS.Desktop.Plugins.ServiceReqResultView
                 bedRoomFilter.TREATMENT_ID = _treatmentId;
                 var _TreatmentBedRoom = new BackendAdapter(param).Get<List<HIS_TREATMENT_BED_ROOM>>("/api/HisTreatmentBedRoom/Get", ApiConsumers.MosConsumer, bedRoomFilter, param).FirstOrDefault();
 
-
                 if (_TreatmentBedRoom != null && _TreatmentBedRoom.BED_ID > 0)
                 {
                     var bedName = BackendDataWorker.Get<HIS_BED>().FirstOrDefault(p => p.ID == _TreatmentBedRoom.BED_ID);
@@ -1122,16 +1134,6 @@ namespace HIS.Desktop.Plugins.ServiceReqResultView
             }
         }
 
-        private void txtDescription_MouseDown(object sender, MouseEventArgs e)
-        {
-
-        }
-
-        private void txtDescription_KeyDown(object sender, KeyEventArgs e)
-        {
-
-        }
-
         private void BtnEmr_Click(object sender, EventArgs e)
         {
             try
@@ -1357,7 +1359,6 @@ namespace HIS.Desktop.Plugins.ServiceReqResultView
                         catch { }
                     }
 
-
                     libraryProcessor.ShowPopup(OutputFile, inputADO);//truyền vào đường dẫn file cần ký, các định dạng hỗ trợ là: pdf,doc,docx,xls,xlsx,rdlc,...
 
                     System.IO.File.Delete(OutputFile);
@@ -1373,6 +1374,7 @@ namespace HIS.Desktop.Plugins.ServiceReqResultView
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
+
         private void ProcessColumnMaping(HIS_SERE_SERV_TEMP sereServTemp, ref Inventec.Common.SignLibrary.ADO.InputADO emrInputADO)
         {
             try
@@ -2361,36 +2363,43 @@ namespace HIS.Desktop.Plugins.ServiceReqResultView
                                     }
                                 }
 
-                                HIS_PATIENT patient = GetPatientById(sereServ.TDL_PATIENT_ID);
-
-                                url = string.Format("http://{0}{1}", address.Address, address.Api);
-
-                                if (address.Api.Trim().StartsWith("http"))
+                                if (!String.IsNullOrWhiteSpace(sereServExt.JSON_FORM_ID) && sereServExt.JSON_FORM_ID.StartsWith("http"))
                                 {
-                                    url = address.Api;
+                                    url = sereServExt.JSON_FORM_ID;
                                 }
-
-                                string idChiDinh = sereServ.ID.ToString();
-                                string idBenhNhan = patient.PATIENT_CODE;
-                                string idDotVaoVien = sereServ.TDL_TREATMENT_CODE;
-                                string PACS_BASE_URI = ConfigSystems.URI_API_PACS;
-
-                                url = url.Replace("<#PACS_BASE_URI;>", PACS_BASE_URI);
-                                var urlSplit = address.Api.Split('=', '&');
-                                var keyUrl = urlSplit.Where(o => o.Contains(":")).ToList();
-                                foreach (var item in keyUrl)
+                                else
                                 {
-                                    if (item.Contains("idChiDinh"))
+                                    HIS_PATIENT patient = GetPatientById(sereServ.TDL_PATIENT_ID);
+
+                                    url = string.Format("http://{0}{1}", address.Address, address.Api);
+
+                                    if (address.Api.Trim().StartsWith("http"))
                                     {
-                                        url = url.Replace(item, idChiDinh);
+                                        url = address.Api;
                                     }
-                                    else if (item.Contains("idBenhNhan"))
+
+                                    string idChiDinh = sereServ.ID.ToString();
+                                    string idBenhNhan = patient.PATIENT_CODE;
+                                    string idDotVaoVien = sereServ.TDL_TREATMENT_CODE;
+                                    string PACS_BASE_URI = ConfigSystems.URI_API_PACS;
+
+                                    url = url.Replace("<#PACS_BASE_URI;>", PACS_BASE_URI);
+                                    var urlSplit = address.Api.Split('=', '&');
+                                    var keyUrl = urlSplit.Where(o => o.Contains(":")).ToList();
+                                    foreach (var item in keyUrl)
                                     {
-                                        url = url.Replace(item, idBenhNhan);
-                                    }
-                                    else if (item.Contains("idDotVaoVien"))
-                                    {
-                                        url = url.Replace(item, idDotVaoVien);
+                                        if (item.Contains("idChiDinh"))
+                                        {
+                                            url = url.Replace(":idChiDinh", idChiDinh);
+                                        }
+                                        else if (item.Contains("idBenhNhan"))
+                                        {
+                                            url = url.Replace(":idBenhNhan", idBenhNhan);
+                                        }
+                                        else if (item.Contains("idDotVaoVien"))
+                                        {
+                                            url = url.Replace(":idDotVaoVien", idDotVaoVien);
+                                        }
                                     }
                                 }
 
@@ -2422,7 +2431,6 @@ namespace HIS.Desktop.Plugins.ServiceReqResultView
                             }
                         }
                     }
-
                 }
                 catch (Exception ex)
                 {

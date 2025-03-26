@@ -26,10 +26,11 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using HIS.UC.UCRelativeInfo.ADO;
 using HIS.Desktop.DelegateRegister;
+using HIS.Desktop.Utility;
 
 namespace HIS.UC.UCRelativeInfo
 {
-    public partial class UCRelativeInfo : UserControl
+    public partial class UCRelativeInfo : UserControlBase
     {
         #region Outside Focus UserControl
 

@@ -50,6 +50,7 @@ namespace HIS.UC.PlusInfo.Design
         #region Contructor - Load
 
         public UCBlood()
+            : base("UCPlusInfo", "UCBlood")
         {
             try
             {

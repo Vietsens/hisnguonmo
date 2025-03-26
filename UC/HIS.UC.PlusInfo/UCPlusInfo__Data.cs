@@ -242,6 +242,9 @@ namespace HIS.UC.PlusInfo
                         case ChoiceControl.ucTaxCode:
                             dataGet.TAX_CODE = this.ucTaxCode != null ? this.ucTaxCode.GetValue() : "";
                             break;
+                        case ChoiceControl.UcCheckBoxCCCD:
+                            dataGet.IsCheckBoxCCCD = this.ucCheckBoxCCCD != null ? this.ucCheckBoxCCCD.GetValue() : true;
+                            break;
                         default:
                             break;
 

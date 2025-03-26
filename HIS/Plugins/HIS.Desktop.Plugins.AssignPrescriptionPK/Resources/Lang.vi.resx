@@ -767,10 +767,10 @@
     <value>Mang đơn về:</value>
   </data>
   <data name="frmAssignPrescription.lciHtu.Text" xml:space="preserve">
-    <value>Cách dùng:</value>
+    <value>TG dùng:</value>
   </data>
   <data name="frmAssignPrescription.lciHuongDan.Text" xml:space="preserve">
-    <value>Hướng dẫn:</value>
+    <value>Liều dùng:</value>
   </data>
   <data name="frmAssignPrescription.lciIcdCause.Text" xml:space="preserve">
     <value>Ng/nhân ngoài:</value>
@@ -1389,9 +1389,6 @@ F6 để lấy lời dặn từ đơn đã kê. (F7 để thiết lập điều 
   <data name="gridControlTreatmentBedRoom__grdColTreatmentCode__Caption" xml:space="preserve">
     <value>Mã điều trị</value>
   </data>
-	<data name="gridControlTreatmentBedRoom__grdColClassifyName__Caption" xml:space="preserve">
-    <value>Phân loại BN</value>
-  </data>
   <data name="IVT_LANGUAGE_KEY__FORM_APPOINTMENT__LCI_APPOINTMENT_TIME" xml:space="preserve">
     <value>T/gian hẹn khám:</value>
   </data>
@@ -1874,5 +1871,8 @@ F6 để lấy lời dặn từ đơn đã kê. (F7 để thiết lập điều 
   </data>
   <data name="frmMissingIcd.labelControl2.Text" xml:space="preserve">
     <value>Các dịch vụ chống chỉ định trong các trường hợp chẩn đoán sau:</value>
+  </data>
+  <data name="gridControlTreatmentBedRoom__grdColClassifyName__Caption" xml:space="preserve">
+    <value>Phân loại BN</value>
   </data>
 </root>

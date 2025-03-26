@@ -31,7 +31,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="AutoMapper">
-      <HintPath>..\..\..\..\LIB\HIS\ReferencedAssemblies\AutoMapper.dll</HintPath>
+      <HintPath>..\..\..\..\lib\MOS\AutoMapper.dll</HintPath>
     </Reference>
     <Reference Include="DevExpress.BonusSkins.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -185,9 +185,8 @@
     <Reference Include="MOS.TDO">
       <HintPath>..\..\..\..\LIB\MOS\MOS.TDO.dll</HintPath>
     </Reference>
-    <Reference Include="MPS, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\LIB\MPS\MPS.dll</HintPath>
+    <Reference Include="MPS">
+      <HintPath>..\..\..\..\lib\MPSv2\MPS\MPS.dll</HintPath>
     </Reference>
     <Reference Include="MPS.Processor.Mps000047">
       <HintPath>..\..\..\..\LIB\MPSv2\MPS.Processor\MPS.Processor.Mps000047.dll</HintPath>

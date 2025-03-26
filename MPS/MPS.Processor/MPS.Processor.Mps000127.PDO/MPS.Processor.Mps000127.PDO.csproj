@@ -134,7 +134,7 @@
       <HintPath>..\..\..\..\LIB\MOS\MOS.TDO.dll</HintPath>
     </Reference>
     <Reference Include="MPS.ProcessorBase">
-      <HintPath>..\..\..\..\..\Test\His.Desktop\ReferencedAssemblies\MPS.ProcessorBase.dll</HintPath>
+      <HintPath>..\..\..\..\lib_1\MPSv2\MPS.ProcessorBase\MPS.ProcessorBase.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />

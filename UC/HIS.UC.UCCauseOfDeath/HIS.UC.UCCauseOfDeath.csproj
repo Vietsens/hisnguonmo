@@ -60,37 +60,34 @@
       <HintPath>..\..\..\..\..\LIBRARY\DevLib\DevExpress.XtraTreeList.v15.2.dll</HintPath>
     </Reference>
     <Reference Include="IMSys.DbConfig.HIS_RS">
-      <HintPath>..\..\..\..\..\..\RELEASE\IMSys.DbConfig\IMSys.DbConfig.HIS_RS\IMSys.DbConfig.HIS_RS.dll</HintPath>
+      <HintPath>..\..\..\lib\IMSys.DbConfig\IMSys.DbConfig.HIS_RS\IMSys.DbConfig.HIS_RS.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Common.Adapter">
-      <HintPath>..\..\..\..\..\..\RELEASE\Inventec.Common\Inventec.Common.Adapter\Inventec.Common.Adapter.dll</HintPath>
-    </Reference>
-    <Reference Include="Inventec.Common.Controls.EditorLoader">
-      <HintPath>..\..\..\..\..\..\RELEASE\Inventec.Common\Inventec.Common.Controls.EditorLoader\Inventec.Common.Controls.EditorLoader.dll</HintPath>
+      <HintPath>..\..\..\lib\Inventec.Common\Inventec.Common.Adapter\Inventec.Common.Adapter.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Common.DateTime">
-      <HintPath>..\..\..\..\..\..\RELEASE\Inventec.Common\Inventec.Common.DateTime\Inventec.Common.DateTime.dll</HintPath>
+      <HintPath>..\..\..\lib\Inventec.Common\Inventec.Common.Adapter\Inventec.Common.DateTime.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Common.Logging">
-      <HintPath>..\..\..\..\..\..\RELEASE\Inventec.Common\Inventec.Common.Logging\Inventec.Common.Logging.dll</HintPath>
+      <HintPath>..\..\..\lib\Inventec.Common\Inventec.Common.Adapter\Inventec.Common.Logging.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Common.Mapper">
-      <HintPath>..\..\..\..\..\..\RELEASE\Inventec.Common\Inventec.Common.Mapper\Inventec.Common.Mapper.dll</HintPath>
+      <HintPath>..\..\..\lib\Inventec.Common\Inventec.Common.Mapper\Inventec.Common.Mapper.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Core">
-      <HintPath>..\..\..\..\..\..\RELEASE\Inventec.Core\Inventec.Core.dll</HintPath>
+      <HintPath>..\..\..\lib\Inventec.Common\Inventec.Common.Adapter\Inventec.Core.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Desktop.CustomControl">
-      <HintPath>..\..\..\..\..\..\RELEASE\Inventec.Desktop.CustomControl\Inventec.Desktop.CustomControl.dll</HintPath>
+      <HintPath>..\..\..\lib\Inventec.Desktop.CustomControl\Inventec.Desktop.CustomControl.dll</HintPath>
     </Reference>
     <Reference Include="MOS.EFMODEL">
-      <HintPath>..\..\..\..\..\..\RELEASE\MOS\MOS.EFMODEL.dll</HintPath>
+      <HintPath>..\..\..\lib\MOS\MOS.EFMODEL.dll</HintPath>
     </Reference>
     <Reference Include="MOS.Filter">
-      <HintPath>..\..\..\..\..\..\RELEASE\MOS\MOS.Filter.dll</HintPath>
+      <HintPath>..\..\..\lib\MOS\MOS.Filter.dll</HintPath>
     </Reference>
     <Reference Include="MOS.SDO">
-      <HintPath>..\..\..\..\..\..\RELEASE\MOS\MOS.SDO.dll</HintPath>
+      <HintPath>..\..\..\lib\MOS\MOS.SDO.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
@@ -135,17 +132,20 @@
     <Compile Include="Run\RunFactory.cs" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Properties\licenses.licx" />
     <EmbeddedResource Include="UCCauseOfDeath.resx">
       <DependentUpon>UCCauseOfDeath.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\HIS\HIS.Desktop.LocalStorage.BackendData\HIS.Desktop.LocalStorage.BackendData.csproj">
+    <ProjectReference Include="..\..\Common\Inventec.Common\Inventec.Common.Controls.EditorLoader\Inventec.Common.Controls.EditorLoader.csproj">
+      <Project>{13ABFBB0-586A-4F63-8FDD-1A8F8C356C9E}</Project>
+      <Name>Inventec.Common.Controls.EditorLoader</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\HIS\HIS.Desktop.LocalStorage.BackendData\HIS.Desktop.LocalStorage.BackendData.csproj">
       <Project>{86709a9c-a149-4ebb-a817-1bf8f4f4bc07}</Project>
       <Name>HIS.Desktop.LocalStorage.BackendData</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\HIS\HIS.Desktop.LocalStorage.LocalData\HIS.Desktop.LocalStorage.LocalData.csproj">
+    <ProjectReference Include="..\..\HIS\HIS.Desktop.LocalStorage.LocalData\HIS.Desktop.LocalStorage.LocalData.csproj">
       <Project>{e036edf5-788c-4892-8d8f-6b1c16dcbd21}</Project>
       <Name>HIS.Desktop.LocalStorage.LocalData</Name>
     </ProjectReference>

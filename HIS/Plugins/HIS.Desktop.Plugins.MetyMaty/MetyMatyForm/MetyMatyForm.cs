@@ -1145,7 +1145,7 @@ namespace HIS.Desktop.Plugins.MetyMaty
                         {
                             if (item.ID == item1.ID)
                             {
-                                item1.PREPARATION_AMOUNT = item.PREPARATION_AMOUNT;
+                                item1.PREPARATION_AMOUNT = Math.Round(item.PREPARATION_AMOUNT, 6);
                             }
                         }
                     }
@@ -1316,7 +1316,7 @@ namespace HIS.Desktop.Plugins.MetyMaty
                         {
                             if (item.ID == item1.ID)
                             {
-                                item1.MATERIAL_TYPE_AMOUNT = item.MATERIAL_TYPE_AMOUNT;
+                                item1.MATERIAL_TYPE_AMOUNT = Math.Round(item.MATERIAL_TYPE_AMOUNT, 6);
                             }
                         }
                     }

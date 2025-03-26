@@ -26,6 +26,7 @@ namespace HIS.Desktop.Plugins.MedicineIsUsedPatient.ADO
 {
     class ExpMestMediMateADO
     {
+        public long ID { get; set; }
         public string CONCRETE_ID__IN_SETY { get; set; }
         public string SERVICE_REQ_CODE { get; set; }
         public string REQUEST_LOGINNAME { get; set; }
@@ -42,6 +43,18 @@ namespace HIS.Desktop.Plugins.MedicineIsUsedPatient.ADO
         public string SERVICE_UNIT_NAME { get; set; }
         public long EXP_MEST_MEDI_MATE_ID { get; set; }
         public bool IS_PARENT { get; set; }
+        public string MORNING { get; set; }
+        public bool? MORNING_CHK { get; set; }
+        public bool? LUNCH_CHK { get; set; }
+        public bool? AFTERNOON_CHK { get; set; }
+        public bool? DINNER_CHK { get; set; }
+        public string NOON { get; set; }
+        public string AFTERNOON { get; set; }
+        public string EVENING { get; set; }
+        public short? MORNING_IS_USED { get; set; }
+        public short? NOON_IS_USED { get; set; }
+        public short? AFTERNOON_IS_USED { get; set; }
+        public short? EVENING_IS_USED { get; set; }
         public ExpMestMediMateADO()
         {
         }

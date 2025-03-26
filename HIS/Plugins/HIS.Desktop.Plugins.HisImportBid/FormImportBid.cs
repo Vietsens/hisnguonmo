@@ -18,6 +18,7 @@
 using DevExpress.Data;
 using DevExpress.XtraGrid.Views.Base;
 using HIS.Desktop.LocalStorage.BackendData;
+using Inventec.Common.Logging;
 using Inventec.Core;
 using Inventec.Desktop.Common.Message;
 using MOS.EFMODEL.DataModels;
@@ -27,6 +28,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -216,7 +218,6 @@ namespace HIS.Desktop.Plugins.HisImportBid
                     var import = new Inventec.Common.ExcelImport.Import();
                     if (import.ReadFileExcel(ofd.FileName))
                     {
-                        
                         var ImpMestListProcessor = import.Get<ADO.ImportADO>(0);
                         if (ImpMestListProcessor != null && ImpMestListProcessor.Count > 0)
                         {
@@ -298,6 +299,7 @@ namespace HIS.Desktop.Plugins.HisImportBid
                 if (CheckValidDataForSave(ref paramCommon, LstDataImport))
                 {
                     List<HIS_BID> ListBid = ProcessBidForSave();
+                    Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => ListBid), ListBid));
                     if (ListBid != null && ListBid.Count > 0)
                     {
                         List<string> bidError = new List<string>();
@@ -563,6 +565,27 @@ namespace HIS.Desktop.Plugins.HisImportBid
                     medicineType.BID_NUMBER = medicineTypeImport.BID_NUMBER;
                     medicineType.BID_TYPE_CODE = medicineTypeImport.BID_TYPE_CODE;
                     medicineType.BID_YEAR = medicineTypeImport.BID_YEAR;
+                    medicineType.BID_APTHAU_CODE = medicineTypeImport.BID_APTHAU_CODE;
+                    
+                    if (!string.IsNullOrWhiteSpace(medicineTypeImport.VALID_FROM_TIME) &&
+                        !DateTime.TryParseExact(medicineTypeImport.VALID_FROM_TIME, "dd/MM/yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out _))
+                    {
+                        medicineType.ERROR = "Định dạng thời gian ko hợp lệ.";
+                    }
+                    else
+                    {
+                        medicineType.VALID_FROM_TIME = medicineTypeImport.VALID_FROM_TIME;
+                    }
+
+                    if (!string.IsNullOrWhiteSpace(medicineTypeImport.VALID_TO_TIME) &&
+                        !DateTime.TryParseExact(medicineTypeImport.VALID_TO_TIME, "dd/MM/yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out _))
+                    {
+                        medicineType.ERROR = "Định dạng thời gian ko hợp lệ.";
+                    }
+                    else
+                    {
+                        medicineType.VALID_TO_TIME = medicineTypeImport.VALID_TO_TIME;
+                    }
 
                     var bidType = bidTypes.FirstOrDefault(o => o.BID_TYPE_CODE == medicineTypeImport.BID_TYPE_CODE);
                     if (bidType != null)
@@ -737,6 +760,39 @@ namespace HIS.Desktop.Plugins.HisImportBid
                     medicineType.BID_NUMBER = materialTypeImport.BID_NUMBER;
                     medicineType.BID_TYPE_CODE = materialTypeImport.BID_TYPE_CODE;
                     medicineType.BID_YEAR = materialTypeImport.BID_YEAR;
+                    medicineType.BID_APTHAU_CODE = materialTypeImport.BID_APTHAU_CODE;
+
+                    if (!string.IsNullOrWhiteSpace(materialTypeImport.VALID_TO_TIME) &&
+                        !DateTime.TryParseExact(materialTypeImport.VALID_TO_TIME, "dd/MM/yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out _))
+                    {
+                        medicineType.ERROR = "Định dạng thời gian ko hợp lệ.";
+                    }
+                    else
+                    {
+                        medicineType.VALID_FROM_TIME = materialTypeImport.VALID_FROM_TIME;
+                    }
+
+                    if (!string.IsNullOrWhiteSpace(materialTypeImport.VALID_TO_TIME) &&
+                        !DateTime.TryParseExact(materialTypeImport.VALID_TO_TIME, "dd/MM/yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out _))
+                    {
+                        medicineType.ERROR = "Định dạng thời gian ko hợp lệ.";
+                    }
+                    else
+                    {
+                        medicineType.VALID_TO_TIME = materialTypeImport.VALID_TO_TIME;
+                    }
+
+                    if (DateTime.TryParseExact(medicineType.VALID_FROM_TIME, "dd/MM/yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime dateFromValue) &&
+                        DateTime.TryParseExact(medicineType.VALID_TO_TIME, "dd/MM/yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime dateToValue))
+                    {
+                        long? fromValue = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(dateFromValue);
+                        long? toValue = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(dateToValue);
+
+                        if (fromValue > toValue)
+                        {
+                            medicineType.ERROR = "Thời gian từ không được lớn hơn thời gian đến";
+                        }
+                    }     
 
                     var bidType = bidTypes.FirstOrDefault(o => o.BID_TYPE_CODE == materialTypeImport.BID_TYPE_CODE);
                     if (bidType != null)
@@ -1175,7 +1231,98 @@ namespace HIS.Desktop.Plugins.HisImportBid
                         bidModel.BID_NUMBER = group.First().BID_NUMBER;
                         bidModel.BID_EXTRA_CODE = group.First().BID_EXTRA_CODE;
                         bidModel.BID_TYPE_ID = group.First().BID_TYPE_ID;
-                        bidModel.BID_YEAR = group.First().BID_YEAR;
+                        bidModel.BID_YEAR = group.First().BID_YEAR;     
+
+                        string ToTime = null;
+                        foreach (var item in group)
+                        {
+                            ToTime = item.VALID_TO_TIME;
+
+                            if (!string.IsNullOrEmpty(ToTime))
+                            {
+                                break;
+                            }
+                        }
+                        string FromTime = null;
+                        foreach (var item in group)
+                        {
+                            FromTime = item.VALID_FROM_TIME;
+
+                            if (!string.IsNullOrEmpty(ToTime))
+                            {
+                                break;  
+                            }
+                        }
+                        string ApThau = null;
+                        foreach (var item in group)
+                        {
+                            ApThau = item.BID_APTHAU_CODE;
+
+                            if (!string.IsNullOrEmpty(ApThau))
+                            {
+                                break;
+                            }
+                        }     
+
+                        if (!string.IsNullOrWhiteSpace(group.First().VALID_FROM_TIME))    
+                        {
+                            if (DateTime.TryParseExact(group.First().VALID_FROM_TIME, "dd/MM/yyyy", null, System.Globalization.DateTimeStyles.None, out DateTime ValidFromTime))
+                            {
+                                bidModel.VALID_FROM_TIME = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(ValidFromTime);
+                            }
+                        }
+                        else
+                        {
+                            if (FromTime != null)
+                            {
+                                if (DateTime.TryParseExact(FromTime, "dd/MM/yyyy", null, System.Globalization.DateTimeStyles.None, out DateTime ValidFromTime))
+                                {
+                                    bidModel.VALID_FROM_TIME = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(ValidFromTime);
+                                }
+                            }
+                            else
+                            {
+                                bidModel.VALID_FROM_TIME = null;
+                            }
+                        }
+
+                        if (!string.IsNullOrWhiteSpace(group.First().VALID_TO_TIME))
+                        {
+                            if (DateTime.TryParseExact(group.First().VALID_TO_TIME, "dd/MM/yyyy", null, System.Globalization.DateTimeStyles.None, out DateTime ValidToTime))
+                            {
+                                bidModel.VALID_TO_TIME = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(ValidToTime);
+                            }
+                        }
+                        else
+                        {
+                            if (ToTime != null)
+                            {
+                                if (DateTime.TryParseExact(ToTime, "dd/MM/yyyy", null, System.Globalization.DateTimeStyles.None, out DateTime ValidToTime))
+                                {
+                                    bidModel.VALID_TO_TIME = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(ValidToTime);
+                                }
+                            }
+                            else
+                            {
+                                bidModel.VALID_TO_TIME = null;
+                            }
+                        }
+
+                        if (!string.IsNullOrWhiteSpace(group.First().BID_APTHAU_CODE))
+                        {
+                            bidModel.BID_APTHAU_CODE = group.First().BID_APTHAU_CODE;
+                        }
+                        else
+                        {
+                            if (ApThau != null)
+                            {
+                                bidModel.BID_APTHAU_CODE = ApThau;
+                            }
+                            else
+                            {
+                                bidModel.BID_APTHAU_CODE = null;
+                            }
+                        }
 
                         foreach (var item in group)
                         {

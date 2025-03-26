@@ -39,7 +39,7 @@ namespace HIS.Desktop.Plugins.ServiceExecute
         internal const string ShowImageCFG = "HIS.Desktop.Plugins.ServiceExecute.IsNotShowingImgAreaForDiagnosticImgServiceReq";
 
         //1: Bắt buộc phải chỉ định thuốc/vật tư tiêu hao trước khi xử lý dịch vụ "chẩn đoán hình ảnh"
-        internal const string LockExecuteCFG = "HIS.Desktop.Plugins.ServiceExecute.MustHavePresBeforeExecuteWithDiagnosticImgServiceReq";
+        internal const string LockExecuteCFG = "c";
 
         internal const string ExecuteRoleDefault = "HIS.DESKTOP.PLUGINS.SURGSERVICEREQEXECUTE.EXECUTE_ROLE_DEFAULT";
 

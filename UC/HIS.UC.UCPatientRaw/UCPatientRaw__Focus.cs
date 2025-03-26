@@ -35,7 +35,7 @@ using Inventec.Desktop.Common.Message;
 
 namespace HIS.UC.UCPatientRaw
 {
-    public partial class UCPatientRaw : UserControl
+    public partial class UCPatientRaw : HIS.Desktop.Utility.UserControlBase
     {
 
         #region Focus UserControl
@@ -321,8 +321,10 @@ namespace HIS.UC.UCPatientRaw
                     var patientTypeDefault = HIS.Desktop.Plugins.Library.RegisterConfig.AppConfigs.PatientTypeDefault;
                     if (patientTypeDefault != null && patientTypeDefault.ID > 0)
                     {
+                        IsLoadFromSearchTxtCode = true;
                         this.txtPatientTypeCode.Text = patientTypeDefault.PATIENT_TYPE_CODE;
                         this.cboPatientType.EditValue = patientTypeDefault.ID;
+                        IsLoadFromSearchTxtCode = false;
                     }
                     else
                     {
@@ -331,7 +333,9 @@ namespace HIS.UC.UCPatientRaw
                         this.cboPatientType.EditValue = null;
                         if (isDefault)
                         {
+                            IsLoadFromSearchTxtCode = true;
                             cboPatientType.EditValue = paties[0].ID;
+                            IsLoadFromSearchTxtCode = false;
                         }
                     }
                 }

@@ -169,21 +169,31 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
         {
             try
             {
+                Inventec.Common.Logging.LogSystem.Debug("UCExecuteRoom_Load.1");
                 GetDataFromRam();
+                Inventec.Common.Logging.LogSystem.Debug("UCExecuteRoom_Load.2");
                 HisConfigCFG.LoadConfig();
                 ShowCheckBoxIsResult();
                 //this.typeCodeFind = typeCodeFind__KeyWork;
+                Inventec.Common.Logging.LogSystem.Debug("UCExecuteRoom_Load.3");
                 InitTypeFind();
                 InitComboSucKhoe();
                 LoadActionButtonRefesh(true);
+                Inventec.Common.Logging.LogSystem.Debug("UCExecuteRoom_Load.4");
                 this.InitControlState();
                 InitLanguage();
+                Inventec.Common.Logging.LogSystem.Debug("UCExecuteRoom_Load.5");
                 AddUctoPanel();
-                AddOrtherUc();
+                Inventec.Common.Logging.LogSystem.Debug("UCExecuteRoom_Load.5.1");
+                HideControl();
+                //AddOrtherUc();//bỏ đi, không load toàn bộ giao diện lên nếu chưa hiển thị ra, chuyển sang dạng lazyload từng phần cần trước, phần nào dùng đến thì load sau
+                Inventec.Common.Logging.LogSystem.Debug("UCExecuteRoom_Load.5.2");
                 InitComboBoxEditStatus();
+                Inventec.Common.Logging.LogSystem.Debug("UCExecuteRoom_Load.6");
                 LoadDefaultData();
                 LoadDepartmentAndRoom();
                 LoadDataToPatientTypeCombo();
+                Inventec.Common.Logging.LogSystem.Debug("UCExecuteRoom_Load.7");
                 this.InitGridCheckMarksSelectionPatientType();
 
                 GridCheckMarksSelection gridCheckMark = cboPatientType.Properties.Tag as GridCheckMarksSelection;
@@ -194,15 +204,20 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
                 // Init combo service req type
                 InitServiceReqTypeCheck();
                 InitComboServiceReqType();
+                Inventec.Common.Logging.LogSystem.Debug("UCExecuteRoom_Load.8");
                 LoadDefaultScreenSaver();
+                Inventec.Common.Logging.LogSystem.Debug("UCExecuteRoom_Load.9");
                 RegisterTimer(currentModule.ModuleLink, "timerAutoReload", timerAutoReload.Interval, timerAutoReload_Tick);
                 FillDataToGridControl();
+                Inventec.Common.Logging.LogSystem.Debug("UCExecuteRoom_Load.10");
                 gridControlServiceReq.ToolTipController = toolTipController1;
                 InitEnableControl();
                 gridControlSereServServiceReq.ToolTipController = toolTipController2;
+                Inventec.Common.Logging.LogSystem.Debug("UCExecuteRoom_Load.11");
                 LoadServiceReqCount(true, 0);
                 this.isInit = false;
                 //RegisterTimer(currentModule.ModuleLink, "timerDoubleClick", timerDoubleClick.Interval, timer1_Tick);
+                Inventec.Common.Logging.LogSystem.Debug("UCExecuteRoom_Load.12");
             }
             catch (Exception ex)
             {
@@ -410,12 +425,14 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
         {
             try
             {
+                Inventec.Common.Logging.LogSystem.Debug("GetDataFromRam.1");
                 lstPatientType = BackendDataWorker.Get<HIS_PATIENT_TYPE>().ToList();
                 patientTypeList = lstPatientType.Where(o => o.IS_NOT_USE_FOR_PATIENT != 1).OrderBy(o => o.PATIENT_TYPE_NAME).ToList();
                 lstExecuteRoom = BackendDataWorker.Get<V_HIS_EXECUTE_ROOM>().Where(o => o.ROOM_ID == this.roomId).ToList();
                 lstPatientPrioty = BackendDataWorker.Get<HIS_PRIORITY_TYPE>().ToList();
                 lstServiceRoom = BackendDataWorker.Get<HIS_SERVICE_ROOM>();
                 deskList = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<HIS_DESK>();
+                Inventec.Common.Logging.LogSystem.Debug("GetDataFromRam.2");
             }
             catch (Exception ex)
             {
@@ -1067,7 +1084,10 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
                     if (e.Clicks == 1)
                     {
                         Inventec.Common.Logging.LogSystem.Debug("gridViewServiceReq.ActiveEditor___");
-                        gridViewServiceReq.ActiveEditor.SelectAll();
+                        if (gridViewServiceReq.ActiveEditor != null)
+                        {
+                            gridViewServiceReq.ActiveEditor.SelectAll();
+                        }
                     }
                 }
 

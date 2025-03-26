@@ -51,8 +51,20 @@
     <Reference Include="DevExpress.XtraEditors.v15.2">
       <HintPath>..\..\..\Lib\DEVEXPRESS\DevExpress.XtraEditors.v15.2.dll</HintPath>
     </Reference>
+    <Reference Include="HIS.Desktop.Library.CacheClient">
+      <HintPath>..\..\..\lib\HIS\His.UC.UCHein\HIS.Desktop.Library.CacheClient.dll</HintPath>
+    </Reference>
     <Reference Include="HIS.Desktop.LocalStorage.Branch">
       <HintPath>..\..\..\Lib\HIS\HIS.Desktop.LocalStorage.Branch\HIS.Desktop.LocalStorage.Branch.dll</HintPath>
+    </Reference>
+    <Reference Include="HIS.Desktop.LocalStorage.ConfigApplication">
+      <HintPath>..\..\..\lib\Inventec.UC\Inventec.UC.ListReports\HIS.Desktop.LocalStorage.ConfigApplication.dll</HintPath>
+    </Reference>
+    <Reference Include="HIS.Desktop.LocalStorage.HisConfig">
+      <HintPath>..\..\..\lib\HIS\His.UC.UCHein\HIS.Desktop.LocalStorage.HisConfig.dll</HintPath>
+    </Reference>
+    <Reference Include="HIS.Desktop.LocalStorage.LocalData">
+      <HintPath>..\..\..\lib\HIS\HIS.Desktop.LocalStorage.LocalData\HIS.Desktop.LocalStorage.LocalData.dll</HintPath>
     </Reference>
     <Reference Include="HTC.EFMODEL">
       <HintPath>..\..\..\Lib\HTC\HTC.EFMODEL.dll</HintPath>
@@ -74,6 +86,12 @@
     </Reference>
     <Reference Include="IMSys.DbConfig.SDA_RS">
       <HintPath>..\..\..\Lib\IMSys.DbConfig\IMSys.DbConfig.SDA_RS\IMSys.DbConfig.SDA_RS.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Common.Adapter">
+      <HintPath>..\..\..\lib\Inventec.Common\Inventec.Common.Adapter\Inventec.Common.Adapter.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Common.Mapper">
+      <HintPath>..\..\..\lib\Inventec.Common\Inventec.Common.Mapper\Inventec.Common.Mapper.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Core">
       <HintPath>..\..\..\Lib\Inventec.Core\Inventec.Core.dll</HintPath>
@@ -138,9 +156,8 @@
     <Reference Include="MRS.SDO">
       <HintPath>..\..\..\Lib\MRS\MRS.SDO.dll</HintPath>
     </Reference>
-    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\ReferencedAssemblies\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\..\..\lib\Library packages\Newtonsoft.Json.6.0.8\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="RDCACHE.SDO">
       <HintPath>..\..\..\Lib\RDCACHE\RDCACHE.SDO.dll</HintPath>
@@ -252,17 +269,9 @@
     <Compile Include="Base\TableNameConstan.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Common\Inventec.Common\Inventec.Common.Adapter\Inventec.Common.Adapter.csproj">
-      <Project>{dd2b84a4-a370-41a1-8dfa-10197540c101}</Project>
-      <Name>Inventec.Common.Adapter</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\Common\Inventec.Common\Inventec.Common.Logging\Inventec.Common.Logging.csproj">
       <Project>{4859008d-a40d-47bb-a185-019c8b140569}</Project>
       <Name>Inventec.Common.Logging</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Common\Inventec.Common\Inventec.Common.Mapper\Inventec.Common.Mapper.csproj">
-      <Project>{7b793974-0c88-47d8-8686-cfa8f5f6e464}</Project>
-      <Name>Inventec.Common.Mapper</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Common\Inventec.Common\Inventec.Common.Number\Inventec.Common.Number.csproj">
       <Project>{7428c903-6c07-4763-9154-a5c7461a9cbf}</Project>
@@ -308,18 +317,6 @@
       <Project>{59fdcba7-0f9f-4257-b95a-e37a1ccfe107}</Project>
       <Name>HIS.Desktop.Common</Name>
     </ProjectReference>
-    <ProjectReference Include="..\HIS.Desktop.LocalStorage.ConfigApplication\HIS.Desktop.LocalStorage.ConfigApplication.csproj">
-      <Project>{3a2c932a-9d3a-483b-89a0-9f9c8225b283}</Project>
-      <Name>HIS.Desktop.LocalStorage.ConfigApplication</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\HIS.Desktop.LocalStorage.HisConfig\HIS.Desktop.LocalStorage.HisConfig.csproj">
-      <Project>{d1e5461b-8a8e-46f7-9aee-5c1b327e5f2b}</Project>
-      <Name>HIS.Desktop.LocalStorage.HisConfig</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\HIS.Desktop.LocalStorage.LocalData\HIS.Desktop.LocalStorage.LocalData.csproj">
-      <Project>{e036edf5-788c-4892-8d8f-6b1c16dcbd21}</Project>
-      <Name>HIS.Desktop.LocalStorage.LocalData</Name>
-    </ProjectReference>
     <ProjectReference Include="..\HIS.Desktop.XmlCacheMonitor\HIS.Desktop.XmlCacheMonitor.csproj">
       <Project>{0e390108-e542-44fe-8711-5e01c5406684}</Project>
       <Name>HIS.Desktop.XmlCacheMonitor</Name>
@@ -327,10 +324,6 @@
     <ProjectReference Include="..\HIS.Desktop.XmlRamMonitor\HIS.Desktop.XmlRamMonitor.csproj">
       <Project>{26c8fac6-4f73-445c-a900-cf89caa75274}</Project>
       <Name>HIS.Desktop.XmlRamMonitor</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Plugins\HIS.Desktop.Library.CacheClient\HIS.Desktop.Library.CacheClient.csproj">
-      <Project>{64837e01-803d-4f1e-9dfc-d34b38ea78f9}</Project>
-      <Name>HIS.Desktop.Library.CacheClient</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup />

@@ -260,7 +260,7 @@ namespace HIS.Desktop.Plugins.HisMedicalContractImport
                     //Quyết định thầu, Nhóm thầu
                     if (!string.IsNullOrEmpty(item.BID_NUMBER))
                     {
-                        if (item.BID_NUMBER.Length > 30)
+                        if (item.BID_NUMBER.Length > 50)
                         {
                             errors.Add(string.Format(Message.MessageImport.Maxlength, "Sổ quyết định thầu"));
                         }

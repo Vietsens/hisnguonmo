@@ -222,14 +222,6 @@ namespace HIS.Desktop.Plugins.HisImportServicePaty.FormLoad
                     var mateAdo = new ServicePatyImportADO();
                     Inventec.Common.Mapper.DataObjectMapper.Map<ServicePatyImportADO>(mateAdo, item);
 
-                    //if (!string.IsNullOrEmpty(item.PACKAGE_NUMBER))
-                    //{
-                    //    if (item.PACKAGE_NUMBER.Length > 100)
-                    //    {
-                    //        error += string.Format(Message.MessageImport.Maxlength, "PACKAGE_NUMBER");
-                    //    }
-                    //}
-
                     if (!string.IsNullOrEmpty(item.PRICE_STR))
                     {
                         if (checkNumber(item.PRICE_STR))
@@ -269,29 +261,24 @@ namespace HIS.Desktop.Plugins.HisImportServicePaty.FormLoad
                     }
                     else
                         error += string.Format(Message.MessageImport.ThieuTruongDL, "VAT");
-
-
-                    //if (!string.IsNullOrEmpty(item.SERVICE_TYPE_CODE))
-                    //{
-                    //    if (item.SERVICE_TYPE_CODE.Length > 6)
-                    //    {
-                    //        error += string.Format(Message.MessageImport.Maxlength, "Mã loại dịch vụ");
-                    //    }
-                    //    var serviceType = BackendDataWorker.Get<HIS_SERVICE_TYPE>().FirstOrDefault(o => o.SERVICE_TYPE_CODE == item.SERVICE_TYPE_CODE);
-                    //    if (serviceType != null)
-                    //    {
-                    //        mateAdo.SERVICE_TYPE_ID = serviceType.ID;
-                    //        mateAdo.SERVICE_TYPE_NAME = serviceType.SERVICE_TYPE_NAME;
-                    //    }
-                    //    else
-                    //    {
-                    //        error += string.Format(Message.MessageImport.KhongHopLe, "Loại dịch vụ");
-                    //    }
-                    //}
-                    //else
-                    //{
-                    //    error += string.Format(Message.MessageImport.ThieuTruongDL, "Loại dịch vụ");
-                    //}
+                    /// mới làm 
+                    if (!string.IsNullOrEmpty(item.SERVICE_RATIO_STR))
+                    {
+                        if (checkNumber(item.SERVICE_RATIO_STR))
+                        {
+                            error += string.Format(Message.MessageImport.KhongHopLe, "tỉ lệ thanh toán");
+                        }
+                        else
+                        {
+                            var price = Inventec.Common.TypeConvert.Parse.ToDecimal(item.SERVICE_RATIO_STR);
+                            if (price < 0)
+                            {
+                                error += string.Format(Message.MessageImport.KhongHopLe, "tỉ lệ thanh toán");
+                            }
+                            else
+                                mateAdo.SERVICE_RATIO = price;
+                        }
+                    }
 
                     if (!string.IsNullOrEmpty(item.SERVICE_CODE))
                     {
@@ -853,6 +840,7 @@ namespace HIS.Desktop.Plugins.HisImportServicePaty.FormLoad
                     foreach (var item in data)
                     {
                         item.ID = 0;
+                        item.SERVICE_RATIO = item.SERVICE_RATIO / 100;
                     }
                 }
                 CommonParam param = new CommonParam();

@@ -42,5 +42,20 @@ namespace HIS.Desktop.Plugins.RegisterExamKiosk
                 return "";
             }
         }
+        internal static string GoiSangCongBHXHTraVeMaLoi
+        {
+            get
+            {
+                try
+                {
+                    return Inventec.Common.Resource.Get.Value("GoiSangCongBHXHTraVeMaLoi", languageMessage, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(ex);
+                }
+                return "";
+            }
+        }
     }
 }

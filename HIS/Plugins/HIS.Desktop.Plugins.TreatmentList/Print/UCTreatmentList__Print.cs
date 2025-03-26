@@ -436,8 +436,8 @@ namespace HIS.Desktop.Plugins.TreatmentList
                 //Cap nhat ho so dieu tri
                 HisTreatmentFilter treatmentFilter = new HisTreatmentFilter();
                 treatmentFilter.ID = treatment4.ID;
-                HIS_TREATMENT treatment = new BackendAdapter(new CommonParam())
-                    .Get<List<MOS.EFMODEL.DataModels.HIS_TREATMENT>>("api/HisTreatment/Get", ApiConsumers.MosConsumer, treatmentFilter, new CommonParam()).FirstOrDefault();
+                V_HIS_TREATMENT treatment = new BackendAdapter(new CommonParam())
+                    .Get<List<MOS.EFMODEL.DataModels.V_HIS_TREATMENT>>("api/HisTreatment/GetView", ApiConsumers.MosConsumer, treatmentFilter, new CommonParam()).FirstOrDefault();
 
 
 

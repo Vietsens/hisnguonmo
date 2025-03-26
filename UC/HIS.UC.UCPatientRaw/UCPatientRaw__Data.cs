@@ -35,8 +35,8 @@ using HIS.Desktop.Plugins.Library.RegisterConfig;
 
 namespace HIS.UC.UCPatientRaw
 {
-	public partial class UCPatientRaw : UserControl
-	{
+	public partial class UCPatientRaw : HIS.Desktop.Utility.UserControlBase
+    {
 		public UCPatientRawADO GetValue()
 		{
 			UCPatientRawADO dataGet = new UCPatientRawADO();

@@ -107,12 +107,17 @@ namespace HIS.Desktop.Plugins.TrackingCreate
         SDA_CONFIG_APP_USER currentConfigAppUser;
         ConfigADO _ConfigADO;
         string trackingCreateOptionCFG = "";
+        string StartTimeMustBeGreaterThanInstructionTime = "";
+        string ASSIGN_SERVICE_SIMULTANEITY_OPTION = "";
+        string IsCheckSubIcdExceedLimit = "";
         string IsReadOnlyCareInstruction = "";
         string ServiceReqIcdOption = "";
         internal SecondaryIcdProcessor subIcdProcessor;
         internal UserControl ucSecondaryIcd;
         internal SecondaryIcdProcessor subIcdYhctProcessor;
+        internal SecondaryIcdProcessor subIcdPbProcessor;
         internal UserControl ucSecondaryIcdYhct;
+        internal UserControl ucSecondaryIcdPb;
 
         internal DHSTProcessor dhstProcessor;
 
@@ -272,7 +277,7 @@ namespace HIS.Desktop.Plugins.TrackingCreate
                 ado.DelegateGetIcdMain = GetIcdMainCode;
                 Rectangle activeScreenDimensions = Screen.FromControl(this).Bounds;
                 ado.hisTreatment = this._Treatment;
-                if (activeScreenDimensions != null) ado.Width = activeScreenDimensions.Width / 2 - 10;
+                //if (activeScreenDimensions != null) ado.Width = activeScreenDimensions.Width / 2 - 10;
                 ado.Height = 24;
                 ado.TextNullValue = "Nhấn F1 để chọn bệnh";
                 ado.limitDataSource = (int)HIS.Desktop.LocalStorage.ConfigApplication.ConfigApplications.NumPageSize;
@@ -374,8 +379,99 @@ namespace HIS.Desktop.Plugins.TrackingCreate
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
-        
-        
+        private void InitUcSecondaryIcdPb()
+        {
+            try
+            {
+                var icdYhct = BackendDataWorker.Get<HIS_ICD>().Where(o => o.IS_ACTIVE == 1).ToList();
+                subIcdPbProcessor = new SecondaryIcdProcessor(new CommonParam(), icdYhct);
+                HIS.UC.SecondaryIcd.ADO.SecondaryIcdInitADO ado = new UC.SecondaryIcd.ADO.SecondaryIcdInitADO();
+                ado.DelegateNextFocus = NextForcusSubIcdToDo;
+                //ado.DelegateGetIcdMain = GetIcdMainCodeYhct;
+                //ado.delegateCheckICD = CheckICDSecondYHCT;
+                Rectangle activeScreenDimensions = Screen.FromControl(this).Bounds;
+
+                //if (activeScreenDimensions != null) ado.Width = activeScreenDimensions.Width / 2 - 10;
+                ado.Height = 24;
+                ado.TextLblIcd = "CĐ phân biệt:";
+                ado.TootiplciIcdSubCode = "Chẩn đoán phân biệt kèm theo";
+                ado.TextNullValue = "Nhấn F1 để chọn bệnh";
+                ado.limitDataSource = (int)HIS.Desktop.LocalStorage.ConfigApplication.ConfigApplications.NumPageSize;
+                ucSecondaryIcdPb = (UserControl)subIcdPbProcessor.Run(ado);
+
+                if (ucSecondaryIcdPb != null)
+                {
+                    this.layoutControlSubIcdPb.Controls.Add(ucSecondaryIcdPb);
+                    ucSecondaryIcdPb.Dock = DockStyle.Fill;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+        private bool CheckICDPb()
+        {
+            bool result = true;
+            try
+            {
+                result = (this.ucSecondaryIcdPb != null && (bool)this.subIcdPbProcessor.GetValidate(this.ucSecondaryIcdPb)) && result;
+                if (this.icdProcessor != null && this.ucIcd != null || (this.subIcdProcessor != null && this.ucSecondaryIcd != null)
+                    || (this.subIcdPbProcessor != null && this.ucSecondaryIcdPb != null))
+                {
+                    var icdValue = this.icdProcessor.GetValue(this.ucIcd);
+                    var icdValueSecond = subIcdProcessor.GetValue(this.ucSecondaryIcd);
+                    var icdValuePB = subIcdPbProcessor.GetValue(this.ucSecondaryIcdPb);
+                    string mainCode = "";
+                    string mainCodeSecond = "";
+                    if (icdValue != null)
+                    {
+                        mainCode = ((HIS.UC.Icd.ADO.IcdInputADO)icdValue).ICD_CODE;
+
+                    }
+                    if (icdValueSecond != null)
+                    {
+                        mainCodeSecond = ((SecondaryIcdDataADO)icdValueSecond).ICD_SUB_CODE;
+                    }
+                    if (icdValuePB != null)
+                    {
+
+                        string subcodePb = ((SecondaryIcdDataADO)icdValuePB).ICD_SUB_CODE;
+                        List<string> listSubCode = new List<string>();
+
+                        if (!string.IsNullOrEmpty(mainCodeSecond))
+                        {
+                            listSubCode = mainCodeSecond.Split(';').ToList();
+                        }
+                        listSubCode.Add(mainCode);
+                        List<string> listSubCodePB = new List<string>();
+                        if (!string.IsNullOrEmpty(subcodePb))
+                        {
+                            listSubCodePB = subcodePb.Split(';').ToList();
+                        }
+                        //check co hay k
+                        string error = "";
+                        var commonValues = listSubCodePB.Intersect(listSubCode).ToList();
+                        if (commonValues != null && commonValues.Count() > 0)
+                        {
+                            error += string.Format("Mã bệnh phân biệt {0} đã sử dụng cho mã bệnh chính và phụ. Vui lòng kiểm tra lại", string.Join(",", commonValues.ToList()));
+
+                            result = false;
+                        }
+                        LogSystem.Debug("SetError: " + error);
+                        this.subIcdPbProcessor.SetError(ucSecondaryIcdPb, error);
+                    }
+
+                }
+
+            }
+            catch (Exception ex)
+            {
+
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+            return result;
+        }
         private bool CheckICD(string icd_code, string icd_sub_code, ref string mess, ref string code_error, bool ref_code)
         {
             bool valid = false;
@@ -384,12 +480,12 @@ namespace HIS.Desktop.Plugins.TrackingCreate
             {
                 HIS.Desktop.Plugins.Library.CheckIcd.CheckIcdManager mana = new CheckIcdManager(DlgIcdSubCode, this._Treatment);
 
-                if (string.IsNullOrEmpty(mess) && !mana.ProcessCheckIcd(icd_code, icd_sub_code, ref mess,false,true))
+                if (string.IsNullOrEmpty(mess) && !mana.ProcessCheckIcd(icd_code, icd_sub_code, ref mess, false, true))
                 {
                     Inventec.Common.Logging.LogSystem.Debug("icd: " + icd_code + " va icd_phu: " + icd_sub_code + "co trung nhom ICD10");
                     valid = true;
                 }
-                
+
             }
             catch (Exception ex)
             {
@@ -494,8 +590,11 @@ namespace HIS.Desktop.Plugins.TrackingCreate
                 this.loginName = Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName();
                 this.currentRoom = BackendDataWorker.Get<V_HIS_ROOM>().FirstOrDefault(o => o.ID == this.currentModule.RoomId);
                 this.trackingCreateOptionCFG = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(ConfigKeyss.DBCODE__HIS_DESKTOP_PLUGINS_TRACKING_CREATE_OPTION);
+                this.StartTimeMustBeGreaterThanInstructionTime = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(ConfigKeyss.DBCODE__HIS_DESKTOP_PLUGINS_StartTimeMustBeGreaterThanInstructionTime);
+                this.ASSIGN_SERVICE_SIMULTANEITY_OPTION = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(ConfigKeyss.DBCODE__HIS_DESKTOP_PLUGINS_ASSIGN_SERVICE_SIMULTANEITY_OPTION);
                 this.updateTreatmentIcd = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(ConfigKeyss.DBCODE__HIS_DESKTOP_PLUGINS_TRACKING_CRETATE_UPDATE_TREATMENT_ICD);
                 this.IsReadOnlyCareInstruction = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(ConfigKeyss.DBCODE__HIS_DESKTOP_PLUGINS_TRACKING_CRETATE_IsReadOnlyCareInstruction);
+                this.IsCheckSubIcdExceedLimit = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(ConfigKeyss.DBCODE__HIS_DESKTOP_PLUGINS_IsCheckSubIcdExceedLimit);
                 BloodPresOption = (HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>("HIS.Desktop.Plugins.TrackingCreate.BloodPresOption") == "1");
                 this.ServiceReqIcdOption = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(ConfigKeyss.DBCODE__HIS_TRACKING_SERVICE_REQ_ICD_OPTION);
 
@@ -512,6 +611,7 @@ namespace HIS.Desktop.Plugins.TrackingCreate
                 InitUcdSecondIcd();
                 InitUcIcdYhct();
                 InitUcSecondaryIcdYhct();
+                InitUcSecondaryIcdPb();
                 cboLogin.EditValue = this.loginName;
                 txtLoginName.EditValue = this.loginName;
                 //InitComboUser();
@@ -840,10 +940,11 @@ namespace HIS.Desktop.Plugins.TrackingCreate
         {
             try
             {
+                //LogSystem.Debug("To dieu tri tu chuc nang danh sach truyen qua. " + LogUtil.TraceData("HIS_TRACKING", data));
                 CommonParam param = new CommonParam();
                 if (data != null)
                 {
-                    //Inventec.Common.Logging.LogSystem.Info(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => data), data));
+                    Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => data), data));
                     HIS.UC.Icd.ADO.IcdInputADO icd = new HIS.UC.Icd.ADO.IcdInputADO();
                     icd.ICD_NAME = data.ICD_NAME;
                     icd.ICD_CODE = data.ICD_CODE;
@@ -871,6 +972,16 @@ namespace HIS.Desktop.Plugins.TrackingCreate
                         if (ucSecondaryIcdYhct != null)
                         {
                             subIcdYhctProcessor.Reload(ucSecondaryIcdYhct, subYhctIcd);
+                        }
+                    }
+                    if (!String.IsNullOrWhiteSpace(data.ICD_DIFF_CODE) || !String.IsNullOrWhiteSpace(data.ICD_DIFF_TEXT))
+                    {
+                        SecondaryIcdDataADO subPbIcd = new SecondaryIcdDataADO();
+                        subPbIcd.ICD_SUB_CODE = data.ICD_DIFF_CODE;
+                        subPbIcd.ICD_TEXT = data.ICD_DIFF_TEXT;
+                        if (ucSecondaryIcdPb != null)
+                        {
+                            this.subIcdPbProcessor.Reload(ucSecondaryIcdPb, subPbIcd);
                         }
                     }
 
@@ -2545,6 +2656,15 @@ namespace HIS.Desktop.Plugins.TrackingCreate
                         trackingSave.ICD_TEXT = ((SecondaryIcdDataADO)subIcd).ICD_TEXT;
                     }
                 }
+                if (this.ucSecondaryIcdPb != null)
+                {
+                    var subICDPB = this.subIcdPbProcessor.GetValue(ucSecondaryIcdPb);
+                    if (subICDPB != null && subICDPB is SecondaryIcdDataADO)
+                    {
+                        trackingSave.ICD_DIFF_CODE = ((SecondaryIcdDataADO)subICDPB).ICD_SUB_CODE;
+                        trackingSave.ICD_DIFF_TEXT = ((SecondaryIcdDataADO)subICDPB).ICD_TEXT;
+                    }
+                }
                 //thay bang uc
                 //trackingSave.ICD_TEXT = txtIcdExtraName.Text;
                 //trackingSave.ICD_SUB_CODE = txtIcdExtraCode.Text;
@@ -2872,14 +2992,20 @@ namespace HIS.Desktop.Plugins.TrackingCreate
                 this.positionHandleControl = -1;
                 bool IsValid = true;
                 IsValid = (bool)icdProcessor.ValidationIcd(this.ucIcd);
-                IsValid = (bool)this.subIcdProcessor.GetValidate(this.ucSecondaryIcd) && IsValid;
-                IsValid = (bool)this.subIcdYhctProcessor.GetValidate(this.ucSecondaryIcdYhct) && IsValid;
-                IsValid = (bool)this.icdYhctProcessor.ValidationIcd(this.ucIcdYhct) && IsValid;
+                IsValid = (bool)(this.ucSecondaryIcd != null && this.subIcdProcessor.GetValidate(this.ucSecondaryIcd)) && IsValid;
+
+                if (this.layoutControlItem12.Visible && this.layoutControlISubIcdYhct.Visible)
+                    IsValid = (bool)(this.ucSecondaryIcdYhct != null && this.subIcdYhctProcessor.GetValidate(this.ucSecondaryIcdYhct)) && IsValid;
+                if (this.layoutControlItem9.Visible && this.layoutControlIcdYhct.Visible)
+                    IsValid = (bool)(this.ucIcdYhct != null && (bool)this.icdYhctProcessor.ValidationIcd(this.ucIcdYhct)) && IsValid;
+
                 IsValid = IsValid && dxValidationProvider1.Validate();
                 if (!IsValid)
                     return;
-                
+
                 IsValid = IsValid && CheckICDPreSave();
+                IsValid = IsValid && CheckICDPb();
+
                 if (!IsValid)
                     return;
                 //this._Treatment = new HIS_TREATMENT();
@@ -2907,9 +3033,11 @@ namespace HIS.Desktop.Plugins.TrackingCreate
                 {
                     GetDataToSave();
 
+                    if (!CheckBeforeCallApiUpdate())
+                        return;
                     trackingOutSave = new HIS_TRACKING();
                     trackingOutSave = new BackendAdapter(param).Post<HIS_TRACKING>(HisRequestUriStore.HIS_TRACKING_CREATE, ApiConsumers.MosConsumer, this.trackingSDOs, param);
-                    WaitingManager.Hide();
+                    WaitingManager.Show();
                     if (trackingOutSave != null)
                     {
                         success = true;
@@ -2945,10 +3073,12 @@ namespace HIS.Desktop.Plugins.TrackingCreate
                 else if (this.action == GlobalVariables.ActionEdit)
                 {
                     GetDataToSave();
+                    if (!CheckBeforeCallApiUpdate())
+                        return;
                     //Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData("api/HisTracking/Update this.trackingSDOs: ", this.trackingSDOs));
                     trackingOutSave = new HIS_TRACKING();
                     trackingOutSave = new BackendAdapter(param).Post<HIS_TRACKING>(HisRequestUriStore.HIS_TRACKING_UPDATE, ApiConsumers.MosConsumer, this.trackingSDOs, param);
-                    WaitingManager.Hide();
+                    WaitingManager.Show();
                     if (trackingOutSave != null)
                     {
                         success = true;
@@ -2965,7 +3095,7 @@ namespace HIS.Desktop.Plugins.TrackingCreate
 
                 HisTrackingADO = LoadTrackingOld();
                 InitComboTrackingOld(HisTrackingADO);
-
+                WaitingManager.Hide();
                 #region Show message
                 MessageManager.Show(this.ParentForm, param, success);
                 SessionManager.ProcessTokenLost(param);
@@ -3394,6 +3524,16 @@ namespace HIS.Desktop.Plugins.TrackingCreate
             {
                 checksign = true;
                 this.positionHandleControl = -1;
+                bool IsValid = true;
+                IsValid = (bool)icdProcessor.ValidationIcd(this.ucIcd);
+                IsValid = (bool)this.subIcdProcessor.GetValidate(this.ucSecondaryIcd) && IsValid;
+                IsValid = (bool)this.subIcdYhctProcessor.GetValidate(this.ucSecondaryIcdYhct) && IsValid;
+
+                IsValid = (bool)this.icdYhctProcessor.ValidationIcd(this.ucIcdYhct) && IsValid;
+                IsValid = IsValid && CheckICDPb();
+
+                if (!IsValid)
+                    return;
                 if (!dxValidationProvider1.Validate())
                     return;
 
@@ -3417,9 +3557,11 @@ namespace HIS.Desktop.Plugins.TrackingCreate
                 {
                     GetDataToSave();
 
+                    if (!CheckBeforeCallApiUpdate())
+                        return;
                     trackingOutSave = new HIS_TRACKING();
                     trackingOutSave = new BackendAdapter(param).Post<HIS_TRACKING>(HisRequestUriStore.HIS_TRACKING_CREATE, ApiConsumers.MosConsumer, this.trackingSDOs, param);
-                    WaitingManager.Hide();
+                    WaitingManager.Show();
                     if (trackingOutSave != null)
                     {
                         success = true;
@@ -3451,10 +3593,12 @@ namespace HIS.Desktop.Plugins.TrackingCreate
                 else if (this.action == GlobalVariables.ActionEdit)
                 {
                     GetDataToSave();
+                    if (!CheckBeforeCallApiUpdate())
+                        return;
                     //Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData("api/HisTracking/Update this.trackingSDOs: ", this.trackingSDOs));
                     trackingOutSave = new HIS_TRACKING();
                     trackingOutSave = new BackendAdapter(param).Post<HIS_TRACKING>(HisRequestUriStore.HIS_TRACKING_UPDATE, ApiConsumers.MosConsumer, this.trackingSDOs, param);
-                    WaitingManager.Hide();
+                    WaitingManager.Show();
                     if (trackingOutSave != null)
                     {
                         success = true;
@@ -3483,7 +3627,108 @@ namespace HIS.Desktop.Plugins.TrackingCreate
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
+        private bool CheckBeforeCallApiUpdate()
+        {
+            bool result = true;
+            try
+            {
+                if (trackingCreateOptionCFG == "2")
+                {
+                    if (StartTimeMustBeGreaterThanInstructionTime == "1" || StartTimeMustBeGreaterThanInstructionTime == "2")
+                    {
+                        WaitingManager.Hide();
+                        HIS_SERVICE_REQ minStartTime = null;
+                        HIS_SERVICE_REQ minFinishTime = null;
+                        if (trackingSDOs.ServiceReqs != null && trackingSDOs.ServiceReqs.Count > 0)
+                        {
+                            minStartTime = rsServiceReq.Where(o => (StartTimeMustBeGreaterThanInstructionTime == "2" ? !new List<long>() { IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__DONTT, IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__DONK, IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__DONDT }.Contains(o.SERVICE_REQ_TYPE_ID) : true) && trackingSDOs.ServiceReqs.Exists(p => p.ServiceReqId == o.ID) && o.START_TIME != null).OrderBy(o => o.START_TIME).ThenBy(o => o.ID).FirstOrDefault();
+                            minFinishTime = rsServiceReq.Where(o => (StartTimeMustBeGreaterThanInstructionTime == "2" ? !new List<long>() { IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__DONTT, IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__DONK, IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__DONDT }.Contains(o.SERVICE_REQ_TYPE_ID) : true) && trackingSDOs.ServiceReqs.Exists(p => p.ServiceReqId == o.ID) && o.FINISH_TIME != null).OrderBy(o => o.FINISH_TIME).ThenBy(o => o.ID).FirstOrDefault();
+                        }
+                        if (trackingSDOs.UsedForServiceReqIds != null && trackingSDOs.UsedForServiceReqIds.Count > 0)
+                        {
+                            var tmpMinSt = rsServiceReqTab2.Where(o => (StartTimeMustBeGreaterThanInstructionTime == "2" ? !new List<long>() { IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__DONTT, IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__DONK, IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__DONDT }.Contains(o.SERVICE_REQ_TYPE_ID) : true) && trackingSDOs.UsedForServiceReqIds.Contains(o.ID) && o.START_TIME != null).OrderBy(o => o.START_TIME).ThenBy(o => o.ID).FirstOrDefault();
+                            minStartTime = minStartTime != null && tmpMinSt.START_TIME > minStartTime.START_TIME ? minStartTime : tmpMinSt;
+                            var tmpMinFn = rsServiceReqTab2.Where(o => (StartTimeMustBeGreaterThanInstructionTime == "2" ? !new List<long>() { IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__DONTT, IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__DONK, IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__DONDT }.Contains(o.SERVICE_REQ_TYPE_ID) : true) && trackingSDOs.UsedForServiceReqIds.Contains(o.ID) && o.FINISH_TIME != null).OrderBy(o => o.FINISH_TIME).ThenBy(o => o.ID).FirstOrDefault();
+                            minFinishTime = minFinishTime != null && tmpMinFn.FINISH_TIME > minFinishTime.FINISH_TIME ? minFinishTime : tmpMinFn;
+                        }
+                        HIS_SERVICE_REQ minData = minFinishTime;
+                        bool IsStartTime = false;
+                        if ((minStartTime != null ? minStartTime.START_TIME : Int64.MaxValue) < (minFinishTime != null ? minFinishTime.FINISH_TIME : Int64.MaxValue))
+                        {
+                            minData = minStartTime; IsStartTime = true;
+                        }
+                        if (minData != null && trackingSDOs.Tracking.TRACKING_TIME > (IsStartTime ? minData.START_TIME : minData.FINISH_TIME) && DevExpress.XtraEditors.XtraMessageBox.Show(string.Format("Thời gian tờ điều trị lớn hơn thời gian bắt đầu {0} y lệnh {1}.", Inventec.Common.DateTime.Convert.TimeNumberToTimeString(IsStartTime ? minData.START_TIME ?? 0 : minData.FINISH_TIME ?? 0), (IsStartTime ? minData.SERVICE_REQ_CODE : minData.SERVICE_REQ_CODE)), "Thông báo") == DialogResult.OK)
+                        {
+                            result = false;
+                        }
 
+                    }
+                    if (result && (ASSIGN_SERVICE_SIMULTANEITY_OPTION == "1" || ASSIGN_SERVICE_SIMULTANEITY_OPTION == "2"))
+                    {
+                        List<HIS_SERVICE_REQ> lstServiceReq = new List<HIS_SERVICE_REQ>();
+                        if (trackingSDOs.ServiceReqs != null && trackingSDOs.ServiceReqs.Count > 0)
+                        {
+                            lstServiceReq.AddRange(rsServiceReq.Where(o => trackingSDOs.ServiceReqs.Exists(p => p.ServiceReqId == o.ID)));
+                        }
+                        if (trackingSDOs.UsedForServiceReqIds != null && trackingSDOs.UsedForServiceReqIds.Count > 0)
+                        {
+                            lstServiceReq.AddRange(rsServiceReqTab2.Where(o => trackingSDOs.UsedForServiceReqIds.Exists(p => p == o.ID)));
+                        }
+                        if (lstServiceReq != null && lstServiceReq.Count > 0)
+                        {
+                            CommonParam param = new CommonParam();
+                            HisServiceReqCheckSereTimesSDO sdo = new HisServiceReqCheckSereTimesSDO();
+                            sdo.TreatmentId = this.treatmentId;
+                            sdo.Loginnames = lstServiceReq.Select(o => o.REQUEST_LOGINNAME).Distinct().ToList();
+                            sdo.SereTimes = new List<long> { trackingSDOs.Tracking.TRACKING_TIME };
+                            Inventec.Common.Logging.LogSystem.Debug("HisServiceReqCheckSereTimesSDO:" + LogUtil.TraceData("HisServiceReqCheckSereTimesSDO", sdo));
+                            bool rs = new BackendAdapter(param).Post<bool>("/api/HisServiceReq/CheckSereTimes", ApiConsumers.MosConsumer, sdo, param);
+                            if (!rs)
+                            {
+                                WaitingManager.Hide();
+                                if (ASSIGN_SERVICE_SIMULTANEITY_OPTION == "1")
+                                {
+                                    MessageManager.Show(this, param, rs);
+                                    result = false;
+                                }
+                                else
+                                {
+                                    result = XtraMessageBox.Show(this, param.GetMessage() + "Bạn có muốn tiếp tục?", "Thông Báo", MessageBoxButtons.YesNo) == DialogResult.Yes;
+
+                                }
+                            }
+                        }
+                    }
+                    if (result && ServiceReqIcdOption == "1")
+                    {
+                        WaitingManager.Hide();
+                        if (Encoding.UTF8.GetByteCount((trackingSDOs.Tracking.ICD_CODE ?? "") + (trackingSDOs.Tracking.ICD_SUB_CODE ?? "")) > 100 && XtraMessageBox.Show(this, "Mã chẩn đoán phụ nhập quá 100 ký tự", "Thông Báo", MessageBoxButtons.OK) == DialogResult.OK)
+                            result = false;
+                        if (result && Encoding.UTF8.GetByteCount((trackingSDOs.Tracking.TRADITIONAL_ICD_CODE ?? "") + (trackingSDOs.Tracking.TRADITIONAL_ICD_SUB_CODE ?? "")) > 255 && XtraMessageBox.Show(this, "Mã chẩn đoán YHCT phụ nhập quá 255 ký tự", "Thông Báo", MessageBoxButtons.OK) == DialogResult.OK)
+                            result = false;
+                        if (result && Encoding.UTF8.GetByteCount((trackingSDOs.Tracking.ICD_NAME ?? "") + (trackingSDOs.Tracking.ICD_TEXT ?? "")) > 1500 && XtraMessageBox.Show(this, "Tên chẩn đoán phụ nhập quá 1500 ký tự", "Thông Báo", MessageBoxButtons.OK) == DialogResult.OK)
+                            result = false;
+                        if (result && (IsCheckSubIcdExceedLimit == "1" || IsCheckSubIcdExceedLimit == "2") && !string.IsNullOrEmpty(trackingSDOs.Tracking.ICD_SUB_CODE) && trackingSDOs.Tracking.ICD_SUB_CODE.Split(new string[] { ";" }, StringSplitOptions.RemoveEmptyEntries).Count() > 12)
+                        {
+                            if (IsCheckSubIcdExceedLimit == "1")
+                            {
+                                XtraMessageBox.Show(this, "Chẩn đoán phụ nhập quá 12 mã bệnh. Vui lòng kiểm tra lại.", "Thông Báo", MessageBoxButtons.OK);
+                                result = false;
+                            }
+                            else if (XtraMessageBox.Show(this, "Chẩn đoán phụ nhập quá 12 mã bệnh. Bạn có muốn tiếp tục?", "Thông Báo", MessageBoxButtons.YesNo) != DialogResult.Yes)
+                                result = false;
+                        }
+
+
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+            return result;
+        }
         private void txtContent_KeyUp(object sender, KeyEventArgs e)
         {
             try

@@ -31,7 +31,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="AutoMapper">
-      <HintPath>..\..\..\..\FE\YTE\DESKTOP\HIS\ReferencedAssemblies\AutoMapper.dll</HintPath>
+      <HintPath>..\..\..\..\..\histest\HISTEST-NEW\histest\x64\ReferencedAssemblies\AutoMapper.dll</HintPath>
     </Reference>
     <Reference Include="IMSys.DbConfig.HIS_RS">
       <HintPath>..\..\..\..\LIB\IMSys.DbConfig\IMSys.DbConfig.HIS_RS\IMSys.DbConfig.HIS_RS.dll</HintPath>
@@ -88,7 +88,7 @@
       <HintPath>..\..\..\..\LIB\MOS\MOS.LibraryHein.Bhyt.dll</HintPath>
     </Reference>
     <Reference Include="MPS.Processor.Mps000470.PDO">
-      <HintPath>..\MPS.Processor.Mps000470.PDO\bin\Debug\MPS.Processor.Mps000470.PDO.dll</HintPath>
+      <HintPath>..\..\..\..\..\histest\HISTEST-NEW\histest\x64\ReferencedAssemblies\MPS.Processor.Mps000470.PDO.dll</HintPath>
     </Reference>
     <Reference Include="MPS.ProcessorBase">
       <HintPath>..\..\..\..\LIB\MPSv2\MPS.ProcessorBase\MPS.ProcessorBase.dll</HintPath>
@@ -110,7 +110,7 @@
     <Compile Include="TestLisResultADO.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\FE\YTE\DESKTOP\HIS\HIS.Desktop.ApiConsumer\HIS.Desktop.ApiConsumer.csproj">
+    <ProjectReference Include="..\..\..\HIS\HIS.Desktop.ApiConsumer\HIS.Desktop.ApiConsumer.csproj">
       <Project>{861bfedb-026f-4b6f-a3cf-32843ae8c03d}</Project>
       <Name>HIS.Desktop.ApiConsumer</Name>
     </ProjectReference>

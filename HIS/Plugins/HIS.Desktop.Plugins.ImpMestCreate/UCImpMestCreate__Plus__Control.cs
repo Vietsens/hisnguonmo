@@ -243,15 +243,15 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                                 //    _result = true;
                                 //}
                             }
-                            if (txtSoDangKy.Text != this.currentMedicine.MEDICINE_REGISTER_NUMBER)
+                            if (txtSoDangKy.Text != (this.currentMedicine.MEDICINE_REGISTER_NUMBER??""))
                             {
                                 error_warning += string.Format(" số đăng ký là {0},", this.currentMedicine.MEDICINE_REGISTER_NUMBER);
                             }
-                            if (txtPackingJoinBid.Text != this.currentMedicine.PACKING_TYPE_NAME)
+                            if (txtPackingJoinBid.Text != (this.currentMedicine.PACKING_TYPE_NAME??""))
                             {
                                 error_warning += string.Format(" quy cách đóng gói là {0},", this.currentMedicine.PACKING_TYPE_NAME);
                             }
-                            if (txtHeinServiceBidMateType.Text != this.currentMedicine.HEIN_SERVICE_BHYT_NAME)
+                            if (txtHeinServiceBidMateType.Text != (this.currentMedicine.HEIN_SERVICE_BHYT_NAME??""))
                             {
                                 error_warning += string.Format(" tên BHYT là {0},", this.currentMedicine.HEIN_SERVICE_BHYT_NAME);
                             }
@@ -273,6 +273,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                                 }
                                 error_warning = "";
                             }
+                            else _result = true;
                         }
                         else _result = true;
 
@@ -286,7 +287,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                             {
                                 error_warning += string.Format(" giá sau VAT = {0},", _giaLanTruoc);
                             }
-                            if (txtSoDangKy.Text != this.currentMaterial.MATERIAL_REGISTER_NUMBER)
+                            if (txtSoDangKy.Text != (this.currentMaterial.MATERIAL_REGISTER_NUMBER??""))
                             {
                                 error_warning += string.Format(" số đăng ký là {0},", this.currentMaterial.MATERIAL_REGISTER_NUMBER);
                             }
@@ -307,6 +308,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                                 }
                                 error_warning = "";
                             }
+                            else _result = true;
                         }
                         else _result = true;
 
@@ -475,7 +477,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
 
         private bool CheckDocumentNumberV2(string _document, string kyHieuHoaDon)
         {
-            bool result = false;
+            bool result = true;
             try
             {
                 kyHieuHoaDon = String.IsNullOrWhiteSpace(kyHieuHoaDon) ? "" : kyHieuHoaDon.Trim();
@@ -522,13 +524,14 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                                 if (DevExpress.XtraEditors.XtraMessageBox.Show(mess, Base.ResourceMessageManager.TieuDeCuaSoThongBaoLaThongBao, System.Windows.Forms.MessageBoxButtons.YesNo) != System.Windows.Forms.DialogResult.Yes)
                                 {
                                     txtDocumentNumber.Focus();
+                                    result = false;
                                 }
                             }
                             else
                             {
                                 string mess = string.Format("Đã tồn tại mã phiếu nhập '{0}' có số chứng từ '{1}', Không thể nhập nhà cung cấp với số chứng từ này", string.Join(",", expMests), _document);
                                 DevExpress.XtraEditors.XtraMessageBox.Show(mess, Base.ResourceMessageManager.TieuDeCuaSoThongBaoLaThongBao);
-                                result = true;
+                                result = false;
                             }
                         }
                         else if (this.IsShowMessDocument)

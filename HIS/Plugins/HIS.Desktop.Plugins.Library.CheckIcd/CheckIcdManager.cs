@@ -43,9 +43,9 @@ namespace HIS.Desktop.Plugins.Library.CheckIcd
             {
                 this.delegateRefeshIcd = delegateRefeshIcd;
                 this.treatment = treatment;
-                this.genderList = BackendDataWorker.Get<HIS_GENDER>().ToList();
-                this.ageTypeList = BackendDataWorker.Get<HIS_AGE_TYPE>().ToList();
-                this.icdList = BackendDataWorker.Get<V_HIS_ICD>().ToList();
+                this.genderList = BackendDataWorker.Get<HIS_GENDER>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE).ToList();
+                this.ageTypeList = BackendDataWorker.Get<HIS_AGE_TYPE>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE).ToList();
+                this.icdList = BackendDataWorker.Get<V_HIS_ICD>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE).ToList();
             }
             catch (Exception ex)
             {
@@ -56,7 +56,7 @@ namespace HIS.Desktop.Plugins.Library.CheckIcd
         public bool ProcessCheckIcd(string icdCodes, string icdSubCodes, ref string MessageError, bool IsCheck = false)
         {
             bool rs = true;
-            bool go = true; 
+            bool go = true;
             try
             {
                 if (treatment == null)
@@ -68,7 +68,7 @@ namespace HIS.Desktop.Plugins.Library.CheckIcd
                 List<string> listIcdTotal = new List<string>();
                 List<string> listIcdCodeTre = new List<string>();
                 List<string> listIcdSubCodeTre = new List<string>();
-               
+
                 if (!string.IsNullOrEmpty(icdSubCodes))
                     listIcdSubCode.AddRange(icdSubCodes.Split(Seperator.ToCharArray(), StringSplitOptions.RemoveEmptyEntries).ToList());
                 listIcdTotal.AddRange(listIcdSubCode);
@@ -186,7 +186,6 @@ namespace HIS.Desktop.Plugins.Library.CheckIcd
         public bool ProcessCheckIcd(string icdCodes, string icdSubCodes, ref string MessageError, bool IsCheck = false, bool IsSave = false)
         {
             bool rs = true;
-            bool go = true;
             try
             {
                 if (treatment == null)
@@ -220,6 +219,8 @@ namespace HIS.Desktop.Plugins.Library.CheckIcd
                     listIcdCode.AddRange(icdCodes.Split(Seperator.ToCharArray(), StringSplitOptions.RemoveEmptyEntries).ToList());
                 listIcdTotal.AddRange(listIcdCode);
                 listIcdTotal = listIcdTotal.Distinct().ToList();
+                bool hasError = false;
+                Dictionary<string, bool> dicIsCheck = new Dictionary<string, bool>();
                 foreach (var icd in listIcdTotal)
                 {
                     var item = icdList.FirstOrDefault(o => o.ICD_CODE.Equals(icd));
@@ -317,7 +318,7 @@ namespace HIS.Desktop.Plugins.Library.CheckIcd
                         }
                     }
                     #endregion
-                    if (item.CHECK_SAME_ICD_GROUP == 1 && go == true && IsSave == true)
+                    if (item.CHECK_SAME_ICD_GROUP == 1 && IsSave == true)
                     {
                         if (listIcdTotal != null && listIcdTotal.Count > 0)
                         {
@@ -327,16 +328,32 @@ namespace HIS.Desktop.Plugins.Library.CheckIcd
                                 List<string> lstICD = icdTreatment.Where(i => i.ICD_GROUP_ID == item.ICD_GROUP_ID).Where(i => i.ICD_CODE != icd).Select(i => i.ICD_CODE).ToList();
                                 if (lstICD.Count > 0)
                                 {
-                                    go = false;
+                                    if (dicIsCheck.ContainsKey(item.ICD_CODE) && dicIsCheck[item.ICD_CODE])
+                                    {
+                                        continue;
+                                    }
                                     IcdCodeError = item.ICD_CODE;
-                                    MessageError = String.Format("Mã bệnh {0} cùng nhóm {1} với mã bệnh {2} đã dùng trong đợt điều trị", string.Join(",", lstICD), item.ICD_GROUP_NAME, IcdCodeError);
-                                    return false;
+                                    //MessageError += String.Format("Mã bệnh {0} cùng nhóm {1} với mã bệnh {2} đã dùng trong đợt điều trị.", string.Join(",", lstICD), item.ICD_GROUP_NAME, IcdCodeError);
+                                    MessageError += String.Format("Mã bệnh {0} cùng nhóm {1} với mã bệnh {2} đã dùng trong đợt điều trị.", IcdCodeError, item.ICD_GROUP_NAME, string.Join(",", lstICD));
+                                    hasError = true;
+                                    foreach (var _i in lstICD)
+                                    {
+                                        if (!dicIsCheck.ContainsKey(_i))
+                                        {
+                                            dicIsCheck[_i] = true;
+                                        }
+                                    }
                                 }
                             }
                         }
                     }
-
                 }
+                MessageError = MessageError.Trim();
+                if (MessageError.EndsWith("."))
+                {
+                    MessageError = MessageError.TrimEnd('.');
+                }
+                if (hasError) return false;
             }
             catch (Exception ex)
             {

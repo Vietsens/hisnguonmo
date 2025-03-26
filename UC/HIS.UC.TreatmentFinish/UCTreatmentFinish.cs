@@ -1517,8 +1517,14 @@ namespace HIS.UC.TreatmentFinish.Run
                         treatmentFinishSDO.TranPatiTechId = this.Treatment.TRAN_PATI_TECH_ID;
                         treatmentFinishSDO.TransferOutMediOrgCode = this.Treatment.MEDI_ORG_CODE;
                         treatmentFinishSDO.TransferOutMediOrgName = this.Treatment.MEDI_ORG_NAME;
-                        treatmentFinishSDO.ClinicalNote = this.Treatment.CLINICAL_NOTE;
-                        treatmentFinishSDO.SubclinicalResult = this.Treatment.SUBCLINICAL_RESULT;
+                        HisTreatmentExtFilter filter = new HisTreatmentExtFilter();
+                        filter.TREATMENT_ID = Treatment.ID;
+                        var treatmentExt = new BackendAdapter(new CommonParam()).Get<List<HIS_TREATMENT_EXT>>("api/HisTreatmentExt/Get", ApiConsumers.MosConsumer, filter, null);
+                        if (treatmentExt != null)
+                        {
+                            treatmentFinishSDO.ClinicalNote = treatmentExt[0].CLINICAL_NOTE;
+                            treatmentFinishSDO.SubclinicalResult = treatmentExt[0].SUBCLINICAL_RESULT;
+                        }
                         treatmentFinishSDO.PatientCondition = this.Treatment.PATIENT_CONDITION;
                         treatmentFinishSDO.TransportVehicle = this.Treatment.TRANSPORT_VEHICLE;
                         treatmentFinishSDO.Transporter = this.Treatment.TRANSPORTER;
@@ -1529,6 +1535,8 @@ namespace HIS.UC.TreatmentFinish.Run
                         treatmentFinishSDO.IsHasAupopsy = this.Treatment.IS_HAS_AUPOPSY;
                         treatmentFinishSDO.DeathCauseId = this.Treatment.DEATH_CAUSE_ID;
                         treatmentFinishSDO.DeathWithinId = this.Treatment.DEATH_WITHIN_ID;
+                        treatmentFinishSDO.HospitalizeReasonName = this.Treatment.HOSPITALIZE_REASON_NAME;
+                        treatmentFinishSDO.HospitalizeReasonCode = this.Treatment.HOSPITALIZE_REASON_CODE;
                         if (this.currentTreatmentEndTypeExt.WorkPlaceId == null)
                         {
                             if (!String.IsNullOrWhiteSpace(this.Treatment.TDL_PATIENT_WORK_PLACE_NAME))
@@ -1813,7 +1821,7 @@ namespace HIS.UC.TreatmentFinish.Run
                     chkAutoPrintGHK.Enabled = chkSignGHK.Enabled = false;
                     chkAutoPrintGHK.Checked = chkSignGHK.Checked = false;
 
-                    CloseTreatment.FormTransfer FormTransfer = new CloseTreatment.FormTransfer(treatmentEndInputADO);
+                    CloseTreatment.FormTransfer FormTransfer = new CloseTreatment.FormTransfer(treatmentEndInputADO, treatmentFinishInitADO.WorkingRoomId ?? 0);
                     FormTransfer.MyGetData = TranPatiDataTreatmentFinish;
                     FormTransfer.ShowDialog();
                 }
@@ -2093,10 +2101,12 @@ namespace HIS.UC.TreatmentFinish.Run
                 result.FatherName = (treatmentFinishSDO != null && !string.IsNullOrEmpty(treatmentFinishSDO.FatherName)) ? treatmentFinishSDO.FatherName : null;
                 result.TransporterLoginnames = (treatmentFinishSDO != null && !string.IsNullOrEmpty(treatmentFinishSDO.TransporterLoginnames)) ? treatmentFinishSDO.TransporterLoginnames : null;
                 result.TreatmentMethod = (treatmentFinishSDO != null && treatmentFinishSDO.TreatmentMethod != null) ? treatmentFinishSDO.TreatmentMethod : null;
-                if(result.TreatmentEndTypeId == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_END_TYPE.ID__CHUYEN && (string.IsNullOrEmpty(result.ClinicalNote) || string.IsNullOrEmpty(result.TreatmentDirection) || string.IsNullOrEmpty(result.TreatmentMethod) && string.IsNullOrEmpty(result.TransportVehicle) || (string.IsNullOrEmpty(result.TransporterLoginnames) && string.IsNullOrEmpty(result.Transporter)) || string.IsNullOrEmpty(result.TransferOutMediOrgCode) || !result.TranPatiReasonId.HasValue || !result.TranPatiFormId.HasValue))
-                {
-
-                }
+                result.HospitalizeReasonCode = (treatmentFinishSDO != null && treatmentFinishSDO.HospitalizeReasonCode != null) ? treatmentFinishSDO.HospitalizeReasonCode : null;
+                result.HospitalizeReasonName = (treatmentFinishSDO != null && treatmentFinishSDO.HospitalizeReasonName != null) ? treatmentFinishSDO.HospitalizeReasonName : null;
+                result.SurgeryName = (treatmentFinishSDO != null && !string.IsNullOrEmpty(treatmentFinishSDO.SurgeryName)) ? treatmentFinishSDO.SurgeryName : null;
+                result.SurgeryBeginTime = (treatmentFinishSDO != null && treatmentFinishSDO.SurgeryBeginTime != null) ? treatmentFinishSDO.SurgeryBeginTime : null;
+                result.SurgeryEndTime = (treatmentFinishSDO != null && treatmentFinishSDO.SurgeryEndTime != null) ? treatmentFinishSDO.SurgeryEndTime : null;
+                result.UsedMedicine = (treatmentFinishSDO != null && treatmentFinishSDO.UsedMedicine != null) ? treatmentFinishSDO.UsedMedicine : null;
                 Inventec.Common.Logging.LogSystem.Debug("GetDataOutput____" + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => result), result));
             }
             catch (Exception ex)

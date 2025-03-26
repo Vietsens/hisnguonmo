@@ -192,7 +192,6 @@ Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture()
                 this.lcBankInfo.Text = Inventec.Common.Resource.Get.Value("frmHisBranch.lcBankInfo.Text",
 Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
 
-
                 this.lciBranchCode.Text = Inventec.Common.Resource.Get.Value("frmHisBranch.lciBranchCode.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.lciBranchName.Text = Inventec.Common.Resource.Get.Value("frmHisBranch.lciBranchName.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 //this.lciHeinMediOrgCode.Text = Inventec.Common.Resource.Get.Value("frmHisBranch.lciHeinMediOrgCode.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
@@ -298,6 +297,7 @@ Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture()
                 dicOrderTabIndexControl.Add("txtPhone", 22);
                 dicOrderTabIndexControl.Add("txtPhone", 23);
                 dicOrderTabIndexControl.Add("chkUseBranchTime", 24);
+                dicOrderTabIndexControl.Add("chkPay", 24);
 
 
 
@@ -676,6 +676,15 @@ Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture()
                     txtTheBrankCode.Text = data.THE_BRANCH_CODE;
                     cboManager.EditValue = data.DIRECTOR_LOGINNAME;
 
+                    if (data.IS_WARNING_WRONG_ROUTE_FEE == 1)
+                    {
+                        chkPay.Checked = true;
+                    }
+                    else
+                    {
+                        chkPay.Checked = false;
+                    }
+
                     if (data.IS_USE_BRANCH_TIME == 1)
                     {
                         chkUseBranchTime.CheckState = CheckState.Checked;
@@ -737,8 +746,11 @@ Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture()
                     foreach (DevExpress.XtraLayout.BaseLayoutItem item in lcEditorInfo.Items)
                     {
                         DevExpress.XtraLayout.LayoutControlItem lci = item as DevExpress.XtraLayout.LayoutControlItem;
-                        if (lci != null && lci.Control != null && lci.Control is BaseEdit)
+                        if (lci != null && lci.Control != null && lci.Control is BaseEdit )
                         {
+                            if (lci.Control is DevExpress.XtraEditors.CheckEdit)
+                                continue;
+
                             DevExpress.XtraEditors.BaseEdit fomatFrm = lci.Control as DevExpress.XtraEditors.BaseEdit;
 
                             fomatFrm.ResetText();
@@ -747,7 +759,7 @@ Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture()
                     }
                     chkUseBranchTime.CheckState = CheckState.Unchecked;
                 }
-                catch (Exception ex)
+                catch (Exception ex)     
                 {
                     Inventec.Common.Logging.LogSystem.Warn(ex);
                 }
@@ -961,6 +973,15 @@ Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture()
                 }
                 currentDTO.BANK_INFO = txtBankInfo.Text != null ? txtBankInfo.Text.Trim() : null;
                 currentDTO.THE_BRANCH_CODE = txtTheBrankCode.Text != null ? txtTheBrankCode.Text.Trim() : null;
+
+                if (chkPay.Checked)
+                {
+                    currentDTO.IS_WARNING_WRONG_ROUTE_FEE = 1;
+                }
+                else
+                {
+                    currentDTO.IS_WARNING_WRONG_ROUTE_FEE = null;
+                }
 
                 if (chkUseBranchTime.Checked)
                 {
@@ -2835,6 +2856,19 @@ Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture()
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
 
+        }
+
+        private void txtHeinLevelCode_TextChanged(object sender, EventArgs e)     
+        {
+            if (txtHeinLevelCode.Text == "1" || txtHeinLevelCode.Text == "2")
+            {
+                chkPay.Enabled = true;
+            }
+            else
+            {
+                chkPay.Enabled = false;
+                chkPay.Checked = false;
+            }
         }
     }
 }

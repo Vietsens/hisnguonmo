@@ -59,7 +59,7 @@ namespace HIS.Desktop.Plugins.CallPatientVer5.CallPatient
                         this.module = (Inventec.Desktop.Common.Modules.Module)item;
                     }
                 }
-                return new frmChooseRoomForWaitingScreen(module);
+                return new frmDisplayOption(module);
             }
             catch (Exception ex)
             {

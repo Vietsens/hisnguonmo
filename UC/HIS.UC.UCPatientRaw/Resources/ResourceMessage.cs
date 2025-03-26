@@ -8,7 +8,7 @@ using Inventec.Desktop.Common.LibraryMessage;
 
 namespace HIS.UC.UCPatientRaw
 {
-    class ResourceMessage
+    public class ResourceMessage
     {
         internal static System.Resources.ResourceManager languageMessage = new System.Resources.ResourceManager("HIS.UC.UCPatientRaw.Resources.Message.Lang", System.Reflection.Assembly.GetExecutingAssembly());
 
@@ -204,7 +204,7 @@ namespace HIS.UC.UCPatientRaw
             }
         }
 
-        internal static string typeCodeFind__MaBN
+        public static string typeCodeFind__MaBN
         {
             get
             {
@@ -220,7 +220,7 @@ namespace HIS.UC.UCPatientRaw
             }
         }
 
-        internal static string typeCodeFind__MaBN_ToolTip
+        public static string typeCodeFind__MaBN_ToolTip
         {
             get
             {
@@ -236,7 +236,7 @@ namespace HIS.UC.UCPatientRaw
             }
         }
 
-        internal static string typeCodeFind__SoDT
+        public static string typeCodeFind__SoDT
         {
             get
             {
@@ -252,7 +252,7 @@ namespace HIS.UC.UCPatientRaw
             }
         }
 
-        internal static string typeCodeFind__SoDT_ToolTip
+        public static string typeCodeFind__SoDT_ToolTip
         {
             get
             {
@@ -269,7 +269,7 @@ namespace HIS.UC.UCPatientRaw
         }
 
 
-        internal static string typeCodeFind__MaHK
+        public static string typeCodeFind__MaHK
         {
             get
             {
@@ -285,7 +285,7 @@ namespace HIS.UC.UCPatientRaw
             }
         }
 
-        internal static string typeCodeFind__MaHK_ToolTip
+        public static string typeCodeFind__MaHK_ToolTip
         {
             get
             {
@@ -301,7 +301,7 @@ namespace HIS.UC.UCPatientRaw
             }
         }
 
-        internal static string typeCodeFind__MaCT
+        public static string typeCodeFind__MaCT
         {
             get
             {
@@ -317,7 +317,7 @@ namespace HIS.UC.UCPatientRaw
             }
         }
 
-        internal static string typeCodeFind__MaCT_ToolTip
+        public static string typeCodeFind__MaCT_ToolTip
         {
             get
             {
@@ -333,7 +333,7 @@ namespace HIS.UC.UCPatientRaw
             }
         }
 
-        internal static string typeCodeFind__SoThe
+        public static string typeCodeFind__SoThe
         {
             get
             {
@@ -348,7 +348,7 @@ namespace HIS.UC.UCPatientRaw
                 return "";
             }
         }
-        internal static string typeCodeFind__MaTV
+        public static string typeCodeFind__MaTV
         {
             get
             {
@@ -364,7 +364,7 @@ namespace HIS.UC.UCPatientRaw
             }
         }
 
-        internal static string typeCodeFind__SoThe_ToolTip
+        public static string typeCodeFind__SoThe_ToolTip
         {
             get
             {
@@ -380,7 +380,7 @@ namespace HIS.UC.UCPatientRaw
             }
         }
 
-        internal static string typeCodeFind__MaNV
+        public static string typeCodeFind__MaNV
         {
             get
             {
@@ -396,7 +396,7 @@ namespace HIS.UC.UCPatientRaw
             }
         }
 
-        internal static string typeCodeFind__MaNV_ToolTip
+        public static string typeCodeFind__MaNV_ToolTip
         {
             get
             {
@@ -412,7 +412,7 @@ namespace HIS.UC.UCPatientRaw
             }
         }
 
-        internal static string typeCodeFind__MaDT
+        public static string typeCodeFind__MaDT
         {
             get
             {
@@ -428,7 +428,7 @@ namespace HIS.UC.UCPatientRaw
             }
         }
 
-        internal static string typeCodeFind__MaDT_ToolTip
+        public static string typeCodeFind__MaDT_ToolTip
         {
             get
             {
@@ -444,7 +444,7 @@ namespace HIS.UC.UCPatientRaw
             }
         }
 
-        internal static string typeCodeFind__MaCMCC
+        public static string typeCodeFind__MaCMCC
         {
             get
             {
@@ -460,7 +460,7 @@ namespace HIS.UC.UCPatientRaw
             }
         }
 
-        internal static string typeCodeFind__MaCMCC_ToolTip
+        public static string typeCodeFind__MaCMCC_ToolTip
         {
             get
             {

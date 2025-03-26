@@ -49,10 +49,11 @@ namespace HIS.Desktop.Utility
         protected Inventec.Desktop.Common.Modules.Module currentModuleBase;
         List<string> HideControls { get; set; }
         string ModuleLink { get; set; }
+        string SubModuleLink { get; set; }
         protected List<ModuleControlADO> ModuleControls { get; set; }
         bool isAutoInitPrintTypeCfg = true;
         List<string> ExcludePrintTypeCode { get; set; }
-        Dictionary<string, string> dicOfNameOnClickPrintWithPrintTypeCfg { get; set; }             
+        Dictionary<string, string> dicOfNameOnClickPrintWithPrintTypeCfg { get; set; }
 
         string timerSessionKey = "";
 
@@ -89,38 +90,49 @@ namespace HIS.Desktop.Utility
             }
         }
 
+        public UserControlBase(string modulelink, string subModuleLink)
+           : this(null)
+        {
+            this.ModuleLink = modulelink;
+            this.SubModuleLink = subModuleLink;
+        }
+
         public void DisposeExt()
         {
             try
             {
-                Inventec.Common.Logging.LogAction.Debug(ModuleLink + ": Begin call DisposeExt.1");
+                string mlink = String.IsNullOrEmpty(SubModuleLink) ? ModuleLink : String.Format("{0}.{1}", ModuleLink, SubModuleLink);
+                Inventec.Common.Logging.LogAction.Debug(mlink + ": Begin call DisposeExt.1");
                 try
                 {
                     currentModuleBase = null;
                     HideControls = null;
-                    ModuleLink = "";
+                    //ModuleLink = "";
                     ModuleControls = null;
                     ExcludePrintTypeCode = null;
                     dicOfNameOnClickPrintWithPrintTypeCfg = null;
                     timerSessionKey = "";
                     watch = null;
-                                       
-                    Inventec.Common.Logging.LogSystem.Debug(this.ModuleLink + ": UserControlBase.DisposeAllControl.1");
+
+                    Inventec.Common.Logging.LogSystem.Debug(mlink + ": UserControlBase.DisposeAllControl.1");
                     DisposeAllControl(this);
-                    Inventec.Common.Logging.LogSystem.Debug(this.ModuleLink + ": UserControlBase.DisposeAllControl.2");
-                    // Force garbage collection.
-                    GC.Collect();
-                    // Wait for all finalizers to complete
-                    GC.WaitForPendingFinalizers();
-                    // Force garbage collection again.
-                    GC.Collect();
+                    Inventec.Common.Logging.LogSystem.Debug(mlink + ": UserControlBase.DisposeAllControl.2");
+                    if (String.IsNullOrEmpty(SubModuleLink))
+                    {
+                        // Force garbage collection.
+                        GC.Collect();
+                        // Wait for all finalizers to complete
+                        GC.WaitForPendingFinalizers();
+                        // Force garbage collection again.
+                        GC.Collect();
+                    }                    
                 }
                 catch (Exception exx)
                 {
                     Inventec.Common.Logging.LogSystem.Error(exx);
                 }
-                MemoryProcessor.CalculateMemoryRam((this.currentModuleBase != null ? this.currentModuleBase.ModuleLink : "") + "____Dung lượng RAM phần mềm HIS sau khi tắt tab user control module là: ");
-                Inventec.Common.Logging.LogAction.Debug(ModuleLink + ": End call DisposeExt.2");
+                MemoryProcessor.CalculateMemoryRam(mlink + "____Dung lượng RAM phần mềm HIS sau khi tắt tab user control module là: ");
+                Inventec.Common.Logging.LogAction.Debug(mlink + ": End call DisposeExt.2");
             }
             catch (Exception ex)
             {
@@ -166,17 +178,19 @@ namespace HIS.Desktop.Utility
             try
             {
                 var watch = System.Diagnostics.Stopwatch.StartNew();
-                Inventec.Common.Logging.LogSystem.Info(ModuleLink + ": UserControlBase.Dispose: disposing=" + disposing + ".1");
+                string mlink = String.IsNullOrEmpty(SubModuleLink) ? ModuleLink : String.Format("{0}.{1}", ModuleLink, SubModuleLink);
+
+                Inventec.Common.Logging.LogSystem.Info(mlink + ": UserControlBase.Dispose: disposing=" + disposing + ".1");
                 if (disposing && (components != null))
                 {
                     components.Dispose();
                 }
                 this.ProcessActionDisposeRegisted();
                 base.Dispose(disposing);
-                this.DisposeTimerByModuleLink(this.ModuleLink);
-                Inventec.Common.Logging.LogSystem.Info(ModuleLink + ": UserControlBase.Dispose: disposing=" + disposing + ".2");
+                this.DisposeTimerByModuleLink(ModuleLink);
+                Inventec.Common.Logging.LogSystem.Info(mlink + ": UserControlBase.Dispose: disposing=" + disposing + ".2");
                 watch.Stop();
-                Inventec.Common.Logging.LogAction.Info(String.Format("{0}____{1}____{2}____{3}____{4}____{5}____{6}____{7}", GlobalVariables.APPLICATION_CODE, GlobalString.VersionApp, (double)((double)watch.ElapsedMilliseconds / (double)1000), this.ModuleLink, "CloseModule", Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName(), StringUtil.GetIpLocal(), StringUtil.CustomerCode));
+                Inventec.Common.Logging.LogAction.Info(String.Format("{0}____{1}____{2}____{3}____{4}____{5}____{6}____{7}", GlobalVariables.APPLICATION_CODE, GlobalString.VersionApp, (double)((double)watch.ElapsedMilliseconds / (double)1000), mlink, "CloseModule", Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName(), StringUtil.GetIpLocal(), StringUtil.CustomerCode));
                 this.DisposeExt();
             }
             catch (Exception ex)
@@ -213,6 +227,7 @@ namespace HIS.Desktop.Utility
             try
             {
                 base.OnLoad(e);
+                string mlink = String.IsNullOrEmpty(SubModuleLink) ? ModuleLink : String.Format("{0}.{1}", ModuleLink, SubModuleLink);
                 LocalStorage.LocalData.GlobalVariables.HwndParent = this.Handle;
                 if (!String.IsNullOrEmpty(this.ModuleLink))
                 {
@@ -223,9 +238,9 @@ namespace HIS.Desktop.Utility
                     this.CreateThreadProcessSetFontTextControl();
                 }
 
-                MemoryProcessor.CalculateMemoryRam(this.ModuleLink + "____Dung lượng RAM phần mềm HIS khi mở tab user control module là:");
+                MemoryProcessor.CalculateMemoryRam(mlink + "____Dung lượng RAM phần mềm HIS khi mở tab user control module là:");
                 this.watch.Stop();
-                Inventec.Common.Logging.LogAction.Info(String.Format("{0}____{1}____{2}____{3}____{4}____{5}____{6}____{7}", GlobalVariables.APPLICATION_CODE, GlobalString.VersionApp, (double)((double)this.watch.ElapsedMilliseconds / (double)1000), this.ModuleLink, "OpenModule", Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName(), StringUtil.GetIpLocal(), StringUtil.CustomerCode));
+                Inventec.Common.Logging.LogAction.Info(String.Format("{0}____{1}____{2}____{3}____{4}____{5}____{6}____{7}", GlobalVariables.APPLICATION_CODE, GlobalString.VersionApp, (double)((double)this.watch.ElapsedMilliseconds / (double)1000), mlink, "OpenModule", Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName(), StringUtil.GetIpLocal(), StringUtil.CustomerCode));
             }
             catch (Exception ex)
             {

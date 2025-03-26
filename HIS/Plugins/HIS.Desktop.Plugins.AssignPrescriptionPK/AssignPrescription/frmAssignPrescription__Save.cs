@@ -37,6 +37,7 @@ using HIS.Desktop.Plugins.Library.PrintTreatmentFinish;
 using HIS.Desktop.Utility;
 using HIS.UC.Icd.ADO;
 using HIS.UC.MenuPrint.ADO;
+using HIS.UC.SecondaryIcd.ADO;
 using Inventec.Common.Adapter;
 using Inventec.Common.Logging;
 using Inventec.Common.ThreadCustom;
@@ -48,9 +49,11 @@ using MOS.SDO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.TextBox;
 
 namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
 {
@@ -407,6 +410,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                 Inventec.Common.Logging.LogSystem.Info("frmAssignPrescription.ProcessSaveData.1");
                 IsValidForSave = true;
                 bool valid = true;
+                ListExpMestMedicineAntibioticRequired = null;
                 this.positionHandleControl = -1;
                 this.resultDataPrescription = null;
                 List<HIS_SERVICE_REQ> lstserviceReqResult = null;
@@ -436,12 +440,80 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                     valid = valid && (bool)icdYhctProcessor.ValidationIcd(ucIcdYhct);
                 if (ucSecondaryIcdYhct != null)
                     valid = valid && subIcdYhctProcessor.GetValidate(ucSecondaryIcdYhct);
+                string codeIcd = "";
+                string nameIcd = "";
+                var icdValue = UcIcdGetValue() as UC.Icd.ADO.IcdInputADO;
+                if (icdValue != null)
+                {
+                    codeIcd = icdValue.ICD_CODE;
+                    nameIcd = icdValue.ICD_NAME;
+                }
+
+                var subIcd = UcSecondaryIcdGetValue() as SecondaryIcdDataADO;
+                if (subIcd != null)
+                {
+                    codeIcd += subIcd.ICD_SUB_CODE;
+                    nameIcd += subIcd.ICD_TEXT;
+                }
+                if (!string.IsNullOrEmpty(codeIcd) && codeIcd.Length > 100)
+                {
+                    IsValidForSave = false;
+                    XtraMessageBox.Show(string.Format("Mã chẩn đoán phụ nhập quá {0} ký tự", 100));
+                    return;
+                }
+
+                if (!string.IsNullOrEmpty(nameIcd) && Encoding.UTF8.GetByteCount(nameIcd) > 1500)
+                {
+                    IsValidForSave = false;
+                    XtraMessageBox.Show(string.Format("Tên chẩn đoán phụ nhập quá {0} ký tự", 1500));
+                    return;
+                }
+
+                string codeIcdYhct = "";
+                if (ucIcdYhct != null)
+                {
+                    var icdTranditional = icdYhctProcessor.GetValue(ucIcdYhct);
+                    if (icdTranditional != null && icdTranditional is UC.Icd.ADO.IcdInputADO)
+                    {
+                        codeIcdYhct = ((UC.Icd.ADO.IcdInputADO)icdTranditional).ICD_CODE;
+                    }
+                }
+                if (ucSecondaryIcdYhct != null)
+                {
+                    var subIcdTranditional = subIcdYhctProcessor.GetValue(ucSecondaryIcdYhct);
+                    if (subIcdTranditional != null && subIcdTranditional is SecondaryIcdDataADO)
+                    {
+                        codeIcdYhct += ((SecondaryIcdDataADO)subIcdTranditional).ICD_SUB_CODE;
+                    }
+                }
+                if (!string.IsNullOrEmpty(codeIcdYhct) && codeIcdYhct.Length > 255)
+                {
+                    IsValidForSave = false;
+                    XtraMessageBox.Show(string.Format("Mã chẩn đoán YHCT phụ nhập quá {0} ký tự", 255));
+                    return;
+                }
+
                 Inventec.Common.Logging.LogSystem.Info("frmAssignPrescription.ProcessSaveData.2");
                 bool isHasUcTreatmentFinish = ((!GlobalStore.IsTreatmentIn) && this.treatmentFinishProcessor != null && this.ucTreatmentFinish != null);
                 var treatUC = isHasUcTreatmentFinish ? treatmentFinishProcessor.GetDataOutput(this.ucTreatmentFinish) : null;
                 bool isHasTreatmentFinishChecked = (treatUC != null && treatUC.IsAutoTreatmentFinish);
                 if (isHasTreatmentFinishChecked && treatUC != null)
                 {
+                    if (subIcd != null && !string.IsNullOrEmpty(subIcd.ICD_SUB_CODE))
+                    {
+                        var subIcdList = subIcd.ICD_SUB_CODE.Split(new string[] { ";" }, StringSplitOptions.RemoveEmptyEntries).ToList();
+                        if (subIcdList != null && subIcdList.Count > 12)
+                        {
+                            if ((HisConfigCFG.IsCheckSubIcdExceedLimit == "1" && DevExpress.XtraEditors.XtraMessageBox.Show("Chẩn đoán phụ nhập quá 12 mã bệnh. Vui lòng kiểm tra lại",
+                         HIS.Desktop.LibraryMessage.MessageUtil.GetMessage(LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaCanhBao),
+                         MessageBoxButtons.OK) == DialogResult.OK) || (HisConfigCFG.IsCheckSubIcdExceedLimit == "2" && DevExpress.XtraEditors.XtraMessageBox.Show("Chẩn đoán phụ nhập quá 12 mã bệnh. Bạn có muốn tiếp tục?",
+                         HIS.Desktop.LibraryMessage.MessageUtil.GetMessage(LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaCanhBao),
+                         MessageBoxButtons.YesNo) == DialogResult.No))
+                            {
+                                return;
+                            }
+                        }
+                    }
                     if ((string.IsNullOrEmpty(currentTreatment.TREATMENT_METHOD) || string.IsNullOrEmpty(treatUC.TreatmentMethod)) && ((HisConfigCFG.RequiredTreatmentMethodOption == "1" && currentTreatment.TDL_TREATMENT_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__DTNOITRU && (treatUC.TreatmentEndTypeId == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_END_TYPE.ID__CHUYEN || treatUC.TreatmentEndTypeId == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_END_TYPE.ID__HEN || treatUC.TreatmentEndTypeId == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_END_TYPE.ID__RAVIEN || treatUC.TreatmentEndTypeId == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_END_TYPE.ID__XINRAVIEN || treatUC.TreatmentEndTypeId == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_END_TYPE.ID__CTCV)) || (HisConfigCFG.RequiredTreatmentMethodOption == "2" && (treatUC.TreatmentEndTypeExtId == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_END_TYPE_EXT.ID__NGHI_OM || ((currentTreatment.TDL_TREATMENT_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__DTNOITRU || currentTreatment.TDL_TREATMENT_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__DTNGOAITRU || currentTreatment.TDL_TREATMENT_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__DTBANNGAY) && (treatUC.TreatmentEndTypeId == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_END_TYPE.ID__CHUYEN || treatUC.TreatmentEndTypeId == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_END_TYPE.ID__HEN || treatUC.TreatmentEndTypeId == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_END_TYPE.ID__RAVIEN || treatUC.TreatmentEndTypeId == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_END_TYPE.ID__XINRAVIEN || treatUC.TreatmentEndTypeId == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_END_TYPE.ID__CTCV))))))
                     {
                         frmTreatmentMethod frm = new frmTreatmentMethod(TreatmentMethod, treatmentMethod =>
@@ -1017,6 +1089,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
 
                 if (success)
                 {
+                    LockByKeyConfig();
                     Thread PortI3 = new Thread(CallPortI3);
                     PortI3.Start();
                     PortI3.Join();
@@ -1030,6 +1103,23 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                 WaitingManager.Hide();
                 MessageManager.Show(this, paramCommon, false);
             }
+        }
+        private void LockByKeyConfig()
+        {
+
+            try
+            {
+                if (resultDataPrescription != null && HisConfigCFG.IsSaveButtonOption != "1")
+                {
+                    ChangeLockButtonWhileProcess(false);
+                    btnAdd.Enabled = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+
         }
         private bool CheckMustChooseSeviceExamOption(string KeyMustChooseSeviceExam)
         {

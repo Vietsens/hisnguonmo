@@ -48,6 +48,8 @@ using ApiConsumers = HIS.Desktop.ApiConsumer.ApiConsumers;
 using HIS.Desktop.Modules.Main;
 using HIS.Desktop.LocalStorage.ConfigCustomizaButton;
 using DevExpress.XtraEditors;
+using System.Threading.Tasks;
+using SDA.EFMODEL.DataModels;
 
 namespace HIS.Desktop.Modules.Login
 {
@@ -438,18 +440,6 @@ namespace HIS.Desktop.Modules.Login
             }
         }
 
-        private void LoadCommuneADOs()
-        {
-            try
-            {
-                var CommuneADOs = BackendDataWorkerSet.Set<HIS.Desktop.LocalStorage.BackendData.ADO.CommuneADO>(false, true);
-                LoadDataWorkerLog(ref i, 0, (CommuneADOs != null ? CommuneADOs.Count : 0), new HIS.Desktop.LocalStorage.BackendData.ADO.CommuneADO().GetType().ToString());
-            }
-            catch (Exception ex)
-            {
-                Inventec.Common.Logging.LogSystem.Error(ex);
-            }
-        }
         #endregion
         private void LoadServicePatys()
         {
@@ -468,7 +458,8 @@ namespace HIS.Desktop.Modules.Login
         {
             try
             {
-                var services = BackendDataWorkerSet.Set<MOS.EFMODEL.DataModels.V_HIS_SERVICE>();
+                var vservices = BackendDataWorkerSet.Set<MOS.EFMODEL.DataModels.V_HIS_SERVICE>();
+                var services = BackendDataWorkerSet.Set<MOS.EFMODEL.DataModels.HIS_SERVICE>();
                 LoadDataWorkerLog(ref i, 0, (services != null ? services.Count : 0), new MOS.EFMODEL.DataModels.V_HIS_SERVICE().GetType().ToString());
             }
             catch (Exception ex)
@@ -481,7 +472,8 @@ namespace HIS.Desktop.Modules.Login
         {
             try
             {
-                var serviceRooms = BackendDataWorkerSet.Set<MOS.EFMODEL.DataModels.V_HIS_SERVICE_ROOM>();
+                var vserviceRooms = BackendDataWorkerSet.Set<MOS.EFMODEL.DataModels.V_HIS_SERVICE_ROOM>();
+                var serviceRooms = BackendDataWorkerSet.Set<MOS.EFMODEL.DataModels.HIS_SERVICE_ROOM>();
                 LoadDataWorkerLog(ref i, 0, (serviceRooms != null ? serviceRooms.Count : 0), new MOS.EFMODEL.DataModels.V_HIS_SERVICE_ROOM().GetType().ToString());
             }
             catch (Exception ex)
@@ -508,6 +500,7 @@ namespace HIS.Desktop.Modules.Login
             try
             {
                 var icds = BackendDataWorkerSet.Set<MOS.EFMODEL.DataModels.HIS_ICD>();
+                var vicds = BackendDataWorkerSet.Set<MOS.EFMODEL.DataModels.V_HIS_ICD>();
                 LoadDataWorkerLog(ref i, 0, (icds != null ? icds.Count : 0), new MOS.EFMODEL.DataModels.HIS_ICD().GetType().ToString());
             }
             catch (Exception ex)
@@ -522,6 +515,20 @@ namespace HIS.Desktop.Modules.Login
             {
                 var useRooms = BackendDataWorkerSet.Set<MOS.EFMODEL.DataModels.V_HIS_USER_ROOM>();
                 LoadDataWorkerLog(ref i, 0, (useRooms != null ? useRooms.Count : 0), new MOS.EFMODEL.DataModels.V_HIS_USER_ROOM().GetType().ToString());
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void LoadServiceFollows()
+        {
+            try
+            {
+                var executeRooms = BackendDataWorkerSet.Set<MOS.EFMODEL.DataModels.HIS_SERVICE_FOLLOW>();
+                var vexecuteRooms = BackendDataWorkerSet.Set<MOS.EFMODEL.DataModels.V_HIS_SERVICE_FOLLOW>();
+                LoadDataWorkerLog(ref i, 0, (executeRooms != null ? executeRooms.Count : 0), new MOS.EFMODEL.DataModels.HIS_SERVICE_FOLLOW().GetType().ToString());
             }
             catch (Exception ex)
             {
@@ -568,67 +575,7 @@ namespace HIS.Desktop.Modules.Login
             }
         }
 
-        private void TheadProcessInitBackgroundData()
-        {
-            try
-            {
-                string isRunSyncDataFromDBCacheToRamAfterLogin = HIS.Desktop.LocalStorage.ConfigApplication.ConfigApplicationWorker.Get<string>(AppConfigKeys.CONFIG_KEY__HIS_DESKTOP_IS_AUTO_SYNC_DATA_IN_DB_CACHE_TO_RAM_AFTER_LOGIN);
 
-                if (isRunSyncDataFromDBCacheToRamAfterLogin == "1")
-                {
-                    Thread thread = new System.Threading.Thread(new ThreadStart(InitBackgroundData2));
-                    try
-                    {
-                        thread.Start();
-                    }
-                    catch (Exception ex)
-                    {
-                        Inventec.Common.Logging.LogSystem.Error(ex);
-                        thread.Abort();
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                LogSystem.Warn(ex);
-            }
-        }
-
-        private void InitBackgroundData2()
-        {
-            try
-            {
-                var watch1 = System.Diagnostics.Stopwatch.StartNew();
-                Inventec.Common.Logging.LogSystem.Debug("InitBackgroundData2. 1");
-                var moduleLinks = GlobalVariables.currentModuleRaws.Select(o => o.ModuleLink).ToArray();
-                if (moduleLinks.Contains("HIS.Desktop.Plugins.RegisterV2")
-                    || moduleLinks.Contains("HIS.Desktop.Plugins.Register")
-                    || moduleLinks.Contains("HIS.Desktop.Plugins.RegisterV3"))
-                {
-                    var province = BackendDataWorker.Get<SDA.EFMODEL.DataModels.V_SDA_PROVINCE>();
-                    var district = BackendDataWorker.Get<SDA.EFMODEL.DataModels.V_SDA_DISTRICT>();
-                    var commune = BackendDataWorker.Get<SDA.EFMODEL.DataModels.V_SDA_COMMUNE>();
-                    var ethnic = BackendDataWorker.Get<SDA.EFMODEL.DataModels.SDA_ETHNIC>();
-                    var national = BackendDataWorker.Get<SDA.EFMODEL.DataModels.SDA_NATIONAL>();
-                }
-
-                if (moduleLinks.Contains("HIS.Desktop.Plugins.AssignPrescriptionPK")
-                    || moduleLinks.Contains("HIS.Desktop.Plugins.AssignPrescriptionYHCT")
-                    || moduleLinks.Contains("HIS.Desktop.Plugins.AssignPrescriptionKidney"))
-                {
-                    var mety = BackendDataWorker.Get<MOS.EFMODEL.DataModels.V_HIS_MEDICINE_TYPE>();
-                    var maty = BackendDataWorker.Get<MOS.EFMODEL.DataModels.V_HIS_MATERIAL_TYPE>();
-                }
-
-                Inventec.Common.Logging.LogSystem.Debug("InitBackgroundData2. 2");
-                watch1.Stop();
-                Inventec.Common.Logging.LogAction.Info(String.Format("{0}____{1}____{2}____{3}____{4}____{5}____{6}____{7}", GlobalVariables.APPLICATION_CODE, GlobalString.VersionApp, (double)((double)watch1.ElapsedMilliseconds / (double)1000), "HIS.Desktop", "LoginApp:InitBackgroundData2", Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName(), StringUtil.GetIpLocal(), StringUtil.CustomerCode));
-            }
-            catch (Exception ex)
-            {
-                LogSystem.Warn(ex);
-            }
-        }
         #region ConnectSever
         private void SyncTimeFormServer()
         {
@@ -976,11 +923,11 @@ namespace HIS.Desktop.Modules.Login
                     LoadDataWorkerLog(ref i, 0, 1, "TaiDuLieuCauHinh");
                     ChoiceRoomForSessionLogin(isChangeBranch, isChangeLoginanme);//Kiem tra va chon phong lam viec
                     LoadDataWorkerLog(ref i, 0, 1, "InitDataCacheLocal");
-                    this.TheadProcessInitBackgroundData();
                     List<Action> methods = new List<Action>();
                     methods.Add(BackendDataWorker.InitDataCacheLocal);
                     methods.Add(LoadServiceRooms);
                     methods.Add(LoadUseRooms);
+                    methods.Add(LoadServiceFollows);
                     methods.Add(LoadServices);
                     methods.Add(LoadServicePatys);
                     methods.Add(LoadIcds);
@@ -1069,13 +1016,13 @@ namespace HIS.Desktop.Modules.Login
                 LoadDataWorkerLog(ref i, 0, 1, "TaiDuLieuCauHinh");
                 ChoiceRoomForSessionLogin();
                 LoadDataWorkerLog(ref i, 0, 1, "InitDataCacheLocal");
-                this.TheadProcessInitBackgroundData();
                 LoadDataWorkerLog(ref i, 0, 1, "methods");
                 List<Action> methods = new List<Action>();
                 methods.Add(BackendDataWorker.InitDataCacheLocal);
                 methods.Add(LoadServiceRooms);
                 methods.Add(LoadUseRooms);
                 methods.Add(LoadServices);
+                methods.Add(LoadServiceFollows);
                 methods.Add(LoadServicePatys);
                 methods.Add(LoadIcds);
                 methods.Add(LoadHeinMediOrgs);

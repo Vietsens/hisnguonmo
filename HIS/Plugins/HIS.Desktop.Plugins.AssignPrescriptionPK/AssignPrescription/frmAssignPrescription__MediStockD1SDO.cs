@@ -337,7 +337,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                 //TickIsAssignPres();
                 gridViewMediMaty.EndUpdate();
                 //Inventec.Common.Logging.LogSystem.Info(" RebuildMediMatyWithInControlContainer: " + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => dMediStock1s), dMediStock1s));
-               //LogSystem.Debug("RebuildMediMatyWithInControlContainer__Du lieu thuoc/vat tu____ " + (dMediStock1s != null ? dMediStock1s.Count : 0));
+                //LogSystem.Debug("RebuildMediMatyWithInControlContainer__Du lieu thuoc/vat tu____ " + (dMediStock1s != null ? dMediStock1s.Count : 0));
             }
             catch (Exception ex)
             {
@@ -709,20 +709,29 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                         if (mety != null)
                         {
                             this.currentMedicineTypeADOForEdit.IS_KIDNEY = mety.IS_KIDNEY;
-                            this.currentMedicineTypeADOForEdit.HTU_ID = mety.HTU_ID;
+                            if (mety.HTU_ID != null)
+                                currentMedicineTypeADOForEdit.HTU_IDs = new List<long>() { mety.HTU_ID ?? 0 };
                         }
                         else
                         {
                             this.currentMedicineTypeADOForEdit.IS_KIDNEY = null;
                         }
-                        if (currentMedicineTypeADOForEdit.HTU_ID != null)
+                        if (currentMedicineTypeADOForEdit.HTU_IDs != null)
                         {
-                            this.cboHtu.EditValue = currentMedicineTypeADOForEdit.HTU_ID;
+                            if (DataHtuList != null && DataHtuList.Count > 0)
+                            {
+                                DataHtuList.ForEach(o =>
+                                {
+                                    o.IsChecked = currentMedicineTypeADOForEdit.HTU_IDs.Exists(p => p == o.ID);
+                                });
+                                this.cboHtu.Text = string.Join(", ", DataHtuList.Where(o => o.IsChecked).Select(o => o.HTU_NAME));
+                            }
                             this.cboHtu.Properties.Buttons[1].Visible = true;
                         }
                         else
                         {
-                            this.cboHtu.EditValue = null;
+                            DataHtuList.ForEach(o => o.IsChecked = false);
+                            this.cboHtu.Text = null;
                             this.cboHtu.Properties.Buttons[1].Visible = false;
                         }
                         this.VisibleInputControl(!(mety != null && mety.IS_OXYGEN == GlobalVariables.CommonNumberTrue));
@@ -742,12 +751,12 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                             //- Với kê tủ trực, kê thuốc điều trị:
                             //--nếu thuốc có hdsd => nhảy con trỏ vào ô số lượng sau khi chọn thuốc.
                             //--nếu không có hdsd => như kê đơn phòng khám
-                            if (GlobalStore.IsTreatmentIn || GlobalStore.IsCabinet || GlobalStore.IsExecutePTTT)
-                            {
-                                spinAmount.Focus();
-                                spinAmount.SelectAll();
-                            }
-                            else
+                            //if (GlobalStore.IsTreatmentIn || GlobalStore.IsCabinet || GlobalStore.IsExecutePTTT)
+                            //{
+                            //    spinAmount.Focus();
+                            //    spinAmount.SelectAll();
+                            //}
+                            //else
                             {
                                 //this.btnAdd.Focus();
                                 this.txtTutorial.Focus();
@@ -918,6 +927,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
 
                     this.btnAdd.Focus();
 
+                    Inventec.Common.Logging.LogSystem.Warn("MaterialTypeTSD_RowClick");
                     //this.currentMedicineTypeADOForEdit.IsAllowOdd = this.GetIsAllowOdd(this.currentMedicineTypeADOForEdit.ID, this.currentMedicineTypeADOForEdit.SERVICE_TYPE_ID);
 
                     ///Khoi tao cbo PatientType va set gia tri mac dinh theo service
@@ -994,8 +1004,12 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                                 this.cboMedicineUseForm.EditValue = medicineType.MEDICINE_USE_FORM_ID;
                             }
                         }
-
-                        this.cboHtu.EditValue = this.medicineTypeTutSelected.HTU_ID;
+                        this.cboHtu.Text = null;
+                        if (DataHtuList != null && DataHtuList.Count > 0 && this.medicineTypeTutSelected.HTU_ID != null)
+                        {
+                            DataHtuList.ForEach(o => o.IsChecked = o.ID == this.medicineTypeTutSelected.HTU_ID);
+                            this.cboHtu.Text = string.Join(", ", DataHtuList.Where(o => o.IsChecked).Select(o => o.HTU_NAME));
+                        }
                         if (this.medicineTypeTutSelected.HTU_ID != null)
                             this.cboHtu.Properties.Buttons[1].Visible = true;
                         else
@@ -1006,13 +1020,14 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                         this.spinSoLuongNgay.EditValue = this.medicineTypeTutSelected.DAY_COUNT;
 
                         Inventec.Common.Logging.LogSystem.Info("Truong hop co HDSD thuoc theo tai khoan cua loai thuoc (HIS_MEDICINE_TYPE_TUT)--> lay truong DAY_COUNT gan vao spinSoNgay" + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => medicineTypeTutSelected), medicineTypeTutSelected));
-
+                        IsSetByMedicineTut = true;
                         this.spinSang.EditValue = this.medicineTypeTutSelected.MORNING;
                         this.spinTrua.EditValue = this.medicineTypeTutSelected.NOON;
                         this.spinChieu.EditValue = this.medicineTypeTutSelected.AFTERNOON;
                         this.spinToi.EditValue = this.medicineTypeTutSelected.EVENING;
+                        IsSetByMedicineTut = false;
                         if (String.IsNullOrEmpty(this.txtTutorial.Text)
-                            || String.IsNullOrEmpty(txtLadder.Text))
+                            || (lciLadder.Visible && String.IsNullOrEmpty(txtLadder.Text)))
                         {
                             //Nếu có trường hướng dẫn thì sử dụng luôn
                             if (!String.IsNullOrEmpty(this.medicineTypeTutSelected.TUTORIAL))
@@ -1159,6 +1174,9 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
         /// Trong đó, XXX là tên thuốc đã kê trong ngày.
         /// </summary>
         List<HIS_SERVICE_REQ> serviceReqAllInDays = null;
+
+        public bool IsSetByMedicineTut { get; private set; }
+
         private async Task InitDataServiceReqAllInDay()
         {
             try
@@ -1749,7 +1767,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                                 dMediStock1ADO.PARENT_ID = item.PARENT_ID;
                                 dMediStock1ADO.PARENT_CODE = item.PARENT_CODE;
                                 dMediStock1ADO.PARENT_NAME = item.PARENT_NAME;
-                               
+
 
                                 UpdateUnit(dMediStock1ADO, GlobalStore.HisMestMetyUnit);
                                 dMediStock1ADO.AMOUNT = ((dMediStock1ADO.IsUseOrginalUnitForPres ?? false) == false && item.CONVERT_RATIO.HasValue && item.CONVERT_RATIO > 0) ? item.AMOUNT * item.CONVERT_RATIO : item.AMOUNT;
@@ -1884,7 +1902,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                         dMediStock1ADO.PARENT_ID = item.PARENT_ID;
                         dMediStock1ADO.PARENT_CODE = item.PARENT_CODE;
                         dMediStock1ADO.PARENT_NAME = item.PARENT_NAME;
-                        
+
                         dMediStock1ADO.MEDICINE_GROUP_ID = item.MEDICINE_GROUP_ID;
                         dMediStock1ADO.ODD_WARNING_CONTENT = item.ODD_WARNING_CONTENT;
 

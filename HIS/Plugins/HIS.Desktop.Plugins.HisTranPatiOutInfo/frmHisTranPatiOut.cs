@@ -24,6 +24,7 @@ using HIS.Desktop.LibraryMessage;
 using HIS.Desktop.LocalStorage.BackendData;
 using HIS.Desktop.LocalStorage.LocalData;
 using HIS.Desktop.Plugins.HisTranPatiOutInfo.ProcessLoadDataCombo;
+using HIS.Desktop.Utility;
 using HIS.UC.Icd;
 using HIS.UC.Icd.ADO;
 using Inventec.Common.Adapter;
@@ -156,6 +157,7 @@ namespace HIS.Desktop.Plugins.HisTranPatiOutInfo
                 ProcessLoad.LoadDataToComboTranPatiForm(cboTranPatiFormTo, VHisTranPatiForm);
 
                 LoadDataTreatment();
+                txtSurgeryName.Properties.NullText = "Nhấn F1 để chọn dịch vụ";
             }
             catch (Exception ex)
             {
@@ -253,6 +255,7 @@ namespace HIS.Desktop.Plugins.HisTranPatiOutInfo
                 this.layoutControlItem17.Text = Inventec.Common.Resource.Get.Value("frmHisTranPatiOut.layoutControlItem17.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.layoutControlItem18.Text = Inventec.Common.Resource.Get.Value("frmHisTranPatiOut.layoutControlItem18.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.layoutControlItem19.Text = Inventec.Common.Resource.Get.Value("frmHisTranPatiOut.layoutControlItem19.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.txtSurgeryName.Properties.NullText = Inventec.Common.Resource.Get.Value("frmHisTranPatiOut.txtSurgeryName.Properties.NullText", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.Text = Inventec.Common.Resource.Get.Value("frmHisTranPatiOut.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
             }
             catch (Exception ex)
@@ -299,8 +302,20 @@ namespace HIS.Desktop.Plugins.HisTranPatiOutInfo
                     txtIcdExtraName.Text = data.ICD_TEXT;
                     txtIcdExtraCode.Text = data.ICD_SUB_CODE;
 
-                    txtDauHieuLamSang.Text = data.CLINICAL_NOTE;
-                    txtXetNghiem.Text = data.SUBCLINICAL_RESULT;
+                    CommonParam param = new CommonParam();
+                    MOS.Filter.HisTreatmentViewFilter hisTreatmentFilter = new MOS.Filter.HisTreatmentViewFilter();
+                    hisTreatmentFilter.ID = treatmentId;
+
+                    List<MOS.EFMODEL.DataModels.V_HIS_TREATMENT> hisTreatment = new BackendAdapter(param)
+                        .Get<List<MOS.EFMODEL.DataModels.V_HIS_TREATMENT>>(HisRequestUriStore.HIS_TREATMENT_GETVIEW, ApiConsumers.MosConsumer, hisTreatmentFilter, param);
+
+                    if (hisTreatment != null && hisTreatment.Count == 1)
+                    {
+                        txtDauHieuLamSang.Text = hisTreatment.FirstOrDefault().CLINICAL_NOTE;
+                        txtXetNghiem.Text = hisTreatment.FirstOrDefault().SUBCLINICAL_RESULT;
+                    }
+                    //txtDauHieuLamSang.Text = data.CLINICAL_NOTE;
+                    //txtXetNghiem.Text = data.SUBCLINICAL_RESULT;
                     txtPPKTThuoc.Text = data.TREATMENT_METHOD;
                     txtTinhTrangNguoiBenh.Text = data.PATIENT_CONDITION;
                     txtHuongDieuTri.Text = data.TREATMENT_DIRECTION;
@@ -362,6 +377,23 @@ namespace HIS.Desktop.Plugins.HisTranPatiOutInfo
                     }
 
                     lblSoChuyenVien.Text = data.OUT_CODE;
+
+                    if (!string.IsNullOrEmpty(data.SURGERY_NAME))
+                    {
+                        txtSurgeryName.Text = data.SURGERY_NAME;
+                    }
+                    if (data.SURGERY_BEGIN_TIME != null)
+                    {
+                        dtStart.EditValue = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(data.SURGERY_BEGIN_TIME ?? 0);
+                    }
+                    if (data.SURGERY_END_TIME != null)
+                    {
+                        dtFinish.EditValue = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(data.SURGERY_END_TIME ?? 0);
+                    }
+                    if (!string.IsNullOrEmpty(data.USED_MEDICINE))
+                    {
+                        txtUsedMedicine.Text = data.USED_MEDICINE;
+                    }
 
                     SetReadOnlyControlToTranPati(true);
                     btnEdit.Enabled = true;
@@ -612,7 +644,10 @@ namespace HIS.Desktop.Plugins.HisTranPatiOutInfo
                 txtTinhTrangNguoiBenh.ReadOnly = isReadOnly;
                 txtHuongDieuTri.ReadOnly = isReadOnly;
                 txtPhuongTienVanChuyen.ReadOnly = isReadOnly;
-
+                txtSurgeryName.ReadOnly = isReadOnly;
+                txtUsedMedicine.ReadOnly = isReadOnly;
+                dtStart.ReadOnly = isReadOnly;
+                dtFinish.ReadOnly = isReadOnly;
                 if (isReadOnly == true)
                 {
                     buttonEdit1.Enabled = false;
@@ -731,8 +766,8 @@ namespace HIS.Desktop.Plugins.HisTranPatiOutInfo
                 _treatmentUpdate.OUT_CODE = lblSoChuyenVien.Text;
                 _treatmentUpdate.ICD_TEXT = txtIcdExtraName.Text;
                 _treatmentUpdate.ICD_SUB_CODE = txtIcdExtraCode.Text;
-                _treatmentUpdate.CLINICAL_NOTE = txtDauHieuLamSang.Text;
-                _treatmentUpdate.SUBCLINICAL_RESULT = txtXetNghiem.Text;
+                //_treatmentUpdate.CLINICAL_NOTE = txtDauHieuLamSang.Text;
+                //_treatmentUpdate.SUBCLINICAL_RESULT = txtXetNghiem.Text;
                 _treatmentUpdate.TREATMENT_METHOD = txtPPKTThuoc.Text;
                 _treatmentUpdate.PATIENT_CONDITION = txtTinhTrangNguoiBenh.Text;
                 _treatmentUpdate.TREATMENT_DIRECTION = txtHuongDieuTri.Text;
@@ -740,8 +775,35 @@ namespace HIS.Desktop.Plugins.HisTranPatiOutInfo
                 //_treatmentUpdate.TRANSPORTER = txtNguoiHoTong.Text;
                 _treatmentUpdate.TRANSPORTER_LOGINNAMES = selected != null && selected.Count > 0 ? string.Join(";", selected.Select(o => o.LOGINNAME).Distinct()) : null;
                 _treatmentUpdate.TRANSPORTER = selected != null && selected.Count > 0 ? string.Join(";", selected.Select(o => o.TDL_USERNAME).Distinct()) : null;
+                if (!string.IsNullOrEmpty(txtSurgeryName.Text))
+                {
+                    _treatmentUpdate.SURGERY_NAME = txtSurgeryName.Text.Trim();
+                }
+                else
+                    _treatmentUpdate.SURGERY_NAME = null;
+                if (!string.IsNullOrEmpty(txtUsedMedicine.Text))
+                {
+                    _treatmentUpdate.USED_MEDICINE = txtUsedMedicine.Text.Trim();
+                }
+                else
+                    _treatmentUpdate.USED_MEDICINE = null;
+                if (dtStart.EditValue != null)
+                {
+                    _treatmentUpdate.SURGERY_BEGIN_TIME = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber((DateTime)dtStart.EditValue);
+                }
+                else
+                    _treatmentUpdate.SURGERY_BEGIN_TIME = null;
+                if (dtFinish.EditValue != null)
+                {
+                    _treatmentUpdate.SURGERY_END_TIME = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber((DateTime)dtFinish.EditValue);
+                }
+                else
+                    _treatmentUpdate.SURGERY_END_TIME = null;
                 sdoUpdate.HisTreatment = _treatmentUpdate;
+                sdoUpdate.ClinicalNote = txtDauHieuLamSang.Text;
+                sdoUpdate.SubclinicalResult = txtXetNghiem.Text;
 
+                Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => sdoUpdate), sdoUpdate));
                 var rs = new BackendAdapter(param).Post<HIS_TREATMENT>("api/HisTreatment/UpdateTranPatiInfo", ApiConsumers.MosConsumer, sdoUpdate, param);
                 if (rs != null)
                 {
@@ -1481,5 +1543,58 @@ namespace HIS.Desktop.Plugins.HisTranPatiOutInfo
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
+
+        private void txtSurgeryName_KeyDown(object sender, KeyEventArgs e)
+        {
+            try
+            {
+                if (e.KeyCode == Keys.F1)
+                {
+                    Inventec.Desktop.Common.Modules.Module moduleData = GlobalVariables.currentModuleRaws.Where(o => o.ModuleLink == "HIS.Desktop.Plugins.ListSurgMisuByTreatment").FirstOrDefault();
+                    if (moduleData == null) throw new NullReferenceException("Not found module by ModuleLink = 'HIS.Desktop.Plugins.ListSurgMisuByTreatment'");
+                    if (moduleData.IsPlugin && moduleData.ExtensionInfo != null)
+                    {
+                        moduleData.RoomId = this.currentModule.RoomId;
+                        moduleData.RoomTypeId = this.currentModule.RoomTypeId;
+                        List<object> listArgs = new List<object>();
+                        listArgs.Add(moduleData);
+                        listArgs.Add(treatmentId);
+                        listArgs.Add((HIS.Desktop.Common.DelegateLoadPTTT)ProcessLoadPTTT);
+                        var extenceInstance = PluginInstance.GetPluginInstance(moduleData, listArgs);
+                        if (extenceInstance == null)
+                        {
+                            throw new ArgumentNullException("moduleData is null");
+                        }
+
+                        ((Form)extenceInstance).ShowDialog();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+        private void ProcessLoadPTTT(string namePTTT, DateTime? startTime, DateTime? finishTime)
+        {
+            try
+            {
+                txtSurgeryName.Text = namePTTT;
+                //dtStart.DateTime = startTime ?? DateTime.MinValue;
+                if (startTime != null)
+                {
+                    dtStart.DateTime = startTime ?? DateTime.MinValue;
+                }
+                if (finishTime != null)
+                {
+                    dtFinish.DateTime = finishTime ?? DateTime.MinValue;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
     }
 }

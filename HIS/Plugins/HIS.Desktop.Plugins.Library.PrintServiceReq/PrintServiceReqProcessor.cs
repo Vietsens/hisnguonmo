@@ -21,6 +21,7 @@ using HIS.Desktop.LocalStorage.HisConfig;
 using HIS.Desktop.Plugins.Library.PrintServiceReq.ADO;
 using Inventec.Core;
 using Inventec.Desktop.Common.Message;
+using LIS.EFMODEL.DataModels;
 using MOS.EFMODEL.DataModels;
 using MOS.Filter;
 using MOS.SDO;
@@ -166,7 +167,29 @@ HisTreatmentWithPatientTypeInfoSDO TreatmentWithPatientTypeInfo, List<V_HIS_BED_
         {
             try
             {
-                lstConfig = BackendDataWorker.Get<HIS_CONFIG>().Where(o => o.KEY.StartsWith("HIS.Desktop.Plugins.PaymentQrCode") && !string.IsNullOrEmpty(o.VALUE)).ToList();
+
+                lstConfig = new List<HIS_CONFIG>();
+                 var currentWorkingRoom = BackendDataWorker.Get<V_HIS_ROOM>().FirstOrDefault(o => o.ID == roomId);
+                if (currentWorkingRoom != null && !string.IsNullOrEmpty(currentWorkingRoom.QR_CONFIG_JSON))
+                {
+                    List<object> listArgs = new List<object>();
+                    try
+                    {
+                        var json = Newtonsoft.Json.JsonConvert.DeserializeObject<BankInfo>(currentWorkingRoom.QR_CONFIG_JSON);
+                        if (json != null)
+                        {
+                            lstConfig.Add(new HIS_CONFIG() { VALUE = json.VALUE, KEY = string.Format("HIS.Desktop.Plugins.PaymentQrCode.{0}Info", json.BANK) });
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        Inventec.Common.Logging.LogSystem.Error(ex);
+                    }
+                }
+                else
+                {
+                    lstConfig = BackendDataWorker.Get<HIS_CONFIG>().Where(o => o.KEY.StartsWith("HIS.Desktop.Plugins.PaymentQrCode") && !string.IsNullOrEmpty(o.VALUE)).ToList();
+                }
                 if (Config.HisTranReqQRCodeTreatmentPrint)
                 {
                     if (lstConfig != null && lstConfig.Count > 0 && HisServiceReqListResultSDO != null && HisServiceReqListResultSDO.ServiceReqs != null && HisServiceReqListResultSDO.ServiceReqs.Count > 0)
@@ -1234,5 +1257,11 @@ HisTreatmentWithPatientTypeInfoSDO TreatmentWithPatientTypeInfo, List<V_HIS_BED_
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
+    }
+    public class BankInfo
+    {
+        public BankInfo() { }
+        public string BANK { get; set; }
+        public string VALUE { get; set; }
     }
 }

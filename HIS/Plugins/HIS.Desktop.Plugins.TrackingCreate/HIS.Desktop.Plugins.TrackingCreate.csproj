@@ -59,14 +59,6 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\lib\HIS\HIS.Desktop.IsAdmin\HIS.Desktop.IsAdmin.dll</HintPath>
     </Reference>
-    <Reference Include="HIS.Desktop.LocalStorage.LocalData, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\HIS.Desktop.LocalStorage.LocalData\bin\Release\HIS.Desktop.LocalStorage.LocalData.dll</HintPath>
-    </Reference>
-    <Reference Include="HIS.Desktop.LocalStorage.Location, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\HIS.Desktop.LocalStorage.Location\bin\Release\HIS.Desktop.LocalStorage.Location.dll</HintPath>
-    </Reference>
     <Reference Include="HIS.Desktop.ModuleExt">
       <HintPath>..\..\..\..\lib\HIS\HIS.Desktop.ModuleExt\HIS.Desktop.ModuleExt.dll</HintPath>
     </Reference>
@@ -83,12 +75,12 @@
     <Reference Include="HIS.Desktop.Print">
       <HintPath>..\..\..\..\lib\HIS\HIS.Desktop.Print\HIS.Desktop.Print.dll</HintPath>
     </Reference>
-    <Reference Include="HIS.Desktop.Utility">
-      <HintPath>..\..\..\..\lib\HIS\HIS.Desktop.Utilities\HIS.Desktop.Utility.dll</HintPath>
-    </Reference>
     <Reference Include="HIS.UC.DHST, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\LIB\HIS\HIS.UC.DHST\HIS.UC.DHST.dll</HintPath>
+    </Reference>
+    <Reference Include="HIS.UC.Icd">
+      <HintPath>..\..\..\..\lib\HIS\His.UC.Icd\HIS.UC.Icd.dll</HintPath>
     </Reference>
     <Reference Include="IMSys.DbConfig.HIS_RS">
       <HintPath>..\..\..\..\LIB\IMSys.DbConfig\IMSys.DbConfig.HIS_RS\IMSys.DbConfig.HIS_RS.dll</HintPath>
@@ -112,9 +104,6 @@
     </Reference>
     <Reference Include="Inventec.Common.LocalStorage.SdaConfig">
       <HintPath>..\..\..\..\LIB\Inventec.Common\Inventec.Common.LocalStorage.SdaConfig\Inventec.Common.LocalStorage.SdaConfig.dll</HintPath>
-    </Reference>
-    <Reference Include="Inventec.Common.Logging">
-      <HintPath>..\..\..\..\LIB\Inventec.Common\Inventec.Common.Logging\Inventec.Common.Logging.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Common.Mapper, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -186,8 +175,9 @@
       <HintPath>..\..\..\..\LIB\Inventec.UC\Inventec.UC.Login\Inventec.UC.Login.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.VisualBasic" />
-    <Reference Include="MOS.EFMODEL">
-      <HintPath>..\..\..\..\LIB\MOS\MOS.EFMODEL.dll</HintPath>
+    <Reference Include="MOS.EFMODEL, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\lib\MOS\MOS.EFMODEL.dll</HintPath>
     </Reference>
     <Reference Include="MOS.Filter, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -373,9 +363,9 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\UC\HIS.UC.Icd\HIS.UC.Icd.csproj">
-      <Project>{5d946729-034f-4911-b8d9-a79a8521f6b3}</Project>
-      <Name>HIS.UC.Icd</Name>
+    <ProjectReference Include="..\..\..\Common\Inventec.Common\Inventec.Common.Logging\Inventec.Common.Logging.csproj">
+      <Project>{4859008d-a40d-47bb-a185-019c8b140569}</Project>
+      <Name>Inventec.Common.Logging</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\..\UC\HIS.UC.SecondaryIcd\HIS.UC.SecondaryIcd.csproj">
       <Project>{04b2ab94-562d-4753-a158-1aad3217408b}</Project>
@@ -416,6 +406,18 @@
     <ProjectReference Include="..\..\HIS.Desktop.LocalStorage.HisConfig\HIS.Desktop.LocalStorage.HisConfig.csproj">
       <Project>{d1e5461b-8a8e-46f7-9aee-5c1b327e5f2b}</Project>
       <Name>HIS.Desktop.LocalStorage.HisConfig</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\HIS.Desktop.LocalStorage.LocalData\HIS.Desktop.LocalStorage.LocalData.csproj">
+      <Project>{e036edf5-788c-4892-8d8f-6b1c16dcbd21}</Project>
+      <Name>HIS.Desktop.LocalStorage.LocalData</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\HIS.Desktop.LocalStorage.Location\HIS.Desktop.LocalStorage.Location.csproj">
+      <Project>{67e93829-79bd-407e-a4dd-b46cebb55a41}</Project>
+      <Name>HIS.Desktop.LocalStorage.Location</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\HIS.Desktop.Utility\HIS.Desktop.Utilities.csproj">
+      <Project>{2aad22db-2166-4be8-ae52-335b21dc03fc}</Project>
+      <Name>HIS.Desktop.Utilities</Name>
     </ProjectReference>
     <ProjectReference Include="..\HIS.Desktop.Library.CacheClient\HIS.Desktop.Library.CacheClient.csproj">
       <Project>{64837e01-803d-4f1e-9dfc-d34b38ea78f9}</Project>

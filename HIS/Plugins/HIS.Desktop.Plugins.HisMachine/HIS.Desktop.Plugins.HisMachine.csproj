@@ -50,7 +50,7 @@
       <HintPath>..\..\..\..\LIB\Inventec.UC\Inventec.UC.ListReports\HIS.Desktop.ApiConsumer.dll</HintPath>
     </Reference>
     <Reference Include="HIS.Desktop.LocalStorage.SdaConfigKey">
-      <HintPath>..\..\HIS.Desktop.LocalStorage.SdaConfigKey\bin\Release\HIS.Desktop.LocalStorage.SdaConfigKey.dll</HintPath>
+      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\HIS.Desktop.LocalStorage.SdaConfigKey.dll</HintPath>
     </Reference>
     <Reference Include="IMSys.DbConfig.HIS_RS">
       <HintPath>..\..\..\..\LIB\IMSys.DbConfig\IMSys.DbConfig.HIS_RS\IMSys.DbConfig.HIS_RS.dll</HintPath>
@@ -68,7 +68,7 @@
       <HintPath>..\..\..\..\LIB\Inventec.Common\Inventec.Common.Controls.PopupLoader\Inventec.Common.Controls.PopupLoader.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Common.DateTime">
-      <HintPath>..\..\..\..\LIB\CARD\Card.Transaction.SocketBO\Inventec.Common.DateTime.dll</HintPath>
+      <HintPath>..\..\..\..\lib\Inventec.Common\Inventec.Common.DateTime\Inventec.Common.DateTime.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Common.Logging">
       <HintPath>..\..\..\..\LIB\Inventec.Common\Inventec.Common.Logging\Inventec.Common.Logging.dll</HintPath>
@@ -133,11 +133,10 @@
       <HintPath>..\..\..\..\LIB\Inventec.UC\Inventec.UC.Paging\Inventec.UC.Paging.dll</HintPath>
     </Reference>
     <Reference Include="MOS.EFMODEL">
-      <HintPath>..\..\..\..\LIB\MOS\MOS.EFMODEL.dll</HintPath>
+      <HintPath>..\..\..\..\lib\MOS\MOS.EFMODEL.dll</HintPath>
     </Reference>
-    <Reference Include="MOS.Filter, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\LIB\MOS\MOS.Filter.dll</HintPath>
+    <Reference Include="MOS.Filter">
+      <HintPath>..\..\..\..\lib\MOS\MOS.Filter.dll</HintPath>
     </Reference>
     <Reference Include="SDA.EFMODEL">
       <HintPath>..\..\..\..\LIB\SDA\SDA.EFMODEL.dll</HintPath>

@@ -41,6 +41,7 @@ namespace HIS.Desktop.Plugins.CallPatientVer5
     {
         const string frmWaitingScreen9 = "frmWaitingScreen9";
         const string frmWaitingScreenQy = "frmWaitingScreen_QY9";
+        const string frmWaitingScreenQyNew = "frmWaitingScreen_QY_New";
         const string frmWaitingExam9 = "frmWaitingExam9";
 
 
@@ -126,6 +127,37 @@ namespace HIS.Desktop.Plugins.CallPatientVer5
                 LogSystem.Error(ex);
             }
         }
+
+        internal static void ShowFormInExtendMonitor(frmWaitingScreen_QY_New control)
+        {
+            try
+            {
+                Screen[] sc;
+                sc = Screen.AllScreens;
+                if (sc.Length <= 1)
+                {
+                    DevExpress.XtraEditors.XtraMessageBox.Show("Không tìm thấy màn hình mở rộng");
+                    control.Show();
+                }
+                else
+                {
+                    Screen secondScreen = sc.FirstOrDefault(o => o != Screen.PrimaryScreen);
+                    control.FormBorderStyle = FormBorderStyle.None;
+                    control.Left = secondScreen.Bounds.Width;
+                    control.Top = secondScreen.Bounds.Height;
+                    control.StartPosition = FormStartPosition.Manual;
+                    control.Location = secondScreen.Bounds.Location;
+                    Point p = new Point(secondScreen.Bounds.Location.X, secondScreen.Bounds.Location.Y);
+                    control.Location = p;
+                    control.WindowState = FormWindowState.Maximized;
+                    control.Show();
+                }
+            }
+            catch (Exception ex)
+            {
+                LogSystem.Error(ex);
+            }
+        }
         internal static void TurnOffExtendMonitor(frmWaitingScreen9 control)
         {
             try
@@ -179,7 +211,50 @@ namespace HIS.Desktop.Plugins.CallPatientVer5
                 LogSystem.Error(ex);
             }
         }
+        internal static void TurnOffExtendMonitor(frmWaitingScreen_QY_New control)
+        {
+            try
+            {
+                if (control != null)
+                {
+                    if (Application.OpenForms != null && Application.OpenForms.Count > 0)
+                    {
+                        for (int i = 0; i < Application.OpenForms.Count; i++)
+                        {
+                            Form f = Application.OpenForms[i];
+                            if (f.Name == frmWaitingScreenQyNew)
+                            {
+                                f.Close();
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                LogSystem.Error(ex);
+            }
+        }
 
+        internal static void LoadDataToExamServiceReqSttGridControl(frmDisplayOption control)
+        {
+            try
+            {
+                HIS.Desktop.Library.CacheClient.ControlStateWorker controlStateWorker;
+                List<HIS.Desktop.Library.CacheClient.ControlStateRDO> currentControlStateRDO;
+                string ModuleLinkName = "HIS.Desktop.Plugins.CallPatientVer5";
+
+                CommonParam param = new CommonParam();
+                MOS.Filter.HisServiceReqSttFilter filter = new MOS.Filter.HisServiceReqSttFilter();
+                List<ServiceReqSttSDO> serviceReqSttSdos = new List<ServiceReqSttSDO>();
+                controlStateWorker = new HIS.Desktop.Library.CacheClient.ControlStateWorker();
+                currentControlStateRDO = controlStateWorker.GetData(ModuleLinkName);
+            }
+            catch (Exception ex)
+            {
+                LogSystem.Error(ex);
+            }
+        }
         internal static void LoadDataToExamServiceReqSttGridControl(frmChooseRoomForWaitingScreen control)
         {
             try

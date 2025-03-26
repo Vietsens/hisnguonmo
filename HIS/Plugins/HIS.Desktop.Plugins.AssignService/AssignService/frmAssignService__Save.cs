@@ -16,6 +16,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 using ACS.EFMODEL.DataModels;
+using DevExpress.Office.Utils;
 using EMR.Filter;
 using HIS.Desktop.ApiConsumer;
 using HIS.Desktop.Controls.Session;
@@ -166,6 +167,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                 isValid = isValid && ValidFeeForExamTreatment();
                 Inventec.Common.Logging.LogSystem.Debug("Valid14__ValidFeeForExamTreatment:" + isValid);
                 isValid = isValid && CheckMaxAmount(serviceCheckeds__Send);
+                isValid = isValid && ValidICD();
                 Inventec.Common.Logging.LogSystem.Debug("Valid15__CheckMaxAmount:" + isValid);
                 if (this.USE_TIME != null && this.USE_TIME.Count > 0)
                 {
@@ -731,6 +733,20 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                     foreach (var item in serviceCheckeds__Send)
                     {
                         var dataCondition = BranchDataWorker.ServicePatyWithListPatientType(item.SERVICE_ID, new List<long> { item.PATIENT_TYPE_ID });
+                        List<V_HIS_SERVICE_PATY> dataSource = new List<V_HIS_SERVICE_PATY>(); 
+                        long instructionTime = this.intructionTimeSelecteds != null && this.intructionTimeSelecteds.Count > 0 ? this.intructionTimeSelecteds.FirstOrDefault() : 0;
+                        long? intructionNumByType = null;
+                        List<HIS_SERE_SERV> sameServiceType = this.sereServWithTreatment != null ? this.sereServWithTreatment.Where(o => o.TDL_SERVICE_TYPE_ID == item.SERVICE_TYPE_ID).ToList() : null;
+                        List<HIS_SERE_SERV> sameService = this.sereServWithTreatment != null ? this.sereServWithTreatment.Where(o => o.SERVICE_ID == item.SERVICE_ID).ToList() : null;
+                        intructionNumByType = sameServiceType != null ? (long)sameServiceType.Count() + 1 : 1;
+                        var intructionNum = sameService != null ? (long)sameService.Count() + 1 : 1;
+                        foreach (var con in dataCondition)
+                        {
+                            var dt = MOS.ServicePaty.ServicePatyUtil.GetApplied(new List<V_HIS_SERVICE_PATY>() { con }, item.TDL_EXECUTE_BRANCH_ID, item.TDL_EXECUTE_ROOM_ID, this.requestRoom.ID, this.requestRoom.DEPARTMENT_ID, instructionTime, this.currentHisTreatment.IN_TIME, item.SERVICE_ID, item.PATIENT_TYPE_ID, intructionNum, intructionNumByType, item.PackagePriceId, con.SERVICE_CONDITION_ID, this.currentHisTreatment.TDL_PATIENT_CLASSIFY_ID, null);
+                            if (dt != null)
+                                dataSource.Add(dt);
+                        }
+                        dataCondition = dataSource;
                         if (dataCondition != null && dataCondition.Count > 0 && lstConditionService != null && lstConditionService.Count > 0)
                         {
                             dataCondition = dataCondition.Where(o => lstConditionService.Exists(p => p.SERVICE_ID == item.SERVICE_ID && p.ID == o.SERVICE_CONDITION_ID)).ToList();

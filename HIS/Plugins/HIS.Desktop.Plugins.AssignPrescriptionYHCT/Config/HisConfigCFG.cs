@@ -91,6 +91,8 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.Config
         private const string KEY__RequiredTreatmentMethodOption = "HIS.Desktop.Plugins.TreatmentFinish.RequiredTreatmentMethodOption";
         private const string KEY__InstructionTimeServiceMustBeGreaterThanStartTimeExam = "HIS.Desktop.Plugins.InstructionTimeServiceMustBeGreaterThanStartTimeExam";
         private const string KEY_ASSIGN_SERVICE_SIMULTANEITY_OPTION = "MOS.HIS_SERVICE_REQ.ASSIGN_SERVICE_SIMULTANEITY_OPTION";
+        private const string KEY_IsCheckSubIcdExceedLimit = "HIS.Desktop.Plugins.IsCheckSubIcdExceedLimit";
+        internal static string IsCheckSubIcdExceedLimit;
         internal static string ASSIGN_SERVICE_SIMULTANEITY_OPTION;
         internal static string InstructionTimeServiceMustBeGreaterThanStartTimeExam;
         internal static string RequiredTreatmentMethodOption;
@@ -229,6 +231,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.Config
         {
             try
             {
+                IsCheckSubIcdExceedLimit = GetValue(KEY_IsCheckSubIcdExceedLimit);
                 ASSIGN_SERVICE_SIMULTANEITY_OPTION = GetValue(KEY_ASSIGN_SERVICE_SIMULTANEITY_OPTION);
                 InstructionTimeServiceMustBeGreaterThanStartTimeExam = GetValue(KEY__InstructionTimeServiceMustBeGreaterThanStartTimeExam);
                 RequiredTreatmentMethodOption = GetValue(KEY__RequiredTreatmentMethodOption);

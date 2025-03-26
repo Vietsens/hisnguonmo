@@ -267,14 +267,17 @@ namespace HIS.Desktop.Plugins.ServiceExecute
         {
             try
             {
+                Inventec.Common.Logging.LogSystem.Debug("UCServiceExecute_Load.1");
                 if (!Directory.Exists(FolderSaveImage))
                     Directory.CreateDirectory(FolderSaveImage);
 
                 GetDataFromRam();
                 isNotLoadWhileChangeControlStateInFirst = true;
                 LoadKeysFromlanguage();
+                Inventec.Common.Logging.LogSystem.Debug("UCServiceExecute_Load.2");
                 this.LoadExecuteRoleUser();
                 timerLoadEkip.Enabled = true;
+                Inventec.Common.Logging.LogSystem.Debug("UCServiceExecute_Load.3");
                 RegisterTimer(moduleData.ModuleLink, "timerLoadEkip", timerLoadEkip.Interval, timerLoadEkip_Tick);
                 StartTimer(moduleData.ModuleLink, "timerLoadEkip");
                 SetDefaultValueControl();
@@ -282,9 +285,13 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                 InitControlState();
                 InitDrButtonOther();
                 CreateThreadLoadDataDefault();
+                Inventec.Common.Logging.LogSystem.Debug("UCServiceExecute_Load.4");
                 FillDataCombo();
+                Inventec.Common.Logging.LogSystem.Debug("UCServiceExecute_Load.5");
                 FillDataToGrid();
+                Inventec.Common.Logging.LogSystem.Debug("UCServiceExecute_Load.6");
                 ProcessPatientInfo();
+                Inventec.Common.Logging.LogSystem.Debug("UCServiceExecute_Load.7");
                 bool sereServFileResult = false;
                 if (listServiceADO != null && listServiceADO.Count > 0)
                 {
@@ -294,7 +301,7 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                 {
                     LoadDataImageLocal();
                 }
-
+                Inventec.Common.Logging.LogSystem.Debug("UCServiceExecute_Load.8");
                 SetDisable();
                 ValidNumberOfFilm();
                 ValidBeginTime();
@@ -305,20 +312,21 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                     btnTuTruc.Enabled = false;
                 }
                 SetEnableControlWithExecuterParam();
+                Inventec.Common.Logging.LogSystem.Debug("UCServiceExecute_Load.9");
                 LoadDataToCombo();
                 EnableControlCamera(false);
-
+                Inventec.Common.Logging.LogSystem.Debug("UCServiceExecute_Load.10");
                 CheckValidPress();
                 InitCameraDefault();
                 isNotLoadWhileChangeControlStateInFirst = false;
                 this.ProcessCustomizeUI();
-                this.listHisTextLib = BackendDataWorker.Get<HIS_TEXT_LIB>();
                 InitBarContentLibrary(this.listHisTextLib);
                 GetTimeSystem();
                 RegisterTimer(moduleData.ModuleLink, "timer1", timer1.Interval, timer1_Tick);
                 StartTimer(moduleData.ModuleLink, "timer1");
                 RegisterTimer(moduleData.ModuleLink, "timerDoubleClick", timerDoubleClick.Interval, timerDoubleClick_Tick);
                 DisableFinishConfig();
+                Inventec.Common.Logging.LogSystem.Debug("UCServiceExecute_Load.11");
             }
             catch (Exception ex)
             {
@@ -443,9 +451,15 @@ namespace HIS.Desktop.Plugins.ServiceExecute
         {
             try
             {
+                Inventec.Common.Logging.LogSystem.Debug("GetDataFromRam.1");
                 lstService = BackendDataWorker.Get<V_HIS_SERVICE>().ToList();
                 lstDepartment = BackendDataWorker.Get<HIS_DEPARTMENT>().Where(o => o.IS_ACTIVE == 1).ToList();
-                lstExecuteRole = BackendDataWorker.Get<HIS_EXECUTE_ROLE>().Where(o => o.IS_ACTIVE == 1 && o.IS_DISABLE_IN_EKIP != 1).ToList().ToList();  
+                lstExecuteRole = BackendDataWorker.Get<HIS_EXECUTE_ROLE>().Where(o => o.IS_ACTIVE == 1 && o.IS_DISABLE_IN_EKIP != 1).ToList().ToList();
+
+                ListMachine = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<HIS_MACHINE>();
+                ListServiceMachine = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<HIS_SERVICE_MACHINE>();
+                this.listHisTextLib = BackendDataWorker.Get<HIS_TEXT_LIB>();
+                Inventec.Common.Logging.LogSystem.Debug("GetDataFromRam.2");
             }
             catch (Exception ex)
             {
@@ -1038,7 +1052,7 @@ namespace HIS.Desktop.Plugins.ServiceExecute
             Thread listTemplate = new Thread(ProcessLoadListTemplate);
             Thread dataFillTemplate = new Thread(ProcessDataForTemplate);
             Thread treatment = new Thread(LoadTreatmentWithPaty);
-            Thread hisBedLog  = new Thread(GetDataDefaultHisBedLog);
+            Thread hisBedLog = new Thread(GetDataDefaultHisBedLog);
             Thread hisDHST = new Thread(GetDataDefaultHisDHST);
             try
             {
@@ -1125,7 +1139,7 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                 //nếu hoàn thành và không phải ng xử lý và ko phải admin thì disable
                 if (currentServiceReq != null &&
                     currentServiceReq.SERVICE_REQ_STT_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_STT.ID__HT)
-                    //&& currentServiceReq.EXECUTE_LOGINNAME != Loginname && !HIS.Desktop.IsAdmin.CheckLoginAdmin.IsAdmin(Loginname))
+                //&& currentServiceReq.EXECUTE_LOGINNAME != Loginname && !HIS.Desktop.IsAdmin.CheckLoginAdmin.IsAdmin(Loginname))
                 {
                     SetEnableControl(false);
                 }
@@ -1140,6 +1154,7 @@ namespace HIS.Desktop.Plugins.ServiceExecute
         {
             try
             {
+                this.btnPreYhct.Enabled = isEnabled;
                 this.btnAssignPrescription.Enabled = isEnabled;
                 this.btnAssignService.Enabled = isEnabled;
                 this.btnCamera.Enabled = isEnabled;
@@ -1325,7 +1340,6 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                 }
                 var workingRoomIds = WorkPlace.GetRoomIds();
 
-                ListMachine = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<HIS_MACHINE>();
                 if (ListMachine != null && ListMachine.Count > 0)
                     ListMachine =
                         (from m in ListMachine
@@ -1333,7 +1347,6 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                          where m.IS_ACTIVE == 1 && m.ROOM_IDS != null && ("," + m.ROOM_IDS + ",").Contains("," + n.ToString() + ",")
                          select m).Distinct().ToList();
 
-                ListServiceMachine = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<HIS_SERVICE_MACHINE>();
                 if (ListServiceMachine != null && ListServiceMachine.Count > 0)
                     ListServiceMachine = ListServiceMachine.Where(o => o.IS_ACTIVE == 1).ToList();
 
@@ -3832,7 +3845,7 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                 if (AppConfigKeys.IsSampleInfoOption == "1")
                 {
                     var datas = gridControlSereServ.DataSource as List<ADO.ServiceADO>;
-                    if (datas != null && datas.Count > 0 && datas.FirstOrDefault(o => o.PATIENT_TYPE_ID == AppConfigKeys.PatientTypeId__BHYT) != null 
+                    if (datas != null && datas.Count > 0 && datas.FirstOrDefault(o => o.PATIENT_TYPE_ID == AppConfigKeys.PatientTypeId__BHYT) != null
                         && (lstEkipUser == null || lstEkipUser.Count == 0))
                     {
                         DevExpress.XtraEditors.XtraMessageBox.Show("Bắt buộc phải có thông tin kíp thực hiện",
@@ -3966,7 +3979,7 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                 {
                     HisSereServCheckExecuteTimesSDO inputSDO = new HisSereServCheckExecuteTimesSDO();
                     var login = Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName();//currentServiceReq.EXECUTE_LOGINNAME;
-                    long beginTime = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(dtBeginTime.DateTime)??0;
+                    long beginTime = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(dtBeginTime.DateTime) ?? 0;
                     long endTime = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(dtEndTime.DateTime) ?? 0;
                     inputSDO.ExecuteTime = new ExecuteTime
                     {
@@ -3975,7 +3988,7 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                     };
                     inputSDO.TreatmentId = currentServiceReq.TREATMENT_ID;
                     List<string> dsLogin = new List<string> { login };
-               
+
                     List<string> lstLogin = ekipUsers.Select(o => o.LOGINNAME).Distinct().ToList();
                     foreach (string acc in lstLogin)
                     {
@@ -3983,73 +3996,73 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                         {
                             lstLoginValid.Add(acc);
                         }
-                      
+
                     }
-                    if (lstLoginValid.Count ==0 )
+                    if (lstLoginValid.Count == 0)
                     {
                         lstLoginValid.Add(login);
-                    }   
+                    }
                     inputSDO.Loginnames = lstLoginValid;
-                   
+
                     string message = "";
                     CommonParam paramCheckEx = new CommonParam();
                     bool suscess = new BackendAdapter(paramCheckEx).Post<bool>("api/HisSereServ/CheckExecuteTimes", ApiConsumers.MosConsumer, inputSDO, paramCheckEx);
-                     if (suscess == true)
-                        {
+                    if (suscess == true)
+                    {
 
-                        }
-                        else
-                        {
-                            message = string.Format("{0} Bạn có muốn tiếp tục?", paramCheckEx.GetMessage());
-                          if (MessageBox.Show(message, "", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
-                               return;
-                        }
+                    }
+                    else
+                    {
+                        message = string.Format("{0} Bạn có muốn tiếp tục?", paramCheckEx.GetMessage());
+                        if (MessageBox.Show(message, "", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
+                            return;
+                    }
 
                 }
 
-                 if (HIS.Desktop.Plugins.ServiceExecute.Config.AppConfigKeys.IsCheckSimulTaneityOption)
+                if (HIS.Desktop.Plugins.ServiceExecute.Config.AppConfigKeys.IsCheckSimulTaneityOption)
                 {
-                    HisSurgServiceReqUpdateListSDO  InputSDO= new HisSurgServiceReqUpdateListSDO ();  
+                    HisSurgServiceReqUpdateListSDO InputSDO = new HisSurgServiceReqUpdateListSDO();
                     List<SurgUpdateSDO> surgUpdateSDOs = new List<SurgUpdateSDO>();
                     SurgUpdateSDO surgUpdate = new SurgUpdateSDO();
-                     surgUpdate.SereServId = sereServ.ID;
-                     if (ekipUsers.Count > 0 && ekipUsers != null)
-                     {
-                         surgUpdate.EkipUsers = ekipUsers;
-                     }
-                     else
-                     {
-                         surgUpdate.EkipUsers = null;
-                         // lấy kíp theo tài khoản đăng nhập (bỏ do pmem chạy chậm)
-                         //var resuilt = BackendDataWorker.Get<HIS_EKIP_USER>().Where(o => o.LOGINNAME == Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName()).FirstOrDefault();
-                         //if (resuilt != null)
-                         //{
-                         //    List<HIS_EKIP_USER> userList = new List<HIS_EKIP_USER> { resuilt };
-                         //    surgUpdate.EkipUsers = userList;
-                         //}
-                         //else
-                         //{
-                         //    surgUpdate.EkipUsers = null;
-                         //}
-                     }
-                    
-                     if (sereServExt != null)
-                     {
-                         surgUpdate.SereServExt = sereServExt;
-                     }
-                     else
-                     {
-                         HIS_SERE_SERV_EXT dataExt = new HIS_SERE_SERV_EXT();
-                         dataExt.BEGIN_TIME = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(dtBeginTime.DateTime);
-                         dataExt.END_TIME = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(dtEndTime.DateTime);
-                         dataExt.ID = 0;
-                         surgUpdate.SereServExt = dataExt;
-                     }
-                     if (dicSereServPttt.ContainsKey(sereServ.ID))
-                     {
-                         surgUpdate.SereServPttt = dicSereServPttt[sereServ.ID];
-                     }
-                     surgUpdateSDOs.Add(surgUpdate);
+                    surgUpdate.SereServId = sereServ.ID;
+                    if (ekipUsers.Count > 0 && ekipUsers != null)
+                    {
+                        surgUpdate.EkipUsers = ekipUsers;
+                    }
+                    else
+                    {
+                        surgUpdate.EkipUsers = null;
+                        // lấy kíp theo tài khoản đăng nhập (bỏ do pmem chạy chậm)
+                        //var resuilt = BackendDataWorker.Get<HIS_EKIP_USER>().Where(o => o.LOGINNAME == Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName()).FirstOrDefault();
+                        //if (resuilt != null)
+                        //{
+                        //    List<HIS_EKIP_USER> userList = new List<HIS_EKIP_USER> { resuilt };
+                        //    surgUpdate.EkipUsers = userList;
+                        //}
+                        //else
+                        //{
+                        //    surgUpdate.EkipUsers = null;
+                        //}
+                    }
+
+                    if (sereServExt != null)
+                    {
+                        surgUpdate.SereServExt = sereServExt;
+                    }
+                    else
+                    {
+                        HIS_SERE_SERV_EXT dataExt = new HIS_SERE_SERV_EXT();
+                        dataExt.BEGIN_TIME = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(dtBeginTime.DateTime);
+                        dataExt.END_TIME = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(dtEndTime.DateTime);
+                        dataExt.ID = 0;
+                        surgUpdate.SereServExt = dataExt;
+                    }
+                    if (dicSereServPttt.ContainsKey(sereServ.ID))
+                    {
+                        surgUpdate.SereServPttt = dicSereServPttt[sereServ.ID];
+                    }
+                    surgUpdateSDOs.Add(surgUpdate);
 
                     InputSDO.SurgUpdateSDOs = surgUpdateSDOs;
                     //InputSDO.IsFinished = currentServiceReq.FINISH_TIME != null ? true : false;
@@ -4070,19 +4083,19 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                     Inventec.Common.Logging.LogSystem.Debug("____________LOGINAME:" + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => ekipUsers), ekipUsers));
                     Inventec.Common.Logging.LogSystem.Debug("____________BEGIN_TIME: " + surgUpdate.SereServExt.BEGIN_TIME);
                     Inventec.Common.Logging.LogSystem.Debug("____________END_TIME: " + surgUpdate.SereServExt.END_TIME);
-                   
-                    bool suscess = new BackendAdapter(paramCheckSurg).Post<bool>("api/HisServiceReq/CheckSurgSimultaneily", ApiConsumers.MosConsumer, InputSDO, paramCheckSurg);
-                     if (suscess == true)
-                        {
 
-                        }
-                        else
-                        {
-                            message = string.Format("{0} Bạn có muốn tiếp tục?", paramCheckSurg.GetMessage());
-                          if (MessageBox.Show(message, "", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
-                               return;
-                        }
-                } 
+                    bool suscess = new BackendAdapter(paramCheckSurg).Post<bool>("api/HisServiceReq/CheckSurgSimultaneily", ApiConsumers.MosConsumer, InputSDO, paramCheckSurg);
+                    if (suscess == true)
+                    {
+
+                    }
+                    else
+                    {
+                        message = string.Format("{0} Bạn có muốn tiếp tục?", paramCheckSurg.GetMessage());
+                        if (MessageBox.Show(message, "", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
+                            return;
+                    }
+                }
 
                 if (CheckAllInOne.Checked)
                 {
@@ -6222,7 +6235,7 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                 //nếu hoàn thành và không phải ng xử lý và ko phải admin thì disable
                 if (currentServiceReq != null &&
                     currentServiceReq.SERVICE_REQ_STT_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_STT.ID__HT)
-                    //&& currentServiceReq.EXECUTE_LOGINNAME != Loginname && !HIS.Desktop.IsAdmin.CheckLoginAdmin.IsAdmin(Loginname))
+                //&& currentServiceReq.EXECUTE_LOGINNAME != Loginname && !HIS.Desktop.IsAdmin.CheckLoginAdmin.IsAdmin(Loginname))
                 {
                     return true;
                 }
@@ -6950,7 +6963,7 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                 List<string> loginNames = new List<string>();
                 if (data != null && data.EXECUTE_ROLE_ID > 0)
                 {
-                    
+
                     var executeRoleUserTemps = executeRoleUsers != null ? executeRoleUsers.Where(o => o.EXECUTE_ROLE_ID == data.EXECUTE_ROLE_ID).ToList() : null;
                     if (executeRoleUserTemps != null && executeRoleUserTemps.Count > 0)
                     {
@@ -6988,7 +7001,7 @@ namespace HIS.Desktop.Plugins.ServiceExecute
 
                 if (data != null && data.DEPARTMENT_ID > 0)
                 {
-                    
+
                     var depaloginNames = BackendDataWorker.Get<V_HIS_EMPLOYEE>().Where(o => o.DEPARTMENT_ID == data.DEPARTMENT_ID || o.DEPARTMENT_ID == null).Select(i => i.LOGINNAME).ToList();
                     if (depaloginNames != null && depaloginNames.Count > 0)
                     {
@@ -7737,7 +7750,7 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                             GridLookUpEdit newEditor = new GridLookUpEdit();
                             LoadUser(data, newEditor);
                         }
-                        if(data.LOGINNAME == null && (key == "1"))
+                        if (data.LOGINNAME == null && (key == "1"))
                         {
                             view.SetRowCellValue(view.FocusedRowHandle, view.Columns["LOGINNAME"], null);
                         }
@@ -7749,6 +7762,40 @@ namespace HIS.Desktop.Plugins.ServiceExecute
 
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
+        }
+
+        private void btnPreYhct_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                Inventec.Desktop.Common.Modules.Module moduleData = GlobalVariables.currentModuleRaws.Where(o => o.ModuleLink == "HIS.Desktop.Plugins.AssignPrescriptionYHCT").FirstOrDefault();
+                if (moduleData == null) Inventec.Common.Logging.LogSystem.Error("khong tim thay moduleLink = HIS.Desktop.Plugins.AssignPrescriptionYHCT");
+                if (moduleData.IsPlugin && moduleData.ExtensionInfo != null)
+                {
+                    List<object> listArgs = new List<object>();
+                    V_HIS_SERE_SERV sereServInput = new V_HIS_SERE_SERV();
+                    Inventec.Common.Mapper.DataObjectMapper.Map<V_HIS_SERE_SERV>(sereServInput, sereServ);
+                    AssignPrescriptionADO assignServiceADO = new AssignPrescriptionADO(currentServiceReq.TREATMENT_ID, currentServiceReq.INTRUCTION_TIME, this.currentServiceReq.ID, sereServInput);
+                    var pres = currentServiceReq;
+                    assignServiceADO.TreatmentCode = pres.TDL_TREATMENT_CODE;
+                    assignServiceADO.GenderName = pres.TDL_PATIENT_GENDER_NAME;
+                    assignServiceADO.PatientDob = pres.TDL_PATIENT_DOB;
+                    assignServiceADO.PatientName = pres.TDL_PATIENT_NAME;
+                    listArgs.Add(assignServiceADO);
+                    var extenceInstance = HIS.Desktop.Utility.PluginInstance.GetPluginInstance(HIS.Desktop.Utility.PluginInstance.GetModuleWithWorkingRoom(moduleData, this.moduleData.RoomId, this.moduleData.RoomTypeId), listArgs);
+                    if (extenceInstance == null) throw new ArgumentNullException("moduleData is null");
+                    ((Form)extenceInstance).ShowDialog();
+
+
+                    //chỉ định xong sẽ load lại dữ liệu
+                    FillDataToGrid();
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+
         }
 
         private void xtraTabControl1_CustomHeaderButtonClick(object sender, DevExpress.XtraTab.ViewInfo.CustomHeaderButtonEventArgs e)

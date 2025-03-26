@@ -15,18 +15,14 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace HIS.Desktop.Plugins.Library.FormMedicalRecord.Base
+namespace HIS.Desktop.Plugins.CallPatientV8
 {
-    public class BarItemADO
+    internal class AppConfigKeys
     {
-        public bool IsVisible { get; set; }
-        public string MediRecordName { get; set; }
-        public MediRecordMenuPopupProcessor.MenuType Type { get; set; }
+        #region Public key
+        internal const string CONFIG_KEY__DUONG_DAN_CHAY_FILE_VIDEO = "CONFIG_KEY__DUONG_DAN_CHAY_FILE_VIDEO";
+        internal const string CONFIG_KEY__SO_BENH_NHAN_TREN_DANH_SACH_CHO_KHAM_VA_CLS = "CONFIG_KEY__SO_BENH_NHAN_TREN_DANH_SACH_CHO_KHAM_CLS";
+        #endregion
     }
 }

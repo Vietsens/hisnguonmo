@@ -132,9 +132,9 @@ namespace HIS.Desktop.Plugins.InsuranceExpertise
                 {
                     if (!String.IsNullOrEmpty(txtFindTreatmentCode.Text))
                     {
-                        positionHandleControl = -1;
-                        if (!dxValidationProvider1.Validate())
-                            return;
+                        //positionHandleControl = -1;
+                        //if (!dxValidationProvider1.Validate())
+                        //    return;
                         WaitingManager.Show();
                         FillDataToGridTreatment();
                         if (listTreatment != null && listTreatment.Count == 1)

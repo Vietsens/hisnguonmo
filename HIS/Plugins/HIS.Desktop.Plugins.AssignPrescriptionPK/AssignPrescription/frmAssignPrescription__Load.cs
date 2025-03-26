@@ -944,7 +944,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                 totalRepay = treatmentFees[0].TOTAL_REPAY_AMOUNT ?? 0;
                 total_obtained_price = (totalDeposit + totalBill - totalBillTransferAmount - totalRepay + exemption);//Da thu benh nhan
                 transferTotal = totalPatientPrice - totalDebtAmount - total_obtained_price;//Phai thu benh nhan
-
+                //transferTotal = Inventec.Common.Number.Convert.NumberToNumberRoundAuto(transferTotal, ConfigApplications.NumberSeperator);
                 //- Bổ sung thông tin viện phí lấy theo dữ liệu trong V_HIS_TREATMENT_FEE_1, cụ thể:
                 //+ "Tổng tiền" --> sửa lại thành "Phát sinh" (chính là số tiền tương ứng với chỉ định bs đang kê)
                 //+ Tổng chi phí BN phải trả = TOTAL_PATIENT_PRICE
@@ -1012,7 +1012,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                     this.Close();
                     return;
                 }
-
+                transferTotal = transferTotal < 1 ? 0 : transferTotal;
                 if (patientTypeByPT != null && patientTypeByPT.IS_CHECK_FEE_WHEN_PRES == 1
                     && treatmentFees[0].TDL_TREATMENT_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__KHAM
                     && transferTotal > 0
@@ -1601,7 +1601,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
 
         /// <summary>
         /// - 1 thuốc được coi là "Có đủ thông tin BHYT" khi thỏa mãn:
-        /// Khai báo đủ các thông tin: mã hoạt chất BHYT (ACTIVE_INGR_BHYT_CODE), số đăng ký (REGISTER_NUMBER), và nhóm BHYT thuộc 1 trong các loại: "Thuốc trong danh mục", "Thuốc thanh toán theo tỷ lệ" hoặc "Thuốc ung thư, chống thải ghép"
+        /// Khai báo đủ các thông tin: mã hoạt chất BHYT (ACTIVE_INGR_BHYT_CODE), và nhóm BHYT thuộc 1 trong các loại: "Thuốc trong danh mục", "Thuốc thanh toán theo tỷ lệ" hoặc "Thuốc ung thư, chống thải ghép"
         /// - 1 vật tư được coi là "Có đủ thông tin BHYT" khi thỏa mãn:
         /// Khai báo đủ các thông tin: mã BHYT (HEIN_SERVICE_BHYT_CODE), tên BHYT (HEIN_SERVICE_BHYT_NAME), và nhóm BHYT thuộc 1 trong các loại: "Vật tư thay thế", "Vật tư trong danh mục", "Vật tư thanh toán theo tỷ lệ"
         /// </summary>
@@ -1612,18 +1612,20 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
             try
             {
                 valid = (medimaty.SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__THUOC &&
-                            !String.IsNullOrEmpty(medimaty.ACTIVE_INGR_BHYT_CODE)
+                            (!String.IsNullOrEmpty(medimaty.ACTIVE_INGR_BHYT_CODE) || !string.IsNullOrEmpty(HisConfigCFG.AllowAssignOffListMedicineMaterialHeinCardNumberPrefix) && !string.IsNullOrEmpty(currentTreatmentWithPatientType.HEIN_CARD_NUMBER) && HisConfigCFG.AllowAssignOffListMedicineMaterialHeinCardNumberPrefix.Split(',').ToList().Exists(o=>currentTreatmentWithPatientType.HEIN_CARD_NUMBER.StartsWith(o)))
                             //&& !String.IsNullOrEmpty(medimaty.REGISTER_NUMBER)
                             && (medimaty.HEIN_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_HEIN_SERVICE_TYPE.ID__TH_TDM
                             || medimaty.HEIN_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_HEIN_SERVICE_TYPE.ID__TH_TL
-                            || medimaty.HEIN_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_HEIN_SERVICE_TYPE.ID__TH_UT))
+                            || medimaty.HEIN_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_HEIN_SERVICE_TYPE.ID__TH_UT)
+                            || (!string.IsNullOrEmpty(HisConfigCFG.AllowAssignOffListMedicineMaterialHeinCardNumberPrefix) && !string.IsNullOrEmpty(currentTreatmentWithPatientType.HEIN_CARD_NUMBER) && HisConfigCFG.AllowAssignOffListMedicineMaterialHeinCardNumberPrefix.Split(',').ToList().Exists(o => currentTreatmentWithPatientType.HEIN_CARD_NUMBER.StartsWith(o)) && medimaty.HEIN_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_HEIN_SERVICE_TYPE.ID__TH_NDM && !String.IsNullOrEmpty(medimaty.ACTIVE_INGR_BHYT_CODE)))
                         ||
                         (medimaty.SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__VT &&
                             !String.IsNullOrEmpty(medimaty.HEIN_SERVICE_BHYT_CODE)
                             && !String.IsNullOrEmpty(medimaty.HEIN_SERVICE_BHYT_NAME)
                             && (medimaty.HEIN_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_HEIN_SERVICE_TYPE.ID__VT_TT
                             || medimaty.HEIN_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_HEIN_SERVICE_TYPE.ID__VT_TL
-                            || medimaty.HEIN_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_HEIN_SERVICE_TYPE.ID__VT_TDM));
+                            || medimaty.HEIN_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_HEIN_SERVICE_TYPE.ID__VT_TDM)
+                            || (!string.IsNullOrEmpty(HisConfigCFG.AllowAssignOffListMedicineMaterialHeinCardNumberPrefix) && !string.IsNullOrEmpty(currentTreatmentWithPatientType.HEIN_CARD_NUMBER) && HisConfigCFG.AllowAssignOffListMedicineMaterialHeinCardNumberPrefix.Split(',').ToList().Exists(o => currentTreatmentWithPatientType.HEIN_CARD_NUMBER.StartsWith(o)) && medimaty.HEIN_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_HEIN_SERVICE_TYPE.ID__VT_NDM));
             }
             catch (Exception ex)
             {
@@ -1645,18 +1647,20 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
             try
             {
                 valid = (medimaty.SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__THUOC &&
-                            !String.IsNullOrEmpty(medimaty.ACTIVE_INGR_BHYT_CODE)
-                            //&& !String.IsNullOrEmpty(medimaty.REGISTER_NUMBER)
-                            && (medimaty.HEIN_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_HEIN_SERVICE_TYPE.ID__TH_TDM
-                            || medimaty.HEIN_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_HEIN_SERVICE_TYPE.ID__TH_TL
-                            || medimaty.HEIN_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_HEIN_SERVICE_TYPE.ID__TH_UT))
-                        ||
-                        (medimaty.SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__VT &&
-                            !String.IsNullOrEmpty(medimaty.HEIN_SERVICE_BHYT_CODE)
-                            && !String.IsNullOrEmpty(medimaty.HEIN_SERVICE_BHYT_NAME)
-                            && (medimaty.HEIN_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_HEIN_SERVICE_TYPE.ID__VT_TT
-                            || medimaty.HEIN_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_HEIN_SERVICE_TYPE.ID__VT_TL
-                            || medimaty.HEIN_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_HEIN_SERVICE_TYPE.ID__VT_TDM));
+                              (!String.IsNullOrEmpty(medimaty.ACTIVE_INGR_BHYT_CODE) || !string.IsNullOrEmpty(HisConfigCFG.AllowAssignOffListMedicineMaterialHeinCardNumberPrefix) && !string.IsNullOrEmpty(currentTreatmentWithPatientType.HEIN_CARD_NUMBER) && HisConfigCFG.AllowAssignOffListMedicineMaterialHeinCardNumberPrefix.Split(',').ToList().Exists(o => currentTreatmentWithPatientType.HEIN_CARD_NUMBER.StartsWith(o)))
+                              //&& !String.IsNullOrEmpty(medimaty.REGISTER_NUMBER)
+                              && (medimaty.HEIN_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_HEIN_SERVICE_TYPE.ID__TH_TDM
+                              || medimaty.HEIN_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_HEIN_SERVICE_TYPE.ID__TH_TL
+                              || medimaty.HEIN_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_HEIN_SERVICE_TYPE.ID__TH_UT)
+                              || (!string.IsNullOrEmpty(HisConfigCFG.AllowAssignOffListMedicineMaterialHeinCardNumberPrefix) && !string.IsNullOrEmpty(currentTreatmentWithPatientType.HEIN_CARD_NUMBER) && HisConfigCFG.AllowAssignOffListMedicineMaterialHeinCardNumberPrefix.Split(',').ToList().Exists(o => currentTreatmentWithPatientType.HEIN_CARD_NUMBER.StartsWith(o)) && medimaty.HEIN_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_HEIN_SERVICE_TYPE.ID__TH_NDM && !String.IsNullOrEmpty(medimaty.ACTIVE_INGR_BHYT_CODE)))
+                          ||
+                          (medimaty.SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__VT &&
+                              !String.IsNullOrEmpty(medimaty.HEIN_SERVICE_BHYT_CODE)
+                              && !String.IsNullOrEmpty(medimaty.HEIN_SERVICE_BHYT_NAME)
+                              && (medimaty.HEIN_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_HEIN_SERVICE_TYPE.ID__VT_TT
+                              || medimaty.HEIN_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_HEIN_SERVICE_TYPE.ID__VT_TL
+                              || medimaty.HEIN_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_HEIN_SERVICE_TYPE.ID__VT_TDM)
+                              || (!string.IsNullOrEmpty(HisConfigCFG.AllowAssignOffListMedicineMaterialHeinCardNumberPrefix) && !string.IsNullOrEmpty(currentTreatmentWithPatientType.HEIN_CARD_NUMBER) && HisConfigCFG.AllowAssignOffListMedicineMaterialHeinCardNumberPrefix.Split(',').ToList().Exists(o => currentTreatmentWithPatientType.HEIN_CARD_NUMBER.StartsWith(o)) && medimaty.HEIN_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_HEIN_SERVICE_TYPE.ID__VT_NDM));
             }
             catch (Exception ex)
             {
@@ -1678,18 +1682,20 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
             try
             {
                 valid = (medimaty.SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__THUOC &&
-                            !String.IsNullOrEmpty(medimaty.ACTIVE_INGR_BHYT_CODE)
+                            (!String.IsNullOrEmpty(medimaty.ACTIVE_INGR_BHYT_CODE) || !string.IsNullOrEmpty(HisConfigCFG.AllowAssignOffListMedicineMaterialHeinCardNumberPrefix) && !string.IsNullOrEmpty(currentTreatmentWithPatientType.HEIN_CARD_NUMBER) && HisConfigCFG.AllowAssignOffListMedicineMaterialHeinCardNumberPrefix.Split(',').ToList().Exists(o => currentTreatmentWithPatientType.HEIN_CARD_NUMBER.StartsWith(o)))
                             //&& !String.IsNullOrEmpty(medimaty.REGISTER_NUMBER)
                             && (medimaty.HEIN_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_HEIN_SERVICE_TYPE.ID__TH_TDM
                             || medimaty.HEIN_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_HEIN_SERVICE_TYPE.ID__TH_TL
-                            || medimaty.HEIN_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_HEIN_SERVICE_TYPE.ID__TH_UT))
+                            || medimaty.HEIN_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_HEIN_SERVICE_TYPE.ID__TH_UT)
+                            || (!string.IsNullOrEmpty(HisConfigCFG.AllowAssignOffListMedicineMaterialHeinCardNumberPrefix) && !string.IsNullOrEmpty(currentTreatmentWithPatientType.HEIN_CARD_NUMBER) && HisConfigCFG.AllowAssignOffListMedicineMaterialHeinCardNumberPrefix.Split(',').ToList().Exists(o => currentTreatmentWithPatientType.HEIN_CARD_NUMBER.StartsWith(o)) && medimaty.HEIN_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_HEIN_SERVICE_TYPE.ID__TH_NDM && !String.IsNullOrEmpty(medimaty.ACTIVE_INGR_BHYT_CODE)))
                         ||
                         (medimaty.SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__VT &&
                             !String.IsNullOrEmpty(medimaty.HEIN_SERVICE_BHYT_CODE)
                             && !String.IsNullOrEmpty(medimaty.HEIN_SERVICE_BHYT_NAME)
                             && (medimaty.HEIN_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_HEIN_SERVICE_TYPE.ID__VT_TT
                             || medimaty.HEIN_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_HEIN_SERVICE_TYPE.ID__VT_TL
-                            || medimaty.HEIN_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_HEIN_SERVICE_TYPE.ID__VT_TDM));
+                            || medimaty.HEIN_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_HEIN_SERVICE_TYPE.ID__VT_TDM)
+                            || (!string.IsNullOrEmpty(HisConfigCFG.AllowAssignOffListMedicineMaterialHeinCardNumberPrefix) && !string.IsNullOrEmpty(currentTreatmentWithPatientType.HEIN_CARD_NUMBER) && HisConfigCFG.AllowAssignOffListMedicineMaterialHeinCardNumberPrefix.Split(',').ToList().Exists(o => currentTreatmentWithPatientType.HEIN_CARD_NUMBER.StartsWith(o)) && medimaty.HEIN_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_HEIN_SERVICE_TYPE.ID__VT_NDM));
             }
             catch (Exception ex)
             {
@@ -1906,7 +1912,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                     HisSereServFilter hisSereServFilter = new HisSereServFilter();
                     hisSereServFilter.TREATMENT_ID = treatment.ID;
                     hisSereServFilter.TDL_SERVICE_TYPE_IDs = setyAllowsIds;
-                    this.sereServWithTreatment = new BackendAdapter(param).Get<List<MOS.EFMODEL.DataModels.HIS_SERE_SERV>>("api/HisSereServ/GetView", ApiConsumers.MosConsumerNoStore, hisSereServFilter, ProcessLostToken, param);
+                    this.sereServWithTreatment = new BackendAdapter(param).Get<List<MOS.EFMODEL.DataModels.HIS_SERE_SERV>>("api/HisSereServ/Get", ApiConsumers.MosConsumerNoStore, hisSereServFilter, ProcessLostToken, param);
                     //}
                     //else
                     //{

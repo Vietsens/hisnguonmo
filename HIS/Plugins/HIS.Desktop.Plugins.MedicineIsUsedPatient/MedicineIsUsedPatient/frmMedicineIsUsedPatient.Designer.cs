@@ -45,9 +45,10 @@ namespace HIS.Desktop.Plugins.MedicineIsUsedPatient.MedicineIsUsedPatient
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.layoutControl1 = new DevExpress.XtraLayout.LayoutControl();
             this.cboIsUse = new DevExpress.XtraEditors.GridLookUpEdit();
-            this.barManager1 = new DevExpress.XtraBars.BarManager();
+            this.barManager1 = new DevExpress.XtraBars.BarManager(this.components);
             this.bar1 = new DevExpress.XtraBars.Bar();
             this.bbtnSearch = new DevExpress.XtraBars.BarButtonItem();
             this.bbtnReset = new DevExpress.XtraBars.BarButtonItem();
@@ -68,8 +69,17 @@ namespace HIS.Desktop.Plugins.MedicineIsUsedPatient.MedicineIsUsedPatient
             this.treeListColumn4 = new DevExpress.XtraTreeList.Columns.TreeListColumn();
             this.treeListColumn_IsUsed = new DevExpress.XtraTreeList.Columns.TreeListColumn();
             this.treeListColumn7 = new DevExpress.XtraTreeList.Columns.TreeListColumn();
+            this.treeListColumn5 = new DevExpress.XtraTreeList.Columns.TreeListColumn();
+            this.treeListColumn6 = new DevExpress.XtraTreeList.Columns.TreeListColumn();
+            this.treeListColumn8 = new DevExpress.XtraTreeList.Columns.TreeListColumn();
+            this.treeListColumn9 = new DevExpress.XtraTreeList.Columns.TreeListColumn();
             this.repositoryItemCheckEdit1 = new DevExpress.XtraEditors.Repository.RepositoryItemCheckEdit();
             this.repositoryItemCheckAll = new DevExpress.XtraEditors.Repository.RepositoryItemCheckEdit();
+            this.repositoryItemCheckEditMorning = new DevExpress.XtraEditors.Repository.RepositoryItemCheckEdit();
+            this.repositoryItemCheckEditLunch = new DevExpress.XtraEditors.Repository.RepositoryItemCheckEdit();
+            this.repositoryItemCheckEditAfternoon = new DevExpress.XtraEditors.Repository.RepositoryItemCheckEdit();
+            this.repositoryItemCheckEditDinner = new DevExpress.XtraEditors.Repository.RepositoryItemCheckEdit();
+            this.repositoryItemCheckEditD = new DevExpress.XtraEditors.Repository.RepositoryItemCheckEdit();
             this.btnReset = new DevExpress.XtraEditors.SimpleButton();
             this.lblHeinRatio = new DevExpress.XtraEditors.LabelControl();
             this.lblRightRoute = new DevExpress.XtraEditors.LabelControl();
@@ -107,7 +117,7 @@ namespace HIS.Desktop.Plugins.MedicineIsUsedPatient.MedicineIsUsedPatient
             this.layoutControlItem17 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem18 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem19 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.timerLoadData = new System.Windows.Forms.Timer();
+            this.timerLoadData = new System.Windows.Forms.Timer(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
             this.layoutControl1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.cboIsUse.Properties)).BeginInit();
@@ -122,6 +132,11 @@ namespace HIS.Desktop.Plugins.MedicineIsUsedPatient.MedicineIsUsedPatient
             ((System.ComponentModel.ISupportInitialize)(this.treeMedicineIsUsePt)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemCheckEdit1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemCheckAll)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repositoryItemCheckEditMorning)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repositoryItemCheckEditLunch)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repositoryItemCheckEditAfternoon)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repositoryItemCheckEditDinner)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repositoryItemCheckEditD)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtTreatmentCode.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem1)).BeginInit();
@@ -373,7 +388,11 @@ namespace HIS.Desktop.Plugins.MedicineIsUsedPatient.MedicineIsUsedPatient
             this.treeListColumn3,
             this.treeListColumn4,
             this.treeListColumn_IsUsed,
-            this.treeListColumn7});
+            this.treeListColumn7,
+            this.treeListColumn5,
+            this.treeListColumn6,
+            this.treeListColumn8,
+            this.treeListColumn9});
             this.treeMedicineIsUsePt.Cursor = System.Windows.Forms.Cursors.Default;
             this.treeMedicineIsUsePt.Dock = System.Windows.Forms.DockStyle.Fill;
             this.treeMedicineIsUsePt.KeyFieldName = "CONCRETE_ID__IN_SETY";
@@ -386,8 +405,16 @@ namespace HIS.Desktop.Plugins.MedicineIsUsedPatient.MedicineIsUsedPatient
             null,
             null,
             null,
+            null,
+            null,
+            null,
+            null,
             null}, -1);
             this.treeMedicineIsUsePt.AppendNode(new object[] {
+            null,
+            null,
+            null,
+            null,
             null,
             null,
             null,
@@ -415,13 +442,20 @@ namespace HIS.Desktop.Plugins.MedicineIsUsedPatient.MedicineIsUsedPatient
             this.treeMedicineIsUsePt.ParentFieldName = "PARENT_ID__IN_SETY";
             this.treeMedicineIsUsePt.RepositoryItems.AddRange(new DevExpress.XtraEditors.Repository.RepositoryItem[] {
             this.repositoryItemCheckEdit1,
-            this.repositoryItemCheckAll});
+            this.repositoryItemCheckAll,
+            this.repositoryItemCheckEditMorning,
+            this.repositoryItemCheckEditLunch,
+            this.repositoryItemCheckEditAfternoon,
+            this.repositoryItemCheckEditDinner,
+            this.repositoryItemCheckEditD});
             this.treeMedicineIsUsePt.ShowButtonMode = DevExpress.XtraTreeList.ShowButtonModeEnum.ShowAlways;
             this.treeMedicineIsUsePt.Size = new System.Drawing.Size(1292, 439);
             this.treeMedicineIsUsePt.TabIndex = 0;
             this.treeMedicineIsUsePt.CustomNodeCellEdit += new DevExpress.XtraTreeList.GetCustomNodeCellEditEventHandler(this.treeMedicineIsUsePt_CustomNodeCellEdit);
             this.treeMedicineIsUsePt.NodeCellStyle += new DevExpress.XtraTreeList.GetCustomNodeCellStyleEventHandler(this.treeMedicineIsUsePt_NodeCellStyle);
+            this.treeMedicineIsUsePt.CustomUnboundColumnData += new DevExpress.XtraTreeList.CustomColumnDataEventHandler(this.treeMedicineIsUsePt_CustomUnboundColumnData);
             this.treeMedicineIsUsePt.CustomDrawColumnHeader += new DevExpress.XtraTreeList.CustomDrawColumnHeaderEventHandler(this.treeMedicineIsUsePt_CustomDrawColumnHeader);
+            this.treeMedicineIsUsePt.CustomDrawNodeCell += new DevExpress.XtraTreeList.CustomDrawNodeCellEventHandler(this.treeMedicineIsUsePt_CustomDrawNodeCell);
             this.treeMedicineIsUsePt.MouseClick += new System.Windows.Forms.MouseEventHandler(this.treeMedicineIsUsePt_MouseClick);
             this.treeMedicineIsUsePt.MouseUp += new System.Windows.Forms.MouseEventHandler(this.treeMedicineIsUsePt_MouseUp);
             // 
@@ -434,7 +468,7 @@ namespace HIS.Desktop.Plugins.MedicineIsUsedPatient.MedicineIsUsedPatient
             this.treeListColumn1.Name = "treeListColumn1";
             this.treeListColumn1.Visible = true;
             this.treeListColumn1.VisibleIndex = 0;
-            this.treeListColumn1.Width = 80;
+            this.treeListColumn1.Width = 141;
             // 
             // treeListColumn2
             // 
@@ -444,7 +478,7 @@ namespace HIS.Desktop.Plugins.MedicineIsUsedPatient.MedicineIsUsedPatient
             this.treeListColumn2.Name = "treeListColumn2";
             this.treeListColumn2.Visible = true;
             this.treeListColumn2.VisibleIndex = 1;
-            this.treeListColumn2.Width = 250;
+            this.treeListColumn2.Width = 311;
             // 
             // treeListColumn3
             // 
@@ -455,7 +489,7 @@ namespace HIS.Desktop.Plugins.MedicineIsUsedPatient.MedicineIsUsedPatient
             this.treeListColumn3.Name = "treeListColumn3";
             this.treeListColumn3.Visible = true;
             this.treeListColumn3.VisibleIndex = 2;
-            this.treeListColumn3.Width = 120;
+            this.treeListColumn3.Width = 181;
             // 
             // treeListColumn4
             // 
@@ -466,7 +500,7 @@ namespace HIS.Desktop.Plugins.MedicineIsUsedPatient.MedicineIsUsedPatient
             this.treeListColumn4.Name = "treeListColumn4";
             this.treeListColumn4.Visible = true;
             this.treeListColumn4.VisibleIndex = 3;
-            this.treeListColumn4.Width = 100;
+            this.treeListColumn4.Width = 162;
             // 
             // treeListColumn_IsUsed
             // 
@@ -478,13 +512,57 @@ namespace HIS.Desktop.Plugins.MedicineIsUsedPatient.MedicineIsUsedPatient
             this.treeListColumn_IsUsed.UnboundType = DevExpress.XtraTreeList.Data.UnboundColumnType.Object;
             this.treeListColumn_IsUsed.Visible = true;
             this.treeListColumn_IsUsed.VisibleIndex = 4;
-            this.treeListColumn_IsUsed.Width = 100;
+            this.treeListColumn_IsUsed.Width = 267;
             // 
             // treeListColumn7
             // 
             this.treeListColumn7.Caption = "IS_MEDICINE";
             this.treeListColumn7.FieldName = "IS_MEDICINE";
             this.treeListColumn7.Name = "treeListColumn7";
+            // 
+            // treeListColumn5
+            // 
+            this.treeListColumn5.Caption = "Sáng";
+            this.treeListColumn5.FieldName = "MORNING_CHK";
+            this.treeListColumn5.Name = "treeListColumn5";
+            this.treeListColumn5.ToolTip = "Thuốc buổi sáng đã sử dụng";
+            this.treeListColumn5.UnboundType = DevExpress.XtraTreeList.Data.UnboundColumnType.Object;
+            this.treeListColumn5.Visible = true;
+            this.treeListColumn5.VisibleIndex = 5;
+            this.treeListColumn5.Width = 57;
+            // 
+            // treeListColumn6
+            // 
+            this.treeListColumn6.Caption = "Trưa";
+            this.treeListColumn6.FieldName = "LUNCH_CHK";
+            this.treeListColumn6.Name = "treeListColumn6";
+            this.treeListColumn6.ToolTip = "Thuốc buổi trưa đã sử dụng";
+            this.treeListColumn6.UnboundType = DevExpress.XtraTreeList.Data.UnboundColumnType.Object;
+            this.treeListColumn6.Visible = true;
+            this.treeListColumn6.VisibleIndex = 6;
+            this.treeListColumn6.Width = 57;
+            // 
+            // treeListColumn8
+            // 
+            this.treeListColumn8.Caption = "Chiều";
+            this.treeListColumn8.FieldName = "AFTERNOON_CHK";
+            this.treeListColumn8.Name = "treeListColumn8";
+            this.treeListColumn8.ToolTip = "Thuốc buổi chiều đã sử dụng";
+            this.treeListColumn8.UnboundType = DevExpress.XtraTreeList.Data.UnboundColumnType.Object;
+            this.treeListColumn8.Visible = true;
+            this.treeListColumn8.VisibleIndex = 7;
+            this.treeListColumn8.Width = 57;
+            // 
+            // treeListColumn9
+            // 
+            this.treeListColumn9.Caption = "Tối";
+            this.treeListColumn9.FieldName = "DINNER_CHK";
+            this.treeListColumn9.Name = "treeListColumn9";
+            this.treeListColumn9.ToolTip = "Thuốc buổi tối đã sử dụng";
+            this.treeListColumn9.UnboundType = DevExpress.XtraTreeList.Data.UnboundColumnType.Object;
+            this.treeListColumn9.Visible = true;
+            this.treeListColumn9.VisibleIndex = 8;
+            this.treeListColumn9.Width = 57;
             // 
             // repositoryItemCheckEdit1
             // 
@@ -502,6 +580,42 @@ namespace HIS.Desktop.Plugins.MedicineIsUsedPatient.MedicineIsUsedPatient
             // 
             this.repositoryItemCheckAll.AutoHeight = false;
             this.repositoryItemCheckAll.Name = "repositoryItemCheckAll";
+            // 
+            // repositoryItemCheckEditMorning
+            // 
+            this.repositoryItemCheckEditMorning.AutoHeight = false;
+            this.repositoryItemCheckEditMorning.Name = "repositoryItemCheckEditMorning";
+            this.repositoryItemCheckEditMorning.NullStyle = DevExpress.XtraEditors.Controls.StyleIndeterminate.Unchecked;
+            this.repositoryItemCheckEditMorning.CheckedChanged += new System.EventHandler(this.repositoryItemCheckEditMorning_CheckedChanged);
+            // 
+            // repositoryItemCheckEditLunch
+            // 
+            this.repositoryItemCheckEditLunch.AutoHeight = false;
+            this.repositoryItemCheckEditLunch.Name = "repositoryItemCheckEditLunch";
+            this.repositoryItemCheckEditLunch.NullStyle = DevExpress.XtraEditors.Controls.StyleIndeterminate.Unchecked;
+            this.repositoryItemCheckEditLunch.CheckedChanged += new System.EventHandler(this.repositoryItemCheckEditLunch_CheckedChanged);
+            // 
+            // repositoryItemCheckEditAfternoon
+            // 
+            this.repositoryItemCheckEditAfternoon.AutoHeight = false;
+            this.repositoryItemCheckEditAfternoon.Name = "repositoryItemCheckEditAfternoon";
+            this.repositoryItemCheckEditAfternoon.NullStyle = DevExpress.XtraEditors.Controls.StyleIndeterminate.Unchecked;
+            this.repositoryItemCheckEditAfternoon.CheckedChanged += new System.EventHandler(this.repositoryItemCheckEditAfternoon_CheckedChanged);
+            // 
+            // repositoryItemCheckEditDinner
+            // 
+            this.repositoryItemCheckEditDinner.AutoHeight = false;
+            this.repositoryItemCheckEditDinner.Name = "repositoryItemCheckEditDinner";
+            this.repositoryItemCheckEditDinner.NullStyle = DevExpress.XtraEditors.Controls.StyleIndeterminate.Unchecked;
+            this.repositoryItemCheckEditDinner.CheckedChanged += new System.EventHandler(this.repositoryItemCheckEditDinner_CheckedChanged);
+            // 
+            // repositoryItemCheckEditD
+            // 
+            this.repositoryItemCheckEditD.AutoHeight = false;
+            this.repositoryItemCheckEditD.CheckStyle = DevExpress.XtraEditors.Controls.CheckStyles.Style5;
+            this.repositoryItemCheckEditD.Name = "repositoryItemCheckEditD";
+            this.repositoryItemCheckEditD.NullStyle = DevExpress.XtraEditors.Controls.StyleIndeterminate.Unchecked;
+            this.repositoryItemCheckEditD.ReadOnly = true;
             // 
             // btnReset
             // 
@@ -1004,6 +1118,11 @@ namespace HIS.Desktop.Plugins.MedicineIsUsedPatient.MedicineIsUsedPatient
             ((System.ComponentModel.ISupportInitialize)(this.treeMedicineIsUsePt)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemCheckEdit1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemCheckAll)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repositoryItemCheckEditMorning)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repositoryItemCheckEditLunch)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repositoryItemCheckEditAfternoon)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repositoryItemCheckEditDinner)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repositoryItemCheckEditD)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtTreatmentCode.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem1)).EndInit();
@@ -1097,5 +1216,14 @@ namespace HIS.Desktop.Plugins.MedicineIsUsedPatient.MedicineIsUsedPatient
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem18;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem19;
         private DevExpress.XtraEditors.Repository.RepositoryItemCheckEdit repositoryItemCheckAll;
+        private DevExpress.XtraTreeList.Columns.TreeListColumn treeListColumn5;
+        private DevExpress.XtraTreeList.Columns.TreeListColumn treeListColumn6;
+        private DevExpress.XtraTreeList.Columns.TreeListColumn treeListColumn8;
+        private DevExpress.XtraTreeList.Columns.TreeListColumn treeListColumn9;
+        private DevExpress.XtraEditors.Repository.RepositoryItemCheckEdit repositoryItemCheckEditMorning;
+        private DevExpress.XtraEditors.Repository.RepositoryItemCheckEdit repositoryItemCheckEditLunch;
+        private DevExpress.XtraEditors.Repository.RepositoryItemCheckEdit repositoryItemCheckEditAfternoon;
+        private DevExpress.XtraEditors.Repository.RepositoryItemCheckEdit repositoryItemCheckEditDinner;
+        private DevExpress.XtraEditors.Repository.RepositoryItemCheckEdit repositoryItemCheckEditD;
     }
 }

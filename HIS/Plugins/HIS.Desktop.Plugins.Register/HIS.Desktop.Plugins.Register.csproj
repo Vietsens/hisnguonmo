@@ -31,6 +31,8 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Accessibility" />
+    <Reference Include="ACS.EFMODEL, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+    <Reference Include="ACS.SDO, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
     <Reference Include="AutoMapper">
       <HintPath>..\..\..\..\lib\MOS\AutoMapper.dll</HintPath>
     </Reference>
@@ -88,9 +90,6 @@
     </Reference>
     <Reference Include="HIS.Desktop.Plugins.Library.HisSyncToHid">
       <HintPath>..\..\..\..\lib\HIS\ReferencedAssemblies\HIS.Desktop.Plugins.Library.HisSyncToHid.dll</HintPath>
-    </Reference>
-    <Reference Include="HIS.Desktop.Plugins.Library.RegisterConfig">
-      <HintPath>..\..\..\..\lib\HIS\ReferencedAssemblies\HIS.Desktop.Plugins.Library.RegisterConfig.dll</HintPath>
     </Reference>
     <Reference Include="HIS.Desktop.Plugins.Library.RegisterConnectHrm">
       <HintPath>..\..\..\..\lib\HIS\ReferencedAssemblies\HIS.Desktop.Plugins.Library.RegisterConnectHrm.dll</HintPath>
@@ -480,6 +479,10 @@
     <ProjectReference Include="..\HIS.Desktop.Library.CacheClient\HIS.Desktop.Library.CacheClient.csproj">
       <Project>{64837e01-803d-4f1e-9dfc-d34b38ea78f9}</Project>
       <Name>HIS.Desktop.Library.CacheClient</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\HIS.Desktop.Plugins.Library.RegisterConfig\HIS.Desktop.Plugins.Library.RegisterConfig.csproj">
+      <Project>{9247dd49-482c-4227-88df-616a8aaf3f38}</Project>
+      <Name>HIS.Desktop.Plugins.Library.RegisterConfig</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

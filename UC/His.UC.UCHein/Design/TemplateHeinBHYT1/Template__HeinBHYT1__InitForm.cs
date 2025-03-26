@@ -78,6 +78,8 @@ namespace His.UC.UCHein.Design.TemplateHeinBHYT1
                 chkBaby.Enabled = this.entity.IsChild;
                 if (!chkBaby.Enabled)
                     this.chkBaby.Checked = false;
+                chkTt46.Checked = false;
+                txtTt46.Enabled = false;
             }
             catch (Exception ex)
             {
@@ -146,7 +148,7 @@ namespace His.UC.UCHein.Design.TemplateHeinBHYT1
                             this.InitDefaultRightRouteType();
                         else
                         {
-                            if (cboHeinRightRoute.EditValue == null)
+                            if (cboHeinRightRoute.EditValue == null && !SetDefaultRightCode())
                             {
                                 DevExpress.XtraEditors.XtraMessageBox.Show(Base.MessageUtil.GetMessage(His.UC.LibraryMessage.Message.Enum.His_UCHein__MaDKKCBBDKhacVoiCuaVienNguoiDungPhaiChonTruongHop), Base.MessageUtil.GetMessage(LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaCanhBao), DefaultBoolean.True);
                             }
@@ -247,8 +249,12 @@ namespace His.UC.UCHein.Design.TemplateHeinBHYT1
                 IsAutoCheck = true;
                 this.chkJoin5Year.Checked = (patientTypeAlter.JOIN_5_YEAR == MOS.LibraryHein.Bhyt.HeinJoin5Year.HeinJoin5YearCode.TRUE);
                 this.chkPaid6Month.Checked = (patientTypeAlter.PAID_6_MONTH == MOS.LibraryHein.Bhyt.HeinPaid6Month.HeinPaid6MonthCode.TRUE);
-                if(chkBaby.Enabled)
+                if(chkBaby.Enabled) 
                     this.chkBaby.Checked = (patientTypeAlter.IS_NEWBORN == 1);
+                this.chkHasWorkingLetter.Checked = patientTypeAlter.HAS_WORKING_LETTER == 1;
+                this.chkHasAbsentLetter.Checked = patientTypeAlter.HAS_ABSENT_LETTER == 1;
+                this.chkTt46.Checked = patientTypeAlter.IS_TT46 == 1;
+                this.txtTt46.Text = patientTypeAlter.TT46_NOTE;
                 IsAutoCheck = false;
                 this.txtAddress.Text = patientTypeAlter.ADDRESS;
                 this.txtHNCode.Text = patientTypeAlter.HNCODE;
@@ -331,6 +337,7 @@ namespace His.UC.UCHein.Design.TemplateHeinBHYT1
                 if (this.entity.IsChild)
                     this.SetEnableControlHein(RightRouterFactory.WRONG_ROUTER, isFocus);
                 this.VisibleButtonDeleteHeinRightRoute();
+                this.ValidateRightRouteType();
             }
             catch (Exception ex)
             {

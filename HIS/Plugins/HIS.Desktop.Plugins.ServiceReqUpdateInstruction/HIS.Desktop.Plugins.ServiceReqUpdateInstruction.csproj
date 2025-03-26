@@ -61,10 +61,10 @@
       <HintPath>..\..\..\..\LIB\HIS\HIS.Desktop.Plugins.Library.PrintServiceReq\HIS.Desktop.Plugins.Library.PrintServiceReq.dll</HintPath>
     </Reference>
     <Reference Include="HIS.UC.Icd">
-      <HintPath>..\..\..\..\..\histest\histest\x64\ReferencedAssemblies\HIS.UC.Icd.dll</HintPath>
+      <HintPath>..\..\..\..\lib\HIS\His.UC.Icd\HIS.UC.Icd.dll</HintPath>
     </Reference>
     <Reference Include="HIS.UC.SecondaryIcd">
-      <HintPath>..\..\..\..\..\histest\histest\x64\ReferencedAssemblies\HIS.UC.SecondaryIcd.dll</HintPath>
+      <HintPath>..\..\..\..\lib\HIS\HIS.UC.SecondaryIcd\HIS.UC.SecondaryIcd.dll</HintPath>
     </Reference>
     <Reference Include="IMSys.DbConfig.HIS_RS">
       <HintPath>..\..\..\..\LIB\IMSys.DbConfig\IMSys.DbConfig.HIS_RS\IMSys.DbConfig.HIS_RS.dll</HintPath>
@@ -90,6 +90,9 @@
     </Reference>
     <Reference Include="Inventec.Common.Resource">
       <HintPath>..\..\..\..\LIB\Inventec.Common\Inventec.Common.Resource\Inventec.Common.Resource.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Common.String">
+      <HintPath>..\..\..\..\lib\Inventec.Common\Inventec.Common.String\Inventec.Common.String.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Common.TypeConvert">
       <HintPath>..\..\..\..\LIB\Inventec.Common\Inventec.Common.TypeConvert\Inventec.Common.TypeConvert.dll</HintPath>
@@ -175,10 +178,13 @@
       <DependentUpon>frmServiceReqUpdateInstruction.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Include="Properties\licenses.licx" />
     <EmbeddedResource Include="Resources\Lang.en.resx">
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Resources\Lang.vi.resx" />
+    <EmbeddedResource Include="Resources\Lang.vi.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="Resources\Message.Lang.en.resx" />
     <EmbeddedResource Include="Resources\Message.Lang.vi.resx" />
   </ItemGroup>

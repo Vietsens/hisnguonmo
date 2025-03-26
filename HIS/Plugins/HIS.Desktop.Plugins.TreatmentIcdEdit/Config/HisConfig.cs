@@ -29,6 +29,7 @@ namespace HIS.Desktop.Plugins.TreatmentIcdEdit
 
         private const string DefaultCheckedCheckboxIssueOutPatientStoreCodeSTR = "HIS.Desktop.Plugins.TreatmentFinish.DefaultCheckedCheckboxCreateOutPatientMediRecord";
         private const string EnableCheckboxIssueOutPatientStoreCodeSTR = "HIS.Desktop.Plugins.TreatmentFinish.EnableCheckboxCreateOutPatientMediRecord";
+        private const string KEY_IsCheckSubIcdExceedLimit = "HIS.Desktop.Plugins.IsCheckSubIcdExceedLimit";
 
         private const string checkSovaovien = "MOS.HIS_TREATMENT.IS_MANUAL_IN_CODE";
 
@@ -40,6 +41,7 @@ namespace HIS.Desktop.Plugins.TreatmentIcdEdit
         internal static bool IsEnableCheckboxIssueOutPatientStoreCode;
         internal static bool SuaThongTinHoSoDieuTri_;
 
+        internal static string IsCheckSubIcdExceedLimit;
 
         internal static void GetConfig()
         {
@@ -47,6 +49,8 @@ namespace HIS.Desktop.Plugins.TreatmentIcdEdit
             {
                 IsCheckedCheckboxIssueOutPatientStoreCode = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(DefaultCheckedCheckboxIssueOutPatientStoreCodeSTR) == IS__TRUE;
                 IsEnableCheckboxIssueOutPatientStoreCode = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(EnableCheckboxIssueOutPatientStoreCodeSTR) == IS__TRUE;
+
+                IsCheckSubIcdExceedLimit = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(KEY_IsCheckSubIcdExceedLimit);
 
                 checkSovaovien_ = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(checkSovaovien) == IS__TRUE;
                 SuaThongTinHoSoDieuTri_ = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(SuaThongTinHoSoDieuTri) == IS__TRUE;

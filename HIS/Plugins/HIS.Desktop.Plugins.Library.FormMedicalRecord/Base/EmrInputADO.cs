@@ -15,6 +15,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+using MOS.EFMODEL.DataModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,10 +26,13 @@ namespace HIS.Desktop.Plugins.Library.FormMedicalRecord.Base
 {
     public class EmrInputADO
     {
+        public HIS_TREATMENT Treatment { get; set; }
         public long TreatmentId { get; set; }
         public long PatientId { get; set; }
+        public long? TreatmentTypeId { get; set; }
         public long? EmrCoverTypeId { get; set; }
         public List<long> lstEmrCoverTypeId { get; set; }
         public long? roomId { get; set; }
+        public long? DepartmentId { get; set; }
     }
 }

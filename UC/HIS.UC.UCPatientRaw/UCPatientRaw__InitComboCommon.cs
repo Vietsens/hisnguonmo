@@ -32,8 +32,8 @@ using MOS.EFMODEL.DataModels;
 
 namespace HIS.UC.UCPatientRaw
 {
-	public partial class UCPatientRaw : UserControl
-	{
+	public partial class UCPatientRaw : HIS.Desktop.Utility.UserControlBase
+    {
 		List<MOS.EFMODEL.DataModels.HIS_POSITION> dataPosition = null;
 		List<MOS.EFMODEL.DataModels.HIS_WORK_PLACE> dataWorkPlace = null;
 		List<MOS.EFMODEL.DataModels.HIS_MILITARY_RANK> dataMilitaryRank = null;

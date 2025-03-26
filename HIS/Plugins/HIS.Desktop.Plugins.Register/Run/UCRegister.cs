@@ -412,7 +412,7 @@ namespace HIS.Desktop.Plugins.Register.Run
                         if (lci != null && lci.Control != null && lci.Control is BaseEdit)
                         {
                             DevExpress.XtraEditors.BaseEdit fomatFrm = lci.Control as DevExpress.XtraEditors.BaseEdit;
-                            if (lci.Name == "lciGateNumber" || lci.Name == "lciStepNumber" || lci.Name == "lcicboCashierRoom" || lci.Name == "layoutControlItem14" || lci.Name == "layoutControlItem15")
+                            if (lci.Name == "lciGateNumber" || lci.Name == "lciStepNumber" || lci.Name == "lcicboCashierRoom" || lci.Name == "layoutControlItem14" || lci.Name == "layoutControlItem15" || lci.Name == "layoutControlItem17")
                             {
                                 continue;
                             }
@@ -605,7 +605,12 @@ namespace HIS.Desktop.Plugins.Register.Run
                 this.isAlertTreatmentEndInDay = false;
                 this.chkIsChronic.Checked = false;
                 this.chkIsChronic.ReadOnly = false;
-
+                this.chkNoCCCD.Checked = false;
+                if (GlobalVariables.AcsAuthorizeSDO != null)
+                {
+                    var controlAcs = GlobalVariables.AcsAuthorizeSDO.ControlInRoles;
+                    chkNoCCCD.Enabled = controlAcs != null && controlAcs.FirstOrDefault(o => o.CONTROL_CODE == "HIS000046") != null;
+                }
                 this.workPlaceProcessor.SetValue(this.ucWorkPlace, "");
                 this.txtPatientCode.Focus();
                 this.txtPatientCode.SelectAll();
@@ -751,8 +756,10 @@ namespace HIS.Desktop.Plugins.Register.Run
             }
         }
 
+
         private void txtPatientCode_KeyDown(object sender, KeyEventArgs e)
         {
+            string OldTypeFind = this.typeCodeFind;
             try
             {
                 if (e.KeyCode == Keys.Enter)
@@ -763,220 +770,246 @@ namespace HIS.Desktop.Plugins.Register.Run
                     this.chkIsChronic.ReadOnly = false;
                     this.oldValue = strValue;
                     IsReadCardTheViet = false;
-                    if (!String.IsNullOrEmpty(strValue))
+                    SearchPatientByCodeOrQrCode(strValue);
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+            finally
+            {
+                this.typeCodeFind = OldTypeFind;
+            }
+        }
+
+        private void SearchPatientByCodeOrQrCode(string strValue)
+        {
+
+            try
+            {
+                if (!String.IsNullOrEmpty(strValue))
+                {
+                    LogSystem.Debug("txtPatientCode_KeyDown");
+
+                    if (strValue.Contains("|"))
                     {
-                        LogSystem.Debug("txtPatientCode_KeyDown");
-                        CommonParam param = new CommonParam();
-                        WaitingManager.Show();
-                        //Trường hợp tìm kiếm BN theo mã BN hoặc theo qrcode
-                        if (this.typeCodeFind == typeCodeFind__MaBN)
+                        var dataFirst = strValue.Split('|')[0];
+                        if (dataFirst.Length == 10 || dataFirst.Length == 15)
                         {
-                            WaitingManager.Hide();
-                            this.typeReceptionForm = Base.ReceptionForm.MaBN;
-                            this.ProcessSearchByCode(strValue);
-                            e.Handled = true;
+                            this.typeCodeFind = typeCodeFind__MaBN;
+
                         }
-                        //Trường hợp tìm kiếm BN theo số thẻ thông minh
-                        else if (this.typeCodeFind == typeCodeFind__SoThe)
+                        else if (dataFirst.Length == 12)
                         {
-                            var patientInRegisterSearchByCard = new BackendAdapter(param).Get<HisCardSDO>(RequestUriStore.HIS_CARD_GETVIEWBYSERVICECODE, ApiConsumers.MosConsumer, strValue, HIS.Desktop.Controls.Session.SessionManager.ActionLostToken, param);
-                            WaitingManager.Hide();
-                            if (patientInRegisterSearchByCard != null)
+                            this.typeCodeFind = typeCodeFind__CCCDCMND;
+                        }
+                    }
+
+                    CommonParam param = new CommonParam();
+                    WaitingManager.Show();
+                    //Trường hợp tìm kiếm BN theo mã BN hoặc theo qrcode
+                    if (this.typeCodeFind == typeCodeFind__MaBN)
+                    {
+                        WaitingManager.Hide();
+                        this.typeReceptionForm = Base.ReceptionForm.MaBN;
+                        this.ProcessSearchByCode(strValue);
+                    }
+                    //Trường hợp tìm kiếm BN theo số thẻ thông minh
+                    else if (this.typeCodeFind == typeCodeFind__SoThe)
+                    {
+                        var patientInRegisterSearchByCard = new BackendAdapter(param).Get<HisCardSDO>(RequestUriStore.HIS_CARD_GETVIEWBYSERVICECODE, ApiConsumers.MosConsumer, strValue, HIS.Desktop.Controls.Session.SessionManager.ActionLostToken, param);
+                        WaitingManager.Hide();
+                        if (patientInRegisterSearchByCard != null)
+                        {
+                            this.typeReceptionForm = Base.ReceptionForm.TheKcbThongminh;
+                            this.actionType = GlobalVariables.ActionAdd;
+                            this.cardSearch = patientInRegisterSearchByCard;
+                            string heinAddressOfPatient = "";
+                            var data = SearchByCode(patientInRegisterSearchByCard.PatientCode);
+                            IsReadCardTheViet = true;
+                            if (data != null && data.Result != null && data.Result is HisPatientSDO)
                             {
-                                this.typeReceptionForm = Base.ReceptionForm.TheKcbThongminh;
-                                this.actionType = GlobalVariables.ActionAdd;
-                                this.cardSearch = patientInRegisterSearchByCard;
-                                string heinAddressOfPatient = "";
-                                var data = SearchByCode(patientInRegisterSearchByCard.PatientCode);
-                                IsReadCardTheViet = true;
-                                if (data != null && data.Result != null && data.Result is HisPatientSDO)
+                                currentPatientSDO = data.Result as HisPatientSDO;
+                                currentPatientSDO.HT_COMMUNE_NAME = HtCommuneName = patientInRegisterSearchByCard.HtCommuneName;
+                                currentPatientSDO.HT_DISTRICT_NAME = HtDistrictName = patientInRegisterSearchByCard.HtDistrictName;
+                                currentPatientSDO.HT_PROVINCE_NAME = HtProvinceName = patientInRegisterSearchByCard.HtProvinceName;
+                                currentPatientSDO.HT_COMMUNE_CODE = HtCommuneCode = patientInRegisterSearchByCard.HtCommuneCode;
+                                currentPatientSDO.HT_DISTRICT_CODE = HtDistrictCode = patientInRegisterSearchByCard.HtDistrictCode;
+                                currentPatientSDO.HT_PROVINCE_CODE = HtProvinceCode = patientInRegisterSearchByCard.HtProvinceCode;
+                                //Benh nhan da dang ky tren he thong benh vien, da co thong tin ho so
+                                this.SetPatientSearchPanel(true);
+                                heinAddressOfPatient = ((HisPatientSDO)data.Result).HeinAddress;
+                                this.Invoke(new MethodInvoker(delegate ()
                                 {
-                                    currentPatientSDO = data.Result as HisPatientSDO;
-                                    currentPatientSDO.HT_COMMUNE_NAME = HtCommuneName = patientInRegisterSearchByCard.HtCommuneName;
-                                    currentPatientSDO.HT_DISTRICT_NAME = HtDistrictName = patientInRegisterSearchByCard.HtDistrictName;
-                                    currentPatientSDO.HT_PROVINCE_NAME = HtProvinceName = patientInRegisterSearchByCard.HtProvinceName;
-                                    currentPatientSDO.HT_COMMUNE_CODE = HtCommuneCode = patientInRegisterSearchByCard.HtCommuneCode;
-                                    currentPatientSDO.HT_DISTRICT_CODE = HtDistrictCode = patientInRegisterSearchByCard.HtDistrictCode;
-                                    currentPatientSDO.HT_PROVINCE_CODE = HtProvinceCode = patientInRegisterSearchByCard.HtProvinceCode;
-                                    //Benh nhan da dang ky tren he thong benh vien, da co thong tin ho so
-                                    this.SetPatientSearchPanel(true);
-                                    heinAddressOfPatient = ((HisPatientSDO)data.Result).HeinAddress;
-                                    this.Invoke(new MethodInvoker(delegate()
-                                    {
-                                        this.ProcessPatientCodeKeydown(data.Result);
-                                    }));
-                                }
-                                else
+                                    this.ProcessPatientCodeKeydown(data.Result);
+                                }));
+                            }
+                            else
+                            {
+                                this.Invoke(new MethodInvoker(delegate ()
                                 {
-                                    this.Invoke(new MethodInvoker(delegate()
-                                    {
-                                        //An button lam moi khi co du lieu benh nhan cu
-                                        this.SetPatientSearchPanel(false);
+                                    //An button lam moi khi co du lieu benh nhan cu
+                                    this.SetPatientSearchPanel(false);
 
-                                        //Benh nhan chua dang ky tren he thong benh vien, chua co thong tin ho so
-                                        HisPatientSDO patientByCard = new HisPatientSDO();
-                                        this.SetPatientDTOFromCardSDO(patientInRegisterSearchByCard, patientByCard);
-                                        this.FillDataPatientToControl(patientByCard);
-                                        this.FillDataToHeinCardControlByCardSDO(patientInRegisterSearchByCard);
-                                    }));
-                                }
+                                    //Benh nhan chua dang ky tren he thong benh vien, chua co thong tin ho so
+                                    HisPatientSDO patientByCard = new HisPatientSDO();
+                                    this.SetPatientDTOFromCardSDO(patientInRegisterSearchByCard, patientByCard);
+                                    this.FillDataPatientToControl(patientByCard);
+                                    this.FillDataToHeinCardControlByCardSDO(patientInRegisterSearchByCard);
+                                }));
+                            }
 
-                                HeinGOVManager heinGOVManager = new HeinGOVManager(ResourceMessage.GoiSangCongBHXHTraVeMaLoi);
-                                this.ResultDataADO = heinGOVManager.Check(this._HeinCardData, null, false, heinAddressOfPatient, dtIntructionTime.DateTime, this.isReadQrCode).Result;
-                                mainHeinProcessor.SetResultDataADOBhyt(ucHeinBHYT, this.ResultDataADO);
-                                if (this.ResultDataADO != null)
+                            HeinGOVManager heinGOVManager = new HeinGOVManager(ResourceMessage.GoiSangCongBHXHTraVeMaLoi);
+                            this.ResultDataADO = heinGOVManager.Check(this._HeinCardData, null, false, heinAddressOfPatient, dtIntructionTime.DateTime, this.isReadQrCode).Result;
+                            mainHeinProcessor.SetResultDataADOBhyt(ucHeinBHYT, this.ResultDataADO);
+                            if (this.ResultDataADO != null)
+                            {
+                                //Trường hợp tìm kiếm BN theo qrocde & BN có số thẻ bhyt mới, cần tìm kiếm BN theo số thẻ mới này & người dùng chọn lấy thông tin thẻ mới => tìm kiếm Bn theo số thẻ mới
+                                if (!String.IsNullOrEmpty(this._HeinCardData.HeinCardNumber))
                                 {
-                                    //Trường hợp tìm kiếm BN theo qrocde & BN có số thẻ bhyt mới, cần tìm kiếm BN theo số thẻ mới này & người dùng chọn lấy thông tin thẻ mới => tìm kiếm Bn theo số thẻ mới
-                                    if (!String.IsNullOrEmpty(this._HeinCardData.HeinCardNumber))
+                                    if (this.ResultDataADO.IsShowQuestionWhileChangeHeinTime__Choose)
                                     {
-                                        if (this.ResultDataADO.IsShowQuestionWhileChangeHeinTime__Choose)
-                                        {
-                                            this._HeinCardData.HeinCardNumber = this.ResultDataADO.ResultHistoryLDO.maTheMoi;
-                                        }
+                                        this._HeinCardData.HeinCardNumber = this.ResultDataADO.ResultHistoryLDO.maTheMoi;
                                     }
                                 }
+                            }
 
-                                this.CheckTTProcessResultData(this._HeinCardData);
-                                this.UCHeinProcessFillDataCareerUnder6AgeByHeinCardNumber(this._HeinCardData, true);
-                            }
-                            else
-                            {
-                                WaitingManager.Hide();
-                                DevExpress.XtraEditors.XtraMessageBox.Show(ResourceMessage.SoTheKhongTontai + " '" + strValue + "'", MessageUtil.GetMessage(Inventec.Desktop.Common.LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaThongBao));
-                                this.txtPatientCode.Focus();
-                                this.txtPatientCode.SelectAll();
-                                return;
-                            }
+                            this.CheckTTProcessResultData(this._HeinCardData);
+                            this.UCHeinProcessFillDataCareerUnder6AgeByHeinCardNumber(this._HeinCardData, true);
                         }
-                        //Trường hợp tìm kiếm Bn theo mã chương trình
-                        else if (this.typeCodeFind == typeCodeFind__MaCT)
+                        else
                         {
-                            //Review .FirstOrDefault(); Exception
-                            var _PatientProgram = new BackendAdapter(param).Get<V_HIS_PATIENT_PROGRAM>(RequestUriStore.HIS_PATIEN_PROGRAM_GET, ApiConsumers.MosConsumer, strValue.Trim(), HIS.Desktop.Controls.Session.SessionManager.ActionLostToken, param);//.FirstOrDefault();
                             WaitingManager.Hide();
-                            if (_PatientProgram != null)
-                            {
-                                this.typeReceptionForm = Base.ReceptionForm.MaChuongTrinh;
-                                this.ResetPatientForm();
-                                this.txtPatientCode.Text = strValue;
-                                this.programId = _PatientProgram.PROGRAM_ID;
-
-                                this.ProcessSearchByCode(_PatientProgram.PATIENT_CODE);
-                                e.Handled = true;
-                            }
-                            else
-                            {
-                                // WaitingManager.Hide();
-                                DevExpress.XtraEditors.XtraMessageBox.Show(ResourceMessage.MaChuongTrinhKhongTontai + " '" + strValue + "'", MessageUtil.GetMessage(Inventec.Desktop.Common.LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaThongBao));
-                                this.txtPatientCode.Focus();
-                                this.txtPatientCode.SelectAll();
-                                return;
-                            }
-                            e.Handled = true;
+                            DevExpress.XtraEditors.XtraMessageBox.Show(ResourceMessage.SoTheKhongTontai + " '" + strValue + "'", MessageUtil.GetMessage(Inventec.Desktop.Common.LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaThongBao));
+                            this.txtPatientCode.Focus();
+                            this.txtPatientCode.SelectAll();
+                            return;
                         }
-                        //Trường hợp tìm kiếm Bn theo mã hẹn khám
-                        else if (this.typeCodeFind == typeCodeFind__MaHK)
-                        {
-                            int n;
-                            bool isNumeric = int.TryParse(this.txtPatientCode.Text, out n);
-                            if (!isNumeric)
-                            {
-                                DevExpress.XtraEditors.XtraMessageBox.Show(ResourceMessage.MaHenKhamKhongTontai + " '" + this.txtPatientCode.Text + "'", MessageUtil.GetMessage(Inventec.Desktop.Common.LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaThongBao));
-                                this.txtPatientCode.Focus();
-                                this.txtPatientCode.SelectAll();
-                                return;
-                            }
-                            var codeFind = string.Format("{0:000000000000}", Convert.ToInt64(strValue));
-                            this.txtPatientCode.Text = codeFind;
-                            param = new CommonParam();
-                            HisPatientAdvanceFilter filter = new HisPatientAdvanceFilter();
-                            filter.APPOINTMENT_CODE__EXACT = codeFind;
-                            var data = (new BackendAdapter(param).Get<List<HisPatientSDO>>(RequestUriStore.HIS_PATIENT_GETSDOADVANCE, ApiConsumers.MosConsumer, filter, HIS.Desktop.Controls.Session.SessionManager.ActionLostToken, param));//.SingleOrDefault();
-                            WaitingManager.Hide();
-                            if (data != null && data.Count > 0)
-                            {
-                                this.typeReceptionForm = Base.ReceptionForm.MaHenKham;
-                                HisPatientSDO _PatientSDO = data.SingleOrDefault();
-                                this.ProcessPatientCodeKeydown(_PatientSDO);
-                                this.appointmentCode = _PatientSDO.AppointmentCode;
-                                this._TreatmnetIdByAppointmentCode = _PatientSDO.TreatmentId ?? 0;
-
-                                HeinCardData heinCard = new HeinCardData();
-                                heinCard.HeinCardNumber = _PatientSDO.HeinCardNumber;
-                                this.UCHeinProcessFillDataCareerUnder6AgeByHeinCardNumber(heinCard, true);
-                            }
-                            else
-                            {
-                                DevExpress.XtraEditors.XtraMessageBox.Show(ResourceMessage.MaHenKhamKhongTontai + " '" + codeFind + "'", MessageUtil.GetMessage(Inventec.Desktop.Common.LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaThongBao));
-                                this.txtPatientCode.Focus();
-                                this.txtPatientCode.SelectAll();
-                                return;
-                            }
-                            e.Handled = true;
-                        }
-
-                        else if (this.typeCodeFind == typeCodeFind__MaNV)
-                        {
-                            param = new CommonParam();
-                            if (string.IsNullOrEmpty(strValue))
-                                return;
-                            HisPatientFilter filter = new HisPatientFilter();
-                            filter.HRM_EMPLOYEE_CODE__EXACT = strValue.Trim();
-                            var data = (new BackendAdapter(param).Get<List<HIS_PATIENT>>("/api/HisPatient/Get", ApiConsumers.MosConsumer, filter, HIS.Desktop.Controls.Session.SessionManager.ActionLostToken, param));
-
-                            if (data != null && data.Count > 0)
-                            {
-                                this.typeReceptionForm = Base.ReceptionForm.MaNV;
-                                HisPatientSDO _PatientSDOByHrm = new HisPatientSDO();
-                                Inventec.Common.Mapper.DataObjectMapper.Map<HisPatientSDO>(_PatientSDOByHrm, data.FirstOrDefault());
-                                this.ProcessPatientCodeKeydown(_PatientSDOByHrm);
-                                HeinCardData heinCard = new HeinCardData();
-                                heinCard.HeinCardNumber = _PatientSDOByHrm.HeinCardNumber;
-                                this.UCHeinProcessFillDataCareerUnder6AgeByHeinCardNumber(heinCard, true);
-                            }
-                            else
-                            {
-
-                                ProcessGetDataHrm(strValue.Trim());//GetDataHrm return _PatientSDOByHrm
-                            }
-                            e.Handled = true;
-                        }
-
-                        else if(this.typeCodeFind == typeCodeFind__CCCDCMND)
-						{
-                            if ((strValue.Trim().Length > 12 && strValue.Trim().Contains('|')) || (strValue.Trim().Length == 12 && !string.IsNullOrEmpty(txtPatientName.Text) && (!string.IsNullOrEmpty(txtPatientDob.Text) || dtPatientDob.EditValue != null)) || (strValue.Trim().Length == 9 || strValue.Trim().Length == 12))
-                            {
-                                isReadQrCccdData = true;
-                                WaitingManager.Hide();
-                                this.ProcessSearchByCode(strValue);
-                                e.Handled = true;
-                                if (strValue.Trim().Length > 12 && strValue.Trim().Contains('|'))
-                                {
-                                    CccdReadFromQr = strValue.Split('|')[0];
-                                    dateReleaseFromQr = Int64.Parse(strValue.Split('|')[6].Substring(4, 4) + strValue.Split('|')[6].Substring(2, 2) + strValue.Split('|')[6].Substring(0, 2) + "000000");
-                                }
-                                else if (strValue.Trim().Length == 12 && !string.IsNullOrEmpty(txtPatientName.Text) && (!string.IsNullOrEmpty(txtPatientDob.Text) || dtPatientDob.EditValue != null))
-                                {
-                                    CccdReadFromQr = strValue.Trim();
-                                }
-                            }
-                            else
-                            {
-                                WaitingManager.Hide();
-                                DevExpress.XtraEditors.XtraMessageBox.Show(ResourceMessage.MaCmndCccdKhongTontai + " '" + strValue + "'", MessageUtil.GetMessage(Inventec.Desktop.Common.LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaThongBao));
-                                this.txtPatientCode.Focus();
-                                this.txtPatientCode.SelectAll();
-                                return;
-                            }
-						}                            
-
-                        WaitingManager.Hide();
                     }
-                    else
+                    //Trường hợp tìm kiếm Bn theo mã chương trình
+                    else if (this.typeCodeFind == typeCodeFind__MaCT)
                     {
-                        this.txtPatientName.Focus();
-                        this.txtPatientName.SelectAll();
+                        //Review .FirstOrDefault(); Exception
+                        var _PatientProgram = new BackendAdapter(param).Get<V_HIS_PATIENT_PROGRAM>(RequestUriStore.HIS_PATIEN_PROGRAM_GET, ApiConsumers.MosConsumer, strValue.Trim(), HIS.Desktop.Controls.Session.SessionManager.ActionLostToken, param);//.FirstOrDefault();
+                        WaitingManager.Hide();
+                        if (_PatientProgram != null)
+                        {
+                            this.typeReceptionForm = Base.ReceptionForm.MaChuongTrinh;
+                            this.ResetPatientForm();
+                            this.txtPatientCode.Text = strValue;
+                            this.programId = _PatientProgram.PROGRAM_ID;
+
+                            this.ProcessSearchByCode(_PatientProgram.PATIENT_CODE);
+                        }
+                        else
+                        {
+                            // WaitingManager.Hide();
+                            DevExpress.XtraEditors.XtraMessageBox.Show(ResourceMessage.MaChuongTrinhKhongTontai + " '" + strValue + "'", MessageUtil.GetMessage(Inventec.Desktop.Common.LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaThongBao));
+                            this.txtPatientCode.Focus();
+                            this.txtPatientCode.SelectAll();
+                            return;
+                        }
                     }
+                    //Trường hợp tìm kiếm Bn theo mã hẹn khám
+                    else if (this.typeCodeFind == typeCodeFind__MaHK)
+                    {
+                        int n;
+                        bool isNumeric = int.TryParse(this.txtPatientCode.Text, out n);
+                        if (!isNumeric)
+                        {
+                            DevExpress.XtraEditors.XtraMessageBox.Show(ResourceMessage.MaHenKhamKhongTontai + " '" + this.txtPatientCode.Text + "'", MessageUtil.GetMessage(Inventec.Desktop.Common.LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaThongBao));
+                            this.txtPatientCode.Focus();
+                            this.txtPatientCode.SelectAll();
+                            return;
+                        }
+                        var codeFind = string.Format("{0:000000000000}", Convert.ToInt64(strValue));
+                        this.txtPatientCode.Text = codeFind;
+                        param = new CommonParam();
+                        HisPatientAdvanceFilter filter = new HisPatientAdvanceFilter();
+                        filter.APPOINTMENT_CODE__EXACT = codeFind;
+                        var data = (new BackendAdapter(param).Get<List<HisPatientSDO>>(RequestUriStore.HIS_PATIENT_GETSDOADVANCE, ApiConsumers.MosConsumer, filter, HIS.Desktop.Controls.Session.SessionManager.ActionLostToken, param));//.SingleOrDefault();
+                        WaitingManager.Hide();
+                        if (data != null && data.Count > 0)
+                        {
+                            this.typeReceptionForm = Base.ReceptionForm.MaHenKham;
+                            HisPatientSDO _PatientSDO = data.SingleOrDefault();
+                            this.ProcessPatientCodeKeydown(_PatientSDO);
+                            this.appointmentCode = _PatientSDO.AppointmentCode;
+                            this._TreatmnetIdByAppointmentCode = _PatientSDO.TreatmentId ?? 0;
+
+                            HeinCardData heinCard = new HeinCardData();
+                            heinCard.HeinCardNumber = _PatientSDO.HeinCardNumber;
+                            this.UCHeinProcessFillDataCareerUnder6AgeByHeinCardNumber(heinCard, true);
+                        }
+                        else
+                        {
+                            DevExpress.XtraEditors.XtraMessageBox.Show(ResourceMessage.MaHenKhamKhongTontai + " '" + codeFind + "'", MessageUtil.GetMessage(Inventec.Desktop.Common.LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaThongBao));
+                            this.txtPatientCode.Focus();
+                            this.txtPatientCode.SelectAll();
+                            return;
+                        }
+                    }
+
+                    else if (this.typeCodeFind == typeCodeFind__MaNV)
+                    {
+                        param = new CommonParam();
+                        if (string.IsNullOrEmpty(strValue))
+                            return;
+                        HisPatientFilter filter = new HisPatientFilter();
+                        filter.HRM_EMPLOYEE_CODE__EXACT = strValue.Trim();
+                        var data = (new BackendAdapter(param).Get<List<HIS_PATIENT>>("/api/HisPatient/Get", ApiConsumers.MosConsumer, filter, HIS.Desktop.Controls.Session.SessionManager.ActionLostToken, param));
+
+                        if (data != null && data.Count > 0)
+                        {
+                            this.typeReceptionForm = Base.ReceptionForm.MaNV;
+                            HisPatientSDO _PatientSDOByHrm = new HisPatientSDO();
+                            Inventec.Common.Mapper.DataObjectMapper.Map<HisPatientSDO>(_PatientSDOByHrm, data.FirstOrDefault());
+                            this.ProcessPatientCodeKeydown(_PatientSDOByHrm);
+                            HeinCardData heinCard = new HeinCardData();
+                            heinCard.HeinCardNumber = _PatientSDOByHrm.HeinCardNumber;
+                            this.UCHeinProcessFillDataCareerUnder6AgeByHeinCardNumber(heinCard, true);
+                        }
+                        else
+                        {
+
+                            ProcessGetDataHrm(strValue.Trim());//GetDataHrm return _PatientSDOByHrm
+                        }
+                    }
+
+                    else if (this.typeCodeFind == typeCodeFind__CCCDCMND)
+                    {
+                        if ((strValue.Trim().Length > 12 && strValue.Trim().Contains('|')) || (strValue.Trim().Length == 12 && !string.IsNullOrEmpty(txtPatientName.Text) && (!string.IsNullOrEmpty(txtPatientDob.Text) || dtPatientDob.EditValue != null)) || ((strValue.Trim().Length == 12 || strValue.Trim().Length == 9) && !strValue.Trim().Contains("|")))
+                        {
+                            isReadQrCccdData = true;
+                            WaitingManager.Show();
+                            this.ProcessSearchByCode(strValue);
+                            if (strValue.Trim().Length > 12 && strValue.Trim().Contains('|'))
+                            {
+                                CccdReadFromQr = strValue.Split('|')[0];
+                                dateReleaseFromQr = Int64.Parse(strValue.Split('|')[6].Substring(4, 4) + strValue.Split('|')[6].Substring(2, 2) + strValue.Split('|')[6].Substring(0, 2) + "000000");
+                            }
+                            else if (strValue.Trim().Length == 12 && !string.IsNullOrEmpty(txtPatientName.Text) && (!string.IsNullOrEmpty(txtPatientDob.Text) || dtPatientDob.EditValue != null))
+                            {
+                                CccdReadFromQr = strValue.Trim();
+                            }
+                        }
+                        else
+                        {
+                            WaitingManager.Hide();
+                            DevExpress.XtraEditors.XtraMessageBox.Show(ResourceMessage.MaCmndCccdKhongTontai + " '" + strValue + "'", MessageUtil.GetMessage(Inventec.Desktop.Common.LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaThongBao));
+                            this.txtPatientCode.Focus();
+                            this.txtPatientCode.SelectAll();
+                            return;
+                        }
+                    }
+
+                    WaitingManager.Hide();
+                }
+                else
+                {
+                    this.txtPatientName.Focus();
+                    this.txtPatientName.SelectAll();
                 }
             }
             catch (Exception ex)
@@ -984,7 +1017,6 @@ namespace HIS.Desktop.Plugins.Register.Run
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
-
         private string ProcessDate(string date)
         {
             string result = "";
@@ -1045,7 +1077,8 @@ namespace HIS.Desktop.Plugins.Register.Run
                         WaitingManager.Hide();
                         this.ProcessSearchByCode(txtPatientCode.Text);
                     }
-                    else {
+                    else
+                    {
                         this.SearchPatientByFilterCombo();
                     }
                     this.txtGenderCode.Focus();
@@ -2416,7 +2449,7 @@ namespace HIS.Desktop.Plugins.Register.Run
                         SDA.EFMODEL.DataModels.V_SDA_COMMUNE commune = BackendDataWorker.Get<SDA.EFMODEL.DataModels.V_SDA_COMMUNE>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.SDA_RS.COMMON.IS_ACTIVE__TRUE)
                             .SingleOrDefault(o =>
                                 o.COMMUNE_CODE == this.cboCommune.EditValue.ToString()
-                                    //&& o.PROVINCE_CODE == cboProvince.EditValue.ToString() 
+                                //&& o.PROVINCE_CODE == cboProvince.EditValue.ToString() 
                                 && (String.IsNullOrEmpty((this.cboDistrict.EditValue ?? "").ToString()) || o.DISTRICT_CODE == (this.cboDistrict.EditValue ?? "").ToString()));
                         if (commune != null)
                         {
@@ -3571,11 +3604,11 @@ namespace HIS.Desktop.Plugins.Register.Run
 
                 }
 
-                if(isReadQrCccdData)
-				{
+                if (isReadQrCccdData)
+                {
                     patientTemp.CMND_NUMBER = CccdReadFromQr;
                     patientTemp.CMND_DATE = dateReleaseFromQr;
-                }                    
+                }
 
                 patientTemp.HT_PROVINCE_CODE = txtProvinceCode.Text;
                 patientTemp.HT_DISTRICT_CODE = txtDistrictCode.Text;
@@ -3592,7 +3625,7 @@ namespace HIS.Desktop.Plugins.Register.Run
                 patientTemp.RELATIVE_TYPE = txtCorrelated.Text;
                 patientTemp.RELATIVE_ADDRESS = txtRelativeAddress.Text;
                 patientTemp.RELATIVE_CMND_NUMBER = txtRelativeCMNDNumber.Text;
-
+                patientTemp.IsNoCCCD = chkNoCCCD.Checked;
                 frmPatientExtend frmPatientExtend = new frmPatientExtend(patientTemp, PatientInfoResult);
                 frmPatientExtend.ShowDialog();
             }
@@ -4500,7 +4533,7 @@ namespace HIS.Desktop.Plugins.Register.Run
                 panelLayoutHosReason.Visible = false;
                 layoutControlItem16.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
                 layoutControlReasonVV.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
-                
+
                 if (cboTreatmentType.EditValue != null)
                 {
                     var type = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_TREATMENT_TYPE>().FirstOrDefault(o => o.ID == Int64.Parse(cboTreatmentType.EditValue.ToString()));
@@ -4508,7 +4541,7 @@ namespace HIS.Desktop.Plugins.Register.Run
                     layoutControlReasonVV.Visibility = type != null && type.HEIN_TREATMENT_TYPE_CODE == MOS.LibraryHein.Bhyt.HeinTreatmentType.HeinTreatmentTypeCode.TREAT ? DevExpress.XtraLayout.Utils.LayoutVisibility.Always : DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
                     layoutControlItem16.Visibility = type != null && type.HEIN_TREATMENT_TYPE_CODE == MOS.LibraryHein.Bhyt.HeinTreatmentType.HeinTreatmentTypeCode.TREAT ? DevExpress.XtraLayout.Utils.LayoutVisibility.Always : DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
 
-                    if (HisConfigCFG.InHospitalizationReasonRequired && panelLayoutHosReason.Visible )
+                    if (HisConfigCFG.InHospitalizationReasonRequired && panelLayoutHosReason.Visible)
                     {
 
                         layoutControlItem16.AppearanceItemCaption.ForeColor = Color.Maroon;
@@ -4524,10 +4557,10 @@ namespace HIS.Desktop.Plugins.Register.Run
 
         }
 
-        
-        
 
-        
+
+
+
         /// <summary>
         /// chon ly do vao noi tru tu viec double click_)
         /// </summary>
@@ -4545,7 +4578,7 @@ namespace HIS.Desktop.Plugins.Register.Run
                 if (listHospitalReason != null)
                 {
                     List<ColumnInfo> columnInfo = new List<ColumnInfo>();
-                    columnInfo.Add(new ColumnInfo("HOSPITALIZE_REASON_CODE","",50,1));
+                    columnInfo.Add(new ColumnInfo("HOSPITALIZE_REASON_CODE", "", 50, 1));
                     columnInfo.Add(new ColumnInfo("HOSPITALIZE_REASON_NAME", "", 150, 1));
                     ControlEditorADO controlEditorADO = new ControlEditorADO("HOSPITALIZE_REASON_NAME", "ID", columnInfo, false, 100);
                     ControlEditorLoader.Load(cboHosReason, listHospitalReason, controlEditorADO);
@@ -4553,7 +4586,7 @@ namespace HIS.Desktop.Plugins.Register.Run
             }
             catch (Exception ex)
             {
-                
+
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
@@ -4577,7 +4610,7 @@ namespace HIS.Desktop.Plugins.Register.Run
                 {
                     cboHosReason.ShowPopup();
                 }
-                else if(e.Button.Kind == DevExpress.XtraEditors.Controls.ButtonPredefines.Delete)
+                else if (e.Button.Kind == DevExpress.XtraEditors.Controls.ButtonPredefines.Delete)
                 {
                     cboHosReason.EditValue = null;
                     GridCheckMarksSelection gridCheckMark = cboHosReason.Properties.Tag as GridCheckMarksSelection;
@@ -4590,7 +4623,7 @@ namespace HIS.Desktop.Plugins.Register.Run
             }
             catch (Exception ex)
             {
-                
+
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
@@ -4600,11 +4633,11 @@ namespace HIS.Desktop.Plugins.Register.Run
             {
                 this.HospitalizeReasonCode = data.HOSPITALIZE_REASON_CODE ?? "";
                 this.HospitalizeReasonName = data.HOSPITALIZE_REASON_NAME ?? "";
-                
+
             }
             catch (Exception ex)
             {
-                
+
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
@@ -4620,8 +4653,8 @@ namespace HIS.Desktop.Plugins.Register.Run
             }
             catch (Exception ex)
             {
-                
-               Inventec.Common.Logging.LogSystem.Error(ex);
+
+                Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
 
@@ -4633,7 +4666,7 @@ namespace HIS.Desktop.Plugins.Register.Run
             }
             catch (Exception ex)
             {
-                
+
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
@@ -4642,14 +4675,14 @@ namespace HIS.Desktop.Plugins.Register.Run
         {
             try
             {
-                if(e.KeyCode == Keys.Enter)
+                if (e.KeyCode == Keys.Enter)
                 {
                     txtCareerCode.Focus();
                 }
             }
             catch (Exception ex)
             {
-                
+
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
@@ -4674,9 +4707,17 @@ namespace HIS.Desktop.Plugins.Register.Run
             }
             catch (Exception ex)
             {
-                
+
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
+        }
+
+        private void chkNoCCCD_CheckStateChanged(object sender, EventArgs e)
+        {
+        }
+
+        private void chkNoCCCD_CheckedChanged(object sender, EventArgs e)
+        {
         }
     }
 }

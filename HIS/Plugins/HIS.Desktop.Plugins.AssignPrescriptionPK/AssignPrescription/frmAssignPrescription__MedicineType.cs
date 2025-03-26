@@ -561,14 +561,22 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                             this.currentMedicineTypeADOForEdit.IS_SUB_PRES = null;
                         }
                     }
-                    if (currentMedicineTypeADOForEdit.HTU_ID != null)
+                    if (currentMedicineTypeADOForEdit.HTU_IDs != null && currentMedicineTypeADOForEdit.HTU_IDs.Count > 0)
                     {
-                        this.cboHtu.EditValue = currentMedicineTypeADOForEdit.HTU_ID;
+                        if (DataHtuList != null && DataHtuList.Count > 0)
+                        {
+                            DataHtuList.ForEach(o =>
+                            {
+                                o.IsChecked = currentMedicineTypeADOForEdit.HTU_IDs.Exists(p => p == o.ID);
+                            });
+                            this.cboHtu.Text = string.Join(", ", DataHtuList.Where(o => o.IsChecked).Select(o => o.HTU_NAME));
+                        }
                         this.cboHtu.Properties.Buttons[1].Visible = true;
                     }
                     else
                     {
-                        this.cboHtu.EditValue = null;
+                        DataHtuList.ForEach(o => o.IsChecked = false);
+                        this.cboHtu.Text = null;
                         this.cboHtu.Properties.Buttons[1].Visible = false;
                     }
                     if (CheckExistMedicinePaymentLimit(this.currentMedicineTypeADOForEdit.MEDICINE_TYPE_CODE))
@@ -605,6 +613,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                         //Neu la thuoc thi kiem tra co mẫu HDSD chưa, có thì focus vào nút "Bổ sung"
                         if (this.medicineTypeTutSelected != null && !String.IsNullOrEmpty(this.medicineTypeTutSelected.TUTORIAL))
                         {
+                            Inventec.Common.Logging.LogSystem.Warn("MedicineType_RowClick");
                             this.btnAdd.Focus();
                         }
                         //Ngược lại kiểm tra có cấu hình PM cho phép sau khi chọn thuốc thì nhảy vào ô số lượng hay ô ngày

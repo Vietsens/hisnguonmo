@@ -33,11 +33,17 @@ using DevExpress.XtraGrid.Views.Base;
 using DevExpress.XtraGrid.Views.Grid.ViewInfo;
 using DevExpress.Utils;
 using DevExpress.XtraGrid.Columns;
+using Inventec.Common.Controls.EditorLoader;
+using MOS.EFMODEL.DataModels;
+using HIS.Desktop.LocalStorage.BackendData;
+using DevExpress.XtraRichEdit.Mouse;
 
 namespace EMR.Desktop.Plugins.EmrViewerList
 {
     public partial class UcEmrViewerList : HIS.Desktop.Utility.UserControlBase
     {
+        private HIS.Desktop.Library.CacheClient.ControlStateWorker controlStateWorker;
+        private List<HIS.Desktop.Library.CacheClient.ControlStateRDO> currentControlStateRDO;
         private Inventec.Desktop.Common.Modules.Module moduleData;
         private System.Globalization.CultureInfo cultureLang;
         private int rowCount = 0;
@@ -47,6 +53,7 @@ namespace EMR.Desktop.Plugins.EmrViewerList
         private GridColumn lastColumn = null;
         private int lastRowHandle = -1;
         private bool IsRoomLt;
+        private bool isNotLoadWhileChangeControlStateInFirst;
 
         enum TypeCancel
         {
@@ -89,6 +96,8 @@ namespace EMR.Desktop.Plugins.EmrViewerList
         {
             try
             {
+                InitControlState();
+
                 //Gan ngon ngu
                 LoadKeysFromlanguage();
 
@@ -97,6 +106,10 @@ namespace EMR.Desktop.Plugins.EmrViewerList
 
                 //Load du lieu
                 FillDataToGrid();
+
+                // load combobox
+                FillDataToGridLookupedit(cboRoomArchive, "ROOM_NAME", "ROOM_CODE", BackendDataWorker.Get<V_HIS_ROOM>()
+                    .Where(o => o.ROOM_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_ROOM_TYPE.ID__LT && o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE).ToList());
 
                 TxtKeyword.Focus();
             }
@@ -128,7 +141,7 @@ namespace EMR.Desktop.Plugins.EmrViewerList
 
         private void GridPaging(object param)
         {
-            try
+            try   
             {
                 startPage = ((CommonParam)param).Start ?? 0;
                 int limit = ((CommonParam)param).Limit ?? 0;
@@ -191,14 +204,35 @@ namespace EMR.Desktop.Plugins.EmrViewerList
 
                 if (ChkYeuCau.Checked) filter.REQUEST_LOGINNAME__EXACT = LogginName;
                 else filter.DATA_STORE_CODE__EXACT = RoomCode;
+
+                if (cboRoomArchive.EditValue != null)
+                {
+                    filter.DATA_STORE_CODE__EXACT = cboRoomArchive.EditValue.ToString();
+                }
                 //if (!IsRoomLt) filter.REQUEST_LOGINNAME__EXACT = LogginName;
                 //else filter.DATA_STORE_CODE__EXACT = RoomCode;
 
-                if (ChkStt_Duyet.Checked) filter.IS_APPROVAL = true;
+                if (ChkStt_YeuCau.Checked) filter.IS_APPROVAL = true;
 
-                if (ChkStt_TuChoi.Checked) filter.IS_DIS_APPROVAL = true;
+                if (ChkStt_Duyet.Checked) filter.IS_DIS_APPROVAL = true;
 
-                if (ChkStt_YeuCau.Checked) filter.IS_REQUEST = true;
+                if (ChkStt_TuChoi.Checked) filter.IS_REQUEST = true;
+
+                if (ChkStt_YeuCau.Checked == true)
+                {
+                    ChkStt_Duyet.Checked = false;
+                    ChkStt_TuChoi.Checked = false;
+                }
+                else if (ChkStt_Duyet.Checked == true)
+                {
+                    ChkStt_TuChoi.Checked = false;
+                    ChkStt_YeuCau.Checked = false;
+                }
+                else if (ChkStt_TuChoi.Checked == true)
+                {
+                    ChkStt_YeuCau.Checked = false;
+                    ChkStt_Duyet.Checked = false;
+                }
             }
             catch (Exception ex)
             {
@@ -210,13 +244,14 @@ namespace EMR.Desktop.Plugins.EmrViewerList
         {
             try
             {
+                //EMR.Filter.EmrViewerViewFilter filter = new EMR.Filter.EmrViewerViewFilter();
+                ChkStt_YeuCau.Checked = false;
                 ChkStt_Duyet.Checked = false;
                 ChkStt_TuChoi.Checked = false;
-                ChkStt_YeuCau.Checked = false;
 
                 //Nếu phòng làm việc mở ra module không phải là "Tủ bệnh án" thì checkbox trên sẽ ở trạng thái tích chọn
                 //ChkYeuCau.Enabled = this.moduleData.RoomTypeId == IMSys.DbConfig.HIS_RS.HIS_ROOM_TYPE.ID__LT;
-                ChkYeuCau.Checked = this.moduleData.RoomTypeId != IMSys.DbConfig.HIS_RS.HIS_ROOM_TYPE.ID__LT;
+               //ChkYeuCau.Checked = this.moduleData.RoomTypeId != IMSys.DbConfig.HIS_RS.HIS_ROOM_TYPE.ID__LT;
 
                 DtTimeFrom.DateTime = DateTime.Now;
                 DtTimeTo.DateTime = DateTime.Now;
@@ -239,8 +274,8 @@ namespace EMR.Desktop.Plugins.EmrViewerList
                 this.BarYeuCau.Caption = GetLanguageControl("IVT_LANGUAGE_KEY__UC_EMR_VIEWER_LIST__BAR_YEU_CAU");
                 this.BtnRefresh.Text = GetLanguageControl("IVT_LANGUAGE_KEY__UC_EMR_VIEWER_LIST__BTN_REFRESH");
                 this.BtnSearch.Text = GetLanguageControl("IVT_LANGUAGE_KEY__UC_EMR_VIEWER_LIST__BTN_SEARCH");
-                this.ChkStt_Duyet.Text = GetLanguageControl("IVT_LANGUAGE_KEY__UC_EMR_VIEWER_LIST__CHK_STT_DUYET");
                 this.ChkStt_TuChoi.Text = GetLanguageControl("IVT_LANGUAGE_KEY__UC_EMR_VIEWER_LIST__CHK_STT_TU_CHOI");
+                this.ChkStt_Duyet.Text = GetLanguageControl("IVT_LANGUAGE_KEY__UC_EMR_VIEWER_LIST__CHK_STT_DUYET");
                 this.ChkStt_YeuCau.Text = GetLanguageControl("IVT_LANGUAGE_KEY__UC_EMR_VIEWER_LIST__CHK_STT_YEU_CAU");
                 this.ChkYeuCau.Text = GetLanguageControl("IVT_LANGUAGE_KEY__UC_EMR_VIEWER_LIST__CHK_YEU_CAU");
                 this.Gc_Approval.Caption = GetLanguageControl("IVT_LANGUAGE_KEY__UC_EMR_VIEWER_LIST__GC_APPROVAL");
@@ -421,10 +456,12 @@ namespace EMR.Desktop.Plugins.EmrViewerList
                 {
                     string approval = (View.GetRowCellValue(e.RowHandle, "APPROVAL_TIME") ?? "").ToString();
                     string reject = (View.GetRowCellValue(e.RowHandle, "REJECT_TIME") ?? "").ToString();
+                    string DATA_STORE_CODE = (View.GetRowCellValue(e.RowHandle, "DATA_STORE_CODE") ?? "").ToString();
 
                     if (e.Column.FieldName == "APPROVAL")
                     {
-                        if (this.moduleData.RoomTypeId == IMSys.DbConfig.HIS_RS.HIS_ROOM_TYPE.ID__LT)
+                        if (this.moduleData.RoomTypeId == IMSys.DbConfig.HIS_RS.HIS_ROOM_TYPE.ID__LT
+                            && RoomCode == DATA_STORE_CODE)
                         {
                             if (String.IsNullOrWhiteSpace(reject) && String.IsNullOrWhiteSpace(approval))
                             {
@@ -446,7 +483,8 @@ namespace EMR.Desktop.Plugins.EmrViewerList
                     }
                     else if (e.Column.FieldName == "DIS_APPROVAL")
                     {
-                        if (this.moduleData.RoomTypeId == IMSys.DbConfig.HIS_RS.HIS_ROOM_TYPE.ID__LT)
+                        if (this.moduleData.RoomTypeId == IMSys.DbConfig.HIS_RS.HIS_ROOM_TYPE.ID__LT
+                            && RoomCode == DATA_STORE_CODE)
                         {
                             if (String.IsNullOrWhiteSpace(reject) && String.IsNullOrWhiteSpace(approval))
                             {
@@ -646,6 +684,116 @@ namespace EMR.Desktop.Plugins.EmrViewerList
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        void FillDataToGridLookupedit(DevExpress.XtraEditors.GridLookUpEdit cboEditor, string displayMember, string valueMember, object datasource)
+        {
+            try
+            {
+                List<ColumnInfo> columnInfos = new List<ColumnInfo>();
+                columnInfos.Add(new ColumnInfo(displayMember, "", 200, 2));
+                ControlEditorADO controlEditorADO = new ControlEditorADO(displayMember, valueMember, columnInfos, false, 100);
+                controlEditorADO.ImmediatePopup = true;
+                ControlEditorLoader.Load(cboEditor, datasource, controlEditorADO);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+
+        }
+
+        private void radioButton3_CheckedChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void ChkYeuCau_CheckedChanged(object sender, EventArgs e)
+        {
+            HIS.Desktop.Library.CacheClient.ControlStateRDO csAddOrUpdate = (this.currentControlStateRDO != null && this.currentControlStateRDO.Count > 0) 
+                ? this.currentControlStateRDO.Where(o => o.KEY == ChkYeuCau.Name && o.MODULE_LINK == this.moduleData.ModuleLink).FirstOrDefault() : null;
+            Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => csAddOrUpdate), csAddOrUpdate));
+            if (csAddOrUpdate != null)
+            {
+                csAddOrUpdate.VALUE = (ChkYeuCau.Checked ? "1" : "");
+            }
+            else
+            {
+                csAddOrUpdate = new HIS.Desktop.Library.CacheClient.ControlStateRDO();
+                csAddOrUpdate.KEY = ChkYeuCau.Name;
+                csAddOrUpdate.VALUE = (ChkYeuCau.Checked ? "1" : "");
+                csAddOrUpdate.MODULE_LINK = this.moduleData.ModuleLink;
+                if (this.currentControlStateRDO == null)
+                    this.currentControlStateRDO = new List<HIS.Desktop.Library.CacheClient.ControlStateRDO>();
+                this.currentControlStateRDO.Add(csAddOrUpdate);
+            }
+            this.controlStateWorker.SetData(this.currentControlStateRDO);
+        }
+
+        private void InitControlState()
+        {
+            isNotLoadWhileChangeControlStateInFirst = true;
+            try
+            {
+                this.controlStateWorker = new HIS.Desktop.Library.CacheClient.ControlStateWorker();
+                this.currentControlStateRDO = controlStateWorker.GetData(this.moduleData.ModuleLink);
+                if (this.currentControlStateRDO != null && this.currentControlStateRDO.Count > 0)
+                {
+                    foreach (var item in this.currentControlStateRDO)
+                    {
+                        if (item.KEY == ChkYeuCau.Name)
+                        {
+                            ChkYeuCau.Checked = item.VALUE == "1";
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+            isNotLoadWhileChangeControlStateInFirst = false;
+        }
+
+        private void cboRoomArchive_Properties_Click(object sender, EventArgs e)
+        {
+            
+        }
+
+        private void cboRoomArchive_ButtonClick(object sender, DevExpress.XtraEditors.Controls.ButtonPressedEventArgs e)
+        {
+            if (e.Button.Kind == DevExpress.XtraEditors.Controls.ButtonPredefines.Delete)
+            {
+                cboRoomArchive.EditValue = null;
+            }
+            
+        }
+
+        private void ChkStt_YeuCau_CheckedChanged(object sender, EventArgs e)
+        {
+            if (ChkStt_YeuCau.Checked)
+            {
+                ChkStt_Duyet.Checked = false;
+                ChkStt_TuChoi.Checked = false;
+            }
+        }
+
+        private void ChkStt_Duyet_CheckedChanged(object sender, EventArgs e)
+        {
+            if (ChkStt_Duyet.Checked)
+            {
+                ChkStt_YeuCau.Checked = false;
+                ChkStt_TuChoi.Checked = false;
+            }
+        }
+
+        private void ChkStt_TuChoi_CheckedChanged(object sender, EventArgs e)
+        {
+            if (ChkStt_TuChoi.Checked)
+            {
+                ChkStt_YeuCau.Checked = false;
+                ChkStt_Duyet.Checked = false;
             }
         }
     }

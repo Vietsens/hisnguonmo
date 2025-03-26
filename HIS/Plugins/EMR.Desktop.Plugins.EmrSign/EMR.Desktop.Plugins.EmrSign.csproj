@@ -43,7 +43,7 @@
       <HintPath>..\..\..\..\LIB\ACS\ACS.SDO.dll</HintPath>
     </Reference>
     <Reference Include="AutoMapper">
-      <HintPath>..\..\ReferencedAssemblies\AutoMapper.dll</HintPath>
+      <HintPath>..\..\..\..\lib\MOS\AutoMapper.dll</HintPath>
     </Reference>
     <Reference Include="DevExpress.Data.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
     <Reference Include="DevExpress.Printing.v15.2.Core, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
@@ -92,7 +92,7 @@
       <HintPath>..\..\..\..\LIB\Inventec.Common\Inventec.Common.Resource\Inventec.Common.Resource.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Common.SignLibrary">
-      <HintPath>..\..\..\..\LIB\Inventec.Common\Inventec.Common.SignLibrary\Inventec.Common.SignLibrary.dll</HintPath>
+      <HintPath>..\..\..\..\lib\Inventec.Common\Inventec.Common.SignLibrary\Inventec.Common.SignLibrary.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Common.TypeConvert, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -170,7 +170,6 @@
     <EmbeddedResource Include="FormEmrSign.resx">
       <DependentUpon>FormEmrSign.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Properties\licenses.licx" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -190,6 +189,10 @@
     <ProjectReference Include="..\..\HIS.Desktop.LocalStorage.BackendData\HIS.Desktop.LocalStorage.BackendData.csproj">
       <Project>{86709a9c-a149-4ebb-a817-1bf8f4f4bc07}</Project>
       <Name>HIS.Desktop.LocalStorage.BackendData</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\HIS.Desktop.LocalStorage.EmrConfig\HIS.Desktop.LocalStorage.EmrConfig.csproj">
+      <Project>{191A954E-19A7-4557-82D7-584888A04DB0}</Project>
+      <Name>HIS.Desktop.LocalStorage.EmrConfig</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\HIS.Desktop.LocalStorage.LocalData\HIS.Desktop.LocalStorage.LocalData.csproj">
       <Project>{e036edf5-788c-4892-8d8f-6b1c16dcbd21}</Project>

@@ -171,6 +171,7 @@ namespace HIS.UC.FormType.HisMultiGetString
 
                 else if (value == "HIS_REQUEST_ROOM") datasuft = Config.HisFormTypeConfig.VHisRooms.Where(o => (new List<long>() { IMSys.DbConfig.HIS_RS.HIS_ROOM_TYPE.ID__BUONG, IMSys.DbConfig.HIS_RS.HIS_ROOM_TYPE.ID__TD, IMSys.DbConfig.HIS_RS.HIS_ROOM_TYPE.ID__XL }).Contains(o.ROOM_TYPE_ID)).Select(o => new DataGet { ID = o.ID, CODE = o.ROOM_CODE, NAME = o.ROOM_NAME, PARENT = o.DEPARTMENT_ID, GRAND_PARENT = o.BRANCH_ID }).ToList();
                 else if (value == "HIS_EXAM_ROOM") datasuft = Config.HisFormTypeConfig.VHisExecuteRooms.Where(o => o.IS_EXAM == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE).Select(o => new DataGet { ID = o.ROOM_ID, CODE = o.EXECUTE_ROOM_CODE, NAME = o.EXECUTE_ROOM_NAME, PARENT = o.DEPARTMENT_ID, GRAND_PARENT = o.BRANCH_ID }).ToList();
+                else if (value == "HIS_CLINICAL_ROOM") datasuft = Config.HisFormTypeConfig.VHisRooms.Where(o => o.IS_EXAM != IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE && o.ROOM_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_ROOM_TYPE.ID__BUONG).Select(o => new DataGet { ID = o.ID, CODE = o.ROOM_CODE, NAME = o.ROOM_NAME, PARENT = o.DEPARTMENT_ID, GRAND_PARENT = o.BRANCH_ID }).ToList();
                 else if (value == "HIS_SURG_ROOM") datasuft = Config.HisFormTypeConfig.VHisExecuteRooms.Where(o => o.IS_SURGERY == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE).Select(o => new DataGet { ID = o.ROOM_ID, CODE = o.EXECUTE_ROOM_CODE, NAME = o.EXECUTE_ROOM_NAME, PARENT = o.DEPARTMENT_ID, GRAND_PARENT = o.BRANCH_ID }).ToList();
                 else if (value == "HIS_MY_SURG_ROOM")
                 {
@@ -263,6 +264,7 @@ namespace HIS.UC.FormType.HisMultiGetString
 
                 else if (value == "HIS_BRANCH_ROOM") datasuft = Config.HisFormTypeConfig.VHisRooms.Select(o => new DataGet { ID = o.ID, CODE = o.ROOM_CODE, NAME = o.ROOM_NAME, PARENT = o.BRANCH_ID, GRAND_PARENT = o.BRANCH_ID }).ToList();
                 else if (value == "HIS_PATIENT_TYPE") datasuft = Config.HisFormTypeConfig.HisPatientTypes.Select(o => new DataGet { ID = o.ID, CODE = o.PATIENT_TYPE_CODE, NAME = o.PATIENT_TYPE_NAME }).ToList();// IDs = Config.HisFormTypeConfig.HisPatientTypes.Select(o => o.ID).ToList(); }
+                else if (value == "HIS_PARENT_SERVICE_RAW_MEDICINAL_HERBS") datasuft = Config.HisFormTypeConfig.HisPatientTypes.Select(o => new DataGet { ID = o.ID, CODE = o.PATIENT_TYPE_CODE, NAME = o.PATIENT_TYPE_NAME }).ToList();
                 else if (value == "HIS_PTTT_GROUP") datasuft = Config.HisFormTypeConfig.HisPTTTGroups.Select(o => new DataGet { ID = o.ID, CODE = o.PTTT_GROUP_CODE, NAME = o.PTTT_GROUP_NAME }).ToList();// IDs = Config.HisFormTypeConfig.HisPTTTGroups.Select(o => o.ID).ToList(); }
                 else if (value == "HIS_IMP_MEST_TYPE") datasuft = Config.HisFormTypeConfig.HisImpMestTypes.Select(o => new DataGet { ID = o.ID, CODE = o.IMP_MEST_TYPE_CODE, NAME = o.IMP_MEST_TYPE_NAME }).ToList();// IDs = Config.HisFormTypeConfig.HisImpMestTypes.Select(o => o.ID).ToList(); }
                 else if (value == "HIS_IMP_MEST_STT") datasuft = Config.HisFormTypeConfig.HisImpMestStts.Select(o => new DataGet { ID = o.ID, CODE = o.IMP_MEST_STT_CODE, NAME = o.IMP_MEST_STT_NAME }).ToList();// IDs = Config.HisFormTypeConfig.HisImpMestStts.Select(o => o.ID).ToList(); }
@@ -287,6 +289,11 @@ namespace HIS.UC.FormType.HisMultiGetString
 
                 else if (value == "HIS_SERVICE_FULL") datasuft = Config.HisFormTypeConfig.VHisServiceFulls;
                 else if (value == "HIS_PARENT_SERVICE")
+                {
+                    List<long> parentIds = Config.HisFormTypeConfig.VHisServices.Where(o => o.PARENT_ID != null).Select(o => o.PARENT_ID ?? 0).Distinct().ToList();
+                    datasuft = Config.HisFormTypeConfig.VHisServices.Where(p => parentIds.Contains(p.ID)).Select(o => new DataGet { ID = o.ID, CODE = o.SERVICE_CODE, NAME = o.SERVICE_NAME, PARENT = o.SERVICE_TYPE_ID }).ToList();
+                }
+                else if (value == "HIS_PATIENT_RAW_MEDICINAL_HERBS_TYPE")// 24/02/2025HIS_PARENT_SERVICE_RAW_MEDICINAL_HERBS
                 {
                     List<long> parentIds = Config.HisFormTypeConfig.VHisServices.Where(o => o.PARENT_ID != null).Select(o => o.PARENT_ID ?? 0).Distinct().ToList();
                     datasuft = Config.HisFormTypeConfig.VHisServices.Where(p => parentIds.Contains(p.ID)).Select(o => new DataGet { ID = o.ID, CODE = o.SERVICE_CODE, NAME = o.SERVICE_NAME, PARENT = o.SERVICE_TYPE_ID }).ToList();
@@ -332,7 +339,14 @@ namespace HIS.UC.FormType.HisMultiGetString
                 else if (value == "HIS_TRANSACTION_TYPE") datasuft = Config.HisFormTypeConfig.HisTransactionType.Select(o => new DataGet { ID = o.ID, CODE = o.TRANSACTION_TYPE_CODE, NAME = o.TRANSACTION_TYPE_NAME }).ToList();
                 else if (value == "HIS_MACHINE") datasuft = Config.HisFormTypeConfig.HisMachines.Select(o => new DataGet { ID = o.ID, CODE = o.MACHINE_CODE, NAME = o.MACHINE_NAME }).ToList();
                 else if (value == "HIS_MEDI_ORG") datasuft = Config.HisFormTypeConfig.HisMediOrgs.Select(o => new DataGet { ID = o.ID, CODE = o.MEDI_ORG_CODE, NAME = o.MEDI_ORG_NAME }).ToList();
-
+                else if (value == "HIS_CONFIG")
+                {
+                    datasuft = Config.HisFormTypeConfig.HisConfig.Select(o => new DataGet { ID = o.ID, CODE = o.KEY.Replace("HIS.Desktop.Plugins.PaymentQrCode.", "").Replace("Info", ""), NAME = "Ngân hàng " + o.KEY.Replace("HIS.Desktop.Plugins.PaymentQrCode.","").Replace("Info","") }).ToList();
+                }
+                else if (value == "HIS_MEDICINE_LINE")
+                {
+                    datasuft = Config.HisFormTypeConfig.HisMedicineLine.Select(o => new DataGet { ID = o.ID, CODE = o.MEDICINE_LINE_CODE, NAME = o.MEDICINE_LINE_NAME }).ToList();
+                }
                 datasuft = datasuft.OrderBy(o => o.NAME).ToList();
             }
             catch (Exception ex)

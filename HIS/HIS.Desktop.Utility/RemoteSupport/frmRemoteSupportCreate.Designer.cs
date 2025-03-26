@@ -45,12 +45,11 @@ namespace HIS.Desktop.Utilities.RemoteSupport
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmRemoteSupportCreate));
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject1 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject2 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject3 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject4 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject13 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject14 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject15 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject16 = new DevExpress.Utils.SerializableAppearanceObject();
             this.layoutControl1 = new DevExpress.XtraLayout.LayoutControl();
             this.gridControl1 = new DevExpress.XtraGrid.GridControl();
             this.gridView1 = new DevExpress.XtraGrid.Views.Grid.GridView();
@@ -58,7 +57,7 @@ namespace HIS.Desktop.Utilities.RemoteSupport
             this.gridColumn2 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.repDel = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
             this.gridColumn3 = new DevExpress.XtraGrid.Columns.GridColumn();
-            this.barManager1 = new DevExpress.XtraBars.BarManager(this.components);
+            this.barManager1 = new DevExpress.XtraBars.BarManager();
             this.bar2 = new DevExpress.XtraBars.Bar();
             this.bbtnSaveShortcut = new DevExpress.XtraBars.BarButtonItem();
             this.barDockControlTop = new DevExpress.XtraBars.BarDockControl();
@@ -66,15 +65,11 @@ namespace HIS.Desktop.Utilities.RemoteSupport
             this.barDockControlLeft = new DevExpress.XtraBars.BarDockControl();
             this.barDockControlRight = new DevExpress.XtraBars.BarDockControl();
             this.btnAttachFile = new DevExpress.XtraEditors.SimpleButton();
-            this.txtPhone = new DevExpress.XtraEditors.TextEdit();
-            this.txtModuleLink = new DevExpress.XtraEditors.TextEdit();
             this.txtDescription = new DevExpress.XtraEditors.MemoEdit();
             this.txtContactInfo = new DevExpress.XtraEditors.TextEdit();
             this.lblAnydeskID = new DevExpress.XtraEditors.LabelControl();
             this.btnSave = new DevExpress.XtraEditors.SimpleButton();
             this.txtTitle = new DevExpress.XtraEditors.TextEdit();
-            this.cboDepartment = new DevExpress.XtraEditors.GridLookUpEdit();
-            this.gridLookUpEdit1View = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.layoutControlGroup1 = new DevExpress.XtraLayout.LayoutControlGroup();
             this.layoutControlItem1 = new DevExpress.XtraLayout.LayoutControlItem();
             this.emptySpaceItem1 = new DevExpress.XtraLayout.EmptySpaceItem();
@@ -82,26 +77,23 @@ namespace HIS.Desktop.Utilities.RemoteSupport
             this.layoutControlItem2 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem7 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem3 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.layoutControlItem4 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.layoutControlItem6 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.layoutControlItem8 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem9 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem10 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.dxValidationProviderEditorInfo = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider(this.components);
-            this.dxErrorProvider = new DevExpress.XtraEditors.DXErrorProvider.DXErrorProvider(this.components);
+            this.dxValidationProviderEditorInfo = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider();
+            this.dxErrorProvider = new DevExpress.XtraEditors.DXErrorProvider.DXErrorProvider();
+            this.chkAttackLog = new DevExpress.XtraEditors.CheckEdit();
+            this.layoutControlItem4 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.chkAttackWImage = new DevExpress.XtraEditors.CheckEdit();
+            this.layoutControlItem6 = new DevExpress.XtraLayout.LayoutControlItem();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
             this.layoutControl1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gridControl1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridView1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.repDel)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.barManager1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.txtPhone.Properties)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.txtModuleLink.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtDescription.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtContactInfo.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtTitle.Properties)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.cboDepartment.Properties)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.gridLookUpEdit1View)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem1)).BeginInit();
@@ -109,27 +101,27 @@ namespace HIS.Desktop.Utilities.RemoteSupport
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem7)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem3)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem4)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem6)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem8)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem9)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem10)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxValidationProviderEditorInfo)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxErrorProvider)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chkAttackLog.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem4)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chkAttackWImage.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem6)).BeginInit();
             this.SuspendLayout();
             // 
             // layoutControl1
             // 
+            this.layoutControl1.Controls.Add(this.chkAttackWImage);
+            this.layoutControl1.Controls.Add(this.chkAttackLog);
             this.layoutControl1.Controls.Add(this.gridControl1);
             this.layoutControl1.Controls.Add(this.btnAttachFile);
-            this.layoutControl1.Controls.Add(this.txtPhone);
-            this.layoutControl1.Controls.Add(this.txtModuleLink);
             this.layoutControl1.Controls.Add(this.txtDescription);
             this.layoutControl1.Controls.Add(this.txtContactInfo);
             this.layoutControl1.Controls.Add(this.lblAnydeskID);
             this.layoutControl1.Controls.Add(this.btnSave);
             this.layoutControl1.Controls.Add(this.txtTitle);
-            this.layoutControl1.Controls.Add(this.cboDepartment);
             this.layoutControl1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.layoutControl1.Location = new System.Drawing.Point(0, 22);
             this.layoutControl1.Name = "layoutControl1";
@@ -140,13 +132,13 @@ namespace HIS.Desktop.Utilities.RemoteSupport
             // 
             // gridControl1
             // 
-            this.gridControl1.Location = new System.Drawing.Point(137, 322);
+            this.gridControl1.Location = new System.Drawing.Point(137, 241);
             this.gridControl1.MainView = this.gridView1;
             this.gridControl1.MenuManager = this.barManager1;
             this.gridControl1.Name = "gridControl1";
             this.gridControl1.RepositoryItems.AddRange(new DevExpress.XtraEditors.Repository.RepositoryItem[] {
             this.repDel});
-            this.gridControl1.Size = new System.Drawing.Size(427, 144);
+            this.gridControl1.Size = new System.Drawing.Size(427, 201);
             this.gridControl1.TabIndex = 16;
             this.gridControl1.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
             this.gridView1});
@@ -192,7 +184,7 @@ namespace HIS.Desktop.Utilities.RemoteSupport
             // 
             this.repDel.AutoHeight = false;
             this.repDel.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("repDel.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject1, serializableAppearanceObject2, serializableAppearanceObject3, serializableAppearanceObject4, "Xóa", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("repDel.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject13, serializableAppearanceObject14, serializableAppearanceObject15, serializableAppearanceObject16, "Xóa", null, null, true)});
             this.repDel.Name = "repDel";
             this.repDel.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             this.repDel.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.repDel_ButtonClick);
@@ -279,41 +271,18 @@ namespace HIS.Desktop.Utilities.RemoteSupport
             this.btnAttachFile.Text = "Đính kèm";
             this.btnAttachFile.Click += new System.EventHandler(this.btnAttachFile_Click);
             // 
-            // txtPhone
-            // 
-            this.txtPhone.Location = new System.Drawing.Point(137, 226);
-            this.txtPhone.Margin = new System.Windows.Forms.Padding(2);
-            this.txtPhone.MenuManager = this.barManager1;
-            this.txtPhone.Name = "txtPhone";
-            this.txtPhone.Properties.MaxLength = 12;
-            this.txtPhone.Size = new System.Drawing.Size(427, 20);
-            this.txtPhone.StyleController = this.layoutControl1;
-            this.txtPhone.TabIndex = 13;
-            this.txtPhone.EditValueChanged += new System.EventHandler(this.txtPhone_EditValueChanged);
-            this.txtPhone.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtPhone_KeyPress);
-            // 
-            // txtModuleLink
-            // 
-            this.txtModuleLink.Location = new System.Drawing.Point(137, 274);
-            this.txtModuleLink.Margin = new System.Windows.Forms.Padding(2);
-            this.txtModuleLink.MenuManager = this.barManager1;
-            this.txtModuleLink.Name = "txtModuleLink";
-            this.txtModuleLink.Size = new System.Drawing.Size(427, 20);
-            this.txtModuleLink.StyleController = this.layoutControl1;
-            this.txtModuleLink.TabIndex = 12;
-            // 
             // txtDescription
             // 
             this.txtDescription.Location = new System.Drawing.Point(137, 36);
             this.txtDescription.MenuManager = this.barManager1;
             this.txtDescription.Name = "txtDescription";
-            this.txtDescription.Size = new System.Drawing.Size(427, 162);
+            this.txtDescription.Size = new System.Drawing.Size(427, 153);
             this.txtDescription.StyleController = this.layoutControl1;
             this.txtDescription.TabIndex = 11;
             // 
             // txtContactInfo
             // 
-            this.txtContactInfo.Location = new System.Drawing.Point(137, 202);
+            this.txtContactInfo.Location = new System.Drawing.Point(137, 193);
             this.txtContactInfo.MenuManager = this.barManager1;
             this.txtContactInfo.Name = "txtContactInfo";
             this.txtContactInfo.Size = new System.Drawing.Size(427, 20);
@@ -322,9 +291,10 @@ namespace HIS.Desktop.Utilities.RemoteSupport
             // 
             // lblAnydeskID
             // 
-            this.lblAnydeskID.Location = new System.Drawing.Point(137, 298);
+            this.lblAnydeskID.AutoSizeMode = DevExpress.XtraEditors.LabelAutoSizeMode.None;
+            this.lblAnydeskID.Location = new System.Drawing.Point(137, 217);
             this.lblAnydeskID.Name = "lblAnydeskID";
-            this.lblAnydeskID.Size = new System.Drawing.Size(12, 20);
+            this.lblAnydeskID.Size = new System.Drawing.Size(427, 20);
             this.lblAnydeskID.StyleController = this.layoutControl1;
             this.lblAnydeskID.TabIndex = 8;
             this.lblAnydeskID.Text = "...";
@@ -347,28 +317,6 @@ namespace HIS.Desktop.Utilities.RemoteSupport
             this.txtTitle.StyleController = this.layoutControl1;
             this.txtTitle.TabIndex = 4;
             // 
-            // cboDepartment
-            // 
-            this.cboDepartment.Location = new System.Drawing.Point(137, 250);
-            this.cboDepartment.MenuManager = this.barManager1;
-            this.cboDepartment.Name = "cboDepartment";
-            this.cboDepartment.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
-            this.cboDepartment.Properties.NullText = "";
-            this.cboDepartment.Properties.PopupSizeable = false;
-            this.cboDepartment.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.Standard;
-            this.cboDepartment.Properties.View = this.gridLookUpEdit1View;
-            this.cboDepartment.Size = new System.Drawing.Size(427, 20);
-            this.cboDepartment.StyleController = this.layoutControl1;
-            this.cboDepartment.TabIndex = 14;
-            // 
-            // gridLookUpEdit1View
-            // 
-            this.gridLookUpEdit1View.FocusRectStyle = DevExpress.XtraGrid.Views.Grid.DrawFocusRectStyle.RowFocus;
-            this.gridLookUpEdit1View.Name = "gridLookUpEdit1View";
-            this.gridLookUpEdit1View.OptionsSelection.EnableAppearanceFocusedCell = false;
-            this.gridLookUpEdit1View.OptionsView.ShowGroupPanel = false;
-            // 
             // layoutControlGroup1
             // 
             this.layoutControlGroup1.EnableIndentsWithoutBorders = DevExpress.Utils.DefaultBoolean.True;
@@ -380,11 +328,10 @@ namespace HIS.Desktop.Utilities.RemoteSupport
             this.layoutControlItem2,
             this.layoutControlItem7,
             this.layoutControlItem3,
-            this.layoutControlItem4,
-            this.layoutControlItem6,
-            this.layoutControlItem8,
             this.layoutControlItem9,
-            this.layoutControlItem10});
+            this.layoutControlItem10,
+            this.layoutControlItem6,
+            this.layoutControlItem4});
             this.layoutControlGroup1.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup1.Name = "layoutControlGroup1";
             this.layoutControlGroup1.Size = new System.Drawing.Size(576, 504);
@@ -418,7 +365,7 @@ namespace HIS.Desktop.Utilities.RemoteSupport
             this.layoutControlItem5.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem5.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem5.Control = this.lblAnydeskID;
-            this.layoutControlItem5.Location = new System.Drawing.Point(0, 286);
+            this.layoutControlItem5.Location = new System.Drawing.Point(0, 205);
             this.layoutControlItem5.Name = "layoutControlItem5";
             this.layoutControlItem5.Size = new System.Drawing.Size(556, 24);
             this.layoutControlItem5.Text = "Anydesk ID:";
@@ -431,7 +378,7 @@ namespace HIS.Desktop.Utilities.RemoteSupport
             this.layoutControlItem2.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem2.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem2.Control = this.txtContactInfo;
-            this.layoutControlItem2.Location = new System.Drawing.Point(0, 190);
+            this.layoutControlItem2.Location = new System.Drawing.Point(0, 181);
             this.layoutControlItem2.Name = "layoutControlItem2";
             this.layoutControlItem2.Size = new System.Drawing.Size(556, 24);
             this.layoutControlItem2.Text = "Thông tin liên lạc:";
@@ -448,7 +395,7 @@ namespace HIS.Desktop.Utilities.RemoteSupport
             this.layoutControlItem7.Control = this.txtDescription;
             this.layoutControlItem7.Location = new System.Drawing.Point(0, 24);
             this.layoutControlItem7.Name = "layoutControlItem7";
-            this.layoutControlItem7.Size = new System.Drawing.Size(556, 166);
+            this.layoutControlItem7.Size = new System.Drawing.Size(556, 157);
             this.layoutControlItem7.Text = "Nội dung:";
             this.layoutControlItem7.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem7.TextSize = new System.Drawing.Size(120, 20);
@@ -462,47 +409,6 @@ namespace HIS.Desktop.Utilities.RemoteSupport
             this.layoutControlItem3.Size = new System.Drawing.Size(115, 26);
             this.layoutControlItem3.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem3.TextVisible = false;
-            // 
-            // layoutControlItem4
-            // 
-            this.layoutControlItem4.AppearanceItemCaption.Options.UseTextOptions = true;
-            this.layoutControlItem4.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
-            this.layoutControlItem4.Control = this.txtModuleLink;
-            this.layoutControlItem4.Location = new System.Drawing.Point(0, 262);
-            this.layoutControlItem4.Name = "layoutControlItem4";
-            this.layoutControlItem4.Size = new System.Drawing.Size(556, 24);
-            this.layoutControlItem4.Text = "Mã chức năng:";
-            this.layoutControlItem4.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
-            this.layoutControlItem4.TextSize = new System.Drawing.Size(120, 20);
-            this.layoutControlItem4.TextToControlDistance = 5;
-            // 
-            // layoutControlItem6
-            // 
-            this.layoutControlItem6.AppearanceItemCaption.Options.UseTextOptions = true;
-            this.layoutControlItem6.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
-            this.layoutControlItem6.Control = this.txtPhone;
-            this.layoutControlItem6.Location = new System.Drawing.Point(0, 214);
-            this.layoutControlItem6.Name = "layoutControlItem6";
-            this.layoutControlItem6.Size = new System.Drawing.Size(556, 24);
-            this.layoutControlItem6.Text = "Số điện thoại:";
-            this.layoutControlItem6.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
-            this.layoutControlItem6.TextSize = new System.Drawing.Size(120, 20);
-            this.layoutControlItem6.TextToControlDistance = 5;
-            // 
-            // layoutControlItem8
-            // 
-            this.layoutControlItem8.AppearanceItemCaption.ForeColor = System.Drawing.Color.Maroon;
-            this.layoutControlItem8.AppearanceItemCaption.Options.UseForeColor = true;
-            this.layoutControlItem8.AppearanceItemCaption.Options.UseTextOptions = true;
-            this.layoutControlItem8.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
-            this.layoutControlItem8.Control = this.cboDepartment;
-            this.layoutControlItem8.Location = new System.Drawing.Point(0, 238);
-            this.layoutControlItem8.Name = "layoutControlItem8";
-            this.layoutControlItem8.Size = new System.Drawing.Size(556, 24);
-            this.layoutControlItem8.Text = "Khoa:";
-            this.layoutControlItem8.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
-            this.layoutControlItem8.TextSize = new System.Drawing.Size(120, 20);
-            this.layoutControlItem8.TextToControlDistance = 5;
             // 
             // layoutControlItem9
             // 
@@ -518,9 +424,9 @@ namespace HIS.Desktop.Utilities.RemoteSupport
             this.layoutControlItem10.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem10.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem10.Control = this.gridControl1;
-            this.layoutControlItem10.Location = new System.Drawing.Point(0, 310);
+            this.layoutControlItem10.Location = new System.Drawing.Point(0, 229);
             this.layoutControlItem10.Name = "layoutControlItem10";
-            this.layoutControlItem10.Size = new System.Drawing.Size(556, 148);
+            this.layoutControlItem10.Size = new System.Drawing.Size(556, 205);
             this.layoutControlItem10.Text = "Đính kèm:";
             this.layoutControlItem10.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem10.TextSize = new System.Drawing.Size(120, 20);
@@ -533,6 +439,48 @@ namespace HIS.Desktop.Utilities.RemoteSupport
             // dxErrorProvider
             // 
             this.dxErrorProvider.ContainerControl = this;
+            // 
+            // chkAttackLog
+            // 
+            this.chkAttackLog.Location = new System.Drawing.Point(137, 446);
+            this.chkAttackLog.MenuManager = this.barManager1;
+            this.chkAttackLog.Name = "chkAttackLog";
+            this.chkAttackLog.Properties.Caption = "Đính kèm log";
+            this.chkAttackLog.Size = new System.Drawing.Size(203, 19);
+            this.chkAttackLog.StyleController = this.layoutControl1;
+            this.chkAttackLog.TabIndex = 17;
+            this.chkAttackLog.CheckedChanged += new System.EventHandler(this.chkAttackLog_CheckedChanged);
+            // 
+            // layoutControlItem4
+            // 
+            this.layoutControlItem4.Control = this.chkAttackLog;
+            this.layoutControlItem4.Location = new System.Drawing.Point(0, 434);
+            this.layoutControlItem4.Name = "layoutControlItem4";
+            this.layoutControlItem4.Size = new System.Drawing.Size(332, 24);
+            this.layoutControlItem4.Text = " ";
+            this.layoutControlItem4.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.layoutControlItem4.TextSize = new System.Drawing.Size(120, 20);
+            this.layoutControlItem4.TextToControlDistance = 5;
+            // 
+            // chkAttackWImage
+            // 
+            this.chkAttackWImage.Location = new System.Drawing.Point(344, 446);
+            this.chkAttackWImage.MenuManager = this.barManager1;
+            this.chkAttackWImage.Name = "chkAttackWImage";
+            this.chkAttackWImage.Properties.Caption = "Đính kèm ảnh chụp màn hình";
+            this.chkAttackWImage.Size = new System.Drawing.Size(220, 19);
+            this.chkAttackWImage.StyleController = this.layoutControl1;
+            this.chkAttackWImage.TabIndex = 18;
+            this.chkAttackWImage.CheckedChanged += new System.EventHandler(this.chkAttackWImage_CheckedChanged);
+            // 
+            // layoutControlItem6
+            // 
+            this.layoutControlItem6.Control = this.chkAttackWImage;
+            this.layoutControlItem6.Location = new System.Drawing.Point(332, 434);
+            this.layoutControlItem6.Name = "layoutControlItem6";
+            this.layoutControlItem6.Size = new System.Drawing.Size(224, 24);
+            this.layoutControlItem6.TextSize = new System.Drawing.Size(0, 0);
+            this.layoutControlItem6.TextVisible = false;
             // 
             // frmRemoteSupportCreate
             // 
@@ -554,13 +502,9 @@ namespace HIS.Desktop.Utilities.RemoteSupport
             ((System.ComponentModel.ISupportInitialize)(this.gridView1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.repDel)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.barManager1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.txtPhone.Properties)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.txtModuleLink.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtDescription.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtContactInfo.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtTitle.Properties)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.cboDepartment.Properties)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.gridLookUpEdit1View)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem1)).EndInit();
@@ -568,13 +512,14 @@ namespace HIS.Desktop.Utilities.RemoteSupport
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem7)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem3)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem4)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem6)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem8)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem9)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem10)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxValidationProviderEditorInfo)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxErrorProvider)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chkAttackLog.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem4)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chkAttackWImage.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem6)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -604,13 +549,6 @@ namespace HIS.Desktop.Utilities.RemoteSupport
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem2;
         private DevExpress.XtraEditors.MemoEdit txtDescription;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem7;
-        private DevExpress.XtraEditors.TextEdit txtModuleLink;
-        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem4;
-        private DevExpress.XtraEditors.TextEdit txtPhone;
-        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem6;
-        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem8;
-        private DevExpress.XtraEditors.GridLookUpEdit cboDepartment;
-        private DevExpress.XtraGrid.Views.Grid.GridView gridLookUpEdit1View;
         private DevExpress.XtraGrid.GridControl gridControl1;
         private DevExpress.XtraGrid.Views.Grid.GridView gridView1;
         private DevExpress.XtraEditors.SimpleButton btnAttachFile;
@@ -620,5 +558,9 @@ namespace HIS.Desktop.Utilities.RemoteSupport
         private DevExpress.XtraGrid.Columns.GridColumn gridColumn2;
         private DevExpress.XtraGrid.Columns.GridColumn gridColumn3;
         private DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit repDel;
+        private DevExpress.XtraEditors.CheckEdit chkAttackWImage;
+        private DevExpress.XtraEditors.CheckEdit chkAttackLog;
+        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem6;
+        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem4;
     }
 }

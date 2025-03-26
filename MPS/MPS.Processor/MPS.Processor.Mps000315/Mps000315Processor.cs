@@ -15,6 +15,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+using HIS.Desktop.LocalStorage.BackendData;
 using Inventec.Core;
 using MOS.EFMODEL.DataModels;
 using MPS.Processor.Mps000315.ADO;
@@ -38,7 +39,7 @@ namespace MPS.Processor.Mps000315
         List<ServiceReqAdo> ServiceReqAdos { get; set; }
         List<TreatmentAdo> TreatmentAdos { get; set; }
         List<SereServResultAdo> SereServResultAdos { get; set; }
-
+        HIS_KSK_GENERAL hkg { get; set; }
         public Mps000315Processor(CommonParam param, PrintData printData)
             : base(param, printData)
         {
@@ -121,6 +122,9 @@ namespace MPS.Processor.Mps000315
                 objectTag.AddRelationship(store, "KskDriver", "ServiceReq", "SERVICE_REQ_ID", "ID");
                 objectTag.AddRelationship(store, "KskDriver", "Treatment", "TDL_TREATMENT_ID", "ID");
 
+                objectTag.AddRelationship(store, "KskGeneral", "Dhst", "DHST_ID", "ID");
+
+
                 if (rdo._KSK_HealthExamRank == null)
                 {
                     rdo._KSK_HealthExamRank = new List<HIS_HEALTH_EXAM_RANK>();
@@ -129,8 +133,6 @@ namespace MPS.Processor.Mps000315
                 objectTag.AddObjectData(store, "KskRank", rdo._KSK_HealthExamRank);
                 objectTag.AddObjectData(store, "Patient", rdo._KSK_Patients);
                 objectTag.AddObjectData(store, "KskGeneral", rdo._KskGeneral);
-
-
 
                 result = true;
             }
@@ -180,6 +182,12 @@ namespace MPS.Processor.Mps000315
                     //
                     if(rdo._KSK_ServiceReqs.Count == 1)
                         AddObjectKeyIntoListkey<V_HIS_SERVICE_REQ>(rdo._KSK_ServiceReqs[0], false);
+                }
+                //set single key
+                if (rdo._KskGeneral != null && rdo._KskGeneral.Count > 0)
+                {
+                    if (rdo._KskGeneral.Count == 1)
+                        AddObjectKeyIntoListkey<HIS_KSK_GENERAL>(rdo._KskGeneral[0], false);
                 }
 
                 TreatmentAdos = new List<TreatmentAdo>();
@@ -232,6 +240,11 @@ namespace MPS.Processor.Mps000315
                     }
                 }
                 // AddObjectKeyIntoListkey<V_HIS_TREATMENT>(rdo._KSK_Treatments);
+                
+                if (rdo._KSK_Dhsts != null)
+                {
+                    SetSingleKey((new KeyValue(Mps000315ExtendSingleKey.DHST_LOGINNAME, rdo._KSK_Dhsts.FirstOrDefault().EXECUTE_LOGINNAME)));
+                }
             }
             catch (Exception ex)
             {

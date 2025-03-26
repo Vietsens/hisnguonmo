@@ -30,8 +30,8 @@ using HIS.Desktop.LocalStorage.HisConfig;
 
 namespace HIS.UC.UCPatientRaw
 {
-	public partial class UCPatientRaw : UserControl
-	{
+	public partial class UCPatientRaw : HIS.Desktop.Utility.UserControlBase
+    {
 		#region Outside Validate
 
 		public bool ValidateRequiredField()
