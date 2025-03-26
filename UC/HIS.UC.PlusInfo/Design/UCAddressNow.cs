@@ -51,6 +51,7 @@ namespace HIS.UC.PlusInfo.Design
         #region Contructor - Load
 
         public UCAddressNow()
+            : base("UCPlusInfo", "UCAddressNow")
         {
             try
             {
@@ -70,7 +71,7 @@ namespace HIS.UC.PlusInfo.Design
         {
             try
             {
-                
+
             }
             catch (Exception ex)
             {

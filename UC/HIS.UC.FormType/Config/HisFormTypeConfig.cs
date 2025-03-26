@@ -1,4 +1,21 @@
-﻿using ACS.EFMODEL.DataModels;
+/* IVT
+ * @Project : hisnguonmo
+ * Copyright (C) 2017 INVENTEC
+ *  
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *  
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.See the
+ * GNU General Public License for more details.
+ *  
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ */
+using ACS.EFMODEL.DataModels;
 using HIS.UC.FormType.HisMultiGetString;
 using Inventec.Core;
 using System;
@@ -2503,6 +2520,27 @@ namespace HIS.UC.FormType.Config
             set
             {
                 hisConfig = value;
+            }
+        }
+        private static List<MOS.EFMODEL.DataModels.HIS_MEDICINE_LINE> hisMedicineLine;
+
+        public static List<MOS.EFMODEL.DataModels.HIS_MEDICINE_LINE> HisMedicineLine
+        {
+            get
+            {
+                if (FormTypeDelegate.ProcessFormType != null) FormTypeDelegate.ProcessFormType(typeof(MOS.EFMODEL.DataModels.HIS_MEDICINE_LINE));
+                if (hisMedicineLine == null || hisMedicineLine.Count == 0)
+                {
+                    CommonParam param = new CommonParam();
+                    MOS.Filter.HisMedicineLineFilter filter = new MOS.Filter.HisMedicineLineFilter();
+                    filter.IS_ACTIVE = IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE;
+                    hisMedicineLine = BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_MEDICINE_LINE>("/api/HisMedicineLine/Get", ApiConsumerStore.MosConsumer, filter);
+                }
+                return hisMedicineLine.Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE).ToList();
+            }
+            set
+            {
+                hisMedicineLine = value;
             }
         }
     }

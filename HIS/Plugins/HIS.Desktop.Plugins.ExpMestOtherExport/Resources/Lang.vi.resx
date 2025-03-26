@@ -117,20 +117,20 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="FromExpMestOtherExport.layoutControl1.Text" xml:space="preserve">
-    <value>layoutControl1</value>
-  </data>
   <data name="FromExpMestOtherExport.bar1.Text" xml:space="preserve">
     <value>Tools</value>
   </data>
   <data name="FromExpMestOtherExport.barButtonItemAdd.Caption" xml:space="preserve">
     <value>Ctrl A</value>
   </data>
+  <data name="FromExpMestOtherExport.barButtonItemNew.Caption" xml:space="preserve">
+    <value>Ctrl N</value>
+  </data>
   <data name="FromExpMestOtherExport.barButtonItemSave.Caption" xml:space="preserve">
     <value>Ctrl S</value>
   </data>
-  <data name="FromExpMestOtherExport.barButtonItemNew.Caption" xml:space="preserve">
-    <value>Ctrl N</value>
+  <data name="FromExpMestOtherExport.layoutControl1.Text" xml:space="preserve">
+    <value>layoutControl1</value>
   </data>
   <data name="FromExpMestOtherExport.Text" xml:space="preserve">
     <value>Xuất khác</value>
@@ -442,7 +442,7 @@
     <value>Hãng sản xuất</value>
   </data>
   <data name="UCExpMestOtherExport.gridColumn_ExpMestDetail_MediMateTypeName.Caption" xml:space="preserve">
-    <value>Tên</value>
+    <value>Tên (Hàm lượng)</value>
   </data>
   <data name="UCExpMestOtherExport.gridColumn_ExpMestDetail_NationalName.Caption" xml:space="preserve">
     <value>Nước sản xuất</value>

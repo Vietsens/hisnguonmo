@@ -1,7 +1,24 @@
+/* IVT
+ * @Project : hisnguonmo
+ * Copyright (C) 2017 INVENTEC
+ *  
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *  
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.See the
+ * GNU General Public License for more details.
+ *  
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ */
 /*****************************************************************
  * Copyright (C) Knights Warrior Corporation. All rights reserved.
  * 
- * Author:   Ê¥µîÆïÊ¿£¨Knights Warrior£© 
+ * Author:   Ê¥ï¿½ï¿½ï¿½ï¿½Ê¿ï¿½ï¿½Knights Warriorï¿½ï¿½ 
  * Email:    KnightsWarrior@msn.com
  * Website:  http://www.cnblogs.com/KnightsWarrior/       http://knightswarrior.blog.51cto.com/
  * Create Date:  5/8/2010 
@@ -35,7 +52,7 @@ namespace Inventec.Aup.Client.AutoUpdater
         private WebClient clientDownload = null;
         private string curBakFolderName = ConstFile.TEMPFOLDERNAME + "\\" + DateTime.Now.ToString("yyyy-MM-dd");
         Config config = new Config();
-        int tryTimes = 0;//³¢ÊÔÏÂÔØ´ÎÊý;
+        int tryTimes = 0;//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ø´ï¿½ï¿½ï¿½;
         string postProcess;
         #endregion
 
@@ -52,7 +69,7 @@ namespace Inventec.Aup.Client.AutoUpdater
             {
                 allFileList.Add(file);
             }
-            //³õÊ¼»¯ÈÕÖ¾Ñ¡ÔñÆ÷           
+            //ï¿½ï¿½Ê¼ï¿½ï¿½ï¿½ï¿½Ö¾Ñ¡ï¿½ï¿½ï¿½ï¿½           
         }
         #endregion
 
@@ -125,7 +142,7 @@ namespace Inventec.Aup.Client.AutoUpdater
                     // clientDownload.Proxy = System.Net.WebProxy.GetDefaultProxy();
                     clientDownload.Proxy = WebRequest.GetSystemWebProxy();
                     clientDownload.Proxy.Credentials = CredentialCache.DefaultCredentials;
-                    //clientDownload.Credentials = System.Net.CredentialCache.DefaultCredentials;//ftp¿ÉÄÜ²»¿ÉÓÃ
+                    //clientDownload.Credentials = System.Net.CredentialCache.DefaultCredentials;//ftpï¿½ï¿½ï¿½Ü²ï¿½ï¿½ï¿½ï¿½ï¿½
                     if (!string.IsNullOrEmpty(config.PassWord) && !string.IsNullOrEmpty(config.UserName))
                     {
                         clientDownload.Credentials = new NetworkCredential(config.UserName, config.PassWord);
@@ -192,7 +209,7 @@ namespace Inventec.Aup.Client.AutoUpdater
                     clientDownload.Dispose();
                     clientDownload = null;
 
-                    #region ¿ÉÄÜ»á½øÐÐÏÂÔØÊ§°Ü£¬½øÐÐ¶à´ÎÖØÐÂÏÂÔØ
+                    #region ï¿½ï¿½ï¿½Ü»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê§ï¿½Ü£ï¿½ï¿½ï¿½ï¿½Ð¶ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
                     string tempUrlPath = CommonUnitity.GetFolderUrl(file, curBakFolderName, this.postProcess);
                     var newPath = Path.Combine(CommonUnitity.SystemBinUrl + "\\" + curBakFolderName + tempUrlPath, file.FileName);
                     System.IO.FileInfo f = new FileInfo(newPath);
@@ -202,12 +219,12 @@ namespace Inventec.Aup.Client.AutoUpdater
                         //&& !file.FileName.ToString().EndsWith(".xml")
                         )
                     {
-                        //ÏÂÔØ³ö´í£¬½øÐÐÖØÊÔ
-                        file.TryTimes += 1;//³¢ÊÔ´ÎÊýµÝÔö
+                        //ï¿½ï¿½ï¿½Ø³ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+                        file.TryTimes += 1;//ï¿½ï¿½ï¿½Ô´ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
                         var curItem = config.UpdateFileList.Where(c => c.Version == file.Version).FirstOrDefault();
                         if (curItem != null)
                         {
-                            curItem.TryTimes += 1;//Ê§°ÜµÄÎÄ¼þ²»±£´æ,ÓÃÓÚÏÂ´ÎÖØÆô
+                            curItem.TryTimes += 1;//Ê§ï¿½Üµï¿½ï¿½Ä¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½,ï¿½ï¿½ï¿½ï¿½ï¿½Â´ï¿½ï¿½ï¿½ï¿½ï¿½
                         }
                         Inventec.Common.Logging.LogSystem.Info(string.Format("Download url file {0}:{1} se thuc hien tai them lan thu {2} do lan tai truoc that bai\n\r", file.DownloadUrl, file.Version, file.TryTimes));
                     }
@@ -257,7 +274,7 @@ namespace Inventec.Aup.Client.AutoUpdater
                     //just deal with the problem which the files EndsWith xml can not download
                     System.IO.FileInfo f = new FileInfo(newPath);
                     //errorMessageStr.AppendFormat("{0},", file.FileFullName);
-                    //2015.5.11ÎÄ¼þ²»´æÔÚ¿ÉÒÔ½øÐÐ¿½±´xml
+                    //2015.5.11ï¿½Ä¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ú¿ï¿½ï¿½Ô½ï¿½ï¿½Ð¿ï¿½ï¿½ï¿½xml
                     if (!file.Size.ToString().Equals(f.Length.ToString())
                         //&& !file.FileName.ToString().EndsWith(".xml")//TODO
                         )
@@ -268,7 +285,7 @@ namespace Inventec.Aup.Client.AutoUpdater
                         var curItem = config.UpdateFileList.Where(c => c.Version == file.Version).FirstOrDefault();
                         if (curItem != null)
                         {
-                            config.UpdateFileList.Remove(curItem);//Ê§°ÜµÄÎÄ¼þ²»±£´æ,ÓÃÓÚÏÂ´ÎÖØÆô
+                            config.UpdateFileList.Remove(curItem);//Ê§ï¿½Üµï¿½ï¿½Ä¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½,ï¿½ï¿½ï¿½ï¿½ï¿½Â´ï¿½ï¿½ï¿½ï¿½ï¿½
                             //TODO
                         }
                         Inventec.Common.Logging.LogSystem.Debug("File not change after download: " + errorMsg + "____f.Length.ToString()=" + f.Length.ToString());
@@ -293,7 +310,7 @@ namespace Inventec.Aup.Client.AutoUpdater
                     }
                     //End added
 
-                    if (File.Exists(oldPath))//ÎÄ¼þ´æÔÚ
+                    if (File.Exists(oldPath))//ï¿½Ä¼ï¿½ï¿½ï¿½ï¿½ï¿½
                     {
                         MoveFolderToOld(oldPath, newPath);
                     }
@@ -356,17 +373,17 @@ namespace Inventec.Aup.Client.AutoUpdater
         //To delete or move to old files
         void MoveFolderToOld(string oldPath, string newPath)
         {
-            //2015.5.12ÐÞ¸Ä²»Ìí¼ÓOld×Ö¶Î
+            //2015.5.12ï¿½Þ¸Ä²ï¿½ï¿½ï¿½ï¿½Oldï¿½Ö¶ï¿½
             if (File.Exists(oldPath + ".old"))
                 File.Delete(oldPath + ".old");
 
             //if (File.Exists(oldPath))
             //    File.Move(oldPath, oldPath + ".old");
             //
-            //Èç¹û.configÎÄ¼þ´æÔÚÔò²»½øÐÐ¸´ÖÆ
+            //ï¿½ï¿½ï¿½.configï¿½Ä¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ò²»½ï¿½ï¿½Ð¸ï¿½ï¿½ï¿½
             if (File.Exists(oldPath) && oldPath.Substring(oldPath.LastIndexOf(".") + 1).Equals(ConstFile.CONFIGFILE))
             {
-                File.Copy(newPath, oldPath, true);//phuongdt thêm
+                File.Copy(newPath, oldPath, true);//phuongdt thï¿½m
             }
             else
             {

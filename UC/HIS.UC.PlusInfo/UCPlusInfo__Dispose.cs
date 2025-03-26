@@ -42,95 +42,95 @@ namespace HIS.UC.PlusInfo
         {
             try
             {
-                if (ucExamHistory != null)
-                    ucExamHistory.DisposeControl();
+                //if (ucExamHistory != null)
+                //    ucExamHistory.DisposeControl();
                 ucExamHistory = null;
-                if (ucTaxCode != null)
-                    ucTaxCode.DisposeControl();
+                //if (ucTaxCode != null)
+                //    ucTaxCode.DisposeControl();
                 ucTaxCode = null;
-                if (ucHrmKskCode != null)
-                    ucHrmKskCode.DisposeControl();
+                //if (ucHrmKskCode != null)
+                //    ucHrmKskCode.DisposeControl();
                 ucHrmKskCode = null;
-                if (ucAddressOfBirth1 != null)
-                    ucAddressOfBirth1.DisposeControl();
+                //if (ucAddressOfBirth1 != null)
+                //    ucAddressOfBirth1.DisposeControl();
                 ucAddressOfBirth1 = null;
-                if (ucDistrictOfBirth1 != null)
-                    ucDistrictOfBirth1.DisposeControl();
+                //if (ucDistrictOfBirth1 != null)
+                //    ucDistrictOfBirth1.DisposeControl();
                 ucDistrictOfBirth1 = null;
-                if (ucCommuneOfBirth1 != null)
-                    ucCommuneOfBirth1.DisposeControl();
+                //if (ucCommuneOfBirth1 != null)
+                //    ucCommuneOfBirth1.DisposeControl();
                 ucCommuneOfBirth1 = null;
-                if (ucPatientStoreCode != null)
-                    ucPatientStoreCode.DisposeControl();
+                //if (ucPatientStoreCode != null)
+                //    ucPatientStoreCode.DisposeControl();
                 ucPatientStoreCode = null;
-                if (ucMaHoNgheo1 != null)
-                    ucMaHoNgheo1.DisposeControl();
+                //if (ucMaHoNgheo1 != null)
+                //    ucMaHoNgheo1.DisposeControl();
                 ucMaHoNgheo1 = null;
-                if (ucProvinceOfBirth1 != null)
-                    ucProvinceOfBirth1.DisposeControl();
+                //if (ucProvinceOfBirth1 != null)
+                //    ucProvinceOfBirth1.DisposeControl();
                 ucProvinceOfBirth1 = null;
-                if (ucProvinceNow1 != null)
-                    ucProvinceNow1.DisposeControl();
+                //if (ucProvinceNow1 != null)
+                //    ucProvinceNow1.DisposeControl();
                 ucProvinceNow1 = null;
-                if (ucProgram1 != null)
-                    ucProgram1.DisposeControl();
+                //if (ucProgram1 != null)
+                //    ucProgram1.DisposeControl();
                 ucProgram1 = null;
-                if (ucPhone1 != null)
-                    ucPhone1.DisposeControl();
+                //if (ucPhone1 != null)
+                //    ucPhone1.DisposeControl();
                 ucPhone1 = null;
-                if (ucNational1 != null)
-                    ucNational1.DisposeControl();
+                //if (ucNational1 != null)
+                //    ucNational1.DisposeControl();
                 ucNational1 = null;
-                if (ucMother1 != null)
-                    ucMother1.DisposeControl();
+                //if (ucMother1 != null)
+                //    ucMother1.DisposeControl();
                 ucMother1 = null;
-                if (ucMilitaryRank1 != null)
-                    ucMilitaryRank1.DisposeControl();
+                //if (ucMilitaryRank1 != null)
+                //    ucMilitaryRank1.DisposeControl();
                 ucMilitaryRank1 = null;
-                if (ucHouseHoldRelative1 != null)
-                    ucHouseHoldRelative1.DisposeControl();
+                //if (ucHouseHoldRelative1 != null)
+                //    ucHouseHoldRelative1.DisposeControl();
                 ucHouseHoldRelative1 = null;
-                if (ucHohName1 != null)
-                    ucHohName1.DisposeControl();
+                //if (ucHohName1 != null)
+                //    ucHohName1.DisposeControl();
                 ucHohName1 = null;
-                if (ucHouseHoldNumber1 != null)
-                    ucHouseHoldNumber1.DisposeControl();
+                //if (ucHouseHoldNumber1 != null)
+                //    ucHouseHoldNumber1.DisposeControl();
                 ucHouseHoldNumber1 = null;
-                if (ucFather1 != null)
-                    ucFather1.DisposeControl();
+                //if (ucFather1 != null)
+                //    ucFather1.DisposeControl();
                 ucFather1 = null;
-                if (ucEthnic1 != null)
-                    ucEthnic1.DisposeControl();
+                //if (ucEthnic1 != null)
+                //    ucEthnic1.DisposeControl();
                 ucEthnic1 = null;
-                if (ucEmail1 != null)
-                    ucEmail1.DisposeControl();
+                //if (ucEmail1 != null)
+                //    ucEmail1.DisposeControl();
                 ucEmail1 = null;
-                if (ucDistrictNow1 != null)
-                    ucDistrictNow1.DisposeControl();
+                //if (ucDistrictNow1 != null)
+                //    ucDistrictNow1.DisposeControl();
                 ucDistrictNow1 = null;
-                if (ucCommuneNow1 != null)
-                    ucCommuneNow1.DisposeControl();
+                //if (ucCommuneNow1 != null)
+                //    ucCommuneNow1.DisposeControl();
                 ucCommuneNow1 = null;
-                if (ucCMNDPlace1 != null)
-                    ucCMNDPlace1.DisposeControl();
+                //if (ucCMNDPlace1 != null)
+                //    ucCMNDPlace1.DisposeControl();
                 ucCMNDPlace1 = null;
-                if (ucCmndNumber1 != null)
-                    ucCmndNumber1.DisposeControl();
+                //if (ucCmndNumber1 != null)
+                //    ucCmndNumber1.DisposeControl();
                 ucCmndNumber1 = null;
-                if (ucCMNDDate1 != null)
-                    ucCMNDDate1.DisposeControl();
+                //if (ucCMNDDate1 != null)
+                //    ucCMNDDate1.DisposeControl();
                 ucCMNDDate1 = null;
-                if (ucBloodRh1 != null)
-                    ucBloodRh1.DisposeControl();
+                //if (ucBloodRh1 != null)
+                //    ucBloodRh1.DisposeControl();
                 ucBloodRh1 = null;
-                if (ucBlood1 != null)
-                    ucBlood1.DisposeControl();
+                //if (ucBlood1 != null)
+                //    ucBlood1.DisposeControl();
                 ucBlood1 = null;
-                if (ucWorkPlace1 != null)
-                    ucWorkPlace1.DisposeControl();
+                //if (ucWorkPlace1 != null)
+                //    ucWorkPlace1.DisposeControl();
                 ucWorkPlace1 = null;
-                if (ucAddress1 != null)
-                    ucAddress1.DisposeControl();
+                //if (ucAddress1 != null)
+                //    ucAddress1.DisposeControl();
                 ucAddress1 = null;
                 totalRowLimit = 0;
                 totalModule = 0;

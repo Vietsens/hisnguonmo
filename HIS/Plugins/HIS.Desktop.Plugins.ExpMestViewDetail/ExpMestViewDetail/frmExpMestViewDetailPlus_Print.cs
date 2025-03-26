@@ -5579,6 +5579,14 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
                     expMestBloods.Add(expMestBlood);
                 }
 
+                HisTransfusionSumViewFilter filter = new HisTransfusionSumViewFilter();
+                filter.EXP_MEST_BLOOD_IDs = expMestBloods.Select(o => o.ID).ToList();
+                List<V_HIS_TRANSFUSION_SUM> v_HIS_TRANSFUSION_SUMs = new BackendAdapter(new CommonParam()).Get<List<V_HIS_TRANSFUSION_SUM>>("/api/HisTransfusionSum/GetView", ApiConsumers.MosConsumer, filter, null);
+
+                HisTransfusionFilter filterTrans = new HisTransfusionFilter();
+                filterTrans.IDs = v_HIS_TRANSFUSION_SUMs.Select(o => o.ID).ToList();
+                List<HIS_TRANSFUSION> hIS_TRANSFUSION = new BackendAdapter(new CommonParam()).Get<List<HIS_TRANSFUSION>>("/api/HisTransfusion/GetView", ApiConsumers.MosConsumer, filterTrans, null);
+                
                 List<V_HIS_EXP_BLTY_SERVICE> ExpBltyService = new List<V_HIS_EXP_BLTY_SERVICE>();
 
                 HisExpBltyServiceViewFilter BltyServicefilter = new HisExpBltyServiceViewFilter();
@@ -5593,14 +5601,21 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
                 expFilter.TDL_TREATMENT_ID = this._CurrentExpMest.TDL_TREATMENT_ID;
                 var ExpMest = new BackendAdapter(new CommonParam()).Get<List<HIS_EXP_MEST>>("api/HisExpMest/Get", ApiConsumer.ApiConsumers.MosConsumer, expFilter, new CommonParam());
 
+                MOS.Filter.HisExpMestViewFilter expMestFilter = new HisExpMestViewFilter();
+                expMestFilter.ID = this._CurrentExpMest.ID;
+                var lstExpMest = new BackendAdapter(new CommonParam()).Get<List<V_HIS_EXP_MEST>>("api/HisExpMest/GetView", ApiConsumer.ApiConsumers.MosConsumer, expMestFilter, new CommonParam()).FirstOrDefault();
+
+
                 WaitingManager.Hide();
                 MPS.Processor.Mps000421.PDO.Mps000421PDO pdo = new MPS.Processor.Mps000421.PDO.Mps000421PDO(
                  treatment,
                  patients,
-                 _CurrentExpMest,
+                 lstExpMest,
                  expMestBloods,
                  ExpBltyService,
-                 ExpMest
+                 v_HIS_TRANSFUSION_SUMs,
+                 ExpMest,
+                 hIS_TRANSFUSION
                  );
                 MPS.ProcessorBase.Core.PrintData PrintData = null;
                 if (GlobalVariables.CheDoInChoCacChucNangTrongPhanMem == 2)
@@ -5632,7 +5647,7 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
                 WaitingManager.Show();
                 ProcessPrint(printTypeCode);
 
-                MOS.Filter.HisExpMestViewFilter expMestFilter = new HisExpMestViewFilter();
+                MOS.Filter.HisExpMestViewFilter expMestFilter = new HisExpMestViewFilter();   
                 expMestFilter.ID = this._CurrentExpMest.ID;
                 var lstExpMest = new BackendAdapter(new CommonParam()).Get<List<V_HIS_EXP_MEST>>("api/HisExpMest/GetView", ApiConsumer.ApiConsumers.MosConsumer, expMestFilter, new CommonParam()).FirstOrDefault();
 

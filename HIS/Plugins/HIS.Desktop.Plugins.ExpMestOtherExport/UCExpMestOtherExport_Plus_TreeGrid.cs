@@ -52,7 +52,7 @@ namespace HIS.Desktop.Plugins.ExpMestOtherExport
                 ado.IsShowSearchPanel = false;
                 ado.ListExpMestMedicineColumn = new List<ExpMestMedicineColumn>();
 
-                ExpMestMedicineColumn colMedicineTypeName = new ExpMestMedicineColumn(Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__UC_EXP_MEST_OTHER_EXPORT__GRID_EXP_MEST_MEDICINE__COLUMN_MEDICINE_TYPE_NAME", langManager, culture), "MEDICINE_TYPE_NAME", 170, false);
+                ExpMestMedicineColumn colMedicineTypeName = new ExpMestMedicineColumn(Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__UC_EXP_MEST_OTHER_EXPORT__GRID_EXP_MEST_MEDICINE__COLUMN_MEDICINE_TYPE_NAME", langManager, culture), "MEDI_MATE_TYPE_NAME_CONCENTRA", 170, false);
                 colMedicineTypeName.VisibleIndex = 0;
                 ado.ListExpMestMedicineColumn.Add(colMedicineTypeName);
 

@@ -751,12 +751,12 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                             //- Với kê tủ trực, kê thuốc điều trị:
                             //--nếu thuốc có hdsd => nhảy con trỏ vào ô số lượng sau khi chọn thuốc.
                             //--nếu không có hdsd => như kê đơn phòng khám
-                            if (GlobalStore.IsTreatmentIn || GlobalStore.IsCabinet || GlobalStore.IsExecutePTTT)
-                            {
-                                spinAmount.Focus();
-                                spinAmount.SelectAll();
-                            }
-                            else
+                            //if (GlobalStore.IsTreatmentIn || GlobalStore.IsCabinet || GlobalStore.IsExecutePTTT)
+                            //{
+                            //    spinAmount.Focus();
+                            //    spinAmount.SelectAll();
+                            //}
+                            //else
                             {
                                 //this.btnAdd.Focus();
                                 this.txtTutorial.Focus();
@@ -927,6 +927,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
 
                     this.btnAdd.Focus();
 
+                    Inventec.Common.Logging.LogSystem.Warn("MaterialTypeTSD_RowClick");
                     //this.currentMedicineTypeADOForEdit.IsAllowOdd = this.GetIsAllowOdd(this.currentMedicineTypeADOForEdit.ID, this.currentMedicineTypeADOForEdit.SERVICE_TYPE_ID);
 
                     ///Khoi tao cbo PatientType va set gia tri mac dinh theo service
@@ -1019,11 +1020,12 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                         this.spinSoLuongNgay.EditValue = this.medicineTypeTutSelected.DAY_COUNT;
 
                         Inventec.Common.Logging.LogSystem.Info("Truong hop co HDSD thuoc theo tai khoan cua loai thuoc (HIS_MEDICINE_TYPE_TUT)--> lay truong DAY_COUNT gan vao spinSoNgay" + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => medicineTypeTutSelected), medicineTypeTutSelected));
-
+                        IsSetByMedicineTut = true;
                         this.spinSang.EditValue = this.medicineTypeTutSelected.MORNING;
                         this.spinTrua.EditValue = this.medicineTypeTutSelected.NOON;
                         this.spinChieu.EditValue = this.medicineTypeTutSelected.AFTERNOON;
                         this.spinToi.EditValue = this.medicineTypeTutSelected.EVENING;
+                        IsSetByMedicineTut = false;
                         if (String.IsNullOrEmpty(this.txtTutorial.Text)
                             || (lciLadder.Visible && String.IsNullOrEmpty(txtLadder.Text)))
                         {
@@ -1172,6 +1174,9 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
         /// Trong đó, XXX là tên thuốc đã kê trong ngày.
         /// </summary>
         List<HIS_SERVICE_REQ> serviceReqAllInDays = null;
+
+        public bool IsSetByMedicineTut { get; private set; }
+
         private async Task InitDataServiceReqAllInDay()
         {
             try

@@ -24,7 +24,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using HIS.Desktop.Plugins.RegisterExamKiosk.Popup.RegisterExemKiosk;
+using HIS.Desktop.Plugins.RegisterExamKiosk.Popup.RegisterExamKiosk;
 using MOS.EFMODEL.DataModels;
 using MOS.Filter;
 using Inventec.Core;
@@ -58,6 +58,7 @@ using System.Net.Http.Headers;
 using System.Net;
 using System.Configuration;
 using HIS.Desktop.ApiConsumer;
+using SDA.EFMODEL.DataModels;
 
 namespace HIS.Desktop.Plugins.RegisterExamKiosk
 {
@@ -287,7 +288,7 @@ namespace HIS.Desktop.Plugins.RegisterExamKiosk
                 var employee = currentEmployee;
                 if (!string.IsNullOrEmpty(connect_infor))
                 {
-                    
+
                     connectInfors = connect_infor.Split('|').ToList();
                     api = connectInfors.Count > 0 ? connectInfors[0] : string.Empty;
 
@@ -481,7 +482,7 @@ namespace HIS.Desktop.Plugins.RegisterExamKiosk
                                 }
                                 else if (TopKMatching.Count > 1)
                                 {
-                                    SetDelegateServiceCccd (false);
+                                    SetDelegateServiceCccd(false);
                                     txtNumberInput.Visible = true;
                                     btnConfirm.Visible = true;
                                     btnCancel.Visible = true;
@@ -975,9 +976,9 @@ namespace HIS.Desktop.Plugins.RegisterExamKiosk
                     if (hisCardSdo != null)
                     {
                         this.PatientData.CardInfo = hisCardSdo;
-                        
+
                     }
-                    
+
                 }, serviceCode);
                 taskAll.Add(tsCard);
 
@@ -1073,7 +1074,7 @@ namespace HIS.Desktop.Plugins.RegisterExamKiosk
                 if (patienType != null && patienType.GetType() == typeof(long))
                 {
                     long patientTypeId = (long)patienType;
-                    
+
                     var frm = new frmRegisterExamKiosk(PatientData, (HIS.Desktop.Common.DelegateRefreshData)SetNull, this.currentModule, (HIS.Desktop.Common.DelegateCloseForm_Uc)closingForm, patientTypeId);
                     frm.ShowDialog();
                 }
@@ -1088,7 +1089,7 @@ namespace HIS.Desktop.Plugins.RegisterExamKiosk
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
-        
+
         private async Task CheckheinCardFromHeinInsuranceApi(HeinCardData dataHein)
         {
             try
@@ -1120,7 +1121,7 @@ namespace HIS.Desktop.Plugins.RegisterExamKiosk
                             }
                             this.PatientData.PatientForKiosk = GetPatientInfoByFilter(filter);
                         }
-                        
+
                         Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => PatientData), PatientData));
                         if (!string.IsNullOrEmpty(rsIns.gtTheTu))
                         {
@@ -1141,7 +1142,7 @@ namespace HIS.Desktop.Plugins.RegisterExamKiosk
                                 }
                             }
                         }
-                        
+
                         DateTime dTheDen = DateTime.MinValue;
                         if (!string.IsNullOrEmpty(rsIns.gtTheDen))
                         {
@@ -1167,7 +1168,7 @@ namespace HIS.Desktop.Plugins.RegisterExamKiosk
                             DateTime d;
                             if (DateTime.TryParseExact(rsIns.gtTheTuMoi, "dd/MM/yyyy", System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None, out dTheTuMoi))
                             {
-                               //Gắn giá trị thẻ mới
+                                //Gắn giá trị thẻ mới
                             }
                         }
                         string mathe = "";
@@ -1303,7 +1304,7 @@ namespace HIS.Desktop.Plugins.RegisterExamKiosk
             {
                 hein = new HeinCardData();
                 hein.Address = patient.HeinAddress;
-                
+
                 if (patient.IsHasNotDayDob == 1)
                 {
                     hein.Dob = patient.Dob.ToString().Substring(0, 4);
@@ -1404,11 +1405,11 @@ namespace HIS.Desktop.Plugins.RegisterExamKiosk
                     Inventec.Common.Logging.LogSystem.Info("Khong goi cong BHXH check thong tin the do du lieu truyen vao chua du du lieu bat buoc___" + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => dataHein), dataHein));
                     return reult;
                 }
-                Inventec.Common.Logging.LogSystem.Debug(String.Format("Tên cán bộ:{0}", nameCb));   
+                Inventec.Common.Logging.LogSystem.Debug(String.Format("Tên cán bộ:{0}", nameCb));
                 Inventec.Common.Logging.LogSystem.Debug(String.Format("CCCD cán bộ:{0}", cccdCb));
                 Inventec.Common.Logging.LogSystem.Debug(String.Format("Tên api:{0}", api));
 
-                
+
 
                 CommonParam param = new CommonParam();
                 ApiInsuranceExpertise apiInsuranceExpertise = new ApiInsuranceExpertise();
@@ -1854,7 +1855,6 @@ namespace HIS.Desktop.Plugins.RegisterExamKiosk
             HisPatientForKioskSDO result = new HisPatientForKioskSDO();
             try
             {
-
                 Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => card), card));
                 result.HeinAddress = card.Address;
                 if (!string.IsNullOrEmpty(card.PatientName))
@@ -1891,7 +1891,22 @@ namespace HIS.Desktop.Plugins.RegisterExamKiosk
                     string dtDate = card.Dob.Replace("/", "");
                     result.DOB = Int64.Parse(dtDate.Substring(4, 4) + dtDate.Substring(2, 2) + dtDate.Substring(0, 2) + "000000");
                 }
-                
+
+                if (!string.IsNullOrWhiteSpace(card.Address))
+                {
+                    Inventec.Common.Address.AddressProcessor adProc = new Inventec.Common.Address.AddressProcessor(BackendDataWorker.Get<V_SDA_PROVINCE>(), BackendDataWorker.Get<V_SDA_DISTRICT>(), BackendDataWorker.Get<V_SDA_COMMUNE>());
+                    Inventec.Common.Address.AddressADO splitAdress = adProc.SplitFromFullAddress(card.Address);
+                    if (splitAdress != null && !string.IsNullOrEmpty(splitAdress.ProvinceName) && !string.IsNullOrEmpty(splitAdress.DistrictName) && !string.IsNullOrEmpty(splitAdress.CommuneName))
+                    {
+                        result.DISTRICT_CODE = splitAdress.DistrictCode;
+                        result.DISTRICT_NAME = splitAdress.DistrictName;
+                        result.COMMUNE_CODE = splitAdress.CommuneName;
+                        result.COMMUNE_NAME = splitAdress.CommuneName;
+                        result.PROVINCE_CODE = splitAdress.ProvinceName;
+                        result.PROVINCE_NAME = splitAdress.ProvinceName;
+                        result.ADDRESS = splitAdress.Address;
+                    }
+                }
             }
             catch (Exception ex)
             {

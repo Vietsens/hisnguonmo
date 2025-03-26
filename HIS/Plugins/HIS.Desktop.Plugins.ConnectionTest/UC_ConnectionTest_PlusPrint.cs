@@ -1725,7 +1725,8 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                 }
 
                 PrintData.ShowPrintLog = (MPS.ProcessorBase.PrintConfig.DelegateShowPrintLog)CallModuleShowPrintLog;
-                PrintData.EmrInputADO = inputADO;
+                PrintData.EmrInputADO = inputADO; 
+                PrintData.eventPrint = CallApiCountPrint;
                 result = MPS.MpsPrinter.Run(PrintData);
                 if (result != null && (PrintData.previewType == MPS.ProcessorBase.PrintConfig.PreviewType.EmrSignNow || PrintData.previewType == MPS.ProcessorBase.PrintConfig.PreviewType.EmrSignAndPrintNow || isPrint > 0))
                 {
@@ -1838,11 +1839,35 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                         }
 
                         PrintData.ShowPrintLog = (MPS.ProcessorBase.PrintConfig.DelegateShowPrintLog)CallModuleShowPrintLog;
+                        PrintData.eventPrint = CallApiCountPrint;
                         result = MPS.MpsPrinter.Run(PrintData);
-                    }
+                    }RIG
                     #endregion
                 }
             }
+        }
+
+        private void CallApiCountPrint()
+        {
+            try
+            {
+                bool success = false;
+                WaitingManager.Show();
+                CommonParam param = new CommonParam();
+                var rs = new BackendAdapter(param).Post<LIS_SAMPLE>("api/LisSample/Print", ApiConsumers.LisConsumer, rowSample.ID, param);
+                if (rs != null)
+                {
+                    success = true;
+                    rowSample.PRINT_COUNT = rs.PRINT_COUNT;
+                    this.gridControlSample.RefreshDataSource();
+                }
+                WaitingManager.Hide();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+
         }
 
         private void InKetQuaXNKhongCoServiceReq(string printTypeCode, string fileName, ref bool result)
@@ -2695,6 +2720,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                         #endregion
                     }
                     PrintData.ShowPrintLog = (MPS.ProcessorBase.PrintConfig.DelegateShowPrintLog)CallModuleShowPrintLog;
+                    PrintData.eventPrint = CallApiCountPrint;
                     result = MPS.MpsPrinter.Run(PrintData);
                     if (result != null && (PrintData.previewType == MPS.ProcessorBase.PrintConfig.PreviewType.EmrSignNow || PrintData.previewType == MPS.ProcessorBase.PrintConfig.PreviewType.EmrSignAndPrintNow || isPrint > 0))
                     {
@@ -2806,6 +2832,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                         }
 
                         PrintData.ShowPrintLog = (MPS.ProcessorBase.PrintConfig.DelegateShowPrintLog)CallModuleShowPrintLog;
+                        PrintData.eventPrint = CallApiCountPrint;
                         result = MPS.MpsPrinter.Run(PrintData);
                     }
                 }

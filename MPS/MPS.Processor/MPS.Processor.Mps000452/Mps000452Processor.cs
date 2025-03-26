@@ -51,8 +51,9 @@ namespace MPS.Processor.Mps000452
                 SetSignatureKeyImageByCFG();
                 store.ReadTemplate(System.IO.Path.GetFullPath(fileName)); 
                 //objectTag.AddObjectData(store, "ServiceReq", new List<V_HIS_SERVICE_REQ>() { rdo.HisServiceReq });
-                //objectTag.AddObjectData(store, "KskOverEighteen", new List<HIS_KSK_OVER_EIGHTEEN>() { rdo.HisKskOverEighteen });
-                //objectTag.AddObjectData(store, "Dhst", new List<HIS_DHST>() { rdo.HisDhst });
+                objectTag.AddObjectData(store, "KskOverEighteen", new List<HIS_KSK_OVER_EIGHTEEN>() { rdo.HisKskOverEighteen });
+                objectTag.AddObjectData(store, "Dhst", new List<HIS_DHST>() { rdo.HisDhst });
+                objectTag.AddRelationship(store, "KskOverEighteen", "Dhst", "DHST_ID", "ID");
 
                 SetData();
                 objectTag.AddObjectData(store, "KskDriverDity", lstADO);
@@ -146,7 +147,11 @@ namespace MPS.Processor.Mps000452
                 } if (rdo.HisDhst != null)
                 {
                     AddObjectKeyIntoListkey<HIS_DHST>(rdo.HisDhst, false);
-                }                
+                }
+                if (rdo.HisDhst != null)
+                {
+                    SetSingleKey((new KeyValue(Mps000452ExtendSingleKey.DHST_LOGINNAME, rdo.HisDhst.EXECUTE_LOGINNAME)));
+                }
             }
             catch (Exception ex)
             {

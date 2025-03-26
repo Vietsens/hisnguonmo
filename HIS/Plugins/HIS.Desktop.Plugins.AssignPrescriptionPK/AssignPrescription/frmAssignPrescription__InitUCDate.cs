@@ -563,6 +563,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
         {
             try
             {
+                Inventec.Common.Logging.LogSystem.Warn("NextForcusUCDateForMedi");
                 btnAdd.Focus();
             }
             catch (Exception ex)

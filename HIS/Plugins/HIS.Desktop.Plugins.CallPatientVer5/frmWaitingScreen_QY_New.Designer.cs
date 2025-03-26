@@ -157,9 +157,9 @@ namespace HIS.Desktop.Plugins.CallPatientVer5
             this.lblPlease.Appearance.Font = new System.Drawing.Font("Tahoma", 20F, System.Drawing.FontStyle.Bold);
             this.lblPlease.Appearance.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
             this.lblPlease.AutoSizeMode = DevExpress.XtraEditors.LabelAutoSizeMode.None;
-            this.lblPlease.Location = new System.Drawing.Point(10, 348);
+            this.lblPlease.Location = new System.Drawing.Point(0, 338);
             this.lblPlease.Name = "lblPlease";
-            this.lblPlease.Size = new System.Drawing.Size(1330, 33);
+            this.lblPlease.Size = new System.Drawing.Size(1350, 53);
             this.lblPlease.StyleController = this.layoutControl1;
             this.lblPlease.TabIndex = 11;
             this.lblPlease.Text = "NỘI DUNG";
@@ -798,9 +798,7 @@ namespace HIS.Desktop.Plugins.CallPatientVer5
             // 
             // panelControl2
             // 
-            this.panelControl2.Appearance.BackColor = System.Drawing.Color.White;
             this.panelControl2.Appearance.BorderColor = System.Drawing.Color.Black;
-            this.panelControl2.Appearance.Options.UseBackColor = true;
             this.panelControl2.Appearance.Options.UseBorderColor = true;
             this.panelControl2.Appearance.Options.UseTextOptions = true;
             this.panelControl2.Appearance.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
@@ -813,9 +811,7 @@ namespace HIS.Desktop.Plugins.CallPatientVer5
             // 
             // panelControl1
             // 
-            this.panelControl1.Appearance.BackColor = System.Drawing.Color.White;
             this.panelControl1.Appearance.BorderColor = System.Drawing.Color.Black;
-            this.panelControl1.Appearance.Options.UseBackColor = true;
             this.panelControl1.Appearance.Options.UseBorderColor = true;
             this.panelControl1.Location = new System.Drawing.Point(677, 43);
             this.panelControl1.LookAndFeel.Style = DevExpress.LookAndFeel.LookAndFeelStyle.UltraFlat;
@@ -907,9 +903,11 @@ namespace HIS.Desktop.Plugins.CallPatientVer5
             // 
             this.layoutControlItem11.Control = this.lblPlease;
             this.layoutControlItem11.Location = new System.Drawing.Point(0, 338);
+            this.layoutControlItem11.MinSize = new System.Drawing.Size(28, 33);
             this.layoutControlItem11.Name = "layoutControlItem11";
-            this.layoutControlItem11.Padding = new DevExpress.XtraLayout.Utils.Padding(10, 10, 10, 10);
+            this.layoutControlItem11.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
             this.layoutControlItem11.Size = new System.Drawing.Size(1350, 53);
+            this.layoutControlItem11.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
             this.layoutControlItem11.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem11.TextVisible = false;
             // 

@@ -44,15 +44,16 @@ using System.Windows.Forms;
 
 namespace HIS.UC.UCPatientRaw
 {
-	public partial class UCPatientRaw : UserControl
-	{
+	public partial class UCPatientRaw : HIS.Desktop.Utility.UserControlBase
+    {
 		public HisPatientSDO patientTD3;
 		DataResultADO dataResult = new DataResultADO();
 		string hrmEmployeeCode = "";
 		string oldValue = "";
-		async void SearchPatientByCodeOrQrCode(string strValue)
-		{
-			try
+		public async void SearchPatientByCodeOrQrCode(string strValue)
+        {
+            string OldTypeFind = this.typeCodeFind;
+            try
 			{
 				this.isAlertTreatmentEndInDay = false;
 				this.ResultDataADO = null;
@@ -65,7 +66,17 @@ namespace HIS.UC.UCPatientRaw
 					LogSystem.Debug("txtPatientCode_KeyDown");
 					CommonParam param = new CommonParam();
 					WaitingManager.Show();
+                    if (strValue.Contains("|")) {
+						var dataFirst = strValue.Split('|')[0];
+						if (dataFirst.Length == 10 || dataFirst.Length == 15)
+                        {
+                            this.typeCodeFind = ResourceMessage.typeCodeFind__MaBN;
 
+                        }else if(dataFirst.Length == 12)
+                        {
+                            this.typeCodeFind = ResourceMessage.typeCodeFind__MaCMCC;
+                        }	
+					}
 					#region --- Trường hợp tìm kiếm BN theo mã BN hoặc QRCode
 					if (this.typeCodeFind == ResourceMessage.typeCodeFind__MaBN)
 					{
@@ -354,7 +365,7 @@ namespace HIS.UC.UCPatientRaw
 					#region ---- CMND/CCCD
 					else if (this.typeCodeFind == ResourceMessage.typeCodeFind__MaCMCC)
 					{
-						if (!((strValue.Trim().Length > 12 && strValue.Trim().Contains("|")) || (strValue.Trim().Length == 12 && !string.IsNullOrEmpty(txtPatientName.Text) && (!string.IsNullOrEmpty(txtPatientDob.Text) || dtPatientDob.EditValue != null))))
+						if (!((strValue.Trim().Length > 12 && strValue.Trim().Contains("|")) || (strValue.Trim().Length == 12 && !string.IsNullOrEmpty(txtPatientName.Text) && (!string.IsNullOrEmpty(txtPatientDob.Text) || dtPatientDob.EditValue != null))) || ((strValue.Trim().Length == 12 || strValue.Trim().Length == 9) && !strValue.Trim().Contains("|")))
 						{
 								param = new CommonParam();
 								HisPatientAdvanceFilter filter = new HisPatientAdvanceFilter();
@@ -720,6 +731,10 @@ namespace HIS.UC.UCPatientRaw
 			{
 				Inventec.Common.Logging.LogSystem.Warn(ex);
 			}
+			finally
+			{
+				typeCodeFind = OldTypeFind;
+			}
 		}
         private void MapHeinCardToPatientSDO()
         {
@@ -787,7 +802,7 @@ namespace HIS.UC.UCPatientRaw
 						this.FillDataPatientToControl(patientByCard, true);
 					}));
 				}
-				dataResult.SearchTypePatient = 4;
+				dataResult.SearchTypePatient = 5;
 				HeinCardData heinCardDataForCheckGOV = new HeinCardData();
 				heinCardDataForCheckGOV = ConvertFromPatientData(dataResult.HisPatientSDO);
 

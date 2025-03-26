@@ -390,11 +390,11 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             try
             {
                 CommonParam param = new CommonParam();
-                HisTreatmentLView2Filter treatmentFilter = new HisTreatmentLView2Filter();
-                treatmentFilter.PATIENT_ID = this.HisServiceReqView.TDL_PATIENT_ID;
-                this.treatmentByPatients = new BackendAdapter(param)
-                    .Get<List<MOS.EFMODEL.DataModels.L_HIS_TREATMENT_2>>("api/HisTreatment/GetLView2", ApiConsumers.MosConsumer, treatmentFilter, param);
-                this.ltreatment2 = this.treatmentByPatients.FirstOrDefault(o => o.ID == this.HisServiceReqView.TREATMENT_ID);
+                //HisTreatmentLView2Filter treatmentFilter = new HisTreatmentLView2Filter();
+                //treatmentFilter.PATIENT_ID = this.HisServiceReqView.TDL_PATIENT_ID;
+                //this.treatmentByPatients = new BackendAdapter(param)
+                //    .Get<List<MOS.EFMODEL.DataModels.L_HIS_TREATMENT_2>>("api/HisTreatment/GetLView2", ApiConsumers.MosConsumer, treatmentFilter, param);
+                //this.ltreatment2 = this.treatmentByPatients.FirstOrDefault(o => o.ID == this.HisServiceReqView.TREATMENT_ID);
 
                 HisTreatmentFilter treatment = new HisTreatmentFilter();
                 treatment.ID = this.HisServiceReqView.TREATMENT_ID;
@@ -402,7 +402,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                     .Get<List<MOS.EFMODEL.DataModels.HIS_TREATMENT>>("api/HisTreatment/Get", ApiConsumers.MosConsumer, treatment, param).FirstOrDefault();
                 if (this.treatment != null)
                 {
-                    
+
                     UpdateNeedSickLeaveCertControl(this.treatment.NEED_SICK_LEAVE_CERT);
                     this.icdDefaultFinish.ICD_CODE = this.treatment.ICD_CODE;
                     this.icdDefaultFinish.ICD_NAME = this.treatment.ICD_NAME;
@@ -413,13 +413,6 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                 }
 
                 EnableControlFastCreateTracking();
-                //CommonParam param = new CommonParam();
-                //HisTreatmentFilter treatmentFilter = new HisTreatmentFilter();
-                //treatmentFilter.PATIENT_ID = this.HisServiceReqView.TDL_PATIENT_ID;
-                //this.treatmentByPatients = new BackendAdapter(param)
-                //    .Get<List<MOS.EFMODEL.DataModels.HIS_TREATMENT>>("api/HisTreatment/Get", ApiConsumers.MosConsumer, treatmentFilter, param);
-
-                //this.treatment = this.treatmentByPatients.FirstOrDefault(o => o.ID == this.HisServiceReqView.TREATMENT_ID);
             }
             catch (Exception ex)
             {
@@ -427,15 +420,38 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             }
         }
 
-        private void LoadTreatmentHistoryTogrid()
+
+
+        private async Task LoadTreatmentHistoryTogrid()
         {
             try
             {
-                LoadTreatmentHistory();
+                await LoadTreatmentHistory();
                 if (this.TreatmentHistorys != null && this.TreatmentHistorys.Count > 0)
                 {
                     gridControlTreatmentHistory.DataSource = this.TreatmentHistorys;
                 }
+
+                if (this.TreatmentHistorys != null && this.TreatmentHistorys.Count > 0)
+                {
+                    this.xtraTabControlInfo.SelectedTabPage = this.xtraTabPageExamHistory;
+                }
+                else
+                {
+                    this.xtraTabControlInfo.SelectedTabPage = this.xtraTabPageExamExecute;
+                }
+                this.SetTabPageVisible(tabControlDetailData);
+
+
+                if (!string.IsNullOrEmpty(this.HisServiceReqView.PATHOLOGICAL_HISTORY_FAMILY))
+                    txtPathologicalHistoryFamily.Text = this.HisServiceReqView.PATHOLOGICAL_HISTORY_FAMILY;
+                else if (ltreatment2 != null && !string.IsNullOrEmpty(ltreatment2.PT_PATHOLOGICAL_HISTORY_FAMILY))
+                    txtPathologicalHistoryFamily.Text = ltreatment2.PT_PATHOLOGICAL_HISTORY_FAMILY;
+
+                if (!string.IsNullOrEmpty(this.HisServiceReqView.PATHOLOGICAL_HISTORY))
+                    txtPathologicalHistory.Text = this.HisServiceReqView.PATHOLOGICAL_HISTORY;
+                else if (ltreatment2 != null && !string.IsNullOrEmpty(ltreatment2.PT_PATHOLOGICAL_HISTORY))
+                    txtPathologicalHistory.Text = ltreatment2.PT_PATHOLOGICAL_HISTORY;
             }
             catch (Exception ex)
             {
@@ -443,10 +459,17 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             }
         }
 
-        private void LoadTreatmentHistory()
+        private async Task LoadTreatmentHistory()
         {
             try
             {
+                CommonParam param = new CommonParam();
+                HisTreatmentLView2Filter treatmentFilter = new HisTreatmentLView2Filter();
+                treatmentFilter.PATIENT_ID = this.HisServiceReqView.TDL_PATIENT_ID;
+                this.treatmentByPatients = await new BackendAdapter(param)
+                    .GetAsync<List<MOS.EFMODEL.DataModels.L_HIS_TREATMENT_2>>("api/HisTreatment/GetLView2", ApiConsumers.MosConsumer, treatmentFilter, param);
+                this.ltreatment2 = this.treatmentByPatients.FirstOrDefault(o => o.ID == this.HisServiceReqView.TREATMENT_ID);
+
                 this.TreatmentHistorys = new List<TreatmentExamADO>();
                 if (this.treatmentByPatients != null && this.treatmentByPatients.Count > 0)
                 {
@@ -1054,7 +1077,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                                 currentDhst.WEIGHT = item.WEIGHT;
                                 currentDhst.HEIGHT = item.HEIGHT;
                             }
-                            MapInformationDhstEmpty(ref currentDhst, item);                         
+                            MapInformationDhstEmpty(ref currentDhst, item);
                         }
                     }
                 }
@@ -1064,8 +1087,9 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                 this.DHSTSetValue(currentDhst);
                 if (IsCheckedGetLastDHSTByPatient)
                 {
-                    LoadDHSTByPatient();
+                    await LoadDHSTByPatient();
                 }
+                await LoadMLCT();
             }
             catch (Exception ex)
             {

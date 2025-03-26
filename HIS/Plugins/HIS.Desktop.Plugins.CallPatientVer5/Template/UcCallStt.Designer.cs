@@ -58,7 +58,7 @@
             this.layoutControl1.Location = new System.Drawing.Point(0, 0);
             this.layoutControl1.Name = "layoutControl1";
             this.layoutControl1.Root = this.layoutControlGroup1;
-            this.layoutControl1.Size = new System.Drawing.Size(404, 186);
+            this.layoutControl1.Size = new System.Drawing.Size(404, 234);
             this.layoutControl1.TabIndex = 0;
             this.layoutControl1.Text = "layoutControl1";
             // 
@@ -67,9 +67,10 @@
             this.lblCaption.Appearance.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Bold);
             this.lblCaption.Appearance.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
             this.lblCaption.AutoSizeMode = DevExpress.XtraEditors.LabelAutoSizeMode.None;
-            this.lblCaption.Location = new System.Drawing.Point(2, 2);
+            this.lblCaption.Location = new System.Drawing.Point(0, 0);
+            this.lblCaption.Margin = new System.Windows.Forms.Padding(5);
             this.lblCaption.Name = "lblCaption";
-            this.lblCaption.Size = new System.Drawing.Size(400, 19);
+            this.lblCaption.Size = new System.Drawing.Size(404, 28);
             this.lblCaption.StyleController = this.layoutControl1;
             this.lblCaption.TabIndex = 7;
             this.lblCaption.Text = "STT TIẾP THEO";
@@ -79,9 +80,10 @@
             this.lblPriority.Appearance.Font = new System.Drawing.Font("Tahoma", 12F);
             this.lblPriority.Appearance.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
             this.lblPriority.AutoSizeMode = DevExpress.XtraEditors.LabelAutoSizeMode.None;
-            this.lblPriority.Location = new System.Drawing.Point(2, 160);
+            this.lblPriority.Location = new System.Drawing.Point(0, 187);
+            this.lblPriority.Margin = new System.Windows.Forms.Padding(5);
             this.lblPriority.Name = "lblPriority";
-            this.lblPriority.Size = new System.Drawing.Size(400, 19);
+            this.lblPriority.Size = new System.Drawing.Size(404, 47);
             this.lblPriority.StyleController = this.layoutControl1;
             this.lblPriority.TabIndex = 6;
             this.lblPriority.Text = "(ƯT)";
@@ -91,9 +93,10 @@
             this.lblPatient.Appearance.Font = new System.Drawing.Font("Tahoma", 13F);
             this.lblPatient.Appearance.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
             this.lblPatient.AutoSizeMode = DevExpress.XtraEditors.LabelAutoSizeMode.None;
-            this.lblPatient.Location = new System.Drawing.Point(2, 134);
+            this.lblPatient.Location = new System.Drawing.Point(0, 155);
+            this.lblPatient.Margin = new System.Windows.Forms.Padding(5);
             this.lblPatient.Name = "lblPatient";
-            this.lblPatient.Size = new System.Drawing.Size(400, 22);
+            this.lblPatient.Size = new System.Drawing.Size(404, 32);
             this.lblPatient.StyleController = this.layoutControl1;
             this.lblPatient.TabIndex = 5;
             this.lblPatient.Text = "NGUYỄN ĐỨC VƯỢNG (2000)";
@@ -103,9 +106,10 @@
             this.lblStt.Appearance.Font = new System.Drawing.Font("Tahoma", 65F, System.Drawing.FontStyle.Bold);
             this.lblStt.Appearance.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
             this.lblStt.AutoSizeMode = DevExpress.XtraEditors.LabelAutoSizeMode.None;
-            this.lblStt.Location = new System.Drawing.Point(2, 25);
+            this.lblStt.Location = new System.Drawing.Point(0, 28);
+            this.lblStt.Margin = new System.Windows.Forms.Padding(5);
             this.lblStt.Name = "lblStt";
-            this.lblStt.Size = new System.Drawing.Size(400, 105);
+            this.lblStt.Size = new System.Drawing.Size(404, 127);
             this.lblStt.StyleController = this.layoutControl1;
             this.lblStt.TabIndex = 4;
             this.lblStt.Text = "11";
@@ -121,15 +125,18 @@
             this.layoutControlItem4});
             this.layoutControlGroup1.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup1.Name = "layoutControlGroup1";
-            this.layoutControlGroup1.Size = new System.Drawing.Size(404, 186);
+            this.layoutControlGroup1.Size = new System.Drawing.Size(404, 234);
             this.layoutControlGroup1.TextVisible = false;
             // 
             // layoutControlItem1
             // 
             this.layoutControlItem1.Control = this.lblStt;
-            this.layoutControlItem1.Location = new System.Drawing.Point(0, 23);
+            this.layoutControlItem1.Location = new System.Drawing.Point(0, 28);
+            this.layoutControlItem1.MinSize = new System.Drawing.Size(89, 110);
             this.layoutControlItem1.Name = "layoutControlItem1";
-            this.layoutControlItem1.Size = new System.Drawing.Size(404, 109);
+            this.layoutControlItem1.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
+            this.layoutControlItem1.Size = new System.Drawing.Size(404, 127);
+            this.layoutControlItem1.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
             this.layoutControlItem1.Text = "11";
             this.layoutControlItem1.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem1.TextVisible = false;
@@ -137,18 +144,24 @@
             // layoutControlItem2
             // 
             this.layoutControlItem2.Control = this.lblPatient;
-            this.layoutControlItem2.Location = new System.Drawing.Point(0, 132);
+            this.layoutControlItem2.Location = new System.Drawing.Point(0, 155);
+            this.layoutControlItem2.MinSize = new System.Drawing.Size(15, 25);
             this.layoutControlItem2.Name = "layoutControlItem2";
-            this.layoutControlItem2.Size = new System.Drawing.Size(404, 26);
+            this.layoutControlItem2.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
+            this.layoutControlItem2.Size = new System.Drawing.Size(404, 32);
+            this.layoutControlItem2.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
             this.layoutControlItem2.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem2.TextVisible = false;
             // 
             // layoutControlItem3
             // 
             this.layoutControlItem3.Control = this.lblPriority;
-            this.layoutControlItem3.Location = new System.Drawing.Point(0, 158);
+            this.layoutControlItem3.Location = new System.Drawing.Point(0, 187);
+            this.layoutControlItem3.MinSize = new System.Drawing.Size(14, 25);
             this.layoutControlItem3.Name = "layoutControlItem3";
-            this.layoutControlItem3.Size = new System.Drawing.Size(404, 28);
+            this.layoutControlItem3.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
+            this.layoutControlItem3.Size = new System.Drawing.Size(404, 47);
+            this.layoutControlItem3.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
             this.layoutControlItem3.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem3.TextVisible = false;
             // 
@@ -156,8 +169,11 @@
             // 
             this.layoutControlItem4.Control = this.lblCaption;
             this.layoutControlItem4.Location = new System.Drawing.Point(0, 0);
+            this.layoutControlItem4.MinSize = new System.Drawing.Size(16, 25);
             this.layoutControlItem4.Name = "layoutControlItem4";
-            this.layoutControlItem4.Size = new System.Drawing.Size(404, 23);
+            this.layoutControlItem4.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
+            this.layoutControlItem4.Size = new System.Drawing.Size(404, 28);
+            this.layoutControlItem4.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
             this.layoutControlItem4.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem4.TextVisible = false;
             // 
@@ -168,7 +184,7 @@
             this.BackColor = System.Drawing.Color.White;
             this.Controls.Add(this.layoutControl1);
             this.Name = "UcCallStt";
-            this.Size = new System.Drawing.Size(404, 186);
+            this.Size = new System.Drawing.Size(404, 234);
             this.Load += new System.EventHandler(this.UcCallStt_Load);
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).EndInit();
             this.layoutControl1.ResumeLayout(false);

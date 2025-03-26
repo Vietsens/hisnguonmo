@@ -1,3 +1,38 @@
+### Release 2.353.0
+* Cho phép cấu hình thiết lập ký tự động theo từng biểu in
+* Cho phép nhập phần thập phân đến 6 chữ số của số lượng trong định mức bào chế thuốc
+* Công khai dịch vụ theo thời gian dự trù
+* Điều chỉnh cồn khám cấp cứu theo thông tư
+
+### Release 2.352.0
+* Cho phép ký số tự động mẫu tạm ứng dịch vụ
+* Bổ sung cấu hình thiết lập dữ liệu hiển thị Thông tin GIAY_CHUYEN_TUYEN đáp ứng quy định 130, 4750/QĐ-BYT và QĐ 3176/QĐ-BYT
+* Cho phép ngày chỉ định bằng ngày dự trù khi chỉ định dịch vụ
+* Sửa chức năng buồng bệnh điều kiện lọc bệnh nhân chưa được kê đơn trong khoảng ngày
+
+### Release 2.351.0
+* Sửa lại cơ chế hiển thị "Điều kiện" khi chỉ định dịch vụ
+* Bổ sung trạng thái in kết quả xét nghiệm
+* Bổ sung chỉ định đơn YHCT tại chức năng xử lý CLS, PTTT
+* Sửa chức năng tạo yêu cầu khách hàng tích hợp hệ thống mới
+* Mặc định dân tộc Kinh khi tiếp đón ở chức năng kios
+* Chỉnh sửa chức năng Xem mượn bệnh án cho phép hiển thị dữ liệu của nhiều kho cùng lúc
+
+### Release 2.350.0
+* Bổ sung thông tin nhập khẩu thầu
+* Tiếp đón sử dụng QR CCCD và QR BHYT trên cùng 1 điều kiện lọc
+* Bổ sung thông tin thuốc tại màn hình xuất khác
+* Tích hợp hệ thống vcong.vn
+* Tự động tách địa chỉ 3 cấp khi tiếp đón bệnh nhân mới trên kios sử dụng QR CCCD hoặc QR thẻ BHYT
+* Sửa danh sách hình thức thanh toán tại màn hình tạm ứng dịch vụ
+
+### Release 2.349.0
+* Bổ sung option theo đối tượng bệnh nhân tính tiền công khám theo công thức của BHYT
+* Bổ sung cấu hình cảnh báo bệnh nhân trái tuyến cần thu tiền khám
+* Bổ sung màn hình chờ khám
+* Sửa thông tin thời gian trong thông tin tử vong
+* Đồng bộ thông tin giữa tờ điều trị và y lệnh tương ứng.
+
 ### Release 2.348.0
 * Bổ sung chặn tiếp đón trên kios trong trường hợp bệnh nhân đã thực hiện kiểm tra thẻ BHYT tại viện khác
 * Sửa thông tin mặc định trong màn hình thông tin bổ sung xử lý PTTT

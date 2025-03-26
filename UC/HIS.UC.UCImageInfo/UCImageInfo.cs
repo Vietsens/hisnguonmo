@@ -63,10 +63,12 @@ namespace HIS.UC.UCImageInfo
         {
             try
             {
+                Inventec.Common.Logging.LogSystem.Debug("UCImageInfo_Load .1");
                 SetCaptionByLanguageKeyNew();
                 RefreshUserControl();
                 InitControlState();
                 //LoadDataByCheckBox();
+                Inventec.Common.Logging.LogSystem.Debug("UCImageInfo_Load .2");
             }
             catch (Exception ex)
             {

@@ -25,7 +25,7 @@ using HIS.Desktop.Plugins.RegisterExamKiosk.ADO;
 using HIS.Desktop.Plugins.RegisterExamKiosk.Config;
 using HIS.Desktop.Plugins.RegisterExamKiosk.Popup.CheckHeinCardGOV;
 using HIS.Desktop.Plugins.RegisterExamKiosk.Popup.ChooseObject;
-using HIS.Desktop.Plugins.RegisterExamKiosk.Popup.RegisterExemKiosk;
+using HIS.Desktop.Plugins.RegisterExamKiosk.Popup.RegisterExamKiosk;
 using Inventec.Common.Adapter;
 using Inventec.Common.QrCodeBHYT;
 using Inventec.Core;

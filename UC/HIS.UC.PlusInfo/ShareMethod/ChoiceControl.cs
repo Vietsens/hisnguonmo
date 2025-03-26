@@ -56,5 +56,6 @@ namespace HIS.UC.PlusInfo.ShareMethod
         public const string ucHrmKskCode = "UCHrmKskCode";
         public const string ucTaxCode = "UCTaxCode";
         public const string ucExamHistory = "UCExamHistory";
+        public const string UcCheckBoxCCCD = "UCCheckBoxCCCD";
     }
 }

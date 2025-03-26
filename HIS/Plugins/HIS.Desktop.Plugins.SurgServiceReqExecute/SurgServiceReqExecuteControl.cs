@@ -303,7 +303,6 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
                 this.InitButtonPhatSinh();
                 this.InitButtonGPBL();
                 Inventec.Common.Logging.LogSystem.Debug("timerInitForm_Tick. 3");
-
                 this.timerInitForm.Stop();
             }
             catch (Exception ex)
@@ -5290,6 +5289,37 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             {
                 if (e.Button.Kind == ButtonPredefines.Delete)
                     cboHospSubs.EditValue = null;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void btnPresYhct_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                Inventec.Desktop.Common.Modules.Module moduleData = GlobalVariables.currentModuleRaws.Where(o => o.ModuleLink == "HIS.Desktop.Plugins.AssignPrescriptionYHCT").FirstOrDefault();
+                if (moduleData == null) Inventec.Common.Logging.LogSystem.Error("khong tim thay moduleLink = HIS.Desktop.Plugins.AssignPrescriptionYHCT");
+                if (moduleData.IsPlugin && moduleData.ExtensionInfo != null)
+                {
+                    List<object> listArgs = new List<object>();
+                    Inventec.Desktop.Common.Modules.Module currentModule = new Inventec.Desktop.Common.Modules.Module();
+                    long intructionTime = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(DateTime.Now) ?? 0;
+                    AutoMapper.Mapper.CreateMap<MOS.EFMODEL.DataModels.V_HIS_SERE_SERV_5, V_HIS_SERE_SERV>();
+                    V_HIS_SERE_SERV sereServInput = AutoMapper.Mapper.Map<V_HIS_SERE_SERV_5, V_HIS_SERE_SERV>(sereServ);
+
+                    AssignPrescriptionADO assignServiceADO = new AssignPrescriptionADO(serviceReq.TREATMENT_ID, intructionTime, this.serviceReq.ID, sereServInput, LoadSereServOutKipResult);
+                    assignServiceADO.GenderName = serviceReq.TDL_PATIENT_GENDER_NAME;
+                    assignServiceADO.PatientName = serviceReq.TDL_PATIENT_NAME;
+                    assignServiceADO.PatientDob = serviceReq.TDL_PATIENT_DOB;
+                    assignServiceADO.PatientId = serviceReq.TDL_PATIENT_ID;
+                    listArgs.Add(assignServiceADO);
+                    var extenceInstance = HIS.Desktop.Utility.PluginInstance.GetPluginInstance(HIS.Desktop.Utility.PluginInstance.GetModuleWithWorkingRoom(moduleData, this.Module.RoomId, this.Module.RoomTypeId), listArgs);
+                    if (extenceInstance == null) throw new ArgumentNullException("moduleData is null");
+                    ((Form)extenceInstance).ShowDialog();
+                }
             }
             catch (Exception ex)
             {

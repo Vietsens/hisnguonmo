@@ -31,10 +31,11 @@ using HIS.Desktop.LocalStorage.BackendData;
 using MOS.EFMODEL.DataModels;
 using Inventec.Core;
 using Inventec.Common.Adapter;
+using HIS.Desktop.Utility;
 
 namespace HIS.UC.UCOtherServiceReqInfo
 {
-    public partial class UCOtherServiceReqInfo : UserControl
+    public partial class UCOtherServiceReqInfo : UserControlBase
     {
         #region Init method
 

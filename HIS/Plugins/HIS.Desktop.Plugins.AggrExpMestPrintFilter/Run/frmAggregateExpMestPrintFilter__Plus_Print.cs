@@ -2054,6 +2054,8 @@ namespace HIS.Desktop.Plugins.AggrExpMestPrintFilter
                         {
                             result = result && true;
                         }
+                        else
+                            result = false;
                     }
                 }
             }
@@ -2086,6 +2088,8 @@ namespace HIS.Desktop.Plugins.AggrExpMestPrintFilter
                         {
                             result = result && true;
                         }
+                        else
+                            result = false;
                     }
                 }
             }

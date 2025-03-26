@@ -52,6 +52,10 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                 SetDataCboRank(cboExamEyeRank5);
                 SetDataCboRank(cboExamEntDiseaseRank5);
                 SetDataCboRank(cboExamCardiovascularRank5);
+                SetDataCboExamLoginName(cboExamCardiovascularLoginName5);
+                SetDataCboExamLoginName(cboExamEyeLoginName5);
+                SetDataCboExamLoginName(cboExamEntLoginName5);
+                SetDataCboExamLoginName(cboExamSubclinicalLoginName5);
                 FillDataDriverCar();
             }
             catch (Exception ex)
@@ -158,7 +162,10 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                         txtNoteSubclinical5.Text = currentKskDriverCar.NOTE_SUBCLINICAL;
                         txtConclude5.Text = currentKskDriverCar.CONCLUDE;
                         txtDiseases5.Text = currentKskDriverCar.DISEASES;
-
+                        cboExamEyeLoginName5.EditValue = currentKskDriverCar.EXAM_EYE_LOGINNAME;
+                        cboExamEntLoginName5.EditValue = currentKskDriverCar.EXAM_ENT_LOGINNAME;
+                        cboExamCardiovascularLoginName5.EditValue = currentKskDriverCar.EXAM_CARDIOVASCULAR_LOGINNAME;
+                        cboExamSubclinicalLoginName5.EditValue = currentKskDriverCar.EXAM_SUBCLINICAL_LOGINNAME;
                     }
                     else
                     {
@@ -283,6 +290,11 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                 obj.NOTE_SUBCLINICAL = txtNoteSubclinical5.Text;
                 obj.CONCLUDE = txtConclude5.Text;
                 obj.DISEASES = txtDiseases5.Text;
+
+                obj.EXAM_EYE_LOGINNAME = cboExamEyeLoginName5.EditValue != null ? cboExamEyeLoginName5.EditValue.ToString() : null;
+                obj.EXAM_ENT_LOGINNAME = cboExamEntLoginName5.EditValue != null ? cboExamEntLoginName5.EditValue.ToString() : null;
+                obj.EXAM_CARDIOVASCULAR_LOGINNAME = cboExamCardiovascularLoginName5.EditValue != null ? cboExamCardiovascularLoginName5.EditValue.ToString() : null;
+                obj.EXAM_SUBCLINICAL_LOGINNAME = cboExamSubclinicalLoginName5.EditValue != null ? cboExamSubclinicalLoginName5.EditValue.ToString() : null;
             }
             catch (Exception ex)
             {

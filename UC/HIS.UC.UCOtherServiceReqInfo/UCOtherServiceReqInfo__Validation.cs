@@ -28,10 +28,11 @@ using HIS.UC.UCOtherServiceReqInfo.Valid;
 using DevExpress.XtraEditors.DXErrorProvider;
 using HIS.UC.UCOtherServiceReqInfo.Resources;
 using DevExpress.XtraEditors;
+using HIS.Desktop.Utility;
 
 namespace HIS.UC.UCOtherServiceReqInfo
 {
-    public partial class UCOtherServiceReqInfo : UserControl
+    public partial class UCOtherServiceReqInfo : UserControlBase
     {
 
         public bool ValidateRequiredField()

@@ -31,6 +31,9 @@ namespace HIS.Desktop.Plugins.ExpMestOtherExport.ADO
         public ExpMedicineSDO ExpMedicine { get; set; }
         public ExpBloodSDO ExpBlood { get; set; }
 
+        public string CONCENTRA { get; set; }
+        public string MEDI_MATE_TYPE_NAME_CONCENTRA { get; set; }
+
         public long SERVICE_ID { get; set; }
         public long MEDI_MATE_TYPE_ID { get; set; }
         public string MEDI_MATE_TYPE_CODE { get; set; }
@@ -91,7 +94,15 @@ namespace HIS.Desktop.Plugins.ExpMestOtherExport.ADO
                     this.MEDI_MATE_TYPE_ID = medicine.ID;
                     this.MEDI_MATE_TYPE_CODE = medicine.MEDICINE_TYPE_CODE;
                     this.MEDI_MATE_TYPE_NAME = medicine.MEDICINE_TYPE_NAME;
-                    //this.CONCENTRA = medicine.CONCENTRA;
+                    this.CONCENTRA = medicine.CONCENTRA;
+                    if (this.CONCENTRA == null)
+                    {
+                        this.MEDI_MATE_TYPE_NAME_CONCENTRA = medicine.MEDICINE_TYPE_NAME;
+                    }
+                    else
+                    {
+                        this.MEDI_MATE_TYPE_NAME_CONCENTRA = this.MEDI_MATE_TYPE_NAME + "("  + this.CONCENTRA + ")";
+                    }
                     this.SERVICE_UNIT_NAME = medicine.SERVICE_UNIT_NAME;
                     this.NATIONAL_NAME = medicine.NATIONAL_NAME;
                     this.MANUFACTURER_NAME = medicine.MANUFACTURER_NAME;
@@ -100,7 +111,7 @@ namespace HIS.Desktop.Plugins.ExpMestOtherExport.ADO
                     this.IMP_PRICE = medicine.IMP_PRICE;
                     this.IMP_VAT_RATIO = medicine.IMP_VAT_RATIO;
                     this.ExpMedicine = new ExpMedicineSDO();
-                    this.ExpMedicine.MedicineId = medicine.ID;                   
+                    this.ExpMedicine.MedicineId = medicine.ID;
                 }
             }
             catch (Exception ex)
@@ -129,6 +140,15 @@ namespace HIS.Desktop.Plugins.ExpMestOtherExport.ADO
                     this.IMP_VAT_RATIO = material.IMP_VAT_RATIO;
                     this.ExpMaterial = new ExpMaterialSDO();
                     this.ExpMaterial.MaterialId = material.ID;
+                    this.CONCENTRA = material.CONCENTRA;
+                    if (this.CONCENTRA == null)
+                    {
+                        this.MEDI_MATE_TYPE_NAME_CONCENTRA = this.MEDI_MATE_TYPE_NAME;
+                    }
+                    else
+                    {
+                        this.MEDI_MATE_TYPE_NAME_CONCENTRA = this.MEDI_MATE_TYPE_NAME + "(" + this.CONCENTRA + ")";
+                    }
                     //this.ExpMaterial.MaterialTypeId = material.Id;
                 }
             }
@@ -150,7 +170,7 @@ namespace HIS.Desktop.Plugins.ExpMestOtherExport.ADO
                     this.MEDI_MATE_TYPE_ID = blood.ID;
                     this.MEDI_MATE_TYPE_CODE = blood.BLOOD_TYPE_CODE;
                     this.MEDI_MATE_TYPE_NAME = blood.BLOOD_TYPE_NAME;
-
+                    this.MEDI_MATE_TYPE_NAME_CONCENTRA = this.MEDI_MATE_TYPE_NAME;
                     this.VOLUME = blood.VOLUME;
                     this.BLOOD_ABO_ID = blood.BLOOD_ABO_ID;
                     this.BLOOD_RH_ID = blood.BLOOD_RH_ID;
@@ -179,7 +199,15 @@ namespace HIS.Desktop.Plugins.ExpMestOtherExport.ADO
                     this.MEDI_MATE_TYPE_ID = medicine.MEDICINE_ID ?? 0;
                     this.MEDI_MATE_TYPE_CODE = medicine.MEDICINE_TYPE_CODE;
                     this.MEDI_MATE_TYPE_NAME = medicine.MEDICINE_TYPE_NAME;
-                   // this.CONCENTRA = medicine.CONCENTRA;
+                    this.CONCENTRA = medicine.CONCENTRA;
+                    if (this.CONCENTRA == null)
+                    {
+                        this.MEDI_MATE_TYPE_NAME_CONCENTRA = this.MEDI_MATE_TYPE_NAME;
+                    }
+                    else
+                    {
+                        this.MEDI_MATE_TYPE_NAME_CONCENTRA = this.MEDI_MATE_TYPE_NAME + "(" + this.CONCENTRA + ")";
+                    }
                     this.SERVICE_UNIT_NAME = medicine.SERVICE_UNIT_NAME;
                     this.NATIONAL_NAME = medicine.NATIONAL_NAME;
                     this.MANUFACTURER_NAME = medicine.MANUFACTURER_NAME;
@@ -221,6 +249,7 @@ namespace HIS.Desktop.Plugins.ExpMestOtherExport.ADO
                     this.MEDI_MATE_TYPE_ID = material.MATERIAL_ID ?? 0;
                     this.MEDI_MATE_TYPE_CODE = material.MATERIAL_TYPE_CODE;
                     this.MEDI_MATE_TYPE_NAME = material.MATERIAL_TYPE_NAME;
+                    this.MEDI_MATE_TYPE_NAME_CONCENTRA = this.MEDI_MATE_TYPE_NAME;
                     this.SERVICE_UNIT_NAME = material.SERVICE_UNIT_NAME;
                     this.NATIONAL_NAME = material.NATIONAL_NAME;
                     this.MANUFACTURER_NAME = material.MANUFACTURER_NAME;
@@ -232,7 +261,6 @@ namespace HIS.Desktop.Plugins.ExpMestOtherExport.ADO
                     this.NOTE = material.DESCRIPTION;
                     this.IMP_PRICE = material.IMP_PRICE;
                     this.IMP_VAT_RATIO = material.IMP_VAT_RATIO;
-
                     this.ExpMaterial = new ExpMaterialSDO();
                     this.ExpMaterial.MaterialId = material.MATERIAL_ID ?? 0;
                     this.ExpMaterial.Amount = material.AMOUNT;
@@ -291,7 +319,7 @@ namespace HIS.Desktop.Plugins.ExpMestOtherExport.ADO
                 {
                     this.IsMedicine = false;
                     this.IsBlood = false;
-                    this.IsReuse = true;
+                    this.IsReuse = true;      
                     this.SERVICE_ID = material.SERVICE_ID;
                     this.MEDI_MATE_TYPE_ID = material.MATERIAL_TYPE_ID;
                     this.MEDI_MATE_TYPE_CODE = material.MATERIAL_TYPE_CODE;

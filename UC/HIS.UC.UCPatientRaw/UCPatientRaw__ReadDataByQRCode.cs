@@ -38,8 +38,8 @@ using Inventec.Common.QrCodeCCCD;
 
 namespace HIS.UC.UCPatientRaw
 {
-	public partial class UCPatientRaw : UserControl
-	{
+	public partial class UCPatientRaw : HIS.Desktop.Utility.UserControlBase
+    {
 		long patientId = 0;
 		string patientCode = "";
 		string employeeCode = "";

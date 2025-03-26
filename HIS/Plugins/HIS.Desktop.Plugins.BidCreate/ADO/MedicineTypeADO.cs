@@ -25,6 +25,8 @@ namespace HIS.Desktop.Plugins.BidCreate.ADO
 {
     public class MedicineTypeADO : MOS.EFMODEL.DataModels.V_HIS_MEDICINE_TYPE
     {
+        public string VALID_TO_TIME {  get; set; }
+        public string VALID_FROM_TIME {  get; set; }
         public double IdRow { get; set; }
         public decimal? AMOUNT { get; set; }
         public long Type { get; set; }

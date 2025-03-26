@@ -84,10 +84,6 @@
     <Reference Include="HIS.Desktop.Plugins.Library.AlertHospitalFeeNotBHYT">
       <HintPath>..\..\..\..\lib\HIS\HIS.Desktop.Plugins.Library.AlertHospitalFeeNotBHYT\HIS.Desktop.Plugins.Library.AlertHospitalFeeNotBHYT.dll</HintPath>
     </Reference>
-    <Reference Include="HIS.Desktop.Plugins.Library.HisSyncToHid, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\HIS.Desktop.Plugins.Library.HisSyncToHid.dll</HintPath>
-    </Reference>
     <Reference Include="HIS.Desktop.Plugins.Library.PrintServiceReq, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\lib\HIS\HIS.Desktop.Plugins.Library.PrintServiceReq\HIS.Desktop.Plugins.Library.PrintServiceReq.dll</HintPath>
@@ -109,9 +105,6 @@
     <Reference Include="HIS.UC.KskContract">
       <HintPath>..\..\..\..\lib\HIS\HIS.UC.KskContract\HIS.UC.KskContract.dll</HintPath>
     </Reference>
-    <Reference Include="HIS.UC.PlusInfo">
-      <HintPath>..\..\..\..\lib\HIS\HIS.UC.PlusInfo\HIS.UC.PlusInfo.dll</HintPath>
-    </Reference>
     <Reference Include="HIS.UC.ServiceRoom">
       <HintPath>..\..\..\..\lib\HIS\HIS.UC.ServiceRoom\HIS.UC.ServiceRoom.dll</HintPath>
     </Reference>
@@ -132,9 +125,6 @@
     </Reference>
     <Reference Include="HIS.UC.UCOtherServiceReqInfo">
       <HintPath>..\..\..\..\lib\HIS\HIS.UC.UCOtherServiceReqInfo\HIS.UC.UCOtherServiceReqInfo.dll</HintPath>
-    </Reference>
-    <Reference Include="HIS.UC.UCPatientRaw">
-      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\HIS.UC.UCPatientRaw.dll</HintPath>
     </Reference>
     <Reference Include="HIS.UC.UCRelativeInfo">
       <HintPath>..\..\..\..\lib\HIS\HIS.UC.UCRelativeInfo\HIS.UC.UCRelativeInfo.dll</HintPath>
@@ -367,6 +357,12 @@
     <Compile Include="Choice\frmKeyConfig.Designer.cs">
       <DependentUpon>frmKeyConfig.cs</DependentUpon>
     </Compile>
+    <Compile Include="Choice\frmPersonSelect.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Choice\frmPersonSelect.Designer.cs">
+      <DependentUpon>frmPersonSelect.cs</DependentUpon>
+    </Compile>
     <Compile Include="Choice\frmServiceReqChoice.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -528,6 +524,14 @@
     <Compile Include="ValidationRule\PatientDob__ValidationRule.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\UC\HIS.UC.PlusInfo\HIS.UC.PlusInfo.csproj">
+      <Project>{dfa6e196-bae2-4ba0-81f6-7363e985c083}</Project>
+      <Name>HIS.UC.PlusInfo</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\UC\HIS.UC.UCPatientRaw\HIS.UC.UCPatientRaw.csproj">
+      <Project>{56fea3a2-be4c-4025-880d-e4a5f89b6ff6}</Project>
+      <Name>HIS.UC.UCPatientRaw</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\HIS.Desktop.ADO\HIS.Desktop.ADO.csproj">
       <Project>{808c25cd-0925-417f-bbf9-caf9604da879}</Project>
       <Name>HIS.Desktop.ADO</Name>
@@ -626,6 +630,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Choice\frmPatientChoice.resx">
       <DependentUpon>frmPatientChoice.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Choice\frmPersonSelect.resx">
+      <DependentUpon>frmPersonSelect.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Choice\frmServiceReqChoice.resx">
       <DependentUpon>frmServiceReqChoice.cs</DependentUpon>

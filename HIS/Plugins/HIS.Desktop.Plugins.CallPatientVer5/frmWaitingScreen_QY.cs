@@ -97,8 +97,6 @@ namespace HIS.Desktop.Plugins.CallPatientVer5
                 //Start all timer
                 StartAllTimer();
                 lblSrollText.Text = "";
-                //Set color Form
-                setFromConfigToControl();
                 RegisterTimer(ModuleLink, "timerAutoLoadDataPatient", WaitingScreenCFG.TIMER_FOR_AUTO_LOAD_WAITING_SCREENS * 1000, StartTheadWaitingPatientToCall);
                 StartTimer(ModuleLink, "timerAutoLoadDataPatient");
                 timerForHightLightCallPatientLayout.Interval = WaitingScreenCFG.TIMER_FOR_HIGHT_LIGHT_CALL_PATIENT * 1000;
@@ -107,6 +105,8 @@ namespace HIS.Desktop.Plugins.CallPatientVer5
                 InitRestoreLayoutGridViewFromXml(gridViewWaitingCls);
                 InitRestoreLayoutGridViewFromXml(gridViewWatingExams);
 
+                //Set color Form
+                setFromConfigToControl();
             }
             catch (Exception ex)
             {
@@ -598,7 +598,6 @@ namespace HIS.Desktop.Plugins.CallPatientVer5
 
                 lblMoibenhnhan.Font = new System.Drawing.Font(new FontFamily("Arial"), WaitingScreenCFG.FONT_SIZE__LABEL_SO_THU_TU_BENH_NHAN_DANG_DUOC_GOI, FontStyle.Bold);
                 lblSoThuTuBenhNhan.Font = new System.Drawing.Font(new FontFamily("Arial"), WaitingScreenCFG.FONT_SIZE__SO_THU_TU_BENH_NHAN_DANG_DUOC_GOI, FontStyle.Bold);
-                lblKhambenh.Font = new System.Drawing.Font(new FontFamily("Arial"), WaitingScreenCFG.FONT_SIZE__LABEL_SO_THU_TU_BENH_NHAN_DANG_DUOC_GOI, FontStyle.Bold);
 
                 lblPatientName.Font = new System.Drawing.Font(new FontFamily("Arial"), WaitingScreenCFG.FONT_SIZE__TEN_BENH_NHAN_DANG_DUOC_GOI, FontStyle.Bold);
 
@@ -759,7 +758,7 @@ namespace HIS.Desktop.Plugins.CallPatientVer5
                         }
                         if (e.Column.FieldName == "UT_STR")
                         {
-                            long uutien = data.PRIORITY_TYPE_ID ?? 0;
+                            long uutien = data.PRIORITY ?? 0;
                             if (uutien > 0)
                             {
                                 var priority = BackendDataWorker.Get<HIS_PRIORITY_TYPE>().Where(o => o.ID == uutien).ToList();
@@ -999,13 +998,13 @@ namespace HIS.Desktop.Plugins.CallPatientVer5
                 {
                     serviceReqRight = serviceReq1.Where(o => o.SERVICE_REQ_STT_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_STT.ID__DXL).Take(countPatient).OrderBy(p => p.START_TIME).ToList();
                     List<long> treatmentIdRight = (serviceReqRight != null && serviceReqRight.Count > 0) ? serviceReqRight.Select(o => o.TREATMENT_ID).Distinct().ToList() : new List<long>();
-                    gridlistleft = serviceReq1.Where(o => serviceReqSttIds.Contains(o.SERVICE_REQ_STT_ID) && !treatmentIdRight.Contains(o.TREATMENT_ID)).ToList();
+                    gridlistleft = serviceReq1.Where(o => serviceReqSttIds.Contains(o.SERVICE_REQ_STT_ID) && !treatmentIdRight.Contains(o.TREATMENT_ID) && !lstCalled.Exists(p => p.ID == o.ID)).ToList();
                 }
                 else
                 {
                     serviceReqRight = serviceReq1.Where(o => o.IS_WAIT_CHILD != 1 && o.HAS_CHILD == 1 && o.SERVICE_REQ_STT_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_STT.ID__DXL).ToList();
 
-                    gridlistleft = serviceReq1.Where(o => serviceReqSttIds.Contains(o.SERVICE_REQ_STT_ID)).ToList();
+                    gridlistleft = serviceReq1.Where(o => serviceReqSttIds.Contains(o.SERVICE_REQ_STT_ID) && !lstCalled.Exists(p=>p.ID == o.ID)).ToList();
                 }
                 gridControlWatingExams.BeginUpdate();
                 gridControlWatingExams.DataSource = gridlistleft;
@@ -1122,7 +1121,7 @@ namespace HIS.Desktop.Plugins.CallPatientVer5
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
-
+        List<HIS_SERVICE_REQ> lstCalled = new List<HIS_SERVICE_REQ>();
         private void SetDataToLabelMoiBenhNhanChild()
         {
             try
@@ -1130,8 +1129,11 @@ namespace HIS.Desktop.Plugins.CallPatientVer5
                 ServiceReq1ADO serviceReq1ADO = new ServiceReq1ADO();
                 ServiceReq1ADO PatientIsCall = (this.serviceReqStts != null && this.serviceReqStts.Count > 0) ? CallPatientDataWorker.DicCallPatient[room.ID].FirstOrDefault(o => o.CallPatientSTT) : null;
                 serviceReq1ADO = PatientIsCall;
-                serviceReqStatics.Remove(serviceReqStatics.FirstOrDefault(o => o.ID == serviceReq1ADO.ID));
-                SetDataToCurrentPatientCall(serviceReq1ADO);
+                if (serviceReqStatics.FirstOrDefault(o => o.ID == serviceReq1ADO.ID) != null && !lstCalled.Exists(o=>o.ID == serviceReq1ADO.ID))
+                {
+                    lstCalled.Add(serviceReqStatics.FirstOrDefault(o => o.ID == serviceReq1ADO.ID));
+                    SetDataToCurrentPatientCall(serviceReq1ADO);
+                }
             }
             catch (Exception ex)
             {
@@ -1147,7 +1149,7 @@ namespace HIS.Desktop.Plugins.CallPatientVer5
                 {
                     lblPatientName.Text = string.Format("{0} ({1})", serviceReq1ADO.TDL_PATIENT_NAME, serviceReq1ADO.TDL_PATIENT_DOB.ToString().Substring(0, 4));
                     lblSoThuTuBenhNhan.Text = serviceReq1ADO.NUM_ORDER + "";
-                    if (serviceReq1ADO.PRIORITY_TYPE_ID != null && serviceReq1ADO.PRIORITY_TYPE_ID > 0)
+                    if (serviceReq1ADO.PRIORITY != null && serviceReq1ADO.PRIORITY > 0)
                     {
                         lblUT.Text = "(ƯT)";
                         //var priority = BackendDataWorker.Get<HIS_PRIORITY_TYPE>().Where(o => o.ID == serviceReq1ADO.PRIORITY_TYPE_ID).ToList();
@@ -1339,8 +1341,6 @@ namespace HIS.Desktop.Plugins.CallPatientVer5
                 {
                     CallPatientDataWorker.DicCallPatient[room.ID] = new List<ServiceReq1ADO>();
                 }
-                lblPatientName.Text = "";
-                lblSoThuTuBenhNhan.Text = "";
 
                 #region Process has exception
                 SessionManager.ProcessTokenLost(param);

@@ -15,8 +15,10 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+using DevExpress.XtraBars.Ribbon.Drawing;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -25,6 +27,11 @@ namespace HIS.Desktop.Plugins.HisImportBid.ADO
 {
     class ImportADO : MOS.EFMODEL.DataModels.V_HIS_MEDICINE_TYPE
     {
+        // boo sung hieu luc tu hieu luc den ma ap thau
+        public string VALID_FROM_TIME { get; set; }
+        public string VALID_TO_TIME { get; set; }
+        public string BID_APTHAU_CODE { get; set; }
+
         public string IS_MEDICINE { get; set; }
 
         public double IdRow { get; set; }
@@ -65,29 +72,43 @@ namespace HIS.Desktop.Plugins.HisImportBid.ADO
         public bool IsNotNullRow{
             get {
                 bool valid = true;
-                if(string.IsNullOrEmpty(MEDICINE_GROUP_CODE) && 
+                if (string.IsNullOrEmpty(MEDICINE_GROUP_CODE) &&
                     string.IsNullOrEmpty(BID_NUM_ORDER) &&
                     string.IsNullOrEmpty(SUPPLIER_CODE) &&
-                    AMOUNT==null &&
-                    IMP_PRICE==null &&
-                    IMP_VAT_RATIO==null &&
+                    AMOUNT == null &&
+                    IMP_PRICE == null &&
+                    IMP_VAT_RATIO == null &&
                     string.IsNullOrEmpty(BID_TYPE_CODE) &&
                     string.IsNullOrEmpty(BID_PACKAGE_CODE) &&
                     string.IsNullOrEmpty(BID_GROUP_CODE) &&
                     string.IsNullOrEmpty(BID_NUMBER) &&
                     string.IsNullOrEmpty(BID_NAME) &&
                     string.IsNullOrEmpty(HEIN_SERVICE_BHYT_NAME) &&
-                     string.IsNullOrEmpty(PACKING_TYPE_NAME) &&
+                    string.IsNullOrEmpty(PACKING_TYPE_NAME) &&
                     string.IsNullOrEmpty(BID_MATERIAL_TYPE_CODE) &&
                     string.IsNullOrEmpty(BID_MATERIAL_TYPE_NAME) &&
                     string.IsNullOrEmpty(JOIN_BID_MATERIAL_TYPE_CODE) &&
                     string.IsNullOrEmpty(MEDICINE_USE_FORM_CODE) &&
                     string.IsNullOrEmpty(BID_YEAR) &&
-                     string.IsNullOrEmpty(CONCENTRA) &&
+                    string.IsNullOrEmpty(CONCENTRA) &&
                     string.IsNullOrEmpty(REGISTER_NUMBER) &&
                     string.IsNullOrEmpty(MANUFACTURER_CODE) &&
-                    string.IsNullOrEmpty(NATIONAL_NAME) 
-                    )
+                    string.IsNullOrEmpty(NATIONAL_NAME) &&
+                    string.IsNullOrEmpty(VALID_FROM_TIME) &&
+                    string.IsNullOrEmpty(VALID_TO_TIME) &&
+                    string.IsNullOrEmpty(BID_APTHAU_CODE) &&
+                    string.IsNullOrWhiteSpace(BID_GROUP_CODE.Trim()) &&
+                    string.IsNullOrWhiteSpace(HEIN_SERVICE_BHYT_NAME.Trim()) &&
+                    string.IsNullOrWhiteSpace(PACKING_TYPE_NAME.Trim()) &&
+                    string.IsNullOrWhiteSpace(ACTIVE_INGR_BHYT_NAME.Trim()) &&
+                    string.IsNullOrWhiteSpace(MEDICINE_USE_FORM_CODE.Trim()) &&
+                    string.IsNullOrWhiteSpace(DOSAGE_FORM) &&
+                    string.IsNullOrWhiteSpace(BID_MATERIAL_TYPE_CODE) &&
+                    string.IsNullOrWhiteSpace(BID_MATERIAL_TYPE_NAME) &&
+                    string.IsNullOrWhiteSpace(JOIN_BID_MATERIAL_TYPE_CODE) &&
+                    string.IsNullOrWhiteSpace(BID_APTHAU_CODE) &&
+                    string.IsNullOrWhiteSpace(REGISTER_NUMBER)
+                    )      
                     valid =false;
                 return valid;
             }

@@ -58,6 +58,7 @@ namespace HIS.UC.PlusInfo.Design
         #region Contructor - Load
 
         public UCHrmKskCode()
+            : base("UCPlusInfo", "UCHrmKskCode")
         {
             try
             {

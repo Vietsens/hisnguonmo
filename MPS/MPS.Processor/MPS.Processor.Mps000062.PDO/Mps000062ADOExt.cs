@@ -42,6 +42,8 @@ namespace MPS.Processor.Mps000062.PDO
         public short Num_Order { get; set; }
         public long? MIXED_INFUSION { get; set; }
         public string ACTIVE_INGR_BHYT_CODE { get; set; }
+        public string ACTIVE_INGR_BHYT_NAME { get; set; }
+        public string CONCENTRA { get; set; }
     }
 
     public class SingleKeyTracking
@@ -297,6 +299,8 @@ namespace MPS.Processor.Mps000062.PDO
         /// </summary>
         public string SERVICE_MERGE_X01___DATA { get; set; }
         public string SERVICE_CLS_DuTru___DATA { get; set; }
+        public string MEDICINES_MERGE_DAY___DATA { get; set; }
+        public string MEDICINES_MERGE_DAY_HTU___DATA { get; set; }
         public string SERVICE_CLS_DuTru_X01___DATA { get; set; }
         public string SERVICE_CLS_THDT___DATA { get; set; }
         public string SERVICE_CLS_THDT_X01___DATA { get; set; }
@@ -670,6 +674,8 @@ namespace MPS.Processor.Mps000062.PDO
         public string MEDICINE_GROUP_NAME { get; set; }
         public string DOSAGE_FORM_NAME { get; set; }
         public string DATA_REPX { get; set; }
+        public string DATA_DAY_REPX { get; set; }
+        public string DATA_DAY_HTU_REPX { get; set; }
         public long? ASSIGN_TIME_TO { get; set; }
         public string ADVISE { get; set; }
         public ExpMestMetyReqADO() { }
@@ -739,6 +745,10 @@ namespace MPS.Processor.Mps000062.PDO
         public string MEDICINE_LINE_NAME { get; set; }
         public string MEDICINE_GROUP_NAME { get; set; }
         public string DOSAGE_FORM_NAME { get; set; }
+        public long? MEDICINE_GROUP_ID { get; set; }
+        public string ACTIVE_INGR_BHYT_CODE { get; set; }
+        public string ACTIVE_INGR_BHYT_NAME { get; set; }
+        public string CONCENTRA { get; set; }
         public ServiceReqMetyADO() { }
         public ServiceReqMetyADO(HIS_SERVICE_REQ_METY data, long trackingId, List<HIS_SERVICE_REQ> ServiceReqs)
         {

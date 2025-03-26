@@ -2075,6 +2075,9 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                         IsAppointment_ExamFinish = examFinishADO.IsAppointment;
                         IsPrintAppointment_ExamFinish = examFinishADO.IsPrintAppointment;
                         serviceReqUpdateSDO.NotePatient = examFinishADO.Note;
+
+                        serviceReqUpdateSDO.AppointmentExamRoomId = examFinishADO.RoomApointmentId;
+                        serviceReqUpdateSDO.AppointmentExamServiceId = examFinishADO.ServiceApointmentId;
                     }
                     else
                     {
