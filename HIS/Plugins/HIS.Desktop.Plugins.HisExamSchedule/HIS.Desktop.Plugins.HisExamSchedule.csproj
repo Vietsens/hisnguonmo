@@ -126,7 +126,9 @@
     <Compile Include="ADO\DoctorADO.cs" />
     <Compile Include="ADO\HisExamScheduleADO.cs" />
     <Compile Include="HisExamScheduleProcessor.cs" />
-    <Compile Include="HisExamSchedule\frmHisExamSchedule.cs" />
+    <Compile Include="HisExamSchedule\frmHisExamSchedule.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="HisExamSchedule\frmHisExamSchedule.Designer.cs">
       <DependentUpon>frmHisExamSchedule.cs</DependentUpon>
     </Compile>
@@ -140,7 +142,9 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="SetupWorkRoom\frmSetupWorkRoom.cs" />
+    <Compile Include="SetupWorkRoom\frmSetupWorkRoom.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="SetupWorkRoom\frmSetupWorkRoom.Designer.cs">
       <DependentUpon>frmSetupWorkRoom.cs</DependentUpon>
     </Compile>

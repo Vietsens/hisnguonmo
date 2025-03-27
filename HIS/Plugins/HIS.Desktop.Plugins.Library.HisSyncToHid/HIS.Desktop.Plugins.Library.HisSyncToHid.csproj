@@ -117,7 +117,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Delegates.cs" />
-    <Compile Include="frmPersonSelect.cs" />
+    <Compile Include="frmPersonSelect.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="frmPersonSelect.Designer.cs">
       <DependentUpon>frmPersonSelect.cs</DependentUpon>
     </Compile>

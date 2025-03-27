@@ -159,7 +159,9 @@
     <Compile Include="ChangeExamRoomProcessProcessor.cs" />
     <Compile Include="ChangeExamRoomProcess\ChangeExamRoomProcessBehavior.cs" />
     <Compile Include="ChangeExamRoomProcess\ChangeExamRoomProcessFactory.cs" />
-    <Compile Include="ChangeExamRoomProcess\FormChangeExamRoomProcess.cs" />
+    <Compile Include="ChangeExamRoomProcess\FormChangeExamRoomProcess.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="ChangeExamRoomProcess\FormChangeExamRoomProcess.Designer.cs">
       <DependentUpon>FormChangeExamRoomProcess.cs</DependentUpon>
     </Compile>

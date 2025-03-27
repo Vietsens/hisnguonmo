@@ -310,12 +310,18 @@
   <ItemGroup>
     <Compile Include="PagingGet\PagingGet.cs" />
     <Compile Include="UserGet\AcsUserCashierGet.cs" />
-    <Compile Include="frmMainReport.cs" />
+    <Compile Include="frmMainReport.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="frmMainReport.Designer.cs">
       <DependentUpon>frmMainReport.cs</DependentUpon>
     </Compile>
-    <Compile Include="frmMainReportProcessFormTypeDelegate.cs" />
-    <Compile Include="frmMainReport__Copy.cs" />
+    <Compile Include="frmMainReportProcessFormTypeDelegate.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmMainReport__Copy.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="ListKeyboardWorker.cs" />
     <Compile Include="KeyboardWorker.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -323,7 +329,9 @@
     <Compile Include="ReportAll\ReportAllBehavior.cs" />
     <Compile Include="ReportAll\ReportAllFactory.cs" />
     <Compile Include="ReportAll\ReportAllProcessor.cs" />
-    <Compile Include="UCReportAll.cs" />
+    <Compile Include="UCReportAll.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="UCReportAll.Designer.cs">
       <DependentUpon>UCReportAll.cs</DependentUpon>
     </Compile>

@@ -261,6 +261,17 @@ namespace HIS.Desktop.Plugins.AggrExpMestPrintFilter
             bool result = false;
             try
             {
+                this.serviceUnitIds = new List<long>();
+                if (ServiceUnits != null && ServiceUnits.Count > 0)
+                    this.serviceUnitIds = ServiceUnits.Select(o => o.ID).Distinct().ToList();
+
+                this.useFormIds = new List<long>();
+                if (MedicineUseForms != null && MedicineUseForms.Count > 0)
+                    this.useFormIds = MedicineUseForms.Select(o => o.ID).Distinct().ToList();
+
+                this.reqRoomIds = new List<long>();
+                if (RoomDTO3s != null && RoomDTO3s.Count > 0)
+                    this.reqRoomIds = RoomDTO3s.Select(p => p.ID).ToList();
                 switch (printTypeCode)
                 {
                     case PrintTypeCodeStore.PRINT_TYPE_CODE__BIEUMAU__PHIEU_LINH__TONG_HOP__MPS000046:
@@ -314,17 +325,6 @@ namespace HIS.Desktop.Plugins.AggrExpMestPrintFilter
                             IntructionTimeTo = Inventec.Common.TypeConvert.Parse.ToInt64(Convert.ToDateTime(dtIntructionTimeTo.EditValue).ToString("yyyyMMdd") + "235959");
                         }
 
-                        this.serviceUnitIds = new List<long>();
-                        if (ServiceUnits != null && ServiceUnits.Count > 0)
-                            this.serviceUnitIds = ServiceUnits.Select(o => o.ID).Distinct().ToList();
-
-                        this.useFormIds = new List<long>();
-                        if (MedicineUseForms != null && MedicineUseForms.Count > 0)
-                            this.useFormIds = MedicineUseForms.Select(o => o.ID).Distinct().ToList();
-
-                        this.reqRoomIds = new List<long>();
-                        if (RoomDTO3s != null && RoomDTO3s.Count > 0)
-                            this.reqRoomIds = RoomDTO3s.Select(p => p.ID).ToList();
 
                         print.InTraDoiTongHop6282(printTypeCode, fileName, ref result, true, this.serviceUnitIds, this.useFormIds, this.reqRoomIds, IntructionTimeFrom, IntructionTimeTo, chkMedicine.Checked, chkMaterial.Checked, chkIsChemicalSustance.Checked, this.department, chooseTimeType);
                         this.CountMediMatePrinted = this.TotalMediMatePrint;

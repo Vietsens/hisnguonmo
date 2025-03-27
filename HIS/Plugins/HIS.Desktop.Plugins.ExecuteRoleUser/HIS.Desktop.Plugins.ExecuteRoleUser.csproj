@@ -155,7 +155,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Resources\ResourceLanguageManager.cs" />
     <Compile Include="Resources\ResourceMessage.cs" />
-    <Compile Include="UC_ExecuteRoleUser.cs" />
+    <Compile Include="UC_ExecuteRoleUser.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="UC_ExecuteRoleUser.Designer.cs">
       <DependentUpon>UC_ExecuteRoleUser.cs</DependentUpon>
     </Compile>

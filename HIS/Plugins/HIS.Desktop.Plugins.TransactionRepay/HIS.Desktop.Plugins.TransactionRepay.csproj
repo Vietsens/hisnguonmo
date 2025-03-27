@@ -143,7 +143,9 @@
     <Compile Include="Config\HisConfigCFG.cs" />
     <Compile Include="Config\MappingErrorTHE.cs" />
     <Compile Include="Config\UriStores.cs" />
-    <Compile Include="frmTransactionRepay.cs" />
+    <Compile Include="frmTransactionRepay.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="frmTransactionRepay.Designer.cs">
       <DependentUpon>frmTransactionRepay.cs</DependentUpon>
     </Compile>

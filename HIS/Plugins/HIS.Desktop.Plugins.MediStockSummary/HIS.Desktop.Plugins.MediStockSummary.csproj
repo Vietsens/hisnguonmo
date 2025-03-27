@@ -365,12 +365,18 @@
     <Compile Include="ADO\StatusADO.cs" />
     <Compile Include="Base\ManagerConstant.cs" />
     <Compile Include="Base\ResourceLangManager.cs" />
-    <Compile Include="CreateReport\frmMediCardByDateReport.cs" />
+    <Compile Include="CreateReport\frmMediCardByDateReport.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="CreateReport\frmMediCardByDateReport.Designer.cs">
       <DependentUpon>frmMediCardByDateReport.cs</DependentUpon>
     </Compile>
-    <Compile Include="CreateReport\frmMediCardByDateReport__Dispose.cs" />
-    <Compile Include="CreateReport\frmMediCardByDateReport__Pluss.cs" />
+    <Compile Include="CreateReport\frmMediCardByDateReport__Dispose.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="CreateReport\frmMediCardByDateReport__Pluss.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="CreateReport\Mps482.cs" />
     <Compile Include="CreateReport\Mps483.cs" />
     <Compile Include="CreateReport\Mrs00067.cs" />
@@ -394,11 +400,21 @@
     </Compile>
     <Compile Include="RequestUriStore.cs" />
     <Compile Include="Resources\ResourceLanguageManager.cs" />
-    <Compile Include="UCMediStockSummary__Dispose.cs" />
-    <Compile Include="UCMediStockSummary__Pluss_Print.cs" />
-    <Compile Include="UCMediStockSummary__Plus__Tree.cs" />
-    <Compile Include="UCMediStockSummary__Control.cs" />
-    <Compile Include="UCMediStockSummary.cs" />
+    <Compile Include="UCMediStockSummary__Dispose.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UCMediStockSummary__Pluss_Print.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UCMediStockSummary__Plus__Tree.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UCMediStockSummary__Control.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UCMediStockSummary.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="UCMediStockSummary.Designer.cs">
       <DependentUpon>UCMediStockSummary.cs</DependentUpon>
     </Compile>

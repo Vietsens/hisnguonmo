@@ -166,7 +166,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="HistoryMedicineProcessor.cs" />
-    <Compile Include="HistoryMedicine\frmHistory.cs" />
+    <Compile Include="HistoryMedicine\frmHistory.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="HistoryMedicine\frmHistory.Designer.cs">
       <DependentUpon>frmHistory.cs</DependentUpon>
     </Compile>
@@ -174,7 +176,9 @@
     <Compile Include="HistoryMedicine\HistoryMedicineFactory.cs" />
     <Compile Include="HistoryMedicine\IHistoryMedicine.cs" />
     <Compile Include="HisRequestUriStore.cs" />
-    <Compile Include="HistoryMedicine\UC_HistoryMedicine.cs" />
+    <Compile Include="HistoryMedicine\UC_HistoryMedicine.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="HistoryMedicine\UC_HistoryMedicine.Designer.cs">
       <DependentUpon>UC_HistoryMedicine.cs</DependentUpon>
     </Compile>

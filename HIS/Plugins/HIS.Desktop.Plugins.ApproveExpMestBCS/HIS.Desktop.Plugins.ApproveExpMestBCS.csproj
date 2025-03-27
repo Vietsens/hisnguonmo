@@ -139,7 +139,9 @@
       <DependentUpon>frmReplace.cs</DependentUpon>
     </Compile>
     <Compile Include="Util\StringUtil.cs" />
-    <Compile Include="frmApproveExpMestBCS.cs" />
+    <Compile Include="frmApproveExpMestBCS.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="frmApproveExpMestBCS.Designer.cs">
       <DependentUpon>frmApproveExpMestBCS.cs</DependentUpon>
     </Compile>

@@ -192,13 +192,21 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="UCExpMestChmsCreate.cs" />
+    <Compile Include="UCExpMestChmsCreate.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="UCExpMestChmsCreate.Designer.cs">
       <DependentUpon>UCExpMestChmsCreate.cs</DependentUpon>
     </Compile>
-    <Compile Include="UCExpMestChmsCreate__Plus__Button.cs" />
-    <Compile Include="UCExpMestChmsCreate__Plus__Control.cs" />
-    <Compile Include="UCExpMestChmsCreate__Plus__TreeList.cs" />
+    <Compile Include="UCExpMestChmsCreate__Plus__Button.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UCExpMestChmsCreate__Plus__Control.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UCExpMestChmsCreate__Plus__TreeList.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="Validation\TextMaxLengthValidationRule.cs" />
     <Compile Include="Validation\ExpAmountValidationRule.cs" />
     <Compile Include="Validation\ExpMediStockValidationRule.cs" />

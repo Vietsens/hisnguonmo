@@ -234,7 +234,9 @@
   <ItemGroup>
     <Compile Include="ADO\HisSereServTeinSDO.cs" />
     <Compile Include="ADO\ImageADO.cs" />
-    <Compile Include="frmSereServTein.cs" />
+    <Compile Include="frmSereServTein.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="frmSereServTein.Designer.cs">
       <DependentUpon>frmSereServTein.cs</DependentUpon>
     </Compile>

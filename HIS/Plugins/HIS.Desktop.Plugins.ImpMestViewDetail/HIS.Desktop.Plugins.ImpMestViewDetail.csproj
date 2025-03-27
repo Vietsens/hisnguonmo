@@ -299,10 +299,16 @@
     <Compile Include="Base\ControlCode.cs" />
     <Compile Include="Base\GlobalStore.cs" />
     <Compile Include="Config\HisConfigCFG.cs" />
-    <Compile Include="ImpMestViewDetail\frmImpMestViewDetailPlus_Print.cs" />
-    <Compile Include="ImpMestViewDetail\frmImpMestViewDetail_InItResource.cs" />
+    <Compile Include="ImpMestViewDetail\frmImpMestViewDetailPlus_Print.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ImpMestViewDetail\frmImpMestViewDetail_InItResource.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="ImpMestViewDetail\ImpMestViewDetailProcess.cs" />
-    <Compile Include="ImpMestViewDetail\frmImpMestViewDetail.cs" />
+    <Compile Include="ImpMestViewDetail\frmImpMestViewDetail.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="ImpMestViewDetail\frmImpMestViewDetail.Designer.cs">
       <DependentUpon>frmImpMestViewDetail.cs</DependentUpon>
     </Compile>
@@ -310,7 +316,9 @@
     <Compile Include="ImpMestViewDetailProcessor.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="ImpMestViewDetail\frmImpMestViewDetailPlus_Validation.cs" />
+    <Compile Include="ImpMestViewDetail\frmImpMestViewDetailPlus_Validation.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="ImpMestViewDetail\IImpMestViewDetail.cs" />
     <Compile Include="ImpMestViewDetail\ImpMestViewDetailBehavior.cs" />
     <Compile Include="ImpMestViewDetail\ImpMestViewDetailFactory.cs" />

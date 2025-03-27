@@ -67,7 +67,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="HisPacsOneProcessor.cs" />
-    <Compile Include="HisPacsOne\frmHisPacsOne.cs" />
+    <Compile Include="HisPacsOne\frmHisPacsOne.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="HisPacsOne\frmHisPacsOne.Designer.cs">
       <DependentUpon>frmHisPacsOne.cs</DependentUpon>
     </Compile>

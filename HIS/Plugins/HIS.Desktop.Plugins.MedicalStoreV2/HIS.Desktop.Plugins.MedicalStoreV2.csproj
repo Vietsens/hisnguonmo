@@ -166,7 +166,9 @@
     <Compile Include="Popup\frmContentRefused.Designer.cs">
       <DependentUpon>frmContentRefused.cs</DependentUpon>
     </Compile>
-    <Compile Include="Popup\TreatmentBorrow.cs" />
+    <Compile Include="Popup\TreatmentBorrow.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Popup\TreatmentBorrow.Designer.cs">
       <DependentUpon>TreatmentBorrow.cs</DependentUpon>
     </Compile>
@@ -186,7 +188,9 @@
       <DependentUpon>frmRejectStore.cs</DependentUpon>
     </Compile>
     <Compile Include="Resources\ResourceMessage.cs" />
-    <Compile Include="UCMedicalStoreV2__Pluss_RightClick.cs" />
+    <Compile Include="UCMedicalStoreV2__Pluss_RightClick.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="KeyboardWorker.cs" />
     <Compile Include="MedicalStoreV2Processor.cs" />
     <Compile Include="MedicalStoreV2\IMedicalStoreV2.cs" />
@@ -199,11 +203,15 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="Resources\ResourceLanguageManager.cs" />
-    <Compile Include="UCMedicalStoreV2.cs" />
+    <Compile Include="UCMedicalStoreV2.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="UCMedicalStoreV2.Designer.cs">
       <DependentUpon>UCMedicalStoreV2.cs</DependentUpon>
     </Compile>
-    <Compile Include="UCMedicalStoreV2__Pluss_Print.cs" />
+    <Compile Include="UCMedicalStoreV2__Pluss_Print.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="Validation\DateTimeValidationRule.cs" />
     <Compile Include="Validation\GridLookUpAndTextValidationRule.cs" />
     <Compile Include="Validation\Validate.cs" />

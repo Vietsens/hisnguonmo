@@ -148,7 +148,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ADO\ServiceImportADO.cs" />
-    <Compile Include="FormLoad\frmService.cs" />
+    <Compile Include="FormLoad\frmService.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="FormLoad\frmService.Designer.cs">
       <DependentUpon>frmService.cs</DependentUpon>
     </Compile>

@@ -155,7 +155,9 @@
     <Compile Include="RequestUriStore.cs" />
     <Compile Include="Resources\ResourceMessage.cs" />
     <Compile Include="TreatmentADO.cs" />
-    <Compile Include="UCApproveKskTreatment_Event.cs" />
+    <Compile Include="UCApproveKskTreatment_Event.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="ApproveKskTreatmentProcessor.cs" />
     <Compile Include="ApproveKskTreatment\ApproveKskTreatmentBehavior.cs" />
     <Compile Include="ApproveKskTreatment\ApproveKskTreatmentFactory.cs" />
@@ -168,7 +170,9 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="Resources\ResourceLanguageManager.cs" />
-    <Compile Include="UCApproveKskTreatment.cs" />
+    <Compile Include="UCApproveKskTreatment.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="UCApproveKskTreatment.Designer.cs">
       <DependentUpon>UCApproveKskTreatment.cs</DependentUpon>
     </Compile>

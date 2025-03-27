@@ -204,14 +204,22 @@
     <Compile Include="Base\ResourceLangManager.cs" />
     <Compile Include="Config\ControlStateConstant.cs" />
     <Compile Include="Config\HisConfigCFG.cs" />
-    <Compile Include="frmDebate_Print.cs" />
+    <Compile Include="frmDebate_Print.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="DebateProcessor.cs" />
-    <Compile Include="frmDebate.cs" />
+    <Compile Include="frmDebate.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="frmDebate.Designer.cs">
       <DependentUpon>frmDebate.cs</DependentUpon>
     </Compile>
-    <Compile Include="frmDebate_RightClick.cs" />
-    <Compile Include="Load\frmDebate___Load.cs" />
+    <Compile Include="frmDebate_RightClick.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Load\frmDebate___Load.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="PrintDebateMenuProcessor.cs" />
     <Compile Include="Processors\PopupMenuProcessor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

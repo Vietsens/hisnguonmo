@@ -125,7 +125,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="TypeADO.cs" />
-    <Compile Include="frmBloodList.cs" />
+    <Compile Include="frmBloodList.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="frmBloodList.Designer.cs">
       <DependentUpon>frmBloodList.cs</DependentUpon>
     </Compile>
@@ -148,7 +150,9 @@
     </Compile>
     <Compile Include="Resources\ResourceLanguageManager.cs" />
     <Compile Include="Resources\ResourceMessage.cs" />
-    <Compile Include="UCBloodList.cs" />
+    <Compile Include="UCBloodList.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="UCBloodList.Designer.cs">
       <DependentUpon>UCBloodList.cs</DependentUpon>
     </Compile>

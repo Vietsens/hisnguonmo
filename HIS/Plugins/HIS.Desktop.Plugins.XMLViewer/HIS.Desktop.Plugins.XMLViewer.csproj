@@ -113,7 +113,9 @@
     <Compile Include="Base\ResourceLangManager.cs" />
     <Compile Include="Base\ResourceMessageLang.cs" />
     <Compile Include="Config\MappingErrorTHE.cs" />
-    <Compile Include="frmXMLViewer.cs" />
+    <Compile Include="frmXMLViewer.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="frmXMLViewer.Designer.cs">
       <DependentUpon>frmXMLViewer.cs</DependentUpon>
     </Compile>

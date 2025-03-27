@@ -55,6 +55,7 @@ namespace HIS.UC.PlusInfo.Design
         #region Contructor - Load
 
         public UCProvinceOfBirth()
+            : base("UCPlusInfo", "UCProvinceOfBirth")
         {
             try
             {

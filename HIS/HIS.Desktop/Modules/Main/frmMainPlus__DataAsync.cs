@@ -64,37 +64,63 @@ namespace HIS.Desktop.Modules.Main
                     ////Nếu người dùng có quyền vào chức năng Tiếp đón thì load sẵn các dữ liệu sẽ dùng trong chức năng này về ram
                     if (moduleLinks.Contains("HIS.Desktop.Plugins.RegisterV2") || moduleLinks.Contains("HIS.Desktop.Plugins.Register") || moduleLinks.Contains("HIS.Desktop.Plugins.RegisterV3"))
                     {
-                        await LoadDataGender();
-                        await LoadDataCareer();
-
+                        LoadDataGender();
+                        LoadDataCareer();
+                        LoadDataNational();
+                        LoadDataEthnic();
+                        LoadDataHisPosition();
+                        LoadDataMilitaryRank();
+                        LoadDataBhytWhiteList();
+                        LoadDataPatientClassify();
+                        LoadDataHisReceptionRoom();
+                        var task1 = LoadDataProvince();
+                        var task2 = LoadDataDistrict();
+                        var task3 = LoadDataCommune();
+                        await Task.WhenAll(task1, task2, task3);
+                        var CommuneADOs = BackendDataWorkerSet.Set<HIS.Desktop.LocalStorage.BackendData.ADO.CommuneADO>(false, true);
                     }
 
                     ////Nếu người dùng có quyền vào chức năng Kê đơn thì load sẵn các dữ liệu sẽ dùng trong chức năng này về ram
-                    if (moduleLinks.Contains("HIS.Desktop.Plugins.AssignPrescriptionPK") || moduleLinks.Contains("HIS.Desktop.Plugins.AssignPrescriptionYHCT") || moduleLinks.Contains("HIS.Desktop.Plugins.ExamServiceReqExecute"))
+                    if (moduleLinks.Contains("HIS.Desktop.Plugins.AssignPrescriptionPK") || moduleLinks.Contains("HIS.Desktop.Plugins.AssignPrescriptionYHCT"))
                     {
-                        await LoadDataMediStock();
-                        await LoadDataMestRoom();
-                        await LoadDataMestPatientType();
-                        await LoadDataMediStockMety();
-                        await LoadDataMestMetyDepa();
-                        await LoadDataExeServiceModule();
+                        LoadDataHisMedicineType();
+                        LoadDataHisMaterialType();
+                        LoadDataMediStock();
+                        LoadDataMestRoom();
+                        LoadDataMestPatientType();
+                        LoadDataMediStockMety();
+                        LoadDataMestMetyDepa();
 
-                        await LoadDataMedicineUseForm();
-                        await LoadDataHisMedicineTypeRoom();
-                        await LoadDataHisEmployee();
-                        await LoadDataHisMestMetyUnit();
+                        LoadDataMedicineUseForm();
+                        LoadDataHisMedicineTypeRoom();
+                        LoadDataHisEmployee();
+                        LoadDataHisMestMetyUnit();
                         LoadDataTreatmentEndType();
                         LoadDataTreatmentEndTypeExt();
-                        //    await LoadDataEquipmentSet();                     
                     }
 
                     ////Nếu người dùng có quyền vào chức năng Chỉ định thì load sẵn các dữ liệu sẽ dùng trong chức năng này về ram
                     if (moduleLinks.Contains("HIS.Desktop.Plugins.AssignService"))
-                    {
-                        await LoadDataExecuteRoom();
-                        await LoadDataServiceGroup();
-                        await LoadDataRoomTimes();
+                    {                        
+                        LoadDataServiceGroup();
+                        LoadDataRoomTimes();
                     }
+
+                    if (moduleLinks.Contains("HIS.Desktop.Plugins.AssignService") || moduleLinks.Contains("HIS.Desktop.Plugins.ExecuteRoom"))
+                    {
+                        LoadDataExecuteRoom();
+                    }
+
+                    if (moduleLinks.Contains("HIS.Desktop.Plugins.ServiceExecute")
+                      || moduleLinks.Contains("HIS.Desktop.Plugins.ExamServiceReqExecute")
+                      || moduleLinks.Contains("HIS.Desktop.Plugins.ExecuteRoom"))
+                    {
+                        LoadDataTextLib();
+                        LoadDataTestIndex();
+                        LoadDataKskContract();
+                        LoadDataExeServiceModule();
+                    }
+
 
                     if (moduleLinks.Contains("HIS.Desktop.Plugins.Transaction"))
                     {
@@ -106,137 +132,117 @@ namespace HIS.Desktop.Modules.Main
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
-        }       
-
-        private void TheadProcessInitRegisterBackgroundData()
-        {
-            try
-            {
-                Thread thread = new System.Threading.Thread(new ThreadStart(InitRegisterBackgroundData));
-                try
-                {
-                    thread.Start();
-                }
-                catch (Exception ex)
-                {
-                    Inventec.Common.Logging.LogSystem.Error(ex);
-                    thread.Abort();
-                }
-            }
-            catch (Exception ex)
-            {
-                LogSystem.Warn(ex);
-            }
         }
 
-        private void InitRegisterBackgroundData()
+        private async Task LoadDataKskContract()
         {
             try
             {
-                Inventec.Common.Logging.LogSystem.Debug("InitRegisterBackgroundData. 1");
-                var province = BackendDataWorker.Get<V_SDA_PROVINCE>();
-                var district = BackendDataWorker.Get<V_SDA_DISTRICT>();
-                var commune = BackendDataWorker.Get<V_SDA_COMMUNE>();
-                var ethnic = BackendDataWorker.Get<SDA_ETHNIC>();
-                var national = BackendDataWorker.Get<SDA_NATIONAL>();
-                Inventec.Common.Logging.LogSystem.Debug("InitRegisterBackgroundData. 2");
-            }
-            catch (Exception ex)
-            {
-                LogSystem.Warn(ex);
-            }
-        }
-
-        private void TheadProcessInitAssignPresscriptionBackgroundData()
-        {
-            try
-            {
-                Thread thread = new System.Threading.Thread(new ThreadStart(InitAssignPresscriptionBackgroundData));
-                try
-                {
-                    thread.Start();
-                }
-                catch (Exception ex)
-                {
-                    Inventec.Common.Logging.LogSystem.Error(ex);
-                    thread.Abort();
-                }
-            }
-            catch (Exception ex)
-            {
-                LogSystem.Warn(ex);
-            }
-        }
-
-        private void InitAssignPresscriptionBackgroundData()
-        {
-            try
-            {
-                Inventec.Common.Logging.LogSystem.Debug("InitAssignPresscriptionBackgroundData. 1");
-                var province = BackendDataWorker.Get<V_HIS_MEDICINE_TYPE>();
-                var district = BackendDataWorker.Get<V_HIS_MATERIAL_TYPE>();
-                Inventec.Common.Logging.LogSystem.Debug("InitAssignPresscriptionBackgroundData. 2");
-            }
-            catch (Exception ex)
-            {
-                LogSystem.Warn(ex);
-            }
-        }
-
-        private async Task LoadDataServicePaty()
-        {
-            try
-            {
-                Inventec.Common.Logging.LogSystem.Info("async Task LoadDataServicePaty => 1");
-
                 CommonParam paramCommon = new CommonParam();
                 dynamic dfilter = new System.Dynamic.ExpandoObject();
-                dfilter.BRANCH_ID = BranchDataWorker.GetCurrentBranchId();
-                dfilter.CustomColumns = new List<string>() {
-                            "ID",
-                            "PATIENT_TYPE_ID",
-                            "SERVICE_ID",
-                            "INSTR_NUM_BY_TYPE_FROM",
-                            "INSTR_NUM_BY_TYPE_TO",
-                            "PRICE",
-                            "VAT_RATIO",
-                            "BRANCH_ID",
-                            "SERVICE_TYPE_ID",
-                            "IS_ACTIVE",
-                            "PRIORITY",
-                            "FROM_TIME",
-                            "TO_TIME",
-                            "TREATMENT_FROM_TIME",
-                            "TREATMENT_TO_TIME",
-                            "INTRUCTION_NUMBER_FROM",
-                            "INTRUCTION_NUMBER_TO",
-                            "HOUR_FROM",
-                            "HOUR_TO",
-                            "DAY_FROM",
-                            "DAY_TO",
-                            "REQUEST_ROOM_IDS",
-                            "EXECUTE_ROOM_IDS",
-                            "REQUEST_DEPARMENT_IDS",
-                            "SERVICE_CONDITION_ID",
-                            "SERVICE_CONDITION_CODE",
-                            "SERVICE_CONDITION_NAME",
-                            "HEIN_RATIO"
-                        };
-
-                long startBytes = GC.GetTotalMemory(true);
-
-                var result = await new Inventec.Common.Adapter.BackendAdapter(paramCommon).GetAsync<List<MOS.EFMODEL.DataModels.V_HIS_SERVICE_PATY>>("api/HisServicePaty/GetView", ApiConsumers.MosConsumer, dfilter, paramCommon);
-
-                long memoryUsageusers = (GC.GetTotalMemory(true) - startBytes) / (1024 * 1024);
-                Inventec.Common.Logging.LogSystem.Info(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => startBytes), startBytes) + "____" + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => memoryUsageusers), memoryUsageusers));
-
-                if (result != null) BackendDataWorker.UpdateToRam(typeof(MOS.EFMODEL.DataModels.V_HIS_SERVICE_PATY), result, long.Parse(DateTime.Now.ToString("yyyyMMddHHmmss")));
-
-                Inventec.Common.Logging.LogSystem.Info("async Task LoadDataServicePaty => 2");
+                dfilter.IS_ACTIVE = IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE;
+                var dataKskContract = await new Inventec.Common.Adapter.BackendAdapter(paramCommon).GetAsync<List<V_HIS_KSK_CONTRACT>>("api/HisKskContract/GetView", ApiConsumers.MosConsumer, dfilter, paramCommon);
+                if (dataKskContract != null) BackendDataWorker.UpdateToRam(typeof(V_HIS_KSK_CONTRACT), dataKskContract, long.Parse(DateTime.Now.ToString("yyyyMMddHHmmss")));
             }
             catch (Exception ex)
             {
-                Inventec.Common.Logging.LogSystem.Warn(ex);
+                LogSystem.Warn(ex);
+            }
+        }
+
+        private async Task LoadDataTestIndex()
+        {
+            try
+            {
+                CommonParam paramCommon = new CommonParam();
+                dynamic dfilter = new System.Dynamic.ExpandoObject();
+                dfilter.IS_ACTIVE = IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE;
+                var dataTestIndex = await new Inventec.Common.Adapter.BackendAdapter(paramCommon).GetAsync<List<HIS_TEST_INDEX>>("api/HisTestIndex/Get", ApiConsumers.MosConsumer, dfilter, paramCommon);
+                if (dataTestIndex != null) BackendDataWorker.UpdateToRam(typeof(HIS_TEST_INDEX), dataTestIndex, long.Parse(DateTime.Now.ToString("yyyyMMddHHmmss")));
+            }
+            catch (Exception ex)
+            {
+                LogSystem.Warn(ex);
+            }
+        }
+
+        private async Task LoadDataTextLib()
+        {
+            try
+            {
+                CommonParam paramCommon = new CommonParam();
+                dynamic dfilter = new System.Dynamic.ExpandoObject();
+                dfilter.IS_ACTIVE = IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE;
+                var dataTextLib = await new Inventec.Common.Adapter.BackendAdapter(paramCommon).GetAsync<List<HIS_TEXT_LIB>>("api/HisTextLib/Get", ApiConsumers.MosConsumer, dfilter, paramCommon);
+                if (dataTextLib != null) BackendDataWorker.UpdateToRam(typeof(HIS_TEXT_LIB), dataTextLib, long.Parse(DateTime.Now.ToString("yyyyMMddHHmmss")));
+            }
+            catch (Exception ex)
+            {
+                LogSystem.Warn(ex);
+            }
+        }
+
+        private async Task LoadDataExecuteRole()
+        {
+            try
+            {
+                CommonParam paramCommon = new CommonParam();
+                dynamic dfilter = new System.Dynamic.ExpandoObject();
+                dfilter.IS_ACTIVE = IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE;
+                var dataExecuteRole = await new Inventec.Common.Adapter.BackendAdapter(paramCommon).GetAsync<List<HIS_EXECUTE_ROLE>>("api/HisExecuteRole/Get", ApiConsumers.MosConsumer, dfilter, paramCommon);
+                if (dataExecuteRole != null) BackendDataWorker.UpdateToRam(typeof(HIS_EXECUTE_ROLE), dataExecuteRole, long.Parse(DateTime.Now.ToString("yyyyMMddHHmmss")));
+            }
+            catch (Exception ex)
+            {
+                LogSystem.Warn(ex);
+            }
+        }
+
+        private async Task LoadDataCommune()
+        {
+            try
+            {
+                CommonParam paramCommon = new CommonParam();
+                dynamic dfilter = new System.Dynamic.ExpandoObject();
+                dfilter.IS_ACTIVE = IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE;
+                var dataCommune = await new Inventec.Common.Adapter.BackendAdapter(paramCommon).GetAsync<List<V_SDA_COMMUNE>>("api/SdaCommune/GetView", ApiConsumers.SdaConsumer, dfilter, paramCommon);
+                if (dataCommune != null) BackendDataWorker.UpdateToRam(typeof(V_SDA_COMMUNE), dataCommune, long.Parse(DateTime.Now.ToString("yyyyMMddHHmmss")));
+            }
+            catch (Exception ex)
+            {
+                LogSystem.Warn(ex);
+            }
+        }
+
+        private async Task LoadDataDistrict()
+        {
+            try
+            {
+                CommonParam paramCommon = new CommonParam();
+                dynamic dfilter = new System.Dynamic.ExpandoObject();
+                dfilter.IS_ACTIVE = IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE;
+                var dataDistrict = await new Inventec.Common.Adapter.BackendAdapter(paramCommon).GetAsync<List<V_SDA_DISTRICT>>("api/SdaDistrict/GetView", ApiConsumers.SdaConsumer, dfilter, paramCommon);
+                if (dataDistrict != null) BackendDataWorker.UpdateToRam(typeof(V_SDA_DISTRICT), dataDistrict, long.Parse(DateTime.Now.ToString("yyyyMMddHHmmss")));
+            }
+            catch (Exception ex)
+            {
+                LogSystem.Warn(ex);
+            }
+        }
+
+        private static async Task LoadDataProvince()
+        {
+            try
+            {
+                CommonParam paramCommon = new CommonParam();
+                dynamic dfilter = new System.Dynamic.ExpandoObject();
+                dfilter.IS_ACTIVE = IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE;
+                var dataProvince = await new Inventec.Common.Adapter.BackendAdapter(paramCommon).GetAsync<List<V_SDA_PROVINCE>>("api/SdaProvince/GetView", ApiConsumers.SdaConsumer, dfilter, paramCommon);
+                if (dataProvince != null) BackendDataWorker.UpdateToRam(typeof(V_SDA_PROVINCE), dataProvince, long.Parse(DateTime.Now.ToString("yyyyMMddHHmmss")));
+            }
+            catch (Exception ex)
+            {
+                LogSystem.Warn(ex);
             }
         }
 
@@ -514,6 +520,86 @@ namespace HIS.Desktop.Modules.Main
             }
         }
 
+        private async Task LoadDataHisPosition()
+        {
+            try
+            {
+                Inventec.Common.Logging.LogSystem.Info("async Task LoadDataHisPosition => 1");
+
+                CommonParam paramCommon = new CommonParam();
+                MOS.Filter.HisPatientTypeFilter filter = new MOS.Filter.HisPatientTypeFilter();
+                var result = await new Inventec.Common.Adapter.BackendAdapter(paramCommon).GetAsync<List<MOS.EFMODEL.DataModels.HIS_POSITION>>("api/HisPosition/Get", ApiConsumers.MosConsumer, filter, paramCommon);
+
+                if (result != null) BackendDataWorker.UpdateToRam(typeof(MOS.EFMODEL.DataModels.HIS_POSITION), result, long.Parse(DateTime.Now.ToString("yyyyMMddHHmmss")));
+
+                Inventec.Common.Logging.LogSystem.Info("async Task LoadDataHisPosition => 2");
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private async Task LoadDataHisAgeType()
+        {
+            try
+            {
+                Inventec.Common.Logging.LogSystem.Info("async Task LoadDataHisAgeType => 1");
+
+                CommonParam paramCommon = new CommonParam();
+                MOS.Filter.HisPatientTypeFilter filter = new MOS.Filter.HisPatientTypeFilter();
+                var result = await new Inventec.Common.Adapter.BackendAdapter(paramCommon).GetAsync<List<MOS.EFMODEL.DataModels.HIS_AGE_TYPE>>("api/HisAgeType/Get", ApiConsumers.MosConsumer, filter, paramCommon);
+
+                if (result != null) BackendDataWorker.UpdateToRam(typeof(MOS.EFMODEL.DataModels.HIS_AGE_TYPE), result, long.Parse(DateTime.Now.ToString("yyyyMMddHHmmss")));
+
+                Inventec.Common.Logging.LogSystem.Info("async Task LoadDataHisAgeType => 2");
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private async Task LoadDataHisReceptionRoom()
+        {
+            try
+            {
+                Inventec.Common.Logging.LogSystem.Info("async Task LoadDataHisReceptionRoom => 1");
+
+                CommonParam paramCommon = new CommonParam();
+                MOS.Filter.HisPatientTypeFilter filter = new MOS.Filter.HisPatientTypeFilter();
+                var result = await new Inventec.Common.Adapter.BackendAdapter(paramCommon).GetAsync<List<MOS.EFMODEL.DataModels.HIS_RECEPTION_ROOM>>("api/HisReceptionRoom/Get", ApiConsumers.MosConsumer, filter, paramCommon);
+
+                if (result != null) BackendDataWorker.UpdateToRam(typeof(MOS.EFMODEL.DataModels.HIS_RECEPTION_ROOM), result, long.Parse(DateTime.Now.ToString("yyyyMMddHHmmss")));
+
+                Inventec.Common.Logging.LogSystem.Info("async Task LoadDataHisReceptionRoom => 2");
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private async Task LoadDataPatientClassify()
+        {
+            try
+            {
+                Inventec.Common.Logging.LogSystem.Info("async Task LoadDataPatientClassify => 1");
+
+                CommonParam paramCommon = new CommonParam();
+                MOS.Filter.HisPatientTypeFilter filter = new MOS.Filter.HisPatientTypeFilter();
+                var result = await new Inventec.Common.Adapter.BackendAdapter(paramCommon).GetAsync<List<MOS.EFMODEL.DataModels.HIS_PATIENT_CLASSIFY>>("api/HisPatientClassify/Get", ApiConsumers.MosConsumer, filter, paramCommon);
+
+                if (result != null) BackendDataWorker.UpdateToRam(typeof(MOS.EFMODEL.DataModels.HIS_PATIENT_CLASSIFY), result, long.Parse(DateTime.Now.ToString("yyyyMMddHHmmss")));
+
+                Inventec.Common.Logging.LogSystem.Info("async Task LoadDataPatientClassify => 2");
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
         private async Task LoadDataGender()
         {
             try
@@ -587,6 +673,66 @@ namespace HIS.Desktop.Modules.Main
                 if (result != null) BackendDataWorker.UpdateToRam(typeof(MOS.EFMODEL.DataModels.HIS_MEST_PATIENT_TYPE), result, long.Parse(DateTime.Now.ToString("yyyyMMddHHmmss")));
 
                 Inventec.Common.Logging.LogSystem.Info("async Task LoadDataMestPatientType => 2");
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private async Task LoadDataHisMedicineType()
+        {
+            try
+            {
+                Inventec.Common.Logging.LogSystem.Info("async Task LoadDataHisMedicineType => 1");
+
+                CommonParam paramCommon = new CommonParam();
+                MOS.Filter.HisPatientTypeFilter filter = new MOS.Filter.HisPatientTypeFilter();
+                var result = await new Inventec.Common.Adapter.BackendAdapter(paramCommon).GetAsync<List<MOS.EFMODEL.DataModels.V_HIS_MEDICINE_TYPE>>("api/HisMedicineType/GetView", ApiConsumers.MosConsumer, filter, paramCommon);
+
+                if (result != null) BackendDataWorker.UpdateToRam(typeof(MOS.EFMODEL.DataModels.V_HIS_MEDICINE_TYPE), result, long.Parse(DateTime.Now.ToString("yyyyMMddHHmmss")));
+
+                Inventec.Common.Logging.LogSystem.Info("async Task LoadDataHisMedicineType => 2");
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private async Task LoadDataHisMaterialType()
+        {
+            try
+            {
+                Inventec.Common.Logging.LogSystem.Info("async Task LoadDataHisMaterialType => 1");
+
+                CommonParam paramCommon = new CommonParam();
+                MOS.Filter.HisPatientTypeFilter filter = new MOS.Filter.HisPatientTypeFilter();
+                var result = await new Inventec.Common.Adapter.BackendAdapter(paramCommon).GetAsync<List<MOS.EFMODEL.DataModels.V_HIS_MATERIAL_TYPE>>("api/HisMaterialType/GetView", ApiConsumers.MosConsumer, filter, paramCommon);
+
+                if (result != null) BackendDataWorker.UpdateToRam(typeof(MOS.EFMODEL.DataModels.V_HIS_MATERIAL_TYPE), result, long.Parse(DateTime.Now.ToString("yyyyMMddHHmmss")));
+
+                Inventec.Common.Logging.LogSystem.Info("async Task LoadDataHisMaterialType => 2");
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private async Task LoadDataHisMedicinePaty()
+        {
+            try
+            {
+                Inventec.Common.Logging.LogSystem.Info("async Task LoadDataHisMedicinePaty => 1");
+
+                CommonParam paramCommon = new CommonParam();
+                MOS.Filter.HisPatientTypeFilter filter = new MOS.Filter.HisPatientTypeFilter();
+                var result = await new Inventec.Common.Adapter.BackendAdapter(paramCommon).GetAsync<List<MOS.EFMODEL.DataModels.HIS_MEDICINE_PATY>>("api/HisMedicinePaty/Get", ApiConsumers.MosConsumer, filter, paramCommon);
+
+                if (result != null) BackendDataWorker.UpdateToRam(typeof(MOS.EFMODEL.DataModels.HIS_MEDICINE_PATY), result, long.Parse(DateTime.Now.ToString("yyyyMMddHHmmss")));
+
+                Inventec.Common.Logging.LogSystem.Info("async Task LoadDataHisMedicinePaty => 2");
             }
             catch (Exception ex)
             {

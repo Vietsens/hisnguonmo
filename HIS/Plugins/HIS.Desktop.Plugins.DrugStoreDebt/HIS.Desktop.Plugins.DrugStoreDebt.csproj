@@ -144,7 +144,9 @@
   <ItemGroup>
     <Compile Include="ADO\MediMateADO.cs" />
     <Compile Include="DrugStoreDebtProcessor.cs" />
-    <Compile Include="frmDrugStoreDebt.cs" />
+    <Compile Include="frmDrugStoreDebt.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="frmDrugStoreDebt.Designer.cs">
       <DependentUpon>frmDrugStoreDebt.cs</DependentUpon>
     </Compile>

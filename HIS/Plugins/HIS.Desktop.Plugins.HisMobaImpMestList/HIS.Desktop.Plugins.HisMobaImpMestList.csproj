@@ -121,7 +121,9 @@
   <ItemGroup>
     <Compile Include="Base\GlobalStore.cs" />
     <Compile Include="Base\HisImpMestSttCFG.cs" />
-    <Compile Include="FormHisMobaImpMestList.cs" />
+    <Compile Include="FormHisMobaImpMestList.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="FormHisMobaImpMestList.Designer.cs">
       <DependentUpon>FormHisMobaImpMestList.cs</DependentUpon>
     </Compile>

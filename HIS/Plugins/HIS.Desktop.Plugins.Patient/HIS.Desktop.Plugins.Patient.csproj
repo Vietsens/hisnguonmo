@@ -222,8 +222,12 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="UCListPatient__Plus_ShowPopup.cs" />
-    <Compile Include="frmHeinCard.cs" />
+    <Compile Include="UCListPatient__Plus_ShowPopup.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="frmHeinCard.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="frmHeinCard.Designer.cs">
       <DependentUpon>frmHeinCard.cs</DependentUpon>
     </Compile>
@@ -243,7 +247,9 @@
     <Compile Include="PatientProcessor.cs" />
     <Compile Include="Resources\ResourceLanguageManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="UCListPatient.cs" />
+    <Compile Include="UCListPatient.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="UCListPatient.Designer.cs">
       <DependentUpon>UCListPatient.cs</DependentUpon>
     </Compile>

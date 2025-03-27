@@ -117,7 +117,9 @@
     <Compile Include="BedAssign\BedAssignBehavior.cs" />
     <Compile Include="BedAssign\BedAssignFactory.cs" />
     <Compile Include="BedAssign\IBedAssign.cs" />
-    <Compile Include="FormBedAssign.cs" />
+    <Compile Include="FormBedAssign.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="FormBedAssign.Designer.cs">
       <DependentUpon>FormBedAssign.cs</DependentUpon>
     </Compile>

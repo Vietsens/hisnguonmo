@@ -161,7 +161,9 @@
     <Compile Include="PopupMenuProcessor.cs" />
     <Compile Include="RequestUriStore.cs" />
     <Compile Include="Resources\ResourceMessage.cs" />
-    <Compile Include="UCHisAggrExpMestList_Event.cs" />
+    <Compile Include="UCHisAggrExpMestList_Event.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="HisAggrExpMestListProcessor.cs" />
     <Compile Include="HisAggrExpMestList\HisAggrExpMestListBehavior.cs" />
     <Compile Include="HisAggrExpMestList\HisAggrExpMestListFactory.cs" />
@@ -174,7 +176,9 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="Resources\ResourceLanguageManager.cs" />
-    <Compile Include="UCHisAggrExpMestList.cs" />
+    <Compile Include="UCHisAggrExpMestList.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="UCHisAggrExpMestList.Designer.cs">
       <DependentUpon>UCHisAggrExpMestList.cs</DependentUpon>
     </Compile>

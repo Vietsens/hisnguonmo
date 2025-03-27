@@ -225,7 +225,9 @@
     <Compile Include="KeyboardWorker.cs" />
     <Compile Include="ModuleLinkString.cs" />
     <Compile Include="PopupMenuProcessor.cs" />
-    <Compile Include="popup\frmReasonExp.cs" />
+    <Compile Include="popup\frmReasonExp.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="popup\frmReasonExp.Designer.cs">
       <DependentUpon>frmReasonExp.cs</DependentUpon>
     </Compile>
@@ -237,13 +239,21 @@
     </Compile>
     <Compile Include="Resources\ResourceLanguageManager.cs" />
     <Compile Include="Resources\ResourceMessage.cs" />
-    <Compile Include="UCHisExportMestMedicine.cs" />
+    <Compile Include="UCHisExportMestMedicine.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="UCHisExportMestMedicine.Designer.cs">
       <DependentUpon>UCHisExportMestMedicine.cs</DependentUpon>
     </Compile>
-    <Compile Include="UCHisExportMestMedicine_Event.cs" />
-    <Compile Include="UCHisExportMestMedicine__Dispose.cs" />
-    <Compile Include="UCHisExportMestMedicine__CallPatient.cs" />
+    <Compile Include="UCHisExportMestMedicine_Event.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UCHisExportMestMedicine__Dispose.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UCHisExportMestMedicine__CallPatient.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="frmMessage.resx">

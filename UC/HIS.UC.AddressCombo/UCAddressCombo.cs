@@ -71,26 +71,26 @@ namespace HIS.UC.AddressCombo
         #region Contructor -Load
 
         public UCAddressCombo()
-            : base()
+            : base("HIS.Desktop.Plugins.RegisterV2", "UCAddressCombo")
         {
-            Inventec.Common.Logging.LogSystem.Debug("UCAddressCombo--------InitializeComponent------1-");
+            Inventec.Common.Logging.LogSystem.Debug("UCAddressCombo.InitializeComponent------1-");
             InitializeComponent();
-            Inventec.Common.Logging.LogSystem.Debug("UCAddressCombo--------InitializeComponent------2-");
+            Inventec.Common.Logging.LogSystem.Debug("UCAddressCombo.InitializeComponent------2-");
         }
 
         private void UCAddressCombo_Load(object sender, EventArgs e)
         {
             try
             {
+                Inventec.Common.Logging.LogSystem.Debug("UCAddressCombo_Load------1-");
                 this.workingCommuneADO = BackendDataWorker.Get<HIS.Desktop.LocalStorage.BackendData.ADO.CommuneADO>();
-                Inventec.Common.Logging.LogSystem.Debug("UCAddressCombo--------UCAddressCombo_Load------1-");
                 //SetCaptionByLanguageKey();
                 SetCaptionByLanguageKeyNew();
                 ShowHideControlAddress();
                 SetDefaultDataToControlV2();
                 this.IsValidateAddressCombo(HIS.Desktop.Plugins.Library.RegisterConfig.HisConfigCFG.Validate__T_H_X);      
 
-                Inventec.Common.Logging.LogSystem.Debug("UCAddressCombo--------UCAddressCombo_Load------1-");
+                Inventec.Common.Logging.LogSystem.Debug("UCAddressCombo_Load------2-");
             }
             catch (Exception ex)
             {

@@ -50,6 +50,7 @@ namespace HIS.UC.PlusInfo.Design
         #region Contructor
 
         public UCPatientStoreCode()
+            : base("UCPlusInfo", "UCPatientStoreCode")
         {
             try
             {

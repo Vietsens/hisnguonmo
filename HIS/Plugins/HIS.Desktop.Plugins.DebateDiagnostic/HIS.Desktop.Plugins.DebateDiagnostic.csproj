@@ -296,12 +296,18 @@
     <Compile Include="EkipTemp\frmEkipTemp__Validate.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="FormDebateDiagnostic.cs" />
+    <Compile Include="FormDebateDiagnostic.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="FormDebateDiagnostic.Designer.cs">
       <DependentUpon>FormDebateDiagnostic.cs</DependentUpon>
     </Compile>
-    <Compile Include="FormDebateDiagnostic_Event.cs" />
-    <Compile Include="FormDebateDiagnostic_Print.cs" />
+    <Compile Include="FormDebateDiagnostic_Event.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormDebateDiagnostic_Print.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="IcdUtil.cs" />
     <Compile Include="PrintTypeCodeStore.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

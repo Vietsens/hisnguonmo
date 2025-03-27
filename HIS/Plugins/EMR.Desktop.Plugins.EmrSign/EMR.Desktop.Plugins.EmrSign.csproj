@@ -154,7 +154,9 @@
     <Compile Include="EmrSign\EmrSignBehavior.cs" />
     <Compile Include="EmrSign\EmrSignFactory.cs" />
     <Compile Include="EmrSign\IEmrSign.cs" />
-    <Compile Include="FormEmrSign.cs" />
+    <Compile Include="FormEmrSign.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="FormEmrSign.Designer.cs">
       <DependentUpon>FormEmrSign.cs</DependentUpon>
     </Compile>

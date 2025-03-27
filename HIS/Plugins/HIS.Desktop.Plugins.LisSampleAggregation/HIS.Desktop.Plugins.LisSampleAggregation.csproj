@@ -139,7 +139,9 @@
     <Compile Include="ADO\ComboADO.cs" />
     <Compile Include="ADO\DeliveryNoteADO.cs" />
     <Compile Include="ControlStateConstan.cs" />
-    <Compile Include="frmBarcodeSampleAggregation\frmBarcodeSampleAggregation.cs" />
+    <Compile Include="frmBarcodeSampleAggregation\frmBarcodeSampleAggregation.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="frmBarcodeSampleAggregation\frmBarcodeSampleAggregation.Designer.cs">
       <DependentUpon>frmBarcodeSampleAggregation.cs</DependentUpon>
     </Compile>
@@ -161,11 +163,15 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="Resources\ResourceLanguageManager.cs" />
-    <Compile Include="Run\FormSelectSample.cs" />
+    <Compile Include="Run\FormSelectSample.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Run\FormSelectSample.Designer.cs">
       <DependentUpon>FormSelectSample.cs</DependentUpon>
     </Compile>
-    <Compile Include="Run\UCLisSampleAggregation.cs" />
+    <Compile Include="Run\UCLisSampleAggregation.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="Run\UCLisSampleAggregation.Designer.cs">
       <DependentUpon>UCLisSampleAggregation.cs</DependentUpon>
     </Compile>

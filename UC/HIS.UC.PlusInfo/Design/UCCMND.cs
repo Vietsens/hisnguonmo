@@ -52,6 +52,7 @@ namespace HIS.UC.PlusInfo.Design
         #region Contructor - Load
 
         public UCCMND()
+            : base("UCPlusInfo", "UCCMND")
         {
             try
             {

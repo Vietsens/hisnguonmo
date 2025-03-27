@@ -98,7 +98,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ManuImpMestEditProcessor.cs" />
-    <Compile Include="FormManuImpMestEdit.cs" />
+    <Compile Include="FormManuImpMestEdit.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="FormManuImpMestEdit.Designer.cs">
       <DependentUpon>FormManuImpMestEdit.cs</DependentUpon>
     </Compile>

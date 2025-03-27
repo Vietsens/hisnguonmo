@@ -116,7 +116,9 @@
     <Compile Include="Config\ControlStateConstant.cs" />
     <Compile Include="Resources\ResourceMessage.cs" />
     <Compile Include="TreatmentPatientUpdateProcessor.cs" />
-    <Compile Include="FormTreatmentPatientUpdate.cs" />
+    <Compile Include="FormTreatmentPatientUpdate.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="FormTreatmentPatientUpdate.Designer.cs">
       <DependentUpon>FormTreatmentPatientUpdate.cs</DependentUpon>
     </Compile>

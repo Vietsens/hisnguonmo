@@ -233,7 +233,9 @@
     <Compile Include="Base\Delegate.cs" />
     <Compile Include="Base\PrintTypeCodeWorker.cs" />
     <Compile Include="Base\UriRequestStore.cs" />
-    <Compile Include="UCSchedulerJob__Load.cs" />
+    <Compile Include="UCSchedulerJob__Load.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="Delegate.cs" />
     <Compile Include="frmSchedulerJob.cs">
       <SubType>Form</SubType>
@@ -253,7 +255,9 @@
     <Compile Include="SchedulerJob\SchedulerJobBehavior.cs" />
     <Compile Include="SchedulerJob\SchedulerJobFactory.cs" />
     <Compile Include="SchedulerJob\ISchedulerJob.cs" />
-    <Compile Include="UCSchedulerJob.cs" />
+    <Compile Include="UCSchedulerJob.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="UCSchedulerJob.Designer.cs">
       <DependentUpon>UCSchedulerJob.cs</DependentUpon>
     </Compile>

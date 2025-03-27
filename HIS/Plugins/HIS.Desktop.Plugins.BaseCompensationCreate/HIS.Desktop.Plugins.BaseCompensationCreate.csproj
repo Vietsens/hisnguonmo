@@ -163,11 +163,15 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="UCBaseCompensationCreate.cs" />
+    <Compile Include="UCBaseCompensationCreate.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="UCBaseCompensationCreate.Designer.cs">
       <DependentUpon>UCBaseCompensationCreate.cs</DependentUpon>
     </Compile>
-    <Compile Include="UCBaseCompensationCreate__Dispose.cs" />
+    <Compile Include="UCBaseCompensationCreate__Dispose.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Properties\licenses.licx" />

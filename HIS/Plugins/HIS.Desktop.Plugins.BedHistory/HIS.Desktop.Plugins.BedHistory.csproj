@@ -140,12 +140,18 @@
     <Compile Include="BedHistory\BedHistoryBehavior.cs" />
     <Compile Include="BedHistory\BedHistoryFactory.cs" />
     <Compile Include="BedHistory\IBedHistory.cs" />
-    <Compile Include="FormBedHistory.cs" />
+    <Compile Include="FormBedHistory.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="FormBedHistory.Designer.cs">
       <DependentUpon>FormBedHistory.cs</DependentUpon>
     </Compile>
-    <Compile Include="FormBedHistory_TreatmentFinish.cs" />
-    <Compile Include="FormBedHistory__ProcessData.cs" />
+    <Compile Include="FormBedHistory_TreatmentFinish.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormBedHistory__ProcessData.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="HisConfigKeys.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">

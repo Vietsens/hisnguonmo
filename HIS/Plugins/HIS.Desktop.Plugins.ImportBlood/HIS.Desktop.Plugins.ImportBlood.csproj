@@ -191,7 +191,9 @@
     <Compile Include="Forms\frmImportError.Designer.cs">
       <DependentUpon>frmImportError.cs</DependentUpon>
     </Compile>
-    <Compile Include="FrmImportBlood.cs" />
+    <Compile Include="FrmImportBlood.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="FrmImportBlood.Designer.cs">
       <DependentUpon>FrmImportBlood.cs</DependentUpon>
     </Compile>
@@ -199,7 +201,9 @@
     <Compile Include="Helpers\DateUtil.cs" />
     <Compile Include="HisRequestUri.cs" />
     <Compile Include="PrintTypeCodeStore.cs" />
-    <Compile Include="UCImportBloodPlus_UpdateBlood.cs" />
+    <Compile Include="UCImportBloodPlus_UpdateBlood.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="ImportBloodProcessor.cs" />
     <Compile Include="ImportBlood\IImportBlood.cs" />
     <Compile Include="ImportBlood\ImportBloodBehavior.cs" />
@@ -211,14 +215,24 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="UCImportBloodPlus.cs" />
+    <Compile Include="UCImportBloodPlus.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="UCImportBloodPlus.Designer.cs">
       <DependentUpon>UCImportBloodPlus.cs</DependentUpon>
     </Compile>
-    <Compile Include="UCImportBloodPlus__Plus__BloodGiver.cs" />
-    <Compile Include="UCImportBloodPlus__Plus__Button.cs" />
-    <Compile Include="UCImportBloodPlus__Plus__Control.cs" />
-    <Compile Include="UCImportBloodPlus__Plus__GridControl.cs" />
+    <Compile Include="UCImportBloodPlus__Plus__BloodGiver.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UCImportBloodPlus__Plus__Button.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UCImportBloodPlus__Plus__Control.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UCImportBloodPlus__Plus__GridControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="Validation\BloodAboValidationRule.cs" />
     <Compile Include="Validation\BloodCodeValidationRule.cs" />
     <Compile Include="Validation\BloodRhValidationRule.cs" />

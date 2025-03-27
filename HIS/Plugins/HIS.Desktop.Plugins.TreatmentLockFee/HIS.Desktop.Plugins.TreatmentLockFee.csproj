@@ -99,7 +99,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Base\ResourceLangManager.cs" />
-    <Compile Include="frmTreatmentLockFee.cs" />
+    <Compile Include="frmTreatmentLockFee.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="frmTreatmentLockFee.Designer.cs">
       <DependentUpon>frmTreatmentLockFee.cs</DependentUpon>
     </Compile>

@@ -190,7 +190,9 @@
     <Compile Include="Run\IExpXml4210ObOtherBHYT.cs" />
     <Compile Include="Run\ExpXml4210ObOtherBHYTBehavior.cs" />
     <Compile Include="Run\ExpXml4210ObOtherBHYTFactory.cs" />
-    <Compile Include="UCExportXml.cs" />
+    <Compile Include="UCExportXml.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="UCExportXml.Designer.cs">
       <DependentUpon>UCExportXml.cs</DependentUpon>
     </Compile>

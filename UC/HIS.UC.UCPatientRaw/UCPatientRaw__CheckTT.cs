@@ -28,7 +28,7 @@ using HIS.Desktop.DelegateRegister;
 
 namespace HIS.UC.UCPatientRaw
 {
-    public partial class UCPatientRaw : UserControl
+    public partial class UCPatientRaw : HIS.Desktop.Utility.UserControlBase
     {
         public void SetDelegateCheckTT(DelegateCheckTT _dlgCheckTT)
         {

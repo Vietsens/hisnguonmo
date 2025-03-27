@@ -222,11 +222,15 @@
     <Compile Include="ADO\ConfigADO.cs" />
     <Compile Include="Config\HisConfigCFG.cs" />
     <Compile Include="Enum\PrintTypeInfusion.cs" />
-    <Compile Include="frmInfusionCreate.cs" />
+    <Compile Include="frmInfusionCreate.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="frmInfusionCreate.Designer.cs">
       <DependentUpon>frmInfusionCreate.cs</DependentUpon>
     </Compile>
-    <Compile Include="frmInfusionCreate__Dispose.cs" />
+    <Compile Include="frmInfusionCreate__Dispose.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="InfusionCreateADO.cs" />
     <Compile Include="InfusionCreateProcessor.cs">
       <SubType>Code</SubType>

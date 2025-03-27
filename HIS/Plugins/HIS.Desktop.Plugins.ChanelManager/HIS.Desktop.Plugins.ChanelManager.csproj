@@ -152,7 +152,9 @@
     <Compile Include="Run\ChanelManagerBehavior.cs" />
     <Compile Include="Run\ChanelManagerFactory.cs" />
     <Compile Include="Run\IChanelManager.cs" />
-    <Compile Include="Run\frmChanelManager.cs" />
+    <Compile Include="Run\frmChanelManager.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Run\frmChanelManager.Designer.cs">
       <DependentUpon>frmChanelManager.cs</DependentUpon>
     </Compile>

@@ -174,19 +174,27 @@
     <Compile Include="Resources\ResourceLanguageManager.cs" />
     <Compile Include="Resources\ResourceMessage.cs" />
     <Compile Include="UpdateExamServiceReqProcessor.cs" />
-    <Compile Include="frmUpdateExamServiceReq___ShortCut.cs" />
-    <Compile Include="frmUpdateExamServiceReq.cs" />
+    <Compile Include="frmUpdateExamServiceReq___ShortCut.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmUpdateExamServiceReq.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="frmUpdateExamServiceReq.Designer.cs">
       <DependentUpon>frmUpdateExamServiceReq.cs</DependentUpon>
     </Compile>
-    <Compile Include="Load\frmUpdateExamServiceReq__Load.cs" />
+    <Compile Include="Load\frmUpdateExamServiceReq__Load.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Delegate\DelegateUC.cs" />
     <Compile Include="KeyboardWorker.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UpdateExamServiceReq\UpdateExamServiceReqBehavior.cs" />
     <Compile Include="UpdateExamServiceReq\UpdateExamServiceReqFactory.cs" />
     <Compile Include="UpdateExamServiceReq\IUpdateExamServiceReq.cs" />
-    <Compile Include="Validate\frmUpdateExamServiceReq___Validate.cs" />
+    <Compile Include="Validate\frmUpdateExamServiceReq___Validate.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Validate\DateEditValidationRule.cs" />
   </ItemGroup>
   <ItemGroup>

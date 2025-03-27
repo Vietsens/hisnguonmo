@@ -44,8 +44,8 @@ using System.Windows.Forms;
 
 namespace HIS.UC.UCPatientRaw
 {
-	public partial class UCPatientRaw : UserControl
-	{
+	public partial class UCPatientRaw : HIS.Desktop.Utility.UserControlBase
+    {
 		public HisPatientSDO patientTD3;
 		DataResultADO dataResult = new DataResultADO();
 		string hrmEmployeeCode = "";

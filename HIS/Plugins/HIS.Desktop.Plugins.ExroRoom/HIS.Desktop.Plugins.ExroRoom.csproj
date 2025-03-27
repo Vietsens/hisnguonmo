@@ -143,7 +143,9 @@
     <Compile Include="ExroRoom\ExroRoomBehavior.cs" />
     <Compile Include="ExroRoom\ExroRoomFactory.cs" />
     <Compile Include="ExroRoom\IExroRoom.cs" />
-    <Compile Include="UCExroRoom.cs" />
+    <Compile Include="UCExroRoom.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="UCExroRoom.Designer.cs">
       <DependentUpon>UCExroRoom.cs</DependentUpon>
     </Compile>

@@ -224,22 +224,34 @@
     <Compile Include="ADO\TransactionADO.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="BordereauPrint\frmTransactionDebt__Plus__Bordereau_Init.cs" />
+    <Compile Include="BordereauPrint\frmTransactionDebt__Plus__Bordereau_Init.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Config\HisConfigCFG.cs" />
     <Compile Include="Config\MappingErrorTHE.cs" />
     <Compile Include="Config\UriStores.cs" />
-    <Compile Include="frmTransactionDebtCollect__Plus__FillInfoPatient.cs" />
-    <Compile Include="frmTransactionDebtCollect__Plus__Button.cs" />
+    <Compile Include="frmTransactionDebtCollect__Plus__FillInfoPatient.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmTransactionDebtCollect__Plus__Button.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="frmTransactionDebtConfig.cs" />
     <Compile Include="Base\PrintTypeCodeWorker.cs" />
     <Compile Include="Base\ResourceLangManager.cs" />
     <Compile Include="Base\ResourceMessageLang.cs" />
-    <Compile Include="frmTransactionDebtCollect.cs" />
+    <Compile Include="frmTransactionDebtCollect.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="frmTransactionDebtCollect.Designer.cs">
       <DependentUpon>frmTransactionDebtCollect.cs</DependentUpon>
     </Compile>
-    <Compile Include="frmTransactionDebtCollect__Plus__Control.cs" />
-    <Compile Include="frmTransactionDebtCollect__Plus__TreeSereServ.cs" />
+    <Compile Include="frmTransactionDebtCollect__Plus__Control.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmTransactionDebtCollect__Plus__TreeSereServ.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>

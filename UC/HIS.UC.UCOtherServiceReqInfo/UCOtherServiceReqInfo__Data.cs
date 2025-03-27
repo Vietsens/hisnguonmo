@@ -35,7 +35,7 @@ using HIS.Desktop.ApiConsumer;
 
 namespace HIS.UC.UCOtherServiceReqInfo
 {
-    public partial class UCOtherServiceReqInfo : UserControl
+    public partial class UCOtherServiceReqInfo : UserControlBase
     {
         #region Get - Set Data
 

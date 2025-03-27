@@ -53,6 +53,7 @@ namespace HIS.UC.PlusInfo.Design
         #region Contructor - Load
 
         public UCCMNDDate()
+             : base("UCPlusInfo", "UCCMNDDate")
         {
             try
             {

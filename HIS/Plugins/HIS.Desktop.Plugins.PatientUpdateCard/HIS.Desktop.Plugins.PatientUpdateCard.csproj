@@ -133,7 +133,9 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="frmPatientUpdateCard.cs" />
+    <Compile Include="frmPatientUpdateCard.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="frmPatientUpdateCard.Designer.cs">
       <DependentUpon>frmPatientUpdateCard.cs</DependentUpon>
     </Compile>

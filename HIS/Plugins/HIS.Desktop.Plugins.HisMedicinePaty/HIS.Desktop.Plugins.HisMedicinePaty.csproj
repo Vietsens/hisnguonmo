@@ -149,7 +149,9 @@
     <Compile Include="ModuleLinkString.cs" />
     <Compile Include="Validate3.cs" />
     <Compile Include="HisMedicinePatyProcessor.cs" />
-    <Compile Include="HisMedicinePaty\frmHisMedicinePaty.cs" />
+    <Compile Include="HisMedicinePaty\frmHisMedicinePaty.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="HisMedicinePaty\frmHisMedicinePaty.Designer.cs">
       <DependentUpon>frmHisMedicinePaty.cs</DependentUpon>
     </Compile>

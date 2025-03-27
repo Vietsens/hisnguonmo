@@ -117,6 +117,7 @@ namespace HIS.UC.PlusInfo
         }
 
         public UCPlusInfo(int _totalRowLimit, bool _isShow)
+            : base("HIS.Desktop.Plugins.RegisterV2", "UCPlusInfo")
         {
             try
             {
@@ -124,12 +125,12 @@ namespace HIS.UC.PlusInfo
                 InitializeComponent();
                 HIS.UC.PlusInfo.ShareMethod.ResourceLanguageManager.ResourceUCPlusInfo = new ResourceManager("HIS.UC.PlusInfo.Resources.Lang", typeof(HIS.UC.PlusInfo.UCPlusInfo).Assembly);
                 this.totalRowLimit = (_totalRowLimit == 0 ? 9 : _totalRowLimit);
-                this.InitDataStorage();
-                this.ConfigLayout();
+                //this.InitDataStorage();
+                //this.ConfigLayout();
                 UCPlusInfo_Config.LoadConfig();
                 this._isShowControlHrmKskCode = _isShow;
 
-                this.InitFieldFromAsync();
+                //this.InitFieldFromAsync();
                 Inventec.Common.Logging.LogSystem.Debug("UCPlusInfo----2----InitializeComponent-------");
             }
             catch (Exception ex)
@@ -138,19 +139,62 @@ namespace HIS.UC.PlusInfo
             }
         }
 
-        private void UCPlusInfo_Load(object sender, EventArgs e)
+        private async void UCPlusInfo_Load(object sender, EventArgs e)
         {
             try
             {
-                SetCaptionByLanguageKey();
-                //timer1.Enabled = true;
-                //timer1.Interval = 2000;
-                //timer1.Start();
-                //this.InitFieldFromAsync();
+                Inventec.Common.Logging.LogSystem.Debug("UCPlusInfo_Load 1");
+                //SetCaptionByLanguageKey();
+                timer1.Enabled = true;
+                timer1.Interval = 2000;
+                timer1.Start();
+                this.InitFieldFromAsync();
+                Inventec.Common.Logging.LogSystem.Debug("UCPlusInfo_Load 2");
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Warn("Load UCPlusInfo that bai: \n" + ex);
+            }
+        }
+
+        public async Task InitFieldFromAsync()
+        {
+            try
+            {
+                await this.InitDataStorage();
+                if (this.moduleField == null)
+                    this.moduleField = new List<SDA_MODULE_FIELD>();
+                this.moduleField = this.moduleField
+                    .Where(o => o.IS_VISIBLE == 1 && o.IS_ACTIVE == 1 && o.MODULE_LINK == UCPlusInfo_Config.ModuleLink //&&(o.FIELD_CODE != ChoiceControl.ucHrmKskCode || (o.FIELD_CODE == ChoiceControl.ucHrmKskCode && this._isShowControlHrmKskCode))
+                        )
+                    .OrderBy(o => o.NUM_ORDER ?? 999999).ThenBy(p => p.FIELD_NAME).ToList();
+
+                this.totalModule = this.moduleField.Count;
+                if (this.moduleField != null && this.moduleField.Count > 0)
+                {
+                    this.listControl = new List<UserControl>();
+                    for (int i = 0; i < moduleField.Count; i++)
+                    {
+                        this.GetTempControl(moduleField[i]);
+                    }
+                }
+                this.PositionControl(listControl);
+
+                if (this.ucExtend1 != null)
+                {
+                    this.LoadControlForFormExtend(this.listControl, indexOfControlEnd);
+                    this.ucExtend1.SetControlForFormExtend(this.listControlForFormExtend);
+                }
+                this.SetDelegateToSetValueAddress();
+                this.SetDelegateToSetValueAddressKS();
+                if (this.ucProvinceNow1 != null)
+                    this.ucProvinceNow1.ReloadDataDistrictAndCommune(this.RefreshDataDistrictAndCommune);
+                if (this.ucProvinceOfBirth1 != null)
+                    this.ucProvinceOfBirth1.ReloadDataDistrictAndCommune(this.RefreshDataDistrictAndCommuneOfBirth);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
 
@@ -215,7 +259,7 @@ namespace HIS.UC.PlusInfo
                 {
                     ucProvinceOfBirth1.UCProvinceOfBirthInit();
                 }
-               
+
 
                 Inventec.Common.Logging.LogSystem.Debug("UCPlusInfo----2----timer1_Tick-------");
             }
@@ -319,55 +363,20 @@ namespace HIS.UC.PlusInfo
             }
         }
 
-        private void InitDataStorage()
+        private async Task InitDataStorage()
         {
             try
             {
-                this.moduleField = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<SDA_MODULE_FIELD>();
+                //this.moduleField = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<SDA_MODULE_FIELD>();
+                CommonParam paramCommon = new CommonParam();
+                dynamic dfilter = new System.Dynamic.ExpandoObject();
+                dfilter.IS_ACTIVE = IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE;
+                this.moduleField = await new Inventec.Common.Adapter.BackendAdapter(paramCommon).GetAsync<List<SDA_MODULE_FIELD>>("api/SdaModuleField/Get", ApiConsumers.SdaConsumer, dfilter, paramCommon);
+                if (this.moduleField != null) BackendDataWorker.UpdateToRam(typeof(SDA_MODULE_FIELD), this.moduleField, long.Parse(DateTime.Now.ToString("yyyyMMddHHmmss")));
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
-            }
-        }
-
-        private void InitFieldFromAsync()
-        {
-            try
-            {
-                if (this.moduleField == null)
-                    this.moduleField = new List<SDA_MODULE_FIELD>();
-                this.moduleField = this.moduleField
-                    .Where(o => o.IS_VISIBLE == 1 && o.IS_ACTIVE == 1 && o.MODULE_LINK == UCPlusInfo_Config.ModuleLink //&&(o.FIELD_CODE != ChoiceControl.ucHrmKskCode || (o.FIELD_CODE == ChoiceControl.ucHrmKskCode && this._isShowControlHrmKskCode))
-                        )
-                    .OrderBy(o => o.NUM_ORDER ?? 999999).ThenBy(p => p.FIELD_NAME).ToList();
-
-                this.totalModule = this.moduleField.Count;
-                if (this.moduleField != null && this.moduleField.Count > 0)
-                {
-                    this.listControl = new List<UserControl>();
-                    for (int i = 0; i < moduleField.Count; i++)
-                    {
-                        this.GetTempControl(moduleField[i]);
-                    }
-                }
-                this.PositionControl(listControl);
-
-                if (this.ucExtend1 != null)
-                {
-                    this.LoadControlForFormExtend(this.listControl, indexOfControlEnd);
-                    this.ucExtend1.SetControlForFormExtend(this.listControlForFormExtend);
-                }
-                this.SetDelegateToSetValueAddress();
-                this.SetDelegateToSetValueAddressKS();
-                if (this.ucProvinceNow1 != null)
-                    this.ucProvinceNow1.ReloadDataDistrictAndCommune(this.RefreshDataDistrictAndCommune);
-                if (this.ucProvinceOfBirth1 != null)
-                    this.ucProvinceOfBirth1.ReloadDataDistrictAndCommune(this.RefreshDataDistrictAndCommuneOfBirth);
-            }
-            catch (Exception ex)
-            {
-                Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
 
@@ -653,7 +662,7 @@ namespace HIS.UC.PlusInfo
                     default:
                         break;
 
-                    #endregion
+                        #endregion
                 }
             }
             catch (Exception ex)
@@ -778,7 +787,7 @@ namespace HIS.UC.PlusInfo
                         }
                         dem++;
                     }
-                    
+
                 }
 
                 Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => userControlNameAdded), userControlNameAdded)

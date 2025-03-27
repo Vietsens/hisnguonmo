@@ -49,6 +49,7 @@ namespace HIS.UC.PlusInfo.Design
         #region Contructor - Load
 
         public UCPhoneNumber()
+            : base("UCPlusInfo", "UCPhoneNumber")
         {
             try
             {

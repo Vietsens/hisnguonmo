@@ -177,14 +177,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="frmPatientChoice.cs" />
+    <Compile Include="frmPatientChoice.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="frmPatientChoice.Designer.cs">
       <DependentUpon>frmPatientChoice.cs</DependentUpon>
     </Compile>
     <Compile Include="ValidateCMNDNumber.cs" />
     <Compile Include="ValidateCMNDPlace.cs" />
     <Compile Include="DateValidObject.cs" />
-    <Compile Include="frmPatientInfo.cs" />
+    <Compile Include="frmPatientInfo.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="frmPatientInfo.Designer.cs">
       <DependentUpon>frmPatientInfo.cs</DependentUpon>
     </Compile>
@@ -194,10 +198,18 @@
     <Compile Include="frmPatientInfo1.Designer.cs">
       <DependentUpon>frmPatientInfo1.cs</DependentUpon>
     </Compile>
-    <Compile Include="frmPatientInfo__Event.cs" />
-    <Compile Include="frmPatientInfo__LoadCombo.cs" />
-    <Compile Include="frmPatientInfo__Validation.cs" />
-    <Compile Include="frmPatientInfo_LoadComboControl.cs" />
+    <Compile Include="frmPatientInfo__Event.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmPatientInfo__LoadCombo.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmPatientInfo__Validation.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmPatientInfo_LoadComboControl.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="HeinUtils.cs" />
     <Compile Include="MoRong\frmMoRong.cs">
       <SubType>Form</SubType>

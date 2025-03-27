@@ -251,16 +251,22 @@
     <Compile Include="ADO\ExpMestSDO.cs" />
     <Compile Include="ADO\ExpMestMatyMetyReqSDODetail.cs" />
     <Compile Include="ADO\ExpMestMedicineSDODetail.cs" />
-    <Compile Include="AggrExpMestDetail\frmAggrExpMestDetail.cs" />
+    <Compile Include="AggrExpMestDetail\frmAggrExpMestDetail.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="AggrExpMestDetail\frmAggrExpMestDetail.Designer.cs">
       <DependentUpon>frmAggrExpMestDetail.cs</DependentUpon>
     </Compile>
-    <Compile Include="AggrExpMestDetail\frmApproveAggrExpMestPlus_Print.cs" />
+    <Compile Include="AggrExpMestDetail\frmApproveAggrExpMestPlus_Print.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="AppConfigKeys.cs" />
     <Compile Include="AggrExpMestDetail\AggregateExpMestPrintFilter\ExpMestAggregateListPopupMenuProcessor.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="AggrExpMestDetail\frmApproveAggrExpMestPlus__InitResource.cs" />
+    <Compile Include="AggrExpMestDetail\frmApproveAggrExpMestPlus__InitResource.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Base\ControlCode.cs" />
     <Compile Include="Base\GlobalStore.cs" />
     <Compile Include="Base\PrintTypeCodeWorker.cs" />

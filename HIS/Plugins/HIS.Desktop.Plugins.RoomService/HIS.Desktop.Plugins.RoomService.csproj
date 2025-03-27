@@ -150,7 +150,9 @@
     <Compile Include="RoomService\RoomService.Factory.cs" />
     <Compile Include="RoomService\IRoomService.cs" />
     <Compile Include="RoomServicProcessor.cs" />
-    <Compile Include="UCRoomService.cs" />
+    <Compile Include="UCRoomService.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="UCRoomService.Designer.cs">
       <DependentUpon>UCRoomService.cs</DependentUpon>
     </Compile>

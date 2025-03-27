@@ -191,7 +191,9 @@
     <Compile Include="Base\ComboboxADO.cs" />
     <Compile Include="Base\ExpBloodADO.cs" />
     <Compile Include="Config\ConfigKey.cs" />
-    <Compile Include="frmHisCheckBeforeTransfusionBlood.cs" />
+    <Compile Include="frmHisCheckBeforeTransfusionBlood.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="frmHisCheckBeforeTransfusionBlood.Designer.cs">
       <DependentUpon>frmHisCheckBeforeTransfusionBlood.cs</DependentUpon>
     </Compile>

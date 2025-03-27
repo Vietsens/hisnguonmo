@@ -159,12 +159,18 @@
   <ItemGroup>
     <Compile Include="Base\PrintTypeCodeWorker.cs" />
     <Compile Include="Base\ResourceLangManager.cs" />
-    <Compile Include="frmSwapService__InitLanguage.cs" />
-    <Compile Include="frmSwapService.cs" />
+    <Compile Include="frmSwapService__InitLanguage.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmSwapService.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="frmSwapService.designer.cs">
       <DependentUpon>frmSwapService.cs</DependentUpon>
     </Compile>
-    <Compile Include="Load\frmSwapService___Load.cs" />
+    <Compile Include="Load\frmSwapService___Load.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

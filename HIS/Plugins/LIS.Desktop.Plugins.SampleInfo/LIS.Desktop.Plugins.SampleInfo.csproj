@@ -152,7 +152,9 @@
     <Compile Include="ComparerObject.cs" />
     <Compile Include="Config\LisConfigCFG.cs" />
     <Compile Include="SampleInfoProcessor.cs" />
-    <Compile Include="frmSampleInfo.cs" />
+    <Compile Include="frmSampleInfo.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="frmSampleInfo.Designer.cs">
       <DependentUpon>frmSampleInfo.cs</DependentUpon>
     </Compile>

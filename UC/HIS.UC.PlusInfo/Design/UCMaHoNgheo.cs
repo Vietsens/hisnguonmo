@@ -56,6 +56,7 @@ namespace HIS.UC.PlusInfo.Design
         #region Contructor - Load
 
         public UCMaHoNgheo()
+            : base("UCPlusInfo", "UCMaHoNgheo")
         {
             try
             {

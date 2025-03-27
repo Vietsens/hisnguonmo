@@ -165,7 +165,9 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="UCCompensationByBaseCreate.cs" />
+    <Compile Include="UCCompensationByBaseCreate.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="UCCompensationByBaseCreate.Designer.cs">
       <DependentUpon>UCCompensationByBaseCreate.cs</DependentUpon>
     </Compile>

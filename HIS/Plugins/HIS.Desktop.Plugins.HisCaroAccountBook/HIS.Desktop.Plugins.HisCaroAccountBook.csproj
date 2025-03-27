@@ -142,7 +142,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Design\frmCaroAccountBook\frmCaroAccountBook.cs" />
+    <Compile Include="Design\frmCaroAccountBook\frmCaroAccountBook.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Design\frmCaroAccountBook\frmCaroAccountBook.Designer.cs">
       <DependentUpon>frmCaroAccountBook.cs</DependentUpon>
     </Compile>

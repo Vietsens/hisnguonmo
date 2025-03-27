@@ -146,11 +146,15 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="RecordChecking\FormHisTreatmentRecordChecking.cs" />
+    <Compile Include="RecordChecking\FormHisTreatmentRecordChecking.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="RecordChecking\FormHisTreatmentRecordChecking.Designer.cs">
       <DependentUpon>FormHisTreatmentRecordChecking.cs</DependentUpon>
     </Compile>
-    <Compile Include="RecordChecking\frmContentFailed.cs" />
+    <Compile Include="RecordChecking\frmContentFailed.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="RecordChecking\frmContentFailed.Designer.cs">
       <DependentUpon>frmContentFailed.cs</DependentUpon>
     </Compile>

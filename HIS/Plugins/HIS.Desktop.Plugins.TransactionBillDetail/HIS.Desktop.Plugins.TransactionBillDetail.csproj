@@ -91,7 +91,9 @@
     <Compile Include="TransactionBillDetail\TransactionBillDetailFactory.cs" />
     <Compile Include="TransactionBillDetail\ITransactionBillDetail.cs" />
     <Compile Include="Base\ResourceLangManager.cs" />
-    <Compile Include="frmTransactionBillDetail.cs" />
+    <Compile Include="frmTransactionBillDetail.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="frmTransactionBillDetail.Designer.cs">
       <DependentUpon>frmTransactionBillDetail.cs</DependentUpon>
     </Compile>

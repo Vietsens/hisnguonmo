@@ -51,6 +51,7 @@ namespace HIS.UC.PlusInfo.Design
         #region Contructor
 
         public UCHouseHold()
+            : base("UCPlusInfo", "UCHouseHold")
         {
             try
             {

@@ -241,7 +241,9 @@
     <Compile Include="ConnectionTest\ConnectionTestBehavior.cs" />
     <Compile Include="ConnectionTest\ConnectionTestFactory.cs" />
     <Compile Include="ConnectionTest\IConnectionTest.cs" />
-    <Compile Include="frmUpdateLisSample.cs" />
+    <Compile Include="frmUpdateLisSample.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="frmUpdateLisSample.Designer.cs">
       <DependentUpon>frmUpdateLisSample.cs</DependentUpon>
     </Compile>

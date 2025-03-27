@@ -133,7 +133,9 @@
     <Compile Include="ModuleControlVisible\ModuleControlVisibleBehavior.cs" />
     <Compile Include="ModuleControlVisible\ModuleControlVisibleFactory.cs" />
     <Compile Include="ModuleControlVisible\IModuleControlVisible.cs" />
-    <Compile Include="ModuleControlVisible\frmModuleControlVisible.cs" />
+    <Compile Include="ModuleControlVisible\frmModuleControlVisible.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="ModuleControlVisible\frmModuleControlVisible.Designer.cs">
       <DependentUpon>frmModuleControlVisible.cs</DependentUpon>
     </Compile>

@@ -138,11 +138,15 @@
     <Compile Include="ADO\SettingADO.cs" />
     <Compile Include="Delegates.cs" />
     <Compile Include="GenerateRegisterOrderProcessor.cs" />
-    <Compile Include="frmGenerateRegisterNumOrder.cs" />
+    <Compile Include="frmGenerateRegisterNumOrder.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="frmGenerateRegisterNumOrder.Designer.cs">
       <DependentUpon>frmGenerateRegisterNumOrder.cs</DependentUpon>
     </Compile>
-    <Compile Include="frmRegisterOrderConfig.cs" />
+    <Compile Include="frmRegisterOrderConfig.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="frmRegisterOrderConfig.Designer.cs">
       <DependentUpon>frmRegisterOrderConfig.cs</DependentUpon>
     </Compile>
