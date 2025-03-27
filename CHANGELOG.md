@@ -1,3 +1,9 @@
+### Release 2.354.0
+* Bố sung thông tin hướng dẫn sử dụng trên phiếu công khai dịch vụ
+* Bắt buộc nhập thông tin CCCD và chặn thông tin CCCD trùng lặp nhiều bệnh nhân
+* Chỉnh sửa lại chức năng thiết lập nghiệp vụ ký
+* Bổ sung tính năng lưu lịch sử kê thuốc tương tách cho bệnh nhân lọc thận
+
 ### Release 2.353.0
 * Cho phép cấu hình thiết lập ký tự động theo từng biểu in
 * Cho phép nhập phần thập phân đến 6 chữ số của số lượng trong định mức bào chế thuốc
