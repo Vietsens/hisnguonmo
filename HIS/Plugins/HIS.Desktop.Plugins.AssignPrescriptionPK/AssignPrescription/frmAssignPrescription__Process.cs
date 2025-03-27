@@ -4794,16 +4794,16 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                 if (txt.OldEditValue.ToString() == txt.EditValue.ToString())
                     return;
                 decimal vlTmp = 0;
-                if ((currentMedicineTypeADOForEdit != null && currentMedicineTypeADOForEdit.ID > 0 && txt.EditValue.ToString() != (currentMedicineTypeADOForEdit.AMOUNT ?? 0).ToString()) || (currentMedicineTypeADOForEdit == null && txt.EditValue.ToString() != txt.OldEditValue.ToString()))
+                CultureInfo culture = new CultureInfo("en-US");
+                spinAmount.Text = GetAmount().ToString();
+                if (spinAmount.Text.Contains(","))
+                    culture = new CultureInfo("fr-FR");
+                decimal amountTmp = Convert.ToDecimal(spinAmount.EditValue.ToString(), culture);
+                if ((currentMedicineTypeADOForEdit != null && currentMedicineTypeADOForEdit.ID > 0 && amountTmp != (currentMedicineTypeADOForEdit.AMOUNT ?? 0)) || (currentMedicineTypeADOForEdit == null && txt.EditValue.ToString() != txt.OldEditValue.ToString()))
                     this.SetHuongDanFromSoLuongNgay();
                 if (currentMedicineTypeADOForEdit != null && currentMedicineTypeADOForEdit.ID > 0 && (!GlobalStore.IsTreatmentIn || GlobalStore.IsCabinet))
                 {
                     int plusSeperate = 1;
-                    CultureInfo culture = new CultureInfo("en-US");
-                    spinAmount.Text = GetAmount().ToString();
-                    if (spinAmount.Text.Contains(","))
-                        culture = new CultureInfo("fr-FR");
-                    decimal amountTmp = Convert.ToDecimal(spinAmount.EditValue.ToString(), culture);
                     if (amountTmp > 0)
                     {
                         if ((HisConfigCFG.IsShowPresAmount && VHistreatment != null && VHistreatment.TDL_TREATMENT_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__KHAM)
