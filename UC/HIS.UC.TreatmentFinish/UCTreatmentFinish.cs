@@ -1550,7 +1550,11 @@ namespace HIS.UC.TreatmentFinish.Run
                             }
                         }
                         cboEndDeptSubs.EditValue = this.Treatment.END_DEPT_SUBS_HEAD_LOGINNAME;
+                        if (ConfigKeyCFG.EndDepartmentSubsHeadOption == "1" && cboEndDeptSubs.EditValue == null)
+                            cboEndDeptSubs.EditValue = Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName();
                         cboHospSubs.EditValue = this.Treatment.HOSP_SUBS_DIRECTOR_LOGINNAME;
+                        if (cboHospSubs.EditValue == null)
+                            LoadDefaultEndDept();
                         if (this.Treatment.TREATMENT_END_TYPE_ID != null)
                         {
                             HIS_TREATMENT_END_TYPE treatmentEndType = BackendDataWorker.Get<HIS_TREATMENT_END_TYPE>().FirstOrDefault(o => o.ID == this.Treatment.TREATMENT_END_TYPE_ID);
@@ -1734,6 +1738,32 @@ namespace HIS.UC.TreatmentFinish.Run
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
+        private void LoadDefaultEndDept()
+        {
+
+            try
+            {
+                var _vHisExecuteRooms = BackendDataWorker.Get<HIS_EXECUTE_ROOM>().FirstOrDefault(p =>
+                     p.IS_ACTIVE == 1 && p.ID == treatmentFinishInitADO.WorkingRoomId && !string.IsNullOrEmpty(p.HOSP_SUBS_DIRECTOR_LOGINNAME));
+                if (_vHisExecuteRooms != null)
+                {
+                    cboHospSubs.EditValue = _vHisExecuteRooms.HOSP_SUBS_DIRECTOR_LOGINNAME;
+                }
+                else
+                {
+                    var HisDepartment = BackendDataWorker.Get<HIS_DEPARTMENT>().FirstOrDefault(p =>
+                         p.IS_ACTIVE == 1 && p.ID == treatmentFinishInitADO.WorkingDepartmentId && !string.IsNullOrEmpty(p.HOSP_SUBS_DIRECTOR_LOGINNAME));
+                    cboHospSubs.EditValue = HisDepartment != null ? HisDepartment.HOSP_SUBS_DIRECTOR_LOGINNAME : null;
+                }
+
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+
+        }
+
         private void ValidHeadDepartmentAndDirectorBranch()
         {
 
@@ -2372,6 +2402,11 @@ namespace HIS.UC.TreatmentFinish.Run
                 cboEndDeptSubs.Properties.ImmediatePopup = true;
                 ControlEditorLoader.Load(cboHospSubs, this.lstReAcsUserADO.Where(o => o.IS_ACTIVE == 1).ToList(), controlEditorADO);
                 cboHospSubs.Properties.ImmediatePopup = true;
+
+                if (ConfigKeyCFG.EndDepartmentSubsHeadOption == "1" && cboEndDeptSubs.EditValue == null)
+                    cboEndDeptSubs.EditValue = Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName();
+                if (cboHospSubs.EditValue == null)
+                    LoadDefaultEndDept();
             }
             catch (Exception ex)
             {
