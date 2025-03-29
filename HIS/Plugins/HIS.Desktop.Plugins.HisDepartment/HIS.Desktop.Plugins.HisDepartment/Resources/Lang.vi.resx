@@ -333,4 +333,10 @@
   <data name="frmHisDepartment.layoutControlItem14.Text" xml:space="preserve">
     <value>Mặc định kho thu hồi thuộc khoa:</value>
   </data>
+  <data name="frmHisDepartment.grdColSubsDirector.Caption" xml:space="preserve">
+    <value>Ký thay giám đốc</value>
+  </data>
+  <data name="frmHisDepartment.grdColSubsDirector.Tooltip" xml:space="preserve">
+    <value>Ký thay giám đốc</value>
+  </data>
 </root>
