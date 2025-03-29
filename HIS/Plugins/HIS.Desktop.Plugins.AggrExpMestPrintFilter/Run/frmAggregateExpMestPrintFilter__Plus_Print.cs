@@ -261,17 +261,6 @@ namespace HIS.Desktop.Plugins.AggrExpMestPrintFilter
             bool result = false;
             try
             {
-                this.serviceUnitIds = new List<long>();
-                if (ServiceUnits != null && ServiceUnits.Count > 0)
-                    this.serviceUnitIds = ServiceUnits.Select(o => o.ID).Distinct().ToList();
-
-                this.useFormIds = new List<long>();
-                if (MedicineUseForms != null && MedicineUseForms.Count > 0)
-                    this.useFormIds = MedicineUseForms.Select(o => o.ID).Distinct().ToList();
-
-                this.reqRoomIds = new List<long>();
-                if (RoomDTO3s != null && RoomDTO3s.Count > 0)
-                    this.reqRoomIds = RoomDTO3s.Select(p => p.ID).ToList();
                 switch (printTypeCode)
                 {
                     case PrintTypeCodeStore.PRINT_TYPE_CODE__BIEUMAU__PHIEU_LINH__TONG_HOP__MPS000046:
@@ -307,7 +296,7 @@ namespace HIS.Desktop.Plugins.AggrExpMestPrintFilter
                         {
                             chooseTimeType = (long)cboChooseTime.EditValue;
                         }
-                        
+
                         print = new Run.PrintNow(this.currrentModule, chooseTimeType);
                         print._AggrExpMests = this._AggrExpMests.OrderBy(o => o.EXP_MEST_CODE).ToList();
                         print.printNow = this.chkPrintNow.Checked;
@@ -325,6 +314,17 @@ namespace HIS.Desktop.Plugins.AggrExpMestPrintFilter
                             IntructionTimeTo = Inventec.Common.TypeConvert.Parse.ToInt64(Convert.ToDateTime(dtIntructionTimeTo.EditValue).ToString("yyyyMMdd") + "235959");
                         }
 
+                        this.serviceUnitIds = new List<long>();
+                        if (ServiceUnits != null && ServiceUnits.Count > 0)
+                            this.serviceUnitIds = ServiceUnits.Select(o => o.ID).Distinct().ToList();
+
+                        this.useFormIds = new List<long>();
+                        if (MedicineUseForms != null && MedicineUseForms.Count > 0)
+                            this.useFormIds = MedicineUseForms.Select(o => o.ID).Distinct().ToList();
+
+                        this.reqRoomIds = new List<long>();
+                        if (RoomDTO3s != null && RoomDTO3s.Count > 0)
+                            this.reqRoomIds = RoomDTO3s.Select(p => p.ID).ToList();
 
                         print.InTraDoiTongHop6282(printTypeCode, fileName, ref result, true, this.serviceUnitIds, this.useFormIds, this.reqRoomIds, IntructionTimeFrom, IntructionTimeTo, chkMedicine.Checked, chkMaterial.Checked, chkIsChemicalSustance.Checked, this.department, chooseTimeType);
                         this.CountMediMatePrinted = this.TotalMediMatePrint;
@@ -552,7 +552,7 @@ namespace HIS.Desktop.Plugins.AggrExpMestPrintFilter
                         }
                     }
                 }
-                
+
             }
             catch (Exception ex)
             {
@@ -915,7 +915,7 @@ namespace HIS.Desktop.Plugins.AggrExpMestPrintFilter
                     this._ExpMestMedi_HCGN = this._ExpMestMedicines.Where(p => p.MEDICINE_GROUP_ID == IMSys.DbConfig.HIS_RS.HIS_MEDICINE_GROUP.ID__HCGN && dcgn).ToList();
                     this._ExpMestMedi_HCHT = this._ExpMestMedicines.Where(p => p.MEDICINE_GROUP_ID == IMSys.DbConfig.HIS_RS.HIS_MEDICINE_GROUP.ID__HCHT && dcht).ToList();
                     this._ExpMestMedi_Others = this._ExpMestMedicines.Where(p => mediTs.Select(s => s.ID).Contains(p.MEDICINE_GROUP_ID ?? 0) &&
-                      (  p.MEDICINE_GROUP_ID != IMSys.DbConfig.HIS_RS.HIS_MEDICINE_GROUP.ID__GN
+                      (p.MEDICINE_GROUP_ID != IMSys.DbConfig.HIS_RS.HIS_MEDICINE_GROUP.ID__GN
                     && p.MEDICINE_GROUP_ID != IMSys.DbConfig.HIS_RS.HIS_MEDICINE_GROUP.ID__HT
                     && p.MEDICINE_GROUP_ID != IMSys.DbConfig.HIS_RS.HIS_MEDICINE_GROUP.ID__DOC
                     && p.MEDICINE_GROUP_ID != IMSys.DbConfig.HIS_RS.HIS_MEDICINE_GROUP.ID__PX
@@ -1006,7 +1006,7 @@ namespace HIS.Desktop.Plugins.AggrExpMestPrintFilter
                         patientViewFilter.IS_ACTIVE = IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE;
                         patientViewFilter.IDs = lst;
                         var patienttmp = new BackendAdapter(param).Get<List<V_HIS_PATIENT>>(HisRequestUriStore.HIS_PATIENT_GETVIEW, ApiConsumers.MosConsumer, patientViewFilter, HIS.Desktop.Controls.Session.SessionManager.ActionLostToken, param);
-                        if(patienttmp != null && patienttmp.Count > 0)
+                        if (patienttmp != null && patienttmp.Count > 0)
                             patients.AddRange(patienttmp);
                         count += 100;
                     }
@@ -1067,14 +1067,6 @@ namespace HIS.Desktop.Plugins.AggrExpMestPrintFilter
                         {
                             query = query.Where(o => expMests.Select(p => p.ID).Contains(o.EXP_MEST_ID ?? 0)).ToList();
                         }
-                        else
-                        {
-                            query = new List<V_HIS_EXP_MEST_MEDICINE>();
-                        }
-                    }
-                    else
-                    {
-                        query = new List<V_HIS_EXP_MEST_MEDICINE>();
                     }
 
                     query = query.Where(p => Check(p)).ToList();
@@ -1108,7 +1100,7 @@ namespace HIS.Desktop.Plugins.AggrExpMestPrintFilter
                             ado.MEDICINE_USE_FORM_NAME = data.MEDICINE_USE_FORM_NAME;
                         }
                         ado.REQ_ROOM_ID = itemGr[0].REQ_ROOM_ID;
-                        ado.REQ_ROOM_NAME = RoomDTO3s.FirstOrDefault(o => o.ID == ado.REQ_ROOM_ID).ROOM_NAME;
+                        ado.REQ_ROOM_NAME = BackendDataWorker.Get<V_HIS_ROOM>().FirstOrDefault(o => o.ID == ado.REQ_ROOM_ID).ROOM_NAME;
                         if (this.aggrExpMest.EXP_MEST_STT_ID == IMSys.DbConfig.HIS_RS.HIS_EXP_MEST_STT.ID__EXECUTE
                             || this.aggrExpMest.EXP_MEST_STT_ID == IMSys.DbConfig.HIS_RS.HIS_EXP_MEST_STT.ID__DONE)
                         {
@@ -1163,14 +1155,6 @@ namespace HIS.Desktop.Plugins.AggrExpMestPrintFilter
                         {
                             query = query.Where(o => expMests.Select(p => p.ID).Contains(o.EXP_MEST_ID ?? 0)).ToList();
                         }
-                        else
-                        {
-                            query = new List<V_HIS_EXP_MEST_MATERIAL>();
-                        }
-                    }
-                    else
-                    {
-                        query = new List<V_HIS_EXP_MEST_MATERIAL>();
                     }
                     query = query.Where(p => Check(p)).ToList();
 
@@ -1202,7 +1186,7 @@ namespace HIS.Desktop.Plugins.AggrExpMestPrintFilter
                         }
 
                         ado.REQ_ROOM_ID = itemGr[0].REQ_ROOM_ID;
-                        ado.REQ_ROOM_NAME = RoomDTO3s.FirstOrDefault(o => o.ID == ado.REQ_ROOM_ID).ROOM_NAME;
+                        ado.REQ_ROOM_NAME = BackendDataWorker.Get<V_HIS_ROOM>().FirstOrDefault(o => o.ID == ado.REQ_ROOM_ID).ROOM_NAME;
                         if (this.aggrExpMest.EXP_MEST_STT_ID == IMSys.DbConfig.HIS_RS.HIS_EXP_MEST_STT.ID__EXECUTE
                             || this.aggrExpMest.EXP_MEST_STT_ID == IMSys.DbConfig.HIS_RS.HIS_EXP_MEST_STT.ID__DONE)
                         {

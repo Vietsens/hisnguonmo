@@ -1549,10 +1549,12 @@ namespace HIS.UC.TreatmentFinish.Run
                                 }
                             }
                         }
-                        cboEndDeptSubs.EditValue = this.Treatment.END_DEPT_SUBS_HEAD_LOGINNAME;
+                        if(!string.IsNullOrEmpty(this.Treatment.END_DEPT_SUBS_HEAD_LOGINNAME) && (cboEndDeptSubs.Properties.DataSource as List<AcsUserADO>).Exists(o=>o.LOGINNAME == this.Treatment.END_DEPT_SUBS_HEAD_LOGINNAME))
+                            cboEndDeptSubs.EditValue = this.Treatment.END_DEPT_SUBS_HEAD_LOGINNAME;
                         if (ConfigKeyCFG.EndDepartmentSubsHeadOption == "1" && cboEndDeptSubs.EditValue == null)
                             cboEndDeptSubs.EditValue = Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName();
-                        cboHospSubs.EditValue = this.Treatment.HOSP_SUBS_DIRECTOR_LOGINNAME;
+                        if (!string.IsNullOrEmpty(this.Treatment.HOSP_SUBS_DIRECTOR_LOGINNAME) && (cboHospSubs.Properties.DataSource as List<AcsUserADO>).Exists(o => o.LOGINNAME == this.Treatment.HOSP_SUBS_DIRECTOR_LOGINNAME))
+                            cboHospSubs.EditValue = this.Treatment.HOSP_SUBS_DIRECTOR_LOGINNAME;
                         if (cboHospSubs.EditValue == null)
                             LoadDefaultEndDept();
                         if (this.Treatment.TREATMENT_END_TYPE_ID != null)
@@ -1744,7 +1746,7 @@ namespace HIS.UC.TreatmentFinish.Run
             try
             {
                 var _vHisExecuteRooms = BackendDataWorker.Get<HIS_EXECUTE_ROOM>().FirstOrDefault(p =>
-                     p.IS_ACTIVE == 1 && p.ID == treatmentFinishInitADO.WorkingRoomId && !string.IsNullOrEmpty(p.HOSP_SUBS_DIRECTOR_LOGINNAME));
+                     p.IS_ACTIVE == 1 && p.ROOM_ID == treatmentFinishInitADO.WorkingRoomId && !string.IsNullOrEmpty(p.HOSP_SUBS_DIRECTOR_LOGINNAME));
                 if (_vHisExecuteRooms != null)
                 {
                     cboHospSubs.EditValue = _vHisExecuteRooms.HOSP_SUBS_DIRECTOR_LOGINNAME;
@@ -2044,6 +2046,13 @@ namespace HIS.UC.TreatmentFinish.Run
             HisTreatmentFinishSDO result = null;
             try
             {
+                if (treatmentFinishSDO == null)
+                    treatmentFinishSDO = new HisTreatmentFinishSDO();
+
+                treatmentFinishSDO.EndDeptSubsHeadLoginname = cboEndDeptSubs.EditValue != null ? cboEndDeptSubs.EditValue.ToString() : null;
+                treatmentFinishSDO.EndDeptSubsHeadUsername = cboEndDeptSubs.EditValue != null ? cboEndDeptSubs.Text.ToString() : null;
+                treatmentFinishSDO.HospSubsDirectorLoginname = cboHospSubs.EditValue != null ? cboHospSubs.EditValue.ToString() : null;
+                treatmentFinishSDO.HospSubsDirectorUsername = cboHospSubs.EditValue != null ? cboHospSubs.Text.ToString() : null;
                 return this.treatmentFinishSDO;
             }
             catch (Exception ex)
@@ -2376,11 +2385,12 @@ namespace HIS.UC.TreatmentFinish.Run
                 this.lstReAcsUserADO = new List<AcsUserADO>();
                 var acsUser = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get
                        <ACS.EFMODEL.DataModels.ACS_USER>().Where(p => !string.IsNullOrEmpty(p.USERNAME) && p.IS_ACTIVE == 1).OrderBy(o => o.USERNAME).ToList();
+                var Employes = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<MOS.EFMODEL.DataModels.V_HIS_EMPLOYEE>().Where(o => o.IS_ACTIVE == 1);
                 foreach (var item in acsUser)
                 {
                     AcsUserADO ado = new AcsUserADO(item);
 
-                    var VhisEmployee = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<MOS.EFMODEL.DataModels.V_HIS_EMPLOYEE>().FirstOrDefault(o => o.LOGINNAME == item.LOGINNAME);
+                    var VhisEmployee = Employes.FirstOrDefault(o => o.LOGINNAME == item.LOGINNAME);
                     if (VhisEmployee != null)
                     {
                         ado.DOB = VhisEmployee.DOB;
@@ -2428,6 +2438,10 @@ namespace HIS.UC.TreatmentFinish.Run
                             cboEndDeptSubs.EditValue = dt.LOGINNAME;
                             cboEndDeptSubs.Focus();
                         }
+                        else
+                        {
+                            cboEndDeptSubs.EditValue = null;
+                        }
                     }
                     else
                     {
@@ -2455,6 +2469,10 @@ namespace HIS.UC.TreatmentFinish.Run
                         {
                             cboHospSubs.EditValue = dt.LOGINNAME;
                             cboHospSubs.Focus();
+                        }
+                        else
+                        {
+                            cboHospSubs.EditValue = null;
                         }
                     }
                     else

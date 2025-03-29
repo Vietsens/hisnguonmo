@@ -112,14 +112,13 @@
       <HintPath>..\..\..\..\lib\HIS\His.Bhyt.InsuranceExpertise\His.Bhyt.InsuranceExpertise.dll</HintPath>
     </Reference>
     <Reference Include="HIS.Desktop.Plugins.Library.CheckHeinGOV">
-      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\HIS.Desktop.Plugins.Library.CheckHeinGOV.dll</HintPath>
+      <HintPath>..\..\..\..\lib_1\HIS\HIS.Desktop.Plugins.Library.CheckHeinGOV\HIS.Desktop.Plugins.Library.CheckHeinGOV.dll</HintPath>
     </Reference>
     <Reference Include="HIS.Desktop.Plugins.Library.EmrGenerate">
       <HintPath>..\..\..\..\LIB\HIS\HIS.Desktop.Plugins.Library.EmrGenerate\HIS.Desktop.Plugins.Library.EmrGenerate.dll</HintPath>
     </Reference>
-    <Reference Include="HIS.Desktop.Plugins.Library.FormMedicalRecord, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\lib\HIS\HIS.Desktop.Plugins.Library.FormMedicalRecord\HIS.Desktop.Plugins.Library.FormMedicalRecord.dll</HintPath>
+    <Reference Include="HIS.Desktop.Plugins.Library.FormMedicalRecord">
+      <HintPath>..\..\..\..\lib_1\HIS\HIS.Desktop.Plugins.Library.FormMedicalRecord\HIS.Desktop.Plugins.Library.FormMedicalRecord.dll</HintPath>
     </Reference>
     <Reference Include="HIS.Desktop.Plugins.Library.MediStockExpend">
       <HintPath>..\..\..\..\LIB\HIS\HIS.Desktop.Plugins.Library.MediStockExpend\HIS.Desktop.Plugins.Library.MediStockExpend.dll</HintPath>
@@ -128,7 +127,7 @@
       <HintPath>..\..\..\..\LIB\HIS\HIS.Desktop.Plugins.Library.OtherTreatmentHistory\HIS.Desktop.Plugins.Library.OtherTreatmentHistory.dll</HintPath>
     </Reference>
     <Reference Include="HIS.UC.TreeSereServ7V2">
-      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\HIS.UC.TreeSereServ7V2.dll</HintPath>
+      <HintPath>..\..\..\..\lib_1\HIS\HIS.UC.TreeSereServ7V2\HIS.UC.TreeSereServ7V2.dll</HintPath>
     </Reference>
     <Reference Include="HIS.UC.ViewEmrDocument, Version=1.5.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -240,16 +239,14 @@
     <Reference Include="Inventec.UC.Paging">
       <HintPath>..\..\..\..\LIB\Inventec.UC\Inventec.UC.Paging\Inventec.UC.Paging.dll</HintPath>
     </Reference>
-    <Reference Include="LIS.EFMODEL, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\LIB\LIS\LIS.EFMODEL.dll</HintPath>
+    <Reference Include="LIS.EFMODEL">
+      <HintPath>..\..\..\..\lib_1\LIS\LIS.EFMODEL.dll</HintPath>
     </Reference>
     <Reference Include="MOS.EFMODEL">
-      <HintPath>..\..\..\..\LIB\MOS\MOS.EFMODEL.dll</HintPath>
+      <HintPath>..\..\..\..\lib_1\MOS\MOS.EFMODEL.dll</HintPath>
     </Reference>
-    <Reference Include="MOS.Filter, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\LIB\MOS\MOS.Filter.dll</HintPath>
+    <Reference Include="MOS.Filter">
+      <HintPath>..\..\..\..\lib_1\MOS\MOS.Filter.dll</HintPath>
     </Reference>
     <Reference Include="MOS.LibraryHein.Bhyt, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
