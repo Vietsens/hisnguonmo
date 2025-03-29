@@ -52,6 +52,7 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using HIS.Desktop.Plugins.Library.DrugInterventionInfo;
 
 namespace HIS.Desktop.Utilities.RemoteSupport
 {
@@ -77,7 +78,7 @@ namespace HIS.Desktop.Utilities.RemoteSupport
         public frmRemoteSupportCreate()
             : this(null)
         {
-
+            
         }
 
         public frmRemoteSupportCreate(Module module)
@@ -915,6 +916,37 @@ namespace HIS.Desktop.Utilities.RemoteSupport
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
+
+        private void btnInstruct_Click(object sender, EventArgs e)
+        {
+            bool IsThrowExFss = true;
+            try
+            {
+                string defaultBrowser = (HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>("HIS.VCong.TutorialLink"));
+                if (!string.IsNullOrEmpty(defaultBrowser))
+                {
+                    Inventec.Common.Logging.LogSystem.Info(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => defaultBrowser), defaultBrowser));
+                    //string fullViewUrl = "";
+                    //Uri uri = null;
+                    //if (Uri.TryCreate(new Uri(this.Url), defaultBrowser, out uri))
+                    //    fullViewUrl = uri.ToString();
+                    //if (!String.IsNullOrWhiteSpace(fullViewUrl))
+                    //{
+                        Plugins.Library.DrugInterventionInfo.ViewForm.FormBrowser form = new Plugins.Library.DrugInterventionInfo.ViewForm.FormBrowser(defaultBrowser);
+                        form.ShowDialog();
+                    //}
+                }
+                else
+                {
+                    XtraMessageBox.Show("Chưa thiết lập đường dẫn tài liệu hướng dẫn. Vui lòng liên hệ với quản trị phần mềm!", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                }
+            }
+            catch (Exception ex)
+            {
+                LogSystem.Error(ex);
+            }
+        }
+
 
         //private void ProcessRemoteByTeamviewer__NotUser()
         //{

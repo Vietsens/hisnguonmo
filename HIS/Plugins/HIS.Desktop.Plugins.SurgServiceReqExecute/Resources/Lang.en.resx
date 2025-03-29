@@ -177,6 +177,12 @@
   <data name="FormPtttMethod.barBtnSearch.Caption" xml:space="preserve">
     <value>Ctrl F</value>
   </data>
+  <data name="FormPtttMethod.bbtnAdd.Caption" xml:space="preserve">
+    <value>Ctrl n</value>
+  </data>
+  <data name="FormPtttMethod.btnAdd.Text" xml:space="preserve">
+    <value>Add (Ctrl n)</value>
+  </data>
   <data name="FormPtttMethod.btnChoose.Text" xml:space="preserve">
     <value>Choose</value>
   </data>
@@ -297,8 +303,29 @@
   <data name="frmEkipTemp.Text" xml:space="preserve">
     <value>Sample making team</value>
   </data>
+  <data name="frmInputDetail.btnBallon.Text" xml:space="preserve">
+    <value>...</value>
+  </data>
+  <data name="frmInputDetail.btnContrastAgent.Text" xml:space="preserve">
+    <value>...</value>
+  </data>
   <data name="frmInputDetail.btnDelete.Text" xml:space="preserve">
     <value>Erase</value>
+  </data>
+  <data name="frmInputDetail.btnGuidingCatheter.Text" xml:space="preserve">
+    <value>...</value>
+  </data>
+  <data name="frmInputDetail.btnGuiteWire.Text" xml:space="preserve">
+    <value>...</value>
+  </data>
+  <data name="frmInputDetail.btnIntroducer.Text" xml:space="preserve">
+    <value>...</value>
+  </data>
+  <data name="frmInputDetail.btnReset.Text" xml:space="preserve">
+    <value>Redo</value>
+  </data>
+  <data name="frmInputDetail.btnStent.Text" xml:space="preserve">
+    <value>...</value>
   </data>
   <data name="frmInputDetail.checkEdit1.Properties.Caption" xml:space="preserve">
     <value>Raft cutting</value>
@@ -759,6 +786,9 @@
   <data name="frmInputDetail.chkShapingSkinOther.Properties.Caption" xml:space="preserve">
     <value>Other</value>
   </data>
+  <data name="frmInputDetail.emptySpaceItem31.Text" xml:space="preserve">
+    <value>mm</value>
+  </data>
   <data name="frmInputDetail.Glocom__raCoDinhNhanCauChiGiacMac.Properties.Caption" xml:space="preserve">
     <value>Only the cornea</value>
   </data>
@@ -824,6 +854,24 @@
   </data>
   <data name="frmInputDetail.Glocom__raTinhTrangBaoTenonSo.Properties.Caption" xml:space="preserve">
     <value>Sister</value>
+  </data>
+  <data name="frmInputDetail.gridColumn1.Caption" xml:space="preserve">
+    <value>Tips name</value>
+  </data>
+  <data name="frmInputDetail.gridColumn2.Caption" xml:space="preserve">
+    <value>Equipment name/size</value>
+  </data>
+  <data name="frmInputDetail.gridColumn3.Caption" xml:space="preserve">
+    <value>The number of balls/pressure pump/tg</value>
+  </data>
+  <data name="frmInputDetail.gridColumn4.Caption" xml:space="preserve">
+    <value>Previous results (% DK.HEP)</value>
+  </data>
+  <data name="frmInputDetail.gridColumn5.Caption" xml:space="preserve">
+    <value>The following results (% DK.HEP)</value>
+  </data>
+  <data name="frmInputDetail.gridColumn6.Caption" xml:space="preserve">
+    <value>GridColumn6</value>
   </data>
   <data name="frmInputDetail.labelControl1.Text" xml:space="preserve">
     <value>ml</value>
@@ -1296,11 +1344,53 @@
   <data name="frmInputDetail.layoutControlItem295.Text" xml:space="preserve">
     <value>CC date:</value>
   </data>
+  <data name="frmInputDetail.layoutControlItem296.Text" xml:space="preserve">
+    <value>1. Tips information</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem297.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Coronary artery hot</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem297.Text" xml:space="preserve">
+    <value>Nong NHV:</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem298.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Put coronary artery racks</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem298.Text" xml:space="preserve">
+    <value>Set the roof of the roof:</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem299.Text" xml:space="preserve">
+    <value>Location of intervention:</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem300.Text" xml:space="preserve">
+    <value>Reason intervention:</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem303.Text" xml:space="preserve">
+    <value>2. Using tools</value>
+  </data>
   <data name="frmInputDetail.layoutControlItem306.Text" xml:space="preserve">
     <value>Diagnosis before PT:</value>
   </data>
+  <data name="frmInputDetail.layoutControlItem308.Text" xml:space="preserve">
+    <value>Introducer:</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem310.Text" xml:space="preserve">
+    <value>Guiding Catheter:</value>
+  </data>
   <data name="frmInputDetail.layoutControlItem311.Text" xml:space="preserve">
     <value>Surgical method:</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem312.Text" xml:space="preserve">
+    <value>Guite Wire:</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem313.Text" xml:space="preserve">
+    <value>Ballon (ballon):</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem315.Text" xml:space="preserve">
+    <value>Stent:</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem316.Text" xml:space="preserve">
+    <value>Contrast drug:</value>
   </data>
   <data name="frmInputDetail.layoutControlItem317.Text" xml:space="preserve">
     <value>Insensitive method:</value>
@@ -1355,6 +1445,18 @@
   </data>
   <data name="frmInputDetail.layoutControlItem343.Text" xml:space="preserve">
     <value>6.</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem347.Text" xml:space="preserve">
+    <value>3. Conclusion</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem348.Text" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem349.Text" xml:space="preserve">
+    <value>Other:</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem350.Text" xml:space="preserve">
+    <value>Note:</value>
   </data>
   <data name="frmInputDetail.layoutControlItem354.Text" xml:space="preserve">
     <value>Reconstruct corner lashes in 3 layers:</value>
@@ -1491,6 +1593,15 @@
   <data name="frmInputDetail.layoutControlItem96.Text" xml:space="preserve">
     <value>Ice:</value>
   </data>
+  <data name="frmInputDetail.lcDaLieu.Text" xml:space="preserve">
+    <value>layoutControl25</value>
+  </data>
+  <data name="frmInputDetail.lcDieuTriCanThiepDMV.Text" xml:space="preserve">
+    <value>layoutControl3</value>
+  </data>
+  <data name="frmInputDetail.lcGlocom.Text" xml:space="preserve">
+    <value>layoutControl7</value>
+  </data>
   <data name="frmInputDetail.lciCloseSkin.Text" xml:space="preserve">
     <value>Skin closure:</value>
   </data>
@@ -1514,6 +1625,24 @@
   </data>
   <data name="frmInputDetail.lciTreatSkinOther.Text" xml:space="preserve">
     <value>Other:</value>
+  </data>
+  <data name="frmInputDetail.lcPtDucTTT.Text" xml:space="preserve">
+    <value>layoutControl1</value>
+  </data>
+  <data name="frmInputDetail.lcPtMong.Text" xml:space="preserve">
+    <value>layoutControl10</value>
+  </data>
+  <data name="frmInputDetail.lcPtSupMi.Text" xml:space="preserve">
+    <value>layoutControl13</value>
+  </data>
+  <data name="frmInputDetail.lcTaiTaoLeQuan.Text" xml:space="preserve">
+    <value>layoutControl16</value>
+  </data>
+  <data name="frmInputDetail.lcTTMongMat.Text" xml:space="preserve">
+    <value>layoutControl19</value>
+  </data>
+  <data name="frmInputDetail.lcTTTLaser.Text" xml:space="preserve">
+    <value>layoutControl22</value>
   </data>
   <data name="frmInputDetail.raCatBao.Properties.Caption" xml:space="preserve">
     <value>Cut bags</value>
@@ -1752,8 +1881,77 @@
   <data name="frmInputDetail.xtraTabOther.Text" xml:space="preserve">
     <value>Other</value>
   </data>
+  <data name="frmInputDetail.xtraTabPage1.Text" xml:space="preserve">
+    <value>Treatment of ethnic intervention</value>
+  </data>
   <data name="frmInputDetail.xtraTabSkin.Text" xml:space="preserve">
     <value>Dermatology</value>
+  </data>
+  <data name="frmMediMate.btnSave.Text" xml:space="preserve">
+    <value>Select</value>
+  </data>
+  <data name="frmMediMate.gridColumn1.Caption" xml:space="preserve">
+    <value>Code</value>
+  </data>
+  <data name="frmMediMate.gridColumn2.Caption" xml:space="preserve">
+    <value>Name of medicine/supplies</value>
+  </data>
+  <data name="frmMediMate.gridColumn3.Caption" xml:space="preserve">
+    <value>Quantity</value>
+  </data>
+  <data name="frmMediMate.gridColumn4.Caption" xml:space="preserve">
+    <value>Unit</value>
+  </data>
+  <data name="frmMediMate.layoutControl1.Text" xml:space="preserve">
+    <value>layoutControl1</value>
+  </data>
+  <data name="frmMediMate.Text" xml:space="preserve">
+    <value>Choose medicine/supplies</value>
+  </data>
+  <data name="frmMediMate.txtFind.Properties.NullValuePrompt" xml:space="preserve">
+    <value>Search keywords</value>
+  </data>
+  <data name="frmMultiIntructonTime.btnChoose.Text" xml:space="preserve">
+    <value>Select</value>
+  </data>
+  <data name="frmMultiIntructonTime.layoutControl1.Text" xml:space="preserve">
+    <value>layoutControl1</value>
+  </data>
+  <data name="frmMultiIntructonTime.lblCalendaInput.Text" xml:space="preserve">
+    <value>Order date:</value>
+  </data>
+  <data name="frmMultiIntructonTime.lblTimeInput.Text" xml:space="preserve">
+    <value>Order time:</value>
+  </data>
+  <data name="frmMultiIntructonTime.Text" xml:space="preserve">
+    <value>Choose many days y</value>
+  </data>
+  <data name="frmSurgAssignAndCopy.btnDY.Text" xml:space="preserve">
+    <value>Agree</value>
+  </data>
+  <data name="frmSurgAssignAndCopy.btnSelect.Text" xml:space="preserve">
+    <value>Select</value>
+  </data>
+  <data name="frmSurgAssignAndCopy.layoutControl1.Text" xml:space="preserve">
+    <value>layoutControl1</value>
+  </data>
+  <data name="frmSurgAssignAndCopy.layoutControlItem1.Text" xml:space="preserve">
+    <value>Order date:</value>
+  </data>
+  <data name="frmSurgAssignAndCopy.layoutControlItem2.Text" xml:space="preserve">
+    <value>Order time:</value>
+  </data>
+  <data name="frmSurgAssignAndCopy.layoutControlItem3.Text" xml:space="preserve">
+    <value>Expected date:</value>
+  </data>
+  <data name="frmSurgAssignAndCopy.layoutControlRoot.Text" xml:space="preserve">
+    <value>layoutControl1</value>
+  </data>
+  <data name="frmSurgAssignAndCopy.lciCalendarInstructionDate.Text" xml:space="preserve">
+    <value>Order date:</value>
+  </data>
+  <data name="frmSurgAssignAndCopy.Text" xml:space="preserve">
+    <value>Time indicated</value>
   </data>
   <data name="Plugin_SurgServiceReqExecute__ThoiGianBatDauThoiGianKetThuc" xml:space="preserve">
     <value>Set the start time and end time incorrectly</value>
@@ -1884,6 +2082,12 @@
   <data name="SurgServiceReqExecuteControl.btnOther.Text" xml:space="preserve">
     <value>Other</value>
   </data>
+  <data name="SurgServiceReqExecuteControl.btnPresYhct.Text" xml:space="preserve">
+    <value>Prescription\r\n</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.btnPresYhct.ToolTip" xml:space="preserve">
+    <value>Statistics of traditional medicine</value>
+  </data>
   <data name="SurgServiceReqExecuteControl.btnPrint.Text" xml:space="preserve">
     <value>Printing</value>
   </data>
@@ -1898,6 +2102,12 @@
   </data>
   <data name="SurgServiceReqExecuteControl.btnServiceReqMaty.Text" xml:space="preserve">
     <value>Waste materials</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.btnSurgAssignAndCopy.Text" xml:space="preserve">
+    <value>Assign</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.btnSurgAssignAndCopy.ToolTip" xml:space="preserve">
+    <value>Service appointment and content copy according to the command are being processed</value>
   </data>
   <data name="SurgServiceReqExecuteControl.btnSwapService.Text" xml:space="preserve">
     <value>Service change</value>
@@ -2127,6 +2337,18 @@
   <data name="SurgServiceReqExecuteControl.layoutControlItem58.Text" xml:space="preserve">
     <value>End:</value>
   </data>
+  <data name="SurgServiceReqExecuteControl.layoutControlItem60.Text" xml:space="preserve">
+    <value>Sign:</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.layoutControlItem61.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Automatically close after successful ending</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.layoutControlItem61.Text" xml:space="preserve">
+    <value>Close:</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.layoutControlItem62.Text" xml:space="preserve">
+    <value>Order time:</value>
+  </data>
   <data name="SurgServiceReqExecuteControl.layoutControlItem7.Text" xml:space="preserve">
     <value>Diagnosis follows:</value>
   </data>
@@ -2162,6 +2384,18 @@
   </data>
   <data name="SurgServiceReqExecuteControl.lciEkipTemp.Text" xml:space="preserve">
     <value>Sample kit:</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.lciEndDeptSubs.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Choose the signer instead of the Dean</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.lciEndDeptSubs.Text" xml:space="preserve">
+    <value>The signer replaces the account:</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.lciHospSubs.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Choose the signer on behalf of the Institute Director</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.lciHospSubs.Text" xml:space="preserve">
+    <value>The signer replaces the director:</value>
   </data>
   <data name="SurgServiceReqExecuteControl.lciIcd1.OptionsToolTip.ToolTip" xml:space="preserve">
     <value>Main diagnosis</value>
@@ -2298,11 +2532,23 @@
   <data name="tileViewItemElement2.Text" xml:space="preserve">
     <value>tileViewColumnName</value>
   </data>
+  <data name="tileViewItemElement3.Text" xml:space="preserve">
+    <value>tileViewColumm2</value>
+  </data>
+  <data name="tileViewItemElement4.Text" xml:space="preserve">
+    <value>tileViewColumm</value>
+  </data>
   <data name="toolTipItem1.Text" xml:space="preserve">
     <value>Additional photos of the surgical procedure diagram</value>
   </data>
   <data name="toolTipItem2.Text" xml:space="preserve">
     <value>Save the sample team</value>
+  </data>
+  <data name="toolTipItem3.Text" xml:space="preserve">
+    <value>Supplementing the procedure surgical schema</value>
+  </data>
+  <data name="toolTipItem4.Text" xml:space="preserve">
+    <value>Save the sample</value>
   </data>
   <data name="UCEkipUser.gridColumn1.Caption" xml:space="preserve">
     <value>Role</value>
@@ -2318,6 +2564,9 @@
   </data>
   <data name="UCEkipUser.gridColumn5.Caption" xml:space="preserve">
     <value>gridColumn5</value>
+  </data>
+  <data name="UCEkipUser.gridColumn6.Caption" xml:space="preserve">
+    <value>GridColumn6</value>
   </data>
   <data name="UCEkipUser.layoutControl1.Text" xml:space="preserve">
     <value>layoutControl1</value>

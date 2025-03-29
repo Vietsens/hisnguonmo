@@ -158,7 +158,7 @@ namespace HIS.Desktop.Plugins.DebateDiagnostic.UcDebateDetail
                 txtPathologicalHistory.Text = hisDebate.PATHOLOGICAL_HISTORY;
                 txtHospitalizationState.Text = hisDebate.HOSPITALIZATION_STATE;
                 txtBeforeDiagnostic.Text = hisDebate.BEFORE_DIAGNOSTIC;
-                txtTreatmentTracking.Text = hisDebate.TREATMENT_TRACKING;
+                txtTreatmentTracking.Text = hisDebate.TREATMENT_TRACKING;   
                 txtDiagnostic.Text = hisDebate.DIAGNOSTIC;
                 txtTreatmentMethod.Text = hisDebate.TREATMENT_METHOD;
                 txtCareMethod.Text = hisDebate.CARE_METHOD;

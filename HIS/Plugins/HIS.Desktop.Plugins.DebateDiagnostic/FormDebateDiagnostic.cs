@@ -1381,7 +1381,7 @@ namespace HIS.Desktop.Plugins.DebateDiagnostic
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
-            }
+            }    
         }
 
         private void FillDatatoControlByHisDebateTemp(HIS_DEBATE_TEMP data)
@@ -1450,12 +1450,12 @@ namespace HIS.Desktop.Plugins.DebateDiagnostic
                                 debate.SURGERY_TIME = IsCheckLockInfor(debate.SURGERY_TIME.ToString()) ? hisDebate.SURGERY_TIME : debate.SURGERY_TIME;
                                 debate.PROGNOSIS = IsCheckLockInfor(debate.PROGNOSIS) ? hisDebate.PROGNOSIS : debate.PROGNOSIS;
                                 debate.CONCLUSION = IsCheckLockInfor(debate.CONCLUSION) ? hisDebate.CONCLUSION : debate.CONCLUSION;
-                                debate.HIS_DEBATE_EKIP_USER = IsCheckLockInforList(debate.HIS_DEBATE_EKIP_USER.ToList()) ? hisDebate.HIS_DEBATE_EKIP_USER : debate.HIS_DEBATE_EKIP_USER;
                                 debate.PATHOLOGICAL_HISTORY = IsCheckLockInfor(debate.PATHOLOGICAL_HISTORY) ? hisDebate.PATHOLOGICAL_HISTORY : debate.PATHOLOGICAL_HISTORY;
                                 debate.HOSPITALIZATION_STATE = IsCheckLockInfor(debate.HOSPITALIZATION_STATE) ? hisDebate.HOSPITALIZATION_STATE : debate.HOSPITALIZATION_STATE;
                                 debate.BEFORE_DIAGNOSTIC = IsCheckLockInfor(debate.BEFORE_DIAGNOSTIC) ? hisDebate.BEFORE_DIAGNOSTIC : debate.BEFORE_DIAGNOSTIC;
                                 debate.DISCUSSION = IsCheckLockInfor(debate.DISCUSSION) ? hisDebate.DISCUSSION : debate.DISCUSSION;
                                 debate.CARE_METHOD = IsCheckLockInfor(debate.CARE_METHOD) ? hisDebate.CARE_METHOD : debate.CARE_METHOD;
+                                //debate.HIS_DEBATE_EKIP_USER = IsCheckLockInforList((debate.HIS_DEBATE_EKIP_USER).ToList()) ? hisDebate.HIS_DEBATE_EKIP_USER : debate.HIS_DEBATE_EKIP_USER;
                                 break;
                             default:
                                 break;
@@ -1718,6 +1718,12 @@ namespace HIS.Desktop.Plugins.DebateDiagnostic
                     ChkPttt.Checked = false;
                     ChkOther.Checked = false;
                     LoadDataControlDetail();
+                    var data = BackendDataWorker.Get<HIS_DEBATE_TEMP>().FirstOrDefault(p => p.ID == Int64.Parse(cboDebateTemp.EditValue.ToString()));
+                    FillDatatoControlByHisDebateTemp(data);
+                    if (detailProcessor != null)
+                    {
+                        detailProcessor.SetData(GetTypeDetail(), currentHisDebate);
+                    }
                 }
                 else if (!ChkPttt.Checked && !ChkOther.Checked)
                 {
@@ -1736,9 +1742,16 @@ namespace HIS.Desktop.Plugins.DebateDiagnostic
             {
                 if (ChkPttt.Checked)
                 {
-                    CheckThuoc.Checked = false;
+                    CheckThuoc.Checked = false;      
                     ChkOther.Checked = false;
                     LoadDataControlDetail();
+                    var data = BackendDataWorker.Get<HIS_DEBATE_TEMP>().FirstOrDefault(p => p.ID == Int64.Parse(cboDebateTemp.EditValue.ToString()));
+                    FillDatatoControlByHisDebateTemp(data);
+
+                    //if (detailProcessor != null)
+                    //{
+                    //    detailProcessor.SetData(GetTypeDetail(), currentHisDebate);
+                    //}
                     if (this.action == GlobalVariables.ActionAdd)
                     {
                         if (this.examServiceReq == null)
@@ -1747,7 +1760,9 @@ namespace HIS.Desktop.Plugins.DebateDiagnostic
                         }
                         if (detailProcessor != null && examServiceReq != null)
                         {
-                            detailProcessor.SetData(GetTypeDetail(), examServiceReq);
+                            //detailProcessor.SetData(GetTypeDetail(), examServiceReq);
+                            //var data = BackendDataWorker.Get<HIS_DEBATE_TEMP>().FirstOrDefault(p => p.ID == Int64.Parse(cboDebateTemp.EditValue.ToString()));
+                            FillDatatoControlByHisDebateTemp(data);
                         }
                     }
                 }
@@ -1794,8 +1809,10 @@ namespace HIS.Desktop.Plugins.DebateDiagnostic
                     ChkPttt.Checked = false;
                     CheckThuoc.Checked = false;
                     LoadDataControlDetail();
+                    var data = BackendDataWorker.Get<HIS_DEBATE_TEMP>().FirstOrDefault(p => p.ID == Int64.Parse(cboDebateTemp.EditValue.ToString()));
+                    FillDatatoControlByHisDebateTemp(data);
                 }
-                else if (!ChkPttt.Checked && !CheckThuoc.Checked)
+                else if (!ChkPttt.Checked && !CheckThuoc.Checked)     
                 {
                     ChkOther.Checked = true;
                 }

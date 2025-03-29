@@ -124,6 +124,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
         List<V_HIS_SERVICE> lstService;
         List<HIS_EMOTIONLESS_METHOD> dataEmotionlessMethod { get; set; }
         DXErrorProvider dxErrorProviver = new DXErrorProvider();
+        public static long ServiceId;
         #endregion
 
         #region Contructor
@@ -224,6 +225,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             try
             {
                 lstService = BackendDataWorker.Get<V_HIS_SERVICE>();
+                ServiceId = sereServ.SERVICE_ID;
             }
             catch (Exception ex)
             {
@@ -5213,7 +5215,9 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             {
                 if (this.serviceReq != null)
                 {
-                    FormSurgAssignAndCopy.frmSurgAssignAndCopy form = new FormSurgAssignAndCopy.frmSurgAssignAndCopy(this.Module, this.serviceReq, this.vhisTreatment);
+                    long beginTime = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(dtStart.DateTime) ?? 0;
+                            long endTime = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(dtFinish.DateTime) ?? 0;
+                    FormSurgAssignAndCopy.frmSurgAssignAndCopy form = new FormSurgAssignAndCopy.frmSurgAssignAndCopy(this.Module, this.serviceReq, this.vhisTreatment, this.sereServ, beginTime, endTime, ucEkip.GetDataSource());
                     form.ShowDialog();
                 }
             }
