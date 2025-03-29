@@ -228,6 +228,11 @@ namespace HIS.UC.UCHeniInfo
                     this.cboDKKCBBD.EditValue = dataMediOrg.MEDI_ORG_CODE;
                     this.MediOrgSelectRowChange(false, dataHein.LiveAreaCode);
                 }
+                else
+                {
+                    this.cboDKKCBBD.EditValue = null;
+                    this.txtMaDKKCBBD.EditValue = null;
+                }
                 if (this.currentPatientSdo != null)
                 {
                     if (!String.IsNullOrEmpty(this.currentPatientSdo.AppointmentCode))
