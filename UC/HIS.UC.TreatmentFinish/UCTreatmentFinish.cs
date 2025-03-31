@@ -53,6 +53,7 @@ using DevExpress.XtraEditors;
 using HIS.Desktop.Utilities.Extensions;
 using DevExpress.XtraEditors.Repository;
 using System.Resources;
+using Inventec.Common.Logging;
 
 namespace HIS.UC.TreatmentFinish.Run
 {
@@ -116,6 +117,9 @@ namespace HIS.UC.TreatmentFinish.Run
             Option3 = 3,
             Option4 = 4
         }
+
+        System.Windows.Forms.Timer timerInitForm;
+
         #endregion
 
         #region Contructor
@@ -126,6 +130,7 @@ namespace HIS.UC.TreatmentFinish.Run
 
         public UCTreatmentFinish(TreatmentFinishInitADO data)
         {
+            LogSystem.Debug("UCTreatmentFinish. 1");
             InitializeComponent();
             try
             {
@@ -161,7 +166,7 @@ namespace HIS.UC.TreatmentFinish.Run
                 }
                 //SetCaptionByLanguageKey();
                 SetCaptionByLanguageKeyNew();
-                LoadDataTocboUser();
+                LogSystem.Debug("UCTreatmentFinish. 2");
             }
             catch (Exception ex)
             {
@@ -258,13 +263,14 @@ namespace HIS.UC.TreatmentFinish.Run
         #endregion
 
         #region Event
-        private void UC_DepositRequestList_Load(object sender, EventArgs e)
+        private async void UCTreatmentFinish_Load(object sender, EventArgs e)
         {
             try
             {
+                LogSystem.Debug("UCTreatmentFinish_Load. 1");
                 ConfigKeyCFG.GetConfig();
                 ValidateForm();
-
+                LogSystem.Debug("UCTreatmentFinish_Load. 2");
                 if (ConfigKeyCFG.AutoCheckAndDisableExportXmlCollinear)
                 {
                     lciXuatXML.Enabled = false;
@@ -289,11 +295,23 @@ namespace HIS.UC.TreatmentFinish.Run
                     = chkPrintBHXH.Enabled
                     = chkSignBHXH.Enabled
                     = false;
+                LogSystem.Debug("UCTreatmentFinish_Load. 3");
 
                 if (this.notAutoInitData)
                 {
-                    Inventec.Common.Logging.LogSystem.Debug("UcTreatmentFinish.UC_DepositRequestList_Load. Khong tai cac du lieu & khoi tao du lieu default tren giao dien, khi check vao o check chon thi moi tai du lieu____" + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => notAutoInitData), notAutoInitData));
+
+                    this.timerInitForm = new System.Windows.Forms.Timer();
+                    this.timerInitForm.Tick += new System.EventHandler(this.timerInitForm_Tick);
+                    this.timerInitForm.Interval = 500;//Fix 5s
+                    this.timerInitForm.Enabled = true;
+                    this.timerInitForm.Start();
+
+                    Inventec.Common.Logging.LogSystem.Debug("UcTreatmentFinish.UCTreatmentFinish_Load. Khong tai cac du lieu & khoi tao du lieu default tren giao dien, khi check vao o check chon thi moi tai du lieu____" + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => notAutoInitData), notAutoInitData));
                     return;
+                }
+                else
+                {
+                    await this.InitDataTocboUser();
                 }
 
                 if (this.IsShowButtonIcd)
@@ -304,16 +322,30 @@ namespace HIS.UC.TreatmentFinish.Run
                 {
                     this.LayoutShowIcd.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
                 }
+                LogSystem.Debug("UCTreatmentFinish_Load. 4");
 
 
-                var data = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get
-                    <MOS.EFMODEL.DataModels.HIS_TREATMENT_END_TYPE>().Where(o => isTreatmentIn ? o.IS_FOR_IN_PATIENT == 1 : o.IS_FOR_OUT_PATIENT == 1).ToList();
-                ValidHeadDepartmentAndDirectorBranch();
-                InitComboCommon(cboTreatmentEndType, data, "ID", "TREATMENT_END_TYPE_NAME", "TREATMENT_END_TYPE_CODE");
+                this.InitTreatmentEndType();
 
-                LoadTreatmentEndTypeExt();
-                InitComboCommon(cboTreatmentEndTypeExt, TreatmentEndTypeExts, "ID", "TREATMENT_END_TYPE_EXT_NAME", "TREATMENT_END_TYPE_EXT_CODE");
+                this.ValidHeadDepartmentAndDirectorBranch();
+
+                LogSystem.Debug("UCTreatmentFinish_Load. 5");
+                this.InitTreatmentEndTypeExt();
                 //InitCapSoLuuTruBNCT();
+                LogSystem.Debug("UCTreatmentFinish_Load. 6");
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSession.Warn(ex);
+            }
+        }
+
+        private void timerInitForm_Tick(object sender, EventArgs e)
+        {
+            try
+            {
+                timerInitForm.Stop();
+                this.InitDataTocboUser();
             }
             catch (Exception ex)
             {
@@ -1427,18 +1459,11 @@ namespace HIS.UC.TreatmentFinish.Run
             {
                 if (this.notAutoInitData)
                 {
-                    var data = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get
-                     <HIS_TREATMENT_END_TYPE>().Where(o => isTreatmentIn ? o.IS_FOR_IN_PATIENT == 1 : o.IS_FOR_OUT_PATIENT == 1).ToList();
+                    this.InitTreatmentEndType();
 
-                    this.InitComboCommon(cboTreatmentEndType, data, "ID", "TREATMENT_END_TYPE_NAME", "TREATMENT_END_TYPE_CODE");
-                    this.LoadTreatmentEndTypeExt();
-                    this.InitComboCommon(cboTreatmentEndTypeExt, TreatmentEndTypeExts, "ID", "TREATMENT_END_TYPE_EXT_NAME", "TREATMENT_END_TYPE_EXT_CODE");
+                    this.InitTreatmentEndTypeExt();
 
-                    var HisCareer = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<HIS_CAREER>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE).ToList();
-
-                    this.InitComboCommon(cboCareer, HisCareer, "ID", "CAREER_NAME", "CAREER_CODE");
-
-                    this.LoadDefautcboCareer(HisCareer);
+                    this.InitCarrer();
 
                     if (this.useCapSoBABNCT.HasValue && this.useCapSoBABNCT.Value)
                         this.InitCapSoLuuTruBNCT();
@@ -1458,6 +1483,30 @@ namespace HIS.UC.TreatmentFinish.Run
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
+        }
+
+        private void InitCarrer()
+        {
+            try
+            {
+                var HisCareer = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<HIS_CAREER>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE).ToList();
+
+                this.InitComboCommon(cboCareer, HisCareer, "ID", "CAREER_NAME", "CAREER_CODE");
+
+                this.LoadDefautcboCareer(HisCareer);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void InitTreatmentEndType()
+        {
+            var data = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get
+             <HIS_TREATMENT_END_TYPE>().Where(o => isTreatmentIn ? o.IS_FOR_IN_PATIENT == 1 : o.IS_FOR_OUT_PATIENT == 1).ToList();
+
+            this.InitComboCommon(cboTreatmentEndType, data, "ID", "TREATMENT_END_TYPE_NAME", "TREATMENT_END_TYPE_CODE");
         }
 
         private void AutoTreatmentFinishCheckedChanged()
@@ -2339,31 +2388,71 @@ namespace HIS.UC.TreatmentFinish.Run
             }
         }
 
-        private void LoadDataTocboUser()
+        private async Task InitDataTocboUser()
         {
             try
             {
+                LogSystem.Debug("InitDataTocboUser 1...");
                 this.lstReAcsUserADO = new List<AcsUserADO>();
-                var acsUser = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get
-                       <ACS.EFMODEL.DataModels.ACS_USER>().Where(p => !string.IsNullOrEmpty(p.USERNAME) && p.IS_ACTIVE == 1).OrderBy(o => o.USERNAME).ToList();
-                foreach (var item in acsUser)
+
+                // Lấy danh sách ACS_USER có USERNAME và IS_ACTIVE = 1
+                var acsUserList = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<ACS.EFMODEL.DataModels.ACS_USER>()
+                    .Where(p => !string.IsNullOrEmpty(p.USERNAME) && p.IS_ACTIVE == 1)
+                    .OrderBy(o => o.USERNAME)
+                    .ToList();  // Thực thi truy vấn một lần duy nhất
+                LogSystem.Debug("InitDataTocboUser 2...");
+                // Tạo Dictionary để tra cứu nhanh dựa vào LOGINNAME
+                List<V_HIS_EMPLOYEE> hisEmployees = null;
+                if (BackendDataWorker.IsExistsKey<V_HIS_EMPLOYEE>())
+                {
+                    hisEmployees = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<MOS.EFMODEL.DataModels.V_HIS_EMPLOYEE>();
+                }
+                else
+                {
+                    CommonParam paramCommon = new CommonParam();
+                    MOS.Filter.HisEmployeeFilter filter = new MOS.Filter.HisEmployeeFilter();
+                    hisEmployees = await new Inventec.Common.Adapter.BackendAdapter(paramCommon).GetAsync<List<MOS.EFMODEL.DataModels.V_HIS_EMPLOYEE>>("api/HisEmployee/GetView", ApiConsumers.MosConsumer, filter, paramCommon);
+
+                    if (hisEmployees != null) BackendDataWorker.UpdateToRam(typeof(MOS.EFMODEL.DataModels.V_HIS_EMPLOYEE), hisEmployees, long.Parse(DateTime.Now.ToString("yyyyMMddHHmmss")));
+
+                }
+                LogSystem.Debug("InitDataTocboUser 3...");
+                var vhisEmployeeDict = hisEmployees
+                   .Where(e => acsUserList.Select(u => u.LOGINNAME).Contains(e.LOGINNAME))
+                   .ToDictionary(e => e.LOGINNAME, e => e);  // Duy nhất 1 truy vấn DB, tìm nhanh qua Dictionary
+
+                LogSystem.Debug("InitDataTocboUser 4...");
+                foreach (var item in acsUserList)
                 {
                     AcsUserADO ado = new AcsUserADO(item);
 
-                    var VhisEmployee = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<MOS.EFMODEL.DataModels.V_HIS_EMPLOYEE>().FirstOrDefault(o => o.LOGINNAME == item.LOGINNAME);
-                    if (VhisEmployee != null)
+                    // Kiểm tra nhanh với Dictionary
+                    if (vhisEmployeeDict.TryGetValue(item.LOGINNAME, out var vhisEmployee))
                     {
-                        ado.DOB = VhisEmployee.DOB;
-                        ado.DOB_STR = Inventec.Common.DateTime.Convert.TimeNumberToDateString(VhisEmployee.DOB ?? 0);
-                        ado.DIPLOMA = VhisEmployee.DIPLOMA;
-                        ado.DEPARTMENT_CODE = VhisEmployee.DEPARTMENT_CODE;
-                        ado.DEPARTMENT_ID = VhisEmployee.DEPARTMENT_ID;
-                        ado.DEPARTMENT_NAME = VhisEmployee.DEPARTMENT_NAME;
-
-                        this.lstReAcsUserADO.Add(ado);
+                        ado.DOB = vhisEmployee.DOB;
+                        ado.DOB_STR = Inventec.Common.DateTime.Convert.TimeNumberToDateString(vhisEmployee.DOB ?? 0);
+                        ado.DIPLOMA = vhisEmployee.DIPLOMA;
+                        ado.DEPARTMENT_CODE = vhisEmployee.DEPARTMENT_CODE;
+                        ado.DEPARTMENT_ID = vhisEmployee.DEPARTMENT_ID;
+                        ado.DEPARTMENT_NAME = vhisEmployee.DEPARTMENT_NAME;
                     }
 
+                    this.lstReAcsUserADO.Add(ado);
                 }
+                LogSystem.Debug("InitDataTocboUser 5...");
+                FillDataTocboUserByData();
+                LogSystem.Debug("InitDataTocboUser 6...");
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void FillDataTocboUserByData()
+        {
+            try
+            {
                 List<ColumnInfo> columnInfos = new List<ColumnInfo>();
                 columnInfos.Add(new ColumnInfo("LOGINNAME", "Tên đăng nhập", 150, 1));
                 columnInfos.Add(new ColumnInfo("USERNAME", "Họ tên", 250, 2));
