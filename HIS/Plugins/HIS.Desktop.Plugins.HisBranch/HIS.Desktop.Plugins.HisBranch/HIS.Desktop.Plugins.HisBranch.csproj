@@ -173,7 +173,9 @@
     <Compile Include="ADO\XML.cs" />
     <Compile Include="Base\ResourceMessageLang.cs" />
     <Compile Include="HisBranchProcessor.cs" />
-    <Compile Include="HisBranch\frmHisBranch.cs" />
+    <Compile Include="HisBranch\frmHisBranch.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="HisBranch\frmHisBranch.Designer.cs">
       <DependentUpon>frmHisBranch.cs</DependentUpon>
     </Compile>

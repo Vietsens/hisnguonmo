@@ -53,7 +53,7 @@ namespace HIS.Desktop.Utility
         protected List<ModuleControlADO> ModuleControls { get; set; }
         bool isAutoInitPrintTypeCfg = true;
         List<string> ExcludePrintTypeCode { get; set; }
-        Dictionary<string, string> dicOfNameOnClickPrintWithPrintTypeCfg { get; set; }
+        Dictionary<string, string> dicOfNameOnClickPrintWithPrintTypeCfg { get; set; }             
 
         string timerSessionKey = "";
 
@@ -125,7 +125,7 @@ namespace HIS.Desktop.Utility
                         GC.WaitForPendingFinalizers();
                         // Force garbage collection again.
                         GC.Collect();
-                    }                    
+                    }
                 }
                 catch (Exception exx)
                 {
@@ -139,6 +139,7 @@ namespace HIS.Desktop.Utility
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
+
 
         private void DisposeAllControl(Control parentControl)
         {

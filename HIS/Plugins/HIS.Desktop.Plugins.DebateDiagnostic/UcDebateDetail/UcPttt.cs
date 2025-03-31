@@ -1251,7 +1251,23 @@ namespace HIS.Desktop.Plugins.DebateDiagnostic.UcDebateDetail
         {
             try
             {
+                
+                memPathHis.Text = hisDebate.PATHOLOGICAL_HISTORY;
+                string hospitalizationState = hisDebate.FULL_EXAM + "\r\n" + hisDebate.PART_EXAM + "\r\n" + hisDebate.SUBCLINICAL;
+                memHosState.Text = hospitalizationState.Trim();
                 TxtTreatmentTracking.Text = hisDebate.PATHOLOGICAL_PROCESS;
+                txtTreatmentMethod.Text = hisDebate.TREATMENT_INSTRUCTION;
+                memCONCLUSION.Text = hisDebate.NEXT_TREATMENT_INSTRUCTION;
+
+                if (!string.IsNullOrEmpty(hisDebate.ICD_CODE))
+                {
+                    var icd = Base.GlobalStore.HisIcds.Where(o => o.ICD_CODE == hisDebate.ICD_CODE).FirstOrDefault();
+                    memBeforeDiagnostic.Text = icd.ICD_NAME;
+                }
+                else
+                {
+                    memBeforeDiagnostic.Text = "";
+                }
             }
             catch (Exception ex)
             {
@@ -1269,7 +1285,7 @@ namespace HIS.Desktop.Plugins.DebateDiagnostic.UcDebateDetail
                     memHosState.Text = hisDebate.HOSPITALIZATION_STATE;
                     memBeforeDiagnostic.Text = hisDebate.BEFORE_DIAGNOSTIC;
                     memDiscussion.Text = hisDebate.DISCUSSION;
-                    memCareMethod.Text = hisDebate.CARE_METHOD;
+                    memCareMethod.Text = hisDebate.CARE_METHOD;   
                     TxtKqCls.Text = hisDebate.SUBCLINICAL_PROCESSES;
                     txtInternalMedicineState.Text = hisDebate.INTERNAL_MEDICINE_STATE;
                     TxtTreatmentTracking.Text = hisDebate.TREATMENT_TRACKING;

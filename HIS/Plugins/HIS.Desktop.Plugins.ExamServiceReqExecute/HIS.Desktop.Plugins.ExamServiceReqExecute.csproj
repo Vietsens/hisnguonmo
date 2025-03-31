@@ -157,8 +157,9 @@
     <Reference Include="HIS.UC.ExamFinish">
       <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\HIS.UC.ExamFinish.dll</HintPath>
     </Reference>
-    <Reference Include="HIS.UC.ExamTreatmentFinish">
-      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\HIS.UC.ExamTreatmentFinish.dll</HintPath>
+    <Reference Include="HIS.UC.ExamTreatmentFinish, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\lib_1\HIS\HIS.UC.ExamTreatmentFinish\HIS.UC.ExamTreatmentFinish.dll</HintPath>
     </Reference>
     <Reference Include="HIS.UC.HisExamServiceAdd">
       <HintPath>..\..\..\..\LIB\HIS\HIS.UC.ExamServiceAdd\HIS.UC.HisExamServiceAdd.dll</HintPath>
@@ -189,8 +190,9 @@
     <Reference Include="HIS.UC.UCTransPati">
       <HintPath>..\..\..\..\LIB\HIS\HIS.UC.TranPati\HIS.UC.UCTransPati.dll</HintPath>
     </Reference>
-    <Reference Include="IMSys.DbConfig.HIS_RS">
-      <HintPath>..\..\..\..\lib\IMSys.DbConfig\IMSys.DbConfig.HIS_RS\IMSys.DbConfig.HIS_RS.dll</HintPath>
+    <Reference Include="IMSys.DbConfig.HIS_RS, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\lib_1\IMSys.DbConfig\IMSys.DbConfig.HIS_RS\IMSys.DbConfig.HIS_RS.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Common.Adapter">
       <HintPath>..\..\..\..\LIB\Inventec.Common\Inventec.Common.Adapter\Inventec.Common.Adapter.dll</HintPath>
@@ -341,8 +343,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\LIB\MOS\MOS.LibraryHein.Ksk.dll</HintPath>
     </Reference>
-    <Reference Include="MOS.SDO">
-      <HintPath>..\..\..\..\lib\MOS\MOS.SDO.dll</HintPath>
+    <Reference Include="MOS.SDO, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\lib_1\MOS\MOS.SDO.dll</HintPath>
     </Reference>
     <Reference Include="MOS.ServicePaty, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>

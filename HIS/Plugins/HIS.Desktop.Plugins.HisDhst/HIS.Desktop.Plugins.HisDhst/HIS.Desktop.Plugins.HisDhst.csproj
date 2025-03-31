@@ -211,7 +211,9 @@
     <Compile Include="ADO\MessFunctionADO.cs" />
     <Compile Include="ChartDhstProcess.cs" />
     <Compile Include="HisDhstProcessor.cs" />
-    <Compile Include="HisDhst\frmHisDhst.cs" />
+    <Compile Include="HisDhst\frmHisDhst.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="HisDhst\frmHisDhst.Designer.cs">
       <DependentUpon>frmHisDhst.cs</DependentUpon>
     </Compile>

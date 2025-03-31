@@ -159,8 +159,12 @@
   <ItemGroup>
     <Compile Include="Base\ResourceLangManager.cs" />
     <Compile Include="ComboADO.cs" />
-    <Compile Include="frmTreatmentHistory__Pluss__TreeSS.cs" />
-    <Compile Include="frmTreatmentHistory.cs" />
+    <Compile Include="frmTreatmentHistory__Pluss__TreeSS.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmTreatmentHistory.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="frmTreatmentHistory.Designer.cs">
       <DependentUpon>frmTreatmentHistory.cs</DependentUpon>
     </Compile>

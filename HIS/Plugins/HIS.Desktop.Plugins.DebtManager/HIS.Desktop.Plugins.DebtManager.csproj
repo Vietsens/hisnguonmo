@@ -155,7 +155,9 @@
       <DesignTime>True</DesignTime>
     </Compile>
     <Compile Include="Resources\ResourceLanguageManager.cs" />
-    <Compile Include="Run\UCDebtManager.cs" />
+    <Compile Include="Run\UCDebtManager.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="Run\UCDebtManager.Designer.cs">
       <DependentUpon>UCDebtManager.cs</DependentUpon>
     </Compile>

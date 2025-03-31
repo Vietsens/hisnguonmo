@@ -140,7 +140,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="frmTransactionInfoEdit.cs" />
+    <Compile Include="frmTransactionInfoEdit.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="frmTransactionInfoEdit.Designer.cs">
       <DependentUpon>frmTransactionInfoEdit.cs</DependentUpon>
     </Compile>

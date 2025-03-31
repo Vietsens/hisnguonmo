@@ -146,7 +146,9 @@
     <Compile Include="ExaminationReqEdit\ExaminationReqEditBehavior.cs" />
     <Compile Include="ExaminationReqEdit\ExaminationReqEditFactory.cs" />
     <Compile Include="ExaminationReqEdit\IExaminationReqEdit.cs" />
-    <Compile Include="FormExaminationReqEdit.cs" />
+    <Compile Include="FormExaminationReqEdit.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="FormExaminationReqEdit.Designer.cs">
       <DependentUpon>FormExaminationReqEdit.cs</DependentUpon>
     </Compile>

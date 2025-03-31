@@ -63,7 +63,7 @@
     </Reference>
     <Reference Include="HIS.Desktop.Common, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\lib\HIS\HIS.Desktop.Common\HIS.Desktop.Common.dll</HintPath>
+      <HintPath>..\..\..\..\lib_1\HIS\HIS.Desktop.Common\HIS.Desktop.Common.dll</HintPath>
     </Reference>
     <Reference Include="HIS.Desktop.LocalStorage.BackendData, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -231,7 +231,7 @@
     </Reference>
     <Reference Include="MOS.EFMODEL, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\lib\MOS\MOS.EFMODEL.dll</HintPath>
+      <HintPath>..\..\..\..\lib_1\MOS\MOS.EFMODEL.dll</HintPath>
     </Reference>
     <Reference Include="MOS.Filter, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -243,7 +243,7 @@
     </Reference>
     <Reference Include="MOS.SDO, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\lib\MOS\MOS.SDO.dll</HintPath>
+      <HintPath>..\..\..\..\lib_1\MOS\MOS.SDO.dll</HintPath>
     </Reference>
     <Reference Include="MOS.UTILITY">
       <HintPath>..\..\..\..\lib\MOS\MOS.UTILITY.dll</HintPath>
@@ -336,11 +336,15 @@
     </Compile>
     <Compile Include="Base\GlobalStore.cs" />
     <Compile Include="Base\GlobalVariablesProcess.cs" />
-    <Compile Include="CloseTreatment\FormAppointment.cs" />
+    <Compile Include="CloseTreatment\FormAppointment.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="CloseTreatment\FormAppointment.Designer.cs">
       <DependentUpon>FormAppointment.cs</DependentUpon>
     </Compile>
-    <Compile Include="CloseTreatment\FormTransfer.cs" />
+    <Compile Include="CloseTreatment\FormTransfer.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="CloseTreatment\FormTransfer.Designer.cs">
       <DependentUpon>FormTransfer.cs</DependentUpon>
     </Compile>
@@ -362,7 +366,9 @@
     <Compile Include="CloseTreatment\frmDienBienCLS.Designer.cs">
       <DependentUpon>frmDienBienCLS.cs</DependentUpon>
     </Compile>
-    <Compile Include="CloseTreatment\FormDeath.cs" />
+    <Compile Include="CloseTreatment\FormDeath.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="CloseTreatment\FormDeath.Designer.cs">
       <DependentUpon>FormDeath.cs</DependentUpon>
     </Compile>
@@ -378,10 +384,18 @@
     <Compile Include="Config\ConfigKey.cs" />
     <Compile Include="Config\TreatmentEndCFG.cs" />
     <Compile Include="ControlStateConstan.cs" />
-    <Compile Include="FormTreatmentFinish_PrintConfig.cs" />
-    <Compile Include="FormTreatmentFinish_Event.cs" />
-    <Compile Include="FormTreatmentFinish_Print.cs" />
-    <Compile Include="FormTreatmentFinish_Warning.cs" />
+    <Compile Include="FormTreatmentFinish_PrintConfig.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormTreatmentFinish_Event.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormTreatmentFinish_Print.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormTreatmentFinish_Warning.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="FormWarning\frmWarning.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -421,10 +435,14 @@
     <Compile Include="Validation\TranPatiFormValidationRule.cs" />
     <Compile Include="Validation\TranPatiReasonValidationRule.cs" />
     <Compile Include="Validation\TransferMediOrgValidationRule.cs" />
-    <Compile Include="FormTreatmentFinish_Validation.cs" />
+    <Compile Include="FormTreatmentFinish_Validation.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Resources\ResourceLanguageManager.cs" />
     <Compile Include="TreatmentFinishProcessor.cs" />
-    <Compile Include="FormTreatmentFinish.cs" />
+    <Compile Include="FormTreatmentFinish.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="FormTreatmentFinish.Designer.cs">
       <DependentUpon>FormTreatmentFinish.cs</DependentUpon>
     </Compile>
@@ -481,6 +499,7 @@
     <EmbeddedResource Include="frmCheckBedRoom.resx">
       <DependentUpon>frmCheckBedRoom.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Properties\licenses.licx" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>

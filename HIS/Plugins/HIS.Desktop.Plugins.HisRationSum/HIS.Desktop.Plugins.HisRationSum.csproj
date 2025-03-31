@@ -212,14 +212,24 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="UCHisRationSum.cs" />
+    <Compile Include="UCHisRationSum.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="UCHisRationSum.Designer.cs">
       <DependentUpon>UCHisRationSum.cs</DependentUpon>
     </Compile>
-    <Compile Include="UCHisRationSum_Language.cs" />
-    <Compile Include="UCHisRationSum_Print.cs" />
-    <Compile Include="UCHisRationSum_Public.cs" />
-    <Compile Include="UCHisRationSum_Validate.cs" />
+    <Compile Include="UCHisRationSum_Language.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UCHisRationSum_Print.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UCHisRationSum_Public.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UCHisRationSum_Validate.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="Validation\GridLookupValidationRule.cs" />
     <Compile Include="Validation\TimeToValidationRule.cs" />
     <Compile Include="Validation\TimeFromValidationRule.cs" />

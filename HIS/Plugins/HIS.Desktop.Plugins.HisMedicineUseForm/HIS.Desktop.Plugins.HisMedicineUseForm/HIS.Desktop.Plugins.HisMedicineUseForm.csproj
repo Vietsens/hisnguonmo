@@ -158,7 +158,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="HisMedicineUseFormProcessor.cs" />
-    <Compile Include="HisMedicineUseForm\frmHisMedicineUseForm.cs" />
+    <Compile Include="HisMedicineUseForm\frmHisMedicineUseForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="HisMedicineUseForm\frmHisMedicineUseForm.Designer.cs">
       <DependentUpon>frmHisMedicineUseForm.cs</DependentUpon>
     </Compile>

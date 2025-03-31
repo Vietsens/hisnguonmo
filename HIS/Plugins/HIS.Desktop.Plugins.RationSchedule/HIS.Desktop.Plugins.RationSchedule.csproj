@@ -165,7 +165,9 @@
   <ItemGroup>
     <Compile Include="RationSchedule\RationScheduleBehavior.cs" />
     <Compile Include="RationSchedule\RationScheduleFactory.cs" />
-    <Compile Include="RationSchedule\frmRationSchedule.cs" />
+    <Compile Include="RationSchedule\frmRationSchedule.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="RationSchedule\frmRationSchedule.Designer.cs">
       <DependentUpon>frmRationSchedule.cs</DependentUpon>
     </Compile>

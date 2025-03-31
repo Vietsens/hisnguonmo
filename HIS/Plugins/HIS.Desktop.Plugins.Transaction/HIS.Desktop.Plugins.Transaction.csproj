@@ -248,14 +248,24 @@
     <Compile Include="Transaction\ITransaction.cs" />
     <Compile Include="Transaction\TransactionBehavior.cs" />
     <Compile Include="Transaction\TransactionFactory.cs" />
-    <Compile Include="UCTransaction.cs" />
+    <Compile Include="UCTransaction.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="UCTransaction.Designer.cs">
       <DependentUpon>UCTransaction.cs</DependentUpon>
     </Compile>
-    <Compile Include="UCTransaction__CallPatient.cs" />
-    <Compile Include="UCTransaction__Plus__Button.cs" />
-    <Compile Include="UCTransaction__Plus__Control.cs" />
-    <Compile Include="UCTransaction__Plus__SereServTree.cs" />
+    <Compile Include="UCTransaction__CallPatient.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UCTransaction__Plus__Button.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UCTransaction__Plus__Control.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UCTransaction__Plus__SereServTree.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Properties\licenses.licx" />

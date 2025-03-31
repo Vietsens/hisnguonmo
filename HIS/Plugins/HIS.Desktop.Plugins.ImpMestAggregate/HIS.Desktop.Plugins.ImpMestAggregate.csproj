@@ -193,11 +193,19 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="Resources\ResourceLanguageManager.cs" />
-    <Compile Include="Run\UCImpMestAggregate__Pluss__Load.cs" />
-    <Compile Include="Run\UCImpMestAggregate__Pluss__Print.cs" />
+    <Compile Include="Run\UCImpMestAggregate__Pluss__Load.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Run\UCImpMestAggregate__Pluss__Print.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="Run\ImpMestAggrListPopupMenuProcessor.cs" />
-    <Compile Include="Run\UCImpMestAggregate__Pluss__Process.cs" />
-    <Compile Include="Run\UCImpMestAggregate.cs" />
+    <Compile Include="Run\UCImpMestAggregate__Pluss__Process.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Run\UCImpMestAggregate.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="Run\UCImpMestAggregate.Designer.cs">
       <DependentUpon>UCImpMestAggregate.cs</DependentUpon>
     </Compile>

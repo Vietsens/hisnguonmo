@@ -136,7 +136,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="HisCoTreatmentCreateProcessor.cs" />
-    <Compile Include="HisCoTreatmentCreate\frmHisCoTreatmentCreate.cs" />
+    <Compile Include="HisCoTreatmentCreate\frmHisCoTreatmentCreate.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="HisCoTreatmentCreate\frmHisCoTreatmentCreate.Designer.cs">
       <DependentUpon>frmHisCoTreatmentCreate.cs</DependentUpon>
     </Compile>

@@ -138,14 +138,28 @@
     <Compile Include="ADO\VHisServicePatyADO.cs" />
     <Compile Include="Base\GlobalStore.cs" />
     <Compile Include="Config\HisImpMestTypeAuthorziedCFG.cs" />
-    <Compile Include="frmManuImpMestUpdate__Plus_InitUC.cs" />
-    <Compile Include="frmManuImpMestUpdate__Plus_Control.cs" />
-    <Compile Include="frmManuImpMestUpdate__Plus_InitCbo.cs" />
-    <Compile Include="frmManuImpMestUpdate__Plus_Validate.cs" />
-    <Compile Include="frmManuImpMestUpdate__Plus_Print.cs" />
-    <Compile Include="frmManuImpMestUpdate__Plus_Load.cs" />
+    <Compile Include="frmManuImpMestUpdate__Plus_InitUC.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmManuImpMestUpdate__Plus_Control.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmManuImpMestUpdate__Plus_InitCbo.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmManuImpMestUpdate__Plus_Validate.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmManuImpMestUpdate__Plus_Print.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmManuImpMestUpdate__Plus_Load.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="ManuImpMestUpdateProcessor.cs" />
-    <Compile Include="frmManuImpMestUpdate.cs" />
+    <Compile Include="frmManuImpMestUpdate.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="frmManuImpMestUpdate.Designer.cs">
       <DependentUpon>frmManuImpMestUpdate.cs</DependentUpon>
     </Compile>
@@ -161,7 +175,9 @@
     <Compile Include="Resources\ResourceLanguageManager.cs" />
     <Compile Include="Resources\ResourceMessage.cs" />
     <Compile Include="Resources\ResourceMessageManager.cs" />
-    <Compile Include="Run\frmImpMestUpdate.cs" />
+    <Compile Include="Run\frmImpMestUpdate.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Run\frmImpMestUpdate.Designer.cs">
       <DependentUpon>frmImpMestUpdate.cs</DependentUpon>
     </Compile>

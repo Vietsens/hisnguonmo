@@ -96,7 +96,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ADO\ImportADO.cs" />
-    <Compile Include="FormImportAcinInteractive.cs" />
+    <Compile Include="FormImportAcinInteractive.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="FormImportAcinInteractive.Designer.cs">
       <DependentUpon>FormImportAcinInteractive.cs</DependentUpon>
     </Compile>

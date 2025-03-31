@@ -140,9 +140,15 @@
     <Compile Include="ADO\MyHisMediInStockSDO.cs" />
     <Compile Include="Base\ResourceLangManager.cs" />
     <Compile Include="Resources\ResourceLanguageManager.cs" />
-    <Compile Include="UCMediStockSummaryByExpireDate__Plus__Tree.cs" />
-    <Compile Include="UCMediStockSummaryByExpireDate__Control.cs" />
-    <Compile Include="UCMediStockSummaryByExpireDate.cs" />
+    <Compile Include="UCMediStockSummaryByExpireDate__Plus__Tree.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UCMediStockSummaryByExpireDate__Control.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UCMediStockSummaryByExpireDate.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="UCMediStockSummaryByExpireDate.Designer.cs">
       <DependentUpon>UCMediStockSummaryByExpireDate.cs</DependentUpon>
     </Compile>

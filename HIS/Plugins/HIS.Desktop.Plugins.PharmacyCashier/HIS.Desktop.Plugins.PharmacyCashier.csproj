@@ -189,16 +189,26 @@
     <Compile Include="ADO\MetyMatyInStockADO.cs" />
     <Compile Include="ADO\SereServADO.cs" />
     <Compile Include="Config\ControlStateConstant.cs" />
-    <Compile Include="frmPharmacyCashier__Print.cs" />
-    <Compile Include="frmPharmacyCashier__Validation.cs" />
+    <Compile Include="frmPharmacyCashier__Print.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmPharmacyCashier__Validation.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="PharmacyCashierProcessor.cs" />
     <Compile Include="Config\HisConfigCFG.cs" />
-    <Compile Include="frmPharmacyCashier.cs" />
+    <Compile Include="frmPharmacyCashier.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="frmPharmacyCashier.Designer.cs">
       <DependentUpon>frmPharmacyCashier.cs</DependentUpon>
     </Compile>
-    <Compile Include="frmPharmacyCashier__Load.cs" />
-    <Compile Include="frmPharmacyCashier__Process.cs" />
+    <Compile Include="frmPharmacyCashier__Load.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmPharmacyCashier__Process.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="PharmacyCashier\IPharmacyCashier.cs" />
     <Compile Include="PharmacyCashier\PharmacyCashierBehavior.cs" />
     <Compile Include="PharmacyCashier\PharmacyCashierFactory.cs" />

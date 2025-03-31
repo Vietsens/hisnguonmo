@@ -165,7 +165,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="frmMediReactCreate.cs" />
+    <Compile Include="frmMediReactCreate.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="frmMediReactCreate.Designer.cs">
       <DependentUpon>frmMediReactCreate.cs</DependentUpon>
     </Compile>

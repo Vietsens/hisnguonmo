@@ -160,7 +160,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="HisPatientTypeProcessor.cs" />
-    <Compile Include="HisPatientType\frmHisPatientType.cs" />
+    <Compile Include="HisPatientType\frmHisPatientType.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="HisPatientType\frmHisPatientType.Designer.cs">
       <DependentUpon>frmHisPatientType.cs</DependentUpon>
     </Compile>

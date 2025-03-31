@@ -1113,13 +1113,13 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                 LogSystem.Debug("frmAssignPrescription_Load. 8");
                 LogSystem.Debug("frmAssignPrescription_Load. 9");
 
-                this.timerInitForm.Interval = 2000;//Fix
+                this.timerInitForm.Interval = 500;//Fix
                 this.timerInitForm.Enabled = true;
                 this.timerInitForm.Start();
 
                 this.timerInitFormAssignPrescription = new System.Windows.Forms.Timer();
                 this.timerInitFormAssignPrescription.Tick += new System.EventHandler(this.timerInitFormAssignPrescription_Tick);
-                this.timerInitFormAssignPrescription.Interval = 500;//Fix
+                this.timerInitFormAssignPrescription.Interval = 200;//Fix
                 this.timerInitFormAssignPrescription.Enabled = true;
                 this.timerInitFormAssignPrescription.Start();
 
@@ -1137,7 +1137,6 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
         {
             try
             {
-                timerInitFormAssignPrescription.Stop();
                 LogSystem.Debug("InitFormAssignPrescriptionAsync. 1");
                 this.LoadDataToPatientInfo();
                 LogSystem.Debug("InitFormAssignPrescriptionAsync. 2");
@@ -1175,7 +1174,6 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
 
                 ModuleList();
                 VisibleColumnPreAmount();
-                InitDataServiceReqAllInDay();
                 CheckAssignServiceSimultaneityOption();
                 LogSystem.Debug("InitFormAssignPrescriptionAsync. 10");
             }
@@ -1402,6 +1400,8 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
         {
             try
             {
+                LogSystem.Debug("timerInitFormAssignPrescription_Tick 1...");
+                timerInitFormAssignPrescription.Stop();
                 this.InitTabIndex();
                 this.ValidateForm();
                 this.ValidateBosung();
@@ -1410,6 +1410,8 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                 this.VisibleColumnInGridControlService();
 
                 InitFormAssignPrescriptionAsync();
+
+                LogSystem.Debug("timerInitFormAssignPrescription_Tick 2...");
             }
             catch (Exception ex)
             {
@@ -1435,6 +1437,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                 this.CheckAppoinmentEarly();//Hien thi thong bao den som thoi gian hen kham
                 this.LoadDataTracking(false);
                 this.LoadAllergenic(this.currentTreatmentWithPatientType.PATIENT_ID);
+                this.InitDataServiceReqAllInDay();
                 this.ThreadLoadDonThuocCu();
                 this.FillDataToComboPriviousExpMest(this.currentTreatmentWithPatientType);
                 this.InitMedicineTypeAcinInfo();

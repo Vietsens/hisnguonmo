@@ -151,7 +151,9 @@
   <ItemGroup>
     <Compile Include="ADO\HisSereServTeinADO.cs" />
     <Compile Include="Resources\ResourceLanguageManager.cs" />
-    <Compile Include="Run\frmSumaryTestResults.cs" />
+    <Compile Include="Run\frmSumaryTestResults.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Run\frmSumaryTestResults.Designer.cs">
       <DependentUpon>frmSumaryTestResults.cs</DependentUpon>
     </Compile>

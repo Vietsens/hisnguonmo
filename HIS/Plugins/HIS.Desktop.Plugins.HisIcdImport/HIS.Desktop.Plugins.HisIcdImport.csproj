@@ -97,7 +97,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ADO\IcdADO.cs" />
-    <Compile Include="frmIcdImport.cs" />
+    <Compile Include="frmIcdImport.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="frmIcdImport.Designer.cs">
       <DependentUpon>frmIcdImport.cs</DependentUpon>
     </Compile>

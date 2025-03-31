@@ -130,7 +130,9 @@
     <Compile Include="KeyboardWorker.cs" />
     <Compile Include="Resources\ResourceLanguageManager.cs" />
     <Compile Include="Treatment6ADO.cs" />
-    <Compile Include="UCFeeWarning.cs" />
+    <Compile Include="UCFeeWarning.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="UCFeeWarning.Designer.cs">
       <DependentUpon>UCFeeWarning.cs</DependentUpon>
     </Compile>

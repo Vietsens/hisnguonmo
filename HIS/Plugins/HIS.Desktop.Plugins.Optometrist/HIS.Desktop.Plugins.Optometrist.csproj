@@ -139,7 +139,9 @@
     <Compile Include="Optometrist\OptometristFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Resources\ResourceLanguageManager.cs" />
-    <Compile Include="UC\UCOptometrist.cs" />
+    <Compile Include="UC\UCOptometrist.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="UC\UCOptometrist.Designer.cs">
       <DependentUpon>UCOptometrist.cs</DependentUpon>
     </Compile>

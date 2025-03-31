@@ -242,13 +242,21 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="KeyboardWorker.cs" />
-    <Compile Include="MaterialTypeCreate\frmMaterialTypeCreate.cs" />
+    <Compile Include="MaterialTypeCreate\frmMaterialTypeCreate.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="MaterialTypeCreate\frmMaterialTypeCreate.Designer.cs">
       <DependentUpon>frmMaterialTypeCreate.cs</DependentUpon>
     </Compile>
-    <Compile Include="MaterialTypeCreate\frmMaterialTypeCreate_InitResource.cs" />
-    <Compile Include="MaterialTypeCreate\frmMaterialTypeCreate_LoadComboControl.cs" />
-    <Compile Include="MaterialTypeCreate\frmMaterialTypeCreate_Validate.cs" />
+    <Compile Include="MaterialTypeCreate\frmMaterialTypeCreate_InitResource.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MaterialTypeCreate\frmMaterialTypeCreate_LoadComboControl.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MaterialTypeCreate\frmMaterialTypeCreate_Validate.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="MaterialTypeCreate\IMaterialTypeCreate.cs" />
     <Compile Include="MaterialTypeCreate\MaterialTypeCreateBehavior.cs" />
     <Compile Include="MaterialTypeCreate\MaterialTypeCreateFactory.cs" />

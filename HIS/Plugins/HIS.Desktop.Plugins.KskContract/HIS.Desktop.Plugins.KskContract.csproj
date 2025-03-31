@@ -167,13 +167,17 @@
     <Compile Include="ADO\EmployeeADO.cs" />
     <Compile Include="Config\ControlStateConstant.cs" />
     <Compile Include="entity\Status.cs" />
-    <Compile Include="FormEmployeeAccess\frmEmployeeAccess.cs" />
+    <Compile Include="FormEmployeeAccess\frmEmployeeAccess.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="FormEmployeeAccess\frmEmployeeAccess.Designer.cs">
       <DependentUpon>frmEmployeeAccess.cs</DependentUpon>
     </Compile>
     <Compile Include="KskContractProcessor.cs" />
     <Compile Include="HisRequestUriStore.cs" />
-    <Compile Include="KskContract\frmKskContract.cs" />
+    <Compile Include="KskContract\frmKskContract.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="KskContract\frmKskContract.Designer.cs">
       <DependentUpon>frmKskContract.cs</DependentUpon>
     </Compile>

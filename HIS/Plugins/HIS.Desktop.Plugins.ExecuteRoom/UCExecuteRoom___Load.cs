@@ -1782,6 +1782,7 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
                 filter.ColumnParams = new List<string>();
                 filter.ColumnParams.Add("DHST_ID");
                 //filter.ColumnParams.Add("EXE_SERVICE_MODULE_ID");
+                filter.ColumnParams.Add("EXECUTE_LOGINNAME");
                 filter.ColumnParams.Add("EXECUTE_ROOM_ID");
                 filter.ColumnParams.Add("ID");
                 filter.ColumnParams.Add("INTRUCTION_TIME");

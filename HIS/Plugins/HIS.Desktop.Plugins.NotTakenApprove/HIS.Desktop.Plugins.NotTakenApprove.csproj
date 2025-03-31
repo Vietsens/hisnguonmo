@@ -100,7 +100,9 @@
   <ItemGroup>
     <Compile Include="Base\ResourceLangManager.cs" />
     <Compile Include="NotTakenApproveProcessor.cs" />
-    <Compile Include="frmNotTakenApprove.cs" />
+    <Compile Include="frmNotTakenApprove.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="frmNotTakenApprove.Designer.cs">
       <DependentUpon>frmNotTakenApprove.cs</DependentUpon>
     </Compile>

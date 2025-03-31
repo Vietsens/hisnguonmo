@@ -166,7 +166,9 @@
     </Compile>
     <Compile Include="Resources\ResourceLanguageManager.cs" />
     <Compile Include="Resources\ResourceMessage.cs" />
-    <Compile Include="UCEmrDocumentList.cs" />
+    <Compile Include="UCEmrDocumentList.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="UCEmrDocumentList.Designer.cs">
       <DependentUpon>UCEmrDocumentList.cs</DependentUpon>
     </Compile>

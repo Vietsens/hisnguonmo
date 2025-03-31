@@ -179,11 +179,15 @@
     <Compile Include="TYTFetusBornListProcessor.cs" />
     <Compile Include="Resources\ResourceLanguageManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="UCTYTFetusBornList.cs" />
+    <Compile Include="UCTYTFetusBornList.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="UCTYTFetusBornList.Designer.cs">
       <DependentUpon>UCTYTFetusBornList.cs</DependentUpon>
     </Compile>
-    <Compile Include="UCTYTFetusBornList__InitResource.cs" />
+    <Compile Include="UCTYTFetusBornList__InitResource.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Properties\licenses.licx" />

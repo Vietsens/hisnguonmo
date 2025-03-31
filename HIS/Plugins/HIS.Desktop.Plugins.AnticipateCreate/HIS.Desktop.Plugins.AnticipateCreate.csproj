@@ -185,14 +185,24 @@
     </Compile>
     <Compile Include="Resources\ResourceLanguageManager.cs" />
     <Compile Include="Resources\ResourceMessage.cs" />
-    <Compile Include="UCAnticipateCreate.cs" />
+    <Compile Include="UCAnticipateCreate.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="UCAnticipateCreate.Designer.cs">
       <DependentUpon>UCAnticipateCreate.cs</DependentUpon>
     </Compile>
-    <Compile Include="UCAnticipateCreate_Event.cs" />
-    <Compile Include="UCAnticipateCreate_Import.cs" />
-    <Compile Include="UCAnticipateCreate_Print.cs" />
-    <Compile Include="UCAnticipateCreate_Validation.cs" />
+    <Compile Include="UCAnticipateCreate_Event.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UCAnticipateCreate_Import.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UCAnticipateCreate_Print.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UCAnticipateCreate_Validation.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="Validation\AmountValidationRule.cs" />
     <Compile Include="Validation\CoefficientValidationRule.cs" />
     <Compile Include="Validation\ImpPriceValidationRule.cs" />

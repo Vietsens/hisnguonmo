@@ -147,7 +147,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ADO\ExpMestADO.cs" />
-    <Compile Include="frmConfig.cs" />
+    <Compile Include="frmConfig.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="frmConfig.Designer.cs">
       <DependentUpon>frmConfig.cs</DependentUpon>
     </Compile>
@@ -162,13 +164,27 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="Run\frmPrepareAndExport_ShortCut.cs" />
-    <Compile Include="Run\frmPrepareAndExport_Tab5.cs" />
-    <Compile Include="Run\frmPrepareAndExport_Tab4.cs" />
-    <Compile Include="Run\frmPrepareAndExport_Tab3.cs" />
-    <Compile Include="Run\frmPrepareAndExport_Tab2.cs" />
-    <Compile Include="Run\frmPrepareAndExport_Tab1.cs" />
-    <Compile Include="Run\frmPrepareAndExport.cs" />
+    <Compile Include="Run\frmPrepareAndExport_ShortCut.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Run\frmPrepareAndExport_Tab5.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Run\frmPrepareAndExport_Tab4.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Run\frmPrepareAndExport_Tab3.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Run\frmPrepareAndExport_Tab2.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Run\frmPrepareAndExport_Tab1.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Run\frmPrepareAndExport.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="Run\frmPrepareAndExport.Designer.cs">
       <DependentUpon>frmPrepareAndExport.cs</DependentUpon>
     </Compile>

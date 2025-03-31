@@ -192,12 +192,22 @@
     </Compile>
     <Compile Include="Resources\ResourceLanguageManager.cs" />
     <Compile Include="Resources\ResourceMessage.cs" />
-    <Compile Include="Run\UCExpMestAggrExam__Pluss__Load.cs" />
-    <Compile Include="Run\UCExpMestAggrExam__Pluss__XuatBuCoSo.cs" />
+    <Compile Include="Run\UCExpMestAggrExam__Pluss__Load.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Run\UCExpMestAggrExam__Pluss__XuatBuCoSo.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="Run\UCExpMestAggrExamListPopupMenuProcessor.cs" />
-    <Compile Include="Run\UCExpMestAggrExam__Pluss__Print.cs" />
-    <Compile Include="Run\UCExpMestAggrExam__Pluss__Process.cs" />
-    <Compile Include="Run\UCExpMestAggrExam.cs" />
+    <Compile Include="Run\UCExpMestAggrExam__Pluss__Print.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Run\UCExpMestAggrExam__Pluss__Process.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Run\UCExpMestAggrExam.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="Run\UCExpMestAggrExam.Designer.cs">
       <DependentUpon>UCExpMestAggrExam.cs</DependentUpon>
     </Compile>

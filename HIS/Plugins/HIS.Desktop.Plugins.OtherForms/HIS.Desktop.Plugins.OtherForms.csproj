@@ -167,7 +167,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="frmOtherForms.cs" />
+    <Compile Include="frmOtherForms.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Resources\ResourceLanguageManager.cs" />
     <Compile Include="OtherFormsProcessor.cs" />
     <Compile Include="KeyboardWorker.cs" />

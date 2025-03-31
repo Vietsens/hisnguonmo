@@ -138,7 +138,9 @@
   <ItemGroup>
     <Compile Include="ADO\SarPrintTypeAdo.cs" />
     <Compile Include="OtherFormAssServiceReqProcessor.cs" />
-    <Compile Include="frmOtherFormAssServiceReq.cs" />
+    <Compile Include="frmOtherFormAssServiceReq.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="frmOtherFormAssServiceReq.Designer.cs">
       <DependentUpon>frmOtherFormAssServiceReq.cs</DependentUpon>
     </Compile>

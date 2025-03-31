@@ -208,8 +208,12 @@
     <Compile Include="Config\HisConfig.cs" />
     <Compile Include="Config\RequestUri.cs" />
     <Compile Include="Config\StringUtil.cs" />
-    <Compile Include="frmBrowseExportTicket_Blood.cs" />
-    <Compile Include="frmBrowseExportTicket.cs" />
+    <Compile Include="frmBrowseExportTicket_Blood.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmBrowseExportTicket.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="frmBrowseExportTicket.Designer.cs">
       <DependentUpon>frmBrowseExportTicket.cs</DependentUpon>
     </Compile>

@@ -200,8 +200,12 @@
     <Compile Include="Base\ResourceLangManager.cs" />
     <Compile Include="Resources\ResourceLanguageManager.cs" />
     <Compile Include="Resources\ResourceMessage.cs" />
-    <Compile Include="UCTestServiceReqExcute__InitUC.cs" />
-    <Compile Include="UCTestServiceReqExcute__Pluss__Print.cs" />
+    <Compile Include="UCTestServiceReqExcute__InitUC.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UCTestServiceReqExcute__Pluss__Print.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="TestServiceReqExcuteProcessor.cs" />
     <Compile Include="Delegate\DelegateUC.cs" />
     <Compile Include="KeyboardWorker.cs" />
@@ -209,7 +213,9 @@
     <Compile Include="TestServiceReqExcute\ITestServiceReqExcute.cs" />
     <Compile Include="TestServiceReqExcute\TestServiceReqExcuteBehavior.cs" />
     <Compile Include="TestServiceReqExcute\TestServiceReqExcuteFactory.cs" />
-    <Compile Include="UCTestServiceReqExcute.cs" />
+    <Compile Include="UCTestServiceReqExcute.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="UCTestServiceReqExcute.Designer.cs">
       <DependentUpon>UCTestServiceReqExcute.cs</DependentUpon>
     </Compile>

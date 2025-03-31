@@ -158,7 +158,9 @@
     <Compile Include="ConfigApplications.cs" />
     <Compile Include="GlobalVariables.cs" />
     <Compile Include="SdaNotifyProcessor.cs" />
-    <Compile Include="SdaNotify\frmSdaNotify.cs" />
+    <Compile Include="SdaNotify\frmSdaNotify.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="SdaNotify\frmSdaNotify.Designer.cs">
       <DependentUpon>frmSdaNotify.cs</DependentUpon>
     </Compile>

@@ -123,7 +123,9 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="Resources\ResourceLanguageManager.cs" />
-    <Compile Include="Run\FormHisNumOrderBlockChooser.cs" />
+    <Compile Include="Run\FormHisNumOrderBlockChooser.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Run\FormHisNumOrderBlockChooser.Designer.cs">
       <DependentUpon>FormHisNumOrderBlockChooser.cs</DependentUpon>
     </Compile>

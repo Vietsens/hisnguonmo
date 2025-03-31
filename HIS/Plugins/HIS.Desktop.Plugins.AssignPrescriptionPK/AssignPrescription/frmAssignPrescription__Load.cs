@@ -225,7 +225,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
             }
         }
 
-        private async Task ThreadLoadDonThuocCu()
+        private async Task ThreadLoadDonThuocCu(List<MOS.EFMODEL.DataModels.HIS_SERVICE_REQ> _serviceReqPrintAlls = null)
         {
             try
             {
@@ -235,13 +235,20 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                 if (savePrintMpsDefault != "Mps000234")
                     return;
 
-                CommonParam param = new CommonParam();
-                //Load đơn phòng khám
-                HisServiceReqFilter serviceReqFilter = new HisServiceReqFilter();
-                serviceReqFilter.TREATMENT_ID = this.treatmentId;
-                serviceReqFilter.SERVICE_REQ_TYPE_IDs = new List<long> { IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__DONK, IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__DONTT, IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__DONDT };
-                serviceReqPrintAlls = await new BackendAdapter(param)
-                      .GetAsync<List<MOS.EFMODEL.DataModels.HIS_SERVICE_REQ>>("api/HisServiceReq/Get", ApiConsumers.MosConsumer, serviceReqFilter, param);
+                if (_serviceReqPrintAlls == null)
+                {
+                    CommonParam param = new CommonParam();
+                    //Load đơn phòng khám
+                    HisServiceReqFilter serviceReqFilter = new HisServiceReqFilter();
+                    serviceReqFilter.TREATMENT_ID = this.treatmentId;
+                    serviceReqFilter.SERVICE_REQ_TYPE_IDs = new List<long> { IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__DONK, IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__DONTT, IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__DONDT };
+                    serviceReqPrintAlls = await new BackendAdapter(param)
+                          .GetAsync<List<MOS.EFMODEL.DataModels.HIS_SERVICE_REQ>>("api/HisServiceReq/Get", ApiConsumers.MosConsumer, serviceReqFilter, param);
+                }
+                else
+                {
+                    serviceReqPrintAlls = _serviceReqPrintAlls;
+                }
 
                 if (serviceReqPrintAlls == null || serviceReqPrintAlls.Count == 0)
                     return;

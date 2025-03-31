@@ -191,11 +191,15 @@
     </Compile>
     <Compile Include="Resources\ResourceLanguageManager.cs" />
     <Compile Include="Resources\ResourceMessage.cs" />
-    <Compile Include="UCHisExportChmsList.cs" />
+    <Compile Include="UCHisExportChmsList.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="UCHisExportChmsList.Designer.cs">
       <DependentUpon>UCHisExportChmsList.cs</DependentUpon>
     </Compile>
-    <Compile Include="UCHisExportChmsList_Event.cs" />
+    <Compile Include="UCHisExportChmsList_Event.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Properties\licenses.licx" />

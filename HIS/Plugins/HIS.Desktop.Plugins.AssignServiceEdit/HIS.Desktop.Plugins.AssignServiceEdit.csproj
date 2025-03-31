@@ -151,7 +151,9 @@
     </Compile>
     <Compile Include="Config\HisConfigCFG.cs" />
     <Compile Include="Config\HisPatientTypeCFG.cs" />
-    <Compile Include="FormAssignServiceEdit.cs" />
+    <Compile Include="FormAssignServiceEdit.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="FormAssignServiceEdit.Designer.cs">
       <DependentUpon>FormAssignServiceEdit.cs</DependentUpon>
     </Compile>

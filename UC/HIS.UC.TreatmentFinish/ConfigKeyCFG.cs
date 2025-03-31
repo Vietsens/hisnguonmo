@@ -61,6 +61,8 @@ namespace HIS.UC.TreatmentFinish
         private const string CONFIG_KEY__PATIENT_TYPE_CODE__BHYT = "MOS.HIS_PATIENT_TYPE.PATIENT_TYPE_CODE.BHYT";//Doi tuong BHYT
         private const string KEY__PATIENT_TYPE_CODE__HOSPITAL_FEE = "MOS.HIS_PATIENT_TYPE.PATIENT_TYPE_CODE.HOSPITAL_FEE";
         private const string KEY__ALLOW_MANY_TREATMENT_OPENING_OPTION = "MOS.TREATMENT.ALLOW_MANY_TREATMENT_OPENING_OPTION";
+        private const string KEY__EndDepartmentSubsHeadOption = "HIS.Desktop.Plugins.TreatmentFinish.EndDepartmentSubsHeadOption";
+        internal static string EndDepartmentSubsHeadOption;
         internal static string AllowManyTreatmentOpeningOption;
         internal static long treatmentEndAppointmentTimeDefault;
         internal static bool AppointmentTimeDefault;
@@ -84,6 +86,7 @@ namespace HIS.UC.TreatmentFinish
         {
             try
             {
+                EndDepartmentSubsHeadOption = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(KEY__EndDepartmentSubsHeadOption);
                 AllowManyTreatmentOpeningOption = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(KEY__ALLOW_MANY_TREATMENT_OPENING_OPTION);
                 NumOrderIssueOption = "1";//HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(KEY__MOS_HIS_SERVICE_REQ_NUM_ORDER_ISSUE_OPTION);
                 treatmentEndAppointmentTimeDefault = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<long>(TREATMENT_END___APPOINTMENT_TIME_DEFAULT_KEY);

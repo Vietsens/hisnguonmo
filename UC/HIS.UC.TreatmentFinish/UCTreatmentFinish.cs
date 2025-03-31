@@ -1598,8 +1598,14 @@ namespace HIS.UC.TreatmentFinish.Run
                                 }
                             }
                         }
-                        cboEndDeptSubs.EditValue = this.Treatment.END_DEPT_SUBS_HEAD_LOGINNAME;
-                        cboHospSubs.EditValue = this.Treatment.HOSP_SUBS_DIRECTOR_LOGINNAME;
+                        if (!string.IsNullOrEmpty(this.Treatment.END_DEPT_SUBS_HEAD_LOGINNAME) && (cboEndDeptSubs.Properties.DataSource as List<AcsUserADO>).Exists(o => o.LOGINNAME == this.Treatment.END_DEPT_SUBS_HEAD_LOGINNAME))
+                            cboEndDeptSubs.EditValue = this.Treatment.END_DEPT_SUBS_HEAD_LOGINNAME;
+                        if (ConfigKeyCFG.EndDepartmentSubsHeadOption == "1" && cboEndDeptSubs.EditValue == null)
+                            cboEndDeptSubs.EditValue = Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName();
+                        if (!string.IsNullOrEmpty(this.Treatment.HOSP_SUBS_DIRECTOR_LOGINNAME) && (cboHospSubs.Properties.DataSource as List<AcsUserADO>).Exists(o => o.LOGINNAME == this.Treatment.HOSP_SUBS_DIRECTOR_LOGINNAME))
+                            cboHospSubs.EditValue = this.Treatment.HOSP_SUBS_DIRECTOR_LOGINNAME;
+                        if (cboHospSubs.EditValue == null)
+                            LoadDefaultEndDept();
                         if (this.Treatment.TREATMENT_END_TYPE_ID != null)
                         {
                             HIS_TREATMENT_END_TYPE treatmentEndType = BackendDataWorker.Get<HIS_TREATMENT_END_TYPE>().FirstOrDefault(o => o.ID == this.Treatment.TREATMENT_END_TYPE_ID);
@@ -1783,6 +1789,32 @@ namespace HIS.UC.TreatmentFinish.Run
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
+        private void LoadDefaultEndDept()
+        {
+
+            try
+            {
+                var _vHisExecuteRooms = BackendDataWorker.Get<HIS_EXECUTE_ROOM>().FirstOrDefault(p =>
+                     p.IS_ACTIVE == 1 && p.ROOM_ID == treatmentFinishInitADO.WorkingRoomId && !string.IsNullOrEmpty(p.HOSP_SUBS_DIRECTOR_LOGINNAME));
+                if (_vHisExecuteRooms != null)
+                {
+                    cboHospSubs.EditValue = _vHisExecuteRooms.HOSP_SUBS_DIRECTOR_LOGINNAME;
+                }
+                else
+                {
+                    var HisDepartment = BackendDataWorker.Get<HIS_DEPARTMENT>().FirstOrDefault(p =>
+                         p.IS_ACTIVE == 1 && p.ID == treatmentFinishInitADO.WorkingDepartmentId && !string.IsNullOrEmpty(p.HOSP_SUBS_DIRECTOR_LOGINNAME));
+                    cboHospSubs.EditValue = HisDepartment != null ? HisDepartment.HOSP_SUBS_DIRECTOR_LOGINNAME : null;
+                }
+
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+
+        }
+
         private void ValidHeadDepartmentAndDirectorBranch()
         {
 
@@ -2063,6 +2095,13 @@ namespace HIS.UC.TreatmentFinish.Run
             HisTreatmentFinishSDO result = null;
             try
             {
+                if (treatmentFinishSDO == null)
+                    treatmentFinishSDO = new HisTreatmentFinishSDO();
+
+                treatmentFinishSDO.EndDeptSubsHeadLoginname = cboEndDeptSubs.EditValue != null ? cboEndDeptSubs.EditValue.ToString() : null;
+                treatmentFinishSDO.EndDeptSubsHeadUsername = cboEndDeptSubs.EditValue != null ? cboEndDeptSubs.Text.ToString() : null;
+                treatmentFinishSDO.HospSubsDirectorLoginname = cboHospSubs.EditValue != null ? cboHospSubs.EditValue.ToString() : null;
+                treatmentFinishSDO.HospSubsDirectorUsername = cboHospSubs.EditValue != null ? cboHospSubs.Text.ToString() : null;
                 return this.treatmentFinishSDO;
             }
             catch (Exception ex)
@@ -2399,34 +2438,20 @@ namespace HIS.UC.TreatmentFinish.Run
                 var acsUserList = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<ACS.EFMODEL.DataModels.ACS_USER>()
                     .Where(p => !string.IsNullOrEmpty(p.USERNAME) && p.IS_ACTIVE == 1)
                     .OrderBy(o => o.USERNAME)
-                    .ToList();  // Thực thi truy vấn một lần duy nhất
+                    .ToList();
+
                 LogSystem.Debug("InitDataTocboUser 2...");
-                // Tạo Dictionary để tra cứu nhanh dựa vào LOGINNAME
-                List<V_HIS_EMPLOYEE> hisEmployees = null;
-                if (BackendDataWorker.IsExistsKey<V_HIS_EMPLOYEE>())
-                {
-                    hisEmployees = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<MOS.EFMODEL.DataModels.V_HIS_EMPLOYEE>();
-                }
-                else
-                {
-                    CommonParam paramCommon = new CommonParam();
-                    MOS.Filter.HisEmployeeFilter filter = new MOS.Filter.HisEmployeeFilter();
-                    hisEmployees = await new Inventec.Common.Adapter.BackendAdapter(paramCommon).GetAsync<List<MOS.EFMODEL.DataModels.V_HIS_EMPLOYEE>>("api/HisEmployee/GetView", ApiConsumers.MosConsumer, filter, paramCommon);
+                List<V_HIS_EMPLOYEE> hisEmployees = await GetHisEmployeesAsync();
 
-                    if (hisEmployees != null) BackendDataWorker.UpdateToRam(typeof(MOS.EFMODEL.DataModels.V_HIS_EMPLOYEE), hisEmployees, long.Parse(DateTime.Now.ToString("yyyyMMddHHmmss")));
-
-                }
                 LogSystem.Debug("InitDataTocboUser 3...");
                 var vhisEmployeeDict = hisEmployees
-                   .Where(e => acsUserList.Select(u => u.LOGINNAME).Contains(e.LOGINNAME))
-                   .ToDictionary(e => e.LOGINNAME, e => e);  // Duy nhất 1 truy vấn DB, tìm nhanh qua Dictionary
+                    .Where(e => e.IS_ACTIVE == 1 && acsUserList.Any(u => u.LOGINNAME == e.LOGINNAME))
+                    .ToDictionary(e => e.LOGINNAME);
 
                 LogSystem.Debug("InitDataTocboUser 4...");
-                foreach (var item in acsUserList)
+                this.lstReAcsUserADO = acsUserList.Select(item =>
                 {
-                    AcsUserADO ado = new AcsUserADO(item);
-
-                    // Kiểm tra nhanh với Dictionary
+                    var ado = new AcsUserADO(item);
                     if (vhisEmployeeDict.TryGetValue(item.LOGINNAME, out var vhisEmployee))
                     {
                         ado.DOB = vhisEmployee.DOB;
@@ -2436,9 +2461,9 @@ namespace HIS.UC.TreatmentFinish.Run
                         ado.DEPARTMENT_ID = vhisEmployee.DEPARTMENT_ID;
                         ado.DEPARTMENT_NAME = vhisEmployee.DEPARTMENT_NAME;
                     }
+                    return ado;
+                }).ToList();
 
-                    this.lstReAcsUserADO.Add(ado);
-                }
                 LogSystem.Debug("InitDataTocboUser 5...");
                 FillDataTocboUserByData();
                 LogSystem.Debug("InitDataTocboUser 6...");
@@ -2448,6 +2473,28 @@ namespace HIS.UC.TreatmentFinish.Run
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
+
+        private async Task<List<V_HIS_EMPLOYEE>> GetHisEmployeesAsync()
+        {
+            if (BackendDataWorker.IsExistsKey<V_HIS_EMPLOYEE>())
+            {
+                return HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<MOS.EFMODEL.DataModels.V_HIS_EMPLOYEE>();
+            }
+            else
+            {
+                var paramCommon = new CommonParam();
+                var filter = new MOS.Filter.HisEmployeeFilter();
+                var hisEmployees = await new Inventec.Common.Adapter.BackendAdapter(paramCommon)
+                    .GetAsync<List<MOS.EFMODEL.DataModels.V_HIS_EMPLOYEE>>("api/HisEmployee/GetView", ApiConsumers.MosConsumer, filter, paramCommon);
+
+                if (hisEmployees != null)
+                {
+                    BackendDataWorker.UpdateToRam(typeof(MOS.EFMODEL.DataModels.V_HIS_EMPLOYEE), hisEmployees, long.Parse(DateTime.Now.ToString("yyyyMMddHHmmss")));
+                }
+                return hisEmployees ?? new List<V_HIS_EMPLOYEE>();
+            }
+        }
+
 
         private void FillDataTocboUserByData()
         {
@@ -2461,6 +2508,11 @@ namespace HIS.UC.TreatmentFinish.Run
                 cboEndDeptSubs.Properties.ImmediatePopup = true;
                 ControlEditorLoader.Load(cboHospSubs, this.lstReAcsUserADO.Where(o => o.IS_ACTIVE == 1).ToList(), controlEditorADO);
                 cboHospSubs.Properties.ImmediatePopup = true;
+
+                if (ConfigKeyCFG.EndDepartmentSubsHeadOption == "1" && cboEndDeptSubs.EditValue == null)
+                    cboEndDeptSubs.EditValue = Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName();
+                if (cboHospSubs.EditValue == null)
+                    LoadDefaultEndDept();
             }
             catch (Exception ex)
             {
@@ -2481,6 +2533,10 @@ namespace HIS.UC.TreatmentFinish.Run
                         {
                             cboEndDeptSubs.EditValue = dt.LOGINNAME;
                             cboEndDeptSubs.Focus();
+                        }
+                        else
+                        {
+                            cboEndDeptSubs.EditValue = null;
                         }
                     }
                     else
@@ -2509,6 +2565,10 @@ namespace HIS.UC.TreatmentFinish.Run
                         {
                             cboHospSubs.EditValue = dt.LOGINNAME;
                             cboHospSubs.Focus();
+                        }
+                        else
+                        {
+                            cboHospSubs.EditValue = null;
                         }
                     }
                     else

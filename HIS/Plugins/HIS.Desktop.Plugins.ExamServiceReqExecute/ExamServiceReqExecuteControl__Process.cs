@@ -1384,6 +1384,31 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                     }
                 }
                 valid = success;
+                if (treatment.TDL_TREATMENT_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__DTNGOAITRU)
+                {
+                    List<string> errors = new List<string>();
+
+                    if (string.IsNullOrEmpty(txtSubclinical.Text.Trim()))
+                    {
+                        errors.Add("Tóm tắt kết quả cận lâm sàng");
+                    }
+                    if (string.IsNullOrEmpty(txtTreatmentInstruction.Text.Trim()))
+                    {
+                        errors.Add("Phương pháp điều trị");
+                    }
+                    if (string.IsNullOrEmpty(txtProvisionalDianosis.Text.Trim()))
+                    {
+                        errors.Add("Chuẩn đoán sơ bộ");
+                    }
+
+                    if (errors.Count > 0)
+                    {
+                        string errorMessage = "Bạn chưa nhập: " + string.Join(" và ", errors) + ".";
+                        DevExpress.XtraEditors.XtraMessageBox.Show(errorMessage, ResourceMessage.ThongBao);
+                        return false;
+                    }
+
+                }
                 if (success)
                 {
                     if (HisServiceReqWithOrderSDO != null && examServiceReqUpdateSDO != null)
@@ -1786,7 +1811,9 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                             }
                         }
                         var treatmentEndTypeId = treatmentFinish.TreatmentFinishSDO.TreatmentEndTypeId;
-                        if (HisConfigCFG.RequiredTreatmentMethodOption == "1" && this.treatment != null && this.treatment.TDL_TREATMENT_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__DTNOITRU && (treatmentEndTypeId == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_END_TYPE.ID__CHUYEN
+                        if (HisConfigCFG.RequiredTreatmentMethodOption == "1" && this.treatment != null 
+                            && this.treatment.TDL_TREATMENT_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__DTNOITRU 
+                            && (treatmentEndTypeId == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_END_TYPE.ID__CHUYEN
                             || treatmentEndTypeId == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_END_TYPE.ID__HEN || treatmentEndTypeId == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_END_TYPE.ID__RAVIEN
                             || treatmentEndTypeId == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_END_TYPE.ID__XINRAVIEN || treatmentEndTypeId == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_END_TYPE.ID__CTCV))
                         {
@@ -1796,7 +1823,10 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                                 return false;
                             }
                         }
-                        else if (HisConfigCFG.RequiredTreatmentMethodOption == "2" && ((cboThongTinBoSung != null && cboThongTinBoSung == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_END_TYPE_EXT.ID__NGHI_OM) || ((this.treatment != null && (this.treatment.TDL_TREATMENT_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__DTNOITRU || this.treatment.TDL_TREATMENT_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__DTNGOAITRU || this.treatment.TDL_TREATMENT_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__DTBANNGAY)) && (treatmentEndTypeId == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_END_TYPE.ID__CHUYEN
+                        else if (HisConfigCFG.RequiredTreatmentMethodOption == "2" && ((cboThongTinBoSung != null && cboThongTinBoSung == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_END_TYPE_EXT.ID__NGHI_OM) 
+                            || ((this.treatment != null && (this.treatment.TDL_TREATMENT_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__DTNOITRU 
+                            || this.treatment.TDL_TREATMENT_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__DTNGOAITRU 
+                            || this.treatment.TDL_TREATMENT_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__DTBANNGAY)) && (treatmentEndTypeId == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_END_TYPE.ID__CHUYEN
                             || treatmentEndTypeId == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_END_TYPE.ID__HEN || treatmentEndTypeId == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_END_TYPE.ID__RAVIEN
                             || treatmentEndTypeId == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_END_TYPE.ID__XINRAVIEN || treatmentEndTypeId == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_END_TYPE.ID__CTCV))))
                         {
@@ -1877,11 +1907,55 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                         if (treatmentFinish.TreatmentFinishSDO.ProgramId > 0)
                         {
                             var Program = BackendDataWorker.Get<HIS_PROGRAM>().FirstOrDefault(o => o.ID == treatmentFinish.TreatmentFinishSDO.ProgramId);
-                            if (Program != null && Program.AUTO_CHANGE_TO_OUT_PATIENT == 1 && (string.IsNullOrEmpty(txtSubclinical.Text.Trim()) || string.IsNullOrEmpty(txtTreatmentInstruction.Text.Trim())))
+                            if (Program != null && Program.AUTO_CHANGE_TO_OUT_PATIENT == 1)
                             {
-                                DevExpress.XtraEditors.XtraMessageBox.Show("Bạn chưa nhập \"Phương pháp điều trị\" hoặc \"Tóm tắt kết quả cận lâm sàng\".", ResourceMessage.ThongBao);
+                                List<string> errors = new List<string>();
+
+                                if (string.IsNullOrEmpty(txtSubclinical.Text.Trim()))
+                                {
+                                    errors.Add("Tóm tắt kết quả cận lâm sàng");
+                                }
+                                if (string.IsNullOrEmpty(txtTreatmentInstruction.Text.Trim()))
+                                {
+                                    errors.Add("Phương pháp điều trị");
+                                }
+                                if (string.IsNullOrEmpty(txtProvisionalDianosis.Text.Trim()))
+                                {
+                                    errors.Add("Chuẩn đoán sơ bộ");
+                                }
+
+                                if (errors.Count > 0)
+                                {
+                                    string errorMessage = "Bạn chưa nhập: " + string.Join(" và ", errors) + ".";
+                                    DevExpress.XtraEditors.XtraMessageBox.Show(errorMessage, ResourceMessage.ThongBao);
+                                    return false;
+                                }
+                            }
+                        }
+                        if (treatment.TDL_TREATMENT_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__DTNGOAITRU)
+                        {
+                            List<string> errors = new List<string>();
+
+                            if (string.IsNullOrEmpty(txtSubclinical.Text.Trim()))
+                            {
+                                errors.Add("Tóm tắt kết quả cận lâm sàng");
+                            }
+                            if (string.IsNullOrEmpty(txtTreatmentInstruction.Text.Trim()))
+                            {
+                                errors.Add("Phương pháp điều trị");
+                            }
+                            if (string.IsNullOrEmpty(txtProvisionalDianosis.Text.Trim()))
+                            {
+                                errors.Add("Chuẩn đoán sơ bộ");
+                            }
+
+                            if (errors.Count > 0)
+                            {
+                                string errorMessage = "Bạn chưa nhập: " + string.Join(" và ", errors) + ".";
+                                DevExpress.XtraEditors.XtraMessageBox.Show(errorMessage, ResourceMessage.ThongBao);
                                 return false;
                             }
+
                         }
                         serviceReqUpdateSDO.NotePatient = treatmentFinish.Note;
                         serviceReqUpdateSDO.TreatmentFinishSDO = treatmentFinish.TreatmentFinishSDO;
@@ -2427,7 +2501,9 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                             btnAggrExam.Enabled = false;
                         }
                         Room = BackendDataWorker.Get<V_HIS_ROOM>().FirstOrDefault(o => o.ID == this.moduleData.RoomId);
-                        if (Room.DEFAULT_CASHIER_ROOM_ID.HasValue && Room.BILL_ACCOUNT_BOOK_ID.HasValue && this.treatment.TDL_TREATMENT_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__KHAM && !string.IsNullOrEmpty(HisConfigCFG.AutoCreatePaymentTransactions))
+                        if (Room.DEFAULT_CASHIER_ROOM_ID.HasValue && Room.BILL_ACCOUNT_BOOK_ID.HasValue 
+                            && this.treatment.TDL_TREATMENT_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__KHAM 
+                            && !string.IsNullOrEmpty(HisConfigCFG.AutoCreatePaymentTransactions))
                         {
                             var PatientTypes = BackendDataWorker.Get<HIS_PATIENT_TYPE>().Where(o => HisConfigCFG.AutoCreatePaymentTransactions.Split(new string[] { ";" }, StringSplitOptions.RemoveEmptyEntries).ToList().Contains(o.PATIENT_TYPE_CODE)).ToList();
                             ListAcountBook = LoadAccountBookList(Room.DEFAULT_CASHIER_ROOM_ID ?? 0);

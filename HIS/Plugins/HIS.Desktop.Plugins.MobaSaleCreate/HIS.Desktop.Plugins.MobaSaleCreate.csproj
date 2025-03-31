@@ -132,7 +132,9 @@
     <Compile Include="ADO\VHisExpMestMedicineADO.cs" />
     <Compile Include="Base\ResourceLangManager.cs" />
     <Compile Include="Base\ResourceMessageLang.cs" />
-    <Compile Include="frmMobaSaleCreate.cs" />
+    <Compile Include="frmMobaSaleCreate.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="frmMobaSaleCreate.Designer.cs">
       <DependentUpon>frmMobaSaleCreate.cs</DependentUpon>
     </Compile>

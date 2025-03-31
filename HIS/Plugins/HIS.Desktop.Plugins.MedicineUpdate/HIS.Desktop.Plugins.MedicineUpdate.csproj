@@ -120,7 +120,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="FormMedicineUpdate.cs" />
+    <Compile Include="FormMedicineUpdate.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="FormMedicineUpdate.Designer.cs">
       <DependentUpon>FormMedicineUpdate.cs</DependentUpon>
     </Compile>

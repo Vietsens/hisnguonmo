@@ -124,12 +124,18 @@
     </Compile>
     <Compile Include="KeyboardWorker.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="UCExportXml.cs" />
+    <Compile Include="UCExportXml.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="UCExportXml.Designer.cs">
       <DependentUpon>UCExportXml.cs</DependentUpon>
     </Compile>
-    <Compile Include="UCExportXml__Plus__Button.cs" />
-    <Compile Include="UCExportXml__Plus__Control.cs" />
+    <Compile Include="UCExportXml__Plus__Button.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UCExportXml__Plus__Control.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="Validation\FindTreatmentCodeValidationRule.cs" />
   </ItemGroup>
   <ItemGroup>

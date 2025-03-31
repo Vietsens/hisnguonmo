@@ -146,11 +146,15 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="HisIcdProcessor.cs" />
-    <Compile Include="HisIcd\frmHisIcd.cs" />
+    <Compile Include="HisIcd\frmHisIcd.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="HisIcd\frmHisIcd.Designer.cs">
       <DependentUpon>frmHisIcd.cs</DependentUpon>
     </Compile>
-    <Compile Include="HisIcd\frmAttachIcd.cs" />
+    <Compile Include="HisIcd\frmAttachIcd.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="HisIcd\frmAttachIcd.Designer.cs">
       <DependentUpon>frmAttachIcd.cs</DependentUpon>
     </Compile>

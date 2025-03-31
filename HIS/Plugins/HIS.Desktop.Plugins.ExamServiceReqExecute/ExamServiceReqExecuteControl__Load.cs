@@ -27,6 +27,7 @@ using MOS.EFMODEL.DataModels;
 using MOS.Filter;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
@@ -402,7 +403,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                     .Get<List<MOS.EFMODEL.DataModels.HIS_TREATMENT>>("api/HisTreatment/Get", ApiConsumers.MosConsumer, treatment, param).FirstOrDefault();
                 if (this.treatment != null)
                 {
-
+                    
                     UpdateNeedSickLeaveCertControl(this.treatment.NEED_SICK_LEAVE_CERT);
                     this.icdDefaultFinish.ICD_CODE = this.treatment.ICD_CODE;
                     this.icdDefaultFinish.ICD_NAME = this.treatment.ICD_NAME;

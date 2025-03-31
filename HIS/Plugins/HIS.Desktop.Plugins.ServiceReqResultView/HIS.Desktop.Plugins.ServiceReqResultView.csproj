@@ -246,12 +246,18 @@
     <Compile Include="ADO\EmrVersionADO.cs" />
     <Compile Include="ADO\ImageADO.cs" />
     <Compile Include="ADO\PatientADO.cs" />
-    <Compile Include="frmServiceReqResultView.cs" />
+    <Compile Include="frmServiceReqResultView.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="frmServiceReqResultView.Designer.cs">
       <DependentUpon>frmServiceReqResultView.cs</DependentUpon>
     </Compile>
-    <Compile Include="frmServiceReqResultView.LoadPdf.cs" />
-    <Compile Include="frmServiceReqResultView__Dispose.cs" />
+    <Compile Include="frmServiceReqResultView.LoadPdf.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmServiceReqResultView__Dispose.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Helpers\LicenceProcess.cs" />
     <Compile Include="PacsCFG.cs" />
     <Compile Include="PrintTypeCode.cs" />

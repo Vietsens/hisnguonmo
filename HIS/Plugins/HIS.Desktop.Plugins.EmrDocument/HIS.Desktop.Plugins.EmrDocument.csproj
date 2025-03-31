@@ -256,7 +256,9 @@
     <Compile Include="frmAttackFile.Designer.cs">
       <DependentUpon>frmAttackFile.cs</DependentUpon>
     </Compile>
-    <Compile Include="frmHomeRelativeSign.cs" />
+    <Compile Include="frmHomeRelativeSign.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="frmHomeRelativeSign.Designer.cs">
       <DependentUpon>frmHomeRelativeSign.cs</DependentUpon>
     </Compile>
@@ -279,7 +281,9 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="Resources\ResourceLanguageManager.cs" />
-    <Compile Include="EmrDocumentForm.cs" />
+    <Compile Include="EmrDocumentForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="EmrDocumentForm.Designer.cs">
       <DependentUpon>EmrDocumentForm.cs</DependentUpon>
     </Compile>

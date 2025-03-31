@@ -228,15 +228,23 @@
     <Compile Include="ADO\DereDetailADO.cs" />
     <Compile Include="Config\HisConfigCFG.cs" />
     <Compile Include="Config\MappingErrorTHE.cs" />
-    <Compile Include="RepayService\frmRepayServicePlus_Print.cs" />
-    <Compile Include="RepayService\frmRepayService__InitResource.cs" />
+    <Compile Include="RepayService\frmRepayServicePlus_Print.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="RepayService\frmRepayService__InitResource.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="RepayService\PatientADO.cs" />
     <Compile Include="RepayService\RepayServiceProcess.cs" />
-    <Compile Include="RepayService\frmRepayService.cs" />
+    <Compile Include="RepayService\frmRepayService.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="RepayService\frmRepayService.Designer.cs">
       <DependentUpon>frmRepayService.cs</DependentUpon>
     </Compile>
-    <Compile Include="RepayService\frmRepayServicePlus_Validation.cs" />
+    <Compile Include="RepayService\frmRepayServicePlus_Validation.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Delegate.cs" />
     <Compile Include="RepayServiceProcessor.cs">
       <SubType>Code</SubType>

@@ -146,7 +146,9 @@
     <Compile Include="HisMedicineTypeAcin\HisMedicineTypeAcinFactoty.cs" />
     <Compile Include="Resources\ResourceLanguageManager.cs" />
     <Compile Include="Resources\ResourceMessage.cs" />
-    <Compile Include="frmHisMedicineTypeAcin.cs" />
+    <Compile Include="frmHisMedicineTypeAcin.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="frmHisMedicineTypeAcin.Designer.cs">
       <DependentUpon>frmHisMedicineTypeAcin.cs</DependentUpon>
     </Compile>

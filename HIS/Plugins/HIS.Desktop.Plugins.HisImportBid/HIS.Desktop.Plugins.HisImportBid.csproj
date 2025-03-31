@@ -103,7 +103,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ADO\ImportADO.cs" />
-    <Compile Include="FormImportBid.cs" />
+    <Compile Include="FormImportBid.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="FormImportBid.Designer.cs">
       <DependentUpon>FormImportBid.cs</DependentUpon>
     </Compile>

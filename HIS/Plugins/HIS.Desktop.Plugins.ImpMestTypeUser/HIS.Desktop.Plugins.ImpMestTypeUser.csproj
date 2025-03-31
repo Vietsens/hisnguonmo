@@ -130,7 +130,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Resources\ResourceLanguageManager.cs" />
     <Compile Include="Resources\ResourceMessage.cs" />
-    <Compile Include="UCImpMestTypeUser.cs" />
+    <Compile Include="UCImpMestTypeUser.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="UCImpMestTypeUser.Designer.cs">
       <DependentUpon>UCImpMestTypeUser.cs</DependentUpon>
     </Compile>
