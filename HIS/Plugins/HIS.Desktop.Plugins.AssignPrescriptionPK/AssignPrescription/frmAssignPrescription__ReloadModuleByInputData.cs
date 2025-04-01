@@ -161,7 +161,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                 LogSystem.Debug("ReloadModuleByInputData. 6");
                 this.LoadPrescriptionForEdit();
                 this.SetEnableButtonControl(this.actionType);
-                this.LoadData();
+                this.LoadDataDhstToControl();
                 this.isNotLoadMediMatyByMediStockInitForm = false;
                 this.IsHandlerWhileOpionGroupSelectedIndexChanged = false;
                 this.isNotLoadWhileChangeInstructionTimeInFirst = false;
