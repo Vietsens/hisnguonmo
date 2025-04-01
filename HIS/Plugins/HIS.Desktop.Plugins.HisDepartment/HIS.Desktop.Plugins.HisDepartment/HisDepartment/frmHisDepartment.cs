@@ -54,6 +54,7 @@ using HIS.Desktop.Utilities.Extensions;
 using ACS.EFMODEL.DataModels;
 using HIS.Desktop.Plugins.HisDepartment.Validation;
 
+
 namespace HIS.Desktop.Plugins.HisDepartment.HisDepartment
 {
     public partial class frmHisDepartment : HIS.Desktop.Utility.FormBase
@@ -68,6 +69,7 @@ namespace HIS.Desktop.Plugins.HisDepartment.HisDepartment
         MOS.EFMODEL.DataModels.HIS_DEPARTMENT currentData;
         List<HIS_DEPARTMENT> listKhoa = new List<HIS_DEPARTMENT>();
         List<ACS_USER> listHead = new List<ACS_USER>();
+        internal List<ADO.SubsDirectorADO> listSubsDirectors { get; set; } // QTCODE
         internal List<ADO.HeadADO> listHeads { get; set; }
         List<string> arrControlEnableNotChange = new List<string>();
 
@@ -161,6 +163,9 @@ namespace HIS.Desktop.Plugins.HisDepartment.HisDepartment
                 this.grdColHead.Caption = Inventec.Common.Resource.Get.Value("frmHisDepartment.grdColHead.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.grdColHead.ToolTip = Inventec.Common.Resource.Get.Value("frmHisDepartment.grdColHead.ToolTip", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
 
+                this.grdColSubsDirector.Caption = Inventec.Common.Resource.Get.Value("frmHisDepartment.grdColSubsDirector.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.grdColSubsDirector.ToolTip = Inventec.Common.Resource.Get.Value("frmHisDepartment.grdColSubsDirector.ToolTip", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+
                 this.gridColumn3.Caption = Inventec.Common.Resource.Get.Value("frmHisDepartment.gridColumn3.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.gridColumn3.ToolTip = Inventec.Common.Resource.Get.Value("frmHisDepartment.gridColumn3.ToolTip", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.gridColumn2.Caption = Inventec.Common.Resource.Get.Value("frmHisDepartment.gridColumn2.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
@@ -215,7 +220,7 @@ namespace HIS.Desktop.Plugins.HisDepartment.HisDepartment
             }
         }
 
-        private void SetDefaultValue()
+        private void SetDefaultValue() // set các giá trị mặc định
         {
             try
             {
@@ -458,7 +463,6 @@ namespace HIS.Desktop.Plugins.HisDepartment.HisDepartment
         {
             try
             {
-
                 List<ColumnInfo> columnInfos = new List<ColumnInfo>();
                 columnInfos.Add(new ColumnInfo("TREATMENT_TYPE_CODE", "", 100, 1));
                 columnInfos.Add(new ColumnInfo("TREATMENT_TYPE_NAME", "", 300, 2));
@@ -636,10 +640,11 @@ namespace HIS.Desktop.Plugins.HisDepartment.HisDepartment
             try
             {
 
-                if (e.IsGetData && e.Column.UnboundType != UnboundColumnType.Bound)
+                if (e.IsGetData && e.Column.UnboundType != UnboundColumnType.Bound) //Đảm bảo rằng cột đang xử lý là một cột unbound((không ràng buộc với dữ liệu trực tiếp từ DataSource).
                 {
                     DevExpress.XtraGrid.Views.Grid.GridView view = sender as DevExpress.XtraGrid.Views.Grid.GridView;
                     MOS.EFMODEL.DataModels.HIS_DEPARTMENT pData = (MOS.EFMODEL.DataModels.HIS_DEPARTMENT)((IList)((BaseView)sender).DataSource)[e.ListSourceRowIndex];
+                   
                     if (e.Column.FieldName == "STT")
                     {
                         e.Value = e.ListSourceRowIndex + 1 + startPage + ((pagingGrid.CurrentPage - 1) * pagingGrid.PageSize);
@@ -766,6 +771,26 @@ namespace HIS.Desktop.Plugins.HisDepartment.HisDepartment
                             Inventec.Common.Logging.LogSystem.Warn("Loi set gia tri cho cot cho phep chi dinh gia goi ALLOW_ASSIGN_PACKAGE_PRICE_STR", ex);
                         }
                     }
+                    else if (e.Column.FieldName == "SubsDirectorSTR")
+                    {
+                        if (pData.HOSP_SUBS_DIRECTOR_LOGINNAME != null && pData.HOSP_SUBS_DIRECTOR_USERNAME != null)
+                        {
+                            e.Value = pData.HOSP_SUBS_DIRECTOR_LOGINNAME + " - " + pData.HOSP_SUBS_DIRECTOR_USERNAME;
+                        }
+                        else if (pData.HOSP_SUBS_DIRECTOR_LOGINNAME != null)
+                        {
+                            e.Value = pData.HOSP_SUBS_DIRECTOR_LOGINNAME;
+                        }
+                        else if (pData.HOSP_SUBS_DIRECTOR_USERNAME != null)
+                        {
+                            e.Value = pData.HOSP_SUBS_DIRECTOR_USERNAME;
+                        }
+                        else
+                        {
+                            e.Value = null;
+                        }
+                    }
+
                     gridControlFormList.RefreshDataSource();
                 }
             }
@@ -832,14 +857,14 @@ namespace HIS.Desktop.Plugins.HisDepartment.HisDepartment
         //    }
         //}
 
-        private void ChangedDataRow(MOS.EFMODEL.DataModels.HIS_DEPARTMENT data)
+        private void ChangedDataRow(MOS.EFMODEL.DataModels.HIS_DEPARTMENT data) // ĐƯỢC GỌI TRONG CLICK 1 ROW, SERACH, KEYDOWN CỦA FORM LIST
         {
             try
             {
                 if (data != null)
                 {
 
-                    FillDataToEditorControl(data);
+                    FillDataToEditorControl(data); // lấy được dữ liệu của input
                     this.ActionType = GlobalVariables.ActionEdit;
                     EnableControlChanged(this.ActionType);
 
@@ -857,7 +882,7 @@ namespace HIS.Desktop.Plugins.HisDepartment.HisDepartment
             }
         }
 
-        private void FillDataToEditorControl(MOS.EFMODEL.DataModels.HIS_DEPARTMENT data)
+        private void FillDataToEditorControl(MOS.EFMODEL.DataModels.HIS_DEPARTMENT data) // GỌI TRONG CHANGEDATAROW
         {
             try
             {
@@ -909,6 +934,12 @@ namespace HIS.Desktop.Plugins.HisDepartment.HisDepartment
                     txtHeadLoginName.Text = data.HEAD_LOGINNAME;
                     cboHeadUserName.EditValue = data.HEAD_LOGINNAME;
 
+                    // QTCODE
+                    txtSubsDirectorLoginName.Text = data.HOSP_SUBS_DIRECTOR_LOGINNAME;
+                    cboSubsDirectorUserName.EditValue = data.HOSP_SUBS_DIRECTOR_LOGINNAME;
+                    
+
+                    // QTCODE
 
                 }
             }
@@ -1217,6 +1248,7 @@ namespace HIS.Desktop.Plugins.HisDepartment.HisDepartment
                 //    LoadCurrent(this.currentData.ID, ref updateDTO);
                 //}
                 UpdateDTOFromDataForm(ref updateDTO);
+                // sau hàm này sẽ lấy được dữ liệu cho updateDTO
                 if (ActionType == GlobalVariables.ActionAdd)
                 {
                     var resultData = new BackendAdapter(param).Post<MOS.EFMODEL.DataModels.HIS_DEPARTMENT>(HisRequestUriStore.MOSHIS_DEPARTMENT_CREATE, ApiConsumers.MosConsumer, updateDTO, param);
@@ -1392,6 +1424,12 @@ namespace HIS.Desktop.Plugins.HisDepartment.HisDepartment
                 currentDTO.HEAD_LOGINNAME = txtHeadLoginName.Text;
                 currentDTO.HEAD_USERNAME = cboHeadUserName.Text;
 
+               // QTCODE
+                currentDTO.HOSP_SUBS_DIRECTOR_LOGINNAME = txtSubsDirectorLoginName.Text;
+                currentDTO.HOSP_SUBS_DIRECTOR_USERNAME = cboSubsDirectorUserName.Text; 
+
+                // END QTCODE
+
                 GridCheckMarksSelection gridCheckMark_ = cboIcdCode.Properties.Tag as GridCheckMarksSelection;
                 if (gridCheckMark_ != null && gridCheckMark_.SelectedCount > 0)
                 {
@@ -1550,6 +1588,9 @@ namespace HIS.Desktop.Plugins.HisDepartment.HisDepartment
 
                 //Load combo Truong phong
                 LoadComboHead();
+
+                // Load combo Người ký thay
+                LoadComboSubsDirector(); 
 
                 //Init combo TreatmentType
                 InitCheck(cboTreatmentType, SelectionGrid__TreatmentType);
@@ -2298,7 +2339,7 @@ namespace HIS.Desktop.Plugins.HisDepartment.HisDepartment
             }
         }
 
-
+        // CLICK 1 ROW 
         private void gridviewFormList_Click(object sender, EventArgs e)
         {
             try
@@ -2389,8 +2430,8 @@ namespace HIS.Desktop.Plugins.HisDepartment.HisDepartment
                             txtHeadLoginName.Text = data.LOGINNAME;
                             cboHeadUserName.Properties.Buttons[1].Visible = true;
                         }
-                        chkIsExamDepartment.Focus();
-                        chkIsExamDepartment.SelectAll();
+                        txtSubsDirectorLoginName.Focus();
+                        txtSubsDirectorLoginName.SelectAll(); 
                     }
 
                 }
@@ -2441,8 +2482,8 @@ namespace HIS.Desktop.Plugins.HisDepartment.HisDepartment
                             txtHeadLoginName.Text = result.First().LOGINNAME;
                             cboHeadUserName.EditValue = result.First().LOGINNAME;
                             cboHeadUserName.Properties.Buttons[1].Visible = true;
-                            chkIsExamDepartment.Focus();
-                            chkIsExamDepartment.SelectAll();
+                            txtSubsDirectorLoginName.Focus();
+                            txtSubsDirectorLoginName.SelectAll();
                         }
                     }
                     if (showCbo)
@@ -2560,6 +2601,117 @@ namespace HIS.Desktop.Plugins.HisDepartment.HisDepartment
                 }
                 e.DisplayText = typeName;
                 cboIcdCode.ToolTip = typeName;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+    
+        private void LoadComboSubsDirector()
+        {
+            try
+            {
+                //truy vấn dữ liệu trực tiếp từ cơ sở dữ liệu thông qua BackendDataWorker.Get
+                var acsUser = BackendDataWorker.Get<ACS.EFMODEL.DataModels.ACS_USER>()
+                    .Where(o => o.IS_ACTIVE == 1).ToList();
+                listSubsDirectors = new List<ADO.SubsDirectorADO>();
+                // listSubsDirectors là biến thành viên (field) của lớp, nên sau khi ra khỏi hàm sẽ k bị mất dữ liệu, 
+                //nếu khai báo listHeads trong hàm thì khi ra khỏi hàm sẽ mất dữ liệu
+
+                // Chuyển đổi dữ liệu sang định dạng ADO
+                foreach (var item in acsUser)
+                {
+                    listSubsDirectors.Add(new ADO.SubsDirectorADO(item));
+                }
+                // Gán dữ liệu cho combobox
+                //Base.GlobalStore.LoadDataGridLookUpEdit(Control control, string valueMember, string displayMember, 
+                //string searchMember, object dataSource);
+                Base.GlobalStore.LoadDataGridLookUpEdit(cboSubsDirectorUserName, "LOGINNAME", "USERNAME", "LOGINNAME", listSubsDirectors);
+                //"LOGINNAME"	Giá trị thực sự của ComboBox (valueMember). Khi chọn một mục, ComboBox sẽ trả về giá trị của cột này.
+                // "USERNAME"	Dữ liệu hiển thị trong ComboBox (displayMember). Đây là cột mà người dùng nhìn thấy khi chọn giá trị.
+                //"LOGINNAME"	Cột dùng để tìm kiếm khi người dùng nhập vào ô tìm kiếm trong ComboBox.
+                // listSubsDirectors	Danh sách dữ liệu được gán vào ComboBox, lấy từ danh sách listSubsDirectors.
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+
+        private void txtSubsDirectorLoginName_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
+        {
+            try
+            {
+                if (e.KeyCode == Keys.Enter)
+                {
+                    bool showCbo = true;
+                    if (!String.IsNullOrEmpty(txtSubsDirectorLoginName.Text.Trim()))
+                    {
+                        string code = txtSubsDirectorLoginName.Text.Trim().ToLower(); // lấy của thằng login
+                        var listData = listSubsDirectors.Where(o => o.LOGINNAME.ToLower().Contains(code)).ToList(); // lấy 1 list các SubsDirectors sao cho thằng loginname chứa thằng mới điền vào ô text 
+                        var result = listData.Count > 1 ? listData.Where(o => o.LOGINNAME.ToLower() == code).ToList() : listData; // nếu có giống hết thì lấy luôn thằng đó nếu k thì là 1 list 
+                        if (result != null && result.Count > 0)
+                        {
+                            showCbo = false;
+                            txtSubsDirectorLoginName.Text = result.First().LOGINNAME;
+                            cboSubsDirectorUserName.EditValue = result.First().LOGINNAME;
+                            cboSubsDirectorUserName.Properties.Buttons[1].Visible = true;
+                            // Chuyển focus sang control tiếp theo
+                            chkIsExamDepartment.Focus();
+                            chkIsExamDepartment.SelectAll();
+                        }
+                    }
+                    if (showCbo)
+                    {
+                        cboSubsDirectorUserName.Focus();
+                        cboSubsDirectorUserName.ShowPopup();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void cboSubsDirectorUserName_Closed(object sender, ClosedEventArgs e)
+        {
+            try
+            {
+                if (e.CloseMode == PopupCloseMode.Normal && cboSubsDirectorUserName.EditValue != null)
+                {
+                    var data = listSubsDirectors.FirstOrDefault(o => o.LOGINNAME == cboSubsDirectorUserName.EditValue.ToString());
+                    if (data != null)
+                    {
+                        txtSubsDirectorLoginName.Text = data.LOGINNAME;
+                        cboSubsDirectorUserName.Properties.Buttons[1].Visible = true;
+                        // Chuyển focus sang control tiếp theo
+                    }
+                    chkIsExamDepartment.Focus();
+                    chkIsExamDepartment.SelectAll();
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+
+
+        private void cboSubsDirectorUserName_ButtonClick(object sender, ButtonPressedEventArgs e)
+        {
+            try
+            {
+                if (e.Button.Kind == DevExpress.XtraEditors.Controls.ButtonPredefines.Delete)
+                {
+                    txtSubsDirectorLoginName.Text = "";
+                    cboSubsDirectorUserName.EditValue = null;
+                    cboSubsDirectorUserName.Properties.Buttons[1].Visible = false;
+                }
             }
             catch (Exception ex)
             {

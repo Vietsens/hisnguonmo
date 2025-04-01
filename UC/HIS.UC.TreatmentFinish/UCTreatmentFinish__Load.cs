@@ -50,12 +50,15 @@ namespace HIS.UC.TreatmentFinish.Run
 {
     public partial class UCTreatmentFinish : UserControl
     {
-        private void LoadTreatmentEndTypeExt()
+        private void InitTreatmentEndTypeExt()
         {
             try
             {
                 TreatmentEndTypeExts = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get
                       <MOS.EFMODEL.DataModels.HIS_TREATMENT_END_TYPE_EXT>();
+
+
+                InitComboCommon(cboTreatmentEndTypeExt, TreatmentEndTypeExts, "ID", "TREATMENT_END_TYPE_EXT_NAME", "TREATMENT_END_TYPE_EXT_CODE");
 
                 //CommonParam param = new CommonParam();
                 //HisTreatmentEndTypeExtFilter filter = new HisTreatmentEndTypeExtFilter();

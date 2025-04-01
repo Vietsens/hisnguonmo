@@ -25,6 +25,7 @@ using DevExpress.XtraEditors.ViewInfo;
 using DevExpress.XtraGrid.Views.Base;
 using DevExpress.XtraGrid.Views.Grid;
 using DevExpress.XtraGrid.Views.Grid.ViewInfo;
+using DevExpress.XtraLayout;
 using DevExpress.XtraTab;
 using HIS.Desktop.ADO;
 using HIS.Desktop.ApiConsumer;
@@ -54,6 +55,7 @@ using HIS.UC.ExamServiceAdd;
 using HIS.UC.ExamServiceAdd.ADO;
 using HIS.UC.ExamTreatmentFinish;
 using HIS.UC.ExamTreatmentFinish.ADO;
+using HIS.UC.ExamTreatmentFinish.Run;
 using HIS.UC.HisExamServiceAdd.ADO;
 using HIS.UC.Hospitalize;
 using HIS.UC.Hospitalize.ADO;
@@ -303,6 +305,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                 if (istime == 1) isTimeServer = true;
                 if (isTimeServer) this.currentTime = param.Now;
 
+
                 LoadTreatmentByPatient();
 
                 LoadTreatmentHistoryTogrid();
@@ -366,6 +369,17 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                 isWarning = false;
                 checkIcdManager = new CheckIcdManager(DlgIcdSubCode, treatment);
                 Inventec.Common.Logging.LogSystem.Debug("ExamServiceReqExecuteControl_Load .13");
+                if (treatment.TDL_TREATMENT_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__DTNGOAITRU)
+                {
+                    lblCaptionDiagnostic.AppearanceItemCaption.ForeColor = Color.Maroon;
+                    lblCaptionConclude.AppearanceItemCaption.ForeColor = Color.Maroon;
+                }
+                else
+                {
+                    lblCaptionDiagnostic.AppearanceItemCaption.ForeColor = Color.Black;
+                    lblCaptionConclude.AppearanceItemCaption.ForeColor = Color.Black;
+                }
+                
             }
             catch (Exception ex)
             {
@@ -2240,6 +2254,22 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             }
         }
 
+
+        private void LabelColor()
+        {
+            try
+            {
+                if (this.ucTreatmentFinish is HIS.UC.ExamTreatmentFinish.Run.UCExamTreatmentFinish uCExamTreatmentFinish)
+                {
+                    uCExamTreatmentFinish.UpdateLabelColor(lblCaptionDiagnostic, lblCaptionConclude);
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
         private void chkTreatmentFinish_CheckedChanged(object sender, EventArgs e)
         {
             try
@@ -2252,6 +2282,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
 
                 if (chkTreatmentFinish.Checked)
                 {
+
                     if (!this.ValidForButtonOtherClick())
                     {
                         chkTreatmentFinish.Checked = false;
@@ -2360,8 +2391,18 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                         treatmentFinishInitADO.ListEventsCausesDeath = dtEventsCausesDeath;
                     }
                     if (this.isTimeServer) treatmentFinishInitADO.Treatment.OUT_TIME = loadParam().Now;
+
                     this.ucTreatmentFinish = (UserControl)treatmentFinishProcessor.Run(treatmentFinishInitADO, this.currentTreatmentExt);
-                    LoadUCToPanelExecuteExt(this.ucTreatmentFinish, chkTreatmentFinish);
+                    LoadUCToPanelExecuteExt(this.ucTreatmentFinish, chkTreatmentFinish);   
+
+                    //LabelColor();
+
+                    //HIS.UC.ExamTreatmentFinish.Run.UCExamTreatmentFinish uCExamTreatmentFinish = new UCExamTreatmentFinish(treatmentFinishInitADO, this.currentTreatmentExt);
+                    //this.ucTreatmentFinish = new UCExamTreatmentFinish(treatmentFinishInitADO, this.currentTreatmentExt);
+                    if (this.ucTreatmentFinish is UCExamTreatmentFinish uCExamTreatmentFinish)
+                    {
+                        uCExamTreatmentFinish.CapSoLuuTruBAChanged += UCExamTreatmentFinish_CapSoLuuTruBAChanged;
+                    }
 
                     if (treatment.TDL_TREATMENT_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__DTNOITRU
                     || treatment.TDL_TREATMENT_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__DTNGOAITRU
@@ -2393,6 +2434,33 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void UCExamTreatmentFinish_CapSoLuuTruBAChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                var sub_out = treatmentFinishProcessor.GetValue(ucTreatmentFinish);
+                if (sub_out != null && sub_out is ExamTreatmentFinishResult)
+                {
+                    var sub = sub_out as ExamTreatmentFinishResult;
+                    if(sub.TreatmentFinishSDO.ProgramId == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__DTNGOAITRU)
+                    {
+                        lblCaptionDiagnostic.AppearanceItemCaption.ForeColor = Color.Maroon;
+                        lblCaptionConclude.AppearanceItemCaption.ForeColor = Color.Maroon;
+                    }
+                    else
+                    {
+                        lblCaptionDiagnostic.AppearanceItemCaption.ForeColor = Color.Black;
+                        lblCaptionConclude.AppearanceItemCaption.ForeColor = Color.Black;
+                    }
+                }
+            }
+            catch (Exception)
+            {
+
+                throw;
             }
         }
 
@@ -8523,7 +8591,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                         dtExecuteTime.DateTime = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(dhst.EXECUTE_TIME ?? 0) ?? DateTime.Now;
                         if (dhst.PULSE != null) spinPulse.EditValue = dhst.PULSE;
                         if (dhst.BLOOD_PRESSURE_MAX != null) spinBloodPressureMax.EditValue = dhst.BLOOD_PRESSURE_MAX;
-                        if (dhst.BLOOD_PRESSURE_MIN != null) spinBloodPressureMin.EditValue = dhst.BLOOD_PRESSURE_MIN;
+                        if (dhst.BLOOD_PRESSURE_MIN != null) spinBloodPressureMin.EditValue = dhst.BLOOD_PRESSURE_MIN;   
                         if (dhst.WEIGHT != null) spinWeight.EditValue = dhst.WEIGHT;
                         if (dhst.HEIGHT != null) spinHeight.EditValue = dhst.HEIGHT;
                         if (dhst.SPO2 != null) spinSPO2.EditValue = dhst.SPO2;
@@ -8544,5 +8612,9 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             }
         }
 
+        private void chkTreatmentFinish_Leave(object sender, EventArgs e)
+        {
+            //chkTreatmentFinish.Checked = false;
+        }
     }
 }

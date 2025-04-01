@@ -335,6 +335,8 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
         internal SecondaryIcdProcessor subIcdYhctProcessor;
         internal UserControl ucSecondaryIcdYhct;
         internal List<AlertLogADO> AlertLogsSdo = new List<AlertLogADO>();
+
+        System.Windows.Forms.Timer timerInitFormAssignPrescription { get; set; }
         #endregion
 
         #region Construct
@@ -343,9 +345,8 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
         {
             try
             {
-                InitializeComponent();
-                LoadHisServiceFromRam();
                 LogSystem.Debug("frmAssignPrescription InitializeComponent.1");
+                InitializeComponent();
                 try
                 {
                     string iconPath = System.IO.Path.Combine(HIS.Desktop.LocalStorage.Location.ApplicationStoreLocation.ApplicationStartupPath, System.Configuration.ConfigurationSettings.AppSettings["Inventec.Desktop.Icon"]);
@@ -508,7 +509,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                 subIcdYhctProcessor = new SecondaryIcdProcessor(new CommonParam(), icdYhct);
                 HIS.UC.SecondaryIcd.ADO.SecondaryIcdInitADO ado = new UC.SecondaryIcd.ADO.SecondaryIcdInitADO();
                 ado.DelegateGetIcdMain = GetIcdMainCodeYhct;
-                ado.hisTreatment = GetTreatment(this.treatmentId);
+                ado.hisTreatment = this.currentTreatment;
                 ado.Width = 440;
                 ado.TextSize = 95;
                 ado.Height = 24;
@@ -551,11 +552,13 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
             return mainCode;
         }
 
-        private void LoadHisServiceFromRam()
+        private void LoadDataFromRam()
         {
             try
             {
                 lstService = BackendDataWorker.Get<V_HIS_SERVICE>().ToList();
+                this.lstExpMestReasons = new List<HIS_EXP_MEST_REASON>();
+                this.lstExpMestReasons = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<HIS_EXP_MEST_REASON>().Where(o => o.IS_ACTIVE == GlobalVariables.CommonNumberTrue).ToList();
             }
             catch (Exception ex)
             {
@@ -1085,77 +1088,97 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
         {
             try
             {
-                this.SetCaptionByLanguageKeyNew();
                 LogSystem.Debug("frmAssignPrescription_Load Starting.... 1");
+                this.SetCaptionByLanguageKeyNew();
+                LogSystem.Debug("frmAssignPrescription_Load. 1");
                 WaitingManager.Show();
                 InitTimerReloadTreatmentFinishTime();
                 this.LoadVHisTreatment();
+                LogSystem.Debug("frmAssignPrescription_Load. 2");
                 InitMultipleThread();
-                this.LoadExpMestReason();
+                LogSystem.Debug("frmAssignPrescription_Load. 3");
+                LoadDataFromRam();
+                LogSystem.Debug("frmAssignPrescription_Load. 4");
                 this.AddBarManager(this.barManager1);
                 this.isNotLoadWhileChangeInstructionTimeInFirst = true;
                 this.isInitTracking = true;
                 this.dicMediMateAssignPres = new Dictionary<string, long>();
                 this.gridControlServiceProcess.ToolTipController = this.tooltipService;
                 this.ResetDataForm();
+                LogSystem.Debug("frmAssignPrescription_Load. 6");
                 this.SetDefaultData();
+                LogSystem.Debug("frmAssignPrescription_Load. 7");
                 this.SetDefaultUC();
-                LogSystem.Debug("frmAssignPrescription_Load 1...");
+
+                LogSystem.Debug("frmAssignPrescription_Load. 8");
+                LogSystem.Debug("frmAssignPrescription_Load. 9");
+
+                this.timerInitForm.Interval = 500;//Fix
+                this.timerInitForm.Enabled = true;
+                this.timerInitForm.Start();
+
+                this.timerInitFormAssignPrescription = new System.Windows.Forms.Timer();
+                this.timerInitFormAssignPrescription.Tick += new System.EventHandler(this.timerInitFormAssignPrescription_Tick);
+                this.timerInitFormAssignPrescription.Interval = 200;//Fix
+                this.timerInitFormAssignPrescription.Enabled = true;
+                this.timerInitFormAssignPrescription.Start();
+
+                WaitingManager.Hide();
+                LogSystem.Debug("frmAssignPrescription_Load. 10");
+            }
+            catch (Exception ex)
+            {
+                WaitingManager.Hide();
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void InitFormAssignPrescriptionAsync()
+        {
+            try
+            {
+                LogSystem.Debug("InitFormAssignPrescriptionAsync. 1");
                 this.LoadDataToPatientInfo();
-                LogSystem.Debug("frmAssignPrescription_Load 1.1");
+                LogSystem.Debug("InitFormAssignPrescriptionAsync. 2");
                 this.isNotLoadMediMatyByMediStockInitForm = true;
                 this.ReSetDataInputAfterAdd__MedicinePage();
-                LogSystem.Debug("frmAssignPrescription_Load. 2");
-                Inventec.Common.Logging.LogSystem.Debug("frmAssignPrescription_Load .DEBUG true");
-                this.InitTabIndex();
-                this.ValidateForm();
-                this.ValidateBosung();
-                this.InitControlByConfig();
-                this.VisibleExecuteGroupByConfig();
-                this.VisibleColumnInGridControlService();
-
+                LogSystem.Debug("InitFormAssignPrescriptionAsync. 3");
+                LogSystem.Debug("InitFormAssignPrescriptionAsync. 4");
                 this.LoadAncillaryServpaty();
-                LogSystem.Debug("frmAssignPrescription_Load. 4");
+                LogSystem.Debug("InitFormAssignPrescriptionAsync. 5");
                 this.FillDataToControlsForm();
                 this.InitComboExpMestReason();
                 this.InitComborepositoryItemCustomGridLookUpReasion();
-                LogSystem.Debug("frmAssignPrescription_Load. 5");
+                LogSystem.Debug("InitFormAssignPrescriptionAsync. 6");
                 this.VisibleButton(this.actionBosung);
                 this.LoadDefaultTabpageMedicine();
                 this.InitDataByServicePackage();
                 this.InitDataByServiceMetyMaty();
                 this.InitDataByExpMestTemplate();
-                LogSystem.Debug("frmAssignPrescription_Load. 6");
+                LogSystem.Debug("InitFormAssignPrescriptionAsync. 7");
                 this.LoadPrescriptionForEdit();
                 this.SetEnableButtonControl(this.actionType);
-                this.LoadData();
+                this.LoadDataDhstToControl();
                 this.isNotLoadMediMatyByMediStockInitForm = false;
                 this.IsHandlerWhileOpionGroupSelectedIndexChanged = false;
                 this.isNotLoadWhileChangeInstructionTimeInFirst = false;
                 this.InitMenuToButtonPrint();
-                LogSystem.Debug("frmAssignPrescription_Load. 7");
-
-                WaitingManager.Hide();
+                LogSystem.Debug("InitFormAssignPrescriptionAsync. 8");
                 this.InitDefaultFocus();
                 this.gridControlServiceProcess.DragOver += new System.Windows.Forms.DragEventHandler(this.gridControlServiceProcess_DragOver);
                 this.gridControlServiceProcess.DragDrop += new System.Windows.Forms.DragEventHandler(this.gridControlServiceProcess_DragDrop);
                 this.gridViewServiceProcess.MouseMove += new System.Windows.Forms.MouseEventHandler(this.gridViewServiceProcess_MouseMove);
 
-                this.timerInitForm.Interval = 2000;//Fix 5s
-                this.timerInitForm.Enabled = true;
-                this.timerInitForm.Start();
 
-                LogSystem.Debug("frmAssignPrescription_Load. 8");
+                LogSystem.Debug("InitFormAssignPrescriptionAsync. 9");
 
                 ModuleList();
                 VisibleColumnPreAmount();
-                InitDataServiceReqAllInDay();
                 CheckAssignServiceSimultaneityOption();
-                LogSystem.Debug("frmAssignPrescription_Load. 9");
+                LogSystem.Debug("InitFormAssignPrescriptionAsync. 10");
             }
             catch (Exception ex)
             {
-                WaitingManager.Hide();
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
@@ -1233,9 +1256,9 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                 else
                 {
                     searchMedicineFilter.USE_TIME_TO_FROM = Int64.Parse(this.intructionTimeSelecteds.OrderByDescending(o => o).Last().ToString().Substring(0, 8) + "000000");
-                    if (currentTreatmentWithPatientType == null || currentTreatmentWithPatientType.ID <= 0)
-                        this.currentTreatmentWithPatientType = this.LoadDataToCurrentTreatmentData(treatmentId, this.InstructionTime);
-                    searchMedicineFilter.TDL_PATIENT_ID = currentTreatmentWithPatientType.PATIENT_ID;
+                    //if (currentTreatmentWithPatientType == null || currentTreatmentWithPatientType.ID <= 0)
+                    //    this.currentTreatmentWithPatientType = this.LoadDataToCurrentTreatmentData(treatmentId, this.InstructionTime);
+                    searchMedicineFilter.TDL_PATIENT_ID = VHistreatment.PATIENT_ID;
                 }
                 ListMedicineTypeOld = new BackendAdapter(param).Get<List<V_HIS_EXP_MEST_MEDICINE>>(HisRequestUriStore.HIS_EXP_MEST_MEDICINE_GETVIEW, ApiConsumers.MosConsumer, searchMedicineFilter, ProcessLostToken, param);
 
@@ -1352,13 +1375,19 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
         {
             try
             {
-                this.VHistreatment = new V_HIS_TREATMENT();
                 CommonParam param = new CommonParam();
                 HisTreatmentViewFilter filter = new HisTreatmentViewFilter();
                 filter.ID = this.treatmentId;
-                this.VHistreatment = new BackendAdapter(param).Get<List<V_HIS_TREATMENT>>("api/HisTreatment/GetView", ApiConsumers.MosConsumer, filter, param).FirstOrDefault();
+                var vtreatmentDatas = new BackendAdapter(param).Get<List<V_HIS_TREATMENT>>("api/HisTreatment/GetView", ApiConsumers.MosConsumer, filter, param);
+
+                this.VHistreatment = vtreatmentDatas != null ? vtreatmentDatas.FirstOrDefault() : new V_HIS_TREATMENT();
                 dteCommonParam = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(param.Now) ?? DateTime.Now;
+                this.patientDob = VHistreatment.TDL_PATIENT_DOB;
                 timerReloadTreatmentFinishTime.Start();
+
+                //currentTreatment = GetTreatment(this.treatmentId);
+                AutoMapper.Mapper.CreateMap<V_HIS_TREATMENT, HIS_TREATMENT>();
+                currentTreatment = AutoMapper.Mapper.Map<HIS_TREATMENT>(this.VHistreatment);
             }
             catch (Exception ex)
             {
@@ -1367,12 +1396,22 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
 
         }
 
-        private void LoadExpMestReason()
+        private void timerInitFormAssignPrescription_Tick(object sender, EventArgs e)
         {
             try
             {
-                this.lstExpMestReasons = new List<HIS_EXP_MEST_REASON>();
-                this.lstExpMestReasons = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<HIS_EXP_MEST_REASON>().Where(o => o.IS_ACTIVE == GlobalVariables.CommonNumberTrue).ToList();
+                LogSystem.Debug("timerInitFormAssignPrescription_Tick 1...");
+                timerInitFormAssignPrescription.Stop();
+                this.InitTabIndex();
+                this.ValidateForm();
+                this.ValidateBosung();
+                this.InitControlByConfig();
+                this.VisibleExecuteGroupByConfig();
+                this.VisibleColumnInGridControlService();
+
+                InitFormAssignPrescriptionAsync();
+
+                LogSystem.Debug("timerInitFormAssignPrescription_Tick 2...");
             }
             catch (Exception ex)
             {
@@ -1386,6 +1425,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
             {
                 LogSystem.Debug("timerInitForm_Tick 1...");
                 this.timerInitForm.Stop();
+
                 if (this.treatmentFinishProcessor != null && this.ucTreatmentFinish != null)
                 {
                     this.treatmentFinishProcessor.UpdateTreatmentData(this.ucTreatmentFinish, this.currentTreatmentWithPatientType);
@@ -1397,6 +1437,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                 this.CheckAppoinmentEarly();//Hien thi thong bao den som thoi gian hen kham
                 this.LoadDataTracking(false);
                 this.LoadAllergenic(this.currentTreatmentWithPatientType.PATIENT_ID);
+                this.InitDataServiceReqAllInDay();
                 this.ThreadLoadDonThuocCu();
                 this.FillDataToComboPriviousExpMest(this.currentTreatmentWithPatientType);
                 this.InitMedicineTypeAcinInfo();
@@ -2178,19 +2219,19 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                         if (medicineService != null && medicineService.Count > 0)
                         {
                             frmOverReason frm = new frmOverReason(medicineService, "bổ sung", (o) =>
-                              {
-                                  if (mediMatyType.dicTreatmentOverResultTestReason == null)
-                                      mediMatyType.dicTreatmentOverResultTestReason = new Dictionary<long, List<TreatmentOverReason>>();
-                                  if (!mediMatyType.dicTreatmentOverResultTestReason.ContainsKey(InstructionTime))
-                                      mediMatyType.dicTreatmentOverResultTestReason[InstructionTime] = new List<TreatmentOverReason>() { o };
-                                  mediMatyType.OVER_RESULT_TEST_REASON = o.overReason;
-                                  mediMatyType.OVER_REASON_ID = o.overReasonId;
-                                  mediMatyType.IsEditOverResultTestReason = true;
-                              }, (o) =>
-                             {
-                                 mediMatyType.IsNoPrescription = !o;
-                                 result = o;
-                             }, mediMatyType, IsUpdateGrid, false, treatmentId);
+                            {
+                                if (mediMatyType.dicTreatmentOverResultTestReason == null)
+                                    mediMatyType.dicTreatmentOverResultTestReason = new Dictionary<long, List<TreatmentOverReason>>();
+                                if (!mediMatyType.dicTreatmentOverResultTestReason.ContainsKey(InstructionTime))
+                                    mediMatyType.dicTreatmentOverResultTestReason[InstructionTime] = new List<TreatmentOverReason>() { o };
+                                mediMatyType.OVER_RESULT_TEST_REASON = o.overReason;
+                                mediMatyType.OVER_REASON_ID = o.overReasonId;
+                                mediMatyType.IsEditOverResultTestReason = true;
+                            }, (o) =>
+                            {
+                                mediMatyType.IsNoPrescription = !o;
+                                result = o;
+                            }, mediMatyType, IsUpdateGrid, false, treatmentId);
                             frm.ShowDialog();
                         }
                         else
@@ -2796,7 +2837,7 @@ o.SERVICE_ID == medi.SERVICE_ID && o.TDL_INTRUCTION_TIME.ToString().Substring(0,
                 HisSereServFilter hisSereServFilter = new HisSereServFilter();
                 hisSereServFilter.TREATMENT_IDs = obj as List<long>;
                 hisSereServFilter.TDL_SERVICE_TYPE_IDs = setyAllowsIds;
-                this.sereServWithMultilTreatment = new BackendAdapter(param).Get<List<MOS.EFMODEL.DataModels.HIS_SERE_SERV>>("api/HisSereServ/GetView", ApiConsumers.MosConsumerNoStore, hisSereServFilter, ProcessLostToken, param);
+                this.sereServWithMultilTreatment = new BackendAdapter(param).Get<List<MOS.EFMODEL.DataModels.HIS_SERE_SERV>>("api/HisSereServ/Get", ApiConsumers.MosConsumerNoStore, hisSereServFilter, ProcessLostToken, param);
                 Inventec.Common.Logging.LogSystem.Debug("LoadDataSereServWithMutilTreatment.4");
             }
             catch (Exception ex)
@@ -10527,13 +10568,13 @@ o.SERVICE_ID == medi.SERVICE_ID && o.TDL_INTRUCTION_TIME.ToString().Substring(0,
             }
         }
 
-        private async Task LoadData()
+        private async Task LoadDataDhstToControl()
         {
             try
             {
                 if (this.currentTreatmentWithPatientType != null)
                 {
-                    WaitingManager.Show();
+                    //WaitingManager.Show();
                     HisDhstFilter dhstFilter = new HisDhstFilter();
                     dhstFilter.TREATMENT_ID = this.currentTreatmentWithPatientType.ID;
                     dhstFilter.ORDER_FIELD = "EXECUTE_TIME";
@@ -10573,7 +10614,7 @@ o.SERVICE_ID == medi.SERVICE_ID && o.TDL_INTRUCTION_TIME.ToString().Substring(0,
                     }
                     else
                         dhst = null;
-                    WaitingManager.Hide();
+                    //WaitingManager.Hide();
                     this.DHSTSetValue(dhst);
                     Inventec.Common.Logging.LogSystem.Debug("Get dhst from treatment");
                 }
@@ -10581,7 +10622,7 @@ o.SERVICE_ID == medi.SERVICE_ID && o.TDL_INTRUCTION_TIME.ToString().Substring(0,
                 //việc 20260
                 if (HisConfigCFG.IsCheckDepartmentInTimeWhenPresOrAssign)
                 {
-                    WaitingManager.Show();
+                    //WaitingManager.Show();
                     CommonParam param = new CommonParam();
                     HisDepartmentTranFilter TranFilter = new HisDepartmentTranFilter();
                     TranFilter.TREATMENT_ID = this.treatmentId;
@@ -10597,12 +10638,12 @@ o.SERVICE_ID == medi.SERVICE_ID && o.TDL_INTRUCTION_TIME.ToString().Substring(0,
 
                     this.lstCoTreatment = await new BackendAdapter(param).GetAsync<List<HIS_CO_TREATMENT>>("api/HisCoTreatment/Get", ApiConsumers.MosConsumer, CoTreatmentFilter, param);
 
-                    WaitingManager.Hide();
+                    //WaitingManager.Hide();
                 }
             }
             catch (Exception ex)
             {
-                WaitingManager.Hide();
+                //WaitingManager.Hide();
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }

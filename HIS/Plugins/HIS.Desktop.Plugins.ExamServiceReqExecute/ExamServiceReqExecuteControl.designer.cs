@@ -125,6 +125,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             this.btnAssignService = new DevExpress.XtraEditors.SimpleButton();
             this.btnPrint_ExamService = new DevExpress.XtraEditors.DropDownButton();
             this.layoutControl3 = new DevExpress.XtraLayout.LayoutControl();
+            this.lblARCPCR = new DevExpress.XtraEditors.LabelControl();
             this.panelControlUcSubIcdYHCT = new System.Windows.Forms.Panel();
             this.panelControlIcdYHCT = new System.Windows.Forms.Panel();
             this.btnViewInformationExam = new DevExpress.XtraEditors.SimpleButton();
@@ -598,6 +599,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             this.layoutControlItem62 = new DevExpress.XtraLayout.LayoutControlItem();
             this.lciBMI = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem73 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.lciARCPCR = new DevExpress.XtraLayout.LayoutControlItem();
             this.lciKhamToanThan = new DevExpress.XtraLayout.LayoutControlItem();
             this.lblCaptionPathologicalHistory = new DevExpress.XtraLayout.LayoutControlItem();
             this.lblCaptionPathologicalHistoryFamily = new DevExpress.XtraLayout.LayoutControlItem();
@@ -645,8 +647,6 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             this.customGridViewWithFilterMultiColumn2 = new Inventec.Desktop.CustomControl.CustomGridViewWithFilterMultiColumn();
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip();
             this.timerInitForm = new System.Windows.Forms.Timer();
-            this.lblARCPCR = new DevExpress.XtraEditors.LabelControl();
-            this.lciARCPCR = new DevExpress.XtraLayout.LayoutControlItem();
             ((System.ComponentModel.ISupportInitialize)(this.dxValidationProviderForLeftPanel)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxErrorProviderForSpinVat)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
@@ -1080,6 +1080,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem62)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciBMI)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem73)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciARCPCR)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciKhamToanThan)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lblCaptionPathologicalHistory)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lblCaptionPathologicalHistoryFamily)).BeginInit();
@@ -1124,7 +1125,6 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             ((System.ComponentModel.ISupportInitialize)(this.customGridViewWithFilterMultiColumn3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.customGridViewWithFilterMultiColumn1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.customGridViewWithFilterMultiColumn2)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.lciARCPCR)).BeginInit();
             this.SuspendLayout();
             // 
             // dxValidationProviderForLeftPanel
@@ -1400,6 +1400,15 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             this.layoutControl3.Size = new System.Drawing.Size(1364, 635);
             this.layoutControl3.TabIndex = 0;
             this.layoutControl3.Text = "layoutControl3";
+            // 
+            // lblARCPCR
+            // 
+            this.lblARCPCR.AutoSizeMode = DevExpress.XtraEditors.LabelAutoSizeMode.None;
+            this.lblARCPCR.Location = new System.Drawing.Point(735, 175);
+            this.lblARCPCR.Name = "lblARCPCR";
+            this.lblARCPCR.Size = new System.Drawing.Size(128, 20);
+            this.lblARCPCR.StyleController = this.layoutControl3;
+            this.lblARCPCR.TabIndex = 71;
             // 
             // panelControlUcSubIcdYHCT
             // 
@@ -2656,6 +2665,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             this.chkTreatmentFinish.TabIndex = 2;
             this.chkTreatmentFinish.TabStop = false;
             this.chkTreatmentFinish.CheckedChanged += new System.EventHandler(this.chkTreatmentFinish_CheckedChanged);
+            this.chkTreatmentFinish.Leave += new System.EventHandler(this.chkTreatmentFinish_Leave);
             // 
             // chkExamFinish
             // 
@@ -6511,6 +6521,8 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             // lblCaptionDiagnostic
             // 
             this.lblCaptionDiagnostic.AllowHtmlStringInCaption = true;
+            this.lblCaptionDiagnostic.AppearanceItemCaption.ForeColor = System.Drawing.Color.Black;
+            this.lblCaptionDiagnostic.AppearanceItemCaption.Options.UseForeColor = true;
             this.lblCaptionDiagnostic.AppearanceItemCaption.Options.UseTextOptions = true;
             this.lblCaptionDiagnostic.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lblCaptionDiagnostic.AppearanceItemCaption.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
@@ -6525,6 +6537,8 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             // 
             // lblCaptionConclude
             // 
+            this.lblCaptionConclude.AppearanceItemCaption.ForeColor = System.Drawing.Color.Black;
+            this.lblCaptionConclude.AppearanceItemCaption.Options.UseForeColor = true;
             this.lblCaptionConclude.AppearanceItemCaption.Options.UseTextOptions = true;
             this.lblCaptionConclude.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lblCaptionConclude.AppearanceItemCaption.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
@@ -7019,6 +7033,20 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             this.layoutControlItem73.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
             this.layoutControlItem73.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem73.TextVisible = false;
+            // 
+            // lciARCPCR
+            // 
+            this.lciARCPCR.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.lciARCPCR.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.lciARCPCR.Control = this.lblARCPCR;
+            this.lciARCPCR.Location = new System.Drawing.Point(217, 144);
+            this.lciARCPCR.Name = "lciARCPCR";
+            this.lciARCPCR.Size = new System.Drawing.Size(217, 24);
+            this.lciARCPCR.Text = "uACR:";
+            this.lciARCPCR.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.lciARCPCR.TextSize = new System.Drawing.Size(80, 20);
+            this.lciARCPCR.TextToControlDistance = 5;
+            this.lciARCPCR.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
             // 
             // lciKhamToanThan
             // 
@@ -7521,29 +7549,6 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             this.contextMenuStrip1.Name = "contextMenuStrip1";
             this.contextMenuStrip1.Size = new System.Drawing.Size(61, 4);
             // 
-            // lblARCPCR
-            // 
-            this.lblARCPCR.AutoSizeMode = DevExpress.XtraEditors.LabelAutoSizeMode.None;
-            this.lblARCPCR.Location = new System.Drawing.Point(735, 175);
-            this.lblARCPCR.Name = "lblARCPCR";
-            this.lblARCPCR.Size = new System.Drawing.Size(128, 20);
-            this.lblARCPCR.StyleController = this.layoutControl3;
-            this.lblARCPCR.TabIndex = 71;
-            // 
-            // lciARCPCR
-            // 
-            this.lciARCPCR.AppearanceItemCaption.Options.UseTextOptions = true;
-            this.lciARCPCR.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
-            this.lciARCPCR.Control = this.lblARCPCR;
-            this.lciARCPCR.Location = new System.Drawing.Point(217, 144);
-            this.lciARCPCR.Name = "lciARCPCR";
-            this.lciARCPCR.Size = new System.Drawing.Size(217, 24);
-            this.lciARCPCR.Text = "uACR:";
-            this.lciARCPCR.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
-            this.lciARCPCR.TextSize = new System.Drawing.Size(80, 20);
-            this.lciARCPCR.TextToControlDistance = 5;
-            this.lciARCPCR.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
-            // 
             // ExamServiceReqExecuteControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -7990,6 +7995,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem62)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciBMI)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem73)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciARCPCR)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciKhamToanThan)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lblCaptionPathologicalHistory)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lblCaptionPathologicalHistoryFamily)).EndInit();
@@ -8034,7 +8040,6 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             ((System.ComponentModel.ISupportInitialize)(this.customGridViewWithFilterMultiColumn3)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.customGridViewWithFilterMultiColumn1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.customGridViewWithFilterMultiColumn2)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.lciARCPCR)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 

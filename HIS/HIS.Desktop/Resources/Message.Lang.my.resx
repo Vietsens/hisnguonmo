@@ -133,7 +133,7 @@
     <value>ဗီယက်နမ်လူမျိုး</value>
   </data>
   <data name="Desktop.Resources.Common.Lang.Message.DangKiemTraPhienBanCapNhat" xml:space="preserve">
-    <value>အပ်ဒိတ်ဗားရှင်းအတွက် စစ်ဆေးနေသည်...</value>
+    <value>ဆော့ဖ်ဝဲသည် ဆာဗာမှ ဗားရှင်းအသစ်များကို စစ်ဆေးနေသည်။ အပ်ဒိတ်အရေအတွက် များပြားပါက သို့မဟုတ် လူများလွန်းပါက ဆေးရုံ၏ ကွန်ရက်စနစ်အား ပိုအားကုန်စေသည့် ဆော့ဖ်ဝဲလ်အပ်ဒိတ်များကို ဤလုပ်ငန်းစဉ်သည် မိနစ်အနည်းငယ်ကြာ သို့မဟုတ် ပိုကြာနိုင်ပါသည်။ စိတ်ရှည်ရှည်နဲ့ စောင့်ပေးပါ။</value>
   </data>
   <data name="Desktop.Resources.Common.Lang.Message.PhienBanHienTaiDangChay" xml:space="preserve">
     <value>သင်အသုံးပြုနေသည့် လက်ရှိဗားရှင်းမှာ ဗားရှင်း {0} ဖြစ်ပြီး နောက်ဆုံးဗားရှင်းမှာ ဗားရှင်း {1} ဖြစ်သည်။</value>
