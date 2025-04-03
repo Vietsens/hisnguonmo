@@ -251,7 +251,7 @@ namespace HIS.Desktop.Plugins.HisRoleUser.Run
                     MOS.Filter.HisImpMestFilter impMestFilter = new MOS.Filter.HisImpMestFilter();
                     impMestFilter.ID = this.ImpMestId;
                     var rsImpMest = new BackendAdapter(param).Get<List<HIS_IMP_MEST>>("api/HisImpMest/Get", ApiConsumers.MosConsumer, impMestFilter, param).FirstOrDefault();
-                    if(rsImpMest != null)
+                    if (rsImpMest != null)
                     {
                         txtImpMestNumber.Text = rsImpMest.IMP_MEST_NUMBER;
                         mmConclude.Text = rsImpMest.CONCLUDE;
@@ -408,7 +408,7 @@ namespace HIS.Desktop.Plugins.HisRoleUser.Run
                 if (row != null)
                 {
                     this.listRoleUserAdo.Remove(row);
-                    if(this.listRoleUserAdo == null || this.listRoleUserAdo.Count == 0)
+                    if (this.listRoleUserAdo == null || this.listRoleUserAdo.Count == 0)
                     {
                         RoleUserAdo RoleUserAdo = new RoleUserAdo();
                         this.listRoleUserAdo.Add(RoleUserAdo);
@@ -585,6 +585,7 @@ namespace HIS.Desktop.Plugins.HisRoleUser.Run
         internal enum PrintType
         {
             BIEN_BAN_KIEM_NHAP_TU_NCC,
+            BIEN_BAN_KIEM_NHAP_TU_NCC_MAU,
             PHIEU_NHAP_THUOC_VAT_TU_TU_NCC,
             PHIEU_NHAP_MAU_TU_NCC,
             BAR_CODE,
@@ -621,6 +622,10 @@ namespace HIS.Desktop.Plugins.HisRoleUser.Run
                         DXMenuItem itemPhieuNhapMauTuNCC = new DXMenuItem("Phiếu nhập máu từ nhà cung cấp", new EventHandler(OnClickInPhieuNhap));
                         itemPhieuNhapMauTuNCC.Tag = PrintType.PHIEU_NHAP_MAU_TU_NCC;
                         menu.Items.Add(itemPhieuNhapMauTuNCC);
+
+                        DXMenuItem itemBienBanKiemNhapMau = new DXMenuItem("Biên bản kiểm nhập từ nhà cung cấp", new EventHandler(OnClickInPhieuNhap));
+                        itemBienBanKiemNhapMau.Tag = PrintType.BIEN_BAN_KIEM_NHAP_TU_NCC_MAU;
+                        menu.Items.Add(itemBienBanKiemNhapMau);
                     }
                     else
                     {
@@ -670,7 +675,7 @@ namespace HIS.Desktop.Plugins.HisRoleUser.Run
             }
         }
 
-        private void OnClickInPhieuNhap(object sender, EventArgs e)
+        private void OnClickInPhieuNhap(object sender, EventArgs e) // Xử lý khi người dùng chọn một mục trong menu "In"
         {
             try
             {
@@ -707,7 +712,7 @@ namespace HIS.Desktop.Plugins.HisRoleUser.Run
             }
         }
 
-        void PrintProcess(PrintType printType)
+        void PrintProcess(PrintType printType) //Gọi mẫu in tương ứng (ví dụ: Mps000085, Mps000149).
         {
             try
             {
@@ -739,6 +744,9 @@ namespace HIS.Desktop.Plugins.HisRoleUser.Run
                     case PrintType.PHIEU_NHAP_MAU_TU_NCC:
                         richEditorMain.RunPrintTemplate(PrintTypeCodeStore.PRINT_TYPE_CODE__PHIEU_NHAP_MAU_TU_NCC_MPS000149, DelegateRunPrinter);
                         break;
+                    case PrintType.BIEN_BAN_KIEM_NHAP_TU_NCC_MAU:
+                        richEditorMain.RunPrintTemplate(PrintTypeCodeStore.PRINT_TYPE_CODE__BienBanKiemNhapTuNhaCungCap_MPS000085, DelegateRunPrinter);
+                        break;
                     case PrintType.PHIEU_NHAP_KIEM_KE_DAU_KY_KHAC:
                         richEditorMain.RunPrintTemplate(PrintTypeCodeStoreV2.PRINT_TYPE_CODE__BIEUMAU__PHIEU_NHAP_KIEM_KE_DAU_KY_KHAC__MPS000199, DelegateRunPrinter);
                         break;
@@ -760,7 +768,14 @@ namespace HIS.Desktop.Plugins.HisRoleUser.Run
                 switch (printTypeCode)
                 {
                     case PrintTypeCodeStore.PRINT_TYPE_CODE__BienBanKiemNhapTuNhaCungCap_MPS000085:
-                        InBienBanKiemNhapTuNhaCungCap(printTypeCode, fileName, ref result);
+                        if (this.impMestBloods != null && this.impMestBloods.Count > 0)
+                        {
+                            InBienBanKiemNhapTuNhaCungCapMau(printTypeCode, fileName, ref result);
+                        }
+                        else
+                        {
+                            InBienBanKiemNhapTuNhaCungCap(printTypeCode, fileName, ref result);
+                        }
                         break;
                     case PrintTypeCodeStore.PRINT_TYPE_CODE__BIEUMAU__PHIEU_NHAP_TU_NCC__MPS000141:
                         InPhieuNhapTuNhaCungCap(printTypeCode, fileName, ref result);
@@ -794,7 +809,66 @@ namespace HIS.Desktop.Plugins.HisRoleUser.Run
 
             return result;
         }
+        private void InBienBanKiemNhapTuNhaCungCapMau(string printTypeCode, string fileName, ref bool result)
+        {
+            try
+            {
+                CommonParam param = new CommonParam();
+                WaitingManager.Show();
 
+                // Lấy dữ liệu máu
+                MOS.Filter.HisImpMestBloodViewFilter bloodFilter = new MOS.Filter.HisImpMestBloodViewFilter();
+                bloodFilter.IMP_MEST_ID = this.ImpMestId;
+
+                var impMestBloods = new BackendAdapter(param).Get<List<V_HIS_IMP_MEST_BLOOD>>(
+                    HisRequestUriStore.HIS_IMP_MEST_BLOOD_GETVIEW, ApiConsumers.MosConsumer, bloodFilter, param);
+
+                // Lấy thông tin người dùng trong phiếu nhập
+                MOS.Filter.HisImpMestUserViewFilter userFilter = new MOS.Filter.HisImpMestUserViewFilter();
+                userFilter.IMP_MEST_ID = this.ImpMestId;
+                var impMestUsers = new BackendAdapter(param).Get<List<V_HIS_IMP_MEST_USER>>(
+                    "/api/HisImpMestUser/GetView", ApiConsumers.MosConsumer, userFilter, param);
+                impMestUsers = impMestUsers.OrderBy(o => o.ID).ToList();
+
+
+
+                // Lấy thông tin phiếu nhập như mã phiếu, ngày nhập, trạng thái, ...
+                MOS.Filter.HisImpMestViewFilter impMestViewFilter = new HisImpMestViewFilter();
+                impMestViewFilter.ID = this.ImpMestId;
+                var impMest = new BackendAdapter(param).Get<List<V_HIS_IMP_MEST>>(
+                    HisRequestUriStore.HIS_IMP_MEST_GETVIEW, ApiConsumers.MosConsumer, impMestViewFilter, param).FirstOrDefault();
+
+                // Chuẩn bị dữ liệu cho báo cáo Mps000085
+                MPS.Processor.Mps000085.PDO.Mps000085PDO pdo = new MPS.Processor.Mps000085.PDO.Mps000085PDO(
+                    impMest,
+                    null, // Không có thuốc
+                    null, // Không có vật tư
+                    impMestUsers,
+                    null, // Không có dữ liệu thuốc
+                    null, // Không có dữ liệu vật tư
+                    null,
+                    null,
+                    impMestBloods
+                );
+
+                WaitingManager.Hide();
+                MPS.ProcessorBase.Core.PrintData PrintData = null;
+                if (GlobalVariables.CheDoInChoCacChucNangTrongPhanMem == 2)
+                {
+                    PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, pdo, MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow, "");
+                }
+                else
+                {
+                    PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, pdo, MPS.ProcessorBase.PrintConfig.PreviewType.ShowDialog, "");
+                }
+                result = MPS.MpsPrinter.Run(PrintData);
+            }
+            catch (Exception ex)
+            {
+                WaitingManager.Hide();
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
         private void InPhieuNhapMauTuNCC(string printTypeCode, string fileName, ref bool result)
         {
             try
