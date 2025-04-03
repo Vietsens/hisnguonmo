@@ -51,9 +51,11 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Resources;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Windows.Forms;
 using System.Windows.Markup;
+using static DevExpress.XtraPrinting.Native.ExportOptionsPropertiesNames;
 
 namespace HIS.Desktop.Plugins.HisExecuteRoom.HisExecuteRoom
 {
@@ -76,6 +78,8 @@ namespace HIS.Desktop.Plugins.HisExecuteRoom.HisExecuteRoom
         internal long executeRoomId;
         List<HIS_AREA> listArea;
         List<ACS_MODULE> listAcsModule;
+        List<ACS_USER> listDirector = new List<ACS_USER>();
+        internal List<ADO.DirectorADO> listDirectors { get; set; }
         HIS_DEPARTMENT department = new HIS_DEPARTMENT();
         List<HIS_MEDI_STOCK> defaultDrugSelecteds;
         List<HIS_PATIENT_TYPE> listPatientTypeIds = new List<HIS_PATIENT_TYPE>();
@@ -448,6 +452,10 @@ namespace HIS.Desktop.Plugins.HisExecuteRoom.HisExecuteRoom
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
 
+        }
+        public void LoadDirectorData()
+        {
+            //cboDirectorUserName.Properties.DataSource = listDirectors;
         }
         private void LoadResQrInfo()
         {
@@ -825,7 +833,8 @@ namespace HIS.Desktop.Plugins.HisExecuteRoom.HisExecuteRoom
                 HisExecuteRoomFilter filter = new HisExecuteRoomFilter();
                 SetFilterNavBar(ref filter);
                 dnNavigation.DataSource = null;
-                gridviewFormList.BeginUpdate();
+                gridControlFormList.DataSource = null;
+                //gridviewFormList.BeginUpdate();
                 apiResult = new BackendAdapter(paramCommon).GetRO<List<MOS.EFMODEL.DataModels.V_HIS_EXECUTE_ROOM>>(HisRequestUriStore.MOSV_HIS_EXECUTE_ROOM_GET, ApiConsumers.MosConsumer, filter, paramCommon);
                 if (apiResult != null)
                 {
@@ -838,7 +847,8 @@ namespace HIS.Desktop.Plugins.HisExecuteRoom.HisExecuteRoom
                         dataTotal = (apiResult.Param == null ? 0 : apiResult.Param.Count ?? 0);
                     }
                 }
-                gridviewFormList.EndUpdate();
+                gridControlFormList.RefreshDataSource();
+                //gridviewFormList.EndUpdate();
 
                 #region Process has exception
                 SessionManager.ProcessTokenLost(paramCommon);
@@ -1029,6 +1039,8 @@ namespace HIS.Desktop.Plugins.HisExecuteRoom.HisExecuteRoom
                     {
                         cboWaitingScreen.Properties.Buttons[1].Visible = true;
                     }
+                    txtDirectorLoginName.Text = data.HOSP_SUBS_DIRECTOR_LOGINNAME;
+                    cboDirectorUserName.EditValue = data.HOSP_SUBS_DIRECTOR_LOGINNAME;
                 }
                 else
                 {
@@ -1042,7 +1054,7 @@ namespace HIS.Desktop.Plugins.HisExecuteRoom.HisExecuteRoom
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
-
+        
         private void ProcessSelectBusiness(string p, GridCheckMarksSelection gridCheckMark)
         {
             try
@@ -1206,12 +1218,15 @@ namespace HIS.Desktop.Plugins.HisExecuteRoom.HisExecuteRoom
                 }
                 WaitingManager.Show();
                 MOS.EFMODEL.DataModels.V_HIS_EXECUTE_ROOM updateDTO = new MOS.EFMODEL.DataModels.V_HIS_EXECUTE_ROOM();
+                //UpdateDTOFromDataForm(ref updateDTO);
                 MOS.SDO.HisExecuteRoomSDO executeRoomSDO = new MOS.SDO.HisExecuteRoomSDO();
                 MOS.SDO.HisExecuteRoomSDO executeRoomResultSDO = new MOS.SDO.HisExecuteRoomSDO();
 
                 executeRoomSDO.HisRoom = SetDataRoom();
 
                 executeRoomSDO.HisExecuteRoom = SetDataExecuteRoom();
+                executeRoomSDO.HisExecuteRoom.HOSP_SUBS_DIRECTOR_LOGINNAME = txtDirectorLoginName.Text;
+                executeRoomSDO.HisExecuteRoom.HOSP_SUBS_DIRECTOR_USERNAME = cboDirectorUserName.Text;
                 if (ActionType == GlobalVariables.ActionAdd)
                 {
                     executeRoomResultSDO = new BackendAdapter(param)
@@ -1288,6 +1303,8 @@ namespace HIS.Desktop.Plugins.HisExecuteRoom.HisExecuteRoom
                 currentDTO.EXECUTE_ROOM_NAME = txtExecuteRoomName.Text.Trim();
                 if (lkRoomId.EditValue != null) currentDTO.DEPARTMENT_ID = Inventec.Common.TypeConvert.Parse.ToInt64((lkRoomId.EditValue ?? "0").ToString());
                 currentDTO.ROOM_TYPE_ID = IMSys.DbConfig.HIS_RS.HIS_ROOM_TYPE.ID__XL;
+                currentDTO.HOSP_SUBS_DIRECTOR_LOGINNAME = txtDirectorLoginName.Text;
+                currentDTO.HOSP_SUBS_DIRECTOR_USERNAME = cboDirectorUserName.Text;
                 currentDTO.IS_EMERGENCY = (short)(chkIsEmergency.Checked ? 1 : 0);
                 currentDTO.IS_PAUSE_ENCLITIC = (short)(chkIsPauseEnclitic.Checked ? 1 : 0);
                 currentDTO.IS_SPECIALITY = (short)(chkIsSpeciality.Checked ? 1 : 0);
@@ -1345,7 +1362,6 @@ namespace HIS.Desktop.Plugins.HisExecuteRoom.HisExecuteRoom
                 {
                     currentDTO.KIDNEY_SHIFT_COUNT = (long)spinKidneyCount.Value;
                 }
-
             }
             catch (Exception ex)
             {
@@ -1370,8 +1386,7 @@ namespace HIS.Desktop.Plugins.HisExecuteRoom.HisExecuteRoom
                     {
                         try
                         {
-                            string createTime = (view.GetRowCellValue(e.ListSourceRowIndex, "CREATE_TIME") ?? "").ToString();
-                            e.Value = Inventec.Common.DateTime.Convert.TimeNumberToTimeString(Inventec.Common.TypeConvert.Parse.ToInt64(createTime));
+                            e.Value = Inventec.Common.DateTime.Convert.TimeNumberToTimeString(pData.CREATE_TIME ?? 0);
 
                         }
                         catch (Exception ex)
@@ -1383,8 +1398,7 @@ namespace HIS.Desktop.Plugins.HisExecuteRoom.HisExecuteRoom
                     {
                         try
                         {
-                            string MODIFY_TIME = (view.GetRowCellValue(e.ListSourceRowIndex, "MODIFY_TIME") ?? "").ToString();
-                            e.Value = Inventec.Common.DateTime.Convert.TimeNumberToTimeString(Inventec.Common.TypeConvert.Parse.ToInt64(MODIFY_TIME));
+                            e.Value = Inventec.Common.DateTime.Convert.TimeNumberToTimeString(pData.MODIFY_TIME ?? 0);
 
                         }
                         catch (Exception ex)
@@ -1451,7 +1465,32 @@ namespace HIS.Desktop.Plugins.HisExecuteRoom.HisExecuteRoom
                             Inventec.Common.Logging.LogSystem.Error(ex);
                         }
                     }
-
+                    else if (e.Column.FieldName == "SIGN_FOR_DIRECTOR")
+                    {
+                        try
+                        {
+                            if (pData.HOSP_SUBS_DIRECTOR_LOGINNAME != null && pData.HOSP_SUBS_DIRECTOR_USERNAME != null)
+                            {
+                                e.Value = pData.HOSP_SUBS_DIRECTOR_LOGINNAME + " - " + pData.HOSP_SUBS_DIRECTOR_USERNAME;
+                            }
+                            else if (pData.HOSP_SUBS_DIRECTOR_LOGINNAME != null)
+                            {
+                                e.Value = pData.HOSP_SUBS_DIRECTOR_LOGINNAME;
+                            }
+                            else if (pData.HOSP_SUBS_DIRECTOR_USERNAME != null)
+                            {
+                                e.Value = pData.HOSP_SUBS_DIRECTOR_USERNAME;
+                            }
+                            else
+                            {
+                                e.Value = null;
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            Inventec.Common.Logging.LogSystem.Error(ex);
+                        }
+                    }
 
                     //gridControlFormList.RefreshDataSource();
                 }
@@ -3064,6 +3103,11 @@ namespace HIS.Desktop.Plugins.HisExecuteRoom.HisExecuteRoom
                 //Focus default
                 SetDefaultFocus();
 
+                // load combobox ky thay bac sy
+                LoadComboDirector();
+
+                LoadDirectorData();
+
             }
             catch (Exception ex)
             {
@@ -3835,8 +3879,179 @@ namespace HIS.Desktop.Plugins.HisExecuteRoom.HisExecuteRoom
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
 
+        }    
+        private void txtDirectorLoginName_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
+        {
+            //try
+            //{
+            //    if (e.KeyCode == Keys.Enter)
+            //    {
+            //        bool showCbo = true;
+            //        if (!String.IsNullOrEmpty(txtDirectorLoginName.Text.Trim()))
+            //        {
+            //            string code = txtDirectorLoginName.Text.Trim().ToLower();
+            //            var listData = this.listDirectors.Where(o => o.LOGINNAME.ToLower().Contains(code)).ToList();
+            //            var result = listData != null ? (listData.Count > 1 ? listData.Where(o => o.LOGINNAME.ToLower() == code).ToList() : listData) : null;
+            //            if (result != null && result.Count > 0)
+            //            {
+            //                showCbo = false;
+            //                txtDirectorLoginName.Text = result.First().LOGINNAME;
+            //                cboDirectorUserName.EditValue = result.First().LOGINNAME;
+            //                cboDirectorUserName.Properties.Buttons[1].Visible = true;
+            //                chkIsEmergency.Focus();
+            //                chkIsEmergency.SelectAll();
+            //            }
+            //        }
+            //        if (showCbo)
+            //        {
+            //            cboDirectorUserName.Focus();
+            //            cboDirectorUserName.ShowPopup();
+            //        }
+            //    }
+            //}
+            //catch (Exception ex)
+            //{
+            //    Inventec.Common.Logging.LogSystem.Error(ex);
+            //}
+            try
+            {
+                if (e.KeyCode == Keys.Enter)
+                {
+                    bool showCbo = true;
+                    string code = txtDirectorLoginName.Text.Trim().ToLower();
+
+                    if (!string.IsNullOrEmpty(code) && listDirectors != null)
+                    {
+                        var listData = listDirectors.Where(o => o.LOGINNAME.ToLower().Contains(code)).ToList();
+                        var result = (listData.Count > 1)
+                            ? listData.Where(o => o.LOGINNAME.ToLower() == code).ToList()
+                            : listData;
+
+                        if (result.Count > 0)
+                        {
+                            showCbo = false;
+                            txtDirectorLoginName.Text = result.First().LOGINNAME;
+                            cboDirectorUserName.EditValue = result.First().LOGINNAME;
+                            if (cboDirectorUserName.Properties.Buttons.Count > 1)
+                            {
+                                cboDirectorUserName.Properties.Buttons[1].Visible = true;
+                            }
+
+                            chkIsEmergency.Focus();
+                            chkIsEmergency.SelectAll();
+                        }
+                    }
+
+                    if (showCbo)
+                    {
+                        cboDirectorUserName.Focus();
+                        cboDirectorUserName.ShowPopup();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+        public void LoadComboDirector()
+        {
+            try
+            {
+                var acsUser = BackendDataWorker.Get<ACS.EFMODEL.DataModels.ACS_USER>().Where(o => o.IS_ACTIVE == 1).ToList();
+                if(acsUser == null || acsUser.Count == 0)
+                {
+                    listDirectors = new List<ADO.DirectorADO>();
+                }
+                else
+                {
+                    listDirectors = acsUser.Select(item => new ADO.DirectorADO(item)).ToList();
+                }
+                //foreach(var item in acsUser)
+                //{
+                //    listDirectors.Add(new ADO.DirectorADO(item));
+                //}
+                Base.GlobalStore.LoadDataGridLookUpEdit(cboDirectorUserName, "LOGINNAME", "USERNAME", "LOGINNAME", listDirectors);
+            }
+            catch(Exception ex)
+            {
+                LogSystem.Error(ex);
+            }
         }
 
+        private void txtJsonQr_KeyDown(object sender, KeyEventArgs e)
+        {
+            try
+            {
+                if (e.KeyCode == Keys.Enter)
+                {
+                    cboDirectorUserName.Focus();
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+        private void cboDirectorUserName_ButtonClick(object sender, ButtonPressedEventArgs e)
+        {
+            try
+            {
+                if (e.Button.Kind == DevExpress.XtraEditors.Controls.ButtonPredefines.Delete)
+                {
+                    txtDirectorLoginName.Text = "";
+                    cboDirectorUserName.EditValue = null;
+                    cboDirectorUserName.Properties.Buttons[1].Visible = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void cboDirectorUserName_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
+        {
+            try
+            {
+                if (e.KeyCode == Keys.Enter)
+                {
+                    chkIsEmergency.Focus();
+                    chkIsEmergency.SelectAll();
+                }               
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void cboDirectorUserName_Closed(object sender, ClosedEventArgs e)
+        {
+            try
+            {
+                if (e.CloseMode == PopupCloseMode.Normal)
+                {
+                    if (cboDirectorUserName.EditValue != null)
+                    {
+                        var dataheads = BackendDataWorker.Get<ACS.EFMODEL.DataModels.ACS_USER>().Where(o => o.IS_ACTIVE == 1).ToList();
+                        var data = dataheads.FirstOrDefault(o => o.LOGINNAME == cboDirectorUserName.EditValue.ToString());
+                        if (data != null)
+                        {
+                            txtDirectorLoginName.Text = data.LOGINNAME;
+                            cboDirectorUserName.Properties.Buttons[1].Visible = true;
+                        }
+                        chkIsEmergency.Focus();
+                        chkIsEmergency.SelectAll();
+                    }
+
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
         //private void frmHisExecuteRoom_KeyDown(object sender, KeyEventArgs e)
         //{
         //    try
