@@ -49,10 +49,11 @@ namespace HIS.UC.UCPatientRaw
 		public HisPatientSDO patientTD3;
 		DataResultADO dataResult = new DataResultADO();
 		string hrmEmployeeCode = "";
-		string oldValue = "";
-		public async void SearchPatientByCodeOrQrCode(string strValue)
+        public string oldValue = "";
+		public string oldTypeFind = ResourceMessage.typeCodeFind__MaBN;
+        public async void SearchPatientByCodeOrQrCode(string strValue, string keyTypeFind = null)
         {
-            string OldTypeFind = this.typeCodeFind;
+            oldTypeFind = this.typeCodeFind;
             try
 			{
 				this.isAlertTreatmentEndInDay = false;
@@ -61,7 +62,9 @@ namespace HIS.UC.UCPatientRaw
 				this.hrmEmployeeCode = "";
 				this.dataResult = new DataResultADO();
 				oldValue = strValue;
-				if (!String.IsNullOrEmpty(strValue))
+				if (!string.IsNullOrEmpty(keyTypeFind))
+					typeCodeFind = keyTypeFind;
+                if (!String.IsNullOrEmpty(strValue))
 				{
 					LogSystem.Debug("txtPatientCode_KeyDown");
 					CommonParam param = new CommonParam();
@@ -733,7 +736,7 @@ namespace HIS.UC.UCPatientRaw
 			}
 			finally
 			{
-				typeCodeFind = OldTypeFind;
+				typeCodeFind = oldTypeFind;
 			}
 		}
         private void MapHeinCardToPatientSDO()

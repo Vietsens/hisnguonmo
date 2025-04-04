@@ -46,17 +46,13 @@ namespace HIS.Desktop.Utilities.RemoteSupport
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmRemoteSupportCreate));
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject13 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject14 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject15 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject16 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject5 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject6 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject7 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject8 = new DevExpress.Utils.SerializableAppearanceObject();
             this.layoutControl1 = new DevExpress.XtraLayout.LayoutControl();
-            this.gridControl1 = new DevExpress.XtraGrid.GridControl();
-            this.gridView1 = new DevExpress.XtraGrid.Views.Grid.GridView();
-            this.gridColumn1 = new DevExpress.XtraGrid.Columns.GridColumn();
-            this.gridColumn2 = new DevExpress.XtraGrid.Columns.GridColumn();
-            this.repDel = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
-            this.gridColumn3 = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.btnInstruct = new DevExpress.XtraEditors.SimpleButton();
+            this.chkAttackWImage = new DevExpress.XtraEditors.CheckEdit();
             this.barManager1 = new DevExpress.XtraBars.BarManager();
             this.bar2 = new DevExpress.XtraBars.Bar();
             this.bbtnSaveShortcut = new DevExpress.XtraBars.BarButtonItem();
@@ -64,6 +60,13 @@ namespace HIS.Desktop.Utilities.RemoteSupport
             this.barDockControlBottom = new DevExpress.XtraBars.BarDockControl();
             this.barDockControlLeft = new DevExpress.XtraBars.BarDockControl();
             this.barDockControlRight = new DevExpress.XtraBars.BarDockControl();
+            this.chkAttackLog = new DevExpress.XtraEditors.CheckEdit();
+            this.gridControl1 = new DevExpress.XtraGrid.GridControl();
+            this.gridView1 = new DevExpress.XtraGrid.Views.Grid.GridView();
+            this.gridColumn1 = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gridColumn2 = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.repDel = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
+            this.gridColumn3 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.btnAttachFile = new DevExpress.XtraEditors.SimpleButton();
             this.txtDescription = new DevExpress.XtraEditors.MemoEdit();
             this.txtContactInfo = new DevExpress.XtraEditors.TextEdit();
@@ -79,18 +82,19 @@ namespace HIS.Desktop.Utilities.RemoteSupport
             this.layoutControlItem3 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem9 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem10 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.layoutControlItem6 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.layoutControlItem4 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.layoutControlItem8 = new DevExpress.XtraLayout.LayoutControlItem();
             this.dxValidationProviderEditorInfo = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider();
             this.dxErrorProvider = new DevExpress.XtraEditors.DXErrorProvider.DXErrorProvider();
-            this.chkAttackLog = new DevExpress.XtraEditors.CheckEdit();
-            this.layoutControlItem4 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.chkAttackWImage = new DevExpress.XtraEditors.CheckEdit();
-            this.layoutControlItem6 = new DevExpress.XtraLayout.LayoutControlItem();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
             this.layoutControl1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.chkAttackWImage.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.barManager1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chkAttackLog.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridControl1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridView1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.repDel)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.barManager1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtDescription.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtContactInfo.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtTitle.Properties)).BeginInit();
@@ -103,16 +107,16 @@ namespace HIS.Desktop.Utilities.RemoteSupport
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem9)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem10)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem6)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem4)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem8)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxValidationProviderEditorInfo)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxErrorProvider)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.chkAttackLog.Properties)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem4)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.chkAttackWImage.Properties)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem6)).BeginInit();
             this.SuspendLayout();
             // 
             // layoutControl1
             // 
+            this.layoutControl1.Controls.Add(this.btnInstruct);
             this.layoutControl1.Controls.Add(this.chkAttackWImage);
             this.layoutControl1.Controls.Add(this.chkAttackLog);
             this.layoutControl1.Controls.Add(this.gridControl1);
@@ -130,73 +134,26 @@ namespace HIS.Desktop.Utilities.RemoteSupport
             this.layoutControl1.TabIndex = 0;
             this.layoutControl1.Text = "layoutControl1";
             // 
-            // gridControl1
+            // btnInstruct
             // 
-            this.gridControl1.Location = new System.Drawing.Point(137, 241);
-            this.gridControl1.MainView = this.gridView1;
-            this.gridControl1.MenuManager = this.barManager1;
-            this.gridControl1.Name = "gridControl1";
-            this.gridControl1.RepositoryItems.AddRange(new DevExpress.XtraEditors.Repository.RepositoryItem[] {
-            this.repDel});
-            this.gridControl1.Size = new System.Drawing.Size(427, 201);
-            this.gridControl1.TabIndex = 16;
-            this.gridControl1.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
-            this.gridView1});
+            this.btnInstruct.Location = new System.Drawing.Point(215, 470);
+            this.btnInstruct.Name = "btnInstruct";
+            this.btnInstruct.Size = new System.Drawing.Size(110, 22);
+            this.btnInstruct.StyleController = this.layoutControl1;
+            this.btnInstruct.TabIndex = 19;
+            this.btnInstruct.Text = "Hướng dẫn";
+            this.btnInstruct.Click += new System.EventHandler(this.btnInstruct_Click);
             // 
-            // gridView1
+            // chkAttackWImage
             // 
-            this.gridView1.Columns.AddRange(new DevExpress.XtraGrid.Columns.GridColumn[] {
-            this.gridColumn1,
-            this.gridColumn2,
-            this.gridColumn3});
-            this.gridView1.GridControl = this.gridControl1;
-            this.gridView1.Name = "gridView1";
-            this.gridView1.OptionsView.ShowGroupPanel = false;
-            this.gridView1.OptionsView.ShowIndicator = false;
-            this.gridView1.CustomUnboundColumnData += new DevExpress.XtraGrid.Views.Base.CustomColumnDataEventHandler(this.gridView1_CustomUnboundColumnData);
-            // 
-            // gridColumn1
-            // 
-            this.gridColumn1.Caption = "STT";
-            this.gridColumn1.FieldName = "STT";
-            this.gridColumn1.MaxWidth = 50;
-            this.gridColumn1.MinWidth = 50;
-            this.gridColumn1.Name = "gridColumn1";
-            this.gridColumn1.OptionsColumn.AllowEdit = false;
-            this.gridColumn1.UnboundType = DevExpress.Data.UnboundColumnType.Object;
-            this.gridColumn1.Visible = true;
-            this.gridColumn1.VisibleIndex = 0;
-            this.gridColumn1.Width = 50;
-            // 
-            // gridColumn2
-            // 
-            this.gridColumn2.Caption = "gridColumn2";
-            this.gridColumn2.ColumnEdit = this.repDel;
-            this.gridColumn2.MaxWidth = 30;
-            this.gridColumn2.MinWidth = 30;
-            this.gridColumn2.Name = "gridColumn2";
-            this.gridColumn2.OptionsColumn.ShowCaption = false;
-            this.gridColumn2.Visible = true;
-            this.gridColumn2.VisibleIndex = 1;
-            this.gridColumn2.Width = 30;
-            // 
-            // repDel
-            // 
-            this.repDel.AutoHeight = false;
-            this.repDel.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("repDel.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject13, serializableAppearanceObject14, serializableAppearanceObject15, serializableAppearanceObject16, "Xóa", null, null, true)});
-            this.repDel.Name = "repDel";
-            this.repDel.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
-            this.repDel.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.repDel_ButtonClick);
-            // 
-            // gridColumn3
-            // 
-            this.gridColumn3.Caption = "Tên";
-            this.gridColumn3.FieldName = "FileAttachName";
-            this.gridColumn3.Name = "gridColumn3";
-            this.gridColumn3.OptionsColumn.AllowEdit = false;
-            this.gridColumn3.Visible = true;
-            this.gridColumn3.VisibleIndex = 2;
+            this.chkAttackWImage.Location = new System.Drawing.Point(344, 446);
+            this.chkAttackWImage.MenuManager = this.barManager1;
+            this.chkAttackWImage.Name = "chkAttackWImage";
+            this.chkAttackWImage.Properties.Caption = "Đính kèm ảnh chụp màn hình";
+            this.chkAttackWImage.Size = new System.Drawing.Size(220, 19);
+            this.chkAttackWImage.StyleController = this.layoutControl1;
+            this.chkAttackWImage.TabIndex = 18;
+            this.chkAttackWImage.CheckedChanged += new System.EventHandler(this.chkAttackWImage_CheckedChanged);
             // 
             // barManager1
             // 
@@ -261,9 +218,88 @@ namespace HIS.Desktop.Utilities.RemoteSupport
             this.barDockControlRight.Location = new System.Drawing.Point(576, 22);
             this.barDockControlRight.Size = new System.Drawing.Size(0, 504);
             // 
+            // chkAttackLog
+            // 
+            this.chkAttackLog.Location = new System.Drawing.Point(137, 446);
+            this.chkAttackLog.MenuManager = this.barManager1;
+            this.chkAttackLog.Name = "chkAttackLog";
+            this.chkAttackLog.Properties.Caption = "Đính kèm log";
+            this.chkAttackLog.Size = new System.Drawing.Size(203, 19);
+            this.chkAttackLog.StyleController = this.layoutControl1;
+            this.chkAttackLog.TabIndex = 17;
+            this.chkAttackLog.CheckedChanged += new System.EventHandler(this.chkAttackLog_CheckedChanged);
+            // 
+            // gridControl1
+            // 
+            this.gridControl1.Location = new System.Drawing.Point(137, 241);
+            this.gridControl1.MainView = this.gridView1;
+            this.gridControl1.MenuManager = this.barManager1;
+            this.gridControl1.Name = "gridControl1";
+            this.gridControl1.RepositoryItems.AddRange(new DevExpress.XtraEditors.Repository.RepositoryItem[] {
+            this.repDel});
+            this.gridControl1.Size = new System.Drawing.Size(427, 201);
+            this.gridControl1.TabIndex = 16;
+            this.gridControl1.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
+            this.gridView1});
+            // 
+            // gridView1
+            // 
+            this.gridView1.Columns.AddRange(new DevExpress.XtraGrid.Columns.GridColumn[] {
+            this.gridColumn1,
+            this.gridColumn2,
+            this.gridColumn3});
+            this.gridView1.GridControl = this.gridControl1;
+            this.gridView1.Name = "gridView1";
+            this.gridView1.OptionsView.ShowGroupPanel = false;
+            this.gridView1.OptionsView.ShowIndicator = false;
+            this.gridView1.CustomUnboundColumnData += new DevExpress.XtraGrid.Views.Base.CustomColumnDataEventHandler(this.gridView1_CustomUnboundColumnData);
+            // 
+            // gridColumn1
+            // 
+            this.gridColumn1.Caption = "STT";
+            this.gridColumn1.FieldName = "STT";
+            this.gridColumn1.MaxWidth = 50;
+            this.gridColumn1.MinWidth = 50;
+            this.gridColumn1.Name = "gridColumn1";
+            this.gridColumn1.OptionsColumn.AllowEdit = false;
+            this.gridColumn1.UnboundType = DevExpress.Data.UnboundColumnType.Object;
+            this.gridColumn1.Visible = true;
+            this.gridColumn1.VisibleIndex = 0;
+            this.gridColumn1.Width = 50;
+            // 
+            // gridColumn2
+            // 
+            this.gridColumn2.Caption = "gridColumn2";
+            this.gridColumn2.ColumnEdit = this.repDel;
+            this.gridColumn2.MaxWidth = 30;
+            this.gridColumn2.MinWidth = 30;
+            this.gridColumn2.Name = "gridColumn2";
+            this.gridColumn2.OptionsColumn.ShowCaption = false;
+            this.gridColumn2.Visible = true;
+            this.gridColumn2.VisibleIndex = 1;
+            this.gridColumn2.Width = 30;
+            // 
+            // repDel
+            // 
+            this.repDel.AutoHeight = false;
+            this.repDel.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("repDel.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject5, serializableAppearanceObject6, serializableAppearanceObject7, serializableAppearanceObject8, "Xóa", null, null, true)});
+            this.repDel.Name = "repDel";
+            this.repDel.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
+            this.repDel.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.repDel_ButtonClick);
+            // 
+            // gridColumn3
+            // 
+            this.gridColumn3.Caption = "Tên";
+            this.gridColumn3.FieldName = "FileAttachName";
+            this.gridColumn3.Name = "gridColumn3";
+            this.gridColumn3.OptionsColumn.AllowEdit = false;
+            this.gridColumn3.Visible = true;
+            this.gridColumn3.VisibleIndex = 2;
+            // 
             // btnAttachFile
             // 
-            this.btnAttachFile.Location = new System.Drawing.Point(334, 470);
+            this.btnAttachFile.Location = new System.Drawing.Point(329, 470);
             this.btnAttachFile.Name = "btnAttachFile";
             this.btnAttachFile.Size = new System.Drawing.Size(115, 22);
             this.btnAttachFile.StyleController = this.layoutControl1;
@@ -301,9 +337,9 @@ namespace HIS.Desktop.Utilities.RemoteSupport
             // 
             // btnSave
             // 
-            this.btnSave.Location = new System.Drawing.Point(453, 470);
+            this.btnSave.Location = new System.Drawing.Point(448, 470);
             this.btnSave.Name = "btnSave";
-            this.btnSave.Size = new System.Drawing.Size(111, 22);
+            this.btnSave.Size = new System.Drawing.Size(116, 22);
             this.btnSave.StyleController = this.layoutControl1;
             this.btnSave.TabIndex = 6;
             this.btnSave.Text = "Lưu(Ctrl S)";
@@ -331,7 +367,8 @@ namespace HIS.Desktop.Utilities.RemoteSupport
             this.layoutControlItem9,
             this.layoutControlItem10,
             this.layoutControlItem6,
-            this.layoutControlItem4});
+            this.layoutControlItem4,
+            this.layoutControlItem8});
             this.layoutControlGroup1.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup1.Name = "layoutControlGroup1";
             this.layoutControlGroup1.Size = new System.Drawing.Size(576, 504);
@@ -357,7 +394,7 @@ namespace HIS.Desktop.Utilities.RemoteSupport
             this.emptySpaceItem1.AllowHotTrack = false;
             this.emptySpaceItem1.Location = new System.Drawing.Point(0, 458);
             this.emptySpaceItem1.Name = "emptySpaceItem1";
-            this.emptySpaceItem1.Size = new System.Drawing.Size(322, 26);
+            this.emptySpaceItem1.Size = new System.Drawing.Size(203, 26);
             this.emptySpaceItem1.TextSize = new System.Drawing.Size(0, 0);
             // 
             // layoutControlItem5
@@ -404,16 +441,16 @@ namespace HIS.Desktop.Utilities.RemoteSupport
             // layoutControlItem3
             // 
             this.layoutControlItem3.Control = this.btnSave;
-            this.layoutControlItem3.Location = new System.Drawing.Point(441, 458);
+            this.layoutControlItem3.Location = new System.Drawing.Point(436, 458);
             this.layoutControlItem3.Name = "layoutControlItem3";
-            this.layoutControlItem3.Size = new System.Drawing.Size(115, 26);
+            this.layoutControlItem3.Size = new System.Drawing.Size(120, 26);
             this.layoutControlItem3.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem3.TextVisible = false;
             // 
             // layoutControlItem9
             // 
             this.layoutControlItem9.Control = this.btnAttachFile;
-            this.layoutControlItem9.Location = new System.Drawing.Point(322, 458);
+            this.layoutControlItem9.Location = new System.Drawing.Point(317, 458);
             this.layoutControlItem9.Name = "layoutControlItem9";
             this.layoutControlItem9.Size = new System.Drawing.Size(119, 26);
             this.layoutControlItem9.TextSize = new System.Drawing.Size(0, 0);
@@ -432,24 +469,14 @@ namespace HIS.Desktop.Utilities.RemoteSupport
             this.layoutControlItem10.TextSize = new System.Drawing.Size(120, 20);
             this.layoutControlItem10.TextToControlDistance = 5;
             // 
-            // dxValidationProviderEditorInfo
+            // layoutControlItem6
             // 
-            this.dxValidationProviderEditorInfo.ValidationFailed += new DevExpress.XtraEditors.DXErrorProvider.ValidationFailedEventHandler(this.dxValidationProviderEditorInfo_ValidationFailed);
-            // 
-            // dxErrorProvider
-            // 
-            this.dxErrorProvider.ContainerControl = this;
-            // 
-            // chkAttackLog
-            // 
-            this.chkAttackLog.Location = new System.Drawing.Point(137, 446);
-            this.chkAttackLog.MenuManager = this.barManager1;
-            this.chkAttackLog.Name = "chkAttackLog";
-            this.chkAttackLog.Properties.Caption = "Đính kèm log";
-            this.chkAttackLog.Size = new System.Drawing.Size(203, 19);
-            this.chkAttackLog.StyleController = this.layoutControl1;
-            this.chkAttackLog.TabIndex = 17;
-            this.chkAttackLog.CheckedChanged += new System.EventHandler(this.chkAttackLog_CheckedChanged);
+            this.layoutControlItem6.Control = this.chkAttackWImage;
+            this.layoutControlItem6.Location = new System.Drawing.Point(332, 434);
+            this.layoutControlItem6.Name = "layoutControlItem6";
+            this.layoutControlItem6.Size = new System.Drawing.Size(224, 24);
+            this.layoutControlItem6.TextSize = new System.Drawing.Size(0, 0);
+            this.layoutControlItem6.TextVisible = false;
             // 
             // layoutControlItem4
             // 
@@ -462,25 +489,22 @@ namespace HIS.Desktop.Utilities.RemoteSupport
             this.layoutControlItem4.TextSize = new System.Drawing.Size(120, 20);
             this.layoutControlItem4.TextToControlDistance = 5;
             // 
-            // chkAttackWImage
+            // layoutControlItem8
             // 
-            this.chkAttackWImage.Location = new System.Drawing.Point(344, 446);
-            this.chkAttackWImage.MenuManager = this.barManager1;
-            this.chkAttackWImage.Name = "chkAttackWImage";
-            this.chkAttackWImage.Properties.Caption = "Đính kèm ảnh chụp màn hình";
-            this.chkAttackWImage.Size = new System.Drawing.Size(220, 19);
-            this.chkAttackWImage.StyleController = this.layoutControl1;
-            this.chkAttackWImage.TabIndex = 18;
-            this.chkAttackWImage.CheckedChanged += new System.EventHandler(this.chkAttackWImage_CheckedChanged);
+            this.layoutControlItem8.Control = this.btnInstruct;
+            this.layoutControlItem8.Location = new System.Drawing.Point(203, 458);
+            this.layoutControlItem8.Name = "layoutControlItem8";
+            this.layoutControlItem8.Size = new System.Drawing.Size(114, 26);
+            this.layoutControlItem8.TextSize = new System.Drawing.Size(0, 0);
+            this.layoutControlItem8.TextVisible = false;
             // 
-            // layoutControlItem6
+            // dxValidationProviderEditorInfo
             // 
-            this.layoutControlItem6.Control = this.chkAttackWImage;
-            this.layoutControlItem6.Location = new System.Drawing.Point(332, 434);
-            this.layoutControlItem6.Name = "layoutControlItem6";
-            this.layoutControlItem6.Size = new System.Drawing.Size(224, 24);
-            this.layoutControlItem6.TextSize = new System.Drawing.Size(0, 0);
-            this.layoutControlItem6.TextVisible = false;
+            this.dxValidationProviderEditorInfo.ValidationFailed += new DevExpress.XtraEditors.DXErrorProvider.ValidationFailedEventHandler(this.dxValidationProviderEditorInfo_ValidationFailed);
+            // 
+            // dxErrorProvider
+            // 
+            this.dxErrorProvider.ContainerControl = this;
             // 
             // frmRemoteSupportCreate
             // 
@@ -498,10 +522,12 @@ namespace HIS.Desktop.Utilities.RemoteSupport
             this.Load += new System.EventHandler(this.frmRemoteSupportCreate_Load);
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).EndInit();
             this.layoutControl1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.chkAttackWImage.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.barManager1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chkAttackLog.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridControl1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridView1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.repDel)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.barManager1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtDescription.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtContactInfo.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtTitle.Properties)).EndInit();
@@ -514,12 +540,11 @@ namespace HIS.Desktop.Utilities.RemoteSupport
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem3)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem9)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem10)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem6)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem4)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem8)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxValidationProviderEditorInfo)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxErrorProvider)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.chkAttackLog.Properties)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem4)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.chkAttackWImage.Properties)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem6)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -562,5 +587,7 @@ namespace HIS.Desktop.Utilities.RemoteSupport
         private DevExpress.XtraEditors.CheckEdit chkAttackLog;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem6;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem4;
+        private DevExpress.XtraEditors.SimpleButton btnInstruct;
+        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem8;
     }
 }

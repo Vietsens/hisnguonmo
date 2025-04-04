@@ -45,6 +45,7 @@ namespace HIS.Desktop.Plugins.DrugStoreDebt
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.layoutControl1 = new DevExpress.XtraLayout.LayoutControl();
             this.btnPrint = new DevExpress.XtraEditors.SimpleButton();
             this.cboCashierRoom = new DevExpress.XtraEditors.GridLookUpEdit();
@@ -112,9 +113,9 @@ namespace HIS.Desktop.Plugins.DrugStoreDebt
             this.lciCashierRoom = new DevExpress.XtraLayout.LayoutControlItem();
             this.lciDebtAmount = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem1 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.dxValidationProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider();
-            this.dxErrorProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXErrorProvider();
-            this.barManager1 = new DevExpress.XtraBars.BarManager();
+            this.dxValidationProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider(this.components);
+            this.dxErrorProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXErrorProvider(this.components);
+            this.barManager1 = new DevExpress.XtraBars.BarManager(this.components);
             this.bar1 = new DevExpress.XtraBars.Bar();
             this.barBtnItemSaveAndPrint = new DevExpress.XtraBars.BarButtonItem();
             this.barBtnItemSave = new DevExpress.XtraBars.BarButtonItem();
@@ -398,7 +399,7 @@ namespace HIS.Desktop.Plugins.DrugStoreDebt
             this.gridCol_MediMateName.OptionsFilter.FilterBySortField = DevExpress.Utils.DefaultBoolean.True;
             this.gridCol_MediMateName.Visible = true;
             this.gridCol_MediMateName.VisibleIndex = 1;
-            this.gridCol_MediMateName.Width = 450;
+            this.gridCol_MediMateName.Width = 463;
             // 
             // gridCol_Amount
             // 
@@ -985,10 +986,6 @@ namespace HIS.Desktop.Plugins.DrugStoreDebt
             // 
             this.barManager1.Bars.AddRange(new DevExpress.XtraBars.Bar[] {
             this.bar1});
-            this.barManager1.DockControls.Add(this.barDockControlTop);
-            this.barManager1.DockControls.Add(this.barDockControlBottom);
-            this.barManager1.DockControls.Add(this.barDockControlLeft);
-            this.barManager1.DockControls.Add(this.barDockControlRight);
             this.barManager1.Form = this;
             this.barManager1.Items.AddRange(new DevExpress.XtraBars.BarItem[] {
             this.barBtnItemSaveAndPrint,
@@ -1047,8 +1044,8 @@ namespace HIS.Desktop.Plugins.DrugStoreDebt
             // 
             this.barDockControlTop.CausesValidation = false;
             this.barDockControlTop.Dock = System.Windows.Forms.DockStyle.Top;
-            this.barDockControlTop.Location = new System.Drawing.Point(0, 0);
-            this.barDockControlTop.Size = new System.Drawing.Size(990, 29);
+            this.barDockControlTop.Location = new System.Drawing.Point(0, 29);
+            this.barDockControlTop.Size = new System.Drawing.Size(990, 0);
             // 
             // barDockControlBottom
             // 

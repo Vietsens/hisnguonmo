@@ -208,9 +208,7 @@
   <ItemGroup>
     <Compile Include="Validation\DateFromValidationRule.cs" />
     <Compile Include="EmrViewerReqProcesser.cs" />
-    <Compile Include="frmEmrViewerReq.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="frmEmrViewerReq.cs" />
     <Compile Include="frmEmrViewerReq.Designer.cs">
       <DependentUpon>frmEmrViewerReq.cs</DependentUpon>
     </Compile>

@@ -369,12 +369,15 @@
       <Project>{f22facd5-3da1-4f80-bb8e-dc83a0ab5cdb}</Project>
       <Name>HIS.Desktop.Plugins.HisTutorial</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Plugins\HIS.Desktop.Plugins.Library.DrugInterventionInfo\HIS.Desktop.Plugins.Library.DrugInterventionInfo.csproj">
+      <Project>{c3460a29-8deb-42ac-8475-d5fe525848e5}</Project>
+      <Name>HIS.Desktop.Plugins.Library.DrugInterventionInfo</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="FormBase.resx">
       <DependentUpon>FormBase.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Properties\licenses.licx" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>

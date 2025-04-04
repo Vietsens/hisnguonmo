@@ -465,12 +465,12 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
             try
             {
                 WaitingManager.Show();
+                this.SetCaptionByLanguageKey();
                 this.LoadHisTreatment();
                 InitMultipleThread();
                 this.LoadExpMestReason();
                 InitControlState();
                 this.isNotLoadWhileChangeInstructionTimeInFirst = true;
-                this.SetCaptionByLanguageKey();
                 this.LoadDataToLocal();
                 LogSystem.Debug("Starting...");
                 this.gridControlServiceProcess.ToolTipController = this.tooltipService;

@@ -100,6 +100,9 @@ namespace HIS.Desktop.Plugins.ImpMestViewDetail.ImpMestViewDetail
                         DXMenuItem itemPhieuNhapMauTuNCC = new DXMenuItem("Phiếu nhập máu từ nhà cung cấp", new EventHandler(OnClickInPhieuNhap));
                         itemPhieuNhapMauTuNCC.Tag = PrintType.PHIEU_NHAP_MAU_TU_NCC;
                         menu.Items.Add(itemPhieuNhapMauTuNCC);
+                        DXMenuItem itemBienBankiemNhapNCC = new DXMenuItem("Biên bản kiểm nhập từ nhà cung cấp", new EventHandler(OnClickInPhieuNhap));
+                        itemBienBankiemNhapNCC.Tag = PrintType.BIEN_BAN_KIEM_NHAP_TU_NCC;
+                        menu.Items.Add(itemBienBankiemNhapNCC);
                     }
                 }
                 else if (this.IMP_MEST_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_IMP_MEST_TYPE.ID__DNTTL || this.IMP_MEST_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_IMP_MEST_TYPE.ID__DTTTL || this.IMP_MEST_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_IMP_MEST_TYPE.ID__DONKTL)
@@ -1148,6 +1151,10 @@ namespace HIS.Desktop.Plugins.ImpMestViewDetail.ImpMestViewDetail
                 userFilter.IMP_MEST_ID = this.ImpMestId;
                 var rs = new BackendAdapter(param).Get<List<V_HIS_IMP_MEST_USER>>("/api/HisImpMestUser/GetView", ApiConsumers.MosConsumer, userFilter, param);
                 rs = rs.OrderBy(p => p.ID).ToList();
+                MOS.Filter.HisImpMestBloodFilter bloodFilter = new MOS.Filter.HisImpMestBloodFilter();
+                bloodFilter.IMP_MEST_ID = this.ImpMestId;
+                var bloodData = new BackendAdapter(param).Get<List<V_HIS_IMP_MEST_BLOOD>>("/api/HisImpMestBlood/GetView", ApiConsumers.MosConsumer, bloodFilter, param);
+                bloodData = bloodData.OrderBy(o => o.ID).ToList();
                 MOS.EFMODEL.DataModels.HIS_SUPPLIER supplier = new HIS_SUPPLIER();
 
                 if (this.impMest != null && this.impMest.SUPPLIER_ID != null)
@@ -1209,7 +1216,7 @@ namespace HIS.Desktop.Plugins.ImpMestViewDetail.ImpMestViewDetail
                     MedicalContractFilter.IDs = MedicalContractIds;
                     MedicalContract = new BackendAdapter(new CommonParam()).Get<List<V_HIS_MEDICAL_CONTRACT>>("api/HisMedicalContract/GetView", ApiConsumers.MosConsumer, MedicalContractFilter, new CommonParam());
                 }
-
+                
                 List<MPS.Processor.Mps000085.PDO.MedicalContractADO> MedicalContractADO = new List<MPS.Processor.Mps000085.PDO.MedicalContractADO>();
 
                 if (MedicalContract != null && MedicalContract.Count > 0)
@@ -1255,7 +1262,8 @@ namespace HIS.Desktop.Plugins.ImpMestViewDetail.ImpMestViewDetail
                  medicines,
                  materials,
                  supplier,
-                 MedicalContractADO
+                 MedicalContractADO,
+                 bloodData
                   );
                 WaitingManager.Hide();
 

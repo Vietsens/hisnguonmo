@@ -28,7 +28,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK
        "Chỉ định thuốc - vật tư",
        "Common",
        14,
-       "y-lenh.png",
+       "y-lenh.png", 
        "A",
        Module.MODULE_TYPE_ID__FORM,
        true,

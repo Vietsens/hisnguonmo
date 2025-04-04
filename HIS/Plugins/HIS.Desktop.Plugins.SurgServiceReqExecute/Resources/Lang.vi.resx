@@ -177,6 +177,12 @@
   <data name="FormPtttMethod.barBtnSearch.Caption" xml:space="preserve">
     <value>Ctrl F</value>
   </data>
+  <data name="FormPtttMethod.bbtnAdd.Caption" xml:space="preserve">
+    <value>Ctrl N</value>
+  </data>
+  <data name="FormPtttMethod.btnAdd.Text" xml:space="preserve">
+    <value>Thêm (Ctrl N)</value>
+  </data>
   <data name="FormPtttMethod.btnChoose.Text" xml:space="preserve">
     <value>Chọn</value>
   </data>
@@ -297,8 +303,29 @@
   <data name="frmEkipTemp.Text" xml:space="preserve">
     <value>Kíp thực hiện mẫu</value>
   </data>
+  <data name="frmInputDetail.btnBallon.Text" xml:space="preserve">
+    <value>...</value>
+  </data>
+  <data name="frmInputDetail.btnContrastAgent.Text" xml:space="preserve">
+    <value>...</value>
+  </data>
   <data name="frmInputDetail.btnDelete.Text" xml:space="preserve">
     <value>Xóa</value>
+  </data>
+  <data name="frmInputDetail.btnGuidingCatheter.Text" xml:space="preserve">
+    <value>...</value>
+  </data>
+  <data name="frmInputDetail.btnGuiteWire.Text" xml:space="preserve">
+    <value>...</value>
+  </data>
+  <data name="frmInputDetail.btnIntroducer.Text" xml:space="preserve">
+    <value>...</value>
+  </data>
+  <data name="frmInputDetail.btnReset.Text" xml:space="preserve">
+    <value>Làm lại</value>
+  </data>
+  <data name="frmInputDetail.btnStent.Text" xml:space="preserve">
+    <value>...</value>
   </data>
   <data name="frmInputDetail.checkEdit1.Properties.Caption" xml:space="preserve">
     <value>Cắt bè</value>
@@ -759,6 +786,9 @@
   <data name="frmInputDetail.chkShapingSkinOther.Properties.Caption" xml:space="preserve">
     <value>Khác</value>
   </data>
+  <data name="frmInputDetail.emptySpaceItem31.Text" xml:space="preserve">
+    <value>mm</value>
+  </data>
   <data name="frmInputDetail.Glocom__raCoDinhNhanCauChiGiacMac.Properties.Caption" xml:space="preserve">
     <value>Chỉ giác mạc</value>
   </data>
@@ -824,6 +854,24 @@
   </data>
   <data name="frmInputDetail.Glocom__raTinhTrangBaoTenonSo.Properties.Caption" xml:space="preserve">
     <value>Sơ</value>
+  </data>
+  <data name="frmInputDetail.gridColumn1.Caption" xml:space="preserve">
+    <value>Tên thủ thuật</value>
+  </data>
+  <data name="frmInputDetail.gridColumn2.Caption" xml:space="preserve">
+    <value>Tên thiết bị/cỡ</value>
+  </data>
+  <data name="frmInputDetail.gridColumn3.Caption" xml:space="preserve">
+    <value>Số lần bơm bóng/Áp lực/TG</value>
+  </data>
+  <data name="frmInputDetail.gridColumn4.Caption" xml:space="preserve">
+    <value>Kết quả trước (% dk.HEP)</value>
+  </data>
+  <data name="frmInputDetail.gridColumn5.Caption" xml:space="preserve">
+    <value>Kết quả sau (% dk.HEP)</value>
+  </data>
+  <data name="frmInputDetail.gridColumn6.Caption" xml:space="preserve">
+    <value>gridColumn6</value>
   </data>
   <data name="frmInputDetail.labelControl1.Text" xml:space="preserve">
     <value>ml</value>
@@ -1296,11 +1344,53 @@
   <data name="frmInputDetail.layoutControlItem295.Text" xml:space="preserve">
     <value>Ngày CC:</value>
   </data>
+  <data name="frmInputDetail.layoutControlItem296.Text" xml:space="preserve">
+    <value>1. Thông tin thủ thuật</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem297.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Nong động mạch vành</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem297.Text" xml:space="preserve">
+    <value>Nong ĐMV:</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem298.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Đặt giá đỡ động mạch vành</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem298.Text" xml:space="preserve">
+    <value>Đặt giá đỡ ĐMV:</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem299.Text" xml:space="preserve">
+    <value>Vị trí can thiệp:</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem300.Text" xml:space="preserve">
+    <value>Lý do can thiệp:</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem303.Text" xml:space="preserve">
+    <value>2. Dụng cụ dùng</value>
+  </data>
   <data name="frmInputDetail.layoutControlItem306.Text" xml:space="preserve">
     <value>+ Chẩn đoán trước PT:</value>
   </data>
+  <data name="frmInputDetail.layoutControlItem308.Text" xml:space="preserve">
+    <value>Introducer:</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem310.Text" xml:space="preserve">
+    <value>Guiding catheter:</value>
+  </data>
   <data name="frmInputDetail.layoutControlItem311.Text" xml:space="preserve">
     <value>+ Phương pháp phẫu thuật:</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem312.Text" xml:space="preserve">
+    <value>Guite wire:</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem313.Text" xml:space="preserve">
+    <value>Bóng (ballon):</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem315.Text" xml:space="preserve">
+    <value>Stent:</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem316.Text" xml:space="preserve">
+    <value>Thuốc cản quang:</value>
   </data>
   <data name="frmInputDetail.layoutControlItem317.Text" xml:space="preserve">
     <value>+ Phương pháp vô cảm:</value>
@@ -1355,6 +1445,18 @@
   </data>
   <data name="frmInputDetail.layoutControlItem343.Text" xml:space="preserve">
     <value>6. </value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem347.Text" xml:space="preserve">
+    <value>3. Kết luận</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem348.Text" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem349.Text" xml:space="preserve">
+    <value>Khác:</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem350.Text" xml:space="preserve">
+    <value>Ghi chú:</value>
   </data>
   <data name="frmInputDetail.layoutControlItem354.Text" xml:space="preserve">
     <value>+ Tái tạo mi góc trong 3 lớp:</value>
@@ -1491,6 +1593,15 @@
   <data name="frmInputDetail.layoutControlItem96.Text" xml:space="preserve">
     <value>Băng:</value>
   </data>
+  <data name="frmInputDetail.lcDaLieu.Text" xml:space="preserve">
+    <value>layoutControl25</value>
+  </data>
+  <data name="frmInputDetail.lcDieuTriCanThiepDMV.Text" xml:space="preserve">
+    <value>layoutControl3</value>
+  </data>
+  <data name="frmInputDetail.lcGlocom.Text" xml:space="preserve">
+    <value>layoutControl7</value>
+  </data>
   <data name="frmInputDetail.lciCloseSkin.Text" xml:space="preserve">
     <value>Đóng da:</value>
   </data>
@@ -1514,6 +1625,24 @@
   </data>
   <data name="frmInputDetail.lciTreatSkinOther.Text" xml:space="preserve">
     <value>Khác:</value>
+  </data>
+  <data name="frmInputDetail.lcPtDucTTT.Text" xml:space="preserve">
+    <value>layoutControl1</value>
+  </data>
+  <data name="frmInputDetail.lcPtMong.Text" xml:space="preserve">
+    <value>layoutControl10</value>
+  </data>
+  <data name="frmInputDetail.lcPtSupMi.Text" xml:space="preserve">
+    <value>layoutControl13</value>
+  </data>
+  <data name="frmInputDetail.lcTaiTaoLeQuan.Text" xml:space="preserve">
+    <value>layoutControl16</value>
+  </data>
+  <data name="frmInputDetail.lcTTMongMat.Text" xml:space="preserve">
+    <value>layoutControl19</value>
+  </data>
+  <data name="frmInputDetail.lcTTTLaser.Text" xml:space="preserve">
+    <value>layoutControl22</value>
   </data>
   <data name="frmInputDetail.raCatBao.Properties.Caption" xml:space="preserve">
     <value>Cắt bao</value>
@@ -1752,8 +1881,77 @@
   <data name="frmInputDetail.xtraTabOther.Text" xml:space="preserve">
     <value>Khác</value>
   </data>
+  <data name="frmInputDetail.xtraTabPage1.Text" xml:space="preserve">
+    <value>Điều trị can thiệp ĐMV</value>
+  </data>
   <data name="frmInputDetail.xtraTabSkin.Text" xml:space="preserve">
     <value>Da liễu</value>
+  </data>
+  <data name="frmMediMate.btnSave.Text" xml:space="preserve">
+    <value>Chọn</value>
+  </data>
+  <data name="frmMediMate.gridColumn1.Caption" xml:space="preserve">
+    <value>Mã</value>
+  </data>
+  <data name="frmMediMate.gridColumn2.Caption" xml:space="preserve">
+    <value>Tên thuốc/vật tư</value>
+  </data>
+  <data name="frmMediMate.gridColumn3.Caption" xml:space="preserve">
+    <value>Số lượng</value>
+  </data>
+  <data name="frmMediMate.gridColumn4.Caption" xml:space="preserve">
+    <value>Đơn vị tính</value>
+  </data>
+  <data name="frmMediMate.layoutControl1.Text" xml:space="preserve">
+    <value>layoutControl1</value>
+  </data>
+  <data name="frmMediMate.Text" xml:space="preserve">
+    <value>Chọn thuốc/vật tư</value>
+  </data>
+  <data name="frmMediMate.txtFind.Properties.NullValuePrompt" xml:space="preserve">
+    <value>Từ khóa tìm kiếm</value>
+  </data>
+  <data name="frmMultiIntructonTime.btnChoose.Text" xml:space="preserve">
+    <value>Chọn</value>
+  </data>
+  <data name="frmMultiIntructonTime.layoutControl1.Text" xml:space="preserve">
+    <value>layoutControl1</value>
+  </data>
+  <data name="frmMultiIntructonTime.lblCalendaInput.Text" xml:space="preserve">
+    <value>Ngày y lệnh:</value>
+  </data>
+  <data name="frmMultiIntructonTime.lblTimeInput.Text" xml:space="preserve">
+    <value>Giờ y lệnh:</value>
+  </data>
+  <data name="frmMultiIntructonTime.Text" xml:space="preserve">
+    <value>Chọn nhiều ngày y lệnh</value>
+  </data>
+  <data name="frmSurgAssignAndCopy.btnDY.Text" xml:space="preserve">
+    <value>Đồng ý</value>
+  </data>
+  <data name="frmSurgAssignAndCopy.btnSelect.Text" xml:space="preserve">
+    <value>Chọn</value>
+  </data>
+  <data name="frmSurgAssignAndCopy.layoutControl1.Text" xml:space="preserve">
+    <value>layoutControl1</value>
+  </data>
+  <data name="frmSurgAssignAndCopy.layoutControlItem1.Text" xml:space="preserve">
+    <value>Ngày y lệnh:</value>
+  </data>
+  <data name="frmSurgAssignAndCopy.layoutControlItem2.Text" xml:space="preserve">
+    <value>Giờ y lệnh:</value>
+  </data>
+  <data name="frmSurgAssignAndCopy.layoutControlItem3.Text" xml:space="preserve">
+    <value>Ngày dự trù:</value>
+  </data>
+  <data name="frmSurgAssignAndCopy.layoutControlRoot.Text" xml:space="preserve">
+    <value>layoutControl1</value>
+  </data>
+  <data name="frmSurgAssignAndCopy.lciCalendarInstructionDate.Text" xml:space="preserve">
+    <value>Ngày y lệnh:</value>
+  </data>
+  <data name="frmSurgAssignAndCopy.Text" xml:space="preserve">
+    <value>Thời gian chỉ định</value>
   </data>
   <data name="Plugin_SurgServiceReqExecute__ThoiGianBatDauThoiGianKetThuc" xml:space="preserve">
     <value>Đặt thời gian bắt đầu và thời gian kết thúc không đúng</value>
@@ -1852,7 +2050,8 @@
     <value>Chỉ định khác kíp</value>
   </data>
   <data name="SurgServiceReqExecuteControl.btnAssignPre.Text" xml:space="preserve">
-    <value>Kê đơn dược</value>
+    <value>Kê đơn
+dược</value>
   </data>
   <data name="SurgServiceReqExecuteControl.btnChonMauPTCHuyenKhoaMat.Text" xml:space="preserve">
     <value>Thông tin bổ sung</value>
@@ -1870,19 +2069,29 @@
     <value>simpleButton1</value>
   </data>
   <data name="SurgServiceReqExecuteControl.btnDepartmentTran.Text" xml:space="preserve">
-    <value>Chuyển khoa</value>
+    <value>Chuyển
+khoa</value>
   </data>
   <data name="SurgServiceReqExecuteControl.btnFinish.Text" xml:space="preserve">
-    <value>Kết thúc xử lý (Ctrl E)</value>
+    <value>Kết thúc 
+xử lý (Ctrl E)</value>
   </data>
   <data name="SurgServiceReqExecuteControl.btnImagePublic.ToolTip" xml:space="preserve">
     <value>Chọn mẫu lược đồ phẫu thuật thủ thuật</value>
   </data>
   <data name="SurgServiceReqExecuteControl.btnKTDT.Text" xml:space="preserve">
-    <value>Kết thúc điều trị</value>
+    <value>Kết thúc
+điều trị</value>
   </data>
   <data name="SurgServiceReqExecuteControl.btnOther.Text" xml:space="preserve">
     <value>Khác</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.btnPresYhct.Text" xml:space="preserve">
+    <value>Kê đơn
+YHCT</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.btnPresYhct.ToolTip" xml:space="preserve">
+    <value>Kê đơn y học cổ truyền</value>
   </data>
   <data name="SurgServiceReqExecuteControl.btnPrint.Text" xml:space="preserve">
     <value>In ấn</value>
@@ -1898,6 +2107,13 @@
   </data>
   <data name="SurgServiceReqExecuteControl.btnServiceReqMaty.Text" xml:space="preserve">
     <value>Vật tư hao phí</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.btnSurgAssignAndCopy.Text" xml:space="preserve">
+    <value>Chỉ định &amp;&amp; 
+sao chép ND</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.btnSurgAssignAndCopy.ToolTip" xml:space="preserve">
+    <value>Chỉ định dịch vụ và sao chép nội dung theo y lệnh đang xử lý</value>
   </data>
   <data name="SurgServiceReqExecuteControl.btnSwapService.Text" xml:space="preserve">
     <value>Đổi dịch vụ</value>
@@ -1933,7 +2149,8 @@
     <value>Sửa</value>
   </data>
   <data name="SurgServiceReqExecuteControl.ddbPhatSinh.Text" xml:space="preserve">
-    <value>Chỉ định DV KT</value>
+    <value>Chỉ định
+DV KT</value>
   </data>
   <data name="SurgServiceReqExecuteControl.ddbPhatSinh.ToolTip" xml:space="preserve">
     <value>Chỉ định các dịch vụ phát sinh từ dịch vụ PTTT này</value>
@@ -1945,7 +2162,8 @@
     <value>DV phát sinh</value>
   </data>
   <data name="SurgServiceReqExecuteControl.dropDownButtonGPBL.Text" xml:space="preserve">
-    <value>Chỉ định GPBL</value>
+    <value>Chỉ định
+GPBL</value>
   </data>
   <data name="SurgServiceReqExecuteControl.dropDownButtonGPBL.ToolTip" xml:space="preserve">
     <value>Chỉ định dịch vụ giải phẫu bệnh lý</value>
@@ -2127,6 +2345,18 @@
   <data name="SurgServiceReqExecuteControl.layoutControlItem58.Text" xml:space="preserve">
     <value>KT:</value>
   </data>
+  <data name="SurgServiceReqExecuteControl.layoutControlItem60.Text" xml:space="preserve">
+    <value>Ký:</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.layoutControlItem61.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Tự động đóng sau khi Kết thúc thành công</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.layoutControlItem61.Text" xml:space="preserve">
+    <value>Đóng:</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.layoutControlItem62.Text" xml:space="preserve">
+    <value>Thời gian y lệnh:</value>
+  </data>
   <data name="SurgServiceReqExecuteControl.layoutControlItem7.Text" xml:space="preserve">
     <value>Chẩn đoán sau:</value>
   </data>
@@ -2162,6 +2392,18 @@
   </data>
   <data name="SurgServiceReqExecuteControl.lciEkipTemp.Text" xml:space="preserve">
     <value>Kíp mẫu:</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.lciEndDeptSubs.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Chọn người ký thay trưởng khoa</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.lciEndDeptSubs.Text" xml:space="preserve">
+    <value>Người ký thay TK:</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.lciHospSubs.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Chọn người ký thay giám đốc viện</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.lciHospSubs.Text" xml:space="preserve">
+    <value>Người ký thay GĐ:</value>
   </data>
   <data name="SurgServiceReqExecuteControl.lciIcd1.OptionsToolTip.ToolTip" xml:space="preserve">
     <value>Chẩn đoán chính</value>
@@ -2298,10 +2540,22 @@
   <data name="tileViewItemElement2.Text" xml:space="preserve">
     <value>tileViewColumnName</value>
   </data>
+  <data name="tileViewItemElement3.Text" xml:space="preserve">
+    <value>tileViewColumn2</value>
+  </data>
+  <data name="tileViewItemElement4.Text" xml:space="preserve">
+    <value>tileViewColumnName</value>
+  </data>
   <data name="toolTipItem1.Text" xml:space="preserve">
     <value>Bổ sung ảnh lược đồ phẫu thuật thủ thuật</value>
   </data>
   <data name="toolTipItem2.Text" xml:space="preserve">
+    <value>Lưu kíp mẫu</value>
+  </data>
+  <data name="toolTipItem3.Text" xml:space="preserve">
+    <value>Bổ sung ảnh lược đồ phẫu thuật thủ thuật</value>
+  </data>
+  <data name="toolTipItem4.Text" xml:space="preserve">
     <value>Lưu kíp mẫu</value>
   </data>
   <data name="UCEkipUser.gridColumn1.Caption" xml:space="preserve">
@@ -2319,10 +2573,37 @@
   <data name="UCEkipUser.gridColumn5.Caption" xml:space="preserve">
     <value>gridColumn5</value>
   </data>
+  <data name="UCEkipUser.gridColumn6.Caption" xml:space="preserve">
+    <value>gridColumn6</value>
+  </data>
   <data name="UCEkipUser.layoutControl1.Text" xml:space="preserve">
     <value>layoutControl1</value>
   </data>
   <data name="UCEkipUser.lciInformationSurg.Text" xml:space="preserve">
     <value>Kíp thực hiện:</value>
+  </data>  
+  <data name="frmMultiIntructonTime.btnChoose.Text" xml:space="preserve">
+  <value>Đồng ý</value>
+  </data> 
+  <data name="frmMultiIntructonTime.layoutControl1.Text" xml:space="preserve">
+  <value>layoutControl1</value>
+  </data>
+<data name="frmMultiIntructonTime.lblCalendaInput.Text" xml:space="preserve">
+  <value>Ngày y lệnh:</value>
+  </data>
+<data name="frmMultiIntructonTime.lblTimeInput.Text" xml:space="preserve">
+  <value>Giờ y lệnh:</value>
+  </data>
+<data name="frmMultiIntructonTime.Text" xml:space="preserve">
+  <value>Chọn nhiều ngày y lệnh</value>
+  </data>
+	<data name="frmMultiIntructonTime.lblCalendaInputDT.Text" xml:space="preserve">
+  <value>Ngày dự trù:</value>
+  </data>
+	<data name="frmMultiIntructonTime.lblTimeInputDT.Text" xml:space="preserve">
+  <value>Giờ dự trù:</value>
+  </data>
+	<data name="frmMultiIntructonTimeDT.Text" xml:space="preserve">
+  <value>Chọn nhiều ngày dự trù</value>
   </data>
 </root>

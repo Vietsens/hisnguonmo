@@ -131,16 +131,16 @@ namespace HIS.Desktop.Plugins.HisRoleUser.Run
             this.layoutControl1.Name = "layoutControl1";
             this.layoutControl1.OptionsCustomizationForm.DesignTimeCustomizationFormPositionAndSize = new System.Drawing.Rectangle(543, 106, 250, 350);
             this.layoutControl1.Root = this.layoutControlGroup1;
-            this.layoutControl1.Size = new System.Drawing.Size(660, 275);
+            this.layoutControl1.Size = new System.Drawing.Size(924, 545);
             this.layoutControl1.TabIndex = 0;
             this.layoutControl1.Text = "layoutControl1";
             // 
             // mmConclude
             // 
-            this.mmConclude.Location = new System.Drawing.Point(401, 2);
+            this.mmConclude.Location = new System.Drawing.Point(523, 2);
             this.mmConclude.MenuManager = this.barManager1;
             this.mmConclude.Name = "mmConclude";
-            this.mmConclude.Size = new System.Drawing.Size(257, 54);
+            this.mmConclude.Size = new System.Drawing.Size(399, 111);
             this.mmConclude.StyleController = this.layoutControl1;
             this.mmConclude.TabIndex = 12;
             this.mmConclude.ToolTip = "Nhận xét cảm quan của hội đồng kiểm nhập";
@@ -192,49 +192,49 @@ namespace HIS.Desktop.Plugins.HisRoleUser.Run
             this.barDockControlTop.CausesValidation = false;
             this.barDockControlTop.Dock = System.Windows.Forms.DockStyle.Top;
             this.barDockControlTop.Location = new System.Drawing.Point(0, 0);
-            this.barDockControlTop.Size = new System.Drawing.Size(660, 29);
+            this.barDockControlTop.Size = new System.Drawing.Size(924, 29);
             // 
             // barDockControlBottom
             // 
             this.barDockControlBottom.CausesValidation = false;
             this.barDockControlBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.barDockControlBottom.Location = new System.Drawing.Point(0, 304);
-            this.barDockControlBottom.Size = new System.Drawing.Size(660, 0);
+            this.barDockControlBottom.Location = new System.Drawing.Point(0, 574);
+            this.barDockControlBottom.Size = new System.Drawing.Size(924, 0);
             // 
             // barDockControlLeft
             // 
             this.barDockControlLeft.CausesValidation = false;
             this.barDockControlLeft.Dock = System.Windows.Forms.DockStyle.Left;
             this.barDockControlLeft.Location = new System.Drawing.Point(0, 29);
-            this.barDockControlLeft.Size = new System.Drawing.Size(0, 275);
+            this.barDockControlLeft.Size = new System.Drawing.Size(0, 545);
             // 
             // barDockControlRight
             // 
             this.barDockControlRight.CausesValidation = false;
             this.barDockControlRight.Dock = System.Windows.Forms.DockStyle.Right;
-            this.barDockControlRight.Location = new System.Drawing.Point(660, 29);
-            this.barDockControlRight.Size = new System.Drawing.Size(0, 275);
+            this.barDockControlRight.Location = new System.Drawing.Point(924, 29);
+            this.barDockControlRight.Size = new System.Drawing.Size(0, 545);
             // 
             // txtImpMestNumber
             // 
             this.txtImpMestNumber.Location = new System.Drawing.Point(97, 2);
             this.txtImpMestNumber.MenuManager = this.barManager1;
             this.txtImpMestNumber.Name = "txtImpMestNumber";
-            this.txtImpMestNumber.Size = new System.Drawing.Size(205, 20);
+            this.txtImpMestNumber.Size = new System.Drawing.Size(327, 20);
             this.txtImpMestNumber.StyleController = this.layoutControl1;
             this.txtImpMestNumber.TabIndex = 11;
             this.txtImpMestNumber.ToolTip = "Số quyết định kiểm nhập";
             // 
             // cboImpUserTemp
             // 
-            this.cboImpUserTemp.Location = new System.Drawing.Point(177, 251);
+            this.cboImpUserTemp.Location = new System.Drawing.Point(209, 521);
             this.cboImpUserTemp.MenuManager = this.barManager1;
             this.cboImpUserTemp.Name = "cboImpUserTemp";
             this.cboImpUserTemp.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
             this.cboImpUserTemp.Properties.NullText = "";
             this.cboImpUserTemp.Properties.View = this.gridLookUpEdit1View;
-            this.cboImpUserTemp.Size = new System.Drawing.Size(101, 20);
+            this.cboImpUserTemp.Size = new System.Drawing.Size(181, 20);
             this.cboImpUserTemp.StyleController = this.layoutControl1;
             this.cboImpUserTemp.TabIndex = 10;
             this.cboImpUserTemp.Closed += new DevExpress.XtraEditors.Controls.ClosedEventHandler(this.cboImpUserTemp_Closed);
@@ -249,9 +249,9 @@ namespace HIS.Desktop.Plugins.HisRoleUser.Run
             // 
             // btnSaveTemp
             // 
-            this.btnSaveTemp.Location = new System.Drawing.Point(2, 251);
+            this.btnSaveTemp.Location = new System.Drawing.Point(2, 521);
             this.btnSaveTemp.Name = "btnSaveTemp";
-            this.btnSaveTemp.Size = new System.Drawing.Size(76, 22);
+            this.btnSaveTemp.Size = new System.Drawing.Size(108, 22);
             this.btnSaveTemp.StyleController = this.layoutControl1;
             this.btnSaveTemp.TabIndex = 8;
             this.btnSaveTemp.Text = "Lưu mẫu";
@@ -260,19 +260,19 @@ namespace HIS.Desktop.Plugins.HisRoleUser.Run
             // btnPrintV2
             // 
             this.btnPrintV2.Enabled = false;
-            this.btnPrintV2.Location = new System.Drawing.Point(553, 251);
+            this.btnPrintV2.Location = new System.Drawing.Point(773, 521);
             this.btnPrintV2.MenuManager = this.barManager1;
             this.btnPrintV2.Name = "btnPrintV2";
-            this.btnPrintV2.Size = new System.Drawing.Size(105, 22);
+            this.btnPrintV2.Size = new System.Drawing.Size(149, 22);
             this.btnPrintV2.StyleController = this.layoutControl1;
             this.btnPrintV2.TabIndex = 7;
             this.btnPrintV2.Text = "In";
             // 
             // btnSave
             // 
-            this.btnSave.Location = new System.Drawing.Point(443, 251);
+            this.btnSave.Location = new System.Drawing.Point(619, 521);
             this.btnSave.Name = "btnSave";
-            this.btnSave.Size = new System.Drawing.Size(106, 22);
+            this.btnSave.Size = new System.Drawing.Size(150, 22);
             this.btnSave.StyleController = this.layoutControl1;
             this.btnSave.TabIndex = 5;
             this.btnSave.Text = "Lưu (Ctrl S)";
@@ -280,7 +280,7 @@ namespace HIS.Desktop.Plugins.HisRoleUser.Run
             // 
             // gridControlRoleUser
             // 
-            this.gridControlRoleUser.Location = new System.Drawing.Point(2, 60);
+            this.gridControlRoleUser.Location = new System.Drawing.Point(2, 117);
             this.gridControlRoleUser.MainView = this.gridViewRoleUser;
             this.gridControlRoleUser.Name = "gridControlRoleUser";
             this.gridControlRoleUser.RepositoryItems.AddRange(new DevExpress.XtraEditors.Repository.RepositoryItem[] {
@@ -288,7 +288,7 @@ namespace HIS.Desktop.Plugins.HisRoleUser.Run
             this.repositoryItemButton__Add,
             this.repositoryItemButton__Delete,
             this.repositoryItemLookUp__ExecuteRoleUser});
-            this.gridControlRoleUser.Size = new System.Drawing.Size(656, 187);
+            this.gridControlRoleUser.Size = new System.Drawing.Size(920, 400);
             this.gridControlRoleUser.TabIndex = 4;
             this.gridControlRoleUser.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
             this.gridViewRoleUser});
@@ -406,50 +406,50 @@ namespace HIS.Desktop.Plugins.HisRoleUser.Run
             this.layoutControlGroup1.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup1.Name = "Root";
             this.layoutControlGroup1.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
-            this.layoutControlGroup1.Size = new System.Drawing.Size(660, 275);
+            this.layoutControlGroup1.Size = new System.Drawing.Size(924, 545);
             this.layoutControlGroup1.TextVisible = false;
             // 
             // layoutControlItem1
             // 
             this.layoutControlItem1.Control = this.gridControlRoleUser;
-            this.layoutControlItem1.Location = new System.Drawing.Point(0, 58);
+            this.layoutControlItem1.Location = new System.Drawing.Point(0, 115);
             this.layoutControlItem1.Name = "layoutControlItem1";
-            this.layoutControlItem1.Size = new System.Drawing.Size(660, 191);
+            this.layoutControlItem1.Size = new System.Drawing.Size(924, 404);
             this.layoutControlItem1.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem1.TextVisible = false;
             // 
             // layoutControlItem2
             // 
             this.layoutControlItem2.Control = this.btnSave;
-            this.layoutControlItem2.Location = new System.Drawing.Point(441, 249);
+            this.layoutControlItem2.Location = new System.Drawing.Point(617, 519);
             this.layoutControlItem2.Name = "layoutControlItem2";
-            this.layoutControlItem2.Size = new System.Drawing.Size(110, 26);
+            this.layoutControlItem2.Size = new System.Drawing.Size(154, 26);
             this.layoutControlItem2.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem2.TextVisible = false;
             // 
             // emptySpaceItem1
             // 
             this.emptySpaceItem1.AllowHotTrack = false;
-            this.emptySpaceItem1.Location = new System.Drawing.Point(280, 249);
+            this.emptySpaceItem1.Location = new System.Drawing.Point(392, 519);
             this.emptySpaceItem1.Name = "emptySpaceItem1";
-            this.emptySpaceItem1.Size = new System.Drawing.Size(161, 26);
+            this.emptySpaceItem1.Size = new System.Drawing.Size(225, 26);
             this.emptySpaceItem1.TextSize = new System.Drawing.Size(0, 0);
             // 
             // layoutControlItem4
             // 
             this.layoutControlItem4.Control = this.btnPrintV2;
-            this.layoutControlItem4.Location = new System.Drawing.Point(551, 249);
+            this.layoutControlItem4.Location = new System.Drawing.Point(771, 519);
             this.layoutControlItem4.Name = "layoutControlItem4";
-            this.layoutControlItem4.Size = new System.Drawing.Size(109, 26);
+            this.layoutControlItem4.Size = new System.Drawing.Size(153, 26);
             this.layoutControlItem4.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem4.TextVisible = false;
             // 
             // layoutControlItem3
             // 
             this.layoutControlItem3.Control = this.btnSaveTemp;
-            this.layoutControlItem3.Location = new System.Drawing.Point(0, 249);
+            this.layoutControlItem3.Location = new System.Drawing.Point(0, 519);
             this.layoutControlItem3.Name = "layoutControlItem3";
-            this.layoutControlItem3.Size = new System.Drawing.Size(80, 26);
+            this.layoutControlItem3.Size = new System.Drawing.Size(112, 26);
             this.layoutControlItem3.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem3.TextVisible = false;
             // 
@@ -458,9 +458,9 @@ namespace HIS.Desktop.Plugins.HisRoleUser.Run
             this.layoutControlItem6.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem6.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem6.Control = this.cboImpUserTemp;
-            this.layoutControlItem6.Location = new System.Drawing.Point(80, 249);
+            this.layoutControlItem6.Location = new System.Drawing.Point(112, 519);
             this.layoutControlItem6.Name = "layoutControlItem6";
-            this.layoutControlItem6.Size = new System.Drawing.Size(200, 26);
+            this.layoutControlItem6.Size = new System.Drawing.Size(280, 26);
             this.layoutControlItem6.Text = "Mẫu:";
             this.layoutControlItem6.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem6.TextSize = new System.Drawing.Size(90, 20);
@@ -475,7 +475,7 @@ namespace HIS.Desktop.Plugins.HisRoleUser.Run
             this.layoutControlItem5.Location = new System.Drawing.Point(0, 0);
             this.layoutControlItem5.Name = "layoutControlItem5";
             this.layoutControlItem5.OptionsToolTip.ToolTip = "Số quyết định kiểm nhập";
-            this.layoutControlItem5.Size = new System.Drawing.Size(304, 24);
+            this.layoutControlItem5.Size = new System.Drawing.Size(426, 24);
             this.layoutControlItem5.Text = "Số quyết định:";
             this.layoutControlItem5.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem5.TextSize = new System.Drawing.Size(90, 20);
@@ -487,10 +487,10 @@ namespace HIS.Desktop.Plugins.HisRoleUser.Run
             this.layoutControlItem7.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem7.AppearanceItemCaption.TextOptions.VAlignment = DevExpress.Utils.VertAlignment.Top;
             this.layoutControlItem7.Control = this.mmConclude;
-            this.layoutControlItem7.Location = new System.Drawing.Point(304, 0);
+            this.layoutControlItem7.Location = new System.Drawing.Point(426, 0);
             this.layoutControlItem7.Name = "layoutControlItem7";
             this.layoutControlItem7.OptionsToolTip.ToolTip = "Nhận xét cảm quan của hội đồng kiểm nhập";
-            this.layoutControlItem7.Size = new System.Drawing.Size(356, 58);
+            this.layoutControlItem7.Size = new System.Drawing.Size(498, 115);
             this.layoutControlItem7.Text = "Nhận xét:";
             this.layoutControlItem7.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem7.TextSize = new System.Drawing.Size(90, 20);
@@ -501,14 +501,14 @@ namespace HIS.Desktop.Plugins.HisRoleUser.Run
             this.emptySpaceItem2.AllowHotTrack = false;
             this.emptySpaceItem2.Location = new System.Drawing.Point(0, 24);
             this.emptySpaceItem2.Name = "emptySpaceItem2";
-            this.emptySpaceItem2.Size = new System.Drawing.Size(304, 34);
+            this.emptySpaceItem2.Size = new System.Drawing.Size(426, 91);
             this.emptySpaceItem2.TextSize = new System.Drawing.Size(0, 0);
             // 
             // frmHisRoleUser
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(660, 304);
+            this.ClientSize = new System.Drawing.Size(924, 574);
             this.Controls.Add(this.layoutControl1);
             this.Controls.Add(this.barDockControlLeft);
             this.Controls.Add(this.barDockControlRight);

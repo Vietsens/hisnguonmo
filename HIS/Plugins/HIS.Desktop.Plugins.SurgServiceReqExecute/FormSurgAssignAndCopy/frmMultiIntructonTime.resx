@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -118,51 +118,6 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
-  <data name="btnGEdit.Buttons" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-    <value>
-        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGPC/xhBQAAABl0RVh0U29m
-        dHdhcmUAQWRvYmUgSW1hZ2VSZWFkeXHJZTwAAAAjdEVYdFRpdGxlAENhbmNlbDtTdG9wO0V4aXQ7QmFy
-        cztSaWJib247TJaWsgAAAKdJREFUOE+Nk0sKwlAMRbu4QEe6iWxA/CBUrNvMShRHTy68wGuaj4MLIbnn
-        0A7e1FqbhOkgTAvmfyJMDzCYFf4KUxOmpy3bCNOrd8Ecsbj1hSaUDLDmrId7JXHgK/ZjIZRE8EYQSNYM
-        3gkCSQi7gkSygzOB/WxktT1XEMChpIIvzu9sJCk83EJJCVcSHPAwUjiRLFjOwvSuYEfyAatLSE62HKU/
-        wBnzD9JAnMxlnre0AAAAAElFTkSuQmCC
-</value>
-  </data>
-  <data name="btnUnlock.Buttons" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-    <value>
-        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGPC/xhBQAAABl0RVh0U29m
-        dHdhcmUAQWRvYmUgSW1hZ2VSZWFkeXHJZTwAAAARdEVYdFRpdGxlAFBlcm1pc3Npb247rGnpegAAAtlJ
-        REFUOE9tkntMzWEch19yybW5M8xfzCUtK7qgTmqnnNOFck5xrFrIKq1cyqVCRMUxMWeTzV0TC02JEqdR
-        K4qoUKPFXLLZ/IEx6pzH3vzY0Xq3z/bufX/P877f7/sTgJBRRj8hxMD4zWmauJSM8qgNqZ3alWs/+q+I
-        rPBUhwQLIeyVb3qYHq6XYGDyjj17jaZTFN+8w9NnbTxqes6ZwmvEpezEU70sVwgxVEr6Etitjk0Myjl6
-        wnLr7n3y8s9iWL+J8HVJ7Mo9ysmCIqI3pFrnzPcKkwf1JbCPWJdUX1RSzuHjZ1gYEFbh5O6jd3Tzjljg
-        G1yZkX2ETKMJV5+gx0KIkX0JRmgi1nxtbG5FH5OIo5tKr9Q8ZK6bapW8ScHVMlyWBH8TQoz7T6A0ZrSX
-        Vk9dwxOCDbFycbIQYrAimRYVv4lL18pw9tbKvSlCiP62Arua7KXVDcZAZB4e0FKbraE6K4CqTDWVGX6U
-        b19CaYqK4mQvzsW610m5rWCQBOnqhF/v4GcH/GiFb0/hSx18NsOnUugsxPI6n4JYDwkNtxXY1x8MhJ+v
-        4YMR3u2DNzsxGaMw5RqgNQ6aYqBxFZbaEE5HL5BQTyP/CobW5Wjgewu8zYSOdHi1ha0bQ0lNCoGX6VC/
-        AmoDsZh9OWFwkZCDrWBYTVYAfKmB9m3QmgzP4jCfD8d8OhTatkG1P5i9sVTM55jOWUKjbAUjqnar/9T5
-        IgFa1kCjgYzkANITfeGhDio9oXwe3ddnkrfMSUJjbAUjb6f5wvuz8CQSGsJpvqwlPEyFfvkimq/ooGwu
-        1uIZdF+aygGto4TG2gocbqT6YG0/hPVBKNZqDZa7Kiz3/LA2RmNt0NFdMofuwkl0XRjNfv9ZEur5mf71
-        oCDe835RwiIurvfgXIwbpyJdyV/pgkk3j7zlThiDHMnRzGafejZbF0+v7d1EO/musi5pVjJeyQQlE5XI
-        uYMQYoBkfwMtqxspY0wXwAAAAABJRU5ErkJggg==
-</value>
-  </data>
-  <data name="btnGEdit_Disable.Buttons" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-    <value>
-        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGPC/xhBQAAABl0RVh0U29m
-        dHdhcmUAQWRvYmUgSW1hZ2VSZWFkeXHJZTwAAAAjdEVYdFRpdGxlAENhbmNlbDtTdG9wO0V4aXQ7QmFy
-        cztSaWJib247TJaWsgAAAKdJREFUOE+Nk0sKwlAMRbu4QEe6iWxA/CBUrNvMShRHTy68wGuaj4MLIbnn
-        0A7e1FqbhOkgTAvmfyJMDzCYFf4KUxOmpy3bCNOrd8Ecsbj1hSaUDLDmrId7JXHgK/ZjIZRE8EYQSNYM
-        3gkCSQi7gkSygzOB/WxktT1XEMChpIIvzu9sJCk83EJJCVcSHPAwUjiRLFjOwvSuYEfyAatLSE62HKU/
-        wBnzD9JAnMxlnre0AAAAAElFTkSuQmCC
-</value>
-  </data>
-  <metadata name="barManager1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>538, 17</value>
-  </metadata>
-  <metadata name="$this.TrayHeight" type="System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>25</value>
-  </metadata>
   <data name="$this.Icon" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         AAABAAEAMDAAAAEAIACoJQAAFgAAACgAAAAwAAAAYAAAAAEAIAAAAAAAACQAAAAAAAAAAAAAAAAAAAAA
@@ -329,16 +284,4 @@
         AAA=
 </value>
   </data>
-  <data name="resource.ToolTip" xml:space="preserve">
-    <value>Nếu khoa này kết thúc điều trị nếu bệnh nhân điều trị nội trú và chưa có thông tin chỉ định dịch vụ giường thì hệ thống sẽ tự động thực hiện gán giường và chỉ định dịch vụ giường với tổng số ngày giường được tính theo công thức: Ngày ra - ngày vào + 1</value>
-  </data>
-  <metadata name="dxValidationProviderEditorInfo.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>320, 17</value>
-  </metadata>
-  <metadata name="dxErrorProvider.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>17, 17</value>
-  </metadata>
-  <metadata name="toolTipControllerGrid.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>153, 17</value>
-  </metadata>
 </root>
