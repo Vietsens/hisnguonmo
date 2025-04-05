@@ -379,7 +379,7 @@ namespace HIS.UC.UCHeniInfo
                 }
                 else
                 {
-                    if (chkHasAbsentLetter.Checked || chkHasWorkingLetter.Checked || chkIsTt46.Checked)
+                    if (chkHasAbsentLetter.Checked || chkHasWorkingLetter.Checked || chkIsTt46.Checked || chkSs.Checked)
                         return;
                     var datas = DataStore.HeinRightRouteTypes.Where(p => p.HeinRightRouteTypeCode != MOS.LibraryHein.Bhyt.HeinRightRoute.HeinRightRouteCode.TRUE).ToList();
                     EditorLoaderProcessor.InitComboCommon(this.cboHeinRightRoute, datas, "HeinRightRouteTypeCode", "HeinRightRouteTypeName", "HeinRightRouteTypeCode");
