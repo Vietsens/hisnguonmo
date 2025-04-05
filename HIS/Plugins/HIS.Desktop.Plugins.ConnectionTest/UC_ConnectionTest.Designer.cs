@@ -343,6 +343,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
             this.gridColumn6 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumnBarCode = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn8 = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gridColumn33 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn20 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn27 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn31 = new DevExpress.XtraGrid.Columns.GridColumn();
@@ -367,7 +368,6 @@ namespace HIS.Desktop.Plugins.ConnectionTest
             this.gridColumn11 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn13 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn14 = new DevExpress.XtraGrid.Columns.GridColumn();
-            this.gridColumn33 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.DuyetE = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
             this.DuyetD = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
             this.HuyDuyetE = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
@@ -1988,6 +1988,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
             this.txtTreatmentCode.Size = new System.Drawing.Size(83, 20);
             this.txtTreatmentCode.StyleController = this.layoutControl1;
             this.txtTreatmentCode.TabIndex = 40;
+            this.txtTreatmentCode.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtTreatmentCode_KeyDown);
             this.txtTreatmentCode.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.txtTreatmentCode_PreviewKeyDown);
             // 
             // chkSignProcess
@@ -2118,7 +2119,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
             this.popupControlContainerRangeValue.Controls.Add(this.btnCancelForValueRange);
             this.popupControlContainerRangeValue.Controls.Add(this.btnOKForValueRange);
             this.popupControlContainerRangeValue.Controls.Add(this.txtValueRangeIntoPopup);
-            this.popupControlContainerRangeValue.Location = new System.Drawing.Point(271, 213);
+            this.popupControlContainerRangeValue.Location = new System.Drawing.Point(479, 326);
             this.popupControlContainerRangeValue.Manager = this.barManager1;
             this.popupControlContainerRangeValue.Name = "popupControlContainerRangeValue";
             this.popupControlContainerRangeValue.Size = new System.Drawing.Size(321, 130);
@@ -2792,6 +2793,17 @@ namespace HIS.Desktop.Plugins.ConnectionTest
             this.gridColumn8.VisibleIndex = 13;
             this.gridColumn8.Width = 150;
             // 
+            // gridColumn33
+            // 
+            this.gridColumn33.FieldName = "PRINT_COUNT_IC";
+            this.gridColumn33.Fixed = DevExpress.XtraGrid.Columns.FixedStyle.Left;
+            this.gridColumn33.MaxWidth = 20;
+            this.gridColumn33.Name = "gridColumn33";
+            this.gridColumn33.OptionsColumn.ShowCaption = false;
+            this.gridColumn33.Visible = true;
+            this.gridColumn33.VisibleIndex = 10;
+            this.gridColumn33.Width = 20;
+            // 
             // gridColumn20
             // 
             this.gridColumn20.Caption = "Kết quả chung";
@@ -3042,17 +3054,6 @@ namespace HIS.Desktop.Plugins.ConnectionTest
             this.gridColumn14.Visible = true;
             this.gridColumn14.VisibleIndex = 37;
             this.gridColumn14.Width = 100;
-            // 
-            // gridColumn33
-            // 
-            this.gridColumn33.FieldName = "PRINT_COUNT_IC";
-            this.gridColumn33.Fixed = DevExpress.XtraGrid.Columns.FixedStyle.Left;
-            this.gridColumn33.MaxWidth = 20;
-            this.gridColumn33.Name = "gridColumn33";
-            this.gridColumn33.OptionsColumn.ShowCaption = false;
-            this.gridColumn33.Visible = true;
-            this.gridColumn33.VisibleIndex = 10;
-            this.gridColumn33.Width = 20;
             // 
             // DuyetE
             // 
