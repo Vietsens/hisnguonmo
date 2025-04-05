@@ -91,7 +91,7 @@
     </Reference>
     <Reference Include="Inventec.Common.ElectronicBill.Misa, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\Common\Inventec.Common\Inventec.Common.ElectronicBill\Inventec.Common.ElectronicBill.Misa\bin\Debug\Inventec.Common.ElectronicBill.Misa.dll</HintPath>
+      <HintPath>..\..\..\..\lib\Inventec.Common\Inventec.Common.ElectronicBill.Misa\Inventec.Common.ElectronicBill.Misa.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Common.ElectronicBillMoit, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
