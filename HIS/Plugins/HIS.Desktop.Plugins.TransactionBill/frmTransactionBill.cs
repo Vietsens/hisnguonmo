@@ -1558,6 +1558,7 @@ namespace HIS.Desktop.Plugins.TransactionBill
                 lciBtnSave.Enabled = true;
                 btnSavePrint.Enabled = true;
                 btnSaveAndSign.Enabled = true;
+                btnAddSignEmr.Enabled = true;
                 if (TransactionBillConfig.InvoiceTypeCreate == invoiceTypeCreate__CreateInvoiceVnpt)
                 {
                     ddBtnPrint.Enabled = true;
@@ -3943,5 +3944,7 @@ namespace HIS.Desktop.Plugins.TransactionBill
             }
 
         }
+
+        
     }
 }

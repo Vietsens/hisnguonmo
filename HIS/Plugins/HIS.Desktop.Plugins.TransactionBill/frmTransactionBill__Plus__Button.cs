@@ -74,6 +74,7 @@ namespace HIS.Desktop.Plugins.TransactionBill
         private string Print106Type_Expend = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>("HIS.Desktop.Print.TransactionDetail_Expend");
         bool isPrintNow = false;
         bool isnotPrintMPS000111 = false;
+        bool isEmr = false;
         byte[] byteData { get; set; }
         public HisTransactionBillResultSDO TransactionBillResultSDO { get; private set; }
 
@@ -1540,7 +1541,7 @@ namespace HIS.Desktop.Plugins.TransactionBill
             }
             return success;
         }
-
+         
         public bool OpenAppPOS()
         {
             try
@@ -3426,7 +3427,14 @@ namespace HIS.Desktop.Plugins.TransactionBill
 
                 MPS.ProcessorBase.Core.PrintData printData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, pdo, MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow, "");
                 WaitingManager.Hide();
-                result = MPS.MpsPrinter.Run(new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, pdo, MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow, printerName) { EmrInputADO = inputADO });
+                if (isEmr)
+                {
+                    result = MPS.MpsPrinter.Run(new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, pdo, MPS.ProcessorBase.PrintConfig.PreviewType.EmrSignAndPrintPreview, printerName) { EmrInputADO = inputADO });
+                }
+                else
+                {
+                    result = MPS.MpsPrinter.Run(new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, pdo, MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow, printerName) { EmrInputADO = inputADO });
+                }
                 if (result && chkAutoClose.CheckState == CheckState.Checked)
                 {
                     this.Close();
@@ -3530,7 +3538,16 @@ namespace HIS.Desktop.Plugins.TransactionBill
                     listSereDepoPrint,
                     lstTranPrint,
                     lstSeseRepayPrint);
-                MPS.ProcessorBase.Core.PrintData printData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, pdo, MPS.ProcessorBase.PrintConfig.PreviewType.SaveFile, "", 1, streamResult) { EmrInputADO = inputADO };
+                MPS.ProcessorBase.Core.PrintData printData;
+                if (isEmr)
+                {
+                    printData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, pdo, MPS.ProcessorBase.PrintConfig.PreviewType.EmrSignNow, "", 1, streamResult) { EmrInputADO = inputADO };
+                }
+                else
+                {
+                    printData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, pdo, MPS.ProcessorBase.PrintConfig.PreviewType.SaveFile, "", 1, streamResult) { EmrInputADO = inputADO };
+
+                }
 
                 result = MPS.MpsPrinter.Run(printData);
 
@@ -3633,6 +3650,7 @@ namespace HIS.Desktop.Plugins.TransactionBill
                 btnSave.Enabled = enable ?? true;
                 btnSaveAndSign.Enabled = enable ?? true;
                 btnSavePrint.Enabled = enable ?? true;
+                btnAddSignEmr.Enabled = enable ?? true;
             }
             catch (Exception ex)
             {
@@ -3719,6 +3737,127 @@ namespace HIS.Desktop.Plugins.TransactionBill
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void btnAddSignEmr_Click(object sender, EventArgs e)
+        {
+            isEmr = true;
+            bool? success = false;
+            try
+            {
+                PrintMps279 = false;
+                this.positionHandleControl = -1;
+                if (!btnSavePrint.Enabled)
+                    return;
+                SetEnableButtonSave(false);
+                if (HisConfigCFG.AutoCreateDepositTransaction && decimal.Parse(lblReceiveAmount.Text) > 0 && cboDepositBook.Enabled && cboDepositBook.EditValue == null)
+                {
+                    XtraMessageBox.Show("Bắt buộc phải chọn sổ tạm ứng khi thanh toán", "Thông báo");
+                    Inventec.Desktop.Common.Controls.ValidationRule.ControlEditValidationRule validate = new Inventec.Desktop.Common.Controls.ValidationRule.ControlEditValidationRule();
+                    validate.editor = this.cboDepositBook;
+                    validate.ErrorText = "Trường dữ liệu bắt buộc";
+                    validate.ErrorType = DevExpress.XtraEditors.DXErrorProvider.ErrorType.Warning;
+                    dxValidationProvider1.SetValidationRule(this.cboDepositBook, validate);
+                }
+                if (!dxValidationProvider1.Validate() || this.treatmentId == null)
+                {
+                    return;
+                }
+                dxValidationProvider1.SetValidationRule(this.cboDepositBook, null);
+                if (HisConfigCFG.AttachAssignPrintWarningOption == "1")
+                {
+                    Inventec.Common.Logging.LogSystem.Debug("HisConfigCFG.AttachAssignPrintWarningOption == 1");
+                    HIS_TREATMENT treatment = GetTreatment(this.treatmentId);
+                    if (treatment != null && treatment.TDL_TREATMENT_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__KHAM)
+                    {
+                        CommonParam paramCommon = new CommonParam();
+                        var result = new BackendAdapter(paramCommon).Get<List<string>>("api/HisServiceReq/GetAttachAssignPrint", ApiConsumers.MosConsumer, this.treatmentId, paramCommon);
+                        if (result != null && result.Count() > 0)
+                        {
+                            Inventec.Common.Logging.LogSystem.Debug("HisConfigCFG.AttachAssignPrintWarningOption == 1; result = " + result);
+                            List<SAR_PRINT_TYPE> listSARPrintType = BackendDataWorker.Get<SAR_PRINT_TYPE>();
+                            string strMessage = "";
+                            foreach (var item in result)
+                            {
+                                strMessage += listSARPrintType.Where(o => o.PRINT_TYPE_CODE == item).Select(o => o.PRINT_TYPE_NAME).FirstOrDefault();
+                                strMessage += ", ";
+                            }
+                            if (result != null && result.Count() > 0)
+                            {
+                                int index = strMessage.LastIndexOf(',');
+                                strMessage.Remove(index, 1);
+
+                                if (MessageBox.Show(String.Format("Bệnh nhân có các phiếu sau cần thu lại: {0}", strMessage), ResourceMessageLang.ThongBao, MessageBoxButtons.OK, MessageBoxIcon.Question) == DialogResult.OK)
+                                {
+
+                                }
+                            }
+                        }
+                    }
+                }
+
+                WaitingManager.Show();
+                CommonParam param = new CommonParam();
+                gridViewBillFund.PostEditor();
+                success = ProcessSave(ref param);
+                WaitingManager.Hide();
+                if (success == true)
+                {
+                    if (chkPrintBKBHNT.Checked)
+                    {
+                        InBangKe_6556_BHYT_Mps000279();
+                    }
+                    this.hienHoaDonNhap = false;
+                    this.onClickPhieuThuThanhToan();
+
+                    if (cboPayForm.EditValue != null && Int64.Parse(cboPayForm.EditValue.ToString()) == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__QR)
+                    {
+                        btnQr.Enabled = true;
+                        if (TransactionBillResultSDO.TransactionRepay != null && TransactionBillResultSDO.TransactionRepay.PAY_FORM_ID == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__QR && TransactionBillResultSDO.TransactionRepay.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__FALSE)
+                            TransactionQr = TransactionBillResultSDO.TransactionRepay;
+                        if (TransactionBillResultSDO.TransactionDeposit != null && TransactionBillResultSDO.TransactionDeposit.PAY_FORM_ID == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__QR && TransactionBillResultSDO.TransactionDeposit.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__FALSE)
+                            TransactionQr = TransactionBillResultSDO.TransactionDeposit;
+                        if (TransactionBillResultSDO.TransactionBill != null && TransactionBillResultSDO.TransactionBill.PAY_FORM_ID == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__QR && TransactionBillResultSDO.TransactionBill.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__FALSE)
+                            TransactionQr = TransactionBillResultSDO.TransactionBill;
+                        if (listConfig != null)
+                        {
+                            if (listConfig.Count > 1)
+                                XtraMessageBox.Show("Vui lòng sử dụng nút tạo QR để thực hiện thanh toán", "Thông báo");
+                            else
+                                btnQr_Click(null, null);
+                        }
+                    }
+                    if (chkAutoClose.CheckState == CheckState.Checked)
+                    {
+                        if (!chkPrintBKBHNT.Checked)
+                            this.Close();
+                        else
+                        {
+                            if (ListSereServTranfer != null && ListSereServTranfer.Count > 0)
+                                timerClose.Interval = ListSereServTranfer.Count * timerClose.Interval;
+                            timerClose.Start();
+                        }
+                    }
+                }
+
+                if (success == false)
+                {
+                    MessageManager.Show(param, success);
+                }
+
+                // SessionManager.ProcessTokenLost(param);
+                GeneratePopupMenu();
+                InitMenuToButtonPrint();
+            }
+            catch (Exception ex)
+            {
+                WaitingManager.Hide();
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+            finally
+            {
+                SetEnableButtonSave(!success);
             }
         }
     }
