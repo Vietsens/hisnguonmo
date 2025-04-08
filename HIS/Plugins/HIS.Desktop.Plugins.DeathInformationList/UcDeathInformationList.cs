@@ -473,6 +473,7 @@ namespace HIS.Desktop.Plugins.DeathInformationList
         #region EvenGridView
         private void gridView1_CustomUnboundColumnData(object sender, DevExpress.XtraGrid.Views.Base.CustomColumnDataEventArgs e)
         {
+            Inventec.Common.Logging.LogSystem.Debug("FieldName: " + e.Column.FieldName);
             try
             {
                 if (e.IsGetData)
@@ -684,7 +685,7 @@ namespace HIS.Desktop.Plugins.DeathInformationList
                         }
                     }
 
-                    else if (e.Column.FieldName == "DEATH_CASE_SYNC_RESULT")
+                    else if (e.Column.FieldName == "DEATH_CASE_SYNC_RESULT_STR")
                     {
                         try
                         {
