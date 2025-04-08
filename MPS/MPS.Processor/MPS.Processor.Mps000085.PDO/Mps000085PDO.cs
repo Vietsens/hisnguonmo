@@ -24,7 +24,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace MPS.Processor.Mps000085.PDO
-{
+{     
     public partial class Mps000085PDO : RDOBase
     {
         public List<V_HIS_IMP_MEST_MEDICINE> _ImpMestMedicines = null;
@@ -79,6 +79,19 @@ namespace MPS.Processor.Mps000085.PDO
             this._ImpMestMedicines = impMestMedicines;
             this._ImpMestUserPrint = listImpMestUserPrint;
             this._ListMedicalContract = listMedicalContract;
+        }
+
+        public Mps000085PDO(V_HIS_IMP_MEST impMest, List<V_HIS_IMP_MEST_MEDICINE> impMestMedicines, List<V_HIS_IMP_MEST_MATERIAL> impMestMaterials, List<V_HIS_IMP_MEST_USER> listImpMestUserPrint, List<HIS_MEDICINE> medicine, List<HIS_MATERIAL> material, HIS_SUPPLIER supplier, List<MedicalContractADO> listMedicalContract, List<V_HIS_IMP_MEST_BLOOD> lstMestBlook)
+        {
+            this._ImpMest = impMest;
+            this._supplier = supplier;
+            this._Medicines = medicine;
+            this._Materials = material;
+            this._ImpMestMaterials = impMestMaterials;
+            this._ImpMestMedicines = impMestMedicines;
+            this._ImpMestUserPrint = listImpMestUserPrint;
+            this._ListMedicalContract = listMedicalContract;
+            this._ListImpMestBlood = lstMestBlook;
         }
 
         //public Mps000085PDO(V_HIS_IMP_MEST impMest, List<ImpMestMedicineADO> impMestMedicineAdos, List<ImpMestMaterialADO> impMestMaterialAdos, List<V_HIS_IMP_MEST_USER> listImpMestUserPrint, V_HIS_BID bid)

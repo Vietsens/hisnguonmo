@@ -78,6 +78,7 @@ namespace HIS.Desktop.Plugins.TransactionDeposit
         string moduleLink = "HIS.Desktop.Plugins.TransactionDeposit";
         string creator = "";
         bool isShowMess = false;
+        bool isSaveAndSign = false;
         WcfClient cll;
         DateTime dteCommonParam { get; set; }
         private bool is_true = true;
@@ -905,6 +906,7 @@ namespace HIS.Desktop.Plugins.TransactionDeposit
                 btnPrint.Enabled = false;
                 ddBtnPrint.Enabled = false;
                 btnSave.Enabled = true;
+                btnSaveAndSign.Enabled = true;
                 spinTransferAmount.EditValue = null;
                 V_HIS_TREATMENT_FEE fee = null;
                 FillDataToCommon(fee);
@@ -1165,7 +1167,7 @@ namespace HIS.Desktop.Plugins.TransactionDeposit
                     btnSave.Enabled = false;
                     btnPrint.Enabled = true;
                     btnSavePrint.Enabled = false;
-
+                    btnSaveAndSign.Enabled = false;
                 }
                 WaitingManager.Hide();
                 if (!success)
@@ -1220,7 +1222,7 @@ namespace HIS.Desktop.Plugins.TransactionDeposit
                     btnPrint.Enabled = true;
                     ddBtnPrint.Enabled = true;
                     btnSavePrint.Enabled = false;
-
+                    btnSaveAndSign.Enabled = false;
                 }
                 WaitingManager.Hide();
                 if (success)
@@ -2014,8 +2016,15 @@ namespace HIS.Desktop.Plugins.TransactionDeposit
                 if (ConfigApplications.CheDoInChoCacChucNangTrongPhanMem == 2)
                 {
                     //printData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, rdo, MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow, null);
+                    if (isSaveAndSign)
+                    {
+                        result = MPS.MpsPrinter.Run(new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, rdo, MPS.ProcessorBase.PrintConfig.PreviewType.EmrSignAndPrintPreview, printerName) { EmrInputADO = inputADO, ShowPrintLog = (MPS.ProcessorBase.PrintConfig.DelegateShowPrintLog)CallModuleShowPrintLog });
 
-                    result = MPS.MpsPrinter.Run(new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, rdo, MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow, printerName) { EmrInputADO = inputADO, ShowPrintLog = (MPS.ProcessorBase.PrintConfig.DelegateShowPrintLog)CallModuleShowPrintLog });
+                    }
+                    else
+                    {
+                        result = MPS.MpsPrinter.Run(new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, rdo, MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow, printerName) { EmrInputADO = inputADO, ShowPrintLog = (MPS.ProcessorBase.PrintConfig.DelegateShowPrintLog)CallModuleShowPrintLog });
+                    }     
                 }
                 else
                 {
@@ -2108,9 +2117,14 @@ namespace HIS.Desktop.Plugins.TransactionDeposit
                 }
 
                 Inventec.Common.SignLibrary.ADO.InputADO inputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode((this.resultTranDeposit != null ? this.resultTranDeposit.TREATMENT_CODE : ""), printTypeCode, currentModule != null ? currentModule.RoomId : 0);
-
-                result = MPS.MpsPrinter.Run(new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, rdo, MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow, printerName) { EmrInputADO = inputADO });
-
+                if (isSaveAndSign)
+                {
+                    result = MPS.MpsPrinter.Run(new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, rdo, MPS.ProcessorBase.PrintConfig.PreviewType.EmrSignAndPrintPreview, printerName) { EmrInputADO = inputADO });
+                }
+                else
+                {
+                    result = MPS.MpsPrinter.Run(new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, rdo, MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow, printerName) { EmrInputADO = inputADO });
+                }
                 //result = MPS.MpsPrinter.Run(printData);
 
                 if (result && chkAutoClose.CheckState == CheckState.Checked)
@@ -2545,7 +2559,7 @@ namespace HIS.Desktop.Plugins.TransactionDeposit
                 this.ResetDefaultValueControl();
 
                 this.treatment = null;
-                this.depositReq = null;
+                this.depositReq = null;  
                 if (!String.IsNullOrEmpty(txtTreatmenCode.Text))
                 {
                     LoadSearchByTreatmentCode();
@@ -2814,6 +2828,46 @@ namespace HIS.Desktop.Plugins.TransactionDeposit
             catch (Exception ex)
             {
 
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void btnSaveAndSign_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                isSaveAndSign = true;
+                positionHandleControl = -1;
+                if (!btnSaveAndSign.Enabled || !dxValidationProvider1.Validate() || this.treatment == null)
+                    return;
+                WaitingManager.Show();
+                CommonParam param = new CommonParam();
+                bool success = false;
+                this.SaveDeposit(param, ref success);
+                if (success)
+                {
+                    btnSave.Enabled = false;
+                    btnPrint.Enabled = true;
+                    btnSaveAndSign.Enabled = false;
+                    btnSavePrint.Enabled = false;
+                }
+                WaitingManager.Hide();
+                if (!success)
+                {
+                    if (!isShowMess)
+                    {
+                        MessageManager.Show(param, success);
+                    }
+                }
+                else
+                {
+                    this.InPhieuThuTamUng(true);
+                }
+                SessionManager.ProcessTokenLost(param);
+            }
+            catch (Exception ex)
+            {
+                WaitingManager.Hide();
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }

@@ -103,8 +103,12 @@
     <Reference Include="MOS.SDO">
       <HintPath>..\..\..\..\LIB\MOS\MOS.SDO.dll</HintPath>
     </Reference>
+    <Reference Include="MPS.Processor.Mps000085.PDO, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\lib\MPSv2\MPS.PDO\MPS.Processor.Mps000085.PDO.dll</HintPath>
+    </Reference>
     <Reference Include="MPS.ProcessorBase">
-      <HintPath>..\..\..\..\..\histest\histest\x64\ReferencedAssemblies\MPS.ProcessorBase.dll</HintPath>
+      <HintPath>..\..\..\..\lib\MPSv2\MPS.ProcessorBase\MPS.ProcessorBase.dll</HintPath>
     </Reference>
     <Reference Include="SAR.EFMODEL">
       <HintPath>..\..\..\..\LIB\SAR\SAR.EFMODEL.dll</HintPath>
@@ -128,10 +132,6 @@
     <ProjectReference Include="..\..\..\HIS\HIS.Desktop.LocalStorage.ConfigApplication\HIS.Desktop.LocalStorage.ConfigApplication.csproj">
       <Project>{3a2c932a-9d3a-483b-89a0-9f9c8225b283}</Project>
       <Name>HIS.Desktop.LocalStorage.ConfigApplication</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\MPS.Processor.Mps000085.PDO\MPS.Processor.Mps000085.PDO.csproj">
-      <Project>{e729b051-e57a-40fe-8094-a49fcb3d3c22}</Project>
-      <Name>MPS.Processor.Mps000085.PDO</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
