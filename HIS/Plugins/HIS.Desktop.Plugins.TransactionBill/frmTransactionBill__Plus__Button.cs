@@ -980,6 +980,7 @@ namespace HIS.Desktop.Plugins.TransactionBill
                 data.Transaction.BUYER_TAX_CODE = txtBuyerTaxCode.Text.Trim();
                 data.Transaction.BUYER_ACCOUNT_NUMBER = txtBuyerAccountNumber.Text.Trim();
                 data.Transaction.BUYER_ADDRESS = txtBuyerAddress.Text.Trim();
+                data.Transaction.BUYER_EMAIL = txtBuyEmail.Text.Trim();
                 data.RequestRoomId = this.currentModule.RoomId;
                 var accountBook = ListAccountBook.FirstOrDefault(o => o.ID == Convert.ToInt64(cboAccountBook.EditValue));
                 if (accountBook != null)
@@ -2292,6 +2293,7 @@ namespace HIS.Desktop.Plugins.TransactionBill
                 transaction.BUYER_ACCOUNT_NUMBER = txtBuyerAccountNumber.Text;
                 transaction.BUYER_ORGANIZATION = txtBuyerOrganization.Text;
                 transaction.BUYER_ADDRESS = txtBuyerAddress.Text;
+                transaction.BUYER_EMAIL = txtBuyEmail.Text;
                 if (dtTransactionTime.EditValue != null && dtTransactionTime.DateTime != DateTime.MinValue)
                 {
                     transaction.TRANSACTION_TIME = Inventec.Common.TypeConvert.Parse.ToInt64(dtTransactionTime.DateTime.ToString("yyyyMMdd") + "000000");

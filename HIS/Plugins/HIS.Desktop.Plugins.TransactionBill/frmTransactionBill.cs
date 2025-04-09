@@ -290,6 +290,7 @@ namespace HIS.Desktop.Plugins.TransactionBill
                     txtBuyerName.Text = currentTransaction.BUYER_NAME;
                     txtBuyerTaxCode.Text = currentTransaction.BUYER_TAX_CODE;
                     txtBuyerAddress.Text = currentTransaction.BUYER_ADDRESS;
+                    txtBuyEmail.Text = currentTransaction.BUYER_EMAIL;
                     txtBuyerAccountNumber.Text = currentTransaction.BUYER_ACCOUNT_NUMBER;
 
                     cboBuyerOrganization.EditValue = null;
