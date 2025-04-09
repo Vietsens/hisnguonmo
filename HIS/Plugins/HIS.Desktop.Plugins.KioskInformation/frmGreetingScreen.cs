@@ -98,7 +98,7 @@ namespace HIS.Desktop.Plugins.KioskInformation
                 this.SetControlValue(); // lấy tên chi nhánh
                 labelError.Visible = false;
                 this.lciError.Padding = new DevExpress.XtraLayout.Utils.Padding(this.Width * 470 / 1300, this.Width * 470 / 1300, 20, 20);
-                
+
                 WaitingManager.Hide();
             }
             catch (Exception ex)
@@ -120,7 +120,7 @@ namespace HIS.Desktop.Plugins.KioskInformation
             g.Dispose();
             return (Image)imgToResize;
         }
-        
+
 
         private void getImageFromFile()
         {
@@ -130,7 +130,7 @@ namespace HIS.Desktop.Plugins.KioskInformation
                 listImage = new List<Image>();
                 //URL thư mục đã được cấu hình
                 string fileName = System.IO.Path.Combine(Application.StartupPath + "\\Tmp\\Imp\\", "IMPORT_ICD_CM.xlsx");
-                if (System.IO.Directory.Exists(Application.StartupPath + "\\Img\\Background_Image_Kiosk_Information\\")) 
+                if (System.IO.Directory.Exists(Application.StartupPath + "\\Img\\Background_Image_Kiosk_Information\\"))
                 //if (System.IO.Directory.Exists(Inventec.UC.ImageLib.Base.LocalStore.LOCAL_STORAGE_PATH_KIOSK))
                 {
                     string[] fileEntries = System.IO.Directory.GetFiles(Application.StartupPath + "\\Img\\Background_Image_Kiosk_Information\\").OrderBy(f => f).ToArray();
@@ -176,7 +176,7 @@ namespace HIS.Desktop.Plugins.KioskInformation
         }
 
 
-                private void FillDataToInformScreen()
+        private void FillDataToInformScreen()
         {
             try
             {
@@ -200,10 +200,9 @@ namespace HIS.Desktop.Plugins.KioskInformation
                     {
                         txtTreatmentCode.Focus();
                         txtTreatmentCode.Text = "";
-                        this.Hide();
                         frmGetInforationScreen formScreen = new frmGetInforationScreen(module, lstKioskInform.FirstOrDefault(), image);
                         formScreen.ShowDialog();
-                        this.Show();
+                        //this.Show();
 
                     }
                     else
@@ -214,9 +213,9 @@ namespace HIS.Desktop.Plugins.KioskInformation
                         //panelError_Select.Visible = true;
                         //gridControlSelectProFile.Visible = true;
                         //gridControlSelectProFile.DataSource = lstKioskInform;
-                        frmSelectProfile formScreen = new frmSelectProfile(module, lstKioskInform, listImage, countTimeChangeWallpaper);
+                        frmSelectProfile formScreen = new frmSelectProfile(module, lstKioskInform, listImage, countTimeChangeWallpaper, OpenFormPatient);
                         formScreen.ShowDialog();
-                        this.Show();
+                        //this.Show();
                     }
                 }
             }
@@ -224,6 +223,20 @@ namespace HIS.Desktop.Plugins.KioskInformation
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
+        }
+
+        private void OpenFormPatient(object[] obj)
+        {
+            try
+            {
+                frmGetInforationScreen frmGetInforationScreen = new frmGetInforationScreen(this.module, obj[0] as KioskInformationSDO, obj[1] as Image);
+                frmGetInforationScreen.ShowDialog();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+
         }
 
         private void btnAgree_Click(object sender, EventArgs e)
@@ -264,37 +277,55 @@ namespace HIS.Desktop.Plugins.KioskInformation
 
         private void timer_Tick(object sender, EventArgs e)
         {
-            if (timer.Enabled)
+
+            try
             {
-                countTimeHideError++;
-                if (countTimeHideError == 60)
+
+                if (timer.Enabled)
                 {
-                    timer.Stop();
-                    labelError.Visible = false;
-                    txtTreatmentCode.Text = "";
-                    txtTreatmentCode.Focus();
+                    countTimeHideError++;
+                    if (countTimeHideError == 60)
+                    {
+                        timer.Stop();
+                        labelError.Visible = false;
+                        txtTreatmentCode.Text = "";
+                        txtTreatmentCode.Focus();
+                    }
                 }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
 
         private void timerWallPaper_Tick()
         {
-            if (timerWallPaper.Enabled)
-            {
-                countTimeChangeWallpaper++;
-                if (countTimeChangeWallpaper % 10 == 0)
-                {
-                    if (listImage != null && listImage.Count > 0)
-                    {
-                        if (countTimeChangeWallpaper/10 == listImage.Count)
-                        {
-                            countTimeChangeWallpaper = 0;
-                        }
 
-                        image = listImage[countTimeChangeWallpaper/10];
-                        this.layoutControlGroup2.BackgroundImage = image;
+            try
+            {
+
+                if (timerWallPaper.Enabled)
+                {
+                    countTimeChangeWallpaper++;
+                    if (countTimeChangeWallpaper % 10 == 0)
+                    {
+                        if (listImage != null && listImage.Count > 0)
+                        {
+                            if (countTimeChangeWallpaper / 10 == listImage.Count)
+                            {
+                                countTimeChangeWallpaper = 0;
+                            }
+
+                            image = listImage[countTimeChangeWallpaper / 10];
+                            this.layoutControlGroup2.BackgroundImage = image;
+                        }
                     }
                 }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
 

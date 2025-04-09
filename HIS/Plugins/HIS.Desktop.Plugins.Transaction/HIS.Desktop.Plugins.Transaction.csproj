@@ -43,15 +43,11 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\LIB\ACS\ACS.SDO.dll</HintPath>
     </Reference>
-    <Reference Include="CARD.WCF.Service.TapCardService">
-      <HintPath>..\..\..\..\LIB\WCF\CARD.WCF\TapCardService\4.5\CARD.WCF.Service.TapCardService.dll</HintPath>
-    </Reference>
     <Reference Include="CHC.WCFClient">
       <HintPath>..\..\..\..\LIB\WCF\CHC.WCF\Client\CHC.WCFClient.dll</HintPath>
     </Reference>
-    <Reference Include="CPA.WCFClient.CallPatientClient, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\Test_HIS\histest\x64\ReferencedAssemblies\CPA.WCFClient.CallPatientClient.dll</HintPath>
+    <Reference Include="CPA.WCFClient.CallPatientClient">
+      <HintPath>..\..\..\..\..\His Test\histest\x64\ReferencedAssemblies\CPA.WCFClient.CallPatientClient.dll</HintPath>
     </Reference>
     <Reference Include="DevExpress.Data.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
     <Reference Include="DevExpress.Images.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
@@ -67,17 +63,26 @@
     <Reference Include="HIS.Common.Treatment">
       <HintPath>..\..\..\..\LIB\HIS\HIS.Common\HIS.Common.Treatment\HIS.Common.Treatment.dll</HintPath>
     </Reference>
+    <Reference Include="HIS.Desktop.ModuleExt">
+      <HintPath>..\..\..\..\lib\HIS\HIS.Desktop.ModuleExt\HIS.Desktop.ModuleExt.dll</HintPath>
+    </Reference>
     <Reference Include="HIS.Desktop.Plugins.Library.EmrGenerate">
       <HintPath>..\..\..\..\LIB\HIS\HIS.Desktop.Plugins.Library.EmrGenerate\HIS.Desktop.Plugins.Library.EmrGenerate.dll</HintPath>
     </Reference>
     <Reference Include="HIS.Desktop.Plugins.Library.PrintServiceReqTreatment">
       <HintPath>..\..\..\..\LIB\HIS\HIS.Desktop.Plugins.Library.PrintServiceReqTreatment\HIS.Desktop.Plugins.Library.PrintServiceReqTreatment.dll</HintPath>
     </Reference>
+    <Reference Include="HIS.Desktop.Print">
+      <HintPath>..\..\..\..\lib\HIS\HIS.Desktop.Print\HIS.Desktop.Print.dll</HintPath>
+    </Reference>
+    <Reference Include="HIS.Desktop.Utility">
+      <HintPath>..\..\..\..\lib\HIS\HIS.Desktop.Utilities\HIS.Desktop.Utility.dll</HintPath>
+    </Reference>
     <Reference Include="HIS.UC.SereServTree">
       <HintPath>..\..\..\..\LIB\HIS\HIS.UC.SereServTree\HIS.UC.SereServTree.dll</HintPath>
     </Reference>
     <Reference Include="HIS.UC.TotalPriceInfo">
-      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\HIS.UC.TotalPriceInfo.dll</HintPath>
+      <HintPath>..\..\..\..\..\His Test\histest\x64\ReferencedAssemblies\HIS.UC.TotalPriceInfo.dll</HintPath>
     </Reference>
     <Reference Include="HIS.UC.TreatmentInfo">
       <HintPath>..\..\..\..\LIB\HIS\HIS.UC.TreatmentInfo\HIS.UC.TreatmentInfo.dll</HintPath>
@@ -126,7 +131,7 @@
     </Reference>
     <Reference Include="Inventec.Common.WebApiClient, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\Inventec.Common.WebApiClient.dll</HintPath>
+      <HintPath>..\..\..\..\lib\Inventec.Common\Inventec.Common.WebApiClient\Inventec.Common.WebApiClient.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Core">
       <HintPath>..\..\..\..\LIB\Inventec.Core\Inventec.Core.dll</HintPath>
@@ -362,18 +367,6 @@
     <ProjectReference Include="..\..\HIS.Desktop.LocalStorage.SdaConfigKey\HIS.Desktop.LocalStorage.SdaConfigKey.csproj">
       <Project>{d46b3ba7-4549-4f4e-a7a4-587879c51166}</Project>
       <Name>HIS.Desktop.LocalStorage.SdaConfigKey</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\HIS.Desktop.ModuleExt\HIS.Desktop.ModuleExt.csproj">
-      <Project>{168b4cc6-8447-41da-b034-a02f336168e4}</Project>
-      <Name>HIS.Desktop.ModuleExt</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\HIS.Desktop.Print\HIS.Desktop.Print.csproj">
-      <Project>{aeeca321-fd65-407a-8d70-ba5362883b87}</Project>
-      <Name>HIS.Desktop.Print</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\HIS.Desktop.Utility\HIS.Desktop.Utilities.csproj">
-      <Project>{2aad22db-2166-4be8-ae52-335b21dc03fc}</Project>
-      <Name>HIS.Desktop.Utilities</Name>
     </ProjectReference>
     <ProjectReference Include="..\HIS.Desktop.Library.CacheClient\HIS.Desktop.Library.CacheClient.csproj">
       <Project>{64837e01-803d-4f1e-9dfc-d34b38ea78f9}</Project>

@@ -86,6 +86,7 @@ namespace HIS.Desktop.Plugins.DepositService.DepositService
         SereServTreeProcessor ssTreeProcessor;
         UserControl ucSereServTree;
         bool isPrintNow = false;
+        bool isSign = false;
         Inventec.Desktop.Common.Modules.Module moduleData;
         HIS.Desktop.Common.DelegateReturnSuccess returnData = null;
         bool? IsDepositAll = null;
@@ -1223,6 +1224,7 @@ namespace HIS.Desktop.Plugins.DepositService.DepositService
                 btnSave.Enabled = isEnable;
                 btnSaveAndPrint.Enabled = isEnable;
                 btnSavePrintAndTrans.Enabled = isEnable;
+                btnAddSign.Enabled = isEnable;
                 ddbPrint.Enabled = !isEnable;
             }
             catch (Exception ex)
@@ -1963,7 +1965,7 @@ namespace HIS.Desktop.Plugins.DepositService.DepositService
             return result;
         }
 
-        private void SaveProcess(bool isSaveAndPrint, bool isShowTransation)
+        private void SaveProcess(bool isSaveAndPrint, bool isShowTransation, bool isSaveAndSign)
         {
             try
             {
@@ -2247,6 +2249,36 @@ namespace HIS.Desktop.Plugins.DepositService.DepositService
                             HIS.Desktop.ModuleExt.PluginInstanceBehavior.ShowModule("HIS.Desktop.Plugins.TransactionBillSelect", this.moduleData.RoomId, this.moduleData.RoomTypeId, listArgs);
                         }
                     }
+                    if (success && isSaveAndSign)
+                    {
+                        this.isSign = true;
+                        Inventec.Common.RichEditor.RichEditorStore richEditorMain = new Inventec.Common.RichEditor.RichEditorStore(HIS.Desktop.ApiConsumer.ApiConsumers.SarConsumer, HIS.Desktop.LocalStorage.ConfigSystem.ConfigSystems.URI_API_SAR, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetLanguage(), HIS.Desktop.LocalStorage.Location.PrintStoreLocation.PrintTemplatePath);
+                        richEditorMain.RunPrintTemplate(PrintTypeCodeStore.PRINT_TYPE_CODE__MPS000102, DelegateRunPrinter);
+                        EnableButton(false);
+                        //if (isShowTransation)
+                        //{
+                        //    this.Close();
+                        //    WaitingManager.Show();
+                        //    List<object> listArgs = new List<object>();
+                        //    LoadTreatment(hisTreatment.ID);
+                        //    listArgs.Add(this.hisTreatment);
+                        //    listArgs.Add(this.sSByTreatment);
+                        //    V_HIS_PATIENT_TYPE_ALTER lastPatientType = new V_HIS_PATIENT_TYPE_ALTER();
+                        //    MOS.Filter.HisPatientTypeAlterViewFilter patientTypeFilter = new HisPatientTypeAlterViewFilter();
+                        //    patientTypeFilter.TREATMENT_ID = hisTreatment.ID;
+                        //    var patientTypeAlters = new BackendAdapter(new CommonParam()).Get<List<V_HIS_PATIENT_TYPE_ALTER>>("api/HisPatientTypeALter/GetView", ApiConsumer.ApiConsumers.MosConsumer, patientTypeFilter, null);
+                        //    if (patientTypeAlters != null && patientTypeAlters.Count > 0)
+                        //    {
+                        //        var patientTypeBhytCFG = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<long>("MOS.HIS_PATIENT_TYPE.PATIENT_TYPE_CODE.BHYT");
+                        //        lastPatientType = patientTypeAlters.OrderByDescending(o => o.LOG_TIME).FirstOrDefault();
+                        //    }
+                        //    listArgs.Add(lastPatientType);
+                        //    listArgs.Add(moduleData);
+                        //    listArgs.Add(false);
+                        //    WaitingManager.Hide();
+                        //    HIS.Desktop.ModuleExt.PluginInstanceBehavior.ShowModule("HIS.Desktop.Plugins.TransactionBillSelect", this.moduleData.RoomId, this.moduleData.RoomTypeId, listArgs);
+                        //}
+                    }
                     WaitingManager.Hide();
                     MessageManager.Show(this, param, success);
                     if (success && chkAutoClose.CheckState == CheckState.Checked)
@@ -2452,7 +2484,7 @@ namespace HIS.Desktop.Plugins.DepositService.DepositService
             try
             {
                 if (!btnSave.Enabled) return;
-                SaveProcess(false, false);
+                SaveProcess(false, false, false);
             }
             catch (Exception ex)
             {
@@ -2481,7 +2513,7 @@ namespace HIS.Desktop.Plugins.DepositService.DepositService
             try
             {
                 if (!btnSaveAndPrint.Enabled) return;
-                SaveProcess(true, false);
+                SaveProcess(true, false, false);
             }
             catch (Exception ex)
             {
@@ -2950,6 +2982,7 @@ namespace HIS.Desktop.Plugins.DepositService.DepositService
                 btnSave.Enabled = enable;
                 btnSaveAndPrint.Enabled = enable;
                 btnSavePrintAndTrans.Enabled = enable;
+                btnAddSign.Enabled = enable;
             }
             catch (Exception ex)
             {
@@ -3431,7 +3464,7 @@ namespace HIS.Desktop.Plugins.DepositService.DepositService
             try
             {
                 if (!btnSavePrintAndTrans.Enabled) return;
-                SaveProcess(true, true);
+                SaveProcess(true, true, false);
             }
             catch (Exception ex)
             {
@@ -3462,6 +3495,12 @@ namespace HIS.Desktop.Plugins.DepositService.DepositService
 
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
+        }
+
+        private void btnAddSign_Click(object sender, EventArgs e)
+        {
+            if (!btnAddSign.Enabled) return;
+            SaveProcess(false, true, true);
         }
     }
 }

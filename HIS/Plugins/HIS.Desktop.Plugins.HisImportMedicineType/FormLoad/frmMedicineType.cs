@@ -1647,7 +1647,7 @@ namespace HIS.Desktop.Plugins.HisImportMedicineType.FormLoad
 
                     if (!string.IsNullOrEmpty(item.MEDICINE_GROUP_CODE))
                     {
-                        if (!CheckMaxLenth(item.MEDICINE_GROUP_CODE, 2))
+                        if (!CheckMaxLenth(item.MEDICINE_GROUP_CODE, 4))
                         {
                             error += string.Format(Message.MessageImport.Maxlength, "Nhóm thuốc");
                             mediAdo.MEDICINE_GROUP_CODE_ERROR = 1;

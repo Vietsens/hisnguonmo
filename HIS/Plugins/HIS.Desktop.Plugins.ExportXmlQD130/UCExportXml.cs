@@ -64,6 +64,7 @@ using System.Xml;
 using System.Security.Cryptography.X509Certificates;
 using System.Diagnostics;
 using System.Threading;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
 
 namespace HIS.Desktop.Plugins.ExportXmlQD130
 {
@@ -1165,7 +1166,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
 
 
 
-        string ProcessExportXmlDetail(ref bool isSuccess, ref MemoryStream memoryStream, bool viewXml, bool XuatXmlTT, bool XuatXml12, List<V_HIS_TREATMENT_12> hisTreatments, List<V_HIS_PATIENT_TYPE_ALTER> hisPatientTypeAlters,
+        string ProcessExportXmlDetail(ref bool isSuccess, ref MemoryStream memoryStream, ref MemoryStream memoryStreamXml12, bool viewXml, bool XuatXmlTT, bool XuatXml12, List<V_HIS_TREATMENT_12> hisTreatments, List<V_HIS_PATIENT_TYPE_ALTER> hisPatientTypeAlters,
             List<V_HIS_SERE_SERV_2> ListSereServ, List<HIS_DHST> listDhst, List<V_HIS_SERE_SERV_TEIN> listSereServTein,
             List<HIS_TRACKING> hisTrackings, List<V_HIS_SERE_SERV_PTTT> hisSereServPttts, List<HIS_EKIP_USER> ListEkipUser,
             List<V_HIS_BED_LOG> ListBedlog, List<HIS_DEBATE> listDebate, List<V_HIS_BABY> listBaby, List<V_HIS_MEDICAL_ASSESSMENT> listMedicalAssessment, List<HIS_HIV_TREATMENT> listHivTreatment, List<V_HIS_SERE_SERV_SUIN> listSereServSuin, List<HIS_TUBERCULOSIS_TREAT> lstTuberculosisTreat)
@@ -1174,6 +1175,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
             Dictionary<string, List<string>> DicErrorMess = new Dictionary<string, List<string>>();
             try
             {
+                XuatXml12 = XuatXml12 && TypeXml().Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries).ToList().Contains("12");
                 Dictionary<long, List<V_HIS_PATIENT_TYPE_ALTER>> dicPatientTypeAlter = new Dictionary<long, List<V_HIS_PATIENT_TYPE_ALTER>>();
                 Dictionary<long, List<V_HIS_SERE_SERV_2>> dicSereServ = new Dictionary<long, List<V_HIS_SERE_SERV_2>>();
                 Dictionary<long, List<V_HIS_SERE_SERV_TEIN>> dicSereServTein = new Dictionary<long, List<V_HIS_SERE_SERV_TEIN>>();
@@ -1545,6 +1547,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                         }
                         if (rsXml12 != null)
                         {
+                            memoryStreamXml12 = rsXml12;
                             FileStream file12 = new FileStream(saveFilePathXml12, FileMode.Create, FileAccess.Write);
                             rsXml12.WriteTo(file12);
                             file12.Close();
@@ -1649,6 +1652,39 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
             return result;
         }
 
+        private string TypeXml()
+        {
+            string result = "";
+
+            try
+            {
+                List<string> connectInfors = new List<string>();
+                int count = 0;
+                if (string.IsNullOrEmpty(HisConfigCFG.QD_130_BYT__CONNECTION_INFO))
+                {
+
+                }
+                else
+                {
+                    connectInfors = HisConfigCFG.QD_130_BYT__CONNECTION_INFO.Split('|').ToList();
+                }
+                try
+                {
+                    result = connectInfors[3];
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Error("Key cấu hình hệ thống chỉ thiết lập 3 giá trị");
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+
+            return result;
+        }
+
         private string DataSignXML(string SourceFile, string element)
         {
             string result = null;
@@ -1692,7 +1728,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                     string pathAfterFileSign = SourceFile;
 
                     var wcfSignResultDCO = signProcessorClient.SignXml130(jsonData);
-                    if (wcfSignResultDCO.Success)
+                    if (wcfSignResultDCO != null && wcfSignResultDCO.Success)
                     {
                         pathAfterFileSign = wcfSignResultDCO.OutputFile;
                     }
@@ -2352,12 +2388,13 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                                 isNotFileSign = true;
                                 CommonParam param = new CommonParam();
                                 MemoryStream memoryStream = new MemoryStream();
+                                MemoryStream memoryStreamXml12 = new MemoryStream();
                                 bool success = false;
                                 WaitingManager.Show();
                                 List<V_HIS_TREATMENT_1> listTreatments = new List<V_HIS_TREATMENT_1>();
                                 listTreatments.Add(treatment1);
                                 Inventec.Common.Logging.LogSystem.Info("btnExportXml_Click Begin");
-                                success = this.GenerateXml(ref param, ref memoryStream, true, false, false, listTreatments);
+                                success = this.GenerateXml(ref param, ref memoryStream,ref memoryStreamXml12, true, false, true, listTreatments);
                                 isNotFileSign = false;
                                 Inventec.Common.Logging.LogSystem.Info("btnExportXml_Click End");
                                 WaitingManager.Hide();
@@ -4027,7 +4064,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                             }
                             else
                                 sendXml12 = false;
-                            sendXml12 = !string.IsNullOrEmpty(typeXml) ? typeXml.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries).ToList().Contains("12") : false;
+                            sendXml12 = !string.IsNullOrEmpty(typeXml) ? typeXml.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries).ToList().Contains("12") && ado.ListMedicalAssessment != null && ado.ListMedicalAssessment.Count > 0 : false;
                             if (dicHivTreatment.ContainsKey(treatment.ID))
                             {
                                 ado.HivTreatment = dicHivTreatment[treatment.ID];
@@ -4337,7 +4374,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                 if (VerifyServiceSignProcessorIsRunning())
                 {
                     var wcfSignResultDCO = signProcessorClient.SignXml130(jsonData);
-                    if (wcfSignResultDCO.Success)
+                    if (wcfSignResultDCO != null && wcfSignResultDCO.Success)
                     {
                         pathAfterFileSign = wcfSignResultDCO.OutputFile;
                     }
@@ -4597,7 +4634,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                     if (this.savePathADO != null && !string.IsNullOrEmpty(this.savePathADO.pathXml))
                     {
                         WaitingManager.Show();
-                        success = this.GenerateXml(ref param, ref memoryStream, false, false, false, listSelection);
+                        success = this.GenerateXml(ref param, ref memoryStream, false, false, true, listSelection);
                         WaitingManager.Hide();
                         if (success && param.Messages.Count == 0)
                         {
@@ -4717,7 +4754,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                     //}
                     WaitingManager.Show();
                     Inventec.Common.Logging.LogSystem.Info("btnExportCollinearXml_Click Begin");
-                    success = this.GenerateXml(ref param, ref memoryStream, false, true, false, listSelection);
+                    success = this.GenerateXml(ref param, ref memoryStream, false, true, true, listSelection);
                     Inventec.Common.Logging.LogSystem.Info("btnExportCollinearXml_Click End");
                     WaitingManager.Hide();
                     if (success && param.Messages.Count == 0)
@@ -4889,7 +4926,6 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                             btnSavePath_Click(null, null);
                     }
 
-                    xuatXml12 = !string.IsNullOrEmpty(this.savePathADO.pathXmlGDYK);
                     if (chkSignFileCertUtil.Checked == false)
                     {
                         WaitingManager.Show();

@@ -4017,20 +4017,28 @@ namespace HIS.Desktop.Plugins.ServiceExecute
 
                         HIS_EXECUTE_ROLE hIS_EXECUTE_ROLE = new HIS_EXECUTE_ROLE();
                         MOS.EFMODEL.DataModels.HIS_EKIP_USER ekipUser = new HIS_EKIP_USER();
-                        ekipUser.LOGINNAME = ServiceReqConstruct.EXECUTE_LOGINNAME;
-
-                        List<MOS.EFMODEL.DataModels.HIS_EKIP_USER> ekipUserVirtual = new List<HIS_EKIP_USER>();
+                        Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData($"ServiceReqConstruct", ServiceReqConstruct.EXECUTE_LOGINNAME));
+                        if (ServiceReqConstruct.EXECUTE_LOGINNAME != null)
+                        {
+                            ekipUser.LOGINNAME = ServiceReqConstruct.EXECUTE_LOGINNAME;
+                        }
+                        else
+                        {
+                            ekipUser.LOGINNAME = login;
+                        }
+                            
+                        //List<MOS.EFMODEL.DataModels.HIS_EKIP_USER> ekipUserVirtual = new List<HIS_EKIP_USER>();
                         lstExecuteRole = BackendDataWorker.Get<HIS_EXECUTE_ROLE>().Where(o => o.ALLOW_SIMULTANEITY != 1).ToList();
                         if (lstExecuteRole != null)
                         {
                             long lstExecuteRoleId = lstExecuteRole.Select(o => o.ID).FirstOrDefault();
                             ekipUser.EXECUTE_ROLE_ID = lstExecuteRoleId;
                         }
-                        ekipUserVirtual.Add(ekipUser);      
+                        ekipUsers.Add(ekipUser);      
 
-                        if (ekipUserVirtual != null)
+                        if (ekipUsers != null)
                         {
-                            List<string> lstLogin = ekipUserVirtual.Select(o => o.LOGINNAME).Distinct().ToList();
+                            List<string> lstLogin = ekipUsers.Select(o => o.LOGINNAME).Distinct().ToList();
                             foreach (string acc in lstLogin)
                             {
                                 if (acc != null)
@@ -4042,11 +4050,11 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                             if (lstLoginValid.Count == 0)
                             {
                                 lstLoginValid.Add(login);
-                            }
+                            }   
                             inputSDO.Loginnames = lstLoginValid;
                             
                         }
-                        Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData($"ekipUserVirtual", inputSDO));
+                        Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData($"ekipUserVirtual", ekipUsers));
                     }
                     
                     string message = "";
@@ -4138,7 +4146,7 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                     else
                     {
                         message = string.Format("{0} Bạn có muốn tiếp tục?", paramCheckSurg.GetMessage());
-                        if (MessageBox.Show(message, "", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
+                        if (XtraMessageBox.Show(message, "", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
                             return;
                     }
                 }

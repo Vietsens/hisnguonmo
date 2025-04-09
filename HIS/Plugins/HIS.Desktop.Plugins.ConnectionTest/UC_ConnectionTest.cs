@@ -88,6 +88,7 @@ using MOS.TDO;
 using System.Threading;
 using EMR.SDO;
 using Inventec.Desktop.CustomControl.CustomGrid;
+using System.Timers;
 
 namespace HIS.Desktop.Plugins.ConnectionTest
 {
@@ -209,7 +210,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
-
+        System.Windows.Forms.Timer timer3 = new System.Windows.Forms.Timer();
         private void UC_ConnectionTest_Load(object sender, EventArgs e)
         {
             try
@@ -267,6 +268,8 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                 StartTimer(currentModule.ModuleLink, "timer1");
                 RegisterTimer(currentModule.ModuleLink, "timer2", timer2.Interval, timer2_Tick);
                 StartTimer(currentModule.ModuleLink, "timer2");
+                timer3.Interval = 200; 
+                RegisterTimer(currentModule.ModuleLink, "timer3", timer3.Interval, timer3_Tick);
             }
             catch (Exception ex)
             {
@@ -407,6 +410,19 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                     }
                 }
                 DateLM.ToolTip = ConvertStringTime(DateLM);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+        private void timer3_Tick()
+        {
+            try
+            {
+                StopTimer(currentModule.ModuleLink, "timer3");
+                txtTreatmentCode.Focus();
+                txtTreatmentCode.SelectAll();
             }
             catch (Exception ex)
             {
@@ -766,14 +782,14 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                                 }
                             }
 
-                            if(info.Column.FieldName == "PRINT_COUNT_IC")
+                            if (info.Column.FieldName == "PRINT_COUNT_IC")
                             {
                                 var printCount = ((LisSampleADO)view.GetRow(lastRowHandle)).PRINT_COUNT;
                                 if (printCount > 0)
                                 {
                                     text = string.Format("Đã in {0} lần", printCount);
                                 }
-                            }    
+                            }
                             lastInfo = new ToolTipControlInfo(new DevExpress.XtraGrid.GridToolTipInfo(view, new DevExpress.XtraGrid.Views.Base.CellToolTipInfo(info.RowHandle, info.Column, "Text")), text);
                         }
                         e.Info = lastInfo;
@@ -1312,7 +1328,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                     }
                     else if (e.Column.FieldName == "PRINT_COUNT_IC")
                     {
-                        if ((data.PRINT_COUNT != null && data.PRINT_COUNT > 0 ))
+                        if ((data.PRINT_COUNT != null && data.PRINT_COUNT > 0))
                         {
                             e.RepositoryItem = repCountPrint;
                         }
@@ -1492,6 +1508,11 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                 {
                     SetDataToCommon(null);
                 }
+
+                if (IsSearchByTreatmentCode && lstSampleAll.Exists(o => string.IsNullOrEmpty(o.BARCODE)))
+                {
+                    FocusCellByRowHandle(gridViewSample, lstSampleAll.IndexOf(lstSampleAll.FirstOrDefault(o => string.IsNullOrEmpty(o.BARCODE))), gridColumnBarCode);
+                }
             }
             catch (Exception ex)
             {
@@ -1533,7 +1554,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
-
+        private bool IsSearchByTreatmentCode = false;
         internal void FillDataToGridSample(object param)
         {
             try
@@ -1545,7 +1566,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                 CommonParam paramCommon = new CommonParam(startPage, limit);
 
                 gridControlSample.DataSource = null;
-
+                IsSearchByTreatmentCode = false;
                 LisSampleViewFilter lisSampleFilter = new LisSampleViewFilter();
                 if (room == null)
                 {
@@ -1567,6 +1588,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                     {
                         code = string.Format("{0:000000000000}", Convert.ToInt64(code));
                     }
+                    IsSearchByTreatmentCode = true;
                     lisSampleFilter.TREATMENT_CODE__EXACT = code;
                     txtTreatmentCode.Text = code;
                 }
@@ -5325,15 +5347,25 @@ namespace HIS.Desktop.Plugins.ConnectionTest
 
                 WaitingManager.Show();
                 var rs = new BackendAdapter(param).Post<LIS_SAMPLE>("api/LisSample/UpdateBarcode", ApiConsumers.LisConsumer, input, param);
+
                 if (rs != null)
                 {
+                    sample.BARCODE = rs.BARCODE;
+                    lstSampleAll.FirstOrDefault(o => o.ID == rs.ID).BARCODE = rs.BARCODE;
                     result = true;
                     lblNewestBarcode.Text = sample.BARCODE;
                 }
                 else
                 {
                     result = false;
-                    FillDataToGridControl();
+                    if (IsSearchByTreatmentCode)
+                    {
+                        FocusCellByRowHandle(gridViewSample, lstSampleAll.IndexOf(lstSampleAll.FirstOrDefault(o => o.ID == sample.ID)), gridColumnBarCode);
+                    }
+                    else
+                    {
+                        FillDataToGridControl();
+                    }
                 }
                 WaitingManager.Hide();
                 MessageManager.Show(this.ParentForm, param, result);
@@ -5852,6 +5884,18 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                 else if (e.KeyCode == Keys.Up)
                 {
                     rowSample = (LisSampleADO)view.GetRow(view.FocusedRowHandle - 1);
+                }
+                else if (e.KeyCode == Keys.Enter && IsSearchByTreatmentCode)
+                {
+                    rowSample = (LisSampleADO)gridViewSample.GetFocusedRow();
+                    if (lstSampleAll.Exists(o => string.IsNullOrEmpty(o.BARCODE) && o.ID != rowSample.ID))
+                    {
+                        FocusCellByRowHandle(gridViewSample, lstSampleAll.IndexOf(lstSampleAll.FirstOrDefault(o => string.IsNullOrEmpty(o.BARCODE) && o.ID != rowSample.ID)), gridColumnBarCode);
+                    }else
+                    {
+                        StartTimer(currentModule.ModuleLink, "timer3");
+                    }
+                    return;
                 }
                 else
                 {
@@ -9253,27 +9297,17 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
+        void FocusCellByRowHandle(ColumnView view, int rowHandle, GridColumn column)
+        {
+            if (view == null || !view.IsDataRow(rowHandle)) return;
+            view.FocusedColumn = column;
+            view.FocusedRowHandle = rowHandle;
+            view.ShowEditor();
+        }
 
         private void txtTreatmentCode_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
         {
-            try
-            {
-                if (e.KeyCode == Keys.Enter)
-                {
-                    if (!string.IsNullOrEmpty(txtTreatmentCode.Text))
-                    {
-                        FillDataToGridControl();
-                    }
-                    else
-                    {
-                        dtBarcodeTimefrom.Focus();
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                Inventec.Common.Logging.LogSystem.Error(ex);
-            }
+           
         }
 
         private void chkKhongHienThiChuaLayMau_CheckedChanged(object sender, EventArgs e)
@@ -9944,5 +9978,26 @@ namespace HIS.Desktop.Plugins.ConnectionTest
             }
         }
 
+        private void txtTreatmentCode_KeyDown(object sender, KeyEventArgs e)
+        {
+            try
+            {
+                if (e.KeyCode == Keys.Enter)
+                {
+                    if (!string.IsNullOrEmpty(txtTreatmentCode.Text))
+                    {
+                        FillDataToGridControl();
+                    }
+                    else
+                    {
+                        dtBarcodeTimefrom.Focus();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
     }
 }
