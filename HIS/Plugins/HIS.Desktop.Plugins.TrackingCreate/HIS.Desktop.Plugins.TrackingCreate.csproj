@@ -82,6 +82,9 @@
     <Reference Include="HIS.UC.Icd">
       <HintPath>..\..\..\..\lib\HIS\His.UC.Icd\HIS.UC.Icd.dll</HintPath>
     </Reference>
+    <Reference Include="HIS.UC.SecondaryIcd">
+      <HintPath>..\..\..\UC\HIS.UC.SecondaryIcd\bin\Debug\HIS.UC.SecondaryIcd.dll</HintPath>
+    </Reference>
     <Reference Include="IMSys.DbConfig.HIS_RS">
       <HintPath>..\..\..\..\LIB\IMSys.DbConfig\IMSys.DbConfig.HIS_RS\IMSys.DbConfig.HIS_RS.dll</HintPath>
     </Reference>
@@ -367,10 +370,6 @@
     <ProjectReference Include="..\..\..\Common\Inventec.Common\Inventec.Common.Logging\Inventec.Common.Logging.csproj">
       <Project>{4859008d-a40d-47bb-a185-019c8b140569}</Project>
       <Name>Inventec.Common.Logging</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\UC\HIS.UC.SecondaryIcd\HIS.UC.SecondaryIcd.csproj">
-      <Project>{04b2ab94-562d-4753-a158-1aad3217408b}</Project>
-      <Name>HIS.UC.SecondaryIcd</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\HIS.Desktop.ADO\HIS.Desktop.ADO.csproj">
       <Project>{808c25cd-0925-417f-bbf9-caf9604da879}</Project>
