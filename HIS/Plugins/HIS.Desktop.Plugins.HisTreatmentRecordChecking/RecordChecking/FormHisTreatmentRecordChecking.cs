@@ -15,6 +15,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+using ACS.EFMODEL.DataModels;
 using DevExpress.Data;
 using DevExpress.Utils;
 using DevExpress.XtraEditors;
@@ -24,6 +25,7 @@ using DevExpress.XtraGrid.Views.Grid.ViewInfo;
 using EMR.EFMODEL.DataModels;
 using EMR.Filter;
 using EMR.SDO;
+using EMR.TDO;
 using HIS.Desktop.ApiConsumer;
 using HIS.Desktop.Controls.Session;
 using HIS.Desktop.LocalStorage.BackendData;
@@ -153,7 +155,8 @@ namespace HIS.Desktop.Plugins.HisTreatmentRecordChecking.RecordChecking
         {
             try
             {
-                WaitingManager.Show();
+                WaitingManager.Show(); 
+                GetControlAcs();
                 //SetCaptionByLanguageKey();
                 if (this.listTreatmentId != null)
                 {
@@ -1097,14 +1100,24 @@ namespace HIS.Desktop.Plugins.HisTreatmentRecordChecking.RecordChecking
                         InputADO inputADO = new InputADO();
                         inputADO.DTI = String.Format("{0}|{1}|{2}|{3}|{4}|{5}", ConfigSystems.URI_API_ACS, ConfigSystems.URI_API_EMR, ConfigSystems.URI_API_FSS, Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetTokenData().TokenCode, Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName(), Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetUserName());
                         inputADO.IsSave = false;
-                        if (!string.IsNullOrEmpty(row.NEXT_SIGNER) && row.NEXT_SIGNER == Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName())
-                            inputADO.IsSign = true;//set true nếu cần gọi ký
+                        if ((row.REJECTER == null
+                   && row.NEXT_SIGNER == Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName())
+                   || (((row.NEXT_SIGNER == null && (row.SIGNERS == null || !row.SIGNERS.Contains("#@!@#" + row.PATIENT_CODE))) || (row.NEXT_SIGNER != null && row.NEXT_SIGNER.Contains("#@!@#" + row.PATIENT_CODE)))
+                           && HIS.Desktop.LocalStorage.EmrConfig.EmrConfigs.Get<string>("EMR.EMR_DOCUMENT.PATIENT_SIGN.OPTION") == "3"))
+                        {
+                            inputADO.IsSign = true;
+                        }
                         else
                             inputADO.IsSign = false;
-                        inputADO.IsReject = false;
-                        inputADO.IsPrint = false;
+
+
+                        inputADO.IsSave = false;
                         inputADO.IsExport = false;
 
+                        inputADO.IsPrint = true;
+
+                        inputADO.IsEnableButtonPrint = controlAcs != null && controlAcs.FirstOrDefault(o => o.CONTROL_CODE == "EMR000002") != null;
+                        inputADO.IsShowPatientSign = true;
                         //Mở popup 
                         inputADO.Treatment = new Inventec.Common.SignLibrary.DTO.TreatmentDTO();
                         inputADO.Treatment.TREATMENT_CODE = row.TREATMENT_CODE;//mã hồ sơ điều trị
@@ -1112,6 +1125,7 @@ namespace HIS.Desktop.Plugins.HisTreatmentRecordChecking.RecordChecking
                         inputADO.DocumentCode = row.DOCUMENT_CODE;
                         inputADO.DocumentName = row.DOCUMENT_NAME;//Tên văn bản cần tạo
 
+                        inputADO.DlgOpenModuleConfig = OpenSignConfig;
                         if (!String.IsNullOrWhiteSpace(temFile) && File.Exists(temFile))
                             libraryProcessor.ShowPopup(temFile, inputADO);
                         else
@@ -1135,6 +1149,51 @@ namespace HIS.Desktop.Plugins.HisTreatmentRecordChecking.RecordChecking
             }
         }
 
+        private void OpenSignConfig(DocumentTDO obj)
+        {
+            try
+            {
+                if (obj != null)
+                {
+                    EMR.Filter.EmrDocumentFilter filter = new EMR.Filter.EmrDocumentFilter();
+                    filter.DOCUMENT_CODE__EXACT = obj.DocumentCode;
+                    var apiResult = new Inventec.Common.Adapter.BackendAdapter(new CommonParam()).Get<List<EMR.EFMODEL.DataModels.EMR_DOCUMENT>>(EMR.URI.EmrDocument.GET, ApiConsumer.ApiConsumers.EmrConsumer, filter, SessionManager.ActionLostToken, null);
+                    if (apiResult != null && apiResult.Count > 0)
+                    {
+                        List<object> _listObj = new List<object>();
+                        _listObj.Add(apiResult.Max(o => o.ID));//truyền vào id lớn nhất;
+
+                        HIS.Desktop.ModuleExt.PluginInstanceBehavior.ShowModule("EMR.Desktop.Plugins.EmrSign", moduleData.RoomId, moduleData.RoomTypeId, _listObj);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        void GetControlAcs()
+        {
+            try
+            {
+                CommonParam param = new CommonParam();
+                ACS.SDO.AcsTokenLoginSDO tokenLoginSDOForAuthorize = new ACS.SDO.AcsTokenLoginSDO();
+                tokenLoginSDOForAuthorize.LOGIN_NAME = Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName();
+                tokenLoginSDOForAuthorize.APPLICATION_CODE = GlobalVariables.APPLICATION_CODE;
+
+                var acsAuthorize = new BackendAdapter(param).Get<ACS.SDO.AcsAuthorizeSDO>(HIS.Desktop.ApiConsumer.AcsRequestUriStore.ACS_TOKEN__AUTHORIZE, HIS.Desktop.ApiConsumer.ApiConsumers.AcsConsumer, tokenLoginSDOForAuthorize, param);
+
+                if (acsAuthorize != null)
+                {
+                    controlAcs = acsAuthorize.ControlInRoles.ToList();
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
         private void Gv_EmrDocument_CustomUnboundColumnData(object sender, DevExpress.XtraGrid.Views.Base.CustomColumnDataEventArgs e)
         {
             try
@@ -1695,6 +1754,8 @@ namespace HIS.Desktop.Plugins.HisTreatmentRecordChecking.RecordChecking
         }
 
         private bool hasSelectedTreatment = false;
+        private List<ACS_CONTROL> controlAcs;
+
         private void Gv_Treatment_RowCellClick(object sender, DevExpress.XtraGrid.Views.Grid.RowCellClickEventArgs e)
         {
             try
