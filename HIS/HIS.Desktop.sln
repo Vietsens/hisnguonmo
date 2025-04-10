@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 17
-VisualStudioVersion = 17.10.35027.167
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HIS.Desktop", "HIS.Desktop\HIS.Desktop.csproj", "{8207ACB0-A325-42C6-97CB-FB54AE1AE6B8}"
 EndProject
@@ -191,9 +191,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HIS.Desktop.Plugins.SurgSer
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HIS.Desktop.Plugins.Camera", "Plugins\HIS.Desktop.Plugins.Camera\HIS.Desktop.Plugins.Camera.csproj", "{4993B9D7-17D9-4709-A99D-DA6F7EB4BEF2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Inventec.Desktop.Common.Message", "..\..\..\COMMON\DESKTOP\Inventec.Desktop\Inventec.Desktop.Common.Message\Inventec.Desktop.Common.Message.csproj", "{72B4C86A-7B66-43D4-A535-6653C76AEBE9}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Inventec.Desktop.Common.Message", "..\..\COMMON\DESKTOP\Inventec.Desktop\Inventec.Desktop.Common.Message\Inventec.Desktop.Common.Message.csproj", "{72B4C86A-7B66-43D4-A535-6653C76AEBE9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Inventec.Common.WebApiClient", "..\..\..\SHAREUTIL\Inventec.Common\Inventec.Common.WebApiClient\Inventec.Common.WebApiClient.csproj", "{7D73F3D1-A9C9-4D6D-8E8F-3287F24FEA2D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Inventec.Common.WebApiClient", "..\..\SHAREUTIL\Inventec.Common\Inventec.Common.WebApiClient\Inventec.Common.WebApiClient.csproj", "{7D73F3D1-A9C9-4D6D-8E8F-3287F24FEA2D}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HIS.Desktop.Plugins.MedicineType", "Plugins\HIS.Desktop.Plugins.MedicineType\HIS.Desktop.Plugins.MedicineType.csproj", "{2554DDB0-3F12-4D0C-8444-2B239614A74D}"
 EndProject
@@ -1110,6 +1110,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HIS.UC.AddressCombo", "..\UC\HIS.UC.AddressCombo\HIS.UC.AddressCombo.csproj", "{C1883745-707D-4E4B-944F-8FE48D8EAE62}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HIS.UC.TreatmentFinish", "..\UC\HIS.UC.TreatmentFinish\HIS.UC.TreatmentFinish.csproj", "{DDBFAF62-E27F-4B53-B4CA-1B160E2506A2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HIS.Desktop.Plugins.DrugStoreDebt_phuongnm", "..\..\DaoTao\HIS.Desktop.Plugins.DrugStoreDebt_phuongnm\HIS.Desktop.Plugins.DrugStoreDebt_phuongnm\HIS.Desktop.Plugins.DrugStoreDebt_phuongnm.csproj", "{E63D7EE9-14A7-44B7-BC17-C72E724DC3C7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -4377,6 +4379,14 @@ Global
 		{DDBFAF62-E27F-4B53-B4CA-1B160E2506A2}.Release|Any CPU.Build.0 = Release|Any CPU
 		{DDBFAF62-E27F-4B53-B4CA-1B160E2506A2}.Release|x86.ActiveCfg = Release|Any CPU
 		{DDBFAF62-E27F-4B53-B4CA-1B160E2506A2}.Release|x86.Build.0 = Release|Any CPU
+		{E63D7EE9-14A7-44B7-BC17-C72E724DC3C7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E63D7EE9-14A7-44B7-BC17-C72E724DC3C7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E63D7EE9-14A7-44B7-BC17-C72E724DC3C7}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{E63D7EE9-14A7-44B7-BC17-C72E724DC3C7}.Debug|x86.Build.0 = Debug|Any CPU
+		{E63D7EE9-14A7-44B7-BC17-C72E724DC3C7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E63D7EE9-14A7-44B7-BC17-C72E724DC3C7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E63D7EE9-14A7-44B7-BC17-C72E724DC3C7}.Release|x86.ActiveCfg = Release|Any CPU
+		{E63D7EE9-14A7-44B7-BC17-C72E724DC3C7}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

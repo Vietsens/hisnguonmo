@@ -59,6 +59,7 @@ namespace MPS.Processor.Mps000085
                 objectTag.AddObjectData(store, "ListMediMate", rdo.listAdo);
                 objectTag.AddObjectData(store, "ListImpMestUser", rdo._ImpMestUserPrint);
                 objectTag.AddObjectData(store, "ListRoleUserEnd", rdo.roleAdo);
+                objectTag.AddObjectData(store, "ListImpMestBlood", rdo._ListAdo);
                 result = true;
             }
             catch (Exception ex)
@@ -72,10 +73,20 @@ namespace MPS.Processor.Mps000085
         {
             try
             {
+                decimal totalPrice = 0;
                 decimal sumPrice = 0;
                 decimal sumPriceNoVat = 0;
-                List<string> listSupplier = new List<string>();
-                string supplierString = "";
+                List<string> listSupplier = new List<string>();   
+                string supplierString = "";      
+                if (rdo._ListImpMestBlood != null && rdo._ListImpMestBlood.Count > 0)
+                {
+                    rdo._ListAdo = (from r in rdo._ListImpMestBlood select new MPS.Processor.Mps000085.PDO.Mps000085PDO.BLOODADO(r)).ToList();
+                    totalPrice = rdo._ListImpMestBlood.Sum(s => ((s.PRICE ?? 0) * (1 + s.VAT_RATIO ?? 0)));
+                    SetSingleKey(new KeyValue(Mps000085ExtendSingleKey.TOTAL_PRICE, totalPrice));
+                    SetSingleKey(new KeyValue(Mps000085ExtendSingleKey.TOTAL_PRICE_SEPARATE, Inventec.Common.Number.Convert.NumberToString(totalPrice, HIS.Desktop.LocalStorage.ConfigApplication.ConfigApplications.NumberSeperator)));
+                    string totalPriceStr = string.Format("{0:0.####}", Inventec.Common.Number.Convert.NumberToNumberRoundMax4(totalPrice));
+                    SetSingleKey(new KeyValue(Mps000085ExtendSingleKey.TOTAL_PRICE_TEXT, Inventec.Common.String.Convert.CurrencyToVneseString(totalPriceStr)));
+                }
                 if (this.rdo._ImpMestMedicines != null && this.rdo._ImpMestMedicines.Count > 0)
                 {
                     // sắp xếp theo thứ tự tăng dần id 
