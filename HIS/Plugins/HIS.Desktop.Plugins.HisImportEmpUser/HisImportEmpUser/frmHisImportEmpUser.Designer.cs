@@ -45,15 +45,15 @@ namespace HIS.Desktop.Plugins.HisImportEmpUser.HisImportEmpUser
         /// </summary>
         private void InitializeComponent()
         {
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject49 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject50 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject51 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject52 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject1 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject2 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject3 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject4 = new DevExpress.Utils.SerializableAppearanceObject();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmHisImportEmpUser));
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject53 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject54 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject55 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject56 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject5 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject6 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject7 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject8 = new DevExpress.Utils.SerializableAppearanceObject();
             this.barManager1 = new DevExpress.XtraBars.BarManager();
             this.bar2 = new DevExpress.XtraBars.Bar();
             this.bbtnLuu = new DevExpress.XtraBars.BarButtonItem();
@@ -79,6 +79,7 @@ namespace HIS.Desktop.Plugins.HisImportEmpUser.HisImportEmpUser
             this.grdCongViec = new DevExpress.XtraGrid.Columns.GridColumn();
             this.grdHangThuocKeDon = new DevExpress.XtraGrid.Columns.GridColumn();
             this.grdMaxBHYT = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.grdEMPLOYEE_CODE = new DevExpress.XtraGrid.Columns.GridColumn();
             this.grdAccountNumber = new DevExpress.XtraGrid.Columns.GridColumn();
             this.grdBank = new DevExpress.XtraGrid.Columns.GridColumn();
             this.grdDepartment = new DevExpress.XtraGrid.Columns.GridColumn();
@@ -92,9 +93,13 @@ namespace HIS.Desktop.Plugins.HisImportEmpUser.HisImportEmpUser
             this.gridColumn8 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn9 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn10 = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.ckbSCLINICAL = new DevExpress.XtraEditors.Repository.RepositoryItemCheckEdit();
             this.gridColumn11 = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.ckbSIMULTANEITY = new DevExpress.XtraEditors.Repository.RepositoryItemCheckEdit();
             this.gridColumn12 = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.ckbSCHEDULE = new DevExpress.XtraEditors.Repository.RepositoryItemCheckEdit();
             this.gridColumn13 = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.ckbINSTEAD = new DevExpress.XtraEditors.Repository.RepositoryItemCheckEdit();
             this.btnLoi = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
             this.ckbIsNurse = new DevExpress.XtraEditors.Repository.RepositoryItemCheckEdit();
             this.btnShowLineError = new DevExpress.XtraEditors.SimpleButton();
@@ -108,16 +113,16 @@ namespace HIS.Desktop.Plugins.HisImportEmpUser.HisImportEmpUser
             this.layoutControlItem5 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem6 = new DevExpress.XtraLayout.LayoutControlItem();
             this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
-            this.ckbSCLINICAL = new DevExpress.XtraEditors.Repository.RepositoryItemCheckEdit();
-            this.ckbSIMULTANEITY = new DevExpress.XtraEditors.Repository.RepositoryItemCheckEdit();
-            this.ckbSCHEDULE = new DevExpress.XtraEditors.Repository.RepositoryItemCheckEdit();
-            this.ckbINSTEAD = new DevExpress.XtraEditors.Repository.RepositoryItemCheckEdit();
             ((System.ComponentModel.ISupportInitialize)(this.barManager1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
             this.layoutControl1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gridControl1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridView1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.btnDelete)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.ckbSCLINICAL)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.ckbSIMULTANEITY)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.ckbSCHEDULE)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.ckbINSTEAD)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.btnLoi)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.ckbIsNurse)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup1)).BeginInit();
@@ -127,10 +132,6 @@ namespace HIS.Desktop.Plugins.HisImportEmpUser.HisImportEmpUser
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem4)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem5)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem6)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.ckbSCLINICAL)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.ckbSIMULTANEITY)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.ckbSCHEDULE)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.ckbINSTEAD)).BeginInit();
             this.SuspendLayout();
             // 
             // barManager1
@@ -243,6 +244,7 @@ namespace HIS.Desktop.Plugins.HisImportEmpUser.HisImportEmpUser
             this.gridControl1.TabIndex = 7;
             this.gridControl1.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
             this.gridView1});
+            this.gridControl1.Click += new System.EventHandler(this.gridControl1_Click);
             // 
             // gridView1
             // 
@@ -259,6 +261,7 @@ namespace HIS.Desktop.Plugins.HisImportEmpUser.HisImportEmpUser
             this.grdCongViec,
             this.grdHangThuocKeDon,
             this.grdMaxBHYT,
+            this.grdEMPLOYEE_CODE,
             this.grdAccountNumber,
             this.grdBank,
             this.grdDepartment,
@@ -326,7 +329,7 @@ namespace HIS.Desktop.Plugins.HisImportEmpUser.HisImportEmpUser
             // 
             this.btnDelete.AutoHeight = false;
             this.btnDelete.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject49, serializableAppearanceObject50, serializableAppearanceObject51, serializableAppearanceObject52, "Xóa ", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject1, serializableAppearanceObject2, serializableAppearanceObject3, serializableAppearanceObject4, "Xóa ", null, null, true)});
             this.btnDelete.Name = "btnDelete";
             this.btnDelete.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             this.btnDelete.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.btnDelete_ButtonClick);
@@ -441,6 +444,15 @@ namespace HIS.Desktop.Plugins.HisImportEmpUser.HisImportEmpUser
             this.grdMaxBHYT.VisibleIndex = 11;
             this.grdMaxBHYT.Width = 151;
             // 
+            // grdEMPLOYEE_CODE
+            // 
+            this.grdEMPLOYEE_CODE.Caption = "Mã nhân viên";
+            this.grdEMPLOYEE_CODE.FieldName = "EMPLOYEE_CODE";
+            this.grdEMPLOYEE_CODE.Name = "grdEMPLOYEE_CODE";
+            this.grdEMPLOYEE_CODE.Visible = true;
+            this.grdEMPLOYEE_CODE.VisibleIndex = 12;
+            this.grdEMPLOYEE_CODE.Width = 80;
+            // 
             // grdAccountNumber
             // 
             this.grdAccountNumber.Caption = "Số tài khoản";
@@ -450,7 +462,7 @@ namespace HIS.Desktop.Plugins.HisImportEmpUser.HisImportEmpUser
             this.grdAccountNumber.OptionsColumn.AllowSort = DevExpress.Utils.DefaultBoolean.False;
             this.grdAccountNumber.OptionsFilter.AllowAutoFilter = false;
             this.grdAccountNumber.Visible = true;
-            this.grdAccountNumber.VisibleIndex = 12;
+            this.grdAccountNumber.VisibleIndex = 13;
             this.grdAccountNumber.Width = 128;
             // 
             // grdBank
@@ -462,7 +474,7 @@ namespace HIS.Desktop.Plugins.HisImportEmpUser.HisImportEmpUser
             this.grdBank.OptionsColumn.AllowSort = DevExpress.Utils.DefaultBoolean.False;
             this.grdBank.OptionsFilter.AllowAutoFilter = false;
             this.grdBank.Visible = true;
-            this.grdBank.VisibleIndex = 13;
+            this.grdBank.VisibleIndex = 14;
             this.grdBank.Width = 111;
             // 
             // grdDepartment
@@ -474,7 +486,7 @@ namespace HIS.Desktop.Plugins.HisImportEmpUser.HisImportEmpUser
             this.grdDepartment.OptionsColumn.AllowSort = DevExpress.Utils.DefaultBoolean.False;
             this.grdDepartment.OptionsFilter.AllowAutoFilter = false;
             this.grdDepartment.Visible = true;
-            this.grdDepartment.VisibleIndex = 14;
+            this.grdDepartment.VisibleIndex = 15;
             this.grdDepartment.Width = 59;
             // 
             // gridColumn1
@@ -483,7 +495,7 @@ namespace HIS.Desktop.Plugins.HisImportEmpUser.HisImportEmpUser
             this.gridColumn1.FieldName = "IDENTIFICATION_NUMBER";
             this.gridColumn1.Name = "gridColumn1";
             this.gridColumn1.Visible = true;
-            this.gridColumn1.VisibleIndex = 15;
+            this.gridColumn1.VisibleIndex = 16;
             // 
             // gridColumn2
             // 
@@ -491,7 +503,7 @@ namespace HIS.Desktop.Plugins.HisImportEmpUser.HisImportEmpUser
             this.gridColumn2.FieldName = "SOCIAL_INSURANCE_NUMBER";
             this.gridColumn2.Name = "gridColumn2";
             this.gridColumn2.Visible = true;
-            this.gridColumn2.VisibleIndex = 16;
+            this.gridColumn2.VisibleIndex = 17;
             // 
             // gridColumn3
             // 
@@ -499,7 +511,7 @@ namespace HIS.Desktop.Plugins.HisImportEmpUser.HisImportEmpUser
             this.gridColumn3.FieldName = "DOB_STR";
             this.gridColumn3.Name = "gridColumn3";
             this.gridColumn3.Visible = true;
-            this.gridColumn3.VisibleIndex = 17;
+            this.gridColumn3.VisibleIndex = 18;
             // 
             // gridColumn4
             // 
@@ -507,7 +519,7 @@ namespace HIS.Desktop.Plugins.HisImportEmpUser.HisImportEmpUser
             this.gridColumn4.FieldName = "TITLE";
             this.gridColumn4.Name = "gridColumn4";
             this.gridColumn4.Visible = true;
-            this.gridColumn4.VisibleIndex = 18;
+            this.gridColumn4.VisibleIndex = 19;
             // 
             // gridColumn5
             // 
@@ -515,7 +527,7 @@ namespace HIS.Desktop.Plugins.HisImportEmpUser.HisImportEmpUser
             this.gridColumn5.FieldName = "ERX_LOGINNAME";
             this.gridColumn5.Name = "gridColumn5";
             this.gridColumn5.Visible = true;
-            this.gridColumn5.VisibleIndex = 19;
+            this.gridColumn5.VisibleIndex = 20;
             // 
             // gridColumn6
             // 
@@ -523,7 +535,7 @@ namespace HIS.Desktop.Plugins.HisImportEmpUser.HisImportEmpUser
             this.gridColumn6.FieldName = "ERX_PASSWORD";
             this.gridColumn6.Name = "gridColumn6";
             this.gridColumn6.Visible = true;
-            this.gridColumn6.VisibleIndex = 20;
+            this.gridColumn6.VisibleIndex = 21;
             // 
             // gridColumn7
             // 
@@ -531,7 +543,7 @@ namespace HIS.Desktop.Plugins.HisImportEmpUser.HisImportEmpUser
             this.gridColumn7.FieldName = "DIPLOMA_DATE_STR";
             this.gridColumn7.Name = "gridColumn7";
             this.gridColumn7.Visible = true;
-            this.gridColumn7.VisibleIndex = 21;
+            this.gridColumn7.VisibleIndex = 22;
             // 
             // gridColumn8
             // 
@@ -539,7 +551,7 @@ namespace HIS.Desktop.Plugins.HisImportEmpUser.HisImportEmpUser
             this.gridColumn8.FieldName = "DIPLOMA_PLACE";
             this.gridColumn8.Name = "gridColumn8";
             this.gridColumn8.Visible = true;
-            this.gridColumn8.VisibleIndex = 22;
+            this.gridColumn8.VisibleIndex = 23;
             // 
             // gridColumn9
             // 
@@ -547,7 +559,7 @@ namespace HIS.Desktop.Plugins.HisImportEmpUser.HisImportEmpUser
             this.gridColumn9.FieldName = "MAX_SERVICE_REQ_PER_DAY_STR";
             this.gridColumn9.Name = "gridColumn9";
             this.gridColumn9.Visible = true;
-            this.gridColumn9.VisibleIndex = 23;
+            this.gridColumn9.VisibleIndex = 24;
             // 
             // gridColumn10
             // 
@@ -557,7 +569,14 @@ namespace HIS.Desktop.Plugins.HisImportEmpUser.HisImportEmpUser
             this.gridColumn10.Name = "gridColumn10";
             this.gridColumn10.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumn10.Visible = true;
-            this.gridColumn10.VisibleIndex = 24;
+            this.gridColumn10.VisibleIndex = 25;
+            // 
+            // ckbSCLINICAL
+            // 
+            this.ckbSCLINICAL.AutoHeight = false;
+            this.ckbSCLINICAL.Name = "ckbSCLINICAL";
+            this.ckbSCLINICAL.NullStyle = DevExpress.XtraEditors.Controls.StyleIndeterminate.Unchecked;
+            this.ckbSCLINICAL.ReadOnly = true;
             // 
             // gridColumn11
             // 
@@ -567,7 +586,14 @@ namespace HIS.Desktop.Plugins.HisImportEmpUser.HisImportEmpUser
             this.gridColumn11.Name = "gridColumn11";
             this.gridColumn11.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumn11.Visible = true;
-            this.gridColumn11.VisibleIndex = 25;
+            this.gridColumn11.VisibleIndex = 26;
+            // 
+            // ckbSIMULTANEITY
+            // 
+            this.ckbSIMULTANEITY.AutoHeight = false;
+            this.ckbSIMULTANEITY.Name = "ckbSIMULTANEITY";
+            this.ckbSIMULTANEITY.NullStyle = DevExpress.XtraEditors.Controls.StyleIndeterminate.Unchecked;
+            this.ckbSIMULTANEITY.ReadOnly = true;
             // 
             // gridColumn12
             // 
@@ -577,7 +603,14 @@ namespace HIS.Desktop.Plugins.HisImportEmpUser.HisImportEmpUser
             this.gridColumn12.Name = "gridColumn12";
             this.gridColumn12.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumn12.Visible = true;
-            this.gridColumn12.VisibleIndex = 26;
+            this.gridColumn12.VisibleIndex = 27;
+            // 
+            // ckbSCHEDULE
+            // 
+            this.ckbSCHEDULE.AutoHeight = false;
+            this.ckbSCHEDULE.Name = "ckbSCHEDULE";
+            this.ckbSCHEDULE.NullStyle = DevExpress.XtraEditors.Controls.StyleIndeterminate.Unchecked;
+            this.ckbSCHEDULE.ReadOnly = true;
             // 
             // gridColumn13
             // 
@@ -587,13 +620,20 @@ namespace HIS.Desktop.Plugins.HisImportEmpUser.HisImportEmpUser
             this.gridColumn13.Name = "gridColumn13";
             this.gridColumn13.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumn13.Visible = true;
-            this.gridColumn13.VisibleIndex = 27;
+            this.gridColumn13.VisibleIndex = 28;
+            // 
+            // ckbINSTEAD
+            // 
+            this.ckbINSTEAD.AutoHeight = false;
+            this.ckbINSTEAD.Name = "ckbINSTEAD";
+            this.ckbINSTEAD.NullStyle = DevExpress.XtraEditors.Controls.StyleIndeterminate.Unchecked;
+            this.ckbINSTEAD.ReadOnly = true;
             // 
             // btnLoi
             // 
             this.btnLoi.AutoHeight = false;
             this.btnLoi.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("btnLoi.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject53, serializableAppearanceObject54, serializableAppearanceObject55, serializableAppearanceObject56, "Hiển thị lỗi", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("btnLoi.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject5, serializableAppearanceObject6, serializableAppearanceObject7, serializableAppearanceObject8, "Hiển thị lỗi", null, null, true)});
             this.btnLoi.Name = "btnLoi";
             this.btnLoi.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             this.btnLoi.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.btnLoi_ButtonClick);
@@ -707,34 +747,6 @@ namespace HIS.Desktop.Plugins.HisImportEmpUser.HisImportEmpUser
             this.layoutControlItem6.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem6.TextVisible = false;
             // 
-            // ckbSCLINICAL
-            // 
-            this.ckbSCLINICAL.AutoHeight = false;
-            this.ckbSCLINICAL.Name = "ckbSCLINICAL";
-            this.ckbSCLINICAL.NullStyle = DevExpress.XtraEditors.Controls.StyleIndeterminate.Unchecked;
-            this.ckbSCLINICAL.ReadOnly = true;
-            // 
-            // ckbSIMULTANEITY
-            // 
-            this.ckbSIMULTANEITY.AutoHeight = false;
-            this.ckbSIMULTANEITY.Name = "ckbSIMULTANEITY";
-            this.ckbSIMULTANEITY.NullStyle = DevExpress.XtraEditors.Controls.StyleIndeterminate.Unchecked;
-            this.ckbSIMULTANEITY.ReadOnly = true;
-            // 
-            // ckbSCHEDULE
-            // 
-            this.ckbSCHEDULE.AutoHeight = false;
-            this.ckbSCHEDULE.Name = "ckbSCHEDULE";
-            this.ckbSCHEDULE.NullStyle = DevExpress.XtraEditors.Controls.StyleIndeterminate.Unchecked;
-            this.ckbSCHEDULE.ReadOnly = true;
-            // 
-            // ckbINSTEAD
-            // 
-            this.ckbINSTEAD.AutoHeight = false;
-            this.ckbINSTEAD.Name = "ckbINSTEAD";
-            this.ckbINSTEAD.NullStyle = DevExpress.XtraEditors.Controls.StyleIndeterminate.Unchecked;
-            this.ckbINSTEAD.ReadOnly = true;
-            // 
             // frmHisImportEmpUser
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -760,6 +772,10 @@ namespace HIS.Desktop.Plugins.HisImportEmpUser.HisImportEmpUser
             ((System.ComponentModel.ISupportInitialize)(this.gridControl1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridView1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.btnDelete)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.ckbSCLINICAL)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.ckbSIMULTANEITY)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.ckbSCHEDULE)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.ckbINSTEAD)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.btnLoi)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.ckbIsNurse)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup1)).EndInit();
@@ -769,10 +785,6 @@ namespace HIS.Desktop.Plugins.HisImportEmpUser.HisImportEmpUser
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem4)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem5)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem6)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.ckbSCLINICAL)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.ckbSIMULTANEITY)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.ckbSCHEDULE)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.ckbINSTEAD)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -838,5 +850,6 @@ namespace HIS.Desktop.Plugins.HisImportEmpUser.HisImportEmpUser
         private DevExpress.XtraEditors.Repository.RepositoryItemCheckEdit ckbSIMULTANEITY;
         private DevExpress.XtraEditors.Repository.RepositoryItemCheckEdit ckbSCHEDULE;
         private DevExpress.XtraEditors.Repository.RepositoryItemCheckEdit ckbINSTEAD;
+        private DevExpress.XtraGrid.Columns.GridColumn grdEMPLOYEE_CODE;
     }
 }

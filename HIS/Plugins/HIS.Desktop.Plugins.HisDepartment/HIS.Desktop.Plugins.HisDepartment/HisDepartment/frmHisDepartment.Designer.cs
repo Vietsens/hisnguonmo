@@ -45,7 +45,6 @@ namespace HIS.Desktop.Plugins.HisDepartment.HisDepartment
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmHisDepartment));
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject1 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject2 = new DevExpress.Utils.SerializableAppearanceObject();
@@ -125,7 +124,7 @@ namespace HIS.Desktop.Plugins.HisDepartment.HisDepartment
             this.emptySpaceItem3 = new DevExpress.XtraLayout.EmptySpaceItem();
             this.lcEditorInfo = new DevExpress.XtraLayout.LayoutControl();
             this.cboSubsDirectorUserName = new DevExpress.XtraEditors.GridLookUpEdit();
-            this.barManager1 = new DevExpress.XtraBars.BarManager(this.components);
+            this.barManager1 = new DevExpress.XtraBars.BarManager();
             this.bar1 = new DevExpress.XtraBars.Bar();
             this.bbtnSearch = new DevExpress.XtraBars.BarButtonItem();
             this.bbtnEdit = new DevExpress.XtraBars.BarButtonItem();
@@ -204,9 +203,9 @@ namespace HIS.Desktop.Plugins.HisDepartment.HisDepartment
             this.barDockControlBottom = new DevExpress.XtraBars.BarDockControl();
             this.barDockControlLeft = new DevExpress.XtraBars.BarDockControl();
             this.barDockControlRight = new DevExpress.XtraBars.BarDockControl();
-            this.dxValidationProviderEditorInfo = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider(this.components);
-            this.dxErrorProvider = new DevExpress.XtraEditors.DXErrorProvider.DXErrorProvider(this.components);
-            this.toolTipControllerGrid = new DevExpress.Utils.ToolTipController(this.components);
+            this.dxValidationProviderEditorInfo = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider();
+            this.dxErrorProvider = new DevExpress.XtraEditors.DXErrorProvider.DXErrorProvider();
+            this.toolTipControllerGrid = new DevExpress.Utils.ToolTipController();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl4)).BeginInit();
             this.layoutControl4.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl7)).BeginInit();
