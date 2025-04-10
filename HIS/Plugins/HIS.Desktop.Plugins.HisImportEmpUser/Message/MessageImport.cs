@@ -37,8 +37,5 @@ namespace HIS.Desktop.Plugins.HisImportEmpUser.Message
         internal const string SaiDinhDang = "Sai định dạng (X) {0} | ";
         internal const string KhongTheAm = "{0} Không thể âm | ";
         internal const string KhongTheLonHon = "Hạng thuốc kê đơn phải không nằm trong danh mục (chọn từ 1 đến 5) |";
-
-
-             
     }
 }

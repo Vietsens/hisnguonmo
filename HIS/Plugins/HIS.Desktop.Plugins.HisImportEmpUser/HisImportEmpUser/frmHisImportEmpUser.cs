@@ -235,7 +235,6 @@ namespace HIS.Desktop.Plugins.HisImportEmpUser.HisImportEmpUser
                                 this.EmpUserAdos = new List<EmpUserADO>();
                                 addServiceToProcessList(CurrentAdos, ref this.EmpUserAdos);
                                 SetDataSource(this.EmpUserAdos);
-
                             }
                         }
                         else
@@ -249,7 +248,7 @@ namespace HIS.Desktop.Plugins.HisImportEmpUser.HisImportEmpUser
                     {
 
                         WaitingManager.Hide();
-                        DevExpress.XtraEditors.XtraMessageBox.Show("Không dọc được file");
+                        DevExpress.XtraEditors.XtraMessageBox.Show("Không đọc được file");
 
                     }
                 }
@@ -330,12 +329,33 @@ namespace HIS.Desktop.Plugins.HisImportEmpUser.HisImportEmpUser
             {
                 empUserRef = new List<EmpUserADO>();
                 long i = 0;
+                //qtcode
+                var groupedEmployeeCodes = service
+                    .Where(o => !string.IsNullOrEmpty(o.EMPLOYEE_CODE))
+                    .GroupBy(o => o.EMPLOYEE_CODE)
+                    .Where(g => g.Count() > 1)
+                    .ToDictionary(g => g.Key, g => g.ToList()); 
+                // e qtcode
                 foreach (var item in service)
                 {
                     i++;
                     string error = "";
                     var serAdo = new EmpUserADO();
                     Inventec.Common.Mapper.DataObjectMapper.Map<EmpUserADO>(serAdo, item);
+                    //qtcode
+                    if(!string.IsNullOrEmpty(item.EMPLOYEE_CODE) && groupedEmployeeCodes.ContainsKey(item.EMPLOYEE_CODE))
+                    {
+                        error += "Nhập trùng mã nhân viên|"; 
+                    }    
+                    // e qtcode
+                    if(!String.IsNullOrEmpty(item.EMPLOYEE_CODE))
+                    {
+                        if(Encoding.UTF8.GetByteCount(item.EMPLOYEE_CODE.Trim()) >20)
+                        {
+                            error += "Mã nhân viên quá dài|"; 
+                        }    
+                    }    
+
                     if (item.IDENTIFICATION_NUMBER != null )
                     {
                         checkMaxLength(item.IDENTIFICATION_NUMBER.ToString(), 15, ref error, "Số CMT/CCCD/HC");
@@ -345,7 +365,7 @@ namespace HIS.Desktop.Plugins.HisImportEmpUser.HisImportEmpUser
                         //&& item.SOCIAL_INSURANCE_NUMBER > 0
                         checkMaxLength(item.SOCIAL_INSURANCE_NUMBER.ToString(), 20, ref error, "Số BHXH");
                     }
-                   
+                    
                     if (!string.IsNullOrEmpty(item.TITLE))
                     {
                         checkMaxLength(item.TITLE.ToString(), 100, ref error, "Chức danh");
@@ -462,8 +482,8 @@ namespace HIS.Desktop.Plugins.HisImportEmpUser.HisImportEmpUser
                     if (!string.IsNullOrEmpty(item.LOGINNAME))
                     {
                         if (item.LOGINNAME.Length > 50)
-                        {
-                            error += string.Format(Message.MessageImport.MaxLength, "Tên đăng nhập ");
+                        {//qtcode
+                            error += string.Format(Message.MessageImport.MaxLength, "Tên đăng nhập", 50);
                         }
                         else
                         {
@@ -493,8 +513,8 @@ namespace HIS.Desktop.Plugins.HisImportEmpUser.HisImportEmpUser
                     if (!string.IsNullOrEmpty(item.USERNAME))
                     {
                         if (Encoding.UTF8.GetByteCount(item.USERNAME.Trim()) > 100)
-                        {
-                            error += string.Format(Message.MessageImport.MaxLength, "Họ tên");
+                        {//qtcode
+                            error += string.Format(Message.MessageImport.MaxLength, "Họ tên", 100);
                         }
                     }
                     else
@@ -504,22 +524,22 @@ namespace HIS.Desktop.Plugins.HisImportEmpUser.HisImportEmpUser
                     if (!string.IsNullOrEmpty(item.EMAIL))
                     {
                         if (Encoding.UTF8.GetByteCount(item.EMAIL.Trim()) > 100)
-                        {
-                            error += string.Format(Message.MessageImport.MaxLength, "Email");
+                        {//qtcode
+                            error += string.Format(Message.MessageImport.MaxLength, "Email", 100);
                         }
                     }
                     if (!string.IsNullOrEmpty(item.MOBILE))
                     {
                         if (Encoding.UTF8.GetByteCount(item.MOBILE.Trim()) > 20)
-                        {
-                            error += string.Format(Message.MessageImport.MaxLength, "Số điện thoại");
+                        {//qtcode
+                            error += string.Format(Message.MessageImport.MaxLength, "Số điện thoại", 20);
                         }
                     }
                     if (!string.IsNullOrEmpty(item.G_CODE))
                     {
                         if (Encoding.UTF8.GetByteCount(item.G_CODE.Trim()) > 20)
-                        {
-                            error += string.Format(Message.MessageImport.MaxLength, "Mã đơn vị");
+                        {//qtcode
+                            error += string.Format(Message.MessageImport.MaxLength, "Mã đơn vị", 20);
 
                         }
                         else
@@ -535,8 +555,8 @@ namespace HIS.Desktop.Plugins.HisImportEmpUser.HisImportEmpUser
                     if (!string.IsNullOrEmpty(item.DIPLOMA))
                     {
                         if (Encoding.UTF8.GetByteCount(item.DIPLOMA.Trim()) > 50)
-                        {
-                            error += string.Format(Message.MessageImport.MaxLength, "Chứng chỉ hành nghề");
+                        {//qtocde
+                            error += string.Format(Message.MessageImport.MaxLength, "Chứng chỉ hành nghề", 50);
                         }
                     }
                     if (!string.IsNullOrEmpty(item.MEDICINE_TYPE_RANK.Trim()))
@@ -544,8 +564,8 @@ namespace HIS.Desktop.Plugins.HisImportEmpUser.HisImportEmpUser
                         if (IsNumber(item.MEDICINE_TYPE_RANK.Trim()))
                         {
                             if (Encoding.UTF8.GetByteCount(item.MEDICINE_TYPE_RANK.Trim()) > 19)
-                            {
-                                error += string.Format(Message.MessageImport.MaxLength, "Hạng thuốc kê đơn");
+                            {//qtcode
+                                error += string.Format(Message.MessageImport.MaxLength, "Hạng thuốc kê đơn", 19);
                             }
                             if (Convert.ToInt32(item.MEDICINE_TYPE_RANK.Trim()) < 0)
                                 error += string.Format(Message.MessageImport.KhongTheAm, "Hạng thuốc kê đơn");
@@ -562,8 +582,8 @@ namespace HIS.Desktop.Plugins.HisImportEmpUser.HisImportEmpUser
                         if (IsNumber(item.MAX_BHYT.Trim()))
                         {
                             if (Encoding.UTF8.GetByteCount(item.MAX_BHYT.Trim()) > 19)
-                            {
-                                error += string.Format(Message.MessageImport.MaxLength, "Số xử lý chỉ định BHYT tối đa trong ngày");
+                            {//qtcode
+                                error += string.Format(Message.MessageImport.MaxLength, "Số xử lý chỉ định BHYT tối đa trong ngày", 19);
                             }
                             if (Convert.ToInt32(item.MAX_BHYT.Trim()) < 0)
                                 error += string.Format(Message.MessageImport.KhongTheAm, "Số xử lý chỉ định BHYT tối đa trong ngày");
@@ -579,8 +599,8 @@ namespace HIS.Desktop.Plugins.HisImportEmpUser.HisImportEmpUser
                         if (IsNumber(item.ACCOUNT_NUMBER.Trim()))
                         {
                             if (Encoding.UTF8.GetByteCount(item.ACCOUNT_NUMBER.Trim()) > 50)
-                            {
-                                error += string.Format(Message.MessageImport.MaxLength, "Số tài khoản");
+                            {//qtcode
+                                error += string.Format(Message.MessageImport.MaxLength, "Số tài khoản", 50);
                             }
                         }
                         else
@@ -592,16 +612,16 @@ namespace HIS.Desktop.Plugins.HisImportEmpUser.HisImportEmpUser
                     if (!string.IsNullOrEmpty(item.BANK))
                     {
                         if (Encoding.UTF8.GetByteCount(item.BANK.Trim()) > 200)
-                        {
-                            error += string.Format(Message.MessageImport.MaxLength, "Ngân hàng");
+                        {//qtcode
+                            error += string.Format(Message.MessageImport.MaxLength, "Ngân hàng", 200);
                         }
                     }
 
                     if (!string.IsNullOrEmpty(item.DEPARTMENT_CODE))
                     {
                         if (Encoding.UTF8.GetByteCount(item.DEPARTMENT_CODE.Trim()) > 10)
-                        {
-                            error += string.Format(Message.MessageImport.MaxLength, "Mã khoa");
+                        { //qtcode
+                            error += string.Format(Message.MessageImport.MaxLength, "Mã khoa", 10);
 
                         }
                         else
@@ -658,10 +678,11 @@ namespace HIS.Desktop.Plugins.HisImportEmpUser.HisImportEmpUser
                     //        serAdo.IS_NURSE_STR += !string.IsNullOrEmpty(serAdo.IS_NURSE_STR) ? " và Y tá" : "Y tá";
                     //    }
                     //}
+                    //qtcode
                     serAdo.ERROR = error;
+                    //qtcode
                     serAdo.ID = i;
                     empUserRef.Add(serAdo);
-
                 }
             }
             catch (Exception ex)
@@ -749,6 +770,9 @@ namespace HIS.Desktop.Plugins.HisImportEmpUser.HisImportEmpUser
                         ado.TDL_USERNAME = item.USERNAME;
                         ado.TDL_EMAIL = item.EMAIL;
                         ado.TDL_MOBILE = item.MOBILE;
+                        //qtcode
+                        ado.EMPLOYEE_CODE = item.EMPLOYEE_CODE; 
+                        //qtcode
                         datas.Add(ado);
                     }
                 }
@@ -935,6 +959,9 @@ namespace HIS.Desktop.Plugins.HisImportEmpUser.HisImportEmpUser
             }
         }
 
+        private void gridControl1_Click(object sender, EventArgs e)
+        {
 
+        }
     }
 }

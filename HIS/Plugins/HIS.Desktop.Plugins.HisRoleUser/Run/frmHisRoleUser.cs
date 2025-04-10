@@ -831,7 +831,6 @@ namespace HIS.Desktop.Plugins.HisRoleUser.Run
                 impMestUsers = impMestUsers.OrderBy(o => o.ID).ToList();
 
 
-
                 // Lấy thông tin phiếu nhập như mã phiếu, ngày nhập, trạng thái, ...
                 MOS.Filter.HisImpMestViewFilter impMestViewFilter = new HisImpMestViewFilter();
                 impMestViewFilter.ID = this.ImpMestId;
