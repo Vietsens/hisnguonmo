@@ -2294,7 +2294,7 @@ namespace HIS.Desktop.Plugins.TransactionBill
                 transaction.BUYER_ACCOUNT_NUMBER = txtBuyerAccountNumber.Text;
                 transaction.BUYER_ORGANIZATION = txtBuyerOrganization.Text;
                 transaction.BUYER_ADDRESS = txtBuyerAddress.Text;
-                transaction.BUYER_EMAIL = txtBuyerEmail.Text;
+                //transaction.BUYER_EMAIL = txtBuyerEmail.Text;
                 if (dtTransactionTime.EditValue != null && dtTransactionTime.DateTime != DateTime.MinValue)
                 {
                     transaction.TRANSACTION_TIME = Inventec.Common.TypeConvert.Parse.ToInt64(dtTransactionTime.DateTime.ToString("yyyyMMdd") + "000000");
@@ -3294,6 +3294,7 @@ namespace HIS.Desktop.Plugins.TransactionBill
                         if (patients != null && patients.Count > 0)
                         {
                             patientsPrint = patients.First();
+                            txtBuyerEmail.Text = patientsPrint.EMAIL;          
                         }
                     }
                 }
