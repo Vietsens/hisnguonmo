@@ -340,7 +340,6 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute.FormSurgAssignAndCopy
             try
             {
                
-                //this.sereServ.SERVICE_ID = SurgServiceReqExecuteControl.ServiceId;
                 V_HIS_SERVICE currentVHisService = lstService.FirstOrDefault(o => o.ID == sereServ.SERVICE_ID);
                 if (currentVHisService.ALLOW_SIMULTANEITY != 1)
                 {
@@ -355,22 +354,22 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute.FormSurgAssignAndCopy
                     sdo.InstructionTimes = ngayYLenhList.Select(date => Convert.ToInt64(date.ToString("yyyyMMdd") + time)).ToList();
                     sdo.Usetimes = ngayDuTruList.Select(date => Convert.ToInt64(date.ToString("yyyyMMdd") + time)).ToList();
 
-                    //List<long> mergedList = sdo.InstructionTimes.Union(sdo.Usetimes).ToList();
                     List<long> mergedList = (sdo.InstructionTimes ?? new List<long>()).Union(sdo.Usetimes ?? new List<long>()).ToList();
 
                     LogSystem.Info($"kiem tra key ASSIGN_SERVICE_SIMULTANEITY_OPTION {Config.HisConfigKeys.ASSIGN_SERVICE_SIMULTANEITY_OPTION} ");
-                    LogSystem.Info($"kiem tra key ASSIGN_SERVICE_SIMULTANEITY_OPTION {Config.HisConfigKeys.CHECK_SIMULTANEITY_OPTION} ");
+                    LogSystem.Info($"kiem tra key CHECK_SIMULTANEITY_OPTION {Config.HisConfigKeys.CHECK_SIMULTANEITY_OPTION} ");
 
                     if (Config.HisConfigKeys.ASSIGN_SERVICE_SIMULTANEITY_OPTION == "1"
                         || Config.HisConfigKeys.ASSIGN_SERVICE_SIMULTANEITY_OPTION == "2")
                     {
                         HisSereServCheckExecuteTimesSDO inputSDO = new HisSereServCheckExecuteTimesSDO();
-
                         
                         CommonParam paramHisServiceReq = new CommonParam();
-
                         var Login = Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName();
+                        LogSystem.Info($"Login {Login}");
+                        Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData($"Login", Login));
                         inputSDO.TreatmentId = serviceReq.TREATMENT_ID;
+                        LogSystem.Info($"inputSDO.TreatmentId {inputSDO.TreatmentId}, {serviceReq.TREATMENT_ID}");
                         List<string> dsLogin = new List<string> { Login };
                         var dataGrid = ekipAdo;
                         if (dataGrid != null && dataGrid.Count() > 0)
@@ -381,7 +380,9 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute.FormSurgAssignAndCopy
                                 if (ekipUser != null && ekipUser.EXECUTE_ROLE_ID != 0)
                                     ekipUsers.Add(ekipUser);
                             }
+                        Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData($"ekipUsers", ekipUsers));
                         List<string> lstLogin = ekipUsers.Select(o => o.LOGINNAME).Distinct().ToList();
+                        LogSystem.Info($"lstLogin {lstLogin}");
                         List<string> lstLoginValid = new List<string>();
                         foreach (string acc in lstLogin)
                         {
@@ -395,6 +396,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute.FormSurgAssignAndCopy
                             lstLoginValid.Add(Login);
                         }
                         inputSDO.Loginnames = lstLoginValid;
+                        LogSystem.Info($"inputSDO.Loginnames {inputSDO.Loginnames}");
                         string message = "";
 
                         LogSystem.Info("lay api 1 :/api/HisSereServ/CheckExecuteTimes");
@@ -404,21 +406,21 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute.FormSurgAssignAndCopy
                             DateTime? begin = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(item);
                             DateTime? begin_BD = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(BEGINTIME);
 
-                            // Chuyển đổi ngày và giờ sang định dạng không có ký tự đặc biệt
-                            string TimeDisplay = begin?.ToString("yyyyMMdd") ?? "00000000"; // Định dạng YYYYMMDD
-                            string strTimeDisplay = begin_BD?.ToString("HHmmss") ?? "000000"; // Định dạng HHmmss
-                                                                                              // Nối hai chuỗi
-                            string cong = TimeDisplay + strTimeDisplay; // Ví dụ: "20240327153045"
-                                                                        // Chuyển sang long
+                            
+                            string TimeDisplay = begin?.ToString("yyyyMMdd") ?? "00000000";
+                            string strTimeDisplay = begin_BD?.ToString("HHmmss") ?? "000000";
+                                                                                              
+                            string cong = TimeDisplay + strTimeDisplay;
+                                                                        
                             long timeAsLong = long.Parse(cong);
 
                             DateTime? end = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(item);
                             DateTime? end_BD = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(ENDTIME);
 
-                            string EndTimeDisplay = end?.ToString("yyyyMMdd") ?? "00000000"; // Định dạng YYYYMMDD
-                            string EndstrTimeDisplay = end_BD?.ToString("HHmmss") ?? "000000"; // Định dạng HHmmss
+                            string EndTimeDisplay = end?.ToString("yyyyMMdd") ?? "00000000";
+                            string EndstrTimeDisplay = end_BD?.ToString("HHmmss") ?? "000000";
 
-                            string cong1 = EndTimeDisplay + EndstrTimeDisplay; // Ví dụ: "20240327153045"
+                            string cong1 = EndTimeDisplay + EndstrTimeDisplay;
                             long timeAsLong1 = long.Parse(cong1);
 
                             inputSDO.ExecuteTime = new ExecuteTime
@@ -481,7 +483,6 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute.FormSurgAssignAndCopy
                                 }
                             }
                         }
-                        //bool suscess = new BackendAdapter(paramCheckEx).Post<bool>("/api/HisSereServ/CheckExecuteTimes", ApiConsumers.MosConsumer, inputSDO, paramCheckEx);
                     }
                     if (Config.HisConfigKeys.CHECK_SIMULTANEITY_OPTION == "1"
                         || Config.HisConfigKeys.CHECK_SIMULTANEITY_OPTION == "2")
@@ -513,7 +514,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute.FormSurgAssignAndCopy
                             DateTime? begin_BD = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(BEGINTIME);
 
                             // Chuyển đổi ngày và giờ sang định dạng không có ký tự đặc biệt
-                            string TimeDisplay = begin?.ToString("yyyyMMdd") ?? "00000000"; // Định dạng YYYYMMDD
+                            string TimeDisplay = begin?.ToString("yyyyMMdd") ?? "00000000";
                             string strTimeDisplay = begin_BD?.ToString("HHmmss") ?? "000000"; // Định dạng HHmmss
                                                                                               // Nối hai chuỗi
                             string cong = TimeDisplay + strTimeDisplay; // Ví dụ: "20240327153045"
