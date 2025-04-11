@@ -1127,7 +1127,10 @@ namespace HIS.Desktop.Plugins.HisTreatmentRecordChecking.RecordChecking
 
                         inputADO.DlgOpenModuleConfig = OpenSignConfig;
                         if (!String.IsNullOrWhiteSpace(temFile) && File.Exists(temFile))
+                        {
                             libraryProcessor.ShowPopup(temFile, inputADO);
+                            BtnSearch_Click(null,null);
+                        }
                         else
                         {
                             XtraMessageBox.Show("Không xác định được văn bản ký");
