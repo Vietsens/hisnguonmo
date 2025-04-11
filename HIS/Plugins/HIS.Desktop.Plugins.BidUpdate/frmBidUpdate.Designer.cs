@@ -53,10 +53,6 @@ namespace HIS.Desktop.Plugins.BidUpdate
             this.barButtonItem1 = new DevExpress.XtraBars.BarButtonItem();
             this.barButtonItem2 = new DevExpress.XtraBars.BarButtonItem();
             this.barButtonItem3 = new DevExpress.XtraBars.BarButtonItem();
-            this.barDockControlTop = new DevExpress.XtraBars.BarDockControl();
-            this.barDockControlBottom = new DevExpress.XtraBars.BarDockControl();
-            this.barDockControlLeft = new DevExpress.XtraBars.BarDockControl();
-            this.barDockControlRight = new DevExpress.XtraBars.BarDockControl();
             this.cboBidForm = new DevExpress.XtraEditors.GridLookUpEdit();
             this.gridView4 = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.txtBID = new DevExpress.XtraEditors.TextEdit();
@@ -188,6 +184,10 @@ namespace HIS.Desktop.Plugins.BidUpdate
             this.layoutControlItem24 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem25 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem27 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.barDockControlTop = new DevExpress.XtraBars.BarDockControl();
+            this.barDockControlBottom = new DevExpress.XtraBars.BarDockControl();
+            this.barDockControlLeft = new DevExpress.XtraBars.BarDockControl();
+            this.barDockControlRight = new DevExpress.XtraBars.BarDockControl();
             this.dxValidationProviderLeft = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider(this.components);
             this.dxValidationProviderRight = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider(this.components);
             this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
@@ -351,7 +351,7 @@ namespace HIS.Desktop.Plugins.BidUpdate
             this.layoutControl1.Controls.Add(this.dtToTime);
             this.layoutControl1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.layoutControl1.Location = new System.Drawing.Point(0, 29);
-            this.layoutControl1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.layoutControl1.Margin = new System.Windows.Forms.Padding(4);
             this.layoutControl1.Name = "layoutControl1";
             this.layoutControl1.Root = this.layoutControlGroup1;
             this.layoutControl1.Size = new System.Drawing.Size(1760, 712);
@@ -361,7 +361,7 @@ namespace HIS.Desktop.Plugins.BidUpdate
             // txtBidApthauCode
             // 
             this.txtBidApthauCode.Location = new System.Drawing.Point(1618, 31);
-            this.txtBidApthauCode.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.txtBidApthauCode.Margin = new System.Windows.Forms.Padding(4);
             this.txtBidApthauCode.MenuManager = this.barManager1;
             this.txtBidApthauCode.Name = "txtBidApthauCode";
             this.txtBidApthauCode.Size = new System.Drawing.Size(139, 22);
@@ -372,10 +372,6 @@ namespace HIS.Desktop.Plugins.BidUpdate
             // 
             this.barManager1.Bars.AddRange(new DevExpress.XtraBars.Bar[] {
             this.bar2});
-            this.barManager1.DockControls.Add(this.barDockControlTop);
-            this.barManager1.DockControls.Add(this.barDockControlBottom);
-            this.barManager1.DockControls.Add(this.barDockControlLeft);
-            this.barManager1.DockControls.Add(this.barDockControlRight);
             this.barManager1.Form = this;
             this.barManager1.Items.AddRange(new DevExpress.XtraBars.BarItem[] {
             this.barButtonItem1,
@@ -423,38 +419,10 @@ namespace HIS.Desktop.Plugins.BidUpdate
             this.barButtonItem3.Name = "barButtonItem3";
             this.barButtonItem3.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.barButtonItem3_ItemClick);
             // 
-            // barDockControlTop
-            // 
-            this.barDockControlTop.CausesValidation = false;
-            this.barDockControlTop.Dock = System.Windows.Forms.DockStyle.Top;
-            this.barDockControlTop.Location = new System.Drawing.Point(0, 0);
-            this.barDockControlTop.Size = new System.Drawing.Size(1760, 29);
-            // 
-            // barDockControlBottom
-            // 
-            this.barDockControlBottom.CausesValidation = false;
-            this.barDockControlBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.barDockControlBottom.Location = new System.Drawing.Point(0, 741);
-            this.barDockControlBottom.Size = new System.Drawing.Size(1760, 0);
-            // 
-            // barDockControlLeft
-            // 
-            this.barDockControlLeft.CausesValidation = false;
-            this.barDockControlLeft.Dock = System.Windows.Forms.DockStyle.Left;
-            this.barDockControlLeft.Location = new System.Drawing.Point(0, 29);
-            this.barDockControlLeft.Size = new System.Drawing.Size(0, 712);
-            // 
-            // barDockControlRight
-            // 
-            this.barDockControlRight.CausesValidation = false;
-            this.barDockControlRight.Dock = System.Windows.Forms.DockStyle.Right;
-            this.barDockControlRight.Location = new System.Drawing.Point(1760, 29);
-            this.barDockControlRight.Size = new System.Drawing.Size(0, 712);
-            // 
             // cboBidForm
             // 
             this.cboBidForm.Location = new System.Drawing.Point(1428, 87);
-            this.cboBidForm.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.cboBidForm.Margin = new System.Windows.Forms.Padding(4);
             this.cboBidForm.MenuManager = this.barManager1;
             this.cboBidForm.Name = "cboBidForm";
             this.cboBidForm.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
@@ -478,7 +446,7 @@ namespace HIS.Desktop.Plugins.BidUpdate
             // txtBID
             // 
             this.txtBID.Location = new System.Drawing.Point(988, 87);
-            this.txtBID.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.txtBID.Margin = new System.Windows.Forms.Padding(4);
             this.txtBID.MenuManager = this.barManager1;
             this.txtBID.Name = "txtBID";
             this.txtBID.Properties.MaxLength = 50;
@@ -490,7 +458,7 @@ namespace HIS.Desktop.Plugins.BidUpdate
             // BtnImport
             // 
             this.BtnImport.Location = new System.Drawing.Point(1412, 682);
-            this.BtnImport.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.BtnImport.Margin = new System.Windows.Forms.Padding(4);
             this.BtnImport.Name = "BtnImport";
             this.BtnImport.Size = new System.Drawing.Size(180, 27);
             this.BtnImport.StyleController = this.layoutControl1;
@@ -501,7 +469,7 @@ namespace HIS.Desktop.Plugins.BidUpdate
             // xtraTabControlEditBid
             // 
             this.xtraTabControlEditBid.Location = new System.Drawing.Point(880, 112);
-            this.xtraTabControlEditBid.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.xtraTabControlEditBid.Margin = new System.Windows.Forms.Padding(4);
             this.xtraTabControlEditBid.Name = "xtraTabControlEditBid";
             this.xtraTabControlEditBid.SelectedTabPage = this.xtraTabPageMedicine;
             this.xtraTabControlEditBid.Size = new System.Drawing.Size(880, 567);
@@ -514,7 +482,7 @@ namespace HIS.Desktop.Plugins.BidUpdate
             // xtraTabPageMedicine
             // 
             this.xtraTabPageMedicine.Controls.Add(this.layoutControl3);
-            this.xtraTabPageMedicine.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.xtraTabPageMedicine.Margin = new System.Windows.Forms.Padding(4);
             this.xtraTabPageMedicine.Name = "xtraTabPageMedicine";
             this.xtraTabPageMedicine.Size = new System.Drawing.Size(873, 533);
             this.xtraTabPageMedicine.Text = "Thuốc";
@@ -524,7 +492,7 @@ namespace HIS.Desktop.Plugins.BidUpdate
             this.layoutControl3.Controls.Add(this.panelControl1);
             this.layoutControl3.Dock = System.Windows.Forms.DockStyle.Fill;
             this.layoutControl3.Location = new System.Drawing.Point(0, 0);
-            this.layoutControl3.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.layoutControl3.Margin = new System.Windows.Forms.Padding(4);
             this.layoutControl3.Name = "layoutControl3";
             this.layoutControl3.Root = this.layoutControlGroup2;
             this.layoutControl3.Size = new System.Drawing.Size(873, 533);
@@ -534,7 +502,7 @@ namespace HIS.Desktop.Plugins.BidUpdate
             // panelControl1
             // 
             this.panelControl1.Location = new System.Drawing.Point(0, 0);
-            this.panelControl1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.panelControl1.Margin = new System.Windows.Forms.Padding(4);
             this.panelControl1.Name = "panelControl1";
             this.panelControl1.Size = new System.Drawing.Size(873, 533);
             this.panelControl1.TabIndex = 4;
@@ -564,9 +532,9 @@ namespace HIS.Desktop.Plugins.BidUpdate
             // xtraTabPageMaterial
             // 
             this.xtraTabPageMaterial.Controls.Add(this.layoutControl4);
-            this.xtraTabPageMaterial.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.xtraTabPageMaterial.Margin = new System.Windows.Forms.Padding(4);
             this.xtraTabPageMaterial.Name = "xtraTabPageMaterial";
-            this.xtraTabPageMaterial.Size = new System.Drawing.Size(873, 535);
+            this.xtraTabPageMaterial.Size = new System.Drawing.Size(873, 533);
             this.xtraTabPageMaterial.Text = "Vật tư";
             // 
             // layoutControl4
@@ -574,19 +542,19 @@ namespace HIS.Desktop.Plugins.BidUpdate
             this.layoutControl4.Controls.Add(this.panelControl2);
             this.layoutControl4.Dock = System.Windows.Forms.DockStyle.Fill;
             this.layoutControl4.Location = new System.Drawing.Point(0, 0);
-            this.layoutControl4.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.layoutControl4.Margin = new System.Windows.Forms.Padding(4);
             this.layoutControl4.Name = "layoutControl4";
             this.layoutControl4.Root = this.layoutControlGroup4;
-            this.layoutControl4.Size = new System.Drawing.Size(873, 535);
+            this.layoutControl4.Size = new System.Drawing.Size(873, 533);
             this.layoutControl4.TabIndex = 0;
             this.layoutControl4.Text = "layoutControl4";
             // 
             // panelControl2
             // 
             this.panelControl2.Location = new System.Drawing.Point(0, 0);
-            this.panelControl2.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.panelControl2.Margin = new System.Windows.Forms.Padding(4);
             this.panelControl2.Name = "panelControl2";
-            this.panelControl2.Size = new System.Drawing.Size(873, 535);
+            this.panelControl2.Size = new System.Drawing.Size(873, 533);
             this.panelControl2.TabIndex = 5;
             // 
             // layoutControlGroup4
@@ -598,7 +566,7 @@ namespace HIS.Desktop.Plugins.BidUpdate
             this.layoutControlGroup4.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup4.Name = "layoutControlGroup4";
             this.layoutControlGroup4.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
-            this.layoutControlGroup4.Size = new System.Drawing.Size(873, 535);
+            this.layoutControlGroup4.Size = new System.Drawing.Size(873, 533);
             this.layoutControlGroup4.TextVisible = false;
             // 
             // layoutControlItem15
@@ -607,16 +575,16 @@ namespace HIS.Desktop.Plugins.BidUpdate
             this.layoutControlItem15.Location = new System.Drawing.Point(0, 0);
             this.layoutControlItem15.Name = "layoutControlItem15";
             this.layoutControlItem15.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
-            this.layoutControlItem15.Size = new System.Drawing.Size(873, 535);
+            this.layoutControlItem15.Size = new System.Drawing.Size(873, 533);
             this.layoutControlItem15.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem15.TextVisible = false;
             // 
             // xtraTabPageBlood
             // 
             this.xtraTabPageBlood.Controls.Add(this.layoutControl5);
-            this.xtraTabPageBlood.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.xtraTabPageBlood.Margin = new System.Windows.Forms.Padding(4);
             this.xtraTabPageBlood.Name = "xtraTabPageBlood";
-            this.xtraTabPageBlood.Size = new System.Drawing.Size(873, 535);
+            this.xtraTabPageBlood.Size = new System.Drawing.Size(873, 533);
             this.xtraTabPageBlood.Text = "Máu";
             // 
             // layoutControl5
@@ -624,19 +592,19 @@ namespace HIS.Desktop.Plugins.BidUpdate
             this.layoutControl5.Controls.Add(this.panelControl3);
             this.layoutControl5.Dock = System.Windows.Forms.DockStyle.Fill;
             this.layoutControl5.Location = new System.Drawing.Point(0, 0);
-            this.layoutControl5.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.layoutControl5.Margin = new System.Windows.Forms.Padding(4);
             this.layoutControl5.Name = "layoutControl5";
             this.layoutControl5.Root = this.layoutControlGroup5;
-            this.layoutControl5.Size = new System.Drawing.Size(873, 535);
+            this.layoutControl5.Size = new System.Drawing.Size(873, 533);
             this.layoutControl5.TabIndex = 0;
             this.layoutControl5.Text = "layoutControl5";
             // 
             // panelControl3
             // 
             this.panelControl3.Location = new System.Drawing.Point(0, 0);
-            this.panelControl3.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.panelControl3.Margin = new System.Windows.Forms.Padding(4);
             this.panelControl3.Name = "panelControl3";
-            this.panelControl3.Size = new System.Drawing.Size(873, 535);
+            this.panelControl3.Size = new System.Drawing.Size(873, 533);
             this.panelControl3.TabIndex = 5;
             // 
             // layoutControlGroup5
@@ -648,7 +616,7 @@ namespace HIS.Desktop.Plugins.BidUpdate
             this.layoutControlGroup5.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup5.Name = "layoutControlGroup5";
             this.layoutControlGroup5.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
-            this.layoutControlGroup5.Size = new System.Drawing.Size(873, 535);
+            this.layoutControlGroup5.Size = new System.Drawing.Size(873, 533);
             this.layoutControlGroup5.TextVisible = false;
             // 
             // layoutControlItem13
@@ -657,14 +625,14 @@ namespace HIS.Desktop.Plugins.BidUpdate
             this.layoutControlItem13.Location = new System.Drawing.Point(0, 0);
             this.layoutControlItem13.Name = "layoutControlItem13";
             this.layoutControlItem13.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
-            this.layoutControlItem13.Size = new System.Drawing.Size(873, 535);
+            this.layoutControlItem13.Size = new System.Drawing.Size(873, 533);
             this.layoutControlItem13.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem13.TextVisible = false;
             // 
             // txtBidYear
             // 
             this.txtBidYear.Location = new System.Drawing.Point(1428, 31);
-            this.txtBidYear.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.txtBidYear.Margin = new System.Windows.Forms.Padding(4);
             this.txtBidYear.MenuManager = this.barManager1;
             this.txtBidYear.Name = "txtBidYear";
             this.txtBidYear.Properties.Mask.EditMask = "d";
@@ -715,7 +683,7 @@ namespace HIS.Desktop.Plugins.BidUpdate
             this.layoutControl2.Controls.Add(this.xtraTabControl1);
             this.layoutControl2.Controls.Add(this.txtSupplierCode);
             this.layoutControl2.Location = new System.Drawing.Point(3, 3);
-            this.layoutControl2.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.layoutControl2.Margin = new System.Windows.Forms.Padding(4);
             this.layoutControl2.Name = "layoutControl2";
             this.layoutControl2.OptionsCustomizationForm.DesignTimeCustomizationFormPositionAndSize = new System.Drawing.Rectangle(638, 116, 250, 350);
             this.layoutControl2.Root = this.layoutControlGroup3;
@@ -726,7 +694,7 @@ namespace HIS.Desktop.Plugins.BidUpdate
             // cboInformationBid
             // 
             this.cboInformationBid.Location = new System.Drawing.Point(681, 508);
-            this.cboInformationBid.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.cboInformationBid.Margin = new System.Windows.Forms.Padding(4);
             this.cboInformationBid.MenuManager = this.barManager1;
             this.cboInformationBid.Name = "cboInformationBid";
             this.cboInformationBid.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
@@ -751,7 +719,7 @@ namespace HIS.Desktop.Plugins.BidUpdate
             0,
             0});
             this.spinImpMoreRatio.Location = new System.Drawing.Point(93, 424);
-            this.spinImpMoreRatio.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.spinImpMoreRatio.Margin = new System.Windows.Forms.Padding(4);
             this.spinImpMoreRatio.MenuManager = this.barManager1;
             this.spinImpMoreRatio.Name = "spinImpMoreRatio";
             this.spinImpMoreRatio.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
@@ -773,7 +741,7 @@ namespace HIS.Desktop.Plugins.BidUpdate
             // txtNOTE
             // 
             this.txtNOTE.Location = new System.Drawing.Point(93, 620);
-            this.txtNOTE.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.txtNOTE.Margin = new System.Windows.Forms.Padding(4);
             this.txtNOTE.MenuManager = this.barManager1;
             this.txtNOTE.Name = "txtNOTE";
             this.txtNOTE.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
@@ -785,7 +753,7 @@ namespace HIS.Desktop.Plugins.BidUpdate
             // txtMaDT
             // 
             this.txtMaDT.Location = new System.Drawing.Point(681, 480);
-            this.txtMaDT.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.txtMaDT.Margin = new System.Windows.Forms.Padding(4);
             this.txtMaDT.MenuManager = this.barManager1;
             this.txtMaDT.Name = "txtMaDT";
             this.txtMaDT.Size = new System.Drawing.Size(190, 22);
@@ -796,7 +764,7 @@ namespace HIS.Desktop.Plugins.BidUpdate
             // txtTenTT
             // 
             this.txtTenTT.Location = new System.Drawing.Point(408, 480);
-            this.txtTenTT.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.txtTenTT.Margin = new System.Windows.Forms.Padding(4);
             this.txtTenTT.MenuManager = this.barManager1;
             this.txtTenTT.Name = "txtTenTT";
             this.txtTenTT.Size = new System.Drawing.Size(202, 22);
@@ -807,7 +775,7 @@ namespace HIS.Desktop.Plugins.BidUpdate
             // txtMaTT
             // 
             this.txtMaTT.Location = new System.Drawing.Point(93, 480);
-            this.txtMaTT.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.txtMaTT.Margin = new System.Windows.Forms.Padding(4);
             this.txtMaTT.MenuManager = this.barManager1;
             this.txtMaTT.Name = "txtMaTT";
             this.txtMaTT.Size = new System.Drawing.Size(224, 22);
@@ -818,7 +786,7 @@ namespace HIS.Desktop.Plugins.BidUpdate
             // txtDosageForm
             // 
             this.txtDosageForm.Location = new System.Drawing.Point(691, 536);
-            this.txtDosageForm.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.txtDosageForm.Margin = new System.Windows.Forms.Padding(4);
             this.txtDosageForm.MenuManager = this.barManager1;
             this.txtDosageForm.Name = "txtDosageForm";
             this.txtDosageForm.Size = new System.Drawing.Size(180, 22);
@@ -829,7 +797,7 @@ namespace HIS.Desktop.Plugins.BidUpdate
             // cboMediUseForm
             // 
             this.cboMediUseForm.Location = new System.Drawing.Point(408, 536);
-            this.cboMediUseForm.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.cboMediUseForm.Margin = new System.Windows.Forms.Padding(4);
             this.cboMediUseForm.MenuManager = this.barManager1;
             this.cboMediUseForm.Name = "cboMediUseForm";
             this.cboMediUseForm.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
@@ -854,7 +822,7 @@ namespace HIS.Desktop.Plugins.BidUpdate
             // txtActiveBhyt
             // 
             this.txtActiveBhyt.Location = new System.Drawing.Point(93, 536);
-            this.txtActiveBhyt.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.txtActiveBhyt.Margin = new System.Windows.Forms.Padding(4);
             this.txtActiveBhyt.MenuManager = this.barManager1;
             this.txtActiveBhyt.Name = "txtActiveBhyt";
             this.txtActiveBhyt.Size = new System.Drawing.Size(224, 22);
@@ -865,7 +833,7 @@ namespace HIS.Desktop.Plugins.BidUpdate
             // txtPackingType
             // 
             this.txtPackingType.Location = new System.Drawing.Point(408, 508);
-            this.txtPackingType.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.txtPackingType.Margin = new System.Windows.Forms.Padding(4);
             this.txtPackingType.MenuManager = this.barManager1;
             this.txtPackingType.Name = "txtPackingType";
             this.txtPackingType.Size = new System.Drawing.Size(202, 22);
@@ -876,7 +844,7 @@ namespace HIS.Desktop.Plugins.BidUpdate
             // txtTenBHYT
             // 
             this.txtTenBHYT.Location = new System.Drawing.Point(93, 508);
-            this.txtTenBHYT.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.txtTenBHYT.Margin = new System.Windows.Forms.Padding(4);
             this.txtTenBHYT.MenuManager = this.barManager1;
             this.txtTenBHYT.Name = "txtTenBHYT";
             this.txtTenBHYT.Size = new System.Drawing.Size(224, 22);
@@ -888,7 +856,7 @@ namespace HIS.Desktop.Plugins.BidUpdate
             // 
             this.labelControl1.AutoSizeMode = DevExpress.XtraEditors.LabelAutoSizeMode.None;
             this.labelControl1.Location = new System.Drawing.Point(408, 648);
-            this.labelControl1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.labelControl1.Margin = new System.Windows.Forms.Padding(4);
             this.labelControl1.Name = "labelControl1";
             this.labelControl1.Size = new System.Drawing.Size(22, 18);
             this.labelControl1.StyleController = this.layoutControl2;
@@ -902,7 +870,7 @@ namespace HIS.Desktop.Plugins.BidUpdate
             0,
             0});
             this.spinHourLifeSpan.Location = new System.Drawing.Point(737, 648);
-            this.spinHourLifeSpan.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.spinHourLifeSpan.Margin = new System.Windows.Forms.Padding(4);
             this.spinHourLifeSpan.MenuManager = this.barManager1;
             this.spinHourLifeSpan.Name = "spinHourLifeSpan";
             this.spinHourLifeSpan.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
@@ -929,7 +897,7 @@ namespace HIS.Desktop.Plugins.BidUpdate
             0,
             0});
             this.spinDayLifeSpan.Location = new System.Drawing.Point(592, 648);
-            this.spinDayLifeSpan.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.spinDayLifeSpan.Margin = new System.Windows.Forms.Padding(4);
             this.spinDayLifeSpan.MenuManager = this.barManager1;
             this.spinDayLifeSpan.Name = "spinDayLifeSpan";
             this.spinDayLifeSpan.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
@@ -956,7 +924,7 @@ namespace HIS.Desktop.Plugins.BidUpdate
             0,
             0});
             this.spinMonthLifeSpan.Location = new System.Drawing.Point(433, 647);
-            this.spinMonthLifeSpan.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.spinMonthLifeSpan.Margin = new System.Windows.Forms.Padding(4);
             this.spinMonthLifeSpan.MenuManager = this.barManager1;
             this.spinMonthLifeSpan.Name = "spinMonthLifeSpan";
             this.spinMonthLifeSpan.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
@@ -978,7 +946,7 @@ namespace HIS.Desktop.Plugins.BidUpdate
             // chkIsOnlyShowByBusiness
             // 
             this.chkIsOnlyShowByBusiness.Location = new System.Drawing.Point(269, 676);
-            this.chkIsOnlyShowByBusiness.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.chkIsOnlyShowByBusiness.Margin = new System.Windows.Forms.Padding(4);
             this.chkIsOnlyShowByBusiness.MenuManager = this.barManager1;
             this.chkIsOnlyShowByBusiness.Name = "chkIsOnlyShowByBusiness";
             this.chkIsOnlyShowByBusiness.Properties.Caption = "Chỉ hiển thị thuốc/vật tư không KD";
@@ -991,7 +959,7 @@ namespace HIS.Desktop.Plugins.BidUpdate
             // chkClearToAdd
             // 
             this.chkClearToAdd.Location = new System.Drawing.Point(3, 676);
-            this.chkClearToAdd.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.chkClearToAdd.Margin = new System.Windows.Forms.Padding(4);
             this.chkClearToAdd.MenuManager = this.barManager1;
             this.chkClearToAdd.Name = "chkClearToAdd";
             this.chkClearToAdd.Properties.Caption = "Làm trắng sau khi bổ sung";
@@ -1004,7 +972,7 @@ namespace HIS.Desktop.Plugins.BidUpdate
             // 
             this.txtBidGroupCode.EnterMoveNextControl = true;
             this.txtBidGroupCode.Location = new System.Drawing.Point(408, 452);
-            this.txtBidGroupCode.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.txtBidGroupCode.Margin = new System.Windows.Forms.Padding(4);
             this.txtBidGroupCode.MenuManager = this.barManager1;
             this.txtBidGroupCode.Name = "txtBidGroupCode";
             this.txtBidGroupCode.Properties.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
@@ -1016,7 +984,7 @@ namespace HIS.Desktop.Plugins.BidUpdate
             // chkEditNational
             // 
             this.chkEditNational.Location = new System.Drawing.Point(768, 564);
-            this.chkEditNational.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.chkEditNational.Margin = new System.Windows.Forms.Padding(4);
             this.chkEditNational.MenuManager = this.barManager1;
             this.chkEditNational.Name = "chkEditNational";
             this.chkEditNational.Properties.Caption = "Sửa";
@@ -1033,7 +1001,7 @@ namespace HIS.Desktop.Plugins.BidUpdate
             this.panelControl4.Controls.Add(this.txtNationalMainText);
             this.panelControl4.Controls.Add(this.cboNational);
             this.panelControl4.Location = new System.Drawing.Point(408, 564);
-            this.panelControl4.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.panelControl4.Margin = new System.Windows.Forms.Padding(4);
             this.panelControl4.Name = "panelControl4";
             this.panelControl4.Size = new System.Drawing.Size(354, 22);
             this.panelControl4.TabIndex = 27;
@@ -1042,7 +1010,7 @@ namespace HIS.Desktop.Plugins.BidUpdate
             // 
             this.txtNationalMainText.Dock = System.Windows.Forms.DockStyle.Fill;
             this.txtNationalMainText.Location = new System.Drawing.Point(2, 2);
-            this.txtNationalMainText.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.txtNationalMainText.Margin = new System.Windows.Forms.Padding(4);
             this.txtNationalMainText.MenuManager = this.barManager1;
             this.txtNationalMainText.Name = "txtNationalMainText";
             this.txtNationalMainText.Size = new System.Drawing.Size(350, 22);
@@ -1053,7 +1021,7 @@ namespace HIS.Desktop.Plugins.BidUpdate
             // 
             this.cboNational.Dock = System.Windows.Forms.DockStyle.Fill;
             this.cboNational.Location = new System.Drawing.Point(2, 2);
-            this.cboNational.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.cboNational.Margin = new System.Windows.Forms.Padding(4);
             this.cboNational.MenuManager = this.barManager1;
             this.cboNational.Name = "cboNational";
             this.cboNational.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
@@ -1077,7 +1045,7 @@ namespace HIS.Desktop.Plugins.BidUpdate
             // cboManufacture
             // 
             this.cboManufacture.Location = new System.Drawing.Point(552, 591);
-            this.cboManufacture.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.cboManufacture.Margin = new System.Windows.Forms.Padding(4);
             this.cboManufacture.MenuManager = this.barManager1;
             this.cboManufacture.Name = "cboManufacture";
             this.cboManufacture.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
@@ -1102,7 +1070,7 @@ namespace HIS.Desktop.Plugins.BidUpdate
             // txtConcentra
             // 
             this.txtConcentra.Location = new System.Drawing.Point(93, 592);
-            this.txtConcentra.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.txtConcentra.Margin = new System.Windows.Forms.Padding(4);
             this.txtConcentra.MenuManager = this.barManager1;
             this.txtConcentra.Name = "txtConcentra";
             this.txtConcentra.Size = new System.Drawing.Size(224, 22);
@@ -1113,7 +1081,7 @@ namespace HIS.Desktop.Plugins.BidUpdate
             // txtManufacture
             // 
             this.txtManufacture.Location = new System.Drawing.Point(407, 591);
-            this.txtManufacture.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.txtManufacture.Margin = new System.Windows.Forms.Padding(4);
             this.txtManufacture.MenuManager = this.barManager1;
             this.txtManufacture.Name = "txtManufacture";
             this.txtManufacture.Size = new System.Drawing.Size(145, 22);
@@ -1124,7 +1092,7 @@ namespace HIS.Desktop.Plugins.BidUpdate
             // txtRegisterNumber
             // 
             this.txtRegisterNumber.Location = new System.Drawing.Point(93, 564);
-            this.txtRegisterNumber.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.txtRegisterNumber.Margin = new System.Windows.Forms.Padding(4);
             this.txtRegisterNumber.MenuManager = this.barManager1;
             this.txtRegisterNumber.Name = "txtRegisterNumber";
             this.txtRegisterNumber.Size = new System.Drawing.Size(224, 22);
@@ -1136,7 +1104,7 @@ namespace HIS.Desktop.Plugins.BidUpdate
             // 
             this.DtExpiredDate.EditValue = null;
             this.DtExpiredDate.Location = new System.Drawing.Point(681, 452);
-            this.DtExpiredDate.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.DtExpiredDate.Margin = new System.Windows.Forms.Padding(4);
             this.DtExpiredDate.MenuManager = this.barManager1;
             this.DtExpiredDate.Name = "DtExpiredDate";
             this.DtExpiredDate.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
@@ -1159,7 +1127,7 @@ namespace HIS.Desktop.Plugins.BidUpdate
             // 
             this.txtBidPackageCode.EnterMoveNextControl = true;
             this.txtBidPackageCode.Location = new System.Drawing.Point(93, 452);
-            this.txtBidPackageCode.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.txtBidPackageCode.Margin = new System.Windows.Forms.Padding(4);
             this.txtBidPackageCode.MenuManager = this.barManager1;
             this.txtBidPackageCode.Name = "txtBidPackageCode";
             this.txtBidPackageCode.Properties.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
@@ -1185,7 +1153,7 @@ namespace HIS.Desktop.Plugins.BidUpdate
             // btnAdd
             // 
             this.btnAdd.Location = new System.Drawing.Point(575, 676);
-            this.btnAdd.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.btnAdd.Margin = new System.Windows.Forms.Padding(4);
             this.btnAdd.Name = "btnAdd";
             this.btnAdd.Size = new System.Drawing.Size(120, 27);
             this.btnAdd.StyleController = this.layoutControl2;
@@ -1198,7 +1166,7 @@ namespace HIS.Desktop.Plugins.BidUpdate
             this.cboSupplier.EditValue = "";
             this.cboSupplier.EnterMoveNextControl = true;
             this.cboSupplier.Location = new System.Drawing.Point(552, 423);
-            this.cboSupplier.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.cboSupplier.Margin = new System.Windows.Forms.Padding(4);
             this.cboSupplier.Name = "cboSupplier";
             this.cboSupplier.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
             this.cboSupplier.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
@@ -1221,7 +1189,7 @@ namespace HIS.Desktop.Plugins.BidUpdate
             // BtnDiscard
             // 
             this.BtnDiscard.Location = new System.Drawing.Point(828, 676);
-            this.BtnDiscard.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.BtnDiscard.Margin = new System.Windows.Forms.Padding(4);
             this.BtnDiscard.Name = "BtnDiscard";
             this.BtnDiscard.Size = new System.Drawing.Size(43, 27);
             this.BtnDiscard.StyleController = this.layoutControl2;
@@ -1232,7 +1200,7 @@ namespace HIS.Desktop.Plugins.BidUpdate
             // btnUpdate
             // 
             this.btnUpdate.Location = new System.Drawing.Point(701, 676);
-            this.btnUpdate.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.btnUpdate.Margin = new System.Windows.Forms.Padding(4);
             this.btnUpdate.Name = "btnUpdate";
             this.btnUpdate.Size = new System.Drawing.Size(121, 27);
             this.btnUpdate.StyleController = this.layoutControl2;
@@ -1248,7 +1216,7 @@ namespace HIS.Desktop.Plugins.BidUpdate
             0,
             0});
             this.spinImpVat.Location = new System.Drawing.Point(681, 396);
-            this.spinImpVat.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.spinImpVat.Margin = new System.Windows.Forms.Padding(4);
             this.spinImpVat.Name = "spinImpVat";
             this.spinImpVat.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
@@ -1274,7 +1242,7 @@ namespace HIS.Desktop.Plugins.BidUpdate
             0,
             0});
             this.spinImpPrice.Location = new System.Drawing.Point(408, 396);
-            this.spinImpPrice.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.spinImpPrice.Margin = new System.Windows.Forms.Padding(4);
             this.spinImpPrice.Name = "spinImpPrice";
             this.spinImpPrice.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
@@ -1300,7 +1268,7 @@ namespace HIS.Desktop.Plugins.BidUpdate
             0,
             0});
             this.spinAmount.Location = new System.Drawing.Point(93, 396);
-            this.spinAmount.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.spinAmount.Margin = new System.Windows.Forms.Padding(4);
             this.spinAmount.Name = "spinAmount";
             this.spinAmount.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.False;
             this.spinAmount.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
@@ -1322,7 +1290,7 @@ namespace HIS.Desktop.Plugins.BidUpdate
             // xtraTabControl1
             // 
             this.xtraTabControl1.Location = new System.Drawing.Point(3, 3);
-            this.xtraTabControl1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.xtraTabControl1.Margin = new System.Windows.Forms.Padding(4);
             this.xtraTabControl1.Name = "xtraTabControl1";
             this.xtraTabControl1.SelectedTabPage = this.xtraTabPage1;
             this.xtraTabControl1.Size = new System.Drawing.Size(868, 387);
@@ -1336,7 +1304,7 @@ namespace HIS.Desktop.Plugins.BidUpdate
             // xtraTabPage1
             // 
             this.xtraTabPage1.Controls.Add(this.pnlThuoc);
-            this.xtraTabPage1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.xtraTabPage1.Margin = new System.Windows.Forms.Padding(4);
             this.xtraTabPage1.Name = "xtraTabPage1";
             this.xtraTabPage1.Size = new System.Drawing.Size(861, 353);
             this.xtraTabPage1.Text = "Thuốc";
@@ -1345,7 +1313,7 @@ namespace HIS.Desktop.Plugins.BidUpdate
             // 
             this.pnlThuoc.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pnlThuoc.Location = new System.Drawing.Point(0, 0);
-            this.pnlThuoc.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.pnlThuoc.Margin = new System.Windows.Forms.Padding(4);
             this.pnlThuoc.Name = "pnlThuoc";
             this.pnlThuoc.Size = new System.Drawing.Size(861, 353);
             this.pnlThuoc.TabIndex = 0;
@@ -1353,41 +1321,41 @@ namespace HIS.Desktop.Plugins.BidUpdate
             // xtraTabPage2
             // 
             this.xtraTabPage2.Controls.Add(this.pnlVatTu);
-            this.xtraTabPage2.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.xtraTabPage2.Margin = new System.Windows.Forms.Padding(4);
             this.xtraTabPage2.Name = "xtraTabPage2";
-            this.xtraTabPage2.Size = new System.Drawing.Size(861, 355);
+            this.xtraTabPage2.Size = new System.Drawing.Size(861, 353);
             this.xtraTabPage2.Text = "Vật tư";
             // 
             // pnlVatTu
             // 
             this.pnlVatTu.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pnlVatTu.Location = new System.Drawing.Point(0, 0);
-            this.pnlVatTu.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.pnlVatTu.Margin = new System.Windows.Forms.Padding(4);
             this.pnlVatTu.Name = "pnlVatTu";
-            this.pnlVatTu.Size = new System.Drawing.Size(861, 355);
+            this.pnlVatTu.Size = new System.Drawing.Size(861, 353);
             this.pnlVatTu.TabIndex = 0;
             // 
             // xtraTabPage3
             // 
             this.xtraTabPage3.Controls.Add(this.pnlMau);
-            this.xtraTabPage3.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.xtraTabPage3.Margin = new System.Windows.Forms.Padding(4);
             this.xtraTabPage3.Name = "xtraTabPage3";
-            this.xtraTabPage3.Size = new System.Drawing.Size(861, 355);
+            this.xtraTabPage3.Size = new System.Drawing.Size(861, 353);
             this.xtraTabPage3.Text = "Máu";
             // 
             // pnlMau
             // 
             this.pnlMau.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pnlMau.Location = new System.Drawing.Point(0, 0);
-            this.pnlMau.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.pnlMau.Margin = new System.Windows.Forms.Padding(4);
             this.pnlMau.Name = "pnlMau";
-            this.pnlMau.Size = new System.Drawing.Size(861, 355);
+            this.pnlMau.Size = new System.Drawing.Size(861, 353);
             this.pnlMau.TabIndex = 0;
             // 
             // txtSupplierCode
             // 
             this.txtSupplierCode.Location = new System.Drawing.Point(407, 423);
-            this.txtSupplierCode.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.txtSupplierCode.Margin = new System.Windows.Forms.Padding(4);
             this.txtSupplierCode.Name = "txtSupplierCode";
             this.txtSupplierCode.Size = new System.Drawing.Size(145, 22);
             this.txtSupplierCode.StyleController = this.layoutControl2;
@@ -1900,7 +1868,7 @@ namespace HIS.Desktop.Plugins.BidUpdate
             // emptySpaceItem1
             // 
             this.emptySpaceItem1.AllowHotTrack = false;
-            this.emptySpaceItem1.Location = new System.Drawing.Point(559, 702);
+            this.emptySpaceItem1.Location = new System.Drawing.Point(559, 673);
             this.emptySpaceItem1.Name = "emptySpaceItem1";
             this.emptySpaceItem1.Size = new System.Drawing.Size(13, 33);
             this.emptySpaceItem1.TextSize = new System.Drawing.Size(0, 0);
@@ -1924,7 +1892,7 @@ namespace HIS.Desktop.Plugins.BidUpdate
             // 
             this.txtBidName.EnterMoveNextControl = true;
             this.txtBidName.Location = new System.Drawing.Point(988, 3);
-            this.txtBidName.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.txtBidName.Margin = new System.Windows.Forms.Padding(4);
             this.txtBidName.Name = "txtBidName";
             this.txtBidName.Properties.NullValuePrompt = "Ctrl 1";
             this.txtBidName.Properties.NullValuePromptShowForEmptyValue = true;
@@ -1937,7 +1905,7 @@ namespace HIS.Desktop.Plugins.BidUpdate
             // 
             this.txtBidNumber.EnterMoveNextControl = true;
             this.txtBidNumber.Location = new System.Drawing.Point(1428, 3);
-            this.txtBidNumber.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.txtBidNumber.Margin = new System.Windows.Forms.Padding(4);
             this.txtBidNumber.Name = "txtBidNumber";
             this.txtBidNumber.Properties.MaxLength = 999999999;
             this.txtBidNumber.Size = new System.Drawing.Size(329, 22);
@@ -1947,7 +1915,7 @@ namespace HIS.Desktop.Plugins.BidUpdate
             // btnSave
             // 
             this.btnSave.Location = new System.Drawing.Point(1598, 682);
-            this.btnSave.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.btnSave.Margin = new System.Windows.Forms.Padding(4);
             this.btnSave.Name = "btnSave";
             this.btnSave.Size = new System.Drawing.Size(159, 27);
             this.btnSave.StyleController = this.layoutControl1;
@@ -1959,7 +1927,7 @@ namespace HIS.Desktop.Plugins.BidUpdate
             // 
             this.cboBidType.EnterMoveNextControl = true;
             this.cboBidType.Location = new System.Drawing.Point(988, 31);
-            this.cboBidType.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.cboBidType.Margin = new System.Windows.Forms.Padding(4);
             this.cboBidType.Name = "cboBidType";
             this.cboBidType.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
@@ -2117,7 +2085,7 @@ namespace HIS.Desktop.Plugins.BidUpdate
             // 
             this.emptySpaceItem2.AllowHotTrack = false;
             this.emptySpaceItem2.CustomizationFormText = "emptySpaceItem1";
-            this.emptySpaceItem2.Location = new System.Drawing.Point(880, 708);
+            this.emptySpaceItem2.Location = new System.Drawing.Point(880, 679);
             this.emptySpaceItem2.Name = "emptySpaceItem2";
             this.emptySpaceItem2.Size = new System.Drawing.Size(529, 33);
             this.emptySpaceItem2.Text = "emptySpaceItem1";
@@ -2244,6 +2212,34 @@ namespace HIS.Desktop.Plugins.BidUpdate
             this.layoutControlItem27.TextSize = new System.Drawing.Size(70, 20);
             this.layoutControlItem27.TextToControlDistance = 5;
             // 
+            // barDockControlTop
+            // 
+            this.barDockControlTop.CausesValidation = false;
+            this.barDockControlTop.Dock = System.Windows.Forms.DockStyle.Top;
+            this.barDockControlTop.Location = new System.Drawing.Point(0, 29);
+            this.barDockControlTop.Size = new System.Drawing.Size(1760, 0);
+            // 
+            // barDockControlBottom
+            // 
+            this.barDockControlBottom.CausesValidation = false;
+            this.barDockControlBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.barDockControlBottom.Location = new System.Drawing.Point(0, 741);
+            this.barDockControlBottom.Size = new System.Drawing.Size(1760, 0);
+            // 
+            // barDockControlLeft
+            // 
+            this.barDockControlLeft.CausesValidation = false;
+            this.barDockControlLeft.Dock = System.Windows.Forms.DockStyle.Left;
+            this.barDockControlLeft.Location = new System.Drawing.Point(0, 29);
+            this.barDockControlLeft.Size = new System.Drawing.Size(0, 712);
+            // 
+            // barDockControlRight
+            // 
+            this.barDockControlRight.CausesValidation = false;
+            this.barDockControlRight.Dock = System.Windows.Forms.DockStyle.Right;
+            this.barDockControlRight.Location = new System.Drawing.Point(1760, 29);
+            this.barDockControlRight.Size = new System.Drawing.Size(0, 712);
+            // 
             // dxValidationProviderLeft
             // 
             this.dxValidationProviderLeft.ValidationFailed += new DevExpress.XtraEditors.DXErrorProvider.ValidationFailedEventHandler(this.dxValidationProviderLeft_ValidationFailed);
@@ -2269,7 +2265,7 @@ namespace HIS.Desktop.Plugins.BidUpdate
             this.Controls.Add(this.barDockControlRight);
             this.Controls.Add(this.barDockControlBottom);
             this.Controls.Add(this.barDockControlTop);
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "frmBidUpdate";
             this.Text = "Sửa gói thầu";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
