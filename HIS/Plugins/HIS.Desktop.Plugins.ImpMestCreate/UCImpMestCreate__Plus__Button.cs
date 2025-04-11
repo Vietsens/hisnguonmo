@@ -904,11 +904,11 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
 
                         if (item != null && !string.IsNullOrEmpty(item.DOSAGE_FORM))
                         {
-                            ado.dosageForm = item.DOSAGE_FORM;
+                            ado.HisMedicine.DOSAGE_FORM = item.DOSAGE_FORM;
                         }
                         else if (medicine != null)
                         {
-                            ado.dosageForm = medicine.DOSAGE_FORM;
+                            ado.HisMedicine.DOSAGE_FORM = medicine.DOSAGE_FORM;
                         }
 
                         if (item != null && !string.IsNullOrWhiteSpace(item.MONTH_LIFESPAN_STR))

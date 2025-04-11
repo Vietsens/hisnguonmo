@@ -55,7 +55,7 @@
       <HintPath>..\..\..\..\lib\HIS\HIS.Desktop.Print\HIS.Desktop.Print.dll</HintPath>
     </Reference>
     <Reference Include="HIS.Desktop.Utility">
-      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\HIS.Desktop.Utility.dll</HintPath>
+      <HintPath>..\..\..\..\..\His Test\histest\x64\ReferencedAssemblies\HIS.Desktop.Utility.dll</HintPath>
     </Reference>
     <Reference Include="HIS.UC.MaterialType">
       <HintPath>..\..\..\..\lib\HIS\HIS.UC.MaterialType\HIS.UC.MaterialType.dll</HintPath>
@@ -205,6 +205,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ADO\BidValidTimeADO.cs" />
+    <Compile Include="ADO\DosageFormADO.cs" />
     <Compile Include="ADO\ExpMestMaterialADO.cs" />
     <Compile Include="ADO\ExpMestMedicineADO.cs" />
     <Compile Include="ADO\ManufacturerADO.cs" />

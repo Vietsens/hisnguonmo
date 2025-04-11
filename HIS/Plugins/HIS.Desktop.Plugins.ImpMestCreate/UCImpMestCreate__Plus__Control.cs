@@ -132,7 +132,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                             {
                                 messError.Add(lciPackingJoinBid.Text.Trim().Trim(':'));
                             }
-                            if (String.IsNullOrWhiteSpace(this.txtDosageForm.Text))
+                            if (String.IsNullOrWhiteSpace(this.cboDosageForm.Text))
                             {
                                 messError.Add(lciDosageForm.Text.Trim().Trim(':'));
                             }
@@ -495,7 +495,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                     var manuImpMests = new BackendAdapter(new CommonParam()).Get<List<HIS_IMP_MEST>>("api/HisImpMest/Get", ApiConsumers.MosConsumer, manuImpMestFilter, new CommonParam());
                     if (manuImpMests != null && manuImpMests.Count > 0)
                     {
-                        WaitingManager.Hide();
+                        //WaitingManager.Hide();
                         long expMestIdEdit = this._currentImpMestUp != null ? this._currentImpMestUp.ID : 0;
 
                         //#21142
