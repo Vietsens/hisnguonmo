@@ -1063,7 +1063,11 @@ namespace HIS.Desktop.Plugins.HisImportMedicineType.FormLoad
                             mediAdo.ALLOW_ODD_ERROR = 1;
                         }
                     }
-
+                    if (string.IsNullOrEmpty(item.DOSAGE_FORM))
+                    {
+                        error += string.Format(Message.MessageImport.TruongDuBatBuoc, "dạng bào chế");
+                        mediAdo.DOSAGE_FORM_ERROR = 1;
+                    }
                     if (!string.IsNullOrEmpty(item.REQUIRE_HSD))
                     {
                         if (item.REQUIRE_HSD.Trim().ToLower() == "x")
@@ -1076,7 +1080,7 @@ namespace HIS.Desktop.Plugins.HisImportMedicineType.FormLoad
                             mediAdo.REQUIRE_HSD_ERROR = 1;
                         }
                     }
-
+                    
                     if (!string.IsNullOrEmpty(item.TDL_GENDER_CODE))
                     {
                         var gender = BackendDataWorker.Get<HIS_GENDER>().FirstOrDefault(o => o.GENDER_CODE == item.TDL_GENDER_CODE);
