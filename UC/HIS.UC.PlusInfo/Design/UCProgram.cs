@@ -245,7 +245,7 @@ namespace HIS.UC.PlusInfo.Design
 
         #region Data
 
-        public void SetValue(long patientID)
+        public void SetValue(long patientID, long programid)
         {
             try
             {
@@ -253,8 +253,18 @@ namespace HIS.UC.PlusInfo.Design
                 this.cboProgram.EditValue = null;
                 if (patientID > 0)
                 {
+
                     var patientPrograms = this._HisPatientPrograms.Where(p => p.PATIENT_ID == patientID).ToList();
                     _shareMethod.InitComboCommon(this.cboProgram, patientPrograms, "PROGRAM_ID", "PROGRAM_NAME", "PROGRAM_CODE");
+                    if (patientPrograms.Any(p => p.PROGRAM_ID == programid))
+                    {
+                        this.cboProgram.EditValue = programid;
+                        var selectedProgram = patientPrograms.FirstOrDefault(p => p.PROGRAM_ID == programid);
+                        if (selectedProgram != null)
+                        {
+                            this.txtProgramCode.Text = selectedProgram.PROGRAM_CODE;
+                        }
+                    }
                 }
                 else
                 {
