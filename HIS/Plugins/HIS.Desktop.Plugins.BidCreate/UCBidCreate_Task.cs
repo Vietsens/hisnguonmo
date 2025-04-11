@@ -31,6 +31,7 @@ using HIS.Desktop.LocalStorage.LocalData;
 using HIS.Desktop.LocalStorage.BackendData;
 using MOS.EFMODEL.DataModels;
 using System.ComponentModel;
+using Inventec.Common.Logging;
 
 namespace HIS.Desktop.Plugins.BidCreate
 {
@@ -52,6 +53,7 @@ namespace HIS.Desktop.Plugins.BidCreate
 					LoadNation();
 					LoadManufacture();
 					LoadMediUseForm();
+					LoadDosageForm();
 					taskMaterialType = LoadMaterial();
 					taskBloodType = LoadBlood();
 				}
@@ -161,6 +163,25 @@ namespace HIS.Desktop.Plugins.BidCreate
 			catch (Exception ex)
 			{
 				Inventec.Common.Logging.LogSystem.Error(ex);
+			}
+		}
+		private async Task LoadDosageForm()
+		{
+			try
+			{
+                dataDosageForm = await Task.Run(() =>
+                {
+                    return BackendDataWorker.Get<HIS_DOSAGE_FORM>()
+                        .Where(o => o.IS_ACTIVE == 1)
+                        .OrderBy(o => o.DOSAGE_FORM_NAME)
+                        .ToList();
+                });
+
+                LoadDataToCboDosageForm();
+			}
+			catch(Exception ex)
+			{
+				LogSystem.Error(ex);
 			}
 		}
 		private async Task LoadMediUseForm()

@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio Version 17
+VisualStudioVersion = 17.13.35825.156 d17.13
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HIS.Desktop", "HIS.Desktop\HIS.Desktop.csproj", "{8207ACB0-A325-42C6-97CB-FB54AE1AE6B8}"
 EndProject
@@ -1112,6 +1112,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HIS.UC.TreatmentFinish", "..\UC\HIS.UC.TreatmentFinish\HIS.UC.TreatmentFinish.csproj", "{DDBFAF62-E27F-4B53-B4CA-1B160E2506A2}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HIS.Desktop.Plugins.DrugStoreDebt_phuongnm", "..\..\DaoTao\HIS.Desktop.Plugins.DrugStoreDebt_phuongnm\HIS.Desktop.Plugins.DrugStoreDebt_phuongnm\HIS.Desktop.Plugins.DrugStoreDebt_phuongnm.csproj", "{E63D7EE9-14A7-44B7-BC17-C72E724DC3C7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HIS.Desktop.Plugins.HisDosageForm", "Plugins\HIS.Desktop.Plugins.HisDosageForm\HIS.Desktop.Plugins.HisDosageForm.csproj", "{99FD1F73-2CBA-4664-99CA-62B546DC9F35}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -4387,6 +4389,14 @@ Global
 		{E63D7EE9-14A7-44B7-BC17-C72E724DC3C7}.Release|Any CPU.Build.0 = Release|Any CPU
 		{E63D7EE9-14A7-44B7-BC17-C72E724DC3C7}.Release|x86.ActiveCfg = Release|Any CPU
 		{E63D7EE9-14A7-44B7-BC17-C72E724DC3C7}.Release|x86.Build.0 = Release|Any CPU
+		{99FD1F73-2CBA-4664-99CA-62B546DC9F35}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{99FD1F73-2CBA-4664-99CA-62B546DC9F35}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{99FD1F73-2CBA-4664-99CA-62B546DC9F35}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{99FD1F73-2CBA-4664-99CA-62B546DC9F35}.Debug|x86.Build.0 = Debug|Any CPU
+		{99FD1F73-2CBA-4664-99CA-62B546DC9F35}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{99FD1F73-2CBA-4664-99CA-62B546DC9F35}.Release|Any CPU.Build.0 = Release|Any CPU
+		{99FD1F73-2CBA-4664-99CA-62B546DC9F35}.Release|x86.ActiveCfg = Release|Any CPU
+		{99FD1F73-2CBA-4664-99CA-62B546DC9F35}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -4938,6 +4948,7 @@ Global
 		{173BF142-9E08-494E-924E-FCB61FEDCF94} = {4389DCF1-3139-4266-8DB8-8407BB0095E8}
 		{C1883745-707D-4E4B-944F-8FE48D8EAE62} = {4389DCF1-3139-4266-8DB8-8407BB0095E8}
 		{DDBFAF62-E27F-4B53-B4CA-1B160E2506A2} = {4389DCF1-3139-4266-8DB8-8407BB0095E8}
+		{99FD1F73-2CBA-4664-99CA-62B546DC9F35} = {FF0EB24F-AC72-4F54-9AEF-4BEADDFEE5DE}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {6B8CBF9E-8615-4AF0-9894-C15CB4B6FC6B}

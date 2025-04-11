@@ -42,7 +42,7 @@ using Inventec.Core;
 using Inventec.Desktop.Common.LanguageManager;
 using Inventec.Desktop.Common.Message;
 using Inventec.Fss.Client;
-using MOS.EFMODEL.DataModels;
+using MOS.EFMODEL.DataModels;      
 using MOS.Filter;
 using MOS.LibraryHein.HcmPoorFund;
 using MOS.SDO;
@@ -75,7 +75,7 @@ namespace HIS.Desktop.Plugins.TransactionBill
             IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__SA,
             IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__TDCN,
             IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__TT,
-            IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__XN
+            IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__XN          
         };
 
         bool isNotLoadWhilechkAutoCloseStateInFirst = true;
@@ -121,7 +121,7 @@ namespace HIS.Desktop.Plugins.TransactionBill
         V_HIS_PATIENT_TYPE_ALTER resultPatientType;
         List<V_HIS_BILL_FUND> ListBillFundPay;
         HIS_BRANCH branch = null;
-        string userName = "";
+        string userName = "";        
         bool? IsDirectlyBilling = null;
 
         HIS.Desktop.Library.CacheClient.ControlStateWorker controlStateWorker;

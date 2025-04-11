@@ -131,6 +131,14 @@ namespace HIS.Desktop.Plugins.HisImportMedicineType.FormLoad
                         e.Valid = true;
                     }
                 }
+                if(view.FocusedColumn.FieldName == "DOSAGE_FORM")
+                {
+                    if(e.Value == null || string.IsNullOrEmpty(e.Value.ToString()))
+                    {
+                        e.Value = false;
+                        e.ErrorText = "Trường dữ liệu bắt buộc nhập";
+                    }
+                }
             }
             catch (Exception ex)
             {
