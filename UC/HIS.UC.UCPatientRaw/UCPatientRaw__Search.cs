@@ -629,13 +629,46 @@ namespace HIS.UC.UCPatientRaw
 							return;
 						}
 					}
-					#endregion
+                    #endregion
 
+                    #region ---- MaBA
+                    else if (this.typeCodeFind == ResourceMessage.typeCodeFind__MaBA)
+					{
+                        WaitingManager.Hide();
+                        Inventec.Common.Logging.LogSystem.Debug("Ma BA________________________");
+                        this.typeReceptionForm = ReceptionForm.MaBA;
+                        var data = await (ProcessSearchByCode(strValue, 1));
+                        if (data != null)
+                        {
+                            if (data is HisPatientSDO)
+                            {
+                                dataResult.HisPatientSDO = (HisPatientSDO)data;
+                                dataResult.OldPatient = true;
+                                this.currentPatientSDO = (HisPatientSDO)data;
+                                this.dlgSendPatientSdo(currentPatientSDO);
+                                this.patientTD3 = (HisPatientSDO)data;
+                                hrmEmployeeCode = currentPatientSDO.HRM_EMPLOYEE_CODE;
+                            }
+                            else if (data is HeinCardData)
+                            {
+                                this.patientTD3 = null;
+                                dataResult.HeinCardData = (HeinCardData)data;
+                                dataResult.OldPatient = false;
+                            }
+                            dataResult.SearchTypePatient = 1;
+                        }
+                        else
+                        {
+                            dataResult = null;
+                            this.patientTD3 = null;
+                        }
+                    }
+                    #endregion
 
-					if (this.typeCodeFind != ResourceMessage.typeCodeFind__MaNV)
+                    if (this.typeCodeFind != ResourceMessage.typeCodeFind__MaNV)
 					{
 						this.dlgShowControlHrmKskCodeNotValid(false);
-						if (!string.IsNullOrEmpty(hrmEmployeeCode) && this.dlgShowControlHrmKskCodeNotValid != null)
+					if (!string.IsNullOrEmpty(hrmEmployeeCode) && this.dlgShowControlHrmKskCodeNotValid != null)
 							this.dlgShowControlHrmKskCodeNotValid(true);
 					}
 

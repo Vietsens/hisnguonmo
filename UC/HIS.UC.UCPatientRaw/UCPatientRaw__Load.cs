@@ -101,6 +101,11 @@ namespace HIS.UC.UCPatientRaw
                 itemSoDT.SuperTip = GetTooltip(ResourceMessage.typeCodeFind__SoDT_ToolTip);
                 menu.Items.Add(itemSoDT);
 
+                DXMenuItem itemMaBA = new DXMenuItem(ResourceMessage.typeCodeFind__MaBA, new EventHandler(btnCodeFind_Click));
+                itemMaBA.Tag = "MaBA";
+                itemMaBA.SuperTip = GetTooltip(ResourceMessage.typeCodeFind__MaBA_ToolTip);
+                menu.Items.Add(itemMaBA);
+
                 btnCodeFind.DropDownControl = menu;
                 btnCodeFind.MenuManager = barManager1;
             }
@@ -165,7 +170,7 @@ namespace HIS.UC.UCPatientRaw
                             dataResult.SearchTypePatient = 1;
                             this.dlgSearchPatient1(dataResult);
                         }
-
+                             
                         if (!this.isAlertTreatmentEndInDay)//Them If de khi co thong bao da ra vien k muon update info
                         {
                             heinCardDataForCheckGOV = ConvertFromPatientData(patient);

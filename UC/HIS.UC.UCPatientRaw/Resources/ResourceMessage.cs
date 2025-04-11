@@ -204,6 +204,38 @@ namespace HIS.UC.UCPatientRaw
             }
         }
 
+        public static string typeCodeFind__MaBA
+        {
+            get
+            {
+                try
+                {
+                    return Inventec.Common.Resource.Get.Value("HIS_UC_UCPatientRaw_typeCodeFind__MaBA", languageMessage, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(ex);
+                }
+                return "";
+            }
+        }
+
+        public static string typeCodeFind__MaBA_ToolTip
+        {
+            get
+            {
+                try
+                {
+                    return Inventec.Common.Resource.Get.Value("HIS_UC_UCPatientRaw_typeCodeFind__MaBA_ToolTip", languageMessage, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(ex);
+                }
+                return "";
+            }
+        }
+
         public static string typeCodeFind__MaBN
         {
             get

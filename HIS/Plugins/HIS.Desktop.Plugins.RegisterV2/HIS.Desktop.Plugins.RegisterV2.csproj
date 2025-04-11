@@ -84,6 +84,9 @@
     <Reference Include="HIS.Desktop.Plugins.Library.AlertHospitalFeeNotBHYT">
       <HintPath>..\..\..\..\lib\HIS\HIS.Desktop.Plugins.Library.AlertHospitalFeeNotBHYT\HIS.Desktop.Plugins.Library.AlertHospitalFeeNotBHYT.dll</HintPath>
     </Reference>
+    <Reference Include="HIS.Desktop.Plugins.Library.CheckHeinGOV">
+      <HintPath>..\..\..\..\lib\HIS\HIS.Desktop.Plugins.Library.CheckHeinGOV\HIS.Desktop.Plugins.Library.CheckHeinGOV.dll</HintPath>
+    </Reference>
     <Reference Include="HIS.Desktop.Plugins.Library.PrintServiceReq, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\lib\HIS\HIS.Desktop.Plugins.Library.PrintServiceReq\HIS.Desktop.Plugins.Library.PrintServiceReq.dll</HintPath>
@@ -105,6 +108,10 @@
     <Reference Include="HIS.UC.KskContract">
       <HintPath>..\..\..\..\lib\HIS\HIS.UC.KskContract\HIS.UC.KskContract.dll</HintPath>
     </Reference>
+    <Reference Include="HIS.UC.PlusInfo, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\His Test\histest\x64\ReferencedAssemblies\HIS.UC.PlusInfo.dll</HintPath>
+    </Reference>
     <Reference Include="HIS.UC.ServiceRoom">
       <HintPath>..\..\..\..\lib\HIS\HIS.UC.ServiceRoom\HIS.UC.ServiceRoom.dll</HintPath>
     </Reference>
@@ -117,17 +124,24 @@
     <Reference Include="His.UC.UCHein">
       <HintPath>..\..\..\..\lib\HIS\His.UC.UCHein\His.UC.UCHein.dll</HintPath>
     </Reference>
-    <Reference Include="HIS.UC.UCHeniInfo">
-      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\HIS.UC.UCHeniInfo.dll</HintPath>
+    <Reference Include="HIS.UC.UCHeniInfo, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\His Test\histest\x64\ReferencedAssemblies\HIS.UC.UCHeniInfo.dll</HintPath>
     </Reference>
     <Reference Include="HIS.UC.UCImageInfo">
       <HintPath>..\..\..\..\lib\HIS\HIS.UC.UCImageInfo\HIS.UC.UCImageInfo.dll</HintPath>
     </Reference>
-    <Reference Include="HIS.UC.UCOtherServiceReqInfo">
-      <HintPath>..\..\..\..\lib\HIS\HIS.UC.UCOtherServiceReqInfo\HIS.UC.UCOtherServiceReqInfo.dll</HintPath>
+    <Reference Include="HIS.UC.UCOtherServiceReqInfo, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\His Test\histest\x64\ReferencedAssemblies\HIS.UC.UCOtherServiceReqInfo.dll</HintPath>
     </Reference>
-    <Reference Include="HIS.UC.UCRelativeInfo">
-      <HintPath>..\..\..\..\lib\HIS\HIS.UC.UCRelativeInfo\HIS.UC.UCRelativeInfo.dll</HintPath>
+    <Reference Include="HIS.UC.UCPatientRaw, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\His Test\histest\x64\ReferencedAssemblies\HIS.UC.UCPatientRaw.dll</HintPath>
+    </Reference>
+    <Reference Include="HIS.UC.UCRelativeInfo, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\His Test\histest\x64\ReferencedAssemblies\HIS.UC.UCRelativeInfo.dll</HintPath>
     </Reference>
     <Reference Include="HIS.UC.UCServiceRoomInfo">
       <HintPath>..\..\..\..\lib\HIS\HIS.UC.UCServiceRoomInfo\HIS.UC.UCServiceRoomInfo.dll</HintPath>
@@ -164,7 +178,7 @@
       <HintPath>..\..\..\..\lib\Inventec.Common\Inventec.Common.Mapper\Inventec.Common.Mapper.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Common.QrCodeBHYT ">
-      <HintPath>..\..\..\..\lib\Inventec.Common\Inventec.Common.QrCodeBHYT\Inventec.Common.QrCodeBHYT .dll</HintPath>
+      <HintPath>..\..\..\..\..\His Test\histest\x64\ReferencedAssemblies\Inventec.Common.QrCodeBHYT .dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Common.Resource">
       <HintPath>..\..\..\..\lib\Inventec.Common\Inventec.Common.Resource\Inventec.Common.Resource.dll</HintPath>
@@ -238,6 +252,9 @@
     <Reference Include="Inventec.WCFService.ReadServiceCodeService">
       <HintPath>..\..\..\..\lib\WCF\Inventec.WCF\Service\.Net 4.5\Inventec.WCFService.ReadServiceCodeService\Inventec.WCFService.ReadServiceCodeService.dll</HintPath>
     </Reference>
+    <Reference Include="log4net">
+      <HintPath>..\..\..\..\..\His Test\histest\x64\ReferencedAssemblies\log4net.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.QualityTools.Testing.Fakes">
       <HintPath>..\..\..\..\lib\HIS\HIS.UC.UCalterBhyt\Microsoft.QualityTools.Testing.Fakes.dll</HintPath>
     </Reference>
@@ -245,7 +262,8 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\lib\MOS\MOS.EFMODEL.dll</HintPath>
     </Reference>
-    <Reference Include="MOS.Filter">
+    <Reference Include="MOS.Filter, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\lib\MOS\MOS.Filter.dll</HintPath>
     </Reference>
     <Reference Include="MOS.LibraryHein.Bhyt">
@@ -524,14 +542,6 @@
     <Compile Include="ValidationRule\PatientDob__ValidationRule.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\UC\HIS.UC.PlusInfo\HIS.UC.PlusInfo.csproj">
-      <Project>{dfa6e196-bae2-4ba0-81f6-7363e985c083}</Project>
-      <Name>HIS.UC.PlusInfo</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\UC\HIS.UC.UCPatientRaw\HIS.UC.UCPatientRaw.csproj">
-      <Project>{56fea3a2-be4c-4025-880d-e4a5f89b6ff6}</Project>
-      <Name>HIS.UC.UCPatientRaw</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\HIS.Desktop.ADO\HIS.Desktop.ADO.csproj">
       <Project>{808c25cd-0925-417f-bbf9-caf9604da879}</Project>
       <Name>HIS.Desktop.ADO</Name>
@@ -604,10 +614,6 @@
       <Project>{64837e01-803d-4f1e-9dfc-d34b38ea78f9}</Project>
       <Name>HIS.Desktop.Library.CacheClient</Name>
     </ProjectReference>
-    <ProjectReference Include="..\HIS.Desktop.Plugins.Library.CheckHeinGOV\HIS.Desktop.Plugins.Library.CheckHeinGOV.csproj">
-      <Project>{ffb3080e-3030-46e2-a2ff-1d53243b3946}</Project>
-      <Name>HIS.Desktop.Plugins.Library.CheckHeinGOV</Name>
-    </ProjectReference>
     <ProjectReference Include="..\HIS.Desktop.Plugins.Library.EmrGenerate\HIS.Desktop.Plugins.Library.EmrGenerate.csproj">
       <Project>{0aedfd21-7195-4fdb-a3ef-035640df48f3}</Project>
       <Name>HIS.Desktop.Plugins.Library.EmrGenerate</Name>
@@ -667,35 +673,13 @@
       <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Connected Services\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>echo PREBUILDSTEP for $(ProjectName)
-
-echo Copying files from $(ProjectDir)bin\$(Configuration) to $(SolutionDir)\$(SolutionName)\bin\$(Configuration)\ReferencedAssemblies
-
-if not exist "$(SolutionDir)\$(SolutionName)\bin\$(Configuration)\ReferencedAssemblies" mkdir "$(SolutionDir)\$(SolutionName)\bin\$(Configuration)\ReferencedAssemblies"
-
-xcopy "$(ProjectDir)bin\$(Configuration)\*.dll" "$(SolutionDir)\$(SolutionName)\bin\$(Configuration)\ReferencedAssemblies" /i /d /y
-xcopy "$(TargetDir)$(TargetName).dll" "$(SolutionDir)$(SolutionName)\bin\Debug\Plugins\Module" /Y /I
-
-if not exist "$(ProjectDir)bin\$(Configuration)\vi" mkdir "$(ProjectDir)bin\$(Configuration)\vi"
-if not exist "$(ProjectDir)bin\$(Configuration)\en" mkdir "$(ProjectDir)bin\$(Configuration)\en"
-xcopy "$(ProjectDir)bin\$(Configuration)\vi\*.dll" "$(SolutionDir)\$(SolutionName)\bin\$(Configuration)\vi" /Y /I
-xcopy "$(ProjectDir)bin\$(Configuration)\en\*.dll" "$(SolutionDir)\$(SolutionName)\bin\$(Configuration)\en" /Y /I
-
-if errorlevel 1 goto BuildEventFailed
-
-if errorlevel 1 goto BuildEventFailed
-
-REM Exit properly because the build will not fail
-REM unless the final step exits with an error code
-
-goto BuildEventOK
-:BuildEventFailed
-echo PREBUILDSTEP for $(ProjectName) FAILED
-exit 1
-:BuildEventOK
-echo PREBUILDSTEP for $(ProjectName) COMPLETED OK</PostBuildEvent>
+    <PostBuildEvent>
+    </PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

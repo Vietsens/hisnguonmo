@@ -507,6 +507,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                     this.spinImpPrice.Enabled = true;
                     this.cboNationals.Enabled = true;
                     this.cboHangSX.Enabled = true;
+                    this.cboDosageForm.EditValue = true;
                     this.txtSoDangKy.Enabled = true;
                     this.SpMaxReuseCount.Enabled = false;
                     this.spinImpPriceVAT.Enabled = false;
@@ -582,6 +583,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                                 this.currrentServiceAdo.monthLifespan = this.MedicalContractMety.MONTH_LIFESPAN;
                             }
 
+                            cboDosageForm.EditValue = MedicalContractMety.DOSAGE_FORM;            
                             txtSoDangKy.Text = this.MedicalContractMety.MEDICINE_REGISTER_NUMBER;
                             txtNognDoHL.Text = this.MedicalContractMety.CONCENTRA;
                             spinImpPriceVAT.Value = (spinImpPrice.Value * (1 + spinImpVatRatio.Value / 100));
@@ -1032,7 +1034,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                     this.txtPackingJoinBid.Text = null;
                     this.txtHeinServiceBidMateType.Text = null;
                     this.txtActiveIngrBhytName.Text = null;
-                    this.txtDosageForm.Text = null;
+                    this.cboDosageForm.EditValue = null;
                     this.cboMedicineUseForm.EditValue = null;
 
                     if (this.currrentServiceAdo.IsMedicine)
@@ -1064,7 +1066,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                             this.txtPackingJoinBid.Text = dataMediType.PACKING_TYPE_NAME;
                             this.txtHeinServiceBidMateType.Text = dataMediType.HEIN_SERVICE_BHYT_NAME;
                             this.txtActiveIngrBhytName.Text = dataMediType.ACTIVE_INGR_BHYT_NAME;
-                            this.txtDosageForm.Text = dataMediType.DOSAGE_FORM;
+                            this.cboDosageForm.EditValue = dataMediType.DOSAGE_FORM;
                             this.cboMedicineUseForm.EditValue = dataMediType.MEDICINE_USE_FORM_ID;
                             txtBidNumber.Text = this.currrentServiceAdo.TDL_BID_NUMBER;
                         }
@@ -1197,7 +1199,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                         txtPackingJoinBid.Text = String.IsNullOrWhiteSpace(bidMediType.PACKING_TYPE_NAME) && this.IsSetBhytInfoFromTypeByDefault ? this.currrentServiceAdo.packingTypeName : bidMediType.PACKING_TYPE_NAME;
                         txtHeinServiceBidMateType.Text = String.IsNullOrWhiteSpace(bidMediType.HEIN_SERVICE_BHYT_NAME) && this.IsSetBhytInfoFromTypeByDefault ? this.currrentServiceAdo.heinServiceBhytName : bidMediType.HEIN_SERVICE_BHYT_NAME;
                         txtActiveIngrBhytName.Text = String.IsNullOrWhiteSpace(bidMediType.ACTIVE_INGR_BHYT_NAME) && this.IsSetBhytInfoFromTypeByDefault ? this.currrentServiceAdo.activeIngrBhytName : bidMediType.ACTIVE_INGR_BHYT_NAME;
-                        txtDosageForm.Text = String.IsNullOrWhiteSpace(bidMediType.DOSAGE_FORM) && this.IsSetBhytInfoFromTypeByDefault ? this.currrentServiceAdo.dosageForm : bidMediType.DOSAGE_FORM;
+                        cboDosageForm.EditValue = String.IsNullOrWhiteSpace(bidMediType.DOSAGE_FORM) && this.IsSetBhytInfoFromTypeByDefault ? this.currrentServiceAdo.HisMedicine.DOSAGE_FORM : bidMediType.DOSAGE_FORM;
 
                         if (!bidMediType.MEDICINE_USE_FORM_ID.HasValue && this.IsSetBhytInfoFromTypeByDefault)
                         {

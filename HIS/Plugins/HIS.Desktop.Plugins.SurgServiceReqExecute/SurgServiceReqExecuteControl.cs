@@ -56,6 +56,7 @@ using System.Drawing;
 using DevExpress.XtraTab;
 using HIS.Desktop.ModuleExt;
 using DevExpress.XtraEditors.DXErrorProvider;
+using Inventec.Common.RichEditor.Base;
 
 namespace HIS.Desktop.Plugins.SurgServiceReqExecute
 {
@@ -5330,5 +5331,29 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
+
+        private void chkIn_CheckedChanged(object sender, EventArgs e)
+        {
+            if (chkIn.Checked)
+            {
+                chkXemIn.Checked = false;
+            }
+        }
+
+        private void chkXemIn_CheckedChanged(object sender, EventArgs e)
+        {
+            if (chkXemIn.Checked)
+            {
+                chkIn.Checked = false;
+            }
+        }
+
+        //private void chkXemIn_Click(object sender, EventArgs e)
+        //{
+        //    if (chkXemIn.Checked && !IsActionOtherButton)
+        //    {
+        //        PrintProcess(PrintTypeSurg.PHIEU_THU_THUAT_PHAU_THUAT);
+        //    }
+        //}
     }
 }

@@ -213,6 +213,7 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
                             HisTransactionBillSDO data = new HisTransactionBillSDO();
                             if (!isTwoPatient)
                             {
+                                
                                 saleSDO.PosPan = result.PAN;
                                 saleSDO.PosCardHoder = result.NAME;
                                 saleSDO.PosInvoice = result.INVOICE.ToString();
@@ -222,6 +223,7 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
                             {
                                 foreach (var item in listSaleSDO)
                                 {
+                                    //item.BuyerEmail = txtEmail.Text;
                                     item.PosPan = result.PAN;
                                     item.PosCardHoder = result.NAME;
                                     item.PosInvoice = result.INVOICE.ToString();
@@ -276,7 +278,7 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
                                 {
                                     List<object> listArgs = new List<object>();
                                     TransReqQRADO adoqr = new TransReqQRADO();
-                                    adoqr.TransReqId = CreateReqType.Transaction;
+                                    adoqr.TransReqId = CreateReqType.Transaction;    
                                     if (mediStock != null && !string.IsNullOrEmpty(mediStock.QR_CONFIG_JSON))
                                     {
                                         try
@@ -848,6 +850,7 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
                 //    ado.PayFormId = Inventec.Common.TypeConvert.Parse.ToInt64(cboPayForm.EditValue.ToString());
 
                 ado.PatientAddress = txtAddress.Text;
+                saleSDO.BuyerEmail = txtEmail.Text;
                 //Inventec.Common.Logging.LogSystem.Debug("cboIcds.EditValue: " + cboIcds.EditValue);
                 //if (cboIcds.EditValue != null && !String.IsNullOrEmpty(cboIcds.EditValue.ToString()))
                 //{
@@ -1112,6 +1115,7 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
                         ado.PatientName = item[0].TDL_PATIENT_NAME;
                         ado.PatientGenderId = item[0].TDL_PATIENT_GENDER_ID;
                         ado.PatientAddress = item[0].TDL_PATIENT_ADDRESS;
+                        saleSDO.BuyerEmail = txtEmail.Text;
                         IcdInputADO OjecIcd = (IcdInputADO)icdProcessor.GetValue(ucIcd);
                         ado.IcdName = OjecIcd != null ? OjecIcd.ICD_NAME : "";
                         ado.IcdCode = OjecIcd != null ? OjecIcd.ICD_CODE : "";
@@ -1659,6 +1663,7 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
             {
                 if (patient != null)
                 {
+                    txtEmail.Text = patient.EMAIL;   
                     txtPatientCode.Text = patient.PATIENT_CODE;
                     txtVirPatientName.Text = patient.VIR_PATIENT_NAME;
                     cboGender.EditValue = patient.GENDER_ID;

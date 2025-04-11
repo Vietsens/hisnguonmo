@@ -974,6 +974,7 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
                 lblTotalReceivable.Text = "";
                 txtPatientCode.Text = "";
                 txtPatientPhone.Text = "";
+                txtEmail.Text = "";
                 treeListMediMate.DataSource = null;
                 this.discountFocus = false;
                 this.discountRatioFocus = false;
@@ -1047,6 +1048,7 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
                     cboTHX.Enabled = true;
                     txtPatientCode.Enabled = true;
                     txtPatientPhone.Enabled = true;
+                    txtEmail.Enabled = true;
                 }
                 else
                 {
@@ -1064,6 +1066,7 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
                     cboTHX.Enabled = false;
                     txtPatientCode.Enabled = false;
                     txtPatientPhone.Enabled = false;
+                    txtEmail.Enabled = false;
                 }
             }
             catch (Exception ex)

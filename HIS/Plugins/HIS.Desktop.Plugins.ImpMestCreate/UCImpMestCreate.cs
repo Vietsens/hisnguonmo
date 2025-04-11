@@ -63,6 +63,8 @@ using MOS.SDO;
 using HIS.Desktop.Plugins.ImpMestCreate.ADO;
 using HIS.Desktop.LocalStorage.HisConfig;
 using System.Threading;
+using HIS.Desktop.Utilities.Extensions;
+using Inventec.Desktop.CustomControl;
 
 namespace HIS.Desktop.Plugins.ImpMestCreate
 {
@@ -252,6 +254,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                 LoadReceiver();
                 LoadSaleProfits();
                 LoadManufacturer();
+                LoadDosageForm();
                 LoadNation();
                 CreateThreadLoadData();
                 InitComboGoiThau();
@@ -280,7 +283,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                 //GetSaleProfits();
 
                 GetFontSizeForm();
-
+                ValidatecboDosage(cboDosageForm, 1024);
                 this.IsShowMessDocument = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>("HIS.Desktop.Plugins.ImpMestCreate__IsShowMessDocument") == "0" ? false : true;
                 this.IsAllowDuplicateDocument = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>("HIS.Desktop.Plugins.ImpMestCreate.AllowDuplicateDocumentNumberInTheSameSupplier") == "1" ? true : false;
                 this.IsDisableChkImprice = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>("HIS.Desktop.Plugins.ImpMestCreate__IsDisableChkImprice") == "1" ? true : false;
@@ -1267,7 +1270,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                                     ado.packingTypeName = medicine.PACKING_TYPE_NAME;
                                     ado.heinServiceBhytName = medicine.HEIN_SERVICE_BHYT_NAME;
                                     ado.activeIngrBhytName = medicine.ACTIVE_INGR_BHYT_NAME;
-                                    ado.dosageForm = medicine.DOSAGE_FORM;
+                                    ado.HisMedicine.DOSAGE_FORM = medicine.DOSAGE_FORM;
                                     ado.medicineUseFormId = medicine.MEDICINE_USE_FORM_ID;
                                     ado.MEDICAL_CONTRACT_ID = medicine.MEDICAL_CONTRACT_ID;
                                     ado.CONTRACT_PRICE = medicine.CONTRACT_PRICE;
@@ -1372,7 +1375,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                                 ado.HisMedicine.PACKING_TYPE_NAME = ado.packingTypeName;
                                 ado.HisMedicine.HEIN_SERVICE_BHYT_NAME = ado.heinServiceBhytName;
                                 ado.HisMedicine.ACTIVE_INGR_BHYT_NAME = ado.activeIngrBhytName;
-                                ado.HisMedicine.DOSAGE_FORM = ado.dosageForm;
+                                ado.HisMedicine.DOSAGE_FORM = ado.HisMedicine.DOSAGE_FORM;
                                 ado.HisMedicine.MEDICINE_USE_FORM_ID = ado.medicineUseFormId;
                                 listServiceADO.Add(ado);
                                 #endregion
@@ -2230,7 +2233,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                     return;
                 }
 
-                WaitingManager.Show();
+                //WaitingManager.Show();
 
                 this.currrentServiceAdo.TEMPERATURE = spnTemperature.EditValue != null ? (decimal?)spnTemperature.Value : null;
                 this.currrentServiceAdo.TDL_BID_NUM_ORDER = txtBidNumOrder.Text.Trim();
@@ -2242,7 +2245,16 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                 this.currrentServiceAdo.packingTypeName = this.txtPackingJoinBid.Text.Trim();
                 this.currrentServiceAdo.heinServiceBhytName = this.txtHeinServiceBidMateType.Text.Trim();
                 this.currrentServiceAdo.activeIngrBhytName = this.txtActiveIngrBhytName.Text.Trim();
-                this.currrentServiceAdo.dosageForm = this.txtDosageForm.Text.Trim();
+                if (cboDosageForm.EditValue != null)
+                {
+                    this.currrentServiceAdo.HisMedicine.DOSAGE_FORM = cboDosageForm.Text;
+                }
+                else
+                {
+                    XtraMessageBox.Show("Dạng bào chế không được để trống!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
                 if (this.cboMedicineUseForm.EditValue != null)
                 {
                     this.currrentServiceAdo.medicineUseFormId = Inventec.Common.TypeConvert.Parse.ToInt64(this.cboMedicineUseForm.EditValue.ToString());
@@ -2384,7 +2396,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
 
 
                     this.currrentServiceAdo.HisMedicine.ACTIVE_INGR_BHYT_NAME = this.currrentServiceAdo.activeIngrBhytName;
-                    this.currrentServiceAdo.HisMedicine.DOSAGE_FORM = this.currrentServiceAdo.dosageForm;
+                    this.currrentServiceAdo.HisMedicine.DOSAGE_FORM = this.currrentServiceAdo.HisMedicine.DOSAGE_FORM;
                     this.currrentServiceAdo.HisMedicine.MEDICINE_USE_FORM_ID = this.currrentServiceAdo.medicineUseFormId;
 
                     //                    if (this.currrentServiceAdo.HisMedicinePatys == null)
@@ -2474,7 +2486,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                     Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => currrentServiceAdo), currrentServiceAdo));
                     if (this.currrentServiceAdo.HisMedicine.IS_SALE_EQUAL_IMP_PRICE == null && this.currrentServiceAdo.HisMedicinePatys.Count == 0)
                     {
-                        WaitingManager.Hide();
+                        //WaitingManager.Hide();
                         DevExpress.XtraEditors.XtraMessageBox.Show("Cần nhập chính sách giá hoặc tích giá bán bằng giá nhập", "Thông báo");
                         return;
                     }
@@ -2482,7 +2494,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                     {
                         if (!string.IsNullOrEmpty(this.currrentServiceAdo.WarningPrice))
                         {
-                            WaitingManager.Hide();
+                            //WaitingManager.Hide();
                             if (DevExpress.XtraEditors.XtraMessageBox.Show(this.currrentServiceAdo.WarningPrice, MessageUtil.GetMessage(HIS.Desktop.LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaThongBao), System.Windows.Forms.MessageBoxButtons.YesNo) != System.Windows.Forms.DialogResult.Yes)
                             {
                                 return;
@@ -2801,7 +2813,8 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                             check += "số đăng ký vượt quá ký tự cho phép,";
                         if (item.Errors.Exists(o => o == HIS.Desktop.Plugins.ImpMestCreate.ADO.VHisServiceADO.Error.MaxLenthNongDoHamLuong))
                             check += "nồng độ/ hàm lượng vượt quá ký tự cho phép,";
-
+                        if (item.Errors.Exists(o => o == HIS.Desktop.Plugins.ImpMestCreate.ADO.VHisServiceADO.Error.ThieuDangBaoChe))
+                            check += "Dạng bào chế không được để trống,";
                         message += check + "\n";
                     }
                     DevExpress.XtraEditors.XtraMessageBox.Show(message, "Thông báo");
@@ -2847,7 +2860,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                 HIS.Desktop.Plugins.ImpMestCreate.Save.ISaveInit iSaveInit = HIS.Desktop.Plugins.ImpMestCreate.Save.SaveFactory.MakeIServiceRequestRegister(param, this.listServiceADO, this, dicBidMedicine, dicBidMaterial, this.roomId, this.resultADO);
                 this.resultADO = iSaveInit.Run() as ResultImpMestADO;
                 Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => resultADO), resultADO));
-                WaitingManager.Hide();
+                //WaitingManager.Hide();
                 if (this.resultADO != null)
                 {
                     this._currentImpMestUp = this.resultADO.ImpMestUpdate;
@@ -2880,7 +2893,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                     InitMenuToButtonPrint(this.resultADO);
                     isSave = true;
                 }
-                BackendDataWorker.Reset<V_HIS_MATERIAL>();
+                BackendDataWorker.Reset<V_HIS_MATERIAL>(); 
                 BackendDataWorker.Reset<V_HIS_MEDICINE>();
                 MessageManager.Show(this.ParentForm, param, success);
                 HIS.Desktop.Controls.Session.SessionManager.ProcessTokenLost(param);
@@ -3258,7 +3271,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                     return;
                 }
 
-                WaitingManager.Show();
+                //WaitingManager.Show();
                 this.currrentServiceAdo.TEMPERATURE = spnTemperature.EditValue != null ? (decimal?)spnTemperature.Value : null;
 
                 this.currrentServiceAdo.TDL_BID_GROUP_CODE = txtBidGroupCode.Text;
@@ -3271,7 +3284,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                 this.currrentServiceAdo.packingTypeName = this.txtPackingJoinBid.Text;
                 this.currrentServiceAdo.heinServiceBhytName = this.txtHeinServiceBidMateType.Text;
                 this.currrentServiceAdo.activeIngrBhytName = this.txtActiveIngrBhytName.Text;
-                this.currrentServiceAdo.dosageForm = this.txtDosageForm.Text;
+                //this.currrentServiceAdo.dosageForm = this.cboDosageForm.Text;
                 if (this.cboMedicineUseForm.EditValue != null)
                 {
                     this.currrentServiceAdo.medicineUseFormId = Inventec.Common.TypeConvert.Parse.ToInt64(this.cboMedicineUseForm.EditValue.ToString());
@@ -3350,6 +3363,8 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                 this.currrentServiceAdo.NATIONAL_NAME = this.txtNationalMainText.Text.Trim();
                 this.currrentServiceAdo.CONCENTRA = this.txtNognDoHL.Text;
                 this.currrentServiceAdo.REGISTER_NUMBER = this.txtSoDangKy.Text;
+                
+                
                 if (cboHangSX.EditValue != null)
                 {
                     this.currrentServiceAdo.MANUFACTURER_ID = (long)cboHangSX.EditValue;
@@ -3372,7 +3387,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                             this.currrentServiceAdo.WarningPrice = string.Format("{0} {1} có giá bán lần trước = {2} khác với giá bán hiện tại. Bạn có muốn tiếp tục thêm ?",
                                 this.currrentServiceAdo.IsMedicine ? "Thuốc" : "Vật tư", this.currrentServiceAdo.MEDI_MATE_NAME, string.Format("{0:#,0}", this.currrentServiceAdo.GiaBan));
 
-                            WaitingManager.Hide();
+                            //WaitingManager.Hide();
                             if (DevExpress.XtraEditors.XtraMessageBox.Show(this.currrentServiceAdo.WarningPrice, MessageUtil.GetMessage(HIS.Desktop.LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaThongBao), System.Windows.Forms.MessageBoxButtons.YesNo) != System.Windows.Forms.DialogResult.Yes)
                             {
                                 return;
@@ -3404,7 +3419,17 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                     this.currrentServiceAdo.HisMedicine.PACKING_TYPE_NAME = this.currrentServiceAdo.packingTypeName;
                     this.currrentServiceAdo.HisMedicine.HEIN_SERVICE_BHYT_NAME = this.currrentServiceAdo.heinServiceBhytName;
                     this.currrentServiceAdo.HisMedicine.ACTIVE_INGR_BHYT_NAME = this.currrentServiceAdo.activeIngrBhytName;
-                    this.currrentServiceAdo.HisMedicine.DOSAGE_FORM = this.currrentServiceAdo.dosageForm;
+                    if (cboDosageForm.EditValue != null)
+                    {
+                        this.currrentServiceAdo.HisMedicine.DOSAGE_FORM = cboDosageForm.Text;
+                    }
+                    else
+                    {
+                        DevExpress.XtraEditors.XtraMessageBox.Show("Dạng bào chế không được để trống!", "Thông báo");
+                        return;
+                    }
+                        
+                    
                     this.currrentServiceAdo.HisMedicine.MEDICINE_USE_FORM_ID = this.currrentServiceAdo.medicineUseFormId;
 
                     List<string> lstRs = new List<string>();
@@ -3451,7 +3476,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                     {
                         if (!string.IsNullOrEmpty(this.currrentServiceAdo.WarningPrice))
                         {
-                            WaitingManager.Hide();
+                            //WaitingManager.Hide();
                             if (DevExpress.XtraEditors.XtraMessageBox.Show(this.currrentServiceAdo.WarningPrice, MessageUtil.GetMessage(HIS.Desktop.LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaThongBao), System.Windows.Forms.MessageBoxButtons.YesNo) != System.Windows.Forms.DialogResult.Yes)
                             {
                                 return;
@@ -3476,7 +3501,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                             this.currrentServiceAdo.WarningPrice = string.Format("{0} {1} có giá bán lần trước = {2} khác với giá bán hiện tại. Bạn có muốn tiếp tục thêm ?",
                                 this.currrentServiceAdo.IsMedicine ? "Thuốc" : "Vật tư", this.currrentServiceAdo.MEDI_MATE_NAME, string.Format("{0:#,0}", this.currrentServiceAdo.GiaBan));
 
-                            WaitingManager.Hide();
+                            //WaitingManager.Hide();
                             if (DevExpress.XtraEditors.XtraMessageBox.Show(this.currrentServiceAdo.WarningPrice, MessageUtil.GetMessage(HIS.Desktop.LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaThongBao), System.Windows.Forms.MessageBoxButtons.YesNo) != System.Windows.Forms.DialogResult.Yes)
                             {
                                 return;
@@ -3548,7 +3573,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                     {
                         if (!string.IsNullOrEmpty(this.currrentServiceAdo.WarningPrice))
                         {
-                            WaitingManager.Hide();
+                            //WaitingManager.Hide();
                             if (DevExpress.XtraEditors.XtraMessageBox.Show(this.currrentServiceAdo.WarningPrice, MessageUtil.GetMessage(HIS.Desktop.LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaThongBao), System.Windows.Forms.MessageBoxButtons.YesNo) != System.Windows.Forms.DialogResult.Yes)
                             {
                                 return;
@@ -3613,11 +3638,11 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                 ResetValueControlDetail();
                 SetEnableButton(false);
                 SetFocuTreeMediMate();
-                WaitingManager.Hide();
+                //WaitingManager.Hide();
             }
             catch (Exception ex)
             {
-                WaitingManager.Hide();
+                //WaitingManager.Hide();
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
@@ -3722,7 +3747,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                                     {
                                         var listvalue = dicContractMety.Select(s => s.Value).ToList();
                                         this.MedicalContractMety = listvalue.FirstOrDefault(o => o.ID == medicine.MEDI_CONTRACT_METY_ID.Value);
-
+                                        cboDosageForm.EditValue = MedicalContractMety.DOSAGE_FORM;
                                         spinCanImpAmount.Value = this.MedicalContractMety.AMOUNT - (this.MedicalContractMety.IN_AMOUNT ?? 0) + currrentServiceAdo.IMP_AMOUNT + (currrentServiceAdo.ADJUST_AMOUNT ?? 0);
                                     }
                                 }
@@ -3897,7 +3922,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                     this.txtPackingJoinBid.Text = this.currrentServiceAdo.packingTypeName;
                     this.txtHeinServiceBidMateType.Text = this.currrentServiceAdo.heinServiceBhytName;
                     this.txtActiveIngrBhytName.Text = this.currrentServiceAdo.activeIngrBhytName;
-                    this.txtDosageForm.Text = this.currrentServiceAdo.dosageForm;
+                    this.cboDosageForm.EditValue = this.currrentServiceAdo.HisMedicine.DOSAGE_FORM;
                     this.cboMedicineUseForm.EditValue = this.currrentServiceAdo.medicineUseFormId;
                     this.txtSoDangKy.Text = this.currrentServiceAdo.REGISTER_NUMBER;
                     this.cboInformationBid.SelectedIndex = currrentServiceAdo.IsMedicine ? -1 : (int)(currrentServiceAdo.HisMaterial.INFORMATION_BID ?? 0) - 1;
@@ -3933,14 +3958,14 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                         chkEditNational.Checked = false;
                     }
                     this.txtNognDoHL.Text = this.currrentServiceAdo.CONCENTRA;
-
-                    cboHangSX.EditValue = this.currrentServiceAdo.MANUFACTURER_ID;
+                    cboDosageForm.EditValue = this.currrentServiceAdo.HisMedicine.DOSAGE_FORM;
+                    cboHangSX.EditValue = this.currrentServiceAdo.MANUFACTURER_ID;    
 
                     if (this.currrentServiceAdo.HisMedicine != null)
                     {
                         chkImprice.Checked = this.currrentServiceAdo.HisMedicine.IS_SALE_EQUAL_IMP_PRICE == 1 ? true : false;
                     }
-                    else if (this.currrentServiceAdo.HisMaterial != null)
+                    else if (this.currrentServiceAdo.HisMaterial != null)   
                     {
                         chkImprice.Checked = this.currrentServiceAdo.HisMaterial.IS_SALE_EQUAL_IMP_PRICE == 1 ? true : false;
                     }
@@ -5854,12 +5879,13 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                 cboNationals.Enabled = !enable;
                 chkEditNational.Enabled = !enable;
                 cboHangSX.Enabled = !enable;
+                cboDosageForm.Enabled = !enable;
                 cboMedicineUseForm.Enabled = !enable;
                 txtSoDangKy.Enabled = !enable;
                 txtActiveIngrBhytName.Enabled = !enable;
                 txtPackingJoinBid.Enabled = !enable;
                 txtHeinServiceBidMateType.Enabled = !enable;
-                txtDosageForm.Enabled = !enable;
+                cboDosageForm.Enabled = !enable;
                 txtNognDoHL.Enabled = !enable;
                 IsBID = enable;
             }
@@ -5976,6 +6002,30 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
 
         }
 
+        private void cboDosageForm_ButtonClick(object sender, ButtonPressedEventArgs e)
+        {
+            if (e.Button.Kind == ButtonPredefines.Plus)
+            {
+                Inventec.Desktop.Common.Modules.Module moduleData = HIS.Desktop.LocalStorage.LocalData.GlobalVariables.currentModuleRaws.Where(o => o.ModuleLink == "HIS.Desktop.Plugins.HisDosageForm").FirstOrDefault();
+                if (moduleData == null) Inventec.Common.Logging.LogSystem.Error("khong tim thay moduleLink = HIS.Desktop.Plugins.HisDosageForm");
+                if (moduleData.IsPlugin && moduleData.ExtensionInfo != null)
+                {
+                    WaitingManager.Show();
+                    List<object> listArgs = new List<object>();
+                    //MOS.EFMODEL.DataModels.HIS_DOSAGE_FORM ado = new HIS_DOSAGE_FORM();
+                    listArgs.Add(HIS.Desktop.Utility.PluginInstance.GetModuleWithWorkingRoom(moduleData, this.roomId, this.roomTypeId));
+                    var extenceInstance = HIS.Desktop.Utility.PluginInstance.GetPluginInstance(HIS.Desktop.Utility.PluginInstance.GetModuleWithWorkingRoom(moduleData, this.roomId, this.roomTypeId), listArgs);
+                    WaitingManager.Hide();
+                    ((System.Windows.Forms.Form)extenceInstance).ShowDialog();
+                    LoadDosageForm();
+                }
+            }
+            if (e.Button.Kind == ButtonPredefines.Delete) 
+            {
+                cboDosageForm.EditValue = null;
+            }
+        }
+
         private void VisibleLayoutTemperature()
         {
             try
@@ -6000,6 +6050,32 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void cboDosageForm_Leave(object sender, EventArgs e)
+        {
+            
+        }
+
+        private void cboDosageForm_Validating(object sender, CancelEventArgs e)
+        {
+        }
+
+        private void ValidatecboDosage(CustomGridLookUpEditWithFilterMultiColumn txt, int maxLength)
+        {
+            try
+            {
+                BidMaxLengthValidationRule valid = new BidMaxLengthValidationRule();
+                valid.txtBid = txt;
+                valid.maxlength = maxLength;
+                valid.ErrorType = ErrorType.Warning;
+                dxValidationProvider1.SetValidationRule(txt, valid);
+
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
 

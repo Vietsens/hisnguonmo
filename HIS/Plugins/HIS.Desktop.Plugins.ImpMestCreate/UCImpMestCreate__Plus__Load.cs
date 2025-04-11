@@ -517,7 +517,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                 txtPackingJoinBid.Text = "";
                 txtHeinServiceBidMateType.Text = "";
                 this.txtActiveIngrBhytName.Text = "";
-                this.txtDosageForm.Text = "";
+                this.cboDosageForm.EditValue = "";
                 this.cboMedicineUseForm.EditValue = null;
                 this.spnTemperature.EditValue = null;
             }
@@ -1608,6 +1608,45 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                 aColumnNameUnsign.Width = 340;
 
                 cbo.Properties.View.Columns["MANUFACTURER_NAME_UNSIGN"].Width = 0;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void DataToComboDosageForm(Inventec.Desktop.CustomControl.CustomGridLookUpEditWithFilterMultiColumn cbo, List<DosageFormADO> listADO)
+        {
+            try
+            {
+                cbo.Properties.DataSource = listADO;
+                cbo.Properties.DisplayMember = "DOSAGE_FORM_NAME";
+                cbo.Properties.ValueMember = "DOSAGE_FORM_NAME";
+                cbo.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.Standard;
+                cbo.Properties.PopupFilterMode = DevExpress.XtraEditors.PopupFilterMode.Contains;
+                cbo.Properties.ImmediatePopup = true;
+                cbo.ForceInitialize();
+                cbo.Properties.View.Columns.Clear();
+                cbo.Properties.PopupFormSize = new Size(900, 250);
+
+                DevExpress.XtraGrid.Columns.GridColumn aColumnCode = cbo.Properties.View.Columns.AddField("DOSAGE_FORM_CODE");
+                aColumnCode.Caption = "Mã";
+                aColumnCode.Visible = true;
+                aColumnCode.VisibleIndex = 1;
+                aColumnCode.Width = 60;
+
+                DevExpress.XtraGrid.Columns.GridColumn aColumnName = cbo.Properties.View.Columns.AddField("DOSAGE_FORM_NAME");
+                aColumnName.Caption = "Tên";
+                aColumnName.Visible = true;
+                aColumnName.VisibleIndex = 2;
+                aColumnName.Width = 340;
+
+                DevExpress.XtraGrid.Columns.GridColumn aColumnNameUnsign = cbo.Properties.View.Columns.AddField("DOSAGEFORM_NAME_UNSIGN");
+                aColumnNameUnsign.Visible = true;
+                aColumnNameUnsign.VisibleIndex = -1;
+                aColumnNameUnsign.Width = 340;
+
+                cbo.Properties.View.Columns["DOSAGEFORM_NAME_UNSIGN"].Width = 0;
             }
             catch (Exception ex)
             {
