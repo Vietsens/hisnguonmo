@@ -209,6 +209,56 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
+        //qtcode
+        private void onClickChiTietBenhAn(object sender, EventArgs e)
+        {
+            try
+            {
+                Inventec.Desktop.Common.Modules.Module moduleData = GlobalVariables.currentModuleRaws.Where(o =>
+                o.ModuleLink == "HIS.Desktop.Plugins.EmrDocument").FirstOrDefault();
+                if (moduleData == null) Inventec.Common.Logging.LogSystem.Error("khong tim thay moduleLink = HIS.Desktop.Plugins.EmrDocument"); 
+                if(moduleData.IsPlugin && moduleData.ExtensionInfo != null)
+                {
+                    List<object> listArgs = new List<Object>();
+                    var tdlTreatmentCode = HisServiceReqView.TDL_TREATMENT_CODE.ToString(); 
+                    listArgs.Add(tdlTreatmentCode);
+                    var extenceInstance = PluginInstance.GetPluginInstance(HIS.Desktop.Utility.PluginInstance.GetModuleWithWorkingRoom(moduleData, this.moduleData.RoomId, this.moduleData.RoomTypeId), listArgs);
+                    if (extenceInstance == null) throw new ArgumentNullException("moduleData is null");
+                    ((Form)extenceInstance).ShowDialog();
+                }    
+            }
+            catch(Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void onClickTraSoatHoSoBenhAn(object sender, EventArgs e)
+        {
+            try
+            {
+                Inventec.Desktop.Common.Modules.Module moduleData = GlobalVariables.currentModuleRaws.Where(o =>
+                o.ModuleLink == "HIS.Desktop.Plugins.HisTreatmentRecordChecking").FirstOrDefault();
+                if (moduleData == null) Inventec.Common.Logging.LogSystem.Error("khong tim thay moduleLink = HIS.Desktop.Plugins.HisTreatmentRecordChecking ");
+                if (moduleData.IsPlugin && moduleData.ExtensionInfo != null)
+                {
+                    List<object> listArgs = new List<Object>();
+                    List<long> tdlTreatmentCode = new List<long>();
+                    tdlTreatmentCode.Add(HisServiceReqView.TREATMENT_ID); 
+                    listArgs.Add(HisServiceReqView.TREATMENT_ID);
+                    listArgs.Add(tdlTreatmentCode); 
+                    var extenceInstance = PluginInstance.GetPluginInstance(HIS.Desktop.Utility.PluginInstance.GetModuleWithWorkingRoom(moduleData, this.moduleData.RoomId, this.moduleData.RoomTypeId), listArgs);
+                    if (extenceInstance == null) throw new ArgumentNullException("moduleData is null");
+                    ((Form)extenceInstance).ShowDialog();
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+        //qtcode
+
 
         private void onClickTruyenDich(object sender, EventArgs e)
         {
