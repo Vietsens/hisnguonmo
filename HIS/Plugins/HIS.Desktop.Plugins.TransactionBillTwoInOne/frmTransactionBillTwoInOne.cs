@@ -1902,6 +1902,9 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
                 txtBuyerTaxCode.Text = "";
                 lblHeinRatio.Text = "";
                 lblRightRoute.Text = "";
+                //qtcode
+                txtBuyerEmail.Text = ""; 
+                //qtcode
             }
             catch (Exception ex)
             {
@@ -1953,6 +1956,17 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
                 txtDOB.Text = Inventec.Common.DateTime.Convert.TimeNumberToDateString(data.TDL_PATIENT_DOB);
                 txtGender.Text = data.TDL_PATIENT_GENDER_NAME;
                 txtAddress.Text = data.TDL_PATIENT_ADDRESS;
+
+                long Id = data.TDL_TREATMENT_TYPE_ID ?? 0;
+                HisPatientFilter ft = new HisPatientFilter();
+                ft.ID = data.PATIENT_ID; 
+                var listPatient = new BackendAdapter(new CommonParam()).Get<List<HIS_PATIENT>>("api/HisPatient/Get", ApiConsumers.MosConsumer, ft, new CommonParam());
+                //var listPatient = new BackendAdapter(new CommonParam()).Get<List<HIS_PATIENT>>("api/HisPatient/Get", ApiConsumers.MosConsumer, patientFilter, new CommonParam());
+                if (listPatient != null && listPatient.Count > 0)
+                {
+                    HIS_PATIENT a = listPatient.FirstOrDefault();
+                    txtBuyerEmail.Text = a.EMAIL; 
+                }
                 if (data.TDL_PATIENT_TYPE_ID != null)
                 {
                     txtPatientType.Text = BackendDataWorker.Get<HIS_PATIENT_TYPE>().FirstOrDefault(o => o.ID == data.TDL_PATIENT_TYPE_ID).PATIENT_TYPE_NAME;
@@ -1964,6 +1978,8 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
 
                 txtBuyerAccountCode.Text = data.TDL_PATIENT_ACCOUNT_NUMBER ?? "";
                 txtBuyerAddress.Text = data.TDL_PATIENT_ADDRESS ?? "";
+                
+
                 txtBuyerName.Text = data.TDL_PATIENT_NAME ?? "";
                 txtBuyerOrganization.Text = data.TDL_PATIENT_WORK_PLACE_NAME ?? data.TDL_PATIENT_WORK_PLACE ?? "";
                 txtBuyerTaxCode.Text = data.TDL_PATIENT_TAX_CODE ?? "";
