@@ -35,6 +35,7 @@ using HIS.UC.PlusInfo.ADO;
 using Inventec.Desktop.Common.LanguageManager;
 using MOS.EFMODEL.DataModels;
 using System.Resources;
+using HIS.Desktop.LocalStorage.HisConfig;
 
 namespace HIS.UC.PlusInfo.Design
 {
@@ -256,7 +257,7 @@ namespace HIS.UC.PlusInfo.Design
 
                     var patientPrograms = this._HisPatientPrograms.Where(p => p.PATIENT_ID == patientID).ToList();
                     _shareMethod.InitComboCommon(this.cboProgram, patientPrograms, "PROGRAM_ID", "PROGRAM_NAME", "PROGRAM_CODE");
-                    if (patientPrograms.Any(p => p.PROGRAM_ID == programid))
+                    if (HIS.Desktop.Plugins.Library.RegisterConfig.HisConfigCFG.ISALLOWPROGRAMPATIENTOLD == "1" && patientPrograms.Any(p => p.PROGRAM_ID == programid) )
                     {
                         this.cboProgram.EditValue = programid;
                         var selectedProgram = patientPrograms.FirstOrDefault(p => p.PROGRAM_ID == programid);
