@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>HIS.Desktop</RootNamespace>
     <AssemblyName>HIS</AssemblyName>
-    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <IsWebBootstrapper>false</IsWebBootstrapper>
     <TargetFrameworkProfile />
@@ -162,12 +162,19 @@
     <Reference Include="FRD">
       <HintPath>..\..\..\Lib\FRD\FRD.dll</HintPath>
     </Reference>
+    <Reference Include="HIS.Desktop.ApiConsumer, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\HISNGUONMO\lib_backup\lib\HIS\His.UC.CreateReport\HIS.Desktop.ApiConsumer.dll</HintPath>
+    </Reference>
     <Reference Include="HIS.Desktop.LocalStorage.ConfigCustomizaButton">
       <HintPath>..\..\..\lib\HIS\HIS.UC.UCPatientRaw\HIS.Desktop.LocalStorage.ConfigCustomizaButton.dll</HintPath>
     </Reference>
     <Reference Include="HIS.Desktop.LocalStorage.Location, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\Lib\HIS\HIS.Desktop.Plugins.Library.EmrGenerate\HIS.Desktop.LocalStorage.Location.dll</HintPath>
+    </Reference>
+    <Reference Include="HIS.Desktop.ModuleExt">
+      <HintPath>..\..\..\..\HISNGUONMO\lib\HIS\HIS.Desktop.ModuleExt\HIS.Desktop.ModuleExt.dll</HintPath>
     </Reference>
     <Reference Include="HIS.Desktop.Plugins.Library.ConnectBloodPressure, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -178,6 +185,9 @@
     </Reference>
     <Reference Include="HIS.Desktop.Print">
       <HintPath>..\..\..\lib\HIS\HIS.Desktop.Plugins.Library.PrintServiceReqTreatment\HIS.Desktop.Print.dll</HintPath>
+    </Reference>
+    <Reference Include="HIS.Desktop.Utility">
+      <HintPath>..\..\..\..\HISNGUONMO\lib\HIS\HIS.Desktop.Utilities\HIS.Desktop.Utility.dll</HintPath>
     </Reference>
     <Reference Include="His.EventLog, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -215,7 +225,7 @@
       <HintPath>..\..\..\Lib\Inventec.Fss.Client\Inventec.Fss.Client.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Fss.Utility">
-      <HintPath>..\..\..\Lib\Inventec.Fss.Client\Inventec.Fss.Utility.dll</HintPath>
+      <HintPath>..\..\..\..\HISNGUONMO\lib\HIS\HIS.UC.UCOtherServiceReqInfo\Inventec.Fss.Utility.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Token.ClientSystem">
       <HintPath>..\..\..\Lib\Inventec.Token\Inventec.Token.ClientSystem\Inventec.Token.ClientSystem.dll</HintPath>
@@ -681,10 +691,6 @@
       <Project>{808c25cd-0925-417f-bbf9-caf9604da879}</Project>
       <Name>HIS.Desktop.ADO</Name>
     </ProjectReference>
-    <ProjectReference Include="..\HIS.Desktop.ApiConsumer\HIS.Desktop.ApiConsumer.csproj">
-      <Project>{861bfedb-026f-4b6f-a3cf-32843ae8c03d}</Project>
-      <Name>HIS.Desktop.ApiConsumer</Name>
-    </ProjectReference>
     <ProjectReference Include="..\HIS.Desktop.ApplicationFont\HIS.Desktop.ApplicationFont.csproj">
       <Project>{ee6bba16-7e46-49bd-9707-a2069e480302}</Project>
       <Name>HIS.Desktop.ApplicationFont</Name>
@@ -736,14 +742,6 @@
     <ProjectReference Include="..\HIS.Desktop.LocalStorage.PubSub\HIS.Desktop.LocalStorage.PubSub.csproj">
       <Project>{e791eade-c034-4b2a-873c-8fdb26fdeb8d}</Project>
       <Name>HIS.Desktop.LocalStorage.PubSub</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\HIS.Desktop.ModuleExt\HIS.Desktop.ModuleExt.csproj">
-      <Project>{168b4cc6-8447-41da-b034-a02f336168e4}</Project>
-      <Name>HIS.Desktop.ModuleExt</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\HIS.Desktop.Utility\HIS.Desktop.Utilities.csproj">
-      <Project>{2aad22db-2166-4be8-ae52-335b21dc03fc}</Project>
-      <Name>HIS.Desktop.Utilities</Name>
     </ProjectReference>
     <ProjectReference Include="..\Plugins\HIS.Desktop.Library.CacheClient\HIS.Desktop.Library.CacheClient.csproj">
       <Project>{64837e01-803d-4f1e-9dfc-d34b38ea78f9}</Project>
