@@ -35,6 +35,7 @@ namespace MPS.Processor.Mps000235
         Mps000235PDO rdo;
 
         List<HIS_PATIENT_TYPE_ALTER> _PATIENT_TYPE_ALTERs = null;
+
         long? SoThang;
 
         public Mps000235Processor(CommonParam param, PrintData printData)
@@ -87,7 +88,10 @@ namespace MPS.Processor.Mps000235
                 store.ReadTemplate(System.IO.Path.GetFullPath(fileName));
                 singleTag.ProcessData(store, singleValueDictionary);
                 barCodeTag.ProcessData(store, dicImage);
-                objectTag.AddObjectData(store, "PatientTypeAlter", _PATIENT_TYPE_ALTERs);
+
+                //Dangth
+
+                objectTag.AddObjectData(store, "PatientTypeAlter", _PATIENT_TYPE_ALTERs);              
                 objectTag.AddObjectData(store, "ExpMestAggregates", rdo.listAdo);
                 objectTag.SetUserFunction(store, "FuncMergeData11", new CalculateMergerData());
                 objectTag.SetUserFunction(store, "FuncMergeData12", new CalculateMergerData());
