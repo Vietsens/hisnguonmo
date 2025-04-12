@@ -731,8 +731,9 @@ namespace HIS.Desktop.Plugins.BidUpdate
                     .Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE)
                     .ToList();
                 List<ColumnInfo> columnInfos = new List<ColumnInfo>();
-                columnInfos.Add(new ColumnInfo("DOSAGE_FORM_NAME", "", 100, 1));
-                ControlEditorADO controlEditorADO = new ControlEditorADO("DOSAGE_FORM_NAME", "DOSAGE_FORM_NAME", columnInfos, false, 350);
+                columnInfos.Add(new ColumnInfo("DOSAGE_FORM_CODE", "", 100, 1));
+                columnInfos.Add(new ColumnInfo("DOSAGE_FORM_NAME", "", 150, 2));
+                ControlEditorADO controlEditorADO = new ControlEditorADO("DOSAGE_FORM_NAME", "DOSAGE_FORM_CODE", columnInfos, false, 350);
                 //Load data vao combobox
                 ControlEditorLoader.Load(cboDosageForm, data, controlEditorADO);
                 cboDosageForm.Properties.ImmediatePopup = true;
@@ -907,6 +908,7 @@ namespace HIS.Desktop.Plugins.BidUpdate
                 this.medicineType = data;
                 if (data.Type == Base.GlobalConfig.THUOC)
                 {
+                    ValidCboDosageForm();
                     //ValidBidPackage(false);
                     xtraTabControl1.SelectedTabPageIndex = 0;
                     this.medicineType = data;
@@ -919,13 +921,13 @@ namespace HIS.Desktop.Plugins.BidUpdate
                     cboDosageForm.EditValue = this.medicineType.DOSAGE_FORM;
                     txtNOTE.Text = this.medicineType.NOTE;
 
+                    cboDosageForm.Enabled = true;
                     EnableLeftControl(true);
                     txtMaTT.Enabled = false;
                     txtMaDT.Enabled = false;
                     txtTenTT.Enabled = false;
                     ValidMaxlengthDosageForm();
                     lciDosageForm.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
-                    layoutControlItem26.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
                     cboInformationBid.SelectedIndex = -1;
                     lciTenBHYT.Size = lciMaTT.Size;
                 }
@@ -950,11 +952,10 @@ namespace HIS.Desktop.Plugins.BidUpdate
                     txtRegisterNumber.Enabled = false;
                     txtPackingType.Enabled = false;
                     txtTenBHYT.Enabled = false;
-                    cboDosageForm.Visible = false;
+                    cboDosageForm.Enabled = false;
                     txtActiveBhyt.Enabled = false;
                     cboMediUseForm.Enabled = false;
                     layoutControlItem26.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
-                    lciDosageForm.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
                     layoutControlItem26.Size = lciMaDT.Size;
                     lciTenBHYT.Size = lciMaTT.Size;
                     cboInformationBid.SelectedIndex = (int)(data.INFORMATION_BID ?? 0) - 1;
@@ -972,7 +973,8 @@ namespace HIS.Desktop.Plugins.BidUpdate
                     this.bloodType.ADJUST_AMOUNT = null;
                     EnableLeftControl(false);
                     layoutControlItem26.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
-                    lciDosageForm.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+
+                    cboDosageForm.Enabled = false;
                     cboInformationBid.SelectedIndex = -1;
                     lciTenBHYT.Size = lciMaTT.Size;
                 }
@@ -1206,7 +1208,7 @@ namespace HIS.Desktop.Plugins.BidUpdate
                 cboSupplier.Properties.ImmediatePopup = true;
                 cboSupplier.ForceInitialize();
                 cboSupplier.Properties.View.Columns.Clear();
-                cboSupplier.Properties.PopupFormSize = new Size(400, 250);
+                cboSupplier.Properties.PopupFormSize = new Size(600, 300);
 
                 GridColumn aColumnCode = cboSupplier.Properties.View.Columns.AddField("SUPPLIER_CODE");
                 aColumnCode.Caption = "Mã";
