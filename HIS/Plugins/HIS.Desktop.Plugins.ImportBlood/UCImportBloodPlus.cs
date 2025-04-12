@@ -51,16 +51,28 @@ using DevExpress.Utils.Win;
 using HIS.Desktop.Plugins.ImportBlood.Properties;
 using ACS.EFMODEL.DataModels;
 using SDA.EFMODEL.DataModels;
+using DevExpress.Utils.Menu;
+using Inventec.Common.RichEditor.Base;
+using HIS.Desktop.Plugins.ImpMestViewDetail.ADO;
 
 namespace HIS.Desktop.Plugins.ImportBlood
 {
     public partial class UCImportBloodPlus : HIS.Desktop.Utility.UserControlBase
     {
         long impMestId;
+        long IMP_MEST_TYPE_ID;
+        long ImpMestSttId;
         BloodTypeProcessor bloodTypeProcessor;
         UserControl ucBloodType;
+        V_HIS_IMP_MEST impMest;
+        Inventec.Desktop.Common.Modules.Module moduleData;
 
         List<V_HIS_BID_BLOOD_TYPE> listBidBlood = new List<V_HIS_BID_BLOOD_TYPE>();
+        List<V_HIS_IMP_MEST_MATERIAL> vimpMestMaterials;
+        List<V_HIS_IMP_MEST_MEDICINE> vimpMestMedicines;
+        List<ImpMestBloodSDODetail> impMestBloods;
+        List<ImpMestMaterialSDODetail> impMestMaterials;
+        List<ImpMestMedicineSDODetail> impMestMedicines;
         List<V_HIS_EXP_MEST_BLOOD> listExpMestBlood { get; set; }
         List<ExpMestBloodADO> listBloodADO { get; set; }
 
@@ -245,6 +257,7 @@ namespace HIS.Desktop.Plugins.ImportBlood
             {
                 Invoke(new Action(() =>
                 {
+                    cboPrint.Enabled = false;
                     if (!CheckMediStockIsBlood())
                     {
                         MessageManager.Show(Base.ResourceMessageLang.KhoKhongPhaiLaKhoMau);
@@ -272,7 +285,8 @@ namespace HIS.Desktop.Plugins.ImportBlood
                     this.SetControlEnableImMestTypeManu();
                     this.SetEnableButtonAdd(true);
                     this.SetControlValueByBloodType(true);
-                    btnPrint.Enabled = false;
+                    ////Dangth
+                    //cboPrint.Enabled = false;
                     cboMediStock.Enabled = false;
                     txtMediStock.Enabled = false;
                     this.bloodTypeProcessor.FocusKeyword(this.ucBloodType);
@@ -297,6 +311,8 @@ namespace HIS.Desktop.Plugins.ImportBlood
                             EnableControlEdit(this.actionType);
                             FillDataToResult(impMest, bloods);
                         }
+
+                        this.InitMenuToButtonPrint(impMest);
                     }
                     WaitingManager.Hide();
                 }));
@@ -852,7 +868,7 @@ namespace HIS.Desktop.Plugins.ImportBlood
                     layoutGiveCode.Enabled = false;
                     layoutGiveName.Enabled = false;
                     SetDataSourceGridBlood_BloodGiver();
-                    btnPrint.Enabled = false;
+                    //cboPrint.Enabled = false;
                     btnExportExcel.Enabled = false;
                 }
                 else
@@ -864,7 +880,7 @@ namespace HIS.Desktop.Plugins.ImportBlood
                     layoutGiveCode.Enabled = true;
                     layoutGiveName.Enabled = true;
                     SetDataSourceGridBlood();
-                    btnPrint.Enabled = true;
+                    //cboPrint.Enabled = true;
                     btnExportExcel.Enabled = true;
                 }
 
@@ -938,7 +954,7 @@ namespace HIS.Desktop.Plugins.ImportBlood
                 {
                     btnSave.Enabled = true;
                     btnSaveDraft.Enabled = true;
-                    btnPrint.Enabled = true;
+                    //cboPrint.Enabled = true;
                 }
             }
             catch (Exception ex)
@@ -1365,7 +1381,8 @@ namespace HIS.Desktop.Plugins.ImportBlood
                 //Button
                 this.btnAdd.Text = Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__UC_IMPORT_BLOOD__BTN_ADD", Base.ResourceLangManager.LanguageUCImportBlood, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
                 this.btnNew.Text = Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__UC_IMPORT_BLOOD__BTN_NEW", Base.ResourceLangManager.LanguageUCImportBlood, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
-                this.btnPrint.Text = Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__UC_IMPORT_BLOOD__BTN_PRINT", Base.ResourceLangManager.LanguageUCImportBlood, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                //Dangth
+                this.cboPrint.Text = Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__UC_IMPORT_BLOOD__BTN_PRINT", Base.ResourceLangManager.LanguageUCImportBlood, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
                 this.btnSave.Text = Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__UC_IMPORT_BLOOD__BTN_SAVE", Base.ResourceLangManager.LanguageUCImportBlood, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
                 this.btnSaveDraft.Text = Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__UC_IMPORT_BLOOD__BTN_SAVE_DRAFT", Base.ResourceLangManager.LanguageUCImportBlood, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
                 this.btnCancel.Text = Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__UC_IMPORT_BLOOD__BTN_CANCEL", Base.ResourceLangManager.LanguageUCImportBlood, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
@@ -1419,7 +1436,269 @@ namespace HIS.Desktop.Plugins.ImportBlood
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
+        //Dangth
+        internal enum PrintType
+        {
+            BIEN_BAN_KIEM_NHAP_TU_NCC,
+            PHIEU_NHAP_THUOC_VAT_TU_TU_NCC,
+            PHIEU_NHAP_MAU_TU_NCC,
+            BAR_CODE,
+            PHIEU_NHAP_THU_HOI,
+            PHIEU_NHAP_CHUYEN_KHO,
+            PHIEU_NHAP_CHUYEN_KHO_THUOC_GAY_NGHIEN_HUONG_THAN,
+            PHIEU_NHAP_CHUYEN_KHO_KHONG_PHAI_THUOC_GAY_NGHIEN_HUONG_THAN,
+            PHIEU_NHAP_KIEM_KE_DAU_KY_KHAC,
+            Mps000214_Nhap_Hao_Phi_Tra_Lai,
+            Mps000213_Don_Mau_Tra_Lai,
+            Mps000084_Don_Noi_Tru_Tra_Lai,
+            Mps000230_Bu_Thuoc_Le,
+            Mps000221_Bu_Co_So_Tu_Truc,
+            Mps000244_Phieu_San_Xuat_thuoc,
+            Mps000092_Phieu_Xuat_Ban,
+            IN_TEM_THEO_SO_SERI
+        }
 
+        Inventec.Common.RichEditor.RichEditorStore store = new Inventec.Common.RichEditor.RichEditorStore(ApiConsumers.SarConsumer, HIS.Desktop.LocalStorage.ConfigSystem.ConfigSystems.URI_API_SAR, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetLanguage(), GlobalVariables.TemnplatePathFolder);
+
+        public void InitMenuToButtonPrint(HIS_IMP_MEST hIS_IMP_MEST)
+        {
+            try
+            {
+                DXPopupMenu menu = new DXPopupMenu();
+                // nhap tu nha cung cap
+                if (hIS_IMP_MEST.IMP_MEST_TYPE_ID != null && hIS_IMP_MEST.IMP_MEST_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_IMP_MEST_TYPE.ID__NCC)
+                {
+                    //btnHoiDongKiemNhap.Enabled = true;
+                    DXMenuItem itemBienBankiemNhapNCC = new DXMenuItem("Biên bản kiểm nhập từ nhà cung cấp", new EventHandler(OnClickInPhieuNhap));
+                    itemBienBankiemNhapNCC.Tag = PrintType.BIEN_BAN_KIEM_NHAP_TU_NCC;
+                    menu.Items.Add(itemBienBankiemNhapNCC);
+
+                    DXMenuItem itemPhieuNhapMauTuNCC = new DXMenuItem("Phiếu nhập máu từ nhà cung cấp", new EventHandler(OnClickInPhieuNhap));
+                    itemPhieuNhapMauTuNCC.Tag = PrintType.PHIEU_NHAP_MAU_TU_NCC;
+                    menu.Items.Add(itemPhieuNhapMauTuNCC);
+                }
+                else
+                {
+                    cboPrint.Enabled = false;
+                }
+
+                cboPrint.DropDownControl = menu;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+        private void OnClickInPhieuNhap(object sender, EventArgs e)
+        {
+            try
+            {
+                var bbtnItem = sender as DXMenuItem;
+                PrintType type = (PrintType)(bbtnItem.Tag);
+                PrintProcess(type);
+
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+
+        }
+        void PrintProcess(PrintType printType)
+        {
+            try
+            {
+                Inventec.Common.RichEditor.RichEditorStore richEditorMain = new Inventec.Common.RichEditor.RichEditorStore(HIS.Desktop.ApiConsumer.ApiConsumers.SarConsumer, HIS.Desktop.LocalStorage.ConfigSystem.ConfigSystems.URI_API_SAR, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetLanguage(), HIS.Desktop.LocalStorage.Location.PrintStoreLocation.PrintTemplatePath);
+
+                switch (printType)
+                {
+                    case PrintType.BIEN_BAN_KIEM_NHAP_TU_NCC:
+                        richEditorMain.RunPrintTemplate(PrintTypeCodeStore.PRINT_TYPE_CODE__BienBanKiemNhapTuNhaCungCap_MPS000085, DelegateRunPrinter);
+                        break;                 
+                    case PrintType.PHIEU_NHAP_MAU_TU_NCC:
+                        richEditorMain.RunPrintTemplate(PrintTypeCodeStore.PRINT_TYPE_CODE__PhieuNhapMauTuNhaCungCap_MPS000149, DelegateRunPrinter);
+                        break;                    
+                    default:
+                        break;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+        private bool DelegateRunPrinter(string printTypeCode, string fileName)
+        {
+            bool result = false;
+            try
+            {
+                switch (printTypeCode)
+                {
+                    case PrintTypeCodeStore.PRINT_TYPE_CODE__BienBanKiemNhapTuNhaCungCap_MPS000085:
+                        InBienBanKiemNhapTuNhaCungCap(printTypeCode, fileName, ref result);
+                        break;
+                    case PrintTypeCodeStore.PRINT_TYPE_CODE__PhieuNhapMauTuNhaCungCap_MPS000149:
+                        InPhieuNhapMauTuNCC(printTypeCode, fileName, ref result);
+                        break;
+                    default:
+                        break;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+
+            return result;
+        }
+        private void InBienBanKiemNhapTuNhaCungCap(string printTypeCode, string fileName, ref bool result)
+        {
+            try
+            {
+                CommonParam param = new CommonParam();
+                List<HIS_MEDICINE> medicines = new List<HIS_MEDICINE>();
+                List<HIS_MATERIAL> materials = new List<HIS_MATERIAL>();
+                MOS.Filter.HisImpMestViewFilter impMestFilter = new MOS.Filter.HisImpMestViewFilter();
+                impMestFilter.ID = this.impMestId;
+                var rs = new BackendAdapter(param).Get<List<V_HIS_IMP_MEST_USER>>("/api/HisImpMestUser/GetView", ApiConsumers.MosConsumer, impMestFilter, param);
+                rs = rs.OrderBy(p => p.ID).ToList();
+                MOS.Filter.HisImpMestBloodFilter bloodFilter = new MOS.Filter.HisImpMestBloodFilter();
+                bloodFilter.IMP_MEST_ID = this.impMestId;
+                var bloodData = new BackendAdapter(param).Get<List<V_HIS_IMP_MEST_BLOOD>>("/api/HisImpMestBlood/GetView", ApiConsumers.MosConsumer, bloodFilter, param);
+                bloodData = bloodData.OrderBy(o => o.ID).ToList();
+
+
+                WaitingManager.Show();
+
+                var ImpMestMaterialPrints = MapImpMestMaterialFromSDO(this.impMestMaterials);
+
+                string printerName = "";
+                if (GlobalVariables.dicPrinter.ContainsKey(printTypeCode))
+                {
+                    printerName = GlobalVariables.dicPrinter[printTypeCode];
+                }
+
+                Inventec.Common.SignLibrary.ADO.InputADO inputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode((this.impMest != null ? this.impMest.TDL_TREATMENT_CODE : ""), printTypeCode, moduleData != null ? moduleData.RoomId : 0);
+
+                MPS.Processor.Mps000085.PDO.Mps000085PDO mps0000085RDO = new MPS.Processor.Mps000085.PDO.Mps000085PDO(
+                 this.impMest,  
+                 null,
+                 null,
+                 rs,
+                 null,
+                 null,
+                 null,
+                 null,
+                 bloodData
+                  );
+                WaitingManager.Hide();
+
+                MPS.ProcessorBase.Core.PrintData PrintData = null;
+                if (GlobalVariables.CheDoInChoCacChucNangTrongPhanMem == 2)
+                {
+                    //PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps0000085RDO, MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow, "");
+                    PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps0000085RDO, MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow, printerName) { EmrInputADO = inputADO };
+                }
+                else
+                {
+                    //PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps0000085RDO, MPS.ProcessorBase.PrintConfig.PreviewType.ShowDialog, "");
+                    PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps0000085RDO, MPS.ProcessorBase.PrintConfig.PreviewType.ShowDialog, printerName) { EmrInputADO = inputADO };
+                }
+                result = MPS.MpsPrinter.Run(PrintData);
+
+            }
+            catch (Exception ex)
+            {
+                WaitingManager.Hide();
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+        private List<V_HIS_IMP_MEST_MATERIAL> MapImpMestMaterialFromSDO(List<ImpMestMaterialSDODetail> input)
+        {
+            List<V_HIS_IMP_MEST_MATERIAL> result = new List<V_HIS_IMP_MEST_MATERIAL>();
+            try
+            {
+                foreach (var item in input)
+                {
+                    V_HIS_IMP_MEST_MATERIAL impMestMedicine = new V_HIS_IMP_MEST_MATERIAL();
+                    AutoMapper.Mapper.CreateMap<ImpMestMedicineSDODetail, V_HIS_IMP_MEST_MATERIAL>();
+                    impMestMedicine = AutoMapper.Mapper.Map<V_HIS_IMP_MEST_MATERIAL>(item);
+                    result.Add(impMestMedicine);
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+            return result;
+        }
+        private void InPhieuNhapMauTuNCC(string printTypeCode, string fileName, ref bool result)
+        {
+            try
+            {
+                CommonParam param = new CommonParam();
+
+                WaitingManager.Show();
+
+                MOS.Filter.HisImpMestBloodFilter filter = new HisImpMestBloodFilter();
+                filter.IMP_MEST_ID = impMestId;
+                filter.IS_ACTIVE = 1;
+                var impMestBloodPrint = new Inventec.Common.Adapter.BackendAdapter(param).Get<List<V_HIS_IMP_MEST_BLOOD>>("api/HisImpMestBlood/GetView", 
+                    ApiConsumer.ApiConsumers.MosConsumer, filter, param);
+
+                MPS.Processor.Mps000149.PDO.Mps000149PDO pdo = new MPS.Processor.Mps000149.PDO.Mps000149PDO(
+                 this.impMest,
+                 impMestBloodPrint
+                );
+                string printerName = "";
+                if (GlobalVariables.dicPrinter.ContainsKey(printTypeCode))
+                {
+                    printerName = GlobalVariables.dicPrinter[printTypeCode];
+                }
+
+                Inventec.Common.SignLibrary.ADO.InputADO inputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode((this.impMest != null ? this.impMest.TDL_TREATMENT_CODE : ""), printTypeCode, moduleData != null ? moduleData.RoomId : 0);
+
+                MPS.ProcessorBase.Core.PrintData PrintData = null;
+                if (GlobalVariables.CheDoInChoCacChucNangTrongPhanMem == 2)
+                {
+                    //PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, pdo, MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow, "");
+                    PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, pdo, MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow, printerName) { EmrInputADO = inputADO };
+                }
+                else
+                {
+                    //PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, pdo, MPS.ProcessorBase.PrintConfig.PreviewType.ShowDialog, "");
+                    PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, pdo, MPS.ProcessorBase.PrintConfig.PreviewType.ShowDialog, printerName) { EmrInputADO = inputADO };
+                }
+                WaitingManager.Hide();
+                result = MPS.MpsPrinter.Run(PrintData);
+
+            }
+            catch (Exception ex)
+            {
+                WaitingManager.Hide();
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+        public List<V_HIS_IMP_MEST_BLOOD> MapImpMestBloodFromSDO(List<ImpMestBloodSDODetail> input)
+        {
+            List<V_HIS_IMP_MEST_BLOOD> result = new List<V_HIS_IMP_MEST_BLOOD>();
+            try
+            {
+                foreach (var item in input)
+                {
+                    V_HIS_IMP_MEST_BLOOD blood = new V_HIS_IMP_MEST_BLOOD();
+                    AutoMapper.Mapper.CreateMap<ImpMestBloodSDODetail, V_HIS_IMP_MEST_BLOOD>();
+                    blood = AutoMapper.Mapper.Map<V_HIS_IMP_MEST_BLOOD>(item);
+                    result.Add(blood);
+                }
+            }
+            catch (Exception ex)
+            {
+                result = null;
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+            return result;
+        }
         public void BtnAdd()
         {
             try
@@ -1509,12 +1788,24 @@ namespace HIS.Desktop.Plugins.ImportBlood
             try
             {
                 btnPrint_Click(null, null);
+                //cboPrint_Click(null, null);
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
+        public void CboPrint()
+        {
+            try
+            {
+                cboPrint_Click(null, null);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }   
 
         private void cboSupplier_Closed(object sender, ClosedEventArgs e)
         {
@@ -2682,6 +2973,37 @@ namespace HIS.Desktop.Plugins.ImportBlood
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
                 DevExpress.XtraEditors.XtraMessageBox.Show("Xảy ra lỗi khi import từ file");
+            }
+        }
+
+        private void btnHoiDongKiemNhap_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (this.impMestId > 0)
+                {
+                    Inventec.Desktop.Common.Message.WaitingManager.Show();
+                    Inventec.Desktop.Common.Modules.Module currentModule = HIS.Desktop.LocalStorage.LocalData.GlobalVariables.currentModuleRaws.Where(o => o.ModuleLink == "HIS.Desktop.Plugins.HisRoleUser").FirstOrDefault();
+                    if (currentModule == null) Inventec.Common.Logging.LogSystem.Error("khong tim thay moduleLink = HIS.Desktop.Plugins.HisRoleUser");
+                    if (currentModule.IsPlugin && currentModule.ExtensionInfo != null)
+                    {
+                        List<object> listArgs = new List<object>();
+                        
+                        listArgs.Add(LoadImpMestByID(this.impMestId));
+                        listArgs.Add(this.impMest);
+                        listArgs.Add(this.impMestBloods);
+                        listArgs.Add(HIS.Desktop.Utility.PluginInstance.GetModuleWithWorkingRoom(currentModule, currentModule.RoomId, currentModule.RoomTypeId));
+                        var extenceInstance = HIS.Desktop.Utility.PluginInstance.GetPluginInstance(HIS.Desktop.Utility.PluginInstance.GetModuleWithWorkingRoom(currentModule, currentModule.RoomId, currentModule.RoomTypeId), listArgs);
+                        if (extenceInstance == null) throw new ArgumentNullException("moduleData is null");
+
+                        ((System.Windows.Forms.Form)extenceInstance).ShowDialog();
+                    }
+                    Inventec.Desktop.Common.Message.WaitingManager.Hide();
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
     }

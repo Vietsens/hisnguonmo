@@ -33,6 +33,7 @@ namespace HIS.Desktop.Plugins.ImportBlood.ADO
         public HisImpMestDonationSDO HisDonationSDO { get; set; }
         public List<MOS.EFMODEL.DataModels.HIS_BLOOD> HisBloodSDOs { get; set; }
 
+        public long ImpMestId { get; set; }
 
         public long ImpMestTypeId { get; set; }
 
@@ -45,30 +46,40 @@ namespace HIS.Desktop.Plugins.ImportBlood.ADO
         {
             this.HisManuSDO = manuSDO;
             this.ImpMestTypeId = manuSDO.ImpMest.IMP_MEST_TYPE_ID;
+            this.ImpMestId = manuSDO.ImpMest.ID;
         }
 
         public ResultImpMestADO(HisImpMestInitSDO initSDO)
         {
             this.HisInitSDO = initSDO;
             this.ImpMestTypeId = initSDO.ImpMest.IMP_MEST_TYPE_ID;
+
+            this.ImpMestId = initSDO.ImpMest.ID;
         }
 
         public ResultImpMestADO(HisImpMestInveSDO inveSDO)
         {
             this.HisInveSDO = inveSDO;
             this.ImpMestTypeId = inveSDO.ImpMest.IMP_MEST_TYPE_ID;
+
+            this.ImpMestId = inveSDO.ImpMest.ID;
+
         }
 
         public ResultImpMestADO(HisImpMestOtherSDO otherSDO)
         {
             this.HisOtherSDO = otherSDO;
             this.ImpMestTypeId = otherSDO.ImpMest.IMP_MEST_TYPE_ID;
+
+            this.ImpMestId = otherSDO.ImpMest.ID;
         }
 
         public ResultImpMestADO(HisImpMestDonationSDO donationSDO)
         {
             this.HisDonationSDO = donationSDO;
             this.ImpMestTypeId = donationSDO.ImpMest.IMP_MEST_TYPE_ID;
+
+            this.ImpMestId = donationSDO.ImpMest.ID;
         }
     }
 }
