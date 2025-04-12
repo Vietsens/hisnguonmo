@@ -1716,6 +1716,7 @@ namespace HIS.Desktop.Plugins.BidCreate
                     txtActiveBhyt.Text = "";
                     cboMediUserForm.EditValue = null;
                     cboDosageForm.EditValue = null;
+                    cboDosageForm.Enabled = false;
                     if (tabMaterial)
                     {
                         WaitingManager.Show();
@@ -1748,6 +1749,7 @@ namespace HIS.Desktop.Plugins.BidCreate
                     txtActiveBhyt.Text = "";
                     cboMediUserForm.EditValue = null;
                     cboDosageForm.EditValue = null;
+                    cboDosageForm.Enabled = false;
 
                     if (tabBlood)
                     {
@@ -3030,26 +3032,35 @@ namespace HIS.Desktop.Plugins.BidCreate
 
         private void cboDosageForm_ButtonClick(object sender, ButtonPressedEventArgs e)
         {
-            if (e.Button.Kind == ButtonPredefines.Delete)
+            try
             {
-                cboDosageForm.Properties.Buttons[1].Visible = true;
-                cboDosageForm.EditValue = null;
-            }
-            else if (e.Button.Kind == ButtonPredefines.Plus)
-            {
-                var module = new Inventec.Desktop.Common.Modules.Module();
-                DelegateSelectData delegateSelectData = new DelegateSelectData((selectedItem) =>
+                if (e.Button.Kind == ButtonPredefines.Delete)
                 {
-                    if (selectedItem is HIS_DOSAGE_FORM dosageForm)
+                    cboDosageForm.Properties.Buttons[2].Visible = true;
+                    cboDosageForm.EditValue = null;
+                }
+                if (e.Button.Kind == ButtonPredefines.Plus)
+                {
+                    cboDosageForm.Properties.Buttons[1].Visible = true;
+                    cboDosageForm.EditValue = null;
+                    var module = new Inventec.Desktop.Common.Modules.Module();
+                    DelegateSelectData delegateSelectData = new DelegateSelectData((selectedItem) =>
                     {
-                        cboDosageForm.EditValue = dosageForm.ID;
-                    }
-                });
-                frmHisDosageForm form = new frmHisDosageForm(module, delegateSelectData);
-                form.ShowDialog();
-
-                LoadDosageForm();
+                        if (selectedItem is HIS_DOSAGE_FORM dosageForm)
+                        {
+                            cboDosageForm.EditValue = dosageForm.ID;
+                        }
+                    });
+                    frmHisDosageForm form = new frmHisDosageForm(module, delegateSelectData);
+                    form.ShowDialog();
+                    //LoadDosageForm();
+                }
             }
+            catch (Exception ex)
+            {
+                LogSystem.Error(ex);
+            }
+            
         }
 
         private void cboDosageForm_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
@@ -3118,7 +3129,7 @@ namespace HIS.Desktop.Plugins.BidCreate
                 }
                 else
                 {
-                    cboDosageForm.Properties.Buttons[1].Visible = false;
+                    cboDosageForm.Properties.Buttons[1].Visible = true;
                 }
             }
             catch (Exception ex)
@@ -3140,12 +3151,12 @@ namespace HIS.Desktop.Plugins.BidCreate
                 aColumnCode.Caption = "Mã";
                 aColumnCode.Visible = true;
                 aColumnCode.VisibleIndex = 0;
-                aColumnCode.Width = 60;
+                aColumnCode.Width = 150;
                 GridColumn aColumnName = cboDosageForm.Properties.View.Columns.AddField("DOSAGE_FORM_NAME");
                 aColumnName.Caption = "Tên";
                 aColumnName.Visible = true;
                 aColumnName.VisibleIndex = 1;
-                aColumnName.Width = 340;
+                aColumnName.Width = 450;
 
                 cboDosageForm.Properties.View.OptionsView.ShowAutoFilterRow = true;
                 cboDosageForm.Properties.PopupFilterMode = PopupFilterMode.Contains;
@@ -3154,7 +3165,7 @@ namespace HIS.Desktop.Plugins.BidCreate
             }
             catch (Exception ex)
             {
-                LogSystem.Error(ex);
+                LogSystem.Error(ex);           
             }
         }
 

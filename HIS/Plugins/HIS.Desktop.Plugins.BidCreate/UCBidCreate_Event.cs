@@ -56,7 +56,6 @@ namespace HIS.Desktop.Plugins.BidCreate
                         o => o.ID == this.medicineType.ID &&
                         o.Type == Base.GlobalConfig.THUOC &&
                         o.SUPPLIER_ID == (long)cboSupplier.EditValue &&
-                        //o.ID == (long)cboDosageForm.EditValue&&
                         o.BID_GROUP_CODE == txtBidGroupCode.Text
                         );
                     if (aMedicineType != null && aMedicineType.ID > 0)
