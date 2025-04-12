@@ -77,8 +77,11 @@ namespace HIS.Desktop.Plugins.MedicineSaleBill
         List<V_HIS_EXP_MEST_MEDICINE> listExpMestMedicine;
         List<V_HIS_EXP_MEST_MATERIAL> listExpMestMaterial;
         long? expMestIdForEdit = null;
+        long? patientIdForEdit = null;
         List<long> expMestIdForEdits = null;
         List<V_HIS_EXP_MEST> ExpMests;
+        List<HIS_PATIENT> Patients;
+        MOS.EFMODEL.DataModels.HIS_PATIENT patient = null;
         //V_HIS_PATIENT patient;
         V_HIS_TRANSACTION transactionBillResult;
         DelegateSelectData delegateSelectData;
@@ -887,14 +890,29 @@ namespace HIS.Desktop.Plugins.MedicineSaleBill
 
         private void SetBuyerInfo()
         {
+            
             if (this.ExpMests != null && this.ExpMests.Count > 0)
             {
+                
+                var expMest = ExpMests.FirstOrDefault();
+
                 txtBuyerAccountCode.Text = ExpMests.FirstOrDefault().TDL_PATIENT_ACCOUNT_NUMBER;
                 txtAddress.Text = ExpMests.FirstOrDefault().TDL_PATIENT_ADDRESS;
                 txtBuyerPhone.Text = ExpMests.FirstOrDefault().TDL_PATIENT_PHONE;
                 txtBuyerTaxCode.Text = ExpMests.FirstOrDefault().TDL_PATIENT_TAX_CODE;
                 txtBuyerOgranization.Text = ExpMests.FirstOrDefault().TDL_PATIENT_WORK_PLACE;
                 txtName.Text = ExpMests.FirstOrDefault().TDL_PATIENT_NAME;
+
+                long tdlPatientId = expMest.TDL_PATIENT_ID ?? 0;
+                HisPatientFilter patientFilter = new HisPatientFilter();
+                patientFilter.ID = tdlPatientId;
+                var listPatient = new Inventec.Common.Adapter.BackendAdapter(new CommonParam()).Get<List<HIS_PATIENT>>("api/HisPatient/Get",
+                    ApiConsumers.MosConsumer, patientFilter, new CommonParam());
+                if (listPatient != null && listPatient.Count > 0)
+                {
+                    HIS_PATIENT HisPatientResult = listPatient.FirstOrDefault();
+                    txtEmail.Text = HisPatientResult.EMAIL;
+                }
             }
 
         }
@@ -1079,6 +1097,7 @@ namespace HIS.Desktop.Plugins.MedicineSaleBill
                 data.HisTransaction.BUYER_ACCOUNT_NUMBER = txtBuyerAccountCode.Text;
                 data.HisTransaction.BUYER_ADDRESS = txtAddress.Text;
                 data.HisTransaction.BUYER_NAME = txtName.Text;
+                data.HisTransaction.BUYER_EMAIL = txtEmail.Text;
                 data.HisTransaction.BUYER_ORGANIZATION = txtBuyerOgranization.Text;
                 data.HisTransaction.BUYER_TAX_CODE = txtBuyerTaxCode.Text;
                 data.HisTransaction.BUYER_PHONE = txtBuyerPhone.Text;
@@ -1853,6 +1872,7 @@ namespace HIS.Desktop.Plugins.MedicineSaleBill
                 this.listExpMestMaterial = null;
                 this.expMestIdForEdit = null;
                 this.ExpMests = null;
+                this.Patients = null;
                 //this.patient = null;
                 this.transactionBillResult = null;
                 this.delegateSelectData = null;
