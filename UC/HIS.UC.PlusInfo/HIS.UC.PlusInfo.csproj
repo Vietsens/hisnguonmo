@@ -69,6 +69,10 @@
     <Reference Include="HIS.Desktop.LocalStorage.LocalData">
       <HintPath>..\..\..\..\His Test\histest\x64\ReferencedAssemblies\HIS.Desktop.LocalStorage.LocalData.dll</HintPath>
     </Reference>
+    <Reference Include="HIS.Desktop.Plugins.Library.RegisterConfig, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\His Test\histest\x64\ReferencedAssemblies\HIS.Desktop.Plugins.Library.RegisterConfig.dll</HintPath>
+    </Reference>
     <Reference Include="His.UC.LibraryMessage">
       <HintPath>..\..\..\lib\HIS\His.UC.LibraryMessage\His.UC.LibraryMessage.dll</HintPath>
     </Reference>
@@ -484,10 +488,6 @@
     <ProjectReference Include="..\..\HIS\HIS.Desktop.Utility\HIS.Desktop.Utilities.csproj">
       <Project>{2aad22db-2166-4be8-ae52-335b21dc03fc}</Project>
       <Name>HIS.Desktop.Utilities</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\HIS\Plugins\HIS.Desktop.Plugins.Library.RegisterConfig\HIS.Desktop.Plugins.Library.RegisterConfig.csproj">
-      <Project>{9247dd49-482c-4227-88df-616a8aaf3f38}</Project>
-      <Name>HIS.Desktop.Plugins.Library.RegisterConfig</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

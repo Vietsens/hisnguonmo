@@ -79,11 +79,10 @@ namespace HIS.UC.UCPatientRaw
                     {
                         filter.STORE_CODE__EXACT = code;
                     }
-                    
-                    else if (HIS.Desktop.Plugins.Library.RegisterConfig.HisConfigCFG.ISALLOWPROGRAMPATIENTOLD != "1" || (HIS.Desktop.Plugins.Library.RegisterConfig.HisConfigCFG.ISALLOWPROGRAMPATIENTOLD == "1" && this.typeCodeFind != ResourceMessage.typeCodeFind__MaBA))
-                    {
-						if (!String.IsNullOrWhiteSpace(type))   
-						{
+					else if ((HIS.Desktop.Plugins.Library.RegisterConfig.HisConfigCFG.ISALLOWPROGRAMPATIENTOLD == "1" && this.typeCodeFind != ResourceMessage.typeCodeFind__MaBA))
+					{
+                        if (!String.IsNullOrWhiteSpace(type))
+                        {
                             if (this.typeCodeFind == ResourceMessage.typeCodeFind__MaHK)
                             {
                                 filter.APPOINTMENT_CODE__EXACT = code;
@@ -106,6 +105,36 @@ namespace HIS.UC.UCPatientRaw
                             filter.PATIENT_CODE__EXACT = string.Format("{0:0000000000}", Convert.ToInt64(code));
                         }
                     }
+					else if (HIS.Desktop.Plugins.Library.RegisterConfig.HisConfigCFG.ISALLOWPROGRAMPATIENTOLD != "1")
+					{
+						if (!String.IsNullOrWhiteSpace(type))
+						{
+							if (this.typeCodeFind == ResourceMessage.typeCodeFind__MaHK)
+							{
+								filter.APPOINTMENT_CODE__EXACT = code;
+							}
+							else if (this.typeCodeFind == ResourceMessage.typeCodeFind__MaDT)
+							{
+								filter.TREATMENT_CODE__EXACT = code;
+							}
+							else if (this.typeCodeFind == ResourceMessage.typeCodeFind__MaTV)
+							{
+								filter.CONSULTATION_REG_CODE = code;
+							}
+							else //thêm filter lỗi để không trả về tất cả dữ liệu
+							{
+								filter.PATIENT_CODE__EXACT = "-1";
+							}
+						}
+						else if (this.typeCodeFind == ResourceMessage.typeCodeFind__MaBA)
+						{
+							filter.STORE_CODE__EXACT = code;
+						}
+						else
+						{
+							filter.PATIENT_CODE__EXACT = string.Format("{0:0000000000}", Convert.ToInt64(code));
+						}
+					}
                     
 					                  
 					data = (new BackendAdapter(param).Get<List<HisPatientSDO>>(RequestUriStore.HIS_PATIENT_GETSDOADVANCE, ApiConsumers.MosConsumer, filter, HIS.Desktop.Controls.Session.SessionManager.ActionLostToken, param)).SingleOrDefault();
