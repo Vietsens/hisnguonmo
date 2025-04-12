@@ -81,7 +81,6 @@ namespace HIS.Desktop.Plugins.BidUpdate
             this.txtMaDT = new DevExpress.XtraEditors.TextEdit();
             this.txtTenTT = new DevExpress.XtraEditors.TextEdit();
             this.txtMaTT = new DevExpress.XtraEditors.TextEdit();
-            this.txtDosageForm = new DevExpress.XtraEditors.TextEdit();
             this.cboMediUseForm = new DevExpress.XtraEditors.GridLookUpEdit();
             this.gridView2 = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.txtActiveBhyt = new DevExpress.XtraEditors.TextEdit();
@@ -123,6 +122,8 @@ namespace HIS.Desktop.Plugins.BidUpdate
             this.xtraTabPage3 = new DevExpress.XtraTab.XtraTabPage();
             this.pnlMau = new DevExpress.XtraEditors.PanelControl();
             this.txtSupplierCode = new DevExpress.XtraEditors.TextEdit();
+            this.cboDosageForm = new DevExpress.XtraEditors.GridLookUpEdit();
+            this.gridView5 = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.layoutControlGroup3 = new DevExpress.XtraLayout.LayoutControlGroup();
             this.layoutControlItem1 = new DevExpress.XtraLayout.LayoutControlItem();
             this.lciBtnUpdate = new DevExpress.XtraLayout.LayoutControlItem();
@@ -227,7 +228,6 @@ namespace HIS.Desktop.Plugins.BidUpdate
             ((System.ComponentModel.ISupportInitialize)(this.txtMaDT.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtTenTT.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtMaTT.Properties)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.txtDosageForm.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboMediUseForm.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridView2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtActiveBhyt.Properties)).BeginInit();
@@ -268,6 +268,8 @@ namespace HIS.Desktop.Plugins.BidUpdate
             this.xtraTabPage3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pnlMau)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtSupplierCode.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cboDosageForm.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gridView5)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciBtnUpdate)).BeginInit();
@@ -652,7 +654,6 @@ namespace HIS.Desktop.Plugins.BidUpdate
             this.layoutControl2.Controls.Add(this.txtMaDT);
             this.layoutControl2.Controls.Add(this.txtTenTT);
             this.layoutControl2.Controls.Add(this.txtMaTT);
-            this.layoutControl2.Controls.Add(this.txtDosageForm);
             this.layoutControl2.Controls.Add(this.cboMediUseForm);
             this.layoutControl2.Controls.Add(this.txtActiveBhyt);
             this.layoutControl2.Controls.Add(this.txtPackingType);
@@ -682,6 +683,7 @@ namespace HIS.Desktop.Plugins.BidUpdate
             this.layoutControl2.Controls.Add(this.spinAmount);
             this.layoutControl2.Controls.Add(this.xtraTabControl1);
             this.layoutControl2.Controls.Add(this.txtSupplierCode);
+            this.layoutControl2.Controls.Add(this.cboDosageForm);
             this.layoutControl2.Location = new System.Drawing.Point(3, 3);
             this.layoutControl2.Margin = new System.Windows.Forms.Padding(4);
             this.layoutControl2.Name = "layoutControl2";
@@ -706,6 +708,7 @@ namespace HIS.Desktop.Plugins.BidUpdate
             "VT áp thầu",
             "VT tự sản xuất",
             "Vật tư trước ngày tt 14/2020"});
+            this.cboInformationBid.Properties.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.cboInformationBid_Properties_ButtonClick);
             this.cboInformationBid.Size = new System.Drawing.Size(190, 22);
             this.cboInformationBid.StyleController = this.layoutControl2;
             this.cboInformationBid.TabIndex = 45;
@@ -782,17 +785,6 @@ namespace HIS.Desktop.Plugins.BidUpdate
             this.txtMaTT.StyleController = this.layoutControl2;
             this.txtMaTT.TabIndex = 40;
             this.txtMaTT.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtMaTT_KeyDown);
-            // 
-            // txtDosageForm
-            // 
-            this.txtDosageForm.Location = new System.Drawing.Point(691, 536);
-            this.txtDosageForm.Margin = new System.Windows.Forms.Padding(4);
-            this.txtDosageForm.MenuManager = this.barManager1;
-            this.txtDosageForm.Name = "txtDosageForm";
-            this.txtDosageForm.Size = new System.Drawing.Size(180, 22);
-            this.txtDosageForm.StyleController = this.layoutControl2;
-            this.txtDosageForm.TabIndex = 39;
-            this.txtDosageForm.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtDosageForm_KeyDown);
             // 
             // cboMediUseForm
             // 
@@ -1362,6 +1354,33 @@ namespace HIS.Desktop.Plugins.BidUpdate
             this.txtSupplierCode.TabIndex = 8;
             this.txtSupplierCode.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.txtSupplierCode_PreviewKeyDown);
             // 
+            // cboDosageForm
+            // 
+            this.cboDosageForm.Location = new System.Drawing.Point(681, 536);
+            this.cboDosageForm.Margin = new System.Windows.Forms.Padding(4);
+            this.cboDosageForm.MenuManager = this.barManager1;
+            this.cboDosageForm.Name = "cboDosageForm";
+            this.cboDosageForm.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo),
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Plus),
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete)});
+            this.cboDosageForm.Properties.NullText = "";
+            this.cboDosageForm.Properties.PopupSizeable = false;
+            this.cboDosageForm.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.Standard;
+            this.cboDosageForm.Properties.View = this.gridView5;
+            this.cboDosageForm.Properties.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.cboDosageForm_Properties_ButtonClick_1);
+            this.cboDosageForm.Size = new System.Drawing.Size(190, 22);
+            this.cboDosageForm.StyleController = this.layoutControl2;
+            this.cboDosageForm.TabIndex = 39;
+            this.cboDosageForm.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtDosageForm_KeyDown);
+            // 
+            // gridView5
+            // 
+            this.gridView5.FocusRectStyle = DevExpress.XtraGrid.Views.Grid.DrawFocusRectStyle.RowFocus;
+            this.gridView5.Name = "gridView5";
+            this.gridView5.OptionsSelection.EnableAppearanceFocusedCell = false;
+            this.gridView5.OptionsView.ShowGroupPanel = false;
+            // 
             // layoutControlGroup3
             // 
             this.layoutControlGroup3.EnableIndentsWithoutBorders = DevExpress.Utils.DefaultBoolean.True;
@@ -1769,16 +1788,18 @@ namespace HIS.Desktop.Plugins.BidUpdate
             // 
             // lciDosageForm
             // 
+            this.lciDosageForm.AppearanceItemCaption.ForeColor = System.Drawing.Color.Maroon;
+            this.lciDosageForm.AppearanceItemCaption.Options.UseForeColor = true;
             this.lciDosageForm.AppearanceItemCaption.Options.UseTextOptions = true;
             this.lciDosageForm.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
-            this.lciDosageForm.Control = this.txtDosageForm;
+            this.lciDosageForm.Control = this.cboDosageForm;
             this.lciDosageForm.Location = new System.Drawing.Point(613, 533);
             this.lciDosageForm.Name = "lciDosageForm";
             this.lciDosageForm.OptionsToolTip.ToolTip = "Dạng bào chế";
             this.lciDosageForm.Size = new System.Drawing.Size(261, 28);
             this.lciDosageForm.Text = "Dạng b/c:";
             this.lciDosageForm.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
-            this.lciDosageForm.TextSize = new System.Drawing.Size(70, 20);
+            this.lciDosageForm.TextSize = new System.Drawing.Size(60, 20);
             this.lciDosageForm.TextToControlDistance = 5;
             // 
             // lciMaTT
@@ -2311,7 +2332,6 @@ namespace HIS.Desktop.Plugins.BidUpdate
             ((System.ComponentModel.ISupportInitialize)(this.txtMaDT.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtTenTT.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtMaTT.Properties)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.txtDosageForm.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboMediUseForm.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridView2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtActiveBhyt.Properties)).EndInit();
@@ -2352,6 +2372,8 @@ namespace HIS.Desktop.Plugins.BidUpdate
             this.xtraTabPage3.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.pnlMau)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtSupplierCode.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cboDosageForm.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gridView5)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup3)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciBtnUpdate)).EndInit();
@@ -2537,7 +2559,6 @@ namespace HIS.Desktop.Plugins.BidUpdate
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem19;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem21;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem18;
-        private DevExpress.XtraEditors.TextEdit txtDosageForm;
         private DevExpress.XtraEditors.GridLookUpEdit cboMediUseForm;
         private DevExpress.XtraGrid.Views.Grid.GridView gridView2;
         private DevExpress.XtraEditors.TextEdit txtActiveBhyt;
@@ -2568,5 +2589,7 @@ namespace HIS.Desktop.Plugins.BidUpdate
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem26;
         private DevExpress.XtraEditors.TextEdit txtBidApthauCode;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem27;
+        private DevExpress.XtraEditors.GridLookUpEdit cboDosageForm;
+        private DevExpress.XtraGrid.Views.Grid.GridView gridView5;
     }
 }
