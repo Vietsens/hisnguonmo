@@ -515,7 +515,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                                 ado.packingTypeName = bidtype.PACKING_TYPE_NAME;
                                 ado.heinServiceBhytName = bidtype.HEIN_SERVICE_BHYT_NAME;
                                 ado.activeIngrBhytName = bidtype.ACTIVE_INGR_BHYT_NAME;
-                                ado.dosageForm = bidtype.DOSAGE_FORM;
+                                ado.HisMedicine.DOSAGE_FORM = bidtype.DOSAGE_FORM;
                                 ado.medicineUseFormId = bidtype.MEDICINE_USE_FORM_ID;
                                 ado.monthLifespan = bidtype.MONTH_LIFESPAN;
                             }
@@ -567,7 +567,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                             ado.packingTypeName = medi.PACKING_TYPE_NAME;
                             ado.heinServiceBhytName = medi.HEIN_SERVICE_BHYT_NAME;
                             ado.activeIngrBhytName = medi.ACTIVE_INGR_BHYT_NAME;
-                            ado.dosageForm = medi.DOSAGE_FORM;
+                            ado.HisMedicine.DOSAGE_FORM = medi.DOSAGE_FORM;
                             ado.medicineUseFormId = medi.MEDICINE_USE_FORM_ID;
                             ado.TAX_RATIO = medi.TAX_RATIO;
                           

@@ -76,6 +76,7 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
                     dataPatient.NATIONAL_NAME = _currentPatientSDO.NATIONAL_NAME;
                     dataPatient.NATIONAL_CODE = _currentPatientSDO.NATIONAL_CODE;
                 }
+                dataPatient.PROGRAM_ID = _currentPatientSDO.ProgramId ?? 0;
                 dataPatient.PROGRAM_CODE = _currentPatientSDO.PatientProgramCode;
                 dataPatient.workPlaceADO = new WorkPlaceADO();
                 dataPatient.workPlaceADO.WORK_PLACE = _currentPatientSDO.WORK_PLACE;

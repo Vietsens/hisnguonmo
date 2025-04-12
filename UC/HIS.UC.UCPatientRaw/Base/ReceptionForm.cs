@@ -36,5 +36,6 @@ namespace HIS.UC.UCPatientRaw.Base
         public const long SoCCCD = 9;
         public const long SDT = 10;
         public const long MaTV = 11;
+        public const long MaBA = 11;
     }
 }
