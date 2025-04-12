@@ -1111,8 +1111,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HIS.UC.AddressCombo", "..\U
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HIS.UC.TreatmentFinish", "..\UC\HIS.UC.TreatmentFinish\HIS.UC.TreatmentFinish.csproj", "{DDBFAF62-E27F-4B53-B4CA-1B160E2506A2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HIS.Desktop.Plugins.DrugStoreDebt_phuongnm", "..\..\DaoTao\HIS.Desktop.Plugins.DrugStoreDebt_phuongnm\HIS.Desktop.Plugins.DrugStoreDebt_phuongnm\HIS.Desktop.Plugins.DrugStoreDebt_phuongnm.csproj", "{E63D7EE9-14A7-44B7-BC17-C72E724DC3C7}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HIS.Desktop.Plugins.HisDosageForm", "Plugins\HIS.Desktop.Plugins.HisDosageForm\HIS.Desktop.Plugins.HisDosageForm.csproj", "{99FD1F73-2CBA-4664-99CA-62B546DC9F35}"
 EndProject
 Global
@@ -4381,14 +4379,6 @@ Global
 		{DDBFAF62-E27F-4B53-B4CA-1B160E2506A2}.Release|Any CPU.Build.0 = Release|Any CPU
 		{DDBFAF62-E27F-4B53-B4CA-1B160E2506A2}.Release|x86.ActiveCfg = Release|Any CPU
 		{DDBFAF62-E27F-4B53-B4CA-1B160E2506A2}.Release|x86.Build.0 = Release|Any CPU
-		{E63D7EE9-14A7-44B7-BC17-C72E724DC3C7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{E63D7EE9-14A7-44B7-BC17-C72E724DC3C7}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{E63D7EE9-14A7-44B7-BC17-C72E724DC3C7}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{E63D7EE9-14A7-44B7-BC17-C72E724DC3C7}.Debug|x86.Build.0 = Debug|Any CPU
-		{E63D7EE9-14A7-44B7-BC17-C72E724DC3C7}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{E63D7EE9-14A7-44B7-BC17-C72E724DC3C7}.Release|Any CPU.Build.0 = Release|Any CPU
-		{E63D7EE9-14A7-44B7-BC17-C72E724DC3C7}.Release|x86.ActiveCfg = Release|Any CPU
-		{E63D7EE9-14A7-44B7-BC17-C72E724DC3C7}.Release|x86.Build.0 = Release|Any CPU
 		{99FD1F73-2CBA-4664-99CA-62B546DC9F35}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{99FD1F73-2CBA-4664-99CA-62B546DC9F35}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{99FD1F73-2CBA-4664-99CA-62B546DC9F35}.Debug|x86.ActiveCfg = Debug|Any CPU
