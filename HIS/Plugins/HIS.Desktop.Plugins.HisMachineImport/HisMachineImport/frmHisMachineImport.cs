@@ -367,7 +367,7 @@ namespace HIS.Desktop.Plugins.HisMachineImport.HisMachineImport
                     }
                     if (!string.IsNullOrEmpty(item.INTEGRATE_ADDRESS))
                     {
-                        if (item.INTEGRATE_ADDRESS.Length > 500)
+                        if (Encoding.UTF8.GetByteCount(item.INTEGRATE_ADDRESS) > 500)
                         {
                             if (error != "") error += " | ";
                             error += string.Format(Message.MessageImport.Maxlength, "Địa chỉ tích hợp", 500);
@@ -383,7 +383,7 @@ namespace HIS.Desktop.Plugins.HisMachineImport.HisMachineImport
                     }
                     if (!string.IsNullOrEmpty(item.SYMBOL))
                     {
-                        if (item.SYMBOL.Length > 500)
+                        if (Encoding.UTF8.GetByteCount(item.SYMBOL) > 500)
                         {
                             if (error != "") error += " | ";
                             error += string.Format(Message.MessageImport.Maxlength, "Ký hiệu", 500);
@@ -391,7 +391,7 @@ namespace HIS.Desktop.Plugins.HisMachineImport.HisMachineImport
                     }
                     if (!string.IsNullOrEmpty(item.MANUFACTURER_NAME))
                     {
-                        if (item.MANUFACTURER_NAME.Length > 500)
+                        if (Encoding.UTF8.GetByteCount(item.MANUFACTURER_NAME) > 500)
                         {
                             if (error != "") error += " | ";
                             error += string.Format(Message.MessageImport.Maxlength, "Tên công ty sản xuất", 500);
@@ -399,7 +399,7 @@ namespace HIS.Desktop.Plugins.HisMachineImport.HisMachineImport
                     }
                     if (!string.IsNullOrEmpty(item.NATIONAL_NAME))
                     {
-                        if (item.NATIONAL_NAME.Length > 500)
+                        if (Encoding.UTF8.GetByteCount(item.NATIONAL_NAME) > 500)
                         {
                             if (error != "") error += " | ";
                             error += string.Format(Message.MessageImport.Maxlength, "Tên nước sản xuất", 500);
@@ -407,20 +407,21 @@ namespace HIS.Desktop.Plugins.HisMachineImport.HisMachineImport
                     }
                     if (item.MANUFACTURED_YEAR.HasValue)
                     {
-                        string manufacturedYearStr = item.MANUFACTURED_YEAR.Value.ToString();
-                        if (manufacturedYearStr.Length > 4)
+                        var year = item.MANUFACTURED_YEAR.Value;
+                        if (year < 0 || year > 9999)
                         {
                             if (error != "") error += " | ";
-                            error += string.Format(Message.MessageImport.KhongHopLe, "Năm sản xuất");
+                            error += "Năm sản xuất vượt quá 4 ký tự";
                         }
                     }
+
                     if (item.USED_YEAR.HasValue)
                     {
-                        string usedYear = item.USED_YEAR.Value.ToString();
-                        if (usedYear.Length > 4)
+                        var year = item.USED_YEAR.Value;
+                        if (year < 0 || year > 9999)
                         {
                             if (error != "") error += " | ";
-                            error += string.Format(Message.MessageImport.KhongHopLe, "Năm sử dụng");
+                            error += "Năm sử dụng vượt quá 4 ký tự";
                         }
                     }
                     if (!string.IsNullOrEmpty(item.CIRCULATION_NUMBER))
@@ -428,7 +429,7 @@ namespace HIS.Desktop.Plugins.HisMachineImport.HisMachineImport
                         if (item.CIRCULATION_NUMBER.Length > 22)
                         {
                             if (error != "") error += " | ";
-                            error += string.Format(Message.MessageImport.Maxlength, "Ký hiệu", 22);
+                            error += string.Format(Message.MessageImport.Maxlength, "Số lưu hành", 22);
                         }
                     }
 
