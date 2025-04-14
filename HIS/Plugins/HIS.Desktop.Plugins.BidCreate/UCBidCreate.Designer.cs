@@ -596,6 +596,7 @@ namespace HIS.Desktop.Plugins.BidCreate
             // 
             this.cboDosageForm.Location = new System.Drawing.Point(449, 426);
             this.cboDosageForm.Name = "cboDosageForm";
+            this.cboDosageForm.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
             this.cboDosageForm.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo),
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Plus),

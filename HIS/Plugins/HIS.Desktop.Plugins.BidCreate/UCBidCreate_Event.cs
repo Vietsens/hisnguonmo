@@ -1065,11 +1065,11 @@ namespace HIS.Desktop.Plugins.BidCreate
                 }
                 if (cboDosageForm.EditValue != null)
                 {
-                    this.medicineType.DOSAGE_FORM = dataDosageForm.FirstOrDefault(o => o.ID == (long)cboDosageForm.EditValue).DOSAGE_FORM_NAME;
-                        
+                    this.medicineType.DOSAGE_FORM = dataDosageForm.FirstOrDefault(o => o.ID == (long)cboDosageForm.EditValue).DOSAGE_FORM_NAME;                        
                 }
                 else
                 {
+                    cboDosageForm.EditValue = null;
                     this.medicineType.DOSAGE_FORM = null;          
                 }
 
