@@ -383,8 +383,24 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.CYBERBILL
             {
                 if (ElectronicBillDataInput == null || string.IsNullOrEmpty(ElectronicBillDataInput.InvoiceCode))
                     return;
+                //
+                //{
+                //    
+                //}
+                //else
+                //{
+                //    string sendJsonData = Newtonsoft.Json.JsonConvert.SerializeObject(ICoEBill());
+                //    OCoEBill = Base.ApiConsumerV2.CreateRequest<OutputConvertElectronicBill>(System.Net.WebRequestMethods.Http.Post, serviceUrl, Base.RequestUriStore.CyberbillTaiHoaDon, login.result.access_token, sendJsonData);
+                //    result.InvoiceSys = ProviderType.CYBERBILL;
+                //}
+
                 string sendJsonData = Newtonsoft.Json.JsonConvert.SerializeObject(ICoEBill());
                 OCoEBill = Base.ApiConsumerV2.CreateRequest<OutputConvertElectronicBill>(System.Net.WebRequestMethods.Http.Post, serviceUrl, Base.RequestUriStore.CyberbillTaiHoaDon, login.result.access_token, sendJsonData);
+                if (ElectronicBillType.ENUM.CONVERT_INVOICE != null)
+                {
+                    OCoEBill = Base.ApiConsumerV2.CreateRequest<OutputConvertElectronicBill>(System.Net.WebRequestMethods.Http.Post, serviceUrl, Base.RequestUriStore.CyberbillChuyenDoiHoaDon, login.result.access_token, sendJsonData);
+
+                }
                 result.InvoiceSys = ProviderType.CYBERBILL;
                 if (OCoEBill != null && OCoEBill.result != null)
                 {
