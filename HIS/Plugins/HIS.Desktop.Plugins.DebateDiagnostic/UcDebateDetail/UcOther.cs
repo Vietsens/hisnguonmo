@@ -107,7 +107,7 @@ namespace HIS.Desktop.Plugins.DebateDiagnostic.UcDebateDetail
             }
         }
 
-        private void LoadDataDebateDiagnostic(HIS_DEBATE hisDebate )
+        private void LoadDataDebateDiagnostic(HIS_DEBATE hisDebate)
         {
             try
             {
@@ -172,13 +172,13 @@ namespace HIS.Desktop.Plugins.DebateDiagnostic.UcDebateDetail
                 txtConclusion.Text = hisDebate.CONCLUSION;
 
                 //qtcode
-                if(IsOther)
+                if (IsOther)
                 {
-                    txtKetQuaCLS.Text = hisDebate.SUBCLINICAL_PROCESSES; 
-                }    
+                    txtKetQuaCLS.Text = hisDebate.SUBCLINICAL_PROCESSES;
+                }
                 else
                 {
-                    txtKetQuaCLS2.Text = hisDebate.SUBCLINICAL_PROCESSES; 
+                    txtKetQuaCLS2.Text = hisDebate.SUBCLINICAL_PROCESSES;
                 }
                 //qtcode
                 Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => hisDebate), hisDebate));
@@ -644,13 +644,13 @@ namespace HIS.Desktop.Plugins.DebateDiagnostic.UcDebateDetail
                 //qtcodeapi
                 if (IsOther)
                 {
-                    saveData.SUBCLINICAL_PROCESSES = txtKetQuaCLS.Text; 
+                    saveData.SUBCLINICAL_PROCESSES = txtKetQuaCLS.Text;
                 }
                 else
                 {
-                    saveData.SUBCLINICAL_PROCESSES = txtKetQuaCLS2.Text; 
+                    saveData.SUBCLINICAL_PROCESSES = txtKetQuaCLS2.Text;
                 }
-                
+
                 //qtcode
                 if (dtTimeUse.EditValue != null && dtTimeUse.DateTime != DateTime.MinValue)
                     saveData.MEDICINE_USE_TIME = Inventec.Common.TypeConvert.Parse.ToInt64(Convert.ToDateTime((dtTimeUse.EditValue ?? "").ToString()).ToString("yyyyMMddHHmm") + "00");
@@ -1619,17 +1619,13 @@ namespace HIS.Desktop.Plugins.DebateDiagnostic.UcDebateDetail
         {
             try
             {
-               
-                    List<object> listArgs = new List<object>();
-                    listArgs.Add(this.TreatmentId);
-                    listArgs.Add((HIS.Desktop.Common.DelegateSelectData)SelectDataResult);
+
+                List<object> listArgs = new List<object>();
+                listArgs.Add(this.TreatmentId);
+                listArgs.Add((HIS.Desktop.Common.DelegateSelectData)SelectDataResult);
                 listArgs.Add(true);
-                //Truyền delegate DelegateSelectDataContentSubclinical để module này có thể gọi lại sau khi người dùng chọn xong.
                 HIS.Desktop.ModuleExt.PluginInstanceBehavior.ShowModule("HIS.Desktop.Plugins.ContentSubclinical", RoomId, RoomTypeId, listArgs);
-                //var extenceInstance = PluginInstance.GetPluginInstance(HIS.Desktop.Utility.PluginInstance
-                //        .GetModuleWithWorkingRoom(moduleData, this.modules.RoomId, this.modules.RoomTypeId), listArgs);
-                //    if (extenceInstance == null) throw new ArgumentNullException("moduleData is null");
-                //    ((Form)extenceInstance).ShowDialog();
+
 
             }
             catch (Exception ex)
@@ -1637,26 +1633,6 @@ namespace HIS.Desktop.Plugins.DebateDiagnostic.UcDebateDetail
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
 
-            //try
-            //{
-            //    Inventec.Desktop.Common.Modules.Module moduleData = GlobalVariables.currentModuleRaws.Where(o => o.ModuleLink == "HIS.Desktop.Plugins.ContentSubclinical").FirstOrDefault();
-            //    if (moduleData == null) Inventec.Common.Logging.LogSystem.Error("khong tim thay moduleLink = HIS.Desktop.Plugins.ContentSubclinical");
-            //    if (moduleData.IsPlugin && moduleData.ExtensionInfo != null)
-            //    {
-            //        List<object> listArgs = new List<object>();
-            //        listArgs.Add(this.TreatmentId);
-            //        listArgs.Add((HIS.Desktop.Common.DelegateSelectData)SelectDataResult);
-            //        //Truyền delegate DelegateSelectDataContentSubclinical để module này có thể gọi lại sau khi người dùng chọn xong.
-            //        var extenceInstance = PluginInstance.GetPluginInstance(HIS.Desktop.Utility.PluginInstance
-            //            .GetModuleWithWorkingRoom(moduleData, this.modules.RoomId, this.modules.RoomTypeId), listArgs);
-            //        if (extenceInstance == null) throw new ArgumentNullException("moduleData is null");
-            //        ((Form)extenceInstance).ShowDialog();
-            //    }
-            //}
-            //catch (Exception ex)
-            //{
-            //    Inventec.Common.Logging.LogSystem.Warn(ex);
-            //}
         }
         //Được gọi bởi module ContentSubclinical khi người dùng hoàn tất việc chọn kết quả.
         //Nhận dữ liệu và cập nhật vào txtKetQuaCLS.
@@ -1666,7 +1642,7 @@ namespace HIS.Desktop.Plugins.DebateDiagnostic.UcDebateDetail
             {
                 Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData("SelectDataResult: ", data));
                 txtKetQuaCLS.Text = "";
-                txtKetQuaCLS2.Text = ""; 
+                txtKetQuaCLS2.Text = "";
                 if (data != null && data is List<HIS.Desktop.ADO.ContentSubclinicalADO>)
                 {
                     List<HIS.Desktop.ADO.ContentSubclinicalADO> dienBien = data as List<HIS.Desktop.ADO.ContentSubclinicalADO>;
