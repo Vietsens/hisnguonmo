@@ -374,11 +374,11 @@ namespace HIS.UC.FormType.Core.RoleUserGrid_F36__
                         else
                         {
                             var ktra = this.listRoleUserAdo.Where(p => p.LOGINNAME == data.LOGINNAME).ToList();
-                            if (ktra != null && ktra.Count > 1)
-                            {
-                                e.Valid = false;
-                                view.SetColumnError(onOrderCol, "'" + Config.AcsFormTypeConfig.HisAcsUser.FirstOrDefault(p => p.LOGINNAME == data.LOGINNAME).USERNAME + "'" + " đã được gán vai trò");
-                            }
+                            //if (ktra != null && ktra.Count > 1)
+                            //{
+                            //    e.Valid = false;
+                            //    view.SetColumnError(onOrderCol, "'" + Config.AcsFormTypeConfig.HisAcsUser.FirstOrDefault(p => p.LOGINNAME == data.LOGINNAME).USERNAME + "'" + " đã được gán vai trò");
+                            //}
                         }
                     }
                 }
