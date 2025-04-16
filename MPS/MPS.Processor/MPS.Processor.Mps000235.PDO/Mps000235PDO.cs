@@ -149,6 +149,12 @@ namespace MPS.Processor.Mps000235.PDO
 
     public class Mps000235ADO
     {
+        //Dangth
+        public string TUTORIAL {  get; set; }
+        public string HTU_TEXT { get; set; }
+        public string REQ_LOGINNAME { get; set; }
+        public string REQ_USERNAME { get; set; }
+        public string REQ_USER_TITLE { get; set; }
         public long TYPE_ID { get; set; }
         public long MEDICINE_TYPE_ID { get; set; }
 
@@ -196,6 +202,12 @@ namespace MPS.Processor.Mps000235.PDO
                     {
                         this.IS_EXPEND_DISPLAY = "X";
                     }
+                    //Dangth
+                    this.TUTORIAL = _expMestMedicines[0].TUTORIAL;
+                    this.HTU_TEXT = _expMestMedicines[0].HTU_TEXT;
+                    this.REQ_LOGINNAME = _expMestMedicines[0].REQ_LOGINNAME;
+                    this.REQ_USERNAME = _expMestMedicines[0].REQ_USERNAME;
+                    this.REQ_USER_TITLE = _expMestMedicines[0].REQ_USER_TITLE;
                     this.DESCRIPTION = _expMestMedicines[0].DESCRIPTION;
                     this.MEDICINE_TYPE_CODE = _expMestMedicines[0].MEDICINE_TYPE_CODE;
                     this.MEDICINE_TYPE_ID = _expMestMedicines[0].MEDICINE_TYPE_ID;
@@ -266,6 +278,12 @@ namespace MPS.Processor.Mps000235.PDO
                     {
                         this.IS_EXPEND_DISPLAY = "X";
                     }
+                    //Dangth
+                    this.TUTORIAL = _expMestMaterials[0].TUTORIAL;
+                    this.HTU_TEXT = _expMestMaterials[0].HTU_TEXT;
+                    this.REQ_LOGINNAME = _expMestMaterials[0].REQ_LOGINNAME;
+                    this.REQ_USERNAME = _expMestMaterials[0].REQ_USERNAME;
+                    this.REQ_USER_TITLE = _expMestMaterials[0].REQ_USER_TITLE;
                     this.DESCRIPTION = _expMestMaterials[0].DESCRIPTION;
                     this.MEDICINE_TYPE_CODE = _expMestMaterials[0].MATERIAL_TYPE_CODE;
                     this.MEDICINE_TYPE_ID = _expMestMaterials[0].MATERIAL_TYPE_ID;

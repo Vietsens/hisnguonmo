@@ -193,7 +193,9 @@ namespace HIS.Desktop.Plugins.TransactionList
                         btnHoaDonDienTu.ItemClick += new ItemClickEventHandler(this._MouseRightClick);
                         this._PopupMenu.AddItems(new BarItem[] { btnHoaDonDienTu });
 
-                        if (this._Transaction.EINVOICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_EINVOICE_TYPE.ID__VNPT || (this._Transaction.EINVOICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_EINVOICE_TYPE.ID__VIETEL && HisConfigCFG.autoPrintType == "1"))
+                        if (this._Transaction.EINVOICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_EINVOICE_TYPE.ID__VNPT || 
+                            (this._Transaction.EINVOICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_EINVOICE_TYPE.ID__VIETEL && HisConfigCFG.autoPrintType == "1") ||
+                            (this._Transaction.EINVOICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_EINVOICE_TYPE.ID__CYBERBILL && HisConfigCFG.autoPrintType == "1"))
                         {
                             BarButtonItem btnChuyenDoiHoaDonDienTu = new BarButtonItem(this._BarManager, "Chuyển đổi hóa đơn điện tử", 1);
                             btnChuyenDoiHoaDonDienTu.Tag = ItemType.ChuyenDoiHoaDonDienTu;

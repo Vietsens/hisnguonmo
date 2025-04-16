@@ -46,6 +46,7 @@ using Inventec.Common.Controls.EditorLoader;
 using HIS.Desktop.Plugins.TreatmentIcdEdit.Validation;
 using HIS.Desktop.Plugins.TreatmentIcdEdit.ADO;
 using HIS.Desktop.LocalStorage.BackendData;
+using HIS.Desktop.Utility;
 
 namespace HIS.Desktop.Plugins.TreatmentIcdEdit
 {
@@ -54,6 +55,8 @@ namespace HIS.Desktop.Plugins.TreatmentIcdEdit
         #region Declare
         System.Globalization.CultureInfo cultureLang;
         MOS.EFMODEL.DataModels.HIS_TREATMENT currentVHisTreatment = null;
+        MOS.EFMODEL.DataModels.HIS_TRACKING currentVHisTracking = null;
+        MOS.EFMODEL.DataModels.HIS_TREATMENT_EXT currentVHisTreatmentExt = null;
         List<HIS_ICD> listIcd { get; set; }
         long roomId = 0;
         long roomTypeId = 0;
@@ -61,6 +64,10 @@ namespace HIS.Desktop.Plugins.TreatmentIcdEdit
         int positionHandleTime = -1;
         HIS.Desktop.Common.RefeshReference RefreshData = null;
         List<V_HIS_PATIENT_TYPE_ALTER> listPatientType;
+        //Dangth
+        List<string> dataSelectedToPTDT;
+        internal V_HIS_SERVICE_REQ HisServiceReqView { get; set; }
+        internal Inventec.Desktop.Common.Modules.Module moduleData;
         V_HIS_PATIENT_TYPE_ALTER patientTypeAlter;
         short IS_TRUE = 1;
         private List<HIS_FUND> DataFunds;
@@ -107,11 +114,12 @@ namespace HIS.Desktop.Plugins.TreatmentIcdEdit
         }
 
         public FormTreatmentIcdEdit(long _treatmentId, HIS.Desktop.Common.RefeshReference refresh, Inventec.Desktop.Common.Modules.Module module)
-            : base(module)
+            : base( )
         {
             try
             {
                 InitializeComponent();
+                this.moduleData = module;
                 listIcd = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<HIS_ICD>().OrderBy(o => o.ICD_CODE).ToList();
                 this.Text = module.text;
                 this.treatmentId = _treatmentId;
@@ -565,6 +573,9 @@ namespace HIS.Desktop.Plugins.TreatmentIcdEdit
 
                 validationControl();
 
+                //Dangth
+
+
                 if (HisConfig.checkSovaovien_ == false)
                 {
                     btnSovaovien.Enabled = false;
@@ -957,6 +968,10 @@ namespace HIS.Desktop.Plugins.TreatmentIcdEdit
                     this.TxtSoThe.Text = currentVHisTreatment.FUND_NUMBER;
                     this.txtSanPham.Text = currentVHisTreatment.FUND_TYPE_NAME;
                     this.txtReasonVV.Text = currentVHisTreatment.HOSPITALIZATION_REASON;
+                    //Dangth
+                    this.txtProvisionalDianosis.Text = currentVHisTreatment.PROVISIONAL_DIAGNOSIS;
+                    this.txtTreatmentInstruction.Text = currentVHisTreatment.TREATMENT_METHOD;
+
                     if (!String.IsNullOrWhiteSpace(currentVHisTreatment.FUND_CUSTOMER_NAME))
                     {
                         this.txtTenKhachHang.Text = currentVHisTreatment.FUND_CUSTOMER_NAME;
@@ -1060,7 +1075,26 @@ namespace HIS.Desktop.Plugins.TreatmentIcdEdit
                         txtReasonVV.Text = "";
                     }
 
-                    if(currentVHisTreatment.IS_TUBERCULOSIS == 1)
+                    //Dangth                 
+                    if (!String.IsNullOrEmpty(currentVHisTreatment.PROVISIONAL_DIAGNOSIS))
+                    {
+                        txtProvisionalDianosis.Text = currentVHisTreatment.PROVISIONAL_DIAGNOSIS;
+                    }
+                    else
+                    {
+                        txtProvisionalDianosis.Text = "";
+                    }
+
+                    if (!String.IsNullOrEmpty(currentVHisTreatment.TREATMENT_METHOD))
+                    {
+                        txtTreatmentInstruction.Text = currentVHisTreatment.TREATMENT_METHOD;
+                    }
+                    else
+                    {
+                        txtTreatmentInstruction.Text = "";
+                    }   
+
+                    if (currentVHisTreatment.IS_TUBERCULOSIS == 1)
                     {
                         chkTuberculosis.Checked = true;
                     }
@@ -1095,7 +1129,59 @@ namespace HIS.Desktop.Plugins.TreatmentIcdEdit
                 {
                     this.txtTreatmentOrder.Text = "";
                 }
-               
+                //Dangth
+                HIS_TREATMENT_EXT HisTreatmentExt = new HIS_TREATMENT_EXT();
+                HisTreatmentExtFilter hisTreatmentExtFilter = new HisTreatmentExtFilter();
+                hisTreatmentExtFilter.TREATMENT_ID = currentVHisTreatment.ID;
+                var TreatmentId = new BackendAdapter(new CommonParam()).Get<List<HIS_TREATMENT_EXT>>("api/HisTreatmentExt/Get", ApiConsumers.MosConsumer, hisTreatmentExtFilter, new CommonParam());
+                if (TreatmentId != null && TreatmentId.Count > 0)
+                {
+                    HIS_TREATMENT_EXT hisTreatmentExtResult = TreatmentId.FirstOrDefault();
+                    if (!String.IsNullOrEmpty(hisTreatmentExtResult.SUBCLINICAL_RESULT))
+                    {
+                        txtSubclinical.Text = hisTreatmentExtResult.SUBCLINICAL_RESULT;
+                    }
+                    else
+                    {
+                        txtSubclinical.Text = "";
+                    }
+                    if (!String.IsNullOrEmpty(hisTreatmentExtResult.CLINICAL_NOTE))
+                    {
+                        txtPathologicalProcess.Text = hisTreatmentExtResult.CLINICAL_NOTE;
+                    }
+                    else
+                    {
+                        txtPathologicalProcess.Text = "";
+                    }
+                }
+                //else
+                //{
+                //    cboDoctorUserName.EditValue = null;
+                //}
+                //if (this.currentVHisTreatmentExt != null)
+                //{
+                //    this.txtSubclinical.Text = currentVHisTreatmentExt.SUBCLINICAL_RESULT;
+                //    this.txtPathologicalProcess.Text = currentVHisTreatmentExt.CLINICAL_NOTE;
+
+                //    if (!String.IsNullOrEmpty(currentVHisTreatmentExt.SUBCLINICAL_RESULT))
+                //    {
+                //        txtSubclinical.Text = currentVHisTreatmentExt.SUBCLINICAL_RESULT;
+                //    }
+                //    else
+                //    {
+                //        txtSubclinical.Text = "";
+                //    }
+
+                //    if (!String.IsNullOrEmpty(currentVHisTreatmentExt.CLINICAL_NOTE))
+                //    {
+                //        txtPathologicalProcess.Text = currentVHisTreatmentExt.CLINICAL_NOTE;
+                //    }
+                //    else
+                //    {
+                //        txtPathologicalProcess.Text = "";
+                //    }
+                //}    
+
             }
             catch (Exception ex)
             {
@@ -1274,9 +1360,27 @@ namespace HIS.Desktop.Plugins.TreatmentIcdEdit
                 layoutControlItem39.AppearanceItemCaption.ForeColor = Color.Black;
                 if (dtClinicalInTime.EditValue != null)
                 {
+                    //Dangth
                     ValidationRequired(txtReasonVV);
+                    //ValidationRequired(txtSubclinical);
+                    //ValidationRequired(txtProvisionalDianosis);
+                    //ValidationRequired(txtTreatmentInstruction);
+                    //ValidationRequired(txtPathologicalProcess);
                     ValidationReason();
                     layoutControlItem39.AppearanceItemCaption.ForeColor = Color.Maroon;
+                }
+                if (currentVHisTreatment.TDL_TREATMENT_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__DTNGOAITRU ||
+                    currentVHisTreatment.TDL_TREATMENT_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__DTNOITRU ||
+                    currentVHisTreatment.TDL_TREATMENT_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__DTBANNGAY)
+                {
+                    lblCaptionDiagnostic.AppearanceItemCaption.ForeColor = Color.Maroon;
+                    lblPathologicalProcess.AppearanceItemCaption.ForeColor = Color.Maroon;
+                    lblCaptionConclude.AppearanceItemCaption.ForeColor = Color.Maroon;
+                    lciProvisionalDianosis.AppearanceItemCaption.ForeColor = Color.Maroon;
+                    ValidationRequired(txtSubclinical);
+                    ValidationRequired(txtProvisionalDianosis);
+                    ValidationRequired(txtTreatmentInstruction);
+                    ValidationRequired(txtPathologicalProcess);
                 }
             }
             catch (Exception ex)
@@ -1302,6 +1406,67 @@ namespace HIS.Desktop.Plugins.TreatmentIcdEdit
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
 
+        }
+        //Dangth
+        private void DelegateSelectDataContentSubclinical(object data)
+        {
+            try
+            {
+                if (data != null && data is String)
+                {
+                    txtSubclinical.Text = data.ToString();
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+        private void dataResult(object data)
+        {
+            try
+            {
+                if (data != null && data is string)
+                {
+                    string dt = data as string;
+
+
+                    //if (!string.IsNullOrEmpty(dt))
+                    //{
+                    //    if (dt.Contains(";"))
+                    //    {
+                    //        string[] serviceName = dt.Split(';');
+                    //        foreach (var item in serviceName)
+                    //        {
+                    //            dataSelectedToPTDT.Add(item.Trim());
+                    //        }
+                    //    }
+                    //    else
+                    //    {
+                    //        dataSelectedToPTDT.Add(dt);
+                    //    }
+                    //}
+
+                    if (!string.IsNullOrEmpty(dt))
+                    {
+                        txtTreatmentInstruction.Text = string.Join("; ",
+                            data
+                            // dataSelectedToPTDT.Distinct()
+                            );
+                    }
+                    else
+                    {
+                        txtTreatmentInstruction.Text = "";
+                    }
+
+                }
+
+
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
         }
 
         private void ValidationRequired(BaseEdit control)
@@ -1567,6 +1732,24 @@ namespace HIS.Desktop.Plugins.TreatmentIcdEdit
 
                 if (CheckTime(data)) return;
 
+                //Dangth
+                if (!String.IsNullOrWhiteSpace(this.txtSubclinical.Text))
+                {
+                    data.SubclinicalResult = this.txtSubclinical.Text.Trim();
+                }
+                if (!String.IsNullOrWhiteSpace(this.txtProvisionalDianosis.Text))
+                {
+                    data.ProvisionalDiagnosis = this.txtProvisionalDianosis.Text.Trim();
+                }
+                if (!String.IsNullOrWhiteSpace(this.txtTreatmentInstruction.Text))
+                {
+                    data.TreatmentMethod = this.txtTreatmentInstruction.Text.Trim();
+                }
+                if (!String.IsNullOrWhiteSpace(this.txtPathologicalProcess.Text))
+                {
+                    data.ClinicalNote = this.txtPathologicalProcess.Text.Trim();
+                }
+
                 if (!String.IsNullOrWhiteSpace(this.txtTreatmentOrder.Text))
                 {
                     data.TreatmentOrder = Convert.ToInt64(txtTreatmentOrder.Text);
@@ -1652,8 +1835,15 @@ namespace HIS.Desktop.Plugins.TreatmentIcdEdit
                         data.TraditionalIcdText = ((SecondaryIcdDataADO)subIcd).ICD_TEXT;
                     }
                 }
-                if ((currentVHisTreatment.TDL_TREATMENT_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__DTNGOAITRU || currentVHisTreatment.TDL_TREATMENT_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__DTNOITRU || currentVHisTreatment.TDL_TREATMENT_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__DTBANNGAY) && currentVHisTreatment.IN_CODE != null && dtClinicalInTime.EditValue == null)
+                if ((currentVHisTreatment.TDL_TREATMENT_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__DTNGOAITRU || 
+                    currentVHisTreatment.TDL_TREATMENT_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__DTNOITRU || 
+                    currentVHisTreatment.TDL_TREATMENT_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__DTBANNGAY) && 
+                    currentVHisTreatment.IN_CODE != null && dtClinicalInTime.EditValue == null)
                 {
+                    //ValidationRequired(txtSubclinical);
+                    //ValidationRequired(txtProvisionalDianosis);
+                    //ValidationRequired(txtTreatmentInstruction);
+                    //ValidationRequired(txtPathologicalProcess);
                     //WaitingManager.Hide();
                     if (DevExpress.XtraEditors.XtraMessageBox.Show(ResourceMessage.NgayVaoKhongDuocDeTrong, ResourceMessage.ThongBao, System.Windows.Forms.MessageBoxButtons.OK) == System.Windows.Forms.DialogResult.OK)
                         return;
@@ -3007,7 +3197,79 @@ namespace HIS.Desktop.Plugins.TreatmentIcdEdit
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
+        //Dangth
+        private void btnContentSubclinicalEdit_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                Inventec.Desktop.Common.Modules.Module moduleData = GlobalVariables.currentModuleRaws.Where(o => o.ModuleLink == "HIS.Desktop.Plugins.ContentSubclinical").FirstOrDefault();
+                if (moduleData == null) Inventec.Common.Logging.LogSystem.Error("khong tim thay moduleLink = HIS.Desktop.Plugins.ContentSubclinical");
+                if (moduleData.IsPlugin && moduleData.ExtensionInfo != null)
+                {
+                    List<object> listArgs = new List<object>();
+                    listArgs.Add(this.treatmentId);
+                    listArgs.Add((HIS.Desktop.Common.DelegateSelectData)DelegateSelectDataContentSubclinical);
+                    var extenceInstance = PluginInstance.GetPluginInstance(HIS.Desktop.Utility.PluginInstance
+                        .GetModuleWithWorkingRoom(moduleData, this.moduleData.RoomId, this.moduleData.RoomTypeId), listArgs);
+                    if (extenceInstance == null) throw new ArgumentNullException("moduleData is null");
+                    ((Form)extenceInstance).ShowDialog();
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
 
+        private void btnInfomationExecute_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                dataSelectedToPTDT = new List<string>();
+                string contentShare = txtTreatmentInstruction.Text.Trim();
+                if (!string.IsNullOrEmpty(contentShare))
+                {
+                    if (contentShare.Contains(";"))
+                    {
+                        string[] serviceName = contentShare.Split(';');
+                        foreach (var item in serviceName)
+                        {
+                            dataSelectedToPTDT.Add(item.Trim());
+                        }
+                    }
+                    else
+                    {
+                        dataSelectedToPTDT.Add(contentShare);
+                    }
+                }
+                Inventec.Desktop.Common.Modules.Module moduleData = GlobalVariables.currentModuleRaws.Where(o => o.ModuleLink == "HIS.Desktop.Plugins.InfomationExecute").FirstOrDefault();
 
+                if (moduleData == null) throw new NullReferenceException("Not found module by ModuleLink = 'HIS.Desktop.Plugins.InfomationExecute'");
+                if (moduleData.IsPlugin && moduleData.ExtensionInfo != null)
+                {
+                    List<object> listArgs = new List<object>();
+                    listArgs.Add(this.treatmentId);
+                    listArgs.Add(this.dataSelectedToPTDT);
+                    listArgs.Add((HIS.Desktop.Common.DelegateSelectData)dataResult);
+                    listArgs.Add(HIS.Desktop.Utility.PluginInstance.GetModuleWithWorkingRoom(moduleData, this.currentModuleBase.RoomId, this.currentModuleBase.RoomTypeId));
+                    var extenceInstance = PluginInstance.GetPluginInstance(PluginInstance.GetModuleWithWorkingRoom(moduleData, this.currentModuleBase.RoomId, this.currentModuleBase.RoomTypeId), listArgs);
+                    if (extenceInstance == null)
+                    {
+                        throw new ArgumentNullException("extenceInstance is null");
+                    }
+
+                    ((Form)extenceInstance).ShowDialog();
+
+                }
+                else
+                {
+                    MessageManager.Show("Chức năng chưa được hỗ trợ ở phiên bản này");
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
     }
 }

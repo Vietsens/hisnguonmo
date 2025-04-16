@@ -43,6 +43,7 @@ namespace HIS.Desktop.Plugins.BidUpdate
                 ValidImpVatRatio();
                 ValidBidGroupCode();
                 ValidSupplier();
+                //ValidCboDosageForm();
                 ValidBidPackage(txtBidPackageCode);
                 ValidMaxlengthRegisterNumber();
                 ValidMaxlengthConcentra();
@@ -109,11 +110,13 @@ namespace HIS.Desktop.Plugins.BidUpdate
         {
             try
             {
-                ValidateMaxLength validateMaxLength = new ValidateMaxLength();
-                validateMaxLength.textEdit = txtDosageForm;
-                validateMaxLength.maxLength = 100;
-                validateMaxLength.ErrorType = DevExpress.XtraEditors.DXErrorProvider.ErrorType.Warning;
-                dxValidationProviderLeft.SetValidationRule(txtDosageForm, validateMaxLength);
+
+                CboDosageFormValidationRule cboDosageFormValidation = new CboDosageFormValidationRule();
+                cboDosageFormValidation.cboDosageForm = cboDosageForm;
+                cboDosageFormValidation.maxLength = 1024;
+                cboDosageFormValidation.ErrorText = Resources.ResourceMessage.ThieuTruongDuLieuBatBuoc;
+                cboDosageFormValidation.ErrorType = DevExpress.XtraEditors.DXErrorProvider.ErrorType.Warning;
+                dxValidationProviderLeft.SetValidationRule(cboDosageForm, cboDosageFormValidation);
             }
             catch (Exception ex)
             {
@@ -323,6 +326,21 @@ namespace HIS.Desktop.Plugins.BidUpdate
                 bidNameValidationRule.ErrorText = Resources.ResourceMessage.ThieuTruongDuLieuBatBuoc;
                 bidNameValidationRule.ErrorType = DevExpress.XtraEditors.DXErrorProvider.ErrorType.Warning;
                 dxValidationProviderRight.SetValidationRule(txtBidName, bidNameValidationRule);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+        private void ValidCboDosageForm()
+        {
+            try
+            {
+                CboDosageFormValidationRule cboDosageFormValidation = new CboDosageFormValidationRule();
+                cboDosageFormValidation.cboDosageForm = cboDosageForm;
+                cboDosageFormValidation.ErrorText = Resources.ResourceMessage.ThieuTruongDuLieuBatBuoc;
+                cboDosageFormValidation.ErrorType = DevExpress.XtraEditors.DXErrorProvider.ErrorType.Warning;
+                dxValidationProviderLeft.SetValidationRule(cboDosageForm, cboDosageFormValidation);
             }
             catch (Exception ex)
             {

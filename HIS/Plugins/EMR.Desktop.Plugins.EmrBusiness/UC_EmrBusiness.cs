@@ -49,6 +49,9 @@ using System.Resources;
 using EMR.Desktop.Plugins.EmrBusiness.Resources;
 using Inventec.Desktop.Common.LanguageManager;
 using DevExpress.XtraEditors;
+using MOS.EFMODEL.DataModels;
+using Inventec.Common.Controls.EditorLoader;
+using DevExpress.XtraEditors.Controls;
 
 namespace EMR.Desktop.Plugins.EmrBusiness
 {
@@ -64,6 +67,7 @@ namespace EMR.Desktop.Plugins.EmrBusiness
         int rowdata = 0;
         long EmrBusinessID;
         EMR_BUSINESS currentData;
+        List<HIS_DEPARTMENT> listdata = new List<HIS_DEPARTMENT>();
         #endregion
 
         #region --private method
@@ -91,6 +95,7 @@ namespace EMR.Desktop.Plugins.EmrBusiness
             try
             {
                 Meshow();
+                //LoadDataToComboDepartment();
             }
             catch (Exception ex)
             {
@@ -108,6 +113,7 @@ namespace EMR.Desktop.Plugins.EmrBusiness
                 ValidateForm();
                 FillDataToGridControl();
                 SetCaptionByLanguageKey();
+                LoadDataToComboDepartment();
             }
             catch (Exception ex)
             {
@@ -124,6 +130,7 @@ namespace EMR.Desktop.Plugins.EmrBusiness
                 txtSearch.Text = "";
                 txtBussinessCode.Text = "";
                 txtBussinessName.Text = "";
+                cboDepartment.EditValue = null;
             }
             catch (Exception ex)
             {
@@ -220,6 +227,26 @@ namespace EMR.Desktop.Plugins.EmrBusiness
                 LogSystem.Error(ex);
             }
         }
+        //Dangth
+        private void LoadDataToComboDepartment()
+        {
+            try
+            {
+                List<HIS_DEPARTMENT> data = BackendDataWorker.Get<HIS_DEPARTMENT>()
+                    .Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE)
+                    .ToList();
+                List<ColumnInfo> columnInfos = new List<ColumnInfo>();
+                columnInfos.Add(new ColumnInfo("DEPARTMENT_CODE", "", 100, 1));
+                columnInfos.Add(new ColumnInfo("DEPARTMENT_NAME", "", 250, 2));
+                ControlEditorADO controlEditorADO = new ControlEditorADO("DEPARTMENT_NAME", "DEPARTMENT_CODE", columnInfos, false, 350);
+                //Load data vao combobox
+                ControlEditorLoader.Load(cboDepartment, data, controlEditorADO);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
 
         private void SetFilter(ref EmrBusinessFilter filter)
         {
@@ -295,7 +322,7 @@ namespace EMR.Desktop.Plugins.EmrBusiness
             {
                 ValidateMaxlangth validate = new ValidateMaxlangth();
                 validate.txtControl = txtBussinessCode;
-                validate.Maxlength = 6;
+                validate.Maxlength = 20;
                 validate.message = ResourcesMassage.MaNghiepVuVuaQuaMaxLangth;
                 validate.ErrorText = MessageUtil.GetMessage(HIS.Desktop.LibraryMessage.Message.Enum.TruongDuLieuBatBuoc);
                 validate.ErrorType = ErrorType.Warning;
@@ -649,10 +676,11 @@ namespace EMR.Desktop.Plugins.EmrBusiness
             {
                 data.BUSINESS_CODE = txtBussinessCode.Text.Trim();
                 data.BUSINESS_NAME = txtBussinessName.Text.Trim();
+                data.DEPARTMENT_CODE = cboDepartment.EditValue.ToString(); // Lưu mã khoa                
+                data.DEPARTMENT_NAME = cboDepartment.Text.Trim(); // Lưu tên khoa
             }
             catch (Exception ex)
             {
-
                 LogSystem.Warn(ex);
             }
         }
@@ -744,13 +772,16 @@ namespace EMR.Desktop.Plugins.EmrBusiness
         {
             try
             {
-                EmrBusinessID = data.ID;
-                txtBussinessCode.Text = data.BUSINESS_CODE;
-                txtBussinessName.Text = data.BUSINESS_NAME;
+                if (data != null)
+                {
+                    EmrBusinessID = data.ID;
+                    txtBussinessCode.Text = data.BUSINESS_CODE;
+                    txtBussinessName.Text = data.BUSINESS_NAME;
+                    cboDepartment.EditValue = data.DEPARTMENT_CODE; // Gán mã khoa để hiển thị tên khoa
+                }
             }
             catch (Exception ex)
             {
-
                 LogSystem.Warn(ex);
             }
         }
@@ -895,7 +926,63 @@ namespace EMR.Desktop.Plugins.EmrBusiness
                 LogSystem.Warn(ex);
             }
         }
+        private void cboDepartment_ButtonClick(object sender, DevExpress.XtraEditors.Controls.ButtonPressedEventArgs e)
+        {
+
+        }
+
         #endregion
 
+        private void cboDepartment_Closed(object sender, DevExpress.XtraEditors.Controls.ClosedEventArgs e)
+        {
+            //try
+            //{
+            //    if (e.CloseMode == PopupCloseMode.Normal)
+            //    {
+            //        if (cboDepartment.EditValue != null)
+            //        {
+            //            var dataStore = listdata.SingleOrDefault(o => o.ID == Inventec.Common.TypeConvert.Parse.ToInt64((cboDepartment.EditValue ?? "").ToString()));
+            //            if (dataStore != null)
+            //            {
+            //                cboDepartment.Properties.Buttons[1].Visible = true;
+            //                if (btnAdd.Enabled)
+            //                {
+            //                    btnAdd.Focus();
+            //                    btnAdd.Select();
+            //                }
+            //                else
+            //                {
+            //                    btnEdit.Focus();
+            //                    btnEdit.Select();
+            //                }
+            //            }
+            //            else
+            //            {
+            //                cboDepartment.Focus();
+            //                cboDepartment.ShowPopup();
+            //            }
+            //        }
+            //    }
+            //}
+            //catch (Exception ex)
+            //{
+            //    Inventec.Common.Logging.LogSystem.Warn(ex);
+            //}
+        }
+
+        private void cboDepartment_Properties_ButtonClick(object sender, DevExpress.XtraEditors.Controls.ButtonPressedEventArgs e)
+        {
+            try
+            {
+                if (e.Button.Kind == ButtonPredefines.Delete)
+                {
+                    cboDepartment.EditValue = null;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
     }
 }

@@ -140,6 +140,7 @@ namespace HIS.Desktop.Plugins.ImportBlood
             if (this.uCImportBloodPlus != null)
             {
                 this.uCImportBloodPlus.BtnPrint();
+                this.uCImportBloodPlus.CboPrint();
             }
         }
     }

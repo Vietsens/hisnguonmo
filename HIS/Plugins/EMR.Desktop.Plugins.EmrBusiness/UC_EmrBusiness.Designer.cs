@@ -45,6 +45,9 @@ namespace EMR.Desktop.Plugins.EmrBusiness
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
+            DevExpress.XtraGrid.GridLevelNode gridLevelNode1 = new DevExpress.XtraGrid.GridLevelNode();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(UC_EmrBusiness));
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject1 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject2 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject3 = new DevExpress.Utils.SerializableAppearanceObject();
@@ -53,7 +56,6 @@ namespace EMR.Desktop.Plugins.EmrBusiness
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject6 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject7 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject8 = new DevExpress.Utils.SerializableAppearanceObject();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(UC_EmrBusiness));
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject9 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject10 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject11 = new DevExpress.Utils.SerializableAppearanceObject();
@@ -101,6 +103,8 @@ namespace EMR.Desktop.Plugins.EmrBusiness
             this.btnEdit = new DevExpress.XtraEditors.SimpleButton();
             this.txtBussinessName = new DevExpress.XtraEditors.TextEdit();
             this.txtBussinessCode = new DevExpress.XtraEditors.TextEdit();
+            this.cboDepartment = new DevExpress.XtraEditors.GridLookUpEdit();
+            this.gridLookUpEdit1View = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.layoutControlGroup3 = new DevExpress.XtraLayout.LayoutControlGroup();
             this.lcBussinessCode = new DevExpress.XtraLayout.LayoutControlItem();
             this.lcBussinessName = new DevExpress.XtraLayout.LayoutControlItem();
@@ -110,6 +114,8 @@ namespace EMR.Desktop.Plugins.EmrBusiness
             this.layoutControlItem11 = new DevExpress.XtraLayout.LayoutControlItem();
             this.emptySpaceItem3 = new DevExpress.XtraLayout.EmptySpaceItem();
             this.emptySpaceItem4 = new DevExpress.XtraLayout.EmptySpaceItem();
+            this.emptySpaceItem5 = new DevExpress.XtraLayout.EmptySpaceItem();
+            this.layoutControlItem14 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControl3 = new DevExpress.XtraLayout.LayoutControl();
             this.layoutControlGroup2 = new DevExpress.XtraLayout.LayoutControlGroup();
             this.btnSearch = new DevExpress.XtraEditors.SimpleButton();
@@ -124,9 +130,8 @@ namespace EMR.Desktop.Plugins.EmrBusiness
             this.layoutControlItem5 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlGroup1 = new DevExpress.XtraLayout.LayoutControlGroup();
             this.layoutControlItem1 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.dxErrorProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXErrorProvider();
-            this.dxValidationProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider();
-            this.emptySpaceItem5 = new DevExpress.XtraLayout.EmptySpaceItem();
+            this.dxErrorProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXErrorProvider(this.components);
+            this.dxValidationProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
             this.layoutControl1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl2)).BeginInit();
@@ -147,6 +152,8 @@ namespace EMR.Desktop.Plugins.EmrBusiness
             this.lcEditorInfo.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.txtBussinessName.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtBussinessCode.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cboDepartment.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gridLookUpEdit1View)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lcBussinessCode)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lcBussinessName)).BeginInit();
@@ -156,6 +163,8 @@ namespace EMR.Desktop.Plugins.EmrBusiness
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem11)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem4)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem5)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem14)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtSearch.Properties)).BeginInit();
@@ -171,7 +180,6 @@ namespace EMR.Desktop.Plugins.EmrBusiness
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxErrorProvider1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxValidationProvider1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem5)).BeginInit();
             this.SuspendLayout();
             // 
             // layoutControl1
@@ -179,7 +187,7 @@ namespace EMR.Desktop.Plugins.EmrBusiness
             this.layoutControl1.Controls.Add(this.layoutControl2);
             this.layoutControl1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.layoutControl1.Location = new System.Drawing.Point(0, 0);
-            this.layoutControl1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.layoutControl1.Margin = new System.Windows.Forms.Padding(4);
             this.layoutControl1.Name = "layoutControl1";
             this.layoutControl1.Root = this.layoutControlGroup1;
             this.layoutControl1.Size = new System.Drawing.Size(1669, 677);
@@ -195,7 +203,7 @@ namespace EMR.Desktop.Plugins.EmrBusiness
             this.layoutControl2.Controls.Add(this.btnSearch);
             this.layoutControl2.Controls.Add(this.txtSearch);
             this.layoutControl2.Location = new System.Drawing.Point(3, 3);
-            this.layoutControl2.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.layoutControl2.Margin = new System.Windows.Forms.Padding(4);
             this.layoutControl2.Name = "layoutControl2";
             this.layoutControl2.Root = this.Root;
             this.layoutControl2.Size = new System.Drawing.Size(1663, 671);
@@ -206,7 +214,7 @@ namespace EMR.Desktop.Plugins.EmrBusiness
             // 
             this.layoutControl5.Controls.Add(this.ucPaging2);
             this.layoutControl5.Location = new System.Drawing.Point(3, 631);
-            this.layoutControl5.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.layoutControl5.Margin = new System.Windows.Forms.Padding(4);
             this.layoutControl5.Name = "layoutControl5";
             this.layoutControl5.Root = this.layoutControlGroup4;
             this.layoutControl5.Size = new System.Drawing.Size(1199, 37);
@@ -216,7 +224,7 @@ namespace EMR.Desktop.Plugins.EmrBusiness
             // ucPaging2
             // 
             this.ucPaging2.Location = new System.Drawing.Point(3, 3);
-            this.ucPaging2.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.ucPaging2.Margin = new System.Windows.Forms.Padding(4);
             this.ucPaging2.Name = "ucPaging2";
             this.ucPaging2.Size = new System.Drawing.Size(1193, 31);
             this.ucPaging2.TabIndex = 6;
@@ -243,10 +251,13 @@ namespace EMR.Desktop.Plugins.EmrBusiness
             // 
             // grdControlEmrBussiness
             // 
-            this.grdControlEmrBussiness.EmbeddedNavigator.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.grdControlEmrBussiness.EmbeddedNavigator.Margin = new System.Windows.Forms.Padding(4);
+            gridLevelNode1.RelationName = "Level1";
+            this.grdControlEmrBussiness.LevelTree.Nodes.AddRange(new DevExpress.XtraGrid.GridLevelNode[] {
+            gridLevelNode1});
             this.grdControlEmrBussiness.Location = new System.Drawing.Point(3, 47);
             this.grdControlEmrBussiness.MainView = this.grdViewEmrBussiness;
-            this.grdControlEmrBussiness.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.grdControlEmrBussiness.Margin = new System.Windows.Forms.Padding(4);
             this.grdControlEmrBussiness.Name = "grdControlEmrBussiness";
             this.grdControlEmrBussiness.RepositoryItems.AddRange(new DevExpress.XtraEditors.Repository.RepositoryItem[] {
             this.btnLock,
@@ -422,7 +433,7 @@ namespace EMR.Desktop.Plugins.EmrBusiness
             // 
             this.btnLock.AutoHeight = false;
             this.btnLock.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, global::EMR.Desktop.Plugins.EmrBusiness.Properties.Resources.Lock_Unlock_icon, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject1, serializableAppearanceObject2, serializableAppearanceObject3, serializableAppearanceObject4, "Khóa", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("btnLock.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject1, serializableAppearanceObject2, serializableAppearanceObject3, serializableAppearanceObject4, "Khóa", null, null, true)});
             this.btnLock.Name = "btnLock";
             this.btnLock.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             this.btnLock.Click += new System.EventHandler(this.btnLock_Click);
@@ -431,7 +442,7 @@ namespace EMR.Desktop.Plugins.EmrBusiness
             // 
             this.btnUnLock.AutoHeight = false;
             this.btnUnLock.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, global::EMR.Desktop.Plugins.EmrBusiness.Properties.Resources.Lock_Lock_icon, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject5, serializableAppearanceObject6, serializableAppearanceObject7, serializableAppearanceObject8, "Mở khóa", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, global::EMR.Desktop.Plugins.EmrBusiness.Properties.Resources.Lock_Lock_16_16, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject5, serializableAppearanceObject6, serializableAppearanceObject7, serializableAppearanceObject8, "Mở khóa", null, null, true)});
             this.btnUnLock.Name = "btnUnLock";
             this.btnUnLock.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             this.btnUnLock.Click += new System.EventHandler(this.btnUnLock_Click);
@@ -477,8 +488,9 @@ namespace EMR.Desktop.Plugins.EmrBusiness
             this.lcEditorInfo.Controls.Add(this.btnEdit);
             this.lcEditorInfo.Controls.Add(this.txtBussinessName);
             this.lcEditorInfo.Controls.Add(this.txtBussinessCode);
+            this.lcEditorInfo.Controls.Add(this.cboDepartment);
             this.lcEditorInfo.Location = new System.Drawing.Point(1208, 3);
-            this.lcEditorInfo.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.lcEditorInfo.Margin = new System.Windows.Forms.Padding(4);
             this.lcEditorInfo.Name = "lcEditorInfo";
             this.lcEditorInfo.OptionsFocus.EnableAutoTabOrder = false;
             this.lcEditorInfo.Root = this.layoutControlGroup3;
@@ -488,8 +500,8 @@ namespace EMR.Desktop.Plugins.EmrBusiness
             // 
             // btnRest
             // 
-            this.btnRest.Location = new System.Drawing.Point(336, 100);
-            this.btnRest.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.btnRest.Location = new System.Drawing.Point(336, 126);
+            this.btnRest.Margin = new System.Windows.Forms.Padding(4);
             this.btnRest.Name = "btnRest";
             this.btnRest.Size = new System.Drawing.Size(113, 27);
             this.btnRest.StyleController = this.lcEditorInfo;
@@ -499,8 +511,8 @@ namespace EMR.Desktop.Plugins.EmrBusiness
             // 
             // btnAdd
             // 
-            this.btnAdd.Location = new System.Drawing.Point(211, 100);
-            this.btnAdd.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.btnAdd.Location = new System.Drawing.Point(211, 126);
+            this.btnAdd.Margin = new System.Windows.Forms.Padding(4);
             this.btnAdd.Name = "btnAdd";
             this.btnAdd.Size = new System.Drawing.Size(119, 27);
             this.btnAdd.StyleController = this.lcEditorInfo;
@@ -510,8 +522,8 @@ namespace EMR.Desktop.Plugins.EmrBusiness
             // 
             // btnEdit
             // 
-            this.btnEdit.Location = new System.Drawing.Point(89, 100);
-            this.btnEdit.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.btnEdit.Location = new System.Drawing.Point(89, 126);
+            this.btnEdit.Margin = new System.Windows.Forms.Padding(4);
             this.btnEdit.Name = "btnEdit";
             this.btnEdit.Size = new System.Drawing.Size(116, 27);
             this.btnEdit.StyleController = this.lcEditorInfo;
@@ -521,8 +533,8 @@ namespace EMR.Desktop.Plugins.EmrBusiness
             // 
             // txtBussinessName
             // 
-            this.txtBussinessName.Location = new System.Drawing.Point(98, 62);
-            this.txtBussinessName.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.txtBussinessName.Location = new System.Drawing.Point(98, 60);
+            this.txtBussinessName.Margin = new System.Windows.Forms.Padding(4);
             this.txtBussinessName.Name = "txtBussinessName";
             this.txtBussinessName.Size = new System.Drawing.Size(351, 22);
             this.txtBussinessName.StyleController = this.lcEditorInfo;
@@ -531,13 +543,42 @@ namespace EMR.Desktop.Plugins.EmrBusiness
             // 
             // txtBussinessCode
             // 
-            this.txtBussinessCode.Location = new System.Drawing.Point(98, 34);
-            this.txtBussinessCode.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.txtBussinessCode.Location = new System.Drawing.Point(98, 32);
+            this.txtBussinessCode.Margin = new System.Windows.Forms.Padding(4);
             this.txtBussinessCode.Name = "txtBussinessCode";
             this.txtBussinessCode.Size = new System.Drawing.Size(351, 22);
             this.txtBussinessCode.StyleController = this.lcEditorInfo;
             this.txtBussinessCode.TabIndex = 0;
             this.txtBussinessCode.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtBussinessCode_KeyDown);
+            // 
+            // cboDepartment
+            // 
+            this.cboDepartment.Location = new System.Drawing.Point(98, 88);
+            this.cboDepartment.Name = "cboDepartment";
+            this.cboDepartment.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
+            this.cboDepartment.Properties.Appearance.BackColor = System.Drawing.Color.Transparent;
+            this.cboDepartment.Properties.Appearance.ForeColor = System.Drawing.Color.Black;
+            this.cboDepartment.Properties.Appearance.Options.UseBackColor = true;
+            this.cboDepartment.Properties.Appearance.Options.UseForeColor = true;
+            this.cboDepartment.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo),
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete)});
+            this.cboDepartment.Properties.NullText = "";
+            this.cboDepartment.Properties.PopupSizeable = false;
+            this.cboDepartment.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.Standard;
+            this.cboDepartment.Properties.View = this.gridLookUpEdit1View;
+            this.cboDepartment.Properties.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.cboDepartment_Properties_ButtonClick);
+            this.cboDepartment.Size = new System.Drawing.Size(351, 22);
+            this.cboDepartment.StyleController = this.lcEditorInfo;
+            this.cboDepartment.TabIndex = 7;
+            this.cboDepartment.Closed += new DevExpress.XtraEditors.Controls.ClosedEventHandler(this.cboDepartment_Closed);
+            // 
+            // gridLookUpEdit1View
+            // 
+            this.gridLookUpEdit1View.FocusRectStyle = DevExpress.XtraGrid.Views.Grid.DrawFocusRectStyle.RowFocus;
+            this.gridLookUpEdit1View.Name = "gridLookUpEdit1View";
+            this.gridLookUpEdit1View.OptionsSelection.EnableAppearanceFocusedCell = false;
+            this.gridLookUpEdit1View.OptionsView.ShowGroupPanel = false;
             // 
             // layoutControlGroup3
             // 
@@ -552,7 +593,8 @@ namespace EMR.Desktop.Plugins.EmrBusiness
             this.layoutControlItem11,
             this.emptySpaceItem3,
             this.emptySpaceItem4,
-            this.emptySpaceItem5});
+            this.emptySpaceItem5,
+            this.layoutControlItem14});
             this.layoutControlGroup3.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup3.Name = "layoutControlGroup3";
             this.layoutControlGroup3.Size = new System.Drawing.Size(452, 665);
@@ -565,7 +607,7 @@ namespace EMR.Desktop.Plugins.EmrBusiness
             this.lcBussinessCode.AppearanceItemCaption.Options.UseTextOptions = true;
             this.lcBussinessCode.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lcBussinessCode.Control = this.txtBussinessCode;
-            this.lcBussinessCode.Location = new System.Drawing.Point(0, 31);
+            this.lcBussinessCode.Location = new System.Drawing.Point(0, 29);
             this.lcBussinessCode.Name = "lcBussinessCode";
             this.lcBussinessCode.Size = new System.Drawing.Size(452, 28);
             this.lcBussinessCode.Text = "Mã nghiệp vụ:";
@@ -580,7 +622,7 @@ namespace EMR.Desktop.Plugins.EmrBusiness
             this.lcBussinessName.AppearanceItemCaption.Options.UseTextOptions = true;
             this.lcBussinessName.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lcBussinessName.Control = this.txtBussinessName;
-            this.lcBussinessName.Location = new System.Drawing.Point(0, 59);
+            this.lcBussinessName.Location = new System.Drawing.Point(0, 57);
             this.lcBussinessName.Name = "lcBussinessName";
             this.lcBussinessName.Size = new System.Drawing.Size(452, 28);
             this.lcBussinessName.Text = "Tên nghiệp vụ:";
@@ -591,7 +633,7 @@ namespace EMR.Desktop.Plugins.EmrBusiness
             // emptySpaceItem2
             // 
             this.emptySpaceItem2.AllowHotTrack = false;
-            this.emptySpaceItem2.Location = new System.Drawing.Point(0, 87);
+            this.emptySpaceItem2.Location = new System.Drawing.Point(0, 113);
             this.emptySpaceItem2.Name = "emptySpaceItem2";
             this.emptySpaceItem2.Size = new System.Drawing.Size(452, 10);
             this.emptySpaceItem2.TextSize = new System.Drawing.Size(0, 0);
@@ -599,7 +641,7 @@ namespace EMR.Desktop.Plugins.EmrBusiness
             // layoutControlItem9
             // 
             this.layoutControlItem9.Control = this.btnEdit;
-            this.layoutControlItem9.Location = new System.Drawing.Point(86, 97);
+            this.layoutControlItem9.Location = new System.Drawing.Point(86, 123);
             this.layoutControlItem9.Name = "layoutControlItem9";
             this.layoutControlItem9.Size = new System.Drawing.Size(122, 33);
             this.layoutControlItem9.TextSize = new System.Drawing.Size(0, 0);
@@ -608,7 +650,7 @@ namespace EMR.Desktop.Plugins.EmrBusiness
             // layoutControlItem10
             // 
             this.layoutControlItem10.Control = this.btnAdd;
-            this.layoutControlItem10.Location = new System.Drawing.Point(208, 97);
+            this.layoutControlItem10.Location = new System.Drawing.Point(208, 123);
             this.layoutControlItem10.Name = "layoutControlItem10";
             this.layoutControlItem10.Size = new System.Drawing.Size(125, 33);
             this.layoutControlItem10.TextSize = new System.Drawing.Size(0, 0);
@@ -617,7 +659,7 @@ namespace EMR.Desktop.Plugins.EmrBusiness
             // layoutControlItem11
             // 
             this.layoutControlItem11.Control = this.btnRest;
-            this.layoutControlItem11.Location = new System.Drawing.Point(333, 97);
+            this.layoutControlItem11.Location = new System.Drawing.Point(333, 123);
             this.layoutControlItem11.Name = "layoutControlItem11";
             this.layoutControlItem11.Size = new System.Drawing.Size(119, 33);
             this.layoutControlItem11.TextSize = new System.Drawing.Size(0, 0);
@@ -626,7 +668,7 @@ namespace EMR.Desktop.Plugins.EmrBusiness
             // emptySpaceItem3
             // 
             this.emptySpaceItem3.AllowHotTrack = false;
-            this.emptySpaceItem3.Location = new System.Drawing.Point(0, 97);
+            this.emptySpaceItem3.Location = new System.Drawing.Point(0, 123);
             this.emptySpaceItem3.Name = "emptySpaceItem3";
             this.emptySpaceItem3.Size = new System.Drawing.Size(86, 33);
             this.emptySpaceItem3.TextSize = new System.Drawing.Size(0, 0);
@@ -634,15 +676,39 @@ namespace EMR.Desktop.Plugins.EmrBusiness
             // emptySpaceItem4
             // 
             this.emptySpaceItem4.AllowHotTrack = false;
-            this.emptySpaceItem4.Location = new System.Drawing.Point(0, 130);
+            this.emptySpaceItem4.Location = new System.Drawing.Point(0, 156);
             this.emptySpaceItem4.Name = "emptySpaceItem4";
-            this.emptySpaceItem4.Size = new System.Drawing.Size(452, 535);
+            this.emptySpaceItem4.Size = new System.Drawing.Size(452, 509);
             this.emptySpaceItem4.TextSize = new System.Drawing.Size(0, 0);
+            // 
+            // emptySpaceItem5
+            // 
+            this.emptySpaceItem5.AllowHotTrack = false;
+            this.emptySpaceItem5.Location = new System.Drawing.Point(0, 0);
+            this.emptySpaceItem5.Name = "emptySpaceItem5";
+            this.emptySpaceItem5.Size = new System.Drawing.Size(452, 29);
+            this.emptySpaceItem5.TextSize = new System.Drawing.Size(0, 0);
+            // 
+            // layoutControlItem14
+            // 
+            this.layoutControlItem14.AppearanceItemCaption.ForeColor = System.Drawing.Color.Black;
+            this.layoutControlItem14.AppearanceItemCaption.Options.UseForeColor = true;
+            this.layoutControlItem14.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.layoutControlItem14.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.layoutControlItem14.Control = this.cboDepartment;
+            this.layoutControlItem14.Location = new System.Drawing.Point(0, 85);
+            this.layoutControlItem14.Name = "layoutControlItem14";
+            this.layoutControlItem14.Size = new System.Drawing.Size(452, 28);
+            this.layoutControlItem14.Text = "Khoa :";
+            this.layoutControlItem14.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.layoutControlItem14.TextLocation = DevExpress.Utils.Locations.Left;
+            this.layoutControlItem14.TextSize = new System.Drawing.Size(90, 20);
+            this.layoutControlItem14.TextToControlDistance = 5;
             // 
             // layoutControl3
             // 
             this.layoutControl3.Location = new System.Drawing.Point(719, 3);
-            this.layoutControl3.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.layoutControl3.Margin = new System.Windows.Forms.Padding(4);
             this.layoutControl3.Name = "layoutControl3";
             this.layoutControl3.Root = this.layoutControlGroup2;
             this.layoutControl3.Size = new System.Drawing.Size(483, 27);
@@ -661,7 +727,7 @@ namespace EMR.Desktop.Plugins.EmrBusiness
             // btnSearch
             // 
             this.btnSearch.Location = new System.Drawing.Point(594, 3);
-            this.btnSearch.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.btnSearch.Margin = new System.Windows.Forms.Padding(4);
             this.btnSearch.Name = "btnSearch";
             this.btnSearch.Size = new System.Drawing.Size(119, 27);
             this.btnSearch.StyleController = this.layoutControl2;
@@ -672,7 +738,7 @@ namespace EMR.Desktop.Plugins.EmrBusiness
             // txtSearch
             // 
             this.txtSearch.Location = new System.Drawing.Point(3, 3);
-            this.txtSearch.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.txtSearch.Margin = new System.Windows.Forms.Padding(4);
             this.txtSearch.Name = "txtSearch";
             this.txtSearch.Properties.NullValuePrompt = "Từ khóa tìm kiếm";
             this.txtSearch.Properties.NullValuePromptShowForEmptyValue = true;
@@ -785,20 +851,12 @@ namespace EMR.Desktop.Plugins.EmrBusiness
             // 
             this.dxErrorProvider1.ContainerControl = this;
             // 
-            // emptySpaceItem5
-            // 
-            this.emptySpaceItem5.AllowHotTrack = false;
-            this.emptySpaceItem5.Location = new System.Drawing.Point(0, 0);
-            this.emptySpaceItem5.Name = "emptySpaceItem5";
-            this.emptySpaceItem5.Size = new System.Drawing.Size(452, 31);
-            this.emptySpaceItem5.TextSize = new System.Drawing.Size(0, 0);
-            // 
             // UC_EmrBusiness
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.layoutControl1);
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "UC_EmrBusiness";
             this.Size = new System.Drawing.Size(1669, 677);
             this.Load += new System.EventHandler(this.UC_EmrBusiness_Load);
@@ -822,6 +880,8 @@ namespace EMR.Desktop.Plugins.EmrBusiness
             this.lcEditorInfo.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.txtBussinessName.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtBussinessCode.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cboDepartment.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gridLookUpEdit1View)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup3)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lcBussinessCode)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lcBussinessName)).EndInit();
@@ -831,6 +891,8 @@ namespace EMR.Desktop.Plugins.EmrBusiness
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem11)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem3)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem4)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem5)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem14)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl3)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtSearch.Properties)).EndInit();
@@ -846,7 +908,6 @@ namespace EMR.Desktop.Plugins.EmrBusiness
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxErrorProvider1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxValidationProvider1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem5)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -910,5 +971,8 @@ namespace EMR.Desktop.Plugins.EmrBusiness
         private DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit btnEmrFlow;
         private DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit btnEnableEmrFlow;
         private DevExpress.XtraLayout.EmptySpaceItem emptySpaceItem5;
+        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem14;
+        private DevExpress.XtraEditors.GridLookUpEdit cboDepartment;
+        private DevExpress.XtraGrid.Views.Grid.GridView gridLookUpEdit1View;
     }
 }

@@ -171,8 +171,42 @@ namespace HIS.Desktop.Plugins.HisMachineImport.HisMachineImport
 
                             foreach (var item in hisMachineImport)
                             {
+                                //bool checkNull =
+                                // string.IsNullOrEmpty(item.MACHINE_CODE) 
+                                // && string.IsNullOrEmpty(item.MACHINE_NAME) && string.IsNullOrEmpty(item.MACHINE_NAME) 
+                                // && string.IsNullOrEmpty(item.MACHINE_GROUP_CODE) && string.IsNullOrEmpty(item.MACHINE_GROUP_CODE) 
+                                // && string.IsNullOrEmpty(item.ROOM_IDS) && string.IsNullOrEmpty(item.ROOM_IDS) 
+                                // && string.IsNullOrEmpty(item.INTEGRATE_ADDRESS) && string.IsNullOrEmpty(item.INTEGRATE_ADDRESS) 
+                                // && string.IsNullOrEmpty(item.SERIAL_NUMBER) && string.IsNullOrEmpty(item.SERIAL_NUMBER) 
+                                // && string.IsNullOrEmpty(item.SOURCE_CODE) && string.IsNullOrEmpty(item.SOURCE_CODE)
+                                // //Dangth
+                                // && string.IsNullOrEmpty(item.SYMBOL) && string.IsNullOrEmpty(item.SYMBOL)
+                                // && string.IsNullOrEmpty(item.MANUFACTURER_NAME) && string.IsNullOrEmpty(item.MANUFACTURER_NAME)
+                                // && string.IsNullOrEmpty(item.NATIONAL_NAME) && string.IsNullOrEmpty(item.NATIONAL_NAME)
+                                // && (!item.MANUFACTURED_YEAR.HasValue) && (!item.MANUFACTURED_YEAR.HasValue)
+                                // && (!item.USED_YEAR.HasValue) && (!item.USED_YEAR.HasValue)
+                                // && string.IsNullOrEmpty(item.CIRCULATION_NUMBER) && string.IsNullOrEmpty(item.CIRCULATION_NUMBER)
+                                // && (!item.MAX_SERVICE_PER_DAY.HasValue);
+                                //if (!checkNull)
+                                //{
+                                //    listAfterRemove.Add(item);
+                                //}
                                 bool checkNull =
-                                 string.IsNullOrEmpty(item.MACHINE_CODE) && string.IsNullOrEmpty(item.MACHINE_NAME) && string.IsNullOrEmpty(item.MACHINE_NAME) && string.IsNullOrEmpty(item.MACHINE_GROUP_CODE) && string.IsNullOrEmpty(item.MACHINE_GROUP_CODE) && string.IsNullOrEmpty(item.ROOM_IDS) && string.IsNullOrEmpty(item.ROOM_IDS) && string.IsNullOrEmpty(item.INTEGRATE_ADDRESS) && string.IsNullOrEmpty(item.INTEGRATE_ADDRESS) && string.IsNullOrEmpty(item.SERIAL_NUMBER) && string.IsNullOrEmpty(item.SERIAL_NUMBER) && string.IsNullOrEmpty(item.SOURCE_CODE) && string.IsNullOrEmpty(item.SOURCE_CODE) && (!item.MAX_SERVICE_PER_DAY.HasValue);
+        string.IsNullOrEmpty(item.MACHINE_CODE)
+        && string.IsNullOrEmpty(item.MACHINE_NAME)
+        && string.IsNullOrEmpty(item.SERIAL_NUMBER)
+        && string.IsNullOrEmpty(item.SOURCE_CODE)
+        && string.IsNullOrEmpty(item.ROOM_IDS)
+        && string.IsNullOrEmpty(item.INTEGRATE_ADDRESS)
+        && string.IsNullOrEmpty(item.SYMBOL)
+        && string.IsNullOrEmpty(item.MACHINE_GROUP_CODE)
+        && string.IsNullOrEmpty(item.MANUFACTURER_NAME)
+        && string.IsNullOrEmpty(item.NATIONAL_NAME)
+        && string.IsNullOrEmpty(item.CIRCULATION_NUMBER)
+        && !item.MANUFACTURED_YEAR.HasValue
+        && !item.USED_YEAR.HasValue
+        && !item.MAX_SERVICE_PER_DAY.HasValue;
+
                                 if (!checkNull)
                                 {
                                     listAfterRemove.Add(item);
@@ -234,7 +268,20 @@ namespace HIS.Desktop.Plugins.HisMachineImport.HisMachineImport
                     // check trung trong file import
                     if (!string.IsNullOrEmpty(item.MACHINE_CODE) && item.MACHINE_CODE != "")
                     {
-                        var count = _CurrentAdosAdd.Where(o => o.MACHINE_CODE == item.MACHINE_CODE && o.MACHINE_NAME == item.MACHINE_NAME && o.SERIAL_NUMBER == item.SERIAL_NUMBER && o.SOURCE_CODE == item.SOURCE_CODE && o.ROOM_IDS == item.ROOM_IDS && o.INTEGRATE_ADDRESS == item.INTEGRATE_ADDRESS && o.MAX_SERVICE_PER_DAY == item.MAX_SERVICE_PER_DAY && o.MACHINE_GROUP_CODE == item.MACHINE_GROUP_CODE).ToList();
+                        var count = _CurrentAdosAdd.Where(o => o.MACHINE_CODE == item.MACHINE_CODE && 
+                                                            o.MACHINE_NAME == item.MACHINE_NAME && 
+                                                            o.SERIAL_NUMBER == item.SERIAL_NUMBER && 
+                                                            o.SOURCE_CODE == item.SOURCE_CODE && 
+                                                            o.ROOM_IDS == item.ROOM_IDS && 
+                                                            o.INTEGRATE_ADDRESS == item.INTEGRATE_ADDRESS && 
+                                                            o.MAX_SERVICE_PER_DAY == item.MAX_SERVICE_PER_DAY && 
+                                                            o.MACHINE_GROUP_CODE == item.MACHINE_GROUP_CODE &&
+                                                            o.SYMBOL == item.SYMBOL &&
+                                                            o.MANUFACTURER_NAME == item.MANUFACTURER_NAME &&
+                                                            o.NATIONAL_NAME == item.NATIONAL_NAME &&
+                                                            o.MANUFACTURED_YEAR == item.MANUFACTURED_YEAR &&
+                                                            o.USED_YEAR == item.USED_YEAR &&
+                                                            o.CIRCULATION_NUMBER == item.CIRCULATION_NUMBER).GroupBy(o => o.MACHINE_CODE).Select(o => o.FirstOrDefault()).ToList();
                         if (count.Count > 1)
                             checkTrungTrongFile = true;
                     }
@@ -264,7 +311,7 @@ namespace HIS.Desktop.Plugins.HisMachineImport.HisMachineImport
                         if (item.MACHINE_CODE.Length > 100)
                         {
                             if (error != "") error += " | ";
-                            error += string.Format(Message.MessageImport.Maxlength, "Mã máy CLS");
+                            error += string.Format(Message.MessageImport.Maxlength, "Mã máy CLS", 100);
                         }
                         lstMachineCheck = BackendDataWorker.Get<HIS_MACHINE>().Where(p => p.MACHINE_CODE == item.MACHINE_CODE).ToList();
                         if (lstMachineCheck != null && lstMachineCheck.Count > 0)
@@ -299,7 +346,7 @@ namespace HIS.Desktop.Plugins.HisMachineImport.HisMachineImport
                         if (item.MACHINE_NAME.Length > 200)
                         {
                             if (error != "") error += " | ";
-                            error += string.Format(Message.MessageImport.Maxlength, "Tên máy CLS");
+                            error += string.Format(Message.MessageImport.Maxlength, "Tên máy CLS", 200);
                         }
                     }
                     if (!string.IsNullOrEmpty(item.SERIAL_NUMBER))
@@ -307,15 +354,23 @@ namespace HIS.Desktop.Plugins.HisMachineImport.HisMachineImport
                         if (item.SERIAL_NUMBER.Length > 200)
                         {
                             if (error != "") error += " | ";
-                            error += string.Format(Message.MessageImport.Maxlength, "Số serial ");
+                            error += string.Format(Message.MessageImport.Maxlength, "Số serial ", 200);
+                        }
+                    }
+                    if (!string.IsNullOrEmpty(item.SOURCE_CODE))
+                    {
+                        if (item.SOURCE_CODE.Length > 2)
+                        {
+                            if (error != "") error += " | ";
+                            error += string.Format(Message.MessageImport.Maxlength, "Tên nguồn kinh phí", 2);
                         }
                     }
                     if (!string.IsNullOrEmpty(item.INTEGRATE_ADDRESS))
                     {
-                        if (item.INTEGRATE_ADDRESS.Length > 500)
+                        if (Encoding.UTF8.GetByteCount(item.INTEGRATE_ADDRESS) > 500)
                         {
                             if (error != "") error += " | ";
-                            error += string.Format(Message.MessageImport.Maxlength, "Địa chỉ tích hợp");
+                            error += string.Format(Message.MessageImport.Maxlength, "Địa chỉ tích hợp", 500);
                         }
                     }
                     if (!string.IsNullOrEmpty(item.MACHINE_GROUP_CODE))
@@ -323,7 +378,58 @@ namespace HIS.Desktop.Plugins.HisMachineImport.HisMachineImport
                         if (item.MACHINE_GROUP_CODE.Length > 10)
                         {
                             if (error != "") error += " | ";
-                            error += string.Format(Message.MessageImport.Maxlength, "Mã nhóm máy thực hiện");
+                            error += string.Format(Message.MessageImport.Maxlength, "Mã nhóm máy thực hiện", 10);
+                        }
+                    }
+                    if (!string.IsNullOrEmpty(item.SYMBOL))
+                    {
+                        if (Encoding.UTF8.GetByteCount(item.SYMBOL) > 500)
+                        {
+                            if (error != "") error += " | ";
+                            error += string.Format(Message.MessageImport.Maxlength, "Ký hiệu", 500);
+                        }
+                    }
+                    if (!string.IsNullOrEmpty(item.MANUFACTURER_NAME))
+                    {
+                        if (Encoding.UTF8.GetByteCount(item.MANUFACTURER_NAME) > 500)
+                        {
+                            if (error != "") error += " | ";
+                            error += string.Format(Message.MessageImport.Maxlength, "Tên công ty sản xuất", 500);
+                        }
+                    }
+                    if (!string.IsNullOrEmpty(item.NATIONAL_NAME))
+                    {
+                        if (Encoding.UTF8.GetByteCount(item.NATIONAL_NAME) > 500)
+                        {
+                            if (error != "") error += " | ";
+                            error += string.Format(Message.MessageImport.Maxlength, "Tên nước sản xuất", 500);
+                        }
+                    }
+                    if (item.MANUFACTURED_YEAR.HasValue)
+                    {
+                        var year = item.MANUFACTURED_YEAR.Value;
+                        if (year < 0 || year > 9999)
+                        {
+                            if (error != "") error += " | ";
+                            error += "Năm sản xuất vượt quá 4 ký tự";
+                        }
+                    }
+
+                    if (item.USED_YEAR.HasValue)
+                    {
+                        var year = item.USED_YEAR.Value;
+                        if (year < 0 || year > 9999)
+                        {
+                            if (error != "") error += " | ";
+                            error += "Năm sử dụng vượt quá 4 ký tự";
+                        }
+                    }
+                    if (!string.IsNullOrEmpty(item.CIRCULATION_NUMBER))
+                    {
+                        if (item.CIRCULATION_NUMBER.Length > 22)
+                        {
+                            if (error != "") error += " | ";
+                            error += string.Format(Message.MessageImport.Maxlength, "Số lưu hành", 22);
                         }
                     }
 
@@ -392,6 +498,12 @@ namespace HIS.Desktop.Plugins.HisMachineImport.HisMachineImport
                         ado.INTEGRATE_ADDRESS = item.INTEGRATE_ADDRESS;
                         ado.MAX_SERVICE_PER_DAY = item.MAX_SERVICE_PER_DAY;
                         ado.MACHINE_GROUP_CODE = item.MACHINE_GROUP_CODE;
+                        ado.SYMBOL = item.SYMBOL;
+                        ado.MANUFACTURER_NAME = item.MANUFACTURER_NAME;
+                        ado.NATIONAL_NAME = item.NATIONAL_NAME;
+                        ado.MANUFACTURED_YEAR = item.MANUFACTURED_YEAR;
+                        ado.USED_YEAR = item.USED_YEAR;
+                        ado.CIRCULATION_NUMBER = item.CIRCULATION_NUMBER;
                         datas.Add(ado);
                     }
                 }

@@ -25,7 +25,7 @@ namespace HIS.Desktop.Plugins.HisMachineImport.Message
 {
     class MessageImport
     {
-        internal const string Maxlength = "{0} vượt quá maxlength";
+        internal const string Maxlength = "{0} vượt quá {1} ký tự";
         internal const string KhongHopLe = "{0} không hợp lệ";
         internal const string ThieuTruongDL = "Thiếu trường {0}";
         internal const string DaTonTai = " {0} đã tồn tại trong danh sách máy CLS";

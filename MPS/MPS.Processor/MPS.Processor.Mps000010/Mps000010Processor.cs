@@ -61,6 +61,21 @@ namespace MPS.Processor.Mps000010
                         dicImage.Add(Mps000010ExtendSingleKey.TREATMENT_CODE_BAR, barcodeTreatment);
                     }
 
+                    if (!String.IsNullOrEmpty(rdo.currentTreatment.STORE_CODE))
+                    {
+                        Inventec.Common.BarcodeLib.Barcode barcodeTreatment = new Inventec.Common.BarcodeLib.Barcode(rdo.currentTreatment.STORE_CODE);
+                        barcodeTreatment.Alignment = Inventec.Common.BarcodeLib.AlignmentPositions.CENTER;
+                        barcodeTreatment.IncludeLabel = false;
+                        barcodeTreatment.Width = 200;
+                        barcodeTreatment.Height = 40;
+                        barcodeTreatment.RotateFlipType = RotateFlipType.Rotate180FlipXY;
+                        barcodeTreatment.LabelPosition = Inventec.Common.BarcodeLib.LabelPositions.BOTTOMCENTER;
+                        barcodeTreatment.EncodedType = Inventec.Common.BarcodeLib.TYPE.CODE128;
+                        barcodeTreatment.IncludeLabel = true;
+
+                        dicImage.Add(Mps000010ExtendSingleKey.STORE_CODE_BAR, barcodeTreatment);
+                    }
+
                     if (!String.IsNullOrEmpty(rdo.currentTreatment.TREATMENT_CODE))
                     {
                         Inventec.Common.BarcodeLib.Barcode barcodeAppointment = new Inventec.Common.BarcodeLib.Barcode(rdo.currentTreatment.TREATMENT_CODE);

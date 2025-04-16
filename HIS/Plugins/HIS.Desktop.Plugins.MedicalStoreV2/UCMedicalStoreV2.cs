@@ -461,35 +461,100 @@ namespace HIS.Desktop.Plugins.MedicalStoreV2
                 CommonParam param = new CommonParam();
                 HisDataStoreView1Filter filter = new HisDataStoreView1Filter();
                 filter.IS_ACTIVE = IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE;
-                var currentDataStore = new BackendAdapter(param).Get<List<V_HIS_DATA_STORE_1>>("api/HisDataStore/GetView1", ApiConsumers.MosConsumer, filter, param).Where(p => p.ROOM_ID == this.currentModule.RoomId || p.ROOM_TYPE_ID == this.currentModule.RoomTypeId).ToList();
+
+                var currentDataStore = new BackendAdapter(param).Get<List<V_HIS_DATA_STORE_1>>(
+                    "api/HisDataStore/GetView1", ApiConsumers.MosConsumer, filter, param)
+                    .Where(p => p.ROOM_ID == this.currentModule.RoomId ||
+                                p.ROOM_TYPE_ID == this.currentModule.RoomTypeId)
+                    .ToList();
 
                 if (currentDataStore != null && currentDataStore.Count > 0)
                 {
                     var listAdo = new List<DataStoreADO>();
+
+                    Dictionary<long, bool> previousCheckStates = new Dictionary<long, bool>();
+                    if (treeListMedicalStore.DataSource is BindingList<DataStoreADO> previousData)
+                    {
+                        foreach (var item in previousData)
+                        {
+                            previousCheckStates[item.ID] = item.CheckStore;
+                        }
+                    }
+
                     foreach (var item in currentDataStore)
                     {
                         var ado = new DataStoreADO(item);
-                        ado.CheckStore = true;
+                        if (previousCheckStates.ContainsKey(ado.ID))
+                        {
+                            ado.CheckStore = previousCheckStates[ado.ID];
+                        }
+                        else
+                        {
+                            ado.CheckStore = true; 
+                        }
+
                         listAdo.Add(ado);
                     }
-
                     var binding = new BindingList<DataStoreADO>(listAdo);
 
-                    if (currentDataStore != null)
-                    {
-                        treeListMedicalStore.KeyFieldName = "ID";
-                        treeListMedicalStore.ParentFieldName = "PARENT_ID";
-                        treeListMedicalStore.DataSource = binding;
-                        checkEdit.ValueChecked = true;
-                    }
+                    treeListMedicalStore.KeyFieldName = "ID";
+                    treeListMedicalStore.ParentFieldName = "PARENT_ID";
+                    treeListMedicalStore.DataSource = binding;
                 }
                 checkEdit.ValueChecked = false;
-
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
+            //try
+            //{
+            //    CommonParam param = new CommonParam();
+            //    HisDataStoreView1Filter filter = new HisDataStoreView1Filter();
+            //    filter.IS_ACTIVE = IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE;
+            //    var currentDataStore = new BackendAdapter(param).Get<List<V_HIS_DATA_STORE_1>>("api/HisDataStore/GetView1", ApiConsumers.MosConsumer, filter, param).Where(p => p.ROOM_ID == this.currentModule.RoomId || p.ROOM_TYPE_ID == this.currentModule.RoomTypeId).ToList();
+
+            //    if (currentDataStore != null && currentDataStore.Count > 0)
+            //    {
+            //        var listAdo = new List<DataStoreADO>();
+            //        foreach (var item in currentDataStore)
+            //        {
+            //            var ado = new DataStoreADO(item);
+            //            if (treeListMedicalStore.DataSource != null)
+            //            {
+            //                BindingList<DataStoreADO> existingData = (BindingList<DataStoreADO>)treeListMedicalStore.DataSource;
+            //                var existingItem = existingData.FirstOrDefault(o => o.ID == ado.ID);
+            //                if (existingItem != null)
+            //                {
+            //                    ado.CheckStore = existingItem.CheckStore;
+            //                }
+            //                else
+            //                {
+            //                    ado.CheckStore = true; 
+            //                }
+            //            }
+            //            else
+            //            {
+            //                ado.CheckStore = true;
+            //            }
+            //            listAdo.Add(ado);
+            //        }
+
+            //        var binding = new BindingList<DataStoreADO>(listAdo);
+
+            //        treeListMedicalStore.KeyFieldName = "ID";
+            //        treeListMedicalStore.ParentFieldName = "PARENT_ID";
+            //        treeListMedicalStore.DataSource = binding;
+            //    }
+            //    else
+            //    {
+            //        treeListMedicalStore.DataSource = null;
+            //    }
+            //}
+            //catch (Exception ex)
+            //{
+            //    Inventec.Common.Logging.LogSystem.Error(ex);
+            //}
         }
 
         private void RefreshDataAfterSave()

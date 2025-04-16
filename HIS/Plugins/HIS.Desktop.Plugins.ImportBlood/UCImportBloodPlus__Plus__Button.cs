@@ -389,6 +389,8 @@ namespace HIS.Desktop.Plugins.ImportBlood
                     var sdo = getImpMestTypeSDORequest(impMestType, IMSys.DbConfig.HIS_RS.HIS_IMP_MEST_STT.ID__REQUEST);
                     if (sdo != null)
                     {
+                        //btnHoiDongKiemNhap.Enabled = false;
+
                         if (sdo.GetType() == typeof(HisImpMestManuSDO))
                         {
                             HisImpMestManuSDO rs = null;
@@ -406,6 +408,9 @@ namespace HIS.Desktop.Plugins.ImportBlood
                                 this.resultADO = new ResultImpMestADO(rs);
                                 this.resultADO.HisBloodSDOs = new List<HIS_BLOOD>();
                                 this.resultADO.HisBloodSDOs = rs.ManuBloods;
+
+
+                                this.InitMenuToButtonPrint(resultADO.HisManuSDO.ImpMest);
 
                             }
                         }
@@ -486,7 +491,9 @@ namespace HIS.Desktop.Plugins.ImportBlood
                         if (success)
                         {
                             this.ProcessSaveSuccess();
-                            btnPrint.Enabled = true;
+                            impMestId = resultADO.ImpMestId;
+                            btnHoiDongKiemNhap.Enabled = true;
+                            cboPrint.Enabled = true;
                             btnSave.Enabled = false;
                             btnSaveDraft.Enabled = false;
                         }
@@ -612,7 +619,7 @@ namespace HIS.Desktop.Plugins.ImportBlood
                         if (success)
                         {
                             this.ProcessSaveSuccess();
-                            btnPrint.Enabled = true;
+                            cboPrint.Enabled = true;
                         }
                     }
                 }
@@ -647,7 +654,7 @@ namespace HIS.Desktop.Plugins.ImportBlood
                 this.SetDataSourceGridBlood();
                 this.SetDefaultValueMediStock();
                 this.ProcessChoiceBloodTypeADO(null);
-                btnPrint.Enabled = false;
+                cboPrint.Enabled = false;
                 this.bloodTypeProcessor.FocusKeyword(this.ucBloodType);
                 AllowImpMest();
 
@@ -662,27 +669,84 @@ namespace HIS.Desktop.Plugins.ImportBlood
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
-
-        private void btnPrint_Click(object sender, EventArgs e)
+        private void cboPrint_Click(object sender, EventArgs e)
         {
             try
             {
-                if (!btnPrint.Enabled || this.resultADO == null)
+                if (!cboPrint.Enabled || this.resultADO == null)
                     return;
-                Inventec.Common.RichEditor.RichEditorStore store = new Inventec.Common.RichEditor.RichEditorStore(ApiConsumers.SarConsumer, ConfigSystems.URI_API_SAR, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetLanguage(), GlobalVariables.TemnplatePathFolder);
-                if (resultADO != null && resultADO.ImpMestTypeId == IMSys.DbConfig.HIS_RS.HIS_IMP_MEST_TYPE.ID__NCC)
-                {
-                    store.RunPrintTemplate(PrintTypeCodeStore.PRINT_TYPE_CODE__PhieuNhapMauTuNhaCungCap_MPS000149, delegatePrintTemplate);
-                }
-                else
-                {
-                    store.RunPrintTemplate(PrintTypeCodeStore.PRINT_TYPE_CODE__PhieuNhapMauKhacDauKyKiemKe_MPS000212, delegatePrintTemplate);
-                }
+                //Inventec.Common.RichEditor.RichEditorStore store = new Inventec.Common.RichEditor.RichEditorStore(ApiConsumers.SarConsumer, ConfigSystems.URI_API_SAR, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetLanguage(), GlobalVariables.TemnplatePathFolder);
+                //if (resultADO != null && resultADO.ImpMestTypeId == IMSys.DbConfig.HIS_RS.HIS_IMP_MEST_TYPE.ID__NCC)
+                //{
+                //    store.RunPrintTemplate(PrintTypeCodeStore.PRINT_TYPE_CODE__PhieuNhapMauTuNhaCungCap_MPS000149, delegatePrintTemplate);
+                //}
+                //else
+                //{
+                //    store.RunPrintTemplate(PrintTypeCodeStore.PRINT_TYPE_CODE__PhieuNhapMauKhacDauKyKiemKe_MPS000212, delegatePrintTemplate);
+                //}
+                cboPrint.ShowDropDown();
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
+        }
+        //private void btnRoleUser_Click(object sender, EventArgs e)
+        //{
+        //    try
+        //    {
+        //        if (this.impMestId > 0)
+        //        {
+        //            Inventec.Desktop.Common.Message.WaitingManager.Show();
+        //            Inventec.Desktop.Common.Modules.Module moduleData = HIS.Desktop.LocalStorage.LocalData.GlobalVariables.currentModuleRaws.Where(o => o.ModuleLink == "HIS.Desktop.Plugins.HisRoleUser").FirstOrDefault();
+        //            if (moduleData == null) Inventec.Common.Logging.LogSystem.Error("khong tim thay moduleLink = HIS.Desktop.Plugins.HisRoleUser");
+        //            if (moduleData.IsPlugin && moduleData.ExtensionInfo != null)
+        //            {
+        //                List<object> listArgs = new List<object>();
+        //                MOS.EFMODEL.DataModels.HIS_IMP_MEST ado = new HIS_IMP_MEST();
+        //                ado.ID = this.impMestId;
+        //                ado.IMP_MEST_TYPE_ID = this.IMP_MEST_TYPE_ID;
+        //                ado.IMP_MEST_STT_ID = this.ImpMestSttId;
+        //                listArgs.Add(ado);
+        //                listArgs.Add(this.impMest);
+        //                listArgs.Add(this.impMestMaterials);
+        //                listArgs.Add(this.impMestMedicines);
+        //                listArgs.Add(this.impMestBloods);
+        //                listArgs.Add(HIS.Desktop.Utility.PluginInstance.GetModuleWithWorkingRoom(moduleData, 0, 0));
+        //                var extenceInstance = HIS.Desktop.Utility.PluginInstance.GetPluginInstance(HIS.Desktop.Utility.PluginInstance.GetModuleWithWorkingRoom(moduleData, 0, 0), listArgs);
+        //                if (extenceInstance == null) throw new ArgumentNullException("moduleData is null");
+
+        //                ((System.Windows.Forms.Form)extenceInstance).ShowDialog();
+        //            }
+        //            Inventec.Desktop.Common.Message.WaitingManager.Hide();
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Inventec.Common.Logging.LogSystem.Error(ex);
+        //    }
+        //}
+
+        private void btnPrint_Click(object sender, EventArgs e)
+        {
+            //try
+            //{
+            //    if (!btnHoi.Enabled || this.resultADO == null)
+            //        return;
+            //    Inventec.Common.RichEditor.RichEditorStore store = new Inventec.Common.RichEditor.RichEditorStore(ApiConsumers.SarConsumer, ConfigSystems.URI_API_SAR, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetLanguage(), GlobalVariables.TemnplatePathFolder);
+            //    if (resultADO != null && resultADO.ImpMestTypeId == IMSys.DbConfig.HIS_RS.HIS_IMP_MEST_TYPE.ID__NCC)
+            //    {
+            //        store.RunPrintTemplate(PrintTypeCodeStore.PRINT_TYPE_CODE__PhieuNhapMauTuNhaCungCap_MPS000149, delegatePrintTemplate);
+            //    }
+            //    else
+            //    {
+            //        store.RunPrintTemplate(PrintTypeCodeStore.PRINT_TYPE_CODE__PhieuNhapMauKhacDauKyKiemKe_MPS000212, delegatePrintTemplate);
+            //    }
+            //}
+            //catch (Exception ex)
+            //{
+            //    Inventec.Common.Logging.LogSystem.Error(ex);
+            //}
         }
 
         private void repositoryItemBtnDelete_ButtonClick(object sender, DevExpress.XtraEditors.Controls.ButtonPressedEventArgs e)
@@ -1049,7 +1113,7 @@ namespace HIS.Desktop.Plugins.ImportBlood
                 txtPackingTime.Text = "";
                 dtPackingTime.EditValue = null;
                 dtExpiredDate.EditValue = null;
-                btnPrint.Enabled = true;
+                //cboPrint.Enabled = true;
                 btnSaveDraft.Enabled = true;
                 btnSave.Enabled = true;
                 RemoveControlDxError1();

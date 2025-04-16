@@ -52,6 +52,7 @@ using System.Resources;
 using Inventec.Desktop.Common.LanguageManager;
 using Inventec.Desktop.Common.Controls.ValidationRule;
 using DevExpress.XtraEditors.Controls;
+using EMR.URI;
 
 
 namespace EMR.Desktop.Plugins.EmrFlow.EmrFlow
@@ -235,7 +236,7 @@ namespace EMR.Desktop.Plugins.EmrFlow.EmrFlow
             try
             {
 
-                var data = BackendDataWorker.Get<V_HIS_ROOM>().Where(o => o.IS_ACTIVE == 1).ToList();
+                var data = BackendDataWorker.Get<V_HIS_ROOM>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE && (EmrBusinessData != null ? o.DEPARTMENT_CODE == EmrBusinessData.DEPARTMENT_CODE: true)).ToList();
                 List<ColumnInfo> columInfor = new List<ColumnInfo>();
                 columInfor.Add(new ColumnInfo("ROOM_CODE", "Mã phòng ký", 150, 1));
                 columInfor.Add(new ColumnInfo("ROOM_NAME", "Tên phòng ký", 200, 1));
@@ -1162,7 +1163,10 @@ namespace EMR.Desktop.Plugins.EmrFlow.EmrFlow
             try
             {
                 List<V_HIS_ROOM> listResult = new List<V_HIS_ROOM>();
-                listResult = BackendDataWorker.Get<V_HIS_ROOM>().Where(o => (o.ROOM_CODE != null && o.ROOM_CODE == Data.ROOM_CODE && o.ROOM_TYPE_CODE == Data.ROOM_TYPE_CODE)).ToList();
+                listResult = BackendDataWorker.Get<V_HIS_ROOM>().Where(o => o.ROOM_CODE != null
+                        && o.ROOM_CODE == Data.ROOM_CODE
+                        && o.ROOM_TYPE_CODE == Data.ROOM_TYPE_CODE) // Lọc theo khoa nếu có
+                .ToList();
 
                 cboRoomCode.EditValue = listResult[0].ID;
                 txtRoomCode.Text = listResult[0].ROOM_CODE;
