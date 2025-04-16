@@ -1974,7 +1974,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
 
                 if (this.gridViewServicePaty.FocusedRowModified)
                     this.gridViewServicePaty.UpdateCurrentRow();
-                if (!btnAdd1.Enabled)
+                if (!btnAdd1.Enabled)   
                     return;
                 btnAdd1.Focus();
                 positionHandleControl = -1;
@@ -2247,7 +2247,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                 this.currrentServiceAdo.activeIngrBhytName = this.txtActiveIngrBhytName.Text.Trim();
                 if (cboDosageForm.EditValue != null)
                 {
-                    this.currrentServiceAdo.HisMedicine.DOSAGE_FORM = cboDosageForm.Text;
+                    this.currrentServiceAdo.DOSAGE_FORM = cboDosageForm.Text;
                 }
                 else
                 {
@@ -2396,7 +2396,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
 
 
                     this.currrentServiceAdo.HisMedicine.ACTIVE_INGR_BHYT_NAME = this.currrentServiceAdo.activeIngrBhytName;
-                    this.currrentServiceAdo.HisMedicine.DOSAGE_FORM = this.currrentServiceAdo.HisMedicine.DOSAGE_FORM;
+                    this.currrentServiceAdo.HisMedicine.DOSAGE_FORM = this.currrentServiceAdo.DOSAGE_FORM;
                     this.currrentServiceAdo.HisMedicine.MEDICINE_USE_FORM_ID = this.currrentServiceAdo.medicineUseFormId;
 
                     //                    if (this.currrentServiceAdo.HisMedicinePatys == null)
@@ -3272,6 +3272,16 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                 }
 
                 //WaitingManager.Show();
+
+                if (cboDosageForm.EditValue != null)
+                {
+                    this.currrentServiceAdo.DOSAGE_FORM = cboDosageForm.Text;
+                }
+                else
+                {
+                    DevExpress.XtraEditors.XtraMessageBox.Show("Dạng bào chế không được để trống!", "Thông báo");
+                    return;
+                }
                 this.currrentServiceAdo.TEMPERATURE = spnTemperature.EditValue != null ? (decimal?)spnTemperature.Value : null;
 
                 this.currrentServiceAdo.TDL_BID_GROUP_CODE = txtBidGroupCode.Text;
@@ -3419,17 +3429,9 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                     this.currrentServiceAdo.HisMedicine.PACKING_TYPE_NAME = this.currrentServiceAdo.packingTypeName;
                     this.currrentServiceAdo.HisMedicine.HEIN_SERVICE_BHYT_NAME = this.currrentServiceAdo.heinServiceBhytName;
                     this.currrentServiceAdo.HisMedicine.ACTIVE_INGR_BHYT_NAME = this.currrentServiceAdo.activeIngrBhytName;
-                    if (cboDosageForm.EditValue != null)
-                    {
-                        this.currrentServiceAdo.HisMedicine.DOSAGE_FORM = cboDosageForm.Text;
-                    }
-                    else
-                    {
-                        DevExpress.XtraEditors.XtraMessageBox.Show("Dạng bào chế không được để trống!", "Thông báo");
-                        return;
-                    }
-                        
-                    
+
+                    this.currrentServiceAdo.HisMedicine.DOSAGE_FORM = this.currrentServiceAdo.DOSAGE_FORM;
+
                     this.currrentServiceAdo.HisMedicine.MEDICINE_USE_FORM_ID = this.currrentServiceAdo.medicineUseFormId;
 
                     List<string> lstRs = new List<string>();
@@ -3516,6 +3518,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                         this.currrentServiceAdo.BanBangGiaNhap = false;
                     }
 
+                    this.currrentServiceAdo.HisMaterial.AMOUNT = this.currrentServiceAdo.IMP_AMOUNT;
                     this.currrentServiceAdo.HisMaterial.AMOUNT = this.currrentServiceAdo.IMP_AMOUNT;
                     this.currrentServiceAdo.HisMaterial.IMP_PRICE = this.currrentServiceAdo.IMP_PRICE;
                     this.currrentServiceAdo.HisMaterial.DOCUMENT_PRICE = this.currrentServiceAdo.DOCUMENT_PRICE;
