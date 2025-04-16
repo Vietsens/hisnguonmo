@@ -56,6 +56,10 @@ namespace HIS.Desktop.Plugins.TreatmentFinish.CloseTreatment
             this.barManager1 = new DevExpress.XtraBars.BarManager(this.components);
             this.bar1 = new DevExpress.XtraBars.Bar();
             this.barButtonItemSave = new DevExpress.XtraBars.BarButtonItem();
+            this.barDockControlTop = new DevExpress.XtraBars.BarDockControl();
+            this.barDockControlBottom = new DevExpress.XtraBars.BarDockControl();
+            this.barDockControlLeft = new DevExpress.XtraBars.BarDockControl();
+            this.barDockControlRight = new DevExpress.XtraBars.BarDockControl();
             this.chkKyPhieuHenKham = new DevExpress.XtraEditors.CheckEdit();
             this.chkInPhieuHenKham = new DevExpress.XtraEditors.CheckEdit();
             this.chkKhongCanhBaoNgayNghi = new DevExpress.XtraEditors.CheckEdit();
@@ -99,10 +103,6 @@ namespace HIS.Desktop.Plugins.TreatmentFinish.CloseTreatment
             this.lblKyPhieuHenKham = new DevExpress.XtraLayout.LayoutControlItem();
             this.lblXemTruocKhiIn = new DevExpress.XtraLayout.LayoutControlItem();
             this.emptySpaceItem2 = new DevExpress.XtraLayout.EmptySpaceItem();
-            this.barDockControlTop = new DevExpress.XtraBars.BarDockControl();
-            this.barDockControlBottom = new DevExpress.XtraBars.BarDockControl();
-            this.barDockControlLeft = new DevExpress.XtraBars.BarDockControl();
-            this.barDockControlRight = new DevExpress.XtraBars.BarDockControl();
             this.layoutControlItem3 = new DevExpress.XtraLayout.LayoutControlItem();
             this.dxValidationProvider = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
@@ -178,11 +178,11 @@ namespace HIS.Desktop.Plugins.TreatmentFinish.CloseTreatment
             // 
             // chkXemTrcKhiIn
             // 
-            this.chkXemTrcKhiIn.Location = new System.Drawing.Point(519, 535);
+            this.chkXemTrcKhiIn.Location = new System.Drawing.Point(518, 535);
             this.chkXemTrcKhiIn.MenuManager = this.barManager1;
             this.chkXemTrcKhiIn.Name = "chkXemTrcKhiIn";
             this.chkXemTrcKhiIn.Properties.Caption = "";
-            this.chkXemTrcKhiIn.Size = new System.Drawing.Size(29, 19);
+            this.chkXemTrcKhiIn.Size = new System.Drawing.Size(30, 19);
             this.chkXemTrcKhiIn.StyleController = this.layoutControl1;
             this.chkXemTrcKhiIn.TabIndex = 21;
             this.chkXemTrcKhiIn.CheckedChanged += new System.EventHandler(this.chkXemTrcKhiIn_CheckedChanged);
@@ -191,6 +191,10 @@ namespace HIS.Desktop.Plugins.TreatmentFinish.CloseTreatment
             // 
             this.barManager1.Bars.AddRange(new DevExpress.XtraBars.Bar[] {
             this.bar1});
+            this.barManager1.DockControls.Add(this.barDockControlTop);
+            this.barManager1.DockControls.Add(this.barDockControlBottom);
+            this.barManager1.DockControls.Add(this.barDockControlLeft);
+            this.barManager1.DockControls.Add(this.barDockControlRight);
             this.barManager1.Form = this;
             this.barManager1.Items.AddRange(new DevExpress.XtraBars.BarItem[] {
             this.barButtonItemSave});
@@ -215,24 +219,52 @@ namespace HIS.Desktop.Plugins.TreatmentFinish.CloseTreatment
             this.barButtonItemSave.Name = "barButtonItemSave";
             this.barButtonItemSave.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.barButtonItemSave_ItemClick);
             // 
+            // barDockControlTop
+            // 
+            this.barDockControlTop.CausesValidation = false;
+            this.barDockControlTop.Dock = System.Windows.Forms.DockStyle.Top;
+            this.barDockControlTop.Location = new System.Drawing.Point(0, 0);
+            this.barDockControlTop.Size = new System.Drawing.Size(550, 29);
+            // 
+            // barDockControlBottom
+            // 
+            this.barDockControlBottom.CausesValidation = false;
+            this.barDockControlBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.barDockControlBottom.Location = new System.Drawing.Point(0, 611);
+            this.barDockControlBottom.Size = new System.Drawing.Size(550, 0);
+            // 
+            // barDockControlLeft
+            // 
+            this.barDockControlLeft.CausesValidation = false;
+            this.barDockControlLeft.Dock = System.Windows.Forms.DockStyle.Left;
+            this.barDockControlLeft.Location = new System.Drawing.Point(0, 29);
+            this.barDockControlLeft.Size = new System.Drawing.Size(0, 582);
+            // 
+            // barDockControlRight
+            // 
+            this.barDockControlRight.CausesValidation = false;
+            this.barDockControlRight.Dock = System.Windows.Forms.DockStyle.Right;
+            this.barDockControlRight.Location = new System.Drawing.Point(550, 29);
+            this.barDockControlRight.Size = new System.Drawing.Size(0, 582);
+            // 
             // chkKyPhieuHenKham
             // 
-            this.chkKyPhieuHenKham.Location = new System.Drawing.Point(409, 535);
+            this.chkKyPhieuHenKham.Location = new System.Drawing.Point(397, 535);
             this.chkKyPhieuHenKham.MenuManager = this.barManager1;
             this.chkKyPhieuHenKham.Name = "chkKyPhieuHenKham";
             this.chkKyPhieuHenKham.Properties.Caption = "";
-            this.chkKyPhieuHenKham.Size = new System.Drawing.Size(19, 19);
+            this.chkKyPhieuHenKham.Size = new System.Drawing.Size(20, 19);
             this.chkKyPhieuHenKham.StyleController = this.layoutControl1;
             this.chkKyPhieuHenKham.TabIndex = 20;
             this.chkKyPhieuHenKham.CheckedChanged += new System.EventHandler(this.chkKyPhieuHenKham_CheckedChanged);
             // 
             // chkInPhieuHenKham
             // 
-            this.chkInPhieuHenKham.Location = new System.Drawing.Point(288, 535);
+            this.chkInPhieuHenKham.Location = new System.Drawing.Point(275, 535);
             this.chkInPhieuHenKham.MenuManager = this.barManager1;
             this.chkInPhieuHenKham.Name = "chkInPhieuHenKham";
             this.chkInPhieuHenKham.Properties.Caption = "";
-            this.chkInPhieuHenKham.Size = new System.Drawing.Size(20, 19);
+            this.chkInPhieuHenKham.Size = new System.Drawing.Size(21, 19);
             this.chkInPhieuHenKham.StyleController = this.layoutControl1;
             this.chkInPhieuHenKham.TabIndex = 19;
             this.chkInPhieuHenKham.CheckedChanged += new System.EventHandler(this.chkInPhieuHenKham_CheckedChanged);
@@ -722,68 +754,44 @@ namespace HIS.Desktop.Plugins.TreatmentFinish.CloseTreatment
             // 
             // lblInPhieuHenKham
             // 
+            this.lblInPhieuHenKham.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.lblInPhieuHenKham.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lblInPhieuHenKham.Control = this.chkInPhieuHenKham;
-            this.lblInPhieuHenKham.Location = new System.Drawing.Point(189, 533);
+            this.lblInPhieuHenKham.Location = new System.Drawing.Point(176, 533);
             this.lblInPhieuHenKham.Name = "lblInPhieuHenKham";
-            this.lblInPhieuHenKham.Size = new System.Drawing.Size(121, 23);
+            this.lblInPhieuHenKham.Size = new System.Drawing.Size(122, 23);
             this.lblInPhieuHenKham.Text = "In phiếu hẹn khám:";
             this.lblInPhieuHenKham.TextSize = new System.Drawing.Size(94, 13);
             // 
             // lblKyPhieuHenKham
             // 
+            this.lblKyPhieuHenKham.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.lblKyPhieuHenKham.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lblKyPhieuHenKham.Control = this.chkKyPhieuHenKham;
-            this.lblKyPhieuHenKham.Location = new System.Drawing.Point(310, 533);
+            this.lblKyPhieuHenKham.Location = new System.Drawing.Point(298, 533);
             this.lblKyPhieuHenKham.Name = "lblKyPhieuHenKham";
-            this.lblKyPhieuHenKham.Size = new System.Drawing.Size(120, 23);
+            this.lblKyPhieuHenKham.Size = new System.Drawing.Size(121, 23);
             this.lblKyPhieuHenKham.Text = "Ký phiếu hẹn khám:";
             this.lblKyPhieuHenKham.TextSize = new System.Drawing.Size(94, 13);
             // 
             // lblXemTruocKhiIn
             // 
+            this.lblXemTruocKhiIn.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.lblXemTruocKhiIn.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lblXemTruocKhiIn.Control = this.chkXemTrcKhiIn;
-            this.lblXemTruocKhiIn.Location = new System.Drawing.Point(430, 533);
+            this.lblXemTruocKhiIn.Location = new System.Drawing.Point(419, 533);
             this.lblXemTruocKhiIn.Name = "lblXemTruocKhiIn";
-            this.lblXemTruocKhiIn.Size = new System.Drawing.Size(120, 23);
+            this.lblXemTruocKhiIn.Size = new System.Drawing.Size(131, 23);
             this.lblXemTruocKhiIn.Text = "Xem trước khi in:";
-            this.lblXemTruocKhiIn.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
-            this.lblXemTruocKhiIn.TextSize = new System.Drawing.Size(84, 13);
-            this.lblXemTruocKhiIn.TextToControlDistance = 3;
+            this.lblXemTruocKhiIn.TextSize = new System.Drawing.Size(94, 13);
             // 
             // emptySpaceItem2
             // 
             this.emptySpaceItem2.AllowHotTrack = false;
             this.emptySpaceItem2.Location = new System.Drawing.Point(0, 533);
             this.emptySpaceItem2.Name = "emptySpaceItem2";
-            this.emptySpaceItem2.Size = new System.Drawing.Size(189, 23);
+            this.emptySpaceItem2.Size = new System.Drawing.Size(176, 23);
             this.emptySpaceItem2.TextSize = new System.Drawing.Size(0, 0);
-            // 
-            // barDockControlTop
-            // 
-            this.barDockControlTop.CausesValidation = false;
-            this.barDockControlTop.Dock = System.Windows.Forms.DockStyle.Top;
-            this.barDockControlTop.Location = new System.Drawing.Point(0, 29);
-            this.barDockControlTop.Size = new System.Drawing.Size(550, 0);
-            // 
-            // barDockControlBottom
-            // 
-            this.barDockControlBottom.CausesValidation = false;
-            this.barDockControlBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.barDockControlBottom.Location = new System.Drawing.Point(0, 611);
-            this.barDockControlBottom.Size = new System.Drawing.Size(550, 0);
-            // 
-            // barDockControlLeft
-            // 
-            this.barDockControlLeft.CausesValidation = false;
-            this.barDockControlLeft.Dock = System.Windows.Forms.DockStyle.Left;
-            this.barDockControlLeft.Location = new System.Drawing.Point(0, 29);
-            this.barDockControlLeft.Size = new System.Drawing.Size(0, 582);
-            // 
-            // barDockControlRight
-            // 
-            this.barDockControlRight.CausesValidation = false;
-            this.barDockControlRight.Dock = System.Windows.Forms.DockStyle.Right;
-            this.barDockControlRight.Location = new System.Drawing.Point(550, 29);
-            this.barDockControlRight.Size = new System.Drawing.Size(0, 582);
             // 
             // layoutControlItem3
             // 
