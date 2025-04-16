@@ -731,9 +731,9 @@ namespace HIS.Desktop.Plugins.BidUpdate
                     .Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE)
                     .ToList();
                 List<ColumnInfo> columnInfos = new List<ColumnInfo>();
-                columnInfos.Add(new ColumnInfo("DOSAGE_FORM_CODE", "", 100, 1));
-                columnInfos.Add(new ColumnInfo("DOSAGE_FORM_NAME", "", 150, 2));
-                ControlEditorADO controlEditorADO = new ControlEditorADO("DOSAGE_FORM_NAME", "DOSAGE_FORM_CODE", columnInfos, false, 350);
+                columnInfos.Add(new ColumnInfo("DOSAGE_FORM_CODE", "Mã", 100, 1));
+                columnInfos.Add(new ColumnInfo("DOSAGE_FORM_NAME", "Tên", 150, 2));
+                ControlEditorADO controlEditorADO = new ControlEditorADO("DOSAGE_FORM_NAME", "ID", columnInfos, false, 350);
                 //Load data vao combobox
                 ControlEditorLoader.Load(cboDosageForm, data, controlEditorADO);
                 cboDosageForm.Properties.ImmediatePopup = true;
@@ -908,6 +908,8 @@ namespace HIS.Desktop.Plugins.BidUpdate
                 this.medicineType = data;
                 if (data.Type == Base.GlobalConfig.THUOC)
                 {
+                    var dosage = BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_DOSAGE_FORM>().Where(o => o.DOSAGE_FORM_NAME == this.medicineType.DOSAGE_FORM).ToList();
+
                     ValidCboDosageForm();
                     //ValidBidPackage(false);
                     xtraTabControl1.SelectedTabPageIndex = 0;
@@ -918,7 +920,15 @@ namespace HIS.Desktop.Plugins.BidUpdate
                     txtPackingType.Text = this.medicineType.PACKING_TYPE_NAME;
                     txtActiveBhyt.Text = this.medicineType.ACTIVE_INGR_BHYT_NAME;
                     cboMediUseForm.EditValue = this.medicineType.MEDICINE_USE_FORM_ID;
-                    cboDosageForm.EditValue = this.medicineType.DOSAGE_FORM;
+                    if (dosage != null && dosage.Count() > 0)
+                    {
+                        cboDosageForm.EditValue = dosage[0].ID;
+                    }
+                    else
+                    {
+                        cboDosageForm.EditValue = null;
+                    }
+                    //cboDosageForm.EditValue = this.medicineType.DOSAGE_FORM;
                     txtNOTE.Text = this.medicineType.NOTE;
 
                     cboDosageForm.Enabled = true;
@@ -1838,6 +1848,7 @@ namespace HIS.Desktop.Plugins.BidUpdate
                 if (xtraTabControl1.SelectedTabPageIndex == 0 && this.medicineType != null && !String.IsNullOrEmpty(this.medicineType.MEDICINE_TYPE_CODE))
                 {
                     var national = BackendDataWorker.Get<SDA.EFMODEL.DataModels.SDA_NATIONAL>().Where(o => o.NATIONAL_NAME == this.medicineType.NATIONAL_NAME).ToList();
+                    var dosage = BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_DOSAGE_FORM>().Where(o => o.DOSAGE_FORM_NAME == this.medicineType.DOSAGE_FORM).ToList();  
                     txtRegisterNumber.Text = this.medicineType.REGISTER_NUMBER;
                     if (national != null && national.Count() > 0)
                     {
@@ -1864,7 +1875,15 @@ namespace HIS.Desktop.Plugins.BidUpdate
                     txtPackingType.Text = HisConfigCFG.IsSet__BHYT ? this.medicineType.PACKING_TYPE_NAME : "";
                     txtActiveBhyt.Text = HisConfigCFG.IsSet__BHYT ? this.medicineType.ACTIVE_INGR_BHYT_NAME : "";
                     cboMediUseForm.EditValue = HisConfigCFG.IsSet__BHYT ? this.medicineType.MEDICINE_USE_FORM_ID : null;
-                    cboDosageForm.EditValue = HisConfigCFG.IsSet__BHYT ? this.medicineType.DOSAGE_FORM : "";
+                    if (dosage != null && dosage.Count() > 0)
+                    {
+                        cboDosageForm.EditValue = dosage[0].ID;
+                    }
+                    else
+                    {
+                        cboDosageForm.EditValue = null;
+                    }
+                    //cboDosageForm.EditValue = HisConfigCFG.IsSet__BHYT ? this.medicineType.DOSAGE_FORM : "";
 
                     if (this.medicineType.DAY_LIFESPAN.HasValue)
                     {
