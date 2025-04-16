@@ -172,7 +172,9 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
         HIS_PATIENT currentPatient;
         HIS_TREATMENT_EXT currentTreatmentExt = new HIS_TREATMENT_EXT();
         public List<HIS_CAREER> careers;
-
+        public bool InPhieuHenKham { get; set; }
+        public bool XemTruocKhiIn { get; set; }
+        public bool KyPhieuHenKham { get; set; }
         bool isFinished = false;
         #endregion
 
@@ -2735,10 +2737,19 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
                         {
                             VoBenhAn(HisTreatment);
                         }
+                    }      
+                    
+                    if(AppointmentPrintOptionsStorageADO.InPhieuHenKham || AppointmentPrintOptionsStorageADO.KyPhieuHenKham || AppointmentPrintOptionsStorageADO.XemTruocKhiIn)
+                    {
+                        var menuItem = new DevExpress.Utils.Menu.DXMenuItem("Hẹn khám lại");
+                        menuItem.Tag = ModuleTypePrint.HEN_KHAM_LAI;
+                        PrintCloseTreatment_Click(menuItem, null);
                     }
-
-                    RunAutoPrintByPrintConfig();
-
+                    else
+                    {
+                        RunAutoPrintByPrintConfig();
+                    }
+                   
                     Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => hisTreatmentFinishSDO), hisTreatmentFinishSDO));
                     if (hisTreatmentFinishSDO.TreatmentEndTypeExtId == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_END_TYPE_EXT.ID__NGHI_OM)
                     {
@@ -2762,6 +2773,11 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
+        }
+
+        private object GetPreviewTypeForMps10(bool inPhieuHenKham, bool kyPhieuHenKham, bool xemTruocKhiIn)
+        {
+            throw new NotImplementedException();
         }
 
         private bool CheckMustChooseSeviceExamOption()

@@ -39,6 +39,8 @@ using HIS.Desktop.ApiConsumer;
 using Inventec.Common.LocalStorage.SdaConfig;
 using HIS.Desktop.Plugins.Library.PrintTreatmentEndTypeExt;
 using HIS.Desktop.LocalStorage.BackendData;
+using HIS.Desktop.Plugins.TreatmentFinish.ADO;
+using static MPS.ProcessorBase.PrintConfig;
 
 namespace HIS.Desktop.Plugins.TreatmentFinish
 {
@@ -77,98 +79,138 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
                 WaitingManager.Hide();
                 var btnIn = sender as DevExpress.Utils.Menu.DXMenuItem;
                 ModuleTypePrint printType = (ModuleTypePrint)btnIn.Tag;
-                switch (printType)
+                if(AppointmentPrintOptionsStorageADO.InPhieuHenKham || AppointmentPrintOptionsStorageADO.KyPhieuHenKham || AppointmentPrintOptionsStorageADO.XemTruocKhiIn)
                 {
-                    case ModuleTypePrint.GIAY_NGHI_OM:
-                        PrintTreatmentEndTypeExtProcessor printTreatmentEndTypeExtProcessor = new PrintTreatmentEndTypeExtProcessor(this.treatmentId, ReloadMenuTreatmentEndTypeExt, CreateMenu.TYPE.DYNAMIC, this.currentModuleBase != null ? this.currentModuleBase.RoomId : 0);
+                    if (printType == ModuleTypePrint.HEN_KHAM_LAI)
+                    {
+                        var inPhieu = AppointmentPrintOptionsStorageADO.InPhieuHenKham;
+                        var kyPhieu = AppointmentPrintOptionsStorageADO.KyPhieuHenKham;
+                        var xemPhieu = AppointmentPrintOptionsStorageADO.XemTruocKhiIn;
+                        MPS.ProcessorBase.PrintConfig.PreviewType previewType = PreviewType.ShowDialog;
+                        if (inPhieu && !kyPhieu && !xemPhieu)
+                        {
+                            previewType = PreviewType.PrintNow;
+                        }
+                        else if (!inPhieu && !kyPhieu && xemPhieu)
+                        {
+                            previewType = PreviewType.Show;
+                        }
+                        else if (!inPhieu && kyPhieu && !xemPhieu)
+                        {
+                            previewType = PreviewType.EmrSignNow;
+                        }
+                        else if (inPhieu && kyPhieu && !xemPhieu)
+                        {
+                            previewType = PreviewType.EmrSignAndPrintNow;
+                        }
+                        else if (!inPhieu && kyPhieu && xemPhieu)
+                        {
+                            previewType = PreviewType.EmrSignAndPrintPreview;
+                        }
+                        if (!isLoad)
+                        {
+                            process = new Library.PrintTreatmentFinish.PrintTreatmentFinishProcessor(hisTreatmentResult, this.currentModuleBase != null ? this.currentModuleBase.RoomId : 0, previewType);
+                            isLoad = true;
+                        }
 
-                        printTreatmentEndTypeExtProcessor.Print(HIS.Desktop.Plugins.Library.PrintTreatmentEndTypeExt.Base.PrintTreatmentEndTypeExPrintType.TYPE.NGHI_OM, PrintTreatmentEndTypeExtProcessor.OPTION.PRINT);
-                        break;
-                    case ModuleTypePrint.IN_GIAY_RA_VIEN:
-                        if (!isLoad)
-                        {
-                            process = new Library.PrintTreatmentFinish.PrintTreatmentFinishProcessor(hisTreatmentResult, this.currentModuleBase != null ? this.currentModuleBase.RoomId : 0);
-                            isLoad = true;
-                        }
-                        DelegateRunPrinter(MPS.Processor.Mps000008.PDO.Mps000008PDO.printTypeCode);
-                        break;
-                    case ModuleTypePrint.HEN_KHAM_LAI:
-                        if (!isLoad)
-                        {
-                            process = new Library.PrintTreatmentFinish.PrintTreatmentFinishProcessor(hisTreatmentResult, this.currentModuleBase != null ? this.currentModuleBase.RoomId : 0);
-                            isLoad = true;
-                        }
                         DelegateRunPrinter(MPS.Processor.Mps000010.PDO.Mps000010PDO.printTypeCode);
-                        break;
-                    case ModuleTypePrint.IN_GIAY_CHUYEN_VIEN:
-                        if (!isLoad)
-                        {
-                            process = new Library.PrintTreatmentFinish.PrintTreatmentFinishProcessor(hisTreatmentResult, LoadServiceReq(hisTreatmentResult.ID), this.currentModuleBase != null ? this.currentModuleBase.RoomId : 0);
-                            isLoad = true;
-                        }
-                        DelegateRunPrinter(MPS.Processor.Mps000011.PDO.Mps000011PDO.printTypeCode);
-                        break;
-                    case ModuleTypePrint.Mps000382:
-                        if (!isLoad)
-                        {
-                            process = new Library.PrintTreatmentFinish.PrintTreatmentFinishProcessor(hisTreatmentResult, this.currentModuleBase != null ? this.currentModuleBase.RoomId : 0);
-                            isLoad = true;
-                        }
-                        DelegateRunPrinter(MPS.Processor.Mps000382.PDO.Mps000382PDO.printTypeCode);
-                        break;
-                    case ModuleTypePrint.GIAY_BAO_TU:
-                        if (!isLoad)
-                        {
-                            HIS_BRANCH branch = new HIS_BRANCH();
-                            if (this.module != null)
-                            {
-                                var currentRoom = this.hisRooms.FirstOrDefault(o => o.ID == this.module.RoomId && o.ROOM_TYPE_ID == this.module.RoomTypeId);
-                                branch = currentRoom != null ? this.hisBranchs.FirstOrDefault(o => o.ID == currentRoom.BRANCH_ID) : null;
-                            }
-
-                            process = new Library.PrintTreatmentFinish.PrintTreatmentFinishProcessor(hisTreatmentResult, branch, this.currentModuleBase != null ? this.currentModuleBase.RoomId : 0);
-                            isLoad = true;
-                        }
-                        DelegateRunPrinter(MPS.Processor.Mps000268.PDO.Mps000268PDO.printTypeCode);
-                        break;
-                    case ModuleTypePrint.Mps000476:
-                        ProcessMps000476();
-                        break;
-                    case ModuleTypePrint.BANG_KE_THANH_TOAN:
-                        BangKeThanhToanClick();
-                        break;
-                    case ModuleTypePrint.BIEU_MAU_KHAC:
-                        TaoBieuMauKhac(currentHisTreatment);
-                        break;
-                    case ModuleTypePrint._IN_GIAY_CHUNG_NHAN_PTTT:
-                        ShowFormPTTT();
-                        break;
-                    case ModuleTypePrint._IN_GIAY_CHUNG_NHAN_TT:
-                        ShowFormTT();
-                        break;
-                    case ModuleTypePrint.TOM_TAT_BENH_AN:
-                        clickItemTomTatBenhAn();
-                        break;
-                    case ModuleTypePrint.Mps000399:
-                        if (!isLoad)
-                        {
-                            process = new Library.PrintTreatmentFinish.PrintTreatmentFinishProcessor(hisTreatmentResult, this.currentModuleBase != null ? this.currentModuleBase.RoomId : 0);
-                            isLoad = true;
-                        }
-                        DelegateRunPrinter("Mps000399");
-                        break;
-                    case ModuleTypePrint.Mps000478_TOM_TAT_Y_LENH_PTTT_VA_DON_THUOC:
-                        PrintMps000478(false);
-                        break;
-                    case ModuleTypePrint.Mps000222_TOM_TAT_KET_QUA_CLS:
-                        PrintMps000222();
-                        break;
-                    case ModuleTypePrint.Mps000485:
-                        PrintMps000485();
-                        break;
-                    default:
-                        break;
+                    }
                 }
+                else
+                {
+                    switch (printType)
+                    {
+                        case ModuleTypePrint.GIAY_NGHI_OM:
+                            PrintTreatmentEndTypeExtProcessor printTreatmentEndTypeExtProcessor = new PrintTreatmentEndTypeExtProcessor(this.treatmentId, ReloadMenuTreatmentEndTypeExt, CreateMenu.TYPE.DYNAMIC, this.currentModuleBase != null ? this.currentModuleBase.RoomId : 0);
+
+                            printTreatmentEndTypeExtProcessor.Print(HIS.Desktop.Plugins.Library.PrintTreatmentEndTypeExt.Base.PrintTreatmentEndTypeExPrintType.TYPE.NGHI_OM, PrintTreatmentEndTypeExtProcessor.OPTION.PRINT);
+                            break;
+                        case ModuleTypePrint.IN_GIAY_RA_VIEN:
+                            if (!isLoad)
+                            {
+                                process = new Library.PrintTreatmentFinish.PrintTreatmentFinishProcessor(hisTreatmentResult, this.currentModuleBase != null ? this.currentModuleBase.RoomId : 0);
+                                isLoad = true;
+                            }
+                            DelegateRunPrinter(MPS.Processor.Mps000008.PDO.Mps000008PDO.printTypeCode);
+                            break;
+                        case ModuleTypePrint.HEN_KHAM_LAI:
+                            if (!isLoad)
+                            {
+                                process = new Library.PrintTreatmentFinish.PrintTreatmentFinishProcessor(hisTreatmentResult, this.currentModuleBase != null ? this.currentModuleBase.RoomId : 0);
+                                isLoad = true;
+                            }
+                            DelegateRunPrinter(MPS.Processor.Mps000010.PDO.Mps000010PDO.printTypeCode);
+                            break;
+                        case ModuleTypePrint.IN_GIAY_CHUYEN_VIEN:
+                            if (!isLoad)
+                            {
+                                process = new Library.PrintTreatmentFinish.PrintTreatmentFinishProcessor(hisTreatmentResult, LoadServiceReq(hisTreatmentResult.ID), this.currentModuleBase != null ? this.currentModuleBase.RoomId : 0);
+                                isLoad = true;
+                            }
+                            DelegateRunPrinter(MPS.Processor.Mps000011.PDO.Mps000011PDO.printTypeCode);
+                            break;
+                        case ModuleTypePrint.Mps000382:
+                            if (!isLoad)
+                            {
+                                process = new Library.PrintTreatmentFinish.PrintTreatmentFinishProcessor(hisTreatmentResult, this.currentModuleBase != null ? this.currentModuleBase.RoomId : 0);
+                                isLoad = true;
+                            }
+                            DelegateRunPrinter(MPS.Processor.Mps000382.PDO.Mps000382PDO.printTypeCode);
+                            break;
+                        case ModuleTypePrint.GIAY_BAO_TU:
+                            if (!isLoad)
+                            {
+                                HIS_BRANCH branch = new HIS_BRANCH();
+                                if (this.module != null)
+                                {
+                                    var currentRoom = this.hisRooms.FirstOrDefault(o => o.ID == this.module.RoomId && o.ROOM_TYPE_ID == this.module.RoomTypeId);
+                                    branch = currentRoom != null ? this.hisBranchs.FirstOrDefault(o => o.ID == currentRoom.BRANCH_ID) : null;
+                                }
+
+                                process = new Library.PrintTreatmentFinish.PrintTreatmentFinishProcessor(hisTreatmentResult, branch, this.currentModuleBase != null ? this.currentModuleBase.RoomId : 0);
+                                isLoad = true;
+                            }
+                            DelegateRunPrinter(MPS.Processor.Mps000268.PDO.Mps000268PDO.printTypeCode);
+                            break;
+                        case ModuleTypePrint.Mps000476:
+                            ProcessMps000476();
+                            break;
+                        case ModuleTypePrint.BANG_KE_THANH_TOAN:
+                            BangKeThanhToanClick();
+                            break;
+                        case ModuleTypePrint.BIEU_MAU_KHAC:
+                            TaoBieuMauKhac(currentHisTreatment);
+                            break;
+                        case ModuleTypePrint._IN_GIAY_CHUNG_NHAN_PTTT:
+                            ShowFormPTTT();
+                            break;
+                        case ModuleTypePrint._IN_GIAY_CHUNG_NHAN_TT:
+                            ShowFormTT();
+                            break;
+                        case ModuleTypePrint.TOM_TAT_BENH_AN:
+                            clickItemTomTatBenhAn();
+                            break;
+                        case ModuleTypePrint.Mps000399:
+                            if (!isLoad)
+                            {
+                                process = new Library.PrintTreatmentFinish.PrintTreatmentFinishProcessor(hisTreatmentResult, this.currentModuleBase != null ? this.currentModuleBase.RoomId : 0);
+                                isLoad = true;
+                            }
+                            DelegateRunPrinter("Mps000399");
+                            break;
+                        case ModuleTypePrint.Mps000478_TOM_TAT_Y_LENH_PTTT_VA_DON_THUOC:
+                            PrintMps000478(false);
+                            break;
+                        case ModuleTypePrint.Mps000222_TOM_TAT_KET_QUA_CLS:
+                            PrintMps000222();
+                            break;
+                        case ModuleTypePrint.Mps000485:
+                            PrintMps000485();
+                            break;
+                        default:
+                            break;
+                    }
+                }                
             }
             catch (Exception ex)
             {

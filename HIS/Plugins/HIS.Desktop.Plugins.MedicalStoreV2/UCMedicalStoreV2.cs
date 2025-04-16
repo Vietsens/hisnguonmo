@@ -2184,30 +2184,39 @@ namespace HIS.Desktop.Plugins.MedicalStoreV2
 
                     MOS.Filter.HisMediRecordBorrowFilter filter = new HisMediRecordBorrowFilter();
                     filter.MEDI_RECORD_ID = focus.ID;
+                    filter.IS_RECEIVE = false;
                     var mediRecordBorrows = new BackendAdapter(new CommonParam()).Get<List<HIS_MEDI_RECORD_BORROW>>("api/HisMediRecordBorrow/Get", ApiConsumer.ApiConsumers.MosConsumer, filter, null);
 
                     if (mediRecordBorrows != null && mediRecordBorrows.Count > 0)
                     {
-                        HIS_MEDI_RECORD_BORROW treatmentBorrow = new HIS_MEDI_RECORD_BORROW();
-                        treatmentBorrow.MEDI_RECORD_ID = focus.ID;
-                        treatmentBorrow.ID = mediRecordBorrows.FirstOrDefault().ID;
-                        WaitingManager.Show();
-                        var rsApi = new BackendAdapter(param).Post<HIS_MEDI_RECORD_BORROW>("api/HisMediRecordBorrow/Receive", ApiConsumer.ApiConsumers.MosConsumer, treatmentBorrow, param);
-                        WaitingManager.Hide();
-
-                        if (rsApi != null)
+                        //HIS_MEDI_RECORD_BORROW treatmentBorrow = new HIS_MEDI_RECORD_BORROW();
+                        //treatmentBorrow.MEDI_RECORD_ID = focus.ID;
+                        //treatmentBorrow.ID = mediRecordBorrows.FirstOrDefault().ID;
+                        var listBorrows = mediRecordBorrows.OrderByDescending(x => x.ID).FirstOrDefault();
+                        if (listBorrows != null)
                         {
-                            success = true;
-                            btnSearchMediRecord_Click(null, null);
+                            HIS_MEDI_RECORD_BORROW treatmentBorrow = new HIS_MEDI_RECORD_BORROW();
+                            treatmentBorrow.MEDI_RECORD_ID = focus.ID;
+                            treatmentBorrow.ID = listBorrows.ID;
+
+                            WaitingManager.Show();
+                            var rsApi = new BackendAdapter(param).Post<HIS_MEDI_RECORD_BORROW>("api/HisMediRecordBorrow/Receive", ApiConsumer.ApiConsumers.MosConsumer, treatmentBorrow, param);
+                            WaitingManager.Hide();
+
+                            if (rsApi != null)
+                            {
+                                success = true;
+                                btnSearchMediRecord_Click(null, null);
+                            }
+
+                            #region Hien thi message thong bao
+                            MessageManager.Show(this.ParentForm, param, success);
+                            #endregion
+
+                            #region Neu phien lam viec bi mat, phan mem tu dong logout va tro ve trang login
+                            SessionManager.ProcessTokenLost(param);
+                            #endregion
                         }
-
-                        #region Hien thi message thong bao
-                        MessageManager.Show(this.ParentForm, param, success);
-                        #endregion
-
-                        #region Neu phien lam viec bi mat, phan mem tu dong logout va tro ve trang login
-                        SessionManager.ProcessTokenLost(param);
-                        #endregion
                     }
                     else
                     {
