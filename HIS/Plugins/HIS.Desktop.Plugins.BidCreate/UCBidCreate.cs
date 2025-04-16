@@ -44,6 +44,7 @@ using Inventec.Core;
 using DevExpress.XtraEditors.Repository;
 using HIS.Desktop.Plugins.HisDosageForm;
 using HIS.Desktop.Common;
+using HIS.Desktop.Plugins.BidCreate.Validation;
 
 namespace HIS.Desktop.Plugins.BidCreate
 {
@@ -1267,6 +1268,20 @@ namespace HIS.Desktop.Plugins.BidCreate
                     {
                         spinHourLifeSpan.EditValue = null;
                     }
+                    if (!string.IsNullOrEmpty(this.medicineType.DOSAGE_FORM))
+                    {
+                        //this.medicineType.DOSAGE_FORM = dataDosageForm.FirstOrDefault(o => o.ID == (long)cboDosageForm.EditValue).DOSAGE_FORM_NAME;
+                        var selectedItem = dataDosageForm.FirstOrDefault(o => o.DOSAGE_FORM_NAME == this.medicineType.DOSAGE_FORM);
+                        if (selectedItem != null)
+                        {
+                            cboDosageForm.EditValue = selectedItem.ID;
+                        }                       
+                    }
+                    else
+                    {
+                        cboDosageForm.EditValue = null;
+                        this.medicineType.DOSAGE_FORM = null;
+                    }
                 }
                 else if (xtraTabControl1.SelectedTabPageIndex == 1 && this.materialType != null && !String.IsNullOrEmpty(this.materialType.MATERIAL_TYPE_CODE))
                 {
@@ -1692,13 +1707,15 @@ namespace HIS.Desktop.Plugins.BidCreate
                     txtMaDT.Enabled = false;
                     cboDosageForm.Enabled = true;
                     cboInformationBid.SelectedIndex = -1;
+                    ValidDosageForm();
+                    //layoutControlItem21.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
 
                     layoutControlItem19.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
                 }
                 else if (xtraTabControl1.SelectedTabPageIndex == 1) // vat tu
                 {
                     EnableLeftControl(true);
-
+                    dxValidationProviderLeft.SetValidationRule(cboDosageForm, null);
                     layoutControlItem19.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
                     layoutControlItem19.Size = lciMaDT.Size;
                     cboInformationBid.SelectedIndex = 0;
@@ -1717,6 +1734,7 @@ namespace HIS.Desktop.Plugins.BidCreate
                     cboMediUserForm.EditValue = null;
                     cboDosageForm.EditValue = null;
                     cboDosageForm.Enabled = false;
+                    //layoutControlItem21.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
                     if (tabMaterial)
                     {
                         WaitingManager.Show();
@@ -1730,6 +1748,7 @@ namespace HIS.Desktop.Plugins.BidCreate
                 else if (xtraTabControl1.SelectedTabPageIndex == 2) // Mau
                 {
                     EnableLeftControl(false);
+                    dxValidationProviderLeft.SetValidationRule(cboDosageForm, null);
                     cboInformationBid.SelectedIndex = -1;
                     layoutControlItem19.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
                     spinImpMoreRatio.EditValue = null;
@@ -1750,7 +1769,7 @@ namespace HIS.Desktop.Plugins.BidCreate
                     cboMediUserForm.EditValue = null;
                     cboDosageForm.EditValue = null;
                     cboDosageForm.Enabled = false;
-
+                    //layoutControlItem21.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
                     if (tabBlood)
                     {
                         WaitingManager.Show();
@@ -3136,7 +3155,7 @@ namespace HIS.Desktop.Plugins.BidCreate
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
-        }
+        }        
         private void LoadDataToCboDosageForm()
         {
             try
