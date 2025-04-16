@@ -41,6 +41,7 @@ using Inventec.Common.Adapter;
 using HIS.Desktop.ApiConsumer;
 using MOS.Filter;
 using HIS.Desktop.Utility;
+using HIS.Desktop.LocalStorage.LocalData;
 
 namespace HIS.Desktop.Plugins.DebateDiagnostic.UcDebateDetail
 {
@@ -56,20 +57,24 @@ namespace HIS.Desktop.Plugins.DebateDiagnostic.UcDebateDetail
         List<ActiveIngredientADO> currentActiveIngredientAlls;
         //List<MedicineTypeADO> currentMedicineTypeSelecteds;
         //List<ActiveIngredientADO> currentActiveIngredientSelecteds;
-
+        //qtcode
+        internal Inventec.Desktop.Common.Modules.Module modules;
+        //qtcode
         bool isShowContainerMediMaty = false;
         bool isShowContainerMediMatyForChoose = false;
         bool isShow = true;
 
-        public UcOther(long treatmentId, long roomId, long roomTypeId, bool isOther)
+
+        public UcOther(long treatmentId, long roomId, long roomTypeId, bool isOther, Inventec.Desktop.Common.Modules.Module modules)
         {
             InitializeComponent();
             this.TreatmentId = treatmentId;
             this.RoomId = roomId;
             this.RoomTypeId = roomTypeId;
             this.IsOther = isOther;
+            this.modules = modules;
         }
-        public UcOther(long treatmentId, long roomId, long roomTypeId, bool isOther, HIS_SERVICE _hisService)
+        public UcOther(long treatmentId, long roomId, long roomTypeId, bool isOther, HIS_SERVICE _hisService, Inventec.Desktop.Common.Modules.Module modules)
         {
             InitializeComponent();
             this.TreatmentId = treatmentId;
@@ -77,6 +82,8 @@ namespace HIS.Desktop.Plugins.DebateDiagnostic.UcDebateDetail
             this.RoomTypeId = roomTypeId;
             this.IsOther = isOther;
             this.hisService = _hisService;
+
+            this.modules = modules;
         }
 
         private void UcOther_Load(object sender, EventArgs e)
@@ -100,7 +107,7 @@ namespace HIS.Desktop.Plugins.DebateDiagnostic.UcDebateDetail
             }
         }
 
-        private void LoadDataDebateDiagnostic(HIS_DEBATE hisDebate)
+        private void LoadDataDebateDiagnostic(HIS_DEBATE hisDebate )
         {
             try
             {
@@ -158,11 +165,22 @@ namespace HIS.Desktop.Plugins.DebateDiagnostic.UcDebateDetail
                 txtPathologicalHistory.Text = hisDebate.PATHOLOGICAL_HISTORY;
                 txtHospitalizationState.Text = hisDebate.HOSPITALIZATION_STATE;
                 txtBeforeDiagnostic.Text = hisDebate.BEFORE_DIAGNOSTIC;
-                txtTreatmentTracking.Text = hisDebate.TREATMENT_TRACKING;   
+                txtTreatmentTracking.Text = hisDebate.TREATMENT_TRACKING;
                 txtDiagnostic.Text = hisDebate.DIAGNOSTIC;
                 txtTreatmentMethod.Text = hisDebate.TREATMENT_METHOD;
                 txtCareMethod.Text = hisDebate.CARE_METHOD;
                 txtConclusion.Text = hisDebate.CONCLUSION;
+
+                //qtcode
+                if(IsOther)
+                {
+                    txtKetQuaCLS.Text = hisDebate.SUBCLINICAL_PROCESSES; 
+                }    
+                else
+                {
+                    txtKetQuaCLS2.Text = hisDebate.SUBCLINICAL_PROCESSES; 
+                }
+                //qtcode
                 Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => hisDebate), hisDebate));
 
                 if (hisDebate.SERVICE_ID != null)
@@ -228,6 +246,13 @@ namespace HIS.Desktop.Plugins.DebateDiagnostic.UcDebateDetail
                     LciRequestContent.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
                     LciServiceCode.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
                     LciServiceName.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
+                    //qtcode
+                    lciKetQuaCLS.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
+                    lciChonKQ.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
+                    emptySpaceItem1.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
+                    lciKetQuaCLS2.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+                    lciChonKQ2.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+                    emptySpaceItem2.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
                 }
                 else
                 {
@@ -241,6 +266,15 @@ namespace HIS.Desktop.Plugins.DebateDiagnostic.UcDebateDetail
                     LciRequestContent.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
                     LciServiceCode.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
                     LciServiceName.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+
+                    //qtcode
+                    lciKetQuaCLS.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+                    lciChonKQ.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+                    emptySpaceItem1.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+
+                    lciKetQuaCLS2.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
+                    lciChonKQ2.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
+                    emptySpaceItem2.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
                 }
                 if (hisService != null)
                 {
@@ -607,6 +641,17 @@ namespace HIS.Desktop.Plugins.DebateDiagnostic.UcDebateDetail
                 saveData.REQUEST_CONTENT = txtRequestContent.Text.Trim();
                 saveData.TREATMENT_METHOD = txtTreatmentMethod.Text.Trim();
                 saveData.TREATMENT_TRACKING = txtTreatmentTracking.Text.Trim();
+                //qtcodeapi
+                if (IsOther)
+                {
+                    saveData.SUBCLINICAL_PROCESSES = txtKetQuaCLS.Text; 
+                }
+                else
+                {
+                    saveData.SUBCLINICAL_PROCESSES = txtKetQuaCLS2.Text; 
+                }
+                
+                //qtcode
                 if (dtTimeUse.EditValue != null && dtTimeUse.DateTime != DateTime.MinValue)
                     saveData.MEDICINE_USE_TIME = Inventec.Common.TypeConvert.Parse.ToInt64(Convert.ToDateTime((dtTimeUse.EditValue ?? "").ToString()).ToString("yyyyMMddHHmm") + "00");
             }
@@ -1568,6 +1613,53 @@ namespace HIS.Desktop.Plugins.DebateDiagnostic.UcDebateDetail
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
+        }
+
+        private void btnChonKQ_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                Inventec.Desktop.Common.Modules.Module moduleData = GlobalVariables.currentModuleRaws.Where(o => o.ModuleLink == "HIS.Desktop.Plugins.ContentSubclinical").FirstOrDefault();
+                if (moduleData == null) Inventec.Common.Logging.LogSystem.Error("khong tim thay moduleLink = HIS.Desktop.Plugins.ContentSubclinical");
+                if (moduleData.IsPlugin && moduleData.ExtensionInfo != null)
+                {
+                    List<object> listArgs = new List<object>();
+                    listArgs.Add(this.TreatmentId);
+                    listArgs.Add((HIS.Desktop.Common.DelegateSelectData)DelegateSelectDataContentSubclinical);
+                    //Truyền delegate DelegateSelectDataContentSubclinical để module này có thể gọi lại sau khi người dùng chọn xong.
+                    var extenceInstance = PluginInstance.GetPluginInstance(HIS.Desktop.Utility.PluginInstance
+                        .GetModuleWithWorkingRoom(moduleData, this.modules.RoomId, this.modules.RoomTypeId), listArgs);
+                    if (extenceInstance == null) throw new ArgumentNullException("moduleData is null");
+                    ((Form)extenceInstance).ShowDialog();
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void DelegateSelectDataContentSubclinical(object data)
+        //Được gọi bởi module ContentSubclinical khi người dùng hoàn tất việc chọn kết quả.
+        //Nhận dữ liệu và cập nhật vào txtKetQuaCLS.
+        {
+            try
+            {
+                if (data != null && data is String)
+                {
+                    txtKetQuaCLS.Text = data.ToString();
+                    txtKetQuaCLS2.Text = data.ToString(); 
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void txtRequestContent_EditValueChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }
