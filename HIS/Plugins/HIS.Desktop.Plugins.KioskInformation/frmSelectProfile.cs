@@ -17,6 +17,7 @@
  */
 using DevExpress.Data;
 using DevExpress.XtraGrid.Views.Base;
+using DevExpress.XtraGrid.Views.Grid;
 using HIS.Desktop.Utility;
 using Inventec.Common.Logging;
 using Inventec.Desktop.Common.Modules;
@@ -34,13 +35,14 @@ using System.Windows.Forms;
 
 namespace HIS.Desktop.Plugins.KioskInformation
 {
-    public partial class frmSelectProfile : Form
+    public partial class frmSelectProfile : Form     
     {
         private List<KioskInformationSDO> _lstKioskInform = new List<KioskInformationSDO>();
 
-        private Module _currentModule = new Module();
+        private Module _currentModule = new Module();        
 
-        private List<Image> _lstImage;
+
+        private List<Image> _lstImage;   
 
         private Image _currentImage;
 
@@ -49,7 +51,7 @@ namespace HIS.Desktop.Plugins.KioskInformation
         private int _coutWallpaper = 0;
 
         private int countOfGrid = 0;
-        private Action<object[]> actionData;
+        private Action<object[]> actionData;    
 
         public frmSelectProfile(Module currentModule, List<KioskInformationSDO> lstKioskInform, List<Image> lstImage, int coutWallpaper, Action<object[]> actionData)
         {
@@ -82,6 +84,12 @@ namespace HIS.Desktop.Plugins.KioskInformation
 
         private void gridViewSelectProfile_Click(object sender, EventArgs e)
         {
+            var view = sender as GridView;
+            var hi = view.CalcHitInfo(view.GridControl.PointToClient(MousePosition));
+            if (!hi.InRow || hi.RowHandle < 0)
+                return;
+
+
             try
             {
                 KioskInformationSDO kioskInformationSDO = (KioskInformationSDO)this.gridViewSelectProfile.GetFocusedRow();
@@ -116,6 +124,12 @@ namespace HIS.Desktop.Plugins.KioskInformation
                         if (e.Column.FieldName == "DobStr")
                         {
                             e.Value = Inventec.Common.DateTime.Convert.TimeNumberToDateString(kioskInformationSDO.Dob);
+                        }
+                        if (e.Column.FieldName == "IntimeStr")
+                        {
+                            e.Value = kioskInformationSDO.Intime.HasValue
+                                ? Inventec.Common.DateTime.Convert.TimeNumberToDateString(kioskInformationSDO.Intime.Value)
+                                : string.Empty;
                         }
                     }
                 }
