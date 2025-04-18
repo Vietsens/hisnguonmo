@@ -1248,6 +1248,7 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
                     txtSoChuyenVien.Text = data.OUT_CODE;
                     txtSurgery.Text = data.SURGERY;
                     txtMaBHXH.Text = data.TDL_SOCIAL_INSURANCE_NUMBER;
+                    
 
                     if (!string.IsNullOrEmpty(data.ICD_CAUSE_CODE))
                     {
@@ -3995,7 +3996,7 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
                         cboProgram.EditValue = null;
                     }
                 }
-                else if (this.currentHisTreatment != null)
+                else if (this.currentHisTreatment != null && ProgramADOList.Any(p => p.ID == this.currentHisTreatment.PROGRAM_ID))
                 {
                     cboProgram.EditValue = this.currentHisTreatment.PROGRAM_ID;
                 }
@@ -5170,7 +5171,7 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
                 if (rs)
                 {
                     return false;
-                }
+                }                     
 
                 if (!string.IsNullOrEmpty(txtMaBHXH.Text))
                 {
