@@ -387,7 +387,7 @@
       <Project>{2770fe74-96ea-4bfd-ab55-a04b07a04989}</Project>
       <Name>HIS.UC.RoomExamService</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\UC\HIS.UC\HIS.UC.ServiceRoom\HIS.UC.ServiceRoom.csproj">
+    <ProjectReference Include="..\..\..\UC\HIS.UC.ServiceRoom\HIS.UC.ServiceRoom.csproj">
       <Project>{c02ada96-015b-4edb-b944-9183e1087224}</Project>
       <Name>HIS.UC.ServiceRoom</Name>
     </ProjectReference>
@@ -403,15 +403,15 @@
       <Project>{e3891201-0493-4164-b1dc-d99277ba6291}</Project>
       <Name>HIS.UC.UCPatientRaw</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\UC\HIS.UC\HIS.UC.UCRelativeInfo\HIS.UC.UCRelativeInfo.csproj">
+    <ProjectReference Include="..\..\..\UC\HIS.UC.UCRelativeInfo\HIS.UC.UCRelativeInfo.csproj">
       <Project>{c5a20f34-8afa-47f2-b8d5-a8eb0b3d67b0}</Project>
       <Name>HIS.UC.UCRelativeInfo</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\UC\HIS.UC\HIS.UC.UCServiceRoomInfo\HIS.UC.UCServiceRoomInfo.csproj">
+    <ProjectReference Include="..\..\..\UC\HIS.UC.UCServiceRoomInfo\HIS.UC.UCServiceRoomInfo.csproj">
       <Project>{b4750acf-9857-4837-844a-a439e7f82571}</Project>
       <Name>HIS.UC.UCServiceRoomInfo</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\UC\HIS.UC\HIS.UC.UCTransPati\HIS.UC.UCTransPati.csproj">
+    <ProjectReference Include="..\..\..\UC\HIS.UC.UCTransPati\HIS.UC.UCTransPati.csproj">
       <Project>{173bf142-9e08-494e-924e-fcb61fedcf94}</Project>
       <Name>HIS.UC.UCTransPati</Name>
     </ProjectReference>
