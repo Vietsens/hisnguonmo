@@ -73,7 +73,7 @@
       <HintPath>..\..\..\..\lib\EMR\EMR.SDO.dll</HintPath>
     </Reference>
     <Reference Include="EMR_MAIN">
-      <HintPath>..\..\..\..\..\His Test\histest\x64\ReferencedAssemblies\EMR_MAIN.dll</HintPath>
+      <HintPath>..\..\..\..\lib\EMRLinksoft\EMR_MAIN.dll</HintPath>
     </Reference>
     <Reference Include="HIS.Common.Treatment, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -506,7 +506,6 @@
     <EmbeddedResource Include="frmMediMate.resx">
       <DependentUpon>frmMediMate.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Properties\licenses.licx" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <SubType>Designer</SubType>
