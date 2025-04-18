@@ -827,9 +827,10 @@ namespace HIS.Desktop.Plugins.MaterialUpdate
 
         private void ValidBidControlMaxlength(DevExpress.XtraEditors.TextEdit control, int maxlength)
         {
-            try
-            {
+            try      
+            {   
                 Validation.BidMaxLengthValidationRule _rule = new Validation.BidMaxLengthValidationRule();
+
                 _rule.txtBid = control;
                 _rule.maxlength = maxlength;
                 _rule.ErrorType = DevExpress.XtraEditors.DXErrorProvider.ErrorType.Warning;

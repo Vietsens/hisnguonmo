@@ -50,10 +50,6 @@ namespace HIS.Desktop.Plugins.MedicineUpdate
             this.barManager = new DevExpress.XtraBars.BarManager();
             this.bar1 = new DevExpress.XtraBars.Bar();
             this.barButtonSave = new DevExpress.XtraBars.BarButtonItem();
-            this.barDockControlTop = new DevExpress.XtraBars.BarDockControl();
-            this.barDockControlBottom = new DevExpress.XtraBars.BarDockControl();
-            this.barDockControlLeft = new DevExpress.XtraBars.BarDockControl();
-            this.barDockControlRight = new DevExpress.XtraBars.BarDockControl();
             this.txtBidExtraCode = new DevExpress.XtraEditors.TextEdit();
             this.txtHeinServiceBHYTName = new DevExpress.XtraEditors.TextEdit();
             this.txtConcentra = new DevExpress.XtraEditors.TextEdit();
@@ -111,6 +107,10 @@ namespace HIS.Desktop.Plugins.MedicineUpdate
             this.lctxtBidExtraCode = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem12 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem13 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.barDockControlTop = new DevExpress.XtraBars.BarDockControl();
+            this.barDockControlBottom = new DevExpress.XtraBars.BarDockControl();
+            this.barDockControlLeft = new DevExpress.XtraBars.BarDockControl();
+            this.barDockControlRight = new DevExpress.XtraBars.BarDockControl();
             this.dxValidationProvider = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider();
             this.customGridLookUpEdit1View = new HIS.Desktop.Utilities.Extensions.CustomGridView();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
@@ -228,10 +228,6 @@ namespace HIS.Desktop.Plugins.MedicineUpdate
             // 
             this.barManager.Bars.AddRange(new DevExpress.XtraBars.Bar[] {
             this.bar1});
-            this.barManager.DockControls.Add(this.barDockControlTop);
-            this.barManager.DockControls.Add(this.barDockControlBottom);
-            this.barManager.DockControls.Add(this.barDockControlLeft);
-            this.barManager.DockControls.Add(this.barDockControlRight);
             this.barManager.Form = this;
             this.barManager.Items.AddRange(new DevExpress.XtraBars.BarItem[] {
             this.barButtonSave});
@@ -255,34 +251,6 @@ namespace HIS.Desktop.Plugins.MedicineUpdate
             this.barButtonSave.ItemShortcut = new DevExpress.XtraBars.BarShortcut((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S));
             this.barButtonSave.Name = "barButtonSave";
             this.barButtonSave.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.barButtonSave_ItemClick);
-            // 
-            // barDockControlTop
-            // 
-            this.barDockControlTop.CausesValidation = false;
-            this.barDockControlTop.Dock = System.Windows.Forms.DockStyle.Top;
-            this.barDockControlTop.Location = new System.Drawing.Point(0, 0);
-            this.barDockControlTop.Size = new System.Drawing.Size(443, 29);
-            // 
-            // barDockControlBottom
-            // 
-            this.barDockControlBottom.CausesValidation = false;
-            this.barDockControlBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.barDockControlBottom.Location = new System.Drawing.Point(0, 369);
-            this.barDockControlBottom.Size = new System.Drawing.Size(443, 0);
-            // 
-            // barDockControlLeft
-            // 
-            this.barDockControlLeft.CausesValidation = false;
-            this.barDockControlLeft.Dock = System.Windows.Forms.DockStyle.Left;
-            this.barDockControlLeft.Location = new System.Drawing.Point(0, 29);
-            this.barDockControlLeft.Size = new System.Drawing.Size(0, 340);
-            // 
-            // barDockControlRight
-            // 
-            this.barDockControlRight.CausesValidation = false;
-            this.barDockControlRight.Dock = System.Windows.Forms.DockStyle.Right;
-            this.barDockControlRight.Location = new System.Drawing.Point(443, 29);
-            this.barDockControlRight.Size = new System.Drawing.Size(0, 340);
             // 
             // txtBidExtraCode
             // 
@@ -445,7 +413,7 @@ namespace HIS.Desktop.Plugins.MedicineUpdate
             this.txtBidNumber.MenuManager = this.barManager;
             this.txtBidNumber.Name = "txtBidNumber";
             this.txtBidNumber.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
-            this.txtBidNumber.Properties.MaxLength = 40;
+            this.txtBidNumber.Properties.MaxLength = 50;
             this.txtBidNumber.Size = new System.Drawing.Size(114, 20);
             this.txtBidNumber.StyleController = this.layoutControl1;
             this.txtBidNumber.TabIndex = 16;
@@ -1039,6 +1007,34 @@ namespace HIS.Desktop.Plugins.MedicineUpdate
             this.layoutControlItem13.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem13.TextSize = new System.Drawing.Size(90, 20);
             this.layoutControlItem13.TextToControlDistance = 5;
+            // 
+            // barDockControlTop
+            // 
+            this.barDockControlTop.CausesValidation = false;
+            this.barDockControlTop.Dock = System.Windows.Forms.DockStyle.Top;
+            this.barDockControlTop.Location = new System.Drawing.Point(0, 29);
+            this.barDockControlTop.Size = new System.Drawing.Size(443, 0);
+            // 
+            // barDockControlBottom
+            // 
+            this.barDockControlBottom.CausesValidation = false;
+            this.barDockControlBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.barDockControlBottom.Location = new System.Drawing.Point(0, 369);
+            this.barDockControlBottom.Size = new System.Drawing.Size(443, 0);
+            // 
+            // barDockControlLeft
+            // 
+            this.barDockControlLeft.CausesValidation = false;
+            this.barDockControlLeft.Dock = System.Windows.Forms.DockStyle.Left;
+            this.barDockControlLeft.Location = new System.Drawing.Point(0, 29);
+            this.barDockControlLeft.Size = new System.Drawing.Size(0, 340);
+            // 
+            // barDockControlRight
+            // 
+            this.barDockControlRight.CausesValidation = false;
+            this.barDockControlRight.Dock = System.Windows.Forms.DockStyle.Right;
+            this.barDockControlRight.Location = new System.Drawing.Point(443, 29);
+            this.barDockControlRight.Size = new System.Drawing.Size(0, 340);
             // 
             // dxValidationProvider
             // 
