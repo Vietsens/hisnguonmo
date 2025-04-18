@@ -576,7 +576,7 @@ namespace HIS.Desktop.Plugins.MaterialUpdate
                 ValidBidControlMaxlength(txtGroupBid, 2);
                 ValidBidControlMaxlength(txtPackBid, 4);
                 ValidBidControlMaxlength(txtBidYear, 20);
-                ValidBidControlMaxlength(txtBidNumber, 20, false);
+                ValidBidControlMaxlength(txtBidNumber, 50, false);
                 ValidBidControlMaxlength(txtBidMaterialTypeCode, 50, false);
                 ValidBidControlMaxlength(txtBidMaterialTypeName, 500, false);
                 ValidBidControlMaxlength(txtBidExtraCode, 50, false);
