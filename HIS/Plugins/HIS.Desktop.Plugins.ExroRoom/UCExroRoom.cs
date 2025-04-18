@@ -61,6 +61,7 @@ namespace HIS.Desktop.Plugins.ExroRoom
         internal List<HIS.UC.ExecuteRoomView.ExecuteRoomViewADO> lstExecuteRoomADOs { get; set; }
         private List<V_HIS_ROOM> listRoom;
         private List<V_HIS_EXECUTE_ROOM> listExecuteRoom;
+        private List<V_HIS_BED_ROOM> 
         private long ExecuteRoomIdCheckByExecuteRoom = 0;
         private long isChoseExecuteRoom;
         private long isChoseRoom;
