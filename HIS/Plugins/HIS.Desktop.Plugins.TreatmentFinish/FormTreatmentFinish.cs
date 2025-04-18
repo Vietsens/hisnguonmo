@@ -3927,16 +3927,16 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
                 {
                     var program = this.ProgramADOList.FirstOrDefault(o => o.ID == this.PatientPrograms[0].PROGRAM_ID);
 
-                    if (this.currentHisTreatment != null && ProgramADOList.Any(p => p.ID == this.currentHisTreatment.PROGRAM_ID))
+                    if (program != null)
                     {
-                        cboProgram.EditValue = this.currentHisTreatment.PROGRAM_ID;
+                        cboProgram.EditValue = program.ID;
                     }
                     else
                     {
                         cboProgram.EditValue = null;
                     }
                 }
-                else if (this.currentHisTreatment != null)
+                else if (this.currentHisTreatment != null && ProgramADOList.Any(p => p.ID == this.currentHisTreatment.PROGRAM_ID))
                 {
                     cboProgram.EditValue = this.currentHisTreatment.PROGRAM_ID;
                 }
