@@ -44,6 +44,12 @@ using DevExpress.XtraEditors;
 using DevExpress.XtraEditors.ViewInfo;
 using HIS.Desktop.Controls.Session;
 using HIS.Desktop.LocalStorage.BackendData;
+using System.IO;
+using HIS.Desktop.LocalStorage.LocalData;
+using HIS.Desktop.Plugins.HisSereServPtttTemp.Resources;
+using HIS.Desktop.Plugins.HisSereServPtttTemp.Base;
+using Inventec.Common.Logging;
+
 
 namespace HIS.Desktop.Plugins.HisSereServPtttTemp
 {
@@ -57,6 +63,13 @@ namespace HIS.Desktop.Plugins.HisSereServPtttTemp
         int positionHandle = -1;
         string LoggingName = "";
         MOS.EFMODEL.DataModels.HIS_SERE_SERV_PTTT_TEMP currentSereServPtttTemp;
+        internal Inventec.Desktop.Common.Modules.Module Module;
+        internal MOS.EFMODEL.DataModels.V_HIS_SERE_SERV_5 sereServ { get; set; }
+        internal List<MOS.EFMODEL.DataModels.HIS_SERE_SERV_PTTT_TEMP> sereServPtttTemp { get; set; }
+        private List<HIS_TEXT_LIB> selectedImageLib = new List<HIS_TEXT_LIB>();
+
+        List<ImageADO> imageADOs = new List<ImageADO>();
+        ImageADO currentImageADO;
 
         List<HIS_SERE_SERV_TEMP> ListDataSource;
 
@@ -80,10 +93,18 @@ namespace HIS.Desktop.Plugins.HisSereServPtttTemp
         private object lockObj = new object();
         #endregion
 
-        public frmSereServPtttTemp()
+        public frmSereServPtttTemp(Inventec.Desktop.Common.Modules.Module moduleData) : base(moduleData)
         {
             InitializeComponent();
             LoggingName = Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName();
+            try
+            {
+                this.Module = moduleData;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
         }
 
         private void frmSereServPtttTemp_Load(object sender, EventArgs e)
@@ -219,6 +240,10 @@ namespace HIS.Desktop.Plugins.HisSereServPtttTemp
                 txtConclude.Text = "";
                 txtDescription.Text = "";
                 txtNote.Text = "";
+                cardControl.DataSource = null;
+                cardControl.RefreshDataSource();
+                imageADOs = new List<ImageADO>();
+                ProcessLoadGridImage(imageADOs);
             }
             catch (Exception ex)
             {
@@ -709,12 +734,38 @@ namespace HIS.Desktop.Plugins.HisSereServPtttTemp
                     txtNote.Text = data.NOTE;
                     chkIsPublic.Checked = data.IS_PUBLIC == 1;
                     chkIsPublicInDepartment.Checked = data.IS_PUBLIC_IN_DEPARTMENT == 1;
+                    imageADOs = new List<ImageADO>();
+                    SelectListImageTemp(GetTextLib(data.TEXT_LIB_IDS));
                 }
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
+        }
+
+        private List<HIS_TEXT_LIB> GetTextLib(string ids)
+        {
+            List<HIS_TEXT_LIB> lstTextLib = new List<HIS_TEXT_LIB>();
+            try
+            {
+                if (!string.IsNullOrEmpty(ids))
+                {
+                    string[] arrId = ids.Split(',');
+                    HisTextLibFilter filter = new HisTextLibFilter();
+                    filter.IDs = arrId.Select(o => Int64.Parse(o)).ToList();
+                    var textLib = new BackendAdapter(new CommonParam()).Get<List<HIS_TEXT_LIB>>("api/HisTextLib/Get", ApiConsumers.MosConsumer, filter, null);
+                    if (textLib != null)
+                    {
+                        lstTextLib.AddRange(textLib);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+            return lstTextLib;
         }
 
         private void txtPtttGroup_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
@@ -1446,6 +1497,42 @@ namespace HIS.Desktop.Plugins.HisSereServPtttTemp
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
+        void SaveImageProcess(System.Drawing.Image imageData)
+        {
+            try
+            {
+                Inventec.Common.Logging.LogSystem.Info("SaveImageProcess: bắt đầu lưu ảnh đã chỉnh sửa");
+
+                if (this.currentImageADO != null)
+                {
+                    using (MemoryStream stream = new MemoryStream())
+                    {
+                        // Lưu ảnh vào stream
+                        imageData.Save(stream, System.Drawing.Imaging.ImageFormat.Bmp);
+                        stream.Position = 0;
+
+                        // Gán lại stream và IMAGE_DISPLAY
+                        this.currentImageADO.streamImage = new MemoryStream();
+                        stream.CopyTo(this.currentImageADO.streamImage);
+                        this.currentImageADO.IMAGE_DISPLAY = imageData;
+
+                        // Làm mới giao diện
+                        cardControl.RefreshDataSource();
+
+                        // Thông báo thành công
+                        MessageBox.Show("Lưu ảnh thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+                MessageBox.Show("Có lỗi khi lưu ảnh đã chỉnh sửa: " + ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
 
         private void SaveProcess()
         {
@@ -1594,6 +1681,15 @@ namespace HIS.Desktop.Plugins.HisSereServPtttTemp
                 updateDTO.CONCLUDE = txtConclude.Text;
                 updateDTO.DESCRIPTION = txtDescription.Text;
                 updateDTO.NOTE = txtNote.Text;
+                if (imageADOs != null && imageADOs.Count > 0)
+                {
+                    updateDTO.TEXT_LIB_IDS = string.Join(",", imageADOs.Select(x => x.ID).Distinct());
+                }
+                else
+                {
+                    updateDTO.TEXT_LIB_IDS = null;
+                }
+
             }
             catch (Exception ex)
             {
@@ -1637,6 +1733,158 @@ namespace HIS.Desktop.Plugins.HisSereServPtttTemp
             try
             {
                 btnSave_Click(null, null);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void btnImagePublic_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                var formSelectImage = new ViewImage.FormImageTemp(this.Module, SelectListImageTemp);
+                //formSelectImage.SelectImageId = (list) =>
+                //{
+                //    this.selectedImageLib = list;
+                //};
+                formSelectImage.ShowDialog();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void SelectListImageTemp(List<HIS_TEXT_LIB> listImage)
+        {
+            try
+            {
+                if (listImage != null && listImage.Count > 0)
+                {
+                    foreach (var file in listImage)
+                    {
+
+                        string base64String = System.Text.Encoding.UTF8.GetString(file.CONTENT);
+                        byte[] imageBytes = Convert.FromBase64String(base64String);
+
+                        using (MemoryStream stream = new MemoryStream(imageBytes))
+                        {
+
+
+                            if (stream != null && stream.Length > 0)
+                            {
+                                ImageADO tileNew = new ImageADO();
+                                tileNew.FileName = DateTime.Now.ToString("yyyyMMddHHmmssfff");
+                                tileNew.IsChecked = false;
+                                tileNew.ID = file.ID;
+                                tileNew.streamImage = new MemoryStream();
+                                stream.Position = 0;
+                                stream.CopyTo(tileNew.streamImage);
+                                stream.Position = 0;
+                                tileNew.IMAGE_DISPLAY = System.Drawing.Image.FromStream(stream);
+                                if ((imageADOs != null && imageADOs.Count > 0 && !imageADOs.Exists(x => x.ID == file.ID) || (imageADOs.Count == 0)))
+
+                                    this.imageADOs.Add(tileNew);
+                            }
+                        }
+
+                    }
+
+                }
+
+                ProcessLoadGridImage(this.imageADOs);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+
+        private List<HIS_SERE_SERV_FILE> GetSereServFilesBySereServId(List<long> sereServId)
+        {
+            List<MOS.EFMODEL.DataModels.HIS_SERE_SERV_FILE> result = null;
+            try
+            {
+                if (sereServId != null && sereServId.Count > 0)
+                {
+                    CommonParam param = new CommonParam();
+                    MOS.Filter.HisSereServFileFilter filter = new MOS.Filter.HisSereServFileFilter();
+                    filter.IS_ACTIVE = IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE;
+                    filter.SERE_SERV_IDs = sereServId;
+                    filter.ORDER_DIRECTION = "DESC";
+                    filter.ORDER_FIELD = "ID";
+                    result = new Inventec.Common.Adapter.BackendAdapter(param).Get<List<MOS.EFMODEL.DataModels.HIS_SERE_SERV_FILE>>(RequestUriStore.HIS_SERE_SERV_FILE_GET, ApiConsumer.ApiConsumers.MosConsumer, filter, HIS.Desktop.Controls.Session.SessionManager.ActionLostToken, param);
+                }
+            }
+            catch (Exception ex)
+            {
+                LogSystem.Error(ex);
+            }
+            return result;
+        }
+        private void ProcessLoadGridImage(List<ImageADO> listImage)
+        {
+            try
+            {
+                cardControl.BeginUpdate();
+                cardControl.DataSource = null;
+                if (listImage != null && listImage.Count > 0)
+                {
+                    cardControl.DataSource = listImage;
+                }
+                cardControl.EndUpdate();
+            }
+            catch (Exception ex)
+            {
+                cardControl.EndUpdate();
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void tileView1_ContextButtonClick(object sender, DevExpress.Utils.ContextItemClickEventArgs e)
+        {
+            try
+            {
+                if (e.Item.Name == "btnDelete")
+                {
+                    if (XtraMessageBox.Show(
+                        LibraryMessage.MessageUtil.GetMessage(LibraryMessage.Message.Enum.HeThongTBCuaSoThongBaoBanCoMuonXoaDuLieuKhong),
+                        LibraryMessage.MessageUtil.GetMessage(LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaThongBao),
+                        MessageBoxButtons.YesNo) == DialogResult.Yes)
+                    {
+                        var dataItem = (DevExpress.XtraGrid.Views.Tile.TileViewItem)e.DataItem;
+                        var item = (ImageADO)tileView1.GetRow(dataItem.RowHandle);
+
+                        if (item != null)
+                        {
+                            var list = tileView1.DataSource as List<ImageADO>;
+                            if (list != null && list.Contains(item))
+                            {
+                                list.Remove(item);
+                                tileView1.RefreshData();
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+
+        }
+
+        private void tileView1_ItemDoubleClick(object sender, DevExpress.XtraGrid.Views.Tile.TileViewItemClickEventArgs e)
+        {
+            try
+            {
+                Inventec.Common.Logging.LogSystem.Debug("tileView1_ItemDoubleClick");
+                this.currentImageADO = (ImageADO)tileView1.GetRow(e.Item.RowHandle);
+                Inventec.DrawTools.frmDrawTools f = new Inventec.DrawTools.frmDrawTools(this.currentImageADO.IMAGE_DISPLAY, SaveImageProcess);
+                f.ShowDialog();
             }
             catch (Exception ex)
             {

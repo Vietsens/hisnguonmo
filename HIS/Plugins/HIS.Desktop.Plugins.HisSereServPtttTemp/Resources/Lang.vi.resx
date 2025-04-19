@@ -1,0 +1,2328 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="FormEkipUser.btnSave.Text" xml:space="preserve">
+    <value>Lưu</value>
+  </data>
+  <data name="FormEkipUser.gridColumn1.Caption" xml:space="preserve">
+    <value>Họ và tên</value>
+  </data>
+  <data name="FormEkipUser.gridColumn2.Caption" xml:space="preserve">
+    <value>Vai trò</value>
+  </data>
+  <data name="FormEkipUser.gridColumn3.Caption" xml:space="preserve">
+    <value>gridColumn3</value>
+  </data>
+  <data name="FormEkipUser.gridColumn4.Caption" xml:space="preserve">
+    <value>gridColumn4</value>
+  </data>
+  <data name="FormEkipUser.layoutControl1.Text" xml:space="preserve">
+    <value>layoutControl1</value>
+  </data>
+  <data name="FormEkipUser.layoutControlItem2.Text" xml:space="preserve">
+    <value>Kíp mẫu:</value>
+  </data>
+  <data name="FormEkipUser.Text" xml:space="preserve">
+    <value>Kíp thực hiện</value>
+  </data>
+  <data name="FormImageTemp.bar1.Text" xml:space="preserve">
+    <value>Tools</value>
+  </data>
+  <data name="FormImageTemp.barBtnSave.Caption" xml:space="preserve">
+    <value>Ctrl S</value>
+  </data>
+  <data name="FormImageTemp.barBtnSearch.Caption" xml:space="preserve">
+    <value>Crtl F</value>
+  </data>
+  <data name="FormImageTemp.btnSave.Text" xml:space="preserve">
+    <value>Chọn (Ctrl S)</value>
+  </data>
+  <data name="FormImageTemp.btnSearch.Text" xml:space="preserve">
+    <value>Tìm (Ctrl F)</value>
+  </data>
+  <data name="FormImageTemp.gridColumn1.Caption" xml:space="preserve">
+    <value>STT</value>
+  </data>
+  <data name="FormImageTemp.gridColumn3.Caption" xml:space="preserve">
+    <value>Tiêu đề</value>
+  </data>
+  <data name="FormImageTemp.layoutControl1.Text" xml:space="preserve">
+    <value>layoutControl1</value>
+  </data>
+  <data name="FormImageTemp.Text" xml:space="preserve">
+    <value>Mẫu lược đồ phẫu thuật thủ thuật</value>
+  </data>
+  <data name="FormImageTemp.txtKeyWord.Properties.NullValuePrompt" xml:space="preserve">
+    <value>Từ khóa tìm kiếm</value>
+  </data>
+  <data name="FormPtttMethod.bar1.Text" xml:space="preserve">
+    <value>Tools</value>
+  </data>
+  <data name="FormPtttMethod.barBtnSearch.Caption" xml:space="preserve">
+    <value>Ctrl F</value>
+  </data>
+  <data name="FormPtttMethod.btnChoose.Text" xml:space="preserve">
+    <value>Chọn</value>
+  </data>
+  <data name="FormPtttMethod.btnSearch.Text" xml:space="preserve">
+    <value>Tìm (Ctrl F)</value>
+  </data>
+  <data name="FormPtttMethod.gc_amount.Caption" xml:space="preserve">
+    <value>Số lượng</value>
+  </data>
+  <data name="FormPtttMethod.gc_icon.Caption" xml:space="preserve">
+    <value>gridColumn1</value>
+  </data>
+  <data name="FormPtttMethod.gc_MethodCode.Caption" xml:space="preserve">
+    <value>Mã</value>
+  </data>
+  <data name="FormPtttMethod.gc_MethodName.Caption" xml:space="preserve">
+    <value>Tên</value>
+  </data>
+  <data name="FormPtttMethod.gc_PTTT.Caption" xml:space="preserve">
+    <value>Loại PTTT</value>
+  </data>
+  <data name="FormPtttMethod.gc_PTTT.ToolTip" xml:space="preserve">
+    <value>Loại phẫu thuật thủ thuật</value>
+  </data>
+  <data name="FormPtttMethod.gridColumn1.Caption" xml:space="preserve">
+    <value>gridColumn1</value>
+  </data>
+  <data name="FormPtttMethod.layoutControl1.Text" xml:space="preserve">
+    <value>layoutControl1</value>
+  </data>
+  <data name="FormPtttMethod.Text" xml:space="preserve">
+    <value>Phương pháp thực tế</value>
+  </data>
+  <data name="FormPtttMethod.txtKeyword.Properties.NullValuePrompt" xml:space="preserve">
+    <value>Từ khóa tìm kiếm</value>
+  </data>
+  <data name="FormPtttTemp.bar1.Text" xml:space="preserve">
+    <value>Tools</value>
+  </data>
+  <data name="FormPtttTemp.barBtnSave.Caption" xml:space="preserve">
+    <value>Ctrl S</value>
+  </data>
+  <data name="FormPtttTemp.btnSave.Text" xml:space="preserve">
+    <value>Lưu (Ctrl S)</value>
+  </data>
+  <data name="FormPtttTemp.chkPublic.Properties.Caption" xml:space="preserve">
+    <value>Công khai toàn viện</value>
+  </data>
+  <data name="FormPtttTemp.chkPublicDepartment.Properties.Caption" xml:space="preserve">
+    <value>Công khai trong khoa</value>
+  </data>
+  <data name="FormPtttTemp.layoutControl1.Text" xml:space="preserve">
+    <value>layoutControl1</value>
+  </data>
+  <data name="FormPtttTemp.layoutControlItem3.Text" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="FormPtttTemp.lciPtttTempCode.Text" xml:space="preserve">
+    <value>Mã:</value>
+  </data>
+  <data name="FormPtttTemp.lciPtttTempName.Text" xml:space="preserve">
+    <value>Tên:</value>
+  </data>
+  <data name="FormPtttTemp.Text" xml:space="preserve">
+    <value>Mẫu phẫu thuật thủ thuật</value>
+  </data>
+  <data name="FormViewImage.layoutControl1.Text" xml:space="preserve">
+    <value>layoutControl1</value>
+  </data>
+  <data name="FormViewImage.layoutControl2.Text" xml:space="preserve">
+    <value>layoutControl2</value>
+  </data>
+  <data name="FormViewImage.PictureEdit.Properties.NullText" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="FormViewImage.Text" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="FormViewImage.tileControl.Text" xml:space="preserve">
+    <value>tileControl1</value>
+  </data>
+  <data name="frmEkipTemp.bar1.Text" xml:space="preserve">
+    <value>Tools</value>
+  </data>
+  <data name="frmEkipTemp.barButtonItem1.Caption" xml:space="preserve">
+    <value>Lưu (Ctrl S)</value>
+  </data>
+  <data name="frmEkipTemp.btnSave.Text" xml:space="preserve">
+    <value>Lưu (Ctrl S)</value>
+  </data>
+  <data name="frmEkipTemp.chkDepartment.Properties.Caption" xml:space="preserve">
+    <value>Lưu thông tin khoa</value>
+  </data>
+  <data name="frmEkipTemp.chkDepartment.ToolTip" xml:space="preserve">
+    <value>Lưu thông tin khoa của thành viên trong kíp</value>
+  </data>
+  <data name="frmEkipTemp.chkPublic.Properties.Caption" xml:space="preserve">
+    <value>Công khai toàn viện</value>
+  </data>
+  <data name="frmEkipTemp.chkPublicDepartment.Properties.Caption" xml:space="preserve">
+    <value>Công khai trong khoa</value>
+  </data>
+  <data name="frmEkipTemp.layoutControl1.Text" xml:space="preserve">
+    <value>layoutControl1</value>
+  </data>
+  <data name="frmEkipTemp.layoutControlItem1.Text" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="frmEkipTemp.layoutControlItem2.Text" xml:space="preserve">
+    <value>Tên:</value>
+  </data>
+  <data name="frmEkipTemp.layoutControlItem4.Text" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="frmEkipTemp.layoutControlItem5.Text" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="frmEkipTemp.Text" xml:space="preserve">
+    <value>Kíp thực hiện mẫu</value>
+  </data>
+  <data name="frmInputDetail.btnDelete.Text" xml:space="preserve">
+    <value>Xóa</value>
+  </data>
+  <data name="frmInputDetail.checkEdit1.Properties.Caption" xml:space="preserve">
+    <value>Cắt bè</value>
+  </data>
+  <data name="frmInputDetail.checkEdit10.Properties.Caption" xml:space="preserve">
+    <value>Băng ép</value>
+  </data>
+  <data name="frmInputDetail.checkEdit100.Properties.Caption" xml:space="preserve">
+    <value>Phân tích thân mộng</value>
+  </data>
+  <data name="frmInputDetail.checkEdit101.Properties.Caption" xml:space="preserve">
+    <value>Đốt cầm máu</value>
+  </data>
+  <data name="frmInputDetail.checkEdit102.Properties.Caption" xml:space="preserve">
+    <value>Không</value>
+  </data>
+  <data name="frmInputDetail.checkEdit103.Properties.Caption" xml:space="preserve">
+    <value>Tê tại mặt</value>
+  </data>
+  <data name="frmInputDetail.checkEdit104.Properties.Caption" xml:space="preserve">
+    <value>Mê</value>
+  </data>
+  <data name="frmInputDetail.checkEdit105.Properties.Caption" xml:space="preserve">
+    <value>10-12mm</value>
+  </data>
+  <data name="frmInputDetail.checkEdit107.Properties.Caption" xml:space="preserve">
+    <value>Thủng củng mạc</value>
+  </data>
+  <data name="frmInputDetail.checkEdit109.Properties.Caption" xml:space="preserve">
+    <value>Cắt vào cở trực</value>
+  </data>
+  <data name="frmInputDetail.checkEdit11.Properties.Caption" xml:space="preserve">
+    <value>Khác</value>
+  </data>
+  <data name="frmInputDetail.checkEdit110.Properties.Caption" xml:space="preserve">
+    <value>Nước</value>
+  </data>
+  <data name="frmInputDetail.checkEdit111.Properties.Caption" xml:space="preserve">
+    <value>Có</value>
+  </data>
+  <data name="frmInputDetail.checkEdit113.Properties.Caption" xml:space="preserve">
+    <value>Giác mạc</value>
+  </data>
+  <data name="frmInputDetail.checkEdit114.Properties.Caption" xml:space="preserve">
+    <value>Không</value>
+  </data>
+  <data name="frmInputDetail.checkEdit115.Properties.Caption" xml:space="preserve">
+    <value>Nylon 10-O</value>
+  </data>
+  <data name="frmInputDetail.checkEdit117.Properties.Caption" xml:space="preserve">
+    <value>5mm</value>
+  </data>
+  <data name="frmInputDetail.checkEdit118.Properties.Caption" xml:space="preserve">
+    <value>Có</value>
+  </data>
+  <data name="frmInputDetail.checkEdit119.Properties.Caption" xml:space="preserve">
+    <value>Không</value>
+  </data>
+  <data name="frmInputDetail.checkEdit12.Properties.Caption" xml:space="preserve">
+    <value>Đường rạch phụ</value>
+  </data>
+  <data name="frmInputDetail.checkEdit120.Properties.Caption" xml:space="preserve">
+    <value>7mm</value>
+  </data>
+  <data name="frmInputDetail.checkEdit122.Properties.Caption" xml:space="preserve">
+    <value>8mm</value>
+  </data>
+  <data name="frmInputDetail.checkEdit123.Properties.Caption" xml:space="preserve">
+    <value>Treo mi cơ trán bằng silicon</value>
+  </data>
+  <data name="frmInputDetail.checkEdit124.Properties.Caption" xml:space="preserve">
+    <value>6mm</value>
+  </data>
+  <data name="frmInputDetail.checkEdit125.Properties.Caption" xml:space="preserve">
+    <value>Treo mi cơ trán bằng chỉ</value>
+  </data>
+  <data name="frmInputDetail.checkEdit126.Properties.Caption" xml:space="preserve">
+    <value>Treo mi cơ trán bằng cân cơ đùi</value>
+  </data>
+  <data name="frmInputDetail.checkEdit127.Properties.Caption" xml:space="preserve">
+    <value>Gấp cân cơ nâng mi</value>
+  </data>
+  <data name="frmInputDetail.checkEdit128.Properties.Caption" xml:space="preserve">
+    <value>Cắt ngắn cơ nâng mi</value>
+  </data>
+  <data name="frmInputDetail.checkEdit129.Properties.Caption" xml:space="preserve">
+    <value>Tê tại chỗ</value>
+  </data>
+  <data name="frmInputDetail.checkEdit13.Properties.Caption" xml:space="preserve">
+    <value>Không</value>
+  </data>
+  <data name="frmInputDetail.checkEdit130.Properties.Caption" xml:space="preserve">
+    <value>Gây mê</value>
+  </data>
+  <data name="frmInputDetail.checkEdit131.Properties.Caption" xml:space="preserve">
+    <value>Sụp độ IV</value>
+  </data>
+  <data name="frmInputDetail.checkEdit132.Properties.Caption" xml:space="preserve">
+    <value>Sụp độ II</value>
+  </data>
+  <data name="frmInputDetail.checkEdit133.Properties.Caption" xml:space="preserve">
+    <value>Sụp độ I</value>
+  </data>
+  <data name="frmInputDetail.checkEdit135.Properties.Caption" xml:space="preserve">
+    <value>Sụp độ III</value>
+  </data>
+  <data name="frmInputDetail.checkEdit136.Properties.Caption" xml:space="preserve">
+    <value>Sụp mi</value>
+  </data>
+  <data name="frmInputDetail.checkEdit137.Properties.Caption" xml:space="preserve">
+    <value>Sụp độ I</value>
+  </data>
+  <data name="frmInputDetail.checkEdit138.Properties.Caption" xml:space="preserve">
+    <value>Sụp độ III</value>
+  </data>
+  <data name="frmInputDetail.checkEdit139.Properties.Caption" xml:space="preserve">
+    <value>Sụp độ IV</value>
+  </data>
+  <data name="frmInputDetail.checkEdit140.Properties.Caption" xml:space="preserve">
+    <value>Sụp độ II</value>
+  </data>
+  <data name="frmInputDetail.checkEdit141.Properties.Caption" xml:space="preserve">
+    <value>Sụp mi</value>
+  </data>
+  <data name="frmInputDetail.checkEdit142.Properties.Caption" xml:space="preserve">
+    <value>3mm</value>
+  </data>
+  <data name="frmInputDetail.checkEdit144.Properties.Caption" xml:space="preserve">
+    <value>Băng ép</value>
+  </data>
+  <data name="frmInputDetail.checkEdit15.Properties.Caption" xml:space="preserve">
+    <value>Mũi rời</value>
+  </data>
+  <data name="frmInputDetail.checkEdit171.Properties.Caption" xml:space="preserve">
+    <value>da mi</value>
+  </data>
+  <data name="frmInputDetail.checkEdit173.Properties.Caption" xml:space="preserve">
+    <value>Kết mạc</value>
+  </data>
+  <data name="frmInputDetail.checkEdit174.Properties.Caption" xml:space="preserve">
+    <value>nút điểm lệ</value>
+  </data>
+  <data name="frmInputDetail.checkEdit175.Properties.Caption" xml:space="preserve">
+    <value>Có đứt</value>
+  </data>
+  <data name="frmInputDetail.checkEdit176.Properties.Caption" xml:space="preserve">
+    <value>Mô dưới da</value>
+  </data>
+  <data name="frmInputDetail.checkEdit177.Properties.Caption" xml:space="preserve">
+    <value>Da</value>
+  </data>
+  <data name="frmInputDetail.checkEdit178.Properties.Caption" xml:space="preserve">
+    <value>Hình nhẫn</value>
+  </data>
+  <data name="frmInputDetail.checkEdit179.Properties.Caption" xml:space="preserve">
+    <value>hình nhẫn</value>
+  </data>
+  <data name="frmInputDetail.checkEdit18.Properties.Caption" xml:space="preserve">
+    <value>Khâu vắt</value>
+  </data>
+  <data name="frmInputDetail.checkEdit180.Properties.Caption" xml:space="preserve">
+    <value>Có</value>
+  </data>
+  <data name="frmInputDetail.checkEdit181.Properties.Caption" xml:space="preserve">
+    <value>Có</value>
+  </data>
+  <data name="frmInputDetail.checkEdit182.Properties.Caption" xml:space="preserve">
+    <value>Không đứt</value>
+  </data>
+  <data name="frmInputDetail.checkEdit183.Properties.Caption" xml:space="preserve">
+    <value>Vùng túi lệ</value>
+  </data>
+  <data name="frmInputDetail.checkEdit184.Properties.Caption" xml:space="preserve">
+    <value>Không</value>
+  </data>
+  <data name="frmInputDetail.checkEdit185.Properties.Caption" xml:space="preserve">
+    <value>Dọc theo vết rách mi</value>
+  </data>
+  <data name="frmInputDetail.checkEdit186.Properties.Caption" xml:space="preserve">
+    <value>mini Monoka</value>
+  </data>
+  <data name="frmInputDetail.checkEdit187.Properties.Caption" xml:space="preserve">
+    <value>1/3 giữa</value>
+  </data>
+  <data name="frmInputDetail.checkEdit188.Properties.Caption" xml:space="preserve">
+    <value>1 lệ quản</value>
+  </data>
+  <data name="frmInputDetail.checkEdit189.Properties.Caption" xml:space="preserve">
+    <value>1/3 trong</value>
+  </data>
+  <data name="frmInputDetail.checkEdit190.Properties.Caption" xml:space="preserve">
+    <value>1/3 ngoài</value>
+  </data>
+  <data name="frmInputDetail.checkEdit191.Properties.Caption" xml:space="preserve">
+    <value>Mũi</value>
+  </data>
+  <data name="frmInputDetail.checkEdit192.Properties.Caption" xml:space="preserve">
+    <value>Dưới hốc</value>
+  </data>
+  <data name="frmInputDetail.checkEdit193.Properties.Caption" xml:space="preserve">
+    <value>Tê tại mặt</value>
+  </data>
+  <data name="frmInputDetail.checkEdit194.Properties.Caption" xml:space="preserve">
+    <value>Mê</value>
+  </data>
+  <data name="frmInputDetail.checkEdit197.Properties.Caption" xml:space="preserve">
+    <value>Đặt ống Silicon hình nhẫn</value>
+  </data>
+  <data name="frmInputDetail.checkEdit2.Properties.Caption" xml:space="preserve">
+    <value>Rạch bè</value>
+  </data>
+  <data name="frmInputDetail.checkEdit20.Properties.Caption" xml:space="preserve">
+    <value>Có</value>
+  </data>
+  <data name="frmInputDetail.checkEdit200.Properties.Caption" xml:space="preserve">
+    <value>Đặt ống Silicon 1 lệ quản</value>
+  </data>
+  <data name="frmInputDetail.checkEdit201.Properties.Caption" xml:space="preserve">
+    <value>Đứt lệ quản trên</value>
+  </data>
+  <data name="frmInputDetail.checkEdit204.Properties.Caption" xml:space="preserve">
+    <value>Đứt lệ quản trên dưới</value>
+  </data>
+  <data name="frmInputDetail.checkEdit205.Properties.Caption" xml:space="preserve">
+    <value>Đứt lệ quản dưới</value>
+  </data>
+  <data name="frmInputDetail.checkEdit206.Properties.Caption" xml:space="preserve">
+    <value>Có</value>
+  </data>
+  <data name="frmInputDetail.checkEdit21.Properties.Caption" xml:space="preserve">
+    <value>Không</value>
+  </data>
+  <data name="frmInputDetail.checkEdit22.Properties.Caption" xml:space="preserve">
+    <value>Vicryl</value>
+  </data>
+  <data name="frmInputDetail.checkEdit23.Properties.Caption" xml:space="preserve">
+    <value>Hơi</value>
+  </data>
+  <data name="frmInputDetail.checkEdit24.Properties.Caption" xml:space="preserve">
+    <value>Nylon</value>
+  </data>
+  <data name="frmInputDetail.checkEdit25.Properties.Caption" xml:space="preserve">
+    <value>Có</value>
+  </data>
+  <data name="frmInputDetail.checkEdit255.Properties.Caption" xml:space="preserve">
+    <value>13h</value>
+  </data>
+  <data name="frmInputDetail.checkEdit256.Properties.Caption" xml:space="preserve">
+    <value>11h</value>
+  </data>
+  <data name="frmInputDetail.checkEdit257.Properties.Caption" xml:space="preserve">
+    <value>Sau</value>
+  </data>
+  <data name="frmInputDetail.checkEdit258.Properties.Caption" xml:space="preserve">
+    <value>Trước</value>
+  </data>
+  <data name="frmInputDetail.checkEdit26.Properties.Caption" xml:space="preserve">
+    <value>Nước</value>
+  </data>
+  <data name="frmInputDetail.checkEdit261.Properties.Caption" xml:space="preserve">
+    <value>5mj</value>
+  </data>
+  <data name="frmInputDetail.checkEdit264.Properties.Caption" xml:space="preserve">
+    <value>4mj</value>
+  </data>
+  <data name="frmInputDetail.checkEdit266.Properties.Caption" xml:space="preserve">
+    <value>MP Glôcôm, Tiền phòng góc hẹp</value>
+  </data>
+  <data name="frmInputDetail.checkEdit267.Properties.Caption" xml:space="preserve">
+    <value>MT nghi ngờ Glôcôm, Tiền phòng góc hẹp</value>
+  </data>
+  <data name="frmInputDetail.checkEdit268.Properties.Caption" xml:space="preserve">
+    <value>MT Glôcôm, Tiền phòng góc hẹp</value>
+  </data>
+  <data name="frmInputDetail.checkEdit269.Properties.Caption" xml:space="preserve">
+    <value>MP nghi ngờ Glôcôm, Tiền phòng góc hẹp</value>
+  </data>
+  <data name="frmInputDetail.checkEdit27.Properties.Caption" xml:space="preserve">
+    <value>Không</value>
+  </data>
+  <data name="frmInputDetail.checkEdit28.Properties.Caption" xml:space="preserve">
+    <value>Có</value>
+  </data>
+  <data name="frmInputDetail.checkEdit29.Properties.Caption" xml:space="preserve">
+    <value>Cả hai vị trí</value>
+  </data>
+  <data name="frmInputDetail.checkEdit3.Properties.Caption" xml:space="preserve">
+    <value>Mỡ</value>
+  </data>
+  <data name="frmInputDetail.checkEdit30.Properties.Caption" xml:space="preserve">
+    <value>Dưới nắp CM</value>
+  </data>
+  <data name="frmInputDetail.checkEdit31.Properties.Caption" xml:space="preserve">
+    <value>Trên nắp CM</value>
+  </data>
+  <data name="frmInputDetail.checkEdit319.Properties.Caption" xml:space="preserve">
+    <value>Hình chữ thập</value>
+  </data>
+  <data name="frmInputDetail.checkEdit32.Properties.Caption" xml:space="preserve">
+    <value>Không</value>
+  </data>
+  <data name="frmInputDetail.checkEdit320.Properties.Caption" xml:space="preserve">
+    <value>Hình tròn</value>
+  </data>
+  <data name="frmInputDetail.checkEdit321.Properties.Caption" xml:space="preserve">
+    <value>Sau</value>
+  </data>
+  <data name="frmInputDetail.checkEdit322.Properties.Caption" xml:space="preserve">
+    <value>Trước</value>
+  </data>
+  <data name="frmInputDetail.checkEdit325.Properties.Caption" xml:space="preserve">
+    <value>2mj</value>
+  </data>
+  <data name="frmInputDetail.checkEdit328.Properties.Caption" xml:space="preserve">
+    <value>1.5mj</value>
+  </data>
+  <data name="frmInputDetail.checkEdit329.Properties.Caption" xml:space="preserve">
+    <value>MT đục bao sau sau mổ TTT</value>
+  </data>
+  <data name="frmInputDetail.checkEdit33.Properties.Caption" xml:space="preserve">
+    <value>Vị trí vùng bè</value>
+  </data>
+  <data name="frmInputDetail.checkEdit333.Properties.Caption" xml:space="preserve">
+    <value>MP đục bao sau sau mổ TTT</value>
+  </data>
+  <data name="frmInputDetail.checkEdit34.Properties.Caption" xml:space="preserve">
+    <value>Rạch bè</value>
+  </data>
+  <data name="frmInputDetail.checkEdit35.Properties.Caption" xml:space="preserve">
+    <value>Có</value>
+  </data>
+  <data name="frmInputDetail.checkEdit36.Properties.Caption" xml:space="preserve">
+    <value>Màng ối</value>
+  </data>
+  <data name="frmInputDetail.checkEdit37.Properties.Caption" xml:space="preserve">
+    <value>Olcogen</value>
+  </data>
+  <data name="frmInputDetail.checkEdit38.Properties.Caption" xml:space="preserve">
+    <value>MMC</value>
+  </data>
+  <data name="frmInputDetail.checkEdit39.Properties.Caption" xml:space="preserve">
+    <value>Có</value>
+  </data>
+  <data name="frmInputDetail.checkEdit4.Properties.Caption" xml:space="preserve">
+    <value>CNC</value>
+  </data>
+  <data name="frmInputDetail.checkEdit40.Properties.Caption" xml:space="preserve">
+    <value>Không</value>
+  </data>
+  <data name="frmInputDetail.checkEdit41.Properties.Caption" xml:space="preserve">
+    <value>Trước bè</value>
+  </data>
+  <data name="frmInputDetail.checkEdit42.Properties.Caption" xml:space="preserve">
+    <value>5FU</value>
+  </data>
+  <data name="frmInputDetail.checkEdit43.Properties.Caption" xml:space="preserve">
+    <value>Có</value>
+  </data>
+  <data name="frmInputDetail.checkEdit44.Properties.Caption" xml:space="preserve">
+    <value>Không</value>
+  </data>
+  <data name="frmInputDetail.checkEdit5.Properties.Caption" xml:space="preserve">
+    <value>Dưới KM</value>
+  </data>
+  <data name="frmInputDetail.checkEdit6.Properties.Caption" xml:space="preserve">
+    <value>Tách nhân</value>
+  </data>
+  <data name="frmInputDetail.checkEdit64.Properties.Caption" xml:space="preserve">
+    <value>MP</value>
+  </data>
+  <data name="frmInputDetail.checkEdit69.Properties.Caption" xml:space="preserve">
+    <value>Trên</value>
+  </data>
+  <data name="frmInputDetail.checkEdit7.Properties.Caption" xml:space="preserve">
+    <value>Mở bè</value>
+  </data>
+  <data name="frmInputDetail.checkEdit70.Properties.Caption" xml:space="preserve">
+    <value>Dưới</value>
+  </data>
+  <data name="frmInputDetail.checkEdit71.Properties.Caption" xml:space="preserve">
+    <value>MT</value>
+  </data>
+  <data name="frmInputDetail.checkEdit8.Properties.Caption" xml:space="preserve">
+    <value>Khác</value>
+  </data>
+  <data name="frmInputDetail.checkEdit80.Properties.Caption" xml:space="preserve">
+    <value>Có</value>
+  </data>
+  <data name="frmInputDetail.checkEdit83.Properties.Caption" xml:space="preserve">
+    <value>Không</value>
+  </data>
+  <data name="frmInputDetail.checkEdit84.Properties.Caption" xml:space="preserve">
+    <value>Bằng chỉ</value>
+  </data>
+  <data name="frmInputDetail.checkEdit85.Properties.Caption" xml:space="preserve">
+    <value>Có</value>
+  </data>
+  <data name="frmInputDetail.checkEdit86.Properties.Caption" xml:space="preserve">
+    <value>Không</value>
+  </data>
+  <data name="frmInputDetail.checkEdit87.Properties.Caption" xml:space="preserve">
+    <value>Cân cơ đùi</value>
+  </data>
+  <data name="frmInputDetail.checkEdit88.Properties.Caption" xml:space="preserve">
+    <value>Bằng silicon</value>
+  </data>
+  <data name="frmInputDetail.checkEdit89.Properties.Caption" xml:space="preserve">
+    <value>Có</value>
+  </data>
+  <data name="frmInputDetail.checkEdit9.Properties.Caption" xml:space="preserve">
+    <value>Cắt mống mắt</value>
+  </data>
+  <data name="frmInputDetail.checkEdit90.Properties.Caption" xml:space="preserve">
+    <value>Có</value>
+  </data>
+  <data name="frmInputDetail.checkEdit91.Properties.Caption" xml:space="preserve">
+    <value>18-24mm</value>
+  </data>
+  <data name="frmInputDetail.checkEdit92.Properties.Caption" xml:space="preserve">
+    <value>Không</value>
+  </data>
+  <data name="frmInputDetail.checkEdit95.Properties.Caption" xml:space="preserve">
+    <value>Không</value>
+  </data>
+  <data name="frmInputDetail.checkEdit96.Properties.Caption" xml:space="preserve">
+    <value>Vycryl7-O</value>
+  </data>
+  <data name="frmInputDetail.checkEdit98.Properties.Caption" xml:space="preserve">
+    <value>&gt;24mm</value>
+  </data>
+  <data name="frmInputDetail.checkEdit99.Properties.Caption" xml:space="preserve">
+    <value>Có</value>
+  </data>
+  <data name="frmInputDetail.chkCloseSkin.Properties.Caption" xml:space="preserve">
+    <value>Đóng kín</value>
+  </data>
+  <data name="frmInputDetail.chkDamageTypeAll.Properties.Caption" xml:space="preserve">
+    <value>Toàn bộ</value>
+  </data>
+  <data name="frmInputDetail.chkDamageTypePart.Properties.Caption" xml:space="preserve">
+    <value>Một phần làm sạch</value>
+  </data>
+  <data name="frmInputDetail.chkDiscloseSkin.Properties.Caption" xml:space="preserve">
+    <value>Để hở</value>
+  </data>
+  <data name="frmInputDetail.chkPostureSide.Properties.Caption" xml:space="preserve">
+    <value>Nghiêng</value>
+  </data>
+  <data name="frmInputDetail.chkPostureTummy.Properties.Caption" xml:space="preserve">
+    <value>Sấp</value>
+  </data>
+  <data name="frmInputDetail.chkPostureUp.Properties.Caption" xml:space="preserve">
+    <value>Ngửa</value>
+  </data>
+  <data name="frmInputDetail.chkShapingSkin.Properties.Caption" xml:space="preserve">
+    <value>Vạt tại chỗ</value>
+  </data>
+  <data name="frmInputDetail.chkShapingSkinOther.Properties.Caption" xml:space="preserve">
+    <value>Khác</value>
+  </data>
+  <data name="frmInputDetail.Glocom__raCoDinhNhanCauChiGiacMac.Properties.Caption" xml:space="preserve">
+    <value>Chỉ giác mạc</value>
+  </data>
+  <data name="frmInputDetail.Glocom__raCoDinhNhanCauCoTruc.Properties.Caption" xml:space="preserve">
+    <value>Chỉ cơ trực</value>
+  </data>
+  <data name="frmInputDetail.Glocom__raCoDinhNhanCauDayCungDo.Properties.Caption" xml:space="preserve">
+    <value>Đáy cùng đồ</value>
+  </data>
+  <data name="frmInputDetail.Glocom__raCoDinhNhanCauDayVungRia.Properties.Caption" xml:space="preserve">
+    <value>Đáy vùng rìa</value>
+  </data>
+  <data name="frmInputDetail.Glocom__raCoDinhNhanCauVanhMi.Properties.Caption" xml:space="preserve">
+    <value>Vành mi</value>
+  </data>
+  <data name="frmInputDetail.Glocom__raGiaDoanBenhGanTuyet.Properties.Caption" xml:space="preserve">
+    <value>Gần tuyệt</value>
+  </data>
+  <data name="frmInputDetail.Glocom__raGiaDoanBenhSoPhat.Properties.Caption" xml:space="preserve">
+    <value>Sơ phát</value>
+  </data>
+  <data name="frmInputDetail.Glocom__raGiaDoanBenhTiemTang.Properties.Caption" xml:space="preserve">
+    <value>Tiềm tàng</value>
+  </data>
+  <data name="frmInputDetail.Glocom__raGiaDoanBenhTienTrien.Properties.Caption" xml:space="preserve">
+    <value>Tiến triển</value>
+  </data>
+  <data name="frmInputDetail.Glocom__raGiaDoanBenhTranTrong.Properties.Caption" xml:space="preserve">
+    <value>Trầm trọng</value>
+  </data>
+  <data name="frmInputDetail.Glocom__raGiaDoanBenhTuyetDoi.Properties.Caption" xml:space="preserve">
+    <value>Tuyệt đối</value>
+  </data>
+  <data name="frmInputDetail.Glocom__raGloocomBamSinh.Properties.Caption" xml:space="preserve">
+    <value>Glôcôm bẩm sinh</value>
+  </data>
+  <data name="frmInputDetail.Glocom__raGloocomGocDong.Properties.Caption" xml:space="preserve">
+    <value>Glôcôm góc đóng</value>
+  </data>
+  <data name="frmInputDetail.Glocom__raGloocomGocMo.Properties.Caption" xml:space="preserve">
+    <value>Glôcôm góc mở</value>
+  </data>
+  <data name="frmInputDetail.Glocom__raGloocomThuPhat.Properties.Caption" xml:space="preserve">
+    <value>Glôcôm thứ phát</value>
+  </data>
+  <data name="frmInputDetail.Glocom__raPPVoCamCNC.Properties.Caption" xml:space="preserve">
+    <value>CNC</value>
+  </data>
+  <data name="frmInputDetail.Glocom__raPPVoCamGayMe.Properties.Caption" xml:space="preserve">
+    <value>Mê</value>
+  </data>
+  <data name="frmInputDetail.Glocom__raPPVoCamTeTaiMat.Properties.Caption" xml:space="preserve">
+    <value>Tê tại mặt</value>
+  </data>
+  <data name="frmInputDetail.Glocom__raPPVoCamViTriBaoTenon.Properties.Caption" xml:space="preserve">
+    <value>Dưới bao tenon</value>
+  </data>
+  <data name="frmInputDetail.Glocom__raTinhTrangBaoTenonBT.Properties.Caption" xml:space="preserve">
+    <value>Bình thường</value>
+  </data>
+  <data name="frmInputDetail.Glocom__raTinhTrangBaoTenonGay.Properties.Caption" xml:space="preserve">
+    <value>Dày</value>
+  </data>
+  <data name="frmInputDetail.Glocom__raTinhTrangBaoTenonSo.Properties.Caption" xml:space="preserve">
+    <value>Sơ</value>
+  </data>
+  <data name="frmInputDetail.labelControl1.Text" xml:space="preserve">
+    <value>ml</value>
+  </data>
+  <data name="frmInputDetail.labelControl10.Text" xml:space="preserve">
+    <value>Lược đồ phẫu thuật</value>
+  </data>
+  <data name="frmInputDetail.labelControl11.Text" xml:space="preserve">
+    <value>+ Vạt CM:</value>
+  </data>
+  <data name="frmInputDetail.labelControl12.Text" xml:space="preserve">
+    <value>+ Khâu nắp CM:</value>
+  </data>
+  <data name="frmInputDetail.labelControl13.Text" xml:space="preserve">
+    <value>Bệnh nhân ngồi và cố định đầu vào máy Laser Yag</value>
+  </data>
+  <data name="frmInputDetail.labelControl14.Text" xml:space="preserve">
+    <value>mm</value>
+  </data>
+  <data name="frmInputDetail.labelControl15.Text" xml:space="preserve">
+    <value>giờ</value>
+  </data>
+  <data name="frmInputDetail.labelControl16.Text" xml:space="preserve">
+    <value>giờ</value>
+  </data>
+  <data name="frmInputDetail.labelControl17.Text" xml:space="preserve">
+    <value>ml</value>
+  </data>
+  <data name="frmInputDetail.labelControl18.Text" xml:space="preserve">
+    <value>+ Vị trí:</value>
+  </data>
+  <data name="frmInputDetail.labelControl19.Text" xml:space="preserve">
+    <value>Băng mắt</value>
+  </data>
+  <data name="frmInputDetail.labelControl2.Text" xml:space="preserve">
+    <value>giờ</value>
+  </data>
+  <data name="frmInputDetail.labelControl20.Text" xml:space="preserve">
+    <value>+ Lấy mảnh KM sát rìa:</value>
+  </data>
+  <data name="frmInputDetail.labelControl21.Text" xml:space="preserve">
+    <value>mm</value>
+  </data>
+  <data name="frmInputDetail.labelControl22.Text" xml:space="preserve">
+    <value>+ Rạch ra mi theo đường vẽ:</value>
+  </data>
+  <data name="frmInputDetail.labelControl23.Text" xml:space="preserve">
+    <value>+ Cầm máu kĩ:</value>
+  </data>
+  <data name="frmInputDetail.labelControl24.Text" xml:space="preserve">
+    <value>+ Phương pháp phẫu thuật:</value>
+  </data>
+  <data name="frmInputDetail.labelControl25.Text" xml:space="preserve">
+    <value>ml</value>
+  </data>
+  <data name="frmInputDetail.labelControl26.Text" xml:space="preserve">
+    <value>ml</value>
+  </data>
+  <data name="frmInputDetail.labelControl27.Text" xml:space="preserve">
+    <value>2.5ml</value>
+  </data>
+  <data name="frmInputDetail.labelControl28.Text" xml:space="preserve">
+    <value>Rửa cùng đồ</value>
+  </data>
+  <data name="frmInputDetail.labelControl29.Text" xml:space="preserve">
+    <value>Mở cố định đầu và mắt bệnh nhân</value>
+  </data>
+  <data name="frmInputDetail.labelControl3.Text" xml:space="preserve">
+    <value>Vị trí đường rạch:</value>
+  </data>
+  <data name="frmInputDetail.labelControl30.Text" xml:space="preserve">
+    <value>Cố định nhãn cầu bằng kính ABRAHAM</value>
+  </data>
+  <data name="frmInputDetail.labelControl31.Text" xml:space="preserve">
+    <value>Rửa cùng đồ</value>
+  </data>
+  <data name="frmInputDetail.labelControl32.Text" xml:space="preserve">
+    <value>+ Chẩn đoán trước PT:</value>
+  </data>
+  <data name="frmInputDetail.labelControl33.Text" xml:space="preserve">
+    <value>mũi</value>
+  </data>
+  <data name="frmInputDetail.labelControl34.Text" xml:space="preserve">
+    <value>ml</value>
+  </data>
+  <data name="frmInputDetail.labelControl35.Text" xml:space="preserve">
+    <value>1. Tư thế nằm:</value>
+  </data>
+  <data name="frmInputDetail.labelControl36.Text" xml:space="preserve">
+    <value>4. Xử lý thương tổn:</value>
+  </data>
+  <data name="frmInputDetail.labelControl37.Text" xml:space="preserve">
+    <value>Bệnh nhân ngồi và cố định đầu vào máy Laser Yag</value>
+  </data>
+  <data name="frmInputDetail.labelControl38.Text" xml:space="preserve">
+    <value>Điều chỉnh tiêu điểm phù hợp</value>
+  </data>
+  <data name="frmInputDetail.labelControl39.Text" xml:space="preserve">
+    <value>Mở cố định đầu và mắt bệnh nhân</value>
+  </data>
+  <data name="frmInputDetail.labelControl4.Text" xml:space="preserve">
+    <value>giờ</value>
+  </data>
+  <data name="frmInputDetail.labelControl40.Text" xml:space="preserve">
+    <value>Cố định nhãn cầu bằng kính ABRAHAM</value>
+  </data>
+  <data name="frmInputDetail.labelControl41.Text" xml:space="preserve">
+    <value>+ Chẩn đoán trước PT:</value>
+  </data>
+  <data name="frmInputDetail.labelControl42.Text" xml:space="preserve">
+    <value>tiêu điểm</value>
+  </data>
+  <data name="frmInputDetail.labelControl43.Text" xml:space="preserve">
+    <value>6. Phẫu thuật an toàn, chuyển theo dõi.</value>
+  </data>
+  <data name="frmInputDetail.labelControl44.Text" xml:space="preserve">
+    <value>5. Làm sạch, sát trùng, băng tổn thương.</value>
+  </data>
+  <data name="frmInputDetail.labelControl5.Text" xml:space="preserve">
+    <value>mm</value>
+  </data>
+  <data name="frmInputDetail.labelControl50.Text" xml:space="preserve">
+    <value>tiêu điểm</value>
+  </data>
+  <data name="frmInputDetail.labelControl52.Text" xml:space="preserve">
+    <value>Chẩn đoán trước PT:</value>
+  </data>
+  <data name="frmInputDetail.labelControl53.Text" xml:space="preserve">
+    <value>+ Bộc lộ sụn mi trên:</value>
+  </data>
+  <data name="frmInputDetail.labelControl6.Text" xml:space="preserve">
+    <value>%</value>
+  </data>
+  <data name="frmInputDetail.labelControl7.Text" xml:space="preserve">
+    <value>mmHg</value>
+  </data>
+  <data name="frmInputDetail.labelControl8.Text" xml:space="preserve">
+    <value>9. Tán nhân:</value>
+  </data>
+  <data name="frmInputDetail.labelControl9.Text" xml:space="preserve">
+    <value>3. Xác định thương tổn:</value>
+  </data>
+  <data name="frmInputDetail.layoutControl_TabOther.Text" xml:space="preserve">
+    <value>layoutControl3</value>
+  </data>
+  <data name="frmInputDetail.layoutControl1.Text" xml:space="preserve">
+    <value>layoutControl1</value>
+  </data>
+  <data name="frmInputDetail.layoutControl10.Text" xml:space="preserve">
+    <value>layoutControl10</value>
+  </data>
+  <data name="frmInputDetail.layoutControl11.Text" xml:space="preserve">
+    <value>layoutControl11</value>
+  </data>
+  <data name="frmInputDetail.layoutControl12.Text" xml:space="preserve">
+    <value>layoutControl12</value>
+  </data>
+  <data name="frmInputDetail.layoutControl13.Text" xml:space="preserve">
+    <value>layoutControl13</value>
+  </data>
+  <data name="frmInputDetail.layoutControl14.Text" xml:space="preserve">
+    <value>layoutControl14</value>
+  </data>
+  <data name="frmInputDetail.layoutControl15.Text" xml:space="preserve">
+    <value>layoutControl15</value>
+  </data>
+  <data name="frmInputDetail.layoutControl16.Text" xml:space="preserve">
+    <value>layoutControl16</value>
+  </data>
+  <data name="frmInputDetail.layoutControl17.Text" xml:space="preserve">
+    <value>layoutControl17</value>
+  </data>
+  <data name="frmInputDetail.layoutControl18.Text" xml:space="preserve">
+    <value>layoutControl18</value>
+  </data>
+  <data name="frmInputDetail.layoutControl19.Text" xml:space="preserve">
+    <value>layoutControl19</value>
+  </data>
+  <data name="frmInputDetail.layoutControl2.Text" xml:space="preserve">
+    <value>layoutControl2</value>
+  </data>
+  <data name="frmInputDetail.layoutControl20.Text" xml:space="preserve">
+    <value>layoutControl20</value>
+  </data>
+  <data name="frmInputDetail.layoutControl21.Text" xml:space="preserve">
+    <value>layoutControl21</value>
+  </data>
+  <data name="frmInputDetail.layoutControl22.Text" xml:space="preserve">
+    <value>layoutControl22</value>
+  </data>
+  <data name="frmInputDetail.layoutControl23.Text" xml:space="preserve">
+    <value>layoutControl23</value>
+  </data>
+  <data name="frmInputDetail.layoutControl24.Text" xml:space="preserve">
+    <value>layoutControl24</value>
+  </data>
+  <data name="frmInputDetail.layoutControl25.Text" xml:space="preserve">
+    <value>layoutControl25</value>
+  </data>
+  <data name="frmInputDetail.layoutControl4.Text" xml:space="preserve">
+    <value>layoutControl4</value>
+  </data>
+  <data name="frmInputDetail.layoutControl5.Text" xml:space="preserve">
+    <value>layoutControl5</value>
+  </data>
+  <data name="frmInputDetail.layoutControl6.Text" xml:space="preserve">
+    <value>layoutControl6</value>
+  </data>
+  <data name="frmInputDetail.layoutControl7.Text" xml:space="preserve">
+    <value>layoutControl7</value>
+  </data>
+  <data name="frmInputDetail.layoutControl8.Text" xml:space="preserve">
+    <value>layoutControl8</value>
+  </data>
+  <data name="frmInputDetail.layoutControl9.Text" xml:space="preserve">
+    <value>layoutControl9</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem104.Text" xml:space="preserve">
+    <value>+ Chẩn đoán trước PT:</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem106.Text" xml:space="preserve">
+    <value>+ Phẫu thuật:</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem109.Text" xml:space="preserve">
+    <value>+ Giai đoạn bệnh:</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem115.Text" xml:space="preserve">
+    <value>+ Phương pháp vô cảm:</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem117.Text" xml:space="preserve">
+    <value>Loại thuốc tê:</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem119.Text" xml:space="preserve">
+    <value>+ Cố định nhẫn cầu:</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem121.Text" xml:space="preserve">
+    <value>+ Tình trạng bao tenon:</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem122.Text" xml:space="preserve">
+    <value>+ Lạng bớt bao tenon:</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem128.Text" xml:space="preserve">
+    <value>3. Mở KM rìa:</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem130.Text" xml:space="preserve">
+    <value>Tạo vạt KM: Kinh tuyến: </value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem132.Text" xml:space="preserve">
+    <value>+ Ức chế tạo sơ:</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem135.Text" xml:space="preserve">
+    <value>Thời gian:</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem136.Text" xml:space="preserve">
+    <value>layoutControlItem40</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem138.Text" xml:space="preserve">
+    <value>Kích thước:</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem14.Text" xml:space="preserve">
+    <value>+ Chỉ định phẫu thuật:</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem141.Text" xml:space="preserve">
+    <value>6. </value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem143.Text" xml:space="preserve">
+    <value>+ Cắt mẩu bè:</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem144.Text" xml:space="preserve">
+    <value>+ Cắt mống mắt:</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem145.Text" xml:space="preserve">
+    <value>+ Tái tạo TP:</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem146.Text" xml:space="preserve">
+    <value>Chỉ rút:</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem147.Text" xml:space="preserve">
+    <value>+ Tiêm thuốc tê Lidocaine vùng thân mộng:</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem148.Text" xml:space="preserve">
+    <value>+ Gọt giác mạc đầu mộng:</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem152.Text" xml:space="preserve">
+    <value>7. </value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem153.Text" xml:space="preserve">
+    <value>+ Chọc TP:</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem157.Text" xml:space="preserve">
+    <value>Hình dạng:</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem158.Text" xml:space="preserve">
+    <value>Sống mũi:</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem159.Text" xml:space="preserve">
+    <value>+ Tra kháng sinh:</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem162.Text" xml:space="preserve">
+    <value>Tốc độ DC:</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem168.Text" xml:space="preserve">
+    <value>Loại chỉ:</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem169.Text" xml:space="preserve">
+    <value>Kích thước:</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem170.Text" xml:space="preserve">
+    <value>+ Khâu KM:</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem173.Text" xml:space="preserve">
+    <value>+ Khâu KM che phần đã cắt kết mạc:</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem174.Text" xml:space="preserve">
+    <value>+ Diễn biến khác xảy ra trong phẫu thuật:</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem175.Text" xml:space="preserve">
+    <value>+ Tiêm mắt:</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem176.Text" xml:space="preserve">
+    <value>+ Biến chứng:</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem177.Text" xml:space="preserve">
+    <value>+ Lấy mảnh màng ối:</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem180.Text" xml:space="preserve">
+    <value>+ MP:</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem182.Text" xml:space="preserve">
+    <value>Thuốc:</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem184.Text" xml:space="preserve">
+    <value>+ Phương pháp vô cảm:</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem185.Text" xml:space="preserve">
+    <value>+ Thuốc tra mắt:</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem187.Text" xml:space="preserve">
+    <value>Do:</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem199.Text" xml:space="preserve">
+    <value>Số mũi:</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem20.Text" xml:space="preserve">
+    <value>+ Phương pháp vô cảm:</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem201.Text" xml:space="preserve">
+    <value>+ MT:</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem202.Text" xml:space="preserve">
+    <value>Loại thuốc tê:</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem209.Text" xml:space="preserve">
+    <value>+ Băng ép:</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem211.Text" xml:space="preserve">
+    <value>+ Phương pháp vô cảm:</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem212.Text" xml:space="preserve">
+    <value>Số mũi:</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem214.Text" xml:space="preserve">
+    <value>Loại thuốc tê:</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem216.Text" xml:space="preserve">
+    <value>1. Cố định nhẫn cầu:</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem218.Text" xml:space="preserve">
+    <value>+ Đo và vẽ vị trí đường rạch cách bờ tự do:</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem219.Text" xml:space="preserve">
+    <value>    Cắt cơ vòng mi:</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem22.Text" xml:space="preserve">
+    <value>Loại thuốc tê:</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem225.Text" xml:space="preserve">
+    <value>+ Đặt vành mi:</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem226.Text" xml:space="preserve">
+    <value>Kích thước:</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem228.Text" xml:space="preserve">
+    <value>+ Cắt rời đầu mộng:</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem230.Text" xml:space="preserve">
+    <value>+ Khâu mảnh ghép chỉ:</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem233.Text" xml:space="preserve">
+    <value>Kích thước:</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem235.Text" xml:space="preserve">
+    <value>+ Tê tại chỗ loại thuốc tê:</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem237.Text" xml:space="preserve">
+    <value>    Phân tích phần da dư:</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem24.Text" xml:space="preserve">
+    <value>1. Cố định nhẫn cầu:</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem242.Text" xml:space="preserve">
+    <value>layoutControlItem40</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem244.Text" xml:space="preserve">
+    <value>+ Cách xử trí:</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem245.Text" xml:space="preserve">
+    <value>+ Diễn biến khác:</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem247.Text" xml:space="preserve">
+    <value>+ Rạch ra mi theo đường vẽ:</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem248.Text" xml:space="preserve">
+    <value>Loại thuốc:</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem250.Text" xml:space="preserve">
+    <value>+ Cắt ngắn cơ nâng mi khoảng:</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem253.Text" xml:space="preserve">
+    <value>10. Hút chất T3:</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem254.Text" xml:space="preserve">
+    <value>+ Luồn chỉ hoặc Silicon theo hình ngũ giác:</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem26.Text" xml:space="preserve">
+    <value>2. Tình trạng T3:</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem260.Text" xml:space="preserve">
+    <value>+ Cố định và tách cơ nâng mi ra khỏi kết mạc và cơ dưới da đến dây chằng whitnall:</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem261.Text" xml:space="preserve">
+    <value>+ Treo mi cơ trán:</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem262.Text" xml:space="preserve">
+    <value>+ Gấp cơ nâng mi khoảng:</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem270.Text" xml:space="preserve">
+    <value>Năng lượng:</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem271.Text" xml:space="preserve">
+    <value>+ Khâu cố định cơ nâng mi vào 1/3 bờ trên sụn mi trên 3 nốt chữ U bằng chỉ vicryl:</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem275.Text" xml:space="preserve">
+    <value>+ Tra PD:</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem281.Text" xml:space="preserve">
+    <value>+ Phương pháp phẫu thuật:</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem285.Text" xml:space="preserve">
+    <value>Kích thước:</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem286.Text" xml:space="preserve">
+    <value>Dẫn lưu:</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem287.Text" xml:space="preserve">
+    <value>+ Khâu da mi 2 lớp và tạo mi bằng chỉ:</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem289.Text" xml:space="preserve">
+    <value>Bấc:</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem291.Text" xml:space="preserve">
+    <value>Khác:</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem293.Text" xml:space="preserve">
+    <value>Ngày rút:</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem295.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Ngày cắt chỉ</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem295.Text" xml:space="preserve">
+    <value>Ngày CC:</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem306.Text" xml:space="preserve">
+    <value>+ Chẩn đoán trước PT:</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem311.Text" xml:space="preserve">
+    <value>+ Phương pháp phẫu thuật:</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem317.Text" xml:space="preserve">
+    <value>+ Phương pháp vô cảm:</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem319.Text" xml:space="preserve">
+    <value>PT lần:</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem32.Text" xml:space="preserve">
+    <value>3. Mở KM rìa:</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem321.Text" xml:space="preserve">
+    <value>1. Cố định nhẫn cầu:</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem323.Text" xml:space="preserve">
+    <value>+ Tìm đầu đứt trong:</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem324.Text" xml:space="preserve">
+    <value>+ Cố định Silicon:</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem325.Text" xml:space="preserve">
+    <value>Vị trí:</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem327.Text" xml:space="preserve">
+    <value>+ Đặt lệ quản:</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem330.Text" xml:space="preserve">
+    <value>3. Mở KM rìa:</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem331.Text" xml:space="preserve">
+    <value>+ Kiểm tra vết thương lấy dị vật:</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem332.Text" xml:space="preserve">
+    <value>Giờ thứ:</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem334.Text" xml:space="preserve">
+    <value>4. Mở vào TP:</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem335.Text" xml:space="preserve">
+    <value>+ Kiểm tra lệ quản lành:</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem337.Text" xml:space="preserve">
+    <value>+ Nối tận 2 đầu lệ quản đứt: trên, dưới, sau bằng chỉ vicryl:</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem34.Text" xml:space="preserve">
+    <value>4. Mở vào TP:</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem340.Text" xml:space="preserve">
+    <value>Loại thuốc tê:</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem342.Text" xml:space="preserve">
+    <value>+ Tìm đầu đứt ngoài:</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem343.Text" xml:space="preserve">
+    <value>6. </value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem354.Text" xml:space="preserve">
+    <value>+ Tái tạo mi góc trong 3 lớp:</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem355.Text" xml:space="preserve">
+    <value>Xoay nhân:</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem359.Text" xml:space="preserve">
+    <value>+ Diễn biến khác:</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem364.Text" xml:space="preserve">
+    <value>Bằng chỉ nylon:</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem38.Text" xml:space="preserve">
+    <value>5. Nhuộm bao:</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem387.Text" xml:space="preserve">
+    <value>+ Tra kháng sinh:</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem39.Text" xml:space="preserve">
+    <value>Kinh tuyến:</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem395.Text" xml:space="preserve">
+    <value>+ Chẩn đoán:</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem400.Text" xml:space="preserve">
+    <value>Chỉnh năng lượng:</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem406.Text" xml:space="preserve">
+    <value>Chỉnh điểm nổ:</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem41.Text" xml:space="preserve">
+    <value>Kinh tuyến:</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem410.Text" xml:space="preserve">
+    <value>Vị trí cắt mống chu biên:</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem42.Text" xml:space="preserve">
+    <value>layoutControlItem40</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem421.Text" xml:space="preserve">
+    <value>Khác:</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem426.Text" xml:space="preserve">
+    <value>Khác:</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem44.Text" xml:space="preserve">
+    <value>Kích thước:</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem47.Text" xml:space="preserve">
+    <value>6. </value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem484.Text" xml:space="preserve">
+    <value>+ Chẩn đoán trước PT:</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem489.Text" xml:space="preserve">
+    <value>+ Chỉnh năng lượng:</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem495.Text" xml:space="preserve">
+    <value>+ Chỉnh điểm nổ:</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem499.Text" xml:space="preserve">
+    <value>+ Mở bao sau theo hình dạng:</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem51.Text" xml:space="preserve">
+    <value>7. </value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem518.Text" xml:space="preserve">
+    <value>Khác:</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem52.Text" xml:space="preserve">
+    <value>8. Đẩy nhân:</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem53.Text" xml:space="preserve">
+    <value>Xoay nhân:</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem573.Text" xml:space="preserve">
+    <value>layoutControlItem23</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem58.Text" xml:space="preserve">
+    <value>10. Hút chất T3:</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem59.Text" xml:space="preserve">
+    <value>11. Đặt IOL:</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem64.Text" xml:space="preserve">
+    <value>12. Rách bao sau:</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem67.Text" xml:space="preserve">
+    <value>     - Cắt bao sau:</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem69.Text" xml:space="preserve">
+    <value>     - Cắt mống mắt ngoại vi:</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem72.Text" xml:space="preserve">
+    <value>Năng lượng:</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem73.Text" xml:space="preserve">
+    <value>Vị trí rách:</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem74.Text" xml:space="preserve">
+    <value>Lực hút:</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem75.Text" xml:space="preserve">
+    <value>Kích thước:</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem79.Text" xml:space="preserve">
+    <value>Tốc độ DC:</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem80.Text" xml:space="preserve">
+    <value>Vị trí rách:</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem81.Text" xml:space="preserve">
+    <value>Loại thuốc:</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem82.Text" xml:space="preserve">
+    <value>13. Phục hồi vết mổ:</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem84.Text" xml:space="preserve">
+    <value>14. Tiêm mắt:</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem89.Text" xml:space="preserve">
+    <value>15. Tra mắt:</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem9.Text" xml:space="preserve">
+    <value>+ Chẩn đoán:</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem92.Text" xml:space="preserve">
+    <value>Loại thuốc:</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem93.Text" xml:space="preserve">
+    <value>16. Diến biến khác:</value>
+  </data>
+  <data name="frmInputDetail.layoutControlItem96.Text" xml:space="preserve">
+    <value>Băng:</value>
+  </data>
+  <data name="frmInputDetail.lciCloseSkin.Text" xml:space="preserve">
+    <value>Đóng da:</value>
+  </data>
+  <data name="frmInputDetail.lciDamageType.Text" xml:space="preserve">
+    <value>Cắt bỏ:</value>
+  </data>
+  <data name="frmInputDetail.lciPosture.Text" xml:space="preserve">
+    <value>1. Tư thế nằm:</value>
+  </data>
+  <data name="frmInputDetail.lciShapingSkin.Text" xml:space="preserve">
+    <value>Tạo hình:</value>
+  </data>
+  <data name="frmInputDetail.lciSkinDamage.Text" xml:space="preserve">
+    <value>Thương tổn:</value>
+  </data>
+  <data name="frmInputDetail.lciSkinDamageAmount.Text" xml:space="preserve">
+    <value>Số lượng:</value>
+  </data>
+  <data name="frmInputDetail.lciSkinDamagePosition.Text" xml:space="preserve">
+    <value>Vị trí:</value>
+  </data>
+  <data name="frmInputDetail.lciTreatSkinOther.Text" xml:space="preserve">
+    <value>Khác:</value>
+  </data>
+  <data name="frmInputDetail.raCatBao.Properties.Caption" xml:space="preserve">
+    <value>Cắt bao</value>
+  </data>
+  <data name="frmInputDetail.raChiCoTruc.Properties.Caption" xml:space="preserve">
+    <value>Chỉ cơ trực</value>
+  </data>
+  <data name="frmInputDetail.raDatIOLBangPince.Properties.Caption" xml:space="preserve">
+    <value>Bằng pince</value>
+  </data>
+  <data name="frmInputDetail.raDatIOLBangSung.Properties.Caption" xml:space="preserve">
+    <value>Bằng súng</value>
+  </data>
+  <data name="frmInputDetail.raDatIOLCoDinhCM.Properties.Caption" xml:space="preserve">
+    <value>Cố định CM</value>
+  </data>
+  <data name="frmInputDetail.raDatIOLCung.Properties.Caption" xml:space="preserve">
+    <value>Cứng</value>
+  </data>
+  <data name="frmInputDetail.raDatIOLMem.Properties.Caption" xml:space="preserve">
+    <value>Mềm</value>
+  </data>
+  <data name="frmInputDetail.raDayNhanBangChatNhay.Properties.Caption" xml:space="preserve">
+    <value>Bằng chất nhầy</value>
+  </data>
+  <data name="frmInputDetail.raDayNhanBangNuoc.Properties.Caption" xml:space="preserve">
+    <value>Bằng nước</value>
+  </data>
+  <data name="frmInputDetail.raDayNhanCo.Properties.Caption" xml:space="preserve">
+    <value>Có</value>
+  </data>
+  <data name="frmInputDetail.raDayNhanKhong.Properties.Caption" xml:space="preserve">
+    <value>Không</value>
+  </data>
+  <data name="frmInputDetail.raDoI.Properties.Caption" xml:space="preserve">
+    <value>Độ I</value>
+  </data>
+  <data name="frmInputDetail.raDoII.Properties.Caption" xml:space="preserve">
+    <value>Độ II</value>
+  </data>
+  <data name="frmInputDetail.raDoIII.Properties.Caption" xml:space="preserve">
+    <value>Độ III</value>
+  </data>
+  <data name="frmInputDetail.raDoIV.Properties.Caption" xml:space="preserve">
+    <value>Độ IV</value>
+  </data>
+  <data name="frmInputDetail.raDoV.Properties.Caption" xml:space="preserve">
+    <value>Độ V</value>
+  </data>
+  <data name="frmInputDetail.raDucT3BamSinh.Properties.Caption" xml:space="preserve">
+    <value>Đục T3 bẩm sinh</value>
+  </data>
+  <data name="frmInputDetail.raDucT3BenhLy.Properties.Caption" xml:space="preserve">
+    <value>Đục T3 bệnh lý</value>
+  </data>
+  <data name="frmInputDetail.raDucT3Gia.Properties.Caption" xml:space="preserve">
+    <value>Đục T3 giả</value>
+  </data>
+  <data name="frmInputDetail.raHutChatT3IA.Properties.Caption" xml:space="preserve">
+    <value>IA</value>
+  </data>
+  <data name="frmInputDetail.raHutChatT3Kim2Nong.Properties.Caption" xml:space="preserve">
+    <value>Kim hai nòng</value>
+  </data>
+  <data name="frmInputDetail.raKhongCoT3.Properties.Caption" xml:space="preserve">
+    <value>Không có T3</value>
+  </data>
+  <data name="frmInputDetail.raLechT3.Properties.Caption" xml:space="preserve">
+    <value>Lệch T3</value>
+  </data>
+  <data name="frmInputDetail.raLechTTT.Properties.Caption" xml:space="preserve">
+    <value>Lệch TTT</value>
+  </data>
+  <data name="frmInputDetail.raMe.Properties.Caption" xml:space="preserve">
+    <value>Mê</value>
+  </data>
+  <data name="frmInputDetail.raMoKMRiaCo.Properties.Caption" xml:space="preserve">
+    <value>Có</value>
+  </data>
+  <data name="frmInputDetail.raMoKMRiaKhong.Properties.Caption" xml:space="preserve">
+    <value>Không</value>
+  </data>
+  <data name="frmInputDetail.raMP.Properties.Caption" xml:space="preserve">
+    <value>MP</value>
+  </data>
+  <data name="frmInputDetail.raMT.Properties.Caption" xml:space="preserve">
+    <value>MT</value>
+  </data>
+  <data name="frmInputDetail.raMVTPCungMac.Properties.Caption" xml:space="preserve">
+    <value>Củng mạc</value>
+  </data>
+  <data name="frmInputDetail.raMVTPGiacMac.Properties.Caption" xml:space="preserve">
+    <value>Giác mạc</value>
+  </data>
+  <data name="frmInputDetail.raMVTPRia.Properties.Caption" xml:space="preserve">
+    <value>Vùng rìa</value>
+  </data>
+  <data name="frmInputDetail.raNgoaiBao.Properties.Caption" xml:space="preserve">
+    <value>Ngoài bao</value>
+  </data>
+  <data name="frmInputDetail.raNhuomBaoCo.Properties.Caption" xml:space="preserve">
+    <value>Có</value>
+  </data>
+  <data name="frmInputDetail.raNhuomBaoKhong.Properties.Caption" xml:space="preserve">
+    <value>Không</value>
+  </data>
+  <data name="frmInputDetail.raPhaco.Properties.Caption" xml:space="preserve">
+    <value>Phaco</value>
+  </data>
+  <data name="frmInputDetail.raPhucHoiVetMoBomPhu.Properties.Caption" xml:space="preserve">
+    <value>Bơm phủ</value>
+  </data>
+  <data name="frmInputDetail.raPhucHoiVetMoKhauVat.Properties.Caption" xml:space="preserve">
+    <value>Khâu vắt</value>
+  </data>
+  <data name="frmInputDetail.raPTDucThuyTInhThe.Properties.Caption" xml:space="preserve">
+    <value>PT Đục Thủy tinh thể</value>
+  </data>
+  <data name="frmInputDetail.raPTGlocom.Properties.Caption" xml:space="preserve">
+    <value>PT Glôcôm</value>
+  </data>
+  <data name="frmInputDetail.raPTMong.Properties.Caption" xml:space="preserve">
+    <value>PT Mộng</value>
+  </data>
+  <data name="frmInputDetail.raPTSupMi.Properties.Caption" xml:space="preserve">
+    <value>PT sụp mi</value>
+  </data>
+  <data name="frmInputDetail.raPTTaiTaoLeQuan.Properties.Caption" xml:space="preserve">
+    <value>PT Tái tạo lệ quản</value>
+  </data>
+  <data name="frmInputDetail.raRachBaoSauCo.Properties.Caption" xml:space="preserve">
+    <value>Có</value>
+  </data>
+  <data name="frmInputDetail.raRachBaoSauKhong.Properties.Caption" xml:space="preserve">
+    <value>Không</value>
+  </data>
+  <data name="frmInputDetail.raRBSCBSCatBangKeo.Properties.Caption" xml:space="preserve">
+    <value>Cắt bằng kéo</value>
+  </data>
+  <data name="frmInputDetail.raRBSCBSCo.Properties.Caption" xml:space="preserve">
+    <value>Có</value>
+  </data>
+  <data name="frmInputDetail.raRBSCBSKhong.Properties.Caption" xml:space="preserve">
+    <value>Không</value>
+  </data>
+  <data name="frmInputDetail.raRBSCBSMayCatDK.Properties.Caption" xml:space="preserve">
+    <value>Mát cắt DK</value>
+  </data>
+  <data name="frmInputDetail.raRBSCMMNVCo.Properties.Caption" xml:space="preserve">
+    <value>Có</value>
+  </data>
+  <data name="frmInputDetail.raRBSCMMNVKhong.Properties.Caption" xml:space="preserve">
+    <value>Không</value>
+  </data>
+  <data name="frmInputDetail.raTeTaiMat.Properties.Caption" xml:space="preserve">
+    <value>Tê tại mặt</value>
+  </data>
+  <data name="frmInputDetail.raTiemMatCNC.Properties.Caption" xml:space="preserve">
+    <value>CNC</value>
+  </data>
+  <data name="frmInputDetail.raTiemMatCo.Properties.Caption" xml:space="preserve">
+    <value>Có</value>
+  </data>
+  <data name="frmInputDetail.raTiemMatDuoiKM.Properties.Caption" xml:space="preserve">
+    <value>Dưới KM</value>
+  </data>
+  <data name="frmInputDetail.raTiemMatKhong.Properties.Caption" xml:space="preserve">
+    <value>Không</value>
+  </data>
+  <data name="frmInputDetail.raTiemMatTienPhong.Properties.Caption" xml:space="preserve">
+    <value>Tiền phòng</value>
+  </data>
+  <data name="frmInputDetail.raTraMatDD.Properties.Caption" xml:space="preserve">
+    <value>DD</value>
+  </data>
+  <data name="frmInputDetail.raTraMatMo.Properties.Caption" xml:space="preserve">
+    <value>Mỡ</value>
+  </data>
+  <data name="frmInputDetail.raTreoCungMac.Properties.Caption" xml:space="preserve">
+    <value>Treo củng mạc</value>
+  </data>
+  <data name="frmInputDetail.raTrongBao.Properties.Caption" xml:space="preserve">
+    <value>Trong bao</value>
+  </data>
+  <data name="frmInputDetail.raTTLaser.Properties.Caption" xml:space="preserve">
+    <value>TT LASER YAG</value>
+  </data>
+  <data name="frmInputDetail.raTTMongMat.Properties.Caption" xml:space="preserve">
+    <value>TT Mống mắt</value>
+  </data>
+  <data name="frmInputDetail.raVanhMi.Properties.Caption" xml:space="preserve">
+    <value>Vành mi</value>
+  </data>
+  <data name="frmInputDetail.raXeBaoTruocT3.Properties.Caption" xml:space="preserve">
+    <value>Xé bao trước T3</value>
+  </data>
+  <data name="frmInputDetail.raXMoBaoHinhTemThu.Properties.Caption" xml:space="preserve">
+    <value>Mở bao hình them thư</value>
+  </data>
+  <data name="frmInputDetail.raXoayNhanDeDang.Properties.Caption" xml:space="preserve">
+    <value>Dễ dàng</value>
+  </data>
+  <data name="frmInputDetail.raXoayNhanKhoKhan.Properties.Caption" xml:space="preserve">
+    <value>Khó khăn</value>
+  </data>
+  <data name="frmInputDetail.simpleButton2.Text" xml:space="preserve">
+    <value>Lưu</value>
+  </data>
+  <data name="frmInputDetail.tabPageGlocom.Text" xml:space="preserve">
+    <value>Glocom</value>
+  </data>
+  <data name="frmInputDetail.tabPagePTDucTTT.Text" xml:space="preserve">
+    <value>PT Đục TTT</value>
+  </data>
+  <data name="frmInputDetail.tabPagePTMong.Text" xml:space="preserve">
+    <value>PT Mộng</value>
+  </data>
+  <data name="frmInputDetail.TabPagePTSupMi.Text" xml:space="preserve">
+    <value>PT Sụp mi</value>
+  </data>
+  <data name="frmInputDetail.TabPageTaiTaoLeQuan.Text" xml:space="preserve">
+    <value>Tái tạo lệ quản</value>
+  </data>
+  <data name="frmInputDetail.TabPageTTMongMat.Text" xml:space="preserve">
+    <value>TT Mống mắt</value>
+  </data>
+  <data name="frmInputDetail.TabPageTTTLaser.Text" xml:space="preserve">
+    <value>TTT LASER</value>
+  </data>
+  <data name="frmInputDetail.Text" xml:space="preserve">
+    <value>Thông tin bổ sung</value>
+  </data>
+  <data name="frmInputDetail.xtraTabEye.Text" xml:space="preserve">
+    <value>Mắt</value>
+  </data>
+  <data name="frmInputDetail.xtraTabOther.Text" xml:space="preserve">
+    <value>Khác</value>
+  </data>
+  <data name="frmInputDetail.xtraTabSkin.Text" xml:space="preserve">
+    <value>Da liễu</value>
+  </data>
+  <data name="Plugin_SurgServiceReqExecute__ThoiGianBatDauThoiGianKetThuc" xml:space="preserve">
+    <value>Đặt thời gian bắt đầu và thời gian kết thúc không đúng</value>
+  </data>
+  <data name="SurgServiceReqExecute.ButtonOther.ChuanBiTruocMo" xml:space="preserve">
+    <value>Chuẩn bị trước mổ</value>
+  </data>
+  <data name="SurgServiceReqExecute.ButtonOther.ToDieuTri" xml:space="preserve">
+    <value>Tờ điều trị</value>
+  </data>
+  <data name="SurgServiceReqExecute.Print.BangGayMeHoiSuc" xml:space="preserve">
+    <value>Bảng gây mê hồi sức</value>
+  </data>
+  <data name="SurgServiceReqExecute.Print.BangKiemAnToanPTTT" xml:space="preserve">
+    <value>Bảng kiểm an toàn phẫu thuật</value>
+  </data>
+  <data name="SurgServiceReqExecute.Print.BieuMauKhac" xml:space="preserve">
+    <value>Biểu mẫu khác</value>
+  </data>
+  <data name="SurgServiceReqExecute.Print.BieuMauKhacPhieuPTTT" xml:space="preserve">
+    <value>Phiếu phẫu thuật thủ thuật</value>
+  </data>
+  <data name="SurgServiceReqExecute.Print.CachThucPTTT" xml:space="preserve">
+    <value>Cách thức phẫu thuật thủ thuật</value>
+  </data>
+  <data name="SurgServiceReqExecute.Print.ChiPhiChayThanNhanTao" xml:space="preserve">
+    <value>Chi phí chạy thận nhân tạo</value>
+  </data>
+  <data name="SurgServiceReqExecute.Print.GiayCamDoan" xml:space="preserve">
+    <value>Giấy cam đoan chấp nhận PTTT và gây mê hồi sức</value>
+  </data>
+  <data name="SurgServiceReqExecute.Print.GIAYCHUNGNHANPTTT" xml:space="preserve">
+    <value>Giấy chứng nhận phẫu thuật thủ thuật</value>
+  </data>
+  <data name="SurgServiceReqExecute.Print.Mps000390" xml:space="preserve">
+    <value>Phiếu tường trình phẫu thuật đục thủy tinh thể</value>
+  </data>
+  <data name="SurgServiceReqExecute.Print.Mps000391" xml:space="preserve">
+    <value>Phiếu tường trình phẫu thuật mộng</value>
+  </data>
+  <data name="SurgServiceReqExecute.Print.Mps000392" xml:space="preserve">
+    <value>Phiếu tường trình phẫu thuật tái tạo lệ quản</value>
+  </data>
+  <data name="SurgServiceReqExecute.Print.Mps000393" xml:space="preserve">
+    <value>Phiếu tường trình phẫu thuật sụp mí</value>
+  </data>
+  <data name="SurgServiceReqExecute.Print.Mps000394" xml:space="preserve">
+    <value>Phiếu tường trình phẫu thuật Glocom</value>
+  </data>
+  <data name="SurgServiceReqExecute.Print.Mps000395" xml:space="preserve">
+    <value>Phiếu tường trình thủ thuật mở bao sau bằng Laser Yag</value>
+  </data>
+  <data name="SurgServiceReqExecute.Print.Mps000396" xml:space="preserve">
+    <value>Phiếu tường trình thủ thuật mở bao sau bằng mống mắt</value>
+  </data>
+  <data name="SurgServiceReqExecute.Print.PHIEU_PHAU_THUAT_GLOCOM" xml:space="preserve">
+    <value>Phiếu tường trình phẫu thuật Glocom</value>
+  </data>
+  <data name="SurgServiceReqExecute.Print.PHIEU_PHAU_THUAT_MONG" xml:space="preserve">
+    <value>Phiếu tường trình phẫu thuật mộng</value>
+  </data>
+  <data name="SurgServiceReqExecute.Print.PhieuGayMeHoiSuc" xml:space="preserve">
+    <value>Phiếu gây mê hồi sức</value>
+  </data>
+  <data name="SurgServiceReqExecute.Print.PhieuKeKhaiThuocVatTu" xml:space="preserve">
+    <value>Phiếu kê khai thuốc vật tư</value>
+  </data>
+  <data name="SurgServiceReqExecute.Print.PhieuKhamGayMeTruocMo" xml:space="preserve">
+    <value>Phiếu khám gây mê trước mổ</value>
+  </data>
+  <data name="SurgServiceReqExecute.Print.PhieuKiemKeDungCuVtyt" xml:space="preserve">
+    <value>Bảng kiểm dụng cụ VTYT bệnh nhân PTTT</value>
+  </data>
+  <data name="SurgServiceReqExecute.Print.PhieuPhauThuat" xml:space="preserve">
+    <value>Phiếu phẫu thuật</value>
+  </data>
+  <data name="SurgServiceReqExecute.Print.PhieuSuDungVatTuGiaTriLon" xml:space="preserve">
+    <value>Phiếu sử dụng vật tư giá trị lớn</value>
+  </data>
+  <data name="SurgServiceReqExecute.Print.PhieuThanhToanThuThuatPhauThuat" xml:space="preserve">
+    <value>Phiếu thanh toán Phẫu thuật - Thủ thuật</value>
+  </data>
+  <data name="SurgServiceReqExecute.Print.PhieuThuThuat" xml:space="preserve">
+    <value>Phiếu thủ thuật</value>
+  </data>
+  <data name="SurgServiceReqExecute.Print.ThuThuatPhauThuat" xml:space="preserve">
+    <value>Phiếu thủ thuật phẫu thuật</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.btnAss.Text" xml:space="preserve">
+    <value>Chỉ định cùng kíp</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.btnAssignBlood.Text" xml:space="preserve">
+    <value>Kê máu</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.btnAssignOutKip.Text" xml:space="preserve">
+    <value>Chỉ định khác kíp</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.btnAssignPre.Text" xml:space="preserve">
+    <value>Kê đơn dược</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.btnChonMauPTCHuyenKhoaMat.Text" xml:space="preserve">
+    <value>Thông tin bổ sung</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.btnChoosePtttMethods.ToolTip" xml:space="preserve">
+    <value>Danh sách phương pháp thực tế</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.btnCoppyInfo.Text" xml:space="preserve">
+    <value>Sao chép thông tin xử lý</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.btnCoppyInfo.ToolTip" xml:space="preserve">
+    <value>Sao chép thông tin xử lý của dịch vụ đã thực hiện trước đó vào dịch vụ hiện tại</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.btnCreateImageLuuDo.Text" xml:space="preserve">
+    <value>simpleButton1</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.btnDepartmentTran.Text" xml:space="preserve">
+    <value>Chuyển khoa</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.btnFinish.Text" xml:space="preserve">
+    <value>Kết thúc xử lý (Ctrl E)</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.btnImagePublic.ToolTip" xml:space="preserve">
+    <value>Chọn mẫu lược đồ phẫu thuật thủ thuật</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.btnKTDT.Text" xml:space="preserve">
+    <value>Kết thúc điều trị</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.btnOther.Text" xml:space="preserve">
+    <value>Khác</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.btnPrint.Text" xml:space="preserve">
+    <value>In ấn</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.btnSave.Text" xml:space="preserve">
+    <value>Lưu (Ctrl S)</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.btnSaveEkipTemp.Text" xml:space="preserve">
+    <value>Lưu kíp mẫu</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.btnSavePtttTemp.ToolTip" xml:space="preserve">
+    <value>Lưu mẫu Phẫu thuật thủ thuật</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.btnServiceReqMaty.Text" xml:space="preserve">
+    <value>Vật tư hao phí</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.btnSwapService.Text" xml:space="preserve">
+    <value>Đổi dịch vụ</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.btnTuTruc.Text" xml:space="preserve">
+    <value>Tủ trực</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.Checked.Caption" xml:space="preserve">
+    <value>Chọn</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.chkIcd.Properties.Caption" xml:space="preserve">
+    <value>ICD</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.chkIcd1.Properties.Caption" xml:space="preserve">
+    <value>Sửa</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.chkIcd2.Properties.Caption" xml:space="preserve">
+    <value>Sửa</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.chkIcd3.Properties.Caption" xml:space="preserve">
+    <value>Sửa</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.chkIcdAfter.Properties.Caption" xml:space="preserve">
+    <value>ICD</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.chkIcdBefore.Properties.Caption" xml:space="preserve">
+    <value>ICD</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.chkIcdCm.Properties.Caption" xml:space="preserve">
+    <value>Sửa</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.chkIcdCm.Text" xml:space="preserve">
+    <value>Sửa</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.ddbPhatSinh.Text" xml:space="preserve">
+    <value>Chỉ định DV KT</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.ddbPhatSinh.ToolTip" xml:space="preserve">
+    <value>Chỉ định các dịch vụ phát sinh từ dịch vụ PTTT này</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.dropDownButtonGPBL.DVKhongPhatSinh" xml:space="preserve">
+    <value>DV không phát sinh</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.dropDownButtonGPBL.DVPhatSinh" xml:space="preserve">
+    <value>DV phát sinh</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.dropDownButtonGPBL.Text" xml:space="preserve">
+    <value>Chỉ định GPBL</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.dropDownButtonGPBL.ToolTip" xml:space="preserve">
+    <value>Chỉ định dịch vụ giải phẫu bệnh lý</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.grdColNumber.Caption" xml:space="preserve">
+    <value>Số lượng</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.grdColObjectPay.Caption" xml:space="preserve">
+    <value>Đối tượng thanh toán</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.grdColServiceCode.Caption" xml:space="preserve">
+    <value>Mã dịch vụ</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.grdColServiceName.Caption" xml:space="preserve">
+    <value>Tên dịch vụ</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.grdColSTT.Caption" xml:space="preserve">
+    <value>STT</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.grdColUnit.Caption" xml:space="preserve">
+    <value>Đơn vị tính</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.gridColAdd.Caption" xml:space="preserve">
+    <value>Thêm</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.gridColAmount.Caption" xml:space="preserve">
+    <value>Số lượng</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.gridColSereServAttachAmount.Caption" xml:space="preserve">
+    <value>Số lượng</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.gridColSereServAttachServiceCode.Caption" xml:space="preserve">
+    <value>Mã dịch vụ</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.gridColSereServAttachServiceName.Caption" xml:space="preserve">
+    <value>Tên dịch vụ</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.gridColSereServAttachUnit.Caption" xml:space="preserve">
+    <value>Đơn vị tính</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.gridColServiceCode_InEkip.Caption" xml:space="preserve">
+    <value>Mã dịch vụ</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.gridColServiceName_InEKip.Caption" xml:space="preserve">
+    <value>Tên dịch vụ</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.gridColTitles.Caption" xml:space="preserve">
+    <value>Vai trò</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.gridColumn1.Caption" xml:space="preserve">
+    <value>gridColumn1</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.gridColumn2.Caption" xml:space="preserve">
+    <value>STT</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.gridColumn3.Caption" xml:space="preserve">
+    <value>Mã dịch vụ</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.gridColumn4.Caption" xml:space="preserve">
+    <value>Tên dịch vụ</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.gridColumn5.Caption" xml:space="preserve">
+    <value>Thời gian y lệnh</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.gridColumn7.Caption" xml:space="preserve">
+    <value>gridColumn2</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.gridColumn8.Caption" xml:space="preserve">
+    <value>Sao chép</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.gridColumn8.ToolTip" xml:space="preserve">
+    <value>Sao chép nội dung xử lý dịch vụ</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.gridColumnImage.Caption" xml:space="preserve">
+    <value>ảnh</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.gridColumnMaty.Caption" xml:space="preserve">
+    <value>gridColumn2</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.gridColUnit_InEkip.Caption" xml:space="preserve">
+    <value>Đơn vị tính</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.gridColUserName.Caption" xml:space="preserve">
+    <value>Họ và tên</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.gridViewSereServAttach.GroupPanelText" xml:space="preserve">
+    <value>Danh sách dịch vụ đính kèm</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.gridViewServServInEkip.GroupPanelText" xml:space="preserve">
+    <value>Danh sách dịch vụ cùng kíp</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.layoutControlGroup1.Text" xml:space="preserve">
+    <value>Dịch vụ đính kèm</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.layoutControlGroup2.Text" xml:space="preserve">
+    <value>Dịch vụ cùng kíp</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.layoutControlItem1.Text" xml:space="preserve">
+    <value>Loại gói:</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.layoutControlItem11.Text" xml:space="preserve">
+    <value>Phương pháp:</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.layoutControlItem13.Text" xml:space="preserve">
+    <value>Phân loại:</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.layoutControlItem14.Text" xml:space="preserve">
+    <value>Phân loại:</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.layoutControlItem15.Text" xml:space="preserve">
+    <value>Vô cảm:</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.layoutControlItem17.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Hình thức phẫu thuật</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.layoutControlItem17.Text" xml:space="preserve">
+    <value>Hình thức:</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.layoutControlItem19.Text" xml:space="preserve">
+    <value>Rh:</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.layoutControlItem2.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Ghi chú của bác sĩ chỉ định phẫu thuật thủ thuật</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.layoutControlItem2.Text" xml:space="preserve">
+    <value>Ghi chú BS CĐ:</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.layoutControlItem21.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Phương pháp 2:</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.layoutControlItem21.Text" xml:space="preserve">
+    <value>Phương pháp 2:</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.layoutControlItem23.Text" xml:space="preserve">
+    <value>Tai biến:</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.layoutControlItem25.Text" xml:space="preserve">
+    <value>Tử vong trong:</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.layoutControlItem27.Text" xml:space="preserve">
+    <value>Mô tả:</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.layoutControlItem28.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Kết quả vô cảm</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.layoutControlItem28.Text" xml:space="preserve">
+    <value>KQ vô cảm:</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.layoutControlItem3.Text" xml:space="preserve">
+    <value>Chẩn đoán phụ:</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.layoutControlItem38.Text" xml:space="preserve">
+    <value>Cách thức:</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.layoutControlItem39.Text" xml:space="preserve">
+    <value>phút</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.layoutControlItem42.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Tự động nhập Thời gian kết thúc </value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.layoutControlItem42.Text" xml:space="preserve">
+    <value>TG xử lý:</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.layoutControlItem43.Text" xml:space="preserve">
+    <value>Kết thúc:</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.layoutControlItem5.Text" xml:space="preserve">
+    <value>Chẩn đoán trước:</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.layoutControlItem55.Text" xml:space="preserve">
+    <value>Chỉ hiển thị các dịch vụ cùng mã</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.layoutControlItem56.Text" xml:space="preserve">
+    <value>Kíp thực hiện:</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.layoutControlItem58.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Tự động kết thúc khi nhập thời gian kết thúc</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.layoutControlItem58.Text" xml:space="preserve">
+    <value>KT:</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.layoutControlItem7.Text" xml:space="preserve">
+    <value>Chẩn đoán sau:</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.layoutControlItem9.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Phương pháp thực tế</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.layoutControlItem9.Text" xml:space="preserve">
+    <value>Phương pháp TT:</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.layoutControlLeft.Text" xml:space="preserve">
+    <value>layoutControl1</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.layoutControlRight.Text" xml:space="preserve">
+    <value>layoutControl2</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.lciBanMo.Text" xml:space="preserve">
+    <value>Bàn mổ:</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.lciCachThuc.Text" xml:space="preserve">
+    <value>Cách thức:</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.lciChkGroup.Text" xml:space="preserve">
+    <value>Xử lý gộp:</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.lciChuanDoanPhu.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Chẩn đoán phụ</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.lciChuanDoanPhu.Text" xml:space="preserve">
+    <value>CĐ phụ:</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.lciDepartment.Text" xml:space="preserve">
+    <value>Khoa:</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.lciEkipTemp.Text" xml:space="preserve">
+    <value>Kíp mẫu:</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.lciIcd1.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Chẩn đoán chính</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.lciIcd1.Text" xml:space="preserve">
+    <value>CĐ chính:</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.lciIcd2.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Chẩn đoán trước khi phẫu thuật thủ thuật</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.lciIcd2.Text" xml:space="preserve">
+    <value>CĐ trước:</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.lciIcd3.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Chẩn đoán sau khi phẫu thuật thủ thuật</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.lciIcd3.Text" xml:space="preserve">
+    <value>CĐ sau:</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.lciIcdCmCode.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Chẩn đoán chính theo danh mục ICD9-CM</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.lciIcdCmCode.Text" xml:space="preserve">
+    <value>CĐ ICD9-CM chính:</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.lciIcdCmSubCode.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Chẩn đoán phụ theo danh mục ICD9-CM</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.lciIcdCmSubCode.Text" xml:space="preserve">
+    <value>CĐ ICD9-CM phụ:</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.lciInformationSurg.Text" xml:space="preserve">
+    <value>Kíp thực hiện:</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.lciKetLuan.Text" xml:space="preserve">
+    <value>Kết luận:</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.lciKTC.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Mổ kỹ thuật cao</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.lciKTC.Text" xml:space="preserve">
+    <value>KTC:</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.lciMachine.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Máy thủ thuật</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.lciMachine.Text" xml:space="preserve">
+    <value>Máy thực hiện:</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.lciNhomMau.Text" xml:space="preserve">
+    <value>Nhóm máu:</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.lciPhanLoai.Text" xml:space="preserve">
+    <value>Phân loại:</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.lciPhuongPhap.Text" xml:space="preserve">
+    <value>Phương pháp:</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.lciPtttTemp.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Mẫu phẫu thuật thủ thuật</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.lciPtttTemp.Text" xml:space="preserve">
+    <value>Mẫu PTTT:</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.lciRh.Text" xml:space="preserve">
+    <value>Rh:</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.lciStartTime.Text" xml:space="preserve">
+    <value>Bắt đầu:</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.lciTaiBien.Text" xml:space="preserve">
+    <value>Tai biến:</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.lciThoiGianKetThuc.Text" xml:space="preserve">
+    <value>Kết thúc:</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.lciTinhTrang.Text" xml:space="preserve">
+    <value>Tình trạng:</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.lciTruongHop.Text" xml:space="preserve">
+    <value>Trường hợp:</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.lciTuVongTrong.Text" xml:space="preserve">
+    <value>Tử vong trong:</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.lciTypePackage.Text" xml:space="preserve">
+    <value>Loại gói:</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.lciVoCam.Text" xml:space="preserve">
+    <value>Vô cảm:</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.tileViewColumn2.Caption" xml:space="preserve">
+    <value>ảnh</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.tileViewColumn4.Caption" xml:space="preserve">
+    <value>tileViewColumn4</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.tileViewColumnName.Caption" xml:space="preserve">
+    <value>Tên</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.tileViewColumnSTTImage.Caption" xml:space="preserve">
+    <value>tileViewColumnSTTImage</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.tileViewIsChecked.Caption" xml:space="preserve">
+    <value>Chọn</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.txtIcdCmSubCode.Properties.NullValuePrompt" xml:space="preserve">
+    <value>Nhập mã</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.txtIcdCmSubName.Properties.NullValuePrompt" xml:space="preserve">
+    <value>Nhấn F1 để chọn bệnh phụ</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.txtIcdExtraCode.Properties.NullValuePrompt" xml:space="preserve">
+    <value>Nhập mã bệnh phụ</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.txtIcdText.Properties.NullValuePrompt" xml:space="preserve">
+    <value>Nhấn F1 để chọn bệnh phụ</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.xtraTabPage1.Text" xml:space="preserve">
+    <value>Chung</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.xtraTabPageGhiChu.Text" xml:space="preserve">
+    <value>Ghi chú</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.xtraTabPageLuocDo.Text" xml:space="preserve">
+    <value>Lược đồ</value>
+  </data>
+  <data name="SurgServiceReqExecuteControl.xtraTabPageMoTa.Text" xml:space="preserve">
+    <value>Mô tả</value>
+  </data>
+  <data name="tileViewItemElement1.Text" xml:space="preserve">
+    <value>tileViewColumn2</value>
+  </data>
+  <data name="tileViewItemElement2.Text" xml:space="preserve">
+    <value>tileViewColumnName</value>
+  </data>
+  <data name="toolTipItem1.Text" xml:space="preserve">
+    <value>Bổ sung ảnh lược đồ phẫu thuật thủ thuật</value>
+  </data>
+  <data name="toolTipItem2.Text" xml:space="preserve">
+    <value>Lưu kíp mẫu</value>
+  </data>
+  <data name="UCEkipUser.gridColumn1.Caption" xml:space="preserve">
+    <value>Vai trò</value>
+  </data>
+  <data name="UCEkipUser.gridColumn2.Caption" xml:space="preserve">
+    <value>Họ tên</value>
+  </data>
+  <data name="UCEkipUser.gridColumn3.Caption" xml:space="preserve">
+    <value>Khoa</value>
+  </data>
+  <data name="UCEkipUser.gridColumn4.Caption" xml:space="preserve">
+    <value>gridColumn4</value>
+  </data>
+  <data name="UCEkipUser.gridColumn5.Caption" xml:space="preserve">
+    <value>gridColumn5</value>
+  </data>
+  <data name="UCEkipUser.layoutControl1.Text" xml:space="preserve">
+    <value>layoutControl1</value>
+  </data>
+  <data name="UCEkipUser.lciInformationSurg.Text" xml:space="preserve">
+    <value>Kíp thực hiện:</value>
+  </data>
+</root>
