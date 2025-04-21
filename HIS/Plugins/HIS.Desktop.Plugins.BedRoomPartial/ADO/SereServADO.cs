@@ -26,6 +26,7 @@ namespace HIS.Desktop.Plugins.BedRoomPartial.ADO
 {
     public class SereServADO : DHisSereServ2
     {
+       
         public bool IsEnableEdit { get; set; }
         public bool IsEnableDelete { get; set; }
         public string CONCRETE_ID__IN_SETY { get; set; }
