@@ -215,6 +215,7 @@ namespace HIS.Desktop.Plugins.KioskInformation
                         //gridControlSelectProFile.DataSource = lstKioskInform;
                         frmSelectProfile formScreen = new frmSelectProfile(module, lstKioskInform, listImage, countTimeChangeWallpaper, OpenFormPatient);
                         formScreen.ShowDialog();
+                        formScreen.Location = new Point(formScreen.Location.X, formScreen.Location.Y + 50);
                         //this.Show();
                     }
                 }
