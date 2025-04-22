@@ -1078,7 +1078,7 @@ namespace HIS.Desktop.Plugins.ServiceReqList
                         var medicines = await new BackendAdapter(paramCommon).GetAsync<List<HIS_EXP_MEST_MEDICINE>>(RequestUriStore.HIS_EXP_MEST_MEDICINE_GET, ApiConsumers.MosConsumer, mediFilter, HIS.Desktop.Controls.Session.SessionManager.ActionLostToken, paramCommon);
                         if (medicines != null && medicines.Count > 0)
                         {
-                            var expMestMetyGroups = medicines.GroupBy(o => new { o.TDL_MEDICINE_TYPE_ID, o.TUTORIAL }).ToList();
+                            var expMestMetyGroups = medicines.GroupBy(o => new { o.TDL_MEDICINE_TYPE_ID, o.TUTORIAL, o.HTU_TEXT}).ToList();
                             foreach (var expMestMetyGroup in expMestMetyGroups)
                             {
                                 ADO.ListMedicineADO metyExpmestTypeADO = new ADO.ListMedicineADO();
@@ -1089,6 +1089,7 @@ namespace HIS.Desktop.Plugins.ServiceReqList
                                 metyExpmestTypeADO.kind = 0;
                                 metyExpmestTypeADO.type = 1;
                                 metyExpmestTypeADO.HuongDanSuDung = expMestMetyGroup.First().TUTORIAL;
+                                metyExpmestTypeADO.CachDung = expMestMetyGroup.First().HTU_TEXT;
                                 metyExpmestTypeADO.TocDoTruyen = expMestMetyGroup.First().SPEED;
                                 metyExpmestTypeADO.ExpMestMedicineId = expMestMetyGroup.First().ID;
                                 metyExpmestTypeADO.TDL_INTRUCTION_TIME = dataExpMest.TDL_INTRUCTION_TIME.Value;
@@ -1128,7 +1129,7 @@ namespace HIS.Desktop.Plugins.ServiceReqList
                         var materials = await new BackendAdapter(paramCommon).GetAsync<List<HIS_EXP_MEST_MATERIAL>>(RequestUriStore.HIS_EXP_MEST_MATERIAL_GET, ApiConsumer.ApiConsumers.MosConsumer, mateFilter, HIS.Desktop.Controls.Session.SessionManager.ActionLostToken, paramCommon);
                         if (materials != null && materials.Count > 0)
                         {
-                            var expMestMatyGroups = materials.GroupBy(o => new { o.TDL_MATERIAL_TYPE_ID, o.TUTORIAL }).ToList();
+                            var expMestMatyGroups = materials.GroupBy(o => new { o.TDL_MATERIAL_TYPE_ID, o.TUTORIAL, o.HTU_TEXT }).ToList();
                             foreach (var expMestMatyGroup in expMestMatyGroups)
                             {
                                 ADO.ListMedicineADO matyExpmestTypeADO = new ADO.ListMedicineADO();
@@ -1139,6 +1140,7 @@ namespace HIS.Desktop.Plugins.ServiceReqList
                                 matyExpmestTypeADO.kind = 0;
                                 matyExpmestTypeADO.type = 0;
                                 matyExpmestTypeADO.HuongDanSuDung = expMestMatyGroup.First().TUTORIAL;
+                                matyExpmestTypeADO.CachDung = expMestMatyGroup.First().HTU_TEXT;
                                 matyExpmestTypeADO.PRES_AMOUNT = expMestMatyGroup.Sum(o => o.PRES_AMOUNT ?? o.AMOUNT);
                                 matyExpmestTypeADO.USE_TIME = serviceClick.USE_TIME;
 
@@ -1173,6 +1175,7 @@ namespace HIS.Desktop.Plugins.ServiceReqList
                     //Thuoc
                     paramCommon = new CommonParam();
                     HisServiceReqMetyFilter metyFilter = new HisServiceReqMetyFilter();
+
                     metyFilter.SERVICE_REQ_ID = dataExpMest.SERVICE_REQ_ID;
                     List<HIS_SERVICE_REQ_METY> metys = await new Inventec.Common.Adapter.BackendAdapter(paramCommon).GetAsync<List<HIS_SERVICE_REQ_METY>>(RequestUriStore.HIS_SERVICE_REQ_METY_GET, ApiConsumers.MosConsumer, metyFilter, HIS.Desktop.Controls.Session.SessionManager.ActionLostToken, paramCommon);
                     if (metys != null && metys.Count > 0)
@@ -1181,7 +1184,7 @@ namespace HIS.Desktop.Plugins.ServiceReqList
 
                         if (!metys.Exists(p => p.MEDICINE_TYPE_ID == null))
                         {
-                            var expMestMetyGroups = metys.GroupBy(o => new { o.MEDICINE_TYPE_ID, o.TUTORIAL }).ToList();
+                            var expMestMetyGroups = metys.GroupBy(o => new { o.MEDICINE_TYPE_ID, o.TUTORIAL}).ToList();
                             foreach (var expMestMetyGroup in expMestMetyGroups)
                             {
                                 ADO.ListMedicineADO metyExpmestTypeADO = new ADO.ListMedicineADO();
@@ -1198,6 +1201,7 @@ namespace HIS.Desktop.Plugins.ServiceReqList
                                 metyExpmestTypeADO.serviceReqMety = expMestMetyGroup.First();
                                 metyExpmestTypeADO.USE_TIME = serviceClick.USE_TIME;
 
+                                
                                 var mety = BackendDataWorker.Get<V_HIS_MEDICINE_TYPE>().FirstOrDefault(o => o.ID == expMestMetyGroup.First().MEDICINE_TYPE_ID);
                                 if (mety != null)
                                 {
@@ -1213,13 +1217,14 @@ namespace HIS.Desktop.Plugins.ServiceReqList
                                 }
                                 listMedicine.Add(metyExpmestTypeADO);
                             }
+                           
                         }
                         else
                         {
                             var notNull = metys.Where(o => o.MEDICINE_TYPE_ID != null).ToList();
                             if (notNull != null && notNull.Count > 0)
                             {
-                                var expMestMetyGroups = notNull.GroupBy(o => new { o.MEDICINE_TYPE_ID, o.TUTORIAL }).ToList();
+                                var expMestMetyGroups = notNull.GroupBy(o => new { o.MEDICINE_TYPE_ID, o.TUTORIAL, o.HTU_TEXT }).ToList();
                                 foreach (var expMestMetyGroup in expMestMetyGroups)
                                 {
                                     ADO.ListMedicineADO metyExpmestTypeADO = new ADO.ListMedicineADO();
@@ -1257,7 +1262,7 @@ namespace HIS.Desktop.Plugins.ServiceReqList
                             var Null = metys.Where(o => o.MEDICINE_TYPE_ID == null).ToList();
                             if (Null != null && Null.Count > 0)
                             {
-                                var expMestMetyGroups = Null.GroupBy(o => new { o.MEDICINE_TYPE_NAME, o.MEDICINE_USE_FORM_ID, o.TUTORIAL }).ToList();
+                                var expMestMetyGroups = Null.GroupBy(o => new { o.MEDICINE_TYPE_NAME, o.MEDICINE_USE_FORM_ID, o.TUTORIAL}).ToList();
                                 foreach (var expMestMetyGroup in expMestMetyGroups)
                                 {
                                     ADO.ListMedicineADO metyExpmestTypeADO = new ADO.ListMedicineADO();
@@ -1273,7 +1278,6 @@ namespace HIS.Desktop.Plugins.ServiceReqList
                                     metyExpmestTypeADO.kind = 1;
                                     metyExpmestTypeADO.serviceReqMety = expMestMetyGroup.First();
                                     metyExpmestTypeADO.USE_TIME = serviceClick.USE_TIME;
-
                                     metyExpmestTypeADO.SERVICE_UNIT_NAME = expMestMetyGroup.First().UNIT_NAME;
                                     listMedicine.Add(metyExpmestTypeADO);
                                 }
@@ -1289,7 +1293,7 @@ namespace HIS.Desktop.Plugins.ServiceReqList
                     {
                         if (!matys.Exists(p => p.MATERIAL_TYPE_ID == null))
                         {
-                            var expMestMatyGroups = matys.GroupBy(o => new { o.MATERIAL_TYPE_ID, o.TUTORIAL }).ToList();
+                            var expMestMatyGroups = matys.GroupBy(o => new { o.MATERIAL_TYPE_ID, o.TUTORIAL}).ToList();
                             foreach (var expMestMatyGroup in expMestMatyGroups)
                             {
                                 ADO.ListMedicineADO matyExpmestTypeADO = new ADO.ListMedicineADO();
@@ -1356,7 +1360,7 @@ namespace HIS.Desktop.Plugins.ServiceReqList
                             var Null = matys.Where(o => o.MATERIAL_TYPE_ID == null).ToList();
                             if (Null != null && Null.Count > 0)
                             {
-                                var expMestMatyGroups = Null.GroupBy(o => new { o.MATERIAL_TYPE_ID, o.TUTORIAL }).ToList();
+                                var expMestMatyGroups = Null.GroupBy(o => new { o.MATERIAL_TYPE_ID, o.TUTORIAL, o.HTU_TEXT}).ToList();
                                 foreach (var expMestMatyGroup in expMestMatyGroups)
                                 {
                                     ADO.ListMedicineADO matyExpmestTypeADO = new ADO.ListMedicineADO();
@@ -1368,6 +1372,7 @@ namespace HIS.Desktop.Plugins.ServiceReqList
                                     matyExpmestTypeADO.type = 0;
                                     matyExpmestTypeADO.SERVICE_UNIT_NAME = expMestMatyGroup.First().UNIT_NAME;
                                     matyExpmestTypeADO.HuongDanSuDung = expMestMatyGroup.First().TUTORIAL;
+                                  
                                     matyExpmestTypeADO.USE_TIME = serviceClick.USE_TIME;
                                     listMedicine.Add(matyExpmestTypeADO);
                                 }
@@ -1394,6 +1399,7 @@ namespace HIS.Desktop.Plugins.ServiceReqList
                             ado.AMOUNT = item.AMOUNT;
                             ado.DISCOUNT = item.DISCOUNT;
                             ado.HuongDanSuDung = item.INSTRUCTION_NOTE;
+                            ado.CachDung = item.INSTRUCTION_NOTE;
                             ado.PATIENT_TYPE_ID = item.PATIENT_TYPE_ID;
                             ado.PATIENT_TYPE_NAME = item.PATIENT_TYPE_NAME;
                             ado.PRICE = item.PRICE;
