@@ -934,7 +934,29 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                         case SAVETYPE.SAVE:
                             if ((lciForchkSignForDDT.Visibility == DevExpress.XtraLayout.Utils.LayoutVisibility.Always && chkSignForDDT.Checked) || (lciForchkSignForDPK.Visibility == DevExpress.XtraLayout.Utils.LayoutVisibility.Always && chkSignForDPK.Checked) || (lciForchkSignForDTT.Visibility == DevExpress.XtraLayout.Utils.LayoutVisibility.Always && chkSignForDTT.Checked))
                             {
-                                if (printNow)
+                                if (printNow && chkPreviewBeforePrint.Checked)
+                                {
+                                    if (!string.IsNullOrWhiteSpace(HisConfigCFG.MODULELINKS))
+                                    {
+                                        //currentModule
+                                        Inventec.Desktop.Common.Modules.Module moduleData = GlobalVariables.currentModuleRaws.Where(o => o.ModuleLink == "HIS.Desktop.Plugins.AssignPrescriptionPK").FirstOrDefault();
+
+                                        if (moduleData != null)
+                                        {
+                                            var allowedModules = HisConfigCFG.MODULELINKS.Split(';');
+
+                                            if (allowedModules.Contains(moduleData.ModuleLink))
+                                            {
+                                                previewType = MPS.ProcessorBase.PrintConfig.PreviewType.EmrSignAndPrintPreview;
+                                            }
+                                            else
+                                            {
+                                                previewType = MPS.ProcessorBase.PrintConfig.PreviewType.EmrSignNow;
+                                            }
+                                        }
+                                    }
+                                }
+                                else if (printNow)
                                 {
                                     previewType = MPS.ProcessorBase.PrintConfig.PreviewType.EmrSignAndPrintNow;
                                 }
@@ -962,7 +984,14 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                             }
                             break;
                         case SAVETYPE.SAVE_PRINT_NOW:
-                            this.PrescriptionSavePrintShowHasClickSave("", true, null);
+                            if (chkPreviewBeforePrint.Checked)
+                            {
+                                this.PrescriptionSavePrintShowHasClickSave("", true, previewType);
+                            }
+                            else
+                            {
+                                this.PrescriptionSavePrintShowHasClickSave("", true, null);
+                            }
                             break;
                         case SAVETYPE.SAVE_SHOW_PRINT_PREVIEW:
                             this.PrescriptionSavePrintShowHasClickSave(MPS.Processor.Mps000118.PDO.Mps000118PDO.PrintTypeCode, false);
