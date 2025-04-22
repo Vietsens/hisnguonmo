@@ -250,34 +250,97 @@ namespace HIS.Desktop.Plugins.Library.PrintTreatmentFinish
                     switch (printCode)
                     {
                         case MPS.Processor.Mps000008.PDO.Mps000008PDO.printTypeCode:
-                            new PrintMps000008(printCode, fileName, ref result, VHisPatient, HisTreatment, VHisPatientTypeAlter, printNow, roomId);
+                            if (PreviewType.HasValue)
+                            {
+                                new PrintMps000008(printCode, fileName, ref result, VHisPatient, HisTreatment, VHisPatientTypeAlter, PreviewType, roomId);
+                            }
+                            else
+                            {
+                                new PrintMps000008(printCode, fileName, ref result, VHisPatient, HisTreatment, VHisPatientTypeAlter, printNow, roomId);
+                            }
                             break;
                         case MPS.Processor.Mps000399.PDO.Mps000399PDO.printTypeCode:
-                            new PrintMps000399(printCode, fileName, ref result, VHisPatient, HisTreatment, printNow, roomId);
+                            if (PreviewType.HasValue)
+                            {
+                                new PrintMps000399(printCode, fileName, ref result, VHisPatient, HisTreatment, PreviewType, roomId);
+                            }
+                            else
+                            {
+                                new PrintMps000399(printCode, fileName, ref result, VHisPatient, HisTreatment, printNow, roomId);
+                            }
                             break;
                         case MPS.Processor.Mps000389.PDO.Mps000389PDO.printTypeCode:
-                            new PrintMps000389(printCode, fileName, ref result, VHisPatient, HisTreatment, printNow, roomId);
+                            if (PreviewType.HasValue)
+                            {
+                                new PrintMps000389(printCode, fileName, ref result, VHisPatient, HisTreatment, PreviewType, roomId);
+                            }
+                            else
+                            {
+                                new PrintMps000389(printCode, fileName, ref result, VHisPatient, HisTreatment, printNow, roomId);
+                            }
                             break;
                         case MPS.Processor.Mps000010.PDO.Mps000010PDO.printTypeCode:
-                            new PrintMps000010(printCode, fileName, ref result, VHisPatient, HisTreatment, VHisPatientTypeAlter, PreviewType, roomId, HisMediRecord, HisServiceReq);
+                            if (PreviewType.HasValue)
+                            {
+                                new PrintMps000010(printCode, fileName, ref result, VHisPatient, HisTreatment, VHisPatientTypeAlter, PreviewType, roomId, HisMediRecord, HisServiceReq);
+                            }
+                            else
+                            {
+                                new PrintMps000010(printCode, fileName, ref result, VHisPatient, HisTreatment, VHisPatientTypeAlter, printNow, roomId, HisMediRecord, HisServiceReq);
+                            }
                             break;
                         case MPS.Processor.Mps000011.PDO.Mps000011PDO.printTypeCode:
-                            new PrintMps000011(printCode, fileName, ref result, VHisPatient, HisTreatment, VHisPatientTypeAlter, printNow, roomId, HisServiceReq, TreatmentExt);
+                            if (PreviewType.HasValue)
+                            {
+                                new PrintMps000011(printCode, fileName, ref result, VHisPatient, HisTreatment, VHisPatientTypeAlter, printNow, roomId, HisServiceReq, TreatmentExt);
+                            }
+                            else
+                            {
+                                new PrintMps000011(printCode, fileName, ref result, VHisPatient, HisTreatment, VHisPatientTypeAlter, printNow, roomId, HisServiceReq, TreatmentExt);
+                            }
                             break;
                         case MPS.Processor.Mps000268.PDO.Mps000268PDO.printTypeCode:
-                            new PrintMps000268(printCode, fileName, ref result, VHisPatient, HisTreatment, this.CurrentBranch, printNow, roomId);
+                            if (PreviewType.HasValue)
+                            {
+                                new PrintMps000268(printCode, fileName, ref result, VHisPatient, HisTreatment, this.CurrentBranch, PreviewType, roomId);
+                            }
+                            else
+                            {
+                                new PrintMps000268(printCode, fileName, ref result, VHisPatient, HisTreatment, this.CurrentBranch, printNow, roomId);
+                            }
                             break;
                         //case "Mps000269":
                         //    new PrintMps000269(printCode, fileName, ref result, HisTreatment, VHisPatientTypeAlter, _HisSereServ, printNow, roomId);
                         //    break;
                         case PrintEnum.IN_BANT__MPS000174:
-                            new PrintMps000174(printCode, fileName, ref result, HisTreatment, VHisPatient, VHisPatientTypeAlter, printNow, roomId);
+                            if (PreviewType.HasValue)
+                            {
+                                new PrintMps000174(printCode, fileName, ref result, HisTreatment, VHisPatient, VHisPatientTypeAlter, PreviewType, roomId);
+                            }
+                            else
+                            {
+                                new PrintMps000174(printCode, fileName, ref result, HisTreatment, VHisPatient, VHisPatientTypeAlter, printNow, roomId);
+                            }
                             break;
                         case MPS.Processor.Mps000382.PDO.Mps000382PDO.printTypeCode:
-                            new PrintMps000382(printCode, fileName, ref result, VHisPatient, HisTreatment, VHisPatientTypeAlter, printNow, roomId);
+                            if (PreviewType.HasValue)
+                            {
+                                new PrintMps000382(printCode, fileName, ref result, VHisPatient, HisTreatment, VHisPatientTypeAlter, PreviewType, roomId);
+                            }
+                            else
+                            {
+                                new PrintMps000382(printCode, fileName, ref result, VHisPatient, HisTreatment, VHisPatientTypeAlter, printNow, roomId);
+                            }
                             break;
                         case MPS.Processor.Mps000478.PDO.Mps000478PDO.printTypeCode:
-                            new PrintMps000478(printCode, fileName, ref result, printNow, HisTreatment.ID, roomId);
+                            if (PreviewType.HasValue)
+                            {
+                                new PrintMps000478(printCode, fileName, ref result, PreviewType, HisTreatment.ID, roomId);
+                            }
+                            else
+                            {
+                                new PrintMps000478(printCode, fileName, ref result, printNow, HisTreatment.ID, roomId);
+                            }
                             break;
                         default:
                             break;

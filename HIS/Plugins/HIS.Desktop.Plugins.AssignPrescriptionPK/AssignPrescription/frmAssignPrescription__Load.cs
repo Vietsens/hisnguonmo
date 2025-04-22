@@ -235,9 +235,10 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                 if (savePrintMpsDefault != "Mps000234")
                     return;
 
+                CommonParam param = new CommonParam();
                 if (_serviceReqPrintAlls == null)
                 {
-                    CommonParam param = new CommonParam();
+                    
                     //Load đơn phòng khám
                     HisServiceReqFilter serviceReqFilter = new HisServiceReqFilter();
                     serviceReqFilter.TREATMENT_ID = this.treatmentId;
