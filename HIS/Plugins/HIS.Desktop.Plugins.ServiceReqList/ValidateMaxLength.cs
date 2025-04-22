@@ -38,6 +38,7 @@ namespace HIS.Desktop.Plugins.ServiceReqList
 
                 if (String.IsNullOrEmpty(memoEdit.Text))
                 {
+
                     this.ErrorText = "Trường dữ liệu bắt buộc";
                     return valid;
                 }
@@ -57,4 +58,37 @@ namespace HIS.Desktop.Plugins.ServiceReqList
             return valid;
         }
     }
+    class ValidateMaxLength2 : DevExpress.XtraEditors.DXErrorProvider.ValidationRule
+    {
+        internal int? maxLength;
+
+        public override bool Validate(Control control, object value)
+        {
+            try
+            {
+                var memo = control as DevExpress.XtraEditors.MemoEdit;
+
+               
+                if (memo == null || !memo.Visible)
+                    return true;
+
+                string text = memo.Text?.Trim() ?? "";
+
+                if (!string.IsNullOrEmpty(text) && Encoding.UTF8.GetByteCount(text) > maxLength)
+                {
+                    this.ErrorText = "Trường dữ liệu vượt quá ký tự cho phép";
+                    return false;
+                }
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+                this.ErrorText = "Lỗi kiểm tra dữ liệu";
+                return false;
+            }
+        }
+    }
+
 }
