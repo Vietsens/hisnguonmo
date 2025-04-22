@@ -2440,6 +2440,28 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                 HisBidViewFilter filter = new HisBidViewFilter();
                 filter.IS_ACTIVE = 1;
                 bids = new BackendAdapter(param).Get<List<V_HIS_BID_1>>("api/HisBid/GetView1", ApiConsumers.MosConsumer, filter, param);
+                //qtcode
+                 
+                bids = bids.Where(o =>
+                {
+                    if (o.VALID_FROM_TIME.HasValue && o.VALID_TO_TIME.HasValue)
+                    {
+                        return o.VALID_FROM_TIME.Value <= filter.VALID_TIME && filter.VALID_TIME <= o.VALID_TO_TIME.Value;
+                    }
+                    else if (!o.VALID_FROM_TIME.HasValue && o.VALID_TO_TIME.HasValue)
+                    {
+                        return filter.VALID_TIME <= o.VALID_TO_TIME.Value;
+                    }
+                    else if (o.VALID_FROM_TIME.HasValue && !o.VALID_TO_TIME.HasValue)
+                    {
+                        return o.VALID_FROM_TIME.Value <= filter.VALID_TIME;
+                    }
+                    else
+                    {
+                        return true;
+                    }
+                }).ToList();
+                //qtcode
                 if (IsShowingApprovalBid)
                 {
                     bids = bids.Where(o => o.APPROVAL_TIME != null).ToList();
