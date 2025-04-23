@@ -156,7 +156,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
 		string _TextIcdName = "";
 		string _TextIcdNameCause = "";
 
-		List<HIS_ICD> currentIcds;
+        List<HIS_ICD> currentIcds;
 
 		List<HIS_PATIENT_TYPE> currentPatientTypes;
 		List<V_HIS_PATIENT_TYPE_ALLOW> currentPatientTypeAllows;
@@ -5041,7 +5041,6 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
 
 				this.controlStateWorker.SetData(this.currentControlStateRDO);
 
-
 			}
 			catch (Exception ex)
 			{
@@ -5407,7 +5406,8 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
 		{
 			try
 			{
-				if (!string.IsNullOrEmpty(HisConfigCFG.InstructionTimeServiceMustBeGreaterThanStartTimeExam))
+				if (HisConfigCFG.IsSereServMinDurationAlert != 1 || HisConfigCFG.IsSereServMinDurationAlert != 2) return;
+                if (!string.IsNullOrEmpty(HisConfigCFG.InstructionTimeServiceMustBeGreaterThanStartTimeExam))
 				{
 					LoadVServiceReq();
 					if (vServiceReq != null && vServiceReq.START_TIME.HasValue && Inventec.Common.DateTime.Calculation.DifferenceTime(vServiceReq.START_TIME.Value, InstructionTime, Inventec.Common.DateTime.Calculation.UnitDifferenceTime.SECOND) < Int32.Parse(HisConfigCFG.InstructionTimeServiceMustBeGreaterThanStartTimeExam))
@@ -5517,7 +5517,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
 						}
 						#endregion
 						#region ValidSereServWithMinDuration
-						List<HIS_SERE_SERV> sereServMinDurations = new List<HIS_SERE_SERV>();
+						List<HIS_SERE_SERV> sereServMinDurations = new List<HIS_SERE_SERV>();                       
 						foreach (var item in lstPatientSelect)
 						{
 							var dt = getSereServWithMinDuration(serviceCheckeds__Send, item.PATIENT_ID);
@@ -5535,10 +5535,10 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
 								   " (" + item.TDL_SERVICE_REQ_CODE +
 								   "); ";
 							}
-
-							if (HisConfigCFG.IsSereServMinDurationAlert)
+							
+							if (HisConfigCFG.IsSereServMinDurationAlert == 1)
 							{
-								if (MessageBox.Show(string.Format(ResourceMessage.SereServMinDurationAlert__BanCoMuonChuyenDoiDTTTSangVienPhi, sereServMinDurationStr), MessageUtil.GetMessage(LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaThongBao), MessageBoxButtons.YesNo) == DialogResult.Yes)
+								if (MessageBox.Show(string.Format(ResourceMessage.SereServMinDurationAlert__BanCoMuonChuyenDoiDTTTSangVienPhi,string.Format(ResourceMessage.DichVuCoThoiGianChiDinhNamTrongKhoangThoiGianKhongChoPhep, sereServMinDurationStr)), MessageUtil.GetMessage(LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaThongBao), MessageBoxButtons.YesNo) == DialogResult.Yes)
 								{
 									foreach (var sv in serviceCheckeds__Send)
 									{
@@ -5553,13 +5553,34 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
 								{
 									return;
 								}
-							}
-							else
+							}                            
+                            else if (HisConfigCFG.IsSereServMinDurationAlert == 2)
+                            {
+								if (MessageBox.Show(string.Format(ResourceMessage.BanCoMuonTiepTuc, string.Format(ResourceMessage.DichVuCoThoiGianChiDinhNamTrongKhoangThoiGianKhongChoPhep, sereServMinDurationStr)), MessageUtil.GetMessage(LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaThongBao), MessageBoxButtons.YesNo) == DialogResult.Yes)
+								{
+                                    return;
+                                }										
+								else
+								{
+                                    return;
+                                }										
+                            }
+                            else
 							{
-								if (MessageBox.Show(string.Format(ResourceMessage.DichVuCoThoiGianChiDinhNamTrongKhoangThoiGianKhongChoPhep, sereServMinDurationStr), MessageUtil.GetMessage(LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaThongBao), MessageBoxButtons.YesNo) == DialogResult.No)
-									return;
-							}
-						}
+                                if (HisConfigCFG.IsSereServMinDurationAlert != 1 && HisConfigCFG.IsSereServMinDurationAlert != 2)
+                                {
+
+                                    if (MessageBox.Show(string.Format(ResourceMessage.BanCoMuonTiepTuc, string.Format(ResourceMessage.DichVuCoThoiGianChiDinhNamTrongKhoangThoiGianKhongChoPhep, sereServMinDurationStr)), MessageUtil.GetMessage(LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaThongBao), MessageBoxButtons.YesNo) == DialogResult.Yes)
+									{
+                                        return;
+                                    }
+									else
+									{
+                                        return;
+                                    }	
+                                }
+                            }							
+                        }
 						#endregion
 						isValid = isValid && ValidSereServWithCondition(serviceCheckeds__Send);
 						isValid = isValid && CheckMaxPatientbyDayOption(serviceCheckeds__Send);

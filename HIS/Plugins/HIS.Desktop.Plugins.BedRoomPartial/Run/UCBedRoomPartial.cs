@@ -65,6 +65,7 @@ using System.Reflection;
 using EMR.SDO;
 using System.IO;
 using DevExpress.XtraEditors;
+using DevExpress.XtraExport;
 
 namespace HIS.Desktop.Plugins.BedRoomPartial
 {
@@ -1107,10 +1108,27 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
         {
             try
             {
+                bool hasAllergyCard = false;
                 CommonParam param = new CommonParam();
                 if (data != null)
                 {
                     lblPatientCode.Text = data.TDL_PATIENT_CODE;
+                    var allErgyCardFilter = new HisAllergyCardFilter();
+                    allErgyCardFilter.TREATMENT_ID = data.TREATMENT_ID;
+                    var allergyCards = new BackendAdapter(new CommonParam()).Get<List<HIS_ALLERGY_CARD>>("/api/HisAllergyCard/Get", ApiConsumers.MosConsumer, allErgyCardFilter, new CommonParam());
+                    hasAllergyCard = (allergyCards != null && allergyCards.Any());
+                    if (hasAllergyCard)
+                    {
+                        lblPatientCode.Appearance.Image = global::HIS.Desktop.Plugins.BedRoomPartial.Properties.Resources.thuoc;
+                        lblPatientCode.ToolTip = "Bệnh nhân có thẻ dị ứng";
+                        lblPatientCode.Appearance.ImageAlign = ContentAlignment.MiddleRight;
+                        lblPatientCode.ImageAlignToText = DevExpress.XtraEditors.ImageAlignToText.RightCenter;
+                    }
+                    else
+                    {      
+                        lblPatientCode.Appearance.Image = null;
+                        lblPatientCode.ToolTip = "";        
+                    }
                     lblPatientName.Text = data.TDL_PATIENT_NAME;
                     lblGender.Text = data.TDL_PATIENT_GENDER_NAME;
                     lblDOB.Text = String.Format("{0}({1})", Inventec.Common.DateTime.Convert.TimeNumberToDateString(data.TDL_PATIENT_DOB), MPS.AgeUtil.CalculateFullAge(data.TDL_PATIENT_DOB)); ;

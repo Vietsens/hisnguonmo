@@ -432,6 +432,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <None Include="ClassDiagram1.cd" />
     <None Include="Resources\phieu-linh.png" />
   </ItemGroup>
   <ItemGroup>
@@ -439,8 +440,12 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Resources\phieu-tra.png" />
+    <None Include="Resources\thuoc.png" />
     <Content Include="Resources\y-te.png" />
     <None Include="Resources\y-te1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Connected Services\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
