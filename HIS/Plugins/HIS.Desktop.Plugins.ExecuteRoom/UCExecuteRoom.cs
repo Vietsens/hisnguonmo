@@ -1023,6 +1023,13 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
                         else
                             e.Value = null;
                     }
+                    if (e.Column.FieldName == "TDL_PATIENT_CCCD" && e.IsGetData)
+                    {
+                        var row = dataRow;
+                        e.Value = !string.IsNullOrWhiteSpace(row.TDL_PATIENT_CCCD_NUMBER) ? row.TDL_PATIENT_CCCD_NUMBER :
+                                  !string.IsNullOrWhiteSpace(row.TDL_PATIENT_CMND_NUMBER) ? row.TDL_PATIENT_CMND_NUMBER :
+                                  row.TDL_PATIENT_PASSPORT_NUMBER;
+                    }
                 }
                 else
                 {

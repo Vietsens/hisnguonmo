@@ -64,6 +64,7 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
     public partial class UCExecuteRoom : UserControlBase
     {
         V_HIS_SERE_SERV_7 TreeClickData;
+        MOS.EFMODEL.DataModels.HIS_SERVICE_REQ currentHisServiceReq_Data = null;
 
         private bool ValidateFindControl()
         {
@@ -138,6 +139,7 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
                 numPageSize = ((CommonParam)param).Limit ?? 0;
                 CommonParam paramCommon = new CommonParam(start, limit);
                 Inventec.Core.ApiResultObject<List<L_HIS_SERVICE_REQ>> apiResult = new ApiResultObject<List<L_HIS_SERVICE_REQ>>();
+                Inventec.Core.ApiResultObject<List<V_HIS_SERVICE_REQ>> apiResult1 = new ApiResultObject<List<V_HIS_SERVICE_REQ>>();
                 MOS.Filter.HisServiceReqLViewFilter hisServiceReqFilter = new HisServiceReqLViewFilter();
 
                 if (!String.IsNullOrEmpty(txtServiceReqCode.Text))
@@ -364,7 +366,6 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
                     .GetRO<List<L_HIS_SERVICE_REQ>>("api/HisServiceReq/GetLView", ApiConsumers.MosConsumer, hisServiceReqFilter, paramCommon);
 
                 gridControlServiceReq.DataSource = null;
-
                 if (apiResult != null && apiResult.Data != null)
                 {
 
@@ -391,6 +392,11 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
                             {
                                 item.status = 14;
                             }
+                           // item.TDL_PATIENT_CCCD = !string.IsNullOrWhiteSpace(item.TDL_PATIENT_CCCD_NUMBER) ? item.TDL_PATIENT_CCCD_NUMBER
+                           //: !string.IsNullOrWhiteSpace(item.TDL_PATIENT_CMND_NUMBER) ? item.TDL_PATIENT_CMND_NUMBER
+                           //: item.TDL_PATIENT_PASSPORT_NUMBER;
+
+                            //item.TDL_PATIENT_ADDRESS = !string.IsNullOrWhiteSpace(item.TDL_PATIENT_ADDRESS) ? item.TDL_PATIENT_ADDRESS : null;
 
                         }
                         gridControlServiceReq.DataSource = serviceReqs;
@@ -1804,6 +1810,11 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
                 filter.ColumnParams.Add("TDL_PATIENT_DOB");
                 filter.ColumnParams.Add("TDL_PATIENT_GENDER_NAME");
                 filter.ColumnParams.Add("TDL_PATIENT_NAME");
+                //dangth
+                filter.ColumnParams.Add("TDL_PATIENT_CCCD_NUMBER");
+                filter.ColumnParams.Add("TDL_PATIENT_CMND_NUMBER");
+                filter.ColumnParams.Add("TDL_PATIENT_PASSPORT_NUMBER");
+                //dangth
                 filter.ColumnParams.Add("TDL_PATIENT_GENDER_ID");
                 filter.ColumnParams.Add("TDL_PATIENT_ID");
                 filter.ColumnParams.Add("TDL_TREATMENT_CODE");

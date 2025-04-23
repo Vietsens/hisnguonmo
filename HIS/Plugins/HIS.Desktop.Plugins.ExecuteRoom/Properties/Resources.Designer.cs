@@ -139,5 +139,15 @@ namespace HIS.Desktop.Plugins.ExecuteRoom.Properties {
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap thuoc {
+            get {
+                object obj = ResourceManager.GetObject("thuoc", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
     }
 }
