@@ -1310,7 +1310,7 @@ namespace HIS.UC.UCPatientRaw
                         }
 
                         ReloadDataCboPatientClassifyByPatientType(pt);
-                        if (!IsLoadFromSearchTxtCode)
+                        //if (!IsLoadFromSearchTxtCode)
                         {
                             this.PatientTypeEditValueChanged(sender, e);
                         }

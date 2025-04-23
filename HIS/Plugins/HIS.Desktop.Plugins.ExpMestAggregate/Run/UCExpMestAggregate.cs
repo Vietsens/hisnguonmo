@@ -1712,6 +1712,7 @@ namespace HIS.Desktop.Plugins.ExpMestAggregate
 
         void LoadDataMediDetailExpMest(object _listExpMestIDs)
         {
+           
             try
             {
                 listSereServeMedi = new List<SereServADO>();
@@ -1743,6 +1744,7 @@ namespace HIS.Desktop.Plugins.ExpMestAggregate
                         ado.SERVICE_UNIT_NAME = dataType.SERVICE_UNIT_NAME;
                         ado.TDL_SERVICE_CODE = dataType.MEDICINE_TYPE_CODE;
                         ado.TDL_SERVICE_NAME = dataType.MEDICINE_TYPE_NAME;
+                        ado.CONCENTRA = dataType.CONCENTRA;
                         listSereServeMedi.Add(ado);
                     }
                 }
@@ -1783,6 +1785,7 @@ namespace HIS.Desktop.Plugins.ExpMestAggregate
                         ado.SERVICE_UNIT_NAME = dataType.SERVICE_UNIT_NAME;
                         ado.TDL_SERVICE_CODE = dataType.MATERIAL_TYPE_CODE;
                         ado.TDL_SERVICE_NAME = dataType.MATERIAL_TYPE_NAME;
+                        
                         listSereServeMate.Add(ado);
                     }
                 }

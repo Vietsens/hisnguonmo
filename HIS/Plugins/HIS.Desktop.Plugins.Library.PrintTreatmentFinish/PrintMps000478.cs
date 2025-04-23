@@ -92,6 +92,64 @@ namespace HIS.Desktop.Plugins.Library.PrintTreatmentFinish
             }
         }
 
+        public PrintMps000478(string printTypeCode, string fileName, ref bool result, MPS.ProcessorBase.PrintConfig.PreviewType? _previewType, long treatmentId, long? roomId)
+        {
+            try
+            {
+                Inventec.Common.Logging.LogSystem.Debug("__________ProcessPrintMps000478");
+                if (treatmentId > 0)
+                {
+                    WaitingManager.Show();
+                    string printerName = "";
+                    if (GlobalVariables.dicPrinter.ContainsKey(printTypeCode))
+                    {
+                        printerName = GlobalVariables.dicPrinter[printTypeCode];
+                    }
+
+                    V_HIS_TREATMENT Treatment = GetTreatment_ByID(treatmentId);
+                    var listExpMestMedicine_ByTreatment = GetListExpMestMedicine_ByTreatmentID(treatmentId);
+                    List<V_HIS_EXP_MEST_MEDICINE> listExpMestMedicine = new List<V_HIS_EXP_MEST_MEDICINE>();
+                    if (listExpMestMedicine_ByTreatment != null)
+                    {
+                        listExpMestMedicine = listExpMestMedicine_ByTreatment.Where(o => o.IS_EXPEND != 1).ToList();
+                    }
+                    var listSereServ_ByTreatment = GetListSereServ_ByTreatmentID(treatmentId);
+                    List<V_HIS_SERE_SERV> listSereServ = new List<V_HIS_SERE_SERV>();
+                    if (listSereServ_ByTreatment != null)
+                    {
+                        listSereServ = listSereServ_ByTreatment.Where(o => o.TDL_SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__PT
+                                                                        || o.TDL_SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__TT).ToList();
+                    }
+                    Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData("Treatment", Treatment));
+                    Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData("listExpMestMedicine", listExpMestMedicine));
+                    Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData("lstSereServ", listSereServ));
+                    WaitingManager.Hide();
+                    this.mps000478RDO = new MPS.Processor.Mps000478.PDO.Mps000478PDO
+                        (
+                        Treatment,
+                        listSereServ,
+                        listExpMestMedicine
+                        );
+
+                    result = Print.RunPrint(printTypeCode, fileName, mps000478RDO, (Inventec.Common.FlexCelPrint.DelegateEventLog)EventLogPrint, result, _previewType, roomId);
+                    //if (_printNow
+                    //    || HIS.Desktop.LocalStorage.ConfigApplication.ConfigApplications.CheDoInChoCacChucNangTrongPhanMem == 2)
+                    //{
+                    //    result = MPS.MpsPrinter.Run(new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, pdo, MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow, printerName));
+                    //}
+                    //else
+                    //{
+                    //    result = MPS.MpsPrinter.Run(new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, pdo, MPS.ProcessorBase.PrintConfig.PreviewType.Show, printerName));
+                    //}
+                }
+            }
+            catch (Exception ex)
+            {
+                WaitingManager.Hide();
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
         private void EventLogPrint()
         {
             try

@@ -827,6 +827,9 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
                 this.tc_Number.Caption = Inventec.Common.Resource.Get.Value("UCTreeListService.tc_Number.Caption", Resources.ResourceLanguageManager.LanguageResource__UCTreeListService, LanguageManager.GetCulture());
                 this.tc_NoteAdo.Caption = Inventec.Common.Resource.Get.Value("UCTreeListService.tc_NoteAdo.Caption", Resources.ResourceLanguageManager.LanguageResource__UCTreeListService, LanguageManager.GetCulture());
                 this.tc_RequestDepartmentName.Caption = Inventec.Common.Resource.Get.Value("UCTreeListService.tc_RequestDepartmentName.Caption", Resources.ResourceLanguageManager.LanguageResource__UCTreeListService, LanguageManager.GetCulture());
+                //qtcode
+                this.tc_TdlMedicineConcentra.Caption = Inventec.Common.Resource.Get.Value("UCTreeListService.tc_TdlMedicineConcentra.Caption", Resources.ResourceLanguageManager.LanguageResource__UCTreeListService, LanguageManager.GetCulture());
+                //qtcode
                 this.repositoryItemButton__Send.Buttons[0].ToolTip = Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__TREE_SERE_SERV__GUI_LAI_YEU_CAU_XET_NGHIEM", Resources.ResourceLanguageManager.LanguageResource__UCTreeListService, LanguageManager.GetCulture());
                 this.repositoryItemButton__Send__Disable.Buttons[0].ToolTip = Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__TREE_SERE_SERV__GUI_LAI_YEU_CAU_XET_NGHIEM", Resources.ResourceLanguageManager.LanguageResource__UCTreeListService, LanguageManager.GetCulture());
                 this.repositoryItemButtonEdit_TaoThuHoi.Buttons[0].ToolTip = Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__TREE_SERE_SERV__TAO_THU_HOI", Resources.ResourceLanguageManager.LanguageResource__UCTreeListService, LanguageManager.GetCulture());
@@ -922,6 +925,9 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
                 repositoryItemButton__Send = null;
                 imageCollection1 = null;
                 tc_RequestDepartmentName = null;
+                //qtcode
+                tc_TdlMedicineConcentra = null; 
+                //qtcode
                 tc_NoteAdo = null;
                 tc_Number = null;
                 tc_ServiceName = null;

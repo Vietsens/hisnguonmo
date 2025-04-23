@@ -919,157 +919,16 @@ namespace HIS.Desktop.Utilities.RemoteSupport
 
         private void btnInstruct_Click(object sender, EventArgs e)
         {
-            bool IsThrowExFss = true;
             try
             {
                 string defaultBrowser = (HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>("HIS.VCong.TutorialLink"));
-                if (!string.IsNullOrEmpty(defaultBrowser))
-                {
-                    Inventec.Common.Logging.LogSystem.Info(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => defaultBrowser), defaultBrowser));
-                    //string fullViewUrl = "";
-                    //Uri uri = null;
-                    //if (Uri.TryCreate(new Uri(this.Url), defaultBrowser, out uri))
-                    //    fullViewUrl = uri.ToString();
-                    //if (!String.IsNullOrWhiteSpace(fullViewUrl))
-                    //{
-                        Plugins.Library.DrugInterventionInfo.ViewForm.FormBrowser form = new Plugins.Library.DrugInterventionInfo.ViewForm.FormBrowser(defaultBrowser);
-                        form.ShowDialog();
-                    //}
-                }
-                else
-                {
-                    XtraMessageBox.Show("Chưa thiết lập đường dẫn tài liệu hướng dẫn. Vui lòng liên hệ với quản trị phần mềm!", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                }
+                System.Diagnostics.Process.Start(defaultBrowser);
             }
             catch (Exception ex)
             {
                 LogSystem.Error(ex);
             }
-        }
-
-
-        //private void ProcessRemoteByTeamviewer__NotUser()
-        //{
-        //    if (CloseAllApp.IsProcessOpenExact("TeamViewer") || CloseAllApp.IsProcessOpenExact("TeamViewerQS"))
-        //    {
-        //        //for (int i = 0; i < processTeamViewer.Count(); i++)
-        //        //{
-        //        //    try
-        //        //    {
-        //        //        processTeamViewer[i].Kill();
-        //        //    }
-        //        //    catch (Exception ex)
-        //        //    {
-        //        //        //LogSystem.Warn(ex);
-        //        //    }
-        //        //}
-        //    }
-        //    else
-        //    {
-        //        Process.Start(HIS.Desktop.LocalStorage.Location.ApplicationStoreLocation.ApplicationStartupPath + "\\Tool\\TeamViewerQS.exe");
-        //        //ProcessStartInfo startInfo = new ProcessStartInfo();
-        //        //startInfo.FileName = @"C:\Program Files (x86)\TeamViewer\TeamViewer.exe";
-        //        //startInfo.Arguments = "-i \"768 568 934\" -P \"9w9i2dkq\" ";
-        //        //Process.Start(startInfo);
-        //    }
-
-
-        //    this.timerRemoteSupport = new System.Windows.Forms.Timer();
-        //    this.timerRemoteSupport.Interval = 1000;
-        //    this.timerRemoteSupport.Enabled = true;
-        //    this.timerRemoteSupport.Tick += timerRemoteSupportTeamviewer_Tick;
-        //    this.timerRemoteSupport.Start();
-        //}
-
-        //private void timerRemoteSupportTeamviewer_Tick(object sender, EventArgs e)
-        //{
-        //    try
-        //    {
-        //        var dicInfo = HIS.Desktop.Modules.RemoteSupport.TeamviewerHelper.GetInfos("Your ID", "Password");
-        //        Inventec.Common.Logging.LogSystem.Info(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => dicInfo), dicInfo));
-        //        if (dicInfo != null)
-        //        {
-        //            string yourID = "";
-        //            string password = "";
-        //            dicInfo.TryGetValue("Your ID", out yourID);
-        //            dicInfo.TryGetValue("Password", out password);
-        //            Inventec.Common.Logging.LogSystem.Info(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => yourID), yourID)
-        //                + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => password), password));
-        //            if (!String.IsNullOrEmpty(yourID) && yourID != "-" && !String.IsNullOrEmpty(password) && password != "-")
-        //            {
-        //                string customerCode = "";
-        //                string customerName = "";
-        //                string customerInfo = HisConfigs.Get<string>(HisConfigKeys.CONFIG_KEY__VPLUS_CUSTOMER_INFO);
-        //                if (!String.IsNullOrEmpty(customerInfo))
-        //                {
-        //                    var cusInfoArr = customerInfo.Split(new string[] { ";" }, StringSplitOptions.RemoveEmptyEntries);
-        //                    if (cusInfoArr != null && cusInfoArr.Length > 1)
-        //                    {
-        //                        customerCode = cusInfoArr[0];
-        //                        customerName = cusInfoArr[1];
-        //                    }
-        //                }
-
-        //                if (String.IsNullOrEmpty(customerCode) || String.IsNullOrEmpty(customerName))
-        //                {
-        //                    MessageManager.Show("Vui lòng khai báo khách hàng trên hệ thống V+ Vietsens để sử dụng tính năng này!");
-        //                    Inventec.Common.Logging.LogSystem.Info("Vui lòng khai báo mã partner trên hệ thống CRM Vietsens để sử dụng tính năng này!" + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => customerCode), customerCode)
-        //                        + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => customerName), customerName));
-        //                    this.timerRemoteSupport.Stop();
-        //                    return;
-        //                }
-
-        //                dynamic remoteSupport = new System.Dynamic.ExpandoObject();
-
-        //                //{
-        //                //    "tiêu_đề": "Khoa test",
-        //                //    "nội_dung": "Yêu cầu khách hàng test không xử lý ",
-        //                //    "stt": "3",
-        //                //    "người_dùng_cuối": "3_loginname_hispro",
-        //                //    "teamviewer_identify": "123 456 789",
-        //                //    "teamviewer_password": "Abcdefgh123@!#"
-        //                //}
-        //                remoteSupport.tiêu_đề = "Yêu cầu hỗ trợ từ xa(Khoa test)";
-        //                remoteSupport.nội_dung = String.Format("Người dùng phần mềm Hispro của \"{0}\" (Tên máy: {1} - IP: {2} - Tài khoản phần mềm: {3}-{4}) đã tạo yêu cầu hỗ trợ từ xa vào lúc {5}", customerName, Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetTokenData().MachineName, Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginAddress(), Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName(), Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetUserName(), Inventec.Common.DateTime.Get.NowAsTimeString());
-        //                remoteSupport.stt = customerCode;
-        //                remoteSupport.người_dùng_cuối = String.Format("{0}:{1}:{2}", customerCode, "hispro", Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName());
-        //                remoteSupport.id_teamviewer = yourID;
-        //                remoteSupport.mật_khẩu_teamviewer = password;
-
-
-        //                //remoteSupport.MACHINE_NAME = Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetTokenData().MachineName;
-        //                //remoteSupport.REQUEST_LOGIN_NAME = Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName();
-        //                //remoteSupport.REQUEST_USER_NAME = Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetUserName();
-        //                //remoteSupport.PARTNER_ID = partnerData.ID;
-        //                //remoteSupport.REMOTE_IP = Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginAddress();
-        //                //remoteSupport.MODIFIER = Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetUserName();
-        //                //remoteSupport.CREATOR = Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetUserName();
-        //                //remoteSupport.DESCRIPTION = String.Format("Yêu cầu hỗ trợ tự xa. Số điện thoại: {0}.", Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetUserData().Mobile);
-
-        //                remoteSupport.REMOTE_ID = yourID;
-        //                remoteSupport.REMOTE_PASSWORD = password;
-
-        //                this.timerRemoteSupport.Stop();
-
-        //                bool cReateSuccess = false;
-
-        //                CommonParam param = new CommonParam();
-        //                Inventec.Common.Logging.LogSystem.Info(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => remoteSupport), remoteSupport));
-        //                var rsCrmRemoteSupport = new BackendAdapter(param).PostWithouApiParam<CRM.EFMODEL.DataModels.CRM_REMOTE_SUPPORT>("ords/vietsens/kh/yckh/", ApiConsumers.CrmConsumer, param, remoteSupport, 0, null);
-        //                cReateSuccess = true;
-
-        //                MessageManager.Show(this, param, cReateSuccess);
-
-        //                Inventec.Common.Logging.LogSystem.Info("Gọi api tạo yêu cầu hỗ trợ " + (cReateSuccess ? "thành công" : "thất bại") + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => rsCrmRemoteSupport), rsCrmRemoteSupport) + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => param), param));
-        //            }
-        //        }
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        LogSystem.Error(ex);
-        //    }
-        //}
-
+        }     
     }
     public class FileAttachADO
     {

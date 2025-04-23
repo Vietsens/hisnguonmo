@@ -1891,7 +1891,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
             // gridColumn6
             // 
             this.gridColumn6.Caption = "Dạng bào chế";
-            this.gridColumn6.FieldName = "dosageForm";
+            this.gridColumn6.FieldName = "DOSAGE_FORM";
             this.gridColumn6.Name = "gridColumn6";
             this.gridColumn6.OptionsColumn.AllowEdit = false;
             this.gridColumn6.Visible = true;

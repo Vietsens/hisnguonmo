@@ -227,8 +227,16 @@ namespace HIS.Desktop.Plugins.ExpMestAggregate
             this.gridView2 = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.layoutControlGroup16 = new DevExpress.XtraLayout.LayoutControlGroup();
             this.layoutControlItem29 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.navBarGroupControlContainer7 = new DevExpress.XtraNavBar.NavBarGroupControlContainer();
+            this.layoutControl18 = new DevExpress.XtraLayout.LayoutControl();
+            this.dteUseTimeTo = new DevExpress.XtraEditors.DateEdit();
+            this.dteUseTimeFrom = new DevExpress.XtraEditors.DateEdit();
+            this.layoutControlGroup17 = new DevExpress.XtraLayout.LayoutControlGroup();
+            this.layoutControlItem31 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.layoutControlItem32 = new DevExpress.XtraLayout.LayoutControlItem();
             this.navBarGroupMediStock = new DevExpress.XtraNavBar.NavBarGroup();
             this.navBarGroup1 = new DevExpress.XtraNavBar.NavBarGroup();
+            this.navBarGroup2 = new DevExpress.XtraNavBar.NavBarGroup();
             this.navStatus = new DevExpress.XtraNavBar.NavBarGroup();
             this.navRoom = new DevExpress.XtraNavBar.NavBarGroup();
             this.navBarGroupTypePress = new DevExpress.XtraNavBar.NavBarGroup();
@@ -245,14 +253,7 @@ namespace HIS.Desktop.Plugins.ExpMestAggregate
             this.toolTipController1 = new DevExpress.Utils.ToolTipController(this.components);
             this.imageCollection1 = new DevExpress.Utils.ImageCollection(this.components);
             this.imageListIcon = new System.Windows.Forms.ImageList(this.components);
-            this.navBarGroup2 = new DevExpress.XtraNavBar.NavBarGroup();
-            this.navBarGroupControlContainer7 = new DevExpress.XtraNavBar.NavBarGroupControlContainer();
-            this.layoutControl18 = new DevExpress.XtraLayout.LayoutControl();
-            this.layoutControlGroup17 = new DevExpress.XtraLayout.LayoutControlGroup();
-            this.dteUseTimeFrom = new DevExpress.XtraEditors.DateEdit();
-            this.layoutControlItem31 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.dteUseTimeTo = new DevExpress.XtraEditors.DateEdit();
-            this.layoutControlItem32 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.grdColConcentra = new DevExpress.XtraGrid.Columns.GridColumn();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
             this.layoutControl1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl3)).BeginInit();
@@ -376,6 +377,16 @@ namespace HIS.Desktop.Plugins.ExpMestAggregate
             ((System.ComponentModel.ISupportInitialize)(this.gridView2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup16)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem29)).BeginInit();
+            this.navBarGroupControlContainer7.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControl18)).BeginInit();
+            this.layoutControl18.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dteUseTimeTo.Properties.CalendarTimeProperties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dteUseTimeTo.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dteUseTimeFrom.Properties.CalendarTimeProperties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dteUseTimeFrom.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup17)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem31)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem32)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtKeywordProcess.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Root)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem3)).BeginInit();
@@ -386,16 +397,6 @@ namespace HIS.Desktop.Plugins.ExpMestAggregate
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.imageCollection1)).BeginInit();
-            this.navBarGroupControlContainer7.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControl18)).BeginInit();
-            this.layoutControl18.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup17)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dteUseTimeFrom.Properties.CalendarTimeProperties)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dteUseTimeFrom.Properties)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem31)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dteUseTimeTo.Properties.CalendarTimeProperties)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dteUseTimeTo.Properties)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem32)).BeginInit();
             this.SuspendLayout();
             // 
             // layoutControl1
@@ -960,7 +961,8 @@ namespace HIS.Desktop.Plugins.ExpMestAggregate
             this.grdColMediTypeName,
             this.grdColMediUnitName,
             this.grdColMediAmount,
-            this.grdColMediBidNumber});
+            this.grdColMediBidNumber,
+            this.grdColConcentra});
             this.gridViewDetail.GridControl = this.gridControlDetail;
             this.gridViewDetail.Name = "gridViewDetail";
             this.gridViewDetail.OptionsView.ColumnAutoWidth = false;
@@ -2014,6 +2016,102 @@ namespace HIS.Desktop.Plugins.ExpMestAggregate
             this.layoutControlItem29.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem29.TextVisible = false;
             // 
+            // navBarGroupControlContainer7
+            // 
+            this.navBarGroupControlContainer7.Appearance.BackColor = System.Drawing.SystemColors.Control;
+            this.navBarGroupControlContainer7.Appearance.Options.UseBackColor = true;
+            this.navBarGroupControlContainer7.Controls.Add(this.layoutControl18);
+            this.navBarGroupControlContainer7.Name = "navBarGroupControlContainer7";
+            this.navBarGroupControlContainer7.Size = new System.Drawing.Size(212, 53);
+            this.navBarGroupControlContainer7.TabIndex = 9;
+            // 
+            // layoutControl18
+            // 
+            this.layoutControl18.Controls.Add(this.dteUseTimeTo);
+            this.layoutControl18.Controls.Add(this.dteUseTimeFrom);
+            this.layoutControl18.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.layoutControl18.Location = new System.Drawing.Point(0, 0);
+            this.layoutControl18.Name = "layoutControl18";
+            this.layoutControl18.Root = this.layoutControlGroup17;
+            this.layoutControl18.Size = new System.Drawing.Size(212, 53);
+            this.layoutControl18.TabIndex = 0;
+            this.layoutControl18.Text = "layoutControl18";
+            // 
+            // dteUseTimeTo
+            // 
+            this.dteUseTimeTo.EditValue = null;
+            this.dteUseTimeTo.Location = new System.Drawing.Point(97, 26);
+            this.dteUseTimeTo.Name = "dteUseTimeTo";
+            this.dteUseTimeTo.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
+            this.dteUseTimeTo.Properties.CalendarTimeProperties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
+            this.dteUseTimeTo.Properties.DisplayFormat.FormatString = "dd/MM/yyyy";
+            this.dteUseTimeTo.Properties.DisplayFormat.FormatType = DevExpress.Utils.FormatType.Custom;
+            this.dteUseTimeTo.Properties.EditFormat.FormatString = "dd/MM/yyyy";
+            this.dteUseTimeTo.Properties.EditFormat.FormatType = DevExpress.Utils.FormatType.Custom;
+            this.dteUseTimeTo.Properties.Mask.EditMask = "dd/MM/yyyy";
+            this.dteUseTimeTo.Size = new System.Drawing.Size(113, 20);
+            this.dteUseTimeTo.StyleController = this.layoutControl18;
+            this.dteUseTimeTo.TabIndex = 5;
+            // 
+            // dteUseTimeFrom
+            // 
+            this.dteUseTimeFrom.EditValue = null;
+            this.dteUseTimeFrom.Location = new System.Drawing.Point(97, 2);
+            this.dteUseTimeFrom.Name = "dteUseTimeFrom";
+            this.dteUseTimeFrom.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
+            this.dteUseTimeFrom.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
+            this.dteUseTimeFrom.Properties.CalendarTimeProperties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
+            this.dteUseTimeFrom.Properties.DisplayFormat.FormatString = "dd/MM/yyyy";
+            this.dteUseTimeFrom.Properties.DisplayFormat.FormatType = DevExpress.Utils.FormatType.Custom;
+            this.dteUseTimeFrom.Properties.EditFormat.FormatString = "dd/MM/yyyy";
+            this.dteUseTimeFrom.Properties.EditFormat.FormatType = DevExpress.Utils.FormatType.Custom;
+            this.dteUseTimeFrom.Properties.Mask.EditMask = "dd/MM/yyyy";
+            this.dteUseTimeFrom.Size = new System.Drawing.Size(113, 20);
+            this.dteUseTimeFrom.StyleController = this.layoutControl18;
+            this.dteUseTimeFrom.TabIndex = 4;
+            // 
+            // layoutControlGroup17
+            // 
+            this.layoutControlGroup17.EnableIndentsWithoutBorders = DevExpress.Utils.DefaultBoolean.False;
+            this.layoutControlGroup17.GroupBordersVisible = false;
+            this.layoutControlGroup17.Items.AddRange(new DevExpress.XtraLayout.BaseLayoutItem[] {
+            this.layoutControlItem31,
+            this.layoutControlItem32});
+            this.layoutControlGroup17.Location = new System.Drawing.Point(0, 0);
+            this.layoutControlGroup17.Name = "layoutControlGroup17";
+            this.layoutControlGroup17.Size = new System.Drawing.Size(212, 53);
+            this.layoutControlGroup17.TextVisible = false;
+            // 
+            // layoutControlItem31
+            // 
+            this.layoutControlItem31.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.layoutControlItem31.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.layoutControlItem31.Control = this.dteUseTimeFrom;
+            this.layoutControlItem31.Location = new System.Drawing.Point(0, 0);
+            this.layoutControlItem31.Name = "layoutControlItem31";
+            this.layoutControlItem31.Size = new System.Drawing.Size(212, 24);
+            this.layoutControlItem31.Text = "Từ:";
+            this.layoutControlItem31.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.layoutControlItem31.TextSize = new System.Drawing.Size(90, 20);
+            this.layoutControlItem31.TextToControlDistance = 5;
+            // 
+            // layoutControlItem32
+            // 
+            this.layoutControlItem32.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.layoutControlItem32.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.layoutControlItem32.Control = this.dteUseTimeTo;
+            this.layoutControlItem32.Location = new System.Drawing.Point(0, 24);
+            this.layoutControlItem32.Name = "layoutControlItem32";
+            this.layoutControlItem32.Size = new System.Drawing.Size(212, 29);
+            this.layoutControlItem32.Text = "Đến:";
+            this.layoutControlItem32.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.layoutControlItem32.TextSize = new System.Drawing.Size(90, 20);
+            this.layoutControlItem32.TextToControlDistance = 5;
+            // 
             // navBarGroupMediStock
             // 
             this.navBarGroupMediStock.Caption = "Kho xuất";
@@ -2031,6 +2129,15 @@ namespace HIS.Desktop.Plugins.ExpMestAggregate
             this.navBarGroup1.GroupClientHeight = 45;
             this.navBarGroup1.GroupStyle = DevExpress.XtraNavBar.NavBarGroupStyle.ControlContainer;
             this.navBarGroup1.Name = "navBarGroup1";
+            // 
+            // navBarGroup2
+            // 
+            this.navBarGroup2.Caption = "Thời gian dự trù";
+            this.navBarGroup2.ControlContainer = this.navBarGroupControlContainer7;
+            this.navBarGroup2.Expanded = true;
+            this.navBarGroup2.GroupClientHeight = 60;
+            this.navBarGroup2.GroupStyle = DevExpress.XtraNavBar.NavBarGroupStyle.ControlContainer;
+            this.navBarGroup2.Name = "navBarGroup2";
             // 
             // navStatus
             // 
@@ -2201,110 +2308,14 @@ namespace HIS.Desktop.Plugins.ExpMestAggregate
             this.imageListIcon.Images.SetKeyName(5, "dau tích-01.jpg");
             this.imageListIcon.Images.SetKeyName(6, "dau tích-02.jpg");
             // 
-            // navBarGroup2
+            // grdColConcentra
             // 
-            this.navBarGroup2.Caption = "Thời gian dự trù";
-            this.navBarGroup2.ControlContainer = this.navBarGroupControlContainer7;
-            this.navBarGroup2.Expanded = true;
-            this.navBarGroup2.GroupClientHeight = 60;
-            this.navBarGroup2.GroupStyle = DevExpress.XtraNavBar.NavBarGroupStyle.ControlContainer;
-            this.navBarGroup2.Name = "navBarGroup2";
-            // 
-            // navBarGroupControlContainer7
-            // 
-            this.navBarGroupControlContainer7.Appearance.BackColor = System.Drawing.SystemColors.Control;
-            this.navBarGroupControlContainer7.Appearance.Options.UseBackColor = true;
-            this.navBarGroupControlContainer7.Controls.Add(this.layoutControl18);
-            this.navBarGroupControlContainer7.Name = "navBarGroupControlContainer7";
-            this.navBarGroupControlContainer7.Size = new System.Drawing.Size(212, 53);
-            this.navBarGroupControlContainer7.TabIndex = 9;
-            // 
-            // layoutControl18
-            // 
-            this.layoutControl18.Controls.Add(this.dteUseTimeTo);
-            this.layoutControl18.Controls.Add(this.dteUseTimeFrom);
-            this.layoutControl18.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.layoutControl18.Location = new System.Drawing.Point(0, 0);
-            this.layoutControl18.Name = "layoutControl18";
-            this.layoutControl18.Root = this.layoutControlGroup17;
-            this.layoutControl18.Size = new System.Drawing.Size(212, 53);
-            this.layoutControl18.TabIndex = 0;
-            this.layoutControl18.Text = "layoutControl18";
-            // 
-            // layoutControlGroup17
-            // 
-            this.layoutControlGroup17.EnableIndentsWithoutBorders = DevExpress.Utils.DefaultBoolean.False;
-            this.layoutControlGroup17.GroupBordersVisible = false;
-            this.layoutControlGroup17.Items.AddRange(new DevExpress.XtraLayout.BaseLayoutItem[] {
-            this.layoutControlItem31,
-            this.layoutControlItem32});
-            this.layoutControlGroup17.Location = new System.Drawing.Point(0, 0);
-            this.layoutControlGroup17.Name = "layoutControlGroup17";
-            this.layoutControlGroup17.Size = new System.Drawing.Size(212, 53);
-            this.layoutControlGroup17.TextVisible = false;
-            // 
-            // dteUseTimeFrom
-            // 
-            this.dteUseTimeFrom.EditValue = null;
-            this.dteUseTimeFrom.Location = new System.Drawing.Point(97, 2);
-            this.dteUseTimeFrom.Name = "dteUseTimeFrom";
-            this.dteUseTimeFrom.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
-            this.dteUseTimeFrom.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
-            this.dteUseTimeFrom.Properties.CalendarTimeProperties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
-            this.dteUseTimeFrom.Properties.DisplayFormat.FormatString = "dd/MM/yyyy";
-            this.dteUseTimeFrom.Properties.DisplayFormat.FormatType = DevExpress.Utils.FormatType.Custom;
-            this.dteUseTimeFrom.Properties.EditFormat.FormatString = "dd/MM/yyyy";
-            this.dteUseTimeFrom.Properties.EditFormat.FormatType = DevExpress.Utils.FormatType.Custom;
-            this.dteUseTimeFrom.Properties.Mask.EditMask = "dd/MM/yyyy";
-            this.dteUseTimeFrom.Size = new System.Drawing.Size(113, 20);
-            this.dteUseTimeFrom.StyleController = this.layoutControl18;
-            this.dteUseTimeFrom.TabIndex = 4;
-            // 
-            // layoutControlItem31
-            // 
-            this.layoutControlItem31.AppearanceItemCaption.Options.UseTextOptions = true;
-            this.layoutControlItem31.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
-            this.layoutControlItem31.Control = this.dteUseTimeFrom;
-            this.layoutControlItem31.Location = new System.Drawing.Point(0, 0);
-            this.layoutControlItem31.Name = "layoutControlItem31";
-            this.layoutControlItem31.Size = new System.Drawing.Size(212, 24);
-            this.layoutControlItem31.Text = "Từ:";
-            this.layoutControlItem31.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
-            this.layoutControlItem31.TextSize = new System.Drawing.Size(90, 20);
-            this.layoutControlItem31.TextToControlDistance = 5;
-            // 
-            // dteUseTimeTo
-            // 
-            this.dteUseTimeTo.EditValue = null;
-            this.dteUseTimeTo.Location = new System.Drawing.Point(97, 26);
-            this.dteUseTimeTo.Name = "dteUseTimeTo";
-            this.dteUseTimeTo.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
-            this.dteUseTimeTo.Properties.CalendarTimeProperties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
-            this.dteUseTimeTo.Properties.DisplayFormat.FormatString = "dd/MM/yyyy";
-            this.dteUseTimeTo.Properties.DisplayFormat.FormatType = DevExpress.Utils.FormatType.Custom;
-            this.dteUseTimeTo.Properties.EditFormat.FormatString = "dd/MM/yyyy";
-            this.dteUseTimeTo.Properties.EditFormat.FormatType = DevExpress.Utils.FormatType.Custom;
-            this.dteUseTimeTo.Properties.Mask.EditMask = "dd/MM/yyyy";
-            this.dteUseTimeTo.Size = new System.Drawing.Size(113, 20);
-            this.dteUseTimeTo.StyleController = this.layoutControl18;
-            this.dteUseTimeTo.TabIndex = 5;
-            // 
-            // layoutControlItem32
-            // 
-            this.layoutControlItem32.AppearanceItemCaption.Options.UseTextOptions = true;
-            this.layoutControlItem32.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
-            this.layoutControlItem32.Control = this.dteUseTimeTo;
-            this.layoutControlItem32.Location = new System.Drawing.Point(0, 24);
-            this.layoutControlItem32.Name = "layoutControlItem32";
-            this.layoutControlItem32.Size = new System.Drawing.Size(212, 29);
-            this.layoutControlItem32.Text = "Đến:";
-            this.layoutControlItem32.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
-            this.layoutControlItem32.TextSize = new System.Drawing.Size(90, 20);
-            this.layoutControlItem32.TextToControlDistance = 5;
+            this.grdColConcentra.Caption = "Hàm Lượng";
+            this.grdColConcentra.FieldName = "CONCENTRA";
+            this.grdColConcentra.Name = "grdColConcentra";
+            this.grdColConcentra.OptionsColumn.AllowEdit = false;
+            this.grdColConcentra.Visible = true;
+            this.grdColConcentra.VisibleIndex = 6;
             // 
             // UCExpMestAggregate
             // 
@@ -2437,6 +2448,16 @@ namespace HIS.Desktop.Plugins.ExpMestAggregate
             ((System.ComponentModel.ISupportInitialize)(this.gridView2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup16)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem29)).EndInit();
+            this.navBarGroupControlContainer7.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControl18)).EndInit();
+            this.layoutControl18.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.dteUseTimeTo.Properties.CalendarTimeProperties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dteUseTimeTo.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dteUseTimeFrom.Properties.CalendarTimeProperties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dteUseTimeFrom.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup17)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem31)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem32)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtKeywordProcess.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.Root)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem3)).EndInit();
@@ -2447,16 +2468,6 @@ namespace HIS.Desktop.Plugins.ExpMestAggregate
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.imageCollection1)).EndInit();
-            this.navBarGroupControlContainer7.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControl18)).EndInit();
-            this.layoutControl18.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup17)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dteUseTimeFrom.Properties.CalendarTimeProperties)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dteUseTimeFrom.Properties)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem31)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dteUseTimeTo.Properties.CalendarTimeProperties)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dteUseTimeTo.Properties)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem32)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -2637,5 +2648,6 @@ namespace HIS.Desktop.Plugins.ExpMestAggregate
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem31;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem32;
         private DevExpress.XtraNavBar.NavBarGroup navBarGroup2;
+        private DevExpress.XtraGrid.Columns.GridColumn grdColConcentra;
     }
 }

@@ -269,7 +269,27 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
         {
             try
             {
-                
+                if (chkPrint.Checked)
+                {
+                    Inventec.Desktop.Common.Modules.Module module = GlobalVariables.currentModuleRaws.Where(o => o.ModuleLink == "HIS.Desktop.Plugins.AssignService").FirstOrDefault();
+                    if (module != null)
+                    {
+                        var IsSignPrint = HisConfigCFG.IsAllowSignaturePrint.Split(';');
+                        if (IsSignPrint != null)
+                        {
+                            chkPrint.Visible = false;
+                            if (IsSignPrint.Contains(HisConfigCFG.IsAllowSignaturePrint))
+                            {
+                                previewType = MPS.ProcessorBase.PrintConfig.PreviewType.EmrSignAndPrintNow;
+                            }
+                            else
+                            {
+                                previewType = MPS.ProcessorBase.PrintConfig.PreviewType.EmrSignNow;
+                            }
+
+                        }
+                    }
+                }                               
                 if (serviceReqComboResultSDO != null)
                 {
                     CommonParam param = new CommonParam();

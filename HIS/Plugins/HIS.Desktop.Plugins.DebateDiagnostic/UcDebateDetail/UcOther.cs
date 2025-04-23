@@ -107,7 +107,7 @@ namespace HIS.Desktop.Plugins.DebateDiagnostic.UcDebateDetail
             }
         }
 
-        private void LoadDataDebateDiagnostic(HIS_DEBATE hisDebate )
+        private void LoadDataDebateDiagnostic(HIS_DEBATE hisDebate)
         {
             try
             {
@@ -172,13 +172,13 @@ namespace HIS.Desktop.Plugins.DebateDiagnostic.UcDebateDetail
                 txtConclusion.Text = hisDebate.CONCLUSION;
 
                 //qtcode
-                if(IsOther)
+                if (IsOther)
                 {
-                    txtKetQuaCLS.Text = hisDebate.SUBCLINICAL_PROCESSES; 
-                }    
+                    txtKetQuaCLS.Text = hisDebate.SUBCLINICAL_PROCESSES;
+                }
                 else
                 {
-                    txtKetQuaCLS2.Text = hisDebate.SUBCLINICAL_PROCESSES; 
+                    txtKetQuaCLS2.Text = hisDebate.SUBCLINICAL_PROCESSES;
                 }
                 //qtcode
                 Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => hisDebate), hisDebate));
@@ -644,13 +644,13 @@ namespace HIS.Desktop.Plugins.DebateDiagnostic.UcDebateDetail
                 //qtcodeapi
                 if (IsOther)
                 {
-                    saveData.SUBCLINICAL_PROCESSES = txtKetQuaCLS.Text; 
+                    saveData.SUBCLINICAL_PROCESSES = txtKetQuaCLS.Text;
                 }
                 else
                 {
-                    saveData.SUBCLINICAL_PROCESSES = txtKetQuaCLS2.Text; 
+                    saveData.SUBCLINICAL_PROCESSES = txtKetQuaCLS2.Text;
                 }
-                
+
                 //qtcode
                 if (dtTimeUse.EditValue != null && dtTimeUse.DateTime != DateTime.MinValue)
                     saveData.MEDICINE_USE_TIME = Inventec.Common.TypeConvert.Parse.ToInt64(Convert.ToDateTime((dtTimeUse.EditValue ?? "").ToString()).ToString("yyyyMMddHHmm") + "00");
@@ -1619,41 +1619,83 @@ namespace HIS.Desktop.Plugins.DebateDiagnostic.UcDebateDetail
         {
             try
             {
-                Inventec.Desktop.Common.Modules.Module moduleData = GlobalVariables.currentModuleRaws.Where(o => o.ModuleLink == "HIS.Desktop.Plugins.ContentSubclinical").FirstOrDefault();
-                if (moduleData == null) Inventec.Common.Logging.LogSystem.Error("khong tim thay moduleLink = HIS.Desktop.Plugins.ContentSubclinical");
-                if (moduleData.IsPlugin && moduleData.ExtensionInfo != null)
-                {
-                    List<object> listArgs = new List<object>();
-                    listArgs.Add(this.TreatmentId);
-                    listArgs.Add((HIS.Desktop.Common.DelegateSelectData)DelegateSelectDataContentSubclinical);
-                    //Truyền delegate DelegateSelectDataContentSubclinical để module này có thể gọi lại sau khi người dùng chọn xong.
-                    var extenceInstance = PluginInstance.GetPluginInstance(HIS.Desktop.Utility.PluginInstance
-                        .GetModuleWithWorkingRoom(moduleData, this.modules.RoomId, this.modules.RoomTypeId), listArgs);
-                    if (extenceInstance == null) throw new ArgumentNullException("moduleData is null");
-                    ((Form)extenceInstance).ShowDialog();
-                }
+
+                List<object> listArgs = new List<object>();
+                listArgs.Add(this.TreatmentId);
+                listArgs.Add((HIS.Desktop.Common.DelegateSelectData)SelectDataResult);
+                listArgs.Add(true);
+                HIS.Desktop.ModuleExt.PluginInstanceBehavior.ShowModule("HIS.Desktop.Plugins.ContentSubclinical", RoomId, RoomTypeId, listArgs);
+
+
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
-        }
 
-        private void DelegateSelectDataContentSubclinical(object data)
+        }
         //Được gọi bởi module ContentSubclinical khi người dùng hoàn tất việc chọn kết quả.
         //Nhận dữ liệu và cập nhật vào txtKetQuaCLS.
+        private void SelectDataResult(object data)
         {
             try
             {
-                if (data != null && data is String)
+                Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData("SelectDataResult: ", data));
+                txtKetQuaCLS.Text = "";
+                txtKetQuaCLS2.Text = "";
+                if (data != null && data is List<HIS.Desktop.ADO.ContentSubclinicalADO>)
                 {
-                    txtKetQuaCLS.Text = data.ToString();
-                    txtKetQuaCLS2.Text = data.ToString(); 
+                    List<HIS.Desktop.ADO.ContentSubclinicalADO> dienBien = data as List<HIS.Desktop.ADO.ContentSubclinicalADO>;
+                    List<string> lstData = new List<string>();
+
+
+                    var dbXetNghiem = dienBien.Where(o => o.TDL_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__XN).ToList();
+                    var dbother = dienBien.Where(o => o.TDL_SERVICE_TYPE_ID != IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__XN).ToList();
+
+                    if (dbXetNghiem != null && dbXetNghiem.Count > 0)
+                    {
+                        var groupxn = dbXetNghiem.OrderBy(p => p.NUM_ORDER).GroupBy(s => s.SERVICE_ID).ToList();
+                        foreach (var item in groupxn)
+                        {
+                            List<string> lstData1 = new List<string>();
+                            List<HIS.Desktop.ADO.ContentSubclinicalADO> xn = item.ToList();
+                            for (int i = 0; i < xn.Count(); i++)
+                            {
+                                if (i == 0)
+                                {
+                                    if (!string.IsNullOrWhiteSpace(xn[i].TDL_SERVICE_NAME.ToLower()) && !string.IsNullOrWhiteSpace(xn[i].TEST_INDEX_NAME) && xn[i].TDL_SERVICE_NAME.ToLower() == xn[i].TEST_INDEX_NAME.ToLower())
+                                    {
+                                        lstData1.Add(string.Format("{0}: {1} {2}", xn[i].TEST_INDEX_NAME, xn[i].VALUE, xn[i].SERVICE_UNIT_NAME));
+                                    }
+                                    else
+                                    {
+                                        lstData1.Add(string.Format("{0}: {1} {2} {3} ; ", xn[i].TDL_SERVICE_NAME, xn[i].TEST_INDEX_NAME, xn[i].VALUE, xn[i].SERVICE_UNIT_NAME));
+                                    }
+                                }
+                                else
+                                {
+                                    lstData1.Add(string.Format("{0} {1} {2}", xn[i].TEST_INDEX_NAME, xn[i].VALUE, xn[i].SERVICE_UNIT_NAME));
+                                }
+                            }
+                            lstData.Add(string.Join("; ", lstData1));
+                        }
+                    }
+
+                    if (dbother != null && dbother.Count > 0)
+                    {
+                        foreach (var item in dbother)
+                        {
+                            lstData.Add(string.Format("{0}:{1}", item.TDL_SERVICE_NAME, item.VALUE));
+                        }
+                    }
+
+                    txtKetQuaCLS.Text = string.Join("\r\n", lstData);
+                    txtKetQuaCLS2.Text = string.Join("\r\n", lstData);
                 }
             }
             catch (Exception ex)
             {
-                Inventec.Common.Logging.LogSystem.Warn(ex);
+                Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
 

@@ -34,6 +34,7 @@ namespace HIS.Desktop.Plugins.ServiceReqList.ADO
         public string SERVICE_UNIT_NAME { get; set; }
         public int kind { get; set; }
         public string HuongDanSuDung { get; set; }
+        public string CachDung { get; set; }
         public decimal? TocDoTruyen { get; set; }
         public int type { get; set; } //1: thuốc, vật tư  //2: máu
         public short? subPress { get; set; }
@@ -84,6 +85,7 @@ namespace HIS.Desktop.Plugins.ServiceReqList.ADO
                             }
                         }
                     }
+                    
                 }
             }
             catch (Exception ex)

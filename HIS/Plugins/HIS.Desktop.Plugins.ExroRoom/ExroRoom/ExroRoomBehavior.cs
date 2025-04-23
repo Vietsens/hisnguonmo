@@ -29,6 +29,7 @@ namespace HIS.Desktop.Plugins.ExroRoom.ExroRoom
     {
         private object[] entity;
         private V_HIS_EXECUTE_ROOM executeRoom;
+        private V_HIS_BED_ROOM bedRoom;
         private MOS.EFMODEL.DataModels.V_HIS_ROOM executeRoom1;
         private V_HIS_RECEPTION_ROOM receptionRoom;
 
@@ -61,6 +62,10 @@ namespace HIS.Desktop.Plugins.ExroRoom.ExroRoom
                         {
                             executeRoom = (V_HIS_EXECUTE_ROOM)item;
                         }
+                        if (item is V_HIS_BED_ROOM)
+                        {
+                            bedRoom = (V_HIS_BED_ROOM)item;
+                        }
                         if (item is V_HIS_ROOM)
                         {
                             executeRoom1 = (V_HIS_ROOM)item;
@@ -75,9 +80,9 @@ namespace HIS.Desktop.Plugins.ExroRoom.ExroRoom
                         }
                     }
 
-                    if (executeRoom != null)
+                    if (executeRoom != null && bedRoom != null)
                     {
-                        result = new UCExroRoom(executeRoom, moduleData);
+                        result = new UCExroRoom(executeRoom, bedRoom, moduleData);
                     }
                     else
                     {

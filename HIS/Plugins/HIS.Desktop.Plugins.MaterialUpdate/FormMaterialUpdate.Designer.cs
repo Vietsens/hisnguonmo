@@ -45,9 +45,10 @@ namespace HIS.Desktop.Plugins.MaterialUpdate
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.layoutControl1 = new DevExpress.XtraLayout.LayoutControl();
             this.txtTTThau = new DevExpress.XtraEditors.TextEdit();
-            this.barManager = new DevExpress.XtraBars.BarManager();
+            this.barManager = new DevExpress.XtraBars.BarManager(this.components);
             this.bar1 = new DevExpress.XtraBars.Bar();
             this.barButtonSave = new DevExpress.XtraBars.BarButtonItem();
             this.cboInformationBid = new DevExpress.XtraEditors.LookUpEdit();
@@ -96,7 +97,7 @@ namespace HIS.Desktop.Plugins.MaterialUpdate
             this.barDockControlBottom = new DevExpress.XtraBars.BarDockControl();
             this.barDockControlLeft = new DevExpress.XtraBars.BarDockControl();
             this.barDockControlRight = new DevExpress.XtraBars.BarDockControl();
-            this.dxValidationProvider = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider();
+            this.dxValidationProvider = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
             this.layoutControl1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.txtTTThau.Properties)).BeginInit();
@@ -355,7 +356,7 @@ namespace HIS.Desktop.Plugins.MaterialUpdate
             this.txtBidNumber.Name = "txtBidNumber";
             this.txtBidNumber.Properties.Mask.EditMask = "\\S*";
             this.txtBidNumber.Properties.Mask.MaskType = DevExpress.XtraEditors.Mask.MaskType.RegEx;
-            this.txtBidNumber.Properties.MaxLength = 20;
+            this.txtBidNumber.Properties.MaxLength = 50;
             this.txtBidNumber.Size = new System.Drawing.Size(117, 20);
             this.txtBidNumber.StyleController = this.layoutControl1;
             this.txtBidNumber.TabIndex = 12;
