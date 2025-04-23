@@ -175,12 +175,8 @@
     <Compile Include="AppConfigKeys.cs" />
     <Compile Include="HisConfigCFG.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Run\frmAggregateImpMestPrintFilter__Print.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Run\frmAggregateImpMestPrintFilter.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="Run\frmAggregateImpMestPrintFilter__Print.cs" />
+    <Compile Include="Run\frmAggregateImpMestPrintFilter.cs" />
     <Compile Include="Run\frmAggregateImpMestPrintFilter.designer.cs">
       <DependentUpon>frmAggregateImpMestPrintFilter.cs</DependentUpon>
     </Compile>
@@ -194,10 +190,6 @@
     <ProjectReference Include="..\..\HIS.Desktop.Control.Session\HIS.Desktop.Controls.Session.csproj">
       <Project>{9b4b505c-afa1-4974-8ac8-503f748bd5a2}</Project>
       <Name>HIS.Desktop.Controls.Session</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\HIS.Desktop.LibraryMessage\HIS.Desktop.LibraryMessage.csproj">
-      <Project>{48d9a44a-7120-4c9b-8923-b1af16b1992f}</Project>
-      <Name>HIS.Desktop.LibraryMessage</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\HIS.Desktop.LocalStorage.BackendData\HIS.Desktop.LocalStorage.BackendData.csproj">
       <Project>{86709a9c-a149-4ebb-a817-1bf8f4f4bc07}</Project>

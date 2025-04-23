@@ -152,15 +152,9 @@
     <Compile Include="Resources\ResourceLanguageManager.cs" />
     <Compile Include="Resources\ResourceMessage.cs" />
     <Compile Include="Run\ExpMestBCSPopupMenuProcessor.cs" />
-    <Compile Include="Run\UCExpMestBCSCreate__Plus_Print.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Run\UCExpMestBCSCreate__Plus_Load.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Run\UCExpMestBCSCreate.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
+    <Compile Include="Run\UCExpMestBCSCreate__Plus_Print.cs" />
+    <Compile Include="Run\UCExpMestBCSCreate__Plus_Load.cs" />
+    <Compile Include="Run\UCExpMestBCSCreate.cs" />
     <Compile Include="Run\UCExpMestBCSCreate.Designer.cs">
       <DependentUpon>UCExpMestBCSCreate.cs</DependentUpon>
     </Compile>

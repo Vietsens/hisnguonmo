@@ -132,9 +132,7 @@
     <Compile Include="SpinEdit__ValidationRule.cs" />
     <Compile Include="Resources\ResourceLanguageManager.cs" />
     <Compile Include="ScnPersonalHealthProcessor.cs" />
-    <Compile Include="frmPersonalHealth.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="frmPersonalHealth.cs" />
     <Compile Include="frmPersonalHealth.Designer.cs">
       <DependentUpon>frmPersonalHealth.cs</DependentUpon>
     </Compile>

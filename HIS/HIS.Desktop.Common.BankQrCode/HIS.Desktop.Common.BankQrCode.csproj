@@ -90,10 +90,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Common\Inventec.Common\Inventec.Common.WebApiClient\Inventec.Common.WebApiClient.csproj">
-      <Project>{F8A0B7B7-F43A-4F57-94BF-490CF1C3BE43}</Project>
-      <Name>Inventec.Common.WebApiClient</Name>
-    </ProjectReference>
     <ProjectReference Include="..\HIS.Desktop.ApiConsumer\HIS.Desktop.ApiConsumer.csproj">
       <Project>{861BFEDB-026F-4B6F-A3CF-32843AE8C03D}</Project>
       <Name>HIS.Desktop.ApiConsumer</Name>

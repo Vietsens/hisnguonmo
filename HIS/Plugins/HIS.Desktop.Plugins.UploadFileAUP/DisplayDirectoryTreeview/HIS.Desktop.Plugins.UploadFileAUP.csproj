@@ -134,12 +134,6 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\..\HIS.Desktop.LibraryMessage\HIS.Desktop.LibraryMessage.csproj">
-      <Project>{48d9a44a-7120-4c9b-8923-b1af16b1992f}</Project>
-      <Name>HIS.Desktop.LibraryMessage</Name>
-    </ProjectReference>
-  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

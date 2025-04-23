@@ -228,9 +228,7 @@
     <Compile Include="ADO\HisSereServTeinSDO.cs" />
     <Compile Include="ADO\ImageADO.cs" />
     <Compile Include="ADO\SenseADO.cs" />
-    <Compile Include="frmSereServTeinBacterium.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="frmSereServTeinBacterium.cs" />
     <Compile Include="frmSereServTeinBacterium.Designer.cs">
       <DependentUpon>frmSereServTeinBacterium.cs</DependentUpon>
     </Compile>
@@ -274,10 +272,6 @@
     <ProjectReference Include="..\..\HIS.Desktop.Control.Session\HIS.Desktop.Controls.Session.csproj">
       <Project>{9b4b505c-afa1-4974-8ac8-503f748bd5a2}</Project>
       <Name>HIS.Desktop.Controls.Session</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\HIS.Desktop.LibraryMessage\HIS.Desktop.LibraryMessage.csproj">
-      <Project>{48d9a44a-7120-4c9b-8923-b1af16b1992f}</Project>
-      <Name>HIS.Desktop.LibraryMessage</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\HIS.Desktop.LocalStorage.BackendData\HIS.Desktop.LocalStorage.BackendData.csproj">
       <Project>{86709a9c-a149-4ebb-a817-1bf8f4f4bc07}</Project>

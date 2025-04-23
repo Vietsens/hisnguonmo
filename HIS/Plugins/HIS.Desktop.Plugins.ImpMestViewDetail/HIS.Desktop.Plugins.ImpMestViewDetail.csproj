@@ -299,16 +299,10 @@
     <Compile Include="Base\ControlCode.cs" />
     <Compile Include="Base\GlobalStore.cs" />
     <Compile Include="Config\HisConfigCFG.cs" />
-    <Compile Include="ImpMestViewDetail\frmImpMestViewDetailPlus_Print.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="ImpMestViewDetail\frmImpMestViewDetail_InItResource.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="ImpMestViewDetail\frmImpMestViewDetailPlus_Print.cs" />
+    <Compile Include="ImpMestViewDetail\frmImpMestViewDetail_InItResource.cs" />
     <Compile Include="ImpMestViewDetail\ImpMestViewDetailProcess.cs" />
-    <Compile Include="ImpMestViewDetail\frmImpMestViewDetail.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="ImpMestViewDetail\frmImpMestViewDetail.cs" />
     <Compile Include="ImpMestViewDetail\frmImpMestViewDetail.Designer.cs">
       <DependentUpon>frmImpMestViewDetail.cs</DependentUpon>
     </Compile>
@@ -316,9 +310,7 @@
     <Compile Include="ImpMestViewDetailProcessor.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="ImpMestViewDetail\frmImpMestViewDetailPlus_Validation.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="ImpMestViewDetail\frmImpMestViewDetailPlus_Validation.cs" />
     <Compile Include="ImpMestViewDetail\IImpMestViewDetail.cs" />
     <Compile Include="ImpMestViewDetail\ImpMestViewDetailBehavior.cs" />
     <Compile Include="ImpMestViewDetail\ImpMestViewDetailFactory.cs" />
@@ -351,10 +343,6 @@
     <EmbeddedResource Include="Resources\Message.Lang.vi.resx" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\HIS.Desktop.LibraryMessage\HIS.Desktop.LibraryMessage.csproj">
-      <Project>{48d9a44a-7120-4c9b-8923-b1af16b1992f}</Project>
-      <Name>HIS.Desktop.LibraryMessage</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\HIS.Desktop.LocalStorage.BackendData\HIS.Desktop.LocalStorage.BackendData.csproj">
       <Project>{86709a9c-a149-4ebb-a817-1bf8f4f4bc07}</Project>
       <Name>HIS.Desktop.LocalStorage.BackendData</Name>

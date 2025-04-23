@@ -198,18 +198,12 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="TreatmentImportADO.cs" />
-    <Compile Include="UCInsuranceExpertise.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
+    <Compile Include="UCInsuranceExpertise.cs" />
     <Compile Include="UCInsuranceExpertise.Designer.cs">
       <DependentUpon>UCInsuranceExpertise.cs</DependentUpon>
     </Compile>
-    <Compile Include="UCInsuranceExpertise__Plus__Button.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="UCInsuranceExpertise__Plus__Control.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
+    <Compile Include="UCInsuranceExpertise__Plus__Button.cs" />
+    <Compile Include="UCInsuranceExpertise__Plus__Control.cs" />
     <Compile Include="Validation\ValidationControlTextEditStoreBordereauCode.cs" />
   </ItemGroup>
   <ItemGroup>

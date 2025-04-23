@@ -76,10 +76,6 @@
       <Project>{4859008d-a40d-47bb-a185-019c8b140569}</Project>
       <Name>Inventec.Common.Logging</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Common\Inventec.Common\Inventec.Common.WebApiClient\Inventec.Common.WebApiClient.csproj">
-      <Project>{f8a0b7b7-f43a-4f57-94bf-490cf1c3be43}</Project>
-      <Name>Inventec.Common.WebApiClient</Name>
-    </ProjectReference>
     <ProjectReference Include="..\HIS.Desktop.ApiConsumer\HIS.Desktop.ApiConsumer.csproj">
       <Project>{861bfedb-026f-4b6f-a3cf-32843ae8c03d}</Project>
       <Name>HIS.Desktop.ApiConsumer</Name>

@@ -127,9 +127,7 @@
   <ItemGroup>
     <Compile Include="ADO\ExpMestMediAndMateADO.cs" />
     <Compile Include="Base\GlobaStore.cs" />
-    <Compile Include="FormPublicMedicineGeneral.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="FormPublicMedicineGeneral.cs" />
     <Compile Include="FormPublicMedicineGeneral.Designer.cs">
       <DependentUpon>FormPublicMedicineGeneral.cs</DependentUpon>
     </Compile>

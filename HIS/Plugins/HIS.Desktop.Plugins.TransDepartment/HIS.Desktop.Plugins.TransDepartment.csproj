@@ -152,28 +152,20 @@
     <Compile Include="Resources\ResourceLanguageManager.cs" />
     <Compile Include="TransDepartmentProcessor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TransDepartment\frmDepartmentTran.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="TransDepartment\frmDepartmentTran.cs" />
     <Compile Include="TransDepartment\frmDepartmentTran.Designer.cs">
       <DependentUpon>frmDepartmentTran.cs</DependentUpon>
     </Compile>
-    <Compile Include="TransDepartment\frmDepartmentTran__Dispose.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="TransDepartment\frmDepartmentTran__Dispose.cs" />
     <Compile Include="TransDepartment\Load\TreatmentTypeLoad.cs" />
     <Compile Include="TransDepartment\Load\DepartmentLoad.cs" />
-    <Compile Include="TransDepartment\Load\frmDepartmentTran_Load.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="TransDepartment\Load\frmDepartmentTran_Load.cs" />
     <Compile Include="TransDepartment\Load\Loader.cs" />
     <Compile Include="TransDepartment\Load\PopupLoader.cs" />
     <Compile Include="TransDepartment\TransDepartmentBehavior.cs" />
     <Compile Include="TransDepartment\TransDepartmentFactory.cs" />
     <Compile Include="TransDepartment\ITransDepartment.cs" />
-    <Compile Include="TransDepartment\Validate\frmDepartmentTran_Validate.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="TransDepartment\Validate\frmDepartmentTran_Validate.cs" />
     <Compile Include="TransDepartment\Validate\ValidationRule\DepartmentTran__DepartmentValidationRule.cs" />
     <Compile Include="TransDepartment\Validate\ValidationRule\DepartmentTran__TreatmentLogTimeValidationRule.cs" />
   </ItemGroup>
@@ -201,10 +193,6 @@
     <ProjectReference Include="..\..\HIS.Desktop.EventLog\HIS.Desktop.EventLog.csproj">
       <Project>{306cbc95-d95a-48e1-941e-f3ecc0cbee34}</Project>
       <Name>HIS.Desktop.EventLog</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\HIS.Desktop.LibraryMessage\HIS.Desktop.LibraryMessage.csproj">
-      <Project>{8631edc1-de51-458e-acca-c9c2996d5f37}</Project>
-      <Name>HIS.Desktop.LibraryMessage</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\HIS.Desktop.LocalStorage.BackendData\HIS.Desktop.LocalStorage.BackendData.csproj">
       <Project>{86709a9c-a149-4ebb-a817-1bf8f4f4bc07}</Project>

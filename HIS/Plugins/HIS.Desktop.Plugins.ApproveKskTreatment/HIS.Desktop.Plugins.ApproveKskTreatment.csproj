@@ -155,9 +155,7 @@
     <Compile Include="RequestUriStore.cs" />
     <Compile Include="Resources\ResourceMessage.cs" />
     <Compile Include="TreatmentADO.cs" />
-    <Compile Include="UCApproveKskTreatment_Event.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
+    <Compile Include="UCApproveKskTreatment_Event.cs" />
     <Compile Include="ApproveKskTreatmentProcessor.cs" />
     <Compile Include="ApproveKskTreatment\ApproveKskTreatmentBehavior.cs" />
     <Compile Include="ApproveKskTreatment\ApproveKskTreatmentFactory.cs" />
@@ -170,9 +168,7 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="Resources\ResourceLanguageManager.cs" />
-    <Compile Include="UCApproveKskTreatment.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
+    <Compile Include="UCApproveKskTreatment.cs" />
     <Compile Include="UCApproveKskTreatment.Designer.cs">
       <DependentUpon>UCApproveKskTreatment.cs</DependentUpon>
     </Compile>
@@ -213,10 +209,6 @@
     <ProjectReference Include="..\..\HIS.Desktop.IsAdmin\HIS.Desktop.IsAdmin.csproj">
       <Project>{4ab09efc-8f70-4cca-9e6d-693f44a7d29f}</Project>
       <Name>HIS.Desktop.IsAdmin</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\HIS.Desktop.LibraryMessage\HIS.Desktop.LibraryMessage.csproj">
-      <Project>{48d9a44a-7120-4c9b-8923-b1af16b1992f}</Project>
-      <Name>HIS.Desktop.LibraryMessage</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\HIS.Desktop.LocalStorage.BackendData\HIS.Desktop.LocalStorage.BackendData.csproj">
       <Project>{86709a9c-a149-4ebb-a817-1bf8f4f4bc07}</Project>

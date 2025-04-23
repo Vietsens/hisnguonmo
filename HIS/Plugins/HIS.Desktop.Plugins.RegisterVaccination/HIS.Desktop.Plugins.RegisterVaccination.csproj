@@ -260,9 +260,7 @@
     <Compile Include="ADO\ExpMestMedicineADO.cs" />
     <Compile Include="CalculatePatientAge.cs" />
     <Compile Include="DateUtil.cs" />
-    <Compile Include="FormEdit\frmMedicine.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="FormEdit\frmMedicine.cs" />
     <Compile Include="FormEdit\frmMedicine.Designer.cs">
       <DependentUpon>frmMedicine.cs</DependentUpon>
     </Compile>
@@ -281,42 +279,20 @@
     <Compile Include="ResourceMessage.cs" />
     <Compile Include="RequestUriStore.cs" />
     <Compile Include="Resources\ResourceLanguageManager.cs" />
-    <Compile Include="RunV3\UCRegister.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
+    <Compile Include="RunV3\UCRegister.cs" />
     <Compile Include="RunV3\UCRegister.Designer.cs">
       <DependentUpon>UCRegister.cs</DependentUpon>
     </Compile>
-    <Compile Include="RunV3\UCRegister__Bill.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="RunV3\UCRegister__CallPatient.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="RunV3\UCRegister__DepositDetail.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="RunV3\UCRegister__Keyboard.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="RunV3\UCRegister__Load.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="RunV3\UCRegister__New.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="RunV3\UCRegister__Save.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="RunV3\UCRegister__SaveAndAssain.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="RunV3\UCRegister__TreatmentBedRoom.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="RunV3\UCRegister__UCPatientRawInfo.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
+    <Compile Include="RunV3\UCRegister__Bill.cs" />
+    <Compile Include="RunV3\UCRegister__CallPatient.cs" />
+    <Compile Include="RunV3\UCRegister__DepositDetail.cs" />
+    <Compile Include="RunV3\UCRegister__Keyboard.cs" />
+    <Compile Include="RunV3\UCRegister__Load.cs" />
+    <Compile Include="RunV3\UCRegister__New.cs" />
+    <Compile Include="RunV3\UCRegister__Save.cs" />
+    <Compile Include="RunV3\UCRegister__SaveAndAssain.cs" />
+    <Compile Include="RunV3\UCRegister__TreatmentBedRoom.cs" />
+    <Compile Include="RunV3\UCRegister__UCPatientRawInfo.cs" />
     <Compile Include="RunV3\EditorLoaderProcessor.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -329,39 +305,17 @@
     <Compile Include="RunV3\RunFactory.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="RunV3\UCRegister__AddressCombo.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="RunV3\UCRegister__Init.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="RunV3\UCRegister__PlusInfo.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="RunV3\UCRegister__Print.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="RunV3\UCRegister__Process.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="RunV3\UCRegister__ReadCard.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="RunV3\UCRegister__Search.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="RunV3\UCRegister__SetDelegate.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="RunV3\UCRegister__TabIndex.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="RunV3\UCRegister__UCHein.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="RunV3\UCRegister__ValidateRule.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
+    <Compile Include="RunV3\UCRegister__AddressCombo.cs" />
+    <Compile Include="RunV3\UCRegister__Init.cs" />
+    <Compile Include="RunV3\UCRegister__PlusInfo.cs" />
+    <Compile Include="RunV3\UCRegister__Print.cs" />
+    <Compile Include="RunV3\UCRegister__Process.cs" />
+    <Compile Include="RunV3\UCRegister__ReadCard.cs" />
+    <Compile Include="RunV3\UCRegister__Search.cs" />
+    <Compile Include="RunV3\UCRegister__SetDelegate.cs" />
+    <Compile Include="RunV3\UCRegister__TabIndex.cs" />
+    <Compile Include="RunV3\UCRegister__UCHein.cs" />
+    <Compile Include="RunV3\UCRegister__ValidateRule.cs" />
     <Compile Include="ValidationRule\PatientName__ValidationRule.cs" />
     <Compile Include="ValidationRule\PatientDob__ValidationRule.cs" />
     <Compile Include="ValidationRule\TextEditMaxLengthValidationRule.cs" />

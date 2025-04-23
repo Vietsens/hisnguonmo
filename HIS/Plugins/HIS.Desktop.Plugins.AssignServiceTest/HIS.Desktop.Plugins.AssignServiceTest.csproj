@@ -256,33 +256,17 @@
     <Compile Include="AssignServiceTestProcessor.cs" />
     <Compile Include="AssignService\AssignServiceBehavior.cs" />
     <Compile Include="AssignService\AssignServiceFactory.cs" />
-    <Compile Include="AssignService\frmAssignService__Print.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="AssignService\frmAssignService__TabIndex.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="AssignService\frmAssignService__Load.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="AssignService\frmAssignService__InitCombo.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="AssignService\frmAssignService__BuildTree.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="AssignService\frmAssignService__Validate.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="AssignService\frmAssignService.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="AssignService\frmAssignService__Print.cs" />
+    <Compile Include="AssignService\frmAssignService__TabIndex.cs" />
+    <Compile Include="AssignService\frmAssignService__Load.cs" />
+    <Compile Include="AssignService\frmAssignService__InitCombo.cs" />
+    <Compile Include="AssignService\frmAssignService__BuildTree.cs" />
+    <Compile Include="AssignService\frmAssignService__Validate.cs" />
+    <Compile Include="AssignService\frmAssignService.cs" />
     <Compile Include="AssignService\frmAssignService.Designer.cs">
       <DependentUpon>frmAssignService.cs</DependentUpon>
     </Compile>
-    <Compile Include="AssignService\frmDetail.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="AssignService\frmDetail.cs" />
     <Compile Include="AssignService\frmDetail.Designer.cs">
       <DependentUpon>frmDetail.cs</DependentUpon>
     </Compile>
@@ -320,10 +304,6 @@
     <ProjectReference Include="..\..\HIS.Desktop.Control.Session\HIS.Desktop.Controls.Session.csproj">
       <Project>{9b4b505c-afa1-4974-8ac8-503f748bd5a2}</Project>
       <Name>HIS.Desktop.Controls.Session</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\HIS.Desktop.LibraryMessage\HIS.Desktop.LibraryMessage.csproj">
-      <Project>{f814509c-1ff4-44cc-8edf-32881edb7b17}</Project>
-      <Name>HIS.Desktop.LibraryMessage</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\HIS.Desktop.LocalStorage.BackendData\HIS.Desktop.LocalStorage.BackendData.csproj">
       <Project>{86709a9c-a149-4ebb-a817-1bf8f4f4bc07}</Project>

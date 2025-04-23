@@ -239,24 +239,12 @@
     <Compile Include="ADO\TrackingAdo.cs" />
     <Compile Include="Config\HisConfigCFG.cs" />
     <Compile Include="EmrDataStore.cs" />
-    <Compile Include="frmHisAssignBlood__Plus__InitCombo.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="frmHisAssignBlood__Plus__Load.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="frmHisAssignBlood__Plus__Print.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="frmHisAssignBlood__Plus__Control.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="frmHisAssignBlood__Plus__Validate.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="frmHisAssignBlood.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="frmHisAssignBlood__Plus__InitCombo.cs" />
+    <Compile Include="frmHisAssignBlood__Plus__Load.cs" />
+    <Compile Include="frmHisAssignBlood__Plus__Print.cs" />
+    <Compile Include="frmHisAssignBlood__Plus__Control.cs" />
+    <Compile Include="frmHisAssignBlood__Plus__Validate.cs" />
+    <Compile Include="frmHisAssignBlood.cs" />
     <Compile Include="frmHisAssignBlood.Designer.cs">
       <DependentUpon>frmHisAssignBlood.cs</DependentUpon>
     </Compile>
@@ -301,10 +289,6 @@
     <ProjectReference Include="..\..\HIS.Desktop.Control.Session\HIS.Desktop.Controls.Session.csproj">
       <Project>{9b4b505c-afa1-4974-8ac8-503f748bd5a2}</Project>
       <Name>HIS.Desktop.Controls.Session</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\HIS.Desktop.LibraryMessage\HIS.Desktop.LibraryMessage.csproj">
-      <Project>{f814509c-1ff4-44cc-8edf-32881edb7b17}</Project>
-      <Name>HIS.Desktop.LibraryMessage</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\HIS.Desktop.LocalStorage.BackendData\HIS.Desktop.LocalStorage.BackendData.csproj">
       <Project>{86709a9c-a149-4ebb-a817-1bf8f4f4bc07}</Project>

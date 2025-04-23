@@ -637,7 +637,7 @@ namespace HIS.Desktop.Plugins.AssignPaan
         void ResetControlValue()
         {
             try
-            {
+            {         
                 this.InitDefaultControl();
                 resultSDO = null;
                 checkIsSurgery.Checked = false;

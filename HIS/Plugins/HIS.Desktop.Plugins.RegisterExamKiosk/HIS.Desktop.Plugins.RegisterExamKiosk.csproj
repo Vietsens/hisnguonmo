@@ -287,15 +287,11 @@
     <Compile Include="Config\CheckHeinCardCFG.cs" />
     <Compile Include="Config\HisConfigCFG.cs" />
     <Compile Include="Config\HisConfigCHECKHEINCARD.cs" />
-    <Compile Include="frmWaiting2.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="frmWaiting2.cs" />
     <Compile Include="frmWaiting2.Designer.cs">
       <DependentUpon>frmWaiting2.cs</DependentUpon>
     </Compile>
-    <Compile Include="frmWaitingScreen.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="frmWaitingScreen.cs" />
     <Compile Include="frmWaitingScreen.Designer.cs">
       <DependentUpon>frmWaitingScreen.cs</DependentUpon>
     </Compile>
@@ -336,22 +332,16 @@
     <Compile Include="Popup\InputSave\frmInputSave1.Designer.cs">
       <DependentUpon>frmInputSave1.cs</DependentUpon>
     </Compile>
-    <Compile Include="Popup\RegisteredExam\frmRegisteredExam.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="Popup\RegisteredExam\frmRegisteredExam.cs" />
     <Compile Include="Popup\RegisteredExam\frmRegisteredExam.Designer.cs">
       <DependentUpon>frmRegisteredExam.cs</DependentUpon>
     </Compile>
-    <Compile Include="Popup\RegisterExamKiosk\frmRegisterExamKiosk.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="Popup\RegisterExamKiosk\frmRegisterExamKiosk.cs" />
     <Compile Include="Popup\RegisterExamKiosk\frmRegisterExamKiosk.Designer.cs">
       <DependentUpon>frmRegisterExamKiosk.cs</DependentUpon>
     </Compile>
     <Compile Include="Popup\RegisterExamKiosk\ModuleLinkString.cs" />
-    <Compile Include="Popup\ServiceRoom\frmServiceRoom.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="Popup\ServiceRoom\frmServiceRoom.cs" />
     <Compile Include="Popup\ServiceRoom\frmServiceRoom.Designer.cs">
       <DependentUpon>frmServiceRoom.cs</DependentUpon>
     </Compile>
@@ -453,10 +443,6 @@
     <ProjectReference Include="..\..\HIS.Desktop.EventLog\HIS.Desktop.EventLog.csproj">
       <Project>{306cbc95-d95a-48e1-941e-f3ecc0cbee34}</Project>
       <Name>HIS.Desktop.EventLog</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\HIS.Desktop.LibraryMessage\HIS.Desktop.LibraryMessage.csproj">
-      <Project>{48d9a44a-7120-4c9b-8923-b1af16b1992f}</Project>
-      <Name>HIS.Desktop.LibraryMessage</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\HIS.Desktop.LocalStorage.BackendData\HIS.Desktop.LocalStorage.BackendData.csproj">
       <Project>{86709a9c-a149-4ebb-a817-1bf8f4f4bc07}</Project>

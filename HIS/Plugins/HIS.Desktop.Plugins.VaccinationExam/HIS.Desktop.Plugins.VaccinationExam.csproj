@@ -349,30 +349,14 @@
     <Compile Include="Base\AppConfigKeys.cs" />
     <Compile Include="CheckAdmin.cs" />
     <Compile Include="Processors\PopupMenuProcessor.cs" />
-    <Compile Include="UCVaccinationExam__CallPatient.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="UCVaccinationExam__Check.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="UCVaccinationExam__Print.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="UCVaccinationExam__Process.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="UCVaccinationExam__LoadCombo.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="UCVaccinationExam__RightClick.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="UCVaccinationExam__Shortcut.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="UCVaccinationExam__Load.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
+    <Compile Include="UCVaccinationExam__CallPatient.cs" />
+    <Compile Include="UCVaccinationExam__Check.cs" />
+    <Compile Include="UCVaccinationExam__Print.cs" />
+    <Compile Include="UCVaccinationExam__Process.cs" />
+    <Compile Include="UCVaccinationExam__LoadCombo.cs" />
+    <Compile Include="UCVaccinationExam__RightClick.cs" />
+    <Compile Include="UCVaccinationExam__Shortcut.cs" />
+    <Compile Include="UCVaccinationExam__Load.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -381,9 +365,7 @@
     <Compile Include="Delegate\DelegateUC.cs" />
     <Compile Include="KeyboardWorker.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="UCVaccinationExam.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
+    <Compile Include="UCVaccinationExam.cs" />
     <Compile Include="UCVaccinationExam.Designer.cs">
       <DependentUpon>UCVaccinationExam.cs</DependentUpon>
     </Compile>
@@ -392,9 +374,7 @@
     <Compile Include="VaccinationExam\VaccinationExamBehavior.cs" />
     <Compile Include="VaccinationExam\VaccinationExamFactory.cs" />
     <Compile Include="Validate\DateEditValidationRule.cs" />
-    <Compile Include="Validate\UCVaccinationExam__Validate.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
+    <Compile Include="Validate\UCVaccinationExam__Validate.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Properties\licenses.licx" />
@@ -438,10 +418,6 @@
     <ProjectReference Include="..\..\HIS.Desktop.Control.Session\HIS.Desktop.Controls.Session.csproj">
       <Project>{9b4b505c-afa1-4974-8ac8-503f748bd5a2}</Project>
       <Name>HIS.Desktop.Controls.Session</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\HIS.Desktop.LibraryMessage\HIS.Desktop.LibraryMessage.csproj">
-      <Project>{48d9a44a-7120-4c9b-8923-b1af16b1992f}</Project>
-      <Name>HIS.Desktop.LibraryMessage</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\HIS.Desktop.LocalStorage.ConfigApplication\HIS.Desktop.LocalStorage.ConfigApplication.csproj">
       <Project>{3a2c932a-9d3a-483b-89a0-9f9c8225b283}</Project>

@@ -322,6 +322,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
         long ServiceReqIdPrevios { get; set; }
         bool PrescriptionPrevious { get; set; }
         decimal transferTotal { get; set; }
+        decimal? chiSoMLCT;
         List<V_HIS_SERVICE_REQ_7> serviceReqPreExpmestAll { get; set; }
         internal string TreatmentMethod { get; set; }
         List<HIS_EXP_MEST_MEDICINE> ListExpMestMedicineAntibioticRequired = new List<HIS_EXP_MEST_MEDICINE>();
@@ -329,6 +330,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
         List<HIS_EXP_MEST> ListExpMestResult { get; set; }
         private System.Windows.Forms.Timer timerReloadTreatmentFinishTime { get; set; }
         bool isCheckAssignServiceSimultaneityOption = false;
+        bool CheckButt = true;
 
         internal IcdProcessor icdYhctProcessor;
         internal UserControl ucIcdYhct;
@@ -2214,7 +2216,10 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                                 this.medicineService = this.medicineService.Where(o => o.DATA_TYPE == IMSys.DbConfig.HIS_RS.HIS_MEDICINE_SERVICE.DATA_TYPE__EGFR).ToList();
 
                             Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => this.medicineService.Where(o => o.TEST_INDEX_ID == ssTein.TEST_INDEX_ID).Where(o => o.DATA_TYPE != IMSys.DbConfig.HIS_RS.HIS_MEDICINE_SERVICE.DATA_TYPE__SERVICE)), this.medicineService.Where(o => o.TEST_INDEX_ID == ssTein.TEST_INDEX_ID).Where(o => o.DATA_TYPE != IMSys.DbConfig.HIS_RS.HIS_MEDICINE_SERVICE.DATA_TYPE__SERVICE)));
-                            var medicineServiceCheck = this.medicineService.Where(o => o.TEST_INDEX_ID == ssTein.TEST_INDEX_ID).Where(o => o.DATA_TYPE != IMSys.DbConfig.HIS_RS.HIS_MEDICINE_SERVICE.DATA_TYPE__SERVICE).Where(o => (o.VALUE_SERVICE_FROM ?? decimal.MinValue) <= GetValueFromDataType(o.DATA_TYPE, ConvertToDecimal(ssTein.VALUE), dhst) && GetValueFromDataType(o.DATA_TYPE, ConvertToDecimal(ssTein.VALUE), dhst) < (o.VALUE_SERVICE_TO ?? decimal.MaxValue) && (o.AMOUNT_INDAY_FROM ?? 0) < ((IsGrid ? mediMatyType.AMOUNT / (mediMatyType.UseDays ?? 1) : GetAmount() / (this.spinSoLuongNgay.Value != 0 ? this.spinSoLuongNgay.Value : 1)) + AmountInDay) && ((IsGrid ? mediMatyType.AMOUNT / (mediMatyType.UseDays ?? 1) : GetAmount() / (this.spinSoLuongNgay.Value != 0 ? this.spinSoLuongNgay.Value : 1)) + AmountInDay) <= (o.AMOUNT_INDAY_TO ?? decimal.MaxValue)).ToList();
+                            var medicineServiceCheck = this.medicineService.Where(o => o.TEST_INDEX_ID == ssTein.TEST_INDEX_ID).Where(o => o.DATA_TYPE != IMSys.DbConfig.HIS_RS.HIS_MEDICINE_SERVICE.DATA_TYPE__SERVICE)
+                                .Where(o => (o.VALUE_SERVICE_FROM ?? decimal.MinValue) <= GetValueFromDataType(o.DATA_TYPE, ConvertToDecimal(ssTein.VALUE), dhst, chiSoMLCT) 
+                                && GetValueFromDataType(o.DATA_TYPE, ConvertToDecimal(ssTein.VALUE), dhst, chiSoMLCT) < (o.VALUE_SERVICE_TO ?? decimal.MaxValue) && (o.AMOUNT_INDAY_FROM ?? 0) < ((IsGrid ? mediMatyType.AMOUNT / (mediMatyType.UseDays ?? 1) : GetAmount() / (this.spinSoLuongNgay.Value != 0 ? this.spinSoLuongNgay.Value : 1)) + AmountInDay) 
+                                && ((IsGrid ? mediMatyType.AMOUNT / (mediMatyType.UseDays ?? 1) : GetAmount() / (this.spinSoLuongNgay.Value != 0 ? this.spinSoLuongNgay.Value : 1)) + AmountInDay) <= (o.AMOUNT_INDAY_TO ?? decimal.MaxValue)).ToList();
                             if (medicineServiceCheck != null && medicineServiceCheck.Count > 0)
                             {
                                 medicineService.AddRange(medicineServiceCheck);
@@ -2228,7 +2233,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                             bool IsFirst = true;
                             foreach (var item in minOverDose)
                             {
-                                var value = GetValueFromDataType(item.DATA_TYPE, ConvertToDecimal(lstSereServTein.FirstOrDefault(p => p.TEST_INDEX_ID == item.TEST_INDEX_ID).VALUE), dhst);
+                                var value = GetValueFromDataType(item.DATA_TYPE, ConvertToDecimal(lstSereServTein.FirstOrDefault(p => p.TEST_INDEX_ID == item.TEST_INDEX_ID).VALUE), dhst, chiSoMLCT);
                                 if (IsFirst)
                                 {
                                     minType = value;
@@ -2487,7 +2492,7 @@ o.SERVICE_ID == medi.SERVICE_ID && o.TDL_INTRUCTION_TIME.ToString().Substring(0,
                                                 bool IsFirst = true;
                                                 foreach (var item in minOverDose)
                                                 {
-                                                    var value = GetValueFromDataType(item.DATA_TYPE, ConvertToDecimal(lstSereServTein.FirstOrDefault(p => p.TEST_INDEX_ID == item.TEST_INDEX_ID).VALUE), dhst);
+                                                    var value = GetValueFromDataType(item.DATA_TYPE, ConvertToDecimal(lstSereServTein.FirstOrDefault(p => p.TEST_INDEX_ID == item.TEST_INDEX_ID).VALUE), dhst, chiSoMLCT);
                                                     if (IsFirst)
                                                     {
                                                         minType = value;
@@ -2596,7 +2601,7 @@ o.SERVICE_ID == medi.SERVICE_ID && o.TDL_INTRUCTION_TIME.ToString().Substring(0,
                                             var medicineCheck = mediSer.Where(o => ssTein.TEST_INDEX_ID == o.TEST_INDEX_ID).ToList();
                                             if (dhst == null || dhst.ID == 0)
                                                 medicineCheck = medicineCheck.Where(o => o.DATA_TYPE == IMSys.DbConfig.HIS_RS.HIS_MEDICINE_SERVICE.DATA_TYPE__EGFR).ToList();
-                                            medicineCheck = medicineCheck.Where(o => (o.VALUE_SERVICE_FROM ?? decimal.MinValue) <= GetValueFromDataType(o.DATA_TYPE, ConvertToDecimal(ssTein.VALUE), dhst) && GetValueFromDataType(o.DATA_TYPE, ConvertToDecimal(ssTein.VALUE), dhst) < (o.VALUE_SERVICE_TO ?? decimal.MaxValue) && (o.AMOUNT_INDAY_FROM ?? 0) < (medi.AMOUNT / (medi.UseDays ?? 1) + AmountInDay) && (medi.AMOUNT / (medi.UseDays ?? 1) + AmountInDay) <= (o.AMOUNT_INDAY_TO ?? decimal.MaxValue)).ToList();
+                                            medicineCheck = medicineCheck.Where(o => (o.VALUE_SERVICE_FROM ?? decimal.MinValue) <= GetValueFromDataType(o.DATA_TYPE, ConvertToDecimal(ssTein.VALUE), dhst, chiSoMLCT) && GetValueFromDataType(o.DATA_TYPE, ConvertToDecimal(ssTein.VALUE), dhst, chiSoMLCT) < (o.VALUE_SERVICE_TO ?? decimal.MaxValue) && (o.AMOUNT_INDAY_FROM ?? 0) < (medi.AMOUNT / (medi.UseDays ?? 1) + AmountInDay) && (medi.AMOUNT / (medi.UseDays ?? 1) + AmountInDay) <= (o.AMOUNT_INDAY_TO ?? decimal.MaxValue)).ToList();
                                             if (medicineCheck != null && medicineCheck.Count > 0)
                                                 medicine.AddRange(medicineCheck);
                                         }
@@ -2611,7 +2616,7 @@ o.SERVICE_ID == medi.SERVICE_ID && o.TDL_INTRUCTION_TIME.ToString().Substring(0,
                                                 bool IsFirst = true;
                                                 foreach (var item in minOverDose)
                                                 {
-                                                    var value = GetValueFromDataType(item.DATA_TYPE, ConvertToDecimal(lstSereServTein.FirstOrDefault(p => p.TEST_INDEX_ID == item.TEST_INDEX_ID).VALUE), dhst);
+                                                    var value = GetValueFromDataType(item.DATA_TYPE, ConvertToDecimal(lstSereServTein.FirstOrDefault(p => p.TEST_INDEX_ID == item.TEST_INDEX_ID).VALUE), dhst, chiSoMLCT);
                                                     if (IsFirst)
                                                     {
                                                         minType = value;
@@ -2654,7 +2659,7 @@ o.SERVICE_ID == medi.SERVICE_ID && o.TDL_INTRUCTION_TIME.ToString().Substring(0,
                                                     sdo.IntructionTime = itime;
                                                     AlertLogADO ado = new AlertLogADO(sdo, medi);
                                                     AlertLogsSdo.Add(ado);
-                                                }, minOverDose.Select(o => GetValueFromDataType(o.DATA_TYPE, ConvertToDecimal(lstSereServTein.FirstOrDefault(p => p.TEST_INDEX_ID == o.TEST_INDEX_ID).VALUE), dhst)).Min(), minOverDose.FirstOrDefault(), AmountInDay);
+                                                }, minOverDose.Select(o => GetValueFromDataType(o.DATA_TYPE, ConvertToDecimal(lstSereServTein.FirstOrDefault(p => p.TEST_INDEX_ID == o.TEST_INDEX_ID).VALUE), dhst, chiSoMLCT)).Min(), minOverDose.FirstOrDefault(), AmountInDay);
                                                 frm.ShowDialog();
                                             }
                                             else
@@ -2893,7 +2898,7 @@ o.SERVICE_ID == medi.SERVICE_ID && o.TDL_INTRUCTION_TIME.ToString().Substring(0,
             }
         }
 
-        internal decimal GetValueFromDataType(short? type, decimal value, HIS_DHST dhst)
+        internal decimal GetValueFromDataType(short? type, decimal value, HIS_DHST dhst, decimal? chiSoMLCT)
         {
             decimal result = 0;
             try
@@ -2902,11 +2907,21 @@ o.SERVICE_ID == medi.SERVICE_ID && o.TDL_INTRUCTION_TIME.ToString().Substring(0,
                 {
                     case IMSys.DbConfig.HIS_RS.HIS_MEDICINE_SERVICE.DATA_TYPE__EGFR:
                         //Công thức eGFR 
-                        result = 175 * (decimal)Math.Pow((double)((decimal)0.011312217194570135 * value), (double)(-1.154)) * (decimal)Math.Pow(Inventec.Common.DateTime.Calculation.Age(patientDob), (double)(-0.203)) * (genderName.ToLower().Equals("nữ") ? (decimal)0.742 : 1);
+                        if (HisConfigCFG.ASSIGNPRESCRIPTION_EGFROPTION == "1")
+                        {
+                            result = 186 * (decimal)Math.Pow((double)(chiSoMLCT * value), (double)(-1.154)) * (decimal)Math.Pow(Inventec.Common.DateTime.Calculation.Age(patientDob), 
+                                (double)(-0.203)) * (genderName.ToLower().Equals("nữ") ? (decimal)0.742 : 1);
+                        }
+                        else
+                        {
+                            result = 175 * (decimal)Math.Pow((double)(chiSoMLCT * value), (double)(-1.154)) * (decimal)Math.Pow(Inventec.Common.DateTime.Calculation.Age(patientDob),
+                                (double)(-0.203)) * (genderName.ToLower().Equals("nữ") ? (decimal)0.742 : 1);
+                        }
+                            
                         break;
                     case IMSys.DbConfig.HIS_RS.HIS_MEDICINE_SERVICE.DATA_TYPE__CRCL:
                         //Công thức CrCl
-                        result = ((140 - Inventec.Common.DateTime.Calculation.Age(patientDob)) * (dhst != null && dhst.ID > 0 ? dhst.WEIGHT * (genderName.ToLower().Equals("nữ") ? (decimal)0.85 : 1) : 1)) / (72 * (decimal)0.011312217194570135 * value) ?? 0;
+                        result = ((140 - Inventec.Common.DateTime.Calculation.Age(patientDob)) * (dhst != null && dhst.ID > 0 ? dhst.WEIGHT * (genderName.ToLower().Equals("nữ") ? (decimal)0.85 : 1) : 1)) / (72 * chiSoMLCT * value) ?? 0;
                         break;
                     default:
                         break;
@@ -2943,7 +2958,6 @@ o.SERVICE_ID == medi.SERVICE_ID && o.TDL_INTRUCTION_TIME.ToString().Substring(0,
             try
             {
                 //ProcessSaveForListSelect(HIS.Desktop.Plugins.AssignPrescriptionPK.SAVETYPE.SAVE);
-
                 LogTheadInSessionInfo(() => ProcessSaveForListSelect(HIS.Desktop.Plugins.AssignPrescriptionPK.SAVETYPE.SAVE), !GlobalStore.IsCabinet ? "SavePrescription" : "SaveMedicalStore");
             }
             catch (Exception ex)
@@ -10903,6 +10917,7 @@ o.SERVICE_ID == medi.SERVICE_ID && o.TDL_INTRUCTION_TIME.ToString().Substring(0,
                                     {
                                         if (testIndex.CONVERT_RATIO_MLCT.HasValue)
                                             chiso *= (testIndex.CONVERT_RATIO_MLCT ?? 0);
+                                        chiSoMLCT = chiso;
                                         strIsToCalculateEgfr = Inventec.Common.Calculate.Calculation.MucLocCauThanCrCleGFR(this.currentTreatmentWithPatientType.TDL_PATIENT_DOB, spinWeight.Value, spinHeight.Value, chiso, this.currentTreatmentWithPatientType.TDL_PATIENT_GENDER_ID == IMSys.DbConfig.HIS_RS.HIS_GENDER.ID__MALE).ToString();
                                     }
                                 }

@@ -104,24 +104,14 @@
     <Compile Include="RelativeProcessor.cs" />
     <Compile Include="Resources\ResourceLanguageManager.cs" />
     <Compile Include="Resources\ResourceMessage.cs" />
-    <Compile Include="UCRelativeInfo.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
+    <Compile Include="UCRelativeInfo.cs" />
     <Compile Include="UCRelativeInfo.Designer.cs">
       <DependentUpon>UCRelativeInfo.cs</DependentUpon>
     </Compile>
-    <Compile Include="UCRelativeInfo__Dispose.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="UCRelativeInfo__Data.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="UCRelativeInfo__Focus.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="UCRelativeInfo__Validate.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
+    <Compile Include="UCRelativeInfo__Dispose.cs" />
+    <Compile Include="UCRelativeInfo__Data.cs" />
+    <Compile Include="UCRelativeInfo__Focus.cs" />
+    <Compile Include="UCRelativeInfo__Validate.cs" />
     <Compile Include="Valid\MessageUtil.cs" />
     <Compile Include="Valid\TextEditMaxLengthValidationRule.cs" />
     <Compile Include="Valid\ValidControl.cs" />

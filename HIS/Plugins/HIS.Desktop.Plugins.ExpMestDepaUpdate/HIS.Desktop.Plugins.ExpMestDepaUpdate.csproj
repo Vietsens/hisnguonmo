@@ -154,24 +154,16 @@
     <Compile Include="Base\ResourceMessageLang.cs" />
     <Compile Include="Config\CheckCabinetCounterCFG.cs" />
     <Compile Include="ExpMestDepaUpdateProcessor.cs" />
-    <Compile Include="frmExpMestDepaUpdate.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="frmExpMestDepaUpdate.cs" />
     <Compile Include="frmExpMestDepaUpdate.Designer.cs">
       <DependentUpon>frmExpMestDepaUpdate.cs</DependentUpon>
     </Compile>
     <Compile Include="ExpMestDepaUpdate\ExpMestDepaUpdateBehavior.cs" />
     <Compile Include="ExpMestDepaUpdate\ExpMestDepaUpdateFactory.cs" />
     <Compile Include="ExpMestDepaUpdate\IExpMestDepaUpdate.cs" />
-    <Compile Include="frmExpMestDepaUpdate__Plus__Button.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="frmExpMestDepaUpdate__Plus__Control.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="frmExpMestDepaUpdate__Plus__TreeList.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="frmExpMestDepaUpdate__Plus__Button.cs" />
+    <Compile Include="frmExpMestDepaUpdate__Plus__Control.cs" />
+    <Compile Include="frmExpMestDepaUpdate__Plus__TreeList.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -209,10 +201,6 @@
     <ProjectReference Include="..\..\HIS.Desktop.Control.Session\HIS.Desktop.Controls.Session.csproj">
       <Project>{9b4b505c-afa1-4974-8ac8-503f748bd5a2}</Project>
       <Name>HIS.Desktop.Controls.Session</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\HIS.Desktop.LibraryMessage\HIS.Desktop.LibraryMessage.csproj">
-      <Project>{48d9a44a-7120-4c9b-8923-b1af16b1992f}</Project>
-      <Name>HIS.Desktop.LibraryMessage</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\HIS.Desktop.LocalStorage.BackendData\HIS.Desktop.LocalStorage.BackendData.csproj">
       <Project>{86709a9c-a149-4ebb-a817-1bf8f4f4bc07}</Project>

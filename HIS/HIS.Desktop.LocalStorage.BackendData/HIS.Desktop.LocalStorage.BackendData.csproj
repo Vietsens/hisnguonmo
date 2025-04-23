@@ -297,10 +297,6 @@
       <Project>{36fae455-24a7-45af-b360-aa6dc4d771f8}</Project>
       <Name>Inventec.Common.TypeConvert</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Common\Inventec.Common\Inventec.Common.WebApiClient\Inventec.Common.WebApiClient.csproj">
-      <Project>{f8a0b7b7-f43a-4f57-94bf-490cf1c3be43}</Project>
-      <Name>Inventec.Common.WebApiClient</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\Common\Inventec.Desktop\Inventec.Desktop.Common.LanguageManager\Inventec.Desktop.Common.LanguageManager.csproj">
       <Project>{c44d9b7b-878d-427b-b18e-5de971d36395}</Project>
       <Name>Inventec.Desktop.Common.LanguageManager</Name>

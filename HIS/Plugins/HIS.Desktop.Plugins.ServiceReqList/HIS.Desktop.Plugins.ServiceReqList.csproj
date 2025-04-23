@@ -324,24 +324,14 @@
     <Compile Include="frmChangeRoom.Designer.cs">
       <DependentUpon>frmChangeRoom.cs</DependentUpon>
     </Compile>
-    <Compile Include="frmServiceReqList_Dispose.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="frmServiceReqList__Plus__InPhieu.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="frmServiceReqList.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="frmServiceReqList_Dispose.cs" />
+    <Compile Include="frmServiceReqList__Plus__InPhieu.cs" />
+    <Compile Include="frmServiceReqList.cs" />
     <Compile Include="frmServiceReqList.Designer.cs">
       <DependentUpon>frmServiceReqList.cs</DependentUpon>
     </Compile>
-    <Compile Include="frmServiceReqList__Plus__PrintWord.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="frmTutorial.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="frmServiceReqList__Plus__PrintWord.cs" />
+    <Compile Include="frmTutorial.cs" />
     <Compile Include="frmTutorial.Designer.cs">
       <DependentUpon>frmTutorial.cs</DependentUpon>
     </Compile>
@@ -353,18 +343,14 @@
     <Compile Include="PopupMenuProcessorCheck.cs" />
     <Compile Include="PopupMenuProcessorMedicine.cs" />
     <Compile Include="PrintPopupMenuProcessor.cs" />
-    <Compile Include="frmServiceReqList__Plus__Print.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="frmServiceReqList__Plus__Print.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="frmReason.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="frmReason.cs" />
     <Compile Include="frmReason.Designer.cs">
       <DependentUpon>frmReason.cs</DependentUpon>
     </Compile>
@@ -398,10 +384,6 @@
     <ProjectReference Include="..\..\HIS.Desktop.IsAdmin\HIS.Desktop.IsAdmin.csproj">
       <Project>{4ab09efc-8f70-4cca-9e6d-693f44a7d29f}</Project>
       <Name>HIS.Desktop.IsAdmin</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\HIS.Desktop.LibraryMessage\HIS.Desktop.LibraryMessage.csproj">
-      <Project>{48d9a44a-7120-4c9b-8923-b1af16b1992f}</Project>
-      <Name>HIS.Desktop.LibraryMessage</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\HIS.Desktop.LocalStorage.BackendData\HIS.Desktop.LocalStorage.BackendData.csproj">
       <Project>{86709a9c-a149-4ebb-a817-1bf8f4f4bc07}</Project>

@@ -109,18 +109,36 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.MessageBoxForm
                 if (IsAssignPres)
                 {
                     dtWarningTime = DateTime.Now;
-                    lblTitle.Text = "Thuốc {4}\r\nMức lọc cầu thận của bệnh nhân là {0}\r\n{1}.\r\n{2}Bạn có muốn {3} không?\r\nTrong trường hợp chọn \"Có\", vui lòng nhập lý do.\r\n";
-                    lblTitle.Text = string.Format(lblTitle.Text, Math.Round(MLCT, 4), Ms.WARNING_CONTENT, (Ms.AMOUNT_INDAY_FROM ?? 0) == 0 ? "" : string.Format("Bạn đang kê vượt liều {0}\r\n", Math.Round((Data.AMOUNT ?? 0) - (Ms.AMOUNT_INDAY_FROM ?? 0) * (Data.UseDays ?? 1) + AmountInDay, 2)), content, Data.MEDICINE_TYPE_NAME);
-                    if ((Ms.AMOUNT_INDAY_FROM ?? 0) <= 0)
-                        pbImage.Image = global::HIS.Desktop.Plugins.AssignPrescriptionPK.Properties.Resources.block;
-                    else
+                    if (this.Ms.DATA_TYPE == IMSys.DbConfig.HIS_RS.HIS_MEDICINE_SERVICE.DATA_TYPE__EGFR)
                     {
-                        IsWarning = true;
-                        pbImage.Image = global::HIS.Desktop.Plugins.AssignPrescriptionPK.Properties.Resources.warning;
-                    }
-                    if (!string.IsNullOrEmpty(Data.OVER_KIDNEY_REASON))
+                        lblTitle.Text = "Thuốc {4}\r\nMức lọc cầu thận của bệnh nhân là {0} ml/phút/1,73 m2 (eGFR)\r\n{1}.\r\n{2}Bạn có muốn {3} không?\r\nTrong trường hợp chọn \"Có\", vui lòng nhập lý do.\r\n";
+                        lblTitle.Text = string.Format(lblTitle.Text, Math.Round(MLCT, 4), Ms.WARNING_CONTENT, (Ms.AMOUNT_INDAY_FROM ?? 0) == 0 ? "" : string.Format("Bạn đang kê vượt liều {0}\r\n", Math.Round((Data.AMOUNT ?? 0) - (Ms.AMOUNT_INDAY_FROM ?? 0) * (Data.UseDays ?? 1) + AmountInDay, 2)), content, Data.MEDICINE_TYPE_NAME);
+                        if ((Ms.AMOUNT_INDAY_FROM ?? 0) <= 0)
+                            pbImage.Image = global::HIS.Desktop.Plugins.AssignPrescriptionPK.Properties.Resources.block;
+                        else
+                        {
+                            IsWarning = true;
+                            pbImage.Image = global::HIS.Desktop.Plugins.AssignPrescriptionPK.Properties.Resources.warning;
+                        }
+                        if (!string.IsNullOrEmpty(Data.OVER_KIDNEY_REASON))
 
-                        memReason.Text = Data.OVER_KIDNEY_REASON;
+                            memReason.Text = Data.OVER_KIDNEY_REASON;
+                    }
+                    else if (this.Ms.DATA_TYPE == IMSys.DbConfig.HIS_RS.HIS_MEDICINE_SERVICE.DATA_TYPE__CRCL)
+                    {
+                        lblTitle.Text = "Thuốc {4}\r\nĐộ thanh thải của bệnh nhân là {0} ml/phút (CrCl)\r\n{1}.\r\n{2}Bạn có muốn {3} không?\r\nTrong trường hợp chọn \"Có\", vui lòng nhập lý do.\r\n";
+                        lblTitle.Text = string.Format(lblTitle.Text, Math.Round(MLCT, 4), Ms.WARNING_CONTENT, (Ms.AMOUNT_INDAY_FROM ?? 0) == 0 ? "" : string.Format("Bạn đang kê vượt liều {0}\r\n", Math.Round((Data.AMOUNT ?? 0) - (Ms.AMOUNT_INDAY_FROM ?? 0) * (Data.UseDays ?? 1) + AmountInDay, 2)), content, Data.MEDICINE_TYPE_NAME);
+                        if ((Ms.AMOUNT_INDAY_FROM ?? 0) <= 0)
+                            pbImage.Image = global::HIS.Desktop.Plugins.AssignPrescriptionPK.Properties.Resources.block;
+                        else
+                        {
+                            IsWarning = true;
+                            pbImage.Image = global::HIS.Desktop.Plugins.AssignPrescriptionPK.Properties.Resources.warning;
+                        }
+                        if (!string.IsNullOrEmpty(Data.OVER_KIDNEY_REASON))
+
+                            memReason.Text = Data.OVER_KIDNEY_REASON;
+                    }
 
                 }
                 else

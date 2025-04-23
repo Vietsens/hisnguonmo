@@ -187,15 +187,11 @@
     </Compile>
     <Compile Include="Resources\ResourceLanguageManager.cs" />
     <Compile Include="Resources\ResourceMessage.cs" />
-    <Compile Include="UCHisRadixChangeCabinet.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
+    <Compile Include="UCHisRadixChangeCabinet.cs" />
     <Compile Include="UCHisRadixChangeCabinet.Designer.cs">
       <DependentUpon>UCHisRadixChangeCabinet.cs</DependentUpon>
     </Compile>
-    <Compile Include="UCHisRadixChangeCabinet_Event.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
+    <Compile Include="UCHisRadixChangeCabinet_Event.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Properties\licenses.licx" />
@@ -236,10 +232,6 @@
     <ProjectReference Include="..\..\HIS.Desktop.IsAdmin\HIS.Desktop.IsAdmin.csproj">
       <Project>{4ab09efc-8f70-4cca-9e6d-693f44a7d29f}</Project>
       <Name>HIS.Desktop.IsAdmin</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\HIS.Desktop.LibraryMessage\HIS.Desktop.LibraryMessage.csproj">
-      <Project>{48d9a44a-7120-4c9b-8923-b1af16b1992f}</Project>
-      <Name>HIS.Desktop.LibraryMessage</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\HIS.Desktop.LocalStorage.BackendData\HIS.Desktop.LocalStorage.BackendData.csproj">
       <Project>{86709a9c-a149-4ebb-a817-1bf8f4f4bc07}</Project>

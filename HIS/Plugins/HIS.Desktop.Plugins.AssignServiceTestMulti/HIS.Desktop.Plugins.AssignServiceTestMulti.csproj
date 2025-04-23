@@ -299,36 +299,18 @@
     <Compile Include="AssignServiceTestProcessor.cs" />
     <Compile Include="AssignService\AssignServiceBehavior.cs" />
     <Compile Include="AssignService\AssignServiceFactory.cs" />
-    <Compile Include="AssignService\frmAssignService__Save.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="AssignService\frmAssignService__Print.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="AssignService\frmAssignService__TabIndex.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="AssignService\frmAssignService__Load.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="AssignService\frmAssignService__InitCombo.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="AssignService\frmAssignService__BuildTree.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="AssignService\frmAssignService__Validate.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="AssignService\frmAssignService.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="AssignService\frmAssignService__Save.cs" />
+    <Compile Include="AssignService\frmAssignService__Print.cs" />
+    <Compile Include="AssignService\frmAssignService__TabIndex.cs" />
+    <Compile Include="AssignService\frmAssignService__Load.cs" />
+    <Compile Include="AssignService\frmAssignService__InitCombo.cs" />
+    <Compile Include="AssignService\frmAssignService__BuildTree.cs" />
+    <Compile Include="AssignService\frmAssignService__Validate.cs" />
+    <Compile Include="AssignService\frmAssignService.cs" />
     <Compile Include="AssignService\frmAssignService.Designer.cs">
       <DependentUpon>frmAssignService.cs</DependentUpon>
     </Compile>
-    <Compile Include="AssignService\frmDetail.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="AssignService\frmDetail.cs" />
     <Compile Include="AssignService\frmDetail.Designer.cs">
       <DependentUpon>frmDetail.cs</DependentUpon>
     </Compile>
@@ -370,10 +352,6 @@
     <ProjectReference Include="..\..\HIS.Desktop.EventLog\HIS.Desktop.EventLog.csproj">
       <Project>{306cbc95-d95a-48e1-941e-f3ecc0cbee34}</Project>
       <Name>HIS.Desktop.EventLog</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\HIS.Desktop.LibraryMessage\HIS.Desktop.LibraryMessage.csproj">
-      <Project>{48d9a44a-7120-4c9b-8923-b1af16b1992f}</Project>
-      <Name>HIS.Desktop.LibraryMessage</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\HIS.Desktop.LocalStorage.BackendData\HIS.Desktop.LocalStorage.BackendData.csproj">
       <Project>{86709a9c-a149-4ebb-a817-1bf8f4f4bc07}</Project>

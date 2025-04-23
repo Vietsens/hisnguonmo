@@ -202,9 +202,7 @@
     <Compile Include="EmrRequestUriStore.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="frmAcsUser.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="frmAcsUser.cs" />
     <Compile Include="frmAcsUser.Designer.cs">
       <DependentUpon>frmAcsUser.cs</DependentUpon>
     </Compile>
@@ -215,9 +213,7 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="Resource\ResourceLanguageManager.cs" />
-    <Compile Include="EmrDocumentTypeForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="EmrDocumentTypeForm.cs" />
     <Compile Include="EmrDocumentTypeForm.Designer.cs">
       <DependentUpon>EmrDocumentTypeForm.cs</DependentUpon>
     </Compile>
@@ -239,10 +235,6 @@
     <ProjectReference Include="..\..\HIS.Desktop.EventLog\HIS.Desktop.EventLog.csproj">
       <Project>{306cbc95-d95a-48e1-941e-f3ecc0cbee34}</Project>
       <Name>HIS.Desktop.EventLog</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\HIS.Desktop.LibraryMessage\HIS.Desktop.LibraryMessage.csproj">
-      <Project>{48d9a44a-7120-4c9b-8923-b1af16b1992f}</Project>
-      <Name>HIS.Desktop.LibraryMessage</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\HIS.Desktop.LocalStorage.ConfigApplication\HIS.Desktop.LocalStorage.ConfigApplication.csproj">
       <Project>{3a2c932a-9d3a-483b-89a0-9f9c8225b283}</Project>

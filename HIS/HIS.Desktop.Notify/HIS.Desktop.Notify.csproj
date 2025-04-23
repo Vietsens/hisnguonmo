@@ -159,10 +159,6 @@
       <Project>{36fae455-24a7-45af-b360-aa6dc4d771f8}</Project>
       <Name>Inventec.Common.TypeConvert</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Common\Inventec.Common\Inventec.Common.WebApiClient\Inventec.Common.WebApiClient.csproj">
-      <Project>{f8a0b7b7-f43a-4f57-94bf-490cf1c3be43}</Project>
-      <Name>Inventec.Common.WebApiClient</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

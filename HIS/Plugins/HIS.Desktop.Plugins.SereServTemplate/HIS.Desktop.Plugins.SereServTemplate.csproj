@@ -167,9 +167,7 @@
     <Compile Include="Resources\ResourceLanguageManager.cs" />
     <Compile Include="Resources\ResourceMessage.cs" />
     <Compile Include="SereServTemplateProcessor.cs" />
-    <Compile Include="FormSereServTemplate.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="FormSereServTemplate.cs" />
     <Compile Include="FormSereServTemplate.Designer.cs">
       <DependentUpon>FormSereServTemplate.cs</DependentUpon>
     </Compile>
@@ -178,9 +176,7 @@
     <Compile Include="SereServTemplate\SereServTemplateBehavior.cs" />
     <Compile Include="SereServTemplate\SereServTemplateFactory.cs" />
     <Compile Include="TemplateKey\PatientADO.cs" />
-    <Compile Include="TemplateKey\PreviewTemplateKey.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="TemplateKey\PreviewTemplateKey.cs" />
     <Compile Include="TemplateKey\PreviewTemplateKey.Designer.cs">
       <DependentUpon>PreviewTemplateKey.cs</DependentUpon>
     </Compile>

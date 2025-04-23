@@ -619,10 +619,6 @@
       <Project>{36fae455-24a7-45af-b360-aa6dc4d771f8}</Project>
       <Name>Inventec.Common.TypeConvert</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Common\Inventec.Common\Inventec.Common.WebApiClient\Inventec.Common.WebApiClient.csproj">
-      <Project>{f8a0b7b7-f43a-4f57-94bf-490cf1c3be43}</Project>
-      <Name>Inventec.Common.WebApiClient</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\Common\Inventec.Common\Inventec.Common.WordContent\Inventec.Common.WordContent.csproj">
       <Project>{e2ba1ac3-7691-4833-b261-280c95d34f45}</Project>
       <Name>Inventec.Common.WordContent</Name>
@@ -646,10 +642,6 @@
     <ProjectReference Include="..\..\Common\Inventec.Desktop\Inventec.Desktop.Common.LibraryMessage\Inventec.Desktop.Common.LibraryMessage.csproj">
       <Project>{52e34a37-cd2d-4c1c-81f0-9ca6b17ac4a5}</Project>
       <Name>Inventec.Desktop.Common.LibraryMessage</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Common\Inventec.Desktop\Inventec.Desktop.Common.Message\Inventec.Desktop.Common.Message.csproj">
-      <Project>{2ef2ca8c-b308-4d64-86cd-86ba479c2664}</Project>
-      <Name>Inventec.Desktop.Common.Message</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Common\Inventec.Desktop\Inventec.Desktop.Common.Module\Inventec.Desktop.Common.Modules.csproj">
       <Project>{aa9d939b-6eea-4dc7-8d6c-56c3291ebfe3}</Project>
@@ -706,10 +698,6 @@
     <ProjectReference Include="..\HIS.Desktop.EventLog\HIS.Desktop.EventLog.csproj">
       <Project>{306cbc95-d95a-48e1-941e-f3ecc0cbee34}</Project>
       <Name>HIS.Desktop.EventLog</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\HIS.Desktop.LibraryMessage\HIS.Desktop.LibraryMessage.csproj">
-      <Project>{48d9a44a-7120-4c9b-8923-b1af16b1992f}</Project>
-      <Name>HIS.Desktop.LibraryMessage</Name>
     </ProjectReference>
     <ProjectReference Include="..\HIS.Desktop.LocalStorage.BackendData\HIS.Desktop.LocalStorage.BackendData.csproj">
       <Project>{86709a9c-a149-4ebb-a817-1bf8f4f4bc07}</Project>

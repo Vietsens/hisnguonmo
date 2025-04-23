@@ -211,9 +211,7 @@
     <Compile Include="Base\HisConfigCFG.cs" />
     <Compile Include="Base\PrintTypeCodeWorker.cs" />
     <Compile Include="ExpMestADO.cs" />
-    <Compile Include="frmMessage.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="frmMessage.cs" />
     <Compile Include="frmMessage.Designer.cs">
       <DependentUpon>frmMessage.cs</DependentUpon>
     </Compile>
@@ -225,9 +223,7 @@
     <Compile Include="KeyboardWorker.cs" />
     <Compile Include="ModuleLinkString.cs" />
     <Compile Include="PopupMenuProcessor.cs" />
-    <Compile Include="popup\frmReasonExp.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="popup\frmReasonExp.cs" />
     <Compile Include="popup\frmReasonExp.Designer.cs">
       <DependentUpon>frmReasonExp.cs</DependentUpon>
     </Compile>
@@ -239,21 +235,13 @@
     </Compile>
     <Compile Include="Resources\ResourceLanguageManager.cs" />
     <Compile Include="Resources\ResourceMessage.cs" />
-    <Compile Include="UCHisExportMestMedicine.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
+    <Compile Include="UCHisExportMestMedicine.cs" />
     <Compile Include="UCHisExportMestMedicine.Designer.cs">
       <DependentUpon>UCHisExportMestMedicine.cs</DependentUpon>
     </Compile>
-    <Compile Include="UCHisExportMestMedicine_Event.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="UCHisExportMestMedicine__Dispose.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="UCHisExportMestMedicine__CallPatient.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
+    <Compile Include="UCHisExportMestMedicine_Event.cs" />
+    <Compile Include="UCHisExportMestMedicine__Dispose.cs" />
+    <Compile Include="UCHisExportMestMedicine__CallPatient.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="frmMessage.resx">
@@ -313,10 +301,6 @@
     <ProjectReference Include="..\..\HIS.Desktop.IsAdmin\HIS.Desktop.IsAdmin.csproj">
       <Project>{4ab09efc-8f70-4cca-9e6d-693f44a7d29f}</Project>
       <Name>HIS.Desktop.IsAdmin</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\HIS.Desktop.LibraryMessage\HIS.Desktop.LibraryMessage.csproj">
-      <Project>{48d9a44a-7120-4c9b-8923-b1af16b1992f}</Project>
-      <Name>HIS.Desktop.LibraryMessage</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\HIS.Desktop.LocalStorage.BackendData\HIS.Desktop.LocalStorage.BackendData.csproj">
       <Project>{86709a9c-a149-4ebb-a817-1bf8f4f4bc07}</Project>

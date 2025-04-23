@@ -117,10 +117,6 @@
       <Project>{70cec503-7124-4a0f-b794-6b84e87b1908}</Project>
       <Name>Inventec.Common.Sqlite</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\Common\Inventec.Common\Inventec.Common.WebApiClient\Inventec.Common.WebApiClient.csproj">
-      <Project>{f8a0b7b7-f43a-4f57-94bf-490cf1c3be43}</Project>
-      <Name>Inventec.Common.WebApiClient</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\HIS.Desktop.XmlCacheMonitor\HIS.Desktop.XmlCacheMonitor.csproj">
       <Project>{0e390108-e542-44fe-8711-5e01c5406684}</Project>
       <Name>HIS.Desktop.XmlCacheMonitor</Name>

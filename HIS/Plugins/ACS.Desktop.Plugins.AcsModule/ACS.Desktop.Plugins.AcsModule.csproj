@@ -148,9 +148,7 @@
     <Compile Include="AcsModuleProcessor.cs" />
     <Compile Include="AcsModule\AcsModuleBehavior.cs" />
     <Compile Include="AcsModule\AcsModuleFactory.cs" />
-    <Compile Include="AcsModule\frmAcsModule.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="AcsModule\frmAcsModule.cs" />
     <Compile Include="AcsModule\frmAcsModule.Designer.cs">
       <DependentUpon>frmAcsModule.cs</DependentUpon>
     </Compile>

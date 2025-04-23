@@ -184,9 +184,7 @@
     <Compile Include="CustomValidateRule\TemplateHeinBHYT1__Address__ValidationRule.cs" />
     <Compile Include="CustomValidateRule\TemplateHeinBHYT1__CheckBox__ValidationRule.cs" />
     <Compile Include="CustomValidateRule\TemplateHeinBHYT1__FreeCoPainTime__ValidationRule.cs" />
-    <Compile Include="Design\UCHeinInfo__Dispose.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
+    <Compile Include="Design\UCHeinInfo__Dispose.cs" />
     <Compile Include="Design\UCHeinInfo__SetAddress.cs">
       <SubType>UserControl</SubType>
     </Compile>

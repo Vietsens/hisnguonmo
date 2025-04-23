@@ -205,9 +205,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Form_RequestDeposit.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="Form_RequestDeposit.cs" />
     <Compile Include="Form_RequestDeposit.Designer.cs">
       <DependentUpon>Form_RequestDeposit.cs</DependentUpon>
     </Compile>
@@ -217,18 +215,10 @@
     <Compile Include="Form_RequestDepositReason.Designer.cs">
       <DependentUpon>Form_RequestDepositReason.cs</DependentUpon>
     </Compile>
-    <Compile Include="Form_RequestDeposit_Event.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Form_RequestDeposit_Method.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Form_RequestDeposit_Print.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Form_RequestDeposit_Validate.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="Form_RequestDeposit_Event.cs" />
+    <Compile Include="Form_RequestDeposit_Method.cs" />
+    <Compile Include="Form_RequestDeposit_Print.cs" />
+    <Compile Include="Form_RequestDeposit_Validate.cs" />
     <Compile Include="HisRequestUriStore.cs" />
     <Compile Include="PrintGlobalStore.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -293,10 +283,6 @@
     <ProjectReference Include="..\..\HIS.Desktop.EventLog\HIS.Desktop.EventLog.csproj">
       <Project>{306cbc95-d95a-48e1-941e-f3ecc0cbee34}</Project>
       <Name>HIS.Desktop.EventLog</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\HIS.Desktop.LibraryMessage\HIS.Desktop.LibraryMessage.csproj">
-      <Project>{48d9a44a-7120-4c9b-8923-b1af16b1992f}</Project>
-      <Name>HIS.Desktop.LibraryMessage</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\HIS.Desktop.LocalStorage.BackendData\HIS.Desktop.LocalStorage.BackendData.csproj">
       <Project>{86709a9c-a149-4ebb-a817-1bf8f4f4bc07}</Project>

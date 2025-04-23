@@ -196,12 +196,8 @@
     <Compile Include="Base\PrintTypeCodeWorker.cs" />
     <Compile Include="Base\ResourceLangManager.cs" />
     <Compile Include="IcdUtil.cs" />
-    <Compile Include="Load\RehaServiceReqExecuteControl__Load.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="RehaServiceReqExecuteControl__ShortCut.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
+    <Compile Include="Load\RehaServiceReqExecuteControl__Load.cs" />
+    <Compile Include="RehaServiceReqExecuteControl__ShortCut.cs" />
     <Compile Include="RehaTrain\frmRehaTrain__Combo.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -211,21 +207,15 @@
     <Compile Include="RehaTrain\frmRehaTrain.designer.cs">
       <DependentUpon>frmRehaTrain.cs</DependentUpon>
     </Compile>
-    <Compile Include="RehaServiceReqExecuteControl__InitLanguage.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Load\RehaServiceReqExecuteControl__Combo.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
+    <Compile Include="RehaServiceReqExecuteControl__InitLanguage.cs" />
+    <Compile Include="Load\RehaServiceReqExecuteControl__Combo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="RehaServiceReqExecuteControlProcess.cs" />
-    <Compile Include="Print\RehaServiceReqExecuteControl__PlusPrintExcel.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
+    <Compile Include="Print\RehaServiceReqExecuteControl__PlusPrintExcel.cs" />
     <Compile Include="RehaServiceReqExecuteProcessor.cs" />
     <Compile Include="Delegate\DelegateUC.cs" />
     <Compile Include="KeyboardWorker.cs" />
@@ -234,9 +224,7 @@
     <Compile Include="RehaServiceReqExecute\RehaServiceReqExecuteBehavior.cs" />
     <Compile Include="RehaServiceReqExecute\RehaServiceReqExecuteFactory.cs" />
     <Compile Include="RehaTrain__TrainTimeValidationRule.cs" />
-    <Compile Include="RehaServiceReqExecuteControl.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
+    <Compile Include="RehaServiceReqExecuteControl.cs" />
     <Compile Include="RehaServiceReqExecuteControl.Designer.cs">
       <DependentUpon>RehaServiceReqExecuteControl.cs</DependentUpon>
     </Compile>
@@ -290,10 +278,6 @@
     <ProjectReference Include="..\..\HIS.Desktop.EventLog\HIS.Desktop.EventLog.csproj">
       <Project>{306cbc95-d95a-48e1-941e-f3ecc0cbee34}</Project>
       <Name>HIS.Desktop.EventLog</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\HIS.Desktop.LibraryMessage\HIS.Desktop.LibraryMessage.csproj">
-      <Project>{48d9a44a-7120-4c9b-8923-b1af16b1992f}</Project>
-      <Name>HIS.Desktop.LibraryMessage</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\HIS.Desktop.LocalStorage.BackendData\HIS.Desktop.LocalStorage.BackendData.csproj">
       <Project>{86709a9c-a149-4ebb-a817-1bf8f4f4bc07}</Project>

@@ -218,31 +218,21 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ADO\InstructionTimeChoiceADO.cs" />
-    <Compile Include="BordereauPrint\frmTransactionDebt__Plus__Bordereau_Init.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="BordereauPrint\frmTransactionDebt__Plus__Bordereau_Init.cs" />
     <Compile Include="Config\HisConfigCFG.cs" />
     <Compile Include="Config\MappingErrorTHE.cs" />
     <Compile Include="Config\UriStores.cs" />
     <Compile Include="DepositServicePrintProcess.cs" />
-    <Compile Include="frmDepositServiceKiosk__Plus__FillInfoPatient.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="frmDepositServiceKiosk__Plus__Button.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="frmDepositServiceKiosk__Plus__FillInfoPatient.cs" />
+    <Compile Include="frmDepositServiceKiosk__Plus__Button.cs" />
     <Compile Include="Base\PrintTypeCodeWorker.cs" />
     <Compile Include="Base\ResourceLangManager.cs" />
     <Compile Include="Base\ResourceMessageLang.cs" />
-    <Compile Include="frmDepositServiceKiosk.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="frmDepositServiceKiosk.cs" />
     <Compile Include="frmDepositServiceKiosk.Designer.cs">
       <DependentUpon>frmDepositServiceKiosk.cs</DependentUpon>
     </Compile>
-    <Compile Include="frmDepositServiceKiosk__Plus__Control.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="frmDepositServiceKiosk__Plus__Control.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -296,10 +286,6 @@
     <ProjectReference Include="..\..\HIS.Desktop.Control.Session\HIS.Desktop.Controls.Session.csproj">
       <Project>{9b4b505c-afa1-4974-8ac8-503f748bd5a2}</Project>
       <Name>HIS.Desktop.Controls.Session</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\HIS.Desktop.LibraryMessage\HIS.Desktop.LibraryMessage.csproj">
-      <Project>{48d9a44a-7120-4c9b-8923-b1af16b1992f}</Project>
-      <Name>HIS.Desktop.LibraryMessage</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\HIS.Desktop.LocalStorage.BackendData\HIS.Desktop.LocalStorage.BackendData.csproj">
       <Project>{86709a9c-a149-4ebb-a817-1bf8f4f4bc07}</Project>

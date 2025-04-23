@@ -126,9 +126,7 @@
     <Compile Include="ADO\DoctorADO.cs" />
     <Compile Include="ADO\HisExamScheduleADO.cs" />
     <Compile Include="HisExamScheduleProcessor.cs" />
-    <Compile Include="HisExamSchedule\frmHisExamSchedule.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="HisExamSchedule\frmHisExamSchedule.cs" />
     <Compile Include="HisExamSchedule\frmHisExamSchedule.Designer.cs">
       <DependentUpon>frmHisExamSchedule.cs</DependentUpon>
     </Compile>
@@ -142,9 +140,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="SetupWorkRoom\frmSetupWorkRoom.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="SetupWorkRoom\frmSetupWorkRoom.cs" />
     <Compile Include="SetupWorkRoom\frmSetupWorkRoom.Designer.cs">
       <DependentUpon>frmSetupWorkRoom.cs</DependentUpon>
     </Compile>
@@ -163,10 +159,6 @@
     <ProjectReference Include="..\..\HIS.Desktop.Control.Session\HIS.Desktop.Controls.Session.csproj">
       <Project>{9b4b505c-afa1-4974-8ac8-503f748bd5a2}</Project>
       <Name>HIS.Desktop.Controls.Session</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\HIS.Desktop.LibraryMessage\HIS.Desktop.LibraryMessage.csproj">
-      <Project>{48d9a44a-7120-4c9b-8923-b1af16b1992f}</Project>
-      <Name>HIS.Desktop.LibraryMessage</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\HIS.Desktop.LocalStorage.BackendData\HIS.Desktop.LocalStorage.BackendData.csproj">
       <Project>{86709a9c-a149-4ebb-a817-1bf8f4f4bc07}</Project>

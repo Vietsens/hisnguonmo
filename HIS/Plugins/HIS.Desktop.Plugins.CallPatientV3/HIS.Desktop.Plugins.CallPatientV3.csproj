@@ -146,24 +146,16 @@
     <Compile Include="CallPatientCLS\CallPatientV3Factory.cs" />
     <Compile Include="CallPatientCLS\ICallPatientV3.cs" />
     <Compile Include="ChooseRoomForWaitingScreenProcess.cs" />
-    <Compile Include="frmChooseRoomForWaitingScreen.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="frmChooseRoomForWaitingScreen.cs" />
     <Compile Include="frmChooseRoomForWaitingScreen.Designer.cs">
       <DependentUpon>frmChooseRoomForWaitingScreen.cs</DependentUpon>
     </Compile>
-    <Compile Include="frmChooseRoomForWaitingScreen__InitResource.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="frmWaitingScreenV3.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="frmChooseRoomForWaitingScreen__InitResource.cs" />
+    <Compile Include="frmWaitingScreenV3.cs" />
     <Compile Include="frmWaitingScreenV3.Designer.cs">
       <DependentUpon>frmWaitingScreenV3.cs</DependentUpon>
     </Compile>
-    <Compile Include="frmWaitingScreenV3__InitResource.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="frmWaitingScreenV3__InitResource.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Resources\ResourceLanguageManager.cs" />
     <Compile Include="roomWaitingScreenValidation.cs" />
@@ -203,10 +195,6 @@
     <ProjectReference Include="..\..\HIS.Desktop.EventLog\HIS.Desktop.EventLog.csproj">
       <Project>{306cbc95-d95a-48e1-941e-f3ecc0cbee34}</Project>
       <Name>HIS.Desktop.EventLog</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\HIS.Desktop.LibraryMessage\HIS.Desktop.LibraryMessage.csproj">
-      <Project>{48d9a44a-7120-4c9b-8923-b1af16b1992f}</Project>
-      <Name>HIS.Desktop.LibraryMessage</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\HIS.Desktop.LocalStorage.BackendData\HIS.Desktop.LocalStorage.BackendData.csproj">
       <Project>{86709a9c-a149-4ebb-a817-1bf8f4f4bc07}</Project>
