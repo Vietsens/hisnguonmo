@@ -261,6 +261,9 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                 EnabledLableApproveList(false);
                 DateKQ.ToolTip = ConvertStringTime(DateKQ);
                 DateLM.ToolTip = ConvertStringTime(DateLM);
+                //dangth
+                DateLM.EditValueChanged += (s, t) => UpdateThoiGianThucHien();
+                DateKQ.EditValueChanged += (s, t) => UpdateThoiGianThucHien();
                 GetTimeSystem();
                 EnableControlWarning();
                 RegisterTimer(currentModule.ModuleLink, "timer1", timer1.Interval, timer1_Tick);
@@ -9077,6 +9080,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                 {
                     DateLM.EditValue = currentTimerLM;
                 }
+                UpdateThoiGianThucHien();
             }
             catch (Exception ex)
             {
@@ -9084,6 +9088,35 @@ namespace HIS.Desktop.Plugins.ConnectionTest
             }
 
         }
+        private void UpdateThoiGianThucHien()
+        {
+            if (DateLM.EditValue != null && DateKQ.EditValue != null)
+            {
+                DateTime ngayLayMau = Convert.ToDateTime(DateLM.EditValue);
+                DateTime ngayTraKQ = Convert.ToDateTime(DateKQ.EditValue);
+
+                TimeSpan thoiGian = ngayTraKQ - ngayLayMau;
+
+                if (thoiGian.TotalSeconds <= 0)
+                {
+                    lblRealTime.Text = "00:00:00";
+                }
+                else
+                {
+                    lblRealTime.Text = string.Format("{0:D2}:{1:D2}:{2:D2}",
+                        (int)thoiGian.TotalHours,
+                        thoiGian.Minutes,
+                        thoiGian.Seconds
+                    );
+                }
+            }
+            else
+            {
+                lblRealTime.Text = "00:00:00";
+            }
+        }
+
+
         private void cboUserKQ_Closed(object sender, DevExpress.XtraEditors.Controls.ClosedEventArgs e)
         {
             try
