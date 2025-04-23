@@ -16,6 +16,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 using ACS.EFMODEL.DataModels;
+using DevExpress.XtraExport;
 using HIS.Desktop.ADO;
 using HIS.Desktop.ApiConsumer;
 using HIS.Desktop.Controls.Session;
@@ -23,6 +24,7 @@ using HIS.Desktop.LocalStorage.BackendData;
 using HIS.Desktop.LocalStorage.ConfigSystem;
 using HIS.Desktop.LocalStorage.HisConfig;
 using HIS.Desktop.LocalStorage.LocalData;
+using HIS.Desktop.Plugins.AssignPaan.Config;
 using Inventec.Common.Logging;
 using Inventec.Core;
 using Inventec.Desktop.Common.Message;
@@ -451,19 +453,36 @@ namespace HIS.Desktop.Plugins.AssignPaan
                         bedLogs = new Inventec.Common.Adapter.BackendAdapter(param).Get<List<V_HIS_BED_LOG>>("api/HisBedLog/GetView", ApiConsumer.ApiConsumers.MosConsumer, bedLogViewFilter, param);
                     }
 
-                    bool printNow = false;
+                    MPS.ProcessorBase.PrintConfig.PreviewType? printNow = null;
 
-                    if (HIS.Desktop.LocalStorage.ConfigApplication.ConfigApplications.CheDoInChoCacChucNangTrongPhanMem == 2)
-                    {
-                        printNow = true;
-                    }
-                    else
-                    {
-                        printNow = false;
-                    }
+                    //bool printNow = false
+                    //if (HIS.Desktop.LocalStorage.ConfigApplication.ConfigApplications.CheDoInChoCacChucNangTrongPhanMem == 2)
+                    //{
+                    //    printNow = true;
+                    //}
+                    //else
+                    //{
+                    //    printNow = false;
+                    //}
 
-                    var PrintServiceReqProcessor = new Library.PrintServiceReq.PrintServiceReqProcessor(sdo, currentHisTreatment, bedLogs, currentModule != null ? currentModule.RoomId : 0);
-                    PrintServiceReqProcessor.Print(printTypeCode, printNow);
+                    //var PrintServiceReqProcessor = new Library.PrintServiceReq.PrintServiceReqProcessor(sdo, currentHisTreatment, bedLogs, currentModule != null ? currentModule.RoomId : 0);
+                    //PrintServiceReqProcessor.Print(printTypeCode, printNow);
+                    Inventec.Desktop.Common.Modules.Module module = GlobalVariables.currentModuleRaws.Where(o => o.ModuleLink == "HIS.Desktop.Plugins.AssignPaan").FirstOrDefault();
+                    if(module != null)
+                    {
+                        var AssignPaan = HisPatientTypeCFG.IsAllowSignaturePrint.Split(',');
+                        if(AssignPaan != null)
+                        {
+                            if (AssignPaan.Contains(HisPatientTypeCFG.IsAllowSignaturePrint))
+                            {
+                                printNow = MPS.ProcessorBase.PrintConfig.PreviewType.EmrSignAndPrintNow;
+                            }
+                            else
+                            {
+                                printNow = MPS.ProcessorBase.PrintConfig.PreviewType.EmrShow;
+                            }                            
+                        }
+                    }
                 }
             }
             catch (Exception ex)

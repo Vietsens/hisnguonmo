@@ -684,7 +684,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                            "); ";
                     }
 
-                    if (HisConfigCFG.IsSereServMinDurationAlert)
+                    if (HisConfigCFG.IsSereServMinDurationAlert == 1)
                     {
                         if (MessageBox.Show(string.Format(ResourceMessage.SereServMinDurationAlert__BanCoMuonChuyenDoiDTTTSangVienPhi, sereServMinDurationStr), MessageUtil.GetMessage(Inventec.Desktop.Common.LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaThongBao), MessageBoxButtons.YesNo) == DialogResult.Yes)
                         {
@@ -1252,16 +1252,58 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
         {
             List<HIS_SERE_SERV> listSereServResult = null;
             try
-            {
-                if (serviceCheckeds != null && serviceCheckeds.Count > 0)
+            {              
+                if (HisConfigCFG.IsSereServMinDurationAlert == 1 || HisConfigCFG.IsSereServMinDurationAlert == 2)
                 {
-                    List<SereServADO> sereServADOExistMinDUration = serviceCheckeds.Where(o => o.MIN_DURATION != null).ToList();
-                    if (icdServiceDuration != null && icdServiceDuration.Count > 0)
-                        sereServADOExistMinDUration = serviceCheckeds;//.Where(o => o.MIN_DURATION != null).ToList();
-                    if (sereServADOExistMinDUration != null && sereServADOExistMinDUration.Count > 0)
+                    if (serviceCheckeds != null && serviceCheckeds.Count > 0)
+                    {
+                        var bhytServices = serviceCheckeds.Where(o => o.PATIENT_TYPE_ID == HisConfigCFG.PatientTypeId__BHYT).ToList();
+                        List<SereServADO> sereServADOExistMinDUration = bhytServices.Where(o => o.MIN_DURATION != null).ToList();
+                        if (icdServiceDuration != null && icdServiceDuration.Count > 0)
+                            sereServADOExistMinDUration = bhytServices;
+                        if (sereServADOExistMinDUration != null && sereServADOExistMinDUration.Count > 0)
+                        {
+                            List<ServiceDuration> serviceDurations = new List<ServiceDuration>();
+                            foreach (var item in sereServADOExistMinDUration)
+                            {
+                                ServiceDuration serviceDuration = new ServiceDuration();
+                                serviceDuration.ServiceId = item.SERVICE_ID;
+                                if (icdServiceDuration != null && icdServiceDuration.Count > 0)
+                                    serviceDuration.MinDuration = icdServiceDuration.Where(o => o.SERVICE_ID == item.SERVICE_ID).Min(o => o.MIN_DURATION ?? 0);
+                                else
+                                    serviceDuration.MinDuration = (item.MIN_DURATION ?? 0);
+                                serviceDurations.Add(serviceDuration);
+                            }
+                            CommonParam param = new CommonParam();
+                            HisSereServMinDurationFilter filter = new HisSereServMinDurationFilter
+                            {
+                                ServiceDurations = serviceDurations,
+                                InstructionTime = this.isMultiDateState ? intructionTimeSelecteds.First() : intructionTimeSelecteds.First(),
+                                PatientId = patientId
+                            };
+                            var result = new BackendAdapter(param).Get<List<HIS_SERE_SERV>>("api/HisSereServ/GetExceedMinDuration", ApiConsumer.ApiConsumers.MosConsumer, filter, param);
+                            if (result != null && result.Any())
+                            {
+                                listSereServResult = result.GroupBy(o => o.SERVICE_ID).Select(g => g.OrderByDescending(x => x.TDL_INTRUCTION_TIME).First()).ToList();
+                            }
+                        }
+                        else
+                        {
+                            listSereServResult = null;
+                        }
+                    }
+                    else
+                    {
+                        listSereServResult = null;
+                    }
+                }             
+                if (HisConfigCFG.IsSereServMinDurationAlert != 1 && HisConfigCFG.IsSereServMinDurationAlert != 2)
+                {
+                    var allServices = serviceCheckeds.Where(o => o.MIN_DURATION != null).ToList();
+                    if(allServices.Count > 0)
                     {
                         List<ServiceDuration> serviceDurations = new List<ServiceDuration>();
-                        foreach (var item in sereServADOExistMinDUration)
+                        foreach (var item in allServices)
                         {
                             ServiceDuration serviceDuration = new ServiceDuration();
                             serviceDuration.ServiceId = item.SERVICE_ID;
@@ -1271,43 +1313,19 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                                 serviceDuration.MinDuration = (item.MIN_DURATION ?? 0);
                             serviceDurations.Add(serviceDuration);
                         }
-                        // gọi api để lấy về thông báo
                         CommonParam param = new CommonParam();
-                        HisSereServMinDurationFilter hisSereServMinDurationFilter = new HisSereServMinDurationFilter();
-                        hisSereServMinDurationFilter.ServiceDurations = serviceDurations;
-                        if (this.isMultiDateState)
-                            hisSereServMinDurationFilter.InstructionTime = intructionTimeSelecteds.First();//TODO
-                        else
-                            hisSereServMinDurationFilter.InstructionTime = intructionTimeSelecteds.First();
-
-                        hisSereServMinDurationFilter.PatientId = patientId;
-                        //Inventec.Common.Logging.LogSystem.Error("du lieu dau vao khi goi api HisSereServ/GetExceedMinDuration: " + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => hisSereServMinDurationFilter), hisSereServMinDurationFilter));
-                        var result = new BackendAdapter(param).Get<List<HIS_SERE_SERV>>("api/HisSereServ/GetExceedMinDuration", ApiConsumer.ApiConsumers.MosConsumer, hisSereServMinDurationFilter, param);
-                        Inventec.Common.Logging.LogSystem.Error("ket qua tra ve khi goi api HisSereServ/GetExceedMinDuration: " + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => result), result));
-
-                        if (result == null || result.Count() == 0)
-                            return listSereServResult;
-
-                        //var listSereServResultTemp = from SereServResult in listSereServResult
-                        //                             group SereServResult by SereServResult.SERVICE_ID into g
-                        //                             orderby g.Key
-                        //                             select g.FirstOrDefault();
-                        listSereServResult = new List<HIS_SERE_SERV>();
-                        var listSSTemp = result.GroupBy(o => o.SERVICE_ID).ToList();
-                        foreach (var item in listSSTemp)
+                        HisSereServMinDurationFilter filter = new HisSereServMinDurationFilter
                         {
-                            var itemGroup = item.OrderByDescending(o => o.TDL_INTRUCTION_TIME).FirstOrDefault();
-                            listSereServResult.Add(itemGroup);
+                            ServiceDurations = serviceDurations,
+                            InstructionTime = this.isMultiDateState ? intructionTimeSelecteds.First() : intructionTimeSelecteds.First(),
+                            PatientId = patientId
+                        };
+                        var result = new BackendAdapter(param).Get<List<HIS_SERE_SERV>>("api/HisSereServ/GetExceedMinDuration", ApiConsumer.ApiConsumers.MosConsumer, filter, param);
+                        if (result != null && result.Any())
+                        {
+                            listSereServResult = result.GroupBy(o => o.SERVICE_ID).Select(g => g.OrderByDescending(x => x.TDL_INTRUCTION_TIME).First()).ToList();
                         }
                     }
-                    else
-                    {
-                        listSereServResult = null;
-                    }
-                }
-                else
-                {
-                    listSereServResult = null;
                 }
             }
             catch (Exception ex)
