@@ -322,7 +322,7 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
                 this.gridColumnSoPhieu.Caption = Inventec.Common.Resource.Get.Value("UCExecuteRoom.gridColumnSoPhieu.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.gridColumnSereServServiceReqBlock.Caption = Inventec.Common.Resource.Get.Value("UCExecuteRoom.gridColumnSereServServiceReqBlock.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.layoutControl4.Text = Inventec.Common.Resource.Get.Value("UCExecuteRoom.layoutControl4.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                this.layoutControlItem4.Text = Inventec.Common.Resource.Get.Value("UCExecuteRoom.layoutControlItem4.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.lciPatientCode.Text = Inventec.Common.Resource.Get.Value("UCExecuteRoom.layoutControlItem4.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.layoutControlItem13.Text = Inventec.Common.Resource.Get.Value("UCExecuteRoom.layoutControlItem13.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.layoutControlItem14.Text = Inventec.Common.Resource.Get.Value("UCExecuteRoom.layoutControlItem14.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.s.Text = Inventec.Common.Resource.Get.Value("UCExecuteRoom.s.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());

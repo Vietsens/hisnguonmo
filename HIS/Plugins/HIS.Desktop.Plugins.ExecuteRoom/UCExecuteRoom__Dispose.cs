@@ -436,7 +436,7 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
                 layoutControlItem15 = null;
                 layoutControlItem14 = null;
                 layoutControlItem13 = null;
-                layoutControlItem4 = null;
+                lciPatientCode = null;
                 layoutControlGroup3 = null;
                 lblPatientCode = null;
                 lblPatientName = null;

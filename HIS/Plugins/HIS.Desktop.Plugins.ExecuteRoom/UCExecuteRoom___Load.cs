@@ -842,10 +842,33 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
         {
             try
             {
+                lblPatientCode.Appearance.Image = null;
                 CommonParam param = new CommonParam();
                 if (serviceReq != null)
                 {
                     lblPatientCode.Text = serviceReq.TDL_PATIENT_CODE;
+                    var allErgyCardFilter = new HisAllergyCardFilter();
+                    allErgyCardFilter.TREATMENT_ID = serviceReq.TREATMENT_ID;
+
+                    var allergyCards = new BackendAdapter(new CommonParam()).Get<List<HIS_ALLERGY_CARD>>(
+                        "/api/HisAllergyCard/Get",
+                        ApiConsumers.MosConsumer,
+                        allErgyCardFilter,
+                        new CommonParam());
+
+                    if (allergyCards != null && allergyCards.Count > 0)
+                    {
+                        lblPatientCode.Appearance.Image = global::HIS.Desktop.Plugins.ExecuteRoom.Properties.Resources.thuoc;
+                        lblPatientCode.ToolTip = "Bệnh nhân có thẻ dị ứng";
+                        lblPatientCode.Appearance.ImageAlign = ContentAlignment.MiddleRight;
+                        lblPatientCode.ImageAlignToText = DevExpress.XtraEditors.ImageAlignToText.RightCenter;
+                    }
+                    else
+                    {
+                        lblPatientCode.Appearance.Image = null;
+                        lblPatientCode.ToolTip = string.Empty;
+                    }
+
                     lblPatientName.Text = serviceReq.TDL_PATIENT_NAME;
                     lblGender.Text = serviceReq.TDL_PATIENT_GENDER_NAME;
                     lblDOB.Text = String.Format("{0} ({1})", Inventec.Common.DateTime.Convert.TimeNumberToDateString(serviceReq.TDL_PATIENT_DOB), MPS.AgeUtil.CalculateFullAge(serviceReq.TDL_PATIENT_DOB));
