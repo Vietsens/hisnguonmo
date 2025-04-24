@@ -77,6 +77,7 @@ using DevExpress.XtraBars;
 using HIS.UC.Icd;
 using HIS.UC.Icd.ADO;
 using DevExpress.XtraBars.Controls;
+using static MPS.ProcessorBase.PrintConfig;
 
 namespace HIS.Desktop.Plugins.AssignService.AssignService
 {
@@ -1094,7 +1095,25 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
 					? DevExpress.XtraLayout.Utils.LayoutVisibility.Never 
 					: DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
 				txtDutruTime.Enabled = !chkMultiIntructionTime.Checked;
-			}
+
+                Inventec.Desktop.Common.Modules.Module module = GlobalVariables.currentModuleRaws.Where(o => o.ModuleLink == "HIS.Desktop.Plugins.AssignService").FirstOrDefault();
+
+                if (module != null)
+                {
+                    var IsSignPrint = HisConfigCFG.IsAllowSignaturePrint.Split(';');
+                    if (IsSignPrint != null)
+                    {
+                        if (IsSignPrint.Contains(HisConfigCFG.IsAllowSignaturePrint))
+                        {
+							layoutControlItem18.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+                        }
+                        else
+                        {
+                            layoutControlItem18.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
+                        }
+                    }
+                }
+            }
 			catch (Exception ex)
 			{
 				WaitingManager.Hide();
@@ -5406,7 +5425,6 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
 		{
 			try
 			{
-				if (HisConfigCFG.IsSereServMinDurationAlert != 1 || HisConfigCFG.IsSereServMinDurationAlert != 2) return;
                 if (!string.IsNullOrEmpty(HisConfigCFG.InstructionTimeServiceMustBeGreaterThanStartTimeExam))
 				{
 					LoadVServiceReq();
@@ -5553,34 +5571,35 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
 								{
 									return;
 								}
-							}                            
-                            else if (HisConfigCFG.IsSereServMinDurationAlert == 2)
-                            {
+							}
+							else if (HisConfigCFG.IsSereServMinDurationAlert == 2)
+							{
 								if (MessageBox.Show(string.Format(ResourceMessage.BanCoMuonTiepTuc, string.Format(ResourceMessage.DichVuCoThoiGianChiDinhNamTrongKhoangThoiGianKhongChoPhep, sereServMinDurationStr)), MessageUtil.GetMessage(LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaThongBao), MessageBoxButtons.YesNo) == DialogResult.Yes)
 								{
-                                    return;
-                                }										
+									return;
+
+								}
 								else
 								{
-                                    return;
-                                }										
-                            }
-                            else
+									return;
+								}
+							}
+							else
 							{
-                                if (HisConfigCFG.IsSereServMinDurationAlert != 1 && HisConfigCFG.IsSereServMinDurationAlert != 2)
-                                {
+								if (HisConfigCFG.IsSereServMinDurationAlert != 1 && HisConfigCFG.IsSereServMinDurationAlert != 2)
+								{
 
-                                    if (MessageBox.Show(string.Format(ResourceMessage.BanCoMuonTiepTuc, string.Format(ResourceMessage.DichVuCoThoiGianChiDinhNamTrongKhoangThoiGianKhongChoPhep, sereServMinDurationStr)), MessageUtil.GetMessage(LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaThongBao), MessageBoxButtons.YesNo) == DialogResult.Yes)
+									if (MessageBox.Show(string.Format(ResourceMessage.BanCoMuonTiepTuc, string.Format(ResourceMessage.DichVuCoThoiGianChiDinhNamTrongKhoangThoiGianKhongChoPhep, sereServMinDurationStr)), MessageUtil.GetMessage(LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaThongBao), MessageBoxButtons.YesNo) == DialogResult.Yes)
 									{
-                                        return;
-                                    }
+										return;
+									}
 									else
 									{
-                                        return;
-                                    }	
-                                }
-                            }							
-                        }
+										return;
+									}
+								}
+							}
+						}
 						#endregion
 						isValid = isValid && ValidSereServWithCondition(serviceCheckeds__Send);
 						isValid = isValid && CheckMaxPatientbyDayOption(serviceCheckeds__Send);
