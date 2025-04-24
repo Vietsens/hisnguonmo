@@ -1105,7 +1105,8 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
         }
 
         private void FillDataToLableControl(L_HIS_TREATMENT_BED_ROOM data)
-        {
+        {      
+
             try
             {
                 bool hasAllergyCard = false;

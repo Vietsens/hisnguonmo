@@ -268,32 +268,29 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
         private void InPhieuYeuCauDichVu(bool isSaveAndShow, MPS.ProcessorBase.PrintConfig.PreviewType? previewType = null)
         {
             try
-            {
-                if (chkPrint.Checked)
-                {
-                    Inventec.Desktop.Common.Modules.Module module = GlobalVariables.currentModuleRaws.Where(o => o.ModuleLink == "HIS.Desktop.Plugins.AssignService").FirstOrDefault();
-                    if (module != null)
-                    {
-                        var IsSignPrint = HisConfigCFG.IsAllowSignaturePrint.Split(';');
-                        if (IsSignPrint != null)
-                        {
-                            chkPrint.Visible = false;
-                            if (IsSignPrint.Contains(HisConfigCFG.IsAllowSignaturePrint))
-                            {
-                                previewType = MPS.ProcessorBase.PrintConfig.PreviewType.EmrSignAndPrintNow;
-                            }
-                            else
-                            {
-                                previewType = MPS.ProcessorBase.PrintConfig.PreviewType.EmrSignNow;
-                            }
+            {                                
+                string configValue = HisConfigCFG.IsAllowSignaturePrint;
 
-                        }
+                if (!string.IsNullOrWhiteSpace(configValue))
+                {
+                    var allowedModules = configValue
+                        .Split(new[] { ';' }, StringSplitOptions.RemoveEmptyEntries)
+                        .Select(x => x.Trim())
+                        .ToList();
+
+                    if (allowedModules.Contains("HIS.Desktop.Plugins.AssignService"))
+                    {
+                        previewType = MPS.ProcessorBase.PrintConfig.PreviewType.EmrSignAndPrintNow;
                     }
-                }                               
+                    else
+                    {
+                        previewType = MPS.ProcessorBase.PrintConfig.PreviewType.EmrSignNow;
+                    }
+                }
                 if (serviceReqComboResultSDO != null)
                 {
                     CommonParam param = new CommonParam();
-                    
+
 
                     List<V_HIS_BED_LOG> bedLogs = new List<V_HIS_BED_LOG>();
                     // get bedLog
@@ -307,7 +304,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                     var PrintServiceReqProcessor = previewType != null ? new Library.PrintServiceReq.PrintServiceReqProcessor(serviceReqComboResultSDO, currentHisTreatment, bedLogs, (currentModule != null ? currentModule.RoomId : 0), previewType.Value, GetDocmentSigned)
                         : new Library.PrintServiceReq.PrintServiceReqProcessor(serviceReqComboResultSDO, currentHisTreatment, bedLogs, (currentModule != null ? currentModule.RoomId : 0));
                     PrintServiceReqProcessor.SaveNPrint(isSaveAndShow);
-
+                                           
                     if (this.serviceReqComboResultSDO.SereServs != null)
                     {
                         ProcessOpenVoBenhAn(serviceReqComboResultSDO.SereServs);

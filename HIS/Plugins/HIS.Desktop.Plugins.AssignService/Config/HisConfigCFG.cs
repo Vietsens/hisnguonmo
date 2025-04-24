@@ -239,7 +239,7 @@ namespace HIS.Desktop.Plugins.AssignService.Config
                 IsNotAutoLoadServiceOpenAssignService = GetValue(CONFIG_KEY__IsNotAutoLoadServiceOpenAssignService) == GlobalVariables.CommonStringTrue;
                 IsUsingWarningHeinFee = GetValue(CONFIG_KEY__IsUsingWarningHeinFee);
                 //IsSereServMinDurationAlert = (GetValue(CONFIG_KEY__SERVICE_REQ__IS_SERE_SERV_MIN_DURATION_ALERT) == GlobalVariables.CommonStringTrue);
-                IsSereServMinDurationAlert = Convert. ToInt32(GetValue(CONFIG_KEY__SERVICE_REQ__IS_SERE_SERV_MIN_DURATION_ALERT));
+                IsSereServMinDurationAlert = Convert.ToInt32(GetValue(CONFIG_KEY__SERVICE_REQ__IS_SERE_SERV_MIN_DURATION_ALERT));
                 ShowRequestUser = GetValue(CONFIG_KEY__ShowRequestUser);
                 IsSingleCheckservice = GetValue(CONFIG_KEY__IsSingleCheckservice);
                 IsSearchAll = (GetValue(CONFIG_KEY__IsSearchAll) == GlobalVariables.CommonStringTrue);
