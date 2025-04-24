@@ -683,7 +683,6 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                            " (" + item.TDL_SERVICE_REQ_CODE +
                            "); ";
                     }
-
                     if (HisConfigCFG.IsSereServMinDurationAlert == 1)
                     {
                         if (MessageBox.Show(string.Format(ResourceMessage.SereServMinDurationAlert__BanCoMuonChuyenDoiDTTTSangVienPhi, sereServMinDurationStr), MessageUtil.GetMessage(Inventec.Desktop.Common.LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaThongBao), MessageBoxButtons.YesNo) == DialogResult.Yes)
@@ -702,12 +701,32 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                             return false;
                         }
                     }
+                    else if (HisConfigCFG.IsSereServMinDurationAlert == 2)
+                    {
+                        if (MessageBox.Show(string.Format(ResourceMessage.DichVuCoThoiGianChiDinhNamTrongKhoangThoiGianKhongChoPhep, sereServMinDurationStr), MessageUtil.GetMessage(Inventec.Desktop.Common.LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaThongBao), MessageBoxButtons.YesNo) == DialogResult.Yes)
+                        {
+                            return true;
+                        }
+                        else
+                        {
+                            return false;
+                        }
+                    }
                     else
                     {
-                        if (MessageBox.Show(string.Format(ResourceMessage.DichVuCoThoiGianChiDinhNamTrongKhoangThoiGianKhongChoPhep, sereServMinDurationStr), MessageUtil.GetMessage(Inventec.Desktop.Common.LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaThongBao), MessageBoxButtons.YesNo) == DialogResult.No)
-                            return false;
+                        if (HisConfigCFG.IsSereServMinDurationAlert == 0 || (HisConfigCFG.IsSereServMinDurationAlert != 1 && HisConfigCFG.IsSereServMinDurationAlert != 2))
+                        {
+                            if (MessageBox.Show(string.Format(ResourceMessage.DichVuCoThoiGianChiDinhNamTrongKhoangThoiGianKhongChoPhep, sereServMinDurationStr), MessageUtil.GetMessage(Inventec.Desktop.Common.LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaThongBao), MessageBoxButtons.YesNo) == DialogResult.Yes)
+                            {
+                                return true;
+                            }
+                            else
+                            {
+                                return false;
+                            }
+                        }
                     }
-                }
+                }                
             }
             catch (Exception ex)
             {
@@ -1252,19 +1271,58 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
         {
             List<HIS_SERE_SERV> listSereServResult = null;
             try
-            {              
-                if (HisConfigCFG.IsSereServMinDurationAlert == 1 || HisConfigCFG.IsSereServMinDurationAlert == 2)
-                {
-                    if (serviceCheckeds != null && serviceCheckeds.Count > 0)
+            {                     
+                    if (HisConfigCFG.IsSereServMinDurationAlert == 1 || HisConfigCFG.IsSereServMinDurationAlert == 2)
                     {
-                        var bhytServices = serviceCheckeds.Where(o => o.PATIENT_TYPE_ID == HisConfigCFG.PatientTypeId__BHYT).ToList();
-                        List<SereServADO> sereServADOExistMinDUration = bhytServices.Where(o => o.MIN_DURATION != null).ToList();
-                        if (icdServiceDuration != null && icdServiceDuration.Count > 0)
-                            sereServADOExistMinDUration = bhytServices;
-                        if (sereServADOExistMinDUration != null && sereServADOExistMinDUration.Count > 0)
+                        if (serviceCheckeds != null && serviceCheckeds.Count > 0)
+                        {
+                            var bhytServices = serviceCheckeds.Where(o => o.PATIENT_TYPE_ID == HisConfigCFG.PatientTypeId__BHYT).ToList();
+                            List<SereServADO> sereServADOExistMinDUration = bhytServices.Where(o => o.MIN_DURATION != null).ToList();
+                            if (icdServiceDuration != null && icdServiceDuration.Count > 0)
+                                sereServADOExistMinDUration = bhytServices;
+                            if (sereServADOExistMinDUration != null && sereServADOExistMinDUration.Count > 0)
+                            {
+                                List<ServiceDuration> serviceDurations = new List<ServiceDuration>();
+                                foreach (var item in sereServADOExistMinDUration)
+                                {
+                                    ServiceDuration serviceDuration = new ServiceDuration();
+                                    serviceDuration.ServiceId = item.SERVICE_ID;
+                                    if (icdServiceDuration != null && icdServiceDuration.Count > 0)
+                                        serviceDuration.MinDuration = icdServiceDuration.Where(o => o.SERVICE_ID == item.SERVICE_ID).Min(o => o.MIN_DURATION ?? 0);
+                                    else
+                                        serviceDuration.MinDuration = (item.MIN_DURATION ?? 0);
+                                    serviceDurations.Add(serviceDuration);
+                                }
+                                CommonParam param = new CommonParam();
+                                HisSereServMinDurationFilter filter = new HisSereServMinDurationFilter
+                                {
+                                    ServiceDurations = serviceDurations,
+                                    InstructionTime = this.isMultiDateState ? intructionTimeSelecteds.First() : intructionTimeSelecteds.First(),
+                                    PatientId = patientId
+                                };
+                                var result = new BackendAdapter(param).Get<List<HIS_SERE_SERV>>("api/HisSereServ/GetExceedMinDuration", ApiConsumer.ApiConsumers.MosConsumer, filter, param);
+                                if (result != null && result.Any())
+                                {
+                                    listSereServResult = result.GroupBy(o => o.SERVICE_ID).Select(g => g.OrderByDescending(x => x.TDL_INTRUCTION_TIME).First()).ToList();
+                                }
+                            }
+                            else
+                            {
+                                listSereServResult = null;
+                            }
+                        }
+                        else
+                        {
+                            listSereServResult = null;
+                        }
+                    }
+                    if (HisConfigCFG.IsSereServMinDurationAlert == 0 || (HisConfigCFG.IsSereServMinDurationAlert != 1 && HisConfigCFG.IsSereServMinDurationAlert != 2))
+                    {
+                        var allServices = serviceCheckeds.Where(o => o.MIN_DURATION != null).ToList();
+                        if (allServices.Count > 0)
                         {
                             List<ServiceDuration> serviceDurations = new List<ServiceDuration>();
-                            foreach (var item in sereServADOExistMinDUration)
+                            foreach (var item in allServices)
                             {
                                 ServiceDuration serviceDuration = new ServiceDuration();
                                 serviceDuration.ServiceId = item.SERVICE_ID;
@@ -1287,46 +1345,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                                 listSereServResult = result.GroupBy(o => o.SERVICE_ID).Select(g => g.OrderByDescending(x => x.TDL_INTRUCTION_TIME).First()).ToList();
                             }
                         }
-                        else
-                        {
-                            listSereServResult = null;
-                        }
-                    }
-                    else
-                    {
-                        listSereServResult = null;
-                    }
-                }             
-                if (HisConfigCFG.IsSereServMinDurationAlert != 1 && HisConfigCFG.IsSereServMinDurationAlert != 2)
-                {
-                    var allServices = serviceCheckeds.Where(o => o.MIN_DURATION != null).ToList();
-                    if(allServices.Count > 0)
-                    {
-                        List<ServiceDuration> serviceDurations = new List<ServiceDuration>();
-                        foreach (var item in allServices)
-                        {
-                            ServiceDuration serviceDuration = new ServiceDuration();
-                            serviceDuration.ServiceId = item.SERVICE_ID;
-                            if (icdServiceDuration != null && icdServiceDuration.Count > 0)
-                                serviceDuration.MinDuration = icdServiceDuration.Where(o => o.SERVICE_ID == item.SERVICE_ID).Min(o => o.MIN_DURATION ?? 0);
-                            else
-                                serviceDuration.MinDuration = (item.MIN_DURATION ?? 0);
-                            serviceDurations.Add(serviceDuration);
-                        }
-                        CommonParam param = new CommonParam();
-                        HisSereServMinDurationFilter filter = new HisSereServMinDurationFilter
-                        {
-                            ServiceDurations = serviceDurations,
-                            InstructionTime = this.isMultiDateState ? intructionTimeSelecteds.First() : intructionTimeSelecteds.First(),
-                            PatientId = patientId
-                        };
-                        var result = new BackendAdapter(param).Get<List<HIS_SERE_SERV>>("api/HisSereServ/GetExceedMinDuration", ApiConsumer.ApiConsumers.MosConsumer, filter, param);
-                        if (result != null && result.Any())
-                        {
-                            listSereServResult = result.GroupBy(o => o.SERVICE_ID).Select(g => g.OrderByDescending(x => x.TDL_INTRUCTION_TIME).First()).ToList();
-                        }
-                    }
-                }
+                    }                               
             }
             catch (Exception ex)
             {
@@ -1335,7 +1354,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
             }
             return listSereServResult;
         }
-
+        
         private bool ServiceAttachForServicePrimary(ref AssignServiceSDO result, long pTypeId)
         {
             bool valid = true;
@@ -1779,7 +1798,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                             else
                             {
                                 #region Hien thi message thong bao
-                                MessageManager.Show(this, paramEmr, apiResult);
+                                MessageManager.Show(this,paramEmr, apiResult);
                                 #endregion
                             }
                         }
@@ -1956,6 +1975,8 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                     #region Process has exception
                     SessionManager.ProcessTokenLost(param);
                     #endregion
+
+                    WaitingManager.Hide();
                 }
             }
             catch (Exception ex)

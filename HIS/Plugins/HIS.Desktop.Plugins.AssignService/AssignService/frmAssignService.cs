@@ -5574,26 +5574,24 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
 							}
 							else if (HisConfigCFG.IsSereServMinDurationAlert == 2)
 							{
-								if (MessageBox.Show(string.Format(ResourceMessage.BanCoMuonTiepTuc, string.Format(ResourceMessage.DichVuCoThoiGianChiDinhNamTrongKhoangThoiGianKhongChoPhep, sereServMinDurationStr)), MessageUtil.GetMessage(LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaThongBao), MessageBoxButtons.YesNo) == DialogResult.Yes)
-								{
-									return;
-
-								}
-								else
+                                if (MessageBox.Show(string.Format(ResourceMessage.DichVuCoThoiGianChiDinhNamTrongKhoangThoiGianKhongChoPhep, sereServMinDurationStr), MessageUtil.GetMessage(LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaThongBao), MessageBoxButtons.YesNo) == DialogResult.Yes)
+                                {
+                                    return;
+                                }
+                                else
 								{
 									return;
 								}
 							}
 							else
 							{
-								if (HisConfigCFG.IsSereServMinDurationAlert != 1 && HisConfigCFG.IsSereServMinDurationAlert != 2)
+								if (HisConfigCFG.IsSereServMinDurationAlert == 0 || (HisConfigCFG.IsSereServMinDurationAlert != 1 && HisConfigCFG.IsSereServMinDurationAlert != 2))
 								{
-
-									if (MessageBox.Show(string.Format(ResourceMessage.BanCoMuonTiepTuc, string.Format(ResourceMessage.DichVuCoThoiGianChiDinhNamTrongKhoangThoiGianKhongChoPhep, sereServMinDurationStr)), MessageUtil.GetMessage(LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaThongBao), MessageBoxButtons.YesNo) == DialogResult.Yes)
-									{
-										return;
-									}
-									else
+                                    if (MessageBox.Show(string.Format(ResourceMessage.DichVuCoThoiGianChiDinhNamTrongKhoangThoiGianKhongChoPhep, sereServMinDurationStr), MessageUtil.GetMessage(LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaThongBao), MessageBoxButtons.YesNo) == DialogResult.Yes)
+                                    {
+                                        return;
+                                    }
+                                    else
 									{
 										return;
 									}
@@ -6250,6 +6248,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
 			}
 			catch (Exception ex)
 			{
+				WaitingManager.Hide();
 				Inventec.Common.Logging.LogSystem.Error(ex);
 			}
 		}
