@@ -39,6 +39,8 @@ namespace HIS.Desktop.Plugins.AssignPaan.Config
         private const string SDA_CONFIG__PATIENT_TYPE_CODE__THUPHI = "HIS.HIS_PATIENT_TYPE.PATIENT_TYPE_CODE.THUPHI";
 
         private const string CONFIG_KEY__DEFAULT_PATIENT_TYPE_OPTION = "HIS.Desktop.Plugins.Assign.DefaultPatientTypeOption";
+        private const string IS_ALLOW_SIGN_NATURE_PRINT = "HIS.Desktop.Plugins.IsAllowSignaturePrint.ModuleLinks";
+        internal static string IsAllowSignaturePrint;
 
         private static long patientTypeIdIsService;
         public static long PATIENT_TYPE_ID__IS_SERIVCE

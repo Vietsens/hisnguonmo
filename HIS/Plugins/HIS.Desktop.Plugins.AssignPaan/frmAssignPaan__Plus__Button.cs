@@ -23,6 +23,7 @@ using HIS.Desktop.LocalStorage.BackendData;
 using HIS.Desktop.LocalStorage.ConfigSystem;
 using HIS.Desktop.LocalStorage.HisConfig;
 using HIS.Desktop.LocalStorage.LocalData;
+using HIS.Desktop.Plugins.AssignPaan.Config;
 using Inventec.Common.Logging;
 using Inventec.Core;
 using Inventec.Desktop.Common.Message;

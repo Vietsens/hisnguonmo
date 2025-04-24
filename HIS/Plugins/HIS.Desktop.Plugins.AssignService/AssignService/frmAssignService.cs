@@ -4970,7 +4970,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
 				{
 					return;
 				}
-				WaitingManager.Show();
+				//WaitingManager.Show();
 				//if (chkSign.Checked == false)
 				//{
 				//    chkPrintDocumentSigned.Checked = false;
