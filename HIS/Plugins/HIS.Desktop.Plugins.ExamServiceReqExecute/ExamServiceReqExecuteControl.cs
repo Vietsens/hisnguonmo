@@ -5073,7 +5073,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                 {
                     strIsToCalculateEgfr = "";
                 }
-
+                lblIsToCalculateEgfr.Visible = true;
                 lblIsToCalculateEgfr.Text = strIsToCalculateEgfr;
                 Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => strIsToCalculateEgfr), strIsToCalculateEgfr));
             }
