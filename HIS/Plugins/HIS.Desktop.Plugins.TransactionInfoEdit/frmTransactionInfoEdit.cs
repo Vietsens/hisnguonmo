@@ -474,6 +474,7 @@ namespace HIS.Desktop.Plugins.TransactionInfoEdit
                     this.txtSTKNguoiMua.Text = this._HisTransaction.BUYER_ACCOUNT_NUMBER;
                     this.txtMaSoThue.Text = this._HisTransaction.BUYER_TAX_CODE;
                     this.txtDonVi.Text = this._HisTransaction.BUYER_ORGANIZATION;
+                    this.txtBuyerEmail.Text = this._HisTransaction.BUYER_EMAIL;
                     this.spinEditAmount.EditValue = Inventec.Common.Number.Convert.NumberToString(this._HisTransaction.AMOUNT, ConfigApplications.NumberSeperator);
                     this.cboPayForm.EditValue = this._HisTransaction.PAY_FORM_ID;
                     if (this._HisTransaction.PAY_FORM_ID == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__TMCK)
@@ -673,7 +674,7 @@ namespace HIS.Desktop.Plugins.TransactionInfoEdit
                 ado.BuyerTaxCode = this.txtMaSoThue.Text;
                 ado.BuyerOrganization = this.txtDonVi.Text;
                 ado.TransactionId = this._HisTransaction.ID;
-
+                ado.BuyerEmail = this.txtBuyerEmail.Text;
                 ado.PayFormId = Convert.ToInt64(cboPayForm.EditValue);
                 ado.TransferAmount = spinEditChuyenKhoan.Value;
                 if (cboAccountBook.EditValue != null)
@@ -1321,6 +1322,15 @@ namespace HIS.Desktop.Plugins.TransactionInfoEdit
             }
         }
 
+        private void txtBuyerEmail_TextChanged(object sender, EventArgs e)
+        {
+            if (txtBuyerEmail.Text.Length > 100)
+            {
+                MessageBox.Show("Email không được vượt quá 100 ký tự!", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                txtBuyerEmail.Text = txtBuyerEmail.Text.Substring(0, 100);
+                txtBuyerEmail.SelectionStart = txtBuyerEmail.Text.Length;
+            }
 
+        }
     }
 }

@@ -177,6 +177,7 @@ namespace HIS.Desktop.Plugins.SereServTein
                     lblDescription.Text = sereServExt.First().DESCRIPTION;
                     Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData("this.sereServExt", sereServExt.First().CONCLUDE));
                 }
+                layoutControlItem10.TextVisible = false; 
             }
             catch (Exception ex)
             {

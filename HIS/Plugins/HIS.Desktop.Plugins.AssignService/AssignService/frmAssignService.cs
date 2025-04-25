@@ -1101,7 +1101,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                 if (!string.IsNullOrWhiteSpace(configValue))
                 {
                     var allowedModules = configValue
-                        .Split(new[] { ';' }, StringSplitOptions.RemoveEmptyEntries)
+                        .Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries)
                         .Select(x => x.Trim())
                         .ToList();
 
@@ -1114,8 +1114,12 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                         layoutControlItem18.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
                     }
                 }
+                else
+                {
+                    layoutControlItem18.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
+                }
             }
-			catch (Exception ex)
+            catch (Exception ex)
 			{
 				WaitingManager.Hide();
 				Inventec.Common.Logging.LogSystem.Warn(ex);
@@ -5715,7 +5719,12 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
 			try
 			{
 				SaveWithGridpatientSelect(TypeButton.SAVE_AND_PRINT, true, false, false);
-			}
+                //if (LblBtnPrint.Visibility == DevExpress.XtraLayout.Utils.LayoutVisibility.Always && BtnPrint.Enabled)
+                //{
+                //    PrintServiceReqProcessor = new Library.PrintServiceReq.PrintServiceReqProcessor(serviceReqComboResultSDO, currentHisTreatment, null, currentModule != null ? currentModule.RoomId : 0);
+                //    InPhieuYeuCauDichVu(true);
+                //}
+            }
 			catch (Exception ex)
 			{
 				Inventec.Common.Logging.LogSystem.Error(ex);
