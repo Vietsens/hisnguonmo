@@ -107,16 +107,25 @@ namespace HIS.Desktop.Plugins.PatientDocumentIssued.Form
                 filter.IsMerge = true;
                 filter.IsShowPatientSign = true;
                 filter.IsShowWatermark = false;
-                if (moduleData != null && moduleData.RoomId > 0)
-                {
-                    V_HIS_ROOM room = BackendDataWorker.Get<V_HIS_ROOM>().FirstOrDefault(o => o.ID == moduleData.RoomId);
-                    if (room != null)
+                    if (moduleData != null && moduleData.RoomId > 0)
                     {
-                        filter.RoomCode = room.ROOM_CODE;
-                        filter.DepartmentCode = room.DEPARTMENT_CODE;
+                        V_HIS_ROOM room = BackendDataWorker.Get<V_HIS_ROOM>().FirstOrDefault(o => o.ID == moduleData.RoomId);
+                        if (room != null)
+                        {
+                            filter.RoomCode = room.ROOM_CODE;
+                            filter.DepartmentCode = room.DEPARTMENT_CODE;
+                        }
+                        else
+                        {
+                            filter.IsRoomLT = true;
+                        }
                     }
-                }
-                filter.IsView = null;
+                    else
+                    {
+                        filter.IsRoomLT = true;
+                    }
+                    //filter.IsView = null;
+                    filter.IsView = true;
 
                 List<EmrDocumentFileSDO> apiResult = new BackendAdapter(paramCommon).Post<List<EmrDocumentFileSDO>>("api/EmrDocument/DownloadFile", ApiConsumers.EmrConsumer, filter, paramCommon);
                 if (apiResult != null && apiResult.Count > 0)

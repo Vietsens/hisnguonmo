@@ -445,7 +445,7 @@ namespace HIS.Desktop.Plugins.PatientDocumentIssued
                   Resources.ResourceLanguageManager.LanguageResources, LanguageManager.GetCulture());
                 this.btnPrintAllCheck.Text = Inventec.Common.Resource.Get.Value("UCPatientDocumentIssued.btnPrintAllCheck.Text",
                   Resources.ResourceLanguageManager.LanguageResources, LanguageManager.GetCulture());
-                this.bbtnFind.Caption = Inventec.Common.Resource.Get.Value("UCPatientDocumentIssued.bbtnFind.Csaption",
+                this.bbtnFind.Caption = Inventec.Common.Resource.Get.Value("UCPatientDocumentIssued.bbtnFind.Caption",
                   Resources.ResourceLanguageManager.LanguageResources, LanguageManager.GetCulture());
 
                 this.txtPatientCode.Properties.NullValuePrompt = Inventec.Common.Resource.Get.Value("UCPatientDocumentIssued.txtPatientCode.Properties.NullValuePrompt",
@@ -1245,7 +1245,12 @@ namespace HIS.Desktop.Plugins.PatientDocumentIssued
                             filter.RoomCode = room.ROOM_CODE;
                             filter.DepartmentCode = room.DEPARTMENT_CODE;
                         }
-                        filter.IsView = null;
+                        else
+                        {
+                            filter.IsRoomLT = true;
+                        }
+
+                        filter.IsView = true;
 
                         List<EmrDocumentFileSDO> apiResult = new BackendAdapter(paramCommon).Post<List<EmrDocumentFileSDO>>("api/EmrDocument/DownloadFile", ApiConsumers.EmrConsumer, filter, paramCommon);
 
