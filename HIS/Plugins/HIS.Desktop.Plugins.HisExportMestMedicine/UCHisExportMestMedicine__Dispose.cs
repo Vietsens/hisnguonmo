@@ -62,7 +62,7 @@ namespace HIS.Desktop.Plugins.HisExportMestMedicine
                 this.gridView.RowCellStyle -= new DevExpress.XtraGrid.Views.Grid.RowCellStyleEventHandler(this.gridView_RowCellStyle);
                 this.gridView.CustomRowCellEdit -= new DevExpress.XtraGrid.Views.Grid.CustomRowCellEditEventHandler(this.gridView_CustomRowCellEdit);
                 this.gridView.PopupMenuShowing -= new DevExpress.XtraGrid.Views.Grid.PopupMenuShowingEventHandler(this.gridView_PopupMenuShowing);
-                this.gridView.CustomUnboundColumnData -= new DevExpress.XtraGrid.Views.Base.CustomColumnDataEventHandler(this.gridView_CustomUnboundColumnData);
+                this.gridView.CustomUnboundColumnData -= new DevExpress.XtraGrid.Views.Base.CustomColumnDataEventHandler(this.Gv_ExpMestDetail_CustomUnboundColumnData);
                 this.repositoryItemButtonViewDetail.ButtonClick -= new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.repositoryItemButtonViewDetail_ButtonClick);
                 this.Btn_Check_TruyenMau_Enable.ButtonClick -= new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.Btn_Check_TruyenMau_Enable_ButtonClick);
                 this.ButtonCopyExportMest.ButtonClick -= new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.ButtonCopyExportMest_ButtonClick);
