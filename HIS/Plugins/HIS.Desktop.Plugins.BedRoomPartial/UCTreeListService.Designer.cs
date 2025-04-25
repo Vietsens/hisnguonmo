@@ -45,7 +45,6 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(UCTreeListService));
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject1 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject2 = new DevExpress.Utils.SerializableAppearanceObject();
@@ -79,10 +78,6 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject30 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject31 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject32 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject33 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject34 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject35 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject36 = new DevExpress.Utils.SerializableAppearanceObject();
             this.layoutControl1 = new DevExpress.XtraLayout.LayoutControl();
             this.treeSereServ = new DevExpress.XtraTreeList.TreeList();
             this.tc_SendTestServiceReq = new DevExpress.XtraTreeList.Columns.TreeListColumn();
@@ -106,7 +101,7 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
             this.rep_btnEdit_Disable = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
             this.rep_btnDelete_Enable = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
             this.rep_btnDelete_Disable = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
-            this.toolTipController2 = new DevExpress.Utils.ToolTipController(this.components);
+            this.toolTipController2 = new DevExpress.Utils.ToolTipController();
             this.layoutControlGroup1 = new DevExpress.XtraLayout.LayoutControlGroup();
             this.layoutControlItem1 = new DevExpress.XtraLayout.LayoutControlItem();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
@@ -197,8 +192,12 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
             // 
             // tc_SendTestServiceReq
             // 
+            this.tc_SendTestServiceReq.AppearanceCell.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(5)));
+            this.tc_SendTestServiceReq.AppearanceCell.Options.UseFont = true;
             this.tc_SendTestServiceReq.AppearanceCell.Options.UseTextOptions = true;
             this.tc_SendTestServiceReq.AppearanceCell.TextOptions.VAlignment = DevExpress.Utils.VertAlignment.Top;
+            this.tc_SendTestServiceReq.AppearanceHeader.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(5)));
+            this.tc_SendTestServiceReq.AppearanceHeader.Options.UseFont = true;
             this.tc_SendTestServiceReq.Caption = " ";
             this.tc_SendTestServiceReq.FieldName = "SendTestServiceReq";
             this.tc_SendTestServiceReq.MinWidth = 50;

@@ -78,7 +78,6 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
                 this.wkRoomId = currentModule != null ? currentModule.RoomId : 0;
                 this.wkRoomTypeId = currentModule != null ? currentModule.RoomTypeId : 0;
 
-
             }
             catch (Exception ex)
             {
