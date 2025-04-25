@@ -1096,21 +1096,22 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
 					: DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
 				txtDutruTime.Enabled = !chkMultiIntructionTime.Checked;
 
-                Inventec.Desktop.Common.Modules.Module module = GlobalVariables.currentModuleRaws.Where(o => o.ModuleLink == "HIS.Desktop.Plugins.AssignService").FirstOrDefault();
+                string configValue = HisConfigCFG.IsAllowSignaturePrint;
 
-                if (module != null)
+                if (!string.IsNullOrWhiteSpace(configValue))
                 {
-                    var IsSignPrint = HisConfigCFG.IsAllowSignaturePrint.Split(';');
-                    if (IsSignPrint != null)
+                    var allowedModules = configValue
+                        .Split(new[] { ';' }, StringSplitOptions.RemoveEmptyEntries)
+                        .Select(x => x.Trim())
+                        .ToList();
+
+                    if (allowedModules.Contains("HIS.Desktop.Plugins.AssignService"))
                     {
-                        if (IsSignPrint.Contains(HisConfigCFG.IsAllowSignaturePrint))
-                        {
-							layoutControlItem18.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
-                        }
-                        else
-                        {
-                            layoutControlItem18.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
-                        }
+                        layoutControlItem18.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+                    }
+                    else
+                    {
+                        layoutControlItem18.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
                     }
                 }
             }
