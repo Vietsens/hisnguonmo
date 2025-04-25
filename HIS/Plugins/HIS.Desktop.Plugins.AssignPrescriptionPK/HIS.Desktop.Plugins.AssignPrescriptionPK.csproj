@@ -130,7 +130,8 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\lib\HIS\HIS.Desktop.Plugins.Library.PrintTreatmentEndTypeExt\HIS.Desktop.Plugins.Library.PrintTreatmentEndTypeExt.dll</HintPath>
     </Reference>
-    <Reference Include="HIS.Desktop.Plugins.Library.PrintTreatmentFinish">
+    <Reference Include="HIS.Desktop.Plugins.Library.PrintTreatmentFinish, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\..\His Test\histest\x64\ReferencedAssemblies\HIS.Desktop.Plugins.Library.PrintTreatmentFinish.dll</HintPath>
     </Reference>
     <Reference Include="HIS.Desktop.Print, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
@@ -159,7 +160,7 @@
     </Reference>
     <Reference Include="HIS.UC.PeriousExpMestList, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\lib\HIS\HIS.UC.PeriousExpMestList\HIS.UC.PeriousExpMestList.dll</HintPath>
+      <HintPath>..\..\..\..\..\His Test\histest\x64\ReferencedAssemblies\HIS.UC.PeriousExpMestList.dll</HintPath>
     </Reference>
     <Reference Include="HIS.UC.SecondaryIcd">
       <HintPath>..\..\..\..\lib\HIS\HIS.UC.SecondaryIcd\HIS.UC.SecondaryIcd.dll</HintPath>
@@ -288,7 +289,7 @@
     </Reference>
     <Reference Include="log4net, Version=1.2.10.0, Culture=neutral, PublicKeyToken=1b44e1d426115821, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\lib\Inventec.Core\log4net.dll</HintPath>
+      <HintPath>..\..\..\..\lib\Library packages\log4net.1.2.10\log4net.dll</HintPath>
     </Reference>
     <Reference Include="MOS.EFMODEL">
       <HintPath>..\..\..\..\lib\MOS\MOS.EFMODEL.dll</HintPath>
@@ -599,11 +600,7 @@
     <Compile Include="MixedInfusion\frmMixedInfusion.Designer.cs">
       <DependentUpon>frmMixedInfusion.cs</DependentUpon>
     </Compile>
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Resources.resx</DependentUpon>
-    </Compile>
+    <Compile Include="Properties\Resources.Designer.cs" />
     <Compile Include="Util\IcdUtil.cs" />
     <Compile Include="MessageBoxForm\frmMessageBoxChooseVT.cs">
       <SubType>Form</SubType>
@@ -796,12 +793,14 @@
     </EmbeddedResource>
     <EmbeddedResource Include="AssignPrescription\frmChoiceSingleDate.resx">
       <DependentUpon>frmChoiceSingleDate.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="AssignPrescription\frmEyeInfo.resx">
       <DependentUpon>frmEyeInfo.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="AssignPrescription\frmIsExpendType.resx">
       <DependentUpon>frmIsExpendType.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="AssignPrescription\frmAssignPrescription.resx">
       <DependentUpon>frmAssignPrescription.cs</DependentUpon>
@@ -809,30 +808,39 @@
     </EmbeddedResource>
     <EmbeddedResource Include="AssignPrescription\frmEditDayNum.resx">
       <DependentUpon>frmEditDayNum.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="AssignPrescription\frmHisExpMestTemplateCreate.resx">
       <DependentUpon>frmHisExpMestTemplateCreate.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="AssignPrescription\frmMedicineDebateConfirm.resx">
       <DependentUpon>frmMedicineDebateConfirm.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="AssignPrescription\frmMultiIntructonTime.resx">
       <DependentUpon>frmMultiIntructonTime.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="AssignPrescription\frmTreatmentMethod.resx">
       <DependentUpon>frmTreatmentMethod.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="ChooseICD\frmChooseICD.resx">
       <DependentUpon>frmChooseICD.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="ChooseICD\frmMissingIcd.resx">
       <DependentUpon>frmMissingIcd.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="ChooseMediStock\frmDetailsSereServ.resx">
       <DependentUpon>frmDetailsSereServ.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="ChooseMediStock\frmTuberCulosis.resx">
       <DependentUpon>frmTuberCulosis.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="ChooseMediStock\frmWorkingMediStock.resx">
       <DependentUpon>frmWorkingMediStock.cs</DependentUpon>
@@ -844,9 +852,11 @@
     </EmbeddedResource>
     <EmbeddedResource Include="MessageBoxForm\frmBlockNoAdd.resx">
       <DependentUpon>frmBlockNoAdd.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="MessageBoxForm\frmMessageBoxChooseMaterialTypeMap.resx">
       <DependentUpon>frmMessageBoxChooseMaterialTypeMap.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="MessageBoxForm\frmMessageBoxChooseThuocExceAmout.resx">
       <DependentUpon>frmMessageBoxChooseThuocExceAmout.cs</DependentUpon>
@@ -854,32 +864,39 @@
     </EmbeddedResource>
     <EmbeddedResource Include="MessageBoxForm\frmMessageBoxChooseVT.resx">
       <DependentUpon>frmMessageBoxChooseVT.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="MessageBoxForm\frmMessageBoxChooseAcinBhyt.resx">
       <DependentUpon>frmMessageBoxChooseAcinBhyt.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="MessageBoxForm\frmMutlilPatientReasonInBatch.resx">
       <DependentUpon>frmMutlilPatientReasonInBatch.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="MessageBoxForm\frmOverReason.resx">
       <DependentUpon>frmOverReason.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="MessageBoxForm\frmReasonOddPres.resx">
       <DependentUpon>frmReasonOddPres.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="MessageBoxForm\frmReasonMaxPrescription.resx">
       <DependentUpon>frmReasonMaxPrescription.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="MessageBoxForm\frmMessageBoxInteraction.resx">
       <DependentUpon>frmMessageBoxInteraction.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="MixedInfusion\frmMixedInfusion.resx">
       <DependentUpon>frmMixedInfusion.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <SubType>Designer</SubType>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Resources\Lang.en.resx">
       <SubType>Designer</SubType>

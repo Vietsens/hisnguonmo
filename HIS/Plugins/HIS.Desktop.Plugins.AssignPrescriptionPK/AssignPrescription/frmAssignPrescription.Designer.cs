@@ -2074,9 +2074,9 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
             // lblIsToCalculateEgfr
             // 
             this.lblIsToCalculateEgfr.AutoSizeMode = DevExpress.XtraEditors.LabelAutoSizeMode.None;
-            this.lblIsToCalculateEgfr.Location = new System.Drawing.Point(255, 123);
+            this.lblIsToCalculateEgfr.Location = new System.Drawing.Point(184, 123);
             this.lblIsToCalculateEgfr.Name = "lblIsToCalculateEgfr";
-            this.lblIsToCalculateEgfr.Size = new System.Drawing.Size(106, 20);
+            this.lblIsToCalculateEgfr.Size = new System.Drawing.Size(177, 20);
             this.lblIsToCalculateEgfr.StyleController = this.layoutControl9;
             this.lblIsToCalculateEgfr.TabIndex = 27;
             // 
@@ -2544,8 +2544,9 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
             this.layoutControlItem32.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
             this.layoutControlItem32.Text = "MLCT:";
             this.layoutControlItem32.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
-            this.layoutControlItem32.TextSize = new System.Drawing.Size(69, 20);
-            this.layoutControlItem32.TextToControlDistance = 2;
+            this.layoutControlItem32.TextSize = new System.Drawing.Size(0, 0);
+            this.layoutControlItem32.TextToControlDistance = 0;
+            this.layoutControlItem32.TextVisible = false;
             // 
             // layoutControlItem55
             // 

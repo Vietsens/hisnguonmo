@@ -236,7 +236,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                     return;
 
                 CommonParam param = new CommonParam();
-                if (_serviceReqPrintAlls == null)
+                //if (_serviceReqPrintAlls == null)
                 {
                     
                     //Load đơn phòng khám
@@ -246,10 +246,10 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                     serviceReqPrintAlls = await new BackendAdapter(param)
                           .GetAsync<List<MOS.EFMODEL.DataModels.HIS_SERVICE_REQ>>("api/HisServiceReq/Get", ApiConsumers.MosConsumer, serviceReqFilter, param);
                 }
-                else
-                {
-                    serviceReqPrintAlls = _serviceReqPrintAlls;
-                }
+                //else
+                //{
+                //    serviceReqPrintAlls = _serviceReqPrintAlls;
+                //}
 
                 if (serviceReqPrintAlls == null || serviceReqPrintAlls.Count == 0)
                     return;

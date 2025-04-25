@@ -79,7 +79,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                 this.spinHeight.EditValueChanged -= new System.EventHandler(this.spinHeight_EditValueChanged);
 
 
-
+                  
                 this.gridControlOtherPaySource.Click -= new System.EventHandler(this.gridControlOtherPaySource_Click);
                 this.gridViewOtherPaySource.KeyDown -= new System.Windows.Forms.KeyEventHandler(this.gridViewOtherPaySource_KeyDown);
 
