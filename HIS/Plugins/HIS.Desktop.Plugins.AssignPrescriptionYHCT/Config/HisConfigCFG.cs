@@ -59,6 +59,8 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.Config
         private const string MUST_FINISH_ALL_SERVICES_BEFORE_FINISH_TREATMENT_CFG = "MOS.HIS_TREATMENT.MUST_FINISH_ALL_SERVICES_BEFORE_FINISH_TREATMENT";
         private const string SERVICE_CODE__AUTO_FINISH = "MOS.HIS_TREATMENT.AUTO_FINISH_SERVICE_REQ.SERVICE_CODE";
         private const string CONFIG_KEY____ISAUTO_CLOSE_FROM_WITH_AUTO_TREATMENT_FINISH = "HIS.Desktop.Plugins.AssignPrescription.IsAutoCloseFormWithAutoConfigTreatmentFinish";
+        //dangth
+        private const string CONFIG_KEY__IS_ALLOW_SIGNATURE_PRINT = "HIS.Desktop.Plugins.IsAllowSignaturePrint.ModuleLinks";
         private const string Key__WarningOverCeiling__Exam__Out__In = "HIS.Desktop.Plugins.WarningOverCeiling.Exam__Out__In";
         public const string ONLY_DISPLAY_MEDIMATE_IS_BUSINESS = "HIS.Desktop.Plugins.AssignPrescription.OnlyDisplayMediMateIsBusiness";
 
