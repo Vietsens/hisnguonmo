@@ -50,7 +50,6 @@ namespace HIS.Desktop.Plugins.BedRoomPartial.ADO
             {
                 if (data != null)
                 {
-                    
                     Inventec.Common.Mapper.DataObjectMapper.Map<SereServADO>(this, data);
                     this.PARENT_ID__IN_SETY = data.SERVICE_REQ_CODE;
                 }
