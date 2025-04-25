@@ -35,7 +35,6 @@ namespace HIS.Desktop.Plugins.ExroRoom.ExroRoom
 
 
 
-
         internal ExroRoomBehavior()
             : base()
         {
@@ -85,7 +84,7 @@ namespace HIS.Desktop.Plugins.ExroRoom.ExroRoom
                         result = new UCExroRoom(executeRoom, bedRoom, moduleData);
                     }
                     else
-                    {
+                    {    
                         if (executeRoom1 != null)
                         {
                             result = new UCExroRoom(executeRoom1, moduleData);

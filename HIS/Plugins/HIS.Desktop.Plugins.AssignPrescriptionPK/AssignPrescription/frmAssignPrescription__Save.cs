@@ -936,11 +936,29 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                             {
                                 if (printNow)
                                 {
-                                    previewType = MPS.ProcessorBase.PrintConfig.PreviewType.EmrSignAndPrintNow;
+                                    Inventec.Desktop.Common.Modules.Module moduleData = GlobalVariables.currentModuleRaws.Where(o => o.ModuleLink == "HIS.Desktop.Plugins.AssignPrescriptionPK").FirstOrDefault();
+
+                                    var allowedModules = HisConfigCFG.MODULELINKS.Split(',');
+
+                                    if (!string.IsNullOrWhiteSpace(HisConfigCFG.MODULELINKS) && moduleData != null && allowedModules.Contains(moduleData.ModuleLink))
+                                    {
+                                        if (allowedModules.Contains(moduleData.ModuleLink))
+                                        {
+                                            previewType = MPS.ProcessorBase.PrintConfig.PreviewType.EmrSignAndPrintPreview;
+                                        }
+                                    }
+                                    else if (chkPreviewBeforePrint.Checked)
+                                    {
+                                        previewType = MPS.ProcessorBase.PrintConfig.PreviewType.EmrSignAndPrintNow;
+                                    }
+                                    else
+                                    {
+                                        previewType = MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow;
+                                    }
                                 }
                                 else if (chkPreviewBeforePrint.Checked)
                                 {
-                                    previewType = MPS.ProcessorBase.PrintConfig.PreviewType.EmrSignAndPrintPreview;
+                                    previewType = MPS.ProcessorBase.PrintConfig.PreviewType.EmrSignAndPrintNow;
                                 }
                                 else
                                     previewType = MPS.ProcessorBase.PrintConfig.PreviewType.EmrSignNow;
@@ -949,11 +967,30 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                             {
                                 if (printNow)
                                 {
-                                    previewType = MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow;
+                                    Inventec.Desktop.Common.Modules.Module moduleData = GlobalVariables.currentModuleRaws.Where(o => o.ModuleLink == "HIS.Desktop.Plugins.AssignPrescriptionPK").FirstOrDefault();
+
+                                    var allowedModules = HisConfigCFG.MODULELINKS.Split(',');
+
+                                    if (!string.IsNullOrWhiteSpace(HisConfigCFG.MODULELINKS) && moduleData != null && allowedModules.Contains(moduleData.ModuleLink))
+                                    {
+                                        if (allowedModules.Contains(moduleData.ModuleLink))
+                                        {
+                                            previewType = MPS.ProcessorBase.PrintConfig.PreviewType.EmrSignAndPrintPreview;
+                                        }
+                                    }
+                                    else if (chkPreviewBeforePrint.Checked)
+                                    {
+                                        previewType = MPS.ProcessorBase.PrintConfig.PreviewType.EmrSignAndPrintNow;
+                                    }
+                                    else
+                                    {
+                                        previewType = MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow;
+                                    }
+
                                 }
                                 else if (chkPreviewBeforePrint.Checked)
                                 {
-                                    previewType = MPS.ProcessorBase.PrintConfig.PreviewType.Show;
+                                    previewType = MPS.ProcessorBase.PrintConfig.PreviewType.Show;    
                                 }
                             }
                             if (previewType != null)

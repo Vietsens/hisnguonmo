@@ -65,6 +65,7 @@ using System.Drawing;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Reflection.Emit;
 using System.Resources;
 using System.Text;
 using System.Threading.Tasks;
@@ -119,6 +120,8 @@ namespace HIS.Desktop.Plugins.ReturnMicrobiologicalResults
         List<LIS_BACTERIUM> datasBacterium = null;
         DateTime currentTimer;
         DateTime currentTimerLM;
+        DateTime SAMPLE_TIME;
+        private Timer realTimeTimer;
         TimerSDO timeSync { get; set; }
 
         List<HIS_DEPARTMENT> lstDepart;
@@ -187,6 +190,8 @@ namespace HIS.Desktop.Plugins.ReturnMicrobiologicalResults
                 StartTimer(currentModule.ModuleLink, "timer1");
                 RegisterTimer(currentModule.ModuleLink, "timer2", timer2.Interval, timer2_Tick);
                 StartTimer(currentModule.ModuleLink, "timer2");
+                this.dtSampleTime.EditValueChanged += DateEdit_ValueChanged;
+                this.dtResultTime.EditValueChanged += DateEdit_ValueChanged;
             }
             catch (Exception ex)
             {
@@ -197,14 +202,98 @@ namespace HIS.Desktop.Plugins.ReturnMicrobiologicalResults
         {
             try
             {
+                rowSample2 = (V_LIS_SAMPLE_2)gridViewSample.GetFocusedRow();
+                V_LIS_SAMPLE_2 sample = new V_LIS_SAMPLE_2();
+                sample = rowSample2;
+
                 timeSync = new BackendAdapter(new CommonParam()).Get<TimerSDO>(AcsRequestUriStore.ACS_TIMER__SYNC, ApiConsumers.AcsConsumer, 1, new CommonParam());
                 currentTimer = currentTimerLM = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(timeSync.LocalTime) ?? DateTime.Now;
+
+                if (realTimeTimer != null)
+                {
+                    realTimeTimer.Stop();
+                    realTimeTimer.Dispose();
+                    realTimeTimer = null;
+                }
+
+                if (sample == null)
+                {
+                    DateTime startTime = Convert.ToDateTime(dtSampleTime.EditValue);
+                    DateTime endTime = Convert.ToDateTime(dtResultTime.EditValue);
+
+                    TimeSpan duration = endTime - startTime;
+
+                    if (duration.TotalSeconds < 0)
+                        duration = TimeSpan.Zero;
+
+                    lblTGThucHien.Text = FormatTimeSpan(duration);
+                }
+                else
+                {
+                    if (sample.RESULT_TIME == null && sample.SAMPLE_TIME == null)
+                    {
+                        TimeSpan duration = currentTimer - currentTimerLM;
+                        lblTGThucHien.Text = FormatTimeSpan(duration);
+                    }
+                    else if (sample.RESULT_TIME == null && sample.SAMPLE_TIME != null)
+                    {
+                        SAMPLE_TIME = Convert.ToDateTime(dtSampleTime.EditValue);
+                        if (realTimeTimer == null || !realTimeTimer.Enabled)
+                            StartLiveTimer(lblTGThucHien, SAMPLE_TIME);
+                        //StartLiveTimer(lblTGThucHien, SAMPLE_TIME);
+                    }
+                    else
+                    {
+                        TimeSpan duration = dtResultTime.DateTime - dtSampleTime.DateTime;
+                        lblTGThucHien.Text = FormatTimeSpan(duration);
+                    }
+                }
+                
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
+
+        public void StartLiveTimer(DevExpress.XtraEditors.LabelControl label , DateTime startTime)
+        {
+            if (realTimeTimer != null && realTimeTimer.Enabled)
+            {
+                realTimeTimer.Stop();
+            }
+
+            if (startTime == null)
+            {
+                label.Text = "00:00:00";
+                return;
+            }   
+
+            if (realTimeTimer != null)
+            {
+                realTimeTimer.Stop();
+                realTimeTimer.Dispose();
+            }
+
+            realTimeTimer = new Timer();
+            realTimeTimer.Interval = 1000;
+            realTimeTimer.Tick += (s, e) =>
+            {
+                TimeSpan duration = DateTime.Now - startTime;
+                label.Text = FormatTimeSpan(duration);
+            };
+            realTimeTimer.Start();
+        }
+
+        private string FormatTimeSpan(TimeSpan duration)
+        {
+            return string.Format("{0:D2}:{1:D2}:{2:D2}",
+                (int)duration.TotalHours,
+                duration.Minutes,
+                duration.Seconds);
+        }
+        
+
         private void timer1_Tick()
         {
             try
@@ -227,7 +316,7 @@ namespace HIS.Desktop.Plugins.ReturnMicrobiologicalResults
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
-        }
+        }    
         private void timer2_Tick()
         {
             try
@@ -469,6 +558,7 @@ namespace HIS.Desktop.Plugins.ReturnMicrobiologicalResults
                     return;
                 }
                 RowClick(null, null);
+
             }
             catch (Exception ex)
             {
@@ -576,6 +666,9 @@ namespace HIS.Desktop.Plugins.ReturnMicrobiologicalResults
                 {
                     dtSampleTime.EditValue = currentTimerLM;
                 }
+
+                
+
             }
             catch (Exception ex)
             {
@@ -5182,5 +5275,36 @@ namespace HIS.Desktop.Plugins.ReturnMicrobiologicalResults
             }
         }
 
+        private void DateEdit_ValueChanged(object sender, EventArgs e)
+        {
+            if (realTimeTimer != null && realTimeTimer.Enabled)
+            {
+                realTimeTimer.Stop();
+                realTimeTimer.Dispose();
+                realTimeTimer = null;
+            }
+
+            // Lấy giá trị từ dateEdit
+            if (dtSampleTime.EditValue != null && dtResultTime.EditValue != null)
+            {
+                DateTime startTime = Convert.ToDateTime(dtSampleTime.EditValue);
+                DateTime endTime = Convert.ToDateTime(dtResultTime.EditValue);
+
+                // Tính khoảng thời gian
+                TimeSpan duration = endTime - startTime;
+
+                if (duration.TotalSeconds < 0)
+                    duration = TimeSpan.Zero; // tránh âm
+
+                lblTGThucHien.Text = FormatTimeSpan(duration);
+            }
+            else
+            {
+                lblTGThucHien.Text = "00:00:00";
+            }
+        }
+
+
     }
 }
+

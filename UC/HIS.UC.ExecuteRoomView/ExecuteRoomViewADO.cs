@@ -40,16 +40,15 @@ namespace HIS.UC.ExecuteRoomView
         {
             if (data != null)
             {
+                Inventec.Common.Mapper.DataObjectMapper.Map<ExecuteRoomViewADO>(this, data);
                 this.EXECUTE_ROOM_CODE = data.BED_ROOM_CODE;
-                this.EXECUTE_ROOM_NAME = data.BED_ROOM_NAME;    
-                this.DEPARTMENT_ID = data.DEPARTMENT_ID;
-                this.ROOM_TYPE_ID = data.ROOM_TYPE_ID;
+                this.EXECUTE_ROOM_NAME = data.BED_ROOM_NAME;          
                 this.RoomType = "BED";
-            }
+            }   
         }
 
         public string RoomType { get; set; }
-        public bool check1 { get; set; }
+        public bool check1 { get; set; }   
         public bool isKeyChoose { get; set; }
         public bool radio1 { get; set; }    
 
