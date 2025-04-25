@@ -251,9 +251,7 @@
     <Compile Include="Base\HisConfigCFG.cs" />
     <Compile Include="Base\PrintTypeCodeWorker.cs" />
     <Compile Include="ExpMestADO.cs" />
-    <Compile Include="frmMessage.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="frmMessage.cs" />
     <Compile Include="frmMessage.Designer.cs">
       <DependentUpon>frmMessage.cs</DependentUpon>
     </Compile>
@@ -279,21 +277,13 @@
     </Compile>
     <Compile Include="Resources\ResourceLanguageManager.cs" />
     <Compile Include="Resources\ResourceMessage.cs" />
-    <Compile Include="UCHisExportMestMedicine.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
+    <Compile Include="UCHisExportMestMedicine.cs" />
     <Compile Include="UCHisExportMestMedicine.Designer.cs">
       <DependentUpon>UCHisExportMestMedicine.cs</DependentUpon>
     </Compile>
-    <Compile Include="UCHisExportMestMedicine_Event.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="UCHisExportMestMedicine__Dispose.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="UCHisExportMestMedicine__CallPatient.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
+    <Compile Include="UCHisExportMestMedicine_Event.cs" />
+    <Compile Include="UCHisExportMestMedicine__Dispose.cs" />
+    <Compile Include="UCHisExportMestMedicine__CallPatient.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="frmMessage.resx">
