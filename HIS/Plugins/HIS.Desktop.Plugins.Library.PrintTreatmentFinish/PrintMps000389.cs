@@ -50,27 +50,27 @@ namespace HIS.Desktop.Plugins.Library.PrintTreatmentFinish
             }
         }
 
-        public PrintMps000389(string printTypeCode, string fileName, ref bool result, MOS.EFMODEL.DataModels.V_HIS_PATIENT HisPatient, MOS.EFMODEL.DataModels.HIS_TREATMENT HisTreatment, MPS.ProcessorBase.PrintConfig.PreviewType? _previewType, long? roomId)
-        {
-            try
-            {
-                if (HisTreatment == null || HisTreatment.ID <= 0)
-                {
-                    result = false;
-                    return;
-                }
+        //public PrintMps000389(string printTypeCode, string fileName, ref bool result, MOS.EFMODEL.DataModels.V_HIS_PATIENT HisPatient, MOS.EFMODEL.DataModels.HIS_TREATMENT HisTreatment, MPS.ProcessorBase.PrintConfig.PreviewType? _previewType, long? roomId)
+        //{
+        //    try
+        //    {
+        //        if (HisTreatment == null || HisTreatment.ID <= 0)
+        //        {
+        //            result = false;
+        //            return;
+        //        }
 
-                mps000389RDO = new MPS.Processor.Mps000389.PDO.Mps000389PDO(
-                   HisTreatment
-                   );
+        //        mps000389RDO = new MPS.Processor.Mps000389.PDO.Mps000389PDO(
+        //           HisTreatment
+        //           );
 
-                result = Print.RunPrint(printTypeCode, fileName, mps000389RDO, null
-                    , result, _previewType, roomId);
-            }
-            catch (Exception ex)
-            {
-                Inventec.Common.Logging.LogSystem.Error(ex);
-            }
-        }
+        //        result = Print.RunPrint(printTypeCode, fileName, mps000389RDO, null
+        //            , result, _previewType, roomId);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Inventec.Common.Logging.LogSystem.Error(ex);
+        //    }
+        //}
     }
 }

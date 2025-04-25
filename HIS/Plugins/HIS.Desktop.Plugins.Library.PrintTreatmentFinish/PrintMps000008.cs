@@ -81,45 +81,45 @@ namespace HIS.Desktop.Plugins.Library.PrintTreatmentFinish
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
-        public PrintMps000008(string printTypeCode, string fileName, ref bool result, MOS.EFMODEL.DataModels.V_HIS_PATIENT HisPatient, MOS.EFMODEL.DataModels.HIS_TREATMENT HisTreatment, MOS.EFMODEL.DataModels.V_HIS_PATIENT_TYPE_ALTER VHisPatientTypeAlter, MPS.ProcessorBase.PrintConfig.PreviewType? _previewType, long? roomId)
-        {
-            try
-            {
-                if (HisTreatment == null || HisTreatment.ID <= 0)
-                {
-                    result = false;
-                    return;
-                }
+        //public PrintMps000008(string printTypeCode, string fileName, ref bool result, MOS.EFMODEL.DataModels.V_HIS_PATIENT HisPatient, MOS.EFMODEL.DataModels.HIS_TREATMENT HisTreatment, MOS.EFMODEL.DataModels.V_HIS_PATIENT_TYPE_ALTER VHisPatientTypeAlter, MPS.ProcessorBase.PrintConfig.PreviewType? _previewType, long? roomId)
+        //{
+        //    try
+        //    {
+        //        if (HisTreatment == null || HisTreatment.ID <= 0)
+        //        {
+        //            result = false;
+        //            return;
+        //        }
 
-                if (HisConfigs.Get<string>(Config.KEY_IN_RA_VIEN) == "1" && HisTreatment.IS_ACTIVE == 1)
-                {
-                    DevExpress.XtraEditors.XtraMessageBox.Show(String.Format(Resources.ResourceLanguageManager.BenhNhanChuaKhoaVienPhi, Resources.ResourceLanguageManager.GiayRaVien));
-                }
-                else
-                {
-                    ProcessThreadGetData(HisTreatment);
+        //        if (HisConfigs.Get<string>(Config.KEY_IN_RA_VIEN) == "1" && HisTreatment.IS_ACTIVE == 1)
+        //        {
+        //            DevExpress.XtraEditors.XtraMessageBox.Show(String.Format(Resources.ResourceLanguageManager.BenhNhanChuaKhoaVienPhi, Resources.ResourceLanguageManager.GiayRaVien));
+        //        }
+        //        else
+        //        {
+        //            ProcessThreadGetData(HisTreatment);
 
-                    var appointmentPeriods = BackendDataWorker.Get<HIS_APPOINTMENT_PERIOD>();
-                    MPS.Processor.Mps000008.PDO.PatientADO PatientADO = new MPS.Processor.Mps000008.PDO.PatientADO(HisPatient);
+        //            var appointmentPeriods = BackendDataWorker.Get<HIS_APPOINTMENT_PERIOD>();
+        //            MPS.Processor.Mps000008.PDO.PatientADO PatientADO = new MPS.Processor.Mps000008.PDO.PatientADO(HisPatient);
 
-                    mps000008RDO = new MPS.Processor.Mps000008.PDO.Mps000008PDO(
-                       PatientADO,
-                       VHisPatientTypeAlter,
-                       HisTreatment,
-                       mps000008ADO,
-                       timeIn,
-                       ListEkipUser,
-                       appointmentPeriods,
-                       tracking);
+        //            mps000008RDO = new MPS.Processor.Mps000008.PDO.Mps000008PDO(
+        //               PatientADO,
+        //               VHisPatientTypeAlter,
+        //               HisTreatment,
+        //               mps000008ADO,
+        //               timeIn,
+        //               ListEkipUser,
+        //               appointmentPeriods,
+        //               tracking);
 
-                    result = Print.RunPrint(printTypeCode, fileName, mps000008RDO, (Inventec.Common.FlexCelPrint.DelegateEventLog)EventLogPrint, result, _previewType, roomId);
-                }
-            }
-            catch (Exception ex)
-            {
-                Inventec.Common.Logging.LogSystem.Error(ex);
-            }
-        }
+        //            result = Print.RunPrint(printTypeCode, fileName, mps000008RDO, (Inventec.Common.FlexCelPrint.DelegateEventLog)EventLogPrint, result, _previewType, roomId);
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Inventec.Common.Logging.LogSystem.Error(ex);
+        //    }
+        //}
 
         private void ProcessThreadGetData(HIS_TREATMENT HisTreatment)
         {
