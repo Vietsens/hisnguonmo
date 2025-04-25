@@ -16,6 +16,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 using System;
+using System.Globalization;
 
 namespace Inventec.Common.Calculate
 {
@@ -61,20 +62,23 @@ namespace Inventec.Common.Calculate
         public static string MucLocCauThanCrCleGFR(long patientDob, decimal weight, decimal height, decimal resultTestIndex, bool isMale)
         {
             string result = null;
+
             try
             {
                 var age = Age(patientDob);
                 var number = MucLocCauThan(patientDob, weight, height, resultTestIndex, isMale);
+                number = Math.Round(number, 4); 
+
                 if (age >= 17)
                 {
-                    result = string.Format("{0} (CrCl)", number);
+                    result = string.Format("CrCl: {0} ml/phút", number);
                 }
                 else
                 {
-                    result = string.Format("{0} (eGFR)", number);
+                    result = string.Format("eGFR: {0} ml/phút/1,73 m2", number);
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 result = null;
             }

@@ -5,3 +5,5 @@ obj/
 *.licx
 *.suo
 *.user
+/HIS/Plugins/HIS.Desktop.Plugins.TreatmentIcdEdit/Properties
+/HIS/Plugins/HIS.Desktop.Plugins.ImportBlood/ADO
