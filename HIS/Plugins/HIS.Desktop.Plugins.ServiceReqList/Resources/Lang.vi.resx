@@ -687,4 +687,7 @@
   <data name="frmTutorial.layoutControlItem5.Text" xml:space="preserve">
     <value>Cách dùng:</value>
   </data>
+  <data name="frmServiceReqList.gridColumn12.Caption" xml:space="preserve">
+    <value>Ngày dự trù</value>
+  </data>
 </root>
