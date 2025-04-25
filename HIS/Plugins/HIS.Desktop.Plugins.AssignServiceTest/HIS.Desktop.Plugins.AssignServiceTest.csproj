@@ -257,7 +257,9 @@
     <Compile Include="AssignService\AssignServiceBehavior.cs" />
     <Compile Include="AssignService\AssignServiceFactory.cs" />
     <Compile Include="AssignService\frmAssignService__Print.cs" />
-    <Compile Include="AssignService\frmAssignService__TabIndex.cs" />
+    <Compile Include="AssignService\frmAssignService__TabIndex.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="AssignService\frmAssignService__Load.cs" />
     <Compile Include="AssignService\frmAssignService__InitCombo.cs" />
     <Compile Include="AssignService\frmAssignService__BuildTree.cs" />

@@ -236,7 +236,9 @@
     <Compile Include="frmControl\frmExpMest.Designer.cs">
       <DependentUpon>frmExpMest.cs</DependentUpon>
     </Compile>
-    <Compile Include="frmExpMestSaleTransactionList__Plus_Print.cs" />
+    <Compile Include="frmExpMestSaleTransactionList__Plus_Print.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="ExpMestSaleTransactionListProcessor.cs" />
     <Compile Include="frmExpMestSaleTransactionList.cs" />
     <Compile Include="frmExpMestSaleTransactionList.Designer.cs">

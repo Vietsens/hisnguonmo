@@ -221,7 +221,9 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="UCExecuteRoom___Load.cs" />
+    <Compile Include="UCExecuteRoom___Load.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="PayClinicalResultProcessor.cs" />
     <Compile Include="Delegate\DelegateUC.cs" />
     <Compile Include="ExecuteRoom\ExecuteRoomBehavior.cs" />

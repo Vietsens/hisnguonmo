@@ -152,7 +152,9 @@
     <Compile Include="MealRationDetail\frmMealRationDetail.Designer.cs">
       <DependentUpon>frmMealRationDetail.cs</DependentUpon>
     </Compile>
-    <Compile Include="MealRationDetail\frmMealRationDetailPlus__InitResource.cs" />
+    <Compile Include="MealRationDetail\frmMealRationDetailPlus__InitResource.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="MealRationDetail\IMealRationDetail.cs" />
     <Compile Include="AppConfigKeys.cs" />
     <Compile Include="MealRationDetailProcessor.cs" />

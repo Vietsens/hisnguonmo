@@ -173,7 +173,9 @@
     <Compile Include="entity\StatusHour.cs" />
     <Compile Include="entity\Status.cs" />
     <Compile Include="HisServicepatyListProcessor.cs" />
-    <Compile Include="frmHisServicePatyList.cs" />
+    <Compile Include="frmHisServicePatyList.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="frmHisServicePatyList.Designer.cs">
       <DependentUpon>frmHisServicePatyList.cs</DependentUpon>
     </Compile>

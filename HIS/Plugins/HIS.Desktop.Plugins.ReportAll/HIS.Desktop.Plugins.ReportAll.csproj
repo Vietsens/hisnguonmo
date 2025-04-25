@@ -315,7 +315,9 @@
       <DependentUpon>frmMainReport.cs</DependentUpon>
     </Compile>
     <Compile Include="frmMainReportProcessFormTypeDelegate.cs" />
-    <Compile Include="frmMainReport__Copy.cs" />
+    <Compile Include="frmMainReport__Copy.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="ListKeyboardWorker.cs" />
     <Compile Include="KeyboardWorker.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

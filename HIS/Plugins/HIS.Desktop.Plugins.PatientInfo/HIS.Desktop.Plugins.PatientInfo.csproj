@@ -177,7 +177,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="frmPatientChoice.cs" />
+    <Compile Include="frmPatientChoice.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="frmPatientChoice.Designer.cs">
       <DependentUpon>frmPatientChoice.cs</DependentUpon>
     </Compile>

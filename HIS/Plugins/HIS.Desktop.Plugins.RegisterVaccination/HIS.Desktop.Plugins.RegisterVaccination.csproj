@@ -315,7 +315,9 @@
     <Compile Include="RunV3\UCRegister__SetDelegate.cs" />
     <Compile Include="RunV3\UCRegister__TabIndex.cs" />
     <Compile Include="RunV3\UCRegister__UCHein.cs" />
-    <Compile Include="RunV3\UCRegister__ValidateRule.cs" />
+    <Compile Include="RunV3\UCRegister__ValidateRule.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="ValidationRule\PatientName__ValidationRule.cs" />
     <Compile Include="ValidationRule\PatientDob__ValidationRule.cs" />
     <Compile Include="ValidationRule\TextEditMaxLengthValidationRule.cs" />

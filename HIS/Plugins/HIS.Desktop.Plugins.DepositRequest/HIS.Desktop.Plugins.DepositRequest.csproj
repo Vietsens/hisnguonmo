@@ -187,7 +187,9 @@
     <Compile Include="KeyboardWorker.cs" />
     <Compile Include="Load\frmDepositRequest_AccountBook.cs" />
     <Compile Include="Load\frmDepositRequest_Save.cs" />
-    <Compile Include="Load\frmDepositRequest_SetDefault.cs" />
+    <Compile Include="Load\frmDepositRequest_SetDefault.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="Load\frmDepositRequest_UCDeposit.cs" />
     <Compile Include="Load\frmDepositRequest_Validate.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

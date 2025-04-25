@@ -118,7 +118,9 @@
     <Compile Include="UCServiceRoomInfo__GetDetail.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ServiceRoomInfoProcessor.cs" />
-    <Compile Include="UCServiceRoomInfo.cs" />
+    <Compile Include="UCServiceRoomInfo.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="UCServiceRoomInfo.Designer.cs">
       <DependentUpon>UCServiceRoomInfo.cs</DependentUpon>
     </Compile>

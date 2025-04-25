@@ -186,7 +186,9 @@
     <Compile Include="frmOtherFormAssTreatment__Pluss__Mps100004.cs" />
     <Compile Include="frmOtherFormAssTreatment__Pluss__Mps100005.cs" />
     <Compile Include="frmOtherFormAssTreatment__Pluss__SereServ.cs" />
-    <Compile Include="frmOtherFormAssTreatment__Process-73494.cs" />
+    <Compile Include="frmOtherFormAssTreatment__Process-73494.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="frmOtherFormAssTreatment__SetDicParam.cs" />
     <Compile Include="frmOtherFormAssTreatment__Load.cs" />
     <Compile Include="frmOtherFormAssTreatment.cs" />

@@ -349,7 +349,9 @@
     <Compile Include="Base\AppConfigKeys.cs" />
     <Compile Include="CheckAdmin.cs" />
     <Compile Include="Processors\PopupMenuProcessor.cs" />
-    <Compile Include="UCVaccinationExam__CallPatient.cs" />
+    <Compile Include="UCVaccinationExam__CallPatient.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="UCVaccinationExam__Check.cs" />
     <Compile Include="UCVaccinationExam__Print.cs" />
     <Compile Include="UCVaccinationExam__Process.cs" />

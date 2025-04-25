@@ -227,7 +227,9 @@
     <Compile Include="SampleCollectionRoomUC.Designer.cs">
       <DependentUpon>SampleCollectionRoomUC.cs</DependentUpon>
     </Compile>
-    <Compile Include="SampleCollectionRoomUC___CallPatient.cs" />
+    <Compile Include="SampleCollectionRoomUC___CallPatient.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="SdaConfigKeys.cs" />
     <EmbeddedResource Include="frmCallPatientFaster.resx">
       <DependentUpon>frmCallPatientFaster.cs</DependentUpon>

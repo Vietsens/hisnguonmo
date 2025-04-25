@@ -365,7 +365,9 @@
     <Compile Include="ADO\StatusADO.cs" />
     <Compile Include="Base\ManagerConstant.cs" />
     <Compile Include="Base\ResourceLangManager.cs" />
-    <Compile Include="CreateReport\frmMediCardByDateReport.cs" />
+    <Compile Include="CreateReport\frmMediCardByDateReport.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="CreateReport\frmMediCardByDateReport.Designer.cs">
       <DependentUpon>frmMediCardByDateReport.cs</DependentUpon>
     </Compile>

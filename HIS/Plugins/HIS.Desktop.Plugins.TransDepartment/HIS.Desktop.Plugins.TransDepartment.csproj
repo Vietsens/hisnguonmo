@@ -165,7 +165,9 @@
     <Compile Include="TransDepartment\TransDepartmentBehavior.cs" />
     <Compile Include="TransDepartment\TransDepartmentFactory.cs" />
     <Compile Include="TransDepartment\ITransDepartment.cs" />
-    <Compile Include="TransDepartment\Validate\frmDepartmentTran_Validate.cs" />
+    <Compile Include="TransDepartment\Validate\frmDepartmentTran_Validate.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="TransDepartment\Validate\ValidationRule\DepartmentTran__DepartmentValidationRule.cs" />
     <Compile Include="TransDepartment\Validate\ValidationRule\DepartmentTran__TreatmentLogTimeValidationRule.cs" />
   </ItemGroup>
