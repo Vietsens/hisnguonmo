@@ -115,7 +115,9 @@
   <ItemGroup>
     <Compile Include="Base\Config.cs" />
     <Compile Include="Base\MapRoomEmployeeAdo.cs" />
-    <Compile Include="FormImportRegisterByXml.cs" />
+    <Compile Include="FormImportRegisterByXml.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="FormImportRegisterByXml.Designer.cs">
       <DependentUpon>FormImportRegisterByXml.cs</DependentUpon>
     </Compile>

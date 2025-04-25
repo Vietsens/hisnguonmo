@@ -550,7 +550,7 @@
     <value>layoutControl1</value>
   </data>
   <data name="frmTutorial.layoutControlItem1.Text" xml:space="preserve">
-    <value>Hướng dẫn sử dụng:</value>
+    <value>Liều dùng:</value>
   </data>
   <data name="frmTutorial.layoutControlItem3.Text" xml:space="preserve">
     <value>Tốc độ truyền:</value>
@@ -683,5 +683,11 @@
   </data>
   <data name="frmServiceReqList.gridColumn_Pttt_Group_Name.Caption" xml:space="preserve">
     <value>Loại PTTT</value>
+  </data>
+  <data name="frmTutorial.layoutControlItem5.Text" xml:space="preserve">
+    <value>Cách dùng:</value>
+  </data>
+  <data name="frmServiceReqList.gridColumn12.Caption" xml:space="preserve">
+    <value>Ngày dự trù</value>
   </data>
 </root>

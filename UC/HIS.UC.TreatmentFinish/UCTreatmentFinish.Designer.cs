@@ -1236,7 +1236,7 @@ namespace HIS.UC.TreatmentFinish.Run
             this.Controls.Add(this.layoutControl1);
             this.Name = "UCTreatmentFinish";
             this.Size = new System.Drawing.Size(452, 270);
-            this.Load += new System.EventHandler(this.UC_DepositRequestList_Load);
+            this.Load += new System.EventHandler(this.UCTreatmentFinish_Load);
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).EndInit();
             this.layoutControl1.ResumeLayout(false);
             this.gBoxTreatmentFinishInfo.ResumeLayout(false);

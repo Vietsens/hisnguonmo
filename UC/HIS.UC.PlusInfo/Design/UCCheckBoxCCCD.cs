@@ -91,7 +91,7 @@ namespace HIS.UC.PlusInfo.Design
                     chkNoCCCD_CheckedChanged(null, null);
                 }
             }
-            catch (Exception ex)
+            catch (Exception ex)  
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }

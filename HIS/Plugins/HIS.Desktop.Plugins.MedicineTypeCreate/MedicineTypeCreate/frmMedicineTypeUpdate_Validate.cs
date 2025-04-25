@@ -69,6 +69,9 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
                 ValidControlMedicineNationalCode();
                 ValidationControlSpinNotVatAndBlack(spinNumOrder);
                 ValidatecboMedicineLine();
+                //qtcode
+                ValidatecboDosageForm();
+                //qtcode
                 ValidMaxlengthtxtActiveIngrBhytCode();
                 ValidMaxlengthtxtActiveIngrBhytName();
                 ValidMaxlengthTxtDescription();
@@ -137,6 +140,23 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
                 LogSystem.Warn(ex);
             }
         }
+        //qtcode
+        void ValidatecboDosageForm()
+        {
+            try
+            {
+                ValidateCombox vali = new ValidateCombox();
+                vali.gridLockup = cboDosageForm;
+                vali.ErrorType = ErrorType.Warning;
+                vali.ErrorText = MessageUtil.GetMessage(LibraryMessage.Message.Enum.TruongDuLieuBatBuoc);
+                dxValidationMedicineType.SetValidationRule(cboDosageForm, vali); 
+            }
+            catch(Exception ex)
+            {
+                LogSystem.Warn(ex); 
+            }
+        }
+        //qtcode
         void ValidatecboMedicineUseForm(bool isValid)
         {
             try

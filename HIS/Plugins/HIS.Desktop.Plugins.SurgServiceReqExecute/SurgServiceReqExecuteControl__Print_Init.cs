@@ -33,6 +33,8 @@ using HIS.Desktop.Plugins.SurgServiceReqExecute.Config;
 using HIS.Desktop.Print;
 using HIS.Desktop.Utility;
 using Inventec.Common.Adapter;
+using Inventec.Common.SignLibrary;
+using Inventec.Common.SignLibrary.ADO;
 using Inventec.Core;
 using Inventec.Desktop.Common.LanguageManager;
 using Inventec.Desktop.Common.Message;
@@ -44,6 +46,7 @@ using MPS.ProcessorBase.Core;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -1348,9 +1351,26 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
                 WaitingManager.Hide();
                 MPS.Processor.Mps000033.PDO.Mps000033PDO rdo = new MPS.Processor.Mps000033.PDO.Mps000033PDO(currentPatient, departmentTran, serviceReq, sereServ, SereServExt, sereServPttts, vhisTreatment, vEkipUsers, null, currentBedLog, lastBedLog, listManner, skinDesc, sereServFiles, sesePtttMethod);
                 PrintData PrintData;
-                if (chkSign.Checked && !IsActionPrint)
+                if (chkSign.Checked && !IsActionPrint && chkIn.Checked)
+                {
+                    PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, rdo, MPS.ProcessorBase.PrintConfig.PreviewType.EmrSignAndPrintNow, "");
+                }
+                else if (chkSign.Checked && !IsActionPrint && chkXemIn.Checked)
+                {
+                    PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, rdo, MPS.ProcessorBase.PrintConfig.PreviewType.EmrShow, "");
+                    //Inventec.Common.SignLibrary.SignLibraryGUIProcessor.SignAndShowPrintPreview(printTypeCode, fileName, rdo);
+                }
+                else if (chkSign.Checked && !IsActionPrint)
                 {
                     PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, rdo, MPS.ProcessorBase.PrintConfig.PreviewType.EmrSignNow, "");
+                }
+                else if (chkXemIn.Checked)
+                {
+                    PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, rdo, MPS.ProcessorBase.PrintConfig.PreviewType.ShowDialog, "");
+                }
+                else if (chkIn.Checked)
+                {
+                    PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, rdo, MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow, "");
                 }
                 else if (HIS.Desktop.LocalStorage.LocalData.GlobalVariables.CheDoInChoCacChucNangTrongPhanMem == 2)
                 {

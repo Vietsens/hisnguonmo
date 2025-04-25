@@ -10,6 +10,21 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute.Resources
     {
         static System.Resources.ResourceManager languageMessage = new System.Resources.ResourceManager("HIS.Desktop.Plugins.SurgServiceReqExecute.Resources.Message.Lang", System.Reflection.Assembly.GetExecutingAssembly());
 
+        internal static string ChuaChonNgayChiDinh
+        {
+            get
+            {
+                try
+                {
+                    return Inventec.Common.Resource.Get.Value("Plugin_AssignService__ChuaChonNgayChiDinh", languageMessage, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(ex);
+                }
+                return "";
+            }
+        }
         internal static string BanCoMuonSuaThoiGianYLenhBangThoiGianBatDauPTTT
         {
             get

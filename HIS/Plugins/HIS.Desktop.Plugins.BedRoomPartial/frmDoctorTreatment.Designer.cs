@@ -45,30 +45,31 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.layoutControl1 = new DevExpress.XtraLayout.LayoutControl();
             this.btnSave = new DevExpress.XtraEditors.SimpleButton();
-            this.barManager1 = new DevExpress.XtraBars.BarManager();
+            this.cboEmployee = new Inventec.Desktop.CustomControl.NoFocus.CustomGridLookUpEditWithFilterMultiColumnNoFocus();
+            this.barManager1 = new DevExpress.XtraBars.BarManager(this.components);
             this.bar1 = new DevExpress.XtraBars.Bar();
             this.barButtonItem1 = new DevExpress.XtraBars.BarButtonItem();
             this.barDockControlTop = new DevExpress.XtraBars.BarDockControl();
             this.barDockControlBottom = new DevExpress.XtraBars.BarDockControl();
             this.barDockControlLeft = new DevExpress.XtraBars.BarDockControl();
             this.barDockControlRight = new DevExpress.XtraBars.BarDockControl();
+            this.customGridLookUpEditWithFilterMultiColumnNoFocus1View = new Inventec.Desktop.CustomControl.NoFocus.CustomGridViewWithFilterMultiColumnNoFocus();
             this.layoutControlGroup1 = new DevExpress.XtraLayout.LayoutControlGroup();
             this.layoutControlItem1 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem2 = new DevExpress.XtraLayout.LayoutControlItem();
             this.emptySpaceItem1 = new DevExpress.XtraLayout.EmptySpaceItem();
-            this.cboEmployee = new Inventec.Desktop.CustomControl.NoFocus.CustomGridLookUpEditWithFilterMultiColumnNoFocus();
-            this.customGridLookUpEditWithFilterMultiColumnNoFocus1View = new Inventec.Desktop.CustomControl.NoFocus.CustomGridViewWithFilterMultiColumnNoFocus();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
             this.layoutControl1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.cboEmployee.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.barManager1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.customGridLookUpEditWithFilterMultiColumnNoFocus1View)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.cboEmployee.Properties)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.customGridLookUpEditWithFilterMultiColumnNoFocus1View)).BeginInit();
             this.SuspendLayout();
             // 
             // layoutControl1
@@ -92,6 +93,23 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
             this.btnSave.TabIndex = 5;
             this.btnSave.Text = "Lưu (Ctrl S)";
             this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
+            // 
+            // cboEmployee
+            // 
+            this.cboEmployee.Location = new System.Drawing.Point(97, 2);
+            this.cboEmployee.MenuManager = this.barManager1;
+            this.cboEmployee.Name = "cboEmployee";
+            this.cboEmployee.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
+            this.cboEmployee.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo),
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete)});
+            this.cboEmployee.Properties.NullText = "";
+            this.cboEmployee.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.Standard;
+            this.cboEmployee.Properties.View = this.customGridLookUpEditWithFilterMultiColumnNoFocus1View;
+            this.cboEmployee.Size = new System.Drawing.Size(221, 20);
+            this.cboEmployee.StyleController = this.layoutControl1;
+            this.cboEmployee.TabIndex = 4;
+            this.cboEmployee.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.cboEmployee_ButtonClick);
             // 
             // barManager1
             // 
@@ -153,6 +171,13 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
             this.barDockControlRight.Location = new System.Drawing.Point(337, 29);
             this.barDockControlRight.Size = new System.Drawing.Size(0, 30);
             // 
+            // customGridLookUpEditWithFilterMultiColumnNoFocus1View
+            // 
+            this.customGridLookUpEditWithFilterMultiColumnNoFocus1View.FocusRectStyle = DevExpress.XtraGrid.Views.Grid.DrawFocusRectStyle.RowFocus;
+            this.customGridLookUpEditWithFilterMultiColumnNoFocus1View.Name = "customGridLookUpEditWithFilterMultiColumnNoFocus1View";
+            this.customGridLookUpEditWithFilterMultiColumnNoFocus1View.OptionsSelection.EnableAppearanceFocusedCell = false;
+            this.customGridLookUpEditWithFilterMultiColumnNoFocus1View.OptionsView.ShowGroupPanel = false;
+            // 
             // layoutControlGroup1
             // 
             this.layoutControlGroup1.EnableIndentsWithoutBorders = DevExpress.Utils.DefaultBoolean.False;
@@ -196,30 +221,6 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
             this.emptySpaceItem1.Size = new System.Drawing.Size(181, 26);
             this.emptySpaceItem1.TextSize = new System.Drawing.Size(0, 0);
             // 
-            // cboEmployee
-            // 
-            this.cboEmployee.Location = new System.Drawing.Point(97, 2);
-            this.cboEmployee.MenuManager = this.barManager1;
-            this.cboEmployee.Name = "cboEmployee";
-            this.cboEmployee.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
-            this.cboEmployee.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo),
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete)});
-            this.cboEmployee.Properties.NullText = "";
-            this.cboEmployee.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.Standard;
-            this.cboEmployee.Properties.View = this.customGridLookUpEditWithFilterMultiColumnNoFocus1View;
-            this.cboEmployee.Size = new System.Drawing.Size(221, 20);
-            this.cboEmployee.StyleController = this.layoutControl1;
-            this.cboEmployee.TabIndex = 4;
-            this.cboEmployee.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.cboEmployee_ButtonClick);
-            // 
-            // customGridLookUpEditWithFilterMultiColumnNoFocus1View
-            // 
-            this.customGridLookUpEditWithFilterMultiColumnNoFocus1View.FocusRectStyle = DevExpress.XtraGrid.Views.Grid.DrawFocusRectStyle.RowFocus;
-            this.customGridLookUpEditWithFilterMultiColumnNoFocus1View.Name = "customGridLookUpEditWithFilterMultiColumnNoFocus1View";
-            this.customGridLookUpEditWithFilterMultiColumnNoFocus1View.OptionsSelection.EnableAppearanceFocusedCell = false;
-            this.customGridLookUpEditWithFilterMultiColumnNoFocus1View.OptionsView.ShowGroupPanel = false;
-            // 
             // frmDoctorTreatment
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -236,13 +237,13 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
             this.Load += new System.EventHandler(this.frmDoctorTreatment_Load);
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).EndInit();
             this.layoutControl1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.cboEmployee.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.barManager1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.customGridLookUpEditWithFilterMultiColumnNoFocus1View)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.cboEmployee.Properties)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.customGridLookUpEditWithFilterMultiColumnNoFocus1View)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 

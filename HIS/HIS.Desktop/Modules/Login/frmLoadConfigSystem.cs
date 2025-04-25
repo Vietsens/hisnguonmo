@@ -473,7 +473,7 @@ namespace HIS.Desktop.Modules.Login
             try
             {
                 var vserviceRooms = BackendDataWorkerSet.Set<MOS.EFMODEL.DataModels.V_HIS_SERVICE_ROOM>();
-                var serviceRooms = BackendDataWorkerSet.Set<MOS.EFMODEL.DataModels.HIS_SERVICE_ROOM>();
+                var serviceRooms = BackendDataWorkerSet.Set<MOS.EFMODEL.DataModels.HIS_SERVICE_ROOM>();                
                 LoadDataWorkerLog(ref i, 0, (serviceRooms != null ? serviceRooms.Count : 0), new MOS.EFMODEL.DataModels.V_HIS_SERVICE_ROOM().GetType().ToString());
             }
             catch (Exception ex)
@@ -515,6 +515,20 @@ namespace HIS.Desktop.Modules.Login
             {
                 var useRooms = BackendDataWorkerSet.Set<MOS.EFMODEL.DataModels.V_HIS_USER_ROOM>();
                 LoadDataWorkerLog(ref i, 0, (useRooms != null ? useRooms.Count : 0), new MOS.EFMODEL.DataModels.V_HIS_USER_ROOM().GetType().ToString());
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void LoadExecuteRooms()
+        {
+            try
+            {
+                var executeRooms = BackendDataWorkerSet.Set<MOS.EFMODEL.DataModels.HIS_EXECUTE_ROOM>();
+                var vexecuteRooms = BackendDataWorkerSet.Set<MOS.EFMODEL.DataModels.V_HIS_EXECUTE_ROOM>();
+                LoadDataWorkerLog(ref i, 0, (executeRooms != null ? executeRooms.Count : 0), new MOS.EFMODEL.DataModels.HIS_EXECUTE_ROOM().GetType().ToString());
             }
             catch (Exception ex)
             {
@@ -927,7 +941,6 @@ namespace HIS.Desktop.Modules.Login
                     methods.Add(BackendDataWorker.InitDataCacheLocal);
                     methods.Add(LoadServiceRooms);
                     methods.Add(LoadUseRooms);
-                    methods.Add(LoadServiceFollows);
                     methods.Add(LoadServices);
                     methods.Add(LoadServicePatys);
                     methods.Add(LoadIcds);

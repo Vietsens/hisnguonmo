@@ -70,7 +70,9 @@ namespace HIS.Desktop.Utility
                             || c is DevExpress.XtraEditors.PanelControl
                             || c is DevExpress.XtraEditors.XtraScrollableControl
                             || c is Panel
-                             || c is GroupBox)
+                            || c is GroupBox
+                            || c is DevExpress.XtraNavBar.NavBarControl
+                            || c is DevExpress.XtraNavBar.NavBarGroupControlContainerWrapper)
                             {
                                 ProcessControlByType(c, c.Name);
                             }
@@ -111,7 +113,9 @@ namespace HIS.Desktop.Utility
                         || item is DevExpress.XtraEditors.PanelControl
                         || item is DevExpress.XtraEditors.XtraScrollableControl
                         || item is Panel
-                        || item is GroupBox)
+                        || item is GroupBox
+                        || item is DevExpress.XtraNavBar.NavBarControl
+                        || item is DevExpress.XtraNavBar.NavBarGroupControlContainerWrapper)
                         {
                             ProcessControlByType(item, parentPath);
                         }
@@ -219,7 +223,9 @@ namespace HIS.Desktop.Utility
                             || item.Control is DevExpress.XtraEditors.PanelControl
                             || item.Control is DevExpress.XtraEditors.XtraScrollableControl
                             || item.Control is Panel
-                            || item.Control is GroupBox)
+                            || item.Control is GroupBox
+                            || item.Control is DevExpress.XtraNavBar.NavBarControl
+                            || item.Control is DevExpress.XtraNavBar.NavBarGroupControlContainerWrapper)
                             {
                                 ProcessControlByType(item.Control, parentPathChild);
                             }

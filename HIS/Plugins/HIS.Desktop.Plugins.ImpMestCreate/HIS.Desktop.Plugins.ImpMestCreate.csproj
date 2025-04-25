@@ -55,7 +55,7 @@
       <HintPath>..\..\..\..\lib\HIS\HIS.Desktop.Print\HIS.Desktop.Print.dll</HintPath>
     </Reference>
     <Reference Include="HIS.Desktop.Utility">
-      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\HIS.Desktop.Utility.dll</HintPath>
+      <HintPath>..\..\..\..\..\His Test\histest\x64\ReferencedAssemblies\HIS.Desktop.Utility.dll</HintPath>
     </Reference>
     <Reference Include="HIS.UC.MaterialType">
       <HintPath>..\..\..\..\lib\HIS\HIS.UC.MaterialType\HIS.UC.MaterialType.dll</HintPath>
@@ -205,6 +205,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ADO\BidValidTimeADO.cs" />
+    <Compile Include="ADO\DosageFormADO.cs" />
     <Compile Include="ADO\ExpMestMaterialADO.cs" />
     <Compile Include="ADO\ExpMestMedicineADO.cs" />
     <Compile Include="ADO\ManufacturerADO.cs" />
@@ -361,6 +362,10 @@
     <ProjectReference Include="..\..\HIS.Desktop.Control.Session\HIS.Desktop.Controls.Session.csproj">
       <Project>{9b4b505c-afa1-4974-8ac8-503f748bd5a2}</Project>
       <Name>HIS.Desktop.Controls.Session</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\HIS.Desktop.LibraryMessage\HIS.Desktop.LibraryMessage.csproj">
+      <Project>{48d9a44a-7120-4c9b-8923-b1af16b1992f}</Project>
+      <Name>HIS.Desktop.LibraryMessage</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\HIS.Desktop.LocalStorage.BackendData\HIS.Desktop.LocalStorage.BackendData.csproj">
       <Project>{86709a9c-a149-4ebb-a817-1bf8f4f4bc07}</Project>

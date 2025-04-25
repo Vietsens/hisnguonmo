@@ -702,7 +702,6 @@ namespace His.UC.UCHein.Design.TemplateHeinBHYT1
                     Inventec.Common.Logging.LogSystem.Debug("HasChangeValidRightRouteType.1");
                     hasValid = true;
                 }
-                ValidateRightRouteType();
             }
             catch (Exception ex)
             {

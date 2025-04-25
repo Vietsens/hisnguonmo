@@ -49,9 +49,12 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.InvoiceInfo
                     result.Note = dataInput.Transaction.DESCRIPTION;
                     result.TransactionTime = dataInput.Transaction.TRANSACTION_TIME;
 
+                    result.BuyerEmail = dataInput.Transaction.BUYER_EMAIL;
+
                     patientCode = dataInput.Transaction.TDL_PATIENT_CODE;
                     treatmentCode = dataInput.Transaction.TDL_TREATMENT_CODE;
-
+                    
+                    
                     if (dataInput.Transaction.PAY_FORM_ID == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__CK)
                     {
                         result.PaymentMethod = "CK";
@@ -71,6 +74,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.InvoiceInfo
                 }
                 else if (dataInput.ListTransaction != null && dataInput.ListTransaction.Count > 0)
                 {
+                    
                     var legal = dataInput.ListTransaction.Where(o => !String.IsNullOrWhiteSpace(o.BUYER_ORGANIZATION)).OrderByDescending(o => o.TRANSACTION_TIME).FirstOrDefault();
                     if (legal != null)
                     {

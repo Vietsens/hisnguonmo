@@ -421,7 +421,36 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
 			}
 		}
 
-		private async Task LoadNation()
+        private async Task LoadDosageForm()
+        {
+            try
+            {
+                List<DosageFormADO> listADO = new List<DosageFormADO>();
+                Action myaction = () => {
+                    var dataDosageForm = BackendDataWorker.Get<HIS_DOSAGE_FORM>().Where(p => p.IS_ACTIVE == 1).ToList();
+                    foreach (var item in dataDosageForm)
+                    {
+                        DosageFormADO Dosage = new DosageFormADO();
+                        Dosage.ID = item.ID;
+                        Dosage.DOSAGE_FORM_CODE = item.DOSAGE_FORM_CODE;
+                        Dosage.DOSAGE_FORM_NAME = item.DOSAGE_FORM_NAME;
+                        Dosage.DOSAGEFORM_NAME_UNSIGN = convertToUnSign3(item.DOSAGE_FORM_NAME);
+                        listADO.Add(Dosage);
+                    }
+                };
+                Task task = new Task(myaction);
+                task.Start();
+
+                await task;
+                DataToComboDosageForm(cboDosageForm, listADO);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private async Task LoadNation()
 		{
 			try
 			{

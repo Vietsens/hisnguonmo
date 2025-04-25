@@ -366,7 +366,7 @@ namespace HIS.UC.PlusInfo
                                 this.ucPhone1.SetValue(dataSet.PHONE_NUMBER);
                                 break;
                             case ChoiceControl.ucProgram:
-                                this.ucProgram1.SetValue(dataSet.PATIENT_ID);
+                                this.ucProgram1.SetValue(dataSet.PATIENT_ID, dataSet.PROGRAM_ID);
                                 break;
                             case ChoiceControl.ucProvinceOfBirth:
                                 this.ucProvinceOfBirth1.SetValue(dataSet.PROVINCE_OfBIRTH_CODE);

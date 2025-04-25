@@ -206,6 +206,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
         {
             try
             {
+           
                 bool valid = true;
                 this.positionHandleControl = -1;
 
@@ -313,7 +314,20 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
                         case SAVETYPE.SAVE:
                             break;
                         case SAVETYPE.SAVE_PRINT_NOW:
-                            this.PrescriptionPrintNow();
+                            Inventec.Desktop.Common.Modules.Module moduleData = GlobalVariables.currentModuleRaws.Where(o => o.ModuleLink == "HIS.Desktop.Plugins.AssignPrescriptionCLS").FirstOrDefault();
+                            if (moduleData != null)
+                            {
+                                var allowedModules = HisConfigCFG.IsAllowSignaturePrint.Split(',');
+                                if (allowedModules.Contains(moduleData.ModuleLink))
+                                {
+                                  
+                                    this.PrescriptionPrintNow();
+                                }
+                            }
+                            else
+                            {
+                                this.PrescriptionPrintNow();
+                            }
                             break;
                         case SAVETYPE.SAVE_SHOW_PRINT_PREVIEW:
                             this.PrescriptionPrintShow(PrintTypeCodes.PRINT_TYPE_CODE__BIEUMAU__PHIEU_KE_KHAI_THUOC_VATU__MPS000338, false);

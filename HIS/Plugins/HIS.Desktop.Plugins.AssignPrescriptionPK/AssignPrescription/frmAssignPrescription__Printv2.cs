@@ -40,6 +40,8 @@ using MPS.ProcessorBase;
 using HIS.Desktop.LocalStorage.ConfigApplication;
 using Inventec.Desktop.Common.Message;
 using HIS.Desktop.Plugins.Library.EmrGenerate;
+using static MPS.ProcessorBase.PrintConfig;
+using HIS.Desktop.Plugins.AssignPrescriptionPK.Config;
 
 namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
 {
@@ -247,8 +249,29 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                     var bbtnItem = sender as SimpleButton;
                     printTypeCode = (bbtnItem.Tag ?? "").ToString();
                 }
+                if (!string.IsNullOrWhiteSpace(HisConfigCFG.MODULELINKS))
+                {
+                    //currentModule
+                    Inventec.Desktop.Common.Modules.Module moduleData = GlobalVariables.currentModuleRaws.Where(o => o.ModuleLink == "HIS.Desktop.Plugins.AssignPrescriptionPK").FirstOrDefault();
 
-                PrescriptionSavePrintShowHasClickSave(printTypeCode, false);
+                    if (moduleData != null)
+                    {
+                        var allowedModules = HisConfigCFG.MODULELINKS.Split(',');
+
+                        if (allowedModules.Contains(moduleData.ModuleLink))
+                        {
+                            PrescriptionSavePrintShowHasClickSave(printTypeCode, false, MPS.ProcessorBase.PrintConfig.PreviewType.EmrSignAndPrintNow);
+                        }
+                        else
+                        {
+                            PrescriptionSavePrintShowHasClickSave(printTypeCode, false, null);
+                        }
+                    }
+                }
+                else
+                {
+                    PrescriptionSavePrintShowHasClickSave(printTypeCode, false, null);
+                }
 
                 //PrescriptionPrintShowPrintOnly(printTypeCode, false);
                 Inventec.Common.Logging.LogSystem.Debug("OnClickPrintWithPrintTypeCfg.2____" + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => printTypeCode), printTypeCode));
@@ -416,7 +439,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                     HIS_TREATMENT treatment = new HIS_TREATMENT();
                     Inventec.Common.Mapper.DataObjectMapper.Map<HIS_TREATMENT>(treatment, currentTreatmentWithPatientType);
 
-                    PrintTreatmentFinishProcessor printTreatmentFinishProcessor = new PrintTreatmentFinishProcessor(treatment, LoadServiceReq(treatment.ID), currentModule != null ? currentModule.RoomId : 0);
+                    PrintTreatmentFinishProcessor printTreatmentFinishProcessor = new PrintTreatmentFinishProcessor(treatment, LoadServiceReq(treatment.ID), currentModule != null ? currentModule.RoomId : 0, previewType);
                     if (printTypeCode == PrintTypeCodeStore.PRINT_TYPE_CODE__TOM_TAT_Y_LENH_PTTT_VA_DON_THUOC__MPS000478)
                     {
                         printTreatmentFinishProcessor.Print(MPS.Processor.Mps000478.PDO.Mps000478PDO.printTypeCode, isPrintNow);
@@ -640,7 +663,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                                     OutPatientPresResultSDO.ServiceReqMaties = serviceReqMatys;
                                 }
 
-                                OutPatientPresResultSDOForPrints.Add(OutPatientPresResultSDO);
+                                OutPatientPresResultSDOForPrints.Add(OutPatientPresResultSDO);  
                             }
                         }
 

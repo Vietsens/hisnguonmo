@@ -45,16 +45,15 @@ namespace  HIS.Desktop.Plugins.HisImportMedicineType.FormLoad
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmMedicineType));
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject17 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject18 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject19 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject20 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject21 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject22 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject23 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject24 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject1 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject2 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject3 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject4 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject5 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject6 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject7 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject8 = new DevExpress.Utils.SerializableAppearanceObject();
             this.layoutControl1 = new DevExpress.XtraLayout.LayoutControl();
             this.gridControlMedicineType = new DevExpress.XtraGrid.GridControl();
             this.gridViewMedicineType = new DevExpress.XtraGrid.Views.Grid.GridView();
@@ -128,6 +127,7 @@ namespace  HIS.Desktop.Plugins.HisImportMedicineType.FormLoad
             this.gridColumn61 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn68 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn69 = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gridColumn71 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn70 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.Btn_ErrorLine = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
             this.Btn_Delete = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
@@ -146,14 +146,13 @@ namespace  HIS.Desktop.Plugins.HisImportMedicineType.FormLoad
             this.layoutControlItem5 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem6 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem7 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.barManager1 = new DevExpress.XtraBars.BarManager(this.components);
+            this.barManager1 = new DevExpress.XtraBars.BarManager();
             this.bar1 = new DevExpress.XtraBars.Bar();
             this.barButtonItem1 = new DevExpress.XtraBars.BarButtonItem();
             this.barDockControlTop = new DevExpress.XtraBars.BarDockControl();
             this.barDockControlBottom = new DevExpress.XtraBars.BarDockControl();
             this.barDockControlLeft = new DevExpress.XtraBars.BarDockControl();
             this.barDockControlRight = new DevExpress.XtraBars.BarDockControl();
-            this.gridColumn71 = new DevExpress.XtraGrid.Columns.GridColumn();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
             this.layoutControl1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gridControlMedicineType)).BeginInit();
@@ -969,6 +968,17 @@ namespace  HIS.Desktop.Plugins.HisImportMedicineType.FormLoad
             this.gridColumn69.Visible = true;
             this.gridColumn69.VisibleIndex = 67;
             // 
+            // gridColumn71
+            // 
+            this.gridColumn71.Caption = "Số ngày dùng trong tờ điều trị";
+            this.gridColumn71.ColumnEdit = this.Item_Check;
+            this.gridColumn71.FieldName = "SoNgayDung";
+            this.gridColumn71.Name = "gridColumn71";
+            this.gridColumn71.OptionsColumn.AllowEdit = false;
+            this.gridColumn71.UnboundType = DevExpress.Data.UnboundColumnType.Object;
+            this.gridColumn71.Visible = true;
+            this.gridColumn71.VisibleIndex = 68;
+            // 
             // gridColumn70
             // 
             this.gridColumn70.Caption = "Số ngày dùng trong tờ điều trị";
@@ -981,7 +991,7 @@ namespace  HIS.Desktop.Plugins.HisImportMedicineType.FormLoad
             // 
             this.Btn_ErrorLine.AutoHeight = false;
             this.Btn_ErrorLine.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("Btn_ErrorLine.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject17, serializableAppearanceObject18, serializableAppearanceObject19, serializableAppearanceObject20, "Hiển thị lỗi", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("Btn_ErrorLine.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject1, serializableAppearanceObject2, serializableAppearanceObject3, serializableAppearanceObject4, "Hiển thị lỗi", null, null, true)});
             this.Btn_ErrorLine.Name = "Btn_ErrorLine";
             this.Btn_ErrorLine.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             this.Btn_ErrorLine.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.Btn_Show_Error_ButtonClick);
@@ -990,7 +1000,7 @@ namespace  HIS.Desktop.Plugins.HisImportMedicineType.FormLoad
             // 
             this.Btn_Delete.AutoHeight = false;
             this.Btn_Delete.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("Btn_Delete.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject21, serializableAppearanceObject22, serializableAppearanceObject23, serializableAppearanceObject24, "Xóa", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("Btn_Delete.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject5, serializableAppearanceObject6, serializableAppearanceObject7, serializableAppearanceObject8, "Xóa", null, null, true)});
             this.Btn_Delete.Name = "Btn_Delete";
             this.Btn_Delete.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             this.Btn_Delete.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.Btn_Delete_ButtonClick);
@@ -1201,17 +1211,6 @@ namespace  HIS.Desktop.Plugins.HisImportMedicineType.FormLoad
             this.barDockControlRight.Dock = System.Windows.Forms.DockStyle.Right;
             this.barDockControlRight.Location = new System.Drawing.Point(1236, 29);
             this.barDockControlRight.Size = new System.Drawing.Size(0, 482);
-            // 
-            // gridColumn71
-            // 
-            this.gridColumn71.Caption = "Số ngày dùng trong tờ điều trị";
-            this.gridColumn71.ColumnEdit = this.Item_Check;
-            this.gridColumn71.FieldName = "SoNgayDung";
-            this.gridColumn71.Name = "gridColumn71";
-            this.gridColumn71.OptionsColumn.AllowEdit = false;
-            this.gridColumn71.UnboundType = DevExpress.Data.UnboundColumnType.Object;
-            this.gridColumn71.Visible = true;
-            this.gridColumn71.VisibleIndex = 68;
             // 
             // frmMedicineType
             // 

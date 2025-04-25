@@ -1061,8 +1061,10 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
                         //xuandv -- reload lai btnKhac
                         this.InitButtonOther();
                         this.InitPrintSurgService();
-                        if (chkSign.Checked && !IsActionOtherButton)
+                        if ((chkSign.Checked && !IsActionOtherButton) || chkXemIn.Checked || chkIn.Checked)
+                        {
                             PrintProcess(PrintTypeSurg.PHIEU_THU_THUAT_PHAU_THUAT);
+                        }
                     }
 
                     #region Show message
@@ -1255,8 +1257,12 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
                         //xuandv -- reload lai btnKhac
                         this.InitButtonOther();
                         this.InitPrintSurgService();
-                        if (chkSign.Checked && !IsActionOtherButton)
+
+                        if ((chkSign.Checked && !IsActionOtherButton) || chkXemIn.Checked || chkIn.Checked)
+                        {
                             PrintProcess(PrintTypeSurg.PHIEU_THU_THUAT_PHAU_THUAT);
+                        }
+
                     }
 
                     #region Show message

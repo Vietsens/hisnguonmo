@@ -42,6 +42,9 @@ using System.IO;
 using SDA.EFMODEL.DataModels;
 using Inventec.Core;
 using DevExpress.XtraEditors.Repository;
+using HIS.Desktop.Plugins.HisDosageForm;
+using HIS.Desktop.Common;
+using HIS.Desktop.Plugins.BidCreate.Validation;
 
 namespace HIS.Desktop.Plugins.BidCreate
 {
@@ -88,6 +91,7 @@ namespace HIS.Desktop.Plugins.BidCreate
         List<V_HIS_MEDICINE_TYPE> listHisMedicineType = new List<V_HIS_MEDICINE_TYPE>();
         List<V_HIS_MATERIAL_TYPE> listHisMaterialType = new List<V_HIS_MATERIAL_TYPE>();
         List<V_HIS_BLOOD_TYPE> listHisBloodType = new List<V_HIS_BLOOD_TYPE>();
+        List<HIS_DOSAGE_FORM> dataDosageForm;
         #endregion
 
         #region Construct
@@ -481,7 +485,7 @@ namespace HIS.Desktop.Plugins.BidCreate
                 txtRegisterNumber.Text = "";
                 cboSupplier.EditValue = null;
                 txtActiveBhyt.Text = "";
-                txtDosageForm.Text = "";
+                cboDosageForm.EditValue = null;
                 txtQCĐG.Text = "";
                 txtTenBHYT.Text = "";
                 txtTenTT.Text = "";
@@ -567,6 +571,8 @@ namespace HIS.Desktop.Plugins.BidCreate
                 cboSupplier.Text = "";
                 cboSupplier.EditValue = null;
                 cboSupplier.Properties.Buttons[1].Visible = false;
+                cboDosageForm.Text = "";
+                cboDosageForm.EditValue = null;
                 cboNational.Text = "";
                 cboNational.EditValue = null;
                 //cboNational.Properties.Buttons[1].Visible = false;
@@ -579,6 +585,7 @@ namespace HIS.Desktop.Plugins.BidCreate
                 dxValidationProviderLeft.RemoveControlError(spinImpVat);
                 dxValidationProviderLeft.RemoveControlError(txtBidNumOrder);
                 dxValidationProviderLeft.RemoveControlError(cboSupplier);
+                dxValidationProviderLeft.RemoveControlError(cboDosageForm);
                 dxValidationProviderLeft.RemoveControlError(cboNational);
                 dxValidationProviderLeft.RemoveControlError(cboManufacture);
                 DtExpiredDate.EditValue = null;
@@ -608,6 +615,19 @@ namespace HIS.Desktop.Plugins.BidCreate
                     else
                     {
                         listHisMedicineType = listHisMedicineType != null ? listHisMedicineType.Where(o => o.IS_BUSINESS != (short)1).ToList() : null;
+                    }
+                }
+
+
+                if (listHisMedicineType != null)
+                {
+                    foreach (var item in listHisMedicineType)
+                    {
+                        var medicineTypeInfo = listHisMedicineType.FirstOrDefault(x => x.ID == item.ID);
+                        if (medicineTypeInfo != null && !string.IsNullOrEmpty(medicineTypeInfo.DOSAGE_FORM))
+                        {
+                            item.DOSAGE_FORM = medicineTypeInfo.DOSAGE_FORM;
+                        }
                     }
                 }
                 this.medicineTypeProcessor.Reload(this.ucMedicineType, listHisMedicineType);
@@ -1222,7 +1242,7 @@ namespace HIS.Desktop.Plugins.BidCreate
                     txtQCĐG.Text = (Int64.Parse(HisConfigCFG.IsSet__BHYT) == 1) ? this.medicineType.PACKING_TYPE_NAME : "";
                     txtActiveBhyt.Text = (Int64.Parse(HisConfigCFG.IsSet__BHYT) == 1) ? this.medicineType.ACTIVE_INGR_BHYT_NAME : "";
                     cboMediUserForm.EditValue = (Int64.Parse(HisConfigCFG.IsSet__BHYT) == 1) ? this.medicineType.MEDICINE_USE_FORM_ID : null;
-                    txtDosageForm.Text = (Int64.Parse(HisConfigCFG.IsSet__BHYT) == 1) ? this.medicineType.DOSAGE_FORM : "";
+                    cboDosageForm.EditValue = (Int64.Parse(HisConfigCFG.IsSet__BHYT) == 1) ? this.medicineType.DOSAGE_FORM : "";
 
                     if (this.medicineType.DAY_LIFESPAN.HasValue)
                     {
@@ -1247,6 +1267,20 @@ namespace HIS.Desktop.Plugins.BidCreate
                     else
                     {
                         spinHourLifeSpan.EditValue = null;
+                    }
+                    if (!string.IsNullOrEmpty(this.medicineType.DOSAGE_FORM))
+                    {
+                        //this.medicineType.DOSAGE_FORM = dataDosageForm.FirstOrDefault(o => o.ID == (long)cboDosageForm.EditValue).DOSAGE_FORM_NAME;
+                        var selectedItem = dataDosageForm.FirstOrDefault(o => o.DOSAGE_FORM_NAME == this.medicineType.DOSAGE_FORM);
+                        if (selectedItem != null)
+                        {
+                            cboDosageForm.EditValue = selectedItem.ID;
+                        }                       
+                    }
+                    else
+                    {
+                        cboDosageForm.EditValue = null;
+                        this.medicineType.DOSAGE_FORM = null;
                     }
                 }
                 else if (xtraTabControl1.SelectedTabPageIndex == 1 && this.materialType != null && !String.IsNullOrEmpty(this.materialType.MATERIAL_TYPE_CODE))
@@ -1628,7 +1662,7 @@ namespace HIS.Desktop.Plugins.BidCreate
                 spinDayLifeSpan.EditValue = null;
                 spinHourLifeSpan.EditValue = null;
                 txtActiveBhyt.Text = "";
-                txtDosageForm.Text = "";
+                cboDosageForm.EditValue = null;
                 cboMediUserForm.EditValue = null;
 
                 if (chkClearToAdd.Checked)
@@ -1658,7 +1692,7 @@ namespace HIS.Desktop.Plugins.BidCreate
                 txtQCĐG.Enabled = true;
                 txtActiveBhyt.Enabled = true;
                 cboMediUserForm.Enabled = true;
-                txtDosageForm.Enabled = true;
+                
                 if (xtraTabControl1.SelectedTabPageIndex == 0) // thuoc
                 {
                     medicineTypeProcessor.FocusKeyword(ucMedicineType);
@@ -1671,15 +1705,17 @@ namespace HIS.Desktop.Plugins.BidCreate
                     txtTenTT.Enabled = false;
                     txtMaDT.Text = "";
                     txtMaDT.Enabled = false;
-
+                    cboDosageForm.Enabled = true;
                     cboInformationBid.SelectedIndex = -1;
+                    ValidDosageForm();
+                    //layoutControlItem21.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
 
                     layoutControlItem19.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
                 }
                 else if (xtraTabControl1.SelectedTabPageIndex == 1) // vat tu
                 {
                     EnableLeftControl(true);
-
+                    dxValidationProviderLeft.SetValidationRule(cboDosageForm, null);
                     layoutControlItem19.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
                     layoutControlItem19.Size = lciMaDT.Size;
                     cboInformationBid.SelectedIndex = 0;
@@ -1693,10 +1729,12 @@ namespace HIS.Desktop.Plugins.BidCreate
                     txtQCĐG.Enabled = false;
                     txtActiveBhyt.Enabled = false;
                     cboMediUserForm.Enabled = false;
-                    txtDosageForm.Enabled = false;
+                    cboDosageForm.Enabled = false;
                     txtActiveBhyt.Text = "";
                     cboMediUserForm.EditValue = null;
-                    txtDosageForm.Text = "";
+                    cboDosageForm.EditValue = null;
+                    cboDosageForm.Enabled = false;
+                    //layoutControlItem21.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
                     if (tabMaterial)
                     {
                         WaitingManager.Show();
@@ -1710,6 +1748,7 @@ namespace HIS.Desktop.Plugins.BidCreate
                 else if (xtraTabControl1.SelectedTabPageIndex == 2) // Mau
                 {
                     EnableLeftControl(false);
+                    dxValidationProviderLeft.SetValidationRule(cboDosageForm, null);
                     cboInformationBid.SelectedIndex = -1;
                     layoutControlItem19.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
                     spinImpMoreRatio.EditValue = null;
@@ -1725,11 +1764,12 @@ namespace HIS.Desktop.Plugins.BidCreate
                     txtQCĐG.Enabled = false;
                     txtActiveBhyt.Enabled = false;
                     cboMediUserForm.Enabled = false;
-                    txtDosageForm.Enabled = false;
+                    cboDosageForm.Enabled = false;
                     txtActiveBhyt.Text = "";
                     cboMediUserForm.EditValue = null;
-                    txtDosageForm.Text = "";
-
+                    cboDosageForm.EditValue = null;
+                    cboDosageForm.Enabled = false;
+                    //layoutControlItem21.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
                     if (tabBlood)
                     {
                         WaitingManager.Show();
@@ -2821,8 +2861,8 @@ namespace HIS.Desktop.Plugins.BidCreate
             {
                 if (e.CloseMode == PopupCloseMode.Normal)
                 {
-                    txtDosageForm.Focus();
-                    txtDosageForm.SelectAll();
+                    cboDosageForm.Focus();
+                    cboDosageForm.SelectAll();
                 }
             }
             catch (Exception ex)
@@ -3006,6 +3046,145 @@ namespace HIS.Desktop.Plugins.BidCreate
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void cboDosageForm_ButtonClick(object sender, ButtonPressedEventArgs e)
+        {
+            try
+            {
+                if (e.Button.Kind == ButtonPredefines.Delete)
+                {
+                    cboDosageForm.Properties.Buttons[2].Visible = true;
+                    cboDosageForm.EditValue = null;
+                }
+                if (e.Button.Kind == ButtonPredefines.Plus)
+                {
+                    cboDosageForm.Properties.Buttons[1].Visible = true;
+                    cboDosageForm.EditValue = null;
+                    var module = new Inventec.Desktop.Common.Modules.Module();
+                    DelegateSelectData delegateSelectData = new DelegateSelectData((selectedItem) =>
+                    {
+                        if (selectedItem is HIS_DOSAGE_FORM dosageForm)
+                        {
+                            cboDosageForm.EditValue = dosageForm.ID;
+                        }
+                    });
+                    frmHisDosageForm form = new frmHisDosageForm(module, delegateSelectData);
+                    form.ShowDialog();
+                    //LoadDosageForm();
+                }
+            }
+            catch (Exception ex)
+            {
+                LogSystem.Error(ex);
+            }
+            
+        }
+
+        private void cboDosageForm_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
+        {
+            try
+            {
+                if (e.KeyCode == Keys.Enter)
+                {
+                    bool valid = false;
+                    if (!String.IsNullOrEmpty(cboDosageForm.Text))
+                    {
+                        string key = cboDosageForm.Text.ToLower();
+                        var listData = dataDosageForm.Where(o => o.DOSAGE_FORM_CODE.ToLower().Contains(key) || o.DOSAGE_FORM_NAME.ToLower().Contains(key)).ToList();
+                        if (listData != null && listData.Count == 1)
+                        {
+                            valid = true;
+                            cboDosageForm.EditValue = listData.First().ID;
+                            txtRegisterNumber.Focus();
+                            txtRegisterNumber.SelectAll();
+                        }
+                    }
+                    if (!valid)
+                    {
+                        cboDosageForm.Focus();
+                        cboDosageForm.ShowPopup();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void cboDosageForm_Closed(object sender, ClosedEventArgs e)
+        {
+            try
+            {
+                if (e.CloseMode == PopupCloseMode.Normal)
+                {
+                    if (cboDosageForm.EditValue != null)
+                    {
+                        var dosageform = dataDosageForm.SingleOrDefault(o => o.DOSAGE_FORM_NAME == (cboDosageForm.EditValue ?? "").ToString());
+                        if (dosageform != null)
+                        {
+                            cboDosageForm.Properties.Buttons[1].Visible = true;
+                            txtRegisterNumber.Focus();
+                            txtRegisterNumber.SelectAll();
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void cboDosageForm_EditValueChanged(object sender, EventArgs e)
+        {
+           try
+            {
+                if (cboDosageForm.EditValue != null)
+                {
+                    cboDosageForm.Properties.Buttons[1].Visible = true;
+                }
+                else
+                {
+                    cboDosageForm.Properties.Buttons[1].Visible = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }        
+        private void LoadDataToCboDosageForm()
+        {
+            try
+            {
+                cboDosageForm.Properties.DataSource = dataDosageForm;
+                cboDosageForm.Properties.DisplayMember = "DOSAGE_FORM_NAME";
+                cboDosageForm.Properties.ValueMember = "ID";
+                cboDosageForm.EditValue = null;
+                cboDosageForm.Properties.View.Columns.Clear();
+
+                GridColumn aColumnCode = cboDosageForm.Properties.View.Columns.AddField("DOSAGE_FORM_CODE");
+                aColumnCode.Caption = "Mã";
+                aColumnCode.Visible = true;
+                aColumnCode.VisibleIndex = 0;
+                aColumnCode.Width = 150;
+                GridColumn aColumnName = cboDosageForm.Properties.View.Columns.AddField("DOSAGE_FORM_NAME");
+                aColumnName.Caption = "Tên";
+                aColumnName.Visible = true;
+                aColumnName.VisibleIndex = 1;
+                aColumnName.Width = 450;
+
+                cboDosageForm.Properties.View.OptionsView.ShowAutoFilterRow = true;
+                cboDosageForm.Properties.PopupFilterMode = PopupFilterMode.Contains;
+                cboDosageForm.Properties.TextEditStyle = TextEditStyles.Standard;      
+
+            }
+            catch (Exception ex)
+            {
+                LogSystem.Error(ex);           
             }
         }
 

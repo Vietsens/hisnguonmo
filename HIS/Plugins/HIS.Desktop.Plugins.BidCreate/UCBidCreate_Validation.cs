@@ -27,6 +27,7 @@ using HIS.Desktop.LibraryMessage;
 using HIS.Desktop.Plugins.BidCreate.Validation;
 using Inventec.Desktop.Common.Controls.ValidationRule;
 using DevExpress.XtraEditors;
+using Inventec.Common.Logging;
 
 namespace HIS.Desktop.Plugins.BidCreate
 {
@@ -43,6 +44,7 @@ namespace HIS.Desktop.Plugins.BidCreate
                 ValidBidGroupCode();
                 ValidSupplier();
                 ValidBidPackage(txtBidPackageCode);
+                ValidDosageForm();
                 ValidMaxlengthConcentra();
                 ValidMaxlengthTenTT();
                 ValidMaxlengthMaDT();
@@ -51,7 +53,6 @@ namespace HIS.Desktop.Plugins.BidCreate
                 ValidMaxlengthMaTT();
                 ValidMaxlengthRegisterNumber();
                 ValidMaxlengthActiveBhyt();
-                ValidMaxlengthDosageForm();
             }
             catch (Exception ex)
             {
@@ -302,7 +303,21 @@ namespace HIS.Desktop.Plugins.BidCreate
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
-
+        private void ValidDosageForm()
+        {
+            try
+            {
+                DosageValidationRule dosageValidationRule = new DosageValidationRule();
+                dosageValidationRule.cboDosageForm = cboDosageForm;
+                dosageValidationRule.ErrorText = Resources.ResourceMessage.ThieuTruongDuLieuBatBuoc;
+                dosageValidationRule.ErrorType = DevExpress.XtraEditors.DXErrorProvider.ErrorType.Warning;
+                dxValidationProviderLeft.SetValidationRule(cboDosageForm, dosageValidationRule);        
+            }
+            catch(Exception ex)
+            {
+                LogSystem.Error(ex);
+            }
+        }
         private void ValidImpPrice()
         {
             try
@@ -356,10 +371,10 @@ namespace HIS.Desktop.Plugins.BidCreate
             try
             {
                 ValidateMaxLength validateMaxLength = new ValidateMaxLength();
-                validateMaxLength.textEdit = txtDosageForm;
-                validateMaxLength.maxLength = 100;
+                validateMaxLength.textEdit = cboDosageForm;
+                validateMaxLength.maxLength = 1024;
                 validateMaxLength.ErrorType = DevExpress.XtraEditors.DXErrorProvider.ErrorType.Warning;
-                dxValidationProviderLeft.SetValidationRule(txtDosageForm, validateMaxLength);
+                dxValidationProviderLeft.SetValidationRule(cboDosageForm, validateMaxLength);
             }
             catch (Exception ex)
             {

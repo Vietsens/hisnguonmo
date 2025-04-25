@@ -31,5 +31,6 @@ namespace HIS.UC.UCPatientRaw.Base
         public const string HIS_PATIEN_PROGRAM_GET = "/api/HisPatientProgram/GetViewByCode";
         public const string HIS_PATIEN_PROGRAM_GET_VIEW = "/api/HisPatientProgram/GetView";
         public const string HIS_CARD_GETVIEWBYMSCODE = "api/HisCard/GetCardSdoByMsCode";
+        //public const string HIS_Treatment_STORE_CODE = "api/HisCard/GetCardSdoByMsCode";
     }
 }

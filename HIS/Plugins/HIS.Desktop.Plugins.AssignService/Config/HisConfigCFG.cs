@@ -94,6 +94,7 @@ namespace HIS.Desktop.Plugins.AssignService.Config
         private const string KEY__InstructionTimeServiceMustBeGreaterThanStartTimeExam = "HIS.Desktop.Plugins.InstructionTimeServiceMustBeGreaterThanStartTimeExam";
         private const string KEY_ASSIGN_SERVICE_SIMULTANEITY_OPTION = "MOS.HIS_SERVICE_REQ.ASSIGN_SERVICE_SIMULTANEITY_OPTION";
         private const string KEY_ASSIGN_ROOM_BY_PATIENT_TYPE = "MOS.HIS_SERVICE_REQ.ASSIGN_ROOM_BY_PATIENT_TYPE";
+        private const string IS_ALLOW_SIGN_NATURE_PRINT = "HIS.Desktop.Plugins.IsAllowSignaturePrint.ModuleLinks";
         internal static bool IsAssignRoomByPatientType;
         internal static string ASSIGN_SERVICE_SIMULTANEITY_OPTION;
         internal static string InstructionTimeServiceMustBeGreaterThanStartTimeExam;
@@ -116,7 +117,8 @@ namespace HIS.Desktop.Plugins.AssignService.Config
         internal static bool IsAutoCheckPriorityForPrioritizedExam;
         internal static bool IsNotAutoLoadServiceOpenAssignService;
         internal static string IsUsingWarningHeinFee;
-        public static bool IsSereServMinDurationAlert { get; set; }
+        internal static string IsAllowSignaturePrint;
+        public static int IsSereServMinDurationAlert { get; set; }
         public static decimal WarningOverCeiling__Exam { get; set; }
         public static decimal WarningOverCeiling__Out { get; set; }
         public static decimal WarningOverCeiling__In { get; set; }
@@ -215,6 +217,7 @@ namespace HIS.Desktop.Plugins.AssignService.Config
                 IntegrationTypeValue = GetValue(CONFIG_KEY__INTEGRATION_TYPE);
                 IntegrationVersionValue = GetValue(CONFIG_KEY__INTEGRATION_VERSION);
                 CheckIcdWhenSave = GetValue(CHECK_ICD_WHEN_SAVE);
+                IsAllowSignaturePrint = GetValue(IS_ALLOW_SIGN_NATURE_PRINT);
                 IsShowServerTimeByDefault = GetValue(CONFIG__ShowServerTimeByDefault) == GlobalVariables.CommonStringTrue;
                 IsServiceReqIcdOption = GetValue(CONFIG_KEY__SERVICE_REQ_ICD_OPTION) == GlobalVariables.CommonStringTrue;
                 BedServiceType_NotAllow_For_OutPatient = GetValue(CONFIG_KEY__BedServiceType_NotAllow_For_OutPatient);
@@ -235,7 +238,8 @@ namespace HIS.Desktop.Plugins.AssignService.Config
                 IsAutoCheckPriorityForPrioritizedExam = GetValue(CONFIG_KEY__IsAutoCheckPriorityForPrioritizedExam) == GlobalVariables.CommonStringTrue;
                 IsNotAutoLoadServiceOpenAssignService = GetValue(CONFIG_KEY__IsNotAutoLoadServiceOpenAssignService) == GlobalVariables.CommonStringTrue;
                 IsUsingWarningHeinFee = GetValue(CONFIG_KEY__IsUsingWarningHeinFee);
-                IsSereServMinDurationAlert = (GetValue(CONFIG_KEY__SERVICE_REQ__IS_SERE_SERV_MIN_DURATION_ALERT) == GlobalVariables.CommonStringTrue);
+                //IsSereServMinDurationAlert = (GetValue(CONFIG_KEY__SERVICE_REQ__IS_SERE_SERV_MIN_DURATION_ALERT) == GlobalVariables.CommonStringTrue);
+                IsSereServMinDurationAlert = Convert.ToInt32(GetValue(CONFIG_KEY__SERVICE_REQ__IS_SERE_SERV_MIN_DURATION_ALERT));
                 ShowRequestUser = GetValue(CONFIG_KEY__ShowRequestUser);
                 IsSingleCheckservice = GetValue(CONFIG_KEY__IsSingleCheckservice);
                 IsSearchAll = (GetValue(CONFIG_KEY__IsSearchAll) == GlobalVariables.CommonStringTrue);

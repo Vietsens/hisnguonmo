@@ -133,7 +133,7 @@
     <value>Vietnamese</value>
   </data>
   <data name="Desktop.Resources.Common.Lang.Message.DangKiemTraPhienBanCapNhat" xml:space="preserve">
-    <value>Checking for updated version...</value>
+    <value>The software is checking for a new version from the server. This process may take a few minutes or longer if the number of updates is large, or if too many people are running the software update like you, causing the hospital's network system to be overloaded. Please wait patiently.</value>
   </data>
   <data name="Desktop.Resources.Common.Lang.Message.PhienBanHienTaiDangChay" xml:space="preserve">
     <value>The current version you are running is version {0}, the latest version is version {1}</value>

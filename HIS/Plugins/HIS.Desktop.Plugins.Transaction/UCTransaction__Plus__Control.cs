@@ -496,6 +496,7 @@ namespace HIS.Desktop.Plugins.Transaction
                     lblInHospital.Text = Inventec.Common.DateTime.Convert.TimeNumberToDateString(treatment.CLINICAL_IN_TIME ?? 0);
                     lblOutDate.Text = Inventec.Common.DateTime.Convert.TimeNumberToTimeStringWithoutSecond(treatment.OUT_TIME ?? 0);
                     lblName.Text = treatment.TDL_PATIENT_NAME;
+                    lblNote.Text = treatment.TDL_PATIENT_NOTE;
                     if (treatment.TDL_PATIENT_IS_HAS_NOT_DAY_DOB == 1)
                     {
                         lblDob.Text = string.Format("{0} ({1})", treatment.TDL_PATIENT_DOB.ToString().Substring(0, 4), MPS.AgeUtil.CalculateFullAge(treatment.TDL_PATIENT_DOB));

@@ -28,8 +28,7 @@ using HIS.Desktop.LibraryMessage;
 
 namespace HIS.Desktop.Plugins.SurgServiceReqExecute.Validate.ValidationRule
 {
-    class ValidTimeSpan :
-DevExpress.XtraEditors.DXErrorProvider.ValidationRule
+    class ValidTimeSpan : DevExpress.XtraEditors.DXErrorProvider.ValidationRule
     {
         internal DevExpress.XtraEditors.DateEdit dateFromEdit;
         internal DevExpress.XtraEditors.DateEdit dateToEdit;
@@ -49,24 +48,24 @@ DevExpress.XtraEditors.DXErrorProvider.ValidationRule
                     this.ErrorText = ResourceMessage.TruongDuLieuBatBuoc;
                     return false;
                 }
-                if (lciDate.Visible)
-                {
-                    string dteFrom = dateFromEdit.DateTime.ToString("yyyyMMdd");
-                    string dteTo = dateToEdit.DateTime.ToString("yyyyMMdd");
-                    if (inTime.HasValue && Int64.Parse(dteFrom + (DateTime.Today.Date + timeSpanEdit.TimeSpan).ToString("HHmm")) < Int64.Parse(inTime.ToString().Substring(0, 12)))
-                    {
-                        this.ErrorText = "Thời gian nhỏ hơn thời gian vào viện";
-                        this.ErrorType = ErrorType.Warning;
-                        return false;
-                    }
+                //if (lciDate.Visible)
+                //{
+                //    string dteFrom = dateFromEdit.DateTime.ToString("yyyyMMdd");
+                //    string dteTo = dateToEdit.DateTime.ToString("yyyyMMdd");
+                //    if (inTime.HasValue && Int64.Parse(dteFrom + (DateTime.Today.Date + timeSpanEdit.TimeSpan).ToString("HHmm")) < Int64.Parse(inTime.ToString().Substring(0, 12)))
+                //    {
+                //        this.ErrorText = "Thời gian nhỏ hơn thời gian vào viện";
+                //        this.ErrorType = ErrorType.Warning;
+                //        return false;
+                //    }
 
-                    if (outTime.HasValue && Int64.Parse(dteTo + (DateTime.Today.Date + timeSpanEdit.TimeSpan).ToString("HHmm")) > Int64.Parse(outTime.ToString().Substring(0, 12)))
-                    {
-                        this.ErrorText = "Thời gian lớn hơn thời gian ra viện";
-                        this.ErrorType = ErrorType.Warning;
-                        return false;
-                    }
-                }
+                //    if (outTime.HasValue && Int64.Parse(dteTo + (DateTime.Today.Date + timeSpanEdit.TimeSpan).ToString("HHmm")) > Int64.Parse(outTime.ToString().Substring(0, 12)))
+                //    {
+                //        this.ErrorText = "Thời gian lớn hơn thời gian ra viện";
+                //        this.ErrorType = ErrorType.Warning;
+                //        return false;
+                //    }
+                //}
 
                 if(lciCa.Visible)
                 {

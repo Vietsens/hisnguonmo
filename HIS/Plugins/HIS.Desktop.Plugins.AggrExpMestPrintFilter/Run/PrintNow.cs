@@ -2153,26 +2153,8 @@ namespace HIS.Desktop.Plugins.AggrExpMestPrintFilter.Run
 
                 if (conditional)
                 {
-                    if (this.serviceUnitIds != null && this.serviceUnitIds.Count > 0)
-                    {
-                        if (this._ExpMestMedicines != null && this._ExpMestMedicines.Count > 0)
-                        {
-                            this._ExpMestMedicines = this._ExpMestMedicines.Where(o => this.serviceUnitIds.Contains(o.SERVICE_UNIT_ID)).ToList();
-                        }
-
-                        if (this._ExpMestMaterials != null && this._ExpMestMaterials.Count > 0)
-                        {
-                            this._ExpMestMaterials = this._ExpMestMaterials.Where(o => this.serviceUnitIds.Contains(o.SERVICE_UNIT_ID)).ToList();
-                        }
-                    }
-
-                    if (this.useFormIds != null && this.useFormIds.Count > 0)
-                    {
-                        if (this._ExpMestMedicines != null && this._ExpMestMedicines.Count > 0)
-                        {
-                            this._ExpMestMedicines = this._ExpMestMedicines.Where(o => this.useFormIds.Contains(o.MEDICINE_USE_FORM_ID ?? 0)).ToList();
-                        }
-                    }
+                    _ExpMestMedicines = _ExpMestMedicines.Where(p => Check(p, serviceUnitIds, useFormIds)).ToList();
+                    _ExpMestMaterials = _ExpMestMaterials.Where(p => Check(p, serviceUnitIds)).ToList();
 
                     if (!Medicine)
                     {
@@ -2215,7 +2197,6 @@ namespace HIS.Desktop.Plugins.AggrExpMestPrintFilter.Run
                         {
                             this._ViewExpMests_Print = this._ViewExpMests_Print.Where(p => lstreqRoomId.Contains(p.REQ_ROOM_ID)).ToList();
                         }
-
                     }
 
                     if (this._ExpMests_Print != null && _ExpMests_Print.Count > 0)
@@ -2294,7 +2275,60 @@ namespace HIS.Desktop.Plugins.AggrExpMestPrintFilter.Run
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
-
+        bool Check(V_HIS_EXP_MEST_MATERIAL _expMestMaterial, List<long> serviceUnitIds)
+        {
+            bool result = false;
+            try
+            {
+                if (_expMestMaterial != null)
+                {
+                    if (serviceUnitIds != null && serviceUnitIds.Count > 0)
+                    {
+                        if (serviceUnitIds.Contains(_expMestMaterial.SERVICE_UNIT_ID))
+                            result = true;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+                result = false;
+            }
+            return result;
+        }
+        bool Check(V_HIS_EXP_MEST_MEDICINE _expMestMedicine, List<long> serviceUnitIds, List<long> useFormIds)
+        {
+            bool result = false;
+            try
+            {
+                var data = BackendDataWorker.Get<V_HIS_MEDICINE_TYPE>().FirstOrDefault(p => p.ID == _expMestMedicine.MEDICINE_TYPE_ID);
+                if (data != null)
+                {
+                    if (serviceUnitIds != null
+                        && serviceUnitIds.Count > 0)
+                    {
+                        if (serviceUnitIds.Contains(data.SERVICE_UNIT_ID))
+                            result = true;
+                    }
+                    if (data.MEDICINE_USE_FORM_ID > 0)
+                    {
+                        if (useFormIds != null
+                    && useFormIds.Count > 0 && useFormIds.Contains(data.MEDICINE_USE_FORM_ID ?? 0))
+                        {
+                            result = result && true;
+                        }
+                        else
+                            result = false;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+                result = false;
+            }
+            return result;
+        }
         List<HIS_EXP_MEST> _ExpMests_Print { get; set; }
         List<V_HIS_EXP_MEST> _ViewExpMests_Print { get; set; }
         List<V_HIS_EXP_MEST_MATERIAL> _ExpMestMaterials { get; set; }

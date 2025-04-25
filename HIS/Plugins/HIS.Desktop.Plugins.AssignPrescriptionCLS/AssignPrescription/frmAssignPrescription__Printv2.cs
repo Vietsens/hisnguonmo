@@ -148,6 +148,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
         }
 
         private void PrescriptionPrintShow(string printTypeCode, bool isPrintNow)
+            //private void PrescriptionPrintShow(string printTypeCode, bool isPrintNow, bool check, )
         {
             try
             {
@@ -186,10 +187,11 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
                    
                     OutPatientPresResultSDOForPrints.Add(OutPatientPresResultSDO);
                 }
-
+                MPS.ProcessorBase.PrintConfig.PreviewType previewType;
                 printPrescriptionProcessor = new Library.PrintPrescription.PrintPrescriptionProcessor(OutPatientPresResultSDOForPrints, this.currentSereServ, this.currentModule);
 
                 printPrescriptionProcessor.Print(printTypeCode, isPrintNow);
+                printPrescriptionProcessor.Print(printTypeCode, isPrintNow, previewType);
             }
             catch (Exception ex)
             {

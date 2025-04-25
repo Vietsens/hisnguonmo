@@ -16,7 +16,6 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 using ACS.EFMODEL.DataModels;
-using DevExpress.XtraExport;
 using HIS.Desktop.ADO;
 using HIS.Desktop.ApiConsumer;
 using HIS.Desktop.Controls.Session;
@@ -37,6 +36,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using static MPS.ProcessorBase.PrintConfig;
 
 namespace HIS.Desktop.Plugins.AssignPaan
 {
@@ -453,9 +453,8 @@ namespace HIS.Desktop.Plugins.AssignPaan
                         bedLogs = new Inventec.Common.Adapter.BackendAdapter(param).Get<List<V_HIS_BED_LOG>>("api/HisBedLog/GetView", ApiConsumer.ApiConsumers.MosConsumer, bedLogViewFilter, param);
                     }
 
-                    MPS.ProcessorBase.PrintConfig.PreviewType? printNow = null;
-
-                    //bool printNow = false
+                    bool printNow = false;
+                    var previewType = MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow;
                     //if (HIS.Desktop.LocalStorage.ConfigApplication.ConfigApplications.CheDoInChoCacChucNangTrongPhanMem == 2)
                     //{
                     //    printNow = true;
@@ -464,26 +463,39 @@ namespace HIS.Desktop.Plugins.AssignPaan
                     //{
                     //    printNow = false;
                     //}
-
-                    //var PrintServiceReqProcessor = new Library.PrintServiceReq.PrintServiceReqProcessor(sdo, currentHisTreatment, bedLogs, currentModule != null ? currentModule.RoomId : 0);
-                    //PrintServiceReqProcessor.Print(printTypeCode, printNow);
                     Inventec.Desktop.Common.Modules.Module module = GlobalVariables.currentModuleRaws.Where(o => o.ModuleLink == "HIS.Desktop.Plugins.AssignPaan").FirstOrDefault();
                     if(module != null)
                     {
-                        var AssignPaan = HisPatientTypeCFG.IsAllowSignaturePrint.Split(',');
-                        if(AssignPaan != null)
+                        var allowSignValue = HisPatientTypeCFG.IsAllowSignaturePrint;
+                        if (!string.IsNullOrWhiteSpace(allowSignValue))
                         {
-                            if (AssignPaan.Contains(HisPatientTypeCFG.IsAllowSignaturePrint))
+                            var allowedModules = allowSignValue
+                                .Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries)
+                                .Select(x => x.Trim())
+                                .ToList();
+
+                            if (allowedModules.Contains("HIS.Desktop.Plugins.AssignPaan"))
                             {
-                                printNow = MPS.ProcessorBase.PrintConfig.PreviewType.EmrSignAndPrintNow;
+                                previewType = MPS.ProcessorBase.PrintConfig.PreviewType.EmrSignAndPrintPreview;
                             }
                             else
                             {
-                                printNow = MPS.ProcessorBase.PrintConfig.PreviewType.EmrShow;
-                            }                            
+                                previewType = MPS.ProcessorBase.PrintConfig.PreviewType.EmrSignNow;
+                            }
+                        }
+                        else
+                        {
+                            previewType = MPS.ProcessorBase.PrintConfig.PreviewType.ShowDialog;
                         }
                     }
+                    else
+                    {
+                        previewType = MPS.ProcessorBase.PrintConfig.PreviewType.ShowDialog;
+                    }
+                    var PrintServiceReqProcessors = new Library.PrintServiceReq.PrintServiceReqProcessor(sdo, currentHisTreatment, bedLogs, currentModule != null ? currentModule.RoomId : 0, previewType);
+                    PrintServiceReqProcessors.Print(printTypeCode, printNow);
                 }
+
             }
             catch (Exception ex)
             {

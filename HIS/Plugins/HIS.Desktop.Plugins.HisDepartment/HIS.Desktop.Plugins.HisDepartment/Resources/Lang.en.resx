@@ -343,4 +343,10 @@
     <value>Is in department's stock:</value>
     <comment>Mặc định kho thu hồi thuộc khoa:</comment>
   </data>
+  <data name="frmHisDepartment.grdColSubsDirector.Caption" xml:space="preserve">
+    <value>SubsDirector</value>
+  </data>
+  <data name="frmHisDepartment.grdColSubsDirector.Tooltip" xml:space="preserve">
+    <value>SUBSDIRECTOR_LOGINNAME - SUBSDIRECTOR_USERNAME</value>
+  </data>
 </root>

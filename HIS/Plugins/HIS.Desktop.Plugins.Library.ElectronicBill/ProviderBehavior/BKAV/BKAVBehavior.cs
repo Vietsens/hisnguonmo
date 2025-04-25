@@ -364,6 +364,11 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.BKAV
             invoiceWS.InvoiceDate = DateTime.Now;
             invoiceWS.InvoiceForm = this.ElectronicBillDataInput.TemplateCode;
             invoiceWS.InvoiceSerial = this.ElectronicBillDataInput.SymbolCode;
+            int invoiceType = 1;
+            if (int.TryParse(this.ElectronicBillDataInput.TemplateCode, out invoiceType))
+            {
+                invoiceWS.InvoiceTypeID = invoiceType;
+            }
 
             InvoiceInfo.InvoiceInfoADO adoInfo = InvoiceInfo.InvoiceInfoProcessor.GetData(this.ElectronicBillDataInput);
             invoiceWS.BuyerName = adoInfo.BuyerName ?? "";

@@ -4586,7 +4586,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                         else
                         {
                             solan = 1;
-                            List<double> lst = new List<double>() { (double)((double)this.GetValueSpin(this.spinAmount.Text)/((int)spinSoLuongNgay.Value)) };
+                            List<double> lst = new List<double>() { (double)((double)this.GetValueSpin(this.spinAmount.Text) / ((int)spinSoLuongNgay.Value)) };
                             lst = lst.Where(o => o > 0).Distinct().ToList();
                             if (lst.Count == 1)
                             {
@@ -4791,18 +4791,19 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
             try
             {
                 TextEdit txt = sender as TextEdit;
-                this.SetHuongDanFromSoLuongNgay();
-                if (txt.OldEditValue == txt.EditValue)
+                if (txt.OldEditValue.ToString() == txt.EditValue.ToString())
                     return;
                 decimal vlTmp = 0;
+                CultureInfo culture = new CultureInfo("en-US");
+                spinAmount.Text = GetAmount().ToString();
+                if (spinAmount.Text.Contains(","))
+                    culture = new CultureInfo("fr-FR");
+                decimal amountTmp = Convert.ToDecimal(spinAmount.EditValue.ToString(), culture);
+                if ((currentMedicineTypeADOForEdit != null && currentMedicineTypeADOForEdit.ID > 0 && amountTmp != (currentMedicineTypeADOForEdit.AMOUNT ?? 0)) || (currentMedicineTypeADOForEdit == null && txt.EditValue.ToString() != txt.OldEditValue.ToString()))
+                    this.SetHuongDanFromSoLuongNgay();
                 if (currentMedicineTypeADOForEdit != null && currentMedicineTypeADOForEdit.ID > 0 && (!GlobalStore.IsTreatmentIn || GlobalStore.IsCabinet))
                 {
                     int plusSeperate = 1;
-                    CultureInfo culture = new CultureInfo("en-US");
-                    spinAmount.Text = GetAmount().ToString();
-                    if (spinAmount.Text.Contains(","))
-                        culture = new CultureInfo("fr-FR");
-                    decimal amountTmp = Convert.ToDecimal(spinAmount.EditValue.ToString(), culture);
                     if (amountTmp > 0)
                     {
                         if ((HisConfigCFG.IsShowPresAmount && VHistreatment != null && VHistreatment.TDL_TREATMENT_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__KHAM)

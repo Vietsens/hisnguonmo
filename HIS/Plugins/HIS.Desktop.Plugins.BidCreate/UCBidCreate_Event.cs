@@ -51,12 +51,12 @@ namespace HIS.Desktop.Plugins.BidCreate
                 if (!dxValidationProviderLeft.Validate()) return;
                 if (xtraTabControl1.SelectedTabPageIndex == 0) // thuoc
                 {
-                    if (!WarningBhytInfo()) return;
+                    if (!WarningBhytInfo()) return;                   
                     var aMedicineType = this.ListMedicineTypeAdoProcess.FirstOrDefault(
                         o => o.ID == this.medicineType.ID &&
                         o.Type == Base.GlobalConfig.THUOC &&
-                        o.SUPPLIER_ID == (long)cboSupplier.EditValue
-                        &&o.BID_GROUP_CODE == txtBidGroupCode.Text
+                        o.SUPPLIER_ID == (long)cboSupplier.EditValue &&
+                        o.BID_GROUP_CODE == txtBidGroupCode.Text
                         );
                     if (aMedicineType != null && aMedicineType.ID > 0)
                     {
@@ -200,6 +200,7 @@ namespace HIS.Desktop.Plugins.BidCreate
                         txtConcentra.Text = "";
                         txtSupplierCode.Text = "";
                         cboSupplier.EditValue = null;
+                        cboDosageForm.EditValue = null;
                         cboNational.EditValue = null;
                         cboManufacture.EditValue = null;
                         spinAmount.Value = 0;
@@ -641,7 +642,17 @@ namespace HIS.Desktop.Plugins.BidCreate
                         xtraTabControl1.SelectedTabPageIndex = 0;
                         this.medicineType = row;
                         txtActiveBhyt.Text = row.ACTIVE_INGR_BHYT_NAME ?? "";
-                        txtDosageForm.Text = row.DOSAGE_FORM ?? "";
+                        //cboDosageForm.EditValue = row.DOSAGE_FORM ?? "";
+                        var dosageItem = dataDosageForm.FirstOrDefault(o => o.DOSAGE_FORM_NAME == row.DOSAGE_FORM);
+                        if (dosageItem != null)
+                        {
+                            cboDosageForm.EditValue = dosageItem.ID;
+                        }
+                        else
+                        {
+                            cboDosageForm.EditValue = null;
+                        }
+
                         cboMediUserForm.EditValue = row.MEDICINE_USE_FORM_ID;
                         txtTenBHYT.Text = row.HEIN_SERVICE_BHYT_NAME ?? "";
                         txtQCĐG.Text = row.PACKING_TYPE_NAME ?? "";
@@ -683,7 +694,7 @@ namespace HIS.Desktop.Plugins.BidCreate
                     {
                         txtSupplierCode.Text = supplier.SUPPLIER_CODE;
                         cboSupplier.EditValue = supplier.ID;
-                        cboSupplier.Properties.Buttons[1].Visible = true;
+                        cboSupplier.Properties.Buttons[1].Visible = true;        
                     }
                     else
                     {
@@ -962,7 +973,7 @@ namespace HIS.Desktop.Plugins.BidCreate
                 this.medicineType.HEIN_SERVICE_BHYT_NAME = txtTenBHYT.Text.Trim();
                 this.medicineType.PACKING_TYPE_NAME = txtQCĐG.Text.Trim();
                 this.medicineType.ACTIVE_INGR_BHYT_NAME = txtActiveBhyt.Text.Trim();
-                this.medicineType.DOSAGE_FORM = txtDosageForm.Text.Trim();
+                //this.medicineType.DOSAGE_FORM = txtDosageForm.Text.Trim();
                 if (cboMediUserForm.EditValue != null)
                 {
                     HIS_MEDICINE_USE_FORM useForm = BackendDataWorker.Get<HIS_MEDICINE_USE_FORM>().FirstOrDefault(o => o.ID == Convert.ToInt64(cboMediUserForm.EditValue));
@@ -1052,6 +1063,16 @@ namespace HIS.Desktop.Plugins.BidCreate
                 {
                     this.medicineType.MONTH_LIFESPAN = null;
                 }
+                if (cboDosageForm.EditValue != null)
+                {
+                    this.medicineType.DOSAGE_FORM = dataDosageForm.FirstOrDefault(o => o.ID == (long)cboDosageForm.EditValue).DOSAGE_FORM_NAME;                        
+                }
+                else
+                {
+                    cboDosageForm.EditValue = null;
+                    this.medicineType.DOSAGE_FORM = null;          
+                }
+
                 this.ListMedicineTypeAdoProcess.Add(this.medicineType);
             }
             catch (Exception ex)
@@ -1215,7 +1236,7 @@ namespace HIS.Desktop.Plugins.BidCreate
             bool valid = true;
             try
             {
-                if (this.medicineType.IS_BUSINESS != (short)1)
+                if (this.medicineType != null && this.medicineType.IS_BUSINESS != (short)1)
                 {
                     List<string> fields = new List<string>();
                     Control focusControl = null;
@@ -1244,7 +1265,11 @@ namespace HIS.Desktop.Plugins.BidCreate
                         fields.Add(Resources.ResourceMessage.DuongDung);
                         if (focusControl == null) focusControl = cboMediUserForm;
                     }
-
+                    if(cboDosageForm.EditValue == null)
+                    {
+                        fields.Add(Resources.ResourceMessage.Dangbaoche);
+                        if (focusControl == null) focusControl = cboDosageForm;
+                    }
                     if (fields.Count > 0)
                     {
                         if (XtraMessageBox.Show(String.Format(Resources.ResourceMessage.BanChuaNhapCacTruongMuonTiepTuc, string.Join(", ", fields)), Resources.ResourceMessage.ThongBao, MessageBoxButtons.YesNo, DevExpress.Utils.DefaultBoolean.True) != DialogResult.Yes)

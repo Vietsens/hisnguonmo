@@ -172,8 +172,8 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
         private void RunAutoPrintByPrintConfig()
         {
             try
-            {
-                var printConfigAutoPrints = (printConfigADOs != null && printConfigADOs.Count > 0 && printConfigADOs.Exists(o => o.IsAutoPrint)) ? printConfigADOs.Where(o => o.IsAutoPrint).ToList() : null;
+            {              
+                var printConfigAutoPrints = (printConfigADOs != null && printConfigADOs.Count > 0 && printConfigADOs.Exists(o => o.IsAutoPrint)) ? printConfigADOs.Where(o => o.IsAutoPrint).ToList() : null;               
                 if (printConfigAutoPrints != null && printConfigAutoPrints.Count > 0)
                 {
                     foreach (var itemPrint in printConfigAutoPrints)
@@ -208,7 +208,7 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
                         menuItem.Tag = itemPrint.ModuleTypePrint;
                         PrintCloseTreatment_Click(menuItem, null);
                     }
-                }
+                }               
             }
             catch (Exception ex)
             {

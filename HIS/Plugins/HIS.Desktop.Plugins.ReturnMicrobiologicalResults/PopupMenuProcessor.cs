@@ -25,7 +25,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
+using System.Threading.Tasks;    
 using System.Windows.Forms;
 
 namespace HIS.Desktop.Plugins.ReturnMicrobiologicalResults
@@ -34,7 +34,7 @@ namespace HIS.Desktop.Plugins.ReturnMicrobiologicalResults
     class PopupMenuProcessor
     {
         V_LIS_SAMPLE _Sample = null;
-        BarManager _BarManager = null;
+        BarManager _BarManager = null;     
         PopupMenu _PopupMenu = null;
         MouseRightClick _MouseRightClick;
         Point _pointPopup;

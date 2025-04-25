@@ -100,11 +100,15 @@
     <Compile Include="CallPatientDepartment\CallPatientDepartmentBehavior.cs" />
     <Compile Include="CallPatientDepartment\CallPatientDepartmentFactory.cs" />
     <Compile Include="CallPatientDepartment\ICallPatientDepartment.cs" />
-    <Compile Include="FormConfigWaitingScreen.cs" />
+    <Compile Include="FormConfigWaitingScreen.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="FormConfigWaitingScreen.Designer.cs">
       <DependentUpon>FormConfigWaitingScreen.cs</DependentUpon>
     </Compile>
-    <Compile Include="FormWaitingScreen.cs" />
+    <Compile Include="FormWaitingScreen.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="FormWaitingScreen.Designer.cs">
       <DependentUpon>FormWaitingScreen.cs</DependentUpon>
     </Compile>

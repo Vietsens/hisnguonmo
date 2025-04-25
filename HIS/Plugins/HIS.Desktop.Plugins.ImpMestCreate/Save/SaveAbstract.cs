@@ -147,7 +147,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate.Save
                     mediSdo.Medicine.PACKING_TYPE_NAME = ado.packingTypeName;
                     mediSdo.Medicine.ACTIVE_INGR_BHYT_CODE = ado.activeIngrBhytCode;
                     mediSdo.Medicine.ACTIVE_INGR_BHYT_NAME = ado.activeIngrBhytName;
-                    mediSdo.Medicine.DOSAGE_FORM = ado.dosageForm;
+                    mediSdo.Medicine.DOSAGE_FORM = ado.HisMedicine.DOSAGE_FORM;
                     mediSdo.Medicine.MEDICINE_USE_FORM_ID = ado.medicineUseFormId;
                     // mediSdo.Medicine.DOCUMENT_PRICE = ado.DOCUMENT_PRICE;
                     mediSdo.Medicine.DOCUMENT_PRICE = (long)Math.Round((ado.IMP_AMOUNT * ado.IMP_PRICE * (1 + ado.IMP_VAT_RATIO)), 0, MidpointRounding.AwayFromZero);

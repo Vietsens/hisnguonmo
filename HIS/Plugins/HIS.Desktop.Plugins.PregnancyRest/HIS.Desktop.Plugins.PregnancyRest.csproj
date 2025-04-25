@@ -167,7 +167,9 @@
     <Compile Include="ADO\BabyADO.cs" />
     <Compile Include="ADO\HisConfigCHECKHEINCARD.cs" />
     <Compile Include="AgeUtil.cs" />
-    <Compile Include="FormPregnancyRest.cs" />
+    <Compile Include="FormPregnancyRest.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="FormPregnancyRest.Designer.cs">
       <DependentUpon>FormPregnancyRest.cs</DependentUpon>
     </Compile>

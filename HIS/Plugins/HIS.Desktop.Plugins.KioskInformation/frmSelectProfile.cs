@@ -17,6 +17,7 @@
  */
 using DevExpress.Data;
 using DevExpress.XtraGrid.Views.Base;
+using DevExpress.XtraGrid.Views.Grid;
 using HIS.Desktop.Utility;
 using Inventec.Common.Logging;
 using Inventec.Desktop.Common.Modules;
@@ -34,13 +35,14 @@ using System.Windows.Forms;
 
 namespace HIS.Desktop.Plugins.KioskInformation
 {
-    public partial class frmSelectProfile : FormBase
+    public partial class frmSelectProfile : Form     
     {
         private List<KioskInformationSDO> _lstKioskInform = new List<KioskInformationSDO>();
 
-        private Module _currentModule = new Module();
+        private Module _currentModule = new Module();        
 
-        private List<Image> _lstImage;
+
+        private List<Image> _lstImage;   
 
         private Image _currentImage;
 
@@ -49,15 +51,16 @@ namespace HIS.Desktop.Plugins.KioskInformation
         private int _coutWallpaper = 0;
 
         private int countOfGrid = 0;
+        private Action<object[]> actionData;    
 
-        public frmSelectProfile(Module currentModule, List<KioskInformationSDO> lstKioskInform, List<Image> lstImage, int coutWallpaper)
-            : base(currentModule)
+        public frmSelectProfile(Module currentModule, List<KioskInformationSDO> lstKioskInform, List<Image> lstImage, int coutWallpaper, Action<object[]> actionData)
         {
             this.InitializeComponent();
             this._currentModule = currentModule;
             this._lstImage = lstImage;
             this._lstKioskInform = lstKioskInform;
             this._coutWallpaper = coutWallpaper;
+            this.actionData = actionData;
         }
 
         private void frmSelectProfile_Load(object sender, EventArgs e)
@@ -69,7 +72,7 @@ namespace HIS.Desktop.Plugins.KioskInformation
                 this.timerWallpaperSelectForm.Start();
                 this._currentImage = this._lstImage[this._coutWallpaper / 10];
                 this.timerOffGrid.Interval = 1000;
-                this.timerOffGrid.Start();
+                //this.timerOffGrid.Start();
             }
             catch (Exception ex)
             {
@@ -81,6 +84,12 @@ namespace HIS.Desktop.Plugins.KioskInformation
 
         private void gridViewSelectProfile_Click(object sender, EventArgs e)
         {
+            var view = sender as GridView;
+            var hi = view.CalcHitInfo(view.GridControl.PointToClient(MousePosition));
+            if (!hi.InRow || hi.RowHandle < 0)
+                return;
+
+
             try
             {
                 KioskInformationSDO kioskInformationSDO = (KioskInformationSDO)this.gridViewSelectProfile.GetFocusedRow();
@@ -88,9 +97,9 @@ namespace HIS.Desktop.Plugins.KioskInformation
                 {
                     this._currentData = kioskInformationSDO;
                     base.Hide();
-                    frmGetInforationScreen frmGetInforationScreen = new frmGetInforationScreen(this._currentModule, this._currentData, this._currentImage);
-                    frmGetInforationScreen.ShowDialog();
-                    base.Show();
+                    //frmGetInforationScreen frmGetInforationScreen = new frmGetInforationScreen(this._currentModule, this._currentData, this._currentImage);
+                    //frmGetInforationScreen.ShowDialog();
+                    actionData(new object[] { this._currentData , this._currentImage });
                 }
             }
             catch (Exception ex)
@@ -116,6 +125,12 @@ namespace HIS.Desktop.Plugins.KioskInformation
                         {
                             e.Value = Inventec.Common.DateTime.Convert.TimeNumberToDateString(kioskInformationSDO.Dob);
                         }
+                        if (e.Column.FieldName == "IntimeStr")
+                        {
+                            e.Value = kioskInformationSDO.Intime.HasValue
+                                ? Inventec.Common.DateTime.Convert.TimeNumberToDateString(kioskInformationSDO.Intime.Value)
+                                : string.Empty;
+                        }
                     }
                 }
             }
@@ -127,20 +142,27 @@ namespace HIS.Desktop.Plugins.KioskInformation
 
         private void timerWallpaperSelectForm_Tick(object sender, EventArgs e)
         {
-            if (this.timerWallpaperSelectForm.Enabled)
+            try
             {
-                this._coutWallpaper++;
-                if (this._coutWallpaper % 10 == 0)
+                if (this.timerWallpaperSelectForm.Enabled)
                 {
-                    if (this._lstImage != null && this._lstImage.Count > 0)
+                    this._coutWallpaper++;
+                    if (this._coutWallpaper % 10 == 0)
                     {
-                        if (this._coutWallpaper / 10 == this._lstImage.Count)
+                        if (this._lstImage != null && this._lstImage.Count > 0)
                         {
-                            this._coutWallpaper = 0;
+                            if (this._coutWallpaper / 10 == this._lstImage.Count)
+                            {
+                                this._coutWallpaper = 0;
+                            }
+                            this._currentImage = this._lstImage[this._coutWallpaper / 10];
                         }
-                        this._currentImage = this._lstImage[this._coutWallpaper / 10];
                     }
                 }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
 
@@ -149,7 +171,7 @@ namespace HIS.Desktop.Plugins.KioskInformation
             if (this.timerOffGrid.Enabled)
             {
                 this.countOfGrid++;
-                if (this.countOfGrid == 60)
+                if (this.countOfGrid == 10)
                 {
                     base.Hide();
                 }

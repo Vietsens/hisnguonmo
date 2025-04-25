@@ -58,8 +58,7 @@ namespace HIS.Desktop.Plugins.HisImportEmpUser.ADO
         public string DO_NOT_ALLOW_SIMULTANEITY_STR { get; set; }
         public string IS_LIMIT_SCHEDULE_STR { get; set; }
         public string IS_NEED_SIGN_INSTEAD_STR { get; set; }
-
-
+        public string EMPLOYEE_CODE { get; set; }
 
     }
 }

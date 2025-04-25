@@ -550,7 +550,7 @@
     <value>layoutControl1</value>
   </data>
   <data name="frmTutorial.layoutControlItem1.Text" xml:space="preserve">
-    <value>User manual:</value>
+    <value>Dosage:</value>
   </data>
   <data name="frmTutorial.layoutControlItem3.Text" xml:space="preserve">
     <value>Transfer rate:</value>
@@ -680,5 +680,8 @@
   </data>
   <data name="frmServiceReqList.lciTestSampleTypeName.Text" xml:space="preserve">
     <value>Sample type:</value>
+  </data>
+  <data name="frmTutorial.layoutControlItem5.Text" xml:space="preserve">
+    <value>Use medicine:</value>
   </data>
 </root>

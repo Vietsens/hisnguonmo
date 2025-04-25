@@ -1439,7 +1439,7 @@ namespace His.UC.UCHein.Design.TemplateHeinBHYT1
                 var treatment = this.patientTypeAlterOld != null && this.patientTypeAlterOld.TREATMENT_ID > 0 ? His.UC.UCHein.HisTreatment.HisTreatmentGet.GetById(this.patientTypeAlterOld.TREATMENT_ID) : (this.entity.HisTreatment != null && this.entity.HisTreatment.ID > 0) ? this.entity.HisTreatment : null;
                 if (LoadDefault)
                     SetDefaultRightCode();
-                if (!this.isCallByRegistor && rdoRightRoute.Checked && this.cboDKKCBBD.EditValue != null && (string)this.cboDKKCBBD.EditValue != BackendDataWorker.Get<HIS_BRANCH>().FirstOrDefault(o => o.ID == treatment.BRANCH_ID).HEIN_MEDI_ORG_CODE && this.cboNoiSong.EditValue == null && !chkHasAbsentLetter.Checked && !chkHasWorkingLetter.Checked && !chkTt46.Checked && (!ValidAcceptHeinMediOrgCode((string)this.cboDKKCBBD.EditValue, BackendDataWorker.Get<HIS_BRANCH>().FirstOrDefault(o => o.ID == treatment.BRANCH_ID).ACCEPT_HEIN_MEDI_ORG_CODE)
+                if (!this.isCallByRegistor && rdoRightRoute.Checked && this.cboDKKCBBD.EditValue != null && (string)this.cboDKKCBBD.EditValue != BackendDataWorker.Get<HIS_BRANCH>().FirstOrDefault(o => o.ID == treatment.BRANCH_ID).HEIN_MEDI_ORG_CODE && (!this.IsNotRequiredRightTypeInCaseOfHavingAreaCode || this.cboNoiSong.EditValue == null) &&!chkBaby.Checked && !chkHasAbsentLetter.Checked && !chkHasWorkingLetter.Checked && !chkTt46.Checked && (!ValidAcceptHeinMediOrgCode((string)this.cboDKKCBBD.EditValue, BackendDataWorker.Get<HIS_BRANCH>().FirstOrDefault(o => o.ID == treatment.BRANCH_ID).ACCEPT_HEIN_MEDI_ORG_CODE)
                         && !ValidSysMediOrgCode((string)this.cboDKKCBBD.EditValue, BackendDataWorker.Get<HIS_BRANCH>().FirstOrDefault(o => o.ID == treatment.BRANCH_ID).SYS_MEDI_ORG_CODE)))
                     ValidRightRouteType();
                 else
@@ -1972,6 +1972,8 @@ namespace His.UC.UCHein.Design.TemplateHeinBHYT1
                 if (e.CloseMode == PopupCloseMode.Normal)
                 {
                     Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => IsNotRequiredRightTypeInCaseOfHavingAreaCode), IsNotRequiredRightTypeInCaseOfHavingAreaCode) + Inventec.Common.Logging.LogUtil.TraceData("this.cboNoiSong.EditValue", this.cboNoiSong.EditValue) + Inventec.Common.Logging.LogUtil.TraceData("this.cboDKKCBBD.EditValue", this.cboDKKCBBD.EditValue));
+
+                    ValidateRightRouteType();
                     if (IsNotRequiredRightTypeInCaseOfHavingAreaCode)
                     {
                         string liveArea = (this.cboNoiSong.EditValue ?? "").ToString();
@@ -1981,6 +1983,8 @@ namespace His.UC.UCHein.Design.TemplateHeinBHYT1
 
                         if ((!String.IsNullOrEmpty(liveArea) && (liveArea == MOS.LibraryHein.Bhyt.HeinLiveArea.HeinLiveAreaCode.K1 || liveArea == MOS.LibraryHein.Bhyt.HeinLiveArea.HeinLiveAreaCode.K2 || liveArea == MOS.LibraryHein.Bhyt.HeinLiveArea.HeinLiveAreaCode.K3)))
                         {
+                            lblRightRouteType.AppearanceItemCaption.ForeColor = System.Drawing.Color.Black;
+                            dxValidationProvider1.SetValidationRule(txtHeinRightRouteCode, null);
                             this.rdoRightRoute.Checked = true;
                             this.dxValidationProvider1.RemoveControlError(cboHeinRightRoute);
                         }

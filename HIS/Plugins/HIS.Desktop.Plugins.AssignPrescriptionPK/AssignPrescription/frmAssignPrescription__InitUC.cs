@@ -50,11 +50,13 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                 this.currentIcds = BackendDataWorker.Get<HIS_ICD>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE && o.IS_TRADITIONAL != 1).OrderBy(o => o.ICD_CODE).ToList();
                 this.currentTranditionalIcds = BackendDataWorker.Get<HIS_ICD>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE && o.IS_TRADITIONAL == 1).OrderBy(o => o.ICD_CODE).ToList();
                 VisibleLayoutSubIcd(HisConfigCFG.OptionSubIcdWhenFinish == "3");
+                LogSystem.Debug("InitMultipleThread => 2");
                 UCIcdInit();
                 UCIcdCauseInit();
                 UcDateInit();
                 InitUcIcdYhct();
                 InitUcSecondaryIcdYhct();
+                LogSystem.Debug("InitMultipleThread => 3");
                 if (HisConfigCFG.IsUsingServiceTime
                     && !GlobalStore.IsTreatmentIn
                     && !GlobalStore.IsExecutePTTT)
@@ -64,11 +66,13 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                 }
 
                 InitControlState();
-
+                LogSystem.Debug("InitMultipleThread => 4");
                 if ((GlobalStore.IsTreatmentIn && !GlobalStore.IsCabinet) || GlobalStore.IsExecutePTTT)
                 {
                     this.InitUCPatientSelect();
+                    LogSystem.Debug("InitMultipleThread => 5");
                     this.InitUCPeriousExpMestList();
+                    LogSystem.Debug("InitMultipleThread => 6");
                     heightUCBottom = lciUCBottomPanel.Height + 20;
                     heightUCTop = lciUCTopPanel.Height - 20;
                     //heightUCTop = lciUCTopPanel.Height - 200;
@@ -81,7 +85,9 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                 else
                 {
                     this.InitUCPeriousExpMestList();
+                    LogSystem.Debug("InitMultipleThread => 7");
                     this.InitUcTreatmentFinish();
+                    LogSystem.Debug("InitMultipleThread => 8");
                     heightUCBottom = lciUCBottomPanel.Height + 20;
                     heightUCTop = lciUCTopPanel.Height - 20;
 
@@ -102,7 +108,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                 //this.lciUCBottomPanel.Height = heightUCBottom;
                 //this.lciUCTopPanel.Height = heightUCTop;
                 Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => heightUCTop), heightUCTop) + "____" + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => heightUCBottom), heightUCBottom));
-                LogSystem.Debug("InitMultipleThread => 2");
+                LogSystem.Debug("InitMultipleThread => 9");
             }
             catch (Exception ex)
             {
@@ -371,7 +377,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
             return mainCode;
         }
 
-        private void SetDefaultUC()
+        private async Task SetDefaultUC()
         {
             try
             {
@@ -382,7 +388,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                     if (HisConfigCFG.IsUsingServiceTime)
                     {
                         //Lay gio server
-                        TimerSDO timeSync = new BackendAdapter(new CommonParam()).Get<TimerSDO>(AcsRequestUriStore.ACS_TIMER__SYNC, ApiConsumers.AcsConsumer, 1, new CommonParam());
+                        TimerSDO timeSync = await new BackendAdapter(new CommonParam()).GetAsync<TimerSDO>(AcsRequestUriStore.ACS_TIMER__SYNC, ApiConsumers.AcsConsumer, 1, new CommonParam());
                         Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => timeSync), timeSync));
                         if (timeSync != null)
                         {

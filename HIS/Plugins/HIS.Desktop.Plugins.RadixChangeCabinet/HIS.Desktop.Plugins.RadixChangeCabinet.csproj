@@ -143,7 +143,9 @@
     <Compile Include="ADO\StringUtil.cs" />
     <Compile Include="AppConfigKeys.cs" />
     <Compile Include="cboValidationRule.cs" />
-    <Compile Include="frmFormUC.cs" />
+    <Compile Include="frmFormUC.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="frmFormUC.Designer.cs">
       <DependentUpon>frmFormUC.cs</DependentUpon>
     </Compile>

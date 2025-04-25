@@ -225,7 +225,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
             }
         }
 
-        private async Task ThreadLoadDonThuocCu()
+        private async Task ThreadLoadDonThuocCu(List<MOS.EFMODEL.DataModels.HIS_SERVICE_REQ> _serviceReqPrintAlls = null)
         {
             try
             {
@@ -236,7 +236,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                     return;
 
                 CommonParam param = new CommonParam();
-                if (_serviceReqPrintAlls == null)
+                //if (_serviceReqPrintAlls == null)
                 {
                     
                     //Load đơn phòng khám
@@ -246,11 +246,10 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                     serviceReqPrintAlls = await new BackendAdapter(param)
                           .GetAsync<List<MOS.EFMODEL.DataModels.HIS_SERVICE_REQ>>("api/HisServiceReq/Get", ApiConsumers.MosConsumer, serviceReqFilter, param);
                 }
-                else
-                {
-                    serviceReqPrintAlls = _serviceReqPrintAlls;
-                }
->>>>>>> Stashed changes
+                //else
+                //{
+                //    serviceReqPrintAlls = _serviceReqPrintAlls;
+                //}
 
                 if (serviceReqPrintAlls == null || serviceReqPrintAlls.Count == 0)
                     return;
@@ -1621,7 +1620,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
             try
             {
                 valid = (medimaty.SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__THUOC &&
-                            (!String.IsNullOrEmpty(medimaty.ACTIVE_INGR_BHYT_CODE) || !string.IsNullOrEmpty(HisConfigCFG.AllowAssignOffListMedicineMaterialHeinCardNumberPrefix) && !string.IsNullOrEmpty(currentTreatmentWithPatientType.HEIN_CARD_NUMBER) && HisConfigCFG.AllowAssignOffListMedicineMaterialHeinCardNumberPrefix.Split(',').ToList().Exists(o=>currentTreatmentWithPatientType.HEIN_CARD_NUMBER.StartsWith(o)))
+                            (!String.IsNullOrEmpty(medimaty.ACTIVE_INGR_BHYT_CODE) || !string.IsNullOrEmpty(HisConfigCFG.AllowAssignOffListMedicineMaterialHeinCardNumberPrefix) && !string.IsNullOrEmpty(currentTreatmentWithPatientType.HEIN_CARD_NUMBER) && HisConfigCFG.AllowAssignOffListMedicineMaterialHeinCardNumberPrefix.Split(',').ToList().Exists(o => currentTreatmentWithPatientType.HEIN_CARD_NUMBER.StartsWith(o)))
                             //&& !String.IsNullOrEmpty(medimaty.REGISTER_NUMBER)
                             && (medimaty.HEIN_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_HEIN_SERVICE_TYPE.ID__TH_TDM
                             || medimaty.HEIN_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_HEIN_SERVICE_TYPE.ID__TH_TL

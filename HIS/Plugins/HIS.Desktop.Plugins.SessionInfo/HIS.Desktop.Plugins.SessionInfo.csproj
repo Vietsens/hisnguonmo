@@ -122,7 +122,9 @@
     <Compile Include="SessionInfo\SessionInfoFactory.cs" />
     <Compile Include="SessionInfo\ISessionInfo.cs" />
     <Compile Include="Base\ResourceLangManager.cs" />
-    <Compile Include="frmSessionInfo.cs" />
+    <Compile Include="frmSessionInfo.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="frmSessionInfo.Designer.cs">
       <DependentUpon>frmSessionInfo.cs</DependentUpon>
     </Compile>

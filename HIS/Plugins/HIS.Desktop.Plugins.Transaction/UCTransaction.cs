@@ -92,12 +92,12 @@ namespace HIS.Desktop.Plugins.Transaction
         PopupItemStatusAdo PopupItemStatusAdo = new PopupItemStatusAdo();
 
         CPA.WCFClient.CallPatientClient.CallPatientClientManager clienttManager = null;
-
+            
         int positionHandleControl = -1;
         private bool allowUnlock = false;
-        private string loginname = null;
+        private string loginname = null;      
         string configKeyCallPatientCPA;
-        string configKeyCallPatientByCPA;
+        string configKeyCallPatientByCPA;   
         #endregion
         public UCTransaction(long roomId, long roomTypeId)
         {

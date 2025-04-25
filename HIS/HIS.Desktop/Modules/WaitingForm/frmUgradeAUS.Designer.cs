@@ -45,7 +45,9 @@ namespace HIS.Desktop.Modules.WaitingForm
         /// </summary>
         private void InitializeComponent()
         {
-            this.timer1 = new System.Windows.Forms.Timer();
+            this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmUgradeAUS));
+            this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.lblDescription = new DevExpress.XtraEditors.LabelControl();
             this.SuspendLayout();
             // 
@@ -56,19 +58,19 @@ namespace HIS.Desktop.Modules.WaitingForm
             // lblDescription
             // 
             this.lblDescription.Appearance.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold);
-            this.lblDescription.Appearance.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
+            this.lblDescription.Appearance.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
             this.lblDescription.AutoSizeMode = DevExpress.XtraEditors.LabelAutoSizeMode.None;
-            this.lblDescription.Location = new System.Drawing.Point(25, 52);
+            this.lblDescription.Location = new System.Drawing.Point(12, 12);
             this.lblDescription.Name = "lblDescription";
-            this.lblDescription.Size = new System.Drawing.Size(270, 19);
+            this.lblDescription.Size = new System.Drawing.Size(296, 83);
             this.lblDescription.TabIndex = 0;
-            this.lblDescription.Text = "Đang kiểm tra phiên bản cập nhật ...";
+            this.lblDescription.Text = resources.GetString("lblDescription.Text");
             // 
             // frmUgradeAUS
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(320, 73);
+            this.ClientSize = new System.Drawing.Size(320, 108);
             this.Controls.Add(this.lblDescription);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "frmUgradeAUS";

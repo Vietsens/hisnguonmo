@@ -509,10 +509,14 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
                 {
                     hisTreatmentFinishSDO.ProgramId = Inventec.Common.TypeConvert.Parse.ToInt64(cboProgram.EditValue.ToString());
                 }
+                if (cboProgram.EditValue == null)
+                {
+                    hisTreatmentFinishSDO.ProgramId = null;
+                }
 
                 hisTreatmentFinishSDO.IsExpXml4210Collinear = ChkExpXml4210.Checked;
 
-                if (ucSecondaryIcdYhct != null)
+                if (ucSecondaryIcdYhct != null)     
                 {
                     var subIcd = subIcdYhctProcessor.GetValue(ucSecondaryIcdYhct);
                     if (subIcd != null && subIcd is SecondaryIcdDataADO)

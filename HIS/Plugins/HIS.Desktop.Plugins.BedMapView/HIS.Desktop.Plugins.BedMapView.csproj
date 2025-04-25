@@ -99,7 +99,9 @@
     <Compile Include="BedMapView\BedMapViewFactory.cs" />
     <Compile Include="BedMapView\IBedMapView.cs" />
     <Compile Include="Config\HisConfigCFG.cs" />
-    <Compile Include="FormBedMapView.cs" />
+    <Compile Include="FormBedMapView.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="FormBedMapView.Designer.cs">
       <DependentUpon>FormBedMapView.cs</DependentUpon>
     </Compile>

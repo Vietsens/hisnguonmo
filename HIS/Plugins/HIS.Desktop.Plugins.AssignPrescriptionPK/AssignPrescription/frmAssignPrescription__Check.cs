@@ -352,6 +352,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
             {
                 if (treatmentIds != null && treatmentIds.Count > 0)
                 {
+                    Inventec.Common.Logging.LogSystem.Debug("LoadDataSereServWithMultilTreatment.1");
                     CommonParam param = new CommonParam();
                     List<long> setyAllowsIds = new List<long>();
                     setyAllowsIds.Add(IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__VT);
@@ -359,7 +360,8 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                     HisSereServFilter hisSereServFilter = new HisSereServFilter();
                     hisSereServFilter.TREATMENT_IDs = treatmentIds;
                     hisSereServFilter.TDL_SERVICE_TYPE_IDs = setyAllowsIds;
-                    this.sereServWithMultilTreatment = new BackendAdapter(param).Get<List<MOS.EFMODEL.DataModels.HIS_SERE_SERV>>("api/HisSereServ/GetView", ApiConsumers.MosConsumerNoStore, hisSereServFilter, ProcessLostToken, param);
+                    this.sereServWithMultilTreatment = new BackendAdapter(param).Get<List<MOS.EFMODEL.DataModels.HIS_SERE_SERV>>("api/HisSereServ/Get", ApiConsumers.MosConsumerNoStore, hisSereServFilter, ProcessLostToken, param);
+                    Inventec.Common.Logging.LogSystem.Debug("LoadDataSereServWithMultilTreatment.2");
                 }
             }
             catch (Exception ex)

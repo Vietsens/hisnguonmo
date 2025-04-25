@@ -17,6 +17,7 @@
  */
 using DevExpress.Data;
 using DevExpress.XtraEditors;
+using DevExpress.XtraExport;
 using DevExpress.XtraGrid.Columns;
 using DevExpress.XtraGrid.Views.Base;
 using DevExpress.XtraGrid.Views.Grid.ViewInfo;
@@ -1762,6 +1763,18 @@ namespace HIS.Desktop.Plugins.TreatmentFinish.CloseTreatment
                         {
                             chkKhongCanhBaoNgayNghi.Checked = item.VALUE == "1";
                         }
+                        if(item.KEY == chkInPhieuHenKham.Name)
+                        {
+                            chkInPhieuHenKham.Checked = item.VALUE == "2";
+                        }
+                        if (item.KEY == chkKyPhieuHenKham.Name)
+                        {
+                            chkKyPhieuHenKham.Checked = item.VALUE == "3";
+                        }
+                        if (item.KEY == chkXemTrcKhiIn.Name)
+                        {
+                            chkXemTrcKhiIn.Checked = item.VALUE == "4";
+                        }
                     }
                 }
             }
@@ -1770,6 +1783,122 @@ namespace HIS.Desktop.Plugins.TreatmentFinish.CloseTreatment
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
             isNotLoadWhileChangeControlStateInFirstAppointment = false;
+        }
+
+        private void chkInPhieuHenKham_CheckedChanged(object sender, EventArgs e)
+        {
+            try
+            {               
+                if (isNotLoadWhileChangeControlStateInFirstAppointment)
+                {
+                    return;
+                }
+
+                WaitingManager.Show();
+                HIS.Desktop.Library.CacheClient.ControlStateRDO controlStateRDO = (this.currentControlStateAppointmentRDO != null && this.currentControlStateAppointmentRDO.Count > 0) ? this.currentControlStateAppointmentRDO.Where(o => o.KEY == chkInPhieuHenKham.Name && o.MODULE_LINK == moduleLink).FirstOrDefault() : null;
+                Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => controlStateRDO), controlStateRDO));
+                if (controlStateRDO != null)
+                {
+                    controlStateRDO.VALUE = (chkInPhieuHenKham.Checked ? "2" : "");
+                }
+                else
+                {
+                    controlStateRDO = new HIS.Desktop.Library.CacheClient.ControlStateRDO();
+                    controlStateRDO.KEY = chkInPhieuHenKham.Name;
+                    controlStateRDO.VALUE = (chkInPhieuHenKham.Checked ? "2" : "");
+                    controlStateRDO.MODULE_LINK = moduleLink;
+                    if (this.currentControlStateAppointmentRDO == null)
+                        this.currentControlStateAppointmentRDO = new List<HIS.Desktop.Library.CacheClient.ControlStateRDO>();
+                    this.currentControlStateAppointmentRDO.Add(controlStateRDO);
+                }
+                this.controlStateWorkerAppointment.SetData(this.currentControlStateAppointmentRDO);
+                if (chkInPhieuHenKham.Checked)
+                {
+                    chkXemTrcKhiIn.Checked = false;
+                }
+                AppointmentPrintOptionsStorageADO.InPhieuHenKham = chkInPhieuHenKham.Checked;
+                WaitingManager.Hide();
+            }
+            catch (Exception ex)
+            {
+
+                LogSystem.Error(ex);
+            }           
+        }
+
+        private void chkXemTrcKhiIn_CheckedChanged(object sender, EventArgs e)  
+        {
+            try
+            {
+                if (isNotLoadWhileChangeControlStateInFirstAppointment) return;
+                WaitingManager.Show();
+                HIS.Desktop.Library.CacheClient.ControlStateRDO controlStateRDO = (this.currentControlStateAppointmentRDO != null && this.currentControlStateAppointmentRDO.Count > 0) ? this.currentControlStateAppointmentRDO.Where(o => o.KEY == chkXemTrcKhiIn.Name && o.MODULE_LINK == moduleLink).FirstOrDefault() : null;
+                if(controlStateRDO != null)
+                {
+                    controlStateRDO.VALUE = (chkXemTrcKhiIn.Checked ? "4" : "");
+                }
+                else
+                {
+                    controlStateRDO = new HIS.Desktop.Library.CacheClient.ControlStateRDO();
+                    controlStateRDO.KEY = chkXemTrcKhiIn.Name;
+                    controlStateRDO.VALUE = (chkXemTrcKhiIn.Checked ? "4" : "");
+                    controlStateRDO.MODULE_LINK = moduleLink;
+
+                    if (this.currentControlStateAppointmentRDO == null)
+                    {
+                        this.currentControlStateAppointmentRDO = new List<Desktop.Library.CacheClient.ControlStateRDO>();
+                    }
+                    this.currentControlStateAppointmentRDO.Add(controlStateRDO);
+                }
+                if (chkXemTrcKhiIn.Checked)
+                {
+                    chkInPhieuHenKham.Checked = false;
+                }
+                this.controlStateWorkerAppointment.SetData(this.currentControlStateAppointmentRDO);
+                AppointmentPrintOptionsStorageADO.XemTruocKhiIn = chkXemTrcKhiIn.Checked;
+                WaitingManager.Hide();
+            }
+            catch (Exception ex)
+            {
+
+                LogSystem.Error(ex);
+            }
+            
+        }
+
+        private void chkKyPhieuHenKham_CheckedChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                if (isNotLoadWhileChangeControlStateInFirstAppointment) return;
+                WaitingManager.Show();
+                HIS.Desktop.Library.CacheClient.ControlStateRDO controlStateRDO = (this.currentControlStateAppointmentRDO != null && this.currentControlStateAppointmentRDO.Count > 0) ? this.currentControlStateAppointmentRDO.Where(o => o.KEY == chkKyPhieuHenKham.Name && o.MODULE_LINK == moduleLink).FirstOrDefault() : null;
+                if(controlStateRDO != null)
+                {
+                    controlStateRDO.VALUE = (chkKyPhieuHenKham.Checked ? "3" : "0");
+                }
+                else
+                {
+                    controlStateRDO = new Desktop.Library.CacheClient.ControlStateRDO();
+                    controlStateRDO.KEY = chkKyPhieuHenKham.Name;
+                    controlStateRDO.VALUE = (chkKyPhieuHenKham.Checked ? "3" : "0");
+                    controlStateRDO.MODULE_LINK = moduleLink;
+
+                    if(this.currentControlStateAppointmentRDO == null)
+                    {
+                        this.currentControlStateAppointmentRDO = new List<Desktop.Library.CacheClient.ControlStateRDO>();
+                    }
+                    this.currentControlStateAppointmentRDO.Add(controlStateRDO);
+                }
+                this.controlStateWorkerAppointment.SetData(this.currentControlStateAppointmentRDO);
+                AppointmentPrintOptionsStorageADO.KyPhieuHenKham = chkKyPhieuHenKham.Checked;
+                WaitingManager.Hide();
+            }
+            catch (Exception ex)
+            {
+
+                LogSystem.Error(ex);
+            }
         }
     }
 }

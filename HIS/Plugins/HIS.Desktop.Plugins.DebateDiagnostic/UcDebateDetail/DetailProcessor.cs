@@ -38,23 +38,33 @@ namespace HIS.Desktop.Plugins.DebateDiagnostic.UcDebateDetail
         bool IsSetPttt;
         bool IsSetThuoc;
         bool IsSetKhac;
+        //qtcode
+        Inventec.Desktop.Common.Modules.Module module;
+        //qtcode
         public List<ACS_USER> UserList;
         public List<V_HIS_EMPLOYEE> EmployeeList;
         public List<HIS_DEPARTMENT> DepartmentList;
         public List<MOS.EFMODEL.DataModels.HIS_EXECUTE_ROLE> ExecuteRoleList;
 
-        public DetailProcessor(long treatmentId, long roomId, long roomTypeId)
+        //public DetailProcessor(long treatmentId, long roomId, long roomTypeId)
+        //qtcode
+        public DetailProcessor(long treatmentId, long roomId, long roomTypeId, Inventec.Desktop.Common.Modules.Module module)
         {
             this.TreatmentId = treatmentId;
             this.RoomId = roomId;
             this.RoomTypeId = roomTypeId;
+            this.module = module; 
         }
-        public DetailProcessor(long treatmentId, long roomId, long roomTypeId, HIS_SERVICE hisService)
+        //public DetailProcessor(long treatmentId, long roomId, long roomTypeId, HIS_SERVICE hisService)
+        public DetailProcessor(long treatmentId, long roomId, long roomTypeId, HIS_SERVICE hisServicee, Inventec.Desktop.Common.Modules.Module module)
         {
             this.TreatmentId = treatmentId;
             this.RoomId = roomId;
             this.RoomTypeId = roomTypeId;
             this.hisService = hisService;
+
+
+            this.module = module;
         }
 
         public UserControl GetControl(DetailEnum type)
@@ -67,7 +77,7 @@ namespace HIS.Desktop.Plugins.DebateDiagnostic.UcDebateDetail
                     case DetailEnum.Thuoc:
                         if (Thuoc == null)
                         {
-                            Thuoc = new UcOther(TreatmentId, RoomId, RoomTypeId, false);
+                            Thuoc = new UcOther(TreatmentId, RoomId, RoomTypeId, false, module);
                         }
                         result = Thuoc;
                         break;
@@ -83,11 +93,11 @@ namespace HIS.Desktop.Plugins.DebateDiagnostic.UcDebateDetail
                         {
                             if (hisService != null)
                             {
-                                Khac = new UcOther(TreatmentId, RoomId, RoomTypeId, true, hisService);
+                                Khac = new UcOther(TreatmentId, RoomId, RoomTypeId, true, hisService, module);
                             }
                             else
                             {
-                                Khac = new UcOther(TreatmentId, RoomId, RoomTypeId, true);
+                                Khac = new UcOther(TreatmentId, RoomId, RoomTypeId, true, module);
                             }
 
                         }
@@ -95,7 +105,7 @@ namespace HIS.Desktop.Plugins.DebateDiagnostic.UcDebateDetail
                         {
                             if (hisService != null)
                             {
-                                Khac = new UcOther(TreatmentId, RoomId, RoomTypeId, true, hisService);
+                                Khac = new UcOther(TreatmentId, RoomId, RoomTypeId, true, hisService, module);
                             }
                         }
                         result = Khac;

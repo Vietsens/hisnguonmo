@@ -243,58 +243,23 @@ namespace EMR.Desktop.Plugins.EmrSign
         {
             try
             {
-                lblMessage.Text = "";
-                if (this.Document.CREATOR == this.LoginName)
-                {
-                    isEdit = null;
-                }
-                else
-                {
-                    var acsUser = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<ACS.EFMODEL.DataModels.ACS_USER>().FirstOrDefault(o => o.LOGINNAME == this.LoginName);
+                var acsUser = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<ACS.EFMODEL.DataModels.ACS_USER>().FirstOrDefault(o => o.LOGINNAME == this.LoginName);
 
-                    if (acsUser != null)
+                if (acsUser != null)
+                {
+                    var acsRoleUserList = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<ACS.EFMODEL.DataModels.ACS_ROLE_USER>().Where(o => o.USER_ID == acsUser.ID).ToList();
+                    var controlSetting = controlAcs != null && controlAcs.Count > 0 ? controlAcs.FirstOrDefault(o => o.CONTROL_CODE == ControlCode.BtnSetting) : null;
+                    if (acsRoleUserList != null && acsRoleUserList.Count > 0 && controlSetting != null)
                     {
-                        var acsRoleUserList = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<ACS.EFMODEL.DataModels.ACS_ROLE_USER>().Where(o => o.USER_ID == acsUser.ID).ToList();
-                        var controlSetting = controlAcs != null && controlAcs.Count > 0 ? controlAcs.FirstOrDefault(o => o.CONTROL_CODE == ControlCode.BtnSetting) : null;
-                        if (acsRoleUserList != null && acsRoleUserList.Count > 0 && controlSetting != null)
-                        {
-                            ACS.Filter.AcsControlRoleViewFilter controlRoleFilter = new ACS.Filter.AcsControlRoleViewFilter();
-                            controlRoleFilter.IS_ACTIVE = 1;
-                            controlRoleFilter.ROLE_IDs = acsRoleUserList.Select(o => o.ROLE_ID).Distinct().ToList();
-                            controlRoleFilter.CONTROL_ID = controlSetting.ID;
-                            var ControlRoleList = new BackendAdapter(new CommonParam()).Get<List<ACS.EFMODEL.DataModels.V_ACS_CONTROL_ROLE>>("api/AcsControlRole/GetView", ApiConsumers.AcsConsumer, controlRoleFilter, null);
-                            if (ControlRoleList != null && ControlRoleList.Count > 0)
-                            {
-                                isEdit = null;
-                            }
-                            else
-                            {
-                                var dataSource = (List<SignADO>)gridControlSign.DataSource;
-                                var checkSigner = dataSource.FirstOrDefault(o => o.LOGINNAME == this.LoginName);
-                                if (checkSigner != null)
-                                {
-                                    isEdit = true;
-                                    lblMessage.Text = "Người dùng không có quyền sửa thiết lập ký văn bản do người khác tạo. Chỉ được phép chọn người ký thay mình";
-                                    BtnAddPatient.Enabled = false;
-                                }
-                                else
-                                {
-                                    isEdit = false;
-                                    gridControlSign.Enabled = false;
-                                    BtnAddPatient.Enabled = false;
-                                    BtnSave.Enabled = false;
-                                }
-                            }
-                        }
-                        else
-                        {
-                            isEdit = false;
-                            gridControlSign.Enabled = false;
-                            BtnAddPatient.Enabled = false;
-                            BtnSave.Enabled = false;
-                        }
+                        isEdit = null;
                     }
-
+                    else
+                    {
+                        isEdit = false;
+                        gridControlSign.Enabled = false;
+                        BtnAddPatient.Enabled = false;
+                        BtnSave.Enabled = false;
+                    }
                 }
             }
             catch (Exception ex)
@@ -843,7 +808,7 @@ namespace EMR.Desktop.Plugins.EmrSign
                         Inventec.Common.Logging.LogSystem.Debug("EMR.Desktop.Plugins.EmrSign____" + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => success), success));
                         if (success)
                         {
-                            documentUpdateStateForIntegrateSystem.UpdateStateIGSys(Document, SignStateCode.DOCUMENT_HAS_SIGN_CONFIG);
+                             documentUpdateStateForIntegrateSystem.UpdateStateIGSys(Document, SignStateCode.DOCUMENT_HAS_SIGN_CONFIG);
 
                             FillDataToControl();
                         }

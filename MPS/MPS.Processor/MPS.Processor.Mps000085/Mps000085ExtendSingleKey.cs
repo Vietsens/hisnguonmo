@@ -44,5 +44,9 @@ namespace MPS.Processor.Mps000085
         internal static string DOCUMENT_PRICE = "DOCUMENT_PRICE";
         internal static string DOCUMENT_PRICE_SEPARATE = "DOCUMENT_PRICE_SEPARATE";
         internal static string SUPPLIER_NAME_STR = "SUPPLIER_NAME_STR";
+
+        internal static string TOTAL_PRICE = "TOTAL_PRICE";
+        internal static string TOTAL_PRICE_SEPARATE = "TOTAL_PRICE_SEPARATE";
+        internal static string TOTAL_PRICE_TEXT = "TOTAL_PRICE_TEXT";
     }
 }

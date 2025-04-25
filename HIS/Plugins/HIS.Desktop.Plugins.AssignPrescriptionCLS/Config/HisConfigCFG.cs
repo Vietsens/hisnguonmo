@@ -64,6 +64,11 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.Config
         public const string ICD_SERVICE__HAS_REQUIRE_CHECK = "HIS.HIS_ICD_SERVICE.HAS_REQUIRE_CHECK";
         public const string HIS_ICD_SERVICE__ALLOW_UPDATE = "HIS.HIS_ICD_SERVICE.ALLOW_UPDATE";
 
+        //qtcode
+        private const string IS_ALLOW_SIGN_NATURE_PRINT = "HIS.Desktop.Plugins.IsAllowSignaturePrint.ModuleLinks";
+        internal static string IsAllowSignaturePrint;
+        //qtcode
+
         internal const string SAVE_PRINT_MPS_DEFAULT = "HIS.Desktop.Plugins.Library.PrintPrescription.Mps";
         internal const string CHECK_SAME_HEIN_KEY = "HIS.DESKTOP.TREATMENT_FINISH.CHECK_SAME_HEIN";
         internal const string TUTORIAL_NUMBER_IS_FRAC = "HIS.Desktop.Plugins.AssignPrescription.TutorialNumberIsFrac";
@@ -211,6 +216,9 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.Config
         {
             try
             {
+                //qtcode
+                IsAllowSignaturePrint = GetValue(IS_ALLOW_SIGN_NATURE_PRINT);
+                //qtcode
                 IsTrackingRequired = GetValue(CONFIG_KEY__IS_TRACKING_REQUIRED) == GlobalVariables.CommonStringTrue;
                 IsDefaultPatientTypeOption = GetValue(CONFIG_KEY__DEFAULT_TYPE_OPTION) == GlobalVariables.CommonStringTrue;
                 IsWarningOddConvertAmount = GetValue(CONFIG_KEY__WARNING_ODD_CONVERT_AMOUNT) == GlobalVariables.CommonStringTrue;  

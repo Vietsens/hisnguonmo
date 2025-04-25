@@ -25,7 +25,7 @@ using System.Windows.Forms;
 namespace HIS.UC.UCPatientRaw
 {
     class PatientRawProcessor
-    {
+    {    
         internal Control ControlWorker { get; set; }
 
         internal PatientRawProcessor() { Init(); }

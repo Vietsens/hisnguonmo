@@ -56,6 +56,7 @@ using System.Threading;
 using Inventec.Common.SignLibrary.ServiceSign;
 using EMR.WCF.DCO;
 using Newtonsoft.Json;
+using Inventec.Common.Mapper; 
 
 namespace HIS.Desktop.Plugins.DeathInformationList
 {
@@ -134,6 +135,16 @@ namespace HIS.Desktop.Plugins.DeathInformationList
                 this.gridColumn15.ToolTip = Inventec.Common.Resource.Get.Value("UcDeathInformationList.gridColumn15.ToolTip", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.gridColumn16.Caption = Inventec.Common.Resource.Get.Value("UcDeathInformationList.gridColumn16.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.gridColumn17.Caption = Inventec.Common.Resource.Get.Value("UcDeathInformationList.gridColumn17.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+
+                this.gridColumn19.Caption = Inventec.Common.Resource.Get.Value("UcDeathInformationList.gridColumn19.Caption", 
+                    Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.gridColumn20.Caption = Inventec.Common.Resource.Get.Value("UcDeathInformationList.gridColumn20.Caption",
+                    Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.gridColumn21.Caption = Inventec.Common.Resource.Get.Value("UcDeathInformationList.gridColumn21.Caption",
+                    Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.gridColumn22.Caption = Inventec.Common.Resource.Get.Value("UcDeathInformationList.gridColumn22.Caption",
+                    Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+
                 this.bar1.Text = Inventec.Common.Resource.Get.Value("UcDeathInformationList.bar1.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.bbtnSearch.Caption = Inventec.Common.Resource.Get.Value("UcDeathInformationList.bbtnSearch.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.bbtnRefresh.Caption = Inventec.Common.Resource.Get.Value("UcDeathInformationList.bbtnRefresh.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
@@ -141,6 +152,10 @@ namespace HIS.Desktop.Plugins.DeathInformationList
                 this.chkSignFileCertUtil.Properties.Caption = Inventec.Common.Resource.Get.Value("UcDeathInformationList.chkSignFileCertUtil.Properties.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.btnDongBo.Text = Inventec.Common.Resource.Get.Value("UcDeathInformationList.btnDongBo.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.btnDongBo.ToolTip = Inventec.Common.Resource.Get.Value("UcDeathInformationList.btnDongBo.ToolTip", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+
+                this.btnDongBoCTV.Text = Inventec.Common.Resource.Get.Value("UcDeathInformationList.btnDongBoCTV.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.btnDongBoCTV.ToolTip = Inventec.Common.Resource.Get.Value("UcDeathInformationList.btnDongBoCTV.ToolTip", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+      
                 this.txtPatientCode.Properties.NullValuePrompt = Inventec.Common.Resource.Get.Value("UcDeathInformationList.txtPatientCode.Properties.NullValuePrompt", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.btnRefresh.Text = Inventec.Common.Resource.Get.Value("UcDeathInformationList.btnRefresh.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.btnSearch.Text = Inventec.Common.Resource.Get.Value("UcDeathInformationList.btnSearch.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
@@ -161,6 +176,14 @@ namespace HIS.Desktop.Plugins.DeathInformationList
             Inventec.Common.Resource.Get.Value("UcDeathInformationList.cboSYNC_RESULT_TYPE.Properties.2", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture()),
             Inventec.Common.Resource.Get.Value("UcDeathInformationList.cboSYNC_RESULT_TYPE.Properties.3", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture()),
             Inventec.Common.Resource.Get.Value("UcDeathInformationList.cboSYNC_RESULT_TYPE.Properties.4", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture())});
+
+                this.cboDeath_Case_Sync_Result.Properties.Items.AddRange(new object[] {
+            Inventec.Common.Resource.Get.Value("UcDeathInformationList.cboDeath_Case_Sync_Result.Properties.1", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture()),
+            Inventec.Common.Resource.Get.Value("UcDeathInformationList.cboDeath_Case_Sync_Result.Properties.2", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture()),
+            Inventec.Common.Resource.Get.Value("UcDeathInformationList.cboDeath_Case_Sync_Result.Properties.3", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture()),
+            Inventec.Common.Resource.Get.Value("UcDeathInformationList.cboDeath_Case_Sync_Result.Properties.4", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture())
+
+        });
             }
             catch (Exception ex)
             {
@@ -227,11 +250,11 @@ namespace HIS.Desktop.Plugins.DeathInformationList
                 startPage = ((CommonParam)param).Start ?? 0;
                 int limit = ((CommonParam)param).Limit ?? 0;
                 CommonParam paramCommon = new CommonParam(startPage, limit);
-                ApiResultObject<List<V_HIS_TREATMENT>> apiResult = null;
-                HisTreatmentViewFilter filter = new HisTreatmentViewFilter();
+                ApiResultObject<List<V_HIS_TREATMENT_11>> apiResult = null;
+                HisTreatmentView11Filter filter = new HisTreatmentView11Filter();
                 SetFilter(ref filter);
                 gridView1.BeginUpdate();
-                apiResult = new BackendAdapter(paramCommon).GetRO<List<V_HIS_TREATMENT>>("api/HisTreatment/GetView", ApiConsumers.MosConsumer, filter, paramCommon);
+                apiResult = new BackendAdapter(paramCommon).GetRO<List<V_HIS_TREATMENT_11>>("api/HisTreatment/GetView11", ApiConsumers.MosConsumer, filter, paramCommon);
                 if (apiResult != null)
                 {
                     var data = apiResult.Data;
@@ -282,11 +305,10 @@ namespace HIS.Desktop.Plugins.DeathInformationList
                 return result;
             }
         }
-        private void SetFilter(ref HisTreatmentViewFilter filter)
+        private void SetFilter(ref HisTreatmentView11Filter filter)
         {
             try
             {
-
                 string TreatmentCode = txtTreatmentCode.Text.Trim();
                 if (!string.IsNullOrEmpty(TreatmentCode))
                 {
@@ -346,6 +368,27 @@ namespace HIS.Desktop.Plugins.DeathInformationList
                             break;
                     }
                 }
+                if(cboDeath_Case_Sync_Result.EditValue != null)
+                {
+                    switch(cboDeath_Case_Sync_Result.SelectedIndex)
+                    {
+                        case 0: // Tất cả
+                            filter.DEATH_CASE_SYNC_RESULT = null;
+                            break;
+                        case 1: // Chưa đồng bộ
+                            filter.DEATH_CASE_SYNC_RESULT = 1;
+                            break;
+                        case 2: // Thành công
+                            filter.DEATH_CASE_SYNC_RESULT = 2;
+                            break;
+                        case 3: // Thất bại
+                            filter.DEATH_CASE_SYNC_RESULT = 3;
+                            break;
+                        default:
+                            filter.DEATH_CASE_SYNC_RESULT = null;
+                            break;
+                    }    
+                }    
                 if (this.departmentSelecteds != null && this.departmentSelecteds.Count() > 0)
                 {
                     filter.END_DEPARTMENT_IDs = this.departmentSelecteds.Select(o => o.ID).Distinct().ToList();
@@ -376,7 +419,9 @@ namespace HIS.Desktop.Plugins.DeathInformationList
                 txtTreatmentCode.Text = "";
                 txtPatientName.Text = "";
                 cboSYNC_RESULT_TYPE.SelectedIndex = 0;
+                cboDeath_Case_Sync_Result.SelectedIndex = 0; 
                 btnDongBo.Enabled = false;
+                btnDongBoCTV.Enabled = false; 
                 GridCheckMarksSelection gridCheckMark = cboDepartment.Properties.Tag as GridCheckMarksSelection;
                 if (gridCheckMark != null)
                 {
@@ -428,12 +473,13 @@ namespace HIS.Desktop.Plugins.DeathInformationList
         #region EvenGridView
         private void gridView1_CustomUnboundColumnData(object sender, DevExpress.XtraGrid.Views.Base.CustomColumnDataEventArgs e)
         {
+            Inventec.Common.Logging.LogSystem.Debug("FieldName: " + e.Column.FieldName);
             try
             {
                 if (e.IsGetData)
                 {
                     DevExpress.XtraGrid.Views.Grid.GridView view = sender as DevExpress.XtraGrid.Views.Grid.GridView;
-                    var data = (V_HIS_TREATMENT)((IList)((BaseView)sender).DataSource)[e.ListSourceRowIndex];
+                    var data = (V_HIS_TREATMENT_11)((IList)((BaseView)sender).DataSource)[e.ListSourceRowIndex];
                     if (e.Column.FieldName == "STT")
                     {
                         e.Value = e.ListSourceRowIndex + 1 + startPage;
@@ -558,24 +604,6 @@ namespace HIS.Desktop.Plugins.DeathInformationList
                             Inventec.Common.Logging.LogSystem.Warn("Loi set gia tri cho cot ngay cap giay bao tu DEATH_ISSUED_DATE_STR", ex);
                         }
                     }
-                    else if (e.Column.FieldName == "DEATH_DOCUMENT_DATE_STR")
-                    {
-                        try
-                        {
-                            if (data.DEATH_DOCUMENT_DATE != null)
-                            {
-                                e.Value = Inventec.Common.DateTime.Convert.TimeNumberToDateString(data.DEATH_DOCUMENT_DATE ?? 0);
-                            }
-                            else
-                            {
-                                e.Value = "";
-                            }
-                        }
-                        catch (Exception ex)
-                        {
-                            Inventec.Common.Logging.LogSystem.Warn("Loi set gia tri cho cot ngay cap giay bao tu DEATH_DOCUMENT_DATE_STR", ex);
-                        }
-                    }
                     else if (e.Column.FieldName == "IN_TIME_STR")
                     {
                         try
@@ -656,12 +684,66 @@ namespace HIS.Desktop.Plugins.DeathInformationList
 
                         }
                     }
+
+                    else if (e.Column.FieldName == "DEATH_CASE_SYNC_RESULT_STR")
+                    {
+                        try
+                        {
+                            string result = (view.GetRowCellValue(e.ListSourceRowIndex, "DEATH_CASE_SYNC_RESULT") ?? "").ToString(); 
+                            if(!string.IsNullOrEmpty(result))
+                            {
+
+                                if (result == "1")
+                                {
+                                    e.Value = "Null"; 
+                                }
+                                else if(result == "2")
+                                {
+                                    e.Value = "Thành công"; 
+                                }    
+                                else if(result == "3")
+                                {
+                                    e.Value = "Thất bại"; 
+                                }    
+                                else
+                                {
+                                    e.Value = ""; 
+                                }
+                            }
+                            else
+                            {
+                                e.Value = ""; 
+                            } 
+                                
+                        }
+                        catch(Exception ex)
+                        {
+                            Inventec.Common.Logging.LogSystem.Warn("Loi set gia tri cho cot DEATH_CASE_SYNC_RESULT_STR", ex);
+                        }
+                    }    
+                    else if(e.Column.FieldName == "DEATH_CASE_SYNC_TIME_STR")
+                    {
+                        try
+                        {
+                            if(data.DEATH_CASE_SYNC_TIME != null)
+                            {
+                                e.Value = Inventec.Common.DateTime.Convert.TimeNumberToTimeString(data.DEATH_CASE_SYNC_TIME ?? 0);
+                            }
+                            else
+                            {
+                                e.Value = ""; 
+                            } 
+                        }
+                        catch(Exception ex)
+                        {
+                            Inventec.Common.Logging.LogSystem.Warn("Loi set gia tri cho cot DEATH_CASE_SYNC_TIME_STR", ex);
+                        }
+                    }    
                 }
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
-
             }
         }
         #endregion
@@ -932,10 +1014,12 @@ namespace HIS.Desktop.Plugins.DeathInformationList
                 if (gridView1.GetSelectedRows().Count() > 0)
                 {
                     btnDongBo.Enabled = true;
+                    btnDongBoCTV.Enabled = true; 
                 }
                 else
                 {
                     btnDongBo.Enabled = false;
+                    btnDongBoCTV.Enabled = false; 
                 }
             }
             catch (Exception ex)
@@ -1084,7 +1168,9 @@ namespace HIS.Desktop.Plugins.DeathInformationList
                                     });
                                     foreach (var i in rowHandles)
                                     {
-                                        var row = (V_HIS_TREATMENT)gridView1.GetRow(i);
+                                        var row11 = (V_HIS_TREATMENT_11)gridView1.GetRow(i);
+                                        V_HIS_TREATMENT row = new V_HIS_TREATMENT(); 
+                                        Inventec.Common.Mapper.DataObjectMapper.Map<V_HIS_TREATMENT>(row, row11); 
                                         if (row != null)
                                         {
                                             DeathSyncSDO sdo = new DeathSyncSDO();
@@ -1119,7 +1205,9 @@ namespace HIS.Desktop.Plugins.DeathInformationList
                     {
                         foreach (var i in rowHandles)
                         {
-                            var row = (V_HIS_TREATMENT)gridView1.GetRow(i);
+                            var row11 = (V_HIS_TREATMENT_11)gridView1.GetRow(i);
+                            V_HIS_TREATMENT row = new V_HIS_TREATMENT();
+                            Inventec.Common.Mapper.DataObjectMapper.Map<V_HIS_TREATMENT>(row, row11);
                             if (row != null)
                             {
                                 DeathSyncSDO sdo = new DeathSyncSDO();
@@ -1298,6 +1386,90 @@ namespace HIS.Desktop.Plugins.DeathInformationList
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void navBarControl2_Click(object sender, EventArgs e)
+        {
+
+        }
+        private void btnDongBoCTV_Click(object sender, EventArgs e) // học hỏi từ btnDongBo_Click
+        {
+            try
+            {
+                CommonParam param = new CommonParam();
+                bool success = false;
+                List<long> treatmentIds = new List<long>();
+
+                WaitingManager.Show();
+
+                var rowHandles = gridView1.GetSelectedRows(); 
+                if(rowHandles != null && rowHandles.Count() > 0)
+                {
+                    foreach(var i in rowHandles)
+                    {
+                        var row = (V_HIS_TREATMENT_11)gridView1.GetRow(i); 
+                        if(row!=null)
+                        {
+                            treatmentIds.Add(row.ID); 
+                        }    
+                    }    
+                }  
+                if(treatmentIds != null && treatmentIds.Count>0)
+                {
+                    success = new BackendAdapter(param).Post<bool>("api/HisSevereIllnessInfo/DeathCaseSync", ApiConsumers.MosConsumer, treatmentIds, param);
+                }
+                if (success)
+                {
+                    FillDataToGrid(); 
+                }
+                // Ẩn loading
+                WaitingManager.Hide();
+
+                // Hiển thị thông báo kết quả
+                MessageManager.Show(this.ParentForm, param, success);
+
+                // Xử lý trường hợp token hết hạn
+                SessionManager.ProcessTokenLost(param);
+
+            }
+            catch(Exception ex)
+            {
+                WaitingManager.Hide();
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void navBarGroupControlContainer6_Click(object sender, EventArgs e)
+        {
+
+        }
+        private void gridView1_RowCellClick(object sender, DevExpress.XtraGrid.Views.Grid.RowCellClickEventArgs e)
+        {
+            if(e.Column.FieldName == "TTTV")
+            {
+                try
+                {
+                    var row = (V_HIS_TREATMENT_11)gridView1.GetFocusedRow();
+                    Inventec.Desktop.Common.Modules.Module moduleData = GlobalVariables.currentModuleRaws.Where(o => o.ModuleLink == "HIS.Desktop.Plugins.HisDeathInfo").FirstOrDefault();
+                    if (moduleData == null) throw new ArgumentNullException("khong tim thay moduleLink = HIS.Desktop.Plugins.HisDeathInfo");
+                    if (moduleData.IsPlugin && moduleData.ExtensionInfo != null)
+                    {
+
+                        List<object> listArgs = new List<object>();
+                        listArgs.Add(row.ID);
+
+                        // Tạo instance của module HisDeathInfo
+                        var extenceInstance = PluginInstance.GetPluginInstance(PluginInstance.GetModuleWithWorkingRoom(moduleData, this.currentModule.RoomId, this.currentModule.RoomTypeId), listArgs);
+                        if (extenceInstance == null) throw new ArgumentNullException("moduleData is null");
+                        // Hiển thị giao diện của module HisDeathInfo dưới dạng popup
+                        ((Form)(extenceInstance)).ShowDialog();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(ex);
+                }
             }
         }
     }

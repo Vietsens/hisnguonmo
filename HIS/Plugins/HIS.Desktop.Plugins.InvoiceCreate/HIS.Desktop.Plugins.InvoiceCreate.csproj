@@ -143,13 +143,21 @@
     <Compile Include="Config\AppConfig.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="frmInvoiceCreate.cs" />
+    <Compile Include="frmInvoiceCreate.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="frmInvoiceCreate.Designer.cs">
       <DependentUpon>frmInvoiceCreate.cs</DependentUpon>
     </Compile>
-    <Compile Include="frmInvoiceCreate__Plus__Button.cs" />
-    <Compile Include="frmInvoiceCreate__Plus__Control.cs" />
-    <Compile Include="frmInvoiceCreate__Plus__GridControl.cs" />
+    <Compile Include="frmInvoiceCreate__Plus__Button.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmInvoiceCreate__Plus__Control.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmInvoiceCreate__Plus__GridControl.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="InvoiceCreateProcessor.cs" />
     <Compile Include="InvoiceCreate\IInvoiceCreate.cs" />
     <Compile Include="InvoiceCreate\InvoiceCreateBehavior.cs" />

@@ -65,6 +65,7 @@ using System.Reflection;
 using EMR.SDO;
 using System.IO;
 using DevExpress.XtraEditors;
+using DevExpress.XtraExport;
 
 namespace HIS.Desktop.Plugins.BedRoomPartial
 {
@@ -1104,13 +1105,31 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
         }
 
         private void FillDataToLableControl(L_HIS_TREATMENT_BED_ROOM data)
-        {
+        {      
+
             try
             {
+                bool hasAllergyCard = false;
                 CommonParam param = new CommonParam();
                 if (data != null)
                 {
                     lblPatientCode.Text = data.TDL_PATIENT_CODE;
+                    var allErgyCardFilter = new HisAllergyCardFilter();
+                    allErgyCardFilter.TREATMENT_ID = data.TREATMENT_ID;
+                    var allergyCards = new BackendAdapter(new CommonParam()).Get<List<HIS_ALLERGY_CARD>>("/api/HisAllergyCard/Get", ApiConsumers.MosConsumer, allErgyCardFilter, new CommonParam());
+                    hasAllergyCard = (allergyCards != null && allergyCards.Any());
+                    if (hasAllergyCard)
+                    {
+                        lblPatientCode.Appearance.Image = global::HIS.Desktop.Plugins.BedRoomPartial.Properties.Resources.thuoc;
+                        lblPatientCode.ToolTip = "Bệnh nhân có thẻ dị ứng";
+                        lblPatientCode.Appearance.ImageAlign = ContentAlignment.MiddleRight;
+                        lblPatientCode.ImageAlignToText = DevExpress.XtraEditors.ImageAlignToText.RightCenter;
+                    }
+                    else
+                    {      
+                        lblPatientCode.Appearance.Image = null;
+                        lblPatientCode.ToolTip = "";        
+                    }
                     lblPatientName.Text = data.TDL_PATIENT_NAME;
                     lblGender.Text = data.TDL_PATIENT_GENDER_NAME;
                     lblDOB.Text = String.Format("{0}({1})", Inventec.Common.DateTime.Convert.TimeNumberToDateString(data.TDL_PATIENT_DOB), MPS.AgeUtil.CalculateFullAge(data.TDL_PATIENT_DOB)); ;
@@ -1315,6 +1334,12 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
                                 #region Child
                                 SereServADO ssRootSety = new SereServADO();
                                 ssRootSety.CONCRETE_ID__IN_SETY = ssRootType.CONCRETE_ID__IN_SETY + "_" + rootSety.First().SERVICE_REQ_ID;
+                                //qtcode
+                                if (rootSety.First().USE_TIME.HasValue)  
+                                {
+                                    ssRootSety.REQUEST_DEPARTMENT_NAME = string.Format("Dự trù: {0}", Inventec.Common.DateTime.Convert.TimeNumberToDateString(rootSety.First().USE_TIME.Value));
+                                }
+                                //qtcode
                                 ssRootSety.PARENT_ID__IN_SETY = ssRootType.CONCRETE_ID__IN_SETY;
                                 ssRootSety.REQUEST_DEPARTMENT_ID = idDepartment;
                                 ssRootSety.EXECUTE_DEPARTMENT_ID = idExecuteDepartment;
@@ -1520,6 +1545,12 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
                             ssRootSety.EXECUTE_DEPARTMENT_ID = idExecuteDepartment;
                             ssRootSety.SERVICE_REQ_TYPE_ID = BackendDataWorker.Get<HIS_SERVICE_REQ_TYPE>().FirstOrDefault(p => p.ID == idSerReqType) != null ?
                             BackendDataWorker.Get<HIS_SERVICE_REQ_TYPE>().FirstOrDefault(p => p.ID == idSerReqType).ID : 0;
+                            //qtcode
+                            if (rootSety.First().USE_TIME.HasValue)
+                            {
+                                ssRootSety.REQUEST_DEPARTMENT_NAME = string.Format("Dự trù: {0}", Inventec.Common.DateTime.Convert.TimeNumberToDateString(rootSety.First().USE_TIME.Value));
+                            }
+                            //qtcode
                             ssRootSety.TRACKING_TIME = rootSety.First().TRACKING_TIME;
                             ssRootSety.SERVICE_REQ_ID = rootSety.First().SERVICE_REQ_ID;
                             ssRootSety.SERVICE_REQ_STT_ID = rootSety.First().SERVICE_REQ_STT_ID;
@@ -1540,6 +1571,7 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
                             ssRootSety.SERVICE_NAME = String.Format("- {0} - {1}", rootSety.First().REQUEST_ROOM_NAME, rootSety.First().REQUEST_DEPARTMENT_NAME);
                             var time = Inventec.Common.DateTime.Convert.TimeNumberToTimeString(rootSety.First().TDL_INTRUCTION_TIME ?? 0);
                             ssRootSety.NOTE_ADO = time.Substring(0, time.Count() - 3);
+                           
                             if ((rootSety.First().REQUEST_LOGINNAME == Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName() || CheckLoginAdmin.IsAdmin(Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName()))
                                     && (rootSety.First().SERVICE_REQ_STT_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_STT.ID__CXL || HisConfigs.Get<string>("MOS.HIS_SERVICE_REQ.ALLOW_MODIFYING_OF_STARTED") == "1" || (HisConfigs.Get<string>("MOS.HIS_SERVICE_REQ.ALLOW_MODIFYING_OF_STARTED") == "2"
                                     && ssRootSety.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__KH))

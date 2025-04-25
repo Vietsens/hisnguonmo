@@ -45,19 +45,21 @@ namespace HIS.Desktop.Plugins.ServiceReqList
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.layoutControl1 = new DevExpress.XtraLayout.LayoutControl();
-            this.spinCountUsedBefore = new DevExpress.XtraEditors.SpinEdit();
-            this.barManager1 = new DevExpress.XtraBars.BarManager();
+            this.txtCachDung = new DevExpress.XtraEditors.MemoEdit();
+            this.barManager1 = new DevExpress.XtraBars.BarManager(this.components);
             this.bar1 = new DevExpress.XtraBars.Bar();
             this.barButtonItem1 = new DevExpress.XtraBars.BarButtonItem();
             this.barDockControlTop = new DevExpress.XtraBars.BarDockControl();
             this.barDockControlBottom = new DevExpress.XtraBars.BarDockControl();
             this.barDockControlLeft = new DevExpress.XtraBars.BarDockControl();
             this.barDockControlRight = new DevExpress.XtraBars.BarDockControl();
+            this.spinCountUsedBefore = new DevExpress.XtraEditors.SpinEdit();
             this.spinDayNumber = new DevExpress.XtraEditors.SpinEdit();
             this.spinSpeed = new DevExpress.XtraEditors.SpinEdit();
             this.btnSave = new DevExpress.XtraEditors.SimpleButton();
-            this.txtHuongDanSuDung = new DevExpress.XtraEditors.MemoEdit();
+            this.txtLieuDung = new DevExpress.XtraEditors.MemoEdit();
             this.layoutControlGroup1 = new DevExpress.XtraLayout.LayoutControlGroup();
             this.layoutControlItem1 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem2 = new DevExpress.XtraLayout.LayoutControlItem();
@@ -66,14 +68,16 @@ namespace HIS.Desktop.Plugins.ServiceReqList
             this.layoutControlItem4 = new DevExpress.XtraLayout.LayoutControlItem();
             this.emptySpaceItem2 = new DevExpress.XtraLayout.EmptySpaceItem();
             this.lciSpinCountUsedBefore = new DevExpress.XtraLayout.LayoutControlItem();
-            this.dxValidationProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider();
+            this.layoutControlItem5 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.dxValidationProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
             this.layoutControl1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.spinCountUsedBefore.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.txtCachDung.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.barManager1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.spinCountUsedBefore.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.spinDayNumber.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.spinSpeed.Properties)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.txtHuongDanSuDung.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.txtLieuDung.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem2)).BeginInit();
@@ -82,16 +86,18 @@ namespace HIS.Desktop.Plugins.ServiceReqList
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem4)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciSpinCountUsedBefore)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem5)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxValidationProvider1)).BeginInit();
             this.SuspendLayout();
             // 
             // layoutControl1
             // 
+            this.layoutControl1.Controls.Add(this.txtCachDung);
             this.layoutControl1.Controls.Add(this.spinCountUsedBefore);
             this.layoutControl1.Controls.Add(this.spinDayNumber);
             this.layoutControl1.Controls.Add(this.spinSpeed);
             this.layoutControl1.Controls.Add(this.btnSave);
-            this.layoutControl1.Controls.Add(this.txtHuongDanSuDung);
+            this.layoutControl1.Controls.Add(this.txtLieuDung);
             this.layoutControl1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.layoutControl1.Location = new System.Drawing.Point(0, 29);
             this.layoutControl1.Name = "layoutControl1";
@@ -100,24 +106,14 @@ namespace HIS.Desktop.Plugins.ServiceReqList
             this.layoutControl1.TabIndex = 0;
             this.layoutControl1.Text = "layoutControl1";
             // 
-            // spinCountUsedBefore
+            // txtCachDung
             // 
-            this.spinCountUsedBefore.EditValue = new decimal(new int[] {
-            0,
-            0,
-            0,
-            0});
-            this.spinCountUsedBefore.Location = new System.Drawing.Point(417, 2);
-            this.spinCountUsedBefore.MenuManager = this.barManager1;
-            this.spinCountUsedBefore.Name = "spinCountUsedBefore";
-            this.spinCountUsedBefore.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
-            this.spinCountUsedBefore.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
-            this.spinCountUsedBefore.Properties.IsFloatValue = false;
-            this.spinCountUsedBefore.Properties.Mask.EditMask = "N00";
-            this.spinCountUsedBefore.Size = new System.Drawing.Size(88, 20);
-            this.spinCountUsedBefore.StyleController = this.layoutControl1;
-            this.spinCountUsedBefore.TabIndex = 8;
+            this.txtCachDung.Location = new System.Drawing.Point(97, 73);
+            this.txtCachDung.MenuManager = this.barManager1;
+            this.txtCachDung.Name = "txtCachDung";
+            this.txtCachDung.Size = new System.Drawing.Size(624, 44);
+            this.txtCachDung.StyleController = this.layoutControl1;
+            this.txtCachDung.TabIndex = 9;
             // 
             // barManager1
             // 
@@ -179,6 +175,25 @@ namespace HIS.Desktop.Plugins.ServiceReqList
             this.barDockControlRight.Location = new System.Drawing.Point(723, 29);
             this.barDockControlRight.Size = new System.Drawing.Size(0, 169);
             // 
+            // spinCountUsedBefore
+            // 
+            this.spinCountUsedBefore.EditValue = new decimal(new int[] {
+            0,
+            0,
+            0,
+            0});
+            this.spinCountUsedBefore.Location = new System.Drawing.Point(516, 2);
+            this.spinCountUsedBefore.MenuManager = this.barManager1;
+            this.spinCountUsedBefore.Name = "spinCountUsedBefore";
+            this.spinCountUsedBefore.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
+            this.spinCountUsedBefore.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
+            this.spinCountUsedBefore.Properties.IsFloatValue = false;
+            this.spinCountUsedBefore.Properties.Mask.EditMask = "N00";
+            this.spinCountUsedBefore.Size = new System.Drawing.Size(50, 20);
+            this.spinCountUsedBefore.StyleController = this.layoutControl1;
+            this.spinCountUsedBefore.TabIndex = 8;
+            // 
             // spinDayNumber
             // 
             this.spinDayNumber.EditValue = new decimal(new int[] {
@@ -197,7 +212,7 @@ namespace HIS.Desktop.Plugins.ServiceReqList
             0,
             0,
             0});
-            this.spinDayNumber.Size = new System.Drawing.Size(61, 20);
+            this.spinDayNumber.Size = new System.Drawing.Size(160, 20);
             this.spinDayNumber.StyleController = this.layoutControl1;
             this.spinDayNumber.TabIndex = 7;
             this.spinDayNumber.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.spinDayNumber_PreviewKeyDown);
@@ -226,21 +241,21 @@ namespace HIS.Desktop.Plugins.ServiceReqList
             // 
             // btnSave
             // 
-            this.btnSave.Location = new System.Drawing.Point(607, 145);
+            this.btnSave.Location = new System.Drawing.Point(625, 145);
             this.btnSave.Name = "btnSave";
-            this.btnSave.Size = new System.Drawing.Size(114, 22);
+            this.btnSave.Size = new System.Drawing.Size(96, 22);
             this.btnSave.StyleController = this.layoutControl1;
             this.btnSave.TabIndex = 5;
             this.btnSave.Text = "Lưu (Ctrl S)";
             this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
             // 
-            // txtHuongDanSuDung
+            // txtLieuDung
             // 
-            this.txtHuongDanSuDung.Location = new System.Drawing.Point(97, 26);
-            this.txtHuongDanSuDung.Name = "txtHuongDanSuDung";
-            this.txtHuongDanSuDung.Size = new System.Drawing.Size(624, 91);
-            this.txtHuongDanSuDung.StyleController = this.layoutControl1;
-            this.txtHuongDanSuDung.TabIndex = 4;
+            this.txtLieuDung.Location = new System.Drawing.Point(97, 26);
+            this.txtLieuDung.Name = "txtLieuDung";
+            this.txtLieuDung.Size = new System.Drawing.Size(624, 43);
+            this.txtLieuDung.StyleController = this.layoutControl1;
+            this.txtLieuDung.TabIndex = 4;
             // 
             // layoutControlGroup1
             // 
@@ -253,7 +268,8 @@ namespace HIS.Desktop.Plugins.ServiceReqList
             this.layoutControlItem3,
             this.layoutControlItem4,
             this.emptySpaceItem2,
-            this.lciSpinCountUsedBefore});
+            this.lciSpinCountUsedBefore,
+            this.layoutControlItem5});
             this.layoutControlGroup1.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup1.Name = "layoutControlGroup1";
             this.layoutControlGroup1.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
@@ -267,11 +283,11 @@ namespace HIS.Desktop.Plugins.ServiceReqList
             this.layoutControlItem1.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem1.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem1.AppearanceItemCaption.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
-            this.layoutControlItem1.Control = this.txtHuongDanSuDung;
+            this.layoutControlItem1.Control = this.txtLieuDung;
             this.layoutControlItem1.Location = new System.Drawing.Point(0, 24);
             this.layoutControlItem1.Name = "layoutControlItem1";
-            this.layoutControlItem1.Size = new System.Drawing.Size(723, 95);
-            this.layoutControlItem1.Text = "Hướng dẫn sử dụng:";
+            this.layoutControlItem1.Size = new System.Drawing.Size(723, 47);
+            this.layoutControlItem1.Text = "Liều dùng:";
             this.layoutControlItem1.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem1.TextSize = new System.Drawing.Size(90, 20);
             this.layoutControlItem1.TextToControlDistance = 5;
@@ -279,9 +295,9 @@ namespace HIS.Desktop.Plugins.ServiceReqList
             // layoutControlItem2
             // 
             this.layoutControlItem2.Control = this.btnSave;
-            this.layoutControlItem2.Location = new System.Drawing.Point(605, 143);
+            this.layoutControlItem2.Location = new System.Drawing.Point(623, 143);
             this.layoutControlItem2.Name = "layoutControlItem2";
-            this.layoutControlItem2.Size = new System.Drawing.Size(118, 26);
+            this.layoutControlItem2.Size = new System.Drawing.Size(100, 26);
             this.layoutControlItem2.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem2.TextVisible = false;
             // 
@@ -290,7 +306,7 @@ namespace HIS.Desktop.Plugins.ServiceReqList
             this.emptySpaceItem1.AllowHotTrack = false;
             this.emptySpaceItem1.Location = new System.Drawing.Point(0, 143);
             this.emptySpaceItem1.Name = "emptySpaceItem1";
-            this.emptySpaceItem1.Size = new System.Drawing.Size(605, 26);
+            this.emptySpaceItem1.Size = new System.Drawing.Size(623, 26);
             this.emptySpaceItem1.TextSize = new System.Drawing.Size(0, 0);
             // 
             // layoutControlItem3
@@ -313,7 +329,7 @@ namespace HIS.Desktop.Plugins.ServiceReqList
             this.layoutControlItem4.Control = this.spinDayNumber;
             this.layoutControlItem4.Location = new System.Drawing.Point(0, 0);
             this.layoutControlItem4.Name = "layoutControlItem4";
-            this.layoutControlItem4.Size = new System.Drawing.Size(160, 24);
+            this.layoutControlItem4.Size = new System.Drawing.Size(259, 24);
             this.layoutControlItem4.Text = "Số ngày:";
             this.layoutControlItem4.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem4.TextSize = new System.Drawing.Size(90, 20);
@@ -322,9 +338,9 @@ namespace HIS.Desktop.Plugins.ServiceReqList
             // emptySpaceItem2
             // 
             this.emptySpaceItem2.AllowHotTrack = false;
-            this.emptySpaceItem2.Location = new System.Drawing.Point(507, 0);
+            this.emptySpaceItem2.Location = new System.Drawing.Point(568, 0);
             this.emptySpaceItem2.Name = "emptySpaceItem2";
-            this.emptySpaceItem2.Size = new System.Drawing.Size(216, 24);
+            this.emptySpaceItem2.Size = new System.Drawing.Size(155, 24);
             this.emptySpaceItem2.TextSize = new System.Drawing.Size(0, 0);
             // 
             // lciSpinCountUsedBefore
@@ -332,14 +348,31 @@ namespace HIS.Desktop.Plugins.ServiceReqList
             this.lciSpinCountUsedBefore.AppearanceItemCaption.Options.UseTextOptions = true;
             this.lciSpinCountUsedBefore.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lciSpinCountUsedBefore.Control = this.spinCountUsedBefore;
-            this.lciSpinCountUsedBefore.Location = new System.Drawing.Point(160, 0);
+            this.lciSpinCountUsedBefore.Location = new System.Drawing.Point(259, 0);
             this.lciSpinCountUsedBefore.Name = "lciSpinCountUsedBefore";
             this.lciSpinCountUsedBefore.OptionsToolTip.ToolTip = "Số ngày sử dụng thuốc trước đó";
-            this.lciSpinCountUsedBefore.Size = new System.Drawing.Size(347, 24);
+            this.lciSpinCountUsedBefore.Size = new System.Drawing.Size(309, 24);
             this.lciSpinCountUsedBefore.Text = "Số lần sử dụng trước đó:";
             this.lciSpinCountUsedBefore.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lciSpinCountUsedBefore.TextSize = new System.Drawing.Size(250, 20);
             this.lciSpinCountUsedBefore.TextToControlDistance = 5;
+            // 
+            // layoutControlItem5
+            // 
+            this.layoutControlItem5.AppearanceItemCaption.ForeColor = System.Drawing.Color.Black;
+            this.layoutControlItem5.AppearanceItemCaption.Options.UseForeColor = true;
+            this.layoutControlItem5.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.layoutControlItem5.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.layoutControlItem5.AppearanceItemCaption.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
+            this.layoutControlItem5.Control = this.txtCachDung;
+            this.layoutControlItem5.Location = new System.Drawing.Point(0, 71);
+            this.layoutControlItem5.Name = "layoutControlItem5";
+            this.layoutControlItem5.Size = new System.Drawing.Size(723, 48);
+            this.layoutControlItem5.Text = "Cách dùng: ";
+            this.layoutControlItem5.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.layoutControlItem5.TextLocation = DevExpress.Utils.Locations.Left;
+            this.layoutControlItem5.TextSize = new System.Drawing.Size(90, 20);
+            this.layoutControlItem5.TextToControlDistance = 5;
             // 
             // dxValidationProvider1
             // 
@@ -366,11 +399,12 @@ namespace HIS.Desktop.Plugins.ServiceReqList
             this.Controls.SetChildIndex(this.layoutControl1, 0);
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).EndInit();
             this.layoutControl1.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.spinCountUsedBefore.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.txtCachDung.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.barManager1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.spinCountUsedBefore.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.spinDayNumber.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.spinSpeed.Properties)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.txtHuongDanSuDung.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.txtLieuDung.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem2)).EndInit();
@@ -379,6 +413,7 @@ namespace HIS.Desktop.Plugins.ServiceReqList
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem4)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciSpinCountUsedBefore)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem5)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxValidationProvider1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -389,7 +424,7 @@ namespace HIS.Desktop.Plugins.ServiceReqList
 
         private DevExpress.XtraLayout.LayoutControl layoutControl1;
         private DevExpress.XtraEditors.SimpleButton btnSave;
-        private DevExpress.XtraEditors.MemoEdit txtHuongDanSuDung;
+        private DevExpress.XtraEditors.MemoEdit txtLieuDung;
         private DevExpress.XtraLayout.LayoutControlGroup layoutControlGroup1;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem1;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem2;
@@ -409,5 +444,7 @@ namespace HIS.Desktop.Plugins.ServiceReqList
         private DevExpress.XtraLayout.EmptySpaceItem emptySpaceItem2;
         private DevExpress.XtraEditors.SpinEdit spinCountUsedBefore;
         private DevExpress.XtraLayout.LayoutControlItem lciSpinCountUsedBefore;
+        private DevExpress.XtraEditors.MemoEdit txtCachDung;
+        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem5;
     }
 }

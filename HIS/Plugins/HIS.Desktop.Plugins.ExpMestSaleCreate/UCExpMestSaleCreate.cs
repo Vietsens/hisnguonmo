@@ -1080,7 +1080,7 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
                 txtMaTHX.Text = "";
                 txtPresUser.Text = "";
                 txtLoginName.Text = "";
-
+                txtEmail.Text = "";
                 treeListMediMate.DataSource = null;
                 treeListResult.DataSource = null;
                 checkIsVisitor.Enabled = true;
@@ -1302,6 +1302,11 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
                     {
                         txtPatientPhone.Focus();
                         txtPatientPhone.SelectAll();
+                    }
+                    else if (txtEmail.Visible && txtEmail.Enabled)
+                    {
+                        txtEmail.Focus();
+                        txtEmail.SelectAll();
                     }
                     else if (dtIntructionTime.Visible && dtIntructionTime.Enabled)
                     {
@@ -2141,6 +2146,11 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
                         {
                             txtPatientPhone.Focus();
                             txtPatientPhone.SelectAll();
+                        }
+                        else if (txtEmail.Visible && txtEmail.Enabled)
+                        {
+                            txtEmail.Focus();
+                            txtEmail.SelectAll();
                         }
                         else if (dtIntructionTime.Visible && dtIntructionTime.Enabled)
                         {
@@ -3996,6 +4006,11 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
                         txtPatientPhone.Focus();
                         txtPatientPhone.SelectAll();
                     }
+                    else if (txtEmail.Visible && txtEmail.Enabled)
+                    {
+                        txtEmail.Focus();
+                        txtEmail.SelectAll();
+                    }
                     else if (dtIntructionTime.Visible && dtIntructionTime.Enabled)
                     {
                         dtIntructionTime.Focus();
@@ -4609,6 +4624,11 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
                         txtPatientPhone.Focus();
                         txtPatientPhone.SelectAll();
                     }
+                    if (txtEmail.Visible && txtEmail.Enabled)
+                    {
+                        txtEmail.Focus();
+                        txtEmail.SelectAll();
+                    }
                     else if (dtIntructionTime.Visible && dtIntructionTime.Enabled)
                     {
                         dtIntructionTime.Focus();
@@ -4760,6 +4780,11 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
                             txtPatientPhone.Focus();
                             txtPatientPhone.SelectAll();
                         }
+                        else if (txtEmail.Visible && txtEmail.Enabled)
+                        {
+                            txtEmail.Focus();
+                            txtEmail.SelectAll();
+                        }
                         else if (dtIntructionTime.Visible && dtIntructionTime.Enabled)
                         {
                             dtIntructionTime.Focus();
@@ -4902,6 +4927,11 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
                         {
                             txtPatientPhone.Focus();
                             txtPatientPhone.SelectAll();
+                        }
+                        else if (txtEmail.Visible && txtEmail.Enabled)
+                        {
+                            txtEmail.Focus();
+                            txtEmail.SelectAll();
                         }
                         else if (dtIntructionTime.Visible && dtIntructionTime.Enabled)
                         {
@@ -5058,6 +5088,11 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
                         txtPatientPhone.Focus();
                         txtPatientPhone.SelectAll();
                     }
+                    else if (txtEmail.Visible && txtEmail.Enabled)
+                    {
+                        txtEmail.Focus();
+                        txtEmail.SelectAll();
+                    }
                     else if (dtIntructionTime.Visible && dtIntructionTime.Enabled)
                     {
                         dtIntructionTime.Focus();
@@ -5201,6 +5236,11 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
                     {
                         txtPatientPhone.Focus();
                         txtPatientPhone.SelectAll();
+                    }
+                    else if (txtEmail.Visible && txtEmail.Enabled)
+                    {
+                        txtEmail.Focus();
+                        txtEmail.SelectAll();
                     }
                     else if (dtIntructionTime.Visible && dtIntructionTime.Enabled)
                     {
@@ -5449,275 +5489,10 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
                         txtPatientPhone.Focus();
                         txtPatientPhone.SelectAll();
                     }
-                    else if (dtIntructionTime.Visible && dtIntructionTime.Enabled)
+                    else if (txtEmail.Visible && txtEmail.Enabled)
                     {
-                        dtIntructionTime.Focus();
-                        dtIntructionTime.SelectAll();
-                    }
-                    else if (txtLoginName.Visible && txtLoginName.Enabled)
-                    {
-                        txtLoginName.Focus();
-                        txtLoginName.SelectAll();
-                    }
-                    else if (txtPresUser.Visible && txtPresUser.Enabled)
-                    {
-                        txtPresUser.Focus();
-                        txtPresUser.SelectAll();
-                    }
-                    else if (txtDescription.Visible && txtDescription.Enabled)
-                    {
-                        txtDescription.Focus();
-                        txtDescription.SelectAll();
-                    }
-                    else if (txtMediMatyForPrescription.Visible && txtMediMatyForPrescription.Enabled)
-                    {
-                        txtMediMatyForPrescription.Focus();
-                        txtMediMatyForPrescription.Show();
-                    }
-                    else if (spinAmount.Visible && spinAmount.Enabled)
-                    {
-                        spinAmount.Focus();
-                        spinAmount.SelectAll();
-                    }
-                    else if (spinDayNum.Visible && spinDayNum.Enabled)
-                    {
-                        spinDayNum.Focus();
-                        spinDayNum.SelectAll();
-                    }
-                    else if (checkImpExpPrice.Visible && checkImpExpPrice.Enabled)
-                    {
-                        checkImpExpPrice.Focus();
-                    }
-                    else if (spinProfit.Visible && spinProfit.Enabled)
-                    {
-                        spinProfit.Focus();
-                        spinProfit.SelectAll();
-                    }
-                    else if (spinExpPrice.Visible && spinExpPrice.Enabled)
-                    {
-                        spinExpPrice.Focus();
-                        spinExpPrice.SelectAll();
-                    }
-                    else if (spinExpVatRatio.Visible && spinExpVatRatio.Enabled)
-                    {
-                        spinExpVatRatio.Focus();
-                        spinExpVatRatio.SelectAll();
-                    }
-                    else if (spinDiscountDetail.Visible && spinDiscountDetail.Enabled)
-                    {
-                        spinDiscountDetail.Focus();
-                        spinDiscountDetail.SelectAll();
-                    }
-                    else if (spinDiscountDetailRatio.Visible && spinDiscountDetailRatio.Enabled)
-                    {
-                        spinDiscountDetailRatio.Focus();
-                        spinDiscountDetailRatio.SelectAll();
-                    }
-                    else if (txtTutorial.Visible && txtTutorial.Enabled)
-                    {
-                        txtTutorial.Focus();
-                        txtTutorial.SelectAll();
-                    }
-                    else if (txtNote.Visible && txtNote.Enabled)
-                    {
-                        txtNote.Focus();
-                        txtNote.SelectAll();
-                    }
-                    else if (btnAdd.Visible && btnAdd.Enabled)
-                    {
-                        btnAdd.Focus();
-                        e.Handled = true;
-                    }
-                }
-
-            }
-            catch (Exception ex)
-            {
-                WaitingManager.Hide();
-                Inventec.Common.Logging.LogSystem.Warn(ex);
-            }
-        }
-
-        private void txtTreatmentCode_KeyDown(object sender, KeyEventArgs e)
-        {
-            try
-            {
-                if (e.KeyCode == Keys.Enter)
-                {
-                    if (!String.IsNullOrEmpty(txtTreatmentCode.Text))
-                    {
-                        ProcessorSearch(false);
-                    }
-
-                    if (txtPatientCode.Visible && txtPatientCode.Enabled)
-                    {
-                        txtPatientCode.Focus();
-                        txtPatientCode.SelectAll();
-                    }
-                    else if (txtVirPatientName.Visible && txtVirPatientName.Enabled)
-                    {
-                        txtVirPatientName.Focus();
-                        txtVirPatientName.SelectAll();
-                    }
-                    else if (cboGender.Visible && cboGender.Enabled)
-                    {
-                        cboGender.Focus();
-                        cboGender.ShowPopup();
-                    }
-                    else if (txtPatientDob.Visible && txtPatientDob.Enabled)
-                    {
-                        txtPatientDob.Focus();
-                        txtPatientDob.SelectAll();
-                    }
-                    else if (txtMaTHX.Visible && txtMaTHX.Enabled)
-                    {
-                        txtMaTHX.Focus();
-                        txtMaTHX.SelectAll();
-                    }
-                    else if (cboTHX.Visible && cboTHX.Enabled)
-                    {
-                        cboTHX.Focus();
-                        cboTHX.SelectAll();
-                    }
-                    else if (txtAddress.Visible && txtAddress.Enabled)
-                    {
-                        txtAddress.Focus();
-                        txtAddress.SelectAll();
-                    }
-                    else if (txtPatientPhone.Visible && txtPatientPhone.Enabled)
-                    {
-                        txtPatientPhone.Focus();
-                        txtPatientPhone.SelectAll();
-                    }
-                    else if (dtIntructionTime.Visible && dtIntructionTime.Enabled)
-                    {
-                        dtIntructionTime.Focus();
-                        dtIntructionTime.SelectAll();
-                    }
-                    else if (txtLoginName.Visible && txtLoginName.Enabled)
-                    {
-                        txtLoginName.Focus();
-                        txtLoginName.SelectAll();
-                    }
-                    else if (txtPresUser.Visible && txtPresUser.Enabled)
-                    {
-                        txtPresUser.Focus();
-                        txtPresUser.SelectAll();
-                    }
-                    else if (txtDescription.Visible && txtDescription.Enabled)
-                    {
-                        txtDescription.Focus();
-                        txtDescription.SelectAll();
-                    }
-                    else if (txtMediMatyForPrescription.Visible && txtMediMatyForPrescription.Enabled)
-                    {
-                        txtMediMatyForPrescription.Focus();
-                        txtMediMatyForPrescription.Show();
-                    }
-                    else if (spinAmount.Visible && spinAmount.Enabled)
-                    {
-                        spinAmount.Focus();
-                        spinAmount.SelectAll();
-                    }
-                    else if (spinDayNum.Visible && spinDayNum.Enabled)
-                    {
-                        spinDayNum.Focus();
-                        spinDayNum.SelectAll();
-                    }
-                    else if (checkImpExpPrice.Visible && checkImpExpPrice.Enabled)
-                    {
-                        checkImpExpPrice.Focus();
-                    }
-                    else if (spinProfit.Visible && spinProfit.Enabled)
-                    {
-                        spinProfit.Focus();
-                        spinProfit.SelectAll();
-                    }
-                    else if (spinExpPrice.Visible && spinExpPrice.Enabled)
-                    {
-                        spinExpPrice.Focus();
-                        spinExpPrice.SelectAll();
-                    }
-                    else if (spinExpVatRatio.Visible && spinExpVatRatio.Enabled)
-                    {
-                        spinExpVatRatio.Focus();
-                        spinExpVatRatio.SelectAll();
-                    }
-                    else if (spinDiscountDetail.Visible && spinDiscountDetail.Enabled)
-                    {
-                        spinDiscountDetail.Focus();
-                        spinDiscountDetail.SelectAll();
-                    }
-                    else if (spinDiscountDetailRatio.Visible && spinDiscountDetailRatio.Enabled)
-                    {
-                        spinDiscountDetailRatio.Focus();
-                        spinDiscountDetailRatio.SelectAll();
-                    }
-                    else if (txtTutorial.Visible && txtTutorial.Enabled)
-                    {
-                        txtTutorial.Focus();
-                        txtTutorial.SelectAll();
-                    }
-                    else if (txtNote.Visible && txtNote.Enabled)
-                    {
-                        txtNote.Focus();
-                        txtNote.SelectAll();
-                    }
-                    else if (btnAdd.Visible && btnAdd.Enabled)
-                    {
-                        btnAdd.Focus();
-                        e.Handled = true;
-                    }
-                }
-
-            }
-            catch (Exception ex)
-            {
-                WaitingManager.Hide();
-                Inventec.Common.Logging.LogSystem.Warn(ex);
-            }
-        }
-
-        private void txtPatientCode_KeyDown(object sender, KeyEventArgs e)
-        {
-            try
-            {
-                if (e.KeyCode == Keys.Enter)
-                {
-                    if (txtVirPatientName.Visible && txtVirPatientName.Enabled)
-                    {
-                        txtVirPatientName.Focus();
-                        txtVirPatientName.SelectAll();
-                    }
-                    else if (cboGender.Visible && cboGender.Enabled)
-                    {
-                        cboGender.Focus();
-                        cboGender.ShowPopup();
-                    }
-                    else if (txtPatientDob.Visible && txtPatientDob.Enabled)
-                    {
-                        txtPatientDob.Focus();
-                        txtPatientDob.SelectAll();
-                    }
-                    else if (txtMaTHX.Visible && txtMaTHX.Enabled)
-                    {
-                        txtMaTHX.Focus();
-                        txtMaTHX.SelectAll();
-                    }
-                    else if (cboTHX.Visible && cboTHX.Enabled)
-                    {
-                        cboTHX.Focus();
-                        cboTHX.SelectAll();
-                    }
-                    else if (txtAddress.Visible && txtAddress.Enabled)
-                    {
-                        txtAddress.Focus();
-                        txtAddress.SelectAll();
-                    }
-                    else if (txtPatientPhone.Visible && txtPatientPhone.Enabled)
-                    {
-                        txtPatientPhone.Focus();
-                        txtPatientPhone.SelectAll();
+                        txtEmail.Focus();
+                        txtEmail.SelectAll();
                     }
                     else if (dtIntructionTime.Visible && dtIntructionTime.Enabled)
                     {
@@ -5813,6 +5588,296 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
             }
         }
 
+        private void txtTreatmentCode_KeyDown(object sender, KeyEventArgs e)
+        {
+            try
+            {
+                if (e.KeyCode == Keys.Enter)
+                {
+                    if (!String.IsNullOrEmpty(txtTreatmentCode.Text))
+                    {
+                        ProcessorSearch(false);
+                    }
+
+                    if (txtPatientCode.Visible && txtPatientCode.Enabled)
+                    {
+                        txtPatientCode.Focus();
+                        txtPatientCode.SelectAll();
+                    }
+                    else if (txtVirPatientName.Visible && txtVirPatientName.Enabled)
+                    {
+                        txtVirPatientName.Focus();
+                        txtVirPatientName.SelectAll();
+                    }
+                    else if (cboGender.Visible && cboGender.Enabled)
+                    {
+                        cboGender.Focus();
+                        cboGender.ShowPopup();
+                    }
+                    else if (txtPatientDob.Visible && txtPatientDob.Enabled)
+                    {
+                        txtPatientDob.Focus();
+                        txtPatientDob.SelectAll();
+                    }
+                    else if (txtMaTHX.Visible && txtMaTHX.Enabled)
+                    {
+                        txtMaTHX.Focus();
+                        txtMaTHX.SelectAll();
+                    }
+                    else if (cboTHX.Visible && cboTHX.Enabled)
+                    {
+                        cboTHX.Focus();
+                        cboTHX.SelectAll();
+                    }
+                    else if (txtAddress.Visible && txtAddress.Enabled)
+                    {
+                        txtAddress.Focus();
+                        txtAddress.SelectAll();
+                    }
+                    else if (txtPatientPhone.Visible && txtPatientPhone.Enabled)
+                    {
+                        txtPatientPhone.Focus();
+                        txtPatientPhone.SelectAll();
+                    }
+                    else if (txtEmail.Visible && txtEmail.Enabled)
+                    {
+                        txtEmail.Focus();
+                        txtEmail.SelectAll();
+                    }
+                    else if (dtIntructionTime.Visible && dtIntructionTime.Enabled)
+                    {
+                        dtIntructionTime.Focus();
+                        dtIntructionTime.SelectAll();
+                    }
+                    else if (txtLoginName.Visible && txtLoginName.Enabled)
+                    {
+                        txtLoginName.Focus();
+                        txtLoginName.SelectAll();
+                    }
+                    else if (txtPresUser.Visible && txtPresUser.Enabled)
+                    {
+                        txtPresUser.Focus();
+                        txtPresUser.SelectAll();
+                    }
+                    else if (txtDescription.Visible && txtDescription.Enabled)
+                    {
+                        txtDescription.Focus();
+                        txtDescription.SelectAll();
+                    }
+                    else if (txtMediMatyForPrescription.Visible && txtMediMatyForPrescription.Enabled)
+                    {
+                        txtMediMatyForPrescription.Focus();
+                        txtMediMatyForPrescription.Show();
+                    }
+                    else if (spinAmount.Visible && spinAmount.Enabled)
+                    {
+                        spinAmount.Focus();
+                        spinAmount.SelectAll();
+                    }
+                    else if (spinDayNum.Visible && spinDayNum.Enabled)
+                    {
+                        spinDayNum.Focus();
+                        spinDayNum.SelectAll();
+                    }
+                    else if (checkImpExpPrice.Visible && checkImpExpPrice.Enabled)
+                    {
+                        checkImpExpPrice.Focus();
+                    }
+                    else if (spinProfit.Visible && spinProfit.Enabled)
+                    {
+                        spinProfit.Focus();
+                        spinProfit.SelectAll();
+                    }
+                    else if (spinExpPrice.Visible && spinExpPrice.Enabled)
+                    {
+                        spinExpPrice.Focus();
+                        spinExpPrice.SelectAll();
+                    }
+                    else if (spinExpVatRatio.Visible && spinExpVatRatio.Enabled)
+                    {
+                        spinExpVatRatio.Focus();
+                        spinExpVatRatio.SelectAll();
+                    }
+                    else if (spinDiscountDetail.Visible && spinDiscountDetail.Enabled)
+                    {
+                        spinDiscountDetail.Focus();
+                        spinDiscountDetail.SelectAll();
+                    }
+                    else if (spinDiscountDetailRatio.Visible && spinDiscountDetailRatio.Enabled)
+                    {
+                        spinDiscountDetailRatio.Focus();
+                        spinDiscountDetailRatio.SelectAll();
+                    }
+                    else if (txtTutorial.Visible && txtTutorial.Enabled)
+                    {
+                        txtTutorial.Focus();
+                        txtTutorial.SelectAll();
+                    }
+                    else if (txtNote.Visible && txtNote.Enabled)
+                    {
+                        txtNote.Focus();
+                        txtNote.SelectAll();
+                    }
+                    else if (btnAdd.Visible && btnAdd.Enabled)
+                    {
+                        btnAdd.Focus();
+                        e.Handled = true;
+                    }
+
+                    if (!String.IsNullOrEmpty(txtPatientCode.Text))
+                    {
+                        ProcessorSearchPatient();
+                    }
+                }
+
+            }
+            catch (Exception ex)
+            {
+                WaitingManager.Hide();
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void txtPatientCode_KeyDown(object sender, KeyEventArgs e)
+        {
+            try
+            {
+                if (e.KeyCode == Keys.Enter)
+                {
+                    if (txtVirPatientName.Visible && txtVirPatientName.Enabled)
+                    {
+                        txtVirPatientName.Focus();
+                        txtVirPatientName.SelectAll();
+                    }
+                    else if (cboGender.Visible && cboGender.Enabled)
+                    {
+                        cboGender.Focus();
+                        cboGender.ShowPopup();
+                    }
+                    else if (txtPatientDob.Visible && txtPatientDob.Enabled)
+                    {
+                        txtPatientDob.Focus();
+                        txtPatientDob.SelectAll();
+                    }
+                    else if (txtMaTHX.Visible && txtMaTHX.Enabled)
+                    {
+                        txtMaTHX.Focus();
+                        txtMaTHX.SelectAll();
+                    }
+                    else if (cboTHX.Visible && cboTHX.Enabled)
+                    {
+                        cboTHX.Focus();
+                        cboTHX.SelectAll();
+                    }
+                    else if (txtAddress.Visible && txtAddress.Enabled)
+                    {
+                        txtAddress.Focus();
+                        txtAddress.SelectAll();
+                    }
+                    else if (txtPatientPhone.Visible && txtPatientPhone.Enabled)
+                    {
+                        txtPatientPhone.Focus();
+                        txtPatientPhone.SelectAll();
+                    }
+                    else if (txtEmail.Visible && txtEmail.Enabled)
+                    {
+                        txtEmail.Focus();
+                        txtEmail.SelectAll();
+                    }
+                    else if (dtIntructionTime.Visible && dtIntructionTime.Enabled)
+                    {
+                        dtIntructionTime.Focus();
+                        dtIntructionTime.SelectAll();
+                    }
+                    else if (txtLoginName.Visible && txtLoginName.Enabled)
+                    {
+                        txtLoginName.Focus();
+                        txtLoginName.SelectAll();
+                    }
+                    else if (txtPresUser.Visible && txtPresUser.Enabled)
+                    {
+                        txtPresUser.Focus();
+                        txtPresUser.SelectAll();
+                    }
+                    else if (txtDescription.Visible && txtDescription.Enabled)
+                    {
+                        txtDescription.Focus();
+                        txtDescription.SelectAll();
+                    }
+                    else if (txtMediMatyForPrescription.Visible && txtMediMatyForPrescription.Enabled)
+                    {
+                        txtMediMatyForPrescription.Focus();
+                        txtMediMatyForPrescription.Show();
+                    }
+                    else if (spinAmount.Visible && spinAmount.Enabled)
+                    {
+                        spinAmount.Focus();
+                        spinAmount.SelectAll();
+                    }
+                    else if (spinDayNum.Visible && spinDayNum.Enabled)
+                    {
+                        spinDayNum.Focus();
+                        spinDayNum.SelectAll();
+                    }
+                    else if (checkImpExpPrice.Visible && checkImpExpPrice.Enabled)
+                    {
+                        checkImpExpPrice.Focus();
+                    }
+                    else if (spinProfit.Visible && spinProfit.Enabled)
+                    {
+                        spinProfit.Focus();
+                        spinProfit.SelectAll();
+                    }
+                    else if (spinExpPrice.Visible && spinExpPrice.Enabled)
+                    {
+                        spinExpPrice.Focus();
+                        spinExpPrice.SelectAll();
+                    }
+                    else if (spinExpVatRatio.Visible && spinExpVatRatio.Enabled)
+                    {
+                        spinExpVatRatio.Focus();
+                        spinExpVatRatio.SelectAll();
+                    }
+                    else if (spinDiscountDetail.Visible && spinDiscountDetail.Enabled)
+                    {
+                        spinDiscountDetail.Focus();
+                        spinDiscountDetail.SelectAll();
+                    }
+                    else if (spinDiscountDetailRatio.Visible && spinDiscountDetailRatio.Enabled)
+                    {
+                        spinDiscountDetailRatio.Focus();
+                        spinDiscountDetailRatio.SelectAll();
+                    }
+                    else if (txtTutorial.Visible && txtTutorial.Enabled)
+                    {
+                        txtTutorial.Focus();
+                        txtTutorial.SelectAll();
+                    }
+                    else if (txtNote.Visible && txtNote.Enabled)
+                    {
+                        txtNote.Focus();
+                        txtNote.SelectAll();
+                    }
+                    else if (btnAdd.Visible && btnAdd.Enabled)
+                    {
+                        btnAdd.Focus();
+                        e.Handled = true;
+                    }
+
+                    if (!String.IsNullOrEmpty(txtPatientCode.Text))  
+                    {
+                        ProcessorSearchPatient();
+                    }
+                }
+
+            }
+            catch (Exception ex)
+            {
+                WaitingManager.Hide();
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
         private void txtVirPatientName_KeyDown(object sender, KeyEventArgs e)
         {
             try
@@ -5852,6 +5917,11 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
                     {
                         txtPatientPhone.Focus();
                         txtPatientPhone.SelectAll();
+                    }
+                    else if (txtEmail.Visible && txtEmail.Enabled)
+                    {
+                        txtEmail.Focus();
+                        txtEmail.SelectAll();
                     }
                     else if (dtIntructionTime.Visible && dtIntructionTime.Enabled)
                     {
@@ -5977,6 +6047,11 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
                     {
                         txtPatientPhone.Focus();
                         txtPatientPhone.SelectAll();
+                    }
+                    else if (txtEmail.Visible && txtEmail.Enabled)
+                    {
+                        txtEmail.Focus();
+                        txtEmail.SelectAll();
                     }
                     else if (dtIntructionTime.Visible && dtIntructionTime.Enabled)
                     {

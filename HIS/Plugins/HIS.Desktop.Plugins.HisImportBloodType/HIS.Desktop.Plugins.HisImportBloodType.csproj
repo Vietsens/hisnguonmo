@@ -117,7 +117,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ADO\BloodTypeAdo.cs" />
-    <Compile Include="FormImportBloodType.cs" />
+    <Compile Include="FormImportBloodType.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="FormImportBloodType.Designer.cs">
       <DependentUpon>FormImportBloodType.cs</DependentUpon>
     </Compile>

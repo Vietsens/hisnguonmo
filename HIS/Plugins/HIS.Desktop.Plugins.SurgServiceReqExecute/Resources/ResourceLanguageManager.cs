@@ -9,7 +9,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute.Resources
 {
     public class ResourceLanguageManager
     {
-        //public static ResourceManager LanguageResource { get; set; }
+        public static ResourceManager LanguageResource { get; set; }
         public static ResourceManager LanguageResource__frmDetail { get; set; }
         public static ResourceManager LanguageResource__frmEkipTemp { get; set; }
         public static ResourceManager LanguageResource__FormEkipUser { get; set; }

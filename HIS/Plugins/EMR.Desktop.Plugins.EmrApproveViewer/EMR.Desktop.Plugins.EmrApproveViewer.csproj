@@ -129,7 +129,9 @@
     <Compile Include="EmrApproveViewer\EmrApproveViewerBehavior.cs" />
     <Compile Include="EmrApproveViewer\EmrApproveViewerFactory.cs" />
     <Compile Include="EmrApproveViewer\IEmrApproveViewer.cs" />
-    <Compile Include="frmEmrApproveViewer.cs" />
+    <Compile Include="frmEmrApproveViewer.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="frmEmrApproveViewer.Designer.cs">
       <DependentUpon>frmEmrApproveViewer.cs</DependentUpon>
     </Compile>

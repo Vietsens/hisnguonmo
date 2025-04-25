@@ -156,7 +156,9 @@
     <Compile Include="ADO\VHisExpMestMedicineADO.cs" />
     <Compile Include="Base\ResourceLangManager.cs" />
     <Compile Include="Base\ResourceMessageLang.cs" />
-    <Compile Include="frmMobaCabinetCreate.cs" />
+    <Compile Include="frmMobaCabinetCreate.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="frmMobaCabinetCreate.Designer.cs">
       <DependentUpon>frmMobaCabinetCreate.cs</DependentUpon>
     </Compile>

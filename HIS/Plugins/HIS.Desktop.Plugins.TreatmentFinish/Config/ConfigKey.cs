@@ -30,6 +30,8 @@ namespace HIS.Desktop.Plugins.TreatmentFinish.Config
 {
     class ConfigKey
     {
+        private const string KEY__HIS_DESKTOP_PLUGINS_TREATMENTFINISH_ENDDEAPRTMENTSUBSHEADOPTIOIN = "HIS.Desktop.Plugins.TreatmentFinish.EndDepartmentSubsHeadOption";
+
         public const string KEY__MOS_HIS_SERVICE_REQ_NUM_ORDER_ISSUE_OPTION = "MOS.HIS_SERVICE_REQ.NUM_ORDER_ISSUE_OPTION";
         internal const string SaveTemp = "HIS.Desktop.Plugins.TreatmentFinish.SaveTemp";
         internal const string TREATMENT_RESULT_CODE_DEFAULT_OF_EXAM = "MOS.HIS_TREATMENT_RESULT.TREATMENT_RESULT_CODE.DEFAULT_OF_EXAM";
@@ -110,10 +112,13 @@ namespace HIS.Desktop.Plugins.TreatmentFinish.Config
 
         internal static string IsCheckSubIcdExceedLimit;
 
+        internal static string ENDDEAPRTMENTSUBSHEADOPTIOIN;
+
         internal static void GetConfigKey()
         {
             try
             {
+                ENDDEAPRTMENTSUBSHEADOPTIOIN = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(KEY__HIS_DESKTOP_PLUGINS_TREATMENTFINISH_ENDDEAPRTMENTSUBSHEADOPTIOIN);
                 IsCheckSubIcdExceedLimit = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(KEY_IsCheckSubIcdExceedLimit);
                 OptionTreatmentEndTypeIsTransfer = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(KEY_TreatmentEndTypeIsTransfer);
                 MustChooseSeviceExamOption = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(KEY__MustChooseSeviceExam);

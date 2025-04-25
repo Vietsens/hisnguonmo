@@ -30,6 +30,35 @@ namespace MPS.Processor.Mps000085.PDO
         public V_HIS_BID _bid = null;
         public V_HIS_IMP_MEST _ImpMest = null;
         public HIS_SUPPLIER _supplier = null;
+        public List<V_HIS_IMP_MEST_BLOOD> _ListImpMestBlood = null;
+        public List<BLOODADO> _ListAdo = new List<BLOODADO>();
+
+        public class BLOODADO : V_HIS_IMP_MEST_BLOOD
+        {
+            public decimal AMOUNT { get; set; }
+            public decimal PRICE { get; set; }
+            public string PRICE_SEPARATE { get; set; }
+
+            public BLOODADO() { }
+
+            public BLOODADO(V_HIS_IMP_MEST_BLOOD impBlood)
+            {
+                try
+                {
+                    if (impBlood != null)
+                    {
+                        Inventec.Common.Mapper.DataObjectMapper.Map<BLOODADO>(this, impBlood);
+                        this.AMOUNT = 1;
+                        this.PRICE = impBlood.IMP_PRICE;
+                        this.PRICE_SEPARATE = Inventec.Common.Number.Convert.NumberToString(this.PRICE, HIS.Desktop.LocalStorage.ConfigApplication.ConfigApplications.NumberSeperator);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Error(ex);
+                }
+            }
+        }
     }
 
     public class Mps000085ADO
@@ -280,7 +309,6 @@ namespace MPS.Processor.Mps000085.PDO
         public string User9 { get; set; }
         public string User10 { get; set; }
     }
-
 
     public class ImpMestMedicineADO : V_HIS_IMP_MEST_MEDICINE
     {

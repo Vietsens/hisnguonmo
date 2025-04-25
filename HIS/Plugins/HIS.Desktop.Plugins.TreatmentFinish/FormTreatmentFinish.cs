@@ -57,7 +57,7 @@ using DevExpress.XtraEditors.DXErrorProvider;
 using HIS.Desktop.Plugins.TreatmentFinish.Validation;
 using MOS.SDO;
 using DevExpress.XtraGrid.Views.Base;
-using DevExpress.XtraGrid.Views.Grid;
+using DevExpress.XtraGrid.Views.Grid; 
 using DevExpress.XtraGrid.Views.Grid.ViewInfo;
 using EMR.SDO;
 using DevExpress.XtraBars;
@@ -172,7 +172,9 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
         HIS_PATIENT currentPatient;
         HIS_TREATMENT_EXT currentTreatmentExt = new HIS_TREATMENT_EXT();
         public List<HIS_CAREER> careers;
-
+        public bool InPhieuHenKham { get; set; }
+        public bool XemTruocKhiIn { get; set; }
+        public bool KyPhieuHenKham { get; set; }
         bool isFinished = false;
         #endregion
 
@@ -1246,6 +1248,7 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
                     txtSoChuyenVien.Text = data.OUT_CODE;
                     txtSurgery.Text = data.SURGERY;
                     txtMaBHXH.Text = data.TDL_SOCIAL_INSURANCE_NUMBER;
+                    
 
                     if (!string.IsNullOrEmpty(data.ICD_CAUSE_CODE))
                     {
@@ -1377,16 +1380,54 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
                         txtEyesightGlassLeft.Text = data.EYESIGHT_GLASS_LEFT;
                     }
 
+                    // bat dau code o day
+                    //tq
                     if (!string.IsNullOrEmpty(data.END_DEPT_SUBS_HEAD_LOGINNAME) && !string.IsNullOrEmpty(data.END_DEPT_SUBS_HEAD_USERNAME))
                     {
                         txtEndDeptSubsHead.Text = data.END_DEPT_SUBS_HEAD_LOGINNAME;
                         cboEndDeptSubsHead.EditValue = data.END_DEPT_SUBS_HEAD_LOGINNAME;
                     }
+                    else
+                    {
+                        if (Config.ConfigKey.ENDDEAPRTMENTSUBSHEADOPTIOIN == "1")
+                        {
+                            var USER = Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName();
+                            if (USER != null)
+                            {
+                                txtEndDeptSubsHead.Text = USER;
+                                cboEndDeptSubsHead.EditValue = USER;
+                            }
+                         }
+                    }
+
+
+
+                    // giam doc
                     if (!string.IsNullOrEmpty(data.HOSP_SUBS_DIRECTOR_LOGINNAME) && !string.IsNullOrEmpty(data.HOSP_SUBS_DIRECTOR_USERNAME))
                     {
                         txtHospSubsDirector.Text = data.HOSP_SUBS_DIRECTOR_LOGINNAME;
                         cboHospSubsDirector.EditValue = data.HOSP_SUBS_DIRECTOR_LOGINNAME;
                     }
+                    else
+                    {
+                        var _vHisExecuteRooms = BackendDataWorker.Get<HIS_EXECUTE_ROOM>().FirstOrDefault(p => p.ROOM_ID == module.RoomId);
+                        if (_vHisExecuteRooms != null && _vHisExecuteRooms.HOSP_SUBS_DIRECTOR_LOGINNAME != null)
+                        {
+                            txtHospSubsDirector.Text = _vHisExecuteRooms.HOSP_SUBS_DIRECTOR_LOGINNAME;
+                            cboHospSubsDirector.EditValue = _vHisExecuteRooms.HOSP_SUBS_DIRECTOR_LOGINNAME;
+                        }
+                        else
+                        {
+                            var depar = hisDepartments.FirstOrDefault(s => s.HOSP_SUBS_DIRECTOR_LOGINNAME != null);
+                            if (depar != null)
+                            {
+                                txtHospSubsDirector.Text = _vHisExecuteRooms.HOSP_SUBS_DIRECTOR_LOGINNAME;
+                                cboHospSubsDirector.EditValue = _vHisExecuteRooms.HOSP_SUBS_DIRECTOR_LOGINNAME;
+                            }
+                        }  
+                    }
+                    
+                    // ket thu o day
 
                     //nếu có dữ liệu tại popup khác thì load dữ liệu cũ để không phải mở popup lưu lại
                     if (data.TREATMENT_END_TYPE_EXT_ID.HasValue || data.TREATMENT_END_TYPE_ID.HasValue)
@@ -1723,14 +1764,19 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
                 }
                 else
                 {
-                    if (((treatmentResultId.Value == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_RESULT.ID__KTD || treatmentResultId.Value == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_RESULT.ID__NANG) &&
+                    if (((treatmentResultId.Value == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_RESULT.ID__KTD 
+                        || treatmentResultId.Value == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_RESULT.ID__NANG
+                        ) 
+                        &&
                         (treatmentEndTypeId.Value == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_END_TYPE.ID__CHUYEN ||
-                         treatmentEndTypeId.Value == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_END_TYPE.ID__XINRAVIEN)) ||
+                         treatmentEndTypeId.Value == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_END_TYPE.ID__XINRAVIEN)) ||   
                          treatmentEndTypeId.Value == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_END_TYPE.ID__CHET
                         )
                     {
                         result = (int)((TimeSpan)(dtOut.Date - dtIn.Date)).TotalDays + 1;
                     }
+                    else if(treatmentResultId.Value == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_RESULT.ID__DO && treatmentEndTypeId.Value == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_END_TYPE.ID__CHUYEN)
+                        result = (int)((TimeSpan)(dtOut.Date - dtIn.Date)).TotalDays + 1;
                     else
                         result = (int)((TimeSpan)(dtOut.Date - dtIn.Date)).TotalDays;
                 }
@@ -2692,10 +2738,19 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
                         {
                             VoBenhAn(HisTreatment);
                         }
+                    }      
+                    
+                    if(AppointmentPrintOptionsStorageADO.InPhieuHenKham || AppointmentPrintOptionsStorageADO.KyPhieuHenKham || AppointmentPrintOptionsStorageADO.XemTruocKhiIn)
+                    {
+                        var menuItem = new DevExpress.Utils.Menu.DXMenuItem("Hẹn khám lại");
+                        menuItem.Tag = ModuleTypePrint.HEN_KHAM_LAI;
+                        PrintCloseTreatment_Click(menuItem, null);
                     }
-
-                    RunAutoPrintByPrintConfig();
-
+                    else
+                    {
+                        RunAutoPrintByPrintConfig();
+                    }
+                   
                     Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => hisTreatmentFinishSDO), hisTreatmentFinishSDO));
                     if (hisTreatmentFinishSDO.TreatmentEndTypeExtId == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_END_TYPE_EXT.ID__NGHI_OM)
                     {
@@ -2719,6 +2774,11 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
+        }
+
+        private object GetPreviewTypeForMps10(bool inPhieuHenKham, bool kyPhieuHenKham, bool xemTruocKhiIn)
+        {
+            throw new NotImplementedException();
         }
 
         private bool CheckMustChooseSeviceExamOption()
@@ -3936,7 +3996,7 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
                         cboProgram.EditValue = null;
                     }
                 }
-                else if (this.currentHisTreatment != null)
+                else if (this.currentHisTreatment != null && ProgramADOList.Any(p => p.ID == this.currentHisTreatment.PROGRAM_ID))
                 {
                     cboProgram.EditValue = this.currentHisTreatment.PROGRAM_ID;
                 }
@@ -5111,7 +5171,7 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
                 if (rs)
                 {
                     return false;
-                }
+                }                     
 
                 if (!string.IsNullOrEmpty(txtMaBHXH.Text))
                 {
@@ -5745,7 +5805,7 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
                             BackendDataWorker.Reset<HIS_TREATMENT>();
                             currentHisTreatment = result;
                             FillDataCurrentTreatment(currentHisTreatment);
-                            EnableControlByTreatment();
+                            EnableControlByTreatment();    
 
                         }
                         MessageManager.Show(this, param, success);

@@ -172,8 +172,12 @@
   <ItemGroup>
     <Compile Include="AppConfigKeys.cs" />
     <Compile Include="LocalCacheManager\CacheData.cs" />
-    <Compile Include="LocalCacheManager\frmLocalCacheManager__Load.cs" />
-    <Compile Include="LocalCacheManager\frmLocalCacheManager.cs" />
+    <Compile Include="LocalCacheManager\frmLocalCacheManager__Load.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="LocalCacheManager\frmLocalCacheManager.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="LocalCacheManager\frmLocalCacheManager.Designer.cs">
       <DependentUpon>frmLocalCacheManager.cs</DependentUpon>
     </Compile>

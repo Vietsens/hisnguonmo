@@ -380,12 +380,12 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                 if (configWarningDiff != null && configWarningDiff.VALUE == "1")
                 {
                     threadLoadMedicine = new Thread(() => GetMedicine(data.ID));
-                    
+
                 }
                 if (btnCancel1.Enabled == true)
                 {
                     SetEnableButton(false);
-                    ResetValueControlDetail();  
+                    ResetValueControlDetail();
                     SetFocuTreeMediMate();
                     SetEnableButton(false);
                 }
@@ -410,7 +410,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
 
                 if (data != null)
                 {
-                    if(threadLoadMedicine != null)threadLoadMedicine.Start();
+                    if (threadLoadMedicine != null) threadLoadMedicine.Start();
                     if (data.IS_SALE_EQUAL_IMP_PRICE == 1)
                     {
                         chkImprice.Checked = true;
@@ -507,6 +507,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                     this.spinImpPrice.Enabled = true;
                     this.cboNationals.Enabled = true;
                     this.cboHangSX.Enabled = true;
+                    this.cboDosageForm.EditValue = true;
                     this.txtSoDangKy.Enabled = true;
                     this.SpMaxReuseCount.Enabled = false;
                     this.spinImpPriceVAT.Enabled = false;
@@ -582,6 +583,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                                 this.currrentServiceAdo.monthLifespan = this.MedicalContractMety.MONTH_LIFESPAN;
                             }
 
+                            cboDosageForm.EditValue = MedicalContractMety.DOSAGE_FORM;
                             txtSoDangKy.Text = this.MedicalContractMety.MEDICINE_REGISTER_NUMBER;
                             txtNognDoHL.Text = this.MedicalContractMety.CONCENTRA;
                             spinImpPriceVAT.Value = (spinImpPrice.Value * (1 + spinImpVatRatio.Value / 100));
@@ -831,7 +833,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                 this.currrentServiceAdo = null;
                 if (data != null)
                 {
-                    if(threadLoadMaterial != null ) threadLoadMaterial.Start();
+                    if (threadLoadMaterial != null) threadLoadMaterial.Start();
                     if (data.IS_SALE_EQUAL_IMP_PRICE == 1)
                     {
                         chkImprice.Checked = true;
@@ -1032,7 +1034,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                     this.txtPackingJoinBid.Text = null;
                     this.txtHeinServiceBidMateType.Text = null;
                     this.txtActiveIngrBhytName.Text = null;
-                    this.txtDosageForm.Text = null;
+                    this.cboDosageForm.EditValue = null;
                     this.cboMedicineUseForm.EditValue = null;
 
                     if (this.currrentServiceAdo.IsMedicine)
@@ -1064,7 +1066,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                             this.txtPackingJoinBid.Text = dataMediType.PACKING_TYPE_NAME;
                             this.txtHeinServiceBidMateType.Text = dataMediType.HEIN_SERVICE_BHYT_NAME;
                             this.txtActiveIngrBhytName.Text = dataMediType.ACTIVE_INGR_BHYT_NAME;
-                            this.txtDosageForm.Text = dataMediType.DOSAGE_FORM;
+                            this.cboDosageForm.EditValue = dataMediType.DOSAGE_FORM;
                             this.cboMedicineUseForm.EditValue = dataMediType.MEDICINE_USE_FORM_ID;
                             txtBidNumber.Text = this.currrentServiceAdo.TDL_BID_NUMBER;
                         }
@@ -1197,7 +1199,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                         txtPackingJoinBid.Text = String.IsNullOrWhiteSpace(bidMediType.PACKING_TYPE_NAME) && this.IsSetBhytInfoFromTypeByDefault ? this.currrentServiceAdo.packingTypeName : bidMediType.PACKING_TYPE_NAME;
                         txtHeinServiceBidMateType.Text = String.IsNullOrWhiteSpace(bidMediType.HEIN_SERVICE_BHYT_NAME) && this.IsSetBhytInfoFromTypeByDefault ? this.currrentServiceAdo.heinServiceBhytName : bidMediType.HEIN_SERVICE_BHYT_NAME;
                         txtActiveIngrBhytName.Text = String.IsNullOrWhiteSpace(bidMediType.ACTIVE_INGR_BHYT_NAME) && this.IsSetBhytInfoFromTypeByDefault ? this.currrentServiceAdo.activeIngrBhytName : bidMediType.ACTIVE_INGR_BHYT_NAME;
-                        txtDosageForm.Text = String.IsNullOrWhiteSpace(bidMediType.DOSAGE_FORM) && this.IsSetBhytInfoFromTypeByDefault ? this.currrentServiceAdo.dosageForm : bidMediType.DOSAGE_FORM;
+                        cboDosageForm.EditValue = String.IsNullOrWhiteSpace(bidMediType.DOSAGE_FORM) && this.IsSetBhytInfoFromTypeByDefault ? this.currrentServiceAdo.HisMedicine.DOSAGE_FORM : bidMediType.DOSAGE_FORM;
 
                         if (!bidMediType.MEDICINE_USE_FORM_ID.HasValue && this.IsSetBhytInfoFromTypeByDefault)
                         {
@@ -1640,11 +1642,11 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                         lciReUseMaterial.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
                         lciSeriNumber.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
                     }
-                    if(this.currrentServiceAdo.IsReusable)
+                    if (this.currrentServiceAdo.IsReusable)
                     {
                         SpMaxReuseCount.EditValue = this.currrentServiceAdo.MAX_REUSE_COUNT;
                         lciReUseMaterial.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
-                    }    
+                    }
                     //Bat buoc nhap so seri va so lan tai su dung
                     //TODO
                     if ((SpMaxReuseCount.EditValue == null
@@ -2180,7 +2182,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                         if (o.IMP_UNIT_ID.HasValue) o.SERVICE_UNIT_NAME = o.IMP_UNIT_NAME;
                     });
                 }
-                
+
                 this.medicineProcessor.Reload(this.ucMedicineTypeTree, listMedicineType);
                 if (this.currentImpMestType.ID == IMSys.DbConfig.HIS_RS.HIS_IMP_MEST_TYPE.ID__NCC || this.currentImpMestType.ID == IMSys.DbConfig.HIS_RS.HIS_IMP_MEST_TYPE.ID__DK)
                 {
@@ -2437,6 +2439,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                 CommonParam param = new CommonParam();
                 HisBidViewFilter filter = new HisBidViewFilter();
                 filter.IS_ACTIVE = 1;
+                filter.VALID_TIME = Inventec.Common.DateTime.Get.Now();
                 bids = new BackendAdapter(param).Get<List<V_HIS_BID_1>>("api/HisBid/GetView1", ApiConsumers.MosConsumer, filter, param);
                 if (IsShowingApprovalBid)
                 {

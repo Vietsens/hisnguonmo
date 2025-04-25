@@ -64,7 +64,6 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
     public partial class UCExecuteRoom : UserControlBase
     {
         V_HIS_SERE_SERV_7 TreeClickData;
-        MOS.EFMODEL.DataModels.HIS_SERVICE_REQ currentHisServiceReq_Data = null;
 
         private bool ValidateFindControl()
         {
@@ -139,7 +138,6 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
                 numPageSize = ((CommonParam)param).Limit ?? 0;
                 CommonParam paramCommon = new CommonParam(start, limit);
                 Inventec.Core.ApiResultObject<List<L_HIS_SERVICE_REQ>> apiResult = new ApiResultObject<List<L_HIS_SERVICE_REQ>>();
-                Inventec.Core.ApiResultObject<List<V_HIS_SERVICE_REQ>> apiResult1 = new ApiResultObject<List<V_HIS_SERVICE_REQ>>();
                 MOS.Filter.HisServiceReqLViewFilter hisServiceReqFilter = new HisServiceReqLViewFilter();
 
                 if (!String.IsNullOrEmpty(txtServiceReqCode.Text))
@@ -366,6 +364,7 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
                     .GetRO<List<L_HIS_SERVICE_REQ>>("api/HisServiceReq/GetLView", ApiConsumers.MosConsumer, hisServiceReqFilter, paramCommon);
 
                 gridControlServiceReq.DataSource = null;
+
                 if (apiResult != null && apiResult.Data != null)
                 {
 
@@ -392,11 +391,6 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
                             {
                                 item.status = 14;
                             }
-                           // item.TDL_PATIENT_CCCD = !string.IsNullOrWhiteSpace(item.TDL_PATIENT_CCCD_NUMBER) ? item.TDL_PATIENT_CCCD_NUMBER
-                           //: !string.IsNullOrWhiteSpace(item.TDL_PATIENT_CMND_NUMBER) ? item.TDL_PATIENT_CMND_NUMBER
-                           //: item.TDL_PATIENT_PASSPORT_NUMBER;
-
-                            //item.TDL_PATIENT_ADDRESS = !string.IsNullOrWhiteSpace(item.TDL_PATIENT_ADDRESS) ? item.TDL_PATIENT_ADDRESS : null;
 
                         }
                         gridControlServiceReq.DataSource = serviceReqs;
@@ -842,33 +836,10 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
         {
             try
             {
-                lblPatientCode.Appearance.Image = null;
                 CommonParam param = new CommonParam();
                 if (serviceReq != null)
                 {
                     lblPatientCode.Text = serviceReq.TDL_PATIENT_CODE;
-                    var allErgyCardFilter = new HisAllergyCardFilter();
-                    allErgyCardFilter.TREATMENT_ID = serviceReq.TREATMENT_ID;
-
-                    var allergyCards = new BackendAdapter(new CommonParam()).Get<List<HIS_ALLERGY_CARD>>(
-                        "/api/HisAllergyCard/Get",
-                        ApiConsumers.MosConsumer,
-                        allErgyCardFilter,
-                        new CommonParam());
-
-                    if (allergyCards != null && allergyCards.Count > 0)
-                    {
-                        lblPatientCode.Appearance.Image = global::HIS.Desktop.Plugins.ExecuteRoom.Properties.Resources.thuoc;
-                        lblPatientCode.ToolTip = "Bệnh nhân có thẻ dị ứng";
-                        lblPatientCode.Appearance.ImageAlign = ContentAlignment.MiddleRight;
-                        lblPatientCode.ImageAlignToText = DevExpress.XtraEditors.ImageAlignToText.RightCenter;
-                    }
-                    else
-                    {
-                        lblPatientCode.Appearance.Image = null;
-                        lblPatientCode.ToolTip = string.Empty;
-                    }
-
                     lblPatientName.Text = serviceReq.TDL_PATIENT_NAME;
                     lblGender.Text = serviceReq.TDL_PATIENT_GENDER_NAME;
                     lblDOB.Text = String.Format("{0} ({1})", Inventec.Common.DateTime.Convert.TimeNumberToDateString(serviceReq.TDL_PATIENT_DOB), MPS.AgeUtil.CalculateFullAge(serviceReq.TDL_PATIENT_DOB));
@@ -1811,6 +1782,7 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
                 filter.ColumnParams = new List<string>();
                 filter.ColumnParams.Add("DHST_ID");
                 //filter.ColumnParams.Add("EXE_SERVICE_MODULE_ID");
+                filter.ColumnParams.Add("EXECUTE_LOGINNAME");
                 filter.ColumnParams.Add("EXECUTE_ROOM_ID");
                 filter.ColumnParams.Add("ID");
                 filter.ColumnParams.Add("INTRUCTION_TIME");
@@ -1833,11 +1805,6 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
                 filter.ColumnParams.Add("TDL_PATIENT_DOB");
                 filter.ColumnParams.Add("TDL_PATIENT_GENDER_NAME");
                 filter.ColumnParams.Add("TDL_PATIENT_NAME");
-                //dangth
-                filter.ColumnParams.Add("TDL_PATIENT_CCCD_NUMBER");
-                filter.ColumnParams.Add("TDL_PATIENT_CMND_NUMBER");
-                filter.ColumnParams.Add("TDL_PATIENT_PASSPORT_NUMBER");
-                //dangth
                 filter.ColumnParams.Add("TDL_PATIENT_GENDER_ID");
                 filter.ColumnParams.Add("TDL_PATIENT_ID");
                 filter.ColumnParams.Add("TDL_TREATMENT_CODE");

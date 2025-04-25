@@ -54,6 +54,11 @@ using MOS.Filter;
 using HIS.Desktop.ApiConsumer;
 using IcdADO = HIS.UC.ExamTreatmentFinish.ADO.IcdADO;
 using Inventec.Common.Adapter;
+using DevExpress.XtraLayout;
+using HIS.UC.ExamTreatmentFinish.Resources;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.TextBox;
+using Inventec.Common.Logging;
+using DevExpress.XtraExport;
 
 namespace HIS.UC.ExamTreatmentFinish.Run
 {
@@ -981,6 +986,74 @@ namespace HIS.UC.ExamTreatmentFinish.Run
         //        Inventec.Common.Logging.LogSystem.Warn(ex);
         //    }
         //}
+        public event EventHandler CapSoLuuTruBAChanged;
+        public void UpdateLabelColor(LayoutControlItem LayoutControlItem1, LayoutControlItem LayoutControlItem2)
+        {
+            if (chkCapSoLuuTruBA.Checked)
+            {
+                LayoutControlItem1.AppearanceItemCaption.ForeColor = Color.Maroon;
+                LayoutControlItem2.AppearanceItemCaption.ForeColor = Color.Maroon;
+                
+            }
+            else
+            {
+                LayoutControlItem1.AppearanceItemCaption.ForeColor = Color.Black;
+                LayoutControlItem2.AppearanceItemCaption.ForeColor = Color.Black;
+            }
+        }
+
+        public void UpdateValide(DevExpress.XtraEditors.TextEdit textEdit1, DevExpress.XtraEditors.TextEdit textEdit2, DevExpress.XtraEditors.TextEdit textEdit3)
+        {
+            if (treatment.TDL_TREATMENT_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__DTNGOAITRU)
+            {
+                List<string> errors = new List<string>();
+
+                if (string.IsNullOrEmpty(textEdit1.Text.Trim()))
+                {
+                    errors.Add("Tóm tắt kết quả cận lâm sàng");
+                }
+                if (string.IsNullOrEmpty(textEdit2.Text.Trim()))
+                {
+                    errors.Add("Phương pháp điều trị");
+                }
+                if (string.IsNullOrEmpty(textEdit3.Text.Trim()))
+                {
+                    errors.Add("Chuẩn đoán sơ bộ");
+                }
+
+                if (errors.Count > 0)
+                {
+                    string errorMessage = "Bạn chưa nhập: " + string.Join(" hoặc ", errors) + ".";
+                    DevExpress.XtraEditors.XtraMessageBox.Show(errorMessage, ResourceMessage.ThongBao);
+                    return;
+                }
+
+            }
+            else if(cboProgram.EditValue != null && cboProgram.Properties.View.FocusedRowHandle == 0)
+            {
+                List<string> errors = new List<string>();
+
+                if (string.IsNullOrEmpty(textEdit1.Text.Trim()))
+                {
+                    errors.Add("Tóm tắt kết quả cận lâm sàng");
+                }
+                if (string.IsNullOrEmpty(textEdit2.Text.Trim()))
+                {
+                    errors.Add("Phương pháp điều trị");
+                }
+                if (string.IsNullOrEmpty(textEdit3.Text.Trim()))
+                {
+                    errors.Add("Chuẩn đoán sơ bộ");
+                }
+
+                if (errors.Count > 0)
+                {
+                    string errorMessage = "Bạn chưa nhập: " + string.Join(" hoặc ", errors) + ".";
+                    DevExpress.XtraEditors.XtraMessageBox.Show(errorMessage, ResourceMessage.ThongBao);
+                    return;
+                }
+            }
+        }
 
         private void SetDafaultComboProram()
         {
@@ -1010,6 +1083,7 @@ namespace HIS.UC.ExamTreatmentFinish.Run
         {
             try
             {
+                
                 EnableControlByCheckStoreData();
                 LoadComboProgram(this.ExamTreatmentFinishInitADO.PatientPrograms, this.ExamTreatmentFinishInitADO.DataStores);
                 SetDafaultComboProram();
@@ -1040,6 +1114,7 @@ namespace HIS.UC.ExamTreatmentFinish.Run
         {
             try
             {
+                
                 if (e.Button.Kind == ButtonPredefines.Delete)
                 {
                     cboProgram.EditValue = null;
@@ -1054,6 +1129,8 @@ namespace HIS.UC.ExamTreatmentFinish.Run
 
         private void cboProgram_EditValueChanged(object sender, EventArgs e)
         {
+
+            CapSoLuuTruBAChanged?.Invoke(this, EventArgs.Empty);
             if (cboProgram.EditValue != null)
             {
                 dxValidationProvider1.RemoveControlError(cboProgram);
@@ -1747,8 +1824,51 @@ namespace HIS.UC.ExamTreatmentFinish.Run
                 cboHospSubs.Properties.ImmediatePopup = true;
                 if (this.ExamTreatmentFinishInitADO.Treatment != null)
                 {
-                    cboEndDeptSubs.EditValue = this.ExamTreatmentFinishInitADO.Treatment.END_DEPT_SUBS_HEAD_LOGINNAME;
-                    cboHospSubs.EditValue = this.ExamTreatmentFinishInitADO.Treatment.HOSP_SUBS_DIRECTOR_LOGINNAME;
+
+                    // code thêm từ đây
+                    if (this.ExamTreatmentFinishInitADO.Treatment.HOSP_SUBS_DIRECTOR_LOGINNAME != null)
+                    {
+                        cboHospSubs.EditValue = this.ExamTreatmentFinishInitADO.Treatment.HOSP_SUBS_DIRECTOR_LOGINNAME;
+                        LogSystem.Info($"ExamTreatmentFinishInitADO.Treatment.HOSP_SUBS_DIRECTOR_LOGINNAME != null {this.ExamTreatmentFinishInitADO.Treatment.HOSP_SUBS_DIRECTOR_LOGINNAME}");
+                    }
+                    else
+                    {
+                        var _vHisExecuteRooms = BackendDataWorker.Get<HIS_EXECUTE_ROOM>().FirstOrDefault(p => p.ROOM_ID == moduleData.RoomId);
+
+                        if (_vHisExecuteRooms != null && _vHisExecuteRooms.HOSP_SUBS_DIRECTOR_LOGINNAME != null)    
+                        {
+                            cboHospSubs.EditValue = _vHisExecuteRooms.HOSP_SUBS_DIRECTOR_LOGINNAME;
+                            LogSystem.Info($"_vHisExecuteRooms.HOSP_SUBS_DIRECTOR_LOGINNAME != null {_vHisExecuteRooms.HOSP_SUBS_DIRECTOR_LOGINNAME}");
+                        }
+                        else
+                        {
+                            var _VHisRoom = BackendDataWorker.Get<V_HIS_ROOM>().FirstOrDefault(o => o.ID == this.moduleData.RoomId);
+                            
+                            var depar = listDepartment.FirstOrDefault(s => s.ID == _VHisRoom.DEPARTMENT_ID);
+                            if (depar != null && depar.HOSP_SUBS_DIRECTOR_LOGINNAME != null)
+                            {
+                                cboHospSubs.EditValue = depar.HOSP_SUBS_DIRECTOR_LOGINNAME;
+                                LogSystem.Info($"depar.HOSP_SUBS_DIRECTOR_LOGINNAME != null {depar.HOSP_SUBS_DIRECTOR_LOGINNAME}");
+                            }
+                        }
+                    }    
+                    if (this.ExamTreatmentFinishInitADO.Treatment.END_DEPT_SUBS_HEAD_LOGINNAME != null)
+                    {
+                        cboEndDeptSubs.EditValue = this.ExamTreatmentFinishInitADO.Treatment.END_DEPT_SUBS_HEAD_LOGINNAME;
+                    }
+                    else
+                    {
+                        if (Config.HisConfig.ENDDEPARTMENTSUBSHEADOPTION == "1")
+                        {
+                            var USER = Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName();
+                            if (USER != null)  
+                            {
+                                cboEndDeptSubs.EditValue = USER;
+                            }
+                        }
+                    }
+                    /// đến đây
+                    
                     var department = listDepartment.FirstOrDefault(s => s.ID == (this.ExamTreatmentFinishInitADO.Treatment.LAST_DEPARTMENT_ID ?? 0));
                     if(department != null)
                     {

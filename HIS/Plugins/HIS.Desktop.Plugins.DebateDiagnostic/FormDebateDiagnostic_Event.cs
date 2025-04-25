@@ -195,8 +195,6 @@ namespace HIS.Desktop.Plugins.DebateDiagnostic
                 }
 
                 // luu dich vu hoi chuan
-
-
                 ProcessHisDebateUser(hisDebate);
                 ProcessHisDebateInvateUser(hisDebate);
                 // check debateUser
@@ -282,6 +280,7 @@ namespace HIS.Desktop.Plugins.DebateDiagnostic
                 //}
 
                 if (!CheckValidation(hisDebate)) return;
+                //trong hàm dưới là gọi api để lưu
                 SaveHisDebate(hisDebate);
                 WaitingManager.Hide();
             }
@@ -1206,6 +1205,9 @@ namespace HIS.Desktop.Plugins.DebateDiagnostic
                     switch (GetTypeDetail())
                     {
                         case HIS.Desktop.Plugins.DebateDiagnostic.UcDebateDetail.DetailEnum.Thuoc:
+                            //qtcode
+                            hisDebateSave.SUBCLINICAL_PROCESSES = data.SUBCLINICAL_PROCESSES;
+                            //qtcode
                             hisDebateSave.CONTENT_TYPE = IMSys.DbConfig.HIS_RS.HIS_DEBATE.CONTENT_TYPE__MEDICINE;
                             hisDebateSave.MEDICINE_TYPE_IDS = data.MEDICINE_TYPE_IDS;
                             hisDebateSave.ACTIVE_INGREDIENT_IDS = data.ACTIVE_INGREDIENT_IDS;
@@ -1227,7 +1229,6 @@ namespace HIS.Desktop.Plugins.DebateDiagnostic
                             hisDebateSave.EMOTIONLESS_METHOD_ID = null;
                             hisDebateSave.INTERNAL_MEDICINE_STATE = "";
                             hisDebateSave.PROGNOSIS = "";
-                            hisDebateSave.SUBCLINICAL_PROCESSES = "";
                             hisDebateSave.SURGERY_SERVICE_ID = null;
                             hisDebateSave.SURGERY_TIME = null;
                             hisDebateSave.HIS_DEBATE_EKIP_USER = null;
@@ -1265,6 +1266,9 @@ namespace HIS.Desktop.Plugins.DebateDiagnostic
                             hisDebateSave.REQUEST_CONTENT = "";
                             break;
                         case HIS.Desktop.Plugins.DebateDiagnostic.UcDebateDetail.DetailEnum.Khac:
+                            //qtcode
+                            hisDebateSave.SUBCLINICAL_PROCESSES = data.SUBCLINICAL_PROCESSES;
+                            //qtcode
                             hisDebateSave.CONTENT_TYPE = IMSys.DbConfig.HIS_RS.HIS_DEBATE.CONTENT_TYPE__OTHER;
                             hisDebateSave.DISCUSSION = data.DISCUSSION;
                             hisDebateSave.BEFORE_DIAGNOSTIC = data.BEFORE_DIAGNOSTIC;
@@ -1286,7 +1290,7 @@ namespace HIS.Desktop.Plugins.DebateDiagnostic
                             hisDebateSave.EMOTIONLESS_METHOD_ID = null;
                             hisDebateSave.INTERNAL_MEDICINE_STATE = "";
                             hisDebateSave.PROGNOSIS = "";
-                            hisDebateSave.SUBCLINICAL_PROCESSES = "";
+                            
                             hisDebateSave.SURGERY_SERVICE_ID = null;
                             hisDebateSave.SURGERY_TIME = null;
                             hisDebateSave.HIS_DEBATE_EKIP_USER = null;

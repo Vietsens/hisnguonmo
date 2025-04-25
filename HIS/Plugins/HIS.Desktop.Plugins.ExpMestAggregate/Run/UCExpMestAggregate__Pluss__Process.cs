@@ -67,6 +67,7 @@ namespace HIS.Desktop.Plugins.ExpMestAggregate
         public string TDL_SERVICE_NAME { get; set; }
         public decimal AMOUNT { get; set; }
         public string PACKAGE_NUMBER { get; set; }
+        public string CONCENTRA { get; set; }
     }
 
 }

@@ -137,7 +137,7 @@ namespace HIS.UC.FormType.TreatmentTypeGridCheckBox
 
             }
             catch (Exception ex)
-            {
+            {   
                 LogSystem.Error(ex);
             }
         }

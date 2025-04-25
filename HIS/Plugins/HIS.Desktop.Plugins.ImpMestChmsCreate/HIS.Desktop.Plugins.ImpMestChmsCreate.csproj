@@ -133,7 +133,9 @@
     <Compile Include="Base\AppConfigKeys.cs" />
     <Compile Include="Base\ResourceLangManager.cs" />
     <Compile Include="Base\ResourceMessageLang.cs" />
-    <Compile Include="frmImpMestChmsCreate.cs" />
+    <Compile Include="frmImpMestChmsCreate.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="frmImpMestChmsCreate.Designer.cs">
       <DependentUpon>frmImpMestChmsCreate.cs</DependentUpon>
     </Compile>

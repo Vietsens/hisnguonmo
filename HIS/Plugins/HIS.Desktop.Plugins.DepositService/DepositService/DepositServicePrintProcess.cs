@@ -98,7 +98,7 @@ namespace HIS.Desktop.Plugins.DepositService.DepositService
             }
         }
 
-        public static void LoadPhieuThuPhiDichVu(string printTypeCode, string fileName, bool isExpand, List<MOS.EFMODEL.DataModels.V_HIS_SERE_SERV_12> SereServAlls, MOS.EFMODEL.DataModels.V_HIS_TREATMENT_FEE currentHisTreatment, List<long> sereServIds, MOS.EFMODEL.DataModels.V_HIS_TRANSACTION deposit, List<MOS.EFMODEL.DataModels.HIS_SERE_SERV_DEPOSIT> dereDetails, V_HIS_SERVICE_REQ hisServiceReq, bool isPrintNow, Inventec.Desktop.Common.Modules.Module moduleData)
+        public static void LoadPhieuThuPhiDichVu(string printTypeCode, string fileName, bool isExpand, List<MOS.EFMODEL.DataModels.V_HIS_SERE_SERV_12> SereServAlls, MOS.EFMODEL.DataModels.V_HIS_TREATMENT_FEE currentHisTreatment, List<long> sereServIds, MOS.EFMODEL.DataModels.V_HIS_TRANSACTION deposit, List<MOS.EFMODEL.DataModels.HIS_SERE_SERV_DEPOSIT> dereDetails, V_HIS_SERVICE_REQ hisServiceReq, bool isPrintNow, bool isSign, Inventec.Desktop.Common.Modules.Module moduleData)
         {
             bool result = false;
             CommonParam param = new CommonParam();
@@ -224,7 +224,7 @@ namespace HIS.Desktop.Plugins.DepositService.DepositService
                         serviceReports,
 
                         deposit,
-                        dereDetails,
+                        dereDetails,  
 
                         totalDay,
                         ratio_text,
@@ -236,11 +236,15 @@ namespace HIS.Desktop.Plugins.DepositService.DepositService
                 {
                     PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, pdo, MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow, GlobalVariables.dicPrinter.ContainsKey(printTypeCode) && !string.IsNullOrEmpty(GlobalVariables.dicPrinter[printTypeCode]) ? GlobalVariables.dicPrinter[printTypeCode] : "") { EmrInputADO = inputADO };
                 }
+                else if (isSign)
+                {
+                    PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, pdo, MPS.ProcessorBase.PrintConfig.PreviewType.EmrSignAndPrintPreview, GlobalVariables.dicPrinter.ContainsKey(printTypeCode) && !string.IsNullOrEmpty(GlobalVariables.dicPrinter[printTypeCode]) ? GlobalVariables.dicPrinter[printTypeCode] : "") { EmrInputADO = inputADO };
+                }
                 else
                 {
                     PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, pdo, MPS.ProcessorBase.PrintConfig.PreviewType.Show, GlobalVariables.dicPrinter.ContainsKey(printTypeCode) && !string.IsNullOrEmpty(GlobalVariables.dicPrinter[printTypeCode]) ? GlobalVariables.dicPrinter[printTypeCode] : "", 1, false, true) { EmrInputADO = inputADO };
                 }
-               
+                
                 PrintData.ShowPrintLog = (MPS.ProcessorBase.PrintConfig.DelegateShowPrintLog)CallModuleShowPrintLog;
                 result = MPS.MpsPrinter.Run(PrintData);
                 //if (isPrintNow)

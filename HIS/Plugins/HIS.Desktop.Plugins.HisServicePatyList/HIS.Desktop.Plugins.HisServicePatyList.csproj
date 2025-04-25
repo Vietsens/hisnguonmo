@@ -169,7 +169,9 @@
     <Compile Include="ModuleLinkString.cs" />
     <Compile Include="RoomRequiredADO.cs" />
     <Compile Include="RoomPracticeADO.cs" />
-    <Compile Include="frmHisServicePatyList_Import.cs" />
+    <Compile Include="frmHisServicePatyList_Import.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="entity\StatusHour.cs" />
     <Compile Include="entity\Status.cs" />
     <Compile Include="HisServicepatyListProcessor.cs" />

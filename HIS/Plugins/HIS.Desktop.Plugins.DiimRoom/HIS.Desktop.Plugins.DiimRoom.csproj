@@ -196,11 +196,15 @@
     <Compile Include="ADO\ImageRequestADO.cs" />
     <Compile Include="ADO\SeriesADO.cs" />
     <Compile Include="DiimRoomProcessor.cs" />
-    <Compile Include="DiimRoom\frmPacsView.cs" />
+    <Compile Include="DiimRoom\frmPacsView.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="DiimRoom\frmPacsView.Designer.cs">
       <DependentUpon>frmPacsView.cs</DependentUpon>
     </Compile>
-    <Compile Include="DiimRoom\UCPacsView.cs" />
+    <Compile Include="DiimRoom\UCPacsView.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="DiimRoom\UCPacsView.Designer.cs">
       <DependentUpon>UCPacsView.cs</DependentUpon>
     </Compile>

@@ -2264,8 +2264,16 @@ namespace HIS.UC.UCHeniInfo
         {
             try
             {
-
-                this.cboHeinRightRoute.EditValue = chkSs.Checked ? MOS.LibraryHein.Bhyt.HeinRightRoute.HeinRightRouteCode.TRUE : null;
+                if (this.chkSs.Checked)
+                {
+                    EditorLoaderProcessor.InitComboCommon(this.cboHeinRightRoute, DataStore.HeinRightRouteTypes, "HeinRightRouteTypeCode", "HeinRightRouteTypeName", "HeinRightRouteTypeCode");
+                    this.cboHeinRightRoute.EditValue = MOS.LibraryHein.Bhyt.HeinRightRoute.HeinRightRouteCode.TRUE;
+                }
+                else
+                {
+                    EditorLoaderProcessor.InitComboCommon(this.cboHeinRightRoute, dataSourceCboHeinRightRouteTemp, "HeinRightRouteTypeCode", "HeinRightRouteTypeName", "HeinRightRouteTypeCode");
+                    this.cboHeinRightRoute.EditValue = null;
+                }
                 this.dlgCheckSS(chkSs.Checked);
 
             }

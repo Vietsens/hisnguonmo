@@ -28,6 +28,7 @@ using HIS.Desktop.Plugins.TransactionBill.ADO;
 using Inventec.Core;
 using Inventec.Desktop.Common.Message;
 using MOS.EFMODEL.DataModels;
+using MOS.SDO;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -411,13 +412,16 @@ namespace HIS.Desktop.Plugins.TransactionBill
                     bool success = false;
                     //Review
                     HIS_TRANSACTION rs = null;
+                    TransactionLockSDO sdo = new TransactionLockSDO();
+                    sdo.TransactionId = data.ID;
+                    sdo.RequestRoomId = currentModule.RoomId;
                     if (isLock)
                     {
                         rs = new Inventec.Common.Adapter.BackendAdapter(param).Post<HIS_TRANSACTION>("api/HisTransaction/DepositLock", ApiConsumers.MosConsumer, data.ID, param);
                     }
                     else
                     {
-                        rs = new Inventec.Common.Adapter.BackendAdapter(param).Post<HIS_TRANSACTION>("api/HisTransaction/DepositUnlock", ApiConsumers.MosConsumer, data.ID, param);
+                        rs = new Inventec.Common.Adapter.BackendAdapter(param).Post<HIS_TRANSACTION>("api/HisTransaction/DepositUnlock", ApiConsumers.MosConsumer, sdo, param);
                     }
                     if (rs != null)
                     {
@@ -432,7 +436,7 @@ namespace HIS.Desktop.Plugins.TransactionBill
                         gridControlTransaction.EndUpdate();
                     }
                     WaitingManager.Hide();
-                    MessageManager.Show(param, success);
+                    MessageManager.Show(this, param, success);
                     SessionManager.ProcessTokenLost(param);
                 }
             }

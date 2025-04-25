@@ -25,6 +25,8 @@ namespace HIS.UC.ExamTreatmentFinish.Config
 {
     class HisConfig
     {
+        private const string KEY__HIS_DESKTOP_PLUGINS_TREATMENTFINISH_ENDDEPARTMENTSUBSHEADOPTION = "HIS.Desktop.Plugins.TreatmentFinish.EndDepartmentSubsHeadOption";
+
         public const string KEY__MOS_HIS_TREATMENT_AUTO_CREATE_WHEN_APPOINTMENT = "MOS.HIS_TREATMENT.AUTO_CREATE_WHEN_APPOINTMENT";
         public const string KEY__MOS_HIS_SERVICE_REQ_NUM_ORDER_ISSUE_OPTION = "MOS.HIS_SERVICE_REQ.NUM_ORDER_ISSUE_OPTION";
         public const string KEY__MOS_TREATMENT_ALLOW_MANY_TREATMENT_OPENING_OPTION = "MOS.TREATMENT.ALLOW_MANY_TREATMENT_OPENING_OPTION";
@@ -59,10 +61,15 @@ namespace HIS.UC.ExamTreatmentFinish.Config
         internal static string AutoCreateWhenAppoinment;
         internal static string AllowManyOpeningOption;
 
+        internal static string ENDDEPARTMENTSUBSHEADOPTION;
+
+
         internal static void GetConfig()
         {
             try
             {
+                ENDDEPARTMENTSUBSHEADOPTION = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(KEY__HIS_DESKTOP_PLUGINS_TREATMENTFINISH_ENDDEPARTMENTSUBSHEADOPTION);
+
                 CheckIcdWhenSave = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(CHECK_ICD_WHEN_SAVE);
                 OptionSubIcdWhenFinish = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(CONFIG__USING_EXAM_SUB_ICD_WHEN_FINISH);
                 AutoCreateWhenAppoinment = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(KEY__MOS_HIS_TREATMENT_AUTO_CREATE_WHEN_APPOINTMENT);

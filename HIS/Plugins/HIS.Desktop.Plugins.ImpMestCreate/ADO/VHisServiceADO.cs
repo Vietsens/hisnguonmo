@@ -163,6 +163,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate.ADO
                     this.SERVICE_TYPE_ID = data.SERVICE_TYPE_ID;
                     this.BanBangGiaNhap = data.IS_SALE_EQUAL_IMP_PRICE == 1 ? true : false;
                     this.HisMedicine = new HIS_MEDICINE();
+                    this.HisMedicine.DOSAGE_FORM = data.DOSAGE_FORM;
                     this.HisMedicine.IS_SALE_EQUAL_IMP_PRICE = data.IS_SALE_EQUAL_IMP_PRICE;
                     this.HisMedicine.MEDICINE_TYPE_ID = data.ID;
                     this.MEDICINE_LINE_ID = data.MEDICINE_LINE_ID;
@@ -172,7 +173,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate.ADO
                     this.packingTypeName = data.PACKING_TYPE_NAME;
                     this.heinServiceBhytName = data.HEIN_SERVICE_BHYT_NAME;
                     this.activeIngrBhytName = data.ACTIVE_INGR_BHYT_NAME;
-                    this.dosageForm = data.DOSAGE_FORM;
+                    //this.dosageForm = data.DOSAGE_FORM;
                     this.medicineUseFormId = data.MEDICINE_USE_FORM_ID;
                     this.isFunctionalFood = data.IS_FUNCTIONAL_FOOD;
                     this.MEDICINE_USE_FORM_CODE = data.MEDICINE_USE_FORM_CODE;
@@ -233,7 +234,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate.ADO
 
         public enum Error
         {
-            ThieuMa, ThieuGiaNhap, ThieuVat, ThieuSoLuong, SaiGiaNhap, SaiVat, SaiSoLuong, SaiMa, MaxLengthGoiThau, MaxLengthNhomThau, MaxLengthQuocGia, MaxLenthNongDoHamLuong, MaxLengthMaHangSX, MaxLengthSoDangKy, MaQuetDinhThauVuotQuaKiTu, LoaiThongTinThauKhongHopLe, ThongTinThauVuotQuaKiTu
+            ThieuMa, ThieuGiaNhap, ThieuVat, ThieuSoLuong, SaiGiaNhap, SaiVat, SaiSoLuong, SaiMa, MaxLengthGoiThau, MaxLengthNhomThau, MaxLengthQuocGia, MaxLenthNongDoHamLuong, MaxLengthMaHangSX, MaxLengthSoDangKy, MaQuetDinhThauVuotQuaKiTu, LoaiThongTinThauKhongHopLe, ThongTinThauVuotQuaKiTu, ThieuDangBaoChe
 
         }
         public enum Warm

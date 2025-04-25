@@ -112,13 +112,21 @@
     </Compile>
     <Compile Include="Resources\ResourceLanguageManager.cs" />
     <Compile Include="Resources\ResourceMessage.cs" />
-    <Compile Include="Run\frmHisMedicalContractImport.cs" />
+    <Compile Include="Run\frmHisMedicalContractImport.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Run\frmHisMedicalContractImport.Designer.cs">
       <DependentUpon>frmHisMedicalContractImport.cs</DependentUpon>
     </Compile>
-    <Compile Include="Run\frmHisMedicalContractImport.Process.cs" />
-    <Compile Include="Run\frmHisMedicalContractImport.SetResources.cs" />
-    <Compile Include="Run\frmHisMedicalContractImport.ValidateImportData.cs" />
+    <Compile Include="Run\frmHisMedicalContractImport.Process.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Run\frmHisMedicalContractImport.SetResources.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Run\frmHisMedicalContractImport.ValidateImportData.cs">
+      <SubType>Form</SubType>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\HIS.Desktop.ApiConsumer\HIS.Desktop.ApiConsumer.csproj">

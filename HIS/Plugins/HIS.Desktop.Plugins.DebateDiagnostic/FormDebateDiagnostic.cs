@@ -57,6 +57,7 @@ namespace HIS.Desktop.Plugins.DebateDiagnostic
         #region Declare
         int action = 0;
         long treatment_id = 0;
+     
         System.Globalization.CultureInfo cultureLang;
         List<ADO.HisDebateUserADO> lstParticipantDebate;
         internal MOS.EFMODEL.DataModels.HIS_DEBATE currentHisDebate { get; set; }
@@ -1036,7 +1037,7 @@ namespace HIS.Desktop.Plugins.DebateDiagnostic
                     cboPhieuDieuTri.EditValue = hisDebate.TRACKING_ID;
                 }
 
-
+              
                 cboDebateType.EditValue = hisDebate.DEBATE_TYPE_ID;
                 Inventec.Common.Logging.LogSystem.Debug("DEBATE_REASON_ID___2" + hisDebate.DEBATE_REASON_ID);
                 cboDebateReason.EditValue = hisDebate.DEBATE_REASON_ID;
@@ -1381,7 +1382,7 @@ namespace HIS.Desktop.Plugins.DebateDiagnostic
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
-            }
+            }    
         }
 
         private void FillDatatoControlByHisDebateTemp(HIS_DEBATE_TEMP data)
@@ -1402,25 +1403,9 @@ namespace HIS.Desktop.Plugins.DebateDiagnostic
                         switch (GetTypeDetail())
                         {
                             case DetailEnum.Khac:
-                                 debate.MEDICINE_TYPE_IDS = IsCheckLockInfor(debate.MEDICINE_TYPE_IDS) ? hisDebate.MEDICINE_TYPE_IDS : debate.MEDICINE_TYPE_IDS;
-                                debate.ACTIVE_INGREDIENT_IDS = IsCheckLockInfor(debate.ACTIVE_INGREDIENT_IDS) ? hisDebate.ACTIVE_INGREDIENT_IDS : debate.ACTIVE_INGREDIENT_IDS;
-                                debate.MEDICINE_TYPE_NAME = IsCheckLockInfor(debate.MEDICINE_TYPE_NAME) ? hisDebate.MEDICINE_TYPE_NAME : debate.MEDICINE_TYPE_NAME;
-                                debate.MEDICINE_CONCENTRA = IsCheckLockInfor(debate.MEDICINE_CONCENTRA) ? hisDebate.MEDICINE_CONCENTRA : debate.MEDICINE_CONCENTRA;
-                                debate.MEDICINE_USE_FORM_NAME = IsCheckLockInfor(debate.MEDICINE_USE_FORM_NAME) ? hisDebate.MEDICINE_USE_FORM_NAME : debate.MEDICINE_USE_FORM_NAME;
-                                debate.MEDICINE_TUTORIAL = IsCheckLockInfor(debate.MEDICINE_TUTORIAL) ? hisDebate.MEDICINE_TUTORIAL : debate.MEDICINE_TUTORIAL;
-                                debate.DISCUSSION = IsCheckLockInfor(debate.DISCUSSION) ? hisDebate.DISCUSSION : debate.DISCUSSION;
-                                debate.BEFORE_DIAGNOSTIC = IsCheckLockInfor(debate.BEFORE_DIAGNOSTIC) ? hisDebate.BEFORE_DIAGNOSTIC : debate.BEFORE_DIAGNOSTIC;
-                                debate.CARE_METHOD = IsCheckLockInfor(debate.CARE_METHOD) ? hisDebate.CARE_METHOD : debate.CARE_METHOD;
-                                debate.CONCLUSION = IsCheckLockInfor(debate.CONCLUSION) ? hisDebate.CONCLUSION : debate.CONCLUSION;
-                                debate.DIAGNOSTIC = IsCheckLockInfor(debate.DIAGNOSTIC) ? hisDebate.DIAGNOSTIC : debate.DIAGNOSTIC;
-                                debate.HOSPITALIZATION_STATE = IsCheckLockInfor(debate.HOSPITALIZATION_STATE) ? hisDebate.HOSPITALIZATION_STATE : debate.HOSPITALIZATION_STATE;
-                                debate.PATHOLOGICAL_HISTORY = IsCheckLockInfor(debate.PATHOLOGICAL_HISTORY) ? hisDebate.PATHOLOGICAL_HISTORY : debate.PATHOLOGICAL_HISTORY;
-                                debate.REQUEST_CONTENT = IsCheckLockInfor(debate.REQUEST_CONTENT) ? hisDebate.REQUEST_CONTENT : debate.REQUEST_CONTENT;
-                                debate.TREATMENT_METHOD = IsCheckLockInfor(debate.TREATMENT_METHOD) ? hisDebate.TREATMENT_METHOD : debate.TREATMENT_METHOD;
-                                debate.TREATMENT_TRACKING = IsCheckLockInfor(debate.TREATMENT_TRACKING) ? hisDebate.TREATMENT_TRACKING : debate.TREATMENT_TRACKING;
-                                debate.MEDICINE_USE_TIME = IsCheckLockInfor(debate.MEDICINE_USE_TIME.ToString()) ? hisDebate.MEDICINE_USE_TIME : debate.MEDICINE_USE_TIME;
-                                break;
-                            case DetailEnum.Thuoc:
+                                //qtcode
+                                debate.SUBCLINICAL_PROCESSES = IsCheckLockInfor(debate.SUBCLINICAL_PROCESSES) ? hisDebate.SUBCLINICAL_PROCESSES : debate.SUBCLINICAL_PROCESSES;
+                                //qtcode
                                 debate.MEDICINE_TYPE_IDS = IsCheckLockInfor(debate.MEDICINE_TYPE_IDS) ? hisDebate.MEDICINE_TYPE_IDS : debate.MEDICINE_TYPE_IDS;
                                 debate.ACTIVE_INGREDIENT_IDS = IsCheckLockInfor(debate.ACTIVE_INGREDIENT_IDS) ? hisDebate.ACTIVE_INGREDIENT_IDS : debate.ACTIVE_INGREDIENT_IDS;
                                 debate.MEDICINE_TYPE_NAME = IsCheckLockInfor(debate.MEDICINE_TYPE_NAME) ? hisDebate.MEDICINE_TYPE_NAME : debate.MEDICINE_TYPE_NAME;
@@ -1439,6 +1424,30 @@ namespace HIS.Desktop.Plugins.DebateDiagnostic
                                 debate.TREATMENT_TRACKING = IsCheckLockInfor(debate.TREATMENT_TRACKING) ? hisDebate.TREATMENT_TRACKING : debate.TREATMENT_TRACKING;
                                 debate.MEDICINE_USE_TIME = IsCheckLockInfor(debate.MEDICINE_USE_TIME.ToString()) ? hisDebate.MEDICINE_USE_TIME : debate.MEDICINE_USE_TIME;
                                 break;
+                            case DetailEnum.Thuoc:
+                                //qtcode
+                                debate.SUBCLINICAL_PROCESSES = IsCheckLockInfor(debate.SUBCLINICAL_PROCESSES) ? hisDebate.SUBCLINICAL_PROCESSES : debate.SUBCLINICAL_PROCESSES;
+                                //qtcode
+
+                                debate.MEDICINE_TYPE_IDS = IsCheckLockInfor(debate.MEDICINE_TYPE_IDS) ? hisDebate.MEDICINE_TYPE_IDS : debate.MEDICINE_TYPE_IDS;
+                                debate.ACTIVE_INGREDIENT_IDS = IsCheckLockInfor(debate.ACTIVE_INGREDIENT_IDS) ? hisDebate.ACTIVE_INGREDIENT_IDS : debate.ACTIVE_INGREDIENT_IDS;
+                                debate.MEDICINE_TYPE_NAME = IsCheckLockInfor(debate.MEDICINE_TYPE_NAME) ? hisDebate.MEDICINE_TYPE_NAME : debate.MEDICINE_TYPE_NAME;
+                                debate.MEDICINE_CONCENTRA = IsCheckLockInfor(debate.MEDICINE_CONCENTRA) ? hisDebate.MEDICINE_CONCENTRA : debate.MEDICINE_CONCENTRA;
+                                debate.MEDICINE_USE_FORM_NAME = IsCheckLockInfor(debate.MEDICINE_USE_FORM_NAME) ? hisDebate.MEDICINE_USE_FORM_NAME : debate.MEDICINE_USE_FORM_NAME;
+                                debate.MEDICINE_TUTORIAL = IsCheckLockInfor(debate.MEDICINE_TUTORIAL) ? hisDebate.MEDICINE_TUTORIAL : debate.MEDICINE_TUTORIAL;
+                                debate.DISCUSSION = IsCheckLockInfor(debate.DISCUSSION) ? hisDebate.DISCUSSION : debate.DISCUSSION;
+                                debate.BEFORE_DIAGNOSTIC = IsCheckLockInfor(debate.BEFORE_DIAGNOSTIC) ? hisDebate.BEFORE_DIAGNOSTIC : debate.BEFORE_DIAGNOSTIC;
+                                debate.CARE_METHOD = IsCheckLockInfor(debate.CARE_METHOD) ? hisDebate.CARE_METHOD : debate.CARE_METHOD;
+                                debate.CONCLUSION = IsCheckLockInfor(debate.CONCLUSION) ? hisDebate.CONCLUSION : debate.CONCLUSION;
+                                debate.DIAGNOSTIC = IsCheckLockInfor(debate.DIAGNOSTIC) ? hisDebate.DIAGNOSTIC : debate.DIAGNOSTIC;
+                                debate.HOSPITALIZATION_STATE = IsCheckLockInfor(debate.HOSPITALIZATION_STATE) ? hisDebate.HOSPITALIZATION_STATE : debate.HOSPITALIZATION_STATE;
+                                debate.PATHOLOGICAL_HISTORY = IsCheckLockInfor(debate.PATHOLOGICAL_HISTORY) ? hisDebate.PATHOLOGICAL_HISTORY : debate.PATHOLOGICAL_HISTORY;
+
+                                debate.REQUEST_CONTENT = IsCheckLockInfor(debate.REQUEST_CONTENT) ? hisDebate.REQUEST_CONTENT : debate.REQUEST_CONTENT;
+                                debate.TREATMENT_METHOD = IsCheckLockInfor(debate.TREATMENT_METHOD) ? hisDebate.TREATMENT_METHOD : debate.TREATMENT_METHOD;
+                                debate.TREATMENT_TRACKING = IsCheckLockInfor(debate.TREATMENT_TRACKING) ? hisDebate.TREATMENT_TRACKING : debate.TREATMENT_TRACKING;
+                                debate.MEDICINE_USE_TIME = IsCheckLockInfor(debate.MEDICINE_USE_TIME.ToString()) ? hisDebate.MEDICINE_USE_TIME : debate.MEDICINE_USE_TIME;
+                                break;
                             case DetailEnum.Pttt:
                                 debate.SUBCLINICAL_PROCESSES = IsCheckLockInfor(debate.SUBCLINICAL_PROCESSES) ? hisDebate.SUBCLINICAL_PROCESSES : debate.SUBCLINICAL_PROCESSES;
                                 debate.INTERNAL_MEDICINE_STATE = IsCheckLockInfor(debate.INTERNAL_MEDICINE_STATE) ? hisDebate.INTERNAL_MEDICINE_STATE : debate.INTERNAL_MEDICINE_STATE;
@@ -1450,12 +1459,12 @@ namespace HIS.Desktop.Plugins.DebateDiagnostic
                                 debate.SURGERY_TIME = IsCheckLockInfor(debate.SURGERY_TIME.ToString()) ? hisDebate.SURGERY_TIME : debate.SURGERY_TIME;
                                 debate.PROGNOSIS = IsCheckLockInfor(debate.PROGNOSIS) ? hisDebate.PROGNOSIS : debate.PROGNOSIS;
                                 debate.CONCLUSION = IsCheckLockInfor(debate.CONCLUSION) ? hisDebate.CONCLUSION : debate.CONCLUSION;
-                                debate.HIS_DEBATE_EKIP_USER = IsCheckLockInforList(debate.HIS_DEBATE_EKIP_USER.ToList()) ? hisDebate.HIS_DEBATE_EKIP_USER : debate.HIS_DEBATE_EKIP_USER;
                                 debate.PATHOLOGICAL_HISTORY = IsCheckLockInfor(debate.PATHOLOGICAL_HISTORY) ? hisDebate.PATHOLOGICAL_HISTORY : debate.PATHOLOGICAL_HISTORY;
                                 debate.HOSPITALIZATION_STATE = IsCheckLockInfor(debate.HOSPITALIZATION_STATE) ? hisDebate.HOSPITALIZATION_STATE : debate.HOSPITALIZATION_STATE;
                                 debate.BEFORE_DIAGNOSTIC = IsCheckLockInfor(debate.BEFORE_DIAGNOSTIC) ? hisDebate.BEFORE_DIAGNOSTIC : debate.BEFORE_DIAGNOSTIC;
                                 debate.DISCUSSION = IsCheckLockInfor(debate.DISCUSSION) ? hisDebate.DISCUSSION : debate.DISCUSSION;
                                 debate.CARE_METHOD = IsCheckLockInfor(debate.CARE_METHOD) ? hisDebate.CARE_METHOD : debate.CARE_METHOD;
+                                //debate.HIS_DEBATE_EKIP_USER = IsCheckLockInforList((debate.HIS_DEBATE_EKIP_USER).ToList()) ? hisDebate.HIS_DEBATE_EKIP_USER : debate.HIS_DEBATE_EKIP_USER;
                                 break;
                             default:
                                 break;
@@ -1718,6 +1727,12 @@ namespace HIS.Desktop.Plugins.DebateDiagnostic
                     ChkPttt.Checked = false;
                     ChkOther.Checked = false;
                     LoadDataControlDetail();
+                    var data = BackendDataWorker.Get<HIS_DEBATE_TEMP>().FirstOrDefault(p => p.ID == Int64.Parse(cboDebateTemp.EditValue.ToString()));
+                    FillDatatoControlByHisDebateTemp(data);
+                    if (detailProcessor != null)
+                    {
+                        detailProcessor.SetData(GetTypeDetail(), currentHisDebate);
+                    }
                 }
                 else if (!ChkPttt.Checked && !ChkOther.Checked)
                 {
@@ -1736,9 +1751,16 @@ namespace HIS.Desktop.Plugins.DebateDiagnostic
             {
                 if (ChkPttt.Checked)
                 {
-                    CheckThuoc.Checked = false;
+                    CheckThuoc.Checked = false;      
                     ChkOther.Checked = false;
                     LoadDataControlDetail();
+                    var data = BackendDataWorker.Get<HIS_DEBATE_TEMP>().FirstOrDefault(p => p.ID == Int64.Parse(cboDebateTemp.EditValue.ToString()));
+                    FillDatatoControlByHisDebateTemp(data);
+
+                    //if (detailProcessor != null)
+                    //{
+                    //    detailProcessor.SetData(GetTypeDetail(), currentHisDebate);
+                    //}
                     if (this.action == GlobalVariables.ActionAdd)
                     {
                         if (this.examServiceReq == null)
@@ -1747,7 +1769,9 @@ namespace HIS.Desktop.Plugins.DebateDiagnostic
                         }
                         if (detailProcessor != null && examServiceReq != null)
                         {
-                            detailProcessor.SetData(GetTypeDetail(), examServiceReq);
+                            //detailProcessor.SetData(GetTypeDetail(), examServiceReq);
+                            //var data = BackendDataWorker.Get<HIS_DEBATE_TEMP>().FirstOrDefault(p => p.ID == Int64.Parse(cboDebateTemp.EditValue.ToString()));
+                            FillDatatoControlByHisDebateTemp(data);
                         }
                     }
                 }
@@ -1794,8 +1818,15 @@ namespace HIS.Desktop.Plugins.DebateDiagnostic
                     ChkPttt.Checked = false;
                     CheckThuoc.Checked = false;
                     LoadDataControlDetail();
+                    HIS_DEBATE_TEMP data = null;
+                    data = BackendDataWorker.Get<HIS_DEBATE_TEMP>().FirstOrDefault(p => p.ID == Int64.Parse(cboDebateTemp.EditValue.ToString()));
+                    //if (cboDebateTemp.EditValue!= null)
+                    //{
+                    //    data = BackendDataWorker.Get<HIS_DEBATE_TEMP>().FirstOrDefault(p => p.ID == Int64.Parse(cboDebateTemp.EditValue.ToString()));
+                    //}
+                    FillDatatoControlByHisDebateTemp(data);
                 }
-                else if (!ChkPttt.Checked && !CheckThuoc.Checked)
+                else if (!ChkPttt.Checked && !CheckThuoc.Checked)     
                 {
                     ChkOther.Checked = true;
                 }
@@ -1817,11 +1848,11 @@ namespace HIS.Desktop.Plugins.DebateDiagnostic
                     if (hisService != null)
                     {
 
-                        detailProcessor = new DetailProcessor(treatment_id, moduleData.RoomId, moduleData.RoomTypeId, hisService);
+                        detailProcessor = new DetailProcessor(treatment_id, moduleData.RoomId, moduleData.RoomTypeId, hisService, moduleData);
                     }
                     else
                     {
-                        detailProcessor = new DetailProcessor(treatment_id, moduleData.RoomId, moduleData.RoomTypeId);
+                        detailProcessor = new DetailProcessor(treatment_id, moduleData.RoomId, moduleData.RoomTypeId, moduleData);
                     }
                 }
                 detailProcessor.DepartmentList = listDepartment;

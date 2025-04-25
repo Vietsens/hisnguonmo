@@ -133,7 +133,7 @@
     <value>Tiếng Việt</value>
   </data>
   <data name="Desktop.Resources.Common.Lang.Message.DangKiemTraPhienBanCapNhat" xml:space="preserve">
-    <value>Đang kiểm tra phiên bản cập nhật ...</value>
+    <value>Phần mềm đang kiểm tra phiên bản mới từ máy chủ về. Quá trình này có thể mất một vài phút hoặc lâu hơn nếu như lượng cập nhật lớn, hoặc đang có quá nhiều người cũng chạy cập nhật phần mềm như bạn khiến cho hệ thống mạng của bệnh viện bị quá tải. Xin thông cảm chờ đợi.</value>
   </data>
   <data name="Desktop.Resources.Common.Lang.Message.PhienBanHienTaiDangChay" xml:space="preserve">
     <value>Phiên bản hiện tại bạn đang chạy là bản {0}, phiên bản mới nhất là phiên bản {1}</value>

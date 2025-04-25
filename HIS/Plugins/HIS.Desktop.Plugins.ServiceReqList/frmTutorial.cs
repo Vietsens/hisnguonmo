@@ -28,6 +28,7 @@ using Inventec.Desktop.Common.LanguageManager;
 using Inventec.Desktop.Common.Message;
 using MOS.EFMODEL.DataModels;
 using MOS.Filter;
+using Org.BouncyCastle.Utilities.Collections;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -37,6 +38,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+
+
+
 
 namespace HIS.Desktop.Plugins.ServiceReqList
 {
@@ -84,6 +88,7 @@ namespace HIS.Desktop.Plugins.ServiceReqList
                 this.layoutControlItem1.Text = Inventec.Common.Resource.Get.Value("frmTutorial.layoutControlItem1.Text", Resources.ResourceLanguageManager.LanguagefrmServiceReqList, LanguageManager.GetCulture());
                 this.layoutControlItem3.Text = Inventec.Common.Resource.Get.Value("frmTutorial.layoutControlItem3.Text", Resources.ResourceLanguageManager.LanguagefrmServiceReqList, LanguageManager.GetCulture());
                 this.layoutControlItem4.Text = Inventec.Common.Resource.Get.Value("frmTutorial.layoutControlItem4.Text", Resources.ResourceLanguageManager.LanguagefrmServiceReqList, LanguageManager.GetCulture());
+                this.layoutControlItem5.Text = Inventec.Common.Resource.Get.Value("frmTutorial.layoutControlItem5.Text", Resources.ResourceLanguageManager.LanguagefrmServiceReqList, LanguageManager.GetCulture());
                 this.lciSpinCountUsedBefore.OptionsToolTip.ToolTip = Inventec.Common.Resource.Get.Value("frmTutorial.lciSpinCountUsedBefore.OptionsToolTip.ToolTip", Resources.ResourceLanguageManager.LanguagefrmServiceReqList, LanguageManager.GetCulture());
                 this.lciSpinCountUsedBefore.Text = Inventec.Common.Resource.Get.Value("frmTutorial.lciSpinCountUsedBefore.Text", Resources.ResourceLanguageManager.LanguagefrmServiceReqList, LanguageManager.GetCulture());
                 this.Text = Inventec.Common.Resource.Get.Value("frmTutorial.Text", Resources.ResourceLanguageManager.LanguagefrmServiceReqList, LanguageManager.GetCulture());
@@ -99,7 +104,9 @@ namespace HIS.Desktop.Plugins.ServiceReqList
             try
             {
 
-                txtHuongDanSuDung.Text = listMedicineADO.HuongDanSuDung;
+
+                txtLieuDung.Text = listMedicineADO.HuongDanSuDung;
+                txtCachDung.Text = listMedicineADO.CachDung;
                 spinSpeed.EditValue = listMedicineADO.TocDoTruyen;
                 CommonParam param = new CommonParam();
                 HisExpMestMedicineFilter filter = new HisExpMestMedicineFilter();
@@ -107,11 +114,25 @@ namespace HIS.Desktop.Plugins.ServiceReqList
                 var rs = new BackendAdapter(param).Get<List<HIS_EXP_MEST_MEDICINE>>("api/HisExpMestMedicine/Get", ApiConsumer.ApiConsumers.MosConsumer, filter, param);
                 if (rs != null)
                 {
-                    spinCountUsedBefore.Value = Inventec.Common.TypeConvert.Parse.ToDecimal(rs.FirstOrDefault().PREVIOUS_USING_COUNT.ToString());
+                    var firstItem = rs.FirstOrDefault();
+                    if (firstItem != null && firstItem.PREVIOUS_USING_COUNT != null)
+                    {
+                        spinCountUsedBefore.Value = Inventec.Common.TypeConvert.Parse.ToDecimal(firstItem.PREVIOUS_USING_COUNT.ToString());
+                    }
                 }
                 long a;
+
+
                 if (listMedicineADO.xpMestMedicine != null)
+                {
                     a = listMedicineADO.xpMestMedicine.ID;
+                }
+
+
+                if (listMedicineADO.serviceReqMety != null && listMedicineADO.serviceReqMety.HTU_TEXT == null)
+                { 
+                    layoutControlItem5.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+                }
                 if (listMedicineADO.USE_TIME_TO != null)
                 {
                     DateTime? useTimeTo = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(listMedicineADO.USE_TIME_TO.Value);
@@ -155,7 +176,8 @@ namespace HIS.Desktop.Plugins.ServiceReqList
                         }
                     }
                 }
-                ValidationMaxlength(txtHuongDanSuDung, 1000);
+                ValidationMaxlength(txtLieuDung, 1000);
+                ValidateMaxLength2(txtCachDung, 1024);
                 ValidationBiggerThan0(spinDayNumber);
             }
             catch (Exception ex)
@@ -178,14 +200,15 @@ namespace HIS.Desktop.Plugins.ServiceReqList
                 bool success = false;
                 if (!dxValidationProvider1.Validate())
                     return;
-
+               
                 CommonParam param = new CommonParam();
 
                 if (listMedicineADO.serviceReqMety == null)
                 {
                     HIS_EXP_MEST_MEDICINE expMestMedicine = new HIS_EXP_MEST_MEDICINE();
                     expMestMedicine.ID = listMedicineADO.ExpMestMedicineId;
-                    expMestMedicine.TUTORIAL = txtHuongDanSuDung.Text.Trim();
+                    expMestMedicine.TUTORIAL = txtLieuDung.Text.Trim();
+                    expMestMedicine.HTU_TEXT = txtCachDung.Text.Trim();
                     expMestMedicine.SPEED = (decimal?)spinSpeed.EditValue;
                     DateTime? intructionDate = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(listMedicineADO.USE_TIME > 0 ? listMedicineADO.USE_TIME.Value : listMedicineADO.TDL_INTRUCTION_TIME);
                     long addNumber = 0;
@@ -219,8 +242,16 @@ namespace HIS.Desktop.Plugins.ServiceReqList
                 }
                 else
                 {
-                    listMedicineADO.serviceReqMety.TUTORIAL = txtHuongDanSuDung.Text.Trim();
+                    listMedicineADO.serviceReqMety.TUTORIAL = txtLieuDung.Text.Trim();
+                    listMedicineADO.serviceReqMety.HTU_TEXT = txtCachDung.Text.Trim();
                     listMedicineADO.serviceReqMety.SPEED = (decimal?)spinSpeed.EditValue;
+                    if (listMedicineADO.CachDung == null)
+                    {
+
+                        layoutControlItem5.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+
+
+                    }
                     DateTime? intructionDate = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(listMedicineADO.serviceReqMety.CREATE_TIME.Value);
                     long addNumber = 0;
                     if (spinDayNumber.EditValue != null && Inventec.Common.TypeConvert.Parse.ToInt64(spinDayNumber.EditValue.ToString()) > 0)
@@ -302,7 +333,7 @@ namespace HIS.Desktop.Plugins.ServiceReqList
             }
 
         }
-
+       
         private void ValidationMaxlength(MemoEdit control, int maxLength)
         {
             try
@@ -318,7 +349,21 @@ namespace HIS.Desktop.Plugins.ServiceReqList
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
+        private void ValidateMaxLength2(MemoEdit control, int maxLength)
+        {
+            try
+            {
+                ValidateMaxLength2 validRule = new ValidateMaxLength2();
+                validRule.maxLength = maxLength;
+                validRule.ErrorType = ErrorType.Warning;
 
+                dxValidationProvider1.SetValidationRule(control, validRule);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
         private void ValidationBiggerThan0(SpinEdit control)
         {
             try
@@ -363,7 +408,7 @@ namespace HIS.Desktop.Plugins.ServiceReqList
             {
                 if (e.KeyCode == Keys.Enter)
                 {
-                    txtHuongDanSuDung.Focus();
+                    txtLieuDung.Focus();
                 }
             }
             catch (Exception ex)
@@ -408,6 +453,7 @@ namespace HIS.Desktop.Plugins.ServiceReqList
                 layoutControlItem4 = null;
                 spinDayNumber = null;
                 layoutControlItem3 = null;
+                layoutControlItem5 = null;
                 spinSpeed = null;
                 dxValidationProvider1 = null;
                 barDockControlRight = null;
@@ -421,7 +467,8 @@ namespace HIS.Desktop.Plugins.ServiceReqList
                 layoutControlItem2 = null;
                 layoutControlItem1 = null;
                 layoutControlGroup1 = null;
-                txtHuongDanSuDung = null;
+                txtLieuDung = null;
+                txtCachDung = null;
                 btnSave = null;
                 layoutControl1 = null;
             }

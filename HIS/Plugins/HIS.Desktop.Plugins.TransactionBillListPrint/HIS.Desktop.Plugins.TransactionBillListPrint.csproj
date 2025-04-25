@@ -130,7 +130,9 @@
   <ItemGroup>
     <Compile Include="ADO\BillTypeADO.cs" />
     <Compile Include="Config\HisConfigCFG.cs" />
-    <Compile Include="FormTransactionBillListPrint.cs" />
+    <Compile Include="FormTransactionBillListPrint.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="FormTransactionBillListPrint.Designer.cs">
       <DependentUpon>FormTransactionBillListPrint.cs</DependentUpon>
     </Compile>

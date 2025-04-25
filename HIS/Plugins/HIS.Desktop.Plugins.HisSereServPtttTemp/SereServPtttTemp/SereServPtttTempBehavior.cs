@@ -56,7 +56,7 @@ namespace HIS.Desktop.Plugins.HisSereServPtttTemp.SereServPtttTemp
                 }
                 if (moduleData != null)
                 {
-                    return new frmSereServPtttTemp(moduleData);
+                    return new frmSereServPtttTemp();
                 }
                 else
                 {

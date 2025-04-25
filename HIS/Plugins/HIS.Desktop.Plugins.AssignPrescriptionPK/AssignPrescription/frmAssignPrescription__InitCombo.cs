@@ -652,7 +652,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
 
                     var listmedistocks = BackendDataWorker.Get<MOS.EFMODEL.DataModels.V_HIS_MEDI_STOCK>();
 
-                    currentTreatment = GetTreatment(this.treatmentId);
+                    //currentTreatment = GetTreatment(this.treatmentId);
 
                     if (currentTreatment != null && currentTreatment.TDL_PATIENT_CLASSIFY_ID != null)
                     {

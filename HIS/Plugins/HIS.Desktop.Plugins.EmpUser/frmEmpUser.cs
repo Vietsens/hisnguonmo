@@ -127,6 +127,14 @@ namespace HIS.Desktop.Plugins.EmpUser
             {     
                 updateDTOEmployee.VCONG_LOGINNAME = null;
             }
+            if(!string.IsNullOrEmpty(txtEmployeeCode.Text.Trim()))
+            {
+                updateDTOEmployee.EMPLOYEE_CODE = txtEmployeeCode.Text.Trim(); 
+            }
+            else
+            {
+                updateDTOEmployee.EMPLOYEE_CODE = null;
+            } 
 
             if (txtEmail.Text.Length > 0)
                 updateDTOEmployee.TDL_EMAIL = txtEmail.Text.Trim();
@@ -671,6 +679,9 @@ namespace HIS.Desktop.Plugins.EmpUser
                     txtLoginName.Text = currentDataEmp.LOGINNAME;
                     txtUserName.Text = currentDataEmp.TDL_USERNAME;
                     txtMobile.Text = currentDataEmp.TDL_MOBILE;
+         
+                    txtEmployeeCode.Text = currentDataEmp.EMPLOYEE_CODE;
+       
                     if (currentDataEmp.DOB != null)
                     {
                         dtDOB.DateTime = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(currentDataEmp.DOB ?? 0) ?? DateTime.MinValue;
@@ -804,6 +815,10 @@ namespace HIS.Desktop.Plugins.EmpUser
                         formatFrm.EditValue = null;
                     }
                 }
+          
+                txtEmployeeCode.Text = null; 
+              
+
                 txtVCong.Text = "";
                 txtLoginName.Text = "";
                 txtUserName.Text = "";
@@ -883,6 +898,9 @@ namespace HIS.Desktop.Plugins.EmpUser
                 validMalength(this.txtDiplomaPlace, 50);
                 validMalength(this.txtIdentificationNumber, 15);
                 ValidationBhxh(this.txtSocialInsuranceNumber);
+           
+                validMalength(this.txtEmployeeCode, 20); 
+
                 WaitingManager.Hide();
             }
             catch (Exception ex)
