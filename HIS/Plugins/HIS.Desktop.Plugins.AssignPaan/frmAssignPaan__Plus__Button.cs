@@ -453,7 +453,7 @@ namespace HIS.Desktop.Plugins.AssignPaan
                         bedLogs = new Inventec.Common.Adapter.BackendAdapter(param).Get<List<V_HIS_BED_LOG>>("api/HisBedLog/GetView", ApiConsumer.ApiConsumers.MosConsumer, bedLogViewFilter, param);
                     }
 
-                    bool printNow = false;
+                    
                     MPS.ProcessorBase.PrintConfig.PreviewType previewType;
                     //if (HIS.Desktop.LocalStorage.ConfigApplication.ConfigApplications.CheDoInChoCacChucNangTrongPhanMem == 2)
                     //{
@@ -463,25 +463,15 @@ namespace HIS.Desktop.Plugins.AssignPaan
                     //{
                     //    printNow = false;
                     //}
-
-
-
+                    bool printNow = false;
                     var allowSignValue = HisPatientTypeCFG.IsAllowSignaturePrint;
-                    if (!string.IsNullOrWhiteSpace(allowSignValue))
-                    {
-                        var allowedModules = allowSignValue
+                    var allowedModules = allowSignValue
                             .Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries)
                             .Select(x => x.Trim())
                             .ToList();
-
-                        if (allowedModules.Contains("HIS.Desktop.Plugins.AssignPaan"))
-                        {
-                            previewType = MPS.ProcessorBase.PrintConfig.PreviewType.EmrSignAndPrintPreview;
-                        }
-                        else
-                        {
-                            previewType = MPS.ProcessorBase.PrintConfig.PreviewType.EmrSignNow;
-                        }
+                    if (!string.IsNullOrWhiteSpace(allowSignValue) && allowedModules.Contains("HIS.Desktop.Plugins.AssignPaan"))
+                    {                                                
+                        previewType = MPS.ProcessorBase.PrintConfig.PreviewType.EmrSignAndPrintPreview;                        
                     }
                     else
                     {

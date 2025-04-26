@@ -274,7 +274,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                 if (!string.IsNullOrWhiteSpace(configValue))
                 {
                     var allowedModules = configValue
-                        .Split(new[] { ';' }, StringSplitOptions.RemoveEmptyEntries)
+                        .Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries)
                         .Select(x => x.Trim())
                         .ToList();
 
