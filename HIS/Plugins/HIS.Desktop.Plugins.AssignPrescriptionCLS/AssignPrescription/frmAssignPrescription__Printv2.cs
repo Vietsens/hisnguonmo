@@ -129,8 +129,10 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
                     var bbtnItem = sender as SimpleButton;
                     printTypeCode = (bbtnItem.Tag ?? "").ToString();
                 }
+                //qtcode
+                PrescriptionPrintShow(printTypeCode, true, PrintConfig.PreviewType.EmrSignAndPrintNow);
 
-                PrescriptionPrintShow(printTypeCode, false, null);
+                //PrescriptionPrintShow(printTypeCode, false);
                 Inventec.Common.Logging.LogSystem.Debug("OnClickPrintWithPrintTypeCfg.2____" + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => printTypeCode), printTypeCode));
             }
             catch (Exception ex)
@@ -143,8 +145,8 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
         {
             try
             {
-                Inventec.Desktop.Common.Modules.Module moduleData = GlobalVariables.currentModuleRaws.Where(o => o.ModuleLink == "HIS.Desktop.Plugins.AssignPrescriptionCLS").FirstOrDefault();
-                if (!string.IsNullOrEmpty(HisConfigCFG.IsAllowSignaturePrint)  && moduleData != null)
+                Inventec.Desktop.Common.Modules.Module moduleData = GlobalVariables.currentModuleRaws.Where(o => o.ModuleLink == this.ModuleLink).FirstOrDefault();
+                if (!string.IsNullOrEmpty(HisConfigCFG.AllowSignaturePrintModuleLinks) && ("," + HisConfigCFG.AllowSignaturePrintModuleLinks + ",").Contains("," + this.ModuleLink + ",") && moduleData != null)
                 {
                     PrescriptionPrintShow(PrintTypeCodes.PRINT_TYPE_CODE__BIEUMAU__PHIEU_KE_KHAI_THUOC_VATU__MPS000338, true, PrintConfig.PreviewType.EmrSignAndPrintNow);
                 }
@@ -201,8 +203,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
                 }
                 //MPS.ProcessorBase.PrintConfig.PreviewType previewType;
                 printPrescriptionProcessor = new Library.PrintPrescription.PrintPrescriptionProcessor(OutPatientPresResultSDOForPrints, this.currentSereServ, this.currentModule);
-
-                printPrescriptionProcessor.Print(printTypeCode, isPrintNow, previewType);
+                 printPrescriptionProcessor.Print(printTypeCode, isPrintNow, previewType);
                 //printPrescriptionProcessor.Print(printTypeCode, isPrintNow, previewType);
             }
             catch (Exception ex)
