@@ -66,7 +66,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.Config
 
         //qtcode
         private const string IS_ALLOW_SIGN_NATURE_PRINT = "HIS.Desktop.Plugins.IsAllowSignaturePrint.ModuleLinks";
-        internal static string IsAllowSignaturePrint;
+        internal static string AllowSignaturePrintModuleLinks;
         //qtcode
 
         internal const string SAVE_PRINT_MPS_DEFAULT = "HIS.Desktop.Plugins.Library.PrintPrescription.Mps";
@@ -217,7 +217,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.Config
             try
             {
                 //qtcode
-                IsAllowSignaturePrint = GetValue(IS_ALLOW_SIGN_NATURE_PRINT);
+                AllowSignaturePrintModuleLinks = GetValue(IS_ALLOW_SIGN_NATURE_PRINT);
                 //qtcode
                 IsTrackingRequired = GetValue(CONFIG_KEY__IS_TRACKING_REQUIRED) == GlobalVariables.CommonStringTrue;
                 IsDefaultPatientTypeOption = GetValue(CONFIG_KEY__DEFAULT_TYPE_OPTION) == GlobalVariables.CommonStringTrue;
