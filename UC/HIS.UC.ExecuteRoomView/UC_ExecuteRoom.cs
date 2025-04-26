@@ -357,9 +357,9 @@ namespace HIS.UC.ExecuteRoomView
 
                 if (row != null && this.btn_Radio_Enable_Click != null)
                 {
-                    V_HIS_EXECUTE_ROOM executeRoom = new V_HIS_EXECUTE_ROOM();
-                    Inventec.Common.Mapper.DataObjectMapper.Map<V_HIS_EXECUTE_ROOM>(executeRoom, row);
-                    this.btn_Radio_Enable_Click(executeRoom);
+                    //V_HIS_EXECUTE_ROOM executeRoom = new V_HIS_EXECUTE_ROOM();
+                    //Inventec.Common.Mapper.DataObjectMapper.Map<V_HIS_EXECUTE_ROOM>(executeRoom, row);
+                    this.btn_Radio_Enable_Click(row);
                 }
                 gridViewExecuteRoom.LayoutChanged();
             }

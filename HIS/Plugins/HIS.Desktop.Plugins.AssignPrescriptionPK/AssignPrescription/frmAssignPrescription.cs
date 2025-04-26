@@ -77,6 +77,7 @@ using HIS.UC.Icd;
 using HIS.UC.Icd.ADO;
 using DevExpress.XtraGrid;
 using System.ComponentModel.DataAnnotations;
+using static MPS.ProcessorBase.PrintConfig;
 
 namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
 {
@@ -1112,7 +1113,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
 
                 LogSystem.Debug("frmAssignPrescription_Load. 8");
                 LogSystem.Debug("frmAssignPrescription_Load. 9");
-
+                
                 this.timerInitForm.Interval = 500;//Fix
                 this.timerInitForm.Enabled = true;
                 this.timerInitForm.Start();
@@ -1168,7 +1169,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                 this.gridControlServiceProcess.DragOver += new System.Windows.Forms.DragEventHandler(this.gridControlServiceProcess_DragOver);
                 this.gridControlServiceProcess.DragDrop += new System.Windows.Forms.DragEventHandler(this.gridControlServiceProcess_DragDrop);
                 this.gridViewServiceProcess.MouseMove += new System.Windows.Forms.MouseEventHandler(this.gridViewServiceProcess_MouseMove);
-
+                //ReloadValidate();
 
                 LogSystem.Debug("InitFormAssignPrescriptionAsync. 9");
 
@@ -1183,6 +1184,111 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
             }
         }
 
+        //private async Task ReloadValidate()
+        //{
+        //    try
+        //    {
+        //        int heightUCTop = 0;
+        //        int heightUCBottom = 0;
+
+        //        if ((GlobalStore.IsTreatmentIn && !GlobalStore.IsCabinet) || GlobalStore.IsExecutePTTT)
+        //        {
+        //            this.InitUCPatientSelect();
+        //            this.InitUCPeriousExpMestList();
+        //            heightUCBottom = lciUCBottomPanel.Height + 20;
+        //            heightUCTop = lciUCTopPanel.Height - 20;
+
+
+        //            if (!string.IsNullOrWhiteSpace(HisConfigCFG.MODULELINKS))
+        //            {
+        //                currentModule
+        //                Inventec.Desktop.Common.Modules.Module moduleData = GlobalVariables.currentModuleRaws.Where(o => o.ModuleLink == "HIS.Desktop.Plugins.AssignPrescriptionPK").FirstOrDefault();
+
+        //                if (moduleData != null)
+        //                {
+        //                    var allowedModules = HisConfigCFG.MODULELINKS.Split(',');
+
+        //                    if (allowedModules.Contains(moduleData.ModuleLink))
+        //                    {
+        //                        layoutControlGroup9.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+        //                    }
+        //                    else
+        //                    {
+        //                        layoutControlGroup9.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
+        //                        lciForchkSignForDPK.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+        //                        lciForchkSignForDTT.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+        //                        lciForchkSignForDDT.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
+        //                    }
+        //                }
+        //            }
+        //        }
+        //        else
+        //        {
+        //            this.InitUCPeriousExpMestList();
+        //            this.InitUcTreatmentFinish();
+        //            heightUCBottom = lciUCBottomPanel.Height + 20;
+        //            heightUCTop = lciUCTopPanel.Height - 20;
+
+        //            if (GlobalStore.IsCabinet)
+        //            {
+
+        //                if (!string.IsNullOrWhiteSpace(HisConfigCFG.MODULELINKS))
+        //                {
+        //                    currentModule
+        //                    Inventec.Desktop.Common.Modules.Module moduleData = GlobalVariables.currentModuleRaws.Where(o => o.ModuleLink == "HIS.Desktop.Plugins.AssignPrescriptionPK").FirstOrDefault();
+
+        //                    if (moduleData != null)
+        //                    {
+        //                        var allowedModules = HisConfigCFG.MODULELINKS.Split(',');
+
+        //                        if (allowedModules.Contains(moduleData.ModuleLink))
+        //                        {
+        //                            layoutControlGroup9.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+        //                        }
+        //                        else
+        //                        {
+        //                            layoutControlGroup9.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
+        //                            lciForchkSignForDPK.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+        //                            lciForchkSignForDTT.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
+        //                            lciForchkSignForDDT.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+        //                        }
+        //                    }
+        //                }
+        //            }
+        //            else
+        //            {
+        //                if (!string.IsNullOrWhiteSpace(HisConfigCFG.MODULELINKS))
+        //                {
+        //                    currentModule
+        //                    Inventec.Desktop.Common.Modules.Module moduleData = GlobalVariables.currentModuleRaws.Where(o => o.ModuleLink == "HIS.Desktop.Plugins.AssignPrescriptionPK").FirstOrDefault();
+
+        //                    if (moduleData != null)
+        //                    {
+        //                        var allowedModules = HisConfigCFG.MODULELINKS.Split(',');
+
+        //                        if (allowedModules.Contains(moduleData.ModuleLink))
+        //                        {
+        //                            layoutControlGroup9.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+        //                        }
+        //                        else
+        //                        {
+        //                            layoutControlGroup9.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
+        //                            lciForchkSignForDPK.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
+        //                            lciForchkSignForDTT.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+        //                            lciForchkSignForDDT.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+        //                        }
+        //                    }
+        //                }
+        //            }
+        //        }
+        //        this.lciUCBottomPanel.Height = heightUCBottom;
+        //        this.lciUCTopPanel.Height = heightUCTop;
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Inventec.Common.Logging.LogSystem.Error(ex);
+        //    }
+        //}
         private void InitTimerReloadTreatmentFinishTime()
         {
             try
@@ -1438,7 +1544,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                 this.LoadDataTracking(false);
                 this.LoadAllergenic(this.currentTreatmentWithPatientType.PATIENT_ID);
                 this.InitDataServiceReqAllInDay();
-                this.ThreadLoadDonThuocCu();
+                this.ThreadLoadDonThuocCu(serviceReqAllInDays);
                 this.FillDataToComboPriviousExpMest(this.currentTreatmentWithPatientType);
                 this.InitMedicineTypeAcinInfo();
                 this.InitCheckIcdManager();
@@ -1891,6 +1997,8 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
             try
             {
                 WaitingManager.Show();
+
+
                 ThreadLoadDonThuocCu();
                 this.isCheckAssignServiceSimultaneityOption = false;
                 if (this.actionType == GlobalVariables.ActionAdd)
@@ -2952,7 +3060,7 @@ o.SERVICE_ID == medi.SERVICE_ID && o.TDL_INTRUCTION_TIME.ToString().Substring(0,
                     default:
                         break;
                 }
-            }
+            }    
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
@@ -2976,7 +3084,7 @@ o.SERVICE_ID == medi.SERVICE_ID && o.TDL_INTRUCTION_TIME.ToString().Substring(0,
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
-            }
+            }   
             return result;
         }
         private void btnSave_Click(object sender, EventArgs e)
@@ -10944,6 +11052,7 @@ o.SERVICE_ID == medi.SERVICE_ID && o.TDL_INTRUCTION_TIME.ToString().Substring(0,
                                     {
                                         if (testIndex.CONVERT_RATIO_MLCT.HasValue)
                                             chiso *= (testIndex.CONVERT_RATIO_MLCT ?? 0);
+                                        chiSoMLCT = testIndex.CONVERT_RATIO_MLCT ?? 0;
                                         strIsToCalculateEgfr = Inventec.Common.Calculate.Calculation.MucLocCauThanCrCleGFR(this.currentTreatmentWithPatientType.TDL_PATIENT_DOB, spinWeight.Value, spinHeight.Value, chiso, this.currentTreatmentWithPatientType.TDL_PATIENT_GENDER_ID == IMSys.DbConfig.HIS_RS.HIS_GENDER.ID__MALE).ToString();
                                     }
                                 }

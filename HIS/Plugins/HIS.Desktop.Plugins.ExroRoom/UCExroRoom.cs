@@ -41,6 +41,9 @@ using HIS.Desktop.Common;
 using DevExpress.XtraBars;
 using MOS.SDO;
 using HIS.Desktop.Plugins.ExroRoom.Entity;
+using System.Windows.Media.Media3D;
+using DevExpress.XtraGrid.Views.Base;
+using Inventec.Common.Logging;
 
 namespace HIS.Desktop.Plugins.ExroRoom
 {
@@ -58,6 +61,7 @@ namespace HIS.Desktop.Plugins.ExroRoom
         private int rowCount1 = 0;
         private int dataTotal1 = 0;
         internal List<HIS.UC.Room.RoomAccountADO> lstRoomADOs { get; set; }
+        private HIS.UC.ExecuteRoomView.ExecuteRoomViewADO ExecuteRoomADO;
         internal List<HIS.UC.ExecuteRoomView.ExecuteRoomViewADO> lstExecuteRoomADOs { get; set; }
         private List<V_HIS_ROOM> listRoom;
         private List<V_HIS_EXECUTE_ROOM> listExecuteRoom;
@@ -108,6 +112,7 @@ namespace HIS.Desktop.Plugins.ExroRoom
             try
             {
                 currentExecuteRoom = MedicineTypeData;
+               
                 currentBedRoom = BedRoom;
             }
             catch (Exception ex)
@@ -152,7 +157,7 @@ namespace HIS.Desktop.Plugins.ExroRoom
                 LoadComboStatus();
                 InitUcgridViewMedicineType();
                 InitUcgridViewRoom();
-                FillDataBedExecuteRoom(this);
+                //LoadExecuteRoomData();
 
                 if (currentExecuteRoom == null && Room == null && currentReceptionRoom == null)
                 {
@@ -168,7 +173,8 @@ namespace HIS.Desktop.Plugins.ExroRoom
                         FillDataToGrid2__Room(this);
                         if (currentExecuteRoom != null)
                         {
-                            btn_Radio_Enable_Click1(currentExecuteRoom);
+                            Inventec.Common.Mapper.DataObjectMapper.Map<ExecuteRoomViewADO>(ExecuteRoomADO, currentExecuteRoom);
+                            btn_Radio_Enable_Click1(ExecuteRoomADO);
                             cboRoomType.EditValue = currentExecuteRoom.ROOM_TYPE_ID;
                         }
                     }
@@ -208,109 +214,30 @@ namespace HIS.Desktop.Plugins.ExroRoom
             }
         }
 
-        private void FillDataBedExecuteRoom(object data)
-        {
-            WaitingManager.Show();
-            listExecuteRoom = new List<V_HIS_EXECUTE_ROOM>();
-            lstBedRoom = new List<V_HIS_BED_ROOM>();
-
-            var start = ((CommonParam)data).Start ?? 0; // số bắt đầu
-            var limit = ((CommonParam)data).Limit ?? 0; // số lượng phần tử cần lấy
-            var param = new CommonParam(start, limit);
-            var ServiceFillter = new HisExecuteRoomViewFilter();
-            ServiceFillter.IS_ACTIVE = 1;
-
-            if ((long)cboChoose.EditValue == 1)
-            {
-                isChoseExecuteRoom = (long)cboChoose.EditValue;
-            }
-
-            var rs = new Inventec.Common.Adapter.BackendAdapter(param).Get<List<MOS.EFMODEL.DataModels.V_HIS_EXECUTE_ROOM>>(
-                                                 "api/HisExecuteRoom/GetView",
-                 HIS.Desktop.ApiConsumer.ApiConsumers.MosConsumer,
-                 ServiceFillter,
-                 param);
-
-            lstExecuteRoomADOs = new List<ExecuteRoomViewADO>();
-
-            if (rs != null && rs.Count > 0)
-            {
-                listExecuteRoom = rs;
-                foreach (var item in listExecuteRoom)
-                {
-                    var RoomServiceADO = new ExecuteRoomViewADO(item);
-                    if (isChoseExecuteRoom == 1)
-                    {
-                        RoomServiceADO.isKeyChoose = true;
-                    }
-                    lstExecuteRoomADOs.Add(RoomServiceADO);
-                }
-            }
-
-            var BedRoom = new Inventec.Common.Adapter.BackendAdapter(param).Get<List<MOS.EFMODEL.DataModels.V_HIS_BED_ROOM>>(
-                                 "api/HisBedRoom/GetView",
-                 HIS.Desktop.ApiConsumer.ApiConsumers.MosConsumer,
-                 ServiceFillter,
-                 param);
-
-            if (BedRoom != null && BedRoom.Count > 0)
-            {
-                lstBedRoom = BedRoom;
-                foreach (var item in lstBedRoom)
-                {
-                    var RoomServiceADO = new ExecuteRoomViewADO(item);
-                    if (isChoseExecuteRoom == 1)
-                    {
-                        RoomServiceADO.isKeyChoose = true;
-                    }
-                    lstExecuteRoomADOs.Add(RoomServiceADO);
-                }
-            }
-        }
-        private void FillDataToGrid1_Room(object data)
-        {
-            try
-            {
-                int numPageSize;
-                if (ucPaging1.pagingGrid != null)
-                {
-                    numPageSize = ucPaging1.pagingGrid.PageSize;
-                }
-                else
-                {
-                    numPageSize = ConfigApplicationWorker.Get<int>("CONFIG_KEY__NUM_PAGESIZE");
-                }
-
-                FillDataToGridRoom_Default(new CommonParam(0, numPageSize));
-
-                var param = new CommonParam();
-                param.Limit = rowCount;
-                param.Count = dataTotal;
-                ucPaging1.Init(FillDataToGridRoom_Default, param, numPageSize);
-            }
-            catch (Exception ex)
-            {
-                Inventec.Common.Logging.LogSystem.Error(ex);
-            }
-        }
         private void FillDataToGridExecuteRoom_Default(object data)
         {
             try
             {
                 WaitingManager.Show();
                 listExecuteRoom = new List<V_HIS_EXECUTE_ROOM>();
+                lstBedRoom = new List<V_HIS_BED_ROOM>();
                 var start = ((CommonParam)data).Start ?? 0;
                 var limit = ((CommonParam)data).Limit ?? 0;
                 var param = new CommonParam(start, limit);
+
                 var hisExecuteRoomViewFilter = new HisExecuteRoomViewFilter();
                 hisExecuteRoomViewFilter.IS_ACTIVE = 1;
                 hisExecuteRoomViewFilter.ID = currentExecuteRoom.ID;
+
+                var hisbedRoomViewFilter = new HisBedRoomFilter();
+                hisExecuteRoomViewFilter.IS_ACTIVE = 1;
+                hisExecuteRoomViewFilter.ID = currentBedRoom.ID;
                 if ((long)cboChoose.EditValue == 1)
                 {
                     isChoseExecuteRoom = (long)cboChoose.EditValue;
                 }
 
-                var rs = new Inventec.Common.Adapter.BackendAdapter(param).GetRO<List<MOS.EFMODEL.DataModels.V_HIS_EXECUTE_ROOM>>(
+                var rs = new Inventec.Common.Adapter.BackendAdapter(param).Get<List<MOS.EFMODEL.DataModels.V_HIS_EXECUTE_ROOM>>(
                                                      "api/HisExecuteRoom/GetView",
                      HIS.Desktop.ApiConsumer.ApiConsumers.MosConsumer,
                      hisExecuteRoomViewFilter,
@@ -318,10 +245,10 @@ namespace HIS.Desktop.Plugins.ExroRoom
 
                 lstExecuteRoomADOs = new List<ExecuteRoomViewADO>();
 
-                if (rs != null && rs.Data.Count > 0)
+                if (rs != null && rs.Count > 0)
                 {
                     listExecuteRoom = new List<V_HIS_EXECUTE_ROOM>();
-                    listExecuteRoom = rs.Data;
+                    listExecuteRoom = rs;
                     foreach (var item in listExecuteRoom)
                     {
                         var RoomServiceADO = new ExecuteRoomViewADO(item);
@@ -333,25 +260,55 @@ namespace HIS.Desktop.Plugins.ExroRoom
                     }
                 }
 
+                var BedRoom = new Inventec.Common.Adapter.BackendAdapter(param).Get<List<MOS.EFMODEL.DataModels.V_HIS_BED_ROOM>>(
+                                     "api/HisBedRoom/GetView",
+                     HIS.Desktop.ApiConsumer.ApiConsumers.MosConsumer,
+                     hisbedRoomViewFilter,
+                     param);
+
+                if (BedRoom != null && BedRoom.Count > 0)
+                {
+                    lstBedRoom = BedRoom;
+                    foreach (var item in lstBedRoom)
+                    {
+                        var RoomServiceADO = new ExecuteRoomViewADO(item);
+                        if (isChoseExecuteRoom == 1)
+                        {
+                            RoomServiceADO.isKeyChoose = true;
+                        }
+                        lstExecuteRoomADOs.Add(RoomServiceADO);
+                    }
+                }
+
+                if (!string.IsNullOrWhiteSpace(txtKeyword1.Text))
+                {
+                    var keyword = txtKeyword1.Text.Trim().ToLower();
+                    lstExecuteRoomADOs = lstExecuteRoomADOs
+                        .Where(o =>
+                            (!string.IsNullOrEmpty(o.EXECUTE_ROOM_CODE) && o.EXECUTE_ROOM_CODE.ToLower().Contains(keyword)) ||
+                            (!string.IsNullOrEmpty(o.EXECUTE_ROOM_NAME) && o.EXECUTE_ROOM_NAME.ToLower().Contains(keyword)))
+                        .ToList();
+                }
+
                 if (ExroRoomViews != null && ExroRoomViews.Count > 0)
                 {
                     foreach (var itemUsername in ExroRoomViews)
                     {
-                        var check = lstExecuteRoomADOs.FirstOrDefault(o => o.ID == itemUsername.ID);
+                        var check = lstExecuteRoomADOs.FirstOrDefault(o => (o.ID == itemUsername.EXECUTE_ROOM_ID && o.RoomType == "EXECUTE") || (o.ID == itemUsername.BED_ROOM_ID && o.RoomType == "BED"));
                         if (check != null)
                         {
                             check.check1 = true;
                         }
                     }
                 }
-
-                lstExecuteRoomADOs = lstExecuteRoomADOs.OrderByDescending(p => p.check1).ToList();
+                lstExecuteRoomADOs = lstExecuteRoomADOs.OrderByDescending(p => p.check1).Distinct().Skip(start).Take(limit).ToList();
+                //lstExecuteRoomADOs = lstExecuteRoomADOs.OrderByDescending(p => p.check1).ToList();
                 if (ucGridControlExecuteRoom != null)
                 {
                     ExecuteRoomViewProcessor.Reload(ucGridControlExecuteRoom, lstExecuteRoomADOs);
                 }
-                rowCount = (data == null ? 0 : lstExecuteRoomADOs.Count);
-                dataTotal = (rs.Param == null ? 0 : rs.Param.Count ?? 0);
+                //rowCount = (data == null ? 0 : lstExecuteRoomADOs.Count);
+                //dataTotal = (rs.Param == null ? 0 : rs.Param.Count ?? 0);
                 WaitingManager.Hide();
             }
             catch (Exception ex)
@@ -364,7 +321,7 @@ namespace HIS.Desktop.Plugins.ExroRoom
         {
             try
             {
-                if (isChoseExecuteRoom == 1)
+                if (isChoseExecuteRoom == 1)    
                 {
                     return;
                 }
@@ -1023,25 +980,27 @@ namespace HIS.Desktop.Plugins.ExroRoom
             }
         }
 
-        private void btn_Radio_Enable_Click1(V_HIS_EXECUTE_ROOM data)
-        {
+        private void btn_Radio_Enable_Click1(HIS.UC.ExecuteRoomView.ExecuteRoomViewADO data)
+        {          
             try
             {
                 WaitingManager.Show();
                 var param = new CommonParam();
                 var filter = new HisExroRoomViewFilter();
-                filter.EXECUTE_ROOM_ID = data.ID;
+                filter.EXECUTE_BED_ROOM_ID = data.ID;
                 checkExecuteRoomId = data.ID;
                 ExecuteRoomIdCheckByExecuteRoom = data.ID;
 
                 ExroRooms = new BackendAdapter(param).Get<List<V_HIS_EXRO_ROOM>>(
-                                    "api/HisExroRoom/GetView",
-                                HIS.Desktop.ApiConsumer.ApiConsumers.MosConsumer,
-                                filter,
-                                param);
+                                        "api/HisExroRoom/GetView",
+                                    HIS.Desktop.ApiConsumer.ApiConsumers.MosConsumer,
+                                    filter,
+                                    param);
                 var dataNew = new List<HIS.UC.Room.RoomAccountADO>();
                 dataNew = (from r in listRoom
                             select new RoomAccountADO(r)).ToList();
+                
+
                 if (ExroRooms != null && ExroRooms.Count > 0)
                 {
                     foreach (var itemRoom in ExroRooms)
@@ -1226,24 +1185,31 @@ namespace HIS.Desktop.Plugins.ExroRoom
                                 HIS.Desktop.ApiConsumer.ApiConsumers.MosConsumer,
                                 filter,
                                 param);
-                var dataNew = new List<HIS.UC.ExecuteRoomView.ExecuteRoomViewADO>();
-                dataNew = (from r in listExecuteRoom
-                            select new HIS.UC.ExecuteRoomView.ExecuteRoomViewADO(r)).ToList();
+                var dataNew = lstExecuteRoomADOs;
+
+                foreach (var room in dataNew)
+                {
+                    room.check1 = false;
+                    room.isAllowRequest = false;
+                    room.isHoldOrder = false;
+                    room.isPriorityRequire = false;
+                }
+
                 if (ExroRoomViews != null && ExroRoomViews.Count > 0)
                 {
                     foreach (var itemService in ExroRoomViews)
                     {
-                        var check = dataNew.FirstOrDefault(o => o.ID == itemService.EXECUTE_ROOM_ID);
+                        var check = dataNew.FirstOrDefault(o => (o.ID == itemService.EXECUTE_ROOM_ID && o.RoomType == "EXECUTE") || (o.ID == itemService.BED_ROOM_ID && o.RoomType == "BED"));
                         if (check != null)
                         {
                             check.check1 = true;
                             if (itemService.IS_PRIORITY_REQUIRE == 1)
-                            {
+                            {    
                                 check.isPriorityRequire = true;
                             }
                             else
                             {
-                                check.isPriorityRequire = false;
+                                check.isPriorityRequire = false;    
                             }
                             if (itemService.IS_HOLD_ORDER == 1)
                             {
@@ -1261,8 +1227,9 @@ namespace HIS.Desktop.Plugins.ExroRoom
                             {
                                 check.isAllowRequest = false;
                             }
-                        }
+                        }     
                     }
+                        
 
 
                     dataNew = dataNew.OrderByDescending(p => p.check1).ToList();
@@ -1301,14 +1268,14 @@ namespace HIS.Desktop.Plugins.ExroRoom
                                 HIS.Desktop.ApiConsumer.ApiConsumers.MosConsumer,
                                 filter,
                                 param);
-                var dataNew = new List<HIS.UC.ExecuteRoomView.ExecuteRoomViewADO>();
-                dataNew = (from r in listExecuteRoom
-                            select new HIS.UC.ExecuteRoomView.ExecuteRoomViewADO(r)).ToList();
+                var dataNew = lstExecuteRoomADOs;
+                //dataNew = (from r in listExecuteRoom
+                //            select new HIS.UC.ExecuteRoomView.ExecuteRoomViewADO(r)).ToList();
                 if (ExroRoomViews != null && ExroRoomViews.Count > 0)
                 {
                     foreach (var itemService in ExroRoomViews)
                     {
-                        var check = dataNew.FirstOrDefault(o => o.ID == itemService.EXECUTE_ROOM_ID);
+                        var check = dataNew.FirstOrDefault(o => (o.ID == itemService.EXECUTE_ROOM_ID && o.RoomType == "EXECUTE") || (o.ID == itemService.BED_ROOM_ID && o.RoomType == "BED"));
                         if (check != null)
                         {
                             check.check1 = true;
@@ -1419,6 +1386,7 @@ namespace HIS.Desktop.Plugins.ExroRoom
             {
                 WaitingManager.Show();
                 listExecuteRoom = new List<V_HIS_EXECUTE_ROOM>();
+                lstBedRoom = new List<V_HIS_BED_ROOM>();
                 var start1 = ((CommonParam)data).Start ?? 0;
                 var limit1 = ((CommonParam)data).Limit ?? 0;
                 var param = new CommonParam(start1, limit1);
@@ -1427,6 +1395,12 @@ namespace HIS.Desktop.Plugins.ExroRoom
                 ExecuteRoomFillter.ORDER_FIELD = "MODIFY_TIME";
                 ExecuteRoomFillter.ORDER_DIRECTION = "DESC";
                 ExecuteRoomFillter.KEY_WORD = txtKeyword2.Text;
+
+                var BedRoomFillter = new HisBedRoomFilter();
+                BedRoomFillter.IS_ACTIVE = 1;
+                BedRoomFillter.ORDER_FIELD = "MODIFY_TIME";
+                BedRoomFillter.ORDER_DIRECTION = "DESC";
+                BedRoomFillter.KEY_WORD = txtKeyword2.Text;
                 if ((long)cboChoose.EditValue == 1)
                 {
                     isChoseExecuteRoom = (long)cboChoose.EditValue;
@@ -1435,16 +1409,17 @@ namespace HIS.Desktop.Plugins.ExroRoom
                 {
                     ExecuteRoomFillter.ROOM_ID = Inventec.Common.TypeConvert.Parse.ToInt64((cboRoomType.EditValue ?? "0").ToString());
                 }
-                var sar = new Inventec.Common.Adapter.BackendAdapter(param).GetRO<List<MOS.EFMODEL.DataModels.V_HIS_EXECUTE_ROOM>>(
+
+                var sar = new Inventec.Common.Adapter.BackendAdapter(param).Get<List<MOS.EFMODEL.DataModels.V_HIS_EXECUTE_ROOM>>(
                    HIS.Desktop.ApiConsumer.HisRequestUriStore.HIS_EXECUTE_ROOM_GETVIEW,
                     HIS.Desktop.ApiConsumer.ApiConsumers.MosConsumer,
                       ExecuteRoomFillter,
                     param);
 
                 lstExecuteRoomADOs = new List<ExecuteRoomViewADO>();
-                if (sar != null && sar.Data.Count > 0)
+                if (sar != null && sar.Count > 0)
                 {
-                    listExecuteRoom = sar.Data;
+                    listExecuteRoom = sar;
                     foreach (var item in listExecuteRoom)
                     {
                         var roomaccountADO = new ExecuteRoomViewADO(item);
@@ -1456,25 +1431,69 @@ namespace HIS.Desktop.Plugins.ExroRoom
                     }
                 }
 
-                if (ExroRooms != null && ExroRooms.Count > 0)
+                var BED = new Inventec.Common.Adapter.BackendAdapter(param).Get<List<MOS.EFMODEL.DataModels.V_HIS_BED_ROOM>>(
+                   HIS.Desktop.ApiConsumer.HisRequestUriStore.HIS_BED_ROOM_GETVIEW,
+                    HIS.Desktop.ApiConsumer.ApiConsumers.MosConsumer,
+                      BedRoomFillter,
+                    param);
+
+                if (BED != null && BED.Count > 0)
                 {
-                    foreach (var itemUsername in ExroRooms)
+                    lstBedRoom = BED;
+                    foreach (var item in lstBedRoom)
                     {
-                        var check = lstExecuteRoomADOs.FirstOrDefault(o => o.ID == itemUsername.ROOM_ID);
+                        var roomaccountADO = new ExecuteRoomViewADO(item);
+                        if (isChoseRoom == 2)
+                        {
+                            roomaccountADO.isKeyChoose = true;
+                        }
+                        lstExecuteRoomADOs.Add(roomaccountADO);
+                    }
+                }
+
+                if (!string.IsNullOrWhiteSpace(txtKeyword1.Text))
+                {
+                    var keyword = txtKeyword1.Text.Trim().ToLower();
+                    lstExecuteRoomADOs = lstExecuteRoomADOs
+                        .Where(o =>
+                            (!string.IsNullOrEmpty(o.EXECUTE_ROOM_CODE) && o.EXECUTE_ROOM_CODE.ToLower().Contains(keyword)) ||
+                            (!string.IsNullOrEmpty(o.EXECUTE_ROOM_NAME) && o.EXECUTE_ROOM_NAME.ToLower().Contains(keyword)))
+                        .ToList();
+                }
+
+                if (ExroRoomViews != null && ExroRoomViews.Count > 0)
+                {
+                    foreach (var itemUsername in ExroRoomViews)
+                    {
+                        
+                        var check = lstExecuteRoomADOs.FirstOrDefault(o => (o.ID == itemUsername.EXECUTE_ROOM_ID && o.RoomType == "EXECUTE") || (o.ID == itemUsername.BED_ROOM_ID && o.RoomType == "BED"));
                         if (check != null)
                         {
                             check.check1 = true;
                         }
                     }
                 }
-                lstExecuteRoomADOs = lstExecuteRoomADOs.OrderByDescending(p => p.check1).Distinct().ToList();
+                lstExecuteRoomADOs = lstExecuteRoomADOs.OrderByDescending(p => p.check1).Distinct().Skip(start1).Take(limit1).ToList();
+
+                //if (ExroRooms != null && ExroRooms.Count > 0)
+                //{
+                //    foreach (var itemUsername in ExroRooms)
+                //    {
+                //        var check = lstExecuteRoomADOs.FirstOrDefault(o => o.ID == itemUsername.ROOM_ID);
+                //        if (check != null)
+                //        {
+                //            check.check1 = true;
+                //        }
+                //    }
+                //}
+                //lstExecuteRoomADOs = lstExecuteRoomADOs.OrderByDescending(p => p.check1).Distinct().ToList();
 
                 if (ucGridControlExecuteRoom != null)
                 {
                     ExecuteRoomViewProcessor.Reload(ucGridControlExecuteRoom, lstExecuteRoomADOs);
                 }
-                rowCount1 = (data == null ? 0 : lstExecuteRoomADOs.Count);
-                dataTotal1 = (sar.Param == null ? 0 : sar.Param.Count ?? 0);
+                //rowCount1 = (data == null ? 0 : lstExecuteRoomADOs.Count);
+                //dataTotal1 = (sar.Param == null ? 0 : sar.Param.Count ?? 0);
                 WaitingManager.Hide();
             }
             catch (Exception ex)
@@ -1943,13 +1962,119 @@ namespace HIS.Desktop.Plugins.ExroRoom
         {
             try
             {
-               
+                WaitingManager.Show();
                 var start = ((CommonParam)data).Start ?? 0; // số bắt đầu
                 var limit = ((CommonParam)data).Limit ?? 0; // số lượng phần tử cần lấy
                 var param = new CommonParam(start, limit);
+                listExecuteRoom = new List<V_HIS_EXECUTE_ROOM>();
+                lstBedRoom = new List<V_HIS_BED_ROOM>();
+
+                var ServiceFillter = new HisExecuteRoomViewFilter();
+                ServiceFillter.IS_ACTIVE = 1;
+
+                var bedRoomFillter = new HisBedRoomFilter();
+                ServiceFillter.IS_ACTIVE = 1;
+
+                if ((long)cboChoose.EditValue == 1)
+                {
+                    isChoseExecuteRoom = (long)cboChoose.EditValue;
+                }
+
+                var rs = new Inventec.Common.Adapter.BackendAdapter(param).Get<List<MOS.EFMODEL.DataModels.V_HIS_EXECUTE_ROOM>>(
+                                                     "api/HisExecuteRoom/GetView",
+                     HIS.Desktop.ApiConsumer.ApiConsumers.MosConsumer,
+                     ServiceFillter,
+                     param);
+
+                lstExecuteRoomADOs = new List<ExecuteRoomViewADO>();
+
+                if (rs != null && rs.Count > 0)
+                {
+                    listExecuteRoom = rs;
+                    foreach (var item in listExecuteRoom)
+                    {
+                        var RoomServiceADO = new ExecuteRoomViewADO(item);
+                        if (isChoseExecuteRoom == 1)
+                        {
+                            RoomServiceADO.isKeyChoose = true;
+                        }
+                        lstExecuteRoomADOs.Add(RoomServiceADO);
+                    }
+                }
+
+                var BedRoom = new Inventec.Common.Adapter.BackendAdapter(param).Get<List<MOS.EFMODEL.DataModels.V_HIS_BED_ROOM>>(
+                                     "api/HisBedRoom/GetView",
+                     HIS.Desktop.ApiConsumer.ApiConsumers.MosConsumer,
+                     bedRoomFillter,
+                     param);
+
+                if (BedRoom != null && BedRoom.Count > 0)
+                {
+                    lstBedRoom = BedRoom;
+                    foreach (var item in lstBedRoom)
+                    {
+                        var RoomServiceADO = new ExecuteRoomViewADO(item);
+                        if (isChoseExecuteRoom == 1)
+                        {
+                            RoomServiceADO.isKeyChoose = true;
+                        }
+                        lstExecuteRoomADOs.Add(RoomServiceADO);
+                    }
+                }
 
                 
+                #region
+                //var ServiceFillter = new HisExecuteRoomViewFilter();
+                //ServiceFillter.IS_ACTIVE = 1;
 
+                //if ((long)cboChoose.EditValue == 1)
+                //{
+                //    isChoseExecuteRoom = (long)cboChoose.EditValue;
+                //}
+
+                //var rs = new Inventec.Common.Adapter.BackendAdapter(param).Get<List<MOS.EFMODEL.DataModels.V_HIS_EXECUTE_ROOM>>(
+                //                                     "api/HisExecuteRoom/GetView",
+                //     HIS.Desktop.ApiConsumer.ApiConsumers.MosConsumer,
+                //     ServiceFillter,
+                //     param);
+
+                //lstExecuteRoomADOs = new List<ExecuteRoomViewADO>();
+
+                //if (rs != null && rs.Count > 0)
+                //{
+                //    listExecuteRoom = rs;
+                //    foreach (var item in listExecuteRoom)
+                //    {
+                //        var RoomServiceADO = new ExecuteRoomViewADO(item);
+                //        if (isChoseExecuteRoom == 1)
+                //        {
+                //            RoomServiceADO.isKeyChoose = true;
+                //        }
+                //        lstExecuteRoomADOs.Add(RoomServiceADO);
+                //    }
+                //}
+
+                //var BedRoom = new Inventec.Common.Adapter.BackendAdapter(param).Get<List<MOS.EFMODEL.DataModels.V_HIS_BED_ROOM>>(
+                //                     "api/HisBedRoom/GetView",
+                //     HIS.Desktop.ApiConsumer.ApiConsumers.MosConsumer,
+                //     ServiceFillter,
+                //     param);
+
+                //if (BedRoom != null && BedRoom.Count > 0)
+                //{
+                //    lstBedRoom = BedRoom;
+                //    foreach (var item in lstBedRoom)
+                //    {
+                //        var RoomServiceADO = new ExecuteRoomViewADO(item);
+                //        if (isChoseExecuteRoom == 1)
+                //        {
+                //            RoomServiceADO.isKeyChoose = true;
+                //        }
+                //        lstExecuteRoomADOs.Add(RoomServiceADO);
+                //    }
+                //}
+
+                #endregion
                 if (!string.IsNullOrWhiteSpace(txtKeyword1.Text))
                 {
                     var keyword = txtKeyword1.Text.Trim().ToLower();
@@ -1964,7 +2089,7 @@ namespace HIS.Desktop.Plugins.ExroRoom
                 {
                     foreach (var itemUsername in ExroRoomViews)
                     {
-                        var check = lstExecuteRoomADOs.FirstOrDefault(o => o.ID == itemUsername.EXECUTE_ROOM_ID && o.ID == itemUsername.ROOM_ID);
+                        var check = lstExecuteRoomADOs.FirstOrDefault(o => (o.ID == itemUsername.EXECUTE_ROOM_ID && o.RoomType == "EXECUTE") || (o.ID == itemUsername.BED_ROOM_ID && o.RoomType == "BED"));
                         if (check != null)
                         {
                             check.check1 = true;
@@ -2424,28 +2549,37 @@ namespace HIS.Desktop.Plugins.ExroRoom
                             {
                                 var dataChecked = lstExecuteRoomADOs.Where(p => p.check1 == true).ToList();
 
+                                
 
-
-
-
-
-                                var dataUpdate = dataChecked.Where(o => ExroRoomViews.Select(p => p.EXECUTE_ROOM_ID)
-                                    .Contains(o.ID)).ToList();
-
+                                //var dataUpdate = dataChecked.Where(o => ExroRoomViews.Select(p => p.EXECUTE_ROOM_ID)
+                                //    .Contains(o.ID)).ToList();
+                                var dataUpdate = dataChecked.Where(o =>
+                                        (o.RoomType == "EXECUTE" && ExroRoomViews.Any(p => p.EXECUTE_ROOM_ID == o.ID)) ||
+                                        (o.RoomType == "BED" && ExroRoomViews.Any(p => p.BED_ROOM_ID == o.ID))
+                                    ).ToList();
 
                                 //var dataDelete = lstExecuteRoomADOs.Where(o => ExroRoomViews.Select(p => p.EXECUTE_ROOM_ID)
                                 //    .Contains(o.ID) && o.check1 == false).ToList();
-                                var executeRoomIds = ExroRoomViews
-                                    .Where(p => p.EXECUTE_ROOM_ID.HasValue)
-                                    .Select(p => p.EXECUTE_ROOM_ID.Value)
-                                    .ToList();
+                                //var executeRoomIds = ExroRoomViews
+                                //    .Where(p => p.EXECUTE_ROOM_ID.HasValue)
+                                //    .Select(p => p.EXECUTE_ROOM_ID.Value)
+                                //    .ToList();
 
-                                var dataDelete = lstExecuteRoomADOs
-                                    .Where(o => executeRoomIds.Contains(o.ID) && o.check1 == false)
-                                    .ToList();
 
-                                var dataCreate = dataChecked.Where(o => !ExroRoomViews.Select(p => p.EXECUTE_ROOM_ID)
-                                    .Contains(o.ID)).ToList();
+
+                                //var dataDelete = lstExecuteRoomADOs
+                                //    .Where(o => executeRoomIds.Contains(o.ID) && o.check1 == false)
+                                //    .ToList();
+
+                                var dataDelete = lstExecuteRoomADOs.Where(o =>
+                                        ((o.RoomType == "EXECUTE" && ExroRoomViews.Any(p => p.EXECUTE_ROOM_ID == o.ID)) ||
+                                        (o.RoomType == "BED" && ExroRoomViews.Any(p => p.BED_ROOM_ID == o.ID)) && o.check1 == false)
+                                    ).ToList();
+
+                                var dataCreate = dataChecked.Where(o =>
+                                        (o.RoomType == "EXECUTE" && !ExroRoomViews.Any(p => p.EXECUTE_ROOM_ID == o.ID)) ||
+                                        (o.RoomType == "BED" && !ExroRoomViews.Any(p => p.BED_ROOM_ID == o.ID))
+                                    ).ToList();
 
                                 if (dataUpdate != null && dataUpdate.Count > 0)
                                 {
@@ -2453,7 +2587,7 @@ namespace HIS.Desktop.Plugins.ExroRoom
                                     var executeRoomErrors = new List<ExecuteRoomViewADO>();
                                     foreach (var item in dataUpdate)
                                     {
-                                        var exroRoom = ExroRoomViews.FirstOrDefault(o => o.EXECUTE_ROOM_ID == item.ID && o.ROOM_ID == checkRoomId);
+                                        var exroRoom = ExroRoomViews.FirstOrDefault(o => (o.EXECUTE_ROOM_ID == item.ID || o.BED_ROOM_ID == item.ID) && o.ROOM_ID == checkRoomId);
                                         if (exroRoom != null)
                                         {
                                             var exroRoomResult = new HIS_EXRO_ROOM();
@@ -2483,14 +2617,14 @@ namespace HIS.Desktop.Plugins.ExroRoom
                                             {
                                                 exroRoomResult.IS_HOLD_ORDER = null;
                                             }
-                                            if (item.RoomType == "BED")
-                                            {
-                                                exroRoomResult.BED_ROOM_ID = currentBedRoom.ID;
-                                            }
-                                            else
-                                            {
-                                                exroRoomResult.BED_ROOM_ID = null;
-                                            }
+                                            //if (item.RoomType == "BED")
+                                            //{
+                                            //    exroRoomResult.BED_ROOM_ID = item.ID;
+                                            //}
+                                            //else
+                                            //{
+                                            //    exroRoomResult.BED_ROOM_ID = null;
+                                            //}
                                             if (exroRoomResult.IS_HOLD_ORDER == null && exroRoomResult.IS_ALLOW_REQUEST == null)
                                             {
                                                 executeRoomErrors.Add(item);
@@ -2543,7 +2677,8 @@ namespace HIS.Desktop.Plugins.ExroRoom
                                     //var deleteId = ExroRoomViews.Where(o => dataDelete.Select(p => p.ID)
                                     //    .Contains(o.EXECUTE_ROOM_ID)).Select(o => o.ID).ToList();
                                     var deleteId = ExroRoomViews
-                                        .Where(o => o.EXECUTE_ROOM_ID.HasValue && dataDelete.Any(p => p.ID == o.EXECUTE_ROOM_ID.Value))
+                                        .Where(o => (o.EXECUTE_ROOM_ID.HasValue && dataDelete.Any(p => p.ID == o.EXECUTE_ROOM_ID.Value)) 
+                                        || (o.BED_ROOM_ID.HasValue && dataDelete.Any(p => p.ID == o.BED_ROOM_ID.Value)))
                                         .Select(o => o.ID)
                                         .ToList();
                                     var deleteResult = new BackendAdapter(param).Post<bool>(
@@ -2566,7 +2701,14 @@ namespace HIS.Desktop.Plugins.ExroRoom
                                     {
                                         var ServiceRoomID = new HIS_EXRO_ROOM();
                                         ServiceRoomID.ROOM_ID = RoomIdCheckByRoom;
-                                        ServiceRoomID.EXECUTE_ROOM_ID = item.ID;
+                                        if (item.RoomType == "BED")
+                                        {
+                                            ServiceRoomID.BED_ROOM_ID = item.ID;
+                                        }
+                                        else
+                                        {
+                                            ServiceRoomID.EXECUTE_ROOM_ID = item.ID;
+                                        }
                                         if (item.isAllowRequest)
                                         {
                                             ServiceRoomID.IS_ALLOW_REQUEST = 1;
@@ -2591,14 +2733,14 @@ namespace HIS.Desktop.Plugins.ExroRoom
                                         {
                                             ServiceRoomID.IS_HOLD_ORDER = null;
                                         }
-                                        if (item.RoomType == "BED")
-                                        {
-                                            ServiceRoomID.BED_ROOM_ID = currentBedRoom.ID;
-                                        }
-                                        else
-                                        {
-                                            ServiceRoomID.BED_ROOM_ID = null;
-                                        }
+                                        //if (item.RoomType == "BED")
+                                        //{
+                                        //    ServiceRoomID.BED_ROOM_ID = item.ID;
+                                        //}
+                                        //else
+                                        //{
+                                        //    ServiceRoomID.BED_ROOM_ID = null;
+                                        //}
                                         if (ServiceRoomID.IS_HOLD_ORDER == null && ServiceRoomID.IS_ALLOW_REQUEST == null)
                                         {
                                             executeRoomErrors.Add(item);
@@ -2622,9 +2764,10 @@ namespace HIS.Desktop.Plugins.ExroRoom
                                                HIS.Desktop.ApiConsumer.ApiConsumers.MosConsumer,
                                                ServiceRoomCreate,
                                                param);
+                                    Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData($"ServiceRoomCreate", ServiceRoomCreate));
                                     if (createResult != null && createResult.Count > 0)
                                     {
-                                        success = true;
+                                        success = true;    
                                     }
                                     AutoMapper.Mapper.CreateMap<HIS_EXRO_ROOM, V_HIS_EXRO_ROOM>();
                                     var vCreateResults = AutoMapper.Mapper.Map<List<HIS_EXRO_ROOM>, List<V_HIS_EXRO_ROOM>>(createResult);

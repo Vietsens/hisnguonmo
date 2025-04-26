@@ -118,6 +118,16 @@ namespace HIS.Desktop.Plugins.Library.PrintTreatmentFinish
             this.treatmentId = -1;
         }
 
+        public PrintTreatmentFinishProcessor(HIS_TREATMENT _His_Treatment, HIS_SERVICE_REQ _His_Service_Req, long? roomId, MPS.ProcessorBase.PrintConfig.PreviewType? _PreviewType)
+        {
+            HisTreatment = _His_Treatment;
+            HisServiceReq = _His_Service_Req;
+            HisPatient = null;
+            VHisPatientTypeAlter = null;   
+            this.patientId = -1;
+            this.treatmentId = -1;
+        }
+
         /// <summary>
         /// Sử dụng cấu hình để in ngay ("HIS.Desktop.Plugins.Library.PrintTreatmentFinish.Mps")
         /// </summary>
@@ -250,97 +260,34 @@ namespace HIS.Desktop.Plugins.Library.PrintTreatmentFinish
                     switch (printCode)
                     {
                         case MPS.Processor.Mps000008.PDO.Mps000008PDO.printTypeCode:
-                            if (PreviewType.HasValue)
-                            {
-                                new PrintMps000008(printCode, fileName, ref result, VHisPatient, HisTreatment, VHisPatientTypeAlter, PreviewType, roomId);
-                            }
-                            else
-                            {
-                                new PrintMps000008(printCode, fileName, ref result, VHisPatient, HisTreatment, VHisPatientTypeAlter, printNow, roomId);
-                            }
+                            new PrintMps000008(printCode, fileName, ref result, VHisPatient, HisTreatment, VHisPatientTypeAlter, printNow, roomId);
                             break;
                         case MPS.Processor.Mps000399.PDO.Mps000399PDO.printTypeCode:
-                            if (PreviewType.HasValue)
-                            {
-                                new PrintMps000399(printCode, fileName, ref result, VHisPatient, HisTreatment, PreviewType, roomId);
-                            }
-                            else
-                            {
-                                new PrintMps000399(printCode, fileName, ref result, VHisPatient, HisTreatment, printNow, roomId);
-                            }
+                            new PrintMps000399(printCode, fileName, ref result, VHisPatient, HisTreatment, printNow, roomId);
                             break;
                         case MPS.Processor.Mps000389.PDO.Mps000389PDO.printTypeCode:
-                            if (PreviewType.HasValue)
-                            {
-                                new PrintMps000389(printCode, fileName, ref result, VHisPatient, HisTreatment, PreviewType, roomId);
-                            }
-                            else
-                            {
-                                new PrintMps000389(printCode, fileName, ref result, VHisPatient, HisTreatment, printNow, roomId);
-                            }
+                            new PrintMps000389(printCode, fileName, ref result, VHisPatient, HisTreatment, printNow, roomId);
                             break;
                         case MPS.Processor.Mps000010.PDO.Mps000010PDO.printTypeCode:
-                            if (PreviewType.HasValue)
-                            {
-                                new PrintMps000010(printCode, fileName, ref result, VHisPatient, HisTreatment, VHisPatientTypeAlter, PreviewType, roomId, HisMediRecord, HisServiceReq);
-                            }
-                            else
-                            {
-                                new PrintMps000010(printCode, fileName, ref result, VHisPatient, HisTreatment, VHisPatientTypeAlter, printNow, roomId, HisMediRecord, HisServiceReq);
-                            }
+                            new PrintMps000010(printCode, fileName, ref result, VHisPatient, HisTreatment, VHisPatientTypeAlter, PreviewType, roomId, HisMediRecord, HisServiceReq);
                             break;
                         case MPS.Processor.Mps000011.PDO.Mps000011PDO.printTypeCode:
-                            if (PreviewType.HasValue)
-                            {
-                                new PrintMps000011(printCode, fileName, ref result, VHisPatient, HisTreatment, VHisPatientTypeAlter, printNow, roomId, HisServiceReq, TreatmentExt);
-                            }
-                            else
-                            {
-                                new PrintMps000011(printCode, fileName, ref result, VHisPatient, HisTreatment, VHisPatientTypeAlter, printNow, roomId, HisServiceReq, TreatmentExt);
-                            }
+                            new PrintMps000011(printCode, fileName, ref result, VHisPatient, HisTreatment, VHisPatientTypeAlter, printNow, roomId, HisServiceReq, TreatmentExt);
                             break;
                         case MPS.Processor.Mps000268.PDO.Mps000268PDO.printTypeCode:
-                            if (PreviewType.HasValue)
-                            {
-                                new PrintMps000268(printCode, fileName, ref result, VHisPatient, HisTreatment, this.CurrentBranch, PreviewType, roomId);
-                            }
-                            else
-                            {
-                                new PrintMps000268(printCode, fileName, ref result, VHisPatient, HisTreatment, this.CurrentBranch, printNow, roomId);
-                            }
+                            new PrintMps000268(printCode, fileName, ref result, VHisPatient, HisTreatment, this.CurrentBranch, printNow, roomId);
                             break;
                         //case "Mps000269":
                         //    new PrintMps000269(printCode, fileName, ref result, HisTreatment, VHisPatientTypeAlter, _HisSereServ, printNow, roomId);
                         //    break;
                         case PrintEnum.IN_BANT__MPS000174:
-                            if (PreviewType.HasValue)
-                            {
-                                new PrintMps000174(printCode, fileName, ref result, HisTreatment, VHisPatient, VHisPatientTypeAlter, PreviewType, roomId);
-                            }
-                            else
-                            {
-                                new PrintMps000174(printCode, fileName, ref result, HisTreatment, VHisPatient, VHisPatientTypeAlter, printNow, roomId);
-                            }
+                            new PrintMps000174(printCode, fileName, ref result, HisTreatment, VHisPatient, VHisPatientTypeAlter, printNow, roomId);
                             break;
                         case MPS.Processor.Mps000382.PDO.Mps000382PDO.printTypeCode:
-                            if (PreviewType.HasValue)
-                            {
-                                new PrintMps000382(printCode, fileName, ref result, VHisPatient, HisTreatment, VHisPatientTypeAlter, PreviewType, roomId);
-                            }
-                            else
-                            {
-                                new PrintMps000382(printCode, fileName, ref result, VHisPatient, HisTreatment, VHisPatientTypeAlter, printNow, roomId);
-                            }
+                            new PrintMps000382(printCode, fileName, ref result, VHisPatient, HisTreatment, VHisPatientTypeAlter, printNow, roomId);
                             break;
                         case MPS.Processor.Mps000478.PDO.Mps000478PDO.printTypeCode:
-                            if (PreviewType.HasValue)
-                            {
-                                new PrintMps000478(printCode, fileName, ref result, PreviewType, HisTreatment.ID, roomId);
-                            }
-                            else
-                            {
-                                new PrintMps000478(printCode, fileName, ref result, printNow, HisTreatment.ID, roomId);
-                            }
+                            new PrintMps000478(printCode, fileName, ref result, printNow, HisTreatment.ID, roomId);
                             break;
                         default:
                             break;

@@ -85,6 +85,7 @@ namespace HIS.Desktop.Plugins.ServiceReqList
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject38 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject39 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject40 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.XtraGrid.GridLevelNode gridLevelNode1 = new DevExpress.XtraGrid.GridLevelNode();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject41 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject42 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject43 = new DevExpress.Utils.SerializableAppearanceObject();
@@ -305,6 +306,7 @@ namespace HIS.Desktop.Plugins.ServiceReqList
             this.gridColumn_Transaction_PayFormName = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn3 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn_Transaction_Dob = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gridColumn12 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn_Request_Username = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn_Execute_Username = new DevExpress.XtraGrid.Columns.GridColumn();
             this.grdColRationTime = new DevExpress.XtraGrid.Columns.GridColumn();
@@ -2027,6 +2029,9 @@ namespace HIS.Desktop.Plugins.ServiceReqList
             // 
             // gridControlServiceReq
             // 
+            gridLevelNode1.RelationName = "Level1";
+            this.gridControlServiceReq.LevelTree.Nodes.AddRange(new DevExpress.XtraGrid.GridLevelNode[] {
+            gridLevelNode1});
             this.gridControlServiceReq.Location = new System.Drawing.Point(2, 52);
             this.gridControlServiceReq.MainView = this.gridViewServiceReq;
             this.gridControlServiceReq.Name = "gridControlServiceReq";
@@ -2081,6 +2086,7 @@ namespace HIS.Desktop.Plugins.ServiceReqList
             this.gridColumn_Transaction_PayFormName,
             this.gridColumn3,
             this.gridColumn_Transaction_Dob,
+            this.gridColumn12,
             this.gridColumn_Request_Username,
             this.gridColumn_Execute_Username,
             this.grdColRationTime,
@@ -2439,6 +2445,19 @@ namespace HIS.Desktop.Plugins.ServiceReqList
             this.gridColumn_Transaction_Dob.VisibleIndex = 16;
             this.gridColumn_Transaction_Dob.Width = 120;
             // 
+            // gridColumn12
+            // 
+            this.gridColumn12.AppearanceCell.Options.UseTextOptions = true;
+            this.gridColumn12.AppearanceCell.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
+            this.gridColumn12.Caption = "Ngày dự trù";
+            this.gridColumn12.FieldName = "USE_TIME_STR";
+            this.gridColumn12.Name = "gridColumn12";
+            this.gridColumn12.OptionsColumn.AllowEdit = false;
+            this.gridColumn12.UnboundType = DevExpress.Data.UnboundColumnType.Object;
+            this.gridColumn12.Visible = true;
+            this.gridColumn12.VisibleIndex = 17;
+            this.gridColumn12.Width = 100;
+            // 
             // gridColumn_Request_Username
             // 
             this.gridColumn_Request_Username.Caption = "Người yêu cầu";
@@ -2447,7 +2466,7 @@ namespace HIS.Desktop.Plugins.ServiceReqList
             this.gridColumn_Request_Username.OptionsColumn.AllowEdit = false;
             this.gridColumn_Request_Username.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumn_Request_Username.Visible = true;
-            this.gridColumn_Request_Username.VisibleIndex = 17;
+            this.gridColumn_Request_Username.VisibleIndex = 18;
             this.gridColumn_Request_Username.Width = 120;
             // 
             // gridColumn_Execute_Username
@@ -2460,7 +2479,7 @@ namespace HIS.Desktop.Plugins.ServiceReqList
             this.gridColumn_Execute_Username.OptionsColumn.AllowEdit = false;
             this.gridColumn_Execute_Username.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumn_Execute_Username.Visible = true;
-            this.gridColumn_Execute_Username.VisibleIndex = 18;
+            this.gridColumn_Execute_Username.VisibleIndex = 19;
             this.gridColumn_Execute_Username.Width = 120;
             // 
             // grdColRationTime
@@ -2470,7 +2489,7 @@ namespace HIS.Desktop.Plugins.ServiceReqList
             this.grdColRationTime.Name = "grdColRationTime";
             this.grdColRationTime.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.grdColRationTime.Visible = true;
-            this.grdColRationTime.VisibleIndex = 19;
+            this.grdColRationTime.VisibleIndex = 20;
             this.grdColRationTime.Width = 70;
             // 
             // gridColumn_Transaction_GenderName
@@ -2485,7 +2504,7 @@ namespace HIS.Desktop.Plugins.ServiceReqList
             this.gridColumn_Transaction_GenderName.OptionsColumn.AllowEdit = false;
             this.gridColumn_Transaction_GenderName.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumn_Transaction_GenderName.Visible = true;
-            this.gridColumn_Transaction_GenderName.VisibleIndex = 20;
+            this.gridColumn_Transaction_GenderName.VisibleIndex = 21;
             this.gridColumn_Transaction_GenderName.Width = 45;
             // 
             // Gc_HisSendOldSystem
@@ -2495,7 +2514,7 @@ namespace HIS.Desktop.Plugins.ServiceReqList
             this.Gc_HisSendOldSystem.Name = "Gc_HisSendOldSystem";
             this.Gc_HisSendOldSystem.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.Gc_HisSendOldSystem.Visible = true;
-            this.Gc_HisSendOldSystem.VisibleIndex = 21;
+            this.Gc_HisSendOldSystem.VisibleIndex = 22;
             this.Gc_HisSendOldSystem.Width = 55;
             // 
             // gridColumn_Transaction_CreateTime
@@ -2510,7 +2529,7 @@ namespace HIS.Desktop.Plugins.ServiceReqList
             this.gridColumn_Transaction_CreateTime.OptionsColumn.AllowEdit = false;
             this.gridColumn_Transaction_CreateTime.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumn_Transaction_CreateTime.Visible = true;
-            this.gridColumn_Transaction_CreateTime.VisibleIndex = 22;
+            this.gridColumn_Transaction_CreateTime.VisibleIndex = 23;
             this.gridColumn_Transaction_CreateTime.Width = 120;
             // 
             // gridColumn_Transaction_Creator
@@ -2522,7 +2541,7 @@ namespace HIS.Desktop.Plugins.ServiceReqList
             this.gridColumn_Transaction_Creator.Name = "gridColumn_Transaction_Creator";
             this.gridColumn_Transaction_Creator.OptionsColumn.AllowEdit = false;
             this.gridColumn_Transaction_Creator.Visible = true;
-            this.gridColumn_Transaction_Creator.VisibleIndex = 23;
+            this.gridColumn_Transaction_Creator.VisibleIndex = 24;
             // 
             // gridColumn_Transaction_ModifyTime
             // 
@@ -2536,7 +2555,7 @@ namespace HIS.Desktop.Plugins.ServiceReqList
             this.gridColumn_Transaction_ModifyTime.OptionsColumn.AllowEdit = false;
             this.gridColumn_Transaction_ModifyTime.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumn_Transaction_ModifyTime.Visible = true;
-            this.gridColumn_Transaction_ModifyTime.VisibleIndex = 24;
+            this.gridColumn_Transaction_ModifyTime.VisibleIndex = 25;
             this.gridColumn_Transaction_ModifyTime.Width = 120;
             // 
             // gridColumn_Transaction_Modifier
@@ -2548,7 +2567,7 @@ namespace HIS.Desktop.Plugins.ServiceReqList
             this.gridColumn_Transaction_Modifier.Name = "gridColumn_Transaction_Modifier";
             this.gridColumn_Transaction_Modifier.OptionsColumn.AllowEdit = false;
             this.gridColumn_Transaction_Modifier.Visible = true;
-            this.gridColumn_Transaction_Modifier.VisibleIndex = 25;
+            this.gridColumn_Transaction_Modifier.VisibleIndex = 26;
             // 
             // repositoryItemBtnDeleteServiceReq
             // 
@@ -3306,5 +3325,6 @@ namespace HIS.Desktop.Plugins.ServiceReqList
         private DevExpress.XtraEditors.LabelControl lblTestSampleTypeName;
         private DevExpress.XtraLayout.LayoutControlItem lciTestSampleTypeName;
         private DevExpress.XtraGrid.Columns.GridColumn gridColumn_Pttt_Group_Name;
+        private DevExpress.XtraGrid.Columns.GridColumn gridColumn12;
     }
 }

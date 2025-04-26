@@ -379,6 +379,11 @@ namespace HIS.Desktop.Plugins.ServiceReqList
                 this.gridColumn_Transaction_CashierRoomName.Caption = Inventec.Common.Resource.Get.Value("frmServiceReqList.gridColumn_Transaction_CashierRoomName.Caption", Resources.ResourceLanguageManager.LanguagefrmServiceReqList, LanguageManager.GetCulture());
                 this.gridColumn_Transaction_PayFormName.Caption = Inventec.Common.Resource.Get.Value("frmServiceReqList.gridColumn_Transaction_PayFormName.Caption", Resources.ResourceLanguageManager.LanguagefrmServiceReqList, LanguageManager.GetCulture());
                 this.gridColumn_Transaction_Dob.Caption = Inventec.Common.Resource.Get.Value("frmServiceReqList.gridColumn_Transaction_Dob.Caption", Resources.ResourceLanguageManager.LanguagefrmServiceReqList, LanguageManager.GetCulture());
+
+                //qtcode
+                this.gridColumn12.Caption = Inventec.Common.Resource.Get.Value("frmServiceReqList.gridColumn12.Caption", Resources.ResourceLanguageManager.LanguagefrmServiceReqList, LanguageManager.GetCulture());
+                //qtcode
+
                 this.gridColumn_Transaction_TreatmentCode.Caption = Inventec.Common.Resource.Get.Value("frmServiceReqList.gridColumn_Transaction_TreatmentCode.Caption", Resources.ResourceLanguageManager.LanguagefrmServiceReqList, LanguageManager.GetCulture());
                 this.gridColumn_Transaction_VirPatientName.Caption = Inventec.Common.Resource.Get.Value("frmServiceReqList.gridColumn_Transaction_VirPatientName.Caption", Resources.ResourceLanguageManager.LanguagefrmServiceReqList, LanguageManager.GetCulture());
                 this.gridColumn_Transaction_GenderName.Caption = Inventec.Common.Resource.Get.Value("frmServiceReqList.gridColumn_Transaction_GenderName.Caption", Resources.ResourceLanguageManager.LanguagefrmServiceReqList, LanguageManager.GetCulture());
@@ -654,7 +659,6 @@ namespace HIS.Desktop.Plugins.ServiceReqList
             {
                 int pagingSize = ucPaging1.pagingGrid != null ? ucPaging1.pagingGrid.PageSize : (int)ConfigApplications.NumPageSize;
                 FillDataToGridTransaction(new CommonParam(0, pagingSize));
-
                 CommonParam param = new CommonParam();
                 param.Limit = rowCount;
                 param.Count = dataTotal;
@@ -1684,11 +1688,24 @@ namespace HIS.Desktop.Plugins.ServiceReqList
                             {
                                 e.Value = Inventec.Common.DateTime.Convert.TimeNumberToTimeString(data.INTRUCTION_TIME);
                             }
+                            catch (Exception ex) 
+                            {
+                                Inventec.Common.Logging.LogSystem.Error(ex);
+                            }
+                        }
+                        //qtcode
+                        else if (e.Column.FieldName == "USE_TIME_STR")
+                        {
+                            try
+                            {
+                                e.Value = Inventec.Common.DateTime.Convert.TimeNumberToDateString(data.USE_TIME.Value);
+                            }
                             catch (Exception ex)
                             {
                                 Inventec.Common.Logging.LogSystem.Error(ex);
                             }
                         }
+                        //qtcode
                         else if (e.Column.FieldName == "CREATE_TIME_STR")
                         {
                             try
@@ -2320,7 +2337,11 @@ namespace HIS.Desktop.Plugins.ServiceReqList
                     dicParam.Add("INTRUCTION_TIME_STR",
                         Inventec.Common.DateTime.Convert.TimeNumberToTimeStringWithoutSecond(
                             currentServiceReqPrint.INTRUCTION_TIME));
-
+                    //qtcode
+                    dicParam.Add("USE_TIME",
+                        Inventec.Common.DateTime.Convert.TimeNumberToDateStringSeparateString(
+                            currentServiceReqPrint.USE_TIME.Value));
+                    //qtcode
                     dicParam.Add("START_TIME_STR",
                         Inventec.Common.DateTime.Convert.TimeNumberToTimeStringWithoutSecond(
                             currentServiceReqPrint.START_TIME ?? 0));
