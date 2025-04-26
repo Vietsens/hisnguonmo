@@ -171,7 +171,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
                 }
                 else
                 {
-                    PrescriptionPrintShow(printTypeCode, true, null);
+                    PrescriptionPrintShow(printTypeCode, false, null);
                 }
             }
             catch (Exception ex)
@@ -322,8 +322,10 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
                     }
                     if (previewType.HasValue)
                         printPrescriptionProcessor.Print(printTypeCode, isPrintNow, previewType);             
-                    else
+                    else if (isPrintNow)
                         printPrescriptionProcessor.Print();
+                    else
+                        printPrescriptionProcessor.Print(printTypeCode, isPrintNow, previewType);
                 }
             }
             catch (Exception ex)
