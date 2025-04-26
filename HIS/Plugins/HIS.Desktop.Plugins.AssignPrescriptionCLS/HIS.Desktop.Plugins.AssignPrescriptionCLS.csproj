@@ -81,6 +81,11 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\..\LIBRARY\DevLib\DevExpress.XtraTreeList.v15.2.dll</HintPath>
     </Reference>
+    <Reference Include="EMR.EFMODEL, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+    <Reference Include="EMR.SDO, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\lib\EMR\EMR.SDO.dll</HintPath>
+    </Reference>
     <Reference Include="HIS.Common.Treatment, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\LIB\HIS\HIS.Common\HIS.Common.Treatment\HIS.Common.Treatment.dll</HintPath>

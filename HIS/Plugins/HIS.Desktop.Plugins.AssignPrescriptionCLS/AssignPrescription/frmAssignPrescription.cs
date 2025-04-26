@@ -1175,7 +1175,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
         {
             try
             {
-                PrescriptionPrintShow(PrintTypeCodes.PRINT_TYPE_CODE__BIEUMAU__PHIEU_KE_KHAI_THUOC_VATU__MPS000338, false);
+                PrescriptionPrintShow(PrintTypeCodes.PRINT_TYPE_CODE__BIEUMAU__PHIEU_KE_KHAI_THUOC_VATU__MPS000338, false, MPS.ProcessorBase.PrintConfig.PreviewType.EmrSignAndPrintNow);
             }
             catch (Exception ex)
             {
