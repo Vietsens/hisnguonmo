@@ -804,6 +804,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
                     this.SetEnableButtonControl(this.actionType);
                     //Mở khóa các button lưu && lưu in khi đã xử lý xong
                     this.ChangeLockButtonWhileProcess(false);
+                    //dangth
                     if (isSaveAndPrint)
                         this.PrescriptionPrintNow();
 
