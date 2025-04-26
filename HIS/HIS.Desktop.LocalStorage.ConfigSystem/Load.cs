@@ -221,6 +221,14 @@ namespace HIS.Desktop.LocalStorage.ConfigSystem
                 {
                     Inventec.Common.Logging.LogSystem.Debug("Khong tim thay key uri resource server HSSK. " + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => Keys.EXE_CONFIG_KEY__HSSK_BASE_URI), Keys.EXE_CONFIG_KEY__HSSK_BASE_URI));
                 }
+                try
+                {
+                    ConfigSystems.URI_API_HPS = (ApplicationConfig.GetKeyValue(Keys.EXE_CONFIG_KEY__HPS_BASE_URI) ?? "").ToString();
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Debug("Khong tim thay key uri resource server HSSK. " + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => Keys.EXE_CONFIG_KEY__HSSK_BASE_URI), Keys.EXE_CONFIG_KEY__HSSK_BASE_URI));
+                }
             }
         }
     }
