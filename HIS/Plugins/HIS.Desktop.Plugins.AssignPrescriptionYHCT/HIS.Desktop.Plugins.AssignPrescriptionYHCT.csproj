@@ -99,6 +99,10 @@
     <Reference Include="HIS.UC.PeriousExpMestList">
       <HintPath>..\..\..\..\lib\HIS\HIS.UC.PeriousExpMestList\HIS.UC.PeriousExpMestList.dll</HintPath>
     </Reference>
+    <Reference Include="HIS.UC.SecondaryIcd, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\lib\HIS\HIS.UC.SecondaryIcd\HIS.UC.SecondaryIcd.dll</HintPath>
+    </Reference>
     <Reference Include="HIS.UC.TreatmentFinish">
       <HintPath>..\..\..\..\lib\HIS\HIS.UC.TreatmentFinish\HIS.UC.TreatmentFinish.dll</HintPath>
     </Reference>
@@ -459,10 +463,6 @@
     <Compile Include="Worker\ValidAcinInteractiveWorker.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\UC\HIS.UC.SecondaryIcd\HIS.UC.SecondaryIcd.csproj">
-      <Project>{04b2ab94-562d-4753-a158-1aad3217408b}</Project>
-      <Name>HIS.UC.SecondaryIcd</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\HIS.Desktop.ADO\HIS.Desktop.ADO.csproj">
       <Project>{808c25cd-0925-417f-bbf9-caf9604da879}</Project>
       <Name>HIS.Desktop.ADO</Name>
@@ -565,33 +565,8 @@
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>echo PREBUILDSTEP for $(ProjectName)
-
-echo Copying files from $(ProjectDir)bin\$(Configuration) to $(SolutionDir)\$(SolutionName)\bin\$(Configuration)\ReferencedAssemblies
-
-if not exist "$(SolutionDir)\$(SolutionName)\bin\$(Configuration)\ReferencedAssemblies" mkdir "$(SolutionDir)\$(SolutionName)\bin\$(Configuration)\ReferencedAssemblies"
-
-xcopy "$(ProjectDir)bin\$(Configuration)\*.dll" "$(SolutionDir)\$(SolutionName)\bin\$(Configuration)\ReferencedAssemblies" /i /d /y
-xcopy "$(TargetDir)$(TargetName).dll" "$(SolutionDir)$(SolutionName)\bin\Debug\Plugins\Module" /Y /I
-
-if not exist "$(ProjectDir)bin\$(Configuration)\vi" mkdir "$(ProjectDir)bin\$(Configuration)\vi"
-if not exist "$(ProjectDir)bin\$(Configuration)\en" mkdir "$(ProjectDir)bin\$(Configuration)\en"
-xcopy "$(ProjectDir)bin\$(Configuration)\vi\*.dll" "$(SolutionDir)\$(SolutionName)\bin\$(Configuration)\vi" /Y /I
-xcopy "$(ProjectDir)bin\$(Configuration)\en\*.dll" "$(SolutionDir)\$(SolutionName)\bin\$(Configuration)\en" /Y /I
-
-if errorlevel 1 goto BuildEventFailed
-
-if errorlevel 1 goto BuildEventFailed
-
-REM Exit properly because the build will not fail
-REM unless the final step exits with an error code
-
-goto BuildEventOK
-:BuildEventFailed
-echo PREBUILDSTEP for $(ProjectName) FAILED
-exit 1
-:BuildEventOK
-echo PREBUILDSTEP for $(ProjectName) COMPLETED OK</PostBuildEvent>
+    <PostBuildEvent>
+    </PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
