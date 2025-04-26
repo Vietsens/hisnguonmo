@@ -55,7 +55,6 @@ namespace HIS.Desktop.Plugins.TransactionInfoEdit
         List<HIS_REPAY_REASON> repayReasons = new List<HIS_REPAY_REASON>();
         int configUpdateAccountBook;
         bool MustChooseWorkingShift;
-
         public frmTransactionInfoEdit(Inventec.Desktop.Common.Modules.Module module, V_HIS_TRANSACTION _transaction)
             : base(module)
         {
@@ -1322,15 +1321,21 @@ namespace HIS.Desktop.Plugins.TransactionInfoEdit
             }
         }
 
-        private void txtBuyerEmail_TextChanged(object sender, EventArgs e)
+        private void txtBuyerEmail_Validating(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            if (txtBuyerEmail.Text.Length > 100)
-            {
-                MessageBox.Show("Email không được vượt quá 100 ký tự!", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                txtBuyerEmail.Text = txtBuyerEmail.Text.Substring(0, 100);
-                txtBuyerEmail.SelectionStart = txtBuyerEmail.Text.Length;
+            try
+            {              
+                if(Inventec.Common.String.CheckString.IsOverMaxLengthUTF8(txtBuyerEmail.Text.Trim(), 100))
+                {
+                    MessageBox.Show("Địa chỉ email không được vượt quá 100 ký tự!", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    e.Cancel = true;
+                    txtBuyerEmail.Focus();
+                }
             }
-
+            catch (Exception ex)
+            {
+                LogSystem.Error(ex);
+            }           
         }
     }
 }

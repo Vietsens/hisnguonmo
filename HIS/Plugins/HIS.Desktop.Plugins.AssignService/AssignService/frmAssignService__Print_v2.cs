@@ -280,7 +280,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
 
                     if (allowedModules.Contains("HIS.Desktop.Plugins.AssignService"))
                     {
-                        previewType = MPS.ProcessorBase.PrintConfig.PreviewType.EmrSignAndPrintNow;
+                        previewType = MPS.ProcessorBase.PrintConfig.PreviewType.EmrSignAndPrintPreview;
                     }
                     else
                     {
@@ -290,8 +290,6 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                 if (serviceReqComboResultSDO != null)
                 {
                     CommonParam param = new CommonParam();
-
-
                     List<V_HIS_BED_LOG> bedLogs = new List<V_HIS_BED_LOG>();
                     // get bedLog
                     if (this.currentHisTreatment != null && this.serviceReqComboResultSDO != null && this.serviceReqComboResultSDO.ServiceReqs != null && this.serviceReqComboResultSDO.ServiceReqs.Count > 0)

@@ -45,6 +45,7 @@ namespace HIS.Desktop.Plugins.TransactionInfoEdit
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject5 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject6 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject7 = new DevExpress.Utils.SerializableAppearanceObject();
@@ -53,7 +54,7 @@ namespace HIS.Desktop.Plugins.TransactionInfoEdit
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.layoutControl3 = new DevExpress.XtraLayout.LayoutControl();
             this.txtRepayReason = new DevExpress.XtraEditors.TextEdit();
-            this.barManager1 = new DevExpress.XtraBars.BarManager();
+            this.barManager1 = new DevExpress.XtraBars.BarManager(this.components);
             this.bar1 = new DevExpress.XtraBars.Bar();
             this.barButtonItem__Save = new DevExpress.XtraBars.BarButtonItem();
             this.barDockControlTop = new DevExpress.XtraBars.BarDockControl();
@@ -105,7 +106,7 @@ namespace HIS.Desktop.Plugins.TransactionInfoEdit
             this.emptySpaceItem1 = new DevExpress.XtraLayout.EmptySpaceItem();
             this.layoutControlItem7 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem17 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.dxValidationProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider();
+            this.dxValidationProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
             this.layoutControl1.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -653,11 +654,11 @@ namespace HIS.Desktop.Plugins.TransactionInfoEdit
             this.txtBuyerEmail.Location = new System.Drawing.Point(736, 37);
             this.txtBuyerEmail.MenuManager = this.barManager1;
             this.txtBuyerEmail.Name = "txtBuyerEmail";
-            this.txtBuyerEmail.Properties.MaxLength = 100;
+            this.txtBuyerEmail.Properties.MaxLength = 125;
             this.txtBuyerEmail.Size = new System.Drawing.Size(195, 20);
             this.txtBuyerEmail.StyleController = this.layoutControl2;
             this.txtBuyerEmail.TabIndex = 9;
-            this.txtBuyerEmail.TextChanged += new System.EventHandler(this.txtBuyerEmail_TextChanged);
+            this.txtBuyerEmail.Validating += new System.ComponentModel.CancelEventHandler(this.txtBuyerEmail_Validating);
             // 
             // txtDiaChiNguoiMua
             // 
@@ -684,7 +685,7 @@ namespace HIS.Desktop.Plugins.TransactionInfoEdit
             this.txtSTKNguoiMua.Location = new System.Drawing.Point(736, 5);
             this.txtSTKNguoiMua.MenuManager = this.barManager1;
             this.txtSTKNguoiMua.Name = "txtSTKNguoiMua";
-            this.txtSTKNguoiMua.Size = new System.Drawing.Size(192, 20);
+            this.txtSTKNguoiMua.Size = new System.Drawing.Size(195, 20);
             this.txtSTKNguoiMua.StyleController = this.layoutControl2;
             this.txtSTKNguoiMua.TabIndex = 6;
             this.txtSTKNguoiMua.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.txtSTKNguoiMua_PreviewKeyDown);
@@ -761,7 +762,7 @@ namespace HIS.Desktop.Plugins.TransactionInfoEdit
             this.layoutControlItem4.Control = this.txtSTKNguoiMua;
             this.layoutControlItem4.Location = new System.Drawing.Point(636, 0);
             this.layoutControlItem4.Name = "layoutControlItem4";
-            this.layoutControlItem4.Padding = new DevExpress.XtraLayout.Utils.Padding(5, 5, 5, 5);
+            this.layoutControlItem4.Padding = new DevExpress.XtraLayout.Utils.Padding(5, 2, 5, 5);
             this.layoutControlItem4.Size = new System.Drawing.Size(297, 30);
             this.layoutControlItem4.Text = "Số tài khoản:";
             this.layoutControlItem4.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;

@@ -454,7 +454,7 @@ namespace HIS.Desktop.Plugins.AssignPaan
                     }
 
                     bool printNow = false;
-                    var previewType = MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow;
+                    MPS.ProcessorBase.PrintConfig.PreviewType previewType;
                     //if (HIS.Desktop.LocalStorage.ConfigApplication.ConfigApplications.CheDoInChoCacChucNangTrongPhanMem == 2)
                     //{
                     //    printNow = true;
@@ -463,29 +463,24 @@ namespace HIS.Desktop.Plugins.AssignPaan
                     //{
                     //    printNow = false;
                     //}
-                    Inventec.Desktop.Common.Modules.Module module = GlobalVariables.currentModuleRaws.Where(o => o.ModuleLink == "HIS.Desktop.Plugins.AssignPaan").FirstOrDefault();
-                    if(module != null)
-                    {
-                        var allowSignValue = HisPatientTypeCFG.IsAllowSignaturePrint;
-                        if (!string.IsNullOrWhiteSpace(allowSignValue))
-                        {
-                            var allowedModules = allowSignValue
-                                .Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries)
-                                .Select(x => x.Trim())
-                                .ToList();
 
-                            if (allowedModules.Contains("HIS.Desktop.Plugins.AssignPaan"))
-                            {
-                                previewType = MPS.ProcessorBase.PrintConfig.PreviewType.EmrSignAndPrintPreview;
-                            }
-                            else
-                            {
-                                previewType = MPS.ProcessorBase.PrintConfig.PreviewType.EmrSignNow;
-                            }
+
+
+                    var allowSignValue = HisPatientTypeCFG.IsAllowSignaturePrint;
+                    if (!string.IsNullOrWhiteSpace(allowSignValue))
+                    {
+                        var allowedModules = allowSignValue
+                            .Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries)
+                            .Select(x => x.Trim())
+                            .ToList();
+
+                        if (allowedModules.Contains("HIS.Desktop.Plugins.AssignPaan"))
+                        {
+                            previewType = MPS.ProcessorBase.PrintConfig.PreviewType.EmrSignAndPrintPreview;
                         }
                         else
                         {
-                            previewType = MPS.ProcessorBase.PrintConfig.PreviewType.ShowDialog;
+                            previewType = MPS.ProcessorBase.PrintConfig.PreviewType.EmrSignNow;
                         }
                     }
                     else
