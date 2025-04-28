@@ -46,14 +46,15 @@ namespace HIS.Desktop.Plugins.DebateDiagnostic.UcDebateDetail
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject9 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject10 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject11 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject12 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject1 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject2 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject3 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject4 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject5 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject6 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject7 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject8 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject9 = new DevExpress.Utils.SerializableAppearanceObject();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(UcOther));
             this.layoutControl1 = new DevExpress.XtraLayout.LayoutControl();
             this.btnChonKQ2 = new DevExpress.XtraEditors.SimpleButton();
@@ -483,7 +484,7 @@ namespace HIS.Desktop.Plugins.DebateDiagnostic.UcDebateDetail
             // 
             this.xtraTabPage6.Controls.Add(this.txtDiagnostic);
             this.xtraTabPage6.Name = "xtraTabPage6";
-            this.xtraTabPage6.Size = new System.Drawing.Size(1185, 263);
+            this.xtraTabPage6.Size = new System.Drawing.Size(1185, 249);
             this.xtraTabPage6.Text = "Chẩn đoán, nguyên nhân tiên lượng";
             // 
             // txtDiagnostic
@@ -492,14 +493,14 @@ namespace HIS.Desktop.Plugins.DebateDiagnostic.UcDebateDetail
             this.txtDiagnostic.Location = new System.Drawing.Point(0, 0);
             this.txtDiagnostic.MenuManager = this.barManager1;
             this.txtDiagnostic.Name = "txtDiagnostic";
-            this.txtDiagnostic.Size = new System.Drawing.Size(1185, 263);
+            this.txtDiagnostic.Size = new System.Drawing.Size(1185, 249);
             this.txtDiagnostic.TabIndex = 0;
             // 
             // xtraTabPage7
             // 
             this.xtraTabPage7.Controls.Add(this.txtTreatmentMethod);
             this.xtraTabPage7.Name = "xtraTabPage7";
-            this.xtraTabPage7.Size = new System.Drawing.Size(1185, 263);
+            this.xtraTabPage7.Size = new System.Drawing.Size(1185, 249);
             this.xtraTabPage7.Text = "Phương pháp điều trị";
             // 
             // txtTreatmentMethod
@@ -508,14 +509,14 @@ namespace HIS.Desktop.Plugins.DebateDiagnostic.UcDebateDetail
             this.txtTreatmentMethod.Location = new System.Drawing.Point(0, 0);
             this.txtTreatmentMethod.MenuManager = this.barManager1;
             this.txtTreatmentMethod.Name = "txtTreatmentMethod";
-            this.txtTreatmentMethod.Size = new System.Drawing.Size(1185, 263);
+            this.txtTreatmentMethod.Size = new System.Drawing.Size(1185, 249);
             this.txtTreatmentMethod.TabIndex = 0;
             // 
             // xtraTabPage8
             // 
             this.xtraTabPage8.Controls.Add(this.txtCareMethod);
             this.xtraTabPage8.Name = "xtraTabPage8";
-            this.xtraTabPage8.Size = new System.Drawing.Size(1185, 263);
+            this.xtraTabPage8.Size = new System.Drawing.Size(1185, 249);
             this.xtraTabPage8.Text = "Chăm sóc";
             // 
             // txtCareMethod
@@ -524,14 +525,14 @@ namespace HIS.Desktop.Plugins.DebateDiagnostic.UcDebateDetail
             this.txtCareMethod.Location = new System.Drawing.Point(0, 0);
             this.txtCareMethod.MenuManager = this.barManager1;
             this.txtCareMethod.Name = "txtCareMethod";
-            this.txtCareMethod.Size = new System.Drawing.Size(1185, 263);
+            this.txtCareMethod.Size = new System.Drawing.Size(1185, 249);
             this.txtCareMethod.TabIndex = 0;
             // 
             // xtraTabPage9
             // 
             this.xtraTabPage9.Controls.Add(this.txtConclusion);
             this.xtraTabPage9.Name = "xtraTabPage9";
-            this.xtraTabPage9.Size = new System.Drawing.Size(1185, 263);
+            this.xtraTabPage9.Size = new System.Drawing.Size(1185, 249);
             this.xtraTabPage9.Text = "Kết luận";
             // 
             // txtConclusion
@@ -540,7 +541,7 @@ namespace HIS.Desktop.Plugins.DebateDiagnostic.UcDebateDetail
             this.txtConclusion.Location = new System.Drawing.Point(0, 0);
             this.txtConclusion.MenuManager = this.barManager1;
             this.txtConclusion.Name = "txtConclusion";
-            this.txtConclusion.Size = new System.Drawing.Size(1185, 263);
+            this.txtConclusion.Size = new System.Drawing.Size(1185, 249);
             this.txtConclusion.TabIndex = 0;
             // 
             // layoutControlGroup2
@@ -587,6 +588,8 @@ namespace HIS.Desktop.Plugins.DebateDiagnostic.UcDebateDetail
             // 
             // xtraTabControl1
             // 
+            this.xtraTabControl1.CustomHeaderButtons.AddRange(new DevExpress.XtraTab.Buttons.CustomHeaderButton[] {
+            new DevExpress.XtraTab.Buttons.CustomHeaderButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "Chọn diễn biến, diễn biến CLS", -1, true, true, DevExpress.XtraEditors.ImageLocation.MiddleRight, null, serializableAppearanceObject1, "", "Chondienbien", null, true)});
             this.xtraTabControl1.Location = new System.Drawing.Point(2, 2);
             this.xtraTabControl1.Name = "xtraTabControl1";
             this.xtraTabControl1.SelectedTabPage = this.xtraTabPage1;
@@ -597,6 +600,8 @@ namespace HIS.Desktop.Plugins.DebateDiagnostic.UcDebateDetail
             this.xtraTabPage2,
             this.xtraTabPage3,
             this.xtraTabPage4});
+            this.xtraTabControl1.SelectedPageChanged += new DevExpress.XtraTab.TabPageChangedEventHandler(this.xtraTabControl1_SelectedPageChanged);
+            this.xtraTabControl1.CustomHeaderButtonClick += new DevExpress.XtraTab.ViewInfo.CustomHeaderButtonEventHandler(this.xtraTabControl1_CustomHeaderButtonClick);
             // 
             // xtraTabPage1
             // 
@@ -617,7 +622,7 @@ namespace HIS.Desktop.Plugins.DebateDiagnostic.UcDebateDetail
             // 
             this.xtraTabPage2.Controls.Add(this.txtHospitalizationState);
             this.xtraTabPage2.Name = "xtraTabPage2";
-            this.xtraTabPage2.Size = new System.Drawing.Size(1185, 130);
+            this.xtraTabPage2.Size = new System.Drawing.Size(1185, 115);
             this.xtraTabPage2.Text = "Tình trạng lúc vào viện";
             // 
             // txtHospitalizationState
@@ -626,14 +631,14 @@ namespace HIS.Desktop.Plugins.DebateDiagnostic.UcDebateDetail
             this.txtHospitalizationState.Location = new System.Drawing.Point(0, 0);
             this.txtHospitalizationState.Name = "txtHospitalizationState";
             this.txtHospitalizationState.Properties.MaxLength = 2000;
-            this.txtHospitalizationState.Size = new System.Drawing.Size(1185, 130);
+            this.txtHospitalizationState.Size = new System.Drawing.Size(1185, 115);
             this.txtHospitalizationState.TabIndex = 5;
             // 
             // xtraTabPage3
             // 
             this.xtraTabPage3.Controls.Add(this.txtBeforeDiagnostic);
             this.xtraTabPage3.Name = "xtraTabPage3";
-            this.xtraTabPage3.Size = new System.Drawing.Size(1185, 130);
+            this.xtraTabPage3.Size = new System.Drawing.Size(1185, 115);
             this.xtraTabPage3.Text = "Chẩn đoán(Tuyến dưới, KKB, điều trị)";
             // 
             // txtBeforeDiagnostic
@@ -642,14 +647,14 @@ namespace HIS.Desktop.Plugins.DebateDiagnostic.UcDebateDetail
             this.txtBeforeDiagnostic.Location = new System.Drawing.Point(0, 0);
             this.txtBeforeDiagnostic.Name = "txtBeforeDiagnostic";
             this.txtBeforeDiagnostic.Properties.MaxLength = 2000;
-            this.txtBeforeDiagnostic.Size = new System.Drawing.Size(1185, 130);
+            this.txtBeforeDiagnostic.Size = new System.Drawing.Size(1185, 115);
             this.txtBeforeDiagnostic.TabIndex = 6;
             // 
             // xtraTabPage4
             // 
             this.xtraTabPage4.Controls.Add(this.txtTreatmentTracking);
             this.xtraTabPage4.Name = "xtraTabPage4";
-            this.xtraTabPage4.Size = new System.Drawing.Size(1185, 130);
+            this.xtraTabPage4.Size = new System.Drawing.Size(1185, 115);
             this.xtraTabPage4.Text = "Tóm tắt diễn biến bệnh, quá trình điều trị, chăm sóc";
             // 
             // txtTreatmentTracking
@@ -657,7 +662,7 @@ namespace HIS.Desktop.Plugins.DebateDiagnostic.UcDebateDetail
             this.txtTreatmentTracking.Dock = System.Windows.Forms.DockStyle.Fill;
             this.txtTreatmentTracking.Location = new System.Drawing.Point(0, 0);
             this.txtTreatmentTracking.Name = "txtTreatmentTracking";
-            this.txtTreatmentTracking.Size = new System.Drawing.Size(1185, 130);
+            this.txtTreatmentTracking.Size = new System.Drawing.Size(1185, 115);
             this.txtTreatmentTracking.TabIndex = 7;
             // 
             // layoutControlGroup3
@@ -688,7 +693,6 @@ namespace HIS.Desktop.Plugins.DebateDiagnostic.UcDebateDetail
             this.txtRequestContent.Size = new System.Drawing.Size(659, 20);
             this.txtRequestContent.StyleController = this.layoutControl1;
             this.txtRequestContent.TabIndex = 8;
-            this.txtRequestContent.EditValueChanged += new System.EventHandler(this.txtRequestContent_EditValueChanged);
             this.txtRequestContent.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.txtRequestContent_PreviewKeyDown);
             // 
             // txtUserManual
@@ -754,7 +758,7 @@ namespace HIS.Desktop.Plugins.DebateDiagnostic.UcDebateDetail
             this.cboMedcineType.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
             this.cboMedcineType.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.DropDown),
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete, "", -1, true, false, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject9, serializableAppearanceObject10, serializableAppearanceObject11, serializableAppearanceObject12, "", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete, "", -1, true, false, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject2, serializableAppearanceObject3, serializableAppearanceObject4, serializableAppearanceObject5, "", null, null, true)});
             this.cboMedcineType.Size = new System.Drawing.Size(278, 20);
             this.cboMedcineType.StyleController = this.layoutControl1;
             this.cboMedcineType.TabIndex = 1;
@@ -770,7 +774,7 @@ namespace HIS.Desktop.Plugins.DebateDiagnostic.UcDebateDetail
             this.cboActiveIngredient.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
             this.cboActiveIngredient.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.DropDown),
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete, "", -1, true, false, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject1, serializableAppearanceObject2, serializableAppearanceObject3, serializableAppearanceObject4, "", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete, "", -1, true, false, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject6, serializableAppearanceObject7, serializableAppearanceObject8, serializableAppearanceObject9, "", null, null, true)});
             this.cboActiveIngredient.Size = new System.Drawing.Size(282, 20);
             this.cboActiveIngredient.StyleController = this.layoutControl1;
             this.cboActiveIngredient.TabIndex = 2;

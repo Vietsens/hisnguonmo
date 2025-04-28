@@ -42,6 +42,7 @@ using HIS.Desktop.ApiConsumer;
 using MOS.Filter;
 using HIS.Desktop.Utility;
 using HIS.Desktop.LocalStorage.LocalData;
+using Inventec.Common.Logging;
 
 namespace HIS.Desktop.Plugins.DebateDiagnostic.UcDebateDetail
 {
@@ -1699,9 +1700,40 @@ namespace HIS.Desktop.Plugins.DebateDiagnostic.UcDebateDetail
             }
         }
 
-        private void txtRequestContent_EditValueChanged(object sender, EventArgs e)
+        private void xtraTabControl1_SelectedPageChanged(object sender, DevExpress.XtraTab.TabPageChangedEventArgs e)
         {
+            try
+            {
+                
+            }
+            catch (Exception ex)
+            {
+                LogSystem.Error(ex);
+            }
 
+        }
+
+        private void xtraTabControl1_CustomHeaderButtonClick(object sender, DevExpress.XtraTab.ViewInfo.CustomHeaderButtonEventArgs e)
+        {
+            try
+            {
+                var clickedButton = e.Button;
+
+                if (clickedButton.Tag != null)
+                {
+                    string tag = clickedButton.Tag.ToString();
+
+                    if (tag == "Chondienbien")
+                    {
+                        frmDevelopmentCLS frm = new frmDevelopmentCLS();
+                        frm.ShowDialog(); 
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                LogSystem.Error(ex);
+            }
         }
     }
 }
