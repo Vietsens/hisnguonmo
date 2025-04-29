@@ -6026,14 +6026,40 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                     listArgs.Add(HIS.Desktop.Utility.PluginInstance.GetModuleWithWorkingRoom(moduleData, this.roomId, this.roomTypeId));
                     var extenceInstance = HIS.Desktop.Utility.PluginInstance.GetPluginInstance(HIS.Desktop.Utility.PluginInstance.GetModuleWithWorkingRoom(moduleData, this.roomId, this.roomTypeId), listArgs);
                     WaitingManager.Hide();
-                    ((System.Windows.Forms.Form)extenceInstance).ShowDialog();
-                    LoadDosageForm();
+                    //((System.Windows.Forms.Form)extenceInstance).ShowDialog();
+                    //cboDosageForm.EditValue = null;
+                    //LoadDosageForm();
+                    var form = (System.Windows.Forms.Form)extenceInstance;
+                    var oldValue = cboDosageForm.EditValue; // Lưu lại EditValue hiện tại
+                    form.ShowDialog();
+
+                    LoadDosageForm(); // Load lại danh sách sau khi form đóng
+                         
+                    // Nếu EditValue cũ còn tồn tại trong datasource mới, gán lại
+                    var dataSource = cboDosageForm.Properties.DataSource as IList<object>;
+                    if (dataSource != null && dataSource.Any(x => GetValueMember(x)?.ToString() == oldValue?.ToString()))
+                    {
+                        cboDosageForm.EditValue = oldValue;
+                    }
+                    else
+                    {
+                        cboDosageForm.Text = "";
+                        cboDosageForm.EditValue = null;
+                    }    
                 }
             }
             if (e.Button.Kind == ButtonPredefines.Delete) 
             {
+                cboDosageForm.Text = "";
                 cboDosageForm.EditValue = null;
             }
+        }
+
+        private object GetValueMember(object dataItem)
+        {
+            if (dataItem == null) return null;
+            var propertyInfo = dataItem.GetType().GetProperty(cboDosageForm.Properties.ValueMember);
+            return propertyInfo?.GetValue(dataItem, null);
         }
 
         private void VisibleLayoutTemperature()
