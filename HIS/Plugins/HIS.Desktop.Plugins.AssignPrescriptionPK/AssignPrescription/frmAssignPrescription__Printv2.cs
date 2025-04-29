@@ -257,7 +257,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                     if (moduleData != null)
                     {
                         var allowedModules = HisConfigCFG.MODULELINKS.Split(',');
-
+                             
                         if (allowedModules.Contains(moduleData.ModuleLink))
                         {
                             PrescriptionSavePrintShowHasClickSave(printTypeCode, false, MPS.ProcessorBase.PrintConfig.PreviewType.EmrSignAndPrintNow);

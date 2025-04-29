@@ -421,12 +421,12 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
 			}
 		}
 
-        private async Task LoadDosageForm()
+        private void LoadDosageForm()
         {
             try
             {
                 List<DosageFormADO> listADO = new List<DosageFormADO>();
-                Action myaction = () => {
+                //Action myaction = () => {
                     var dataDosageForm = BackendDataWorker.Get<HIS_DOSAGE_FORM>().Where(p => p.IS_ACTIVE == 1).ToList();
                     foreach (var item in dataDosageForm)
                     {
@@ -437,11 +437,15 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                         Dosage.DOSAGEFORM_NAME_UNSIGN = convertToUnSign3(item.DOSAGE_FORM_NAME);
                         listADO.Add(Dosage);
                     }
-                };
-                Task task = new Task(myaction);
-                task.Start();
+				//};
+				//Task task = new Task(myaction);
+				// task.Start();
 
-                await task;
+				//await task;
+				cboDosageForm.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
+                cboDosageForm.EditValue = null;
+                cboDosageForm.Text = string.Empty;
+
                 DataToComboDosageForm(cboDosageForm, listADO);
             }
             catch (Exception ex)

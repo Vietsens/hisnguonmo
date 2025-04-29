@@ -1619,6 +1619,8 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
         {
             try
             {
+                cbo.EditValue = null;
+                cbo.Properties.View.ActiveFilter.Clear();
                 cbo.Properties.DataSource = listADO;
                 cbo.Properties.DisplayMember = "DOSAGE_FORM_NAME";
                 cbo.Properties.ValueMember = "DOSAGE_FORM_NAME";

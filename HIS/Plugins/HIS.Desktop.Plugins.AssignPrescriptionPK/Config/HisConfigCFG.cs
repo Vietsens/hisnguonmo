@@ -167,6 +167,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.Config
         internal static string OptionSubIcdWhenFinish;
         internal static bool IsServiceReqIcdOption;
         internal static string ModuleLinkApply;
+        internal static string MODULELINKS;
         /// <summary>
         /// :Có tự động focus vào ô lời dặn không. 1-có, 0-không
         ///Mặc định= 0
@@ -443,6 +444,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.Config
         {
             try
             {
+                MODULELINKS = GetValue(IS_ALLOW_SIGNATURE_PRINT_MODULELINKS);
                 AllowAssignOffListMedicineMaterialHeinCardNumberPrefix = GetValue(KEY_ALLOW_ASSIGN_OFF_LIST_MEDICINE_MATERIAL__HEIN_CARD_NUMBER_PREFIX);
                 IsSaveButtonOption = GetValue(KEY_SaveButtonOption);
                 IsRequiredHtu = GetValue(KEY_IsRequiredHtu);
