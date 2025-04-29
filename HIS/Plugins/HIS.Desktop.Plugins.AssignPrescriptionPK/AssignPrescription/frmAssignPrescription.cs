@@ -336,7 +336,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
         internal SecondaryIcdProcessor subIcdYhctProcessor;
         internal UserControl ucSecondaryIcdYhct;
         internal List<AlertLogADO> AlertLogsSdo = new List<AlertLogADO>();
-
+        decimal? chiSoMLCT;
         System.Windows.Forms.Timer timerInitFormAssignPrescription { get; set; }
         #endregion
 
