@@ -361,7 +361,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                         CommonParam param = new CommonParam();
                         LIS.Filter.LisSampleServiceFilter filter = new LisSampleServiceFilter();
                         filter.SAMPLE_ID = rowSample.ID;
-                        var result = new BackendAdapter(param).Get<List<LIS_SAMPLE_SERVICE>>("api/LisSampleServiceF/Get", ApiConsumers.LisConsumer, filter, param);
+                        var result = new BackendAdapter(param).Get<List<LIS_SAMPLE_SERVICE>>("api/LisSampleService/Get", ApiConsumers.LisConsumer, filter, param);
                         if(result != null && result.Count > 0)
                         {
                             var ServiceCodes = result.Select(s => s.SERVICE_CODE).ToList();
