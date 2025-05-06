@@ -1374,8 +1374,12 @@ namespace LIS.Desktop.Plugins.SampleInfo
                     ado.GenderName = (!String.IsNullOrWhiteSpace(this.sample.GENDER_CODE)) ? (this.sample.GENDER_CODE == "01" ? "Nữ" : "Nam") : "";
                     ado.GenderName_Unsign = Inventec.Common.String.Convert.UnSignVNese(ado.GenderName);
                     ado.PatientCode = this.sample.PATIENT_CODE ?? "";
-                    ado.SampleTypeCode = this.sample.SAMPLE_TYPE_CODE;
-                    ado.SampleTypeName = this.sample.SAMPLE_TYPE_NAME;
+                    var data = BackendDataWorker.Get<LIS.EFMODEL.DataModels.LIS_SAMPLE_TYPE>().FirstOrDefault(o => o.ID == (sample.SAMPLE_TYPE_ID ?? 0));
+                    if (data != null)
+                    {
+                        ado.SampleTypeCode = data.SAMPLE_TYPE_CODE;
+                        ado.SampleTypeName = data.SAMPLE_TYPE_NAME;
+                    }
                     ado.PrintTime = Inventec.Common.DateTime.Convert.TimeNumberToTimeString(Inventec.Common.DateTime.Get.Now() ?? 0);
                     List<string> name = new List<string>();
                     if (!String.IsNullOrWhiteSpace(this.sample.LAST_NAME))
