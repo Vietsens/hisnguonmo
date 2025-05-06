@@ -784,11 +784,11 @@ namespace HIS.Desktop.Plugins.HisExamServiceTemp.HisExamServiceTemp
                     txtThiLucKhongKinhTrai.Text = data.PART_EXAM_EYESIGHT_LEFT;
                     txtKinhLoPhai.Text = data.PART_EXAM_HOLE_GLASS_RIGHT;
                     txtKinhLoTrai.Text = data.PART_EXAM_HOLE_GLASS_LEFT;
-                    //
-                    if (data.PART_EXAM_DERMATOLOGY != null)
-                    {
+                    ////
+                    //if (data.PART_EXAM_DERMATOLOGY != null)
+                    //{
                         txtDaLieu.Text = data.PART_EXAM_DERMATOLOGY;
-                    }
+                    //}
 
                     //
                     if (data.PART_EXAM_HORIZONTAL_SIGHT == 1)
@@ -1281,6 +1281,7 @@ namespace HIS.Desktop.Plugins.HisExamServiceTemp.HisExamServiceTemp
         {
             try
             {
+
                 txtExamServiceTempCode.Text = currentDTO.EXAM_SERVICE_TEMP_CODE;
                 txtExamServiceTempName.Text = currentDTO.EXAM_SERVICE_TEMP_NAME;
                 txtPartExamCirculation.Text = currentDTO.PART_EXAM_CIRCULATION;
