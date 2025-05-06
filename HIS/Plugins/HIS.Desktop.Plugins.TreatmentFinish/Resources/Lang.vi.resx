@@ -1065,4 +1065,7 @@
   <data name="TruongThongTinCoDoDaiVuotQuaGioiHan" xml:space="preserve">
     <value>Độ dài của trường dữ liệu không vượt quá 2000 ký tự</value>
   </data>
+  <data name="FormTransfer.lciClinicalSigns.Text" xml:space="preserve">
+    <value>Dấu hiệu lâm sàng</value>
+  </data>
 </root>
