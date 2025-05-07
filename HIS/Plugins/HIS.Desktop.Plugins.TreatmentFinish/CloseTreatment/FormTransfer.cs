@@ -1052,6 +1052,7 @@ namespace HIS.Desktop.Plugins.TreatmentFinish.CloseTreatment
                 //qtcode
                 currentTreatmentFinishSDO.ClinicalSigns = txtClinicalSigns.Text.Trim(); 
                 //qtcode
+
                 MyGetData(currentTreatmentFinishSDO);
                 this.Close();
             }

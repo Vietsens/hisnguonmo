@@ -206,6 +206,7 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
         {
             try
             {
+                //hisTreatmentFinishSDO = treatmentFinish; // Sửa để gán vào hisTreatmentFinishSDO
                 hisTreatmentFinishSDO_process = treatmentFinish;
             }
             catch (Exception ex)
