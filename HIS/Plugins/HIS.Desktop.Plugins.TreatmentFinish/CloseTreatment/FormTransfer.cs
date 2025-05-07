@@ -195,6 +195,9 @@ namespace HIS.Desktop.Plugins.TreatmentFinish.CloseTreatment
                     txtPPKTThuoc.Text = treatment.TREATMENT_METHOD;
                     txtHuongDieuTri.Text = treatment.TREATMENT_DIRECTION;
                     txtUsedMedicine.Text = GetUsedMedicine(treatment.ID);
+                    //qtcode
+                    txtClinicalSigns.Text = treatment.CLINICAL_SIGNS; 
+                    //qtcode
                     if (string.IsNullOrEmpty(txtUsedMedicine.Text)
                         && !string.IsNullOrEmpty(treatment.USED_MEDICINE))
                         txtUsedMedicine.Text = treatment.USED_MEDICINE;
@@ -248,6 +251,9 @@ namespace HIS.Desktop.Plugins.TreatmentFinish.CloseTreatment
                 this.lciMediOrg.Text = Inventec.Common.Resource.Get.Value("FormTransfer.lciMediOrg.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.lciTranPatiReason.Text = Inventec.Common.Resource.Get.Value("FormTransfer.lciTranPatiReason.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.lciPhuongTienVanChuyen.Text = Inventec.Common.Resource.Get.Value("FormTransfer.lciPhuongTienVanChuyen.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                //qtcode
+                this.lciClinicalSigns.Text = Inventec.Common.Resource.Get.Value("FormTransfer.lciClinicalSigns.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                //qtcode
                 this.lciMediOrgAddress.Text = Inventec.Common.Resource.Get.Value("FormTransfer.lciMediOrgAddress.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.lciHuongDieuTri.Text = Inventec.Common.Resource.Get.Value("FormTransfer.lciHuongDieuTri.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.lciPhuongPhapSuDung.Text = Inventec.Common.Resource.Get.Value("FormTransfer.lciPhuongPhapSuDung.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
@@ -534,6 +540,10 @@ namespace HIS.Desktop.Plugins.TreatmentFinish.CloseTreatment
                 ValidationMaxLength(txtHuongDieuTri, 3000);
                 ValidationMaxLength(txtTinhTrangNguoiBenh, 3000);
                 ValidationMaxLength(txtPhuongTienVanChuyen, 3000);
+                //qtcode
+                ValidationMaxLength(txtClinicalSigns, 3000);
+                ValidateTextEdit(txtClinicalSigns); 
+                //qtcode
                 //ValidationMaxLength(txtNguoiHoTong, 200);
                 ValidationMaxLength(txtUsedMedicine, 3000);
                 ValidateTextEdit(txtHuongDieuTri);
@@ -884,6 +894,7 @@ namespace HIS.Desktop.Plugins.TreatmentFinish.CloseTreatment
         }
 
         private void cboTranPatiForm_Closed(object sender, DevExpress.XtraEditors.Controls.ClosedEventArgs e)
+        
         {
             try
             {
@@ -895,8 +906,10 @@ namespace HIS.Desktop.Plugins.TreatmentFinish.CloseTreatment
                         if (data != null)
                         {
                             txtTranPatiForm.Text = data.TRAN_PATI_FORM_CODE;
-                            txtHuongDieuTri.Focus();
-                            txtHuongDieuTri.SelectAll();
+                            //qtcode
+                            txtClinicalSigns.Focus();
+                            txtClinicalSigns.SelectAll();
+                            //qtcode
                         }
                     }
                 }
@@ -929,8 +942,8 @@ namespace HIS.Desktop.Plugins.TreatmentFinish.CloseTreatment
                     }
                     else
                     {
-                        txtHuongDieuTri.Focus();
-                        txtHuongDieuTri.SelectAll();
+                        txtClinicalSigns.Focus();
+                        txtClinicalSigns.SelectAll();
                     }
                 }
             }
@@ -971,7 +984,6 @@ namespace HIS.Desktop.Plugins.TreatmentFinish.CloseTreatment
                 }
                 else
                     currentTreatmentFinishSDO.TranPatiFormId = null;
-
                 var data = listMediOrg.FirstOrDefault(o => o.MEDI_ORG_CODE == txtMediOrgCode.Text);
                 if (data != null)
                 {
@@ -1037,6 +1049,9 @@ namespace HIS.Desktop.Plugins.TreatmentFinish.CloseTreatment
                 {
                     currentTreatmentFinishSDO.Valid1Year = false;
                 }
+                //qtcode
+                currentTreatmentFinishSDO.ClinicalSigns = txtClinicalSigns.Text.Trim(); 
+                //qtcode
                 MyGetData(currentTreatmentFinishSDO);
                 this.Close();
             }
