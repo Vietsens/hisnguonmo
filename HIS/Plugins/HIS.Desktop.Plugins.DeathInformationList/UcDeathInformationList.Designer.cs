@@ -50,7 +50,6 @@ namespace HIS.Desktop.Plugins.DeathInformationList
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(UcDeathInformationList));
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject1 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject2 = new DevExpress.Utils.SerializableAppearanceObject();
@@ -72,6 +71,7 @@ namespace HIS.Desktop.Plugins.DeathInformationList
             this.gridView1 = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.gridColumn1 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn4 = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gridColumn20 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn5 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn6 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn7 = new DevExpress.XtraGrid.Columns.GridColumn();
@@ -90,10 +90,9 @@ namespace HIS.Desktop.Plugins.DeathInformationList
             this.gridColumn17 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn19 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.repositoryItemButtonEdit1 = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
-            this.gridColumn20 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn21 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn22 = new DevExpress.XtraGrid.Columns.GridColumn();
-            this.barManager1 = new DevExpress.XtraBars.BarManager(this.components);
+            this.barManager1 = new DevExpress.XtraBars.BarManager();
             this.bar1 = new DevExpress.XtraBars.Bar();
             this.bbtnSearch = new DevExpress.XtraBars.BarButtonItem();
             this.bbtnRefresh = new DevExpress.XtraBars.BarButtonItem();
@@ -174,9 +173,9 @@ namespace HIS.Desktop.Plugins.DeathInformationList
             this.layoutControlGroup1 = new DevExpress.XtraLayout.LayoutControlGroup();
             this.layoutControlItem1 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem2 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.timerRefreshForm = new System.Windows.Forms.Timer(this.components);
-            this.timer1 = new System.Windows.Forms.Timer(this.components);
-            this.bindingSource1 = new System.Windows.Forms.BindingSource(this.components);
+            this.timerRefreshForm = new System.Windows.Forms.Timer();
+            this.timer1 = new System.Windows.Forms.Timer();
+            this.bindingSource1 = new System.Windows.Forms.BindingSource();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
             this.layoutControl1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl3)).BeginInit();
@@ -320,6 +319,7 @@ namespace HIS.Desktop.Plugins.DeathInformationList
             this.gridView1.Columns.AddRange(new DevExpress.XtraGrid.Columns.GridColumn[] {
             this.gridColumn1,
             this.gridColumn4,
+            this.gridColumn20,
             this.gridColumn5,
             this.gridColumn6,
             this.gridColumn7,
@@ -337,7 +337,6 @@ namespace HIS.Desktop.Plugins.DeathInformationList
             this.gridColumn16,
             this.gridColumn17,
             this.gridColumn19,
-            this.gridColumn20,
             this.gridColumn21,
             this.gridColumn22});
             this.gridView1.GridControl = this.gridControl1;
@@ -380,6 +379,17 @@ namespace HIS.Desktop.Plugins.DeathInformationList
             this.gridColumn4.Visible = true;
             this.gridColumn4.VisibleIndex = 3;
             this.gridColumn4.Width = 95;
+            // 
+            // gridColumn20
+            // 
+            this.gridColumn20.Caption = "Trạng thái tử vong";
+            this.gridColumn20.FieldName = "DEATH_CASE_SYNC_RESULT_STR";
+            this.gridColumn20.Name = "gridColumn20";
+            this.gridColumn20.OptionsColumn.AllowEdit = false;
+            this.gridColumn20.UnboundType = DevExpress.Data.UnboundColumnType.Object;
+            this.gridColumn20.Visible = true;
+            this.gridColumn20.VisibleIndex = 20;
+            this.gridColumn20.Width = 150;
             // 
             // gridColumn5
             // 
@@ -573,22 +583,13 @@ namespace HIS.Desktop.Plugins.DeathInformationList
             this.repositoryItemButtonEdit1.Name = "repositoryItemButtonEdit1";
             this.repositoryItemButtonEdit1.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             // 
-            // gridColumn20
-            // 
-            this.gridColumn20.Caption = "Trạng thái tử vong";
-            this.gridColumn20.FieldName = "DEATH_CASE_SYNC_RESULT";
-            this.gridColumn20.Name = "gridColumn20";
-            this.gridColumn20.OptionsColumn.AllowEdit = false;
-            this.gridColumn20.Visible = true;
-            this.gridColumn20.VisibleIndex = 20;
-            this.gridColumn20.Width = 150;
-            // 
             // gridColumn21
             // 
             this.gridColumn21.Caption = "Thời gian đồng bộ ca tử vong";
-            this.gridColumn21.FieldName = "DEATH_CASE_SYNC_TIME ";
+            this.gridColumn21.FieldName = "DEATH_CASE_SYNC_TIME_STR";
             this.gridColumn21.Name = "gridColumn21";
             this.gridColumn21.OptionsColumn.AllowEdit = false;
+            this.gridColumn21.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumn21.Visible = true;
             this.gridColumn21.VisibleIndex = 21;
             this.gridColumn21.Width = 150;
@@ -596,7 +597,7 @@ namespace HIS.Desktop.Plugins.DeathInformationList
             // gridColumn22
             // 
             this.gridColumn22.Caption = "Lý do đồng bộ ca tử vong";
-            this.gridColumn22.FieldName = "DEATH_CASE_SYNC_ERROR ";
+            this.gridColumn22.FieldName = "DEATH_CASE_SYNC_ERROR";
             this.gridColumn22.Name = "gridColumn22";
             this.gridColumn22.OptionsColumn.AllowEdit = false;
             this.gridColumn22.Visible = true;

@@ -46,7 +46,8 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             MPS000453,
             MPS000454,
             MPS000455,
-            MPS000464
+            MPS000464,
+            MPS000499,
         }
         private void PrintProcess(PRINT_TYPE printType)
         {
@@ -72,6 +73,9 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                         break;
                     case PRINT_TYPE.MPS000464:
                         richEditorMain.RunPrintTemplate("Mps000464", DelegateRunPrinter);
+                        break;
+                    case PRINT_TYPE.MPS000499:
+                        richEditorMain.RunPrintTemplate("Mps000499", DelegateRunPrinter);
                         break;
                 }
             }
@@ -106,6 +110,9 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                         break;
                     case "Mps000464":
                         LoadBieuMauPhieuMps000464(printTypeCode, fileName, ref result);
+                        break;
+                    case "Mps000499":
+                        LoadBieuMauPhieuMps000499(printTypeCode, fileName, ref result);
                         break;
                 }
             }
@@ -323,6 +330,73 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
+
+        private void LoadBieuMauPhieuMps000499(string printTypeCode, string fileName, ref bool result)
+        {
+            try
+            {
+                CommonParam param = new CommonParam();
+                WaitingManager.Show();
+
+                var serviceReqId = currentServiceReq.ID;
+                var treatmentId = currentServiceReq.TREATMENT_ID;
+
+
+                var kskOccupational = currentKsKOccupational;
+
+                var treatments = new List<V_HIS_TREATMENT_4>();
+                if (treatmentId > 0)
+                {
+                    var tFilter = new HisTreatmentView4Filter { ID = treatmentId };
+                    treatments = new BackendAdapter(param).Get<List<V_HIS_TREATMENT_4>>(
+                        "api/HisTreatment/GetView4", ApiConsumers.MosConsumer, tFilter, null);
+                }
+
+             
+             
+               
+                var dhstList = new List<V_HIS_DHST>();
+                if (kskOccupational.DHST_ID > 0)
+                {
+                    var filter = new MOS.Filter.HisDhstFilter { ID = kskOccupational.DHST_ID };
+                    dhstList = new BackendAdapter(param).Get<List<V_HIS_DHST>>(
+                        "api/HisDhst/GetView", ApiConsumers.MosConsumer, filter, param);
+                }
+
+             
+                var healthRanks = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker
+                    .Get<HIS_HEALTH_EXAM_RANK>()
+                    .Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE)
+                    .ToList();
+
+
+                var selectedKsk = kskOccupational;
+                var selectedReq = currentServiceReq;
+                var selectedTreatment = treatments.FirstOrDefault();
+                var selectedDhst = dhstList.FirstOrDefault();
+
+               
+                var rdo = new MPS.Processor.Mps000499.PDO.Mps000499PDO(
+                    selectedKsk,
+                    selectedTreatment,
+                    selectedReq,
+                    selectedDhst,
+                    healthRanks
+                );
+
+
+
+                 PrintData(printTypeCode, fileName, rdo, ref result);
+                WaitingManager.Hide();
+            }
+            catch (Exception ex)
+            {
+                WaitingManager.Hide();
+                Inventec.Common.Logging.LogSystem.Error(ex);
+                result = false;
+            }
+        }
+
 
         private void PrintData(string printTypeCode, string fileName, object data, ref bool result)
         {

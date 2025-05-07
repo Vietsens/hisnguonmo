@@ -39,18 +39,6 @@ namespace  HIS.Desktop.Plugins.HisImportMedicineType.Message
         internal const string ChiDuocNhapGiaGoiKhiCoGoi = "Chỉ được nhập giá gói khi có gói|";
         internal const string TonTaiTrungNhauTrongFileImport = "Tồn tại {0} trùng nhau trong file import|";
         internal const string CoThiPhaiNhap = "Có {0} thì phải nhập {1}|";
-        //internal const string DaTonTai = "";
-        //internal const string DaTonTai = "";
-        //internal const string DaTonTai = "";
-        //internal const string DaTonTai = "";
-        //internal const string DaTonTai = "";
-        //internal const string DaTonTai = "";
-        //internal const string DaTonTai = "";
-        //internal const string DaTonTai = "";
-        //internal const string DaTonTai = "";
-        //internal const string DaTonTai = "";
-        //internal const string DaTonTai = "";
-        //internal const string DaTonTai = "";
-        
+        internal const string TruongDuBatBuoc = "Trường dữ liệu {0} bắt buộc nhập|";
     }
 }

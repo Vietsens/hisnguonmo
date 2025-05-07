@@ -1310,7 +1310,7 @@ namespace HIS.UC.UCPatientRaw
                         }
 
                         ReloadDataCboPatientClassifyByPatientType(pt);
-                        if (!IsLoadFromSearchTxtCode)
+                        //if (!IsLoadFromSearchTxtCode)
                         {
                             this.PatientTypeEditValueChanged(sender, e);
                         }
@@ -1597,7 +1597,7 @@ namespace HIS.UC.UCPatientRaw
 
                     List<SDA.EFMODEL.DataModels.SDA_ETHNIC> datas = null;
                     if (BackendDataWorker.IsExistsKey<SDA.EFMODEL.DataModels.SDA_ETHNIC>())
-                    {
+                    {   
                         datas = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<SDA.EFMODEL.DataModels.SDA_ETHNIC>();
                     }
                     else

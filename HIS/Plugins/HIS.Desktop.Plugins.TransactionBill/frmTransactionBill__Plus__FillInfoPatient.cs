@@ -61,10 +61,17 @@ namespace HIS.Desktop.Plugins.TransactionBill
                     txtDOB.Text = Inventec.Common.DateTime.Convert.TimeNumberToDateString(data.TDL_PATIENT_DOB);
                     txtGender.Text = data.TDL_PATIENT_GENDER_NAME;
                     txtAddress.Text = data.TDL_PATIENT_ADDRESS;
+                    HisPatientFilter filter = new HisPatientFilter();
+                    filter.ID = data.PATIENT_ID;
+                    var patient = new BackendAdapter(new CommonParam()).Get<List<MOS.EFMODEL.DataModels.HIS_PATIENT>>("api/HisPatient/Get", ApiConsumers.MosConsumer, filter, null);
+                    if(patient != null && patient.Count > 0)
+                    {
+                        txtBuyerEmail.Text = patient.FirstOrDefault().EMAIL;
+                    }
                     //
-//                    Nếu TDL_PATIENT_WORK_PLACE_ID trong V_HIS_TREATMENT_FEE có giá trị thì hiển thị bản ghi HIS_WORK_PLACE có ID tương ứng, và bỏ check checkbox “Khác”
-//Nếu TDL_PATIENT_WORK_PLACE_ID không có thông tin và TDL_PATIENT_WORK_PLACE_NAME có thông tin thì hiển thị dữ liệu tại TDL_PATIENT_WORK_PLACE_NAME và tự động check vào checkbox “Khác”
-//Nếu cả 2 trường đếu ko có thông tin thì mặc định bỏ check checkbox “Khác”
+                    //                    Nếu TDL_PATIENT_WORK_PLACE_ID trong V_HIS_TREATMENT_FEE có giá trị thì hiển thị bản ghi HIS_WORK_PLACE có ID tương ứng, và bỏ check checkbox “Khác”
+                    //Nếu TDL_PATIENT_WORK_PLACE_ID không có thông tin và TDL_PATIENT_WORK_PLACE_NAME có thông tin thì hiển thị dữ liệu tại TDL_PATIENT_WORK_PLACE_NAME và tự động check vào checkbox “Khác”
+                    //Nếu cả 2 trường đếu ko có thông tin thì mặc định bỏ check checkbox “Khác”
 
                     if (!IsPin)
                     {

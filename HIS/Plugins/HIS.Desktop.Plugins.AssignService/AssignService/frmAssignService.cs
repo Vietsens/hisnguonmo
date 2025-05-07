@@ -77,6 +77,7 @@ using DevExpress.XtraBars;
 using HIS.UC.Icd;
 using HIS.UC.Icd.ADO;
 using DevExpress.XtraBars.Controls;
+using static MPS.ProcessorBase.PrintConfig;
 
 namespace HIS.Desktop.Plugins.AssignService.AssignService
 {
@@ -156,7 +157,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
 		string _TextIcdName = "";
 		string _TextIcdNameCause = "";
 
-		List<HIS_ICD> currentIcds;
+        List<HIS_ICD> currentIcds;
 
 		List<HIS_PATIENT_TYPE> currentPatientTypes;
 		List<V_HIS_PATIENT_TYPE_ALLOW> currentPatientTypeAllows;
@@ -1094,8 +1095,31 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
 					? DevExpress.XtraLayout.Utils.LayoutVisibility.Never 
 					: DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
 				txtDutruTime.Enabled = !chkMultiIntructionTime.Checked;
-			}
-			catch (Exception ex)
+
+                string configValue = HisConfigCFG.IsAllowSignaturePrint;
+
+                if (!string.IsNullOrWhiteSpace(configValue))
+                {
+                    var allowedModules = configValue
+                        .Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries)
+                        .Select(x => x.Trim())
+                        .ToList();
+
+                    if (allowedModules.Contains("HIS.Desktop.Plugins.AssignService"))
+                    {
+                        layoutControlItem18.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+                    }
+                    else
+                    {
+                        layoutControlItem18.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
+                    }
+                }
+                else
+                {
+                    layoutControlItem18.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
+                }
+            }
+            catch (Exception ex)
 			{
 				WaitingManager.Hide();
 				Inventec.Common.Logging.LogSystem.Warn(ex);
@@ -5041,7 +5065,6 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
 
 				this.controlStateWorker.SetData(this.currentControlStateRDO);
 
-
 			}
 			catch (Exception ex)
 			{
@@ -5407,7 +5430,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
 		{
 			try
 			{
-				if (!string.IsNullOrEmpty(HisConfigCFG.InstructionTimeServiceMustBeGreaterThanStartTimeExam))
+                if (!string.IsNullOrEmpty(HisConfigCFG.InstructionTimeServiceMustBeGreaterThanStartTimeExam))
 				{
 					LoadVServiceReq();
 					if (vServiceReq != null && vServiceReq.START_TIME.HasValue && Inventec.Common.DateTime.Calculation.DifferenceTime(vServiceReq.START_TIME.Value, InstructionTime, Inventec.Common.DateTime.Calculation.UnitDifferenceTime.SECOND) < Int32.Parse(HisConfigCFG.InstructionTimeServiceMustBeGreaterThanStartTimeExam))
@@ -5517,7 +5540,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
 						}
 						#endregion
 						#region ValidSereServWithMinDuration
-						List<HIS_SERE_SERV> sereServMinDurations = new List<HIS_SERE_SERV>();
+						List<HIS_SERE_SERV> sereServMinDurations = new List<HIS_SERE_SERV>();                       
 						foreach (var item in lstPatientSelect)
 						{
 							var dt = getSereServWithMinDuration(serviceCheckeds__Send, item.PATIENT_ID);
@@ -5535,10 +5558,10 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
 								   " (" + item.TDL_SERVICE_REQ_CODE +
 								   "); ";
 							}
-
-							if (HisConfigCFG.IsSereServMinDurationAlert)
+							
+							if (HisConfigCFG.IsSereServMinDurationAlert == 1)
 							{
-								if (MessageBox.Show(string.Format(ResourceMessage.SereServMinDurationAlert__BanCoMuonChuyenDoiDTTTSangVienPhi, sereServMinDurationStr), MessageUtil.GetMessage(LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaThongBao), MessageBoxButtons.YesNo) == DialogResult.Yes)
+								if (MessageBox.Show(string.Format(ResourceMessage.SereServMinDurationAlert__BanCoMuonChuyenDoiDTTTSangVienPhi,string.Format(ResourceMessage.DichVuCoThoiGianChiDinhNamTrongKhoangThoiGianKhongChoPhep, sereServMinDurationStr)), MessageUtil.GetMessage(LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaThongBao), MessageBoxButtons.YesNo) == DialogResult.Yes)
 								{
 									foreach (var sv in serviceCheckeds__Send)
 									{
@@ -5554,10 +5577,30 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
 									return;
 								}
 							}
+							else if (HisConfigCFG.IsSereServMinDurationAlert == 2)
+							{
+                                if (MessageBox.Show(string.Format(ResourceMessage.DichVuCoThoiGianChiDinhNamTrongKhoangThoiGianKhongChoPhep, sereServMinDurationStr), MessageUtil.GetMessage(LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaThongBao), MessageBoxButtons.YesNo) == DialogResult.Yes)
+                                {
+                                    return;
+                                }
+                                else
+								{
+									return;
+								}
+							}
 							else
 							{
-								if (MessageBox.Show(string.Format(ResourceMessage.DichVuCoThoiGianChiDinhNamTrongKhoangThoiGianKhongChoPhep, sereServMinDurationStr), MessageUtil.GetMessage(LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaThongBao), MessageBoxButtons.YesNo) == DialogResult.No)
-									return;
+								if (HisConfigCFG.IsSereServMinDurationAlert == 0 || (HisConfigCFG.IsSereServMinDurationAlert != 1 && HisConfigCFG.IsSereServMinDurationAlert != 2))
+								{
+                                    if (MessageBox.Show(string.Format(ResourceMessage.DichVuCoThoiGianChiDinhNamTrongKhoangThoiGianKhongChoPhep, sereServMinDurationStr), MessageUtil.GetMessage(LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaThongBao), MessageBoxButtons.YesNo) == DialogResult.Yes)
+                                    {
+                                        return;
+                                    }
+                                    else
+									{
+										return;
+									}
+								}
 							}
 						}
 						#endregion
@@ -5676,7 +5719,12 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
 			try
 			{
 				SaveWithGridpatientSelect(TypeButton.SAVE_AND_PRINT, true, false, false);
-			}
+                //if (LblBtnPrint.Visibility == DevExpress.XtraLayout.Utils.LayoutVisibility.Always && BtnPrint.Enabled)
+                //{
+                //    PrintServiceReqProcessor = new Library.PrintServiceReq.PrintServiceReqProcessor(serviceReqComboResultSDO, currentHisTreatment, null, currentModule != null ? currentModule.RoomId : 0);
+                //    InPhieuYeuCauDichVu(true);
+                //}
+            }
 			catch (Exception ex)
 			{
 				Inventec.Common.Logging.LogSystem.Error(ex);
@@ -6210,6 +6258,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
 			}
 			catch (Exception ex)
 			{
+				WaitingManager.Hide();
 				Inventec.Common.Logging.LogSystem.Error(ex);
 			}
 		}

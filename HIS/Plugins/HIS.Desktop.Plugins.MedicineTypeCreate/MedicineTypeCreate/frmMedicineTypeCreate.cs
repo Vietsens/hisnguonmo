@@ -3192,6 +3192,8 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
             {
                 if (e.Button.Kind == ButtonPredefines.Delete)
                 {
+                    //txtMedicineUseFormCode
+
                     cboMedicineUseForm.Properties.Buttons[1].Visible = true;
                     cboMedicineUseForm.EditValue = null;
                     txtMedicineUseFormCode.Text = "";
@@ -6978,6 +6980,7 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
             }
         }
 
+        //qtcode chú ý
         private void cboMedicineLine_EditValueChanged(object sender, EventArgs e)
         {
             try
@@ -6991,7 +6994,6 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
                         ValidatecboMedicineUseForm(medicineLine.DO_NOT_REQUIRED_USE_FORM != 1);
                     }
                 }
-
             }
             catch (Exception ex)
             {

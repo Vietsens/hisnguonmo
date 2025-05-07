@@ -48,5 +48,6 @@ namespace HIS.Desktop.LocalStorage.ConfigSystem
         internal const string EXE_CONFIG_KEY__MPS_BASE_URI = "KEY__MPS_BASE_URI";
         internal const string EXE_CONFIG_KEY__CRM_BASE_URI = "KEY__CRM_BASE_URI";
         internal const string EXE_CONFIG_KEY__FSS_FOR_CRM_BASE_URI = "KEY__FSS_FOR_CRM_BASE_URI";
+        internal const string EXE_CONFIG_KEY__HPS_BASE_URI = "KEY__HPS_BASE_URI";
     }
 }

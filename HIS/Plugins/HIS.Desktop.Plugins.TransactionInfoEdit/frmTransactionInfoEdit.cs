@@ -55,7 +55,6 @@ namespace HIS.Desktop.Plugins.TransactionInfoEdit
         List<HIS_REPAY_REASON> repayReasons = new List<HIS_REPAY_REASON>();
         int configUpdateAccountBook;
         bool MustChooseWorkingShift;
-
         public frmTransactionInfoEdit(Inventec.Desktop.Common.Modules.Module module, V_HIS_TRANSACTION _transaction)
             : base(module)
         {
@@ -474,6 +473,7 @@ namespace HIS.Desktop.Plugins.TransactionInfoEdit
                     this.txtSTKNguoiMua.Text = this._HisTransaction.BUYER_ACCOUNT_NUMBER;
                     this.txtMaSoThue.Text = this._HisTransaction.BUYER_TAX_CODE;
                     this.txtDonVi.Text = this._HisTransaction.BUYER_ORGANIZATION;
+                    this.txtBuyerEmail.Text = this._HisTransaction.BUYER_EMAIL;
                     this.spinEditAmount.EditValue = Inventec.Common.Number.Convert.NumberToString(this._HisTransaction.AMOUNT, ConfigApplications.NumberSeperator);
                     this.cboPayForm.EditValue = this._HisTransaction.PAY_FORM_ID;
                     if (this._HisTransaction.PAY_FORM_ID == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__TMCK)
@@ -673,7 +673,7 @@ namespace HIS.Desktop.Plugins.TransactionInfoEdit
                 ado.BuyerTaxCode = this.txtMaSoThue.Text;
                 ado.BuyerOrganization = this.txtDonVi.Text;
                 ado.TransactionId = this._HisTransaction.ID;
-
+                ado.BuyerEmail = this.txtBuyerEmail.Text;
                 ado.PayFormId = Convert.ToInt64(cboPayForm.EditValue);
                 ado.TransferAmount = spinEditChuyenKhoan.Value;
                 if (cboAccountBook.EditValue != null)
@@ -1321,6 +1321,21 @@ namespace HIS.Desktop.Plugins.TransactionInfoEdit
             }
         }
 
-
+        private void txtBuyerEmail_Validating(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            try
+            {              
+                if(Inventec.Common.String.CheckString.IsOverMaxLengthUTF8(txtBuyerEmail.Text.Trim(), 100))
+                {
+                    MessageBox.Show("Địa chỉ email không được vượt quá 100 ký tự!", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    e.Cancel = true;
+                    txtBuyerEmail.Focus();
+                }
+            }
+            catch (Exception ex)
+            {
+                LogSystem.Error(ex);
+            }           
+        }
     }
 }

@@ -351,6 +351,24 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                     ado.SampleTime = Inventec.Common.DateTime.Convert.TimeNumberToTimeString(rowSample.SAMPLE_TIME ?? 0);
                     ado.ResultTime = Inventec.Common.DateTime.Convert.TimeNumberToTimeString(rowSample.RESULT_TIME ?? 0);
                     ado.AppointmentTime = Inventec.Common.DateTime.Convert.TimeNumberToTimeString(rowSample.APPOINTMENT_TIME ?? 0);
+                    if (!string.IsNullOrEmpty(rowSample.SAMPLE_TYPE_CODE))
+                    {
+                        ado.SampleTypeCode = rowSample.SAMPLE_TYPE_CODE;
+                        ado.SampleTypeName = rowSample.SAMPLE_TYPE_NAME;
+                    }
+                    else
+                    {
+                        CommonParam param = new CommonParam();
+                        LIS.Filter.LisSampleServiceFilter filter = new LisSampleServiceFilter();
+                        filter.SAMPLE_ID = rowSample.ID;
+                        var result = new BackendAdapter(param).Get<List<LIS_SAMPLE_SERVICE>>("api/LisSampleService/Get", ApiConsumers.LisConsumer, filter, param);
+                        if(result != null && result.Count > 0)
+                        {
+                            var ServiceCodes = result.Select(s => s.SERVICE_CODE).ToList();
+                            var services = BackendDataWorker.Get<V_HIS_SERVICE>().Where(w => ServiceCodes.Any(o => o == w.SERVICE_CODE));
+                            ado.SampleTypeCode = string.Join(",", services.Select(s => s.SAMPLE_TYPE_CODE));
+                        }
+                    }
 
                     BartenderPrintClientManager client = new BartenderPrintClientManager();
                     bool success = client.BartenderPrint(ado);

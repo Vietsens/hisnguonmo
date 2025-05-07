@@ -31,6 +31,7 @@ using System.Text;
 using System.Threading.Tasks;
 using MOS.Filter;
 using HIS.Desktop.Utility;
+using System.Reflection;
 
 namespace HIS.Desktop.Plugins.DepositService.DepositService
 {
@@ -100,7 +101,7 @@ namespace HIS.Desktop.Plugins.DepositService.DepositService
                         InPhieuTamUng(printTypeCode, fileName, ref result);
                         break;
                     case PrintTypeCodeStore.PRINT_TYPE_CODE__MPS000102:
-                        InPhieuThuPhiDichVu(printTypeCode, fileName, ref result, this.isPrintNow);
+                        InPhieuThuPhiDichVu(printTypeCode, fileName, ref result, this.isPrintNow, this.isSign);
                         break;
                     default:
                         break;
@@ -142,7 +143,7 @@ namespace HIS.Desktop.Plugins.DepositService.DepositService
             return result;
         }
 
-        private void InPhieuThuPhiDichVu(string printTypeCode, string fileName, ref bool result, bool isPrintNow)
+        private void InPhieuThuPhiDichVu(string printTypeCode, string fileName, ref bool result, bool isPrintNow, bool isSign)
         {
             try
             {
@@ -164,7 +165,7 @@ namespace HIS.Desktop.Plugins.DepositService.DepositService
                         item.VIR_TOTAL_PATIENT_PRICE = itemCheck.AMOUNT;
                     }
                 }
-                DepositServicePrintProcess.LoadPhieuThuPhiDichVu(PrintTypeCodeStore.PRINT_TYPE_CODE__MPS000102, fileName, true, sereServs, this.hisTreatment, sereServIds, this.hisDeposit, dereDetails, FirstExamRoom(), isPrintNow, this.moduleData);
+                DepositServicePrintProcess.LoadPhieuThuPhiDichVu(PrintTypeCodeStore.PRINT_TYPE_CODE__MPS000102, fileName, true, sereServs, this.hisTreatment, sereServIds, this.hisDeposit, dereDetails, FirstExamRoom(), isPrintNow, isSign, this.moduleData);
             }
             catch (Exception ex)
             {

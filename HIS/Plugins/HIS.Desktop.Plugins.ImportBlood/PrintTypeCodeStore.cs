@@ -27,5 +27,6 @@ namespace HIS.Desktop.Plugins.ImportBlood
     {
         public const string PRINT_TYPE_CODE__PhieuNhapMauKhacDauKyKiemKe_MPS000212 = "Mps000212";
         public const string PRINT_TYPE_CODE__PhieuNhapMauTuNhaCungCap_MPS000149 = "Mps000149";
+        public const string PRINT_TYPE_CODE__BienBanKiemNhapTuNhaCungCap_MPS000085 = "MPS000085";
     }
 }

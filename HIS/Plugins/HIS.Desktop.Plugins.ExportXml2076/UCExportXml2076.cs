@@ -45,6 +45,8 @@ using DevExpress.XtraGrid.Views.Grid;
 using DevExpress.XtraGrid.Views.Grid.ViewInfo;
 using HIS.Desktop.Plugins.ExportXml2076.Config;
 using ACS.EFMODEL.DataModels;
+using DevExpress.Utils;
+using DevExpress.XtraGrid;
 
 namespace HIS.Desktop.Plugins.ExportXml2076
 {
@@ -771,6 +773,19 @@ namespace HIS.Desktop.Plugins.ExportXml2076
                         else
                             e.Value = data.TDL_HEIN_CARD_NUMBER;
                     }
+                    //else if (e.Column.FieldName == "STATUS_ICON") 
+                    //{
+                    //    if (data.XML2076_RESULT == 1) // Lỗi đồng bộ
+                    //    {
+                    //        e.Value = !string.IsNullOrEmpty(data.XML130_DESC)
+                    //            ? Properties.Resources.caution 
+                    //            : Properties.Resources.cross;   
+                    //    }
+                    //    else if (data.XML2076_RESULT == 2) 
+                    //    {
+                    //        e.Value = Properties.Resources.check; 
+                    //    }
+                    //}
                 }
             }
             catch (Exception ex)
@@ -1229,12 +1244,35 @@ namespace HIS.Desktop.Plugins.ExportXml2076
             }
         }
 
-        private void gridViewTreatment_RowCellClick(object sender, DevExpress.XtraGrid.Views.Grid.RowCellClickEventArgs e)
+        private void gridViewTreatment_CustomRowCellEdit(object sender, CustomRowCellEditEventArgs e)
         {
             try
             {
-                this.currentTreatment = (V_HIS_TREATMENT_10)gridViewTreatment.GetRow(e.RowHandle);
-                FillDataByTreatmentSelect();
+                DevExpress.XtraGrid.Views.Grid.GridView view = sender as DevExpress.XtraGrid.Views.Grid.GridView;
+                if (e.RowHandle >= 0)
+                {
+                    var rowData = (V_HIS_TREATMENT_10)view.GetRow(e.RowHandle);
+                    if (rowData == null) return;
+
+                    if (e.Column.FieldName == "STATUS_ICON") 
+                    {
+                        if (rowData.XML2076_RESULT == 1) // Lỗi đồng bộ
+                        {
+                            if (rowData.XML2076_DESC != null)
+                            {
+                                e.RepositoryItem = btnError;
+                            }
+                            else
+                            {
+                                e.RepositoryItem = btnFail; 
+                            }
+                        }
+                        else if (rowData.XML2076_RESULT == 2) // Gửi thành công
+                        {
+                            e.RepositoryItem = btnSuccess;
+                        }
+                    }
+                }
             }
             catch (Exception ex)
             {
@@ -1242,62 +1280,20 @@ namespace HIS.Desktop.Plugins.ExportXml2076
             }
         }
 
-        private void gridViewTreatment_MouseDown(object sender, MouseEventArgs e)
+        private void btnError_ButtonClick(object sender, DevExpress.XtraEditors.Controls.ButtonPressedEventArgs e)
         {
             try
             {
-                if ((Control.ModifierKeys & Keys.Control) != Keys.Control)
+                var row = (V_HIS_TREATMENT_10)gridViewTreatment.GetFocusedRow();
+                if (row != null && !string.IsNullOrEmpty(row.XML2076_DESC))
                 {
-                    GridView view = sender as GridView;
-                    GridHitInfo hi = view.CalcHitInfo(e.Location);
-                    if (hi.InRowCell)
-                    {
-                        if (hi.Column.FieldName == "EXPORT_XML")
-                        {
-                            V_HIS_TREATMENT_10 row = (V_HIS_TREATMENT_10)gridViewTreatment.GetRow(hi.RowHandle);
-                            LogSystem.Info("repositoryItemBtnExport_Click. 2");
-                            if (String.IsNullOrWhiteSpace(txtPathSave.Text))
-                            {
-                                FolderBrowserDialog fbd = new FolderBrowserDialog();
-                                if (fbd.ShowDialog() == DialogResult.OK)
-                                {
-                                    txtPathSave.Text = fbd.SelectedPath;
-                                }
-                                else
-                                {
-                                    return;
-                                }
-                            }
-                            bool success = false;
-                            CommonParam param = new CommonParam();
-                            WaitingManager.Show();
-                            List<V_HIS_TREATMENT_10> listSeleted = new List<V_HIS_TREATMENT_10>();
-                            listSeleted.Add(row);
-
-
-                            success = this.GenerateXml2076(ref param, listSeleted);
-
-                            WaitingManager.Hide();
-                            if (success && param.Messages.Count == 0)
-                            {
-                                MessageManager.Show(this.ParentForm, param, success);
-                                this.gridViewTreatment.BeginDataUpdate();
-                                this.gridViewTreatment.EndDataUpdate();
-                            }
-                            else
-                            {
-                                MessageManager.Show(param, success);
-                            }
-                        }
-                    }
+                    DevExpress.XtraEditors.XtraMessageBox.Show(row.XML2076_DESC, "Thông tin lỗi");
                 }
             }
             catch (Exception ex)
             {
-                WaitingManager.Hide();
-                Inventec.Common.Logging.LogSystem.Warn(ex);
+                LogSystem.Error(ex);
             }
         }
-
     }
 }

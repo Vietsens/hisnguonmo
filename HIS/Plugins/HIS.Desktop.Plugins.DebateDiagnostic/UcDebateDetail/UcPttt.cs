@@ -750,7 +750,7 @@ namespace HIS.Desktop.Plugins.DebateDiagnostic.UcDebateDetail
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
-
+        //qtcode chú ý
         private void SelectDataResult(object data)
         {
             try

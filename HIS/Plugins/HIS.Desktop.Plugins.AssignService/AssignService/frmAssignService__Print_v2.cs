@@ -268,13 +268,28 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
         private void InPhieuYeuCauDichVu(bool isSaveAndShow, MPS.ProcessorBase.PrintConfig.PreviewType? previewType = null)
         {
             try
-            {
-                
+            {                                
+                string configValue = HisConfigCFG.IsAllowSignaturePrint;
+
+                if (!string.IsNullOrWhiteSpace(configValue))
+                {
+                    var allowedModules = configValue
+                        .Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries)
+                        .Select(x => x.Trim())
+                        .ToList();
+
+                    if (allowedModules.Contains("HIS.Desktop.Plugins.AssignService"))
+                    {
+                        previewType = MPS.ProcessorBase.PrintConfig.PreviewType.EmrSignAndPrintPreview;
+                    }
+                    else
+                    {
+                        previewType = MPS.ProcessorBase.PrintConfig.PreviewType.EmrSignNow;
+                    }
+                }
                 if (serviceReqComboResultSDO != null)
                 {
                     CommonParam param = new CommonParam();
-                    
-
                     List<V_HIS_BED_LOG> bedLogs = new List<V_HIS_BED_LOG>();
                     // get bedLog
                     if (this.currentHisTreatment != null && this.serviceReqComboResultSDO != null && this.serviceReqComboResultSDO.ServiceReqs != null && this.serviceReqComboResultSDO.ServiceReqs.Count > 0)
@@ -287,7 +302,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                     var PrintServiceReqProcessor = previewType != null ? new Library.PrintServiceReq.PrintServiceReqProcessor(serviceReqComboResultSDO, currentHisTreatment, bedLogs, (currentModule != null ? currentModule.RoomId : 0), previewType.Value, GetDocmentSigned)
                         : new Library.PrintServiceReq.PrintServiceReqProcessor(serviceReqComboResultSDO, currentHisTreatment, bedLogs, (currentModule != null ? currentModule.RoomId : 0));
                     PrintServiceReqProcessor.SaveNPrint(isSaveAndShow);
-
+                                           
                     if (this.serviceReqComboResultSDO.SereServs != null)
                     {
                         ProcessOpenVoBenhAn(serviceReqComboResultSDO.SereServs);

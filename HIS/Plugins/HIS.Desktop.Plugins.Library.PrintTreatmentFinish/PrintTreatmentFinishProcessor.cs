@@ -118,6 +118,16 @@ namespace HIS.Desktop.Plugins.Library.PrintTreatmentFinish
             this.treatmentId = -1;
         }
 
+        public PrintTreatmentFinishProcessor(HIS_TREATMENT _His_Treatment, HIS_SERVICE_REQ _His_Service_Req, long? roomId, MPS.ProcessorBase.PrintConfig.PreviewType? _PreviewType)
+        {
+            HisTreatment = _His_Treatment;
+            HisServiceReq = _His_Service_Req;
+            HisPatient = null;
+            VHisPatientTypeAlter = null;   
+            this.patientId = -1;
+            this.treatmentId = -1;
+        }
+
         /// <summary>
         /// Sử dụng cấu hình để in ngay ("HIS.Desktop.Plugins.Library.PrintTreatmentFinish.Mps")
         /// </summary>

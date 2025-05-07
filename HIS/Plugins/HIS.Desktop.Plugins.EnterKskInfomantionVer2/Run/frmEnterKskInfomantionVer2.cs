@@ -75,6 +75,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
         private HIS_KSK_PERIOD_DRIVER currentKskPeriodDriver { get; set; }
         private HIS_KSK_DRIVER_CAR currentKskDriverCar { get; set; }
         private HIS_KSK_OTHER currentKskOther { get; set; }
+        private HIS_KSK_OCCUPATIONAL currentKsKOccupational { get; set; }
         List<MOS.EFMODEL.DataModels.HIS_PERIOD_DRIVER_DITY> lstDataDriverDity { get; set; }
         List<MOS.EFMODEL.DataModels.HIS_PERIOD_DRIVER_DITY> lstDataDriverDityOverE { get; set; }
         List<MOS.EFMODEL.DataModels.HIS_KSK_UNEI_VATY> lstDataUneiVaty { get; set; }
@@ -87,7 +88,8 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             CDHA_2,
             KET_QUA_3,
             KET_QUA_4,
-            KET_QUA_5
+            KET_QUA_5,
+            KET_QUA_7
         }
         public ENameSItem? NameSItem { get; set; }
 
@@ -351,6 +353,39 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                         LoginNameEnableControl(currentKskDriverCar.EXAM_SUBCLINICAL_LOGINNAME, txtResultSubclinical5); // có dữ liệu và khác với tài khoản đăng nhập thì disable các trường thông tin khám cận lâm sàng.
                         LoginNameEnableControl(currentKskDriverCar.EXAM_SUBCLINICAL_LOGINNAME, txtNoteSubclinical5); // có dữ liệu và khác với tài khoản đăng nhập thì disable các trường thông tin khám cận lâm sàng.
                     }
+                    if (this.currentKsKOccupational != null) 
+                    {
+                        LoginNameEnableControl(currentKsKOccupational.EXAM_CIRCULATION_LOGINNAME, txtExamCirculation7, cboExamCirculationRank7); // có dữ liệu và khác với tài khoản đăng nhập thì disable các trường thông tin khám tuần hoàn.
+                        LoginNameEnableControl(currentKsKOccupational.EXAM_RESPIRATORY_LOGINNAME, txtExamRespiratory7, cboExamRespiratoryRank7); // có dữ liệu và khác với tài khoản đăng nhập thì disable các trường thông tin khám hô hấp.
+                        LoginNameEnableControl(currentKsKOccupational.EXAM_DIGESTION_LOGINNAME, txtExamDigestion7, cboExamDigestionRank7); // có dữ liệu và khác với tài khoản đăng nhập thì disable các trường thông tin khám tiêu hóa.
+                        LoginNameEnableControl(currentKsKOccupational.EXAM_KIDNEY_UROLOGY_LOGINNAME, txtExamKidneyUrology7, cboExamKidneyUrologyRank7); // có dữ liệu và khác với tài khoản đăng nhập thì disable các trường thông tin khám thận tiết niệu.
+                        LoginNameEnableControl(currentKsKOccupational.EXAM_NEUROLOGICAL_LOGINNAME, txtExamOend7, cboExamOendRank7); // có dữ liệu và khác với tài khoản đăng nhập thì disable các trường thông tin khám thần kinh.
+                        LoginNameEnableControl(currentKsKOccupational.EXAM_MUSLE_BONE_LOGINNAME, txtExamMuscleBone7, cboExamMuscleBoneRank7); // có dữ liệu và khác với tài khoản đăng nhập thì disable các trường thông tin khám thần kinh.
+                       
+                        LoginNameEnableControl(currentKsKOccupational.EXAM_ENT_LOGINNAME, txtExamEntLeftNormal7); // có dữ liệu và khác với tài khoản đăng nhập thì disable các trường thông tin khám tai mũi họng.
+                        LoginNameEnableControl(currentKsKOccupational.EXAM_ENT_LOGINNAME, txtExamEntRightNomal7); // có dữ liệu và khác với tài khoản đăng nhập thì disable các trường thông tin khám tai mũi họng.
+                        LoginNameEnableControl(currentKsKOccupational.EXAM_ENT_LOGINNAME, txtExamEntLeftWhisper7); // có dữ liệu và khác với tài khoản đăng nhập thì disable các trường thông tin khám tai mũi họng.
+                        LoginNameEnableControl(currentKsKOccupational.EXAM_ENT_LOGINNAME, txtExamEntRightWhisper7); // có dữ liệu và khác với tài khoản đăng nhập thì disable các trường thông tin khám tai mũi họng.
+                        LoginNameEnableControl(currentKsKOccupational.EXAM_ENT_LOGINNAME, txtExamEntDisease7, cboExamEntDiseaseRank7); // có dữ liệu và khác với tài khoản đăng nhập thì disable các trường thông tin khám tai mũi họng.
+                        LoginNameEnableControl(currentKsKOccupational.EXAM_STOMATOLOGY_LOGINNAME, txtExamStomatologyUpper7); // có dữ liệu và khác với tài khoản đăng nhập thì disable các trường thông tin khám răng hàm mặt.
+                        LoginNameEnableControl(currentKsKOccupational.EXAM_STOMATOLOGY_LOGINNAME, txtExamStomatologyLower7); // có dữ liệu và khác với tài khoản đăng nhập thì disable các trường thông tin khám răng hàm mặt.
+                        LoginNameEnableControl(currentKsKOccupational.EXAM_STOMATOLOGY_LOGINNAME, txtExamStomatologyDisease7, cboExamStomatologyRank7); // có dữ liệu và khác với tài khoản đăng nhập thì disable các trường thông tin khám răng hàm mặt.
+                        LoginNameEnableControl(currentKsKOccupational.EXAM_EYE_LOGINNAME, txtExamEyeSightRight7); // có dữ liệu và khác với tài khoản đăng nhập thì disable các trường thông tin khám mắt.
+                        LoginNameEnableControl(currentKsKOccupational.EXAM_EYE_LOGINNAME, txtExamEyeSightLeft7); // có dữ liệu và khác với tài khoản đăng nhập thì disable các trường thông tin khám mắt.
+                        LoginNameEnableControl(currentKsKOccupational.EXAM_EYE_LOGINNAME, txtExamEyeSightGlassRight7); // có dữ liệu và khác với tài khoản đăng nhập thì disable các trường thông tin khám mắt.
+                        LoginNameEnableControl(currentKsKOccupational.EXAM_EYE_LOGINNAME, txtExamEyeSightGlassLeft7); // có dữ liệu và khác với tài khoản đăng nhập thì disable các trường thông tin khám mắt.
+                        LoginNameEnableControl(currentKsKOccupational.EXAM_EYE_LOGINNAME, txtExamEyeDisease7, cboExamEyeRank7); // có dữ liệu và khác với tài khoản đăng nhập thì disable các trường thông tin khám mắt.
+                        LoginNameEnableControl(currentKsKOccupational.EXAM_OEND_LOGINNAME, txtExamNeurological7, cboExamNeurologicalRank7); // có dữ liệu và khác với tài khoản đăng nhập thì disable các trường thông tin khám nội tiết.
+                        LoginNameEnableControl(currentKsKOccupational.EXAM_MENTAL_LOGINNAME, txtExamMental7, cboExamMentalRank7); // có dữ liệu và khác với tài khoản đăng nhập thì disable các trường thông tin khám tâm thần.
+                        LoginNameEnableControl(currentKsKOccupational.EXAM_DERMATOLOGY_LOGINNAME, txtExamDernatology7, cboExamDernatologyRank7); // có dữ liệu và khác với tài khoản đăng nhập thì disable các trường thông tin khám da liễu.
+                        LoginNameEnableControl(currentKsKOccupational.NOTE_CLINICAL, txtNoteSubclinical);
+                        LoginNameEnableControl(currentKsKOccupational.EXAM_SURGERY_LOGINNAME, txtExamSurgery7,cboExamSurgeryRank7); // có dữ liệu và khác với tài khoản đăng nhập thì disable thông tin ngoại khoa
+                        LoginNameEnableControl(currentKsKOccupational.EXAM_OBSTETRIC_LOGINNAME, txtExamObstetric7, cboExamObstetricRank7); // có dữ liệu và khác với tài khoản đăng nhập thì disable các trường thông tin khám sản phụ khoa.
+                        LoginNameEnableControl(currentKsKOccupational.EXAM_SUBCLINICAL_LOGINNAME, txtResultSubclinical7, txtNoteSubclinical7); // có dữ liệu và khác với tài khoản đăng nhập thì disable các trường thông tin khám cận lâm sàng.
+
+                       
+                    }
+                
                 }
             }
             catch (Exception ex)
@@ -415,6 +450,11 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                     xtraTabControl1.SelectedTabPageIndex = 5;
                     isActive = true;
                 }
+                if (currentKsKOccupational != null)
+                {
+                    xtraTabControl1.SelectedTabPageIndex = 0;
+                    isActive = true;
+                }
                 btnPrint.Enabled = isActive;
             }
             catch (System.Exception ex)
@@ -457,6 +497,8 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             try
             {
                 FillDataPageGenaral();
+
+                FillDataPageOccupational();
 
                 FillDataPageOverEighteen();
 
@@ -623,11 +665,20 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                 {
                     sdo.HisKskOther = GetValueKSKOther();
                 }
+                else if (xtraTabControl1.SelectedTabPageIndex == 6)
+                {
+                    sdo.KskOccupationalV2 = new HisKskOccupationalV2SDO();
+                    sdo.KskOccupationalV2.HisKskOccupational = new HIS_KSK_OCCUPATIONAL();
+                    sdo.KskOccupationalV2.HisKskOccupational = GetValueOccupational();
+                    sdo.KskOccupationalV2.HisDhst = new HIS_DHST();
+                    sdo.KskOccupationalV2.HisDhst = GetValueDhstOccupational();
+                }
                 CommonParam param = new CommonParam();
                 Inventec.Common.Logging.LogSystem.Debug("INPUT DATA:__api/HisServiceReq/KskExecuteV2 " + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => sdo), sdo));
                 KskExecuteResultV2SDO result = new BackendAdapter(param).Post<KskExecuteResultV2SDO>("api/HisServiceReq/KskExecuteV2", ApiConsumers.MosConsumer, sdo, param);
+                Inventec.Common.Logging.LogSystem.Debug("INPUT DATA:__api/HisServiceReq/KskExecuteV2 " + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => result), result));
                 if (result != null)
-                {
+                {       
                     success = true;
                     currentKskDriverCar = result.HisKskDriverCar;
                     currentKskGeneral = result.HisKskGeneral;
@@ -635,6 +686,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                     currentKskPeriodDriver = result.HisKskPeriodDriver;
                     currentKskUnderEight = result.HisKskUnderEighteen;
                     currentKskOther = result.HisKskOther;
+                    currentKsKOccupational = result.KskOccupational;
                     currentServiceReq = result.HisServiceReq;
                     btnPrint.Enabled = true;
                 }
@@ -697,6 +749,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                     if (currentKskDriverCar != null)
                         IsEnable = true;
                 }
+               
                 else if (xtraTabControl1.SelectedTabPageIndex == 5)
                 {
                     if (currentKskOther != null)
@@ -711,6 +764,11 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                     {
                         btnSave.Enabled = false;
                     }
+                }
+                else if (xtraTabControl1.SelectedTabPageIndex == 6)
+                {
+                    if (currentKsKOccupational != null)
+                        IsEnable = true;
                 }
                 btnPrint.Enabled = IsEnable;
             }
@@ -756,6 +814,11 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                 {
                     if (currentKskOther != null)
                         PrintProcess(PRINT_TYPE.MPS000464);
+                }
+                else if (xtraTabControl1.SelectedTabPageIndex == 6)
+                {
+                    if (currentKsKOccupational != null)
+                        PrintProcess(PRINT_TYPE.MPS000499);
                 }
             }
             catch (System.Exception ex)
@@ -853,6 +916,9 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                             break;
                         case ENameSItem.KET_QUA_5:
                             txtResultSubclinical5.Text = data.ToString();
+                            break;
+                        case ENameSItem.KET_QUA_7:
+                            txtResultSubclinical7.Text = data.ToString();
                             break;
                         default:
                             break;
@@ -970,6 +1036,15 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
 
+        }
+
+        private void cboExamEntLoginName7_ButtonClick(object sender, ButtonPressedEventArgs e)
+        {
+            if (e.Button.Kind == ButtonPredefines.Delete)
+            {
+                cboExamEntLoginName7.Text= null;
+                cboExamEntLoginName7.EditValue = null;
+            }
         }
     }
 }

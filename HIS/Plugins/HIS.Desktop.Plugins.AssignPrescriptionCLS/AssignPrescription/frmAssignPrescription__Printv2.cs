@@ -18,14 +18,18 @@
 using DevExpress.Utils.Menu;
 using DevExpress.XtraEditors;
 using HIS.Desktop.LocalStorage.BackendData;
+using HIS.Desktop.LocalStorage.LocalData;
+using HIS.Desktop.Plugins.AssignPrescriptionCLS.Config;
 using HIS.Desktop.Plugins.Library.PrintTreatmentFinish;
 using HIS.Desktop.Print;
 using HIS.UC.MenuPrint.ADO;
 using Inventec.Common.Logging;
 using MOS.EFMODEL.DataModels;
 using MOS.SDO;
+using MPS.ProcessorBase;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -125,8 +129,10 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
                     var bbtnItem = sender as SimpleButton;
                     printTypeCode = (bbtnItem.Tag ?? "").ToString();
                 }
+                //qtcode
+                PrescriptionPrintShow(printTypeCode, true, PrintConfig.PreviewType.EmrSignAndPrintNow);
 
-                PrescriptionPrintShow(printTypeCode, false);
+                //PrescriptionPrintShow(printTypeCode, false);
                 Inventec.Common.Logging.LogSystem.Debug("OnClickPrintWithPrintTypeCfg.2____" + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => printTypeCode), printTypeCode));
             }
             catch (Exception ex)
@@ -139,7 +145,15 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
         {
             try
             {
-                PrescriptionPrintShow(PrintTypeCodes.PRINT_TYPE_CODE__BIEUMAU__PHIEU_KE_KHAI_THUOC_VATU__MPS000338, true);
+                Inventec.Desktop.Common.Modules.Module moduleData = GlobalVariables.currentModuleRaws.Where(o => o.ModuleLink == this.ModuleLink).FirstOrDefault();
+                if (!string.IsNullOrEmpty(HisConfigCFG.AllowSignaturePrintModuleLinks) && ("," + HisConfigCFG.AllowSignaturePrintModuleLinks + ",").Contains("," + this.ModuleLink + ",") && moduleData != null)
+                {
+                    PrescriptionPrintShow(PrintTypeCodes.PRINT_TYPE_CODE__BIEUMAU__PHIEU_KE_KHAI_THUOC_VATU__MPS000338, true, PrintConfig.PreviewType.EmrSignAndPrintNow);
+                }
+                else
+                {
+                    PrescriptionPrintShow(PrintTypeCodes.PRINT_TYPE_CODE__BIEUMAU__PHIEU_KE_KHAI_THUOC_VATU__MPS000338, true, null);
+                }
             }
             catch (Exception ex)
             {
@@ -147,7 +161,8 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
             }
         }
 
-        private void PrescriptionPrintShow(string printTypeCode, bool isPrintNow)
+        private void PrescriptionPrintShow(string printTypeCode, bool isPrintNow, PrintConfig.PreviewType? previewType = null)
+        //private void PrescriptionPrintShow(string printTypeCode, bool isPrintNow, bool check, )
         {
             try
             {
@@ -183,19 +198,25 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
                         AutoMapper.Mapper.CreateMap<V_HIS_EXP_MEST_MATERIAL, HIS_EXP_MEST_MATERIAL>();
                         OutPatientPresResultSDO.Materials = AutoMapper.Mapper.Map<List<HIS_EXP_MEST_MATERIAL>>(this.expMestMaterialEditPrints);
                     }
-                   
+
                     OutPatientPresResultSDOForPrints.Add(OutPatientPresResultSDO);
                 }
-
+                //MPS.ProcessorBase.PrintConfig.PreviewType previewType;
                 printPrescriptionProcessor = new Library.PrintPrescription.PrintPrescriptionProcessor(OutPatientPresResultSDOForPrints, this.currentSereServ, this.currentModule);
-
-                printPrescriptionProcessor.Print(printTypeCode, isPrintNow);
+                 printPrescriptionProcessor.Print(printTypeCode, isPrintNow, previewType);
+                //printPrescriptionProcessor.Print(printTypeCode, isPrintNow, previewType);
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
+
+        //private bool HasSigner()
+        //{
+        //    return MPS.ProcessorBase.PrintConfig.EmrSigners != null
+        //        && MPS.ProcessorBase.PrintConfig.EmrSigners.Count > 0;
+        //}
 
         //private void PrescriptionSavePrintShow(string printTypeCode, bool isPrintNow)
         //{

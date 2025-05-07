@@ -2924,6 +2924,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                 GetUcIcdYHCT();
                 LogSystem.Debug("Valid ICD");
                 if (!ValidIcd(true)) return;
+                //Dangth
                 if ((HisConfigCFG.MustChooseSeviceExamOption == "1" || HisConfigCFG.MustChooseSeviceExamOption == "2") && !CheckMustChooseSeviceExamOption())
                     return;
                 HisServiceReqExamUpdateSDO hisServiceReqSDO = new HisServiceReqExamUpdateSDO();
@@ -3144,6 +3145,11 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                             isTreatmentFinish = true;
                         }
                     }
+                }
+                //Nhập viện
+                if (chkHospitalize.Checked && string.IsNullOrEmpty(HisServiceReqView.TDL_SERVICE_IDS))
+                {
+                    serviceReqCode = HisServiceReqView.SERVICE_REQ_CODE;
                 }
                 if (HisConfigCFG.MustChooseSeviceExamOption == "1")
                 {

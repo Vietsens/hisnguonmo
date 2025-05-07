@@ -56,6 +56,7 @@ using Inventec.Desktop.Common.Message;
 using MOS.EFMODEL.DataModels;
 using MOS.Filter;
 using MOS.SDO;
+using MPS.ProcessorBase;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -1171,18 +1172,31 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
             }
         }
 
+
+        //qtcode
         private void btnPrint_Click(object sender, EventArgs e)
         {
             try
             {
-                PrescriptionPrintShow(PrintTypeCodes.PRINT_TYPE_CODE__BIEUMAU__PHIEU_KE_KHAI_THUOC_VATU__MPS000338, false);
+
+                Inventec.Desktop.Common.Modules.Module moduleData = GlobalVariables.currentModuleRaws.Where(o => o.ModuleLink == this.ModuleLink).FirstOrDefault();
+                if (!string.IsNullOrEmpty(HisConfigCFG.AllowSignaturePrintModuleLinks) && ("," + HisConfigCFG.AllowSignaturePrintModuleLinks + ",").Contains("," + this.ModuleLink + ",") && moduleData != null)
+                {
+                    PrescriptionPrintShow(PrintTypeCodes.PRINT_TYPE_CODE__BIEUMAU__PHIEU_KE_KHAI_THUOC_VATU__MPS000338, true, PrintConfig.PreviewType.EmrSignAndPrintNow);
+                }
+                else
+                {
+                    PrescriptionPrintShow(PrintTypeCodes.PRINT_TYPE_CODE__BIEUMAU__PHIEU_KE_KHAI_THUOC_VATU__MPS000338, true, null);
+                }
+
+                //PrescriptionPrintShow(PrintTypeCodes.PRINT_TYPE_CODE__BIEUMAU__PHIEU_KE_KHAI_THUOC_VATU__MPS000338, false, MPS.ProcessorBase.PrintConfig.PreviewType.EmrSignAndPrintNow);
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
-
+        //qtcode
         #endregion
 
         #region Control editor
@@ -2102,7 +2116,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
-
+        
         private void txtMediMatyForPrescription_ButtonClick(object sender, ButtonPressedEventArgs e)
         {
             try
@@ -4478,6 +4492,8 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
             }else
                 cboPhieuDieuTri.Properties.Buttons[2].Visible = false;
         }
+
+   
 
         private void cboExpMestReason_KeyUp(object sender, KeyEventArgs e)
         {

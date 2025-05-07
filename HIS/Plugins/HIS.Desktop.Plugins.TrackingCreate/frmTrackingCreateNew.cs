@@ -71,7 +71,7 @@ using System.Windows.Forms;
 namespace HIS.Desktop.Plugins.TrackingCreate
 {
     public partial class frmTrackingCreateNew : FormBase
-    {
+    {           
         #region Declare
         internal Inventec.Desktop.Common.Modules.Module currentModule;
         int action = -1;
@@ -277,7 +277,7 @@ namespace HIS.Desktop.Plugins.TrackingCreate
                 ado.DelegateGetIcdMain = GetIcdMainCode;
                 Rectangle activeScreenDimensions = Screen.FromControl(this).Bounds;
                 ado.hisTreatment = this._Treatment;
-                //if (activeScreenDimensions != null) ado.Width = activeScreenDimensions.Width / 2 - 10;
+                if (activeScreenDimensions != null) ado.Width = activeScreenDimensions.Width / 2 - 10;
                 ado.Height = 24;
                 ado.TextNullValue = "Nhấn F1 để chọn bệnh";
                 ado.limitDataSource = (int)HIS.Desktop.LocalStorage.ConfigApplication.ConfigApplications.NumPageSize;
@@ -391,7 +391,7 @@ namespace HIS.Desktop.Plugins.TrackingCreate
                 //ado.delegateCheckICD = CheckICDSecondYHCT;
                 Rectangle activeScreenDimensions = Screen.FromControl(this).Bounds;
 
-                //if (activeScreenDimensions != null) ado.Width = activeScreenDimensions.Width / 2 - 10;
+                if (activeScreenDimensions != null) ado.Width = activeScreenDimensions.Width / 2 - 10;
                 ado.Height = 24;
                 ado.TextLblIcd = "CĐ phân biệt:";
                 ado.TootiplciIcdSubCode = "Chẩn đoán phân biệt kèm theo";
@@ -569,14 +569,14 @@ namespace HIS.Desktop.Plugins.TrackingCreate
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
-        #endregion
+        #endregion            
 
         private void frmTrackingCreateNew_Load(object sender, EventArgs e)
         {
             try
             {
                 isNotLoadWhileChangeControlStateInFirst = true;
-                SetIconFrm();
+                SetIconFrm();          
                 this.SetCaptionByLanguageKey();
                 if (this.action == GlobalVariables.ActionEdit)
                     lciUpdateTimeDHST.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;

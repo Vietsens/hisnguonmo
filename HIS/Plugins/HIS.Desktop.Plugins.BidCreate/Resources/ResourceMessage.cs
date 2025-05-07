@@ -186,7 +186,21 @@ namespace HIS.Desktop.Plugins.BidCreate.Resources
                 return "";
             }
         }
-
+        internal static string Dangbaoche
+        {
+            get
+            {
+                try
+                {
+                    return Inventec.Common.Resource.Get.Value("Dangbaoche", languageMessage, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(ex);
+                }
+                return "";
+            }
+        }
         internal static string SaiDinhDangNam
         {
             get

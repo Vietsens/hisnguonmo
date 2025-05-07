@@ -110,9 +110,12 @@ namespace HIS.Desktop.Plugins.PublicServices_NT
                     if (treatmentBedRoomList != null && treatmentBedRoomList.Count() > 0)
                     {
                         var index = treatmentBedRoomList.FindIndex(x => x.TREATMENT_ID == this._treatmentId);
-                        var item = treatmentBedRoomList[index];
-                        treatmentBedRoomList[index] = treatmentBedRoomList[0];
-                        treatmentBedRoomList[0] = item;
+                        if (index > -1)
+                        {
+                            var item = treatmentBedRoomList[index];
+                            treatmentBedRoomList[index] = treatmentBedRoomList[0];
+                            treatmentBedRoomList[0] = item;
+                        }                        
                     }
 
                     gridControlPatient.DataSource = treatmentBedRoomList != null && treatmentBedRoomList.Count > 0 ? treatmentBedRoomList.Where(o => !o.REMOVE_TIME.HasValue).ToList() : null;
@@ -132,6 +135,7 @@ namespace HIS.Desktop.Plugins.PublicServices_NT
                 if (this.currentModule != null)
                 {
                     this.Text = this.currentModule.text;
+
                 }
                 SetCaptionByLanguageKey();
                 InitControlState();

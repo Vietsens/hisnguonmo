@@ -74,12 +74,12 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                 this.chkSignForDDT.CheckedChanged -= new System.EventHandler(this.chkSignForDDT_CheckedChanged);
                 this.chkSignForDTT.CheckedChanged -= new System.EventHandler(this.chkSignForDTT_CheckedChanged);
                 this.chkSignForDPK.CheckedChanged -= new System.EventHandler(this.chkSign_CheckedChanged);
-
+                    
                 this.spinWeight.EditValueChanged -= new System.EventHandler(this.spinWeight_EditValueChanged);
                 this.spinHeight.EditValueChanged -= new System.EventHandler(this.spinHeight_EditValueChanged);
 
-
-
+                     
+                  
                 this.gridControlOtherPaySource.Click -= new System.EventHandler(this.gridControlOtherPaySource_Click);
                 this.gridViewOtherPaySource.KeyDown -= new System.Windows.Forms.KeyEventHandler(this.gridViewOtherPaySource_KeyDown);
 

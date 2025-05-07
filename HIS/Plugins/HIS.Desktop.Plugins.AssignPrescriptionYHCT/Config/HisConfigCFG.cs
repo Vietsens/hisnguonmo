@@ -51,6 +51,9 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.Config
         private const string CONFIG_KEY__OBLIGATE_ICD = "EXE.ASSIGN_SERVICE_REQUEST__OBLIGATE_ICD";
         private const string Key__IsAllowPrintFinish = "HIS.Desktop.AllowPrint.Finish";
         private const string Key__AcinInteractive__Grade = "HIS.Desktop.Plugins.AssignPrescription.AcinInteractive__Grade";
+        //dangth
+        private const string IS_ALLOW_SIGN_NATURE_PRINT = "HIS.Desktop.Plugins.IsAllowSignaturePrint.ModuleLinks";
+        internal static string AllowSignaturePrintModules;
 
         private const string TREATMENT_END___APPOINTMENT_TIME_DEFAULT_KEY = "EXE.HIS_TREATMENT_END.APPOINTMENT_TIME_DEFAULT";
         private const string PRESCRIPTION_TIME_AND_APPOINTMENT_TIME_KEY = "HIS.Desktop.Plugins.TreatmentFinish.APPOINTMENT_TIME";
@@ -231,6 +234,8 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.Config
         {
             try
             {
+                //dangth
+                AllowSignaturePrintModules = GetValue(IS_ALLOW_SIGN_NATURE_PRINT);
                 IsCheckSubIcdExceedLimit = GetValue(KEY_IsCheckSubIcdExceedLimit);
                 ASSIGN_SERVICE_SIMULTANEITY_OPTION = GetValue(KEY_ASSIGN_SERVICE_SIMULTANEITY_OPTION);
                 InstructionTimeServiceMustBeGreaterThanStartTimeExam = GetValue(KEY__InstructionTimeServiceMustBeGreaterThanStartTimeExam);

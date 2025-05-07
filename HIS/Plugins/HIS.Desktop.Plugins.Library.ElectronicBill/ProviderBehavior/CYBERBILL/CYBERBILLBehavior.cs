@@ -22,6 +22,7 @@ using HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.CYBERBILL.Mode
 using HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.MOBIFONE.Model;
 using HIS.Desktop.Plugins.Library.ElectronicBill.Template;
 using Inventec.Common.EBillSoftDreams.Model;
+using Inventec.Common.Logging;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -97,6 +98,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.CYBERBILL
                             HuyHoaDon(ref result);
                             break;
                         case ElectronicBillType.ENUM.CONVERT_INVOICE:
+                            CyberbillChuyenDoiHoaDon(ref result);
                             break;
                         case ElectronicBillType.ENUM.CREATE_INVOICE_DATA:
                             break;
@@ -385,6 +387,50 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.CYBERBILL
                     return;
                 string sendJsonData = Newtonsoft.Json.JsonConvert.SerializeObject(ICoEBill());
                 OCoEBill = Base.ApiConsumerV2.CreateRequest<OutputConvertElectronicBill>(System.Net.WebRequestMethods.Http.Post, serviceUrl, Base.RequestUriStore.CyberbillTaiHoaDon, login.result.access_token, sendJsonData);
+                Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData($"CyberbillChuyenDoiHoaDon", sendJsonData));
+                result.InvoiceSys = ProviderType.CYBERBILL;
+                if (OCoEBill != null && OCoEBill.result != null)
+                {
+                    if (OCoEBill.result.maketqua == SUCCESS_CODE)
+                    {
+                        result.Success = true;
+                        var dic = Application.StartupPath + @"\temp";
+                        if (!Directory.Exists(dic))
+                            Directory.CreateDirectory(dic);
+                        string fullName = dic + @"\" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".pdf";
+                        System.IO.File.WriteAllBytes(fullName, System.Convert.FromBase64String(OCoEBill.result.base64pdf));
+                        result.InvoiceLink = fullName;
+                    }
+                    else
+                    {
+                        result.Success = false;
+                        ElectronicBillResultUtil.Set(ref result, false, OEBill.result != null ? OEBill.result.motaketqua : "Chuyển đổi hóa đơn thất bại");
+                    }
+                }
+                else if (OCoEBill == null || (OCoEBill != null && OCoEBill.error != null))
+                {
+                    result.Success = false;
+                    ElectronicBillResultUtil.Set(ref result, false, OCoEBill != null && OCoEBill.error != null ? OCoEBill.error.details : "Chuyển đổi hóa đơn thất bại");
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+
+        }
+
+        private void CyberbillChuyenDoiHoaDon(ref ElectronicBillResult result)
+        {
+
+            try
+            {
+                if (ElectronicBillDataInput == null || string.IsNullOrEmpty(ElectronicBillDataInput.InvoiceCode))
+                    return;   
+                string sendJsonData = Newtonsoft.Json.JsonConvert.SerializeObject(ICoEBill());
+                OCoEBill = Base.ApiConsumerV2.CreateRequest<OutputConvertElectronicBill>(System.Net.WebRequestMethods.Http.Post, serviceUrl, Base.RequestUriStore.CyberbillChuyenDoiHoaDon, login.result.access_token, sendJsonData);
+                Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData($"CyberbillChuyenDoiHoaDon", sendJsonData));
+
                 result.InvoiceSys = ProviderType.CYBERBILL;
                 if (OCoEBill != null && OCoEBill.result != null)
                 {

@@ -71,7 +71,7 @@ namespace HIS.Desktop.Utility
                 // add parent 
                 ModuleControlADO moduleParent = null;
                 if (parent == null && mainControl != null)
-                {                    
+                {
                     moduleParent = new ModuleControlADO();
                     if (this.hasIncludeControl)
                         moduleParent.mControl = mainControl;
@@ -144,7 +144,9 @@ namespace HIS.Desktop.Utility
                         || itemCtrl is DevExpress.XtraEditors.PanelControl
                         || itemCtrl is DevExpress.XtraEditors.XtraScrollableControl
                         || itemCtrl is System.Windows.Forms.Panel
-                        || itemCtrl is System.Windows.Forms.GroupBox)
+                        || itemCtrl is System.Windows.Forms.GroupBox
+                        || itemCtrl is DevExpress.XtraNavBar.NavBarControl
+                        || itemCtrl is DevExpress.XtraNavBar.NavBarGroupControlContainerWrapper)
                         {
                             if (controlResultAlls != null)
                                 GetControls(itemCtrl, controlResultAlls, moduleControl);
@@ -339,11 +341,12 @@ namespace HIS.Desktop.Utility
                     || itemChild is DevExpress.XtraEditors.XtraScrollableControl
                     || itemChild is Panel
                     || itemChild is GroupBox
+                    || itemChild is DevExpress.XtraNavBar.NavBarControl
+                    || itemChild is DevExpress.XtraNavBar.NavBarGroupControlContainerWrapper
                     )
                 {
                     GetControls(itemChild, controlResults, moduleControl);
                 }
-
             }
         }
 

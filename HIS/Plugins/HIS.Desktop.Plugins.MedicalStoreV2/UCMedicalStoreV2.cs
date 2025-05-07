@@ -461,35 +461,100 @@ namespace HIS.Desktop.Plugins.MedicalStoreV2
                 CommonParam param = new CommonParam();
                 HisDataStoreView1Filter filter = new HisDataStoreView1Filter();
                 filter.IS_ACTIVE = IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE;
-                var currentDataStore = new BackendAdapter(param).Get<List<V_HIS_DATA_STORE_1>>("api/HisDataStore/GetView1", ApiConsumers.MosConsumer, filter, param).Where(p => p.ROOM_ID == this.currentModule.RoomId || p.ROOM_TYPE_ID == this.currentModule.RoomTypeId).ToList();
+
+                var currentDataStore = new BackendAdapter(param).Get<List<V_HIS_DATA_STORE_1>>(
+                    "api/HisDataStore/GetView1", ApiConsumers.MosConsumer, filter, param)
+                    .Where(p => p.ROOM_ID == this.currentModule.RoomId ||
+                                p.ROOM_TYPE_ID == this.currentModule.RoomTypeId)
+                    .ToList();
 
                 if (currentDataStore != null && currentDataStore.Count > 0)
                 {
                     var listAdo = new List<DataStoreADO>();
+
+                    Dictionary<long, bool> previousCheckStates = new Dictionary<long, bool>();
+                    if (treeListMedicalStore.DataSource is BindingList<DataStoreADO> previousData)
+                    {
+                        foreach (var item in previousData)
+                        {
+                            previousCheckStates[item.ID] = item.CheckStore;
+                        }
+                    }
+
                     foreach (var item in currentDataStore)
                     {
                         var ado = new DataStoreADO(item);
-                        ado.CheckStore = true;
+                        if (previousCheckStates.ContainsKey(ado.ID))
+                        {
+                            ado.CheckStore = previousCheckStates[ado.ID];
+                        }
+                        else
+                        {
+                            ado.CheckStore = true; 
+                        }
+
                         listAdo.Add(ado);
                     }
-
                     var binding = new BindingList<DataStoreADO>(listAdo);
 
-                    if (currentDataStore != null)
-                    {
-                        treeListMedicalStore.KeyFieldName = "ID";
-                        treeListMedicalStore.ParentFieldName = "PARENT_ID";
-                        treeListMedicalStore.DataSource = binding;
-                        checkEdit.ValueChecked = true;
-                    }
+                    treeListMedicalStore.KeyFieldName = "ID";
+                    treeListMedicalStore.ParentFieldName = "PARENT_ID";
+                    treeListMedicalStore.DataSource = binding;
                 }
                 checkEdit.ValueChecked = false;
-
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
+            //try
+            //{
+            //    CommonParam param = new CommonParam();
+            //    HisDataStoreView1Filter filter = new HisDataStoreView1Filter();
+            //    filter.IS_ACTIVE = IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE;
+            //    var currentDataStore = new BackendAdapter(param).Get<List<V_HIS_DATA_STORE_1>>("api/HisDataStore/GetView1", ApiConsumers.MosConsumer, filter, param).Where(p => p.ROOM_ID == this.currentModule.RoomId || p.ROOM_TYPE_ID == this.currentModule.RoomTypeId).ToList();
+
+            //    if (currentDataStore != null && currentDataStore.Count > 0)
+            //    {
+            //        var listAdo = new List<DataStoreADO>();
+            //        foreach (var item in currentDataStore)
+            //        {
+            //            var ado = new DataStoreADO(item);
+            //            if (treeListMedicalStore.DataSource != null)
+            //            {
+            //                BindingList<DataStoreADO> existingData = (BindingList<DataStoreADO>)treeListMedicalStore.DataSource;
+            //                var existingItem = existingData.FirstOrDefault(o => o.ID == ado.ID);
+            //                if (existingItem != null)
+            //                {
+            //                    ado.CheckStore = existingItem.CheckStore;
+            //                }
+            //                else
+            //                {
+            //                    ado.CheckStore = true; 
+            //                }
+            //            }
+            //            else
+            //            {
+            //                ado.CheckStore = true;
+            //            }
+            //            listAdo.Add(ado);
+            //        }
+
+            //        var binding = new BindingList<DataStoreADO>(listAdo);
+
+            //        treeListMedicalStore.KeyFieldName = "ID";
+            //        treeListMedicalStore.ParentFieldName = "PARENT_ID";
+            //        treeListMedicalStore.DataSource = binding;
+            //    }
+            //    else
+            //    {
+            //        treeListMedicalStore.DataSource = null;
+            //    }
+            //}
+            //catch (Exception ex)
+            //{
+            //    Inventec.Common.Logging.LogSystem.Error(ex);
+            //}
         }
 
         private void RefreshDataAfterSave()
@@ -2184,30 +2249,39 @@ namespace HIS.Desktop.Plugins.MedicalStoreV2
 
                     MOS.Filter.HisMediRecordBorrowFilter filter = new HisMediRecordBorrowFilter();
                     filter.MEDI_RECORD_ID = focus.ID;
+                    filter.IS_RECEIVE = false;
                     var mediRecordBorrows = new BackendAdapter(new CommonParam()).Get<List<HIS_MEDI_RECORD_BORROW>>("api/HisMediRecordBorrow/Get", ApiConsumer.ApiConsumers.MosConsumer, filter, null);
 
                     if (mediRecordBorrows != null && mediRecordBorrows.Count > 0)
                     {
-                        HIS_MEDI_RECORD_BORROW treatmentBorrow = new HIS_MEDI_RECORD_BORROW();
-                        treatmentBorrow.MEDI_RECORD_ID = focus.ID;
-                        treatmentBorrow.ID = mediRecordBorrows.FirstOrDefault().ID;
-                        WaitingManager.Show();
-                        var rsApi = new BackendAdapter(param).Post<HIS_MEDI_RECORD_BORROW>("api/HisMediRecordBorrow/Receive", ApiConsumer.ApiConsumers.MosConsumer, treatmentBorrow, param);
-                        WaitingManager.Hide();
-
-                        if (rsApi != null)
+                        //HIS_MEDI_RECORD_BORROW treatmentBorrow = new HIS_MEDI_RECORD_BORROW();
+                        //treatmentBorrow.MEDI_RECORD_ID = focus.ID;
+                        //treatmentBorrow.ID = mediRecordBorrows.FirstOrDefault().ID;
+                        var listBorrows = mediRecordBorrows.OrderByDescending(x => x.ID).FirstOrDefault();
+                        if (listBorrows != null)
                         {
-                            success = true;
-                            btnSearchMediRecord_Click(null, null);
+                            HIS_MEDI_RECORD_BORROW treatmentBorrow = new HIS_MEDI_RECORD_BORROW();
+                            treatmentBorrow.MEDI_RECORD_ID = focus.ID;
+                            treatmentBorrow.ID = listBorrows.ID;
+
+                            WaitingManager.Show();
+                            var rsApi = new BackendAdapter(param).Post<HIS_MEDI_RECORD_BORROW>("api/HisMediRecordBorrow/Receive", ApiConsumer.ApiConsumers.MosConsumer, treatmentBorrow, param);
+                            WaitingManager.Hide();
+
+                            if (rsApi != null)
+                            {
+                                success = true;
+                                btnSearchMediRecord_Click(null, null);
+                            }
+
+                            #region Hien thi message thong bao
+                            MessageManager.Show(this.ParentForm, param, success);
+                            #endregion
+
+                            #region Neu phien lam viec bi mat, phan mem tu dong logout va tro ve trang login
+                            SessionManager.ProcessTokenLost(param);
+                            #endregion
                         }
-
-                        #region Hien thi message thong bao
-                        MessageManager.Show(this.ParentForm, param, success);
-                        #endregion
-
-                        #region Neu phien lam viec bi mat, phan mem tu dong logout va tro ve trang login
-                        SessionManager.ProcessTokenLost(param);
-                        #endregion
                     }
                     else
                     {

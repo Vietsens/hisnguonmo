@@ -147,6 +147,7 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
             this.navigationFrameBuyerInfo = new DevExpress.XtraBars.Navigation.NavigationFrame();
             this.navigationPage1 = new DevExpress.XtraBars.Navigation.NavigationPage();
             this.layoutControlBuyerInfoTab1 = new DevExpress.XtraLayout.LayoutControl();
+            this.txtBuyerEmail = new DevExpress.XtraEditors.TextEdit();
             this.txtBuyerName = new DevExpress.XtraEditors.TextEdit();
             this.txtBuyerAddress = new DevExpress.XtraEditors.TextEdit();
             this.txtBuyerTaxCode = new DevExpress.XtraEditors.TextEdit();
@@ -158,6 +159,7 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
             this.layoutControlItem59 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem62 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem60 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.layoutControlItem69 = new DevExpress.XtraLayout.LayoutControlItem();
             this.navigationPage2 = new DevExpress.XtraBars.Navigation.NavigationPage();
             this.layoutControlBuyerInfoTab2 = new DevExpress.XtraLayout.LayoutControl();
             this.txtBuyerAddress2 = new DevExpress.XtraEditors.TextEdit();
@@ -400,6 +402,7 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
             this.navigationPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlBuyerInfoTab1)).BeginInit();
             this.layoutControlBuyerInfoTab1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.txtBuyerEmail.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtBuyerName.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtBuyerAddress.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtBuyerTaxCode.Properties)).BeginInit();
@@ -411,6 +414,7 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem59)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem62)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem60)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem69)).BeginInit();
             this.navigationPage2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlBuyerInfoTab2)).BeginInit();
             this.layoutControlBuyerInfoTab2.SuspendLayout();
@@ -1609,6 +1613,7 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
             // 
             // layoutControlBuyerInfoTab1
             // 
+            this.layoutControlBuyerInfoTab1.Controls.Add(this.txtBuyerEmail);
             this.layoutControlBuyerInfoTab1.Controls.Add(this.txtBuyerName);
             this.layoutControlBuyerInfoTab1.Controls.Add(this.txtBuyerAddress);
             this.layoutControlBuyerInfoTab1.Controls.Add(this.txtBuyerTaxCode);
@@ -1621,6 +1626,15 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
             this.layoutControlBuyerInfoTab1.Size = new System.Drawing.Size(853, 51);
             this.layoutControlBuyerInfoTab1.TabIndex = 0;
             this.layoutControlBuyerInfoTab1.Text = "layoutControl8";
+            // 
+            // txtBuyerEmail
+            // 
+            this.txtBuyerEmail.Location = new System.Drawing.Point(703, 26);
+            this.txtBuyerEmail.MenuManager = this.barManager1;
+            this.txtBuyerEmail.Name = "txtBuyerEmail";
+            this.txtBuyerEmail.Size = new System.Drawing.Size(148, 20);
+            this.txtBuyerEmail.StyleController = this.layoutControlBuyerInfoTab1;
+            this.txtBuyerEmail.TabIndex = 46;
             // 
             // txtBuyerName
             // 
@@ -1637,7 +1651,7 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
             this.txtBuyerAddress.Location = new System.Drawing.Point(404, 26);
             this.txtBuyerAddress.MenuManager = this.barManager1;
             this.txtBuyerAddress.Name = "txtBuyerAddress";
-            this.txtBuyerAddress.Size = new System.Drawing.Size(447, 20);
+            this.txtBuyerAddress.Size = new System.Drawing.Size(200, 20);
             this.txtBuyerAddress.StyleController = this.layoutControlBuyerInfoTab1;
             this.txtBuyerAddress.TabIndex = 45;
             this.txtBuyerAddress.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.txtBuyerAddress_PreviewKeyDown);
@@ -1681,7 +1695,8 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
             this.layoutControlItem61,
             this.layoutControlItem59,
             this.layoutControlItem62,
-            this.layoutControlItem60});
+            this.layoutControlItem60,
+            this.layoutControlItem69});
             this.layoutControlGroupTab1.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroupTab1.Name = "layoutControlGroupTab1";
             this.layoutControlGroupTab1.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
@@ -1734,7 +1749,7 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
             this.layoutControlItem62.Control = this.txtBuyerAddress;
             this.layoutControlItem62.Location = new System.Drawing.Point(307, 24);
             this.layoutControlItem62.Name = "layoutControlItem62";
-            this.layoutControlItem62.Size = new System.Drawing.Size(546, 27);
+            this.layoutControlItem62.Size = new System.Drawing.Size(299, 27);
             this.layoutControlItem62.Text = "Địa chỉ:";
             this.layoutControlItem62.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem62.TextSize = new System.Drawing.Size(90, 20);
@@ -1752,6 +1767,19 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
             this.layoutControlItem60.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem60.TextSize = new System.Drawing.Size(90, 20);
             this.layoutControlItem60.TextToControlDistance = 5;
+            // 
+            // layoutControlItem69
+            // 
+            this.layoutControlItem69.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.layoutControlItem69.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.layoutControlItem69.Control = this.txtBuyerEmail;
+            this.layoutControlItem69.Location = new System.Drawing.Point(606, 24);
+            this.layoutControlItem69.Name = "layoutControlItem69";
+            this.layoutControlItem69.Size = new System.Drawing.Size(247, 27);
+            this.layoutControlItem69.Text = "Email:";
+            this.layoutControlItem69.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.layoutControlItem69.TextSize = new System.Drawing.Size(90, 20);
+            this.layoutControlItem69.TextToControlDistance = 5;
             // 
             // navigationPage2
             // 
@@ -4093,6 +4121,7 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
             this.navigationPage1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlBuyerInfoTab1)).EndInit();
             this.layoutControlBuyerInfoTab1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.txtBuyerEmail.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtBuyerName.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtBuyerAddress.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtBuyerTaxCode.Properties)).EndInit();
@@ -4104,6 +4133,7 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem59)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem62)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem60)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem69)).EndInit();
             this.navigationPage2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlBuyerInfoTab2)).EndInit();
             this.layoutControlBuyerInfoTab2.ResumeLayout(false);
@@ -4522,5 +4552,7 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
         private DevExpress.XtraEditors.SimpleButton btnQR;
         private DevExpress.XtraLayout.LayoutControlItem lciQR;
         private DevExpress.XtraBars.PopupMenu popupMenu1;
+        private DevExpress.XtraEditors.TextEdit txtBuyerEmail;
+        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem69;
     }
 }

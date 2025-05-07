@@ -29,6 +29,8 @@ using System.Collections.Generic;
 using System.Windows.Forms;
 using System.Linq;
 using HIS.Desktop.LocalStorage.LocalData;
+using HIS.Desktop.Plugins.AssignPrescriptionYHCT.Config;
+using MPS.ProcessorBase;
 
 namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
 {
@@ -162,7 +164,15 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
                     printTypeCode = (bbtnItem.Tag ?? "").ToString();
                 }
 
-                PrescriptionPrintShow(printTypeCode, false);
+                Inventec.Desktop.Common.Modules.Module moduleData = GlobalVariables.currentModuleRaws.Where(o => o.ModuleLink == this.ModuleLink).FirstOrDefault();
+                if (!string.IsNullOrEmpty(HisConfigCFG.AllowSignaturePrintModules) && ("," + HisConfigCFG.AllowSignaturePrintModules + ",").Contains("," + this.ModuleLink + ",") && moduleData != null)
+                {
+                    PrescriptionPrintShow(printTypeCode, true, PrintConfig.PreviewType.EmrSignAndPrintPreview);
+                }
+                else
+                {
+                    PrescriptionPrintShow(printTypeCode, false, null);
+                }
             }
             catch (Exception ex)
             {
@@ -174,7 +184,16 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
         {
             try
             {
-                PrescriptionSavePrintShow(PrintTypeCodeStore.PRINT_TYPE_CODE__BIEUMAU__PHIEU_YEU_CAU_IN_DON_THUOC_Y_HOC_CO_TRUYEN__MPS000050, true);
+                //dangth
+                Inventec.Desktop.Common.Modules.Module moduleData = GlobalVariables.currentModuleRaws.Where(o => o.ModuleLink == this.ModuleLink).FirstOrDefault();
+                if (!string.IsNullOrEmpty(HisConfigCFG.AllowSignaturePrintModules) && ("," + HisConfigCFG.AllowSignaturePrintModules + ",").Contains("," + this.ModuleLink + ",") && moduleData != null)
+                {
+                    PrescriptionSavePrintShow(PrintTypeCodeStore.PRINT_TYPE_CODE__BIEUMAU__PHIEU_YEU_CAU_IN_DON_THUOC_Y_HOC_CO_TRUYEN__MPS000050, true, PrintConfig.PreviewType.EmrSignAndPrintPreview);
+                }
+                else
+                {
+                    PrescriptionSavePrintShow(PrintTypeCodeStore.PRINT_TYPE_CODE__BIEUMAU__PHIEU_YEU_CAU_IN_DON_THUOC_Y_HOC_CO_TRUYEN__MPS000050, true, null);
+                }
             }
             catch (Exception ex)
             {
@@ -182,7 +201,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
             }
         }
 
-        private void PrescriptionPrintShow(string printTypeCode, bool isPrintNow)
+        private void PrescriptionPrintShow(string printTypeCode, bool isPrintNow, PrintConfig.PreviewType? previewType = null)
         {
             try
             {
@@ -301,10 +320,12 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
 
                         printPrescriptionProcessor = new Library.PrintPrescription.PrintPrescriptionProcessor(OutPatientPresResultSDOForPrints, this.currentModule);
                     }
-                    if (isPrintNow)
+                    if (previewType.HasValue)
+                        printPrescriptionProcessor.Print(printTypeCode, isPrintNow, previewType);             
+                    else if (isPrintNow)
                         printPrescriptionProcessor.Print();
                     else
-                        printPrescriptionProcessor.Print(printTypeCode, isPrintNow);
+                        printPrescriptionProcessor.Print(printTypeCode, isPrintNow, previewType);
                 }
             }
             catch (Exception ex)
@@ -313,7 +334,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
             }
         }
 
-        private void PrescriptionSavePrintShow(string printTypeCode, bool isPrintNow)
+        private void PrescriptionSavePrintShow(string printTypeCode, bool isPrintNow, PrintConfig.PreviewType? previewType = null)
         {
             try
             {
@@ -385,7 +406,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
                     //if (isPrintNow)
                     //    printPrescriptionProcessor.Print();
                     //else
-                    printPrescriptionProcessor.Print(printTypeCode, isPrintNow);
+                    printPrescriptionProcessor.Print(printTypeCode, isPrintNow, previewType);
                 }
             }
             catch (Exception ex)

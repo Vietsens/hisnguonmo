@@ -56,6 +56,7 @@ using System.Drawing;
 using DevExpress.XtraTab;
 using HIS.Desktop.ModuleExt;
 using DevExpress.XtraEditors.DXErrorProvider;
+using Inventec.Common.RichEditor.Base;
 
 namespace HIS.Desktop.Plugins.SurgServiceReqExecute
 {
@@ -3208,7 +3209,30 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
                 HIS_SERE_SERV_PTTT_TEMP fillData = new HIS_SERE_SERV_PTTT_TEMP();
                 if (cboPtttTemp.EditValue != null)
                 {
-                    fillData = BackendDataWorker.Get<HIS_SERE_SERV_PTTT_TEMP>().FirstOrDefault(o => o.ID == Inventec.Common.TypeConvert.Parse.ToInt64(cboPtttTemp.EditValue.ToString()));
+                   
+                    fillData =(cboPtttTemp.Properties.DataSource as List<HIS_SERE_SERV_PTTT_TEMP>).FirstOrDefault(o => o.ID == Inventec.Common.TypeConvert.Parse.ToInt64(cboPtttTemp.EditValue.ToString())); 
+                    //qtcode
+                    if (fillData != null && !string.IsNullOrEmpty(fillData.TEXT_LIB_IDS))
+                    {
+                        var textLibIds = fillData.TEXT_LIB_IDS // lấy sanh sách TEXT_LIB_IDS
+                            .Split(new[] { "," }, StringSplitOptions.RemoveEmptyEntries)
+                            .Select(a => a.Trim())
+                            .ToList();
+
+                        var hisTextLibs = BackendDataWorker.Get<HIS_TEXT_LIB>()
+                            .Where(o => o.IS_ACTIVE == 1
+                                && o.IS_DELETE != 1
+                                && o.LIB_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_LIB_TYPE.ID__IMAGE
+                                && textLibIds.Contains(o.ID.ToString()))
+                            .ToList();
+
+                        // Gọi hàm SelectListImageTemp để tạo HIS_SERE_SERV_FILE và load ảnh
+                        if (hisTextLibs != null && hisTextLibs.Any())
+                        {
+                            SelectListImageTemp(hisTextLibs);
+                        }
+                        //qtcode
+                    }
                 }
 
                 FillDataToControlFromTemp(fillData);
@@ -5330,5 +5354,29 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
+
+        private void chkIn_CheckedChanged(object sender, EventArgs e)
+        {
+            if (chkIn.Checked)
+            {
+                chkXemIn.Checked = false;
+            }
+        }
+
+        private void chkXemIn_CheckedChanged(object sender, EventArgs e)
+        {
+            if (chkXemIn.Checked)
+            {
+                chkIn.Checked = false;
+            }
+        }
+
+        //private void chkXemIn_Click(object sender, EventArgs e)
+        //{
+        //    if (chkXemIn.Checked && !IsActionOtherButton)
+        //    {
+        //        PrintProcess(PrintTypeSurg.PHIEU_THU_THUAT_PHAU_THUAT);
+        //    }
+        //}
     }
 }

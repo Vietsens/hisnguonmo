@@ -33,6 +33,8 @@ namespace MPS.Processor.Mps000010
         internal const string APPOINTMENT_BARCODE = "APPOINTMENT_BARCODE";
         internal const string CREATOR_USERNAME = "CREATOR_USERNAME";
         internal const string TREATMENT_CODE_BAR = "TREATMENT_CODE_BAR";
+
+        internal const string STORE_CODE_BAR = "STORE_CODE_BAR";
         internal const string PATIENT_CODE_BAR = "PATIENT_CODE_BAR";
         internal const string HEIN_CARD_ADDRESS = "HEIN_CARD_ADDRESS";
 

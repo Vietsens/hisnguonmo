@@ -21,7 +21,7 @@ using System.Linq;
 
 namespace HIS.Desktop.Plugins.ExroRoom
 {
-    internal class CallModule
+    internal class CallModule   
     {
         internal const string HisImportServiceRoom = "HIS.Desktop.Plugins.HisImportServiceRoom";
 

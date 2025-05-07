@@ -24,6 +24,7 @@ using MOS.Filter;
 using MPS.Processor.Mps000096.PDO;
 using MPS.ProcessorBase.Core;
 using System;
+using System.CodeDom;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Globalization;
@@ -47,7 +48,7 @@ namespace MPS.Processor.Mps000096
         List<TestLisResultADO> ListTestChild = new List<TestLisResultADO>();
         List<V_HIS_SERVICE> ListServiceParent = new List<V_HIS_SERVICE>();
         List<TestLisResultADO> ListTestParentService = new List<TestLisResultADO>();
-        
+
 
         public void SetBarcodeKey()
         {
@@ -152,7 +153,7 @@ namespace MPS.Processor.Mps000096
 
         public void SetSingleKey()
         {
-            try      
+            try
             {
                 AddObjectKeyIntoListkey<MLCTADO>(rdo.mLCTADOs, false);
                 if (rdo.currentSample != null && String.IsNullOrWhiteSpace(rdo.currentSample.SERVICE_REQ_CODE))
@@ -166,8 +167,8 @@ namespace MPS.Processor.Mps000096
                     }
                     else if (rdo.currentSample.GENDER_CODE == "02")
                     {
-                        SetSingleKey(new KeyValue(Mps000096ExtendSingleKey.GENDER_NAME, "Nam"));      
-                    }    
+                        SetSingleKey(new KeyValue(Mps000096ExtendSingleKey.GENDER_NAME, "Nam"));
+                    }
                     else if (rdo.currentSample.GENDER_CODE == "03")
                     {
                         SetSingleKey(new KeyValue(Mps000096ExtendSingleKey.GENDER_NAME, "Không xác định"));
@@ -769,6 +770,7 @@ namespace MPS.Processor.Mps000096
                                 parent = rdo.ListTestService != null ? rdo.ListTestService.FirstOrDefault(o => o.ID == service.PARENT_ID.Value) : null;
                                 if (parent != null)
                                 {
+                                    hisSereServTeinSDO.SERVICE_CODE = parent.SERVICE_CODE;
                                     hisSereServTeinSDO.SERVICE_PARENT_ORDER = parent.NUM_ORDER ?? -1;
                                 }
                             }
@@ -1056,13 +1058,34 @@ namespace MPS.Processor.Mps000096
             {
                 if (rdo != null && rdo.currentSample != null && rdo.currentServiceReq != null && rdo.currentTreatment != null)
                 {
-                    //result = String.Format("{0}_{1}_{2}_{3}", this.printTypeCode, rdo.currentTreatment.TREATMENT_CODE, rdo.currentServiceReq.SERVICE_REQ_CODE, rdo.currentSample.BARCODE);
-                    result = String.Format("{0} {1} {2} {3}", this.printTypeCode, string.Format("TREATMENT_CODE:{0}", rdo.currentTreatment.TREATMENT_CODE), string.Format("SERVICE_REQ_CODE:{0}", rdo.currentServiceReq.SERVICE_REQ_CODE), rdo.currentSample.BARCODE);
+                    var groupedServices = rdo.lstLisResult
+                        .Select(sereServ => rdo.ListTestService.FirstOrDefault(o => o.SERVICE_CODE == sereServ.SERVICE_CODE))
+                        .Where(service => service != null && service.PARENT_ID.HasValue)
+                        .GroupBy(service => service.PARENT_ID.Value)
+                        .ToList();
+
+                    foreach (var group in groupedServices)
+                    {
+                        var parentService = rdo.ListTestService.FirstOrDefault(o => o.ID == group.Key);
+                        string serviceCode = parentService != null ? parentService.SERVICE_CODE : null;
+
+                        string currentResult = string.Format("{0} {1} {2} {3}",
+                            this.printTypeCode,
+                            string.Format("TREATMENT_CODE:{0}", rdo.currentTreatment.TREATMENT_CODE),
+                            string.Format("SERVICE_REQ_CODE:{0}", rdo.currentServiceReq.SERVICE_REQ_CODE),
+                            string.Format("BARCODE:{0}", rdo.currentSample.BARCODE));
+
+
+                        if (!string.IsNullOrEmpty(serviceCode))
+                        {
+                            currentResult += string.Format(" SERVICE_CODE:{0}", serviceCode);
+                        }
+                        result = currentResult;
+                    }
                 }
             }
             catch (Exception ex)
             {
-                result = "";
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
             return result;

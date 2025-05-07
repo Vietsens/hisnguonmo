@@ -23,6 +23,7 @@ using HIS.Desktop.LocalStorage.BackendData;
 using HIS.Desktop.LocalStorage.ConfigSystem;
 using HIS.Desktop.LocalStorage.HisConfig;
 using HIS.Desktop.LocalStorage.LocalData;
+using HIS.Desktop.Plugins.AssignPaan.Config;
 using Inventec.Common.Logging;
 using Inventec.Core;
 using Inventec.Desktop.Common.Message;
@@ -35,6 +36,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using static MPS.ProcessorBase.PrintConfig;
 
 namespace HIS.Desktop.Plugins.AssignPaan
 {
@@ -451,20 +453,34 @@ namespace HIS.Desktop.Plugins.AssignPaan
                         bedLogs = new Inventec.Common.Adapter.BackendAdapter(param).Get<List<V_HIS_BED_LOG>>("api/HisBedLog/GetView", ApiConsumer.ApiConsumers.MosConsumer, bedLogViewFilter, param);
                     }
 
+                    
+                    MPS.ProcessorBase.PrintConfig.PreviewType previewType;
+                    //if (HIS.Desktop.LocalStorage.ConfigApplication.ConfigApplications.CheDoInChoCacChucNangTrongPhanMem == 2)
+                    //{
+                    //    printNow = true;
+                    //}
+                    //else
+                    //{
+                    //    printNow = false;
+                    //}
                     bool printNow = false;
-
-                    if (HIS.Desktop.LocalStorage.ConfigApplication.ConfigApplications.CheDoInChoCacChucNangTrongPhanMem == 2)
-                    {
-                        printNow = true;
+                    var allowSignValue = HisPatientTypeCFG.IsAllowSignaturePrint;
+                    var allowedModules = allowSignValue
+                            .Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries)
+                            .Select(x => x.Trim())
+                            .ToList();
+                    if (!string.IsNullOrWhiteSpace(allowSignValue) && allowedModules.Contains("HIS.Desktop.Plugins.AssignPaan"))
+                    {                                                
+                        previewType = MPS.ProcessorBase.PrintConfig.PreviewType.EmrSignAndPrintPreview;                        
                     }
                     else
                     {
-                        printNow = false;
+                        previewType = MPS.ProcessorBase.PrintConfig.PreviewType.ShowDialog;
                     }
-
-                    var PrintServiceReqProcessor = new Library.PrintServiceReq.PrintServiceReqProcessor(sdo, currentHisTreatment, bedLogs, currentModule != null ? currentModule.RoomId : 0);
-                    PrintServiceReqProcessor.Print(printTypeCode, printNow);
+                    var PrintServiceReqProcessors = new Library.PrintServiceReq.PrintServiceReqProcessor(sdo, currentHisTreatment, bedLogs, currentModule != null ? currentModule.RoomId : 0, previewType);
+                    PrintServiceReqProcessors.Print(printTypeCode, printNow);
                 }
+
             }
             catch (Exception ex)
             {

@@ -75,6 +75,14 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             try
             {
                 DXPopupMenu menu = new DXPopupMenu();
+                //DXMenuItem itemTruyenDich = new DXMenuItem("Truyền dịch", new EventHandler(onClickTruyenDich));
+                //menu.Items.Add(itemTruyenDich);
+                //qtcode
+                DXMenuItem itemTraSoatHoSoBenhAn = new DXMenuItem("Tra soát hồ sơ bệnh án", new EventHandler(onClickTraSoatHoSoBenhAn));
+                menu.Items.Add(itemTraSoatHoSoBenhAn);
+                DXMenuItem itemChiTietBenhAn = new DXMenuItem("Chi tiết bệnh án", new EventHandler(onClickChiTietBenhAn));
+                menu.Items.Add(itemChiTietBenhAn);
+                // qtcode
                 DXMenuItem itemPhieuVoBenhAn = new DXMenuItem(Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY_PHIEU_VO_BENH_AN", ResourceLangManager.LanguageUCExamServiceReqExecute, LanguageManager.GetCulture()), new EventHandler(onClickPhieuVoBenhAn));
                 menu.Items.Add(itemPhieuVoBenhAn);
 

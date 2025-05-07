@@ -1,4 +1,4 @@
-/* IVT
+﻿/* IVT
  * @Project : hisnguonmo
  * Copyright (C) 2017 INVENTEC
  *  
@@ -38,7 +38,12 @@ namespace HIS.Desktop.Plugins.BidCreate.Validation
                 {
                     this.ErrorText = Resources.ResourceMessage.ThieuTruongDuLieuBatBuoc;
                     return valid;
-                }            
+                }
+                if (txtBidNumber.Text.Length > 50)
+                {
+                    this.ErrorText = "Trường dữ liệu có độ dài quá 50";
+                    return valid;
+                }
                 valid = true;
             }
             catch (Exception ex)

@@ -927,7 +927,9 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
                     billTwoBookSDO.RecieptTransaction.BUYER_NAME = txtBuyerName.Text;
                     billTwoBookSDO.RecieptTransaction.BUYER_ORGANIZATION = txtBuyerOrganization.Text;
                     billTwoBookSDO.RecieptTransaction.BUYER_TAX_CODE = txtBuyerTaxCode.Text;
-
+                    //qtcode
+                    billTwoBookSDO.RecieptTransaction.BUYER_EMAIL = txtBuyerEmail.Text;
+                    //qtcode
                     billTwoBookSDO.RecieptTransaction.BUYER_TYPE = 1;
                 }
                 else if (chkOrganizationInfo.Checked)

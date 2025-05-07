@@ -298,6 +298,11 @@ namespace HIS.UC.FormType.HisMultiGetString
                     List<long> parentIds = Config.HisFormTypeConfig.VHisServices.Where(o => o.PARENT_ID != null).Select(o => o.PARENT_ID ?? 0).Distinct().ToList();
                     datasuft = Config.HisFormTypeConfig.VHisServices.Where(p => parentIds.Contains(p.ID)).Select(o => new DataGet { ID = o.ID, CODE = o.SERVICE_CODE, NAME = o.SERVICE_NAME, PARENT = o.SERVICE_TYPE_ID }).ToList();
                 }
+                else if (value == "HIS_PARENT_MEDICINE_TYPE") /// 22/04/2025 TKB00139 thận hà nội
+                {
+                    List<long> parentIds = Config.HisFormTypeConfig.VHisMedicineTypes.Where(o => o.PARENT_ID != null).Select(o => o.PARENT_ID ?? 0).Distinct().ToList();
+                    datasuft = Config.HisFormTypeConfig.VHisMedicineTypes.Where(p => parentIds.Contains(p.ID)).Select(o => new DataGet { ID = o.ID, CODE = o.MEDICINE_TYPE_CODE, NAME = o.MEDICINE_TYPE_NAME, PARENT = o.ID }).ToList();
+                }
                 else if (value == "HIS_CHILD_SERVICE") datasuft = Config.HisFormTypeConfig.VHisServices.Where(p => p.PARENT_ID.HasValue).Select(o => new DataGet { ID = o.ID, CODE = o.SERVICE_CODE, NAME = o.SERVICE_NAME, PARENT = o.PARENT_ID.Value }).ToList();
                 else if (value == "HIS_SERVICE_ROOM") datasuft = Config.HisFormTypeConfig.VHisServiceRooms.Select(o => new DataGet { ID = o.ID, CODE = o.ROOM_CODE, NAME = o.ROOM_NAME }).ToList();// IDs = Config.HisFormTypeConfig.VHisServiceRooms.Select(o => o.ID).ToList(); }
                 else if (value == "HIS_SERVICE_GROUP") datasuft = Config.HisFormTypeConfig.VHisServiceGroups.Select(o => new DataGet { ID = o.ID, CODE = o.SERVICE_GROUP_CODE, NAME = o.SERVICE_GROUP_NAME }).ToList();
@@ -341,7 +346,7 @@ namespace HIS.UC.FormType.HisMultiGetString
                 else if (value == "HIS_MEDI_ORG") datasuft = Config.HisFormTypeConfig.HisMediOrgs.Select(o => new DataGet { ID = o.ID, CODE = o.MEDI_ORG_CODE, NAME = o.MEDI_ORG_NAME }).ToList();
                 else if (value == "HIS_CONFIG")
                 {
-                    datasuft = Config.HisFormTypeConfig.HisConfig.Select(o => new DataGet { ID = o.ID, CODE = o.KEY.Replace("HIS.Desktop.Plugins.PaymentQrCode.", "").Replace("Info", ""), NAME = "Ngân hàng " + o.KEY.Replace("HIS.Desktop.Plugins.PaymentQrCode.","").Replace("Info","") }).ToList();
+                    datasuft = Config.HisFormTypeConfig.HisConfig.Select(o => new DataGet { ID = o.ID, CODE = o.KEY.Replace("HIS.Desktop.Plugins.PaymentQrCode.", "").Replace("Info", ""), NAME = "Ngân hàng " + o.KEY.Replace("HIS.Desktop.Plugins.PaymentQrCode.", "").Replace("Info", "") }).ToList();
                 }
                 else if (value == "HIS_MEDICINE_LINE")
                 {

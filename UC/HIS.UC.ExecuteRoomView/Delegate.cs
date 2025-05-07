@@ -27,8 +27,8 @@ using System.Windows.Forms;
 namespace HIS.UC.ExecuteRoomView
 {
     public delegate void Grid_CustomUnboundColumnData(V_HIS_EXECUTE_ROOM data, DevExpress.XtraGrid.Views.Base.CustomColumnDataEventArgs e);
-    public delegate void btn_Radio_Enable_Click(V_HIS_EXECUTE_ROOM data);
-    public delegate void Grid_CustomRowCellEdit(V_HIS_EXECUTE_ROOM data, DevExpress.XtraGrid.Views.Base.CustomRowCellEventArgs e);
+    public delegate void btn_Radio_Enable_Click(ExecuteRoomViewADO data);
+    public delegate void Grid_CustomRowCellEdit(V_HIS_EXECUTE_ROOM data, DevExpress.XtraGrid.Views.Base.CustomRowCellEventArgs e);    
     public delegate void Grid_CellValueChanged(ExecuteRoomViewADO data, DevExpress.XtraGrid.Views.Base.CellValueChangedEventArgs e);
     public delegate void Grid_MouseDown(object sender, MouseEventArgs e);
 

@@ -45,7 +45,6 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(UCBedRoomPartial));
             DevExpress.XtraGrid.GridLevelNode gridLevelNode1 = new DevExpress.XtraGrid.GridLevelNode();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject1 = new DevExpress.Utils.SerializableAppearanceObject();
@@ -117,12 +116,12 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
             this.xtraTabDocumentResult = new DevExpress.XtraTab.XtraTabPage();
             this.ucViewEmrDocumentResult = new HIS.UC.ViewEmrDocument.UcEmrDocument.UcViewEmrDocument();
             this.cboFilterByDepartment = new DevExpress.XtraEditors.LookUpEdit();
-            this.barManager1 = new DevExpress.XtraBars.BarManager(this.components);
+            this.barManager1 = new DevExpress.XtraBars.BarManager();
             this.barDockControlTop = new DevExpress.XtraBars.BarDockControl();
             this.barDockControlBottom = new DevExpress.XtraBars.BarDockControl();
             this.barDockControlLeft = new DevExpress.XtraBars.BarDockControl();
             this.barDockControlRight = new DevExpress.XtraBars.BarDockControl();
-            this.imageCollection2 = new DevExpress.Utils.ImageCollection(this.components);
+            this.imageCollection2 = new DevExpress.Utils.ImageCollection();
             this.layoutControlGroup6 = new DevExpress.XtraLayout.LayoutControlGroup();
             this.LciGroupEmrDocument1 = new DevExpress.XtraLayout.LayoutControlGroup();
             this.layoutControlItem32 = new DevExpress.XtraLayout.LayoutControlItem();
@@ -213,16 +212,18 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
             this.gridColumn9 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.grdColAddTime = new DevExpress.XtraGrid.Columns.GridColumn();
             this.grdColBedName = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gridColumn7 = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gridColumn11 = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gridColumn12 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.grdColRoomName = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn1 = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gridColumn5 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gc_ClassifyName = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn3 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn8 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gc_MedisoftH = new DevExpress.XtraGrid.Columns.GridColumn();
             this.repositoryItemBtnMedisoft = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
-            this.gridColumn5 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn6 = new DevExpress.XtraGrid.Columns.GridColumn();
-            this.gridColumn7 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.repositoryItemTextEdit1 = new DevExpress.XtraEditors.Repository.RepositoryItemTextEdit();
             this.repositoryItemButton__Send = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
             this.repositoryItemButton__Send__Disable = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
@@ -274,13 +275,12 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
             this.layoutControlItem6 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem18 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem47 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.imageCollection1 = new DevExpress.Utils.ImageCollection(this.components);
-            this.toolTipController2 = new DevExpress.Utils.ToolTipController(this.components);
-            this.toolTipController1 = new DevExpress.Utils.ToolTipController(this.components);
-            this.notifyIcon1 = new System.Windows.Forms.NotifyIcon(this.components);
-            this.timer1 = new System.Windows.Forms.Timer(this.components);
-            this.gridColumn11 = new DevExpress.XtraGrid.Columns.GridColumn();
-            this.gridColumn12 = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.imageCollection1 = new DevExpress.Utils.ImageCollection();
+            this.toolTipController2 = new DevExpress.Utils.ToolTipController();
+            this.toolTipController1 = new DevExpress.Utils.ToolTipController();
+            this.notifyIcon1 = new System.Windows.Forms.NotifyIcon();
+            this.timer1 = new System.Windows.Forms.Timer();
+            this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
             this.layoutControl1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl3)).BeginInit();
@@ -1190,6 +1190,7 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
             // 
             // lblPatientCode
             // 
+            this.lblPatientCode.Appearance.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.lblPatientCode.AutoSizeMode = DevExpress.XtraEditors.LabelAutoSizeMode.None;
             this.lblPatientCode.Location = new System.Drawing.Point(97, 2);
             this.lblPatientCode.Name = "lblPatientCode";
@@ -1231,6 +1232,7 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
             this.lciPatientCode.AppearanceItemCaption.Options.UseTextOptions = true;
             this.lciPatientCode.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lciPatientCode.Control = this.lblPatientCode;
+            this.lciPatientCode.ImageToTextDistance = 0;
             this.lciPatientCode.Location = new System.Drawing.Point(0, 0);
             this.lciPatientCode.MaxSize = new System.Drawing.Size(0, 24);
             this.lciPatientCode.MinSize = new System.Drawing.Size(109, 24);
@@ -1950,6 +1952,37 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
             this.grdColBedName.VisibleIndex = 11;
             this.grdColBedName.Width = 222;
             // 
+            // gridColumn7
+            // 
+            this.gridColumn7.Caption = "Số vào viện";
+            this.gridColumn7.FieldName = "IN_CODE_STR";
+            this.gridColumn7.Name = "gridColumn7";
+            this.gridColumn7.UnboundType = DevExpress.Data.UnboundColumnType.Object;
+            this.gridColumn7.Visible = true;
+            this.gridColumn7.VisibleIndex = 12;
+            // 
+            // gridColumn11
+            // 
+            this.gridColumn11.Caption = "Chuẩn đoán chính";
+            this.gridColumn11.FieldName = "ICD_CODE_ICD_NAME";
+            this.gridColumn11.MaxWidth = 150;
+            this.gridColumn11.Name = "gridColumn11";
+            this.gridColumn11.OptionsColumn.AllowEdit = false;
+            this.gridColumn11.UnboundType = DevExpress.Data.UnboundColumnType.Object;
+            this.gridColumn11.Visible = true;
+            this.gridColumn11.VisibleIndex = 13;
+            // 
+            // gridColumn12
+            // 
+            this.gridColumn12.Caption = "Chuẩn đoán phụ";
+            this.gridColumn12.FieldName = "ICD_SUB_CODE_ICD_TEXT";
+            this.gridColumn12.MaxWidth = 150;
+            this.gridColumn12.Name = "gridColumn12";
+            this.gridColumn12.OptionsColumn.AllowEdit = false;
+            this.gridColumn12.UnboundType = DevExpress.Data.UnboundColumnType.Object;
+            this.gridColumn12.Visible = true;
+            this.gridColumn12.VisibleIndex = 14;
+            // 
             // grdColRoomName
             // 
             this.grdColRoomName.Caption = "Phòng điều trị";
@@ -1972,6 +2005,15 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
             this.gridColumn1.Visible = true;
             this.gridColumn1.VisibleIndex = 16;
             this.gridColumn1.Width = 96;
+            // 
+            // gridColumn5
+            // 
+            this.gridColumn5.Caption = "Khoa";
+            this.gridColumn5.FieldName = "LAST_DEPARTMENT_NAME";
+            this.gridColumn5.Name = "gridColumn5";
+            this.gridColumn5.Visible = true;
+            this.gridColumn5.VisibleIndex = 17;
+            this.gridColumn5.Width = 99;
             // 
             // gc_ClassifyName
             // 
@@ -2022,15 +2064,6 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
             this.repositoryItemBtnMedisoft.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             this.repositoryItemBtnMedisoft.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.repositoryItemBtnMedisoft_ButtonClick);
             // 
-            // gridColumn5
-            // 
-            this.gridColumn5.Caption = "Khoa";
-            this.gridColumn5.FieldName = "LAST_DEPARTMENT_NAME";
-            this.gridColumn5.Name = "gridColumn5";
-            this.gridColumn5.Visible = true;
-            this.gridColumn5.VisibleIndex = 17;
-            this.gridColumn5.Width = 99;
-            // 
             // gridColumn6
             // 
             this.gridColumn6.Caption = "gridColumn6";
@@ -2042,15 +2075,6 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
             this.gridColumn6.Visible = true;
             this.gridColumn6.VisibleIndex = 2;
             this.gridColumn6.Width = 30;
-            // 
-            // gridColumn7
-            // 
-            this.gridColumn7.Caption = "Số vào viện";
-            this.gridColumn7.FieldName = "IN_CODE_STR";
-            this.gridColumn7.Name = "gridColumn7";
-            this.gridColumn7.UnboundType = DevExpress.Data.UnboundColumnType.Object;
-            this.gridColumn7.Visible = true;
-            this.gridColumn7.VisibleIndex = 12;
             // 
             // repositoryItemTextEdit1
             // 
@@ -2600,27 +2624,10 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
             // 
             this.timer1.Interval = 1000;
             // 
-            // gridColumn11
+            // contextMenuStrip1
             // 
-            this.gridColumn11.Caption = "Chuẩn đoán chính";
-            this.gridColumn11.FieldName = "ICD_CODE_ICD_NAME";
-            this.gridColumn11.MaxWidth = 150;
-            this.gridColumn11.Name = "gridColumn11";
-            this.gridColumn11.OptionsColumn.AllowEdit = false;
-            this.gridColumn11.UnboundType = DevExpress.Data.UnboundColumnType.Object;
-            this.gridColumn11.Visible = true;
-            this.gridColumn11.VisibleIndex = 13;
-            // 
-            // gridColumn12
-            // 
-            this.gridColumn12.Caption = "Chuẩn đoán phụ";
-            this.gridColumn12.FieldName = "ICD_SUB_CODE_ICD_TEXT";
-            this.gridColumn12.MaxWidth = 150;
-            this.gridColumn12.Name = "gridColumn12";
-            this.gridColumn12.OptionsColumn.AllowEdit = false;
-            this.gridColumn12.UnboundType = DevExpress.Data.UnboundColumnType.Object;
-            this.gridColumn12.Visible = true;
-            this.gridColumn12.VisibleIndex = 14;
+            this.contextMenuStrip1.Name = "contextMenuStrip1";
+            this.contextMenuStrip1.Size = new System.Drawing.Size(61, 4);
             // 
             // UCBedRoomPartial
             // 
@@ -2980,5 +2987,6 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
         private Inventec.Desktop.CustomControl.NoFocus.CustomGridViewWithFilterMultiColumnNoFocus customGridLookUpEditWithFilterMultiColumnNoFocus1View;
         private DevExpress.XtraGrid.Columns.GridColumn gridColumn11;
         private DevExpress.XtraGrid.Columns.GridColumn gridColumn12;
+        private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
     }
 }

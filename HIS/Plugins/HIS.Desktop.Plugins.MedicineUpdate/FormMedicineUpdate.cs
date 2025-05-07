@@ -609,7 +609,7 @@ namespace HIS.Desktop.Plugins.MedicineUpdate
                 ValidBidControlMaxlength(txtGroupBid, 4);
                 //ValidBidControlMaxlength(txtPackBid, 4);
                 //ValidBidControlMaxlength(txtBidYear, 20);
-                ValidBidControlMaxlength(txtBidNumber, 30, false);
+                ValidBidControlMaxlength(txtBidNumber, 50, false);
                 ValidBidControlMaxlength(txtMaHoatChatBHYT, 500, false);
                 ValidBidControlMaxlength(txtConcentra, 1000, false);
                 ValidBidControlMaxlength(txtHeinServiceBHYTName, 1500);

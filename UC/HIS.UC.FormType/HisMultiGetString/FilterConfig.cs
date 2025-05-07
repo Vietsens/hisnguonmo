@@ -84,6 +84,8 @@ namespace HIS.UC.FormType.HisMultiGetString
                             FilterTypeCode = "HIS_PARENT_SERVICE";
                         else if (_jsonOutput.Contains("PARENT_SERVICE_RAW_MEDICINAL_HERBS_ID"))/// 24/02/2025
                             FilterTypeCode = "HIS_PARENT_SERVICE_RAW_MEDICINAL_HERBS";
+                        else if (_jsonOutput.Contains("PARENT_MEDICINE_TYPE_ID"))/// 22/04/2025
+                            FilterTypeCode = "HIS_PARENT_MEDICINE_TYPE";
                         else if (_jsonOutput.Contains("CHILD_SERVICE_ID"))
                             FilterTypeCode = "HIS_CHILD_SERVICE";
                         else if (_jsonOutput.Contains("MEST_ROOM_ID"))
@@ -365,6 +367,8 @@ namespace HIS.UC.FormType.HisMultiGetString
                             FilterTypeCode = "HIS_PARENT_SERVICE";
                         else if (_jsonOutput.Contains("PARENT_SERVICE_RAW_MEDICINAL_HERBS_CODE"))// 24/02/2025
                             FilterTypeCode = "HIS_PARENT_SERVICE_RAW_MEDICINAL_HERBS";
+                        else if (_jsonOutput.Contains("PARENT_MEDICINE_TYPE_CODE")) /// 22/04/2025
+                            FilterTypeCode = "HIS_PARENT_MEDICINE_TYPE";
                         else if (_jsonOutput.Contains("CHILD_SERVICE_CODE"))
                             FilterTypeCode = "HIS_CHILD_SERVICE";
                         else if (_jsonOutput.Contains("MEST_ROOM_CODE"))

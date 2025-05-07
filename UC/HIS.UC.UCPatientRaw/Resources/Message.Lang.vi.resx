@@ -192,7 +192,13 @@
   <data name="HIS_UC_UCPatientRaw_typeCodeFind__MaBN_ToolTip" xml:space="preserve">
     <value>Mã bệnh nhân</value>
   </data>
-  <data name="HIS_UC_UCPatientRaw_typeCodeFind__MaCMCC" xml:space="preserve">
+  <data name="HIS_UC_UCPatientRaw_typeCodeFind__MaBA" xml:space="preserve">
+    <value>Mã BA</value>
+  </data>
+  <data name="HIS_UC_UCPatientRaw_typeCodeFind__MaBA_ToolTip" xml:space="preserve">
+  <value>Mã bệnh án</value>
+  </data>
+	<data name="HIS_UC_UCPatientRaw_typeCodeFind__MaCMCC" xml:space="preserve">
     <value>CMND/CCCD</value>
   </data>
   <data name="HIS_UC_UCPatientRaw_typeCodeFind__MaCMCC_ToolTip" xml:space="preserve">

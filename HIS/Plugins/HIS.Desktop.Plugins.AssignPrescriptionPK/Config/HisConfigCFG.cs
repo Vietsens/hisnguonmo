@@ -28,6 +28,8 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.Config
 {
     class HisConfigCFG
     {
+        private const string IS_ALLOW_SIGNATURE_PRINT_MODULELINKS = "HIS.Desktop.Plugins.IsAllowSignaturePrint.ModuleLinks";
+        private const string CONFIG_KEY__ASSIGNPRESCRIPTION_EGFROPTION = "HIS.Desktop.Plugins.AssignPrescription.EgfrOption";   
         private const string CONFIG_KEY__ICD_SERVICE__CONTRAINDICATED__WARNING_OPTION = "HIS.ICD_SERVICE.CONTRAINDICATED.WARNING_OPTION";
         private const string CONFIG_KEY__TrackingCreate__UpdateTreatmentIcd = "HIS.Desktop.Plugins.TrackingCreate.UpdateTreatmentIcd";
         private const string CONFIG_KEY__HIS_SERVICE_REQ__DO_NOT_ALLOW_PRES_OUT_PATIENT_IN_CASE_OF_HAVING_DEBT = "MOS.HIS_SERVICE_REQ.DO_NOT_ALLOW_PRES_OUT_PATIENT_IN_CASE_OF_HAVING_DEBT";
@@ -165,6 +167,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.Config
         internal static string OptionSubIcdWhenFinish;
         internal static bool IsServiceReqIcdOption;
         internal static string ModuleLinkApply;
+        internal static string MODULELINKS;
         /// <summary>
         /// :Có tự động focus vào ô lời dặn không. 1-có, 0-không
         ///Mặc định= 0
@@ -441,6 +444,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.Config
         {
             try
             {
+                MODULELINKS = GetValue(IS_ALLOW_SIGNATURE_PRINT_MODULELINKS);
                 AllowAssignOffListMedicineMaterialHeinCardNumberPrefix = GetValue(KEY_ALLOW_ASSIGN_OFF_LIST_MEDICINE_MATERIAL__HEIN_CARD_NUMBER_PREFIX);
                 IsSaveButtonOption = GetValue(KEY_SaveButtonOption);
                 IsRequiredHtu = GetValue(KEY_IsRequiredHtu);
