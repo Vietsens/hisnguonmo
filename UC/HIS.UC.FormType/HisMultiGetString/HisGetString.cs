@@ -149,7 +149,7 @@ namespace HIS.UC.FormType.HisMultiGetString
                 }
                 else if (value == "HIS_ACCIDENT_HURT_TYPE") datasuft = Config.HisFormTypeConfig.HisAccidentHurtTypes.Select(o => new DataGet { ID = o.ID, CODE = o.ACCIDENT_HURT_TYPE_CODE, NAME = o.ACCIDENT_HURT_TYPE_NAME }).ToList();
                 else if (value == "HIS_ACCIDENT_RESULT") datasuft = Config.HisFormTypeConfig.HisAccidentResults.Select(o => new DataGet { ID = o.ID, CODE = o.ACCIDENT_RESULT_CODE, NAME = o.ACCIDENT_RESULT_NAME }).ToList();
-                else if (value == "HIS_EMPLOYEE") datasuft = Config.HisFormTypeConfig.HisDEmployees.Select(o => new DataGet { ID = o.ID, CODE = o.DIPLOMA, NAME = o.DIPLOMA }).ToList();
+                else if (value == "HIS_EMPLOYEE") datasuft = Config.HisFormTypeConfig.HisDEmployees.Select(o => new DataGet { ID = o.ID, CODE = o.LOGINNAME, NAME = o.TDL_USERNAME }).ToList();
                 else if (value == "HIS_CURRENTBRANCH_MEDI_STOCK" && Config.HisFormTypeConfig.VHisMediStock != null && Config.HisFormTypeConfig.HisDepartments != null)
                 {
                     datasuft = Config.HisFormTypeConfig.VHisMediStock.Where(o => Config.HisFormTypeConfig.HisDepartments.Exists(p => p.ID == o.DEPARTMENT_ID && p.BRANCH_ID == HIS.UC.FormType.FormTypeConfig.BranchId)).Select(o => new DataGet { ID = o.ID, CODE = o.MEDI_STOCK_CODE, NAME = o.MEDI_STOCK_NAME }).ToList();
