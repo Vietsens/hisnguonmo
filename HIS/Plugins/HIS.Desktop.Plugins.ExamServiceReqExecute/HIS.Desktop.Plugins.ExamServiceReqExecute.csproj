@@ -86,14 +86,9 @@
     <Reference Include="HIS.Desktop.Plugins.Library.AlertHospitalFeeNotBHYT">
       <HintPath>..\..\..\..\LIB\HIS\HIS.Desktop.Plugins.Library.AlertHospitalFeeNotBHYT\HIS.Desktop.Plugins.Library.AlertHospitalFeeNotBHYT.dll</HintPath>
     </Reference>
-<<<<<<< HEAD
-    <Reference Include="HIS.Desktop.Plugins.Library.CheckIcd">
-      <HintPath>..\..\..\..\lib\HIS\HIS.Desktop.Plugins.Library.CheckIcd\HIS.Desktop.Plugins.Library.CheckIcd.dll</HintPath>
-=======
     <Reference Include="HIS.Desktop.Plugins.Library.CheckIcd, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\..\HISNGUONMO\lib_backup\lib\HIS\HIS.Desktop.Plugins.Library.CheckIcd\HIS.Desktop.Plugins.Library.CheckIcd.dll</HintPath>
->>>>>>> dangth
     </Reference>
     <Reference Include="HIS.Desktop.Plugins.Library.ConnectBloodPressure">
       <HintPath>..\..\..\..\LIB\HIS\HIS.Desktop.Plugins.Library.ConnectBloodPressure\HIS.Desktop.Plugins.Library.ConnectBloodPressure.dll</HintPath>
@@ -163,11 +158,8 @@
       <HintPath>..\..\..\..\..\HISNGUONMO\lib_backup\lib\HIS\HIS.UC.ExamFinish\HIS.UC.ExamFinish.dll</HintPath>
     </Reference>
     <Reference Include="HIS.UC.ExamTreatmentFinish">
-<<<<<<< HEAD
       <HintPath>..\..\..\..\lib\HIS\HIS.UC.ExamTreatmentFinish\HIS.UC.ExamTreatmentFinish.dll</HintPath>
-=======
       <HintPath>..\..\..\..\..\HISTEST\histest\x64\ReferencedAssemblies\HIS.UC.ExamTreatmentFinish.dll</HintPath>
->>>>>>> dangth
     </Reference>
     <Reference Include="HIS.UC.HisExamServiceAdd">
       <HintPath>..\..\..\..\LIB\HIS\HIS.UC.ExamServiceAdd\HIS.UC.HisExamServiceAdd.dll</HintPath>
@@ -193,11 +185,8 @@
       <HintPath>..\..\..\..\LIB\HIS\HIS.UC.TranPati\HIS.UC.TranPati.dll</HintPath>
     </Reference>
     <Reference Include="HIS.UC.TreatmentFinish">
-<<<<<<< HEAD
       <HintPath>..\..\..\..\lib\HIS\HIS.UC.TreatmentFinish\HIS.UC.TreatmentFinish.dll</HintPath>
-=======
       <HintPath>..\..\..\..\..\HISTEST\histest\x64\ReferencedAssemblies\HIS.UC.TreatmentFinish.dll</HintPath>
->>>>>>> dangth
     </Reference>
     <Reference Include="HIS.UC.TreeSereServ7">
       <HintPath>..\..\..\..\LIB\HIS\HIS.UC.TreeSereServ7\HIS.UC.TreeSereServ7.dll</HintPath>

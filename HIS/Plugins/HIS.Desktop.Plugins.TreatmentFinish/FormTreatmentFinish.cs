@@ -2077,8 +2077,10 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
 
                     FormTransfer = new CloseTreatment.FormTransfer(this.module, currentHisTreatment);
                     FormTransfer.MyGetData = new CloseTreatment.FormTransfer.GetString(TranPatiDataTreatmentFinish);
-                    FormTransfer.Form = this;
-                    FormTransfer.ShowDialog();
+                    
+                    Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData("MyGetData", FormTransfer.MyGetData));
+                    FormTransfer.Form = this; 
+                    FormTransfer.ShowDialog(); 
                     cboTTExt.EditValue = null;
                 }
                 else if (data.ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_END_TYPE.ID__HEN)
