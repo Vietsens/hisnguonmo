@@ -192,6 +192,9 @@
   <data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__MOUSE_RIGHT__BANG_KE" xml:space="preserve">
     <value>List</value>
   </data>
+	<data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__MOUSE_RIGHT__MOI_KHAM_CHUYEN_KHOA" xml:space="preserve">
+    <value>Invite</value>
+  </data>
   <data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__MOUSE_RIGHT__BIEN_BAN_HOI_CHAN" xml:space="preserve">
     <value>Minutes of consultation</value>
   </data>

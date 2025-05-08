@@ -26,7 +26,7 @@ using DevExpress.XtraGrid.Columns;
 using DevExpress.XtraGrid.Views.Base;
 using DevExpress.XtraGrid.Views.Grid;
 using DevExpress.XtraGrid.Views.Grid.ViewInfo;
-using HIS.Desktop.ADO;
+using HIS.Desktop.ADO;      
 using HIS.Desktop.ApiConsumer;
 using HIS.Desktop.Controls.Session;
 using HIS.Desktop.LibraryMessage;
@@ -206,7 +206,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
         bool isStopEventChangeMultiDate;
         bool IsObligatoryTranferMediOrg = false;
         bool IsAcceptWordNotInData = false;
-        string[] icdSeparators = new string[] { ";" };
+        string[] icdSeparators = new string[] { "," };
         bool isAutoCheckIcd;
         string _TextIcdName = "";
         string _TextIcdNameCause = "";
@@ -1592,12 +1592,12 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                 var lstIcdCodeScreen = txtIcdSubCode.Text.Trim().Split(IcdUtil.seperator.ToCharArray(), StringSplitOptions.RemoveEmptyEntries).ToList();
                 lstIcdCodeScreen.AddRange(lstIcdCode);
                 lstIcdCodeScreen = lstIcdCodeScreen.Distinct().ToList();
-                string icdCode = string.Join(";", lstIcdCodeScreen);
+                string icdCode = string.Join(",", lstIcdCodeScreen);
 
                 var lstIcdNameScreen = txtIcdText.Text.Trim().Split(IcdUtil.seperator.ToCharArray(), StringSplitOptions.RemoveEmptyEntries).ToList();
                 lstIcdNameScreen.AddRange(lstIcdName);
                 lstIcdNameScreen = lstIcdNameScreen.Distinct().ToList();
-                string icdName = string.Join(";", lstIcdNameScreen);
+                string icdName = string.Join(",", lstIcdNameScreen);
                 if (!string.IsNullOrEmpty(icdCode))
                 {
                     txtIcdSubCode.Text = icdCode;
@@ -1909,6 +1909,11 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
         {
 
             WaitingManager.Show();
+            //if (memHtu.Text != null)
+            //    this.medicineTypeTutSelected.HTU_TEXT = memHtu.Text;
+            //else
+            //    this.medicineTypeTutSelected.HTU_TEXT = null;
+
 
             if (cboMedicineUseForm.EditValue != null)
                 this.medicineTypeTutSelected.MEDICINE_USE_FORM_ID = Inventec.Common.TypeConvert.Parse.ToInt64((cboMedicineUseForm.EditValue ?? 0).ToString());
@@ -2864,21 +2869,21 @@ o.SERVICE_ID == medi.SERVICE_ID && o.TDL_INTRUCTION_TIME.ToString().Substring(0,
                 var icdValue = UcIcdGetValue() as HIS.UC.Icd.ADO.IcdInputADO;
                 if (icdValue != null && !string.IsNullOrEmpty(icdValue.ICD_CODE))
                 {
-                    lstIcd.Add(icdValue.ICD_CODE.Replace(";", ""));
+                    lstIcd.Add(icdValue.ICD_CODE.Replace(",", ""));
                 }
 
                 var icdCauseValue = UcIcdCauseGetValue() as HIS.UC.Icd.ADO.IcdInputADO;
                 if (icdCauseValue != null && !string.IsNullOrEmpty(icdCauseValue.ICD_CODE))
                 {
-                    lstIcd.Add(icdCauseValue.ICD_CODE.Replace(";", ""));
+                    lstIcd.Add(icdCauseValue.ICD_CODE.Replace(",", ""));
                 }
 
                 var subIcd = UcSecondaryIcdGetValue() as SecondaryIcdDataADO;
                 if (subIcd != null && !string.IsNullOrEmpty(subIcd.ICD_SUB_CODE))
                 {
-                    lstIcd.AddRange(subIcd.ICD_SUB_CODE.Split(new string[] { ";" }, StringSplitOptions.RemoveEmptyEntries).ToList());
+                    lstIcd.AddRange(subIcd.ICD_SUB_CODE.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries).ToList());
                 }
-                medicineServiceTest = mediResultTest.Where(o => o.ICD_CODE.Split(new string[] { ";" }, StringSplitOptions.RemoveEmptyEntries).ToList().Exists(k => lstIcd.Exists(p => p.Equals(k)))).ToList();
+                medicineServiceTest = mediResultTest.Where(o => o.ICD_CODE.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries).ToList().Exists(k => lstIcd.Exists(p => p.Equals(k)))).ToList();
                 if (medicineServiceTest != null && medicineServiceTest.Count > 0)
                 {
                     HisSereServTeinView1Filter tifilter = new HisSereServTeinView1Filter();
@@ -4724,7 +4729,7 @@ o.SERVICE_ID == medi.SERVICE_ID && o.TDL_INTRUCTION_TIME.ToString().Substring(0,
                 e.ExceptionMode = ExceptionMode.DisplayError;
             }
             catch (Exception ex)
-            {
+            {       
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
@@ -7903,14 +7908,14 @@ o.SERVICE_ID == medi.SERVICE_ID && o.TDL_INTRUCTION_TIME.ToString().Substring(0,
                                    || DataType == HIS.Desktop.LocalStorage.BackendData.ADO.MedicineMaterialTypeComboADO.THUOC_TUTUC)
                                 && IsSubPres == 1)
                             {
-                                text += ";" + ResourceMessage.ThuocVatTuKhongChiemKhaDung;
+                                text += "," + ResourceMessage.ThuocVatTuKhongChiemKhaDung;
                             }
 
                             //Gán tooltip cảnh báo thuốc đã hết hoặc không còn trong kho
                             if ((DataType == HIS.Desktop.LocalStorage.BackendData.ADO.MedicineMaterialTypeComboADO.THUOC || DataType == HIS.Desktop.LocalStorage.BackendData.ADO.MedicineMaterialTypeComboADO.VATTU))
                                 if (AmountAlert > 0)
                                 {
-                                    text += ";" + ResourceMessage.SoLuongXuatLonHonSpoLuongKhadungTrongKho;
+                                    text += "," + ResourceMessage.SoLuongXuatLonHonSpoLuongKhadungTrongKho;
                                 }
                                 else if (!String.IsNullOrEmpty(ErrorMessageMediMatyBean))
                                 {
@@ -8924,8 +8929,8 @@ o.SERVICE_ID == medi.SERVICE_ID && o.TDL_INTRUCTION_TIME.ToString().Substring(0,
                         isNotProcessWhileChangedTextSubIcd = true;
                         if (lstIcdCodes != null && lstIcdCodes.Count > 0)
                         {
-                            this.txtIcdSubCode.Text = String.Join(";", lstIcdCodes);
-                            this.txtIcdText.Text = String.Join(";", lstIcdSubName);
+                            this.txtIcdSubCode.Text = String.Join(",", lstIcdCodes);
+                            this.txtIcdText.Text = String.Join(",", lstIcdSubName);
                         }
                         else
                         {
@@ -9009,9 +9014,9 @@ o.SERVICE_ID == medi.SERVICE_ID && o.TDL_INTRUCTION_TIME.ToString().Substring(0,
                     string strIcdSubText = "";
 
                     txtIcdText.Refresh();
-                    if (txtIcdText.Text.LastIndexOf(";") > -1)
+                    if (txtIcdText.Text.LastIndexOf(",") > -1)
                     {
-                        strIcdSubText = txtIcdText.Text.Substring(txtIcdText.Text.LastIndexOf(";")).Replace(";", "");
+                        strIcdSubText = txtIcdText.Text.Substring(txtIcdText.Text.LastIndexOf(",")).Replace(",", "");
                     }
                     else
                         strIcdSubText = txtIcdText.Text;
@@ -9113,9 +9118,9 @@ o.SERVICE_ID == medi.SERVICE_ID && o.TDL_INTRUCTION_TIME.ToString().Substring(0,
                 Inventec.Common.Logging.LogSystem.Debug("SetCheckedSubIcdsToControl.1");
                 this.isNotProcessWhileChangedTextSubIcd = true;
                 string strIcdSubText = "";
-                if (txtIcdText.Text.LastIndexOf(";") > -1)
+                if (txtIcdText.Text.LastIndexOf(",") > -1)
                 {
-                    strIcdSubText = txtIcdText.Text.Substring(txtIcdText.Text.LastIndexOf(";")).Replace(";", "");
+                    strIcdSubText = txtIcdText.Text.Substring(txtIcdText.Text.LastIndexOf(",")).Replace(",", "");
                 }
                 else
                     strIcdSubText = txtIcdText.Text;
@@ -12054,37 +12059,37 @@ o.SERVICE_ID == medi.SERVICE_ID && o.TDL_INTRUCTION_TIME.ToString().Substring(0,
                 icdCode = txtIcdCode.Text.Trim();
                 icdName = txtIcdMainText.Text.Trim();
                 List<IcdCheckADO> lstIcd = lstIcdNew.Where(o => o.ICD_CODE != icdCode && o.ICD_NAME != icdName).ToList();
-                icdSubCodeQ = String.Join(";", lstIcd.Select(o => o.ICD_CODE).Distinct()) + ";";
-                icdSubNameQ = String.Join(";", lstIcd.Select(o => o.ICD_NAME).Distinct()) + ";";
+                icdSubCodeQ = String.Join(",", lstIcd.Select(o => o.ICD_CODE).Distinct()) + ",";
+                icdSubNameQ = String.Join(",", lstIcd.Select(o => o.ICD_NAME).Distinct()) + ",";
                 var lstIcdActive = lstIcdNew.Where(o => o.ICD_CODE == icdCode).ToList();
                 foreach (var item in lstIcdActive)
                 {
                     if (item.ICD_NAME == icdName)
                         continue;
-                    icdSubNameQ += item.ICD_NAME + ";";
+                    icdSubNameQ += item.ICD_NAME + ",";
                 }
                 #region Xử lý dấu ; 
-                if (!string.IsNullOrEmpty(icdSubCodeQ) && (icdSubCodeQ.StartsWith(";") || icdSubCodeQ.EndsWith(";")))
+                if (!string.IsNullOrEmpty(icdSubCodeQ) && (icdSubCodeQ.StartsWith(",") || icdSubCodeQ.EndsWith(",")))
                 {
                     List<string> lstTmp = new List<string>();
-                    var arr = icdSubCodeQ.Split(';');
+                    var arr = icdSubCodeQ.Split(',');
                     foreach (var item in arr)
                     {
                         if (!string.IsNullOrEmpty(item))
                             lstTmp.Add(item);
                     }
-                    icdSubCodeQ = string.Join(";", lstTmp);
+                    icdSubCodeQ = string.Join(",", lstTmp);
                 }
-                if (!string.IsNullOrEmpty(icdSubNameQ) && (icdSubNameQ.StartsWith(";") || icdSubNameQ.EndsWith(";")))
+                if (!string.IsNullOrEmpty(icdSubNameQ) && (icdSubNameQ.StartsWith(",") || icdSubNameQ.EndsWith(",")))
                 {
                     List<string> lstTmp = new List<string>();
-                    var arr = icdSubNameQ.Split(';');
+                    var arr = icdSubNameQ.Split(',');
                     foreach (var item in arr)
                     {
                         if (!string.IsNullOrEmpty(item))
                             lstTmp.Add(item);
                     }
-                    icdSubNameQ = string.Join(";", lstTmp);
+                    icdSubNameQ = string.Join(",", lstTmp);
                 }
                 #endregion
                 isNotProcessWhileChangedTextSubIcd = true;
@@ -12151,13 +12156,13 @@ o.SERVICE_ID == medi.SERVICE_ID && o.TDL_INTRUCTION_TIME.ToString().Substring(0,
                 var lstSelect = lstConfig.Where(o => o.IsChecked).Select(o => o.ID);
                 if (csAddOrUpdate != null)
                 {
-                    csAddOrUpdate.VALUE = String.Join(";", lstSelect);
+                    csAddOrUpdate.VALUE = String.Join(",", lstSelect);
                 }
                 else
                 {
                     csAddOrUpdate = new HIS.Desktop.Library.CacheClient.ControlStateRDO();
                     csAddOrUpdate.KEY = gridControlConfig.Name;
-                    csAddOrUpdate.VALUE = String.Join(";", lstSelect);
+                    csAddOrUpdate.VALUE = String.Join(",", lstSelect);
                     csAddOrUpdate.MODULE_LINK = moduleLink;
                     if (this.currentControlStateRDO == null)
                         this.currentControlStateRDO = new List<HIS.Desktop.Library.CacheClient.ControlStateRDO>();
@@ -12645,6 +12650,13 @@ o.SERVICE_ID == medi.SERVICE_ID && o.TDL_INTRUCTION_TIME.ToString().Substring(0,
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
+        }
+
+        private void cboHtu_EditValueChanged(object sender, EventArgs e)
+        {
+            this.CalculateAmount();
+            if (!IsSetByMedicineTut)
+                this.SetHuongDanFromSoLuongNgay();
         }
 
         internal bool CheckValidMaterial(bool IsCheckList = false)

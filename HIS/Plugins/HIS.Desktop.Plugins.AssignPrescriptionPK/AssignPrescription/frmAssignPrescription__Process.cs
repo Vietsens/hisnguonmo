@@ -4407,6 +4407,9 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                     int numberDisplaySeperateFormatAmountTemp = GetNumberDisplaySeperateFormat();
 
                     StringBuilder huongDan = new StringBuilder();
+                    StringBuilder CachDung = new StringBuilder();
+                    string CD = cboHtu.Text + cboMedicineUseForm.Text;
+                    this.memHtu.Text = CD;
                     string format__ThoVoiTocDoXTrongYGio = ResourceMessage.ThoVoiTocDoXTrongYGio;
                     string format__NgayUong = ResourceMessage.NgayUong;
                     string format__NgayUongTemp2 = ResourceMessage.NgayUongTemp2;
@@ -4672,7 +4675,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
             try
             {
                 if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar) &&
-       (e.KeyChar != '.') && (e.KeyChar != ',') && (e.KeyChar != '/'))
+       (e.KeyChar != '.') && (e.KeyChar != ';') && (e.KeyChar != '/'))
                 {
                     e.Handled = true;
                 }
@@ -4720,7 +4723,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                 else if (numberDisplaySeperateFormatAmountTemp > 0)
                 {
                     if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar) &&
-   (e.KeyChar != '.') && (e.KeyChar != ',') && (e.KeyChar != '/') && e.KeyChar != (char)System.Windows.Forms.Keys.Back)
+   (e.KeyChar != '.') && (e.KeyChar != ';') && (e.KeyChar != '/') && e.KeyChar != (char)System.Windows.Forms.Keys.Back)
                     {
                         e.Handled = true;
                     }
@@ -4796,7 +4799,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                 decimal vlTmp = 0;
                 CultureInfo culture = new CultureInfo("en-US");
                 spinAmount.Text = GetAmount().ToString();
-                if (spinAmount.Text.Contains(","))
+                if (spinAmount.Text.Contains(","))  
                     culture = new CultureInfo("fr-FR");
                 decimal amountTmp = Convert.ToDecimal(spinAmount.EditValue.ToString(), culture);
                 if ((currentMedicineTypeADOForEdit != null && currentMedicineTypeADOForEdit.ID > 0 && amountTmp != (currentMedicineTypeADOForEdit.AMOUNT ?? 0)) || (currentMedicineTypeADOForEdit == null && txt.EditValue.ToString() != txt.OldEditValue.ToString()))

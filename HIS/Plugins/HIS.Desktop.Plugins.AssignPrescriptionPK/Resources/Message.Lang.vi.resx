@@ -345,13 +345,13 @@
     <value>Vật tư đã kê trong ngày</value>
   </data>
   <data name="Plugin_AssignPrescription__Chieu" xml:space="preserve">
-    <value>Chiều {0} {1}</value>
+    <value>Chiều: {0} {1}</value>
   </data>
   <data name="Plugin_AssignPrescription__ChuaChonNgayChiDinh" xml:space="preserve">
     <value>Chưa chọn ngày chỉ định</value>
   </data>
   <data name="Plugin_AssignPrescription__DoiTuongBHYTBatBuocPhaiNhapHDSD" xml:space="preserve">
-    <value>Bắt buộc phải nhập hướng dẫn sử dụng cho thuốc</value>
+    <value>Bắt buộc phải nhập liều dùng thuốc</value>
   </data>
   <data name="Plugin_AssignPrescription__HDSDVuotQuaKyTu" xml:space="preserve">
     <value>Hướng dẫn sử dụng vượt độ dài cho phép</value>
@@ -414,7 +414,7 @@
     <value>Sửa số ngày</value>
   </data>
   <data name="Plugin_AssignPrescription__Sang" xml:space="preserve">
-    <value>Sáng {0} {1}</value>
+    <value>Sáng: {0} {1}</value>
   </data>
   <data name="Plugin_AssignPrescription__SoLuongXuatLonHonSpoLuongKhadungTrongKho" xml:space="preserve">
     <value>Số lượng kê đã vượt quá số khả dụng trong kho.</value>
@@ -459,7 +459,7 @@
     <value>Tiền BHYT đã kê vượt quá mức giới hạn</value>
   </data>
   <data name="Plugin_AssignPrescription__Toi" xml:space="preserve">
-    <value>Tối {0} {1}</value>
+    <value>Tối: {0} {1}</value>
   </data>
   <data name="Plugin_AssignPrescription__TongTienHaoPhiVuotQuaDinhMucHaoPhiKhongTheChonDichVuNay" xml:space="preserve">
     <value>Tổng số tiền hao phí {0} đã vượt quá số tiền định mức hao phí {1} của dịch vụ chính {2}. Các thuốc/vật tư hao phí đã kê: {3}</value>
@@ -468,7 +468,7 @@
     <value>Tổng số tiền của các dịch vụ đã chỉ định của bệnh nhân đối thuộc diện điều trị {0} cho BHYT là {1} đã vượt quá mức giới hạn {2}</value>
   </data>
   <data name="Plugin_AssignPrescription__Trua" xml:space="preserve">
-    <value>Trưa {0} {1}</value>
+    <value>Trưa: {0} {1}</value>
   </data>
   <data name="Plugin_AssignPrescription__TruongSoLuongNhapSaiDinhDang" xml:space="preserve">
     <value>Số lượng chỉ cho phép nhập ký tự số (0-9), dấu phân tách thập phân ("," "." vd: 0.5; 0,5) và dấu phân số (/ vd: 3/4)</value>
