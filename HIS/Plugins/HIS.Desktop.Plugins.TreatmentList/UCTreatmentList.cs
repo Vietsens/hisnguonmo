@@ -1138,8 +1138,9 @@ namespace HIS.Desktop.Plugins.TreatmentList
                         filter.OUT_TIME_TO = Inventec.Common.TypeConvert.Parse.ToInt64(
                         Convert.ToDateTime(dtOutDateCome.EditValue).ToString("yyyyMMddHHmm") + "59");
                     }
+
                     // Loc theo doi tuong benh nhan
-                    else if (this.patientTypeSelecteds != null && this.patientTypeSelecteds.Count > 0)
+                    if (this.patientTypeSelecteds != null && this.patientTypeSelecteds.Count > 0)
                     {
                         filter.TDL_PATIENT_TYPE_IDs = patientTypeSelecteds.Select(o => o.ID).ToList();
                     }

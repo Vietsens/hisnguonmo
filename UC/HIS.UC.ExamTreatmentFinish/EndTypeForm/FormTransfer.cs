@@ -217,7 +217,7 @@ namespace HIS.UC.ExamTreatmentFinish.EndTypeForm
                     }
                     txtPPKTThuoc.Text = treatment.TREATMENT_METHOD;
                     Inventec.Common.Logging.LogSystem.Error("UCTREATMENT___________");
-                    txtClinicalNote.Text = this.currentTreatmentExt.CLINICAL_NOTE;
+                    txtClinicalNote.Text = treatment.CLINICAL_SIGNS;
                     //if (!string.IsNullOrEmpty(treatment.SUBCLINICAL_RESULT))
                     //{
                     //    txtSubclinicalResult.Text = treatment.SUBCLINICAL_RESULT;
@@ -1084,7 +1084,7 @@ namespace HIS.UC.ExamTreatmentFinish.EndTypeForm
                 currentTreatmentFinishSDO.TreatmentMethod = txtPPKTThuoc.Text;
                 currentTreatmentFinishSDO.TreatmentDirection = txtHuongDieuTri.Text;
                 currentTreatmentFinishSDO.UsedMedicine = txtUsedMedicine.Text;
-                currentTreatmentFinishSDO.ClinicalNote = txtClinicalNote.Text;
+                currentTreatmentFinishSDO.ClinicalSigns = txtClinicalNote.Text;
                 currentTreatmentFinishSDO.SubclinicalResult = txtSubclinicalResult.Text;
                 if (cboLoginName.EditValue != null)
                 {
