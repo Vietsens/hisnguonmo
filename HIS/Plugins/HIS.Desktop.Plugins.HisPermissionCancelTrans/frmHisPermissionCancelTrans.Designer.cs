@@ -65,6 +65,18 @@ namespace HIS.Desktop.Plugins.HisPermissionCancelTrans
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject16 = new DevExpress.Utils.SerializableAppearanceObject();
             this.dxValidationProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider(this.components);
             this.layoutControl1 = new DevExpress.XtraLayout.LayoutControl();
+            this.cboPermissionType = new DevExpress.XtraEditors.GridLookUpEdit();
+            this.barManager1 = new DevExpress.XtraBars.BarManager(this.components);
+            this.bar1 = new DevExpress.XtraBars.Bar();
+            this.barBtnFind = new DevExpress.XtraBars.BarButtonItem();
+            this.barBtnEdit = new DevExpress.XtraBars.BarButtonItem();
+            this.barBtnAdd = new DevExpress.XtraBars.BarButtonItem();
+            this.barBtnRefresh = new DevExpress.XtraBars.BarButtonItem();
+            this.barDockControl1 = new DevExpress.XtraBars.BarDockControl();
+            this.barDockControl2 = new DevExpress.XtraBars.BarDockControl();
+            this.barDockControl3 = new DevExpress.XtraBars.BarDockControl();
+            this.barDockControl4 = new DevExpress.XtraBars.BarDockControl();
+            this.gridView1 = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.ucPaging1 = new Inventec.UC.Paging.UcPaging();
             this.btnRefresh = new DevExpress.XtraEditors.SimpleButton();
             this.btnAdd = new DevExpress.XtraEditors.SimpleButton();
@@ -103,20 +115,14 @@ namespace HIS.Desktop.Plugins.HisPermissionCancelTrans
             this.layoutControlItem9 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem10 = new DevExpress.XtraLayout.LayoutControlItem();
             this.emptySpaceItem1 = new DevExpress.XtraLayout.EmptySpaceItem();
-            this.barManager1 = new DevExpress.XtraBars.BarManager(this.components);
-            this.bar1 = new DevExpress.XtraBars.Bar();
-            this.barBtnFind = new DevExpress.XtraBars.BarButtonItem();
-            this.barBtnEdit = new DevExpress.XtraBars.BarButtonItem();
-            this.barBtnAdd = new DevExpress.XtraBars.BarButtonItem();
-            this.barBtnRefresh = new DevExpress.XtraBars.BarButtonItem();
-            this.barDockControl1 = new DevExpress.XtraBars.BarDockControl();
-            this.barDockControl2 = new DevExpress.XtraBars.BarDockControl();
-            this.barDockControl3 = new DevExpress.XtraBars.BarDockControl();
-            this.barDockControl4 = new DevExpress.XtraBars.BarDockControl();
+            this.layoutControlItem1 = new DevExpress.XtraLayout.LayoutControlItem();
             this.dxErrorProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXErrorProvider(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.dxValidationProvider1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
             this.layoutControl1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.cboPermissionType.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.barManager1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gridView1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dtEffectiveDate.Properties.CalendarTimeProperties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dtEffectiveDate.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboCashier.Properties)).BeginInit();
@@ -141,7 +147,7 @@ namespace HIS.Desktop.Plugins.HisPermissionCancelTrans
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem9)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem10)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.barManager1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxErrorProvider1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -151,6 +157,7 @@ namespace HIS.Desktop.Plugins.HisPermissionCancelTrans
             // 
             // layoutControl1
             // 
+            this.layoutControl1.Controls.Add(this.cboPermissionType);
             this.layoutControl1.Controls.Add(this.ucPaging1);
             this.layoutControl1.Controls.Add(this.btnRefresh);
             this.layoutControl1.Controls.Add(this.btnAdd);
@@ -169,6 +176,116 @@ namespace HIS.Desktop.Plugins.HisPermissionCancelTrans
             this.layoutControl1.TabIndex = 0;
             this.layoutControl1.Text = "layoutControl1";
             // 
+            // cboPermissionType
+            // 
+            this.cboPermissionType.Location = new System.Drawing.Point(867, 50);
+            this.cboPermissionType.MenuManager = this.barManager1;
+            this.cboPermissionType.Name = "cboPermissionType";
+            this.cboPermissionType.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
+            this.cboPermissionType.Properties.NullText = "";
+            this.cboPermissionType.Properties.View = this.gridView1;
+            this.cboPermissionType.Size = new System.Drawing.Size(231, 20);
+            this.cboPermissionType.StyleController = this.layoutControl1;
+            this.cboPermissionType.TabIndex = 14;
+            // 
+            // barManager1
+            // 
+            this.barManager1.Bars.AddRange(new DevExpress.XtraBars.Bar[] {
+            this.bar1});
+            this.barManager1.DockControls.Add(this.barDockControl1);
+            this.barManager1.DockControls.Add(this.barDockControl2);
+            this.barManager1.DockControls.Add(this.barDockControl3);
+            this.barManager1.DockControls.Add(this.barDockControl4);
+            this.barManager1.Form = this;
+            this.barManager1.Items.AddRange(new DevExpress.XtraBars.BarItem[] {
+            this.barBtnFind,
+            this.barBtnEdit,
+            this.barBtnAdd,
+            this.barBtnRefresh});
+            this.barManager1.MaxItemId = 4;
+            // 
+            // bar1
+            // 
+            this.bar1.BarName = "Tools";
+            this.bar1.DockCol = 0;
+            this.bar1.DockRow = 0;
+            this.bar1.DockStyle = DevExpress.XtraBars.BarDockStyle.Top;
+            this.bar1.LinksPersistInfo.AddRange(new DevExpress.XtraBars.LinkPersistInfo[] {
+            new DevExpress.XtraBars.LinkPersistInfo(this.barBtnFind),
+            new DevExpress.XtraBars.LinkPersistInfo(this.barBtnEdit),
+            new DevExpress.XtraBars.LinkPersistInfo(this.barBtnAdd),
+            new DevExpress.XtraBars.LinkPersistInfo(this.barBtnRefresh)});
+            this.bar1.Text = "Tools";
+            this.bar1.Visible = false;
+            // 
+            // barBtnFind
+            // 
+            this.barBtnFind.Caption = "Tìm (Ctrl F)";
+            this.barBtnFind.Id = 0;
+            this.barBtnFind.ItemShortcut = new DevExpress.XtraBars.BarShortcut((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.F));
+            this.barBtnFind.Name = "barBtnFind";
+            this.barBtnFind.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.barBtnFind_ItemClick);
+            // 
+            // barBtnEdit
+            // 
+            this.barBtnEdit.Caption = "Sửa (Ctrl S)";
+            this.barBtnEdit.Id = 1;
+            this.barBtnEdit.ItemShortcut = new DevExpress.XtraBars.BarShortcut((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S));
+            this.barBtnEdit.Name = "barBtnEdit";
+            this.barBtnEdit.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.barBtnEdit_ItemClick);
+            // 
+            // barBtnAdd
+            // 
+            this.barBtnAdd.Caption = "Thêm (Ctrl N)";
+            this.barBtnAdd.Id = 2;
+            this.barBtnAdd.ItemShortcut = new DevExpress.XtraBars.BarShortcut((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.N));
+            this.barBtnAdd.Name = "barBtnAdd";
+            this.barBtnAdd.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.barBtnAdd_ItemClick);
+            // 
+            // barBtnRefresh
+            // 
+            this.barBtnRefresh.Caption = "Mới (Ctrl R)";
+            this.barBtnRefresh.Id = 3;
+            this.barBtnRefresh.ItemShortcut = new DevExpress.XtraBars.BarShortcut((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.R));
+            this.barBtnRefresh.Name = "barBtnRefresh";
+            this.barBtnRefresh.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.barBtnRefresh_ItemClick);
+            // 
+            // barDockControl1
+            // 
+            this.barDockControl1.CausesValidation = false;
+            this.barDockControl1.Dock = System.Windows.Forms.DockStyle.Top;
+            this.barDockControl1.Location = new System.Drawing.Point(0, 0);
+            this.barDockControl1.Size = new System.Drawing.Size(1100, 29);
+            // 
+            // barDockControl2
+            // 
+            this.barDockControl2.CausesValidation = false;
+            this.barDockControl2.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.barDockControl2.Location = new System.Drawing.Point(0, 561);
+            this.barDockControl2.Size = new System.Drawing.Size(1100, 0);
+            // 
+            // barDockControl3
+            // 
+            this.barDockControl3.CausesValidation = false;
+            this.barDockControl3.Dock = System.Windows.Forms.DockStyle.Left;
+            this.barDockControl3.Location = new System.Drawing.Point(0, 29);
+            this.barDockControl3.Size = new System.Drawing.Size(0, 532);
+            // 
+            // barDockControl4
+            // 
+            this.barDockControl4.CausesValidation = false;
+            this.barDockControl4.Dock = System.Windows.Forms.DockStyle.Right;
+            this.barDockControl4.Location = new System.Drawing.Point(1100, 29);
+            this.barDockControl4.Size = new System.Drawing.Size(0, 532);
+            // 
+            // gridView1
+            // 
+            this.gridView1.FocusRectStyle = DevExpress.XtraGrid.Views.Grid.DrawFocusRectStyle.RowFocus;
+            this.gridView1.Name = "gridView1";
+            this.gridView1.OptionsSelection.EnableAppearanceFocusedCell = false;
+            this.gridView1.OptionsView.ShowGroupPanel = false;
+            // 
             // ucPaging1
             // 
             this.ucPaging1.Location = new System.Drawing.Point(2, 510);
@@ -178,7 +295,7 @@ namespace HIS.Desktop.Plugins.HisPermissionCancelTrans
             // 
             // btnRefresh
             // 
-            this.btnRefresh.Location = new System.Drawing.Point(992, 50);
+            this.btnRefresh.Location = new System.Drawing.Point(992, 74);
             this.btnRefresh.Name = "btnRefresh";
             this.btnRefresh.Size = new System.Drawing.Size(106, 22);
             this.btnRefresh.StyleController = this.layoutControl1;
@@ -188,7 +305,7 @@ namespace HIS.Desktop.Plugins.HisPermissionCancelTrans
             // 
             // btnAdd
             // 
-            this.btnAdd.Location = new System.Drawing.Point(882, 50);
+            this.btnAdd.Location = new System.Drawing.Point(882, 74);
             this.btnAdd.Name = "btnAdd";
             this.btnAdd.Size = new System.Drawing.Size(106, 22);
             this.btnAdd.StyleController = this.layoutControl1;
@@ -198,7 +315,7 @@ namespace HIS.Desktop.Plugins.HisPermissionCancelTrans
             // 
             // btnEdit
             // 
-            this.btnEdit.Location = new System.Drawing.Point(772, 50);
+            this.btnEdit.Location = new System.Drawing.Point(772, 74);
             this.btnEdit.Name = "btnEdit";
             this.btnEdit.Size = new System.Drawing.Size(106, 22);
             this.btnEdit.StyleController = this.layoutControl1;
@@ -511,7 +628,8 @@ namespace HIS.Desktop.Plugins.HisPermissionCancelTrans
             this.layoutControlItem8,
             this.layoutControlItem9,
             this.layoutControlItem10,
-            this.emptySpaceItem1});
+            this.emptySpaceItem1,
+            this.layoutControlItem1});
             this.layoutControlGroup1.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup1.Name = "layoutControlGroup1";
             this.layoutControlGroup1.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
@@ -590,27 +708,27 @@ namespace HIS.Desktop.Plugins.HisPermissionCancelTrans
             // layoutControlItem7
             // 
             this.layoutControlItem7.Control = this.btnEdit;
-            this.layoutControlItem7.Location = new System.Drawing.Point(770, 48);
+            this.layoutControlItem7.Location = new System.Drawing.Point(770, 72);
             this.layoutControlItem7.Name = "layoutControlItem7";
-            this.layoutControlItem7.Size = new System.Drawing.Size(110, 484);
+            this.layoutControlItem7.Size = new System.Drawing.Size(110, 460);
             this.layoutControlItem7.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem7.TextVisible = false;
             // 
             // layoutControlItem8
             // 
             this.layoutControlItem8.Control = this.btnAdd;
-            this.layoutControlItem8.Location = new System.Drawing.Point(880, 48);
+            this.layoutControlItem8.Location = new System.Drawing.Point(880, 72);
             this.layoutControlItem8.Name = "layoutControlItem8";
-            this.layoutControlItem8.Size = new System.Drawing.Size(110, 484);
+            this.layoutControlItem8.Size = new System.Drawing.Size(110, 460);
             this.layoutControlItem8.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem8.TextVisible = false;
             // 
             // layoutControlItem9
             // 
             this.layoutControlItem9.Control = this.btnRefresh;
-            this.layoutControlItem9.Location = new System.Drawing.Point(990, 48);
+            this.layoutControlItem9.Location = new System.Drawing.Point(990, 72);
             this.layoutControlItem9.Name = "layoutControlItem9";
-            this.layoutControlItem9.Size = new System.Drawing.Size(110, 484);
+            this.layoutControlItem9.Size = new System.Drawing.Size(110, 460);
             this.layoutControlItem9.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem9.TextVisible = false;
             // 
@@ -631,95 +749,20 @@ namespace HIS.Desktop.Plugins.HisPermissionCancelTrans
             this.emptySpaceItem1.Size = new System.Drawing.Size(220, 26);
             this.emptySpaceItem1.TextSize = new System.Drawing.Size(0, 0);
             // 
-            // barManager1
+            // layoutControlItem1
             // 
-            this.barManager1.Bars.AddRange(new DevExpress.XtraBars.Bar[] {
-            this.bar1});
-            this.barManager1.DockControls.Add(this.barDockControl1);
-            this.barManager1.DockControls.Add(this.barDockControl2);
-            this.barManager1.DockControls.Add(this.barDockControl3);
-            this.barManager1.DockControls.Add(this.barDockControl4);
-            this.barManager1.Form = this;
-            this.barManager1.Items.AddRange(new DevExpress.XtraBars.BarItem[] {
-            this.barBtnFind,
-            this.barBtnEdit,
-            this.barBtnAdd,
-            this.barBtnRefresh});
-            this.barManager1.MaxItemId = 4;
-            // 
-            // bar1
-            // 
-            this.bar1.BarName = "Tools";
-            this.bar1.DockCol = 0;
-            this.bar1.DockRow = 0;
-            this.bar1.DockStyle = DevExpress.XtraBars.BarDockStyle.Top;
-            this.bar1.LinksPersistInfo.AddRange(new DevExpress.XtraBars.LinkPersistInfo[] {
-            new DevExpress.XtraBars.LinkPersistInfo(this.barBtnFind),
-            new DevExpress.XtraBars.LinkPersistInfo(this.barBtnEdit),
-            new DevExpress.XtraBars.LinkPersistInfo(this.barBtnAdd),
-            new DevExpress.XtraBars.LinkPersistInfo(this.barBtnRefresh)});
-            this.bar1.Text = "Tools";
-            this.bar1.Visible = false;
-            // 
-            // barBtnFind
-            // 
-            this.barBtnFind.Caption = "Tìm (Ctrl F)";
-            this.barBtnFind.Id = 0;
-            this.barBtnFind.ItemShortcut = new DevExpress.XtraBars.BarShortcut((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.F));
-            this.barBtnFind.Name = "barBtnFind";
-            this.barBtnFind.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.barBtnFind_ItemClick);
-            // 
-            // barBtnEdit
-            // 
-            this.barBtnEdit.Caption = "Sửa (Ctrl S)";
-            this.barBtnEdit.Id = 1;
-            this.barBtnEdit.ItemShortcut = new DevExpress.XtraBars.BarShortcut((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S));
-            this.barBtnEdit.Name = "barBtnEdit";
-            this.barBtnEdit.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.barBtnEdit_ItemClick);
-            // 
-            // barBtnAdd
-            // 
-            this.barBtnAdd.Caption = "Thêm (Ctrl N)";
-            this.barBtnAdd.Id = 2;
-            this.barBtnAdd.ItemShortcut = new DevExpress.XtraBars.BarShortcut((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.N));
-            this.barBtnAdd.Name = "barBtnAdd";
-            this.barBtnAdd.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.barBtnAdd_ItemClick);
-            // 
-            // barBtnRefresh
-            // 
-            this.barBtnRefresh.Caption = "Mới (Ctrl R)";
-            this.barBtnRefresh.Id = 3;
-            this.barBtnRefresh.ItemShortcut = new DevExpress.XtraBars.BarShortcut((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.R));
-            this.barBtnRefresh.Name = "barBtnRefresh";
-            this.barBtnRefresh.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.barBtnRefresh_ItemClick);
-            // 
-            // barDockControl1
-            // 
-            this.barDockControl1.CausesValidation = false;
-            this.barDockControl1.Dock = System.Windows.Forms.DockStyle.Top;
-            this.barDockControl1.Location = new System.Drawing.Point(0, 0);
-            this.barDockControl1.Size = new System.Drawing.Size(1100, 29);
-            // 
-            // barDockControl2
-            // 
-            this.barDockControl2.CausesValidation = false;
-            this.barDockControl2.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.barDockControl2.Location = new System.Drawing.Point(0, 561);
-            this.barDockControl2.Size = new System.Drawing.Size(1100, 0);
-            // 
-            // barDockControl3
-            // 
-            this.barDockControl3.CausesValidation = false;
-            this.barDockControl3.Dock = System.Windows.Forms.DockStyle.Left;
-            this.barDockControl3.Location = new System.Drawing.Point(0, 29);
-            this.barDockControl3.Size = new System.Drawing.Size(0, 532);
-            // 
-            // barDockControl4
-            // 
-            this.barDockControl4.CausesValidation = false;
-            this.barDockControl4.Dock = System.Windows.Forms.DockStyle.Right;
-            this.barDockControl4.Location = new System.Drawing.Point(1100, 29);
-            this.barDockControl4.Size = new System.Drawing.Size(0, 532);
+            this.layoutControlItem1.AppearanceItemCaption.ForeColor = System.Drawing.Color.Maroon;
+            this.layoutControlItem1.AppearanceItemCaption.Options.UseForeColor = true;
+            this.layoutControlItem1.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.layoutControlItem1.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.layoutControlItem1.Control = this.cboPermissionType;
+            this.layoutControlItem1.Location = new System.Drawing.Point(770, 48);
+            this.layoutControlItem1.Name = "layoutControlItem1";
+            this.layoutControlItem1.Size = new System.Drawing.Size(330, 24);
+            this.layoutControlItem1.Text = "Loại:";
+            this.layoutControlItem1.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.layoutControlItem1.TextSize = new System.Drawing.Size(90, 20);
+            this.layoutControlItem1.TextToControlDistance = 5;
             // 
             // dxErrorProvider1
             // 
@@ -746,6 +789,9 @@ namespace HIS.Desktop.Plugins.HisPermissionCancelTrans
             ((System.ComponentModel.ISupportInitialize)(this.dxValidationProvider1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).EndInit();
             this.layoutControl1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.cboPermissionType.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.barManager1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gridView1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dtEffectiveDate.Properties.CalendarTimeProperties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dtEffectiveDate.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboCashier.Properties)).EndInit();
@@ -770,7 +816,7 @@ namespace HIS.Desktop.Plugins.HisPermissionCancelTrans
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem9)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem10)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.barManager1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxErrorProvider1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -830,5 +876,8 @@ namespace HIS.Desktop.Plugins.HisPermissionCancelTrans
         private DevExpress.XtraBars.BarDockControl barDockControl3;
         private DevExpress.XtraBars.BarDockControl barDockControl4;
         private DevExpress.XtraEditors.DXErrorProvider.DXErrorProvider dxErrorProvider1;
+        private DevExpress.XtraEditors.GridLookUpEdit cboPermissionType;
+        private DevExpress.XtraGrid.Views.Grid.GridView gridView1;
+        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem1;
     }
 }

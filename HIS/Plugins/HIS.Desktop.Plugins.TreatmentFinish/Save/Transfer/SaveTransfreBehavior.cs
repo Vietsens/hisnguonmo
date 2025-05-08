@@ -82,7 +82,9 @@ namespace HIS.Desktop.Plugins.TreatmentFinish.Save.Transfer
                     result.TreatmentDirection = hisTreatmentFinishSDO_process.TreatmentDirection;
                     result.UsedMedicine = hisTreatmentFinishSDO_process.UsedMedicine;
                     result.TranPatiTechId = hisTreatmentFinishSDO_process.TranPatiTechId;
-
+                    //qtcode
+                    result.ClinicalSigns = hisTreatmentFinishSDO_process.ClinicalSigns;
+                    //qtcode
                     //treatment sick
                     result.SickLeaveDay = hisTreatmentFinishSDO_process.SickLeaveDay;
                     result.SickLeaveFrom = hisTreatmentFinishSDO_process.SickLeaveFrom;
