@@ -4675,7 +4675,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
             try
             {
                 if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar) &&
-       (e.KeyChar != '.') && (e.KeyChar != ';') && (e.KeyChar != '/'))
+       (e.KeyChar != '.') && (e.KeyChar != ',') && (e.KeyChar != '/'))
                 {
                     e.Handled = true;
                 }
@@ -4723,7 +4723,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                 else if (numberDisplaySeperateFormatAmountTemp > 0)
                 {
                     if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar) &&
-   (e.KeyChar != '.') && (e.KeyChar != ';') && (e.KeyChar != '/') && e.KeyChar != (char)System.Windows.Forms.Keys.Back)
+   (e.KeyChar != '.') && (e.KeyChar != ',') && (e.KeyChar != '/') && e.KeyChar != (char)System.Windows.Forms.Keys.Back)
                     {
                         e.Handled = true;
                     }
