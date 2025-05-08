@@ -250,6 +250,7 @@ namespace HIS.Desktop.Plugins.HisPermissionCancelTrans
                     txtCashierLoginname.Text = "";
                     dtEffectiveDate.EditValue = null;
                     cboPermissionType.EditValue = null;
+                    this.cboPermissionType.EditValue = 1;
                 }
             }
             catch (Exception ex)
@@ -699,7 +700,6 @@ namespace HIS.Desktop.Plugins.HisPermissionCancelTrans
             try
             {
                 if (!btnRefresh.Enabled) return;
-
                 WaitingManager.Show();
                 this.currentData = null;
                 this.SetDataToControl();
