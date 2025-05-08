@@ -47,6 +47,9 @@ using DevExpress.XtraGrid.Views.Base;
 using HIS.Desktop.Plugins.SamplePathologyReq.Resources;
 using System.Resources;
 using Inventec.Desktop.Common.LanguageManager;
+using DevExpress.XtraEditors;
+using DevExpress.XtraEditors.DXErrorProvider;
+using HIS.Desktop.Plugins.SamplePathologyReq.ADO;
 
 namespace HIS.Desktop.Plugins.SamplePathologyReq.SamplePathologyReq
 {
@@ -299,7 +302,8 @@ namespace HIS.Desktop.Plugins.SamplePathologyReq.SamplePathologyReq
                     var data = (List<HIS_SERVICE_REQ>)apiResult.Data;
                     if (data != null)
                     {
-                        gridView1.GridControl.DataSource = data;
+                        AutoMapper.Mapper.CreateMap<HIS_SERVICE_REQ, ServiceReqADO>();
+                        gridView1.GridControl.DataSource = AutoMapper.Mapper.Map<List<ServiceReqADO>>(data);
                         rowCount = (data == null ? 0 : data.Count);
                         dataTotal = (apiResult.Param == null ? 0 : apiResult.Param.Count ?? 0);
                         if (data.Count == 1)
@@ -341,7 +345,7 @@ namespace HIS.Desktop.Plugins.SamplePathologyReq.SamplePathologyReq
                             string text = "";
                             if (info.Column.FieldName == "STATUS")
                             {
-                                var busyCount = ((HIS_SERVICE_REQ)view.GetRow(lastRowHandle));
+                                var busyCount = ((ServiceReqADO)view.GetRow(lastRowHandle));
                                 if (busyCount.SERVICE_REQ_STT_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_STT.ID__CXL && busyCount.IS_SAMPLED != 1)
                                 {
                                     text = "Chưa lấy mẫu";
@@ -367,7 +371,7 @@ namespace HIS.Desktop.Plugins.SamplePathologyReq.SamplePathologyReq
                             }
                             else if (info.Column.FieldName == "GET_SAMPLE")
                             {
-                                var data = ((HIS_SERVICE_REQ)view.GetRow(lastRowHandle));
+                                var data = ((ServiceReqADO)view.GetRow(lastRowHandle));
                                 if (data.SERVICE_REQ_STT_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_STT.ID__CXL && data.IS_SAMPLED != 1)
                                 {
                                     text = "Lấy mẫu";
@@ -702,7 +706,7 @@ namespace HIS.Desktop.Plugins.SamplePathologyReq.SamplePathologyReq
                 if (e.RowHandle >= 0)
                 {
                     var ServiceReqStt = Inventec.Common.TypeConvert.Parse.ToInt64((gridView1.GetRowCellValue(e.RowHandle, "SERVICE_REQ_STT_ID")).ToString());
-                    var data = (HIS_SERVICE_REQ)gridView1.GetRow(e.RowHandle);
+                    var data = (ServiceReqADO)gridView1.GetRow(e.RowHandle);
                     if (data == null) return;
 
                     if (e.Column.FieldName == "GET_SAMPLE")
@@ -761,7 +765,7 @@ namespace HIS.Desktop.Plugins.SamplePathologyReq.SamplePathologyReq
             {
                 if (e.IsGetData && e.Column.UnboundType != UnboundColumnType.Bound)
                 {
-                    HIS_SERVICE_REQ data = (HIS_SERVICE_REQ)((IList)((BaseView)sender).DataSource)[e.ListSourceRowIndex];
+                    HIS_SERVICE_REQ data = (ServiceReqADO)((IList)((BaseView)sender).DataSource)[e.ListSourceRowIndex];
                     if (data != null)
                     {
                         if (e.Column.FieldName == "STT")
@@ -843,7 +847,7 @@ namespace HIS.Desktop.Plugins.SamplePathologyReq.SamplePathologyReq
                 WaitingManager.Show();
                 bool result = false;
                 CommonParam param = new CommonParam();
-                var row = (HIS_SERVICE_REQ)gridView1.GetFocusedRow();
+                var row = (ServiceReqADO)gridView1.GetFocusedRow();
                 if (!string.IsNullOrEmpty(row.BLOCK))
                 {
                     var resultData = new BackendAdapter(param).Post<HIS_SERVICE_REQ>(HisRequestUriStore.HIS_SERVICE_REQ_PAAN_TAKE_SAMPLE, ApiConsumers.MosConsumer, row.ID, param);
@@ -881,7 +885,7 @@ namespace HIS.Desktop.Plugins.SamplePathologyReq.SamplePathologyReq
                 WaitingManager.Show();
                 bool result = false;
                 CommonParam param = new CommonParam();
-                var row = (HIS_SERVICE_REQ)gridView1.GetFocusedRow();
+                var row = (ServiceReqADO)gridView1.GetFocusedRow();
                 var resultData = new BackendAdapter(param).Post<HIS_SERVICE_REQ>(HisRequestUriStore.HIS_SERVICE_REQ_PAAN_CANCEL_SAMPLE, ApiConsumers.MosConsumer, row.ID, param);
                 if (resultData != null)
                 {
@@ -970,7 +974,7 @@ namespace HIS.Desktop.Plugins.SamplePathologyReq.SamplePathologyReq
         {
             try
             {
-                var row = (HIS_SERVICE_REQ)gridView1.GetFocusedRow();
+                var row = (ServiceReqADO)gridView1.GetFocusedRow();
                 WaitingManager.Show();
                 currentVServiceReq = new V_HIS_SERVICE_REQ();
                 CommonParam param = new CommonParam();
@@ -1020,21 +1024,46 @@ namespace HIS.Desktop.Plugins.SamplePathologyReq.SamplePathologyReq
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
-        List<V_HIS_SERVICE_REQ> vhisderreq = new List<V_HIS_SERVICE_REQ>();
+        List<ServiceReqADO> vhisderreq = new List<ServiceReqADO>();
         private void gridView1_CellValueChanged(object sender, CellValueChangedEventArgs e)
         {
             try
             {
+                ServiceReqADO vHisService = (ServiceReqADO)gridView1.GetFocusedRow();
+
                 if (e.Column.FieldName == "BLOCK")
                 {
-                    var focus = (V_HIS_SERVICE_REQ)gridView1.GetFocusedRow();
+                    if (Encoding.UTF8.GetByteCount(vHisService.BLOCK) > 30)
+                    {
+                        vHisService.ErrorMessageBlock = "Trường block đang nhập quá 30 ký tự cho phép"; ;
+                        vHisService.ErrorTypeBlock = ErrorType.Warning;
+                    }
+                    else
+                    {
+                        vHisService.ErrorMessageBlock = "";
+                        vHisService.ErrorTypeBlock = ErrorType.None;
+                    }
+
+                    var focus = (ServiceReqADO)gridView1.GetFocusedRow();
                     vhisderreq.Add(focus);
                     btnSave.Focus();
                 }
                 if (e.Column.FieldName == "TDL_INSTRUCTION_NOTE")
                 {
-                    var focus = (HIS_SERVICE_REQ)gridView1.GetFocusedRow();
-                    ProcessUpdateNote(focus);
+                    if (Encoding.UTF8.GetByteCount(vHisService.TDL_INSTRUCTION_NOTE) > 3000)
+                    {
+                        vHisService.ErrorMessageTDN = "Trường ghi chú đang nhập quá 3000 ký tự cho phép"; ;
+                        vHisService.ErrorTypeTDN = ErrorType.Warning;
+                    }
+                    else
+                    {
+                        vHisService.ErrorMessageTDN = "";
+                        vHisService.ErrorTypeTDN = ErrorType.None;
+
+                        var focus = (ServiceReqADO)gridView1.GetFocusedRow();
+                        ProcessUpdateNote(focus);
+                    }
+
                 }
             }
             catch (Exception ex)
@@ -1077,15 +1106,17 @@ namespace HIS.Desktop.Plugins.SamplePathologyReq.SamplePathologyReq
         private void btnSave_Click(object sender, EventArgs e)
         {
             btnSave.Focus();
-            var focus_ = (List<HIS_SERVICE_REQ>)gridView1.DataSource;
+            var focus_ = (List<ServiceReqADO>)gridView1.DataSource;
             ProcessUpdateBlock(focus_);
         }
 
-        private void ProcessUpdateBlock(List<HIS_SERVICE_REQ> sample)
+        private void ProcessUpdateBlock(List<ServiceReqADO> sample)
         {
             try
             {
-                WaitingManager.Show();
+                if (sample.Exists(o => !string.IsNullOrEmpty(o.ErrorMessageBlock) || !string.IsNullOrEmpty(o.ErrorMessageTDN)))
+                    return;
+                WaitingManager.Show();       
                 List<PaanBlockSDO> listinput = new List<PaanBlockSDO>();
 
                 CommonParam param_ = new CommonParam();
@@ -1192,11 +1223,83 @@ namespace HIS.Desktop.Plugins.SamplePathologyReq.SamplePathologyReq
             }
         }
 
+        private void gridView1_CustomRowError(object sender, Inventec.Desktop.CustomControl.RowColumnErrorEventArgs e)
+        {
+            try
+            {
+                var index = this.gridView1.GetDataSourceRowIndex(e.RowHandle);
+                if (index < 0)
+                {
+                    e.Info.ErrorType = ErrorType.None;
+                    e.Info.ErrorText = "";
+                    return;
+                }
+                var listDatas = this.gridControl1.DataSource as List<ServiceReqADO>;
+                var row = listDatas[index];
+                if (e.ColumnName == "BLOCK")
+                {
+                    if (row.ErrorTypeBlock == ErrorType.Warning)
+                    {
+                        e.Info.ErrorType = (ErrorType)(row.ErrorTypeBlock);
+                        e.Info.ErrorText = (string)(row.ErrorMessageBlock);
+                    }
+                    else
+                    {
+                        e.Info.ErrorType = (ErrorType)(ErrorType.None);
+                        e.Info.ErrorText = "";
+                    }
+                }
+                if (e.ColumnName == "TDL_INSTRUCTION_NOTE")
+                {
+                    if (row.ErrorTypeTDN == ErrorType.Warning)
+                    {
+                        e.Info.ErrorType = (ErrorType)(row.ErrorTypeTDN);
+                        e.Info.ErrorText = (string)(row.ErrorMessageTDN);
+                    }
+                    else
+                    {
+                        e.Info.ErrorType = (ErrorType)(ErrorType.None);
+                        e.Info.ErrorText = "";
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                try
+                {
+                    e.Info.ErrorType = (ErrorType)(ErrorType.None);
+                    e.Info.ErrorText = "";
+                }
+                catch { }
+
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void gridView1_CustomRowColumnError(object sender, Inventec.Desktop.CustomControl.RowColumnErrorEventArgs e)
+        {
+            try
+            {
+                if (e.ColumnName == "BLOCK")
+                {
+                    this.gridView1_CustomRowError(sender, e);
+                }
+                if (e.ColumnName == "TDL_INSTRUCTION_NOTE")
+                {
+                    this.gridView1_CustomRowError(sender, e);
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
         //private void repositoryItemTextEditNoteE_EditValueChanged(object sender, EventArgs e)
         //{
         //    try
         //    {
-        //        // var focus = (HIS_SERVICE_REQ)gridView1.GetFocusedRow();
+        //        // var focus = (ServiceReqADO)gridView1.GetFocusedRow();
         //        btnSave.Focus();
         //    }
         //    catch (Exception ex)
@@ -1204,6 +1307,6 @@ namespace HIS.Desktop.Plugins.SamplePathologyReq.SamplePathologyReq
         //        Inventec.Common.Logging.LogSystem.Error(ex);
         //    }
         //}
-      
+
     }
 }
