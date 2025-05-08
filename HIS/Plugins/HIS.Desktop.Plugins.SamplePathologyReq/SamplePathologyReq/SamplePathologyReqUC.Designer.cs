@@ -45,6 +45,7 @@ namespace HIS.Desktop.Plugins.SamplePathologyReq.SamplePathologyReq
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SamplePathologyReqUC));
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject1 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject2 = new DevExpress.Utils.SerializableAppearanceObject();
@@ -82,8 +83,8 @@ namespace HIS.Desktop.Plugins.SamplePathologyReq.SamplePathologyReq
             this.txtTreatmentCode = new DevExpress.XtraEditors.TextEdit();
             this.txtBlock = new DevExpress.XtraEditors.TextEdit();
             this.txtServiceReqCode = new DevExpress.XtraEditors.TextEdit();
-            this.gridControl1 = new DevExpress.XtraGrid.GridControl();
-            this.gridView1 = new DevExpress.XtraGrid.Views.Grid.GridView();
+            this.gridControl1 = new Inventec.Desktop.CustomControl.MyGridControl();
+            this.gridView1 = new Inventec.Desktop.CustomControl.MyGridView();
             this.gridColumn1 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn2 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.RepbtnCall = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
@@ -113,6 +114,29 @@ namespace HIS.Desktop.Plugins.SamplePathologyReq.SamplePathologyReq
             this.gridColumn21 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn22 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn23 = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.colSTTUnb = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.colCallUnb = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.colSTATUSUnb = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.colNUM_ORDERUnb = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.colGET_SAMPLEUnb = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.colPRINTUnb = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.colSERVICE_REQ_CODEUnb = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.colBLOCKUnb = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.colTDL_INSTRUCTION_NOTEUnb = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.colTDL_TREATMENT_CODEUnb = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.colTDL_PATIENT_NAMEUnb = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.colTDL_PATIENT_CODEUnb = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.colTDL_PATIENT_GENDER_NAMEUnb = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.colTDL_PATIENT_DOB_STRUnb = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.colINTRUCTION_TIME_STRUnb = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.colSAMPLE_TIME_STRUnb = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.colSAMPLER_STRUnb = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.colREQUEST_DEPARTMENT_STRUnb = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.colREQUEST_STRUnb = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.colCREATE_TIME_STRUnb = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.colCREATORUnb = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.colMODIFY_TIME_STRUnb = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.colMODIFIERUnb = new DevExpress.XtraGrid.Columns.GridColumn();
             this.RepbbtnUnSample = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
             this.repositoryItemTextEditNoteD = new DevExpress.XtraEditors.Repository.RepositoryItemTextEdit();
             this.repositoryItemTextEditBlockD = new DevExpress.XtraEditors.Repository.RepositoryItemTextEdit();
@@ -139,8 +163,9 @@ namespace HIS.Desktop.Plugins.SamplePathologyReq.SamplePathologyReq
             this.layoutControlItem17 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlGroup1 = new DevExpress.XtraLayout.LayoutControlGroup();
             this.layoutControlItem1 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.imageListIcon = new System.Windows.Forms.ImageList();
-            this.toolTipController1 = new DevExpress.Utils.ToolTipController();
+            this.imageListIcon = new System.Windows.Forms.ImageList(this.components);
+            this.toolTipController1 = new DevExpress.Utils.ToolTipController(this.components);
+            this.dxValidationProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
             this.layoutControl1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl2)).BeginInit();
@@ -189,6 +214,7 @@ namespace HIS.Desktop.Plugins.SamplePathologyReq.SamplePathologyReq
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem17)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dxValidationProvider1)).BeginInit();
             this.SuspendLayout();
             // 
             // layoutControl1
@@ -428,12 +454,36 @@ namespace HIS.Desktop.Plugins.SamplePathologyReq.SamplePathologyReq
             this.gridColumn20,
             this.gridColumn21,
             this.gridColumn22,
-            this.gridColumn23});
+            this.gridColumn23,
+            this.colSTTUnb,
+            this.colCallUnb,
+            this.colSTATUSUnb,
+            this.colNUM_ORDERUnb,
+            this.colGET_SAMPLEUnb,
+            this.colPRINTUnb,
+            this.colSERVICE_REQ_CODEUnb,
+            this.colBLOCKUnb,
+            this.colTDL_INSTRUCTION_NOTEUnb,
+            this.colTDL_TREATMENT_CODEUnb,
+            this.colTDL_PATIENT_NAMEUnb,
+            this.colTDL_PATIENT_CODEUnb,
+            this.colTDL_PATIENT_GENDER_NAMEUnb,
+            this.colTDL_PATIENT_DOB_STRUnb,
+            this.colINTRUCTION_TIME_STRUnb,
+            this.colSAMPLE_TIME_STRUnb,
+            this.colSAMPLER_STRUnb,
+            this.colREQUEST_DEPARTMENT_STRUnb,
+            this.colREQUEST_STRUnb,
+            this.colCREATE_TIME_STRUnb,
+            this.colCREATORUnb,
+            this.colMODIFY_TIME_STRUnb,
+            this.colMODIFIERUnb});
             this.gridView1.GridControl = this.gridControl1;
             this.gridView1.Name = "gridView1";
             this.gridView1.OptionsView.ColumnAutoWidth = false;
             this.gridView1.OptionsView.ShowGroupPanel = false;
             this.gridView1.OptionsView.ShowIndicator = false;
+            this.gridView1.CustomRowColumnError += new System.EventHandler<Inventec.Desktop.CustomControl.RowColumnErrorEventArgs>(this.gridView1_CustomRowColumnError);
             this.gridView1.CustomRowCellEdit += new DevExpress.XtraGrid.Views.Grid.CustomRowCellEditEventHandler(this.gridView1_CustomRowCellEdit);
             this.gridView1.CellValueChanged += new DevExpress.XtraGrid.Views.Base.CellValueChangedEventHandler(this.gridView1_CellValueChanged);
             this.gridView1.CustomUnboundColumnData += new DevExpress.XtraGrid.Views.Base.CustomColumnDataEventHandler(this.gridView1_CustomUnboundColumnData);
@@ -442,9 +492,11 @@ namespace HIS.Desktop.Plugins.SamplePathologyReq.SamplePathologyReq
             // 
             this.gridColumn1.Caption = "STT";
             this.gridColumn1.FieldName = "STT";
+            this.gridColumn1.FieldNameSortGroup = "STTUnb";
             this.gridColumn1.Name = "gridColumn1";
             this.gridColumn1.OptionsColumn.AllowEdit = false;
             this.gridColumn1.OptionsColumn.AllowSort = DevExpress.Utils.DefaultBoolean.False;
+            this.gridColumn1.OptionsFilter.FilterBySortField = DevExpress.Utils.DefaultBoolean.True;
             this.gridColumn1.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumn1.Visible = true;
             this.gridColumn1.VisibleIndex = 0;
@@ -454,8 +506,10 @@ namespace HIS.Desktop.Plugins.SamplePathologyReq.SamplePathologyReq
             // 
             this.gridColumn2.ColumnEdit = this.RepbtnCall;
             this.gridColumn2.FieldName = "Call";
+            this.gridColumn2.FieldNameSortGroup = "CallUnb";
             this.gridColumn2.Name = "gridColumn2";
             this.gridColumn2.OptionsColumn.ShowCaption = false;
+            this.gridColumn2.OptionsFilter.FilterBySortField = DevExpress.Utils.DefaultBoolean.True;
             this.gridColumn2.Visible = true;
             this.gridColumn2.VisibleIndex = 1;
             this.gridColumn2.Width = 29;
@@ -473,8 +527,10 @@ namespace HIS.Desktop.Plugins.SamplePathologyReq.SamplePathologyReq
             // 
             this.gridColumn3.ColumnEdit = this.repositoryItembtnStatus;
             this.gridColumn3.FieldName = "STATUS";
+            this.gridColumn3.FieldNameSortGroup = "STATUSUnb";
             this.gridColumn3.Name = "gridColumn3";
             this.gridColumn3.OptionsColumn.ShowCaption = false;
+            this.gridColumn3.OptionsFilter.FilterBySortField = DevExpress.Utils.DefaultBoolean.True;
             this.gridColumn3.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumn3.Visible = true;
             this.gridColumn3.VisibleIndex = 2;
@@ -491,9 +547,11 @@ namespace HIS.Desktop.Plugins.SamplePathologyReq.SamplePathologyReq
             // 
             this.gridColumn4.Caption = "#";
             this.gridColumn4.FieldName = "NUM_ORDER";
+            this.gridColumn4.FieldNameSortGroup = "NUM_ORDERUnb";
             this.gridColumn4.Name = "gridColumn4";
             this.gridColumn4.OptionsColumn.AllowEdit = false;
             this.gridColumn4.OptionsColumn.AllowSort = DevExpress.Utils.DefaultBoolean.False;
+            this.gridColumn4.OptionsFilter.FilterBySortField = DevExpress.Utils.DefaultBoolean.True;
             this.gridColumn4.Visible = true;
             this.gridColumn4.VisibleIndex = 3;
             this.gridColumn4.Width = 46;
@@ -502,8 +560,10 @@ namespace HIS.Desktop.Plugins.SamplePathologyReq.SamplePathologyReq
             // 
             this.gridColumn5.ColumnEdit = this.RepbtnSample;
             this.gridColumn5.FieldName = "GET_SAMPLE";
+            this.gridColumn5.FieldNameSortGroup = "GET_SAMPLEUnb";
             this.gridColumn5.Name = "gridColumn5";
             this.gridColumn5.OptionsColumn.ShowCaption = false;
+            this.gridColumn5.OptionsFilter.FilterBySortField = DevExpress.Utils.DefaultBoolean.True;
             this.gridColumn5.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumn5.Visible = true;
             this.gridColumn5.VisibleIndex = 4;
@@ -522,8 +582,10 @@ namespace HIS.Desktop.Plugins.SamplePathologyReq.SamplePathologyReq
             // 
             this.gridColumn6.ColumnEdit = this.repbtnPrint;
             this.gridColumn6.FieldName = "PRINT";
+            this.gridColumn6.FieldNameSortGroup = "PRINTUnb";
             this.gridColumn6.Name = "gridColumn6";
             this.gridColumn6.OptionsColumn.ShowCaption = false;
+            this.gridColumn6.OptionsFilter.FilterBySortField = DevExpress.Utils.DefaultBoolean.True;
             this.gridColumn6.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumn6.Visible = true;
             this.gridColumn6.VisibleIndex = 5;
@@ -542,9 +604,11 @@ namespace HIS.Desktop.Plugins.SamplePathologyReq.SamplePathologyReq
             // 
             this.gridColumn7.Caption = "Mã y lệnh";
             this.gridColumn7.FieldName = "SERVICE_REQ_CODE";
+            this.gridColumn7.FieldNameSortGroup = "SERVICE_REQ_CODEUnb";
             this.gridColumn7.Name = "gridColumn7";
             this.gridColumn7.OptionsColumn.AllowEdit = false;
             this.gridColumn7.OptionsColumn.AllowSort = DevExpress.Utils.DefaultBoolean.False;
+            this.gridColumn7.OptionsFilter.FilterBySortField = DevExpress.Utils.DefaultBoolean.True;
             this.gridColumn7.Visible = true;
             this.gridColumn7.VisibleIndex = 6;
             this.gridColumn7.Width = 100;
@@ -554,8 +618,10 @@ namespace HIS.Desktop.Plugins.SamplePathologyReq.SamplePathologyReq
             this.gridColumn8.Caption = "Block";
             this.gridColumn8.ColumnEdit = this.repositoryItemTextEditBlockE;
             this.gridColumn8.FieldName = "BLOCK";
+            this.gridColumn8.FieldNameSortGroup = "BLOCKUnb";
             this.gridColumn8.Name = "gridColumn8";
             this.gridColumn8.OptionsColumn.AllowSort = DevExpress.Utils.DefaultBoolean.False;
+            this.gridColumn8.OptionsFilter.FilterBySortField = DevExpress.Utils.DefaultBoolean.True;
             this.gridColumn8.Visible = true;
             this.gridColumn8.VisibleIndex = 7;
             // 
@@ -569,8 +635,10 @@ namespace HIS.Desktop.Plugins.SamplePathologyReq.SamplePathologyReq
             this.gridColumn9.Caption = "Ghi chú";
             this.gridColumn9.ColumnEdit = this.repositoryItemTextEditNoteE;
             this.gridColumn9.FieldName = "TDL_INSTRUCTION_NOTE";
+            this.gridColumn9.FieldNameSortGroup = "TDL_INSTRUCTION_NOTEUnb";
             this.gridColumn9.Name = "gridColumn9";
             this.gridColumn9.OptionsColumn.AllowSort = DevExpress.Utils.DefaultBoolean.False;
+            this.gridColumn9.OptionsFilter.FilterBySortField = DevExpress.Utils.DefaultBoolean.True;
             this.gridColumn9.Visible = true;
             this.gridColumn9.VisibleIndex = 8;
             this.gridColumn9.Width = 150;
@@ -584,9 +652,11 @@ namespace HIS.Desktop.Plugins.SamplePathologyReq.SamplePathologyReq
             // 
             this.gridColumn10.Caption = "Mã điều trị";
             this.gridColumn10.FieldName = "TDL_TREATMENT_CODE";
+            this.gridColumn10.FieldNameSortGroup = "TDL_TREATMENT_CODEUnb";
             this.gridColumn10.Name = "gridColumn10";
             this.gridColumn10.OptionsColumn.AllowEdit = false;
             this.gridColumn10.OptionsColumn.AllowSort = DevExpress.Utils.DefaultBoolean.False;
+            this.gridColumn10.OptionsFilter.FilterBySortField = DevExpress.Utils.DefaultBoolean.True;
             this.gridColumn10.Visible = true;
             this.gridColumn10.VisibleIndex = 9;
             this.gridColumn10.Width = 100;
@@ -595,9 +665,11 @@ namespace HIS.Desktop.Plugins.SamplePathologyReq.SamplePathologyReq
             // 
             this.gridColumn11.Caption = "Tên bệnh nhân";
             this.gridColumn11.FieldName = "TDL_PATIENT_NAME";
+            this.gridColumn11.FieldNameSortGroup = "TDL_PATIENT_NAMEUnb";
             this.gridColumn11.Name = "gridColumn11";
             this.gridColumn11.OptionsColumn.AllowEdit = false;
             this.gridColumn11.OptionsColumn.AllowSort = DevExpress.Utils.DefaultBoolean.False;
+            this.gridColumn11.OptionsFilter.FilterBySortField = DevExpress.Utils.DefaultBoolean.True;
             this.gridColumn11.Visible = true;
             this.gridColumn11.VisibleIndex = 10;
             this.gridColumn11.Width = 150;
@@ -606,9 +678,11 @@ namespace HIS.Desktop.Plugins.SamplePathologyReq.SamplePathologyReq
             // 
             this.gridColumn12.Caption = "Mã bệnh nhân";
             this.gridColumn12.FieldName = "TDL_PATIENT_CODE";
+            this.gridColumn12.FieldNameSortGroup = "TDL_PATIENT_CODEUnb";
             this.gridColumn12.Name = "gridColumn12";
             this.gridColumn12.OptionsColumn.AllowEdit = false;
             this.gridColumn12.OptionsColumn.AllowSort = DevExpress.Utils.DefaultBoolean.False;
+            this.gridColumn12.OptionsFilter.FilterBySortField = DevExpress.Utils.DefaultBoolean.True;
             this.gridColumn12.Visible = true;
             this.gridColumn12.VisibleIndex = 11;
             this.gridColumn12.Width = 100;
@@ -617,9 +691,11 @@ namespace HIS.Desktop.Plugins.SamplePathologyReq.SamplePathologyReq
             // 
             this.gridColumn13.Caption = "Giới tính";
             this.gridColumn13.FieldName = "TDL_PATIENT_GENDER_NAME";
+            this.gridColumn13.FieldNameSortGroup = "TDL_PATIENT_GENDER_NAMEUnb";
             this.gridColumn13.Name = "gridColumn13";
             this.gridColumn13.OptionsColumn.AllowEdit = false;
             this.gridColumn13.OptionsColumn.AllowSort = DevExpress.Utils.DefaultBoolean.False;
+            this.gridColumn13.OptionsFilter.FilterBySortField = DevExpress.Utils.DefaultBoolean.True;
             this.gridColumn13.Visible = true;
             this.gridColumn13.VisibleIndex = 12;
             this.gridColumn13.Width = 100;
@@ -628,9 +704,11 @@ namespace HIS.Desktop.Plugins.SamplePathologyReq.SamplePathologyReq
             // 
             this.gridColumn14.Caption = "Ngày sinh";
             this.gridColumn14.FieldName = "TDL_PATIENT_DOB_STR";
+            this.gridColumn14.FieldNameSortGroup = "TDL_PATIENT_DOB_STRUnb";
             this.gridColumn14.Name = "gridColumn14";
             this.gridColumn14.OptionsColumn.AllowEdit = false;
             this.gridColumn14.OptionsColumn.AllowSort = DevExpress.Utils.DefaultBoolean.False;
+            this.gridColumn14.OptionsFilter.FilterBySortField = DevExpress.Utils.DefaultBoolean.True;
             this.gridColumn14.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumn14.Visible = true;
             this.gridColumn14.VisibleIndex = 13;
@@ -640,9 +718,11 @@ namespace HIS.Desktop.Plugins.SamplePathologyReq.SamplePathologyReq
             // 
             this.gridColumn15.Caption = "Thời gian Y lệnh";
             this.gridColumn15.FieldName = "INTRUCTION_TIME_STR";
+            this.gridColumn15.FieldNameSortGroup = "INTRUCTION_TIME_STRUnb";
             this.gridColumn15.Name = "gridColumn15";
             this.gridColumn15.OptionsColumn.AllowEdit = false;
             this.gridColumn15.OptionsColumn.AllowSort = DevExpress.Utils.DefaultBoolean.False;
+            this.gridColumn15.OptionsFilter.FilterBySortField = DevExpress.Utils.DefaultBoolean.True;
             this.gridColumn15.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumn15.Visible = true;
             this.gridColumn15.VisibleIndex = 14;
@@ -652,9 +732,11 @@ namespace HIS.Desktop.Plugins.SamplePathologyReq.SamplePathologyReq
             // 
             this.gridColumn16.Caption = "Thời gian lấy mẫu";
             this.gridColumn16.FieldName = "SAMPLE_TIME_STR";
+            this.gridColumn16.FieldNameSortGroup = "SAMPLE_TIME_STRUnb";
             this.gridColumn16.Name = "gridColumn16";
             this.gridColumn16.OptionsColumn.AllowEdit = false;
             this.gridColumn16.OptionsColumn.AllowSort = DevExpress.Utils.DefaultBoolean.False;
+            this.gridColumn16.OptionsFilter.FilterBySortField = DevExpress.Utils.DefaultBoolean.True;
             this.gridColumn16.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumn16.Visible = true;
             this.gridColumn16.VisibleIndex = 15;
@@ -664,9 +746,11 @@ namespace HIS.Desktop.Plugins.SamplePathologyReq.SamplePathologyReq
             // 
             this.gridColumn17.Caption = "Người lấy mẫu";
             this.gridColumn17.FieldName = "SAMPLER_STR";
+            this.gridColumn17.FieldNameSortGroup = "SAMPLER_STRUnb";
             this.gridColumn17.Name = "gridColumn17";
             this.gridColumn17.OptionsColumn.AllowEdit = false;
             this.gridColumn17.OptionsColumn.AllowSort = DevExpress.Utils.DefaultBoolean.False;
+            this.gridColumn17.OptionsFilter.FilterBySortField = DevExpress.Utils.DefaultBoolean.True;
             this.gridColumn17.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumn17.Visible = true;
             this.gridColumn17.VisibleIndex = 16;
@@ -676,9 +760,11 @@ namespace HIS.Desktop.Plugins.SamplePathologyReq.SamplePathologyReq
             // 
             this.gridColumn18.Caption = "Khoa chỉ định";
             this.gridColumn18.FieldName = "REQUEST_DEPARTMENT_STR";
+            this.gridColumn18.FieldNameSortGroup = "REQUEST_DEPARTMENT_STRUnb";
             this.gridColumn18.Name = "gridColumn18";
             this.gridColumn18.OptionsColumn.AllowEdit = false;
             this.gridColumn18.OptionsColumn.AllowSort = DevExpress.Utils.DefaultBoolean.False;
+            this.gridColumn18.OptionsFilter.FilterBySortField = DevExpress.Utils.DefaultBoolean.True;
             this.gridColumn18.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumn18.Visible = true;
             this.gridColumn18.VisibleIndex = 17;
@@ -688,9 +774,11 @@ namespace HIS.Desktop.Plugins.SamplePathologyReq.SamplePathologyReq
             // 
             this.gridColumn19.Caption = "Người chỉ định";
             this.gridColumn19.FieldName = "REQUEST_STR";
+            this.gridColumn19.FieldNameSortGroup = "REQUEST_STRUnb";
             this.gridColumn19.Name = "gridColumn19";
             this.gridColumn19.OptionsColumn.AllowEdit = false;
             this.gridColumn19.OptionsColumn.AllowSort = DevExpress.Utils.DefaultBoolean.False;
+            this.gridColumn19.OptionsFilter.FilterBySortField = DevExpress.Utils.DefaultBoolean.True;
             this.gridColumn19.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumn19.Visible = true;
             this.gridColumn19.VisibleIndex = 18;
@@ -700,9 +788,11 @@ namespace HIS.Desktop.Plugins.SamplePathologyReq.SamplePathologyReq
             // 
             this.gridColumn20.Caption = "Thời gian tạo";
             this.gridColumn20.FieldName = "CREATE_TIME_STR";
+            this.gridColumn20.FieldNameSortGroup = "CREATE_TIME_STRUnb";
             this.gridColumn20.Name = "gridColumn20";
             this.gridColumn20.OptionsColumn.AllowEdit = false;
             this.gridColumn20.OptionsColumn.AllowSort = DevExpress.Utils.DefaultBoolean.False;
+            this.gridColumn20.OptionsFilter.FilterBySortField = DevExpress.Utils.DefaultBoolean.True;
             this.gridColumn20.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumn20.Visible = true;
             this.gridColumn20.VisibleIndex = 19;
@@ -712,9 +802,11 @@ namespace HIS.Desktop.Plugins.SamplePathologyReq.SamplePathologyReq
             // 
             this.gridColumn21.Caption = "Người tạo";
             this.gridColumn21.FieldName = "CREATOR";
+            this.gridColumn21.FieldNameSortGroup = "CREATORUnb";
             this.gridColumn21.Name = "gridColumn21";
             this.gridColumn21.OptionsColumn.AllowEdit = false;
             this.gridColumn21.OptionsColumn.AllowSort = DevExpress.Utils.DefaultBoolean.False;
+            this.gridColumn21.OptionsFilter.FilterBySortField = DevExpress.Utils.DefaultBoolean.True;
             this.gridColumn21.Visible = true;
             this.gridColumn21.VisibleIndex = 20;
             this.gridColumn21.Width = 100;
@@ -723,9 +815,11 @@ namespace HIS.Desktop.Plugins.SamplePathologyReq.SamplePathologyReq
             // 
             this.gridColumn22.Caption = "Thời gian sửa";
             this.gridColumn22.FieldName = "MODIFY_TIME_STR";
+            this.gridColumn22.FieldNameSortGroup = "MODIFY_TIME_STRUnb";
             this.gridColumn22.Name = "gridColumn22";
             this.gridColumn22.OptionsColumn.AllowEdit = false;
             this.gridColumn22.OptionsColumn.AllowSort = DevExpress.Utils.DefaultBoolean.False;
+            this.gridColumn22.OptionsFilter.FilterBySortField = DevExpress.Utils.DefaultBoolean.True;
             this.gridColumn22.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumn22.Visible = true;
             this.gridColumn22.VisibleIndex = 21;
@@ -735,12 +829,152 @@ namespace HIS.Desktop.Plugins.SamplePathologyReq.SamplePathologyReq
             // 
             this.gridColumn23.Caption = "Người sửa";
             this.gridColumn23.FieldName = "MODIFIER";
+            this.gridColumn23.FieldNameSortGroup = "MODIFIERUnb";
             this.gridColumn23.Name = "gridColumn23";
             this.gridColumn23.OptionsColumn.AllowEdit = false;
             this.gridColumn23.OptionsColumn.AllowSort = DevExpress.Utils.DefaultBoolean.False;
+            this.gridColumn23.OptionsFilter.FilterBySortField = DevExpress.Utils.DefaultBoolean.True;
             this.gridColumn23.Visible = true;
             this.gridColumn23.VisibleIndex = 22;
             this.gridColumn23.Width = 100;
+            // 
+            // colSTTUnb
+            // 
+            this.colSTTUnb.FieldName = "STTUnb";
+            this.colSTTUnb.Name = "colSTTUnb";
+            this.colSTTUnb.UnboundType = DevExpress.Data.UnboundColumnType.String;
+            // 
+            // colCallUnb
+            // 
+            this.colCallUnb.FieldName = "CallUnb";
+            this.colCallUnb.Name = "colCallUnb";
+            this.colCallUnb.UnboundType = DevExpress.Data.UnboundColumnType.String;
+            // 
+            // colSTATUSUnb
+            // 
+            this.colSTATUSUnb.FieldName = "STATUSUnb";
+            this.colSTATUSUnb.Name = "colSTATUSUnb";
+            this.colSTATUSUnb.UnboundType = DevExpress.Data.UnboundColumnType.String;
+            // 
+            // colNUM_ORDERUnb
+            // 
+            this.colNUM_ORDERUnb.FieldName = "NUM_ORDERUnb";
+            this.colNUM_ORDERUnb.Name = "colNUM_ORDERUnb";
+            this.colNUM_ORDERUnb.UnboundType = DevExpress.Data.UnboundColumnType.String;
+            // 
+            // colGET_SAMPLEUnb
+            // 
+            this.colGET_SAMPLEUnb.FieldName = "GET_SAMPLEUnb";
+            this.colGET_SAMPLEUnb.Name = "colGET_SAMPLEUnb";
+            this.colGET_SAMPLEUnb.UnboundType = DevExpress.Data.UnboundColumnType.String;
+            // 
+            // colPRINTUnb
+            // 
+            this.colPRINTUnb.FieldName = "PRINTUnb";
+            this.colPRINTUnb.Name = "colPRINTUnb";
+            this.colPRINTUnb.UnboundType = DevExpress.Data.UnboundColumnType.String;
+            // 
+            // colSERVICE_REQ_CODEUnb
+            // 
+            this.colSERVICE_REQ_CODEUnb.FieldName = "SERVICE_REQ_CODEUnb";
+            this.colSERVICE_REQ_CODEUnb.Name = "colSERVICE_REQ_CODEUnb";
+            this.colSERVICE_REQ_CODEUnb.UnboundType = DevExpress.Data.UnboundColumnType.String;
+            // 
+            // colBLOCKUnb
+            // 
+            this.colBLOCKUnb.FieldName = "BLOCKUnb";
+            this.colBLOCKUnb.Name = "colBLOCKUnb";
+            this.colBLOCKUnb.UnboundType = DevExpress.Data.UnboundColumnType.String;
+            // 
+            // colTDL_INSTRUCTION_NOTEUnb
+            // 
+            this.colTDL_INSTRUCTION_NOTEUnb.FieldName = "TDL_INSTRUCTION_NOTEUnb";
+            this.colTDL_INSTRUCTION_NOTEUnb.Name = "colTDL_INSTRUCTION_NOTEUnb";
+            this.colTDL_INSTRUCTION_NOTEUnb.UnboundType = DevExpress.Data.UnboundColumnType.String;
+            // 
+            // colTDL_TREATMENT_CODEUnb
+            // 
+            this.colTDL_TREATMENT_CODEUnb.FieldName = "TDL_TREATMENT_CODEUnb";
+            this.colTDL_TREATMENT_CODEUnb.Name = "colTDL_TREATMENT_CODEUnb";
+            this.colTDL_TREATMENT_CODEUnb.UnboundType = DevExpress.Data.UnboundColumnType.String;
+            // 
+            // colTDL_PATIENT_NAMEUnb
+            // 
+            this.colTDL_PATIENT_NAMEUnb.FieldName = "TDL_PATIENT_NAMEUnb";
+            this.colTDL_PATIENT_NAMEUnb.Name = "colTDL_PATIENT_NAMEUnb";
+            this.colTDL_PATIENT_NAMEUnb.UnboundType = DevExpress.Data.UnboundColumnType.String;
+            // 
+            // colTDL_PATIENT_CODEUnb
+            // 
+            this.colTDL_PATIENT_CODEUnb.FieldName = "TDL_PATIENT_CODEUnb";
+            this.colTDL_PATIENT_CODEUnb.Name = "colTDL_PATIENT_CODEUnb";
+            this.colTDL_PATIENT_CODEUnb.UnboundType = DevExpress.Data.UnboundColumnType.String;
+            // 
+            // colTDL_PATIENT_GENDER_NAMEUnb
+            // 
+            this.colTDL_PATIENT_GENDER_NAMEUnb.FieldName = "TDL_PATIENT_GENDER_NAMEUnb";
+            this.colTDL_PATIENT_GENDER_NAMEUnb.Name = "colTDL_PATIENT_GENDER_NAMEUnb";
+            this.colTDL_PATIENT_GENDER_NAMEUnb.UnboundType = DevExpress.Data.UnboundColumnType.String;
+            // 
+            // colTDL_PATIENT_DOB_STRUnb
+            // 
+            this.colTDL_PATIENT_DOB_STRUnb.FieldName = "TDL_PATIENT_DOB_STRUnb";
+            this.colTDL_PATIENT_DOB_STRUnb.Name = "colTDL_PATIENT_DOB_STRUnb";
+            this.colTDL_PATIENT_DOB_STRUnb.UnboundType = DevExpress.Data.UnboundColumnType.String;
+            // 
+            // colINTRUCTION_TIME_STRUnb
+            // 
+            this.colINTRUCTION_TIME_STRUnb.FieldName = "INTRUCTION_TIME_STRUnb";
+            this.colINTRUCTION_TIME_STRUnb.Name = "colINTRUCTION_TIME_STRUnb";
+            this.colINTRUCTION_TIME_STRUnb.UnboundType = DevExpress.Data.UnboundColumnType.String;
+            // 
+            // colSAMPLE_TIME_STRUnb
+            // 
+            this.colSAMPLE_TIME_STRUnb.FieldName = "SAMPLE_TIME_STRUnb";
+            this.colSAMPLE_TIME_STRUnb.Name = "colSAMPLE_TIME_STRUnb";
+            this.colSAMPLE_TIME_STRUnb.UnboundType = DevExpress.Data.UnboundColumnType.String;
+            // 
+            // colSAMPLER_STRUnb
+            // 
+            this.colSAMPLER_STRUnb.FieldName = "SAMPLER_STRUnb";
+            this.colSAMPLER_STRUnb.Name = "colSAMPLER_STRUnb";
+            this.colSAMPLER_STRUnb.UnboundType = DevExpress.Data.UnboundColumnType.String;
+            // 
+            // colREQUEST_DEPARTMENT_STRUnb
+            // 
+            this.colREQUEST_DEPARTMENT_STRUnb.FieldName = "REQUEST_DEPARTMENT_STRUnb";
+            this.colREQUEST_DEPARTMENT_STRUnb.Name = "colREQUEST_DEPARTMENT_STRUnb";
+            this.colREQUEST_DEPARTMENT_STRUnb.UnboundType = DevExpress.Data.UnboundColumnType.String;
+            // 
+            // colREQUEST_STRUnb
+            // 
+            this.colREQUEST_STRUnb.FieldName = "REQUEST_STRUnb";
+            this.colREQUEST_STRUnb.Name = "colREQUEST_STRUnb";
+            this.colREQUEST_STRUnb.UnboundType = DevExpress.Data.UnboundColumnType.String;
+            // 
+            // colCREATE_TIME_STRUnb
+            // 
+            this.colCREATE_TIME_STRUnb.FieldName = "CREATE_TIME_STRUnb";
+            this.colCREATE_TIME_STRUnb.Name = "colCREATE_TIME_STRUnb";
+            this.colCREATE_TIME_STRUnb.UnboundType = DevExpress.Data.UnboundColumnType.String;
+            // 
+            // colCREATORUnb
+            // 
+            this.colCREATORUnb.FieldName = "CREATORUnb";
+            this.colCREATORUnb.Name = "colCREATORUnb";
+            this.colCREATORUnb.UnboundType = DevExpress.Data.UnboundColumnType.String;
+            // 
+            // colMODIFY_TIME_STRUnb
+            // 
+            this.colMODIFY_TIME_STRUnb.FieldName = "MODIFY_TIME_STRUnb";
+            this.colMODIFY_TIME_STRUnb.Name = "colMODIFY_TIME_STRUnb";
+            this.colMODIFY_TIME_STRUnb.UnboundType = DevExpress.Data.UnboundColumnType.String;
+            // 
+            // colMODIFIERUnb
+            // 
+            this.colMODIFIERUnb.FieldName = "MODIFIERUnb";
+            this.colMODIFIERUnb.Name = "colMODIFIERUnb";
+            this.colMODIFIERUnb.UnboundType = DevExpress.Data.UnboundColumnType.String;
             // 
             // RepbbtnUnSample
             // 
@@ -1072,6 +1306,7 @@ namespace HIS.Desktop.Plugins.SamplePathologyReq.SamplePathologyReq
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem17)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dxValidationProvider1)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -1081,8 +1316,8 @@ namespace HIS.Desktop.Plugins.SamplePathologyReq.SamplePathologyReq
         private DevExpress.XtraLayout.LayoutControl layoutControl1;
         private DevExpress.XtraLayout.LayoutControlGroup layoutControlGroup1;
         private DevExpress.XtraLayout.LayoutControl layoutControl2;
-        private DevExpress.XtraGrid.GridControl gridControl1;
-        private DevExpress.XtraGrid.Views.Grid.GridView gridView1;
+        private Inventec.Desktop.CustomControl.MyGridControl gridControl1;
+        private Inventec.Desktop.CustomControl.MyGridView gridView1;
         private DevExpress.XtraLayout.LayoutControlGroup Root;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem2;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem1;
@@ -1153,5 +1388,29 @@ namespace HIS.Desktop.Plugins.SamplePathologyReq.SamplePathologyReq
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem16;
         private DevExpress.XtraEditors.SimpleButton btnSave;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem17;
+        private DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider dxValidationProvider1;
+        private DevExpress.XtraGrid.Columns.GridColumn colSTTUnb;
+        private DevExpress.XtraGrid.Columns.GridColumn colCallUnb;
+        private DevExpress.XtraGrid.Columns.GridColumn colSTATUSUnb;
+        private DevExpress.XtraGrid.Columns.GridColumn colNUM_ORDERUnb;
+        private DevExpress.XtraGrid.Columns.GridColumn colGET_SAMPLEUnb;
+        private DevExpress.XtraGrid.Columns.GridColumn colPRINTUnb;
+        private DevExpress.XtraGrid.Columns.GridColumn colSERVICE_REQ_CODEUnb;
+        private DevExpress.XtraGrid.Columns.GridColumn colBLOCKUnb;
+        private DevExpress.XtraGrid.Columns.GridColumn colTDL_INSTRUCTION_NOTEUnb;
+        private DevExpress.XtraGrid.Columns.GridColumn colTDL_TREATMENT_CODEUnb;
+        private DevExpress.XtraGrid.Columns.GridColumn colTDL_PATIENT_NAMEUnb;
+        private DevExpress.XtraGrid.Columns.GridColumn colTDL_PATIENT_CODEUnb;
+        private DevExpress.XtraGrid.Columns.GridColumn colTDL_PATIENT_GENDER_NAMEUnb;
+        private DevExpress.XtraGrid.Columns.GridColumn colTDL_PATIENT_DOB_STRUnb;
+        private DevExpress.XtraGrid.Columns.GridColumn colINTRUCTION_TIME_STRUnb;
+        private DevExpress.XtraGrid.Columns.GridColumn colSAMPLE_TIME_STRUnb;
+        private DevExpress.XtraGrid.Columns.GridColumn colSAMPLER_STRUnb;
+        private DevExpress.XtraGrid.Columns.GridColumn colREQUEST_DEPARTMENT_STRUnb;
+        private DevExpress.XtraGrid.Columns.GridColumn colREQUEST_STRUnb;
+        private DevExpress.XtraGrid.Columns.GridColumn colCREATE_TIME_STRUnb;
+        private DevExpress.XtraGrid.Columns.GridColumn colCREATORUnb;
+        private DevExpress.XtraGrid.Columns.GridColumn colMODIFY_TIME_STRUnb;
+        private DevExpress.XtraGrid.Columns.GridColumn colMODIFIERUnb;
     }
 }

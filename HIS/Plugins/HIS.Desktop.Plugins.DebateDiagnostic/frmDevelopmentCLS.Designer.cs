@@ -86,6 +86,7 @@
             this.btnSelect.StyleController = this.layoutControl1;
             this.btnSelect.TabIndex = 8;
             this.btnSelect.Text = "Chọn (ctrl S)";
+            this.btnSelect.Click += new System.EventHandler(this.btnSelect_Click);
             // 
             // txtSearch
             // 
@@ -96,6 +97,7 @@
             this.txtSearch.Size = new System.Drawing.Size(339, 20);
             this.txtSearch.StyleController = this.layoutControl1;
             this.txtSearch.TabIndex = 7;
+            this.txtSearch.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtSearch_KeyDown);
             this.txtSearch.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtSearch_KeyPress);
             // 
             // deStartTime
@@ -112,27 +114,29 @@
             this.deStartTime.Properties.EditFormat.FormatString = "dd/MM/yyyy HH:mm:ss";
             this.deStartTime.Properties.EditFormat.FormatType = DevExpress.Utils.FormatType.DateTime;
             this.deStartTime.Properties.Mask.EditMask = "dd/MM/yyyy HH:mm:ss";
-            this.deStartTime.Size = new System.Drawing.Size(186, 20);
+            this.deStartTime.Size = new System.Drawing.Size(180, 20);
             this.deStartTime.StyleController = this.layoutControl1;
             this.deStartTime.TabIndex = 6;
+            this.deStartTime.KeyDown += new System.Windows.Forms.KeyEventHandler(this.deStartTime_KeyDown);
             // 
             // deEndTime
             // 
             this.deEndTime.EditValue = null;
-            this.deEndTime.Location = new System.Drawing.Point(242, 2);
+            this.deEndTime.Location = new System.Drawing.Point(236, 2);
             this.deEndTime.Name = "deEndTime";
             this.deEndTime.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
             this.deEndTime.Properties.CalendarTimeProperties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
-            this.deEndTime.Properties.DisplayFormat.FormatString = "yyyy/MM/dd HH:mm:ss";
+            this.deEndTime.Properties.DisplayFormat.FormatString = "dd/MM/yyyy HH:mm:ss";
             this.deEndTime.Properties.DisplayFormat.FormatType = DevExpress.Utils.FormatType.DateTime;
             this.deEndTime.Properties.EditFormat.FormatString = "yyyy/MM/dd HH:mm:ss";
             this.deEndTime.Properties.EditFormat.FormatType = DevExpress.Utils.FormatType.DateTime;
             this.deEndTime.Properties.Mask.EditMask = "dd/MM/yyyy HH:mm:ss";
-            this.deEndTime.Size = new System.Drawing.Size(189, 20);
+            this.deEndTime.Size = new System.Drawing.Size(195, 20);
             this.deEndTime.StyleController = this.layoutControl1;
             this.deEndTime.TabIndex = 5;
+            this.deEndTime.KeyDown += new System.Windows.Forms.KeyEventHandler(this.deEndTime_KeyDown);
             // 
             // gcDevelopmentCLS
             // 
@@ -162,8 +166,10 @@
             // gridColumn1
             // 
             this.gridColumn1.Caption = "Thời gian";
-            this.gridColumn1.FieldName = "TRACKING_TIME";
+            this.gridColumn1.FieldName = "TRACKING_TIMEStr";
             this.gridColumn1.Name = "gridColumn1";
+            this.gridColumn1.OptionsColumn.AllowEdit = false;
+            this.gridColumn1.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumn1.Visible = true;
             this.gridColumn1.VisibleIndex = 1;
             this.gridColumn1.Width = 88;
@@ -173,6 +179,7 @@
             this.gridColumn2.Caption = "Diễn biến bệnh";
             this.gridColumn2.FieldName = "CONTENT";
             this.gridColumn2.Name = "gridColumn2";
+            this.gridColumn2.OptionsColumn.AllowEdit = false;
             this.gridColumn2.Visible = true;
             this.gridColumn2.VisibleIndex = 2;
             this.gridColumn2.Width = 250;
@@ -182,6 +189,7 @@
             this.gridColumn3.Caption = "Diễn biến CLS";
             this.gridColumn3.FieldName = "SUBCLINICAL_PROCESSES";
             this.gridColumn3.Name = "gridColumn3";
+            this.gridColumn3.OptionsColumn.AllowEdit = false;
             this.gridColumn3.Visible = true;
             this.gridColumn3.VisibleIndex = 3;
             this.gridColumn3.Width = 250;
@@ -215,9 +223,9 @@
             // layoutControlItem2
             // 
             this.layoutControlItem2.Control = this.deEndTime;
-            this.layoutControlItem2.Location = new System.Drawing.Point(240, 0);
+            this.layoutControlItem2.Location = new System.Drawing.Point(234, 0);
             this.layoutControlItem2.Name = "layoutControlItem2";
-            this.layoutControlItem2.Size = new System.Drawing.Size(193, 24);
+            this.layoutControlItem2.Size = new System.Drawing.Size(199, 24);
             this.layoutControlItem2.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem2.TextVisible = false;
             // 
@@ -226,7 +234,7 @@
             this.layoutControlItem3.Control = this.deStartTime;
             this.layoutControlItem3.Location = new System.Drawing.Point(0, 0);
             this.layoutControlItem3.Name = "layoutControlItem3";
-            this.layoutControlItem3.Size = new System.Drawing.Size(240, 24);
+            this.layoutControlItem3.Size = new System.Drawing.Size(234, 24);
             this.layoutControlItem3.Text = "Thời gian:";
             this.layoutControlItem3.TextSize = new System.Drawing.Size(47, 13);
             // 
