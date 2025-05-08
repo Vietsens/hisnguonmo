@@ -501,7 +501,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                 {
                     if (subIcd != null && !string.IsNullOrEmpty(subIcd.ICD_SUB_CODE))
                     {
-                        var subIcdList = subIcd.ICD_SUB_CODE.Split(new string[] { ";" }, StringSplitOptions.RemoveEmptyEntries).ToList();
+                        var subIcdList = subIcd.ICD_SUB_CODE.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries).ToList();
                         if (subIcdList != null && subIcdList.Count > 12)
                         {
                             if ((HisConfigCFG.IsCheckSubIcdExceedLimit == "1" && DevExpress.XtraEditors.XtraMessageBox.Show("Chẩn đoán phụ nhập quá 12 mã bệnh. Vui lòng kiểm tra lại",

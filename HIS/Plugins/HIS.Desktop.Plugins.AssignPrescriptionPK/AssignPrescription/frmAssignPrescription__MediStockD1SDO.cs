@@ -703,6 +703,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                     this.txtMediMatyForPrescription.Text = this.currentMedicineTypeADOForEdit.MEDICINE_TYPE_NAME;
                     if (this.currentMedicineTypeADOForEdit.SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__THUOC)
                     {
+                        
                         var metyAlls = BackendDataWorker.Get<V_HIS_MEDICINE_TYPE>();
                         var metys = (metyAlls != null && metyAlls.Count > 0) ? metyAlls.Where(o => o.SERVICE_ID == this.currentMedicineTypeADOForEdit.SERVICE_ID).ToList() : null;
                         var mety = (metys != null && metys.Count > 0) ? metys.FirstOrDefault() : null;
@@ -1026,21 +1027,21 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                         this.spinChieu.EditValue = this.medicineTypeTutSelected.AFTERNOON;
                         this.spinToi.EditValue = this.medicineTypeTutSelected.EVENING;
                         IsSetByMedicineTut = false;
-                        if (String.IsNullOrEmpty(this.txtTutorial.Text)
-                            || (lciLadder.Visible && String.IsNullOrEmpty(txtLadder.Text)))
-                        {
-                            //Nếu có trường hướng dẫn thì sử dụng luôn
-                            if (!String.IsNullOrEmpty(this.medicineTypeTutSelected.TUTORIAL))
-                            {
-                                this.txtTutorial.Text = this.medicineTypeTutSelected.TUTORIAL;
-                            }
-                            //Nếu không có hướng dẫn sử dụng thì tự động set theo các trường như lúc nhập liệu
-                            else
-                            {
-                                this.CalculateAmount();
-                                this.SetHuongDanFromSoLuongNgay();
-                            }
-                        }
+                        //if (String.IsNullOrEmpty(this.txtTutorial.Text)
+                        //    || (lciLadder.Visible && String.IsNullOrEmpty(txtLadder.Text)))
+                        //{
+                        //    //Nếu có trường hướng dẫn thì sử dụng luôn
+                        //    if (!String.IsNullOrEmpty(this.medicineTypeTutSelected.TUTORIAL))
+                        //    {
+                        //        this.txtTutorial.Text = this.medicineTypeTutSelected.TUTORIAL;
+                        //    }
+                        //    //Nếu không có hướng dẫn sử dụng thì tự động set theo các trường như lúc nhập liệu
+                        //    else
+                        //    {
+                        //        this.CalculateAmount();
+                        //        this.SetHuongDanFromSoLuongNgay();
+                        //    }
+                        //}
                     }
                 }
                 //Trường hợp thuốc không có cấu hình hướng dẫn sử dụng thì lấy hướng dẫn sử dụng ở danh mục loại thuốc fill vào
