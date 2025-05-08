@@ -2097,11 +2097,11 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                     {
                         if (currentTreatmentExt == null || string.IsNullOrEmpty(this.currentTreatmentExt.CLINICAL_NOTE))
                         {
-                            serviceReqUpdateSDO.TreatmentFinishSDO.ClinicalNote = txtPathologicalProcess.Text.Trim();
+                            serviceReqUpdateSDO.TreatmentFinishSDO.ClinicalSigns = txtPathologicalProcess.Text.Trim();
                         }
                         else
                         {
-                            serviceReqUpdateSDO.TreatmentFinishSDO.ClinicalNote = this.currentTreatmentExt.CLINICAL_NOTE;
+                            serviceReqUpdateSDO.TreatmentFinishSDO.ClinicalSigns = treatment.CLINICAL_SIGNS;
                         }
 
                         if (currentTreatmentExt == null || string.IsNullOrEmpty(this.currentTreatmentExt.SUBCLINICAL_RESULT))

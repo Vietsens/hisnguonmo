@@ -155,17 +155,16 @@
       <HintPath>..\..\..\..\LIB\HIS\HIS.UC.DHST\HIS.UC.DHST.dll</HintPath>
     </Reference>
     <Reference Include="HIS.UC.ExamFinish">
-      <HintPath>..\..\..\..\..\HISNGUONMO\lib_backup\lib\HIS\HIS.UC.ExamFinish\HIS.UC.ExamFinish.dll</HintPath>
+      <HintPath>..\..\..\..\lib\HIS\HIS.UC.ExamFinish\HIS.UC.ExamFinish.dll</HintPath>
     </Reference>
     <Reference Include="HIS.UC.ExamTreatmentFinish">
-      <HintPath>..\..\..\..\lib\HIS\HIS.UC.ExamTreatmentFinish\HIS.UC.ExamTreatmentFinish.dll</HintPath>
-      <HintPath>..\..\..\..\..\HISTEST\histest\x64\ReferencedAssemblies\HIS.UC.ExamTreatmentFinish.dll</HintPath>
+      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\HIS.UC.ExamTreatmentFinish.dll</HintPath>
     </Reference>
     <Reference Include="HIS.UC.HisExamServiceAdd">
       <HintPath>..\..\..\..\LIB\HIS\HIS.UC.ExamServiceAdd\HIS.UC.HisExamServiceAdd.dll</HintPath>
     </Reference>
     <Reference Include="HIS.UC.Hospitalize">
-      <HintPath>..\..\..\..\..\HISTEST\histest\x64\ReferencedAssemblies\HIS.UC.Hospitalize.dll</HintPath>
+      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\HIS.UC.Hospitalize.dll</HintPath>
     </Reference>
     <Reference Include="HIS.UC.Icd, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -186,7 +185,7 @@
     </Reference>
     <Reference Include="HIS.UC.TreatmentFinish">
       <HintPath>..\..\..\..\lib\HIS\HIS.UC.TreatmentFinish\HIS.UC.TreatmentFinish.dll</HintPath>
-      <HintPath>..\..\..\..\..\HISTEST\histest\x64\ReferencedAssemblies\HIS.UC.TreatmentFinish.dll</HintPath>
+      <HintPath>..\..\..\..\lib\HIS\HIS.UC.TreatmentFinish\HIS.UC.TreatmentFinish.dll</HintPath>
     </Reference>
     <Reference Include="HIS.UC.TreeSereServ7">
       <HintPath>..\..\..\..\LIB\HIS\HIS.UC.TreeSereServ7\HIS.UC.TreeSereServ7.dll</HintPath>
@@ -201,7 +200,7 @@
       <HintPath>..\..\..\..\LIB\Inventec.Common\Inventec.Common.Adapter\Inventec.Common.Adapter.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Common.Calculate">
-      <HintPath>..\..\..\..\..\HISNGUONMO\lib_backup\lib\Inventec.Common\Inventec.Common.Calculate\Inventec.Common.Calculate.dll</HintPath>
+      <HintPath>..\..\..\..\lib\Inventec.Common\Inventec.Common.Calculate\Inventec.Common.Calculate.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Common.CardReader">
       <HintPath>..\..\..\..\LIB\Inventec.Common\Inventec.Common.CardReader\Inventec.Common.CardReader.dll</HintPath>
@@ -317,10 +316,10 @@
       <HintPath>..\..\..\..\lib\Library packages\log4net.1.2.10\log4net.dll</HintPath>
     </Reference>
     <Reference Include="MOS.EFMODEL">
-      <HintPath>..\..\..\..\..\HISNGUONMO\lib_backup\lib\MOS\MOS.EFMODEL.dll</HintPath>
+      <HintPath>..\..\..\..\lib\MOS\MOS.EFMODEL.dll</HintPath>
     </Reference>
     <Reference Include="MOS.Filter">
-      <HintPath>..\..\..\..\..\HISTEST\histest\x64\ReferencedAssemblies\MOS.Filter.dll</HintPath>
+      <HintPath>..\..\..\..\lib\MOS\MOS.Filter.dll</HintPath>
     </Reference>
     <Reference Include="MOS.KskSignData">
       <HintPath>..\..\..\..\LIB\MOS\MOS.KskSignData.dll</HintPath>
@@ -346,7 +345,7 @@
       <HintPath>..\..\..\..\LIB\MOS\MOS.LibraryHein.Ksk.dll</HintPath>
     </Reference>
     <Reference Include="MOS.SDO">
-      <HintPath>..\..\..\..\..\HISTEST\histest\x64\ReferencedAssemblies\MOS.SDO.dll</HintPath>
+      <HintPath>..\..\..\..\lib\MOS\MOS.SDO.dll</HintPath>
     </Reference>
     <Reference Include="MOS.ServicePaty, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
