@@ -428,6 +428,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
                 this.VisibleButton(this.actionBosung);
                 LogSystem.Debug("frmAssignPrescription_Load. 6");
                 this.LoadPrescriptionForEdit();
+                this.LoadTutListByMedicine();
                 this.SetEnableButtonControl(this.actionType);
                 this.isNotLoadMediMatyByMediStockInitForm = false;
                 this.IsHandlerWhileOpionGroupSelectedIndexChanged = false;
@@ -893,7 +894,11 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
                 valid = valid && CheckMaMePackage(currentMedicineTypeADOForEdit);
                 valid = valid && CheckOddConvertUnit(currentMedicineTypeADOForEdit, spinAmount.Value);
                 if (!valid) return;
-
+                if (string.IsNullOrEmpty(cboHtuText.Text)) 
+                {
+                    MessageBox.Show("Bắt buộc phải nhập cách dùng thuốc", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
                 if (this.mediMatyTypeADOs == null)
                     this.mediMatyTypeADOs = new List<MediMatyTypeADO>();
                 switch (this.actionBosung)
@@ -2049,7 +2054,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
             {
                 if (e.KeyCode == Keys.Enter || e.KeyCode == Keys.Tab)
                 {
-                    btnAdd.Focus();
+                    cboHtuText.Focus();
                     if (e.KeyCode == Keys.Enter)
                         e.Handled = true;
                 }
@@ -2280,6 +2285,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
                     //Ngược lại nếu là số nguyên thì hiển thị giữ nguyên giá trị                    
                     this.spinAmount.EditValue = amountValue;
                     this.txtTutorial.Text = this.currentMedicineTypeADOForEdit.TUTORIAL;
+                    //this.cboHtuText.EditValue = this.currentMedicineTypeADOForEdit.HTU_TEXT;
                     this.btnAdd.Enabled = true;
                     Inventec.Desktop.Controls.ControlWorker.ValidationProviderRemoveControlError(this.dxValidProviderBoXung, this.dxErrorProvider1);
                     Inventec.Desktop.Controls.ControlWorker.ValidationProviderRemoveControlError(this.dxValidProviderBoXung__DuongDung, this.dxErrorProvider1);
@@ -3195,8 +3201,16 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
                     popupControlContainerMediMaty.HidePopup();
                     isShowContainerMediMaty = false;
                     isShowContainerMediMatyForChoose = true;
+                    if (!string.IsNullOrEmpty(currentMedicineTypeADOForEdit.MEDICINE_USE_FORM_NAME))
+                    {
+                        cboHtuText.Text = currentMedicineTypeADOForEdit.MEDICINE_USE_FORM_NAME;
+                    }
+                    else
+                    {
+                        cboHtuText.EditValue = null;
+                    }
                     MetyMatyTypeInStock_RowClick(medicineTypeADOForEdit);
-                }
+                }              
             }
             catch (Exception ex)
             {
@@ -4493,8 +4507,22 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
                 cboPhieuDieuTri.Properties.Buttons[2].Visible = false;
         }
 
-   
-
+        private void cboHtuText_KeyDown(object sender, KeyEventArgs e)
+        {
+            try
+            {
+                if (e.KeyCode == Keys.Enter || e.KeyCode == Keys.Tab)
+                {
+                    btnAdd.Focus();
+                    if (e.KeyCode == Keys.Enter)
+                        e.Handled = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
         private void cboExpMestReason_KeyUp(object sender, KeyEventArgs e)
         {
             try
@@ -4510,5 +4538,21 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
             }
         }
 
+        private void LoadTutListByMedicine()
+        {
+            try
+            {
+                List<HIS_MEDICINE_TYPE_TUT> medicineTypeTut = new List<HIS_MEDICINE_TYPE_TUT>();
+                cboHtuText.Properties.DataSource = medicineTypeTut;
+                cboHtuText.Properties.ValueMember = "ID";
+                cboHtuText.Properties.DisplayMember = "HTU_TEXT";
+                cboHtuText.Properties.View.Columns["HTU_TEXT"].Width = 200;
+                cboHtuText.Properties.PopupFormSize = new Size(400, 200);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
     }
 }
