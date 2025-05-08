@@ -1311,12 +1311,34 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                     dteCommonParam = dteCommonParam.AddSeconds(1);
                 if (this.intructionTimeSelecteds != null && this.intructionTimeSelecteds.Count > 0)
                     dteTreatmentFinishIntructionTime = Int64.Parse(Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(this.intructionTimeSelecteds.OrderBy(o => o).First()).Value.AddSeconds(1).ToString("yyyyMMddHHmmss"));
+
+                UpdateMemHtu();
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
 
+        }
+
+        private void UpdateMemHtu()
+        {
+            StringBuilder CachDung = new StringBuilder();
+
+            if (!string.IsNullOrWhiteSpace(cboMedicineUseForm.Text))
+            {
+                CachDung.Append(cboMedicineUseForm.Text);
+            }
+
+            if (!string.IsNullOrWhiteSpace(cboHtu.Text))
+            {
+                if (CachDung.Length > 0)
+                    CachDung.Append(" "); // thêm khoảng trắng nếu cả hai đều có dữ liệu
+
+                CachDung.Append(cboHtu.Text);
+            }
+
+            memHtu.Text = CachDung.ToString();
         }
 
         private void LoadAncillaryServpaty()
@@ -7882,7 +7904,7 @@ o.SERVICE_ID == medi.SERVICE_ID && o.TDL_INTRUCTION_TIME.ToString().Substring(0,
         }
 
         private void tooltipService_GetActiveObjectInfo(object sender, ToolTipControllerGetActiveObjectInfoEventArgs e)
-        {
+        {    
             try
             {
                 if (e.Info == null && e.SelectedControl == this.gridControlServiceProcess)
@@ -7890,7 +7912,7 @@ o.SERVICE_ID == medi.SERVICE_ID && o.TDL_INTRUCTION_TIME.ToString().Substring(0,
                     string text = "";
                     DevExpress.XtraGrid.Views.Grid.GridView view = this.gridControlServiceProcess.FocusedView as DevExpress.XtraGrid.Views.Grid.GridView;
                     GridHitInfo info = view.CalcHitInfo(e.ControlMousePosition);
-                    if (info.InRowCell)
+                    if (info.InRowCell)      
                     {
                         if (this.lastRowHandle != info.RowHandle || this.lastColumn != info.Column)
                         {

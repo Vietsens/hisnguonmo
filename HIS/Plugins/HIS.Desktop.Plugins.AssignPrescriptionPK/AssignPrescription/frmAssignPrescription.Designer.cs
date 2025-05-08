@@ -1207,10 +1207,6 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
             // 
             this.barManager1.Bars.AddRange(new DevExpress.XtraBars.Bar[] {
             this.bar1});
-            this.barManager1.DockControls.Add(this.barDockControlTop);
-            this.barManager1.DockControls.Add(this.barDockControlBottom);
-            this.barManager1.DockControls.Add(this.barDockControlLeft);
-            this.barManager1.DockControls.Add(this.barDockControlRight);
             this.barManager1.DockManager = this.dockManager1;
             this.barManager1.Form = this;
             this.barManager1.Images = this.imageCollection1;
@@ -1384,8 +1380,8 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
             // 
             this.barDockControlTop.CausesValidation = false;
             this.barDockControlTop.Dock = System.Windows.Forms.DockStyle.Top;
-            this.barDockControlTop.Location = new System.Drawing.Point(0, 0);
-            this.barDockControlTop.Size = new System.Drawing.Size(1314, 29);
+            this.barDockControlTop.Location = new System.Drawing.Point(0, 29);
+            this.barDockControlTop.Size = new System.Drawing.Size(1314, 0);
             // 
             // barDockControlBottom
             // 
@@ -4973,7 +4969,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
             // txtThoiGianTho
             // 
             this.txtThoiGianTho.EditValue = "";
-            this.txtThoiGianTho.Location = new System.Drawing.Point(190, 17);
+            this.txtThoiGianTho.Location = new System.Drawing.Point(190, 26);
             this.txtThoiGianTho.MenuManager = this.barManager1;
             this.txtThoiGianTho.Name = "txtThoiGianTho";
             this.txtThoiGianTho.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
@@ -4992,7 +4988,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
             // txtTocDoTho
             // 
             this.txtTocDoTho.EditValue = "";
-            this.txtTocDoTho.Location = new System.Drawing.Point(67, 17);
+            this.txtTocDoTho.Location = new System.Drawing.Point(67, 26);
             this.txtTocDoTho.MenuManager = this.barManager1;
             this.txtTocDoTho.Name = "txtTocDoTho";
             this.txtTocDoTho.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
@@ -5011,7 +5007,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
             // spinSang
             // 
             this.spinSang.EditValue = "";
-            this.spinSang.Location = new System.Drawing.Point(57, -7);
+            this.spinSang.Location = new System.Drawing.Point(57, 2);
             this.spinSang.MenuManager = this.barManager1;
             this.spinSang.Name = "spinSang";
             this.spinSang.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
@@ -5030,7 +5026,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
             // spinTrua
             // 
             this.spinTrua.EditValue = "";
-            this.spinTrua.Location = new System.Drawing.Point(190, -7);
+            this.spinTrua.Location = new System.Drawing.Point(190, 2);
             this.spinTrua.MenuManager = this.barManager1;
             this.spinTrua.Name = "spinTrua";
             this.spinTrua.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
@@ -5049,7 +5045,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
             // spinChieu
             // 
             this.spinChieu.EditValue = "";
-            this.spinChieu.Location = new System.Drawing.Point(302, -7);
+            this.spinChieu.Location = new System.Drawing.Point(302, 2);
             this.spinChieu.MenuManager = this.barManager1;
             this.spinChieu.Name = "spinChieu";
             this.spinChieu.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
@@ -5068,7 +5064,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
             // spinToi
             // 
             this.spinToi.EditValue = "";
-            this.spinToi.Location = new System.Drawing.Point(413, -7);
+            this.spinToi.Location = new System.Drawing.Point(413, 2);
             this.spinToi.MenuManager = this.barManager1;
             this.spinToi.Name = "spinToi";
             this.spinToi.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
@@ -5096,7 +5092,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
             this.lciFortxtThoiGianTho,
             this.emptySpaceItem6,
             this.lciFortxtTocDoTho});
-            this.layoutControlGroup4.Location = new System.Drawing.Point(0, -9);
+            this.layoutControlGroup4.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup4.Name = "layoutControlGroup4";
             this.layoutControlGroup4.OptionsItemText.TextToControlDistance = 4;
             this.layoutControlGroup4.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
