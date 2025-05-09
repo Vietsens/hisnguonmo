@@ -177,7 +177,8 @@ namespace HIS.Desktop.Plugins.ServiceReqList
                     }
                 }
                 ValidationMaxlength(txtLieuDung, 1000);
-                ValidateMaxLength2(txtCachDung, 1024);
+                ValidationMaxlength(txtCachDung, 1024);
+               // ValidateMaxLength2(txtCachDung, 1024);
                 ValidationBiggerThan0(spinDayNumber);
             }
             catch (Exception ex)

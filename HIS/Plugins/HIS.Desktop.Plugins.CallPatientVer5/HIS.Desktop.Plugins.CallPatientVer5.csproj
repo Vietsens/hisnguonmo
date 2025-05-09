@@ -161,17 +161,6 @@
     <Compile Include="CallPatient\CallPatienFactory.cs" />
     <Compile Include="CallPatient\ICallPatien.cs" />
     <Compile Include="ChooseRoomForWaitingScreenProcess.cs" />
-<<<<<<< HEAD
-    <Compile Include="frmChooseRoomForWaitingScreen.cs" />
-    <Compile Include="frmChooseRoomForWaitingScreen.Designer.cs">
-      <DependentUpon>frmChooseRoomForWaitingScreen.cs</DependentUpon>
-    </Compile>
-    <Compile Include="frmWaitingScreen.cs" />
-    <Compile Include="frmWaitingScreen.Designer.cs">
-      <DependentUpon>frmWaitingScreen.cs</DependentUpon>
-    </Compile>
-    <Compile Include="frmWaitingScreen_QY.cs" />
-=======
     <Compile Include="Class\DisplayOptionADO.cs" />
     <Compile Include="Class\ServiceReq1ADOWorker.cs" />
     <Compile Include="frmChooseRoomForWaitingScreen.cs">
@@ -201,7 +190,6 @@
     <Compile Include="frmWaitingScreen_QY.cs">
       <SubType>Form</SubType>
     </Compile>
->>>>>>> remotes/origin/Develop
     <Compile Include="frmWaitingScreen_QY.Designer.cs">
       <DependentUpon>frmWaitingScreen_QY.cs</DependentUpon>
     </Compile>
@@ -312,29 +300,8 @@
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>echo PREBUILDSTEP for $(ProjectName)
-
-echo Copying files from $(ProjectDir)bin\$(Configuration) to $(SolutionDir)\$(SolutionName)\bin\$(Configuration)\ReferencedAssemblies
-
-if not exist "$(SolutionDir)\$(SolutionName)\bin\$(Configuration)\ReferencedAssemblies" mkdir "$(SolutionDir)\$(SolutionName)\bin\$(Configuration)\ReferencedAssemblies"
-
-xcopy "$(ProjectDir)bin\$(Configuration)\*.dll" "$(SolutionDir)\$(SolutionName)\bin\$(Configuration)\ReferencedAssemblies" /i /d /y
-xcopy "$(TargetDir)$(TargetName).dll" "$(SolutionDir)$(SolutionName)\bin\Debug\Plugins\Module" /Y /I
-xcopy "$(ProjectDir)bin\$(Configuration)\vi\*.dll" "$(SolutionDir)\$(SolutionName)\bin\$(Configuration)\vi" /Y /I
-
-if errorlevel 1 goto BuildEventFailed
-
-if errorlevel 1 goto BuildEventFailed
-
-REM Exit properly because the build will not fail
-REM unless the final step exits with an error code
-
-goto BuildEventOK
-:BuildEventFailed
-echo PREBUILDSTEP for $(ProjectName) FAILED
-exit 1
-:BuildEventOK
-echo PREBUILDSTEP for $(ProjectName) COMPLETED OK</PostBuildEvent>
+    <PostBuildEvent>
+    </PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

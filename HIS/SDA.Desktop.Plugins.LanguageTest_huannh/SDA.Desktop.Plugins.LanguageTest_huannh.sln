@@ -1,0 +1,20 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SDA.Desktop.Plugins.LanguageTest_huannh", "SDA.Desktop.Plugins.LanguageTest_huannh\SDA.Desktop.Plugins.LanguageTest_huannh.csproj", "{8315CC70-99FD-4033-98E1-E316D10B98F9}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{8315CC70-99FD-4033-98E1-E316D10B98F9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8315CC70-99FD-4033-98E1-E316D10B98F9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8315CC70-99FD-4033-98E1-E316D10B98F9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8315CC70-99FD-4033-98E1-E316D10B98F9}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

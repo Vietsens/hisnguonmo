@@ -943,13 +943,13 @@ namespace HIS.Desktop.Plugins.CallPatientVer5
                     {
                         serviceReqStatics.Remove(rowCall);
                         SetDataToCurrentPatientCall(serviceReq1ADO);
-                        if(!lstPatientCalled.Exists(o => o.ID == rowCall.ID))
+                        if (!lstPatientCalled.Exists(o => o.ID == rowCall.ID))
                             lstPatientCalled.Add(rowCall);
                         if (serviceReqStatics.Count > 0)
                         {
                             if ((ServiceReqNext != null && lstPatientCalled.Exists(o => o.ID == ServiceReqNext.ID)) || (ServiceReqNext == null && !lstPatientCalled.Exists(o => o.ID == serviceReqStatics.FirstOrDefault().ID)))
                             {
-                                ServiceReqNext = serviceReqStatics.FirstOrDefault();
+                                ServiceReqNext = serviceReqStatics.FirstOrDefault(o => this.serviceReqStts.Select(s => s.ID).Contains(o.SERVICE_REQ_STT_ID));
                                 SetDataToCurrentPatientNextCall(ServiceReqNext);
                             }
                         }

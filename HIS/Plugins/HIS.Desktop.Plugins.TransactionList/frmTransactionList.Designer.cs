@@ -47,10 +47,6 @@ namespace HIS.Desktop.Plugins.TransactionList
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmTransactionList));
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject81 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject82 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject83 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject84 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject1 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject2 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject3 = new DevExpress.Utils.SerializableAppearanceObject();
@@ -131,6 +127,10 @@ namespace HIS.Desktop.Plugins.TransactionList
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject78 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject79 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject80 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject81 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject82 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject83 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject84 = new DevExpress.Utils.SerializableAppearanceObject();
             this.layoutControl1 = new DevExpress.XtraLayout.LayoutControl();
             this.txtTransactionCode = new DevExpress.XtraEditors.TextEdit();
             this.barManager1 = new DevExpress.XtraBars.BarManager(this.components);
@@ -232,7 +232,6 @@ namespace HIS.Desktop.Plugins.TransactionList
             this.gridColumn_Transaction_CancelTransaction = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn_UnrejectCancellation = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn18 = new DevExpress.XtraGrid.Columns.GridColumn();
-            this.repositoryItemBtnChangePay = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
             this.gridColumn_Restore = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumnHDDT = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn_Transaction_ChangeLock = new DevExpress.XtraGrid.Columns.GridColumn();
@@ -300,6 +299,7 @@ namespace HIS.Desktop.Plugins.TransactionList
             this.repositoryItemUnrejectCancellation = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
             this.repositoryItemUnrejectCancellationDis = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
             this.repQr = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
+            this.repositoryItemBtnChangePay = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
             this.layoutControlGroup1 = new DevExpress.XtraLayout.LayoutControlGroup();
             this.layoutControlItem1 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem2 = new DevExpress.XtraLayout.LayoutControlItem();
@@ -394,7 +394,6 @@ namespace HIS.Desktop.Plugins.TransactionList
             ((System.ComponentModel.ISupportInitialize)(this.txtKeyword.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridControlTransaction)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridViewTransaction)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.repositoryItemBtnChangePay)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemBtnCancelTran)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemBtnCancelTranDisable)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemBtnLock)).BeginInit();
@@ -417,6 +416,7 @@ namespace HIS.Desktop.Plugins.TransactionList
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemUnrejectCancellation)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemUnrejectCancellationDis)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.repQr)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repositoryItemBtnChangePay)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem2)).BeginInit();
@@ -1686,15 +1686,6 @@ namespace HIS.Desktop.Plugins.TransactionList
             this.gridColumn18.VisibleIndex = 7;
             this.gridColumn18.Width = 23;
             // 
-            // repositoryItemBtnChangePay
-            // 
-            this.repositoryItemBtnChangePay.AutoHeight = false;
-            this.repositoryItemBtnChangePay.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("repositoryItemBtnChangePay.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject81, serializableAppearanceObject82, serializableAppearanceObject83, serializableAppearanceObject84, "Đổi hình thức thanh toán", null, null, true)});
-            this.repositoryItemBtnChangePay.Name = "repositoryItemBtnChangePay";
-            this.repositoryItemBtnChangePay.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
-            this.repositoryItemBtnChangePay.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.repositoryItemBtnChangePay_ButtonClick);
-            // 
             // gridColumn_Restore
             // 
             this.gridColumn_Restore.Caption = "Khôi phục";
@@ -2418,6 +2409,15 @@ namespace HIS.Desktop.Plugins.TransactionList
             this.repQr.Name = "repQr";
             this.repQr.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.repQr_ButtonClick);
             // 
+            // repositoryItemBtnChangePay
+            // 
+            this.repositoryItemBtnChangePay.AutoHeight = false;
+            this.repositoryItemBtnChangePay.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("repositoryItemBtnChangePay.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject81, serializableAppearanceObject82, serializableAppearanceObject83, serializableAppearanceObject84, "Đổi hình thức thanh toán", null, null, true)});
+            this.repositoryItemBtnChangePay.Name = "repositoryItemBtnChangePay";
+            this.repositoryItemBtnChangePay.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
+            this.repositoryItemBtnChangePay.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.repositoryItemBtnChangePay_ButtonClick);
+            // 
             // layoutControlGroup1
             // 
             this.layoutControlGroup1.EnableIndentsWithoutBorders = DevExpress.Utils.DefaultBoolean.True;
@@ -2658,7 +2658,6 @@ namespace HIS.Desktop.Plugins.TransactionList
             ((System.ComponentModel.ISupportInitialize)(this.txtKeyword.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridControlTransaction)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridViewTransaction)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.repositoryItemBtnChangePay)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemBtnCancelTran)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemBtnCancelTranDisable)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemBtnLock)).EndInit();
@@ -2681,6 +2680,7 @@ namespace HIS.Desktop.Plugins.TransactionList
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemUnrejectCancellation)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemUnrejectCancellationDis)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.repQr)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repositoryItemBtnChangePay)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem2)).EndInit();
