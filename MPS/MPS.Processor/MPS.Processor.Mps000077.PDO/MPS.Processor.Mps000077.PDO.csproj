@@ -4,7 +4,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{7921D8A7-74F3-4E1A-A0A3-E19CD76D4B13}</ProjectGuid>
+    <ProjectGuid>{BC0040FC-2DFA-44C2-8A84-AB80658A87BC}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>MPS.Processor.Mps000077.PDO</RootNamespace>

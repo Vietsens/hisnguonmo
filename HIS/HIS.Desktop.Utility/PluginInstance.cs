@@ -162,6 +162,11 @@ namespace HIS.Desktop.Utility
                             //LogSystem.Debug("GetPluginInstance.9");
                             arrParams = arrParams ?? new List<object>();
                             arrParams.Add(moduleData);
+                            LogSystem.Info($"extenceInstance {extenceInstance}");
+                            LogSystem.Info($"arrParams {arrParams}");
+                            LogSystem.Info($"moduleData {moduleData}");
+                            Inventec.Common.Logging.LogSystem.Debug("-----------------------------" + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => moduleData), moduleData));
+                            Inventec.Common.Logging.LogSystem.Debug("-----------------------------arrParams" + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => arrParams), arrParams));
                             extenceInstance = obj.Run(arrParams != null ? arrParams.ToArray() : null);
                             if (extenceInstance == null)
                             {

@@ -133,10 +133,10 @@
     <value>gridColumn1</value>
   </data>
   <data name="frmChooseRoomForWaitingScreen.gridColumn2.Caption" xml:space="preserve">
-    <value>Mã trạng thái</value>
+    <value>gridColumn2</value>
   </data>
   <data name="frmChooseRoomForWaitingScreen.gridColumn3.Caption" xml:space="preserve">
-    <value>Tên trạng thái</value>
+    <value>Mã trạng thái</value>
   </data>
   <data name="frmChooseRoomForWaitingScreen.lblRoom.Text" xml:space="preserve">
     <value>labelControl1</value>
@@ -191,5 +191,62 @@
   </data>
   <data name="frmWaitingScreen_QY9.gridColumnUTExam.Caption" xml:space="preserve">
     <value>UT</value>
+  </data>
+  <data name="frmChooseRoomForWaitingScreen.gridColumn4.Caption" xml:space="preserve">
+    <value>Tên trạng thái</value>
+  </data>
+  <data name="frmDisplayOption.gridColumn3.Caption" xml:space="preserve">
+    <value>Mã trạng thái</value>
+  </data>
+  <data name="frmDisplayOption.gridColumn4.Caption" xml:space="preserve">
+    <value>Tên trạng thái</value>
+  </data>
+  <data name="frmDisplayOption.cboBackground.Text" xml:space="preserve">
+    <value>Màu nền:</value>
+  </data>
+  <data name="frmDisplayOption.chkIsNotInDebt.Text" xml:space="preserve">
+    <value>Chỉ hiển thị bệnh nhân đã đóng tiền</value>
+  </data>
+  <data name="frmDisplayOption.chkTitleSTTNext.Text" xml:space="preserve">
+    <value>Tiêu đề STT tiếp theo:</value>
+  </data>
+  <data name="frmDisplayOption.layoutControlItem10.Text" xml:space="preserve">
+    <value>Tiêu đề STT:</value>
+  </data>
+  <data name="frmDisplayOption.layoutControlItem11.Text" xml:space="preserve">
+    <value>Cỡ chữ tiêu đề STT:</value>
+  </data>
+  <data name="frmDisplayOption.layoutControlItem12.Text" xml:space="preserve">
+    <value>Cỡ chữ STT:</value>
+  </data>
+  <data name="frmDisplayOption.layoutControlItem13.Text" xml:space="preserve">
+    <value>Màu chữ STT:</value>
+  </data>
+  <data name="frmDisplayOption.layoutControlItem14.Text" xml:space="preserve">
+    <value>Cỡ chữ nội dung STT:</value>
+  </data>
+  <data name="frmDisplayOption.layoutControlItem19.Text" xml:space="preserve">
+    <value>Nội dung:</value>
+  </data>
+  <data name="frmDisplayOption.layoutControlItem20.Text" xml:space="preserve">
+    <value>Cỡ chữ danh sách: </value>
+  </data>
+  <data name="frmDisplayOption.layoutControlItem21.Text" xml:space="preserve">
+    <value>Màu chữ danh sách:</value>
+  </data>
+  <data name="frmDisplayOption.layoutControlItem7.Text" xml:space="preserve">
+    <value>Cỡ chữ tiêu đề:</value>
+  </data>
+  <data name="frmDisplayOption.layoutControlItem8.Text" xml:space="preserve">
+    <value>Màu chữ tiêu đề: </value>
+  </data>
+  <data name="frmDisplayOption.LayoutFont.Text" xml:space="preserve">
+    <value>Màu chữ ưu tiền: </value>
+  </data>
+  <data name="frmDisplayOption.txtColorSTTNext.Text" xml:space="preserve">
+    <value>Màu chữ STT tiếp theo:</value>
+  </data>
+  <data name="frmDisplayOption.chkIsShowCol.Text" xml:space="preserve">
+    <value>Hiển thị tên cột trong danh sách</value>
   </data>
 </root>

@@ -37,7 +37,7 @@ using System.Configuration;
 
 namespace HIS.Desktop.Plugins.CallPatientVer5
 {
-    public class ChooseRoomForWaitingScreenProcess
+    public class ChooseRoomForWaitingScreenProcess 
     {
         const string frmWaitingScreen9 = "frmWaitingScreen9";
         const string frmWaitingScreenQy = "frmWaitingScreen_QY9";
@@ -236,29 +236,12 @@ namespace HIS.Desktop.Plugins.CallPatientVer5
             }
         }
 
+    
         internal static void LoadDataToExamServiceReqSttGridControl(frmDisplayOption control)
         {
             try
             {
-                HIS.Desktop.Library.CacheClient.ControlStateWorker controlStateWorker;
-                List<HIS.Desktop.Library.CacheClient.ControlStateRDO> currentControlStateRDO;
-                string ModuleLinkName = "HIS.Desktop.Plugins.CallPatientVer5";
-
-                CommonParam param = new CommonParam();
-                MOS.Filter.HisServiceReqSttFilter filter = new MOS.Filter.HisServiceReqSttFilter();
-                List<ServiceReqSttSDO> serviceReqSttSdos = new List<ServiceReqSttSDO>();
-                controlStateWorker = new HIS.Desktop.Library.CacheClient.ControlStateWorker();
-                currentControlStateRDO = controlStateWorker.GetData(ModuleLinkName);
-            }
-            catch (Exception ex)
-            {
-                LogSystem.Error(ex);
-            }
-        }
-        internal static void LoadDataToExamServiceReqSttGridControl(frmChooseRoomForWaitingScreen control)
-        {
-            try
-            {
+               
                 HIS.Desktop.Library.CacheClient.ControlStateWorker controlStateWorker;
                 List<HIS.Desktop.Library.CacheClient.ControlStateRDO> currentControlStateRDO;
                 string ModuleLinkName = "HIS.Desktop.Plugins.CallPatientVer5";
@@ -272,56 +255,38 @@ namespace HIS.Desktop.Plugins.CallPatientVer5
                 currentControlStateRDO = controlStateWorker.GetData(ModuleLinkName);
 
 
+
                 foreach (var item in HisServiceReqStts)
                 {
                     ServiceReqSttSDO serviceReqSttSdo = new ServiceReqSttSDO();
                     AutoMapper.Mapper.CreateMap<MOS.EFMODEL.DataModels.HIS_SERVICE_REQ_STT, ServiceReqSttSDO>();
                     serviceReqSttSdo = AutoMapper.Mapper.Map<MOS.EFMODEL.DataModels.HIS_SERVICE_REQ_STT, ServiceReqSttSDO>(item);
 
+                    bool isChecked = item.ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_STT.ID__CXL;
+
                     if (currentControlStateRDO != null && currentControlStateRDO.Count > 0)
                     {
+                        Inventec.Common.Logging.LogSystem.Warn($"[CheckSTT] Đang xử lý item: {item.SERVICE_REQ_STT_CODE}");
+                        foreach (var i in currentControlStateRDO)
+                        {
+                            Inventec.Common.Logging.LogSystem.Warn($"[ControlStateRDO] KEY: {i.KEY}, VALUE: {i.VALUE}");
+                        }
                         foreach (var i in currentControlStateRDO)
                         {
                             if (i.KEY == item.SERVICE_REQ_STT_CODE)
                             {
-
-
-                                serviceReqSttSdo.checkStt = i.VALUE == "1";
+                                isChecked = i.VALUE == "1";
+                                
                             }
                         }
                     }
+
+                    serviceReqSttSdo.checkStt = isChecked;
                     serviceReqSttSdos.Add(serviceReqSttSdo);
                 }
 
+
                 control.gridControlExecuteStatus.DataSource = serviceReqSttSdos;
-
-                List<MOS.EFMODEL.DataModels.HIS_SERVICE_REQ_STT> serviceReqStts = new List<MOS.EFMODEL.DataModels.HIS_SERVICE_REQ_STT>();
-                foreach (var item in serviceReqSttSdos)
-                {
-                    if (item.checkStt)
-                    {
-                        MOS.EFMODEL.DataModels.HIS_SERVICE_REQ_STT serviceReqStt = new MOS.EFMODEL.DataModels.HIS_SERVICE_REQ_STT();
-                        AutoMapper.Mapper.CreateMap<ServiceReqSttSDO, MOS.EFMODEL.DataModels.HIS_SERVICE_REQ_STT>();
-                        serviceReqStt = AutoMapper.Mapper.Map<ServiceReqSttSDO, MOS.EFMODEL.DataModels.HIS_SERVICE_REQ_STT>(item);
-                        serviceReqStts.Add(serviceReqStt);
-                    }
-                }
-                if (serviceReqStts.Count() > 0)
-                {
-                    if (control.checkStt == true)
-                    {
-                        control.tgExtendMonitor.IsOn = false;
-                    }
-                    else
-                    {
-                        control.tgExtendMonitor.IsOn = true;
-                    }
-                }
-                else
-                {
-                    control.tgExtendMonitor.IsOn = false;
-                }
-
 
             }
             catch (Exception ex)

@@ -4,7 +4,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{E497CE25-0674-4E6C-9E0D-88C541F4580F}</ProjectGuid>
+    <ProjectGuid>{DA80ABC9-AED5-49D3-8D75-C9BD354CFD2F}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>MPS.Processor.Mps000338</RootNamespace>
