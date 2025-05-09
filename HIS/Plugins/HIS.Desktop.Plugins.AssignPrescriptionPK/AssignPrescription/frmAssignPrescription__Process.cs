@@ -4407,9 +4407,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                     int numberDisplaySeperateFormatAmountTemp = GetNumberDisplaySeperateFormat();
 
                     StringBuilder huongDan = new StringBuilder();
-                    StringBuilder CachDung = new StringBuilder();
-                    string CD = cboMedicineUseForm.Text + " " + cboHtu.Text;
-                    this.memHtu.Text = CD;
+                    
                     string format__ThoVoiTocDoXTrongYGio = ResourceMessage.ThoVoiTocDoXTrongYGio;
                     string format__NgayUong = ResourceMessage.NgayUong;
                     string format__NgayUongTemp2 = ResourceMessage.NgayUongTemp2;
