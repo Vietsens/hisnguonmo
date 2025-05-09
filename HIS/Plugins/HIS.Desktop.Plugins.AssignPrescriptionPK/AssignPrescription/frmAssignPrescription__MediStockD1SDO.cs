@@ -32,6 +32,8 @@ using MOS.Filter;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
+using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -703,7 +705,6 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                     this.txtMediMatyForPrescription.Text = this.currentMedicineTypeADOForEdit.MEDICINE_TYPE_NAME;
                     if (this.currentMedicineTypeADOForEdit.SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__THUOC)
                     {
-                        
                         var metyAlls = BackendDataWorker.Get<V_HIS_MEDICINE_TYPE>();
                         var metys = (metyAlls != null && metyAlls.Count > 0) ? metyAlls.Where(o => o.SERVICE_ID == this.currentMedicineTypeADOForEdit.SERVICE_ID).ToList() : null;
                         var mety = (metys != null && metys.Count > 0) ? metys.FirstOrDefault() : null;
@@ -762,6 +763,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                                 //this.btnAdd.Focus();
                                 this.txtTutorial.Focus();
                                 this.txtTutorial.SelectionStart = txtTutorial.Text.Length + 1;
+                                this.memHtu.SelectionStart = memHtu.Text.Length + 1;
                             }
                         }
                         //Ngược lại kiểm tra có cấu hình PM cho phép sau khi chọn thuốc thì nhảy vào ô số lượng hay ô ngày
@@ -809,6 +811,13 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
+        }
+
+        private string convertToUnSign3(string s)
+        {
+            Regex regex = new Regex("\\p{IsCombiningDiacriticalMarks}+");
+            string temp = s.Normalize(NormalizationForm.FormD);
+            return regex.Replace(temp, String.Empty).Replace('\u0111', 'd').Replace('\u0110', 'D');
         }
 
         private void SetPatientType()
@@ -987,6 +996,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                     List<HIS_MEDICINE_TYPE_TUT> medicineTypeTutFilters = medicineTypeTuts.OrderByDescending(o => o.MODIFY_TIME).Where(o => o.MEDICINE_TYPE_ID == medicineTypeId && o.LOGINNAME == loginName).ToList();
 
                     this.RebuildTutorialWithInControlContainer(medicineTypeTutFilters);
+                    this.RebuildHtuWithInControlContainer(medicineTypeTutFilters);
                     this.medicineTypeTutSelected = medicineTypeTutFilters.FirstOrDefault();
                     if (this.medicineTypeTutSelected != null)
                     {
@@ -1041,6 +1051,15 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                                 this.CalculateAmount();
                                 this.SetHuongDanFromSoLuongNgay();
                             }
+                        }
+
+                        if (String.IsNullOrEmpty(this.memHtu.Text))
+                        {
+                            if (this.medicineTypeTutSelected.HTU_TEXT != null)
+                                this.memHtu.Text = this.medicineTypeTutSelected.HTU_TEXT;
+                            //else
+                            //    this.memHtu.Text = ;
+
                         }
                     }
                 }

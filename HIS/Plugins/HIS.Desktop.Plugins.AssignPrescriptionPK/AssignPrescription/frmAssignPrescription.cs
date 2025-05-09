@@ -200,6 +200,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
         int theRequiredWidth = 900, theRequiredHeight = 130;
         bool isShowContainerMediMaty = false;
         bool isShowContainerTutorial = false;
+        bool isShowContainerHTU = false;
         bool isShowContainerMediMatyForChoose = false;
         bool isShow = true;
 
@@ -337,6 +338,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
         internal UserControl ucSecondaryIcdYhct;
         internal List<AlertLogADO> AlertLogsSdo = new List<AlertLogADO>();
         decimal? chiSoMLCT;
+        HIS_MEDICINE_TYPE_TUT medicineTypehtu { get; set; }
         System.Windows.Forms.Timer timerInitFormAssignPrescription { get; set; }
         #endregion
 
@@ -1311,34 +1313,18 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                     dteCommonParam = dteCommonParam.AddSeconds(1);
                 if (this.intructionTimeSelecteds != null && this.intructionTimeSelecteds.Count > 0)
                     dteTreatmentFinishIntructionTime = Int64.Parse(Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(this.intructionTimeSelecteds.OrderBy(o => o).First()).Value.AddSeconds(1).ToString("yyyyMMddHHmmss"));
-
-                UpdateMemHtu();
+                if (memHtu.Text == "")
+                {
+                    StringBuilder CachDung = new StringBuilder();
+                    string CD = cboMedicineUseForm.Text + " " + cboHtu.Text;
+                    this.memHtu.Text = CD;
+                }
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
 
-        }
-
-        private void UpdateMemHtu()
-        {
-            StringBuilder CachDung = new StringBuilder();
-
-            if (!string.IsNullOrWhiteSpace(cboMedicineUseForm.Text))
-            {
-                CachDung.Append(cboMedicineUseForm.Text);
-            }
-
-            if (!string.IsNullOrWhiteSpace(cboHtu.Text))
-            {
-                if (CachDung.Length > 0)
-                    CachDung.Append(" "); // thêm khoảng trắng nếu cả hai đều có dữ liệu
-
-                CachDung.Append(cboHtu.Text);
-            }
-
-            memHtu.Text = CachDung.ToString();
         }
 
         private void LoadAncillaryServpaty()
@@ -1929,7 +1915,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
 
         private void ProcessSaveMedicineTypeTut()
         {
-
+                  
             WaitingManager.Show();
             if (memHtu.Text != null)
                 this.medicineTypeTutSelected.HTU_TEXT = memHtu.Text;
@@ -1973,6 +1959,8 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                 this.medicineTypeTutSelected.EVENING = null;
 
             this.medicineTypeTutSelected.TUTORIAL = txtTutorial.Text;
+            this.medicineTypeTutSelected.HTU_TEXT = memHtu.Text;
+
             this.medicineTypeTutSelected.LOGINNAME = Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName();
 
             CommonParam param = new CommonParam();
@@ -1989,6 +1977,9 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
             string loginName = Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName();
             List<HIS_MEDICINE_TYPE_TUT> medicineTypeTutFilters = medicineTypeTuts.OrderByDescending(o => o.MODIFY_TIME).Where(o => o.MEDICINE_TYPE_ID == this.currentMedicineTypeADOForEdit.ID && o.LOGINNAME == loginName).ToList();
             this.RebuildTutorialWithInControlContainer(medicineTypeTutFilters);
+            this.RebuildHtuWithInControlContainer(medicineTypeTutFilters);
+
+
 
             WaitingManager.Hide();
         }
@@ -2726,7 +2717,7 @@ o.SERVICE_ID == medi.SERVICE_ID && o.TDL_INTRUCTION_TIME.ToString().Substring(0,
                                     medi.dicTreatmentOverKidneyReason = new Dictionary<long, List<TreatmentOverReason>>();
                                 decimal AmountInDay = 0;
                                 var mediSer = mediKidney.Where(o => o.MEDICINE_TYPE_ID == medi.ID).ToList();
-                                foreach (var treatId in treatmentIds)
+                                foreach (var treatId in treatmentIds)      
                                 {
                                     AmountInDay = GetAmountInDaySave(medi, treatId, itime, IsShowPopup);
                                     var ssTeinList = sereServTeinKidney.Where(o => !string.IsNullOrEmpty(o.VALUE)).Where(o => o.TDL_TREATMENT_ID == treatId && mediSer.Exists(p => p.TEST_INDEX_ID == o.TEST_INDEX_ID)).ToList();
@@ -2837,7 +2828,7 @@ o.SERVICE_ID == medi.SERVICE_ID && o.TDL_INTRUCTION_TIME.ToString().Substring(0,
                                             {
                                                 medi.IsEditOverKidneyReason = true;
                                             }
-                                        }
+                                        }    
                                         else
                                         {
                                             medi.OVER_KIDNEY_REASON = null;
@@ -5804,6 +5795,7 @@ o.SERVICE_ID == medi.SERVICE_ID && o.TDL_INTRUCTION_TIME.ToString().Substring(0,
                     //Ngược lại nếu là số nguyên thì hiển thị giữ nguyên giá trị     
                     this.spinAmount.EditValue = ConvertNumber.ConvertDecToFracByConfig((double)(this.currentMedicineTypeADOForEdit.AMOUNT ?? 0));
                     this.txtTutorial.Text = this.currentMedicineTypeADOForEdit.TUTORIAL;
+                    this.memHtu.Text = this.currentMedicineTypeADOForEdit.HTU_TEXT;
                     this.spinTocDoTruyen.EditValue = this.currentMedicineTypeADOForEdit.Speed;
                     this.btnAdd.Enabled = true;
                     Inventec.Desktop.Controls.ControlWorker.ValidationProviderRemoveControlError(this.dxValidProviderBoXung, this.dxErrorProvider1);
@@ -5816,6 +5808,7 @@ o.SERVICE_ID == medi.SERVICE_ID && o.TDL_INTRUCTION_TIME.ToString().Substring(0,
                     var medicineTypeTuts = BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_MEDICINE_TYPE_TUT>();
                     List<HIS_MEDICINE_TYPE_TUT> medicineTypeTutFilters = medicineTypeTuts.OrderByDescending(o => o.MODIFY_TIME).Where(o => o.MEDICINE_TYPE_ID == currentMedicineTypeADOForEdit.ID && o.LOGINNAME == loginName).ToList();
                     this.RebuildTutorialWithInControlContainer(medicineTypeTutFilters);
+                    this.RebuildHtuWithInControlContainer(medicineTypeTutFilters);
 
                     if (HisConfigCFG.ManyDayPrescriptionOption == 2
                         //&& this.ucDateForMediProcessor != null
@@ -12690,6 +12683,90 @@ o.SERVICE_ID == medi.SERVICE_ID && o.TDL_INTRUCTION_TIME.ToString().Substring(0,
             this.CalculateAmount();
             if (!IsSetByMedicineTut)
                 this.SetHuongDanFromSoLuongNgay();
+        }
+
+        private void gridControlMediMaty_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void gridViewHtuText_RowClick(object sender, RowClickEventArgs e)
+        {
+            try
+            {
+                medicineTypehtu = gridViewHtuText.GetFocusedRow() as HIS_MEDICINE_TYPE_TUT;
+                if (medicineTypehtu != null)
+                {
+                    popupControlContainerHtuText.HidePopup();
+                    isShowContainerHTU = false;
+                    HtuText_RowClick(medicineTypehtu);
+                }
+                
+
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void gridViewHtuText_KeyDown(object sender, KeyEventArgs e)
+        {
+            try
+            {
+                if (e.KeyCode == Keys.Enter)
+                {
+                    var medicineTypeADOForEdit = this.gridViewMediMaty.GetFocusedRow();
+                    if (medicineTypeADOForEdit != null)
+                    {
+                        isShowContainerMediMaty = false;
+                        isShowContainerMediMatyForChoose = true;
+                        popupControlContainerMediMaty.HidePopup();
+                        var selectedOpionGroup = GetSelectedOpionGroup();
+                        if (selectedOpionGroup == 1)
+                        {
+                            MetyMatyTypeInStock_RowClick(medicineTypeADOForEdit);
+                        }
+                        else if (selectedOpionGroup == 2)
+                        {
+                            MedicineType_RowClick(medicineTypeADOForEdit);
+                        }
+                        else
+                        {
+                            MaterialTypeTSD_RowClick(medicineTypeADOForEdit);
+                        }
+                    }
+                }
+                else if (e.KeyCode == Keys.Down)
+                {
+                    this.gridViewMediMaty.Focus();
+                    this.gridViewMediMaty.FocusedRowHandle = this.gridViewMediMaty.FocusedRowHandle;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void memHtu_ButtonClick(object sender, ButtonPressedEventArgs e)
+        {
+            try
+            {
+                if (e.Button.Kind == ButtonPredefines.DropDown)
+                {
+                    isShowContainerHTU = !isShowContainerHTU;
+                    if (isShowContainerHTU)
+                    {
+                        Rectangle buttonBounds = new Rectangle(memHtu.Bounds.X, memHtu.Bounds.Y, memHtu.Bounds.Width, memHtu.Bounds.Height);
+                        popupControlContainerHtuText.ShowPopup(new Point(buttonBounds.X, buttonBounds.Bottom + 25));
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
         }
 
         internal bool CheckValidMaterial(bool IsCheckList = false)
