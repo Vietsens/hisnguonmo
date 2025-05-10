@@ -73,12 +73,9 @@ namespace HIS.Desktop.Plugins.EmrDocument
 {
     public partial class EmrDocumentForm : FormBase
     {
-
         #region Declare
-
         public HIS.Desktop.Library.CacheClient.ControlStateWorker controlStateWorker;
         public List<HIS.Desktop.Library.CacheClient.ControlStateRDO> currentControlStateRDO;
-
         int rowCount = 0;
         int dataTotal = 0;
         int startPage = 0;
@@ -108,7 +105,6 @@ namespace HIS.Desktop.Plugins.EmrDocument
         string loginName = null;
         List<ACS.EFMODEL.DataModels.ACS_CONTROL> controlAcs;
 
-
         bool isStore = false;
         bool isInit = true;
         bool IsSigning = false;
@@ -120,14 +116,14 @@ namespace HIS.Desktop.Plugins.EmrDocument
         Dictionary<long, string> DicoutPdfFile;
         string emrTreatmentStoreCode;
         RefeshReference refreshData = null;
-
-
+        List<EMR_DOCUMENT_TYPE> lstEmrType { get; set; }
+        List<PatientSignType> lstPatientSignType = new List<PatientSignType>();
+        bool isFirstLoad = false;
         #endregion
 
         public EmrDocumentForm(Inventec.Desktop.Common.Modules.Module module, DelegateSelectData delegateData, RefeshReference fr)
             : base(module)
         {
-
             InitializeComponent();
             currentModule = module;
             this.refreshData = fr;
@@ -146,7 +142,6 @@ namespace HIS.Desktop.Plugins.EmrDocument
         public EmrDocumentForm(Inventec.Desktop.Common.Modules.Module module, long _treatmentId, RefeshReference fr)
             : base(module)
         {
-
             InitializeComponent();
             this.refreshData = fr;
             currentModule = module;
@@ -165,7 +160,6 @@ namespace HIS.Desktop.Plugins.EmrDocument
         public EmrDocumentForm(Inventec.Desktop.Common.Modules.Module module, string _treatmentCode, bool isSigning, RefeshReference fr)
             : base(module)
         {
-
             InitializeComponent();
             currentModule = module;
             this.refreshData = fr;
@@ -185,7 +179,6 @@ namespace HIS.Desktop.Plugins.EmrDocument
         public EmrDocumentForm(Inventec.Desktop.Common.Modules.Module module, List<string> _treatmentCodes, bool _isStore, RefeshReference fr)
             : base(module)
         {
-
             InitializeComponent();
             currentModule = module;
             this.refreshData = fr;
@@ -205,11 +198,9 @@ namespace HIS.Desktop.Plugins.EmrDocument
         public EmrDocumentForm(Inventec.Desktop.Common.Modules.Module module, RefeshReference fr)
             : base(module)
         {
-
             try
             {
                 InitializeComponent();
-                //pagingGrid = new PagingGrid();
                 this.refreshData = fr;
                 currentModule = module;
                 try
@@ -221,7 +212,6 @@ namespace HIS.Desktop.Plugins.EmrDocument
                 {
                     LogSystem.Warn(ex);
                 }
-
             }
             catch (Exception ex)
             {
@@ -230,7 +220,6 @@ namespace HIS.Desktop.Plugins.EmrDocument
         }
 
         #region Loadform
-
         private void EmrDocumentForm_Load(object sender, EventArgs e)
         {
             try
@@ -252,13 +241,11 @@ namespace HIS.Desktop.Plugins.EmrDocument
                 }
                 if (Config.ConfigKey.deleteFileOption == "1")
                 {
-                    //checkIncludeDelete.Visible = false;
                     lciIncludeDelete.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
                 }
                 else
                 {
                     lciIncludeDelete.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
-                    //checkIncludeDelete.Visible = true;
                 }
                 this.InitControlState();
                 this.ProcessGroupRow();
@@ -295,7 +282,6 @@ namespace HIS.Desktop.Plugins.EmrDocument
 
         private void EmrDocumentForm_Leave(object sender, EventArgs e)
         {
-
             try
             {
                 this.refreshData();
@@ -304,8 +290,8 @@ namespace HIS.Desktop.Plugins.EmrDocument
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
-
         }
+
         private async Task InitEmployee()
         {
             try
@@ -324,7 +310,6 @@ namespace HIS.Desktop.Plugins.EmrDocument
                 {
                     checkIncludeDelete.Enabled = false;
                 }
-
             }
             catch (Exception ex) { Inventec.Common.Logging.LogSystem.Warn(ex); }
         }
@@ -409,24 +394,23 @@ namespace HIS.Desktop.Plugins.EmrDocument
                         {
                             checkGroupType.Checked = item.VALUE == "1";
                         }
-
-                        if (item.KEY == ControlStateConstant.CHECK_MERGE_DOC)
+                        else if (item.KEY == ControlStateConstant.CHECK_MERGE_DOC)
                         {
                             chkMergeDoc.Checked = item.VALUE == "1";
                         }
-                        if (item.KEY == ControlStateConstant.CHECK_MERGE)
+                        else if (item.KEY == ControlStateConstant.CHECK_MERGE)
                         {
                             chkMerge.Checked = item.VALUE == "1";
                         }
-                        if (item.KEY == chkDowloadGroup.Name)
+                        else if (item.KEY == chkDowloadGroup.Name)
                         {
                             chkDowloadGroup.Checked = item.VALUE == "1";
                         }
-                        if (item.KEY == chkNotFillZero.Name)
+                        else if (item.KEY == chkNotFillZero.Name)
                         {
                             chkNotFillZero.Checked = item.VALUE == "1";
                         }
-                        if (item.KEY == chkAddPatientSign.Name)
+                        else if (item.KEY == chkAddPatientSign.Name)
                         {
                             chkAddPatientSign.Checked = item.VALUE == "1";
                         }
@@ -438,7 +422,7 @@ namespace HIS.Desktop.Plugins.EmrDocument
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
-        List<EMR_DOCUMENT_TYPE> lstEmrType { get; set; }
+
         private void LoadEmrDocumentType()
         {
             try
@@ -457,7 +441,7 @@ namespace HIS.Desktop.Plugins.EmrDocument
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
-        List<PatientSignType> lstPatientSignType = new List<PatientSignType>();
+
         private void LoadPatientSignType()
         {
             try
@@ -544,7 +528,6 @@ namespace HIS.Desktop.Plugins.EmrDocument
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
-
         }
 
         private void FillDatagctFormList()
@@ -610,7 +593,7 @@ namespace HIS.Desktop.Plugins.EmrDocument
                 {
                     Emrfilter.STORE_CODE__EXACT = emrTreatmentStoreCode;
                 }
-                Inventec.Common.Logging.LogSystem.Debug("__________" + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => emrTreatmentStoreCode), emrTreatmentStoreCode));
+
                 if (!string.IsNullOrEmpty(txtTreatmentCode.Text))
                 {
                     string code = txtTreatmentCode.Text.Trim();
@@ -628,22 +611,21 @@ namespace HIS.Desktop.Plugins.EmrDocument
                     {
                         Emrfilter.TREATMENT_CODE__EXACT = code;
                     }
-
                 }
+
                 if (this.treatmentCodes != null && this.treatmentCodes.Count > 0)
                 {
                     Emrfilter.TREATMENT_CODEs = this.treatmentCodes;
                 }
+
                 Inventec.Common.Logging.LogSystem.Debug("LoadPaging.1.1");
 
                 var treatments = new BackendAdapter(new CommonParam()).Get<List<EMR_TREATMENT>>("api/EmrTreatment/Get", ApiConsumer.ApiConsumers.EmrConsumer, Emrfilter, null);
-                Inventec.Common.Logging.LogSystem.Debug("__________" + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => treatments), treatments));
 
                 Inventec.Common.Logging.LogSystem.Debug("LoadPaging.1.2");
 
                 if (treatments != null && treatments.Count > 0)
                 {
-
                     Inventec.Common.Logging.LogSystem.Debug("LoadPaging.1.3");
                     if (!chkSTORE_CODE.Checked)
                     {
@@ -652,9 +634,9 @@ namespace HIS.Desktop.Plugins.EmrDocument
                     else
                     {
                         lstTreatmentID_Treatment = treatments.Select(o => o.ID).ToList();
-                        Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => lstTreatmentID_Treatment), lstTreatmentID_Treatment));
                     }
                 }
+
                 Inventec.Common.Logging.LogSystem.Debug("LoadPaging.1.4");
                 Inventec.Common.Logging.LogSystem.Debug("LoadPaging.2");
                 if (Config.ConfigKey.IsStoredMustReqToView && treatments != null && treatments.Count == 1 && treatments[0].STORE_TIME != null)
@@ -698,7 +680,6 @@ namespace HIS.Desktop.Plugins.EmrDocument
                     filter.ORDER_DIRECTION4 = "ASC";
                     filter.ORDER_FIELD4 = "CREATE_TIME";
 
-                    Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => filter.TREATMENT_IDs), filter.TREATMENT_IDs));
                     Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => filter), filter));
 
                     apiResult = new ApiResultObject<List<EmrDocumentADO>>();
@@ -707,8 +688,6 @@ namespace HIS.Desktop.Plugins.EmrDocument
                     Inventec.Common.Logging.LogSystem.Debug("LoadPaging.4.1");
 
                     Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => apiResult), apiResult));
-
-                    Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => apiResult.Data), apiResult.Data));
                     IsMergeDocument = true;
                 }
                 else
@@ -737,8 +716,6 @@ namespace HIS.Desktop.Plugins.EmrDocument
                     apiResult = new BackendAdapter(paramCommon).GetRO<List<EmrDocumentADO>>(HIS.Desktop.Plugins.EmrDocument.EmrRequestUriStore.EMR_DOCUMENT_GET_VIEW, ApiConsumers.EmrConsumer, filter, paramCommon);
                     Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => apiResult), apiResult));
 
-                    Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => apiResult.Data), apiResult.Data));
-
                     Inventec.Common.Logging.LogSystem.Debug("LoadPaging.4.2");
                 }
                 Inventec.Common.Logging.LogSystem.Debug("LoadPaging.5");
@@ -764,8 +741,6 @@ namespace HIS.Desktop.Plugins.EmrDocument
                         {
                             List<EmrDocumentADO> listTypes = new List<EmrDocumentADO>();
                             List<EmrDocumentADO> listGroups = new List<EmrDocumentADO>();
-
-                            //var GroupByTypes = listData.GroupBy(g => g.DOCUMENT_TYPE_ID).ToList();
 
                             foreach (var item in this.lstTreatment)
                             {
@@ -845,7 +820,6 @@ namespace HIS.Desktop.Plugins.EmrDocument
                                             {
                                                 //Kiểm tra nếu có nhóm văn bản thì cần kiểm tra tiếp nhóm văn bản đó có văn bản cha nào không
                                                 //Nếu có thì cần tái hiện lại cây nhóm văn bản và gắn trong loại, văn bản sẽ được gắn vào nhóm văn bản lá
-
                                                 var groupCheckParents = this.currentDocumentGroups != null ? this.currentDocumentGroups.Where(t => t.VIR_PATH != null && ("/" + docGroup.VIR_PATH + "/").Contains("/" + t.ID + "/")).OrderBy(t => t.NUM_ORDER).ToList() : null;
                                                 if (groupCheckParents != null && groupCheckParents.Count > 0)
                                                 {
@@ -896,7 +870,6 @@ namespace HIS.Desktop.Plugins.EmrDocument
                                                     var docGroupCCs = (this.currentDocumentGroups != null && currentDocumentGroups.Count > 0) ? this.currentDocumentGroups.Where(t => (docGroup.VIR_PATH + "/").Contains("/" + t.ID + "/")).OrderBy(t => t.NUM_ORDER).ToList() : null;
                                                     cus1 += ((docGroupCCs != null && docGroupCCs.Count > 0) ? String.Join("0000000000000000", docGroupCCs.Select(t => (t.NUM_ORDER.HasValue ? (String.Format("{0:0000000000000000}", t.NUM_ORDER) + "") : ""))) : "");
 
-
                                                     listData.Add(new EmrDocumentADO()
                                                     {
                                                         DOCUMENT_DISPLAY = String.Format("{0}({1})", o.DOCUMENT_GROUP_NAME, count1),
@@ -919,25 +892,6 @@ namespace HIS.Desktop.Plugins.EmrDocument
                                     }
                                 }
                                 listData = listData.OrderByDescending(o => o.NUM_ORDER).ThenBy(o => o.CUSTOM_BY_GROUP_NUM_ORDER).ThenBy(o => o.DOCUMENT_TIME).ThenBy(o => o.CREATE_TIME).ToList();
-
-                                //long stepRowNumOder = 1;
-                                //var Group1s = listData.OrderByDescending(o => o.NUM_ORDER).GroupBy(g => g.DOCUMENT_TYPE_ID).ToList();
-                                //foreach (var item in Group1s)
-                                //{
-                                //    var Group2s = item.ToList().OrderBy(o => o.DOCUMENT_GROUP_NUM_ORDER).ThenBy(o => o.DOCUMENT_TIME).ThenBy(o => o.CREATE_TIME).GroupBy(gg => gg.DOCUMENT_GROUP_ID).ToList();
-
-                                //    foreach (var itemGroup2 in Group2s)
-                                //    {
-                                //        var listitemGroup2 = itemGroup2.ToList();
-                                //        foreach (var itemChildGroup2 in listitemGroup2)
-                                //        {
-                                //            if (itemChildGroup2.ID > 0)
-                                //            {
-                                //                itemChildGroup2.CUSTOM_NUM_ORDER = stepRowNumOder++;
-                                //            }
-                                //        }
-                                //    }
-                                //}
                             }
                         }
                         else if (listData != null && listData.Count > 0)
@@ -1027,7 +981,6 @@ namespace HIS.Desktop.Plugins.EmrDocument
                                     {
                                         //Kiểm tra nếu có nhóm văn bản thì cần kiểm tra tiếp nhóm văn bản đó có văn bản cha nào không
                                         //Nếu có thì cần tái hiện lại cây nhóm văn bản và gắn trong loại, văn bản sẽ được gắn vào nhóm văn bản lá
-
                                         var groupCheckParents = this.currentDocumentGroups != null ? this.currentDocumentGroups.Where(t => t.VIR_PATH != null && ("/" + docGroup.VIR_PATH + "/").Contains("/" + t.ID + "/")).OrderBy(t => t.NUM_ORDER).ToList() : null;
                                         if (groupCheckParents != null && groupCheckParents.Count > 0)
                                         {
@@ -1078,7 +1031,6 @@ namespace HIS.Desktop.Plugins.EmrDocument
                                             var docGroupCCs = (this.currentDocumentGroups != null && currentDocumentGroups.Count > 0) ? this.currentDocumentGroups.Where(t => (docGroup.VIR_PATH + "/").Contains("/" + t.ID + "/")).OrderBy(t => t.NUM_ORDER).ToList() : null;
                                             cus1 += ((docGroupCCs != null && docGroupCCs.Count > 0) ? String.Join("0000000000000000", docGroupCCs.Select(t => (t.NUM_ORDER.HasValue ? (String.Format("{0:0000000000000000}", t.NUM_ORDER) + "") : ""))) : "");
 
-
                                             listData.Add(new EmrDocumentADO()
                                             {
                                                 DOCUMENT_DISPLAY = String.Format("{0}({1})", o.DOCUMENT_GROUP_NAME, count1),
@@ -1100,25 +1052,6 @@ namespace HIS.Desktop.Plugins.EmrDocument
                                 });
                             }
                             listData = listData.OrderByDescending(o => o.NUM_ORDER).ThenBy(o => o.CUSTOM_BY_GROUP_NUM_ORDER).ThenBy(o => o.DOCUMENT_TIME).ThenBy(o => o.CREATE_TIME).ToList();
-
-                            //long stepRowNumOder = 1;
-                            //var Group1s = listData.OrderByDescending(o => o.NUM_ORDER).GroupBy(g => g.DOCUMENT_TYPE_ID).ToList();
-                            //foreach (var item in Group1s)
-                            //{
-                            //    var Group2s = item.ToList().OrderBy(o => o.DOCUMENT_GROUP_NUM_ORDER).ThenBy(o => o.DOCUMENT_TIME).ThenBy(o => o.CREATE_TIME).GroupBy(gg => gg.DOCUMENT_GROUP_ID).ToList();
-
-                            //    foreach (var itemGroup2 in Group2s)
-                            //    {
-                            //        var listitemGroup2 = itemGroup2.ToList();
-                            //        foreach (var itemChildGroup2 in listitemGroup2)
-                            //        {
-                            //            if (itemChildGroup2.ID > 0)
-                            //            {
-                            //                itemChildGroup2.CUSTOM_NUM_ORDER = stepRowNumOder++;
-                            //            }
-                            //        }
-                            //    }
-                            //}
                         }
                         else if (listData != null && listData.Count > 0)
                         {
@@ -1210,16 +1143,6 @@ namespace HIS.Desktop.Plugins.EmrDocument
 
                 if (!string.IsNullOrEmpty(txtTreatmentCode.Text))
                 {
-
-                    //if (this.treatmentIds != null && this.treatmentIds.Count > 0)
-                    //{
-                    //    filter.TREATMENT_IDs = this.treatmentIds;
-                    //}
-                    //else
-                    //{
-                    //    filter.TREATMENT_ID = this._TreatmentId;
-                    //}
-
                     filter.TREATMENT_ID = treatmentId;
                 }
                 else
@@ -1235,7 +1158,7 @@ namespace HIS.Desktop.Plugins.EmrDocument
                     filter.DOCUMENT_TYPE_ID = (long)cboType.EditValue;
                 }
 
-                if(cboStatusPatientSign.EditValue != null && !string.IsNullOrEmpty(PatientCode))
+                if (cboStatusPatientSign.EditValue != null && !string.IsNullOrEmpty(PatientCode))
                 {
                     var sps = (PSType)cboStatusPatientSign.EditValue;
                     switch (sps)
@@ -1249,16 +1172,15 @@ namespace HIS.Desktop.Plugins.EmrDocument
                         case PSType.PatientMustSign:
                             filter.UNSIGNED = string.Format(lstPatientSignType.First().Description, PatientCode);
                             var patientMustSignList = lstEmrType.Where(o => o.PATIENT_MUST_SIGN == 1).ToList();
-                            filter.DOCUMENT_TYPE_IDs = patientMustSignList.Count > 0 ? patientMustSignList.Select(o=>o.ID).ToList() : null;
+                            filter.DOCUMENT_TYPE_IDs = patientMustSignList.Count > 0 ? patientMustSignList.Select(o => o.ID).ToList() : null;
                             break;
                         default:
                             break;
                     }
-                }    
+                }
 
                 if (chkMergeDoc.Checked)
                 {
-                    //filter.IS_MERGE = true;//TODO
                     filter.IS_DELETE = false;
                 }
             }
@@ -1282,18 +1204,15 @@ namespace HIS.Desktop.Plugins.EmrDocument
                 {
                     filter.HAS_NEXT_SIGNER_OR_NOT_SIGNERS = false;
                     filter.HAS_REJECTER = false;
-                    //filter.IS_DELETE = false;
                 }
                 else if (cboStatus.EditValue == "Đang ký")
                 {
                     filter.HAS_NEXT_SIGNER_OR_NOT_SIGNERS = true;
                     filter.HAS_REJECTER = false;
-                    //filter.IS_DELETE = false;
                 }
                 else if (cboStatus.EditValue == "Từ chối ký")
                 {
                     filter.HAS_REJECTER = true;
-                    //filter.IS_DELETE = false;
                 }
 
                 if (!checkIncludeDelete.Checked)
@@ -1309,15 +1228,6 @@ namespace HIS.Desktop.Plugins.EmrDocument
                 {
                     if (!string.IsNullOrEmpty(txtTreatmentCode.Text))
                     {
-                        //if (this.treatmentIds != null && this.treatmentIds.Count > 0)
-                        //{
-                        //    filter.TREATMENT_IDs = this.treatmentIds;
-                        //}
-                        //else
-                        //{
-                        //    filter.TREATMENT_ID = this._TreatmentId;
-                        //}
-
                         filter.TREATMENT_ID = treatmentId;
                     }
                     else
@@ -1343,12 +1253,11 @@ namespace HIS.Desktop.Plugins.EmrDocument
                 LogSystem.Error(ex);
             }
         }
-        bool isFirstLoad = false;
+
         private void SetDefaultValue()
         {
             try
             {
-                //txtSearch.Text = "";
                 this.cboType.EditValue = null;
                 this.btnFirst.Enabled = false;
                 this.btnPrevious.Enabled = false;
@@ -1420,7 +1329,6 @@ namespace HIS.Desktop.Plugins.EmrDocument
                 var uc = documentManager.GetUcDocumentMerge(data, ref outPdfFile, chkMerge.Checked);
                 if (uc != null)
                 {
-
                     uc.Dock = DockStyle.Fill;
                     this.panel1.Controls.Clear();
                     this.panel1.Controls.Add(uc);
@@ -1429,7 +1337,6 @@ namespace HIS.Desktop.Plugins.EmrDocument
                     His.EventLog.Logger.Log(GlobalVariables.APPLICATION_CODE, Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName(), message, Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginAddress());
 
                     Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => message), message));
-
                 }
                 else
                 {
@@ -1463,13 +1370,9 @@ namespace HIS.Desktop.Plugins.EmrDocument
 
                 inputADO.IsSave = false;
                 inputADO.IsExport = false;
-
                 inputADO.IsPrint = true;
                 inputADO.IsEnableButtonPrint = controlAcs != null && controlAcs.FirstOrDefault(o => o.CONTROL_CODE == "EMR000002") != null;
                 inputADO.IsShowPatientSign = true;
-                //inputADO.RoomCode = room != null ? room.ROOM_CODE : "";
-                //inputADO.RoomTypeCode = room != null ? room.ROOM_TYPE_CODE : "";
-                //inputADO.RoomName = room != null ? room.ROOM_NAME : "";
 
                 if (data.WIDTH != null && data.HEIGHT != null && data.RAW_KIND != null)
                 {
@@ -1484,15 +1387,6 @@ namespace HIS.Desktop.Plugins.EmrDocument
                 Inventec.Common.Logging.LogSystem.Info("data.LAST_VERSION_URL: " + data.LAST_VERSION_URL);
                 if (!String.IsNullOrEmpty(data.LAST_VERSION_URL))
                 {
-                    //var stream = Inventec.Fss.Client.FileDownload.GetFile(data.LAST_VERSION_URL);
-                    //byte[] b;
-
-                    //using (BinaryReader br = new BinaryReader(stream))
-                    //{
-                    //    b = br.ReadBytes((int)stream.Length);
-                    //}
-                    //string base64FileContent = Convert.ToBase64String(b);
-
                     var documentFileSDOs = GetEmrDocumentFile(data, null, null, null, null);
                     var uc = libraryProcessor.GetUC(documentFileSDOs != null && documentFileSDOs.Count > 0 ? documentFileSDOs[0].Base64Data : null, FileType.Pdf, inputADO);
                     if (uc != null)
@@ -1513,7 +1407,6 @@ namespace HIS.Desktop.Plugins.EmrDocument
                 {
                     this.panel1.Controls.Clear();
                 }
-
             }
             catch (Exception ex)
             {
@@ -1575,15 +1468,9 @@ namespace HIS.Desktop.Plugins.EmrDocument
         {
             try
             {
-                //var rowData = (V_EMR_DOCUMENT)gridViewDocument.GetFocusedRow();
                 var rowData = treeListDocument.GetDataRecordByNode(treeListDocument.FocusedNode) as EmrDocumentADO;
                 List<object> listArgs = new List<object>();
                 listArgs.Add(rowData.ID);
-                //    listArgs.Add(PluginInstance.GetModuleWithWorkingRoom(moduleData, currentModule.RoomId, currentModule.RoomTypeId));
-                //    var extenceInstance = PluginInstance.GetPluginInstance(PluginInstance.GetModuleWithWorkingRoom(moduleData, currentModule.RoomId, currentModule.RoomTypeId), listArgs);
-                //    if (extenceInstance == null) throw new ArgumentNullException("moduleData is null");
-                //    ((Form)extenceInstance).ShowDialog();
-                //}
                 HIS.Desktop.ModuleExt.PluginInstanceBehavior.ShowModule("EMR.Desktop.Plugins.EmrSign", this.currentModule.RoomId, this.currentModule.RoomTypeId, listArgs);
             }
             catch (Exception ex)
@@ -1596,7 +1483,6 @@ namespace HIS.Desktop.Plugins.EmrDocument
         {
             try
             {
-                //var rowData = (V_EMR_DOCUMENT)gridViewDocument.GetFocusedRow();
                 var rowData = treeListDocument.GetDataRecordByNode(treeListDocument.FocusedNode) as EmrDocumentADO;
                 frmAttackFile frmAttackFile = new frmAttackFile(rowData, this._TreatmentId, this.loginName, RefeshAfterAttackFile);
                 frmAttackFile.ShowDialog();
@@ -1627,11 +1513,6 @@ namespace HIS.Desktop.Plugins.EmrDocument
             }
         }
 
-        private void pdfViewer1_Load(object sender, EventArgs e)
-        {
-
-        }
-
         private void gridViewSign_CustomUnboundColumnData(object sender, CustomColumnDataEventArgs e)
         {
             try
@@ -1641,7 +1522,7 @@ namespace HIS.Desktop.Plugins.EmrDocument
                 {
                     if (e.Column.FieldName == "STT")
                     {
-                        e.Value = e.ListSourceRowIndex + 1 + startPage; //+ ((pagingGrid.CurrentPage - 1) * pagingGrid.PageSize);
+                        e.Value = e.ListSourceRowIndex + 1 + startPage;
                     }
                     else if (e.Column.FieldName == "SIGN_TIME_str")
                     {
@@ -1705,7 +1586,6 @@ namespace HIS.Desktop.Plugins.EmrDocument
 
                     gridControlSign.RefreshDataSource();
                 }
-
             }
             catch (Exception ex)
             {
@@ -1804,7 +1684,6 @@ namespace HIS.Desktop.Plugins.EmrDocument
 
                     treeListColumnDOCUMENT_TYPE_NAME.Visible = false;
                     treeListColumnDOCUMENT_TYPE_NAME.VisibleIndex = -1;
-                    //treeListDocument.OptionsView.ShowButtons = false;
                     treeListDocument.CollapseAll();
                 }
                 else
@@ -1814,7 +1693,6 @@ namespace HIS.Desktop.Plugins.EmrDocument
                     {
                         treeListColumnDOCUMENT_TYPE_NAME.Visible = true;
                         treeListColumnDOCUMENT_TYPE_NAME.VisibleIndex = 4;
-                        //treeListDocument.OptionsView.ShowButtons = true;
                         treeListColumn1.Width = 30;
                     }
                 }
@@ -2024,19 +1902,6 @@ namespace HIS.Desktop.Plugins.EmrDocument
         {
             try
             {
-                //TreeList tree = sender as TreeList;
-                //TreeListHitInfo hi = tree.CalcHitInfo(tree.PointToClient(Control.MousePosition));
-                //if (hi.Node != null)
-                //{
-                //    EmrDocumentADO rowData = (EmrDocumentADO)tree.GetDataRecordByNode(hi.Node);
-                //    if (rowData != null && rowData.ID > 0)
-                //    {
-                //        WaitingManager.Show();
-                //        LoadPdf(rowData);
-                //        loadViewSign(rowData.ID);
-                //        WaitingManager.Hide();
-                //    }
-                //}
             }
             catch (Exception ex)
             {
@@ -2095,34 +1960,27 @@ namespace HIS.Desktop.Plugins.EmrDocument
                     this.btnFirst.Enabled = true;
                     this.btnPrevious.Enabled = true;
                 }
-                if (currentPage < lstDataPage.Count - 1)
+                else if (currentPage < lstDataPage.Count - 1)
                 {
                     this.btnNext.Enabled = true;
                     this.btnLast.Enabled = true;
                 }
-                if (currentPage == 0)
+                else if (currentPage == 0)
                 {
                     this.btnFirst.Enabled = false;
                     this.btnPrevious.Enabled = false;
                 }
-                if (currentPage == lstDataPage.Count - 1)
+                else if (currentPage == lstDataPage.Count - 1)
                 {
                     this.btnNext.Enabled = false;
                     this.btnLast.Enabled = false;
                 }
-
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
-
-        //private void treeListDocument_AfterCheckNode(object sender, NodeEventArgs e)
-        //{
-        //    foreach (DevExpress.XtraTreeList.Nodes.TreeListNode node in treeListDocument.Selection)
-        //        node.CheckState = e.Node.CheckState;
-        //}
 
         private void treeListDocument_MouseDown(object sender, MouseEventArgs e)
         {
@@ -2284,152 +2142,6 @@ namespace HIS.Desktop.Plugins.EmrDocument
 
         }
 
-
-        private void GridCheckChange(bool checkedAll)
-        {
-            try
-            {
-                foreach (var item in this.listData)
-                {
-                    item.IsChecked = checkedAll;
-                }
-                BindingList<EmrDocumentADO> records = new BindingList<EmrDocumentADO>();
-                treeListDocument.ParentFieldName = "PARENT_KEY";
-                treeListDocument.KeyFieldName = "CHILD_KEY";
-                records = new BindingList<EmrDocumentADO>(this.listData);
-                treeListDocument.DataSource = records;
-                treeListDocument.Focus();
-                treeListDocument.CollapseAll();
-            }
-            catch (Exception ex)
-            {
-                Inventec.Common.Logging.LogSystem.Warn(ex);
-            }
-        }
-
-        /// <summary>
-        /// nối nhiếu file ảnh thành 1 file pdf
-        /// </summary>
-        /// <returns></returns>
-
-        #region
-        //internal static void InsertPage(Stream sourceFile, string sourceFileStr, Dictionary<long, string> fileListJoin, string desFileJoined, Dictionary<long, string> DicoutPdfFiles)
-        //{
-        //    Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => DicoutPdfFiles), DicoutPdfFiles));
-        //    Inventec.Common.Logging.LogSystem.Debug("InsertPage.1");
-        //    List<string> joinStreams = new List<string>();
-        //    if (fileListJoin != null && fileListJoin.Count > 0)
-        //    {
-        //        iTextSharp.text.pdf.PdfReader reader1 = null;
-        //        if (sourceFile != null)
-        //        {
-        //            Inventec.Common.Logging.LogSystem.Debug("InsertPage.1.1");
-        //            reader1 = new PdfReader(sourceFile);
-        //            Inventec.Common.Logging.LogSystem.Debug("InsertPage.1.2");
-        //        }
-        //        else
-        //        {
-        //            Inventec.Common.Logging.LogSystem.Debug("InsertPage.1.3");
-        //            reader1 = new PdfReader(sourceFileStr);
-        //            Inventec.Common.Logging.LogSystem.Debug("InsertPage.1.4");
-        //        }
-        //        int pageCount = reader1.NumberOfPages;
-        //        iTextSharp.text.Rectangle pageSize = reader1.GetPageSizeWithRotation(reader1.NumberOfPages);
-        //        iTextSharp.text.Rectangle pageSize1 = new iTextSharp.text.Rectangle(pageSize.Left, pageSize.Bottom, pageSize.Right, (pageSize.Bottom + pageSize.Height), pageSize.Rotation);
-        //        Inventec.Common.Logging.LogSystem.Debug("InsertPage.1.5");
-        //        foreach (var item in fileListJoin)
-        //        {
-        //            if (string.IsNullOrEmpty(DicoutPdfFiles[item.Key]))
-        //            {
-        //                Inventec.Common.Logging.LogSystem.Debug("InsertPage.1.6");
-        //                var stream = Inventec.Fss.Client.FileDownload.GetFile(item.Value);
-
-        //                if (stream != null && stream.Length > 0)
-        //                {
-        //                    stream.Position = 0;
-
-        //                    //Kiểm tra nếu là file đuôi ảnh: thì cần tạo file pdf sau đó chèn ảnh vào file
-
-
-        //                    string pdfAddFile = Utils.GenerateTempFileWithin();
-        //                    Utils.ByteToFile(Utils.StreamToByte(stream), pdfAddFile);
-        //                    Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => item.Value), item.Value)
-        //                    + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => pdfAddFile), pdfAddFile));
-        //                    joinStreams.Add(pdfAddFile);
-        //                }
-        //                else
-        //                {
-        //                    Inventec.Common.Logging.LogSystem.Error("Loi convert va luu tam file pdf tu server fss ve may tram____item=" + item);
-        //                }
-        //                Inventec.Common.Logging.LogSystem.Debug("InsertPage.1.7");
-        //            }
-        //            else
-        //            {
-        //                Inventec.Common.Logging.LogSystem.Debug("InsertPage.1.8");
-        //                if (!string.IsNullOrEmpty(DicoutPdfFiles[item.Key]))
-        //                {
-        //                    Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => item.Value), item.Value)
-        //                    + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => item.Key), item.Key));
-
-        //                    joinStreams.Add(DicoutPdfFiles[item.Key]);
-        //                }
-        //                Inventec.Common.Logging.LogSystem.Debug("InsertPage.1.9");
-        //            }
-        //        }
-
-        //        Stream currentStream = File.Open(desFileJoined, FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.ReadWrite);
-        //        Inventec.Common.Logging.LogSystem.Debug("InsertPage.2.0");
-        //        currentStream.Position = 0;
-        //        var pdfConcat = new iTextSharp.text.pdf.PdfConcatenate(currentStream);
-        //        Inventec.Common.Logging.LogSystem.Debug("InsertPage.2.1");
-        //        var pages = new List<int>();
-        //        for (int i = 0; i <= reader1.NumberOfPages; i++)
-        //        {
-        //            pages.Add(i);
-        //        }
-        //        reader1.SelectPages(pages);
-        //        pdfConcat.AddPages(reader1);
-
-        //        Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData("Đây là dữ liệu joinStreams: " + Inventec.Common.Logging.LogUtil.GetMemberName(() => joinStreams), joinStreams));
-
-        //        foreach (var file in joinStreams)
-        //        {
-        //            iTextSharp.text.pdf.PdfReader pdfReader = null;
-        //            pdfReader = new iTextSharp.text.pdf.PdfReader(file);
-        //            pages = new List<int>();
-        //            for (int i = 0; i <= pdfReader.NumberOfPages; i++)
-        //            {
-        //                pages.Add(i);
-        //            }
-        //            pdfReader.SelectPages(pages);
-        //            pdfConcat.AddPages(pdfReader);
-        //            pdfReader.Close();
-        //        }
-
-        //        try
-        //        {
-        //            reader1.Close();
-        //        }
-        //        catch { }
-
-        //        try
-        //        {
-        //            pdfConcat.Close();
-        //        }
-        //        catch { }
-
-        //        foreach (var file in joinStreams)
-        //        {
-        //            try
-        //            {
-        //                File.Delete(file);
-        //            }
-        //            catch { }
-        //        }
-        //    }
-        //}
-        #endregion
-
         internal static void InsertPage1(Stream sourceStream, string sourceFile, Dictionary<long, string> fileListJoin, string desFileJoined, List<EMR_SIGN> signAlls, long documentId, bool IsGroup = false)
         {
             List<string> joinStreams = new List<string>();
@@ -2512,14 +2224,6 @@ namespace HIS.Desktop.Plugins.EmrDocument
                     }
                     else
                     {
-
-                        //string joinFileResult = Utils.GenerateTempFileWithin();
-                        //var streamSource = FssFileDownload.GetFile(item);
-                        //streamSource.Position = 0;
-                        //Stream streamConvert = new FileStream(joinFileResult, FileMode.Create, FileAccess.Write);
-                        //iTextSharp.text.Document iTextdocument = new iTextSharp.text.Document(pageSize1, 0, 0, 0, 0);
-                        //iTextSharp.text.pdf.PdfWriter writer = iTextSharp.text.pdf.PdfWriter.GetInstance(iTextdocument, streamConvert);
-
                         MemoryStream stream = null;
                         if (File.Exists(item.Value))
                         {
@@ -2557,14 +2261,6 @@ namespace HIS.Desktop.Plugins.EmrDocument
                 var pdfConcat = new iTextSharp.text.pdf.PdfConcatenate(currentStream);
 
                 var pages = new List<int>();
-
-                //for (int i = 0; i <= reader1.NumberOfPages; i++)
-                //{
-                //    pages.Add(i);
-                //}
-                //reader1.SelectPages(pages);
-
-                //pdfConcat.AddPages(reader1);
 
                 Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData("Đây là dữ liệu joinStreams: " + Inventec.Common.Logging.LogUtil.GetMemberName(() => joinStreams), joinStreams));
 
@@ -2763,13 +2459,12 @@ namespace HIS.Desktop.Plugins.EmrDocument
                 }
                 else
                 {
-
                     var documents = GetEmrDocumentFile(null, listDataTrue.Select(o => o.ID).ToList(), chkDowloadGroup.Checked, chkAddPatientSign.Checked, false);
 
                     string output = Utils.GenerateTempFileWithin();
                     if (documents != null && documents.Count > 0)
                     {
-                        documents = documents.OrderBy(a => listDataTrue.OrderByDescending(o=>o.NUM_ORDER).OrderBy(o=>o.CUSTOM_NUM_ORDER).ToList().FindIndex(o => o.ID == a.DocumentId)).ToList();
+                        documents = documents.OrderBy(a => listDataTrue.OrderByDescending(o => o.NUM_ORDER).OrderBy(o => o.CUSTOM_NUM_ORDER).ToList().FindIndex(o => o.ID == a.DocumentId)).ToList();
                         List<string> joinStreams = new List<string>();
 
                         List<MemoryStream> documentData = new List<MemoryStream>();
@@ -2848,10 +2543,7 @@ namespace HIS.Desktop.Plugins.EmrDocument
                 this.panel1 = new Panel();
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
-
         }
-
-
 
         private void btnFirst_Click(object sender, EventArgs e)
         {
@@ -2869,7 +2561,6 @@ namespace HIS.Desktop.Plugins.EmrDocument
                     this.btnLast.Enabled = true;
                     this.btnFirst.Enabled = false;
                     this.btnPrevious.Enabled = false;
-
                 }
             }
             catch (Exception ex)
@@ -2891,7 +2582,6 @@ namespace HIS.Desktop.Plugins.EmrDocument
                     currentPage = this.lstDataPage.IndexOf(rowEmrDocumentData);
                     this.btnFirst.Enabled = true;
                     this.btnPrevious.Enabled = true;
-
                     this.btnNext.Enabled = false;
                     this.btnLast.Enabled = false;
                 }
@@ -2921,17 +2611,17 @@ namespace HIS.Desktop.Plugins.EmrDocument
                             this.btnFirst.Enabled = true;
                             this.btnPrevious.Enabled = true;
                         }
-                        if (currentPage < lstDataPage.Count - 1)
+                        else if (currentPage < lstDataPage.Count - 1)
                         {
                             this.btnNext.Enabled = true;
                             this.btnLast.Enabled = true;
                         }
-                        if (currentPage == 0)
+                        else if (currentPage == 0)
                         {
                             this.btnFirst.Enabled = false;
                             this.btnPrevious.Enabled = false;
                         }
-                        if (currentPage == lstDataPage.Count - 1)
+                        else if (currentPage == lstDataPage.Count - 1)
                         {
                             this.btnNext.Enabled = false;
                             this.btnLast.Enabled = false;
@@ -2964,17 +2654,17 @@ namespace HIS.Desktop.Plugins.EmrDocument
                             this.btnFirst.Enabled = true;
                             this.btnPrevious.Enabled = true;
                         }
-                        if (currentPage < lstDataPage.Count - 1)
+                        else if (currentPage < lstDataPage.Count - 1)
                         {
                             this.btnNext.Enabled = true;
                             this.btnLast.Enabled = true;
                         }
-                        if (currentPage == 0)
+                        else if (currentPage == 0)
                         {
                             this.btnFirst.Enabled = false;
                             this.btnPrevious.Enabled = false;
                         }
-                        if (currentPage == lstDataPage.Count - 1)
+                        else if (currentPage == lstDataPage.Count - 1)
                         {
                             this.btnNext.Enabled = false;
                             this.btnLast.Enabled = false;
@@ -3020,7 +2710,7 @@ namespace HIS.Desktop.Plugins.EmrDocument
                         treeListDocument.UncheckAll();
                     }
                 }
-                if (pictureEdit1.Image == imageCheck.Images[2])
+                else if (pictureEdit1.Image == imageCheck.Images[2])
                 {
                     checkColumn = true;
                     if (this.listData != null && this.listData.Where(o => o.IsChecked == true && o.ID > 0).Count() != this.listData.Where(o => o.ID > 0).Count())
@@ -3043,7 +2733,6 @@ namespace HIS.Desktop.Plugins.EmrDocument
                 if (listDataTrue != null && listDataTrue.Count > 0)
                 {
                     this.btnPrint.Enabled = controlAcs != null && controlAcs.FirstOrDefault(o => o.CONTROL_CODE == "EMR000002") != null;
-
                     this.btnDownload.Enabled = controlAcs != null && controlAcs.FirstOrDefault(o => o.CONTROL_CODE == "EMR000003") != null;
                     this.btnHomeRelativeSign.Enabled = true;
                     this.btnPatientSign.Enabled = true;
@@ -3118,9 +2807,6 @@ namespace HIS.Desktop.Plugins.EmrDocument
                 {
                     return;
                 }
-                //checkreason = true;
-                //savetest();
-                //FolderBrowserDialog openFolder = new FolderBrowserDialog();
 
                 OpenFileDialog openFolder = new OpenFileDialog();
                 openFolder.ValidateNames = false;
@@ -3138,8 +2824,7 @@ namespace HIS.Desktop.Plugins.EmrDocument
                         {
                             System.IO.Directory.CreateDirectory(directoryPath);
                         }
-                        //else
-                        //    MessageBox.Show(String.Format(ResourceMessage.ThuMucDaTonTai, (listDataTrue.FirstOrDefault().TREATMENT_CODE + "_" + listDataTrue.FirstOrDefault().VIR_PATIENT_NAME)));
+                        
                         int count = 0;
                         int totalList = listDataTrue.Count;
                         string filePath = "";
@@ -3150,7 +2835,6 @@ namespace HIS.Desktop.Plugins.EmrDocument
                         long key = 0;
                         foreach (var item in this.listDataTrue)
                         {
-
                             if (!string.IsNullOrEmpty(DicoutPdfFile[item.ID])) lstURL.Add(item.ID, DicoutPdfFile[item.ID]);
 
                             if (!lstURL.ContainsKey(item.ID)) lstURL.Add(item.ID, item.LAST_VERSION_URL);
@@ -3158,8 +2842,8 @@ namespace HIS.Desktop.Plugins.EmrDocument
                             if (!lstURLJSON.ContainsKey(item.ID)) lstURLJSON.Add(item.ID, item.LAST_XML_VERSION_URL);
 
                             if (!lstURLXML.ContainsKey(item.ID)) lstURLXML.Add(item.ID, item.LAST_JSON_VERSION_URL);
-
                         }
+
                         CommonParam param1 = new CommonParam();
                         List<EMR_SIGN> apiResultEmrSign = null;
                         List<EMR_ATTACHMENT> apiResultAttachment = null;
@@ -3217,7 +2901,7 @@ namespace HIS.Desktop.Plugins.EmrDocument
                                 key = lstURL.Keys.FirstOrDefault();
                                 MemoryStream streamSource = null;
                                 string streamSourceStr = null;
- 
+
                                 if (!string.IsNullOrEmpty(DicoutPdfFile[key]))
                                 {
                                     Inventec.Common.Logging.LogSystem.Info("nhận string");
@@ -3260,7 +2944,6 @@ namespace HIS.Desktop.Plugins.EmrDocument
                                 if (lst != null && lst.Count > 0)
                                 {
                                     InsertPage1(streamSource, streamSourceStr, lst, filePath, apiResultEmrSign, lstURL.Keys.FirstOrDefault());
-                                    //InsertPage(streamSource, streamSourceStr, lst, output, DicoutPdfFile);
                                 }
                                 else
                                 {
@@ -3311,7 +2994,7 @@ namespace HIS.Desktop.Plugins.EmrDocument
 
 
                         }
-                        else //if (!chkDowloadGroup.Checked)
+                        else
                         {
                             listDataTrueStatic = listDataTrue;
                             foreach (var item in listDataTrue)
@@ -3433,6 +3116,7 @@ namespace HIS.Desktop.Plugins.EmrDocument
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
+
         internal static BaseFont GetBaseFont()
         {
             string TAHOMA_TFF = System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Fonts), "tahoma.ttf");
@@ -3441,6 +3125,7 @@ namespace HIS.Desktop.Plugins.EmrDocument
             return BaseFont.CreateFont(TAHOMA_TFF, BaseFont.IDENTITY_H, BaseFont.NOT_EMBEDDED);
 
         }
+
         private static List<int> GetConfigImage()
         {
             List<int> rs = new List<int>();
@@ -3499,14 +3184,13 @@ namespace HIS.Desktop.Plugins.EmrDocument
             }
             return rs;
         }
+
         private static void ProcessInsertPatientSign(PdfReader readerWorking, string outPathFile, long documentId, List<EMR_SIGN> signAlls)
         {
             try
             {
-
                 using (FileStream fs_ = File.Open(outPathFile, FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.ReadWrite))
                 {
-
                     using (PdfStamper stam = new PdfStamper(readerWorking, fs_))
                     {
                         var signElectronics = (signAlls != null && signAlls.Count > 0) ? signAlls.Where(o => o.IS_SIGN_ELECTRONIC == 1 && o.COOR_X_RECTANGLE > 0 && o.COOR_Y_RECTANGLE > 0 && o.DOCUMENT_ID == documentId).ToList() : null;
@@ -3526,8 +3210,6 @@ namespace HIS.Desktop.Plugins.EmrDocument
                                     var configImage = GetConfigImage();
                                     if (configImage != null && configImage.Count() == 2)
                                     {
-                                        //image.ScaleAbsoluteWidth((float)(configImage[0] / 2));
-                                        //image.ScaleAbsoluteHeight((float)(configImage[1] / 2));
                                         float SignaltureImageWidth = 0;
                                         image.WidthPercentage = SharedUtils.CalculateWidthPercent(configImage[0], configImage[1], image, SignaltureImageWidth, 100, SignPdfAsynchronous.ProcessHeightPlus(100, configImage[0]));
                                     }
@@ -3569,6 +3251,7 @@ namespace HIS.Desktop.Plugins.EmrDocument
                 LogSystem.Error(ex);
             }
         }
+
         internal static void InsertPageOne(Stream sourceFile, string streamSourceStr, string desFileJoined, List<EMR_SIGN> signAlls, long documentId)
         {
             iTextSharp.text.pdf.PdfReader reader1 = null;
@@ -3590,7 +3273,8 @@ namespace HIS.Desktop.Plugins.EmrDocument
                 {
                     sourceFile.CopyTo(saveFile);
                 }
-            }else if (!string.IsNullOrEmpty(streamSourceStr))
+            }
+            else if (!string.IsNullOrEmpty(streamSourceStr))
             {
                 reader1 = new PdfReader(streamSourceStr);
                 ProcessInsertPatientSign(reader1, desFileJoined, documentId, signAlls);
@@ -3608,7 +3292,6 @@ namespace HIS.Desktop.Plugins.EmrDocument
             try
             {
                 TreeList view = sender as TreeList;
-                //(treelistcolumn4.width - 30))
                 if (view.LeftCoord >= 33)
                 {
                     pictureEdit1.Visible = false;
@@ -3646,7 +3329,6 @@ namespace HIS.Desktop.Plugins.EmrDocument
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
-
         }
 
         private void chkMergeDoc_CheckedChanged(object sender, EventArgs e)
@@ -3764,15 +3446,12 @@ namespace HIS.Desktop.Plugins.EmrDocument
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
+
         private void Reload(bool obj)
         {
             try
             {
-                if (obj != null && obj is bool)
-                {
-                    checkreason = obj;
-                }
-
+                checkreason = obj;
             }
             catch (Exception ex)
             {
@@ -3804,7 +3483,7 @@ namespace HIS.Desktop.Plugins.EmrDocument
             }
             catch (Exception ex)
             {
-                throw;
+                Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
 
@@ -3851,6 +3530,7 @@ namespace HIS.Desktop.Plugins.EmrDocument
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
+
         private void GetReason(string reason)
         {
             try
@@ -3930,6 +3610,7 @@ namespace HIS.Desktop.Plugins.EmrDocument
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
+
         private void chkAddPatientSign_CheckedChanged(object sender, EventArgs e)
         {
             try
@@ -3962,7 +3643,8 @@ namespace HIS.Desktop.Plugins.EmrDocument
 
             try
             {
-                if(e.Button.Kind == ButtonPredefines.Delete) {
+                if (e.Button.Kind == ButtonPredefines.Delete)
+                {
                     cboStatusPatientSign.EditValue = null;
                 }
             }
@@ -3970,12 +3652,10 @@ namespace HIS.Desktop.Plugins.EmrDocument
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
-
         }
 
         private void repEdit_Enable_ButtonClick(object sender, ButtonPressedEventArgs e)
         {
-
             try
             {
                 Inventec.Desktop.Common.Modules.Module moduleData = HIS.Desktop.LocalStorage.LocalData.GlobalVariables.currentModuleRaws.Where(o => o.ModuleLink == "EMR.Desktop.Plugins.DocumentEdit").FirstOrDefault();
@@ -3993,7 +3673,6 @@ namespace HIS.Desktop.Plugins.EmrDocument
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
-
         }
 
         private void PatientAndHomeRelatetiveSign(bool IsPatientSign, bool IsHomeRelativeSign)
@@ -4053,7 +3732,6 @@ namespace HIS.Desktop.Plugins.EmrDocument
                     inputADO.RelationPeopleName = RelationPeopleName;
                     inputADO.Treatment = new Inventec.Common.SignLibrary.DTO.TreatmentDTO();
                     inputADO.Treatment.TREATMENT_CODE = item.TREATMENT_CODE;//mã hồ sơ điều trị
-
                     inputADO.DocumentCode = item.DOCUMENT_CODE;
                     inputADO.DocumentName = item.DOCUMENT_NAME;
                     inputADO.IsRemoveSignPadBefore = index == listDataTrue.Count;
@@ -4065,7 +3743,7 @@ namespace HIS.Desktop.Plugins.EmrDocument
                     }
                 }
                 if (IsReloadSuccess)
-                    btnSearch_Click(null,null);
+                    btnSearch_Click(null, null);
             }
             catch (Exception ex)
             {
