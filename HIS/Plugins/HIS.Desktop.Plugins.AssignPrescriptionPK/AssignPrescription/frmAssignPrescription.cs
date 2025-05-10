@@ -338,8 +338,10 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
         internal UserControl ucSecondaryIcdYhct;
         internal List<AlertLogADO> AlertLogsSdo = new List<AlertLogADO>();
         decimal? chiSoMLCT;
+        List<HIS_MEDICINE_TYPE_TUT> medicineTypeTutFilters { get; set; }
         HIS_MEDICINE_TYPE_TUT medicineTypehtu { get; set; }
         System.Windows.Forms.Timer timerInitFormAssignPrescription { get; set; }
+        bool shouldAutoUpdateMemHtu = false;
         #endregion
 
         #region Construct
@@ -1308,17 +1310,18 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
         private void TimerReloadTreatmentFinishTime_Tick(object sender, EventArgs e)
         {
             try
-            {
+            {       
                 if (dteCommonParam != null && dteCommonParam != DateTime.MinValue)
                     dteCommonParam = dteCommonParam.AddSeconds(1);
                 if (this.intructionTimeSelecteds != null && this.intructionTimeSelecteds.Count > 0)
                     dteTreatmentFinishIntructionTime = Int64.Parse(Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(this.intructionTimeSelecteds.OrderBy(o => o).First()).Value.AddSeconds(1).ToString("yyyyMMddHHmmss"));
-                if (memHtu.Text == "")
+                if (string.IsNullOrWhiteSpace(memHtu.Text))
                 {
-                    StringBuilder CachDung = new StringBuilder();
-                    string CD = cboMedicineUseForm.Text + " " + cboHtu.Text;
-                    this.memHtu.Text = CD;
+                    shouldAutoUpdateMemHtu = true;
+                    memHtu.Text = cboMedicineUseForm.Text + " " + cboHtu.Text;
                 }
+
+
             }
             catch (Exception ex)
             {
@@ -2320,6 +2323,12 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
             bool result = true;
             try
             {
+                if (mediMatyType.DataType == HIS.Desktop.LocalStorage.BackendData.ADO.MedicineMaterialTypeComboADO.VATTU 
+                    || mediMatyType.DataType == HIS.Desktop.LocalStorage.BackendData.ADO.MedicineMaterialTypeComboADO.VATTU_DM
+                    || mediMatyType.DataType == HIS.Desktop.LocalStorage.BackendData.ADO.MedicineMaterialTypeComboADO.VATTU_TSD)
+                {
+                    return result;
+                }     
                 CommonParam param = new CommonParam();
                 HisMedicineServiceFilter filter = new HisMedicineServiceFilter();
                 filter.MEDICINE_TYPE_ID = mediMatyType.ID;
@@ -5666,10 +5675,11 @@ o.SERVICE_ID == medi.SERVICE_ID && o.TDL_INTRUCTION_TIME.ToString().Substring(0,
             CommonParam param = new CommonParam();
             try
             {
+                this.cboHtu.Text = "";
                 this.currentMedicineTypeADOForEdit = (MediMatyTypeADO)this.gridViewServiceProcess.GetFocusedRow();
                 if (this.currentMedicineTypeADOForEdit != null)
                 {
-                    var selectedOpionGroup = GetSelectedOpionGroup();
+                    var selectedOpionGroup = GetSelectedOpionGroup();      
 
                     this.actionBosung = GlobalVariables.ActionEdit;
                     isShowContainerMediMatyForChoose = true;
@@ -5736,7 +5746,14 @@ o.SERVICE_ID == medi.SERVICE_ID && o.TDL_INTRUCTION_TIME.ToString().Substring(0,
                             {
                                 o.IsChecked = currentMedicineTypeADOForEdit.HTU_IDs.Exists(p => p == o.ID);
                             });
-                            this.cboHtu.Text = string.Join(", ", DataHtuList.Where(o => o.IsChecked).Select(o => o.HTU_NAME));
+                            if (string.Join(", ", DataHtuList.Where(o => o.IsChecked).Select(o => o.HTU_NAME)) != null)
+                            {
+                                this.cboHtu.Text = string.Join(", ", DataHtuList.Where(o => o.IsChecked).Select(o => o.HTU_NAME));
+                            }
+                            else
+                            {
+                                this.cboHtu.Text = "";
+                            }
                             this.cboHtu.Properties.Buttons[1].Visible = true;
                         }
                     }
@@ -12681,6 +12698,10 @@ o.SERVICE_ID == medi.SERVICE_ID && o.TDL_INTRUCTION_TIME.ToString().Substring(0,
         private void cboHtu_EditValueChanged(object sender, EventArgs e)
         {
             this.CalculateAmount();
+            if (shouldAutoUpdateMemHtu)
+            {
+                memHtu.Text = cboMedicineUseForm.Text + " " + cboHtu.Text;
+            }
             if (!IsSetByMedicineTut)
                 this.SetHuongDanFromSoLuongNgay();
         }
@@ -12766,6 +12787,16 @@ o.SERVICE_ID == medi.SERVICE_ID && o.TDL_INTRUCTION_TIME.ToString().Substring(0,
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void memHtu_EditValueChanged(object sender, EventArgs e)
+        {
+            string expected = cboMedicineUseForm.Text + " " + cboHtu.Text;     
+
+            if (memHtu.Text != expected)
+            {
+                shouldAutoUpdateMemHtu = false;     
             }
         }
 
