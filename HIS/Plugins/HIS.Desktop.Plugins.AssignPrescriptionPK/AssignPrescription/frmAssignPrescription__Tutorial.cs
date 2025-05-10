@@ -130,7 +130,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
 
                 gridViewHtuText.GridControl.DataSource = data;
 
-                gridViewHtu.OptionsBehavior.Editable = false;
+                gridViewHtuText.OptionsBehavior.Editable = false;
                 gridViewHtuText.EndUpdate();
             }
             catch (Exception ex)
@@ -167,7 +167,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                         this.cboHtu.Text = string.Join(", ", DataHtuList.Where(o => o.IsChecked).Select(o => o.HTU_NAME));
                     }
                     if (medicineTypeTut.HTU_ID != null)
-                        this.cboHtu.Properties.Buttons[1].Visible = true;
+                        this.cboHtu.Properties.Buttons[1].Visible = true;       
                     else
                         this.cboHtu.Properties.Buttons[1].Visible = false;
 
