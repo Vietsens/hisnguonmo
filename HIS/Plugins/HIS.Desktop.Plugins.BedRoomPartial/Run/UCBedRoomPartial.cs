@@ -984,7 +984,7 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
         }
 
         private void gridViewTreatmentBedRoom_PopupMenuShowing(object sender, DevExpress.XtraGrid.Views.Grid.PopupMenuShowingEventArgs e)
-        {
+            {
             try
             {
                 GridHitInfo hi = e.HitInfo;

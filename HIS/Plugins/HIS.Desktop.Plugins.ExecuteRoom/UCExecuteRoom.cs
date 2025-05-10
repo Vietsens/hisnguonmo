@@ -58,6 +58,7 @@ using System.Threading;
 using HIS.Desktop.Plugins.Library.FormMedicalRecord;
 using System.Resources;
 
+
 namespace HIS.Desktop.Plugins.ExecuteRoom
 {
     public partial class UCExecuteRoom : UserControlBase
@@ -75,7 +76,8 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
         internal List<ServiceReqADO> serviceReqs { get; set; }
         internal List<SereServADO> sereServ7s { get; set; }
         internal V_HIS_EXECUTE_ROOM executeRoom { get; set; }
-
+        //bool check = false;
+        bool isFirstTime = true;
         int rowCount = 0;
         int dataTotal = 0;
         int numPageSize;
@@ -134,6 +136,7 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
         List<HIS_DESK> deskList { get; set; }
         EpaymentDepositResultSDO epaymentDepositResultSDO;
         V_HIS_TREATMENT_4 currentTreatment4;
+        bool chkModule = false;
         #region IsClick
         bool isEventPopupMenuShowing = false;
         long treatmentId = 0;
@@ -206,6 +209,8 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
                 InitComboServiceReqType();
                 Inventec.Common.Logging.LogSystem.Debug("UCExecuteRoom_Load.8");
                 LoadDefaultScreenSaver();
+               
+               
                 Inventec.Common.Logging.LogSystem.Debug("UCExecuteRoom_Load.9");
                 RegisterTimer(currentModule.ModuleLink, "timerAutoReload", timerAutoReload.Interval, timerAutoReload_Tick);
                 FillDataToGridControl();
@@ -224,6 +229,8 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
+
+        
 
         /// <summary>
         ///Hàm xét ngôn ngữ cho giao diện UCExecuteRoom
@@ -3186,14 +3193,25 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
             {
                 if (chkScreenSaver.Checked)
                 {
+                
                     List<object> _listObj = new List<object>();
+                    _listObj.Add(true);
+
                     WaitingManager.Hide();
-                    var SCREEN_SAVER = BackendDataWorker.Get<V_HIS_ROOM>().FirstOrDefault(o => o.ID == this.roomId);
+                     var SCREEN_SAVER = BackendDataWorker.Get<V_HIS_ROOM>().FirstOrDefault(o => o.ID == this.roomId);
+                 
+                 //   var SCREEN_SAVER = BackendDataWorker.Get<MOS.EFMODEL.DataModels.V_HIS_ROOM>().FirstOrDefault(o => o.ID == roomId);
+
                     if (SCREEN_SAVER != null)
                     {
                         if (!string.IsNullOrEmpty(SCREEN_SAVER.SCREEN_SAVER_MODULE_LINK))
                         {
+                            
                             HIS.Desktop.ModuleExt.PluginInstanceBehavior.ShowModule(SCREEN_SAVER.SCREEN_SAVER_MODULE_LINK, this.roomId, this.roomTypeId, _listObj);
+                            //HIS.Desktop.ModuleExt.PluginInstanceBehavior.ShowModule(SCREEN_SAVER.SCREEN_SAVER_MODULE_LINK,GlobalVariables.ROOM_ID_FOR_WAITING_SCREEN, this.roomTypeId,  
+                            //listObj
+                   
+
                         }
                         else
                         {

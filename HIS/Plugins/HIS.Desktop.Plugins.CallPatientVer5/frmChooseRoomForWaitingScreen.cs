@@ -133,7 +133,7 @@ namespace HIS.Desktop.Plugins.CallPatientVer5
                 SetIcon();
                 InitControlState();
                 //ChooseRoomForWaitingScreenProcess.LoadDataToComboRoom(roomId);
-                ChooseRoomForWaitingScreenProcess.LoadDataToExamServiceReqSttGridControl(this);
+            //    ChooseRoomForWaitingScreenProcess.LoadDataToExamServiceReqSttGridControl(this); 
                 room = BackendDataWorker.Get<V_HIS_ROOM>().FirstOrDefault(o => o.ID == roomId);
                 lbcRoom.Text = Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetUserName().ToUpper();
                 if (room != null)
