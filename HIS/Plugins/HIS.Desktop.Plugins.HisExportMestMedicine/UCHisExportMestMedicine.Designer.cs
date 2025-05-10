@@ -45,167 +45,166 @@ namespace HIS.Desktop.Plugins.HisExportMestMedicine
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(UCHisExportMestMedicine));
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject1 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject2 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject3 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject4 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject5 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject6 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject7 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject8 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject9 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject10 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject11 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject12 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject13 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject14 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject15 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject16 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject17 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject18 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject19 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject20 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject21 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject22 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject23 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject24 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject25 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject26 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject27 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject28 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject29 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject30 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject31 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject32 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject33 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject34 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject35 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject36 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject37 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject38 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject39 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject40 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject41 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject42 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject43 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject44 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject45 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject46 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject47 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject48 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject49 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject50 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject51 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject52 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject53 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject54 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject55 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject56 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject57 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject58 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject59 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject60 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject61 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject62 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject63 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject64 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject65 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject66 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject67 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject68 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject69 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject70 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject71 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject72 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject73 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject74 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject75 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject76 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject77 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject78 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject79 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject80 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject81 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject82 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject83 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject84 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject85 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject86 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject87 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject88 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject89 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject90 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject91 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject92 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject93 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject94 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject95 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject96 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject97 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject98 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject99 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject100 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject101 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject102 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject103 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject104 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject105 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject106 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject107 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject108 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject109 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject110 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject111 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject112 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject113 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject114 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject115 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject116 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject117 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject118 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject119 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject120 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject121 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject122 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject123 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject124 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject125 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject126 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject127 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject128 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject129 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject130 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject131 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject132 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject133 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject134 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject135 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject136 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject137 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject138 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject139 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject140 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject141 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject142 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject143 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject144 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject145 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject146 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject147 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject148 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject149 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject150 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject151 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject152 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject153 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject154 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject155 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject156 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject313 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject314 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject315 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject316 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject317 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject318 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject319 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject320 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject321 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject322 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject323 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject324 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject325 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject326 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject327 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject328 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject329 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject330 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject331 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject332 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject333 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject334 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject335 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject336 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject337 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject338 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject339 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject340 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject341 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject342 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject343 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject344 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject345 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject346 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject347 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject348 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject349 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject350 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject351 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject352 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject353 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject354 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject355 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject356 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject357 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject358 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject359 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject360 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject361 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject362 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject363 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject364 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject365 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject366 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject367 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject368 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject369 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject370 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject371 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject372 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject373 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject374 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject375 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject376 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject377 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject378 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject379 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject380 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject381 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject382 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject383 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject384 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject385 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject386 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject387 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject388 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject389 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject390 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject391 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject392 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject393 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject394 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject395 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject396 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject397 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject398 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject399 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject400 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject401 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject402 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject403 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject404 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject405 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject406 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject407 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject408 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject409 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject410 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject411 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject412 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject413 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject414 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject415 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject416 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject417 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject418 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject419 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject420 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject421 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject422 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject423 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject424 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject425 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject426 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject427 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject428 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject429 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject430 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject431 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject432 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject433 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject434 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject435 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject436 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject437 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject438 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject439 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject440 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject441 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject442 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject443 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject444 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject445 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject446 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject447 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject448 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject449 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject450 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject451 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject452 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject453 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject454 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject455 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject456 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject457 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject458 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject459 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject460 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject461 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject462 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject463 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject464 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject465 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject466 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject467 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject468 = new DevExpress.Utils.SerializableAppearanceObject();
             this.layoutControl1 = new DevExpress.XtraLayout.LayoutControl();
             this.chkAutoCallPatient = new DevExpress.XtraEditors.CheckEdit();
-            this.barManager1 = new DevExpress.XtraBars.BarManager(this.components);
+            this.barManager1 = new DevExpress.XtraBars.BarManager();
             this.barDockControlTop = new DevExpress.XtraBars.BarDockControl();
             this.barDockControlBottom = new DevExpress.XtraBars.BarDockControl();
             this.barDockControlLeft = new DevExpress.XtraBars.BarDockControl();
@@ -263,6 +262,7 @@ namespace HIS.Desktop.Plugins.HisExportMestMedicine
             this.GcCreator = new DevExpress.XtraGrid.Columns.GridColumn();
             this.GcModifyTime = new DevExpress.XtraGrid.Columns.GridColumn();
             this.GcModifier = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.imageListStatus = new System.Windows.Forms.ImageList();
             this.ButtonEnableApproval = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
             this.ButtonDisableApproval = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
             this.ButtonEnableDisApproval = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
@@ -299,7 +299,7 @@ namespace HIS.Desktop.Plugins.HisExportMestMedicine
             this.btnCallPatient = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
             this.btnCallPatientDisable = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
             this.chkInHDSD = new DevExpress.XtraEditors.CheckEdit();
-            this.popupControlExpMestDetail = new DevExpress.XtraBars.PopupControlContainer(this.components);
+            this.popupControlExpMestDetail = new DevExpress.XtraBars.PopupControlContainer();
             this.Gc_ExpMestDetail = new DevExpress.XtraGrid.GridControl();
             this.Gv_ExpMestDetail = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.GvDT_Gc_STT = new DevExpress.XtraGrid.Columns.GridColumn();
@@ -431,10 +431,10 @@ namespace HIS.Desktop.Plugins.HisExportMestMedicine
             this.layoutControlItem36 = new DevExpress.XtraLayout.LayoutControlItem();
             this.emptySpaceItem1 = new DevExpress.XtraLayout.EmptySpaceItem();
             this.layoutControlItem38 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.imageListStatus = new System.Windows.Forms.ImageList(this.components);
-            this.toolTipController = new DevExpress.Utils.ToolTipController(this.components);
+            this.toolTipController = new DevExpress.Utils.ToolTipController();
             this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
+            this.gridColumnDESCRIPTION = new DevExpress.XtraGrid.Columns.GridColumn();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
             this.layoutControl1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.chkAutoCallPatient.Properties)).BeginInit();
@@ -601,19 +601,21 @@ namespace HIS.Desktop.Plugins.HisExportMestMedicine
             this.layoutControl1.Controls.Add(this.ucPaging);
             this.layoutControl1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.layoutControl1.Location = new System.Drawing.Point(0, 0);
+            this.layoutControl1.Margin = new System.Windows.Forms.Padding(4);
             this.layoutControl1.Name = "layoutControl1";
             this.layoutControl1.Root = this.layoutControlGroup1;
-            this.layoutControl1.Size = new System.Drawing.Size(1320, 550);
+            this.layoutControl1.Size = new System.Drawing.Size(1760, 677);
             this.layoutControl1.TabIndex = 0;
             this.layoutControl1.Text = "layoutControl1";
             // 
             // chkAutoCallPatient
             // 
-            this.chkAutoCallPatient.Location = new System.Drawing.Point(523, 577);
+            this.chkAutoCallPatient.Location = new System.Drawing.Point(705, 647);
+            this.chkAutoCallPatient.Margin = new System.Windows.Forms.Padding(4);
             this.chkAutoCallPatient.MenuManager = this.barManager1;
             this.chkAutoCallPatient.Name = "chkAutoCallPatient";
             this.chkAutoCallPatient.Properties.Caption = "Tự động gọi BN khi tìm kiếm theo mã phiếu xuất, mã HSDT, mã y lệnh";
-            this.chkAutoCallPatient.Size = new System.Drawing.Size(345, 19);
+            this.chkAutoCallPatient.Size = new System.Drawing.Size(437, 20);
             this.chkAutoCallPatient.StyleController = this.layoutControl1;
             this.chkAutoCallPatient.TabIndex = 16;
             this.chkAutoCallPatient.ToolTip = "Tự động gọi bệnh nhân khi tìm kiếm theo mã phiếu xuất, mã điều trị, mã y lệnh";
@@ -633,33 +635,39 @@ namespace HIS.Desktop.Plugins.HisExportMestMedicine
             this.barDockControlTop.CausesValidation = false;
             this.barDockControlTop.Dock = System.Windows.Forms.DockStyle.Top;
             this.barDockControlTop.Location = new System.Drawing.Point(0, 0);
-            this.barDockControlTop.Size = new System.Drawing.Size(1320, 0);
+            this.barDockControlTop.Margin = new System.Windows.Forms.Padding(4);
+            this.barDockControlTop.Size = new System.Drawing.Size(1760, 0);
             // 
             // barDockControlBottom
             // 
             this.barDockControlBottom.CausesValidation = false;
             this.barDockControlBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.barDockControlBottom.Location = new System.Drawing.Point(0, 550);
-            this.barDockControlBottom.Size = new System.Drawing.Size(1320, 0);
+            this.barDockControlBottom.Location = new System.Drawing.Point(0, 677);
+            this.barDockControlBottom.Margin = new System.Windows.Forms.Padding(4);
+            this.barDockControlBottom.Size = new System.Drawing.Size(1760, 0);
             // 
             // barDockControlLeft
             // 
             this.barDockControlLeft.CausesValidation = false;
             this.barDockControlLeft.Dock = System.Windows.Forms.DockStyle.Left;
             this.barDockControlLeft.Location = new System.Drawing.Point(0, 0);
-            this.barDockControlLeft.Size = new System.Drawing.Size(0, 550);
+            this.barDockControlLeft.Margin = new System.Windows.Forms.Padding(4);
+            this.barDockControlLeft.Size = new System.Drawing.Size(0, 677);
             // 
             // barDockControlRight
             // 
             this.barDockControlRight.CausesValidation = false;
             this.barDockControlRight.Dock = System.Windows.Forms.DockStyle.Right;
-            this.barDockControlRight.Location = new System.Drawing.Point(1320, 0);
-            this.barDockControlRight.Size = new System.Drawing.Size(0, 550);
+            this.barDockControlRight.Location = new System.Drawing.Point(1760, 0);
+            this.barDockControlRight.Margin = new System.Windows.Forms.Padding(4);
+            this.barDockControlRight.Size = new System.Drawing.Size(0, 677);
             // 
             // gridControl
             // 
-            this.gridControl.Location = new System.Drawing.Point(214, 2);
+            this.gridControl.EmbeddedNavigator.Margin = new System.Windows.Forms.Padding(4);
+            this.gridControl.Location = new System.Drawing.Point(289, 3);
             this.gridControl.MainView = this.gridView;
+            this.gridControl.Margin = new System.Windows.Forms.Padding(4);
             this.gridControl.Name = "gridControl";
             this.gridControl.RepositoryItems.AddRange(new DevExpress.XtraEditors.Repository.RepositoryItem[] {
             this.repositoryItemButtonViewDetail,
@@ -702,7 +710,7 @@ namespace HIS.Desktop.Plugins.HisExportMestMedicine
             this.Btn_CancelBill_Disable,
             this.btnCallPatient,
             this.btnCallPatientDisable});
-            this.gridControl.Size = new System.Drawing.Size(830, 571);
+            this.gridControl.Size = new System.Drawing.Size(1121, 638);
             this.gridControl.TabIndex = 4;
             this.gridControl.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
             this.gridView});
@@ -735,6 +743,7 @@ namespace HIS.Desktop.Plugins.HisExportMestMedicine
             this.gridColumn20,
             this.Gc_TransactionCode,
             this.gridColumn18,
+            this.gridColumnDESCRIPTION,
             this.gridColumn14,
             this.gridColumn22,
             this.gridColumn13,
@@ -757,6 +766,7 @@ namespace HIS.Desktop.Plugins.HisExportMestMedicine
             this.GcModifyTime,
             this.GcModifier});
             this.gridView.GridControl = this.gridControl;
+            this.gridView.Images = this.imageListStatus;
             this.gridView.Name = "gridView";
             this.gridView.OptionsFind.AllowFindPanel = false;
             this.gridView.OptionsView.ColumnAutoWidth = false;
@@ -818,7 +828,7 @@ namespace HIS.Desktop.Plugins.HisExportMestMedicine
             // 
             this.repositoryItemButtonViewDetail.AutoHeight = false;
             this.repositoryItemButtonViewDetail.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("repositoryItemButtonViewDetail.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject1, serializableAppearanceObject2, serializableAppearanceObject3, serializableAppearanceObject4, "Xem chi tiết", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("repositoryItemButtonViewDetail.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject313, serializableAppearanceObject314, serializableAppearanceObject315, serializableAppearanceObject316, "Xem chi tiết", null, null, true)});
             this.repositoryItemButtonViewDetail.Name = "repositoryItemButtonViewDetail";
             this.repositoryItemButtonViewDetail.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             this.repositoryItemButtonViewDetail.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.repositoryItemButtonViewDetail_ButtonClick);
@@ -904,7 +914,7 @@ namespace HIS.Desktop.Plugins.HisExportMestMedicine
             // 
             this.Btn_Check_TruyenMau_Enable.AutoHeight = false;
             this.Btn_Check_TruyenMau_Enable.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("Btn_Check_TruyenMau_Enable.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject5, serializableAppearanceObject6, serializableAppearanceObject7, serializableAppearanceObject8, "Kiểm tra truyền máu", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("Btn_Check_TruyenMau_Enable.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject317, serializableAppearanceObject318, serializableAppearanceObject319, serializableAppearanceObject320, "Kiểm tra truyền máu", null, null, true)});
             this.Btn_Check_TruyenMau_Enable.Name = "Btn_Check_TruyenMau_Enable";
             this.Btn_Check_TruyenMau_Enable.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             this.Btn_Check_TruyenMau_Enable.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.Btn_Check_TruyenMau_Enable_ButtonClick);
@@ -989,7 +999,7 @@ namespace HIS.Desktop.Plugins.HisExportMestMedicine
             // 
             this.ButtonCopyExportMest.AutoHeight = false;
             this.ButtonCopyExportMest.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("ButtonCopyExportMest.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject9, serializableAppearanceObject10, serializableAppearanceObject11, serializableAppearanceObject12, "Copy Phiếu xuất", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("ButtonCopyExportMest.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject321, serializableAppearanceObject322, serializableAppearanceObject323, serializableAppearanceObject324, "Copy Phiếu xuất", null, null, true)});
             this.ButtonCopyExportMest.Name = "ButtonCopyExportMest";
             this.ButtonCopyExportMest.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             this.ButtonCopyExportMest.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.ButtonCopyExportMest_ButtonClick);
@@ -1052,7 +1062,7 @@ namespace HIS.Desktop.Plugins.HisExportMestMedicine
             // 
             this.Btn_EvenLog.AutoHeight = false;
             this.Btn_EvenLog.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("Btn_EvenLog.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject13, serializableAppearanceObject14, serializableAppearanceObject15, serializableAppearanceObject16, "Lịch sử tác động", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("Btn_EvenLog.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject325, serializableAppearanceObject326, serializableAppearanceObject327, serializableAppearanceObject328, "Lịch sử tác động", null, null, true)});
             this.Btn_EvenLog.Name = "Btn_EvenLog";
             this.Btn_EvenLog.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             this.Btn_EvenLog.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.Btn_EvenLog_ButtonClick);
@@ -1190,7 +1200,7 @@ namespace HIS.Desktop.Plugins.HisExportMestMedicine
             this.gridColumn21.OptionsColumn.AllowEdit = false;
             this.gridColumn21.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumn21.Visible = true;
-            this.gridColumn21.VisibleIndex = 24;
+            this.gridColumn21.VisibleIndex = 25;
             this.gridColumn21.Width = 120;
             // 
             // GcReqName
@@ -1201,7 +1211,7 @@ namespace HIS.Desktop.Plugins.HisExportMestMedicine
             this.GcReqName.OptionsColumn.AllowEdit = false;
             this.GcReqName.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.GcReqName.Visible = true;
-            this.GcReqName.VisibleIndex = 25;
+            this.GcReqName.VisibleIndex = 26;
             this.GcReqName.Width = 150;
             // 
             // GcMediStockName
@@ -1211,7 +1221,7 @@ namespace HIS.Desktop.Plugins.HisExportMestMedicine
             this.GcMediStockName.Name = "GcMediStockName";
             this.GcMediStockName.OptionsColumn.AllowEdit = false;
             this.GcMediStockName.Visible = true;
-            this.GcMediStockName.VisibleIndex = 26;
+            this.GcMediStockName.VisibleIndex = 27;
             this.GcMediStockName.Width = 120;
             // 
             // GcApprovalName
@@ -1252,7 +1262,7 @@ namespace HIS.Desktop.Plugins.HisExportMestMedicine
             this.GcReqDepartmentCode.Name = "GcReqDepartmentCode";
             this.GcReqDepartmentCode.OptionsColumn.AllowEdit = false;
             this.GcReqDepartmentCode.Visible = true;
-            this.GcReqDepartmentCode.VisibleIndex = 27;
+            this.GcReqDepartmentCode.VisibleIndex = 28;
             this.GcReqDepartmentCode.Width = 100;
             // 
             // GcReqDepartmentName
@@ -1262,7 +1272,7 @@ namespace HIS.Desktop.Plugins.HisExportMestMedicine
             this.GcReqDepartmentName.Name = "GcReqDepartmentName";
             this.GcReqDepartmentName.OptionsColumn.AllowEdit = false;
             this.GcReqDepartmentName.Visible = true;
-            this.GcReqDepartmentName.VisibleIndex = 28;
+            this.GcReqDepartmentName.VisibleIndex = 29;
             this.GcReqDepartmentName.Width = 150;
             // 
             // gridColumn23
@@ -1272,7 +1282,7 @@ namespace HIS.Desktop.Plugins.HisExportMestMedicine
             this.gridColumn23.Name = "gridColumn23";
             this.gridColumn23.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumn23.Visible = true;
-            this.gridColumn23.VisibleIndex = 29;
+            this.gridColumn23.VisibleIndex = 30;
             this.gridColumn23.Width = 120;
             // 
             // GcFinishTime
@@ -1287,7 +1297,7 @@ namespace HIS.Desktop.Plugins.HisExportMestMedicine
             this.GcFinishTime.OptionsColumn.AllowEdit = false;
             this.GcFinishTime.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.GcFinishTime.Visible = true;
-            this.GcFinishTime.VisibleIndex = 30;
+            this.GcFinishTime.VisibleIndex = 31;
             this.GcFinishTime.Width = 120;
             // 
             // GcNationalExpMestCode
@@ -1297,7 +1307,7 @@ namespace HIS.Desktop.Plugins.HisExportMestMedicine
             this.GcNationalExpMestCode.Name = "GcNationalExpMestCode";
             this.GcNationalExpMestCode.OptionsColumn.AllowEdit = false;
             this.GcNationalExpMestCode.Visible = true;
-            this.GcNationalExpMestCode.VisibleIndex = 31;
+            this.GcNationalExpMestCode.VisibleIndex = 32;
             // 
             // GcCreateTime
             // 
@@ -1311,7 +1321,7 @@ namespace HIS.Desktop.Plugins.HisExportMestMedicine
             this.GcCreateTime.OptionsColumn.AllowEdit = false;
             this.GcCreateTime.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.GcCreateTime.Visible = true;
-            this.GcCreateTime.VisibleIndex = 32;
+            this.GcCreateTime.VisibleIndex = 33;
             this.GcCreateTime.Width = 120;
             // 
             // GcCreator
@@ -1321,7 +1331,7 @@ namespace HIS.Desktop.Plugins.HisExportMestMedicine
             this.GcCreator.Name = "GcCreator";
             this.GcCreator.OptionsColumn.AllowEdit = false;
             this.GcCreator.Visible = true;
-            this.GcCreator.VisibleIndex = 33;
+            this.GcCreator.VisibleIndex = 34;
             this.GcCreator.Width = 90;
             // 
             // GcModifyTime
@@ -1336,7 +1346,7 @@ namespace HIS.Desktop.Plugins.HisExportMestMedicine
             this.GcModifyTime.OptionsColumn.AllowEdit = false;
             this.GcModifyTime.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.GcModifyTime.Visible = true;
-            this.GcModifyTime.VisibleIndex = 34;
+            this.GcModifyTime.VisibleIndex = 35;
             this.GcModifyTime.Width = 120;
             // 
             // GcModifier
@@ -1346,14 +1356,25 @@ namespace HIS.Desktop.Plugins.HisExportMestMedicine
             this.GcModifier.Name = "GcModifier";
             this.GcModifier.OptionsColumn.AllowEdit = false;
             this.GcModifier.Visible = true;
-            this.GcModifier.VisibleIndex = 35;
+            this.GcModifier.VisibleIndex = 36;
             this.GcModifier.Width = 90;
+            // 
+            // imageListStatus
+            // 
+            this.imageListStatus.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imageListStatus.ImageStream")));
+            this.imageListStatus.TransparentColor = System.Drawing.Color.Transparent;
+            this.imageListStatus.Images.SetKeyName(0, "01.png");
+            this.imageListStatus.Images.SetKeyName(1, "02.png");
+            this.imageListStatus.Images.SetKeyName(2, "03.png");
+            this.imageListStatus.Images.SetKeyName(3, "04.png");
+            this.imageListStatus.Images.SetKeyName(4, "05.png");
+            this.imageListStatus.Images.SetKeyName(5, "06.png");
             // 
             // ButtonEnableApproval
             // 
             this.ButtonEnableApproval.AutoHeight = false;
             this.ButtonEnableApproval.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("ButtonEnableApproval.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject17, serializableAppearanceObject18, serializableAppearanceObject19, serializableAppearanceObject20, "Duyệt", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("ButtonEnableApproval.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject329, serializableAppearanceObject330, serializableAppearanceObject331, serializableAppearanceObject332, "Duyệt", null, null, true)});
             this.ButtonEnableApproval.Name = "ButtonEnableApproval";
             this.ButtonEnableApproval.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             this.ButtonEnableApproval.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.ButtonEnableApproval_ButtonClick);
@@ -1362,7 +1383,7 @@ namespace HIS.Desktop.Plugins.HisExportMestMedicine
             // 
             this.ButtonDisableApproval.AutoHeight = false;
             this.ButtonDisableApproval.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, false, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("ButtonDisableApproval.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject21, serializableAppearanceObject22, serializableAppearanceObject23, serializableAppearanceObject24, "Duyệt", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, false, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("ButtonDisableApproval.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject333, serializableAppearanceObject334, serializableAppearanceObject335, serializableAppearanceObject336, "Duyệt", null, null, true)});
             this.ButtonDisableApproval.Name = "ButtonDisableApproval";
             this.ButtonDisableApproval.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             // 
@@ -1370,7 +1391,7 @@ namespace HIS.Desktop.Plugins.HisExportMestMedicine
             // 
             this.ButtonEnableDisApproval.AutoHeight = false;
             this.ButtonEnableDisApproval.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("ButtonEnableDisApproval.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject25, serializableAppearanceObject26, serializableAppearanceObject27, serializableAppearanceObject28, "Không duyệt", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("ButtonEnableDisApproval.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject337, serializableAppearanceObject338, serializableAppearanceObject339, serializableAppearanceObject340, "Không duyệt", null, null, true)});
             this.ButtonEnableDisApproval.Name = "ButtonEnableDisApproval";
             this.ButtonEnableDisApproval.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             this.ButtonEnableDisApproval.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.ButtonEnableDisApproval_ButtonClick);
@@ -1379,7 +1400,7 @@ namespace HIS.Desktop.Plugins.HisExportMestMedicine
             // 
             this.ButtonDisableDisApproval.AutoHeight = false;
             this.ButtonDisableDisApproval.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, false, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("ButtonDisableDisApproval.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject29, serializableAppearanceObject30, serializableAppearanceObject31, serializableAppearanceObject32, "Không duyệt", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, false, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("ButtonDisableDisApproval.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject341, serializableAppearanceObject342, serializableAppearanceObject343, serializableAppearanceObject344, "Không duyệt", null, null, true)});
             this.ButtonDisableDisApproval.Name = "ButtonDisableDisApproval";
             this.ButtonDisableDisApproval.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             // 
@@ -1387,7 +1408,7 @@ namespace HIS.Desktop.Plugins.HisExportMestMedicine
             // 
             this.ButtonEnableDiscard.AutoHeight = false;
             this.ButtonEnableDiscard.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("ButtonEnableDiscard.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject33, serializableAppearanceObject34, serializableAppearanceObject35, serializableAppearanceObject36, "Xóa", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("ButtonEnableDiscard.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject345, serializableAppearanceObject346, serializableAppearanceObject347, serializableAppearanceObject348, "Xóa", null, null, true)});
             this.ButtonEnableDiscard.Name = "ButtonEnableDiscard";
             this.ButtonEnableDiscard.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             this.ButtonEnableDiscard.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.ButtonEnableDiscard_ButtonClick);
@@ -1396,7 +1417,7 @@ namespace HIS.Desktop.Plugins.HisExportMestMedicine
             // 
             this.ButtonDisableDiscard.AutoHeight = false;
             this.ButtonDisableDiscard.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, false, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("ButtonDisableDiscard.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject37, serializableAppearanceObject38, serializableAppearanceObject39, serializableAppearanceObject40, "Xóa", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, false, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("ButtonDisableDiscard.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject349, serializableAppearanceObject350, serializableAppearanceObject351, serializableAppearanceObject352, "Xóa", null, null, true)});
             this.ButtonDisableDiscard.Name = "ButtonDisableDiscard";
             this.ButtonDisableDiscard.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             // 
@@ -1404,7 +1425,7 @@ namespace HIS.Desktop.Plugins.HisExportMestMedicine
             // 
             this.ButtonEnableEdit.AutoHeight = false;
             this.ButtonEnableEdit.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("ButtonEnableEdit.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject41, serializableAppearanceObject42, serializableAppearanceObject43, serializableAppearanceObject44, "Sửa", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("ButtonEnableEdit.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject353, serializableAppearanceObject354, serializableAppearanceObject355, serializableAppearanceObject356, "Sửa", null, null, true)});
             this.ButtonEnableEdit.Name = "ButtonEnableEdit";
             this.ButtonEnableEdit.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             this.ButtonEnableEdit.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.ButtonEnableEdit_ButtonClick);
@@ -1413,7 +1434,7 @@ namespace HIS.Desktop.Plugins.HisExportMestMedicine
             // 
             this.ButtonDisableEdit.AutoHeight = false;
             this.ButtonDisableEdit.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, false, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("ButtonDisableEdit.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject45, serializableAppearanceObject46, serializableAppearanceObject47, serializableAppearanceObject48, "Sửa", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, false, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("ButtonDisableEdit.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject357, serializableAppearanceObject358, serializableAppearanceObject359, serializableAppearanceObject360, "Sửa", null, null, true)});
             this.ButtonDisableEdit.Name = "ButtonDisableEdit";
             this.ButtonDisableEdit.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             // 
@@ -1421,7 +1442,7 @@ namespace HIS.Desktop.Plugins.HisExportMestMedicine
             // 
             this.ButtonEnableActualExport.AutoHeight = false;
             this.ButtonEnableActualExport.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("ButtonEnableActualExport.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject49, serializableAppearanceObject50, serializableAppearanceObject51, serializableAppearanceObject52, "Thực xuất", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("ButtonEnableActualExport.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject361, serializableAppearanceObject362, serializableAppearanceObject363, serializableAppearanceObject364, "Thực xuất", null, null, true)});
             this.ButtonEnableActualExport.Name = "ButtonEnableActualExport";
             this.ButtonEnableActualExport.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             this.ButtonEnableActualExport.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.ButtonEnableActualExport_ButtonClick);
@@ -1430,7 +1451,7 @@ namespace HIS.Desktop.Plugins.HisExportMestMedicine
             // 
             this.ButtonDisableActualExport.AutoHeight = false;
             this.ButtonDisableActualExport.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, false, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("ButtonDisableActualExport.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject53, serializableAppearanceObject54, serializableAppearanceObject55, serializableAppearanceObject56, "Thực xuất", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, false, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("ButtonDisableActualExport.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject365, serializableAppearanceObject366, serializableAppearanceObject367, serializableAppearanceObject368, "Thực xuất", null, null, true)});
             this.ButtonDisableActualExport.Name = "ButtonDisableActualExport";
             this.ButtonDisableActualExport.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             // 
@@ -1438,7 +1459,7 @@ namespace HIS.Desktop.Plugins.HisExportMestMedicine
             // 
             this.ButtonEnableMobaImpCreate.AutoHeight = false;
             this.ButtonEnableMobaImpCreate.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("ButtonEnableMobaImpCreate.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject57, serializableAppearanceObject58, serializableAppearanceObject59, serializableAppearanceObject60, "Tạo yêu cầu nhập thu hồi", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("ButtonEnableMobaImpCreate.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject369, serializableAppearanceObject370, serializableAppearanceObject371, serializableAppearanceObject372, "Tạo yêu cầu nhập thu hồi", null, null, true)});
             this.ButtonEnableMobaImpCreate.Name = "ButtonEnableMobaImpCreate";
             this.ButtonEnableMobaImpCreate.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             this.ButtonEnableMobaImpCreate.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.ButtonEnableMobaImpCreate_ButtonClick);
@@ -1447,7 +1468,7 @@ namespace HIS.Desktop.Plugins.HisExportMestMedicine
             // 
             this.ButtonDisableMobaImpCreate.AutoHeight = false;
             this.ButtonDisableMobaImpCreate.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, false, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("ButtonDisableMobaImpCreate.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject61, serializableAppearanceObject62, serializableAppearanceObject63, serializableAppearanceObject64, "Tạo yêu cầu nhập thu hồi", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, false, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("ButtonDisableMobaImpCreate.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject373, serializableAppearanceObject374, serializableAppearanceObject375, serializableAppearanceObject376, "Tạo yêu cầu nhập thu hồi", null, null, true)});
             this.ButtonDisableMobaImpCreate.Name = "ButtonDisableMobaImpCreate";
             this.ButtonDisableMobaImpCreate.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             // 
@@ -1455,7 +1476,7 @@ namespace HIS.Desktop.Plugins.HisExportMestMedicine
             // 
             this.ButtonRequest.AutoHeight = false;
             this.ButtonRequest.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("ButtonRequest.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject65, serializableAppearanceObject66, serializableAppearanceObject67, serializableAppearanceObject68, "Hủy duyệt", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("ButtonRequest.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject377, serializableAppearanceObject378, serializableAppearanceObject379, serializableAppearanceObject380, "Hủy duyệt", null, null, true)});
             this.ButtonRequest.Name = "ButtonRequest";
             this.ButtonRequest.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             this.ButtonRequest.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.ButtonRequest_ButtonClick);
@@ -1464,7 +1485,7 @@ namespace HIS.Desktop.Plugins.HisExportMestMedicine
             // 
             this.ButtonRequestDisable.AutoHeight = false;
             this.ButtonRequestDisable.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, false, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("ButtonRequestDisable.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject69, serializableAppearanceObject70, serializableAppearanceObject71, serializableAppearanceObject72, "Hủy duyệt", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, false, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("ButtonRequestDisable.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject381, serializableAppearanceObject382, serializableAppearanceObject383, serializableAppearanceObject384, "Hủy duyệt", null, null, true)});
             this.ButtonRequestDisable.Name = "ButtonRequestDisable";
             this.ButtonRequestDisable.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             // 
@@ -1472,7 +1493,7 @@ namespace HIS.Desktop.Plugins.HisExportMestMedicine
             // 
             this.ButtonAssignTest.AutoHeight = false;
             this.ButtonAssignTest.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("ButtonAssignTest.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject73, serializableAppearanceObject74, serializableAppearanceObject75, serializableAppearanceObject76, "Chỉ định xét nghiệm", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("ButtonAssignTest.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject385, serializableAppearanceObject386, serializableAppearanceObject387, serializableAppearanceObject388, "Chỉ định xét nghiệm", null, null, true)});
             this.ButtonAssignTest.Name = "ButtonAssignTest";
             this.ButtonAssignTest.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             this.ButtonAssignTest.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.ButtonAssignTest_ButtonClick);
@@ -1481,7 +1502,7 @@ namespace HIS.Desktop.Plugins.HisExportMestMedicine
             // 
             this.ButtonAssignTestDisable.AutoHeight = false;
             this.ButtonAssignTestDisable.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, false, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("ButtonAssignTestDisable.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject77, serializableAppearanceObject78, serializableAppearanceObject79, serializableAppearanceObject80, "Chỉ định xét nghiệm", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, false, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("ButtonAssignTestDisable.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject389, serializableAppearanceObject390, serializableAppearanceObject391, serializableAppearanceObject392, "Chỉ định xét nghiệm", null, null, true)});
             this.ButtonAssignTestDisable.Name = "ButtonAssignTestDisable";
             this.ButtonAssignTestDisable.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             // 
@@ -1489,7 +1510,7 @@ namespace HIS.Desktop.Plugins.HisExportMestMedicine
             // 
             this.Btn_MobaDepaCreate_Enable.AutoHeight = false;
             this.Btn_MobaDepaCreate_Enable.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("Btn_MobaDepaCreate_Enable.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject81, serializableAppearanceObject82, serializableAppearanceObject83, serializableAppearanceObject84, "Tạo nhập hao phí trả lại", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("Btn_MobaDepaCreate_Enable.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject393, serializableAppearanceObject394, serializableAppearanceObject395, serializableAppearanceObject396, "Tạo nhập hao phí trả lại", null, null, true)});
             this.Btn_MobaDepaCreate_Enable.Name = "Btn_MobaDepaCreate_Enable";
             this.Btn_MobaDepaCreate_Enable.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             this.Btn_MobaDepaCreate_Enable.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.Btn_MobaDepaCreate_Enable_ButtonClick);
@@ -1498,7 +1519,7 @@ namespace HIS.Desktop.Plugins.HisExportMestMedicine
             // 
             this.Btn_MobaDepaCreate_Disable.AutoHeight = false;
             this.Btn_MobaDepaCreate_Disable.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, false, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("Btn_MobaDepaCreate_Disable.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject85, serializableAppearanceObject86, serializableAppearanceObject87, serializableAppearanceObject88, "Tạo nhập hao phí trả lại", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, false, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("Btn_MobaDepaCreate_Disable.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject397, serializableAppearanceObject398, serializableAppearanceObject399, serializableAppearanceObject400, "Tạo nhập hao phí trả lại", null, null, true)});
             this.Btn_MobaDepaCreate_Disable.Name = "Btn_MobaDepaCreate_Disable";
             this.Btn_MobaDepaCreate_Disable.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             // 
@@ -1506,7 +1527,7 @@ namespace HIS.Desktop.Plugins.HisExportMestMedicine
             // 
             this.Btn_ImpMestCreate_Enable.AutoHeight = false;
             this.Btn_ImpMestCreate_Enable.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("Btn_ImpMestCreate_Enable.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject89, serializableAppearanceObject90, serializableAppearanceObject91, serializableAppearanceObject92, "Tạo phiếu nhập", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("Btn_ImpMestCreate_Enable.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject401, serializableAppearanceObject402, serializableAppearanceObject403, serializableAppearanceObject404, "Tạo phiếu nhập", null, null, true)});
             this.Btn_ImpMestCreate_Enable.Name = "Btn_ImpMestCreate_Enable";
             this.Btn_ImpMestCreate_Enable.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             this.Btn_ImpMestCreate_Enable.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.Btn_ImpMestCreate_Enable_ButtonClick);
@@ -1515,7 +1536,7 @@ namespace HIS.Desktop.Plugins.HisExportMestMedicine
             // 
             this.Btn_ImpMestCreate_Disable.AutoHeight = false;
             this.Btn_ImpMestCreate_Disable.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, false, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("Btn_ImpMestCreate_Disable.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject93, serializableAppearanceObject94, serializableAppearanceObject95, serializableAppearanceObject96, "Tạo phiếu nhập", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, false, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("Btn_ImpMestCreate_Disable.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject405, serializableAppearanceObject406, serializableAppearanceObject407, serializableAppearanceObject408, "Tạo phiếu nhập", null, null, true)});
             this.Btn_ImpMestCreate_Disable.Name = "Btn_ImpMestCreate_Disable";
             this.Btn_ImpMestCreate_Disable.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             // 
@@ -1523,7 +1544,7 @@ namespace HIS.Desktop.Plugins.HisExportMestMedicine
             // 
             this.NotApprove.AutoHeight = false;
             this.NotApprove.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("NotApprove.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject97, serializableAppearanceObject98, serializableAppearanceObject99, serializableAppearanceObject100, "Chưa xuất đủ", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("NotApprove.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject409, serializableAppearanceObject410, serializableAppearanceObject411, serializableAppearanceObject412, "Chưa xuất đủ", null, null, true)});
             this.NotApprove.Name = "NotApprove";
             this.NotApprove.ReadOnly = true;
             this.NotApprove.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
@@ -1532,7 +1553,7 @@ namespace HIS.Desktop.Plugins.HisExportMestMedicine
             // 
             this.Approve.AutoHeight = false;
             this.Approve.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("Approve.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject101, serializableAppearanceObject102, serializableAppearanceObject103, serializableAppearanceObject104, "Đã xuất đủ", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("Approve.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject413, serializableAppearanceObject414, serializableAppearanceObject415, serializableAppearanceObject416, "Đã xuất đủ", null, null, true)});
             this.Approve.Name = "Approve";
             this.Approve.ReadOnly = true;
             this.Approve.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
@@ -1541,7 +1562,7 @@ namespace HIS.Desktop.Plugins.HisExportMestMedicine
             // 
             this.Btn_HuyThucXuat_Enable.AutoHeight = false;
             this.Btn_HuyThucXuat_Enable.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("Btn_HuyThucXuat_Enable.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject105, serializableAppearanceObject106, serializableAppearanceObject107, serializableAppearanceObject108, "Hủy thực xuất", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("Btn_HuyThucXuat_Enable.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject417, serializableAppearanceObject418, serializableAppearanceObject419, serializableAppearanceObject420, "Hủy thực xuất", null, null, true)});
             this.Btn_HuyThucXuat_Enable.Name = "Btn_HuyThucXuat_Enable";
             this.Btn_HuyThucXuat_Enable.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             this.Btn_HuyThucXuat_Enable.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.Btn_HuyThucXuat_ButtonClick);
@@ -1550,7 +1571,7 @@ namespace HIS.Desktop.Plugins.HisExportMestMedicine
             // 
             this.Btn_HuyThucXuat_Disable.AutoHeight = false;
             this.Btn_HuyThucXuat_Disable.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, false, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("Btn_HuyThucXuat_Disable.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject109, serializableAppearanceObject110, serializableAppearanceObject111, serializableAppearanceObject112, "Hủy thực xuất", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, false, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("Btn_HuyThucXuat_Disable.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject421, serializableAppearanceObject422, serializableAppearanceObject423, serializableAppearanceObject424, "Hủy thực xuất", null, null, true)});
             this.Btn_HuyThucXuat_Disable.Name = "Btn_HuyThucXuat_Disable";
             this.Btn_HuyThucXuat_Disable.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             // 
@@ -1558,7 +1579,7 @@ namespace HIS.Desktop.Plugins.HisExportMestMedicine
             // 
             this.Btn_HuyTuChoiDuyet_Enable.AutoHeight = false;
             this.Btn_HuyTuChoiDuyet_Enable.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("Btn_HuyTuChoiDuyet_Enable.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject113, serializableAppearanceObject114, serializableAppearanceObject115, serializableAppearanceObject116, "Hủy từ chối duyệt", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("Btn_HuyTuChoiDuyet_Enable.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject425, serializableAppearanceObject426, serializableAppearanceObject427, serializableAppearanceObject428, "Hủy từ chối duyệt", null, null, true)});
             this.Btn_HuyTuChoiDuyet_Enable.Name = "Btn_HuyTuChoiDuyet_Enable";
             this.Btn_HuyTuChoiDuyet_Enable.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             this.Btn_HuyTuChoiDuyet_Enable.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.Btn_HuyTuChoiDuyet_ButtonClick);
@@ -1567,7 +1588,7 @@ namespace HIS.Desktop.Plugins.HisExportMestMedicine
             // 
             this.Btn_HuyTuChoiDuyet_Disable.AutoHeight = false;
             this.Btn_HuyTuChoiDuyet_Disable.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, false, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("Btn_HuyTuChoiDuyet_Disable.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject117, serializableAppearanceObject118, serializableAppearanceObject119, serializableAppearanceObject120, "Hủy từ chối duyệt", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, false, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("Btn_HuyTuChoiDuyet_Disable.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject429, serializableAppearanceObject430, serializableAppearanceObject431, serializableAppearanceObject432, "Hủy từ chối duyệt", null, null, true)});
             this.Btn_HuyTuChoiDuyet_Disable.Name = "Btn_HuyTuChoiDuyet_Disable";
             this.Btn_HuyTuChoiDuyet_Disable.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             // 
@@ -1575,7 +1596,7 @@ namespace HIS.Desktop.Plugins.HisExportMestMedicine
             // 
             this.Btn_HoanThanh_Enable.AutoHeight = false;
             this.Btn_HoanThanh_Enable.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("Btn_HoanThanh_Enable.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject121, serializableAppearanceObject122, serializableAppearanceObject123, serializableAppearanceObject124, "Hoàn thành", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("Btn_HoanThanh_Enable.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject433, serializableAppearanceObject434, serializableAppearanceObject435, serializableAppearanceObject436, "Hoàn thành", null, null, true)});
             this.Btn_HoanThanh_Enable.Name = "Btn_HoanThanh_Enable";
             this.Btn_HoanThanh_Enable.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             this.Btn_HoanThanh_Enable.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.Btn_HoanThanh_Enable_ButtonClick);
@@ -1584,7 +1605,7 @@ namespace HIS.Desktop.Plugins.HisExportMestMedicine
             // 
             this.Btn_HoanThanh_Disable.AutoHeight = false;
             this.Btn_HoanThanh_Disable.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, false, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("Btn_HoanThanh_Disable.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject125, serializableAppearanceObject126, serializableAppearanceObject127, serializableAppearanceObject128, "Hoàn thành", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, false, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("Btn_HoanThanh_Disable.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject437, serializableAppearanceObject438, serializableAppearanceObject439, serializableAppearanceObject440, "Hoàn thành", null, null, true)});
             this.Btn_HoanThanh_Disable.Name = "Btn_HoanThanh_Disable";
             this.Btn_HoanThanh_Disable.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             // 
@@ -1592,7 +1613,7 @@ namespace HIS.Desktop.Plugins.HisExportMestMedicine
             // 
             this.Btn_Check_TruyenMau_Disable.AutoHeight = false;
             this.Btn_Check_TruyenMau_Disable.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("Btn_Check_TruyenMau_Disable.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject129, serializableAppearanceObject130, serializableAppearanceObject131, serializableAppearanceObject132, "Kiểm tra máu truyền", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("Btn_Check_TruyenMau_Disable.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject441, serializableAppearanceObject442, serializableAppearanceObject443, serializableAppearanceObject444, "Kiểm tra máu truyền", null, null, true)});
             this.Btn_Check_TruyenMau_Disable.Name = "Btn_Check_TruyenMau_Disable";
             this.Btn_Check_TruyenMau_Disable.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             this.Btn_Check_TruyenMau_Disable.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.Btn_Check_TruyenMau_Disable_ButtonClick);
@@ -1601,7 +1622,7 @@ namespace HIS.Desktop.Plugins.HisExportMestMedicine
             // 
             this.Btn_Bill_Enable.AutoHeight = false;
             this.Btn_Bill_Enable.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("Btn_Bill_Enable.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject133, serializableAppearanceObject134, serializableAppearanceObject135, serializableAppearanceObject136, "Thanh toán", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("Btn_Bill_Enable.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject445, serializableAppearanceObject446, serializableAppearanceObject447, serializableAppearanceObject448, "Thanh toán", null, null, true)});
             this.Btn_Bill_Enable.Name = "Btn_Bill_Enable";
             this.Btn_Bill_Enable.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             this.Btn_Bill_Enable.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.Btn_Bill_Enable_ButtonClick);
@@ -1610,7 +1631,7 @@ namespace HIS.Desktop.Plugins.HisExportMestMedicine
             // 
             this.Btn_Bill_Disable.AutoHeight = false;
             this.Btn_Bill_Disable.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, false, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("Btn_Bill_Disable.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject137, serializableAppearanceObject138, serializableAppearanceObject139, serializableAppearanceObject140, "Thanh toán", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, false, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("Btn_Bill_Disable.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject449, serializableAppearanceObject450, serializableAppearanceObject451, serializableAppearanceObject452, "Thanh toán", null, null, true)});
             this.Btn_Bill_Disable.Name = "Btn_Bill_Disable";
             this.Btn_Bill_Disable.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             // 
@@ -1618,7 +1639,7 @@ namespace HIS.Desktop.Plugins.HisExportMestMedicine
             // 
             this.Btn_CancelBill_Enable.AutoHeight = false;
             this.Btn_CancelBill_Enable.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("Btn_CancelBill_Enable.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject141, serializableAppearanceObject142, serializableAppearanceObject143, serializableAppearanceObject144, "Hủy thanh toán", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("Btn_CancelBill_Enable.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject453, serializableAppearanceObject454, serializableAppearanceObject455, serializableAppearanceObject456, "Hủy thanh toán", null, null, true)});
             this.Btn_CancelBill_Enable.Name = "Btn_CancelBill_Enable";
             this.Btn_CancelBill_Enable.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             this.Btn_CancelBill_Enable.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.Btn_CancelBill_Enable_ButtonClick);
@@ -1627,7 +1648,7 @@ namespace HIS.Desktop.Plugins.HisExportMestMedicine
             // 
             this.Btn_CancelBill_Disable.AutoHeight = false;
             this.Btn_CancelBill_Disable.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, false, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("Btn_CancelBill_Disable.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject145, serializableAppearanceObject146, serializableAppearanceObject147, serializableAppearanceObject148, "Hủy thanh toán", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, false, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("Btn_CancelBill_Disable.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject457, serializableAppearanceObject458, serializableAppearanceObject459, serializableAppearanceObject460, "Hủy thanh toán", null, null, true)});
             this.Btn_CancelBill_Disable.Name = "Btn_CancelBill_Disable";
             this.Btn_CancelBill_Disable.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             // 
@@ -1635,7 +1656,7 @@ namespace HIS.Desktop.Plugins.HisExportMestMedicine
             // 
             this.btnCallPatient.AutoHeight = false;
             this.btnCallPatient.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("btnCallPatient.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject149, serializableAppearanceObject150, serializableAppearanceObject151, serializableAppearanceObject152, "", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("btnCallPatient.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject461, serializableAppearanceObject462, serializableAppearanceObject463, serializableAppearanceObject464, "", null, null, true)});
             this.btnCallPatient.Name = "btnCallPatient";
             this.btnCallPatient.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             // 
@@ -1643,16 +1664,17 @@ namespace HIS.Desktop.Plugins.HisExportMestMedicine
             // 
             this.btnCallPatientDisable.AutoHeight = false;
             this.btnCallPatientDisable.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, false, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("btnCallPatientDisable.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject153, serializableAppearanceObject154, serializableAppearanceObject155, serializableAppearanceObject156, "", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, false, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("btnCallPatientDisable.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject465, serializableAppearanceObject466, serializableAppearanceObject467, serializableAppearanceObject468, "", null, null, true)});
             this.btnCallPatientDisable.Name = "btnCallPatientDisable";
             this.btnCallPatientDisable.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             // 
             // chkInHDSD
             // 
-            this.chkInHDSD.Location = new System.Drawing.Point(1146, 576);
+            this.chkInHDSD.Location = new System.Drawing.Point(1515, 650);
+            this.chkInHDSD.Margin = new System.Windows.Forms.Padding(4);
             this.chkInHDSD.Name = "chkInHDSD";
             this.chkInHDSD.Properties.Caption = "";
-            this.chkInHDSD.Size = new System.Drawing.Size(96, 19);
+            this.chkInHDSD.Size = new System.Drawing.Size(162, 19);
             this.chkInHDSD.StyleController = this.layoutControl1;
             this.chkInHDSD.TabIndex = 15;
             this.chkInHDSD.CheckedChanged += new System.EventHandler(this.chkInHDSD_CheckedChanged);
@@ -1661,21 +1683,24 @@ namespace HIS.Desktop.Plugins.HisExportMestMedicine
             // 
             this.popupControlExpMestDetail.BorderStyle = DevExpress.XtraEditors.Controls.BorderStyles.NoBorder;
             this.popupControlExpMestDetail.Controls.Add(this.Gc_ExpMestDetail);
-            this.popupControlExpMestDetail.Location = new System.Drawing.Point(376, 355);
+            this.popupControlExpMestDetail.Location = new System.Drawing.Point(501, 437);
             this.popupControlExpMestDetail.Manager = this.barManager1;
+            this.popupControlExpMestDetail.Margin = new System.Windows.Forms.Padding(4);
             this.popupControlExpMestDetail.Name = "popupControlExpMestDetail";
-            this.popupControlExpMestDetail.Size = new System.Drawing.Size(714, 150);
+            this.popupControlExpMestDetail.Size = new System.Drawing.Size(952, 185);
             this.popupControlExpMestDetail.TabIndex = 14;
             this.popupControlExpMestDetail.Visible = false;
             // 
             // Gc_ExpMestDetail
             // 
             this.Gc_ExpMestDetail.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.Gc_ExpMestDetail.EmbeddedNavigator.Margin = new System.Windows.Forms.Padding(4);
             this.Gc_ExpMestDetail.Location = new System.Drawing.Point(0, 0);
             this.Gc_ExpMestDetail.MainView = this.Gv_ExpMestDetail;
+            this.Gc_ExpMestDetail.Margin = new System.Windows.Forms.Padding(4);
             this.Gc_ExpMestDetail.MenuManager = this.barManager1;
             this.Gc_ExpMestDetail.Name = "Gc_ExpMestDetail";
-            this.Gc_ExpMestDetail.Size = new System.Drawing.Size(714, 150);
+            this.Gc_ExpMestDetail.Size = new System.Drawing.Size(952, 185);
             this.Gc_ExpMestDetail.TabIndex = 0;
             this.Gc_ExpMestDetail.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
             this.Gv_ExpMestDetail});
@@ -1764,10 +1789,11 @@ namespace HIS.Desktop.Plugins.HisExportMestMedicine
             // 
             this.groupBoxChiTiet.Controls.Add(this.layoutControl5);
             this.groupBoxChiTiet.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(163)));
-            this.groupBoxChiTiet.Location = new System.Drawing.Point(1046, 0);
+            this.groupBoxChiTiet.Location = new System.Drawing.Point(1413, 0);
+            this.groupBoxChiTiet.Margin = new System.Windows.Forms.Padding(4);
             this.groupBoxChiTiet.Name = "groupBoxChiTiet";
-            this.groupBoxChiTiet.Padding = new System.Windows.Forms.Padding(3, 10, 3, 3);
-            this.groupBoxChiTiet.Size = new System.Drawing.Size(257, 552);
+            this.groupBoxChiTiet.Padding = new System.Windows.Forms.Padding(4, 12, 4, 4);
+            this.groupBoxChiTiet.Size = new System.Drawing.Size(347, 618);
             this.groupBoxChiTiet.TabIndex = 12;
             this.groupBoxChiTiet.TabStop = false;
             this.groupBoxChiTiet.Text = "Thông tin chi tiết";
@@ -1797,19 +1823,21 @@ namespace HIS.Desktop.Plugins.HisExportMestMedicine
             this.layoutControl5.Controls.Add(this.lblMaDieuTri);
             this.layoutControl5.Controls.Add(this.lblMaYeuCau);
             this.layoutControl5.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.layoutControl5.Location = new System.Drawing.Point(3, 32);
+            this.layoutControl5.Location = new System.Drawing.Point(4, 39);
+            this.layoutControl5.Margin = new System.Windows.Forms.Padding(4);
             this.layoutControl5.Name = "layoutControl5";
             this.layoutControl5.Root = this.layoutControlGroup4;
-            this.layoutControl5.Size = new System.Drawing.Size(251, 517);
+            this.layoutControl5.Size = new System.Drawing.Size(339, 575);
             this.layoutControl5.TabIndex = 0;
             this.layoutControl5.Text = "layoutControl5";
             // 
             // lblBloodCode
             // 
             this.lblBloodCode.AutoSizeMode = DevExpress.XtraEditors.LabelAutoSizeMode.None;
-            this.lblBloodCode.Location = new System.Drawing.Point(97, 218);
+            this.lblBloodCode.Location = new System.Drawing.Point(98, 277);
+            this.lblBloodCode.Margin = new System.Windows.Forms.Padding(4);
             this.lblBloodCode.Name = "lblBloodCode";
-            this.lblBloodCode.Size = new System.Drawing.Size(135, 20);
+            this.lblBloodCode.Size = new System.Drawing.Size(217, 20);
             this.lblBloodCode.StyleController = this.layoutControl5;
             this.lblBloodCode.TabIndex = 38;
             this.lblBloodCode.Text = " ";
@@ -1817,9 +1845,10 @@ namespace HIS.Desktop.Plugins.HisExportMestMedicine
             // lblDepartmentReq
             // 
             this.lblDepartmentReq.AutoSizeMode = DevExpress.XtraEditors.LabelAutoSizeMode.None;
-            this.lblDepartmentReq.Location = new System.Drawing.Point(97, 266);
+            this.lblDepartmentReq.Location = new System.Drawing.Point(98, 334);
+            this.lblDepartmentReq.Margin = new System.Windows.Forms.Padding(4);
             this.lblDepartmentReq.Name = "lblDepartmentReq";
-            this.lblDepartmentReq.Size = new System.Drawing.Size(135, 20);
+            this.lblDepartmentReq.Size = new System.Drawing.Size(217, 20);
             this.lblDepartmentReq.StyleController = this.layoutControl5;
             this.lblDepartmentReq.TabIndex = 37;
             this.lblDepartmentReq.Text = " ";
@@ -1827,74 +1856,83 @@ namespace HIS.Desktop.Plugins.HisExportMestMedicine
             // LblReqRoomName
             // 
             this.LblReqRoomName.AutoSizeMode = DevExpress.XtraEditors.LabelAutoSizeMode.None;
-            this.LblReqRoomName.Location = new System.Drawing.Point(97, 290);
+            this.LblReqRoomName.Location = new System.Drawing.Point(98, 360);
+            this.LblReqRoomName.Margin = new System.Windows.Forms.Padding(4);
             this.LblReqRoomName.Name = "LblReqRoomName";
-            this.LblReqRoomName.Size = new System.Drawing.Size(135, 20);
+            this.LblReqRoomName.Size = new System.Drawing.Size(217, 20);
             this.LblReqRoomName.StyleController = this.layoutControl5;
             this.LblReqRoomName.TabIndex = 35;
             // 
             // lblBhytNumber
             // 
-            this.lblBhytNumber.Location = new System.Drawing.Point(97, 170);
+            this.lblBhytNumber.Location = new System.Drawing.Point(98, 220);
+            this.lblBhytNumber.Margin = new System.Windows.Forms.Padding(4);
             this.lblBhytNumber.Name = "lblBhytNumber";
-            this.lblBhytNumber.Size = new System.Drawing.Size(135, 20);
+            this.lblBhytNumber.Size = new System.Drawing.Size(217, 20);
             this.lblBhytNumber.StyleController = this.layoutControl5;
             this.lblBhytNumber.TabIndex = 34;
             // 
             // lblTotalPrice
             // 
             this.lblTotalPrice.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(163)));
-            this.lblTotalPrice.Location = new System.Drawing.Point(97, 506);
+            this.lblTotalPrice.Location = new System.Drawing.Point(98, 634);
+            this.lblTotalPrice.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblTotalPrice.Name = "lblTotalPrice";
-            this.lblTotalPrice.Size = new System.Drawing.Size(135, 20);
+            this.lblTotalPrice.Size = new System.Drawing.Size(217, 25);
             this.lblTotalPrice.TabIndex = 33;
             // 
             // lblPrescriptionReqUserName
             // 
             this.lblPrescriptionReqUserName.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(163)));
-            this.lblPrescriptionReqUserName.Location = new System.Drawing.Point(97, 242);
+            this.lblPrescriptionReqUserName.Location = new System.Drawing.Point(98, 303);
+            this.lblPrescriptionReqUserName.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblPrescriptionReqUserName.Name = "lblPrescriptionReqUserName";
-            this.lblPrescriptionReqUserName.Size = new System.Drawing.Size(135, 20);
+            this.lblPrescriptionReqUserName.Size = new System.Drawing.Size(217, 25);
             this.lblPrescriptionReqUserName.TabIndex = 32;
             // 
             // lblExpTime
             // 
             this.lblExpTime.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(163)));
-            this.lblExpTime.Location = new System.Drawing.Point(97, 482);
+            this.lblExpTime.Location = new System.Drawing.Point(98, 603);
+            this.lblExpTime.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblExpTime.Name = "lblExpTime";
-            this.lblExpTime.Size = new System.Drawing.Size(135, 20);
+            this.lblExpTime.Size = new System.Drawing.Size(217, 25);
             this.lblExpTime.TabIndex = 31;
             // 
             // lblExpUserName
             // 
             this.lblExpUserName.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(163)));
-            this.lblExpUserName.Location = new System.Drawing.Point(97, 458);
+            this.lblExpUserName.Location = new System.Drawing.Point(98, 572);
+            this.lblExpUserName.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblExpUserName.Name = "lblExpUserName";
-            this.lblExpUserName.Size = new System.Drawing.Size(135, 20);
+            this.lblExpUserName.Size = new System.Drawing.Size(217, 25);
             this.lblExpUserName.TabIndex = 30;
             // 
             // lblCreateTime
             // 
             this.lblCreateTime.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(163)));
-            this.lblCreateTime.Location = new System.Drawing.Point(97, 434);
+            this.lblCreateTime.Location = new System.Drawing.Point(98, 541);
+            this.lblCreateTime.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblCreateTime.Name = "lblCreateTime";
-            this.lblCreateTime.Size = new System.Drawing.Size(135, 20);
+            this.lblCreateTime.Size = new System.Drawing.Size(217, 25);
             this.lblCreateTime.TabIndex = 29;
             // 
             // lblReqUserName
             // 
             this.lblReqUserName.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(163)));
-            this.lblReqUserName.Location = new System.Drawing.Point(97, 410);
+            this.lblReqUserName.Location = new System.Drawing.Point(98, 510);
+            this.lblReqUserName.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblReqUserName.Name = "lblReqUserName";
-            this.lblReqUserName.Size = new System.Drawing.Size(135, 20);
+            this.lblReqUserName.Size = new System.Drawing.Size(217, 25);
             this.lblReqUserName.TabIndex = 28;
             // 
             // lblPatientCode
             // 
             this.lblPatientCode.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
-            this.lblPatientCode.Location = new System.Drawing.Point(97, 50);
+            this.lblPatientCode.Location = new System.Drawing.Point(98, 65);
+            this.lblPatientCode.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblPatientCode.Name = "lblPatientCode";
-            this.lblPatientCode.Size = new System.Drawing.Size(135, 20);
+            this.lblPatientCode.Size = new System.Drawing.Size(217, 25);
             this.lblPatientCode.TabIndex = 27;
             this.lblPatientCode.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
@@ -1902,9 +1940,10 @@ namespace HIS.Desktop.Plugins.HisExportMestMedicine
             // 
             this.lblLyDoXuat.AutoEllipsis = true;
             this.lblLyDoXuat.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
-            this.lblLyDoXuat.Location = new System.Drawing.Point(97, 386);
+            this.lblLyDoXuat.Location = new System.Drawing.Point(98, 479);
+            this.lblLyDoXuat.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblLyDoXuat.Name = "lblLyDoXuat";
-            this.lblLyDoXuat.Size = new System.Drawing.Size(135, 20);
+            this.lblLyDoXuat.Size = new System.Drawing.Size(217, 25);
             this.lblLyDoXuat.TabIndex = 26;
             this.lblLyDoXuat.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
@@ -1912,9 +1951,10 @@ namespace HIS.Desktop.Plugins.HisExportMestMedicine
             // 
             this.lblNhaCungCap.AutoEllipsis = true;
             this.lblNhaCungCap.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
-            this.lblNhaCungCap.Location = new System.Drawing.Point(97, 362);
+            this.lblNhaCungCap.Location = new System.Drawing.Point(98, 448);
+            this.lblNhaCungCap.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblNhaCungCap.Name = "lblNhaCungCap";
-            this.lblNhaCungCap.Size = new System.Drawing.Size(135, 20);
+            this.lblNhaCungCap.Size = new System.Drawing.Size(217, 25);
             this.lblNhaCungCap.TabIndex = 25;
             this.lblNhaCungCap.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
@@ -1922,9 +1962,10 @@ namespace HIS.Desktop.Plugins.HisExportMestMedicine
             // 
             this.lblGiaGiam.AutoEllipsis = true;
             this.lblGiaGiam.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
-            this.lblGiaGiam.Location = new System.Drawing.Point(97, 314);
+            this.lblGiaGiam.Location = new System.Drawing.Point(98, 386);
+            this.lblGiaGiam.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblGiaGiam.Name = "lblGiaGiam";
-            this.lblGiaGiam.Size = new System.Drawing.Size(135, 20);
+            this.lblGiaGiam.Size = new System.Drawing.Size(217, 25);
             this.lblGiaGiam.TabIndex = 24;
             this.lblGiaGiam.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
@@ -1932,9 +1973,10 @@ namespace HIS.Desktop.Plugins.HisExportMestMedicine
             // 
             this.lblDoiTuong.AutoEllipsis = true;
             this.lblDoiTuong.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
-            this.lblDoiTuong.Location = new System.Drawing.Point(97, 194);
+            this.lblDoiTuong.Location = new System.Drawing.Point(98, 246);
+            this.lblDoiTuong.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblDoiTuong.Name = "lblDoiTuong";
-            this.lblDoiTuong.Size = new System.Drawing.Size(135, 20);
+            this.lblDoiTuong.Size = new System.Drawing.Size(217, 25);
             this.lblDoiTuong.TabIndex = 23;
             this.lblDoiTuong.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
@@ -1942,9 +1984,10 @@ namespace HIS.Desktop.Plugins.HisExportMestMedicine
             // 
             this.lblKho.AutoEllipsis = true;
             this.lblKho.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
-            this.lblKho.Location = new System.Drawing.Point(97, 338);
+            this.lblKho.Location = new System.Drawing.Point(98, 417);
+            this.lblKho.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblKho.Name = "lblKho";
-            this.lblKho.Size = new System.Drawing.Size(135, 20);
+            this.lblKho.Size = new System.Drawing.Size(217, 25);
             this.lblKho.TabIndex = 22;
             this.lblKho.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
@@ -1952,9 +1995,10 @@ namespace HIS.Desktop.Plugins.HisExportMestMedicine
             // 
             this.lblDiaChi.AutoEllipsis = true;
             this.lblDiaChi.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
-            this.lblDiaChi.Location = new System.Drawing.Point(97, 146);
+            this.lblDiaChi.Location = new System.Drawing.Point(98, 189);
+            this.lblDiaChi.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblDiaChi.Name = "lblDiaChi";
-            this.lblDiaChi.Size = new System.Drawing.Size(135, 20);
+            this.lblDiaChi.Size = new System.Drawing.Size(217, 25);
             this.lblDiaChi.TabIndex = 21;
             this.lblDiaChi.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
@@ -1962,9 +2006,10 @@ namespace HIS.Desktop.Plugins.HisExportMestMedicine
             // 
             this.lblNgaySinh.AutoEllipsis = true;
             this.lblNgaySinh.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
-            this.lblNgaySinh.Location = new System.Drawing.Point(97, 122);
+            this.lblNgaySinh.Location = new System.Drawing.Point(98, 158);
+            this.lblNgaySinh.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblNgaySinh.Name = "lblNgaySinh";
-            this.lblNgaySinh.Size = new System.Drawing.Size(135, 20);
+            this.lblNgaySinh.Size = new System.Drawing.Size(217, 25);
             this.lblNgaySinh.TabIndex = 20;
             this.lblNgaySinh.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
@@ -1972,9 +2017,10 @@ namespace HIS.Desktop.Plugins.HisExportMestMedicine
             // 
             this.lblGioiTinh.AutoEllipsis = true;
             this.lblGioiTinh.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
-            this.lblGioiTinh.Location = new System.Drawing.Point(97, 98);
+            this.lblGioiTinh.Location = new System.Drawing.Point(98, 127);
+            this.lblGioiTinh.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblGioiTinh.Name = "lblGioiTinh";
-            this.lblGioiTinh.Size = new System.Drawing.Size(135, 20);
+            this.lblGioiTinh.Size = new System.Drawing.Size(217, 25);
             this.lblGioiTinh.TabIndex = 19;
             this.lblGioiTinh.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
@@ -1982,9 +2028,10 @@ namespace HIS.Desktop.Plugins.HisExportMestMedicine
             // 
             this.lblTenBenhNhan.AutoEllipsis = true;
             this.lblTenBenhNhan.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
-            this.lblTenBenhNhan.Location = new System.Drawing.Point(97, 74);
+            this.lblTenBenhNhan.Location = new System.Drawing.Point(98, 96);
+            this.lblTenBenhNhan.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblTenBenhNhan.Name = "lblTenBenhNhan";
-            this.lblTenBenhNhan.Size = new System.Drawing.Size(135, 20);
+            this.lblTenBenhNhan.Size = new System.Drawing.Size(217, 25);
             this.lblTenBenhNhan.TabIndex = 18;
             this.lblTenBenhNhan.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
@@ -1992,9 +2039,10 @@ namespace HIS.Desktop.Plugins.HisExportMestMedicine
             // 
             this.lblMaDieuTri.AutoEllipsis = true;
             this.lblMaDieuTri.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
-            this.lblMaDieuTri.Location = new System.Drawing.Point(97, 26);
+            this.lblMaDieuTri.Location = new System.Drawing.Point(98, 34);
+            this.lblMaDieuTri.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblMaDieuTri.Name = "lblMaDieuTri";
-            this.lblMaDieuTri.Size = new System.Drawing.Size(135, 20);
+            this.lblMaDieuTri.Size = new System.Drawing.Size(217, 25);
             this.lblMaDieuTri.TabIndex = 17;
             this.lblMaDieuTri.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
@@ -2002,9 +2050,10 @@ namespace HIS.Desktop.Plugins.HisExportMestMedicine
             // 
             this.lblMaYeuCau.AutoEllipsis = true;
             this.lblMaYeuCau.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
-            this.lblMaYeuCau.Location = new System.Drawing.Point(97, 2);
+            this.lblMaYeuCau.Location = new System.Drawing.Point(98, 3);
+            this.lblMaYeuCau.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblMaYeuCau.Name = "lblMaYeuCau";
-            this.lblMaYeuCau.Size = new System.Drawing.Size(135, 20);
+            this.lblMaYeuCau.Size = new System.Drawing.Size(217, 25);
             this.lblMaYeuCau.TabIndex = 16;
             this.lblMaYeuCau.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
@@ -2038,7 +2087,7 @@ namespace HIS.Desktop.Plugins.HisExportMestMedicine
             this.layoutControlGroup4.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup4.Name = "Root";
             this.layoutControlGroup4.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
-            this.layoutControlGroup4.Size = new System.Drawing.Size(234, 528);
+            this.layoutControlGroup4.Size = new System.Drawing.Size(318, 662);
             this.layoutControlGroup4.TextVisible = false;
             // 
             // layoutControlItem4
@@ -2048,7 +2097,7 @@ namespace HIS.Desktop.Plugins.HisExportMestMedicine
             this.layoutControlItem4.Control = this.lblMaYeuCau;
             this.layoutControlItem4.Location = new System.Drawing.Point(0, 0);
             this.layoutControlItem4.Name = "layoutControlItem4";
-            this.layoutControlItem4.Size = new System.Drawing.Size(234, 24);
+            this.layoutControlItem4.Size = new System.Drawing.Size(318, 31);
             this.layoutControlItem4.Text = "Mã yêu cầu:";
             this.layoutControlItem4.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem4.TextSize = new System.Drawing.Size(90, 20);
@@ -2059,9 +2108,9 @@ namespace HIS.Desktop.Plugins.HisExportMestMedicine
             this.layoutControlItem11.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem11.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem11.Control = this.lblMaDieuTri;
-            this.layoutControlItem11.Location = new System.Drawing.Point(0, 24);
+            this.layoutControlItem11.Location = new System.Drawing.Point(0, 31);
             this.layoutControlItem11.Name = "layoutControlItem11";
-            this.layoutControlItem11.Size = new System.Drawing.Size(234, 24);
+            this.layoutControlItem11.Size = new System.Drawing.Size(318, 31);
             this.layoutControlItem11.Text = "Mã điều trị:";
             this.layoutControlItem11.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem11.TextSize = new System.Drawing.Size(90, 20);
@@ -2072,9 +2121,9 @@ namespace HIS.Desktop.Plugins.HisExportMestMedicine
             this.layoutControlItem12.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem12.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem12.Control = this.lblTenBenhNhan;
-            this.layoutControlItem12.Location = new System.Drawing.Point(0, 72);
+            this.layoutControlItem12.Location = new System.Drawing.Point(0, 93);
             this.layoutControlItem12.Name = "layoutControlItem12";
-            this.layoutControlItem12.Size = new System.Drawing.Size(234, 24);
+            this.layoutControlItem12.Size = new System.Drawing.Size(318, 31);
             this.layoutControlItem12.Text = "Tên bệnh nhân:";
             this.layoutControlItem12.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem12.TextSize = new System.Drawing.Size(90, 20);
@@ -2085,9 +2134,9 @@ namespace HIS.Desktop.Plugins.HisExportMestMedicine
             this.layoutControlItem21.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem21.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem21.Control = this.lblGioiTinh;
-            this.layoutControlItem21.Location = new System.Drawing.Point(0, 96);
+            this.layoutControlItem21.Location = new System.Drawing.Point(0, 124);
             this.layoutControlItem21.Name = "layoutControlItem21";
-            this.layoutControlItem21.Size = new System.Drawing.Size(234, 24);
+            this.layoutControlItem21.Size = new System.Drawing.Size(318, 31);
             this.layoutControlItem21.Text = "Giới tính:";
             this.layoutControlItem21.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem21.TextSize = new System.Drawing.Size(90, 20);
@@ -2098,9 +2147,9 @@ namespace HIS.Desktop.Plugins.HisExportMestMedicine
             this.layoutControlItem23.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem23.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem23.Control = this.lblNgaySinh;
-            this.layoutControlItem23.Location = new System.Drawing.Point(0, 120);
+            this.layoutControlItem23.Location = new System.Drawing.Point(0, 155);
             this.layoutControlItem23.Name = "layoutControlItem23";
-            this.layoutControlItem23.Size = new System.Drawing.Size(234, 24);
+            this.layoutControlItem23.Size = new System.Drawing.Size(318, 31);
             this.layoutControlItem23.Text = "Ngày sinh:";
             this.layoutControlItem23.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem23.TextSize = new System.Drawing.Size(90, 20);
@@ -2111,9 +2160,9 @@ namespace HIS.Desktop.Plugins.HisExportMestMedicine
             this.layoutControlItem24.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem24.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem24.Control = this.lblDiaChi;
-            this.layoutControlItem24.Location = new System.Drawing.Point(0, 144);
+            this.layoutControlItem24.Location = new System.Drawing.Point(0, 186);
             this.layoutControlItem24.Name = "layoutControlItem24";
-            this.layoutControlItem24.Size = new System.Drawing.Size(234, 24);
+            this.layoutControlItem24.Size = new System.Drawing.Size(318, 31);
             this.layoutControlItem24.Text = "Địa chỉ:";
             this.layoutControlItem24.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem24.TextSize = new System.Drawing.Size(90, 20);
@@ -2124,9 +2173,9 @@ namespace HIS.Desktop.Plugins.HisExportMestMedicine
             this.layoutControlItem29.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem29.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem29.Control = this.lblGiaGiam;
-            this.layoutControlItem29.Location = new System.Drawing.Point(0, 312);
+            this.layoutControlItem29.Location = new System.Drawing.Point(0, 383);
             this.layoutControlItem29.Name = "layoutControlItem29";
-            this.layoutControlItem29.Size = new System.Drawing.Size(234, 24);
+            this.layoutControlItem29.Size = new System.Drawing.Size(318, 31);
             this.layoutControlItem29.Text = "Chiết khấu:";
             this.layoutControlItem29.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem29.TextSize = new System.Drawing.Size(90, 20);
@@ -2137,9 +2186,9 @@ namespace HIS.Desktop.Plugins.HisExportMestMedicine
             this.layoutControlItem30.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem30.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem30.Control = this.lblNhaCungCap;
-            this.layoutControlItem30.Location = new System.Drawing.Point(0, 360);
+            this.layoutControlItem30.Location = new System.Drawing.Point(0, 445);
             this.layoutControlItem30.Name = "layoutControlItem30";
-            this.layoutControlItem30.Size = new System.Drawing.Size(234, 24);
+            this.layoutControlItem30.Size = new System.Drawing.Size(318, 31);
             this.layoutControlItem30.Text = "Nhà cung cấp:";
             this.layoutControlItem30.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem30.TextSize = new System.Drawing.Size(90, 20);
@@ -2150,9 +2199,9 @@ namespace HIS.Desktop.Plugins.HisExportMestMedicine
             this.layoutControlItem31.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem31.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem31.Control = this.lblLyDoXuat;
-            this.layoutControlItem31.Location = new System.Drawing.Point(0, 384);
+            this.layoutControlItem31.Location = new System.Drawing.Point(0, 476);
             this.layoutControlItem31.Name = "layoutControlItem31";
-            this.layoutControlItem31.Size = new System.Drawing.Size(234, 24);
+            this.layoutControlItem31.Size = new System.Drawing.Size(318, 31);
             this.layoutControlItem31.Text = "Lý do xuất:";
             this.layoutControlItem31.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem31.TextSize = new System.Drawing.Size(90, 20);
@@ -2163,9 +2212,9 @@ namespace HIS.Desktop.Plugins.HisExportMestMedicine
             this.layoutControlItem16.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem16.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem16.Control = this.lblPatientCode;
-            this.layoutControlItem16.Location = new System.Drawing.Point(0, 48);
+            this.layoutControlItem16.Location = new System.Drawing.Point(0, 62);
             this.layoutControlItem16.Name = "layoutControlItem16";
-            this.layoutControlItem16.Size = new System.Drawing.Size(234, 24);
+            this.layoutControlItem16.Size = new System.Drawing.Size(318, 31);
             this.layoutControlItem16.Text = "Mã bệnh nhân:";
             this.layoutControlItem16.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem16.TextSize = new System.Drawing.Size(90, 20);
@@ -2176,9 +2225,9 @@ namespace HIS.Desktop.Plugins.HisExportMestMedicine
             this.layoutControlItem17.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem17.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem17.Control = this.lblReqUserName;
-            this.layoutControlItem17.Location = new System.Drawing.Point(0, 408);
+            this.layoutControlItem17.Location = new System.Drawing.Point(0, 507);
             this.layoutControlItem17.Name = "layoutControlItem17";
-            this.layoutControlItem17.Size = new System.Drawing.Size(234, 24);
+            this.layoutControlItem17.Size = new System.Drawing.Size(318, 31);
             this.layoutControlItem17.Text = "Người bán:";
             this.layoutControlItem17.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem17.TextSize = new System.Drawing.Size(90, 20);
@@ -2189,9 +2238,9 @@ namespace HIS.Desktop.Plugins.HisExportMestMedicine
             this.layoutControlItem18.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem18.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem18.Control = this.lblCreateTime;
-            this.layoutControlItem18.Location = new System.Drawing.Point(0, 432);
+            this.layoutControlItem18.Location = new System.Drawing.Point(0, 538);
             this.layoutControlItem18.Name = "layoutControlItem18";
-            this.layoutControlItem18.Size = new System.Drawing.Size(234, 24);
+            this.layoutControlItem18.Size = new System.Drawing.Size(318, 31);
             this.layoutControlItem18.Text = "Ngày bán:";
             this.layoutControlItem18.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem18.TextSize = new System.Drawing.Size(90, 20);
@@ -2202,9 +2251,9 @@ namespace HIS.Desktop.Plugins.HisExportMestMedicine
             this.layoutControlItem19.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem19.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem19.Control = this.lblExpUserName;
-            this.layoutControlItem19.Location = new System.Drawing.Point(0, 456);
+            this.layoutControlItem19.Location = new System.Drawing.Point(0, 569);
             this.layoutControlItem19.Name = "layoutControlItem19";
-            this.layoutControlItem19.Size = new System.Drawing.Size(234, 24);
+            this.layoutControlItem19.Size = new System.Drawing.Size(318, 31);
             this.layoutControlItem19.Text = "Người xuất:";
             this.layoutControlItem19.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem19.TextSize = new System.Drawing.Size(90, 20);
@@ -2215,9 +2264,9 @@ namespace HIS.Desktop.Plugins.HisExportMestMedicine
             this.layoutControlItem20.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem20.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem20.Control = this.lblExpTime;
-            this.layoutControlItem20.Location = new System.Drawing.Point(0, 480);
+            this.layoutControlItem20.Location = new System.Drawing.Point(0, 600);
             this.layoutControlItem20.Name = "layoutControlItem20";
-            this.layoutControlItem20.Size = new System.Drawing.Size(234, 24);
+            this.layoutControlItem20.Size = new System.Drawing.Size(318, 31);
             this.layoutControlItem20.Text = "Ngày xuất:";
             this.layoutControlItem20.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem20.TextSize = new System.Drawing.Size(90, 20);
@@ -2228,9 +2277,9 @@ namespace HIS.Desktop.Plugins.HisExportMestMedicine
             this.layoutControlItem32.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem32.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem32.Control = this.lblTotalPrice;
-            this.layoutControlItem32.Location = new System.Drawing.Point(0, 504);
+            this.layoutControlItem32.Location = new System.Drawing.Point(0, 631);
             this.layoutControlItem32.Name = "layoutControlItem32";
-            this.layoutControlItem32.Size = new System.Drawing.Size(234, 24);
+            this.layoutControlItem32.Size = new System.Drawing.Size(318, 31);
             this.layoutControlItem32.Text = "Tổng thành tiền:";
             this.layoutControlItem32.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem32.TextSize = new System.Drawing.Size(90, 20);
@@ -2241,9 +2290,9 @@ namespace HIS.Desktop.Plugins.HisExportMestMedicine
             this.layoutControlItem26.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem26.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem26.Control = this.lblDoiTuong;
-            this.layoutControlItem26.Location = new System.Drawing.Point(0, 192);
+            this.layoutControlItem26.Location = new System.Drawing.Point(0, 243);
             this.layoutControlItem26.Name = "layoutControlItem26";
-            this.layoutControlItem26.Size = new System.Drawing.Size(234, 24);
+            this.layoutControlItem26.Size = new System.Drawing.Size(318, 31);
             this.layoutControlItem26.Text = "Đối tượng:";
             this.layoutControlItem26.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem26.TextSize = new System.Drawing.Size(90, 20);
@@ -2254,9 +2303,9 @@ namespace HIS.Desktop.Plugins.HisExportMestMedicine
             this.layoutControlItem22.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem22.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem22.Control = this.lblPrescriptionReqUserName;
-            this.layoutControlItem22.Location = new System.Drawing.Point(0, 240);
+            this.layoutControlItem22.Location = new System.Drawing.Point(0, 300);
             this.layoutControlItem22.Name = "layoutControlItem22";
-            this.layoutControlItem22.Size = new System.Drawing.Size(234, 24);
+            this.layoutControlItem22.Size = new System.Drawing.Size(318, 31);
             this.layoutControlItem22.Text = "Bác sĩ kê đơn:";
             this.layoutControlItem22.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem22.TextSize = new System.Drawing.Size(90, 20);
@@ -2267,9 +2316,9 @@ namespace HIS.Desktop.Plugins.HisExportMestMedicine
             this.lciBhytNumber.AppearanceItemCaption.Options.UseTextOptions = true;
             this.lciBhytNumber.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lciBhytNumber.Control = this.lblBhytNumber;
-            this.lciBhytNumber.Location = new System.Drawing.Point(0, 168);
+            this.lciBhytNumber.Location = new System.Drawing.Point(0, 217);
             this.lciBhytNumber.Name = "lciBhytNumber";
-            this.lciBhytNumber.Size = new System.Drawing.Size(234, 24);
+            this.lciBhytNumber.Size = new System.Drawing.Size(318, 26);
             this.lciBhytNumber.Text = "Số thẻ BHYT:";
             this.lciBhytNumber.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lciBhytNumber.TextSize = new System.Drawing.Size(90, 20);
@@ -2280,9 +2329,9 @@ namespace HIS.Desktop.Plugins.HisExportMestMedicine
             this.layoutControlItem25.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem25.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem25.Control = this.lblKho;
-            this.layoutControlItem25.Location = new System.Drawing.Point(0, 336);
+            this.layoutControlItem25.Location = new System.Drawing.Point(0, 414);
             this.layoutControlItem25.Name = "layoutControlItem25";
-            this.layoutControlItem25.Size = new System.Drawing.Size(234, 24);
+            this.layoutControlItem25.Size = new System.Drawing.Size(318, 31);
             this.layoutControlItem25.Text = "Kho nhập:";
             this.layoutControlItem25.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem25.TextSize = new System.Drawing.Size(90, 20);
@@ -2293,10 +2342,10 @@ namespace HIS.Desktop.Plugins.HisExportMestMedicine
             this.LciReqRoom.AppearanceItemCaption.Options.UseTextOptions = true;
             this.LciReqRoom.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.LciReqRoom.Control = this.LblReqRoomName;
-            this.LciReqRoom.Location = new System.Drawing.Point(0, 288);
+            this.LciReqRoom.Location = new System.Drawing.Point(0, 357);
             this.LciReqRoom.Name = "LciReqRoom";
             this.LciReqRoom.OptionsToolTip.ToolTip = "Phòng kê đơn/phòng yêu cầu";
-            this.LciReqRoom.Size = new System.Drawing.Size(234, 24);
+            this.LciReqRoom.Size = new System.Drawing.Size(318, 26);
             this.LciReqRoom.Text = "Phòng kê/yc:";
             this.LciReqRoom.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.LciReqRoom.TextSize = new System.Drawing.Size(90, 20);
@@ -2307,9 +2356,9 @@ namespace HIS.Desktop.Plugins.HisExportMestMedicine
             this.layoutControlItem41.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem41.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem41.Control = this.lblDepartmentReq;
-            this.layoutControlItem41.Location = new System.Drawing.Point(0, 264);
+            this.layoutControlItem41.Location = new System.Drawing.Point(0, 331);
             this.layoutControlItem41.Name = "layoutControlItem41";
-            this.layoutControlItem41.Size = new System.Drawing.Size(234, 24);
+            this.layoutControlItem41.Size = new System.Drawing.Size(318, 26);
             this.layoutControlItem41.Text = "Tên khoa:";
             this.layoutControlItem41.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem41.TextSize = new System.Drawing.Size(90, 20);
@@ -2320,9 +2369,9 @@ namespace HIS.Desktop.Plugins.HisExportMestMedicine
             this.layoutControlItem40.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem40.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem40.Control = this.lblBloodCode;
-            this.layoutControlItem40.Location = new System.Drawing.Point(0, 216);
+            this.layoutControlItem40.Location = new System.Drawing.Point(0, 274);
             this.layoutControlItem40.Name = "layoutControlItem40";
-            this.layoutControlItem40.Size = new System.Drawing.Size(234, 24);
+            this.layoutControlItem40.Size = new System.Drawing.Size(318, 26);
             this.layoutControlItem40.Text = "Nhóm máu:";
             this.layoutControlItem40.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem40.TextSize = new System.Drawing.Size(90, 20);
@@ -2330,9 +2379,10 @@ namespace HIS.Desktop.Plugins.HisExportMestMedicine
             // 
             // btnListDepa
             // 
-            this.btnListDepa.Location = new System.Drawing.Point(872, 577);
+            this.btnListDepa.Location = new System.Drawing.Point(1148, 647);
+            this.btnListDepa.Margin = new System.Windows.Forms.Padding(4);
             this.btnListDepa.Name = "btnListDepa";
-            this.btnListDepa.Size = new System.Drawing.Size(91, 22);
+            this.btnListDepa.Size = new System.Drawing.Size(139, 27);
             this.btnListDepa.StyleController = this.layoutControl1;
             this.btnListDepa.TabIndex = 11;
             this.btnListDepa.Text = "Mã phiếu xuất sd";
@@ -2340,9 +2390,10 @@ namespace HIS.Desktop.Plugins.HisExportMestMedicine
             // 
             // btnExportCodeList
             // 
-            this.btnExportCodeList.Location = new System.Drawing.Point(967, 577);
+            this.btnExportCodeList.Location = new System.Drawing.Point(1293, 647);
+            this.btnExportCodeList.Margin = new System.Windows.Forms.Padding(4);
             this.btnExportCodeList.Name = "btnExportCodeList";
-            this.btnExportCodeList.Size = new System.Drawing.Size(77, 22);
+            this.btnExportCodeList.Size = new System.Drawing.Size(117, 27);
             this.btnExportCodeList.StyleController = this.layoutControl1;
             this.btnExportCodeList.TabIndex = 9;
             this.btnExportCodeList.Text = "Xuất mã phiếu";
@@ -2377,17 +2428,19 @@ namespace HIS.Desktop.Plugins.HisExportMestMedicine
             this.layoutControl2.Controls.Add(this.btnRefresh);
             this.layoutControl2.Controls.Add(this.btnSearch);
             this.layoutControl2.Controls.Add(this.txtKeyWord);
-            this.layoutControl2.Location = new System.Drawing.Point(2, 2);
+            this.layoutControl2.Location = new System.Drawing.Point(3, 3);
+            this.layoutControl2.Margin = new System.Windows.Forms.Padding(4);
             this.layoutControl2.Name = "layoutControl2";
             this.layoutControl2.Root = this.Root;
-            this.layoutControl2.Size = new System.Drawing.Size(208, 597);
+            this.layoutControl2.Size = new System.Drawing.Size(280, 671);
             this.layoutControl2.TabIndex = 10;
             this.layoutControl2.Text = "layoutControl2";
             // 
             // dteIntructionTimeTo
             // 
             this.dteIntructionTimeTo.EditValue = null;
-            this.dteIntructionTimeTo.Location = new System.Drawing.Point(97, 264);
+            this.dteIntructionTimeTo.Location = new System.Drawing.Point(98, 303);
+            this.dteIntructionTimeTo.Margin = new System.Windows.Forms.Padding(4);
             this.dteIntructionTimeTo.MenuManager = this.barManager1;
             this.dteIntructionTimeTo.Name = "dteIntructionTimeTo";
             this.dteIntructionTimeTo.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
@@ -2399,14 +2452,15 @@ namespace HIS.Desktop.Plugins.HisExportMestMedicine
             this.dteIntructionTimeTo.Properties.EditFormat.FormatString = "dd/MM/yyyy HH:mm";
             this.dteIntructionTimeTo.Properties.EditFormat.FormatType = DevExpress.Utils.FormatType.Custom;
             this.dteIntructionTimeTo.Properties.Mask.EditMask = "dd/MM/yyyy HH:mm";
-            this.dteIntructionTimeTo.Size = new System.Drawing.Size(109, 20);
+            this.dteIntructionTimeTo.Size = new System.Drawing.Size(179, 22);
             this.dteIntructionTimeTo.StyleController = this.layoutControl2;
             this.dteIntructionTimeTo.TabIndex = 31;
             // 
             // dteIntructionTimeFrom
             // 
             this.dteIntructionTimeFrom.EditValue = null;
-            this.dteIntructionTimeFrom.Location = new System.Drawing.Point(97, 240);
+            this.dteIntructionTimeFrom.Location = new System.Drawing.Point(98, 275);
+            this.dteIntructionTimeFrom.Margin = new System.Windows.Forms.Padding(4);
             this.dteIntructionTimeFrom.MenuManager = this.barManager1;
             this.dteIntructionTimeFrom.Name = "dteIntructionTimeFrom";
             this.dteIntructionTimeFrom.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
@@ -2419,18 +2473,19 @@ namespace HIS.Desktop.Plugins.HisExportMestMedicine
             this.dteIntructionTimeFrom.Properties.EditFormat.FormatString = "dd/MM/yyyy HH:mm";
             this.dteIntructionTimeFrom.Properties.EditFormat.FormatType = DevExpress.Utils.FormatType.Custom;
             this.dteIntructionTimeFrom.Properties.Mask.EditMask = "dd/MM/yyyy HH:mm";
-            this.dteIntructionTimeFrom.Size = new System.Drawing.Size(109, 20);
+            this.dteIntructionTimeFrom.Size = new System.Drawing.Size(179, 22);
             this.dteIntructionTimeFrom.StyleController = this.layoutControl2;
             this.dteIntructionTimeFrom.TabIndex = 30;
             // 
             // txtBloodCode
             // 
-            this.txtBloodCode.Location = new System.Drawing.Point(2, 26);
+            this.txtBloodCode.Location = new System.Drawing.Point(3, 31);
+            this.txtBloodCode.Margin = new System.Windows.Forms.Padding(4);
             this.txtBloodCode.MenuManager = this.barManager1;
             this.txtBloodCode.Name = "txtBloodCode";
             this.txtBloodCode.Properties.NullValuePrompt = "Mã máu";
             this.txtBloodCode.Properties.NullValuePromptShowForEmptyValue = true;
-            this.txtBloodCode.Size = new System.Drawing.Size(204, 20);
+            this.txtBloodCode.Size = new System.Drawing.Size(274, 22);
             this.txtBloodCode.StyleController = this.layoutControl2;
             this.txtBloodCode.TabIndex = 29;
             this.txtBloodCode.ToolTip = "Mã vạch của túi máu";
@@ -2439,7 +2494,8 @@ namespace HIS.Desktop.Plugins.HisExportMestMedicine
             // dtExpTimeTo
             // 
             this.dtExpTimeTo.EditValue = null;
-            this.dtExpTimeTo.Location = new System.Drawing.Point(97, 216);
+            this.dtExpTimeTo.Location = new System.Drawing.Point(98, 251);
+            this.dtExpTimeTo.Margin = new System.Windows.Forms.Padding(4);
             this.dtExpTimeTo.MenuManager = this.barManager1;
             this.dtExpTimeTo.Name = "dtExpTimeTo";
             this.dtExpTimeTo.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
@@ -2451,7 +2507,7 @@ namespace HIS.Desktop.Plugins.HisExportMestMedicine
             this.dtExpTimeTo.Properties.EditFormat.FormatString = "dd/MM/yyyy hh:mm";
             this.dtExpTimeTo.Properties.EditFormat.FormatType = DevExpress.Utils.FormatType.Custom;
             this.dtExpTimeTo.Properties.Mask.EditMask = "dd/MM/yyyy HH:mm";
-            this.dtExpTimeTo.Size = new System.Drawing.Size(109, 20);
+            this.dtExpTimeTo.Size = new System.Drawing.Size(179, 22);
             this.dtExpTimeTo.StyleController = this.layoutControl2;
             this.dtExpTimeTo.TabIndex = 11;
             this.dtExpTimeTo.Closed += new DevExpress.XtraEditors.Controls.ClosedEventHandler(this.dtExpTimeTo_Closed);
@@ -2459,23 +2515,24 @@ namespace HIS.Desktop.Plugins.HisExportMestMedicine
             // 
             // txtHeinCard
             // 
-            this.txtHeinCard.Location = new System.Drawing.Point(2, 98);
+            this.txtHeinCard.Location = new System.Drawing.Point(3, 115);
+            this.txtHeinCard.Margin = new System.Windows.Forms.Padding(4);
             this.txtHeinCard.MenuManager = this.barManager1;
             this.txtHeinCard.Name = "txtHeinCard";
             this.txtHeinCard.Properties.NullValuePrompt = "Thẻ BHYT";
             this.txtHeinCard.Properties.NullValuePromptShowForEmptyValue = true;
             this.txtHeinCard.Properties.ShowNullValuePromptWhenFocused = true;
-            this.txtHeinCard.Size = new System.Drawing.Size(204, 20);
+            this.txtHeinCard.Size = new System.Drawing.Size(274, 22);
             this.txtHeinCard.StyleController = this.layoutControl2;
             this.txtHeinCard.TabIndex = 6;
             this.txtHeinCard.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.txtHeinCard_PreviewKeyDown);
             // 
             // lblTotalOfMedicine
             // 
-            this.lblTotalOfMedicine.Location = new System.Drawing.Point(95, 521);
-            this.lblTotalOfMedicine.Margin = new System.Windows.Forms.Padding(2);
+            this.lblTotalOfMedicine.Location = new System.Drawing.Point(95, 588);
+            this.lblTotalOfMedicine.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.lblTotalOfMedicine.Name = "lblTotalOfMedicine";
-            this.lblTotalOfMedicine.Size = new System.Drawing.Size(33, 17);
+            this.lblTotalOfMedicine.Size = new System.Drawing.Size(43, 17);
             this.lblTotalOfMedicine.StyleController = this.layoutControl2;
             this.lblTotalOfMedicine.TabIndex = 28;
             this.lblTotalOfMedicine.Text = "0         ";
@@ -2483,10 +2540,10 @@ namespace HIS.Desktop.Plugins.HisExportMestMedicine
             // lblAveragePerMedicine
             // 
             this.lblAveragePerMedicine.Appearance.ForeColor = System.Drawing.Color.Red;
-            this.lblAveragePerMedicine.Location = new System.Drawing.Point(95, 555);
-            this.lblAveragePerMedicine.Margin = new System.Windows.Forms.Padding(2);
+            this.lblAveragePerMedicine.Location = new System.Drawing.Point(95, 622);
+            this.lblAveragePerMedicine.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.lblAveragePerMedicine.Name = "lblAveragePerMedicine";
-            this.lblAveragePerMedicine.Size = new System.Drawing.Size(28, 16);
+            this.lblAveragePerMedicine.Size = new System.Drawing.Size(32, 16);
             this.lblAveragePerMedicine.StyleController = this.layoutControl2;
             this.lblAveragePerMedicine.TabIndex = 27;
             this.lblAveragePerMedicine.Text = "0.000";
@@ -2494,40 +2551,42 @@ namespace HIS.Desktop.Plugins.HisExportMestMedicine
             // lblTotalOfPrice
             // 
             this.lblTotalOfPrice.Appearance.ForeColor = System.Drawing.Color.Red;
-            this.lblTotalOfPrice.Location = new System.Drawing.Point(95, 538);
-            this.lblTotalOfPrice.Margin = new System.Windows.Forms.Padding(2);
+            this.lblTotalOfPrice.Location = new System.Drawing.Point(95, 605);
+            this.lblTotalOfPrice.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.lblTotalOfPrice.Name = "lblTotalOfPrice";
-            this.lblTotalOfPrice.Size = new System.Drawing.Size(28, 17);
+            this.lblTotalOfPrice.Size = new System.Drawing.Size(32, 17);
             this.lblTotalOfPrice.StyleController = this.layoutControl2;
             this.lblTotalOfPrice.TabIndex = 26;
             this.lblTotalOfPrice.Text = "0.000";
             // 
             // lblTotalOfPatient
             // 
-            this.lblTotalOfPatient.Location = new System.Drawing.Point(95, 504);
-            this.lblTotalOfPatient.Margin = new System.Windows.Forms.Padding(2);
+            this.lblTotalOfPatient.Location = new System.Drawing.Point(95, 571);
+            this.lblTotalOfPatient.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.lblTotalOfPatient.Name = "lblTotalOfPatient";
-            this.lblTotalOfPatient.Size = new System.Drawing.Size(30, 17);
+            this.lblTotalOfPatient.Size = new System.Drawing.Size(39, 17);
             this.lblTotalOfPatient.StyleController = this.layoutControl2;
             this.lblTotalOfPatient.TabIndex = 25;
             this.lblTotalOfPatient.Text = "0        ";
             // 
             // txtPresNumber
             // 
-            this.txtPresNumber.Location = new System.Drawing.Point(107, 74);
+            this.txtPresNumber.Location = new System.Drawing.Point(144, 87);
+            this.txtPresNumber.Margin = new System.Windows.Forms.Padding(4);
             this.txtPresNumber.MenuManager = this.barManager1;
             this.txtPresNumber.Name = "txtPresNumber";
             this.txtPresNumber.Properties.NullValuePrompt = "Số toa";
             this.txtPresNumber.Properties.NullValuePromptShowForEmptyValue = true;
             this.txtPresNumber.Properties.ShowNullValuePromptWhenFocused = true;
-            this.txtPresNumber.Size = new System.Drawing.Size(99, 20);
+            this.txtPresNumber.Size = new System.Drawing.Size(133, 22);
             this.txtPresNumber.StyleController = this.layoutControl2;
             this.txtPresNumber.TabIndex = 5;
             this.txtPresNumber.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.txtPresNumber_PreviewKeyDown);
             // 
             // radioGroupExportBill
             // 
-            this.radioGroupExportBill.Location = new System.Drawing.Point(97, 439);
+            this.radioGroupExportBill.Location = new System.Drawing.Point(97, 495);
+            this.radioGroupExportBill.Margin = new System.Windows.Forms.Padding(4);
             this.radioGroupExportBill.MenuManager = this.barManager1;
             this.radioGroupExportBill.Name = "radioGroupExportBill";
             this.radioGroupExportBill.Properties.Columns = 1;
@@ -2536,20 +2595,21 @@ namespace HIS.Desktop.Plugins.HisExportMestMedicine
             new DevExpress.XtraEditors.Controls.RadioGroupItem(null, "Đã xuất"),
             new DevExpress.XtraEditors.Controls.RadioGroupItem(null, "Chưa xuất")});
             this.radioGroupExportBill.Properties.ItemsLayout = DevExpress.XtraEditors.RadioGroupItemsLayout.Column;
-            this.radioGroupExportBill.Size = new System.Drawing.Size(109, 55);
+            this.radioGroupExportBill.Size = new System.Drawing.Size(181, 61);
             this.radioGroupExportBill.StyleController = this.layoutControl2;
             this.radioGroupExportBill.TabIndex = 17;
             // 
             // CboRequestRoomIds
             // 
-            this.CboRequestRoomIds.Location = new System.Drawing.Point(97, 360);
+            this.CboRequestRoomIds.Location = new System.Drawing.Point(98, 407);
+            this.CboRequestRoomIds.Margin = new System.Windows.Forms.Padding(4);
             this.CboRequestRoomIds.Name = "CboRequestRoomIds";
             this.CboRequestRoomIds.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
             this.CboRequestRoomIds.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
             this.CboRequestRoomIds.Properties.NullText = "";
             this.CboRequestRoomIds.Properties.View = this.gridRequestRoomView;
-            this.CboRequestRoomIds.Size = new System.Drawing.Size(109, 20);
+            this.CboRequestRoomIds.Size = new System.Drawing.Size(179, 22);
             this.CboRequestRoomIds.StyleController = this.layoutControl2;
             this.CboRequestRoomIds.TabIndex = 15;
             this.CboRequestRoomIds.Closed += new DevExpress.XtraEditors.Controls.ClosedEventHandler(this.CboRequestRoomIds_Closed);
@@ -2566,7 +2626,8 @@ namespace HIS.Desktop.Plugins.HisExportMestMedicine
             // 
             // cboPatientType
             // 
-            this.cboPatientType.Location = new System.Drawing.Point(97, 336);
+            this.cboPatientType.Location = new System.Drawing.Point(98, 379);
+            this.cboPatientType.Margin = new System.Windows.Forms.Padding(4);
             this.cboPatientType.Name = "cboPatientType";
             this.cboPatientType.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
             this.cboPatientType.Properties.Appearance.Options.UseTextOptions = true;
@@ -2576,7 +2637,7 @@ namespace HIS.Desktop.Plugins.HisExportMestMedicine
             this.cboPatientType.Properties.NullText = "";
             this.cboPatientType.Properties.View = this.gridPatientType;
             this.cboPatientType.Properties.CustomDisplayText += new DevExpress.XtraEditors.Controls.CustomDisplayTextEventHandler(this.cboPatientType_Properties_CustomDisplayText);
-            this.cboPatientType.Size = new System.Drawing.Size(109, 20);
+            this.cboPatientType.Size = new System.Drawing.Size(179, 22);
             this.cboPatientType.StyleController = this.layoutControl2;
             this.cboPatientType.TabIndex = 14;
             // 
@@ -2592,7 +2653,8 @@ namespace HIS.Desktop.Plugins.HisExportMestMedicine
             // 
             // radioGroupStatus
             // 
-            this.radioGroupStatus.Location = new System.Drawing.Point(97, 382);
+            this.radioGroupStatus.Location = new System.Drawing.Point(97, 432);
+            this.radioGroupStatus.Margin = new System.Windows.Forms.Padding(4);
             this.radioGroupStatus.Name = "radioGroupStatus";
             this.radioGroupStatus.Properties.Columns = 1;
             this.radioGroupStatus.Properties.Items.AddRange(new DevExpress.XtraEditors.Controls.RadioGroupItem[] {
@@ -2600,42 +2662,45 @@ namespace HIS.Desktop.Plugins.HisExportMestMedicine
             new DevExpress.XtraEditors.Controls.RadioGroupItem(null, "Đã khóa VP"),
             new DevExpress.XtraEditors.Controls.RadioGroupItem(null, "Chưa khóa VP")});
             this.radioGroupStatus.Properties.ItemsLayout = DevExpress.XtraEditors.RadioGroupItemsLayout.Column;
-            this.radioGroupStatus.Size = new System.Drawing.Size(109, 55);
+            this.radioGroupStatus.Size = new System.Drawing.Size(181, 61);
             this.radioGroupStatus.StyleController = this.layoutControl2;
             this.radioGroupStatus.TabIndex = 16;
             // 
             // txtSearchPatientCode
             // 
-            this.txtSearchPatientCode.Location = new System.Drawing.Point(2, 50);
+            this.txtSearchPatientCode.Location = new System.Drawing.Point(3, 59);
+            this.txtSearchPatientCode.Margin = new System.Windows.Forms.Padding(4);
             this.txtSearchPatientCode.Name = "txtSearchPatientCode";
             this.txtSearchPatientCode.Properties.NullValuePrompt = "Mã bệnh nhân";
             this.txtSearchPatientCode.Properties.NullValuePromptShowForEmptyValue = true;
             this.txtSearchPatientCode.Properties.ShowNullValuePromptWhenFocused = true;
-            this.txtSearchPatientCode.Size = new System.Drawing.Size(101, 20);
+            this.txtSearchPatientCode.Size = new System.Drawing.Size(135, 22);
             this.txtSearchPatientCode.StyleController = this.layoutControl2;
             this.txtSearchPatientCode.TabIndex = 2;
             this.txtSearchPatientCode.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.txtSearchPatientCode_PreviewKeyDown);
             // 
             // txtServiceReqCode
             // 
-            this.txtServiceReqCode.Location = new System.Drawing.Point(2, 74);
+            this.txtServiceReqCode.Location = new System.Drawing.Point(3, 87);
+            this.txtServiceReqCode.Margin = new System.Windows.Forms.Padding(4);
             this.txtServiceReqCode.Name = "txtServiceReqCode";
             this.txtServiceReqCode.Properties.NullValuePrompt = "Mã y lệnh";
             this.txtServiceReqCode.Properties.NullValuePromptShowForEmptyValue = true;
             this.txtServiceReqCode.Properties.ShowNullValuePromptWhenFocused = true;
-            this.txtServiceReqCode.Size = new System.Drawing.Size(101, 20);
+            this.txtServiceReqCode.Size = new System.Drawing.Size(135, 22);
             this.txtServiceReqCode.StyleController = this.layoutControl2;
             this.txtServiceReqCode.TabIndex = 4;
             this.txtServiceReqCode.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.txtServiceReqCode_PreviewKeyDown);
             // 
             // txtSearchTreatmentCode
             // 
-            this.txtSearchTreatmentCode.Location = new System.Drawing.Point(107, 50);
+            this.txtSearchTreatmentCode.Location = new System.Drawing.Point(144, 59);
+            this.txtSearchTreatmentCode.Margin = new System.Windows.Forms.Padding(4);
             this.txtSearchTreatmentCode.Name = "txtSearchTreatmentCode";
             this.txtSearchTreatmentCode.Properties.NullValuePrompt = "Mã điều trị";
             this.txtSearchTreatmentCode.Properties.NullValuePromptShowForEmptyValue = true;
             this.txtSearchTreatmentCode.Properties.ShowNullValuePromptWhenFocused = true;
-            this.txtSearchTreatmentCode.Size = new System.Drawing.Size(99, 20);
+            this.txtSearchTreatmentCode.Size = new System.Drawing.Size(133, 22);
             this.txtSearchTreatmentCode.StyleController = this.layoutControl2;
             this.txtSearchTreatmentCode.TabIndex = 3;
             this.txtSearchTreatmentCode.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.txtSearchTreatmentCode_PreviewKeyDown);
@@ -2643,7 +2708,8 @@ namespace HIS.Desktop.Plugins.HisExportMestMedicine
             // cboType
             // 
             this.cboType.EditValue = "";
-            this.cboType.Location = new System.Drawing.Point(97, 312);
+            this.cboType.Location = new System.Drawing.Point(98, 355);
+            this.cboType.Margin = new System.Windows.Forms.Padding(4);
             this.cboType.MaximumSize = new System.Drawing.Size(0, 20);
             this.cboType.MinimumSize = new System.Drawing.Size(0, 20);
             this.cboType.Name = "cboType";
@@ -2652,7 +2718,7 @@ namespace HIS.Desktop.Plugins.HisExportMestMedicine
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
             this.cboType.Properties.NullText = "";
             this.cboType.Properties.View = this.gridViewType;
-            this.cboType.Size = new System.Drawing.Size(109, 20);
+            this.cboType.Size = new System.Drawing.Size(179, 20);
             this.cboType.StyleController = this.layoutControl2;
             this.cboType.TabIndex = 13;
             this.cboType.Closed += new DevExpress.XtraEditors.Controls.ClosedEventHandler(this.cboType_Closed);
@@ -2673,7 +2739,8 @@ namespace HIS.Desktop.Plugins.HisExportMestMedicine
             // cboStatus
             // 
             this.cboStatus.EditValue = "";
-            this.cboStatus.Location = new System.Drawing.Point(97, 288);
+            this.cboStatus.Location = new System.Drawing.Point(98, 331);
+            this.cboStatus.Margin = new System.Windows.Forms.Padding(4);
             this.cboStatus.MaximumSize = new System.Drawing.Size(0, 20);
             this.cboStatus.MinimumSize = new System.Drawing.Size(0, 20);
             this.cboStatus.Name = "cboStatus";
@@ -2684,7 +2751,7 @@ namespace HIS.Desktop.Plugins.HisExportMestMedicine
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
             this.cboStatus.Properties.NullText = "";
             this.cboStatus.Properties.View = this.gridViewStatus;
-            this.cboStatus.Size = new System.Drawing.Size(109, 20);
+            this.cboStatus.Size = new System.Drawing.Size(179, 20);
             this.cboStatus.StyleController = this.layoutControl2;
             this.cboStatus.TabIndex = 12;
             this.cboStatus.Closed += new DevExpress.XtraEditors.Controls.ClosedEventHandler(this.cboStatus_Closed);
@@ -2705,7 +2772,8 @@ namespace HIS.Desktop.Plugins.HisExportMestMedicine
             // dtExpTimeFrom
             // 
             this.dtExpTimeFrom.EditValue = null;
-            this.dtExpTimeFrom.Location = new System.Drawing.Point(97, 192);
+            this.dtExpTimeFrom.Location = new System.Drawing.Point(98, 223);
+            this.dtExpTimeFrom.Margin = new System.Windows.Forms.Padding(4);
             this.dtExpTimeFrom.Name = "dtExpTimeFrom";
             this.dtExpTimeFrom.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
@@ -2717,7 +2785,7 @@ namespace HIS.Desktop.Plugins.HisExportMestMedicine
             this.dtExpTimeFrom.Properties.EditFormat.FormatType = DevExpress.Utils.FormatType.Custom;
             this.dtExpTimeFrom.Properties.Mask.EditMask = "dd/MM/yyyy HH:mm";
             this.dtExpTimeFrom.Properties.MaxValue = new System.DateTime(9999, 12, 31, 23, 59, 0, 0);
-            this.dtExpTimeFrom.Size = new System.Drawing.Size(109, 20);
+            this.dtExpTimeFrom.Size = new System.Drawing.Size(179, 22);
             this.dtExpTimeFrom.StyleController = this.layoutControl2;
             this.dtExpTimeFrom.TabIndex = 10;
             this.dtExpTimeFrom.Closed += new DevExpress.XtraEditors.Controls.ClosedEventHandler(this.dtExpTimeFrom_Closed);
@@ -2726,7 +2794,8 @@ namespace HIS.Desktop.Plugins.HisExportMestMedicine
             // dtCreateTimeTo
             // 
             this.dtCreateTimeTo.EditValue = null;
-            this.dtCreateTimeTo.Location = new System.Drawing.Point(97, 168);
+            this.dtCreateTimeTo.Location = new System.Drawing.Point(98, 195);
+            this.dtCreateTimeTo.Margin = new System.Windows.Forms.Padding(4);
             this.dtCreateTimeTo.Name = "dtCreateTimeTo";
             this.dtCreateTimeTo.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
@@ -2738,7 +2807,7 @@ namespace HIS.Desktop.Plugins.HisExportMestMedicine
             this.dtCreateTimeTo.Properties.EditFormat.FormatType = DevExpress.Utils.FormatType.Custom;
             this.dtCreateTimeTo.Properties.Mask.EditMask = "dd/MM/yyyy HH:mm";
             this.dtCreateTimeTo.Properties.MaxValue = new System.DateTime(9999, 12, 31, 23, 59, 0, 0);
-            this.dtCreateTimeTo.Size = new System.Drawing.Size(109, 20);
+            this.dtCreateTimeTo.Size = new System.Drawing.Size(179, 22);
             this.dtCreateTimeTo.StyleController = this.layoutControl2;
             this.dtCreateTimeTo.TabIndex = 9;
             this.dtCreateTimeTo.Closed += new DevExpress.XtraEditors.Controls.ClosedEventHandler(this.dtCreateTimeTo_Closed);
@@ -2747,7 +2816,8 @@ namespace HIS.Desktop.Plugins.HisExportMestMedicine
             // dtCreateTimeFrom
             // 
             this.dtCreateTimeFrom.EditValue = null;
-            this.dtCreateTimeFrom.Location = new System.Drawing.Point(97, 144);
+            this.dtCreateTimeFrom.Location = new System.Drawing.Point(97, 168);
+            this.dtCreateTimeFrom.Margin = new System.Windows.Forms.Padding(4);
             this.dtCreateTimeFrom.Name = "dtCreateTimeFrom";
             this.dtCreateTimeFrom.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
@@ -2759,7 +2829,7 @@ namespace HIS.Desktop.Plugins.HisExportMestMedicine
             this.dtCreateTimeFrom.Properties.EditFormat.FormatType = DevExpress.Utils.FormatType.Custom;
             this.dtCreateTimeFrom.Properties.Mask.EditMask = "dd/MM/yyyy HH:mm";
             this.dtCreateTimeFrom.Properties.MaxValue = new System.DateTime(9999, 12, 31, 23, 59, 0, 0);
-            this.dtCreateTimeFrom.Size = new System.Drawing.Size(109, 20);
+            this.dtCreateTimeFrom.Size = new System.Drawing.Size(181, 22);
             this.dtCreateTimeFrom.StyleController = this.layoutControl2;
             this.dtCreateTimeFrom.TabIndex = 8;
             this.dtCreateTimeFrom.Closed += new DevExpress.XtraEditors.Controls.ClosedEventHandler(this.dtCreateTimeFrom_Closed);
@@ -2767,33 +2837,36 @@ namespace HIS.Desktop.Plugins.HisExportMestMedicine
             // 
             // chkInStock
             // 
-            this.chkInStock.Location = new System.Drawing.Point(129, 2);
+            this.chkInStock.Location = new System.Drawing.Point(174, 3);
+            this.chkInStock.Margin = new System.Windows.Forms.Padding(4);
             this.chkInStock.Name = "chkInStock";
             this.chkInStock.Properties.Caption = "Trong kho";
             this.chkInStock.Properties.FullFocusRect = true;
             this.chkInStock.Properties.NullStyle = DevExpress.XtraEditors.Controls.StyleIndeterminate.Unchecked;
-            this.chkInStock.Size = new System.Drawing.Size(77, 19);
+            this.chkInStock.Size = new System.Drawing.Size(103, 20);
             this.chkInStock.StyleController = this.layoutControl2;
             this.chkInStock.TabIndex = 1;
             this.chkInStock.KeyUp += new System.Windows.Forms.KeyEventHandler(this.chkInStock_KeyUp);
             // 
             // txtExpMestCode
             // 
-            this.txtExpMestCode.Location = new System.Drawing.Point(2, 2);
+            this.txtExpMestCode.Location = new System.Drawing.Point(3, 3);
+            this.txtExpMestCode.Margin = new System.Windows.Forms.Padding(4);
             this.txtExpMestCode.Name = "txtExpMestCode";
             this.txtExpMestCode.Properties.NullValuePrompt = "Mã xuất (F2)";
             this.txtExpMestCode.Properties.NullValuePromptShowForEmptyValue = true;
             this.txtExpMestCode.Properties.ShowNullValuePromptWhenFocused = true;
-            this.txtExpMestCode.Size = new System.Drawing.Size(123, 20);
+            this.txtExpMestCode.Size = new System.Drawing.Size(165, 22);
             this.txtExpMestCode.StyleController = this.layoutControl2;
             this.txtExpMestCode.TabIndex = 0;
             this.txtExpMestCode.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.txtExpMestCode_PreviewKeyDown);
             // 
             // btnRefresh
             // 
-            this.btnRefresh.Location = new System.Drawing.Point(119, 573);
+            this.btnRefresh.Location = new System.Drawing.Point(161, 641);
+            this.btnRefresh.Margin = new System.Windows.Forms.Padding(4);
             this.btnRefresh.Name = "btnRefresh";
-            this.btnRefresh.Size = new System.Drawing.Size(87, 22);
+            this.btnRefresh.Size = new System.Drawing.Size(116, 27);
             this.btnRefresh.StyleController = this.layoutControl2;
             this.btnRefresh.TabIndex = 19;
             this.btnRefresh.Text = "Làm lại (Ctrl R)";
@@ -2801,9 +2874,10 @@ namespace HIS.Desktop.Plugins.HisExportMestMedicine
             // 
             // btnSearch
             // 
-            this.btnSearch.Location = new System.Drawing.Point(2, 573);
+            this.btnSearch.Location = new System.Drawing.Point(3, 641);
+            this.btnSearch.Margin = new System.Windows.Forms.Padding(4);
             this.btnSearch.Name = "btnSearch";
-            this.btnSearch.Size = new System.Drawing.Size(113, 22);
+            this.btnSearch.Size = new System.Drawing.Size(152, 27);
             this.btnSearch.StyleController = this.layoutControl2;
             this.btnSearch.TabIndex = 18;
             this.btnSearch.Text = "Tìm (Ctrl F)";
@@ -2811,12 +2885,13 @@ namespace HIS.Desktop.Plugins.HisExportMestMedicine
             // 
             // txtKeyWord
             // 
-            this.txtKeyWord.Location = new System.Drawing.Point(2, 122);
+            this.txtKeyWord.Location = new System.Drawing.Point(3, 143);
+            this.txtKeyWord.Margin = new System.Windows.Forms.Padding(4);
             this.txtKeyWord.Name = "txtKeyWord";
             this.txtKeyWord.Properties.NullValuePrompt = "Từ khóa tìm kiếm";
             this.txtKeyWord.Properties.NullValuePromptShowForEmptyValue = true;
             this.txtKeyWord.Properties.ShowNullValuePromptWhenFocused = true;
-            this.txtKeyWord.Size = new System.Drawing.Size(204, 20);
+            this.txtKeyWord.Size = new System.Drawing.Size(274, 22);
             this.txtKeyWord.StyleController = this.layoutControl2;
             this.txtKeyWord.TabIndex = 7;
             this.txtKeyWord.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.txtKeyWord_PreviewKeyDown);
@@ -2857,33 +2932,33 @@ namespace HIS.Desktop.Plugins.HisExportMestMedicine
             this.Root.Location = new System.Drawing.Point(0, 0);
             this.Root.Name = "Root";
             this.Root.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
-            this.Root.Size = new System.Drawing.Size(208, 597);
+            this.Root.Size = new System.Drawing.Size(280, 671);
             this.Root.TextVisible = false;
             // 
             // layoutControlItem3
             // 
             this.layoutControlItem3.Control = this.txtKeyWord;
-            this.layoutControlItem3.Location = new System.Drawing.Point(0, 120);
+            this.layoutControlItem3.Location = new System.Drawing.Point(0, 140);
             this.layoutControlItem3.Name = "layoutControlItem3";
-            this.layoutControlItem3.Size = new System.Drawing.Size(208, 24);
+            this.layoutControlItem3.Size = new System.Drawing.Size(280, 28);
             this.layoutControlItem3.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem3.TextVisible = false;
             // 
             // layoutControlItem5
             // 
             this.layoutControlItem5.Control = this.btnSearch;
-            this.layoutControlItem5.Location = new System.Drawing.Point(0, 571);
+            this.layoutControlItem5.Location = new System.Drawing.Point(0, 638);
             this.layoutControlItem5.Name = "layoutControlItem5";
-            this.layoutControlItem5.Size = new System.Drawing.Size(117, 26);
+            this.layoutControlItem5.Size = new System.Drawing.Size(158, 33);
             this.layoutControlItem5.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem5.TextVisible = false;
             // 
             // layoutControlItem7
             // 
             this.layoutControlItem7.Control = this.btnRefresh;
-            this.layoutControlItem7.Location = new System.Drawing.Point(117, 571);
+            this.layoutControlItem7.Location = new System.Drawing.Point(158, 638);
             this.layoutControlItem7.Name = "layoutControlItem7";
-            this.layoutControlItem7.Size = new System.Drawing.Size(91, 26);
+            this.layoutControlItem7.Size = new System.Drawing.Size(122, 33);
             this.layoutControlItem7.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem7.TextVisible = false;
             // 
@@ -2892,7 +2967,7 @@ namespace HIS.Desktop.Plugins.HisExportMestMedicine
             this.layoutControlItem8.Control = this.txtExpMestCode;
             this.layoutControlItem8.Location = new System.Drawing.Point(0, 0);
             this.layoutControlItem8.Name = "layoutControlItem8";
-            this.layoutControlItem8.Size = new System.Drawing.Size(127, 24);
+            this.layoutControlItem8.Size = new System.Drawing.Size(171, 28);
             this.layoutControlItem8.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem8.TextVisible = false;
             // 
@@ -2901,10 +2976,10 @@ namespace HIS.Desktop.Plugins.HisExportMestMedicine
             this.lciCreateTimeFrom.AppearanceItemCaption.Options.UseTextOptions = true;
             this.lciCreateTimeFrom.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lciCreateTimeFrom.Control = this.dtCreateTimeFrom;
-            this.lciCreateTimeFrom.Location = new System.Drawing.Point(0, 144);
+            this.lciCreateTimeFrom.Location = new System.Drawing.Point(0, 168);
             this.lciCreateTimeFrom.Name = "lciCreateTimeFrom";
             this.lciCreateTimeFrom.Padding = new DevExpress.XtraLayout.Utils.Padding(2, 2, 0, 2);
-            this.lciCreateTimeFrom.Size = new System.Drawing.Size(208, 22);
+            this.lciCreateTimeFrom.Size = new System.Drawing.Size(280, 24);
             this.lciCreateTimeFrom.Text = "Ngày tạo từ:";
             this.lciCreateTimeFrom.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lciCreateTimeFrom.TextSize = new System.Drawing.Size(90, 20);
@@ -2915,10 +2990,10 @@ namespace HIS.Desktop.Plugins.HisExportMestMedicine
             this.lciExpTimeFrom.AppearanceItemCaption.Options.UseTextOptions = true;
             this.lciExpTimeFrom.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lciExpTimeFrom.Control = this.dtExpTimeFrom;
-            this.lciExpTimeFrom.Location = new System.Drawing.Point(0, 190);
+            this.lciExpTimeFrom.Location = new System.Drawing.Point(0, 220);
             this.lciExpTimeFrom.Name = "lciExpTimeFrom";
             this.lciExpTimeFrom.OptionsToolTip.ToolTip = "Ngày hoàn thành từ";
-            this.lciExpTimeFrom.Size = new System.Drawing.Size(208, 24);
+            this.lciExpTimeFrom.Size = new System.Drawing.Size(280, 28);
             this.lciExpTimeFrom.Text = "Ngày HT từ:";
             this.lciExpTimeFrom.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lciExpTimeFrom.TextSize = new System.Drawing.Size(90, 20);
@@ -2929,11 +3004,11 @@ namespace HIS.Desktop.Plugins.HisExportMestMedicine
             this.layoutControlItem27.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem27.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem27.Control = this.cboStatus;
-            this.layoutControlItem27.Location = new System.Drawing.Point(0, 286);
+            this.layoutControlItem27.Location = new System.Drawing.Point(0, 328);
             this.layoutControlItem27.MaxSize = new System.Drawing.Size(0, 24);
             this.layoutControlItem27.MinSize = new System.Drawing.Size(149, 24);
             this.layoutControlItem27.Name = "layoutControlItem27";
-            this.layoutControlItem27.Size = new System.Drawing.Size(208, 24);
+            this.layoutControlItem27.Size = new System.Drawing.Size(280, 24);
             this.layoutControlItem27.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
             this.layoutControlItem27.Text = "Trạng thái:";
             this.layoutControlItem27.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
@@ -2945,11 +3020,11 @@ namespace HIS.Desktop.Plugins.HisExportMestMedicine
             this.layoutControlItem28.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem28.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem28.Control = this.cboType;
-            this.layoutControlItem28.Location = new System.Drawing.Point(0, 310);
+            this.layoutControlItem28.Location = new System.Drawing.Point(0, 352);
             this.layoutControlItem28.MaxSize = new System.Drawing.Size(0, 24);
             this.layoutControlItem28.MinSize = new System.Drawing.Size(149, 24);
             this.layoutControlItem28.Name = "layoutControlItem28";
-            this.layoutControlItem28.Size = new System.Drawing.Size(208, 24);
+            this.layoutControlItem28.Size = new System.Drawing.Size(280, 24);
             this.layoutControlItem28.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
             this.layoutControlItem28.Text = "Loại xuất:";
             this.layoutControlItem28.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
@@ -2961,9 +3036,9 @@ namespace HIS.Desktop.Plugins.HisExportMestMedicine
             this.lciCreateTimeTo.AppearanceItemCaption.Options.UseTextOptions = true;
             this.lciCreateTimeTo.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lciCreateTimeTo.Control = this.dtCreateTimeTo;
-            this.lciCreateTimeTo.Location = new System.Drawing.Point(0, 166);
+            this.lciCreateTimeTo.Location = new System.Drawing.Point(0, 192);
             this.lciCreateTimeTo.Name = "lciCreateTimeTo";
-            this.lciCreateTimeTo.Size = new System.Drawing.Size(208, 24);
+            this.lciCreateTimeTo.Size = new System.Drawing.Size(280, 28);
             this.lciCreateTimeTo.Text = "Đến:";
             this.lciCreateTimeTo.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lciCreateTimeTo.TextSize = new System.Drawing.Size(90, 20);
@@ -2974,9 +3049,9 @@ namespace HIS.Desktop.Plugins.HisExportMestMedicine
             this.layoutControlItem9.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem9.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem9.Control = this.chkInStock;
-            this.layoutControlItem9.Location = new System.Drawing.Point(127, 0);
+            this.layoutControlItem9.Location = new System.Drawing.Point(171, 0);
             this.layoutControlItem9.Name = "layoutControlItem9";
-            this.layoutControlItem9.Size = new System.Drawing.Size(81, 24);
+            this.layoutControlItem9.Size = new System.Drawing.Size(109, 28);
             this.layoutControlItem9.Text = "Trong kho:";
             this.layoutControlItem9.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem9.TextSize = new System.Drawing.Size(0, 0);
@@ -2986,26 +3061,26 @@ namespace HIS.Desktop.Plugins.HisExportMestMedicine
             // emptySpaceItem2
             // 
             this.emptySpaceItem2.AllowHotTrack = false;
-            this.emptySpaceItem2.Location = new System.Drawing.Point(0, 494);
+            this.emptySpaceItem2.Location = new System.Drawing.Point(0, 556);
             this.emptySpaceItem2.Name = "emptySpaceItem2";
-            this.emptySpaceItem2.Size = new System.Drawing.Size(208, 10);
+            this.emptySpaceItem2.Size = new System.Drawing.Size(280, 15);
             this.emptySpaceItem2.TextSize = new System.Drawing.Size(0, 0);
             // 
             // layoutControlItem14
             // 
             this.layoutControlItem14.Control = this.txtServiceReqCode;
-            this.layoutControlItem14.Location = new System.Drawing.Point(0, 72);
+            this.layoutControlItem14.Location = new System.Drawing.Point(0, 84);
             this.layoutControlItem14.Name = "layoutControlItem14";
-            this.layoutControlItem14.Size = new System.Drawing.Size(105, 24);
+            this.layoutControlItem14.Size = new System.Drawing.Size(141, 28);
             this.layoutControlItem14.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem14.TextVisible = false;
             // 
             // layoutControlItem15
             // 
             this.layoutControlItem15.Control = this.txtSearchPatientCode;
-            this.layoutControlItem15.Location = new System.Drawing.Point(0, 48);
+            this.layoutControlItem15.Location = new System.Drawing.Point(0, 56);
             this.layoutControlItem15.Name = "layoutControlItem15";
-            this.layoutControlItem15.Size = new System.Drawing.Size(105, 24);
+            this.layoutControlItem15.Size = new System.Drawing.Size(141, 28);
             this.layoutControlItem15.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem15.TextVisible = false;
             // 
@@ -3014,11 +3089,11 @@ namespace HIS.Desktop.Plugins.HisExportMestMedicine
             this.layoutControlItem34.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem34.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem34.Control = this.radioGroupStatus;
-            this.layoutControlItem34.Location = new System.Drawing.Point(0, 382);
+            this.layoutControlItem34.Location = new System.Drawing.Point(0, 432);
             this.layoutControlItem34.Name = "layoutControlItem34";
             this.layoutControlItem34.OptionsToolTip.ToolTip = "Hồ sơ điều trị";
             this.layoutControlItem34.Padding = new DevExpress.XtraLayout.Utils.Padding(2, 2, 0, 0);
-            this.layoutControlItem34.Size = new System.Drawing.Size(208, 55);
+            this.layoutControlItem34.Size = new System.Drawing.Size(280, 61);
             this.layoutControlItem34.Text = "HSĐT:";
             this.layoutControlItem34.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem34.TextSize = new System.Drawing.Size(90, 20);
@@ -3029,9 +3104,9 @@ namespace HIS.Desktop.Plugins.HisExportMestMedicine
             this.lciPatientType.AppearanceItemCaption.Options.UseTextOptions = true;
             this.lciPatientType.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lciPatientType.Control = this.cboPatientType;
-            this.lciPatientType.Location = new System.Drawing.Point(0, 334);
+            this.lciPatientType.Location = new System.Drawing.Point(0, 376);
             this.lciPatientType.Name = "lciPatientType";
-            this.lciPatientType.Size = new System.Drawing.Size(208, 24);
+            this.lciPatientType.Size = new System.Drawing.Size(280, 28);
             this.lciPatientType.Text = "Đối tượng BN:";
             this.lciPatientType.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lciPatientType.TextSize = new System.Drawing.Size(90, 20);
@@ -3042,10 +3117,10 @@ namespace HIS.Desktop.Plugins.HisExportMestMedicine
             this.LciRequestRoomId.AppearanceItemCaption.Options.UseTextOptions = true;
             this.LciRequestRoomId.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.LciRequestRoomId.Control = this.CboRequestRoomIds;
-            this.LciRequestRoomId.Location = new System.Drawing.Point(0, 358);
+            this.LciRequestRoomId.Location = new System.Drawing.Point(0, 404);
             this.LciRequestRoomId.Name = "LciRequestRoomId";
             this.LciRequestRoomId.OptionsToolTip.ToolTip = "Phòng kê đơn/phòng yêu cầu";
-            this.LciRequestRoomId.Size = new System.Drawing.Size(208, 24);
+            this.LciRequestRoomId.Size = new System.Drawing.Size(280, 28);
             this.LciRequestRoomId.Text = "Phòng kê/yc:";
             this.LciRequestRoomId.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.LciRequestRoomId.TextSize = new System.Drawing.Size(90, 20);
@@ -3058,10 +3133,10 @@ namespace HIS.Desktop.Plugins.HisExportMestMedicine
             this.layoutControlItem33.AppearanceItemCaption.TextOptions.VAlignment = DevExpress.Utils.VertAlignment.Center;
             this.layoutControlItem33.AppearanceItemCaption.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
             this.layoutControlItem33.Control = this.radioGroupExportBill;
-            this.layoutControlItem33.Location = new System.Drawing.Point(0, 437);
+            this.layoutControlItem33.Location = new System.Drawing.Point(0, 493);
             this.layoutControlItem33.Name = "layoutControlItem33";
             this.layoutControlItem33.Padding = new DevExpress.XtraLayout.Utils.Padding(22, 2, 2, 0);
-            this.layoutControlItem33.Size = new System.Drawing.Size(208, 57);
+            this.layoutControlItem33.Size = new System.Drawing.Size(280, 63);
             this.layoutControlItem33.StartNewLine = true;
             this.layoutControlItem33.Text = "Xuất hóa đơn biên lai:";
             this.layoutControlItem33.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
@@ -3073,10 +3148,10 @@ namespace HIS.Desktop.Plugins.HisExportMestMedicine
             this.lciTotalOfPatient.AppearanceItemCaption.Options.UseTextOptions = true;
             this.lciTotalOfPatient.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lciTotalOfPatient.Control = this.lblTotalOfPatient;
-            this.lciTotalOfPatient.Location = new System.Drawing.Point(0, 504);
+            this.lciTotalOfPatient.Location = new System.Drawing.Point(0, 571);
             this.lciTotalOfPatient.Name = "lciTotalOfPatient";
             this.lciTotalOfPatient.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
-            this.lciTotalOfPatient.Size = new System.Drawing.Size(208, 17);
+            this.lciTotalOfPatient.Size = new System.Drawing.Size(280, 17);
             this.lciTotalOfPatient.Spacing = new DevExpress.XtraLayout.Utils.Padding(0, 6, 0, 0);
             this.lciTotalOfPatient.Text = "Bệnh nhân:";
             this.lciTotalOfPatient.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
@@ -3090,10 +3165,10 @@ namespace HIS.Desktop.Plugins.HisExportMestMedicine
             this.lciTotalOfPrice.AppearanceItemCaption.Options.UseTextOptions = true;
             this.lciTotalOfPrice.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lciTotalOfPrice.Control = this.lblTotalOfPrice;
-            this.lciTotalOfPrice.Location = new System.Drawing.Point(0, 538);
+            this.lciTotalOfPrice.Location = new System.Drawing.Point(0, 605);
             this.lciTotalOfPrice.Name = "lciTotalOfPrice";
             this.lciTotalOfPrice.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
-            this.lciTotalOfPrice.Size = new System.Drawing.Size(208, 17);
+            this.lciTotalOfPrice.Size = new System.Drawing.Size(280, 17);
             this.lciTotalOfPrice.Text = "Tổng tiền:";
             this.lciTotalOfPrice.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lciTotalOfPrice.TextSize = new System.Drawing.Size(90, 17);
@@ -3106,10 +3181,10 @@ namespace HIS.Desktop.Plugins.HisExportMestMedicine
             this.lciAveragePerMedicine.AppearanceItemCaption.Options.UseTextOptions = true;
             this.lciAveragePerMedicine.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lciAveragePerMedicine.Control = this.lblAveragePerMedicine;
-            this.lciAveragePerMedicine.Location = new System.Drawing.Point(0, 555);
+            this.lciAveragePerMedicine.Location = new System.Drawing.Point(0, 622);
             this.lciAveragePerMedicine.Name = "lciAveragePerMedicine";
             this.lciAveragePerMedicine.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
-            this.lciAveragePerMedicine.Size = new System.Drawing.Size(208, 16);
+            this.lciAveragePerMedicine.Size = new System.Drawing.Size(280, 16);
             this.lciAveragePerMedicine.Text = "Tiền / 1 đơn:";
             this.lciAveragePerMedicine.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lciAveragePerMedicine.TextSize = new System.Drawing.Size(90, 16);
@@ -3118,18 +3193,18 @@ namespace HIS.Desktop.Plugins.HisExportMestMedicine
             // layoutControlItem13
             // 
             this.layoutControlItem13.Control = this.txtSearchTreatmentCode;
-            this.layoutControlItem13.Location = new System.Drawing.Point(105, 48);
+            this.layoutControlItem13.Location = new System.Drawing.Point(141, 56);
             this.layoutControlItem13.Name = "layoutControlItem13";
-            this.layoutControlItem13.Size = new System.Drawing.Size(103, 24);
+            this.layoutControlItem13.Size = new System.Drawing.Size(139, 28);
             this.layoutControlItem13.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem13.TextVisible = false;
             // 
             // layoutControlItem35
             // 
             this.layoutControlItem35.Control = this.txtPresNumber;
-            this.layoutControlItem35.Location = new System.Drawing.Point(105, 72);
+            this.layoutControlItem35.Location = new System.Drawing.Point(141, 84);
             this.layoutControlItem35.Name = "layoutControlItem35";
-            this.layoutControlItem35.Size = new System.Drawing.Size(103, 24);
+            this.layoutControlItem35.Size = new System.Drawing.Size(139, 28);
             this.layoutControlItem35.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem35.TextVisible = false;
             // 
@@ -3138,10 +3213,10 @@ namespace HIS.Desktop.Plugins.HisExportMestMedicine
             this.lciTotalOfMedicine.AppearanceItemCaption.Options.UseTextOptions = true;
             this.lciTotalOfMedicine.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lciTotalOfMedicine.Control = this.lblTotalOfMedicine;
-            this.lciTotalOfMedicine.Location = new System.Drawing.Point(0, 521);
+            this.lciTotalOfMedicine.Location = new System.Drawing.Point(0, 588);
             this.lciTotalOfMedicine.Name = "lciTotalOfMedicine";
             this.lciTotalOfMedicine.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
-            this.lciTotalOfMedicine.Size = new System.Drawing.Size(208, 17);
+            this.lciTotalOfMedicine.Size = new System.Drawing.Size(280, 17);
             this.lciTotalOfMedicine.Text = "Đơn thuốc:";
             this.lciTotalOfMedicine.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lciTotalOfMedicine.TextSize = new System.Drawing.Size(90, 17);
@@ -3150,9 +3225,9 @@ namespace HIS.Desktop.Plugins.HisExportMestMedicine
             // layoutControlItem37
             // 
             this.layoutControlItem37.Control = this.txtHeinCard;
-            this.layoutControlItem37.Location = new System.Drawing.Point(0, 96);
+            this.layoutControlItem37.Location = new System.Drawing.Point(0, 112);
             this.layoutControlItem37.Name = "layoutControlItem37";
-            this.layoutControlItem37.Size = new System.Drawing.Size(208, 24);
+            this.layoutControlItem37.Size = new System.Drawing.Size(280, 28);
             this.layoutControlItem37.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem37.TextVisible = false;
             // 
@@ -3161,11 +3236,11 @@ namespace HIS.Desktop.Plugins.HisExportMestMedicine
             this.lciExpTimeTo.AppearanceItemCaption.Options.UseTextOptions = true;
             this.lciExpTimeTo.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lciExpTimeTo.Control = this.dtExpTimeTo;
-            this.lciExpTimeTo.Location = new System.Drawing.Point(0, 214);
+            this.lciExpTimeTo.Location = new System.Drawing.Point(0, 248);
             this.lciExpTimeTo.MaxSize = new System.Drawing.Size(0, 24);
             this.lciExpTimeTo.MinSize = new System.Drawing.Size(87, 24);
             this.lciExpTimeTo.Name = "lciExpTimeTo";
-            this.lciExpTimeTo.Size = new System.Drawing.Size(208, 24);
+            this.lciExpTimeTo.Size = new System.Drawing.Size(280, 24);
             this.lciExpTimeTo.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
             this.lciExpTimeTo.Text = "Đến:";
             this.lciExpTimeTo.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
@@ -3175,9 +3250,9 @@ namespace HIS.Desktop.Plugins.HisExportMestMedicine
             // lciBloodCode
             // 
             this.lciBloodCode.Control = this.txtBloodCode;
-            this.lciBloodCode.Location = new System.Drawing.Point(0, 24);
+            this.lciBloodCode.Location = new System.Drawing.Point(0, 28);
             this.lciBloodCode.Name = "lciBloodCode";
-            this.lciBloodCode.Size = new System.Drawing.Size(208, 24);
+            this.lciBloodCode.Size = new System.Drawing.Size(280, 28);
             this.lciBloodCode.TextSize = new System.Drawing.Size(0, 0);
             this.lciBloodCode.TextVisible = false;
             // 
@@ -3186,9 +3261,9 @@ namespace HIS.Desktop.Plugins.HisExportMestMedicine
             this.layoutControlItem39.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem39.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem39.Control = this.dteIntructionTimeFrom;
-            this.layoutControlItem39.Location = new System.Drawing.Point(0, 238);
+            this.layoutControlItem39.Location = new System.Drawing.Point(0, 272);
             this.layoutControlItem39.Name = "layoutControlItem39";
-            this.layoutControlItem39.Size = new System.Drawing.Size(208, 24);
+            this.layoutControlItem39.Size = new System.Drawing.Size(280, 28);
             this.layoutControlItem39.Text = "Thời gian từ:";
             this.layoutControlItem39.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem39.TextSize = new System.Drawing.Size(90, 20);
@@ -3199,9 +3274,9 @@ namespace HIS.Desktop.Plugins.HisExportMestMedicine
             this.layoutControlItem42.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem42.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem42.Control = this.dteIntructionTimeTo;
-            this.layoutControlItem42.Location = new System.Drawing.Point(0, 262);
+            this.layoutControlItem42.Location = new System.Drawing.Point(0, 300);
             this.layoutControlItem42.Name = "layoutControlItem42";
-            this.layoutControlItem42.Size = new System.Drawing.Size(208, 24);
+            this.layoutControlItem42.Size = new System.Drawing.Size(280, 28);
             this.layoutControlItem42.Text = "Đến:";
             this.layoutControlItem42.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem42.TextSize = new System.Drawing.Size(90, 20);
@@ -3209,9 +3284,10 @@ namespace HIS.Desktop.Plugins.HisExportMestMedicine
             // 
             // ucPaging
             // 
-            this.ucPaging.Location = new System.Drawing.Point(214, 577);
+            this.ucPaging.Location = new System.Drawing.Point(289, 647);
+            this.ucPaging.Margin = new System.Windows.Forms.Padding(4);
             this.ucPaging.Name = "ucPaging";
-            this.ucPaging.Size = new System.Drawing.Size(299, 22);
+            this.ucPaging.Size = new System.Drawing.Size(403, 27);
             this.ucPaging.TabIndex = 9;
             // 
             // layoutControlGroup1
@@ -3230,24 +3306,24 @@ namespace HIS.Desktop.Plugins.HisExportMestMedicine
             this.layoutControlGroup1.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup1.Name = "layoutControlGroup1";
             this.layoutControlGroup1.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
-            this.layoutControlGroup1.Size = new System.Drawing.Size(1303, 601);
+            this.layoutControlGroup1.Size = new System.Drawing.Size(1760, 677);
             this.layoutControlGroup1.TextVisible = false;
             // 
             // layoutControlItem1
             // 
             this.layoutControlItem1.Control = this.gridControl;
-            this.layoutControlItem1.Location = new System.Drawing.Point(212, 0);
+            this.layoutControlItem1.Location = new System.Drawing.Point(286, 0);
             this.layoutControlItem1.Name = "layoutControlItem1";
-            this.layoutControlItem1.Size = new System.Drawing.Size(834, 575);
+            this.layoutControlItem1.Size = new System.Drawing.Size(1127, 644);
             this.layoutControlItem1.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem1.TextVisible = false;
             // 
             // layoutControlItem6
             // 
             this.layoutControlItem6.Control = this.ucPaging;
-            this.layoutControlItem6.Location = new System.Drawing.Point(212, 575);
+            this.layoutControlItem6.Location = new System.Drawing.Point(286, 644);
             this.layoutControlItem6.Name = "layoutControlItem6";
-            this.layoutControlItem6.Size = new System.Drawing.Size(303, 26);
+            this.layoutControlItem6.Size = new System.Drawing.Size(409, 33);
             this.layoutControlItem6.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem6.TextVisible = false;
             // 
@@ -3256,35 +3332,35 @@ namespace HIS.Desktop.Plugins.HisExportMestMedicine
             this.layoutControlItem2.Control = this.layoutControl2;
             this.layoutControlItem2.Location = new System.Drawing.Point(0, 0);
             this.layoutControlItem2.Name = "layoutControlItem2";
-            this.layoutControlItem2.Size = new System.Drawing.Size(212, 601);
+            this.layoutControlItem2.Size = new System.Drawing.Size(286, 677);
             this.layoutControlItem2.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem2.TextVisible = false;
             // 
             // lciBtnExport
             // 
             this.lciBtnExport.Control = this.btnExportCodeList;
-            this.lciBtnExport.Location = new System.Drawing.Point(965, 575);
+            this.lciBtnExport.Location = new System.Drawing.Point(1290, 644);
             this.lciBtnExport.Name = "lciBtnExport";
-            this.lciBtnExport.Size = new System.Drawing.Size(81, 26);
+            this.lciBtnExport.Size = new System.Drawing.Size(123, 33);
             this.lciBtnExport.TextSize = new System.Drawing.Size(0, 0);
             this.lciBtnExport.TextVisible = false;
             // 
             // lciBtnListDepa
             // 
             this.lciBtnListDepa.Control = this.btnListDepa;
-            this.lciBtnListDepa.Location = new System.Drawing.Point(870, 575);
+            this.lciBtnListDepa.Location = new System.Drawing.Point(1145, 644);
             this.lciBtnListDepa.Name = "lciBtnListDepa";
-            this.lciBtnListDepa.Size = new System.Drawing.Size(95, 26);
+            this.lciBtnListDepa.Size = new System.Drawing.Size(145, 33);
             this.lciBtnListDepa.TextSize = new System.Drawing.Size(0, 0);
             this.lciBtnListDepa.TextVisible = false;
             // 
             // layoutControlItem10
             // 
             this.layoutControlItem10.Control = this.groupBoxChiTiet;
-            this.layoutControlItem10.Location = new System.Drawing.Point(1046, 0);
+            this.layoutControlItem10.Location = new System.Drawing.Point(1413, 0);
             this.layoutControlItem10.Name = "layoutControlItem10";
             this.layoutControlItem10.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
-            this.layoutControlItem10.Size = new System.Drawing.Size(257, 552);
+            this.layoutControlItem10.Size = new System.Drawing.Size(347, 618);
             this.layoutControlItem10.Text = "Thông tin chi tiết";
             this.layoutControlItem10.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem10.TextSize = new System.Drawing.Size(0, 0);
@@ -3299,10 +3375,10 @@ namespace HIS.Desktop.Plugins.HisExportMestMedicine
             this.layoutControlGroup2.GroupBordersVisible = false;
             this.layoutControlGroup2.Items.AddRange(new DevExpress.XtraLayout.BaseLayoutItem[] {
             this.layoutControlGroup3});
-            this.layoutControlGroup2.Location = new System.Drawing.Point(1046, 552);
+            this.layoutControlGroup2.Location = new System.Drawing.Point(1413, 618);
             this.layoutControlGroup2.Name = "layoutControlGroup2";
             this.layoutControlGroup2.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
-            this.layoutControlGroup2.Size = new System.Drawing.Size(257, 49);
+            this.layoutControlGroup2.Size = new System.Drawing.Size(347, 59);
             this.layoutControlGroup2.Text = "Thiết lập in";
             // 
             // layoutControlGroup3
@@ -3315,7 +3391,7 @@ namespace HIS.Desktop.Plugins.HisExportMestMedicine
             this.layoutControlGroup3.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup3.Name = "layoutControlGroup3";
             this.layoutControlGroup3.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
-            this.layoutControlGroup3.Size = new System.Drawing.Size(257, 49);
+            this.layoutControlGroup3.Size = new System.Drawing.Size(347, 59);
             this.layoutControlGroup3.Text = "Thiết lập in";
             // 
             // layoutControlItem36
@@ -3325,7 +3401,7 @@ namespace HIS.Desktop.Plugins.HisExportMestMedicine
             this.layoutControlItem36.Control = this.chkInHDSD;
             this.layoutControlItem36.Location = new System.Drawing.Point(0, 0);
             this.layoutControlItem36.Name = "layoutControlItem36";
-            this.layoutControlItem36.Size = new System.Drawing.Size(195, 24);
+            this.layoutControlItem36.Size = new System.Drawing.Size(263, 26);
             this.layoutControlItem36.Text = "In HDSD:";
             this.layoutControlItem36.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem36.TextSize = new System.Drawing.Size(90, 20);
@@ -3334,33 +3410,22 @@ namespace HIS.Desktop.Plugins.HisExportMestMedicine
             // emptySpaceItem1
             // 
             this.emptySpaceItem1.AllowHotTrack = false;
-            this.emptySpaceItem1.Location = new System.Drawing.Point(195, 0);
+            this.emptySpaceItem1.Location = new System.Drawing.Point(263, 0);
             this.emptySpaceItem1.Name = "emptySpaceItem1";
-            this.emptySpaceItem1.Size = new System.Drawing.Size(56, 24);
+            this.emptySpaceItem1.Size = new System.Drawing.Size(76, 26);
             this.emptySpaceItem1.TextSize = new System.Drawing.Size(0, 0);
             // 
             // layoutControlItem38
             // 
             this.layoutControlItem38.Control = this.chkAutoCallPatient;
-            this.layoutControlItem38.Location = new System.Drawing.Point(515, 575);
+            this.layoutControlItem38.Location = new System.Drawing.Point(695, 644);
             this.layoutControlItem38.MaxSize = new System.Drawing.Size(450, 23);
             this.layoutControlItem38.MinSize = new System.Drawing.Size(355, 23);
             this.layoutControlItem38.Name = "layoutControlItem38";
-            this.layoutControlItem38.Size = new System.Drawing.Size(355, 26);
+            this.layoutControlItem38.Size = new System.Drawing.Size(450, 33);
             this.layoutControlItem38.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
             this.layoutControlItem38.Text = " ";
-            this.layoutControlItem38.TextSize = new System.Drawing.Size(3, 13);
-            // 
-            // imageListStatus
-            // 
-            this.imageListStatus.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imageListStatus.ImageStream")));
-            this.imageListStatus.TransparentColor = System.Drawing.Color.Transparent;
-            this.imageListStatus.Images.SetKeyName(0, "01.png");
-            this.imageListStatus.Images.SetKeyName(1, "02.png");
-            this.imageListStatus.Images.SetKeyName(2, "03.png");
-            this.imageListStatus.Images.SetKeyName(3, "04.png");
-            this.imageListStatus.Images.SetKeyName(4, "05.png");
-            this.imageListStatus.Images.SetKeyName(5, "06.png");
+            this.layoutControlItem38.TextSize = new System.Drawing.Size(4, 16);
             // 
             // toolTipController
             // 
@@ -3371,17 +3436,27 @@ namespace HIS.Desktop.Plugins.HisExportMestMedicine
             // 
             this.openFileDialog1.FileName = "openFileDialog1";
             // 
+            // gridColumnDESCRIPTION
+            // 
+            this.gridColumnDESCRIPTION.Caption = "Ghi chú";
+            this.gridColumnDESCRIPTION.FieldName = "DESCRIPTION";
+            this.gridColumnDESCRIPTION.Name = "gridColumnDESCRIPTION";
+            this.gridColumnDESCRIPTION.Visible = true;
+            this.gridColumnDESCRIPTION.VisibleIndex = 18;
+            this.gridColumnDESCRIPTION.Width = 300;
+            // 
             // UCHisExportMestMedicine
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.layoutControl1);
             this.Controls.Add(this.barDockControlLeft);
             this.Controls.Add(this.barDockControlRight);
             this.Controls.Add(this.barDockControlBottom);
             this.Controls.Add(this.barDockControlTop);
+            this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "UCHisExportMestMedicine";
-            this.Size = new System.Drawing.Size(1320, 550);
+            this.Size = new System.Drawing.Size(1760, 677);
             this.Load += new System.EventHandler(this.UCHisExportMestMedicine_Load);
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).EndInit();
             this.layoutControl1.ResumeLayout(false);
@@ -3773,5 +3848,6 @@ namespace HIS.Desktop.Plugins.HisExportMestMedicine
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem40;
         private DevExpress.XtraEditors.DateEdit dteIntructionTimeTo;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem42;
+        private DevExpress.XtraGrid.Columns.GridColumn gridColumnDESCRIPTION;
     }
 }
