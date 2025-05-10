@@ -803,11 +803,11 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                     }
 
                     ///Khoi tao cbo PatientType va set gia tri mac dinh theo service
-                    FillDataIntoPatientTypeCombo(this.currentMedicineTypeADOForEdit, cboPatientType);
+                    FillDataIntoPatientTypeCombo(this.currentMedicineTypeADOForEdit, cboPatientType);    
                     SetPatientType();
                 }
             }
-            catch (Exception ex)
+            catch (Exception ex)      
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
@@ -986,9 +986,9 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                 var medicineTypeTuts = BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_MEDICINE_TYPE_TUT>();
                 if (medicineTypeTuts != null && medicineTypeTuts.Count > 0)
                 {
-                    List<HIS_MEDICINE_TYPE_TUT> medicineTypeTutFilters = medicineTypeTuts.OrderByDescending(o => o.MODIFY_TIME).Where(o => o.MEDICINE_TYPE_ID == medicineTypeId && o.LOGINNAME == loginName).ToList();
+                    this.medicineTypeTutFilters = medicineTypeTuts.OrderByDescending(o => o.MODIFY_TIME).Where(o => o.MEDICINE_TYPE_ID == medicineTypeId && o.LOGINNAME == loginName).ToList();
 
-                    this.RebuildTutorialWithInControlContainer(medicineTypeTutFilters);
+                    this.RebuildTutorialWithInControlContainer(medicineTypeTutFilters);      
                     this.RebuildHtuWithInControlContainer(medicineTypeTutFilters);
                     this.medicineTypeTutSelected = medicineTypeTutFilters.FirstOrDefault();
                     if (this.medicineTypeTutSelected != null)
@@ -1050,9 +1050,6 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                         {
                             if (this.medicineTypeTutSelected.HTU_TEXT != null)
                                 this.memHtu.Text = this.medicineTypeTutSelected.HTU_TEXT;
-                            //else
-                            //    this.memHtu.Text = ;
-
                         }
                     }
                 }
