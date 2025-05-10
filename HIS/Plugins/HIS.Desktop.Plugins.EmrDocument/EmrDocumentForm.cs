@@ -371,7 +371,9 @@ namespace HIS.Desktop.Plugins.EmrDocument
             SetDefaultValue();
 
             LoadEmrDocumentType();
+
             LoadPatientSignType();
+
             FillDatagctFormList();
 
             SetCaptionByLanguageKey();
