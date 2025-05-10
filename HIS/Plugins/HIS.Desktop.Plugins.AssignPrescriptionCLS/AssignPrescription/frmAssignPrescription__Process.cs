@@ -3266,16 +3266,21 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
                     StringBuilder huongDan = new StringBuilder();
                     string format__NgayUong = ResourceMessage.NgayUong;
                     string format__NgayUongTemp2 = ResourceMessage.NgayUongTemp2;
+                    //string format__NgayUongTemp3 = ResourceMessage.NgayUongTemp3;
+                    //string format__NgayUongTemp4 = ResourceMessage.NgayUongTemp4;
+                    //string format__NgayUongTemp5 = ResourceMessage.NgayUongTemp5;
                     string format___NgayXVienBuoiYZ = ResourceMessage._NgayXVienBuoiYZ;
                     string format__Sang = ResourceMessage.Sang;
                     string format__Trua = ResourceMessage.Trua;
                     string format__Chieu = ResourceMessage.Chieu;
                     string format__Toi = ResourceMessage.Toi;
+                    //double soLuongTrenlanMin = 0;
                     string strSeperator = ", ";
                     int solan = 1;
                     string buoiChon = "";
 
                     double tongCong = (double)spinAmount.Value;
+
                     if (tongCong == 0)
                     {
                         huongDan = new StringBuilder();
@@ -3290,8 +3295,56 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
                         string hdTemp = huongDan.ToString().Replace("  ", " ").Replace(", ,", ",");
                         huongDan = new StringBuilder().Append(hdTemp.First().ToString().ToUpper() + String.Join("", hdTemp.Skip(1)).ToLower());
                     }
-
                     this.txtTutorial.Text = huongDan.ToString();
+                    //if (HisConfigCFG.TutorialFormat == 4)
+                    //{
+                    //    huongDan.Append(String.Format(format__NgayUongTemp4, (String.IsNullOrEmpty(this.cboMedicineUseForm.Text) ? "" : (FirstCharToUpper(this.cboMedicineUseForm.Text) + " ")), (String.IsNullOrEmpty(this.cboMedicineUseForm.Text) ? "" : this.cboMedicineUseForm.Text.ToLower() + " "), solan) + " ");
+                    //}
+                    //if (HisConfigCFG.TutorialFormat == 2)
+                    //{
+                    //    huongDan.Append(tongCong > 0 ? String.Format(format__NgayUongTemp2, (String.IsNullOrEmpty(this.cboMedicineUseForm.Text) ? "" : " " + this.cboMedicineUseForm.Text.ToLower() + " "), "", "", solan) : "");
+                    //}
+                    //else
+                    //{
+                    //    if ((int)tongCong == tongCong)
+                    //        huongDan.Append(tongCong > 0 ? String.Format(format__NgayUong, (String.IsNullOrEmpty(this.cboMedicineUseForm.Text) ? "" : " " + this.cboMedicineUseForm.Text.ToLower() + " "), " " + (int)tongCong, serviceUnitName, solan) : "");
+                    //    else
+                    //        huongDan.Append(tongCong > 0 ? String.Format(format__NgayUong, (String.IsNullOrEmpty(this.cboMedicineUseForm.Text) ? "" : " " + this.cboMedicineUseForm.Text.ToLower() + " "), ConvertNumber.ConvertDecToFracByConfig(tongCong, 4), serviceUnitName, solan) : "");
+                    //}
+                    //if (HisConfigCFG.TutorialFormat == 3)
+                    //{
+                    //    string hdKey1 = huongDan.ToString();
+                    //    huongDan = new StringBuilder();
+                    //    huongDan.Append(soLuongTrenlanMin > 0 ? String.Format(format__NgayUongTemp3, Inventec.Common.Number.Convert.NumberToStringRoundAuto((decimal)soLuongTrenlanMin, 2), serviceUnitName, solan) : "");
+                    //    huongDan.Append(" (");
+                    //    huongDan.Append(hdKey1);
+                    //    huongDan.Append(")");
+                    //}
+                    //if (HisConfigCFG.TutorialFormat == 5)
+                    //{
+                    //    huongDan = new StringBuilder();
+                    //    huongDan.Append(soLuongTrenlanMin > 0 ? String.Format(format__NgayUongTemp5, (String.IsNullOrEmpty(this.cboMedicineUseForm.Text) ? "" : " " + this.cboMedicineUseForm.Text.ToLower() + " "), !String.IsNullOrEmpty(this.txtHtu.Text) ? string.Join(", ", DataHtuList.Where(o => o.IsChecked).OrderByDescending(o => o.CHECK_ACIN_INTERACTIVE ?? Int64.MaxValue).ThenBy(o => o.NUM_ORDER).Select(o => o.HTU_NAME).ToList()).ToLower() : "") : "");
+                    //}
+                    //if (HisConfigCFG.TutorialFormat == 6)
+                    //{
+                    //    huongDan = new StringBuilder();
+                    //    double tongSoLuong = (double)spinAmount.Value;
+                    //    int soLanTrongNgay = solan > 0 ? solan : 1;
+                    //    if (tongSoLuong > 0)
+                    //    {
+                    //        double moiLan = tongSoLuong / soLanTrongNgay;
+                    //        string strMoiLan = Inventec.Common.Number.Convert.NumberToStringRoundAuto((decimal)moiLan, 2);
+                    //        string strTong = Inventec.Common.Number.Convert.NumberToStringRoundAuto((decimal)tongSoLuong, 2);
+
+                    //        huongDan.AppendFormat("{0} {1}/lần * {2} lần/ngày * {3} ngày", strMoiLan, serviceUnitName, soLanTrongNgay);
+                    //        huongDan.AppendFormat(" [{0} {1}/ngày]", strTong, serviceUnitName);
+                    //    }
+                    //    //if ((int)tongCong == tongCong)
+                    //    //    huongDan.Append(!String.IsNullOrEmpty(this.spinAmount.Text) ? string.Format(" [{0} {1}/ngày]", (int)tongCong, serviceUnitName) : "");
+                    //    //else
+                    //    //    huongDan.Append(!String.IsNullOrEmpty(this.spinAmount.Text) ? String.Format(" [{0} {1}/ngày]", ConvertNumber.ConvertDecToFracByConfig(tongCong, 4), serviceUnitName) : "");
+                    //}
+                    //this.txtTutorial.Text = string.IsNullOrEmpty(huongDan.ToString()) ? this.txtTutorial.Text : huongDan.ToString().Replace("  ", " ").Replace(", ,", ",");
                 }
                 else
                 {
@@ -3356,13 +3409,25 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
-
+        //string FirstCharToUpper(string str)
+        //{
+        //    string result = "";
+        //    try
+        //    {
+        //        result = !String.IsNullOrEmpty(str) ? (str.First().ToString().ToUpper() + String.Join("", str.Skip(1)).ToLower()) : "";
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Inventec.Common.Logging.LogSystem.Warn(ex);
+        //    }
+        //    return result;
+        //}
         private void SpinKeyPress(object sender, KeyPressEventArgs e)
         {
             try
             {
                 if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar) &&
-       (e.KeyChar != '.') && (e.KeyChar != ',') && (e.KeyChar != '/'))
+        (e.KeyChar != '.') && (e.KeyChar != ',') && (e.KeyChar != '/'))
                 {
                     e.Handled = true;
                 }

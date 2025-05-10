@@ -20,6 +20,7 @@ using HIS.Desktop.ApiConsumer;
 using HIS.Desktop.LocalStorage.BackendData;
 using HIS.Desktop.LocalStorage.ConfigApplication;
 using HIS.Desktop.LocalStorage.LocalData;
+using HIS.Desktop.Plugins.AssignPrescriptionCLS.ADO;
 using HIS.Desktop.Plugins.AssignPrescriptionCLS.Config;
 using HIS.Desktop.Utilities.Extensions;
 using Inventec.Common.Adapter;
@@ -38,6 +39,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
 {
     public partial class frmAssignPrescription : HIS.Desktop.Utility.FormBase
     {
+        //public List<HtuADO> DataHtuList { get; private set; }
         //private async Task InitComboHtu(List<MOS.EFMODEL.DataModels.HIS_HTU> data)
         //{
         //    try
@@ -65,7 +67,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
         //        }
         //        else
         //            data = htus.OrderBy(o => o.NUM_ORDER).ToList();
-        //        ControlEditorLoader.Load(cboHtu, data, controlEditorADO);
+        //        ControlEditorLoader.Load(txtHtu, data, controlEditorADO);
         //    }
         //    catch (Exception ex)
         //    {
