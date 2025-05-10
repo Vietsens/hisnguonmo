@@ -37,7 +37,7 @@ using System.Windows.Forms;
 namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
 {
     public partial class frmAssignPrescription : HIS.Desktop.Utility.FormBase
-    {
+    {        
         internal async Task RebuildMediMatyWithInControlContainer()
         {
             try
@@ -470,7 +470,6 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
                     if (this.currentMedicineTypeADOForEdit.SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__THUOC)
                     {
                         this.FillDataIntoMedicineUseFormAndTutorial(currentMedicineTypeADOForEdit.ID);
-
                         //Neu la thuoc thi kiem tra co mẫu HDSD chưa, có thì focus vào nút "Bổ sung"
                         if (this.medicineTypeTutSelected != null && this.medicineTypeTutSelected.ID > 0)
                         {
@@ -487,6 +486,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
                                 //this.btnAdd.Focus();
                                 this.txtTutorial.Focus();
                                 this.txtTutorial.SelectionStart = txtTutorial.Text.Length + 1;
+                                //this.txtHtu.SelectionStart = txtHtu.Text.Length + 1;
                             }
                         }
                         //Ngược lại kiểm tra có cấu hình PM cho phép sau khi chọn thuốc thì nhảy vào ô số lượng hay ô ngày
@@ -618,6 +618,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
                     List<HIS_MEDICINE_TYPE_TUT> medicineTypeTutFilters = medicineTypeTuts.OrderByDescending(o => o.MODIFY_TIME).Where(o => o.MEDICINE_TYPE_ID == medicineTypeId && o.LOGINNAME == loginName).ToList();
 
                     this.RebuildTutorialWithInControlContainer(medicineTypeTutFilters);
+                    //this.RebuildHtulWithInControlContainer(medicineTypeTutFilters);
                     this.medicineTypeTutSelected = medicineTypeTutFilters.FirstOrDefault();
                     if (this.medicineTypeTutSelected != null)
                     {
@@ -626,6 +627,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
                         if (this.medicineTypeTutSelected.MEDICINE_USE_FORM_ID > 0)
                         {
                             this.cboMedicineUseForm.EditValue = this.medicineTypeTutSelected.MEDICINE_USE_FORM_ID;
+                            //this.txtHtu.Text = this.cboMedicineUseForm.Text;
                         }
                         //Nếu không có đường dùng thì lấy đường dùng từ danh mục loại thuốc
                         else
