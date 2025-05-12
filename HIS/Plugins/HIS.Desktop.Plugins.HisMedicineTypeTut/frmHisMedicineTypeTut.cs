@@ -434,6 +434,7 @@ namespace HIS.Desktop.Plugins.HisMedicineTypeTut
                     txtEvening.EditValue = data.EVENING;
                     txtMedicineType.EditValue = data.MEDICINE_TYPE_CODE;
                     txtHD.Text = data.TUTORIAL;
+                    txtCachDung.Text = data.HTU_TEXT;
                     // txtMedicineUseForm.EditValue = data.MEDICINE_USE_FORM_CODE;
                 }
             }
@@ -617,6 +618,7 @@ namespace HIS.Desktop.Plugins.HisMedicineTypeTut
                 cboHTU.EditValue = null;
                 txtLoginName.EditValue = LoginName;
                 txtHD.EditValue = null;
+                txtCachDung.EditValue = null;
                 txtDayCount.EditValue = null;
                 spinAmount.EditValue = null;
             }
@@ -870,6 +872,7 @@ namespace HIS.Desktop.Plugins.HisMedicineTypeTut
                 updateDTO.LOGINNAME = (string)txtLoginName.EditValue;
                 updateDTO.DAY_COUNT = Inventec.Common.TypeConvert.Parse.ToInt64((txtDayCount.EditValue).ToString());
                 updateDTO.TUTORIAL = (string)txtHD.Text;
+                updateDTO.HTU_TEXT = (string)txtCachDung.Text;
             }
             catch (Exception ex)
             {

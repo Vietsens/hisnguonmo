@@ -366,7 +366,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                         {
                             var ServiceCodes = result.Select(s => s.SERVICE_CODE).ToList();
                             var services = BackendDataWorker.Get<V_HIS_SERVICE>().Where(w => ServiceCodes.Any(o => o == w.SERVICE_CODE));
-                            ado.SampleTypeCode = string.Join(",", services.Select(s => s.SERVICE_TYPE_CODE));
+                            ado.SampleTypeCode = string.Join(",", services.Select(s => s.SAMPLE_TYPE_CODE));
                         }
                     }
 

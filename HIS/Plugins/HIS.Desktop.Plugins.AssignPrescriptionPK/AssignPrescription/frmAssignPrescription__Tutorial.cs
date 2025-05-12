@@ -98,6 +98,11 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                     {
                         this.txtTutorial.Text = medicineTypeTut.TUTORIAL;
                     }
+
+                    if (!String.IsNullOrEmpty(medicineTypeTut.HTU_TEXT))
+                    {
+                        this.memHtu.Text = medicineTypeTut.HTU_TEXT;
+                    }
                 }
             }
             catch (Exception ex)
@@ -105,5 +110,95 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
+
+        internal void RebuildHtuWithInControlContainer(object data)
+        {
+            try
+            {
+                gridViewHtuText.OptionsView.ShowColumnHeaders = false;
+                gridViewHtuText.BeginUpdate();
+                gridViewHtuText.Columns.Clear();
+                popupControlContainerHtuText.Width = 550;
+                popupControlContainerHtuText.Height = theRequiredHeight;
+
+                DevExpress.XtraGrid.Columns.GridColumn col2 = new DevExpress.XtraGrid.Columns.GridColumn();
+                col2.FieldName = "HTU_TEXT";
+                col2.Caption = "Cách dùng";
+                col2.Width = 400;
+                col2.VisibleIndex = 1;
+                gridViewHtuText.Columns.Add(col2);
+
+                gridViewHtuText.GridControl.DataSource = data;
+
+                gridViewHtuText.OptionsBehavior.Editable = false;
+                gridViewHtuText.EndUpdate();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void HtuText_RowClick(object data)
+        {
+            try
+            {
+                HIS_MEDICINE_TYPE_TUT medicineTypeTut = data as HIS_MEDICINE_TYPE_TUT;
+                if (medicineTypeTut != null)
+                {
+                    //Nếu hướng dẫn sử dụng mẫu có đường dùng thì lấy ra
+                    if (medicineTypeTut.MEDICINE_USE_FORM_ID > 0)
+                    {
+                        this.cboMedicineUseForm.EditValue = medicineTypeTut.MEDICINE_USE_FORM_ID;
+                    }
+                    //Nếu không có đường dùng thì lấy đường dùng từ danh mục loại thuốc
+                    else
+                    {
+                        var medicineType = BackendDataWorker.Get<MOS.EFMODEL.DataModels.V_HIS_MEDICINE_TYPE>().FirstOrDefault(o => o.ID == medicineTypeTut.MEDICINE_TYPE_ID);
+                        if (medicineType != null && (medicineType.MEDICINE_USE_FORM_ID ?? 0) > 0)
+                        {
+                            this.cboMedicineUseForm.EditValue = medicineType.MEDICINE_USE_FORM_ID;
+                        }
+                    }
+                    this.cboHtu.Text = null;
+                    if (DataHtuList != null && DataHtuList.Count > 0)
+                    {
+                        DataHtuList.ForEach(o => o.IsChecked = o.ID == medicineTypeTut.HTU_ID);
+                        this.cboHtu.Text = string.Join(", ", DataHtuList.Where(o => o.IsChecked).Select(o => o.HTU_NAME));
+                    }
+                    if (medicineTypeTut.HTU_ID != null)
+                        this.cboHtu.Properties.Buttons[1].Visible = true;       
+                    else
+                        this.cboHtu.Properties.Buttons[1].Visible = false;
+
+                    if (this.spinSoNgay.Value < (medicineTypeTut.DAY_COUNT ?? 0))
+                        this.spinSoNgay.EditValue = medicineTypeTut.DAY_COUNT;
+                    this.spinSoLuongNgay.EditValue = medicineTypeTut.DAY_COUNT;
+
+                    Inventec.Common.Logging.LogSystem.Debug("Truong hop co HDSD thuoc theo tai khoan cua loai thuoc (HIS_MEDICINE_TYPE_TUT)--> lay truong DAY_COUNT gan vao spinSoNgay" + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => medicineTypeTut), medicineTypeTut));
+
+                    this.spinSang.EditValue = medicineTypeTut.MORNING;
+                    this.spinTrua.EditValue = medicineTypeTut.NOON;
+                    this.spinChieu.EditValue = medicineTypeTut.AFTERNOON;
+                    this.spinToi.EditValue = medicineTypeTut.EVENING;
+
+                    //Nếu có trường hướng dẫn thì sử dụng luôn
+                    if (!String.IsNullOrEmpty(medicineTypeTut.TUTORIAL))
+                    {
+                        this.txtTutorial.Text = medicineTypeTut.TUTORIAL;
+                    }
+
+                    if (!String.IsNullOrEmpty(medicineTypeTut.HTU_TEXT))
+                    {
+                        this.memHtu.Text = medicineTypeTut.HTU_TEXT;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
     }
 }

@@ -36,6 +36,7 @@ using HIS.Desktop.LocalStorage.ConfigApplication;
 using HIS.Desktop.LocalStorage.BackendData;
 using HIS.Desktop.LocalStorage.BackendData.ADO;
 using System.Reflection;
+using HIS.Desktop.Plugins.SamplePathologyReq.ADO;
 
 namespace HIS.Desktop.Plugins.SamplePathologyReq.SamplePathologyReq
 {
@@ -80,9 +81,10 @@ namespace HIS.Desktop.Plugins.SamplePathologyReq.SamplePathologyReq
         {
             try
             {
-                if (param is HIS_SERVICE_REQ)
+                if (param is ServiceReqADO)
                 {
-                    var data = param as HIS_SERVICE_REQ;
+                    var data = new HIS_SERVICE_REQ();
+                    Inventec.Common.Mapper.DataObjectMapper.Map<HIS_SERVICE_REQ>(data, param as ServiceReqADO);
                     if (data != null)
                     {
                         string examRoomName = "";
@@ -241,7 +243,7 @@ namespace HIS.Desktop.Plugins.SamplePathologyReq.SamplePathologyReq
         {
             try
             {
-                var currentHisServiceReq = (HIS_SERVICE_REQ)gridView1.GetFocusedRow();
+                var currentHisServiceReq = (ServiceReqADO)gridView1.GetFocusedRow();
                 if (currentHisServiceReq != null)
                 {
                     UpdateDicCallPatient(currentHisServiceReq);

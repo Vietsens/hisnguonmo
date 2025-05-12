@@ -311,11 +311,13 @@ namespace HIS.Desktop.Plugins.HisTranPatiOutInfo
 
                     if (hisTreatment != null && hisTreatment.Count == 1)
                     {
-                        txtDauHieuLamSang.Text = hisTreatment.FirstOrDefault().CLINICAL_NOTE;
+                        //dangth
+                        txtDauHieuLamSang.Text = hisTreatment.FirstOrDefault().CLINICAL_SIGNS;
                         txtXetNghiem.Text = hisTreatment.FirstOrDefault().SUBCLINICAL_RESULT;
                     }
                     //txtDauHieuLamSang.Text = data.CLINICAL_NOTE;
                     //txtXetNghiem.Text = data.SUBCLINICAL_RESULT;
+                    txtDauHieuLamSang.Text = data.CLINICAL_SIGNS;
                     txtPPKTThuoc.Text = data.TREATMENT_METHOD;
                     txtTinhTrangNguoiBenh.Text = data.PATIENT_CONDITION;
                     txtHuongDieuTri.Text = data.TREATMENT_DIRECTION;
@@ -766,6 +768,8 @@ namespace HIS.Desktop.Plugins.HisTranPatiOutInfo
                 _treatmentUpdate.OUT_CODE = lblSoChuyenVien.Text;
                 _treatmentUpdate.ICD_TEXT = txtIcdExtraName.Text;
                 _treatmentUpdate.ICD_SUB_CODE = txtIcdExtraCode.Text;
+                //dangth
+                _treatmentUpdate.CLINICAL_SIGNS = txtDauHieuLamSang.Text;
                 //_treatmentUpdate.CLINICAL_NOTE = txtDauHieuLamSang.Text;
                 //_treatmentUpdate.SUBCLINICAL_RESULT = txtXetNghiem.Text;
                 _treatmentUpdate.TREATMENT_METHOD = txtPPKTThuoc.Text;
@@ -799,8 +803,8 @@ namespace HIS.Desktop.Plugins.HisTranPatiOutInfo
                 }
                 else
                     _treatmentUpdate.SURGERY_END_TIME = null;
-                sdoUpdate.HisTreatment = _treatmentUpdate;
-                sdoUpdate.ClinicalNote = txtDauHieuLamSang.Text;
+                sdoUpdate.HisTreatment = _treatmentUpdate;               
+                //sdoUpdate.ClinicalNote = txtDauHieuLamSang.Text;
                 sdoUpdate.SubclinicalResult = txtXetNghiem.Text;
 
                 Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => sdoUpdate), sdoUpdate));

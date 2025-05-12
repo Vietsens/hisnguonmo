@@ -23,7 +23,7 @@ using MOS.Filter;
 using System;
 
 namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
-{
+{     
     public sealed class AssignPrescriptionBehavior : Tool<IDesktopToolContext>, IAssignPrescription
     {
         AssignPrescriptionADO assignPrescriptionADO;

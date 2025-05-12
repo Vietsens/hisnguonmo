@@ -30,6 +30,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="AutoMapper, Version=4.0.4.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\lib\MOS\AutoMapper.dll</HintPath>
+    </Reference>
     <Reference Include="CPA.WCFClient.CallPatientClient">
       <HintPath>..\..\..\..\LIB\WCF\CPA.WCF\Client\CallPatient\CPA.WCFClient.CallPatientClient.dll</HintPath>
     </Reference>
@@ -58,6 +62,9 @@
     <Reference Include="Inventec.Common.Logging">
       <HintPath>..\..\..\..\LIB\Inventec.Common\Inventec.Common.Logging\Inventec.Common.Logging.dll</HintPath>
     </Reference>
+    <Reference Include="Inventec.Common.Mapper">
+      <HintPath>..\..\..\..\lib\Inventec.Common\Inventec.Common.Mapper\Inventec.Common.Mapper.dll</HintPath>
+    </Reference>
     <Reference Include="Inventec.Common.Resource">
       <HintPath>..\..\..\..\LIB\Inventec.Common\Inventec.Common.Resource\Inventec.Common.Resource.dll</HintPath>
     </Reference>
@@ -79,6 +86,9 @@
     <Reference Include="Inventec.Desktop.Common.Controls">
       <HintPath>..\..\..\..\LIB\Inventec.Desktop\Inventec.Desktop.Common.Controls\Inventec.Desktop.Common.Controls.dll</HintPath>
     </Reference>
+    <Reference Include="Inventec.Desktop.Common.Controls.ValidationRule">
+      <HintPath>..\..\..\..\lib\Inventec.Desktop\Inventec.Desktop.Common.Controls.ValidationRule\Inventec.Desktop.Common.Controls.ValidationRule.dll</HintPath>
+    </Reference>
     <Reference Include="Inventec.Desktop.Common.Core">
       <HintPath>..\..\..\..\LIB\Inventec.Desktop\Inventec.Desktop.Common.Core\Inventec.Desktop.Common.Core.dll</HintPath>
     </Reference>
@@ -93,6 +103,9 @@
     </Reference>
     <Reference Include="Inventec.Desktop.Core">
       <HintPath>..\..\..\..\LIB\Inventec.Desktop\Inventec.Desktop.Core\Inventec.Desktop.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Desktop.CustomControl">
+      <HintPath>..\..\..\..\lib\Inventec.Desktop.CustomControl\Inventec.Desktop.CustomControl.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Speech">
       <HintPath>..\..\..\..\LIB\Inventec.Speech\Inventec.Speech.dll</HintPath>
@@ -129,6 +142,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ADO\ServiceReqADO.cs" />
     <Compile Include="AppConfigKey.cs" />
     <Compile Include="ComboADO.cs" />
     <Compile Include="HisRequestUriStore.cs" />

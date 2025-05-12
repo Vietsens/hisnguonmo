@@ -270,8 +270,38 @@ namespace HIS.Desktop.Plugins.ReturnMicrobiologicalResults
                 }
                 if (StartAppPrintBartenderProcessor.OpenAppPrintBartender())
                 {
+
                     ClientPrintADO ado = new ClientPrintADO();
                     ado.Barcode = rowSample.BARCODE;
+                    if (rowSample.SAMPLE_TYPE_CODE != null)
+                    {
+                        ado.SampleTypeCode = rowSample.SAMPLE_TYPE_CODE;
+                        ado.SampleTypeName = rowSample.SAMPLE_TYPE_NAME;
+                    }
+                    else
+                    {
+                        LIS.Filter.LisSampleServiceFilter dataLisSample = new LisSampleServiceFilter();
+                        dataLisSample.SAMPLE_ID = rowSample.ID;
+                        CommonParam param = new CommonParam();
+                        List<LIS_SAMPLE_SERVICE> listSampleService = new BackendAdapter(param).Get<List<LIS_SAMPLE_SERVICE>>("api/LisSampleService/get", ApiConsumers.LisConsumer, dataLisSample, param);
+
+                        if (listSampleService != null && listSampleService.Count > 0)
+                        {
+                            List<V_HIS_SERVICE> services = BackendDataWorker.Get<V_HIS_SERVICE>();
+                            var matchedHisServices = services
+                            .Where(h => listSampleService.Any(s => s.SERVICE_CODE == h.SERVICE_CODE))
+                            .ToList();
+
+                            string stringFilter = string.Join(",", matchedHisServices
+                            .Select(h => h.SAMPLE_TYPE_CODE)
+                            .Where(code => !string.IsNullOrWhiteSpace(code))
+                            .Distinct());
+
+                            ado.SampleTypeCode = stringFilter;
+                        }
+
+
+                    }
                     if (rowSample.DOB.HasValue)
                     {
                         ado.DobYear = rowSample.DOB.Value.ToString().Substring(0, 4);
@@ -380,7 +410,7 @@ namespace HIS.Desktop.Plugins.ReturnMicrobiologicalResults
                 AutoMapper.Mapper.CreateMap<V_LIS_SAMPLE_2, V_LIS_SAMPLE>();
                 rowSample = AutoMapper.Mapper.Map<V_LIS_SAMPLE>(rowSample2);
                 if (!ValidTime()) return;
-                
+
                 WaitingManager.Show();
                 CommonParam param = new CommonParam();
                 LisSampleViewFilter filterSample = new LisSampleViewFilter();

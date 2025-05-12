@@ -114,7 +114,8 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
             BoTheoDoi,
             HivTreatment,
             MedicalAssessment,
-            TuberclusisTreatment
+            TuberclusisTreatment,
+            Specialty
 
         }
         internal ModuleType moduleType { get; set; }
@@ -225,6 +226,13 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
                 itemBordereau.Tag = ModuleType.Bordereau;
                 itemBordereau.ItemClick += new ItemClickEventHandler(bedRoomMouseRightClick);
                 menu.AddItems(new BarItem[] { itemBordereau });
+                #endregion
+
+                #region ----- MoiKhamChuyenKhoa
+                BarButtonItem itemSpecialty = new BarButtonItem(barManager, Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__MOUSE_RIGHT__MOI_KHAM_CHUYEN_KHOA", Base.ResourceLangManager.LanguageUCBedRoomPartial, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture()), 1);
+                itemSpecialty.Tag = ModuleType.Specialty;
+                itemSpecialty.ItemClick += new ItemClickEventHandler(bedRoomMouseRightClick);
+                menu.AddItems(new BarItem[] { itemSpecialty });
                 #endregion
 
                 #region ----- CanTheodoi_BoTheoiDoi

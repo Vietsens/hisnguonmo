@@ -1704,5 +1704,53 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.Resources
                 return "";
             }
         }
+        //internal static string NgayUongTemp3
+        //{
+        //    get
+        //    {
+        //        try
+        //        {
+        //            return Inventec.Common.Resource.Get.Value("Plugin_AssignPrescription__NgayUongTemp3", languageMessage, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+        //        }
+        //        catch (Exception ex)
+        //        {
+        //            Inventec.Common.Logging.LogSystem.Warn(ex);
+        //        }
+        //        return "";
+        //    }
+        //}
+
+        //internal static string NgayUongTemp4
+        //{
+        //    get
+        //    {
+        //        try
+        //        {
+        //            return Inventec.Common.Resource.Get.Value("Plugin_AssignPrescription__NgayUongTemp4", languageMessage, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+        //        }
+        //        catch (Exception ex)
+        //        {
+        //            Inventec.Common.Logging.LogSystem.Warn(ex);
+        //        }
+        //        return "";
+        //    }
+        //}
+
+        //internal static string NgayUongTemp5
+        //{
+        //    get
+        //    {
+        //        try
+        //        {
+        //            return Inventec.Common.Resource.Get.Value("Plugin_AssignPrescription__NgayUongTemp5", languageMessage, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+        //        }
+        //        catch (Exception ex)
+        //        {
+        //            Inventec.Common.Logging.LogSystem.Warn(ex);
+        //        }
+        //        return "";
+        //    }
+        //}
+
     }
 }

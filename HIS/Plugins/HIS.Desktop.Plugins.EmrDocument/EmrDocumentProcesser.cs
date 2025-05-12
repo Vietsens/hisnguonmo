@@ -62,7 +62,6 @@ namespace HIS.Desktop.Plugins.EmrDocument
             try
             {
                 Inventec.Desktop.Common.Modules.Module moduleData = null;
-                DelegateSelectData delegateSelect = null;
                 long _treatmentId = 0;
                 string TreatmentCode = "";
                 List<string> treatmentCodes = null;

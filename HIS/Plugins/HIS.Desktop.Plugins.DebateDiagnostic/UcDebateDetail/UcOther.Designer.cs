@@ -45,7 +45,6 @@ namespace HIS.Desktop.Plugins.DebateDiagnostic.UcDebateDetail
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject1 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject2 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject3 = new DevExpress.Utils.SerializableAppearanceObject();
@@ -59,7 +58,7 @@ namespace HIS.Desktop.Plugins.DebateDiagnostic.UcDebateDetail
             this.layoutControl1 = new DevExpress.XtraLayout.LayoutControl();
             this.btnChonKQ2 = new DevExpress.XtraEditors.SimpleButton();
             this.txtKetQuaCLS2 = new DevExpress.XtraEditors.MemoEdit();
-            this.barManager1 = new DevExpress.XtraBars.BarManager(this.components);
+            this.barManager1 = new DevExpress.XtraBars.BarManager();
             this.bar1 = new DevExpress.XtraBars.Bar();
             this.barDockControlTop = new DevExpress.XtraBars.BarDockControl();
             this.barDockControlBottom = new DevExpress.XtraBars.BarDockControl();
@@ -69,10 +68,10 @@ namespace HIS.Desktop.Plugins.DebateDiagnostic.UcDebateDetail
             this.txtKetQuaCLS = new DevExpress.XtraEditors.MemoEdit();
             this.txtServiceName = new DevExpress.XtraEditors.TextEdit();
             this.txtServiceCode = new DevExpress.XtraEditors.TextEdit();
-            this.popupControlContainerActiveIngredient = new DevExpress.XtraBars.PopupControlContainer(this.components);
+            this.popupControlContainerActiveIngredient = new DevExpress.XtraBars.PopupControlContainer();
             this.gridControlContainerActiveIngredient = new Inventec.Desktop.CustomControl.CustomGridControlWithFilterMultiColumn();
             this.gridViewContainerActiveIngredient = new Inventec.Desktop.CustomControl.CustomGridViewWithFilterMultiColumn();
-            this.popupControlContainerMedicineType = new DevExpress.XtraBars.PopupControlContainer(this.components);
+            this.popupControlContainerMedicineType = new DevExpress.XtraBars.PopupControlContainer();
             this.gridControlContainerMedicineType = new Inventec.Desktop.CustomControl.CustomGridControlWithFilterMultiColumn();
             this.gridViewContainerMedicineType = new Inventec.Desktop.CustomControl.CustomGridViewWithFilterMultiColumn();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
@@ -130,10 +129,10 @@ namespace HIS.Desktop.Plugins.DebateDiagnostic.UcDebateDetail
             this.lciKetQuaCLS2 = new DevExpress.XtraLayout.LayoutControlItem();
             this.lciChonKQ2 = new DevExpress.XtraLayout.LayoutControlItem();
             this.emptySpaceItem2 = new DevExpress.XtraLayout.EmptySpaceItem();
-            this.dxValidationProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider(this.components);
-            this.imageCollection1 = new DevExpress.Utils.ImageCollection(this.components);
+            this.dxValidationProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider();
+            this.imageCollection1 = new DevExpress.Utils.ImageCollection();
             this.memoEdit1 = new DevExpress.XtraEditors.MemoEdit();
-            this.dxValidationProviderControl = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider(this.components);
+            this.dxValidationProviderControl = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
             this.layoutControl1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.txtKetQuaCLS2.Properties)).BeginInit();
@@ -589,7 +588,7 @@ namespace HIS.Desktop.Plugins.DebateDiagnostic.UcDebateDetail
             // xtraTabControl1
             // 
             this.xtraTabControl1.CustomHeaderButtons.AddRange(new DevExpress.XtraTab.Buttons.CustomHeaderButton[] {
-            new DevExpress.XtraTab.Buttons.CustomHeaderButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "Chọn diễn biến, diễn biến CLS", -1, true, true, DevExpress.XtraEditors.ImageLocation.MiddleRight, null, serializableAppearanceObject1, "", "Chondienbien", null, true)});
+            new DevExpress.XtraTab.Buttons.CustomHeaderButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "Chọn diễn biến bệnh, diễn biến CLS", -1, true, true, DevExpress.XtraEditors.ImageLocation.MiddleRight, null, serializableAppearanceObject1, "", "Chondienbien", null, true)});
             this.xtraTabControl1.Location = new System.Drawing.Point(2, 2);
             this.xtraTabControl1.Name = "xtraTabControl1";
             this.xtraTabControl1.SelectedTabPage = this.xtraTabPage1;

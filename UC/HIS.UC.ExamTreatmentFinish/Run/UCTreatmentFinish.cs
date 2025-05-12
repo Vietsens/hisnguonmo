@@ -1258,7 +1258,7 @@ namespace HIS.UC.ExamTreatmentFinish.Run
                                 treatment.TREATMENT_METHOD = currentTreatmentFinishSDO.TreatmentMethod;
                                 treatment.TREATMENT_DIRECTION = currentTreatmentFinishSDO.TreatmentDirection;
                                 treatment.USED_MEDICINE = currentTreatmentFinishSDO.UsedMedicine;
-                                this._treatmentext.CLINICAL_NOTE = currentTreatmentFinishSDO.ClinicalNote;
+                                treatment.CLINICAL_SIGNS = currentTreatmentFinishSDO.ClinicalSigns;
                                 this._treatmentext.SUBCLINICAL_RESULT = currentTreatmentFinishSDO.SubclinicalResult;
                             }
 

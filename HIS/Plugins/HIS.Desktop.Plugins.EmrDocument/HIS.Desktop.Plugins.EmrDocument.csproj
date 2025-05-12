@@ -87,15 +87,6 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\lib\EMR\EMR.URI.dll</HintPath>
     </Reference>
-    <Reference Include="HID.EFMODEL">
-      <HintPath>..\..\..\..\..\histest\histest\x64\ReferencedAssemblies\HID.EFMODEL.dll</HintPath>
-    </Reference>
-    <Reference Include="HID.Filter">
-      <HintPath>..\..\..\..\..\histest\histest\x64\ReferencedAssemblies\HID.Filter.dll</HintPath>
-    </Reference>
-    <Reference Include="HIS.Desktop.LocalStorage.EmrConfig">
-      <HintPath>..\..\HIS.Desktop.LocalStorage.EmrConfig\bin\Debug\HIS.Desktop.LocalStorage.EmrConfig.dll</HintPath>
-    </Reference>
     <Reference Include="His.EventLog, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\lib\HIS\His.EventLog\His.EventLog.dll</HintPath>
@@ -116,7 +107,7 @@
       <HintPath>..\..\..\..\lib\Inventec.Common\Inventec.Common.Controls.PopupLoader\Inventec.Common.Controls.PopupLoader.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Common.DateTime">
-      <HintPath>..\..\..\..\..\histest\histest\x64\ReferencedAssemblies\Inventec.Common.DateTime.dll</HintPath>
+      <HintPath>..\..\..\..\LIB\Inventec.Common\Inventec.Common.DateTime\Inventec.Common.DateTime.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Common.DocumentViewer">
       <HintPath>..\..\..\..\lib\Inventec.Common\Inventec.Common.DocumentViewer\Inventec.Common.DocumentViewer.dll</HintPath>
@@ -140,10 +131,10 @@
       <HintPath>..\..\..\..\lib\Inventec.Common\Inventec.Common.Resource\Inventec.Common.Resource.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Common.SignFile">
-      <HintPath>..\..\..\..\..\histest\histest\x64\ReferencedAssemblies\Inventec.Common.SignFile.dll</HintPath>
+      <HintPath>..\..\..\..\lib\Inventec.Common\Inventec.Common.SignFile\Inventec.Common.SignFile.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Common.SignLibrary">
-      <HintPath>..\..\..\..\..\histest\histest\x64\ReferencedAssemblies\Inventec.Common.SignLibrary.dll</HintPath>
+      <HintPath>..\..\..\..\lib\Inventec.Common\Inventec.Common.SignLibrary\Inventec.Common.SignLibrary.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Common.TypeConvert">
       <HintPath>..\..\..\..\lib\Inventec.Common\Inventec.Common.TypeConvert\Inventec.Common.TypeConvert.dll</HintPath>
@@ -212,9 +203,6 @@
     <Reference Include="MOS.Filter, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\lib\MOS\MOS.Filter.dll</HintPath>
-    </Reference>
-    <Reference Include="PdfSharp-WPF">
-      <HintPath>C:\Users\admin\Desktop\pdfscan-master\pdfscan-master\3rdParty\PDFsharp-MigraDocFoundation-Assemblies-1_31\WPF\PdfSharp-WPF.dll</HintPath>
     </Reference>
     <Reference Include="SDA.EFMODEL">
       <HintPath>..\..\..\..\lib\SDA\SDA.EFMODEL.dll</HintPath>
@@ -329,6 +317,10 @@
     <ProjectReference Include="..\..\HIS.Desktop.LocalStorage.ConfigSystem\HIS.Desktop.LocalStorage.ConfigSystem.csproj">
       <Project>{48d25a6a-11bc-4f0f-8dd7-15e03a2bcada}</Project>
       <Name>HIS.Desktop.LocalStorage.ConfigSystem</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\HIS.Desktop.LocalStorage.EmrConfig\HIS.Desktop.LocalStorage.EmrConfig.csproj">
+      <Project>{191a954e-19a7-4557-82d7-584888a04db0}</Project>
+      <Name>HIS.Desktop.LocalStorage.EmrConfig</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\HIS.Desktop.LocalStorage.HisConfig\HIS.Desktop.LocalStorage.HisConfig.csproj">
       <Project>{d1e5461b-8a8e-46f7-9aee-5c1b327e5f2b}</Project>
