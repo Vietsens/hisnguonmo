@@ -145,32 +145,31 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS
                 rD = rD / i;
             }
         }
-        //public static string ConvertDecToFracByConfig(double dec, int numberDisplaySeperateFormatAmount)
-        //{
-        //    string result = "";
-        //    try
-        //    {
-        //        if (dec == 0)
-        //        {
-        //            result = "";
-        //        }
-        //        else if (HisConfigCFG.IsTutorialNumberIsFrac)
-        //        {
-        //            result = ConvertNumber.Dec2frac(dec);
-        //        }
-        //        else
-        //        {
-        //            result = Inventec.Common.Number.Convert.NumberToStringRoundAuto((decimal)(dec), numberDisplaySeperateFormatAmount);
-        //        }
-        //        Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData("HisConfigCFG.IsTutorialNumberIsFrac", HisConfigCFG.IsTutorialNumberIsFrac) + Inventec.Common.Logging.LogUtil.TraceData("numberDisplaySeperateFormatAmount", numberDisplaySeperateFormatAmount) + Inventec.Common.Logging.LogUtil.TraceData("result", result));
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        result = "";
-        //        Inventec.Common.Logging.LogSystem.Warn(ex);
-        //    }
-        //    return result;
-        //}
-
+        public static string ConvertDecToFracByConfig(double dec, int numberDisplaySeperateFormatAmount)
+        {
+            string result = "";
+            try
+            {
+                if (dec == 0)
+                {
+                    result = "";
+                }
+                else if (HisConfigCFG.IsTutorialNumberIsFrac)
+                {
+                    result = ConvertNumber.Dec2frac(dec);
+                }
+                else
+                {
+                    result = Inventec.Common.Number.Convert.NumberToStringRoundAuto((decimal)(dec), numberDisplaySeperateFormatAmount);
+                }
+                Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData("HisConfigCFG.IsTutorialNumberIsFrac", HisConfigCFG.IsTutorialNumberIsFrac) + Inventec.Common.Logging.LogUtil.TraceData("numberDisplaySeperateFormatAmount", numberDisplaySeperateFormatAmount) + Inventec.Common.Logging.LogUtil.TraceData("result", result));
+            }
+            catch (Exception ex)
+            {
+                result = "";
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+            return result;
+        }
     }
 }
