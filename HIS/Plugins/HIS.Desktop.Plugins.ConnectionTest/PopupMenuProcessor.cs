@@ -45,7 +45,8 @@ namespace HIS.Desktop.Plugins.ConnectionTest
             TaoEmr,
             PrintEmr,
             CapNhatBarcode,
-            InGopBarcode
+            InGopBarcode,
+            AttachTestFile
         }
 
         internal PopupMenuProcessor(V_LIS_SAMPLE sample, BarManager barmanager, MouseRightClick mouseRightClick, bool IsMultilCheck)
@@ -77,6 +78,12 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                 btnCapNhatBarcode.ItemClick += new ItemClickEventHandler(this._MouseRightClick);
 
                 this._PopupMenu.AddItems(new BarItem[] { btnCapNhatBarcode });
+
+                BarButtonItem btnAttachTestFile = new BarButtonItem(this._BarManager, "Đính kèm file kết quả xét nghiệm", 1);
+                btnAttachTestFile.Tag = ItemType.AttachTestFile;
+                btnAttachTestFile.ItemClick += new ItemClickEventHandler(this._MouseRightClick);
+
+                this._PopupMenu.AddItems(new BarItem[] { btnAttachTestFile });
 
                 if (IsMultilCheck)
                 {

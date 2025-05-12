@@ -6304,6 +6304,9 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                         case PopupMenuProcessor.ItemType.InGopBarcode:
                             this.InGopBarcode(row);
                             break;
+                        case PopupMenuProcessor.ItemType.AttachTestFile:
+                            this.AttachTestFile(row);
+                            break;
                         default:
                             break;
                     }
@@ -6312,6 +6315,19 @@ namespace HIS.Desktop.Plugins.ConnectionTest
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void AttachTestFile(LisSampleADO row)
+        {
+            try
+            {
+
+            }
+            catch (Exception)
+            {
+
+                throw;
             }
         }
 
