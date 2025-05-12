@@ -722,9 +722,9 @@ namespace HIS.Desktop.Plugins.EmrDocument
                 }
                 Inventec.Common.Logging.LogSystem.Debug("LoadPaging.5");
                 #endregion
-                #region API RESULT
                 if (apiResult != null)
                 {
+                    #region API RESULT
                     Inventec.Common.Logging.LogSystem.Debug("LoadPaging.6");
                     string documentTreatmentIdKXD = "_____KXD_____";
                     string documentTypeCodeKXD = "____KXD____";
@@ -772,23 +772,13 @@ namespace HIS.Desktop.Plugins.EmrDocument
                                         int count = g.Count();
 
                                         string strTypeKey = String.Format("{0}__{1}", !String.IsNullOrEmpty(g.ToList().First().DOCUMENT_TYPE_CODE) ? g.ToList().First().DOCUMENT_TYPE_CODE : documentTypeCodeKXD, order);
-                                        if (!string.IsNullOrEmpty(txtTreatmentCode.Text))
+                                        if (!listData.Exists(e => e.CHILD_KEY == strTypeKey))
                                         {
                                             listData.Add(new EmrDocumentADO()
                                             {
                                                 DOCUMENT_DISPLAY = String.Format("Loại: {0}({1})", !String.IsNullOrEmpty(g.ToList().First().DOCUMENT_TYPE_NAME) ? g.ToList().First().DOCUMENT_TYPE_NAME : "Không xác định", count),
                                                 CHILD_KEY = strTypeKey,
-                                                PARENT_KEY = "",
-                                                CUSTOM_NUM_ORDER = (order)
-                                            });
-                                        }
-                                        else
-                                        {
-                                            listData.Add(new EmrDocumentADO()
-                                            {
-                                                DOCUMENT_DISPLAY = String.Format("Loại: {0}({1})", !String.IsNullOrEmpty(g.ToList().First().DOCUMENT_TYPE_NAME) ? g.ToList().First().DOCUMENT_TYPE_NAME : "Không xác định", count),
-                                                CHILD_KEY = strTypeKey,
-                                                PARENT_KEY = strtreatmentKey,
+                                                PARENT_KEY = !string.IsNullOrEmpty(txtTreatmentCode.Text) ? "" : strtreatmentKey,
                                                 CUSTOM_NUM_ORDER = (order)
                                             });
                                         }
@@ -844,15 +834,18 @@ namespace HIS.Desktop.Plugins.EmrDocument
                                                         var docGroupCCs = (this.currentDocumentGroups != null && currentDocumentGroups.Count > 0) ? this.currentDocumentGroups.Where(t => (itemgroupParent.VIR_PATH + "/").Contains("/" + t.ID + "/")).OrderBy(t => t.NUM_ORDER).ToList() : null;
                                                         cus1 += ((docGroupCCs != null && docGroupCCs.Count > 0) ? String.Join("0000000000000000", docGroupCCs.Select(t => (t.NUM_ORDER.HasValue ? (String.Format("{0:0000000000000000}", t.NUM_ORDER) + "") : "9999999999999999"))) : "");
 
-                                                        listData.Add(new EmrDocumentADO()
+                                                        if (!listData.Exists(e => e.CHILD_KEY == strChildKeyGroupChild))
                                                         {
-                                                            DOCUMENT_DISPLAY = (itemgroupParent.IS_LEAF.HasValue && itemgroupParent.IS_LEAF == 1) ? String.Format("{0}({1})", o.DOCUMENT_GROUP_NAME, count11) : itemgroupParent.DOCUMENT_GROUP_NAME,
-                                                            CHILD_KEY = strChildKeyGroupChild,
-                                                            PARENT_KEY = strChildKeyGroupParent,
-                                                            CUSTOM_NUM_ORDER = (order),
-                                                            DOCUMENT_GROUP_NUM_ORDER = itemgroupParent.NUM_ORDER,
-                                                            CUSTOM_BY_GROUP_NUM_ORDER = cus1
-                                                        });
+                                                            listData.Add(new EmrDocumentADO()
+                                                            {
+                                                                DOCUMENT_DISPLAY = (itemgroupParent.IS_LEAF.HasValue && itemgroupParent.IS_LEAF == 1) ? String.Format("{0}({1})", o.DOCUMENT_GROUP_NAME, count11) : itemgroupParent.DOCUMENT_GROUP_NAME,
+                                                                CHILD_KEY = strChildKeyGroupChild,
+                                                                PARENT_KEY = strChildKeyGroupParent,
+                                                                CUSTOM_NUM_ORDER = (order),
+                                                                DOCUMENT_GROUP_NUM_ORDER = itemgroupParent.NUM_ORDER,
+                                                                CUSTOM_BY_GROUP_NUM_ORDER = cus1
+                                                            });
+                                                        }
                                                     }
                                                 }
                                                 else
@@ -871,16 +864,18 @@ namespace HIS.Desktop.Plugins.EmrDocument
 
                                                     var docGroupCCs = (this.currentDocumentGroups != null && currentDocumentGroups.Count > 0) ? this.currentDocumentGroups.Where(t => (docGroup.VIR_PATH + "/").Contains("/" + t.ID + "/")).OrderBy(t => t.NUM_ORDER).ToList() : null;
                                                     cus1 += ((docGroupCCs != null && docGroupCCs.Count > 0) ? String.Join("0000000000000000", docGroupCCs.Select(t => (t.NUM_ORDER.HasValue ? (String.Format("{0:0000000000000000}", t.NUM_ORDER) + "") : ""))) : "");
-
-                                                    listData.Add(new EmrDocumentADO()
+                                                    if (!listData.Exists(e => e.CHILD_KEY == strChildKeyGroup))
                                                     {
-                                                        DOCUMENT_DISPLAY = String.Format("{0}({1})", o.DOCUMENT_GROUP_NAME, count1),
-                                                        CHILD_KEY = strChildKeyGroup,
-                                                        PARENT_KEY = strTypeKey,
-                                                        CUSTOM_NUM_ORDER = (order),
-                                                        DOCUMENT_GROUP_NUM_ORDER = docGroup.NUM_ORDER,
-                                                        CUSTOM_BY_GROUP_NUM_ORDER = cus1
-                                                    });
+                                                        listData.Add(new EmrDocumentADO()
+                                                        {
+                                                            DOCUMENT_DISPLAY = String.Format("{0}({1})", o.DOCUMENT_GROUP_NAME, count1),
+                                                            CHILD_KEY = strChildKeyGroup,
+                                                            PARENT_KEY = strTypeKey,
+                                                            CUSTOM_NUM_ORDER = (order),
+                                                            DOCUMENT_GROUP_NUM_ORDER = docGroup.NUM_ORDER,
+                                                            CUSTOM_BY_GROUP_NUM_ORDER = cus1
+                                                        });
+                                                    }
                                                 }
                                             }
 
@@ -937,123 +932,94 @@ namespace HIS.Desktop.Plugins.EmrDocument
                         Inventec.Common.Logging.LogSystem.Debug("LoadPaging.9");
                         if (checkGroupType.Checked && listData != null && listData.Count > 0)
                         {
-                            List<EmrDocumentADO> listTypes = new List<EmrDocumentADO>();
-                            List<EmrDocumentADO> listGroups = new List<EmrDocumentADO>();
+                            var listDataSnapshot = listData.ToList(); // snapshot để GroupBy không bị ảnh hưởng
 
-                            var GroupByTypes = listData.GroupBy(g => g.DOCUMENT_TYPE_ID).ToList();
-                            foreach (var g in GroupByTypes)
+                            var groupByTypes = listDataSnapshot.GroupBy(g => g.DOCUMENT_TYPE_ID).ToList();
+                            foreach (var group in groupByTypes)
                             {
-                                int count = g.Count();
+                                var firstItem = group.FirstOrDefault();
+                                if (firstItem == null) continue;
 
-                                string strTypeKey = String.Format("{0}", !String.IsNullOrEmpty(g.ToList().First().DOCUMENT_TYPE_CODE) ? g.ToList().First().DOCUMENT_TYPE_CODE : documentTypeCodeKXD);
-                                listData.Add(new EmrDocumentADO()
+                                int count = group.Count();
+                                string typeCode = !string.IsNullOrEmpty(firstItem.DOCUMENT_TYPE_CODE) ? firstItem.DOCUMENT_TYPE_CODE : documentTypeCodeKXD;
+                                string typeName = !string.IsNullOrEmpty(firstItem.DOCUMENT_TYPE_NAME) ? firstItem.DOCUMENT_TYPE_NAME : "Không xác định";
+                                string typeKey = typeCode;
+
+                                // Thêm node loại
+                                listData.Add(new EmrDocumentADO
                                 {
-                                    DOCUMENT_DISPLAY = String.Format("Loại: {0}({1})", !String.IsNullOrEmpty(g.ToList().First().DOCUMENT_TYPE_NAME) ? g.ToList().First().DOCUMENT_TYPE_NAME : "Không xác định", count),
-                                    CHILD_KEY = strTypeKey,
+                                    DOCUMENT_DISPLAY = string.Format("Loại: {0}({1})", typeName, count),
+                                    CHILD_KEY = typeKey,
                                     PARENT_KEY = "",
-                                    CUSTOM_NUM_ORDER = (order)
+                                    CUSTOM_NUM_ORDER = order
                                 });
 
-                                var listByGroups = g.ToList();
-                                foreach (var itemBG in listByGroups)
+                                // Duyệt các văn bản theo loại
+                                var documents = group.ToList();
+
+                                foreach (var doc in documents)
                                 {
-                                    var docGroupC = (this.currentDocumentGroups != null && currentDocumentGroups.Count > 0 && itemBG.DOCUMENT_GROUP_ID.HasValue && itemBG.DOCUMENT_GROUP_ID.Value > 0) ? this.currentDocumentGroups.Where(t => t.ID == itemBG.DOCUMENT_GROUP_ID.Value).FirstOrDefault() : null;
-                                    if (docGroupC != null && !String.IsNullOrEmpty(docGroupC.VIR_PATH))
-                                    {
-                                        var arrSplit = docGroupC.VIR_PATH.Split(new string[] { "/" }, StringSplitOptions.RemoveEmptyEntries);
-                                        if (arrSplit != null && arrSplit.Count() < 10)
-                                        {
-                                            for (int iii = 0; iii < 10 - arrSplit.Count(); iii++)
-                                            {
-                                                itemBG.CUSTOM_BY_GROUP_NUM_ORDER += "0000000000000000";
-                                            }
-                                        }
-                                        var docGroupCCs = (this.currentDocumentGroups != null && currentDocumentGroups.Count > 0) ? this.currentDocumentGroups.Where(t => (docGroupC.VIR_PATH + "/").Contains("/" + t.ID + "/")).OrderBy(t => t.NUM_ORDER).ToList() : null;
-                                        itemBG.CUSTOM_BY_GROUP_NUM_ORDER += ((docGroupCCs != null && docGroupCCs.Count > 0) ? String.Join("0000000000000000", docGroupCCs.Select(t => (t.NUM_ORDER.HasValue ? (String.Format("{0:0000000000000000}", t.NUM_ORDER) + "") : "9999999999999999"))) : "");
-                                    }
+                                    string customGroupOrder = BuildGroupOrder(doc.DOCUMENT_GROUP_ID);
+                                    doc.CUSTOM_BY_GROUP_NUM_ORDER = customGroupOrder;
                                 }
 
-                                listByGroups = listByGroups.OrderBy(o => o.CUSTOM_BY_GROUP_NUM_ORDER).ThenBy(o => o.DOCUMENT_TIME).ThenBy(o => o.CREATE_TIME).ToList();
+                                documents = documents
+                                    .OrderBy(d => d.CUSTOM_BY_GROUP_NUM_ORDER)
+                                    .ThenBy(d => d.DOCUMENT_TIME)
+                                    .ThenBy(d => d.CREATE_TIME)
+                                    .ToList();
 
-                                listByGroups.ForEach(o =>
+                                foreach (var doc in documents)
                                 {
-                                    var docGroup = (this.currentDocumentGroups != null && currentDocumentGroups.Count > 0 && o.DOCUMENT_GROUP_ID.HasValue && o.DOCUMENT_GROUP_ID.Value > 0) ? this.currentDocumentGroups.Where(t => t.ID == o.DOCUMENT_GROUP_ID.Value).FirstOrDefault() : null;
-                                    string strChildKeyGroup = String.Format("{0}____{1}", o.DOCUMENT_TYPE_CODE, docGroup != null ? docGroup.VIR_PATH + "/" : documentGroupCodeKXD);
-                                    if (docGroup != null && this.currentDocumentGroups != null && !listData.Exists(p => p.CHILD_KEY == strChildKeyGroup))
+                                    var docGroup = currentDocumentGroups.FirstOrDefault(g => g.ID == doc.DOCUMENT_GROUP_ID);
+                                    string groupKey = string.Format("{0}____{1}/", doc.DOCUMENT_TYPE_CODE, (docGroup != null ? docGroup.VIR_PATH : documentGroupCodeKXD));
+
+                                    // Nếu chưa tồn tại node nhóm văn bản
+                                    if (docGroup != null && !listData.Exists(p => p.CHILD_KEY == groupKey))
                                     {
-                                        //Kiểm tra nếu có nhóm văn bản thì cần kiểm tra tiếp nhóm văn bản đó có văn bản cha nào không
-                                        //Nếu có thì cần tái hiện lại cây nhóm văn bản và gắn trong loại, văn bản sẽ được gắn vào nhóm văn bản lá
-                                        var groupCheckParents = this.currentDocumentGroups != null ? this.currentDocumentGroups.Where(t => t.VIR_PATH != null && ("/" + docGroup.VIR_PATH + "/").Contains("/" + t.ID + "/")).OrderBy(t => t.NUM_ORDER).ToList() : null;
-                                        if (groupCheckParents != null && groupCheckParents.Count > 0)
+                                        var parentGroups = GetParentGroups(docGroup);
+
+                                        foreach (var parent in parentGroups)
                                         {
-                                            int count11 = listData.Where(p => p.DOCUMENT_GROUP_ID == o.DOCUMENT_GROUP_ID && p.DOCUMENT_TYPE_NAME == o.DOCUMENT_TYPE_NAME).Count();
-                                            foreach (var itemgroupParent in groupCheckParents)
+                                            string parentKey = parent.PARENT_ID == null || parent.PARENT_ID == 0
+                                                ? typeKey
+                                                : string.Format("{0}____{1}/", doc.DOCUMENT_TYPE_CODE, parent.PARENT_PATH);
+
+                                            string childKey = string.Format("{0}____{1}/", doc.DOCUMENT_TYPE_CODE, parent.VIR_PATH);
+                                            string groupDisplay = parent.IS_LEAF == 1 ? string.Format("{0}({1})", doc.DOCUMENT_GROUP_NAME, documents.Count(d => d.DOCUMENT_GROUP_ID == doc.DOCUMENT_GROUP_ID)) : parent.DOCUMENT_GROUP_NAME;
+                                            string customOrder = BuildGroupOrder(parent.ID);
+
+                                            if (!listData.Exists(p => p.CHILD_KEY == childKey))
                                             {
-                                                string strChildKeyGroupChild = String.Format("{0}____{1}", o.DOCUMENT_TYPE_CODE, itemgroupParent.VIR_PATH + "/");
-                                                string strChildKeyGroupParent = (itemgroupParent.PARENT_ID == null || itemgroupParent.PARENT_ID == 0) ? strTypeKey : String.Format("{0}____{1}", o.DOCUMENT_TYPE_CODE, itemgroupParent.PARENT_PATH + "/");
-
-                                                string cus1 = "";
-                                                var arrSplit1 = itemgroupParent.VIR_PATH.Split(new string[] { "/" }, StringSplitOptions.RemoveEmptyEntries);
-                                                if (arrSplit1 != null && arrSplit1.Count() < 10)
+                                                listData.Add(new EmrDocumentADO
                                                 {
-                                                    for (int iii = 0; iii < 10 - arrSplit1.Count(); iii++)
-                                                    {
-                                                        cus1 += "0000000000000000";
-                                                    }
-                                                }
-
-                                                var docGroupCCs = (this.currentDocumentGroups != null && currentDocumentGroups.Count > 0) ? this.currentDocumentGroups.Where(t => (itemgroupParent.VIR_PATH + "/").Contains("/" + t.ID + "/")).OrderBy(t => t.NUM_ORDER).ToList() : null;
-                                                cus1 += ((docGroupCCs != null && docGroupCCs.Count > 0) ? String.Join("0000000000000000", docGroupCCs.Select(t => (t.NUM_ORDER.HasValue ? (String.Format("{0:0000000000000000}", t.NUM_ORDER) + "") : "9999999999999999"))) : "");
-
-                                                listData.Add(new EmrDocumentADO()
-                                                {
-                                                    DOCUMENT_DISPLAY = (itemgroupParent.IS_LEAF.HasValue && itemgroupParent.IS_LEAF == 1) ? String.Format("{0}({1})", o.DOCUMENT_GROUP_NAME, count11) : itemgroupParent.DOCUMENT_GROUP_NAME,
-                                                    CHILD_KEY = strChildKeyGroupChild,
-                                                    PARENT_KEY = strChildKeyGroupParent,
-                                                    CUSTOM_NUM_ORDER = (order),
-                                                    DOCUMENT_GROUP_NUM_ORDER = itemgroupParent.NUM_ORDER,
-                                                    CUSTOM_BY_GROUP_NUM_ORDER = cus1
+                                                    DOCUMENT_DISPLAY = groupDisplay,
+                                                    CHILD_KEY = childKey,
+                                                    PARENT_KEY = parentKey,
+                                                    CUSTOM_NUM_ORDER = order,
+                                                    DOCUMENT_GROUP_NUM_ORDER = parent.NUM_ORDER,
+                                                    CUSTOM_BY_GROUP_NUM_ORDER = customOrder
                                                 });
                                             }
                                         }
-                                        else
-                                        {
-                                            int count1 = listData.Where(p => p.DOCUMENT_GROUP_ID == o.DOCUMENT_GROUP_ID && p.DOCUMENT_TYPE_NAME == o.DOCUMENT_TYPE_NAME).Count();
-
-                                            string cus1 = "";
-                                            var arrSplit1 = docGroup.VIR_PATH.Split(new string[] { "/" }, StringSplitOptions.RemoveEmptyEntries);
-                                            if (arrSplit1 != null && arrSplit1.Count() < 10)
-                                            {
-                                                for (int iii = 0; iii < 10 - arrSplit1.Count(); iii++)
-                                                {
-                                                    cus1 += "0000000000000000";
-                                                }
-                                            }
-
-                                            var docGroupCCs = (this.currentDocumentGroups != null && currentDocumentGroups.Count > 0) ? this.currentDocumentGroups.Where(t => (docGroup.VIR_PATH + "/").Contains("/" + t.ID + "/")).OrderBy(t => t.NUM_ORDER).ToList() : null;
-                                            cus1 += ((docGroupCCs != null && docGroupCCs.Count > 0) ? String.Join("0000000000000000", docGroupCCs.Select(t => (t.NUM_ORDER.HasValue ? (String.Format("{0:0000000000000000}", t.NUM_ORDER) + "") : ""))) : "");
-
-                                            listData.Add(new EmrDocumentADO()
-                                            {
-                                                DOCUMENT_DISPLAY = String.Format("{0}({1})", o.DOCUMENT_GROUP_NAME, count1),
-                                                CHILD_KEY = strChildKeyGroup,
-                                                PARENT_KEY = strTypeKey,
-                                                CUSTOM_NUM_ORDER = (order),
-                                                DOCUMENT_GROUP_NUM_ORDER = docGroup.NUM_ORDER,
-                                                CUSTOM_BY_GROUP_NUM_ORDER = cus1
-                                            });
-                                        }
                                     }
 
-                                    o.DOCUMENT_DISPLAY = o.DOCUMENT_NAME;
-                                    o.CUSTOM_NUM_ORDER = order;
-                                    o.PARENT_KEY = (docGroup != null) ? strChildKeyGroup : strTypeKey;
-                                    o.CHILD_KEY = String.Format("{0}____{1}____{2}", o.DOCUMENT_TYPE_CODE, o.DOCUMENT_GROUP_CODE, o.DOCUMENT_CODE);
-
+                                    // Cập nhật văn bản
+                                    doc.DOCUMENT_DISPLAY = doc.DOCUMENT_NAME;
+                                    doc.CUSTOM_NUM_ORDER = order;
+                                    doc.PARENT_KEY = docGroup != null ? groupKey : typeKey;
+                                    doc.CHILD_KEY = string.Format("{0}____{1}____{2}", doc.DOCUMENT_TYPE_CODE, doc.DOCUMENT_GROUP_CODE, doc.DOCUMENT_CODE);
                                     order++;
-                                });
+                                }
                             }
-                            listData = listData.OrderByDescending(o => o.NUM_ORDER).ThenBy(o => o.CUSTOM_BY_GROUP_NUM_ORDER).ThenBy(o => o.DOCUMENT_TIME).ThenBy(o => o.CREATE_TIME).ToList();
+
+                            // Sắp xếp lại toàn bộ
+                            listData = listData
+                                .OrderByDescending(d => d.NUM_ORDER)
+                                .ThenBy(d => d.CUSTOM_BY_GROUP_NUM_ORDER)
+                                .ThenBy(d => d.DOCUMENT_TIME)
+                                .ThenBy(d => d.CREATE_TIME)
+                                .ToList();
                         }
                         else if (listData != null && listData.Count > 0)
                         {
@@ -1103,6 +1069,47 @@ namespace HIS.Desktop.Plugins.EmrDocument
             {
                 LogSystem.Error(ex);
             }
+        }
+
+        private string BuildGroupOrder(long? groupId)
+        {
+            try
+            {
+                if (groupId == null || groupId == 0 || currentDocumentGroups == null) return "";
+
+                var group = currentDocumentGroups.FirstOrDefault(g => g.ID == groupId.Value);
+                if (group == null || string.IsNullOrEmpty(group.VIR_PATH)) return "";
+
+                var segments = group.VIR_PATH.Split(new[] { '/' }, StringSplitOptions.RemoveEmptyEntries);
+                var pad = new string('0', 16);
+                string result = new string('0', (10 - segments.Length) * 16);
+
+                var hierarchy = currentDocumentGroups
+                    .Where(g => (string.Format("{0}/", group.VIR_PATH)).Contains(string.Format("/{0}/", g.ID)))
+                    .OrderBy(g => g.NUM_ORDER)
+                    .Select(g => g.NUM_ORDER.HasValue
+                        ? g.NUM_ORDER.Value.ToString("0000000000000000")
+                        : "9999999999999999");
+
+                result += string.Join("", hierarchy);
+                return result;
+            }
+            catch (Exception ex)
+            {
+                LogSystem.Error(ex);
+            }
+            return "";
+        }
+
+        private List<EMR_DOCUMENT_GROUP> GetParentGroups(EMR_DOCUMENT_GROUP group)
+        {
+            if (group == null || string.IsNullOrEmpty(group.VIR_PATH) || currentDocumentGroups == null)
+                return new List<EMR_DOCUMENT_GROUP>();
+
+            return currentDocumentGroups
+                .Where(g => string.Format("/{0}/", group.VIR_PATH).Contains(string.Format("/{0}/", g.ID)))
+                .OrderBy(g => g.NUM_ORDER)
+                .ToList();
         }
 
         private void SetFilterNavBar(long treatmentId, ref EmrDocumentViewFilter filter)
@@ -2826,7 +2833,7 @@ namespace HIS.Desktop.Plugins.EmrDocument
                         {
                             System.IO.Directory.CreateDirectory(directoryPath);
                         }
-                        
+
                         int count = 0;
                         int totalList = listDataTrue.Count;
                         string filePath = "";
