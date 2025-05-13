@@ -75,7 +75,7 @@ namespace HIS.Desktop.Plugins.TreatmentFinish.Config
         private const string KEY__IsAllowTreatmentFinishDepartmentIsActiveFee = "HIS.Desktop.Plugins.TreatmentFinish.IsAllowTreatmentFinishDepartmentIsActiveFee";
         private const string KEY_TreatmentEndTypeIsTransfer = "HIS.Desktop.Plugins.TreatmentFinish.TreatmentEndTypeIsTransfer";
         private const string KEY_IsCheckSubIcdExceedLimit = "HIS.Desktop.Plugins.IsCheckSubIcdExceedLimit";
-
+        private const string KEY_WarnNotRequiredCompleteHasNoSample = "HIS.Desktop.Plugins.TreatmentFinish.WarnNotRequiredCompleteHasNoSample";
 
         internal static string OptionTreatmentEndTypeIsTransfer;
         internal static string MustChooseSeviceExamOption;
@@ -98,6 +98,8 @@ namespace HIS.Desktop.Plugins.TreatmentFinish.Config
         internal static long? WarningOptionWhenExceedingMaxOfAppointmentDays;
         internal static string ExportXml2076Option { get; set; }
         internal static string MustChooseSeviceInCaseOfAppointment;
+        internal static string WarnNotRequiredCompleteHasNoSample;
+
 
         internal static long WarningOption { get; set; }
 
@@ -137,6 +139,7 @@ namespace HIS.Desktop.Plugins.TreatmentFinish.Config
                 TreatmentEndTypeDefaultID = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<long>(TreatmentEndTypeDefault);
                 ALOW_PRINT_FINISH = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<long>(HIS_DESKTOP_ALLOW_PRINT_FINISH);
                 IsShowDoctor = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(ShowDoctor);
+                WarnNotRequiredCompleteHasNoSample = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(KEY_WarnNotRequiredCompleteHasNoSample);
 
                 WarningOption = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<long>(WARNING_OPTION);
 

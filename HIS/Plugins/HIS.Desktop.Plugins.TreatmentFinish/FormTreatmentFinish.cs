@@ -84,7 +84,7 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
     {
         #region Declare
         HisTreatmentFinishSDO hisTreatmentFinishSDO;
-        internal MOS.SDO.WorkPlaceSDO WorkPlaceSDO;
+        internal MOS.SDO.WorkPlaceSDO WorkPlaceSDO; 
         internal long treatmentId = 0;
         internal MOS.EFMODEL.DataModels.HIS_TREATMENT currentHisTreatment = null;
         //internal MOS.EFMODEL.DataModels.HIS_TREATMENT currentHisTreatment_ = null;
@@ -2611,6 +2611,11 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
                     return;
                 }
 
+                if (!this.CheckWarnNotRequiredCompleteHasNoSample())
+                {
+                    return;
+                }
+
                 HIS.Desktop.Plugins.Library.CheckIcd.CheckIcdManager check = new Desktop.Plugins.Library.CheckIcd.CheckIcdManager(null, currentHisTreatment);
                 string message = null;
                 if (CheckIcdWhenSave == "1" || CheckIcdWhenSave == "2")
@@ -2782,7 +2787,50 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
         {
             throw new NotImplementedException();
         }
+        private bool CheckWarnNotRequiredCompleteHasNoSample()
+        {
+            bool valid = true;
+            try
+            {
+                string serviceReqCode = "";
 
+                if (ConfigKey.WarnNotRequiredCompleteHasNoSample == "1")
+                {
+                    HisServiceReqFilter srFilter = new HisServiceReqFilter();
+
+                    srFilter.TREATMENT_ID = currentHisTreatment.ID;
+                    srFilter.SERVICE_REQ_TYPE_ID = IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__XN;
+                    srFilter.IS_NOT_REQUIRED_COMPLETE = true;
+                    srFilter.ORDER_DIRECTION = "DESC";
+                    srFilter.ORDER_FIELD = "CREATE_TIME";
+
+                    examServiceReqs = new BackendAdapter(new CommonParam()).Get<List<HIS_SERVICE_REQ>>("api/HisServiceReq/Get", ApiConsumers.MosConsumer, srFilter, null);
+
+                }
+
+                if(examServiceReqs != null && examServiceReqs.Count > 0)
+                {
+                    var serviceReqs = examServiceReqs.Where(o => o.SAMPLE_TIME == null).ToList();
+                    if (serviceReqs != null && serviceReqs.Count > 0)
+                    {
+                        serviceReqCode = string.Join(", ", serviceReqs.Select(o => o.SERVICE_REQ_CODE));
+
+                        if (DevExpress.XtraEditors.XtraMessageBox.Show(String.Format("Y lệnh {0} chưa có thông tin lấy mẫu.Bạn có muốn tiếp tục?", serviceReqCode),
+                            "Thông báo",
+                           MessageBoxButtons.YesNo) == DialogResult.No)
+                            return false;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+                valid = false;
+
+            }
+            return valid;
+
+        }
         private bool CheckMustChooseSeviceExamOption()
         {
             bool rs = true;
@@ -3101,6 +3149,12 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
                 valid = this.IsValiICDCause();
                 valid = dxValidationProvider.Validate() && valid;
                 if (!valid) return;
+
+                if (!this.CheckWarnNotRequiredCompleteHasNoSample())
+                {
+                    return;
+                }
+
                 GetValueUC();
                 if (Inventec.Common.String.CountVi.Count(codeCheckCD) > 100)
                 {
@@ -5055,6 +5109,11 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
                 }
 
                 if (!this.CheckUnassignTrackingServiceReq_ForSave(ValidationDataType.GetListMessage, ref this.warningADOs))
+                {
+                    return;
+                }
+
+                if (!this.CheckWarnNotRequiredCompleteHasNoSample())
                 {
                     return;
                 }
