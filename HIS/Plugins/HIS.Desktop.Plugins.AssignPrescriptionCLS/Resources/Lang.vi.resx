@@ -337,7 +337,7 @@
     <value>Cách dùng:</value>
   </data>
   <data name="frmAssignPrescription.lciHuongDan.Text" xml:space="preserve">
-    <value>Hướng dẫn:</value>
+    <value>Liều dùng:</value>
   </data>
   <data name="frmAssignPrescription.lciIcdMain.Text" xml:space="preserve">
     <value>Chẩn đoán chính:</value>
