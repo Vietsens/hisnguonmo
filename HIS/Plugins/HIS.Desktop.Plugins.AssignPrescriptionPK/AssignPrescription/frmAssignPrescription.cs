@@ -2302,6 +2302,12 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
             bool result = true;
             try
             {
+                if (mediMatyType.DataType == HIS.Desktop.LocalStorage.BackendData.ADO.MedicineMaterialTypeComboADO.VATTU
+                    || mediMatyType.DataType == HIS.Desktop.LocalStorage.BackendData.ADO.MedicineMaterialTypeComboADO.VATTU_DM
+                    || mediMatyType.DataType == HIS.Desktop.LocalStorage.BackendData.ADO.MedicineMaterialTypeComboADO.VATTU_TSD)
+                {
+                    return result;
+                }
                 CommonParam param = new CommonParam();
                 HisMedicineServiceFilter filter = new HisMedicineServiceFilter();
                 filter.MEDICINE_TYPE_ID = mediMatyType.ID;
