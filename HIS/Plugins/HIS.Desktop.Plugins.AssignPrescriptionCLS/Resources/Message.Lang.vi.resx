@@ -262,7 +262,7 @@
     <value>Chưa chọn ngày chỉ định</value>
   </data>
   <data name="Plugin_AssignPrescription__DoiTuongBHYTBatBuocPhaiNhapHDSD" xml:space="preserve">
-    <value>Bắt buộc phải nhập hướng dẫn sử dụng cho thuốc</value>
+    <value>Bắt buộc phải nhập liều dùng thuốc</value>
   </data>
   <data name="Plugin_AssignPrescription__HDSDVuotQuaKyTu" xml:space="preserve">
     <value>Hướng dẫn sử dụng vượt độ dài cho phép</value>

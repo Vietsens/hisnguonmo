@@ -1315,12 +1315,6 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                     dteCommonParam = dteCommonParam.AddSeconds(1);
                 if (this.intructionTimeSelecteds != null && this.intructionTimeSelecteds.Count > 0)
                     dteTreatmentFinishIntructionTime = Int64.Parse(Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(this.intructionTimeSelecteds.OrderBy(o => o).First()).Value.AddSeconds(1).ToString("yyyyMMddHHmmss"));
-                if (string.IsNullOrWhiteSpace(memHtu.Text))
-                {
-                    shouldAutoUpdateMemHtu = true;
-                    memHtu.Text = cboMedicineUseForm.Text + " " + cboHtu.Text;
-                }
-
 
             }
             catch (Exception ex)
@@ -5053,6 +5047,11 @@ o.SERVICE_ID == medi.SERVICE_ID && o.TDL_INTRUCTION_TIME.ToString().Substring(0,
                     this.cboHtu.Text = null;
                     this.cboHtu.Properties.Buttons[1].Visible = false;
                     this.SetHuongDanFromSoLuongNgay();
+
+                    if (this.medicineTypeTutSelected == null)
+                    {
+                        this.memHtu.Text = this.cboMedicineUseForm.Text + " " + this.cboHtu.Text;
+                    }
                 }
                 else if (e.Button.Kind == ButtonPredefines.Plus)
                 {
@@ -5063,13 +5062,13 @@ o.SERVICE_ID == medi.SERVICE_ID && o.TDL_INTRUCTION_TIME.ToString().Substring(0,
 
                     List<object> listArgs = new List<object>();
                     var md = HIS.Desktop.Utility.PluginInstance.GetModuleWithWorkingRoom(moduleData, GetRoomId(), GetRoomTypeId());
-                    md.ModuleTypeId = Inventec.Desktop.Common.Modules.Module.MODULE_TYPE_ID__FORM;
+                    md.ModuleTypeId = Inventec.Desktop.Common.Modules.Module.MODULE_TYPE_ID__FORM;    
                     var extenceInstance = HIS.Desktop.Utility.PluginInstance.GetPluginInstance(md, listArgs);
                     if (extenceInstance == null) throw new NullReferenceException("Khoi tao moduleData that bai. extenceInstance = null");
 
                     WaitingManager.Hide();
                     if (extenceInstance is Form)
-                    {
+                    {    
                         ((Form)extenceInstance).ShowDialog();
                     }
                     else if (extenceInstance is UserControl)
@@ -5079,6 +5078,11 @@ o.SERVICE_ID == medi.SERVICE_ID && o.TDL_INTRUCTION_TIME.ToString().Substring(0,
 
                     BackendDataWorker.Reset<MOS.EFMODEL.DataModels.HIS_HTU>();
                     this.InitComboHtu(null);
+
+                    if (this.medicineTypeTutSelected == null)
+                    {
+                        this.memHtu.Text = this.cboMedicineUseForm.Text + " " + this.cboHtu.Text;
+                    }
                 }
                 else if (e.Button.Kind == ButtonPredefines.Combo)
                 {
@@ -7922,9 +7926,9 @@ o.SERVICE_ID == medi.SERVICE_ID && o.TDL_INTRUCTION_TIME.ToString().Substring(0,
                     string text = "";
                     DevExpress.XtraGrid.Views.Grid.GridView view = this.gridControlServiceProcess.FocusedView as DevExpress.XtraGrid.Views.Grid.GridView;
                     GridHitInfo info = view.CalcHitInfo(e.ControlMousePosition);
-                    if (info.InRowCell)      
+                    if (info.InRowCell)        
                     {
-                        if (this.lastRowHandle != info.RowHandle || this.lastColumn != info.Column)
+                        if (this.lastRowHandle != info.RowHandle || this.lastColumn != info.Column)     
                         {
                             this.lastColumn = info.Column;
                             this.lastRowHandle = info.RowHandle;
@@ -12698,9 +12702,9 @@ o.SERVICE_ID == medi.SERVICE_ID && o.TDL_INTRUCTION_TIME.ToString().Substring(0,
         private void cboHtu_EditValueChanged(object sender, EventArgs e)
         {
             this.CalculateAmount();
-            if (shouldAutoUpdateMemHtu)
+            if (this.medicineTypeTutSelected == null)
             {
-                memHtu.Text = cboMedicineUseForm.Text + " " + cboHtu.Text;
+                this.memHtu.Text = this.cboMedicineUseForm.Text + " " + this.cboHtu.Text;
             }
             if (!IsSetByMedicineTut)
                 this.SetHuongDanFromSoLuongNgay();
