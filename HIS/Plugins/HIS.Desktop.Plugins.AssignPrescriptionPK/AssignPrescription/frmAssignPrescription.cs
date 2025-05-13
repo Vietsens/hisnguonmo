@@ -1113,7 +1113,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
 
                 LogSystem.Debug("frmAssignPrescription_Load. 8");
                 LogSystem.Debug("frmAssignPrescription_Load. 9");
-                
+
                 this.timerInitForm.Interval = 500;//Fix
                 this.timerInitForm.Enabled = true;
                 this.timerInitForm.Start();
@@ -1909,6 +1909,11 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
         {
 
             WaitingManager.Show();
+            if (memHtu.Text != null)
+                this.medicineTypeTutSelected.HTU_TEXT = memHtu.Text;
+            else
+                this.medicineTypeTutSelected.HTU_TEXT = null;
+
 
             if (cboMedicineUseForm.EditValue != null)
                 this.medicineTypeTutSelected.MEDICINE_USE_FORM_ID = Inventec.Common.TypeConvert.Parse.ToInt64((cboMedicineUseForm.EditValue ?? 0).ToString());
@@ -2316,7 +2321,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                 {
                     CreateThreadOverReasonAdd(new List<long>() { treatmentId });
 
-                    decimal AmountInDay = GetAmountInDay(mediMatyType);
+                    decimal AmountInDay = GetAmountInDay(mediMatyType);       
                     #region 119139 V+
                     if (sereServTeinResultTest != null && sereServTeinResultTest.Count > 0)
                     {
@@ -3048,6 +3053,7 @@ o.SERVICE_ID == medi.SERVICE_ID && o.TDL_INTRUCTION_TIME.ToString().Substring(0,
             }
         }
 
+
         internal decimal GetValueFromDataType(short? type, decimal value, HIS_DHST dhst, decimal? chiSoMLCT)
         {
             decimal result = 0;
@@ -3076,7 +3082,6 @@ o.SERVICE_ID == medi.SERVICE_ID && o.TDL_INTRUCTION_TIME.ToString().Substring(0,
                     default:
                         break;
                 }
-
             }
             catch (Exception ex)
             {
@@ -3101,7 +3106,7 @@ o.SERVICE_ID == medi.SERVICE_ID && o.TDL_INTRUCTION_TIME.ToString().Substring(0,
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
-            }   
+            }
             return result;
         }
         private void btnSave_Click(object sender, EventArgs e)
@@ -12662,6 +12667,13 @@ o.SERVICE_ID == medi.SERVICE_ID && o.TDL_INTRUCTION_TIME.ToString().Substring(0,
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
+        }
+
+        private void cboHtu_EditValueChanged(object sender, EventArgs e)
+        {
+            this.CalculateAmount();
+            if (!IsSetByMedicineTut)
+                this.SetHuongDanFromSoLuongNgay();
         }
 
         internal bool CheckValidMaterial(bool IsCheckList = false)
