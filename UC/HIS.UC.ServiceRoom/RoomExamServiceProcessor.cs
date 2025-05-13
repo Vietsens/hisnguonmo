@@ -141,7 +141,7 @@ namespace HIS.UC.ServiceRoom
             }
         }
 
-        public void InitComboRoom(object uc, List<MOS.EFMODEL.DataModels.L_HIS_ROOM_COUNTER_2> executeRooms, bool isSync)
+        public void InitComboRoom(object uc, List<MOS.EFMODEL.DataModels.L_HIS_ROOM_COUNTER_2> executeRooms, bool isSync)     
         {
             try
             {
