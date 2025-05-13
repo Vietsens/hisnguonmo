@@ -1591,17 +1591,17 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                     {
                         SERVICE_ID = sv.SERVICE_ID,
                         SERVICE_TYPE_ID = sv.SERVICE_TYPE_ID,
-                        HEIN_SERVICE_TYPE_ID = sv.HEIN_SERVICE_TYPE_ID,
-                        HEIN_SERVICE_TYPE_CODE = sv.HEIN_SERVICE_TYPE_CODE,
+                        HEIN_SERVICE_TYPE_ID = sv.HEIN_SERVICE_TYPE_ID,       
+                        HEIN_SERVICE_TYPE_CODE = sv.HEIN_SERVICE_TYPE_CODE,       
                         HEIN_SERVICE_BHYT_CODE = sv.HEIN_SERVICE_BHYT_CODE,
-                        HEIN_SERVICE_BHYT_NAME = sv.HEIN_SERVICE_BHYT_NAME,
+                        HEIN_SERVICE_BHYT_NAME = sv.HEIN_SERVICE_BHYT_NAME,    
                     };
                 }
 
                 return this.ChoosePatientTypeDefaultlService(patientTypeId, mediMatyTypeADO);
             }
-            catch (Exception ex)
-            {
+            catch (Exception ex)            
+            {     
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
             return result;
