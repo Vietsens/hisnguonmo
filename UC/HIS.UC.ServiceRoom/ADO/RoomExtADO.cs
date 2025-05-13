@@ -52,7 +52,7 @@ namespace HIS.UC.ServiceRoom.ADO
         public short? IsBlockNumOrder { get; set; }
 
         public RoomExtADO() : base() { }
-        public RoomExtADO(L_HIS_ROOM_COUNTER data, List<V_HIS_ROOM> hisRooms, List<RoomExtADO> lRooms = null)
+        public RoomExtADO(L_HIS_ROOM_COUNTER_2 data, List<V_HIS_ROOM> hisRooms, List<RoomExtADO> lRooms = null)
             : base()
         {
             this.EXECUTE_ROOM_CODE = data.EXECUTE_ROOM_CODE;

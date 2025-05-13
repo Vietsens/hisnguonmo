@@ -170,7 +170,7 @@ namespace HIS.UC.ServiceRoom
             }
         }
 
-        public void InitComboRoom(List<MOS.EFMODEL.DataModels.L_HIS_ROOM_COUNTER> executeRooms)
+        public void InitComboRoom(List<MOS.EFMODEL.DataModels.L_HIS_ROOM_COUNTER_2> executeRooms)
         {
             try
             {
@@ -183,11 +183,11 @@ namespace HIS.UC.ServiceRoom
             }
         }
 
-        public void InitComboRoom(List<MOS.EFMODEL.DataModels.L_HIS_ROOM_COUNTER> executeRooms, bool isSyncData)
+        public void InitComboRoom(List<MOS.EFMODEL.DataModels.L_HIS_ROOM_COUNTER_2> executeRooms, bool isSyncData)
         {
             try
             {
-                executeRooms = executeRooms ?? new List<MOS.EFMODEL.DataModels.L_HIS_ROOM_COUNTER>();
+                executeRooms = executeRooms ?? new List<MOS.EFMODEL.DataModels.L_HIS_ROOM_COUNTER_2>();
                 if (isSyncData && this.roomExts != null && this.roomExts.Count > 0)
                     this.roomExts = (from m in executeRooms select new RoomExtADO(m, this.hisRooms, this.roomExts)).ToList();
                 else
@@ -212,6 +212,11 @@ namespace HIS.UC.ServiceRoom
                 AddFieldColumnIntoComboRoomExt("RESPONSIBLE_USERNAME_DISPLAY", col10,"", 300, columnIndex++, true, DevExpress.Data.UnboundColumnType.Object);
                 AddFieldColumnIntoComboRoomExt("NumOrderBlock", col11,"", 150, columnIndex++, true, null, true);
                 AddFieldColumnIntoComboRoomExt("IS_WARN",col12,"", 80, -1, false);
+                AddFieldColumnIntoComboRoomExt("TOTAL_MORNING_SERVICE_REQ", col13,tol8, 80, columnIndex++, true);
+                AddFieldColumnIntoComboRoomExt("TOTAL_AFTERNOON_SERVICE_REQ", col14,tol9, 80, columnIndex++, true);
+                AddFieldColumnIntoComboRoomExt("TOTAL_TODAY_KNVP_SERE", col15,tol10, 80, columnIndex++, true);
+                AddFieldColumnIntoComboRoomExt("TOTAL_MORNING_KNVP_SERE", col16,tol11, 80, columnIndex++, true);
+                AddFieldColumnIntoComboRoomExt("TOTAL_AFTERNOON_KNVP_SERE", col17,tol12, 80, columnIndex++, true);
 
                 gridViewContainerRoom.GridControl.DataSource = this.roomExts;
 

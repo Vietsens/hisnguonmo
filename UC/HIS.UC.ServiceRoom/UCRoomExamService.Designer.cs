@@ -45,6 +45,7 @@ namespace HIS.UC.ServiceRoom
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject1 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject2 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject3 = new DevExpress.Utils.SerializableAppearanceObject();
@@ -64,12 +65,12 @@ namespace HIS.UC.ServiceRoom
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject16 = new DevExpress.Utils.SerializableAppearanceObject();
             this.layoutControl1 = new DevExpress.XtraLayout.LayoutControl();
             this.beditRoom = new DevExpress.XtraEditors.ButtonEdit();
-            this.popupControlContainerRoom = new DevExpress.XtraBars.PopupControlContainer();
+            this.popupControlContainerRoom = new DevExpress.XtraBars.PopupControlContainer(this.components);
             this.gridControlContainerRoom = new Inventec.Desktop.CustomControl.CustomGridControlWithFilterMultiColumn();
             this.gridViewContainerRoom = new Inventec.Desktop.CustomControl.CustomGridViewWithFilterMultiColumn();
             this.repositoryItemBtnChooseHide = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
             this.repositoryItemBtnChoose = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
-            this.barManager1 = new DevExpress.XtraBars.BarManager();
+            this.barManager1 = new DevExpress.XtraBars.BarManager(this.components);
             this.bar1 = new DevExpress.XtraBars.Bar();
             this.barDockControlTop = new DevExpress.XtraBars.BarDockControl();
             this.barDockControlBottom = new DevExpress.XtraBars.BarDockControl();
@@ -86,7 +87,7 @@ namespace HIS.UC.ServiceRoom
             this.lciExamService = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem3 = new DevExpress.XtraLayout.LayoutControlItem();
             this.lciCboRoom = new DevExpress.XtraLayout.LayoutControlItem();
-            this.imageCollection1 = new DevExpress.Utils.ImageCollection();
+            this.imageCollection1 = new DevExpress.Utils.ImageCollection(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
             this.layoutControl1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.beditRoom.Properties)).BeginInit();
