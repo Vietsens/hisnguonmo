@@ -1048,15 +1048,15 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                     this.medicineTypeTutSelected = null;
                 Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => medicineTypeTutSelected), medicineTypeTutSelected));
                 if (this.medicineTypeTutSelected == null)
-                {
+                {       
                     var medicineType = BackendDataWorker.Get<MOS.EFMODEL.DataModels.V_HIS_MEDICINE_TYPE>().FirstOrDefault(o => o.ID == medicineTypeId);
                     if (medicineType != null)
                     {
-                        if ((medicineType.MEDICINE_USE_FORM_ID ?? 0) > 0)
+                        if ((medicineType.MEDICINE_USE_FORM_ID ?? 0) > 0)    
                         {
-                            this.cboMedicineUseForm.EditValue = medicineType.MEDICINE_USE_FORM_ID;
+                            this.cboMedicineUseForm.EditValue = medicineType.MEDICINE_USE_FORM_ID;   
                         }
-                        if ((String.IsNullOrEmpty(this.txtTutorial.Text)
+                        if ((String.IsNullOrEmpty(this.txtTutorial.Text)    
                             || String.IsNullOrEmpty(txtLadder.Text)))
                         {
                             Inventec.Common.Logging.LogSystem.Debug(medicineType.TUTORIAL);
