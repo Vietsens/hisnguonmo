@@ -358,10 +358,14 @@ namespace HIS.Desktop.Plugins.a2ApprovaleDebate.ApprovaleDebate
                                                                   select new
                                                                   {
                                                                       TRACKING_ID = a.ID,
-                                                                      TRACKING_TIME = Inventec.Common.DateTime.Convert.TimeNumberToTimeString(a.TRACKING_TIME).Replace(" ", Environment.NewLine),
+                                                                      TRACKING_TIME = Inventec.Common.DateTime.Convert.TimeNumberToTimeStringWithoutSecond(a.TRACKING_TIME)
+                                                                                        .Replace(" ", Environment.NewLine),
                                                                       USER_NAME = ac?.DIPLOMA,
                                                                       CONTENT = a.CONTENT,
-                                                                      SERVICE = ab?.SERVICE_NAME
+                                                                      SERVICE_NAME = ab?.SERVICE_NAME,
+                                                                      SERVICE_REQ_CODE = ab?.SERVICE_REQ_CODE,
+                                                                      AMOUNT = ab?.AMOUNT,
+                                                                      SERVICE_UNIT_NAME = ab?.SERVICE_UNIT_NAME,
                                                                   })
                                                                   .GroupBy(g => g.TRACKING_ID)
                                                                   .Select((s,i) => new TrackingListADO()
@@ -370,7 +374,8 @@ namespace HIS.Desktop.Plugins.a2ApprovaleDebate.ApprovaleDebate
                                                                       TRACKING_TIME = s.First().TRACKING_TIME,
                                                                       USER_NAME = s.First().USER_NAME,
                                                                       CONTENT = s.First().CONTENT,
-                                                                      SERVICE = string.Join(Environment.NewLine,  s.Select(ss => ss.SERVICE + " x 1"))
+                                                                      SERVICE = string.Join(Environment.NewLine,  s.Where(w => !string.IsNullOrEmpty(w.SERVICE_NAME))
+                                                                      .Select(ss => $"{ss.SERVICE_REQ_CODE} - {ss.SERVICE_NAME} x {ss.AMOUNT} {ss.SERVICE_UNIT_NAME}"))
                                                                   })
                                                                   .ToList();
                             tabToDieuTri.PageVisible = true;

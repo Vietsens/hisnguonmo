@@ -84,6 +84,7 @@ namespace HIS.Desktop.Plugins.a2ApprovaleDebate
             this.TRACKING_TIME = new DevExpress.XtraTreeList.Columns.TreeListColumn();
             this.USER_NAME = new DevExpress.XtraTreeList.Columns.TreeListColumn();
             this.SERVICE = new DevExpress.XtraTreeList.Columns.TreeListColumn();
+            this.repositoryItemMemoEdit1 = new DevExpress.XtraEditors.Repository.RepositoryItemMemoEdit();
             this.CONTENT = new DevExpress.XtraTreeList.Columns.TreeListColumn();
             this.repositoryItemButton__Send = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
             this.repositoryItemButton__Send__Disable = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
@@ -96,10 +97,10 @@ namespace HIS.Desktop.Plugins.a2ApprovaleDebate
             this.toolTipController2 = new DevExpress.Utils.ToolTipController(this.components);
             this.layoutControlGroup1 = new DevExpress.XtraLayout.LayoutControlGroup();
             this.layoutControlItem1 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.repositoryItemMemoEdit1 = new DevExpress.XtraEditors.Repository.RepositoryItemMemoEdit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
             this.layoutControl1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.treeSereServ)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repositoryItemMemoEdit1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemButton__Send)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemButton__Send__Disable)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemButton_IsUse)).BeginInit();
@@ -110,7 +111,6 @@ namespace HIS.Desktop.Plugins.a2ApprovaleDebate
             ((System.ComponentModel.ISupportInitialize)(this.rep_btnDelete_Disable)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.repositoryItemMemoEdit1)).BeginInit();
             this.SuspendLayout();
             // 
             // layoutControl1
@@ -132,7 +132,7 @@ namespace HIS.Desktop.Plugins.a2ApprovaleDebate
             this.SERVICE,
             this.CONTENT});
             this.treeSereServ.Cursor = System.Windows.Forms.Cursors.Default;
-            this.treeSereServ.CustomizationFormBounds = new System.Drawing.Rectangle(-689, 590, 216, 200);
+            this.treeSereServ.CustomizationFormBounds = new System.Drawing.Rectangle(0, 590, 216, 200);
             this.treeSereServ.KeyFieldName = "CONCRETE_ID__IN_SETY";
             this.treeSereServ.Location = new System.Drawing.Point(2, 2);
             this.treeSereServ.Name = "treeSereServ";
@@ -150,10 +150,12 @@ namespace HIS.Desktop.Plugins.a2ApprovaleDebate
             this.treeSereServ.OptionsSelection.EnableAppearanceFocusedCell = false;
             this.treeSereServ.OptionsSelection.EnableAppearanceFocusedRow = false;
             this.treeSereServ.OptionsSelection.InvertSelection = true;
-            this.treeSereServ.OptionsView.AutoWidth = false;
+            this.treeSereServ.OptionsView.ExpandButtonCentered = false;
             this.treeSereServ.OptionsView.FocusRectStyle = DevExpress.XtraTreeList.DrawFocusRectStyle.RowFullFocus;
-            this.treeSereServ.OptionsView.ShowHorzLines = false;
+            this.treeSereServ.OptionsView.ShowBandsMode = DevExpress.Utils.DefaultBoolean.False;
+            this.treeSereServ.OptionsView.ShowButtons = false;
             this.treeSereServ.OptionsView.ShowIndicator = false;
+            this.treeSereServ.OptionsView.ShowRoot = false;
             this.treeSereServ.OptionsView.ShowVertLines = false;
             this.treeSereServ.ParentFieldName = "PARENT_ID__IN_SETY";
             this.treeSereServ.RepositoryItems.AddRange(new DevExpress.XtraEditors.Repository.RepositoryItem[] {
@@ -183,23 +185,27 @@ namespace HIS.Desktop.Plugins.a2ApprovaleDebate
             this.TRACKING_TIME.AppearanceCell.Options.UseTextOptions = true;
             this.TRACKING_TIME.AppearanceCell.TextOptions.VAlignment = DevExpress.Utils.VertAlignment.Top;
             this.TRACKING_TIME.Caption = "TRACKING_TIME";
+            this.TRACKING_TIME.ColumnEdit = this.repositoryItemMemoEdit1;
             this.TRACKING_TIME.FieldName = "TRACKING_TIME";
+            this.TRACKING_TIME.MinWidth = 100;
             this.TRACKING_TIME.Name = "TRACKING_TIME";
             this.TRACKING_TIME.Visible = true;
             this.TRACKING_TIME.VisibleIndex = 0;
-            this.TRACKING_TIME.Width = 100;
+            this.TRACKING_TIME.Width = 102;
             // 
             // USER_NAME
             // 
             this.USER_NAME.AppearanceCell.Options.UseTextOptions = true;
             this.USER_NAME.AppearanceCell.TextOptions.VAlignment = DevExpress.Utils.VertAlignment.Top;
             this.USER_NAME.Caption = "USER_NAME";
+            this.USER_NAME.ColumnEdit = this.repositoryItemMemoEdit1;
             this.USER_NAME.FieldName = "USER_NAME";
+            this.USER_NAME.MinWidth = 150;
             this.USER_NAME.Name = "USER_NAME";
             this.USER_NAME.OptionsColumn.AllowEdit = false;
             this.USER_NAME.Visible = true;
             this.USER_NAME.VisibleIndex = 1;
-            this.USER_NAME.Width = 123;
+            this.USER_NAME.Width = 150;
             // 
             // SERVICE
             // 
@@ -213,7 +219,11 @@ namespace HIS.Desktop.Plugins.a2ApprovaleDebate
             this.SERVICE.OptionsColumn.AllowEdit = false;
             this.SERVICE.Visible = true;
             this.SERVICE.VisibleIndex = 3;
-            this.SERVICE.Width = 342;
+            this.SERVICE.Width = 487;
+            // 
+            // repositoryItemMemoEdit1
+            // 
+            this.repositoryItemMemoEdit1.Name = "repositoryItemMemoEdit1";
             // 
             // CONTENT
             // 
@@ -226,7 +236,7 @@ namespace HIS.Desktop.Plugins.a2ApprovaleDebate
             this.CONTENT.OptionsColumn.AllowEdit = false;
             this.CONTENT.Visible = true;
             this.CONTENT.VisibleIndex = 2;
-            this.CONTENT.Width = 235;
+            this.CONTENT.Width = 381;
             // 
             // repositoryItemButton__Send
             // 
@@ -322,10 +332,6 @@ namespace HIS.Desktop.Plugins.a2ApprovaleDebate
             this.layoutControlItem1.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem1.TextVisible = false;
             // 
-            // repositoryItemMemoEdit1
-            // 
-            this.repositoryItemMemoEdit1.Name = "repositoryItemMemoEdit1";
-            // 
             // UCTreeListTracking
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -337,6 +343,7 @@ namespace HIS.Desktop.Plugins.a2ApprovaleDebate
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).EndInit();
             this.layoutControl1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.treeSereServ)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repositoryItemMemoEdit1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemButton__Send)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemButton__Send__Disable)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemButton_IsUse)).EndInit();
@@ -347,7 +354,6 @@ namespace HIS.Desktop.Plugins.a2ApprovaleDebate
             ((System.ComponentModel.ISupportInitialize)(this.rep_btnDelete_Disable)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.repositoryItemMemoEdit1)).EndInit();
             this.ResumeLayout(false);
 
         }
