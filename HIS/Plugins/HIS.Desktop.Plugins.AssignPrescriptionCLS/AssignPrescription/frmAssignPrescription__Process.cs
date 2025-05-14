@@ -3334,7 +3334,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
                                 string strMoiLan = Inventec.Common.Number.Convert.NumberToStringRoundAuto((decimal)moiLan, 2);
                                 string strTong = Inventec.Common.Number.Convert.NumberToStringRoundAuto((decimal)tongSoLuong, 2);
 
-                                huongDan.AppendFormat("{0} {1}/lần * {2} lần/ngày * {3} ngày", strMoiLan, serviceUnitName, soLanTrongNgay, "");
+                                huongDan.AppendFormat("{0} {1}/lần * {2} lần/ngày * 1 ngày", strMoiLan, serviceUnitName, soLanTrongNgay);
                                 huongDan.AppendFormat(" [{0} {1}/ngày]", strTong, serviceUnitName);
                             }
                             //if ((int)tongCong == tongCong)

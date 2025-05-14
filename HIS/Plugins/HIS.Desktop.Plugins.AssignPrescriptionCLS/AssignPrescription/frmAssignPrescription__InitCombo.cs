@@ -40,6 +40,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
     public partial class frmAssignPrescription : HIS.Desktop.Utility.FormBase
     {
         public List<HtuADO> DataHtuList { get; private set; }
+
         //private async Task InitComboHtu(List<MOS.EFMODEL.DataModels.HIS_HTU> data)
         //{
         //    try

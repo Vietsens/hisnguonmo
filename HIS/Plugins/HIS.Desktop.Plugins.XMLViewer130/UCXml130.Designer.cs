@@ -66,10 +66,9 @@ namespace HIS.Desktop.Plugins.XMLViewer130
             // 
             this.gridViewXml.GridControl = this.gridControllXml;
             this.gridViewXml.Name = "gridViewXml";
+            this.gridViewXml.OptionsSelection.MultiSelect = true;
             this.gridViewXml.OptionsView.ColumnAutoWidth = false;
             this.gridViewXml.OptionsView.ShowGroupPanel = false;
-            this.gridViewXml.OptionsView.ShowIndicator = false;
-            this.gridViewXml.CustomColumnDisplayText += new DevExpress.XtraGrid.Views.Base.CustomColumnDisplayTextEventHandler(this.gridViewXml_CustomColumnDisplayText);
             // 
             // UCXml130
             // 
