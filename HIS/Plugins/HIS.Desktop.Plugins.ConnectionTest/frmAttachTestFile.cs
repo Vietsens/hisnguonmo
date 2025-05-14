@@ -237,7 +237,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
 
         private string CombinePdfFiles()
         {
-            string outputPath = Path.GetTempFileName();
+            string outputPath = "FSS\Upload\EMR\mã y lệnh\";
             Document document = new Document();
 
             try
