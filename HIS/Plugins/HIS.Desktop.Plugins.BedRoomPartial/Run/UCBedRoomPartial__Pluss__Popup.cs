@@ -206,6 +206,9 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
                         case BedRoomPopupMenuProcessor.ModuleType.Specialty:
                             btnSpecialty();
                             break;
+                        case BedRoomPopupMenuProcessor.ModuleType.Consultation:
+                            btnConsultation();
+                            break;
                         case BedRoomPopupMenuProcessor.ModuleType.HisCoTreatmentCreate:
                             btnHisCoTreatmentCreate();
                             break;
@@ -299,6 +302,12 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
         {
             frmSpecialty frmSpecialty = new frmSpecialty(treatmentBedRoomRow, currentModule);
             frmSpecialty.ShowDialog();
+        }
+
+        private void btnConsultation()
+        {
+            frmConsultation frmConsultation = new frmConsultation(treatmentBedRoomRow, currentModule);
+            frmConsultation.ShowDialog();
         }
 
         public void RefreshData()

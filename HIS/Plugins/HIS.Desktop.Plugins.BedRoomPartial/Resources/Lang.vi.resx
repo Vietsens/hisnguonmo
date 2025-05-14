@@ -195,6 +195,9 @@
 	<data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__MOUSE_RIGHT__MOI_KHAM_CHUYEN_KHOA" xml:space="preserve">
     <value>Mời khám chuyên khoa</value>
   </data>
+  <data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__MOUSE_RIGHT__MOI_HOI_CHAN" xml:space="preserve">
+    <value>Mời hội chẩn</value>
+  </data>
   <data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__MOUSE_RIGHT__BIEN_BAN_HOI_CHAN" xml:space="preserve">
     <value>Danh sách biên bản hội chẩn</value>
   </data>

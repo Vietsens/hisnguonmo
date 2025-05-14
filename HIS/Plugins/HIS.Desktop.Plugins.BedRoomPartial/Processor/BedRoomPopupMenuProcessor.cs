@@ -115,7 +115,8 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
             HivTreatment,
             MedicalAssessment,
             TuberclusisTreatment,
-            Specialty
+            Specialty,
+            Consultation,
 
         }
         internal ModuleType moduleType { get; set; }
@@ -235,6 +236,12 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
                 menu.AddItems(new BarItem[] { itemSpecialty });
                 #endregion
 
+                #region ---MoiHoiChan
+                BarButtonItem itemConsultation = new BarButtonItem(barManager, Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__MOUSE_RIGHT__MOI_HOI_CHAN", Base.ResourceLangManager.LanguageUCBedRoomPartial, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture()), 1);
+                itemConsultation.Tag = ModuleType.Consultation;
+                itemConsultation.ItemClick += new ItemClickEventHandler(bedRoomMouseRightClick);
+                menu.AddItems(new BarItem[] { itemConsultation });
+                #endregion
                 #region ----- CanTheodoi_BoTheoiDoi
                 if (this.currentTreatmentBedRoom.TDL_OBSERVED_TIME_FROM ==  null || this.currentTreatmentBedRoom.TDL_OBSERVED_TIME_TO == null || this.currentTreatmentBedRoom.TDL_OBSERVED_TIME_TO < Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(DateTime.Now))
                 {
