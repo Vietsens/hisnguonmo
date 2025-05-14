@@ -1,4 +1,4 @@
-﻿namespace HIS.Desktop.Plugins.ApprovaleDebate.ApprovaleDebate
+﻿namespace HIS.Desktop.Plugins.a2ApprovaleDebate.ApprovaleDebate
 {
     partial class frmApprovaleDebate
     {

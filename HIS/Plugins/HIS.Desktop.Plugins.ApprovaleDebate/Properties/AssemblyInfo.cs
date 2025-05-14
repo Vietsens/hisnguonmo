@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("HIS.Desktop.Plugins.ApprovaleDebate")]
+[assembly: AssemblyTitle("HIS.Desktop.Plugins.a2ApprovaleDebate")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("HIS.Desktop.Plugins.ApprovaleDebate")]
+[assembly: AssemblyProduct("HIS.Desktop.Plugins.a2ApprovaleDebate")]
 [assembly: AssemblyCopyright("Copyright ©  2025")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]

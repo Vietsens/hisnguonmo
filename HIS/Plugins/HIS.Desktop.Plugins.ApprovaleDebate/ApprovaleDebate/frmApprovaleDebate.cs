@@ -13,7 +13,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Inventec.Common.Controls.EditorLoader;
-using HIS.Desktop.Plugins.ApprovaleDebate.ADO;
+using HIS.Desktop.Plugins.a2ApprovaleDebate.ADO;
 using MOS.SDO;
 using Inventec.Core;
 using MOS.Filter;
@@ -28,7 +28,7 @@ using EMR.EFMODEL.DataModels;
 using HIS.Desktop.Controls.Session;
 using DevExpress.XtraTab;
 
-namespace HIS.Desktop.Plugins.ApprovaleDebate.ApprovaleDebate
+namespace HIS.Desktop.Plugins.a2ApprovaleDebate.ApprovaleDebate
 {
     public partial class frmApprovaleDebate : FormBase
     {
@@ -43,7 +43,7 @@ namespace HIS.Desktop.Plugins.ApprovaleDebate.ApprovaleDebate
             try
             {
                 ////Khoi tao doi tuong resource
-                Resources.ResourceLanguageManager.LanguageResource = new ResourceManager("HIS.Desktop.Plugins.ApprovaleDebate.Resources.Lang", typeof(frmApprovaleDebate).Assembly);
+                Resources.ResourceLanguageManager.LanguageResource = new ResourceManager("HIS.Desktop.Plugins.a2ApprovaleDebate.Resources.Lang", typeof(frmApprovaleDebate).Assembly);
 
                 ////Gan gia tri cho cac control editor co Text/Caption/ToolTip/NullText/NullValuePrompt/FindNullPrompt
                 this.layoutControl1.Text = Inventec.Common.Resource.Get.Value("frmApprovaleDebate.layoutControl1.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
@@ -346,21 +346,29 @@ namespace HIS.Desktop.Plugins.ApprovaleDebate.ApprovaleDebate
                         if (resultTracking != null)
                         {
                             //var vHisTrackingList = (List<V_HIS_TRACKING>)result;
-
                             //Inventec.Common.Logging.LogSystem.Info(Newtonsoft.Json.JsonConvert.SerializeObject(vHisTrackingList));
-                            var Employees = BackendDataWorker.Get<V_HIS_EMPLOYEE>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE).ToList();
-
-                            List<SereServADO> listTracking = resultTracking
-                                             .Join(dataNew, a => a.ID, b => b.TRACKING_ID, (a, b) => new { a, b })
-                                             .Join(Employees, x => x.a.CREATOR, emp => emp.LOGINNAME, (x, emp) => new { x, emp })
-                                             .Select((y, index) => new SereServADO()
-                                             {
-                                                 CONCRETE_ID__IN_SETY = (index + 1).ToString(),
-                                                 TRACKING_TIME = y.x.a.TRACKING_TIME,
-                                                 SERVICE_NAME = y.x.a.CONTENT,
-                                                 NOTE_ADO = y.emp.DIPLOMA 
-                                            }).ToList();
-
+                            var Employees = BackendDataWorker.Get<V_HIS_EMPLOYEE>()/*.Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE)*/.ToList();
+                            List<TrackingListADO> listTracking = (from a in resultTracking
+                                                                  join b in dataNew on a.ID equals b.TRACKING_ID
+                                                                  into AB
+                                                                  from ab in AB.DefaultIfEmpty()
+                                                                  join c in Employees on a.CREATOR equals c.LOGINNAME
+                                                                  into AC
+                                                                  from ac in AC.DefaultIfEmpty()
+                                                                  select new
+                                                                  {
+                                                                      TRACKING_TIME = Inventec.Common.DateTime.Convert.TimeNumberToTimeString(a.TRACKING_TIME),
+                                                                      USER_NAME = ac?.DIPLOMA,
+                                                                      CONTENT = a.CONTENT,
+                                                                      SERVICE = ab?.SERVICE_NAME
+                                                                  }).Select((s,i) => new TrackingListADO()
+                                                                  {
+                                                                      CONCRETE_ID__IN_SETY = (i + 1).ToString(),
+                                                                      TRACKING_TIME = s.TRACKING_TIME,
+                                                                      USER_NAME = s.USER_NAME,
+                                                                      CONTENT = s.CONTENT,
+                                                                      SERVICE = s.SERVICE,
+                                                                  }).ToList();
                             tabToDieuTri.PageVisible = true;
                             ucAll.ReLoad(treeView_Click, listTracking, this.RowCellClickBedRoom);
                         }

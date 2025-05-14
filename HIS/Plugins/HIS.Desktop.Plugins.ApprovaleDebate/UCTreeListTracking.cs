@@ -27,9 +27,9 @@ using System.Windows.Forms;
 using System.Collections;
 using DevExpress.XtraGrid.Views.Base;
 using DevExpress.Data;
-using HIS.Desktop.Plugins.ApprovaleDebate;
+using HIS.Desktop.Plugins.a2ApprovaleDebate;
 using DevExpress.Utils;
-using HIS.Desktop.Plugins.ApprovaleDebate.ADO;
+using HIS.Desktop.Plugins.a2ApprovaleDebate.ADO;
 using MOS.SDO;
 using Inventec.Desktop.Common.LanguageManager;
 using Inventec.Desktop.Common.Message;
@@ -47,9 +47,9 @@ using DevExpress.XtraTreeList.Nodes;
 using HIS.Desktop.ADO;
 using System.Resources;
 using System.Reflection;
-using HIS.Desktop.Plugins.ApprovaleDebate.Key;
+using HIS.Desktop.Plugins.a2ApprovaleDebate.Key;
 
-namespace HIS.Desktop.Plugins.ApprovaleDebate
+namespace HIS.Desktop.Plugins.a2ApprovaleDebate
 {
     public partial class UCTreeListTracking : UserControl
     {
@@ -91,7 +91,7 @@ namespace HIS.Desktop.Plugins.ApprovaleDebate
             {
                 this.SetCaptionByLanguageKey();
                 //treeSereServ.SelectImageList = imageCollection;
-                treeSereServ.StateImageList = imageCollection;
+                //treeSereServ.StateImageList = imageCollection;
             }
             catch (Exception ex)
             {
@@ -99,14 +99,14 @@ namespace HIS.Desktop.Plugins.ApprovaleDebate
             }
         }
 
-        public void ReLoad(Action<ADO.SereServADO> editClick, List<SereServADO> SereServADOs, L_HIS_TREATMENT_BED_ROOM _RowCellClickBedRoom/*, Action<ADO.SereServADO> EditEnableButton_Click, Action<ADO.SereServADO> DeleteEnableButton_Click*/)
+        public void ReLoad(Action<ADO.SereServADO> editClick, List<TrackingListADO> SereServADOs, L_HIS_TREATMENT_BED_ROOM _RowCellClickBedRoom/*, Action<ADO.SereServADO> EditEnableButton_Click, Action<ADO.SereServADO> DeleteEnableButton_Click*/)
         {
             try
             {
                 treeSereServ.BeginUpdate();
                 if (SereServADOs != null && SereServADOs.Count > 0)
                 {
-                    treeSereServ.DataSource = new BindingList<SereServADO>(SereServADOs);
+                    treeSereServ.DataSource = new BindingList<TrackingListADO>(SereServADOs);
                     treeSereServ.ExpandAll();
                     Expand(true);
                 }
@@ -115,7 +115,7 @@ namespace HIS.Desktop.Plugins.ApprovaleDebate
                 {
                     this.treeSereServ.BestFitColumns();
                     this.TRACKING_TIME.BestFit();
-                    //this.treeSereServ.OptionsView.ShowColumns = false;
+                    this.treeSereServ.OptionsView.ShowColumns = false;
                 }
                 catch (Exception ex)
                 {
@@ -164,55 +164,7 @@ namespace HIS.Desktop.Plugins.ApprovaleDebate
         {
             try
             {
-                var data = (SereServADO)treeSereServ.GetDataRecordByNode(e.Node);
-                if (data != null && data.SERVICE_REQ_STT_ID > 0)
-                {
-                    if (e.Column.FieldName == "Delete")
-                    {
-                        if (e.Node.HasChildren)
-                        {
-                            if (data.IsEnableDelete)
-                                e.RepositoryItem = rep_btnDelete_Enable;
-                            else
-                                e.RepositoryItem = rep_btnDelete_Disable;
-                        }
-
-                    }
-                    else if (e.Column.FieldName == "Edit")
-                    {
-                        if (e.Node.HasChildren)
-                        {
-                            if (data.TDL_SERVICE_TYPE_ID != IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__AN)
-                            {
-                                if (data.IsEnableEdit)
-                                    e.RepositoryItem = rep_btnEdit_Enable;
-                                else
-                                    e.RepositoryItem = rep_btnEdit_Disable;
-
-                            }
-
-                        }
-                    }
-
-                }
-
-                if (data != null && !e.Node.HasChildren)
-                {
-                    TreeClickData = data;
-                    if (e.Column.FieldName == "SendTestServiceReq")
-                    {
-                        if (data.TDL_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__XN)//Xét nghiệm
-                            e.RepositoryItem = repositoryItemButton__Send;
-                    }
-                    else if (e.Column.FieldName == "MEDI_USED")
-                    {
-                        if (data.IS_USED == 1)
-                        {
-                            e.RepositoryItem = repositoryItemButton_IsUse;
-                        }
-                    }
-
-                }
+                
 
             }
             catch (Exception ex)
@@ -225,51 +177,51 @@ namespace HIS.Desktop.Plugins.ApprovaleDebate
         {
             try
             {
-                var data = (SereServADO)treeSereServ.GetDataRecordByNode(e.Node);
-                if (data != null)
-                {
-                    if (data != null && data.SERVICE_REQ_STT_ID > 0)
-                    {
-                        if (e.Node.HasChildren)
-                        {
-                            if (data.TDL_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__XN
-                                && data.SERVICE_REQ_STT_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_STT.ID__CXL
-                                && data.SAMPLE_TIME != null)
-                            {
-                                e.NodeImageIndex = 5;
-                            }
-                            else if (data.SERVICE_REQ_STT_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_STT.ID__CXL)//Chưa xử lý
-                            {
-                                e.NodeImageIndex = 0;
-                            }
-                            else if (data.SERVICE_REQ_STT_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_STT.ID__DXL)//Đã xử lý
-                            {
-                                if (data.TDL_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__XN && data.RECEIVE_SAMPLE_TIME != null)
-                                {
-                                    e.NodeImageIndex = 2;
-                                }
-                                else
-                                    e.NodeImageIndex = 1;
-                            }
-                            else if (data.SERVICE_REQ_STT_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_STT.ID__HT)//Hoàn thành
-                            {
-                                e.NodeImageIndex = 4;
-                            }
-                        }
-                        else
-                        {
-                            e.NodeImageIndex = -1;
-                        }
-                    }
-                    else
-                    {
-                        e.NodeImageIndex = -1;
-                    }
-                }
-                else
-                {
-                    e.NodeImageIndex = -1;
-                }
+                //var data = (SereServADO)treeSereServ.GetDataRecordByNode(e.Node);
+                //if (data != null)
+                //{
+                //    if (data != null && data.SERVICE_REQ_STT_ID > 0)
+                //    {
+                //        if (e.Node.HasChildren)
+                //        {
+                //            if (data.TDL_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__XN
+                //                && data.SERVICE_REQ_STT_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_STT.ID__CXL
+                //                && data.SAMPLE_TIME != null)
+                //            {
+                //                e.NodeImageIndex = 5;
+                //            }
+                //            else if (data.SERVICE_REQ_STT_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_STT.ID__CXL)//Chưa xử lý
+                //            {
+                //                e.NodeImageIndex = 0;
+                //            }
+                //            else if (data.SERVICE_REQ_STT_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_STT.ID__DXL)//Đã xử lý
+                //            {
+                //                if (data.TDL_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__XN && data.RECEIVE_SAMPLE_TIME != null)
+                //                {
+                //                    e.NodeImageIndex = 2;
+                //                }
+                //                else
+                //                    e.NodeImageIndex = 1;
+                //            }
+                //            else if (data.SERVICE_REQ_STT_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_STT.ID__HT)//Hoàn thành
+                //            {
+                //                e.NodeImageIndex = 4;
+                //            }
+                //        }
+                //        else
+                //        {
+                //            e.NodeImageIndex = -1;
+                //        }
+                //    }
+                //    else
+                //    {
+                //        e.NodeImageIndex = -1;
+                //    }
+                //}
+                //else
+                //{
+                //    e.NodeImageIndex = -1;
+                //}
             }
             catch (Exception ex)
             {
@@ -281,28 +233,28 @@ namespace HIS.Desktop.Plugins.ApprovaleDebate
         {
             try
             {
-                var data = (SereServADO)treeSereServ.GetDataRecordByNode(e.Node);
-                if (data != null && !e.Node.HasChildren)
-                {
-                    if (data.TDL_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__THUOC
-                        || data.TDL_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__VT
-                        || data.TDL_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__MAU
-                        || data.TDL_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__G)
-                    {
-                        e.NodeImageIndex = -1;
-                    }
-                    else
-                    {
-                        if ((HisConfigCFG.IsShowResultWhenReqComplete == "1" && data.SERVICE_REQ_STT_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_STT.ID__HT) || (HisConfigCFG.IsShowResultWhenReqComplete != "1" && HisConfigCFG.IsShowResultWhenReqComplete != "2") || (HisConfigCFG.IsShowResultWhenReqComplete == "2" && (data.TDL_SERVICE_TYPE_ID != IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__XN || (data.TDL_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__XN && data.SERVICE_REQ_STT_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_STT.ID__HT))))
-                            e.NodeImageIndex = 6;
-                        else
-                            e.NodeImageIndex = -1;
-                    }
-                }
-                else
-                {
-                    e.NodeImageIndex = -1;
-                }
+                //var data = (SereServADO)treeSereServ.GetDataRecordByNode(e.Node);
+                //if (data != null && !e.Node.HasChildren)
+                //{
+                //    if (data.TDL_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__THUOC
+                //        || data.TDL_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__VT
+                //        || data.TDL_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__MAU
+                //        || data.TDL_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__G)
+                //    {
+                //        e.NodeImageIndex = -1;
+                //    }
+                //    else
+                //    {
+                //        if ((HisConfigCFG.IsShowResultWhenReqComplete == "1" && data.SERVICE_REQ_STT_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_STT.ID__HT) || (HisConfigCFG.IsShowResultWhenReqComplete != "1" && HisConfigCFG.IsShowResultWhenReqComplete != "2") || (HisConfigCFG.IsShowResultWhenReqComplete == "2" && (data.TDL_SERVICE_TYPE_ID != IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__XN || (data.TDL_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__XN && data.SERVICE_REQ_STT_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_STT.ID__HT))))
+                //            e.NodeImageIndex = 6;
+                //        else
+                //            e.NodeImageIndex = -1;
+                //    }
+                //}
+                //else
+                //{
+                //    e.NodeImageIndex = -1;
+                //}
             }
             catch (Exception ex)
             {
@@ -314,23 +266,23 @@ namespace HIS.Desktop.Plugins.ApprovaleDebate
         {
             try
             {
-                var data = (SereServADO)treeSereServ.GetDataRecordByNode(e.Node);
+                var data = (TrackingListADO)treeSereServ.GetDataRecordByNode(e.Node);
                 if (data != null)
                 {
-                    if (e.Node.HasChildren)
-                    {
-                        e.Appearance.ForeColor = Color.Black;
-                        e.Appearance.Font = new Font(e.Appearance.Font, FontStyle.Bold);
-                    }
-                    else if (data.IS_NO_EXECUTE == 1)
-                    {
-                        e.Appearance.ForeColor = Color.Black;
-                        e.Appearance.Font = new System.Drawing.Font(e.Appearance.Font, System.Drawing.FontStyle.Strikeout);
-                    }
-                    else
-                    {
-                        e.Appearance.ForeColor = Color.Black;
-                    }
+                    //if (e.Node.HasChildren)
+                    //{
+                    //    e.Appearance.ForeColor = Color.Black;
+                    //    e.Appearance.Font = new Font(e.Appearance.Font, FontStyle.Bold);
+                    //}
+                    //else if (data.IS_NO_EXECUTE == 1)
+                    //{
+                    //    e.Appearance.ForeColor = Color.Black;
+                    //    e.Appearance.Font = new System.Drawing.Font(e.Appearance.Font, System.Drawing.FontStyle.Strikeout);
+                    //}
+                    //else
+                    //{
+                    //    e.Appearance.ForeColor = Color.Black;
+                    //}
                 }
             }
             catch (Exception ex)
@@ -343,27 +295,27 @@ namespace HIS.Desktop.Plugins.ApprovaleDebate
         {
             try
             {
-                TreeList tree = sender as TreeList;
-                if (tree != null)
-                {
-                    Point pt = tree.PointToClient(MousePosition);
-                    TreeListHitInfo hitInfo = tree.CalcHitInfo(e.Point);
-                    if (hitInfo != null && (hitInfo.HitInfoType == HitInfoType.Row
-                        || hitInfo.HitInfoType == HitInfoType.Cell))
-                    {
-                        e.Menu.Items.Clear();
-                        tree.FocusedNode = hitInfo.Node;
-                        var data = (SereServADO)treeSereServ.GetDataRecordByNode(hitInfo.Node);
-                        if (data != null)
-                        {
-                            foreach (var menu in this.menuItem(data))
-                            {
-                                e.Menu.Items.Add(menu);
-                            }
-                            e.Menu.Show(pt);
-                        }
-                    }
-                }
+                //TreeList tree = sender as TreeList;
+                //if (tree != null)
+                //{
+                //    Point pt = tree.PointToClient(MousePosition);
+                //    TreeListHitInfo hitInfo = tree.CalcHitInfo(e.Point);
+                //    if (hitInfo != null && (hitInfo.HitInfoType == HitInfoType.Row
+                //        || hitInfo.HitInfoType == HitInfoType.Cell))
+                //    {
+                //        e.Menu.Items.Clear();
+                //        tree.FocusedNode = hitInfo.Node;
+                //        var data = (TrackingListADO)treeSereServ.GetDataRecordByNode(hitInfo.Node);
+                //        if (data != null)
+                //        {
+                //            foreach (var menu in this.menuItem(data))
+                //            {
+                //                e.Menu.Items.Add(menu);
+                //            }
+                //            e.Menu.Show(pt);
+                //        }
+                //    }
+                //}
             }
             catch (Exception ex)
             {
@@ -375,78 +327,78 @@ namespace HIS.Desktop.Plugins.ApprovaleDebate
         {
             try
             {
-                var data = (SereServADO)treeSereServ.GetDataRecordByNode(e.Node);
-                if (data != null && data.SERE_SERV_ID.HasValue)
-                {
-                    if ((HisConfigCFG.IsShowResultWhenReqComplete == "1" && data.SERVICE_REQ_STT_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_STT.ID__HT) || (HisConfigCFG.IsShowResultWhenReqComplete != "1" && HisConfigCFG.IsShowResultWhenReqComplete != "2") || (HisConfigCFG.IsShowResultWhenReqComplete == "2" && (data.TDL_SERVICE_TYPE_ID != IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__XN || (data.TDL_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__XN && data.SERVICE_REQ_STT_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_STT.ID__HT))))
-                    {
-                        if (data.TDL_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__XN)
-                        {
-                            if (data.IS_ANTIBIOTIC_RESISTANCE == 1)
-                            {
-                                //mở module SereServTeinBacterium
-                                WaitingManager.Show();
-                                Inventec.Desktop.Common.Modules.Module moduleData = GlobalVariables.currentModuleRaws.Where(o => o.ModuleLink == "HIS.Desktop.Plugins.SereServTeinBacterium").FirstOrDefault();
-                                if (moduleData == null) Inventec.Common.Logging.LogSystem.Error("khong tim thay moduleLink = HIS.Desktop.Plugins.SereServTeinBacterium");
-                                if (moduleData.IsPlugin && moduleData.ExtensionInfo != null)
-                                {
-                                    List<object> listArgs = new List<object>();
-                                    listArgs.Add(data.SERE_SERV_ID);
-                                    listArgs.Add(PluginInstance.GetModuleWithWorkingRoom(moduleData, this.wkRoomId, this.wkRoomTypeId));
-                                    var extenceInstance = PluginInstance.GetPluginInstance(PluginInstance.GetModuleWithWorkingRoom(moduleData, this.wkRoomId, this.wkRoomTypeId), listArgs);
-                                    if (extenceInstance == null) throw new ArgumentNullException("moduleData is null");
-                                    WaitingManager.Hide();
-                                    ((Form)extenceInstance).ShowDialog();
-                                }
-                            }
-                            else
-                            {
-                                //mở module chỉ số sereServTein
-                                WaitingManager.Show();
-                                Inventec.Desktop.Common.Modules.Module moduleData = GlobalVariables.currentModuleRaws.Where(o => o.ModuleLink == "HIS.Desktop.Plugins.SereServTein").FirstOrDefault();
-                                if (moduleData == null) Inventec.Common.Logging.LogSystem.Error("khong tim thay moduleLink = HIS.Desktop.Plugins.SereServTein");
-                                if (moduleData.IsPlugin && moduleData.ExtensionInfo != null)
-                                {
-                                    List<object> listArgs = new List<object>();
-                                    listArgs.Add(data.SERE_SERV_ID);
-                                    listArgs.Add(PluginInstance.GetModuleWithWorkingRoom(moduleData, this.wkRoomId, this.wkRoomTypeId));
-                                    var extenceInstance = PluginInstance.GetPluginInstance(PluginInstance.GetModuleWithWorkingRoom(moduleData, this.wkRoomId, this.wkRoomTypeId), listArgs);
-                                    if (extenceInstance == null) throw new ArgumentNullException("moduleData is null");
-                                    WaitingManager.Hide();
-                                    ((Form)extenceInstance).ShowDialog();
-                                }
-                            }
-                        }
-                        else if (data.TDL_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__KH)
-                        {
-                            WaitingManager.Show();
-                            Inventec.Desktop.Common.Modules.Module moduleData = GlobalVariables.currentModuleRaws.Where(o => o.ModuleLink == "HIS.Desktop.Plugins.ExamServiceReqResult").FirstOrDefault();
-                            if (moduleData == null) throw new NullReferenceException("Not found module by ModuleLink = 'HIS.Desktop.Plugins.ExamServiceReqResult'");
-                            if (!moduleData.IsPlugin || moduleData.ExtensionInfo == null) throw new NullReferenceException("Module 'HIS.Desktop.Plugins.ExamServiceReqResult' is not plugins");
-                            List<object> listArgs = new List<object>();
-                            listArgs.Add(data.SERE_SERV_ID);
-                            var extenceInstance = HIS.Desktop.Utility.PluginInstance.GetPluginInstance(HIS.Desktop.Utility.PluginInstance.GetModuleWithWorkingRoom(moduleData, wkRoomId, wkRoomTypeId), listArgs);
-                            if (extenceInstance == null) throw new NullReferenceException("Khoi tao moduleData that bai. extenceInstance = null");
+                //var data = (TrackingListADO)treeSereServ.GetDataRecordByNode(e.Node);
+                //if (data != null && data.SERE_SERV_ID.HasValue)
+                //{
+                //    if ((HisConfigCFG.IsShowResultWhenReqComplete == "1" && data.SERVICE_REQ_STT_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_STT.ID__HT) || (HisConfigCFG.IsShowResultWhenReqComplete != "1" && HisConfigCFG.IsShowResultWhenReqComplete != "2") || (HisConfigCFG.IsShowResultWhenReqComplete == "2" && (data.TDL_SERVICE_TYPE_ID != IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__XN || (data.TDL_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__XN && data.SERVICE_REQ_STT_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_STT.ID__HT))))
+                //    {
+                //        if (data.TDL_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__XN)
+                //        {
+                //            if (data.IS_ANTIBIOTIC_RESISTANCE == 1)
+                //            {
+                //                //mở module SereServTeinBacterium
+                //                WaitingManager.Show();
+                //                Inventec.Desktop.Common.Modules.Module moduleData = GlobalVariables.currentModuleRaws.Where(o => o.ModuleLink == "HIS.Desktop.Plugins.SereServTeinBacterium").FirstOrDefault();
+                //                if (moduleData == null) Inventec.Common.Logging.LogSystem.Error("khong tim thay moduleLink = HIS.Desktop.Plugins.SereServTeinBacterium");
+                //                if (moduleData.IsPlugin && moduleData.ExtensionInfo != null)
+                //                {
+                //                    List<object> listArgs = new List<object>();
+                //                    listArgs.Add(data.SERE_SERV_ID);
+                //                    listArgs.Add(PluginInstance.GetModuleWithWorkingRoom(moduleData, this.wkRoomId, this.wkRoomTypeId));
+                //                    var extenceInstance = PluginInstance.GetPluginInstance(PluginInstance.GetModuleWithWorkingRoom(moduleData, this.wkRoomId, this.wkRoomTypeId), listArgs);
+                //                    if (extenceInstance == null) throw new ArgumentNullException("moduleData is null");
+                //                    WaitingManager.Hide();
+                //                    ((Form)extenceInstance).ShowDialog();
+                //                }
+                //            }
+                //            else
+                //            {
+                //                //mở module chỉ số sereServTein
+                //                WaitingManager.Show();
+                //                Inventec.Desktop.Common.Modules.Module moduleData = GlobalVariables.currentModuleRaws.Where(o => o.ModuleLink == "HIS.Desktop.Plugins.SereServTein").FirstOrDefault();
+                //                if (moduleData == null) Inventec.Common.Logging.LogSystem.Error("khong tim thay moduleLink = HIS.Desktop.Plugins.SereServTein");
+                //                if (moduleData.IsPlugin && moduleData.ExtensionInfo != null)
+                //                {
+                //                    List<object> listArgs = new List<object>();
+                //                    listArgs.Add(data.SERE_SERV_ID);
+                //                    listArgs.Add(PluginInstance.GetModuleWithWorkingRoom(moduleData, this.wkRoomId, this.wkRoomTypeId));
+                //                    var extenceInstance = PluginInstance.GetPluginInstance(PluginInstance.GetModuleWithWorkingRoom(moduleData, this.wkRoomId, this.wkRoomTypeId), listArgs);
+                //                    if (extenceInstance == null) throw new ArgumentNullException("moduleData is null");
+                //                    WaitingManager.Hide();
+                //                    ((Form)extenceInstance).ShowDialog();
+                //                }
+                //            }
+                //        }
+                //        else if (data.TDL_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__KH)
+                //        {
+                //            WaitingManager.Show();
+                //            Inventec.Desktop.Common.Modules.Module moduleData = GlobalVariables.currentModuleRaws.Where(o => o.ModuleLink == "HIS.Desktop.Plugins.ExamServiceReqResult").FirstOrDefault();
+                //            if (moduleData == null) throw new NullReferenceException("Not found module by ModuleLink = 'HIS.Desktop.Plugins.ExamServiceReqResult'");
+                //            if (!moduleData.IsPlugin || moduleData.ExtensionInfo == null) throw new NullReferenceException("Module 'HIS.Desktop.Plugins.ExamServiceReqResult' is not plugins");
+                //            List<object> listArgs = new List<object>();
+                //            listArgs.Add(data.SERE_SERV_ID);
+                //            var extenceInstance = HIS.Desktop.Utility.PluginInstance.GetPluginInstance(HIS.Desktop.Utility.PluginInstance.GetModuleWithWorkingRoom(moduleData, wkRoomId, wkRoomTypeId), listArgs);
+                //            if (extenceInstance == null) throw new NullReferenceException("Khoi tao moduleData that bai. extenceInstance = null");
 
-                            WaitingManager.Hide();
-                            ((Form)extenceInstance).ShowDialog();
-                        }
-                        else
-                        {
-                            WaitingManager.Show();
-                            Inventec.Desktop.Common.Modules.Module moduleData = GlobalVariables.currentModuleRaws.Where(o => o.ModuleLink == "HIS.Desktop.Plugins.ServiceReqResultView").FirstOrDefault();
-                            if (moduleData == null) throw new NullReferenceException("Not found module by ModuleLink = 'HIS.Desktop.Plugins.ServiceReqResultView'");
-                            if (!moduleData.IsPlugin || moduleData.ExtensionInfo == null) throw new NullReferenceException("Module 'HIS.Desktop.Plugins.ServiceReqResultView' is not plugins");
-                            List<object> listArgs = new List<object>();
-                            listArgs.Add(data.SERE_SERV_ID);
-                            var extenceInstance = HIS.Desktop.Utility.PluginInstance.GetPluginInstance(HIS.Desktop.Utility.PluginInstance.GetModuleWithWorkingRoom(moduleData, wkRoomId, wkRoomTypeId), listArgs);
-                            if (extenceInstance == null) throw new NullReferenceException("Khoi tao moduleData that bai. extenceInstance = null");
+                //            WaitingManager.Hide();
+                //            ((Form)extenceInstance).ShowDialog();
+                //        }
+                //        else
+                //        {
+                //            WaitingManager.Show();
+                //            Inventec.Desktop.Common.Modules.Module moduleData = GlobalVariables.currentModuleRaws.Where(o => o.ModuleLink == "HIS.Desktop.Plugins.ServiceReqResultView").FirstOrDefault();
+                //            if (moduleData == null) throw new NullReferenceException("Not found module by ModuleLink = 'HIS.Desktop.Plugins.ServiceReqResultView'");
+                //            if (!moduleData.IsPlugin || moduleData.ExtensionInfo == null) throw new NullReferenceException("Module 'HIS.Desktop.Plugins.ServiceReqResultView' is not plugins");
+                //            List<object> listArgs = new List<object>();
+                //            listArgs.Add(data.SERE_SERV_ID);
+                //            var extenceInstance = HIS.Desktop.Utility.PluginInstance.GetPluginInstance(HIS.Desktop.Utility.PluginInstance.GetModuleWithWorkingRoom(moduleData, wkRoomId, wkRoomTypeId), listArgs);
+                //            if (extenceInstance == null) throw new NullReferenceException("Khoi tao moduleData that bai. extenceInstance = null");
 
-                            WaitingManager.Hide();
-                            ((Form)extenceInstance).ShowDialog();
-                        }
-                    }
-                }
+                //            WaitingManager.Hide();
+                //            ((Form)extenceInstance).ShowDialog();
+                //        }
+                //    }
+                //}
             }
             catch (Exception ex)
             {
@@ -521,27 +473,27 @@ namespace HIS.Desktop.Plugins.ApprovaleDebate
         {
             try
             {
-                WaitingManager.Show();
-                CommonParam param = new CommonParam();
-                bool success = false;
-                MOS.EFMODEL.DataModels.HIS_SERVICE_REQ serviceReqDTO = new MOS.EFMODEL.DataModels.HIS_SERVICE_REQ();
-                var currentSS = (SereServADO)treeSereServ.GetDataRecordByNode(treeSereServ.FocusedNode);
-                if (currentSS != null)
-                {
-                    var resend = new BackendAdapter(param).Post<bool>(HisRequestUriStore.HIS_TEST_SERVICE_REQ_RESEND, ApiConsumers.MosConsumer, currentSS.SERVICE_REQ_ID, param);
-                    if (resend)
-                    {
-                        success = true;
-                    }
-                }
-                WaitingManager.Hide();
-                #region Show message
-                MessageManager.Show(this.ParentForm, param, success);
-                #endregion
+                //WaitingManager.Show();
+                //CommonParam param = new CommonParam();
+                //bool success = false;
+                //MOS.EFMODEL.DataModels.HIS_SERVICE_REQ serviceReqDTO = new MOS.EFMODEL.DataModels.HIS_SERVICE_REQ();
+                //var currentSS = (SereServADO)treeSereServ.GetDataRecordByNode(treeSereServ.FocusedNode);
+                //if (currentSS != null)
+                //{
+                //    var resend = new BackendAdapter(param).Post<bool>(HisRequestUriStore.HIS_TEST_SERVICE_REQ_RESEND, ApiConsumers.MosConsumer, currentSS.SERVICE_REQ_ID, param);
+                //    if (resend)
+                //    {
+                //        success = true;
+                //    }
+                //}
+                //WaitingManager.Hide();
+                //#region Show message
+                //MessageManager.Show(this.ParentForm, param, success);
+                //#endregion
 
-                #region Process has exception
-                SessionManager.ProcessTokenLost(param);
-                #endregion
+                //#region Process has exception
+                //SessionManager.ProcessTokenLost(param);
+                //#endregion
             }
             catch (Exception ex)
             {
@@ -652,53 +604,53 @@ namespace HIS.Desktop.Plugins.ApprovaleDebate
         {
             try
             {
-                WaitingManager.Show();
-                CommonParam param = new CommonParam();
-                bool success = false;
-                MOS.EFMODEL.DataModels.HIS_SERVICE_REQ serviceReqDTO = new MOS.EFMODEL.DataModels.HIS_SERVICE_REQ();
-                var currentSS = (SereServADO)treeSereServ.GetDataRecordByNode(treeSereServ.FocusedNode);
-                CommonParam paramCommon = new CommonParam();
-                HIS_EXP_MEST expMest = null;
-                if (currentSS != null)
-                {
-                    HisExpMestFilter expMestFilter = new HisExpMestFilter();
-                    expMestFilter.SERVICE_REQ_ID = currentSS.SERVICE_REQ_ID;
-                    var result = new BackendAdapter(new CommonParam()).Get<List<HIS_EXP_MEST>>("api/HisExpMest/Get", ApiConsumer.ApiConsumers.MosConsumer, expMestFilter, HIS.Desktop.Controls.Session.SessionManager.ActionLostToken, null);
-                    if (result != null && result.Count > 0)
-                    {
-                        currentPrescription = result.FirstOrDefault();
-                        expMest = result.FirstOrDefault();
-                    }
+                //WaitingManager.Show();
+                //CommonParam param = new CommonParam();
+                //bool success = false;
+                //MOS.EFMODEL.DataModels.HIS_SERVICE_REQ serviceReqDTO = new MOS.EFMODEL.DataModels.HIS_SERVICE_REQ();
+                //var currentSS = (SereServADO)treeSereServ.GetDataRecordByNode(treeSereServ.FocusedNode);
+                //CommonParam paramCommon = new CommonParam();
+                //HIS_EXP_MEST expMest = null;
+                //if (currentSS != null)
+                //{
+                //    HisExpMestFilter expMestFilter = new HisExpMestFilter();
+                //    expMestFilter.SERVICE_REQ_ID = currentSS.SERVICE_REQ_ID;
+                //    var result = new BackendAdapter(new CommonParam()).Get<List<HIS_EXP_MEST>>("api/HisExpMest/Get", ApiConsumer.ApiConsumers.MosConsumer, expMestFilter, HIS.Desktop.Controls.Session.SessionManager.ActionLostToken, null);
+                //    if (result != null && result.Count > 0)
+                //    {
+                //        currentPrescription = result.FirstOrDefault();
+                //        expMest = result.FirstOrDefault();
+                //    }
 
-                    if (this.currentPrescription != null &&
-                    (
-                    currentSS.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__DONDT ||
-                    currentSS.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__DONTT ||
-                    currentSS.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__DONM))
-                    {
-                        if (currentPrescription.EXP_MEST_STT_ID == IMSys.DbConfig.HIS_RS.HIS_EXP_MEST_STT.ID__DONE)
-                        {
-                            List<object> sendObj = new List<object>() { currentPrescription.ID };
+                //    if (this.currentPrescription != null &&
+                //    (
+                //    currentSS.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__DONDT ||
+                //    currentSS.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__DONTT ||
+                //    currentSS.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__DONM))
+                //    {
+                //        if (currentPrescription.EXP_MEST_STT_ID == IMSys.DbConfig.HIS_RS.HIS_EXP_MEST_STT.ID__DONE)
+                //        {
+                //            List<object> sendObj = new List<object>() { currentPrescription.ID };
 
-                            if (currentPrescription.EXP_MEST_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_EXP_MEST_TYPE.ID__DDT)
-                            {
-                                CallModule("HIS.Desktop.Plugins.MobaPrescriptionCreate", sendObj);
-                            }
-                            else if (currentPrescription.EXP_MEST_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_EXP_MEST_TYPE.ID__DTT)
-                            {
-                                CallModule("HIS.Desktop.Plugins.MobaCabinetCreate", sendObj);
-                            }
-                            else if (currentPrescription.EXP_MEST_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_EXP_MEST_TYPE.ID__DM)
-                            {
-                                CallModule("HIS.Desktop.Plugins.MobaBloodCreate", sendObj);
-                            }
-                            else
-                            {
-                                MessageManager.Show("Tài khoản không có quyền thực hiện chức năng");
-                            }
-                        }
-                    }
-                }
+                //            if (currentPrescription.EXP_MEST_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_EXP_MEST_TYPE.ID__DDT)
+                //            {
+                //                CallModule("HIS.Desktop.Plugins.MobaPrescriptionCreate", sendObj);
+                //            }
+                //            else if (currentPrescription.EXP_MEST_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_EXP_MEST_TYPE.ID__DTT)
+                //            {
+                //                CallModule("HIS.Desktop.Plugins.MobaCabinetCreate", sendObj);
+                //            }
+                //            else if (currentPrescription.EXP_MEST_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_EXP_MEST_TYPE.ID__DM)
+                //            {
+                //                CallModule("HIS.Desktop.Plugins.MobaBloodCreate", sendObj);
+                //            }
+                //            else
+                //            {
+                //                MessageManager.Show("Tài khoản không có quyền thực hiện chức năng");
+                //            }
+                //        }
+                //    }
+                //}
             }
             catch (Exception ex)
             {
@@ -758,13 +710,13 @@ namespace HIS.Desktop.Plugins.ApprovaleDebate
         {
             try
             {
-                TreeList tree = sender as TreeList;
-                TreeListHitInfo hi = tree.CalcHitInfo(tree.PointToClient(Control.MousePosition));
-                var data = (SereServADO)treeSereServ.GetDataRecordByNode(hi.Node);
-                if (data != null && this.EditButton_Click != null)
-                {
-                    this.EditButton_Click(data);
-                }
+                //TreeList tree = sender as TreeList;
+                //TreeListHitInfo hi = tree.CalcHitInfo(tree.PointToClient(Control.MousePosition));
+                //var data = (SereServADO)treeSereServ.GetDataRecordByNode(hi.Node);
+                //if (data != null && this.EditButton_Click != null)
+                //{
+                //    this.EditButton_Click(data);
+                //}
             }
             catch (Exception ex)
             {
@@ -855,27 +807,18 @@ namespace HIS.Desktop.Plugins.ApprovaleDebate
                 rep_btnDelete_Enable = null;
                 rep_btnEdit_Disable = null;
                 rep_btnEdit_Enable = null;
-                tc_Delete = null;
-                tc_Edit = null;
-                isRation = null;
-                treeListColumn2 = null;
-                treeListColumn1 = null;
                 toolTipController2 = null;
                 repositoryItemButtonEdit_TaoThuHoi = null;
                 repositoryItemButton_IsUse = null;
                 repositoryItemButton__Send__Disable = null;
                 repositoryItemButton__Send = null;
                 imageCollection1 = null;
-                tc_RequestDepartmentName = null;
+                SERVICE = null;
                 //qtcode
                 CONTENT = null; 
                 //qtcode
-                tc_NoteAdo = null;
-                tc_Number = null;
-                tc_ServiceName = null;
+                USER_NAME = null;
                 TRACKING_TIME = null;
-                tc_MediUsed = null;
-                tc_SendTestServiceReq = null;
                 layoutControlItem1 = null;
                 treeSereServ = null;
                 layoutControlGroup1 = null;

@@ -27,9 +27,9 @@ using System.Windows.Forms;
 using System.Collections;
 using DevExpress.XtraGrid.Views.Base;
 using DevExpress.Data;
-using HIS.Desktop.Plugins.ApprovaleDebate;
+using HIS.Desktop.Plugins.a2ApprovaleDebate;
 using DevExpress.Utils;
-using HIS.Desktop.Plugins.ApprovaleDebate.ADO;
+using HIS.Desktop.Plugins.a2ApprovaleDebate.ADO;
 using MOS.SDO;
 using Inventec.Desktop.Common.LanguageManager;
 using Inventec.Desktop.Common.Message;
@@ -47,9 +47,9 @@ using DevExpress.XtraTreeList.Nodes;
 using HIS.Desktop.ADO;
 using System.Resources;
 using System.Reflection;
-using HIS.Desktop.Plugins.ApprovaleDebate.Key;
+using HIS.Desktop.Plugins.a2ApprovaleDebate.Key;
 
-namespace HIS.Desktop.Plugins.ApprovaleDebate
+namespace HIS.Desktop.Plugins.a2ApprovaleDebate
 {
     public partial class UCTreeListService : UserControl
     {

@@ -22,7 +22,7 @@ using System.Text;
 using System.Threading.Tasks;
 using MOS.SDO;
 
-namespace HIS.Desktop.Plugins.ApprovaleDebate.ADO
+namespace HIS.Desktop.Plugins.a2ApprovaleDebate.ADO
 {
     public class ServiceReqGroupByDateADO : HisServiceReqGroupByDateSDO
     {

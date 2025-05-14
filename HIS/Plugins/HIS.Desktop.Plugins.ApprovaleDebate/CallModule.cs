@@ -21,7 +21,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace HIS.Desktop.Plugins.ApprovaleDebate
+namespace HIS.Desktop.Plugins.a2ApprovaleDebate
 {
     class CallModule
     {

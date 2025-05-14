@@ -24,7 +24,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace HIS.Desktop.Plugins.ApprovaleDebate.Key
+namespace HIS.Desktop.Plugins.a2ApprovaleDebate.Key
 {
     [KeyboardAction("bbtnSearch", "HIS.Desktop.Plugins.BedRoomPartial.UCBedRoomPartial", "bbtnSearch", KeyStroke = XKeys.Control | XKeys.F)]
     [KeyboardAction("keyF2Focused", "HIS.Desktop.Plugins.BedRoomPartial.UCBedRoomPartial", "keyF2Focused", KeyStroke = XKeys.F2)]

@@ -1,4 +1,4 @@
-﻿using HIS.Desktop.Plugins.ApprovaleDebate.ApprovaleDebate;
+﻿using HIS.Desktop.Plugins.a2ApprovaleDebate.ApprovaleDebate;
 using Inventec.Core;
 using Inventec.Desktop.Common.Modules;
 using Inventec.Desktop.Core;
@@ -8,10 +8,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace HIS.Desktop.Plugins.ApprovaleDebate
+namespace HIS.Desktop.Plugins.a2ApprovaleDebate
 {
     [ExtensionOf(typeof(DesktopRootExtensionPoint),
-   "HIS.Desktop.Plugins.ApprovaleDebate",
+   "HIS.Desktop.Plugins.a2ApprovaleDebate",
    "Duyệt hội chẩn",
    "Common",
    14,

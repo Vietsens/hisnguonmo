@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace HIS.Desktop.Plugins.ApprovaleDebate.Properties {
+namespace HIS.Desktop.Plugins.a2ApprovaleDebate.Properties {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace HIS.Desktop.Plugins.ApprovaleDebate.Properties {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("HIS.Desktop.Plugins.ApprovaleDebate.Properties.Resources", typeof(Resources).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("HIS.Desktop.Plugins.a2ApprovaleDebate.Properties.Resources", typeof(Resources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;

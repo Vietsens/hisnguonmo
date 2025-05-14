@@ -5,7 +5,7 @@ using System.Resources;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace HIS.Desktop.Plugins.ApprovaleDebate.Resources
+namespace HIS.Desktop.Plugins.a2ApprovaleDebate.Resources
 {
     public class ResourceLanguageManager
     {

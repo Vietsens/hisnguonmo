@@ -22,7 +22,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace HIS.Desktop.Plugins.ApprovaleDebate.ADO
+namespace HIS.Desktop.Plugins.a2ApprovaleDebate.ADO
 {
     public class SereServADO : DHisSereServ2
     {
