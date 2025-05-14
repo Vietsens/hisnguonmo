@@ -278,24 +278,23 @@ namespace HIS.Desktop.Plugins.BedRoomPartial.Popup
                         HIS_SPECIALIST_EXAM.TDL_PATIENT_GENDER_NAME = treatmentBedRoomRow.TDL_PATIENT_GENDER_NAME;
                         HIS_SPECIALIST_EXAM.TDL_PATIENT_ADDRESS = treatmentBedRoomRow.TDL_PATIENT_ADDRESS;
                     }
+
+                    HIS_SPECIALIST_EXAM rs = new HIS_SPECIALIST_EXAM();
+                    CommonParam param = new CommonParam();
+
+                    Inventec.Common.Logging.LogSystem.Warn("HIS_SPECIALIST_EXAM ____hIS_SPECIALIST_EXAM"
+                      + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => HIS_SPECIALIST_EXAM), HIS_SPECIALIST_EXAM));
+                    rs = new Inventec.Common.Adapter.BackendAdapter(param).Post<HIS_SPECIALIST_EXAM>(HisRequestUriStore.HIS_SPECIALIST_EXAM_CREATE, ApiConsumers.MosConsumer, HIS_SPECIALIST_EXAM, param);
+
+                    WaitingManager.Hide();
+                    #region Hien thi message thong bao
+                    MessageManager.Show(this, param, rs != null);
+                    #endregion
+
+                    #region Neu phien lam viec bi mat, phan mem tu dong logout va tro ve trang login
+                    SessionManager.ProcessTokenLost(param);
+                    #endregion
                 }
-               
-                HIS_SPECIALIST_EXAM rs = new HIS_SPECIALIST_EXAM();
-                CommonParam param = new CommonParam();
-
-                Inventec.Common.Logging.LogSystem.Warn("HIS_SPECIALIST_EXAM ____hIS_SPECIALIST_EXAM"
-                  + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => HIS_SPECIALIST_EXAM), HIS_SPECIALIST_EXAM));
-                rs = new Inventec.Common.Adapter.BackendAdapter(param).Post<HIS_SPECIALIST_EXAM>(HisRequestUriStore.HIS_SPECIALIST_EXAM_CREATE, ApiConsumers.MosConsumer, HIS_SPECIALIST_EXAM, param);
-
-
-                WaitingManager.Hide();
-                #region Hien thi message thong bao
-                MessageManager.Show(this, param, rs != null);
-                #endregion
-
-                #region Neu phien lam viec bi mat, phan mem tu dong logout va tro ve trang login
-                SessionManager.ProcessTokenLost(param);
-                #endregion
 
             }
             catch (Exception ex)
