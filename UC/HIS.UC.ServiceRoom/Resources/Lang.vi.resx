@@ -132,6 +132,23 @@
   <data name="UCRoomExamService.col12.Text1" xml:space="preserve">
     <value>Cảnh báo</value>
   </data>
+
+  <data name="UCRoomExamService.col13.Text" xml:space="preserve">
+    <value>Sáng</value>
+  </data>
+	<data name="UCRoomExamService.col14.Text" xml:space="preserve">
+    <value>Chiều</value>
+  </data>
+	<data name="UCRoomExamService.col15.Text" xml:space="preserve">
+    <value>Tổng KNVP</value>
+  </data>
+	<data name="UCRoomExamService.col16.Text" xml:space="preserve">
+    <value>Sáng KNVP</value>
+  </data>
+	<data name="UCRoomExamService.col17.Text" xml:space="preserve">
+    <value>Chiều KNVP</value>
+  </data>
+	
   <data name="UCRoomExamService.col2.Text" xml:space="preserve">
     <value>Tên</value>
   </data>
