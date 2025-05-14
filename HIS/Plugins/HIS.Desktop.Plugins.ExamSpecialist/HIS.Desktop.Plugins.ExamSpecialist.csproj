@@ -55,8 +55,16 @@
     <Reference Include="Inventec.Common.Adapter">
       <HintPath>..\..\..\..\lib\Inventec.Common\Inventec.Common.Adapter\Inventec.Common.Adapter.dll</HintPath>
     </Reference>
+    <Reference Include="Inventec.Common.DateTime, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\lib\Inventec.Common\Inventec.Common.DateTime\Inventec.Common.DateTime.dll</HintPath>
+    </Reference>
     <Reference Include="Inventec.Common.Logging">
       <HintPath>..\..\..\..\lib\Inventec.Common\Inventec.Common.WebApiClient\Inventec.Common.Logging.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Common.Mapper, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\lib\Inventec.Common\Inventec.Common.Mapper\Inventec.Common.Mapper.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Common.WebApiClient">
       <HintPath>..\..\..\..\lib\Inventec.Common\Inventec.Common.WebApiClient\Inventec.Common.WebApiClient.dll</HintPath>
@@ -69,11 +77,11 @@
     </Reference>
     <Reference Include="MOS.EFMODEL, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\LIB\MOS\MOS.EFMODEL.dll</HintPath>
+      <HintPath>..\..\..\..\lib\MOS\MOS.EFMODEL.dll</HintPath>
     </Reference>
     <Reference Include="MOS.Filter, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\LIB\MOS\MOS.Filter.dll</HintPath>
+      <HintPath>..\..\..\..\lib\MOS\MOS.Filter.dll</HintPath>
     </Reference>
     <Reference Include="SDA.EFMODEL">
       <HintPath>..\..\..\..\lib\SDA\SDA.EFMODEL.dll</HintPath>
@@ -96,7 +104,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Class1.cs" />
     <Compile Include="ExamSpecialist\ExamSpecialistBehavior.cs" />
     <Compile Include="ExamSpecialist\ExamSpecialistFactory.cs" />
     <Compile Include="ExamSpecialist\frmExamSpecialist.cs">
@@ -104,6 +111,12 @@
     </Compile>
     <Compile Include="ExamSpecialist\frmExamSpecialist.Designer.cs">
       <DependentUpon>frmExamSpecialist.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ExamSpecialist\frmReject.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ExamSpecialist\frmReject.Designer.cs">
+      <DependentUpon>frmReject.cs</DependentUpon>
     </Compile>
     <Compile Include="ExamSpecialist\IExamSpecialist.cs" />
     <Compile Include="HisExamSpecialistProcessor.cs" />
@@ -163,6 +176,9 @@
   <ItemGroup>
     <EmbeddedResource Include="ExamSpecialist\frmExamSpecialist.resx">
       <DependentUpon>frmExamSpecialist.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ExamSpecialist\frmReject.resx">
+      <DependentUpon>frmReject.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\licenses.licx" />
     <EmbeddedResource Include="Properties\Resources.resx">
