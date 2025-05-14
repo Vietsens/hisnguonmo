@@ -28,10 +28,9 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             this.layoutControl1 = new DevExpress.XtraLayout.LayoutControl();
             this.cboExamination = new Inventec.Desktop.CustomControl.CustomGridLookUpEditWithFilterMultiColumn();
-            this.barManager1 = new DevExpress.XtraBars.BarManager(this.components);
+            this.barManager1 = new DevExpress.XtraBars.BarManager();
             this.bar1 = new DevExpress.XtraBars.Bar();
             this.barbtnAddSpecialty = new DevExpress.XtraBars.BarButtonItem();
             this.barDockControlTop = new DevExpress.XtraBars.BarDockControl();
@@ -108,7 +107,7 @@
             // cboExamination
             // 
             this.cboExamination.EditValue = "";
-            this.cboExamination.Location = new System.Drawing.Point(107, 74);
+            this.cboExamination.Location = new System.Drawing.Point(127, 74);
             this.cboExamination.MenuManager = this.barManager1;
             this.cboExamination.Name = "cboExamination";
             this.cboExamination.Properties.AutoComplete = false;
@@ -116,7 +115,7 @@
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
             this.cboExamination.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.Standard;
             this.cboExamination.Properties.View = this.customGridLookUpEditWithFilterMultiColumn2View;
-            this.cboExamination.Size = new System.Drawing.Size(214, 20);
+            this.cboExamination.Size = new System.Drawing.Size(194, 20);
             this.cboExamination.StyleController = this.layoutControl1;
             this.cboExamination.TabIndex = 13;
             // 
@@ -190,7 +189,7 @@
             // cboEmployeeInvite
             // 
             this.cboEmployeeInvite.EditValue = "";
-            this.cboEmployeeInvite.Location = new System.Drawing.Point(107, 26);
+            this.cboEmployeeInvite.Location = new System.Drawing.Point(127, 26);
             this.cboEmployeeInvite.MenuManager = this.barManager1;
             this.cboEmployeeInvite.Name = "cboEmployeeInvite";
             this.cboEmployeeInvite.Properties.AutoComplete = false;
@@ -198,7 +197,7 @@
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
             this.cboEmployeeInvite.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.Standard;
             this.cboEmployeeInvite.Properties.View = this.customGridViewWithFilterMultiColumn1;
-            this.cboEmployeeInvite.Size = new System.Drawing.Size(214, 20);
+            this.cboEmployeeInvite.Size = new System.Drawing.Size(194, 20);
             this.cboEmployeeInvite.StyleController = this.layoutControl1;
             this.cboEmployeeInvite.TabIndex = 12;
             // 
@@ -212,7 +211,7 @@
             // cboDepartment
             // 
             this.cboDepartment.EditValue = "";
-            this.cboDepartment.Location = new System.Drawing.Point(107, 50);
+            this.cboDepartment.Location = new System.Drawing.Point(127, 50);
             this.cboDepartment.MenuManager = this.barManager1;
             this.cboDepartment.Name = "cboDepartment";
             this.cboDepartment.Properties.AutoComplete = false;
@@ -220,7 +219,7 @@
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
             this.cboDepartment.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.Standard;
             this.cboDepartment.Properties.View = this.customGridLookUpEditWithFilterMultiColumn1View;
-            this.cboDepartment.Size = new System.Drawing.Size(214, 20);
+            this.cboDepartment.Size = new System.Drawing.Size(194, 20);
             this.cboDepartment.StyleController = this.layoutControl1;
             this.cboDepartment.TabIndex = 11;
             // 
@@ -243,27 +242,27 @@
             // 
             // txtContent
             // 
-            this.txtContent.Location = new System.Drawing.Point(107, 122);
+            this.txtContent.Location = new System.Drawing.Point(127, 122);
             this.txtContent.MenuManager = this.barManager1;
             this.txtContent.Name = "txtContent";
-            this.txtContent.Size = new System.Drawing.Size(462, 132);
+            this.txtContent.Size = new System.Drawing.Size(442, 132);
             this.txtContent.StyleController = this.layoutControl1;
             this.txtContent.TabIndex = 9;
             // 
             // chkExamBed
             // 
-            this.chkExamBed.Location = new System.Drawing.Point(107, 98);
+            this.chkExamBed.Location = new System.Drawing.Point(127, 98);
             this.chkExamBed.MenuManager = this.barManager1;
             this.chkExamBed.Name = "chkExamBed";
             this.chkExamBed.Properties.Caption = "";
-            this.chkExamBed.Size = new System.Drawing.Size(462, 19);
+            this.chkExamBed.Size = new System.Drawing.Size(442, 19);
             this.chkExamBed.StyleController = this.layoutControl1;
             this.chkExamBed.TabIndex = 8;
             // 
             // dateInveteTime
             // 
             this.dateInveteTime.EditValue = null;
-            this.dateInveteTime.Location = new System.Drawing.Point(107, 2);
+            this.dateInveteTime.Location = new System.Drawing.Point(127, 2);
             this.dateInveteTime.MenuManager = this.barManager1;
             this.dateInveteTime.Name = "dateInveteTime";
             this.dateInveteTime.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
@@ -275,7 +274,7 @@
             this.dateInveteTime.Properties.EditFormat.FormatString = "dd/MM/yyyy HH:mm";
             this.dateInveteTime.Properties.EditFormat.FormatType = DevExpress.Utils.FormatType.DateTime;
             this.dateInveteTime.Properties.Mask.EditMask = "dd/MM/yyyy HH:mm";
-            this.dateInveteTime.Size = new System.Drawing.Size(214, 20);
+            this.dateInveteTime.Size = new System.Drawing.Size(194, 20);
             this.dateInveteTime.StyleController = this.layoutControl1;
             this.dateInveteTime.TabIndex = 4;
             // 
@@ -312,7 +311,7 @@
             this.layoutControlItem1.Size = new System.Drawing.Size(323, 24);
             this.layoutControlItem1.Text = "Ngày mời:";
             this.layoutControlItem1.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
-            this.layoutControlItem1.TextSize = new System.Drawing.Size(100, 20);
+            this.layoutControlItem1.TextSize = new System.Drawing.Size(120, 20);
             this.layoutControlItem1.TextToControlDistance = 5;
             // 
             // layoutControlItem5
@@ -325,7 +324,7 @@
             this.layoutControlItem5.Size = new System.Drawing.Size(571, 24);
             this.layoutControlItem5.Text = "Khám tại giường:";
             this.layoutControlItem5.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
-            this.layoutControlItem5.TextSize = new System.Drawing.Size(100, 20);
+            this.layoutControlItem5.TextSize = new System.Drawing.Size(120, 20);
             this.layoutControlItem5.TextToControlDistance = 5;
             // 
             // layoutControlItem6
@@ -338,7 +337,7 @@
             this.layoutControlItem6.Size = new System.Drawing.Size(571, 136);
             this.layoutControlItem6.Text = "Nội dung mời:";
             this.layoutControlItem6.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
-            this.layoutControlItem6.TextSize = new System.Drawing.Size(100, 20);
+            this.layoutControlItem6.TextSize = new System.Drawing.Size(120, 20);
             this.layoutControlItem6.TextToControlDistance = 5;
             // 
             // layoutControlItem7
@@ -384,7 +383,7 @@
             this.layoutControlItem8.Size = new System.Drawing.Size(323, 24);
             this.layoutControlItem8.Text = "Khoa phòng khám:";
             this.layoutControlItem8.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
-            this.layoutControlItem8.TextSize = new System.Drawing.Size(100, 13);
+            this.layoutControlItem8.TextSize = new System.Drawing.Size(120, 13);
             this.layoutControlItem8.TextToControlDistance = 5;
             // 
             // layoutControlItem3
@@ -397,7 +396,7 @@
             this.layoutControlItem3.Size = new System.Drawing.Size(323, 24);
             this.layoutControlItem3.Text = "Bác sĩ mời:";
             this.layoutControlItem3.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
-            this.layoutControlItem3.TextSize = new System.Drawing.Size(100, 20);
+            this.layoutControlItem3.TextSize = new System.Drawing.Size(120, 20);
             this.layoutControlItem3.TextToControlDistance = 5;
             // 
             // layoutControlItem9
@@ -410,7 +409,7 @@
             this.layoutControlItem9.Size = new System.Drawing.Size(323, 24);
             this.layoutControlItem9.Text = "Bác sĩ khám:";
             this.layoutControlItem9.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
-            this.layoutControlItem9.TextSize = new System.Drawing.Size(100, 20);
+            this.layoutControlItem9.TextSize = new System.Drawing.Size(120, 20);
             this.layoutControlItem9.TextToControlDistance = 5;
             // 
             // emptySpaceItem4

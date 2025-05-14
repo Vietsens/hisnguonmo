@@ -6322,7 +6322,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
         {
             try
             {
-                 frmAttachTestFile frm = new frmAttachTestFile();
+                frmAttachTestFile frm = new frmAttachTestFile(row.TREATMENT_CODE, row.SERVICE_REQ_CODE, row.BARCODE);
             }
             catch (Exception)
             {

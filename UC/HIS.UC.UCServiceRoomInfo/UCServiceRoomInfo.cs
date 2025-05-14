@@ -162,7 +162,7 @@ namespace HIS.UC.UCServiceRoomInfo
             }
         }
 
-        public void InitComboRoom(List<L_HIS_ROOM_COUNTER> executeRooms)
+        public void InitComboRoom(List<L_HIS_ROOM_COUNTER_2> executeRooms)
         {
             try
             {
@@ -183,7 +183,7 @@ namespace HIS.UC.UCServiceRoomInfo
             }
         }
 
-        public void InitComboRoom(List<L_HIS_ROOM_COUNTER> executeRooms, bool isSync)
+        public void InitComboRoom(List<L_HIS_ROOM_COUNTER_2> executeRooms, bool isSync)
         {
             try
             {

@@ -62,10 +62,10 @@ namespace HIS.UC.ServiceRoom
         public bool isInit { get; set; }
         public bool isFocusCombo { get; set; }
         public string userControlItemName { get; set; }
-        public V_HIS_SERE_SERV sereServExam { get; set; }
+        public V_HIS_SERE_SERV sereServExam { get; set; }     
         internal List<V_HIS_ROOM> hisRooms { get; set; }
         public RemoveRoomExamService dlgRemoveUC { get; set; }
-        public DelegateFocusNextUserControl dlgFocusNextUserControl;
+        public DelegateFocusNextUserControl dlgFocusNextUserControl;     
         Action registerPatientWithRightRouteBHYT;
         Action changeRoomNotEmergency;
         Action<long> changeServiceProcessPrimaryPatientType;
@@ -102,13 +102,24 @@ namespace HIS.UC.ServiceRoom
         string col10 = "";
         string col11 = "";
         string col12 = "";
+        string col13 = "";// thêm
+        string col14 = "";
+        string col15 = "";
+        string col16 = "";
+        string col17 = "";
         string tol1 = "";
         string tol2 = "";
-        string tol3 = "";
+        string tol3 = "";     
         string tol4 = "";
         string tol5 = "";
         string tol6 = "";
         string tol7 = "";
+        string tol12 = "";// thêm
+        string tol8 = "";
+        string tol9 = "";
+        string tol10 = "";
+        string tol11 = "";
+        
         #endregion
 
         #region Constructor - Load
@@ -194,6 +205,11 @@ namespace HIS.UC.ServiceRoom
                 col10 = Inventec.Common.Resource.Get.Value("UCRoomExamService.col10.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 col11 = Inventec.Common.Resource.Get.Value("UCRoomExamService.col11.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 col12 = Inventec.Common.Resource.Get.Value("UCRoomExamService.col12.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                col13 = Inventec.Common.Resource.Get.Value("UCRoomExamService.col13.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                col14 = Inventec.Common.Resource.Get.Value("UCRoomExamService.col14.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                col15 = Inventec.Common.Resource.Get.Value("UCRoomExamService.col15.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                col16 = Inventec.Common.Resource.Get.Value("UCRoomExamService.col16.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                col17 = Inventec.Common.Resource.Get.Value("UCRoomExamService.col17.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 tol1 = Inventec.Common.Resource.Get.Value("UCRoomExamService.tol1.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 tol2 = Inventec.Common.Resource.Get.Value("UCRoomExamService.tol2.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 tol3 = Inventec.Common.Resource.Get.Value("UCRoomExamService.tol3.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
@@ -201,6 +217,12 @@ namespace HIS.UC.ServiceRoom
                 tol5 = Inventec.Common.Resource.Get.Value("UCRoomExamService.tol5.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 tol6 = Inventec.Common.Resource.Get.Value("UCRoomExamService.tol6.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 tol7 = Inventec.Common.Resource.Get.Value("UCRoomExamService.tol7.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                tol8 = Inventec.Common.Resource.Get.Value("UCRoomExamService.tol8.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                tol9 = Inventec.Common.Resource.Get.Value("UCRoomExamService.tol9.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                tol10 = Inventec.Common.Resource.Get.Value("UCRoomExamService.tol10.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                tol11 = Inventec.Common.Resource.Get.Value("UCRoomExamService.tol11.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                tol12 = Inventec.Common.Resource.Get.Value("UCRoomExamService.tol12.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                
             }
             catch (Exception ex)
             {

@@ -1029,7 +1029,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
             this.lciHuongDan.Location = new System.Drawing.Point(0, 24);
             this.lciHuongDan.Name = "lciHuongDan";
             this.lciHuongDan.Size = new System.Drawing.Size(456, 24);
-            this.lciHuongDan.Text = "Hướng dẫn:";
+            this.lciHuongDan.Text = "Liều dùng:";
             this.lciHuongDan.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lciHuongDan.TextSize = new System.Drawing.Size(88, 20);
             this.lciHuongDan.TextToControlDistance = 5;
@@ -3023,7 +3023,6 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
             this.emptySpaceItem1.Name = "emptySpaceItem1";
             this.emptySpaceItem1.Size = new System.Drawing.Size(860, 24);
             this.emptySpaceItem1.TextSize = new System.Drawing.Size(0, 0);
-            this.emptySpaceItem1.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
             // 
             // emptySpaceItem3
             // 
@@ -3045,7 +3044,6 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
             this.layoutControlItem9.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem9.TextSize = new System.Drawing.Size(90, 20);
             this.layoutControlItem9.TextToControlDistance = 5;
-            this.layoutControlItem9.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
             // 
             // customGridViewWithFilterMultiColumn2
             // 

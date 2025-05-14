@@ -214,26 +214,14 @@ namespace HIS.Desktop.Plugins.BedRoomPartial.Popup
         {
             try
             {
-                bool chk = false;
                 WaitingManager.Show();
                 HIS_SPECIALIST_EXAM hIS_SPECIALIST_EXAM = new HIS_SPECIALIST_EXAM();
-
-                HisTrackingSDO trackingSdo = new HisTrackingSDO();
-                trackingSdo.Tracking = new HIS_TRACKING();
-
 
                 if (currentSpecialist != null)
                 {
                     AutoMapper.Mapper.CreateMap<HIS_SPECIALIST_EXAM, HIS_SPECIALIST_EXAM>();
                     hIS_SPECIALIST_EXAM = AutoMapper.Mapper.Map<HIS_SPECIALIST_EXAM>(currentSpecialist);
                 }
-
-                if (this.currentModule != null && this.currentModule.RoomId > 0)
-                {
-                    trackingSdo.WorkingRoomId = this.currentModule.RoomId;
-                }
-                trackingSdo.Tracking.TRACKING_TIME = Inventec.Common.TypeConvert.Parse.ToInt64(dateInveteTime.DateTime.ToString("yyyyMMddHHmmss"));
-                trackingSdo.Tracking.CONTENT = txtContent.Text;
 
 
                 hIS_SPECIALIST_EXAM.INVITE_TIME = Inventec.Common.TypeConvert.Parse.ToInt64(dateInveteTime.DateTime.ToString("yyyyMMddHHmmss"));
@@ -258,6 +246,7 @@ namespace HIS.Desktop.Plugins.BedRoomPartial.Popup
                     hIS_SPECIALIST_EXAM.IS__EXAM_BED = null;
 
                 hIS_SPECIALIST_EXAM.INVITE_CONTENT = txtContent.Text;
+                hIS_SPECIALIST_EXAM.INVITE_TYPE = 1;
                 if (treatmentBedRoomRow != null)
                 {
                     hIS_SPECIALIST_EXAM.TREATMENT_CODE = treatmentBedRoomRow.TREATMENT_CODE;
@@ -266,8 +255,8 @@ namespace HIS.Desktop.Plugins.BedRoomPartial.Popup
                     hIS_SPECIALIST_EXAM.TDL_PATIENT_DOB = treatmentBedRoomRow.TDL_PATIENT_DOB;
                     hIS_SPECIALIST_EXAM.TDL_PATIENT_GENDER_NAME = treatmentBedRoomRow.TDL_PATIENT_GENDER_NAME;
                     hIS_SPECIALIST_EXAM.TDL_PATIENT_ADDRESS = treatmentBedRoomRow.TDL_PATIENT_ADDRESS;
+                    hIS_SPECIALIST_EXAM.TREATMENT_ID = treatmentBedRoomRow.TREATMENT_ID;
                     hIS_SPECIALIST_EXAM.TREATMENT_BED_ROOM_ID = treatmentBedRoomRow.ID;
-                    trackingSdo.Tracking.TREATMENT_ID = treatmentBedRoomRow.TREATMENT_ID;
                 }
 
                 HIS_SPECIALIST_EXAM rs = new HIS_SPECIALIST_EXAM();
@@ -276,28 +265,10 @@ namespace HIS.Desktop.Plugins.BedRoomPartial.Popup
                     + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => hIS_SPECIALIST_EXAM), hIS_SPECIALIST_EXAM));
                 rs = new BackendAdapter(param).Post<HIS_SPECIALIST_EXAM>(HisRequestUriStore.HIS_SPECIALIST_EXAM_CREATE, ApiConsumers.MosConsumer, hIS_SPECIALIST_EXAM, param);
 
-                Inventec.Common.Logging.LogSystem.Warn("HIS_SPECIALIST_EXAM ____rs"
-                    + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => rs), rs));
-
-                
-
-                Inventec.Common.Logging.LogSystem.Warn("HIS_SPECIALIST_EXAM ____hIS_SPECIALIST_EXAM"
-                    + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => trackingSdo), trackingSdo));
-
-                HIS_TRACKING tracking = new BackendAdapter(param).Post<HIS_TRACKING>(HisRequestUriStore.HIS_TRACKING_CREATE, ApiConsumers.MosConsumer, trackingSdo, param);
-
-                Inventec.Common.Logging.LogSystem.Warn("HIS_SPECIALIST_EXAM ____rs"
-                    + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => tracking), tracking));
-
-                if (rs != null && tracking != null)
-                {
-                    chk = true;     
-                }
-
                 WaitingManager.Hide();
 
                 #region Hien thi message thong bao
-                MessageManager.Show(this, param, chk);
+                MessageManager.Show(this, param, rs!= null);
                 #endregion
 
                 #region Neu phien lam viec bi mat, phan mem tu dong logout va tro ve trang login
