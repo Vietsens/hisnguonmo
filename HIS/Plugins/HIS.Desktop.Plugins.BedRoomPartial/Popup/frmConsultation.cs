@@ -277,6 +277,8 @@ namespace HIS.Desktop.Plugins.BedRoomPartial.Popup
                         HIS_SPECIALIST_EXAM.TDL_PATIENT_DOB = treatmentBedRoomRow.TDL_PATIENT_DOB;
                         HIS_SPECIALIST_EXAM.TDL_PATIENT_GENDER_NAME = treatmentBedRoomRow.TDL_PATIENT_GENDER_NAME;
                         HIS_SPECIALIST_EXAM.TDL_PATIENT_ADDRESS = treatmentBedRoomRow.TDL_PATIENT_ADDRESS;
+                        HIS_SPECIALIST_EXAM.TREATMENT_ID = treatmentBedRoomRow.TREATMENT_ID;
+                        HIS_SPECIALIST_EXAM.TREATMENT_BED_ROOM_ID = treatmentBedRoomRow.ID;
                     }
 
                     HIS_SPECIALIST_EXAM rs = new HIS_SPECIALIST_EXAM();
