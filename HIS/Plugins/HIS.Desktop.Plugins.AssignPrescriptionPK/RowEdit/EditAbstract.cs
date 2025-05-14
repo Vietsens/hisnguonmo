@@ -15,6 +15,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+using DevExpress.XtraEditors;
 using DevExpress.XtraEditors.DXErrorProvider;
 using HIS.Desktop.LocalStorage.BackendData;
 using HIS.Desktop.LocalStorage.LocalData;
@@ -528,7 +529,14 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.Edit
         {
             bool valid = true;
             try
-            {
+            {    
+                if (String.IsNullOrEmpty(this.HtuText))
+                {
+                    DialogResult result = XtraMessageBox.Show("Bắt buộc phải nhập cách dùng", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    valid = false;
+                    frmAssignPrescription.memHtu.Focus();
+                }
+
                 if (this.ServiceTypeId == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__THUOC
                     && String.IsNullOrEmpty(this.Tutorial) && !HisConfigCFG.IsNotAutoGenerateTutorial) //frmAssignPrescription.currentHisPatientTypeAlter.PATIENT_TYPE_ID == HisConfigCFG.PatientTypeId__BHYT
                 {
