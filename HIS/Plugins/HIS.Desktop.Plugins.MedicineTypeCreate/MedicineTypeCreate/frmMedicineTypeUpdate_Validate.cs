@@ -37,6 +37,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using HIS.Desktop.LibraryMessage;
 using HIS.Desktop.Plugins.MedicineTypeCreate.Validtion;
+using HIS.Desktop.LocalStorage.BackendData;
 
 namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
 {
@@ -146,10 +147,14 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
             try
             {
                 ValidateCombox vali = new ValidateCombox();
-                vali.gridLockup = cboDosageForm;
-                vali.ErrorType = ErrorType.Warning;
-                vali.ErrorText = MessageUtil.GetMessage(LibraryMessage.Message.Enum.TruongDuLieuBatBuoc);
-                dxValidationMedicineType.SetValidationRule(cboDosageForm, vali); 
+                var medicineLine = BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_MEDICINE_LINE>().SingleOrDefault(o => o.ID == Inventec.Common.TypeConvert.Parse.ToInt64((cboMedicineLine.EditValue ?? "").ToString()));
+                if(medicineLine.ID == 3)
+                {
+                    vali.gridLockup = cboDosageForm;
+                    vali.ErrorType = ErrorType.Warning;
+                    vali.ErrorText = MessageUtil.GetMessage(LibraryMessage.Message.Enum.TruongDuLieuBatBuoc);
+                    dxValidationMedicineType.SetValidationRule(cboDosageForm, vali);
+                }
             }
             catch(Exception ex)
             {
