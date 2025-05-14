@@ -1,0 +1,281 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{2CEB441A-FD6F-4D50-B78D-4B2A5D318C43}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>HIS.Desktop.Plugins.ApprovaleDebate</RootNamespace>
+    <AssemblyName>HIS.Desktop.Plugins.ApprovaleDebate</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="DevExpress.Data.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.Images.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
+    <Reference Include="DevExpress.Printing.v15.2.Core, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.Utils.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.XtraBars.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.XtraEditors.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.XtraGrid.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.XtraLayout.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.XtraTreeList.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="EMR.EFMODEL, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\Lib\EMR\EMR.EFMODEL.dll</HintPath>
+    </Reference>
+    <Reference Include="EMR.Filter, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\lib\EMR\EMR.Filter.dll</HintPath>
+    </Reference>
+    <Reference Include="EMR.SDO, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\lib\EMR\EMR.SDO.dll</HintPath>
+    </Reference>
+    <Reference Include="IMSys.DbConfig.EMR_RS">
+      <HintPath>..\..\..\..\lib\IMSys.DbConfig\IMSys.DbConfig.EMR_RS\IMSys.DbConfig.EMR_RS.dll</HintPath>
+    </Reference>
+    <Reference Include="IMSys.DbConfig.HIS_RS">
+      <HintPath>..\..\..\..\lib\IMSys.DbConfig\IMSys.DbConfig.HIS_RS\IMSys.DbConfig.HIS_RS.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Core">
+      <HintPath>..\..\..\..\lib\Inventec.Core\Inventec.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Token.ClientSystem, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\lib\Inventec.Token\Inventec.Token.ClientSystem\Inventec.Token.ClientSystem.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.UC.Login, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\lib\Inventec.UC\Inventec.UC.Login\Inventec.UC.Login.dll</HintPath>
+    </Reference>
+    <Reference Include="MOS.EFMODEL, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\lib\MOS\MOS.EFMODEL.dll</HintPath>
+    </Reference>
+    <Reference Include="MOS.Filter, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\lib\MOS\MOS.Filter.dll</HintPath>
+    </Reference>
+    <Reference Include="MOS.SDO, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\lib\MOS\MOS.SDO.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\lib\Inventec.Common\Inventec.Common.Adapter\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="ADO\DepartmentFilterADO.cs" />
+    <Compile Include="ADO\PatientFilterADO.cs" />
+    <Compile Include="ADO\SereServADO.cs" />
+    <Compile Include="ADO\ServiceReqGroupByDateADO.cs" />
+    <Compile Include="ADO\TreatmentStatusADO.cs" />
+    <Compile Include="ApprovaleDebate\frmApprovaleDebate.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ApprovaleDebate\frmApprovaleDebate.Designer.cs">
+      <DependentUpon>frmApprovaleDebate.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ApprovaleDebateProcessor.cs" />
+    <Compile Include="ApprovaleDebate\ApprovaleDebateBehavior.cs" />
+    <Compile Include="ApprovaleDebate\ApprovaleDebateFactory.cs" />
+    <Compile Include="ApprovaleDebate\IApprovaleDebate.cs" />
+    <Compile Include="CallModule.cs" />
+    <Compile Include="Key\HisConfigCFG.cs" />
+    <Compile Include="Key\HisConfigKeys.cs" />
+    <Compile Include="Key\KeyboardWorker.cs" />
+    <Compile Include="Key\PrintTypeCodeStorePlus.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Resources\ResourceLanguageManager.cs" />
+    <Compile Include="Resources\ResourceMessage.cs" />
+    <Compile Include="UCTreeListTracking.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UCTreeListTracking.Designer.cs">
+      <DependentUpon>UCTreeListTracking.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UCTreeListService.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UCTreeListService.Designer.cs">
+      <DependentUpon>UCTreeListService.cs</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Common\Inventec.Common\Inventec.Common.Adapter\Inventec.Common.Adapter.csproj">
+      <Project>{dd2b84a4-a370-41a1-8dfa-10197540c101}</Project>
+      <Name>Inventec.Common.Adapter</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Common\Inventec.Common\Inventec.Common.Controls.EditorLoader\Inventec.Common.Controls.EditorLoader.csproj">
+      <Project>{13abfbb0-586a-4f63-8fdd-1a8f8c356c9e}</Project>
+      <Name>Inventec.Common.Controls.EditorLoader</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Common\Inventec.Common\Inventec.Common.DateTime\Inventec.Common.DateTime.csproj">
+      <Project>{d3437a35-37ed-4697-a3fa-109939baaf47}</Project>
+      <Name>Inventec.Common.DateTime</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Common\Inventec.Common\Inventec.Common.FlexCelPrint\Inventec.Common.FlexCelPrint.csproj">
+      <Project>{a9e46128-5af1-4bbd-b318-854517fc26ab}</Project>
+      <Name>Inventec.Common.FlexCelPrint</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Common\Inventec.Common\Inventec.Common.Logging\Inventec.Common.Logging.csproj">
+      <Project>{4859008d-a40d-47bb-a185-019c8b140569}</Project>
+      <Name>Inventec.Common.Logging</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Common\Inventec.Common\Inventec.Common.Mapper\Inventec.Common.Mapper.csproj">
+      <Project>{7b793974-0c88-47d8-8686-cfa8f5f6e464}</Project>
+      <Name>Inventec.Common.Mapper</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Common\Inventec.Common\Inventec.Common.Resource\Inventec.Common.Resource.csproj">
+      <Project>{b7281efe-d0d4-4c75-8f32-5e6d1d580ff6}</Project>
+      <Name>Inventec.Common.Resource</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Common\Inventec.Common\Inventec.Common.String\Inventec.Common.String.csproj">
+      <Project>{dce10a9c-b9df-4306-ac93-691275a5e456}</Project>
+      <Name>Inventec.Common.String</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Common\Inventec.Common\Inventec.Common.WebApiClient\Inventec.Common.WebApiClient.csproj">
+      <Project>{F8A0B7B7-F43A-4F57-94BF-490CF1C3BE43}</Project>
+      <Name>Inventec.Common.WebApiClient</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Common\Inventec.Desktop\Inventec.Desktop.Common.Core\Inventec.Desktop.Common.Core.csproj">
+      <Project>{9e945587-4faa-4c90-823c-289983aa29f0}</Project>
+      <Name>Inventec.Desktop.Common.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Common\Inventec.Desktop\Inventec.Desktop.Common.LanguageManager\Inventec.Desktop.Common.LanguageManager.csproj">
+      <Project>{c44d9b7b-878d-427b-b18e-5de971d36395}</Project>
+      <Name>Inventec.Desktop.Common.LanguageManager</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Common\Inventec.Desktop\Inventec.Desktop.Common.Message\Inventec.Desktop.Common.Message.csproj">
+      <Project>{2ef2ca8c-b308-4d64-86cd-86ba479c2664}</Project>
+      <Name>Inventec.Desktop.Common.Message</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Common\Inventec.Desktop\Inventec.Desktop.Common.Module\Inventec.Desktop.Common.Modules.csproj">
+      <Project>{aa9d939b-6eea-4dc7-8d6c-56c3291ebfe3}</Project>
+      <Name>Inventec.Desktop.Common.Modules</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Common\Inventec.Desktop\Inventec.Desktop.Core\Inventec.Desktop.Core.csproj">
+      <Project>{9e99c16e-0f81-40e2-8078-cba7a820ca97}</Project>
+      <Name>Inventec.Desktop.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Common\Inventec.Desktop\Inventec.Desktop.CustomControl\Inventec.Desktop.CustomControl.csproj">
+      <Project>{889afeda-bd9a-4819-bc98-41c7d3cbd8c3}</Project>
+      <Name>Inventec.Desktop.CustomControl</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\HIS.Desktop.ADO\HIS.Desktop.ADO.csproj">
+      <Project>{808c25cd-0925-417f-bbf9-caf9604da879}</Project>
+      <Name>HIS.Desktop.ADO</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\HIS.Desktop.ApiConsumer\HIS.Desktop.ApiConsumer.csproj">
+      <Project>{861bfedb-026f-4b6f-a3cf-32843ae8c03d}</Project>
+      <Name>HIS.Desktop.ApiConsumer</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\HIS.Desktop.Common\HIS.Desktop.Common.csproj">
+      <Project>{59fdcba7-0f9f-4257-b95a-e37a1ccfe107}</Project>
+      <Name>HIS.Desktop.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\HIS.Desktop.Control.Session\HIS.Desktop.Controls.Session.csproj">
+      <Project>{9b4b505c-afa1-4974-8ac8-503f748bd5a2}</Project>
+      <Name>HIS.Desktop.Controls.Session</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\HIS.Desktop.IsAdmin\HIS.Desktop.IsAdmin.csproj">
+      <Project>{4ab09efc-8f70-4cca-9e6d-693f44a7d29f}</Project>
+      <Name>HIS.Desktop.IsAdmin</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\HIS.Desktop.LibraryMessage\HIS.Desktop.LibraryMessage.csproj">
+      <Project>{48d9a44a-7120-4c9b-8923-b1af16b1992f}</Project>
+      <Name>HIS.Desktop.LibraryMessage</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\HIS.Desktop.LocalStorage.BackendData\HIS.Desktop.LocalStorage.BackendData.csproj">
+      <Project>{86709a9c-a149-4ebb-a817-1bf8f4f4bc07}</Project>
+      <Name>HIS.Desktop.LocalStorage.BackendData</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\HIS.Desktop.LocalStorage.HisConfig\HIS.Desktop.LocalStorage.HisConfig.csproj">
+      <Project>{d1e5461b-8a8e-46f7-9aee-5c1b327e5f2b}</Project>
+      <Name>HIS.Desktop.LocalStorage.HisConfig</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\HIS.Desktop.LocalStorage.LocalData\HIS.Desktop.LocalStorage.LocalData.csproj">
+      <Project>{e036edf5-788c-4892-8d8f-6b1c16dcbd21}</Project>
+      <Name>HIS.Desktop.LocalStorage.LocalData</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\HIS.Desktop.LocalStorage.Location\HIS.Desktop.LocalStorage.Location.csproj">
+      <Project>{67e93829-79bd-407e-a4dd-b46cebb55a41}</Project>
+      <Name>HIS.Desktop.LocalStorage.Location</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\HIS.Desktop.ModuleExt\HIS.Desktop.ModuleExt.csproj">
+      <Project>{168b4cc6-8447-41da-b034-a02f336168e4}</Project>
+      <Name>HIS.Desktop.ModuleExt</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\HIS.Desktop.Utility\HIS.Desktop.Utilities.csproj">
+      <Project>{2aad22db-2166-4be8-ae52-335b21dc03fc}</Project>
+      <Name>HIS.Desktop.Utilities</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="ApprovaleDebate\frmApprovaleDebate.resx">
+      <DependentUpon>frmApprovaleDebate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\licenses.licx" />
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Lang.en.resx" />
+    <EmbeddedResource Include="Resources\Lang.my.resx" />
+    <EmbeddedResource Include="Resources\Lang.vi.resx" />
+    <EmbeddedResource Include="Resources\Message.Lang.en.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Message.Lang.my.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Message.Lang.vi.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UCTreeListTracking.resx">
+      <DependentUpon>UCTreeListTracking.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UCTreeListService.resx">
+      <DependentUpon>UCTreeListService.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>
