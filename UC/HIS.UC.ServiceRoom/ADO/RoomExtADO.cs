@@ -51,6 +51,13 @@ namespace HIS.UC.ServiceRoom.ADO
         public string NumOrderBlock { get; set; }
         public short? IsBlockNumOrder { get; set; }
 
+        public decimal? TOTAL_MORNING_SERE { get; set; }
+        public decimal? TOTAL_AFTERNOON_SERE { get; set; }
+        public decimal? TOTAL_TODAY_KNVP_SERE { get; set; }
+        public decimal? TOTAL_MORNING_KNVP_SERE { get; set; }
+        public decimal? TOTAL_AFTERNOON_KNVP_SERE { get; set; }
+
+
         public RoomExtADO() : base() { }
         public RoomExtADO(L_HIS_ROOM_COUNTER_2 data, List<V_HIS_ROOM> hisRooms, List<RoomExtADO> lRooms = null)
             : base()
@@ -72,6 +79,12 @@ namespace HIS.UC.ServiceRoom.ADO
             long TOTAL_TODAY_1 = Convert.ToInt64(data.TOTAL_TODAY_SERVICE_REQ ?? 0);
             long MAX_BY_DAY_1 = data.MAX_REQUEST_BY_DAY ?? 0;
             long MAX_BY_DAY_2 = data.MAX_REQ_BHYT_BY_DAY ?? 0;
+
+            this.TOTAL_MORNING_SERE = (long?)data.TOTAL_MORNING_SERE;
+            this.TOTAL_AFTERNOON_SERE = (long?)data.TOTAL_AFTERNOON_SERE;
+            this.TOTAL_TODAY_KNVP_SERE = (long?)data.TOTAL_TODAY_KNVP_SERE;
+            this.TOTAL_MORNING_KNVP_SERE = (long?)data.TOTAL_MORNING_KNVP_SERE;
+            this.TOTAL_AFTERNOON_KNVP_SERE = (long?)data.TOTAL_AFTERNOON_KNVP_SERE;
 
             if ((MAX_BY_DAY_1 > 0 && MAX_BY_DAY_1 < TOTAL_TODAY_1) || (MAX_BY_DAY_2 > 0 && MAX_BY_DAY_2 < TOTAL_TODAY_1))
             {

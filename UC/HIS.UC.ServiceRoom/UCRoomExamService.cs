@@ -62,10 +62,10 @@ namespace HIS.UC.ServiceRoom
         public bool isInit { get; set; }
         public bool isFocusCombo { get; set; }
         public string userControlItemName { get; set; }
-        public V_HIS_SERE_SERV sereServExam { get; set; }
+        public V_HIS_SERE_SERV sereServExam { get; set; }     
         internal List<V_HIS_ROOM> hisRooms { get; set; }
         public RemoveRoomExamService dlgRemoveUC { get; set; }
-        public DelegateFocusNextUserControl dlgFocusNextUserControl;
+        public DelegateFocusNextUserControl dlgFocusNextUserControl;     
         Action registerPatientWithRightRouteBHYT;
         Action changeRoomNotEmergency;
         Action<long> changeServiceProcessPrimaryPatientType;
@@ -109,7 +109,7 @@ namespace HIS.UC.ServiceRoom
         string col17 = "";
         string tol1 = "";
         string tol2 = "";
-        string tol3 = "";
+        string tol3 = "";     
         string tol4 = "";
         string tol5 = "";
         string tol6 = "";
