@@ -357,18 +357,22 @@ namespace HIS.Desktop.Plugins.a2ApprovaleDebate.ApprovaleDebate
                                                                   from ac in AC.DefaultIfEmpty()
                                                                   select new
                                                                   {
-                                                                      TRACKING_TIME = Inventec.Common.DateTime.Convert.TimeNumberToTimeString(a.TRACKING_TIME),
+                                                                      TRACKING_ID = a.ID,
+                                                                      TRACKING_TIME = Inventec.Common.DateTime.Convert.TimeNumberToTimeString(a.TRACKING_TIME).Replace(" ", Environment.NewLine),
                                                                       USER_NAME = ac?.DIPLOMA,
                                                                       CONTENT = a.CONTENT,
                                                                       SERVICE = ab?.SERVICE_NAME
-                                                                  }).Select((s,i) => new TrackingListADO()
+                                                                  })
+                                                                  .GroupBy(g => g.TRACKING_ID)
+                                                                  .Select((s,i) => new TrackingListADO()
                                                                   {
                                                                       CONCRETE_ID__IN_SETY = (i + 1).ToString(),
-                                                                      TRACKING_TIME = s.TRACKING_TIME,
-                                                                      USER_NAME = s.USER_NAME,
-                                                                      CONTENT = s.CONTENT,
-                                                                      SERVICE = s.SERVICE,
-                                                                  }).ToList();
+                                                                      TRACKING_TIME = s.First().TRACKING_TIME,
+                                                                      USER_NAME = s.First().USER_NAME,
+                                                                      CONTENT = s.First().CONTENT,
+                                                                      SERVICE = string.Join(Environment.NewLine,  s.Select(ss => ss.SERVICE + " x 1"))
+                                                                  })
+                                                                  .ToList();
                             tabToDieuTri.PageVisible = true;
                             ucAll.ReLoad(treeView_Click, listTracking, this.RowCellClickBedRoom);
                         }
