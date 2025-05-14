@@ -31,6 +31,7 @@ namespace HIS.Desktop.Plugins.ApprovalExamSpecialist.ApprovalExamSpecialist
             try
             {
                 Inventec.Desktop.Common.Modules.Module moduleData = null;
+                long treatmentID = 0;
                 if (entity != null && entity.Count() > 0)
                 {
                     for (int i = 0; i < entity.Count(); i++)
@@ -39,11 +40,16 @@ namespace HIS.Desktop.Plugins.ApprovalExamSpecialist.ApprovalExamSpecialist
                         {
                             moduleData = (Inventec.Desktop.Common.Modules.Module)entity[i];
                         }
+                        if (entity[i] is long)
+                        {
+                            treatmentID = (long)entity[i];
+                        }
                     }
+                
                 }
                 if (moduleData != null)
                 {
-                    return new frmApprovalExamSpecialist(moduleData );
+                    return new frmApprovalExamSpecialist(moduleData, treatmentID);
                 }
                 else
                 {
