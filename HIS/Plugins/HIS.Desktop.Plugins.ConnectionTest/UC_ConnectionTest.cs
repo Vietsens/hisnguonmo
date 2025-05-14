@@ -6322,7 +6322,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
         {
             try
             {
-
+                 frmAttachTestFile frm = new frmAttachTestFile();
             }
             catch (Exception)
             {
