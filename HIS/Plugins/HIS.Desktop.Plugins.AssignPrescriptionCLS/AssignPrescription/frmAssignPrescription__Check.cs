@@ -59,6 +59,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
             bool result = true;
             try
             {
+
                 decimal? amount = null;
                 if (mediMaTy != null && mediMaTy.ALERT_MAX_IN_PRESCRIPTION.HasValue)
                 {
@@ -75,7 +76,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
                         string notice = "";
                         if (mediMaTy.SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__THUOC)
                         {
-                            notice = ResourceMessage.ThuocXKeQuaSoLuongChoPhepBanCoMuonBoSung;
+                            notice = ResourceMessage.ThuocXKeQuaSoLuongChoPhepBanCoMuonBoSung;                            
                         }
                         else if (mediMaTy.SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__VT)
                         {

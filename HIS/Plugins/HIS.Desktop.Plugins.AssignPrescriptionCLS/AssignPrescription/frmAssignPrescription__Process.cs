@@ -1426,6 +1426,8 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
                 isNotProcessRunWhileFilmChangedValue = true;
                 this.cboMedicineUseForm.EditValue = null;
                 this.spinAmount.Text = "";
+                txtHtu.Text = "";
+                txtTutorial.Text = "";
                 this.spinSoPhimHong.EditValue = null;
                 this.spinSoPhimHong.Enabled = false;
                 this.chkPhimHong.Checked = false;

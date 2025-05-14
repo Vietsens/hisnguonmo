@@ -808,7 +808,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
                 {
                     //1 thuốc được coi là "Có đủ thông tin BHYT" khi thỏa mãn:
                     //Khai báo đủ các thông tin: mã hoạt chất BHYT (ACTIVE_INGR_BHYT_CODE) và nhóm BHYT thuộc 1 trong các loại: "Thuốc trong danh mục", "Thuốc thanh toán theo tỷ lệ" hoặc "Thuốc ung thư, chống thải ghép"
-                    //(bỏ, ko check "số đăng ký")
+                    //(bỏ, ko check "số đăng ký")                    
                     var sv = BackendDataWorker.Get<V_HIS_MEDICINE_TYPE>().Where(o => o.SERVICE_ID == serviceId).FirstOrDefault();
                     mediMatyTypeADO = new MediMatyTypeADO()
                     {
