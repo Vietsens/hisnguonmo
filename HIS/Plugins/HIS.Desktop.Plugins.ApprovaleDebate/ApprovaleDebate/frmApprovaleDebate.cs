@@ -101,7 +101,7 @@ namespace HIS.Desktop.Plugins.ApprovaleDebate.ApprovaleDebate
                 if (this.v_his_specialist_exam != null)
                 {
                     this.txtYKienBacSi.Text = this.v_his_specialist_exam.EXAM_EXECUTE_CONTENT;
-                    this.cboEmployee.EditValue = this.v_his_specialist_exam.EXAM_EXECUTE_USERNAME;
+                    this.cboEmployee.EditValue = this.v_his_specialist_exam.EXAM_EXECUTE_LOGINNAME;
                     //
                     this.LoadDataSereServByTreatmentId(this.v_his_specialist_exam);
                 }
@@ -186,6 +186,7 @@ namespace HIS.Desktop.Plugins.ApprovaleDebate.ApprovaleDebate
         {
             try
             {
+                WaitingManager.Show();
                 foreach (XtraTabPage item in this.xtraTabControl1.TabPages)
                 {
                     item.PageVisible = false;
@@ -193,7 +194,6 @@ namespace HIS.Desktop.Plugins.ApprovaleDebate.ApprovaleDebate
                 List<SereServADO> SereServADOs = new List<SereServADO>();
                 List<DHisSereServ2> dataNew = new List<DHisSereServ2>();
                 List<HIS_SERVICE_REQ> dataServiceReq = new List<HIS_SERVICE_REQ>();
-                WaitingManager.Show();
                 if (currentHisServiceReq != null && currentHisServiceReq.TREATMENT_ID > 0)
                 {
                     CommonParam param = new CommonParam();
@@ -312,14 +312,12 @@ namespace HIS.Desktop.Plugins.ApprovaleDebate.ApprovaleDebate
                         }
                     }
                 }
-                WaitingManager.Hide();
                 if (SereServADOs != null && SereServADOs.Count > 0)
                 {
 
                     SereServADOs = SereServADOs.OrderBy(o => o.PARENT_ID__IN_SETY).ThenBy(p => p.SERVICE_CODE).ThenBy(o => o.SERVICE_NAME).ToList();
                     try
                     {
-                        WaitingManager.Show();
                         CommonParam paramCommon = new CommonParam();
                         MOS.Filter.HisTrackingViewFilter trackingFilter = new MOS.Filter.HisTrackingViewFilter();
                         trackingFilter.TREATMENT_ID = currentHisServiceReq.TREATMENT_ID;
@@ -357,21 +355,19 @@ namespace HIS.Desktop.Plugins.ApprovaleDebate.ApprovaleDebate
                                                                           CONCRETE_ID__IN_SETY = (i + 1).ToString(),
                                                                           TRACKING_TIME = Inventec.Common.DateTime.Convert.TimeNumberToTimeStringWithoutSecond(ret.TRACKING_TIME)
                                                                                         .Replace(" ", Environment.NewLine),
-                                                                          USER_NAME = $"{ret.USER_NAME} - {ret.DIPLOMA}",
+                                                                          USER_NAME = ret.USER_NAME + " - " + ret.DIPLOMA,
                                                                           CONTENT = ret.CONTENT,
                                                                           SERVICE = string.Join(Environment.NewLine, s.Where(w => !string.IsNullOrEmpty(w.SERVICE_NAME))
-                                                                          .Select(ss => $"{ss.SERVICE_REQ_CODE} - {ss.SERVICE_NAME} x {ss.AMOUNT} {ss.SERVICE_UNIT_NAME}"))
+                                                                          .Select(ss => ss.SERVICE_REQ_CODE + " - " + ss.SERVICE_NAME + " x " + ss.AMOUNT + " " + ss.SERVICE_UNIT_NAME))
                                                                       };
                                                                   })
                                                                   .ToList();
                             tabToDieuTri.PageVisible = true;
                             ucAll.ReLoad(treeView_Click, listTracking, v_his_specialist_exam);
                         }
-                        WaitingManager.Hide();
                     }
                     catch (Exception ex)
                     {
-                        WaitingManager.Hide();
                         Inventec.Common.Logging.LogSystem.Error(ex);
                     }
 
@@ -473,6 +469,10 @@ namespace HIS.Desktop.Plugins.ApprovaleDebate.ApprovaleDebate
                 WaitingManager.Hide();
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
+            finally
+            {
+                WaitingManager.Hide();
+            }
         }
 
         private void Edit_Click(SereServADO currentSS)
@@ -527,22 +527,22 @@ namespace HIS.Desktop.Plugins.ApprovaleDebate.ApprovaleDebate
             {
                 WaitingManager.Show();
                 CommonParam param = new CommonParam();
-                v_his_specialist_exam.EXAM_EXECUTE_LOGINNAME = cboEmployee.EditValue?.ToString();
-                v_his_specialist_exam.EXAM_EXECUTE_USERNAME = cboEmployee.EditValue?.ToString();
+                v_his_specialist_exam.EXAM_EXECUTE_LOGINNAME = cboEmployee.EditValue != null ? cboEmployee.EditValue.ToString() : null;
+                v_his_specialist_exam.EXAM_EXECUTE_USERNAME = cboEmployee.EditValue != null ? cboEmployee.Text.ToString() : null;
                 v_his_specialist_exam.EXAM_EXECUTE_CONTENT = txtYKienBacSi.Text.Trim();
                 v_his_specialist_exam.IS_APPROVAL = 1;
-                var rs = new BackendAdapter(param).Post<HIS_INFUSION_SUM>("api/HisSpecialistExam/Update", ApiConsumers.MosConsumer, v_his_specialist_exam, param);
-                if (rs != null)
+                var rs = new BackendAdapter(param).Post<HIS_SPECIALIST_EXAM>("api/HisSpecialistExam/Update", ApiConsumers.MosConsumer, v_his_specialist_exam, param);
+                if (rs != null && this.delegateRefresh != null)
                 {
-                    if (this.delegateRefresh != null)
-                    {
-                        this.delegateRefresh();
-                        this.Close();
-                    }
+                    this.delegateRefresh();
                 }
                 MessageManager.Show(this, param, rs != null);
                 SessionManager.ProcessTokenLost(param);
                 WaitingManager.Hide();
+                if (rs != null)
+                {
+                    this.Close();
+                }
             }
             catch (Exception ex)
             {

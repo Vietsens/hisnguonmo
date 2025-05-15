@@ -115,8 +115,7 @@ namespace HIS.Desktop.Plugins.ApprovaleDebate
                 {
                     this.treeSereServ.BestFitColumns();
                     this.TRACKING_TIME.BestFit();
-                    this.treeSereServ.BestFitColumns();
-                    //this.treeSereServ.OptionsView.ShowColumns = false;
+                    this.USER_NAME.BestFit();
                 }
                 catch (Exception ex)
                 {

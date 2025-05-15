@@ -109,6 +109,7 @@
             this.cboEmployee.Location = new System.Drawing.Point(79, 416);
             this.cboEmployee.MenuManager = this.barManager1;
             this.cboEmployee.Name = "cboEmployee";
+            this.cboEmployee.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
             this.cboEmployee.Properties.AutoComplete = false;
             this.cboEmployee.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo),
