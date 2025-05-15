@@ -28,7 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmApprovalExamSpecialist));
             this.xtraTabControl1 = new DevExpress.XtraTab.XtraTabControl();
             this.xtraTabPage1 = new DevExpress.XtraTab.XtraTabPage();
@@ -192,9 +191,9 @@
             this.layoutControlItem7 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem5 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem8 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.imageCollection1 = new DevExpress.Utils.ImageCollection(this.components);
-            this.imageCollection2 = new DevExpress.Utils.ImageCollection(this.components);
-            this.dxValidationProviderEditorInfo = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider(this.components);
+            this.imageCollection1 = new DevExpress.Utils.ImageCollection();
+            this.imageCollection2 = new DevExpress.Utils.ImageCollection();
+            this.dxValidationProviderEditorInfo = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider();
             ((System.ComponentModel.ISupportInitialize)(this.xtraTabControl1)).BeginInit();
             this.xtraTabControl1.SuspendLayout();
             this.xtraTabPage1.SuspendLayout();
@@ -1572,7 +1571,6 @@
             this.gridViewTreatment.OptionsView.RowAutoHeight = true;
             this.gridViewTreatment.OptionsView.ShowGroupPanel = false;
             this.gridViewTreatment.OptionsView.ShowIndicator = false;
-            this.gridViewTreatment.CustomUnboundColumnData += new DevExpress.XtraGrid.Views.Base.CustomColumnDataEventHandler(this.gridViewTreatment_CustomUnboundColumnData);
             // 
             // gridColumnDateTime
             // 
