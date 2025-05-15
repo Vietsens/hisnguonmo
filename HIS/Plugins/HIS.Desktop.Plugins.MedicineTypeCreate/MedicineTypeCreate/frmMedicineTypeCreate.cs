@@ -6992,8 +6992,12 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
                     {
                         cboMedicineLine.Properties.Buttons[1].Visible = true;
                         ValidatecboMedicineUseForm(medicineLine.DO_NOT_REQUIRED_USE_FORM != 1);
-                        ValidatecboDosageForm(medicineLine.DO_NOT_REQUIRED_USE_FORM==1);
+                        if(medicineLine.ID == IMSys.DbConfig.HIS_RS.HIS_MEDICINE_LINE.ID__VT_YHCT)
+                        {
+                            ValidatecboDosageForm(medicineLine.DO_NOT_REQUIRED_USE_FORM == 1);
+                        }
                     }
+                    
                 }
             }
             catch (Exception ex)
@@ -7580,7 +7584,7 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
             {
                 if (cboDosageForm.EditValue != null)
                 {
-                    var medicineUseForm = BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_MEDICINE_USE_FORM>().SingleOrDefault(o => o.ID == Inventec.Common.TypeConvert.Parse.ToInt64((cboDosageForm.EditValue ?? "").ToString()));
+                    var medicineUseForm = BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_DOSAGE_FORM>().SingleOrDefault(o => o.ID == Inventec.Common.TypeConvert.Parse.ToInt64((cboDosageForm.EditValue ?? "").ToString()));
                     if (medicineUseForm != null)
                     {
                         cboDosageForm.Properties.Buttons[1].Visible = true;
