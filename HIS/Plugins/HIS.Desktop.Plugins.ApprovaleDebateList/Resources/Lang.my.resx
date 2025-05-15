@@ -1,0 +1,981 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Form1.bar1.Text" xml:space="preserve">
+    <value>ကိရိယာများ</value>
+  </data>
+  <data name="Form1.barButtonItem__AssService.Caption" xml:space="preserve">
+    <value>ဆုံးဖြတ်ချက်</value>
+  </data>
+  <data name="Form1.barButtonItem__KeDOnThuoc.Caption" xml:space="preserve">
+    <value>KeDOnThuoc</value>
+  </data>
+  <data name="Form1.barButtonItem1.Caption" xml:space="preserve">
+    <value>ဂရုစိုက်ပါ (Ctrl N)</value>
+  </data>
+  <data name="Form1.barButtonItemPrint.Caption" xml:space="preserve">
+    <value>ပရင့်ထုတ်ခြင်း (CtrlP)</value>
+  </data>
+  <data name="Form1.barButtonItemSave.Caption" xml:space="preserve">
+    <value>Save (Ctrl S)</value>
+  </data>
+  <data name="Form1.barButtonItemSearch.Caption" xml:space="preserve">
+    <value>ရှာပါ (Ctrl F)</value>
+  </data>
+  <data name="Form1.bbtnTrackingTemp.Caption" xml:space="preserve">
+    <value>နမူနာပုံစံကို သိမ်းဆည်းပါ။</value>
+  </data>
+  <data name="Form1.btnAssService.Text" xml:space="preserve">
+    <value>ညွှန်ပြချက် (F9)</value>
+  </data>
+  <data name="Form1.btnChamSoc.Text" xml:space="preserve">
+    <value>ဂရုစိုက်ပါ (Ctrl N)</value>
+  </data>
+  <data name="Form1.btnChoseResult.Text" xml:space="preserve">
+    <value>ရလဒ်ကိုရွေးချယ်ပါ။</value>
+  </data>
+  <data name="Form1.btnKeDonMau.Text" xml:space="preserve">
+    <value>သွေးဆေးညွှန်း</value>
+  </data>
+  <data name="Form1.btnKeDonThuoc.Text" xml:space="preserve">
+    <value>ဆေးစာ (F8)</value>
+  </data>
+  <data name="Form1.btnKeDonYHCT.Text" xml:space="preserve">
+    <value>တရုတ်ရိုးရာဆေးညွှန်း</value>
+  </data>
+  <data name="Form1.btnPrint.Text" xml:space="preserve">
+    <value>ပရင့်ထုတ်ခြင်း (Ctrl P)</value>
+  </data>
+  <data name="Form1.btnSave.Text" xml:space="preserve">
+    <value>Save (Ctrl S)</value>
+  </data>
+  <data name="Form1.btnSaveTemp.Text" xml:space="preserve">
+    <value>နမူနာပုံစံကို သိမ်းဆည်းပါ (Ctrl T)</value>
+  </data>
+  <data name="Form1.btnSearch.Text" xml:space="preserve">
+    <value>ရှာပါ (Ctrl F)</value>
+  </data>
+  <data name="Form1.btnTuTruc.Text" xml:space="preserve">
+    <value>တာဝန်ကျ အစိုးရအဖွဲ့ဝင်</value>
+  </data>
+  <data name="Form1.layoutControl1.Text" xml:space="preserve">
+    <value>အပြင်အဆင်ထိန်းချုပ်မှု ၁</value>
+  </data>
+  <data name="Form1.layoutControl2.Text" xml:space="preserve">
+    <value>အပြင်အဆင်ထိန်းချုပ်မှု ၂</value>
+  </data>
+  <data name="Form1.layoutControl3.Text" xml:space="preserve">
+    <value>အပြင်အဆင်ထိန်းချုပ်မှု ၃</value>
+  </data>
+  <data name="Form1.layoutControl4.Text" xml:space="preserve">
+    <value>အပြင်အဆင်ထိန်းချုပ်မှု ၄</value>
+  </data>
+  <data name="Form1.layoutControl5.Text" xml:space="preserve">
+    <value>အပြင်အဆင်ထိန်းချုပ်မှု ၅</value>
+  </data>
+  <data name="Form1.layoutControl6.Text" xml:space="preserve">
+    <value>အပြင်အဆင်ထိန်းချုပ်မှု ၆</value>
+  </data>
+  <data name="Form1.layoutControlIcdYhct.Text" xml:space="preserve">
+    <value>အပြင်အဆင်ထိန်းချုပ်မှု ၄</value>
+  </data>
+  <data name="Form1.layoutControlItem1.Text" xml:space="preserve">
+    <value>တိုးတက်မှုများ-</value>
+  </data>
+  <data name="Form1.layoutControlItem13.Text" xml:space="preserve">
+    <value>အချိန်:</value>
+  </data>
+  <data name="Form1.layoutControlItem15.Text" xml:space="preserve">
+    <value>တိုးတက်မှုများ</value>
+  </data>
+  <data name="Form1.layoutControlItem17.Text" xml:space="preserve">
+    <value>ကုသမှုနည်းလမ်း</value>
+  </data>
+  <data name="Form1.layoutControlItem2.Text" xml:space="preserve">
+    <value>ကိုင်တွယ်နည်း-</value>
+  </data>
+  <data name="Form1.layoutControlItem26.Text" xml:space="preserve">
+    <value>ရောက်သည်-</value>
+  </data>
+  <data name="Form1.layoutControlItem27.Text" xml:space="preserve">
+    <value>နမူနာယူခြင်း-</value>
+  </data>
+  <data name="Form1.layoutControlItem29.Text" xml:space="preserve">
+    <value>နမူနာ:</value>
+  </data>
+  <data name="Form1.layoutControlItem3.Text" xml:space="preserve">
+    <value>ဒုတိယရောဂါရှာဖွေခြင်း-</value>
+  </data>
+  <data name="Form1.layoutControlItem33.Text" xml:space="preserve">
+    <value>CLS ၏ဆင့်ကဲဖြစ်စဉ်</value>
+  </data>
+  <data name="Form1.layoutControlItem37.Text" xml:space="preserve">
+    <value>Follow up - ဂရုစိုက်ပါ။</value>
+  </data>
+  <data name="Form1.layoutControlItem43.Text" xml:space="preserve">
+    <value>ပုံနှိပ်ခြင်း-</value>
+  </data>
+  <data name="Form1.layoutControlItem44.Text" xml:space="preserve">
+    <value>လက္ခဏာ-</value>
+  </data>
+  <data name="Form1.layoutControlItem45.Text" xml:space="preserve">
+    <value>လက်မှတ်ရေးထိုးထားသော စာရွက်စာတမ်းကို ပရင့်ထုတ်ခြင်း-</value>
+  </data>
+  <data name="Form1.layoutControlItem5.Text" xml:space="preserve">
+    <value>မဲများ-</value>
+  </data>
+  <data name="Form1.layoutControlItem6.Text" xml:space="preserve">
+    <value>ကုသမှုစာရွက်ဟောင်း</value>
+  </data>
+  <data name="Form1.layoutControlUcIcd.Text" xml:space="preserve">
+    <value>အပြင်အဆင်ထိန်းချုပ်မှု ၃</value>
+  </data>
+  <data name="Form1.lciAwarenessBehavior.Text" xml:space="preserve">
+    <value>လှုပ်ရှားမှုရှိမည်-</value>
+  </data>
+  <data name="Form1.lciCardiovascular.Text" xml:space="preserve">
+    <value>နှလုံး</value>
+  </data>
+  <data name="Form1.lciConcentration.Text" xml:space="preserve">
+    <value>အာရုံစူးစိုက်နိုင်မှု-</value>
+  </data>
+  <data name="Form1.lciContentOfThinking.Text" xml:space="preserve">
+    <value>စဉ်းစားခြင်း-</value>
+  </data>
+  <data name="Form1.lciEmotion.Text" xml:space="preserve">
+    <value>ခံစားချက်-</value>
+  </data>
+  <data name="Form1.lciEyesightGlassLeft.Text" xml:space="preserve">
+    <value>မျက်မှန်ပါသော အမြင်အာရုံ (ဘယ်ဘက်)</value>
+  </data>
+  <data name="Form1.lciEyesightGlassRight.Text" xml:space="preserve">
+    <value>မျက်မှန်ပါသော အမြင်အာရုံ (ညာဘက်):</value>
+  </data>
+  <data name="Form1.lciEyesightLeft.Text" xml:space="preserve">
+    <value>မျက်မှန်မပါသော အမြင်အာရုံ (ဘယ်ဘက်)</value>
+  </data>
+  <data name="Form1.lciEyesightRight.Text" xml:space="preserve">
+    <value>မျက်မှန်မပါသော အမြင်အာရုံ (ညာဘက်)</value>
+  </data>
+  <data name="Form1.lciEyeTensionLeft.Text" xml:space="preserve">
+    <value>ဘယ်ဘက်အညွှန်း-</value>
+  </data>
+  <data name="Form1.lciEyeTensionRirght.Text" xml:space="preserve">
+    <value>ညာဘက်ဖိအား</value>
+  </data>
+  <data name="Form1.lciGeneralExpression.Text" xml:space="preserve">
+    <value>အထွေထွေသရုပ်ပြမှုများ</value>
+  </data>
+  <data name="Form1.lciInstinctivelyBehavior.Text" xml:space="preserve">
+    <value>သဘာဝ လှုပ်ရှားမှုများ</value>
+  </data>
+  <data name="Form1.lciIntellectual.Text" xml:space="preserve">
+    <value>ပညာ-</value>
+  </data>
+  <data name="Form1.lciMemory.Text" xml:space="preserve">
+    <value>မှတ်ဉာဏ်-</value>
+  </data>
+  <data name="Form1.lciOrientationCapacity.Text" xml:space="preserve">
+    <value>လမ်းညွှန်အလေးချိန်</value>
+  </data>
+  <data name="Form1.lciPerception.Text" xml:space="preserve">
+    <value>ခံစားချက်-</value>
+  </data>
+  <data name="Form1.lciRespiratory.Text" xml:space="preserve">
+    <value>အသက်ရှူလမ်းကြောင်း-</value>
+  </data>
+  <data name="Form1.lciTimeFrom.Text" xml:space="preserve">
+    <value>သတ်မှတ်ထားသောရက်စွဲ-</value>
+  </data>
+  <data name="Form1.Text" xml:space="preserve">
+    <value>ကုသမှုစာရွက်</value>
+  </data>
+  <data name="Form1.txtIcdExtraName.Properties.NullValuePrompt" xml:space="preserve">
+    <value>ရောဂါခွဲများကိုရွေးချယ်ရန် F1 ကိုနှိပ်ပါ။</value>
+  </data>
+  <data name="Form1.txtResultCLS.Properties.NullValuePrompt" xml:space="preserve">
+    <value>ဝန်ဆောင်မှုကိုရွေးချယ်ရန် \\Select Result\\ ကိုနှိပ်ပါ။</value>
+  </data>
+  <data name="Form1.treeListColumn1.Caption" xml:space="preserve">
+    <value>vi</value>
+  </data>
+  <data name="Form1.treeListColumn4.Caption" xml:space="preserve">
+    <value>ယူနစ်</value>
+  </data>
+  <data name="Form1.treeListColumn5.Caption" xml:space="preserve">
+    <value>ပမာဏ</value>
+  </data>
+  <data name="Form1.xtraTabEye.Text" xml:space="preserve">
+    <value>မျက်စိအမြင်</value>
+  </data>
+  <data name="Form1.xtraTabMental.Text" xml:space="preserve">
+    <value>စိတ်ပိုင်းဆိုင်ရာ</value>
+  </data>
+  <data name="Form1.xtraTabOther.Text" xml:space="preserve">
+    <value>တခြား</value>
+  </data>
+  <data name="Form1.xtraTabPageDhst.Text" xml:space="preserve">
+    <value>အရေးကြီးသောသင်္ကေတများ</value>
+  </data>
+  <data name="frmAddExamInfor.bar1.Text" xml:space="preserve">
+    <value>ကိရိယာများ</value>
+  </data>
+  <data name="frmAddExamInfor.barButtonItem______SV.Caption" xml:space="preserve">
+    <value>သိမ်းဆည်းပါ။</value>
+  </data>
+  <data name="frmAddExamInfor.barButtonItem__Cancel.Caption" xml:space="preserve">
+    <value>ပယ်ဖျက်ပါ (Ctrl H)</value>
+  </data>
+  <data name="frmAddExamInfor.barButtonItem__Delete.Caption" xml:space="preserve">
+    <value>ဖျက်ရန် (Ctrl X)</value>
+  </data>
+  <data name="frmAddExamInfor.barButtonItem__Edit.Caption" xml:space="preserve">
+    <value>တည်းဖြတ်ရန် (Ctrl E)</value>
+  </data>
+  <data name="frmAddExamInfor.barButtonItem__Save.Caption" xml:space="preserve">
+    <value>Save (Ctrl S)</value>
+  </data>
+  <data name="frmAddExamInfor.btnSave.Text" xml:space="preserve">
+    <value>သဘောတူသည် (Ctrl S)</value>
+  </data>
+  <data name="frmAddExamInfor.layoutControl1.Text" xml:space="preserve">
+    <value>အပြင်အဆင်ထိန်းချုပ်မှု ၁</value>
+  </data>
+  <data name="frmAddExamInfor.layoutControlItem1.Text" xml:space="preserve">
+    <value>အထွေထွေသရုပ်ပြမှုများ</value>
+  </data>
+  <data name="frmAddExamInfor.layoutControlItem10.Text" xml:space="preserve">
+    <value>အာရုံစူးစိုက်နိုင်မှု-</value>
+  </data>
+  <data name="frmAddExamInfor.layoutControlItem11.Text" xml:space="preserve">
+    <value>နှလုံး</value>
+  </data>
+  <data name="frmAddExamInfor.layoutControlItem12.Text" xml:space="preserve">
+    <value>အသက်ရှူလမ်းကြောင်း-</value>
+  </data>
+  <data name="frmAddExamInfor.layoutControlItem2.Text" xml:space="preserve">
+    <value>လမ်းညွှန်နိုင်မှု-</value>
+  </data>
+  <data name="frmAddExamInfor.layoutControlItem3.Text" xml:space="preserve">
+    <value>ခံစားချက်-</value>
+  </data>
+  <data name="frmAddExamInfor.layoutControlItem4.Text" xml:space="preserve">
+    <value>ခံစားချက်-</value>
+  </data>
+  <data name="frmAddExamInfor.layoutControlItem5.Text" xml:space="preserve">
+    <value>စဉ်းစားခြင်း-</value>
+  </data>
+  <data name="frmAddExamInfor.layoutControlItem6.Text" xml:space="preserve">
+    <value>လှုပ်ရှားမှုရှိမည်-</value>
+  </data>
+  <data name="frmAddExamInfor.layoutControlItem7.Text" xml:space="preserve">
+    <value>သဘာဝ လှုပ်ရှားမှုများ</value>
+  </data>
+  <data name="frmAddExamInfor.layoutControlItem8.Text" xml:space="preserve">
+    <value>မှတ်ဉာဏ်-</value>
+  </data>
+  <data name="frmAddExamInfor.layoutControlItem9.Text" xml:space="preserve">
+    <value>ပညာ-</value>
+  </data>
+  <data name="frmAddExamInfor.Text" xml:space="preserve">
+    <value>အပိုဆောင်းစစ်ဆေးမှုအချက်အလက်</value>
+  </data>
+  <data name="frmInstructionNote.bar1.Text" xml:space="preserve">
+    <value>ကိရိယာများ</value>
+  </data>
+  <data name="frmInstructionNote.barButtonI__Save.Caption" xml:space="preserve">
+    <value>luu</value>
+  </data>
+  <data name="frmInstructionNote.btnSave.Text" xml:space="preserve">
+    <value>Save (Ctrl S)</value>
+  </data>
+  <data name="frmInstructionNote.layoutControl1.Text" xml:space="preserve">
+    <value>အပြင်အဆင်ထိန်းချုပ်မှု ၁</value>
+  </data>
+  <data name="frmInstructionNote.Text" xml:space="preserve">
+    <value>မှတ်ချက်</value>
+  </data>
+  <data name="frmKetLuanHoiChan.bar1.Text" xml:space="preserve">
+    <value>ကိရိယာများ</value>
+  </data>
+  <data name="frmKetLuanHoiChan.bbtnSelect.Caption" xml:space="preserve">
+    <value>(Ctrl S) ကို ရွေးပါ</value>
+  </data>
+  <data name="frmKetLuanHoiChan.btnSelect.Text" xml:space="preserve">
+    <value>(Ctrl S) ကို ရွေးပါ</value>
+  </data>
+  <data name="frmKetLuanHoiChan.gridColumn1.Caption" xml:space="preserve">
+    <value>အချိန်</value>
+  </data>
+  <data name="frmKetLuanHoiChan.gridColumn2.Caption" xml:space="preserve">
+    <value>နိဂုံး</value>
+  </data>
+  <data name="frmKetLuanHoiChan.layoutControlRoot.Text" xml:space="preserve">
+    <value>အပြင်အဆင်ထိန်းချုပ်မှု ၁</value>
+  </data>
+  <data name="frmKetLuanHoiChan.Text" xml:space="preserve">
+    <value>တိုင်ပင်ဆွေးနွေးမှု၏နိဂုံးကိုရွေးချယ်ပါ။</value>
+  </data>
+  <data name="frmTrackingCreate.bar1.Text" xml:space="preserve">
+    <value>ကိရိယာများ</value>
+  </data>
+  <data name="frmTrackingCreate.barButtonItem__AssService.Caption" xml:space="preserve">
+    <value>ဆုံးဖြတ်ချက်</value>
+  </data>
+  <data name="frmTrackingCreate.barButtonItem__KeDOnThuoc.Caption" xml:space="preserve">
+    <value>KeDOnThuoc</value>
+  </data>
+  <data name="frmTrackingCreate.barButtonItem1.Caption" xml:space="preserve">
+    <value>ဂရုစိုက်ပါ (Ctrl N)</value>
+  </data>
+  <data name="frmTrackingCreate.barButtonItemPrint.Caption" xml:space="preserve">
+    <value>ပရင့်ထုတ်ခြင်း (CtrlP)</value>
+  </data>
+  <data name="frmTrackingCreate.barButtonItemSave.Caption" xml:space="preserve">
+    <value>Save (Ctrl S)</value>
+  </data>
+  <data name="frmTrackingCreate.barButtonItemSearch.Caption" xml:space="preserve">
+    <value>ရှာပါ (Ctrl F)</value>
+  </data>
+  <data name="frmTrackingCreate.bbtnTrackingTemp.Caption" xml:space="preserve">
+    <value>နမူနာပုံစံကို သိမ်းဆည်းပါ။</value>
+  </data>
+  <data name="frmTrackingCreate.btnAddExamInfo.Text" xml:space="preserve">
+    <value>အပိုဆောင်းစစ်ဆေးမှုအချက်အလက်</value>
+  </data>
+  <data name="frmTrackingCreate.btnAssService.Text" xml:space="preserve">
+    <value>ညွှန်ပြချက် (F9)</value>
+  </data>
+  <data name="frmTrackingCreate.btnChamSoc.Text" xml:space="preserve">
+    <value>ဂရုစိုက်ပါ (Ctrl N)</value>
+  </data>
+  <data name="frmTrackingCreate.btnChoseResult.Text" xml:space="preserve">
+    <value>ရလဒ်ကိုရွေးချယ်ပါ။</value>
+  </data>
+  <data name="frmTrackingCreate.btnKeDonMau.Text" xml:space="preserve">
+    <value>သွေးဆေးညွှန်း</value>
+  </data>
+  <data name="frmTrackingCreate.btnKeDonThuoc.Text" xml:space="preserve">
+    <value>ဆေးစာ (F8)</value>
+  </data>
+  <data name="frmTrackingCreate.btnKeDonYHCT.Text" xml:space="preserve">
+    <value>တရုတ်ရိုးရာဆေးညွှန်း</value>
+  </data>
+  <data name="frmTrackingCreate.btnPrint.Text" xml:space="preserve">
+    <value>ပရင့်ထုတ်ခြင်း (Ctrl P)</value>
+  </data>
+  <data name="frmTrackingCreate.btnSave.Text" xml:space="preserve">
+    <value>Save (Ctrl S)</value>
+  </data>
+  <data name="frmTrackingCreate.btnSaveTemp.Text" xml:space="preserve">
+    <value>နမူနာပုံစံကို သိမ်းဆည်းပါ (Ctrl T)</value>
+  </data>
+  <data name="frmTrackingCreate.btnSearch.Text" xml:space="preserve">
+    <value>ရှာပါ (Ctrl F)</value>
+  </data>
+  <data name="frmTrackingCreate.btnTuTruc.Text" xml:space="preserve">
+    <value>တာဝန်ကျ အစိုးရအဖွဲ့ဝင်</value>
+  </data>
+  <data name="frmTrackingCreate.layoutControl1.Text" xml:space="preserve">
+    <value>အပြင်အဆင်ထိန်းချုပ်မှု ၁</value>
+  </data>
+  <data name="frmTrackingCreate.layoutControl2.Text" xml:space="preserve">
+    <value>အပြင်အဆင်ထိန်းချုပ်မှု ၂</value>
+  </data>
+  <data name="frmTrackingCreate.layoutControl3.Text" xml:space="preserve">
+    <value>အပြင်အဆင်ထိန်းချုပ်မှု ၃</value>
+  </data>
+  <data name="frmTrackingCreate.layoutControl4.Text" xml:space="preserve">
+    <value>အပြင်အဆင်ထိန်းချုပ်မှု ၄</value>
+  </data>
+  <data name="frmTrackingCreate.layoutControl5.Text" xml:space="preserve">
+    <value>အပြင်အဆင်ထိန်းချုပ်မှု ၅</value>
+  </data>
+  <data name="frmTrackingCreate.layoutControl6.Text" xml:space="preserve">
+    <value>အပြင်အဆင်ထိန်းချုပ်မှု ၆</value>
+  </data>
+  <data name="frmTrackingCreate.layoutControlIcdYhct.Text" xml:space="preserve">
+    <value>အပြင်အဆင်ထိန်းချုပ်မှု ၄</value>
+  </data>
+  <data name="frmTrackingCreate.layoutControlItem1.Text" xml:space="preserve">
+    <value>တိုးတက်မှုများ-</value>
+  </data>
+  <data name="frmTrackingCreate.layoutControlItem13.Text" xml:space="preserve">
+    <value>အချိန်:</value>
+  </data>
+  <data name="frmTrackingCreate.layoutControlItem15.Text" xml:space="preserve">
+    <value>တိုးတက်မှုများ</value>
+  </data>
+  <data name="frmTrackingCreate.layoutControlItem17.Text" xml:space="preserve">
+    <value>ကုသမှုနည်းလမ်း</value>
+  </data>
+  <data name="frmTrackingCreate.layoutControlItem2.Text" xml:space="preserve">
+    <value>ကိုင်တွယ်နည်း-</value>
+  </data>
+  <data name="frmTrackingCreate.layoutControlItem26.Text" xml:space="preserve">
+    <value>ရောက်သည်-</value>
+  </data>
+  <data name="frmTrackingCreate.layoutControlItem27.Text" xml:space="preserve">
+    <value>နမူနာယူခြင်း-</value>
+  </data>
+  <data name="frmTrackingCreate.layoutControlItem29.Text" xml:space="preserve">
+    <value>နမူနာ:</value>
+  </data>
+  <data name="frmTrackingCreate.layoutControlItem3.Text" xml:space="preserve">
+    <value>ဒုတိယရောဂါရှာဖွေခြင်း-</value>
+  </data>
+  <data name="frmTrackingCreate.layoutControlItem33.Text" xml:space="preserve">
+    <value>CLS ၏ဆင့်ကဲဖြစ်စဉ်</value>
+  </data>
+  <data name="frmTrackingCreate.layoutControlItem37.Text" xml:space="preserve">
+    <value>Follow up - ဂရုစိုက်ပါ။</value>
+  </data>
+  <data name="frmTrackingCreate.layoutControlItem43.Text" xml:space="preserve">
+    <value>ပုံနှိပ်ခြင်း-</value>
+  </data>
+  <data name="frmTrackingCreate.layoutControlItem44.Text" xml:space="preserve">
+    <value>လက္ခဏာ-</value>
+  </data>
+  <data name="frmTrackingCreate.layoutControlItem45.Text" xml:space="preserve">
+    <value>လက်မှတ်ရေးထိုးထားသော စာရွက်စာတမ်းကို ပရင့်ထုတ်ခြင်း-</value>
+  </data>
+  <data name="frmTrackingCreate.layoutControlItem5.Text" xml:space="preserve">
+    <value>မဲများ-</value>
+  </data>
+  <data name="frmTrackingCreate.layoutControlItem6.Text" xml:space="preserve">
+    <value>ကုသမှုစာရွက်ဟောင်း</value>
+  </data>
+  <data name="frmTrackingCreate.layoutControlUcIcd.Text" xml:space="preserve">
+    <value>အပြင်အဆင်ထိန်းချုပ်မှု ၃</value>
+  </data>
+  <data name="frmTrackingCreate.lciAwarenessBehavior.Text" xml:space="preserve">
+    <value>လှုပ်ရှားမှုရှိမည်-</value>
+  </data>
+  <data name="frmTrackingCreate.lciCardiovascular.Text" xml:space="preserve">
+    <value>နှလုံး</value>
+  </data>
+  <data name="frmTrackingCreate.lciConcentration.Text" xml:space="preserve">
+    <value>အာရုံစူးစိုက်နိုင်မှု-</value>
+  </data>
+  <data name="frmTrackingCreate.lciContentOfThinking.Text" xml:space="preserve">
+    <value>စဉ်းစားခြင်း-</value>
+  </data>
+  <data name="frmTrackingCreate.lciEmotion.Text" xml:space="preserve">
+    <value>ခံစားချက်-</value>
+  </data>
+  <data name="frmTrackingCreate.lciEyesightGlassLeft.Text" xml:space="preserve">
+    <value>မျက်မှန်ပါသော အမြင်အာရုံ (ဘယ်ဘက်)</value>
+  </data>
+  <data name="frmTrackingCreate.lciEyesightGlassRight.Text" xml:space="preserve">
+    <value>မျက်မှန်ပါသော အမြင်အာရုံ (ညာဘက်):</value>
+  </data>
+  <data name="frmTrackingCreate.lciEyesightLeft.Text" xml:space="preserve">
+    <value>မျက်မှန်မပါသော အမြင်အာရုံ (ဘယ်ဘက်)</value>
+  </data>
+  <data name="frmTrackingCreate.lciEyesightRight.Text" xml:space="preserve">
+    <value>မျက်မှန်မပါသော အမြင်အာရုံ (ညာဘက်)</value>
+  </data>
+  <data name="frmTrackingCreate.lciEyeTensionLeft.Text" xml:space="preserve">
+    <value>ဘယ်ဘက်အညွှန်း-</value>
+  </data>
+  <data name="frmTrackingCreate.lciEyeTensionRirght.Text" xml:space="preserve">
+    <value>ညာဘက်ဖိအား</value>
+  </data>
+  <data name="frmTrackingCreate.lciGeneralExpression.Text" xml:space="preserve">
+    <value>အထွေထွေသရုပ်ပြမှုများ</value>
+  </data>
+  <data name="frmTrackingCreate.lciInstinctivelyBehavior.Text" xml:space="preserve">
+    <value>သဘာဝ လှုပ်ရှားမှုများ</value>
+  </data>
+  <data name="frmTrackingCreate.lciIntellectual.Text" xml:space="preserve">
+    <value>ပညာ-</value>
+  </data>
+  <data name="frmTrackingCreate.lciMemory.Text" xml:space="preserve">
+    <value>မှတ်ဉာဏ်-</value>
+  </data>
+  <data name="frmTrackingCreate.lciOrientationCapacity.Text" xml:space="preserve">
+    <value>လမ်းညွှန်အလေးချိန်</value>
+  </data>
+  <data name="frmTrackingCreate.lciPerception.Text" xml:space="preserve">
+    <value>ခံစားချက်-</value>
+  </data>
+  <data name="frmTrackingCreate.lciRespiratory.Text" xml:space="preserve">
+    <value>အသက်ရှူလမ်းကြောင်း-</value>
+  </data>
+  <data name="frmTrackingCreate.lciTimeFrom.Text" xml:space="preserve">
+    <value>သတ်မှတ်ထားသောရက်စွဲ-</value>
+  </data>
+  <data name="frmTrackingCreate.Text" xml:space="preserve">
+    <value>ကုသမှုစာရွက်</value>
+  </data>
+  <data name="frmTrackingCreate.txtIcdExtraName.Properties.NullValuePrompt" xml:space="preserve">
+    <value>ရောဂါခွဲများကိုရွေးချယ်ရန် F1 ကိုနှိပ်ပါ။</value>
+  </data>
+  <data name="frmTrackingCreate.txtResultCLS.Properties.NullValuePrompt" xml:space="preserve">
+    <value>ဝန်ဆောင်မှုကိုရွေးချယ်ရန် \\Select Result\\ ကိုနှိပ်ပါ။</value>
+  </data>
+  <data name="frmTrackingCreate.treeListColumn1.Caption" xml:space="preserve">
+    <value>vi</value>
+  </data>
+  <data name="frmTrackingCreate.treeListColumn4.Caption" xml:space="preserve">
+    <value>ယူနစ်</value>
+  </data>
+  <data name="frmTrackingCreate.treeListColumn5.Caption" xml:space="preserve">
+    <value>ပမာဏ</value>
+  </data>
+  <data name="frmTrackingCreate.xtraTabEye.Text" xml:space="preserve">
+    <value>မျက်စိအမြင်</value>
+  </data>
+  <data name="frmTrackingCreate.xtraTabMental.Text" xml:space="preserve">
+    <value>စိတ်ပိုင်းဆိုင်ရာ</value>
+  </data>
+  <data name="frmTrackingCreate.xtraTabOther.Text" xml:space="preserve">
+    <value>တခြား</value>
+  </data>
+  <data name="frmTrackingCreate.xtraTabPageDhst.Text" xml:space="preserve">
+    <value>အရေးကြီးသောသင်္ကေတများ</value>
+  </data>
+  <data name="frmTrackingCreateNew.bar1.Text" xml:space="preserve">
+    <value>ကိရိယာများ</value>
+  </data>
+  <data name="frmTrackingCreateNew.barButtonItem__AssService.Caption" xml:space="preserve">
+    <value>ညွှန်ပြချက် (F9)</value>
+  </data>
+  <data name="frmTrackingCreateNew.barButtonItem__KeDOnThuoc.Caption" xml:space="preserve">
+    <value>KeDOnThuoc</value>
+  </data>
+  <data name="frmTrackingCreateNew.barButtonItem1.Caption" xml:space="preserve">
+    <value>ဂရုစိုက်ပါ (Ctrl N)</value>
+  </data>
+  <data name="frmTrackingCreateNew.barButtonItem2.Caption" xml:space="preserve">
+    <value>btnNew</value>
+  </data>
+  <data name="frmTrackingCreateNew.barButtonItem7.Caption" xml:space="preserve">
+    <value>barButtonItem7</value>
+  </data>
+  <data name="frmTrackingCreateNew.barButtonItemPrint.Caption" xml:space="preserve">
+    <value>ပရင့်ထုတ်ခြင်း (Ctrl P)</value>
+  </data>
+  <data name="frmTrackingCreateNew.barButtonItemSave.Caption" xml:space="preserve">
+    <value>Save (Ctrl S)</value>
+  </data>
+  <data name="frmTrackingCreateNew.barButtonItemSearch.Caption" xml:space="preserve">
+    <value>ရှာပါ (Ctrl F)</value>
+  </data>
+  <data name="frmTrackingCreateNew.barLuuKy.Caption" xml:space="preserve">
+    <value>Luuky</value>
+  </data>
+  <data name="frmTrackingCreateNew.bbtnTrackingTemp.Caption" xml:space="preserve">
+    <value>နမူနာပုံစံကို သိမ်းဆည်းပါ (Ctrl T)</value>
+  </data>
+  <data name="frmTrackingCreateNew.btnAssService.Text" xml:space="preserve">
+    <value>ညွှန်ပြချက် (F9)</value>
+  </data>
+  <data name="frmTrackingCreateNew.btnChamSoc.Text" xml:space="preserve">
+    <value>ဇာဂနာ (F4)</value>
+  </data>
+  <data name="frmTrackingCreateNew.btnChoseResult.Text" xml:space="preserve">
+    <value>ရလဒ်ကိုရွေးချယ်ပါ။</value>
+  </data>
+  <data name="frmTrackingCreateNew.btnDanhSachMau.Text" xml:space="preserve">
+    <value>နမူနာစာရင်း</value>
+  </data>
+  <data name="frmTrackingCreateNew.btnKeDonMau.Text" xml:space="preserve">
+    <value>သွေးဆေးညွှန်း</value>
+  </data>
+  <data name="frmTrackingCreateNew.btnKeDonThuoc.Text" xml:space="preserve">
+    <value>ဆေးစာ (F8)</value>
+  </data>
+  <data name="frmTrackingCreateNew.btnKeDonYHCT.Text" xml:space="preserve">
+    <value>တရုတ်ရိုးရာဆေးညွှန်း</value>
+  </data>
+  <data name="frmTrackingCreateNew.btnLuuMau.Text" xml:space="preserve">
+    <value>နမူနာပုံစံအဖြစ် သိမ်းဆည်းပါ။</value>
+  </data>
+  <data name="frmTrackingCreateNew.btnNew.Text" xml:space="preserve">
+    <value>အသစ် (Ctrl N)</value>
+  </data>
+  <data name="frmTrackingCreateNew.btnPrint.Text" xml:space="preserve">
+    <value>ပရင့်ထုတ်ခြင်း (Ctrl P)</value>
+  </data>
+  <data name="frmTrackingCreateNew.btnPhieuVoBenhAn.Text" xml:space="preserve">
+    <value>ဆေးမှတ်တမ်းစာရွက်</value>
+  </data>
+  <data name="frmTrackingCreateNew.btnSave.Text" xml:space="preserve">
+    <value>Save (Ctrl S)</value>
+  </data>
+  <data name="frmTrackingCreateNew.btnSaveSign.Text" xml:space="preserve">
+    <value>ငွေသွင်းခြင်း (Ctrl A)</value>
+  </data>
+  <data name="frmTrackingCreateNew.btnSaveTemp.Text" xml:space="preserve">
+    <value>နမူနာပုံစံကို သိမ်းဆည်းပါ (Ctrl T)</value>
+  </data>
+  <data name="frmTrackingCreateNew.btnSearchNew.Text" xml:space="preserve">
+    <value>ရှာပါ (Ctrl F)</value>
+  </data>
+  <data name="frmTrackingCreateNew.btnSearchNewTab2.Text" xml:space="preserve">
+    <value>ရှာပါ (Ctrl F)</value>
+  </data>
+  <data name="frmTrackingCreateNew.btnTuTruc.Text" xml:space="preserve">
+    <value>တာဝန်ကျ အစိုးရအဖွဲ့ဝင်</value>
+  </data>
+  <data name="frmTrackingCreateNew.gridColumn_ServiceReq_Delete.Caption" xml:space="preserve">
+    <value>vi</value>
+  </data>
+  <data name="frmTrackingCreateNew.gridColumn_ServiceReq_Delete_Preventive.Caption" xml:space="preserve">
+    <value>vi</value>
+  </data>
+  <data name="frmTrackingCreateNew.gridColumn_ServiceReq_Edit.Caption" xml:space="preserve">
+    <value>vi</value>
+  </data>
+  <data name="frmTrackingCreateNew.gridColumn_ServiceReq_Edit_Preventive.Caption" xml:space="preserve">
+    <value>vi</value>
+  </data>
+  <data name="frmTrackingCreateNew.gridColumn_ServiceReq_Stt.Caption" xml:space="preserve">
+    <value>vi</value>
+  </data>
+  <data name="frmTrackingCreateNew.gridColumn_ServiceReq_Stt_Preventive.Caption" xml:space="preserve">
+    <value>vi</value>
+  </data>
+  <data name="frmTrackingCreateNew.layoutControl1.Text" xml:space="preserve">
+    <value>အပြင်အဆင်ထိန်းချုပ်မှု ၁</value>
+  </data>
+  <data name="frmTrackingCreateNew.layoutControl2.Text" xml:space="preserve">
+    <value>အပြင်အဆင်ထိန်းချုပ်မှု ၂</value>
+  </data>
+  <data name="frmTrackingCreateNew.layoutControl3.Text" xml:space="preserve">
+    <value>အပြင်အဆင်ထိန်းချုပ်မှု ၃</value>
+  </data>
+  <data name="frmTrackingCreateNew.layoutControl4.Text" xml:space="preserve">
+    <value>အပြင်အဆင်ထိန်းချုပ်မှု ၄</value>
+  </data>
+  <data name="frmTrackingCreateNew.layoutControl5.Text" xml:space="preserve">
+    <value>အပြင်အဆင်ထိန်းချုပ်မှု ၅</value>
+  </data>
+  <data name="frmTrackingCreateNew.layoutControl7.Text" xml:space="preserve">
+    <value>အပြင်အဆင်ထိန်းချုပ်မှု ၇</value>
+  </data>
+  <data name="frmTrackingCreateNew.layoutControl8.Text" xml:space="preserve">
+    <value>အပြင်အဆင်ထိန်းချုပ်မှု ၈</value>
+  </data>
+  <data name="frmTrackingCreateNew.layoutControl9.Text" xml:space="preserve">
+    <value>အပြင်အဆင်ထိန်းချုပ်မှု ၉</value>
+  </data>
+  <data name="frmTrackingCreateNew.layoutControlIcdYhct.Text" xml:space="preserve">
+    <value>အပြင်အဆင်ထိန်းချုပ်မှု ၅</value>
+  </data>
+  <data name="frmTrackingCreateNew.layoutControlISubIcdYhct.Text" xml:space="preserve">
+    <value>အပြင်အဆင်ထိန်းချုပ်မှု ၆</value>
+  </data>
+  <data name="frmTrackingCreateNew.layoutControlItem10.Text" xml:space="preserve">
+    <value>ဒုတိယရောဂါရှာဖွေခြင်း-</value>
+  </data>
+  <data name="frmTrackingCreateNew.layoutControlItem13.Text" xml:space="preserve">
+    <value>တိုးတက်မှုများ</value>
+  </data>
+  <data name="frmTrackingCreateNew.layoutControlItem14.Text" xml:space="preserve">
+    <value>CLS ၏ဆင့်ကဲဖြစ်စဉ်</value>
+  </data>
+  <data name="frmTrackingCreateNew.layoutControlItem17.Text" xml:space="preserve">
+    <value>ကုသမှုနည်းလမ်း</value>
+  </data>
+  <data name="frmTrackingCreateNew.layoutControlItem18.Text" xml:space="preserve">
+    <value>Follow up - ဂရုစိုက်ပါ။</value>
+  </data>
+  <data name="frmTrackingCreateNew.layoutControlItem22.Text" xml:space="preserve">
+    <value>အချိန်:</value>
+  </data>
+  <data name="frmTrackingCreateNew.layoutControlItem24.Text" xml:space="preserve">
+    <value>ရက်စွဲ-</value>
+  </data>
+  <data name="frmTrackingCreateNew.layoutControlItem26.Text" xml:space="preserve">
+    <value>ပုံနှိပ်ခြင်း-</value>
+  </data>
+  <data name="frmTrackingCreateNew.layoutControlItem27.Text" xml:space="preserve">
+    <value>လက္ခဏာ-</value>
+  </data>
+  <data name="frmTrackingCreateNew.layoutControlItem28.Text" xml:space="preserve">
+    <value>လက်မှတ်ရေးထိုးထားသော စာရွက်စာတမ်းကို ပရင့်ထုတ်ခြင်း-</value>
+  </data>
+  <data name="frmTrackingCreateNew.layoutControlItem3.Text" xml:space="preserve">
+    <value>နမူနာ:</value>
+  </data>
+  <data name="frmTrackingCreateNew.layoutControlItem39.Text" xml:space="preserve">
+    <value>ညာဘက်ဖိအား</value>
+  </data>
+  <data name="frmTrackingCreateNew.layoutControlItem40.Text" xml:space="preserve">
+    <value>လေထိုးထွင်းဉာဏ် (ညာဘက်):</value>
+  </data>
+  <data name="frmTrackingCreateNew.layoutControlItem41.Text" xml:space="preserve">
+    <value>မျက်မှန်ပါသော အမြင်အာရုံ (ညာဘက်):</value>
+  </data>
+  <data name="frmTrackingCreateNew.layoutControlItem42.Text" xml:space="preserve">
+    <value>ဘယ်ဘက်အညွှန်း-</value>
+  </data>
+  <data name="frmTrackingCreateNew.layoutControlItem43.Text" xml:space="preserve">
+    <value>မျက်မှန်မပါသော အမြင်အာရုံ (ဘယ်ဘက်)</value>
+  </data>
+  <data name="frmTrackingCreateNew.layoutControlItem44.Text" xml:space="preserve">
+    <value>မျက်မှန်ပါသော အမြင်အာရုံ (ဘယ်ဘက်)</value>
+  </data>
+  <data name="frmTrackingCreateNew.layoutControlItem47.Text" xml:space="preserve">
+    <value>ရောက်သည်-</value>
+  </data>
+  <data name="frmTrackingCreateNew.layoutControlItem5.Text" xml:space="preserve">
+    <value>ကုသမှုစာရွက်ဟောင်း</value>
+  </data>
+  <data name="frmTrackingCreateNew.layoutControlItem50.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>ဆေးကိစ္စ၏စောင့်ရှောက်မှုစလစ် (CS2) ကိုဖွင့်ပါ။</value>
+  </data>
+  <data name="frmTrackingCreateNew.layoutControlItem53.Text" xml:space="preserve">
+    <value>ငါသတ်မှတ်သည်-</value>
+  </data>
+  <data name="frmTrackingCreateNew.layoutControlItem54.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>ရပ်ကွက်မှ ဆေးအမိန့်စာကိုသာ ယူသည်။</value>
+  </data>
+  <data name="frmTrackingCreateNew.layoutControlItem54.Text" xml:space="preserve">
+    <value>BB မှ YL ကိုသာရယူပါ။</value>
+  </data>
+  <data name="frmTrackingCreateNew.layoutControlItem55.Text" xml:space="preserve">
+    <value>သတ်မှတ်ထားသောရက်စွဲ-</value>
+  </data>
+  <data name="frmTrackingCreateNew.layoutControlItem56.Text" xml:space="preserve">
+    <value>ရောက်သည်-</value>
+  </data>
+  <data name="frmTrackingCreateNew.layoutControlItem6.Text" xml:space="preserve">
+    <value>ဆေးပေးသူ-</value>
+  </data>
+  <data name="frmTrackingCreateNew.layoutControlItem7.Text" xml:space="preserve">
+    <value>မဲများ-</value>
+  </data>
+  <data name="frmTrackingCreateNew.layoutControlUcIcd.Text" xml:space="preserve">
+    <value>အပြင်အဆင်ထိန်းချုပ်မှု ၄</value>
+  </data>
+  <data name="frmTrackingCreateNew.lciAwarenessBehavior.Text" xml:space="preserve">
+    <value>လှုပ်ရှားမှုရှိမည်-</value>
+  </data>
+  <data name="frmTrackingCreateNew.lciCardiovascular.Text" xml:space="preserve">
+    <value>နှလုံး</value>
+  </data>
+  <data name="frmTrackingCreateNew.lciConcentration.Text" xml:space="preserve">
+    <value>အာရုံစူးစိုက်နိုင်မှု-</value>
+  </data>
+  <data name="frmTrackingCreateNew.lciContentOfThinking.Text" xml:space="preserve">
+    <value>စဉ်းစားခြင်း-</value>
+  </data>
+  <data name="frmTrackingCreateNew.lciEmotion.Text" xml:space="preserve">
+    <value>ခံစားချက်-</value>
+  </data>
+  <data name="frmTrackingCreateNew.lciGeneralExpression.Text" xml:space="preserve">
+    <value>အထွေထွေသရုပ်ပြမှုများ</value>
+  </data>
+  <data name="frmTrackingCreateNew.lciInstinctivelyBehavior.Text" xml:space="preserve">
+    <value>သဘာဝ လှုပ်ရှားမှုများ</value>
+  </data>
+  <data name="frmTrackingCreateNew.lciIntellectual.Text" xml:space="preserve">
+    <value>ပညာ-</value>
+  </data>
+  <data name="frmTrackingCreateNew.lciMemory.Text" xml:space="preserve">
+    <value>မှတ်ဉာဏ်-</value>
+  </data>
+  <data name="frmTrackingCreateNew.lciOrientationCapacity.Text" xml:space="preserve">
+    <value>လမ်းညွှန်နိုင်မှု-</value>
+  </data>
+  <data name="frmTrackingCreateNew.lciPerception.Text" xml:space="preserve">
+    <value>ခံစားချက်-</value>
+  </data>
+  <data name="frmTrackingCreateNew.lciRespiratory.Text" xml:space="preserve">
+    <value>အသက်ရှူလမ်းကြောင်း-</value>
+  </data>
+  <data name="frmTrackingCreateNew.Text" xml:space="preserve">
+    <value>frmTrackingCreateNew</value>
+  </data>
+  <data name="frmTrackingCreateNew.txtContent.Properties.NullValuePrompt" xml:space="preserve">
+    <value>ညှိနှိုင်းမှု၏နိဂုံးပိုင်းကိုရွေးချယ်ရန် F1 ကိုနှိပ်ပါ။</value>
+  </data>
+  <data name="frmTrackingCreateNew.txtIcdExtraName.Properties.NullValuePrompt" xml:space="preserve">
+    <value>ရောဂါခွဲများကိုရွေးချယ်ရန် F1 ကိုနှိပ်ပါ။</value>
+  </data>
+  <data name="frmTrackingCreateNew.txtResultCLS.Properties.NullValuePrompt" xml:space="preserve">
+    <value>ဝန်ဆောင်မှုကိုရွေးချယ်ရန် \\Select Result\\ ကိုနှိပ်ပါ။</value>
+  </data>
+  <data name="frmTrackingCreateNew.txtTheoDoiChamSoc.Properties.NullValuePrompt" xml:space="preserve">
+    <value>စောင့်ရှောက်မှုအမျိုးအစားကိုရွေးချယ်ရန် F1 ကိုနှိပ်ပါ။</value>
+  </data>
+  <data name="frmTrackingCreateNew.treeListColumn1.Caption" xml:space="preserve">
+    <value>vi</value>
+  </data>
+  <data name="frmTrackingCreateNew.treeListColumn1_Preventive.Caption" xml:space="preserve">
+    <value>vi</value>
+  </data>
+  <data name="frmTrackingCreateNew.treeListColumn2.Caption" xml:space="preserve">
+    <value>ယူနစ်</value>
+  </data>
+  <data name="frmTrackingCreateNew.treeListColumn2_Preventive.Caption" xml:space="preserve">
+    <value>ယူနစ်</value>
+  </data>
+  <data name="frmTrackingCreateNew.treeListColumn3.Caption" xml:space="preserve">
+    <value>ပမာဏ</value>
+  </data>
+  <data name="frmTrackingCreateNew.treeListColumn3_Preventive.Caption" xml:space="preserve">
+    <value>ပမာဏ</value>
+  </data>
+  <data name="frmTrackingCreateNew.xtraTabPage1.Text" xml:space="preserve">
+    <value>ဆေးရှိမှ၊</value>
+  </data>
+  <data name="frmTrackingCreateNew.xtraTabPage2.Text" xml:space="preserve">
+    <value>မျက်စိအမြင်</value>
+  </data>
+  <data name="frmTrackingCreateNew.xtraTabPage3.Text" xml:space="preserve">
+    <value>စိတ်ပိုင်းဆိုင်ရာ</value>
+  </data>
+  <data name="frmTrackingCreateNew.xtraTabPage4.Text" xml:space="preserve">
+    <value>တခြား</value>
+  </data>
+  <data name="frmTrackingCreateNew.xtraTabPage5.Text" xml:space="preserve">
+    <value>ယာယီအမိန့်ကို လိုက်နာခြင်း။</value>
+  </data>
+  <data name="frmTrackingCreateNew.xtraTabPageDhst.Text" xml:space="preserve">
+    <value>အရေးကြီးသောသင်္ကေတများ</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__TRACKING_CREATE__CHUA_XU_LIVT_LANGUAGE_KEY__TRACKING_CREATE__CHUA_XU_LY" xml:space="preserve">
+    <value>လုပ်ငန်းစဉ်မရှိပါ။</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__TRACKING_CREATE__DANG_XU_LY" xml:space="preserve">
+    <value>လုပ်ဆောင်နေသည်</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__TRACKING_CREATE__HOAN_THANH" xml:space="preserve">
+    <value>ပြီးအောင်</value>
+  </data>
+  <data name="LoaiChamSoc.gridColumn1.Caption" xml:space="preserve">
+    <value>ကုဒ်</value>
+  </data>
+  <data name="LoaiChamSoc.gridColumn2.Caption" xml:space="preserve">
+    <value>နာမည်</value>
+  </data>
+  <data name="LoaiChamSoc.layoutControl1.Text" xml:space="preserve">
+    <value>အပြင်အဆင်ထိန်းချုပ်မှု ၁</value>
+  </data>
+  <data name="LoaiChamSoc.Text" xml:space="preserve">
+    <value>စောင့်ရှောက်မှုအမျိုးအစားကိုရွေးချယ်ပါ။</value>
+  </data>
+  <data name="LoaiChamSoc.txtKeyWord.Properties.NullValuePrompt" xml:space="preserve">
+    <value>အဓိကစကားလုံးကို ရှာပါ။</value>
+  </data>
+</root>

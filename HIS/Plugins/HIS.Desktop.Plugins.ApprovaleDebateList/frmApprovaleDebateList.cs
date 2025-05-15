@@ -1,4 +1,6 @@
-﻿using DevExpress.XtraEditors;
+﻿using DevExpress.Data;
+using DevExpress.XtraEditors;
+using DevExpress.XtraGrid.Views.Base;
 using HIS.Desktop.ApiConsumer;
 using HIS.Desktop.Controls.Session;
 using HIS.Desktop.LocalStorage.BackendData;
@@ -12,6 +14,7 @@ using Inventec.Desktop.Common.Message;
 using MOS.EFMODEL.DataModels;
 using MOS.Filter;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Configuration;
@@ -21,6 +24,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Inventec.Common.Controls.EditorLoader;
 
 namespace HIS.Desktop.Plugins.ApprovaleDebateList
 {
@@ -34,7 +38,7 @@ namespace HIS.Desktop.Plugins.ApprovaleDebateList
 
         public frmApprovaleDebateList()
         {
-            InitializeComponent();            
+            InitializeComponent();
         }
 
         public frmApprovaleDebateList(Inventec.Desktop.Common.Modules.Module moduleData)
@@ -59,8 +63,7 @@ namespace HIS.Desktop.Plugins.ApprovaleDebateList
             SetDeFaultConTrol();
             LoadDepartment();
             InitStatusCombo();
-            InitCombo(cboDepartment, lstDepart, "DEPARTMENT_NAME", "DEPARTMENT_CODE");
-            InitCombo(cboExecuteDepartment, lstDepart, "DEPARTMENT_NAME", "DEPARTMENT_CODE");
+            InitCombo();
             LoadData();
         }
 
@@ -68,16 +71,19 @@ namespace HIS.Desktop.Plugins.ApprovaleDebateList
         {
             try
             {
+                long idtam = 0;
+                if (currentHisSpecialistExam != null)
+                {
+                    idtam = currentHisSpecialistExam.ID;
+                }
                 //Get data HIS_SPECIALIST_EXAM
                 CommonParam param = new CommonParam();
-                //MOS.Filter.HisSpecialistExamFilter filterHSE = new HisSpecialistExamFilter();
-
                 MOS.Filter.HisSpecialistExamViewFilter filterHSE = new HisSpecialistExamViewFilter();
                 long fromTime = Inventec.Common.TypeConvert.Parse.ToInt64(Convert.ToDateTime(dtTimeFrom.EditValue).ToString("yyyyMMdd") + "000000");
                 long toTime = Inventec.Common.TypeConvert.Parse.ToInt64(Convert.ToDateTime(dtTimeTo.EditValue).ToString("yyyyMMdd") + "235959");
 
-                //filterHSE.INVITE_TYPE = 2; không có trong filter
-                filterHSE.INVITE_TIME_FROM = fromTime; 
+                filterHSE.INVITE_TYPE = 2;
+                filterHSE.INVITE_TIME_FROM = fromTime;
                 filterHSE.INVITE_TIME_TO = toTime;
 
                 //Trạng thái duyệt
@@ -90,8 +96,10 @@ namespace HIS.Desktop.Plugins.ApprovaleDebateList
                     treatmentCode = treatmentCode.PadLeft(12, '0');
                     txtTreatmentcode.Text = treatmentCode;
                 }
-                filterHSE.TREATMENT_CODE = treatmentCode;
-
+                if (!string.IsNullOrEmpty(treatmentCode))
+                {
+                    filterHSE.TREATMENT_CODE = treatmentCode;
+                }
                 // Mã bệnh nhân (10 số, tự động thêm số 0 ở đầu)
                 string patientCode = txtPatientcode.Text.Trim();
                 if (!string.IsNullOrEmpty(patientCode) && patientCode.Length < 10)
@@ -99,7 +107,11 @@ namespace HIS.Desktop.Plugins.ApprovaleDebateList
                     patientCode = patientCode.PadLeft(10, '0');
                     txtPatientcode.Text = patientCode;
                 }
-                filterHSE.PATIENT_CODE = patientCode;
+                if (!string.IsNullOrEmpty(patientCode))
+                {
+                    filterHSE.PATIENT_CODE = patientCode;
+                }
+
 
                 // Khoa phòng điều trị
                 if (cboDepartment.EditValue != null && long.TryParse(cboDepartment.EditValue.ToString(), out long departmentId))
@@ -115,14 +127,30 @@ namespace HIS.Desktop.Plugins.ApprovaleDebateList
                     filterHSE.KEY_WORD = txtKeyword.Text?.Trim();
                 }
 
-                var data = new BackendAdapter(param).Get<List<V_HIS_SPECIALIST_EXAM>>("api/HisSpecialistExamView/Get", ApiConsumers.MosConsumer, filterHSE, param);
-                V_HIS_SPECIALIST_EXAM tt = new V_HIS_SPECIALIST_EXAM();
+                var data = new BackendAdapter(param).Get<List<V_HIS_SPECIALIST_EXAM>>("api/HisSpecialistExam/GetView", ApiConsumers.MosConsumer, filterHSE, param);
                 gridControl1.DataSource = data;
+                Inventec.Common.Logging.LogSystem.Info(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => data), data));
                 gridView1.RefreshData();
+
+                try
+                {
+                    if (idtam != 0)
+                    {
+                        var index = gridView1.LocateByValue("ID", idtam);
+                        gridView1.FocusedRowHandle = index;
+                        gridView1.SelectRow(index);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(ex);
+                }
+                
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
+
             }
 
         }
@@ -132,7 +160,7 @@ namespace HIS.Desktop.Plugins.ApprovaleDebateList
             try
             {
                 lstDepart = BackendDataWorker.Get<HIS_DEPARTMENT>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE).ToList();
-                
+
             }
             catch (Exception ex)
             {
@@ -152,20 +180,17 @@ namespace HIS.Desktop.Plugins.ApprovaleDebateList
             }
         }
 
-        private void InitCombo(GridLookUpEdit cbo, List<HIS_DEPARTMENT> data, string DisplayValue, string ValueMember)
+        private void InitCombo()
         {
             try
             {
-                if (data == null || data.Count == 0) return;
-
-                cbo.Properties.DataSource = data;
-                cbo.Properties.DisplayMember = DisplayValue;
-                cbo.Properties.ValueMember = ValueMember;
-                cbo.Properties.View.Columns.Clear();
-                cbo.Properties.View.Columns.AddVisible(DisplayValue, "Tất cả");
-                cbo.Properties.PopupFormWidth = 200;
-                cbo.Properties.View.OptionsView.ShowColumnHeaders = true;
-                cbo.Properties.View.OptionsSelection.MultiSelect = true;
+                if (lstDepart == null || lstDepart.Count == 0) return;
+                List<ColumnInfo> columnInfos = new List<ColumnInfo>();
+                columnInfos.Add(new ColumnInfo("ID", "", 50, 1));
+                columnInfos.Add(new ColumnInfo("DEPARTMENT_NAME", "", 150, 2));
+                ControlEditorADO controlEditorADO = new ControlEditorADO("DEPARTMENT_NAME", "ID", columnInfos, false, 250);
+                ControlEditorLoader.Load(cboDepartment, lstDepart, controlEditorADO);
+                ControlEditorLoader.Load(cboExecuteDepartment, lstDepart, controlEditorADO);
             }
             catch (Exception ex)
             {
@@ -203,7 +228,9 @@ namespace HIS.Desktop.Plugins.ApprovaleDebateList
             cboStatus.Properties.DisplayMember = "Display";
             cboStatus.Properties.ValueMember = "Value";
             cboStatus.Properties.ShowHeader = false;
-            cboStatus.EditValue = null;
+            cboStatus.Properties.PopulateColumns();
+            cboStatus.Properties.Columns["Value"].Visible = false;
+            cboStatus.EditValue = statusList[0].Value;
         }
 
         private void btnSearch_Click(object sender, EventArgs e)
@@ -242,10 +269,11 @@ namespace HIS.Desktop.Plugins.ApprovaleDebateList
                         List<object> listArgs = new List<object>();
                         Inventec.Desktop.Common.Modules.Module currentModule = new Inventec.Desktop.Common.Modules.Module();
                         listArgs.Add(currentHisSpecialistExam);
+                        listArgs.Add((HIS.Desktop.Common.RefeshReference)LoadData);
                         var extenceInstance = PluginInstance.GetPluginInstance(HIS.Desktop.Utility.PluginInstance.GetModuleWithWorkingRoom(moduleData, roomId, roomTypeId), listArgs);
                         if (extenceInstance == null) throw new ArgumentNullException("moduleData is null");
-                        ((Form)extenceInstance).Show();
-                    } 
+                        ((Form)extenceInstance).ShowDialog();                        
+                    }
                 }
             }
             catch (Exception ex)
@@ -303,17 +331,26 @@ namespace HIS.Desktop.Plugins.ApprovaleDebateList
 
                 using (frmRejectApproval frmRA = new frmRejectApproval())
                 {
+
+                    if (currentHisSpecialistExam.IS_APPROVAL == 2)
+                    {
+                        frmRA.RejectReason = currentHisSpecialistExam.REJECT_APPROVAL_REASON; 
+                    }
                     if (frmRA.ShowDialog() == DialogResult.OK)
                     {
                         CommonParam param = new CommonParam();
-                        currentHisSpecialistExam.REJECT_APPROVAL_REASON = frmRA.RejectReason;
-                        currentHisSpecialistExam.IS_APPROVAL = 2; // Từ chối:  IS_APPROVAL= 2
-                        var rs = new BackendAdapter(param).Post<HIS_INFUSION_SUM>("api/HisSpecialistExam/Update", ApiConsumers.MosConsumer, currentHisSpecialistExam, param);
+                        HIS_SPECIALIST_EXAM datamapper = new HIS_SPECIALIST_EXAM();
+                        Inventec.Common.Mapper.DataObjectMapper.Map<HIS_SPECIALIST_EXAM>(datamapper, currentHisSpecialistExam);
+                        datamapper.REJECT_APPROVAL_REASON = frmRA.RejectReason;
+                        datamapper.IS_APPROVAL = 2; // Từ chối:  IS_APPROVAL= 2
+
+                        Inventec.Common.Logging.LogSystem.Info(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => datamapper), datamapper));
+                        var rs = new BackendAdapter(param).Post<HIS_SPECIALIST_EXAM>("api/HisSpecialistExam/Update", ApiConsumers.MosConsumer, datamapper, param);
                         if (rs != null)
                         {
                             LoadData();
                         }
-                        MessageManager.Show(this, param, rs != null);                       
+                        MessageManager.Show(this, param, rs != null);
                         SessionManager.ProcessTokenLost(param);
                     }
                 }
@@ -335,6 +372,140 @@ namespace HIS.Desktop.Plugins.ApprovaleDebateList
                     {
                         e.RepositoryItem = null;
                     }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void txtTreatmentcode_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
+        {
+            try
+            {
+                if (e.KeyCode == Keys.Enter) LoadData();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void gridView1_CustomUnboundColumnData(object sender, DevExpress.XtraGrid.Views.Base.CustomColumnDataEventArgs e)
+        {
+            try
+            {
+                if (e.IsGetData && e.Column.UnboundType != UnboundColumnType.Bound)
+                {
+                    MOS.EFMODEL.DataModels.V_HIS_SPECIALIST_EXAM data = (MOS.EFMODEL.DataModels.V_HIS_SPECIALIST_EXAM)((IList)((BaseView)sender).DataSource)[e.ListSourceRowIndex];
+                    if (data != null)
+                    {
+                        DevExpress.XtraGrid.Views.Grid.GridView view = sender as DevExpress.XtraGrid.Views.Grid.GridView;
+
+                        if (e.Column.FieldName == "STT")
+                        {
+                            e.Value = e.ListSourceRowIndex + 1;
+                        }
+                        if (e.Column.FieldName == "INVITE_TIME_CUS")
+                        {
+                            e.Value = Inventec.Common.DateTime.Convert.TimeNumberToTimeString(data.INVITE_TIME ?? 0);
+                        }
+                        if (e.Column.FieldName == "IS_APPROVAL_CUS")
+                        {
+                            if (data.IS_APPROVAL == null)
+                                e.Value = "Chưa duyệt";
+                            else if (data.IS_APPROVAL == 1)
+                                e.Value = "Đã duyệt";
+                            else if (data.IS_APPROVAL == 2)
+                                e.Value = "Từ chối duyệt";
+                        }
+                    }
+                }
+            }
+
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void gridView1_CustomDrawCell(object sender, RowCellCustomDrawEventArgs e)
+        {
+            try
+            {
+                if (e.Column.FieldName == "IS_APPROVAL_CUS")
+                {
+                    DevExpress.XtraGrid.Views.Grid.GridView view = sender as DevExpress.XtraGrid.Views.Grid.GridView;
+                    V_HIS_SPECIALIST_EXAM data = (V_HIS_SPECIALIST_EXAM)view.GetRow(e.RowHandle);
+                    if (data != null)
+                    {
+                        if (data.IS_APPROVAL == 1) // Đã duyệt
+                        {
+                            e.Appearance.ForeColor = Color.Red;
+                        }
+                        else if (data.IS_APPROVAL == 2) // Từ chối
+                        {
+                            e.Appearance.ForeColor = Color.Green;
+                        }
+                        else // Chưa duyệt
+                        {
+                            e.Appearance.ForeColor = Color.Black;
+                        }
+                    }
+                }
+                if (e.Column.FieldName == "Debate")
+                {
+                    var rowData = gridView1.GetRow(e.RowHandle) as V_HIS_SPECIALIST_EXAM;
+                    if (rowData != null && rowData.IS_APPROVAL != 1)
+                    {
+                        e.Handled = true; // Ngăn không vẽ ô này
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void cboExecuteDepartment_Properties_ButtonClick(object sender, DevExpress.XtraEditors.Controls.ButtonPressedEventArgs e)
+        {
+            //try
+            //{
+            //    if (e.Button.Kind == DevExpress.XtraEditors.Controls.ButtonPredefines.Delete)
+            //    {
+            //        cboExecuteDepartment.EditValue = null;
+            //     }
+            //}
+            //catch (Exception ex)
+            //{
+            //    Inventec.Common.Logging.LogSystem.Error(ex);
+            //}
+        }
+
+        private void cboDepartment_Properties_ButtonClick(object sender, DevExpress.XtraEditors.Controls.ButtonPressedEventArgs e)
+        {
+            try
+            {
+                if (e.Button.Kind == DevExpress.XtraEditors.Controls.ButtonPredefines.Delete)
+                {
+                    cboDepartment.EditValue = null;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void cboStatus_CustomDisplayText(object sender, DevExpress.XtraEditors.Controls.CustomDisplayTextEventArgs e)
+        {
+            try
+            {
+                if (e.Value == null)
+                {
+                    e.DisplayText = "Tất cả";
                 }
             }
             catch (Exception ex)
