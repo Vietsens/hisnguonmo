@@ -68,6 +68,7 @@ namespace HIS.Desktop.Plugins.TransactionList
         V_HIS_TREATMENT_FEE treatment = null;
         V_HIS_ACCOUNT_BOOK accountBook = null;
         string loginName = null;
+        int perId;
         int rowCount = 0;
         int dataTotal = 0;
         int start = 0;
@@ -76,8 +77,8 @@ namespace HIS.Desktop.Plugins.TransactionList
         long typeIdDeposit = 0;
         long typeIdRepay = 0;
         bool hasEditPermission = false;
-        private List<HIS_TRANSACTION> _transactionList;
-        private List<HIS_PERMISSION> _hisPermissionList;
+        List<V_HIS_TRANSACTION> _transactionList { get; set; }
+        //private List<HIS_PERMISSION> _hisPermissionList;
         BarManager baManager = null;
         V_HIS_TRANSACTION transactionPrint;
         List<V_HIS_TRANSACTION> listData;
@@ -110,6 +111,7 @@ namespace HIS.Desktop.Plugins.TransactionList
             {
                 SetIcon();
                 Base.ResourceLangManager.InitResourceLanguageManager();
+
                 this.loginName = Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName();
                 this.currentModule = module;
                 if (this.currentModule != null)
@@ -132,6 +134,7 @@ namespace HIS.Desktop.Plugins.TransactionList
             {
                 SetIcon();
                 Base.ResourceLangManager.InitResourceLanguageManager();
+                
                 this.treatment = data;
                 this.loginName = Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName();
                 this.currentModule = module;
@@ -200,8 +203,7 @@ namespace HIS.Desktop.Plugins.TransactionList
                 LoadDataCboFilterType();
                 LoadKeyFrmLanguage();
                 SetDefaultControlDateTime();
-                GetHisPermission();
-                GetHisPermissionLoad();
+                
                 InitCheck(grdLoaiGiaoDich, SelectionGrid__LoaiGiaoDich);
                 InitCombo(grdLoaiGiaoDich, BackendDataWorker.Get<HIS_TRANSACTION_TYPE>(), "TRANSACTION_TYPE_NAME", "ID");
                 LoaihoadongList();
@@ -219,7 +221,10 @@ namespace HIS.Desktop.Plugins.TransactionList
 
                 InitControlState();
                 CheckKeyCauHinh();
+                  
                 FillDataToGrid();
+                GetHisPermission();
+                GetHisPermissionLoad();
                 btnExportBill.Enabled = false;
                 WaitingManager.Hide();
             }
@@ -460,6 +465,7 @@ namespace HIS.Desktop.Plugins.TransactionList
         {
             try
             {
+                
                 FillDataToGridTransaction(new CommonParam(0, (int)ConfigApplications.NumPageSize));
 
                 CommonParam param = new CommonParam();
@@ -552,6 +558,7 @@ namespace HIS.Desktop.Plugins.TransactionList
                 {
                     MOS.Filter.HisCashierRoomFilter hiscashier = new HisCashierRoomFilter();
                     var hiscashiers = new BackendAdapter(new CommonParam()).Get<List<HIS_CASHIER_ROOM>>("api/HisCashierRoom/Get", ApiConsumer.ApiConsumers.MosConsumer, hiscashier, null);
+
 
                     if (hiscashiers != null && hiscashiers.Count > 0)
                     {
@@ -690,6 +697,8 @@ namespace HIS.Desktop.Plugins.TransactionList
                 }
 
                 var result = new Inventec.Common.Adapter.BackendAdapter(paramCommon).GetRO<List<V_HIS_TRANSACTION>>(HisRequestUriStore.HIS_TRANSACTION_GETVIEW, ApiConsumers.MosConsumer, filter, paramCommon);
+
+                _transactionList = result.Data;
                 if (result != null)
                 {
                     var listData = (List<V_HIS_TRANSACTION>)result.Data;
@@ -703,7 +712,7 @@ namespace HIS.Desktop.Plugins.TransactionList
                     dataTotal = (result.Param == null ? 0 : result.Param.Count ?? 0);
                 }
 
-                Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData("result_____:", result));
+                Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData("result_____tt:", result));
                 gridControlTransaction.BeginUpdate();
                 gridControlTransaction.DataSource = listTransaction;
                 gridControlTransaction.EndUpdate();
@@ -731,54 +740,100 @@ namespace HIS.Desktop.Plugins.TransactionList
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
-        private void GetHisPermission() {
+        //        private void GetHisPermission() {
+        //            try
+        //            {
+        //                CommonParam param  = new CommonParam();
 
-            HisPermissionFilter filter = new HisPermissionFilter
+
+        //                HisPermissionFilter filter = new HisPermissionFilter()
+        //;
+        //                filter.IS_ACTIVE = 1;
+        //                filter.PERMISSION_TYPE_ID = 2;
+        //                filter.LOGINNAME = this.loginName;
+        //                filter.EFFECTIVE_DATE__EXACT = Convert.ToInt64(DateTime.Now.ToString("yyyyMMddHHmmss"));
+        //                var permissionList = new BackendAdapter(param)
+        //             .Get<List<HIS_PERMISSION>>("api/HisPermission/Get", ApiConsumer.ApiConsumers.MosConsumer, filter, param);
+        //                Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData("resultttttt2_____:", permissionList));
+        //                if (permissionList != null || permissionList.Count == 0)
+        //                {
+        //                    isPermission = true;
+        //                }
+        //            }
+        //            catch (Exception ex)
+        //            {
+        //                Inventec.Common.Logging.LogSystem.Error(ex);
+        //            }
+        //        }
+        private bool GetHisPermission()
+        {
+            try
             {
-                IS_ACTIVE = 1,
-                PERMISSION_TYPE_ID = 2,
-                LOGINNAME = this.loginName,
-                EFFECTIVE_DATE__EXACT = Convert.ToInt64(DateTime.Now.ToString("yyyyMMddHHmmss"))
-            };
+                CommonParam param = new CommonParam();
 
-            var permissionList = new BackendAdapter(new CommonParam())
-         .Get<List<HIS_PERMISSION>>("api/HisPermission/Get", ApiConsumer.ApiConsumers.MosConsumer, filter, null);
+                var from = Convert.ToInt64(DateTime.Today.ToString("yyyyMMdd000000"));
+                var to = Convert.ToInt64(DateTime.Today.ToString("yyyyMMdd235959"));
 
-            isPermission = permissionList != null && permissionList.Any();
-           
+                HisPermissionFilter filter = new HisPermissionFilter()
+                {
+                    IS_ACTIVE = 1,
+                    PERMISSION_TYPE_ID = 2,
+                    LOGINNAME = this.loginName,
+                    EFFECTIVE_DATE_FROM = from,
+                    EFFECTIVE_DATE_TO = to
+                };
 
+                var permissionList = new BackendAdapter(param)
+                    .Get<List<HIS_PERMISSION>>("api/HisPermission/Get", ApiConsumer.ApiConsumers.MosConsumer, filter, param);
 
+                Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData("result_____permission:", permissionList));
+                
+                return permissionList != null && permissionList.Count > 0;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error("Lỗi khi gọi GetHisPermission: " + ex.ToString());
+                return false;
+            }
         }
+
         private List<HIS_PERMISSION> GetHisPermissionLoad()
         {
-            var result = new List<HIS_PERMISSION>();
-
-            if (_transactionList == null || _transactionList.Count == 0)
+            try
             {
+
+                List<HIS_PERMISSION> listPermission = new List<HIS_PERMISSION>();
+                CommonParam param = new CommonParam();
+                HisPermissionFilter filter = new HisPermissionFilter();
+
+                filter.IS_ACTIVE = 1;
+                filter.PERMISSION_TYPE_ID = 1;
+                filter.LOGINNAME = this.loginName;
+                filter.EFFECTIVE_DATE_FROM = long.Parse(dtCreateTimeFrom.DateTime.ToString("yyyyMMddHHmmss"));
+                filter.EFFECTIVE_DATE_TO = long.Parse(dtCreateTimeTo.DateTime.ToString("yyyyMMddHHmmss"));
+
+
+                Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData("GetHisPermissionLoad - Filter input:", filter));
+                Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData("GetHisPermissionLoad - Param input:", param));
+
+
+                listPermission = new BackendAdapter(new CommonParam())
+                    .Get<List<HIS_PERMISSION>>("api/HisPermission/Get", ApiConsumer.ApiConsumers.MosConsumer, filter, param);
+                   
+                Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData("resultttttt_____:", listPermission));
                
-                return result;
+                
+
+                return listPermission;
             }
-
-            var minDate = _transactionList.Min(t => t.TRANSACTION_DATE);
-            var maxDate = _transactionList.Max(t => t.TRANSACTION_DATE);
-
-         
-
-            var filter = new HisPermissionFilter
+            catch (Exception ex)
             {
-                IS_ACTIVE = 1,
-                PERMISSION_TYPE_ID = 1,
-                LOGINNAME = this.loginName,
-                EFFECTIVE_DATE_FROM = minDate,
-                EFFECTIVE_DATE_TO = maxDate
-            };
-
-            result = new BackendAdapter(new CommonParam())
-                .Get<List<HIS_PERMISSION>>("api/HisPermission/Get", ApiConsumer.ApiConsumers.MosConsumer, filter, null)
-                ?? new List<HIS_PERMISSION>();
-
-            return result;
+                Inventec.Common.Logging.LogSystem.Error("GetHisPermissionLoad - Exception: " + ex.ToString());
+                return new List<HIS_PERMISSION>();
+            }
         }
+
+
 
 
 
@@ -810,7 +865,7 @@ namespace HIS.Desktop.Plugins.TransactionList
                     string tranCode = txtTransactionCode.Text.Trim();
                     filter.TRANSACTION_CODE__EXACT = tranCode;
                 }
-
+                       
                 int value = Convert.ToInt32(cboFilter.EditValue);
 
                 //var hiscashierId = hiscashiers.Where(o => o.ROOM_ID == currentModule.RoomId).FirstOrDefault().ID;
@@ -1295,9 +1350,7 @@ namespace HIS.Desktop.Plugins.TransactionList
                             {
                                 var isAdmin = HIS.Desktop.IsAdmin.CheckLoginAdmin.IsAdmin(this.loginName);
                                 var HisPermission = BackendDataWorker.Get<HIS_PERMISSION>();
-                               // var isPremission = new HIS_PERMISSION();
-                                var isPremission = hisPermissionList
-                                   .FirstOrDefault(o => o.LOGINNAME == this.loginName && o.EFFECTIVE_DATE == data.TRANSACTION_DATE);
+                                var isPremission = new HIS_PERMISSION();
                                 if (HisPermission != null)
                                 {
                                     isPremission = BackendDataWorker.Get<HIS_PERMISSION>().Where(o => o.LOGINNAME == this.loginName && o.EFFECTIVE_DATE == data.TRANSACTION_DATE).FirstOrDefault();
@@ -1306,31 +1359,11 @@ namespace HIS.Desktop.Plugins.TransactionList
                                 {
                                     isPremission = null;
                                 }
-                                //if (HisConfigCFG.ALLOW_OTHER_LOGINNAME == "2")
-                                //{
-                                //    if (data.IS_ACTIVE == 1
-                                //    && data.IS_CANCEL != 1 && !data.DEBT_BILL_ID.HasValue
-                                //    && ((data.CASHIER_LOGINNAME == this.loginName && data.TRANSACTION_DATE == Inventec.Common.TypeConvert.Parse.ToInt64(DateTime.Now.ToString("yyyyMMdd") + "000000")) || isPremission != null || isAdmin == true))
-                                //    {
-                                //        e.RepositoryItem = repositoryItemBtnCancelTran;
-                                //    }
-                                //    else
-                                //    {
-                                //        e.RepositoryItem = repositoryItemBtnCancelTranDisable;
-                                //    }
-
-                                //}
-                               
-                               
-
                                 if (HisConfigCFG.ALLOW_OTHER_LOGINNAME == "2")
                                 {
                                     if (data.IS_ACTIVE == 1
-                                        && data.IS_CANCEL != 1 && !data.DEBT_BILL_ID.HasValue
-                                        && ((data.CASHIER_LOGINNAME == this.loginName
-                                             && data.TRANSACTION_DATE == Inventec.Common.TypeConvert.Parse.ToInt64(DateTime.Now.ToString("yyyyMMdd") + "000000"))
-                                            || isPremission != null
-                                            || isAdmin))
+                                    && data.IS_CANCEL != 1 && !data.DEBT_BILL_ID.HasValue
+                                    && ((data.CASHIER_LOGINNAME == this.loginName && data.TRANSACTION_DATE == Inventec.Common.TypeConvert.Parse.ToInt64(DateTime.Now.ToString("yyyyMMdd") + "000000")) || isPremission != null || isAdmin == true))
                                     {
                                         e.RepositoryItem = repositoryItemBtnCancelTran;
                                     }
@@ -1338,6 +1371,7 @@ namespace HIS.Desktop.Plugins.TransactionList
                                     {
                                         e.RepositoryItem = repositoryItemBtnCancelTranDisable;
                                     }
+
                                 }
                                 else if (HisConfigCFG.ALLOW_OTHER_LOGINNAME == "0" || HisConfigCFG.ALLOW_OTHER_LOGINNAME == "1")
                                 {
@@ -1402,10 +1436,7 @@ namespace HIS.Desktop.Plugins.TransactionList
                             //}
                             var isAdmin = HIS.Desktop.IsAdmin.CheckLoginAdmin.IsAdmin(this.loginName);
                             var HisPermission = BackendDataWorker.Get<HIS_PERMISSION>();
-
-                           // var isPremission = new HIS_PERMISSION();
-                            var isPremission = hisPermissionList
-                                  .FirstOrDefault(o => o.LOGINNAME == this.loginName && o.EFFECTIVE_DATE == data.TRANSACTION_DATE);
+                            var isPremission = new HIS_PERMISSION();
                             if (HisPermission != null)
                             {
                                 isPremission = BackendDataWorker.Get<HIS_PERMISSION>().Where(o => o.LOGINNAME == this.loginName && o.EFFECTIVE_DATE == data.TRANSACTION_DATE).FirstOrDefault();
@@ -1414,27 +1445,11 @@ namespace HIS.Desktop.Plugins.TransactionList
                             {
                                 isPremission = null;
                             }
-                            //if (HisConfigCFG.UNCANCEL_OPTION == "2")
-                            //{
-                            //    if (data.IS_CANCEL == 1 && data.TRANSACTION_TYPE_ID != IMSys.DbConfig.HIS_RS.HIS_TRANSACTION_TYPE.ID__NO
-                            //        && data.IS_DEBT_COLLECTION != 1 && data.SALE_TYPE_ID != IMSys.DbConfig.HIS_RS.HIS_SALE_TYPE.ID__SALE_VACCIN
-                            //        && ((data.CASHIER_LOGINNAME == this.loginName && data.TRANSACTION_DATE == Inventec.Common.TypeConvert.Parse.ToInt64(DateTime.Now.ToString("yyyyMMdd") + "000000")) || isPremission != null || isAdmin == true))
-                            //    {
-                            //        e.RepositoryItem = repositoryItemBtnRestore;
-                            //    }
-                            //    else
-                            //    {
-                            //        e.RepositoryItem = repositoryItemBtnRestoreDisable;
-                            //    }
-                            //}
-                            if (HisConfigCFG.ALLOW_OTHER_LOGINNAME == "2")
+                            if (HisConfigCFG.UNCANCEL_OPTION == "2")
                             {
-                                if (data.IS_ACTIVE == 1
-                                    && data.IS_CANCEL != 1 && !data.DEBT_BILL_ID.HasValue
-                                    && ((data.CASHIER_LOGINNAME == this.loginName
-                                         && data.TRANSACTION_DATE == Inventec.Common.TypeConvert.Parse.ToInt64(DateTime.Now.ToString("yyyyMMdd") + "000000"))
-                                        || isPremission != null
-                                        || isAdmin))
+                                if (data.IS_CANCEL == 1 && data.TRANSACTION_TYPE_ID != IMSys.DbConfig.HIS_RS.HIS_TRANSACTION_TYPE.ID__NO
+                                    && data.IS_DEBT_COLLECTION != 1 && data.SALE_TYPE_ID != IMSys.DbConfig.HIS_RS.HIS_SALE_TYPE.ID__SALE_VACCIN
+                                    && ((data.CASHIER_LOGINNAME == this.loginName && data.TRANSACTION_DATE == Inventec.Common.TypeConvert.Parse.ToInt64(DateTime.Now.ToString("yyyyMMdd") + "000000")) || isPremission != null || isAdmin == true))
                                 {
                                     e.RepositoryItem = repositoryItemBtnRestore;
                                 }
@@ -1476,18 +1491,47 @@ namespace HIS.Desktop.Plugins.TransactionList
                         //    else
                         //        e.RepositoryItem = repositoryItemButtonEdit__D;
                         //}
+                        //else if (e.Column.FieldName == "EDIT_INFO_DISPLAY")
+                        //{
+                        //    bool isActive = data.IS_ACTIVE == 1;
+                        //    bool isPremission = false;
+                        //    bool isNotCancelled = data.IS_CANCEL != 1;
+                        //    bool hasControlPermission = controlAcs != null && controlAcs.Exists(o => o.CONTROL_CODE == "HIS000017");
+                        //    bool isAdmin = HIS.Desktop.IsAdmin.CheckLoginAdmin.IsAdmin(this.loginName);
+                        //    bool isSameDay = data.TRANSACTION_DATE == Inventec.Common.TypeConvert.Parse.ToInt64(DateTime.Now.ToString("yyyyMMdd") + "000000");
+                        //    bool isCashierOrAdmin = data.CASHIER_LOGINNAME == this.loginName || isAdmin;
+
+                        //    if (isActive && isNotCancelled && hasControlPermission)
+                        //    {
+                        //        if ((isSameDay && isCashierOrAdmin) || (!isSameDay && isPremission))
+                        //        {
+                        //            e.RepositoryItem = repositoryItemButtonEdit__E;
+                        //        }
+                        //        else
+                        //        {
+                        //            e.RepositoryItem = repositoryItemButtonEdit__D;
+                        //        }
+                        //    }
+                        //    else
+                        //    {
+                        //        e.RepositoryItem = repositoryItemButtonEdit__D;
+                        //    }
+                        //}
                         else if (e.Column.FieldName == "EDIT_INFO_DISPLAY")
                         {
-                            bool isToday = data.TRANSACTION_DATE == Convert.ToInt64(DateTime.Now.ToString("yyyyMMdd") + "000000");
+                            bool isActive = data.IS_ACTIVE == 1;
+                            bool isNotCancelled = data.IS_CANCEL != 1;
+                            bool hasControlPermission = controlAcs != null && controlAcs.FirstOrDefault(o => o.CONTROL_CODE == "HIS000017") != null;
                             bool isAdmin = HIS.Desktop.IsAdmin.CheckLoginAdmin.IsAdmin(this.loginName);
-                            bool hasControl = controlAcs != null && controlAcs.Exists(o => o.CONTROL_CODE == "HIS000017");
-                            
-                            var isPremission = hisPermissionList != null &&
-                                               hisPermissionList.Exists(o => o.LOGINNAME == this.loginName && o.EFFECTIVE_DATE == data.TRANSACTION_DATE);
-                            if (data.IS_ACTIVE == 1 && data.IS_CANCEL != 1)
+                            bool isSameDay = data.TRANSACTION_DATE == Inventec.Common.TypeConvert.Parse.ToInt64(DateTime.Now.ToString("yyyyMMdd") + "000000");
+                            bool isCashierOrAdmin = data.CASHIER_LOGINNAME == this.loginName || isAdmin;
+
+                            bool isPermission = GetHisPermission();
+                           
+
+                            if (isActive && isNotCancelled && hasControlPermission)
                             {
-                                if ((isToday && (data.CASHIER_LOGINNAME == this.loginName || isAdmin) && hasControl)
-                                    || (!isToday && isPremission))
+                                if ((isSameDay && isCashierOrAdmin) || (!isSameDay && isPermission))
                                 {
                                     e.RepositoryItem = repositoryItemButtonEdit__E;
                                 }
@@ -1501,6 +1545,8 @@ namespace HIS.Desktop.Plugins.TransactionList
                                 e.RepositoryItem = repositoryItemButtonEdit__D;
                             }
                         }
+
+
                         else if (e.Column.FieldName == "NUM_ORDER")
                         {
                             if (HisConfigCFG.ALLOW_EDIT_NUM_ORDER == "1"
@@ -1680,6 +1726,9 @@ namespace HIS.Desktop.Plugins.TransactionList
             try
             {
                 FillDataToGrid();
+                 GetHisPermissionLoad();
+                
+
             }
             catch (Exception ex)
             {
@@ -1977,7 +2026,7 @@ namespace HIS.Desktop.Plugins.TransactionList
                 {
                     if (XtraMessageBox.Show(String.Format("Hệ thống sẽ tự động cập nhật lại thông tin tài khoản thu ngân, phòng thu ngân của giao dịch theo tài khoản của bạn và phòng bạn đang làm việc. Bạn có muốn mở khóa giao dịch {0} không?", data.TRANSACTION_CODE),
                         "Thông báo", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
-                        ProcessChangeLock(data, false);
+                         ProcessChangeLock(data, false);
                 }
 
             }
@@ -2784,16 +2833,33 @@ namespace HIS.Desktop.Plugins.TransactionList
                                 else
                                 {
                                     var isAdmin = HIS.Desktop.IsAdmin.CheckLoginAdmin.IsAdmin(this.loginName);
-                                    var HisPermission = BackendDataWorker.Get<HIS_PERMISSION>();
-                                    var isPremission = new HIS_PERMISSION();
-                                    if (HisPermission != null)
+
+                                    HIS_PERMISSION isPremission = null;
+
+                                    try
                                     {
-                                        isPremission = BackendDataWorker.Get<HIS_PERMISSION>().Where(o => o.LOGINNAME == this.loginName && o.EFFECTIVE_DATE == transactionData.TRANSACTION_DATE).FirstOrDefault();
+                                        var HisPermissionList = GetHisPermissionLoad();
+                                        isPremission = HisPermissionList
+                                            .FirstOrDefault(o => o.EFFECTIVE_DATE == transactionData.TRANSACTION_DATE);
+                                        Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData("result_____ttzz:", isPremission));
                                     }
-                                    else
+                                    catch (Exception ex)
                                     {
-                                        isPremission = null;
+                                        Inventec.Common.Logging.LogSystem.Error("Error loading HIS_PERMISSION from API: " + ex.ToString());
                                     }
+
+
+                                    //var HisPermission = BackendDataWorker.Get<HIS_PERMISSION>();
+                                    //var isPremission = new HIS_PERMISSION();
+                                    //if (HisPermission != null)
+                                    //{
+                                    //    isPremission = BackendDataWorker.Get<HIS_PERMISSION>().Where(o => o.LOGINNAME == this.loginName && o.EFFECTIVE_DATE == transactionData.TRANSACTION_DATE).FirstOrDefault();
+                                    //}
+                                    //else
+                                    //{
+                                    //    isPremission = null;
+                                    //}
+
 
                                     if (HisConfigCFG.ALLOW_OTHER_LOGINNAME == "2")
                                     {
@@ -2838,17 +2904,30 @@ namespace HIS.Desktop.Plugins.TransactionList
                             else if (hi.Column.FieldName == "Restore")
                             {
                                 var isAdmin = HIS.Desktop.IsAdmin.CheckLoginAdmin.IsAdmin(this.loginName);
-                                var HisPermission = BackendDataWorker.Get<HIS_PERMISSION>();
-                                var isPremission = new HIS_PERMISSION();
-                                if (HisPermission != null)
+
+                                HIS_PERMISSION isPremission = null;
+
+                                try
                                 {
-                                    isPremission = BackendDataWorker.Get<HIS_PERMISSION>().Where(o => o.LOGINNAME == this.loginName && o.EFFECTIVE_DATE == transactionData.TRANSACTION_DATE).FirstOrDefault();
+                                    var HisPermissionList = GetHisPermissionLoad();
+                                    isPremission = HisPermissionList
+                                        .FirstOrDefault(o => o.EFFECTIVE_DATE == transactionData.TRANSACTION_DATE);
                                 }
-                                else
+                                catch (Exception ex)
                                 {
-                                    isPremission = null;
+                                    Inventec.Common.Logging.LogSystem.Error("Error loading HIS_PERMISSION from API in Restore: " + ex.ToString());
                                 }
-                                if (HisConfigCFG.UNCANCEL_OPTION == "2")
+                                    //var HisPermission = BackendDataWorker.Get<HIS_PERMISSION>();
+                                    //var isPremission = new HIS_PERMISSION();
+                                    //if (HisPermission != null)
+                                    //{
+                                    //    isPremission = BackendDataWorker.Get<HIS_PERMISSION>().Where(o => o.LOGINNAME == this.loginName && o.EFFECTIVE_DATE == transactionData.TRANSACTION_DATE).FirstOrDefault();
+                                    //}
+                                    //else
+                                    //{
+                                    //    isPremission = null;
+                                    //}
+                                    if (HisConfigCFG.UNCANCEL_OPTION == "2")
                                 {
                                     if (transactionData.IS_CANCEL == 1 && transactionData.TRANSACTION_TYPE_ID != IMSys.DbConfig.HIS_RS.HIS_TRANSACTION_TYPE.ID__NO
                                         && transactionData.IS_DEBT_COLLECTION != 1 && transactionData.SALE_TYPE_ID != IMSys.DbConfig.HIS_RS.HIS_SALE_TYPE.ID__SALE_VACCIN
@@ -2865,19 +2944,27 @@ namespace HIS.Desktop.Plugins.TransactionList
                                     }
                                 }
                             }
+                           
+                            else if (hi.Column.FieldName == "EDIT_INFO_DISPLAY")
+                            {
+                                bool isActive = transactionData.IS_ACTIVE == 1;
+                                bool isNotCancelled = transactionData.IS_CANCEL != 1;
+                                //bool hasControlPermission = controlAcs != null && controlAcs.Exists(o => o.CONTROL_CODE == "HIS000017");
+                                bool hasControlPermission =  controlAcs != null && controlAcs.FirstOrDefault(o => o.CONTROL_CODE == "HIS000017") != null;
+                                bool isAdmin = HIS.Desktop.IsAdmin.CheckLoginAdmin.IsAdmin(this.loginName);
+                                bool isCashierOrAdmin = transactionData.CASHIER_LOGINNAME == this.loginName || isAdmin;
 
-                            //else if (hi.Column.FieldName == "EDIT_INFO_DISPLAY")
-                            //{
-                            //    if (transactionData.IS_ACTIVE == 1
-                            //     && transactionData.IS_CANCEL != 1
-                            //     && (transactionData.CASHIER_LOGINNAME == this.loginName
-                            //     || HIS.Desktop.IsAdmin.CheckLoginAdmin.IsAdmin(this.loginName))
-                            //     && (controlAcs != null && controlAcs.Exists(o => o.CONTROL_CODE == "HIS000017")))
-                            //    {
-                            //        repositoryItemButtonEdit__E_ButtonClick(transactionData);
-                            //    }
-                            //}
+                                bool isSameDay = transactionData.TRANSACTION_DATE == Inventec.Common.TypeConvert.Parse.ToInt64(DateTime.Now.ToString("yyyyMMdd") + "000000");
+                                bool isPermission = GetHisPermission();
 
+                                if (isActive && isNotCancelled && hasControlPermission)
+                                {
+                                    if ((isSameDay && isCashierOrAdmin) || (!isSameDay && isPermission))
+                                    {
+                                        repositoryItemButtonEdit__E_ButtonClick(transactionData);
+                                    }
+                                }
+                            }
 
                             //else if (hi.Column.FieldName == "NUM_ORDER")
                             //{
