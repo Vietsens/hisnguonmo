@@ -62,6 +62,7 @@ namespace HIS.Desktop.Plugins.ApprovalExamSpecialist
         bool IsExpand;
         DHisSereServ2 _SereServADORightMouseClick;
         L_HIS_TREATMENT_BED_ROOM RowCellClickBedRoom;
+        V_HIS_SPECIALIST_EXAM currentVHisSpecialist;
 
         HIS_EXP_MEST currentPrescription;
         Inventec.Desktop.Common.Modules.Module currentModule;
@@ -98,13 +99,12 @@ namespace HIS.Desktop.Plugins.ApprovalExamSpecialist
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
-
-        public void ReLoad(Action<ADO.SereServADO> editClick, List<SereServADO> SereServADOs)
+        // cái này à a
+        public void ReLoad(Action<ADO.SereServADO> editClick, List<SereServADO> SereServADOs, V_HIS_SPECIALIST_EXAM currentVHisSpecialistExam)
         {
             try
             {
-                this.EditEnableButton_Click = EditEnableButton_Click;
-                this.DeleteEnableButton_Click = DeleteEnableButton_Click;
+                currentVHisSpecialist = currentVHisSpecialistExam;
                 EditButton_Click = editClick;
                 treeSereServ.BeginUpdate();
                 if (SereServADOs != null && SereServADOs.Count > 0)

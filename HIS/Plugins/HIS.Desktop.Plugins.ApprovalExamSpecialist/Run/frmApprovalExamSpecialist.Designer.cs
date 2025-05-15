@@ -28,7 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmApprovalExamSpecialist));
             this.xtraTabControl1 = new DevExpress.XtraTab.XtraTabControl();
             this.xtraTabPage1 = new DevExpress.XtraTab.XtraTabPage();
@@ -145,6 +144,7 @@
             this.gridColumnDateTime = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumnDoctor = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumnProgress = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.memLine = new DevExpress.XtraEditors.Repository.RepositoryItemMemoEdit();
             this.gridColumnMedicalOrder = new DevExpress.XtraGrid.Columns.GridColumn();
             this.layoutControlGroup2 = new DevExpress.XtraLayout.LayoutControlGroup();
             this.layoutControlItem1 = new DevExpress.XtraLayout.LayoutControlItem();
@@ -191,9 +191,9 @@
             this.layoutControlItem7 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem5 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem8 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.imageCollection1 = new DevExpress.Utils.ImageCollection(this.components);
-            this.imageCollection2 = new DevExpress.Utils.ImageCollection(this.components);
-            this.dxValidationProviderEditorInfo = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider(this.components);
+            this.imageCollection1 = new DevExpress.Utils.ImageCollection();
+            this.imageCollection2 = new DevExpress.Utils.ImageCollection();
+            this.dxValidationProviderEditorInfo = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider();
             ((System.ComponentModel.ISupportInitialize)(this.xtraTabControl1)).BeginInit();
             this.xtraTabControl1.SuspendLayout();
             this.xtraTabPage1.SuspendLayout();
@@ -286,6 +286,7 @@
             this.panelControl1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gridControl1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridViewTreatment)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.memLine)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem15)).BeginInit();
@@ -1551,6 +1552,8 @@
             this.gridControl1.Location = new System.Drawing.Point(2, 2);
             this.gridControl1.MainView = this.gridViewTreatment;
             this.gridControl1.Name = "gridControl1";
+            this.gridControl1.RepositoryItems.AddRange(new DevExpress.XtraEditors.Repository.RepositoryItem[] {
+            this.memLine});
             this.gridControl1.Size = new System.Drawing.Size(1118, 508);
             this.gridControl1.TabIndex = 0;
             this.gridControl1.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
@@ -1565,40 +1568,63 @@
             this.gridColumnMedicalOrder});
             this.gridViewTreatment.GridControl = this.gridControl1;
             this.gridViewTreatment.Name = "gridViewTreatment";
+            this.gridViewTreatment.OptionsView.RowAutoHeight = true;
             this.gridViewTreatment.OptionsView.ShowGroupPanel = false;
             this.gridViewTreatment.OptionsView.ShowIndicator = false;
             // 
             // gridColumnDateTime
             // 
             this.gridColumnDateTime.Caption = "Ngày giờ";
-            this.gridColumnDateTime.FieldName = "DATE_TIME";
+            this.gridColumnDateTime.FieldName = "DatetimeFormatted";
             this.gridColumnDateTime.Name = "gridColumnDateTime";
+            this.gridColumnDateTime.OptionsColumn.AllowEdit = false;
+            this.gridColumnDateTime.OptionsColumn.ReadOnly = true;
             this.gridColumnDateTime.Visible = true;
             this.gridColumnDateTime.VisibleIndex = 0;
+            this.gridColumnDateTime.Width = 100;
             // 
             // gridColumnDoctor
             // 
             this.gridColumnDoctor.Caption = "Bác sĩ";
-            this.gridColumnDoctor.FieldName = "DOCTOR";
+            this.gridColumnDoctor.FieldName = "UserName";
             this.gridColumnDoctor.Name = "gridColumnDoctor";
+            this.gridColumnDoctor.OptionsColumn.AllowEdit = false;
+            this.gridColumnDoctor.OptionsColumn.ReadOnly = true;
             this.gridColumnDoctor.Visible = true;
             this.gridColumnDoctor.VisibleIndex = 1;
+            this.gridColumnDoctor.Width = 150;
             // 
             // gridColumnProgress
             // 
+            this.gridColumnProgress.AppearanceCell.Options.UseTextOptions = true;
+            this.gridColumnProgress.AppearanceCell.TextOptions.Trimming = DevExpress.Utils.Trimming.Word;
+            this.gridColumnProgress.AppearanceCell.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
             this.gridColumnProgress.Caption = "Diễn biến";
-            this.gridColumnProgress.FieldName = "PROGRESS";
+            this.gridColumnProgress.ColumnEdit = this.memLine;
+            this.gridColumnProgress.FieldName = "Content";
             this.gridColumnProgress.Name = "gridColumnProgress";
             this.gridColumnProgress.Visible = true;
             this.gridColumnProgress.VisibleIndex = 2;
+            this.gridColumnProgress.Width = 431;
+            // 
+            // memLine
+            // 
+            this.memLine.Appearance.Options.UseTextOptions = true;
+            this.memLine.Appearance.TextOptions.Trimming = DevExpress.Utils.Trimming.Word;
+            this.memLine.Appearance.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
+            this.memLine.Name = "memLine";
             // 
             // gridColumnMedicalOrder
             // 
+            this.gridColumnMedicalOrder.AppearanceCell.Options.UseTextOptions = true;
+            this.gridColumnMedicalOrder.AppearanceCell.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
             this.gridColumnMedicalOrder.Caption = "Y lệnh";
-            this.gridColumnMedicalOrder.FieldName = "MEDICAL_ORDER";
+            this.gridColumnMedicalOrder.ColumnEdit = this.memLine;
+            this.gridColumnMedicalOrder.FieldName = "Medical_order";
             this.gridColumnMedicalOrder.Name = "gridColumnMedicalOrder";
             this.gridColumnMedicalOrder.Visible = true;
             this.gridColumnMedicalOrder.VisibleIndex = 3;
+            this.gridColumnMedicalOrder.Width = 435;
             // 
             // layoutControlGroup2
             // 
@@ -2142,6 +2168,7 @@
             this.panelControl1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.gridControl1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridViewTreatment)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.memLine)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem15)).EndInit();
@@ -2367,5 +2394,6 @@
         private DevExpress.XtraGrid.Columns.GridColumn gridColumnMedicalOrder;
         private Inventec.UC.Paging.UcPaging ucPaging1;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem15;
+        private DevExpress.XtraEditors.Repository.RepositoryItemMemoEdit memLine;
     }
 }

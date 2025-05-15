@@ -37,6 +37,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using HIS.Desktop.LibraryMessage;
 using HIS.Desktop.Plugins.MedicineTypeCreate.Validtion;
+using HIS.Desktop.LocalStorage.BackendData;
 
 namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
 {
@@ -70,7 +71,7 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
                 ValidationControlSpinNotVatAndBlack(spinNumOrder);
                 ValidatecboMedicineLine();
                 //qtcode
-                ValidatecboDosageForm();
+                //ValidatecboDosageForm();
                 //qtcode
                 ValidMaxlengthtxtActiveIngrBhytCode();
                 ValidMaxlengthtxtActiveIngrBhytName();
@@ -141,7 +142,7 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
             }
         }
         //qtcode
-        void ValidatecboDosageForm()
+        void ValidatecboDosageForm(bool isValid)
         {
             try
             {
@@ -149,11 +150,12 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
                 vali.gridLockup = cboDosageForm;
                 vali.ErrorType = ErrorType.Warning;
                 vali.ErrorText = MessageUtil.GetMessage(LibraryMessage.Message.Enum.TruongDuLieuBatBuoc);
-                dxValidationMedicineType.SetValidationRule(cboDosageForm, vali); 
+                dxValidationMedicineType.SetValidationRule(cboDosageForm, isValid ? vali : new ValidateCombox());
+
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
-                LogSystem.Warn(ex); 
+                LogSystem.Warn(ex);
             }
         }
         //qtcode

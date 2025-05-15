@@ -235,6 +235,22 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
             }
         }
 
+        internal static string YLenhChuaCoThongTinLayMau
+        {
+            get
+            {
+                try
+                {
+                    return Inventec.Common.Resource.Get.Value("YLenhChuaCoThongTinLayMau", languageMessage, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(ex);
+                }
+                return "";
+            }
+        }
+
         internal static string ChuaLinhHetThuoc
         {
             get

@@ -249,8 +249,7 @@ namespace HIS.Desktop.Plugins.HisPermissionCancelTrans
                     cboCashier.EditValue = null;
                     txtCashierLoginname.Text = "";
                     dtEffectiveDate.EditValue = null;
-                    cboPermissionType.EditValue = null;
-                    this.cboPermissionType.EditValue = 1;
+                    cboPermissionType.EditValue = 1;
                 }
             }
             catch (Exception ex)
@@ -619,7 +618,7 @@ namespace HIS.Desktop.Plugins.HisPermissionCancelTrans
                 data.USERNAME = user != null ? user.USERNAME : null;
                 //data.PERMISSION_TYPE_ID = IMSys.DbConfig.HIS_RS.HIS_PERMISSION_TYPE.ID__CANCEL_TRAN;
                 data.EFFECTIVE_DATE = Convert.ToInt64(dtEffectiveDate.DateTime.ToString("yyyyMMdd") + "000000");
-                data.PERMISSION_TYPE_ID = cboPermissionType.EditValue != null ? (long)cboPermissionType.EditValue : 1;
+                data.PERMISSION_TYPE_ID = Convert.ToInt64(cboPermissionType.EditValue ?? 1);
             }
             catch (Exception ex)
             {
@@ -643,6 +642,10 @@ namespace HIS.Desktop.Plugins.HisPermissionCancelTrans
                 Mapper.CreateMap<HIS_PERMISSION, HIS_PERMISSION>();
                 HIS_PERMISSION data = Mapper.Map<HIS_PERMISSION>(this.currentData);
                 this.UpdateControlToObject(data);
+                if (!CoincideCheck(data))
+                {
+                    return; 
+                }
 
                 HIS_PERMISSION rs = new BackendAdapter(param).Post<HIS_PERMISSION>("api/HisPermission/Update", ApiConsumers.MosConsumer, data, param);
 
@@ -676,9 +679,13 @@ namespace HIS.Desktop.Plugins.HisPermissionCancelTrans
                 bool success = false;
                 HIS_PERMISSION data = new HIS_PERMISSION();
                 this.UpdateControlToObject(data);
+                if (!CoincideCheck(data))
+                {
+                    return;
+                }
 
                 HIS_PERMISSION rs = new BackendAdapter(param).Post<HIS_PERMISSION>("api/HisPermission/Create", ApiConsumers.MosConsumer, data, param);
-
+                
                 if (rs != null)
                 {
                     success = true;
@@ -802,6 +809,49 @@ namespace HIS.Desktop.Plugins.HisPermissionCancelTrans
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+        private bool CoincideCheck(HIS_PERMISSION data)
+        {
+            try
+            {
+                List<HIS_PERMISSION> listData = new List<HIS_PERMISSION>();
+                CommonParam paramCommon = new CommonParam();
+
+                listData = new BackendAdapter(paramCommon).Get<List<HIS_PERMISSION>>("api/HisPermission/Get", ApiConsumers.MosConsumer, new HisPermissionFilter(), paramCommon);
+                string type1 = "Hủy/hoàn hủy giao dịch";
+                string type2 = "Sửa thông tin giao dịch khác ngày";
+
+                if (listData != null)
+                {
+                    foreach (var item in listData)
+                    {
+                        if (data.LOGINNAME == item.LOGINNAME && data.EFFECTIVE_DATE == item.EFFECTIVE_DATE && data.PERMISSION_TYPE_ID == item.PERMISSION_TYPE_ID)
+                        {
+                            WaitingManager.Hide();
+                            XtraMessageBox.Show(String.Format("Tài khoản {0} đã được thiết lập ngày {1} với loại {2}", data.LOGINNAME, ConvertLongToDateString(data.EFFECTIVE_DATE), data.PERMISSION_TYPE_ID==1? type1 : type2),"Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                            return false;
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+            return true;
+        }
+        public static string ConvertLongToDateString(long rawDateTime)
+        {
+            try
+            {
+                string rawString = rawDateTime.ToString(); 
+                DateTime date = DateTime.ParseExact(rawString, "yyyyMMddHHmmss", System.Globalization.CultureInfo.InvariantCulture);
+                return date.ToString("dd/MM/yyyy");
+            }
+            catch
+            {
+                return string.Empty; 
             }
         }
 

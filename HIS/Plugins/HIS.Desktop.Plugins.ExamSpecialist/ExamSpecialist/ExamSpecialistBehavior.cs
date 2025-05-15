@@ -1,6 +1,7 @@
 ﻿using Inventec.Core;
 using Inventec.Desktop.Core;
 using Inventec.Desktop.Core.Tools;
+using MOS.EFMODEL.DataModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,7 +14,7 @@ namespace HIS.Desktop.Plugins.ExamSpecialist.ExamSpecialist
     {
         object[] entity;
         Inventec.Desktop.Common.Modules.Module currentModule;
-        long treatmentId = 0;
+        
         public ExamSpecialistBehavior()
             : base()
         {
@@ -27,7 +28,9 @@ namespace HIS.Desktop.Plugins.ExamSpecialist.ExamSpecialist
 
         object IExamSpecialist.Run()
         {
+            long treatmentID = 0;
             object result = null;
+            V_HIS_SPECIALIST_EXAM obj = null;
             try
             {
                 if (entity != null && entity.Count() > 0)
@@ -38,9 +41,17 @@ namespace HIS.Desktop.Plugins.ExamSpecialist.ExamSpecialist
                         {
                             currentModule = (Inventec.Desktop.Common.Modules.Module)item;
                         }
+                        else if (item is long)
+                        {
+                            treatmentID = (long)item;
+                        }
+                        else if (item is V_HIS_SPECIALIST_EXAM)
+                        {
+                            obj = (V_HIS_SPECIALIST_EXAM)item;
+                        }
                     }
 
-                    result = new frmExamSpecialist(currentModule, treatmentId);
+                    result = new frmExamSpecialist(currentModule, treatmentID, obj);
                 }
             }
             catch (Exception ex)

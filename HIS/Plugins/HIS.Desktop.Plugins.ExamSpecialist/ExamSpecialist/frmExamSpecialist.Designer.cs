@@ -30,10 +30,6 @@ namespace HIS.Desktop.Plugins.ExamSpecialist.ExamSpecialist
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmExamSpecialist));
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject1 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject2 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject3 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject4 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject5 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject6 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject7 = new DevExpress.Utils.SerializableAppearanceObject();
@@ -46,6 +42,10 @@ namespace HIS.Desktop.Plugins.ExamSpecialist.ExamSpecialist
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject14 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject15 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject16 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject1 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject2 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject3 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject4 = new DevExpress.Utils.SerializableAppearanceObject();
             this.layoutControl1 = new DevExpress.XtraLayout.LayoutControl();
             this.layoutControl2 = new DevExpress.XtraLayout.LayoutControl();
             this.ucPaging1 = new Inventec.UC.Paging.UcPaging();
@@ -74,8 +74,6 @@ namespace HIS.Desktop.Plugins.ExamSpecialist.ExamSpecialist
             this.gridColumn_Is_Exam_Bed = new DevExpress.XtraGrid.Columns.GridColumn();
             this.repositoryItemCheckEdit1 = new DevExpress.XtraEditors.Repository.RepositoryItemCheckEdit();
             this.gridColumn_Exam_Excute = new DevExpress.XtraGrid.Columns.GridColumn();
-            this.cboInviteDepartment = new DevExpress.XtraEditors.GridLookUpEdit();
-            this.gridLookUpEdit1View = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.cboExamSpecialistStt = new DevExpress.XtraEditors.GridLookUpEdit();
             this.gridView2 = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.cboExamExcuteDepartment = new DevExpress.XtraEditors.GridLookUpEdit();
@@ -85,7 +83,6 @@ namespace HIS.Desktop.Plugins.ExamSpecialist.ExamSpecialist
             this.layoutControlItem2 = new DevExpress.XtraLayout.LayoutControlItem();
             this.lciIntructionTimeFrom = new DevExpress.XtraLayout.LayoutControlItem();
             this.lciIntructionTimeTo = new DevExpress.XtraLayout.LayoutControlItem();
-            this.lciInviteDepartment = new DevExpress.XtraLayout.LayoutControlItem();
             this.lciExamExcuteDepartment = new DevExpress.XtraLayout.LayoutControlItem();
             this.lciStatus = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem9 = new DevExpress.XtraLayout.LayoutControlItem();
@@ -96,6 +93,9 @@ namespace HIS.Desktop.Plugins.ExamSpecialist.ExamSpecialist
             this.layoutControlItem3 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlGroup1 = new DevExpress.XtraLayout.LayoutControlGroup();
             this.layoutControlItem1 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.cboInviteDepartment = new DevExpress.XtraEditors.GridLookUpEdit();
+            this.layoutControlItem4 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.gridLookUpEdit1View = new DevExpress.XtraGrid.Views.Grid.GridView();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
             this.layoutControl1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl2)).BeginInit();
@@ -113,8 +113,6 @@ namespace HIS.Desktop.Plugins.ExamSpecialist.ExamSpecialist
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemButtonEditApproval)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemButtonEditRejectApproval)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemCheckEdit1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.cboInviteDepartment.Properties)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.gridLookUpEdit1View)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboExamSpecialistStt.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridView2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboExamExcuteDepartment.Properties)).BeginInit();
@@ -124,7 +122,6 @@ namespace HIS.Desktop.Plugins.ExamSpecialist.ExamSpecialist
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciIntructionTimeFrom)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciIntructionTimeTo)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.lciInviteDepartment)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciExamExcuteDepartment)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciStatus)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem9)).BeginInit();
@@ -135,6 +132,9 @@ namespace HIS.Desktop.Plugins.ExamSpecialist.ExamSpecialist
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cboInviteDepartment.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem4)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gridLookUpEdit1View)).BeginInit();
             this.SuspendLayout();
             // 
             // layoutControl1
@@ -144,12 +144,13 @@ namespace HIS.Desktop.Plugins.ExamSpecialist.ExamSpecialist
             this.layoutControl1.Location = new System.Drawing.Point(0, 0);
             this.layoutControl1.Name = "layoutControl1";
             this.layoutControl1.Root = this.layoutControlGroup1;
-            this.layoutControl1.Size = new System.Drawing.Size(1035, 545);
+            this.layoutControl1.Size = new System.Drawing.Size(1035, 550);
             this.layoutControl1.TabIndex = 0;
             this.layoutControl1.Text = "layoutControl1";
             // 
             // layoutControl2
             // 
+            this.layoutControl2.Controls.Add(this.cboInviteDepartment);
             this.layoutControl2.Controls.Add(this.ucPaging1);
             this.layoutControl2.Controls.Add(this.txtTreatmentCode);
             this.layoutControl2.Controls.Add(this.btnSearch);
@@ -159,7 +160,6 @@ namespace HIS.Desktop.Plugins.ExamSpecialist.ExamSpecialist
             this.layoutControl2.Controls.Add(this.dtIntructionTimeTo);
             this.layoutControl2.Controls.Add(this.dtIntructionTimeFrom);
             this.layoutControl2.Controls.Add(this.gridControlExamSpecialist);
-            this.layoutControl2.Controls.Add(this.cboInviteDepartment);
             this.layoutControl2.Controls.Add(this.cboExamSpecialistStt);
             this.layoutControl2.Controls.Add(this.cboExamExcuteDepartment);
             this.layoutControl2.HiddenItems.AddRange(new DevExpress.XtraLayout.BaseLayoutItem[] {
@@ -168,15 +168,15 @@ namespace HIS.Desktop.Plugins.ExamSpecialist.ExamSpecialist
             this.layoutControl2.Name = "layoutControl2";
             this.layoutControl2.OptionsCustomizationForm.DesignTimeCustomizationFormPositionAndSize = new System.Drawing.Rectangle(909, 322, 250, 350);
             this.layoutControl2.Root = this.Root;
-            this.layoutControl2.Size = new System.Drawing.Size(1031, 541);
+            this.layoutControl2.Size = new System.Drawing.Size(1031, 546);
             this.layoutControl2.TabIndex = 4;
             this.layoutControl2.Text = "layoutControl2";
             // 
             // ucPaging1
             // 
-            this.ucPaging1.Location = new System.Drawing.Point(2, 518);
+            this.ucPaging1.Location = new System.Drawing.Point(2, 524);
             this.ucPaging1.Name = "ucPaging1";
-            this.ucPaging1.Size = new System.Drawing.Size(1027, 21);
+            this.ucPaging1.Size = new System.Drawing.Size(1027, 20);
             this.ucPaging1.TabIndex = 15;
             // 
             // txtTreatmentCode
@@ -185,15 +185,16 @@ namespace HIS.Desktop.Plugins.ExamSpecialist.ExamSpecialist
             this.txtTreatmentCode.Name = "txtTreatmentCode";
             this.txtTreatmentCode.Properties.NullValuePrompt = "Mã điều trị";
             this.txtTreatmentCode.Properties.NullValuePromptShowForEmptyValue = true;
-            this.txtTreatmentCode.Size = new System.Drawing.Size(116, 20);
+            this.txtTreatmentCode.Size = new System.Drawing.Size(144, 20);
             this.txtTreatmentCode.StyleController = this.layoutControl2;
             this.txtTreatmentCode.TabIndex = 14;
+            this.txtTreatmentCode.KeyDown += new System.Windows.Forms.KeyEventHandler(this.cboInviteDepartment_KeyDown);
             // 
             // btnSearch
             // 
-            this.btnSearch.Location = new System.Drawing.Point(507, 26);
+            this.btnSearch.Location = new System.Drawing.Point(525, 26);
             this.btnSearch.Name = "btnSearch";
-            this.btnSearch.Size = new System.Drawing.Size(102, 22);
+            this.btnSearch.Size = new System.Drawing.Size(86, 22);
             this.btnSearch.StyleController = this.layoutControl2;
             this.btnSearch.TabIndex = 13;
             this.btnSearch.Text = "Tìm kiếm(Ctrl F)";
@@ -201,23 +202,25 @@ namespace HIS.Desktop.Plugins.ExamSpecialist.ExamSpecialist
             // 
             // txtSearch
             // 
-            this.txtSearch.Location = new System.Drawing.Point(245, 26);
+            this.txtSearch.Location = new System.Drawing.Point(294, 26);
             this.txtSearch.Name = "txtSearch";
             this.txtSearch.Properties.NullValuePrompt = "Từ khóa tìm kiếm";
             this.txtSearch.Properties.NullValuePromptShowForEmptyValue = true;
-            this.txtSearch.Size = new System.Drawing.Size(258, 20);
+            this.txtSearch.Size = new System.Drawing.Size(227, 20);
             this.txtSearch.StyleController = this.layoutControl2;
             this.txtSearch.TabIndex = 12;
+            this.txtSearch.KeyDown += new System.Windows.Forms.KeyEventHandler(this.cboInviteDepartment_KeyDown);
             // 
             // txtPatientCode
             // 
-            this.txtPatientCode.Location = new System.Drawing.Point(122, 26);
+            this.txtPatientCode.Location = new System.Drawing.Point(150, 26);
             this.txtPatientCode.Name = "txtPatientCode";
             this.txtPatientCode.Properties.NullValuePrompt = "Mã bệnh nhân";
             this.txtPatientCode.Properties.NullValuePromptShowForEmptyValue = true;
-            this.txtPatientCode.Size = new System.Drawing.Size(119, 20);
+            this.txtPatientCode.Size = new System.Drawing.Size(140, 20);
             this.txtPatientCode.StyleController = this.layoutControl2;
             this.txtPatientCode.TabIndex = 11;
+            this.txtPatientCode.KeyDown += new System.Windows.Forms.KeyEventHandler(this.cboInviteDepartment_KeyDown);
             // 
             // textEdit1
             // 
@@ -236,7 +239,7 @@ namespace HIS.Desktop.Plugins.ExamSpecialist.ExamSpecialist
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
             this.dtIntructionTimeTo.Properties.CalendarTimeProperties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
-            this.dtIntructionTimeTo.Size = new System.Drawing.Size(132, 20);
+            this.dtIntructionTimeTo.Size = new System.Drawing.Size(139, 20);
             this.dtIntructionTimeTo.StyleController = this.layoutControl2;
             this.dtIntructionTimeTo.TabIndex = 6;
             // 
@@ -262,7 +265,7 @@ namespace HIS.Desktop.Plugins.ExamSpecialist.ExamSpecialist
             this.repositoryItemButtonEditApproval,
             this.repositoryItemButtonEditRejectApproval,
             this.repositoryItemCheckEdit1});
-            this.gridControlExamSpecialist.Size = new System.Drawing.Size(1027, 462);
+            this.gridControlExamSpecialist.Size = new System.Drawing.Size(1027, 468);
             this.gridControlExamSpecialist.TabIndex = 4;
             this.gridControlExamSpecialist.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
             this.gridView1});
@@ -294,6 +297,7 @@ namespace HIS.Desktop.Plugins.ExamSpecialist.ExamSpecialist
             // 
             this.gridColumn_Transaction_Stt.Caption = "STT";
             this.gridColumn_Transaction_Stt.FieldName = "STT";
+            this.gridColumn_Transaction_Stt.MaxWidth = 40;
             this.gridColumn_Transaction_Stt.MinWidth = 30;
             this.gridColumn_Transaction_Stt.Name = "gridColumn_Transaction_Stt";
             this.gridColumn_Transaction_Stt.OptionsColumn.AllowEdit = false;
@@ -319,7 +323,7 @@ namespace HIS.Desktop.Plugins.ExamSpecialist.ExamSpecialist
             // 
             this.repositoryItemButtonEditApproval.AutoHeight = false;
             this.repositoryItemButtonEditApproval.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("repositoryItemButtonEditApproval.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject1, serializableAppearanceObject2, serializableAppearanceObject3, serializableAppearanceObject4, "", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("repositoryItemButtonEditApproval.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject5, serializableAppearanceObject6, serializableAppearanceObject7, serializableAppearanceObject8, "", null, null, true)});
             this.repositoryItemButtonEditApproval.Name = "repositoryItemButtonEditApproval";
             this.repositoryItemButtonEditApproval.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             this.repositoryItemButtonEditApproval.Click += new System.EventHandler(this.repositoryItemButtonEditApproval_Click);
@@ -341,7 +345,7 @@ namespace HIS.Desktop.Plugins.ExamSpecialist.ExamSpecialist
             // 
             this.repositoryItemButtonEditRejectApproval.AutoHeight = false;
             this.repositoryItemButtonEditRejectApproval.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("repositoryItemButtonEditRejectApproval.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject5, serializableAppearanceObject6, serializableAppearanceObject7, serializableAppearanceObject8, "", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("repositoryItemButtonEditRejectApproval.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject9, serializableAppearanceObject10, serializableAppearanceObject11, serializableAppearanceObject12, "", null, null, true)});
             this.repositoryItemButtonEditRejectApproval.Name = "repositoryItemButtonEditRejectApproval";
             this.repositoryItemButtonEditRejectApproval.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             this.repositoryItemButtonEditRejectApproval.Click += new System.EventHandler(this.repositoryItemButtonEditReject_Click);
@@ -429,9 +433,9 @@ namespace HIS.Desktop.Plugins.ExamSpecialist.ExamSpecialist
             // 
             this.gridColumn_Invite_Content.Caption = "Nội dung mời";
             this.gridColumn_Invite_Content.FieldName = "INVITE_CONTENT";
+            this.gridColumn_Invite_Content.MinWidth = 100;
             this.gridColumn_Invite_Content.Name = "gridColumn_Invite_Content";
             this.gridColumn_Invite_Content.OptionsColumn.AllowEdit = false;
-            this.gridColumn_Invite_Content.OptionsColumn.FixedWidth = true;
             this.gridColumn_Invite_Content.Visible = true;
             this.gridColumn_Invite_Content.VisibleIndex = 10;
             this.gridColumn_Invite_Content.Width = 140;
@@ -467,30 +471,6 @@ namespace HIS.Desktop.Plugins.ExamSpecialist.ExamSpecialist
             this.gridColumn_Exam_Excute.VisibleIndex = 12;
             this.gridColumn_Exam_Excute.Width = 160;
             // 
-            // cboInviteDepartment
-            // 
-            this.cboInviteDepartment.Location = new System.Drawing.Point(451, 2);
-            this.cboInviteDepartment.Name = "cboInviteDepartment";
-            this.cboInviteDepartment.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo),
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete, "", -1, true, false, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject9, serializableAppearanceObject10, serializableAppearanceObject11, serializableAppearanceObject12, "", null, null, true)});
-            this.cboInviteDepartment.Properties.NullText = "";
-            this.cboInviteDepartment.Properties.PopupSizeable = false;
-            this.cboInviteDepartment.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.Standard;
-            this.cboInviteDepartment.Properties.View = this.gridLookUpEdit1View;
-            this.cboInviteDepartment.Size = new System.Drawing.Size(158, 20);
-            this.cboInviteDepartment.StyleController = this.layoutControl2;
-            this.cboInviteDepartment.TabIndex = 7;
-            this.cboInviteDepartment.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.cboInviteDepartment_ButtonClick);
-            this.cboInviteDepartment.EditValueChanged += new System.EventHandler(this.cboInviteDepartment_EditValueChanged);
-            // 
-            // gridLookUpEdit1View
-            // 
-            this.gridLookUpEdit1View.FocusRectStyle = DevExpress.XtraGrid.Views.Grid.DrawFocusRectStyle.RowFocus;
-            this.gridLookUpEdit1View.Name = "gridLookUpEdit1View";
-            this.gridLookUpEdit1View.OptionsSelection.EnableAppearanceFocusedCell = false;
-            this.gridLookUpEdit1View.OptionsView.ShowGroupPanel = false;
-            // 
             // cboExamSpecialistStt
             // 
             this.cboExamSpecialistStt.Location = new System.Drawing.Point(945, 2);
@@ -514,19 +494,21 @@ namespace HIS.Desktop.Plugins.ExamSpecialist.ExamSpecialist
             // 
             // cboExamExcuteDepartment
             // 
-            this.cboExamExcuteDepartment.Location = new System.Drawing.Point(718, 2);
+            this.cboExamExcuteDepartment.Location = new System.Drawing.Point(720, 2);
             this.cboExamExcuteDepartment.Name = "cboExamExcuteDepartment";
+            this.cboExamExcuteDepartment.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
             this.cboExamExcuteDepartment.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo),
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete, "", -1, true, false, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject13, serializableAppearanceObject14, serializableAppearanceObject15, serializableAppearanceObject16, "", null, null, true)});
             this.cboExamExcuteDepartment.Properties.NullText = "";
             this.cboExamExcuteDepartment.Properties.PopupSizeable = false;
             this.cboExamExcuteDepartment.Properties.View = this.gridView3;
-            this.cboExamExcuteDepartment.Size = new System.Drawing.Size(158, 20);
+            this.cboExamExcuteDepartment.Size = new System.Drawing.Size(156, 20);
             this.cboExamExcuteDepartment.StyleController = this.layoutControl2;
             this.cboExamExcuteDepartment.TabIndex = 8;
             this.cboExamExcuteDepartment.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.cboExamExcuteDepartment_ButtonClick);
             this.cboExamExcuteDepartment.EditValueChanged += new System.EventHandler(this.cboExamExcuteDepartment_EditValueChanged);
+            this.cboExamExcuteDepartment.KeyDown += new System.Windows.Forms.KeyEventHandler(this.cboInviteDepartment_KeyDown);
             // 
             // gridView3
             // 
@@ -551,7 +533,6 @@ namespace HIS.Desktop.Plugins.ExamSpecialist.ExamSpecialist
             this.layoutControlItem2,
             this.lciIntructionTimeFrom,
             this.lciIntructionTimeTo,
-            this.lciInviteDepartment,
             this.lciExamExcuteDepartment,
             this.lciStatus,
             this.layoutControlItem9,
@@ -559,10 +540,11 @@ namespace HIS.Desktop.Plugins.ExamSpecialist.ExamSpecialist
             this.layoutControlItem11,
             this.layoutControlItem12,
             this.emptySpaceItem1,
-            this.layoutControlItem3});
+            this.layoutControlItem3,
+            this.layoutControlItem4});
             this.Root.Location = new System.Drawing.Point(0, 0);
             this.Root.Name = "Root";
-            this.Root.Size = new System.Drawing.Size(1031, 541);
+            this.Root.Size = new System.Drawing.Size(1031, 546);
             this.Root.TextVisible = false;
             // 
             // layoutControlItem2
@@ -570,7 +552,7 @@ namespace HIS.Desktop.Plugins.ExamSpecialist.ExamSpecialist
             this.layoutControlItem2.Control = this.gridControlExamSpecialist;
             this.layoutControlItem2.Location = new System.Drawing.Point(0, 50);
             this.layoutControlItem2.Name = "layoutControlItem2";
-            this.layoutControlItem2.Size = new System.Drawing.Size(1031, 466);
+            this.layoutControlItem2.Size = new System.Drawing.Size(1031, 472);
             this.layoutControlItem2.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem2.TextVisible = false;
             // 
@@ -594,33 +576,20 @@ namespace HIS.Desktop.Plugins.ExamSpecialist.ExamSpecialist
             this.lciIntructionTimeTo.Control = this.dtIntructionTimeTo;
             this.lciIntructionTimeTo.Location = new System.Drawing.Point(183, 0);
             this.lciIntructionTimeTo.Name = "lciIntructionTimeTo";
-            this.lciIntructionTimeTo.Size = new System.Drawing.Size(171, 24);
+            this.lciIntructionTimeTo.Size = new System.Drawing.Size(178, 24);
             this.lciIntructionTimeTo.Text = "đến";
             this.lciIntructionTimeTo.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lciIntructionTimeTo.TextSize = new System.Drawing.Size(30, 20);
             this.lciIntructionTimeTo.TextToControlDistance = 5;
-            // 
-            // lciInviteDepartment
-            // 
-            this.lciInviteDepartment.AppearanceItemCaption.Options.UseTextOptions = true;
-            this.lciInviteDepartment.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
-            this.lciInviteDepartment.Control = this.cboInviteDepartment;
-            this.lciInviteDepartment.Location = new System.Drawing.Point(354, 0);
-            this.lciInviteDepartment.Name = "lciInviteDepartment";
-            this.lciInviteDepartment.Size = new System.Drawing.Size(257, 24);
-            this.lciInviteDepartment.Text = "Khoa phòng mời:";
-            this.lciInviteDepartment.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
-            this.lciInviteDepartment.TextSize = new System.Drawing.Size(90, 13);
-            this.lciInviteDepartment.TextToControlDistance = 5;
             // 
             // lciExamExcuteDepartment
             // 
             this.lciExamExcuteDepartment.AppearanceItemCaption.Options.UseTextOptions = true;
             this.lciExamExcuteDepartment.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lciExamExcuteDepartment.Control = this.cboExamExcuteDepartment;
-            this.lciExamExcuteDepartment.Location = new System.Drawing.Point(611, 0);
+            this.lciExamExcuteDepartment.Location = new System.Drawing.Point(613, 0);
             this.lciExamExcuteDepartment.Name = "lciExamExcuteDepartment";
-            this.lciExamExcuteDepartment.Size = new System.Drawing.Size(267, 24);
+            this.lciExamExcuteDepartment.Size = new System.Drawing.Size(265, 24);
             this.lciExamExcuteDepartment.Text = "Khoa phòng khám:";
             this.lciExamExcuteDepartment.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lciExamExcuteDepartment.TextSize = new System.Drawing.Size(100, 20);
@@ -642,27 +611,27 @@ namespace HIS.Desktop.Plugins.ExamSpecialist.ExamSpecialist
             // layoutControlItem9
             // 
             this.layoutControlItem9.Control = this.txtPatientCode;
-            this.layoutControlItem9.Location = new System.Drawing.Point(120, 24);
+            this.layoutControlItem9.Location = new System.Drawing.Point(148, 24);
             this.layoutControlItem9.Name = "layoutControlItem9";
-            this.layoutControlItem9.Size = new System.Drawing.Size(123, 26);
+            this.layoutControlItem9.Size = new System.Drawing.Size(144, 26);
             this.layoutControlItem9.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem9.TextVisible = false;
             // 
             // layoutControlItem10
             // 
             this.layoutControlItem10.Control = this.txtSearch;
-            this.layoutControlItem10.Location = new System.Drawing.Point(243, 24);
+            this.layoutControlItem10.Location = new System.Drawing.Point(292, 24);
             this.layoutControlItem10.Name = "layoutControlItem10";
-            this.layoutControlItem10.Size = new System.Drawing.Size(262, 26);
+            this.layoutControlItem10.Size = new System.Drawing.Size(231, 26);
             this.layoutControlItem10.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem10.TextVisible = false;
             // 
             // layoutControlItem11
             // 
             this.layoutControlItem11.Control = this.btnSearch;
-            this.layoutControlItem11.Location = new System.Drawing.Point(505, 24);
+            this.layoutControlItem11.Location = new System.Drawing.Point(523, 24);
             this.layoutControlItem11.Name = "layoutControlItem11";
-            this.layoutControlItem11.Size = new System.Drawing.Size(106, 26);
+            this.layoutControlItem11.Size = new System.Drawing.Size(90, 26);
             this.layoutControlItem11.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem11.TextVisible = false;
             // 
@@ -671,24 +640,24 @@ namespace HIS.Desktop.Plugins.ExamSpecialist.ExamSpecialist
             this.layoutControlItem12.Control = this.txtTreatmentCode;
             this.layoutControlItem12.Location = new System.Drawing.Point(0, 24);
             this.layoutControlItem12.Name = "layoutControlItem12";
-            this.layoutControlItem12.Size = new System.Drawing.Size(120, 26);
+            this.layoutControlItem12.Size = new System.Drawing.Size(148, 26);
             this.layoutControlItem12.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem12.TextVisible = false;
             // 
             // emptySpaceItem1
             // 
             this.emptySpaceItem1.AllowHotTrack = false;
-            this.emptySpaceItem1.Location = new System.Drawing.Point(611, 24);
+            this.emptySpaceItem1.Location = new System.Drawing.Point(613, 24);
             this.emptySpaceItem1.Name = "emptySpaceItem1";
-            this.emptySpaceItem1.Size = new System.Drawing.Size(420, 26);
+            this.emptySpaceItem1.Size = new System.Drawing.Size(418, 26);
             this.emptySpaceItem1.TextSize = new System.Drawing.Size(0, 0);
             // 
             // layoutControlItem3
             // 
             this.layoutControlItem3.Control = this.ucPaging1;
-            this.layoutControlItem3.Location = new System.Drawing.Point(0, 516);
+            this.layoutControlItem3.Location = new System.Drawing.Point(0, 522);
             this.layoutControlItem3.Name = "layoutControlItem3";
-            this.layoutControlItem3.Size = new System.Drawing.Size(1031, 25);
+            this.layoutControlItem3.Size = new System.Drawing.Size(1031, 24);
             this.layoutControlItem3.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem3.TextVisible = false;
             // 
@@ -700,7 +669,7 @@ namespace HIS.Desktop.Plugins.ExamSpecialist.ExamSpecialist
             this.layoutControlItem1});
             this.layoutControlGroup1.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup1.Name = "layoutControlGroup1";
-            this.layoutControlGroup1.Size = new System.Drawing.Size(1035, 545);
+            this.layoutControlGroup1.Size = new System.Drawing.Size(1035, 550);
             this.layoutControlGroup1.TextVisible = false;
             // 
             // layoutControlItem1
@@ -708,15 +677,51 @@ namespace HIS.Desktop.Plugins.ExamSpecialist.ExamSpecialist
             this.layoutControlItem1.Control = this.layoutControl2;
             this.layoutControlItem1.Location = new System.Drawing.Point(0, 0);
             this.layoutControlItem1.Name = "layoutControlItem1";
-            this.layoutControlItem1.Size = new System.Drawing.Size(1035, 545);
+            this.layoutControlItem1.Size = new System.Drawing.Size(1035, 550);
             this.layoutControlItem1.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem1.TextVisible = false;
+            // 
+            // cboInviteDepartment
+            // 
+            this.cboInviteDepartment.Location = new System.Drawing.Point(458, 2);
+            this.cboInviteDepartment.Name = "cboInviteDepartment";
+            this.cboInviteDepartment.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
+            this.cboInviteDepartment.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo),
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete, "", -1, true, false, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject1, serializableAppearanceObject2, serializableAppearanceObject3, serializableAppearanceObject4, "", null, null, true)});
+            this.cboInviteDepartment.Properties.NullText = "";
+            this.cboInviteDepartment.Properties.View = this.gridLookUpEdit1View;
+            this.cboInviteDepartment.Size = new System.Drawing.Size(153, 20);
+            this.cboInviteDepartment.StyleController = this.layoutControl2;
+            this.cboInviteDepartment.TabIndex = 16;
+            this.cboInviteDepartment.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.cboInviteDepartment_ButtonClick);
+            this.cboInviteDepartment.EditValueChanged += new System.EventHandler(this.cboInviteDepartment_EditValueChanged);
+            // 
+            // layoutControlItem4
+            // 
+            this.layoutControlItem4.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.layoutControlItem4.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.layoutControlItem4.Control = this.cboInviteDepartment;
+            this.layoutControlItem4.Location = new System.Drawing.Point(361, 0);
+            this.layoutControlItem4.Name = "layoutControlItem4";
+            this.layoutControlItem4.Size = new System.Drawing.Size(252, 24);
+            this.layoutControlItem4.Text = "Khoa phòng mời:";
+            this.layoutControlItem4.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.layoutControlItem4.TextSize = new System.Drawing.Size(90, 20);
+            this.layoutControlItem4.TextToControlDistance = 5;
+            // 
+            // gridLookUpEdit1View
+            // 
+            this.gridLookUpEdit1View.FocusRectStyle = DevExpress.XtraGrid.Views.Grid.DrawFocusRectStyle.RowFocus;
+            this.gridLookUpEdit1View.Name = "gridLookUpEdit1View";
+            this.gridLookUpEdit1View.OptionsSelection.EnableAppearanceFocusedCell = false;
+            this.gridLookUpEdit1View.OptionsView.ShowGroupPanel = false;
             // 
             // frmExamSpecialist
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1035, 545);
+            this.ClientSize = new System.Drawing.Size(1035, 550);
             this.Controls.Add(this.layoutControl1);
             this.Name = "frmExamSpecialist";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
@@ -741,8 +746,6 @@ namespace HIS.Desktop.Plugins.ExamSpecialist.ExamSpecialist
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemButtonEditApproval)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemButtonEditRejectApproval)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemCheckEdit1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.cboInviteDepartment.Properties)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.gridLookUpEdit1View)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboExamSpecialistStt.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridView2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboExamExcuteDepartment.Properties)).EndInit();
@@ -752,7 +755,6 @@ namespace HIS.Desktop.Plugins.ExamSpecialist.ExamSpecialist
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciIntructionTimeFrom)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciIntructionTimeTo)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.lciInviteDepartment)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciExamExcuteDepartment)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciStatus)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem9)).EndInit();
@@ -763,6 +765,9 @@ namespace HIS.Desktop.Plugins.ExamSpecialist.ExamSpecialist
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem3)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cboInviteDepartment.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem4)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gridLookUpEdit1View)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -787,7 +792,6 @@ namespace HIS.Desktop.Plugins.ExamSpecialist.ExamSpecialist
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem2;
         private DevExpress.XtraLayout.LayoutControlItem lciIntructionTimeFrom;
         private DevExpress.XtraLayout.LayoutControlItem lciIntructionTimeTo;
-        private DevExpress.XtraLayout.LayoutControlItem lciInviteDepartment;
         private DevExpress.XtraLayout.LayoutControlItem lciExamExcuteDepartment;
         private DevExpress.XtraLayout.LayoutControlItem lciStatus;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem9;
@@ -796,14 +800,10 @@ namespace HIS.Desktop.Plugins.ExamSpecialist.ExamSpecialist
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem12;
         private DevExpress.XtraLayout.EmptySpaceItem emptySpaceItem1;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem1;
-        private DevExpress.XtraEditors.GridLookUpEdit cboInviteDepartment;
-        private DevExpress.XtraGrid.Views.Grid.GridView gridLookUpEdit1View;
         private DevExpress.XtraEditors.GridLookUpEdit cboExamSpecialistStt;
         private DevExpress.XtraGrid.Views.Grid.GridView gridView2;
         private DevExpress.XtraEditors.GridLookUpEdit cboExamExcuteDepartment;
         private DevExpress.XtraGrid.Views.Grid.GridView gridView3;
-        private Inventec.UC.Paging.UcPaging ucPaging1;
-        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem3;
         private DevExpress.XtraGrid.Columns.GridColumn gridColumn_Transaction_Stt;
         private DevExpress.XtraGrid.Columns.GridColumn gridColumn_Approval;
         private DevExpress.XtraGrid.Columns.GridColumn gridColumn_Reject_Approval;
@@ -820,5 +820,10 @@ namespace HIS.Desktop.Plugins.ExamSpecialist.ExamSpecialist
         private DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit repositoryItemButtonEditApproval;
         private DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit repositoryItemButtonEditRejectApproval;
         private DevExpress.XtraEditors.Repository.RepositoryItemCheckEdit repositoryItemCheckEdit1;
+        private Inventec.UC.Paging.UcPaging ucPaging1;
+        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem3;
+        private DevExpress.XtraEditors.GridLookUpEdit cboInviteDepartment;
+        private DevExpress.XtraGrid.Views.Grid.GridView gridLookUpEdit1View;
+        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem4;
     }
 }

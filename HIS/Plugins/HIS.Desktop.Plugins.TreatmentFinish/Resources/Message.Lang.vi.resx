@@ -168,6 +168,9 @@
   <data name="CacPhieuChiDinhSauChuaKetThucKhongChoPhepKetThuc" xml:space="preserve">
     <value>Các phiếu chỉ định sau chưa kết thúc: {0}</value>
   </data>
+  <data name="YLenhChuaCoThongTinLayMau" xml:space="preserve">
+    <value>Y lệnh {0} chưa có thông tin lấy mẫu</value>
+  </data>
   <data name="CacVatTuThieuThongTinHoaDonBanCoMuonTiepTuc" xml:space="preserve">
     <value>Các vật tư {0} thiếu thông tin hóa đơn. Bạn có muốn tiếp tục không?</value>
   </data>
