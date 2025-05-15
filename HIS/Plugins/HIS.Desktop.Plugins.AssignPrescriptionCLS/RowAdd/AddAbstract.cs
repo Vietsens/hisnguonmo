@@ -15,6 +15,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+using DevExpress.XtraEditors;
 using DevExpress.XtraEditors.DXErrorProvider;
 using HIS.Desktop.LocalStorage.BackendData;
 using HIS.Desktop.Plugins.AssignPrescriptionCLS.ADO;
@@ -92,6 +93,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.Add
         protected long HtuId { get; set; }
         protected long MedicineUseFormId { get; set; }
         protected string Tutorial { get; set; }
+        protected string HtuText { get; set; }
         protected bool IsExpend { get; set; }
         protected decimal? UseDays { get; set; }
         protected object DataRow { get; set; }
@@ -135,6 +137,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.Add
             this.MediStockD1SDOs = frmAssignPrescription.mediStockD1ADOs;
             this.MedicineUseFormId = Inventec.Common.TypeConvert.Parse.ToInt64((frmAssignPrescription.cboMedicineUseForm.EditValue ?? "0").ToString());
             this.Tutorial = frmAssignPrescription.txtTutorial.Text.Trim();
+            this.HtuText = frmAssignPrescription.txtHtu.Text.Trim();
             this.UseDays = 1;
 
             this.IsCheckFilm = frmAssignPrescription.chkPhimHong.Enabled && frmAssignPrescription.chkPhimHong.Checked;
@@ -202,6 +205,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.Add
             if (this.Toi > 0)
                 medicineTypeSDO.Toi = this.Toi;
             medicineTypeSDO.TUTORIAL = this.Tutorial;
+            medicineTypeSDO.HTU_TEXT = this.HtuText;
             medicineTypeSDO.IsExpend = this.IsExpend;
             if (this.MedicineUseFormId > 0)
                 medicineTypeSDO.MEDICINE_USE_FORM_ID = this.MedicineUseFormId;
@@ -729,6 +733,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.Add
                 medicineTypeSDO__Category__SameMediAcin.Chieu = this.Chieu;
                 medicineTypeSDO__Category__SameMediAcin.Toi = this.Toi;
                 medicineTypeSDO__Category__SameMediAcin.TUTORIAL = this.Tutorial;
+                medicineTypeSDO__Category__SameMediAcin.HTU_TEXT = this.HtuText;
                 UpdateUseTimeInDataRow(medicineTypeSDO__Category__SameMediAcin);
                 medicineTypeSDO__Category__SameMediAcin.IsOutKtcFee = this.IsOutKtcFee;
                 medicineTypeSDO__Category__SameMediAcin.IsStent = this.IsStent;
@@ -763,6 +768,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.Add
                 medicineTypeSDO__Category__SameMediAcin.Chieu = this.Chieu;
                 medicineTypeSDO__Category__SameMediAcin.Toi = this.Toi;
                 medicineTypeSDO__Category__SameMediAcin.TUTORIAL = this.Tutorial;
+                medicineTypeSDO__Category__SameMediAcin.HTU_TEXT = this.HtuText;
                 //UpdateUseTimeInDataRow(medicineTypeSDO__Category__SameMediAcin);
                 //medicineTypeSDO__Category__SameMediAcin.IsOutKtcFee = this.IsOutKtcFee;
                 //medicineTypeSDO__Category__SameMediAcin.IsStent = this.IsStent;
@@ -800,6 +806,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.Add
                 medicineTypeSDO__Category__SameMediAcin.Chieu = this.Chieu;
                 medicineTypeSDO__Category__SameMediAcin.Toi = this.Toi;
                 medicineTypeSDO__Category__SameMediAcin.TUTORIAL = this.Tutorial;
+                medicineTypeSDO__Category__SameMediAcin.HTU_TEXT = this.HtuText;
                 UpdateUseTimeInDataRow(medicineTypeSDO__Category__SameMediAcin);
                 medicineTypeSDO__Category__SameMediAcin.IsOutKtcFee = this.IsOutKtcFee;
                 medicineTypeSDO__Category__SameMediAcin.IsStent = this.IsStent;
@@ -896,6 +903,12 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.Add
                         MessageBox.Show(ResourceMessage.DoiTuongBHYTBatBuocPhaiNhapHDSD, HIS.Desktop.LibraryMessage.MessageUtil.GetMessage(LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaThongBao));
                         valid = false;
                         frmAssignPrescription.txtTutorial.Focus();
+                    }
+                    if (String.IsNullOrEmpty(this.HtuText))
+                    {
+                        DialogResult result = XtraMessageBox.Show("Bắt buộc phải nhập cách dùng", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        valid = false;
+                        frmAssignPrescription.txtHtu.Focus();
                     }
 
                     if (this.MedicineUseFormId <= 0)

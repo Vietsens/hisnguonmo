@@ -1157,6 +1157,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.ADO
         public double? Trua { get; set; }
         public double? Chieu { get; set; }
         public double? Toi { get; set; }
+        public string HTU_TEXT { get; set; }
         public long? HTU_ID { get; set; }
         public long? UseTimeTo { get; set; }
         public decimal? UseDays { get; set; }

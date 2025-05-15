@@ -641,6 +641,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
                             if (medicineType != null && (medicineType.MEDICINE_USE_FORM_ID ?? 0) > 0)
                             {
                                 this.cboMedicineUseForm.EditValue = medicineType.MEDICINE_USE_FORM_ID;
+                                this.txtHtu.Text = this.cboMedicineUseForm.Text;
                             }
                         }
 
@@ -652,6 +653,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
                             if (!String.IsNullOrEmpty(this.medicineTypeTutSelected.TUTORIAL))
                             {
                                 this.txtTutorial.Text = this.medicineTypeTutSelected.TUTORIAL;
+                                this.txtHtu.Text = this.cboMedicineUseForm.Text;
                             }
                             //Nếu không có hướng dẫn sử dụng thì tự động set theo các trường như lúc nhập liệu
                             else
@@ -674,9 +676,13 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
                         if ((medicineType.MEDICINE_USE_FORM_ID ?? 0) > 0)
                         {
                             this.cboMedicineUseForm.EditValue = medicineType.MEDICINE_USE_FORM_ID;
+                            this.txtHtu.Text = this.cboMedicineUseForm.Text;
                         }
                         if (String.IsNullOrEmpty(this.txtTutorial.Text))
+                        {
                             this.txtTutorial.Text = medicineType.TUTORIAL;
+                            this.txtHtu.Text = this.cboMedicineUseForm.Text;
+                        }                                
                     }
                 }
             }
