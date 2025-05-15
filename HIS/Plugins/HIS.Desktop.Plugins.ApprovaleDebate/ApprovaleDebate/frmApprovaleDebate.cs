@@ -557,6 +557,7 @@ namespace HIS.Desktop.Plugins.ApprovaleDebate.ApprovaleDebate
             try
             {
                 SetMaxlength(txtYKienBacSi, 4000, true);
+                ValidContent();
             }
             catch (Exception ex)
             {
@@ -579,6 +580,12 @@ namespace HIS.Desktop.Plugins.ApprovaleDebate.ApprovaleDebate
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
+        }
+        private void ValidContent()
+        {
+            var spin = new LookupEditWithTextEditValidationRule();
+            spin.txtTextEdit = cboEmployee;
+            this.dxValidationProvider1.SetValidationRule(cboEmployee, spin);
         }
 
         private void bbtnSave_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
