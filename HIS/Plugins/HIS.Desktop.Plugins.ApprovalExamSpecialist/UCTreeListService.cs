@@ -98,13 +98,12 @@ namespace HIS.Desktop.Plugins.ApprovalExamSpecialist
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
-
-        public void ReLoad(Action<ADO.SereServADO> editClick, List<SereServADO> SereServADOs)
+        // cái này à a
+        public void ReLoad(Action<ADO.SereServADO> editClick, List<SereServADO> SereServADOs, L_HIS_TREATMENT_BED_ROOM _RowCellClickBedRoom)
         {
             try
             {
-                this.EditEnableButton_Click = EditEnableButton_Click;
-                this.DeleteEnableButton_Click = DeleteEnableButton_Click;
+                RowCellClickBedRoom = _RowCellClickBedRoom;
                 EditButton_Click = editClick;
                 treeSereServ.BeginUpdate();
                 if (SereServADOs != null && SereServADOs.Count > 0)

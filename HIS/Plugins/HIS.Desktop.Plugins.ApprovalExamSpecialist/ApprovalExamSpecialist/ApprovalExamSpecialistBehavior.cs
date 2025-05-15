@@ -10,6 +10,7 @@ using Inventec.Desktop.Core;
 using Inventec.Desktop.Core.Tools;
 using System.Windows.Forms;
 using HIS.Desktop.Plugins.ApprovalExamSpecialist.Run;
+using MOS.EFMODEL.DataModels;
 
 namespace HIS.Desktop.Plugins.ApprovalExamSpecialist.ApprovalExamSpecialist
 {
@@ -32,6 +33,7 @@ namespace HIS.Desktop.Plugins.ApprovalExamSpecialist.ApprovalExamSpecialist
             {
                 Inventec.Desktop.Common.Modules.Module moduleData = null;
                 long treatmentID = 0;
+                V_HIS_SPECIALIST_EXAM obj = null;
                 if (entity != null && entity.Count() > 0)
                 {
                     for (int i = 0; i < entity.Count(); i++)
@@ -40,16 +42,20 @@ namespace HIS.Desktop.Plugins.ApprovalExamSpecialist.ApprovalExamSpecialist
                         {
                             moduleData = (Inventec.Desktop.Common.Modules.Module)entity[i];
                         }
-                        if (entity[i] is long)
+                        else if (entity[i] is long)
                         {
                             treatmentID = (long)entity[i];
+                        }
+                        else if (entity[i] is V_HIS_SPECIALIST_EXAM)
+                        {
+                            obj = (V_HIS_SPECIALIST_EXAM)entity[i];
                         }
                     }
                 
                 }
                 if (moduleData != null)
                 {
-                    return new frmApprovalExamSpecialist(moduleData, treatmentID);
+                    return new frmApprovalExamSpecialist(moduleData, treatmentID, obj);
                 }
                 else
                 {
