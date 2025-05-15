@@ -3015,9 +3015,10 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
         }
 
         private void btnSaveTemp_Click(object sender, EventArgs e)
-        {
+        {     
+            LogSystem.Info("Bước 1");
             LogTheadInSessionInfo(saveTemp, "btnSaveTemp_Click");
-        }
+        }      
         //sua lai viec 181736
         string codeCheckCD = "";
         string nameCheckCD = "";
@@ -3091,15 +3092,21 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
         {
             try
             {
+                LogSystem.Info("Bước 2");
                 if (!btnSaveTemp.Visible) return;
                 this.positionHandle = -1;
-
+                LogSystem.Info("Bước 3");
                 bool valid = (bool)icdProcessor.ValidationIcd(ucIcd);
+                LogSystem.Info("Bước 4");
                 valid = (bool)subIcdProcessor.GetValidate(ucSecondaryIcd) && valid;
+                LogSystem.Info("Bước 5");
                 valid = this.IsValiICDCause();
+                LogSystem.Info("Bước 6");
                 valid = dxValidationProvider.Validate() && valid;
+                LogSystem.Info("Bước 7");
                 if (!valid) return;
                 GetValueUC();
+                LogSystem.Info("Bước 8");
                 if (Inventec.Common.String.CountVi.Count(codeCheckCD) > 100)
                 {
                     XtraMessageBox.Show("Mã chẩn đoán phụ nhập quá 100 ký tự.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -3115,17 +3122,20 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
                     XtraMessageBox.Show("Mã chẩn đoán YHCT phụ nhập quá 255 ký tự.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
                 }
-
+                LogSystem.Info("Bước 9");
                 var checkICDSubCode = codeCheckSubICD.Split(';').ToList();
                 if (checkICDSubCode != null && checkICDSubCode.Count > 12)
                 {
+                    LogSystem.Info("Bước 10");
                     if (Config.ConfigKey.IsCheckSubIcdExceedLimit == "1")
                     {
+                        LogSystem.Info("Bước 10.1");
                         XtraMessageBox.Show("Chẩn đoán phụ nhập quá 12 mã bệnh. Vui lòng kiểm tra lại.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                         return;
                     }
                     else if (Config.ConfigKey.IsCheckSubIcdExceedLimit == "2")
                     {
+                        LogSystem.Info("Bước 10.2");
                         if (DevExpress.XtraEditors.XtraMessageBox.Show("Chẩn đoán phụ nhập quá 12 mã bệnh. Bạn có muốn tiếp tục không?",
                            "Thông báo",
                           MessageBoxButtons.YesNo) == DialogResult.No)
@@ -3134,29 +3144,37 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
                 }
                 HIS.Desktop.Plugins.Library.CheckIcd.CheckIcdManager check = new Desktop.Plugins.Library.CheckIcd.CheckIcdManager(null, currentHisTreatment);
                 string message = null;
+                LogSystem.Info("Bước 11");
                 if (CheckIcdWhenSave == "1" || CheckIcdWhenSave == "2")
                 {
+                    LogSystem.Info("Bước 11.1");
                     string icdCode = "", icdSubCode = "";
                     if (ucIcd != null)
                     {
+                        LogSystem.Info("Bước 11.2");
                         var icdValue = icdProcessor.GetValue(ucIcd);
                         if (icdValue != null && icdValue is IcdInputADO)
                         {
+                            LogSystem.Info("Bước 11.3");
                             icdCode = ((IcdInputADO)icdValue).ICD_CODE;
                         }
                     }
                     if (ucSecondaryIcd != null)
                     {
+                        LogSystem.Info("Bước 11.4");
                         var subIcd = subIcdProcessor.GetValue(ucSecondaryIcd);
                         if (subIcd != null && subIcd is SecondaryIcdDataADO)
                         {
+                            LogSystem.Info("Bước 11.5");
                             icdSubCode = ((SecondaryIcdDataADO)subIcd).ICD_SUB_CODE;
                         }
                     }
                     if (!check.ProcessCheckIcd(icdCode, icdSubCode, ref message, true))
                     {
+                        LogSystem.Info("Bước 11.6");
                         if (CheckIcdWhenSave == "1" && !String.IsNullOrEmpty(message))
                         {
+                            LogSystem.Info("Bước 11.7");
                             if (DevExpress.XtraEditors.XtraMessageBox.Show(String.Format("{0}. Bạn có muốn tiếp tục không?", message),
                             "Thông báo",
                            MessageBoxButtons.YesNo) == DialogResult.No)
@@ -3164,50 +3182,62 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
                         }
                         if (CheckIcdWhenSave == "2" && !String.IsNullOrEmpty(message))
                         {
+                            LogSystem.Info("Bước 11.8");
                             DevExpress.XtraEditors.XtraMessageBox.Show(message, "Thông báo", MessageBoxButtons.OK);
                             return;
                         }
                     }
                 }
+                LogSystem.Info("Bước 12");
                 bool success = false;
                 if (hisTreatmentFinishSDO_process == null)
                     hisTreatmentFinishSDO_process = new MOS.SDO.HisTreatmentFinishSDO();
                 var treatmentEndType = this.hisTreatmentEndTypes.FirstOrDefault(o => o.ID == Inventec.Common.TypeConvert.Parse.ToInt64((cboTreatmentEndType.EditValue ?? 0).ToString()));
+                LogSystem.Info("Bước 13");
                 if (treatmentEndType != null)
                 {
+                    LogSystem.Info("Bước 14");
                     hisTreatmentFinishSDO_process.TreatmentEndTypeId = treatmentEndType.ID;
                     hisTreatmentFinishSDO_process.IsTemporary = true;
                 }
-
+                LogSystem.Info("Bước 15");
                 hisTreatmentFinishSDO = new MOS.SDO.HisTreatmentFinishSDO();
                 bool rs = await ProcessDataBeforeSaveAsync(this, false);
                 if (rs)
                 {
+                    LogSystem.Info("Bước 16");
                     return;
                 }
-
+                LogSystem.Info("Bước 17");
                 if (chkOutHopitalCondition.Checked == true)
                 {
+                    LogSystem.Info("Bước 17.1");
                     hisTreatmentFinishSDO.IsApproveFinish = true;
                     hisTreatmentFinishSDO.ApproveFinishNote = "Đủ điều kiện ra viện";
                 }
                 else
                 {
+                    LogSystem.Info("Bước 17.2");
                     hisTreatmentFinishSDO.IsApproveFinish = false;
                     hisTreatmentFinishSDO.ApproveFinishNote = null;
                 }
                 Inventec.Common.Logging.LogSystem.Info(" IsApproveFinish: " + hisTreatmentFinishSDO.IsApproveFinish);
                 CommonParam param = new CommonParam();
+                LogSystem.Info("Bước 18");
                 SaveTreatmentFinish(hisTreatmentFinishSDO, ref success, ref param);
+                LogSystem.Info("Bước 19");
                 if (!string.IsNullOrEmpty(param.GetMessage()))
                     XtraMessageBox.Show(param.GetMessage(), "Thông báo");
-                MessageManager.Show(this, new CommonParam(), true);
+                LogSystem.Info("Bước 20");
+                //MessageManager.Show(this, new CommonParam(), true);
                 if (success)
                 {
+                    LogSystem.Info("Bước 21");
                     SetPrintMenu(hisTreatmentFinishSDO.TreatmentEndTypeId, hisTreatmentFinishSDO.TreatmentEndTypeExtId, this.currentHisTreatment.TDL_TREATMENT_TYPE_ID);
                     BtnEndCode.Enabled = CheckTreatmentEndCode();
                     btnDeleteEndInfo.Enabled = true;
                 }
+                LogSystem.Info("Bước 22");
             }
             catch (Exception ex)
             {

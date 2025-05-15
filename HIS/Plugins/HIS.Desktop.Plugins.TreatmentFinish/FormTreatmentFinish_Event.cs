@@ -219,15 +219,29 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
             success = false;
             try
             {
+                Inventec.Common.Logging.LogSystem.Debug("hisTreatmentFinishSDO " + 
+                    Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => hisTreatmentFinishSDO), hisTreatmentFinishSDO));
                 WaitingManager.Show();
-                Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => hisTreatmentFinishSDO), hisTreatmentFinishSDO));
+                
                 hisTreatmentResult = new Inventec.Common.Adapter.BackendAdapter(param).Post<MOS.EFMODEL.DataModels.HIS_TREATMENT>(ApiConsumer.HisRequestUriStore.HIS_TREATMENT_FINISH, ApiConsumer.ApiConsumers.MosConsumer, hisTreatmentFinishSDO, HIS.Desktop.Controls.Session.SessionManager.ActionLostToken, param);
+                
+                Inventec.Common.Logging.LogSystem.Debug("Ket qua khi goi api HisTreatment/Finish " + 
+                    Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => hisTreatmentResult), hisTreatmentResult));
+               
+                if (hisTreatmentResult == null)
+                {
+                    XtraMessageBox.Show("Lưu thất bại.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
                 CallApiSevereIllnessInfo();
 
-                WaitingManager.Hide();
+                Inventec.Common.Logging.LogSystem.Info("SaveTreatmentFinish 1");
+                //WaitingManager.Hide();
+                Inventec.Common.Logging.LogSystem.Debug("Ket qua khi goi api HisTreatment/Finish " + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => hisTreatmentResult), hisTreatmentResult));
                 if (hisTreatmentResult != null)
                 {
-                    Inventec.Common.Logging.LogSystem.Debug("Ket qua khi goi api HisTreatment/Finish " + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => hisTreatmentResult), hisTreatmentResult));
+                    //Inventec.Common.Logging.LogSystem.Debug("Ket qua khi goi api HisTreatment/Finish " + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => hisTreatmentResult), hisTreatmentResult));
                     success = true;
                     btnPrint.Enabled = true;
                     btnSave.Enabled = false;
