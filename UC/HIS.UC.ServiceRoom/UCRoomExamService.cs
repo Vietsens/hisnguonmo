@@ -47,6 +47,7 @@ using HIS.Desktop.ADO;
 using Inventec.Desktop.Common.LanguageManager;
 using DevExpress.XtraGrid.Columns;
 using DevExpress.XtraBars;
+using System.IO;
 
 namespace HIS.UC.ServiceRoom
 {
@@ -80,7 +81,7 @@ namespace HIS.UC.ServiceRoom
         CultureInfo currentCulture;
         List<V_HIS_SERVICE_ROOM> currentServiceRooms = new List<V_HIS_SERVICE_ROOM>();
         Dictionary<long, ResultChooseNumOrderBlockADO> dicNumOrderBlock = new Dictionary<long, ResultChooseNumOrderBlockADO>();
-
+        
         MOS.SDO.HisPatientSDO PatientSDO { get; set; }
         Dictionary<long, string> dicBlockByAppointment = new Dictionary<long, string>();
         long? PatientClassifyId { get; set; }
@@ -473,7 +474,7 @@ namespace HIS.UC.ServiceRoom
             {
                 DevExpress.XtraGrid.Views.Grid.GridView View = sender as DevExpress.XtraGrid.Views.Grid.GridView;
                 if (e.RowHandle >= 0)
-                {
+                {     
                     var row = View.GetRow(e.RowHandle) as RoomExtADO;
                     if (row != null && row.IS_PAUSE_ENCLITIC == 1)
                     {
@@ -502,7 +503,7 @@ namespace HIS.UC.ServiceRoom
                             {
                                 e.Appearance.ForeColor = Color.Blue;
                             }
-                            else
+                            else    
                                 e.Appearance.ForeColor = Color.Black;
                         }
                         else
@@ -529,21 +530,15 @@ namespace HIS.UC.ServiceRoom
                     {
                         if (view != null)
                         {
-                            // Nếu click phải vào header (cột), thì hiện menu chuột phải
-                            if (view != null)
-                            {
-                                view.ColumnsCustomization();
-                                Rectangle screenBounds = Screen.GetBounds(view.GridControl);
+                            view.ColumnsCustomization();
+                            Rectangle screenBounds = Screen.GetBounds(view.GridControl);
 
-                                // Đặt vị trí: góc dưới bên phải màn hình, trừ kích thước của form tùy chỉnh
-                                int x = screenBounds.Right - view.CustomizationForm.Width;
-                                int y = screenBounds.Bottom - view.CustomizationForm.Height;
+                            int x = screenBounds.Right - view.CustomizationForm.Width;
+                            int y = screenBounds.Bottom - view.CustomizationForm.Height;
 
-                                view.CustomizationForm.Location = new Point(x, y);
-                            }
+                            view.CustomizationForm.Location = new Point(x, y);
                         }
                     }
-
 
                     if (hi.Column.FieldName == "IsChecked" && hi.InRowCell)
                     {
@@ -989,6 +984,21 @@ namespace HIS.UC.ServiceRoom
         private void gridViewContainerRoom_MouseUp(object sender, MouseEventArgs e)
         {
 
+        }
+
+        private void gridViewContainerRoom_ColumnPositionChanged(object sender, EventArgs e)
+        {
+            SaveLayoutForCurrentUser(gridViewContainerRoom);
+        }
+
+        private void gridViewContainerRoom_EndSorting(object sender, EventArgs e)
+        {
+            SaveLayoutForCurrentUser(gridViewContainerRoom);
+        }
+
+        private void gridViewContainerRoom_ShowingEditor(object sender, CancelEventArgs e)
+        {
+            SaveLayoutForCurrentUser(gridViewContainerRoom);
         }
     }
 }

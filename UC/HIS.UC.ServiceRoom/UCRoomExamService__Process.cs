@@ -31,6 +31,10 @@ using MOS.EFMODEL.DataModels;
 using HIS.Desktop.LocalStorage.BackendData;
 using DevExpress.XtraEditors;
 using DevExpress.XtraGrid.Views.Grid;
+using System.IO;
+using System.Net.NetworkInformation;
+using HIS.UC.ServiceRoom.OperatingStatus;
+using HIS.Desktop.LocalStorage.LocalData;
 
 namespace HIS.UC.ServiceRoom
 {
@@ -38,6 +42,9 @@ namespace HIS.UC.ServiceRoom
     {
         internal string numOderSelected;
         Dictionary<long, string> numberNames = new Dictionary<long, string>();
+        private string USER = Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName();
+        private string MODULELINKS = "HIS.Desktop.ApplyRestoreLayout.ModuleLinks";
+
         public void InitLoad(RoomExamServiceInitADO ado)
         {
             try
@@ -204,11 +211,11 @@ namespace HIS.UC.ServiceRoom
                 AddFieldColumnIntoComboRoomExt("EXECUTE_ROOM_CODE", col1,"", 90, columnIndex++, true);
                 AddFieldColumnIntoComboRoomExt("EXECUTE_ROOM_NAME", col2,"", 80, columnIndex++, true);       
                 AddFieldColumnIntoComboRoomExt("TOTAL_TODAY_SERVICE_REQ", col3,tol1, 80, columnIndex++, true);
-                AddFieldColumnIntoComboRoomExt("TOTAL_MORNING_SERE", col13, tol8, 240, -1, false);/// mới
-                AddFieldColumnIntoComboRoomExt("TOTAL_AFTERNOON_SERE", col14, tol9, 240, -1, false);
-                AddFieldColumnIntoComboRoomExt("TOTAL_TODAY_KNVP_SERE", col15, tol10, 240, -1, false);
-                AddFieldColumnIntoComboRoomExt("TOTAL_MORNING_KNVP_SERE", col16, tol11, 240, -1, false);
-                AddFieldColumnIntoComboRoomExt("TOTAL_AFTERNOON_KNVP_SERE", col17, tol12, 240, -1, false);///
+                AddFieldColumnIntoComboRoomExt("TOTAL_MORNING_SERE", col13, tol8, 80, -1, false);/// mới
+                AddFieldColumnIntoComboRoomExt("TOTAL_AFTERNOON_SERE", col14, tol9, 80, -1, false);
+                AddFieldColumnIntoComboRoomExt("TOTAL_TODAY_KNVP_SERE", col15, tol10, 80, -1, false);
+                AddFieldColumnIntoComboRoomExt("TOTAL_MORNING_KNVP_SERE", col16, tol11, 80, -1, false);
+                AddFieldColumnIntoComboRoomExt("TOTAL_AFTERNOON_KNVP_SERE", col17, tol12, 80, -1, false);///
                 AddFieldColumnIntoComboRoomExt("TOTAL_NEW_SERVICE_REQ", col4,tol2, 80, columnIndex++, true);
                 AddFieldColumnIntoComboRoomExt("TOTAL_END_SERVICE_REQ", col5, tol3, 80, columnIndex++, true);
                 AddFieldColumnIntoComboRoomExt("TOTAL_WAIT_TODAY_SERVICE_REQ", col6,tol4, 80, columnIndex++, true);
@@ -222,6 +229,8 @@ namespace HIS.UC.ServiceRoom
 
                 gridViewContainerRoom.GridControl.DataSource = this.roomExts;
 
+                RestoreLayoutForCurrentUser(gridViewContainerRoom);
+
                 gridViewContainerRoom.EndUpdate();
             }
             catch (Exception ex)
@@ -230,6 +239,38 @@ namespace HIS.UC.ServiceRoom
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
+
+        public void SaveLayoutForCurrentUser(DevExpress.XtraGrid.Views.Grid.GridView view)
+        {
+            if (view == null || string.IsNullOrEmpty(USER))
+                return;
+            Inventec.Desktop.Common.Modules.Module moduleData = GlobalVariables.currentModuleRaws.Where(o => o.ModuleLink == "HIS.Desktop.Plugins.RegisterV2").FirstOrDefault();
+
+            if (moduleData != null)
+            {
+                var allowedModules = MODULELINKS.Split(',');
+                if (!allowedModules.Contains(moduleData.ModuleLink))
+                    return;
+            }
+
+            var ms = new MemoryStream();
+            view.SaveLayoutToStream(ms);
+
+            OperatingStatus.OperatingStatus.Status.LayoutPerUser[USER] = ms;
+        }
+
+        public void RestoreLayoutForCurrentUser(DevExpress.XtraGrid.Views.Grid.GridView view)
+        {
+            if (view == null || string.IsNullOrEmpty(USER))
+                return;
+
+            if (OperatingStatus.OperatingStatus.Status.LayoutPerUser.TryGetValue(USER, out MemoryStream ms))
+            {
+                ms.Position = 0;
+                view.RestoreLayoutFromStream(ms);
+            }
+        }
+
 
         DevExpress.XtraEditors.Repository.RepositoryItemCheckEdit GenerateRepositoryItemCheckEdit()
         {
