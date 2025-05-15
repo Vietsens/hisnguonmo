@@ -19,6 +19,7 @@ using HIS.Desktop.Plugins.BedRoomPartial.ADO;
 using System.Text.RegularExpressions;
 using HIS.Desktop.Controls.Session;
 using MOS.SDO;
+using HIS.Desktop.LocalStorage.LocalData;
 
 namespace HIS.Desktop.Plugins.BedRoomPartial.Popup
 {
@@ -216,6 +217,7 @@ namespace HIS.Desktop.Plugins.BedRoomPartial.Popup
             {
                 WaitingManager.Show();
                 HIS_SPECIALIST_EXAM hIS_SPECIALIST_EXAM = new HIS_SPECIALIST_EXAM();
+                MOS.SDO.WorkPlaceSDO workPlace = HIS.Desktop.LocalStorage.LocalData.WorkPlace.GetWorkPlace((currentModule));
 
                 if (currentSpecialist != null)
                 {
@@ -225,20 +227,30 @@ namespace HIS.Desktop.Plugins.BedRoomPartial.Popup
 
 
                 hIS_SPECIALIST_EXAM.INVITE_TIME = Inventec.Common.TypeConvert.Parse.ToInt64(dateInveteTime.DateTime.ToString("yyyyMMddHHmmss"));
+                hIS_SPECIALIST_EXAM.INVITE_DEPARMENT_ID = workPlace.DepartmentId;
 
-                var selectedInviteLogin = cboEmployeeInvite.EditValue?.ToString();
-                var selectedInviteDoctor = lstEmployee.FirstOrDefault(o => o.ID.ToString() == selectedInviteLogin);
-                hIS_SPECIALIST_EXAM.INVITE_DOCTOR_LOGINNAME = selectedInviteDoctor.LOGINNAME;
-                hIS_SPECIALIST_EXAM.INVITE_DOCTOR_USERNAME = selectedInviteDoctor.TDL_USERNAME;
+                if (cboEmployeeInvite.EditValue != null)
+                {
+                    var selectedInviteLogin = cboEmployeeInvite.EditValue.ToString();
+                    var selectedInviteDoctor = lstEmployee.FirstOrDefault(o => o.ID.ToString() == selectedInviteLogin);
+                    hIS_SPECIALIST_EXAM.INVITE_DOCTOR_LOGINNAME = selectedInviteDoctor.LOGINNAME;
+                    hIS_SPECIALIST_EXAM.INVITE_DOCTOR_USERNAME = selectedInviteDoctor.TDL_USERNAME;
+                }
+                
+                if (cboDepartment.EditValue != null)
+                {
+                    var selectedDepartment = cboDepartment.EditValue.ToString();
+                    var selectedDepartments = lstDepartment.FirstOrDefault(o => o.ID.ToString() == selectedDepartment);
+                    hIS_SPECIALIST_EXAM.EXAM_EXECUTE_DEPARMENT_ID = selectedDepartments.ID;
+                }
 
-                var selectedDepartment = cboDepartment.EditValue?.ToString();
-                var selectedDepartments = lstDepartment.FirstOrDefault(o => o.ID.ToString() == selectedDepartment);
-                hIS_SPECIALIST_EXAM.EXAM_EXECUTE_DEPARMENT_ID = selectedDepartments.ID;
-
-                var selectedExecuteLogin = cboExamination.EditValue?.ToString();
-                var selectedExecuteDoctor = lstEmployee.FirstOrDefault(o => o.ID.ToString() == selectedExecuteLogin);
-                hIS_SPECIALIST_EXAM.EXAM_EXECUTE_LOGINNAME = selectedExecuteDoctor.LOGINNAME;
-                hIS_SPECIALIST_EXAM.EXAM_EXECUTE_USERNAME = selectedExecuteDoctor.TDL_USERNAME;
+                if(cboExamination.EditValue != null){
+                    var selectedExecuteLogin = cboExamination.EditValue.ToString();
+                    var selectedExecuteDoctor = lstEmployee.FirstOrDefault(o => o.ID.ToString() == selectedExecuteLogin);
+                    hIS_SPECIALIST_EXAM.EXAM_EXECUTE_LOGINNAME = selectedExecuteDoctor.LOGINNAME;
+                    hIS_SPECIALIST_EXAM.EXAM_EXECUTE_USERNAME = selectedExecuteDoctor.TDL_USERNAME;
+                }
+                
 
                 if (chkExamBed.Checked)
                     hIS_SPECIALIST_EXAM.IS__EXAM_BED = 1;
