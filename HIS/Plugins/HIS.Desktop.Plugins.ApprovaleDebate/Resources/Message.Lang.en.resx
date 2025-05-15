@@ -117,97 +117,10 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="BenhNhanCapCuu" xml:space="preserve">
-    <value>Emergency patient</value>
-  </data>
-  <data name="BenhNhanDaDuDieuKienRaVien" xml:space="preserve">
-    <value>The patient was approved to be discharged from the hospital.</value>
-  </data>
-  <data name="BHYT" xml:space="preserve">
-    <value>Health Insurance: {0}/ {1}</value>
-  </data>
-  <data name="BNChuaKeDonTrongKhoang" xml:space="preserve">
-    <value>The patient has not prescribed for approx</value>
-  </data>
-  <data name="BNDangOTrongBuong" xml:space="preserve">
-    <value>Patient is in the room</value>
-  </data>
-  <data name="BNVaoTrongKhoang" xml:space="preserve">
-    <value>Patient is within</value>
-  </data>
-  <data name="CoBenhNhanhBHYTTrongTongSoBenhNhan" xml:space="preserve">
-    <value>There are {0} insured patients out of {1} patients</value>
-  </data>
-  <data name="DaKetThucDieuTri" xml:space="preserve">
-    <value>Finished treatment</value>
-  </data>
-  <data name="DangDieuTriNgoaiBuong" xml:space="preserve">
-    <value>Treating out of the room</value>
-  </data>
-  <data name="DangDieuTriTrongBuong" xml:space="preserve">
-    <value>Treating in the room</value>
-  </data>
-  <data name="DieuTriKetHop" xml:space="preserve">
-    <value>Combination treatment</value>
-  </data>
-  <data name="DieuTriThuong" xml:space="preserve">
-    <value>Normal treatment</value>
-  </data>
-  <data name="DonKhongLayKhongChoPhepSua" xml:space="preserve">
-    <value>Application not taken does not allow correction</value>
-  </data>
-  <data name="DTTT" xml:space="preserve">
-    <value>Payment object</value>
-  </data>
-  <data name="HoSoDieuTriDangTamKhoa" xml:space="preserve">
-    <value>Treatment records are temporarily locked.</value>
-  </data>
-  <data name="HoSoGiayToDinhKem" xml:space="preserve">
-    <value>Attached documents</value>
-  </data>
-  <data name="MucAn" xml:space="preserve">
-    <value>Meal level</value>
-  </data>
-  <data name="MucAnDTTT" xml:space="preserve">
-    <value>Meal level/Payment object</value>
-  </data>
-  <data name="PhanLoaiBN" xml:space="preserve">
-    <value>Patient classification</value>
-  </data>
-  <data name="Plugins_BedRoomPartial__ToolTipCome" xml:space="preserve">
-    <value>Patient transferred to combination therapy from the department: {0}</value>
-  </data>
-  <data name="Plugins_BedRoomPartial__ToolTipLeaves" xml:space="preserve">
-    <value>Patient is on combination therapy at</value>
-  </data>
-  <data name="TatCa" xml:space="preserve">
-    <value>All</value>
-  </data>
-  <data name="ThoiGianDenPhaiLonHonThoiGianTu" xml:space="preserve">
-    <value>The arrival time must be greater than the time from</value>
-  </data>
-  <data name="ThongBao" xml:space="preserve">
-    <value>Notification</value>
-  </data>
-  <data name="ThuocVtBNDaDung" xml:space="preserve">
-    <value>Medications/Materails used by the patient</value>
-  </data>
-  <data name="ToolTipDTTT" xml:space="preserve">
-    <value>Payment object</value>
-  </data>
-  <data name="ToolTipMucAnDTTT" xml:space="preserve">
-    <value>Meal level/Payment object</value>
-  </data>
-  <data name="TraSoatHoSoBenhAn" xml:space="preserve">
-    <value>Checking the medical record hole</value>
-  </data>
-  <data name="TrongKhoa" xml:space="preserve">
-    <value>In the faculty</value>
-  </data>
   <data name="TruongDuLieuBatBuoc" xml:space="preserve">
     <value>Required field</value>
   </data>
-  <data name="YLenhDaTonTaiVanBanKy" xml:space="preserve">
-    <value>This command already exists signed text, do you want to cancel the data?</value>
+  <data name="NhapQuaMaxlength" xml:space="preserve">
+    <value>Không nhập quá 4000 ký tự</value>
   </data>
 </root>

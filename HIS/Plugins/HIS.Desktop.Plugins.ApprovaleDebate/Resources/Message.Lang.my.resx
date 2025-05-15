@@ -117,97 +117,10 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="BenhNhanCapCuu" xml:space="preserve">
-    <value>အရေးပေါ်လူနာ</value>
-  </data>
-  <data name="BenhNhanDaDuDieuKienRaVien" xml:space="preserve">
-    <value>လူနာအား ဆေးရုံမှ ဆင်းခွင့်ပြုခဲ့သည်။</value>
-  </data>
-  <data name="BHYT" xml:space="preserve">
-    <value>ကျန်းမာရေးအာမခံ: {0}/ {1}</value>
-  </data>
-  <data name="BNChuaKeDonTrongKhoang" xml:space="preserve">
-    <value>လူနာသည် ခန့်မှန်းချေကို မသတ်မှတ်ထားပေ။</value>
-  </data>
-  <data name="BNDangOTrongBuong" xml:space="preserve">
-    <value>လူနာက အခန်းထဲမှာ</value>
-  </data>
-  <data name="BNVaoTrongKhoang" xml:space="preserve">
-    <value>လူနာက အထဲမှာရှိတယ်။</value>
-  </data>
-  <data name="CoBenhNhanhBHYTTrongTongSoBenhNhan" xml:space="preserve">
-    <value>လူနာ {1} ဦးအနက် အာမခံထားသူ {0} ဦး ရှိပါသည်။</value>
-  </data>
-  <data name="DaKetThucDieuTri" xml:space="preserve">
-    <value>ကုသမှုပြီးပါပြီ။</value>
-  </data>
-  <data name="DangDieuTriNgoaiBuong" xml:space="preserve">
-    <value>အခန်းထဲက ကုသပေးနေတယ်။</value>
-  </data>
-  <data name="DangDieuTriTrongBuong" xml:space="preserve">
-    <value>အခန်းထဲမှာ ဆေးကုတယ်။</value>
-  </data>
-  <data name="DieuTriKetHop" xml:space="preserve">
-    <value>ပေါင်းစပ်ကုသမှု</value>
-  </data>
-  <data name="DieuTriThuong" xml:space="preserve">
-    <value>ပုံမှန်ကုသမှု</value>
-  </data>
-  <data name="DonKhongLayKhongChoPhepSua" xml:space="preserve">
-    <value>မယူထားသော အပလီကေးရှင်းကို ပြုပြင်ခွင့်မပြုပါ။</value>
-  </data>
-  <data name="DTTT" xml:space="preserve">
-    <value>ငွေပေးချေမှု ရှိကြပါတယ်။</value>
-  </data>
-  <data name="HoSoDieuTriDangTamKhoa" xml:space="preserve">
-    <value>ကုသမှုမှတ်တမ်းများကို ယာယီသော့ခတ်ထားသည်။</value>
-  </data>
-  <data name="HoSoGiayToDinhKem" xml:space="preserve">
-    <value>ပူးတွဲပါစာရွက်စာတမ်းများ</value>
-  </data>
-  <data name="MucAn" xml:space="preserve">
-    <value>အစားအသောက်အဆင့်</value>
-  </data>
-  <data name="MucAnDTTT" xml:space="preserve">
-    <value>အစားအသောက်အဆင့်/ငွေပေးချေမှု ရှိကြပါတယ်။</value>
-  </data>
-  <data name="PhanLoaiBN" xml:space="preserve">
-    <value>လူနာအမျိုးအစားခွဲခြားခြင်း။</value>
-  </data>
-  <data name="Plugins_BedRoomPartial__ToolTipCome" xml:space="preserve">
-    <value>လူနာအား ဌာနမှ ပေါင်းစပ်ကုထုံးသို့ လွှဲပြောင်းခဲ့သည်- {0}</value>
-  </data>
-  <data name="Plugins_BedRoomPartial__ToolTipLeaves" xml:space="preserve">
-    <value>လူနာသည် ပေါင်းစပ်ကုထုံးဖြင့် ကုသနေပါသည်။</value>
-  </data>
-  <data name="TatCa" xml:space="preserve">
-    <value>အားလုံး</value>
-  </data>
-  <data name="ThoiGianDenPhaiLonHonThoiGianTu" xml:space="preserve">
-    <value>ဆိုက်ရောက်ချိန်သည် အချိန်ထက် ပိုနေရမည်။</value>
-  </data>
-  <data name="ThongBao" xml:space="preserve">
-    <value>အကြောင်းကြားပါ။</value>
-  </data>
-  <data name="ThuocVtBNDaDung" xml:space="preserve">
-    <value>လူနာအသုံးပြုသော ဆေးဝါး/ပစ္စည်းများ</value>
-  </data>
-  <data name="ToolTipDTTT" xml:space="preserve">
-    <value>ငွေပေးချေမှု ရှိကြပါတယ်။</value>
-  </data>
-  <data name="ToolTipMucAnDTTT" xml:space="preserve">
-    <value>အစားအသောက်အဆင့်/ငွေပေးချေမှု ရှိကြပါတယ်။</value>
-  </data>
-  <data name="TraSoatHoSoBenhAn" xml:space="preserve">
-    <value>ဆေးမှတ်တမ်းအပေါက်ကို စစ်ဆေးခြင်း။</value>
-  </data>
-  <data name="TrongKhoa" xml:space="preserve">
-    <value>ဌာနထဲမှာ</value>
-  </data>
   <data name="TruongDuLieuBatBuoc" xml:space="preserve">
     <value>လိုအပ်သောအကွက်</value>
   </data>
-  <data name="YLenhDaTonTaiVanBanKy" xml:space="preserve">
-    <value>ဤအမိန့်မှာ လက်မှတ်ထိုးထားသော စာသားရှိပြီး၊ သင်သည် ဒေတာကို ဖျက်လိုပါသလား။</value>
+  <data name="NhapQuaMaxlength" xml:space="preserve">
+    <value>Không nhập quá 4000 ký tự</value>
   </data>
 </root>

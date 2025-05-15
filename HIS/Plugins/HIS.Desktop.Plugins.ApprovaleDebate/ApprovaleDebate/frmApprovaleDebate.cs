@@ -27,6 +27,10 @@ using HIS.Desktop.ADO;
 using EMR.EFMODEL.DataModels;
 using HIS.Desktop.Controls.Session;
 using DevExpress.XtraTab;
+using DevExpress.XtraEditors;
+using Inventec.Desktop.Common.Controls.ValidationRule;
+using HIS.Desktop.Plugins.ApprovaleDebate.Resources;
+using DevExpress.XtraEditors.ViewInfo;
 
 namespace HIS.Desktop.Plugins.ApprovaleDebate.ApprovaleDebate
 {
@@ -98,6 +102,7 @@ namespace HIS.Desktop.Plugins.ApprovaleDebate.ApprovaleDebate
                 this.SetCaptionByLanguageKey();
                 this.AddUc();
                 this.InitComboEmployee();
+                this.ValidControl();
                 if (this.v_his_specialist_exam != null)
                 {
                     this.txtYKienBacSi.Text = this.v_his_specialist_exam.EXAM_EXECUTE_CONTENT;
@@ -508,6 +513,73 @@ namespace HIS.Desktop.Plugins.ApprovaleDebate.ApprovaleDebate
         {
 
         }
+        int positionHandleControl = -1;
+
+        private void dxValidationProvider1_ValidationFailed(object sender, DevExpress.XtraEditors.DXErrorProvider.ValidationFailedEventArgs e)
+        {
+            try
+            {
+                BaseEdit edit = e.InvalidControl as BaseEdit;
+                if (edit == null)
+                    return;
+
+                BaseEditViewInfo viewInfo = edit.GetViewInfo() as BaseEditViewInfo;
+                if (viewInfo == null)
+                    return;
+
+                if (positionHandleControl == -1)
+                {
+                    positionHandleControl = edit.TabIndex;
+                    if (edit.Visible)
+                    {
+                        edit.SelectAll();
+                        edit.Focus();
+                    }
+                }
+                if (positionHandleControl > edit.TabIndex)
+                {
+                    positionHandleControl = edit.TabIndex;
+                    if (edit.Visible)
+                    {
+                        edit.SelectAll();
+                        edit.Focus();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void ValidControl()
+        {
+            try
+            {
+                SetMaxlength(txtYKienBacSi, 4000, true);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+        private void SetMaxlength(BaseEdit control, int maxlenght, bool IsRequired)
+        {
+            try
+            {
+                ControlMaxLengthValidationRule validate = new ControlMaxLengthValidationRule();
+                validate.editor = control;
+                validate.maxLength = maxlenght;
+                validate.IsRequired = IsRequired;
+                validate.ErrorText = string.Format(ResourceMessage.NhapQuaMaxlength, maxlenght);
+                validate.ErrorType = DevExpress.XtraEditors.DXErrorProvider.ErrorType.Warning;
+                dxValidationProvider1.SetValidationRule(control, validate);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
 
         private void bbtnSave_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
         {
@@ -525,6 +597,11 @@ namespace HIS.Desktop.Plugins.ApprovaleDebate.ApprovaleDebate
         {
             try
             {
+                if (!dxValidationProvider1.Validate())
+                {
+                    return;
+                }
+                positionHandleControl = -1;
                 WaitingManager.Show();
                 CommonParam param = new CommonParam();
                 v_his_specialist_exam.EXAM_EXECUTE_LOGINNAME = cboEmployee.EditValue != null ? cboEmployee.EditValue.ToString() : null;
@@ -536,9 +613,9 @@ namespace HIS.Desktop.Plugins.ApprovaleDebate.ApprovaleDebate
                 {
                     this.delegateRefresh();
                 }
+                WaitingManager.Hide();
                 MessageManager.Show(this, param, rs != null);
                 SessionManager.ProcessTokenLost(param);
-                WaitingManager.Hide();
                 if (rs != null)
                 {
                     this.Close();

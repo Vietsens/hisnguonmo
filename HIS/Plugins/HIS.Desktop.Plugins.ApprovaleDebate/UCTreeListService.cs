@@ -110,22 +110,22 @@ namespace HIS.Desktop.Plugins.ApprovaleDebate
                 treeSereServ.BeginUpdate();
                 if (SereServADOs != null && SereServADOs.Count > 0)
                 {
-                    long check = SereServADOs.Where(o => o.IS_RATION == 1).Count();
+                    //long check = SereServADOs.Where(o => o.IS_RATION == 1).Count();
 
-                    if (check == SereServADOs.Where(o => o.child == 4).Count())
-                    {
-                        isRation.Caption = Resources.ResourceMessage.MucAn;
-                    }
-                    else if (check == 0)
-                    {
-                        isRation.Caption = Resources.ResourceMessage.DTTT;
-                        isRation.ToolTip = Resources.ResourceMessage.ToolTipDTTT;
-                    }
-                    else
-                    {
-                        isRation.Caption = Resources.ResourceMessage.MucAnDTTT;
-                        isRation.ToolTip = Resources.ResourceMessage.ToolTipMucAnDTTT;
-                    }
+                    //if (check == SereServADOs.Where(o => o.child == 4).Count())
+                    //{
+                    //    isRation.Caption = Resources.ResourceMessage.MucAn;
+                    //}
+                    //else if (check == 0)
+                    //{
+                    //    isRation.Caption = Resources.ResourceMessage.DTTT;
+                    //    isRation.ToolTip = Resources.ResourceMessage.ToolTipDTTT;
+                    //}
+                    //else
+                    //{
+                    //    isRation.Caption = Resources.ResourceMessage.MucAnDTTT;
+                    //    isRation.ToolTip = Resources.ResourceMessage.ToolTipMucAnDTTT;
+                    //}
                     dataSource = SereServADOs;
                     treeSereServ.DataSource = new BindingList<SereServADO>(SereServADOs);
 

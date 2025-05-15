@@ -132,6 +132,8 @@
     <Compile Include="UCTreeListService.Designer.cs">
       <DependentUpon>UCTreeListService.cs</DependentUpon>
     </Compile>
+    <Compile Include="ValidationRuleControl\LookupEditWithTextEditValidationRule.cs" />
+    <Compile Include="ValidationRuleControl\MemoEditValidationRule.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\Common\Inventec.Common\Inventec.Common.Adapter\Inventec.Common.Adapter.csproj">
@@ -169,6 +171,10 @@
     <ProjectReference Include="..\..\..\Common\Inventec.Common\Inventec.Common.WebApiClient\Inventec.Common.WebApiClient.csproj">
       <Project>{F8A0B7B7-F43A-4F57-94BF-490CF1C3BE43}</Project>
       <Name>Inventec.Common.WebApiClient</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Common\Inventec.Desktop\Inventec.Desktop.Common.Controls.ValidationRule\Inventec.Desktop.Common.Controls.ValidationRule.csproj">
+      <Project>{E9D332EB-750D-4BF1-A6F5-2454F7603FDB}</Project>
+      <Name>Inventec.Desktop.Common.Controls.ValidationRule</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\..\Common\Inventec.Desktop\Inventec.Desktop.Common.Core\Inventec.Desktop.Common.Core.csproj">
       <Project>{9e945587-4faa-4c90-823c-289983aa29f0}</Project>
