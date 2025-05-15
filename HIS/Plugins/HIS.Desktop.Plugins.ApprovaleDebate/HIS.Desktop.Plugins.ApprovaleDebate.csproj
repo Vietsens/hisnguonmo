@@ -133,7 +133,6 @@
       <DependentUpon>UCTreeListService.cs</DependentUpon>
     </Compile>
     <Compile Include="ValidationRuleControl\LookupEditWithTextEditValidationRule.cs" />
-    <Compile Include="ValidationRuleControl\MemoEditValidationRule.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\Common\Inventec.Common\Inventec.Common.Adapter\Inventec.Common.Adapter.csproj">
@@ -183,6 +182,10 @@
     <ProjectReference Include="..\..\..\Common\Inventec.Desktop\Inventec.Desktop.Common.LanguageManager\Inventec.Desktop.Common.LanguageManager.csproj">
       <Project>{c44d9b7b-878d-427b-b18e-5de971d36395}</Project>
       <Name>Inventec.Desktop.Common.LanguageManager</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Common\Inventec.Desktop\Inventec.Desktop.Common.LibraryMessage\Inventec.Desktop.Common.LibraryMessage.csproj">
+      <Project>{52e34a37-cd2d-4c1c-81f0-9ca6b17ac4a5}</Project>
+      <Name>Inventec.Desktop.Common.LibraryMessage</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\..\Common\Inventec.Desktop\Inventec.Desktop.Common.Message\Inventec.Desktop.Common.Message.csproj">
       <Project>{2ef2ca8c-b308-4d64-86cd-86ba479c2664}</Project>

@@ -26,17 +26,22 @@ namespace HIS.Desktop.Plugins.ApprovaleDebate
 {
     class LookupEditWithTextEditValidationRule : DevExpress.XtraEditors.DXErrorProvider.ValidationRule
     {
-        internal DevExpress.XtraEditors.TextEdit txtTextEdit;
-        internal DevExpress.XtraEditors.LookUpEdit cbo;
-
-        public override bool Validate(Control control, object value)
+        internal Inventec.Desktop.CustomControl.CustomGridLookUpEditWithFilterMultiColumn editor;
+        public override bool Validate(System.Windows.Forms.Control control, object value)
         {
             bool valid = false;
             try
             {
-                if (txtTextEdit == null || cbo == null) return valid;
-                if (String.IsNullOrEmpty(txtTextEdit.Text) || cbo.EditValue == null)
-                    return valid;
+                if (editor == null) return valid;
+
+                if (editor is Inventec.Desktop.CustomControl.CustomGridLookUpEditWithFilterMultiColumn eee)
+                {
+                    if (eee.EditValue == null)
+                    {
+                        this.ErrorText = Inventec.Desktop.Common.LibraryMessage.MessageUtil.GetMessage(Inventec.Desktop.Common.LibraryMessage.Message.Enum.TruongDuLieuBatBuoc);
+                        return valid;
+                    }
+                }
                 valid = true;
             }
             catch (Exception ex)

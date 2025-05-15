@@ -584,7 +584,7 @@ namespace HIS.Desktop.Plugins.ApprovaleDebate.ApprovaleDebate
         private void ValidContent()
         {
             var spin = new LookupEditWithTextEditValidationRule();
-            spin.txtTextEdit = cboEmployee;
+            spin.editor = cboEmployee;
             this.dxValidationProvider1.SetValidationRule(cboEmployee, spin);
         }
 
@@ -606,6 +606,7 @@ namespace HIS.Desktop.Plugins.ApprovaleDebate.ApprovaleDebate
             {
                 if (!dxValidationProvider1.Validate())
                 {
+                    Inventec.Common.Logging.LogSystem.Info("dxValidationProvider1.Validate");
                     return;
                 }
                 positionHandleControl = -1;
