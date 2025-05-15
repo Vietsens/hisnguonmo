@@ -2331,7 +2331,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                     {
                         this.currrentServiceAdo.DOSAGE_FORM = cboDosageForm.Text;
                     }
-                    else
+                    else if (this.currrentServiceAdo.MEDICINE_LINE_ID != IMSys.DbConfig.HIS_RS.HIS_MEDICINE_LINE.ID__VT_YHCT)
                     {
                         XtraMessageBox.Show("Dạng bào chế không được để trống!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                         return;
