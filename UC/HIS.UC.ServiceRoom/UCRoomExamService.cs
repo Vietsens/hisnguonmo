@@ -45,6 +45,8 @@ using DevExpress.XtraEditors;
 using DevExpress.XtraGrid;
 using HIS.Desktop.ADO;
 using Inventec.Desktop.Common.LanguageManager;
+using DevExpress.XtraGrid.Columns;
+using DevExpress.XtraBars;
 
 namespace HIS.UC.ServiceRoom
 {
@@ -472,6 +474,11 @@ namespace HIS.UC.ServiceRoom
                 DevExpress.XtraGrid.Views.Grid.GridView View = sender as DevExpress.XtraGrid.Views.Grid.GridView;
                 if (e.RowHandle >= 0)
                 {
+                    var row = View.GetRow(e.RowHandle) as RoomExtADO;
+                    if (row != null && row.IS_PAUSE_ENCLITIC == 1)
+                    {
+                        e.Appearance.ForeColor = Color.Gray;
+                    }
                     long isWarn = Inventec.Common.TypeConvert.Parse.ToInt64((View.GetRowCellValue(e.RowHandle, "IS_WARN") ?? "-1").ToString());
                     if (isWarn == 1)
                     {
@@ -517,6 +524,26 @@ namespace HIS.UC.ServiceRoom
                 {
                     GridView view = sender as GridView;
                     GridHitInfo hi = view.CalcHitInfo(e.Location);
+
+                    if (e.Button == MouseButtons.Right && ModifierKeys == Keys.None)
+                    {
+                        if (view != null)
+                        {
+                            // Nếu click phải vào header (cột), thì hiện menu chuột phải
+                            if (view != null)
+                            {
+                                view.ColumnsCustomization();
+                                Rectangle screenBounds = Screen.GetBounds(view.GridControl);
+
+                                // Đặt vị trí: góc dưới bên phải màn hình, trừ kích thước của form tùy chỉnh
+                                int x = screenBounds.Right - view.CustomizationForm.Width;
+                                int y = screenBounds.Bottom - view.CustomizationForm.Height;
+
+                                view.CustomizationForm.Location = new Point(x, y);
+                            }
+                        }
+                    }
+
 
                     if (hi.Column.FieldName == "IsChecked" && hi.InRowCell)
                     {
@@ -957,6 +984,11 @@ namespace HIS.UC.ServiceRoom
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
+        }
+
+        private void gridViewContainerRoom_MouseUp(object sender, MouseEventArgs e)
+        {
+
         }
     }
 }

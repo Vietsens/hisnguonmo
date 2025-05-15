@@ -30,6 +30,7 @@ using HIS.Desktop.Utilities.Extensions;
 using MOS.EFMODEL.DataModels;
 using HIS.Desktop.LocalStorage.BackendData;
 using DevExpress.XtraEditors;
+using DevExpress.XtraGrid.Views.Grid;
 
 namespace HIS.UC.ServiceRoom
 {
@@ -201,13 +202,13 @@ namespace HIS.UC.ServiceRoom
                 int columnIndex = 1;
                 AddFieldColumnIntoComboRoomExt("IsChecked", " ","", 30, columnIndex++, true, null, true);
                 AddFieldColumnIntoComboRoomExt("EXECUTE_ROOM_CODE", col1,"", 90, columnIndex++, true);
-                AddFieldColumnIntoComboRoomExt("EXECUTE_ROOM_NAME", col2,"", 270, columnIndex++, true);       
+                AddFieldColumnIntoComboRoomExt("EXECUTE_ROOM_NAME", col2,"", 80, columnIndex++, true);       
                 AddFieldColumnIntoComboRoomExt("TOTAL_TODAY_SERVICE_REQ", col3,tol1, 80, columnIndex++, true);
-                AddFieldColumnIntoComboRoomExt("TOTAL_MORNING_SERE", col13, tol8, 80, -1, false);/// mới
-                AddFieldColumnIntoComboRoomExt("TOTAL_AFTERNOON_SERE", col14, tol9, 240, columnIndex++, false);
-                AddFieldColumnIntoComboRoomExt("TOTAL_TODAY_KNVP_SERE", col15, tol10, 80, columnIndex++, false);
-                AddFieldColumnIntoComboRoomExt("TOTAL_MORNING_KNVP_SERE", col16, tol11, 80, columnIndex++, false);
-                AddFieldColumnIntoComboRoomExt("TOTAL_AFTERNOON_KNVP_SERE", col17, tol12, 80, columnIndex++, false);///
+                AddFieldColumnIntoComboRoomExt("TOTAL_MORNING_SERE", col13, tol8, 240, -1, false);/// mới
+                AddFieldColumnIntoComboRoomExt("TOTAL_AFTERNOON_SERE", col14, tol9, 240, -1, false);
+                AddFieldColumnIntoComboRoomExt("TOTAL_TODAY_KNVP_SERE", col15, tol10, 240, -1, false);
+                AddFieldColumnIntoComboRoomExt("TOTAL_MORNING_KNVP_SERE", col16, tol11, 240, -1, false);
+                AddFieldColumnIntoComboRoomExt("TOTAL_AFTERNOON_KNVP_SERE", col17, tol12, 240, -1, false);///
                 AddFieldColumnIntoComboRoomExt("TOTAL_NEW_SERVICE_REQ", col4,tol2, 80, columnIndex++, true);
                 AddFieldColumnIntoComboRoomExt("TOTAL_END_SERVICE_REQ", col5, tol3, 80, columnIndex++, true);
                 AddFieldColumnIntoComboRoomExt("TOTAL_WAIT_TODAY_SERVICE_REQ", col6,tol4, 80, columnIndex++, true);
@@ -266,8 +267,29 @@ namespace HIS.UC.ServiceRoom
                 col2.OptionsFilter.AllowAutoFilter = false;
             }
 
+            col2.OptionsColumn.ShowInCustomizationForm = true;
+
             gridViewContainerRoom.Columns.Add(col2);
         }
+
+        private void gridViewContainerRoom_RowCellClick(object sender, RowCellClickEventArgs e)
+        {
+            //if (e.Column != null && e.Column.FieldName == "Chur")
+            //{
+            //    var view = sender as DevExpress.XtraGrid.Views.Grid.GridView;
+
+            //    if (view != null)
+            //    {
+            //        view.OptionsCustomization.AllowColumnMoving = true;
+            //        view.OptionsCustomization.AllowQuickHideColumns = true;
+            //        view.OptionsCustomization.CustomizationFormSearchBoxVisible = true;
+
+            //        // Gọi Column Chooser
+            //        view.ShowCustomization();
+            //    }
+            //}
+        }
+
 
         private List<RoomExtADO> OrderRoom(List<RoomExtADO> roomList)
         {
