@@ -505,9 +505,9 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                 {
                     this.spinEditGiaTrongThau.Enabled = true;
                     this.spinImpPrice.Enabled = true;
-                    this.cboNationals.Enabled = true;
+                    //this.cboDosageForm.Enabled = true;
+                    this.cboNationals.Enabled = true;     
                     this.cboHangSX.Enabled = true;
-                    this.cboDosageForm.EditValue = true;
                     this.txtSoDangKy.Enabled = true;
                     this.SpMaxReuseCount.Enabled = false;
                     this.spinImpPriceVAT.Enabled = false;
@@ -582,8 +582,8 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                             {
                                 this.currrentServiceAdo.monthLifespan = this.MedicalContractMety.MONTH_LIFESPAN;
                             }
-
-                            cboDosageForm.EditValue = MedicalContractMety.DOSAGE_FORM;
+                            //Nếu chọn hợp đồng thì sẽ ưu tiên lấy thông tin trong hợp đồng. Hết
+                            //cboDosageForm.EditValue = MedicalContractMety.DOSAGE_FORM;// lấy dữ liệu từ thầu hoặc loại thuốc - đang bắt buộc
                             txtSoDangKy.Text = this.MedicalContractMety.MEDICINE_REGISTER_NUMBER;
                             txtNognDoHL.Text = this.MedicalContractMety.CONCENTRA;
                             spinImpPriceVAT.Value = (spinImpPrice.Value * (1 + spinImpVatRatio.Value / 100));

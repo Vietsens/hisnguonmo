@@ -170,7 +170,7 @@ namespace HIS.UC.ServiceRoom
             }
         }
 
-        public void InitComboRoom(List<MOS.EFMODEL.DataModels.L_HIS_ROOM_COUNTER> executeRooms)
+        public void InitComboRoom(List<MOS.EFMODEL.DataModels.L_HIS_ROOM_COUNTER_2> executeRooms)
         {
             try
             {
@@ -183,11 +183,11 @@ namespace HIS.UC.ServiceRoom
             }
         }
 
-        public void InitComboRoom(List<MOS.EFMODEL.DataModels.L_HIS_ROOM_COUNTER> executeRooms, bool isSyncData)
+        public void InitComboRoom(List<MOS.EFMODEL.DataModels.L_HIS_ROOM_COUNTER_2> executeRooms, bool isSyncData)
         {
             try
             {
-                executeRooms = executeRooms ?? new List<MOS.EFMODEL.DataModels.L_HIS_ROOM_COUNTER>();
+                executeRooms = executeRooms ?? new List<MOS.EFMODEL.DataModels.L_HIS_ROOM_COUNTER_2>();
                 if (isSyncData && this.roomExts != null && this.roomExts.Count > 0)
                     this.roomExts = (from m in executeRooms select new RoomExtADO(m, this.hisRooms, this.roomExts)).ToList();
                 else
@@ -201,8 +201,13 @@ namespace HIS.UC.ServiceRoom
                 int columnIndex = 1;
                 AddFieldColumnIntoComboRoomExt("IsChecked", " ","", 30, columnIndex++, true, null, true);
                 AddFieldColumnIntoComboRoomExt("EXECUTE_ROOM_CODE", col1,"", 90, columnIndex++, true);
-                AddFieldColumnIntoComboRoomExt("EXECUTE_ROOM_NAME", col2,"", 270, columnIndex++, true);
+                AddFieldColumnIntoComboRoomExt("EXECUTE_ROOM_NAME", col2,"", 270, columnIndex++, true);       
                 AddFieldColumnIntoComboRoomExt("TOTAL_TODAY_SERVICE_REQ", col3,tol1, 80, columnIndex++, true);
+                AddFieldColumnIntoComboRoomExt("TOTAL_MORNING_SERE", col13, tol8, 80, -1, false);/// mới
+                AddFieldColumnIntoComboRoomExt("TOTAL_AFTERNOON_SERE", col14, tol9, 240, columnIndex++, false);
+                AddFieldColumnIntoComboRoomExt("TOTAL_TODAY_KNVP_SERE", col15, tol10, 80, columnIndex++, false);
+                AddFieldColumnIntoComboRoomExt("TOTAL_MORNING_KNVP_SERE", col16, tol11, 80, columnIndex++, false);
+                AddFieldColumnIntoComboRoomExt("TOTAL_AFTERNOON_KNVP_SERE", col17, tol12, 80, columnIndex++, false);///
                 AddFieldColumnIntoComboRoomExt("TOTAL_NEW_SERVICE_REQ", col4,tol2, 80, columnIndex++, true);
                 AddFieldColumnIntoComboRoomExt("TOTAL_END_SERVICE_REQ", col5, tol3, 80, columnIndex++, true);
                 AddFieldColumnIntoComboRoomExt("TOTAL_WAIT_TODAY_SERVICE_REQ", col6,tol4, 80, columnIndex++, true);
@@ -212,6 +217,7 @@ namespace HIS.UC.ServiceRoom
                 AddFieldColumnIntoComboRoomExt("RESPONSIBLE_USERNAME_DISPLAY", col10,"", 300, columnIndex++, true, DevExpress.Data.UnboundColumnType.Object);
                 AddFieldColumnIntoComboRoomExt("NumOrderBlock", col11,"", 150, columnIndex++, true, null, true);
                 AddFieldColumnIntoComboRoomExt("IS_WARN",col12,"", 80, -1, false);
+                
 
                 gridViewContainerRoom.GridControl.DataSource = this.roomExts;
 

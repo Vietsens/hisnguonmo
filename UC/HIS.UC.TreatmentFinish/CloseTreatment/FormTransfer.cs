@@ -154,9 +154,10 @@ namespace HIS.UC.TreatmentFinish.CloseTreatment
                     var treatmentExt = new BackendAdapter(new CommonParam()).Get<List<HIS_TREATMENT_EXT>>("api/HisTreatmentExt/Get", ApiConsumers.MosConsumer, filter, null);
                     if (treatmentExt != null)
                     {
-                        txtDauHieuLamSang.Text = treatmentExt[0].CLINICAL_NOTE;
+                        
                         txtXetNghiem.Text = treatmentExt[0].SUBCLINICAL_RESULT;
                     }
+                    txtDauHieuLamSang.Text = treatment.CLINICAL_SIGNS;
                     txtTinhTrangNguoiBenh.Text = treatment.PATIENT_CONDITION;
                     txtPhuongTienVanChuyen.Text = treatment.TRANSPORT_VEHICLE;
                     if (treatment != null && !string.IsNullOrEmpty(treatment.TRANSPORTER_LOGINNAMES))
@@ -416,7 +417,7 @@ namespace HIS.UC.TreatmentFinish.CloseTreatment
                         txtTranPatiTechCode.Text = tranPatiTech.TRAN_PATI_TECH_CODE;
                     }
 
-                    txtDauHieuLamSang.Text = currentTreatmentFinishSDO.ClinicalNote;
+                    txtDauHieuLamSang.Text = currentTreatmentFinishSDO.ClinicalSigns;    
                     txtXetNghiem.Text = currentTreatmentFinishSDO.SubclinicalResult;
                     txtTinhTrangNguoiBenh.Text = currentTreatmentFinishSDO.PatientCondition;
                     txtPhuongTienVanChuyen.Text = currentTreatmentFinishSDO.TransportVehicle;
@@ -947,7 +948,7 @@ namespace HIS.UC.TreatmentFinish.CloseTreatment
                     }
                 }
 
-                currentTreatmentFinishSDO.ClinicalNote = txtDauHieuLamSang.Text;
+                currentTreatmentFinishSDO.ClinicalSigns = txtDauHieuLamSang.Text;
                 currentTreatmentFinishSDO.SubclinicalResult = txtXetNghiem.Text;
                 currentTreatmentFinishSDO.PatientCondition = txtTinhTrangNguoiBenh.Text;
                 currentTreatmentFinishSDO.TransportVehicle = txtPhuongTienVanChuyen.Text;

@@ -93,9 +93,9 @@ namespace HIS.UC.TreatmentFinish.Icd
             // 
             // btnSave
             // 
-            this.btnSave.Location = new System.Drawing.Point(561, 36);
+            this.btnSave.Location = new System.Drawing.Point(547, 36);
             this.btnSave.Name = "btnSave";
-            this.btnSave.Size = new System.Drawing.Size(86, 22);
+            this.btnSave.Size = new System.Drawing.Size(100, 22);
             this.btnSave.StyleController = this.layoutControl1;
             this.btnSave.TabIndex = 1;
             this.btnSave.Text = "Lưu (Ctrl S)";
@@ -116,7 +116,7 @@ namespace HIS.UC.TreatmentFinish.Icd
             this.layoutControlGroup2.GroupBordersVisible = false;
             this.layoutControlGroup2.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup2.Name = "layoutControlGroup2";
-            this.layoutControlGroup2.Size = new System.Drawing.Size(629, 10);
+            this.layoutControlGroup2.Size = new System.Drawing.Size(645, 10);
             this.layoutControlGroup2.TextVisible = false;
             // 
             // layoutControlIcd
@@ -134,7 +134,7 @@ namespace HIS.UC.TreatmentFinish.Icd
             this.Root.GroupBordersVisible = false;
             this.Root.Location = new System.Drawing.Point(0, 0);
             this.Root.Name = "Root";
-            this.Root.Size = new System.Drawing.Size(629, 16);
+            this.Root.Size = new System.Drawing.Size(645, 16);
             this.Root.TextVisible = false;
             // 
             // layoutControlGroup1
@@ -172,9 +172,9 @@ namespace HIS.UC.TreatmentFinish.Icd
             // layoutControlItem3
             // 
             this.layoutControlItem3.Control = this.btnSave;
-            this.layoutControlItem3.Location = new System.Drawing.Point(559, 34);
+            this.layoutControlItem3.Location = new System.Drawing.Point(545, 34);
             this.layoutControlItem3.Name = "layoutControlItem3";
-            this.layoutControlItem3.Size = new System.Drawing.Size(90, 26);
+            this.layoutControlItem3.Size = new System.Drawing.Size(104, 26);
             this.layoutControlItem3.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem3.TextVisible = false;
             // 
@@ -190,6 +190,10 @@ namespace HIS.UC.TreatmentFinish.Icd
             // 
             this.barManager1.Bars.AddRange(new DevExpress.XtraBars.Bar[] {
             this.bar1});
+            this.barManager1.DockControls.Add(this.barDockControlTop);
+            this.barManager1.DockControls.Add(this.barDockControlBottom);
+            this.barManager1.DockControls.Add(this.barDockControlLeft);
+            this.barManager1.DockControls.Add(this.barDockControlRight);
             this.barManager1.Form = this;
             this.barManager1.Items.AddRange(new DevExpress.XtraBars.BarItem[] {
             this.barButtonItem1});
@@ -218,8 +222,8 @@ namespace HIS.UC.TreatmentFinish.Icd
             // 
             this.barDockControlTop.CausesValidation = false;
             this.barDockControlTop.Dock = System.Windows.Forms.DockStyle.Top;
-            this.barDockControlTop.Location = new System.Drawing.Point(0, 29);
-            this.barDockControlTop.Size = new System.Drawing.Size(649, 0);
+            this.barDockControlTop.Location = new System.Drawing.Point(0, 0);
+            this.barDockControlTop.Size = new System.Drawing.Size(649, 29);
             // 
             // barDockControlBottom
             // 

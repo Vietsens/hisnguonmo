@@ -26,6 +26,7 @@ using HIS.Desktop.LocalStorage.BackendData;
 using HIS.Desktop.LocalStorage.HisConfig;
 using HIS.Desktop.LocalStorage.LocalData;
 using HIS.Desktop.Plugins.BedRoomPartial.Key;
+using HIS.Desktop.Plugins.BedRoomPartial.Popup;
 using HIS.Desktop.Plugins.Library.FormMedicalRecord.Base;
 using HIS.Desktop.Utility;
 using Inventec.Common.Adapter;
@@ -45,6 +46,7 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
 {
     public partial class UCBedRoomPartial : UserControlBase
     {
+
         void BedRoomMouseRight_Click(object sender, ItemClickEventArgs e)
         {
             try
@@ -201,6 +203,12 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
                         case BedRoomPopupMenuProcessor.ModuleType.BacSiDt:
                             btnBacSiDt();
                             break;
+                        case BedRoomPopupMenuProcessor.ModuleType.Specialty:
+                            btnSpecialty();
+                            break;
+                        case BedRoomPopupMenuProcessor.ModuleType.Consultation:
+                            btnConsultation();
+                            break;
                         case BedRoomPopupMenuProcessor.ModuleType.HisCoTreatmentCreate:
                             btnHisCoTreatmentCreate();
                             break;
@@ -288,6 +296,18 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
         {
             frmDoctorTreatment frmDoctorTreatment = new frmDoctorTreatment(treatmentBedRoomRow, (DelegateRefreshData)RefreshData);
             frmDoctorTreatment.ShowDialog();
+        }
+
+        private void btnSpecialty()
+        {
+            frmSpecialty frmSpecialty = new frmSpecialty(treatmentBedRoomRow, currentModule);
+            frmSpecialty.ShowDialog();
+        }
+
+        private void btnConsultation()
+        {
+            frmConsultation frmConsultation = new frmConsultation(treatmentBedRoomRow, currentModule);
+            frmConsultation.ShowDialog();
         }
 
         public void RefreshData()

@@ -37,7 +37,7 @@ using System.Windows.Forms;
 namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
 {
     public partial class frmAssignPrescription : HIS.Desktop.Utility.FormBase
-    {
+    {        
         internal async Task RebuildMediMatyWithInControlContainer()
         {
             try
@@ -470,7 +470,6 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
                     if (this.currentMedicineTypeADOForEdit.SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__THUOC)
                     {
                         this.FillDataIntoMedicineUseFormAndTutorial(currentMedicineTypeADOForEdit.ID);
-
                         //Neu la thuoc thi kiem tra co mẫu HDSD chưa, có thì focus vào nút "Bổ sung"
                         if (this.medicineTypeTutSelected != null && this.medicineTypeTutSelected.ID > 0)
                         {
@@ -487,6 +486,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
                                 //this.btnAdd.Focus();
                                 this.txtTutorial.Focus();
                                 this.txtTutorial.SelectionStart = txtTutorial.Text.Length + 1;
+                                this.txtHtu.SelectionStart = txtHtu.Text.Length + 1;
                             }
                         }
                         //Ngược lại kiểm tra có cấu hình PM cho phép sau khi chọn thuốc thì nhảy vào ô số lượng hay ô ngày
@@ -610,6 +610,11 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
         {
             try
             {
+                this.txtTutorial.Text = string.Empty;
+                this.txtHtu.Text = string.Empty;
+                this.cboMedicineUseForm.EditValue = null;
+                this.medicineTypeTutSelected = null;
+
                 //Lấy dữ liệu cấu hình hướng dẫn sử dụng của thuốc (HIS_MEDICINE_TYPE_TUT) theo tài khoản đăng nhập và loại thuốc
                 string loginName = Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName();
                 var medicineTypeTuts = BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_MEDICINE_TYPE_TUT>();
@@ -618,6 +623,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
                     List<HIS_MEDICINE_TYPE_TUT> medicineTypeTutFilters = medicineTypeTuts.OrderByDescending(o => o.MODIFY_TIME).Where(o => o.MEDICINE_TYPE_ID == medicineTypeId && o.LOGINNAME == loginName).ToList();
 
                     this.RebuildTutorialWithInControlContainer(medicineTypeTutFilters);
+                    this.RebuildHtulWithInControlContainer(medicineTypeTutFilters);
                     this.medicineTypeTutSelected = medicineTypeTutFilters.FirstOrDefault();
                     if (this.medicineTypeTutSelected != null)
                     {
@@ -626,6 +632,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
                         if (this.medicineTypeTutSelected.MEDICINE_USE_FORM_ID > 0)
                         {
                             this.cboMedicineUseForm.EditValue = this.medicineTypeTutSelected.MEDICINE_USE_FORM_ID;
+                            this.txtHtu.Text = this.cboMedicineUseForm.Text;
                         }
                         //Nếu không có đường dùng thì lấy đường dùng từ danh mục loại thuốc
                         else
@@ -634,6 +641,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
                             if (medicineType != null && (medicineType.MEDICINE_USE_FORM_ID ?? 0) > 0)
                             {
                                 this.cboMedicineUseForm.EditValue = medicineType.MEDICINE_USE_FORM_ID;
+                                this.txtHtu.Text = this.cboMedicineUseForm.Text;
                             }
                         }
 
@@ -645,6 +653,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
                             if (!String.IsNullOrEmpty(this.medicineTypeTutSelected.TUTORIAL))
                             {
                                 this.txtTutorial.Text = this.medicineTypeTutSelected.TUTORIAL;
+                                this.txtHtu.Text = this.cboMedicineUseForm.Text;
                             }
                             //Nếu không có hướng dẫn sử dụng thì tự động set theo các trường như lúc nhập liệu
                             else
@@ -667,9 +676,13 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
                         if ((medicineType.MEDICINE_USE_FORM_ID ?? 0) > 0)
                         {
                             this.cboMedicineUseForm.EditValue = medicineType.MEDICINE_USE_FORM_ID;
+                            this.txtHtu.Text = this.cboMedicineUseForm.Text;
                         }
                         if (String.IsNullOrEmpty(this.txtTutorial.Text))
+                        {
                             this.txtTutorial.Text = medicineType.TUTORIAL;
+                            this.txtHtu.Text = this.cboMedicineUseForm.Text;
+                        }                                
                     }
                 }
             }
@@ -899,6 +912,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
                         item.SERVICE_UNIT_ID = mtF.SERVICE_UNIT_ID;
                         item.SERVICE_UNIT_NAME = mtF.SERVICE_UNIT_NAME;
                         item.TUTORIAL = mtF.TUTORIAL;
+                        item.MEDICINE_USE_FORM_ID = mtF.MEDICINE_USE_FORM_ID;
                         item.IS_AUTO_EXPEND = mtF.IS_AUTO_EXPEND;
                         item.IS_OUT_PARENT_FEE = mtF.IS_OUT_PARENT_FEE;
 
@@ -979,6 +993,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
                             dMediStock1ADO.SERVICE_UNIT_ID = item.SERVICE_UNIT_ID;
                             dMediStock1ADO.SERVICE_UNIT_NAME = item.SERVICE_UNIT_NAME;
                             dMediStock1ADO.TUTORIAL = item.TUTORIAL;
+                            dMediStock1ADO.MEDICINE_USE_FORM_ID = item.MEDICINE_USE_FORM_ID;
                             dMediStock1ADO.USE_ON_DAY = item.USE_ON_DAY;
                             dMediStock1ADO.CONVERT_RATIO = item.CONVERT_RATIO;
                             dMediStock1ADO.CONVERT_UNIT_CODE = item.CONVERT_UNIT_CODE;

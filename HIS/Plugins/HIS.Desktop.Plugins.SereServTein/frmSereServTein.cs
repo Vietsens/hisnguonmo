@@ -1221,6 +1221,11 @@ namespace HIS.Desktop.Plugins.SereServTein
                 foreach (var item in _SereServNumOderss.Keys)
                 {
                     Inventec.Common.Logging.LogSystem.Debug("dữ liệu _SereServNumOderss[item] " + Inventec.Common.Logging.LogUtil.TraceData("", _SereServNumOderss[item]));
+                    Inventec.Common.Logging.LogSystem.Debug("dữ liệu obj.ToArray " + Inventec.Common.Logging.LogUtil.TraceData("", obj));
+                    Inventec.Common.Logging.LogSystem.Debug("dữ liệu sereServTeins " + Inventec.Common.Logging.LogUtil.TraceData("", sereServTeins));
+                    Inventec.Common.Logging.LogSystem.Debug("dữ liệu hisdhst_ " + Inventec.Common.Logging.LogUtil.TraceData("", hisdhst_));
+                    LogSystem.Info("ratio_text " + ratio_text);
+                    LogSystem.Info("Treatment.TDL_PATIENT_GENDER_ID  " + _Treatment.TDL_PATIENT_GENDER_ID);
                     MPS.Processor.Mps000014.PDO.Mps000014PDO mps000014RDO = new MPS.Processor.Mps000014.PDO.Mps000014PDO(
                         obj.ToArray(),
                         _SereServNumOderss[item],
@@ -1231,11 +1236,14 @@ namespace HIS.Desktop.Plugins.SereServTein
                         BackendDataWorker.Get<V_HIS_SERVICE>(),
                         hisdhst_
                         );
+                    Inventec.Common.Logging.LogSystem.Debug("mps000014RDO " + Inventec.Common.Logging.LogUtil.TraceData("", mps000014RDO));
                     bool IseGFR = false;
                     if (!string.IsNullOrEmpty(lblMlct.Text))
                     {
+                        LogSystem.Info("bước 1" + lblMlct.Text.IndexOf("eGFR"));
                         if (lblMlct.Text.IndexOf("eGFR") > -1)
                         {
+                            LogSystem.Info("bước 2");
                             IseGFR = true;
                         }
                     }
@@ -1243,13 +1251,16 @@ namespace HIS.Desktop.Plugins.SereServTein
                     bool IsuACR = false;
                     if (lciACRPRC.Visible)
                     {
+                        LogSystem.Info("bước 3");
                         if (lciACRPRC.Text.IndexOf("uACR") > -1)
                         {
+                            LogSystem.Info("bước 4");
                             IsuACR = true;
                         }
                     }
-                     
+                    LogSystem.Info("bước 5");
                     var mlct = !String.IsNullOrEmpty(lblMlct.Text) ? lblMlct.Text.Substring(0, lblMlct.Text.IndexOf("(")) : "";
+                    Inventec.Common.Logging.LogSystem.Debug("mlct " + Inventec.Common.Logging.LogUtil.TraceData("", mlct));
                     mps000014RDO.mLCTADO = new MPS.Processor.Mps000014.PDO.MLCTADO()
                     {
                         EGFR = IseGFR ? mlct : null,
@@ -1257,22 +1268,24 @@ namespace HIS.Desktop.Plugins.SereServTein
                         UACR = IsuACR ? lblACRPRC.Text : null,
                         UPCR = !IsuACR ? lblACRPRC.Text : null,
                     };
-
+                    Inventec.Common.Logging.LogSystem.Debug("mps000014RDO.mLCTADO " + Inventec.Common.Logging.LogUtil.TraceData("", mps000014RDO.mLCTADO));
                     WaitingManager.Hide();
                     MPS.ProcessorBase.Core.PrintData PrintData = null;
                     if (GlobalVariables.CheDoInChoCacChucNangTrongPhanMem == 2)
                     {
+                        LogSystem.Info("bước 6");
                         PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000014RDO, MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow, "");
                     }
                     else
                     {
+                        LogSystem.Info("bước 7");
                         PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000014RDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show, "");
                     }
-
+                    LogSystem.Info("bước 8");
                     Inventec.Common.SignLibrary.ADO.InputADO inputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode(_Treatment != null ? _Treatment.TREATMENT_CODE : "", printTypeCode, this.currentModule != null ? currentModule.RoomId : 0);
                     Inventec.Common.Logging.LogSystem.Info(_Treatment.TREATMENT_CODE);
                     PrintData.EmrInputADO = inputADO;
-
+                    LogSystem.Info("bước 9");
                     result = MPS.MpsPrinter.Run(PrintData);
                 }
             }

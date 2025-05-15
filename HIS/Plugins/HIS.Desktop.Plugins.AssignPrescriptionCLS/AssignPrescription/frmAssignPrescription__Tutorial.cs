@@ -78,7 +78,77 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
                     if (!String.IsNullOrEmpty(medicineTypeTut.TUTORIAL))
                     {
                         this.txtTutorial.Text = medicineTypeTut.TUTORIAL;
+                        this.txtHtu.Text = medicineTypeTut.HTU_TEXT;
                     }
+                    //if (!String.IsNullOrEmpty(medicineTypeTut.HTU_TEXT))
+                    //{
+                    //    this.txtHtu.Text = medicineTypeTut.HTU_TEXT;
+                    //}
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+        internal void RebuildHtulWithInControlContainer(object data)
+        {
+            try
+            {
+                gridViewHtu.OptionsView.ShowColumnHeaders = false;
+                gridViewHtu.BeginUpdate();
+                gridViewHtu.Columns.Clear();
+                popupControlContainerHtu.Width = 550;
+                popupControlContainerHtu.Height = theRequiredHeight;
+
+                DevExpress.XtraGrid.Columns.GridColumn col2 = new DevExpress.XtraGrid.Columns.GridColumn();
+                col2.FieldName = "HTU_TEXT";
+                col2.Caption = "Cách dùng";
+                col2.Width = 400;
+                col2.VisibleIndex = 1;
+                gridViewHtu.Columns.Add(col2);
+
+                gridViewHtu.OptionsBehavior.Editable = false;
+                gridViewHtu.GridControl.DataSource = data;
+                gridViewHtu.EndUpdate();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void Htu_RowClick(object data)
+        {
+            try
+            {
+                HIS_MEDICINE_TYPE_TUT medicineTypeTut = data as HIS_MEDICINE_TYPE_TUT;
+                if (medicineTypeTut != null)
+                {
+                    if (medicineTypeTut.MEDICINE_USE_FORM_ID > 0)
+                    {
+                        this.cboMedicineUseForm.EditValue = medicineTypeTut.MEDICINE_USE_FORM_ID;
+                    }
+                    else
+                    {
+                        var medicineType = BackendDataWorker.Get<MOS.EFMODEL.DataModels.V_HIS_MEDICINE_TYPE>().FirstOrDefault(o => o.ID == medicineTypeTut.MEDICINE_TYPE_ID);
+                        if (medicineType != null && (medicineType.MEDICINE_USE_FORM_ID ?? 0) > 0)
+                        {
+                            this.cboMedicineUseForm.EditValue = medicineType.MEDICINE_USE_FORM_ID;
+                        }
+                    }
+                    if (!String.IsNullOrEmpty(medicineTypeTut.TUTORIAL))
+                    {
+                        this.txtTutorial.Text = medicineTypeTut.TUTORIAL;
+                        this.txtHtu.Text = medicineTypeTut.HTU_TEXT;
+                    }
+                    //if (!String.IsNullOrEmpty(medicineTypeTut.HTU_TEXT))
+                    //{
+                    //    this.txtHtu.Text = medicineTypeTut.HTU_TEXT;
+                    //}
+
+
+
                 }
             }
             catch (Exception ex)

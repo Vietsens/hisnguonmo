@@ -275,5 +275,10 @@ namespace HIS.Desktop.Plugins.CallPatientV5
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
+
+        private void gridControlExecuteStatus_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

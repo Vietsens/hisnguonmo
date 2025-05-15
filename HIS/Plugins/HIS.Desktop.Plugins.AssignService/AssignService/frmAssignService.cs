@@ -5581,7 +5581,23 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
 							{
                                 if (MessageBox.Show(string.Format(ResourceMessage.DichVuCoThoiGianChiDinhNamTrongKhoangThoiGianKhongChoPhep, sereServMinDurationStr), MessageUtil.GetMessage(LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaThongBao), MessageBoxButtons.YesNo) == DialogResult.Yes)
                                 {
-                                    return;
+                                    if (!assignMulti)
+                                    {
+                                        switch (type)
+                                        {
+                                            case TypeButton.SAVE:
+                                                LogTheadInSessionInfo(() => ProcessSaveData(chkPrint.Checked, false, false, chkSign.Checked, chkPrintDocumentSigned.Checked), "SaveAssignServiceDefault");
+                                                break;
+                                            case TypeButton.SAVE_AND_PRINT:
+                                                LogTheadInSessionInfo(() => ProcessSaveData(true, false, false), "SaveAndPrintAssignServiceDefault");
+                                                break;
+                                            case TypeButton.EDIT:
+                                                LogTheadInSessionInfo(() => ProcessSaveData(chkPrint.Checked, false, false, chkSign.Checked, chkPrintDocumentSigned.Checked), "EditAssignServiceDefault");
+                                                break;
+                                            default:
+                                                break;
+                                        }
+                                    }
                                 }
                                 else
 								{
@@ -5594,7 +5610,23 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
 								{
                                     if (MessageBox.Show(string.Format(ResourceMessage.DichVuCoThoiGianChiDinhNamTrongKhoangThoiGianKhongChoPhep, sereServMinDurationStr), MessageUtil.GetMessage(LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaThongBao), MessageBoxButtons.YesNo) == DialogResult.Yes)
                                     {
-                                        return;
+                                        if (!assignMulti)
+                                        {
+                                            switch (type)
+                                            {
+                                                case TypeButton.SAVE:
+                                                    LogTheadInSessionInfo(() => ProcessSaveData(chkPrint.Checked, false, false, chkSign.Checked, chkPrintDocumentSigned.Checked), "SaveAssignServiceDefault");
+                                                    break;
+                                                case TypeButton.SAVE_AND_PRINT:
+                                                    LogTheadInSessionInfo(() => ProcessSaveData(true, false, false), "SaveAndPrintAssignServiceDefault");
+                                                    break;
+                                                case TypeButton.EDIT:
+                                                    LogTheadInSessionInfo(() => ProcessSaveData(chkPrint.Checked, false, false, chkSign.Checked, chkPrintDocumentSigned.Checked), "EditAssignServiceDefault");
+                                                    break;
+                                                default:
+                                                    break;
+                                            }
+                                        }
                                     }
                                     else
 									{

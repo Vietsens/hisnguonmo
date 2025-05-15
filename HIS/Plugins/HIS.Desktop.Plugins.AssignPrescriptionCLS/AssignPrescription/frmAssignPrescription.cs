@@ -138,6 +138,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
         List<MOS.EFMODEL.DataModels.V_HIS_MEST_ROOM> currentWorkingMestRooms;
         AssignPrescriptionEditADO assignPrescriptionEditADO;
         MOS.EFMODEL.DataModels.HIS_SERVICE_REQ icdExam;
+        List<HIS_MEDICINE_TYPE_TUT> listMedicineTypeTut = new List<HIS_MEDICINE_TYPE_TUT>();
 
         decimal amountInput = 0;
         int lastRowHandle = -1;
@@ -154,6 +155,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
         int theRequiredWidth = 900, theRequiredHeight = 130;
         bool isShowContainerMediMaty = false;
         bool isShowContainerTutorial = false;
+        bool isShowContainerHtu = false;
         bool isShowContainerMediMatyForChoose = false;
         bool isShow = true;
 
@@ -427,8 +429,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
                 LogSystem.Debug("frmAssignPrescription_Load. 5");
                 this.VisibleButton(this.actionBosung);
                 LogSystem.Debug("frmAssignPrescription_Load. 6");
-                this.LoadPrescriptionForEdit();
-                this.LoadTutListByMedicine();
+                this.LoadPrescriptionForEdit();                
                 this.SetEnableButtonControl(this.actionType);
                 this.isNotLoadMediMatyByMediStockInitForm = false;
                 this.IsHandlerWhileOpionGroupSelectedIndexChanged = false;
@@ -703,6 +704,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
                     this.medicineTypeTutSelected.MEDICINE_USE_FORM_ID = null;
 
                 this.medicineTypeTutSelected.TUTORIAL = txtTutorial.Text;
+                this.medicineTypeTutSelected.HTU_TEXT = txtHtu.Text;
                 this.medicineTypeTutSelected.LOGINNAME = Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName();
 
                 CommonParam param = new CommonParam();
@@ -720,7 +722,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
                 string loginName = Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName();
                 List<HIS_MEDICINE_TYPE_TUT> medicineTypeTutFilters = medicineTypeTuts.OrderByDescending(o => o.MODIFY_TIME).Where(o => o.MEDICINE_TYPE_ID == this.currentMedicineTypeADOForEdit.ID && o.LOGINNAME == loginName).ToList();
                 this.RebuildTutorialWithInControlContainer(medicineTypeTutFilters);
-
+                this.RebuildHtulWithInControlContainer(medicineTypeTutFilters);
                 WaitingManager.Hide();
             }
             catch (Exception ex)
@@ -882,8 +884,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
                 {
                     LogSystem.Warn("btnAdd_TabMedicine_Click => thao tac khong hop le. actionType = " + this.actionType);
                     return;
-                }
-
+                }                
                 bool valid = true;
                 this.positionHandleControl = -1;
                 valid = valid && dxValidProviderBoXung.Validate();
@@ -893,12 +894,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
                 valid = valid && CheckGenderMediMaty(currentMedicineTypeADOForEdit);
                 valid = valid && CheckMaMePackage(currentMedicineTypeADOForEdit);
                 valid = valid && CheckOddConvertUnit(currentMedicineTypeADOForEdit, spinAmount.Value);
-                if (!valid) return;
-                if (string.IsNullOrEmpty(cboHtuText.Text)) 
-                {
-                    MessageBox.Show("Bắt buộc phải nhập cách dùng thuốc", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    return;
-                }
+                if (!valid) return;               
                 if (this.mediMatyTypeADOs == null)
                     this.mediMatyTypeADOs = new List<MediMatyTypeADO>();
                 switch (this.actionBosung)
@@ -1176,6 +1172,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
+
 
 
         //qtcode
@@ -1913,7 +1910,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
             }
         }
 
-        private void spinAmount_EditValueChanged(object sender, EventArgs e)
+        private void spinAmount_EditValueChanged(object sender, EventArgs e)          
         {
             try
             {
@@ -2009,6 +2006,11 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
                     this.btnAdd.Focus();
                     e.Handled = true;
                 }
+                else
+                {
+                    this.txtTutorial.Focus();
+                    this.txtTutorial.SelectionStart = this.txtTutorial.Text.Length + 1;
+                }
             }
             catch (Exception ex)
             {
@@ -2054,7 +2056,8 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
             {
                 if (e.KeyCode == Keys.Enter || e.KeyCode == Keys.Tab)
                 {
-                    cboHtuText.Focus();
+                    //btnAdd.Focus();
+                    txtHtu.Focus();
                     if (e.KeyCode == Keys.Enter)
                         e.Handled = true;
                 }
@@ -2285,7 +2288,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
                     //Ngược lại nếu là số nguyên thì hiển thị giữ nguyên giá trị                    
                     this.spinAmount.EditValue = amountValue;
                     this.txtTutorial.Text = this.currentMedicineTypeADOForEdit.TUTORIAL;
-                    //this.cboHtuText.EditValue = this.currentMedicineTypeADOForEdit.HTU_TEXT;
+                    this.txtHtu.Text = this.currentMedicineTypeADOForEdit.HTU_TEXT;
                     this.btnAdd.Enabled = true;
                     Inventec.Desktop.Controls.ControlWorker.ValidationProviderRemoveControlError(this.dxValidProviderBoXung, this.dxErrorProvider1);
                     Inventec.Desktop.Controls.ControlWorker.ValidationProviderRemoveControlError(this.dxValidProviderBoXung__DuongDung, this.dxErrorProvider1);
@@ -2297,6 +2300,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
                     var medicineTypeTuts = BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_MEDICINE_TYPE_TUT>();
                     List<HIS_MEDICINE_TYPE_TUT> medicineTypeTutFilters = medicineTypeTuts.OrderByDescending(o => o.MODIFY_TIME).Where(o => o.MEDICINE_TYPE_ID == currentMedicineTypeADOForEdit.ID && o.LOGINNAME == loginName).ToList();
                     this.RebuildTutorialWithInControlContainer(medicineTypeTutFilters);
+                    this.RebuildHtulWithInControlContainer(medicineTypeTutFilters);
 
                     if (HisConfigCFG.ManyDayPrescriptionOption == 2
                         && this.currentMedicineTypeADOForEdit.IntructionTimeSelecteds != null
@@ -3201,14 +3205,6 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
                     popupControlContainerMediMaty.HidePopup();
                     isShowContainerMediMaty = false;
                     isShowContainerMediMatyForChoose = true;
-                    if (!string.IsNullOrEmpty(currentMedicineTypeADOForEdit.MEDICINE_USE_FORM_NAME))
-                    {
-                        cboHtuText.Text = currentMedicineTypeADOForEdit.MEDICINE_USE_FORM_NAME;
-                    }
-                    else
-                    {
-                        cboHtuText.EditValue = null;
-                    }
                     MetyMatyTypeInStock_RowClick(medicineTypeADOForEdit);
                 }              
             }
@@ -3420,6 +3416,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
                         }
                     }
                 }
+
             }
             catch (Exception ex)
             {
@@ -4505,9 +4502,28 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
                 cboPhieuDieuTri.Properties.Buttons[2].Visible = true;
             }else
                 cboPhieuDieuTri.Properties.Buttons[2].Visible = false;
+        }        
+        private void txtHtu_ButtonClick(object sender, ButtonPressedEventArgs e)
+        {
+            try
+            {
+                if (e.Button.Kind == ButtonPredefines.DropDown)
+                {
+                    isShowContainerHtu = !isShowContainerHtu;
+                    if (isShowContainerHtu)
+                    {
+                        Rectangle buttonBounds = new Rectangle(txtHtu.Bounds.X, txtHtu.Bounds.Y, txtHtu.Bounds.Width, txtHtu.Bounds.Height);
+                        popupControlContainerHtu.ShowPopup(new Point(buttonBounds.X, buttonBounds.Bottom + 25));
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
         }
 
-        private void cboHtuText_KeyDown(object sender, KeyEventArgs e)
+        private void txtHtu_KeyDown(object sender, KeyEventArgs e)
         {
             try
             {
@@ -4523,6 +4539,52 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
+
+        private void gridViewHtu_RowClick(object sender, RowClickEventArgs e)
+        {
+            try
+            {
+                HIS_MEDICINE_TYPE_TUT medicineTypeHtu = gridViewHtu.GetFocusedRow() as HIS_MEDICINE_TYPE_TUT;
+                if (medicineTypeHtu != null)
+                {
+                    popupControlContainerHtu.HidePopup();
+                    isShowContainerHtu = false;
+                    Htu_RowClick(medicineTypeHtu);
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void gridViewHtu_KeyDown(object sender, KeyEventArgs e)
+        {
+            try
+            {
+                if (e.KeyCode == Keys.Enter)
+                {
+                    var medicineTypeADOForEdit = this.gridViewMediMaty.GetFocusedRow();
+                    if (medicineTypeADOForEdit != null)
+                    {
+                        isShowContainerMediMaty = false;
+                        isShowContainerMediMatyForChoose = true;
+                        popupControlContainerMediMaty.HidePopup();
+                        MetyMatyTypeInStock_RowClick(medicineTypeADOForEdit);
+                    }
+                }
+                else if (e.KeyCode == Keys.Down)
+                {
+                    this.gridViewMediMaty.Focus();
+                    this.gridViewMediMaty.FocusedRowHandle = this.gridViewMediMaty.FocusedRowHandle;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
         private void cboExpMestReason_KeyUp(object sender, KeyEventArgs e)
         {
             try
@@ -4535,23 +4597,6 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);                
-            }
-        }
-
-        private void LoadTutListByMedicine()
-        {
-            try
-            {
-                List<HIS_MEDICINE_TYPE_TUT> medicineTypeTut = new List<HIS_MEDICINE_TYPE_TUT>();
-                cboHtuText.Properties.DataSource = medicineTypeTut;
-                cboHtuText.Properties.ValueMember = "ID";
-                cboHtuText.Properties.DisplayMember = "HTU_TEXT";
-                cboHtuText.Properties.View.Columns["HTU_TEXT"].Width = 200;
-                cboHtuText.Properties.PopupFormSize = new Size(400, 200);
-            }
-            catch (Exception ex)
-            {
-                Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
     }

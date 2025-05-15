@@ -381,6 +381,8 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
                     this.VisibleButton(this.actionBosung);
                     this.btnAdd.Enabled = true;
                     this.cboMedicineUseForm.EditValue = null;
+                    this.txtTutorial.Text = "";
+                    this.txtHtu.Text = "";
                     this.spinAmount.Text = "";
                     Inventec.Desktop.Controls.ControlWorker.ValidationProviderRemoveControlError(this.dxValidProviderBoXung, this.dxErrorProvider1);
                     Inventec.Desktop.Controls.ControlWorker.ValidationProviderRemoveControlError(this.dxValidProviderBoXung__DuongDung, this.dxErrorProvider1);

@@ -250,6 +250,7 @@ namespace HIS.Desktop.Plugins.HisPermissionCancelTrans
                     txtCashierLoginname.Text = "";
                     dtEffectiveDate.EditValue = null;
                     cboPermissionType.EditValue = null;
+                    this.cboPermissionType.EditValue = 1;
                 }
             }
             catch (Exception ex)
@@ -618,7 +619,7 @@ namespace HIS.Desktop.Plugins.HisPermissionCancelTrans
                 data.USERNAME = user != null ? user.USERNAME : null;
                 //data.PERMISSION_TYPE_ID = IMSys.DbConfig.HIS_RS.HIS_PERMISSION_TYPE.ID__CANCEL_TRAN;
                 data.EFFECTIVE_DATE = Convert.ToInt64(dtEffectiveDate.DateTime.ToString("yyyyMMdd") + "000000");
-                data.PERMISSION_TYPE_ID = cboPermissionType.EditValue != null ? (long)cboPermissionType.EditValue : 0;
+                data.PERMISSION_TYPE_ID = cboPermissionType.EditValue != null ? (long)cboPermissionType.EditValue : 1;
             }
             catch (Exception ex)
             {
@@ -699,7 +700,6 @@ namespace HIS.Desktop.Plugins.HisPermissionCancelTrans
             try
             {
                 if (!btnRefresh.Enabled) return;
-
                 WaitingManager.Show();
                 this.currentData = null;
                 this.SetDataToControl();

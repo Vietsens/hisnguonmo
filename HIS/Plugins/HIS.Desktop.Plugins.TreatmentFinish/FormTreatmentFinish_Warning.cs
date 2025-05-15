@@ -36,7 +36,7 @@ using System.Windows.Forms;
 
 namespace HIS.Desktop.Plugins.TreatmentFinish
 {
-    public partial class FormTreatmentFinish
+    public partial class FormTreatmentFinish : HIS.Desktop.Utility.FormBase
     {
         enum ValidationDataType
         {
