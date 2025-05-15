@@ -255,21 +255,19 @@ namespace HIS.Desktop.Plugins.XMLViewer
             this.layoutControl1.Controls.Add(this.btnBrowserFile);
             this.layoutControl1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.layoutControl1.Location = new System.Drawing.Point(0, 0);
-            this.layoutControl1.Margin = new System.Windows.Forms.Padding(4);
             this.layoutControl1.Name = "layoutControl1";
             this.layoutControl1.OptionsCustomizationForm.DesignTimeCustomizationFormPositionAndSize = new System.Drawing.Rectangle(494, 243, 250, 350);
             this.layoutControl1.Root = this.layoutControlGroup1;
-            this.layoutControl1.Size = new System.Drawing.Size(1285, 630);
+            this.layoutControl1.Size = new System.Drawing.Size(964, 512);
             this.layoutControl1.TabIndex = 0;
             this.layoutControl1.Text = "layoutControl1";
             // 
             // xtraTabControl1
             // 
-            this.xtraTabControl1.Location = new System.Drawing.Point(5, 38);
-            this.xtraTabControl1.Margin = new System.Windows.Forms.Padding(4);
+            this.xtraTabControl1.Location = new System.Drawing.Point(4, 30);
             this.xtraTabControl1.Name = "xtraTabControl1";
             this.xtraTabControl1.SelectedTabPage = this.xtraTabPage__XML1;
-            this.xtraTabControl1.Size = new System.Drawing.Size(1275, 587);
+            this.xtraTabControl1.Size = new System.Drawing.Size(956, 478);
             this.xtraTabControl1.TabIndex = 6;
             this.xtraTabControl1.TabPages.AddRange(new DevExpress.XtraTab.XtraTabPage[] {
             this.xtraTabPage__XML1,
@@ -282,9 +280,8 @@ namespace HIS.Desktop.Plugins.XMLViewer
             // xtraTabPage__XML1
             // 
             this.xtraTabPage__XML1.Controls.Add(this.layoutControl3);
-            this.xtraTabPage__XML1.Margin = new System.Windows.Forms.Padding(4);
             this.xtraTabPage__XML1.Name = "xtraTabPage__XML1";
-            this.xtraTabPage__XML1.Size = new System.Drawing.Size(1268, 552);
+            this.xtraTabPage__XML1.Size = new System.Drawing.Size(950, 450);
             this.xtraTabPage__XML1.Text = "XML1";
             // 
             // layoutControl3
@@ -292,22 +289,19 @@ namespace HIS.Desktop.Plugins.XMLViewer
             this.layoutControl3.Controls.Add(this.gridControlXML1);
             this.layoutControl3.Dock = System.Windows.Forms.DockStyle.Fill;
             this.layoutControl3.Location = new System.Drawing.Point(0, 0);
-            this.layoutControl3.Margin = new System.Windows.Forms.Padding(4);
             this.layoutControl3.Name = "layoutControl3";
             this.layoutControl3.OptionsCustomizationForm.DesignTimeCustomizationFormPositionAndSize = new System.Drawing.Rectangle(196, 292, 250, 350);
             this.layoutControl3.Root = this.layoutControlGroup3;
-            this.layoutControl3.Size = new System.Drawing.Size(1268, 552);
+            this.layoutControl3.Size = new System.Drawing.Size(950, 450);
             this.layoutControl3.TabIndex = 0;
             this.layoutControl3.Text = "layoutControl3";
             // 
             // gridControlXML1
             // 
-            this.gridControlXML1.EmbeddedNavigator.Margin = new System.Windows.Forms.Padding(4);
-            this.gridControlXML1.Location = new System.Drawing.Point(5, 5);
+            this.gridControlXML1.Location = new System.Drawing.Point(4, 4);
             this.gridControlXML1.MainView = this.gridViewXML1;
-            this.gridControlXML1.Margin = new System.Windows.Forms.Padding(4);
             this.gridControlXML1.Name = "gridControlXML1";
-            this.gridControlXML1.Size = new System.Drawing.Size(1258, 542);
+            this.gridControlXML1.Size = new System.Drawing.Size(942, 442);
             this.gridControlXML1.TabIndex = 85;
             this.gridControlXML1.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
             this.gridViewXML1});
@@ -855,7 +849,7 @@ namespace HIS.Desktop.Plugins.XMLViewer
             this.layoutControlGroup3.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup3.Name = "Root";
             this.layoutControlGroup3.Padding = new DevExpress.XtraLayout.Utils.Padding(2, 2, 2, 2);
-            this.layoutControlGroup3.Size = new System.Drawing.Size(1268, 552);
+            this.layoutControlGroup3.Size = new System.Drawing.Size(950, 450);
             this.layoutControlGroup3.TextVisible = false;
             // 
             // layoutControlItem49
@@ -863,16 +857,15 @@ namespace HIS.Desktop.Plugins.XMLViewer
             this.layoutControlItem49.Control = this.gridControlXML1;
             this.layoutControlItem49.Location = new System.Drawing.Point(0, 0);
             this.layoutControlItem49.Name = "layoutControlItem49";
-            this.layoutControlItem49.Size = new System.Drawing.Size(1264, 548);
+            this.layoutControlItem49.Size = new System.Drawing.Size(946, 446);
             this.layoutControlItem49.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem49.TextVisible = false;
             // 
             // xtraTabPage__XML2
             // 
             this.xtraTabPage__XML2.Controls.Add(this.layoutControl4);
-            this.xtraTabPage__XML2.Margin = new System.Windows.Forms.Padding(4);
             this.xtraTabPage__XML2.Name = "xtraTabPage__XML2";
-            this.xtraTabPage__XML2.Size = new System.Drawing.Size(1268, 552);
+            this.xtraTabPage__XML2.Size = new System.Drawing.Size(950, 450);
             this.xtraTabPage__XML2.Text = "XML2";
             // 
             // layoutControl4
@@ -880,21 +873,18 @@ namespace HIS.Desktop.Plugins.XMLViewer
             this.layoutControl4.Controls.Add(this.gridControlXML2);
             this.layoutControl4.Dock = System.Windows.Forms.DockStyle.Fill;
             this.layoutControl4.Location = new System.Drawing.Point(0, 0);
-            this.layoutControl4.Margin = new System.Windows.Forms.Padding(4);
             this.layoutControl4.Name = "layoutControl4";
             this.layoutControl4.Root = this.layoutControlGroupXML2;
-            this.layoutControl4.Size = new System.Drawing.Size(1268, 552);
+            this.layoutControl4.Size = new System.Drawing.Size(950, 450);
             this.layoutControl4.TabIndex = 0;
             this.layoutControl4.Text = "layoutControl4";
             // 
             // gridControlXML2
             // 
-            this.gridControlXML2.EmbeddedNavigator.Margin = new System.Windows.Forms.Padding(4);
             this.gridControlXML2.Location = new System.Drawing.Point(2, 2);
             this.gridControlXML2.MainView = this.gridViewXML2;
-            this.gridControlXML2.Margin = new System.Windows.Forms.Padding(4);
             this.gridControlXML2.Name = "gridControlXML2";
-            this.gridControlXML2.Size = new System.Drawing.Size(1264, 548);
+            this.gridControlXML2.Size = new System.Drawing.Size(946, 446);
             this.gridControlXML2.TabIndex = 4;
             this.gridControlXML2.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
             this.gridViewXML2});
@@ -1246,7 +1236,7 @@ namespace HIS.Desktop.Plugins.XMLViewer
             this.layoutControlGroupXML2.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroupXML2.Name = "layoutControlGroupXML2";
             this.layoutControlGroupXML2.Padding = new DevExpress.XtraLayout.Utils.Padding(2, 2, 2, 2);
-            this.layoutControlGroupXML2.Size = new System.Drawing.Size(1268, 552);
+            this.layoutControlGroupXML2.Size = new System.Drawing.Size(950, 450);
             this.layoutControlGroupXML2.TextVisible = false;
             // 
             // layoutControlItem44
@@ -1255,16 +1245,15 @@ namespace HIS.Desktop.Plugins.XMLViewer
             this.layoutControlItem44.Location = new System.Drawing.Point(0, 0);
             this.layoutControlItem44.Name = "layoutControlItem44";
             this.layoutControlItem44.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
-            this.layoutControlItem44.Size = new System.Drawing.Size(1264, 548);
+            this.layoutControlItem44.Size = new System.Drawing.Size(946, 446);
             this.layoutControlItem44.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem44.TextVisible = false;
             // 
             // xtraTabPage__XML3
             // 
             this.xtraTabPage__XML3.Controls.Add(this.layoutControl5);
-            this.xtraTabPage__XML3.Margin = new System.Windows.Forms.Padding(4);
             this.xtraTabPage__XML3.Name = "xtraTabPage__XML3";
-            this.xtraTabPage__XML3.Size = new System.Drawing.Size(1268, 552);
+            this.xtraTabPage__XML3.Size = new System.Drawing.Size(950, 450);
             this.xtraTabPage__XML3.Text = "XML3";
             // 
             // layoutControl5
@@ -1272,21 +1261,18 @@ namespace HIS.Desktop.Plugins.XMLViewer
             this.layoutControl5.Controls.Add(this.gridControlXML3);
             this.layoutControl5.Dock = System.Windows.Forms.DockStyle.Fill;
             this.layoutControl5.Location = new System.Drawing.Point(0, 0);
-            this.layoutControl5.Margin = new System.Windows.Forms.Padding(4);
             this.layoutControl5.Name = "layoutControl5";
             this.layoutControl5.Root = this.layoutControlGroupXML3;
-            this.layoutControl5.Size = new System.Drawing.Size(1268, 552);
+            this.layoutControl5.Size = new System.Drawing.Size(950, 450);
             this.layoutControl5.TabIndex = 0;
             this.layoutControl5.Text = "layoutControl5";
             // 
             // gridControlXML3
             // 
-            this.gridControlXML3.EmbeddedNavigator.Margin = new System.Windows.Forms.Padding(4);
-            this.gridControlXML3.Location = new System.Drawing.Point(3, 3);
+            this.gridControlXML3.Location = new System.Drawing.Point(2, 2);
             this.gridControlXML3.MainView = this.gridViewXML3;
-            this.gridControlXML3.Margin = new System.Windows.Forms.Padding(4);
             this.gridControlXML3.Name = "gridControlXML3";
-            this.gridControlXML3.Size = new System.Drawing.Size(1262, 546);
+            this.gridControlXML3.Size = new System.Drawing.Size(946, 446);
             this.gridControlXML3.TabIndex = 5;
             this.gridControlXML3.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
             this.gridViewXML3});
@@ -1667,7 +1653,7 @@ namespace HIS.Desktop.Plugins.XMLViewer
             this.layoutControlGroupXML3.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroupXML3.Name = "layoutControlGroupXML3";
             this.layoutControlGroupXML3.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
-            this.layoutControlGroupXML3.Size = new System.Drawing.Size(1268, 552);
+            this.layoutControlGroupXML3.Size = new System.Drawing.Size(950, 450);
             this.layoutControlGroupXML3.TextVisible = false;
             // 
             // layoutControlItem4
@@ -1675,16 +1661,15 @@ namespace HIS.Desktop.Plugins.XMLViewer
             this.layoutControlItem4.Control = this.gridControlXML3;
             this.layoutControlItem4.Location = new System.Drawing.Point(0, 0);
             this.layoutControlItem4.Name = "layoutControlItem4";
-            this.layoutControlItem4.Size = new System.Drawing.Size(1268, 552);
+            this.layoutControlItem4.Size = new System.Drawing.Size(950, 450);
             this.layoutControlItem4.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem4.TextVisible = false;
             // 
             // xtraTabPage__XML4
             // 
             this.xtraTabPage__XML4.Controls.Add(this.layoutControl6);
-            this.xtraTabPage__XML4.Margin = new System.Windows.Forms.Padding(4);
             this.xtraTabPage__XML4.Name = "xtraTabPage__XML4";
-            this.xtraTabPage__XML4.Size = new System.Drawing.Size(1268, 552);
+            this.xtraTabPage__XML4.Size = new System.Drawing.Size(950, 450);
             this.xtraTabPage__XML4.Text = "XML4";
             // 
             // layoutControl6
@@ -1692,21 +1677,18 @@ namespace HIS.Desktop.Plugins.XMLViewer
             this.layoutControl6.Controls.Add(this.gridControlXML4);
             this.layoutControl6.Dock = System.Windows.Forms.DockStyle.Fill;
             this.layoutControl6.Location = new System.Drawing.Point(0, 0);
-            this.layoutControl6.Margin = new System.Windows.Forms.Padding(4);
             this.layoutControl6.Name = "layoutControl6";
             this.layoutControl6.Root = this.layoutControlGroupXML4;
-            this.layoutControl6.Size = new System.Drawing.Size(1268, 552);
+            this.layoutControl6.Size = new System.Drawing.Size(950, 450);
             this.layoutControl6.TabIndex = 0;
             this.layoutControl6.Text = "layoutControl6";
             // 
             // gridControlXML4
             // 
-            this.gridControlXML4.EmbeddedNavigator.Margin = new System.Windows.Forms.Padding(4);
-            this.gridControlXML4.Location = new System.Drawing.Point(3, 3);
+            this.gridControlXML4.Location = new System.Drawing.Point(2, 2);
             this.gridControlXML4.MainView = this.gridViewXML4;
-            this.gridControlXML4.Margin = new System.Windows.Forms.Padding(4);
             this.gridControlXML4.Name = "gridControlXML4";
-            this.gridControlXML4.Size = new System.Drawing.Size(1262, 546);
+            this.gridControlXML4.Size = new System.Drawing.Size(946, 446);
             this.gridControlXML4.TabIndex = 6;
             this.gridControlXML4.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
             this.gridViewXML4});
@@ -1843,7 +1825,7 @@ namespace HIS.Desktop.Plugins.XMLViewer
             this.layoutControlGroupXML4.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroupXML4.Name = "layoutControlGroupXML4";
             this.layoutControlGroupXML4.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
-            this.layoutControlGroupXML4.Size = new System.Drawing.Size(1268, 552);
+            this.layoutControlGroupXML4.Size = new System.Drawing.Size(950, 450);
             this.layoutControlGroupXML4.TextVisible = false;
             // 
             // layoutControlItem5
@@ -1851,16 +1833,15 @@ namespace HIS.Desktop.Plugins.XMLViewer
             this.layoutControlItem5.Control = this.gridControlXML4;
             this.layoutControlItem5.Location = new System.Drawing.Point(0, 0);
             this.layoutControlItem5.Name = "layoutControlItem5";
-            this.layoutControlItem5.Size = new System.Drawing.Size(1268, 552);
+            this.layoutControlItem5.Size = new System.Drawing.Size(950, 450);
             this.layoutControlItem5.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem5.TextVisible = false;
             // 
             // xtraTabPage__XML5
             // 
             this.xtraTabPage__XML5.Controls.Add(this.layoutControl7);
-            this.xtraTabPage__XML5.Margin = new System.Windows.Forms.Padding(4);
             this.xtraTabPage__XML5.Name = "xtraTabPage__XML5";
-            this.xtraTabPage__XML5.Size = new System.Drawing.Size(1268, 552);
+            this.xtraTabPage__XML5.Size = new System.Drawing.Size(950, 450);
             this.xtraTabPage__XML5.Text = "XML5";
             // 
             // layoutControl7
@@ -1868,21 +1849,18 @@ namespace HIS.Desktop.Plugins.XMLViewer
             this.layoutControl7.Controls.Add(this.gridControlXML5);
             this.layoutControl7.Dock = System.Windows.Forms.DockStyle.Fill;
             this.layoutControl7.Location = new System.Drawing.Point(0, 0);
-            this.layoutControl7.Margin = new System.Windows.Forms.Padding(4);
             this.layoutControl7.Name = "layoutControl7";
             this.layoutControl7.Root = this.layoutControlGroupXML5;
-            this.layoutControl7.Size = new System.Drawing.Size(1268, 552);
+            this.layoutControl7.Size = new System.Drawing.Size(950, 450);
             this.layoutControl7.TabIndex = 0;
             this.layoutControl7.Text = "layoutControl7";
             // 
             // gridControlXML5
             // 
-            this.gridControlXML5.EmbeddedNavigator.Margin = new System.Windows.Forms.Padding(4);
-            this.gridControlXML5.Location = new System.Drawing.Point(3, 3);
+            this.gridControlXML5.Location = new System.Drawing.Point(2, 2);
             this.gridControlXML5.MainView = this.gridViewXML5;
-            this.gridControlXML5.Margin = new System.Windows.Forms.Padding(4);
             this.gridControlXML5.Name = "gridControlXML5";
-            this.gridControlXML5.Size = new System.Drawing.Size(1262, 546);
+            this.gridControlXML5.Size = new System.Drawing.Size(946, 446);
             this.gridControlXML5.TabIndex = 6;
             this.gridControlXML5.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
             this.gridViewXML5});
@@ -1975,7 +1953,7 @@ namespace HIS.Desktop.Plugins.XMLViewer
             this.layoutControlGroupXML5.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroupXML5.Name = "layoutControlGroupXML5";
             this.layoutControlGroupXML5.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
-            this.layoutControlGroupXML5.Size = new System.Drawing.Size(1268, 552);
+            this.layoutControlGroupXML5.Size = new System.Drawing.Size(950, 450);
             this.layoutControlGroupXML5.TextVisible = false;
             // 
             // layoutControlItem6
@@ -1983,16 +1961,15 @@ namespace HIS.Desktop.Plugins.XMLViewer
             this.layoutControlItem6.Control = this.gridControlXML5;
             this.layoutControlItem6.Location = new System.Drawing.Point(0, 0);
             this.layoutControlItem6.Name = "layoutControlItem6";
-            this.layoutControlItem6.Size = new System.Drawing.Size(1268, 552);
+            this.layoutControlItem6.Size = new System.Drawing.Size(950, 450);
             this.layoutControlItem6.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem6.TextVisible = false;
             // 
             // xtraTabPage__XMLfull
             // 
             this.xtraTabPage__XMLfull.Controls.Add(this.layoutControl2);
-            this.xtraTabPage__XMLfull.Margin = new System.Windows.Forms.Padding(4);
             this.xtraTabPage__XMLfull.Name = "xtraTabPage__XMLfull";
-            this.xtraTabPage__XMLfull.Size = new System.Drawing.Size(1268, 552);
+            this.xtraTabPage__XMLfull.Size = new System.Drawing.Size(950, 450);
             this.xtraTabPage__XMLfull.Text = "Dịch đầy đủ";
             // 
             // layoutControl2
@@ -2000,20 +1977,18 @@ namespace HIS.Desktop.Plugins.XMLViewer
             this.layoutControl2.Controls.Add(this.webBrowser1);
             this.layoutControl2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.layoutControl2.Location = new System.Drawing.Point(0, 0);
-            this.layoutControl2.Margin = new System.Windows.Forms.Padding(4);
             this.layoutControl2.Name = "layoutControl2";
             this.layoutControl2.Root = this.layoutControlGroup2;
-            this.layoutControl2.Size = new System.Drawing.Size(1268, 552);
+            this.layoutControl2.Size = new System.Drawing.Size(950, 450);
             this.layoutControl2.TabIndex = 0;
             this.layoutControl2.Text = "layoutControl2";
             // 
             // webBrowser1
             // 
-            this.webBrowser1.Location = new System.Drawing.Point(5, 5);
-            this.webBrowser1.Margin = new System.Windows.Forms.Padding(4);
-            this.webBrowser1.MinimumSize = new System.Drawing.Size(27, 25);
+            this.webBrowser1.Location = new System.Drawing.Point(4, 4);
+            this.webBrowser1.MinimumSize = new System.Drawing.Size(20, 20);
             this.webBrowser1.Name = "webBrowser1";
-            this.webBrowser1.Size = new System.Drawing.Size(1258, 542);
+            this.webBrowser1.Size = new System.Drawing.Size(942, 442);
             this.webBrowser1.TabIndex = 4;
             // 
             // layoutControlGroup2
@@ -2025,7 +2000,7 @@ namespace HIS.Desktop.Plugins.XMLViewer
             this.layoutControlGroup2.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup2.Name = "layoutControlGroup2";
             this.layoutControlGroup2.Padding = new DevExpress.XtraLayout.Utils.Padding(2, 2, 2, 2);
-            this.layoutControlGroup2.Size = new System.Drawing.Size(1268, 552);
+            this.layoutControlGroup2.Size = new System.Drawing.Size(950, 450);
             this.layoutControlGroup2.TextVisible = false;
             // 
             // layoutControlItem1
@@ -2033,16 +2008,15 @@ namespace HIS.Desktop.Plugins.XMLViewer
             this.layoutControlItem1.Control = this.webBrowser1;
             this.layoutControlItem1.Location = new System.Drawing.Point(0, 0);
             this.layoutControlItem1.Name = "layoutControlItem1";
-            this.layoutControlItem1.Size = new System.Drawing.Size(1264, 548);
+            this.layoutControlItem1.Size = new System.Drawing.Size(946, 446);
             this.layoutControlItem1.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem1.TextVisible = false;
             // 
             // btnBrowserFile
             // 
-            this.btnBrowserFile.Location = new System.Drawing.Point(5, 5);
-            this.btnBrowserFile.Margin = new System.Windows.Forms.Padding(4);
+            this.btnBrowserFile.Location = new System.Drawing.Point(4, 4);
             this.btnBrowserFile.Name = "btnBrowserFile";
-            this.btnBrowserFile.Size = new System.Drawing.Size(118, 27);
+            this.btnBrowserFile.Size = new System.Drawing.Size(89, 22);
             this.btnBrowserFile.StyleController = this.layoutControl1;
             this.btnBrowserFile.TabIndex = 5;
             this.btnBrowserFile.Text = "Chọn tệp";
@@ -2059,7 +2033,7 @@ namespace HIS.Desktop.Plugins.XMLViewer
             this.layoutControlGroup1.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup1.Name = "Root";
             this.layoutControlGroup1.Padding = new DevExpress.XtraLayout.Utils.Padding(2, 2, 2, 2);
-            this.layoutControlGroup1.Size = new System.Drawing.Size(1285, 630);
+            this.layoutControlGroup1.Size = new System.Drawing.Size(964, 512);
             this.layoutControlGroup1.TextVisible = false;
             // 
             // layoutControlItem2
@@ -2067,34 +2041,33 @@ namespace HIS.Desktop.Plugins.XMLViewer
             this.layoutControlItem2.Control = this.btnBrowserFile;
             this.layoutControlItem2.Location = new System.Drawing.Point(0, 0);
             this.layoutControlItem2.Name = "layoutControlItem2";
-            this.layoutControlItem2.Size = new System.Drawing.Size(124, 33);
+            this.layoutControlItem2.Size = new System.Drawing.Size(93, 26);
             this.layoutControlItem2.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem2.TextVisible = false;
             // 
             // emptySpaceItem1
             // 
             this.emptySpaceItem1.AllowHotTrack = false;
-            this.emptySpaceItem1.Location = new System.Drawing.Point(124, 0);
+            this.emptySpaceItem1.Location = new System.Drawing.Point(93, 0);
             this.emptySpaceItem1.Name = "emptySpaceItem1";
-            this.emptySpaceItem1.Size = new System.Drawing.Size(1157, 33);
+            this.emptySpaceItem1.Size = new System.Drawing.Size(867, 26);
             this.emptySpaceItem1.TextSize = new System.Drawing.Size(0, 0);
             // 
             // layoutControlItem3
             // 
             this.layoutControlItem3.Control = this.xtraTabControl1;
-            this.layoutControlItem3.Location = new System.Drawing.Point(0, 33);
+            this.layoutControlItem3.Location = new System.Drawing.Point(0, 26);
             this.layoutControlItem3.Name = "layoutControlItem3";
-            this.layoutControlItem3.Size = new System.Drawing.Size(1281, 593);
+            this.layoutControlItem3.Size = new System.Drawing.Size(960, 482);
             this.layoutControlItem3.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem3.TextVisible = false;
             // 
             // frmXMLViewer
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1285, 630);
+            this.ClientSize = new System.Drawing.Size(964, 512);
             this.Controls.Add(this.layoutControl1);
-            this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "frmXMLViewer";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Xem XML";
