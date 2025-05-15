@@ -66,7 +66,7 @@ namespace HIS.Desktop.Plugins.ApprovaleDebate.ApprovaleDebate
             }
         }
 
-        public frmApprovaleDebate(Inventec.Desktop.Common.Modules.Module module,Common.RefeshReference delegateRefresh , V_HIS_SPECIALIST_EXAM specialist)
+        public frmApprovaleDebate(Inventec.Desktop.Common.Modules.Module module, Common.RefeshReference delegateRefresh, V_HIS_SPECIALIST_EXAM specialist)
                     : base(module)
         {
             try
@@ -163,7 +163,11 @@ namespace HIS.Desktop.Plugins.ApprovaleDebate.ApprovaleDebate
         {
             try
             {
-                var data = BackendDataWorker.Get<V_HIS_EMPLOYEE>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE && o.IS_DOCTOR == 1).ToList();
+                var data = BackendDataWorker.Get<V_HIS_EMPLOYEE>().Where(o => 
+                                o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE 
+                                && o.IS_DOCTOR == 1
+                                && o.DEPARTMENT_ID == this.v_his_specialist_exam.EXAM_EXECUTE_DEPARMENT_ID
+                                ).ToList();
                 List<ColumnInfo> columnInfos = new List<ColumnInfo>();
                 columnInfos.Add(new ColumnInfo("LOGINNAME", "Tên đăng nhập", 150, 1));
                 columnInfos.Add(new ColumnInfo("TDL_USERNAME", "Họ và tên", 250, 1));
@@ -335,9 +339,9 @@ namespace HIS.Desktop.Plugins.ApprovaleDebate.ApprovaleDebate
                                                                   select new
                                                                   {
                                                                       TRACKING_ID = a.ID,
-                                                                      TRACKING_TIME = Inventec.Common.DateTime.Convert.TimeNumberToTimeStringWithoutSecond(a.TRACKING_TIME)
-                                                                                        .Replace(" ", Environment.NewLine),
-                                                                      USER_NAME = ac?.DIPLOMA,
+                                                                      TRACKING_TIME = a.TRACKING_TIME,
+                                                                      USER_NAME = ac?.TDL_USERNAME,
+                                                                      DIPLOMA = ac?.DIPLOMA,
                                                                       CONTENT = a.CONTENT,
                                                                       SERVICE_NAME = ab?.SERVICE_NAME,
                                                                       SERVICE_REQ_CODE = ab?.SERVICE_REQ_CODE,
@@ -345,14 +349,19 @@ namespace HIS.Desktop.Plugins.ApprovaleDebate.ApprovaleDebate
                                                                       SERVICE_UNIT_NAME = ab?.SERVICE_UNIT_NAME,
                                                                   })
                                                                   .GroupBy(g => g.TRACKING_ID)
-                                                                  .Select((s,i) => new TrackingListADO()
+                                                                  .Select((s, i) =>
                                                                   {
-                                                                      CONCRETE_ID__IN_SETY = (i + 1).ToString(),
-                                                                      TRACKING_TIME = s.First().TRACKING_TIME,
-                                                                      USER_NAME = s.First().USER_NAME,
-                                                                      CONTENT = s.First().CONTENT,
-                                                                      SERVICE = string.Join(Environment.NewLine,  s.Where(w => !string.IsNullOrEmpty(w.SERVICE_NAME))
-                                                                      .Select(ss => $"{ss.SERVICE_REQ_CODE} - {ss.SERVICE_NAME} x {ss.AMOUNT} {ss.SERVICE_UNIT_NAME}"))
+                                                                      var ret = s.First();
+                                                                      return new TrackingListADO()
+                                                                      {
+                                                                          CONCRETE_ID__IN_SETY = (i + 1).ToString(),
+                                                                          TRACKING_TIME = Inventec.Common.DateTime.Convert.TimeNumberToTimeStringWithoutSecond(ret.TRACKING_TIME)
+                                                                                        .Replace(" ", Environment.NewLine),
+                                                                          USER_NAME = $"{ret.USER_NAME} - {ret.DIPLOMA}",
+                                                                          CONTENT = ret.CONTENT,
+                                                                          SERVICE = string.Join(Environment.NewLine, s.Where(w => !string.IsNullOrEmpty(w.SERVICE_NAME))
+                                                                          .Select(ss => $"{ss.SERVICE_REQ_CODE} - {ss.SERVICE_NAME} x {ss.AMOUNT} {ss.SERVICE_UNIT_NAME}"))
+                                                                      };
                                                                   })
                                                                   .ToList();
                             tabToDieuTri.PageVisible = true;
@@ -497,7 +506,7 @@ namespace HIS.Desktop.Plugins.ApprovaleDebate.ApprovaleDebate
         }
         private void ProcessLoadDocumentBySereServ(DHisSereServ2 data)
         {
-  
+
         }
 
         private void bbtnSave_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
@@ -517,25 +526,22 @@ namespace HIS.Desktop.Plugins.ApprovaleDebate.ApprovaleDebate
             try
             {
                 WaitingManager.Show();
-                if (btnSave.Enabled)
+                CommonParam param = new CommonParam();
+                v_his_specialist_exam.EXAM_EXECUTE_LOGINNAME = cboEmployee.EditValue?.ToString();
+                v_his_specialist_exam.EXAM_EXECUTE_USERNAME = cboEmployee.EditValue?.ToString();
+                v_his_specialist_exam.EXAM_EXECUTE_CONTENT = txtYKienBacSi.Text.Trim();
+                v_his_specialist_exam.IS_APPROVAL = 1;
+                var rs = new BackendAdapter(param).Post<HIS_INFUSION_SUM>("api/HisSpecialistExam/Update", ApiConsumers.MosConsumer, v_his_specialist_exam, param);
+                if (rs != null)
                 {
-                    CommonParam param = new CommonParam();
-                    v_his_specialist_exam.EXAM_EXECUTE_LOGINNAME = cboEmployee.EditValue?.ToString();
-                    v_his_specialist_exam.EXAM_EXECUTE_USERNAME = cboEmployee.EditValue?.ToString();
-                    v_his_specialist_exam.EXAM_EXECUTE_CONTENT = txtYKienBacSi.Text.Trim();
-                    v_his_specialist_exam.IS_APPROVAL = 1;
-                    var rs = new BackendAdapter(param).Post<HIS_INFUSION_SUM>("api/HisSpecialistExam/Update", ApiConsumers.MosConsumer, v_his_specialist_exam, param);
-                    if (rs != null)
+                    if (this.delegateRefresh != null)
                     {
-                        if (this.delegateRefresh != null)
-                        {
-                            this.delegateRefresh();
-                            this.Close();
-                        }
+                        this.delegateRefresh();
+                        this.Close();
                     }
-                    MessageManager.Show(this, param, rs != null);
-                    SessionManager.ProcessTokenLost(param);
                 }
+                MessageManager.Show(this, param, rs != null);
+                SessionManager.ProcessTokenLost(param);
                 WaitingManager.Hide();
             }
             catch (Exception ex)
