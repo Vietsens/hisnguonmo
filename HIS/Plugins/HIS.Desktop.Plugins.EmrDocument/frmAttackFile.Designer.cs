@@ -187,7 +187,7 @@ namespace HIS.Desktop.Plugins.EmrDocument
             this.btnRotateRight.Image = ((System.Drawing.Image)(resources.GetObject("btnRotateRight.Image")));
             this.btnRotateRight.ImageLocation = DevExpress.XtraEditors.ImageLocation.MiddleCenter;
             this.btnRotateRight.Location = new System.Drawing.Point(501, 484);
-            this.btnRotateRight.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.btnRotateRight.Margin = new System.Windows.Forms.Padding(2);
             this.btnRotateRight.Name = "btnRotateRight";
             this.btnRotateRight.Size = new System.Drawing.Size(86, 56);
             this.btnRotateRight.StyleController = this.layoutControl1;
@@ -200,7 +200,7 @@ namespace HIS.Desktop.Plugins.EmrDocument
             this.btnRotateLeft.Image = ((System.Drawing.Image)(resources.GetObject("btnRotateLeft.Image")));
             this.btnRotateLeft.ImageLocation = DevExpress.XtraEditors.ImageLocation.MiddleCenter;
             this.btnRotateLeft.Location = new System.Drawing.Point(401, 484);
-            this.btnRotateLeft.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.btnRotateLeft.Margin = new System.Windows.Forms.Padding(2);
             this.btnRotateLeft.Name = "btnRotateLeft";
             this.btnRotateLeft.Size = new System.Drawing.Size(86, 56);
             this.btnRotateLeft.StyleController = this.layoutControl1;

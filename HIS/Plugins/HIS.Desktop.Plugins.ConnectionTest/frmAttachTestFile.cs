@@ -27,6 +27,9 @@ using Inventec.Common.Controls.EditorLoader;
 using iTextSharp.text;
 using iTextSharp.text.pdf;
 using EMR.TDO;
+using DevExpress.Data;
+using DevExpress.XtraGrid.Views.Base;
+using System.Collections;
 
 namespace HIS.Desktop.Plugins.ConnectionTest
 {
@@ -186,18 +189,13 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                             this.attachmentFiles.Base64Data = Inventec.Common.SignLibrary.Utils.FileToBase64String(item);
                             this.attachmentFiles.FullName = item;
                             string extension = System.IO.Path.GetExtension(item);
-                            if ((extension ?? "").ToLower() != ".pdf")
-                            {
-                                this.attachmentFiles.image = System.Drawing.Image.FromFile(item);
-                            }
-
                             listAttachmentFiles.Add(attachmentFiles);
                         }
                     }
 
                     // Update grid data source
                     gridControl1.BeginUpdate();
-                    gridControl1.DataSource = listAttachmentFiles;
+                    this.gridControl1.DataSource = listAttachmentFiles;
                     gridControl1.EndUpdate();
 
                     // Update document name if it's empty
@@ -205,6 +203,9 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                     {
                         textEditDocName.Text = Path.GetFileNameWithoutExtension(listAttachmentFiles[0].FILE_NAME);
                     }
+
+                    Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => selectedFileNames), selectedFileNames));
+                    Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => listAttachmentFiles), listAttachmentFiles));
                 }
             }
             catch (Exception ex)
@@ -321,6 +322,8 @@ namespace HIS.Desktop.Plugins.ConnectionTest
         {
             try
             {
+                currentAttachmentFile = (AttachFileADO)gridView1.GetFocusedRow();
+                currentAttachmentFile.FILE_NAME = textEditDocName.Text;
                 if (!Config.ConfigKey.IsHasConnectionEmr)
                     return;
 
@@ -328,14 +331,6 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                 {
                     // Create document data object
                     DocumentTDO document = new DocumentTDO();
-                    Validation.ValidateMaxLength valid = new Validation.ValidateMaxLength();
-                    valid.memoEdit = textEditDocName;
-                    valid.maxLength = 2000;
-                    valid.ErrorText = "Trường dữ liệu vượt quá 2000 ký tự";
-                    valid.ErrorType = DevExpress.XtraEditors.DXErrorProvider.ErrorType.Warning;
-                    dxValidationProvider1.SetValidationRule(textEditDocName, valid);
-                    if (!dxValidationProvider1.Validate())  return;
-                    WaitingManager.Show();
                     document.DocumentName = textEditDocName.Text.Trim();
                     document.DocumentTypeId = (long)gridLookUpEditDocType.EditValue;
                     document.DocumentTypeId = 22;
@@ -382,6 +377,8 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                 {
                     MessageBox.Show("Vui lòng chọn ít nhất một file để đính kèm.");
                 }
+                this.attachmentFiles = null;
+                this.selectedFileNames = null;
             }
             catch (Exception ex)
             {
@@ -411,6 +408,52 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                         gridControl1.EndUpdate();
                     }
                 }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void gridView1_CustomUnboundColumnData(object sender, DevExpress.XtraGrid.Views.Base.CustomColumnDataEventArgs e)
+        {
+            try
+            {
+                if (e.IsGetData && e.Column.UnboundType != UnboundColumnType.Bound)
+                {
+                    AttachFileADO AttackTDO = (AttachFileADO)((IList)((BaseView)sender).DataSource)[e.ListSourceRowIndex];
+                    if (AttackTDO != null)
+                    {
+                        if (e.Column.FieldName == "STT")
+                        {
+                            e.Value = e.ListSourceRowIndex + 1;
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void textEditDocName_KeyDown(object sender, KeyEventArgs e)
+        {
+            try
+            {
+                if (e.KeyCode == Keys.Enter)
+                {
+                    Validation.ValidateMaxLength valid = new Validation.ValidateMaxLength();
+                    valid.memoEdit = textEditDocName;
+                    valid.maxLength = 2000;
+                    valid.ErrorText = "Trường dữ liệu vượt quá 2000 ký tự";
+                    valid.ErrorType = DevExpress.XtraEditors.DXErrorProvider.ErrorType.Warning;
+                    dxValidationProvider1.SetValidationRule(textEditDocName, valid);
+                    if (!dxValidationProvider1.Validate()) return;
+                    WaitingManager.Show();
+                }
+                currentAttachmentFile = (AttachFileADO)gridView1.GetFocusedRow();
+                currentAttachmentFile.FILE_NAME = textEditDocName.Text;
             }
             catch (Exception ex)
             {

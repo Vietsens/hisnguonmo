@@ -28,11 +28,13 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmAttachTestFile));
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject1 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject2 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject3 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject4 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject13 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject14 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject15 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject16 = new DevExpress.Utils.SerializableAppearanceObject();
             this.layoutControl1 = new DevExpress.XtraLayout.LayoutControl();
             this.gridLookUpEditDocType = new DevExpress.XtraEditors.GridLookUpEdit();
             this.gridLookUpEdit1View = new DevExpress.XtraGrid.Views.Grid.GridView();
@@ -66,8 +68,8 @@
             this.layoutControlItem9 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem10 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem1 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.dxValidationProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider();
-            this.dxErrorProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXErrorProvider();
+            this.dxValidationProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider(this.components);
+            this.dxErrorProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXErrorProvider(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
             this.layoutControl1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gridLookUpEditDocType.Properties)).BeginInit();
@@ -305,6 +307,7 @@
             this.gridView1.GridControl = this.gridControl1;
             this.gridView1.Name = "gridView1";
             this.gridView1.OptionsView.ShowGroupPanel = false;
+            this.gridView1.CustomUnboundColumnData += new DevExpress.XtraGrid.Views.Base.CustomColumnDataEventHandler(this.gridView1_CustomUnboundColumnData);
             this.gridView1.Click += new System.EventHandler(this.gridView1_Click);
             // 
             // gridColumnSTT
@@ -312,6 +315,8 @@
             this.gridColumnSTT.Caption = "STT";
             this.gridColumnSTT.FieldName = "STT";
             this.gridColumnSTT.Name = "gridColumnSTT";
+            this.gridColumnSTT.OptionsColumn.AllowEdit = false;
+            this.gridColumnSTT.OptionsColumn.AllowSort = DevExpress.Utils.DefaultBoolean.False;
             this.gridColumnSTT.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumnSTT.Visible = true;
             this.gridColumnSTT.VisibleIndex = 0;
@@ -322,6 +327,8 @@
             this.gridColumnDelete.ColumnEdit = this.repositoryItemButtonEditDelete;
             this.gridColumnDelete.FieldName = "DELETE";
             this.gridColumnDelete.Name = "gridColumnDelete";
+            this.gridColumnDelete.OptionsColumn.AllowEdit = false;
+            this.gridColumnDelete.OptionsColumn.AllowSort = DevExpress.Utils.DefaultBoolean.False;
             this.gridColumnDelete.OptionsColumn.ShowCaption = false;
             this.gridColumnDelete.Visible = true;
             this.gridColumnDelete.VisibleIndex = 1;
@@ -331,7 +338,7 @@
             // 
             this.repositoryItemButtonEditDelete.AutoHeight = false;
             this.repositoryItemButtonEditDelete.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("repositoryItemButtonEditDelete.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject1, serializableAppearanceObject2, serializableAppearanceObject3, serializableAppearanceObject4, "", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("repositoryItemButtonEditDelete.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject13, serializableAppearanceObject14, serializableAppearanceObject15, serializableAppearanceObject16, "", null, null, true)});
             this.repositoryItemButtonEditDelete.Name = "repositoryItemButtonEditDelete";
             this.repositoryItemButtonEditDelete.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             this.repositoryItemButtonEditDelete.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.repositoryItemButtonEditDelete_ButtonClick);
@@ -341,6 +348,8 @@
             this.gridColumnFileName.Caption = "Tên";
             this.gridColumnFileName.FieldName = "FileName";
             this.gridColumnFileName.Name = "gridColumnFileName";
+            this.gridColumnFileName.OptionsColumn.AllowEdit = false;
+            this.gridColumnFileName.OptionsColumn.AllowSort = DevExpress.Utils.DefaultBoolean.False;
             this.gridColumnFileName.Visible = true;
             this.gridColumnFileName.VisibleIndex = 2;
             this.gridColumnFileName.Width = 402;
@@ -352,6 +361,7 @@
             this.textEditDocName.Size = new System.Drawing.Size(436, 20);
             this.textEditDocName.StyleController = this.layoutControl1;
             this.textEditDocName.TabIndex = 5;
+            this.textEditDocName.KeyDown += new System.Windows.Forms.KeyEventHandler(this.textEditDocName_KeyDown);
             // 
             // layoutControlGroup1
             // 
