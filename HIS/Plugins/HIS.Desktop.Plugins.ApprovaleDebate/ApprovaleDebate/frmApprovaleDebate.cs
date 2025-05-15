@@ -612,21 +612,25 @@ namespace HIS.Desktop.Plugins.ApprovaleDebate.ApprovaleDebate
                 positionHandleControl = -1;
                 WaitingManager.Show();
                 CommonParam param = new CommonParam();
-                v_his_specialist_exam.EXAM_EXECUTE_LOGINNAME = cboEmployee.EditValue != null ? cboEmployee.EditValue.ToString() : null;
-                v_his_specialist_exam.EXAM_EXECUTE_USERNAME = cboEmployee.EditValue != null ? cboEmployee.Text.ToString() : null;
-                v_his_specialist_exam.EXAM_EXECUTE_CONTENT = txtYKienBacSi.Text.Trim();
-                v_his_specialist_exam.IS_APPROVAL = 1;
-                var rs = new BackendAdapter(param).Post<HIS_SPECIALIST_EXAM>("api/HisSpecialistExam/Update", ApiConsumers.MosConsumer, v_his_specialist_exam, param);
-                if (rs != null && this.delegateRefresh != null)
+                var update_his_specialist_exam = new HIS_SPECIALIST_EXAM();
+                Inventec.Common.Mapper.DataObjectMapper.Map<HIS_SPECIALIST_EXAM>(update_his_specialist_exam, v_his_specialist_exam);
                 {
-                    this.delegateRefresh();
-                }
-                WaitingManager.Hide();
-                MessageManager.Show(this, param, rs != null);
-                SessionManager.ProcessTokenLost(param);
-                if (rs != null)
-                {
-                    this.Close();
+                    update_his_specialist_exam.EXAM_EXECUTE_LOGINNAME = cboEmployee.EditValue != null ? cboEmployee.EditValue.ToString() : null;
+                    update_his_specialist_exam.EXAM_EXECUTE_USERNAME = cboEmployee.EditValue != null ? cboEmployee.Text.ToString() : null;
+                    update_his_specialist_exam.EXAM_EXECUTE_CONTENT = txtYKienBacSi.Text.Trim();
+                    update_his_specialist_exam.IS_APPROVAL = 1;
+                    var rs = new BackendAdapter(param).Post<HIS_SPECIALIST_EXAM>("api/HisSpecialistExam/Update", ApiConsumers.MosConsumer, update_his_specialist_exam, param);
+                    if (rs != null && this.delegateRefresh != null)
+                    {
+                        this.delegateRefresh();
+                    }
+                    WaitingManager.Hide();
+                    MessageManager.Show(this, param, rs != null);
+                    SessionManager.ProcessTokenLost(param);
+                    if (rs != null)
+                    {
+                        this.Close();
+                    }
                 }
             }
             catch (Exception ex)
