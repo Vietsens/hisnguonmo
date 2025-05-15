@@ -168,6 +168,9 @@
   <data name="CacPhieuChiDinhSauChuaKetThucKhongChoPhepKetThuc" xml:space="preserve">
     <value>အောက်ပါအမှာစာများ မပြီးပြတ်သေးပါ- {0}</value>
   </data>
+  <data name="YLenhChuaCoThongTinLayMau" xml:space="preserve">
+    <value>คำสั่งซื้อ {0} ยังไม่มีข้อมูลตัวอย่าง</value>
+  </data>
   <data name="CacVatTuThieuThongTinHoaDonBanCoMuonTiepTuc" xml:space="preserve">
     <value>ပစ္စည်းများ {0} သည် ပြေစာအချက်အလက် ပျောက်ဆုံးနေပါသည်။</value>
   </data>

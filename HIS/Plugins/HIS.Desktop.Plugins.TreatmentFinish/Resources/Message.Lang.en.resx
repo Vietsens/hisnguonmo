@@ -168,6 +168,9 @@
   <data name="CacPhieuChiDinhSauChuaKetThucKhongChoPhepKetThuc" xml:space="preserve">
     <value>The following orders have not yet been completed: {0}</value>
   </data>
+  <data name="YLenhChuaCoThongTinLayMau" xml:space="preserve">
+    <value>Order {0} has no sample information yet</value>
+  </data>
   <data name="CacVatTuThieuThongTinHoaDonBanCoMuonTiepTuc" xml:space="preserve">
     <value>Supplies {0} are missing invoice information.</value>
   </data>
