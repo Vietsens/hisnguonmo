@@ -71,7 +71,7 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
                 ValidationControlSpinNotVatAndBlack(spinNumOrder);
                 ValidatecboMedicineLine();
                 //qtcode
-                ValidatecboDosageForm();
+                //ValidatecboDosageForm();
                 //qtcode
                 ValidMaxlengthtxtActiveIngrBhytCode();
                 ValidMaxlengthtxtActiveIngrBhytName();
@@ -142,23 +142,20 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
             }
         }
         //qtcode
-        void ValidatecboDosageForm()
+        void ValidatecboDosageForm(bool isValid)
         {
             try
             {
                 ValidateCombox vali = new ValidateCombox();
-                var medicineLine = BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_MEDICINE_LINE>().SingleOrDefault(o => o.ID == Inventec.Common.TypeConvert.Parse.ToInt64((cboMedicineLine.EditValue ?? "").ToString()));
-                if(medicineLine.ID == 3)
-                {
-                    vali.gridLockup = cboDosageForm;
-                    vali.ErrorType = ErrorType.Warning;
-                    vali.ErrorText = MessageUtil.GetMessage(LibraryMessage.Message.Enum.TruongDuLieuBatBuoc);
-                    dxValidationMedicineType.SetValidationRule(cboDosageForm, vali);
-                }
+                vali.gridLockup = cboDosageForm;
+                vali.ErrorType = ErrorType.Warning;
+                vali.ErrorText = MessageUtil.GetMessage(LibraryMessage.Message.Enum.TruongDuLieuBatBuoc);
+                dxValidationMedicineType.SetValidationRule(cboDosageForm, isValid ? vali : new ValidateCombox());
+
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
-                LogSystem.Warn(ex); 
+                LogSystem.Warn(ex);
             }
         }
         //qtcode
