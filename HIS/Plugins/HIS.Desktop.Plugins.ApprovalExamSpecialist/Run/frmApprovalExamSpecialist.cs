@@ -70,8 +70,8 @@ namespace HIS.Desktop.Plugins.ApprovalExamSpecialist.Run
             InitializeComponent();
             try
             {
+                this.treatmentID = treatmentID;
                 this.currentSpecialistExam = currentSpecialistExam;
-                this.treatmentID = 134586;
                 this.currentModule = currentModule;
                 this.wkRoomId = this.currentModule != null ? this.currentModule.RoomId : 0;
                 this.wkRoomTypeId = this.currentModule != null ? this.currentModule.RoomTypeId : 0;
@@ -91,13 +91,13 @@ namespace HIS.Desktop.Plugins.ApprovalExamSpecialist.Run
                 SetValidateRule();
                 FillDataToGridTreatmentSpeacialist();
 
-                string jsonString = @"{""ADD_TIME_STR"":""12/09/2024 10:32:09"",""PATIENT_CLASSIFY_NAME"":""Màu tím"",""DISPLAY_COLOR"":""192, 0, 192"",""ID"":6707,""TREATMENT_ID"":152715,""CO_TREATMENT_ID"":2182,""ADD_TIME"":20240912103209,""BED_ROOM_ID"":284,""REMOVE_TIME"":null,""TREATMENT_ROOM_ID"":null,""TDL_OBSERVED_TIME_FROM"":null,""TDL_OBSERVED_TIME_TO"":null,""PATIENT_ID"":127997,""TREATMENT_CODE"":""000000152638"",""TDL_PATIENT_FIRST_NAME"":""1"",""TDL_PATIENT_LAST_NAME"":""TK QUẢNG"",""TDL_PATIENT_NAME"":""TK QUẢNG 1 "",""TDL_PATIENT_DOB"":20040215000000,""TDL_PATIENT_GENDER_NAME"":""Nam"",""TDL_PATIENT_CODE"":""0000127858"",""TDL_PATIENT_ADDRESS"":""34 Trung Kính, Phường Yên Hoà, Quận Cầu Giấy, Hà Nội"",""TDL_HEIN_CARD_NUMBER"":null,""TDL_HEIN_MEDI_ORG_CODE"":null,""ICD_CODE"":""A00"",""ICD_NAME"":""Bệnh tả"",""ICD_TEXT"":null,""ICD_SUB_CODE"":null,""TDL_PATIENT_GENDER_ID"":2,""TDL_HEIN_MEDI_ORG_NAME"":null,""IS_PAUSE"":null,""IS_APPROVE_FINISH"":null,""APPROVE_FINISH_NOTE"":null,""TDL_PATIENT_CLASSIFY_ID"":2,""TDL_TREATMENT_TYPE_ID"":3,""EMR_COVER_TYPE_ID"":12,""CLINICAL_IN_TIME"":20240912100800,""CO_TREAT_DEPARTMENT_IDS"":""22"",""OUT_TIME"":null,""TDL_PATIENT_AVATAR_URL"":null,""LAST_DEPARTMENT_ID"":36,""TDL_PATIENT_UNSIGNED_NAME"":""TK QUANG 1 "",""TREATMENT_END_TYPE_ID"":null,""TREATMENT_METHOD"":""phương pháp điều trị"",""TDL_PATIENT_PHONE"":null,""TDL_HEIN_CARD_FROM_TIME"":null,""TDL_HEIN_CARD_TO_TIME"":null,""TDL_PATIENT_CCCD_NUMBER"":null,""TDL_PATIENT_CMND_NUMBER"":null,""TDL_PATIENT_PASSPORT_NUMBER"":null,""TDL_PATIENT_MOBILE"":null,""DOCTOR_LOGINNAME"":""quangln"",""DOCTOR_USERNAME"":""Lương Ngọc Quảng"",""PATIENT_TYPE_NAME"":""Khám Đích Danh Và Tái Khám"",""BED_NAME"":""Gường xịn"",""BED_CODE"":""G1"",""PATIENT_TYPE_CODE"":""05"",""BED_ROOM_NAME"":""buồng nội trú 2"",""TREATMENT_ROOM_CODE"":null,""TREATMENT_ROOM_NAME"":null,""LAST_DEPARTMENT_CODE"":""2"",""LAST_DEPARTMENT_NAME"":""Khoa Răng Hàm Mặt"",""NOTE"":null}";
+                //string jsonString = @"{""ADD_TIME_STR"":""12/09/2024 10:32:09"",""PATIENT_CLASSIFY_NAME"":""Màu tím"",""DISPLAY_COLOR"":""192, 0, 192"",""ID"":6707,""TREATMENT_ID"":152715,""CO_TREATMENT_ID"":2182,""ADD_TIME"":20240912103209,""BED_ROOM_ID"":284,""REMOVE_TIME"":null,""TREATMENT_ROOM_ID"":null,""TDL_OBSERVED_TIME_FROM"":null,""TDL_OBSERVED_TIME_TO"":null,""PATIENT_ID"":127997,""TREATMENT_CODE"":""000000152638"",""TDL_PATIENT_FIRST_NAME"":""1"",""TDL_PATIENT_LAST_NAME"":""TK QUẢNG"",""TDL_PATIENT_NAME"":""TK QUẢNG 1 "",""TDL_PATIENT_DOB"":20040215000000,""TDL_PATIENT_GENDER_NAME"":""Nam"",""TDL_PATIENT_CODE"":""0000127858"",""TDL_PATIENT_ADDRESS"":""34 Trung Kính, Phường Yên Hoà, Quận Cầu Giấy, Hà Nội"",""TDL_HEIN_CARD_NUMBER"":null,""TDL_HEIN_MEDI_ORG_CODE"":null,""ICD_CODE"":""A00"",""ICD_NAME"":""Bệnh tả"",""ICD_TEXT"":null,""ICD_SUB_CODE"":null,""TDL_PATIENT_GENDER_ID"":2,""TDL_HEIN_MEDI_ORG_NAME"":null,""IS_PAUSE"":null,""IS_APPROVE_FINISH"":null,""APPROVE_FINISH_NOTE"":null,""TDL_PATIENT_CLASSIFY_ID"":2,""TDL_TREATMENT_TYPE_ID"":3,""EMR_COVER_TYPE_ID"":12,""CLINICAL_IN_TIME"":20240912100800,""CO_TREAT_DEPARTMENT_IDS"":""22"",""OUT_TIME"":null,""TDL_PATIENT_AVATAR_URL"":null,""LAST_DEPARTMENT_ID"":36,""TDL_PATIENT_UNSIGNED_NAME"":""TK QUANG 1 "",""TREATMENT_END_TYPE_ID"":null,""TREATMENT_METHOD"":""phương pháp điều trị"",""TDL_PATIENT_PHONE"":null,""TDL_HEIN_CARD_FROM_TIME"":null,""TDL_HEIN_CARD_TO_TIME"":null,""TDL_PATIENT_CCCD_NUMBER"":null,""TDL_PATIENT_CMND_NUMBER"":null,""TDL_PATIENT_PASSPORT_NUMBER"":null,""TDL_PATIENT_MOBILE"":null,""DOCTOR_LOGINNAME"":""quangln"",""DOCTOR_USERNAME"":""Lương Ngọc Quảng"",""PATIENT_TYPE_NAME"":""Khám Đích Danh Và Tái Khám"",""BED_NAME"":""Gường xịn"",""BED_CODE"":""G1"",""PATIENT_TYPE_CODE"":""05"",""BED_ROOM_NAME"":""buồng nội trú 2"",""TREATMENT_ROOM_CODE"":null,""TREATMENT_ROOM_NAME"":null,""LAST_DEPARTMENT_CODE"":""2"",""LAST_DEPARTMENT_NAME"":""Khoa Răng Hàm Mặt"",""NOTE"":null}";
 
 
-                RowCellClickBedRoom = Newtonsoft.Json.JsonConvert.DeserializeObject<L_HIS_TREATMENT_BED_ROOM>(jsonString);
-                if (RowCellClickBedRoom != null)
+                //RowCellClickBedRoom = Newtonsoft.Json.JsonConvert.DeserializeObject<L_HIS_TREATMENT_BED_ROOM>(jsonString);
+                if (this.currentSpecialistExam != null)
                 {
-                    LoadDataSereServByTreatmentId(RowCellClickBedRoom);
+                    LoadDataSereServByTreatmentId(this.currentSpecialistExam);
                 }
 
 
@@ -200,10 +200,10 @@ namespace HIS.Desktop.Plugins.ApprovalExamSpecialist.Run
                 int start = ((CommonParam)param).Start ?? 0;
                 int limit = ((CommonParam)param).Limit ?? 0;
                 CommonParam paramCommon = new CommonParam(start, limit);
-
+                //quên :)) thagndq cái này liên quan gì đến thắng a, k truyền vào thì chả null
                 HisTrackingFilter trackingFilter = new HisTrackingFilter
                 {
-                    TREATMENT_ID = treatmentID
+                    TREATMENT_ID = currentSpecialistExam.TREATMENT_ID
                 };
                 List<HIS_TRACKING> trackings = new BackendAdapter(paramCommon).Get<List<HIS_TRACKING>>(
                     HisRequestUriStore.HIS_TRACKING_GET,
@@ -222,7 +222,7 @@ namespace HIS.Desktop.Plugins.ApprovalExamSpecialist.Run
 
                 MOS.Filter.HisSereServFilter sereServFilter = new MOS.Filter.HisSereServFilter
                 {
-                    TREATMENT_ID = treatmentID
+                    TREATMENT_ID = currentSpecialistExam.TREATMENT_ID
                 };
                 List<DHisSereServ2> sereServList = new BackendAdapter(paramCommon).Get<List<DHisSereServ2>>(
                     UriApi.HIS_SERE_SERV_2_GET,
@@ -237,11 +237,11 @@ namespace HIS.Desktop.Plugins.ApprovalExamSpecialist.Run
                     {
                         emp = empDict[tracking.CREATOR];
                     }
-
-                    TreatmentNoteADO note = new TreatmentNoteADO(tracking, emp, sereServList);
+                    var SServ = sereServList.Where(o => o.TRACKING_ID == tracking.ID).ToList();
+                    TreatmentNoteADO note = new TreatmentNoteADO(tracking, emp, SServ);
                     noteList.Add(note);
                 }
-
+                //Lại đi
                 gridControl1.BeginUpdate();
                 gridControl1.DataSource = noteList;
                 gridControl1.EndUpdate();
@@ -258,14 +258,6 @@ namespace HIS.Desktop.Plugins.ApprovalExamSpecialist.Run
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
-
-
-
-
-
-
-
-
         private void treeView_Click(SereServADO data)
         {
             try
@@ -277,9 +269,6 @@ namespace HIS.Desktop.Plugins.ApprovalExamSpecialist.Run
                     {
                         ProcessLoadDocumentBySereServ(TreeClickData);
                     }
-                    else
-                    {
-                    }
                 }
             }
             catch (Exception ex)
@@ -287,6 +276,7 @@ namespace HIS.Desktop.Plugins.ApprovalExamSpecialist.Run
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
+
 
         private void ProcessLoadDocumentBySereServ(DHisSereServ2 data)
         {
@@ -315,36 +305,6 @@ namespace HIS.Desktop.Plugins.ApprovalExamSpecialist.Run
             }
         }
 
-        private void gridViewTreatment_CustomUnboundColumnData(object sender, DevExpress.XtraGrid.Views.Base.CustomColumnDataEventArgs e)
-        {
-            try
-            {
-                if (e.IsGetData && e.Column.UnboundType != DevExpress.Data.UnboundColumnType.Bound)
-                {
-                    var data = (TreatmentNoteADO)((IList)((BaseView)sender).DataSource)[e.ListSourceRowIndex];
-                    if (data != null)
-                    {
-                        if (e.Column.FieldName == "TRACKING_TIME")
-                        {
-                            e.Value = data.DatetimeFormatted;
-                        }
-                        else if (e.Column.FieldName == "PROGRESS")
-                        {
-                            e.Value = data.Content;
-                        }
-                        else if (e.Column.FieldName == "Medical_order")
-                        {
-                            e.Value = data.Medical_order;
-                        }
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                Inventec.Common.Logging.LogSystem.Error(ex);
-            }
-        }
-
         private List<EmrDocumentFileSDO> GetEmrDocumentFile(string hiscode, bool? IsMerge, bool? IsShowPatientSign, bool? IsShowWatermark, ref CommonParam paramCommon)
         {
             EmrDocumentDownloadFileSDO sdo = new EmrDocumentDownloadFileSDO();
@@ -361,8 +321,7 @@ namespace HIS.Desktop.Plugins.ApprovalExamSpecialist.Run
             sdo.DepartmentCode = roomWorking != null ? roomWorking.DEPARTMENT_CODE : null;
             return new BackendAdapter(paramCommon).Post<List<EmrDocumentFileSDO>>("api/EmrDocument/DownloadFile", ApiConsumers.EmrConsumer, sdo, paramCommon);
         }
-
-        private void LoadDataSereServByTreatmentId(L_HIS_TREATMENT_BED_ROOM currentHisServiceReq)
+        private void LoadDataSereServByTreatmentId(V_HIS_SPECIALIST_EXAM currentHisServiceReq)
         {
             try
             {
@@ -379,28 +338,13 @@ namespace HIS.Desktop.Plugins.ApprovalExamSpecialist.Run
                     CommonParam param = new CommonParam();
                     DHisSereServ2Filter _sereServ2Filter = new DHisSereServ2Filter();
                     _sereServ2Filter.TREATMENT_ID = currentHisServiceReq.TREATMENT_ID;
-                    //_sereServ2Filter.INTRUCTION_DATE = Int64.Parse(currentHisServiceReq.InstructionDate.ToString().Substring(0, 8) + "000000");
                     dataNew = new BackendAdapter(param).Get<List<DHisSereServ2>>("api/HisSereServ/GetDHisSereServ2", ApiConsumers.MosConsumer, _sereServ2Filter, param);
                     if (dataNew != null && dataNew.Count > 0)
                     {
-                        //if ((long)cboFilterByDepartment.EditValue == (long)0) //Theo khoa
-                        //{
-                        //    dataNew = dataNew.Where(o => o.REQUEST_DEPARTMENT_ID == this.DepartmentID).ToList();
-                        //}
-
-                        //if (!currentHisServiceReq.isParent)
-                        //{
-                        //    dataNew = dataNew.Where(o => o.TRACKING_ID == currentHisServiceReq.TRACKING_ID).ToList();
-                        //}
                         HisServiceReqFilter filter = new HisServiceReqFilter();
                         filter.IDs = dataNew.Select(o => o.SERVICE_REQ_ID ?? 0).ToList();
                         dataServiceReq = new BackendAdapter(param).Get<List<HIS_SERVICE_REQ>>("api/HisServiceReq/Get", ApiConsumers.MosConsumer, filter, param);
                         var listRootByType = dataNew.OrderByDescending(o => o.TRACKING_TIME).GroupBy(o => o.TDL_SERVICE_TYPE_ID).ToList();
-
-
-                        //var department = currentModule != null ? BackendDataWorker.Get<HIS_ROOM>().FirstOrDefault(p => p.ID == currentModule.RoomId) : null;
-                        var department = currentModule != null ? new HIS_ROOM() : null;
-                        var departmentId = department != null ? department.DEPARTMENT_ID : 0;
                         foreach (var types in listRootByType)
                         {
                             SereServADO ssRootType = new SereServADO();
@@ -463,7 +407,6 @@ namespace HIS.Desktop.Plugins.ApprovalExamSpecialist.Run
                                 ssRootSety.SERVICE_NAME = String.Format("- {0} - {1}", rootSety.First().REQUEST_ROOM_NAME, rootSety.First().REQUEST_DEPARTMENT_NAME);
                                 var time = Inventec.Common.DateTime.Convert.TimeNumberToTimeString(rootSety.First().TDL_INTRUCTION_TIME ?? 0);
                                 ssRootSety.NOTE_ADO = time.Substring(0, time.Count() - 3);
-
                                 SereServADOs.Add(ssRootSety);
                                 #endregion
                                 int d = 0;
@@ -492,8 +435,9 @@ namespace HIS.Desktop.Plugins.ApprovalExamSpecialist.Run
                         }
                     }
                 }
-
                 WaitingManager.Hide();
+
+
                 if (SereServADOs != null && SereServADOs.Count > 0)
                 {
                     SereServADOs = SereServADOs.OrderBy(o => o.PARENT_ID__IN_SETY).ThenBy(p => p.SERVICE_CODE).ThenBy(o => o.SERVICE_NAME).ToList();
@@ -505,7 +449,7 @@ namespace HIS.Desktop.Plugins.ApprovalExamSpecialist.Run
                         o => o.TDL_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__CDHA
                         ));
 
-                    ucCDHA.ReLoad(treeView_Click, listCLS, this.RowCellClickBedRoom);
+                    ucCDHA.ReLoad(treeView_Click, listCLS, this.currentSpecialistExam);
 
                     #endregion
 
@@ -516,7 +460,7 @@ namespace HIS.Desktop.Plugins.ApprovalExamSpecialist.Run
                         o => o.TDL_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__XN
                         ));
 
-                    ucXN.ReLoad(treeView_Click, listXN, this.RowCellClickBedRoom);
+                    ucXN.ReLoad(treeView_Click, listXN, this.currentSpecialistExam);
 
                     #endregion
 
@@ -528,7 +472,7 @@ namespace HIS.Desktop.Plugins.ApprovalExamSpecialist.Run
                         || o.TDL_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__TDCN
                         ));
 
-                    ucXN.ReLoad(treeView_Click, listPTTT, this.RowCellClickBedRoom);
+                    ucXN.ReLoad(treeView_Click, listPTTT, this.currentSpecialistExam);
 
                     #endregion
 
@@ -540,7 +484,7 @@ namespace HIS.Desktop.Plugins.ApprovalExamSpecialist.Run
                         || o.TDL_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__MAU
                         ));
 
-                    ucDichVu.ReLoad(treeView_Click, listMediMate, this.RowCellClickBedRoom);
+                    ucDichVu.ReLoad(treeView_Click, listMediMate, this.currentSpecialistExam);
 
                     #endregion
 
@@ -551,7 +495,7 @@ namespace HIS.Desktop.Plugins.ApprovalExamSpecialist.Run
                         o => o.TDL_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__GPBL
                         ));
 
-                    ucGiaiPhau.ReLoad(treeView_Click, listGP, this.RowCellClickBedRoom);
+                    ucGiaiPhau.ReLoad(treeView_Click, listGP, this.currentSpecialistExam);
 
                     #endregion
 
@@ -563,7 +507,7 @@ namespace HIS.Desktop.Plugins.ApprovalExamSpecialist.Run
                         || o.TDL_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__NS
                         ));
 
-                    ucGiaiPhau.ReLoad(treeView_Click, listSANS, this.RowCellClickBedRoom);
+                    ucGiaiPhau.ReLoad(treeView_Click, listSANS, this.currentSpecialistExam);
 
                     #endregion
 
@@ -579,12 +523,12 @@ namespace HIS.Desktop.Plugins.ApprovalExamSpecialist.Run
                 }
                 else
                 {
-                    ucCDHA.ReLoad(treeView_Click, null, this.RowCellClickBedRoom);
-                    ucXN.ReLoad(treeView_Click, null, this.RowCellClickBedRoom);
-                    ucDichVu.ReLoad(treeView_Click, null, this.RowCellClickBedRoom);
-                    ucSieuAm.ReLoad(treeView_Click, null, this.RowCellClickBedRoom);
-                    ucPhauThuat.ReLoad(treeView_Click, null, this.RowCellClickBedRoom);
-                    ucGiaiPhau.ReLoad(treeView_Click, null, this.RowCellClickBedRoom);
+                    ucCDHA.ReLoad(treeView_Click, null, this.currentSpecialistExam);
+                    ucXN.ReLoad(treeView_Click, null, this.currentSpecialistExam);
+                    ucDichVu.ReLoad(treeView_Click, null, this.currentSpecialistExam);
+                    ucSieuAm.ReLoad(treeView_Click, null, this.currentSpecialistExam);
+                    ucPhauThuat.ReLoad(treeView_Click, null, this.currentSpecialistExam);
+                    ucGiaiPhau.ReLoad(treeView_Click, null, this.currentSpecialistExam);
                 }
 
             }
@@ -594,7 +538,7 @@ namespace HIS.Desktop.Plugins.ApprovalExamSpecialist.Run
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
-
+   
         private void btnSave_Click(object sender, EventArgs e)
         {
             try
@@ -621,56 +565,6 @@ namespace HIS.Desktop.Plugins.ApprovalExamSpecialist.Run
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
                 MessageBox.Show("Có lỗi xảy ra khi lưu thông tin.", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-        }
-
-        private bool ProcessSaveSpecialistExam(ref HIS_SPECIALIST_EXAM exam)
-        {
-            try
-            {
-                if (currentVHisSpecialist == null)
-                    return false;
-
-                CommonParam param = new CommonParam();
-                HisSpecialistExamFilter filter = new HisSpecialistExamFilter
-                {
-                    ID = currentVHisSpecialist.ID
-                };
-
-                var examList = new BackendAdapter(param).Get<List<HIS_SPECIALIST_EXAM>>(
-                    "api/HisSpecialistExam/Get", ApiConsumers.MosConsumer, filter, param);
-
-                if (examList != null && examList.Count > 0)
-                {
-                    HIS_SPECIALIST_EXAM hisSpecialistResult = examList.First();
-
-                    dtTrackingTime.DateTime = hisSpecialistResult.EXAM_TIME > 0
-                        ? Convert.ToDateTime(hisSpecialistResult.EXAM_TIME)
-                        : DateTime.Now;
-
-                    txtNoiDungKham.Text = hisSpecialistResult.EXAM_EXECUTE_CONTENT ?? "";
-                    txtYLenhKham.Text = hisSpecialistResult.EXAM_EXCUTE ?? "";
-                }
-
-                // Lấy thông tin từ giao diện để lưu
-                exam.EXAM_EXECUTE_CONTENT = txtNoiDungKham.Text?.Trim();
-                exam.EXAM_EXCUTE = txtYLenhKham.Text?.Trim();
-                exam.EXAM_TIME = dtTrackingTime.DateTime.Ticks;
-                exam.IS_APPROVAL = 1;
-
-                // Gọi API để lưu
-                exam = new BackendAdapter(param).Post<HIS_SPECIALIST_EXAM>(
-                    UriApi.HIS_SPEACIALIST_EXAM_CREATE,
-                    ApiConsumers.MosConsumer,
-                    exam,
-                    param);
-
-                return true;
-            }
-            catch (Exception ex)
-            {
-                Inventec.Common.Logging.LogSystem.Error(ex);
-                return false;
             }
         }
 
