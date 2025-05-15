@@ -1,40 +1,63 @@
 ﻿using Inventec.Core;
 using Inventec.Desktop.Core;
 using Inventec.Desktop.Core.Tools;
+using MOS.EFMODEL.DataModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace HIS.Desktop.Plugins.a2ApprovaleDebate.ApprovaleDebate
+namespace HIS.Desktop.Plugins.ApprovaleDebate.ApprovaleDebate
 {
     public sealed class ApprovaleDebateBehavior : Tool<IDesktopToolContext>, IApprovaleDebate
     {
-        Inventec.Desktop.Common.Modules.Module moduleData;
+        object[] entity;
+        Common.RefeshReference delegateRefresh;
+        Inventec.Desktop.Common.Modules.Module module;
+        V_HIS_SPECIALIST_EXAM v_his_specialist_exam;
         public ApprovaleDebateBehavior()
             : base()
         {
         }
 
-        public ApprovaleDebateBehavior(CommonParam param, Inventec.Desktop.Common.Modules.Module moduleData)
+        public ApprovaleDebateBehavior(CommonParam param, object[] entity)
             : base()
         {
-            this.moduleData = moduleData;
+            this.entity = entity;
         }
 
         object IApprovaleDebate.Run()
         {
+            object result = null;
             try
             {
-                return new frmApprovaleDebate(this.moduleData);
+                if (entity != null && entity.Count() > 0)
+                {
+                    foreach (var item in entity)
+                    {
+                        if (item is Inventec.Desktop.Common.Modules.Module)
+                        {
+                            module = (Inventec.Desktop.Common.Modules.Module)item;
+                        }
+                        if (item is V_HIS_SPECIALIST_EXAM SPECIALIST)
+                        {
+                            v_his_specialist_exam = SPECIALIST;
+                        }
+                        if (item is Common.RefeshReference deleg)
+                        {
+                            delegateRefresh = deleg;
+                        }
+                    }
+                    result = new frmApprovaleDebate(module, delegateRefresh, v_his_specialist_exam);
+                }
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
-                //param.HasException = true;
-                return null;
+                result = null;
             }
+            return result;
         }
     }
 }

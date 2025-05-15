@@ -7,8 +7,8 @@
     <ProjectGuid>{2CEB441A-FD6F-4D50-B78D-4B2A5D318C43}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>HIS.Desktop.Plugins.a2ApprovaleDebate</RootNamespace>
-    <AssemblyName>HIS.Desktop.Plugins.a2ApprovaleDebate</AssemblyName>
+    <RootNamespace>HIS.Desktop.Plugins.ApprovaleDebate</RootNamespace>
+    <AssemblyName>HIS.Desktop.Plugins.ApprovaleDebate</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
@@ -97,12 +97,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ADO\DepartmentFilterADO.cs" />
-    <Compile Include="ADO\PatientFilterADO.cs" />
     <Compile Include="ADO\TrackingListADO.cs" />
     <Compile Include="ADO\SereServADO.cs" />
-    <Compile Include="ADO\ServiceReqGroupByDateADO.cs" />
-    <Compile Include="ADO\TreatmentStatusADO.cs" />
     <Compile Include="ApprovaleDebate\frmApprovaleDebate.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -116,8 +112,6 @@
     <Compile Include="CallModule.cs" />
     <Compile Include="Key\HisConfigCFG.cs" />
     <Compile Include="Key\HisConfigKeys.cs" />
-    <Compile Include="Key\KeyboardWorker.cs" />
-    <Compile Include="Key\PrintTypeCodeStorePlus.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>

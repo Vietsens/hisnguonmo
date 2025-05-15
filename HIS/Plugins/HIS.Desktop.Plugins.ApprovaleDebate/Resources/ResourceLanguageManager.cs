@@ -5,13 +5,13 @@ using System.Resources;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace HIS.Desktop.Plugins.a2ApprovaleDebate.Resources
+namespace HIS.Desktop.Plugins.ApprovaleDebate.Resources
 {
     public class ResourceLanguageManager
     {
         public static ResourceManager LanguageResource { get; set; }
         public static ResourceManager LanguageResource__FormApprovalFinish { get; set; }
         public static ResourceManager LanguageResource__FrmFollow { get; set; }
-        public static ResourceManager LanguageResource__UCTreeListService { get; set; }
+        public static ResourceManager LanguageResource__UCTreeListTracking { get; set; }
     }
 }

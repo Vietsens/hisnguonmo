@@ -22,7 +22,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace HIS.Desktop.Plugins.a2ApprovaleDebate.ADO
+namespace HIS.Desktop.Plugins.ApprovaleDebate.ADO
 {
     public class SereServADO : DHisSereServ2
     {
@@ -37,7 +37,7 @@ namespace HIS.Desktop.Plugins.a2ApprovaleDebate.ADO
         public long child { get; set; }
         public long REQUEST_DEPARTMENT_ID { get; set; }
         public long EXECUTE_DEPARTMENT_ID { get; set; }
-        //ServiceReq
+
         public long? SAMPLE_TIME { get; set; }
         public long? RECEIVE_SAMPLE_TIME { get; set; }
         public short? IS_TEMPORARY_PRES { get; set; }

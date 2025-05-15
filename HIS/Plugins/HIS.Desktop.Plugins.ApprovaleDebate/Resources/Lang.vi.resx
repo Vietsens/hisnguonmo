@@ -159,4 +159,67 @@
   <data name="frmApprovaleDebate.Text" xml:space="preserve">
     <value>Duyệt hội chẩn</value>
   </data>
+  <data name="UCTreeListService.isRation.Caption" xml:space="preserve">
+    <value>ĐTTT</value>
+  </data>
+  <data name="UCTreeListService.layoutControl1.Text" xml:space="preserve">
+    <value>layoutControl1</value>
+  </data>
+  <data name="UCTreeListService.tc_Delete.Caption" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="UCTreeListService.tc_Edit.Caption" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="UCTreeListService.tc_MediUsed.Caption" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="UCTreeListService.tc_NoteAdo.Caption" xml:space="preserve">
+    <value>Ghi chú</value>
+  </data>
+  <data name="UCTreeListService.tc_Number.Caption" xml:space="preserve">
+    <value>Số lượng</value>
+  </data>
+  <data name="UCTreeListService.tc_RequestDepartmentName.Caption" xml:space="preserve">
+    <value>Khoa yêu cầu</value>
+  </data>
+  <data name="UCTreeListService.tc_SendTestServiceReq.Caption" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="UCTreeListService.tc_ServiceCode.Caption" xml:space="preserve">
+    <value>Mã dịch vụ</value>
+  </data>
+  <data name="UCTreeListService.tc_ServiceName.Caption" xml:space="preserve">
+    <value>Tên dịch vụ</value>
+  </data>
+  <data name="UCTreeListService.tc_TdlMedicineConcentra.Caption" xml:space="preserve">
+    <value>Hàm lượng</value>
+  </data>
+  <data name="UCTreeListService.treeListColumn1.Caption" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="UCTreeListService.treeListColumn2.Caption" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="UCTreeListService.treeSereServ.OptionsFind.FindNullPrompt" xml:space="preserve">
+    <value>Nhập chuỗi tìm kiếm ...</value>
+  </data>
+  <data name="UCTreeListTracking.CONTENT.Caption" xml:space="preserve">
+    <value>Diễn biến</value>
+  </data>
+  <data name="UCTreeListTracking.layoutControl1.Text" xml:space="preserve">
+    <value>layoutControl1</value>
+  </data>
+  <data name="UCTreeListTracking.SERVICE.Caption" xml:space="preserve">
+    <value>Y lệnh</value>
+  </data>
+  <data name="UCTreeListTracking.TRACKING_TIME.Caption" xml:space="preserve">
+    <value>Ngày giờ</value>
+  </data>
+  <data name="UCTreeListTracking.treeSereServ.OptionsFind.FindNullPrompt" xml:space="preserve">
+    <value>Nhập chuỗi tìm kiếm ...</value>
+  </data>
+  <data name="UCTreeListTracking.USER_NAME.Caption" xml:space="preserve">
+    <value>Bác sĩ</value>
+  </data>
 </root>

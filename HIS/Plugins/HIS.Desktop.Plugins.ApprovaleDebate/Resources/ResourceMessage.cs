@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace HIS.Desktop.Plugins.a2ApprovaleDebate.Resources
+namespace HIS.Desktop.Plugins.ApprovaleDebate.Resources
 {
     class ResourceMessage
     {

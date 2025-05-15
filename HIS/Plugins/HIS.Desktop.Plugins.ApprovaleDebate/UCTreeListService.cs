@@ -27,9 +27,9 @@ using System.Windows.Forms;
 using System.Collections;
 using DevExpress.XtraGrid.Views.Base;
 using DevExpress.Data;
-using HIS.Desktop.Plugins.a2ApprovaleDebate;
+using HIS.Desktop.Plugins.ApprovaleDebate;
 using DevExpress.Utils;
-using HIS.Desktop.Plugins.a2ApprovaleDebate.ADO;
+using HIS.Desktop.Plugins.ApprovaleDebate.ADO;
 using MOS.SDO;
 using Inventec.Desktop.Common.LanguageManager;
 using Inventec.Desktop.Common.Message;
@@ -47,9 +47,9 @@ using DevExpress.XtraTreeList.Nodes;
 using HIS.Desktop.ADO;
 using System.Resources;
 using System.Reflection;
-using HIS.Desktop.Plugins.a2ApprovaleDebate.Key;
+using HIS.Desktop.Plugins.ApprovaleDebate.Key;
 
-namespace HIS.Desktop.Plugins.a2ApprovaleDebate
+namespace HIS.Desktop.Plugins.ApprovaleDebate
 {
     public partial class UCTreeListService : UserControl
     {
@@ -61,7 +61,7 @@ namespace HIS.Desktop.Plugins.a2ApprovaleDebate
         DHisSereServ2 TreeClickData;
         bool IsExpand;
         DHisSereServ2 _SereServADORightMouseClick;
-        L_HIS_TREATMENT_BED_ROOM RowCellClickBedRoom;
+        V_HIS_SPECIALIST_EXAM RowCellClickBedRoom;
 
         HIS_EXP_MEST currentPrescription;
         Inventec.Desktop.Common.Modules.Module currentModule;
@@ -99,7 +99,7 @@ namespace HIS.Desktop.Plugins.a2ApprovaleDebate
             }
         }
 
-        public void ReLoad(Action<ADO.SereServADO> editClick, List<SereServADO> SereServADOs, L_HIS_TREATMENT_BED_ROOM _RowCellClickBedRoom, Action<ADO.SereServADO> EditEnableButton_Click, Action<ADO.SereServADO> DeleteEnableButton_Click)
+        public void ReLoad(Action<ADO.SereServADO> editClick, List<SereServADO> SereServADOs, V_HIS_SPECIALIST_EXAM _RowCellClickBedRoom, Action<ADO.SereServADO> EditEnableButton_Click, Action<ADO.SereServADO> DeleteEnableButton_Click)
         {
             try
             {
@@ -508,34 +508,34 @@ namespace HIS.Desktop.Plugins.a2ApprovaleDebate
         {
             try
             {
-                if (_SereServADORightMouseClick != null && IsCheckDepartmentTran())
-                {
-                    Inventec.Desktop.Common.Modules.Module moduleData = GlobalVariables.currentModuleRaws.Where(o => o.ModuleLink == "HIS.Desktop.Plugins.AssignPrescriptionPK").FirstOrDefault();
-                    if (moduleData == null) Inventec.Common.Logging.LogSystem.Error("khong tim thay moduleLink = HIS.Desktop.Plugins.AssignPrescriptionPK");
-                    if (moduleData.IsPlugin && moduleData.ExtensionInfo != null)
-                    {
-                        List<object> listArgs = new List<object>();
-                        V_HIS_SERE_SERV sereServInput = new V_HIS_SERE_SERV();
-                        Inventec.Common.Mapper.DataObjectMapper.Map<V_HIS_SERE_SERV>(sereServInput, _SereServADORightMouseClick);
+                //if (_SereServADORightMouseClick != null && IsCheckDepartmentTran())
+                //{
+                //    Inventec.Desktop.Common.Modules.Module moduleData = GlobalVariables.currentModuleRaws.Where(o => o.ModuleLink == "HIS.Desktop.Plugins.AssignPrescriptionPK").FirstOrDefault();
+                //    if (moduleData == null) Inventec.Common.Logging.LogSystem.Error("khong tim thay moduleLink = HIS.Desktop.Plugins.AssignPrescriptionPK");
+                //    if (moduleData.IsPlugin && moduleData.ExtensionInfo != null)
+                //    {
+                //        List<object> listArgs = new List<object>();
+                //        V_HIS_SERE_SERV sereServInput = new V_HIS_SERE_SERV();
+                //        Inventec.Common.Mapper.DataObjectMapper.Map<V_HIS_SERE_SERV>(sereServInput, _SereServADORightMouseClick);
 
-                        HIS.Desktop.ADO.AssignPrescriptionADO assignServiceADO = new HIS.Desktop.ADO.AssignPrescriptionADO(RowCellClickBedRoom.TREATMENT_ID,
-                            0,
-                            _SereServADORightMouseClick.SERVICE_REQ_ID ?? 0,
-                            sereServInput);
+                //        HIS.Desktop.ADO.AssignPrescriptionADO assignServiceADO = new HIS.Desktop.ADO.AssignPrescriptionADO(RowCellClickBedRoom.TREATMENT_ID,
+                //            0,
+                //            _SereServADORightMouseClick.SERVICE_REQ_ID ?? 0,
+                //            sereServInput);
 
-                        assignServiceADO.PatientDob = RowCellClickBedRoom.TDL_PATIENT_DOB;
-                        assignServiceADO.PatientName = RowCellClickBedRoom.TDL_PATIENT_NAME;
-                        assignServiceADO.GenderName = RowCellClickBedRoom.TDL_PATIENT_GENDER_NAME;
-                        assignServiceADO.TreatmentCode = RowCellClickBedRoom.TREATMENT_CODE;
-                        assignServiceADO.TreatmentId = RowCellClickBedRoom.TREATMENT_ID;
-                        assignServiceADO.IsAutoCheckExpend = true;
-                        listArgs.Add(assignServiceADO);
-                        listArgs.Add(PluginInstance.GetModuleWithWorkingRoom(moduleData, this.wkRoomId, this.wkRoomTypeId));
-                        var extenceInstance = PluginInstance.GetPluginInstance(HIS.Desktop.Utility.PluginInstance.GetModuleWithWorkingRoom(moduleData, this.currentModule.RoomId, this.currentModule.RoomTypeId), listArgs);
-                        if (extenceInstance == null) throw new ArgumentNullException("moduleData is null");
-                        ((Form)extenceInstance).ShowDialog();
-                    }
-                }
+                //        assignServiceADO.PatientDob = RowCellClickBedRoom.TDL_PATIENT_DOB.HasValue ? ;
+                //        assignServiceADO.PatientName = RowCellClickBedRoom.TDL_PATIENT_NAME;
+                //        assignServiceADO.GenderName = RowCellClickBedRoom.TDL_PATIENT_GENDER_NAME;
+                //        assignServiceADO.TreatmentCode = RowCellClickBedRoom.TREATMENT_CODE;
+                //        assignServiceADO.TreatmentId = RowCellClickBedRoom.TREATMENT_ID;
+                //        assignServiceADO.IsAutoCheckExpend = true;
+                //        listArgs.Add(assignServiceADO);
+                //        listArgs.Add(PluginInstance.GetModuleWithWorkingRoom(moduleData, this.wkRoomId, this.wkRoomTypeId));
+                //        var extenceInstance = PluginInstance.GetPluginInstance(HIS.Desktop.Utility.PluginInstance.GetModuleWithWorkingRoom(moduleData, this.currentModule.RoomId, this.currentModule.RoomTypeId), listArgs);
+                //        if (extenceInstance == null) throw new ArgumentNullException("moduleData is null");
+                //        ((Form)extenceInstance).ShowDialog();
+                //    }
+                //}
             }
             catch (Exception ex)
             {
@@ -547,27 +547,27 @@ namespace HIS.Desktop.Plugins.a2ApprovaleDebate
         {
             try
             {
-                WaitingManager.Show();
-                CommonParam param = new CommonParam();
-                bool success = false;
-                MOS.EFMODEL.DataModels.HIS_SERVICE_REQ serviceReqDTO = new MOS.EFMODEL.DataModels.HIS_SERVICE_REQ();
-                var currentSS = (SereServADO)treeSereServ.GetDataRecordByNode(treeSereServ.FocusedNode);
-                if (currentSS != null)
-                {
-                    var resend = new BackendAdapter(param).Post<bool>(HisRequestUriStore.HIS_TEST_SERVICE_REQ_RESEND, ApiConsumers.MosConsumer, currentSS.SERVICE_REQ_ID, param);
-                    if (resend)
-                    {
-                        success = true;
-                    }
-                }
-                WaitingManager.Hide();
-                #region Show message
-                MessageManager.Show(this.ParentForm, param, success);
-                #endregion
+                //WaitingManager.Show();
+                //CommonParam param = new CommonParam();
+                //bool success = false;
+                //MOS.EFMODEL.DataModels.HIS_SERVICE_REQ serviceReqDTO = new MOS.EFMODEL.DataModels.HIS_SERVICE_REQ();
+                //var currentSS = (SereServADO)treeSereServ.GetDataRecordByNode(treeSereServ.FocusedNode);
+                //if (currentSS != null)
+                //{
+                //    var resend = new BackendAdapter(param).Post<bool>(HisRequestUriStore.HIS_TEST_SERVICE_REQ_RESEND, ApiConsumers.MosConsumer, currentSS.SERVICE_REQ_ID, param);
+                //    if (resend)
+                //    {
+                //        success = true;
+                //    }
+                //}
+                //WaitingManager.Hide();
+                //#region Show message
+                //MessageManager.Show(this.ParentForm, param, success);
+                //#endregion
 
-                #region Process has exception
-                SessionManager.ProcessTokenLost(param);
-                #endregion
+                //#region Process has exception
+                //SessionManager.ProcessTokenLost(param);
+                //#endregion
             }
             catch (Exception ex)
             {
@@ -678,53 +678,53 @@ namespace HIS.Desktop.Plugins.a2ApprovaleDebate
         {
             try
             {
-                WaitingManager.Show();
-                CommonParam param = new CommonParam();
-                bool success = false;
-                MOS.EFMODEL.DataModels.HIS_SERVICE_REQ serviceReqDTO = new MOS.EFMODEL.DataModels.HIS_SERVICE_REQ();
-                var currentSS = (SereServADO)treeSereServ.GetDataRecordByNode(treeSereServ.FocusedNode);
-                CommonParam paramCommon = new CommonParam();
-                HIS_EXP_MEST expMest = null;
-                if (currentSS != null)
-                {
-                    HisExpMestFilter expMestFilter = new HisExpMestFilter();
-                    expMestFilter.SERVICE_REQ_ID = currentSS.SERVICE_REQ_ID;
-                    var result = new BackendAdapter(new CommonParam()).Get<List<HIS_EXP_MEST>>("api/HisExpMest/Get", ApiConsumer.ApiConsumers.MosConsumer, expMestFilter, HIS.Desktop.Controls.Session.SessionManager.ActionLostToken, null);
-                    if (result != null && result.Count > 0)
-                    {
-                        currentPrescription = result.FirstOrDefault();
-                        expMest = result.FirstOrDefault();
-                    }
+                //WaitingManager.Show();
+                //CommonParam param = new CommonParam();
+                //bool success = false;
+                //MOS.EFMODEL.DataModels.HIS_SERVICE_REQ serviceReqDTO = new MOS.EFMODEL.DataModels.HIS_SERVICE_REQ();
+                //var currentSS = (SereServADO)treeSereServ.GetDataRecordByNode(treeSereServ.FocusedNode);
+                //CommonParam paramCommon = new CommonParam();
+                //HIS_EXP_MEST expMest = null;
+                //if (currentSS != null)
+                //{
+                //    HisExpMestFilter expMestFilter = new HisExpMestFilter();
+                //    expMestFilter.SERVICE_REQ_ID = currentSS.SERVICE_REQ_ID;
+                //    var result = new BackendAdapter(new CommonParam()).Get<List<HIS_EXP_MEST>>("api/HisExpMest/Get", ApiConsumer.ApiConsumers.MosConsumer, expMestFilter, HIS.Desktop.Controls.Session.SessionManager.ActionLostToken, null);
+                //    if (result != null && result.Count > 0)
+                //    {
+                //        currentPrescription = result.FirstOrDefault();
+                //        expMest = result.FirstOrDefault();
+                //    }
 
-                    if (this.currentPrescription != null &&
-                    (
-                    currentSS.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__DONDT ||
-                    currentSS.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__DONTT ||
-                    currentSS.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__DONM))
-                    {
-                        if (currentPrescription.EXP_MEST_STT_ID == IMSys.DbConfig.HIS_RS.HIS_EXP_MEST_STT.ID__DONE)
-                        {
-                            List<object> sendObj = new List<object>() { currentPrescription.ID };
+                //    if (this.currentPrescription != null &&
+                //    (
+                //    currentSS.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__DONDT ||
+                //    currentSS.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__DONTT ||
+                //    currentSS.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__DONM))
+                //    {
+                //        if (currentPrescription.EXP_MEST_STT_ID == IMSys.DbConfig.HIS_RS.HIS_EXP_MEST_STT.ID__DONE)
+                //        {
+                //            List<object> sendObj = new List<object>() { currentPrescription.ID };
 
-                            if (currentPrescription.EXP_MEST_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_EXP_MEST_TYPE.ID__DDT)
-                            {
-                                CallModule("HIS.Desktop.Plugins.MobaPrescriptionCreate", sendObj);
-                            }
-                            else if (currentPrescription.EXP_MEST_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_EXP_MEST_TYPE.ID__DTT)
-                            {
-                                CallModule("HIS.Desktop.Plugins.MobaCabinetCreate", sendObj);
-                            }
-                            else if (currentPrescription.EXP_MEST_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_EXP_MEST_TYPE.ID__DM)
-                            {
-                                CallModule("HIS.Desktop.Plugins.MobaBloodCreate", sendObj);
-                            }
-                            else
-                            {
-                                MessageManager.Show("Tài khoản không có quyền thực hiện chức năng");
-                            }
-                        }
-                    }
-                }
+                //            if (currentPrescription.EXP_MEST_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_EXP_MEST_TYPE.ID__DDT)
+                //            {
+                //                CallModule("HIS.Desktop.Plugins.MobaPrescriptionCreate", sendObj);
+                //            }
+                //            else if (currentPrescription.EXP_MEST_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_EXP_MEST_TYPE.ID__DTT)
+                //            {
+                //                CallModule("HIS.Desktop.Plugins.MobaCabinetCreate", sendObj);
+                //            }
+                //            else if (currentPrescription.EXP_MEST_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_EXP_MEST_TYPE.ID__DM)
+                //            {
+                //                CallModule("HIS.Desktop.Plugins.MobaBloodCreate", sendObj);
+                //            }
+                //            else
+                //            {
+                //                MessageManager.Show("Tài khoản không có quyền thực hiện chức năng");
+                //            }
+                //        }
+                //    }
+                //}
             }
             catch (Exception ex)
             {
@@ -806,41 +806,31 @@ namespace HIS.Desktop.Plugins.a2ApprovaleDebate
             try
             {
                 ////Khoi tao doi tuong resource
-                Resources.ResourceLanguageManager.LanguageResource__UCTreeListService = new ResourceManager("HIS.Desktop.Plugins.BedRoomPartial.Resources.Lang", typeof(UCTreeListService).Assembly);
+                Resources.ResourceLanguageManager.LanguageResource = new ResourceManager("HIS.Desktop.Plugins.ApprovaleDebate.Resources.Lang", typeof(UCTreeListService).Assembly);
 
                 ////Gan gia tri cho cac control editor co Text/Caption/ToolTip/NullText/NullValuePrompt/FindNullPrompt
-                this.layoutControl1.Text = Inventec.Common.Resource.Get.Value("UCTreeListService.layoutControl1.Text", Resources.ResourceLanguageManager.LanguageResource__UCTreeListService, LanguageManager.GetCulture());
-                this.treeSereServ.OptionsFind.FindNullPrompt = Inventec.Common.Resource.Get.Value("UCTreeListService.treeSereServ.OptionsFind.FindNullPrompt", Resources.ResourceLanguageManager.LanguageResource__UCTreeListService, LanguageManager.GetCulture());
-                this.tc_SendTestServiceReq.Caption = Inventec.Common.Resource.Get.Value("UCTreeListService.tc_SendTestServiceReq.Caption", Resources.ResourceLanguageManager.LanguageResource__UCTreeListService, LanguageManager.GetCulture());
-                this.tc_Edit.Caption = Inventec.Common.Resource.Get.Value("UCTreeListService.tc_Edit.Caption", Resources.ResourceLanguageManager.LanguageResource__UCTreeListService, LanguageManager.GetCulture());
-                this.tc_Delete.Caption = Inventec.Common.Resource.Get.Value("UCTreeListService.tc_Delete.Caption", Resources.ResourceLanguageManager.LanguageResource__UCTreeListService, LanguageManager.GetCulture());
-                this.tc_MediUsed.Caption = Inventec.Common.Resource.Get.Value("UCTreeListService.tc_MediUsed.Caption", Resources.ResourceLanguageManager.LanguageResource__UCTreeListService, LanguageManager.GetCulture());
-                this.treeListColumn1.Caption = Inventec.Common.Resource.Get.Value("UCTreeListService.treeListColumn1.Caption", Resources.ResourceLanguageManager.LanguageResource__UCTreeListService, LanguageManager.GetCulture());
-                this.treeListColumn2.Caption = Inventec.Common.Resource.Get.Value("UCTreeListService.treeListColumn2.Caption", Resources.ResourceLanguageManager.LanguageResource__UCTreeListService, LanguageManager.GetCulture());
-                this.tc_ServiceCode.Caption = Inventec.Common.Resource.Get.Value("UCTreeListService.tc_ServiceCode.Caption", Resources.ResourceLanguageManager.LanguageResource__UCTreeListService, LanguageManager.GetCulture());
-                this.tc_ServiceName.Caption = Inventec.Common.Resource.Get.Value("UCTreeListService.tc_ServiceName.Caption", Resources.ResourceLanguageManager.LanguageResource__UCTreeListService, LanguageManager.GetCulture());
-                this.isRation.Caption = Inventec.Common.Resource.Get.Value("UCTreeListService.isRation.Caption", Resources.ResourceLanguageManager.LanguageResource__UCTreeListService, LanguageManager.GetCulture());
-                this.tc_Number.Caption = Inventec.Common.Resource.Get.Value("UCTreeListService.tc_Number.Caption", Resources.ResourceLanguageManager.LanguageResource__UCTreeListService, LanguageManager.GetCulture());
-                this.tc_NoteAdo.Caption = Inventec.Common.Resource.Get.Value("UCTreeListService.tc_NoteAdo.Caption", Resources.ResourceLanguageManager.LanguageResource__UCTreeListService, LanguageManager.GetCulture());
-                this.tc_RequestDepartmentName.Caption = Inventec.Common.Resource.Get.Value("UCTreeListService.tc_RequestDepartmentName.Caption", Resources.ResourceLanguageManager.LanguageResource__UCTreeListService, LanguageManager.GetCulture());
-                //qtcode
-                this.tc_TdlMedicineConcentra.Caption = Inventec.Common.Resource.Get.Value("UCTreeListService.tc_TdlMedicineConcentra.Caption", Resources.ResourceLanguageManager.LanguageResource__UCTreeListService, LanguageManager.GetCulture());
-                //qtcode
-                this.repositoryItemButton__Send.Buttons[0].ToolTip = Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__TREE_SERE_SERV__GUI_LAI_YEU_CAU_XET_NGHIEM", Resources.ResourceLanguageManager.LanguageResource__UCTreeListService, LanguageManager.GetCulture());
-                this.repositoryItemButton__Send__Disable.Buttons[0].ToolTip = Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__TREE_SERE_SERV__GUI_LAI_YEU_CAU_XET_NGHIEM", Resources.ResourceLanguageManager.LanguageResource__UCTreeListService, LanguageManager.GetCulture());
-                this.repositoryItemButtonEdit_TaoThuHoi.Buttons[0].ToolTip = Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__TREE_SERE_SERV__TAO_THU_HOI", Resources.ResourceLanguageManager.LanguageResource__UCTreeListService, LanguageManager.GetCulture());
-                this.repositoryItemButton_IsUse.Buttons[0].ToolTip = Resources.ResourceMessage.ThuocVtBNDaDung;
-                this.rep_btnEdit_Enable.Buttons[0].ToolTip = Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__TREE_SERE_SERV__SUA", Resources.ResourceLanguageManager.LanguageResource__UCTreeListService, LanguageManager.GetCulture());
-                this.rep_btnEdit_Disable.Buttons[0].ToolTip = Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__TREE_SERE_SERV__SUA", Resources.ResourceLanguageManager.LanguageResource__UCTreeListService, LanguageManager.GetCulture());
-                this.rep_btnDelete_Enable.Buttons[0].ToolTip = Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__TREE_SERE_SERV__XOA", Resources.ResourceLanguageManager.LanguageResource__UCTreeListService, LanguageManager.GetCulture());
-                this.rep_btnDelete_Disable.Buttons[0].ToolTip = Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__TREE_SERE_SERV__XOA", Resources.ResourceLanguageManager.LanguageResource__UCTreeListService, LanguageManager.GetCulture());
-
+                this.layoutControl1.Text = Inventec.Common.Resource.Get.Value("UCTreeListService.layoutControl1.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.treeSereServ.OptionsFind.FindNullPrompt = Inventec.Common.Resource.Get.Value("UCTreeListService.treeSereServ.OptionsFind.FindNullPrompt", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.tc_SendTestServiceReq.Caption = Inventec.Common.Resource.Get.Value("UCTreeListService.tc_SendTestServiceReq.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.tc_Edit.Caption = Inventec.Common.Resource.Get.Value("UCTreeListService.tc_Edit.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.tc_Delete.Caption = Inventec.Common.Resource.Get.Value("UCTreeListService.tc_Delete.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.tc_MediUsed.Caption = Inventec.Common.Resource.Get.Value("UCTreeListService.tc_MediUsed.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.treeListColumn1.Caption = Inventec.Common.Resource.Get.Value("UCTreeListService.treeListColumn1.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.treeListColumn2.Caption = Inventec.Common.Resource.Get.Value("UCTreeListService.treeListColumn2.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.tc_ServiceCode.Caption = Inventec.Common.Resource.Get.Value("UCTreeListService.tc_ServiceCode.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.tc_ServiceName.Caption = Inventec.Common.Resource.Get.Value("UCTreeListService.tc_ServiceName.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.isRation.Caption = Inventec.Common.Resource.Get.Value("UCTreeListService.isRation.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.tc_Number.Caption = Inventec.Common.Resource.Get.Value("UCTreeListService.tc_Number.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.tc_NoteAdo.Caption = Inventec.Common.Resource.Get.Value("UCTreeListService.tc_NoteAdo.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.tc_RequestDepartmentName.Caption = Inventec.Common.Resource.Get.Value("UCTreeListService.tc_RequestDepartmentName.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.tc_TdlMedicineConcentra.Caption = Inventec.Common.Resource.Get.Value("UCTreeListService.tc_TdlMedicineConcentra.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
+
         private bool IsCheckDepartmentTran()
         {
             bool result = true;

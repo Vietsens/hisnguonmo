@@ -159,4 +159,67 @@
   <data name="frmApprovaleDebate.Text" xml:space="preserve">
     <value>Approval of consultation</value>
   </data>
+  <data name="UCTreeListService.isRation.Caption" xml:space="preserve">
+    <value>ĐTTT</value>
+  </data>
+  <data name="UCTreeListService.layoutControl1.Text" xml:space="preserve">
+    <value>layoutControl1</value>
+  </data>
+  <data name="UCTreeListService.tc_Delete.Caption" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="UCTreeListService.tc_Edit.Caption" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="UCTreeListService.tc_MediUsed.Caption" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="UCTreeListService.tc_NoteAdo.Caption" xml:space="preserve">
+    <value>Note</value>
+  </data>
+  <data name="UCTreeListService.tc_Number.Caption" xml:space="preserve">
+    <value>Quantity</value>
+  </data>
+  <data name="UCTreeListService.tc_RequestDepartmentName.Caption" xml:space="preserve">
+    <value>Faculty requires</value>
+  </data>
+  <data name="UCTreeListService.tc_SendTestServiceReq.Caption" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="UCTreeListService.tc_ServiceCode.Caption" xml:space="preserve">
+    <value>Service code</value>
+  </data>
+  <data name="UCTreeListService.tc_ServiceName.Caption" xml:space="preserve">
+    <value>Service name</value>
+  </data>
+  <data name="UCTreeListService.tc_TdlMedicineConcentra.Caption" xml:space="preserve">
+    <value>Content</value>
+  </data>
+  <data name="UCTreeListService.treeListColumn1.Caption" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="UCTreeListService.treeListColumn2.Caption" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="UCTreeListService.treeSereServ.OptionsFind.FindNullPrompt" xml:space="preserve">
+    <value>Enter the search string...</value>
+  </data>
+  <data name="UCTreeListTracking.CONTENT.Caption" xml:space="preserve">
+    <value>Evolution</value>
+  </data>
+  <data name="UCTreeListTracking.layoutControl1.Text" xml:space="preserve">
+    <value>layoutControl1</value>
+  </data>
+  <data name="UCTreeListTracking.SERVICE.Caption" xml:space="preserve">
+    <value>Command</value>
+  </data>
+  <data name="UCTreeListTracking.TRACKING_TIME.Caption" xml:space="preserve">
+    <value>Dates and time</value>
+  </data>
+  <data name="UCTreeListTracking.treeSereServ.OptionsFind.FindNullPrompt" xml:space="preserve">
+    <value>Enter the search string...</value>
+  </data>
+  <data name="UCTreeListTracking.USER_NAME.Caption" xml:space="preserve">
+    <value>Doctor</value>
+  </data>
 </root>

@@ -13,7 +13,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Inventec.Common.Controls.EditorLoader;
-using HIS.Desktop.Plugins.a2ApprovaleDebate.ADO;
+using HIS.Desktop.Plugins.ApprovaleDebate.ADO;
 using MOS.SDO;
 using Inventec.Core;
 using MOS.Filter;
@@ -28,13 +28,15 @@ using EMR.EFMODEL.DataModels;
 using HIS.Desktop.Controls.Session;
 using DevExpress.XtraTab;
 
-namespace HIS.Desktop.Plugins.a2ApprovaleDebate.ApprovaleDebate
+namespace HIS.Desktop.Plugins.ApprovaleDebate.ApprovaleDebate
 {
     public partial class frmApprovaleDebate : FormBase
     {
+        private Common.RefeshReference delegateRefresh;
+
         System.Globalization.CultureInfo cultureLang;
         internal Inventec.Desktop.Common.Modules.Module currentModule { get; set; }
-        internal L_HIS_TREATMENT_BED_ROOM RowCellClickBedRoom { get; set; }
+        V_HIS_SPECIALIST_EXAM v_his_specialist_exam;
         /// <summary>
         ///Hàm xét ngôn ngữ cho giao diện frmApprovaleDebate
         /// </summary>
@@ -43,23 +45,22 @@ namespace HIS.Desktop.Plugins.a2ApprovaleDebate.ApprovaleDebate
             try
             {
                 ////Khoi tao doi tuong resource
-                Resources.ResourceLanguageManager.LanguageResource = new ResourceManager("HIS.Desktop.Plugins.a2ApprovaleDebate.Resources.Lang", typeof(frmApprovaleDebate).Assembly);
+                Resources.ResourceLanguageManager.LanguageResource = new ResourceManager("HIS.Desktop.Plugins.ApprovaleDebate.Resources.Lang", typeof(frmApprovaleDebate).Assembly);
 
                 ////Gan gia tri cho cac control editor co Text/Caption/ToolTip/NullText/NullValuePrompt/FindNullPrompt
                 this.layoutControl1.Text = Inventec.Common.Resource.Get.Value("frmApprovaleDebate.layoutControl1.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                this.tabToDieuTri.Text = Inventec.Common.Resource.Get.Value("frmApprovaleDebate.tabToDieuTri.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                this.tabCDHA.Text = Inventec.Common.Resource.Get.Value("frmApprovaleDebate.tabCDHA.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                this.layoutControlItem2.Text = Inventec.Common.Resource.Get.Value("frmApprovaleDebate.layoutControlItem2.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                this.cboEmployee.Properties.NullText = Inventec.Common.Resource.Get.Value("frmApprovaleDebate.cboBacSiHoiChan.Properties.NullText", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                this.layoutControlItem3.Text = Inventec.Common.Resource.Get.Value("frmApprovaleDebate.layoutControlItem3.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.btnSave.Text = Inventec.Common.Resource.Get.Value("frmApprovaleDebate.btnSave.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.bar1.Text = Inventec.Common.Resource.Get.Value("frmApprovaleDebate.bar1.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.bbtnSave.Caption = Inventec.Common.Resource.Get.Value("frmApprovaleDebate.bbtnSave.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.tabToDieuTri.Text = Inventec.Common.Resource.Get.Value("frmApprovaleDebate.tabToDieuTri.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.tabCDHA.Text = Inventec.Common.Resource.Get.Value("frmApprovaleDebate.tabCDHA.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.tabXetNghiem.Text = Inventec.Common.Resource.Get.Value("frmApprovaleDebate.tabXetNghiem.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.tabThuocVatTuMau.Text = Inventec.Common.Resource.Get.Value("frmApprovaleDebate.tabThuocVatTuMau.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.tabSieuAmNoiSoi.Text = Inventec.Common.Resource.Get.Value("frmApprovaleDebate.tabSieuAmNoiSoi.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.tabPhauThuatThuThuat.Text = Inventec.Common.Resource.Get.Value("frmApprovaleDebate.tabPhauThuatThuThuat.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.tabGiaiPhauBenh.Text = Inventec.Common.Resource.Get.Value("frmApprovaleDebate.tabGiaiPhauBenh.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.layoutControlItem2.Text = Inventec.Common.Resource.Get.Value("frmApprovaleDebate.layoutControlItem2.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.layoutControlItem3.Text = Inventec.Common.Resource.Get.Value("frmApprovaleDebate.layoutControlItem3.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.Text = Inventec.Common.Resource.Get.Value("frmApprovaleDebate.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
             }
             catch (Exception ex)
@@ -68,17 +69,21 @@ namespace HIS.Desktop.Plugins.a2ApprovaleDebate.ApprovaleDebate
             }
         }
 
-        public frmApprovaleDebate(Inventec.Desktop.Common.Modules.Module module)
+        public frmApprovaleDebate(Inventec.Desktop.Common.Modules.Module module,Common.RefeshReference delegateRefresh , V_HIS_SPECIALIST_EXAM specialist)
                     : base(module)
         {
             try
             {
+                this.delegateRefresh = delegateRefresh;
+                this.v_his_specialist_exam = specialist;
                 InitializeComponent();
                 try
                 {
+
                     cultureLang = Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture();
                     string iconPath = System.IO.Path.Combine(HIS.Desktop.LocalStorage.Location.ApplicationStoreLocation.ApplicationStartupPath, System.Configuration.ConfigurationSettings.AppSettings["Inventec.Desktop.Icon"]);
                     this.Icon = Icon.ExtractAssociatedIcon(iconPath);
+
                 }
                 catch (Exception ex)
                 {
@@ -97,17 +102,26 @@ namespace HIS.Desktop.Plugins.a2ApprovaleDebate.ApprovaleDebate
         {
             try
             {
+                this.SetCaptionByLanguageKey();
+
                 AddUc();
                 //
                 InitComboEmployee();
                 //
-                string jsonString = @"{""ADD_TIME_STR"":""12/09/2024 10:32:09"",""PATIENT_CLASSIFY_NAME"":""Màu tím"",""DISPLAY_COLOR"":""192, 0, 192"",""ID"":6707,""TREATMENT_ID"":152715,""CO_TREATMENT_ID"":2182,""ADD_TIME"":20240912103209,""BED_ROOM_ID"":284,""REMOVE_TIME"":null,""TREATMENT_ROOM_ID"":null,""TDL_OBSERVED_TIME_FROM"":null,""TDL_OBSERVED_TIME_TO"":null,""PATIENT_ID"":127997,""TREATMENT_CODE"":""000000152638"",""TDL_PATIENT_FIRST_NAME"":""1"",""TDL_PATIENT_LAST_NAME"":""TK QUẢNG"",""TDL_PATIENT_NAME"":""TK QUẢNG 1 "",""TDL_PATIENT_DOB"":20040215000000,""TDL_PATIENT_GENDER_NAME"":""Nam"",""TDL_PATIENT_CODE"":""0000127858"",""TDL_PATIENT_ADDRESS"":""34 Trung Kính, Phường Yên Hoà, Quận Cầu Giấy, Hà Nội"",""TDL_HEIN_CARD_NUMBER"":null,""TDL_HEIN_MEDI_ORG_CODE"":null,""ICD_CODE"":""A00"",""ICD_NAME"":""Bệnh tả"",""ICD_TEXT"":null,""ICD_SUB_CODE"":null,""TDL_PATIENT_GENDER_ID"":2,""TDL_HEIN_MEDI_ORG_NAME"":null,""IS_PAUSE"":null,""IS_APPROVE_FINISH"":null,""APPROVE_FINISH_NOTE"":null,""TDL_PATIENT_CLASSIFY_ID"":2,""TDL_TREATMENT_TYPE_ID"":3,""EMR_COVER_TYPE_ID"":12,""CLINICAL_IN_TIME"":20240912100800,""CO_TREAT_DEPARTMENT_IDS"":""22"",""OUT_TIME"":null,""TDL_PATIENT_AVATAR_URL"":null,""LAST_DEPARTMENT_ID"":36,""TDL_PATIENT_UNSIGNED_NAME"":""TK QUANG 1 "",""TREATMENT_END_TYPE_ID"":null,""TREATMENT_METHOD"":""phương pháp điều trị"",""TDL_PATIENT_PHONE"":null,""TDL_HEIN_CARD_FROM_TIME"":null,""TDL_HEIN_CARD_TO_TIME"":null,""TDL_PATIENT_CCCD_NUMBER"":null,""TDL_PATIENT_CMND_NUMBER"":null,""TDL_PATIENT_PASSPORT_NUMBER"":null,""TDL_PATIENT_MOBILE"":null,""DOCTOR_LOGINNAME"":""quangln"",""DOCTOR_USERNAME"":""Lương Ngọc Quảng"",""PATIENT_TYPE_NAME"":""Khám Đích Danh Và Tái Khám"",""BED_NAME"":""Gường xịn"",""BED_CODE"":""G1"",""PATIENT_TYPE_CODE"":""05"",""BED_ROOM_NAME"":""buồng nội trú 2"",""TREATMENT_ROOM_CODE"":null,""TREATMENT_ROOM_NAME"":null,""LAST_DEPARTMENT_CODE"":""2"",""LAST_DEPARTMENT_NAME"":""Khoa Răng Hàm Mặt"",""NOTE"":null}";
+                //string jsonString = @"{""ADD_TIME_STR"":""12/09/2024 10:32:09"",""PATIENT_CLASSIFY_NAME"":""Màu tím"",""DISPLAY_COLOR"":""192, 0, 192"",""ID"":6707,""TREATMENT_ID"":152715,""CO_TREATMENT_ID"":2182,""ADD_TIME"":20240912103209,""BED_ROOM_ID"":284,""REMOVE_TIME"":null,""TREATMENT_ROOM_ID"":null,""TDL_OBSERVED_TIME_FROM"":null,""TDL_OBSERVED_TIME_TO"":null,""PATIENT_ID"":127997,""TREATMENT_CODE"":""000000152638"",""TDL_PATIENT_FIRST_NAME"":""1"",""TDL_PATIENT_LAST_NAME"":""TK QUẢNG"",""TDL_PATIENT_NAME"":""TK QUẢNG 1 "",""TDL_PATIENT_DOB"":20040215000000,""TDL_PATIENT_GENDER_NAME"":""Nam"",""TDL_PATIENT_CODE"":""0000127858"",""TDL_PATIENT_ADDRESS"":""34 Trung Kính, Phường Yên Hoà, Quận Cầu Giấy, Hà Nội"",""TDL_HEIN_CARD_NUMBER"":null,""TDL_HEIN_MEDI_ORG_CODE"":null,""ICD_CODE"":""A00"",""ICD_NAME"":""Bệnh tả"",""ICD_TEXT"":null,""ICD_SUB_CODE"":null,""TDL_PATIENT_GENDER_ID"":2,""TDL_HEIN_MEDI_ORG_NAME"":null,""IS_PAUSE"":null,""IS_APPROVE_FINISH"":null,""APPROVE_FINISH_NOTE"":null,""TDL_PATIENT_CLASSIFY_ID"":2,""TDL_TREATMENT_TYPE_ID"":3,""EMR_COVER_TYPE_ID"":12,""CLINICAL_IN_TIME"":20240912100800,""CO_TREAT_DEPARTMENT_IDS"":""22"",""OUT_TIME"":null,""TDL_PATIENT_AVATAR_URL"":null,""LAST_DEPARTMENT_ID"":36,""TDL_PATIENT_UNSIGNED_NAME"":""TK QUANG 1 "",""TREATMENT_END_TYPE_ID"":null,""TREATMENT_METHOD"":""phương pháp điều trị"",""TDL_PATIENT_PHONE"":null,""TDL_HEIN_CARD_FROM_TIME"":null,""TDL_HEIN_CARD_TO_TIME"":null,""TDL_PATIENT_CCCD_NUMBER"":null,""TDL_PATIENT_CMND_NUMBER"":null,""TDL_PATIENT_PASSPORT_NUMBER"":null,""TDL_PATIENT_MOBILE"":null,""DOCTOR_LOGINNAME"":""quangln"",""DOCTOR_USERNAME"":""Lương Ngọc Quảng"",""PATIENT_TYPE_NAME"":""Khám Đích Danh Và Tái Khám"",""BED_NAME"":""Gường xịn"",""BED_CODE"":""G1"",""PATIENT_TYPE_CODE"":""05"",""BED_ROOM_NAME"":""buồng nội trú 2"",""TREATMENT_ROOM_CODE"":null,""TREATMENT_ROOM_NAME"":null,""LAST_DEPARTMENT_CODE"":""2"",""LAST_DEPARTMENT_NAME"":""Khoa Răng Hàm Mặt"",""NOTE"":null}";
+
+                //// đoạn lấy dữ liệu giả, xóa đoạn này đi khi chạy thật
+                //{
+                //    this.v_his_specialist_exam = Newtonsoft.Json.JsonConvert.DeserializeObject<V_HIS_SPECIALIST_EXAM>(jsonString);
+                //}
+                // đoạn lấy dữ liệu giả, xóa đoạn này đi khi chạy thật
 
 
-                RowCellClickBedRoom = Newtonsoft.Json.JsonConvert.DeserializeObject<L_HIS_TREATMENT_BED_ROOM>(jsonString);
-                if (RowCellClickBedRoom != null)
+                if (this.v_his_specialist_exam != null)
                 {
-                    LoadDataSereServByTreatmentId(RowCellClickBedRoom);
+                    this.txtYKienBacSi.Text = this.v_his_specialist_exam.REJECT_APPROVAL_REASON;
+                    this.cboEmployee.EditValue = this.v_his_specialist_exam.EXAM_EXECUTE_USERNAME;
+                    LoadDataSereServByTreatmentId(this.v_his_specialist_exam);
                 }
             }
             catch (Exception ex)
@@ -167,7 +181,6 @@ namespace HIS.Desktop.Plugins.a2ApprovaleDebate.ApprovaleDebate
         {
             try
             {
-                // HIS_SPECIALIST_EXAM.EXAM_EXECUTE_DEPARMENT_ID     HIS_EMPLOYEE.DEPARTMENT_ID 
                 var data = BackendDataWorker.Get<V_HIS_EMPLOYEE>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE && o.IS_DOCTOR == 1).ToList();
                 List<ColumnInfo> columnInfos = new List<ColumnInfo>();
                 columnInfos.Add(new ColumnInfo("LOGINNAME", "Tên đăng nhập", 150, 1));
@@ -183,8 +196,7 @@ namespace HIS.Desktop.Plugins.a2ApprovaleDebate.ApprovaleDebate
             }
         }
 
-        //private void LoadDataSereServByTreatmentId(ServiceReqGroupByDateADO currentHisServiceReq)
-        private void LoadDataSereServByTreatmentId(L_HIS_TREATMENT_BED_ROOM currentHisServiceReq)
+        private void LoadDataSereServByTreatmentId(V_HIS_SPECIALIST_EXAM currentHisServiceReq)
         {
             try
             {
@@ -379,7 +391,7 @@ namespace HIS.Desktop.Plugins.a2ApprovaleDebate.ApprovaleDebate
                                                                   })
                                                                   .ToList();
                             tabToDieuTri.PageVisible = true;
-                            ucAll.ReLoad(treeView_Click, listTracking, this.RowCellClickBedRoom);
+                            ucAll.ReLoad(treeView_Click, listTracking, v_his_specialist_exam);
                         }
                         WaitingManager.Hide();
                     }
@@ -392,7 +404,7 @@ namespace HIS.Desktop.Plugins.a2ApprovaleDebate.ApprovaleDebate
                     //
                     List<SereServADO> listCDHA = new List<SereServADO>();
                     listCDHA.AddRange(SereServADOs.Where(o => o.TDL_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__CDHA));
-                    ucCDHA.ReLoad(treeView_Click, listCDHA, this.RowCellClickBedRoom, Edit_Click, Delete_Click);
+                    ucCDHA.ReLoad(treeView_Click, listCDHA, this.v_his_specialist_exam, Edit_Click, Delete_Click);
                     if (listCDHA.Any())
                     {
                         tabCDHA.PageVisible = true;
@@ -410,7 +422,7 @@ namespace HIS.Desktop.Plugins.a2ApprovaleDebate.ApprovaleDebate
                         ucXetNghiem.tc_TdlMedicineConcentra.Visible = false;
                         ucXetNghiem.tc_RequestDepartmentName.Visible = false;
                     }
-                    ucXetNghiem.ReLoad(treeView_Click, listXetNghiem, this.RowCellClickBedRoom, Edit_Click, Delete_Click);
+                    ucXetNghiem.ReLoad(treeView_Click, listXetNghiem, this.v_his_specialist_exam, Edit_Click, Delete_Click);
                     //
                     List<SereServADO> listMediMate = new List<SereServADO>();
                     listMediMate.AddRange(SereServADOs.Where(o => o.TDL_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__THUOC
@@ -421,7 +433,7 @@ namespace HIS.Desktop.Plugins.a2ApprovaleDebate.ApprovaleDebate
                     {
                         tabThuocVatTuMau.PageVisible = true;
                     }
-                    ucThuocVatTu.ReLoad(treeView_Click, listMediMate, this.RowCellClickBedRoom, Edit_Click, Delete_Click);
+                    ucThuocVatTu.ReLoad(treeView_Click, listMediMate, this.v_his_specialist_exam, Edit_Click, Delete_Click);
                     //
                     List<SereServADO> listSieuAm = new List<SereServADO>();
                     listSieuAm.AddRange(SereServADOs.Where(o => o.TDL_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__SA
@@ -433,7 +445,7 @@ namespace HIS.Desktop.Plugins.a2ApprovaleDebate.ApprovaleDebate
                         ucSieuAm.tc_TdlMedicineConcentra.Visible = false;
                         ucSieuAm.tc_RequestDepartmentName.Visible = false;
                     }
-                    ucSieuAm.ReLoad(treeView_Click, listSieuAm, this.RowCellClickBedRoom, Edit_Click, Delete_Click);
+                    ucSieuAm.ReLoad(treeView_Click, listSieuAm, this.v_his_specialist_exam, Edit_Click, Delete_Click);
                     //
                     List<SereServADO> listPTTT = new List<SereServADO>();
                     listPTTT.AddRange(SereServADOs.Where(o => o.TDL_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__KH
@@ -445,7 +457,7 @@ namespace HIS.Desktop.Plugins.a2ApprovaleDebate.ApprovaleDebate
                         ucPTTT.tc_TdlMedicineConcentra.Visible = false;
                         ucPTTT.tc_RequestDepartmentName.Visible = false;
                     }
-                    ucPTTT.ReLoad(treeView_Click, listPTTT, this.RowCellClickBedRoom, Edit_Click, Delete_Click);
+                    ucPTTT.ReLoad(treeView_Click, listPTTT, this.v_his_specialist_exam, Edit_Click, Delete_Click);
                     //
                     List<SereServADO> listGPT = new List<SereServADO>();
                     listGPT.AddRange(SereServADOs.Where(o => o.TDL_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__GPBL));
@@ -456,7 +468,7 @@ namespace HIS.Desktop.Plugins.a2ApprovaleDebate.ApprovaleDebate
                         ucGPB.tc_TdlMedicineConcentra.Visible = false;
                         ucGPB.tc_RequestDepartmentName.Visible = false;
                     }
-                    ucGPB.ReLoad(treeView_Click, listGPT, this.RowCellClickBedRoom, Edit_Click, Delete_Click);
+                    ucGPB.ReLoad(treeView_Click, listGPT, this.v_his_specialist_exam, Edit_Click, Delete_Click);
                     //
                     List<SereServADO> listOther = new List<SereServADO>();
                     listOther.AddRange(SereServADOs.Where(o => o.TDL_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__AN
@@ -1097,15 +1109,33 @@ namespace HIS.Desktop.Plugins.a2ApprovaleDebate.ApprovaleDebate
         {
             try
             {
-                if (!btnSave.Enabled)
+                MessageBox.Show("hi");
+                if (btnSave.Enabled)
                 {
-                    return;
-                }
+                    CommonParam param = new CommonParam();
+                    v_his_specialist_exam.EXAM_EXECUTE_LOGINNAME = cboEmployee.EditValue?.ToString();
+                    v_his_specialist_exam.EXAM_EXECUTE_USERNAME = cboEmployee.EditValue?.ToString();
+                    v_his_specialist_exam.REJECT_APPROVAL_REASON = txtYKienBacSi.Text.Trim();
+                    v_his_specialist_exam.IS_APPROVAL = 1;
+                    Inventec.Common.Logging.LogSystem.Info(Newtonsoft.Json.JsonConvert.SerializeObject(v_his_specialist_exam));
 
-                //
+                    var rs = new BackendAdapter(param).Post<HIS_INFUSION_SUM>("api/HisSpecialistExam/Update", ApiConsumers.MosConsumer, v_his_specialist_exam, param);
+                    if (rs != null)
+                    {
+                        MessageBox.Show("hi2");
+                        if (this.delegateRefresh != null)
+                        {
+                            this.delegateRefresh();
+                            this.Close();
+                        }
+                    }
+                    MessageManager.Show(this, param, rs != null);
+                    SessionManager.ProcessTokenLost(param);
+                }
             }
             catch (Exception ex)
             {
+                MessageBox.Show(ex.Message);
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }

@@ -27,9 +27,9 @@ using System.Windows.Forms;
 using System.Collections;
 using DevExpress.XtraGrid.Views.Base;
 using DevExpress.Data;
-using HIS.Desktop.Plugins.a2ApprovaleDebate;
+using HIS.Desktop.Plugins.ApprovaleDebate;
 using DevExpress.Utils;
-using HIS.Desktop.Plugins.a2ApprovaleDebate.ADO;
+using HIS.Desktop.Plugins.ApprovaleDebate.ADO;
 using MOS.SDO;
 using Inventec.Desktop.Common.LanguageManager;
 using Inventec.Desktop.Common.Message;
@@ -47,9 +47,9 @@ using DevExpress.XtraTreeList.Nodes;
 using HIS.Desktop.ADO;
 using System.Resources;
 using System.Reflection;
-using HIS.Desktop.Plugins.a2ApprovaleDebate.Key;
+using HIS.Desktop.Plugins.ApprovaleDebate.Key;
 
-namespace HIS.Desktop.Plugins.a2ApprovaleDebate
+namespace HIS.Desktop.Plugins.ApprovaleDebate
 {
     public partial class UCTreeListTracking : UserControl
     {
@@ -99,7 +99,7 @@ namespace HIS.Desktop.Plugins.a2ApprovaleDebate
             }
         }
 
-        public void ReLoad(Action<ADO.SereServADO> editClick, List<TrackingListADO> SereServADOs, L_HIS_TREATMENT_BED_ROOM _RowCellClickBedRoom/*, Action<ADO.SereServADO> EditEnableButton_Click, Action<ADO.SereServADO> DeleteEnableButton_Click*/)
+        public void ReLoad(Action<ADO.SereServADO> editClick, List<TrackingListADO> SereServADOs, V_HIS_SPECIALIST_EXAM _RowCellClickBedRoom/*, Action<ADO.SereServADO> EditEnableButton_Click, Action<ADO.SereServADO> DeleteEnableButton_Click*/)
         {
             try
             {
@@ -116,7 +116,7 @@ namespace HIS.Desktop.Plugins.a2ApprovaleDebate
                     this.treeSereServ.BestFitColumns();
                     this.TRACKING_TIME.BestFit();
                     this.treeSereServ.BestFitColumns();
-                    this.treeSereServ.OptionsView.ShowColumns = false;
+                    //this.treeSereServ.OptionsView.ShowColumns = false;
                 }
                 catch (Exception ex)
                 {
@@ -732,15 +732,23 @@ namespace HIS.Desktop.Plugins.a2ApprovaleDebate
         {
             try
             {
+                ////Khoi tao doi tuong resource
+                Resources.ResourceLanguageManager.LanguageResource__UCTreeListTracking = new ResourceManager("HIS.Desktop.Plugins.ApprovaleDebate.Resources.Lang", typeof(UCTreeListTracking).Assembly);
 
-
-
+                ////Gan gia tri cho cac control editor co Text/Caption/ToolTip/NullText/NullValuePrompt/FindNullPrompt
+                this.layoutControl1.Text = Inventec.Common.Resource.Get.Value("UCTreeListTracking.layoutControl1.Text", Resources.ResourceLanguageManager.LanguageResource__UCTreeListTracking, LanguageManager.GetCulture());
+                this.treeSereServ.OptionsFind.FindNullPrompt = Inventec.Common.Resource.Get.Value("UCTreeListTracking.treeSereServ.OptionsFind.FindNullPrompt", Resources.ResourceLanguageManager.LanguageResource__UCTreeListTracking, LanguageManager.GetCulture());
+                this.TRACKING_TIME.Caption = Inventec.Common.Resource.Get.Value("UCTreeListTracking.TRACKING_TIME.Caption", Resources.ResourceLanguageManager.LanguageResource__UCTreeListTracking, LanguageManager.GetCulture());
+                this.USER_NAME.Caption = Inventec.Common.Resource.Get.Value("UCTreeListTracking.USER_NAME.Caption", Resources.ResourceLanguageManager.LanguageResource__UCTreeListTracking, LanguageManager.GetCulture());
+                this.SERVICE.Caption = Inventec.Common.Resource.Get.Value("UCTreeListTracking.SERVICE.Caption", Resources.ResourceLanguageManager.LanguageResource__UCTreeListTracking, LanguageManager.GetCulture());
+                this.CONTENT.Caption = Inventec.Common.Resource.Get.Value("UCTreeListTracking.CONTENT.Caption", Resources.ResourceLanguageManager.LanguageResource__UCTreeListTracking, LanguageManager.GetCulture());
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
+
         private bool IsCheckDepartmentTran()
         {
             bool result = true;

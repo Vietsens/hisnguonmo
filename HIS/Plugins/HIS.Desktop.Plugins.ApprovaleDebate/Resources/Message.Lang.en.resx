@@ -126,14 +126,14 @@
   <data name="BHYT" xml:space="preserve">
     <value>Health Insurance: {0}/ {1}</value>
   </data>
+  <data name="BNChuaKeDonTrongKhoang" xml:space="preserve">
+    <value>The patient has not prescribed for approx</value>
+  </data>
   <data name="BNDangOTrongBuong" xml:space="preserve">
     <value>Patient is in the room</value>
   </data>
   <data name="BNVaoTrongKhoang" xml:space="preserve">
     <value>Patient is within</value>
-  </data>
-	<data name="BNChuaKeDonTrongKhoang" xml:space="preserve">
-    <value>The patient has not prescribed for approx</value>
   </data>
   <data name="CoBenhNhanhBHYTTrongTongSoBenhNhan" xml:space="preserve">
     <value>There are {0} insured patients out of {1} patients</value>

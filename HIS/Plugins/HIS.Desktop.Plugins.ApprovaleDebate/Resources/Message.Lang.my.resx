@@ -126,14 +126,14 @@
   <data name="BHYT" xml:space="preserve">
     <value>ကျန်းမာရေးအာမခံ: {0}/ {1}</value>
   </data>
+  <data name="BNChuaKeDonTrongKhoang" xml:space="preserve">
+    <value>လူနာသည် ခန့်မှန်းချေကို မသတ်မှတ်ထားပေ။</value>
+  </data>
   <data name="BNDangOTrongBuong" xml:space="preserve">
     <value>လူနာက အခန်းထဲမှာ</value>
   </data>
   <data name="BNVaoTrongKhoang" xml:space="preserve">
     <value>လူနာက အထဲမှာရှိတယ်။</value>
-  </data>
-	<data name="BNChuaKeDonTrongKhoang" xml:space="preserve">
-    <value>လူနာသည် ခန့်မှန်းချေကို မသတ်မှတ်ထားပေ။</value>
   </data>
   <data name="CoBenhNhanhBHYTTrongTongSoBenhNhan" xml:space="preserve">
     <value>လူနာ {1} ဦးအနက် အာမခံထားသူ {0} ဦး ရှိပါသည်။</value>
@@ -206,15 +206,6 @@
   </data>
   <data name="TruongDuLieuBatBuoc" xml:space="preserve">
     <value>လိုအပ်သောအကွက်</value>
-  </data>
-  <data name="UCBedRoomPartial.gridColCardExpiry.Caption" xml:space="preserve">
-    <value>ကတ်သက်တမ်းကုန်ဆုံး</value>
-  </data>
-  <data name="UCBedRoomPartial.gridColPhone.Caption" xml:space="preserve">
-    <value>ဖုန်းနံပါတ်</value>
-  </data>
-  <data name="UCBedRoomPartial.gridColPhone.Tooltip" xml:space="preserve">
-    <value>လူနာ၏ဖုန်းနံပါတ်</value>
   </data>
   <data name="YLenhDaTonTaiVanBanKy" xml:space="preserve">
     <value>ဤအမိန့်မှာ လက်မှတ်ထိုးထားသော စာသားရှိပြီး၊ သင်သည် ဒေတာကို ဖျက်လိုပါသလား။</value>

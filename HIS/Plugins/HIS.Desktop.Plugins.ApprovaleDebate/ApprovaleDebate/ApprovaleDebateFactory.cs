@@ -5,31 +5,16 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace HIS.Desktop.Plugins.a2ApprovaleDebate.ApprovaleDebate
+namespace HIS.Desktop.Plugins.ApprovaleDebate.ApprovaleDebate
 {
     class ApprovaleDebateFactory
     {
         internal static IApprovaleDebate MakeIApprovalSurgery(CommonParam param, object[] data)
         {
             IApprovaleDebate result = null;
-            Inventec.Desktop.Common.Modules.Module moduleData = null;
             try
             {
-                if (data.GetType() == typeof(object[]))
-                {
-                    if (data != null && data.Count() > 0)
-                    {
-                        for (int i = 0; i < data.Count(); i++)
-                        {
-                            if (data[i] is Inventec.Desktop.Common.Modules.Module)
-                            {
-                                moduleData = (Inventec.Desktop.Common.Modules.Module)data[i];
-                            }
-                        }
-                        result = new ApprovaleDebateBehavior(param, moduleData);
-                    }
-                }
-
+                result = new ApprovaleDebateBehavior(param, data);
                 if (result == null) throw new NullReferenceException();
             }
             catch (NullReferenceException ex)
