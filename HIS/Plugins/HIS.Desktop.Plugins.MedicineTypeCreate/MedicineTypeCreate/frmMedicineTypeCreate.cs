@@ -6994,7 +6994,7 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
                         ValidatecboMedicineUseForm(medicineLine.DO_NOT_REQUIRED_USE_FORM != 1);
                         if(medicineLine.ID == IMSys.DbConfig.HIS_RS.HIS_MEDICINE_LINE.ID__VT_YHCT)
                         {
-                            ValidatecboDosageForm(medicineLine.DO_NOT_REQUIRED_USE_FORM != 1);
+                            ValidatecboDosageForm(medicineLine.DO_NOT_REQUIRED_USE_FORM == 1);
                         }
                     }
                     
