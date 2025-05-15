@@ -131,6 +131,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                 ControlEditorADO controlEditorADO = new ControlEditorADO("DOCUMENT_TYPE_NAME", "ID", columnInfos, false, 230);
                 ControlEditorLoader.Load(gridLookUpEditDocType, GetDocumentTypes(), controlEditorADO);
                 gridLookUpEditDocType.EditValue = IMSys.DbConfig.EMR_RS.EMR_DOCUMENT_TYPE.ID__SERVICE_RESULT;
+                gridLookUpEditDocType.Text = "Phiếu trả kết quả";
             }
             catch (Exception ex)
             {
@@ -333,7 +334,6 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                     DocumentTDO document = new DocumentTDO();
                     document.DocumentName = textEditDocName.Text.Trim();
                     document.DocumentTypeId = (long)gridLookUpEditDocType.EditValue;
-                    document.DocumentTypeId = 22;
                     document.HisCode = "TREATMENT_CODE:" + treatmentCode + " SERVICE_REQ_CODE:" + serviceReqCode + " BAR_CODE:" + barCode;
                     document.IsCapture = true;
                     // Generate combined PDF from all files
