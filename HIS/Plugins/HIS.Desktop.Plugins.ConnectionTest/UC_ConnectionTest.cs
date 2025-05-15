@@ -6322,13 +6322,19 @@ namespace HIS.Desktop.Plugins.ConnectionTest
         {
             try
             {
-                frmAttachTestFile frm = new frmAttachTestFile(row.TREATMENT_CODE, row.SERVICE_REQ_CODE, row.BARCODE);
-                frm.Show();
+                Inventec.Desktop.Common.Modules.Module moduleData = GlobalVariables.currentModuleRaws.Where(o => o.ModuleLink == "HIS.Desktop.Plugins.AttackFile").FirstOrDefault();
+                if (moduleData == null) throw new NullReferenceException("Not found module by ModuleLink = 'HIS.Desktop.Plugins.AttackFile'");
+                if (!moduleData.IsPlugin || moduleData.ExtensionInfo == null) throw new NullReferenceException("Module 'HIS.Desktop.Plugins.AttackFile' is not plugins");
+                List<object> listArgs = new List<object>();
+                listArgs.Add(new HIS.Desktop.ADO.EmrAttackFileADO() { TreatmentCode = row.TREATMENT_CODE, HisCode = string.Format("TREATMENT_CODE:{0} SERVICE_REQ_CODE:{1} BAR_CODE:{2}",row.TREATMENT_CODE,row.SERVICE_REQ_CODE, row.BARCODE)});
+                listArgs.Add(PluginInstance.GetModuleWithWorkingRoom(moduleData, this.currentModule.RoomId, this.currentModule.RoomTypeId));
+                var extenceInstance = PluginInstance.GetPluginInstance(PluginInstance.GetModuleWithWorkingRoom(moduleData, this.currentModule.RoomId, this.currentModule.RoomTypeId), listArgs);
+                if (extenceInstance == null) throw new ArgumentNullException("moduleData is null");
+                ((Form)extenceInstance).ShowDialog();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-
-                throw;
+                Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
 

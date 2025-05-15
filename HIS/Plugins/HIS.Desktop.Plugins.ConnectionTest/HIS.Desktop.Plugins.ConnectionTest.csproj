@@ -308,7 +308,6 @@
     <Compile Include="AddSigner\frmSignerAdd.Designer.cs">
       <DependentUpon>frmSignerAdd.cs</DependentUpon>
     </Compile>
-    <Compile Include="ADO\AttachFileADO.cs" />
     <Compile Include="ADO\ControlCode.cs" />
     <Compile Include="ADO\KskContract.cs" />
     <Compile Include="ADO\LisMachineAdo.cs" />
@@ -329,12 +328,6 @@
     </Compile>
     <Compile Include="frmApproveResult.Designer.cs">
       <DependentUpon>frmApproveResult.cs</DependentUpon>
-    </Compile>
-    <Compile Include="frmAttachTestFile.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="frmAttachTestFile.Designer.cs">
-      <DependentUpon>frmAttachTestFile.cs</DependentUpon>
     </Compile>
     <Compile Include="frmChapNhanMau.cs">
       <SubType>Form</SubType>
@@ -402,9 +395,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="frmApproveResult.resx">
       <DependentUpon>frmApproveResult.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="frmAttachTestFile.resx">
-      <DependentUpon>frmAttachTestFile.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="frmChapNhanMau.resx">
       <DependentUpon>frmChapNhanMau.cs</DependentUpon>

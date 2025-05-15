@@ -149,13 +149,13 @@
 
                 ////Gan gia tri cho cac control editor co Text/Caption/ToolTip/NullText/NullValuePrompt/FindNullPrompt
                 this.layoutControl1.Text = Inventec.Common.Resource.Get.Value("frmAttachTestFile.layoutControl1.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                this.labelControl2.Text = Inventec.Common.Resource.Get.Value("frmAttachTestFile.labelControl2.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                this.labelControl1.Text = Inventec.Common.Resource.Get.Value("frmAttachTestFile.labelControl1.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.layoutControl3.Text = Inventec.Common.Resource.Get.Value("frmAttachTestFile.layoutControl3.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                this.simpleButtonSave.Text = Inventec.Common.Resource.Get.Value("frmAttachTestFile.simpleButtonSave.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.btnSave.Text = Inventec.Common.Resource.Get.Value("frmAttachTestFile.btnSave.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.layoutControl2.Text = Inventec.Common.Resource.Get.Value("frmAttachTestFile.layoutControl2.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.gridColumnSTT.Caption = Inventec.Common.Resource.Get.Value("frmAttachTestFile.gridColumnSTT.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.gridColumnFileName.Caption = Inventec.Common.Resource.Get.Value("frmAttachTestFile.gridColumnFileName.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.layoutControlItem2.Text = Inventec.Common.Resource.Get.Value("frmAttachTestFile.layoutControlItem2.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.layoutControlItem1.Text = Inventec.Common.Resource.Get.Value("frmAttachTestFile.layoutControlItem1.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.Text = Inventec.Common.Resource.Get.Value("frmAttachTestFile.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
             }
             catch (Exception ex)
@@ -483,7 +483,6 @@
                 this.gridColumn11.Caption = Inventec.Common.Resource.Get.Value("UC_ConnectionTest.gridColumn11.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.gridColumn13.Caption = Inventec.Common.Resource.Get.Value("UC_ConnectionTest.gridColumn13.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.gridColumn14.Caption = Inventec.Common.Resource.Get.Value("UC_ConnectionTest.gridColumn14.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                this.cboUserKQ.Properties.NullText = Inventec.Common.Resource.Get.Value("UC_ConnectionTest.cboUserKQ.Properties.NullText", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.layoutControlItem11.OptionsToolTip.ToolTip = Inventec.Common.Resource.Get.Value("UC_ConnectionTest.layoutControlItem11.OptionsToolTip.ToolTip", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.layoutControlItem11.Text = Inventec.Common.Resource.Get.Value("UC_ConnectionTest.layoutControlItem11.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.layoutControlItem12.Text = Inventec.Common.Resource.Get.Value("UC_ConnectionTest.layoutControlItem12.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());

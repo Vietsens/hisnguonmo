@@ -156,6 +156,9 @@
   <data name="frmApproveResult.Text" xml:space="preserve">
     <value>သတင်းအချက်အလက်ခွင့်ပြုချက်သတင်းအချက်အလက်</value>
   </data>
+  <data name="frmAttachTestFile.btnSave.Text" xml:space="preserve">
+    <value>သိမ်းဆည်းခြင်း (Ctrl S)</value>
+  </data>
   <data name="frmAttachTestFile.gridColumnFileName.Caption" xml:space="preserve">
     <value>နံမယ်</value>
   </data>
@@ -176,6 +179,12 @@
   </data>
   <data name="frmAttachTestFile.layoutControl3.Text" xml:space="preserve">
     <value>layoutControl3</value>
+  </data>
+  <data name="frmAttachTestFile.layoutControlItem1.Text" xml:space="preserve">
+    <value>စာသားအမျိုးအစား:</value>
+  </data>
+  <data name="frmAttachTestFile.layoutControlItem2.Text" xml:space="preserve">
+    <value>စာရွက်စာတမ်းအမည်:</value>
   </data>
   <data name="frmAttachTestFile.simpleButtonSave.Text" xml:space="preserve">
     <value>သိမ်းဆည်းခြင်း (Ctrl S)</value>

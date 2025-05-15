@@ -156,6 +156,10 @@
   <data name="frmApproveResult.Text" xml:space="preserve">
     <value>Thông tin duyệt kết quả</value>
   </data>
+  <data name="frmAttachTestFile.btnSave.Text" xml:space="preserve">
+    <value>Lưu (Ctrl S)
+</value>
+  </data>
   <data name="frmAttachTestFile.gridColumnFileName.Caption" xml:space="preserve">
     <value>Tên</value>
   </data>
@@ -176,6 +180,12 @@
   </data>
   <data name="frmAttachTestFile.layoutControl3.Text" xml:space="preserve">
     <value>layoutControl3</value>
+  </data>
+  <data name="frmAttachTestFile.layoutControlItem1.Text" xml:space="preserve">
+    <value>Loại văn bản:</value>
+  </data>
+  <data name="frmAttachTestFile.layoutControlItem2.Text" xml:space="preserve">
+    <value>Tên văn bản:</value>
   </data>
   <data name="frmAttachTestFile.simpleButtonSave.Text" xml:space="preserve">
     <value>Lưu (Ctrl S)
