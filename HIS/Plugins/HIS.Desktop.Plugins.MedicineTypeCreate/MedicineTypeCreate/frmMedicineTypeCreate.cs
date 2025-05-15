@@ -6992,6 +6992,7 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
                     {
                         cboMedicineLine.Properties.Buttons[1].Visible = true;
                         ValidatecboMedicineUseForm(medicineLine.DO_NOT_REQUIRED_USE_FORM != 1);
+                        ValidatecboDosageForm(medicineLine.DO_NOT_REQUIRED_USE_FORM==1);
                     }
                 }
             }
@@ -7579,7 +7580,11 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
             {
                 if (cboDosageForm.EditValue != null)
                 {
-                    cboDosageForm.Properties.Buttons[1].Visible = true;
+                    var medicineUseForm = BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_MEDICINE_USE_FORM>().SingleOrDefault(o => o.ID == Inventec.Common.TypeConvert.Parse.ToInt64((cboDosageForm.EditValue ?? "").ToString()));
+                    if (medicineUseForm != null)
+                    {
+                        cboDosageForm.Properties.Buttons[1].Visible = true;
+                    }
                 }
                 else
                 {

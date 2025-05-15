@@ -884,8 +884,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
                 {
                     LogSystem.Warn("btnAdd_TabMedicine_Click => thao tac khong hop le. actionType = " + this.actionType);
                     return;
-                }
-
+                }                
                 bool valid = true;
                 this.positionHandleControl = -1;
                 valid = valid && dxValidProviderBoXung.Validate();
@@ -895,12 +894,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
                 valid = valid && CheckGenderMediMaty(currentMedicineTypeADOForEdit);
                 valid = valid && CheckMaMePackage(currentMedicineTypeADOForEdit);
                 valid = valid && CheckOddConvertUnit(currentMedicineTypeADOForEdit, spinAmount.Value);
-                if (!valid) return;
-                if (string.IsNullOrEmpty(txtHtu.Text))
-                {
-                    MessageBox.Show("Bắt buộc phải nhập cách dùng thuốc", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    return;
-                }
+                if (!valid) return;               
                 if (this.mediMatyTypeADOs == null)
                     this.mediMatyTypeADOs = new List<MediMatyTypeADO>();
                 switch (this.actionBosung)
@@ -1178,6 +1172,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
+
 
 
         //qtcode
@@ -2011,6 +2006,11 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
                     this.btnAdd.Focus();
                     e.Handled = true;
                 }
+                else
+                {
+                    this.txtTutorial.Focus();
+                    this.txtTutorial.SelectionStart = this.txtTutorial.Text.Length + 1;
+                }
             }
             catch (Exception ex)
             {
@@ -2288,7 +2288,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
                     //Ngược lại nếu là số nguyên thì hiển thị giữ nguyên giá trị                    
                     this.spinAmount.EditValue = amountValue;
                     this.txtTutorial.Text = this.currentMedicineTypeADOForEdit.TUTORIAL;
-                    this.txtHtu.Text = this.currentMedicineTypeADOForEdit.MEDICINE_USE_FORM_NAME;
+                    this.txtHtu.Text = this.currentMedicineTypeADOForEdit.HTU_TEXT;
                     this.btnAdd.Enabled = true;
                     Inventec.Desktop.Controls.ControlWorker.ValidationProviderRemoveControlError(this.dxValidProviderBoXung, this.dxErrorProvider1);
                     Inventec.Desktop.Controls.ControlWorker.ValidationProviderRemoveControlError(this.dxValidProviderBoXung__DuongDung, this.dxErrorProvider1);

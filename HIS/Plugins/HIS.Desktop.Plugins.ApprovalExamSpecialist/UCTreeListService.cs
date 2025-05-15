@@ -27,7 +27,9 @@ using System.Windows.Forms;
 using System.Collections;
 using DevExpress.XtraGrid.Views.Base;
 using DevExpress.Data;
+using HIS.Desktop.Plugins.ApprovalExamSpecialist;
 using DevExpress.Utils;
+using HIS.Desktop.Plugins.ApprovalExamSpecialist.ADO;
 using MOS.SDO;
 using Inventec.Desktop.Common.LanguageManager;
 using Inventec.Desktop.Common.Message;
@@ -45,7 +47,6 @@ using DevExpress.XtraTreeList.Nodes;
 using HIS.Desktop.ADO;
 using System.Resources;
 using System.Reflection;
-using HIS.Desktop.Plugins.ApprovalExamSpecialist.ADO;
 using HIS.Desktop.Plugins.ApprovalExamSpecialist.Key;
 
 namespace HIS.Desktop.Plugins.ApprovalExamSpecialist
@@ -61,7 +62,6 @@ namespace HIS.Desktop.Plugins.ApprovalExamSpecialist
         bool IsExpand;
         DHisSereServ2 _SereServADORightMouseClick;
         L_HIS_TREATMENT_BED_ROOM RowCellClickBedRoom;
-        long departmentID = 0;
 
         HIS_EXP_MEST currentPrescription;
         Inventec.Desktop.Common.Modules.Module currentModule;
@@ -90,11 +90,8 @@ namespace HIS.Desktop.Plugins.ApprovalExamSpecialist
             try
             {
                 this.SetCaptionByLanguageKey();
-                V_HIS_ROOM ms = BackendDataWorker.Get<MOS.EFMODEL.DataModels.V_HIS_ROOM>().SingleOrDefault(o => o.ID == wkRoomId);
-                departmentID = ms.DEPARTMENT_ID;
-                treeSereServ.SelectImageList = imageCollection;
+                //treeSereServ.SelectImageList = imageCollection;
                 treeSereServ.StateImageList = imageCollection;
-
             }
             catch (Exception ex)
             {
@@ -102,14 +99,13 @@ namespace HIS.Desktop.Plugins.ApprovalExamSpecialist
             }
         }
 
-        public void ReLoad(Action<ADO.SereServADO> editClick, List<SereServADO> SereServADOs, L_HIS_TREATMENT_BED_ROOM _RowCellClickBedRoom, Action<ADO.SereServADO> EditEnableButton_Click, Action<ADO.SereServADO> DeleteEnableButton_Click)
+        public void ReLoad(Action<ADO.SereServADO> editClick, List<SereServADO> SereServADOs)
         {
             try
             {
                 this.EditEnableButton_Click = EditEnableButton_Click;
                 this.DeleteEnableButton_Click = DeleteEnableButton_Click;
                 EditButton_Click = editClick;
-                RowCellClickBedRoom = _RowCellClickBedRoom;
                 treeSereServ.BeginUpdate();
                 if (SereServADOs != null && SereServADOs.Count > 0)
                 {
@@ -140,6 +136,16 @@ namespace HIS.Desktop.Plugins.ApprovalExamSpecialist
                     treeSereServ.DataSource = null;
                 }
                 treeSereServ.EndUpdate();
+                try
+                {
+                    this.treeSereServ.BestFitColumns();
+                    this.tc_ServiceCode.BestFit();
+                    this.treeSereServ.OptionsView.ShowColumns = false;
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(ex);
+                }
             }
             catch (Exception ex)
             {
@@ -228,22 +234,6 @@ namespace HIS.Desktop.Plugins.ApprovalExamSpecialist
                         if (data.IS_USED == 1)
                         {
                             e.RepositoryItem = repositoryItemButton_IsUse;
-                        }
-                    }
-
-                }
-                if (data != null && e.Node.HasChildren)
-                {
-                    if (e.Column.FieldName == "TaoThuHoi")
-                    {
-                        if (data.SERVICE_REQ_STT_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_STT.ID__HT
-                            && (data.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__DONTT
-                            || data.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__DONDT
-                            || data.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__DONM)
-                            && (data.REQUEST_DEPARTMENT_ID == departmentID || data.EXECUTE_DEPARTMENT_ID == departmentID)
-                            && data.IS_TEMPORARY_PRES != 1)
-                        {
-                            e.RepositoryItem = repositoryItemButtonEdit_TaoThuHoi;
                         }
                     }
 
@@ -588,87 +578,94 @@ namespace HIS.Desktop.Plugins.ApprovalExamSpecialist
         {
             try
             {
-                if (e.SelectedControl is DevExpress.XtraTreeList.TreeList)// trvService)
-                {
-                    DevExpress.Utils.ToolTipControlInfo info = null;
-                    TreeListHitInfo hi = treeSereServ.CalcHitInfo(e.ControlMousePosition);
-                    if (hi != null && hi.Node != null)
-                    {
-                        var o = hi.Node;
-                        if (hi.HitInfoType == HitInfoType.SelectImage)
-                        {
-                            string text = "";
-                            var data = (SereServADO)treeSereServ.GetDataRecordByNode(o);
-                            if (data != null)
-                            {
-                                if (data.SERVICE_REQ_STT_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_STT.ID__CXL)
-                                {
-                                    if (data.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__XN && data.SAMPLE_TIME != null)
-                                    {
-                                        text = Inventec.Common.Resource.Get.Value("INIT_LANGUAGE__UC_TREE_SERE_SERV_7__DA_LAY_MAU", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                                    }
-                                    else
-                                        text = Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__TREE_SERE_SERV__CHUA_XU_LY", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                                }
-                                else if (data.SERVICE_REQ_STT_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_STT.ID__DXL)
-                                {
-                                    if (data.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__XN && data.RECEIVE_SAMPLE_TIME != null)
-                                    {
-                                        text = Inventec.Common.Resource.Get.Value("INIT_LANGUAGE__UC_TREE_SERE_SERV_7__DA_NHAN_MAU", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                                    }
-                                    else
-                                        text = Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__TREE_SERE_SERV__DANG_XU_LY", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                                }
-                                else if (data.SERVICE_REQ_STT_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_STT.ID__HT)
-                                {
-                                    text = Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__TREE_SERE_SERV__HOAN_THANH", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                                }
+                //if (e != null && e.SelectedControl is DevExpress.XtraTreeList.TreeList)// trvService)
+                //{
+                //    Inventec.Common.Logging.LogSystem.Warn("if (e != null && e.SelectedControl is DevExpress.XtraTreeList.TreeList)");
+                //    DevExpress.Utils.ToolTipControlInfo info = null;
+                //    TreeListHitInfo hi = treeSereServ.CalcHitInfo(e.ControlMousePosition);
+                //    if (hi != null && hi.Node != null)
+                //    {
+                //        Inventec.Common.Logging.LogSystem.Warn(" if (hi != null && hi.Node != null)");
 
-                            }
-                            info = new DevExpress.Utils.ToolTipControlInfo(o, text);
-                            e.Info = info;
-                        }
-                        else if (hi.HitInfoType == HitInfoType.StateImage)
-                        {
-                            var data = (SereServADO)treeSereServ.GetDataRecordByNode(o);
-                            if (data.TDL_SERVICE_TYPE_ID != IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__XN)
-                                return;
-                            string text = Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__TREE_SERE_SERV__KET_QUA_XET_NGHIEM", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                            info = new DevExpress.Utils.ToolTipControlInfo(o, text);
-                            e.Info = info;
-                        }
-                        if (hi.Column.FieldName == "NOTE_ADO")
-                        {
-                            string textx = "";
-                            var datax = (SereServADO)treeSereServ.GetDataRecordByNode(o);
-                            if (datax != null)
-                            {
-                                if (o.HasChildren && !string.IsNullOrEmpty(datax.NOTE_ADO))
-                                {
-                                    textx = Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__TREE_SERE_SERV__THOI_GIAN_Y_LENH", Resources.ResourceLanguageManager.LanguageResource__UCTreeListService, LanguageManager.GetCulture());
-                                }
-                                if (!o.HasChildren)
-                                {
-                                    textx = datax.NOTE_ADO;
-                                }
-                            }
-                            info = new DevExpress.Utils.ToolTipControlInfo(o, textx);
-                            e.Info = info;
-                        }
-                        if (hi.Column.FieldName == "Edit")
-                        {
-                            string textx = Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__TREE_SERE_SERV__SUA", Resources.ResourceLanguageManager.LanguageResource__UCTreeListService, LanguageManager.GetCulture());
-                            info = new DevExpress.Utils.ToolTipControlInfo(o, textx);
-                            e.Info = info;
-                        }
-                        if (hi.Column.FieldName == "Delete")
-                        {
-                            string textx = Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__TREE_SERE_SERV__XOA", Resources.ResourceLanguageManager.LanguageResource__UCTreeListService, LanguageManager.GetCulture());
-                            info = new DevExpress.Utils.ToolTipControlInfo(o, textx);
-                            e.Info = info;
-                        }
-                    }
-                }
+                //        var o = hi.Node;
+                //        //if (hi.HitInfoType == HitInfoType.SelectImage)
+                //        //{
+                //        //    string text = "";
+                //        //    var data = (SereServADO)treeSereServ.GetDataRecordByNode(o);
+                //        //    if (data != null)
+                //        //    {
+                //        //        if (data.SERVICE_REQ_STT_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_STT.ID__CXL)
+                //        //        {
+                //        //            if (data.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__XN && data.SAMPLE_TIME != null)
+                //        //            {
+                //        //                text = Inventec.Common.Resource.Get.Value("INIT_LANGUAGE__UC_TREE_SERE_SERV_7__DA_LAY_MAU", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                //        //            }
+                //        //            else
+                //        //                text = Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__TREE_SERE_SERV__CHUA_XU_LY", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                //        //        }
+                //        //        else if (data.SERVICE_REQ_STT_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_STT.ID__DXL)
+                //        //        {
+                //        //            if (data.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__XN && data.RECEIVE_SAMPLE_TIME != null)
+                //        //            {
+                //        //                text = Inventec.Common.Resource.Get.Value("INIT_LANGUAGE__UC_TREE_SERE_SERV_7__DA_NHAN_MAU", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                //        //            }
+                //        //            else
+                //        //                text = Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__TREE_SERE_SERV__DANG_XU_LY", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                //        //        }
+                //        //        else if (data.SERVICE_REQ_STT_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_STT.ID__HT)
+                //        //        {
+                //        //            text = Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__TREE_SERE_SERV__HOAN_THANH", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                //        //        }
+
+                //        //    }
+                //        //    info = new DevExpress.Utils.ToolTipControlInfo(o, text);
+                //        //    e.Info = info;
+                //        //}
+                //        //else 
+                //        if (hi.HitInfoType == HitInfoType.StateImage)
+                //        {
+                //            Inventec.Common.Logging.LogSystem.Warn("HitInfoType");
+
+
+                //            var data = (SereServADO)treeSereServ.GetDataRecordByNode(o);
+                //            if (data.TDL_SERVICE_TYPE_ID != IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__XN)
+                //                return;
+                //            string text = Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__TREE_SERE_SERV__KET_QUA_XET_NGHIEM", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                //            info = new DevExpress.Utils.ToolTipControlInfo(o, text);
+                //            e.Info = info;
+                //        }
+                //        if (hi.Column.FieldName == "NOTE_ADO")
+                //        {
+                //            string textx = "";
+                //            var datax = (SereServADO)treeSereServ.GetDataRecordByNode(o);
+                //            if (datax != null)
+                //            {
+                //                if (o.HasChildren && !string.IsNullOrEmpty(datax.NOTE_ADO))
+                //                {
+                //                    textx = Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__TREE_SERE_SERV__THOI_GIAN_Y_LENH", Resources.ResourceLanguageManager.LanguageResource__UCTreeListService, LanguageManager.GetCulture());
+                //                }
+                //                if (!o.HasChildren)
+                //                {
+                //                    textx = datax.NOTE_ADO;
+                //                }
+                //            }
+                //            info = new DevExpress.Utils.ToolTipControlInfo(o, textx);
+                //            e.Info = info;
+                //        }
+                //        //if (hi.Column.FieldName == "Edit")
+                //        //{
+                //        //    string textx = Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__TREE_SERE_SERV__SUA", Resources.ResourceLanguageManager.LanguageResource__UCTreeListService, LanguageManager.GetCulture());
+                //        //    info = new DevExpress.Utils.ToolTipControlInfo(o, textx);
+                //        //    e.Info = info;
+                //        //}
+                //        //if (hi.Column.FieldName == "Delete")
+                //        //{
+                //        //    string textx = Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__TREE_SERE_SERV__XOA", Resources.ResourceLanguageManager.LanguageResource__UCTreeListService, LanguageManager.GetCulture());
+                //        //    info = new DevExpress.Utils.ToolTipControlInfo(o, textx);
+                //        //    e.Info = info;
+                //        //}
+                //    }
+                //}
             }
             catch (Exception ex)
             {
@@ -884,7 +881,6 @@ namespace HIS.Desktop.Plugins.ApprovalExamSpecialist
                 dataSource = null;
                 currentModule = null;
                 currentPrescription = null;
-                departmentID = 0;
                 RowCellClickBedRoom = null;
                 _SereServADORightMouseClick = null;
                 IsExpand = false;
@@ -924,7 +920,7 @@ namespace HIS.Desktop.Plugins.ApprovalExamSpecialist
                 imageCollection1 = null;
                 tc_RequestDepartmentName = null;
                 //qtcode
-                tc_TdlMedicineConcentra = null; 
+                tc_TdlMedicineConcentra = null;
                 //qtcode
                 tc_NoteAdo = null;
                 tc_Number = null;

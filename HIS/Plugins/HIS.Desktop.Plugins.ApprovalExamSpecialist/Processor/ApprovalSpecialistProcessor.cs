@@ -17,7 +17,7 @@ namespace HIS.Desktop.Plugins.ApprovalExamSpecialist.Processor
        "Duyệt khám chuyên khoa",
        "Common",
        14,
-       "giuong-benh.png",
+       "pivot_32x32.png",
        "A",
        Module.MODULE_TYPE_ID__UC,
        true,
