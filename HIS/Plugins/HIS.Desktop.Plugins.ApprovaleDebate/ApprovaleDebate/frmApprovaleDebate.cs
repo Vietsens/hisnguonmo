@@ -100,11 +100,8 @@ namespace HIS.Desktop.Plugins.ApprovaleDebate.ApprovaleDebate
                 this.InitComboEmployee();
                 if (this.v_his_specialist_exam != null)
                 {
-                    if (this.v_his_specialist_exam.IS_APPROVAL == 1)
-                    {
-                        this.txtYKienBacSi.Text = this.v_his_specialist_exam.REJECT_APPROVAL_REASON;
-                        this.cboEmployee.EditValue = this.v_his_specialist_exam.EXAM_EXECUTE_USERNAME;
-                    }
+                    this.txtYKienBacSi.Text = this.v_his_specialist_exam.EXAM_EXECUTE_CONTENT;
+                    this.cboEmployee.EditValue = this.v_his_specialist_exam.EXAM_EXECUTE_USERNAME;
                     //
                     this.LoadDataSereServByTreatmentId(this.v_his_specialist_exam);
                 }
@@ -519,12 +516,13 @@ namespace HIS.Desktop.Plugins.ApprovaleDebate.ApprovaleDebate
         {
             try
             {
+                WaitingManager.Show();
                 if (btnSave.Enabled)
                 {
                     CommonParam param = new CommonParam();
                     v_his_specialist_exam.EXAM_EXECUTE_LOGINNAME = cboEmployee.EditValue?.ToString();
                     v_his_specialist_exam.EXAM_EXECUTE_USERNAME = cboEmployee.EditValue?.ToString();
-                    v_his_specialist_exam.REJECT_APPROVAL_REASON = txtYKienBacSi.Text.Trim();
+                    v_his_specialist_exam.EXAM_EXECUTE_CONTENT = txtYKienBacSi.Text.Trim();
                     v_his_specialist_exam.IS_APPROVAL = 1;
                     var rs = new BackendAdapter(param).Post<HIS_INFUSION_SUM>("api/HisSpecialistExam/Update", ApiConsumers.MosConsumer, v_his_specialist_exam, param);
                     if (rs != null)
@@ -538,10 +536,11 @@ namespace HIS.Desktop.Plugins.ApprovaleDebate.ApprovaleDebate
                     MessageManager.Show(this, param, rs != null);
                     SessionManager.ProcessTokenLost(param);
                 }
+                WaitingManager.Hide();
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
+                WaitingManager.Hide();
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
