@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.13.35825.156 d17.13
+VisualStudioVersion = 17.13.35825.156
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HIS.Desktop", "HIS.Desktop\HIS.Desktop.csproj", "{8207ACB0-A325-42C6-97CB-FB54AE1AE6B8}"
 EndProject
@@ -1118,6 +1118,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HIS.Desktop.Plugins.HisMedicineTypeTut", "Plugins\HIS.Desktop.Plugins.HisMedicineTypeTut\HIS.Desktop.Plugins.HisMedicineTypeTut.csproj", "{42FCE551-878E-4FCC-AB99-633DA033BAF4}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HIS.Desktop.Plugins.XMLViewer130", "Plugins\HIS.Desktop.Plugins.XMLViewer130\HIS.Desktop.Plugins.XMLViewer130.csproj", "{2B9A4EE5-0FC5-4C46-9AFF-F13AA62114C8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MPS.Processor.Mps000047", "..\MPS\MPS.Processor\MPS.Processor.Mps000047\MPS.Processor.Mps000047.csproj", "{C76A8F78-CA26-41A0-80A7-DA30F696D079}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -4417,6 +4419,14 @@ Global
 		{2B9A4EE5-0FC5-4C46-9AFF-F13AA62114C8}.Release|Any CPU.Build.0 = Release|Any CPU
 		{2B9A4EE5-0FC5-4C46-9AFF-F13AA62114C8}.Release|x86.ActiveCfg = Release|Any CPU
 		{2B9A4EE5-0FC5-4C46-9AFF-F13AA62114C8}.Release|x86.Build.0 = Release|Any CPU
+		{C76A8F78-CA26-41A0-80A7-DA30F696D079}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C76A8F78-CA26-41A0-80A7-DA30F696D079}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C76A8F78-CA26-41A0-80A7-DA30F696D079}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{C76A8F78-CA26-41A0-80A7-DA30F696D079}.Debug|x86.Build.0 = Debug|Any CPU
+		{C76A8F78-CA26-41A0-80A7-DA30F696D079}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C76A8F78-CA26-41A0-80A7-DA30F696D079}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C76A8F78-CA26-41A0-80A7-DA30F696D079}.Release|x86.ActiveCfg = Release|Any CPU
+		{C76A8F78-CA26-41A0-80A7-DA30F696D079}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
