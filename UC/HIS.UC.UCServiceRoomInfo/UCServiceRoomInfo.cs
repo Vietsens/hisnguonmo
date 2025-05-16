@@ -511,9 +511,8 @@ namespace HIS.UC.UCServiceRoomInfo
                     var roomIdActivesV2 = BackendDataWorker.Get<V_HIS_ROOM>().Where(p => (p.IS_RESTRICT_PATIENT_TYPE == null
                         || _roomIdByPatientTypeRooms.Contains(p.ID))).Select(p => p.ID).ToList();
 
-                    dataExecuteRooms = dataExecuteRooms.Where(p => p.IS_PAUSE_ENCLITIC != 1
-                        && roomIdActivesV2.Contains(p.ROOM_ID)
-                        ).ToList();
+                    //dataExecuteRooms = dataExecuteRooms.Where(p => p.IS_PAUSE_ENCLITIC != 1 && roomIdActivesV2.Contains(p.ROOM_ID)).ToList();
+                    dataExecuteRooms = dataExecuteRooms.Where(p => roomIdActivesV2.Contains(p.ROOM_ID)).ToList();
                     var roomWorking = BackendDataWorker.Get<HIS_ROOM>().FirstOrDefault(p => p.ID == this._RoomID);
 
                     if (HIS.Desktop.Plugins.Library.RegisterConfig.HisConfigCFG.IsShowingExamRoomInDepartment && roomWorking != null)
@@ -672,9 +671,8 @@ namespace HIS.UC.UCServiceRoomInfo
                     var roomIdActivesV2 = BackendDataWorker.Get<V_HIS_ROOM>().Where(p => (p.IS_RESTRICT_PATIENT_TYPE == null
                         || _roomIdByPatientTypeRooms.Contains(p.ID))).Select(p => p.ID).ToList();
 
-                    dataExecuteRooms = dataExecuteRooms.Where(p => p.IS_PAUSE_ENCLITIC != 1
-                        && roomIdActivesV2.Contains(p.ROOM_ID)
-                        ).ToList();
+                    //dataExecuteRooms = dataExecuteRooms.Where(p => p.IS_PAUSE_ENCLITIC != 1 && roomIdActivesV2.Contains(p.ROOM_ID)).ToList();
+                    dataExecuteRooms = dataExecuteRooms.Where(p => roomIdActivesV2.Contains(p.ROOM_ID)).ToList();
 
                     var roomWorking = BackendDataWorker.Get<HIS_ROOM>().FirstOrDefault(p => p.ID == this._RoomID);
 
