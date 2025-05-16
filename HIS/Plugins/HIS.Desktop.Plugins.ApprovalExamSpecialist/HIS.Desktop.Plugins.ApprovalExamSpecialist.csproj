@@ -282,6 +282,24 @@
     <Compile Include="ValidateRule\ValidateMaxLength.cs" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Resources\Lang.en.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Lang.my.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Lang.vi.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Message.Lang.en.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Message.Lang.my.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Message.Lang.vi.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="Run\frmApprovalExamSpecialist.resx">
       <DependentUpon>frmApprovalExamSpecialist.cs</DependentUpon>
     </EmbeddedResource>
@@ -290,6 +308,14 @@
       <DependentUpon>UCTreeListService.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="Resources\phieu-linh.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\phieu-tra.png" />
+    <Content Include="Resources\y-te.png" />
+    <None Include="Resources\y-te1.png" />
+    <None Include="Resources\thuoc.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
