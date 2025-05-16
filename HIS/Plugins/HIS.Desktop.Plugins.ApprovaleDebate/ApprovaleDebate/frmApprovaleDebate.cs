@@ -629,6 +629,10 @@ namespace HIS.Desktop.Plugins.ApprovaleDebate.ApprovaleDebate
                 }
                 MessageManager.Show(this, param, rs != null);
                 SessionManager.ProcessTokenLost(param);
+                if (rs != null)
+                {
+                    this.Close();
+                }
             }
             catch (Exception ex)
             {
