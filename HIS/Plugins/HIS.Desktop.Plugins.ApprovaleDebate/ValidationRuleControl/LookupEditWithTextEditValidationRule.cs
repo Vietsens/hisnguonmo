@@ -38,6 +38,7 @@ namespace HIS.Desktop.Plugins.ApprovaleDebate
                 {
                     if (eee.EditValue == null)
                     {
+                        this.ErrorType = DevExpress.XtraEditors.DXErrorProvider.ErrorType.Warning;
                         this.ErrorText = Inventec.Desktop.Common.LibraryMessage.MessageUtil.GetMessage(Inventec.Desktop.Common.LibraryMessage.Message.Enum.TruongDuLieuBatBuoc);
                         return valid;
                     }

@@ -28,11 +28,12 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmApprovaleDebate));
             this.layoutControl1 = new DevExpress.XtraLayout.LayoutControl();
             this.btnSave = new DevExpress.XtraEditors.SimpleButton();
             this.cboEmployee = new Inventec.Desktop.CustomControl.CustomGridLookUpEditWithFilterMultiColumn();
-            this.barManager1 = new DevExpress.XtraBars.BarManager();
+            this.barManager1 = new DevExpress.XtraBars.BarManager(this.components);
             this.bar1 = new DevExpress.XtraBars.Bar();
             this.bbtnSave = new DevExpress.XtraBars.BarButtonItem();
             this.barDockControl1 = new DevExpress.XtraBars.BarDockControl();
@@ -57,8 +58,8 @@
             this.layoutControlItem4 = new DevExpress.XtraLayout.LayoutControlItem();
             this.emptySpaceItem1 = new DevExpress.XtraLayout.EmptySpaceItem();
             this.emptySpaceItem3 = new DevExpress.XtraLayout.EmptySpaceItem();
-            this.imageCollection1 = new DevExpress.Utils.ImageCollection();
-            this.dxValidationProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider();
+            this.imageCollection1 = new DevExpress.Utils.ImageCollection(this.components);
+            this.dxValidationProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
             this.layoutControl1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.cboEmployee.Properties)).BeginInit();
@@ -96,7 +97,7 @@
             // btnSave
             // 
             this.btnSave.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnSave.Location = new System.Drawing.Point(256, 450);
+            this.btnSave.Location = new System.Drawing.Point(256, 485);
             this.btnSave.Name = "btnSave";
             this.btnSave.Size = new System.Drawing.Size(113, 22);
             this.btnSave.StyleController = this.layoutControl1;
@@ -107,7 +108,7 @@
             // cboEmployee
             // 
             this.cboEmployee.EditValue = "";
-            this.cboEmployee.Location = new System.Drawing.Point(79, 416);
+            this.cboEmployee.Location = new System.Drawing.Point(79, 2);
             this.cboEmployee.MenuManager = this.barManager1;
             this.cboEmployee.Name = "cboEmployee";
             this.cboEmployee.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
@@ -192,10 +193,10 @@
             // 
             // txtYKienBacSi
             // 
-            this.txtYKienBacSi.Location = new System.Drawing.Point(79, 2);
+            this.txtYKienBacSi.Location = new System.Drawing.Point(79, 26);
             this.txtYKienBacSi.Name = "txtYKienBacSi";
             this.txtYKienBacSi.Properties.MaxLength = 4000;
-            this.txtYKienBacSi.Size = new System.Drawing.Size(290, 410);
+            this.txtYKienBacSi.Size = new System.Drawing.Size(290, 445);
             this.txtYKienBacSi.StyleController = this.layoutControl1;
             this.txtYKienBacSi.TabIndex = 5;
             // 
@@ -263,11 +264,11 @@
             this.layoutControlGroup1.GroupBordersVisible = false;
             this.layoutControlGroup1.Items.AddRange(new DevExpress.XtraLayout.BaseLayoutItem[] {
             this.layoutControlItem1,
-            this.layoutControlItem2,
             this.emptySpaceItem2,
             this.layoutControlItem3,
             this.layoutControlItem4,
             this.emptySpaceItem1,
+            this.layoutControlItem2,
             this.emptySpaceItem3});
             this.layoutControlGroup1.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup1.Name = "layoutControlGroup1";
@@ -288,18 +289,18 @@
             this.layoutControlItem2.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem2.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem2.Control = this.txtYKienBacSi;
-            this.layoutControlItem2.Location = new System.Drawing.Point(0, 0);
+            this.layoutControlItem2.Location = new System.Drawing.Point(0, 24);
             this.layoutControlItem2.Name = "layoutControlItem2";
-            this.layoutControlItem2.Size = new System.Drawing.Size(371, 414);
+            this.layoutControlItem2.Size = new System.Drawing.Size(371, 449);
             this.layoutControlItem2.Text = "Ý kiến bác sĩ:";
             this.layoutControlItem2.TextSize = new System.Drawing.Size(74, 13);
             // 
             // emptySpaceItem2
             // 
             this.emptySpaceItem2.AllowHotTrack = false;
-            this.emptySpaceItem2.Location = new System.Drawing.Point(0, 474);
+            this.emptySpaceItem2.Location = new System.Drawing.Point(0, 509);
             this.emptySpaceItem2.Name = "emptySpaceItem2";
-            this.emptySpaceItem2.Size = new System.Drawing.Size(371, 178);
+            this.emptySpaceItem2.Size = new System.Drawing.Size(371, 143);
             this.emptySpaceItem2.TextSize = new System.Drawing.Size(0, 0);
             // 
             // layoutControlItem3
@@ -307,7 +308,7 @@
             this.layoutControlItem3.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem3.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem3.Control = this.cboEmployee;
-            this.layoutControlItem3.Location = new System.Drawing.Point(0, 414);
+            this.layoutControlItem3.Location = new System.Drawing.Point(0, 0);
             this.layoutControlItem3.Name = "layoutControlItem3";
             this.layoutControlItem3.Size = new System.Drawing.Size(371, 24);
             this.layoutControlItem3.Text = "Bác sĩ hội chẩn:";
@@ -316,7 +317,7 @@
             // layoutControlItem4
             // 
             this.layoutControlItem4.Control = this.btnSave;
-            this.layoutControlItem4.Location = new System.Drawing.Point(254, 448);
+            this.layoutControlItem4.Location = new System.Drawing.Point(254, 483);
             this.layoutControlItem4.Name = "layoutControlItem4";
             this.layoutControlItem4.Size = new System.Drawing.Size(117, 26);
             this.layoutControlItem4.TextSize = new System.Drawing.Size(0, 0);
@@ -325,7 +326,7 @@
             // emptySpaceItem1
             // 
             this.emptySpaceItem1.AllowHotTrack = false;
-            this.emptySpaceItem1.Location = new System.Drawing.Point(0, 448);
+            this.emptySpaceItem1.Location = new System.Drawing.Point(0, 483);
             this.emptySpaceItem1.Name = "emptySpaceItem1";
             this.emptySpaceItem1.Size = new System.Drawing.Size(254, 26);
             this.emptySpaceItem1.TextSize = new System.Drawing.Size(0, 0);
@@ -333,7 +334,7 @@
             // emptySpaceItem3
             // 
             this.emptySpaceItem3.AllowHotTrack = false;
-            this.emptySpaceItem3.Location = new System.Drawing.Point(0, 438);
+            this.emptySpaceItem3.Location = new System.Drawing.Point(0, 473);
             this.emptySpaceItem3.Name = "emptySpaceItem3";
             this.emptySpaceItem3.Size = new System.Drawing.Size(371, 10);
             this.emptySpaceItem3.TextSize = new System.Drawing.Size(0, 0);

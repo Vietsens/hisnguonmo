@@ -376,7 +376,7 @@ namespace HIS.Desktop.Plugins.ApprovaleDebate.ApprovaleDebate
                         Inventec.Common.Logging.LogSystem.Error(ex);
                     }
 
-                    //
+                    // Tab Chẩn đoán hình ảnh: Dữ liệu lấy từ D_HIS_SERE_SERV_2 có TDL_SERVICE_TYPE_ID = 3
                     List<SereServADO> listCDHA = new List<SereServADO>();
                     listCDHA.AddRange(SereServADOs.Where(o => o.TDL_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__CDHA));
                     ucCDHA.ReLoad(treeView_Click, listCDHA, this.currentHisSpecialistExam, Edit_Click, Delete_Click);
@@ -387,7 +387,7 @@ namespace HIS.Desktop.Plugins.ApprovaleDebate.ApprovaleDebate
                         ucCDHA.tc_TdlMedicineConcentra.Visible = false;
                         ucCDHA.tc_RequestDepartmentName.Visible = false;
                     }
-                    //
+                    // Tab Xét nghiệm: Dữ liệu lấy từ D_HIS_SERE_SERV_2 có TDL_SERVICE_TYPE_ID = 2
                     List<SereServADO> listXetNghiem = new List<SereServADO>();
                     listXetNghiem.AddRange(SereServADOs.Where(o => o.TDL_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__XN));
                     if (listXetNghiem.Any())
@@ -398,7 +398,7 @@ namespace HIS.Desktop.Plugins.ApprovaleDebate.ApprovaleDebate
                         ucXetNghiem.tc_RequestDepartmentName.Visible = false;
                     }
                     ucXetNghiem.ReLoad(treeView_Click, listXetNghiem, this.currentHisSpecialistExam, Edit_Click, Delete_Click);
-                    //
+                    // Tab thuốc/vt/máu: Dữ liệu lấy từ D_HIS_SERE_SERV_2 có TDL_SERVICE_TYPE_ID = 6,7, 14
                     List<SereServADO> listMediMate = new List<SereServADO>();
                     listMediMate.AddRange(SereServADOs.Where(o => o.TDL_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__THUOC
                         || o.TDL_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__VT
@@ -409,7 +409,7 @@ namespace HIS.Desktop.Plugins.ApprovaleDebate.ApprovaleDebate
                         tabThuocVatTuMau.PageVisible = true;
                     }
                     ucThuocVatTu.ReLoad(treeView_Click, listMediMate, this.currentHisSpecialistExam, Edit_Click, Delete_Click);
-                    //
+                    //Tab siêu âm, nội soi: Dữ liệu lấy từ D_HIS_SERE_SERV_2 có TDL_SERVICE_TYPE_ID = 9,10 
                     List<SereServADO> listSieuAm = new List<SereServADO>();
                     listSieuAm.AddRange(SereServADOs.Where(o => o.TDL_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__SA
                     || o.TDL_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__NS));
@@ -421,10 +421,10 @@ namespace HIS.Desktop.Plugins.ApprovaleDebate.ApprovaleDebate
                         ucSieuAm.tc_RequestDepartmentName.Visible = false;
                     }
                     ucSieuAm.ReLoad(treeView_Click, listSieuAm, this.currentHisSpecialistExam, Edit_Click, Delete_Click);
-                    //
+                    //  Tab phẫn thuật thủ thật: Dữ liệu lấy từ D_HIS_SERE_SERV_2 có TDL_SERVICE_TYPE_ID = 11 ,4
                     List<SereServADO> listPTTT = new List<SereServADO>();
-                    listPTTT.AddRange(SereServADOs.Where(o => o.TDL_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__KH
-                    || o.TDL_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__TDCN));
+                    listPTTT.AddRange(SereServADOs.Where(o => o.TDL_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__PT
+                    || o.TDL_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__TT));
                     if (listPTTT.Any())
                     {
                         tabPhauThuatThuThuat.PageVisible = true;
@@ -433,7 +433,7 @@ namespace HIS.Desktop.Plugins.ApprovaleDebate.ApprovaleDebate
                         ucPTTT.tc_RequestDepartmentName.Visible = false;
                     }
                     ucPTTT.ReLoad(treeView_Click, listPTTT, this.currentHisSpecialistExam, Edit_Click, Delete_Click);
-                    //
+                    //Tab giải phẫu bệnh: Dữ liệu lấy từ D_HIS_SERE_SERV_2 có TDL_SERVICE_TYPE_ID = 15
                     List<SereServADO> listGPT = new List<SereServADO>();
                     listGPT.AddRange(SereServADOs.Where(o => o.TDL_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__GPBL));
                     if (listGPT.Any())
@@ -445,15 +445,15 @@ namespace HIS.Desktop.Plugins.ApprovaleDebate.ApprovaleDebate
                     }
                     ucGPB.ReLoad(treeView_Click, listGPT, this.currentHisSpecialistExam, Edit_Click, Delete_Click);
                     //
-                    List<SereServADO> listOther = new List<SereServADO>();
-                    listOther.AddRange(SereServADOs.Where(o => o.TDL_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__AN
-                        || o.TDL_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__G
-                        || o.TDL_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__KH
-                        || o.TDL_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__KHAC
-                        || o.TDL_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__PHCN
-                        || o.TDL_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__PT
-                        || o.TDL_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__TT
-                        ));
+                    //List<SereServADO> listOther = new List<SereServADO>();
+                    //listOther.AddRange(SereServADOs.Where(o => o.TDL_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__AN
+                    //    || o.TDL_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__G
+                    //    || o.TDL_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__KH
+                    //    || o.TDL_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__KHAC
+                    //    || o.TDL_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__PHCN
+                    //    || o.TDL_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__PT
+                    //    || o.TDL_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__TT
+                    //    ));
                     //ucOrther.ReLoad(treeView_Click, listOther, this.RowCellClickBedRoom, Edit_Click, Delete_Click);
 
 
