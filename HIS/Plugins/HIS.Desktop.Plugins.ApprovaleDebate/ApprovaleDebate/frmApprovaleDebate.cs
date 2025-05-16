@@ -331,6 +331,7 @@ namespace HIS.Desktop.Plugins.ApprovaleDebate.ApprovaleDebate
                         var resultTracking = new BackendAdapter(paramCommon).Get<List<HIS_TRACKING>>(HisRequestUriStore.HIS_TRACKING_GET, ApiConsumers.MosConsumer, trackingFilter, paramCommon);
                         if (resultTracking != null)
                         {
+                            Inventec.Common.Logging.LogSystem.Info(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => dataNew), dataNew));
                             var Employees = BackendDataWorker.Get<V_HIS_EMPLOYEE>()/*.Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE)*/.ToList();
                             List<TrackingListADO> listTracking = (from a in resultTracking
                                                                   join b in dataNew on a.ID equals b.TRACKING_ID
@@ -616,6 +617,7 @@ namespace HIS.Desktop.Plugins.ApprovaleDebate.ApprovaleDebate
                 datamapper.EXAM_EXECUTE_LOGINNAME = cboEmployee.EditValue != null ? cboEmployee.EditValue.ToString() : null;
                 datamapper.EXAM_EXECUTE_USERNAME = cboEmployee.EditValue != null ? cboEmployee.Text.ToString() : null;
                 datamapper.EXAM_EXECUTE_CONTENT = txtYKienBacSi.Text.Trim();
+                datamapper.REJECT_APPROVAL_REASON = null;
                 datamapper.IS_APPROVAL = 1;
                 //Inventec.Common.Logging.LogSystem.Info(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => datamapper), datamapper));
                 var rs = new BackendAdapter(param).Post<HIS_SPECIALIST_EXAM>("api/HisSpecialistExam/Update", ApiConsumers.MosConsumer, datamapper, param);
@@ -625,6 +627,7 @@ namespace HIS.Desktop.Plugins.ApprovaleDebate.ApprovaleDebate
                     currentHisSpecialistExam.EXAM_EXECUTE_USERNAME = datamapper.EXAM_EXECUTE_USERNAME;
                     currentHisSpecialistExam.EXAM_EXECUTE_CONTENT = datamapper.EXAM_EXECUTE_CONTENT;
                     currentHisSpecialistExam.IS_APPROVAL = datamapper.IS_APPROVAL;
+                    currentHisSpecialistExam.REJECT_APPROVAL_REASON = datamapper.REJECT_APPROVAL_REASON;
                     this.delegateRefresh();
                 }
                 MessageManager.Show(this, param, rs != null);
