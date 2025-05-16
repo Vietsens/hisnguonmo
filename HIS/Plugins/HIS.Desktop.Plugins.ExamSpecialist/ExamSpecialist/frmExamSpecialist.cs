@@ -127,6 +127,7 @@ namespace HIS.Desktop.Plugins.ExamSpecialist.ExamSpecialist
         }
         private void FillDataToGrid()
         {
+            //
             try
             {
                 int pagingSize = ucPaging1.pagingGrid != null ? ucPaging1.pagingGrid.PageSize : (int)ConfigApplications.NumPageSize;// xác định số dòng /trang
