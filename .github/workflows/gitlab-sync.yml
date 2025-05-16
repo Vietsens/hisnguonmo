@@ -1,0 +1,33 @@
+name: Sync from GitLab
+
+on:
+  schedule:
+    - cron: '0 0 * * 0'  # Chủ Nhật 00:00 UTC
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Mirror GitLab repository (Commits from 3 months ago)
+        env:
+          GITLAB_URL: https://oauth2:${{ secrets.GITLAB_ACCESS_TOKEN }}@gitlab.vietsens.vn/ivt-dev/frontend/hisnguonmo.git
+        run: |
+          git clone --mirror $GITLAB_URL repo.git
+          cd repo.git
+          
+          # Tính toán mốc thời gian 3 tháng trước          
+          THREE_MONTHS_AGO=$(date -d "3 months ago" --iso-8601)
+          
+          # Lọc commit từ 3 tháng trước          
+          git rev-list --since="$THREE_MONTHS_AGO" --all | while read commit; do
+            git cherry-pick $commit || break
+          done
+          
+          # Đẩy lên GitHub
+          git remote set-url --push origin https://mrbean2992:${{ secrets.GITHUB_TOKEN }}@github.com/Vietsens/hisnguonmo.git
+          git push --mirror --force
