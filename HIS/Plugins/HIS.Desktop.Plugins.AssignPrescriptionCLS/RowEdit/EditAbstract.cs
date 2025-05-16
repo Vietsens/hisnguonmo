@@ -130,7 +130,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.Edit
             this.MediStockD1SDOs = frmAssignPrescription.mediStockD1ADOs;
             if (frmAssignPrescription.cboMedicineUseForm.EditValue != null)
                 this.MedicineUseFormId = Inventec.Common.TypeConvert.Parse.ToInt64((frmAssignPrescription.cboMedicineUseForm.EditValue ?? "0").ToString());
-            this.Tutorial = frmAssignPrescription.txtTutorial.Text.Trim();
+            this.Tutorial = frmAssignPrescription.txtTutorial.Text.Trim();                      
             this.HtuText = frmAssignPrescription.txtHtu.Text.Trim();
             this.UseDays = 1;
 
@@ -213,6 +213,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.Edit
             frmAssignPrescription.SetTotalPrice__TrongDon();
             //frmAssignPrescription.VerifyWarningOverCeiling();
             frmAssignPrescription.gridControlTutorial.DataSource = null;
+            //frmAssignPrescription.gridControlHtu.DataSource = null;
         }
 
         protected void UpdatePatientTypeInDataRow(MediMatyTypeADO medicineTypeSDO)

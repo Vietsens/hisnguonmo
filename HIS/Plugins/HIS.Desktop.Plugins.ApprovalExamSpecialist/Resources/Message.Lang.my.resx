@@ -117,37 +117,106 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
-  <data name="repositoryItemButtonEditApproval.Buttons" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-    <value>
-        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGPC/xhBQAAAB50RVh0VGl0
-        bGUASXNzdWU7UGFnZTtTb2x2ZTtBcnRpY2xlwdRv6gAAAxlJREFUOE9Nk/tvS2EYx9/N/e6fIH7DD4T9
-        QJAQYi6RuJSRTOKWoYzONUs6s24TE0ym69Ktqp3GjBA26S6tRtfOqVg2Idg6qxZl3Xo5pzvntF95Tje8
-        yScnz8l5Pu9zvu85jDGWVWHwtlcavCAqDB6U13pQUeuBTu+FTt+FsrselNW4cbWmC1fuvOpgjGUDYASt
-        7HK9B2kgQ3qCtEJqglQG7S0XdU36XzCp9K5baRKSMvikjISQIc5LCjFeRpSXIcopFFc5qWuypo5jBK3J
-        ZCVBXMg0ZJokRcYLMoQxGYmkBFGSUVatTDAlMib/FUwprnIo48Z4EbGEiLggIvgrAZtzAKXWHmjqOFyx
-        9sDmGECz/SMJpv8vmHrhWofynqPju7/r/43zRg42lx/vg1EMJyXlSrXGwCFf+3A7ZVeo9yqCaUU6uyIY
-        iUsI/IxDU9sNnz+C/qgIXzgJZ4gH91PAF6oHIjhx2x3dc860gE6QBDNOlbRCTqURTYhoaPmARkc/uLCA
-        jm8JtAcSaB+Kw+oLYuNpC6qevIO1sx/5V1v1lB8JZhYUP1cEo7Ek1DddcH4eQYs/Cq2NQ+6ZRpi8Aey9
-        3IzPgWHsuNCEzk8RHCi1h2h6Esw6eukpJDmN0XgS+0paYX4bhtEXRm5hI4Z+jEJ1qRmhcAy5x+rR5AvC
-        7Atjd/ELkcIkwexD5x9DklKIRAXkl7xEpX0QN10h3Hd/xdaCBgyGRrD5aD0edH9Djfs7Ku1+bDv7hCZQ
-        BHPyix5DlFKI82O4bvbitIFDRVsAN5xBNLgGsU1jg/n1kFKXtwVwqo7D+iP3GugElRBVx82OA4VNUGuf
-        w/jwDXLVTSi09EHb+hW6tgAe9Q6jzD4EbcsgzljfY0OBLbFkU9Fi+opJkE1BMsbmMcbm9/X17TM+8jSv
-        O9woqnQOnLzfi4vP/FCbe6HSdWLtIevY0i0lu2j3VQctTPkhiJz9Jtbzgychne3URWvUS5btqraszKsP
-        5+w3YUWeMbxsZ7Vl4eoTS8dHz8rJM/0TLFcZ/zIuofEopNmMsbmU1XhN97Mmnv0Dd+KIuZYlvvIAAAAA
-        SUVORK5CYII=
-</value>
+  <data name="BenhNhanCapCuu" xml:space="preserve">
+    <value>အရေးပေါ်လူနာ</value>
   </data>
-  <data name="repositoryItemButtonEditRejectApproval.Buttons" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-    <value>
-        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGPC/xhBQAAABl0RVh0U29m
-        dHdhcmUAQWRvYmUgSW1hZ2VSZWFkeXHJZTwAAAA0dEVYdFRpdGxlAERlbGV0ZTtEZWxldGVJdGVtO1Jl
-        bW92ZTtSZW1vdmVJdGVtO0l0ZW07TWludXNY6xfiAAAAYklEQVQ4T2P4//8/AyUYzmhpafmPB/+D0sZ4
-        DcAHQPJ9fX130Q0hyYD/////QjeEJAPQMGkGIANomFBkAMUuoNyAsuXTyTcACggbcCPZBS+mvQEEAGEv
-        4AI4Y4FEjGoAuRgA/Qg4pNYvcf4AAAAASUVORK5CYII=
-</value>
+  <data name="BenhNhanDaDuDieuKienRaVien" xml:space="preserve">
+    <value>လူနာအား ဆေးရုံမှ ဆင်းခွင့်ပြုခဲ့သည်။</value>
   </data>
-  <metadata name="toolTipController1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>17, 17</value>
-  </metadata>
+  <data name="BHYT" xml:space="preserve">
+    <value>ကျန်းမာရေးအာမခံ: {0}/ {1}</value>
+  </data>
+  <data name="BNDangOTrongBuong" xml:space="preserve">
+    <value>လူနာက အခန်းထဲမှာ</value>
+  </data>
+  <data name="BNVaoTrongKhoang" xml:space="preserve">
+    <value>လူနာက အထဲမှာရှိတယ်။</value>
+  </data>
+	<data name="BNChuaKeDonTrongKhoang" xml:space="preserve">
+    <value>လူနာသည် ခန့်မှန်းချေကို မသတ်မှတ်ထားပေ။</value>
+  </data>
+  <data name="CoBenhNhanhBHYTTrongTongSoBenhNhan" xml:space="preserve">
+    <value>လူနာ {1} ဦးအနက် အာမခံထားသူ {0} ဦး ရှိပါသည်။</value>
+  </data>
+  <data name="DaKetThucDieuTri" xml:space="preserve">
+    <value>ကုသမှုပြီးပါပြီ။</value>
+  </data>
+  <data name="DangDieuTriNgoaiBuong" xml:space="preserve">
+    <value>အခန်းထဲက ကုသပေးနေတယ်။</value>
+  </data>
+  <data name="DangDieuTriTrongBuong" xml:space="preserve">
+    <value>အခန်းထဲမှာ ဆေးကုတယ်။</value>
+  </data>
+  <data name="DieuTriKetHop" xml:space="preserve">
+    <value>ပေါင်းစပ်ကုသမှု</value>
+  </data>
+  <data name="DieuTriThuong" xml:space="preserve">
+    <value>ပုံမှန်ကုသမှု</value>
+  </data>
+  <data name="DonKhongLayKhongChoPhepSua" xml:space="preserve">
+    <value>မယူထားသော အပလီကေးရှင်းကို ပြုပြင်ခွင့်မပြုပါ။</value>
+  </data>
+  <data name="DTTT" xml:space="preserve">
+    <value>ငွေပေးချေမှု ရှိကြပါတယ်။</value>
+  </data>
+  <data name="HoSoDieuTriDangTamKhoa" xml:space="preserve">
+    <value>ကုသမှုမှတ်တမ်းများကို ယာယီသော့ခတ်ထားသည်။</value>
+  </data>
+  <data name="HoSoGiayToDinhKem" xml:space="preserve">
+    <value>ပူးတွဲပါစာရွက်စာတမ်းများ</value>
+  </data>
+  <data name="MucAn" xml:space="preserve">
+    <value>အစားအသောက်အဆင့်</value>
+  </data>
+  <data name="MucAnDTTT" xml:space="preserve">
+    <value>အစားအသောက်အဆင့်/ငွေပေးချေမှု ရှိကြပါတယ်။</value>
+  </data>
+  <data name="PhanLoaiBN" xml:space="preserve">
+    <value>လူနာအမျိုးအစားခွဲခြားခြင်း။</value>
+  </data>
+  <data name="Plugins_BedRoomPartial__ToolTipCome" xml:space="preserve">
+    <value>လူနာအား ဌာနမှ ပေါင်းစပ်ကုထုံးသို့ လွှဲပြောင်းခဲ့သည်- {0}</value>
+  </data>
+  <data name="Plugins_BedRoomPartial__ToolTipLeaves" xml:space="preserve">
+    <value>လူနာသည် ပေါင်းစပ်ကုထုံးဖြင့် ကုသနေပါသည်။</value>
+  </data>
+  <data name="TatCa" xml:space="preserve">
+    <value>အားလုံး</value>
+  </data>
+  <data name="ThoiGianDenPhaiLonHonThoiGianTu" xml:space="preserve">
+    <value>ဆိုက်ရောက်ချိန်သည် အချိန်ထက် ပိုနေရမည်။</value>
+  </data>
+  <data name="ThongBao" xml:space="preserve">
+    <value>အကြောင်းကြားပါ။</value>
+  </data>
+  <data name="ThuocVtBNDaDung" xml:space="preserve">
+    <value>လူနာအသုံးပြုသော ဆေးဝါး/ပစ္စည်းများ</value>
+  </data>
+  <data name="ToolTipDTTT" xml:space="preserve">
+    <value>ငွေပေးချေမှု ရှိကြပါတယ်။</value>
+  </data>
+  <data name="ToolTipMucAnDTTT" xml:space="preserve">
+    <value>အစားအသောက်အဆင့်/ငွေပေးချေမှု ရှိကြပါတယ်။</value>
+  </data>
+  <data name="TraSoatHoSoBenhAn" xml:space="preserve">
+    <value>ဆေးမှတ်တမ်းအပေါက်ကို စစ်ဆေးခြင်း။</value>
+  </data>
+  <data name="TrongKhoa" xml:space="preserve">
+    <value>ဌာနထဲမှာ</value>
+  </data>
+  <data name="TruongDuLieuBatBuoc" xml:space="preserve">
+    <value>လိုအပ်သောအကွက်</value>
+  </data>
+  <data name="UCBedRoomPartial.gridColCardExpiry.Caption" xml:space="preserve">
+    <value>ကတ်သက်တမ်းကုန်ဆုံး</value>
+  </data>
+  <data name="UCBedRoomPartial.gridColPhone.Caption" xml:space="preserve">
+    <value>ဖုန်းနံပါတ်</value>
+  </data>
+  <data name="UCBedRoomPartial.gridColPhone.Tooltip" xml:space="preserve">
+    <value>လူနာ၏ဖုန်းနံပါတ်</value>
+  </data>
+  <data name="YLenhDaTonTaiVanBanKy" xml:space="preserve">
+    <value>ဤအမိန့်မှာ လက်မှတ်ထိုးထားသော စာသားရှိပြီး၊ သင်သည် ဒေတာကို ဖျက်လိုပါသလား။</value>
+  </data>
 </root>

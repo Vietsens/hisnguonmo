@@ -499,6 +499,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
                                         && o.IsExpend == item.IsExpend
                                         && o.DataType == item.DataType
                                         && o.TUTORIAL == item.TUTORIAL
+                                        && o.HTU_TEXT == item.HTU_TEXT
                                         && o.SERVICE_UNIT_NAME == item.SERVICE_UNIT_NAME
                                         && o.UseTimeTo == item.UseTimeTo
                                         );
@@ -661,6 +662,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
                                         && o.IsExpend == item.IsExpend
                                         && o.DataType == item.DataType
                                         && o.TUTORIAL == item.TUTORIAL
+                                        && o.HTU_TEXT == item.HTU_TEXT
                                         && o.SERVICE_UNIT_NAME == item.SERVICE_UNIT_NAME
                                         && o.UseTimeTo == item.UseTimeTo
                                         );

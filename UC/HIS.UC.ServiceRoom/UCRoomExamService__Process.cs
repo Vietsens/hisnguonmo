@@ -43,7 +43,6 @@ namespace HIS.UC.ServiceRoom
         internal string numOderSelected;
         Dictionary<long, string> numberNames = new Dictionary<long, string>();
         private string USER = Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName();
-        private string MODULELINKS = "HIS.Desktop.ApplyRestoreLayout.ModuleLinks";
 
         public void InitLoad(RoomExamServiceInitADO ado)
         {
@@ -209,7 +208,7 @@ namespace HIS.UC.ServiceRoom
                 int columnIndex = 1;
                 AddFieldColumnIntoComboRoomExt("IsChecked", " ","", 30, columnIndex++, true, null, true);
                 AddFieldColumnIntoComboRoomExt("EXECUTE_ROOM_CODE", col1,"", 90, columnIndex++, true);
-                AddFieldColumnIntoComboRoomExt("EXECUTE_ROOM_NAME", col2,"", 80, columnIndex++, true);       
+                AddFieldColumnIntoComboRoomExt("EXECUTE_ROOM_NAME", col2,"", 240, columnIndex++, true);       
                 AddFieldColumnIntoComboRoomExt("TOTAL_TODAY_SERVICE_REQ", col3,tol1, 80, columnIndex++, true);
                 AddFieldColumnIntoComboRoomExt("TOTAL_MORNING_SERE", col13, tol8, 80, -1, false);/// mới
                 AddFieldColumnIntoComboRoomExt("TOTAL_AFTERNOON_SERE", col14, tol9, 80, -1, false);
@@ -246,12 +245,9 @@ namespace HIS.UC.ServiceRoom
                 return;
             Inventec.Desktop.Common.Modules.Module moduleData = GlobalVariables.currentModuleRaws.Where(o => o.ModuleLink == "HIS.Desktop.Plugins.RegisterV2").FirstOrDefault();
 
-            if (moduleData != null)
-            {
-                var allowedModules = MODULELINKS.Split(',');
-                if (!allowedModules.Contains(moduleData.ModuleLink))
-                    return;
-            }
+            var allowedModules = HIS.Desktop.Plugins.Library.RegisterConfig.HisConfigCFG.MODULELINKS.Split(',');
+            if (!string.IsNullOrWhiteSpace(HIS.Desktop.Plugins.Library.RegisterConfig.HisConfigCFG.MODULELINKS) && moduleData != null && !allowedModules.Contains(moduleData.ModuleLink))
+                return;
 
             var ms = new MemoryStream();
             view.SaveLayoutToStream(ms);

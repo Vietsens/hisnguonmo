@@ -117,37 +117,97 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
-  <data name="repositoryItemButtonEditApproval.Buttons" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-    <value>
-        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGPC/xhBQAAAB50RVh0VGl0
-        bGUASXNzdWU7UGFnZTtTb2x2ZTtBcnRpY2xlwdRv6gAAAxlJREFUOE9Nk/tvS2EYx9/N/e6fIH7DD4T9
-        QJAQYi6RuJSRTOKWoYzONUs6s24TE0ym69Ktqp3GjBA26S6tRtfOqVg2Idg6qxZl3Xo5pzvntF95Tje8
-        yScnz8l5Pu9zvu85jDGWVWHwtlcavCAqDB6U13pQUeuBTu+FTt+FsrselNW4cbWmC1fuvOpgjGUDYASt
-        7HK9B2kgQ3qCtEJqglQG7S0XdU36XzCp9K5baRKSMvikjISQIc5LCjFeRpSXIcopFFc5qWuypo5jBK3J
-        ZCVBXMg0ZJokRcYLMoQxGYmkBFGSUVatTDAlMib/FUwprnIo48Z4EbGEiLggIvgrAZtzAKXWHmjqOFyx
-        9sDmGECz/SMJpv8vmHrhWofynqPju7/r/43zRg42lx/vg1EMJyXlSrXGwCFf+3A7ZVeo9yqCaUU6uyIY
-        iUsI/IxDU9sNnz+C/qgIXzgJZ4gH91PAF6oHIjhx2x3dc860gE6QBDNOlbRCTqURTYhoaPmARkc/uLCA
-        jm8JtAcSaB+Kw+oLYuNpC6qevIO1sx/5V1v1lB8JZhYUP1cEo7Ek1DddcH4eQYs/Cq2NQ+6ZRpi8Aey9
-        3IzPgWHsuNCEzk8RHCi1h2h6Esw6eukpJDmN0XgS+0paYX4bhtEXRm5hI4Z+jEJ1qRmhcAy5x+rR5AvC
-        7Atjd/ELkcIkwexD5x9DklKIRAXkl7xEpX0QN10h3Hd/xdaCBgyGRrD5aD0edH9Djfs7Ku1+bDv7hCZQ
-        BHPyix5DlFKI82O4bvbitIFDRVsAN5xBNLgGsU1jg/n1kFKXtwVwqo7D+iP3GugElRBVx82OA4VNUGuf
-        w/jwDXLVTSi09EHb+hW6tgAe9Q6jzD4EbcsgzljfY0OBLbFkU9Fi+opJkE1BMsbmMcbm9/X17TM+8jSv
-        O9woqnQOnLzfi4vP/FCbe6HSdWLtIevY0i0lu2j3VQctTPkhiJz9Jtbzgychne3URWvUS5btqraszKsP
-        5+w3YUWeMbxsZ7Vl4eoTS8dHz8rJM/0TLFcZ/zIuofEopNmMsbmU1XhN97Mmnv0Dd+KIuZYlvvIAAAAA
-        SUVORK5CYII=
-</value>
+  <data name="BenhNhanCapCuu" xml:space="preserve">
+    <value>Bệnh nhân cấp cứu</value>
   </data>
-  <data name="repositoryItemButtonEditRejectApproval.Buttons" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-    <value>
-        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGPC/xhBQAAABl0RVh0U29m
-        dHdhcmUAQWRvYmUgSW1hZ2VSZWFkeXHJZTwAAAA0dEVYdFRpdGxlAERlbGV0ZTtEZWxldGVJdGVtO1Jl
-        bW92ZTtSZW1vdmVJdGVtO0l0ZW07TWludXNY6xfiAAAAYklEQVQ4T2P4//8/AyUYzmhpafmPB/+D0sZ4
-        DcAHQPJ9fX130Q0hyYD/////QjeEJAPQMGkGIANomFBkAMUuoNyAsuXTyTcACggbcCPZBS+mvQEEAGEv
-        4AI4Y4FEjGoAuRgA/Qg4pNYvcf4AAAAASUVORK5CYII=
-</value>
+  <data name="BenhNhanDaDuDieuKienRaVien" xml:space="preserve">
+    <value>Bệnh nhân đã duyệt đủ điều kiện ra viện.</value>
   </data>
-  <metadata name="toolTipController1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>17, 17</value>
-  </metadata>
+  <data name="BHYT" xml:space="preserve">
+    <value>BHYT: {0}/ {1}</value>
+  </data>
+  <data name="BNDangOTrongBuong" xml:space="preserve">
+    <value>BN đang ở trong buồng</value>
+  </data>
+  <data name="BNVaoTrongKhoang" xml:space="preserve">
+    <value>BN vào trong khoảng</value>
+  </data>
+	<data name="BNChuaKeDonTrongKhoang" xml:space="preserve">
+    <value>BN chưa kê đơn trong khoảng</value>
+  </data>
+  <data name="CoBenhNhanhBHYTTrongTongSoBenhNhan" xml:space="preserve">
+    <value>Có {0} bệnh nhân BHYT trong tổng số {1} bệnh nhân</value>
+  </data>
+  <data name="DaKetThucDieuTri" xml:space="preserve">
+    <value>Đã kết thúc điều trị</value>
+  </data>
+  <data name="DangDieuTriNgoaiBuong" xml:space="preserve">
+    <value>Đang điều trị ngoài buồng</value>
+  </data>
+  <data name="DangDieuTriTrongBuong" xml:space="preserve">
+    <value>Đang điều trị trong buồng</value>
+  </data>
+  <data name="DieuTriKetHop" xml:space="preserve">
+    <value>Điều trị kết hợp</value>
+  </data>
+  <data name="DieuTriThuong" xml:space="preserve">
+    <value>Điều trị thường</value>
+  </data>
+  <data name="DonKhongLayKhongChoPhepSua" xml:space="preserve">
+    <value>Đơn không lấy không cho phép sửa</value>
+  </data>
+  <data name="DTTT" xml:space="preserve">
+    <value>DTTT</value>
+  </data>
+  <data name="HoSoDieuTriDangTamKhoa" xml:space="preserve">
+    <value>Hồ sơ điều trị đang tạm khóa.</value>
+  </data>
+  <data name="HoSoGiayToDinhKem" xml:space="preserve">
+    <value>Hồ sơ giấy tờ đính kèm</value>
+  </data>
+  <data name="MucAn" xml:space="preserve">
+    <value>Mức ăn</value>
+  </data>
+  <data name="MucAnDTTT" xml:space="preserve">
+    <value>Mức ăn/DTTT</value>
+  </data>
+  <data name="PhanLoaiBN" xml:space="preserve">
+    <value>Phân loại bệnh nhân</value>
+  </data>
+  <data name="Plugins_BedRoomPartial__ToolTipCome" xml:space="preserve">
+    <value>Bệnh nhân chuyển điều trị kết hợp từ khoa: {0}</value>
+  </data>
+  <data name="Plugins_BedRoomPartial__ToolTipLeaves" xml:space="preserve">
+    <value>Bệnh nhân đang điều trị kết hợp tại</value>
+  </data>
+  <data name="TatCa" xml:space="preserve">
+    <value>Tất cả</value>
+  </data>
+  <data name="ThoiGianDenPhaiLonHonThoiGianTu" xml:space="preserve">
+    <value>Thời gian đến phải lớn hơn thời gian từ</value>
+  </data>
+  <data name="ThongBao" xml:space="preserve">
+    <value>Thông báo</value>
+  </data>
+  <data name="ThuocVtBNDaDung" xml:space="preserve">
+    <value>Thuốc/vt bệnh nhân đã dùng</value>
+  </data>
+  <data name="ToolTipDTTT" xml:space="preserve">
+    <value>Đối tượng thanh toán</value>
+  </data>
+  <data name="ToolTipMucAnDTTT" xml:space="preserve">
+    <value>Mức ăn/Đối tượng thanh toán</value>
+  </data>
+  <data name="TraSoatHoSoBenhAn" xml:space="preserve">
+    <value>Tra soát hố sơ bệnh án</value>
+  </data>
+  <data name="TrongKhoa" xml:space="preserve">
+    <value>Trong khoa</value>
+  </data>
+  <data name="TruongDuLieuBatBuoc" xml:space="preserve">
+    <value>Trường dữ liệu bắt buộc</value>
+  </data>
+  <data name="YLenhDaTonTaiVanBanKy" xml:space="preserve">
+    <value>Y lệnh này đã tồn tại văn bản ký, bạn có muốn hủy dữ liệu?</value>
+  </data>
 </root>

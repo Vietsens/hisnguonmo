@@ -3396,5 +3396,10 @@ namespace HIS.Desktop.Plugins.DebateDiagnostic
         {
             return !chkLockInfor.Checked || (chkLockInfor.Checked && (lstData == null || lstData.Count == 0));
         }
+
+        private void chkAutoCreateTracking_CheckedChanged(object sender, EventArgs e) //  đây là cái checkbox cần thêm
+        {
+
+        }
     }
 }

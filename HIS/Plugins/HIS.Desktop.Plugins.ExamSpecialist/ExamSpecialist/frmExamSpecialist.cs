@@ -21,6 +21,7 @@ using System.Windows.Forms;
 using HIS.Desktop.ApiConsumer;
 using DevExpress.XtraGrid.Views.Base;
 using System.Collections;
+using DevExpress.XtraGrid.Views.Grid.ViewInfo;
 
 namespace HIS.Desktop.Plugins.ExamSpecialist.ExamSpecialist
 {
@@ -32,7 +33,7 @@ namespace HIS.Desktop.Plugins.ExamSpecialist.ExamSpecialist
         int dataTotal = 0;
         long treatmentId = 0;
         int start = 0;
-        V_HIS_SPECIALIST_EXAM curentSpecialistExam; 
+        V_HIS_SPECIALIST_EXAM curentSpecialistExam;
         #endregion
         private Inventec.Desktop.Common.Modules.Module currentModule;
         public frmExamSpecialist()
@@ -45,7 +46,7 @@ namespace HIS.Desktop.Plugins.ExamSpecialist.ExamSpecialist
             InitializeComponent();
             this.currentModule = currentModule;
             this.treatmentId = treatmentId;
-            this.curentSpecialistExam = curentSpecialistExam; 
+            this.curentSpecialistExam = curentSpecialistExam;
             try
             {
                 this.Text = currentModule.text;
@@ -64,6 +65,7 @@ namespace HIS.Desktop.Plugins.ExamSpecialist.ExamSpecialist
                 this.KeyPreview = true;
                 LoadComboHisDepartment();
                 SetDefaultValueControl();
+                toolTipController1.Active = true;
                 FillDataToGrid();
             }
             catch (Exception ex)
@@ -153,8 +155,6 @@ namespace HIS.Desktop.Plugins.ExamSpecialist.ExamSpecialist
                 HisSpecialistExamViewFilter filter = new HisSpecialistExamViewFilter();
                 SetFilter(ref filter);
                 var result = new Inventec.Common.Adapter.BackendAdapter(paramCommon).GetRO<List<V_HIS_SPECIALIST_EXAM>>("api/HisSpecialistExam/GetView", ApiConsumers.MosConsumer, filter, paramCommon);
-                //Cơ chế hoạt động lúc gọi api là Get nhưng đầu ra để là View thành ra những thông tin nào k có trong bảng sang View sẽ bị mất dữ liệu
-                Inventec.Common.Logging.LogSystem.Debug("API Result Of list: " + Inventec.Common.Logging.LogUtil.TraceData("Data:", result.Data));
                 if (result != null)
                 {
                     rowCount = (result.Data == null ? 0 : result.Data.Count);
@@ -402,9 +402,6 @@ namespace HIS.Desktop.Plugins.ExamSpecialist.ExamSpecialist
                     Inventec.Common.Mapper.DataObjectMapper.Map<HIS_SPECIALIST_EXAM>(datamapper, row);
                     frmReject form = new frmReject(datamapper, () => FillDataToGrid());
                     form.ShowDialog();
-                    //Những cái nào load lại form như hàm fillDataToGrid như này thì code truyền thêm cái delegate hoặc action vào
-                    //Để thể hiện hành động thành công thì mới gọi lại hàm Fill
-                    //Code như này cứ tắt form là Fill lại Data, nó thừa 
                 }
             }
             catch (Exception ex)
@@ -466,8 +463,6 @@ namespace HIS.Desktop.Plugins.ExamSpecialist.ExamSpecialist
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
-
-       
         private void cboInviteDepartment_KeyDown(object sender, KeyEventArgs e)
         {
             try

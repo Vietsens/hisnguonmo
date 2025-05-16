@@ -176,6 +176,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.Save
                         pres.IsOutParentFee = true;
                     pres.MedicineUseFormId = item.MEDICINE_USE_FORM_ID;
                     pres.Tutorial = item.TUTORIAL;
+                    pres.HtuText = item.HTU_TEXT;
                     pres.NumOfDays = GetNumOfDays(item);
                     pres.NumOrder = item.NUM_ORDER;
                     pres.MediStockId = item.MEDI_STOCK_ID ?? 0;
@@ -323,6 +324,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.Save
                     mety.UnitName = item.SERVICE_UNIT_NAME;
                     mety.NumOrder = item.NUM_ORDER;
                     mety.Tutorial = item.TUTORIAL;
+                    mety.HtuText = item.HTU_TEXT;
                     mety.UseTimeTo = item.UseTimeTo;
                     //mety.SERVICE_REQ_ID = item.SERVICE_REQ_ID;
                     //mety.ID = item.SERVICE_REQ_METY_MATY_ID;
@@ -366,6 +368,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.Save
                     orty.UnitName = item.SERVICE_UNIT_NAME;
                     orty.MedicineUseFormId = item.MEDICINE_USE_FORM_ID;
                     orty.Tutorial = item.TUTORIAL;
+                    orty.HtuText = item.HTU_TEXT;
                     //orty.SERVICE_REQ_ID = item.SERVICE_REQ_ID;
                     orty.UseTimeTo = item.UseTimeTo;
                     orty.Price = item.PRICE ?? 0;
@@ -411,6 +414,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.Save
                     //Duong dung, huong dan su dung
                     pres.MedicineUseFormId = item.MEDICINE_USE_FORM_ID;
                     pres.Tutorial = item.TUTORIAL;
+                    pres.HtuText = item.HTU_TEXT;
                     pres.NumOfDays = GetNumOfDays(item);
                     //pres.UseTimeTo = item.UseTimeTo;
                     pres.NumOrder = item.NUM_ORDER;
@@ -522,6 +526,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.Save
                     mety.UnitName = item.SERVICE_UNIT_NAME;
                     mety.NumOrder = item.NUM_ORDER;
                     mety.Tutorial = item.TUTORIAL;
+                    mety.HtuText = item.HTU_TEXT;
                     mety.UseTimeTo = item.UseTimeTo;
                     mety.Price = item.PRICE ?? 0;
 
@@ -577,6 +582,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.Save
                     orty.UnitName = item.SERVICE_UNIT_NAME;
                     orty.MedicineUseFormId = item.MEDICINE_USE_FORM_ID;
                     orty.Tutorial = item.TUTORIAL;
+                    orty.HtuText = item.HTU_TEXT;
                     orty.UseTimeTo = item.UseTimeTo;
                     orty.Price = item.PRICE ?? 0;
 

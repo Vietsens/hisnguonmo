@@ -29,6 +29,7 @@ namespace HIS.Desktop.Plugins.Library.RegisterConfig
 {
     public class HisConfigCFG
     {
+        private const string CONFIG_KEY__ModuleLinks = "HIS.Desktop.ApplyRestoreLayout.ModuleLinks";
         private const string CONFIG_KEY__PhoneRequired = "HIS.Desktop.Plugins.RegisterV2.PhoneRequired";
         private const string CONFIG_KEY__FocusExecuteRoomOption = "HIS.Desktop.Plugins.RegisterV2.FocusExecuteRoomOption";
         private const string CONFIG_KEY__IsNotAutoFocusOnExistsPatient = "HIS.Desktop.Plugins.Register.IsNotAutoFocusOnExistsPatient";
@@ -122,6 +123,7 @@ namespace HIS.Desktop.Plugins.Library.RegisterConfig
 
         private const string CONFIG_KEY__CHECK_DUPLICATION = "MOS.HIS_PATIENT.CCCD_NUMBER.CHECK_DUPLICATION";
         public static string CHECK_DUPLICATION;
+        public static string MODULELINKS;
 
         public static bool WarningInvalidCheckHistoryHeinCard;
         public static bool EditOldPatientInformationOption;
@@ -252,6 +254,7 @@ namespace HIS.Desktop.Plugins.Library.RegisterConfig
                 LogSystem.Debug("LoadConfig => 1");
                 //Get BHYT
                 BHXHLoginCFG.LoadConfig();
+                MODULELINKS = GetValue(CONFIG_KEY__ModuleLinks);    
                 CHECK_DUPLICATION = GetValue(CONFIG_KEY__CHECK_DUPLICATION);
                 WarningInvalidCheckHistoryHeinCard = GetValue(CONFIG_KEY__WarningInvalidCheckHistoryHeinCard) == valueString__true;
                 EditOldPatientInformationOption = GetValue(CONFIG_KEY__EditOldPatientInformationOption) == valueString__true;

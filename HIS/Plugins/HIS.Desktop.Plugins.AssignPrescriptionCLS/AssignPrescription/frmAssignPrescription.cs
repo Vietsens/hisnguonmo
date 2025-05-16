@@ -138,7 +138,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
         List<MOS.EFMODEL.DataModels.V_HIS_MEST_ROOM> currentWorkingMestRooms;
         AssignPrescriptionEditADO assignPrescriptionEditADO;
         MOS.EFMODEL.DataModels.HIS_SERVICE_REQ icdExam;
-        List<HIS_MEDICINE_TYPE_TUT> listMedicineTypeTut = new List<HIS_MEDICINE_TYPE_TUT>();
+        //List<HIS_MEDICINE_TYPE_TUT> listMedicineTypeTut = new List<HIS_MEDICINE_TYPE_TUT>();
 
         decimal amountInput = 0;
         int lastRowHandle = -1;
@@ -192,6 +192,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
         bool isNotProcessRunWhileFilmChangedValue;
         decimal currentSoPhimHong;
         HIS_TREATMENT Histreatment;
+        HIS_MEDICINE_TYPE_TUT hisMedicineTypeTut { get; set; }
 
         #endregion
 
@@ -846,6 +847,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
+
 
         private void btnSaveAndPrint_Click(object sender, EventArgs e)
         {
@@ -2003,14 +2005,15 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
             {
                 if (e.KeyCode == Keys.Enter)
                 {
-                    this.btnAdd.Focus();
+                    //this.btnAdd.Focus();
+                   txtTutorial.Focus();
                     e.Handled = true;
                 }
-                else
-                {
-                    this.txtTutorial.Focus();
-                    this.txtTutorial.SelectionStart = this.txtTutorial.Text.Length + 1;
-                }
+                //else
+                //{
+                //    this.txtTutorial.Focus();
+                //    this.txtTutorial.SelectionStart = this.txtTutorial.Text.Length + 1;
+                //}
             }
             catch (Exception ex)
             {
@@ -4544,12 +4547,12 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
         {
             try
             {
-                HIS_MEDICINE_TYPE_TUT medicineTypeHtu = gridViewHtu.GetFocusedRow() as HIS_MEDICINE_TYPE_TUT;
-                if (medicineTypeHtu != null)
+                hisMedicineTypeTut = gridViewHtu.GetFocusedRow() as HIS_MEDICINE_TYPE_TUT;
+                if (hisMedicineTypeTut != null)
                 {
                     popupControlContainerHtu.HidePopup();
                     isShowContainerHtu = false;
-                    Htu_RowClick(medicineTypeHtu);
+                    Htu_RowClick(hisMedicineTypeTut);
                 }
             }
             catch (Exception ex)
