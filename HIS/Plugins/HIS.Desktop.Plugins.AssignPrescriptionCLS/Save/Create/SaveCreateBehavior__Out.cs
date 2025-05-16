@@ -50,7 +50,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.Save.Create
                 this.ProcessPrescriptionUpdateSDO(prescriptionSDO);
                 this.ProcessPrescriptionUpdateSDOICD(prescriptionSDO);
                 this.ProcessPrescriptionSDOForSereServInKip(prescriptionSDO);
-                LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => prescriptionSDO), prescriptionSDO));
+                LogSystem.Debug("prescriptionSDO__run__out_______" + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => prescriptionSDO), prescriptionSDO));
                 result = new Inventec.Common.Adapter.BackendAdapter(Param).Post<SubclinicalPresResultSDO>(RequestUriStore.HIS_SERVICE_REQ__OUTPATIENT_PRES_CREATE, ApiConsumers.MosConsumer, prescriptionSDO, Param);
                 if (result == null
                     || result.ServiceReqs == null || result.ServiceReqs.Count == 0
@@ -65,7 +65,6 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.Save.Create
                     result = null;
                 }
             }
-
             return result;
         }
 

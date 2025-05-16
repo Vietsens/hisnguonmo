@@ -119,12 +119,12 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
             this.barDockControlLeft = new DevExpress.XtraBars.BarDockControl();
             this.barDockControlRight = new DevExpress.XtraBars.BarDockControl();
             this.layoutControl6 = new DevExpress.XtraLayout.LayoutControl();
-            this.popupControlContainerTutorial = new DevExpress.XtraBars.PopupControlContainer(this.components);
-            this.gridControlTutorial = new DevExpress.XtraGrid.GridControl();
-            this.gridViewTutorial = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.popupControlContainerHtu = new DevExpress.XtraBars.PopupControlContainer(this.components);
             this.gridControlHtu = new DevExpress.XtraGrid.GridControl();
             this.gridViewHtu = new DevExpress.XtraGrid.Views.Grid.GridView();
+            this.popupControlContainerTutorial = new DevExpress.XtraBars.PopupControlContainer(this.components);
+            this.gridControlTutorial = new DevExpress.XtraGrid.GridControl();
+            this.gridViewTutorial = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.txtHtu = new DevExpress.XtraEditors.ButtonEdit();
             this.popupControlContainerMediMaty = new DevExpress.XtraBars.PopupControlContainer(this.components);
             this.gridControlMediMaty = new Inventec.Desktop.CustomControl.CustomGridControlWithFilterMultiColumn();
@@ -339,14 +339,14 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
             ((System.ComponentModel.ISupportInitialize)(this.barManager1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl6)).BeginInit();
             this.layoutControl6.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.popupControlContainerTutorial)).BeginInit();
-            this.popupControlContainerTutorial.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.gridControlTutorial)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.gridViewTutorial)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.popupControlContainerHtu)).BeginInit();
             this.popupControlContainerHtu.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gridControlHtu)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridViewHtu)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.popupControlContainerTutorial)).BeginInit();
+            this.popupControlContainerTutorial.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.gridControlTutorial)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gridViewTutorial)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtHtu.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.popupControlContainerMediMaty)).BeginInit();
             this.popupControlContainerMediMaty.SuspendLayout();
@@ -513,6 +513,10 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
             // 
             this.barManager1.Bars.AddRange(new DevExpress.XtraBars.Bar[] {
             this.bar1});
+            this.barManager1.DockControls.Add(this.barDockControlTop);
+            this.barManager1.DockControls.Add(this.barDockControlBottom);
+            this.barManager1.DockControls.Add(this.barDockControlLeft);
+            this.barManager1.DockControls.Add(this.barDockControlRight);
             this.barManager1.Form = this;
             this.barManager1.Items.AddRange(new DevExpress.XtraBars.BarItem[] {
             this.barbtnSaveShortcut,
@@ -621,8 +625,8 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
             // 
             this.barDockControlTop.CausesValidation = false;
             this.barDockControlTop.Dock = System.Windows.Forms.DockStyle.Top;
-            this.barDockControlTop.Location = new System.Drawing.Point(0, 29);
-            this.barDockControlTop.Size = new System.Drawing.Size(1320, 0);
+            this.barDockControlTop.Location = new System.Drawing.Point(0, 0);
+            this.barDockControlTop.Size = new System.Drawing.Size(1320, 29);
             // 
             // barDockControlBottom
             // 
@@ -647,6 +651,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
             // 
             // layoutControl6
             // 
+            this.layoutControl6.Controls.Add(this.popupControlContainerHtu);
             this.layoutControl6.Controls.Add(this.popupControlContainerTutorial);
             this.layoutControl6.Controls.Add(this.txtHtu);
             this.layoutControl6.Controls.Add(this.popupControlContainerMediMaty);
@@ -685,12 +690,47 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
             this.layoutControl6.TabIndex = 5;
             this.layoutControl6.Text = "layoutControl6";
             // 
+            // popupControlContainerHtu
+            // 
+            this.popupControlContainerHtu.BorderStyle = DevExpress.XtraEditors.Controls.BorderStyles.NoBorder;
+            this.popupControlContainerHtu.Controls.Add(this.gridControlHtu);
+            this.popupControlContainerHtu.Location = new System.Drawing.Point(132, 304);
+            this.popupControlContainerHtu.Manager = this.barManager1;
+            this.popupControlContainerHtu.Name = "popupControlContainerHtu";
+            this.popupControlContainerHtu.Size = new System.Drawing.Size(457, 162);
+            this.popupControlContainerHtu.TabIndex = 1;
+            this.popupControlContainerHtu.Visible = false;
+            // 
+            // gridControlHtu
+            // 
+            this.gridControlHtu.Dock = System.Windows.Forms.DockStyle.Fill;
+            gridLevelNode1.RelationName = "Level1";
+            this.gridControlHtu.LevelTree.Nodes.AddRange(new DevExpress.XtraGrid.GridLevelNode[] {
+            gridLevelNode1});
+            this.gridControlHtu.Location = new System.Drawing.Point(0, 0);
+            this.gridControlHtu.MainView = this.gridViewHtu;
+            this.gridControlHtu.MenuManager = this.barManager1;
+            this.gridControlHtu.Name = "gridControlHtu";
+            this.gridControlHtu.Size = new System.Drawing.Size(457, 162);
+            this.gridControlHtu.TabIndex = 0;
+            this.gridControlHtu.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
+            this.gridViewHtu});
+            // 
+            // gridViewHtu
+            // 
+            this.gridViewHtu.GridControl = this.gridControlHtu;
+            this.gridViewHtu.Name = "gridViewHtu";
+            this.gridViewHtu.OptionsCustomization.AllowGroup = false;
+            this.gridViewHtu.OptionsView.ShowGroupPanel = false;
+            this.gridViewHtu.OptionsView.ShowIndicator = false;
+            this.gridViewHtu.RowClick += new DevExpress.XtraGrid.Views.Grid.RowClickEventHandler(this.gridViewHtu_RowClick);
+            this.gridViewHtu.KeyDown += new System.Windows.Forms.KeyEventHandler(this.gridViewHtu_KeyDown);
+            // 
             // popupControlContainerTutorial
             // 
             this.popupControlContainerTutorial.BorderStyle = DevExpress.XtraEditors.Controls.BorderStyles.NoBorder;
             this.popupControlContainerTutorial.Controls.Add(this.gridControlTutorial);
-            this.popupControlContainerTutorial.Controls.Add(this.popupControlContainerHtu);
-            this.popupControlContainerTutorial.Location = new System.Drawing.Point(114, 251);
+            this.popupControlContainerTutorial.Location = new System.Drawing.Point(621, 120);
             this.popupControlContainerTutorial.Manager = this.barManager1;
             this.popupControlContainerTutorial.Name = "popupControlContainerTutorial";
             this.popupControlContainerTutorial.Size = new System.Drawing.Size(550, 160);
@@ -718,42 +758,6 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
             this.gridViewTutorial.OptionsView.ShowIndicator = false;
             this.gridViewTutorial.RowClick += new DevExpress.XtraGrid.Views.Grid.RowClickEventHandler(this.gridViewTutorial_RowClick);
             this.gridViewTutorial.KeyDown += new System.Windows.Forms.KeyEventHandler(this.gridViewTutorial_KeyDown);
-            // 
-            // popupControlContainerHtu
-            // 
-            this.popupControlContainerHtu.BorderStyle = DevExpress.XtraEditors.Controls.BorderStyles.NoBorder;
-            this.popupControlContainerHtu.Controls.Add(this.gridControlHtu);
-            this.popupControlContainerHtu.Location = new System.Drawing.Point(327, 53);
-            this.popupControlContainerHtu.Manager = this.barManager1;
-            this.popupControlContainerHtu.Name = "popupControlContainerHtu";
-            this.popupControlContainerHtu.Size = new System.Drawing.Size(457, 121);
-            this.popupControlContainerHtu.TabIndex = 1;
-            this.popupControlContainerHtu.Visible = false;
-            // 
-            // gridControlHtu
-            // 
-            this.gridControlHtu.Dock = System.Windows.Forms.DockStyle.Fill;
-            gridLevelNode1.RelationName = "Level1";
-            this.gridControlHtu.LevelTree.Nodes.AddRange(new DevExpress.XtraGrid.GridLevelNode[] {
-            gridLevelNode1});
-            this.gridControlHtu.Location = new System.Drawing.Point(0, 0);
-            this.gridControlHtu.MainView = this.gridViewHtu;
-            this.gridControlHtu.MenuManager = this.barManager1;
-            this.gridControlHtu.Name = "gridControlHtu";
-            this.gridControlHtu.Size = new System.Drawing.Size(457, 121);
-            this.gridControlHtu.TabIndex = 0;
-            this.gridControlHtu.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
-            this.gridViewHtu});
-            // 
-            // gridViewHtu
-            // 
-            this.gridViewHtu.GridControl = this.gridControlHtu;
-            this.gridViewHtu.Name = "gridViewHtu";
-            this.gridViewHtu.OptionsCustomization.AllowGroup = false;
-            this.gridViewHtu.OptionsView.ShowGroupPanel = false;
-            this.gridViewHtu.OptionsView.ShowIndicator = false;
-            this.gridViewHtu.RowClick += new DevExpress.XtraGrid.Views.Grid.RowClickEventHandler(this.gridViewHtu_RowClick);
-            this.gridViewHtu.KeyDown += new System.Windows.Forms.KeyEventHandler(this.gridViewHtu_KeyDown);
             // 
             // txtHtu
             // 
@@ -3111,14 +3115,14 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
             ((System.ComponentModel.ISupportInitialize)(this.barManager1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl6)).EndInit();
             this.layoutControl6.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.popupControlContainerTutorial)).EndInit();
-            this.popupControlContainerTutorial.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.gridControlTutorial)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.gridViewTutorial)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.popupControlContainerHtu)).EndInit();
             this.popupControlContainerHtu.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.gridControlHtu)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridViewHtu)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.popupControlContainerTutorial)).EndInit();
+            this.popupControlContainerTutorial.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.gridControlTutorial)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gridViewTutorial)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtHtu.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.popupControlContainerMediMaty)).EndInit();
             this.popupControlContainerMediMaty.ResumeLayout(false);
@@ -3514,7 +3518,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
         internal DevExpress.XtraEditors.ButtonEdit txtHtu;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem9;
         private DevExpress.XtraBars.PopupControlContainer popupControlContainerHtu;
-        private DevExpress.XtraGrid.GridControl gridControlHtu;
+        internal DevExpress.XtraGrid.GridControl gridControlHtu;
         private DevExpress.XtraGrid.Views.Grid.GridView gridViewHtu;
     }
 }
