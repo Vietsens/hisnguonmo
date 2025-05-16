@@ -113,9 +113,9 @@ namespace HIS.Desktop.Plugins.ApprovaleDebate
                 treeSereServ.EndUpdate();
                 try
                 {
-                    this.treeSereServ.BestFitColumns();
+                    //this.treeSereServ.BestFitColumns();
                     this.TRACKING_TIME.BestFit();
-                    this.USER_NAME.BestFit();
+                    //this.USER_NAME.BestFit();
                 }
                 catch (Exception ex)
                 {

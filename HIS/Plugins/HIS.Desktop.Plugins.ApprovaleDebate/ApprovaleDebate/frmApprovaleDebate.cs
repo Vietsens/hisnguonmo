@@ -331,7 +331,7 @@ namespace HIS.Desktop.Plugins.ApprovaleDebate.ApprovaleDebate
                         var resultTracking = new BackendAdapter(paramCommon).Get<List<HIS_TRACKING>>(HisRequestUriStore.HIS_TRACKING_GET, ApiConsumers.MosConsumer, trackingFilter, paramCommon);
                         if (resultTracking != null)
                         {
-                            Inventec.Common.Logging.LogSystem.Info(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => dataNew), dataNew));
+                            //Inventec.Common.Logging.LogSystem.Info(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => dataNew), dataNew));
                             var Employees = BackendDataWorker.Get<V_HIS_EMPLOYEE>()/*.Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE)*/.ToList();
                             List<TrackingListADO> listTracking = (from a in resultTracking
                                                                   join b in dataNew on a.ID equals b.TRACKING_ID
@@ -446,29 +446,12 @@ namespace HIS.Desktop.Plugins.ApprovaleDebate.ApprovaleDebate
                     }
                     ucGPB.ReLoad(treeView_Click, listGPT, this.currentHisSpecialistExam, Edit_Click, Delete_Click);
                     //
-                    //List<SereServADO> listOther = new List<SereServADO>();
-                    //listOther.AddRange(SereServADOs.Where(o => o.TDL_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__AN
-                    //    || o.TDL_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__G
-                    //    || o.TDL_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__KH
-                    //    || o.TDL_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__KHAC
-                    //    || o.TDL_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__PHCN
-                    //    || o.TDL_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__PT
-                    //    || o.TDL_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__TT
-                    //    ));
-                    //ucOrther.ReLoad(treeView_Click, listOther, this.RowCellClickBedRoom, Edit_Click, Delete_Click);
-
-
-                    xtraTabControl1.SelectedTabPage = xtraTabControl1.TabPages[6];
-                    xtraTabControl1.SelectedTabPage = xtraTabControl1.TabPages[5];
-                    xtraTabControl1.SelectedTabPage = xtraTabControl1.TabPages[4];
-                    xtraTabControl1.SelectedTabPage = xtraTabControl1.TabPages[3];
-                    xtraTabControl1.SelectedTabPage = xtraTabControl1.TabPages[2];
-                    xtraTabControl1.SelectedTabPage = xtraTabControl1.TabPages[1];
-                    xtraTabControl1.SelectedTabPage = xtraTabControl1.TabPages[0];
-
-
+                    foreach (XtraTabPage tab in xtraTabControl1.TabPages.Where(w => w.PageVisible))
+                    {
+                        xtraTabControl1.SelectedTabPage = tab;
+                        break;
+                    }
                 }
-
             }
             catch (Exception ex)
             {
