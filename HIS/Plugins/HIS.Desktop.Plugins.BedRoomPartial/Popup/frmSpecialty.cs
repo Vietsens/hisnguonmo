@@ -227,30 +227,44 @@ namespace HIS.Desktop.Plugins.BedRoomPartial.Popup
 
 
                 hIS_SPECIALIST_EXAM.INVITE_TIME = Inventec.Common.TypeConvert.Parse.ToInt64(dateInveteTime.DateTime.ToString("yyyyMMddHHmmss"));
-                hIS_SPECIALIST_EXAM.INVITE_DEPARMENT_ID = workPlace.DepartmentId;
+
+                if (workPlace != null)
+                {
+                    hIS_SPECIALIST_EXAM.INVITE_DEPARMENT_ID = workPlace.DepartmentId;
+
+                }
 
                 if (cboEmployeeInvite.EditValue != null)
                 {
                     var selectedInviteLogin = cboEmployeeInvite.EditValue.ToString();
                     var selectedInviteDoctor = lstEmployee.FirstOrDefault(o => o.ID.ToString() == selectedInviteLogin);
-                    hIS_SPECIALIST_EXAM.INVITE_DOCTOR_LOGINNAME = selectedInviteDoctor.LOGINNAME;
-                    hIS_SPECIALIST_EXAM.INVITE_DOCTOR_USERNAME = selectedInviteDoctor.TDL_USERNAME;
+                    if (selectedInviteDoctor != null)
+                    {
+                        hIS_SPECIALIST_EXAM.INVITE_DOCTOR_LOGINNAME = selectedInviteDoctor.LOGINNAME;
+                        hIS_SPECIALIST_EXAM.INVITE_DOCTOR_USERNAME = selectedInviteDoctor.TDL_USERNAME;
+                    }
                 }
                 
                 if (cboDepartment.EditValue != null)
                 {
                     var selectedDepartment = cboDepartment.EditValue.ToString();
                     var selectedDepartments = lstDepartment.FirstOrDefault(o => o.ID.ToString() == selectedDepartment);
-                    hIS_SPECIALIST_EXAM.EXAM_EXECUTE_DEPARMENT_ID = selectedDepartments.ID;
+                    if (selectedDepartments != null)
+                    {
+                        hIS_SPECIALIST_EXAM.EXAM_EXECUTE_DEPARMENT_ID = selectedDepartments.ID;
+                    }
                 }
 
                 if(cboExamination.EditValue != null){
                     var selectedExecuteLogin = cboExamination.EditValue.ToString();
                     var selectedExecuteDoctor = lstEmployee.FirstOrDefault(o => o.ID.ToString() == selectedExecuteLogin);
-                    hIS_SPECIALIST_EXAM.EXAM_EXECUTE_LOGINNAME = selectedExecuteDoctor.LOGINNAME;
-                    hIS_SPECIALIST_EXAM.EXAM_EXECUTE_USERNAME = selectedExecuteDoctor.TDL_USERNAME;
+                    if (selectedExecuteDoctor != null)
+                    {
+                        hIS_SPECIALIST_EXAM.EXAM_EXECUTE_LOGINNAME = selectedExecuteDoctor.LOGINNAME;
+                        hIS_SPECIALIST_EXAM.EXAM_EXECUTE_USERNAME = selectedExecuteDoctor.TDL_USERNAME;
+                    }
+                    
                 }
-                
 
                 if (chkExamBed.Checked)
                     hIS_SPECIALIST_EXAM.IS__EXAM_BED = 1;
