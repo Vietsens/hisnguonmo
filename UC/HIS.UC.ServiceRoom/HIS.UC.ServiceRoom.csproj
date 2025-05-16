@@ -100,6 +100,11 @@
     <Reference Include="Inventec.Desktop.CustomControl">
       <HintPath>..\..\..\lib\Inventec.Desktop.CustomControl\Inventec.Desktop.CustomControl.dll</HintPath>
     </Reference>
+    <Reference Include="Inventec.Token.ClientSystem, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+    <Reference Include="Inventec.UC.Login, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\lib\Inventec.UC\Inventec.UC.Login\Inventec.UC.Login.dll</HintPath>
+    </Reference>
     <Reference Include="MOS.EFMODEL, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\lib\MOS\MOS.EFMODEL.dll</HintPath>
@@ -143,6 +148,7 @@
     <Compile Include="GetDetailSDO\GetDetailSDOBehavior.cs" />
     <Compile Include="GetDetailSDO\GetDetailSDOBehaviorFactory.cs" />
     <Compile Include="GetDetailSDO\IGetDetailSDO.cs" />
+    <Compile Include="OperatingStatus\OperatingStatus.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -215,6 +221,10 @@
     <ProjectReference Include="..\..\HIS\HIS.Desktop.LocalStorage.BackendData\HIS.Desktop.LocalStorage.BackendData.csproj">
       <Project>{86709a9c-a149-4ebb-a817-1bf8f4f4bc07}</Project>
       <Name>HIS.Desktop.LocalStorage.BackendData</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\HIS\HIS.Desktop.LocalStorage.LocalData\HIS.Desktop.LocalStorage.LocalData.csproj">
+      <Project>{E036EDF5-788C-4892-8D8F-6B1C16DCBD21}</Project>
+      <Name>HIS.Desktop.LocalStorage.LocalData</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\HIS\HIS.Desktop.ModuleExt\HIS.Desktop.ModuleExt.csproj">
       <Project>{168b4cc6-8447-41da-b034-a02f336168e4}</Project>

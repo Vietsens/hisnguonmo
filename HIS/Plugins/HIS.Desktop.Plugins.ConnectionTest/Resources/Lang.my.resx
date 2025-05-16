@@ -135,6 +135,63 @@
   <data name="frmAddTimeSample.Text" xml:space="preserve">
     <value>အကြောင်းကြားပါ။</value>
   </data>
+  <data name="frmApproveResult.bar1.Text" xml:space="preserve">
+    <value>ကိရိယာများ</value>
+  </data>
+  <data name="frmApproveResult.barButtonItem1.Caption" xml:space="preserve">
+    <value>ကယ်ဆယ်</value>
+  </data>
+  <data name="frmApproveResult.btnSave.Text" xml:space="preserve">
+    <value>သိမ်းဆည်းခြင်း (Ctrl S)</value>
+  </data>
+  <data name="frmApproveResult.layoutControl1.Text" xml:space="preserve">
+    <value>layoutcontrol1</value>
+  </data>
+  <data name="frmApproveResult.layoutControlItem1.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>ရလဒ်များ၏ခွင့်ပြုချက်ကြာချိန်</value>
+  </data>
+  <data name="frmApproveResult.layoutControlItem1.Text" xml:space="preserve">
+    <value>kQ browsing အချိန်:</value>
+  </data>
+  <data name="frmApproveResult.Text" xml:space="preserve">
+    <value>သတင်းအချက်အလက်ခွင့်ပြုချက်သတင်းအချက်အလက်</value>
+  </data>
+  <data name="frmAttachTestFile.btnSave.Text" xml:space="preserve">
+    <value>သိမ်းဆည်းခြင်း (Ctrl S)</value>
+  </data>
+  <data name="frmAttachTestFile.gridColumnFileName.Caption" xml:space="preserve">
+    <value>နံမယ်</value>
+  </data>
+  <data name="frmAttachTestFile.gridColumnSTT.Caption" xml:space="preserve">
+    <value>စဆဲတီ</value>
+  </data>
+  <data name="frmAttachTestFile.labelControl1.Text" xml:space="preserve">
+    <value>စာသားအမျိုးအစား:</value>
+  </data>
+  <data name="frmAttachTestFile.labelControl2.Text" xml:space="preserve">
+    <value>စာရွက်စာတမ်းအမည်:</value>
+  </data>
+  <data name="frmAttachTestFile.layoutControl1.Text" xml:space="preserve">
+    <value>layoutcontrol1</value>
+  </data>
+  <data name="frmAttachTestFile.layoutControl2.Text" xml:space="preserve">
+    <value>layoutControl2</value>
+  </data>
+  <data name="frmAttachTestFile.layoutControl3.Text" xml:space="preserve">
+    <value>layoutControl3</value>
+  </data>
+  <data name="frmAttachTestFile.layoutControlItem1.Text" xml:space="preserve">
+    <value>စာသားအမျိုးအစား:</value>
+  </data>
+  <data name="frmAttachTestFile.layoutControlItem2.Text" xml:space="preserve">
+    <value>စာရွက်စာတမ်းအမည်:</value>
+  </data>
+  <data name="frmAttachTestFile.simpleButtonSave.Text" xml:space="preserve">
+    <value>သိမ်းဆည်းခြင်း (Ctrl S)</value>
+  </data>
+  <data name="frmAttachTestFile.Text" xml:space="preserve">
+    <value>ဖိုင်တွဲကိုပူးတွဲပါ</value>
+  </data>
   <data name="frmChapNhanMau.bar1.Text" xml:space="preserve">
     <value>ကိရိယာများ</value>
   </data>
@@ -152,6 +209,24 @@
   </data>
   <data name="frmChapNhanMau.Text" xml:space="preserve">
     <value>နမူနာလက်ခံမှုအချက်အလက်</value>
+  </data>
+  <data name="frmMachine.bar1.Text" xml:space="preserve">
+    <value>ကိရိယာများ</value>
+  </data>
+  <data name="frmMachine.barButtonItem1.Caption" xml:space="preserve">
+    <value>အချစ်</value>
+  </data>
+  <data name="frmMachine.btnSave.Text" xml:space="preserve">
+    <value>ရွေးချယ်ပါ (Ctrl S)</value>
+  </data>
+  <data name="frmMachine.layoutControl1.Text" xml:space="preserve">
+    <value>layoutcontrol1</value>
+  </data>
+  <data name="frmMachine.layoutControlItem1.Text" xml:space="preserve">
+    <value>ရလဒ်များပြန်လာ:</value>
+  </data>
+  <data name="frmMachine.Text" xml:space="preserve">
+    <value>ရရှိလာတဲ့စက်ကိုရွေးပါ</value>
   </data>
   <data name="frmReasonReject.bar1.Text" xml:space="preserve">
     <value>ကိရိယာများ</value>
@@ -221,6 +296,54 @@
   </data>
   <data name="frmSignerAdd.Text" xml:space="preserve">
     <value>လက်မှတ်ထိုးစီးကြောင်းဖန်တီးပါ။</value>
+  </data>
+  <data name="frmUnSample.bar1.Text" xml:space="preserve">
+    <value>ကိရိယာများ</value>
+  </data>
+  <data name="frmUnSample.barButtonItem1.Caption" xml:space="preserve">
+    <value>barbuttonitem1</value>
+  </data>
+  <data name="frmUnSample.btnSave.Text" xml:space="preserve">
+    <value>သိမ်းဆည်းခြင်း (Ctrl S)</value>
+  </data>
+  <data name="frmUnSample.layoutControl1.Text" xml:space="preserve">
+    <value>layoutcontrol1</value>
+  </data>
+  <data name="frmUnSample.layoutControlItem1.Text" xml:space="preserve">
+    <value>တောင်းဆိုမှုကုဒ်:</value>
+  </data>
+  <data name="frmUnSample.layoutControlItem2.Text" xml:space="preserve">
+    <value>ဘားကုဒ် -</value>
+  </data>
+  <data name="frmUnSample.layoutControlItem3.Text" xml:space="preserve">
+    <value>ကုသမှုကုဒ်:</value>
+  </data>
+  <data name="frmUnSample.layoutControlItem4.Text" xml:space="preserve">
+    <value>လူနာကုဒ်:</value>
+  </data>
+  <data name="frmUnSample.layoutControlItem5.Text" xml:space="preserve">
+    <value>လူနာအမည်:</value>
+  </data>
+  <data name="frmUnSample.layoutControlItem6.Text" xml:space="preserve">
+    <value>အကြောင်းပြချက်:</value>
+  </data>
+  <data name="frmUnSample.lblBarcode.Text" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="frmUnSample.lblPatientCode.Text" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="frmUnSample.lblPatientName.Text" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="frmUnSample.lblServiceReqCode.Text" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="frmUnSample.lblTreatmentCode.Text" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="frmUnSample.Text" xml:space="preserve">
+    <value>ပျက်စေ</value>
   </data>
   <data name="frmUpdateCondition.bar1.Text" xml:space="preserve">
     <value>ကိရိယာများ</value>
@@ -303,14 +426,41 @@
   <data name="UC_ConnectionTest.btnSearch.Text" xml:space="preserve">
     <value>ရှာပါ (Ctrl F)</value>
   </data>
+  <data name="UC_ConnectionTest.cboFind.ToolTip" xml:space="preserve">
+    <value>မော်ဒယ်အခြေအနေ</value>
+  </data>
   <data name="UC_ConnectionTest.cboKskContract.Properties.NullValuePrompt" xml:space="preserve">
     <value>ကျန်းမာရေးစစ်ဆေးခြင်းစာချုပ်</value>
+  </data>
+  <data name="UC_ConnectionTest.chkAppointment.Properties.Caption" xml:space="preserve">
+    <value>ရက်ချိန်းအားဖြင့် sx</value>
+  </data>
+  <data name="UC_ConnectionTest.chkAppointment.ToolTip" xml:space="preserve">
+    <value>သေးငယ်တဲ့ပေးဆောင်တဲ့ချိန်းဆိုမှုအရဒေတာကိုစီစဉ်ပါ</value>
+  </data>
+  <data name="UC_ConnectionTest.chkCon.Properties.Caption" xml:space="preserve">
+    <value>ပိတ်ဆို့</value>
+  </data>
+  <data name="UC_ConnectionTest.chkKhongHienThiChuaLayMau.Properties.Caption" xml:space="preserve">
+    <value>နမူနာမပြပါနှင့်</value>
+  </data>
+  <data name="UC_ConnectionTest.chkKhongHienThiChuaLayMau.ToolTip" xml:space="preserve">
+    <value>မပြောင်းလဲသောလက္ခဏာများပြသခြင်းကိုခွင့်မပြုပါနှင့် (Code 01039 ၏ system configurations)</value>
   </data>
   <data name="UC_ConnectionTest.chkOrderByBarcode.Properties.Caption" xml:space="preserve">
     <value>ဘားကုဒ်ဖြင့် ထုတ်လုပ်သည်။</value>
   </data>
   <data name="UC_ConnectionTest.chkOrderByBarcode.ToolTip" xml:space="preserve">
     <value>ဘားကုဒ်ဖြင့် စီပါ။</value>
+  </data>
+  <data name="UC_ConnectionTest.chkOrderByEmergencyPriority.Properties.Caption" xml:space="preserve">
+    <value>ဦး စားပေး / အရေးပေါ်လူနာများ</value>
+  </data>
+  <data name="UC_ConnectionTest.chkOrderByEmergencyPriority.ToolTip" xml:space="preserve">
+    <value>ဦး စားပေး / အရေးပေါ်လူနာကစီစဉ်ခဲ့သည်</value>
+  </data>
+  <data name="UC_ConnectionTest.chkReturnResult.Properties.Caption" xml:space="preserve">
+    <value> </value>
   </data>
   <data name="UC_ConnectionTest.chkShowSampleGroup.Properties.Caption" xml:space="preserve">
     <value>ပေါင်းစည်းထားသော ပုံစံများအားလုံးကို ပြပါ။</value>
@@ -320,6 +470,21 @@
   </data>
   <data name="UC_ConnectionTest.chkSignProcess.ToolTip" xml:space="preserve">
     <value>သိမ်းဆည်းပြီးနောက် \\Signing Setup\\ အချက်အလက်များအရ အီလက်ထရွန်နစ်စာရွက်စာတမ်းများနှင့် လက်မှတ်ထိုးသူများကို အလိုအလျောက်ထုတ်ပေးပါသည်။</value>
+  </data>
+  <data name="UC_ConnectionTest.chkWarn.Properties.Caption" xml:space="preserve">
+    <value>အသိပေးချက်</value>
+  </data>
+  <data name="UC_ConnectionTest.dtBarcodeTimefrom.ToolTip" xml:space="preserve">
+    <value>စမ်းသပ်ဘို့အချိန်</value>
+  </data>
+  <data name="UC_ConnectionTest.dtBarcodeTimeTo.ToolTip" xml:space="preserve">
+    <value>စမ်းသပ်ဘို့အချိန်</value>
+  </data>
+  <data name="UC_ConnectionTest.dtResultTimeFrom.ToolTip" xml:space="preserve">
+    <value>စမ်းသပ်မှုရလဒ်များကိုပြန်ပို့ရန်အချိန်</value>
+  </data>
+  <data name="UC_ConnectionTest.dtResultTimeTo.ToolTip" xml:space="preserve">
+    <value>စမ်းသပ်မှုရလဒ်များကိုပြန်ပို့ရန်အချိန်</value>
   </data>
   <data name="UC_ConnectionTest.gc_ApproveResult.Caption" xml:space="preserve">
     <value>ရလဒ်များကို ကြည့်ပါ။</value>
@@ -438,8 +603,23 @@
   <data name="UC_ConnectionTest.gridColumn27.Caption" xml:space="preserve">
     <value>လက်မှတ်ရေးထိုးမှုအခြေအနေ</value>
   </data>
+  <data name="UC_ConnectionTest.gridColumn28.Caption" xml:space="preserve">
+    <value>နမူနာ</value>
+  </data>
+  <data name="UC_ConnectionTest.gridColumn29.Caption" xml:space="preserve">
+    <value>အမိန့်အချိန်</value>
+  </data>
   <data name="UC_ConnectionTest.gridColumn3.Caption" xml:space="preserve">
     <value>ဘရောက်ဆာ</value>
+  </data>
+  <data name="UC_ConnectionTest.gridColumn30.Caption" xml:space="preserve">
+    <value>ရလဒ်များ</value>
+  </data>
+  <data name="UC_ConnectionTest.gridColumn31.Caption" xml:space="preserve">
+    <value>ကုသမှုကုဒ်</value>
+  </data>
+  <data name="UC_ConnectionTest.gridColumn32.Caption" xml:space="preserve">
+    <value>ခန့်ထားမှု</value>
   </data>
   <data name="UC_ConnectionTest.gridColumn4.Caption" xml:space="preserve">
     <value>ဘားကုဒ်ကို ပရင့်ထုတ်ပါ။</value>
@@ -495,11 +675,23 @@
   <data name="UC_ConnectionTest.layoutControlItem16.Text" xml:space="preserve">
     <value>မှတ်စု:</value>
   </data>
+  <data name="UC_ConnectionTest.layoutControlItem19.Text" xml:space="preserve">
+    <value>စာချုပ် -</value>
+  </data>
+  <data name="UC_ConnectionTest.layoutControlItem20.Text" xml:space="preserve">
+    <value> </value>
+  </data>
   <data name="UC_ConnectionTest.layoutControlItem21.Text" xml:space="preserve">
     <value>ပင်မကောလိပ်-</value>
   </data>
   <data name="UC_ConnectionTest.layoutControlItem23.Text" xml:space="preserve">
     <value>အလယ်တန်းကောလိပ်-</value>
+  </data>
+  <data name="UC_ConnectionTest.layoutControlItem26.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>ရလဒ်များ၏လက်မှတ်ထိုး status</value>
+  </data>
+  <data name="UC_ConnectionTest.layoutControlItem26.Text" xml:space="preserve">
+    <value>TT လက်မှတ်ထိုး:</value>
   </data>
   <data name="UC_ConnectionTest.layoutControlItem29.OptionsToolTip.ToolTip" xml:space="preserve">
     <value>ရလဒ်ကို ပြန်ပေးမယ့်သူ</value>
@@ -519,11 +711,47 @@
   <data name="UC_ConnectionTest.layoutControlItem33.Text" xml:space="preserve">
     <value>လက်မှတ်ထိုးသူ-</value>
   </data>
+  <data name="UC_ConnectionTest.layoutControlItem35.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>မပြောင်းလဲသောလက္ခဏာများပြသခြင်းကိုခွင့်မပြုပါနှင့် (Code 01039 ၏ system configurations)</value>
+  </data>
+  <data name="UC_ConnectionTest.layoutControlItem36.Text" xml:space="preserve">
+    <value>နမူနာရက်စွဲ:</value>
+  </data>
+  <data name="UC_ConnectionTest.layoutControlItem37.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>အကယ်. သင်သည်စမ်းသပ်မှုစက်သတင်းအချက်အလက်မထည့်ပါကအမှု၌ optional ကို</value>
+  </data>
+  <data name="UC_ConnectionTest.layoutControlItem37.Text" xml:space="preserve">
+    <value>XN Machine ကိုမထည့်ပါနှင့်။</value>
+  </data>
+  <data name="UC_ConnectionTest.layoutControlItem39.Text" xml:space="preserve">
+    <value>အကြောင်းပြချက်ဖျက်သိမ်းခြင်း:</value>
+  </data>
+  <data name="UC_ConnectionTest.layoutControlItem40.Text" xml:space="preserve">
+    <value>ငြင်းဆန်မှုအတွက်အကြောင်းပြချက် -</value>
+  </data>
+  <data name="UC_ConnectionTest.layoutControlItem43.Text" xml:space="preserve">
+    <value>ဌာန:</value>
+  </data>
+  <data name="UC_ConnectionTest.layoutControlItem44.Text" xml:space="preserve">
+    <value>အခန်း:</value>
+  </data>
+  <data name="UC_ConnectionTest.layoutControlItem8.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>မော်ဒယ်အခြေအနေ</value>
+  </data>
+  <data name="UC_ConnectionTest.layoutControlItem8.Text" xml:space="preserve">
+    <value>TT Model:</value>
+  </data>
   <data name="UC_ConnectionTest.lblApproveResultError.Text" xml:space="preserve">
     <value>၀ယ်တယ်။</value>
   </data>
   <data name="UC_ConnectionTest.lblApproveResultSuccess.Text" xml:space="preserve">
     <value>၀/၀</value>
+  </data>
+  <data name="UC_ConnectionTest.lblCancelReason.Text" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="UC_ConnectionTest.lblRejectReason.Text" xml:space="preserve">
+    <value> </value>
   </data>
   <data name="UC_ConnectionTest.lciApproveListSuccess.Text" xml:space="preserve">
     <value>ဆောင်ရွက်ပြီး-</value>
@@ -544,7 +772,7 @@
     <value>လိင်-</value>
   </data>
   <data name="UC_ConnectionTest.LciGroupEmrDocument.Text" xml:space="preserve">
-    <value>vi</value>
+    <value> </value>
   </data>
   <data name="UC_ConnectionTest.lciNewestBarcode.Text" xml:space="preserve">
     <value>နောက်ဆုံးထွက်ဘားကုဒ်များ-</value>
@@ -570,11 +798,20 @@
   <data name="UC_ConnectionTest.lciReturnResult.Text" xml:space="preserve">
     <value>ရလဒ်များ</value>
   </data>
+  <data name="UC_ConnectionTest.lciServiceResult.Text" xml:space="preserve">
+    <value>ရလဒ် -</value>
+  </data>
   <data name="UC_ConnectionTest.lciSign.Text" xml:space="preserve">
     <value>လက္ခဏာ-</value>
   </data>
   <data name="UC_ConnectionTest.lciSignApproveList.Text" xml:space="preserve">
     <value>လက္ခဏာ-</value>
+  </data>
+  <data name="UC_ConnectionTest.lkbAmTinh.Text" xml:space="preserve">
+    <value>လုံးဝွငင်းဆိုသော</value>
+  </data>
+  <data name="UC_ConnectionTest.lkbDuongTinh.Text" xml:space="preserve">
+    <value>မုချဖြစ်သော</value>
   </data>
   <data name="UC_ConnectionTest.repositoryItemCheckRerun_Disable.Caption" xml:space="preserve">
     <value>စမ်းသပ်မှုကို ထပ်မံလုပ်ဆောင်ပါ။</value>
@@ -583,16 +820,7 @@
     <value>စမ်းသပ်မှုကို ထပ်မံလုပ်ဆောင်ပါ။</value>
   </data>
   <data name="UC_ConnectionTest.repositoryItemPictureEdit2.NullText" xml:space="preserve">
-    <value>vi</value>
-  </data>
-  <data name="UC_ConnectionTest.txtPatientCode.Properties.NullValuePrompt" xml:space="preserve">
-    <value>လူနာကုဒ် (F2)</value>
-  </data>
-  <data name="UC_ConnectionTest.txtSearchKey.Properties.NullValuePrompt" xml:space="preserve">
-    <value>အဓိကစကားလုံးကို ရှာပါ။</value>
-  </data>
-  <data name="UC_ConnectionTest.txtSERVICE_REQ_CODE__EXACT.Properties.NullValuePrompt" xml:space="preserve">
-    <value>အမိန့်ကုဒ် (F1)</value>
+    <value> </value>
   </data>
   <data name="UC_ConnectionTest.treeListColDescription.Caption" xml:space="preserve">
     <value>မှတ်ချက်</value>
@@ -607,7 +835,10 @@
     <value>စမ်းသပ်မှုကို ထပ်မံလုပ်ဆောင်ပါ။</value>
   </data>
   <data name="UC_ConnectionTest.treeListColumn1.Caption" xml:space="preserve">
-    <value>vi</value>
+    <value> </value>
+  </data>
+  <data name="UC_ConnectionTest.treeListColumn2.Caption" xml:space="preserve">
+    <value>စဆဲတီ</value>
   </data>
   <data name="UC_ConnectionTest.treeListColumn3.Caption" xml:space="preserve">
     <value>ငွေချေစက်</value>
@@ -616,16 +847,16 @@
     <value>ရလဒ်စက်</value>
   </data>
   <data name="UC_ConnectionTest.treeListColumn6.Caption" xml:space="preserve">
-    <value>vi</value>
+    <value> </value>
   </data>
   <data name="UC_ConnectionTest.treeListColumnButtonForNote.Caption" xml:space="preserve">
-    <value>vi</value>
+    <value> </value>
   </data>
   <data name="UC_ConnectionTest.treeListColumnForButtonResultDesciption.Caption" xml:space="preserve">
-    <value>vi</value>
+    <value> </value>
   </data>
   <data name="UC_ConnectionTest.treeListColumnForOldValue.Caption" xml:space="preserve">
-    <value>vi</value>
+    <value> </value>
   </data>
   <data name="UC_ConnectionTest.treeListModifier.Caption" xml:space="preserve">
     <value>ပြုပြင်သူ</value>
@@ -636,10 +867,31 @@
   <data name="UC_ConnectionTest.treeListSereServTein.OptionsFind.FindNullPrompt" xml:space="preserve">
     <value>ရှာဖွေရေးစာကြောင်းကို ရိုက်ထည့်ပါ...</value>
   </data>
+  <data name="UC_ConnectionTest.txtPatientCode.Properties.NullValuePrompt" xml:space="preserve">
+    <value>လူနာကုဒ် (F2)</value>
+  </data>
+  <data name="UC_ConnectionTest.txtSearchKey.Properties.NullValuePrompt" xml:space="preserve">
+    <value>အဓိကစကားလုံးကို ရှာပါ။</value>
+  </data>
+  <data name="UC_ConnectionTest.txtSERVICE_REQ_CODE__EXACT.Properties.NullValuePrompt" xml:space="preserve">
+    <value>အမိန့်ကုဒ် (F1)</value>
+  </data>
+  <data name="UC_ConnectionTest.txtTreatmentCode.Properties.NullValuePrompt" xml:space="preserve">
+    <value>ကုသမှုကုဒ်</value>
+  </data>
   <data name="UC_ConnectionTest.xtraTabDocumentReq.Text" xml:space="preserve">
     <value>မဲများသတ်မှတ်ပါ။</value>
   </data>
   <data name="UC_ConnectionTest.xtraTabDocumentResult.Text" xml:space="preserve">
     <value>ရလဒ်စာရွက်</value>
+  </data>
+  <data name="UC_ConnectionTest.xtraTabPage1.Text" xml:space="preserve">
+    <value>မှတ်ချက်</value>
+  </data>
+  <data name="UC_ConnectionTest.xtraTabPage2.Text" xml:space="preserve">
+    <value>commentီကာ</value>
+  </data>
+  <data name="UC_ConnectionTest.xtraTabPage3.Text" xml:space="preserve">
+    <value>ကောက်ချက်ချ</value>
   </data>
 </root>

@@ -141,4 +141,7 @@
   <data name="YLenhChuaCoVanBanQues" xml:space="preserve">
     <value>The medical order does not have a digitally signed document. Do you want to continue processing?</value>
   </data>
+  <data name="YLenhDaTonTaiVanBanKy" xml:space="preserve">
+    <value>The order existed the signed document, continuing to automatically delete the current signing document.</value>
+  </data>
 </root>

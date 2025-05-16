@@ -135,6 +135,65 @@
   <data name="frmAddTimeSample.Text" xml:space="preserve">
     <value>Thông báo</value>
   </data>
+  <data name="frmApproveResult.bar1.Text" xml:space="preserve">
+    <value>Tools</value>
+  </data>
+  <data name="frmApproveResult.barButtonItem1.Caption" xml:space="preserve">
+    <value>Lưu</value>
+  </data>
+  <data name="frmApproveResult.btnSave.Text" xml:space="preserve">
+    <value>Lưu (Ctrl S)</value>
+  </data>
+  <data name="frmApproveResult.layoutControl1.Text" xml:space="preserve">
+    <value>layoutControl1</value>
+  </data>
+  <data name="frmApproveResult.layoutControlItem1.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Thời gian duyệt kết quả</value>
+  </data>
+  <data name="frmApproveResult.layoutControlItem1.Text" xml:space="preserve">
+    <value>Thời gian duyệt KQ:</value>
+  </data>
+  <data name="frmApproveResult.Text" xml:space="preserve">
+    <value>Thông tin duyệt kết quả</value>
+  </data>
+  <data name="frmAttachTestFile.btnSave.Text" xml:space="preserve">
+    <value>Lưu (Ctrl S)
+</value>
+  </data>
+  <data name="frmAttachTestFile.gridColumnFileName.Caption" xml:space="preserve">
+    <value>Tên</value>
+  </data>
+  <data name="frmAttachTestFile.gridColumnSTT.Caption" xml:space="preserve">
+    <value>STT</value>
+  </data>
+  <data name="frmAttachTestFile.labelControl1.Text" xml:space="preserve">
+    <value>Loại văn bản:</value>
+  </data>
+  <data name="frmAttachTestFile.labelControl2.Text" xml:space="preserve">
+    <value>Tên văn bản:</value>
+  </data>
+  <data name="frmAttachTestFile.layoutControl1.Text" xml:space="preserve">
+    <value>layoutControl1</value>
+  </data>
+  <data name="frmAttachTestFile.layoutControl2.Text" xml:space="preserve">
+    <value>layoutControl2</value>
+  </data>
+  <data name="frmAttachTestFile.layoutControl3.Text" xml:space="preserve">
+    <value>layoutControl3</value>
+  </data>
+  <data name="frmAttachTestFile.layoutControlItem1.Text" xml:space="preserve">
+    <value>Loại văn bản:</value>
+  </data>
+  <data name="frmAttachTestFile.layoutControlItem2.Text" xml:space="preserve">
+    <value>Tên văn bản:</value>
+  </data>
+  <data name="frmAttachTestFile.simpleButtonSave.Text" xml:space="preserve">
+    <value>Lưu (Ctrl S)
+</value>
+  </data>
+  <data name="frmAttachTestFile.Text" xml:space="preserve">
+    <value>Đính kèm file</value>
+  </data>
   <data name="frmChapNhanMau.bar1.Text" xml:space="preserve">
     <value>Tools</value>
   </data>
@@ -152,6 +211,24 @@
   </data>
   <data name="frmChapNhanMau.Text" xml:space="preserve">
     <value>Thông tin chấp nhận mẫu</value>
+  </data>
+  <data name="frmMachine.bar1.Text" xml:space="preserve">
+    <value>Tools</value>
+  </data>
+  <data name="frmMachine.barButtonItem1.Caption" xml:space="preserve">
+    <value>btnSave</value>
+  </data>
+  <data name="frmMachine.btnSave.Text" xml:space="preserve">
+    <value>Chọn (Ctrl S)</value>
+  </data>
+  <data name="frmMachine.layoutControl1.Text" xml:space="preserve">
+    <value>layoutControl1</value>
+  </data>
+  <data name="frmMachine.layoutControlItem1.Text" xml:space="preserve">
+    <value>Máy trả kết quả:</value>
+  </data>
+  <data name="frmMachine.Text" xml:space="preserve">
+    <value>Chọn máy kết quả</value>
   </data>
   <data name="frmReasonReject.bar1.Text" xml:space="preserve">
     <value>Tools</value>
@@ -221,6 +298,54 @@
   </data>
   <data name="frmSignerAdd.Text" xml:space="preserve">
     <value>Tạo luồng ký</value>
+  </data>
+  <data name="frmUnSample.bar1.Text" xml:space="preserve">
+    <value>Tools</value>
+  </data>
+  <data name="frmUnSample.barButtonItem1.Caption" xml:space="preserve">
+    <value>barButtonItem1</value>
+  </data>
+  <data name="frmUnSample.btnSave.Text" xml:space="preserve">
+    <value>Lưu (Ctrl S)</value>
+  </data>
+  <data name="frmUnSample.layoutControl1.Text" xml:space="preserve">
+    <value>layoutControl1</value>
+  </data>
+  <data name="frmUnSample.layoutControlItem1.Text" xml:space="preserve">
+    <value>Mã yêu cầu:</value>
+  </data>
+  <data name="frmUnSample.layoutControlItem2.Text" xml:space="preserve">
+    <value>Barcode:</value>
+  </data>
+  <data name="frmUnSample.layoutControlItem3.Text" xml:space="preserve">
+    <value>Mã điều trị:</value>
+  </data>
+  <data name="frmUnSample.layoutControlItem4.Text" xml:space="preserve">
+    <value>Mã bệnh nhân:</value>
+  </data>
+  <data name="frmUnSample.layoutControlItem5.Text" xml:space="preserve">
+    <value>Tên bệnh nhân:</value>
+  </data>
+  <data name="frmUnSample.layoutControlItem6.Text" xml:space="preserve">
+    <value>Lý do:</value>
+  </data>
+  <data name="frmUnSample.lblBarcode.Text" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="frmUnSample.lblPatientCode.Text" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="frmUnSample.lblPatientName.Text" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="frmUnSample.lblServiceReqCode.Text" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="frmUnSample.lblTreatmentCode.Text" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="frmUnSample.Text" xml:space="preserve">
+    <value>Hủy mẫu</value>
   </data>
   <data name="frmUpdateCondition.bar1.Text" xml:space="preserve">
     <value>Tools</value>
@@ -303,14 +428,41 @@
   <data name="UC_ConnectionTest.btnSearch.Text" xml:space="preserve">
     <value>Tìm (Ctrl F)</value>
   </data>
+  <data name="UC_ConnectionTest.cboFind.ToolTip" xml:space="preserve">
+    <value>Trạng thái mẫu bệnh phẩm</value>
+  </data>
   <data name="UC_ConnectionTest.cboKskContract.Properties.NullValuePrompt" xml:space="preserve">
     <value>Hợp đồng khám sức khỏe</value>
+  </data>
+  <data name="UC_ConnectionTest.chkAppointment.Properties.Caption" xml:space="preserve">
+    <value>SX theo hẹn trả</value>
+  </data>
+  <data name="UC_ConnectionTest.chkAppointment.ToolTip" xml:space="preserve">
+    <value>Sắp xếp dữ liệu theo hẹn trả từ nhỏ đến lớn</value>
+  </data>
+  <data name="UC_ConnectionTest.chkCon.Properties.Caption" xml:space="preserve">
+    <value>Chặn</value>
+  </data>
+  <data name="UC_ConnectionTest.chkKhongHienThiChuaLayMau.Properties.Caption" xml:space="preserve">
+    <value>Không hiển thị chưa lấy mẫu</value>
+  </data>
+  <data name="UC_ConnectionTest.chkKhongHienThiChuaLayMau.ToolTip" xml:space="preserve">
+    <value>Không cho phép hiển thị các chỉ định chưa lấy mẫu (theo cấu hình hệ thống mã 01039)</value>
   </data>
   <data name="UC_ConnectionTest.chkOrderByBarcode.Properties.Caption" xml:space="preserve">
     <value>SX theo barcode</value>
   </data>
   <data name="UC_ConnectionTest.chkOrderByBarcode.ToolTip" xml:space="preserve">
-    <value>Sắp xếp theo barcode</value>
+    <value>Sắp xếp dữ liệu theo mã vạch từ nhỏ đến lớn</value>
+  </data>
+  <data name="UC_ConnectionTest.chkOrderByEmergencyPriority.Properties.Caption" xml:space="preserve">
+    <value>BN ưu tiên/cấp cứu</value>
+  </data>
+  <data name="UC_ConnectionTest.chkOrderByEmergencyPriority.ToolTip" xml:space="preserve">
+    <value>Sắp xếp theo bệnh nhân ưu tiên/cấp cứu</value>
+  </data>
+  <data name="UC_ConnectionTest.chkReturnResult.Properties.Caption" xml:space="preserve">
+    <value> </value>
   </data>
   <data name="UC_ConnectionTest.chkShowSampleGroup.Properties.Caption" xml:space="preserve">
     <value>Hiển thị cả mẫu đã gộp</value>
@@ -319,7 +471,22 @@
     <value>Tự động tạo văn bản điện tử và trình ký theo thông tin “Thiết lập ký” sau khi lưu thành công</value>
   </data>
   <data name="UC_ConnectionTest.chkSignProcess.ToolTip" xml:space="preserve">
-    <value>Tự động tạo văn bản điện tử và trình ký theo thông tin \Thiết lập ký\ sau khi lưu +</value>
+    <value>Tự động tạo văn bản điện tử và trình ký theo thông tin "Thiết lập ký" sau khi lưu thành công</value>
+  </data>
+  <data name="UC_ConnectionTest.chkWarn.Properties.Caption" xml:space="preserve">
+    <value>Cảnh báo</value>
+  </data>
+  <data name="UC_ConnectionTest.dtBarcodeTimefrom.ToolTip" xml:space="preserve">
+    <value>Thời gian yêu cầu xét nghiệm</value>
+  </data>
+  <data name="UC_ConnectionTest.dtBarcodeTimeTo.ToolTip" xml:space="preserve">
+    <value>Thời gian yêu cầu xét nghiệm</value>
+  </data>
+  <data name="UC_ConnectionTest.dtResultTimeFrom.ToolTip" xml:space="preserve">
+    <value>Thời gian trả kết quả xét nghiệm</value>
+  </data>
+  <data name="UC_ConnectionTest.dtResultTimeTo.ToolTip" xml:space="preserve">
+    <value>Thời gian trả kết quả xét nghiệm</value>
   </data>
   <data name="UC_ConnectionTest.gc_ApproveResult.Caption" xml:space="preserve">
     <value>Duyệt kết quả</value>
@@ -352,7 +519,7 @@
     <value>IS_PARENT</value>
   </data>
   <data name="UC_ConnectionTest.grdCollDonvitinh.Caption" xml:space="preserve">
-    <value>Đơn vị tính</value>
+    <value>ĐVT</value>
   </data>
   <data name="UC_ConnectionTest.grdCollDonvitinh.ToolTip" xml:space="preserve">
     <value>Đơn vị tính</value>
@@ -438,8 +605,23 @@
   <data name="UC_ConnectionTest.gridColumn27.Caption" xml:space="preserve">
     <value>Trạng thái ký</value>
   </data>
+  <data name="UC_ConnectionTest.gridColumn28.Caption" xml:space="preserve">
+    <value>Loại mẫu</value>
+  </data>
+  <data name="UC_ConnectionTest.gridColumn29.Caption" xml:space="preserve">
+    <value>Thời gian y lệnh</value>
+  </data>
   <data name="UC_ConnectionTest.gridColumn3.Caption" xml:space="preserve">
     <value>Duyệt</value>
+  </data>
+  <data name="UC_ConnectionTest.gridColumn30.Caption" xml:space="preserve">
+    <value>Người trả kết quả</value>
+  </data>
+  <data name="UC_ConnectionTest.gridColumn31.Caption" xml:space="preserve">
+    <value>Mã điều trị</value>
+  </data>
+  <data name="UC_ConnectionTest.gridColumn32.Caption" xml:space="preserve">
+    <value>Hẹn trả</value>
   </data>
   <data name="UC_ConnectionTest.gridColumn4.Caption" xml:space="preserve">
     <value>In Barcode</value>
@@ -481,7 +663,7 @@
     <value>layoutControl4</value>
   </data>
   <data name="UC_ConnectionTest.layoutControlItem11.OptionsToolTip.ToolTip" xml:space="preserve">
-    <value>Thời gian yêu cầu từ đến</value>
+    <value>Thời gian yêu cầu xét nghiệm</value>
   </data>
   <data name="UC_ConnectionTest.layoutControlItem11.Text" xml:space="preserve">
     <value>TG yêu cầu:</value>
@@ -495,11 +677,23 @@
   <data name="UC_ConnectionTest.layoutControlItem16.Text" xml:space="preserve">
     <value>Ghi chú:</value>
   </data>
+  <data name="UC_ConnectionTest.layoutControlItem19.Text" xml:space="preserve">
+    <value>Hợp đồng:</value>
+  </data>
+  <data name="UC_ConnectionTest.layoutControlItem20.Text" xml:space="preserve">
+    <value> </value>
+  </data>
   <data name="UC_ConnectionTest.layoutControlItem21.Text" xml:space="preserve">
     <value>CĐ chính:</value>
   </data>
   <data name="UC_ConnectionTest.layoutControlItem23.Text" xml:space="preserve">
     <value>CĐ phụ:</value>
+  </data>
+  <data name="UC_ConnectionTest.layoutControlItem26.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Trạng thái ký của phiếu trả kết quả</value>
+  </data>
+  <data name="UC_ConnectionTest.layoutControlItem26.Text" xml:space="preserve">
+    <value>TT Ký:</value>
   </data>
   <data name="UC_ConnectionTest.layoutControlItem29.OptionsToolTip.ToolTip" xml:space="preserve">
     <value>Người trả kết quả</value>
@@ -519,11 +713,47 @@
   <data name="UC_ConnectionTest.layoutControlItem33.Text" xml:space="preserve">
     <value>Trình ký:</value>
   </data>
+  <data name="UC_ConnectionTest.layoutControlItem35.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Không cho phép hiển thị các chỉ định chưa lấy mẫu (theo cấu hình hệ thống mã 01039)</value>
+  </data>
+  <data name="UC_ConnectionTest.layoutControlItem36.Text" xml:space="preserve">
+    <value>Ngày lấy mẫu:</value>
+  </data>
+  <data name="UC_ConnectionTest.layoutControlItem37.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Tùy chọn trong trường hợp nếu không nhập thông tin máy xét nghiệm</value>
+  </data>
+  <data name="UC_ConnectionTest.layoutControlItem37.Text" xml:space="preserve">
+    <value>Không nhập máy XN:</value>
+  </data>
+  <data name="UC_ConnectionTest.layoutControlItem39.Text" xml:space="preserve">
+    <value>Lý do hủy:</value>
+  </data>
+  <data name="UC_ConnectionTest.layoutControlItem40.Text" xml:space="preserve">
+    <value>Lý do từ chối:</value>
+  </data>
+  <data name="UC_ConnectionTest.layoutControlItem43.Text" xml:space="preserve">
+    <value>Khoa:</value>
+  </data>
+  <data name="UC_ConnectionTest.layoutControlItem44.Text" xml:space="preserve">
+    <value>Phòng:</value>
+  </data>
+  <data name="UC_ConnectionTest.layoutControlItem8.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Trạng thái mẫu bệnh phẩm</value>
+  </data>
+  <data name="UC_ConnectionTest.layoutControlItem8.Text" xml:space="preserve">
+    <value>TT mẫu:</value>
+  </data>
   <data name="UC_ConnectionTest.lblApproveResultError.Text" xml:space="preserve">
     <value>0</value>
   </data>
   <data name="UC_ConnectionTest.lblApproveResultSuccess.Text" xml:space="preserve">
     <value>0/0</value>
+  </data>
+  <data name="UC_ConnectionTest.lblCancelReason.Text" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="UC_ConnectionTest.lblRejectReason.Text" xml:space="preserve">
+    <value> </value>
   </data>
   <data name="UC_ConnectionTest.lciApproveListSuccess.Text" xml:space="preserve">
     <value>Đã xử lý:</value>
@@ -562,7 +792,7 @@
     <value>Xem trước in:</value>
   </data>
   <data name="UC_ConnectionTest.lciResultTimeFrom.OptionsToolTip.ToolTip" xml:space="preserve">
-    <value>Thời gian trả kết quả từ đến</value>
+    <value>Thời gian trả kết quả xét nghiệm</value>
   </data>
   <data name="UC_ConnectionTest.lciResultTimeFrom.Text" xml:space="preserve">
     <value>Tg trả KQ:</value>
@@ -570,11 +800,20 @@
   <data name="UC_ConnectionTest.lciReturnResult.Text" xml:space="preserve">
     <value>Trả kết quả:</value>
   </data>
+  <data name="UC_ConnectionTest.lciServiceResult.Text" xml:space="preserve">
+    <value>Kết quả:</value>
+  </data>
   <data name="UC_ConnectionTest.lciSign.Text" xml:space="preserve">
     <value>Ký:</value>
   </data>
   <data name="UC_ConnectionTest.lciSignApproveList.Text" xml:space="preserve">
     <value>Ký:</value>
+  </data>
+  <data name="UC_ConnectionTest.lkbAmTinh.Text" xml:space="preserve">
+    <value>Âm tính</value>
+  </data>
+  <data name="UC_ConnectionTest.lkbDuongTinh.Text" xml:space="preserve">
+    <value>Dương tính</value>
   </data>
   <data name="UC_ConnectionTest.repositoryItemCheckRerun_Disable.Caption" xml:space="preserve">
     <value>Chạy lại xét nghiệm</value>
@@ -584,15 +823,6 @@
   </data>
   <data name="UC_ConnectionTest.repositoryItemPictureEdit2.NullText" xml:space="preserve">
     <value> </value>
-  </data>
-  <data name="UC_ConnectionTest.txtPatientCode.Properties.NullValuePrompt" xml:space="preserve">
-    <value>Mã bệnh nhân (F2)</value>
-  </data>
-  <data name="UC_ConnectionTest.txtSearchKey.Properties.NullValuePrompt" xml:space="preserve">
-    <value>Từ khóa tìm kiếm</value>
-  </data>
-  <data name="UC_ConnectionTest.txtSERVICE_REQ_CODE__EXACT.Properties.NullValuePrompt" xml:space="preserve">
-    <value>Mã y lệnh (F1)</value>
   </data>
   <data name="UC_ConnectionTest.treeListColDescription.Caption" xml:space="preserve">
     <value>Ghi chú</value>
@@ -608,6 +838,9 @@
   </data>
   <data name="UC_ConnectionTest.treeListColumn1.Caption" xml:space="preserve">
     <value> </value>
+  </data>
+  <data name="UC_ConnectionTest.treeListColumn2.Caption" xml:space="preserve">
+    <value>STT</value>
   </data>
   <data name="UC_ConnectionTest.treeListColumn3.Caption" xml:space="preserve">
     <value>Máy trả KQ</value>
@@ -636,10 +869,31 @@
   <data name="UC_ConnectionTest.treeListSereServTein.OptionsFind.FindNullPrompt" xml:space="preserve">
     <value>Nhập chuỗi tìm kiếm ...</value>
   </data>
+  <data name="UC_ConnectionTest.txtPatientCode.Properties.NullValuePrompt" xml:space="preserve">
+    <value>Mã bệnh nhân (F2)</value>
+  </data>
+  <data name="UC_ConnectionTest.txtSearchKey.Properties.NullValuePrompt" xml:space="preserve">
+    <value>Từ khóa tìm kiếm</value>
+  </data>
+  <data name="UC_ConnectionTest.txtSERVICE_REQ_CODE__EXACT.Properties.NullValuePrompt" xml:space="preserve">
+    <value>Mã y lệnh (F1)</value>
+  </data>
+  <data name="UC_ConnectionTest.txtTreatmentCode.Properties.NullValuePrompt" xml:space="preserve">
+    <value>Mã điều trị</value>
+  </data>
   <data name="UC_ConnectionTest.xtraTabDocumentReq.Text" xml:space="preserve">
     <value>Phiếu chỉ định</value>
   </data>
   <data name="UC_ConnectionTest.xtraTabDocumentResult.Text" xml:space="preserve">
     <value>Phiếu trả kết quả</value>
+  </data>
+  <data name="UC_ConnectionTest.xtraTabPage1.Text" xml:space="preserve">
+    <value>Ghi chú</value>
+  </data>
+  <data name="UC_ConnectionTest.xtraTabPage2.Text" xml:space="preserve">
+    <value>Nhận xét</value>
+  </data>
+  <data name="UC_ConnectionTest.xtraTabPage3.Text" xml:space="preserve">
+    <value>Kết luận</value>
   </data>
 </root>
