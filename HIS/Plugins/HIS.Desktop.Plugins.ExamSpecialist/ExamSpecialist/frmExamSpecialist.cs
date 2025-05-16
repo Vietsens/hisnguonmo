@@ -21,6 +21,7 @@ using System.Windows.Forms;
 using HIS.Desktop.ApiConsumer;
 using DevExpress.XtraGrid.Views.Base;
 using System.Collections;
+using DevExpress.XtraGrid.Views.Grid.ViewInfo;
 
 namespace HIS.Desktop.Plugins.ExamSpecialist.ExamSpecialist
 {
@@ -32,7 +33,7 @@ namespace HIS.Desktop.Plugins.ExamSpecialist.ExamSpecialist
         int dataTotal = 0;
         long treatmentId = 0;
         int start = 0;
-        V_HIS_SPECIALIST_EXAM curentSpecialistExam; 
+        V_HIS_SPECIALIST_EXAM curentSpecialistExam;
         #endregion
         private Inventec.Desktop.Common.Modules.Module currentModule;
         public frmExamSpecialist()
@@ -45,7 +46,7 @@ namespace HIS.Desktop.Plugins.ExamSpecialist.ExamSpecialist
             InitializeComponent();
             this.currentModule = currentModule;
             this.treatmentId = treatmentId;
-            this.curentSpecialistExam = curentSpecialistExam; 
+            this.curentSpecialistExam = curentSpecialistExam;
             try
             {
                 this.Text = currentModule.text;
@@ -64,6 +65,7 @@ namespace HIS.Desktop.Plugins.ExamSpecialist.ExamSpecialist
                 this.KeyPreview = true;
                 LoadComboHisDepartment();
                 SetDefaultValueControl();
+                toolTipController1.Active = true;
                 FillDataToGrid();
             }
             catch (Exception ex)
