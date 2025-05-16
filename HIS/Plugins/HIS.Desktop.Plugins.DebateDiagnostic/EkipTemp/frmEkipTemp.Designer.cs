@@ -81,23 +81,21 @@ namespace HIS.Desktop.Plugins.DebateDiagnostic.EkipTemp
             this.layoutControl1.Controls.Add(this.btnSave);
             this.layoutControl1.Controls.Add(this.txtEkipTempName);
             this.layoutControl1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.layoutControl1.Location = new System.Drawing.Point(0, 38);
-            this.layoutControl1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.layoutControl1.Location = new System.Drawing.Point(0, 29);
             this.layoutControl1.Name = "layoutControl1";
             this.layoutControl1.OptionsCustomizationForm.DesignTimeCustomizationFormPositionAndSize = new System.Drawing.Rectangle(423, 40, 250, 350);
             this.layoutControl1.Root = this.layoutControlGroup1;
-            this.layoutControl1.Size = new System.Drawing.Size(408, 73);
+            this.layoutControl1.Size = new System.Drawing.Size(306, 61);
             this.layoutControl1.TabIndex = 0;
             this.layoutControl1.Text = "layoutControl1";
             // 
             // chkPublic
             // 
-            this.chkPublic.Location = new System.Drawing.Point(111, 4);
-            this.chkPublic.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.chkPublic.Location = new System.Drawing.Point(107, 36);
             this.chkPublic.MenuManager = this.barManager1;
             this.chkPublic.Name = "chkPublic";
             this.chkPublic.Properties.Caption = "";
-            this.chkPublic.Size = new System.Drawing.Size(260, 19);
+            this.chkPublic.Size = new System.Drawing.Size(170, 19);
             this.chkPublic.StyleController = this.layoutControl1;
             this.chkPublic.TabIndex = 7;
             // 
@@ -138,39 +136,34 @@ namespace HIS.Desktop.Plugins.DebateDiagnostic.EkipTemp
             this.barDockControlTop.CausesValidation = false;
             this.barDockControlTop.Dock = System.Windows.Forms.DockStyle.Top;
             this.barDockControlTop.Location = new System.Drawing.Point(0, 0);
-            this.barDockControlTop.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.barDockControlTop.Size = new System.Drawing.Size(408, 38);
+            this.barDockControlTop.Size = new System.Drawing.Size(306, 29);
             // 
             // barDockControlBottom
             // 
             this.barDockControlBottom.CausesValidation = false;
             this.barDockControlBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.barDockControlBottom.Location = new System.Drawing.Point(0, 111);
-            this.barDockControlBottom.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.barDockControlBottom.Size = new System.Drawing.Size(408, 0);
+            this.barDockControlBottom.Location = new System.Drawing.Point(0, 90);
+            this.barDockControlBottom.Size = new System.Drawing.Size(306, 0);
             // 
             // barDockControlLeft
             // 
             this.barDockControlLeft.CausesValidation = false;
             this.barDockControlLeft.Dock = System.Windows.Forms.DockStyle.Left;
-            this.barDockControlLeft.Location = new System.Drawing.Point(0, 38);
-            this.barDockControlLeft.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.barDockControlLeft.Size = new System.Drawing.Size(0, 73);
+            this.barDockControlLeft.Location = new System.Drawing.Point(0, 29);
+            this.barDockControlLeft.Size = new System.Drawing.Size(0, 61);
             // 
             // barDockControlRight
             // 
             this.barDockControlRight.CausesValidation = false;
             this.barDockControlRight.Dock = System.Windows.Forms.DockStyle.Right;
-            this.barDockControlRight.Location = new System.Drawing.Point(408, 38);
-            this.barDockControlRight.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.barDockControlRight.Size = new System.Drawing.Size(0, 73);
+            this.barDockControlRight.Location = new System.Drawing.Point(306, 29);
+            this.barDockControlRight.Size = new System.Drawing.Size(0, 61);
             // 
             // btnSave
             // 
-            this.btnSave.Location = new System.Drawing.Point(247, 30);
-            this.btnSave.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.btnSave.Location = new System.Drawing.Point(184, 60);
             this.btnSave.Name = "btnSave";
-            this.btnSave.Size = new System.Drawing.Size(124, 27);
+            this.btnSave.Size = new System.Drawing.Size(93, 22);
             this.btnSave.StyleController = this.layoutControl1;
             this.btnSave.TabIndex = 6;
             this.btnSave.Text = "Lưu (Ctrl S)";
@@ -178,10 +171,9 @@ namespace HIS.Desktop.Plugins.DebateDiagnostic.EkipTemp
             // 
             // txtEkipTempName
             // 
-            this.txtEkipTempName.Location = new System.Drawing.Point(111, -24);
-            this.txtEkipTempName.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.txtEkipTempName.Location = new System.Drawing.Point(107, 12);
             this.txtEkipTempName.Name = "txtEkipTempName";
-            this.txtEkipTempName.Size = new System.Drawing.Size(260, 22);
+            this.txtEkipTempName.Size = new System.Drawing.Size(170, 20);
             this.txtEkipTempName.StyleController = this.layoutControl1;
             this.txtEkipTempName.TabIndex = 5;
             // 
@@ -194,9 +186,9 @@ namespace HIS.Desktop.Plugins.DebateDiagnostic.EkipTemp
             this.layoutControlItem3,
             this.emptySpaceItem1,
             this.layoutControlItem1});
-            this.layoutControlGroup1.Location = new System.Drawing.Point(0, -40);
+            this.layoutControlGroup1.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup1.Name = "Root";
-            this.layoutControlGroup1.Size = new System.Drawing.Size(387, 113);
+            this.layoutControlGroup1.Size = new System.Drawing.Size(289, 94);
             this.layoutControlGroup1.TextVisible = false;
             // 
             // layoutControlItem2
@@ -208,7 +200,7 @@ namespace HIS.Desktop.Plugins.DebateDiagnostic.EkipTemp
             this.layoutControlItem2.Control = this.txtEkipTempName;
             this.layoutControlItem2.Location = new System.Drawing.Point(0, 0);
             this.layoutControlItem2.Name = "layoutControlItem2";
-            this.layoutControlItem2.Size = new System.Drawing.Size(361, 28);
+            this.layoutControlItem2.Size = new System.Drawing.Size(269, 24);
             this.layoutControlItem2.Text = "Tên:";
             this.layoutControlItem2.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem2.TextSize = new System.Drawing.Size(90, 20);
@@ -217,18 +209,18 @@ namespace HIS.Desktop.Plugins.DebateDiagnostic.EkipTemp
             // layoutControlItem3
             // 
             this.layoutControlItem3.Control = this.btnSave;
-            this.layoutControlItem3.Location = new System.Drawing.Point(231, 54);
+            this.layoutControlItem3.Location = new System.Drawing.Point(172, 48);
             this.layoutControlItem3.Name = "layoutControlItem3";
-            this.layoutControlItem3.Size = new System.Drawing.Size(130, 33);
+            this.layoutControlItem3.Size = new System.Drawing.Size(97, 26);
             this.layoutControlItem3.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem3.TextVisible = false;
             // 
             // emptySpaceItem1
             // 
             this.emptySpaceItem1.AllowHotTrack = false;
-            this.emptySpaceItem1.Location = new System.Drawing.Point(0, 54);
+            this.emptySpaceItem1.Location = new System.Drawing.Point(0, 48);
             this.emptySpaceItem1.Name = "emptySpaceItem1";
-            this.emptySpaceItem1.Size = new System.Drawing.Size(231, 33);
+            this.emptySpaceItem1.Size = new System.Drawing.Size(172, 26);
             this.emptySpaceItem1.TextSize = new System.Drawing.Size(0, 0);
             // 
             // layoutControlItem1
@@ -236,9 +228,9 @@ namespace HIS.Desktop.Plugins.DebateDiagnostic.EkipTemp
             this.layoutControlItem1.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem1.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem1.Control = this.chkPublic;
-            this.layoutControlItem1.Location = new System.Drawing.Point(0, 28);
+            this.layoutControlItem1.Location = new System.Drawing.Point(0, 24);
             this.layoutControlItem1.Name = "layoutControlItem1";
-            this.layoutControlItem1.Size = new System.Drawing.Size(361, 26);
+            this.layoutControlItem1.Size = new System.Drawing.Size(269, 24);
             this.layoutControlItem1.Text = "Công khai:";
             this.layoutControlItem1.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem1.TextSize = new System.Drawing.Size(90, 20);
@@ -250,15 +242,14 @@ namespace HIS.Desktop.Plugins.DebateDiagnostic.EkipTemp
             // 
             // frmEkipTemp
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(408, 111);
+            this.ClientSize = new System.Drawing.Size(306, 90);
             this.Controls.Add(this.layoutControl1);
             this.Controls.Add(this.barDockControlLeft);
             this.Controls.Add(this.barDockControlRight);
             this.Controls.Add(this.barDockControlBottom);
             this.Controls.Add(this.barDockControlTop);
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.Name = "frmEkipTemp";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Kíp thực hiện mẫu";
