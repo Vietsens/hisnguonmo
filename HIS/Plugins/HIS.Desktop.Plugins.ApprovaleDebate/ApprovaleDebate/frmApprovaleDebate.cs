@@ -38,7 +38,7 @@ namespace HIS.Desktop.Plugins.ApprovaleDebate.ApprovaleDebate
     {
         private Common.RefeshReference delegateRefresh;
         internal Inventec.Desktop.Common.Modules.Module currentModule { get; set; }
-        V_HIS_SPECIALIST_EXAM v_his_specialist_exam;
+        V_HIS_SPECIALIST_EXAM currentHisSpecialistExam;
         /// <summary>
         ///Hàm xét ngôn ngữ cho giao diện frmApprovaleDebate
         /// </summary>
@@ -76,7 +76,7 @@ namespace HIS.Desktop.Plugins.ApprovaleDebate.ApprovaleDebate
             try
             {
                 this.delegateRefresh = delegateRefresh;
-                this.v_his_specialist_exam = specialist;
+                this.currentHisSpecialistExam = specialist;
                 InitializeComponent();
                 try
                 {
@@ -103,12 +103,12 @@ namespace HIS.Desktop.Plugins.ApprovaleDebate.ApprovaleDebate
                 this.AddUc();
                 this.InitComboEmployee();
                 this.ValidControl();
-                if (this.v_his_specialist_exam != null)
+                if (this.currentHisSpecialistExam != null)
                 {
-                    this.txtYKienBacSi.Text = this.v_his_specialist_exam.EXAM_EXECUTE_CONTENT;
-                    this.cboEmployee.EditValue = this.v_his_specialist_exam.EXAM_EXECUTE_LOGINNAME;
+                    this.txtYKienBacSi.Text = this.currentHisSpecialistExam.EXAM_EXECUTE_CONTENT;
+                    this.cboEmployee.EditValue = this.currentHisSpecialistExam.EXAM_EXECUTE_LOGINNAME;
                     //
-                    this.LoadDataSereServByTreatmentId(this.v_his_specialist_exam);
+                    this.LoadDataSereServByTreatmentId(this.currentHisSpecialistExam);
                 }
             }
             catch (Exception ex)
@@ -171,7 +171,7 @@ namespace HIS.Desktop.Plugins.ApprovaleDebate.ApprovaleDebate
                 var data = BackendDataWorker.Get<V_HIS_EMPLOYEE>().Where(o => 
                                 o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE 
                                 && o.IS_DOCTOR == 1
-                                && o.DEPARTMENT_ID == this.v_his_specialist_exam.EXAM_EXECUTE_DEPARMENT_ID
+                                && o.DEPARTMENT_ID == this.currentHisSpecialistExam.EXAM_EXECUTE_DEPARMENT_ID
                                 ).ToList();
                 List<ColumnInfo> columnInfos = new List<ColumnInfo>();
                 columnInfos.Add(new ColumnInfo("LOGINNAME", "Tên đăng nhập", 150, 1));
@@ -368,7 +368,7 @@ namespace HIS.Desktop.Plugins.ApprovaleDebate.ApprovaleDebate
                                                                   })
                                                                   .ToList();
                             tabToDieuTri.PageVisible = true;
-                            ucAll.ReLoad(treeView_Click, listTracking, v_his_specialist_exam);
+                            ucAll.ReLoad(treeView_Click, listTracking, currentHisSpecialistExam);
                         }
                     }
                     catch (Exception ex)
@@ -379,7 +379,7 @@ namespace HIS.Desktop.Plugins.ApprovaleDebate.ApprovaleDebate
                     //
                     List<SereServADO> listCDHA = new List<SereServADO>();
                     listCDHA.AddRange(SereServADOs.Where(o => o.TDL_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__CDHA));
-                    ucCDHA.ReLoad(treeView_Click, listCDHA, this.v_his_specialist_exam, Edit_Click, Delete_Click);
+                    ucCDHA.ReLoad(treeView_Click, listCDHA, this.currentHisSpecialistExam, Edit_Click, Delete_Click);
                     if (listCDHA.Any())
                     {
                         tabCDHA.PageVisible = true;
@@ -397,7 +397,7 @@ namespace HIS.Desktop.Plugins.ApprovaleDebate.ApprovaleDebate
                         ucXetNghiem.tc_TdlMedicineConcentra.Visible = false;
                         ucXetNghiem.tc_RequestDepartmentName.Visible = false;
                     }
-                    ucXetNghiem.ReLoad(treeView_Click, listXetNghiem, this.v_his_specialist_exam, Edit_Click, Delete_Click);
+                    ucXetNghiem.ReLoad(treeView_Click, listXetNghiem, this.currentHisSpecialistExam, Edit_Click, Delete_Click);
                     //
                     List<SereServADO> listMediMate = new List<SereServADO>();
                     listMediMate.AddRange(SereServADOs.Where(o => o.TDL_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__THUOC
@@ -408,7 +408,7 @@ namespace HIS.Desktop.Plugins.ApprovaleDebate.ApprovaleDebate
                     {
                         tabThuocVatTuMau.PageVisible = true;
                     }
-                    ucThuocVatTu.ReLoad(treeView_Click, listMediMate, this.v_his_specialist_exam, Edit_Click, Delete_Click);
+                    ucThuocVatTu.ReLoad(treeView_Click, listMediMate, this.currentHisSpecialistExam, Edit_Click, Delete_Click);
                     //
                     List<SereServADO> listSieuAm = new List<SereServADO>();
                     listSieuAm.AddRange(SereServADOs.Where(o => o.TDL_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__SA
@@ -420,7 +420,7 @@ namespace HIS.Desktop.Plugins.ApprovaleDebate.ApprovaleDebate
                         ucSieuAm.tc_TdlMedicineConcentra.Visible = false;
                         ucSieuAm.tc_RequestDepartmentName.Visible = false;
                     }
-                    ucSieuAm.ReLoad(treeView_Click, listSieuAm, this.v_his_specialist_exam, Edit_Click, Delete_Click);
+                    ucSieuAm.ReLoad(treeView_Click, listSieuAm, this.currentHisSpecialistExam, Edit_Click, Delete_Click);
                     //
                     List<SereServADO> listPTTT = new List<SereServADO>();
                     listPTTT.AddRange(SereServADOs.Where(o => o.TDL_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__KH
@@ -432,7 +432,7 @@ namespace HIS.Desktop.Plugins.ApprovaleDebate.ApprovaleDebate
                         ucPTTT.tc_TdlMedicineConcentra.Visible = false;
                         ucPTTT.tc_RequestDepartmentName.Visible = false;
                     }
-                    ucPTTT.ReLoad(treeView_Click, listPTTT, this.v_his_specialist_exam, Edit_Click, Delete_Click);
+                    ucPTTT.ReLoad(treeView_Click, listPTTT, this.currentHisSpecialistExam, Edit_Click, Delete_Click);
                     //
                     List<SereServADO> listGPT = new List<SereServADO>();
                     listGPT.AddRange(SereServADOs.Where(o => o.TDL_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__GPBL));
@@ -443,7 +443,7 @@ namespace HIS.Desktop.Plugins.ApprovaleDebate.ApprovaleDebate
                         ucGPB.tc_TdlMedicineConcentra.Visible = false;
                         ucGPB.tc_RequestDepartmentName.Visible = false;
                     }
-                    ucGPB.ReLoad(treeView_Click, listGPT, this.v_his_specialist_exam, Edit_Click, Delete_Click);
+                    ucGPB.ReLoad(treeView_Click, listGPT, this.currentHisSpecialistExam, Edit_Click, Delete_Click);
                     //
                     List<SereServADO> listOther = new List<SereServADO>();
                     listOther.AddRange(SereServADOs.Where(o => o.TDL_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__AN
@@ -610,32 +610,28 @@ namespace HIS.Desktop.Plugins.ApprovaleDebate.ApprovaleDebate
                     return;
                 }
                 positionHandleControl = -1;
-                WaitingManager.Show();
                 CommonParam param = new CommonParam();
-                var update_his_specialist_exam = new HIS_SPECIALIST_EXAM();
-                Inventec.Common.Mapper.DataObjectMapper.Map<HIS_SPECIALIST_EXAM>(update_his_specialist_exam, v_his_specialist_exam);
+                HIS_SPECIALIST_EXAM datamapper = new HIS_SPECIALIST_EXAM();
+                Inventec.Common.Mapper.DataObjectMapper.Map<HIS_SPECIALIST_EXAM>(datamapper, currentHisSpecialistExam);
+                datamapper.EXAM_EXECUTE_LOGINNAME = cboEmployee.EditValue != null ? cboEmployee.EditValue.ToString() : null;
+                datamapper.EXAM_EXECUTE_USERNAME = cboEmployee.EditValue != null ? cboEmployee.Text.ToString() : null;
+                datamapper.EXAM_EXECUTE_CONTENT = txtYKienBacSi.Text.Trim();
+                datamapper.IS_APPROVAL = 1;
+                //Inventec.Common.Logging.LogSystem.Info(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => datamapper), datamapper));
+                var rs = new BackendAdapter(param).Post<HIS_SPECIALIST_EXAM>("api/HisSpecialistExam/Update", ApiConsumers.MosConsumer, datamapper, param);
+                if (rs != null && this.delegateRefresh != null)
                 {
-                    update_his_specialist_exam.EXAM_EXECUTE_LOGINNAME = cboEmployee.EditValue != null ? cboEmployee.EditValue.ToString() : null;
-                    update_his_specialist_exam.EXAM_EXECUTE_USERNAME = cboEmployee.EditValue != null ? cboEmployee.Text.ToString() : null;
-                    update_his_specialist_exam.EXAM_EXECUTE_CONTENT = txtYKienBacSi.Text.Trim();
-                    update_his_specialist_exam.IS_APPROVAL = 1;
-                    var rs = new BackendAdapter(param).Post<HIS_SPECIALIST_EXAM>("api/HisSpecialistExam/Update", ApiConsumers.MosConsumer, update_his_specialist_exam, param);
-                    if (rs != null && this.delegateRefresh != null)
-                    {
-                        this.delegateRefresh();
-                    }
-                    WaitingManager.Hide();
-                    MessageManager.Show(this, param, rs != null);
-                    SessionManager.ProcessTokenLost(param);
-                    if (rs != null)
-                    {
-                        this.Close();
-                    }
+                    currentHisSpecialistExam.EXAM_EXECUTE_LOGINNAME = datamapper.EXAM_EXECUTE_LOGINNAME;
+                    currentHisSpecialistExam.EXAM_EXECUTE_USERNAME = datamapper.EXAM_EXECUTE_USERNAME;
+                    currentHisSpecialistExam.EXAM_EXECUTE_CONTENT = datamapper.EXAM_EXECUTE_CONTENT;
+                    currentHisSpecialistExam.IS_APPROVAL = datamapper.IS_APPROVAL;
+                    this.delegateRefresh();
                 }
+                MessageManager.Show(this, param, rs != null);
+                SessionManager.ProcessTokenLost(param);
             }
             catch (Exception ex)
             {
-                WaitingManager.Hide();
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
