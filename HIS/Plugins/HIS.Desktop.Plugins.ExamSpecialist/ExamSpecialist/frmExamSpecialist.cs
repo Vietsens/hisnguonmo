@@ -127,6 +127,7 @@ namespace HIS.Desktop.Plugins.ExamSpecialist.ExamSpecialist
         }
         private void FillDataToGrid()
         {
+            //
             try
             {
                 int pagingSize = ucPaging1.pagingGrid != null ? ucPaging1.pagingGrid.PageSize : (int)ConfigApplications.NumPageSize;// xác định số dòng /trang
@@ -157,21 +158,12 @@ namespace HIS.Desktop.Plugins.ExamSpecialist.ExamSpecialist
                 var result = new Inventec.Common.Adapter.BackendAdapter(paramCommon).GetRO<List<V_HIS_SPECIALIST_EXAM>>("api/HisSpecialistExam/GetView", ApiConsumers.MosConsumer, filter, paramCommon);
                 if (result != null)
                 {
-                    rowCount = (result.Data == null ? 0 : result.Data.Count);
-                    dataTotal = (result.Param == null ? 0 : result.Param.Count ?? 0);
-
                     if (result.Data != null && result.Data.Count > 0)
                     {
                         listData = result.Data;
-                        CommonParam Param = new CommonParam();
-                        HisSpecialistExamFilter speFilter = new HisSpecialistExamFilter();
-                        var speResult = new Inventec.Common.Adapter.BackendAdapter(Param).GetRO<List<HIS_SPECIALIST_EXAM>>(
-                            "api/HisSpecialistExam/Get", ApiConsumers.MosConsumer, speFilter, Param);
-                        if (speResult != null && speResult.Data != null && speResult.Data.Count > 0)
-                        {
-                            var validIds = speResult.Data.Where(d => d.INVITE_TYPE == 1).Select(d => d.ID).ToList();
-                            listData = result.Data.Where(v => validIds.Contains(v.ID)).ToList();
-                        }
+                        rowCount = (listData == null ? 0 : listData.Count);
+                        dataTotal = (listData == null ? 0 : listData.Count);
+                        Inventec.Common.Logging.LogSystem.Debug("API Result with invite_type = 1: " + Inventec.Common.Logging.LogUtil.TraceData("Data:", listData));
                     }
                     else
                     {
@@ -198,6 +190,7 @@ namespace HIS.Desktop.Plugins.ExamSpecialist.ExamSpecialist
                 if (filter == null) filter = new HisSpecialistExamViewFilter();
                 filter.ORDER_FIELD = "INVITE_TIME";
                 filter.ORDER_DIRECTION = "DESC";
+                filter.INVITE_TYPE = 1;
                 if (!String.IsNullOrEmpty(txtTreatmentCode.Text))
                 {
                     string codeTreatment = txtTreatmentCode.Text.Trim();
