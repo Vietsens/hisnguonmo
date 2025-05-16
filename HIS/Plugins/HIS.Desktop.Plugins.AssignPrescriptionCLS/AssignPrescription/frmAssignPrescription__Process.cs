@@ -3306,7 +3306,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
                         if (HisConfigCFG.TutorialFormat == 4)
                         {
                             huongDan = new StringBuilder();                          
-                            huongDan.AppendFormat("{0} {1} ngày. Ngày {0} 1 lần {1} {2}", (String.IsNullOrEmpty(this.cboMedicineUseForm.Text) ? "" : this.cboMedicineUseForm.Text), strTong, serviceUnitName);
+                            huongDan.AppendFormat("{0} 1 ngày. Ngày {0} 1 lần {1} {2}", (String.IsNullOrEmpty(this.cboMedicineUseForm.Text) ? "" : this.cboMedicineUseForm.Text), strTong, serviceUnitName);
                         }
                         if (HisConfigCFG.TutorialFormat == 5)
                         {
