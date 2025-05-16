@@ -60,6 +60,9 @@ namespace HIS.Desktop.Plugins.ExamSpecialist.ExamSpecialist
                     if (dlgRefresh != null)
                         dlgRefresh();
                     this.Close();
+                    speciaListExam.EXAM_TIME = null;
+                    speciaListExam.EXAM_EXECUTE_CONTENT = null;
+                    speciaListExam.EXAM_EXCUTE = null; 
                     MessageManager.Show(this, param, true);
                 }
                 else
@@ -74,9 +77,6 @@ namespace HIS.Desktop.Plugins.ExamSpecialist.ExamSpecialist
             }
 
         }
-
-        
-
         private void frmReject_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.Control && e.KeyCode == Keys.S)
