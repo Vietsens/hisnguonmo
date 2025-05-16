@@ -155,8 +155,6 @@ namespace HIS.Desktop.Plugins.ExamSpecialist.ExamSpecialist
                 HisSpecialistExamViewFilter filter = new HisSpecialistExamViewFilter();
                 SetFilter(ref filter);
                 var result = new Inventec.Common.Adapter.BackendAdapter(paramCommon).GetRO<List<V_HIS_SPECIALIST_EXAM>>("api/HisSpecialistExam/GetView", ApiConsumers.MosConsumer, filter, paramCommon);
-                //Cơ chế hoạt động lúc gọi api là Get nhưng đầu ra để là View thành ra những thông tin nào k có trong bảng sang View sẽ bị mất dữ liệu
-                Inventec.Common.Logging.LogSystem.Debug("API Result Of list: " + Inventec.Common.Logging.LogUtil.TraceData("Data:", result.Data));
                 if (result != null)
                 {
                     rowCount = (result.Data == null ? 0 : result.Data.Count);
