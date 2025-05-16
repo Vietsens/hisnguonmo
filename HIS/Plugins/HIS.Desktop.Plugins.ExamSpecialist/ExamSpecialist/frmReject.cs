@@ -74,9 +74,6 @@ namespace HIS.Desktop.Plugins.ExamSpecialist.ExamSpecialist
             }
 
         }
-
-        
-
         private void frmReject_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.Control && e.KeyCode == Keys.S)

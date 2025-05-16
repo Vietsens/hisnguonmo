@@ -402,9 +402,6 @@ namespace HIS.Desktop.Plugins.ExamSpecialist.ExamSpecialist
                     Inventec.Common.Mapper.DataObjectMapper.Map<HIS_SPECIALIST_EXAM>(datamapper, row);
                     frmReject form = new frmReject(datamapper, () => FillDataToGrid());
                     form.ShowDialog();
-                    //Những cái nào load lại form như hàm fillDataToGrid như này thì code truyền thêm cái delegate hoặc action vào
-                    //Để thể hiện hành động thành công thì mới gọi lại hàm Fill
-                    //Code như này cứ tắt form là Fill lại Data, nó thừa 
                 }
             }
             catch (Exception ex)
@@ -466,8 +463,6 @@ namespace HIS.Desktop.Plugins.ExamSpecialist.ExamSpecialist
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
-
-       
         private void cboInviteDepartment_KeyDown(object sender, KeyEventArgs e)
         {
             try
