@@ -1,0 +1,771 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="FormApprovalFinish.bar1.Text" xml:space="preserve">
+    <value>Tools</value>
+  </data>
+  <data name="FormApprovalFinish.barBtnSave.Caption" xml:space="preserve">
+    <value>Save</value>
+  </data>
+  <data name="FormApprovalFinish.BtnSave.Text" xml:space="preserve">
+    <value>Save (Ctrl S)</value>
+  </data>
+  <data name="FormApprovalFinish.layoutControl1.Text" xml:space="preserve">
+    <value>layoutControl1</value>
+  </data>
+  <data name="FormApprovalFinish.layoutControlItem1.Text" xml:space="preserve">
+    <value>Note:</value>
+  </data>
+  <data name="FormApprovalFinish.Text" xml:space="preserve">
+    <value>Browse hospital discharge eligibility</value>
+  </data>
+  <data name="FrmFollow.bar1.Text" xml:space="preserve">
+    <value>Tools</value>
+  </data>
+  <data name="FrmFollow.barButtonItem1.Caption" xml:space="preserve">
+    <value>Save</value>
+  </data>
+  <data name="FrmFollow.btnSave.Text" xml:space="preserve">
+    <value>Save (Ctrl S)</value>
+  </data>
+  <data name="FrmFollow.chk12.Properties.Caption" xml:space="preserve">
+    <value>12 o'clock</value>
+  </data>
+  <data name="FrmFollow.chk24.Properties.Caption" xml:space="preserve">
+    <value>24 hours</value>
+  </data>
+  <data name="FrmFollow.chkKhac.Properties.Caption" xml:space="preserve">
+    <value>Other</value>
+  </data>
+  <data name="FrmFollow.layoutControl1.Text" xml:space="preserve">
+    <value>layoutControl1</value>
+  </data>
+  <data name="FrmFollow.layoutControlItem1.Text" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="FrmFollow.layoutControlItem2.Text" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="FrmFollow.layoutControlItem3.Text" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="FrmFollow.layoutControlItem4.Text" xml:space="preserve">
+    <value>Are from:</value>
+  </data>
+  <data name="FrmFollow.layoutControlItem5.Text" xml:space="preserve">
+    <value>Arrive:</value>
+  </data>
+  <data name="FrmFollow.Text" xml:space="preserve">
+    <value>Tracking time</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__BTN__CHI_TIET" xml:space="preserve">
+    <value>Detail</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__BTN__THU_GON" xml:space="preserve">
+    <value>Collapse</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__MOUSE_RIGHT__AllergyCard" xml:space="preserve">
+    <value>Allergy card</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__MOUSE_RIGHT__APPROVE_FINISH" xml:space="preserve">
+    <value>Browse hospital discharge eligibility</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__MOUSE_RIGHT__BAN_GIAO_BN_TRUOC_PTTT" xml:space="preserve">
+    <value>Handing over patients before surgery (BMK)</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__MOUSE_RIGHT__BANG_KE" xml:space="preserve">
+    <value>List</value>
+  </data>
+	<data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__MOUSE_RIGHT__MOI_KHAM_CHUYEN_KHOA" xml:space="preserve">
+    <value>Invite</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__MOUSE_RIGHT__MOI_HOI_CHAN" xml:space="preserve">
+    <value>Invite</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__MOUSE_RIGHT__BIEN_BAN_HOI_CHAN" xml:space="preserve">
+    <value>Minutes of consultation</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__MOUSE_RIGHT__BIEU_MAU_KHAC" xml:space="preserve">
+    <value>Another form</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__MOUSE_RIGHT__BIEU_MAU_KHAC_HSDT" xml:space="preserve">
+    <value>Other forms of treatment records</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__MOUSE_RIGHT__BloodTransfusion" xml:space="preserve">
+    <value>Blood transfusion</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__MOUSE_RIGHT__BOTD" xml:space="preserve">
+    <value>Unfollow</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__MOUSE_RIGHT__CANTD" xml:space="preserve">
+    <value>Need to follow up</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__MOUSE_RIGHT__CONG_KHAI_DICH_VU_KHAM_CHUA_BENH_NOT_TRU" xml:space="preserve">
+    <value>Publicize inpatient medical examination and treatment services</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__MOUSE_RIGHT__CONG_KHAI_THUOC_THEO_GIAI_DOAN" xml:space="preserve">
+    <value>Public stage drugs</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__MOUSE_RIGHT__CONG_KHAI_THUOC_THEO_NGAY" xml:space="preserve">
+    <value>Public daily medication</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__MOUSE_RIGHT__CHAM_SOC" xml:space="preserve">
+    <value>Take care of</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__MOUSE_RIGHT__CheckInfoBHYT" xml:space="preserve">
+    <value>Check health insurance card information</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__MOUSE_RIGHT__CHI_DINH" xml:space="preserve">
+    <value>Point</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__MOUSE_RIGHT__CHI_DINH_Dinh_DUONG" xml:space="preserve">
+    <value>Specify meals</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__MOUSE_RIGHT__CHI_DINH_GIAI_PHAU_BENH_LY" xml:space="preserve">
+    <value>Specify pathological anatomy</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__MOUSE_RIGHT__CHI_TIET_BENH_AN" xml:space="preserve">
+    <value>Treatment detail</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__MOUSE_RIGHT__CHUYEN_DIEU_TRI_KET_HOP" xml:space="preserve">
+    <value>Switch to combination therapy</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__MOUSE_RIGHT__CHUYEN_KHOA" xml:space="preserve">
+    <value>Specialist</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__MOUSE_RIGHT__CHUYEN_RA_BUONG" xml:space="preserve">
+    <value>Transfer chamber</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__MOUSE_RIGHT__CHUYEN_VAO_BUONG" xml:space="preserve">
+    <value>Transferred into chamber</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__MOUSE_RIGHT__DANH_SACH_YEU_CAU" xml:space="preserve">
+    <value>Wishlist</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__MOUSE_RIGHT__DIS_APPROVE_FINISH" xml:space="preserve">
+    <value>Cancellation of eligibility for hospital discharge</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__MOUSE_RIGHT__DONG_THOI_GIAN" xml:space="preserve">
+    <value>Timeline</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__MOUSE_RIGHT__DU_TRU_THUOC_THEO_BENH_NHAN" xml:space="preserve">
+    <value>Drug planning according to patient</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__MOUSE_RIGHT__GHEP_MA_BENH_NHAN" xml:space="preserve">
+    <value>Transplant patient code</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__MOUSE_RIGHT__GIAY_CAM_KET_NAM_GIUONG_TU_NGUYEN" xml:space="preserve">
+    <value>Letter of commitment to bed voluntarily (BMK)</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__MOUSE_RIGHT__GIAY_NAM_VIEN" xml:space="preserve">
+    <value>Certificate of Hospitalization</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__MOUSE_RIGHT__GIAY_THXN" xml:space="preserve">
+    <value>Summary of test results</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__MOUSE_RIGHT__HIS_ADR" xml:space="preserve">
+    <value>Information on adverse drug reactions</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__MOUSE_RIGHT__HisDhst" xml:space="preserve">
+    <value>Life function monitoring</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__MOUSE_RIGHT__HisDhstChart" xml:space="preserve">
+    <value>vital signs chart</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__MOUSE_RIGHT__HisPhieuSoketTruocMo" xml:space="preserve">
+    <value>Pre-surgery summary sheet</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__MOUSE_RIGHT__HisSoKetBenhAnTruocPhauThuat" xml:space="preserve">
+    <value>Preoperative BA review (BMK)</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__MOUSE_RIGHT__HisSoKetBenhAnTruocThuThuat" xml:space="preserve">
+    <value>Pre-procedure BA review (BMK)</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__MOUSE_RIGHT__HO_SO_DIEU_TRI" xml:space="preserve">
+    <value>Treatment records</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__MOUSE_RIGHT__KE_DON_DUOC" xml:space="preserve">
+    <value>Prescription drugs</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__MOUSE_RIGHT__KE_DON_MAU" xml:space="preserve">
+    <value>Prescribing blood</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__MOUSE_RIGHT__KET_QUA_XET_NGHIEM" xml:space="preserve">
+    <value>Test results</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__MOUSE_RIGHT__KET_THUC_DIEU_TRI" xml:space="preserve">
+    <value>Finishing treatment</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__MOUSE_RIGHT__KET_THUC_DIEU_TRI_KET_HOP" xml:space="preserve">
+    <value>End of combination treatment</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__MOUSE_RIGHT__KIDNEY_SHIFT" xml:space="preserve">
+    <value>Schedule dialysis</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__MOUSE_RIGHT__LICH_SU_GIUONG" xml:space="preserve">
+    <value>Historic bed</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__MOUSE_RIGHT__PHAN_UNG_THUOC" xml:space="preserve">
+    <value>Drug reactions</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__MOUSE_RIGHT__PHIEU_KHAI_THAC_TIEN_SU_DI_UNG" xml:space="preserve">
+    <value>Allergy History Record Sheet (BMK)</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__MOUSE_RIGHT__PHIEU_XN_DUONG_MAU_MAO_MACH" xml:space="preserve">
+    <value>Capillary blood sugar test sheet (BMK)</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__MOUSE_RIGHT__Phiếu chăm sóc_Vo" xml:space="preserve">
+    <value>Care note_Case case</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__MOUSE_RIGHT__SUA_HSDT" xml:space="preserve">
+    <value>Edit treatment</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__MOUSE_RIGHT__SUB_BENH_AN" xml:space="preserve">
+    <value>Patient</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__MOUSE_RIGHT__SUB_CONG_KHAI_THUOC_DICH_VU" xml:space="preserve">
+    <value>Disclosure of drugs and services</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__MOUSE_RIGHT__SUB_IN_AN" xml:space="preserve">
+    <value>Printing</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__MOUSE_RIGHT__SUB_KE_DON_CHI_DINH" xml:space="preserve">
+    <value>Prescribe, order</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__MOUSE_RIGHT__SUB_LUU_CHUYEN" xml:space="preserve">
+    <value>Circulation</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__MOUSE_RIGHT__SUB_THONG_TIN" xml:space="preserve">
+    <value>Information</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__MOUSE_RIGHT__TAO_BIEN_BAN_HOI_CHAN" xml:space="preserve">
+    <value>Create consultation records</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__MOUSE_RIGHT__TO_DIEU_TRI" xml:space="preserve">
+    <value>Sheet treatment</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__MOUSE_RIGHT__TU_TRUC" xml:space="preserve">
+    <value>cabinets direct</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__MOUSE_RIGHT__THONG_TIN_BENH_AN" xml:space="preserve">
+    <value>Medical information</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__MOUSE_RIGHT__THONG_TIN_CHUYEN_DEN" xml:space="preserve">
+    <value>Information go to</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__MOUSE_RIGHT__THONG_TIN_CHUYEN_DI" xml:space="preserve">
+    <value>Information transmitted</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__MOUSE_RIGHT__THONG_TIN_TAI_NAN_THUONG_TICH" xml:space="preserve">
+    <value>Injury Information</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__MOUSE_RIGHT__THONG_TIN_TU_VONG" xml:space="preserve">
+    <value>Information death</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__MOUSE_RIGHT__THONG_TIN_TRE_SO_SINH" xml:space="preserve">
+    <value>Information newborns</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__MOUSE_RIGHT__TRUYEN_DICH" xml:space="preserve">
+    <value>Infusion</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__MOUSE_RIGHT__VIEN_PHI" xml:space="preserve">
+    <value>Hospital's fee</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__MOUSE_RIGHT__XEM_GOI_DICH_VU" xml:space="preserve">
+    <value>See the service pack</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__MOUSE_RIGHT__Y_LENH_THEO_KHOA" xml:space="preserve">
+    <value>Faculty of Medicine Ordinance</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__MOUSE_RIGHT__YEU_CAU_TAM_UNG" xml:space="preserve">
+    <value>Require advance</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__TREE_SERE_SERV__COLUMN_NOTE" xml:space="preserve">
+    <value>Note</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__TREE_SERE_SERV__COLUMN_SERVICE_CODE" xml:space="preserve">
+    <value>Service code</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__TREE_SERE_SERV__COLUMN_SERVICE_NAME" xml:space="preserve">
+    <value>service name</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__TREE_SERE_SERV__COLUMN_SERVICE_REQ_CODE" xml:space="preserve">
+    <value>Request code</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__TREE_SERE_SERV__CHUA_XU_LY" xml:space="preserve">
+    <value>No process</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__TREE_SERE_SERV__DANG_XU_LY" xml:space="preserve">
+    <value>Processing</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__TREE_SERE_SERV__HOAN_THANH" xml:space="preserve">
+    <value>Complete</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__TREE_SERE_SERV__KET_QUA_XET_NGHIEM" xml:space="preserve">
+    <value>Test result 1</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__TREE_SERE_SERV__REQUEST_DEPARTMENT_NAME" xml:space="preserve">
+    <value>Faculty required</value>
+  </data>
+  <data name="LblTotalPatientInfoFormat" xml:space="preserve">
+    <value>Health insurance: {0}/ {1}</value>
+  </data>
+  <data name="UCBedRoomPartial.btnBangKe.Text" xml:space="preserve">
+    <value>List</value>
+  </data>
+  <data name="UCBedRoomPartial.btnBedHistory.Text" xml:space="preserve">
+    <value>Bed history</value>
+  </data>
+  <data name="UCBedRoomPartial.btnCloseLeaf.Text" xml:space="preserve">
+    <value>Close all the leaves</value>
+  </data>
+  <data name="UCBedRoomPartial.btnChamSoc.Text" xml:space="preserve">
+    <value>Take care of</value>
+  </data>
+  <data name="UCBedRoomPartial.btnChiDinhDichVu.Text" xml:space="preserve">
+    <value>Point</value>
+  </data>
+  <data name="UCBedRoomPartial.btnChiDinhMau.Text" xml:space="preserve">
+    <value>Prescribing blood</value>
+  </data>
+  <data name="UCBedRoomPartial.btnChuyenKhoa.Text" xml:space="preserve">
+    <value>Specialist</value>
+  </data>
+  <data name="UCBedRoomPartial.btnDanhSachYeuCau.Text" xml:space="preserve">
+    <value>Listings request</value>
+  </data>
+  <data name="UCBedRoomPartial.btnHoiChan.Text" xml:space="preserve">
+    <value>Minutes of consultation</value>
+  </data>
+  <data name="UCBedRoomPartial.btnInToDieuTri.Text" xml:space="preserve">
+    <value>Sheet treatment</value>
+  </data>
+  <data name="UCBedRoomPartial.btnKeDonThuoc.Text" xml:space="preserve">
+    <value>Prescription drugs</value>
+  </data>
+  <data name="UCBedRoomPartial.btnKeDonYHCT.Text" xml:space="preserve">
+    <value>Prescription of Traditional Chinese Medicine</value>
+  </data>
+  <data name="UCBedRoomPartial.btnKetThucDieuTri.Text" xml:space="preserve">
+    <value>Finishing treatment</value>
+  </data>
+  <data name="UCBedRoomPartial.btnLichSuDieuTri.Text" xml:space="preserve">
+    <value>Faculty of Medicine Ordinance</value>
+  </data>
+  <data name="UCBedRoomPartial.btnOpenLeaf.Text" xml:space="preserve">
+    <value>Open all leaves</value>
+  </data>
+  <data name="UCBedRoomPartial.btnSearch.Text" xml:space="preserve">
+    <value>Find (Ctrl F)</value>
+  </data>
+  <data name="UCBedRoomPartial.btnTongHpVienPhi.Text" xml:space="preserve">
+    <value>Hospital's fee</value>
+  </data>
+  <data name="UCBedRoomPartial.btnTuTruc.Text" xml:space="preserve">
+    <value>cabinets direct</value>
+  </data>
+  <data name="UCBedRoomPartial.btnThuGon.Text" xml:space="preserve">
+    <value>Collapse</value>
+  </data>
+  <data name="UCBedRoomPartial.btnYeuCauTamUng.Text" xml:space="preserve">
+    <value>Require advance</value>
+  </data>
+  <data name="UCBedRoomPartial.chkKhongHienThiKTT.Properties.Caption" xml:space="preserve">
+    <value>Hide the temporary ending</value>
+  </data>
+  <data name="UCBedRoomPartial.chkKhongHienThiKTT.ToolTip" xml:space="preserve">
+    <value>Hide patients who have performed a temporary termination</value>
+  </data>
+  <data name="UCBedRoomPartial.chkOBSERVED.Properties.Caption" xml:space="preserve">
+    <value>Need to follow up</value>
+  </data>
+  <data name="UCBedRoomPartial.gc_ClassifyName.Caption" xml:space="preserve">
+    <value>Patient classification</value>
+  </data>
+  <data name="UCBedRoomPartial.gc_ClassifyName.ToolTip" xml:space="preserve">
+    <value>Patient classification</value>
+  </data>
+  <data name="UCBedRoomPartial.gc_MedisoftH.Caption" xml:space="preserve">
+    <value>Medisoft treatment history</value>
+  </data>
+  <data name="UCBedRoomPartial.grdColAddTime.Caption" xml:space="preserve">
+    <value>Time in</value>
+  </data>
+  <data name="UCBedRoomPartial.grdColBedName.Caption" xml:space="preserve">
+    <value>Bed</value>
+  </data>
+  <data name="UCBedRoomPartial.grdColPatientCode.Caption" xml:space="preserve">
+    <value>Patient code</value>
+  </data>
+  <data name="UCBedRoomPartial.grdColPatientName.Caption" xml:space="preserve">
+    <value>Patient's</value>
+  </data>
+  <data name="UCBedRoomPartial.grdColRoomName.Caption" xml:space="preserve">
+    <value>Treatment room</value>
+  </data>
+  <data name="UCBedRoomPartial.grdColSTT.Caption" xml:space="preserve">
+    <value>STT</value>
+  </data>
+  <data name="UCBedRoomPartial.grdColTreatmentCode.Caption" xml:space="preserve">
+    <value>Treatment code</value>
+  </data>
+  <data name="UCBedRoomPartial.gridColDateTime.Caption" xml:space="preserve">
+    <value>Right</value>
+  </data>
+  <data name="UCBedRoomPartial.gridColCardExpiry.Caption" xml:space="preserve">
+    <value>Card expiry</value>
+  </data>
+  <data name="UCBedRoomPartial.gridColumn1.Caption" xml:space="preserve">
+    <value>Number of days of provisional treatment</value>
+  </data>
+  <data name="UCBedRoomPartial.gridColumn1.ToolTip" xml:space="preserve">
+    <value>The number of days of temporary treatment is calculated based on the time of hospitalization up to the present time</value>
+  </data>
+  <data name="UCBedRoomPartial.gridColumn2.Caption" xml:space="preserve">
+    <value>Age</value>
+  </data>
+  <data name="UCBedRoomPartial.gridColumn2.ToolTip" xml:space="preserve">
+    <value>Age</value>
+  </data>
+  <data name="UCBedRoomPartial.gridColumn3.Caption" xml:space="preserve">
+    <value>Hospitalized day</value>
+  </data>
+  <data name="UCBedRoomPartial.gridColumn4.Caption" xml:space="preserve">
+    <value>Card number</value>
+  </data>
+  <data name="UCBedRoomPartial.gridColumn5.Caption" xml:space="preserve">
+    <value>Department</value>
+  </data>
+  <data name="UCBedRoomPartial.gridColumn6.Caption" xml:space="preserve">
+    <value>gridColumn6</value>
+  </data>
+  <data name="UCBedRoomPartial.gridColumn7.Caption" xml:space="preserve">
+    <value>Hospitalization number</value>
+  </data>
+  <data name="UCBedRoomPartial.gridViewTreatmentBedRoom.OptionsFind.FindNullPrompt" xml:space="preserve">
+    <value>Enter search string ...</value>
+  </data>
+  <data name="UCBedRoomPartial.groupBoxPatientInfo.Text" xml:space="preserve">
+    <value>Patient Info</value>
+  </data>
+  <data name="UCBedRoomPartial.layoutControl1.Text" xml:space="preserve">
+    <value>layoutControl1</value>
+  </data>
+  <data name="UCBedRoomPartial.layoutControl2.Text" xml:space="preserve">
+    <value>layoutControl2</value>
+  </data>
+  <data name="UCBedRoomPartial.layoutControl3.Text" xml:space="preserve">
+    <value>layoutControl3</value>
+  </data>
+  <data name="UCBedRoomPartial.layoutControl4.Text" xml:space="preserve">
+    <value>layoutControl4</value>
+  </data>
+  <data name="UCBedRoomPartial.layoutControl5.Text" xml:space="preserve">
+    <value>layoutControl5</value>
+  </data>
+  <data name="UCBedRoomPartial.layoutControl6.Text" xml:space="preserve">
+    <value>layoutControl6</value>
+  </data>
+  <data name="UCBedRoomPartial.layoutControlItem20.Text" xml:space="preserve">
+    <value>Main disease:</value>
+  </data>
+  <data name="UCBedRoomPartial.layoutControlItem23.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Code of initial medical examination and treatment on health insurance card</value>
+  </data>
+  <data name="UCBedRoomPartial.layoutControlItem23.Text" xml:space="preserve">
+    <value>Code of KCBBD:</value>
+  </data>
+  <data name="UCBedRoomPartial.layoutControlItem28.Text" xml:space="preserve">
+    <value>Secondary diseases:</value>
+  </data>
+  <data name="UCBedRoomPartial.layoutControlItem34.Text" xml:space="preserve">
+    <value>Are from:</value>
+  </data>
+  <data name="UCBedRoomPartial.layoutControlItem35.Text" xml:space="preserve">
+    <value>-</value>
+  </data>
+  <data name="UCBedRoomPartial.layoutControlItem38.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Expiration of health insurance card</value>
+  </data>
+  <data name="UCBedRoomPartial.layoutControlItem38.Text" xml:space="preserve">
+    <value>Card expiration:</value>
+  </data>
+  <data name="UCBedRoomPartial.layoutControlItem44.Text" xml:space="preserve">
+    <value>Discharge type:</value>
+  </data>
+  <data name="UCBedRoomPartial.layoutControlItem45.Text" xml:space="preserve">
+    <value>Treatments:</value>
+  </data>
+  <data name="UCBedRoomPartial.layoutControlItem7.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Health insurance card number</value>
+  </data>
+  <data name="UCBedRoomPartial.layoutControlItem7.Text" xml:space="preserve">
+    <value>Health insurance card:</value>
+  </data>
+  <data name="UCBedRoomPartial.layoutControlTreeSereServ.Text" xml:space="preserve">
+    <value>layoutControl7</value>
+  </data>
+  <data name="UCBedRoomPartial.lblTotalPatietInfo.Text" xml:space="preserve">
+    <value>Health insurance: 0/0</value>
+  </data>
+  <data name="UCBedRoomPartial.lciAddress.Text" xml:space="preserve">
+    <value>Address:</value>
+  </data>
+  <data name="UCBedRoomPartial.lciApprovalNote.Text" xml:space="preserve">
+    <value>Note:</value>
+  </data>
+	<data name="UCBedRoomPartial.lciApprovalNote.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Hospital discharge notes, patient notes</value>
+  </data>
+  <data name="UCBedRoomPartial.lciDOB.Text" xml:space="preserve">
+    <value>Birthday:</value>
+  </data>
+  <data name="UCBedRoomPartial.lciFilterByDepartment.Text" xml:space="preserve">
+    <value>Department</value>
+  </data>
+  <data name="UCBedRoomPartial.lciGenner.Text" xml:space="preserve">
+    <value>Gender:</value>
+  </data>
+  <data name="UCBedRoomPartial.LciGroupEmrDocument1.Text" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="UCBedRoomPartial.lciLbTreatDoctor.Text" xml:space="preserve">
+    <value>Doctor:</value>
+  </data>
+  <data name="UCBedRoomPartial.lciPatientCode.Text" xml:space="preserve">
+    <value>Patients code:</value>
+  </data>
+  <data name="UCBedRoomPartial.lciPatientName.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Patient's name</value>
+  </data>
+  <data name="UCBedRoomPartial.lciPatientName.Text" xml:space="preserve">
+    <value>Patient's name:</value>
+  </data>
+  <data name="UCBedRoomPartial.lciTreatmentType.Text" xml:space="preserve">
+    <value>Subjects</value>
+  </data>
+  <data name="UCBedRoomPartial.txtKeyWord.Properties.NullValuePrompt" xml:space="preserve">
+    <value>Keyword search (F2)</value>
+  </data>
+  <data name="UCBedRoomPartial.treeColDateTime.Caption" xml:space="preserve">
+    <value>Day</value>
+  </data>
+  <data name="UCBedRoomPartial.xtraTabDocumentReq.Text" xml:space="preserve">
+    <value>Specify votes</value>
+  </data>
+  <data name="UCBedRoomPartial.xtraTabDocumentResult.Text" xml:space="preserve">
+    <value>Result sheet</value>
+  </data>
+  <data name="UCBedRoomPartial.xtraTabPage1.Text" xml:space="preserve">
+    <value>All</value>
+  </data>
+  <data name="UCBedRoomPartial.xtraTabPage2.Text" xml:space="preserve">
+    <value>CLS</value>
+  </data>
+  <data name="UCBedRoomPartial.xtraTabPage3.Text" xml:space="preserve">
+    <value>Medicines, supplies, blood</value>
+  </data>
+  <data name="UCBedRoomPartial.xtraTabPage4.Text" xml:space="preserve">
+    <value>Other</value>
+  </data>
+  <data name="UCTreeListService.isRation.Caption" xml:space="preserve">
+    <value>DTTT</value>
+  </data>
+  <data name="UCTreeListService.layoutControl1.Text" xml:space="preserve">
+    <value>layoutControl1</value>
+  </data>
+  <data name="UCTreeListService.tc_Delete.Caption" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="UCTreeListService.tc_Edit.Caption" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="UCTreeListService.tc_MediUsed.Caption" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="UCTreeListService.tc_NoteAdo.Caption" xml:space="preserve">
+    <value>Note</value>
+  </data>
+  <data name="UCTreeListService.tc_Number.Caption" xml:space="preserve">
+    <value>Amount</value>
+  </data>
+  <data name="UCTreeListService.tc_RequestDepartmentName.Caption" xml:space="preserve">
+    <value>Faculty required</value>
+  </data>
+  <data name="UCTreeListService.tc_SendTestServiceReq.Caption" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="UCTreeListService.tc_ServiceCode.Caption" xml:space="preserve">
+    <value>Service code</value>
+  </data>
+  <data name="UCTreeListService.tc_ServiceName.Caption" xml:space="preserve">
+    <value>Service name</value>
+  </data>
+  <data name="UCTreeListService.treeListColumn1.Caption" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="UCTreeListService.treeListColumn2.Caption" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="UCTreeListService.treeSereServ.OptionsFind.FindNullPrompt" xml:space="preserve">
+    <value>Enter the search string...</value>
+  </data>
+  <data name="UCBedRoomPartial.gridColPhone.Caption" xml:space="preserve">
+    <value>Phone number</value>
+  </data>
+  <data name="UCBedRoomPartial.gridColPhone.Tooltip" xml:space="preserve">
+    <value>Patient's phone number</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__TREE_SERE_SERV__GUI_LAI_YEU_CAU_XET_NGHIEM" xml:space="preserve">
+    <value>Resend test request</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__TREE_SERE_SERV__SUA" xml:space="preserve">
+    <value>Edit</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__TREE_SERE_SERV__TAO_THU_HOI" xml:space="preserve">
+    <value>Create recall</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__TREE_SERE_SERV__THOI_GIAN_Y_LENH" xml:space="preserve">
+    <value>Order time</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__TREE_SERE_SERV__XOA" xml:space="preserve">
+    <value>Delete</value>
+  </data>
+  <data name="UCTreeListService.btnHivTreatment.Text" xml:space="preserve">
+    <value>HIV/AIDS treatment information</value>
+  </data>
+  <data name="GiamDinhYKhoa" xml:space="preserve">
+    <value>Medical assessment</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__MOUSE_RIGHT__BAO_AN" xml:space="preserve">
+    <value>Meal report</value>
+  </data>
+  <data name="UCBedRoomPartial.gridColumn10.Caption" xml:space="preserve">
+    <value>Gender</value>
+  </data>
+  <data name="UCBedRoomPartial.gridColumn10.ToolTip" xml:space="preserve">
+    <value>Gender</value>
+  </data>
+  <data name="INIT_LANGUAGE__UC_TREE_SERE_SERV_7__DA_LAY_MAU" xml:space="preserve">
+    <value>Sample taken</value>
+  </data>
+  <data name="INIT_LANGUAGE__UC_TREE_SERE_SERV_7__DA_NHAN_MAU" xml:space="preserve">
+    <value>Sample received</value>
+  </data>
+</root>

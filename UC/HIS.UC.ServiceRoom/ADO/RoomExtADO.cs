@@ -56,6 +56,7 @@ namespace HIS.UC.ServiceRoom.ADO
         public decimal? TOTAL_TODAY_KNVP_SERE { get; set; }
         public decimal? TOTAL_MORNING_KNVP_SERE { get; set; }
         public decimal? TOTAL_AFTERNOON_KNVP_SERE { get; set; }
+        public short? IS_PAUSE_ENCLITIC { get; set; }
 
 
         public RoomExtADO() : base() { }
@@ -74,7 +75,7 @@ namespace HIS.UC.ServiceRoom.ADO
             this.MAX_REQUEST_BY_DAY = (long?)data.MAX_REQUEST_BY_DAY;
             this.TOTAL_OPEN_SERVICE_REQ = (long?)(data.TOTAL_TODAY_SERVICE_REQ - data.TOTAL_NEW_SERVICE_REQ);
             this.RESPONSIBLE_LOGINNAME = data.RESPONSIBLE_LOGINNAME;
-            this.RESPONSIBLE_USERNAME = data.RESPONSIBLE_USERNAME;
+            this.RESPONSIBLE_USERNAME = data.RESPONSIBLE_USERNAME;      
             this.TOTAL_END_SERVICE_REQ = (long?)data.TOTAL_END_SERVICE_REQ;
             long TOTAL_TODAY_1 = Convert.ToInt64(data.TOTAL_TODAY_SERVICE_REQ ?? 0);
             long MAX_BY_DAY_1 = data.MAX_REQUEST_BY_DAY ?? 0;
@@ -85,6 +86,8 @@ namespace HIS.UC.ServiceRoom.ADO
             this.TOTAL_TODAY_KNVP_SERE = (long?)data.TOTAL_TODAY_KNVP_SERE;
             this.TOTAL_MORNING_KNVP_SERE = (long?)data.TOTAL_MORNING_KNVP_SERE;
             this.TOTAL_AFTERNOON_KNVP_SERE = (long?)data.TOTAL_AFTERNOON_KNVP_SERE;
+
+            this.IS_PAUSE_ENCLITIC = data.IS_PAUSE_ENCLITIC;
 
             if ((MAX_BY_DAY_1 > 0 && MAX_BY_DAY_1 < TOTAL_TODAY_1) || (MAX_BY_DAY_2 > 0 && MAX_BY_DAY_2 < TOTAL_TODAY_1))
             {

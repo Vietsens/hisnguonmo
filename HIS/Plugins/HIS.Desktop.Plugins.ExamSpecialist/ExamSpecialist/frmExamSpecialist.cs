@@ -21,6 +21,7 @@ using System.Windows.Forms;
 using HIS.Desktop.ApiConsumer;
 using DevExpress.XtraGrid.Views.Base;
 using System.Collections;
+using DevExpress.XtraGrid.Views.Grid.ViewInfo;
 
 namespace HIS.Desktop.Plugins.ExamSpecialist.ExamSpecialist
 {
@@ -32,18 +33,20 @@ namespace HIS.Desktop.Plugins.ExamSpecialist.ExamSpecialist
         int dataTotal = 0;
         long treatmentId = 0;
         int start = 0;
+        V_HIS_SPECIALIST_EXAM curentSpecialistExam;
         #endregion
         private Inventec.Desktop.Common.Modules.Module currentModule;
         public frmExamSpecialist()
         {
             InitializeComponent();
         }
-        public frmExamSpecialist(Inventec.Desktop.Common.Modules.Module currentModule, long treatmentId)
+        public frmExamSpecialist(Inventec.Desktop.Common.Modules.Module currentModule, long treatmentId, V_HIS_SPECIALIST_EXAM curentSpecialistExam)
             : base(currentModule)
         {
             InitializeComponent();
             this.currentModule = currentModule;
             this.treatmentId = treatmentId;
+            this.curentSpecialistExam = curentSpecialistExam;
             try
             {
                 this.Text = currentModule.text;
@@ -59,8 +62,10 @@ namespace HIS.Desktop.Plugins.ExamSpecialist.ExamSpecialist
             try
             {
                 WaitingManager.Show();
+                this.KeyPreview = true;
                 LoadComboHisDepartment();
                 SetDefaultValueControl();
+                toolTipController1.Active = true;
                 FillDataToGrid();
             }
             catch (Exception ex)
@@ -150,17 +155,23 @@ namespace HIS.Desktop.Plugins.ExamSpecialist.ExamSpecialist
                 HisSpecialistExamViewFilter filter = new HisSpecialistExamViewFilter();
                 SetFilter(ref filter);
                 var result = new Inventec.Common.Adapter.BackendAdapter(paramCommon).GetRO<List<V_HIS_SPECIALIST_EXAM>>("api/HisSpecialistExam/GetView", ApiConsumers.MosConsumer, filter, paramCommon);
-                //Đây nhé
-                //Cơ chế hoạt động lúc gọi api là Get nhưng đầu ra để là View thành ra những thông tin nào k có trong bảng sang View sẽ bị mất dữ liệu
-                //Cái này ông sai là rõ r còn gì :)
-                Inventec.Common.Logging.LogSystem.Debug("API Result Of list: " + Inventec.Common.Logging.LogUtil.TraceData("Data:", result.Data));
                 if (result != null)
                 {
                     rowCount = (result.Data == null ? 0 : result.Data.Count);
                     dataTotal = (result.Param == null ? 0 : result.Param.Count ?? 0);
+
                     if (result.Data != null && result.Data.Count > 0)
                     {
                         listData = result.Data;
+                        CommonParam Param = new CommonParam();
+                        HisSpecialistExamFilter speFilter = new HisSpecialistExamFilter();
+                        var speResult = new Inventec.Common.Adapter.BackendAdapter(Param).GetRO<List<HIS_SPECIALIST_EXAM>>(
+                            "api/HisSpecialistExam/Get", ApiConsumers.MosConsumer, speFilter, Param);
+                        if (speResult != null && speResult.Data != null && speResult.Data.Count > 0)
+                        {
+                            var validIds = speResult.Data.Where(d => d.INVITE_TYPE == 1).Select(d => d.ID).ToList();
+                            listData = result.Data.Where(v => validIds.Contains(v.ID)).ToList();
+                        }
                     }
                     else
                     {
@@ -184,8 +195,6 @@ namespace HIS.Desktop.Plugins.ExamSpecialist.ExamSpecialist
         {
             try
             {
-                //xong r
-                //bool IsNotServiceReq = false;
                 if (filter == null) filter = new HisSpecialistExamViewFilter();
                 filter.ORDER_FIELD = "INVITE_TIME";
                 filter.ORDER_DIRECTION = "DESC";
@@ -298,12 +307,13 @@ namespace HIS.Desktop.Plugins.ExamSpecialist.ExamSpecialist
         {
             try
             {
+                var row = (V_HIS_SPECIALIST_EXAM)gridView1.GetFocusedRow();
                 Inventec.Desktop.Common.Modules.Module moduleData = GlobalVariables.currentModuleRaws.Where(o => o.ModuleLink == "HIS.Desktop.Plugins.ApprovalExamSpecialist").FirstOrDefault();
                 if (moduleData == null) Inventec.Common.Logging.LogSystem.Error("khong tim thay moduleLink = HIS.Desktop.Plugins.ApprovalExamSpecialist");
                 if (moduleData.IsPlugin && moduleData.ExtensionInfo != null)
                 {
                     List<object> listArgs = new List<object>();
-                    listArgs.Add(this.treatmentId);
+                    listArgs.Add(row);
                     var extenceInstance = PluginInstance.GetPluginInstance(PluginInstance
                         .GetModuleWithWorkingRoom(moduleData, this.currentModule.RoomId, this.currentModule.RoomTypeId), listArgs);
                     if (extenceInstance == null) throw new ArgumentNullException("moduleData is null");
@@ -353,7 +363,7 @@ namespace HIS.Desktop.Plugins.ExamSpecialist.ExamSpecialist
                         }
                         else if (e.Column.FieldName == "INVITE_TIME_STR")
                         {
-                            e.Value = Inventec.Common.DateTime.Convert.TimeNumberToDateString((long)data.INVITE_TIME);
+                            e.Value = Inventec.Common.DateTime.Convert.TimeNumberToTimeString((long)data.INVITE_TIME);
                         }
                         else if (e.Column.FieldName == "IS_APPROVAL_STR")
                         {
@@ -376,7 +386,7 @@ namespace HIS.Desktop.Plugins.ExamSpecialist.ExamSpecialist
         {
             if (e.Control && e.KeyCode == Keys.F)
             {
-                btnSearch.PerformClick();
+                btnSearch_Click(null, null);
                 e.Handled = true;
             }
         }
@@ -392,9 +402,6 @@ namespace HIS.Desktop.Plugins.ExamSpecialist.ExamSpecialist
                     Inventec.Common.Mapper.DataObjectMapper.Map<HIS_SPECIALIST_EXAM>(datamapper, row);
                     frmReject form = new frmReject(datamapper, () => FillDataToGrid());
                     form.ShowDialog();
-                    //Những cái nào load lại form như hàm fillDataToGrid như này thì code truyền thêm cái delegate hoặc action vào
-                    //Để thể hiện hành động thành công thì mới gọi lại hàm Fill
-                    //Code như này cứ tắt form là Fill lại Data, nó thừa 
                 }
             }
             catch (Exception ex)
@@ -414,12 +421,22 @@ namespace HIS.Desktop.Plugins.ExamSpecialist.ExamSpecialist
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
-
+        private void cboExamExcuteDepartment_EditValueChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                cboExamExcuteDepartment.Properties.Buttons[1].Visible = cboExamExcuteDepartment.EditValue != null;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
         private void cboInviteDepartment_ButtonClick(object sender, DevExpress.XtraEditors.Controls.ButtonPressedEventArgs e)
         {
             try
             {
-                if (e.Button.Kind == DevExpress.XtraEditors.Controls.ButtonPredefines.Delete)
+                if (cboInviteDepartment.EditValue != null && e.Button.Kind == DevExpress.XtraEditors.Controls.ButtonPredefines.Delete)
                 {
                     cboInviteDepartment.EditValue = null;
                     cboInviteDepartment.Properties.Buttons[1].Visible = false;
@@ -435,7 +452,7 @@ namespace HIS.Desktop.Plugins.ExamSpecialist.ExamSpecialist
         {
             try
             {
-                if (e.Button.Kind == DevExpress.XtraEditors.Controls.ButtonPredefines.Delete)
+                if (cboExamExcuteDepartment.EditValue != null && e.Button.Kind == DevExpress.XtraEditors.Controls.ButtonPredefines.Delete)
                 {
                     cboExamExcuteDepartment.EditValue = null;
                     cboExamExcuteDepartment.Properties.Buttons[1].Visible = false;
@@ -446,12 +463,15 @@ namespace HIS.Desktop.Plugins.ExamSpecialist.ExamSpecialist
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
-
-        private void cboExamExcuteDepartment_EditValueChanged(object sender, EventArgs e)
+        private void cboInviteDepartment_KeyDown(object sender, KeyEventArgs e)
         {
             try
             {
-                cboExamExcuteDepartment.Properties.Buttons[1].Visible = cboExamExcuteDepartment.EditValue != null;
+                if (e.KeyCode == Keys.Enter)
+                {
+                    btnSearch_Click(null, null);
+                    e.Handled = true;
+                }
             }
             catch (Exception ex)
             {

@@ -135,7 +135,7 @@
             this.dtTrackingTime = new DevExpress.XtraEditors.DateEdit();
             this.btnPrint = new DevExpress.XtraEditors.SimpleButton();
             this.btnSave = new DevExpress.XtraEditors.SimpleButton();
-            this.xtraTabControl2 = new DevExpress.XtraTab.XtraTabControl();
+            this.tabAll = new DevExpress.XtraTab.XtraTabControl();
             this.xtraTabPage19 = new DevExpress.XtraTab.XtraTabPage();
             this.layoutControl2 = new DevExpress.XtraLayout.LayoutControl();
             this.ucPaging1 = new Inventec.UC.Paging.UcPaging();
@@ -145,38 +145,39 @@
             this.gridColumnDateTime = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumnDoctor = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumnProgress = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.memLine = new DevExpress.XtraEditors.Repository.RepositoryItemMemoEdit();
             this.gridColumnMedicalOrder = new DevExpress.XtraGrid.Columns.GridColumn();
             this.layoutControlGroup2 = new DevExpress.XtraLayout.LayoutControlGroup();
             this.layoutControlItem1 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem15 = new DevExpress.XtraLayout.LayoutControlItem();
             this.xtraTabPage20 = new DevExpress.XtraTab.XtraTabPage();
             this.layoutControl3 = new DevExpress.XtraLayout.LayoutControl();
-            this.panelControl2 = new DevExpress.XtraEditors.PanelControl();
+            this.pcCDHA = new DevExpress.XtraEditors.PanelControl();
             this.layoutControlGroup3 = new DevExpress.XtraLayout.LayoutControlGroup();
             this.layoutControlItem9 = new DevExpress.XtraLayout.LayoutControlItem();
             this.xtraTabPage21 = new DevExpress.XtraTab.XtraTabPage();
             this.layoutControl4 = new DevExpress.XtraLayout.LayoutControl();
-            this.panelControl3 = new DevExpress.XtraEditors.PanelControl();
+            this.pcXN = new DevExpress.XtraEditors.PanelControl();
             this.layoutControlGroup5 = new DevExpress.XtraLayout.LayoutControlGroup();
             this.layoutControlItem10 = new DevExpress.XtraLayout.LayoutControlItem();
             this.xtraTabPage22 = new DevExpress.XtraTab.XtraTabPage();
             this.layoutControl5 = new DevExpress.XtraLayout.LayoutControl();
-            this.panelControl4 = new DevExpress.XtraEditors.PanelControl();
+            this.pcService = new DevExpress.XtraEditors.PanelControl();
             this.layoutControlGroup7 = new DevExpress.XtraLayout.LayoutControlGroup();
             this.layoutControlItem11 = new DevExpress.XtraLayout.LayoutControlItem();
             this.xtraTabPage23 = new DevExpress.XtraTab.XtraTabPage();
             this.layoutControl8 = new DevExpress.XtraLayout.LayoutControl();
-            this.panelControl5 = new DevExpress.XtraEditors.PanelControl();
+            this.pcSANS = new DevExpress.XtraEditors.PanelControl();
             this.layoutControlGroup8 = new DevExpress.XtraLayout.LayoutControlGroup();
             this.layoutControlItem12 = new DevExpress.XtraLayout.LayoutControlItem();
             this.xtraTabPage24 = new DevExpress.XtraTab.XtraTabPage();
             this.layoutControl9 = new DevExpress.XtraLayout.LayoutControl();
-            this.panelControl6 = new DevExpress.XtraEditors.PanelControl();
+            this.pcPTTT = new DevExpress.XtraEditors.PanelControl();
             this.layoutControlGroup9 = new DevExpress.XtraLayout.LayoutControlGroup();
             this.layoutControlItem13 = new DevExpress.XtraLayout.LayoutControlItem();
             this.xtraTabPage25 = new DevExpress.XtraTab.XtraTabPage();
             this.layoutControl10 = new DevExpress.XtraLayout.LayoutControl();
-            this.panelControl7 = new DevExpress.XtraEditors.PanelControl();
+            this.pcGP = new DevExpress.XtraEditors.PanelControl();
             this.layoutControlGroup10 = new DevExpress.XtraLayout.LayoutControlGroup();
             this.layoutControlItem14 = new DevExpress.XtraLayout.LayoutControlItem();
             this.txtNoiDungKham = new DevExpress.XtraEditors.MemoEdit();
@@ -277,8 +278,8 @@
             this.layoutControl1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dtTrackingTime.Properties.CalendarTimeProperties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dtTrackingTime.Properties)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.xtraTabControl2)).BeginInit();
-            this.xtraTabControl2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.tabAll)).BeginInit();
+            this.tabAll.SuspendLayout();
             this.xtraTabPage19.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl2)).BeginInit();
             this.layoutControl2.SuspendLayout();
@@ -286,43 +287,44 @@
             this.panelControl1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gridControl1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridViewTreatment)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.memLine)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem15)).BeginInit();
             this.xtraTabPage20.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl3)).BeginInit();
             this.layoutControl3.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.panelControl2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pcCDHA)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem9)).BeginInit();
             this.xtraTabPage21.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl4)).BeginInit();
             this.layoutControl4.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.panelControl3)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pcXN)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup5)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem10)).BeginInit();
             this.xtraTabPage22.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl5)).BeginInit();
             this.layoutControl5.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.panelControl4)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pcService)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup7)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem11)).BeginInit();
             this.xtraTabPage23.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl8)).BeginInit();
             this.layoutControl8.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.panelControl5)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pcSANS)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup8)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem12)).BeginInit();
             this.xtraTabPage24.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl9)).BeginInit();
             this.layoutControl9.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.panelControl6)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pcPTTT)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup9)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem13)).BeginInit();
             this.xtraTabPage25.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl10)).BeginInit();
             this.layoutControl10.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.panelControl7)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pcGP)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup10)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem14)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtNoiDungKham.Properties)).BeginInit();
@@ -1451,7 +1453,7 @@
             this.layoutControl1.Controls.Add(this.dtTrackingTime);
             this.layoutControl1.Controls.Add(this.btnPrint);
             this.layoutControl1.Controls.Add(this.btnSave);
-            this.layoutControl1.Controls.Add(this.xtraTabControl2);
+            this.layoutControl1.Controls.Add(this.tabAll);
             this.layoutControl1.Controls.Add(this.txtNoiDungKham);
             this.layoutControl1.Controls.Add(this.txtYLenhKham);
             this.layoutControl1.Controls.Add(this.txtBacSiKham);
@@ -1495,14 +1497,14 @@
             this.btnSave.Text = "Lưu (Ctrl S)";
             this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
             // 
-            // xtraTabControl2
+            // tabAll
             // 
-            this.xtraTabControl2.Location = new System.Drawing.Point(363, 3);
-            this.xtraTabControl2.Name = "xtraTabControl2";
-            this.xtraTabControl2.SelectedTabPage = this.xtraTabPage19;
-            this.xtraTabControl2.Size = new System.Drawing.Size(1135, 578);
-            this.xtraTabControl2.TabIndex = 9;
-            this.xtraTabControl2.TabPages.AddRange(new DevExpress.XtraTab.XtraTabPage[] {
+            this.tabAll.Location = new System.Drawing.Point(363, 3);
+            this.tabAll.Name = "tabAll";
+            this.tabAll.SelectedTabPage = this.xtraTabPage19;
+            this.tabAll.Size = new System.Drawing.Size(1135, 578);
+            this.tabAll.TabIndex = 9;
+            this.tabAll.TabPages.AddRange(new DevExpress.XtraTab.XtraTabPage[] {
             this.xtraTabPage19,
             this.xtraTabPage20,
             this.xtraTabPage21,
@@ -1551,6 +1553,8 @@
             this.gridControl1.Location = new System.Drawing.Point(2, 2);
             this.gridControl1.MainView = this.gridViewTreatment;
             this.gridControl1.Name = "gridControl1";
+            this.gridControl1.RepositoryItems.AddRange(new DevExpress.XtraEditors.Repository.RepositoryItem[] {
+            this.memLine});
             this.gridControl1.Size = new System.Drawing.Size(1118, 508);
             this.gridControl1.TabIndex = 0;
             this.gridControl1.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
@@ -1565,40 +1569,63 @@
             this.gridColumnMedicalOrder});
             this.gridViewTreatment.GridControl = this.gridControl1;
             this.gridViewTreatment.Name = "gridViewTreatment";
+            this.gridViewTreatment.OptionsView.RowAutoHeight = true;
             this.gridViewTreatment.OptionsView.ShowGroupPanel = false;
             this.gridViewTreatment.OptionsView.ShowIndicator = false;
             // 
             // gridColumnDateTime
             // 
             this.gridColumnDateTime.Caption = "Ngày giờ";
-            this.gridColumnDateTime.FieldName = "DATE_TIME";
+            this.gridColumnDateTime.FieldName = "DatetimeFormatted";
             this.gridColumnDateTime.Name = "gridColumnDateTime";
+            this.gridColumnDateTime.OptionsColumn.AllowEdit = false;
+            this.gridColumnDateTime.OptionsColumn.ReadOnly = true;
             this.gridColumnDateTime.Visible = true;
             this.gridColumnDateTime.VisibleIndex = 0;
+            this.gridColumnDateTime.Width = 100;
             // 
             // gridColumnDoctor
             // 
             this.gridColumnDoctor.Caption = "Bác sĩ";
-            this.gridColumnDoctor.FieldName = "DOCTOR";
+            this.gridColumnDoctor.FieldName = "UserName";
             this.gridColumnDoctor.Name = "gridColumnDoctor";
+            this.gridColumnDoctor.OptionsColumn.AllowEdit = false;
+            this.gridColumnDoctor.OptionsColumn.ReadOnly = true;
             this.gridColumnDoctor.Visible = true;
             this.gridColumnDoctor.VisibleIndex = 1;
+            this.gridColumnDoctor.Width = 150;
             // 
             // gridColumnProgress
             // 
+            this.gridColumnProgress.AppearanceCell.Options.UseTextOptions = true;
+            this.gridColumnProgress.AppearanceCell.TextOptions.Trimming = DevExpress.Utils.Trimming.Word;
+            this.gridColumnProgress.AppearanceCell.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
             this.gridColumnProgress.Caption = "Diễn biến";
-            this.gridColumnProgress.FieldName = "PROGRESS";
+            this.gridColumnProgress.ColumnEdit = this.memLine;
+            this.gridColumnProgress.FieldName = "Content";
             this.gridColumnProgress.Name = "gridColumnProgress";
             this.gridColumnProgress.Visible = true;
             this.gridColumnProgress.VisibleIndex = 2;
+            this.gridColumnProgress.Width = 431;
+            // 
+            // memLine
+            // 
+            this.memLine.Appearance.Options.UseTextOptions = true;
+            this.memLine.Appearance.TextOptions.Trimming = DevExpress.Utils.Trimming.Word;
+            this.memLine.Appearance.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
+            this.memLine.Name = "memLine";
             // 
             // gridColumnMedicalOrder
             // 
+            this.gridColumnMedicalOrder.AppearanceCell.Options.UseTextOptions = true;
+            this.gridColumnMedicalOrder.AppearanceCell.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
             this.gridColumnMedicalOrder.Caption = "Y lệnh";
-            this.gridColumnMedicalOrder.FieldName = "MEDICAL_ORDER";
+            this.gridColumnMedicalOrder.ColumnEdit = this.memLine;
+            this.gridColumnMedicalOrder.FieldName = "Medical_order";
             this.gridColumnMedicalOrder.Name = "gridColumnMedicalOrder";
             this.gridColumnMedicalOrder.Visible = true;
             this.gridColumnMedicalOrder.VisibleIndex = 3;
+            this.gridColumnMedicalOrder.Width = 435;
             // 
             // layoutControlGroup2
             // 
@@ -1640,7 +1667,7 @@
             // 
             // layoutControl3
             // 
-            this.layoutControl3.Controls.Add(this.panelControl2);
+            this.layoutControl3.Controls.Add(this.pcCDHA);
             this.layoutControl3.Dock = System.Windows.Forms.DockStyle.Fill;
             this.layoutControl3.Location = new System.Drawing.Point(0, 0);
             this.layoutControl3.Name = "layoutControl3";
@@ -1649,12 +1676,12 @@
             this.layoutControl3.TabIndex = 1;
             this.layoutControl3.Text = "layoutControl3";
             // 
-            // panelControl2
+            // pcCDHA
             // 
-            this.panelControl2.Location = new System.Drawing.Point(3, 3);
-            this.panelControl2.Name = "panelControl2";
-            this.panelControl2.Size = new System.Drawing.Size(1122, 538);
-            this.panelControl2.TabIndex = 0;
+            this.pcCDHA.Location = new System.Drawing.Point(3, 3);
+            this.pcCDHA.Name = "pcCDHA";
+            this.pcCDHA.Size = new System.Drawing.Size(1122, 538);
+            this.pcCDHA.TabIndex = 0;
             // 
             // layoutControlGroup3
             // 
@@ -1670,7 +1697,7 @@
             // 
             // layoutControlItem9
             // 
-            this.layoutControlItem9.Control = this.panelControl2;
+            this.layoutControlItem9.Control = this.pcCDHA;
             this.layoutControlItem9.Location = new System.Drawing.Point(0, 0);
             this.layoutControlItem9.Name = "layoutControlItem9";
             this.layoutControlItem9.Size = new System.Drawing.Size(1128, 544);
@@ -1686,7 +1713,7 @@
             // 
             // layoutControl4
             // 
-            this.layoutControl4.Controls.Add(this.panelControl3);
+            this.layoutControl4.Controls.Add(this.pcXN);
             this.layoutControl4.Dock = System.Windows.Forms.DockStyle.Fill;
             this.layoutControl4.Location = new System.Drawing.Point(0, 0);
             this.layoutControl4.Name = "layoutControl4";
@@ -1695,12 +1722,12 @@
             this.layoutControl4.TabIndex = 1;
             this.layoutControl4.Text = "layoutControl4";
             // 
-            // panelControl3
+            // pcXN
             // 
-            this.panelControl3.Location = new System.Drawing.Point(3, 3);
-            this.panelControl3.Name = "panelControl3";
-            this.panelControl3.Size = new System.Drawing.Size(1122, 538);
-            this.panelControl3.TabIndex = 0;
+            this.pcXN.Location = new System.Drawing.Point(3, 3);
+            this.pcXN.Name = "pcXN";
+            this.pcXN.Size = new System.Drawing.Size(1122, 538);
+            this.pcXN.TabIndex = 0;
             // 
             // layoutControlGroup5
             // 
@@ -1716,7 +1743,7 @@
             // 
             // layoutControlItem10
             // 
-            this.layoutControlItem10.Control = this.panelControl3;
+            this.layoutControlItem10.Control = this.pcXN;
             this.layoutControlItem10.Location = new System.Drawing.Point(0, 0);
             this.layoutControlItem10.Name = "layoutControlItem10";
             this.layoutControlItem10.Size = new System.Drawing.Size(1128, 544);
@@ -1732,7 +1759,7 @@
             // 
             // layoutControl5
             // 
-            this.layoutControl5.Controls.Add(this.panelControl4);
+            this.layoutControl5.Controls.Add(this.pcService);
             this.layoutControl5.Dock = System.Windows.Forms.DockStyle.Fill;
             this.layoutControl5.Location = new System.Drawing.Point(0, 0);
             this.layoutControl5.Name = "layoutControl5";
@@ -1741,12 +1768,12 @@
             this.layoutControl5.TabIndex = 1;
             this.layoutControl5.Text = "layoutControl5";
             // 
-            // panelControl4
+            // pcService
             // 
-            this.panelControl4.Location = new System.Drawing.Point(3, 3);
-            this.panelControl4.Name = "panelControl4";
-            this.panelControl4.Size = new System.Drawing.Size(1122, 538);
-            this.panelControl4.TabIndex = 0;
+            this.pcService.Location = new System.Drawing.Point(3, 3);
+            this.pcService.Name = "pcService";
+            this.pcService.Size = new System.Drawing.Size(1122, 538);
+            this.pcService.TabIndex = 0;
             // 
             // layoutControlGroup7
             // 
@@ -1762,7 +1789,7 @@
             // 
             // layoutControlItem11
             // 
-            this.layoutControlItem11.Control = this.panelControl4;
+            this.layoutControlItem11.Control = this.pcService;
             this.layoutControlItem11.Location = new System.Drawing.Point(0, 0);
             this.layoutControlItem11.Name = "layoutControlItem11";
             this.layoutControlItem11.Size = new System.Drawing.Size(1128, 544);
@@ -1778,7 +1805,7 @@
             // 
             // layoutControl8
             // 
-            this.layoutControl8.Controls.Add(this.panelControl5);
+            this.layoutControl8.Controls.Add(this.pcSANS);
             this.layoutControl8.Dock = System.Windows.Forms.DockStyle.Fill;
             this.layoutControl8.Location = new System.Drawing.Point(0, 0);
             this.layoutControl8.Name = "layoutControl8";
@@ -1787,12 +1814,12 @@
             this.layoutControl8.TabIndex = 1;
             this.layoutControl8.Text = "layoutControl8";
             // 
-            // panelControl5
+            // pcSANS
             // 
-            this.panelControl5.Location = new System.Drawing.Point(3, 3);
-            this.panelControl5.Name = "panelControl5";
-            this.panelControl5.Size = new System.Drawing.Size(1122, 538);
-            this.panelControl5.TabIndex = 0;
+            this.pcSANS.Location = new System.Drawing.Point(3, 3);
+            this.pcSANS.Name = "pcSANS";
+            this.pcSANS.Size = new System.Drawing.Size(1122, 538);
+            this.pcSANS.TabIndex = 0;
             // 
             // layoutControlGroup8
             // 
@@ -1808,7 +1835,7 @@
             // 
             // layoutControlItem12
             // 
-            this.layoutControlItem12.Control = this.panelControl5;
+            this.layoutControlItem12.Control = this.pcSANS;
             this.layoutControlItem12.Location = new System.Drawing.Point(0, 0);
             this.layoutControlItem12.Name = "layoutControlItem12";
             this.layoutControlItem12.Size = new System.Drawing.Size(1128, 544);
@@ -1824,7 +1851,7 @@
             // 
             // layoutControl9
             // 
-            this.layoutControl9.Controls.Add(this.panelControl6);
+            this.layoutControl9.Controls.Add(this.pcPTTT);
             this.layoutControl9.Dock = System.Windows.Forms.DockStyle.Fill;
             this.layoutControl9.Location = new System.Drawing.Point(0, 0);
             this.layoutControl9.Name = "layoutControl9";
@@ -1833,12 +1860,12 @@
             this.layoutControl9.TabIndex = 1;
             this.layoutControl9.Text = "layoutControl9";
             // 
-            // panelControl6
+            // pcPTTT
             // 
-            this.panelControl6.Location = new System.Drawing.Point(3, 3);
-            this.panelControl6.Name = "panelControl6";
-            this.panelControl6.Size = new System.Drawing.Size(1122, 538);
-            this.panelControl6.TabIndex = 0;
+            this.pcPTTT.Location = new System.Drawing.Point(3, 3);
+            this.pcPTTT.Name = "pcPTTT";
+            this.pcPTTT.Size = new System.Drawing.Size(1122, 538);
+            this.pcPTTT.TabIndex = 0;
             // 
             // layoutControlGroup9
             // 
@@ -1854,7 +1881,7 @@
             // 
             // layoutControlItem13
             // 
-            this.layoutControlItem13.Control = this.panelControl6;
+            this.layoutControlItem13.Control = this.pcPTTT;
             this.layoutControlItem13.Location = new System.Drawing.Point(0, 0);
             this.layoutControlItem13.Name = "layoutControlItem13";
             this.layoutControlItem13.Size = new System.Drawing.Size(1128, 544);
@@ -1870,7 +1897,7 @@
             // 
             // layoutControl10
             // 
-            this.layoutControl10.Controls.Add(this.panelControl7);
+            this.layoutControl10.Controls.Add(this.pcGP);
             this.layoutControl10.Dock = System.Windows.Forms.DockStyle.Fill;
             this.layoutControl10.Location = new System.Drawing.Point(0, 0);
             this.layoutControl10.Name = "layoutControl10";
@@ -1879,12 +1906,12 @@
             this.layoutControl10.TabIndex = 1;
             this.layoutControl10.Text = "layoutControl10";
             // 
-            // panelControl7
+            // pcGP
             // 
-            this.panelControl7.Location = new System.Drawing.Point(3, 3);
-            this.panelControl7.Name = "panelControl7";
-            this.panelControl7.Size = new System.Drawing.Size(1122, 538);
-            this.panelControl7.TabIndex = 0;
+            this.pcGP.Location = new System.Drawing.Point(3, 3);
+            this.pcGP.Name = "pcGP";
+            this.pcGP.Size = new System.Drawing.Size(1122, 538);
+            this.pcGP.TabIndex = 0;
             // 
             // layoutControlGroup10
             // 
@@ -1900,7 +1927,7 @@
             // 
             // layoutControlItem14
             // 
-            this.layoutControlItem14.Control = this.panelControl7;
+            this.layoutControlItem14.Control = this.pcGP;
             this.layoutControlItem14.Location = new System.Drawing.Point(0, 0);
             this.layoutControlItem14.Name = "layoutControlItem14";
             this.layoutControlItem14.Size = new System.Drawing.Size(1128, 544);
@@ -1974,7 +2001,7 @@
             // 
             // layoutControlItem6
             // 
-            this.layoutControlItem6.Control = this.xtraTabControl2;
+            this.layoutControlItem6.Control = this.tabAll;
             this.layoutControlItem6.Location = new System.Drawing.Point(360, 0);
             this.layoutControlItem6.Name = "layoutControlItem6";
             this.layoutControlItem6.Size = new System.Drawing.Size(1141, 584);
@@ -2133,8 +2160,8 @@
             this.layoutControl1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dtTrackingTime.Properties.CalendarTimeProperties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dtTrackingTime.Properties)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.xtraTabControl2)).EndInit();
-            this.xtraTabControl2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.tabAll)).EndInit();
+            this.tabAll.ResumeLayout(false);
             this.xtraTabPage19.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl2)).EndInit();
             this.layoutControl2.ResumeLayout(false);
@@ -2142,43 +2169,44 @@
             this.panelControl1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.gridControl1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridViewTreatment)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.memLine)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem15)).EndInit();
             this.xtraTabPage20.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl3)).EndInit();
             this.layoutControl3.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.panelControl2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pcCDHA)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup3)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem9)).EndInit();
             this.xtraTabPage21.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl4)).EndInit();
             this.layoutControl4.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.panelControl3)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pcXN)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup5)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem10)).EndInit();
             this.xtraTabPage22.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl5)).EndInit();
             this.layoutControl5.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.panelControl4)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pcService)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup7)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem11)).EndInit();
             this.xtraTabPage23.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl8)).EndInit();
             this.layoutControl8.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.panelControl5)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pcSANS)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup8)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem12)).EndInit();
             this.xtraTabPage24.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl9)).EndInit();
             this.layoutControl9.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.panelControl6)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pcPTTT)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup9)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem13)).EndInit();
             this.xtraTabPage25.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl10)).EndInit();
             this.layoutControl10.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.panelControl7)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pcGP)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup10)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem14)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtNoiDungKham.Properties)).EndInit();
@@ -2312,7 +2340,7 @@
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem2;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem3;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem4;
-        private DevExpress.XtraTab.XtraTabControl xtraTabControl2;
+        private DevExpress.XtraTab.XtraTabControl tabAll;
         private DevExpress.XtraTab.XtraTabPage xtraTabPage19;
         private DevExpress.XtraTab.XtraTabPage xtraTabPage20;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem6;
@@ -2329,12 +2357,12 @@
         private DevExpress.XtraTab.XtraTabPage xtraTabPage23;
         private DevExpress.XtraTab.XtraTabPage xtraTabPage24;
         private DevExpress.XtraTab.XtraTabPage xtraTabPage25;
-        private DevExpress.XtraEditors.PanelControl panelControl2;
-        private DevExpress.XtraEditors.PanelControl panelControl3;
-        private DevExpress.XtraEditors.PanelControl panelControl4;
-        private DevExpress.XtraEditors.PanelControl panelControl5;
-        private DevExpress.XtraEditors.PanelControl panelControl6;
-        private DevExpress.XtraEditors.PanelControl panelControl7;
+        private DevExpress.XtraEditors.PanelControl pcCDHA;
+        private DevExpress.XtraEditors.PanelControl pcXN;
+        private DevExpress.XtraEditors.PanelControl pcService;
+        private DevExpress.XtraEditors.PanelControl pcSANS;
+        private DevExpress.XtraEditors.PanelControl pcPTTT;
+        private DevExpress.XtraEditors.PanelControl pcGP;
         private DevExpress.Utils.ImageCollection imageCollection1;
         private DevExpress.Utils.ImageCollection imageCollection2;
         private DevExpress.XtraLayout.LayoutControl layoutControl2;
@@ -2367,5 +2395,6 @@
         private DevExpress.XtraGrid.Columns.GridColumn gridColumnMedicalOrder;
         private Inventec.UC.Paging.UcPaging ucPaging1;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem15;
+        private DevExpress.XtraEditors.Repository.RepositoryItemMemoEdit memLine;
     }
 }
