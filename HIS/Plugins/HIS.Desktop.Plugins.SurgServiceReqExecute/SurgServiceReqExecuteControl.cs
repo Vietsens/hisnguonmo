@@ -2277,7 +2277,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
                 if (e.KeyCode == Keys.Enter)
                 {
                     if (dtFinish.EditValue != null && dtFinish.DateTime != DateTime.MinValue && dtStart.EditValue != null && dtStart.DateTime != DateTime.MinValue)
-                        spinExcuteTimeAdd.EditValue = (dtFinish.DateTime - dtStart.DateTime).TotalMinutes;
+                        spinExcuteTimeAdd.EditValue = (int)(dtFinish.DateTime - dtStart.DateTime).TotalMinutes;
                     dtFinish.Properties.Buttons[1].Visible = true;
                     txtMANNER.Focus();
                 }
@@ -2401,7 +2401,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
                     dtFinish.DateTime = new DateTime(dt.Year, dt.Month, dt.Day, DateTime.Now.Hour, DateTime.Now.Minute, 0);
                     dtFinish.Properties.Buttons[1].Visible = true;
                     if (dtFinish.EditValue != null && dtFinish.DateTime != DateTime.MinValue && dtStart.EditValue != null && dtStart.DateTime != DateTime.MinValue)
-                        spinExcuteTimeAdd.EditValue = (dtFinish.DateTime - dtStart.DateTime).TotalMinutes;
+                        spinExcuteTimeAdd.EditValue = (int)(dtFinish.DateTime - dtStart.DateTime).TotalMinutes;
                     txtMANNER.Focus();
                 }
             }
@@ -5240,7 +5240,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
                 if (this.serviceReq != null)
                 {
                     long beginTime = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(dtStart.DateTime) ?? 0;
-                            long endTime = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(dtFinish.DateTime) ?? 0;
+                    long endTime = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(dtFinish.DateTime) ?? 0;
                     FormSurgAssignAndCopy.frmSurgAssignAndCopy form = new FormSurgAssignAndCopy.frmSurgAssignAndCopy(this.Module, this.serviceReq, this.vhisTreatment, this.sereServ, beginTime, endTime, ucEkip.GetDataSource());
                     form.ShowDialog();
                 }
@@ -5288,7 +5288,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             try
             {
                 if (dtFinish.EditValue != null && dtFinish.DateTime != DateTime.MinValue && dtStart.EditValue != null && dtStart.DateTime != DateTime.MinValue)
-                    spinExcuteTimeAdd.EditValue = (dtFinish.DateTime - dtStart.DateTime).TotalMinutes;
+                    spinExcuteTimeAdd.EditValue = (int)(dtFinish.DateTime - dtStart.DateTime).TotalMinutes;
             }
             catch (Exception ex)
             {
