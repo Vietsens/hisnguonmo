@@ -153,6 +153,17 @@ namespace HIS.Desktop.Plugins.ApprovaleDebateList
             }
         }
 
-       
+        private void bbtnSave_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
+        {
+            try
+            {
+                btnSave_Click(null, null);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
     }
 }

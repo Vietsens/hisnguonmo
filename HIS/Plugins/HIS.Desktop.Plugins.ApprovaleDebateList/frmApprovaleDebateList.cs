@@ -25,6 +25,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Inventec.Common.Controls.EditorLoader;
+using HIS.Desktop.LocalStorage.ConfigApplication;
+using DevExpress.XtraGrid.Views.Grid;
+using DevExpress.XtraEditors.Repository;
 
 namespace HIS.Desktop.Plugins.ApprovaleDebateList
 {
@@ -34,6 +37,9 @@ namespace HIS.Desktop.Plugins.ApprovaleDebateList
         Inventec.Desktop.Common.Modules.Module currentModule;
         internal long roomId;
         internal long roomTypeId;
+        int rowCount = 0;
+        int dataTotal = 0;
+        int startPage = 0;
         internal V_HIS_SPECIALIST_EXAM currentHisSpecialistExam { get; set; }
 
         public frmApprovaleDebateList()
@@ -64,7 +70,8 @@ namespace HIS.Desktop.Plugins.ApprovaleDebateList
             LoadDepartment();
             InitStatusCombo();
             InitCombo();
-            LoadData();
+            //LoadData();
+            FillDataToGrid();
         }
 
         private void LoadData()
@@ -145,7 +152,7 @@ namespace HIS.Desktop.Plugins.ApprovaleDebateList
                 {
                     Inventec.Common.Logging.LogSystem.Warn(ex);
                 }
-                
+
             }
             catch (Exception ex)
             {
@@ -154,7 +161,10 @@ namespace HIS.Desktop.Plugins.ApprovaleDebateList
             }
 
         }
-
+        private void RefreshData()
+        {
+            gridView1.UpdateCurrentRow();
+        }
         private void LoadDepartment()
         {
             try
@@ -235,7 +245,8 @@ namespace HIS.Desktop.Plugins.ApprovaleDebateList
 
         private void btnSearch_Click(object sender, EventArgs e)
         {
-            LoadData();
+            //LoadData();
+            FillDataToGrid();
         }
 
         private void bbtnSearch_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
@@ -269,10 +280,10 @@ namespace HIS.Desktop.Plugins.ApprovaleDebateList
                         List<object> listArgs = new List<object>();
                         Inventec.Desktop.Common.Modules.Module currentModule = new Inventec.Desktop.Common.Modules.Module();
                         listArgs.Add(currentHisSpecialistExam);
-                        listArgs.Add((HIS.Desktop.Common.RefeshReference)LoadData);
+                        listArgs.Add((HIS.Desktop.Common.RefeshReference)RefreshData);
                         var extenceInstance = PluginInstance.GetPluginInstance(HIS.Desktop.Utility.PluginInstance.GetModuleWithWorkingRoom(moduleData, roomId, roomTypeId), listArgs);
                         if (extenceInstance == null) throw new ArgumentNullException("moduleData is null");
-                        ((Form)extenceInstance).ShowDialog();                        
+                        ((Form)extenceInstance).ShowDialog();
                     }
                 }
             }
@@ -334,7 +345,7 @@ namespace HIS.Desktop.Plugins.ApprovaleDebateList
 
                     if (currentHisSpecialistExam.IS_APPROVAL == 2)
                     {
-                        frmRA.RejectReason = currentHisSpecialistExam.REJECT_APPROVAL_REASON; 
+                        frmRA.RejectReason = currentHisSpecialistExam.REJECT_APPROVAL_REASON;
                     }
                     if (frmRA.ShowDialog() == DialogResult.OK)
                     {
@@ -343,12 +354,17 @@ namespace HIS.Desktop.Plugins.ApprovaleDebateList
                         Inventec.Common.Mapper.DataObjectMapper.Map<HIS_SPECIALIST_EXAM>(datamapper, currentHisSpecialistExam);
                         datamapper.REJECT_APPROVAL_REASON = frmRA.RejectReason;
                         datamapper.IS_APPROVAL = 2; // Từ chối:  IS_APPROVAL= 2
-
+                        datamapper.EXAM_TIME = null;
+                        datamapper.EXAM_EXECUTE_CONTENT = null;
+                        datamapper.EXAM_EXCUTE = null;
+                        datamapper.EXAM_EXECUTE_LOGINNAME = null;
+                        datamapper.EXAM_EXECUTE_USERNAME = null;
                         Inventec.Common.Logging.LogSystem.Info(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => datamapper), datamapper));
                         var rs = new BackendAdapter(param).Post<HIS_SPECIALIST_EXAM>("api/HisSpecialistExam/Update", ApiConsumers.MosConsumer, datamapper, param);
                         if (rs != null)
                         {
-                            LoadData();
+                            //LoadData();
+                            FillDataToGrid();
                         }
                         MessageManager.Show(this, param, rs != null);
                         SessionManager.ProcessTokenLost(param);
@@ -384,7 +400,7 @@ namespace HIS.Desktop.Plugins.ApprovaleDebateList
         {
             try
             {
-                if (e.KeyCode == Keys.Enter) LoadData();
+                if (e.KeyCode == Keys.Enter) FillDataToGrid();
             }
             catch (Exception ex)
             {
@@ -405,7 +421,7 @@ namespace HIS.Desktop.Plugins.ApprovaleDebateList
 
                         if (e.Column.FieldName == "STT")
                         {
-                            e.Value = e.ListSourceRowIndex + 1;
+                            e.Value = e.ListSourceRowIndex + startPage + 1;// + (((ucPaging2.pagingGrid == null ? 0 : ucPaging2.pagingGrid.CurrentPage) - 1) * (ucPaging2.pagingGrid == null ? 0 : ucPaging2.pagingGrid.PageSize));
                         }
                         if (e.Column.FieldName == "INVITE_TIME_CUS")
                         {
@@ -419,6 +435,14 @@ namespace HIS.Desktop.Plugins.ApprovaleDebateList
                                 e.Value = "Đã duyệt";
                             else if (data.IS_APPROVAL == 2)
                                 e.Value = "Từ chối duyệt";
+                        }
+                        if (e.Column.FieldName == "CREATE_TIME_CUS")
+                        {
+                            e.Value = Inventec.Common.DateTime.Convert.TimeNumberToTimeString(data.CREATE_TIME ?? 0);
+                        }
+                        if (e.Column.FieldName == "MODIFY_TIME_CUS")
+                        {
+                            e.Value = Inventec.Common.DateTime.Convert.TimeNumberToTimeString(data.MODIFY_TIME ?? 0);
                         }
                     }
                 }
@@ -459,7 +483,14 @@ namespace HIS.Desktop.Plugins.ApprovaleDebateList
                     var rowData = gridView1.GetRow(e.RowHandle) as V_HIS_SPECIALIST_EXAM;
                     if (rowData != null && rowData.IS_APPROVAL != 1)
                     {
-                        e.Handled = true; // Ngăn không vẽ ô này
+                        // Ẩn tooltip của button
+                        //RepositoryItemButtonEdit buttonEdit = e.Column.ColumnEdit as RepositoryItemButtonEdit;
+                        //if (buttonEdit != null)
+                        //{
+                        //    buttonEdit.Buttons[0].ToolTip = "";  // Xóa Tooltip
+                        //    buttonEdit.Buttons[0].SuperTip = null; // Xóa SuperTip nếu có
+                        //}
+                        e.Handled = true; // Ẩn icon nếu chưa duyệt
                     }
                 }
             }
@@ -471,17 +502,17 @@ namespace HIS.Desktop.Plugins.ApprovaleDebateList
 
         private void cboExecuteDepartment_Properties_ButtonClick(object sender, DevExpress.XtraEditors.Controls.ButtonPressedEventArgs e)
         {
-            //try
-            //{
-            //    if (e.Button.Kind == DevExpress.XtraEditors.Controls.ButtonPredefines.Delete)
-            //    {
-            //        cboExecuteDepartment.EditValue = null;
-            //     }
-            //}
-            //catch (Exception ex)
-            //{
-            //    Inventec.Common.Logging.LogSystem.Error(ex);
-            //}
+            try
+            {
+                if (e.Button.Kind == DevExpress.XtraEditors.Controls.ButtonPredefines.Delete)
+                {
+                    cboExecuteDepartment.EditValue = null;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
         }
 
         private void cboDepartment_Properties_ButtonClick(object sender, DevExpress.XtraEditors.Controls.ButtonPressedEventArgs e)
@@ -513,11 +544,264 @@ namespace HIS.Desktop.Plugins.ApprovaleDebateList
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
-    }
 
-    public class StatusModel
-    {
-        public int? Value { get; set; }
-        public string Display { get; set; }
+        public void FillDataToGrid_1()
+        {
+            try
+            {
+                WaitingManager.Show();
+
+                long idtam = 0;
+                if (currentHisSpecialistExam != null)
+                {
+                    idtam = currentHisSpecialistExam.ID;
+                }
+
+                int numPageSize = 0;
+                if (ucPaging2.pagingGrid != null)
+                {
+                    numPageSize = ucPaging2.pagingGrid.PageSize;
+                }
+                else
+                {
+                    numPageSize = ConfigApplicationWorker.Get<int>("CONFIG_KEY__NUM_PAGESIZE");
+                }
+
+                GridPaging(new CommonParam(0, numPageSize));
+                CommonParam param = new CommonParam();
+                param.Limit = rowCount;
+                param.Count = dataTotal;
+                ucPaging2.Init(GridPaging, param, numPageSize, this.gridControl1);
+                //focus row
+                try
+                {
+                    if (idtam != 0)
+                    {
+                        var index = gridView1.LocateByValue("ID", idtam);
+                        gridView1.FocusedRowHandle = index;
+                        gridView1.SelectRow(index);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(ex);
+                }
+                gridColumn9.BestFit();
+                WaitingManager.Hide();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+                WaitingManager.Hide();
+            }
+        }
+
+        private void FillDataToGrid()
+        {
+            try
+            {
+                WaitingManager.Show();
+                int pagingSize = ucPaging2.pagingGrid != null ? ucPaging2.pagingGrid.PageSize : (int)ConfigApplications.NumPageSize;
+                GridPaging(new CommonParam(0, pagingSize));
+                CommonParam param = new CommonParam();
+                param.Limit = rowCount;
+                param.Count = dataTotal;
+                ucPaging2.Init(GridPaging, param, pagingSize);
+                WaitingManager.Hide();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+                WaitingManager.Hide();
+            }
+        }
+
+        private void LoadPaging2()
+        {
+            try
+            {
+                WaitingManager.Show();
+                int pagingSize = ucPaging2.pagingGrid != null ? ucPaging2.pagingGrid.PageSize : (int)ConfigApplications.NumPageSize;
+                GridPaging2(new CommonParam(0, pagingSize));
+                CommonParam param = new CommonParam();
+                param.Limit = rowCount;
+                param.Count = dataTotal;
+                ucPaging2.Init(GridPaging2, param, pagingSize, gridControl1);
+                WaitingManager.Hide();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+                WaitingManager.Hide();
+            }
+        }
+
+        private void GridPaging2(object commonParam)
+        {
+            try
+            {
+                WaitingManager.Show();
+                gridControl1.DataSource = null;
+                startPage = ((CommonParam)commonParam).Start ?? 0;
+                int limit = ((CommonParam)commonParam).Limit ?? 0;
+                CommonParam param = new CommonParam(startPage, limit);
+                MOS.Filter.HisSpecialistExamViewFilter filter = new MOS.Filter.HisSpecialistExamViewFilter();
+                SetFilter(ref filter);
+                var apiData = new Inventec.Common.Adapter.BackendAdapter
+                    (param).GetRO<List<MOS.EFMODEL.DataModels.V_HIS_SPECIALIST_EXAM>>
+                    ("api/HisSpecialistExam/GetView", ApiConsumers.MosConsumer, filter, param);
+                List<MOS.EFMODEL.DataModels.V_HIS_SPECIALIST_EXAM> lstData = null;
+
+                if (apiData != null && apiData.Data != null && apiData.Data.Count > 0)
+                {
+                    lstData = apiData.Data;
+                    rowCount = (lstData == null ? 0 : lstData.Count);
+                    dataTotal = (lstData == null ? 0 : lstData.Count);
+                }
+                gridControl1.DataSource = lstData;
+                WaitingManager.Hide();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+                WaitingManager.Hide();
+            }
+        }
+
+        private void GridPaging(object param)
+        {
+            try
+            {
+                startPage = ((CommonParam)param).Start ?? 0;
+                int limit = ((CommonParam)param).Limit ?? 0;
+                CommonParam paramCommon = new CommonParam(startPage, limit);
+                gridControl1.DataSource = null;
+                ApiResultObject<List<MOS.EFMODEL.DataModels.V_HIS_SPECIALIST_EXAM>> apiResult = null;
+                MOS.Filter.HisSpecialistExamViewFilter filter = new MOS.Filter.HisSpecialistExamViewFilter();
+                SetFilter(ref filter);
+                gridView1.BeginUpdate();
+                apiResult = new Inventec.Common.Adapter.BackendAdapter
+                    (paramCommon).GetRO<List<MOS.EFMODEL.DataModels.V_HIS_SPECIALIST_EXAM>>
+                    ("api/HisSpecialistExam/GetView", ApiConsumers.MosConsumer, filter, paramCommon);
+
+                if (apiResult != null)
+                {
+
+                    Inventec.Common.Logging.LogSystem.Debug(apiResult.Data.Count + "");
+                    Inventec.Common.Logging.LogSystem.Info(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => paramCommon), paramCommon));
+
+                    var data = apiResult.Data;
+                    if (data != null && data.Count > 0)
+                    {
+                        gridControl1.DataSource = data;
+                        rowCount = (data == null ? 0 : data.Count);
+                        dataTotal = (apiResult.Param == null ? 0 : apiResult.Param.Count ?? 0);
+                    }
+                    else
+                    {
+                        gridControl1.DataSource = null;
+                        rowCount = (data == null ? 0 : data.Count);
+                        dataTotal = (apiResult.Param == null ? 0 : apiResult.Param.Count ?? 0);
+                    }
+                }
+                gridView1.EndUpdate();
+
+                #region Process has exception
+                HIS.Desktop.Controls.Session.SessionManager.ProcessTokenLost(paramCommon);
+                #endregion
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void SetFilter(ref HisSpecialistExamViewFilter filterHSE)
+        {
+            try
+            {
+                long fromTime = Inventec.Common.TypeConvert.Parse.ToInt64(Convert.ToDateTime(dtTimeFrom.EditValue).ToString("yyyyMMdd") + "000000");
+                long toTime = Inventec.Common.TypeConvert.Parse.ToInt64(Convert.ToDateTime(dtTimeTo.EditValue).ToString("yyyyMMdd") + "235959");
+
+                filterHSE.ORDER_DIRECTION = "DESC";
+                filterHSE.ORDER_FIELD = "MODIFY_TIME";
+
+                filterHSE.INVITE_TYPE = 2;
+                filterHSE.INVITE_TIME_FROM = fromTime;
+                filterHSE.INVITE_TIME_TO = toTime;
+
+                //Trạng thái duyệt
+                filterHSE.IS_APPROVAL = cboStatus.EditValue != null ? Convert.ToInt64(cboStatus.EditValue) : (long?)null;
+
+                // Mã điều trị (12 số, tự động thêm số 0 ở đầu)
+                string treatmentCode = txtTreatmentcode.Text.Trim();
+                if (!string.IsNullOrEmpty(treatmentCode) && treatmentCode.Length < 12)
+                {
+                    treatmentCode = treatmentCode.PadLeft(12, '0');
+                    txtTreatmentcode.Text = treatmentCode;
+                }
+                if (!string.IsNullOrEmpty(treatmentCode))
+                {
+                    filterHSE.TREATMENT_CODE = treatmentCode;
+                }
+                // Mã bệnh nhân (10 số, tự động thêm số 0 ở đầu)
+                string patientCode = txtPatientcode.Text.Trim();
+                if (!string.IsNullOrEmpty(patientCode) && patientCode.Length < 10)
+                {
+                    patientCode = patientCode.PadLeft(10, '0');
+                    txtPatientcode.Text = patientCode;
+                }
+                if (!string.IsNullOrEmpty(patientCode))
+                {
+                    filterHSE.PATIENT_CODE = patientCode;
+                }
+
+                // Khoa phòng điều trị
+                if (cboDepartment.EditValue != null && long.TryParse(cboDepartment.EditValue.ToString(), out long departmentId))
+                    filterHSE.INVITE_DEPARMENT_ID = departmentId;
+
+                // Khoa phòng hội chẩn
+                if (cboExecuteDepartment.EditValue != null && long.TryParse(cboExecuteDepartment.EditValue.ToString(), out long executeDepartmentId))
+                    filterHSE.EXAM_EXECUTE_DEPARMENT_ID = executeDepartmentId;
+
+                // Từ khóa tìm kiếm
+                if (!string.IsNullOrEmpty(txtKeyword.Text))
+                {
+                    filterHSE.KEY_WORD = txtKeyword.Text.Trim();
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void gridView1_ShowingEditor(object sender, CancelEventArgs e)
+        {
+            try
+            {
+                GridView view = sender as GridView;
+                if (view.FocusedColumn.FieldName == "Debate")
+                {
+                    var rowData = view.GetFocusedRow() as V_HIS_SPECIALIST_EXAM;
+                    if (rowData != null && rowData.IS_APPROVAL != 1)
+                    {
+                        e.Cancel = true; // Chặn click show icon Hội chẩn
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
     }
 }
+
+public class StatusModel
+{
+    public int? Value { get; set; }
+    public string Display { get; set; }
+}
+

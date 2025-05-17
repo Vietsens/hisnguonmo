@@ -168,6 +168,7 @@
             this.bbtnSave.Id = 0;
             this.bbtnSave.ItemShortcut = new DevExpress.XtraBars.BarShortcut((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S));
             this.bbtnSave.Name = "bbtnSave";
+            this.bbtnSave.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.bbtnSave_ItemClick);
             // 
             // barDockControl1
             // 
