@@ -596,9 +596,11 @@ namespace HIS.Desktop.Plugins.BidCreate
             // cboDosageForm
             // 
             this.cboDosageForm.Location = new System.Drawing.Point(259, 330);
-            this.cboDosageForm.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.cboDosageForm.Margin = new System.Windows.Forms.Padding(2);
             this.cboDosageForm.Name = "cboDosageForm";
             this.cboDosageForm.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
+            this.cboDosageForm.Properties.Appearance.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Underline);
+            this.cboDosageForm.Properties.Appearance.Options.UseFont = true;
             this.cboDosageForm.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo),
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Plus),
@@ -1709,7 +1711,7 @@ namespace HIS.Desktop.Plugins.BidCreate
             // 
             // layoutControlItem21
             // 
-            this.layoutControlItem21.AppearanceItemCaption.ForeColor = System.Drawing.Color.Maroon;
+            this.layoutControlItem21.AppearanceItemCaption.ForeColor = System.Drawing.Color.Black;
             this.layoutControlItem21.AppearanceItemCaption.Options.UseForeColor = true;
             this.layoutControlItem21.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem21.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
@@ -2291,7 +2293,7 @@ namespace HIS.Desktop.Plugins.BidCreate
             // 
             this.dtFromTime.EditValue = null;
             this.dtFromTime.Location = new System.Drawing.Point(654, 50);
-            this.dtFromTime.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.dtFromTime.Margin = new System.Windows.Forms.Padding(2);
             this.dtFromTime.Name = "dtFromTime";
             this.dtFromTime.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
@@ -2312,7 +2314,7 @@ namespace HIS.Desktop.Plugins.BidCreate
             // 
             this.dtToTime.EditValue = null;
             this.dtToTime.Location = new System.Drawing.Point(984, 50);
-            this.dtToTime.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.dtToTime.Margin = new System.Windows.Forms.Padding(2);
             this.dtToTime.Name = "dtToTime";
             this.dtToTime.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});

@@ -72,7 +72,8 @@ namespace HIS.Desktop.Plugins.Transaction
             HoaDonDienTu,
             CLS,
             InPhieuThanhToan,
-            YCTU
+            YCTU,
+            InDonTongHopPhongKham
         }
 
         internal void InitMenu(bool allowUnlock, string loginname)
@@ -101,6 +102,15 @@ namespace HIS.Desktop.Plugins.Transaction
                 bbtnPhieuThuThanhToan.Tag = ItemType.InPhieuThanhToan;
                 bbtnPhieuThuThanhToan.ItemClick += new ItemClickEventHandler(this._MouseRightClick);
                 this._Menu.AddItems(new BarItem[] { bbtnPhieuThuThanhToan });
+
+                //In đơn tổng hợp phòng khám
+                if (this.currentTreatment.IS_PAUSE == 1)
+                {
+                    BarButtonItem bbtnDonTongHopPhongKham = new BarButtonItem(this._BarManager, "In đơn tổng hợp phòng khám", 1);
+                    bbtnDonTongHopPhongKham.Tag = ItemType.InDonTongHopPhongKham;
+                    bbtnDonTongHopPhongKham.ItemClick += new ItemClickEventHandler(this._MouseRightClick);
+                    this._Menu.AddItems(new BarItem[] { bbtnDonTongHopPhongKham }); 
+                }
 
 
                 if (this.PopupItemStatusAdo.LockStt)

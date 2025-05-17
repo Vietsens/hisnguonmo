@@ -66,7 +66,7 @@
     <Reference Include="DevExpress.XtraTreeList.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
     <Reference Include="DevExpress.XtraVerticalGrid.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
     <Reference Include="EMR_MAIN">
-      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\EMR_MAIN.dll</HintPath>
+      <HintPath>..\..\..\..\..\His_test\histest\x64\ReferencedAssemblies\EMR_MAIN.dll</HintPath>
     </Reference>
     <Reference Include="His.Bhyt.ExportXml">
       <HintPath>..\..\..\..\LIB\HIS\His.Bhyt.ExportXml\His.Bhyt.ExportXml.dll</HintPath>
@@ -76,10 +76,10 @@
       <HintPath>..\..\..\..\LIB\HIS\HIS.Common\HIS.Common.Treatment\HIS.Common.Treatment.dll</HintPath>
     </Reference>
     <Reference Include="HIS.Desktop.IsAdmin">
-      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\HIS.Desktop.IsAdmin.dll</HintPath>
+      <HintPath>..\..\..\..\lib\HIS\HIS.Desktop.IsAdmin\HIS.Desktop.IsAdmin.dll</HintPath>
     </Reference>
     <Reference Include="HIS.Desktop.Plugins.InformationAllowGoHome">
-      <HintPath>..\..\..\..\histest\x64\Plugins\Module\HIS.Desktop.Plugins.InformationAllowGoHome.dll</HintPath>
+      <HintPath>..\..\..\..\..\his_push\histest\x64\Plugins\Module\HIS.Desktop.Plugins.InformationAllowGoHome.dll</HintPath>
     </Reference>
     <Reference Include="HIS.Desktop.Plugins.Library.EmrGenerate, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -98,10 +98,10 @@
       <HintPath>..\..\..\..\LIB\HIS\HIS.Desktop.Plugins.Library.PrintOtherForm\HIS.Desktop.Plugins.Library.PrintOtherForm.dll</HintPath>
     </Reference>
     <Reference Include="HIS.Desktop.Plugins.Library.PrintPatientUpdate">
-      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\HIS.Desktop.Plugins.Library.PrintPatientUpdate.dll</HintPath>
+      <HintPath>..\..\..\..\..\His_test\histest\x64\ReferencedAssemblies\HIS.Desktop.Plugins.Library.PrintPatientUpdate.dll</HintPath>
     </Reference>
     <Reference Include="HIS.Desktop.Plugins.Library.PrintPrescription">
-      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\HIS.Desktop.Plugins.Library.PrintPrescription.dll</HintPath>
+      <HintPath>..\..\..\..\..\His_test\histest\x64\ReferencedAssemblies\HIS.Desktop.Plugins.Library.PrintPrescription.dll</HintPath>
     </Reference>
     <Reference Include="HIS.Desktop.Plugins.Library.PrintPublicMedicines">
       <HintPath>..\..\..\..\LIB\HIS\HIS.Desktop.Plugins.Library.PrintPublicMedicines\HIS.Desktop.Plugins.Library.PrintPublicMedicines.dll</HintPath>

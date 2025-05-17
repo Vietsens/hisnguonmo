@@ -21,12 +21,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace HIS.Desktop.Plugins.TransactionList.Base
+namespace Inventec.Desktop.Plugins.ApprovaleDebateList.ApprovaleDebateList
 {
-    class ControlCode
+    interface IApprovaleDebateList
     {
-        internal const string BtnRestore = "HIS000021";
-        internal const string BtnDelete = "HIS000023";
-        internal const string BtnEdit = "HIS000017";
+        object Run();
     }
 }
