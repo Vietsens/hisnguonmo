@@ -35,7 +35,7 @@ using HIS.Desktop.LocalStorage.BackendData;
 using Inventec.Common.Logging;
 using HIS.Desktop.Utilities.Extensions;
 using DevExpress.XtraEditors.Repository;
-using HIS.UC.ServiceRoom.CustomControl;
+//using HIS.UC.ServiceRoom.CustomControl;
 using DevExpress.XtraGrid.Views.Grid;
 using System.Collections;
 using DevExpress.Data;
@@ -48,10 +48,11 @@ using Inventec.Desktop.Common.LanguageManager;
 using DevExpress.XtraGrid.Columns;
 using DevExpress.XtraBars;
 using System.IO;
+using HIS.Desktop.LocalStorage.LocalData;
 
 namespace HIS.UC.ServiceRoom
 {
-    public partial class UCRoomExamService : UserControl
+    public partial class UCRoomExamService : Desktop.Utility.UserControlBase
     {
         #region Daclare
 
@@ -65,10 +66,10 @@ namespace HIS.UC.ServiceRoom
         public bool isInit { get; set; }
         public bool isFocusCombo { get; set; }
         public string userControlItemName { get; set; }
-        public V_HIS_SERE_SERV sereServExam { get; set; }     
+        public V_HIS_SERE_SERV sereServExam { get; set; }
         internal List<V_HIS_ROOM> hisRooms { get; set; }
         public RemoveRoomExamService dlgRemoveUC { get; set; }
-        public DelegateFocusNextUserControl dlgFocusNextUserControl;     
+        public DelegateFocusNextUserControl dlgFocusNextUserControl;
         Action registerPatientWithRightRouteBHYT;
         Action changeRoomNotEmergency;
         Action<long> changeServiceProcessPrimaryPatientType;
@@ -81,7 +82,7 @@ namespace HIS.UC.ServiceRoom
         CultureInfo currentCulture;
         List<V_HIS_SERVICE_ROOM> currentServiceRooms = new List<V_HIS_SERVICE_ROOM>();
         Dictionary<long, ResultChooseNumOrderBlockADO> dicNumOrderBlock = new Dictionary<long, ResultChooseNumOrderBlockADO>();
-        
+        Inventec.Desktop.Common.Modules.Module crurrentModele = null;
         MOS.SDO.HisPatientSDO PatientSDO { get; set; }
         Dictionary<long, string> dicBlockByAppointment = new Dictionary<long, string>();
         long? PatientClassifyId { get; set; }
@@ -112,7 +113,7 @@ namespace HIS.UC.ServiceRoom
         string col17 = "";
         string tol1 = "";
         string tol2 = "";
-        string tol3 = "";     
+        string tol3 = "";
         string tol4 = "";
         string tol5 = "";
         string tol6 = "";
@@ -122,17 +123,19 @@ namespace HIS.UC.ServiceRoom
         string tol9 = "";
         string tol10 = "";
         string tol11 = "";
-        
+
         #endregion
 
         #region Constructor - Load
 
         public UCRoomExamService()
+            : base("HIS.Desktop.Plugins.RegisterV2", "UCRoomExamService")
         {
             InitializeComponent();
         }
 
         public UCRoomExamService(RoomExamServiceInitADO ado)
+            : base("HIS.Desktop.Plugins.RegisterV2", "UCRoomExamService")
         {
             InitializeComponent();
             try
@@ -150,6 +153,8 @@ namespace HIS.UC.ServiceRoom
             try
             {
                 SetCaptionByLanguageKeyNew();
+
+                InitRestoreLayoutGridViewFromXml(gridViewContainerRoom);
             }
             catch (Exception ex)
             {
@@ -225,7 +230,7 @@ namespace HIS.UC.ServiceRoom
                 tol10 = Inventec.Common.Resource.Get.Value("UCRoomExamService.tol10.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 tol11 = Inventec.Common.Resource.Get.Value("UCRoomExamService.tol11.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 tol12 = Inventec.Common.Resource.Get.Value("UCRoomExamService.tol12.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                
+
             }
             catch (Exception ex)
             {
@@ -325,7 +330,7 @@ namespace HIS.UC.ServiceRoom
                 if (control.Parent != null && !(control is UserControl))
                 {
                     heightPlus += bounds.Y;
-                    return GetClientRectangle(control.Parent, ref  heightPlus);
+                    return GetClientRectangle(control.Parent, ref heightPlus);
                 }
             }
             return bounds;
@@ -340,7 +345,7 @@ namespace HIS.UC.ServiceRoom
                 if (control.Parent != null)
                 {
                     heightPlus += bounds.Y;
-                    return GetAllClientRectangle(control.Parent, ref  heightPlus);
+                    return GetAllClientRectangle(control.Parent, ref heightPlus);
                 }
             }
             return bounds;
@@ -478,7 +483,7 @@ namespace HIS.UC.ServiceRoom
             {
                 DevExpress.XtraGrid.Views.Grid.GridView View = sender as DevExpress.XtraGrid.Views.Grid.GridView;
                 if (e.RowHandle >= 0)
-                {     
+                {
                     var row = View.GetRow(e.RowHandle) as RoomExtADO;
 
                     long isWarn = Inventec.Common.TypeConvert.Parse.ToInt64((View.GetRowCellValue(e.RowHandle, "IS_WARN") ?? "-1").ToString());
@@ -488,7 +493,7 @@ namespace HIS.UC.ServiceRoom
                         e.Appearance.Font = new Font(e.Appearance.Font, FontStyle.Bold);
                         e.HighPriority = true;
                     }
-                    else      
+                    else
                     {
                         if (row != null && row.IS_PAUSE_ENCLITIC == 1)
                         {
@@ -516,7 +521,7 @@ namespace HIS.UC.ServiceRoom
                             else
                                 e.Appearance.ForeColor = Color.Black;
                         }
-                        
+
                     }
                 }
             }
@@ -543,7 +548,7 @@ namespace HIS.UC.ServiceRoom
                         return;
                     }
 
-                    if (e.Button == MouseButtons.Right && ModifierKeys == Keys.None)
+                    if (e.Button == MouseButtons.Right)
                     {
                         if (view != null)
                         {
@@ -622,7 +627,7 @@ namespace HIS.UC.ServiceRoom
                         view.FocusedRowHandle = hi.RowHandle;
                         view.FocusedColumn = hi.Column;
                         var rawRoom = (RoomExtADO)this.gridViewContainerRoom.GetRow(hi.RowHandle);
-                        
+
                         CallModuleNumOrderBlockChooser(rawRoom);
                     }
                 }
@@ -851,76 +856,76 @@ namespace HIS.UC.ServiceRoom
                         this.txtExamServiceCode.Text = service.SERVICE_CODE;
                         this.cboExamService.Properties.Buttons[1].Visible = true;
                         this.ProcessPrimaryPatientTypeByService(service.SERVICE_ID);
-					}
-					else
-					{
-						if (this.changeServiceProcessPrimaryPatientType != null)
-						{
-							this.changeServiceProcessPrimaryPatientType(0);
-						}
-						if (this.changeDisablePrimaryPatientType != null)
-						{
-							this.changeDisablePrimaryPatientType(false);
-						}
-					}
-				}
-			}
+                    }
+                    else
+                    {
+                        if (this.changeServiceProcessPrimaryPatientType != null)
+                        {
+                            this.changeServiceProcessPrimaryPatientType(0);
+                        }
+                        if (this.changeDisablePrimaryPatientType != null)
+                        {
+                            this.changeDisablePrimaryPatientType(false);
+                        }
+                    }
+                }
+            }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
 
-        private bool IsContainString(string arrStr,string str)
-		{
+        private bool IsContainString(string arrStr, string str)
+        {
             bool result = false;
-			try
-			{
-                if(arrStr.Contains(","))
-				{
+            try
+            {
+                if (arrStr.Contains(","))
+                {
                     var arr = arrStr.Split(',');
-					for (int i = 0; i < arr.Length; i++)
-					{
+                    for (int i = 0; i < arr.Length; i++)
+                    {
                         result = arr[i] == str;
                         if (result) break;
-					}
-				}
-				else
-				{
+                    }
+                }
+                else
+                {
                     result = arrStr == str;
-				}                    
-			}
-			catch (Exception ex)
-			{
+                }
+            }
+            catch (Exception ex)
+            {
                 result = false;
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
             return result;
-		}
+        }
 
         private void ProcessPrimaryPatientTypeByService(long serviceId)
         {
             try
             {
-				
-				if (this.changeDisablePrimaryPatientType != null)
-				{
-					this.changeDisablePrimaryPatientType(true);
-				}
-				var service = BackendDataWorker.Get<V_HIS_SERVICE>().Where(o => o.ID == serviceId).FirstOrDefault();
+
+                if (this.changeDisablePrimaryPatientType != null)
+                {
+                    this.changeDisablePrimaryPatientType(true);
+                }
+                var service = BackendDataWorker.Get<V_HIS_SERVICE>().Where(o => o.ID == serviceId).FirstOrDefault();
                 if (service != null && service.BILL_PATIENT_TYPE_ID.HasValue && this.changeServiceProcessPrimaryPatientType != null
-                    && ((string.IsNullOrEmpty(service.APPLIED_PATIENT_TYPE_IDS) || ( service.APPLIED_PATIENT_TYPE_IDS != null && currentPatientTypeAlter.PATIENT_TYPE_ID > 0 && IsContainString(service.APPLIED_PATIENT_TYPE_IDS,currentPatientTypeAlter.PATIENT_TYPE_ID.ToString()))) && ((string.IsNullOrEmpty(service.APPLIED_PATIENT_CLASSIFY_IDS) || (service.APPLIED_PATIENT_CLASSIFY_IDS != null && PatientClassifyId != null && IsContainString(service.APPLIED_PATIENT_CLASSIFY_IDS, PatientClassifyId != null ? PatientClassifyId.ToString() : "-1"))))))
+                    && ((string.IsNullOrEmpty(service.APPLIED_PATIENT_TYPE_IDS) || (service.APPLIED_PATIENT_TYPE_IDS != null && currentPatientTypeAlter.PATIENT_TYPE_ID > 0 && IsContainString(service.APPLIED_PATIENT_TYPE_IDS, currentPatientTypeAlter.PATIENT_TYPE_ID.ToString()))) && ((string.IsNullOrEmpty(service.APPLIED_PATIENT_CLASSIFY_IDS) || (service.APPLIED_PATIENT_CLASSIFY_IDS != null && PatientClassifyId != null && IsContainString(service.APPLIED_PATIENT_CLASSIFY_IDS, PatientClassifyId != null ? PatientClassifyId.ToString() : "-1"))))))
                 {
                     this.changeServiceProcessPrimaryPatientType(service.BILL_PATIENT_TYPE_ID.Value);
-					if (service.IS_NOT_CHANGE_BILL_PATY == (short?)1 && this.changeDisablePrimaryPatientType != null)
-					{
-						this.changeDisablePrimaryPatientType(false);
-					}
-					else
-					{
-						this.changeDisablePrimaryPatientType(true);
-					}
-                }                
+                    if (service.IS_NOT_CHANGE_BILL_PATY == (short?)1 && this.changeDisablePrimaryPatientType != null)
+                    {
+                        this.changeDisablePrimaryPatientType(false);
+                    }
+                    else
+                    {
+                        this.changeDisablePrimaryPatientType(true);
+                    }
+                }
             }
             catch (Exception ex)
             {
@@ -1004,26 +1009,6 @@ namespace HIS.UC.ServiceRoom
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
-        }
-
-        private void gridViewContainerRoom_MouseUp(object sender, MouseEventArgs e)
-        {
-
-        }
-
-        private void gridViewContainerRoom_ColumnPositionChanged(object sender, EventArgs e)
-        {
-            SaveLayoutForCurrentUser(gridViewContainerRoom);
-        }
-
-        private void gridViewContainerRoom_EndSorting(object sender, EventArgs e)
-        {
-            SaveLayoutForCurrentUser(gridViewContainerRoom);
-        }
-
-        private void gridViewContainerRoom_ShowingEditor(object sender, CancelEventArgs e)
-        {
-            SaveLayoutForCurrentUser(gridViewContainerRoom);
         }
     }
 }

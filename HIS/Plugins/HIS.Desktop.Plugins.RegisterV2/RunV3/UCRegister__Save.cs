@@ -780,7 +780,7 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
                         {
                             this.ucOtherServiceReqInfo1.SetValueIncode(this.currentHisExamServiceReqResultSDO.HisPatientProfile.HisTreatment.IN_CODE);
                         }
-                        this.ucServiceRoomInfo1.InitComboRoom(new ExecuteRoomGet1().GetLCounter1());
+                        this.ucServiceRoomInfo1.InitComboRoom(new ExecuteRoomGet1().GetLCounter2(), new ExecuteRoomGet1().GetLCounter());
                         this.ucPatientRaw1.FocusToPatientName();
                         this.ucHeinInfo1.SetTreatmentId(this.currentHisExamServiceReqResultSDO.HisPatientProfile.HisTreatment.ID);
                     }

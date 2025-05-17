@@ -184,13 +184,9 @@ namespace HIS.UC.ServiceRoom
             this.gridViewContainerRoom.RowCellClick += new DevExpress.XtraGrid.Views.Grid.RowCellClickEventHandler(this.gridViewContainerRoom_RowCellClick);
             this.gridViewContainerRoom.RowStyle += new DevExpress.XtraGrid.Views.Grid.RowStyleEventHandler(this.gridViewContainerRoom_RowStyle);
             this.gridViewContainerRoom.CustomRowCellEdit += new DevExpress.XtraGrid.Views.Grid.CustomRowCellEditEventHandler(this.gridViewContainerRoom_CustomRowCellEdit);
-            this.gridViewContainerRoom.ShowingEditor += new System.ComponentModel.CancelEventHandler(this.gridViewContainerRoom_ShowingEditor);
-            this.gridViewContainerRoom.EndSorting += new System.EventHandler(this.gridViewContainerRoom_EndSorting);
-            this.gridViewContainerRoom.ColumnPositionChanged += new System.EventHandler(this.gridViewContainerRoom_ColumnPositionChanged);
             this.gridViewContainerRoom.CustomUnboundColumnData += new DevExpress.XtraGrid.Views.Base.CustomColumnDataEventHandler(this.gridViewContainerRoom_CustomUnboundColumnData);
             this.gridViewContainerRoom.KeyDown += new System.Windows.Forms.KeyEventHandler(this.gridViewContainerRoom_KeyDown);
             this.gridViewContainerRoom.MouseDown += new System.Windows.Forms.MouseEventHandler(this.gridViewContainerRoom_MouseDown);
-            this.gridViewContainerRoom.MouseUp += new System.Windows.Forms.MouseEventHandler(this.gridViewContainerRoom_MouseUp);
             // 
             // repositoryItemBtnChooseHide
             // 

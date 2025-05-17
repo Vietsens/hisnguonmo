@@ -162,7 +162,7 @@ namespace HIS.UC.UCServiceRoomInfo
             }
         }
 
-        public void InitComboRoom(List<L_HIS_ROOM_COUNTER_2> executeRooms)
+        public void InitComboRoom(List<L_HIS_ROOM_COUNTER_2> executeRooms2, List<L_HIS_ROOM_COUNTER> executeRooms)
         {
             try
             {
@@ -172,7 +172,7 @@ namespace HIS.UC.UCServiceRoomInfo
                     {
                         if (item != null && (item.Control is UserControl || item.Control is XtraUserControl))
                         {
-                            this.roomExamServiceProcessor.InitComboRoom(item.Control, executeRooms);
+                            this.roomExamServiceProcessor.InitComboRoom(item.Control, executeRooms2, executeRooms);
                         }
                     }
                 }
@@ -183,7 +183,7 @@ namespace HIS.UC.UCServiceRoomInfo
             }
         }
 
-        public void InitComboRoom(List<L_HIS_ROOM_COUNTER_2> executeRooms, bool isSync)
+        public void InitComboRoom(List<L_HIS_ROOM_COUNTER_2> executeRooms2, List<L_HIS_ROOM_COUNTER> executeRooms, bool isSync)
         {
             try
             {
@@ -193,7 +193,7 @@ namespace HIS.UC.UCServiceRoomInfo
                     {
                         if (item != null && (item.Control is UserControl || item.Control is XtraUserControl))
                         {
-                            this.roomExamServiceProcessor.InitComboRoom(item.Control, executeRooms, isSync);
+                            this.roomExamServiceProcessor.InitComboRoom(item.Control, executeRooms2, executeRooms, isSync);
                         }
                     }
                 }
@@ -503,55 +503,111 @@ namespace HIS.UC.UCServiceRoomInfo
 
                 roomExamServiceData.CurrentCulture = Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture();
 
-                var dataExecuteRooms = new ExecuteRoomGet1().GetLCounter1();//#10548
+                
+                Inventec.Desktop.Common.Modules.Module moduleData = GlobalVariables.currentModuleRaws.Where(o => o.ModuleLink == "HIS.Desktop.Plugins.RegisterV2").FirstOrDefault();
 
-				
-                if (dataExecuteRooms != null && dataExecuteRooms.Count > 0)
+                var allowedModules = HIS.Desktop.Plugins.Library.RegisterConfig.HisConfigCFG.MODULELINKS.Split(',');
+                if (!string.IsNullOrWhiteSpace(HIS.Desktop.Plugins.Library.RegisterConfig.HisConfigCFG.MODULELINKS) && moduleData != null && allowedModules.Contains(moduleData.ModuleLink))
                 {
-                    var roomIdActivesV2 = BackendDataWorker.Get<V_HIS_ROOM>().Where(p => (p.IS_RESTRICT_PATIENT_TYPE == null
-                        || _roomIdByPatientTypeRooms.Contains(p.ID))).Select(p => p.ID).ToList();
+                    var dataExecuteRooms = new ExecuteRoomGet1().GetLCounter2();//#10548
 
-                    //dataExecuteRooms = dataExecuteRooms.Where(p => p.IS_PAUSE_ENCLITIC != 1 && roomIdActivesV2.Contains(p.ROOM_ID)).ToList();
-                    dataExecuteRooms = dataExecuteRooms.Where(p => roomIdActivesV2.Contains(p.ROOM_ID)).ToList();
-                    var roomWorking = BackendDataWorker.Get<HIS_ROOM>().FirstOrDefault(p => p.ID == this._RoomID);
-
-                    if (HIS.Desktop.Plugins.Library.RegisterConfig.HisConfigCFG.IsShowingExamRoomInDepartment && roomWorking != null)
+                    if (dataExecuteRooms != null && dataExecuteRooms.Count > 0)
                     {
-                        List<long> _RoomIdByDepartments = new List<long>();//20939
-                        _RoomIdByDepartments = BackendDataWorker.Get<V_HIS_ROOM>().Where(p => p.DEPARTMENT_ID == roomWorking.DEPARTMENT_ID).Select(p => p.ID).ToList();
-                        dataExecuteRooms = dataExecuteRooms.Where(p => _RoomIdByDepartments.Contains(p.ROOM_ID)
-                        ).ToList();
+                        var roomIdActivesV2 = BackendDataWorker.Get<V_HIS_ROOM>().Where(p => (p.IS_RESTRICT_PATIENT_TYPE == null
+                            || _roomIdByPatientTypeRooms.Contains(p.ID))).Select(p => p.ID).ToList();
 
-                        Inventec.Common.Logging.LogSystem.Debug("Co cau hinh IsShowingExamRoomInDepartment, loc ra cac phong cung khoa voi phong nguoi dung dang lam viec" + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => this._RoomID), this._RoomID) + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => roomWorking.DEPARTMENT_ID), roomWorking.DEPARTMENT_ID) + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => _RoomIdByDepartments), _RoomIdByDepartments));
+                        //dataExecuteRooms = dataExecuteRooms.Where(p => p.IS_PAUSE_ENCLITIC != 1 && roomIdActivesV2.Contains(p.ROOM_ID)).ToList();
+                        dataExecuteRooms = dataExecuteRooms.Where(p => roomIdActivesV2.Contains(p.ROOM_ID)).ToList();
+                        var roomWorking = BackendDataWorker.Get<HIS_ROOM>().FirstOrDefault(p => p.ID == this._RoomID);
+
+                        if (HIS.Desktop.Plugins.Library.RegisterConfig.HisConfigCFG.IsShowingExamRoomInDepartment && roomWorking != null)
+                        {
+                            List<long> _RoomIdByDepartments = new List<long>();//20939
+                            _RoomIdByDepartments = BackendDataWorker.Get<V_HIS_ROOM>().Where(p => p.DEPARTMENT_ID == roomWorking.DEPARTMENT_ID).Select(p => p.ID).ToList();
+                            dataExecuteRooms = dataExecuteRooms.Where(p => _RoomIdByDepartments.Contains(p.ROOM_ID)
+                            ).ToList();
+
+                            Inventec.Common.Logging.LogSystem.Debug("Co cau hinh IsShowingExamRoomInDepartment, loc ra cac phong cung khoa voi phong nguoi dung dang lam viec" + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => this._RoomID), this._RoomID) + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => roomWorking.DEPARTMENT_ID), roomWorking.DEPARTMENT_ID) + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => _RoomIdByDepartments), _RoomIdByDepartments));
+                        }
+
+                        if (HIS.Desktop.Plugins.Library.RegisterConfig.HisConfigCFG.IsShowingExamRoomInArea && roomWorking != null && roomWorking.AREA_ID.HasValue && roomWorking.AREA_ID > 0)
+                        {
+                            var _RoomIdSameAreas = BackendDataWorker.Get<HIS_ROOM>().Where(p => p.AREA_ID == null || p.AREA_ID == roomWorking.AREA_ID).Select(p => p.ID).ToList();
+                            dataExecuteRooms = dataExecuteRooms.Where(p => _RoomIdSameAreas.Contains(p.ROOM_ID)
+                            ).ToList();
+
+                            Inventec.Common.Logging.LogSystem.Debug("Co cau hinh IsShowingExamRoomInArea, loc ra cac phong cung AREA_ID voi phong nguoi dung dang lam viec hoac co AREA_ID = null" + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => this._RoomID), this._RoomID) + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => roomWorking.AREA_ID), roomWorking.AREA_ID) + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => _RoomIdSameAreas), _RoomIdSameAreas));
+                        }
                     }
+                    roomExamServiceData.LHisRoomCounters2 = dataExecuteRooms;
+                    roomExamServiceData.HisServiceRooms = BackendDataWorker.Get<MOS.EFMODEL.DataModels.V_HIS_SERVICE_ROOM>().Where(o => o.BRANCH_ID == WorkPlace.GetBranchId() && o.SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__KH && o.IS_ACTIVE == 1).ToList();
+                    //Lấy danh sách các service & room đang hoạt động (IS_ACTIVE = 1), sau đó lọc các HisServiceRooms
+                    var roomIdActives = roomExamServiceData.LHisRoomCounters2.Select(o => o.ROOM_ID).ToList();
 
-                    if (HIS.Desktop.Plugins.Library.RegisterConfig.HisConfigCFG.IsShowingExamRoomInArea && roomWorking != null && roomWorking.AREA_ID.HasValue && roomWorking.AREA_ID > 0)
-                    {
-                        var _RoomIdSameAreas = BackendDataWorker.Get<HIS_ROOM>().Where(p => p.AREA_ID == null || p.AREA_ID == roomWorking.AREA_ID).Select(p => p.ID).ToList();
-                        dataExecuteRooms = dataExecuteRooms.Where(p => _RoomIdSameAreas.Contains(p.ROOM_ID)
-                        ).ToList();
-
-                        Inventec.Common.Logging.LogSystem.Debug("Co cau hinh IsShowingExamRoomInArea, loc ra cac phong cung AREA_ID voi phong nguoi dung dang lam viec hoac co AREA_ID = null" + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => this._RoomID), this._RoomID) + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => roomWorking.AREA_ID), roomWorking.AREA_ID) + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => _RoomIdSameAreas), _RoomIdSameAreas));
-                    }
+                    var serviceIdActives = BackendDataWorker.Get<MOS.EFMODEL.DataModels.V_HIS_SERVICE>().Where(o => o.SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__KH && o.IS_ACTIVE == 1).Select(o => o.ID).ToList();
+                    roomExamServiceData.HisServiceRooms = roomExamServiceData.HisServiceRooms.Where(o =>
+                        roomIdActives != null && roomIdActives.Contains(o.ROOM_ID)
+                        && serviceIdActives != null
+                        && serviceIdActives.Contains(o.SERVICE_ID)).ToList();
+                    roomExamServiceData.UcName = roomExamServiceNumber + "";
+                    roomExamServiceData.IsInit = isInit;
+                    if (sereServExam != null)
+                        roomExamServiceData.SereServExam = sereServExam;
+                    roomExamServiceData.CurrentPatientTypes = BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_PATIENT_TYPE>().Where(o => o.IS_ACTIVE == 1 && o.ID == _patientTypeId).ToList();
+                    roomExamServiceData.IsFocusCombo = this.isFocusCombo;
+                    roomExamServiceData.patientSDO = patientSDO;
                 }
+                else
+                {
+                    var dataExecuteRooms = new ExecuteRoomGet1().GetLCounter();//#10548
 
-                roomExamServiceData.LHisRoomCounters = dataExecuteRooms;
-                roomExamServiceData.HisServiceRooms = BackendDataWorker.Get<MOS.EFMODEL.DataModels.V_HIS_SERVICE_ROOM>().Where(o => o.BRANCH_ID == WorkPlace.GetBranchId() && o.SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__KH && o.IS_ACTIVE == 1).ToList();
-                //Lấy danh sách các service & room đang hoạt động (IS_ACTIVE = 1), sau đó lọc các HisServiceRooms
-                var roomIdActives = roomExamServiceData.LHisRoomCounters.Select(o => o.ROOM_ID).ToList();
+                    if (dataExecuteRooms != null && dataExecuteRooms.Count > 0)
+                    {
+                        var roomIdActivesV2 = BackendDataWorker.Get<V_HIS_ROOM>().Where(p => (p.IS_RESTRICT_PATIENT_TYPE == null
+                            || _roomIdByPatientTypeRooms.Contains(p.ID))).Select(p => p.ID).ToList();
 
-                var serviceIdActives = BackendDataWorker.Get<MOS.EFMODEL.DataModels.V_HIS_SERVICE>().Where(o => o.SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__KH && o.IS_ACTIVE == 1).Select(o => o.ID).ToList();
-                roomExamServiceData.HisServiceRooms = roomExamServiceData.HisServiceRooms.Where(o =>
-                    roomIdActives != null && roomIdActives.Contains(o.ROOM_ID)
-                    && serviceIdActives != null
-                    && serviceIdActives.Contains(o.SERVICE_ID)).ToList();
-                roomExamServiceData.UcName = roomExamServiceNumber + "";
-                roomExamServiceData.IsInit = isInit;
-                if (sereServExam != null)
-                    roomExamServiceData.SereServExam = sereServExam;
-                roomExamServiceData.CurrentPatientTypes = BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_PATIENT_TYPE>().Where(o => o.IS_ACTIVE == 1 && o.ID == _patientTypeId).ToList();
-                roomExamServiceData.IsFocusCombo = this.isFocusCombo;
-                roomExamServiceData.patientSDO = patientSDO;
+                        //dataExecuteRooms = dataExecuteRooms.Where(p => p.IS_PAUSE_ENCLITIC != 1 && roomIdActivesV2.Contains(p.ROOM_ID)).ToList();
+                        dataExecuteRooms = dataExecuteRooms.Where(p => roomIdActivesV2.Contains(p.ROOM_ID)).ToList();
+                        var roomWorking = BackendDataWorker.Get<HIS_ROOM>().FirstOrDefault(p => p.ID == this._RoomID);
+
+                        if (HIS.Desktop.Plugins.Library.RegisterConfig.HisConfigCFG.IsShowingExamRoomInDepartment && roomWorking != null)
+                        {
+                            List<long> _RoomIdByDepartments = new List<long>();//20939
+                            _RoomIdByDepartments = BackendDataWorker.Get<V_HIS_ROOM>().Where(p => p.DEPARTMENT_ID == roomWorking.DEPARTMENT_ID).Select(p => p.ID).ToList();
+                            dataExecuteRooms = dataExecuteRooms.Where(p => _RoomIdByDepartments.Contains(p.ROOM_ID)
+                            ).ToList();
+
+                            Inventec.Common.Logging.LogSystem.Debug("Co cau hinh IsShowingExamRoomInDepartment, loc ra cac phong cung khoa voi phong nguoi dung dang lam viec" + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => this._RoomID), this._RoomID) + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => roomWorking.DEPARTMENT_ID), roomWorking.DEPARTMENT_ID) + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => _RoomIdByDepartments), _RoomIdByDepartments));
+                        }
+
+                        if (HIS.Desktop.Plugins.Library.RegisterConfig.HisConfigCFG.IsShowingExamRoomInArea && roomWorking != null && roomWorking.AREA_ID.HasValue && roomWorking.AREA_ID > 0)
+                        {
+                            var _RoomIdSameAreas = BackendDataWorker.Get<HIS_ROOM>().Where(p => p.AREA_ID == null || p.AREA_ID == roomWorking.AREA_ID).Select(p => p.ID).ToList();
+                            dataExecuteRooms = dataExecuteRooms.Where(p => _RoomIdSameAreas.Contains(p.ROOM_ID)
+                            ).ToList();
+
+                            Inventec.Common.Logging.LogSystem.Debug("Co cau hinh IsShowingExamRoomInArea, loc ra cac phong cung AREA_ID voi phong nguoi dung dang lam viec hoac co AREA_ID = null" + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => this._RoomID), this._RoomID) + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => roomWorking.AREA_ID), roomWorking.AREA_ID) + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => _RoomIdSameAreas), _RoomIdSameAreas));
+                        }
+                    }
+                    roomExamServiceData.LHisRoomCounters = dataExecuteRooms;
+
+                    roomExamServiceData.HisServiceRooms = BackendDataWorker.Get<MOS.EFMODEL.DataModels.V_HIS_SERVICE_ROOM>().Where(o => o.BRANCH_ID == WorkPlace.GetBranchId() && o.SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__KH && o.IS_ACTIVE == 1).ToList();
+                    //Lấy danh sách các service & room đang hoạt động (IS_ACTIVE = 1), sau đó lọc các HisServiceRooms
+                    var roomIdActives = roomExamServiceData.LHisRoomCounters.Select(o => o.ROOM_ID).ToList();
+
+                    var serviceIdActives = BackendDataWorker.Get<MOS.EFMODEL.DataModels.V_HIS_SERVICE>().Where(o => o.SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__KH && o.IS_ACTIVE == 1).Select(o => o.ID).ToList();
+                    roomExamServiceData.HisServiceRooms = roomExamServiceData.HisServiceRooms.Where(o =>
+                        roomIdActives != null && roomIdActives.Contains(o.ROOM_ID)
+                        && serviceIdActives != null
+                        && serviceIdActives.Contains(o.SERVICE_ID)).ToList();
+                    roomExamServiceData.UcName = roomExamServiceNumber + "";
+                    roomExamServiceData.IsInit = isInit;
+                    if (sereServExam != null)
+                        roomExamServiceData.SereServExam = sereServExam;
+                    roomExamServiceData.CurrentPatientTypes = BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_PATIENT_TYPE>().Where(o => o.IS_ACTIVE == 1 && o.ID == _patientTypeId).ToList();
+                    roomExamServiceData.IsFocusCombo = this.isFocusCombo;
+                    roomExamServiceData.patientSDO = patientSDO;
+                }
             }
             catch (Exception ex)
             {
@@ -665,35 +721,77 @@ namespace HIS.UC.UCServiceRoomInfo
                     _roomIdByPatientTypeRooms = await GetPatientTypeRoom1Async(_patientTypeId);
                 }
 
-                var dataExecuteRooms = await new ExecuteRoomGet1().GetLCounter1Async();//#10548
-                if (dataExecuteRooms != null && dataExecuteRooms.Count > 0)
+                Inventec.Desktop.Common.Modules.Module moduleData = GlobalVariables.currentModuleRaws.Where(o => o.ModuleLink == "HIS.Desktop.Plugins.RegisterV2").FirstOrDefault();
+
+                var allowedModules = HIS.Desktop.Plugins.Library.RegisterConfig.HisConfigCFG.MODULELINKS.Split(',');
+                if (!string.IsNullOrWhiteSpace(HIS.Desktop.Plugins.Library.RegisterConfig.HisConfigCFG.MODULELINKS) && moduleData != null && allowedModules.Contains(moduleData.ModuleLink))
                 {
-                    var roomIdActivesV2 = BackendDataWorker.Get<V_HIS_ROOM>().Where(p => (p.IS_RESTRICT_PATIENT_TYPE == null
-                        || _roomIdByPatientTypeRooms.Contains(p.ID))).Select(p => p.ID).ToList();
+                    var dataExecuteRooms = await new ExecuteRoomGet1().GetLCounter1Async2();//#10548
 
-                    //dataExecuteRooms = dataExecuteRooms.Where(p => p.IS_PAUSE_ENCLITIC != 1 && roomIdActivesV2.Contains(p.ROOM_ID)).ToList();
-                    dataExecuteRooms = dataExecuteRooms.Where(p => roomIdActivesV2.Contains(p.ROOM_ID)).ToList();
-
-                    var roomWorking = BackendDataWorker.Get<HIS_ROOM>().FirstOrDefault(p => p.ID == this._RoomID);
-
-                    if (HIS.Desktop.Plugins.Library.RegisterConfig.HisConfigCFG.IsShowingExamRoomInDepartment && roomWorking != null)
+                    if (dataExecuteRooms != null && dataExecuteRooms.Count > 0)
                     {
-                        List<long> _RoomIdByDepartments = new List<long>();
-                        _RoomIdByDepartments = BackendDataWorker.Get<V_HIS_ROOM>().Where(p => p.DEPARTMENT_ID == roomWorking.DEPARTMENT_ID).Select(p => p.ID).ToList();
-                        dataExecuteRooms = dataExecuteRooms.Where(p => _RoomIdByDepartments.Contains(p.ROOM_ID)
-                        ).ToList();
+                        var roomIdActivesV2 = BackendDataWorker.Get<V_HIS_ROOM>().Where(p => (p.IS_RESTRICT_PATIENT_TYPE == null
+                            || _roomIdByPatientTypeRooms.Contains(p.ID))).Select(p => p.ID).ToList();
+
+                        //dataExecuteRooms = dataExecuteRooms.Where(p => p.IS_PAUSE_ENCLITIC != 1 && roomIdActivesV2.Contains(p.ROOM_ID)).ToList();
+                        dataExecuteRooms = dataExecuteRooms.Where(p => roomIdActivesV2.Contains(p.ROOM_ID)).ToList();
+
+                        var roomWorking = BackendDataWorker.Get<HIS_ROOM>().FirstOrDefault(p => p.ID == this._RoomID);
+
+                        if (HIS.Desktop.Plugins.Library.RegisterConfig.HisConfigCFG.IsShowingExamRoomInDepartment && roomWorking != null)
+                        {
+                            List<long> _RoomIdByDepartments = new List<long>();
+                            _RoomIdByDepartments = BackendDataWorker.Get<V_HIS_ROOM>().Where(p => p.DEPARTMENT_ID == roomWorking.DEPARTMENT_ID).Select(p => p.ID).ToList();
+                            dataExecuteRooms = dataExecuteRooms.Where(p => _RoomIdByDepartments.Contains(p.ROOM_ID)
+                            ).ToList();
+                        }
+
+                        if (HIS.Desktop.Plugins.Library.RegisterConfig.HisConfigCFG.IsShowingExamRoomInArea && roomWorking != null && roomWorking.AREA_ID.HasValue && roomWorking.AREA_ID > 0)
+                        {
+                            var _RoomIdSameAreas = BackendDataWorker.Get<V_HIS_ROOM>().Where(p => p.AREA_ID == null || p.AREA_ID == roomWorking.AREA_ID).Select(p => p.ID).ToList();
+                            dataExecuteRooms = dataExecuteRooms.Where(p => _RoomIdSameAreas.Contains(p.ROOM_ID)
+                            ).ToList();
+                        }
                     }
 
-                    if (HIS.Desktop.Plugins.Library.RegisterConfig.HisConfigCFG.IsShowingExamRoomInArea && roomWorking != null && roomWorking.AREA_ID.HasValue && roomWorking.AREA_ID > 0)
-                    {
-                        var _RoomIdSameAreas = BackendDataWorker.Get<V_HIS_ROOM>().Where(p => p.AREA_ID == null || p.AREA_ID == roomWorking.AREA_ID).Select(p => p.ID).ToList();
-                        dataExecuteRooms = dataExecuteRooms.Where(p => _RoomIdSameAreas.Contains(p.ROOM_ID)
-                        ).ToList();
-                    }
+                    Inventec.Common.Logging.LogSystem.Debug("ProcessTimerSyncRoomCounter.2");
+                    InitComboRoom(dataExecuteRooms, null, true);
+                    Inventec.Common.Logging.LogSystem.Debug("ProcessTimerSyncRoomCounter.3");
                 }
-                Inventec.Common.Logging.LogSystem.Debug("ProcessTimerSyncRoomCounter.2");
-                InitComboRoom(dataExecuteRooms, true);
-                Inventec.Common.Logging.LogSystem.Debug("ProcessTimerSyncRoomCounter.3");
+                else
+                {
+                    var dataExecuteRooms = await new ExecuteRoomGet1().GetLCounter1Async();//#10548
+
+                    if (dataExecuteRooms != null && dataExecuteRooms.Count > 0)
+                    {
+                        var roomIdActivesV2 = BackendDataWorker.Get<V_HIS_ROOM>().Where(p => (p.IS_RESTRICT_PATIENT_TYPE == null
+                            || _roomIdByPatientTypeRooms.Contains(p.ID))).Select(p => p.ID).ToList();
+
+                        //dataExecuteRooms = dataExecuteRooms.Where(p => p.IS_PAUSE_ENCLITIC != 1 && roomIdActivesV2.Contains(p.ROOM_ID)).ToList();
+                        dataExecuteRooms = dataExecuteRooms.Where(p => roomIdActivesV2.Contains(p.ROOM_ID)).ToList();
+
+                        var roomWorking = BackendDataWorker.Get<HIS_ROOM>().FirstOrDefault(p => p.ID == this._RoomID);
+
+                        if (HIS.Desktop.Plugins.Library.RegisterConfig.HisConfigCFG.IsShowingExamRoomInDepartment && roomWorking != null)
+                        {
+                            List<long> _RoomIdByDepartments = new List<long>();
+                            _RoomIdByDepartments = BackendDataWorker.Get<V_HIS_ROOM>().Where(p => p.DEPARTMENT_ID == roomWorking.DEPARTMENT_ID).Select(p => p.ID).ToList();
+                            dataExecuteRooms = dataExecuteRooms.Where(p => _RoomIdByDepartments.Contains(p.ROOM_ID)
+                            ).ToList();
+                        }
+
+                        if (HIS.Desktop.Plugins.Library.RegisterConfig.HisConfigCFG.IsShowingExamRoomInArea && roomWorking != null && roomWorking.AREA_ID.HasValue && roomWorking.AREA_ID > 0)
+                        {
+                            var _RoomIdSameAreas = BackendDataWorker.Get<V_HIS_ROOM>().Where(p => p.AREA_ID == null || p.AREA_ID == roomWorking.AREA_ID).Select(p => p.ID).ToList();
+                            dataExecuteRooms = dataExecuteRooms.Where(p => _RoomIdSameAreas.Contains(p.ROOM_ID)
+                            ).ToList();
+                        }
+                    }
+
+                    Inventec.Common.Logging.LogSystem.Debug("ProcessTimerSyncRoomCounter.2");
+                    InitComboRoom(null, dataExecuteRooms, true);
+                    Inventec.Common.Logging.LogSystem.Debug("ProcessTimerSyncRoomCounter.3");
+                }
             }
             catch (Exception ex)
             {
