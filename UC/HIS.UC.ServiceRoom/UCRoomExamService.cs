@@ -45,6 +45,9 @@ using DevExpress.XtraEditors;
 using DevExpress.XtraGrid;
 using HIS.Desktop.ADO;
 using Inventec.Desktop.Common.LanguageManager;
+using DevExpress.XtraGrid.Columns;
+using DevExpress.XtraBars;
+using System.IO;
 
 namespace HIS.UC.ServiceRoom
 {
@@ -78,7 +81,7 @@ namespace HIS.UC.ServiceRoom
         CultureInfo currentCulture;
         List<V_HIS_SERVICE_ROOM> currentServiceRooms = new List<V_HIS_SERVICE_ROOM>();
         Dictionary<long, ResultChooseNumOrderBlockADO> dicNumOrderBlock = new Dictionary<long, ResultChooseNumOrderBlockADO>();
-
+        
         MOS.SDO.HisPatientSDO PatientSDO { get; set; }
         Dictionary<long, string> dicBlockByAppointment = new Dictionary<long, string>();
         long? PatientClassifyId { get; set; }
@@ -432,7 +435,9 @@ namespace HIS.UC.ServiceRoom
                     if (this.gridViewContainerRoom.FocusedRowModified)
                         this.gridViewContainerRoom.UpdateCurrentRow();
 
-                    var rawRoom = (RoomExtADO)this.gridViewContainerRoom.GetFocusedRow();
+                    int rowHandle = gridViewContainerRoom.FocusedRowHandle;
+
+                    var rawRoom = (rowHandle >= 0) ? (RoomExtADO)this.gridViewContainerRoom.GetRow(rowHandle) : null;
 
                     if (rawRoom != null && rawRoom.IsChecked)
                     {
@@ -447,7 +452,9 @@ namespace HIS.UC.ServiceRoom
                 }
                 else if (e.KeyCode == Keys.Enter)
                 {
-                    var rawRoom = (RoomExtADO)this.gridViewContainerRoom.GetFocusedRow();
+                    int rowHandle = gridViewContainerRoom.FocusedRowHandle;
+
+                    var rawRoom = (rowHandle >= 0) ? (RoomExtADO)this.gridViewContainerRoom.GetRow(rowHandle) : null;
                     if ((roomExts != null && !roomExts.Any(o => o.IsChecked)) && rawRoom != null)
                     {
                         rawRoom.IsChecked = true;
@@ -471,7 +478,9 @@ namespace HIS.UC.ServiceRoom
             {
                 DevExpress.XtraGrid.Views.Grid.GridView View = sender as DevExpress.XtraGrid.Views.Grid.GridView;
                 if (e.RowHandle >= 0)
-                {
+                {     
+                    var row = View.GetRow(e.RowHandle) as RoomExtADO;
+
                     long isWarn = Inventec.Common.TypeConvert.Parse.ToInt64((View.GetRowCellValue(e.RowHandle, "IS_WARN") ?? "-1").ToString());
                     if (isWarn == 1)
                     {
@@ -479,27 +488,35 @@ namespace HIS.UC.ServiceRoom
                         e.Appearance.Font = new Font(e.Appearance.Font, FontStyle.Bold);
                         e.HighPriority = true;
                     }
-                    else
+                    else      
                     {
-                        long ROOM_ID = Inventec.Common.TypeConvert.Parse.ToInt64(View.GetRowCellValue(e.RowHandle, "ROOM_ID").ToString());
-                        long? RESPONSIBLE_TIME = View.GetRowCellValue(e.RowHandle, "RESPONSIBLE_TIME") != null ? (long?)Inventec.Common.TypeConvert.Parse.ToInt64(View.GetRowCellValue(e.RowHandle, "RESPONSIBLE_TIME").ToString()) : null;
-                        //+ Với các dòng dữ liệu không bị bôi đỏ và có RESPONSIBLE_TIME trong HIS_ROOM nằm trong khoảng: 
-                        //  tg hiện tại - 5p <= RESPONSIBLE_TIME <= tg hiện tại + 10p thì bôi màu vàng.                    
-                        if (RESPONSIBLE_TIME.HasValue && RESPONSIBLE_TIME.Value > 0)
+                        if (row != null && row.IS_PAUSE_ENCLITIC == 1)
                         {
-                            DateTime now = DateTime.Now;
-                            DateTime nowPre5P = now.AddMinutes(-5);
-                            DateTime nowNexr10P = now.AddMinutes(10);
-                            DateTime resTime = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(RESPONSIBLE_TIME.Value).Value;
-                            if (resTime != DateTime.MinValue && (Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(nowPre5P) ?? 0) <= (Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(resTime) ?? 0) && (Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(nowNexr10P) ?? 0) >= (Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(resTime) ?? 0))
+                            e.Appearance.ForeColor = Color.Gray;
+                        }
+                        else
+                        {
+                            long ROOM_ID = Inventec.Common.TypeConvert.Parse.ToInt64(View.GetRowCellValue(e.RowHandle, "ROOM_ID").ToString());
+                            long? RESPONSIBLE_TIME = View.GetRowCellValue(e.RowHandle, "RESPONSIBLE_TIME") != null ? (long?)Inventec.Common.TypeConvert.Parse.ToInt64(View.GetRowCellValue(e.RowHandle, "RESPONSIBLE_TIME").ToString()) : null;
+                            //+ Với các dòng dữ liệu không bị bôi đỏ và có RESPONSIBLE_TIME trong HIS_ROOM nằm trong khoảng: 
+                            //  tg hiện tại - 5p <= RESPONSIBLE_TIME <= tg hiện tại + 10p thì bôi màu vàng.                    
+                            if (RESPONSIBLE_TIME.HasValue && RESPONSIBLE_TIME.Value > 0)
                             {
-                                e.Appearance.ForeColor = Color.Blue;
+                                DateTime now = DateTime.Now;
+                                DateTime nowPre5P = now.AddMinutes(-5);
+                                DateTime nowNexr10P = now.AddMinutes(10);
+                                DateTime resTime = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(RESPONSIBLE_TIME.Value).Value;
+                                if (resTime != DateTime.MinValue && (Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(nowPre5P) ?? 0) <= (Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(resTime) ?? 0) && (Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(nowNexr10P) ?? 0) >= (Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(resTime) ?? 0))
+                                {
+                                    e.Appearance.ForeColor = Color.Blue;
+                                }
+                                else
+                                    e.Appearance.ForeColor = Color.Black;
                             }
                             else
                                 e.Appearance.ForeColor = Color.Black;
                         }
-                        else
-                            e.Appearance.ForeColor = Color.Black;
+                        
                     }
                 }
             }
@@ -517,6 +534,28 @@ namespace HIS.UC.ServiceRoom
                 {
                     GridView view = sender as GridView;
                     GridHitInfo hi = view.CalcHitInfo(e.Location);
+
+                    if (hi.InColumn && e.Button == MouseButtons.Left)
+                    {
+                        gridViewContainerRoom.ClearSelection();
+                        gridViewContainerRoom.FocusedRowHandle = GridControl.InvalidRowHandle;
+                        (e as DevExpress.Utils.DXMouseEventArgs).Handled = true;
+                        return;
+                    }
+
+                    if (e.Button == MouseButtons.Right && ModifierKeys == Keys.None)
+                    {
+                        if (view != null)
+                        {
+                            view.ColumnsCustomization();
+                            Rectangle screenBounds = Screen.GetBounds(view.GridControl);
+
+                            int x = screenBounds.Right - view.CustomizationForm.Width;
+                            int y = screenBounds.Bottom - view.CustomizationForm.Height;
+
+                            view.CustomizationForm.Location = new Point(x, y);
+                        }
+                    }
 
                     if (hi.Column.FieldName == "IsChecked" && hi.InRowCell)
                     {
@@ -563,7 +602,11 @@ namespace HIS.UC.ServiceRoom
 
                         statecheckColumn = !statecheckColumn;
                         this.SetCheckAllColumn(statecheckColumn);
-                        var rawRoom = (RoomExtADO)this.gridViewContainerRoom.GetFocusedRow();
+
+                        int rowHandle = gridViewContainerRoom.FocusedRowHandle;
+
+                        var rawRoom = (rowHandle >= 0) ? (RoomExtADO)this.gridViewContainerRoom.GetRow(rowHandle) : null;
+
                         long roomIdFocus = rawRoom != null ? rawRoom.ROOM_ID : 0;
                         this.roomExts.ForEach(o => o.IsChecked = statecheckColumn);
                         var roomFocus = this.roomExts.FirstOrDefault(o => o.ROOM_ID == roomIdFocus);
@@ -655,7 +698,9 @@ namespace HIS.UC.ServiceRoom
         {
             try
             {
-                var rawRoom = (RoomExtADO)this.gridViewContainerRoom.GetFocusedRow();
+                int rowHandle = gridViewContainerRoom.FocusedRowHandle;
+
+                var rawRoom = (rowHandle >= 0) ? (RoomExtADO)this.gridViewContainerRoom.GetRow(rowHandle) : null;
                 if (rawRoom != null)
                 {
                     rawRoom.IsChecked = !rawRoom.IsChecked;
@@ -950,13 +995,35 @@ namespace HIS.UC.ServiceRoom
         {
             try
             {
-                var rawRoom = (RoomExtADO)this.gridViewContainerRoom.GetFocusedRow();
+                int rowHandle = gridViewContainerRoom.FocusedRowHandle;
+
+                var rawRoom = (rowHandle >= 0) ? (RoomExtADO)this.gridViewContainerRoom.GetRow(rowHandle) : null;
                 CallModuleNumOrderBlockChooser(rawRoom);
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
+        }
+
+        private void gridViewContainerRoom_MouseUp(object sender, MouseEventArgs e)
+        {
+
+        }
+
+        private void gridViewContainerRoom_ColumnPositionChanged(object sender, EventArgs e)
+        {
+            SaveLayoutForCurrentUser(gridViewContainerRoom);
+        }
+
+        private void gridViewContainerRoom_EndSorting(object sender, EventArgs e)
+        {
+            SaveLayoutForCurrentUser(gridViewContainerRoom);
+        }
+
+        private void gridViewContainerRoom_ShowingEditor(object sender, CancelEventArgs e)
+        {
+            SaveLayoutForCurrentUser(gridViewContainerRoom);
         }
     }
 }

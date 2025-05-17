@@ -662,6 +662,10 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
                                 //this.SetHuongDanFromSoLuongNgay();//TODO
                             }
                         }
+                        if (String.IsNullOrEmpty(this.txtHtu.Text))
+                        {
+                            this.txtHtu.Text = this.medicineTypeTutSelected.HTU_TEXT;                           
+                        }
                     }
                 }
                 //Trường hợp thuốc không có cấu hình hướng dẫn sử dụng thì lấy hướng dẫn sử dụng ở danh mục loại thuốc fill vào
@@ -912,6 +916,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
                         item.SERVICE_UNIT_ID = mtF.SERVICE_UNIT_ID;
                         item.SERVICE_UNIT_NAME = mtF.SERVICE_UNIT_NAME;
                         item.TUTORIAL = mtF.TUTORIAL;
+                        
                         item.MEDICINE_USE_FORM_ID = mtF.MEDICINE_USE_FORM_ID;
                         item.IS_AUTO_EXPEND = mtF.IS_AUTO_EXPEND;
                         item.IS_OUT_PARENT_FEE = mtF.IS_OUT_PARENT_FEE;

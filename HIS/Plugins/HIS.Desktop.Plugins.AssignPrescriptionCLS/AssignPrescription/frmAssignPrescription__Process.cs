@@ -499,6 +499,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
                                         && o.IsExpend == item.IsExpend
                                         && o.DataType == item.DataType
                                         && o.TUTORIAL == item.TUTORIAL
+                                        && o.HTU_TEXT == item.HTU_TEXT
                                         && o.SERVICE_UNIT_NAME == item.SERVICE_UNIT_NAME
                                         && o.UseTimeTo == item.UseTimeTo
                                         );
@@ -661,6 +662,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
                                         && o.IsExpend == item.IsExpend
                                         && o.DataType == item.DataType
                                         && o.TUTORIAL == item.TUTORIAL
+                                        && o.HTU_TEXT == item.HTU_TEXT
                                         && o.SERVICE_UNIT_NAME == item.SERVICE_UNIT_NAME
                                         && o.UseTimeTo == item.UseTimeTo
                                         );
@@ -3268,9 +3270,6 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
                     StringBuilder huongDan = new StringBuilder();
                     string format__NgayUong = ResourceMessage.NgayUong;
                     string format__NgayUongTemp2 = ResourceMessage.NgayUongTemp2;
-                    string format__NgayUongTemp3 = ResourceMessage.NgayUongTemp3;
-                    string format__NgayUongTemp4 = ResourceMessage.NgayUongTemp4;
-                    string format__NgayUongTemp5 = ResourceMessage.NgayUongTemp5;
                     string format___NgayXVienBuoiYZ = ResourceMessage._NgayXVienBuoiYZ;
                     string format__Sang = ResourceMessage.Sang;
                     string format__Trua = ResourceMessage.Trua;
@@ -3282,7 +3281,10 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
                     string buoiChon = "";
 
                     double tongCong = (double)spinAmount.Value;
-
+                    int soLanTrongNgay = solan > 0 ? solan : 1;
+                    double moiLan = tongCong / soLanTrongNgay;
+                    string strMoiLan = Inventec.Common.Number.Convert.NumberToStringRoundAuto((decimal)moiLan, 2);
+                    string strTong = Inventec.Common.Number.Convert.NumberToStringRoundAuto((decimal)tongCong, 2);
                     if (tongCong == 0)
                     {
                         huongDan = new StringBuilder();
@@ -3291,51 +3293,32 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
                     {
                         if (HisConfigCFG.TutorialFormat == 1)
                         {
-                            huongDan.AppendFormat("Ngày uống {0} {1}/ {2} lần : {3} {4}", (String.IsNullOrEmpty(this.cboMedicineUseForm.Text) ? "" : this.cboMedicineUseForm.Text), tongCong, serviceUnitName, solan, " ");
+                            huongDan.AppendFormat("Ngày {0} {1} {2}/ 1 lần", (String.IsNullOrEmpty(this.cboMedicineUseForm.Text) ? "" : this.cboMedicineUseForm.Text), strTong, serviceUnitName);
                         }
-                        else if (HisConfigCFG.TutorialFormat == 2)
+                        if (HisConfigCFG.TutorialFormat == 2)
                         {
-                            huongDan.AppendFormat("Ngày uống {0} lần : {1} {2}", (String.IsNullOrEmpty(this.cboMedicineUseForm.Text) ? "" : this.cboMedicineUseForm.Text), tongCong, serviceUnitName, solan, " ");
+                            huongDan.Append(tongCong > 0 ? String.Format(format__NgayUongTemp2, (String.IsNullOrEmpty(this.cboMedicineUseForm.Text) ? "" : " " + this.cboMedicineUseForm.Text.ToLower() + " "), strTong, serviceUnitName) : "");                            
                         }
-                        else if (HisConfigCFG.TutorialFormat == 3)
+                        if (HisConfigCFG.TutorialFormat == 3)
                         {
-                            double moiLan = tongCong / solan;
-                            huongDan.AppendFormat("{0} {1}/lần * {2} lần/ngày", (String.IsNullOrEmpty(this.cboMedicineUseForm.Text) ? "" : this.cboMedicineUseForm.Text), moiLan, serviceUnitName, solan, " ");
+                            huongDan.AppendFormat("{1} {2}/lần * 1 lần/ngày (Ngày {0} {1} {2}/ 1 lần)", (String.IsNullOrEmpty(this.cboMedicineUseForm.Text) ? "" : this.cboMedicineUseForm.Text), strTong, serviceUnitName);
                         }
                         if (HisConfigCFG.TutorialFormat == 4)
                         {
-                            huongDan.AppendFormat("{0} ngày. Ngày uống {1} {2}/ {3} lần", (String.IsNullOrEmpty(this.cboMedicineUseForm.Text) ? "" : this.cboMedicineUseForm.Text), tongCong, serviceUnitName, solan, " ");
+                            huongDan = new StringBuilder();                          
+                            huongDan.AppendFormat("{0} 1 ngày. Ngày {0} 1 lần {1} {2}", (String.IsNullOrEmpty(this.cboMedicineUseForm.Text) ? "" : this.cboMedicineUseForm.Text), strTong, serviceUnitName);
                         }
                         if (HisConfigCFG.TutorialFormat == 5)
                         {
                             huongDan = new StringBuilder();
-                            if (!String.IsNullOrEmpty(this.cboMedicineUseForm.Text))
-                            {
-                                huongDan.AppendFormat("{0}, ", this.cboMedicineUseForm.Text.ToLower());
-                            }
-                            if (!String.IsNullOrEmpty(this.txtHtu.Text))
-                            {
-                                huongDan.AppendFormat("{0}, ", this.txtHtu.Text.ToLower());
-                            }
-                            if (soLuongTrenlanMin > 0)
-                            {
-                                huongDan.AppendFormat("{0} {1}", ConvertNumber.ConvertDecToFracByConfig(soLuongTrenlanMin, 4), serviceUnitName);
-                            }
-                            string result = huongDan.ToString().TrimEnd(',', ' ');
-                            this.txtTutorial.Text = result;
-                            //huongDan.Append(soLuongTrenlanMin > 0 ? String.Format(format__NgayUongTemp5, (String.IsNullOrEmpty(this.cboMedicineUseForm.Text) ? "" : " " + this.cboMedicineUseForm.Text.ToLower() + " "), !String.IsNullOrEmpty(this.txtHtu.Text) ? string.Join(", ", DataHtuList.Where(o => o.IsChecked).OrderByDescending(o => o.CHECK_ACIN_INTERACTIVE ?? Int64.MaxValue).ThenBy(o => o.NUM_ORDER).Select(o => o.HTU_NAME).ToList()).ToLower() : "") : "");
+                                                       
+                            huongDan.AppendFormat("{0} {1} {2}", (String.IsNullOrEmpty(this.cboMedicineUseForm.Text) ? "" : this.cboMedicineUseForm.Text), strTong, serviceUnitName);
                         }
                         if (HisConfigCFG.TutorialFormat == 6)
                         {
                             huongDan = new StringBuilder();
-                            double tongSoLuong = (double)spinAmount.Value;
-                            int soLanTrongNgay = solan > 0 ? solan : 1;
-                            if (tongSoLuong > 0)
-                            {
-                                double moiLan = tongSoLuong / soLanTrongNgay;
-                                string strMoiLan = Inventec.Common.Number.Convert.NumberToStringRoundAuto((decimal)moiLan, 2);
-                                string strTong = Inventec.Common.Number.Convert.NumberToStringRoundAuto((decimal)tongSoLuong, 2);
-
+                            if (tongCong > 0)
+                            {                                                               
                                 huongDan.AppendFormat("{0} {1}/lần * {2} lần/ngày * 1 ngày", strMoiLan, serviceUnitName, soLanTrongNgay);
                                 huongDan.AppendFormat(" [{0} {1}/ngày]", strTong, serviceUnitName);
                             }

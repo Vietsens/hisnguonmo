@@ -57,7 +57,7 @@ namespace HIS.UC.UCServiceRoomInfo
                 exetuteFilter.IS_EXAM = true;
                 exetuteFilter.IS_ACTIVE = IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE;
                 exetuteFilter.BRANCH_ID = WorkPlace.GetBranchId();
-                return new Inventec.Common.Adapter.BackendAdapter(new CommonParam()).Get<List<L_HIS_ROOM_COUNTER_2>>("api/HisRoom/GetCounterLView", ApiConsumers.MosConsumer, exetuteFilter, null);
+                return new Inventec.Common.Adapter.BackendAdapter(new CommonParam()).Get<List<L_HIS_ROOM_COUNTER_2>>("api/HisRoom/GetCounterLView2", ApiConsumers.MosConsumer, exetuteFilter, null);
             }
             catch (Exception ex)
             {
@@ -74,7 +74,7 @@ namespace HIS.UC.UCServiceRoomInfo
                 exetuteFilter.IS_EXAM = true;
                 exetuteFilter.IS_ACTIVE = IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE;
                 exetuteFilter.BRANCH_ID = WorkPlace.GetBranchId();
-                return await new Inventec.Common.Adapter.BackendAdapter(new CommonParam()).GetAsync<List<L_HIS_ROOM_COUNTER_2>>("api/HisRoom/GetCounterLView", ApiConsumers.MosConsumer, exetuteFilter, null);
+                return await new Inventec.Common.Adapter.BackendAdapter(new CommonParam()).GetAsync<List<L_HIS_ROOM_COUNTER_2>>("api/HisRoom/GetCounterLView2", ApiConsumers.MosConsumer, exetuteFilter, null);
             }
             catch (Exception ex)
             {

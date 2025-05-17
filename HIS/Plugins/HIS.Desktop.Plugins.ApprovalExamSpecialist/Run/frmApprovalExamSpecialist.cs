@@ -30,6 +30,8 @@ using DevExpress.XtraTreeList;
 using DevExpress.XtraTab;
 using System.Collections;
 using DevExpress.XtraGrid.Views.Base;
+using System.Resources;
+using Inventec.Desktop.Common.LanguageManager;
 namespace HIS.Desktop.Plugins.ApprovalExamSpecialist.Run
 {
     public partial class frmApprovalExamSpecialist : FormBase
@@ -126,22 +128,22 @@ namespace HIS.Desktop.Plugins.ApprovalExamSpecialist.Run
                 ucPhauThuat = new UCTreeListService(imageCollection1, currentModule);
                 ucGiaiPhau = new UCTreeListService(imageCollection1, currentModule);
 
-                panelControl2.Controls.Add(ucCDHA);
+                pcCDHA.Controls.Add(ucCDHA);
                 ucCDHA.Dock = DockStyle.Fill;
 
-                panelControl3.Controls.Add(ucXN);
+                pcXN.Controls.Add(ucXN);
                 ucXN.Dock = DockStyle.Fill;
 
-                panelControl4.Controls.Add(ucDichVu);
+                pcService.Controls.Add(ucDichVu);
                 ucDichVu.Dock = DockStyle.Fill;
 
-                panelControl5.Controls.Add(ucSieuAm);
+                pcSANS.Controls.Add(ucSieuAm);
                 ucSieuAm.Dock = DockStyle.Fill;
 
-                panelControl6.Controls.Add(ucPhauThuat);
+                pcPTTT.Controls.Add(ucPhauThuat);
                 ucPhauThuat.Dock = DockStyle.Fill;
 
-                panelControl7.Controls.Add(ucGiaiPhau);
+                pcGP.Controls.Add(ucGiaiPhau);
                 ucGiaiPhau.Dock = DockStyle.Fill;
             }
             catch (Exception ex)
@@ -465,14 +467,14 @@ namespace HIS.Desktop.Plugins.ApprovalExamSpecialist.Run
                     #endregion
 
                     #region PTTT
-
+                    //Quần què gì đây pttt a, sao lạ load vào tab xét nghiệm :)))                   
                     List<SereServADO> listPTTT = new List<SereServADO>();
                     listPTTT.AddRange(SereServADOs.Where(
                         o => o.TDL_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__KH
                         || o.TDL_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__TDCN
                         ));
 
-                    ucXN.ReLoad(treeView_Click, listPTTT, this.currentSpecialistExam);
+                    ucPhauThuat.ReLoad(treeView_Click, listPTTT, this.currentSpecialistExam);
 
                     #endregion
 
@@ -507,7 +509,7 @@ namespace HIS.Desktop.Plugins.ApprovalExamSpecialist.Run
                         || o.TDL_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__NS
                         ));
 
-                    ucGiaiPhau.ReLoad(treeView_Click, listSANS, this.currentSpecialistExam);
+                    ucSieuAm.ReLoad(treeView_Click, listSANS, this.currentSpecialistExam);
 
                     #endregion
 
@@ -541,80 +543,53 @@ namespace HIS.Desktop.Plugins.ApprovalExamSpecialist.Run
    
         private void btnSave_Click(object sender, EventArgs e)
         {
-            try
-            {
-                HIS_SPECIALIST_EXAM exam = new HIS_SPECIALIST_EXAM();
-                HIS_TRACKING tracking = new HIS_TRACKING();
+            //try
+            //{
+            //    WaitingManager.Show();
+            //    CommonParam param = new CommonParam();
+            //    currentVHisSpecialist.EXAM_TIME = dtTrackingTime.D
+            //    currentVHisSpecialist.EXAM_EXECUTE_USERNAME = cboEmployee.EditValue?.ToString();
+            //    currentVHisSpecialist.EXAM_EXECUTE_CONTENT = txtYKienBacSi.Text.Trim();
+            //    currentVHisSpecialist.IS_APPROVAL = 1;
+            //    var rs = new BackendAdapter(param).Post<HIS_INFUSION_SUM>("api/HisSpecialistExam/Update", ApiConsumers.MosConsumer, currentVHisSpecialist, param);
 
-                //bool isSpecialistExamSaved = ProcessSaveSpecialistExam(ref exam);
-                //if (!isSpecialistExamSaved)
-                //{
-                //    MessageBox.Show("Lưu thông tin khám chuyên khoa không thành công.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                //    return;
-                //}
+            //    MessageManager.Show(this, param, rs != null);
+            //    SessionManager.ProcessTokenLost(param);
+            //    WaitingManager.Hide();
+            //}
+            //catch (Exception ex)
+            //{
+            //    WaitingManager.Hide();
+            //    Inventec.Common.Logging.LogSystem.Error(ex);
+            //}
 
-                bool isTrackingSaved = ProcessSaveTracking(ref tracking);
-                if (!isTrackingSaved)
-                {
-                    MessageBox.Show("Lưu thông tin theo dõi không thành công.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    return;
-                }
-                MessageBox.Show("Lưu thông tin thành công.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
-            }
-            catch (Exception ex)
-            {
-                Inventec.Common.Logging.LogSystem.Error(ex);
-                MessageBox.Show("Có lỗi xảy ra khi lưu thông tin.", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
         }
 
-        private bool ProcessSaveTracking(ref HIS_TRACKING tracking)
+        private void SetCaptionByLanguageKey()
         {
             try
             {
-                if (currentVHisTracking == null)
-                    return false;
-
-                CommonParam param = new CommonParam();
-                HisTrackingFilter filter = new HisTrackingFilter
-                {
-                    ID = currentVHisTracking.ID
-                };
-
-                var trackingList = new BackendAdapter(param).Get<List<HIS_TRACKING>>(
-                    "api/HisTracking/Get", ApiConsumers.MosConsumer, filter, param);
-
-                if (trackingList != null && trackingList.Count > 0)
-                {
-                    HIS_TRACKING hisTrackingResult = trackingList.First();
-
-                    dtTrackingTime.DateTime = hisTrackingResult.TRACKING_TIME > 0
-                        ? Convert.ToDateTime(hisTrackingResult.TRACKING_TIME)
-                        : DateTime.Now;
-
-                    txtNoiDungKham.Text = hisTrackingResult.CONTENT ?? "";
-                    txtYLenhKham.Text = hisTrackingResult.CONTENT ?? "";
-                }
-
-                // Lấy thông tin từ giao diện để lưu
-                tracking.CONTENT = txtNoiDungKham.Text?.Trim();
-                tracking.CONTENT = txtYLenhKham.Text?.Trim();
-                tracking.TRACKING_TIME = dtTrackingTime.DateTime.Ticks;
-
-                // Gọi API để lưu
-                tracking = new BackendAdapter(param).Post<HIS_TRACKING>(
-                    HisRequestUriStore.HIS_TRACKING_CREATE,
-                    ApiConsumers.MosConsumer,
-                    tracking,
-                    param);
-
-                return true;
+                ////Khoi tao doi tuong resource
+                Resources.ResourceLanguageManager.LanguageResource = new ResourceManager("HIS.Desktop.Plugins.ApprovalExamSpecialist.Resources.Lang", typeof(frmApprovalExamSpecialist).Assembly);
+                ////Gan gia tri cho cac control editor co Text/Caption/ToolTip/NullText/NullValuePrompt/FindNullPrompt
+                this.layoutControl1.Text = Inventec.Common.Resource.Get.Value("frmApprovalExamSpecialist.layoutControl1.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.btnSave.Text = Inventec.Common.Resource.Get.Value("frmApprovalExamSpecialist.btnSave.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.gridControl1.Text = Inventec.Common.Resource.Get.Value("frmApprovalExamSpecialist.tabToDieuTri.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.tabAll.Text = Inventec.Common.Resource.Get.Value("frmApprovalExamSpecialist.tabAll.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.pcXN.Text = Inventec.Common.Resource.Get.Value("frmApprovalExamSpecialist.pcXN.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.pcService.Text = Inventec.Common.Resource.Get.Value("frmApprovalExamSpecialist.pcService.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.pcSANS.Text = Inventec.Common.Resource.Get.Value("frmApprovalExamSpecialist.pcSANS.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.pcPTTT.Text = Inventec.Common.Resource.Get.Value("frmApprovalExamSpecialist.pcPTTT.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.pcGP.Text = Inventec.Common.Resource.Get.Value("frmApprovalExamSpecialist.pcGP.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.layoutControlItem2.Text = Inventec.Common.Resource.Get.Value("frmApprovalExamSpecialist.layoutControlItem2.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.layoutControlItem3.Text = Inventec.Common.Resource.Get.Value("frmApprovalExamSpecialist.layoutControlItem3.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.Text = Inventec.Common.Resource.Get.Value("frmApprovalExamSpecialist.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
             }
             catch (Exception ex)
             {
-                Inventec.Common.Logging.LogSystem.Error(ex);
-                return false;
+                Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
+
     }
 }

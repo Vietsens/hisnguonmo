@@ -237,6 +237,53 @@ namespace HIS.Desktop.Plugins.BedRoomPartial.Popup
         {
             btnConsultation_Click(this, EventArgs.Empty);
         }
+        private void saveDate(HIS_SPECIALIST_EXAM HIS_SPECIALIST_EXAM)
+        {
+            if (dateEdit1.EditValue != null)
+            {
+                HIS_SPECIALIST_EXAM.INVITE_TIME = Inventec.Common.TypeConvert.Parse.ToInt64(dateEdit1.DateTime.ToString("yyyyMMddHHmmss"));
+            }
+
+            if (cboDepartment.EditValue != null)
+            {
+                HIS_SPECIALIST_EXAM.INVITE_DEPARMENT_ID = Convert.ToInt64(cboDepartment.EditValue);
+            }
+
+            if (memoEdit1.Text != null)
+            {
+                HIS_SPECIALIST_EXAM.INVITE_CONTENT = memoEdit1.Text;
+            }
+
+            HIS_SPECIALIST_EXAM.INVITE_TYPE = 2;
+
+            if (treatmentBedRoomRow != null)
+            {
+                HIS_SPECIALIST_EXAM.TREATMENT_CODE = treatmentBedRoomRow.TREATMENT_CODE;
+                HIS_SPECIALIST_EXAM.PATIENT_CODE = treatmentBedRoomRow.TDL_PATIENT_CODE;
+                HIS_SPECIALIST_EXAM.TDL_PATIENT_NAME = treatmentBedRoomRow.TDL_PATIENT_NAME;
+                HIS_SPECIALIST_EXAM.TDL_PATIENT_DOB = treatmentBedRoomRow.TDL_PATIENT_DOB;
+                HIS_SPECIALIST_EXAM.TDL_PATIENT_GENDER_NAME = treatmentBedRoomRow.TDL_PATIENT_GENDER_NAME;
+                HIS_SPECIALIST_EXAM.TDL_PATIENT_ADDRESS = treatmentBedRoomRow.TDL_PATIENT_ADDRESS;
+                HIS_SPECIALIST_EXAM.TREATMENT_ID = treatmentBedRoomRow.TREATMENT_ID;
+                HIS_SPECIALIST_EXAM.TREATMENT_BED_ROOM_ID = treatmentBedRoomRow.ID;
+            }
+
+            HIS_SPECIALIST_EXAM rs = new HIS_SPECIALIST_EXAM();
+            CommonParam param = new CommonParam();
+
+            Inventec.Common.Logging.LogSystem.Warn("HIS_SPECIALIST_EXAM ____hIS_SPECIALIST_EXAM"
+              + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => HIS_SPECIALIST_EXAM), HIS_SPECIALIST_EXAM));
+            rs = new Inventec.Common.Adapter.BackendAdapter(param).Post<HIS_SPECIALIST_EXAM>(HisRequestUriStore.HIS_SPECIALIST_EXAM_CREATE, ApiConsumers.MosConsumer, HIS_SPECIALIST_EXAM, param);
+
+            WaitingManager.Hide();
+            #region Hien thi message thong bao
+            MessageManager.Show(this, param, rs != null);
+            #endregion
+
+            #region Neu phien lam viec bi mat, phan mem tu dong logout va tro ve trang login
+            SessionManager.ProcessTokenLost(param);
+            #endregion
+        }
         private void ProcessSaveData()
         {
 
@@ -245,57 +292,19 @@ namespace HIS.Desktop.Plugins.BedRoomPartial.Popup
                 WaitingManager.Show();
 
                 HIS_SPECIALIST_EXAM HIS_SPECIALIST_EXAM = new HIS_SPECIALIST_EXAM();
-               
-                foreach (var item in lstDepartment)
+
+                if(lstDepartment != null && lstDepartment.Count>0)
                 {
-                    if (dateEdit1.DateTime != null)
+                    foreach (var item in lstDepartment)
                     {
-                        HIS_SPECIALIST_EXAM.INVITE_TIME = Inventec.Common.TypeConvert.Parse.ToInt64(dateEdit1.DateTime.ToString("yyyyMMddHHmmss"));
+                        HIS_SPECIALIST_EXAM.EXAM_EXECUTE_DEPARMENT_ID = item.ID;
+
+                        saveDate(HIS_SPECIALIST_EXAM);
                     }
-
-                    if (cboDepartment.EditValue != null)
-                    {
-                        HIS_SPECIALIST_EXAM.INVITE_DEPARMENT_ID = Convert.ToInt64(cboDepartment.EditValue);
-                    }
-
-                 
-                    HIS_SPECIALIST_EXAM.EXAM_EXECUTE_DEPARMENT_ID = item.ID;
-                    
-
-                    if (memoEdit1.Text != null)
-                    {
-                        HIS_SPECIALIST_EXAM.INVITE_CONTENT = memoEdit1.Text;
-                    }
-
-                    HIS_SPECIALIST_EXAM.INVITE_TYPE = 2;
-
-                    if (treatmentBedRoomRow != null)
-                    {
-                        HIS_SPECIALIST_EXAM.TREATMENT_CODE = treatmentBedRoomRow.TREATMENT_CODE;
-                        HIS_SPECIALIST_EXAM.PATIENT_CODE = treatmentBedRoomRow.TDL_PATIENT_CODE;
-                        HIS_SPECIALIST_EXAM.TDL_PATIENT_NAME = treatmentBedRoomRow.TDL_PATIENT_NAME;
-                        HIS_SPECIALIST_EXAM.TDL_PATIENT_DOB = treatmentBedRoomRow.TDL_PATIENT_DOB;
-                        HIS_SPECIALIST_EXAM.TDL_PATIENT_GENDER_NAME = treatmentBedRoomRow.TDL_PATIENT_GENDER_NAME;
-                        HIS_SPECIALIST_EXAM.TDL_PATIENT_ADDRESS = treatmentBedRoomRow.TDL_PATIENT_ADDRESS;
-                        HIS_SPECIALIST_EXAM.TREATMENT_ID = treatmentBedRoomRow.TREATMENT_ID;
-                        HIS_SPECIALIST_EXAM.TREATMENT_BED_ROOM_ID = treatmentBedRoomRow.ID;
-                    }
-
-                    HIS_SPECIALIST_EXAM rs = new HIS_SPECIALIST_EXAM();
-                    CommonParam param = new CommonParam();
-
-                    Inventec.Common.Logging.LogSystem.Warn("HIS_SPECIALIST_EXAM ____hIS_SPECIALIST_EXAM"
-                      + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => HIS_SPECIALIST_EXAM), HIS_SPECIALIST_EXAM));
-                    rs = new Inventec.Common.Adapter.BackendAdapter(param).Post<HIS_SPECIALIST_EXAM>(HisRequestUriStore.HIS_SPECIALIST_EXAM_CREATE, ApiConsumers.MosConsumer, HIS_SPECIALIST_EXAM, param);
-
-                    WaitingManager.Hide();
-                    #region Hien thi message thong bao
-                    MessageManager.Show(this, param, rs != null);
-                    #endregion
-
-                    #region Neu phien lam viec bi mat, phan mem tu dong logout va tro ve trang login
-                    SessionManager.ProcessTokenLost(param);
-                    #endregion
+                }
+                else
+                {
+                    saveDate(HIS_SPECIALIST_EXAM);
                 }
 
             }

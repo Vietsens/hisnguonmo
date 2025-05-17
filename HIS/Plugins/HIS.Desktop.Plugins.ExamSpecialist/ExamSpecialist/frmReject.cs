@@ -50,11 +50,11 @@ namespace HIS.Desktop.Plugins.ExamSpecialist.ExamSpecialist
                 speciaListExam.IS_APPROVAL = 2;//Từ chối
                 speciaListExam.REJECT_APPROVAL_REASON = txtReason.Text.Trim();
                 speciaListExam.INVITE_TYPE = 1;
+                speciaListExam.EXAM_TIME = null;
+                speciaListExam.EXAM_EXECUTE_CONTENT = null;
+                speciaListExam.EXAM_EXCUTE = null;
                 var result = new Inventec.Common.Adapter.BackendAdapter(param).Post<HIS_SPECIALIST_EXAM>("api/HisSpecialistExam/Update", ApiConsumers.MosConsumer, speciaListExam, param);
-
                 Inventec.Common.Logging.LogSystem.Debug("API Create Result: " + Inventec.Common.Logging.LogUtil.TraceData("DataA", result));
-
-
                 if (result != null)
                 {
                     if (dlgRefresh != null)
@@ -74,9 +74,6 @@ namespace HIS.Desktop.Plugins.ExamSpecialist.ExamSpecialist
             }
 
         }
-
-        
-
         private void frmReject_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.Control && e.KeyCode == Keys.S)

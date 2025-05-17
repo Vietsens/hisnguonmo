@@ -1,0 +1,774 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="FormApprovalFinish.bar1.Text" xml:space="preserve">
+    <value>Tools</value>
+  </data>
+  <data name="FormApprovalFinish.barBtnSave.Caption" xml:space="preserve">
+    <value>Save</value>
+  </data>
+  <data name="FormApprovalFinish.BtnSave.Text" xml:space="preserve">
+    <value>Lưu (Ctrl S)</value>
+  </data>
+  <data name="FormApprovalFinish.layoutControl1.Text" xml:space="preserve">
+    <value>layoutControl1</value>
+  </data>
+  <data name="FormApprovalFinish.layoutControlItem1.Text" xml:space="preserve">
+    <value>Ghi chú:</value>
+  </data>
+  <data name="FormApprovalFinish.Text" xml:space="preserve">
+    <value>Duyệt đủ điều kiện ra viện</value>
+  </data>
+  <data name="FrmFollow.bar1.Text" xml:space="preserve">
+    <value>Tools</value>
+  </data>
+  <data name="FrmFollow.barButtonItem1.Caption" xml:space="preserve">
+    <value>Lưu</value>
+  </data>
+  <data name="FrmFollow.btnSave.Text" xml:space="preserve">
+    <value>Lưu (Ctrl S)</value>
+  </data>
+  <data name="FrmFollow.chk12.Properties.Caption" xml:space="preserve">
+    <value>12 giờ</value>
+  </data>
+  <data name="FrmFollow.chk24.Properties.Caption" xml:space="preserve">
+    <value>24 giờ</value>
+  </data>
+  <data name="FrmFollow.chkKhac.Properties.Caption" xml:space="preserve">
+    <value>Khác</value>
+  </data>
+  <data name="FrmFollow.layoutControl1.Text" xml:space="preserve">
+    <value>layoutControl1</value>
+  </data>
+  <data name="FrmFollow.layoutControlItem1.Text" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="FrmFollow.layoutControlItem2.Text" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="FrmFollow.layoutControlItem3.Text" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="FrmFollow.layoutControlItem4.Text" xml:space="preserve">
+    <value>Từ:</value>
+  </data>
+  <data name="FrmFollow.layoutControlItem5.Text" xml:space="preserve">
+    <value>Đến:</value>
+  </data>
+  <data name="FrmFollow.Text" xml:space="preserve">
+    <value>Thời gian theo dõi</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__BTN__CHI_TIET" xml:space="preserve">
+    <value>Chi tiết</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__BTN__THU_GON" xml:space="preserve">
+    <value>Thu gọn</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__MOUSE_RIGHT__AllergyCard" xml:space="preserve">
+    <value>Thẻ dị ứng</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__MOUSE_RIGHT__APPROVE_FINISH" xml:space="preserve">
+    <value>Duyệt đủ điều kiện ra viện</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__MOUSE_RIGHT__BAN_GIAO_BN_TRUOC_PTTT" xml:space="preserve">
+    <value>Bàn giao người bệnh trước PTTT (BMK)</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__MOUSE_RIGHT__BANG_KE" xml:space="preserve">
+    <value>Bảng kê</value>
+  </data>
+	<data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__MOUSE_RIGHT__MOI_KHAM_CHUYEN_KHOA" xml:space="preserve">
+    <value>Mời khám chuyên khoa</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__MOUSE_RIGHT__MOI_HOI_CHAN" xml:space="preserve">
+    <value>Mời hội chẩn</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__MOUSE_RIGHT__BIEN_BAN_HOI_CHAN" xml:space="preserve">
+    <value>Danh sách biên bản hội chẩn</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__MOUSE_RIGHT__BIEU_MAU_KHAC" xml:space="preserve">
+    <value>Biểu mẫu khác</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__MOUSE_RIGHT__BIEU_MAU_KHAC_HSDT" xml:space="preserve">
+    <value>Biễu mẫu khác hồ sơ điều trị</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__MOUSE_RIGHT__BloodTransfusion" xml:space="preserve">
+    <value>Truyền máu</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__MOUSE_RIGHT__BOTD" xml:space="preserve">
+    <value>Bỏ theo dõi</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__MOUSE_RIGHT__CANTD" xml:space="preserve">
+    <value>Cần theo dõi</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__MOUSE_RIGHT__CONG_KHAI_DICH_VU_KHAM_CHUA_BENH_NOT_TRU" xml:space="preserve">
+    <value>Công khai dịch vụ khám, chữa bệnh nội trú</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__MOUSE_RIGHT__CONG_KHAI_THUOC_THEO_GIAI_DOAN" xml:space="preserve">
+    <value>Công khai thuốc theo giai đoạn</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__MOUSE_RIGHT__CONG_KHAI_THUOC_THEO_NGAY" xml:space="preserve">
+    <value>Công khai thuốc theo ngày</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__MOUSE_RIGHT__CHAM_SOC" xml:space="preserve">
+    <value>Chăm sóc</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__MOUSE_RIGHT__CheckInfoBHYT" xml:space="preserve">
+    <value>Kiểm tra thông tin thẻ BHYT</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__MOUSE_RIGHT__CHI_DINH" xml:space="preserve">
+    <value>Chỉ định</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__MOUSE_RIGHT__CHI_DINH_Dinh_DUONG" xml:space="preserve">
+    <value>Chỉ định suất ăn</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__MOUSE_RIGHT__CHI_DINH_GIAI_PHAU_BENH_LY" xml:space="preserve">
+    <value>Chỉ định giải phẫu bệnh lý</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__MOUSE_RIGHT__CHI_TIET_BENH_AN" xml:space="preserve">
+    <value>Chi tiết bệnh án</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__MOUSE_RIGHT__CHUYEN_DIEU_TRI_KET_HOP" xml:space="preserve">
+    <value>Chuyển điều trị kết hợp</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__MOUSE_RIGHT__CHUYEN_KHOA" xml:space="preserve">
+    <value>Chuyển khoa</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__MOUSE_RIGHT__CHUYEN_RA_BUONG" xml:space="preserve">
+    <value>Chuyển ra buồng</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__MOUSE_RIGHT__CHUYEN_VAO_BUONG" xml:space="preserve">
+    <value>Chuyển vào buồng</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__MOUSE_RIGHT__DANH_SACH_YEU_CAU" xml:space="preserve">
+    <value>Danh sách y lệnh</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__MOUSE_RIGHT__DIS_APPROVE_FINISH" xml:space="preserve">
+    <value>Hủy duyệt đủ điều kiện ra viện</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__MOUSE_RIGHT__DONG_THOI_GIAN" xml:space="preserve">
+    <value>Dòng thời gian</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__MOUSE_RIGHT__DU_TRU_THUOC_THEO_BENH_NHAN" xml:space="preserve">
+    <value>Dự trù thuốc theo bệnh nhân</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__MOUSE_RIGHT__GHEP_MA_BENH_NHAN" xml:space="preserve">
+    <value>Ghép mã bệnh nhân</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__MOUSE_RIGHT__GIAY_CAM_KET_NAM_GIUONG_TU_NGUYEN" xml:space="preserve">
+    <value>Giấy cam kết nằm giường tự nguyện (BMK)</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__MOUSE_RIGHT__GIAY_NAM_VIEN" xml:space="preserve">
+    <value>Giấy chứng nhận nằm viện</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__MOUSE_RIGHT__GIAY_THXN" xml:space="preserve">
+    <value>Giấy Tổng hợp kết quả xét nghiệm</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__MOUSE_RIGHT__HIS_ADR" xml:space="preserve">
+    <value>Thông tin phản ứng có hại thuốc</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__MOUSE_RIGHT__HisDhst" xml:space="preserve">
+    <value>Theo dõi chức năng sống</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__MOUSE_RIGHT__HisDhstChart" xml:space="preserve">
+    <value>Biểu đồ dấu hiệu sinh tồn</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__MOUSE_RIGHT__HisPhieuSoketTruocMo" xml:space="preserve">
+    <value>Phiếu sơ kết trước mổ</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__MOUSE_RIGHT__HisSoKetBenhAnTruocPhauThuat" xml:space="preserve">
+    <value>Sơ kết BA trước phẫu thuật (BMK)</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__MOUSE_RIGHT__HisSoKetBenhAnTruocThuThuat" xml:space="preserve">
+    <value>Sơ kết BA trước thủ thuật (BMK)</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__MOUSE_RIGHT__HO_SO_DIEU_TRI" xml:space="preserve">
+    <value>Hồ sơ điều trị</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__MOUSE_RIGHT__KE_DON_DUOC" xml:space="preserve">
+    <value>Kê đơn dược</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__MOUSE_RIGHT__KE_DON_MAU" xml:space="preserve">
+    <value>Kê đơn máu</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__MOUSE_RIGHT__KET_QUA_XET_NGHIEM" xml:space="preserve">
+    <value>Kết quả xét nghiệm 1</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__MOUSE_RIGHT__KET_THUC_DIEU_TRI" xml:space="preserve">
+    <value>Kết thúc điều trị</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__MOUSE_RIGHT__KET_THUC_DIEU_TRI_KET_HOP" xml:space="preserve">
+    <value>Kết thúc điều trị kết hợp</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__MOUSE_RIGHT__KIDNEY_SHIFT" xml:space="preserve">
+    <value>Xếp lịch chạy thận</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__MOUSE_RIGHT__LICH_SU_GIUONG" xml:space="preserve">
+    <value>Lịch sử giường</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__MOUSE_RIGHT__PHAN_UNG_THUOC" xml:space="preserve">
+    <value>Phản ứng thuốc</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__MOUSE_RIGHT__PHIEU_KHAI_THAC_TIEN_SU_DI_UNG" xml:space="preserve">
+    <value>Phiếu khai thác tiền sử dị ứng (BMK)</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__MOUSE_RIGHT__PHIEU_XN_DUONG_MAU_MAO_MACH" xml:space="preserve">
+    <value>Phiếu XN đường máu mao mạch (BMK)</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__MOUSE_RIGHT__Phiếu chăm sóc_Vo" xml:space="preserve">
+    <value>Phiếu chăm sóc_Vỏ bệnh án</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__MOUSE_RIGHT__SUA_HSDT" xml:space="preserve">
+    <value>Sửa hồ sơ điều trị</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__MOUSE_RIGHT__SUB_BENH_AN" xml:space="preserve">
+    <value>Bệnh án</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__MOUSE_RIGHT__SUB_CONG_KHAI_THUOC_DICH_VU" xml:space="preserve">
+    <value>Công khai thuốc, dịch vụ</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__MOUSE_RIGHT__SUB_IN_AN" xml:space="preserve">
+    <value>In ấn</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__MOUSE_RIGHT__SUB_KE_DON_CHI_DINH" xml:space="preserve">
+    <value>Kê đơn, chỉ định</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__MOUSE_RIGHT__SUB_LUU_CHUYEN" xml:space="preserve">
+    <value>Lưu chuyển</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__MOUSE_RIGHT__SUB_THONG_TIN" xml:space="preserve">
+    <value>Thông tin</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__MOUSE_RIGHT__TAO_BIEN_BAN_HOI_CHAN" xml:space="preserve">
+    <value>Tạo biên bản hội chẩn</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__MOUSE_RIGHT__TO_DIEU_TRI" xml:space="preserve">
+    <value>Tờ điều trị</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__MOUSE_RIGHT__TU_TRUC" xml:space="preserve">
+    <value>Tủ trực</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__MOUSE_RIGHT__THONG_TIN_BENH_AN" xml:space="preserve">
+    <value>Thông tin bệnh án</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__MOUSE_RIGHT__THONG_TIN_CHUYEN_DEN" xml:space="preserve">
+    <value>Thông tin chuyển đến</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__MOUSE_RIGHT__THONG_TIN_CHUYEN_DI" xml:space="preserve">
+    <value>Thông tin chuyển đi</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__MOUSE_RIGHT__THONG_TIN_TAI_NAN_THUONG_TICH" xml:space="preserve">
+    <value>Thông tin tai nạn thương tích</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__MOUSE_RIGHT__THONG_TIN_TU_VONG" xml:space="preserve">
+    <value>Thông tin tử vong</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__MOUSE_RIGHT__THONG_TIN_TRE_SO_SINH" xml:space="preserve">
+    <value>Thông tin trẻ sơ sinh</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__MOUSE_RIGHT__TRUYEN_DICH" xml:space="preserve">
+    <value>Truyền dịch</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__MOUSE_RIGHT__VIEN_PHI" xml:space="preserve">
+    <value>Viện phí</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__MOUSE_RIGHT__XEM_GOI_DICH_VU" xml:space="preserve">
+    <value>Xem gói dịch vụ</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__MOUSE_RIGHT__Y_LENH_THEO_KHOA" xml:space="preserve">
+    <value>Lịch sử điều trị</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__MOUSE_RIGHT__YEU_CAU_TAM_UNG" xml:space="preserve">
+    <value>Yêu cầu tạm ứng</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__TREE_SERE_SERV__COLUMN_NOTE" xml:space="preserve">
+    <value>Ghi chú</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__TREE_SERE_SERV__COLUMN_SERVICE_CODE" xml:space="preserve">
+    <value>Mã dịch vụ</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__TREE_SERE_SERV__COLUMN_SERVICE_NAME" xml:space="preserve">
+    <value>Tên dịch vụ</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__TREE_SERE_SERV__COLUMN_SERVICE_REQ_CODE" xml:space="preserve">
+    <value>Mã yêu cầu</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__TREE_SERE_SERV__CHUA_XU_LY" xml:space="preserve">
+    <value>Chưa xử lý</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__TREE_SERE_SERV__DANG_XU_LY" xml:space="preserve">
+    <value>Đang xử lý</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__TREE_SERE_SERV__HOAN_THANH" xml:space="preserve">
+    <value>Hoàn thành</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__TREE_SERE_SERV__KET_QUA_XET_NGHIEM" xml:space="preserve">
+    <value>Kết quả xét nghiệm 1</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__TREE_SERE_SERV__REQUEST_DEPARTMENT_NAME" xml:space="preserve">
+    <value>Khoa yêu cầu</value>
+  </data>
+  <data name="LblTotalPatientInfoFormat" xml:space="preserve">
+    <value>BHYT: {0}/ {1}</value>
+  </data>
+  <data name="UCBedRoomPartial.btnBangKe.Text" xml:space="preserve">
+    <value>Bảng kê (F5)</value>
+  </data>
+  <data name="UCBedRoomPartial.btnBedHistory.Text" xml:space="preserve">
+    <value>Lịch sử giường</value>
+  </data>
+  <data name="UCBedRoomPartial.btnCloseLeaf.Text" xml:space="preserve">
+    <value>Đóng hết lá</value>
+  </data>
+  <data name="UCBedRoomPartial.btnChamSoc.Text" xml:space="preserve">
+    <value>Chăm sóc</value>
+  </data>
+  <data name="UCBedRoomPartial.btnChiDinhDichVu.Text" xml:space="preserve">
+    <value>Chỉ định (F9)</value>
+  </data>
+  <data name="UCBedRoomPartial.btnChiDinhMau.Text" xml:space="preserve">
+    <value>Kê đơn máu</value>
+  </data>
+  <data name="UCBedRoomPartial.btnChuyenKhoa.Text" xml:space="preserve">
+    <value>Chuyển khoa</value>
+  </data>
+  <data name="UCBedRoomPartial.btnDanhSachYeuCau.Text" xml:space="preserve">
+    <value>Danh sách y lệnh</value>
+  </data>
+  <data name="UCBedRoomPartial.btnHoiChan.Text" xml:space="preserve">
+    <value>Biên bản hội chẩn</value>
+  </data>
+  <data name="UCBedRoomPartial.btnInToDieuTri.Text" xml:space="preserve">
+    <value>Tờ điều trị</value>
+  </data>
+  <data name="UCBedRoomPartial.btnKeDonThuoc.Text" xml:space="preserve">
+    <value>Kê đơn dược (F8)</value>
+  </data>
+  <data name="UCBedRoomPartial.btnKeDonYHCT.Text" xml:space="preserve">
+    <value>Kê đơn YHCT</value>
+  </data>
+  <data name="UCBedRoomPartial.btnKetThucDieuTri.Text" xml:space="preserve">
+    <value>Kết thúc điều trị (F10)</value>
+  </data>
+  <data name="UCBedRoomPartial.btnLichSuDieuTri.Text" xml:space="preserve">
+    <value>Y lệnh theo khoa</value>
+  </data>
+  <data name="UCBedRoomPartial.btnOpenLeaf.Text" xml:space="preserve">
+    <value>Mở hết lá</value>
+  </data>
+  <data name="UCBedRoomPartial.btnSearch.Text" xml:space="preserve">
+    <value>Tìm (Ctrl F)</value>
+  </data>
+  <data name="UCBedRoomPartial.btnTongHpVienPhi.Text" xml:space="preserve">
+    <value>Viện phí</value>
+  </data>
+  <data name="UCBedRoomPartial.btnTuTruc.Text" xml:space="preserve">
+    <value>Tủ trực</value>
+  </data>
+  <data name="UCBedRoomPartial.btnThuGon.Text" xml:space="preserve">
+    <value>Thu gọn</value>
+  </data>
+  <data name="UCBedRoomPartial.btnYeuCauTamUng.Text" xml:space="preserve">
+    <value>Yêu cầu tạm ứng</value>
+  </data>
+  <data name="UCBedRoomPartial.chkKhongHienThiKTT.Properties.Caption" xml:space="preserve">
+    <value>Ẩn kết thúc tạm</value>
+  </data>
+  <data name="UCBedRoomPartial.chkKhongHienThiKTT.ToolTip" xml:space="preserve">
+    <value>Ẩn các bệnh nhân đã thực hiện kết thúc tạm</value>
+  </data>
+  <data name="UCBedRoomPartial.chkOBSERVED.Properties.Caption" xml:space="preserve">
+    <value>Cần theo dõi</value>
+  </data>
+  <data name="UCBedRoomPartial.gc_ClassifyName.Caption" xml:space="preserve">
+    <value>Phân loại BN</value>
+  </data>
+  <data name="UCBedRoomPartial.gc_ClassifyName.ToolTip" xml:space="preserve">
+    <value>Phân loại bệnh nhân</value>
+  </data>
+  <data name="UCBedRoomPartial.gc_MedisoftH.Caption" xml:space="preserve">
+    <value>Lịch sử điều trị medisoft</value>
+  </data>
+  <data name="UCBedRoomPartial.grdColAddTime.Caption" xml:space="preserve">
+    <value>Thời gian vào</value>
+  </data>
+  <data name="UCBedRoomPartial.grdColBedName.Caption" xml:space="preserve">
+    <value>Giường</value>
+  </data>
+  <data name="UCBedRoomPartial.grdColPatientCode.Caption" xml:space="preserve">
+    <value>Mã bệnh nhân</value>
+  </data>
+  <data name="UCBedRoomPartial.grdColPatientName.Caption" xml:space="preserve">
+    <value>Tên bệnh nhân</value>
+  </data>
+  <data name="UCBedRoomPartial.grdColRoomName.Caption" xml:space="preserve">
+    <value>Phòng điều trị</value>
+  </data>
+  <data name="UCBedRoomPartial.grdColSTT.Caption" xml:space="preserve">
+    <value>STT</value>
+  </data>
+  <data name="UCBedRoomPartial.grdColTreatmentCode.Caption" xml:space="preserve">
+    <value>Mã điều trị</value>
+  </data>
+  <data name="UCBedRoomPartial.gridColDateTime.Caption" xml:space="preserve">
+    <value>Ngày</value>
+  </data>
+  <data name="UCBedRoomPartial.gridColumn1.Caption" xml:space="preserve">
+    <value>Số ngày điều trị tạm tính</value>
+  </data>
+  <data name="UCBedRoomPartial.gridColumn1.ToolTip" xml:space="preserve">
+    <value>Số ngày điều trị tạm tính căn cứ theo thời gian nhập viện đến thời điểm hiện tại</value>
+  </data>
+  <data name="UCBedRoomPartial.gridColumn2.Caption" xml:space="preserve">
+    <value>Tuổi</value>
+  </data>
+  <data name="UCBedRoomPartial.gridColumn2.ToolTip" xml:space="preserve">
+    <value>Tuổi</value>
+  </data>
+  <data name="UCBedRoomPartial.gridColumn3.Caption" xml:space="preserve">
+    <value>Ngày nhập viện</value>
+  </data>
+  <data name="UCBedRoomPartial.gridColumn4.Caption" xml:space="preserve">
+    <value>Số thẻ</value>
+  </data>
+  <data name="UCBedRoomPartial.gridColumn5.Caption" xml:space="preserve">
+    <value>Khoa</value>
+  </data>
+  <data name="UCBedRoomPartial.gridColumn6.Caption" xml:space="preserve">
+    <value>gridColumn6</value>
+  </data>
+  <data name="UCBedRoomPartial.gridColumn7.Caption" xml:space="preserve">
+    <value>Số vào viện</value>
+  </data>
+  <data name="UCBedRoomPartial.gridViewTreatmentBedRoom.OptionsFind.FindNullPrompt" xml:space="preserve">
+    <value>Nhập chuỗi tìm kiếm ...</value>
+  </data>
+  <data name="UCBedRoomPartial.groupBoxPatientInfo.Text" xml:space="preserve">
+    <value>Thông tin bệnh nhân</value>
+  </data>
+  <data name="UCBedRoomPartial.layoutControl1.Text" xml:space="preserve">
+    <value>layoutControl1</value>
+  </data>
+  <data name="UCBedRoomPartial.layoutControl2.Text" xml:space="preserve">
+    <value>layoutControl2</value>
+  </data>
+  <data name="UCBedRoomPartial.layoutControl3.Text" xml:space="preserve">
+    <value>layoutControl3</value>
+  </data>
+  <data name="UCBedRoomPartial.layoutControl4.Text" xml:space="preserve">
+    <value>layoutControl4</value>
+  </data>
+  <data name="UCBedRoomPartial.layoutControl5.Text" xml:space="preserve">
+    <value>layoutControl5</value>
+  </data>
+  <data name="UCBedRoomPartial.layoutControl6.Text" xml:space="preserve">
+    <value>layoutControl6</value>
+  </data>
+  <data name="UCBedRoomPartial.layoutControlItem20.Text" xml:space="preserve">
+    <value>Bệnh chính:</value>
+  </data>
+  <data name="UCBedRoomPartial.layoutControlItem23.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Mã nơi khám chữa bệnh ban đầu trên thẻ bảo hiểm y tế</value>
+  </data>
+  <data name="UCBedRoomPartial.layoutControlItem23.Text" xml:space="preserve">
+    <value>Mã KCBBD:</value>
+  </data>
+  <data name="UCBedRoomPartial.layoutControlItem28.Text" xml:space="preserve">
+    <value>Bệnh phụ:</value>
+  </data>
+  <data name="UCBedRoomPartial.layoutControlItem34.Text" xml:space="preserve">
+    <value>Từ:</value>
+  </data>
+  <data name="UCBedRoomPartial.layoutControlItem35.Text" xml:space="preserve">
+    <value>-</value>
+  </data>
+  <data name="UCBedRoomPartial.layoutControlItem38.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Hạn thẻ bảo hiểm y tế</value>
+  </data>
+  <data name="UCBedRoomPartial.layoutControlItem38.Text" xml:space="preserve">
+    <value>Hạn thẻ:</value>
+  </data>
+  <data name="UCBedRoomPartial.layoutControlItem44.Text" xml:space="preserve">
+    <value>Loại ra viện:</value>
+  </data>
+  <data name="UCBedRoomPartial.layoutControlItem45.Text" xml:space="preserve">
+    <value>PPĐT:</value>
+  </data>
+  <data name="UCBedRoomPartial.layoutControlItem7.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Số thẻ bảo hiểm y tế</value>
+  </data>
+  <data name="UCBedRoomPartial.layoutControlItem7.Text" xml:space="preserve">
+    <value>Thẻ BHYT:</value>
+  </data>
+  <data name="UCBedRoomPartial.layoutControlTreeSereServ.Text" xml:space="preserve">
+    <value>layoutControl7</value>
+  </data>
+  <data name="UCBedRoomPartial.lblTotalPatietInfo.Text" xml:space="preserve">
+    <value>BHYT: 0/ 0</value>
+  </data>
+  <data name="UCBedRoomPartial.lciAddress.Text" xml:space="preserve">
+    <value>Địa chỉ:</value>
+  </data>
+  <data name="UCBedRoomPartial.lciApprovalNote.Text" xml:space="preserve">
+    <value>Ghi chú:</value>
+  </data>
+  <data name="UCBedRoomPartial.lciApprovalNote.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Ghi chú ra viện, ghi chú bệnh nhân</value>
+  </data>
+  <data name="UCBedRoomPartial.lciDOB.Text" xml:space="preserve">
+    <value>Ngày sinh:</value>
+  </data>
+  <data name="UCBedRoomPartial.lciFilterByDepartment.Text" xml:space="preserve">
+    <value>Khoa </value>
+  </data>
+  <data name="UCBedRoomPartial.lciGenner.Text" xml:space="preserve">
+    <value>Giới tính:</value>
+  </data>
+  <data name="UCBedRoomPartial.LciGroupEmrDocument1.Text" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="UCBedRoomPartial.lciLbTreatDoctor.Text" xml:space="preserve">
+    <value>Bác sĩ ĐT:</value>
+  </data>
+  <data name="UCBedRoomPartial.lciPatientCode.Text" xml:space="preserve">
+    <value>Mã bệnh nhân:</value>
+  </data>
+  <data name="UCBedRoomPartial.lciPatientName.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Tên bệnh nhân</value>
+  </data>
+  <data name="UCBedRoomPartial.lciPatientName.Text" xml:space="preserve">
+    <value>Tên BN:</value>
+  </data>
+  <data name="UCBedRoomPartial.lciTreatmentType.Text" xml:space="preserve">
+    <value>Đối tượng:</value>
+  </data>
+  <data name="UCBedRoomPartial.txtKeyWord.Properties.NullValuePrompt" xml:space="preserve">
+    <value>Từ khóa tìm kiếm (F2)</value>
+  </data>
+  <data name="UCBedRoomPartial.treeColDateTime.Caption" xml:space="preserve">
+    <value>Ngày</value>
+  </data>
+  <data name="UCBedRoomPartial.xtraTabDocumentReq.Text" xml:space="preserve">
+    <value>Phiếu chỉ định</value>
+  </data>
+  <data name="UCBedRoomPartial.xtraTabDocumentResult.Text" xml:space="preserve">
+    <value>Phiếu trả kết quả</value>
+  </data>
+  <data name="UCBedRoomPartial.xtraTabPage1.Text" xml:space="preserve">
+    <value>Tất cả</value>
+  </data>
+  <data name="UCBedRoomPartial.xtraTabPage2.Text" xml:space="preserve">
+    <value>CLS</value>
+  </data>
+  <data name="UCBedRoomPartial.xtraTabPage3.Text" xml:space="preserve">
+    <value>Thuốc, vật tư, máu</value>
+  </data>
+  <data name="UCBedRoomPartial.xtraTabPage4.Text" xml:space="preserve">
+    <value>Khác</value>
+  </data>
+  <data name="UCTreeListService.isRation.Caption" xml:space="preserve">
+    <value>ĐTTT</value>
+  </data>
+  <data name="UCTreeListService.layoutControl1.Text" xml:space="preserve">
+    <value>layoutControl1</value>
+  </data>
+  <data name="UCTreeListService.tc_Delete.Caption" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="UCTreeListService.tc_Edit.Caption" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="UCTreeListService.tc_MediUsed.Caption" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="UCTreeListService.tc_NoteAdo.Caption" xml:space="preserve">
+    <value>Ghi chú</value>
+  </data>
+  <data name="UCTreeListService.tc_Number.Caption" xml:space="preserve">
+    <value>Số lượng</value>
+  </data>
+  <data name="UCTreeListService.tc_RequestDepartmentName.Caption" xml:space="preserve">
+    <value>Khoa yêu cầu</value>
+  </data>
+  <data name="UCTreeListService.tc_SendTestServiceReq.Caption" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="UCTreeListService.tc_ServiceCode.Caption" xml:space="preserve">
+    <value>Mã dịch vụ</value>
+  </data>
+  <data name="UCTreeListService.tc_ServiceName.Caption" xml:space="preserve">
+    <value>Tên dịch vụ</value>
+  </data>
+  <data name="UCTreeListService.treeListColumn1.Caption" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="UCTreeListService.treeListColumn2.Caption" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="UCTreeListService.treeSereServ.OptionsFind.FindNullPrompt" xml:space="preserve">
+    <value>Nhập chuỗi tìm kiếm ...</value>
+  </data>
+  <data name="UCBedRoomPartial.gridColCardExpiry.Caption" xml:space="preserve">
+    <value>Hạn thẻ</value>
+  </data>
+  <data name="UCBedRoomPartial.gridColPhone.Caption" xml:space="preserve">
+    <value>Số điện thoại</value>
+  </data>
+  <data name="UCBedRoomPartial.gridColPhone.Tooltip" xml:space="preserve">
+    <value>Số điện thoại của bệnh nhân</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__TREE_SERE_SERV__GUI_LAI_YEU_CAU_XET_NGHIEM" xml:space="preserve">
+    <value>Gửi lại yêu cầu xét nghiệm</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__TREE_SERE_SERV__SUA" xml:space="preserve">
+    <value>Sửa</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__TREE_SERE_SERV__TAO_THU_HOI" xml:space="preserve">
+    <value>Tạo thu hồi</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__TREE_SERE_SERV__THOI_GIAN_Y_LENH" xml:space="preserve">
+    <value>Thời gian y lệnh</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__TREE_SERE_SERV__XOA" xml:space="preserve">
+    <value>Xóa</value>
+  </data>
+  <data name="UCTreeListService.btnHivTreatment.Text" xml:space="preserve">
+    <value>Thông tin điều trị HIV/AIDS</value>
+  </data>
+  <data name="GiamDinhYKhoa" xml:space="preserve">
+    <value>Giám định y khoa</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__MOUSE_RIGHT__BAO_AN" xml:space="preserve">
+    <value>Báo ăn</value>
+  </data>
+  <data name="UCBedRoomPartial.gridColumn10.Caption" xml:space="preserve">
+    <value>Giới tính</value>
+  </data>
+  <data name="UCBedRoomPartial.gridColumn10.ToolTip" xml:space="preserve">
+    <value>Giới tính</value>
+  </data>
+  <data name="INIT_LANGUAGE__UC_TREE_SERE_SERV_7__DA_LAY_MAU" xml:space="preserve">
+    <value>Đã lấy mẫu</value>
+  </data>
+  <data name="INIT_LANGUAGE__UC_TREE_SERE_SERV_7__DA_NHAN_MAU" xml:space="preserve">
+    <value>Đã nhận mẫu</value>
+  </data>
+  <data name="UCTreeListService.tc_TdlMedicineConcentra.Caption" xml:space="preserve">
+    <value>Hàm lượng</value>
+  </data>
+</root>

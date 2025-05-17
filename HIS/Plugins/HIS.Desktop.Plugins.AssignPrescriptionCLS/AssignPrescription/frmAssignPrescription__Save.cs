@@ -206,7 +206,6 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
         {
             try
             {
-
                 bool valid = true;
                 this.positionHandleControl = -1;
 
@@ -296,7 +295,6 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
                         assignPrescriptionEditADO.DgRefeshData(this.oldServiceReq);
                     }
                 }
-
                 success = ((GlobalStore.IsTreatmentIn && !GlobalStore.IsCabinet) ?
                     ProcessAfterSaveForIn(isave, isSaveAndPrint, (InPatientPresResultSDO)rsData)
                     : ProcessAfterSaveForOut(isave, isSaveAndPrint, (SubclinicalPresResultSDO)rsData));
@@ -334,6 +332,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
                 }
 
                 WaitingManager.Hide();
+
 
                 #region Show message
 

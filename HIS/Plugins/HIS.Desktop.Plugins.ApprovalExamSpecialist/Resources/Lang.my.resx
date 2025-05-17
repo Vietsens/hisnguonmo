@@ -1,0 +1,765 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+	<!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+	<xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+		<xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+		<xsd:element name="root" msdata:IsDataSet="true">
+			<xsd:complexType>
+				<xsd:choice maxOccurs="unbounded">
+					<xsd:element name="metadata">
+						<xsd:complexType>
+							<xsd:sequence>
+								<xsd:element name="value" type="xsd:string" minOccurs="0" />
+							</xsd:sequence>
+							<xsd:attribute name="name" use="required" type="xsd:string" />
+							<xsd:attribute name="type" type="xsd:string" />
+							<xsd:attribute name="mimetype" type="xsd:string" />
+							<xsd:attribute ref="xml:space" />
+						</xsd:complexType>
+					</xsd:element>
+					<xsd:element name="assembly">
+						<xsd:complexType>
+							<xsd:attribute name="alias" type="xsd:string" />
+							<xsd:attribute name="name" type="xsd:string" />
+						</xsd:complexType>
+					</xsd:element>
+					<xsd:element name="data">
+						<xsd:complexType>
+							<xsd:sequence>
+								<xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+								<xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+							</xsd:sequence>
+							<xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+							<xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+							<xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+							<xsd:attribute ref="xml:space" />
+						</xsd:complexType>
+					</xsd:element>
+					<xsd:element name="resheader">
+						<xsd:complexType>
+							<xsd:sequence>
+								<xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+							</xsd:sequence>
+							<xsd:attribute name="name" type="xsd:string" use="required" />
+						</xsd:complexType>
+					</xsd:element>
+				</xsd:choice>
+			</xsd:complexType>
+		</xsd:element>
+	</xsd:schema>
+	<resheader name="resmimetype">
+		<value>text/microsoft-resx</value>
+	</resheader>
+	<resheader name="version">
+		<value>2.0</value>
+	</resheader>
+	<resheader name="reader">
+		<value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+	</resheader>
+	<resheader name="writer">
+		<value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+	</resheader>
+	<data name="FormApprovalFinish.bar1.Text" xml:space="preserve">
+    <value>ကိရိယာများ</value>
+  </data>
+	<data name="FormApprovalFinish.barBtnSave.Caption" xml:space="preserve">
+    <value>သိမ်းဆည်းပါ။</value>
+  </data>
+	<data name="FormApprovalFinish.BtnSave.Text" xml:space="preserve">
+    <value>Save (Ctrl S)</value>
+  </data>
+	<data name="FormApprovalFinish.layoutControl1.Text" xml:space="preserve">
+    <value>အပြင်အဆင်ထိန်းချုပ်မှု ၁</value>
+  </data>
+	<data name="FormApprovalFinish.layoutControlItem1.Text" xml:space="preserve">
+    <value>မှတ်စု:</value>
+  </data>
+	<data name="FormApprovalFinish.Text" xml:space="preserve">
+    <value>ဆေးရုံဆင်းခွင့် အရည်အချင်းပြည့်မီမှုကို ကြည့်ပါ။</value>
+  </data>
+	<data name="FrmFollow.bar1.Text" xml:space="preserve">
+    <value>ကိရိယာများ</value>
+  </data>
+	<data name="FrmFollow.barButtonItem1.Caption" xml:space="preserve">
+    <value>သိမ်းဆည်းပါ။</value>
+  </data>
+	<data name="FrmFollow.btnSave.Text" xml:space="preserve">
+    <value>Save (Ctrl S)</value>
+  </data>
+	<data name="FrmFollow.chk12.Properties.Caption" xml:space="preserve">
+    <value>12 နာရီ</value>
+  </data>
+	<data name="FrmFollow.chk24.Properties.Caption" xml:space="preserve">
+    <value>24 နာရီ</value>
+  </data>
+	<data name="FrmFollow.chkKhac.Properties.Caption" xml:space="preserve">
+    <value>တခြား</value>
+  </data>
+	<data name="FrmFollow.layoutControl1.Text" xml:space="preserve">
+    <value>အပြင်အဆင်ထိန်းချုပ်မှု ၁</value>
+  </data>
+	<data name="FrmFollow.layoutControlItem1.Text" xml:space="preserve">
+    <value> </value>
+  </data>
+	<data name="FrmFollow.layoutControlItem2.Text" xml:space="preserve">
+    <value> </value>
+  </data>
+	<data name="FrmFollow.layoutControlItem3.Text" xml:space="preserve">
+    <value> </value>
+  </data>
+	<data name="FrmFollow.layoutControlItem4.Text" xml:space="preserve">
+    <value>မှဖြစ်ကြသည်-</value>
+  </data>
+	<data name="FrmFollow.layoutControlItem5.Text" xml:space="preserve">
+    <value>ရောက်သည်-</value>
+  </data>
+	<data name="FrmFollow.Text" xml:space="preserve">
+    <value>ခြေရာခံချိန်</value>
+  </data>
+	<data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__BTN__CHI_TIET" xml:space="preserve">
+    <value>အသေးစိတ်</value>
+  </data>
+	<data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__BTN__THU_GON" xml:space="preserve">
+    <value>ပြိုကျသည်။</value>
+  </data>
+	<data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__MOUSE_RIGHT__AllergyCard" xml:space="preserve">
+    <value>ဓာတ်မတည့်ကတ်</value>
+  </data>
+	<data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__MOUSE_RIGHT__APPROVE_FINISH" xml:space="preserve">
+    <value>ဆေးရုံဆင်းခွင့် အရည်အချင်းပြည့်မီမှုကို ကြည့်ပါ။</value>
+  </data>
+	<data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__MOUSE_RIGHT__BAN_GIAO_BN_TRUOC_PTTT" xml:space="preserve">
+    <value>မခွဲစိတ်မီ လူနာများ လွှဲပြောင်းပေးအပ်ခြင်း (BMK)</value>
+  </data>
+	<data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__MOUSE_RIGHT__BANG_KE" xml:space="preserve">
+    <value>စာရင်း</value>
+  </data>
+	<data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__MOUSE_RIGHT__BIEN_BAN_HOI_CHAN" xml:space="preserve">
+    <value>အစည်းအဝေးမှတ်တမ်းများစာရင်း</value>
+  </data>
+	<data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__MOUSE_RIGHT__BIEU_MAU_KHAC" xml:space="preserve">
+    <value>အခြားပုံစံများ</value>
+  </data>
+	<data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__MOUSE_RIGHT__BIEU_MAU_KHAC_HSDT" xml:space="preserve">
+    <value>အခြားကုသမှုပုံစံများ</value>
+  </data>
+	<data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__MOUSE_RIGHT__BloodTransfusion" xml:space="preserve">
+    <value>သွေးသွင်းခြင်း။</value>
+  </data>
+	<data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__MOUSE_RIGHT__BOTD" xml:space="preserve">
+    <value>လိုက်ရန်</value>
+  </data>
+	<data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__MOUSE_RIGHT__CANTD" xml:space="preserve">
+    <value>လိုက်နာရန် လိုအပ်ပါသည်။</value>
+  </data>
+	<data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__MOUSE_RIGHT__CONG_KHAI_DICH_VU_KHAM_CHUA_BENH_NOT_TRU" xml:space="preserve">
+    <value>အတွင်းလူနာများအား ဆေးစစ်ခြင်း နှင့် ကုသခြင်း ဝန်ဆောင်မှုများကို ကြေငြာခြင်း။</value>
+  </data>
+	<data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__MOUSE_RIGHT__CONG_KHAI_THUOC_THEO_GIAI_DOAN" xml:space="preserve">
+    <value>အဆင့်အလိုက် မူးယစ်ဆေးဝါးများ ဖော်ထုတ်ခြင်း။</value>
+  </data>
+	<data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__MOUSE_RIGHT__CONG_KHAI_THUOC_THEO_NGAY" xml:space="preserve">
+    <value>ရက်စွဲအလိုက် ဆေးဝါးများ ထုတ်ပြန်ခြင်း။</value>
+  </data>
+	<data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__MOUSE_RIGHT__CHAM_SOC" xml:space="preserve">
+    <value>ဂရုစိုက်ပါ</value>
+  </data>
+	<data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__MOUSE_RIGHT__CheckInfoBHYT" xml:space="preserve">
+    <value>ကျန်းမာရေးအာမခံကတ် အချက်အလက်ကို စစ်ဆေးပါ။</value>
+  </data>
+	<data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__MOUSE_RIGHT__CHI_DINH" xml:space="preserve">
+    <value>ပွိုင့်</value>
+  </data>
+	<data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__MOUSE_RIGHT__CHI_DINH_Dinh_DUONG" xml:space="preserve">
+    <value>အစားအစာများသတ်မှတ်ပါ။</value>
+  </data>
+	<data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__MOUSE_RIGHT__CHI_DINH_GIAI_PHAU_BENH_LY" xml:space="preserve">
+    <value>ရောဂါဗေဒအတွက်ညွှန်ပြချက်များ</value>
+  </data>
+	<data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__MOUSE_RIGHT__CHI_TIET_BENH_AN" xml:space="preserve">
+    <value>ဆေးမှတ်တမ်းအသေးစိတ်</value>
+  </data>
+	<data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__MOUSE_RIGHT__CHUYEN_DIEU_TRI_KET_HOP" xml:space="preserve">
+    <value>ပေါင်းစပ်ကုထုံးသို့ပြောင်းပါ။</value>
+  </data>
+	<data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__MOUSE_RIGHT__CHUYEN_KHOA" xml:space="preserve">
+    <value>ရာထူးအပြောင်းအရွှေ့</value>
+  </data>
+	<data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__MOUSE_RIGHT__CHUYEN_RA_BUONG" xml:space="preserve">
+    <value>အခန်းကိုပြောင်းပါ။</value>
+  </data>
+	<data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__MOUSE_RIGHT__CHUYEN_VAO_BUONG" xml:space="preserve">
+    <value>အခန်းထဲသို့ ရွှေ့ပါ။</value>
+  </data>
+	<data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__MOUSE_RIGHT__DANH_SACH_YEU_CAU" xml:space="preserve">
+    <value>ဆေးစာရင်း</value>
+  </data>
+	<data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__MOUSE_RIGHT__DIS_APPROVE_FINISH" xml:space="preserve">
+    <value>ဆေးရုံဆင်းခွင့်ရရှိခြင်းအား ပယ်ဖျက်ခြင်း။</value>
+  </data>
+	<data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__MOUSE_RIGHT__DONG_THOI_GIAN" xml:space="preserve">
+    <value>အချိန်ဇယား</value>
+  </data>
+	<data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__MOUSE_RIGHT__DU_TRU_THUOC_THEO_BENH_NHAN" xml:space="preserve">
+    <value>လူနာအလိုက် ဆေးဝါးစီစဉ်ခြင်း။</value>
+  </data>
+	<data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__MOUSE_RIGHT__GHEP_MA_BENH_NHAN" xml:space="preserve">
+    <value>လူနာကုဒ် ကိုက်ညီမှု</value>
+  </data>
+	<data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__MOUSE_RIGHT__GIAY_CAM_KET_NAM_GIUONG_TU_NGUYEN" xml:space="preserve">
+    <value>ဆန္ဒအလျောက် အိပ်ရာဝင်ရန် ကတိကဝတ်ပြုလွှာ (BMK)</value>
+  </data>
+	<data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__MOUSE_RIGHT__GIAY_NAM_VIEN" xml:space="preserve">
+    <value>ဆေးရုံတက်လက်မှတ်</value>
+  </data>
+	<data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__MOUSE_RIGHT__GIAY_THXN" xml:space="preserve">
+    <value>စာမေးပွဲရလဒ်အကျဉ်းချုပ်</value>
+  </data>
+	<data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__MOUSE_RIGHT__HIS_ADR" xml:space="preserve">
+    <value>ဆိုးရွားသောဆေးဝါးတုံ့ပြန်မှုများဆိုင်ရာအချက်အလက်များ</value>
+  </data>
+	<data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__MOUSE_RIGHT__HisDhst" xml:space="preserve">
+    <value>ဘဝလုပ်ဆောင်ချက်ကို စောင့်ကြည့်ခြင်း။</value>
+  </data>
+	<data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__MOUSE_RIGHT__HisDhstChart" xml:space="preserve">
+    <value>အရေးကြီးသောလက္ခဏာများဇယား</value>
+  </data>
+	<data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__MOUSE_RIGHT__HisPhieuSoketTruocMo" xml:space="preserve">
+    <value>ခွဲစိတ်မှုအကြိုအကျဉ်းချုပ်စာရွက်</value>
+  </data>
+	<data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__MOUSE_RIGHT__HisSoKetBenhAnTruocPhauThuat" xml:space="preserve">
+    <value>ကြိုတင်ခွဲစိတ်မှု BA ပြန်လည်သုံးသပ်ခြင်း (BMK)</value>
+  </data>
+	<data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__MOUSE_RIGHT__HisSoKetBenhAnTruocThuThuat" xml:space="preserve">
+    <value>ကြိုတင်လုပ်ထုံးလုပ်နည်း BA ပြန်လည်သုံးသပ်ခြင်း (BMK)</value>
+  </data>
+	<data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__MOUSE_RIGHT__HO_SO_DIEU_TRI" xml:space="preserve">
+    <value>ကုသမှုမှတ်တမ်းများ</value>
+  </data>
+	<data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__MOUSE_RIGHT__KE_DON_DUOC" xml:space="preserve">
+    <value>ဆေးညွှန်း</value>
+  </data>
+	<data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__MOUSE_RIGHT__KE_DON_MAU" xml:space="preserve">
+    <value>သွေးဆေးညွှန်း</value>
+  </data>
+	<data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__MOUSE_RIGHT__KET_QUA_XET_NGHIEM" xml:space="preserve">
+    <value>စမ်းသပ်မှုရလဒ် ၁</value>
+  </data>
+	<data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__MOUSE_RIGHT__KET_THUC_DIEU_TRI" xml:space="preserve">
+    <value>ကုသမှုပြီးဆုံး</value>
+  </data>
+	<data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__MOUSE_RIGHT__KET_THUC_DIEU_TRI_KET_HOP" xml:space="preserve">
+    <value>ပေါင်းစပ်ကုသမှု ပြီးဆုံးသည်။</value>
+  </data>
+	<data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__MOUSE_RIGHT__KIDNEY_SHIFT" xml:space="preserve">
+    <value>ကျောက်ကပ်ဆေးခြင်းကို အချိန်ဇယားဆွဲပါ။</value>
+  </data>
+	<data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__MOUSE_RIGHT__LICH_SU_GIUONG" xml:space="preserve">
+    <value>အိပ်ရာဝင်မှတ်တမ်း</value>
+  </data>
+	<data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__MOUSE_RIGHT__PHAN_UNG_THUOC" xml:space="preserve">
+    <value>မူးယစ်ဆေးဝါးတုံ့ပြန်မှု</value>
+  </data>
+	<data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__MOUSE_RIGHT__PHIEU_KHAI_THAC_TIEN_SU_DI_UNG" xml:space="preserve">
+    <value>ဓာတ်မတည့်မှုမှတ်တမ်းစာရွက် (BMK)</value>
+  </data>
+	<data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__MOUSE_RIGHT__PHIEU_XN_DUONG_MAU_MAO_MACH" xml:space="preserve">
+    <value>သွေးကြောမျှင်သွေးသကြားဓာတ်စစ်ဆေးလွှာ (BMK)</value>
+  </data>
+	<data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__MOUSE_RIGHT__Phiếu chăm sóc_Vo" xml:space="preserve">
+    <value>သတိပြုရန်_Case ကိစ္စ</value>
+  </data>
+	<data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__MOUSE_RIGHT__SUA_HSDT" xml:space="preserve">
+    <value>ကုသမှုမှတ်တမ်းများကို တည်းဖြတ်ပါ။</value>
+  </data>
+	<data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__MOUSE_RIGHT__SUB_BENH_AN" xml:space="preserve">
+    <value>သည်းခံပါ။</value>
+  </data>
+	<data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__MOUSE_RIGHT__SUB_CONG_KHAI_THUOC_DICH_VU" xml:space="preserve">
+    <value>မူးယစ်ဆေးဝါးနှင့် ဝန်ဆောင်မှုများကို ထုတ်ဖော်ခြင်း။</value>
+  </data>
+	<data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__MOUSE_RIGHT__SUB_IN_AN" xml:space="preserve">
+    <value>ပုံနှိပ်ခြင်း။</value>
+  </data>
+	<data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__MOUSE_RIGHT__SUB_KE_DON_CHI_DINH" xml:space="preserve">
+    <value>အမိန့်ပေး၊ အမိန့်ပေးသည်။</value>
+  </data>
+	<data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__MOUSE_RIGHT__SUB_LUU_CHUYEN" xml:space="preserve">
+    <value>လည်ပတ်မှု</value>
+  </data>
+	<data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__MOUSE_RIGHT__SUB_THONG_TIN" xml:space="preserve">
+    <value>သတင်းအချက်အလက်</value>
+  </data>
+	<data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__MOUSE_RIGHT__TAO_BIEN_BAN_HOI_CHAN" xml:space="preserve">
+    <value>အစည်းအဝေးမှတ်တမ်းများ ဖန်တီးပါ။</value>
+  </data>
+	<data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__MOUSE_RIGHT__TO_DIEU_TRI" xml:space="preserve">
+    <value>ကုသမှုစာရွက်</value>
+  </data>
+	<data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__MOUSE_RIGHT__TU_TRUC" xml:space="preserve">
+    <value>တာဝန်ကျ အစိုးရအဖွဲ့ဝင်</value>
+  </data>
+	<data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__MOUSE_RIGHT__THONG_TIN_BENH_AN" xml:space="preserve">
+    <value>ဆေးမှတ်တမ်းအချက်အလက်</value>
+  </data>
+	<data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__MOUSE_RIGHT__THONG_TIN_CHUYEN_DEN" xml:space="preserve">
+    <value>သတင်းအချက်အလက်လွှဲပြောင်း</value>
+  </data>
+	<data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__MOUSE_RIGHT__THONG_TIN_CHUYEN_DI" xml:space="preserve">
+    <value>အချက်အလက်လွှဲပြောင်းပါ။</value>
+  </data>
+	<data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__MOUSE_RIGHT__THONG_TIN_TAI_NAN_THUONG_TICH" xml:space="preserve">
+    <value>ဒဏ်ရာ မတော်တဆမှု အချက်အလက်</value>
+  </data>
+	<data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__MOUSE_RIGHT__THONG_TIN_TU_VONG" xml:space="preserve">
+    <value>သေဆုံးခြင်းအချက်အလက်</value>
+  </data>
+	<data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__MOUSE_RIGHT__THONG_TIN_TRE_SO_SINH" xml:space="preserve">
+    <value>မွေးကင်းစအချက်အလက်</value>
+  </data>
+	<data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__MOUSE_RIGHT__TRUYEN_DICH" xml:space="preserve">
+    <value>ပြုတ်ရည်</value>
+  </data>
+	<data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__MOUSE_RIGHT__VIEN_PHI" xml:space="preserve">
+    <value>ဆေးရုံကြေး</value>
+  </data>
+	<data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__MOUSE_RIGHT__XEM_GOI_DICH_VU" xml:space="preserve">
+    <value>ဝန်ဆောင်မှုအထုပ်ကို ကြည့်ပါ။</value>
+  </data>
+	<data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__MOUSE_RIGHT__Y_LENH_THEO_KHOA" xml:space="preserve">
+    <value>ကုသမှုမှတ်တမ်း</value>
+  </data>
+	<data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__MOUSE_RIGHT__YEU_CAU_TAM_UNG" xml:space="preserve">
+    <value>ကြိုတင်မေတ္တာရပ်ခံအပ်ပါသည်။</value>
+  </data>
+	<data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__TREE_SERE_SERV__COLUMN_NOTE" xml:space="preserve">
+    <value>မှတ်ချက်</value>
+  </data>
+	<data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__TREE_SERE_SERV__COLUMN_SERVICE_CODE" xml:space="preserve">
+    <value>ဝန်ဆောင်မှုကုဒ်</value>
+  </data>
+	<data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__TREE_SERE_SERV__COLUMN_SERVICE_NAME" xml:space="preserve">
+    <value>ဝန်ဆောင်မှုအမည်</value>
+  </data>
+	<data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__TREE_SERE_SERV__COLUMN_SERVICE_REQ_CODE" xml:space="preserve">
+    <value>ကုဒ်တောင်းပါ။</value>
+  </data>
+	<data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__TREE_SERE_SERV__CHUA_XU_LY" xml:space="preserve">
+    <value>လုပ်ငန်းစဉ်မရှိပါ။</value>
+  </data>
+	<data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__TREE_SERE_SERV__DANG_XU_LY" xml:space="preserve">
+    <value>လုပ်ဆောင်နေသည်</value>
+  </data>
+	<data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__TREE_SERE_SERV__HOAN_THANH" xml:space="preserve">
+    <value>ပြီးအောင်</value>
+  </data>
+	<data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__TREE_SERE_SERV__KET_QUA_XET_NGHIEM" xml:space="preserve">
+    <value>စမ်းသပ်မှုရလဒ် ၁</value>
+  </data>
+	<data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__TREE_SERE_SERV__REQUEST_DEPARTMENT_NAME" xml:space="preserve">
+    <value>ဘာသာရပ်လိုအပ်သည်။</value>
+  </data>
+	<data name="LblTotalPatientInfoFormat" xml:space="preserve">
+    <value>ကျန်းမာရေးအာမခံ- {0}/ {1}</value>
+  </data>
+	<data name="UCBedRoomPartial.btnBangKe.Text" xml:space="preserve">
+    <value>စာရင်း (F5)</value>
+  </data>
+	<data name="UCBedRoomPartial.btnBedHistory.Text" xml:space="preserve">
+    <value>အိပ်ရာဝင်မှတ်တမ်း</value>
+  </data>
+	<data name="UCBedRoomPartial.btnCloseLeaf.Text" xml:space="preserve">
+    <value>အရွက်အားလုံးကိုပိတ်ပါ။</value>
+  </data>
+	<data name="UCBedRoomPartial.btnChamSoc.Text" xml:space="preserve">
+    <value>ဂရုစိုက်ပါ</value>
+  </data>
+	<data name="UCBedRoomPartial.btnChiDinhDichVu.Text" xml:space="preserve">
+    <value>ညွှန်ပြချက် (F9)</value>
+  </data>
+	<data name="UCBedRoomPartial.btnChiDinhMau.Text" xml:space="preserve">
+    <value>သွေးဆေးညွှန်း</value>
+  </data>
+	<data name="UCBedRoomPartial.btnChuyenKhoa.Text" xml:space="preserve">
+    <value>ရာထူးအပြောင်းအရွှေ့</value>
+  </data>
+	<data name="UCBedRoomPartial.btnDanhSachYeuCau.Text" xml:space="preserve">
+    <value>ဆေးစာရင်း</value>
+  </data>
+	<data name="UCBedRoomPartial.btnHoiChan.Text" xml:space="preserve">
+    <value>ဆွေးနွေးပွဲမှတ်တမ်းများ</value>
+  </data>
+	<data name="UCBedRoomPartial.btnInToDieuTri.Text" xml:space="preserve">
+    <value>ကုသမှုစာရွက်</value>
+  </data>
+	<data name="UCBedRoomPartial.btnKeDonThuoc.Text" xml:space="preserve">
+    <value>ဆေးစာ (F8)</value>
+  </data>
+	<data name="UCBedRoomPartial.btnKeDonYHCT.Text" xml:space="preserve">
+    <value>တရုတ်ရိုးရာဆေးညွှန်း</value>
+  </data>
+	<data name="UCBedRoomPartial.btnKetThucDieuTri.Text" xml:space="preserve">
+    <value>ကုသမှုပြီးဆုံးခြင်း (F10)</value>
+  </data>
+	<data name="UCBedRoomPartial.btnLichSuDieuTri.Text" xml:space="preserve">
+    <value>ဆေးဌာနက အမိန့်ပေးတယ်။</value>
+  </data>
+	<data name="UCBedRoomPartial.btnOpenLeaf.Text" xml:space="preserve">
+    <value>အရွက်အားလုံးကိုဖွင့်ပါ။</value>
+  </data>
+	<data name="UCBedRoomPartial.btnSearch.Text" xml:space="preserve">
+    <value>ရှာပါ (Ctrl F)</value>
+  </data>
+	<data name="UCBedRoomPartial.btnTongHpVienPhi.Text" xml:space="preserve">
+    <value>ဆေးရုံကြေး</value>
+  </data>
+	<data name="UCBedRoomPartial.btnTuTruc.Text" xml:space="preserve">
+    <value>တာဝန်ကျ အစိုးရအဖွဲ့ဝင်</value>
+  </data>
+	<data name="UCBedRoomPartial.btnThuGon.Text" xml:space="preserve">
+    <value>ပြိုကျသည်။</value>
+  </data>
+	<data name="UCBedRoomPartial.btnYeuCauTamUng.Text" xml:space="preserve">
+    <value>ကြိုတင်မေတ္တာရပ်ခံအပ်ပါသည်။</value>
+  </data>
+	<data name="UCBedRoomPartial.chkKhongHienThiKTT.Properties.Caption" xml:space="preserve">
+    <value>ယာယီဇာတ်သိမ်းကို ဖျောက်ပါ။</value>
+  </data>
+	<data name="UCBedRoomPartial.chkKhongHienThiKTT.ToolTip" xml:space="preserve">
+    <value>ယာယီရပ်စဲခြင်းများ လုပ်ဆောင်ခဲ့သော လူနာများကို ဝှက်ထားပါ။</value>
+  </data>
+	<data name="UCBedRoomPartial.chkOBSERVED.Properties.Caption" xml:space="preserve">
+    <value>လိုက်နာရန် လိုအပ်ပါသည်။</value>
+  </data>
+	<data name="UCBedRoomPartial.gc_ClassifyName.Caption" xml:space="preserve">
+    <value>BN အမျိုးအစားခွဲခြားခြင်း။</value>
+  </data>
+	<data name="UCBedRoomPartial.gc_ClassifyName.ToolTip" xml:space="preserve">
+    <value>လူနာအမျိုးအစားခွဲခြားခြင်း။</value>
+  </data>
+	<data name="UCBedRoomPartial.gc_MedisoftH.Caption" xml:space="preserve">
+    <value>Medisoft ကုသမှုမှတ်တမ်း</value>
+  </data>
+	<data name="UCBedRoomPartial.grdColAddTime.Caption" xml:space="preserve">
+    <value>ဝင်ချိန်</value>
+  </data>
+	<data name="UCBedRoomPartial.grdColBedName.Caption" xml:space="preserve">
+    <value>အိပ်ရာဝင်</value>
+  </data>
+	<data name="UCBedRoomPartial.grdColPatientCode.Caption" xml:space="preserve">
+    <value>လူနာကုဒ်</value>
+  </data>
+	<data name="UCBedRoomPartial.grdColPatientName.Caption" xml:space="preserve">
+    <value>လူနာအမည်</value>
+  </data>
+	<data name="UCBedRoomPartial.grdColRoomName.Caption" xml:space="preserve">
+    <value>ဆေးကုခန်း</value>
+  </data>
+	<data name="UCBedRoomPartial.grdColSTT.Caption" xml:space="preserve">
+    <value>STT</value>
+  </data>
+	<data name="UCBedRoomPartial.grdColTreatmentCode.Caption" xml:space="preserve">
+    <value>ကုသမှုကုဒ်</value>
+  </data>
+	<data name="UCBedRoomPartial.gridColDateTime.Caption" xml:space="preserve">
+    <value>နေ့</value>
+  </data>
+	<data name="UCBedRoomPartial.gridColumn1.Caption" xml:space="preserve">
+    <value>ယာယီကုသသည့်ရက်အရေအတွက်</value>
+  </data>
+	<data name="UCBedRoomPartial.gridColumn1.ToolTip" xml:space="preserve">
+    <value>ယာယီကုသမှုခံယူသည့်ရက်အရေအတွက်ကို လက်ရှိအချိန်အထိ ဆေးရုံတက်ကုသချိန်ပေါ်မူတည်၍ တွက်ချက်ပါသည်။</value>
+  </data>
+	<data name="UCBedRoomPartial.gridColumn2.Caption" xml:space="preserve">
+    <value>အသက်</value>
+  </data>
+	<data name="UCBedRoomPartial.gridColumn2.ToolTip" xml:space="preserve">
+    <value>အသက်</value>
+  </data>
+	<data name="UCBedRoomPartial.gridColumn3.Caption" xml:space="preserve">
+    <value>ဆေးရုံတက်တဲ့နေ့</value>
+  </data>
+	<data name="UCBedRoomPartial.gridColumn4.Caption" xml:space="preserve">
+    <value>ကတ်နံပါတ်</value>
+  </data>
+	<data name="UCBedRoomPartial.gridColumn5.Caption" xml:space="preserve">
+    <value>ဌာန</value>
+  </data>
+	<data name="UCBedRoomPartial.gridColumn6.Caption" xml:space="preserve">
+    <value>gridColumn၆</value>
+  </data>
+	<data name="UCBedRoomPartial.gridColumn7.Caption" xml:space="preserve">
+    <value>ဆေးရုံတက်ရမည့်နံပါတ်</value>
+  </data>
+	<data name="UCBedRoomPartial.gridViewTreatmentBedRoom.OptionsFind.FindNullPrompt" xml:space="preserve">
+    <value>ရှာဖွေရေးစာကြောင်းကို ရိုက်ထည့်ပါ...</value>
+  </data>
+	<data name="UCBedRoomPartial.groupBoxPatientInfo.Text" xml:space="preserve">
+    <value>လူနာအချက်အလက်</value>
+  </data>
+	<data name="UCBedRoomPartial.layoutControl1.Text" xml:space="preserve">
+    <value>အပြင်အဆင်ထိန်းချုပ်မှု ၁</value>
+  </data>
+	<data name="UCBedRoomPartial.layoutControl2.Text" xml:space="preserve">
+    <value>အပြင်အဆင်ထိန်းချုပ်မှု ၂</value>
+  </data>
+	<data name="UCBedRoomPartial.layoutControl3.Text" xml:space="preserve">
+    <value>အပြင်အဆင်ထိန်းချုပ်မှု ၃</value>
+  </data>
+	<data name="UCBedRoomPartial.layoutControl4.Text" xml:space="preserve">
+    <value>အပြင်အဆင်ထိန်းချုပ်မှု ၄</value>
+  </data>
+	<data name="UCBedRoomPartial.layoutControl5.Text" xml:space="preserve">
+    <value>အပြင်အဆင်ထိန်းချုပ်မှု ၅</value>
+  </data>
+	<data name="UCBedRoomPartial.layoutControl6.Text" xml:space="preserve">
+    <value>အပြင်အဆင်ထိန်းချုပ်မှု ၆</value>
+  </data>
+	<data name="UCBedRoomPartial.layoutControlItem20.Text" xml:space="preserve">
+    <value>အဓိကရောဂါ</value>
+  </data>
+	<data name="UCBedRoomPartial.layoutControlItem23.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>ကျန်းမာရေးအာမခံကတ်တွင် ကနဦးဆေးစစ်ခြင်းနှင့် ကုသမှုဆိုင်ရာ ကုဒ်</value>
+  </data>
+	<data name="UCBedRoomPartial.layoutControlItem23.Text" xml:space="preserve">
+    <value>KCBD ၏ကုဒ်-</value>
+  </data>
+	<data name="UCBedRoomPartial.layoutControlItem28.Text" xml:space="preserve">
+    <value>ဒုတိယရောဂါများ</value>
+  </data>
+	<data name="UCBedRoomPartial.layoutControlItem34.Text" xml:space="preserve">
+    <value>မှဖြစ်ကြသည်-</value>
+  </data>
+	<data name="UCBedRoomPartial.layoutControlItem35.Text" xml:space="preserve">
+    <value>-</value>
+  </data>
+	<data name="UCBedRoomPartial.layoutControlItem38.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>ကျန်းမာရေးအာမခံကတ် သက်တမ်းကုန်ဆုံးခြင်း။</value>
+  </data>
+	<data name="UCBedRoomPartial.layoutControlItem38.Text" xml:space="preserve">
+    <value>ကတ်သက်တမ်းကုန်ဆုံးချိန်-</value>
+  </data>
+	<data name="UCBedRoomPartial.layoutControlItem44.Text" xml:space="preserve">
+    <value>ထုတ်လွှတ်မှုအမျိုးအစား-</value>
+  </data>
+	<data name="UCBedRoomPartial.layoutControlItem45.Text" xml:space="preserve">
+    <value>ကုသမှုများ-</value>
+  </data>
+	<data name="UCBedRoomPartial.layoutControlItem7.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>ကျန်းမာရေးအာမခံကတ်နံပါတ်</value>
+  </data>
+	<data name="UCBedRoomPartial.layoutControlItem7.Text" xml:space="preserve">
+    <value>ကျန်းမာရေးအာမခံကတ်</value>
+  </data>
+	<data name="UCBedRoomPartial.layoutControlTreeSereServ.Text" xml:space="preserve">
+    <value>အပြင်အဆင်ထိန်းချုပ်မှု ၇</value>
+  </data>
+	<data name="UCBedRoomPartial.lblTotalPatietInfo.Text" xml:space="preserve">
+    <value>ကျန်းမာရေးအာမခံ- 0/0</value>
+  </data>
+	<data name="UCBedRoomPartial.lciAddress.Text" xml:space="preserve">
+    <value>လိပ်စာ-</value>
+  </data>
+	<data name="UCBedRoomPartial.lciApprovalNote.Text" xml:space="preserve">
+    <value>မှတ်ချက်-</value>
+  </data>
+	<data name="UCBedRoomPartial.lciApprovalNote.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>ဆေးရုံဆင်းချိန်မှတ်စုများ၊ လူနာမှတ်စုများ</value>
+  </data>
+	<data name="UCBedRoomPartial.lciDOB.Text" xml:space="preserve">
+    <value>မွေးရက်:</value>
+  </data>
+	<data name="UCBedRoomPartial.lciFilterByDepartment.Text" xml:space="preserve">
+    <value>ဌာန</value>
+  </data>
+	<data name="UCBedRoomPartial.lciGenner.Text" xml:space="preserve">
+    <value>လိင်-</value>
+  </data>
+	<data name="UCBedRoomPartial.LciGroupEmrDocument1.Text" xml:space="preserve">
+    <value> </value>
+  </data>
+	<data name="UCBedRoomPartial.lciLbTreatDoctor.Text" xml:space="preserve">
+    <value>ဆရာဝန်-</value>
+  </data>
+	<data name="UCBedRoomPartial.lciPatientCode.Text" xml:space="preserve">
+    <value>လူနာကုဒ်-</value>
+  </data>
+	<data name="UCBedRoomPartial.lciPatientName.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>လူနာအမည်</value>
+  </data>
+	<data name="UCBedRoomPartial.lciPatientName.Text" xml:space="preserve">
+    <value>BN အမည်-</value>
+  </data>
+	<data name="UCBedRoomPartial.lciTreatmentType.Text" xml:space="preserve">
+    <value>အကြောင်းအရာ-</value>
+  </data>
+	<data name="UCBedRoomPartial.txtKeyWord.Properties.NullValuePrompt" xml:space="preserve">
+    <value>အဓိကစကားလုံး (F2) ရှာရန်</value>
+  </data>
+	<data name="UCBedRoomPartial.treeColDateTime.Caption" xml:space="preserve">
+    <value>နေ့</value>
+  </data>
+	<data name="UCBedRoomPartial.xtraTabDocumentReq.Text" xml:space="preserve">
+    <value>မဲများသတ်မှတ်ပါ။</value>
+  </data>
+	<data name="UCBedRoomPartial.xtraTabDocumentResult.Text" xml:space="preserve">
+    <value>ရလဒ်စာရွက်</value>
+  </data>
+	<data name="UCBedRoomPartial.xtraTabPage1.Text" xml:space="preserve">
+    <value>အားလုံး</value>
+  </data>
+	<data name="UCBedRoomPartial.xtraTabPage2.Text" xml:space="preserve">
+    <value>CLS</value>
+  </data>
+	<data name="UCBedRoomPartial.xtraTabPage3.Text" xml:space="preserve">
+    <value>ဆေးဝါး၊ အထောက်အပံ့များ၊ သွေး</value>
+  </data>
+	<data name="UCBedRoomPartial.xtraTabPage4.Text" xml:space="preserve">
+    <value>တခြား</value>
+  </data>
+	<data name="UCTreeListService.isRation.Caption" xml:space="preserve">
+    <value>DTTT</value>
+  </data>
+	<data name="UCTreeListService.layoutControl1.Text" xml:space="preserve">
+    <value>အပြင်အဆင်ထိန်းချုပ်မှု ၁</value>
+  </data>
+	<data name="UCTreeListService.tc_Delete.Caption" xml:space="preserve">
+    <value> </value>
+  </data>
+	<data name="UCTreeListService.tc_Edit.Caption" xml:space="preserve">
+    <value> </value>
+  </data>
+	<data name="UCTreeListService.tc_MediUsed.Caption" xml:space="preserve">
+    <value> </value>
+  </data>
+	<data name="UCTreeListService.tc_NoteAdo.Caption" xml:space="preserve">
+    <value>မှတ်ချက်</value>
+  </data>
+	<data name="UCTreeListService.tc_Number.Caption" xml:space="preserve">
+    <value>ပမာဏ</value>
+  </data>
+	<data name="UCTreeListService.tc_RequestDepartmentName.Caption" xml:space="preserve">
+    <value>ဘာသာရပ်လိုအပ်သည်။</value>
+  </data>
+	<data name="UCTreeListService.tc_SendTestServiceReq.Caption" xml:space="preserve">
+    <value> </value>
+  </data>
+	<data name="UCTreeListService.tc_ServiceCode.Caption" xml:space="preserve">
+    <value>ဝန်ဆောင်မှုကုဒ်</value>
+  </data>
+	<data name="UCTreeListService.tc_ServiceName.Caption" xml:space="preserve">
+    <value>ဝန်ဆောင်မှုအမည်</value>
+  </data>
+	<data name="UCTreeListService.treeListColumn1.Caption" xml:space="preserve">
+    <value> </value>
+  </data>
+	<data name="UCTreeListService.treeListColumn2.Caption" xml:space="preserve">
+    <value> </value>
+  </data>
+	<data name="UCTreeListService.treeSereServ.OptionsFind.FindNullPrompt" xml:space="preserve">
+    <value>ရှာဖွေရေးစာကြောင်းကို ရိုက်ထည့်ပါ...</value>
+  </data>
+	<data name="UCBedRoomPartial.gridColCardExpiry.Caption" xml:space="preserve">
+    <value>ကတ်သက်တမ်းကုန်ဆုံး</value>
+  </data>
+	<data name="UCBedRoomPartial.gridColPhone.Caption" xml:space="preserve">
+    <value>ဖုန်းနံပါတ်</value>
+  </data>
+	<data name="UCBedRoomPartial.gridColPhone.Tooltip" xml:space="preserve">
+    <value>လူနာ၏ဖုန်းနံပါတ်</value>
+  </data>
+	<data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__TREE_SERE_SERV__GUI_LAI_YEU_CAU_XET_NGHIEM" xml:space="preserve">
+    <value>စမ်းသပ်မှုတောင်းဆိုချက်ကို ပြန်လည်ပေးပို့ပါ။</value>
+  </data>
+	<data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__TREE_SERE_SERV__SUA" xml:space="preserve">
+    <value>ပြင်ပါ။</value>
+  </data>
+	<data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__TREE_SERE_SERV__TAO_THU_HOI" xml:space="preserve">
+    <value>မှတ်မိအောင်ဖန်တီးပါ။</value>
+  </data>
+	<data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__TREE_SERE_SERV__THOI_GIAN_Y_LENH" xml:space="preserve">
+    <value>အော်ဒါမှာတယ်။</value>
+  </data>
+	<data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__TREE_SERE_SERV__XOA" xml:space="preserve">
+    <value>ဖျက်ပါ။</value>
+  </data>
+	<data name="UCTreeListService.btnHivTreatment.Text" xml:space="preserve">
+    <value>HIV/AIDS ကုသမှုဆိုင်ရာ အချက်အလက်</value>
+  </data>
+	<data name="GiamDinhYKhoa" xml:space="preserve">
+    <value>ဆေးစစ်ခြင်း။</value>
+  </data>
+	<data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__MOUSE_RIGHT__BAO_AN" xml:space="preserve">
+    <value>သတင်းစာတွေ စားတယ်။</value>
+  </data>
+	<data name="UCBedRoomPartial.gridColumn10.Caption" xml:space="preserve">
+    <value>လိင်</value>
+  </data>
+	<data name="UCBedRoomPartial.gridColumn10.ToolTip" xml:space="preserve">
+    <value>လိင်</value>
+  </data>
+	<data name="INIT_LANGUAGE__UC_TREE_SERE_SERV_7__DA_LAY_MAU" xml:space="preserve">
+    <value>နမူနာယူပါ။</value>
+  </data>
+	<data name="INIT_LANGUAGE__UC_TREE_SERE_SERV_7__DA_NHAN_MAU" xml:space="preserve">
+    <value>နမူနာလက်ခံရရှိခဲ့သည်။</value>
+  </data>
+</root>

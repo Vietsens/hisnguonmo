@@ -654,7 +654,9 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
                     LogSystem.Info("SereServExts: " + SereServExts.Count);
                     if (this.SereServExt.BEGIN_TIME.HasValue)
                     {
-                        dtStart.DateTime = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(this.SereServExt.BEGIN_TIME.Value) ?? DateTime.Now;
+                        var dt = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(this.SereServExt.BEGIN_TIME.Value) ?? DateTime.Now;
+                        dtStart.DateTime = new DateTime(dt.Year, dt.Month, dt.Day, dt.Hour, dt.Minute, 0);
+                        //dtStart.DateTime = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(this.SereServExt.BEGIN_TIME.Value) ?? DateTime.Now;
                     }
                     else
                     {
@@ -663,7 +665,9 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
 
                     if (this.SereServExt.END_TIME.HasValue)
                     {
-                        dtFinish.DateTime = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(this.SereServExt.END_TIME.Value) ?? DateTime.Now;
+                        var dt = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(this.SereServExt.END_TIME.Value) ?? DateTime.Now;
+                        dtFinish.DateTime = new DateTime(dt.Year, dt.Month, dt.Day, dt.Hour, dt.Minute, 0);
+                        //dtFinish.DateTime = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(this.SereServExt.END_TIME.Value) ?? DateTime.Now;
                         dtFinish.Properties.Buttons[1].Visible = true;
                         if (this.SereServExt.BEGIN_TIME.HasValue)
                         {

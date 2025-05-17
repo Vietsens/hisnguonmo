@@ -45,7 +45,6 @@ namespace HIS.Desktop.Plugins.DebateDiagnostic
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormDebateDiagnostic));
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject1 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject2 = new DevExpress.Utils.SerializableAppearanceObject();
@@ -64,18 +63,15 @@ namespace HIS.Desktop.Plugins.DebateDiagnostic
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject15 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject16 = new DevExpress.Utils.SerializableAppearanceObject();
             this.layoutControl1 = new DevExpress.XtraLayout.LayoutControl();
-            this.chkLockInfor = new DevExpress.XtraEditors.CheckEdit();
-            this.barManager1 = new DevExpress.XtraBars.BarManager(this.components);
+            this.chkAutoCreateTracking = new DevExpress.XtraEditors.CheckEdit();
+            this.barManager1 = new DevExpress.XtraBars.BarManager();
             this.bar1 = new DevExpress.XtraBars.Bar();
             this.barButtonItemSave = new DevExpress.XtraBars.BarButtonItem();
             this.barButtonItem1 = new DevExpress.XtraBars.BarButtonItem();
             this.barButtonItem2 = new DevExpress.XtraBars.BarButtonItem();
-            this.barDockControlTop = new DevExpress.XtraBars.BarDockControl();
-            this.barDockControlBottom = new DevExpress.XtraBars.BarDockControl();
-            this.barDockControlLeft = new DevExpress.XtraBars.BarDockControl();
-            this.barDockControlRight = new DevExpress.XtraBars.BarDockControl();
+            this.chkLockInfor = new DevExpress.XtraEditors.CheckEdit();
             this.btnSendTMP = new DevExpress.XtraEditors.SimpleButton();
-            this.popupControlContainer1 = new DevExpress.XtraBars.PopupControlContainer(this.components);
+            this.popupControlContainer1 = new DevExpress.XtraBars.PopupControlContainer();
             this.layoutControl2 = new DevExpress.XtraLayout.LayoutControl();
             this.btnCancel = new DevExpress.XtraEditors.SimpleButton();
             this.btnOk = new DevExpress.XtraEditors.SimpleButton();
@@ -219,11 +215,17 @@ namespace HIS.Desktop.Plugins.DebateDiagnostic
             this.layoutControlItem23 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem24 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem25 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.dxValidationProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider(this.components);
+            this.layoutControlItem26 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.barDockControlTop = new DevExpress.XtraBars.BarDockControl();
+            this.barDockControlBottom = new DevExpress.XtraBars.BarDockControl();
+            this.barDockControlLeft = new DevExpress.XtraBars.BarDockControl();
+            this.barDockControlRight = new DevExpress.XtraBars.BarDockControl();
+            this.dxValidationProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
             this.layoutControl1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.chkLockInfor.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chkAutoCreateTracking.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.barManager1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chkLockInfor.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.popupControlContainer1)).BeginInit();
             this.popupControlContainer1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl2)).BeginInit();
@@ -341,11 +343,13 @@ namespace HIS.Desktop.Plugins.DebateDiagnostic
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem23)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem24)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem25)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem26)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxValidationProvider1)).BeginInit();
             this.SuspendLayout();
             // 
             // layoutControl1
             // 
+            this.layoutControl1.Controls.Add(this.chkAutoCreateTracking);
             this.layoutControl1.Controls.Add(this.chkLockInfor);
             this.layoutControl1.Controls.Add(this.btnSendTMP);
             this.layoutControl1.Controls.Add(this.popupControlContainer1);
@@ -387,26 +391,21 @@ namespace HIS.Desktop.Plugins.DebateDiagnostic
             this.layoutControl1.TabIndex = 0;
             this.layoutControl1.Text = "layoutControl1";
             // 
-            // chkLockInfor
+            // chkAutoCreateTracking
             // 
-            this.chkLockInfor.Location = new System.Drawing.Point(469, 2);
-            this.chkLockInfor.MenuManager = this.barManager1;
-            this.chkLockInfor.Name = "chkLockInfor";
-            this.chkLockInfor.Properties.Caption = "Giữ thông tin";
-            this.chkLockInfor.Size = new System.Drawing.Size(84, 19);
-            this.chkLockInfor.StyleController = this.layoutControl1;
-            this.chkLockInfor.TabIndex = 43;
-            this.chkLockInfor.ToolTip = "Không hiển thị dữ liệu mẫu vào các ô đã có dữ liệu";
-            this.chkLockInfor.CheckedChanged += new System.EventHandler(this.chkLockInfor_CheckedChanged);
+            this.chkAutoCreateTracking.Location = new System.Drawing.Point(229, 696);
+            this.chkAutoCreateTracking.MenuManager = this.barManager1;
+            this.chkAutoCreateTracking.Name = "chkAutoCreateTracking";
+            this.chkAutoCreateTracking.Properties.Caption = "";
+            this.chkAutoCreateTracking.Size = new System.Drawing.Size(19, 19);
+            this.chkAutoCreateTracking.StyleController = this.layoutControl1;
+            this.chkAutoCreateTracking.TabIndex = 44;
+            this.chkAutoCreateTracking.CheckedChanged += new System.EventHandler(this.chkAutoCreateTracking_CheckedChanged);
             // 
             // barManager1
             // 
             this.barManager1.Bars.AddRange(new DevExpress.XtraBars.Bar[] {
             this.bar1});
-            this.barManager1.DockControls.Add(this.barDockControlTop);
-            this.barManager1.DockControls.Add(this.barDockControlBottom);
-            this.barManager1.DockControls.Add(this.barDockControlLeft);
-            this.barManager1.DockControls.Add(this.barDockControlRight);
             this.barManager1.Form = this;
             this.barManager1.Items.AddRange(new DevExpress.XtraBars.BarItem[] {
             this.barButtonItemSave,
@@ -448,33 +447,17 @@ namespace HIS.Desktop.Plugins.DebateDiagnostic
             this.barButtonItem2.Id = 2;
             this.barButtonItem2.Name = "barButtonItem2";
             // 
-            // barDockControlTop
+            // chkLockInfor
             // 
-            this.barDockControlTop.CausesValidation = false;
-            this.barDockControlTop.Dock = System.Windows.Forms.DockStyle.Top;
-            this.barDockControlTop.Location = new System.Drawing.Point(0, 0);
-            this.barDockControlTop.Size = new System.Drawing.Size(1362, 29);
-            // 
-            // barDockControlBottom
-            // 
-            this.barDockControlBottom.CausesValidation = false;
-            this.barDockControlBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.barDockControlBottom.Location = new System.Drawing.Point(0, 749);
-            this.barDockControlBottom.Size = new System.Drawing.Size(1362, 0);
-            // 
-            // barDockControlLeft
-            // 
-            this.barDockControlLeft.CausesValidation = false;
-            this.barDockControlLeft.Dock = System.Windows.Forms.DockStyle.Left;
-            this.barDockControlLeft.Location = new System.Drawing.Point(0, 29);
-            this.barDockControlLeft.Size = new System.Drawing.Size(0, 720);
-            // 
-            // barDockControlRight
-            // 
-            this.barDockControlRight.CausesValidation = false;
-            this.barDockControlRight.Dock = System.Windows.Forms.DockStyle.Right;
-            this.barDockControlRight.Location = new System.Drawing.Point(1362, 29);
-            this.barDockControlRight.Size = new System.Drawing.Size(0, 720);
+            this.chkLockInfor.Location = new System.Drawing.Point(469, 2);
+            this.chkLockInfor.MenuManager = this.barManager1;
+            this.chkLockInfor.Name = "chkLockInfor";
+            this.chkLockInfor.Properties.Caption = "Giữ thông tin";
+            this.chkLockInfor.Size = new System.Drawing.Size(84, 19);
+            this.chkLockInfor.StyleController = this.layoutControl1;
+            this.chkLockInfor.TabIndex = 43;
+            this.chkLockInfor.ToolTip = "Không hiển thị dữ liệu mẫu vào các ô đã có dữ liệu";
+            this.chkLockInfor.CheckedChanged += new System.EventHandler(this.chkLockInfor_CheckedChanged);
             // 
             // btnSendTMP
             // 
@@ -1321,23 +1304,23 @@ namespace HIS.Desktop.Plugins.DebateDiagnostic
             // 
             // chkAutoCreateEmr
             // 
-            this.chkAutoCreateEmr.Location = new System.Drawing.Point(439, 696);
+            this.chkAutoCreateEmr.Location = new System.Drawing.Point(477, 696);
             this.chkAutoCreateEmr.MenuManager = this.barManager1;
             this.chkAutoCreateEmr.Name = "chkAutoCreateEmr";
             this.chkAutoCreateEmr.Properties.Caption = "";
             this.chkAutoCreateEmr.Properties.FullFocusRect = true;
-            this.chkAutoCreateEmr.Size = new System.Drawing.Size(35, 19);
+            this.chkAutoCreateEmr.Size = new System.Drawing.Size(21, 19);
             this.chkAutoCreateEmr.StyleController = this.layoutControl1;
             this.chkAutoCreateEmr.TabIndex = 31;
             this.chkAutoCreateEmr.CheckedChanged += new System.EventHandler(this.chkAutoCreateEmr_CheckedChanged);
             // 
             // chkAutoSign
             // 
-            this.chkAutoSign.Location = new System.Drawing.Point(783, 696);
+            this.chkAutoSign.Location = new System.Drawing.Point(777, 696);
             this.chkAutoSign.MenuManager = this.barManager1;
             this.chkAutoSign.Name = "chkAutoSign";
             this.chkAutoSign.Properties.Caption = "";
-            this.chkAutoSign.Size = new System.Drawing.Size(15, 19);
+            this.chkAutoSign.Size = new System.Drawing.Size(21, 19);
             this.chkAutoSign.StyleController = this.layoutControl1;
             this.chkAutoSign.TabIndex = 30;
             this.chkAutoSign.CheckedChanged += new System.EventHandler(this.chkAutoSign_CheckedChanged);
@@ -1703,7 +1686,8 @@ namespace HIS.Desktop.Plugins.DebateDiagnostic
             this.layoutControlItem19,
             this.layoutControlItem23,
             this.layoutControlItem24,
-            this.layoutControlItem25});
+            this.layoutControlItem25,
+            this.layoutControlItem26});
             this.layoutControlGroup1.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup1.Name = "layoutControlGroup1";
             this.layoutControlGroup1.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
@@ -1994,15 +1978,15 @@ namespace HIS.Desktop.Plugins.DebateDiagnostic
             this.lciAutoCreateEmr.AppearanceItemCaption.Options.UseTextOptions = true;
             this.lciAutoCreateEmr.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lciAutoCreateEmr.Control = this.chkAutoCreateEmr;
-            this.lciAutoCreateEmr.Location = new System.Drawing.Point(182, 694);
+            this.lciAutoCreateEmr.Location = new System.Drawing.Point(250, 694);
             this.lciAutoCreateEmr.MinSize = new System.Drawing.Size(250, 24);
             this.lciAutoCreateEmr.Name = "lciAutoCreateEmr";
             this.lciAutoCreateEmr.OptionsToolTip.ToolTip = "Tự động tạo văn bản điện tử sau khi lưu thành công";
-            this.lciAutoCreateEmr.Size = new System.Drawing.Size(294, 26);
+            this.lciAutoCreateEmr.Size = new System.Drawing.Size(250, 26);
             this.lciAutoCreateEmr.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
             this.lciAutoCreateEmr.Text = "Tự động tạo văn bản điện tử:";
             this.lciAutoCreateEmr.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
-            this.lciAutoCreateEmr.TextSize = new System.Drawing.Size(250, 20);
+            this.lciAutoCreateEmr.TextSize = new System.Drawing.Size(220, 20);
             this.lciAutoCreateEmr.TextToControlDistance = 5;
             // 
             // layoutControlItem8
@@ -2058,7 +2042,7 @@ namespace HIS.Desktop.Plugins.DebateDiagnostic
             this.emptySpaceItem2.AllowHotTrack = false;
             this.emptySpaceItem2.Location = new System.Drawing.Point(0, 694);
             this.emptySpaceItem2.Name = "emptySpaceItem2";
-            this.emptySpaceItem2.Size = new System.Drawing.Size(182, 26);
+            this.emptySpaceItem2.Size = new System.Drawing.Size(112, 26);
             this.emptySpaceItem2.TextSize = new System.Drawing.Size(0, 0);
             // 
             // lciAutoSign
@@ -2066,15 +2050,15 @@ namespace HIS.Desktop.Plugins.DebateDiagnostic
             this.lciAutoSign.AppearanceItemCaption.Options.UseTextOptions = true;
             this.lciAutoSign.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lciAutoSign.Control = this.chkAutoSign;
-            this.lciAutoSign.Location = new System.Drawing.Point(476, 694);
+            this.lciAutoSign.Location = new System.Drawing.Point(500, 694);
             this.lciAutoSign.MinSize = new System.Drawing.Size(300, 24);
             this.lciAutoSign.Name = "lciAutoSign";
             this.lciAutoSign.OptionsToolTip.ToolTip = "Tự động thiết lập ký theo thành phần tham gia";
-            this.lciAutoSign.Size = new System.Drawing.Size(324, 26);
+            this.lciAutoSign.Size = new System.Drawing.Size(300, 26);
             this.lciAutoSign.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
-            this.lciAutoSign.Text = "Tự động thiết lập ký theo thành phần tham gia";
+            this.lciAutoSign.Text = "Tự động thiết lập ký theo thành phần tham gia:";
             this.lciAutoSign.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
-            this.lciAutoSign.TextSize = new System.Drawing.Size(300, 20);
+            this.lciAutoSign.TextSize = new System.Drawing.Size(270, 20);
             this.lciAutoSign.TextToControlDistance = 5;
             // 
             // layoutControlItem18
@@ -2132,6 +2116,43 @@ namespace HIS.Desktop.Plugins.DebateDiagnostic
             this.layoutControlItem25.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem25.TextVisible = false;
             // 
+            // layoutControlItem26
+            // 
+            this.layoutControlItem26.Control = this.chkAutoCreateTracking;
+            this.layoutControlItem26.Location = new System.Drawing.Point(112, 694);
+            this.layoutControlItem26.Name = "layoutControlItem26";
+            this.layoutControlItem26.Size = new System.Drawing.Size(138, 26);
+            this.layoutControlItem26.Text = "Tự động tạo tờ điều trị:";
+            this.layoutControlItem26.TextSize = new System.Drawing.Size(112, 13);
+            // 
+            // barDockControlTop
+            // 
+            this.barDockControlTop.CausesValidation = false;
+            this.barDockControlTop.Dock = System.Windows.Forms.DockStyle.Top;
+            this.barDockControlTop.Location = new System.Drawing.Point(0, 29);
+            this.barDockControlTop.Size = new System.Drawing.Size(1362, 0);
+            // 
+            // barDockControlBottom
+            // 
+            this.barDockControlBottom.CausesValidation = false;
+            this.barDockControlBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.barDockControlBottom.Location = new System.Drawing.Point(0, 749);
+            this.barDockControlBottom.Size = new System.Drawing.Size(1362, 0);
+            // 
+            // barDockControlLeft
+            // 
+            this.barDockControlLeft.CausesValidation = false;
+            this.barDockControlLeft.Dock = System.Windows.Forms.DockStyle.Left;
+            this.barDockControlLeft.Location = new System.Drawing.Point(0, 29);
+            this.barDockControlLeft.Size = new System.Drawing.Size(0, 720);
+            // 
+            // barDockControlRight
+            // 
+            this.barDockControlRight.CausesValidation = false;
+            this.barDockControlRight.Dock = System.Windows.Forms.DockStyle.Right;
+            this.barDockControlRight.Location = new System.Drawing.Point(1362, 29);
+            this.barDockControlRight.Size = new System.Drawing.Size(0, 720);
+            // 
             // dxValidationProvider1
             // 
             this.dxValidationProvider1.ValidationFailed += new DevExpress.XtraEditors.DXErrorProvider.ValidationFailedEventHandler(this.dxValidationProvider1_ValidationFailed);
@@ -2160,8 +2181,9 @@ namespace HIS.Desktop.Plugins.DebateDiagnostic
             this.Controls.SetChildIndex(this.layoutControl1, 0);
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).EndInit();
             this.layoutControl1.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.chkLockInfor.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chkAutoCreateTracking.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.barManager1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chkLockInfor.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.popupControlContainer1)).EndInit();
             this.popupControlContainer1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl2)).EndInit();
@@ -2279,6 +2301,7 @@ namespace HIS.Desktop.Plugins.DebateDiagnostic
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem23)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem24)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem25)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem26)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxValidationProvider1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -2444,5 +2467,7 @@ namespace HIS.Desktop.Plugins.DebateDiagnostic
         private DevExpress.XtraEditors.Repository.RepositoryItemTextEdit TextEditLoginNameDis;
         private DevExpress.XtraEditors.CheckEdit chkLockInfor;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem25;
+        private DevExpress.XtraEditors.CheckEdit chkAutoCreateTracking;
+        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem26;
     }
 }

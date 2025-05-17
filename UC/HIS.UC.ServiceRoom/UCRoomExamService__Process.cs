@@ -30,6 +30,11 @@ using HIS.Desktop.Utilities.Extensions;
 using MOS.EFMODEL.DataModels;
 using HIS.Desktop.LocalStorage.BackendData;
 using DevExpress.XtraEditors;
+using DevExpress.XtraGrid.Views.Grid;
+using System.IO;
+using System.Net.NetworkInformation;
+using HIS.UC.ServiceRoom.OperatingStatus;
+using HIS.Desktop.LocalStorage.LocalData;
 
 namespace HIS.UC.ServiceRoom
 {
@@ -37,6 +42,8 @@ namespace HIS.UC.ServiceRoom
     {
         internal string numOderSelected;
         Dictionary<long, string> numberNames = new Dictionary<long, string>();
+        private string USER = Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName();
+
         public void InitLoad(RoomExamServiceInitADO ado)
         {
             try
@@ -201,13 +208,13 @@ namespace HIS.UC.ServiceRoom
                 int columnIndex = 1;
                 AddFieldColumnIntoComboRoomExt("IsChecked", " ","", 30, columnIndex++, true, null, true);
                 AddFieldColumnIntoComboRoomExt("EXECUTE_ROOM_CODE", col1,"", 90, columnIndex++, true);
-                AddFieldColumnIntoComboRoomExt("EXECUTE_ROOM_NAME", col2,"", 270, columnIndex++, true);       
+                AddFieldColumnIntoComboRoomExt("EXECUTE_ROOM_NAME", col2,"", 240, columnIndex++, true);       
                 AddFieldColumnIntoComboRoomExt("TOTAL_TODAY_SERVICE_REQ", col3,tol1, 80, columnIndex++, true);
                 AddFieldColumnIntoComboRoomExt("TOTAL_MORNING_SERE", col13, tol8, 80, -1, false);/// mới
-                AddFieldColumnIntoComboRoomExt("TOTAL_AFTERNOON_SERE", col14, tol9, 240, columnIndex++, false);
-                AddFieldColumnIntoComboRoomExt("TOTAL_TODAY_KNVP_SERE", col15, tol10, 80, columnIndex++, false);
-                AddFieldColumnIntoComboRoomExt("TOTAL_MORNING_KNVP_SERE", col16, tol11, 80, columnIndex++, false);
-                AddFieldColumnIntoComboRoomExt("TOTAL_AFTERNOON_KNVP_SERE", col17, tol12, 80, columnIndex++, false);///
+                AddFieldColumnIntoComboRoomExt("TOTAL_AFTERNOON_SERE", col14, tol9, 80, -1, false);
+                AddFieldColumnIntoComboRoomExt("TOTAL_TODAY_KNVP_SERE", col15, tol10, 80, -1, false);
+                AddFieldColumnIntoComboRoomExt("TOTAL_MORNING_KNVP_SERE", col16, tol11, 80, -1, false);
+                AddFieldColumnIntoComboRoomExt("TOTAL_AFTERNOON_KNVP_SERE", col17, tol12, 80, -1, false);///
                 AddFieldColumnIntoComboRoomExt("TOTAL_NEW_SERVICE_REQ", col4,tol2, 80, columnIndex++, true);
                 AddFieldColumnIntoComboRoomExt("TOTAL_END_SERVICE_REQ", col5, tol3, 80, columnIndex++, true);
                 AddFieldColumnIntoComboRoomExt("TOTAL_WAIT_TODAY_SERVICE_REQ", col6,tol4, 80, columnIndex++, true);
@@ -221,6 +228,8 @@ namespace HIS.UC.ServiceRoom
 
                 gridViewContainerRoom.GridControl.DataSource = this.roomExts;
 
+                RestoreLayoutForCurrentUser(gridViewContainerRoom);
+
                 gridViewContainerRoom.EndUpdate();
             }
             catch (Exception ex)
@@ -229,6 +238,35 @@ namespace HIS.UC.ServiceRoom
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
+
+        public void SaveLayoutForCurrentUser(DevExpress.XtraGrid.Views.Grid.GridView view)
+        {
+            if (view == null || string.IsNullOrEmpty(USER))
+                return;
+            Inventec.Desktop.Common.Modules.Module moduleData = GlobalVariables.currentModuleRaws.Where(o => o.ModuleLink == "HIS.Desktop.Plugins.RegisterV2").FirstOrDefault();
+
+            var allowedModules = HIS.Desktop.Plugins.Library.RegisterConfig.HisConfigCFG.MODULELINKS.Split(',');
+            if (!string.IsNullOrWhiteSpace(HIS.Desktop.Plugins.Library.RegisterConfig.HisConfigCFG.MODULELINKS) && moduleData != null && !allowedModules.Contains(moduleData.ModuleLink))
+                return;
+
+            var ms = new MemoryStream();
+            view.SaveLayoutToStream(ms);
+
+            OperatingStatus.OperatingStatus.Status.LayoutPerUser[USER] = ms;
+        }
+
+        public void RestoreLayoutForCurrentUser(DevExpress.XtraGrid.Views.Grid.GridView view)
+        {
+            if (view == null || string.IsNullOrEmpty(USER))
+                return;
+
+            if (OperatingStatus.OperatingStatus.Status.LayoutPerUser.TryGetValue(USER, out MemoryStream ms))
+            {
+                ms.Position = 0;
+                view.RestoreLayoutFromStream(ms);
+            }
+        }
+
 
         DevExpress.XtraEditors.Repository.RepositoryItemCheckEdit GenerateRepositoryItemCheckEdit()
         {
@@ -266,8 +304,29 @@ namespace HIS.UC.ServiceRoom
                 col2.OptionsFilter.AllowAutoFilter = false;
             }
 
+            col2.OptionsColumn.ShowInCustomizationForm = true;
+
             gridViewContainerRoom.Columns.Add(col2);
         }
+
+        private void gridViewContainerRoom_RowCellClick(object sender, RowCellClickEventArgs e)
+        {
+            //if (e.Column != null && e.Column.FieldName == "Chur")
+            //{
+            //    var view = sender as DevExpress.XtraGrid.Views.Grid.GridView;
+
+            //    if (view != null)
+            //    {
+            //        view.OptionsCustomization.AllowColumnMoving = true;
+            //        view.OptionsCustomization.AllowQuickHideColumns = true;
+            //        view.OptionsCustomization.CustomizationFormSearchBoxVisible = true;
+
+            //        // Gọi Column Chooser
+            //        view.ShowCustomization();
+            //    }
+            //}
+        }
+
 
         private List<RoomExtADO> OrderRoom(List<RoomExtADO> roomList)
         {
