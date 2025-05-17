@@ -189,7 +189,7 @@
     </Reference>
     <Reference Include="MOS.SDO, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\LIB\MOS\MOS.SDO.dll</HintPath>
+      <HintPath>..\..\..\..\lib\MOS\MOS.SDO.dll</HintPath>
     </Reference>
     <Reference Include="MPS, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
