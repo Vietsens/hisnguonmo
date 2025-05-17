@@ -1340,6 +1340,9 @@ namespace HIS.Desktop.Plugins.Transaction
                         case PopupMenuProcessor.ItemType.YCTU:
                             YeuCauTamUng();
                             break;
+                        case PopupMenuProcessor.ItemType.InDonTongHopPhongKham:
+                            PrintDonTongHopPhongKham();
+                            break;
                         default:
                             break;
                     }
@@ -1586,6 +1589,21 @@ namespace HIS.Desktop.Plugins.Transaction
             }
         }
 
+        private void PrintDonTongHopPhongKham()
+        {
+            try
+            {
+                if (this.currentTreatment == null)
+                    return;
+                Inventec.Common.RichEditor.RichEditorStore store = new Inventec.Common.RichEditor.RichEditorStore(ApiConsumers.SarConsumer, ConfigSystems.URI_API_SAR, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetLanguage(), GlobalVariables.TemnplatePathFolder);
+                store.RunPrintTemplate("Mps000479", DelegatePrintTempalte);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
         private bool DelegatePrintTempalte(string printTypeCode, string fileName)
         {
             bool result = false;
@@ -1604,6 +1622,9 @@ namespace HIS.Desktop.Plugins.Transaction
                         break;
                     case "Mps000111":
                         InPhieuPhieuThuThanhToan(printTypeCode, fileName, ref result);
+                        break;
+                    case "Mps000479":
+                        InDonTongHopPhongKham(printTypeCode, fileName, ref result);
                         break;
                     default:
                         break;
@@ -1845,6 +1866,58 @@ namespace HIS.Desktop.Plugins.Transaction
                         }
                     }
                 }
+            }
+            catch (Exception ex)
+            {
+                WaitingManager.Hide();
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+            finally
+            {
+                WaitingManager.Hide();
+            }
+        }
+
+        private void InDonTongHopPhongKham(string printTypeCode, string fileName, ref bool result)
+        {
+            try
+            {
+
+                WaitingManager.Show();
+                //Get data HIS_EXP_MEST 
+                CommonParam param = new CommonParam();
+                MOS.Filter.HisExpMestViewFilter filterHEM = new HisExpMestViewFilter();
+                filterHEM.TDL_TREATMENT_ID = currentTreatment.ID;
+                filterHEM.EXP_MEST_TYPE_ID = IMSys.DbConfig.HIS_RS.HIS_EXP_MEST_TYPE.ID__THPK;
+                var data = new BackendAdapter(param).Get<List<HIS_EXP_MEST>>("api/HisExpMest/GetView", ApiConsumers.MosConsumer, filterHEM, param);
+                WaitingManager.Hide();
+                if(data == null || data.Count == 0)
+                {
+                    DevExpress.XtraEditors.XtraMessageBox.Show("Hồ sơ không có đơn tổng hợp phòng khám", "Thông báo");
+                    return;
+                }
+                foreach (var item in data)
+                {
+                    MPS.Processor.Mps000479.PDO.Mps000479PDO pdo = new MPS.Processor.Mps000479.PDO.Mps000479PDO(item
+                    );
+                    string printerName = "";
+                    if (GlobalVariables.dicPrinter.ContainsKey(printTypeCode))
+                    {
+                        printerName = GlobalVariables.dicPrinter[printTypeCode];
+                    }
+
+                    Inventec.Common.SignLibrary.ADO.InputADO inputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode((currentTreatment != null ? currentTreatment.TREATMENT_CODE : ""), printTypeCode, currentModule != null ? currentModule.RoomId : 0);
+
+                    if (ConfigApplications.CheDoInChoCacChucNangTrongPhanMem == 2)
+                    {
+                        result = MPS.MpsPrinter.Run(new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, pdo, MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow, printerName) { EmrInputADO = inputADO });
+                    }
+                    else
+                    {
+                        result = MPS.MpsPrinter.Run(new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, pdo, MPS.ProcessorBase.PrintConfig.PreviewType.Show, printerName) { EmrInputADO = inputADO });
+                    }
+                }
+                
             }
             catch (Exception ex)
             {
