@@ -51,6 +51,7 @@ namespace HIS.Desktop.Plugins.TreatmentList
 
         internal enum ItemType
         {
+            ReqOpenTreatmentRecord,
             CertificateOfTBTreatment,
             TreatmentBedRoomList,
             BedHistory,
@@ -395,6 +396,16 @@ namespace HIS.Desktop.Plugins.TreatmentList
                 subDieuTri.AddItem(bbtnTracking);
 
                 this._Menu.AddItems(new BarItem[] { subDieuTri });
+
+                #region ----- Yêu cầu mở hồ sơ điều trị
+                if (this._TreatmentPoppupPrint != null && _TreatmentPoppupPrint.IS_PAUSE == 1)
+                {
+                    BarButtonItem itemOpenTreatment = new BarButtonItem(_BarManager, "Yêu cầu mở hồ sơ điều trị", 8);
+                    itemOpenTreatment.Tag = ItemType.ReqOpenTreatmentRecord;
+                    itemOpenTreatment.ItemClick += new ItemClickEventHandler(_MouseRightClick);
+                    _Menu.AddItem(itemOpenTreatment);
+                }
+                #endregion
 
                 #region ----- BenhAn
                 //BarSubItem subBenhAn = new BarSubItem(_BarManager, Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__MOUSE_RIGHT__SUB_BENH_AN", Base.ResourceLangManager.LanguageUCTreatmentList, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture()), 9);
