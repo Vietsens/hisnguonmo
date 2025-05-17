@@ -125,7 +125,7 @@ namespace HIS.Desktop.Plugins.TreatmentLog
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
-
+              
         private void SetCaptionByLanguageKey()
         {
             try
