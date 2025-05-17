@@ -48,9 +48,9 @@ namespace HIS.Desktop.Plugins.AttackFile
         Inventec.Desktop.Common.Modules.Module currentModule;
         EmrAttackFileADO inputADO;
 
-        public frmAttachTestFile(Inventec.Desktop.Common.Modules.Module currentModule, EmrAttackFileADO inputADO) :base(currentModule)
+        public frmAttachTestFile(Inventec.Desktop.Common.Modules.Module currentModule, EmrAttackFileADO inputADO) : base(currentModule)
         {
-         
+
             InitializeComponent();
             try
             {
@@ -73,13 +73,28 @@ namespace HIS.Desktop.Plugins.AttackFile
                 txtDocName.Focus();
                 this.layoutControlItem9.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
                 this.layoutControlItem5.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
-
+                ValidationMaxLength();
                 EMR_TREATMENT treatment = GetTreatmentById(this.inputADO.TreatmentCode);
-                if(treatment == null)
+                if (treatment == null)
                 {
                     XtraMessageBox.Show("Hồ sơ hiện chưa có trên hệ thống văn bản. Vui lòng sử dụng chức năng 'Đồng bộ lại EMR'");
                     return;
                 }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+        private void GetDocument(long treatmentId)
+        {
+            try
+            {
+                CommonParam paramCommon = new CommonParam();
+                EmrDocumentFilter filter = new EmrDocumentFilter();
+                filter.TREATMENT_ID = treatmentId;
+                var documents = new BackendAdapter(paramCommon).Get<List<EMR_DOCUMENT>>("api/EmrDocument/Get", ApiConsumers.EmrConsumer, filter, paramCommon);
+
             }
             catch (Exception ex)
             {
@@ -418,9 +433,7 @@ namespace HIS.Desktop.Plugins.AttackFile
         {
             try
             {
-                currentAttachmentFile = (AttachFileADO)gridView1.GetFocusedRow();
-                currentAttachmentFile.FILE_NAME = txtDocName.Text;
-                if (!Config.ConfigKey.IsHasConnectionEmr)
+                if (!Config.ConfigKey.IsHasConnectionEmr || !dxValidationProvider1.Validate())
                     return;
 
                 if (listAttachmentFiles != null && listAttachmentFiles.Count > 0)
@@ -434,7 +447,7 @@ namespace HIS.Desktop.Plugins.AttackFile
                     // Generate combined PDF from all files
                     GeneratePdfFileFromImages();
                     string combinedPdfPath = CombineMultiplePDFs();
-                    
+
                     document.OriginalVersion = new VersionTDO();
                     document.OriginalVersion.Base64Data = Convert.ToBase64String(GetMemoryStreamFromFile(combinedPdfPath).ToArray());
                     document.FileType = EMR.TDO.FileType.PDF;
@@ -533,18 +546,24 @@ namespace HIS.Desktop.Plugins.AttackFile
         {
             try
             {
-                if (e.KeyCode == Keys.Enter)
-                {
-                    Validation.ValidateMaxLength valid = new Validation.ValidateMaxLength();
-                    valid.memoEdit = txtDocName;
-                    valid.maxLength = 2000;
-                    valid.ErrorText = "Trường dữ liệu vượt quá 2000 ký tự";
-                    valid.ErrorType = DevExpress.XtraEditors.DXErrorProvider.ErrorType.Warning;
-                    dxValidationProvider1.SetValidationRule(txtDocName, valid);
-                    if (!dxValidationProvider1.Validate()) return;
-                }
-                currentAttachmentFile = (AttachFileADO)gridView1.GetFocusedRow();
-                currentAttachmentFile.FILE_NAME = txtDocName.Text;
+                //currentAttachmentFile = (AttachFileADO)gridView1.GetFocusedRow();
+                //currentAttachmentFile.FILE_NAME = txtDocName.Text;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+        private void ValidationMaxLength()
+        {
+            try
+            {
+                Validation.ValidateMaxLength valid = new Validation.ValidateMaxLength();
+                valid.memoEdit = txtDocName;
+                valid.maxLength = 2000;
+                valid.ErrorText = "Trường dữ liệu vượt quá 2000 ký tự";
+                valid.ErrorType = DevExpress.XtraEditors.DXErrorProvider.ErrorType.Warning;
+                dxValidationProvider1.SetValidationRule(txtDocName, valid);
             }
             catch (Exception ex)
             {

@@ -45,6 +45,7 @@ namespace HIS.Desktop.Plugins.ApprovalExamSpecialist
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(UCTreeListService));
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject1 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject2 = new DevExpress.Utils.SerializableAppearanceObject();
@@ -101,7 +102,7 @@ namespace HIS.Desktop.Plugins.ApprovalExamSpecialist
             this.rep_btnEdit_Disable = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
             this.rep_btnDelete_Enable = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
             this.rep_btnDelete_Disable = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
-            this.toolTipController2 = new DevExpress.Utils.ToolTipController();
+            this.toolTipController2 = new DevExpress.Utils.ToolTipController(this.components);
             this.layoutControlGroup1 = new DevExpress.XtraLayout.LayoutControlGroup();
             this.layoutControlItem1 = new DevExpress.XtraLayout.LayoutControlItem();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();

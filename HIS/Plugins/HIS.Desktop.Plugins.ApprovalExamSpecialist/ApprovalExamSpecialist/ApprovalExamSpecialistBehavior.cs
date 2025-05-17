@@ -17,6 +17,7 @@ namespace HIS.Desktop.Plugins.ApprovalExamSpecialist.ApprovalExamSpecialist
     public sealed class ApprovalExamSpecialistBehavior : Tool<IDesktopToolContext>, IApprovalExamSpecialist
     {
         object[] entity;
+        Common.RefeshReference delegateRefresh;
         public ApprovalExamSpecialistBehavior()
             : base()
         {
@@ -50,12 +51,17 @@ namespace HIS.Desktop.Plugins.ApprovalExamSpecialist.ApprovalExamSpecialist
                         {
                             obj = (V_HIS_SPECIALIST_EXAM)entity[i];
                         }
+                        else if (entity[i] is Common.RefeshReference deleg)
+                        {
+                            delegateRefresh = deleg;
+                        }
+
                     }
-                
+
                 }
                 if (moduleData != null)
                 {
-                    return new frmApprovalExamSpecialist(moduleData, treatmentID, obj);
+                    return new frmApprovalExamSpecialist(moduleData, treatmentID, obj, delegateRefresh);
                 }
                 else
                 {
