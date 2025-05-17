@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmAttachTestFile));
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject5 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject6 = new DevExpress.Utils.SerializableAppearanceObject();
@@ -45,9 +46,11 @@
             this.emptySpaceItem2 = new DevExpress.XtraLayout.EmptySpaceItem();
             this.emptySpaceItem3 = new DevExpress.XtraLayout.EmptySpaceItem();
             this.layoutControl2 = new DevExpress.XtraLayout.LayoutControl();
+            this.pictureEdit1 = new DevExpress.XtraEditors.PictureEdit();
             this.pdfViewer1 = new DevExpress.XtraPdfViewer.PdfViewer();
             this.Root = new DevExpress.XtraLayout.LayoutControlGroup();
             this.layoutControlItem5 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.layoutControlItem9 = new DevExpress.XtraLayout.LayoutControlItem();
             this.gridControl1 = new DevExpress.XtraGrid.GridControl();
             this.gridView1 = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.gridColumnSTT = new DevExpress.XtraGrid.Columns.GridColumn();
@@ -61,10 +64,8 @@
             this.layoutControlItem4 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem6 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem1 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.dxValidationProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider();
-            this.dxErrorProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXErrorProvider();
-            this.pictureEdit1 = new DevExpress.XtraEditors.PictureEdit();
-            this.layoutControlItem9 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.dxValidationProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider(this.components);
+            this.dxErrorProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXErrorProvider(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
             this.layoutControl1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.cboDocType.Properties)).BeginInit();
@@ -78,8 +79,10 @@
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl2)).BeginInit();
             this.layoutControl2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureEdit1.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Root)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem5)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem9)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridControl1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridView1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemButtonEditDelete)).BeginInit();
@@ -92,8 +95,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxValidationProvider1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxErrorProvider1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureEdit1.Properties)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem9)).BeginInit();
             this.SuspendLayout();
             // 
             // layoutControl1
@@ -229,12 +230,26 @@
             this.layoutControl2.TabIndex = 3;
             this.layoutControl2.Text = "layoutControl2";
             // 
+            // pictureEdit1
+            // 
+            this.pictureEdit1.Location = new System.Drawing.Point(299, 12);
+            this.pictureEdit1.Name = "pictureEdit1";
+            this.pictureEdit1.Properties.ShowCameraMenuItem = DevExpress.XtraEditors.Controls.CameraMenuItemVisibility.Auto;
+            this.pictureEdit1.Size = new System.Drawing.Size(284, 320);
+            this.pictureEdit1.StyleController = this.layoutControl2;
+            this.pictureEdit1.TabIndex = 4;
+            this.pictureEdit1.ImageChanged += new System.EventHandler(this.pictureEdit1_ImageChanged);
+            // 
             // pdfViewer1
             // 
             this.pdfViewer1.Location = new System.Drawing.Point(12, 12);
             this.pdfViewer1.Name = "pdfViewer1";
+            this.pdfViewer1.NavigationPaneInitialVisibility = DevExpress.XtraPdfViewer.PdfNavigationPaneVisibility.Hidden;
+            this.pdfViewer1.ShowPrintStatusDialog = false;
             this.pdfViewer1.Size = new System.Drawing.Size(283, 320);
             this.pdfViewer1.TabIndex = 0;
+            this.pdfViewer1.TabStop = false;
+            this.pdfViewer1.ZoomMode = DevExpress.XtraPdfViewer.PdfZoomMode.FitToVisible;
             // 
             // Root
             // 
@@ -256,6 +271,15 @@
             this.layoutControlItem5.Size = new System.Drawing.Size(287, 324);
             this.layoutControlItem5.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem5.TextVisible = false;
+            // 
+            // layoutControlItem9
+            // 
+            this.layoutControlItem9.Control = this.pictureEdit1;
+            this.layoutControlItem9.Location = new System.Drawing.Point(287, 0);
+            this.layoutControlItem9.Name = "layoutControlItem9";
+            this.layoutControlItem9.Size = new System.Drawing.Size(288, 324);
+            this.layoutControlItem9.TextSize = new System.Drawing.Size(0, 0);
+            this.layoutControlItem9.TextVisible = false;
             // 
             // gridControl1
             // 
@@ -286,6 +310,7 @@
             this.gridColumnSTT.Caption = "STT";
             this.gridColumnSTT.FieldName = "STT";
             this.gridColumnSTT.Name = "gridColumnSTT";
+            this.gridColumnSTT.OptionsColumn.AllowEdit = false;
             this.gridColumnSTT.OptionsColumn.AllowSort = DevExpress.Utils.DefaultBoolean.False;
             this.gridColumnSTT.OptionsColumn.ReadOnly = true;
             this.gridColumnSTT.UnboundType = DevExpress.Data.UnboundColumnType.Object;
@@ -318,6 +343,7 @@
             this.gridColumnFileName.Caption = "Tên";
             this.gridColumnFileName.FieldName = "FILE_NAME";
             this.gridColumnFileName.Name = "gridColumnFileName";
+            this.gridColumnFileName.OptionsColumn.AllowEdit = false;
             this.gridColumnFileName.OptionsColumn.AllowSort = DevExpress.Utils.DefaultBoolean.False;
             this.gridColumnFileName.OptionsColumn.ReadOnly = true;
             this.gridColumnFileName.Visible = true;
@@ -407,25 +433,6 @@
             // 
             this.dxErrorProvider1.ContainerControl = this;
             // 
-            // pictureEdit1
-            // 
-            this.pictureEdit1.Location = new System.Drawing.Point(299, 12);
-            this.pictureEdit1.Name = "pictureEdit1";
-            this.pictureEdit1.Properties.ShowCameraMenuItem = DevExpress.XtraEditors.Controls.CameraMenuItemVisibility.Auto;
-            this.pictureEdit1.Size = new System.Drawing.Size(284, 320);
-            this.pictureEdit1.StyleController = this.layoutControl2;
-            this.pictureEdit1.TabIndex = 4;
-            this.pictureEdit1.ImageChanged += new System.EventHandler(this.pictureEdit1_ImageChanged);
-            // 
-            // layoutControlItem9
-            // 
-            this.layoutControlItem9.Control = this.pictureEdit1;
-            this.layoutControlItem9.Location = new System.Drawing.Point(287, 0);
-            this.layoutControlItem9.Name = "layoutControlItem9";
-            this.layoutControlItem9.Size = new System.Drawing.Size(288, 324);
-            this.layoutControlItem9.TextSize = new System.Drawing.Size(0, 0);
-            this.layoutControlItem9.TextVisible = false;
-            // 
             // frmAttachTestFile
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -450,8 +457,10 @@
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem3)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl2)).EndInit();
             this.layoutControl2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.pictureEdit1.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.Root)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem5)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem9)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridControl1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridView1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemButtonEditDelete)).EndInit();
@@ -464,8 +473,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxValidationProvider1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxErrorProvider1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureEdit1.Properties)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem9)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
