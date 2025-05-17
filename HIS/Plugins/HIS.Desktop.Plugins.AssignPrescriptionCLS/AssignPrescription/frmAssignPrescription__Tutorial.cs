@@ -80,10 +80,10 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
                         this.txtTutorial.Text = medicineTypeTut.TUTORIAL;
                         this.txtHtu.Text = medicineTypeTut.HTU_TEXT;
                     }
-                    //if (!String.IsNullOrEmpty(medicineTypeTut.HTU_TEXT))
-                    //{
-                    //    this.txtHtu.Text = medicineTypeTut.HTU_TEXT;
-                    //}
+                    if (!String.IsNullOrEmpty(medicineTypeTut.HTU_TEXT))
+                    {
+                        this.txtHtu.Text = medicineTypeTut.HTU_TEXT;
+                    }
                 }
             }
             catch (Exception ex)
@@ -142,13 +142,10 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
                         this.txtTutorial.Text = medicineTypeTut.TUTORIAL;
                         this.txtHtu.Text = medicineTypeTut.HTU_TEXT;
                     }
-                    //if (!String.IsNullOrEmpty(medicineTypeTut.HTU_TEXT))
-                    //{
-                    //    this.txtHtu.Text = medicineTypeTut.HTU_TEXT;
-                    //}
-
-
-
+                    if (!String.IsNullOrEmpty(medicineTypeTut.HTU_TEXT))
+                    {
+                        this.txtHtu.Text = medicineTypeTut.HTU_TEXT;
+                    }
                 }
             }
             catch (Exception ex)

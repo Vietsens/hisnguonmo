@@ -289,7 +289,7 @@
     <value>Ngày {0}{1} {2} chia {3} lần, </value>
   </data>
   <data name="Plugin_AssignPrescription__NgayUongTemp2" xml:space="preserve">
-    <value>Ngày {0}{1} {2} {3} lần,</value>
+    <value>Ngày {0} 1 lần : {1} {2}</value>
   </data>
   <data name="Plugin_AssignPrescription__NgayXVienBuoiYZ" xml:space="preserve">
     <value>Ngày {0}{1} {2} {3}</value>

@@ -283,7 +283,6 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.ADO
                 this.PATIENT_TYPE_CODE = inputData.PATIENT_TYPE_CODE;
                 this.PATIENT_TYPE_NAME = inputData.PATIENT_TYPE_NAME;
                 this.SereServParentId = inputData.SERE_SERV_PARENT_ID;
-
                 var mst = BackendDataWorker.Get<V_HIS_MEDI_STOCK>().FirstOrDefault(o => o.ID == inputData.TDL_MEDI_STOCK_ID);
                 if (mst != null)
                 {
@@ -329,7 +328,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.ADO
                     this.PRE_AMOUNT = this.AMOUNT;
                     this.NUM_ORDER = inputData.NUM_ORDER;
                     this.UseTimeTo = inputData.USE_TIME_TO;
-
+                    this.HTU_TEXT = inputData.HTU_TEXT;
                     this.MedicineBean1Result = medicineBeans != null ? medicineBeans.Where(o => o.EXP_MEST_MEDICINE_ID == inputData.ID).ToList() : null;
                     this.MAME_ID = inputData.MEDICINE_ID;
                     this.TDL_PACKAGE_NUMBER = inputData.PACKAGE_NUMBER;
@@ -406,6 +405,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.ADO
                 this.PATIENT_TYPE_CODE = inputData.PATIENT_TYPE_CODE;
                 this.PATIENT_TYPE_NAME = inputData.PATIENT_TYPE_NAME;
                 this.SereServParentId = inputData.SERE_SERV_PARENT_ID;
+                this.HTU_TEXT = inputData.HTU_TEXT;
 
                 var mety = BackendDataWorker.Get<V_HIS_MEDICINE_TYPE>().FirstOrDefault(o => o.ID == inputData.MEDICINE_TYPE_ID);
                 if (mety != null)
@@ -908,7 +908,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.ADO
                     || (mety != null && mety.IS_AUTO_EXPEND == GlobalVariables.CommonNumberTrue))
                     this.IsExpend = true;
                 this.UseTimeTo = inputData.USE_TIME_TO;
-                this.TUTORIAL = inputData.TUTORIAL;
+                this.TUTORIAL = inputData.TUTORIAL;                
                 this.AMOUNT = inputData.AMOUNT;
                 this.PRICE = inputData.PRICE;
 
@@ -919,6 +919,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.ADO
                 }
                 this.SERVICE_REQ_ID = inputData.SERVICE_REQ_ID;
                 this.SERVICE_REQ_METY_MATY_ID = inputData.ID;
+                this.HTU_TEXT = inputData.HTU_TEXT;
                 if (isEdit)
                 {
                     this.PRE_AMOUNT = this.AMOUNT;
@@ -970,7 +971,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.ADO
                       || (mety != null && mety.IS_AUTO_EXPEND == GlobalVariables.CommonNumberTrue))
                     this.IsExpend = true;
                 this.UseTimeTo = inputData.USE_TIME_TO;
-                this.TUTORIAL = inputData.TUTORIAL;
+                this.TUTORIAL = inputData.TUTORIAL; 
                 this.AMOUNT = inputData.AMOUNT;
                 this.PRICE = inputData.PRICE;
                 if (this.CONVERT_RATIO.HasValue)
@@ -981,7 +982,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.ADO
                 this.SERVICE_REQ_ID = inputData.SERVICE_REQ_ID;
                 this.SERVICE_REQ_METY_MATY_ID = inputData.ID;
                 this.TotalPrice = (this.PRICE ?? 0) * (this.AMOUNT ?? 0);
-
+                this.HTU_TEXT = inputData.HTU_TEXT;
                 if (serviceReq != null)
                 {
                     if (inputData.USE_TIME_TO.HasValue)
@@ -1037,7 +1038,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.ADO
                     this.PRICE = this.PRICE / this.CONVERT_RATIO.Value;
                 }
                 this.TotalPrice = (inputData.PRICE ?? 0) * (this.AMOUNT ?? 0);
-
+                this.HTU_TEXT = inputData.HTU_TEXT;
                 if (isEdit)
                 {
                     this.PRE_AMOUNT = inputData.AMOUNT;

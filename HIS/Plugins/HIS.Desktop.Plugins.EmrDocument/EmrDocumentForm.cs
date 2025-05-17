@@ -68,6 +68,7 @@ using System.Drawing.Printing;
 using HIS.Desktop.Plugins.Library.EmrGenerate;
 using Inventec.Common.SignFile;
 using EMR.SDO;
+using static Aspose.Pdf.Operator;
 
 namespace HIS.Desktop.Plugins.EmrDocument
 {
@@ -1441,6 +1442,27 @@ namespace HIS.Desktop.Plugins.EmrDocument
             sdo.RoomCode = room != null ? room.ROOM_CODE : null;
             sdo.DepartmentCode = room != null ? room.DEPARTMENT_CODE : null;
             sdo.IsRoomLT = room != null ? room.ROOM_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_ROOM_TYPE.ID__LT : false;
+            if (docIds != null && docIds.Count > 0)
+            {
+                List<NumOrderDocumentSDO> numOrderList = new List<NumOrderDocumentSDO>();
+                int stt = 1;
+                foreach (var id in docIds)
+                {
+                    if (id > 0)
+                    {
+                        var item = new NumOrderDocumentSDO
+                        {
+                            IdDocument = id,
+                            STT = stt++
+                        };
+                        Inventec.Common.Logging.LogSystem.Debug($"[NumOrderDocumentSDO] IdDocument = {item.IdDocument}, STT = {item.STT}");
+                        numOrderList.Add(item);
+
+                    }
+                }
+
+                sdo.NumOrderDocuments = numOrderList;
+            }
             Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => sdo), sdo));
             return new BackendAdapter(paramCommon).Post<List<EmrDocumentFileSDO>>("api/EmrDocument/DownloadFile", ApiConsumers.EmrConsumer, sdo, paramCommon);
         }
@@ -3768,6 +3790,49 @@ namespace HIS.Desktop.Plugins.EmrDocument
         private void btnHomeRelativeSign_Click(object sender, EventArgs e)
         {
             PatientAndHomeRelatetiveSign(false, true);
+        }
+
+        private void treeListDocument_CellValueChanged(object sender, DevExpress.XtraTreeList.CellValueChangedEventArgs e)
+        {
+            try
+            {
+                if (e.Column.FieldName == "IsChecked")
+                {
+                    UpdateListDataTrue();
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+        private void UpdateListDataTrue()
+        {
+            try
+            {
+                listDataTrue = new List<EmrDocumentADO>();
+
+                if (this.listData != null && this.listData.Count > 0)
+                {
+                    listDataTrue = this.listData
+                        .Where(o => o.IsChecked == true && o.ID > 0)
+                        .OrderBy(p => p.CUSTOM_NUM_ORDER)
+                        .ToList();
+                }
+
+                bool hasValidData = listDataTrue != null && listDataTrue.Count > 0;
+
+                this.btnPrint.Enabled = hasValidData && controlAcs?.FirstOrDefault(o => o.CONTROL_CODE == "EMR000002") != null;
+                this.btnDownload.Enabled = hasValidData && controlAcs?.FirstOrDefault(o => o.CONTROL_CODE == "EMR000003") != null;
+                this.btnHomeRelativeSign.Enabled = hasValidData;
+                this.btnPatientSign.Enabled = hasValidData;
+
+                SetStateButtonDelete();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
         }
     }
 }
