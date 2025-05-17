@@ -23,5 +23,5 @@ using System.Threading.Tasks;
 
 namespace HIS.UC.UCServiceRoomInfo
 {    
-    public delegate long dlgGetPatientTypeId();
+    public delegate long dlgGetPatientTypeId();      
 }

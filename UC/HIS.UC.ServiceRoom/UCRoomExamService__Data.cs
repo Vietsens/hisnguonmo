@@ -32,10 +32,11 @@ using System.Threading;
 using Inventec.Common.Adapter;
 using Inventec.Core;
 using HIS.Desktop.ApiConsumer;
+using HIS.Desktop.Utility;
 
 namespace HIS.UC.ServiceRoom
 {
-    public partial class UCRoomExamService : UserControl
+    public partial class UCRoomExamService : UserControlBase
     {
         private void SetDataInit(RoomExamServiceInitADO ado)
         {
