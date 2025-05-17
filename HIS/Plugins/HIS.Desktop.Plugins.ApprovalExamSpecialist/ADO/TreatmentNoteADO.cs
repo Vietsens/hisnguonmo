@@ -31,7 +31,7 @@ namespace HIS.Desktop.Plugins.ApprovalExamSpecialist.ADO
 
                 if (employee != null && employee.LOGINNAME == tracking.CREATOR)
                 {
-                    UserName = employee.DIPLOMA + " - " + employee.TDL_USERNAME;
+                    UserName = employee.TDL_USERNAME + " - " + employee.DIPLOMA;
                 }
 
                 if (allSereServ2 != null && allSereServ2.Count > 0)
