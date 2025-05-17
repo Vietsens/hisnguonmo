@@ -758,7 +758,6 @@ namespace HIS.Desktop.Plugins.EmrDocument
             this.treeListDocument.CustomUnboundColumnData += new DevExpress.XtraTreeList.CustomColumnDataEventHandler(this.treeListDocument_CustomUnboundColumnData);
             this.treeListDocument.FocusedNodeChanged += new DevExpress.XtraTreeList.FocusedNodeChangedEventHandler(this.treeListDocument_FocusedNodeChanged);
             this.treeListDocument.LeftCoordChanged += new System.EventHandler(this.treeListDocument_LeftCoordChanged);
-            this.treeListDocument.CellValueChanged += new DevExpress.XtraTreeList.CellValueChangedEventHandler(this.treeListDocument_CellValueChanged);
             this.treeListDocument.Click += new System.EventHandler(this.treeListDocument_Click);
             this.treeListDocument.KeyDown += new System.Windows.Forms.KeyEventHandler(this.treeListDocument_KeyDown);
             this.treeListDocument.MouseDown += new System.Windows.Forms.MouseEventHandler(this.treeListDocument_MouseDown);
