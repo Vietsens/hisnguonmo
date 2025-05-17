@@ -252,10 +252,12 @@
     <Reference Include="MPS">
       <HintPath>..\..\..\..\lib\MPSv2\MPS\MPS.dll</HintPath>
     </Reference>
-    <Reference Include="MPS.Processor.Mps000500">
+    <Reference Include="MPS.Processor.Mps000500, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\lib\MPSv2\MPS.Processor\MPS.Processor.Mps000500.dll</HintPath>
     </Reference>
-    <Reference Include="MPS.Processor.Mps000500.PDO">
+    <Reference Include="MPS.Processor.Mps000500.PDO, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\lib\MPSv2\MPS.PDO\MPS.Processor.Mps000500.PDO.dll</HintPath>
     </Reference>
     <Reference Include="MPS.ProcessorBase">
