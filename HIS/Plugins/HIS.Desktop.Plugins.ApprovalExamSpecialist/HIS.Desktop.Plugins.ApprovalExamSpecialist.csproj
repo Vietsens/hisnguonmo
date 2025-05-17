@@ -128,6 +128,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\lib\Inventec.UC\Inventec.UC.ListReports\HIS.Desktop.LocalStorage.ConfigApplication.dll</HintPath>
     </Reference>
+    <Reference Include="HIS.Desktop.LocalStorage.ConfigSystem, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\HISTEST\histest\x64\ReferencedAssemblies\HIS.Desktop.LocalStorage.ConfigSystem.dll</HintPath>
+    </Reference>
     <Reference Include="HIS.Desktop.LocalStorage.HisConfig">
       <HintPath>..\..\..\..\..\HISTEST\histest\x64\ReferencedAssemblies\HIS.Desktop.LocalStorage.HisConfig.dll</HintPath>
     </Reference>
@@ -137,6 +141,9 @@
     </Reference>
     <Reference Include="HIS.Desktop.ModuleExt">
       <HintPath>..\..\..\..\..\HISTEST\histest\x64\ReferencedAssemblies\HIS.Desktop.ModuleExt.dll</HintPath>
+    </Reference>
+    <Reference Include="HIS.Desktop.Plugins.Library.EmrGenerate">
+      <HintPath>..\..\..\..\..\HISTEST\histest\x64\ReferencedAssemblies\HIS.Desktop.Plugins.Library.EmrGenerate.dll</HintPath>
     </Reference>
     <Reference Include="HIS.Desktop.Utility">
       <HintPath>..\..\..\..\lib\HIS\HIS.Desktop.Utilities\HIS.Desktop.Utility.dll</HintPath>
@@ -170,6 +177,13 @@
     </Reference>
     <Reference Include="Inventec.Common.Resource">
       <HintPath>..\..\..\..\..\HISTEST\histest\x64\ReferencedAssemblies\Inventec.Common.Resource.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Common.RichEditor">
+      <HintPath>..\..\..\..\..\HISTEST\histest\x64\Inventec.Common.RichEditor.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Common.SignLibrary, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\HISTEST\histest\x64\ReferencedAssemblies\Inventec.Common.SignLibrary.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Common.WebApiClient">
       <HintPath>..\..\..\..\lib\Inventec.Common\Inventec.Common.WebApiClient\Inventec.Common.WebApiClient.dll</HintPath>
@@ -235,6 +249,18 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\lib\MOS\MOS.TDO.dll</HintPath>
     </Reference>
+    <Reference Include="MPS">
+      <HintPath>..\..\..\..\lib\MPSv2\MPS\MPS.dll</HintPath>
+    </Reference>
+    <Reference Include="MPS.Processor.Mps000500">
+      <HintPath>..\..\..\..\lib\MPSv2\MPS.Processor\MPS.Processor.Mps000500.dll</HintPath>
+    </Reference>
+    <Reference Include="MPS.Processor.Mps000500.PDO">
+      <HintPath>..\..\..\..\lib\MPSv2\MPS.PDO\MPS.Processor.Mps000500.PDO.dll</HintPath>
+    </Reference>
+    <Reference Include="MPS.ProcessorBase">
+      <HintPath>..\..\..\..\lib\MPSv2\MPS\MPS.ProcessorBase.dll</HintPath>
+    </Reference>
     <Reference Include="Newtonsoft.Json, Version=13.0.1.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\..\HISTEST\histest\x64\Integrate\Aup\Lib\Newtonsoft.Json.dll</HintPath>
@@ -263,6 +289,11 @@
     <Compile Include="Key\HisConfigCFG.cs" />
     <Compile Include="Key\HisConfigKeys.cs" />
     <Compile Include="Processor\ApprovalSpecialistProcessor.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
     <Compile Include="Resources\ResourceLanguageManager.cs" />
     <Compile Include="Resources\ResourceMessage.cs" />
     <Compile Include="Run\frmApprovalExamSpecialist.cs">
@@ -282,6 +313,10 @@
     <Compile Include="ValidateRule\ValidateMaxLength.cs" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="Resources\Lang.en.resx">
       <SubType>Designer</SubType>
     </EmbeddedResource>
