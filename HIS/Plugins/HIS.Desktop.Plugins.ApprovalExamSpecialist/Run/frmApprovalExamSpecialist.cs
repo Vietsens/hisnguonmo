@@ -1,8 +1,19 @@
-﻿using HIS.Desktop.Plugins.ApprovalExamSpecialist.ValidateRule;
+﻿using DevExpress.Entity.Model.Metadata;
+using DevExpress.XtraTab;
+using EMR.SDO;
+using HIS.Desktop.ApiConsumer;
+using HIS.Desktop.Controls.Session;
+using HIS.Desktop.LocalStorage.BackendData;
+using HIS.Desktop.LocalStorage.ConfigApplication;
+using HIS.Desktop.LocalStorage.ConfigSystem;
+using HIS.Desktop.LocalStorage.LocalData;
+using HIS.Desktop.Plugins.ApprovalExamSpecialist.ADO;
+using HIS.Desktop.Plugins.ApprovalExamSpecialist.Base;
+using HIS.Desktop.Plugins.ApprovalExamSpecialist.ValidateRule;
 using HIS.Desktop.Utility;
 using Inventec.Common.Adapter;
 using Inventec.Common.Controls.EditorLoader;
-using Inventec.Common;
+using Inventec.Common.SignLibrary.ADO;
 using Inventec.Core;
 using Inventec.Desktop.Common.Message;
 using MOS.EFMODEL.DataModels;
@@ -10,30 +21,10 @@ using MOS.Filter;
 using MOS.SDO;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using HIS.Desktop.ApiConsumer;
-using HIS.Desktop.Controls.Session;
-using HIS.Desktop.Plugins.ApprovalExamSpecialist.Base;
-using HIS.Desktop.LocalStorage.BackendData;
-using HIS.Desktop.LocalStorage.ConfigApplication;
-using HIS.Desktop.Plugins.ApprovalExamSpecialist.ADO;
-using HIS.Desktop.LocalStorage.HisConfig;
-using EMR.SDO;
-using EMR.EFMODEL.DataModels;
-using DevExpress.XtraTreeList;
-using DevExpress.XtraTab;
-using System.Collections;
-using DevExpress.XtraGrid.Views.Base;
-using System.Resources;
-using Inventec.Desktop.Common.LanguageManager;
-using HIS.Desktop.LocalStorage.ConfigSystem;
-using HIS.Desktop.LocalStorage.LocalData;
 namespace HIS.Desktop.Plugins.ApprovalExamSpecialist.Run
 {
     public partial class frmApprovalExamSpecialist : FormBase
@@ -92,12 +83,13 @@ namespace HIS.Desktop.Plugins.ApprovalExamSpecialist.Run
         {
             try
             {
+                this.KeyPreview = true;
+                this.ActiveControl = gridControl1;
                 this.SetCaptionByLanguageKey();
                 this.InitComboDoctor();
                 AddUc();
                 gridViewTreatment.FocusedRowHandle = -1;
                 SetDefaultValueControl();
-                SetValidateRule();
                 FillDataToGridTreatment();
                 if (this.currentSpecialistExam != null)
                 {
@@ -115,19 +107,28 @@ namespace HIS.Desktop.Plugins.ApprovalExamSpecialist.Run
 
         private void SetDefaultValueControl()
         {
-            if (currentSpecialistExam.EXAM_TIME.HasValue)
+            try
             {
-                dtTrackingTime.DateTime = Inventec.Common.DateTime.Convert
-                    .TimeNumberToSystemDateTime(currentSpecialistExam.EXAM_TIME.Value) ?? DateTime.Now;
+
+                if (currentSpecialistExam.EXAM_TIME.HasValue)
+                {
+                    dtTrackingTime.Text = Inventec.Common.DateTime.Convert.TimeNumberToTimeString((long)currentSpecialistExam.EXAM_TIME); 
+                    
+                }
+                else
+                {
+                    dtTrackingTime.DateTime = DateTime.Now;
+                }
+                txtNoiDungKham.Text = currentSpecialistExam.EXAM_EXECUTE_CONTENT;
+                txtYLenhKham.Text = currentSpecialistExam.EXAM_EXCUTE;
+                this.cboDoctor.EditValue = this.currentSpecialistExam.EXAM_EXECUTE_LOGINNAME;
+                SetValidateNoiDungKham();
+                SetValidateYLenhKham();
             }
-            else
+            catch (Exception ex)
             {
-                dtTrackingTime.DateTime = DateTime.Now;
+                Inventec.Common.Logging.LogSystem.Error(ex);
             }
-            dtTrackingTime.DateTime = DateTime.Now;
-            txtNoiDungKham.Text = currentSpecialistExam.EXAM_EXECUTE_CONTENT;
-            txtYLenhKham.Text = currentSpecialistExam.EXAM_EXCUTE;
-            this.cboDoctor.EditValue = this.currentSpecialistExam.EXAM_EXECUTE_LOGINNAME;
         }
         private void AddUc()
         {
@@ -163,7 +164,7 @@ namespace HIS.Desktop.Plugins.ApprovalExamSpecialist.Run
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
-        private void SetValidateRule()
+        private void SetValidateNoiDungKham()
         {
             ValidateMaxLength validateMaxLengthNoiDung = new ValidateMaxLength();
             validateMaxLengthNoiDung.textEdit = txtNoiDungKham;
@@ -171,38 +172,16 @@ namespace HIS.Desktop.Plugins.ApprovalExamSpecialist.Run
             validateMaxLengthNoiDung.ErrorType = DevExpress.XtraEditors.DXErrorProvider.ErrorType.Warning;
             validateMaxLengthNoiDung.isValidNull = true;
             dxValidationProviderEditorInfo.SetValidationRule(txtNoiDungKham, validateMaxLengthNoiDung);
-
+        }
+        private void SetValidateYLenhKham()
+        {
             ValidateMaxLength validateMaxLengthYLenh = new ValidateMaxLength();
             validateMaxLengthYLenh.textEdit = txtYLenhKham;
             validateMaxLengthYLenh.maxLength = 4000;
             validateMaxLengthYLenh.ErrorType = DevExpress.XtraEditors.DXErrorProvider.ErrorType.Warning;
             validateMaxLengthYLenh.isValidNull = true;
             dxValidationProviderEditorInfo.SetValidationRule(txtYLenhKham, validateMaxLengthYLenh);
-
         }
-        //private void FillDataToGridTreatmentSpeacialist()
-        //{
-        //    try
-        //    {
-        //        if (ucPaging1.pagingGrid != null)
-        //        {
-        //            pageSize = ucPaging1.pagingGrid.PageSize;
-        //        }
-        //        else
-        //        {
-        //            pageSize = (int)ConfigApplications.NumPageSize;
-        //        }
-        //        FillDataToGridTreatment(new CommonParam(0, (int)pageSize));
-        //        CommonParam param = new CommonParam();
-        //        param.Limit = rowCount;
-        //        param.Count = dataTotal;
-        //        ucPaging1.Init(FillDataToGridTreatment, param, pageSize, gridControl1);
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        Inventec.Common.Logging.LogSystem.Error(ex);
-        //    }
-        //}
         private void FillDataToGridTreatment()
         {
             try
@@ -389,8 +368,11 @@ namespace HIS.Desktop.Plugins.ApprovalExamSpecialist.Run
             try
             {
                 WaitingManager.Show();
-
-                MPS.Processor.Mps000500.PDO.Mps000500PDO pdo = new MPS.Processor.Mps000500.PDO.Mps000500PDO();
+                HIS_SPECIALIST_EXAM datamapperExam = new HIS_SPECIALIST_EXAM();
+                HIS_TREATMENT datamapperTreatment = new HIS_TREATMENT();
+                Inventec.Common.Mapper.DataObjectMapper.Map<HIS_SPECIALIST_EXAM>(datamapperExam, currentSpecialistExam);
+                Inventec.Common.Mapper.DataObjectMapper.Map<HIS_TREATMENT>(datamapperTreatment, currentSpecialistExam);
+                MPS.Processor.Mps000500.PDO.Mps000500PDO pdo = new MPS.Processor.Mps000500.PDO.Mps000500PDO(datamapperExam, datamapperTreatment);
 
                 string printerName = "";
                 if (GlobalVariables.dicPrinter.ContainsKey(printTypeCode))
@@ -417,10 +399,32 @@ namespace HIS.Desktop.Plugins.ApprovalExamSpecialist.Run
             }
         }
 
+        private void frmApprovalExamSpecialist_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Control && e.KeyCode == Keys.S)
+            {
+                btnSave_Click(null, null);
+                e.Handled = true;
+            }
+            if (e.Control && e.KeyCode == Keys.P)
+            {
+                btnPrint_Click(null, null);
+                e.Handled = true;
+            }
+        }
+
         private void btnSave_Click(object sender, EventArgs e)
         {
             try
             {
+                SetValidateNoiDungKham();
+                SetValidateYLenhKham();
+
+                if (!dxValidationProviderEditorInfo.Validate())
+                {
+                    MessageBox.Show("Vui lòng kiểm tra lại nội dung khám và y lệnh khám.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
                 positionHandleControl = -1;
                 CommonParam param = new CommonParam();
                 HIS_SPECIALIST_EXAM datamapper = new HIS_SPECIALIST_EXAM();
@@ -433,13 +437,13 @@ namespace HIS.Desktop.Plugins.ApprovalExamSpecialist.Run
                 datamapper.IS_APPROVAL = 1;
                 datamapper.REJECT_APPROVAL_REASON = null;
 
-
                 var rs = new Inventec.Common.Adapter.BackendAdapter(param).Post<HIS_SPECIALIST_EXAM>("api/HisSpecialistExam/Update", ApiConsumers.MosConsumer, datamapper, param);
 
                 Inventec.Common.Logging.LogSystem.Debug("API Create Result: " + Inventec.Common.Logging.LogUtil.TraceData("DataA", rs));
                 if (rs != null && this.delegateRefresher != null)
                 {
                     this.delegateRefresher();
+                    this.Close();
                 }
 
                 MessageManager.Show(this, param, rs != null);
