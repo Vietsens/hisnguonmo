@@ -29,10 +29,10 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Requirements));
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject13 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject14 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject15 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject16 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject1 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject2 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject3 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject4 = new DevExpress.Utils.SerializableAppearanceObject();
             this.layoutControl1 = new DevExpress.XtraLayout.LayoutControl();
             this.textSearch = new DevExpress.XtraEditors.TextEdit();
             this.gridControl2 = new DevExpress.XtraGrid.GridControl();
@@ -112,6 +112,11 @@
             // 
             // ProfileCode
             // 
+            this.ProfileCode.AppearanceCell.Options.UseTextOptions = true;
+            this.ProfileCode.AppearanceCell.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
+            this.ProfileCode.AppearanceCell.TextOptions.WordWrap = DevExpress.Utils.WordWrap.NoWrap;
+            this.ProfileCode.AppearanceHeader.Options.UseTextOptions = true;
+            this.ProfileCode.AppearanceHeader.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
             this.ProfileCode.Caption = "Mã hồ sơ";
             this.ProfileCode.FieldName = "TREATMENT_CODE";
             this.ProfileCode.Name = "ProfileCode";
@@ -121,6 +126,11 @@
             // 
             // Reason
             // 
+            this.Reason.AppearanceCell.Options.UseTextOptions = true;
+            this.Reason.AppearanceCell.TextOptions.WordWrap = DevExpress.Utils.WordWrap.NoWrap;
+            this.Reason.AppearanceHeader.GradientMode = System.Drawing.Drawing2D.LinearGradientMode.Vertical;
+            this.Reason.AppearanceHeader.Options.UseTextOptions = true;
+            this.Reason.AppearanceHeader.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
             this.Reason.Caption = "Lý do";
             this.Reason.FieldName = "REASON_UNFINISH";
             this.Reason.Name = "Reason";
@@ -142,7 +152,7 @@
             // 
             this.resApproval.AutoHeight = false;
             this.resApproval.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("resApproval.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject13, serializableAppearanceObject14, serializableAppearanceObject15, serializableAppearanceObject16, "Duyệt hồ sơ", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("resApproval.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject1, serializableAppearanceObject2, serializableAppearanceObject3, serializableAppearanceObject4, "Duyệt hồ sơ", null, null, true)});
             this.resApproval.Name = "resApproval";
             this.resApproval.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             this.resApproval.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.resApproval_ButtonClick);

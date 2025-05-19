@@ -42,7 +42,7 @@ namespace HIS.Desktop.Plugins.PrepareAndExport.Popup
                 if(lstAll!=null && lstAll.Count > 0)
                 {
                     var treatmentIds = lstAll
-                          .Select(x => x.ID)
+                          .Select(x => x.TDL_TREATMENT_ID??0)
                           .Distinct()
                           .ToList();
 
