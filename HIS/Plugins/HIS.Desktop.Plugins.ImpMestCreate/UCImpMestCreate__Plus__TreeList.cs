@@ -1075,7 +1075,8 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                             this.txtPackingJoinBid.Text = dataMediType.PACKING_TYPE_NAME;
                             this.txtHeinServiceBidMateType.Text = dataMediType.HEIN_SERVICE_BHYT_NAME;
                             this.txtActiveIngrBhytName.Text = dataMediType.ACTIVE_INGR_BHYT_NAME;
-                            this.cboDosageForm.EditValue = dataMediType.DOSAGE_FORM;
+                            var ds=( cboDosageForm.Properties.DataSource as List < DosageFormADO >).FirstOrDefault (o=>o.DOSAGE_FORM_NAME== dataMediType.DOSAGE_FORM);
+                            this.cboDosageForm.EditValue = ds != null ? ds.DOSAGE_FORM_NAME : null; 
                             this.cboMedicineUseForm.EditValue = dataMediType.MEDICINE_USE_FORM_ID;
                             txtBidNumber.Text = this.currrentServiceAdo.TDL_BID_NUMBER;
                         }
