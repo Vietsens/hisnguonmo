@@ -317,6 +317,7 @@
     <Compile Include="ADO\ImageADO.cs" />
     <Compile Include="ADO\InformationADO.cs" />
     <Compile Include="ADO\PatientADO.cs" />
+    <Compile Include="ADO\ResultADO.cs" />
     <Compile Include="ADO\SereServFileADO.cs" />
     <Compile Include="ADO\SereServHistoryADO.cs" />
     <Compile Include="ADO\ServiceADO.cs" />
@@ -535,7 +536,6 @@
     <EmbeddedResource Include="frmSTTNumber.resx">
       <DependentUpon>frmSTTNumber.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Properties\licenses.licx" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>

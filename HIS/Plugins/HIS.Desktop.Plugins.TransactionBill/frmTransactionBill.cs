@@ -3026,6 +3026,10 @@ namespace HIS.Desktop.Plugins.TransactionBill
                         {
                             chkShowServiceNotPay.Checked = item.VALUE == "1";
                         }
+                        else if (item.KEY == chkPrintTHPK.Name)
+                        {
+                            chkPrintTHPK.Checked = item.VALUE == "1";
+                        }
                         else if (item.KEY == btnStateForInformationUser.Name)
                         {
                             if (item.VALUE == "1")
@@ -3930,6 +3934,40 @@ namespace HIS.Desktop.Plugins.TransactionBill
                     csAddOrUpdate = new HIS.Desktop.Library.CacheClient.ControlStateRDO();
                     csAddOrUpdate.KEY = chkAddressBhyt.Name;
                     csAddOrUpdate.VALUE = (chkAddressBhyt.Checked ? "1" : "");
+                    csAddOrUpdate.MODULE_LINK = currentModule.ModuleLink;
+                    if (this.currentControlStateRDO == null)
+                        this.currentControlStateRDO = new List<HIS.Desktop.Library.CacheClient.ControlStateRDO>();
+                    this.currentControlStateRDO.Add(csAddOrUpdate);
+                }
+
+                this.controlStateWorker.SetData(this.currentControlStateRDO);
+                WaitingManager.Hide();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void chkPrintTHPK_CheckedChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                if (isNotLoadWhileChangeControlStateInFirst)
+                {
+                    return;
+                }
+                WaitingManager.Show();
+                HIS.Desktop.Library.CacheClient.ControlStateRDO csAddOrUpdate = (this.currentControlStateRDO != null && this.currentControlStateRDO.Count > 0) ? this.currentControlStateRDO.Where(o => o.KEY == chkPrintTHPK.Name && o.MODULE_LINK == currentModule.ModuleLink).FirstOrDefault() : null;
+                if (csAddOrUpdate != null)
+                {
+                    csAddOrUpdate.VALUE = (chkPrintTHPK.Checked ? "1" : "");
+                }
+                else
+                {
+                    csAddOrUpdate = new HIS.Desktop.Library.CacheClient.ControlStateRDO();
+                    csAddOrUpdate.KEY = chkPrintTHPK.Name;
+                    csAddOrUpdate.VALUE = (chkPrintTHPK.Checked ? "1" : "");
                     csAddOrUpdate.MODULE_LINK = currentModule.ModuleLink;
                     if (this.currentControlStateRDO == null)
                         this.currentControlStateRDO = new List<HIS.Desktop.Library.CacheClient.ControlStateRDO>();
