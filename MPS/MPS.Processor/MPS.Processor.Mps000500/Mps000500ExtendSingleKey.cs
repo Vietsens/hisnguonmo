@@ -26,8 +26,9 @@ namespace MPS.Processor.Mps000500
 {
     class Mps000500ExtendSingleKey : CommonKey
     {
-        internal const string TREAMENT_CODE = "TREAMENT_CODE";
+        internal const string TREATMENT_CODE = "TREATMENT_CODE";
         internal const string PATIENT_CODE = "PATIENT_CODE";
+
         internal const string TDL_PATIENT_NAME = "TDL_PATIENT_NAME";
         internal const string TDL_PATIENT_DOB = "TDL_PATIENT_DOB";
 
@@ -44,10 +45,11 @@ namespace MPS.Processor.Mps000500
         internal const string EXAM_EXECUTE_CONTENT = "EXAM_EXECUTE_CONTENT";
         internal const string EXAM_EXCUTE = "EXAM_EXCUTE";
 
-        internal const string EXAM_EXECUTE_DEPARMENT_CODE = "EXAM_EXECUTE_DEPARMENT_CODE";
-        internal const string EXAM_EXECUTE_DEPARMENT_NAME = "EXAM_EXECUTE_DEPARMENT_NAME";
-        internal const string NVITE_DEPARMENT_CODE = "NVITE_DEPARMENT_CODE";
+        internal const string EXAM_EXECUTE_DEPARMENT_CODE = "EXAM_EXECUTE_DEPARTMENT_CODE";
+        internal const string EXAM_EXECUTE_DEPARMENT_NAME = "EXAM_EXECUTE_DEPARTMENT_NAME";
+        internal const string INVITE_DEPARMENT_CODE = "INVITE_DEPARTMENT_CODE";
+        internal const string INVITE_DEPARMENT_NAME = "INVITE_DEPARTMENT_NAME";
 
-       
+
     }
 }
