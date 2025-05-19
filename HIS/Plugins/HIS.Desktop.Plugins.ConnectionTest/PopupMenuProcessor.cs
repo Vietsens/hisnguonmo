@@ -82,7 +82,9 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                 BarButtonItem btnAttachTestFile = new BarButtonItem(this._BarManager, "Đính kèm file kết quả xét nghiệm", 1);
                 btnAttachTestFile.Tag = ItemType.AttachTestFile;
                 btnAttachTestFile.SuperTip = new DevExpress.Utils.SuperToolTip();
-                btnAttachTestFile.SuperTip.Items.Add("Đính kèm file kết quả xét nghiệm của y lệnh trong trường hợp xét nghiệm ngoại viện");
+                DevExpress.Utils.ToolTipItem toolTipItem2 = new DevExpress.Utils.ToolTipItem();
+                toolTipItem2.Text = "Đính kèm file kết quả xét nghiệm của y lệnh trong trường hợp xét nghiệm ngoại viện";
+                btnAttachTestFile.SuperTip.Items.Add(toolTipItem2);
                 btnAttachTestFile.ItemClick += new ItemClickEventHandler(this._MouseRightClick);
 
                 this._PopupMenu.AddItems(new BarItem[] { btnAttachTestFile });

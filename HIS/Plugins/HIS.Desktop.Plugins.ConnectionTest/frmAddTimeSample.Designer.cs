@@ -169,6 +169,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
             // 
             // barManager1
             // 
+            this.barManager1.ShowScreenTipsInMenus = true;
             this.barManager1.Bars.AddRange(new DevExpress.XtraBars.Bar[] {
             this.bar1});
             this.barManager1.DockControls.Add(this.barDockControlTop);

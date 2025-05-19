@@ -322,5 +322,20 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
+
+        public void ClickF11()
+        {
+            try
+            {
+                if (ucAddressCombo1 != null)
+                {
+                    ucAddressCombo1.FocusTHX();
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
     }
 }

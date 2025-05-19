@@ -46,7 +46,7 @@ namespace HIS.Desktop.Plugins.RegisterV2
     [KeyboardAction("ClickF8", "HIS.Desktop.Plugins.RegisterV2.Run2.UCRegister", "ClickF8", KeyStroke = XKeys.F8)]
     [KeyboardAction("ClickF9", "HIS.Desktop.Plugins.RegisterV2.Run2.UCRegister", "ClickF9", KeyStroke = XKeys.F9)]
     [KeyboardAction("ClickF10", "HIS.Desktop.Plugins.RegisterV2.Run2.UCRegister", "ClickF10", KeyStroke = XKeys.F10)]
-    //[KeyboardAction("ClickF11", "HIS.Desktop.Plugins.RegisterV2.Run2.UCRegister", "ClickF11", KeyStroke = XKeys.F11)]
+    [KeyboardAction("ClickF11", "HIS.Desktop.Plugins.RegisterV2.Run2.UCRegister", "ClickF11", KeyStroke = XKeys.F11)]
     [ExtensionOf(typeof(DesktopToolExtensionPoint))]
     public sealed class KeyboardWorker : Tool<IDesktopToolContext>
     {

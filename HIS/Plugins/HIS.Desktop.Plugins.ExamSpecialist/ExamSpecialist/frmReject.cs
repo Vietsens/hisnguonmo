@@ -53,6 +53,8 @@ namespace HIS.Desktop.Plugins.ExamSpecialist.ExamSpecialist
                 speciaListExam.EXAM_TIME = null;
                 speciaListExam.EXAM_EXECUTE_CONTENT = null;
                 speciaListExam.EXAM_EXCUTE = null;
+                speciaListExam.EXAM_EXECUTE_LOGINNAME = null;
+                speciaListExam.EXAM_EXECUTE_USERNAME = null;
                 var result = new Inventec.Common.Adapter.BackendAdapter(param).Post<HIS_SPECIALIST_EXAM>("api/HisSpecialistExam/Update", ApiConsumers.MosConsumer, speciaListExam, param);
                 Inventec.Common.Logging.LogSystem.Debug("API Create Result: " + Inventec.Common.Logging.LogUtil.TraceData("DataA", result));
                 if (result != null)

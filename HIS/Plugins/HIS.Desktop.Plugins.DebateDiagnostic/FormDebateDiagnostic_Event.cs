@@ -33,6 +33,7 @@ using MOS.EFMODEL.DataModels;
 using HIS.Desktop.Plugins.DebateDiagnostic.Resources;
 using Inventec.Common.Adapter;
 using HIS.Desktop.ApiConsumer;
+using MOS.SDO;
 
 namespace HIS.Desktop.Plugins.DebateDiagnostic
 {
@@ -151,6 +152,7 @@ namespace HIS.Desktop.Plugins.DebateDiagnostic
         {
             try
             {
+
                 if (treatment_id == 0)
                     return;
                 this.positionHandleControl = -1;
@@ -160,7 +162,6 @@ namespace HIS.Desktop.Plugins.DebateDiagnostic
                     return;
 
                 WaitingManager.Show();
-
                 MOS.EFMODEL.DataModels.HIS_DEBATE hisDebate = new MOS.EFMODEL.DataModels.HIS_DEBATE();
                 if (hisService != null)
                 {
@@ -1290,7 +1291,7 @@ namespace HIS.Desktop.Plugins.DebateDiagnostic
                             hisDebateSave.EMOTIONLESS_METHOD_ID = null;
                             hisDebateSave.INTERNAL_MEDICINE_STATE = "";
                             hisDebateSave.PROGNOSIS = "";
-                            
+
                             hisDebateSave.SURGERY_SERVICE_ID = null;
                             hisDebateSave.SURGERY_TIME = null;
                             hisDebateSave.HIS_DEBATE_EKIP_USER = null;
@@ -1446,7 +1447,7 @@ namespace HIS.Desktop.Plugins.DebateDiagnostic
                             }
                         }
                     }
-                    if(lstHisDebateUser !=null && lstHisDebateUser.Count > 0)
+                    if (lstHisDebateUser != null && lstHisDebateUser.Count > 0)
                     {
                         hisDebateSave.HIS_DEBATE_USER = lstHisDebateUser;
                     }
@@ -1572,10 +1573,15 @@ namespace HIS.Desktop.Plugins.DebateDiagnostic
                     //hisDebateSave.REQUEST_USERNAME = Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetUserName();
                     //hisDebateSave.DEPARTMENT_ID = this.WorkPlaceSDO.DepartmentId;
                     //hisDebate.TREATMENT_ID = this.treatment_id;
-
-
-                    hisDebateResult = new Inventec.Common.Adapter.BackendAdapter(param).Post<MOS.EFMODEL.DataModels.HIS_DEBATE>(ApiConsumer.HisRequestUriStore.HIS_DEBATE_CREATE, ApiConsumer.ApiConsumers.MosConsumer, hisDebateSave, param);
-
+                    //qtcode
+                    HisDebateCreateAutoTrackingSDO sdo = new HisDebateCreateAutoTrackingSDO();
+                    sdo.HisDebate = hisDebateSave;
+                    if (chkAutoCreateTracking.Checked)
+                    {
+                        sdo.IsAutoCreateTracking = 1; 
+                    }
+                    hisDebateResult = new Inventec.Common.Adapter.BackendAdapter(param).Post<MOS.EFMODEL.DataModels.HIS_DEBATE>(ApiConsumer.HisRequestUriStore.HIS_DEBATE_CREATE_AUTO_TRACKING, ApiConsumer.ApiConsumers.MosConsumer, sdo, param);
+                    //qtcode
                 }
                 else if (this.action == GlobalVariables.ActionEdit && currentHisDebate != null)
                 {
@@ -1591,6 +1597,7 @@ namespace HIS.Desktop.Plugins.DebateDiagnostic
                     btnSendTMP.Enabled = true;
                     this.currentHisDebate = hisDebateResult;
                     this.action = GlobalVariables.ActionEdit;
+
                     if (lciAutoCreateEmr.Visibility == DevExpress.XtraLayout.Utils.LayoutVisibility.Always && chkAutoCreateEmr.Checked)
                     {
                         isCreateEmrDocument = true;

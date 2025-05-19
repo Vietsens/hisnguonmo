@@ -86,9 +86,9 @@
       <Project>{075d8b91-153f-4e19-a00a-77547e6f2bd0}</Project>
       <Name>MPS.ProcessorBase</Name>
     </ProjectReference>
-    <ProjectReference Include="..\MPS.Processor.Mps000077.PDO\MPS.Processor.Mps000077.PDO.csproj">
+    <ProjectReference Include="..\MPS.Processor.Mps000494.PDO\MPS.Processor.Mps000494.PDO.csproj">
       <Project>{7921d8a7-74f3-4e1a-a0a3-e19cd76d4b13}</Project>
-      <Name>MPS.Processor.Mps000077.PDO</Name>
+      <Name>MPS.Processor.Mps000494.PDO</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

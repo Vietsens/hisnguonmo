@@ -26,10 +26,11 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using HIS.Desktop.DelegateRegister;
 using Inventec.Common.Logging;
+using HIS.Desktop.Utility;
 
 namespace HIS.UC.ServiceRoom
 {
-    public partial class UCRoomExamService : UserControl
+    public partial class UCRoomExamService : UserControlBase
     {
         #region Outside Focus UserControl
 

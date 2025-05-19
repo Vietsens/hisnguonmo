@@ -65,7 +65,6 @@ namespace HIS.Desktop.Plugins.ExamSpecialist.ExamSpecialist
                 this.KeyPreview = true;
                 LoadComboHisDepartment();
                 SetDefaultValueControl();
-                toolTipController1.Active = true;
                 FillDataToGrid();
             }
             catch (Exception ex)
@@ -188,7 +187,7 @@ namespace HIS.Desktop.Plugins.ExamSpecialist.ExamSpecialist
             try
             {
                 if (filter == null) filter = new HisSpecialistExamViewFilter();
-                filter.ORDER_FIELD = "INVITE_TIME";
+                filter.ORDER_FIELD = "MODIFY_TIME";
                 filter.ORDER_DIRECTION = "DESC";
                 filter.INVITE_TYPE = 1;
                 if (!String.IsNullOrEmpty(txtTreatmentCode.Text))
@@ -307,6 +306,7 @@ namespace HIS.Desktop.Plugins.ExamSpecialist.ExamSpecialist
                 {
                     List<object> listArgs = new List<object>();
                     listArgs.Add(row);
+                    listArgs.Add((HIS.Desktop.Common.RefeshReference)FillDataToGrid);
                     var extenceInstance = PluginInstance.GetPluginInstance(PluginInstance
                         .GetModuleWithWorkingRoom(moduleData, this.currentModule.RoomId, this.currentModule.RoomTypeId), listArgs);
                     if (extenceInstance == null) throw new ArgumentNullException("moduleData is null");
@@ -366,6 +366,28 @@ namespace HIS.Desktop.Plugins.ExamSpecialist.ExamSpecialist
                                 e.Value = "Đã duyệt";
                             else if (data.IS_APPROVAL == 2)
                                 e.Value = "Từ chối duyệt";
+                        }
+                        else if (e.Column.FieldName == "CREATE_TIME_STR")
+                        {
+                            try
+                            {
+                                e.Value = Inventec.Common.DateTime.Convert.TimeNumberToTimeString((long)data.CREATE_TIME);
+                            }
+                            catch (Exception ex)
+                            {
+                                Inventec.Common.Logging.LogSystem.Error(ex);
+                            }
+                        }
+                        else if (e.Column.FieldName == "MODIFY_TIME_STR")
+                        {
+                            try
+                            {
+                                e.Value = Inventec.Common.DateTime.Convert.TimeNumberToTimeString((long)data.MODIFY_TIME);
+                            }
+                            catch (Exception ex)
+                            {
+                                Inventec.Common.Logging.LogSystem.Error(ex);
+                            }
                         }
                     }
                 }

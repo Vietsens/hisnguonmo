@@ -15,6 +15,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+using HIS.UC.ServiceRoom.ADO;
 using HIS.UC.ServiceRoom.Dispose;
 using HIS.UC.ServiceRoom.FocusAndShow;
 using HIS.UC.ServiceRoom.FocusService;
@@ -22,6 +23,7 @@ using HIS.UC.ServiceRoom.GetDetailSDO;
 using HIS.UC.ServiceRoom.Run;
 using HIS.UC.ServiceRoom.SetPatientClassifyId;
 using HIS.UC.ServiceRoom.SetValueByPatient;
+using MOS.EFMODEL.DataModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -129,24 +131,24 @@ namespace HIS.UC.ServiceRoom
             }
         }
 
-        public void InitComboRoom(object uc, List<MOS.EFMODEL.DataModels.L_HIS_ROOM_COUNTER_2> executeRooms)
+        public void InitComboRoom(object uc, List<L_HIS_ROOM_COUNTER_2> executeRooms2, List<L_HIS_ROOM_COUNTER> executeRooms)
         {
             try
             {
-                ((UCRoomExamService)uc).InitComboRoom(executeRooms);
+                ((UCRoomExamService)uc).InitComboRoom(executeRooms2, executeRooms);
             }
             catch (Exception ex)
             {
-                Inventec.Common.Logging.LogSystem.Error(ex);
+                Inventec.Common.Logging.LogSystem.Error(ex);   
             }
         }
 
-        public void InitComboRoom(object uc, List<MOS.EFMODEL.DataModels.L_HIS_ROOM_COUNTER_2> executeRooms, bool isSync)     
+        public void InitComboRoom(object uc, List<L_HIS_ROOM_COUNTER_2> executeRooms2, List<L_HIS_ROOM_COUNTER> executeRooms, bool isSync)     
         
         {
             try
             {
-                ((UCRoomExamService)uc).InitComboRoom(executeRooms, isSync);
+                ((UCRoomExamService)uc).InitComboRoom(executeRooms2, executeRooms, isSync);
             }
             catch (Exception ex)
             {

@@ -69,6 +69,9 @@ using HIS.Desktop.Plugins.Library.EmrGenerate;
 using Inventec.Common.SignFile;
 using EMR.SDO;
 using static Aspose.Pdf.Operator;
+using DevExpress.XtraTreeList.Nodes;
+using DevExpress.XtraEditors.Filtering;
+using DevExpress.XtraExport;
 
 namespace HIS.Desktop.Plugins.EmrDocument
 {
@@ -96,6 +99,7 @@ namespace HIS.Desktop.Plugins.EmrDocument
         List<EMR_TREATMENT> lstTreatment = new List<EMR_TREATMENT>();
         List<long> lstTreatmentID = new List<long>();
         List<long> lstTreatmentID_Treatment = new List<long>();
+        List<NumOrderDocumentSDO> listNumOrderDocument = new List<NumOrderDocumentSDO>();
         /// <summary>
         /// lấy các dữ liệu có ID > 0
         /// </summary>
@@ -1442,27 +1446,13 @@ namespace HIS.Desktop.Plugins.EmrDocument
             sdo.RoomCode = room != null ? room.ROOM_CODE : null;
             sdo.DepartmentCode = room != null ? room.DEPARTMENT_CODE : null;
             sdo.IsRoomLT = room != null ? room.ROOM_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_ROOM_TYPE.ID__LT : false;
-            if (docIds != null && docIds.Count > 0)
+            listNumOrderDocument.Clear();
+            CreateNumOrderDocuments();
+            sdo.NumOrderDocuments = listNumOrderDocument.Select(x => new EMR.SDO.NumOrderDocumentSDO
             {
-                List<NumOrderDocumentSDO> numOrderList = new List<NumOrderDocumentSDO>();
-                int stt = 1;
-                foreach (var id in docIds)
-                {
-                    if (id > 0)
-                    {
-                        var item = new NumOrderDocumentSDO
-                        {
-                            IdDocument = id,
-                            STT = stt++
-                        };
-                        Inventec.Common.Logging.LogSystem.Debug($"[NumOrderDocumentSDO] IdDocument = {item.IdDocument}, STT = {item.STT}");
-                        numOrderList.Add(item);
-
-                    }
-                }
-
-                sdo.NumOrderDocuments = numOrderList;
-            }
+                IdDocument = x.IdDocument,
+                STT = x.STT,
+            }).ToList();
             Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => sdo), sdo));
             return new BackendAdapter(paramCommon).Post<List<EmrDocumentFileSDO>>("api/EmrDocument/DownloadFile", ApiConsumers.EmrConsumer, sdo, paramCommon);
         }
@@ -2052,14 +2042,13 @@ namespace HIS.Desktop.Plugins.EmrDocument
                                 {
                                     pictureEdit1.Image = imageCheck.Images[1];
                                 }
-
-                                Inventec.Common.Logging.LogSystem.Info("dữ liệu node: " + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => rowData), rowData) + " __s: " + s + " __listData.Where(o => o.ID > 0).Count: " + listData.Where(o => o.ID > 0).Count());
                             }
                         }
                         else
                         {
                             if (hi.Node.Checked)
                             {
+                                listNumOrderDocument.Clear();
                                 NodeIsChecked(view, hi.Node.Nodes, false);
                                 int s = listData.Where(o => o.IsChecked == false && o.ID > 0).Count();
                                 if (s == listData.Where(o => o.ID > 0).Count())
@@ -2073,6 +2062,7 @@ namespace HIS.Desktop.Plugins.EmrDocument
                             }
                             else
                             {
+                                listNumOrderDocument.Clear();
                                 NodeIsChecked(view, hi.Node.Nodes, true);
                                 int s = listData.Where(o => o.IsChecked == true && o.ID > 0).Count();
 
@@ -2089,7 +2079,6 @@ namespace HIS.Desktop.Plugins.EmrDocument
                             }
                         }
                     }
-
                     listDataTrue = new List<EmrDocumentADO>();
                     if (this.listData != null && this.listData.Count > 0)
                     {
@@ -2116,6 +2105,24 @@ namespace HIS.Desktop.Plugins.EmrDocument
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
+            }           
+        }
+        private void SetCheckedRecursive(TreeList view, TreeListNode parentNode, bool isChecked)
+        {
+            foreach (TreeListNode node in parentNode.Nodes)
+            {
+                node.Checked = isChecked;
+
+                var data = view.GetDataRecordByNode(node) as EmrDocumentADO;
+                if (data != null)
+                {
+                    data.IsChecked = isChecked;
+                }
+
+                if (node.HasChildren)
+                {
+                    SetCheckedRecursive(view, node, isChecked);
+                }
             }
         }
 
@@ -2151,13 +2158,18 @@ namespace HIS.Desktop.Plugins.EmrDocument
         {
             try
             {
+                long stt = 1;
                 foreach (var item in Nodes)
                 {
                     EmrDocumentADO rowData = (EmrDocumentADO)view.GetDataRecordByNode((DevExpress.XtraTreeList.Nodes.TreeListNode)item);
                     if (rowData.ID > 0)
                     {
+                        listNumOrderDocument.Add(new NumOrderDocumentSDO
+                        {
+                            IdDocument = rowData.ID,
+                            STT = stt++
+                        });
                         rowData.IsChecked = check;
-                        Inventec.Common.Logging.LogSystem.Info("dữ liệu node: " + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => rowData), rowData));
                     }
                     else
                     {
@@ -2165,6 +2177,7 @@ namespace HIS.Desktop.Plugins.EmrDocument
                         NodeIsChecked(view, listNode.Nodes, check);
                     }
                 }
+                CreateNumOrderDocuments();
             }
             catch (Exception ex)
             {
@@ -2172,6 +2185,69 @@ namespace HIS.Desktop.Plugins.EmrDocument
             }
 
         }
+        //private void NodeIsChecked(TreeList treeList, TreeListNodes nodes, bool isChecked, ref long stt)
+        //{
+        //    foreach (TreeListNode node in nodes)
+        //    {
+        //        node.Checked = isChecked;
+
+        //        EmrDocumentADO data = treeList.GetDataRecordByNode(node) as EmrDocumentADO;
+        //        if (data != null)
+        //        {
+        //            data.IsChecked = isChecked;
+        //            if (isChecked)
+        //            {
+        //                data.CUSTOM_NUM_ORDER = stt++;
+        //                if (!listNumOrderDocument.Any(x => x.IdDocument == data.ID))
+        //                {
+        //                    listNumOrderDocument.Add(new NumOrderDocumentSDO
+        //                    {
+        //                        IdDocument = data.ID,
+        //                        STT = data.CUSTOM_NUM_ORDER ?? 0
+        //                    });
+        //                }
+        //            }
+        //            else
+        //            {
+        //                data.CUSTOM_NUM_ORDER = null;
+        //                listNumOrderDocument.RemoveAll(x => x.IdDocument == data.ID);
+        //            }
+        //        }
+
+        //        if (node.HasChildren)
+        //        {
+        //            NodeIsChecked(treeList, node.Nodes, isChecked, ref stt);
+        //        }
+        //    }
+        //}       
+        private void CreateNumOrderDocuments()
+        {
+            if (treeListDocument == null) return;
+            listNumOrderDocument.Clear();
+            int stt = 1;
+            CollectCheckedNodes(treeListDocument, treeListDocument.Nodes, listNumOrderDocument, ref stt);
+        }
+
+        private void CollectCheckedNodes(TreeList view, DevExpress.XtraTreeList.Nodes.TreeListNodes nodes, List<NumOrderDocumentSDO> outputList, ref int stt)
+        {
+            foreach (DevExpress.XtraTreeList.Nodes.TreeListNode node in nodes)
+            {
+                EmrDocumentADO data = view.GetDataRecordByNode(node) as EmrDocumentADO;
+                if (data != null && data.IsChecked && data.ID > 0)
+                {
+                    outputList.Add(new NumOrderDocumentSDO
+                    {
+                        IdDocument = data.ID,
+                        STT = stt++
+                    });
+                }
+                if (node.HasChildren)
+                {
+                    CollectCheckedNodes(view, node.Nodes, outputList, ref stt);
+                }
+            }
+        }
+
 
         internal static void InsertPage1(Stream sourceStream, string sourceFile, Dictionary<long, string> fileListJoin, string desFileJoined, List<EMR_SIGN> signAlls, long documentId, bool IsGroup = false)
         {
@@ -3790,49 +3866,6 @@ namespace HIS.Desktop.Plugins.EmrDocument
         private void btnHomeRelativeSign_Click(object sender, EventArgs e)
         {
             PatientAndHomeRelatetiveSign(false, true);
-        }
-
-        private void treeListDocument_CellValueChanged(object sender, DevExpress.XtraTreeList.CellValueChangedEventArgs e)
-        {
-            try
-            {
-                if (e.Column.FieldName == "IsChecked")
-                {
-                    UpdateListDataTrue();
-                }
-            }
-            catch (Exception ex)
-            {
-                Inventec.Common.Logging.LogSystem.Error(ex);
-            }
-        }
-        private void UpdateListDataTrue()
-        {
-            try
-            {
-                listDataTrue = new List<EmrDocumentADO>();
-
-                if (this.listData != null && this.listData.Count > 0)
-                {
-                    listDataTrue = this.listData
-                        .Where(o => o.IsChecked == true && o.ID > 0)
-                        .OrderBy(p => p.CUSTOM_NUM_ORDER)
-                        .ToList();
-                }
-
-                bool hasValidData = listDataTrue != null && listDataTrue.Count > 0;
-
-                this.btnPrint.Enabled = hasValidData && controlAcs?.FirstOrDefault(o => o.CONTROL_CODE == "EMR000002") != null;
-                this.btnDownload.Enabled = hasValidData && controlAcs?.FirstOrDefault(o => o.CONTROL_CODE == "EMR000003") != null;
-                this.btnHomeRelativeSign.Enabled = hasValidData;
-                this.btnPatientSign.Enabled = hasValidData;
-
-                SetStateButtonDelete();
-            }
-            catch (Exception ex)
-            {
-                Inventec.Common.Logging.LogSystem.Error(ex);
-            }
         }
     }
 }

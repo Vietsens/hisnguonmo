@@ -17,7 +17,7 @@
  */
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
+using System.ComponentModel;    
 using System.Drawing;
 using System.Data;
 using System.Linq;
@@ -46,8 +46,8 @@ using HIS.Desktop.ApiConsumer;
 using HIS.Desktop.Plugins.Library.RegisterConfig;
 
 namespace HIS.UC.AddressCombo
-{
-    public partial class UCAddressCombo : UserControlBase
+{   
+    public partial class UCAddressCombo : HIS.Desktop.Utility.UserControlBase
     {
         #region Declare
 
@@ -1435,6 +1435,11 @@ namespace HIS.UC.AddressCombo
             {
                  Inventec.Common.Logging.LogSystem.Warn(ex);
             }
+        }
+            
+        public void FocusTHX()
+        {
+            txtMaTHX.Focus();
         }
     }
 }
