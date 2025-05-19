@@ -81,7 +81,7 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
                     }
                     else
                     {
-                        e.NodeImageIndex = -1;
+                        e.NodeImageIndex =  -1;
                     }
                 }
                 else
