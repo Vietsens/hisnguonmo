@@ -2540,6 +2540,7 @@ namespace HIS.Desktop.Plugins.ServiceExecute
         {
             try
             {
+                WaitingManager.Show();
                 if (sImage != null && sImage.Count > 0 && sImage.Any(o => o.IsChecked))
                 {
                     if (!string.IsNullOrEmpty(AppConfigKeys.AIConnectionInfo))
@@ -2557,6 +2558,7 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                             { "Prompt", "Phân tích nội dung hình ảnh y tế được cung cấp. Mô tả chi tiết các đặc điểm bất thường (nếu có) như màu sắc, hình dạng, kích thước, mật độ, hoặc các dấu hiệu lạ. Đưa ra các giả thuyết hoặc khả năng y tế có thể liên quan đến những đặc điểm đó. Gợi ý bệnh nhân nên khám tại chuyên khoa nào để được chẩn đoán chính xác hơn. Đưa ra các lời khuyên ban đầu về cách giảm đau hoặc tự theo dõi trước khi đi khám. Lưu ý: Bạn chỉ mô tả và gợi ý một cách tham khảo, không đưa ra chẩn đoán y khoa chính thức. Hãy trả lời hoàn toàn bằng tiếng Việt, chính xác, chi tiết và dễ hiểu." },
 
                         });
+                        WaitingManager.Hide();
                         return result;
                     }
                 }
@@ -2565,6 +2567,7 @@ namespace HIS.Desktop.Plugins.ServiceExecute
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
+            WaitingManager.Hide();
             return null;
         }
         static string ConvertStreamToBase64(Stream stream)
