@@ -936,7 +936,18 @@ namespace HIS.Desktop.Plugins.BidUpdate
                     txtMaTT.Enabled = false;
                     txtMaDT.Enabled = false;
                     txtTenTT.Enabled = false;
-                    ValidMaxlengthDosageForm();
+                    var mt = BackendDataWorker.Get<V_HIS_MEDICINE_TYPE>().FirstOrDefault(o => o.ID == medicineType.ID).MEDICINE_LINE_ID;
+                    if (mt != IMSys.DbConfig.HIS_RS.HIS_MEDICINE_LINE.ID__VT_YHCT)
+                    {
+                        this.lciDosageForm.AppearanceItemCaption.ForeColor = Color.Maroon;
+                        ValidMaxlengthDosageForm();
+                    }
+                    else
+                    {
+                        this.lciDosageForm.AppearanceItemCaption.ForeColor = Color.Black;
+                        dxValidationProviderLeft.RemoveControlError(cboDosageForm);
+                        dxValidationProviderLeft.SetValidationRule(cboDosageForm, null);
+                    }
                     lciDosageForm.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
                     cboInformationBid.SelectedIndex = -1;
                     lciTenBHYT.Size = lciMaTT.Size;
@@ -1848,7 +1859,7 @@ namespace HIS.Desktop.Plugins.BidUpdate
                 if (xtraTabControl1.SelectedTabPageIndex == 0 && this.medicineType != null && !String.IsNullOrEmpty(this.medicineType.MEDICINE_TYPE_CODE))
                 {
                     var national = BackendDataWorker.Get<SDA.EFMODEL.DataModels.SDA_NATIONAL>().Where(o => o.NATIONAL_NAME == this.medicineType.NATIONAL_NAME).ToList();
-                    var dosage = BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_DOSAGE_FORM>().Where(o => o.DOSAGE_FORM_NAME == this.medicineType.DOSAGE_FORM).ToList();  
+                    var dosage = BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_DOSAGE_FORM>().Where(o => o.DOSAGE_FORM_NAME == this.medicineType.DOSAGE_FORM).ToList();
                     txtRegisterNumber.Text = this.medicineType.REGISTER_NUMBER;
                     if (national != null && national.Count() > 0)
                     {
@@ -1884,7 +1895,18 @@ namespace HIS.Desktop.Plugins.BidUpdate
                         cboDosageForm.EditValue = null;
                     }
                     //cboDosageForm.EditValue = HisConfigCFG.IsSet__BHYT ? this.medicineType.DOSAGE_FORM : "";
-
+                    var mt = BackendDataWorker.Get<V_HIS_MEDICINE_TYPE>().FirstOrDefault(o => o.ID == medicineType.ID).MEDICINE_LINE_ID;
+                    if (mt != IMSys.DbConfig.HIS_RS.HIS_MEDICINE_LINE.ID__VT_YHCT)
+                    {
+                        this.lciDosageForm.AppearanceItemCaption.ForeColor = Color.Maroon;
+                        ValidMaxlengthDosageForm();
+                    }
+                    else
+                    {
+                        this.lciDosageForm.AppearanceItemCaption.ForeColor = Color.Black;
+                        dxValidationProviderLeft.RemoveControlError(cboDosageForm);
+                        dxValidationProviderLeft.SetValidationRule(cboDosageForm, null);
+                    }
                     if (this.medicineType.DAY_LIFESPAN.HasValue)
                     {
                         spinDayLifeSpan.EditValue = this.medicineType.DAY_LIFESPAN.Value;
@@ -4129,6 +4151,23 @@ namespace HIS.Desktop.Plugins.BidUpdate
             if (e.Button.Kind == ButtonPredefines.Delete)
             {
                 cboDosageForm.EditValue = null;
+            }
+        }
+
+        private void cboSupplier_Properties_ButtonClick(object sender, ButtonPressedEventArgs e)
+        {
+            if (e.Button.Kind == ButtonPredefines.Delete)
+            {
+                txtSupplierCode.EditValue = null;
+                cboSupplier.EditValue = null;
+            }
+        }
+
+        private void DtExpiredDate_Properties_ButtonClick(object sender, ButtonPressedEventArgs e)
+        {
+            if (e.Button.Kind == ButtonPredefines.Delete)
+            {
+                DtExpiredDate.EditValue = null;
             }
         }
 

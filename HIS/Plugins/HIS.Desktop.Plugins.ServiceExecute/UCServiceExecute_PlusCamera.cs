@@ -648,6 +648,13 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                         case RightButtonType.ChangeStt:
                             ShowFromChangeStt();
                             break;
+                        case RightButtonType.PhanTichHinhAnhYKhoa:
+                            var result = UCServiceExecute.PhanTichHinhAnhYKhoa(this.listImage);
+                            if (result != null && !string.IsNullOrEmpty(result.Results))
+                            {
+                                XtraMessageBox.Show(this, result.Results, "Thông báo", DevExpress.Utils.DefaultBoolean.True);
+                            }
+                            break;
                         default:
                             break;
                     }

@@ -48,8 +48,8 @@
     <Reference Include="MOS.EFMODEL">
       <HintPath>..\..\Huannh\his\lib\MOS\MOS.EFMODEL.dll</HintPath>
     </Reference>
-    <Reference Include="MPS.Processor.Mps000500.PDO">
-      <HintPath>..\..\MPS.Processor.Mps000500.PDO.dll</HintPath>
+    <Reference Include="MPS.Processor.Mps000008.PDO">
+      <HintPath>..\MPS.Processor.Mps000500.PDO\bin\Debug\MPS.Processor.Mps000008.PDO.dll</HintPath>
     </Reference>
     <Reference Include="MPS.ProcessorBase">
       <HintPath>..\..\Huannh\his\lib\MPSv2\MPS.ProcessorBase\MPS.ProcessorBase.dll</HintPath>

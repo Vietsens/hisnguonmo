@@ -711,6 +711,22 @@ namespace HIS.Desktop.Plugins.ServiceExecute
             }
         }
 
+        internal static string PhanTichHinhAnhYKhoa
+        {
+            get
+            {
+                try
+                {
+                    return Inventec.Common.Resource.Get.Value("PhanTichHinhAnhYKhoa", languageMessage, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(ex);
+                }
+                return "";
+            }
+        }
+
         internal static string ThucHienCls
         {
             get
