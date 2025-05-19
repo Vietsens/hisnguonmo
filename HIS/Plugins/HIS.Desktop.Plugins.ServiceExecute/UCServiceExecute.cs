@@ -2571,6 +2571,7 @@ namespace HIS.Desktop.Plugins.ServiceExecute
         {
             using (MemoryStream memoryStream = new MemoryStream())
             {
+                stream.Seek(0, SeekOrigin.Begin);
                 stream.CopyTo(memoryStream);
                 byte[] bytes = memoryStream.ToArray();
                 return "data:image/jpeg;base64," + Convert.ToBase64String(bytes);
