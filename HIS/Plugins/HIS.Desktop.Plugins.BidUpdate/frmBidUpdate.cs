@@ -4158,6 +4158,7 @@ namespace HIS.Desktop.Plugins.BidUpdate
         {
             if (e.Button.Kind == ButtonPredefines.Delete)
             {
+                txtSupplierCode.EditValue = null;
                 cboSupplier.EditValue = null;
             }
         }
