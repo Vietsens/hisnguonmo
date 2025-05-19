@@ -130,6 +130,7 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
                 SetCaptionByLanguageKey();
                 LoadServiceFromRam();
                 Inventec.Common.Logging.LogSystem.Debug("UCRegister .6");
+                this.KeyDown += UCRegister_KeyDown;
             }
             catch (Exception ex)
             {
@@ -2041,6 +2042,15 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
             {
                 WaitingManager.Hide();
                 Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void UCRegister_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.F11)
+            {
+                ucAddressCombo1.FocusTHX();
+                e.Handled = true;
             }
         }
     }
