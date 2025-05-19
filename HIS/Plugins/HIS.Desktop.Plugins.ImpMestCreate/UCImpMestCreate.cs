@@ -104,7 +104,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
         HIS_IMP_MEST_TYPE currentImpMestType = null;
 
         List<MaterialTypeADO> listMaterialType = new List<MaterialTypeADO>();
-        List<MedicineTypeADO> listMedicineType = new List<MedicineTypeADO>();        
+        List<MedicineTypeADO> listMedicineType = new List<MedicineTypeADO>();
 
         VHisServiceADO currrentServiceAdo = null;
         ResultImpMestADO resultADO = null;
@@ -1974,7 +1974,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
 
                 if (this.gridViewServicePaty.FocusedRowModified)
                     this.gridViewServicePaty.UpdateCurrentRow();
-                if (!btnAdd1.Enabled)   
+                if (!btnAdd1.Enabled)
                     return;
                 btnAdd1.Focus();
                 positionHandleControl = -1;
@@ -2245,7 +2245,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                 this.currrentServiceAdo.packingTypeName = this.txtPackingJoinBid.Text.Trim();
                 this.currrentServiceAdo.heinServiceBhytName = this.txtHeinServiceBidMateType.Text.Trim();
                 this.currrentServiceAdo.activeIngrBhytName = this.txtActiveIngrBhytName.Text.Trim();
-                
+
 
                 if (this.cboMedicineUseForm.EditValue != null)
                 {
@@ -2894,7 +2894,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                     InitMenuToButtonPrint(this.resultADO);
                     isSave = true;
                 }
-                BackendDataWorker.Reset<V_HIS_MATERIAL>(); 
+                BackendDataWorker.Reset<V_HIS_MATERIAL>();
                 BackendDataWorker.Reset<V_HIS_MEDICINE>();
                 MessageManager.Show(this.ParentForm, param, success);
                 HIS.Desktop.Controls.Session.SessionManager.ProcessTokenLost(param);
@@ -3274,7 +3274,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
 
                 //WaitingManager.Show();
 
-                
+
                 this.currrentServiceAdo.TEMPERATURE = spnTemperature.EditValue != null ? (decimal?)spnTemperature.Value : null;
 
                 this.currrentServiceAdo.TDL_BID_GROUP_CODE = txtBidGroupCode.Text;
@@ -3366,8 +3366,8 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                 this.currrentServiceAdo.NATIONAL_NAME = this.txtNationalMainText.Text.Trim();
                 this.currrentServiceAdo.CONCENTRA = this.txtNognDoHL.Text;
                 this.currrentServiceAdo.REGISTER_NUMBER = this.txtSoDangKy.Text;
-                
-                
+
+
                 if (cboHangSX.EditValue != null)
                 {
                     this.currrentServiceAdo.MANUFACTURER_ID = (long)cboHangSX.EditValue;
@@ -3403,7 +3403,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                         this.currrentServiceAdo.HisMedicine.IS_SALE_EQUAL_IMP_PRICE = null;
                     }
 
-                    
+
                     this.currrentServiceAdo.HisMedicine.AMOUNT = this.currrentServiceAdo.IMP_AMOUNT;
                     this.currrentServiceAdo.HisMedicine.IMP_PRICE = this.currrentServiceAdo.IMP_PRICE;
                     this.currrentServiceAdo.HisMedicine.DOCUMENT_PRICE = this.currrentServiceAdo.DOCUMENT_PRICE;
@@ -3909,6 +3909,18 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                             spinCanImpAmount.Value = this.currrentServiceAdo.CanImpAmount;
                         }
                     }
+                    if (this.currrentServiceAdo.IsMedicine)
+                    {
+                        if (this.currrentServiceAdo.MEDICINE_LINE_ID == IMSys.DbConfig.HIS_RS.HIS_MEDICINE_LINE.ID__VT_YHCT)
+                        {
+                            this.lciDosageForm.AppearanceItemCaption.ForeColor = Color.Black;
+                        }
+                        else
+                        {
+                            this.lciDosageForm.AppearanceItemCaption.ForeColor = Color.Maroon;
+                        }
+                    }
+                    
                     VisibleLayoutTemperature();
                     if (this.currrentServiceAdo.TEMPERATURE != null)
                         spnTemperature.Value = this.currrentServiceAdo.TEMPERATURE ?? 0;
@@ -3930,7 +3942,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                     this.txtPackingJoinBid.Text = this.currrentServiceAdo.packingTypeName;
                     this.txtHeinServiceBidMateType.Text = this.currrentServiceAdo.heinServiceBhytName;
                     this.txtActiveIngrBhytName.Text = this.currrentServiceAdo.activeIngrBhytName;
-                    
+
                     this.cboMedicineUseForm.EditValue = this.currrentServiceAdo.medicineUseFormId;
                     this.txtSoDangKy.Text = this.currrentServiceAdo.REGISTER_NUMBER;
                     this.cboInformationBid.SelectedIndex = currrentServiceAdo.IsMedicine ? -1 : (int)(currrentServiceAdo.HisMaterial.INFORMATION_BID ?? 0) - 1;
@@ -3970,13 +3982,13 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                     {
                         cboDosageForm.EditValue = this.currrentServiceAdo.HisMedicine.DOSAGE_FORM;
                     }
-                    cboHangSX.EditValue = this.currrentServiceAdo.MANUFACTURER_ID;    
+                    cboHangSX.EditValue = this.currrentServiceAdo.MANUFACTURER_ID;
 
                     if (this.currrentServiceAdo.HisMedicine != null)
                     {
                         chkImprice.Checked = this.currrentServiceAdo.HisMedicine.IS_SALE_EQUAL_IMP_PRICE == 1 ? true : false;
                     }
-                    else if (this.currrentServiceAdo.HisMaterial != null)   
+                    else if (this.currrentServiceAdo.HisMaterial != null)
                     {
                         chkImprice.Checked = this.currrentServiceAdo.HisMaterial.IS_SALE_EQUAL_IMP_PRICE == 1 ? true : false;
                     }
@@ -6035,7 +6047,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                     form.ShowDialog();
 
                     LoadDosageForm(); // Load lại danh sách sau khi form đóng
-                         
+
                     // Nếu EditValue cũ còn tồn tại trong datasource mới, gán lại
                     var dataSource = cboDosageForm.Properties.DataSource as IList<object>;
                     if (dataSource != null && dataSource.Any(x => GetValueMember(x)?.ToString() == oldValue?.ToString()))
@@ -6046,10 +6058,10 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                     {
                         cboDosageForm.Text = "";
                         cboDosageForm.EditValue = null;
-                    }    
+                    }
                 }
             }
-            if (e.Button.Kind == ButtonPredefines.Delete) 
+            if (e.Button.Kind == ButtonPredefines.Delete)
             {
                 cboDosageForm.Text = "";
                 cboDosageForm.EditValue = null;
@@ -6092,7 +6104,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
 
         private void cboDosageForm_Leave(object sender, EventArgs e)
         {
-            
+
         }
 
         private void cboDosageForm_Validating(object sender, CancelEventArgs e)
