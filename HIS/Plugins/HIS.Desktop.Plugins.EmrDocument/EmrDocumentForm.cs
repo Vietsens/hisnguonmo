@@ -2042,8 +2042,6 @@ namespace HIS.Desktop.Plugins.EmrDocument
                                 {
                                     pictureEdit1.Image = imageCheck.Images[1];
                                 }
-
-                                Inventec.Common.Logging.LogSystem.Info("dữ liệu node: " + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => rowData), rowData) + " __s: " + s + " __listData.Where(o => o.ID > 0).Count: " + listData.Where(o => o.ID > 0).Count());
                             }
                         }
                         else
@@ -2172,7 +2170,6 @@ namespace HIS.Desktop.Plugins.EmrDocument
                             STT = stt++
                         });
                         rowData.IsChecked = check;
-                        Inventec.Common.Logging.LogSystem.Info("dữ liệu node: " + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => rowData), rowData));
                     }
                     else
                     {
@@ -2222,67 +2219,13 @@ namespace HIS.Desktop.Plugins.EmrDocument
         //            NodeIsChecked(treeList, node.Nodes, isChecked, ref stt);
         //        }
         //    }
-        //}
-        //private void NodeIsChecked(TreeList view, TreeListNodes nodes, bool check, ref long stt)
-        //{
-        //    try
-        //    {
-        //        foreach (TreeListNode node in nodes)
-        //        {
-        //            node.Checked = check;
-
-        //            if (node.Tag is EmrDocumentADO rowData && rowData.ID > 0)
-        //            {
-        //                rowData.IsChecked = check;
-        //                if (check)
-        //                {
-        //                    rowData.CUSTOM_NUM_ORDER = stt;
-        //                    listNumOrderDocument.Add(new NumOrderDocumentSDO
-        //                    {
-        //                        IdDocument = rowData.ID,
-        //                        STT = stt++
-        //                    });
-        //                }
-        //            }
-        //            NodeIsChecked(view, node.Nodes, check, ref stt);
-        //        }
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        Inventec.Common.Logging.LogSystem.Warn(ex);
-        //    }
-        //}
-
-        //private void CreateNumOrderDocuments()
-        //{
-        //    Inventec.Common.Logging.LogSystem.Info("[CreateNumOrderDocuments] Called");
-        //    if (listData == null) return;
-        //    var filtered = listData.Where(o => o.IsChecked && o.ID > 0).ToList();
-        //    Inventec.Common.Logging.LogSystem.Info($"[CreateNumOrderDocuments] Filtered count = {filtered.Count}");
-        //    listNumOrderDocument = listData
-        //        .Where(o => o.IsChecked == true && o.ID > 0)
-        //        .OrderBy(o => o.CUSTOM_NUM_ORDER)
-        //        .Select((doc, index) => new NumOrderDocumentSDO
-        //        {
-        //            IdDocument = doc.ID,
-        //            STT = index + 1
-        //        })
-        //        .ToList();
-        //    Inventec.Common.Logging.LogSystem.Info("[CreateNumOrderDocuments] Danh sách STT: " + string.Join(", ", listNumOrderDocument.Select(x => $"(ID: {x.IdDocument}, STT: {x.STT})")));
-        //}
+        //}       
         private void CreateNumOrderDocuments()
         {
-            Inventec.Common.Logging.LogSystem.Info("[CreateNumOrderDocuments] Called");
-
             if (treeListDocument == null) return;
-
             listNumOrderDocument.Clear();
-
             int stt = 1;
             CollectCheckedNodes(treeListDocument, treeListDocument.Nodes, listNumOrderDocument, ref stt);
-
-            Inventec.Common.Logging.LogSystem.Info("[CreateNumOrderDocuments] Danh sách STT: " +
-                string.Join(", ", listNumOrderDocument.Select(x => $"(ID: {x.IdDocument}, STT: {x.STT})")));
         }
 
         private void CollectCheckedNodes(TreeList view, DevExpress.XtraTreeList.Nodes.TreeListNodes nodes, List<NumOrderDocumentSDO> outputList, ref int stt)
