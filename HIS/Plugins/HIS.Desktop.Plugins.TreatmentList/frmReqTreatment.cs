@@ -22,6 +22,7 @@ namespace HIS.Desktop.Plugins.TreatmentList
         public frmReqTreatment(V_HIS_TREATMENT_4 treatment, Action<string> dlgReason, Action<bool> dlgClose)
         {
             InitializeComponent();
+            currentTreatment = treatment;
             this.dlgReason = dlgReason;
             this.dlgClose = dlgClose;
             string iconPath = System.IO.Path.Combine(HIS.Desktop.LocalStorage.Location.ApplicationStoreLocation.ApplicationStartupPath, System.Configuration.ConfigurationSettings.AppSettings["Inventec.Desktop.Icon"]);
@@ -42,7 +43,7 @@ namespace HIS.Desktop.Plugins.TreatmentList
         {
             try
             {
-                memReason.Text = currentTreatment.RESON_UNFINISH.ToString();
+                memReason.Text = currentTreatment.REASON_UNFINISH;
             }
             catch (Exception ex)
             {
@@ -89,7 +90,6 @@ namespace HIS.Desktop.Plugins.TreatmentList
 
         private void btnSave_Click(object sender, EventArgs e)
         {
-            memReason.Text = memReason.Text.Trim();
             if (!dxValidationProvider1.Validate()) return;
             dlgReason(memReason.Text.Trim());
             IsClose = false;

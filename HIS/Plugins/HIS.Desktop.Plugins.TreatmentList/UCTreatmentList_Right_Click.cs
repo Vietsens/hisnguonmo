@@ -71,7 +71,7 @@ namespace HIS.Desktop.Plugins.TreatmentList
                         #region -----
 
                         case PopupMenuProcessor.ItemType.ReqOpenTreatmentRecord:
-                            btnReqTreatmentClick();
+                            ReqOpenTreatmentRecord();
                             break;
                         case PopupMenuProcessor.ItemType.EventLog:
                             btnEvenLogClick();
@@ -347,7 +347,7 @@ namespace HIS.Desktop.Plugins.TreatmentList
             }
         }
 
-        private void btnReqTreatmentClick()
+        private void ReqOpenTreatmentRecord()
         {
             CommonParam param = new CommonParam();
             bool success = false;
@@ -374,7 +374,7 @@ namespace HIS.Desktop.Plugins.TreatmentList
                         return;
                     WaitingManager.Show();
                     MOS.SDO.HisTreatmentRequestUnfinishSDO sdo = new MOS.SDO.HisTreatmentRequestUnfinishSDO();
-                    sdo.ResonUnfinish = mess;
+                    sdo.ReasonUnfinish = mess;
                     sdo.TreatmentID = currentTreatment.ID;
                     bool unFinishTreatment = new Inventec.Common.Adapter.BackendAdapter(param).Post<bool>("/api/HisTreatment/RequestUnfinish", ApiConsumers.MosConsumer, sdo, param);
                     //CloseTreatmentProcessor.TreatmentUnFinish(, param);
