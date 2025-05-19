@@ -212,4 +212,19 @@
   <data name="UCRoomExamService.tol7.Text" xml:space="preserve">
     <value>Giới hạn tổng số yêu cầu BHYT cho phép xử lý trong ngày</value>
   </data>
+	<data name="UCRoomExamService.tol8.Text" xml:space="preserve">
+    <value>Tổng số yêu cầu buổi sáng</value>
+  </data>
+	<data name="UCRoomExamService.tol9.Text" xml:space="preserve">
+    <value>Tổng số yêu cầu buổi chiều</value>
+  </data>
+	<data name="UCRoomExamService.tol10.Text" xml:space="preserve">
+    <value>Tổng số yêu cầu không nợ viện phí</value>
+  </data>
+	<data name="UCRoomExamService.tol11.Text" xml:space="preserve">
+    <value>Tổng số yêu cầu buổi sáng không nợ viện phí</value>
+  </data>
+	<data name="UCRoomExamService.tol12.Text" xml:space="preserve">
+    <value>Tổng số yêu cầu buổi chiều không nợ viện phí</value>
+  </data>
 </root>
