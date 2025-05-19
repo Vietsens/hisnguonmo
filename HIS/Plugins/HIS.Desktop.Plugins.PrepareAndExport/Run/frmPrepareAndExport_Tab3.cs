@@ -40,7 +40,9 @@ namespace HIS.Desktop.Plugins.PrepareAndExport.Run
 {
 	public partial class frmPrepareAndExport
 	{
-		private async Task LoadTab3()
+        long roomId = 0;
+
+        private async Task LoadTab3()
 		{
 			try
 			{
@@ -451,5 +453,64 @@ namespace HIS.Desktop.Plugins.PrepareAndExport.Run
 				Inventec.Common.Logging.LogSystem.Error(ex);
 			}
 		}
-	}
+
+        private void repUnapprove_ButtonClick(object sender, DevExpress.XtraEditors.Controls.ButtonPressedEventArgs e)
+        {
+            try
+            {
+                HIS_EXP_MEST data = (HIS_EXP_MEST)gvPrepareMedicine.GetFocusedRow();
+               
+                        if (data != null)
+                        {
+                            if (data.EXP_MEST_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_EXP_MEST_TYPE.ID__THPK)
+                            {
+                                WaitingManager.Show();
+                                bool success = false;
+                                CommonParam param = new CommonParam();
+
+                                HisExpMestSDO res = new HisExpMestSDO();
+                                res.ExpMestId = data.ID;
+                                res.ReqRoomId = this.roomId;
+                                if (gcPrepareMedicine.DataSource != null)
+                                {
+                                    var griddata = (List<V_HIS_EXP_MEST_2>)gcPrepareMedicine.DataSource;
+                                    var apiresul = new Inventec.Common.Adapter.BackendAdapter(param).Post<HIS_EXP_MEST>("api/HisExpMest/AggrExamUnapprove", ApiConsumer.ApiConsumers.MosConsumer, data, param);
+                                    if (apiresul != null)
+                                    {
+                                        foreach (var item in griddata)
+                                        {
+                                            if (item.ID == apiresul.ID)
+                                            {
+                                                var expMestSTT = BackendDataWorker.Get<HIS_EXP_MEST_STT>().FirstOrDefault(o => o.ID == apiresul.EXP_MEST_STT_ID);
+                                                item.EXP_MEST_STT_ID = expMestSTT.ID;
+                                                item.EXP_MEST_STT_NAME = expMestSTT.EXP_MEST_STT_NAME;
+                                                item.EXP_MEST_STT_CODE = expMestSTT.EXP_MEST_STT_CODE;
+                                                item.MODIFY_TIME = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(DateTime.Now);
+                                                break;
+                                            }
+                                        }
+                                        success = true;
+                                        gvPrepareMedicine.BeginUpdate();
+                                        griddata = griddata.OrderByDescending(p => p.MODIFY_TIME).ToList();
+                                        gcPrepareMedicine.DataSource = griddata;
+                                        gvPrepareMedicine.EndUpdate();
+                                    }
+                                }
+                                WaitingManager.Hide();
+                                #region Show message
+                                Inventec.Desktop.Common.Message.MessageManager.Show(this.ParentForm, param, success);
+                                #endregion
+
+                                #region Process has exception
+                                HIS.Desktop.Controls.Session.SessionManager.ProcessTokenLost(param);
+                                #endregion
+                            }
+                        }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+    }
 }

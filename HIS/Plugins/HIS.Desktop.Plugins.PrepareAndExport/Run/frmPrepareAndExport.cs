@@ -40,6 +40,7 @@ using HIS.Desktop.Plugins.PrepareAndExport.Validate;
 using DevExpress.XtraEditors;
 using DevExpress.XtraEditors.ViewInfo;
 using HIS.Desktop.LocalStorage.LocalData;
+using HIS.Desktop.Plugins.PrepareAndExport.Popup;
 
 namespace HIS.Desktop.Plugins.PrepareAndExport.Run
 {
@@ -609,5 +610,17 @@ namespace HIS.Desktop.Plugins.PrepareAndExport.Run
             }
         }
 
+        private void simpleButton2_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                    Requirements popup = new Requirements(lstAll);
+                    popup.ShowDialog();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
     }
 }
