@@ -372,7 +372,7 @@ namespace HIS.Desktop.Plugins.ApprovalExamSpecialist.Run
                 HIS_TREATMENT datamapperTreatment = new HIS_TREATMENT();
                 Inventec.Common.Mapper.DataObjectMapper.Map<HIS_SPECIALIST_EXAM>(datamapperExam, currentSpecialistExam);
                 Inventec.Common.Mapper.DataObjectMapper.Map<HIS_TREATMENT>(datamapperTreatment, currentSpecialistExam);
-                MPS.Processor.Mps000500.PDO.Mps000500PDO pdo = new MPS.Processor.Mps000500.PDO.Mps000500PDO(datamapperExam, datamapperTreatment);
+                MPS.Processor.Mps000500.PDO.Mps000500PDO pdo = new MPS.Processor.Mps000500.PDO.Mps000500PDO(currentSpecialistExam, datamapperTreatment);
 
                 string printerName = "";
                 if (GlobalVariables.dicPrinter.ContainsKey(printTypeCode))
