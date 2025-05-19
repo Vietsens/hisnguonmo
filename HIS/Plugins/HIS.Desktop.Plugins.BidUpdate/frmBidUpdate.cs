@@ -4154,6 +4154,22 @@ namespace HIS.Desktop.Plugins.BidUpdate
             }
         }
 
+        private void cboSupplier_Properties_ButtonClick(object sender, ButtonPressedEventArgs e)
+        {
+            if (e.Button.Kind == ButtonPredefines.Delete)
+            {
+                cboSupplier.EditValue = null;
+            }
+        }
+
+        private void DtExpiredDate_Properties_ButtonClick(object sender, ButtonPressedEventArgs e)
+        {
+            if (e.Button.Kind == ButtonPredefines.Delete)
+            {
+                DtExpiredDate.EditValue = null;
+            }
+        }
+
         private void txtMaDT_KeyDown(object sender, KeyEventArgs e)
         {
             try
