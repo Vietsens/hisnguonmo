@@ -31,6 +31,7 @@ using HIS.Desktop.LocalStorage.BackendData;
 using MOS.EFMODEL.DataModels;
 using DevExpress.XtraEditors;
 using MOS.Filter;
+using System.Drawing;
 
 namespace HIS.Desktop.Plugins.BidCreate
 {
@@ -644,6 +645,18 @@ namespace HIS.Desktop.Plugins.BidCreate
                         txtActiveBhyt.Text = row.ACTIVE_INGR_BHYT_NAME ?? "";
                         //cboDosageForm.EditValue = row.DOSAGE_FORM ?? "";
                         var dosageItem = dataDosageForm.FirstOrDefault(o => o.DOSAGE_FORM_NAME == row.DOSAGE_FORM);
+                        if (this.medicineType.MEDICINE_LINE_ID.Value != IMSys.DbConfig.HIS_RS.HIS_MEDICINE_LINE.ID__VT_YHCT)
+                        {
+                            layoutControlItem21.AppearanceItemCaption.ForeColor = Color.Maroon;
+                            ValidDosageForm();
+                        }
+
+                        else
+                        {
+
+                            dxValidationProviderLeft.SetValidationRule(cboDosageForm, null);
+                            layoutControlItem21.AppearanceItemCaption.ForeColor = Color.Black;
+                        }
                         if (dosageItem != null)
                         {
                             cboDosageForm.EditValue = dosageItem.ID;
