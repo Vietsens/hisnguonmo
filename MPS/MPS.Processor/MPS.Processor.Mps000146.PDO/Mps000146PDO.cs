@@ -27,7 +27,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+     
 namespace MPS.Processor.Mps000146.PDO
 {
     public partial class Mps000146PDO : RDOBase
@@ -36,7 +36,7 @@ namespace MPS.Processor.Mps000146.PDO
         public List<HIS_MEDICINE> lstHisMedicine;
         public List<V_HIS_MEDICINE_TYPE> lstHisMedicineViewType;
         public List<HIS_MIXED_MEDICINE> lstMixedMedicine;
-
+             
         public Mps000146PDO() { }
         public Mps000146PDO(
             V_HIS_INFUSION_SUM infusionSum,
