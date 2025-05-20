@@ -53,6 +53,8 @@ namespace MPS.Processor.Mps000215
         public long? NUM_ORDER { get; set; }
         public long? MEDICINE_USE_FORM_NUM_ORDER { get; set; }
         public string MEDICINE_TYPE_NAME { get; set; }
+        public string STORAGE_CONDITION_CODE { get; set; }
+        public string STORAGE_CONDITION_NAME { get; set; }
 
         public string CONCENTRA { get; set; }
 
@@ -107,6 +109,8 @@ namespace MPS.Processor.Mps000215
                     this.MEDICINE_PARENT_CODE = data.PARENT_CODE;
                     this.MEDICINE_PARENT_NAME = data.PARENT_NAME;
                     this.SCIENTIFIC_NAME = data.SCIENTIFIC_NAME;
+                    this.STORAGE_CONDITION_CODE = data.STORAGE_CONDITION_CODE;
+                    this.STORAGE_CONDITION_NAME = data.STORAGE_CONDITION_NAME;
                 }
 
                 if (expMest.EXP_MEST_STT_ID == IMSys.DbConfig.HIS_RS.HIS_EXP_MEST_STT.ID__EXECUTE || expMest.EXP_MEST_STT_ID == IMSys.DbConfig.HIS_RS.HIS_EXP_MEST_STT.ID__DONE)
