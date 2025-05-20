@@ -534,7 +534,6 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
                     srFilter.ORDER_FIELD = "CREATE_TIME";
 
                     var examServiceReqs = new BackendAdapter(new CommonParam()).Get<List<HIS_SERVICE_REQ>>("api/HisServiceReq/Get", ApiConsumers.MosConsumer, srFilter, null);
-                    Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData("examServiceReqs", examServiceReqs));
 
                     if (examServiceReqs != null && examServiceReqs.Count > 0)
                     {
