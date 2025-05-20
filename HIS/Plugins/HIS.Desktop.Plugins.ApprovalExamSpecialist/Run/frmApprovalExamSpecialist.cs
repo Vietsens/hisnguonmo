@@ -109,18 +109,19 @@ namespace HIS.Desktop.Plugins.ApprovalExamSpecialist.Run
         {
             try
             {
-
+                dtTrackingTime.Properties.Mask.EditMask = "dd/MM/yyyy HH:mm:ss";
+                dtTrackingTime.Properties.DisplayFormat.FormatString = "dd/MM/yyyy HH:mm:ss";
                 if (currentSpecialistExam.EXAM_TIME.HasValue)
                 {
-                    dtTrackingTime.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.DisableTextEditor;
-                    dtTrackingTime.Text = Inventec.Common.DateTime.Convert.TimeNumberToTimeString((long)currentSpecialistExam.EXAM_TIME); 
-                    
+                    DateTime? dtTracking = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(currentSpecialistExam.EXAM_TIME.Value);
+
+                    dtTrackingTime.DateTime = dtTracking.Value;
                 }
                 else
                 {
-                    dtTrackingTime.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.DisableTextEditor;
                     dtTrackingTime.DateTime = DateTime.Now;
                 }
+
                 txtNoiDungKham.Text = currentSpecialistExam.EXAM_EXECUTE_CONTENT;
                 txtYLenhKham.Text = currentSpecialistExam.EXAM_EXCUTE;
                 this.cboDoctor.EditValue = this.currentSpecialistExam.EXAM_EXECUTE_LOGINNAME;
