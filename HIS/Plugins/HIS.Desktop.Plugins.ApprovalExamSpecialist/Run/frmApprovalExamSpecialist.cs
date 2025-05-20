@@ -370,9 +370,9 @@ namespace HIS.Desktop.Plugins.ApprovalExamSpecialist.Run
                 WaitingManager.Show();
                 HIS_SPECIALIST_EXAM datamapperExam = new HIS_SPECIALIST_EXAM();
                 HIS_TREATMENT datamapperTreatment = new HIS_TREATMENT();
-                Inventec.Common.Mapper.DataObjectMapper.Map<HIS_SPECIALIST_EXAM>(datamapperExam, currentSpecialistExam);
-                Inventec.Common.Mapper.DataObjectMapper.Map<HIS_TREATMENT>(datamapperTreatment, currentSpecialistExam);
-                MPS.Processor.Mps000500.PDO.Mps000500PDO pdo = new MPS.Processor.Mps000500.PDO.Mps000500PDO(currentSpecialistExam, datamapperTreatment);
+                var Treatment = BackendDataWorker.Get<HIS_TREATMENT>().FirstOrDefault(o => o.ID == currentSpecialistExam.TREATMENT_ID);
+
+                MPS.Processor.Mps000500.PDO.Mps000500PDO pdo = new MPS.Processor.Mps000500.PDO.Mps000500PDO(currentSpecialistExam, Treatment);
 
                 string printerName = "";
                 if (GlobalVariables.dicPrinter.ContainsKey(printTypeCode))
@@ -443,7 +443,6 @@ namespace HIS.Desktop.Plugins.ApprovalExamSpecialist.Run
                 if (rs != null && this.delegateRefresher != null)
                 {
                     this.delegateRefresher();
-                    this.Close();
                 }
 
                 MessageManager.Show(this, param, rs != null);
