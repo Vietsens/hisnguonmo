@@ -101,5 +101,10 @@ namespace HIS.Desktop.Plugins.TreatmentList
         {
             dlgClose(IsClose);
         }
+
+        private void barButtonItem1_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
+        {
+            btnSave.PerformClick();
+        }
     }
 }
