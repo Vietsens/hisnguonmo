@@ -83,8 +83,8 @@ namespace HIS.Desktop.Plugins.PrepareAndExport.Popup
                         
                         if (gridControl2.DataSource != null)
                         {
-                            var apiresul = new Inventec.Common.Adapter.BackendAdapter(param).Post<HIS_TREATMENT>("(api/HisTreatment/ConfirmUnfinish", ApiConsumer.ApiConsumers.MosConsumer, data.ID, param);
-                            if (apiresul != null)
+                            var apiresul = new Inventec.Common.Adapter.BackendAdapter(param).Post<bool>("api/HisTreatment/ConfirmUnfinish", ApiConsumer.ApiConsumers.MosConsumer, data.ID, param);
+                            if (apiresul)
                             {
                                 success = true;
                                 LoadListHisTreatment();
