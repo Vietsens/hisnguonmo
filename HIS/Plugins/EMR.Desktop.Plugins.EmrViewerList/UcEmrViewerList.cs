@@ -203,7 +203,7 @@ namespace EMR.Desktop.Plugins.EmrViewerList
                 if (!String.IsNullOrEmpty(TxtKeyword.Text)) filter.KEY_WORD = TxtKeyword.Text.Trim();
 
                 if (ChkYeuCau.Checked) filter.REQUEST_LOGINNAME__EXACT = LogginName;
-                else filter.DATA_STORE_CODE__EXACT = RoomCode;
+                //else filter.DATA_STORE_CODE__EXACT = RoomCode;
 
                 if (cboRoomArchive.EditValue != null)
                 {
