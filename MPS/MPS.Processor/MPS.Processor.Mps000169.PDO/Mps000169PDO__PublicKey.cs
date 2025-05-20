@@ -93,6 +93,10 @@ namespace MPS.Processor.Mps000169.PDO
         public decimal? VAT_RATIO { get; set; }
         public long? MEDICINE_ID { get; set; }
         public long? MANUFACTURER_ID { get; set; }
+
+        public string STORAGE_CONDITION_CODE { get; set; }
+        public string STORAGE_CONDITION_NAME { get; set; }
+
         public Mps000169ADO(
             V_HIS_EXP_MEST _expMest,
             List<V_HIS_EXP_MEST_MEDICINE> _expMestMedicines,
@@ -163,6 +167,9 @@ namespace MPS.Processor.Mps000169.PDO
                     this.AMOUNT_REQUEST_STRING = Inventec.Common.String.Convert.CurrencyToVneseString(string.Format("{0:0.####}", Inventec.Common.Number.Convert.NumberToNumberRoundMax4(this.AMOUNT_REQUEST)));
                     this.AMOUNT_EXECUTE_STRING = Inventec.Common.String.Convert.CurrencyToVneseString(string.Format("{0:0.####}", Inventec.Common.Number.Convert.NumberToNumberRoundMax4(this.AMOUNT_EXCUTE)));
                     this.AMOUNT_EXPORT_STRING = Inventec.Common.String.Convert.CurrencyToVneseString(string.Format("{0:0.####}", Inventec.Common.Number.Convert.NumberToNumberRoundMax4(this.AMOUNT_EXPORTED)));
+
+                    this.STORAGE_CONDITION_CODE = _expMestMedicines[0].STORAGE_CONDITION_CODE;
+                    this.STORAGE_CONDITION_NAME = _expMestMedicines[0].STORAGE_CONDITION_NAME;
                 }
             }
             catch (Exception ex)
