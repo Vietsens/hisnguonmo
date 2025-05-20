@@ -225,6 +225,22 @@ namespace HIS.Desktop.Plugins.ImpMestAggregate
                     var data = (List<V_HIS_IMP_MEST_2>)apiResult.Data;
                     if (data != null)
                     {
+                        // Extract distinct REQ_ROOM_IDs
+                        var reqRoomIds = data.Where(o => o.REQ_ROOM_ID.HasValue)
+                            .Select(o => o.REQ_ROOM_ID.Value)
+                            .Distinct()
+                            .ToList();
+
+                        // Get matching rooms from backend
+                        List<V_HIS_ROOM> listRooms = BackendDataWorker.Get<V_HIS_ROOM>()
+                            .Where(o => reqRoomIds.Contains(o.ID))
+                            .ToList() ?? new List<V_HIS_ROOM>();
+                        foreach (var item in data)
+                        {
+                            item.ROOM_NAME = listRooms
+                                .FirstOrDefault(o => o.ID == item.REQ_ROOM_ID.GetValueOrDefault())?
+                                .ROOM_NAME ?? "";
+                        }
                         gridControlImpMestReq.DataSource = data;
                         rowCountImpM = data.Count;
                         dataTotalImpM = apiResult.Param.Count ?? 0;
