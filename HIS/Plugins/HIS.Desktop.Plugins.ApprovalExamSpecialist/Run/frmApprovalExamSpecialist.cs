@@ -443,7 +443,6 @@ namespace HIS.Desktop.Plugins.ApprovalExamSpecialist.Run
                 if (rs != null && this.delegateRefresher != null)
                 {
                     this.delegateRefresher();
-                    this.Close();
                 }
 
                 MessageManager.Show(this, param, rs != null);
