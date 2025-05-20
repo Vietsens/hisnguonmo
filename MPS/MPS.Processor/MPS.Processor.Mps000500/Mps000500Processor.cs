@@ -68,25 +68,7 @@ namespace MPS.Processor.Mps000500
             {
                 if (rdo.currentTreatment != null)
                 {
-
-                    if (rdo.currentTreatment.TDL_PATIENT_DOB.ToString().Length > 4)
-                    {
-
-                        var dob = rdo.currentExam.TDL_PATIENT_DOB;
-
-                        if (dob != null && int.TryParse(dob.ToString(), out int dobNumber))
-                        {
-                            string formattedDob = Inventec.Common.DateTime.Convert.TimeNumberToTimeString(dobNumber);
-                            SetSingleKey(new KeyValue(Mps000500ExtendSingleKey.TDL_PATIENT_DOB, formattedDob));
-                        }
-                        else
-                        {
-
-                        }
-
-
-                    }
-
+                    SetSingleKey(new KeyValue(Mps000500ExtendSingleKey.TDL_PATIENT_DOB, Inventec.Common.DateTime.Convert.TimeNumberToDateString((long)(rdo.currentExam.TDL_PATIENT_DOB))));
                     SetSingleKey(new KeyValue(Mps000500ExtendSingleKey.TREATMENT_CODE, rdo.currentExam.TREATMENT_CODE));
                     SetSingleKey(new KeyValue(Mps000500ExtendSingleKey.PATIENT_CODE, rdo.currentExam.PATIENT_CODE));
                     SetSingleKey(new KeyValue(Mps000500ExtendSingleKey.TDL_PATIENT_NAME, rdo.currentExam.TDL_PATIENT_NAME));
@@ -104,9 +86,9 @@ namespace MPS.Processor.Mps000500
                     SetSingleKey(new KeyValue(Mps000500ExtendSingleKey.EXAM_EXECUTE_CONTENT, rdo.currentExam.EXAM_EXECUTE_CONTENT));
                     SetSingleKey(new KeyValue(Mps000500ExtendSingleKey.EXAM_EXCUTE, rdo.currentExam.EXAM_EXCUTE));
                     SetSingleKey(new KeyValue(Mps000500ExtendSingleKey.EXAM_EXECUTE_DEPARMENT_CODE, rdo.currentExam.EXAM_EXECUTE_DEPARTMENT_CODE));
-                    SetSingleKey(new KeyValue(Mps000500ExtendSingleKey.EXAM_EXECUTE_DEPARMENT_NAME, rdo.currentExam.EXAM_EXECUTE_DEPARTMENT_CODE));
-                    SetSingleKey(new KeyValue(Mps000500ExtendSingleKey.INVITE_DEPARMENT_CODE, rdo.currentExam.INVITE_DEPARTMENT_CODE));
-                    SetSingleKey(new KeyValue(Mps000500ExtendSingleKey.INVITE_DEPARMENT_NAME, rdo.currentExam.INVITE_DEPARTMENT_NAME));
+                    SetSingleKey(new KeyValue(Mps000500ExtendSingleKey.EXAM_EXECUTE_DEPARMENT_NAME, rdo.currentExam.EXAM_EXECUTE_DEPARTMENT_NAME));
+                    SetSingleKey(new KeyValue(Mps000500ExtendSingleKey.INVITE_DEPARTMENT_CODE, rdo.currentExam.INVITE_DEPARTMENT_CODE));
+                    SetSingleKey(new KeyValue(Mps000500ExtendSingleKey.INVITE_DEPARTMENT_NAME, rdo.currentExam.INVITE_DEPARTMENT_NAME));
 
                 }
             }

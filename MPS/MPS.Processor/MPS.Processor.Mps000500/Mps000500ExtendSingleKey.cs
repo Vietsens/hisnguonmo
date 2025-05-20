@@ -47,8 +47,8 @@ namespace MPS.Processor.Mps000500
 
         internal const string EXAM_EXECUTE_DEPARMENT_CODE = "EXAM_EXECUTE_DEPARTMENT_CODE";
         internal const string EXAM_EXECUTE_DEPARMENT_NAME = "EXAM_EXECUTE_DEPARTMENT_NAME";
-        internal const string INVITE_DEPARMENT_CODE = "INVITE_DEPARTMENT_CODE";
-        internal const string INVITE_DEPARMENT_NAME = "INVITE_DEPARTMENT_NAME";
+        internal const string INVITE_DEPARTMENT_CODE = "INVITE_DEPARTMENT_CODE";
+        internal const string INVITE_DEPARTMENT_NAME = "INVITE_DEPARTMENT_NAME";
 
 
     }
