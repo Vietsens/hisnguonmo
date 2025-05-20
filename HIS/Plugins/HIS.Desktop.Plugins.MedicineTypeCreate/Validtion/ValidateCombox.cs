@@ -16,17 +16,20 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 using HIS.Desktop.LibraryMessage;
+using HIS.Desktop.LocalStorage.BackendData;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+
 namespace HIS.Desktop.Plugins.MedicineTypeCreate.Validtion
 {
     class ValidateCombox : DevExpress.XtraEditors.DXErrorProvider.ValidationRule
     {
         internal DevExpress.XtraEditors.GridLookUpEdit gridLockup;
+
 
         public override bool Validate(System.Windows.Forms.Control control, object value)
         {
@@ -35,7 +38,7 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.Validtion
             {
                 if (gridLockup.EditValue == null)
                 {
-                    this.ErrorText = MessageUtil.GetMessage(HIS.Desktop.LibraryMessage.Message.Enum.TruongDuLieuBatBuoc);
+                    //this.ErrorText = MessageUtil.GetMessage(HIS.Desktop.LibraryMessage.Message.Enum.TruongDuLieuBatBuoc);
                     return valid;
                 }
 

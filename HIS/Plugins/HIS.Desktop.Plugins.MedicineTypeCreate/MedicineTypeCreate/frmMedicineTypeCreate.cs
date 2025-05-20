@@ -6949,6 +6949,8 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
                     chkIsStopImp.SelectAll();
                 }
 
+
+
             }
             catch (Exception ex)
             {
@@ -6992,12 +6994,9 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
                     {
                         cboMedicineLine.Properties.Buttons[1].Visible = true;
                         ValidatecboMedicineUseForm(medicineLine.DO_NOT_REQUIRED_USE_FORM != 1);
-                        if(medicineLine.ID != IMSys.DbConfig.HIS_RS.HIS_MEDICINE_LINE.ID__VT_YHCT)
-                        {
-                            ValidatecboDosageForm(medicineLine.DO_NOT_REQUIRED_USE_FORM != 1);
-                        }
-                    }
-                    
+                        dxValidationMedicineType.SetValidationRule(cboDosageForm, null);
+                        ValidatecboDosageForm(medicineLine.DO_NOT_REQUIRED_USE_FORM != 1);
+                    }                    
                 }
             }
             catch (Exception ex)

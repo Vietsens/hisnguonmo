@@ -146,18 +146,25 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
         {
             try
             {
-                ValidateCombox vali = new ValidateCombox();
-                vali.gridLockup = cboDosageForm;
-                vali.ErrorType = ErrorType.Warning;
-                vali.ErrorText = MessageUtil.GetMessage(LibraryMessage.Message.Enum.TruongDuLieuBatBuoc);
-                dxValidationMedicineType.SetValidationRule(cboDosageForm, isValid ? vali : new ValidateCombox());
-
+                var medicineLine = BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_MEDICINE_LINE>().SingleOrDefault(o => o.ID == Inventec.Common.TypeConvert.Parse.ToInt64((cboMedicineLine.EditValue ?? "").ToString()));
+                if (medicineLine.ID != IMSys.DbConfig.HIS_RS.HIS_MEDICINE_LINE.ID__VT_YHCT) 
+                {
+                    lciDosageForm.AppearanceItemCaption.ForeColor = Color.Maroon;
+                    ValidateCombox vali = new ValidateCombox();
+                    vali.gridLockup = cboDosageForm;
+                    vali.ErrorType = ErrorType.Warning;
+                    vali.ErrorText = MessageUtil.GetMessage(LibraryMessage.Message.Enum.TruongDuLieuBatBuoc);
+                    dxValidationMedicineType.SetValidationRule(cboDosageForm, isValid ? vali : new ValidateCombox());
+                }       
+                else
+                    lciDosageForm.AppearanceItemCaption.ForeColor = Color.Black;
             }
             catch (Exception ex)
             {
                 LogSystem.Warn(ex);
             }
         }
+
         //qtcode
         void ValidatecboMedicineUseForm(bool isValid)
         {
