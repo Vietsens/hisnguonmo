@@ -82,6 +82,8 @@ namespace MPS.Processor.Mps000347.PDO
         public string ACTIVE_INGR_BHYT_CODE { get; set; }
         public long? MEDICINE_USE_FORM_NUM_ORDER { get; set; }
         public string MEDICINE_TYPE_NAME { get; set; }
+        public string STORAGE_CONDITION_CODE { get; set; }
+        public string STORAGE_CONDITION_NAME { get; set; }
 
         public Mps000347ADO()
         {
@@ -113,6 +115,9 @@ namespace MPS.Processor.Mps000347.PDO
                         this.REGISTER_NUMBER = data.REGISTER_NUMBER;
                         this.SERVICE_UNIT_CODE = data.SERVICE_UNIT_CODE;
                         this.SERVICE_UNIT_NAME = data.SERVICE_UNIT_NAME;
+                        this.STORAGE_CONDITION_CODE = data.STORAGE_CONDITION_CODE;
+                        this.STORAGE_CONDITION_NAME = data.STORAGE_CONDITION_NAME;
+
                     }
 
                     if (_ChmsExpMest.EXP_MEST_STT_ID == _expMesttSttId__Approval || _ChmsExpMest.EXP_MEST_STT_ID == _expMesttSttId__Export
