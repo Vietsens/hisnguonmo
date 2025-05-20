@@ -533,32 +533,31 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
                     srFilter.ORDER_DIRECTION = "DESC";
                     srFilter.ORDER_FIELD = "CREATE_TIME";
 
-                    examServiceReqs = new BackendAdapter(new CommonParam()).Get<List<HIS_SERVICE_REQ>>("api/HisServiceReq/Get", ApiConsumers.MosConsumer, srFilter, null);
+                    var examServiceReqs = new BackendAdapter(new CommonParam()).Get<List<HIS_SERVICE_REQ>>("api/HisServiceReq/Get", ApiConsumers.MosConsumer, srFilter, null);
 
-                }
-
-                if (examServiceReqs != null && examServiceReqs.Count > 0)
-                {
-                    var serviceReqs = examServiceReqs.Where(o => o.SAMPLE_TIME == null).ToList();
-                    if (serviceReqs != null && serviceReqs.Count > 0)
+                    if (examServiceReqs != null && examServiceReqs.Count > 0)
                     {
-                        serviceReqCode = string.Join(", ", serviceReqs.Select(o => o.SERVICE_REQ_CODE));
+                        var serviceReqs = examServiceReqs.Where(o => o.SAMPLE_TIME == null).ToList();
+                        if (serviceReqs != null && serviceReqs.Count > 0)
+                        {
+                            serviceReqCode = string.Join(", ", serviceReqs.Select(o => o.SERVICE_REQ_CODE));
 
-                        if (validationDataType == ValidationDataType.PopupMessage)
-                        {
-                            if (DevExpress.XtraEditors.XtraMessageBox.Show(String.Format("Y lệnh {0} chưa có thông tin lấy mẫu.Bạn có muốn tiếp tục?", serviceReqCode),
-                           "Thông báo",
-                          MessageBoxButtons.YesNo) == DialogResult.No)
+                            if (validationDataType == ValidationDataType.PopupMessage)
                             {
-                                return false;
+                                if (DevExpress.XtraEditors.XtraMessageBox.Show(String.Format("Y lệnh {0} chưa có thông tin lấy mẫu.Bạn có muốn tiếp tục?", serviceReqCode),
+                               "Thông báo",
+                              MessageBoxButtons.YesNo) == DialogResult.No)
+                                {
+                                    return false;
+                                }
                             }
-                        }
-                        else if (validationDataType == ValidationDataType.GetListMessage && listWarningADO != null)
-                        {
-                            WarningADO warning = new WarningADO();
-                            warning.IsSkippable = true;
-                            warning.Description = String.Format(ResourceMessage.YLenhChuaCoThongTinLayMau, serviceReqCode);
-                            listWarningADO.Add(warning);
+                            else if (validationDataType == ValidationDataType.GetListMessage && listWarningADO != null)
+                            {
+                                WarningADO warning = new WarningADO();
+                                warning.IsSkippable = true;
+                                warning.Description = String.Format(ResourceMessage.YLenhChuaCoThongTinLayMau, serviceReqCode);
+                                listWarningADO.Add(warning);
+                            }
                         }
                     }
                 }
