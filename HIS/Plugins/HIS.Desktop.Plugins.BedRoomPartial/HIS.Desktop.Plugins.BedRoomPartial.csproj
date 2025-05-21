@@ -63,8 +63,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\LIB\EMR\EMR.SDO.dll</HintPath>
     </Reference>
-    <Reference Include="EMR_MAIN">
-      <HintPath>..\..\..\..\lib\EMRLinksoft\EMR_MAIN.dll</HintPath>
+    <Reference Include="EMR_MAIN, Version=25.1.12.1, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\EMR_MAIN.dll</HintPath>
     </Reference>
     <Reference Include="HIS.Common.Treatment, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -269,6 +270,12 @@
     </Compile>
     <Compile Include="Key\HisConfigCFG.cs" />
     <Compile Include="Key\HisConfigKeys.cs" />
+    <Compile Include="Popup\frmConsultation.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Popup\frmConsultation.Designer.cs">
+      <DependentUpon>frmConsultation.cs</DependentUpon>
+    </Compile>
     <Compile Include="Popup\frmSpecialty.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -332,6 +339,9 @@
     <EmbeddedResource Include="FrmFollow.resx">
       <DependentUpon>FrmFollow.cs</DependentUpon>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Popup\frmConsultation.resx">
+      <DependentUpon>frmConsultation.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Popup\frmSpecialty.resx">
       <DependentUpon>frmSpecialty.cs</DependentUpon>
