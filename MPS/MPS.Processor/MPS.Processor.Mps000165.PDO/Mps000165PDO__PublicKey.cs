@@ -71,6 +71,8 @@ namespace MPS.Processor.Mps000165.PDO
         public decimal IMP_PRICE_AFTER_VAT_TOTAL { get; set; }
 
         public long? NUM_ORDER { get; set; }
+        public string STORAGE_CONDITION_CODE { get; set; }
+        public string STORAGE_CONDITION_NAME { get; set; }
 
         public Mps000165ADO()
         {
@@ -113,6 +115,8 @@ namespace MPS.Processor.Mps000165.PDO
                     this.CONCENTRA = listMedicine.First().CONCENTRA;
                     this.IMP_PRICE_AFTER_VAT = listMedicine.First().IMP_PRICE + (listMedicine.First().IMP_PRICE * listMedicine.First().IMP_VAT_RATIO);
                     this.IMP_PRICE_AFTER_VAT_TOTAL = this.IMP_PRICE_AFTER_VAT * listMedicine.First().AMOUNT;
+                    this.STORAGE_CONDITION_CODE = listMedicine.First().STORAGE_CONDITION_CODE;
+                    this.STORAGE_CONDITION_NAME = listMedicine.First().STORAGE_CONDITION_NAME;
                 }
             }
             catch (Exception ex)
