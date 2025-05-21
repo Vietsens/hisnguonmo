@@ -458,6 +458,8 @@ namespace HIS.UC.PlusInfo
                     this.ucExamHistory.RefreshUserControl();
                 if (this.ucHrmKskCode != null)
                     this.ucHrmKskCode.RefreshData();
+                if (this.ucProgram1 != null)
+                    this.ucProgram1.RefreshUserControl(true);
                 WaitingManager.Hide();
             }
             catch (Exception ex)

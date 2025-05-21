@@ -183,7 +183,8 @@
   <data name="HIS_UC_UCPatientRaw_TruongDuLieuBatBuoc" xml:space="preserve">
     <value>လိုအပ်သောအကွက်။</value>
   </data>
-  <data name="HIS_UC_UCPatientRaw_typeCodeFind__MaBN" xml:space="preserve">
+  <data name="HIS_UC_UCPatientRaw_
+		" xml:space="preserve">
     <value>BN ကုဒ်</value>
   </data>
   <data name="HIS_UC_UCPatientRaw_typeCodeFind__MaBN_ToolTip" xml:space="preserve">
