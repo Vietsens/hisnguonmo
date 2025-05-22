@@ -235,6 +235,8 @@ namespace MPS.Processor.Mps000347
                                     adoMediGr.PACKING_TYPE_NAME = _dataMedi.PACKING_TYPE_NAME;
                                     adoMediGr.MEDICINE_USE_FORM_NAME = _dataMedi.MEDICINE_USE_FORM_NAME;
                                     adoMediGr.CONCENTRA = _dataMedi.CONCENTRA;
+                                    adoMediGr.STORAGE_CONDITION_CODE = _dataMedi.STORAGE_CONDITION_CODE;
+                                    adoMediGr.STORAGE_CONDITION_NAME = _dataMedi.STORAGE_CONDITION_NAME;
                                 }
 
                                 var medicines = rdo._Medicines.Where(p => mediGr.Select(x => x.MEDICINE_ID).ToList().Contains(p.ID)).ToList();
@@ -290,6 +292,8 @@ namespace MPS.Processor.Mps000347
                                 ado.MEDICINE_USE_FORM_NAME = data.MEDICINE_USE_FORM_NAME;
                                 ado.CONCENTRA = data.CONCENTRA;
                                 ado.MEDICINE_TYPE_NAME = data.MEDICINE_TYPE_NAME;
+                                ado.STORAGE_CONDITION_CODE = data.STORAGE_CONDITION_CODE;
+                                ado.STORAGE_CONDITION_NAME = data.STORAGE_CONDITION_NAME;
 
                                 if (rdo.useform != null && rdo.useform.Count() > 0)
                                     ado.MEDICINE_USE_FORM_NUM_ORDER = rdo.useform.FirstOrDefault(o => o.ID == data.MEDICINE_USE_FORM_ID).NUM_ORDER;

@@ -78,6 +78,8 @@ namespace HIS.Desktop.Plugins.ImpMestAggregate
             this.grdColExpIntructionTime = new DevExpress.XtraGrid.Columns.GridColumn();
             this.grdColExpTreatmentCode = new DevExpress.XtraGrid.Columns.GridColumn();
             this.grdColExpPatientCode = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.grdColBedCode = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.grdColRoomName = new DevExpress.XtraGrid.Columns.GridColumn();
             this.layoutControlGroup12 = new DevExpress.XtraLayout.LayoutControlGroup();
             this.layoutControlItem23 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem25 = new DevExpress.XtraLayout.LayoutControlItem();
@@ -190,8 +192,6 @@ namespace HIS.Desktop.Plugins.ImpMestAggregate
             this.toolTipController1 = new DevExpress.Utils.ToolTipController(this.components);
             this.imageListIcon = new System.Windows.Forms.ImageList(this.components);
             this.imageListCheck = new System.Windows.Forms.ImageList(this.components);
-            this.grdColBedCode = new DevExpress.XtraGrid.Columns.GridColumn();
-            this.grdColRoomName = new DevExpress.XtraGrid.Columns.GridColumn();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
             this.layoutControl1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl3)).BeginInit();
@@ -546,6 +546,27 @@ namespace HIS.Desktop.Plugins.ImpMestAggregate
             this.grdColExpPatientCode.Visible = true;
             this.grdColExpPatientCode.VisibleIndex = 3;
             this.grdColExpPatientCode.Width = 120;
+            // 
+            // grdColBedCode
+            // 
+            this.grdColBedCode.Caption = "Mã giường";
+            this.grdColBedCode.FieldName = "BED_CODE";
+            this.grdColBedCode.Name = "grdColBedCode";
+            this.grdColBedCode.OptionsColumn.AllowEdit = false;
+            this.grdColBedCode.Visible = true;
+            this.grdColBedCode.VisibleIndex = 7;
+            this.grdColBedCode.Width = 120;
+            // 
+            // grdColRoomName
+            // 
+            this.grdColRoomName.Caption = "Tên phòng";
+            this.grdColRoomName.FieldName = "ROOM_NAME";
+            this.grdColRoomName.Name = "grdColRoomName";
+            this.grdColRoomName.OptionsColumn.AllowEdit = false;
+            this.grdColRoomName.UnboundType = DevExpress.Data.UnboundColumnType.Object;
+            this.grdColRoomName.Visible = true;
+            this.grdColRoomName.VisibleIndex = 8;
+            this.grdColRoomName.Width = 120;
             // 
             // layoutControlGroup12
             // 
@@ -1786,26 +1807,6 @@ namespace HIS.Desktop.Plugins.ImpMestAggregate
             this.imageListCheck.Images.SetKeyName(1, "uncheck.jpg");
             this.imageListCheck.Images.SetKeyName(2, "Select.png");
             this.imageListCheck.Images.SetKeyName(3, "checked.png");
-            // 
-            // grdColBedCode
-            // 
-            this.grdColBedCode.Caption = "Mã giường";
-            this.grdColBedCode.FieldName = "BED_CODE";
-            this.grdColBedCode.Name = "grdColBedCode";
-            this.grdColBedCode.OptionsColumn.AllowEdit = false;
-            this.grdColBedCode.Visible = true;
-            this.grdColBedCode.VisibleIndex = 7;
-            this.grdColBedCode.Width = 120;
-            // 
-            // grdColRoomName
-            // 
-            this.grdColRoomName.Caption = "Tên phòng";
-            this.grdColRoomName.FieldName = "ROOM_NAME";
-            this.grdColRoomName.Name = "grdColRoomName";
-            this.grdColRoomName.OptionsColumn.AllowEdit = false;
-            this.grdColRoomName.Visible = true;
-            this.grdColRoomName.VisibleIndex = 8;
-            this.grdColRoomName.Width = 120;
             // 
             // UCImpMestAggregate
             // 

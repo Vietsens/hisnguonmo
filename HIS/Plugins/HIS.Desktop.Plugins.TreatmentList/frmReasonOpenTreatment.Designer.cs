@@ -222,7 +222,7 @@ namespace HIS.Desktop.Plugins.TreatmentList
             this.Controls.Add(this.barDockControlTop);
             this.Name = "frmReasonOpenTreatment";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Mở điều trị";
+            this.Text = "Yêu cầu mở hồ sơ điều trị";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.frmReasonOpenTreatment_FormClosed);
             this.Load += new System.EventHandler(this.frmReasonOpenTreatment_Load);
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).EndInit();

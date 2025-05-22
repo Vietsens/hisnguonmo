@@ -117,7 +117,6 @@ namespace MPS.Processor.Mps000347.PDO
                         this.SERVICE_UNIT_NAME = data.SERVICE_UNIT_NAME;
                         this.STORAGE_CONDITION_CODE = data.STORAGE_CONDITION_CODE;
                         this.STORAGE_CONDITION_NAME = data.STORAGE_CONDITION_NAME;
-
                     }
 
                     if (_ChmsExpMest.EXP_MEST_STT_ID == _expMesttSttId__Approval || _ChmsExpMest.EXP_MEST_STT_ID == _expMesttSttId__Export
