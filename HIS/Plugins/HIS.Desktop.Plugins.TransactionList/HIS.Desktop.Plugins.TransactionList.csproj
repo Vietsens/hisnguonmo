@@ -277,11 +277,8 @@
     <Reference Include="MPS.Processor.Mps000430.PDO">
       <HintPath>..\..\..\..\LIB\MPSv2\MPS.PDO\MPS.Processor.Mps000430.PDO.dll</HintPath>
     </Reference>
-    <Reference Include="MPS.Processor.Mps000431">
-      <HintPath>..\..\..\..\..\HISTEST\histest\x64\Plugins\MpsProcessor\MPS.Processor.Mps000431.dll</HintPath>
-    </Reference>
     <Reference Include="MPS.Processor.Mps000431.PDO">
-      <HintPath>..\..\..\..\..\HISTEST\histest\x64\ReferencedAssemblies\MPS.Processor.Mps000431.PDO.dll</HintPath>
+      <HintPath>..\..\..\..\lib\MPSv2\MPS.PDO\MPS.Processor.Mps000431.PDO.dll</HintPath>
     </Reference>
     <Reference Include="MPS.Processor.Mps000439.PDO">
       <HintPath>..\..\..\..\LIB\MPSv2\MPS.PDO\MPS.Processor.Mps000439.PDO.dll</HintPath>
