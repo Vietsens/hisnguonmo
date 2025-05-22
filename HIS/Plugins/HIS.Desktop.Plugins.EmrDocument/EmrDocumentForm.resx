@@ -212,24 +212,6 @@
   <data name="chkAddPatientSign.ToolTip" xml:space="preserve">
     <value>Chèn ảnh chữ ký của bệnh nhân (nếu có) vào tệp văn bản khi tải xuống. Trong trường hợp tệp gốc có chữ ký số thì tệp sau khi chèn ảnh sẽ không thể xác thực được chữ ký số này nữa (chữ ký số mất mất hiệu lực)</value>
   </data>
-  <data name="btnAttack.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-    <value>
-        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGPC/xhBQAAAA10RVh0VGl0
-        bGUAQXR0YWNoO3wCt50AAALPSURBVDhPpZLLTxpRFMaPLTEIFZ1heCuooIi8QWpRUBQVpUEoCoL4QgSj
-        htRXfSDisz5qrVarRWuX/idNmi668h/ooquu7fo2d5DEVZOmJ/lyc2fmd+Y7372AEIL/0b9UAQA8eqBc
-        WSY/gyVxDfWJazAnPoF5/ArMscuHAF4L6oL7au3A6Y1m8OxWHTpeB4DH9Dtz/ApMsUswjWXBGM2CYfRj
-        HmboBs+xR4bSv6XRRE5RbWA/VuPbstYGDi+UfW+O6SaGaBb0IxegH7oA3fA5DRPyBqY6ckYDla55tSp0
-        jOSeTAduhqFyx3RNde/hb56upxS0Qx9AEzmjhWGO1FCkCp2gat/ruKx9Vq8MHCGFbxfbKrofiVHunG+V
-        e/d+sYQqFtSF34MqdELDT8RqljLwDsk9m/Gyliljtf8tqvRsZwWWiLbKd4DHYZU5F7wVnl0keDoSph0p
-        A0c0zBbVsRT+Q1TpXk8AQHGV9wDJ3BuXPFNQX+HZQxLnq6TInuyVuncQZRqIAkDpfVZQwBaqWFXefSTr
-        XJ0Q26essuc736Wu9BVX98KIAbFj7qWwcTJY3rWNKEMYwxQAFIo7N+iTZMjcmzfSrswuADAlzuVRafcO
-        IlRuCwaE9pkZfkO8X+LaRKS+fwwACAyLnBkQOjMATErBlnZv3xXLnvFwwhxFKylpT3/BAL8pOUtZomFR
-        +zoitH0xACAxLGhNA9+RE5QqXXyJa+OuSKTFtvBM+ILgxAmuORoStq2hErV/PA/zHavAa0kBrzkFVPMK
-        PQJT2Ja+pazT2B4GGSXqXglhHgvyHWnEUflwqFwMY4CyLwMXy4a1lMuArI85BS2pH1xrcq3UOOwiLRNJ
-        XvMKKq7twTAfwxggbUtANuVENC0C0bgIwHOkcJPCEl3YzrUtfKVsiz9J69w3tryjJ/9n/DHZmAMeCj/L
-        F333AYANAJz7Fe/pc/5b/QEN7e1qYjBmTQAAAABJRU5ErkJggg==
-</value>
-  </data>
   <data name="repositoryItem__Delete_E.Buttons" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGPC/xhBQAAABl0RVh0U29m
@@ -308,6 +290,24 @@
         bmRhcmQ7MBPD2wAAAIdJREFUOE+t0sENgCAMBVB2Yg6WIj0zD7sYr969erCmREitpFK1yY8k2NcoOER0
         X9IWAIBK9vPpVUAr2k8pzRIxAYi4ScQE8JgBXr8AAPAeoHoNTMuKIeYabwJqM0eGATG5TB8GOs3jn6A1
         h5iffyK93EHKTbwBMhUQSLvGF0CGzpkiJ1MTzwEAmyZSSWzFwgAAAABJRU5ErkJggg==
+</value>
+  </data>
+  <data name="btnAttack.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGPC/xhBQAAAA10RVh0VGl0
+        bGUAQXR0YWNoO3wCt50AAALPSURBVDhPpZLLTxpRFMaPLTEIFZ1heCuooIi8QWpRUBQVpUEoCoL4QgSj
+        htRXfSDisz5qrVarRWuX/idNmi668h/ooquu7fo2d5DEVZOmJ/lyc2fmd+Y7372AEIL/0b9UAQA8eqBc
+        WSY/gyVxDfWJazAnPoF5/ArMscuHAF4L6oL7au3A6Y1m8OxWHTpeB4DH9Dtz/ApMsUswjWXBGM2CYfRj
+        HmboBs+xR4bSv6XRRE5RbWA/VuPbstYGDi+UfW+O6SaGaBb0IxegH7oA3fA5DRPyBqY6ckYDla55tSp0
+        jOSeTAduhqFyx3RNde/hb56upxS0Qx9AEzmjhWGO1FCkCp2gat/ruKx9Vq8MHCGFbxfbKrofiVHunG+V
+        e/d+sYQqFtSF34MqdELDT8RqljLwDsk9m/Gyliljtf8tqvRsZwWWiLbKd4DHYZU5F7wVnl0keDoSph0p
+        A0c0zBbVsRT+Q1TpXk8AQHGV9wDJ3BuXPFNQX+HZQxLnq6TInuyVuncQZRqIAkDpfVZQwBaqWFXefSTr
+        XJ0Q26essuc736Wu9BVX98KIAbFj7qWwcTJY3rWNKEMYwxQAFIo7N+iTZMjcmzfSrswuADAlzuVRafcO
+        IlRuCwaE9pkZfkO8X+LaRKS+fwwACAyLnBkQOjMATErBlnZv3xXLnvFwwhxFKylpT3/BAL8pOUtZomFR
+        +zoitH0xACAxLGhNA9+RE5QqXXyJa+OuSKTFtvBM+ILgxAmuORoStq2hErV/PA/zHavAa0kBrzkFVPMK
+        PQJT2Ja+pazT2B4GGSXqXglhHgvyHWnEUflwqFwMY4CyLwMXy4a1lMuArI85BS2pH1xrcq3UOOwiLRNJ
+        XvMKKq7twTAfwxggbUtANuVENC0C0bgIwHOkcJPCEl3YzrUtfKVsiz9J69w3tryjJ/9n/DHZmAMeCj/L
+        F333AYANAJz7Fe/pc/5b/QEN7e1qYjBmTQAAAABJRU5ErkJggg==
 </value>
   </data>
   <metadata name="dxValidationProviderControl.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
