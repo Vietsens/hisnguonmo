@@ -18,6 +18,7 @@
 using DevExpress.Data;
 using DevExpress.XtraGrid.Views.Base;
 using DevExpress.XtraGrid.Views.Grid;
+using DevExpress.XtraRichEdit.Fields;
 using HIS.Desktop.ApiConsumer;
 using HIS.Desktop.Controls.Session;
 using HIS.Desktop.IsAdmin;
@@ -726,7 +727,17 @@ namespace HIS.Desktop.Plugins.SereServTein
                             IsuACR = true;
                         }
                     }
-                    var mlct = !String.IsNullOrEmpty(lblMlct.Text) ? lblMlct.Text.Substring(0, lblMlct.Text.IndexOf("(")) : "";
+                    //var mlct = !String.IsNullOrEmpty(lblMlct.Text) ? lblMlct.Text.Substring(0, lblMlct.Text.IndexOf("(")) : "";
+
+                    var mlct = "";
+                    if (!string.IsNullOrEmpty(lblMlct.Text))
+                    {
+                        int idx = lblMlct.Text.IndexOf("(");
+                        if (idx > 0)
+                            mlct = lblMlct.Text.Substring(0, idx);
+                        else
+                            mlct = lblMlct.Text;
+                    }
 
                     pdo.mLCTADOs = new MPS.Processor.Mps000096.PDO.MLCTADO()
                     {
