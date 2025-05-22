@@ -53,6 +53,7 @@ using HIS.Desktop.Plugins.ImpMestAggregate.ADO;
 using HIS.Desktop.Utilities.Extensions;
 using DevExpress.XtraEditors.Repository;
 using System.Globalization;
+using HIS.Desktop.LocalStorage.BackendData;
 
 namespace HIS.Desktop.Plugins.ImpMestAggregate
 {
@@ -292,6 +293,11 @@ namespace HIS.Desktop.Plugins.ImpMestAggregate
                     else if (e.Column.FieldName == "TDL_INTRUCTION_TIME_STR")
                     {
                         e.Value = Inventec.Common.DateTime.Convert.TimeNumberToTimeString(data.TDL_INTRUCTION_TIME ?? 0);
+                    }
+                    else if (e.Column.FieldName == "ROOM_NAME")
+                    {
+                        var room = BackendDataWorker.Get<V_HIS_ROOM>().FirstOrDefault(o => o.ID == data.REQ_ROOM_ID.Value);
+                        e.Value = room?.ROOM_NAME ?? string.Empty;
                     }
                 }
             }
