@@ -421,6 +421,10 @@ namespace HIS.Desktop.Plugins.EmrDocument
                         {
                             chkAddPatientSign.Checked = item.VALUE == "1";
                         }
+                        else if (item.KEY == layoutControlGroup4.Name)
+                        {
+                            layoutControlGroup4.Expanded = item.VALUE == "1";
+                        }
                     }
                 }
             }
@@ -3866,6 +3870,36 @@ namespace HIS.Desktop.Plugins.EmrDocument
         private void btnHomeRelativeSign_Click(object sender, EventArgs e)
         {
             PatientAndHomeRelatetiveSign(false, true);
+        }
+
+        private void layoutControl2_GroupExpandChanged(object sender, DevExpress.XtraLayout.Utils.LayoutGroupEventArgs e)
+        {
+            try
+            {
+                HIS.Desktop.Library.CacheClient.ControlStateRDO csAddOrUpdate = (this.currentControlStateRDO != null && this.currentControlStateRDO.Count > 0) 
+                    ? this.currentControlStateRDO.Where(o => o.KEY ==
+                    layoutControlGroup4.Name 
+                    && o.MODULE_LINK == ControlStateConstant.MODULE_LINK).FirstOrDefault() : null;
+                if (csAddOrUpdate != null)
+                {
+                    csAddOrUpdate.VALUE = (layoutControlGroup4.Expanded ? "1" : "");
+                }
+                else
+                {
+                    csAddOrUpdate = new HIS.Desktop.Library.CacheClient.ControlStateRDO();
+                    csAddOrUpdate.KEY = layoutControlGroup4.Name;
+                    csAddOrUpdate.VALUE = (layoutControlGroup4.Expanded ? "1" : "");
+                    csAddOrUpdate.MODULE_LINK = ControlStateConstant.MODULE_LINK;
+                    if (this.currentControlStateRDO == null)
+                        this.currentControlStateRDO = new List<HIS.Desktop.Library.CacheClient.ControlStateRDO>();
+                    this.currentControlStateRDO.Add(csAddOrUpdate);
+                }
+                this.controlStateWorker.SetData(this.currentControlStateRDO);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
         }
     }
 }
