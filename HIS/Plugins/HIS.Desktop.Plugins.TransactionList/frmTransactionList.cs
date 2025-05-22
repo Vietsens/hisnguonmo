@@ -378,6 +378,7 @@ namespace HIS.Desktop.Plugins.TransactionList
             }
         }
 
+
         //HIS.DESKTOP.TRANSACTION_LIST.SHOW_TRANS_OF_OTHER_OPTION
         //- Nếu giá trị = 1 hoặc tài khoản người dùng là admin: Xử lý như hiện tại (vẫn enable cho phép sửa combobox filter người tạo.
         //- Nếu giá trị = 0 (khác 1) và tài khoản người dùng khong phải là admin: Set mặc định combobox người tạo là "Tôi tạo" và đisable không cho phép sửa.

@@ -277,6 +277,12 @@
     <Reference Include="MPS.Processor.Mps000430.PDO">
       <HintPath>..\..\..\..\LIB\MPSv2\MPS.PDO\MPS.Processor.Mps000430.PDO.dll</HintPath>
     </Reference>
+    <Reference Include="MPS.Processor.Mps000431">
+      <HintPath>..\..\..\..\..\HISTEST\histest\x64\Plugins\MpsProcessor\MPS.Processor.Mps000431.dll</HintPath>
+    </Reference>
+    <Reference Include="MPS.Processor.Mps000431.PDO">
+      <HintPath>..\..\..\..\..\HISTEST\histest\x64\ReferencedAssemblies\MPS.Processor.Mps000431.PDO.dll</HintPath>
+    </Reference>
     <Reference Include="MPS.Processor.Mps000439.PDO">
       <HintPath>..\..\..\..\LIB\MPSv2\MPS.PDO\MPS.Processor.Mps000439.PDO.dll</HintPath>
     </Reference>
@@ -330,6 +336,7 @@
     </Compile>
     <Compile Include="Config\HisConfigCFG.cs" />
     <Compile Include="Config\TransactionCancelCFG.cs" />
+    <Compile Include="TransactionListConfig.cs" />
     <Compile Include="ExportErrorProcessed.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -414,7 +421,6 @@
       <DependentUpon>frmTransactionList.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Properties\licenses.licx" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
