@@ -35,16 +35,16 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.Template
 
         public object Run()
         {
-            List<Data.ProductBase> results = new List<Data.ProductBase>();
+            List<Data.ProductBasePlus> results = new List<Data.ProductBasePlus>();
             try
             {
                 Inventec.Common.Logging.LogSystem.Debug("Tram nay do co ma RegisterNumber:" + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => Amount), Amount));
-                Data.ProductBase productBase = new Data.ProductBase();
-                productBase.Amount = Inventec.Common.Number.Convert.NumberToNumberRoundMax4(Amount);
-                productBase.ProdName = "V/P";
-                productBase.ProdCode = "VP";
-                productBase.ProdUnit = "";
-                results.Add(productBase);
+                Data.ProductBasePlus ProductBasePlus = new Data.ProductBasePlus();
+                ProductBasePlus.Amount = Inventec.Common.Number.Convert.NumberToNumberRoundMax4(Amount);
+                ProductBasePlus.ProdName = "V/P";
+                ProductBasePlus.ProdCode = "VP";
+                ProductBasePlus.ProdUnit = "";
+                results.Add(ProductBasePlus);
 
                 if (results.Count > 0)
                 {
