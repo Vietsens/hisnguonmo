@@ -229,6 +229,8 @@ namespace HIS.Desktop.Plugins.Library.PrintPrescription
                                 mediExpmestADO.MANUFACTURER_ID = mety.MANUFACTURER_ID;
                                 mediExpmestADO.MANUFACTURER_CODE = mety.MANUFACTURER_CODE;
                                 mediExpmestADO.MANUFACTURER_NAME = mety.MANUFACTURER_NAME;
+                                mediExpmestADO.STORAGE_CONDITION_CODE = mety.STORAGE_CONDITION_CODE;
+                                mediExpmestADO.STORAGE_CONDITION_NAME = mety.STORAGE_CONDITION_NAME; 
 
                                 if (mety.MEDICINE_GROUP_ID == IMSys.DbConfig.HIS_RS.HIS_MEDICINE_GROUP.ID__GN)
                                 {
