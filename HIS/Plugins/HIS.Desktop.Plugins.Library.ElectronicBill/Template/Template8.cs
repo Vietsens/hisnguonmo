@@ -44,7 +44,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.Template
 
         public object Run()
         {
-            List<ProductBasePlus> result = new List<ProductBasePlus>();
+            List<ProductBase> result = new List<ProductBase>();
             if (DataInput.SereServBill != null && DataInput.SereServBill.Count > 0)
             {
                 List<HIS_SERE_SERV_BILL> sereServsTotal = new List<HIS_SERE_SERV_BILL>();
@@ -202,7 +202,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.Template
                                     if (amount == 0)
                                         continue;
                                     V_HIS_SERVICE service = services != null ? services.FirstOrDefault(o => o.ID == item.First().TDL_SERVICE_ID) : null;
-                                    ProductBasePlus product1 = new ProductBasePlus();
+                                    ProductBase product1 = new ProductBase();
                                     product1.ProdName = item.First().TDL_SERVICE_NAME;
                                     product1.Amount = Inventec.Common.Number.Convert.NumberToNumberRoundMax4(amount);
                                     product1.ProdUnit = service != null ? service.SERVICE_UNIT_NAME : "";
@@ -230,7 +230,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.Template
                                     continue;
                                 }
 
-                                ProductBasePlus product = new ProductBasePlus();
+                                ProductBase product = new ProductBase();
                                 if (splitPriceBhyt)//số tiền cùng chi trả bhyt
                                 {
                                     product.Amount = Inventec.Common.Number.Convert.NumberToNumberRoundMax4(sereServs.Sum(o => o.TDL_TOTAL_PATIENT_PRICE_BHYT ?? 0));
@@ -276,7 +276,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.Template
                                     amount += sereServs.Sum(s => s.PRICE);
                                 }
 
-                                ProductBasePlus product = new ProductBasePlus();
+                                ProductBase product = new ProductBase();
                                 product.ProdName = detail.Display;
                                 product.ProdUnit = detail.Unit;
                                 product.Amount = Inventec.Common.Number.Convert.NumberToNumberRoundMax4(amount);
@@ -312,7 +312,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.Template
                         }
                         if (amount != 0)
                         {
-                            ProductBasePlus product = new ProductBasePlus();
+                            ProductBase product = new ProductBase();
                             product.ProdName = "Dịch vụ khác";
                             product.ProdUnit = "Lần";
                             product.ProdCode = "DVK";
