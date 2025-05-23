@@ -277,8 +277,9 @@
     <Reference Include="MPS.Processor.Mps000430.PDO">
       <HintPath>..\..\..\..\LIB\MPSv2\MPS.PDO\MPS.Processor.Mps000430.PDO.dll</HintPath>
     </Reference>
-    <Reference Include="MPS.Processor.Mps000431.PDO">
-      <HintPath>..\..\..\..\lib\MPSv2\MPS.PDO\MPS.Processor.Mps000431.PDO.dll</HintPath>
+    <Reference Include="MPS.Processor.Mps000431.PDO, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\MPS\MPS.Processor\MPS.Processor.Mps000431.PDO\bin\Debug\MPS.Processor.Mps000431.PDO.dll</HintPath>
     </Reference>
     <Reference Include="MPS.Processor.Mps000439.PDO">
       <HintPath>..\..\..\..\LIB\MPSv2\MPS.PDO\MPS.Processor.Mps000439.PDO.dll</HintPath>

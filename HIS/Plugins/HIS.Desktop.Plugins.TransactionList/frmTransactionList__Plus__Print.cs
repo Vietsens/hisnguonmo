@@ -235,20 +235,29 @@ namespace HIS.Desktop.Plugins.TransactionList
                         int dem = 0;
                         foreach (var item in billGoods)
                         {
+                            decimal amount = item.AMOUNT;
+                            decimal vatRatio = item.VAT_RATIO ?? 0;
+                            decimal price = item.PRICE;
+                            decimal discount = item.DISCOUNT ?? 0;
+
+                            decimal unitPrice = amount != 0 ? (price * amount - discount) / amount : 0;
+                            decimal totalPriceBeforeVat = unitPrice * amount;
+                            decimal totalPriceWithVat = totalPriceBeforeVat * (1 + vatRatio);
+
                             var ssb = new V_HIS_SERE_SERV_5
                             {
                                 SERVICE_ID = item.NONE_MEDI_SERVICE_ID ?? item.MATERIAL_TYPE_ID ?? item.MEDICINE_TYPE_ID ?? dem,
                                 MEDICINE_ID = item.MEDICINE_TYPE_ID,
                                 MATERIAL_ID = item.MATERIAL_TYPE_ID,
                                 OTHER_PAY_SOURCE_ID = item.NONE_MEDI_SERVICE_ID,
-                                AMOUNT = item.AMOUNT,
-                                VAT_RATIO = item.VAT_RATIO ?? 0,
+                                AMOUNT = amount,
+                                VAT_RATIO = vatRatio,
                                 TDL_SERVICE_CODE = "",
                                 TDL_SERVICE_NAME = item.GOODS_NAME,
                                 SERVICE_UNIT_NAME = item.GOODS_UNIT_NAME,
-                                PRICE = item.PRICE - ((item.DISCOUNT ?? 0) / item.AMOUNT),
-                                VIR_PRICE = item.PRICE - ((item.DISCOUNT ?? 0) / item.AMOUNT),
-                                VIR_TOTAL_PATIENT_PRICE = (item.PRICE - ((item.DISCOUNT ?? 0) / item.AMOUNT)) * (1 + (item.VAT_RATIO ?? 0)) * item.AMOUNT
+                                PRICE = unitPrice,
+                                VIR_PRICE = unitPrice,
+                                VIR_TOTAL_PATIENT_PRICE = totalPriceWithVat
                             };
                             sereServ5s.Add(ssb);
                             dem++;
@@ -319,7 +328,7 @@ namespace HIS.Desktop.Plugins.TransactionList
                 var listProduct = iRunTemplate.Run();
 
                 List<MPS.Processor.Mps000431.PDO.ProductADO> lstProductADO = new List<MPS.Processor.Mps000431.PDO.ProductADO>();
-                var lst = (List<ProductBase>)listProduct;
+                var lst = (List<ProductBasePlus>)listProduct;
                 foreach (var item in lst)
                 {
                     MPS.Processor.Mps000431.PDO.ProductADO ado = new MPS.Processor.Mps000431.PDO.ProductADO();
