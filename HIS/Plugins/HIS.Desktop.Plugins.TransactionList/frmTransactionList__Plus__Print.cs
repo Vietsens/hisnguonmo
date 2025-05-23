@@ -196,12 +196,12 @@ namespace HIS.Desktop.Plugins.TransactionList
             }
             return result;
         }
-        private bool InHoaDonDienTuNhap( string printTypeCode, string fileName, ref bool result)
+        private bool InHoaDonDienTuNhap(string printTypeCode, string fileName, ref bool result)
         {
             try
             {
                 var transaction = transactionPrint;
-                List<V_HIS_SERE_SERV_5> sereServ5s = new List<V_HIS_SERE_SERV_5>(); 
+                List<V_HIS_SERE_SERV_5> sereServ5s = new List<V_HIS_SERE_SERV_5>();
                 List<HIS_SERE_SERV_BILL> sereServBill = null;
                 var filterParam = new CommonParam();
                 var ssbFilter = new HisSereServBillFilter() { BILL_ID = transaction.ID };
@@ -209,8 +209,6 @@ namespace HIS.Desktop.Plugins.TransactionList
 
                 if (sereServBill != null && sereServBill.Count > 0)
                 {
-                    if (sereServ5s == null)
-                        sereServ5s = new List<V_HIS_SERE_SERV_5>();
                     foreach (var item in sereServBill)
                     {
                         V_HIS_SERE_SERV_5 sereServBill5 = new V_HIS_SERE_SERV_5();
@@ -225,22 +223,20 @@ namespace HIS.Desktop.Plugins.TransactionList
                 }
                 else if (sereServBill == null || sereServBill.Count == 0)
                 {
-                    var bgFilter = new HisBillGoodsFilter();
-                    bgFilter.BILL_ID = transaction.ID;
+                    var bgFilter = new HisBillGoodsFilter { BILL_ID = transaction.ID };
                     var billGoods = new BackendAdapter(filterParam).Get<List<HIS_BILL_GOODS>>("api/HisBillGoods/Get", ApiConsumers.MosConsumer, bgFilter, filterParam);
 
                     if (billGoods != null && billGoods.Count > 0)
                     {
-                        sereServ5s = new List<V_HIS_SERE_SERV_5>();
                         int dem = 0;
                         foreach (var item in billGoods)
                         {
                             decimal amount = item.AMOUNT;
                             decimal vatRatio = item.VAT_RATIO ?? 0;
-                            decimal price = item.PRICE;
+                            decimal priceWithVat = item.PRICE; 
                             decimal discount = item.DISCOUNT ?? 0;
 
-                            decimal unitPrice = amount != 0 ? (price * amount - discount) / amount : 0;
+                            decimal unitPrice = amount != 0 ? ((priceWithVat / (1 + vatRatio)) * amount - discount) / amount : 0;
                             decimal totalPriceBeforeVat = unitPrice * amount;
                             decimal totalPriceWithVat = totalPriceBeforeVat * (1 + vatRatio);
 
@@ -318,13 +314,9 @@ namespace HIS.Desktop.Plugins.TransactionList
                 {
                     typ = (TemplateEnum.TYPE)Template;
                 }
-                catch (Exception)
-                {
-                    typ = TemplateEnum.TYPE.Template1;
-                }
+                catch { typ = TemplateEnum.TYPE.Template1; }
 
                 IRunTemplate iRunTemplate = TemplateFactory.MakeIRun(typ, dataInput);
-
                 var listProduct = iRunTemplate.Run();
 
                 List<MPS.Processor.Mps000431.PDO.ProductADO> lstProductADO = new List<MPS.Processor.Mps000431.PDO.ProductADO>();
@@ -346,16 +338,12 @@ namespace HIS.Desktop.Plugins.TransactionList
                     printerName = GlobalVariables.dicPrinter[printTypeCode];
                 }
 
-                Inventec.Common.SignLibrary.ADO.InputADO inputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode((this.currentTreatment != null ? this.currentTreatment.TREATMENT_CODE : ""), printTypeCode, currentModule != null ? currentModule.RoomId : 0);
+                var inputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor()
+                    .GenerateInputADOWithPrintTypeCode((this.currentTreatment != null ? this.currentTreatment.TREATMENT_CODE : ""), printTypeCode, currentModule != null ? currentModule.RoomId : 0);
 
-                if (isPrintNow)
-                {
-                    result = MPS.MpsPrinter.Run(new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, rdo, MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow, printerName) { EmrInputADO = inputADO });
-                }
-                else
-                {
-                    result = MPS.MpsPrinter.Run(new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, rdo, MPS.ProcessorBase.PrintConfig.PreviewType.ShowDialog, printerName) { EmrInputADO = inputADO });
-                }
+                result = isPrintNow
+                    ? MPS.MpsPrinter.Run(new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, rdo, MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow, printerName) { EmrInputADO = inputADO })
+                    : MPS.MpsPrinter.Run(new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, rdo, MPS.ProcessorBase.PrintConfig.PreviewType.ShowDialog, printerName) { EmrInputADO = inputADO });
             }
             catch (Exception ex)
             {
@@ -363,6 +351,7 @@ namespace HIS.Desktop.Plugins.TransactionList
             }
             return result;
         }
+
 
         private void MouseRight_XuatHoaDonDienTu(V_HIS_TRANSACTION transactionBill)
         {

@@ -40,7 +40,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.Template
 
         public object Run()
         {
-            List<Data.ProductBase> result = new List<ProductBase>();
+            List<Data.ProductBasePlus> result = new List<ProductBasePlus>();
             try
             {
                 decimal amount = 0;
@@ -59,7 +59,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.Template
                 //làm tròn
                 amount = Math.Round(amount, 0);
 
-                ProductBase product = new ProductBase();
+                ProductBasePlus product = new ProductBasePlus();
                 product.ProdName = "THANH TOÁN VIỆN PHÍ";
                 product.ProdCode = "TTVP";
                 product.ProdPrice = amount;
