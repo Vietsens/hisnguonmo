@@ -77,7 +77,7 @@
     </Reference>
     <Reference Include="HIS.Desktop.Plugins.Library.ElectronicBill, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\lib\HIS\HIS.Desktop.Plugins.Library.ElectronicBill\HIS.Desktop.Plugins.Library.ElectronicBill.dll</HintPath>
+      <HintPath>..\HIS.Desktop.Plugins.Library.ElectronicBill\bin\Debug\HIS.Desktop.Plugins.Library.ElectronicBill.dll</HintPath>
     </Reference>
     <Reference Include="HIS.Desktop.Plugins.Library.EmrGenerate">
       <HintPath>..\..\..\..\lib\HIS\HIS.Desktop.Plugins.Library.EmrGenerate\HIS.Desktop.Plugins.Library.EmrGenerate.dll</HintPath>
