@@ -435,7 +435,7 @@ namespace HIS.Desktop.Plugins.ServiceReqResultView
                             }
                             else if (address != null && !String.IsNullOrWhiteSpace(address.Api))
                             {
-                                if (!String.IsNullOrWhiteSpace(sereServExt.JSON_FORM_ID) && sereServExt.JSON_FORM_ID.StartsWith("http"))
+                                if (sereServExt != null && !String.IsNullOrWhiteSpace(sereServExt.JSON_FORM_ID) && sereServExt.JSON_FORM_ID.StartsWith("http"))
                                 {
                                     url = sereServExt.JSON_FORM_ID;
                                 }
@@ -2363,14 +2363,13 @@ namespace HIS.Desktop.Plugins.ServiceReqResultView
                                     }
                                 }
 
-                                if (!String.IsNullOrWhiteSpace(sereServExt.JSON_FORM_ID) && sereServExt.JSON_FORM_ID.StartsWith("http"))
+                                if (sereServExt != null && !String.IsNullOrWhiteSpace(sereServExt.JSON_FORM_ID) && sereServExt.JSON_FORM_ID.StartsWith("http"))
                                 {
                                     url = sereServExt.JSON_FORM_ID;
                                 }
                                 else
                                 {
                                     HIS_PATIENT patient = GetPatientById(sereServ.TDL_PATIENT_ID);
-
                                     url = string.Format("http://{0}{1}", address.Address, address.Api);
 
                                     if (address.Api.Trim().StartsWith("http"))

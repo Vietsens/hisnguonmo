@@ -37,6 +37,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using HIS.Desktop.LibraryMessage;
 using HIS.Desktop.Plugins.MedicineTypeCreate.Validtion;
+using HIS.Desktop.LocalStorage.BackendData;
 
 namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
 {
@@ -70,7 +71,7 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
                 ValidationControlSpinNotVatAndBlack(spinNumOrder);
                 ValidatecboMedicineLine();
                 //qtcode
-                ValidatecboDosageForm();
+                //ValidatecboDosageForm();
                 //qtcode
                 ValidMaxlengthtxtActiveIngrBhytCode();
                 ValidMaxlengthtxtActiveIngrBhytName();
@@ -141,21 +142,29 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
             }
         }
         //qtcode
-        void ValidatecboDosageForm()
+        void ValidatecboDosageForm(bool isValid)
         {
             try
             {
-                ValidateCombox vali = new ValidateCombox();
-                vali.gridLockup = cboDosageForm;
-                vali.ErrorType = ErrorType.Warning;
-                vali.ErrorText = MessageUtil.GetMessage(LibraryMessage.Message.Enum.TruongDuLieuBatBuoc);
-                dxValidationMedicineType.SetValidationRule(cboDosageForm, vali); 
+                var medicineLine = BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_MEDICINE_LINE>().SingleOrDefault(o => o.ID == Inventec.Common.TypeConvert.Parse.ToInt64((cboMedicineLine.EditValue ?? "").ToString()));
+                if (medicineLine.ID != IMSys.DbConfig.HIS_RS.HIS_MEDICINE_LINE.ID__VT_YHCT) 
+                {
+                    lciDosageForm.AppearanceItemCaption.ForeColor = Color.Maroon;
+                    ValidateCombox vali = new ValidateCombox();
+                    vali.gridLockup = cboDosageForm;
+                    vali.ErrorType = ErrorType.Warning;
+                    vali.ErrorText = MessageUtil.GetMessage(LibraryMessage.Message.Enum.TruongDuLieuBatBuoc);
+                    dxValidationMedicineType.SetValidationRule(cboDosageForm, isValid ? vali : new ValidateCombox());
+                }       
+                else
+                    lciDosageForm.AppearanceItemCaption.ForeColor = Color.Black;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
-                LogSystem.Warn(ex); 
+                LogSystem.Warn(ex);
             }
         }
+
         //qtcode
         void ValidatecboMedicineUseForm(bool isValid)
         {

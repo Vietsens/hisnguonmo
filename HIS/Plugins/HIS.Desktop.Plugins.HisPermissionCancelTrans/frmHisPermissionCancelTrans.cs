@@ -1,4 +1,4 @@
-/* IVT
+﻿/* IVT
  * @Project : hisnguonmo
  * Copyright (C) 2017 INVENTEC
  *  
@@ -19,6 +19,7 @@ using ACS.EFMODEL.DataModels;
 using AutoMapper;
 using DevExpress.Data;
 using DevExpress.XtraEditors;
+using DevExpress.XtraEditors.DXErrorProvider;
 using DevExpress.XtraEditors.ViewInfo;
 using DevExpress.XtraGrid.Views.Base;
 using HIS.Desktop.ApiConsumer;
@@ -28,6 +29,7 @@ using HIS.Desktop.Utility;
 using Inventec.Common.Adapter;
 using Inventec.Common.Controls.EditorLoader;
 using Inventec.Core;
+using Inventec.Desktop.Common.Controls.ValidationRule;
 using Inventec.Desktop.Common.Message;
 using MOS.EFMODEL.DataModels;
 using MOS.Filter;
@@ -72,6 +74,7 @@ namespace HIS.Desktop.Plugins.HisPermissionCancelTrans
                 this.InitComboUser();
                 this.SetDataToControl();
                 this.FillDataToGridControl();
+                this.InitComboPermissionType();
                 WaitingManager.Hide();
             }
             catch (Exception ex)
@@ -87,6 +90,7 @@ namespace HIS.Desktop.Plugins.HisPermissionCancelTrans
             {
                 this.ValidateGridLookupWithTextEdit(cboCashier, txtCashierLoginname, dxValidationProvider1);
                 this.ValidationSingleControl(dtEffectiveDate, dxValidationProvider1);
+                this.ValidCboPermissionType();
             }
             catch (Exception ex)
             {
@@ -128,7 +132,39 @@ namespace HIS.Desktop.Plugins.HisPermissionCancelTrans
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
+        private void ValidCboPermissionType() {
+            try
+            {
+                ControlEditValidationRule validRule = new ControlEditValidationRule();
+                validRule.editor = cboPermissionType;
+                validRule.ErrorText = Inventec.Desktop.Common.LibraryMessage.MessageUtil.GetMessage(Inventec.Desktop.Common.LibraryMessage.Message.Enum.TruongDuLieuBatBuoc);
+                validRule.ErrorType = ErrorType.Warning;
+                dxValidationProvider1.SetValidationRule(cboPermissionType, validRule);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+        private void InitComboPermissionType()
+        {
+            try
+            {
+                var listPermissionType = new List<ADO.PermissionTypeADO>();
+                listPermissionType.Add(new ADO.PermissionTypeADO() { ID = 1, NAME = "Hủy/hoàn hủy giao dịch" });
+                listPermissionType.Add(new ADO.PermissionTypeADO(){ID = 2, NAME = "Sửa thông tin giao dịch khác ngày"});
 
+                List<ColumnInfo> columnInfos = new List<ColumnInfo>();
+                columnInfos.Add(new ColumnInfo("NAME", "", 350, 1));
+
+                ControlEditorADO controlEditorADO = new ControlEditorADO("NAME", "ID", columnInfos, false, 400);
+                ControlEditorLoader.Load(this.cboPermissionType, listPermissionType, controlEditorADO);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
         public void FillDataToGridControl()
         {
             try
@@ -167,7 +203,7 @@ namespace HIS.Desktop.Plugins.HisPermissionCancelTrans
                 HisPermissionFilter filter = new HisPermissionFilter();
                 filter.ORDER_DIRECTION = "DESC";
                 filter.ORDER_FIELD = "MODIFY_TIME";
-                filter.PERMISSION_TYPE_ID = IMSys.DbConfig.HIS_RS.HIS_PERMISSION_TYPE.ID__CANCEL_TRAN;
+                //filter.PERMISSION_TYPE_ID = IMSys.DbConfig.HIS_RS.HIS_PERMISSION_TYPE.ID__CANCEL_TRAN;
 
                 if (!String.IsNullOrWhiteSpace(this.txtKeyword.Text))
                 {
@@ -204,6 +240,7 @@ namespace HIS.Desktop.Plugins.HisPermissionCancelTrans
                     cboCashier.EditValue = this.currentData.LOGINNAME;
                     txtCashierLoginname.Text = this.currentData.LOGINNAME;
                     dtEffectiveDate.EditValue = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(this.currentData.EFFECTIVE_DATE);
+                    cboPermissionType.EditValue = this.currentData.PERMISSION_TYPE_ID;
                 }
                 else
                 {
@@ -212,6 +249,7 @@ namespace HIS.Desktop.Plugins.HisPermissionCancelTrans
                     cboCashier.EditValue = null;
                     txtCashierLoginname.Text = "";
                     dtEffectiveDate.EditValue = null;
+                    cboPermissionType.EditValue = 1;
                 }
             }
             catch (Exception ex)
@@ -578,13 +616,15 @@ namespace HIS.Desktop.Plugins.HisPermissionCancelTrans
                 ACS_USER user = BackendDataWorker.Get<ACS_USER>().FirstOrDefault(o => o.LOGINNAME == cboCashier.EditValue.ToString());
                 data.LOGINNAME = user != null ? user.LOGINNAME : null;
                 data.USERNAME = user != null ? user.USERNAME : null;
-                data.PERMISSION_TYPE_ID = IMSys.DbConfig.HIS_RS.HIS_PERMISSION_TYPE.ID__CANCEL_TRAN;
+                //data.PERMISSION_TYPE_ID = IMSys.DbConfig.HIS_RS.HIS_PERMISSION_TYPE.ID__CANCEL_TRAN;
                 data.EFFECTIVE_DATE = Convert.ToInt64(dtEffectiveDate.DateTime.ToString("yyyyMMdd") + "000000");
+                data.PERMISSION_TYPE_ID = Convert.ToInt64(cboPermissionType.EditValue ?? 1);
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
-            }
+            } 
+
         }
 
         private void btnEdit_Click(object sender, EventArgs e)
@@ -602,6 +642,10 @@ namespace HIS.Desktop.Plugins.HisPermissionCancelTrans
                 Mapper.CreateMap<HIS_PERMISSION, HIS_PERMISSION>();
                 HIS_PERMISSION data = Mapper.Map<HIS_PERMISSION>(this.currentData);
                 this.UpdateControlToObject(data);
+                if (!CoincideCheck(data))
+                {
+                    return; 
+                }
 
                 HIS_PERMISSION rs = new BackendAdapter(param).Post<HIS_PERMISSION>("api/HisPermission/Update", ApiConsumers.MosConsumer, data, param);
 
@@ -635,9 +679,13 @@ namespace HIS.Desktop.Plugins.HisPermissionCancelTrans
                 bool success = false;
                 HIS_PERMISSION data = new HIS_PERMISSION();
                 this.UpdateControlToObject(data);
+                if (!CoincideCheck(data))
+                {
+                    return;
+                }
 
                 HIS_PERMISSION rs = new BackendAdapter(param).Post<HIS_PERMISSION>("api/HisPermission/Create", ApiConsumers.MosConsumer, data, param);
-
+                
                 if (rs != null)
                 {
                     success = true;
@@ -659,7 +707,6 @@ namespace HIS.Desktop.Plugins.HisPermissionCancelTrans
             try
             {
                 if (!btnRefresh.Enabled) return;
-
                 WaitingManager.Show();
                 this.currentData = null;
                 this.SetDataToControl();
@@ -762,6 +809,49 @@ namespace HIS.Desktop.Plugins.HisPermissionCancelTrans
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+        private bool CoincideCheck(HIS_PERMISSION data)
+        {
+            try
+            {
+                List<HIS_PERMISSION> listData = new List<HIS_PERMISSION>();
+                CommonParam paramCommon = new CommonParam();
+
+                listData = new BackendAdapter(paramCommon).Get<List<HIS_PERMISSION>>("api/HisPermission/Get", ApiConsumers.MosConsumer, new HisPermissionFilter(), paramCommon);
+                string type1 = "Hủy/hoàn hủy giao dịch";
+                string type2 = "Sửa thông tin giao dịch khác ngày";
+
+                if (listData != null)
+                {
+                    foreach (var item in listData)
+                    {
+                        if (data.LOGINNAME == item.LOGINNAME && data.EFFECTIVE_DATE == item.EFFECTIVE_DATE && data.PERMISSION_TYPE_ID == item.PERMISSION_TYPE_ID)
+                        {
+                            WaitingManager.Hide();
+                            XtraMessageBox.Show(String.Format("Tài khoản {0} đã được thiết lập ngày {1} với loại {2}", data.LOGINNAME, ConvertLongToDateString(data.EFFECTIVE_DATE), data.PERMISSION_TYPE_ID==1? type1 : type2),"Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                            return false;
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+            return true;
+        }
+        public static string ConvertLongToDateString(long rawDateTime)
+        {
+            try
+            {
+                string rawString = rawDateTime.ToString(); 
+                DateTime date = DateTime.ParseExact(rawString, "yyyyMMddHHmmss", System.Globalization.CultureInfo.InvariantCulture);
+                return date.ToString("dd/MM/yyyy");
+            }
+            catch
+            {
+                return string.Empty; 
             }
         }
 

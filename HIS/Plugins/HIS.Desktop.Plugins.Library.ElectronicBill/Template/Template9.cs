@@ -43,14 +43,14 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.Template
 
         public object Run()
         {
-            List<ProductBase> result = new List<ProductBase>();
+            List<ProductBasePlus> result = new List<ProductBasePlus>();
             if (DataInput.SereServBill != null && DataInput.SereServBill.Count > 0)
             {
                 var groupType = DataInput.SereServBill.GroupBy(o => o.TDL_PATIENT_TYPE_ID ?? 0).ToList();
                 decimal totalPhuThu = 0;
                 decimal totalBhyt = 0;
 
-                List<ProductBase> typeProduct = new List<ProductBase>();
+                List<ProductBasePlus> typeProduct = new List<ProductBasePlus>();
 
                 foreach (var detail in groupType)
                 {
@@ -77,7 +77,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.Template
                             amount = checkAmout;
                         }
 
-                        ProductBase product = new ProductBase();
+                        ProductBasePlus product = new ProductBasePlus();
                         product.ProdName = name;
                         product.Amount = Inventec.Common.Number.Convert.NumberToNumberRoundMax4(amount);
                         product.ProdUnit = " ";
@@ -96,7 +96,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.Template
 
                     decimal ratio = (new MOS.LibraryHein.Bhyt.BhytHeinProcessor().GetDefaultHeinRatio(DataInput.LastPatientTypeAlter.HEIN_TREATMENT_TYPE_CODE, DataInput.LastPatientTypeAlter.HEIN_CARD_NUMBER, DataInput.LastPatientTypeAlter.LEVEL_CODE, DataInput.LastPatientTypeAlter.RIGHT_ROUTE_CODE) ?? 0) * 100;
 
-                    ProductBase product = new ProductBase();
+                    ProductBasePlus product = new ProductBasePlus();
                     product.ProdName = String.Format("Đồng chi trả bảo hiểm {0}%", Math.Round(100 - ratio, 0, MidpointRounding.AwayFromZero)); ;
                     product.Amount = Inventec.Common.Number.Convert.NumberToNumberRoundMax4(totalBhyt);
                     product.ProdUnit = " ";
@@ -115,7 +115,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.Template
 
                 if (totalPhuThu > 0)
                 {
-                    ProductBase product = new ProductBase();
+                    ProductBasePlus product = new ProductBasePlus();
                     product.ProdName = "Tiền phụ thu";
                     product.Amount = Inventec.Common.Number.Convert.NumberToNumberRoundMax4(totalPhuThu);
                     product.ProdUnit = " ";

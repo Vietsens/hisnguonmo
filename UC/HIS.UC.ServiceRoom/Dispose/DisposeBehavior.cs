@@ -16,6 +16,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+using HIS.Desktop.Utility;
 using Inventec.Core;
 using MOS.EFMODEL.DataModels;
 using System;

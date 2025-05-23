@@ -101,6 +101,7 @@ namespace HIS.Desktop.Plugins.DebateDiagnostic.UcDebateDetail
 
                 VisibilityControl();
                 ValidationControl();
+                UpdateCustomHeaderButtons(xtraTabControl1.SelectedTabPage);
             }
             catch (Exception ex)
             {
@@ -609,6 +610,7 @@ namespace HIS.Desktop.Plugins.DebateDiagnostic.UcDebateDetail
                 txtCareMethod.ReadOnly = true;
                 txtTreatmentMethod.ReadOnly = true;
                 txtConclusion.ReadOnly = true;
+                
             }
             catch (Exception ex)
             {
@@ -1704,13 +1706,31 @@ namespace HIS.Desktop.Plugins.DebateDiagnostic.UcDebateDetail
         {
             try
             {
-                
+                //if (e.Page == xtraTabPage1 || e.Page == xtraTabPage2 || e.Page == xtraTabPage3)
+                //{
+                //    xtraTabControl1.CustomHeaderButtons[0].Enabled = false;
+                //}
+                //else if (e.Page == xtraTabPage4)
+                //{
+                //    xtraTabControl1.CustomHeaderButtons[0].Enabled = true;
+                //}
+                UpdateCustomHeaderButtons(e.Page);
             }
             catch (Exception ex)
             {
                 LogSystem.Error(ex);
             }
-
+        }
+        private void UpdateCustomHeaderButtons(DevExpress.XtraTab.XtraTabPage page)
+        {
+            if (page == xtraTabPage1 || page == xtraTabPage2 || page == xtraTabPage3)
+            {
+                xtraTabControl1.CustomHeaderButtons[0].Enabled = false;
+            }
+            else if (page == xtraTabPage4)
+            {
+                xtraTabControl1.CustomHeaderButtons[0].Enabled = true;
+            }
         }
 
         private void xtraTabControl1_CustomHeaderButtonClick(object sender, DevExpress.XtraTab.ViewInfo.CustomHeaderButtonEventArgs e)
@@ -1725,7 +1745,8 @@ namespace HIS.Desktop.Plugins.DebateDiagnostic.UcDebateDetail
 
                     if (tag == "Chondienbien")
                     {
-                        frmDevelopmentCLS frm = new frmDevelopmentCLS();
+                        frmDevelopmentCLS frm = new frmDevelopmentCLS(TreatmentId);
+                        frm.ParentUcOther = this;
                         frm.ShowDialog(); 
                     }
                 }
@@ -1734,6 +1755,10 @@ namespace HIS.Desktop.Plugins.DebateDiagnostic.UcDebateDetail
             {
                 LogSystem.Error(ex);
             }
+        }
+        public void SetTreatmentTrackingText(string text)
+        {
+            txtTreatmentTracking.Text = text;
         }
     }
 }

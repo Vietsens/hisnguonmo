@@ -474,8 +474,17 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                             SoloValidBidControl(txtPackageNumber, layoutPackageNumber, false);
                         }
                     }
-                }
 
+                    if (this.currrentServiceAdo.MEDICINE_LINE_ID == IMSys.DbConfig.HIS_RS.HIS_MEDICINE_LINE.ID__VT_YHCT)
+                    {
+                        this.lciDosageForm.AppearanceItemCaption.ForeColor = Color.Black;
+                    }
+                    else
+                    {
+                        this.lciDosageForm.AppearanceItemCaption.ForeColor = Color.Maroon;
+                    }
+                }
+                
                 VisibleLayoutTemperature();
                 this.SetPrimary();
                 SetValueByServiceAdo();
@@ -505,9 +514,9 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                 {
                     this.spinEditGiaTrongThau.Enabled = true;
                     this.spinImpPrice.Enabled = true;
-                    this.cboNationals.Enabled = true;
+                    //this.cboDosageForm.Enabled = true;
+                    this.cboNationals.Enabled = true;     
                     this.cboHangSX.Enabled = true;
-                    this.cboDosageForm.EditValue = true;
                     this.txtSoDangKy.Enabled = true;
                     this.SpMaxReuseCount.Enabled = false;
                     this.spinImpPriceVAT.Enabled = false;
@@ -582,8 +591,8 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                             {
                                 this.currrentServiceAdo.monthLifespan = this.MedicalContractMety.MONTH_LIFESPAN;
                             }
-
-                            cboDosageForm.EditValue = MedicalContractMety.DOSAGE_FORM;
+                            //Nếu chọn hợp đồng thì sẽ ưu tiên lấy thông tin trong hợp đồng. Hết
+                            //cboDosageForm.EditValue = MedicalContractMety.DOSAGE_FORM;// lấy dữ liệu từ thầu hoặc loại thuốc - đang bắt buộc
                             txtSoDangKy.Text = this.MedicalContractMety.MEDICINE_REGISTER_NUMBER;
                             txtNognDoHL.Text = this.MedicalContractMety.CONCENTRA;
                             spinImpPriceVAT.Value = (spinImpPrice.Value * (1 + spinImpVatRatio.Value / 100));
@@ -1066,7 +1075,8 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                             this.txtPackingJoinBid.Text = dataMediType.PACKING_TYPE_NAME;
                             this.txtHeinServiceBidMateType.Text = dataMediType.HEIN_SERVICE_BHYT_NAME;
                             this.txtActiveIngrBhytName.Text = dataMediType.ACTIVE_INGR_BHYT_NAME;
-                            this.cboDosageForm.EditValue = dataMediType.DOSAGE_FORM;
+                            var ds=( cboDosageForm.Properties.DataSource as List < DosageFormADO >).FirstOrDefault (o=>o.DOSAGE_FORM_NAME== dataMediType.DOSAGE_FORM);
+                            this.cboDosageForm.EditValue = ds != null ? ds.DOSAGE_FORM_NAME : null; 
                             this.cboMedicineUseForm.EditValue = dataMediType.MEDICINE_USE_FORM_ID;
                             txtBidNumber.Text = this.currrentServiceAdo.TDL_BID_NUMBER;
                         }

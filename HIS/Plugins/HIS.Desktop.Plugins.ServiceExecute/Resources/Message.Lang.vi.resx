@@ -264,13 +264,16 @@
   <data name="TruongDuLieuVuotQuaKyTu" xml:space="preserve">
     <value>Trường dữ liệu nhập quá dài</value>
   </data>
-	<data name="XacNhanKhongThucHien" xml:space="preserve">
+  <data name="XacNhanKhongThucHien" xml:space="preserve">
     <value>Xác nhận không thực hiện</value>
   </data>
-	<data name="HuyXacNhanKhongThucHien" xml:space="preserve">
+  <data name="HuyXacNhanKhongThucHien" xml:space="preserve">
     <value>Hủy xác nhận không thực hiên</value>
   </data>
-	<data name="HuyXuLy" xml:space="preserve">
+  <data name="HuyXuLy" xml:space="preserve">
     <value>Hủy xử lý</value>
+  </data>
+  <data name="PhanTichHinhAnhYKhoa" xml:space="preserve">
+    <value>Phân tích hình ảnh y khoa</value>
   </data>
 </root>

@@ -61,6 +61,10 @@
     <Reference Include="HIS.Common.Treatment">
       <HintPath>..\..\..\..\LIB\HIS\HIS.Common\HIS.Common.Treatment\HIS.Common.Treatment.dll</HintPath>
     </Reference>
+    <Reference Include="HIS.Desktop.Library.CacheClient, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\his_push\histest\x64\ReferencedAssemblies\HIS.Desktop.Library.CacheClient.dll</HintPath>
+    </Reference>
     <Reference Include="HIS.Desktop.LocalStorage.HisConfig">
       <HintPath>..\..\..\..\LIB\HIS\HIS.UC.AddressCombo\HIS.Desktop.LocalStorage.HisConfig.dll</HintPath>
     </Reference>
@@ -70,6 +74,10 @@
     </Reference>
     <Reference Include="HIS.Desktop.ModuleExt">
       <HintPath>..\..\..\..\lib\HIS\HIS.Desktop.ModuleExt\HIS.Desktop.ModuleExt.dll</HintPath>
+    </Reference>
+    <Reference Include="HIS.Desktop.Plugins.Library.ElectronicBill, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\HIS.Desktop.Plugins.Library.ElectronicBill\bin\Debug\HIS.Desktop.Plugins.Library.ElectronicBill.dll</HintPath>
     </Reference>
     <Reference Include="HIS.Desktop.Plugins.Library.EmrGenerate">
       <HintPath>..\..\..\..\lib\HIS\HIS.Desktop.Plugins.Library.EmrGenerate\HIS.Desktop.Plugins.Library.EmrGenerate.dll</HintPath>
@@ -269,6 +277,10 @@
     <Reference Include="MPS.Processor.Mps000430.PDO">
       <HintPath>..\..\..\..\LIB\MPSv2\MPS.PDO\MPS.Processor.Mps000430.PDO.dll</HintPath>
     </Reference>
+    <Reference Include="MPS.Processor.Mps000431.PDO, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\MPS\MPS.Processor\MPS.Processor.Mps000431.PDO\bin\Debug\MPS.Processor.Mps000431.PDO.dll</HintPath>
+    </Reference>
     <Reference Include="MPS.Processor.Mps000439.PDO">
       <HintPath>..\..\..\..\LIB\MPSv2\MPS.PDO\MPS.Processor.Mps000439.PDO.dll</HintPath>
     </Reference>
@@ -322,6 +334,7 @@
     </Compile>
     <Compile Include="Config\HisConfigCFG.cs" />
     <Compile Include="Config\TransactionCancelCFG.cs" />
+    <Compile Include="TransactionListConfig.cs" />
     <Compile Include="ExportErrorProcessed.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -393,14 +406,6 @@
     <ProjectReference Include="..\..\HIS.Desktop.LocalStorage.Location\HIS.Desktop.LocalStorage.Location.csproj">
       <Project>{67e93829-79bd-407e-a4dd-b46cebb55a41}</Project>
       <Name>HIS.Desktop.LocalStorage.Location</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\HIS.Desktop.Library.CacheClient\HIS.Desktop.Library.CacheClient.csproj">
-      <Project>{64837e01-803d-4f1e-9dfc-d34b38ea78f9}</Project>
-      <Name>HIS.Desktop.Library.CacheClient</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\HIS.Desktop.Plugins.Library.ElectronicBill\HIS.Desktop.Plugins.Library.ElectronicBill.csproj">
-      <Project>{c5aecd51-4be8-4937-a6c3-04f25b11b33f}</Project>
-      <Name>HIS.Desktop.Plugins.Library.ElectronicBill</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

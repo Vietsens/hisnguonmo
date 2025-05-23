@@ -27,5 +27,6 @@ namespace HIS.Desktop.Plugins.TransactionList.Base
     {
         internal const string BtnRestore = "HIS000021";
         internal const string BtnDelete = "HIS000023";
+        internal const string BtnEdit = "HIS000017";
     }
 }

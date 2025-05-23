@@ -298,7 +298,7 @@
     <value>How to use:</value>
   </data>
   <data name="frmAssignPrescription.lciHuongDan.Text" xml:space="preserve">
-    <value>Tutorial:</value>
+    <value>Dosage:</value>
   </data>
   <data name="frmAssignPrescription.lciIcdMain.Text" xml:space="preserve">
     <value>Primary/Pri/Main diagnosis:</value>

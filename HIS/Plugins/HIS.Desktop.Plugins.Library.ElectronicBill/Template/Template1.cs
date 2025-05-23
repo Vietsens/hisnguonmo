@@ -59,7 +59,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.Template
 
         object IRunTemplate.Run()
         {
-            List<ProductBase> products = new List<ProductBase>();
+            List<ProductBasePlus> products = new List<ProductBasePlus>();
             try
             {
                 if (sereServs != null && sereServs.Count > 0)
@@ -98,7 +98,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.Template
                         #region SERE_SERV_BHYT
                         if (dicSereServType[SERE_SERV_TYPE.BHYT_NOT_SERVICE_CONFIG] != null && dicSereServType[SERE_SERV_TYPE.BHYT_NOT_SERVICE_CONFIG].Count > 0)
                         {
-                            ProductBase product = new ProductBase();
+                            ProductBasePlus product = new ProductBasePlus();
                             product.Amount = Inventec.Common.Number.Convert.NumberToNumberRoundMax4(dicSereServType[SERE_SERV_TYPE.BHYT_NOT_SERVICE_CONFIG].Sum(o => o.PRICE));
 
                             decimal ratio = (new MOS.LibraryHein.Bhyt.BhytHeinProcessor().GetDefaultHeinRatio(DataInput.LastPatientTypeAlter.HEIN_TREATMENT_TYPE_CODE, DataInput.LastPatientTypeAlter.HEIN_CARD_NUMBER, branch.HEIN_LEVEL_CODE, DataInput.LastPatientTypeAlter.RIGHT_ROUTE_CODE) ?? 0) * 100;
@@ -165,7 +165,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.Template
                             foreach (var item in sereServNotBHYTGroups)
                             {
                                 HIS_SERVICE_TYPE serviceType = serviceTypes.FirstOrDefault(o => o.ID == item.First().TDL_SERVICE_TYPE_ID);
-                                ProductBase product = new ProductBase();
+                                ProductBasePlus product = new ProductBasePlus();
                                 product.ProdName = serviceType != null ? serviceType.SERVICE_TYPE_NAME : "Khác";
                                 product.ProdCode = General.GetFirstWord(product.ProdName);
                                 product.Amount = Inventec.Common.Number.Convert.NumberToNumberRoundMax4(item.Sum(o => o.PRICE));
@@ -182,7 +182,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.Template
                             foreach (var item in dicSereServType[SERE_SERV_TYPE.SERVICE_CONFIG])
                             {
                                 V_HIS_SERVICE service = services != null ? services.FirstOrDefault(o => o.ID == item.TDL_SERVICE_ID) : null;
-                                ProductBase product = new ProductBase();
+                                ProductBasePlus product = new ProductBasePlus();
                                 product.ProdName = item.TDL_SERVICE_NAME;
                                 product.ProdCode = item.TDL_SERVICE_CODE;
                                 //product.ProdPrice = Inventec.Common.Number.Convert.NumberToNumberRoundMax4(item.TDL_REAL_PRICE ?? 0);
@@ -205,7 +205,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.Template
                             foreach (var item in groupPrice)
                             {
                                 V_HIS_SERVICE service = services != null ? services.FirstOrDefault(o => o.ID == item.First().TDL_SERVICE_ID) : null;
-                                ProductBase product = new ProductBase();
+                                ProductBasePlus product = new ProductBasePlus();
                                 product.ProdName = item.First().TDL_SERVICE_NAME;
                                 product.ProdCode = item.First().TDL_SERVICE_CODE;
                                 //product.ProdPrice = Inventec.Common.Number.Convert.NumberToNumberRoundMax4(item.First().TDL_REAL_PRICE ?? 0);
@@ -220,7 +220,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.Template
                         }
                         else
                         {
-                            ProductBase product = new ProductBase();
+                            ProductBasePlus product = new ProductBasePlus();
                             product.Amount = Inventec.Common.Number.Convert.NumberToNumberRoundMax4(sereServs.Sum(o => o.PRICE));
                             product.ProdName = "Thu viện phí nhân dân";
                             product.ProdCode = General.GetFirstWord(product.ProdName);

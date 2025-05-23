@@ -42,10 +42,10 @@ using System.IO;
 using SDA.EFMODEL.DataModels;
 using Inventec.Core;
 using DevExpress.XtraEditors.Repository;
-using HIS.Desktop.Plugins.HisDosageForm;
 using HIS.Desktop.Common;
 using HIS.Desktop.Plugins.BidCreate.Validation;
-
+using HIS.Desktop.Plugins.HisDosageForm;
+       
 namespace HIS.Desktop.Plugins.BidCreate
 {
     public partial class UCBidCreate : HIS.Desktop.Utility.UserControlBase
@@ -630,6 +630,7 @@ namespace HIS.Desktop.Plugins.BidCreate
                         }
                     }
                 }
+               
                 this.medicineTypeProcessor.Reload(this.ucMedicineType, listHisMedicineType);
                 WaitingManager.Hide();
             }
@@ -1268,20 +1269,35 @@ namespace HIS.Desktop.Plugins.BidCreate
                     {
                         spinHourLifeSpan.EditValue = null;
                     }
+                  
+                    bool isValid = !string.IsNullOrEmpty(this.medicineType.DOSAGE_FORM);
+                    if (this.medicineType.MEDICINE_LINE_ID.Value != IMSys.DbConfig.HIS_RS.HIS_MEDICINE_LINE.ID__VT_YHCT)
+                    {
+                        layoutControlItem21.AppearanceItemCaption.ForeColor = Color.Maroon ;
+                        ValidDosageForm();
+                    }
+                       
+                    else
+                    {
+
+                        dxValidationProviderLeft.SetValidationRule(cboDosageForm, null);
+                        layoutControlItem21.AppearanceItemCaption.ForeColor = Color.Black;
+                    }
                     if (!string.IsNullOrEmpty(this.medicineType.DOSAGE_FORM))
                     {
-                        //this.medicineType.DOSAGE_FORM = dataDosageForm.FirstOrDefault(o => o.ID == (long)cboDosageForm.EditValue).DOSAGE_FORM_NAME;
                         var selectedItem = dataDosageForm.FirstOrDefault(o => o.DOSAGE_FORM_NAME == this.medicineType.DOSAGE_FORM);
                         if (selectedItem != null)
                         {
                             cboDosageForm.EditValue = selectedItem.ID;
-                        }                       
+                        }
                     }
                     else
                     {
                         cboDosageForm.EditValue = null;
                         this.medicineType.DOSAGE_FORM = null;
                     }
+
+
                 }
                 else if (xtraTabControl1.SelectedTabPageIndex == 1 && this.materialType != null && !String.IsNullOrEmpty(this.materialType.MATERIAL_TYPE_CODE))
                 {
@@ -1621,7 +1637,7 @@ namespace HIS.Desktop.Plugins.BidCreate
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
-
+             
         private void EnableLeftControl(bool Enable)
         {
             try
@@ -3105,6 +3121,14 @@ namespace HIS.Desktop.Plugins.BidCreate
                     {
                         cboDosageForm.Focus();
                         cboDosageForm.ShowPopup();
+                        if (this.medicineType != null &&
+                    this.medicineType.MEDICINE_LINE_ID.HasValue &&
+                    this.medicineType.MEDICINE_LINE_ID.Value != 3)
+                        {
+
+
+                            dxValidationProviderLeft.Validate(cboDosageForm);
+                        }
                     }
                 }
             }
@@ -3138,9 +3162,10 @@ namespace HIS.Desktop.Plugins.BidCreate
             }
         }
 
+
         private void cboDosageForm_EditValueChanged(object sender, EventArgs e)
         {
-           try
+            try
             {
                 if (cboDosageForm.EditValue != null)
                 {
@@ -3155,7 +3180,7 @@ namespace HIS.Desktop.Plugins.BidCreate
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
-        }        
+        }
         private void LoadDataToCboDosageForm()
         {
             try

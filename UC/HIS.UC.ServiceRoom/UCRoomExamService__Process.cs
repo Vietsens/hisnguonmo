@@ -30,13 +30,21 @@ using HIS.Desktop.Utilities.Extensions;
 using MOS.EFMODEL.DataModels;
 using HIS.Desktop.LocalStorage.BackendData;
 using DevExpress.XtraEditors;
+using DevExpress.XtraGrid.Views.Grid;
+using System.IO;
+using System.Net.NetworkInformation;
+using HIS.UC.ServiceRoom.OperatingStatus;
+using HIS.Desktop.LocalStorage.LocalData;
+using HIS.Desktop.Utility;
 
 namespace HIS.UC.ServiceRoom
 {
-    public partial class UCRoomExamService : UserControl
+    public partial class UCRoomExamService : UserControlBase
     {
         internal string numOderSelected;
         Dictionary<long, string> numberNames = new Dictionary<long, string>();
+        private string USER = Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName();
+
         public void InitLoad(RoomExamServiceInitADO ado)
         {
             try
@@ -145,9 +153,9 @@ namespace HIS.UC.ServiceRoom
                 {
                     InitComboRoom(this.roomExamServiceInitADO.HisExecuteRooms);
                 }
-                else if (this.roomExamServiceInitADO.LHisRoomCounters != null && this.roomExamServiceInitADO.LHisRoomCounters.Count > 0)
+                else if ((this.roomExamServiceInitADO.LHisRoomCounters != null && this.roomExamServiceInitADO.LHisRoomCounters.Count > 0 ) || (this.roomExamServiceInitADO.LHisRoomCounters2 != null && this.roomExamServiceInitADO.LHisRoomCounters2.Count > 0))
                 {
-                    InitComboRoom(this.roomExamServiceInitADO.LHisRoomCounters);
+                    InitComboRoom(this.roomExamServiceInitADO.LHisRoomCounters2, this.roomExamServiceInitADO.LHisRoomCounters);
                 }
             }
             catch (Exception ex)
@@ -170,11 +178,11 @@ namespace HIS.UC.ServiceRoom
             }
         }
 
-        public void InitComboRoom(List<MOS.EFMODEL.DataModels.L_HIS_ROOM_COUNTER> executeRooms)
+        public void InitComboRoom(List<L_HIS_ROOM_COUNTER_2> executeRooms2, List<L_HIS_ROOM_COUNTER> executeRooms)
         {
             try
             {
-                InitComboRoom(executeRooms, false);
+                InitComboRoom(executeRooms2, executeRooms, false);
             }
             catch (Exception ex)
             {
@@ -183,36 +191,77 @@ namespace HIS.UC.ServiceRoom
             }
         }
 
-        public void InitComboRoom(List<MOS.EFMODEL.DataModels.L_HIS_ROOM_COUNTER> executeRooms, bool isSyncData)
+        public void InitComboRoom(List<L_HIS_ROOM_COUNTER_2> executeRooms2, List<L_HIS_ROOM_COUNTER> executeRooms, bool isSyncData)
         {
             try
             {
-                executeRooms = executeRooms ?? new List<MOS.EFMODEL.DataModels.L_HIS_ROOM_COUNTER>();
-                if (isSyncData && this.roomExts != null && this.roomExts.Count > 0)
-                    this.roomExts = (from m in executeRooms select new RoomExtADO(m, this.hisRooms, this.roomExts)).ToList();
-                else
-                    this.roomExts = (from m in executeRooms select new RoomExtADO(m, this.hisRooms)).ToList();
-                this.roomExts = OrderRoom(this.roomExts);
-                popupHeight = (this.roomExts != null && this.roomExts.Count > 15) ? 400 : 200;
-                gridViewContainerRoom.BeginUpdate();
-                gridViewContainerRoom.Columns.Clear();
-                popupControlContainerRoom.Width = 1100;
-                popupControlContainerRoom.Height = popupHeight;
-                int columnIndex = 1;
-                AddFieldColumnIntoComboRoomExt("IsChecked", " ","", 30, columnIndex++, true, null, true);
-                AddFieldColumnIntoComboRoomExt("EXECUTE_ROOM_CODE", col1,"", 90, columnIndex++, true);
-                AddFieldColumnIntoComboRoomExt("EXECUTE_ROOM_NAME", col2,"", 270, columnIndex++, true);
-                AddFieldColumnIntoComboRoomExt("TOTAL_TODAY_SERVICE_REQ", col3,tol1, 80, columnIndex++, true);
-                AddFieldColumnIntoComboRoomExt("TOTAL_NEW_SERVICE_REQ", col4,tol2, 80, columnIndex++, true);
-                AddFieldColumnIntoComboRoomExt("TOTAL_END_SERVICE_REQ", col5, tol3, 80, columnIndex++, true);
-                AddFieldColumnIntoComboRoomExt("TOTAL_WAIT_TODAY_SERVICE_REQ", col6,tol4, 80, columnIndex++, true);
-                AddFieldColumnIntoComboRoomExt("TOTAL_OPEN_SERVICE_REQ", col7,tol5, 80, columnIndex++, true);
-                AddFieldColumnIntoComboRoomExt("MAX_REQUEST_BY_DAY", col8,tol6, 80, columnIndex++, true);
-                AddFieldColumnIntoComboRoomExt("MAX_REQ_BHYT_BY_DAY", col9,tol7, 80, columnIndex++, true);
-                AddFieldColumnIntoComboRoomExt("RESPONSIBLE_USERNAME_DISPLAY", col10,"", 300, columnIndex++, true, DevExpress.Data.UnboundColumnType.Object);
-                AddFieldColumnIntoComboRoomExt("NumOrderBlock", col11,"", 150, columnIndex++, true, null, true);
-                AddFieldColumnIntoComboRoomExt("IS_WARN",col12,"", 80, -1, false);
+                Inventec.Desktop.Common.Modules.Module moduleData = GlobalVariables.currentModuleRaws.Where(o => o.ModuleLink == "HIS.Desktop.Plugins.RegisterV2").FirstOrDefault();
 
+                var allowedModules = HIS.Desktop.Plugins.Library.RegisterConfig.HisConfigCFG.MODULELINKS.Split(',');
+                if (!string.IsNullOrWhiteSpace(HIS.Desktop.Plugins.Library.RegisterConfig.HisConfigCFG.MODULELINKS) && moduleData != null && allowedModules.Contains(moduleData.ModuleLink))
+                {
+                    executeRooms2 = executeRooms2 ?? new List<MOS.EFMODEL.DataModels.L_HIS_ROOM_COUNTER_2>();
+                    if (isSyncData && this.roomExts != null && this.roomExts.Count > 0)
+                        this.roomExts = (from m in executeRooms2 select new RoomExtADO(m, this.hisRooms, this.roomExts)).ToList();
+                    else
+                        this.roomExts = (from m in executeRooms2 select new RoomExtADO(m, this.hisRooms)).ToList();
+
+                    this.roomExts = OrderRoom(this.roomExts);
+                    popupHeight = (this.roomExts != null && this.roomExts.Count > 15) ? 400 : 200;
+                    gridViewContainerRoom.BeginUpdate();
+                    gridViewContainerRoom.Columns.Clear();
+                    popupControlContainerRoom.Width = 1100;
+                    popupControlContainerRoom.Height = popupHeight;
+                    int columnIndex = 1;
+                    AddFieldColumnIntoComboRoomExt("IsChecked", " ", "", 30, columnIndex++, false, null, true);
+                    AddFieldColumnIntoComboRoomExt("EXECUTE_ROOM_CODE", col1, "", 90, columnIndex++, false);
+                    AddFieldColumnIntoComboRoomExt("EXECUTE_ROOM_NAME", col2, "", 240, columnIndex++, false);
+                    AddFieldColumnIntoComboRoomExt("TOTAL_TODAY_SERVICE_REQ", col3, tol1, 80, columnIndex++, false);
+                    AddFieldColumnIntoComboRoomExt("TOTAL_MORNING_SERE", col13, tol8, 80, -1, false);/// mới
+                    AddFieldColumnIntoComboRoomExt("TOTAL_AFTERNOON_SERE", col14, tol9, 80, -1, false);
+                    AddFieldColumnIntoComboRoomExt("TOTAL_TODAY_KNVP_SERE", col15, tol10, 80, -1, false);
+                    AddFieldColumnIntoComboRoomExt("TOTAL_MORNING_KNVP_SERE", col16, tol11, 80, -1, false);
+                    AddFieldColumnIntoComboRoomExt("TOTAL_AFTERNOON_KNVP_SERE", col17, tol12, 80, -1, false);///
+                    AddFieldColumnIntoComboRoomExt("TOTAL_NEW_SERVICE_REQ", col4, tol2, 80, columnIndex++, false);
+                    AddFieldColumnIntoComboRoomExt("TOTAL_END_SERVICE_REQ", col5, tol3, 80, columnIndex++, false);
+                    AddFieldColumnIntoComboRoomExt("TOTAL_WAIT_TODAY_SERVICE_REQ", col6, tol4, 80, columnIndex++, false);
+                    AddFieldColumnIntoComboRoomExt("TOTAL_OPEN_SERVICE_REQ", col7, tol5, 80, columnIndex++, false);
+                    AddFieldColumnIntoComboRoomExt("MAX_REQUEST_BY_DAY", col8, tol6, 80, columnIndex++, false);
+                    AddFieldColumnIntoComboRoomExt("MAX_REQ_BHYT_BY_DAY", col9, tol7, 80, columnIndex++, false);
+                    AddFieldColumnIntoComboRoomExt("RESPONSIBLE_USERNAME_DISPLAY", col10, "", 300, columnIndex++, false, DevExpress.Data.UnboundColumnType.Object);
+                    AddFieldColumnIntoComboRoomExt("NumOrderBlock", col11, "", 150, columnIndex++, false, null, true);
+                    AddFieldColumnIntoComboRoomExt("IS_WARN", col12, "", 80, -1, false);
+                }
+                else
+                {
+                    executeRooms = executeRooms ?? new List<MOS.EFMODEL.DataModels.L_HIS_ROOM_COUNTER>();
+                    if (isSyncData && this.roomExts != null && this.roomExts.Count > 0)
+                        this.roomExts = (from m in executeRooms select new RoomExtADO(m, this.hisRooms, this.roomExts)).ToList();
+                    else
+                        this.roomExts = (from m in executeRooms select new RoomExtADO(m, this.hisRooms)).ToList();
+
+                    this.roomExts = OrderRoom(this.roomExts);
+                    popupHeight = (this.roomExts != null && this.roomExts.Count > 15) ? 400 : 200;
+                    gridViewContainerRoom.BeginUpdate();
+                    gridViewContainerRoom.Columns.Clear();
+                    popupControlContainerRoom.Width = 1100;
+                    popupControlContainerRoom.Height = popupHeight;
+                    int columnIndex = 1;
+                    AddFieldColumnIntoComboRoomExt("IsChecked", " ", "", 30, columnIndex++, false, null, true);
+                    AddFieldColumnIntoComboRoomExt("EXECUTE_ROOM_CODE", col1, "", 90, columnIndex++, false);
+                    AddFieldColumnIntoComboRoomExt("EXECUTE_ROOM_NAME", col2, "", 240, columnIndex++, false);
+                    AddFieldColumnIntoComboRoomExt("TOTAL_TODAY_SERVICE_REQ", col3, tol1, 80, columnIndex++, false);
+                    AddFieldColumnIntoComboRoomExt("TOTAL_NEW_SERVICE_REQ", col4, tol2, 80, columnIndex++, false);
+                    AddFieldColumnIntoComboRoomExt("TOTAL_END_SERVICE_REQ", col5, tol3, 80, columnIndex++, false);
+                    AddFieldColumnIntoComboRoomExt("TOTAL_WAIT_TODAY_SERVICE_REQ", col6, tol4, 80, columnIndex++, false);
+                    AddFieldColumnIntoComboRoomExt("TOTAL_OPEN_SERVICE_REQ", col7, tol5, 80, columnIndex++, false);
+                    AddFieldColumnIntoComboRoomExt("MAX_REQUEST_BY_DAY", col8, tol6, 80, columnIndex++, false);
+                    AddFieldColumnIntoComboRoomExt("MAX_REQ_BHYT_BY_DAY", col9, tol7, 80, columnIndex++, false);
+                    AddFieldColumnIntoComboRoomExt("RESPONSIBLE_USERNAME_DISPLAY", col10, "", 300, columnIndex++, false, DevExpress.Data.UnboundColumnType.Object);
+                    AddFieldColumnIntoComboRoomExt("NumOrderBlock", col11, "", 150, columnIndex++, false, null, true);
+                    AddFieldColumnIntoComboRoomExt("IS_WARN", col12, "", 80, -1, false);
+                }
+                InitRestoreLayoutGridViewFromXml(gridViewContainerRoom);
                 gridViewContainerRoom.GridControl.DataSource = this.roomExts;
 
                 gridViewContainerRoom.EndUpdate();
@@ -223,6 +272,7 @@ namespace HIS.UC.ServiceRoom
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
+
 
         DevExpress.XtraEditors.Repository.RepositoryItemCheckEdit GenerateRepositoryItemCheckEdit()
         {
@@ -260,8 +310,29 @@ namespace HIS.UC.ServiceRoom
                 col2.OptionsFilter.AllowAutoFilter = false;
             }
 
+            col2.OptionsColumn.ShowInCustomizationForm = true;
+
             gridViewContainerRoom.Columns.Add(col2);
         }
+
+        private void gridViewContainerRoom_RowCellClick(object sender, RowCellClickEventArgs e)
+        {
+            //if (e.Column != null && e.Column.FieldName == "Chur")
+            //{
+            //    var view = sender as DevExpress.XtraGrid.Views.Grid.GridView;
+
+            //    if (view != null)
+            //    {
+            //        view.OptionsCustomization.AllowColumnMoving = true;
+            //        view.OptionsCustomization.AllowQuickHideColumns = true;
+            //        view.OptionsCustomization.CustomizationFormSearchBoxVisible = true;
+
+            //        // Gọi Column Chooser
+            //        view.ShowCustomization();
+            //    }
+            //}
+        }
+
 
         private List<RoomExtADO> OrderRoom(List<RoomExtADO> roomList)
         {

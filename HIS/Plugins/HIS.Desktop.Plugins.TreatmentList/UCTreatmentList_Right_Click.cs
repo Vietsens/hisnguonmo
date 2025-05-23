@@ -70,6 +70,9 @@ namespace HIS.Desktop.Plugins.TreatmentList
                     {
                         #region -----
 
+                        case PopupMenuProcessor.ItemType.ReqOpenTreatmentRecord:
+                            ReqOpenTreatmentRecord();
+                            break;
                         case PopupMenuProcessor.ItemType.EventLog:
                             btnEvenLogClick();
                             break;
@@ -344,6 +347,59 @@ namespace HIS.Desktop.Plugins.TreatmentList
             }
         }
 
+        private void ReqOpenTreatmentRecord()
+        {
+            CommonParam param = new CommonParam();
+            bool success = false;
+            try
+            {
+                if (currentTreatment != null)
+                {
+                    string mess = null;
+
+                    bool IsContinue = true;
+                    frmReqTreatment frm = new frmReqTreatment(currentTreatment, reason =>
+                     {
+                         if (!String.IsNullOrEmpty(reason))
+                         {
+                             mess = reason;
+                         }
+                     }, IsClose =>
+                     {
+                         IsContinue = !IsClose;
+                     }
+                    );
+                    frm.ShowDialog();
+                    if (!IsContinue)
+                        return;
+                    WaitingManager.Show();
+                    MOS.SDO.HisTreatmentRequestUnfinishSDO sdo = new MOS.SDO.HisTreatmentRequestUnfinishSDO();
+                    sdo.ReasonUnfinish = mess;
+                    sdo.TreatmentID = currentTreatment.ID;
+                    bool unFinishTreatment = new Inventec.Common.Adapter.BackendAdapter(param).Post<bool>("/api/HisTreatment/RequestUnfinish", ApiConsumers.MosConsumer, sdo, param);
+                    //CloseTreatmentProcessor.TreatmentUnFinish(, param);
+                    WaitingManager.Hide();
+                    if (unFinishTreatment == true)
+                    {
+                        success = true;
+                        FillDataToGrid();
+                    }
+
+                    #region Show message
+                    MessageManager.Show(this.ParentForm, param, success);
+                    #endregion
+
+                    #region Process has exception
+                    SessionManager.ProcessTokenLost(param);
+                    #endregion
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
         private void BenhNangXinVe(object sender, ItemClickEventArgs e)
         {
             try
@@ -571,7 +627,7 @@ namespace HIS.Desktop.Plugins.TreatmentList
             }
             return patientTypeAlter;
         }
-        private HIS_DEPARTMENT_TRAN GetDepartmentTran(long treatmentId,long departmentId)
+        private HIS_DEPARTMENT_TRAN GetDepartmentTran(long treatmentId, long departmentId)
         {
             CommonParam param = new CommonParam();
             HIS_DEPARTMENT_TRAN departmentTran = null;
@@ -2944,7 +3000,7 @@ namespace HIS.Desktop.Plugins.TreatmentList
                     causeOfDeathADO.SevereIllNessInfo = severeIllnessInfo;
                     causeOfDeathADO.ListEventsCausesDeath = GetListEventsCausesDeath(severeIllnessInfo.ID);
                 }
-                frmCauseOfDeath frm = new frmCauseOfDeath(causeOfDeathADO, true,this.currentModule);
+                frmCauseOfDeath frm = new frmCauseOfDeath(causeOfDeathADO, true, this.currentModule);
                 frm.ShowDialog();
 
             }

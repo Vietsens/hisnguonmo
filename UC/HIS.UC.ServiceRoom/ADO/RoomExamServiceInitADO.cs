@@ -38,6 +38,7 @@ namespace HIS.UC.ServiceRoom.ADO
         public List<HIS_PATIENT_TYPE> CurrentPatientTypes { get; set; }
         public List<V_HIS_SERVICE_ROOM> HisServiceRooms { get; set; }
         public List<V_HIS_EXECUTE_ROOM_1> HisExecuteRooms { get; set; }
+        public List<L_HIS_ROOM_COUNTER_2> LHisRoomCounters2 { get; set; }
         public List<L_HIS_ROOM_COUNTER> LHisRoomCounters { get; set; }
 
         public string LciRoomName { get; set; }
@@ -67,8 +68,9 @@ namespace HIS.UC.ServiceRoom.ADO
             this.HisServiceRooms = serviceRooms;
         }
 
-        public RoomExamServiceInitADO(List<L_HIS_ROOM_COUNTER> executeRooms, List<V_HIS_SERVICE_ROOM> serviceRooms)
+        public RoomExamServiceInitADO(List<L_HIS_ROOM_COUNTER_2> executeRooms2, List<L_HIS_ROOM_COUNTER> executeRooms, List<V_HIS_SERVICE_ROOM> serviceRooms)
         {
+            this.LHisRoomCounters2 = executeRooms2;
             this.LHisRoomCounters = executeRooms;
             this.HisServiceRooms = serviceRooms;
         }

@@ -26,7 +26,7 @@ using System.Resources;
 
 namespace HIS.Desktop.Plugins.AssignPrescriptionPK
 {
-    class CommonBaseEditor
+    class CommonBaseEditor    
     {
         internal static void ValidateLookupWithTextEdit(LookUpEdit cbo, TextEdit textEdit, DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider dxValidationProviderEditor)
         {

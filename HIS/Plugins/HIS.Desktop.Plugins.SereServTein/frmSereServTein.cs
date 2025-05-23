@@ -18,6 +18,7 @@
 using DevExpress.Data;
 using DevExpress.XtraGrid.Views.Base;
 using DevExpress.XtraGrid.Views.Grid;
+using DevExpress.XtraRichEdit.Fields;
 using HIS.Desktop.ApiConsumer;
 using HIS.Desktop.Controls.Session;
 using HIS.Desktop.IsAdmin;
@@ -726,7 +727,17 @@ namespace HIS.Desktop.Plugins.SereServTein
                             IsuACR = true;
                         }
                     }
-                    var mlct = !String.IsNullOrEmpty(lblMlct.Text) ? lblMlct.Text.Substring(0, lblMlct.Text.IndexOf("(")) : "";
+                    //var mlct = !String.IsNullOrEmpty(lblMlct.Text) ? lblMlct.Text.Substring(0, lblMlct.Text.IndexOf("(")) : "";
+
+                    var mlct = "";
+                    if (!string.IsNullOrEmpty(lblMlct.Text))
+                    {
+                        int idx = lblMlct.Text.IndexOf("(");
+                        if (idx > 0)
+                            mlct = lblMlct.Text.Substring(0, idx);
+                        else
+                            mlct = lblMlct.Text;
+                    }
 
                     pdo.mLCTADOs = new MPS.Processor.Mps000096.PDO.MLCTADO()
                     {
@@ -1248,8 +1259,18 @@ namespace HIS.Desktop.Plugins.SereServTein
                             IsuACR = true;
                         }
                     }
-                     
-                    var mlct = !String.IsNullOrEmpty(lblMlct.Text) ? lblMlct.Text.Substring(0, lblMlct.Text.IndexOf("(")) : "";
+                    //var mlct = !String.IsNullOrEmpty(lblMlct.Text) ? lblMlct.Text.Substring(0, lblMlct.Text.IndexOf("(")) : "";
+
+                    var mlct = "";
+                    if (!string.IsNullOrEmpty(lblMlct.Text))
+                    {
+                        int idx = lblMlct.Text.IndexOf("(");
+                        if (idx > 0)
+                            mlct = lblMlct.Text.Substring(0, idx);
+                        else
+                            mlct = lblMlct.Text;
+                    }
+
                     mps000014RDO.mLCTADO = new MPS.Processor.Mps000014.PDO.MLCTADO()
                     {
                         EGFR = IseGFR ? mlct : null,
@@ -1257,7 +1278,6 @@ namespace HIS.Desktop.Plugins.SereServTein
                         UACR = IsuACR ? lblACRPRC.Text : null,
                         UPCR = !IsuACR ? lblACRPRC.Text : null,
                     };
-
                     WaitingManager.Hide();
                     MPS.ProcessorBase.Core.PrintData PrintData = null;
                     if (GlobalVariables.CheDoInChoCacChucNangTrongPhanMem == 2)
@@ -1268,11 +1288,9 @@ namespace HIS.Desktop.Plugins.SereServTein
                     {
                         PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000014RDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show, "");
                     }
-
                     Inventec.Common.SignLibrary.ADO.InputADO inputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode(_Treatment != null ? _Treatment.TREATMENT_CODE : "", printTypeCode, this.currentModule != null ? currentModule.RoomId : 0);
                     Inventec.Common.Logging.LogSystem.Info(_Treatment.TREATMENT_CODE);
                     PrintData.EmrInputADO = inputADO;
-
                     result = MPS.MpsPrinter.Run(PrintData);
                 }
             }

@@ -114,7 +114,7 @@ namespace HIS.Desktop.Plugins.TreatmentFinish.CloseTreatment
         #endregion
 
         #region Private method
-        private void loadDataTranPatiOld(MOS.EFMODEL.DataModels.HIS_TREATMENT treatment)
+        private void loadDataTranPatiOld(MOS.EFMODEL.DataModels.HIS_TREATMENT treatment) // load trong db
         {
             try
             {
@@ -196,7 +196,7 @@ namespace HIS.Desktop.Plugins.TreatmentFinish.CloseTreatment
                     txtHuongDieuTri.Text = treatment.TREATMENT_DIRECTION;
                     txtUsedMedicine.Text = GetUsedMedicine(treatment.ID);
                     //qtcode
-                    txtClinicalSigns.Text = treatment.CLINICAL_SIGNS; 
+                    txtClinicalSigns.Text = treatment.CLINICAL_SIGNS;
                     //qtcode
                     if (string.IsNullOrEmpty(txtUsedMedicine.Text)
                         && !string.IsNullOrEmpty(treatment.USED_MEDICINE))
@@ -387,7 +387,7 @@ namespace HIS.Desktop.Plugins.TreatmentFinish.CloseTreatment
             return result;
         }
 
-        private void SetDefaultValueControl()
+        private void SetDefaultValueControl() // load lưu tạm
         {
             try
             {
@@ -395,6 +395,10 @@ namespace HIS.Desktop.Plugins.TreatmentFinish.CloseTreatment
                 currentTreatmentFinishSDO = Form.hisTreatmentFinishSDO_process;
                 if (currentTreatmentFinishSDO != null)
                 {
+                    if (currentTreatmentFinishSDO.ClinicalSigns != null)
+                    {
+                        txtClinicalSigns.Text = currentTreatmentFinishSDO.ClinicalSigns;
+                    }
                     var mediOrgName = listMediOrg.FirstOrDefault(o => o.MEDI_ORG_CODE == currentTreatmentFinishSDO.TransferOutMediOrgCode);
                     if (mediOrgName != null)
                     {
@@ -424,6 +428,7 @@ namespace HIS.Desktop.Plugins.TreatmentFinish.CloseTreatment
                     }
                     txtTinhTrangNguoiBenh.Text = currentTreatmentFinishSDO.PatientCondition;
                     txtPhuongTienVanChuyen.Text = currentTreatmentFinishSDO.TransportVehicle;
+
                     //txtNguoiHoTong.Text = currentTreatmentFinishSDO.Transporter;
 
                     if (!string.IsNullOrEmpty(currentTreatmentFinishSDO.TransporterLoginnames))
@@ -460,6 +465,7 @@ namespace HIS.Desktop.Plugins.TreatmentFinish.CloseTreatment
                     }
                     txtPPKTThuoc.Text = currentTreatmentFinishSDO.TreatmentMethod;
                     txtHuongDieuTri.Text = currentTreatmentFinishSDO.TreatmentDirection;
+
                     if (currentTreatmentFinishSDO.TreatmentId > 0)
                         txtUsedMedicine.Text = GetUsedMedicine(currentTreatmentFinishSDO.TreatmentId);
                     if (string.IsNullOrEmpty(txtUsedMedicine.Text)
@@ -542,7 +548,7 @@ namespace HIS.Desktop.Plugins.TreatmentFinish.CloseTreatment
                 ValidationMaxLength(txtPhuongTienVanChuyen, 3000);
                 //qtcode
                 ValidationMaxLength(txtClinicalSigns, 3000);
-                ValidateTextEdit(txtClinicalSigns); 
+                ValidateTextEdit(txtClinicalSigns);
                 //qtcode
                 //ValidationMaxLength(txtNguoiHoTong, 200);
                 ValidationMaxLength(txtUsedMedicine, 3000);
@@ -894,7 +900,7 @@ namespace HIS.Desktop.Plugins.TreatmentFinish.CloseTreatment
         }
 
         private void cboTranPatiForm_Closed(object sender, DevExpress.XtraEditors.Controls.ClosedEventArgs e)
-        
+
         {
             try
             {
@@ -1050,8 +1056,9 @@ namespace HIS.Desktop.Plugins.TreatmentFinish.CloseTreatment
                     currentTreatmentFinishSDO.Valid1Year = false;
                 }
                 //qtcode
-                currentTreatmentFinishSDO.ClinicalSigns = txtClinicalSigns.Text.Trim(); 
+                currentTreatmentFinishSDO.ClinicalSigns = txtClinicalSigns.Text.Trim(); // lưu ở lưu tạm
                 //qtcode
+
                 MyGetData(currentTreatmentFinishSDO);
                 this.Close();
             }
@@ -1390,6 +1397,7 @@ namespace HIS.Desktop.Plugins.TreatmentFinish.CloseTreatment
 
                 txtHuongDieuTri.Text = data.TREATMENT_DIRECTION;
                 txtTinhTrangNguoiBenh.Text = data.PATIENT_CONDITION;
+
                 txtPPKTThuoc.Text = data.TREATMENT_METHOD;
                 txtPhuongTienVanChuyen.Text = data.TRANSPORT_VEHICLE;
                 txtUsedMedicine.Text = data.USED_MEDICINE;

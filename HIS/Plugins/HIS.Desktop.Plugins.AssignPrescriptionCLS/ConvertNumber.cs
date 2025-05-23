@@ -15,6 +15,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+using HIS.Desktop.Plugins.AssignPrescriptionCLS.Config;
 using System;
 using System.Globalization;
 using System.Text;
@@ -143,6 +144,32 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS
                 rN = rN / i;
                 rD = rD / i;
             }
+        }
+        public static string ConvertDecToFracByConfig(double dec, int numberDisplaySeperateFormatAmount)
+        {
+            string result = "";
+            try
+            {
+                if (dec == 0)
+                {
+                    result = "";
+                }
+                else if (HisConfigCFG.IsTutorialNumberIsFrac)
+                {
+                    result = ConvertNumber.Dec2frac(dec);
+                }
+                else
+                {
+                    result = Inventec.Common.Number.Convert.NumberToStringRoundAuto((decimal)(dec), numberDisplaySeperateFormatAmount);
+                }
+                Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData("HisConfigCFG.IsTutorialNumberIsFrac", HisConfigCFG.IsTutorialNumberIsFrac) + Inventec.Common.Logging.LogUtil.TraceData("numberDisplaySeperateFormatAmount", numberDisplaySeperateFormatAmount) + Inventec.Common.Logging.LogUtil.TraceData("result", result));
+            }
+            catch (Exception ex)
+            {
+                result = "";
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+            return result;
         }
     }
 }

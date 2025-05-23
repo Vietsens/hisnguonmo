@@ -84,7 +84,7 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
     {
         #region Declare
         HisTreatmentFinishSDO hisTreatmentFinishSDO;
-        internal MOS.SDO.WorkPlaceSDO WorkPlaceSDO;
+        internal MOS.SDO.WorkPlaceSDO WorkPlaceSDO; 
         internal long treatmentId = 0;
         internal MOS.EFMODEL.DataModels.HIS_TREATMENT currentHisTreatment = null;
         //internal MOS.EFMODEL.DataModels.HIS_TREATMENT currentHisTreatment_ = null;
@@ -2077,8 +2077,10 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
 
                     FormTransfer = new CloseTreatment.FormTransfer(this.module, currentHisTreatment);
                     FormTransfer.MyGetData = new CloseTreatment.FormTransfer.GetString(TranPatiDataTreatmentFinish);
-                    FormTransfer.Form = this;
-                    FormTransfer.ShowDialog();
+                    
+                    Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData("MyGetData", FormTransfer.MyGetData));
+                    FormTransfer.Form = this; 
+                    FormTransfer.ShowDialog(); 
                     cboTTExt.EditValue = null;
                 }
                 else if (data.ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_END_TYPE.ID__HEN)
@@ -2574,6 +2576,11 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
                     return;
                 }
 
+                if (!this.CheckWarnNotRequiredCompleteHasNoSample(ValidationDataType.PopupMessage, ref warningADONew))
+                {
+                    return;
+                }
+
                 if (!this.CheckSameHein_ForSave(ValidationDataType.PopupMessage, ref warningADONew))
                 {
                     return;
@@ -2768,7 +2775,7 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
 
                     BtnEndCode.Enabled = CheckTreatmentEndCode();
                 }
-                Inventec.Common.Logging.LogSystem.Info("Save treatmentFinish 6");
+                Inventec.Common.Logging.LogSystem.Info("Save treatmentFinish 6"); 
             }
             catch (Exception ex)
             {
@@ -2780,7 +2787,7 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
         {
             throw new NotImplementedException();
         }
-
+        
         private bool CheckMustChooseSeviceExamOption()
         {
             bool rs = true;
@@ -3099,6 +3106,13 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
                 valid = this.IsValiICDCause();
                 valid = dxValidationProvider.Validate() && valid;
                 if (!valid) return;
+
+                List<WarningADO> warningADONew = new List<WarningADO>();
+                
+                if (!this.CheckWarnNotRequiredCompleteHasNoSample(ValidationDataType.PopupMessage, ref warningADONew))
+                {
+                    return;
+                }
                 GetValueUC();
                 if (Inventec.Common.String.CountVi.Count(codeCheckCD) > 100)
                 {
@@ -5028,6 +5042,11 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
                 }
 
                 if (!this.Check_INTRUCTION_TIME_and_DEPARTMENT_IN_TIME_ForSave(ValidationDataType.GetListMessage, ref this.warningADOs))
+                {
+                    return;
+                }
+
+                if (!this.CheckWarnNotRequiredCompleteHasNoSample(ValidationDataType.GetListMessage, ref this.warningADOs))
                 {
                     return;
                 }

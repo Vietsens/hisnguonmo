@@ -41,6 +41,10 @@ using DevExpress.XtraGrid.Views.Tile;
 using System.Drawing.Drawing2D;
 using System.Collections;
 using DevExpress.XtraGrid.Views.Base;
+using System.Net;
+using System.Net.Http;
+using Newtonsoft.Json;
+using System.Text;
 
 namespace HIS.Desktop.Plugins.ServiceExecute
 {
@@ -67,7 +71,8 @@ namespace HIS.Desktop.Plugins.ServiceExecute
         internal enum RightButtonType
         {
             Copy,
-            ChangeStt
+            ChangeStt,
+            PhanTichHinhAnhYKhoa
         }
         List<ADO.ServiceADO> listServiceADOForAllInOne;
         ADO.ServiceADO sereServ;
@@ -96,52 +101,52 @@ namespace HIS.Desktop.Plugins.ServiceExecute
         {
             try
             {
-            this.panelControlCamera.Controls.Clear();
-            if (valueType == 2)
-            {
-                this.ucCameraDXC1 = new UCCameraDXC(DelegateCaptureImage);
-                this.panelControlCamera.Controls.Add(this.ucCameraDXC1);
-                this.ucCameraDXC1.Dock = DockStyle.Fill;
-                if (!this.ucCameraDXC1.IsDisposed)
+                this.panelControlCamera.Controls.Clear();
+                if (valueType == 2)
                 {
-                    this.ucCameraDXC1.Stop();
+                    this.ucCameraDXC1 = new UCCameraDXC(DelegateCaptureImage);
+                    this.panelControlCamera.Controls.Add(this.ucCameraDXC1);
+                    this.ucCameraDXC1.Dock = DockStyle.Fill;
+                    if (!this.ucCameraDXC1.IsDisposed)
+                    {
+                        this.ucCameraDXC1.Stop();
+                    }
+                    this.ucCameraDXC1.Start();
+                    this.ucCameraDXC1.SetDisable();
+                    this.ucCameraDXC1.VisibleControl(VisibleOptionCamera);
+                    this.ucCameraDXC1.IsAutoSaveImageInStore = AppConfigKeys.IsSavingInLocal;
+                    this.ucCameraDXC1.SetClientCode(this.currentServiceReq.TDL_TREATMENT_CODE);
                 }
-                this.ucCameraDXC1.Start();
-                this.ucCameraDXC1.SetDisable();
-                this.ucCameraDXC1.VisibleControl(VisibleOptionCamera);
-                this.ucCameraDXC1.IsAutoSaveImageInStore = AppConfigKeys.IsSavingInLocal;
-                this.ucCameraDXC1.SetClientCode(this.currentServiceReq.TDL_TREATMENT_CODE);
-            }
-            else
-            {
-                this.ucCamera1 = new UCCamera(DelegateCaptureImage, false, true);
-                this.panelControlCamera.Controls.Add(this.ucCamera1);
-                this.ucCamera1.Dock = DockStyle.Fill;
-                if (!this.ucCamera1.IsDisposed)
+                else
                 {
-                    this.ucCamera1.Stop();
+                    this.ucCamera1 = new UCCamera(DelegateCaptureImage, false, true);
+                    this.panelControlCamera.Controls.Add(this.ucCamera1);
+                    this.ucCamera1.Dock = DockStyle.Fill;
+                    if (!this.ucCamera1.IsDisposed)
+                    {
+                        this.ucCamera1.Stop();
+                    }
+                    this.ucCamera1.Start();
+                    this.ucCamera1.SetDisable();
+                    this.ucCamera1.VisibleControl(VisibleOptionCamera);
+                    this.ucCamera1.IsAutoSaveImageInStore = AppConfigKeys.IsSavingInLocal;
+                    this.ucCamera1.SetClientCode(this.currentServiceReq.TDL_TREATMENT_CODE);
                 }
-                this.ucCamera1.Start();
-                this.ucCamera1.SetDisable();
-                this.ucCamera1.VisibleControl(VisibleOptionCamera);
-                this.ucCamera1.IsAutoSaveImageInStore = AppConfigKeys.IsSavingInLocal;
-                this.ucCamera1.SetClientCode(this.currentServiceReq.TDL_TREATMENT_CODE);
-            }
 
-            string shortcutCapture = ConfigApplicationWorker.Get<string>(AppConfigKeys.CONFIG_KEY__MODULE_CAMERA__SHORTCUT_KEY);
-            Inventec.Common.Logging.LogSystem.Info("Start Camera 4");
-            try
-            {
-                DevExpress.XtraBars.BarShortcut shortcut1 = new DevExpress.XtraBars.BarShortcut((Keys)Enum.Parse(typeof(Keys), shortcutCapture, true));
-                //btnCapture.ItemShortcut = shortcut1;
-            }
-            catch (Exception ex)
-            {
-                Inventec.Common.Logging.LogSystem.Warn("Gan phim tat cho nut chup anh that bai, " + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => shortcutCapture), shortcutCapture), ex);
-            }
+                string shortcutCapture = ConfigApplicationWorker.Get<string>(AppConfigKeys.CONFIG_KEY__MODULE_CAMERA__SHORTCUT_KEY);
+                Inventec.Common.Logging.LogSystem.Info("Start Camera 4");
+                try
+                {
+                    DevExpress.XtraBars.BarShortcut shortcut1 = new DevExpress.XtraBars.BarShortcut((Keys)Enum.Parse(typeof(Keys), shortcutCapture, true));
+                    //btnCapture.ItemShortcut = shortcut1;
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn("Gan phim tat cho nut chup anh that bai, " + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => shortcutCapture), shortcutCapture), ex);
+                }
 
-            maxImage = HisConfigs.Get<int>("HIS.Desktop.Plugins.Camera.MaxImage");
-            Inventec.Common.Logging.LogSystem.Info("Start Camera 5");
+                maxImage = HisConfigs.Get<int>("HIS.Desktop.Plugins.Camera.MaxImage");
+                Inventec.Common.Logging.LogSystem.Info("Start Camera 5");
 
             }
             catch (Exception ex)
@@ -600,6 +605,13 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                     itemStt.Tag = RightButtonType.ChangeStt;
                     itemStt.ItemClick += new ItemClickEventHandler(MouseRightClick);
                     menu.AddItems(new BarItem[] { itemStt });
+
+
+                    BarButtonItem itemPTHAYK = new BarButtonItem(this.barManager1, ResourceMessage.PhanTichHinhAnhYKhoa);
+                    itemPTHAYK.Tag = RightButtonType.PhanTichHinhAnhYKhoa;
+                    itemPTHAYK.ItemClick += new ItemClickEventHandler(MouseRightClick);
+                    menu.AddItems(new BarItem[] { itemPTHAYK });
+
                 }
 
                 menu.ShowPopup(Cursor.Position);
@@ -624,6 +636,13 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                             break;
                         case RightButtonType.ChangeStt:
                             ShowFromChangeStt();
+                            break;
+                        case RightButtonType.PhanTichHinhAnhYKhoa:
+                            var result = UCServiceExecute.PhanTichHinhAnhYKhoa(this.listImage);
+                            if (result != null && !string.IsNullOrEmpty(result.Results))
+                            {
+                                XtraMessageBox.Show(this, result.Results, "Thông báo", DevExpress.Utils.DefaultBoolean.True);
+                            }
                             break;
                         default:
                             break;
@@ -650,6 +669,115 @@ namespace HIS.Desktop.Plugins.ServiceExecute
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
+        }
+
+        private void PhanTichHinhAnhYKhoa()
+        {
+            try
+            {
+                if (this.listImage != null && this.listImage.Count > 0 && this.listImage.Any(o => o.IsChecked))
+                {
+
+                    if (!string.IsNullOrEmpty(AppConfigKeys.AIConnectionInfo))
+                    {
+                        var Base64Imagess = new List<string>();
+                        foreach (ImageADO img in this.listImage)
+                        {
+                            string base64String = ConvertStreamToBase64(img.streamImage);
+                            Base64Imagess.Add(base64String);
+                        }
+
+                        var result = CreateRequest<ResultADO>(AppConfigKeys.AIConnectionInfo, new Dictionary<string, object>()
+                        {
+                            { "AppCode", "HIS" },
+                            { "Base64Imagess", Base64Imagess },
+                            { "Prompt", "Phân tích nội dung hình ảnh y tế được cung cấp. Mô tả chi tiết các đặc điểm bất thường (nếu có) như màu sắc, hình dạng, kích thước, mật độ, hoặc các dấu hiệu lạ. Đưa ra các giả thuyết hoặc khả năng y tế có thể liên quan đến những đặc điểm đó. Gợi ý bệnh nhân nên khám tại chuyên khoa nào để được chẩn đoán chính xác hơn. Đưa ra các lời khuyên ban đầu về cách giảm đau hoặc tự theo dõi trước khi đi khám. Lưu ý: Bạn chỉ mô tả và gợi ý một cách tham khảo, không đưa ra chẩn đoán y khoa chính thức. Hãy trả lời hoàn toàn bằng tiếng Việt, chính xác, chi tiết và dễ hiểu." },
+
+                        });
+                        if (result != null && !string.IsNullOrEmpty(result.Results))
+                        {
+                            XtraMessageBox.Show(this, result.Results, "Thông báo", DevExpress.Utils.DefaultBoolean.True);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+        static string ConvertStreamToBase64(Stream stream)
+        {
+            using (MemoryStream memoryStream = new MemoryStream())
+            {
+                stream.CopyTo(memoryStream);
+                byte[] bytes = memoryStream.ToArray();
+                return "data:image/jpeg;base64," + Convert.ToBase64String(bytes);
+            }
+        }
+        public T CreateRequest<T>(string requestUri, Dictionary<string, object> sendData)
+        {
+            T data = default(T);
+            try
+            {
+
+                ServicePointManager.Expect100Continue = true;
+                ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
+                using (var client = new HttpClient())
+                {
+                    string fullrequestUri = requestUri;
+                    
+                    client.BaseAddress = new Uri(requestUri);
+                    client.Timeout = new TimeSpan(0, 5, 0);
+                    client.DefaultRequestHeaders.Accept.Clear();
+                    var stringPayload = JsonConvert.SerializeObject(sendData);
+                    var content = new StringContent(stringPayload, Encoding.UTF8, "application/json");
+                   
+
+                    HttpResponseMessage resp = null;
+                    try
+                    {
+                        Inventec.Common.Logging.LogSystem.Debug("_____sendJsonData : " + stringPayload);
+                        resp = client.PostAsync(fullrequestUri, content).Result;
+                    }
+                    catch (HttpRequestException ex)
+                    {
+                        throw new Exception("Lỗi kết nối đến");
+                    }
+                    catch (Exception ex)
+                    {
+                        throw ex;
+                    }
+                    if (resp == null || !resp.IsSuccessStatusCode)
+                    {
+                        int statusCode = resp.StatusCode.GetHashCode();
+                        if (resp.Content != null)
+                        {
+                            try
+                            {
+                                string errorData = resp.Content.ReadAsStringAsync().Result;
+                                Inventec.Common.Logging.LogSystem.Error("errorData: " + errorData);
+                            }
+                            catch { }
+                        }
+
+                        throw new Exception(string.Format(" trả về thông tin lỗi. Mã lỗi: {0}", statusCode));
+                    }
+                    string responseData = resp.Content.ReadAsStringAsync().Result;
+                    Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => responseData), responseData));
+                    data = JsonConvert.DeserializeObject<T>(responseData);
+                    if (data == null)
+                    {
+                        throw new Exception("Dữ liệu trả về không đúng");
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+
+            return data;
         }
 
         private void ProsseccCopyImageToClipboard()

@@ -36,7 +36,7 @@ using System.Windows.Forms;
 
 namespace HIS.Desktop.Plugins.TreatmentFinish
 {
-    public partial class FormTreatmentFinish
+    public partial class FormTreatmentFinish : HIS.Desktop.Utility.FormBase
     {
         enum ValidationDataType
         {
@@ -501,6 +501,64 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
                         warning.IsSkippable = false;
                         warning.Description = ResourceMessage.BenhNhanThieuCanNang;
                         listWarningADO.Add(warning);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+                valid = false;
+            }
+            return valid;
+        }
+
+        private bool CheckWarnNotRequiredCompleteHasNoSample(ValidationDataType validationDataType, ref List<WarningADO> listWarningADO)
+        {
+            bool valid = true;
+            try
+            {
+                if (validationDataType == ValidationDataType.PopupMessage && this._isSkipWarningForSave == true)
+                {
+                    return valid;
+                }
+                string serviceReqCode = "";
+
+                if (ConfigKey.WarnNotRequiredCompleteHasNoSample == "1")
+                {
+                    HisServiceReqFilter srFilter = new HisServiceReqFilter();
+
+                    srFilter.TREATMENT_ID = currentHisTreatment.ID;
+                    srFilter.SERVICE_REQ_TYPE_ID = IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__XN;
+                    srFilter.IS_NOT_REQUIRED_COMPLETE = true;
+                    srFilter.ORDER_DIRECTION = "DESC";
+                    srFilter.ORDER_FIELD = "CREATE_TIME";
+
+                    var examServiceReqs = new BackendAdapter(new CommonParam()).Get<List<HIS_SERVICE_REQ>>("api/HisServiceReq/Get", ApiConsumers.MosConsumer, srFilter, null);
+
+                    if (examServiceReqs != null && examServiceReqs.Count > 0)
+                    {
+                        var serviceReqs = examServiceReqs.Where(o => o.SAMPLE_TIME == null).ToList();
+                        if (serviceReqs != null && serviceReqs.Count > 0)
+                        {
+                            serviceReqCode = string.Join(", ", serviceReqs.Select(o => o.SERVICE_REQ_CODE));
+
+                            if (validationDataType == ValidationDataType.PopupMessage)
+                            {
+                                if (DevExpress.XtraEditors.XtraMessageBox.Show(String.Format("Y lệnh {0} chưa có thông tin lấy mẫu.Bạn có muốn tiếp tục?", serviceReqCode),
+                               "Thông báo",
+                              MessageBoxButtons.YesNo) == DialogResult.No)
+                                {
+                                    return false;
+                                }
+                            }
+                            else if (validationDataType == ValidationDataType.GetListMessage && listWarningADO != null)
+                            {
+                                WarningADO warning = new WarningADO();
+                                warning.IsSkippable = true;
+                                warning.Description = String.Format(ResourceMessage.YLenhChuaCoThongTinLayMau, serviceReqCode);
+                                listWarningADO.Add(warning);
+                            }
+                        }
                     }
                 }
             }

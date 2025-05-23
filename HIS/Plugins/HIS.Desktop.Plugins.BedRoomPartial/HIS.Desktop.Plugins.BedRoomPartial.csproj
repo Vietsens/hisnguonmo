@@ -63,8 +63,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\LIB\EMR\EMR.SDO.dll</HintPath>
     </Reference>
-    <Reference Include="EMR_MAIN">
-      <HintPath>..\..\..\..\lib\EMRLinksoft\EMR_MAIN.dll</HintPath>
+    <Reference Include="EMR_MAIN, Version=25.1.12.1, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\EMR_MAIN.dll</HintPath>
     </Reference>
     <Reference Include="HIS.Common.Treatment, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -191,19 +192,17 @@
     <Reference Include="Inventec.UC.Paging">
       <HintPath>..\..\..\..\LIB\Inventec.UC\Inventec.UC.Paging\Inventec.UC.Paging.dll</HintPath>
     </Reference>
-    <Reference Include="MOS.EFMODEL, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\LIB\MOS\MOS.EFMODEL.dll</HintPath>
+    <Reference Include="MOS.EFMODEL">
+      <HintPath>..\..\..\..\lib\MOS\MOS.EFMODEL.dll</HintPath>
     </Reference>
     <Reference Include="MOS.Filter">
-      <HintPath>..\..\..\..\LIB\MOS\MOS.Filter.dll</HintPath>
+      <HintPath>..\..\..\..\lib\MOS\MOS.Filter.dll</HintPath>
     </Reference>
     <Reference Include="MOS.LibraryHein.Bhyt, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\LIB\MOS\MOS.LibraryHein.Bhyt.dll</HintPath>
     </Reference>
-    <Reference Include="MOS.SDO, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
+    <Reference Include="MOS.SDO">
       <HintPath>..\..\..\..\lib\MOS\MOS.SDO.dll</HintPath>
     </Reference>
     <Reference Include="MOS.TDO">
@@ -236,7 +235,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ADO\DepartmentADO.cs" />
     <Compile Include="ADO\DepartmentFilterADO.cs" />
+    <Compile Include="ADO\EmployeeADO.cs" />
     <Compile Include="ADO\PatientFilterADO.cs" />
     <Compile Include="ADO\SereServADO.cs" />
     <Compile Include="ADO\ServiceReqGroupByDateADO.cs" />
@@ -269,6 +270,18 @@
     </Compile>
     <Compile Include="Key\HisConfigCFG.cs" />
     <Compile Include="Key\HisConfigKeys.cs" />
+    <Compile Include="Popup\frmConsultation.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Popup\frmConsultation.Designer.cs">
+      <DependentUpon>frmConsultation.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Popup\frmSpecialty.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Popup\frmSpecialty.Designer.cs">
+      <DependentUpon>frmSpecialty.cs</DependentUpon>
+    </Compile>
     <Compile Include="Processor\BedRoomPartialProcessor.cs" />
     <Compile Include="Processor\BedRoomPopupMenuProcessor.cs">
       <SubType>UserControl</SubType>
@@ -326,6 +339,12 @@
     <EmbeddedResource Include="FrmFollow.resx">
       <DependentUpon>FrmFollow.cs</DependentUpon>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Popup\frmConsultation.resx">
+      <DependentUpon>frmConsultation.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Popup\frmSpecialty.resx">
+      <DependentUpon>frmSpecialty.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

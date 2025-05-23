@@ -49,7 +49,7 @@ namespace HIS.UC.UCServiceRoomInfo
             return null;
         }
 
-        public List<L_HIS_ROOM_COUNTER> GetLCounter1()
+        public List<L_HIS_ROOM_COUNTER> GetLCounter()
         {
             try
             {
@@ -58,6 +58,40 @@ namespace HIS.UC.UCServiceRoomInfo
                 exetuteFilter.IS_ACTIVE = IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE;
                 exetuteFilter.BRANCH_ID = WorkPlace.GetBranchId();
                 return new Inventec.Common.Adapter.BackendAdapter(new CommonParam()).Get<List<L_HIS_ROOM_COUNTER>>("api/HisRoom/GetCounterLView", ApiConsumers.MosConsumer, exetuteFilter, null);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+            return null;
+        }
+
+        public List<L_HIS_ROOM_COUNTER_2> GetLCounter2()
+        {
+            try
+            {
+                HisRoomCounterLViewFilter exetuteFilter = new HisRoomCounterLViewFilter();
+                exetuteFilter.IS_EXAM = true;
+                exetuteFilter.IS_ACTIVE = IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE;
+                exetuteFilter.BRANCH_ID = WorkPlace.GetBranchId();
+                return new Inventec.Common.Adapter.BackendAdapter(new CommonParam()).Get<List<L_HIS_ROOM_COUNTER_2>>("api/HisRoom/GetCounterLView2", ApiConsumers.MosConsumer, exetuteFilter, null);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+            return null;
+        }
+
+        public async Task<List<L_HIS_ROOM_COUNTER_2>> GetLCounter1Async2()
+        {
+            try
+            {
+                HisRoomCounterLViewFilter exetuteFilter = new HisRoomCounterLViewFilter();
+                exetuteFilter.IS_EXAM = true;
+                exetuteFilter.IS_ACTIVE = IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE;
+                exetuteFilter.BRANCH_ID = WorkPlace.GetBranchId();
+                return await new Inventec.Common.Adapter.BackendAdapter(new CommonParam()).GetAsync<List<L_HIS_ROOM_COUNTER_2>>("api/HisRoom/GetCounterLView2", ApiConsumers.MosConsumer, exetuteFilter, null);
             }
             catch (Exception ex)
             {

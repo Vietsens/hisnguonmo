@@ -106,17 +106,14 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject46 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject47 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject48 = new DevExpress.Utils.SerializableAppearanceObject();
-<<<<<<< HEAD
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject49 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject50 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject51 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject52 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject53 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject54 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject55 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject56 = new DevExpress.Utils.SerializableAppearanceObject();
-=======
->>>>>>> dangth
+            //DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject53 = new DevExpress.Utils.SerializableAppearanceObject();
+            //DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject54 = new DevExpress.Utils.SerializableAppearanceObject();
+            //DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject55 = new DevExpress.Utils.SerializableAppearanceObject();
+            //DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject56 = new DevExpress.Utils.SerializableAppearanceObject();
             this.dxValidationProviderForLeftPanel = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider(this.components);
             this.dxErrorProviderForSpinVat = new DevExpress.XtraEditors.DXErrorProvider.DXErrorProvider(this.components);
             this.layoutControl1 = new DevExpress.XtraLayout.LayoutControl();
@@ -1434,16 +1431,13 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             // lblARCPCR
             // 
             this.lblARCPCR.AutoSizeMode = DevExpress.XtraEditors.LabelAutoSizeMode.None;
-<<<<<<< HEAD
             this.lblARCPCR.Location = new System.Drawing.Point(735, 175);
             this.lblARCPCR.Name = "lblARCPCR";
             this.lblARCPCR.Size = new System.Drawing.Size(128, 20);
-=======
             this.lblARCPCR.Location = new System.Drawing.Point(953, 204);
             this.lblARCPCR.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.lblARCPCR.Name = "lblARCPCR";
             this.lblARCPCR.Size = new System.Drawing.Size(199, 20);
->>>>>>> dangth
             this.lblARCPCR.StyleController = this.layoutControl3;
             this.lblARCPCR.TabIndex = 71;
             // 
@@ -7323,15 +7317,12 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             this.lciARCPCR.AppearanceItemCaption.Options.UseTextOptions = true;
             this.lciARCPCR.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lciARCPCR.Control = this.lblARCPCR;
-<<<<<<< HEAD
             this.lciARCPCR.Location = new System.Drawing.Point(217, 144);
             this.lciARCPCR.Name = "lciARCPCR";
             this.lciARCPCR.Size = new System.Drawing.Size(217, 24);
-=======
             this.lciARCPCR.Location = new System.Drawing.Point(290, 168);
             this.lciARCPCR.Name = "lciARCPCR";
             this.lciARCPCR.Size = new System.Drawing.Size(290, 26);
->>>>>>> dangth
             this.lciARCPCR.Text = "uACR:";
             this.lciARCPCR.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lciARCPCR.TextSize = new System.Drawing.Size(80, 20);

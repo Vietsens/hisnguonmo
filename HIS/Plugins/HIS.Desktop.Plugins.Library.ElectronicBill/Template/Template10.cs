@@ -38,7 +38,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.Template
 
         public object Run()
         {
-            List<ProductBase> result = new List<ProductBase>();
+            List<ProductBasePlus> result = new List<ProductBasePlus>();
             if (DataInput.SereServBill != null && DataInput.SereServBill.Count > 0)
             {
                 int roundNum = 4;
@@ -52,7 +52,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.Template
 
                 //1
                 var sereServXn = DataInput.SereServBill.Where(o => o.TDL_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__XN || o.TDL_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__GPBL).ToList();
-                ProductBase productXn = new ProductBase();
+                ProductBasePlus productXn = new ProductBasePlus();
                 productXn.ProdCode = "TONG";
                 productXn.ProdName = "Xét nghiệm (Medical test)";
                 if (sereServXn != null && sereServXn.Count > 0)
@@ -69,7 +69,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.Template
                     || o.TDL_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__TDCN
                     || o.TDL_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__SA
                     || o.TDL_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__NS).ToList();
-                ProductBase productCdha = new ProductBase();
+                ProductBasePlus productCdha = new ProductBasePlus();
                 productCdha.ProdCode = "TONG";
                 productCdha.ProdName = "CĐHA - TDCN (Diagnostic imaging - Functional assessments)";
                 if (sereServCdha != null && sereServCdha.Count > 0)
@@ -84,7 +84,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.Template
                 //3
                 var sereServTvt = DataInput.SereServBill.Where(o => o.TDL_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__THUOC
                     || o.TDL_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__VT).ToList();
-                ProductBase productTvt = new ProductBase();
+                ProductBasePlus productTvt = new ProductBasePlus();
                 productTvt.ProdCode = "TONG";
                 productTvt.ProdName = "Thuốc - VTYT (Medication - Medical supplies)";
                 if (sereServTvt != null && sereServTvt.Count > 0)
@@ -98,7 +98,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.Template
 
                 //4
                 var sereServPttt = DataInput.SereServBill.Where(o => o.TDL_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__PT || o.TDL_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__TT).ToList();
-                ProductBase productPttt = new ProductBase();
+                ProductBasePlus productPttt = new ProductBasePlus();
                 productPttt.ProdCode = "TONG";
                 productPttt.ProdName = "Thủ thuật - phẫu thuật (Medical procedures - Surgery)";
                 if (sereServPttt != null && sereServPttt.Count > 0)
@@ -112,7 +112,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.Template
 
                 //5
                 var sereServKh = DataInput.SereServBill.Where(o => o.TDL_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__KH).ToList();
-                ProductBase productKh = new ProductBase();
+                ProductBasePlus productKh = new ProductBasePlus();
                 productKh.ProdCode = "TONG";
                 productKh.ProdName = "Tiền khám (Examination cost)";
                 if (sereServKh != null && sereServKh.Count > 0)
@@ -126,7 +126,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.Template
 
                 //6
                 var sereServG = DataInput.SereServBill.Where(o => o.TDL_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__G).ToList();
-                ProductBase productG = new ProductBase();
+                ProductBasePlus productG = new ProductBasePlus();
                 productG.ProdCode = "TONG";
                 productG.ProdName = "Tiền giường (Hospital bed cost)";
                 if (sereServG != null && sereServG.Count > 0)
@@ -156,7 +156,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.Template
                 };
 
                 var sereServKhac = DataInput.SereServBill.Where(o => !allType.Contains(o.TDL_SERVICE_TYPE_ID ?? 0)).ToList();
-                ProductBase productKhac = new ProductBase();
+                ProductBasePlus productKhac = new ProductBasePlus();
                 productKhac.ProdCode = "TONG";
                 productKhac.ProdName = "Khác (Others)";
                 if (sereServKhac != null && sereServKhac.Count > 0)
@@ -188,13 +188,13 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.Template
                 discount = Math.Round(discount, roundNum, MidpointRounding.AwayFromZero);
 
                 //8
-                ProductBase productTongVp = new ProductBase();
+                ProductBasePlus productTongVp = new ProductBasePlus();
                 productTongVp.ProdCode = "0";
                 productTongVp.ProdName = "Tổng viện phí (Total hospital cost)";
                 productTongVp.Amount = totalPrice + discount;
                 result.Add(productTongVp);
                 //9
-                ProductBase productThuBn = new ProductBase();
+                ProductBasePlus productThuBn = new ProductBasePlus();
                 productThuBn.ProdCode = "0";
                 productThuBn.ProdName = "+ Tổng thu BN (Total Patient Revenue)";
                 productThuBn.Amount = totalPrice - billFund;
@@ -202,7 +202,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.Template
                 result.Add(productThuBn);
 
                 //10
-                ProductBase productCctbh = new ProductBase();
+                ProductBasePlus productCctbh = new ProductBasePlus();
                 productCctbh.ProdCode = "0";
                 productCctbh.ProdName = "- Cùng chi trả BH (Patient payment)";
                 productCctbh.Amount = DataInput.SereServBill.Sum(o => (o.TDL_TOTAL_PATIENT_PRICE_BHYT ?? 0) - (o.TDL_DISCOUNT ?? 0));
@@ -214,7 +214,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.Template
                 }
 
                 //11
-                ProductBase productDichVu = new ProductBase();
+                ProductBasePlus productDichVu = new ProductBasePlus();
                 productDichVu.ProdCode = "0";
                 productDichVu.ProdName = "- Dịch vụ (Service cost)";
                 productDichVu.Amount = DataInput.SereServBill.Sum(o => o.PRICE - ((o.TDL_TOTAL_PATIENT_PRICE_BHYT ?? 0) - (o.TDL_DISCOUNT ?? 0)));
@@ -259,14 +259,14 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.Template
                 }
 
                 //12
-                ProductBase productBillFund = new ProductBase();
+                ProductBasePlus productBillFund = new ProductBasePlus();
                 productBillFund.ProdCode = "0";
                 productBillFund.ProdName = "+ Bảo lãnh viện phí (Hospital expenses insurance)";
                 productBillFund.Amount = billFund;
                 result.Add(productBillFund);
 
                 //13
-                ProductBase productDiscount = new ProductBase();
+                ProductBasePlus productDiscount = new ProductBasePlus();
                 productDiscount.ProdCode = "0";
                 productDiscount.ProdName = "+ Giảm giá (Discount)";
                 productDiscount.Amount = discount;
@@ -277,7 +277,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.Template
                 //Tại thời điểm tạo giao dịch đã lưu các thông tin tạm ứng, hoàn ứng, kết chuyển
                 //số tiền tạm ứng tại thời điểm thanh toán sẽ là tổng tiền tạm ứng - hoàn ứng - kết chuyển
                 //thanh toán lần 1 kết chuyển và hoàn ứng hết thì lần thanh toán 2 sẽ còn số tiền tạm ứng lần 2.
-                ProductBase productTamThu = new ProductBase();
+                ProductBasePlus productTamThu = new ProductBasePlus();
                 productTamThu.ProdCode = "0";
                 productTamThu.ProdName = "Tạm thu (Advance received)";
 
@@ -295,7 +295,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.Template
                 result.Add(productTamThu);
 
                 //15 Thu thêm/thoái trả
-                ProductBase productThuTra = new ProductBase();
+                ProductBasePlus productThuTra = new ProductBasePlus();
                 productThuTra.ProdCode = "0";
                 productThuTra.ProdName = "+ Thu thêm (Additional revenue)";
                 productThuTra.Amount = productThuBn.Amount - productTamThu.Amount;

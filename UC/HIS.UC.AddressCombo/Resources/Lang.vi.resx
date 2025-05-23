@@ -121,7 +121,7 @@
     <value>layoutControl1</value>
   </data>
   <data name="UCAddressCombo.lcgAddress.Text" xml:space="preserve">
-    <value>Địa chỉ liên hệ</value>
+    <value>Địa chỉ liên hệ (F11)</value>
   </data>
   <data name="UCAddressCombo.lciAddress.Phone.Text" xml:space="preserve">
     <value>ĐT:</value>

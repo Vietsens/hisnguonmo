@@ -204,6 +204,9 @@
   <data name="NgayIn" xml:space="preserve">
     <value>ပုံနှိပ်ရက်စွဲ- {0}</value>
   </data>
+  <data name="PhanTichHinhAnhYKhoa" xml:space="preserve">
+    <value>PhanTichHinhAnhYKhoa</value>
+  </data>
   <data name="PhieuPhauThuatThuThuat" xml:space="preserve">
     <value>ခွဲစိတ်မှု ကတ်ပြား</value>
   </data>

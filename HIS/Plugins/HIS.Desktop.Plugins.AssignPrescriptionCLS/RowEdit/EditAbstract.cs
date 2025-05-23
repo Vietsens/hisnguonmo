@@ -1,4 +1,4 @@
-/* IVT
+﻿/* IVT
  * @Project : hisnguonmo
  * Copyright (C) 2017 INVENTEC
  *  
@@ -15,6 +15,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+using DevExpress.XtraEditors;
 using DevExpress.XtraEditors.DXErrorProvider;
 using HIS.Desktop.LocalStorage.BackendData;
 using HIS.Desktop.Plugins.AssignPrescriptionCLS.ADO;
@@ -82,6 +83,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.Edit
         protected long? HtuId { get; set; }
         protected long? MedicineUseFormId { get; set; }
         protected string Tutorial { get; set; }
+        protected string HtuText { get; set; }
         protected bool IsExpend { get; set; }
         protected decimal? UseDays { get; set; }
         protected object DataRow { get; set; }
@@ -128,7 +130,8 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.Edit
             this.MediStockD1SDOs = frmAssignPrescription.mediStockD1ADOs;
             if (frmAssignPrescription.cboMedicineUseForm.EditValue != null)
                 this.MedicineUseFormId = Inventec.Common.TypeConvert.Parse.ToInt64((frmAssignPrescription.cboMedicineUseForm.EditValue ?? "0").ToString());
-            this.Tutorial = frmAssignPrescription.txtTutorial.Text.Trim();
+            this.Tutorial = frmAssignPrescription.txtTutorial.Text.Trim();                      
+            this.HtuText = frmAssignPrescription.txtHtu.Text.Trim();
             this.UseDays = 1;
 
             this.IsCheckFilm = frmAssignPrescription.chkPhimHong.Enabled && frmAssignPrescription.chkPhimHong.Checked;
@@ -184,6 +187,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.Edit
                 medicineTypeSDO.Chieu = this.Chieu;
                 medicineTypeSDO.Toi = this.Toi;
                 medicineTypeSDO.TUTORIAL = this.Tutorial;
+                medicineTypeSDO.HTU_TEXT = this.HtuText;
                 medicineTypeSDO.IsExpend = this.IsExpend;
                 medicineTypeSDO.MEDICINE_USE_FORM_ID = this.MedicineUseFormId;
                 medicineTypeSDO.HTU_ID = this.HtuId;
@@ -209,6 +213,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.Edit
             frmAssignPrescription.SetTotalPrice__TrongDon();
             //frmAssignPrescription.VerifyWarningOverCeiling();
             frmAssignPrescription.gridControlTutorial.DataSource = null;
+            //frmAssignPrescription.gridControlHtu.DataSource = null;
         }
 
         protected void UpdatePatientTypeInDataRow(MediMatyTypeADO medicineTypeSDO)
@@ -404,6 +409,12 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.Edit
             bool valid = true;
             try
             {
+                if (this.ServiceTypeId == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__THUOC && String.IsNullOrEmpty(this.HtuText))
+                {
+                    DialogResult result = XtraMessageBox.Show("Bắt buộc phải nhập cách dùng", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning); 
+                    valid = false;
+                    frmAssignPrescription.txtHtu.Focus();
+                }    
                 if (this.ServiceTypeId == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__THUOC
                     && String.IsNullOrEmpty(this.Tutorial)) //frmAssignPrescription.currentHisPatientTypeAlter.PATIENT_TYPE_ID == HisConfigCFG.PatientTypeId__BHYT
                 {

@@ -45,6 +45,7 @@ namespace HIS.UC.ServiceRoom
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject1 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject2 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject3 = new DevExpress.Utils.SerializableAppearanceObject();
@@ -64,12 +65,12 @@ namespace HIS.UC.ServiceRoom
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject16 = new DevExpress.Utils.SerializableAppearanceObject();
             this.layoutControl1 = new DevExpress.XtraLayout.LayoutControl();
             this.beditRoom = new DevExpress.XtraEditors.ButtonEdit();
-            this.popupControlContainerRoom = new DevExpress.XtraBars.PopupControlContainer();
+            this.popupControlContainerRoom = new DevExpress.XtraBars.PopupControlContainer(this.components);
             this.gridControlContainerRoom = new Inventec.Desktop.CustomControl.CustomGridControlWithFilterMultiColumn();
             this.gridViewContainerRoom = new Inventec.Desktop.CustomControl.CustomGridViewWithFilterMultiColumn();
             this.repositoryItemBtnChooseHide = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
             this.repositoryItemBtnChoose = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
-            this.barManager1 = new DevExpress.XtraBars.BarManager();
+            this.barManager1 = new DevExpress.XtraBars.BarManager(this.components);
             this.bar1 = new DevExpress.XtraBars.Bar();
             this.barDockControlTop = new DevExpress.XtraBars.BarDockControl();
             this.barDockControlBottom = new DevExpress.XtraBars.BarDockControl();
@@ -86,7 +87,7 @@ namespace HIS.UC.ServiceRoom
             this.lciExamService = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem3 = new DevExpress.XtraLayout.LayoutControlItem();
             this.lciCboRoom = new DevExpress.XtraLayout.LayoutControlItem();
-            this.imageCollection1 = new DevExpress.Utils.ImageCollection();
+            this.imageCollection1 = new DevExpress.Utils.ImageCollection(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
             this.layoutControl1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.beditRoom.Properties)).BeginInit();
@@ -123,7 +124,7 @@ namespace HIS.UC.ServiceRoom
             this.layoutControl1.Name = "layoutControl1";
             this.layoutControl1.OptionsView.UseDefaultDragAndDropRendering = false;
             this.layoutControl1.Root = this.layoutControlGroup1;
-            this.layoutControl1.Size = new System.Drawing.Size(404, 52);
+            this.layoutControl1.Size = new System.Drawing.Size(404, 49);
             this.layoutControl1.TabIndex = 0;
             this.layoutControl1.Text = "layoutControl1";
             // 
@@ -145,10 +146,10 @@ namespace HIS.UC.ServiceRoom
             // 
             this.popupControlContainerRoom.BorderStyle = DevExpress.XtraEditors.Controls.BorderStyles.NoBorder;
             this.popupControlContainerRoom.Controls.Add(this.gridControlContainerRoom);
-            this.popupControlContainerRoom.Location = new System.Drawing.Point(136, 17);
+            this.popupControlContainerRoom.Location = new System.Drawing.Point(214, 17);
             this.popupControlContainerRoom.Manager = this.barManager1;
             this.popupControlContainerRoom.Name = "popupControlContainerRoom";
-            this.popupControlContainerRoom.Size = new System.Drawing.Size(252, 25);
+            this.popupControlContainerRoom.Size = new System.Drawing.Size(206, 32);
             this.popupControlContainerRoom.TabIndex = 16;
             this.popupControlContainerRoom.Visible = false;
             this.popupControlContainerRoom.CloseUp += new System.EventHandler(this.popupControlContainerRoom_CloseUp);
@@ -162,7 +163,7 @@ namespace HIS.UC.ServiceRoom
             this.gridControlContainerRoom.RepositoryItems.AddRange(new DevExpress.XtraEditors.Repository.RepositoryItem[] {
             this.repositoryItemBtnChooseHide,
             this.repositoryItemBtnChoose});
-            this.gridControlContainerRoom.Size = new System.Drawing.Size(252, 25);
+            this.gridControlContainerRoom.Size = new System.Drawing.Size(206, 32);
             this.gridControlContainerRoom.TabIndex = 0;
             this.gridControlContainerRoom.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
             this.gridViewContainerRoom});
@@ -176,9 +177,11 @@ namespace HIS.UC.ServiceRoom
             this.gridViewContainerRoom.FocusRectStyle = DevExpress.XtraGrid.Views.Grid.DrawFocusRectStyle.RowFullFocus;
             this.gridViewContainerRoom.GridControl = this.gridControlContainerRoom;
             this.gridViewContainerRoom.Name = "gridViewContainerRoom";
+            this.gridViewContainerRoom.OptionsView.ColumnAutoWidth = false;
             this.gridViewContainerRoom.OptionsView.ShowFilterPanelMode = DevExpress.XtraGrid.Views.Base.ShowFilterPanelMode.Never;
             this.gridViewContainerRoom.OptionsView.ShowGroupPanel = false;
             this.gridViewContainerRoom.OptionsView.ShowIndicator = false;
+            this.gridViewContainerRoom.RowCellClick += new DevExpress.XtraGrid.Views.Grid.RowCellClickEventHandler(this.gridViewContainerRoom_RowCellClick);
             this.gridViewContainerRoom.RowStyle += new DevExpress.XtraGrid.Views.Grid.RowStyleEventHandler(this.gridViewContainerRoom_RowStyle);
             this.gridViewContainerRoom.CustomRowCellEdit += new DevExpress.XtraGrid.Views.Grid.CustomRowCellEditEventHandler(this.gridViewContainerRoom_CustomRowCellEdit);
             this.gridViewContainerRoom.CustomUnboundColumnData += new DevExpress.XtraGrid.Views.Base.CustomColumnDataEventHandler(this.gridViewContainerRoom_CustomUnboundColumnData);
@@ -234,7 +237,7 @@ namespace HIS.UC.ServiceRoom
             // 
             this.barDockControlBottom.CausesValidation = false;
             this.barDockControlBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.barDockControlBottom.Location = new System.Drawing.Point(0, 52);
+            this.barDockControlBottom.Location = new System.Drawing.Point(0, 49);
             this.barDockControlBottom.Size = new System.Drawing.Size(404, 0);
             // 
             // barDockControlLeft
@@ -242,14 +245,14 @@ namespace HIS.UC.ServiceRoom
             this.barDockControlLeft.CausesValidation = false;
             this.barDockControlLeft.Dock = System.Windows.Forms.DockStyle.Left;
             this.barDockControlLeft.Location = new System.Drawing.Point(0, 0);
-            this.barDockControlLeft.Size = new System.Drawing.Size(0, 52);
+            this.barDockControlLeft.Size = new System.Drawing.Size(0, 49);
             // 
             // barDockControlRight
             // 
             this.barDockControlRight.CausesValidation = false;
             this.barDockControlRight.Dock = System.Windows.Forms.DockStyle.Right;
             this.barDockControlRight.Location = new System.Drawing.Point(404, 0);
-            this.barDockControlRight.Size = new System.Drawing.Size(0, 52);
+            this.barDockControlRight.Size = new System.Drawing.Size(0, 49);
             // 
             // txtRoomCode
             // 
@@ -320,7 +323,7 @@ namespace HIS.UC.ServiceRoom
             this.layoutControlGroup1.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup1.Name = "layoutControlGroup1";
             this.layoutControlGroup1.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
-            this.layoutControlGroup1.Size = new System.Drawing.Size(404, 52);
+            this.layoutControlGroup1.Size = new System.Drawing.Size(404, 49);
             this.layoutControlGroup1.TextVisible = false;
             // 
             // lciBtnDelete
@@ -330,7 +333,7 @@ namespace HIS.UC.ServiceRoom
             this.lciBtnDelete.MaxSize = new System.Drawing.Size(34, 26);
             this.lciBtnDelete.MinSize = new System.Drawing.Size(34, 24);
             this.lciBtnDelete.Name = "lciBtnDelete";
-            this.lciBtnDelete.Size = new System.Drawing.Size(34, 52);
+            this.lciBtnDelete.Size = new System.Drawing.Size(34, 49);
             this.lciBtnDelete.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
             this.lciBtnDelete.TextSize = new System.Drawing.Size(0, 0);
             this.lciBtnDelete.TextVisible = false;
@@ -359,7 +362,7 @@ namespace HIS.UC.ServiceRoom
             this.lciExamService.Name = "lciExamService";
             this.lciExamService.OptionsToolTip.ToolTip = "Yêu cầu khám";
             this.lciExamService.Padding = new DevExpress.XtraLayout.Utils.Padding(2, 0, 2, 2);
-            this.lciExamService.Size = new System.Drawing.Size(136, 28);
+            this.lciExamService.Size = new System.Drawing.Size(136, 25);
             this.lciExamService.Text = "Yêu cầu:";
             this.lciExamService.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lciExamService.TextSize = new System.Drawing.Size(70, 20);
@@ -371,7 +374,7 @@ namespace HIS.UC.ServiceRoom
             this.layoutControlItem3.Location = new System.Drawing.Point(136, 24);
             this.layoutControlItem3.Name = "layoutControlItem3";
             this.layoutControlItem3.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 2, 2, 2);
-            this.layoutControlItem3.Size = new System.Drawing.Size(234, 28);
+            this.layoutControlItem3.Size = new System.Drawing.Size(234, 25);
             this.layoutControlItem3.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem3.TextVisible = false;
             // 
@@ -402,7 +405,7 @@ namespace HIS.UC.ServiceRoom
             this.Controls.Add(this.barDockControlBottom);
             this.Controls.Add(this.barDockControlTop);
             this.Name = "UCRoomExamService";
-            this.Size = new System.Drawing.Size(404, 52);
+            this.Size = new System.Drawing.Size(404, 49);
             this.Load += new System.EventHandler(this.UCRoomExamService_Load);
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).EndInit();
             this.layoutControl1.ResumeLayout(false);

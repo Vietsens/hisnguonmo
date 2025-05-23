@@ -186,7 +186,8 @@
   <data name="HIS_UC_UCPatientRaw_TruongDuLieuBatBuoc" xml:space="preserve">
     <value>Trường dữ liệu bắt buộc.</value>
   </data>
-  <data name="HIS_UC_UCPatientRaw_typeCodeFind__MaBN" xml:space="preserve">
+  <data name="HIS_UC_UCPatientRaw_
+		" xml:space="preserve">
     <value>Mã BN</value>
   </data>
   <data name="HIS_UC_UCPatientRaw_typeCodeFind__MaBN_ToolTip" xml:space="preserve">

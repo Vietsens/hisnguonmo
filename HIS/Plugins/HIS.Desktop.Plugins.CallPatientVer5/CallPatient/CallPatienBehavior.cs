@@ -36,6 +36,7 @@ namespace HIS.Desktop.Plugins.CallPatientVer5.CallPatient
     {
         object[] entity;
         Inventec.Desktop.Common.Modules.Module module;
+        bool checkModel = false;
         public CallPatientBehavior()
             : base()
         {
@@ -56,10 +57,16 @@ namespace HIS.Desktop.Plugins.CallPatientVer5.CallPatient
                 {
                     if (item is Inventec.Desktop.Common.Modules.Module)
                     {
+
                         this.module = (Inventec.Desktop.Common.Modules.Module)item;
                     }
+                    else if (item is bool)
+                    {
+
+                        this.checkModel = (bool)item;
+                    }
                 }
-                return new frmDisplayOption(module);
+                return new frmDisplayOption(module, checkModel);
             }
             catch (Exception ex)
             {

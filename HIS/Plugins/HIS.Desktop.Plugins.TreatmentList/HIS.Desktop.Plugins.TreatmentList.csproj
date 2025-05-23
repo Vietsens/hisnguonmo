@@ -398,6 +398,12 @@
     <Compile Include="frmReasonOpenTreatment.Designer.cs">
       <DependentUpon>frmReasonOpenTreatment.cs</DependentUpon>
     </Compile>
+    <Compile Include="frmReqTreatment.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmReqTreatment.Designer.cs">
+      <DependentUpon>frmReqTreatment.cs</DependentUpon>
+    </Compile>
     <Compile Include="frmServiceType.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -461,6 +467,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="frmReasonOpenTreatment.resx">
       <DependentUpon>frmReasonOpenTreatment.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmReqTreatment.resx">
+      <DependentUpon>frmReqTreatment.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="frmServiceType.resx">
       <DependentUpon>frmServiceType.cs</DependentUpon>

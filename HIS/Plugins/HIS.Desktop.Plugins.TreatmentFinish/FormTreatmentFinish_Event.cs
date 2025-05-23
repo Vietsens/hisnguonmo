@@ -206,6 +206,7 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
         {
             try
             {
+                //hisTreatmentFinishSDO = treatmentFinish; // Sửa để gán vào hisTreatmentFinishSDO
                 hisTreatmentFinishSDO_process = treatmentFinish;
             }
             catch (Exception ex)
@@ -646,6 +647,7 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
                 currentTreatmentFinishSDO.IcdText = data.ICD_TEXT;
                 currentTreatmentFinishSDO.MainCause = data.MAIN_CAUSE;
                 currentTreatmentFinishSDO.PatientCondition = data.PATIENT_CONDITION;
+                currentTreatmentFinishSDO.ClinicalSigns = data.CLINICAL_SIGNS;
                 currentTreatmentFinishSDO.SubclinicalResult = this.currentTreatmentExt != null ? this.currentTreatmentExt.SUBCLINICAL_RESULT:"";
                 currentTreatmentFinishSDO.Surgery = data.SURGERY;
                 currentTreatmentFinishSDO.TranPatiFormId = data.TRAN_PATI_FORM_ID;

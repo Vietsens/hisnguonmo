@@ -29,9 +29,11 @@ namespace HIS.Desktop.Plugins.Library.RegisterConfig
 {
     public class HisConfigCFG
     {
+        private const string CONFIG_KEY__ModuleLinks = "HIS.Desktop.ApplyRestoreLayout.ModuleLinks";
         private const string CONFIG_KEY__PhoneRequired = "HIS.Desktop.Plugins.RegisterV2.PhoneRequired";
         private const string CONFIG_KEY__FocusExecuteRoomOption = "HIS.Desktop.Plugins.RegisterV2.FocusExecuteRoomOption";
         private const string CONFIG_KEY__IsNotAutoFocusOnExistsPatient = "HIS.Desktop.Plugins.Register.IsNotAutoFocusOnExistsPatient";
+        private const string CONFIG_KEY__IsAllowProgramPatientOld = "HIS.Desktop.Plugins.RegisterV2.IsAllowProgramPatientOld";
         /// <summary>
         /// Khai báo các mã đối tượng bệnh nhân ngăn cách bằng dấu phẩy. Trong trường hợp khai báo giá trị thì khi tiếp đón các đối tượng được khai báo sẽ mặc định tick vào checkbox "In phiếu khám" và các đối tượng không được khai báo sẽ mặc định bỏ tick
         /// </summary>
@@ -122,6 +124,7 @@ namespace HIS.Desktop.Plugins.Library.RegisterConfig
 
         private const string CONFIG_KEY__CHECK_DUPLICATION = "MOS.HIS_PATIENT.CCCD_NUMBER.CHECK_DUPLICATION";
         public static string CHECK_DUPLICATION;
+        public static string MODULELINKS;
 
         public static bool WarningInvalidCheckHistoryHeinCard;
         public static bool EditOldPatientInformationOption;
@@ -161,6 +164,7 @@ namespace HIS.Desktop.Plugins.Library.RegisterConfig
         public static bool IsShowingExamRoomInArea;
         public static bool IsShowingExamRoomInDepartment;
         public static bool IsAutoShowTransferFormInCaseOfAppointment;//đúng tuyến hẹn khám hiển thị popup chuyển tuyến
+        public static string IsAllowProgramPatientOld;
         /// <summary>
         /// 1: Các trường "Người nhà", "Quan hệ", "CMND", "Địa chỉ" đều bắt buộc nhập. 2: Chỉ bắt buộc nhập với trường "Người nhà
         /// </summary>
@@ -252,6 +256,8 @@ namespace HIS.Desktop.Plugins.Library.RegisterConfig
                 LogSystem.Debug("LoadConfig => 1");
                 //Get BHYT
                 BHXHLoginCFG.LoadConfig();
+                IsAllowProgramPatientOld = GetValue("HIS.Desktop.Plugins.RegisterV2.IsAllowProgramPatientOld");
+                MODULELINKS = GetValue(CONFIG_KEY__ModuleLinks);    
                 CHECK_DUPLICATION = GetValue(CONFIG_KEY__CHECK_DUPLICATION);
                 WarningInvalidCheckHistoryHeinCard = GetValue(CONFIG_KEY__WarningInvalidCheckHistoryHeinCard) == valueString__true;
                 EditOldPatientInformationOption = GetValue(CONFIG_KEY__EditOldPatientInformationOption) == valueString__true;

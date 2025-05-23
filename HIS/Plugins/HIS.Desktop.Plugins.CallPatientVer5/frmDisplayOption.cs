@@ -38,7 +38,7 @@ namespace HIS.Desktop.Plugins.CallPatientVer5
 
         int positionHandleControl;
         internal long roomId = 0;
-        internal bool checkStt;
+        internal bool checkStt = false;
         MOS.EFMODEL.DataModels.V_HIS_ROOM room;
         internal MOS.EFMODEL.DataModels.HIS_SERVICE_REQ HisServiceReq = null;
         internal Inventec.Desktop.Common.Modules.Module _module = null;
@@ -48,14 +48,8 @@ namespace HIS.Desktop.Plugins.CallPatientVer5
             InitializeComponent();
         }
 
+      
         public frmDisplayOption(Inventec.Desktop.Common.Modules.Module module, bool _checkStt)
-            : base(module)
-        {
-            this._module = module;
-            this.checkStt = _checkStt;
-            InitializeComponent();
-        }
-        public frmDisplayOption(Inventec.Desktop.Common.Modules.Module module)
             : base(module)
         {
             try
@@ -72,6 +66,7 @@ namespace HIS.Desktop.Plugins.CallPatientVer5
                 InitializeComponent();
                 this._module = module;
                 this.roomId = module.RoomId;
+                this.checkStt = _checkStt;
                 SetCaptionByLanguageKey();
             }
             catch (Exception ex)
@@ -91,10 +86,13 @@ namespace HIS.Desktop.Plugins.CallPatientVer5
                 Resources.ResourceLanguageManager.LanguageResource = new ResourceManager("HIS.Desktop.Plugins.CallPatientVer5.Resources.Lang", typeof(frmDisplayOption).Assembly);
 
                 ////Gan gia tri cho cac control editor co Text/Caption/ToolTip/NullText/NullValuePrompt/FindNullPrompt
+                this.gridColumn2.Caption = Inventec.Common.Resource.Get.Value("frmDisplayOption.gridColumn3.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.gridColumn3.Caption = Inventec.Common.Resource.Get.Value("frmDisplayOption.gridColumn4.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.layoutControl1.Text = Inventec.Common.Resource.Get.Value("frmDisplayOption.layoutControl1.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                this.tgExtendMonitor.Properties.OffText = Inventec.Common.Resource.Get.Value("frmDisplayOption.tgExtendMonitor.Properties.OffText", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                this.tgExtendMonitor.Properties.OnText = Inventec.Common.Resource.Get.Value("frmDisplayOption.tgExtendMonitor.Properties.OnText", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                this.chkIsShowCol.Properties.Caption = Inventec.Common.Resource.Get.Value("frmDisplayOption.chkIsShowCol.Properties.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.chkIsShowCol.Text = Inventec.Common.Resource.Get.Value("frmDisplayOption.chkIsShowCol.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+               
+
+
                 this.layoutControl4.Text = Inventec.Common.Resource.Get.Value("frmDisplayOption.layoutControl4.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.lbcRoom.Text = Inventec.Common.Resource.Get.Value("frmDisplayOption.lbcRoom.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.layoutControl2.Text = Inventec.Common.Resource.Get.Value("frmDisplayOption.layoutControl2.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
@@ -112,7 +110,7 @@ namespace HIS.Desktop.Plugins.CallPatientVer5
                 this.layoutControlItem20.Text = Inventec.Common.Resource.Get.Value("frmDisplayOption.layoutControlItem20.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.layoutControlItem21.Text = Inventec.Common.Resource.Get.Value("frmDisplayOption.layoutControlItem21.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.LayoutFont.Text = Inventec.Common.Resource.Get.Value("frmDisplayOption.LayoutFont.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                this.Text = Inventec.Common.Resource.Get.Value("frmDisplayOption.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                //this.Text = Inventec.Common.Resource.Get.Value("frmDisplayOption.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
             }
             catch (Exception ex)
             {
@@ -127,12 +125,14 @@ namespace HIS.Desktop.Plugins.CallPatientVer5
             {
                 SetIcon();
                 InitControlState();
+                //DisplayTbStatus();
                 cboSizeTitle.EditValue = null;
                 cboColorSTTNext.EditValue = null;
                 cboSizeTitleSTT.EditValue = null;
                 cboSizeSTT.EditValue = null;
                 cboSizeContentSTT.EditValue = null;
                 cboSizeList.EditValue = null;
+
                 ChooseRoomForWaitingScreenProcess.LoadDataToExamServiceReqSttGridControl(this);
                 room = BackendDataWorker.Get<V_HIS_ROOM>().FirstOrDefault(o => o.ID == roomId);
                 lbcRoom.Text = Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetUserName().ToUpper();
@@ -145,32 +145,13 @@ namespace HIS.Desktop.Plugins.CallPatientVer5
                     lbcRoom.Text = "";
                 }
                 InitControlSate();
+                ShowWaitingScreen();
                 //CommonParam param = new CommonParam();
                 //MOS.Filter.HisRoomTypeFilter roomfilter = new MOS.Filter.HisRoomTypeFilter();
 
                 //Validate_Room();
 
-                if (Application.OpenForms != null && Application.OpenForms.Count > 0)
-                {
-                    for (int i = 0; i < Application.OpenForms.Count; i++)
-                    {
-                        Form f = Application.OpenForms[i];
-                        if (f.Name == frmWaitingScreenStr || f.Name == frmWaitingScreenQyStr || f.Name == frmWaitingExam9 || f.Name == frmWaitingScreenQyNewStr)
-                        {
-                            //dxValidationProviderControl.RemoveControlError(txtRoomCode);
-                            if (!checkStt)
-                            {
-                                tgExtendMonitor.IsOn = true;
-                            }
-                            if (GlobalVariables.ROOM_ID_FOR_WAITING_SCREEN != 0 && BackendDataWorker.Get<MOS.EFMODEL.DataModels.V_HIS_ROOM>() != null && BackendDataWorker.Get<MOS.EFMODEL.DataModels.V_HIS_ROOM>().Count > 0)
-                            {
-                                //cboRoom.Enabled = false;
-                                //txtRoomCode.Enabled = false;
-                            }
-                        }
-                    }
 
-                }
 
 
                 //cboRoom.EditValue = GlobalVariables.ROOM_ID_FOR_WAITING_SCREEN;
@@ -178,6 +159,42 @@ namespace HIS.Desktop.Plugins.CallPatientVer5
                 this.isInit = false;
 
 
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+        private void ShowWaitingScreen()
+        {
+            try
+            {
+                if (checkStt)
+                {
+                    tgExtendMonitor.IsOn = true;
+                }
+                else
+                {
+                    if (Application.OpenForms != null && Application.OpenForms.Count > 0)
+                    {
+                        for (int i = 0; i < Application.OpenForms.Count; i++)
+                        {
+                            Form f = Application.OpenForms[i];
+                            if (f.Name == frmWaitingScreenStr || f.Name == frmWaitingScreenQyStr || f.Name == frmWaitingExam9 || f.Name == frmWaitingScreenQyNewStr)
+                            {
+                                //dxValidationProviderControl.RemoveControlError(txtRoomCode);
+                                //if (!checkStt)
+
+                                if (GlobalVariables.ROOM_ID_FOR_WAITING_SCREEN != 0 && BackendDataWorker.Get<MOS.EFMODEL.DataModels.V_HIS_ROOM>() != null && BackendDataWorker.Get<MOS.EFMODEL.DataModels.V_HIS_ROOM>().Count > 0)
+                                {
+                                    //cboRoom.Enabled = false;
+                                    //txtRoomCode.Enabled = false;
+                                }
+                            }
+                        }
+
+                    }
+                }
             }
             catch (Exception ex)
             {
@@ -233,7 +250,38 @@ namespace HIS.Desktop.Plugins.CallPatientVer5
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
+        //public class ServiceReqSttInfo
+        //{
+        //    //  public long SERVICE_REQ_STT_ID { get; set; }
+        //    public bool IsChecked { get; set; }
+        //    public string SERVICE_REQ_STT_CODE { get; set; }
+        //    public string SERVICE_REQ_STT_NAME { get; set; }
 
+        //}
+        //private void DisplayTbStatus()
+        //{
+        //    List<MOS.EFMODEL.DataModels.HIS_SERVICE_REQ_STT> serviceReqStts = BackendDataWorker.Get<HIS_SERVICE_REQ_STT>().ToList();
+
+
+        //    List<ServiceReqSttInfo> infoList = serviceReqStts
+        //      .Select(x => new ServiceReqSttInfo
+        //      {
+
+        //            //SERVICE_REQ_STT_ID = x.ID,
+        //            IsChecked = false,
+        //          SERVICE_REQ_STT_CODE = x.SERVICE_REQ_STT_CODE,
+        //          SERVICE_REQ_STT_NAME = x.SERVICE_REQ_STT_NAME
+
+        //      })
+        //      .ToList();
+
+
+        //    gridControl1.DataSource = infoList;
+          
+          
+        //    //gridView1.PopulateColumns();
+
+        //}
         private void InitControlState()
         {
             try
@@ -242,6 +290,8 @@ namespace HIS.Desktop.Plugins.CallPatientVer5
                 this.currentControlStateRDO = controlStateWorker.GetData(ModuleLinkName);
                 if (this.currentControlStateRDO != null && this.currentControlStateRDO.Count > 0)
                 {
+                    
+                  
                     foreach (var item in this.currentControlStateRDO)
                     {
                         if (item.KEY == chkIsShowCol.Name)
@@ -261,7 +311,23 @@ namespace HIS.Desktop.Plugins.CallPatientVer5
         {
             try
             {
-                List<MOS.EFMODEL.DataModels.HIS_SERVICE_REQ_STT> serviceReqStts = BackendDataWorker.Get<HIS_SERVICE_REQ_STT>().ToList();
+              //  List<MOS.EFMODEL.DataModels.HIS_SERVICE_REQ_STT> serviceReqStts = BackendDataWorker.Get<HIS_SERVICE_REQ_STT>().ToList();
+                List<ServiceReqSttSDO> serviceReqSttSdos = new List<ServiceReqSttSDO>();
+                if (gridControlExecuteStatus.DataSource != null)
+                {
+                    serviceReqSttSdos = (List<ServiceReqSttSDO>)gridControlExecuteStatus.DataSource;
+                }
+                List<MOS.EFMODEL.DataModels.HIS_SERVICE_REQ_STT> serviceReqStts = new List<MOS.EFMODEL.DataModels.HIS_SERVICE_REQ_STT>();
+                foreach (var item in serviceReqSttSdos)
+                {
+                    if (item.checkStt)
+                    {
+                        MOS.EFMODEL.DataModels.HIS_SERVICE_REQ_STT serviceReqStt = new MOS.EFMODEL.DataModels.HIS_SERVICE_REQ_STT();
+                        AutoMapper.Mapper.CreateMap<ServiceReqSttSDO, MOS.EFMODEL.DataModels.HIS_SERVICE_REQ_STT>();
+                        serviceReqStt = AutoMapper.Mapper.Map<ServiceReqSttSDO, MOS.EFMODEL.DataModels.HIS_SERVICE_REQ_STT>(item);
+                        serviceReqStts.Add(serviceReqStt);
+                    }
+                }
                 this.positionHandleControl = -1;
                 if (!dxValidationProviderControl.Validate())
                     return;
@@ -324,7 +390,7 @@ namespace HIS.Desktop.Plugins.CallPatientVer5
                 SaveConfigToRam(dataSave);
                 if (chkTitleSTTNext.Checked)
                 {
-                    var aFrmNew = new frmWaitingScreen_QY_New(HisServiceReq, serviceReqStts, ado, _module); 
+                    var aFrmNew = new frmWaitingScreen_QY_New(HisServiceReq, serviceReqStts, ado, _module);
                     if (roomId != 0)
                     {
                         MOS.EFMODEL.DataModels.V_HIS_ROOM data = BackendDataWorker.Get<MOS.EFMODEL.DataModels.V_HIS_ROOM>().FirstOrDefault(o => o.ID == roomId);
@@ -370,7 +436,7 @@ namespace HIS.Desktop.Plugins.CallPatientVer5
                         GlobalVariables.ROOM_ID_FOR_WAITING_SCREEN = roomId;
                     }
                 }
-               
+
             }
             catch (Exception ex)
             {
@@ -435,18 +501,18 @@ namespace HIS.Desktop.Plugins.CallPatientVer5
                             chkIsShowCol.Checked = ado.IsShowCol;
                             chkIsNotInDebt.Checked = ado.IsNotInDebt;
                             chkTitleSTTNext.Checked = !string.IsNullOrEmpty(txtTitleSTTNext.Text.Trim());
-                            if(!chkTitleSTTNext.Checked)
+                            if (!chkTitleSTTNext.Checked)
                             {
                                 txtTitleSTTNext.ReadOnly = true;
                                 cboColorSTTNext.ReadOnly = true;
-                            }    
+                            }
                         }
                     }
                 }
-                if(ado == null)
+                if (ado == null)
                 {
                     LoadDefaultByConfigKey();
-                }    
+                }
             }
             catch (Exception ex)
             {
@@ -515,5 +581,14 @@ namespace HIS.Desktop.Plugins.CallPatientVer5
             }
         }
 
+        private void gridView1_CustomUnboundColumnData(object sender, DevExpress.XtraGrid.Views.Base.CustomColumnDataEventArgs e)
+        {
+
+        }
+
+        private void gridControlExecuteStatus_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

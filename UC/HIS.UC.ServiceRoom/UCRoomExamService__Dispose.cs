@@ -32,10 +32,11 @@ using System.Threading;
 using Inventec.Common.Adapter;
 using Inventec.Core;
 using HIS.Desktop.ApiConsumer;
+using HIS.Desktop.Utility;
 
 namespace HIS.UC.ServiceRoom
 {
-    public partial class UCRoomExamService : UserControl
+    public partial class UCRoomExamService : UserControlBase
     {
 
         public void DisposeControl()
@@ -49,6 +50,11 @@ namespace HIS.UC.ServiceRoom
                 tol3 = null;
                 tol2 = null;
                 tol1 = null;
+                tol8 = null;
+                tol9 = null;
+                tol10 = null;
+                tol11 = null;
+                tol12 = null;
                 col12 = null;
                 col11 = null;
                 col10 = null;
@@ -61,6 +67,11 @@ namespace HIS.UC.ServiceRoom
                 col3 = null;
                 col2 = null;
                 col1 = null;
+                col13 = null;
+                col14 = null;
+                col15 = null;
+                col16 = null;
+                col17 = null;
                 isShow = false;
                 isShowContainerMediMatyForChoose = false;
                 isShowContainerTutorial = false;

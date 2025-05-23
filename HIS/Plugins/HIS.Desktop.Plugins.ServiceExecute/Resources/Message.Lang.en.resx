@@ -204,6 +204,9 @@
   <data name="NgayIn" xml:space="preserve">
     <value>Print date: {0}</value>
   </data>
+  <data name="PhanTichHinhAnhYKhoa" xml:space="preserve">
+    <value>Phân tích hình ảnh y khoa</value>
+  </data>
   <data name="PhieuPhauThuatThuThuat" xml:space="preserve">
     <value>Card of surgical procedure</value>
   </data>

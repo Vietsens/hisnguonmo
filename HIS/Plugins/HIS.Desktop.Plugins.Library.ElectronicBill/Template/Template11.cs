@@ -40,7 +40,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.Template
 
         public object Run()
         {
-            List<ProductBase> result = new List<ProductBase>();
+            List<ProductBasePlus> result = new List<ProductBasePlus>();
 
             //lấy chi tiết gom theo mẫu 8
             IRunTemplate iRunTemplate = TemplateFactory.MakeIRun(TemplateEnum.TYPE.Template8, DataInput);
@@ -50,12 +50,12 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.Template
                 throw new Exception("Không có thông tin chi tiết dịch vụ.");
             }
 
-            if (listProduct.GetType() == typeof(List<ProductBase>))
+            if (listProduct.GetType() == typeof(List<ProductBasePlus>))
             {
                 decimal amount = 0;
                 List<string> content = new List<string>();
-                List<ProductBase> listProductBase = (List<ProductBase>)listProduct;
-                foreach (var item in listProductBase)
+                List<ProductBasePlus> listProductBasePlus = (List<ProductBasePlus>)listProduct;
+                foreach (var item in listProductBasePlus)
                 {
                     content.Add(string.Format("{0}({1})", item.ProdName, Inventec.Common.Number.Convert.NumberToStringRoundMax4(item.Amount)));
                     amount += item.Amount;
@@ -63,7 +63,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.Template
 
                 if (content.Count > 0)
                 {
-                    ProductBase product = new ProductBase();
+                    ProductBasePlus product = new ProductBasePlus();
 
                     product.ProdName = string.Join("; ", content);
                     product.ProdCode = "TTVP";

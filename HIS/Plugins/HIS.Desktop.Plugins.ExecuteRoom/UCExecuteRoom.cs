@@ -58,6 +58,7 @@ using System.Threading;
 using HIS.Desktop.Plugins.Library.FormMedicalRecord;
 using System.Resources;
 
+
 namespace HIS.Desktop.Plugins.ExecuteRoom
 {
     public partial class UCExecuteRoom : UserControlBase
@@ -75,7 +76,8 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
         internal List<ServiceReqADO> serviceReqs { get; set; }
         internal List<SereServADO> sereServ7s { get; set; }
         internal V_HIS_EXECUTE_ROOM executeRoom { get; set; }
-
+        //bool check = false;
+        bool isFirstTime = true;
         int rowCount = 0;
         int dataTotal = 0;
         int numPageSize;
@@ -134,6 +136,7 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
         List<HIS_DESK> deskList { get; set; }
         EpaymentDepositResultSDO epaymentDepositResultSDO;
         V_HIS_TREATMENT_4 currentTreatment4;
+        bool chkModule = false;
         #region IsClick
         bool isEventPopupMenuShowing = false;
         long treatmentId = 0;
@@ -156,7 +159,7 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
             {
                 this.currentModule = moduleData;
                 this.roomId = moduleData.RoomId;
-                this.roomTypeId = moduleData.RoomTypeId;               
+                this.roomTypeId = moduleData.RoomTypeId;
                 SetCaptionByLanguageKey();
             }
             catch (Exception ex)
@@ -169,6 +172,14 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
         {
             try
             {
+                //qtcode
+                var executeRoom = BackendDataWorker.Get<V_HIS_EXECUTE_ROOM>().FirstOrDefault(o => o.ROOM_ID == this.roomId);
+                if (executeRoom != null)
+                {
+                    bool isPause = executeRoom.IS_PAUSE_ENCLITIC == 1;
+                    UpdateButtonStatus(isPause);
+                }
+                //qtcode
                 Inventec.Common.Logging.LogSystem.Debug("UCExecuteRoom_Load.1");
                 GetDataFromRam();
                 Inventec.Common.Logging.LogSystem.Debug("UCExecuteRoom_Load.2");
@@ -206,6 +217,8 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
                 InitComboServiceReqType();
                 Inventec.Common.Logging.LogSystem.Debug("UCExecuteRoom_Load.8");
                 LoadDefaultScreenSaver();
+
+
                 Inventec.Common.Logging.LogSystem.Debug("UCExecuteRoom_Load.9");
                 RegisterTimer(currentModule.ModuleLink, "timerAutoReload", timerAutoReload.Interval, timerAutoReload_Tick);
                 FillDataToGridControl();
@@ -224,7 +237,85 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
+        //qtcode
+        private void UpdateButtonStatus(bool isPause)
+        {
+            try
+            {
+                if (isPause)
+                {
+                    btnBreakOrContinue.Text = "Tiếp tục";
+                    btnBreakOrContinue.ToolTip = "Nhấn để tiếp tục xử lý dịch vụ";
+                    btnCallPatient.Enabled = false;
+                    btnRecallPatient.Enabled = false;
+                    btnMissCall.Enabled = false;
+                    btnNotEnter.Enabled = false;
+                    btnUnStart.Enabled = false;
+                    btnExecute.Enabled = false;
+                    btnServiceReqList.Enabled = false;
+                    btnTreatmentHistory.Enabled = false;
+                    btnRoomTran.Enabled = false;
+                    btnBordereau.Enabled = false;
+                }
+                else
+                {
+                    btnBreakOrContinue.Text = "Tạm nghỉ";
+                    btnBreakOrContinue.ToolTip = "Nhấn để tạm dừng xử lý dịch vụ";
+                    btnCallPatient.Enabled = true;
+                    btnRecallPatient.Enabled = true;
+                    btnMissCall.Enabled = true;
+                    btnNotEnter.Enabled = true;
+                    btnUnStart.Enabled = true;
+                    btnExecute.Enabled = true;
+                    btnServiceReqList.Enabled = true;
+                    btnTreatmentHistory.Enabled = true;
+                    btnRoomTran.Enabled = true;
+                    btnBordereau.Enabled = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+        private void btnBreakOrContinue_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                WaitingManager.Show();
+                CommonParam param = new CommonParam();
+                bool success = false;
+                var executeRoom = BackendDataWorker.Get<V_HIS_EXECUTE_ROOM>().FirstOrDefault(o => o.ROOM_ID == this.roomId);
+                if (executeRoom == null)
+                {
+                    WaitingManager.Hide();
+                    return;
+                }
+                HisExecuteRoomPauseEncliticSDO sdo = new HisExecuteRoomPauseEncliticSDO()
+                {
+                    Id = executeRoom.ID,
+                    IsPauseEnclitic = (short?)(executeRoom.IS_PAUSE_ENCLITIC == 1 ? 0 : 1)
+                };
+                bool result = new BackendAdapter(param).Post<bool>("api/HisExecuteRoom/PauseEnclitic", ApiConsumers.MosConsumer, sdo, param);
 
+                if (result)
+                {
+                    success = true;
+                    BackendDataWorker.Reset<HIS_EXECUTE_ROOM>();
+                    BackendDataWorker.Reset<V_HIS_EXECUTE_ROOM>();
+                    UpdateButtonStatus(sdo.IsPauseEnclitic == 1);
+                }
+
+                WaitingManager.Hide();
+                MessageManager.Show(this.ParentForm, param, success);
+            }
+            catch (Exception ex)
+            {
+                WaitingManager.Hide();
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+        //qtcode
         /// <summary>
         ///Hàm xét ngôn ngữ cho giao diện UCExecuteRoom
         /// </summary>
@@ -1040,6 +1131,7 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
         {
             try
             {
+                
                 if (e.Column.Caption == "Selection")
                     return;
                 if (e.Column.FieldName == "CallPatient1")
@@ -1090,7 +1182,14 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
                         }
                     }
                 }
-
+                //qtcode
+                //var executeRoom = lstExecuteRoom.FirstOrDefault(o => o.ROOM_ID == this.roomId);
+                //if (executeRoom != null)
+                //{
+                //    bool isPause = executeRoom.IS_PAUSE_ENCLITIC == 1;
+                //    UpdateButtonStatus(isPause);
+                //}
+                //qtcode
             }
             catch (Exception ex)
             {
@@ -2122,7 +2221,27 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
                     gridViewServiceReq.OptionsSelection.EnableAppearanceFocusedRow = true;
                     currentHisServiceReq = (ServiceReqADO)gridViewServiceReq.GetFocusedRow();
                     LoadDataToPanelRight(currentHisServiceReq);
-                    InitEnableControl();
+                    //qtcode
+                    var executeRoom = BackendDataWorker.Get<V_HIS_EXECUTE_ROOM>().FirstOrDefault(o => o.ROOM_ID == roomId);
+                    if (executeRoom != null && executeRoom.IS_PAUSE_ENCLITIC == 1)
+                    {
+                        btnCallPatient.Enabled = false;
+                        btnRecallPatient.Enabled = false;
+                        btnMissCall.Enabled = false;
+                        btnNotEnter.Enabled = false;
+                        btnUnStart.Enabled = false;
+                        btnExecute.Enabled = false;
+                        btnServiceReqList.Enabled = false;
+                        btnTreatmentHistory.Enabled = false;
+                        btnRoomTran.Enabled = false;
+                        btnBordereau.Enabled = false;
+                    }
+                    else
+                    {
+                        InitEnableControl();
+                    }
+                    //qtcode
+                    //InitEnableControl();
                     SetTextButtonExecute(currentHisServiceReq);
 
                 }
@@ -3034,7 +3153,6 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
-
         private void cboInDebt_SelectedIndexChanged(object sender, EventArgs e)
         {
             try
@@ -3186,14 +3304,25 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
             {
                 if (chkScreenSaver.Checked)
                 {
+
                     List<object> _listObj = new List<object>();
+                    _listObj.Add(true);
+
                     WaitingManager.Hide();
                     var SCREEN_SAVER = BackendDataWorker.Get<V_HIS_ROOM>().FirstOrDefault(o => o.ID == this.roomId);
+
+                    //   var SCREEN_SAVER = BackendDataWorker.Get<MOS.EFMODEL.DataModels.V_HIS_ROOM>().FirstOrDefault(o => o.ID == roomId);
+
                     if (SCREEN_SAVER != null)
                     {
                         if (!string.IsNullOrEmpty(SCREEN_SAVER.SCREEN_SAVER_MODULE_LINK))
                         {
+
                             HIS.Desktop.ModuleExt.PluginInstanceBehavior.ShowModule(SCREEN_SAVER.SCREEN_SAVER_MODULE_LINK, this.roomId, this.roomTypeId, _listObj);
+                            //HIS.Desktop.ModuleExt.PluginInstanceBehavior.ShowModule(SCREEN_SAVER.SCREEN_SAVER_MODULE_LINK,GlobalVariables.ROOM_ID_FOR_WAITING_SCREEN, this.roomTypeId,  
+                            //listObj
+
+
                         }
                         else
                         {
@@ -3670,7 +3799,7 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
         {
             try
             {
-                
+
             }
             catch (Exception ex)
             {
@@ -3680,7 +3809,7 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
 
         private void txtStepNumber_TextChanged(object sender, EventArgs e)
         {
-           
+
         }
 
         private void ckKQCLS_CheckedChanged(object sender, EventArgs e)

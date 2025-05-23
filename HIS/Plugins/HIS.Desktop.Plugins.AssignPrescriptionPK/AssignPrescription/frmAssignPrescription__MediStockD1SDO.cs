@@ -32,6 +32,8 @@ using MOS.Filter;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
+using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -761,6 +763,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                                 //this.btnAdd.Focus();
                                 this.txtTutorial.Focus();
                                 this.txtTutorial.SelectionStart = txtTutorial.Text.Length + 1;
+                                this.memHtu.SelectionStart = memHtu.Text.Length + 1;
                             }
                         }
                         //Ngược lại kiểm tra có cấu hình PM cho phép sau khi chọn thuốc thì nhảy vào ô số lượng hay ô ngày
@@ -800,11 +803,11 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                     }
 
                     ///Khoi tao cbo PatientType va set gia tri mac dinh theo service
-                    FillDataIntoPatientTypeCombo(this.currentMedicineTypeADOForEdit, cboPatientType);
+                    FillDataIntoPatientTypeCombo(this.currentMedicineTypeADOForEdit, cboPatientType);    
                     SetPatientType();
                 }
             }
-            catch (Exception ex)
+            catch (Exception ex)      
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
@@ -983,9 +986,10 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                 var medicineTypeTuts = BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_MEDICINE_TYPE_TUT>();
                 if (medicineTypeTuts != null && medicineTypeTuts.Count > 0)
                 {
-                    List<HIS_MEDICINE_TYPE_TUT> medicineTypeTutFilters = medicineTypeTuts.OrderByDescending(o => o.MODIFY_TIME).Where(o => o.MEDICINE_TYPE_ID == medicineTypeId && o.LOGINNAME == loginName).ToList();
+                    this.medicineTypeTutFilters = medicineTypeTuts.OrderByDescending(o => o.MODIFY_TIME).Where(o => o.MEDICINE_TYPE_ID == medicineTypeId).ToList();
 
-                    this.RebuildTutorialWithInControlContainer(medicineTypeTutFilters);
+                    this.RebuildTutorialWithInControlContainer(medicineTypeTutFilters);      
+                    this.RebuildHtuWithInControlContainer(medicineTypeTutFilters);
                     this.medicineTypeTutSelected = medicineTypeTutFilters.FirstOrDefault();
                     if (this.medicineTypeTutSelected != null)
                     {
@@ -994,7 +998,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                         if (this.medicineTypeTutSelected.MEDICINE_USE_FORM_ID > 0)
                         {
                             this.cboMedicineUseForm.EditValue = this.medicineTypeTutSelected.MEDICINE_USE_FORM_ID;
-                        }
+                        }   
                         //Nếu không có đường dùng thì lấy đường dùng từ danh mục loại thuốc
                         else
                         {
@@ -1013,7 +1017,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                         if (this.medicineTypeTutSelected.HTU_ID != null)
                             this.cboHtu.Properties.Buttons[1].Visible = true;
                         else
-                            this.cboHtu.Properties.Buttons[1].Visible = false;
+                            this.cboHtu.Properties.Buttons[1].Visible = false;   
 
                         if (this.spinSoNgay.Value < (this.medicineTypeTutSelected.DAY_COUNT ?? 0))
                             this.spinSoNgay.EditValue = this.medicineTypeTutSelected.DAY_COUNT;
@@ -1041,7 +1045,20 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                                 this.SetHuongDanFromSoLuongNgay();
                             }
                         }
+
+                        if (String.IsNullOrEmpty(this.memHtu.Text))
+                        {
+                            if (this.medicineTypeTutSelected.HTU_TEXT != null)
+                                this.memHtu.Text = this.medicineTypeTutSelected.HTU_TEXT;
+                            else
+                            {
+                                string autoValue = cboMedicineUseForm.Text + " " + cboHtu.Text;
+
+                                memHtu.Text = autoValue;
+                            }
+                        }
                     }
+                    
                 }
                 //Trường hợp thuốc không có cấu hình hướng dẫn sử dụng thì lấy hướng dẫn sử dụng ở danh mục loại thuốc fill vào
                 else
@@ -1055,6 +1072,10 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                         if ((medicineType.MEDICINE_USE_FORM_ID ?? 0) > 0)
                         {
                             this.cboMedicineUseForm.EditValue = medicineType.MEDICINE_USE_FORM_ID;
+
+                            string autoValue = cboMedicineUseForm.Text;
+
+                            memHtu.Text = autoValue;
                         }
                         if ((String.IsNullOrEmpty(this.txtTutorial.Text)
                             || String.IsNullOrEmpty(txtLadder.Text)))

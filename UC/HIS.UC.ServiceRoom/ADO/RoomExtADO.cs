@@ -51,13 +51,21 @@ namespace HIS.UC.ServiceRoom.ADO
         public string NumOrderBlock { get; set; }
         public short? IsBlockNumOrder { get; set; }
 
+        public decimal? TOTAL_MORNING_SERE { get; set; }
+        public decimal? TOTAL_AFTERNOON_SERE { get; set; }
+        public decimal? TOTAL_TODAY_KNVP_SERE { get; set; }
+        public decimal? TOTAL_MORNING_KNVP_SERE { get; set; }
+        public decimal? TOTAL_AFTERNOON_KNVP_SERE { get; set; }
+        public short? IS_PAUSE_ENCLITIC { get; set; }
+
+
         public RoomExtADO() : base() { }
-        public RoomExtADO(L_HIS_ROOM_COUNTER data, List<V_HIS_ROOM> hisRooms, List<RoomExtADO> lRooms = null)
-            : base()
+
+        private void InitCommonFields(dynamic data, List<V_HIS_ROOM> hisRooms, List<RoomExtADO> lRooms)
         {
             this.EXECUTE_ROOM_CODE = data.EXECUTE_ROOM_CODE;
             this.EXECUTE_ROOM_NAME = data.EXECUTE_ROOM_NAME;
-            this.EXECUTE_ROOM_NAME__UNSIGN = Inventec.Common.String.Convert.UnSignVNese(this.EXECUTE_ROOM_NAME);
+            this.EXECUTE_ROOM_NAME__UNSIGN = Inventec.Common.String.Convert.UnSignVNese(data.EXECUTE_ROOM_NAME);
             this.NUM_ORDER = data.NUM_ORDER;
             this.ROOM_ID = data.ROOM_ID;
             this.TOTAL_TODAY_SERVICE_REQ = (long?)data.TOTAL_TODAY_SERVICE_REQ;
@@ -65,23 +73,25 @@ namespace HIS.UC.ServiceRoom.ADO
             this.TOTAL_WAIT_TODAY_SERVICE_REQ = (long?)data.TOTAL_WAIT_TODAY_SERVICE_REQ;
             this.MAX_REQ_BHYT_BY_DAY = (long?)data.MAX_REQ_BHYT_BY_DAY;
             this.MAX_REQUEST_BY_DAY = (long?)data.MAX_REQUEST_BY_DAY;
+            this.TOTAL_END_SERVICE_REQ = (long?)data.TOTAL_END_SERVICE_REQ;
+
             this.TOTAL_OPEN_SERVICE_REQ = (long?)(data.TOTAL_TODAY_SERVICE_REQ - data.TOTAL_NEW_SERVICE_REQ);
             this.RESPONSIBLE_LOGINNAME = data.RESPONSIBLE_LOGINNAME;
             this.RESPONSIBLE_USERNAME = data.RESPONSIBLE_USERNAME;
-            this.TOTAL_END_SERVICE_REQ = (long?)data.TOTAL_END_SERVICE_REQ;
-            long TOTAL_TODAY_1 = Convert.ToInt64(data.TOTAL_TODAY_SERVICE_REQ ?? 0);
-            long MAX_BY_DAY_1 = data.MAX_REQUEST_BY_DAY ?? 0;
-            long MAX_BY_DAY_2 = data.MAX_REQ_BHYT_BY_DAY ?? 0;
-
-            if ((MAX_BY_DAY_1 > 0 && MAX_BY_DAY_1 < TOTAL_TODAY_1) || (MAX_BY_DAY_2 > 0 && MAX_BY_DAY_2 < TOTAL_TODAY_1))
-            {
-                this.IS_WARN = 1;
-            }
-
             this.RESPONSIBLE_TIME = data.RESPONSIBLE_TIME;
             this.WORKING_LOGINNAME = data.WORKING_LOGINNAME;
             this.WORKING_USERNAME = data.WORKING_USERNAME;
             this.IsBlockNumOrder = data.IS_BLOCK_NUM_ORDER;
+            this.IS_PAUSE_ENCLITIC = data.IS_PAUSE_ENCLITIC;
+
+            long totalToday = Convert.ToInt64(data.TOTAL_TODAY_SERVICE_REQ ?? 0);
+            long maxByDay1 = data.MAX_REQUEST_BY_DAY ?? 0;
+            long maxByDay2 = data.MAX_REQ_BHYT_BY_DAY ?? 0;
+
+            if ((maxByDay1 > 0 && maxByDay1 < totalToday) || (maxByDay2 > 0 && maxByDay2 < totalToday))
+            {
+                this.IS_WARN = 1;
+            }
 
             if (lRooms != null && lRooms.Count > 0)
             {
@@ -94,6 +104,23 @@ namespace HIS.UC.ServiceRoom.ADO
             }
         }
 
+        public RoomExtADO(L_HIS_ROOM_COUNTER_2 data, List<V_HIS_ROOM> hisRooms, List<RoomExtADO> lRooms = null)
+            : base()
+        {
+            InitCommonFields(data, hisRooms, lRooms);
+            this.TOTAL_MORNING_SERE = (long?)data.TOTAL_MORNING_SERE;
+            this.TOTAL_AFTERNOON_SERE = (long?)data.TOTAL_AFTERNOON_SERE;
+            this.TOTAL_TODAY_KNVP_SERE = (long?)data.TOTAL_TODAY_KNVP_SERE;
+            this.TOTAL_MORNING_KNVP_SERE = (long?)data.TOTAL_MORNING_KNVP_SERE;
+            this.TOTAL_AFTERNOON_KNVP_SERE = (long?)data.TOTAL_AFTERNOON_KNVP_SERE;
+        }
+
+        public RoomExtADO(L_HIS_ROOM_COUNTER data, List<V_HIS_ROOM> hisRooms, List<RoomExtADO> lRooms = null)
+            : base()
+        {
+            InitCommonFields(data, hisRooms, lRooms);
+        }
+        //this.AMOUNT_COMBO = TOTAL_OPEN_1 + "/" + TOTAL_TODAY_1 + "(" + MAX_BY_DAY_1 + ")";
         public RoomExtADO(V_HIS_EXECUTE_ROOM_1 data, List<V_HIS_ROOM> hisRooms)
             : base()
         {
