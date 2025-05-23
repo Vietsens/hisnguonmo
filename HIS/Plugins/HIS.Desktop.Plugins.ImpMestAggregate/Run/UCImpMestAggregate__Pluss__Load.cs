@@ -219,24 +219,14 @@ namespace HIS.Desktop.Plugins.ImpMestAggregate
                 impMestViewfilter.ORDER_DIRECTION = "DESC";
                 impMestViewfilter.ORDER_FIELD = "MODIFY_TIME";
                 impMestViewfilter.AGGR_IMP_MEST_ID = this.aggrImpMestId;
-                var apiResult = new BackendAdapter(paramCommon).GetRO<List<V_HIS_IMP_MEST_2>>(HisRequestUriStore.HIS_IMP_MEST_GETVIEW, ApiConsumers.MosConsumer, impMestViewfilter, paramCommon);
+                var apiResult = new BackendAdapter(paramCommon).GetRO<List<V_HIS_IMP_MEST_2>>("api/HisImpMest/GetView2", ApiConsumers.MosConsumer, impMestViewfilter, paramCommon);
                 if (apiResult != null)
                 {
                     var data = (List<V_HIS_IMP_MEST_2>)apiResult.Data;
                     if (data != null)
                     {
                         gridControlImpMestReq.DataSource = data;
-                        // Force BED_CODE to be treated as a bound column
-                        GridView view = gridControlImpMestReq.MainView as GridView;
-                        if (view != null)
-                        {
-                            GridColumn bedCodeColumn = view.Columns["BED_CODE"];
-                            if (bedCodeColumn != null)
-                            {
-                                bedCodeColumn.UnboundType = DevExpress.Data.UnboundColumnType.Bound;
-                            }
-                            view.RefreshData();
-                        }
+                       
                         rowCountImpM = data.Count;
                         dataTotalImpM = apiResult.Param.Count ?? 0;
                     }
