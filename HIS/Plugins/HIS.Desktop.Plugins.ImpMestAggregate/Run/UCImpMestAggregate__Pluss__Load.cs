@@ -226,6 +226,17 @@ namespace HIS.Desktop.Plugins.ImpMestAggregate
                     if (data != null)
                     {
                         gridControlImpMestReq.DataSource = data;
+                        // Force BED_CODE to be treated as a bound column
+                        GridView view = gridControlImpMestReq.MainView as GridView;
+                        if (view != null)
+                        {
+                            GridColumn bedCodeColumn = view.Columns["BED_CODE"];
+                            if (bedCodeColumn != null)
+                            {
+                                bedCodeColumn.UnboundType = DevExpress.Data.UnboundColumnType.Bound;
+                            }
+                            view.RefreshData();
+                        }
                         rowCountImpM = data.Count;
                         dataTotalImpM = apiResult.Param.Count ?? 0;
                     }
