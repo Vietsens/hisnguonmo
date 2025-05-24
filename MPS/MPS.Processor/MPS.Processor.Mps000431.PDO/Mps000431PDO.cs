@@ -56,5 +56,15 @@ namespace MPS.Processor.Mps000431.PDO
         public decimal ProdPrice { get; set; }
         public decimal ProdQuantity { get; set; }
         public string ProdUnit { get; set; }
+
+
+        //dangth
+        public decimal? TaxAmount { get; set; }
+
+        public decimal? AmountWithoutTax { get; set; }
+
+        public int? TaxPercentage { get; set; }
+
+        public decimal TaxConvert { get; set; }
     }
 }
