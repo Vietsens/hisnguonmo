@@ -181,7 +181,7 @@ namespace HIS.Desktop.Plugins.TransactionList
             {
                 switch (printCode)
                 {
-                   
+
                     case MPS.Processor.Mps000431.PDO.Mps000431PDO.printTypeCode:
                         InHoaDonDienTuNhap( printCode, fileName, ref result);
                         break;
@@ -233,7 +233,7 @@ namespace HIS.Desktop.Plugins.TransactionList
                         {
                             decimal amount = item.AMOUNT;
                             decimal vatRatio = item.VAT_RATIO ?? 0;
-                            decimal priceWithVat = item.PRICE; 
+                            decimal priceWithVat = item.PRICE;
                             decimal discount = item.DISCOUNT ?? 0;
 
                             decimal unitPrice = amount != 0 ? ((priceWithVat / (1 + vatRatio)) * amount - discount) / amount : 0;
@@ -308,24 +308,49 @@ namespace HIS.Desktop.Plugins.TransactionList
                 Inventec.Common.Mapper.DataObjectMapper.Map<HIS_TRANSACTION>(tran, transaction);
                 dataInput.Transaction = tran;
 
-                long Template = long.Parse(TransactionListConfig.InvoiceTemplateCreate);
                 TemplateEnum.TYPE typ = TemplateEnum.TYPE.Template1;
-                try
-                {
-                    typ = (TemplateEnum.TYPE)Template;
-                }
-                catch { typ = TemplateEnum.TYPE.Template1; }
 
+                if (transaction.SALE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SALE_TYPE.ID__SALE_EXP)
+                {
+                    typ = TemplateEnum.TYPE.TemplateNhaThuoc;
+                }
+                else
+                {
+                    try
+                    {
+                        long templateConfig = long.Parse(TransactionListConfig.InvoiceTemplateCreate);
+                        typ = (TemplateEnum.TYPE)templateConfig;
+                    }
+                    catch
+                    {
+                        typ = TemplateEnum.TYPE.Template1;
+                    }
+                }
+
+
+                List<MPS.Processor.Mps000431.PDO.ProductADO> lstProductADO = new List<MPS.Processor.Mps000431.PDO.ProductADO>();
                 IRunTemplate iRunTemplate = TemplateFactory.MakeIRun(typ, dataInput);
                 var listProduct = iRunTemplate.Run();
 
-                List<MPS.Processor.Mps000431.PDO.ProductADO> lstProductADO = new List<MPS.Processor.Mps000431.PDO.ProductADO>();
-                var lst = (List<ProductBasePlus>)listProduct;
-                foreach (var item in lst)
+                if (transaction.SALE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SALE_TYPE.ID__SALE_EXP)
                 {
-                    MPS.Processor.Mps000431.PDO.ProductADO ado = new MPS.Processor.Mps000431.PDO.ProductADO();
-                    Inventec.Common.Mapper.DataObjectMapper.Map<MPS.Processor.Mps000431.PDO.ProductADO>(ado, item);
-                    lstProductADO.Add(ado);
+                    var lst = (List<ProductBasePlus>)listProduct;
+                    foreach (var item in lst)
+                    {
+                        MPS.Processor.Mps000431.PDO.ProductADO ado = new MPS.Processor.Mps000431.PDO.ProductADO();
+                        Inventec.Common.Mapper.DataObjectMapper.Map<MPS.Processor.Mps000431.PDO.ProductADO>(ado, item);
+                        lstProductADO.Add(ado);
+                    }
+                }
+                else
+                {
+                    var lst = (List<ProductBase>)listProduct;
+                    foreach (var item in lst)
+                    {
+                        MPS.Processor.Mps000431.PDO.ProductADO ado = new MPS.Processor.Mps000431.PDO.ProductADO();
+                        Inventec.Common.Mapper.DataObjectMapper.Map<MPS.Processor.Mps000431.PDO.ProductADO>(ado, item);
+                        lstProductADO.Add(ado);
+                    }
                 }
 
                 MPS.Processor.Mps000431.PDO.Mps000431PDO rdo = new MPS.Processor.Mps000431.PDO.Mps000431PDO(transaction, lstProductADO);
@@ -353,6 +378,7 @@ namespace HIS.Desktop.Plugins.TransactionList
         }
 
 
+
         private void MouseRight_XuatHoaDonDienTu(V_HIS_TRANSACTION transactionBill)
         {
             try
@@ -367,7 +393,7 @@ namespace HIS.Desktop.Plugins.TransactionList
                         return;
                     }
                 }
-                if(transactionBill.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__FALSE && (MessageBox.Show("Giao dịch đang tạm khóa bạn có muốn tiếp tục", Resources.ResourceMessage.ThongBao, MessageBoxButtons.YesNo) == DialogResult.No))
+                if (transactionBill.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__FALSE && (MessageBox.Show("Giao dịch đang tạm khóa bạn có muốn tiếp tục", Resources.ResourceMessage.ThongBao, MessageBoxButtons.YesNo) == DialogResult.No))
                 {
                     return;
                 }
@@ -3944,7 +3970,7 @@ namespace HIS.Desktop.Plugins.TransactionList
                 //MessageBox.Show(param.Messages.ToString());
             }
             catch (Exception ex)
-            {            
+            {
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
             return result;
