@@ -76,7 +76,7 @@ namespace HIS.Desktop.Plugins.LisSampleUpdate
             : base(module)
         {
             InitializeComponent();
-            this._dataLisSample = dataLisSample;
+            this._dataLisSample = dataLisSample;          
         }
 
         void InitControlState()
@@ -291,6 +291,7 @@ namespace HIS.Desktop.Plugins.LisSampleUpdate
                 this.InitComboCommon(this.cboCommune, BackendDataWorker.Get<SDA.EFMODEL.DataModels.V_SDA_COMMUNE>(), "COMMUNE_CODE", "RENDERER_COMMUNE_NAME", "SEARCH_CODE");
                 this.InitComboCommon(this.cboGender, BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_GENDER>(), "GENDER_CODE", "GENDER_NAME", "GENDER_CODE");
                 this.InitControlState();
+                this.hasBarcode();
                 WaitingManager.Hide();
                 this.KeyPreview = true;
             }
@@ -428,6 +429,7 @@ namespace HIS.Desktop.Plugins.LisSampleUpdate
                 sampleRaw.COMMUNE_NAME = cboCommune.Text;
                 sampleRaw.ADDRESS = txtAddress.Text;
                 sampleRaw.PHONE_NUMBER = txtPhone.Text;
+               
                 if (cboMediOrgCode.EditValue != null)
                 {
                     HIS_MEDI_ORG org = listMediOrg != null ? listMediOrg.FirstOrDefault(o => o.MEDI_ORG_CODE == cboMediOrgCode.EditValue.ToString()) : null;
@@ -459,12 +461,12 @@ namespace HIS.Desktop.Plugins.LisSampleUpdate
                 else
                     sampleRaw.SPECIMEN_ORDER = null;
 
-                sampleRaw.SAMPLE_NAME = TextEditHelper.GetTrimmedTextOrNull(txtSampleName);
-                sampleRaw.SAMPLE_STATE = TextEditHelper.GetTrimmedTextOrNull(txtSampleState);
-                sampleRaw.SAMPLE_POSITION = TextEditHelper.GetTrimmedTextOrNull(txtSamplePosition);
-                sampleRaw.CARTRIDGE_LOT = TextEditHelper.GetTrimmedTextOrNull(txtCartridgeLot);
-                sampleRaw.CARTRIDGE_CAL = TextEditHelper.GetTrimmedTextOrNull(txtCartridgeCal);
-                sampleRaw.RANGE_TIMES = TextEditHelper.GetTrimmedTextOrNull(txtRangeTimes);
+                sampleRaw.SAMPLE_NAME = txtSampleName.Text;
+                sampleRaw.SAMPLE_STATE = txtSampleState.Text;
+                sampleRaw.SAMPLE_POSITION = txtSamplePosition.Text;
+                sampleRaw.CARTRIDGE_LOT = txtCartridgeLot.Text;
+                sampleRaw.CARTRIDGE_CAL = txtCartridgeCal.Text;
+                sampleRaw.RANGE_TIMES = txtRangeTimes.Text;
 
                 sampleRaw.NOTE = txtNote.Text.Trim();
 
@@ -1734,6 +1736,12 @@ namespace HIS.Desktop.Plugins.LisSampleUpdate
                 txtAddress.Text = this.sample != null ? this.sample.ADDRESS : "";
                 txtPhone.Text = this.sample != null ? this.sample.PHONE_NUMBER : "";
                 txtQrSdt.Text = this.sample != null ? this.sample.PHONE_NUMBER : "";
+                txtSampleName.Text = this.sample != null ? this.sample.SAMPLE_NAME : "";
+                txtSampleState.Text = this.sample != null ? this.sample.SAMPLE_STATE : "";
+                txtSamplePosition.Text = this.sample != null ? this.sample.SAMPLE_POSITION : "";
+                txtCartridgeLot.Text = this.sample != null ? this.sample.CARTRIDGE_LOT : "";
+                txtCartridgeCal.Text = this.sample != null ? this.sample.CARTRIDGE_CAL : "";
+                txtRangeTimes.Text = this.sample != null ? this.sample.RANGE_TIMES : null;
                 if (!String.IsNullOrWhiteSpace(this.sample.SAMPLE_SENDER_CODE) || !String.IsNullOrWhiteSpace(this.sample.SAMPLE_SENDER))
                 {
                     if (!String.IsNullOrWhiteSpace(this.sample.SAMPLE_SENDER_CODE))
@@ -1775,13 +1783,7 @@ namespace HIS.Desktop.Plugins.LisSampleUpdate
                 dtSampleTime.EditValue = this.sample != null ? Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(this.sample.SAMPLE_TIME ?? 0) : null;
 
                 dtTGNhanMau.EditValue = this.sample != null ? Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(this.sample.RESULT_TIME ?? 0) : null;
-                txtNote.Text = this.sample != null ? this.sample.NOTE : "";
-                txtSampleName.EditValue = this.sample != null ? this.sample.SAMPLE_NAME : "";
-                txtSampleState.EditValue = this.sample != null ? this.sample.SAMPLE_STATE : "";
-                txtSamplePosition.EditValue = this.sample != null ? this.sample.SAMPLE_POSITION : "";
-                txtCartridgeLot.EditValue = this.sample != null ? this.sample.CARTRIDGE_LOT : "";
-                txtCartridgeCal.EditValue = this.sample != null ? this.sample.CARTRIDGE_CAL : "";
-                txtRangeTimes.EditValue = this.sample != null ? this.sample.RANGE_TIMES : null;
+                txtNote.Text = this.sample != null ? this.sample.NOTE : "";             
 
                 if ((this.sample != null && this.sample.SPECIMEN_ORDER != null))
                 {
@@ -3337,16 +3339,19 @@ namespace HIS.Desktop.Plugins.LisSampleUpdate
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
-
-        public static class TextEditHelper
+        private void hasBarcode()
         {
-            public static string GetTrimmedTextOrNull(TextEdit textEdit)
+            if (_dataLisSample != null)
             {
-                var value = textEdit?.EditValue?.ToString();
-                return string.IsNullOrWhiteSpace(value) ? null : value.Trim();
+                if (_dataLisSample.BARCODE != null)
+                {
+                    txtBarcode.Text = _dataLisSample.BARCODE;
+                    txtBarcode.Enabled = false;
+                    this.btnSave.Enabled = true;
+                    txtBarcode_PreviewKeyDown(null, new PreviewKeyDownEventArgs(Keys.Enter));
+                }
             }
         }
-
     }
 }
 
