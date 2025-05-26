@@ -109,16 +109,19 @@ namespace HIS.Desktop.Plugins.ApprovalExamSpecialist.Run
         {
             try
             {
-
+                dtTrackingTime.Properties.Mask.EditMask = "dd/MM/yyyy HH:mm:ss";
+                dtTrackingTime.Properties.DisplayFormat.FormatString = "dd/MM/yyyy HH:mm:ss";
                 if (currentSpecialistExam.EXAM_TIME.HasValue)
                 {
-                    dtTrackingTime.Text = Inventec.Common.DateTime.Convert.TimeNumberToTimeString((long)currentSpecialistExam.EXAM_TIME); 
-                    
+                    DateTime? dtTracking = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(currentSpecialistExam.EXAM_TIME.Value);
+
+                    dtTrackingTime.DateTime = dtTracking.Value;
                 }
                 else
                 {
                     dtTrackingTime.DateTime = DateTime.Now;
                 }
+
                 txtNoiDungKham.Text = currentSpecialistExam.EXAM_EXECUTE_CONTENT;
                 txtYLenhKham.Text = currentSpecialistExam.EXAM_EXCUTE;
                 this.cboDoctor.EditValue = this.currentSpecialistExam.EXAM_EXECUTE_LOGINNAME;
@@ -366,13 +369,28 @@ namespace HIS.Desktop.Plugins.ApprovalExamSpecialist.Run
         private void Inphieuketquakhamchuyenkhoa(string printTypeCode, string fileName, ref bool result)
         {
             try
-            {
+            {   
                 WaitingManager.Show();
-                HIS_SPECIALIST_EXAM datamapperExam = new HIS_SPECIALIST_EXAM();
-                HIS_TREATMENT datamapperTreatment = new HIS_TREATMENT();
-                var Treatment = BackendDataWorker.Get<HIS_TREATMENT>().FirstOrDefault(o => o.ID == currentSpecialistExam.TREATMENT_ID);
+                CommonParam param = new CommonParam();
 
-                MPS.Processor.Mps000500.PDO.Mps000500PDO pdo = new MPS.Processor.Mps000500.PDO.Mps000500PDO(currentSpecialistExam, Treatment);
+
+                HisTreatmentFilter treatmentFilter = new HisTreatmentFilter();
+
+                treatmentFilter.ID = currentSpecialistExam.TREATMENT_ID;
+
+                var treatment = new Inventec.Common.Adapter.BackendAdapter(param).Get<List<MOS.EFMODEL.DataModels.HIS_TREATMENT>>
+                    (HisRequestUriStore.HIS_TREATMENT_GET, ApiConsumer.ApiConsumers.MosConsumer, treatmentFilter, param);
+                var treatmentItem = treatment?.FirstOrDefault();
+
+                HisSpecialistExamFilter examFilter = new HisSpecialistExamFilter();
+
+                examFilter.ID = currentSpecialistExam.ID;
+
+                var exam = new Inventec.Common.Adapter.BackendAdapter(param).Get<List<MOS.EFMODEL.DataModels.V_HIS_SPECIALIST_EXAM>>
+                    (UriApi.HIS_SPEACIALIST_EXAM_GETVIEW, ApiConsumer.ApiConsumers.MosConsumer, examFilter, param);
+                var examItem = exam?.FirstOrDefault();
+
+                MPS.Processor.Mps000500.PDO.Mps000500PDO pdo = new MPS.Processor.Mps000500.PDO.Mps000500PDO(examItem, treatmentItem);
 
                 string printerName = "";
                 if (GlobalVariables.dicPrinter.ContainsKey(printTypeCode))
@@ -439,7 +457,6 @@ namespace HIS.Desktop.Plugins.ApprovalExamSpecialist.Run
 
                 var rs = new Inventec.Common.Adapter.BackendAdapter(param).Post<HIS_SPECIALIST_EXAM>("api/HisSpecialistExam/Update", ApiConsumers.MosConsumer, datamapper, param);
 
-                Inventec.Common.Logging.LogSystem.Debug("API Create Result: " + Inventec.Common.Logging.LogUtil.TraceData("DataA", rs));
                 if (rs != null && this.delegateRefresher != null)
                 {
                     this.delegateRefresher();

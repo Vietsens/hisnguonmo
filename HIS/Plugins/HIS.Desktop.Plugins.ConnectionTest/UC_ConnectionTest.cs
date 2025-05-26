@@ -15,80 +15,82 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
-using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using LIS.EFMODEL.DataModels;
-using DevExpress.XtraGrid.Columns;
-using DevExpress.Utils;
-using DevExpress.Data;
-using DevExpress.XtraGrid.Views.Base;
-using System.Collections;
-using DevExpress.XtraGrid.Views.Grid;
-using Inventec.Desktop.Common.Message;
-using Inventec.Core;
-using Inventec.Common.Adapter;
-using HIS.Desktop.Controls.Session;
-using DevExpress.XtraEditors;
-using DevExpress.XtraGrid.Views.Grid.ViewInfo;
-using Inventec.Common.Logging;
-using HIS.Desktop.LocalStorage.BackendData;
-using MOS.EFMODEL.DataModels;
-using HIS.Desktop.LocalStorage.ConfigApplication;
-using MOS.Filter;
-using Inventec.Common.Controls.EditorLoader;
-using System.Resources;
-using Inventec.Desktop.Common.LanguageManager;
-using LIS.Filter;
-using HIS.Desktop.Plugins.ConnectionTest.ADO;
-using LIS.SDO;
-using HIS.Desktop.ApiConsumer;
-using HIS.Desktop.Plugins.ConnectionTest.Config;
-using HIS.Desktop.Utilities.Extentions;
-using DevExpress.XtraTreeList;
-using DevExpress.XtraTreeList.Nodes;
-using System.Globalization;
-using HIS.Desktop.LocalStorage.HisConfig;
-using HIS.Desktop.LocalStorage.LocalData;
-using DevExpress.XtraBars;
-using DevExpress.Utils.Menu;
-using DevExpress.XtraTreeList.Columns;
-using DevExpress.XtraGrid;
-using HIS.Desktop.Plugins.ConnectionTest.Sda.SdaEventLogCreate;
-using HIS.Desktop.EventLog;
-using System.Drawing.Text;
-using HIS.Desktop.Plugins.ConnectionTest.ConnectionTest;
+using ACS.EFMODEL.DataModels;
+using ACS.SDO;
 using AutoMapper;
-using HIS.Desktop.Utility;
-using HIS.Desktop.LibraryMessage;
+using DevExpress.Data;
+using DevExpress.Utils;
+using DevExpress.Utils.Menu;
+using DevExpress.XtraBars;
+using DevExpress.XtraEditors;
+using DevExpress.XtraEditors.DXErrorProvider;
 using DevExpress.XtraEditors.Popup;
 using DevExpress.XtraEditors.ViewInfo;
-using EMR.EFMODEL.DataModels;
-using EMR.TDO;
-using System.IO;
-using Inventec.Common.SignLibrary;
-using ACS.EFMODEL.DataModels;
-using HIS.Desktop.Plugins.ConnectionTest.Validation;
-using MPS.ProcessorBase.Core;
-using HIS.Desktop.Common;
-using System.Diagnostics;
-using EMR.Filter;
-using MOS.SDO;
-using HIS.Desktop.Plugins.ConnectionTest.Resources;
-using ACS.SDO;
-using DevExpress.XtraEditors.DXErrorProvider;
+using DevExpress.XtraGrid;
+using DevExpress.XtraGrid.Columns;
+using DevExpress.XtraGrid.Views.Base;
+using DevExpress.XtraGrid.Views.Grid;
+using DevExpress.XtraGrid.Views.Grid.ViewInfo;
 using DevExpress.XtraPrinting;
-using MOS.TDO;
-using System.Threading;
+using DevExpress.XtraRichEdit.Commands;
+using DevExpress.XtraTreeList;
+using DevExpress.XtraTreeList.Columns;
+using DevExpress.XtraTreeList.Nodes;
+using EMR.EFMODEL.DataModels;
+using EMR.Filter;
 using EMR.SDO;
+using EMR.TDO;
+using HIS.Desktop.ApiConsumer;
+using HIS.Desktop.Common;
+using HIS.Desktop.Controls.Session;
+using HIS.Desktop.EventLog;
+using HIS.Desktop.LibraryMessage;
+using HIS.Desktop.LocalStorage.BackendData;
+using HIS.Desktop.LocalStorage.ConfigApplication;
+using HIS.Desktop.LocalStorage.HisConfig;
+using HIS.Desktop.LocalStorage.LocalData;
+using HIS.Desktop.Plugins.ConnectionTest.ADO;
+using HIS.Desktop.Plugins.ConnectionTest.Config;
+using HIS.Desktop.Plugins.ConnectionTest.ConnectionTest;
+using HIS.Desktop.Plugins.ConnectionTest.Resources;
+using HIS.Desktop.Plugins.ConnectionTest.Sda.SdaEventLogCreate;
+using HIS.Desktop.Plugins.ConnectionTest.Validation;
+using HIS.Desktop.Utilities.Extentions;
+using HIS.Desktop.Utility;
+using Inventec.Common.Adapter;
+using Inventec.Common.Controls.EditorLoader;
+using Inventec.Common.Logging;
+using Inventec.Common.SignLibrary;
+using Inventec.Common.SignLibrary.ADO;
+using Inventec.Core;
+using Inventec.Desktop.Common.LanguageManager;
+using Inventec.Desktop.Common.Message;
 using Inventec.Desktop.CustomControl.CustomGrid;
+using LIS.EFMODEL.DataModels;
+using LIS.Filter;
+using LIS.SDO;
+using MOS.EFMODEL.DataModels;
+using MOS.Filter;
+using MOS.SDO;
+using MOS.TDO;
+using MPS.ProcessorBase.Core;
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Diagnostics;
+using System.Drawing;
+using System.Drawing.Text;
+using System.Globalization;
+using System.IO;
+using System.Linq;
+using System.Resources;
+using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Timers;
+using System.Windows.Forms;
 
 namespace HIS.Desktop.Plugins.ConnectionTest
 {
@@ -6307,10 +6309,35 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                         case PopupMenuProcessor.ItemType.AttachTestFile:
                             this.AttachTestFile(row);
                             break;
+                        case PopupMenuProcessor.ItemType.EditSampleInfo:
+                            this.EditSampleInfo(row);
+                            break;
                         default:
                             break;
                     }
                 }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void EditSampleInfo(LisSampleADO row)
+        {
+            try
+            {
+                Inventec.Desktop.Common.Modules.Module moduleData = GlobalVariables.currentModuleRaws.Where(o => o.ModuleLink == "HIS.Desktop.Plugins.LisSampleUpdate").FirstOrDefault();
+                if (moduleData == null) throw new NullReferenceException("Not found module by ModuleLink = 'HIS.Desktop.Plugins.LisSampleUpdate'");
+                if (!moduleData.IsPlugin || moduleData.ExtensionInfo == null) throw new NullReferenceException("Module 'HIS.Desktop.Plugins.LisSampleUpdate' is not plugins");
+                List<object> listArgs = new List<object>();
+                V_LIS_SAMPLE lisSample = new V_LIS_SAMPLE();
+                Inventec.Common.Mapper.DataObjectMapper.Map<V_LIS_SAMPLE>(lisSample, row);
+                listArgs.Add(lisSample);
+                listArgs.Add(PluginInstance.GetModuleWithWorkingRoom(moduleData, this.currentModule.RoomId, this.currentModule.RoomTypeId));
+                var extenceInstance = PluginInstance.GetPluginInstance(PluginInstance.GetModuleWithWorkingRoom(moduleData, this.currentModule.RoomId, this.currentModule.RoomTypeId), listArgs);
+                if (extenceInstance == null) throw new ArgumentNullException("moduleData is null");
+                ((Form)extenceInstance).ShowDialog();
             }
             catch (Exception ex)
             {
@@ -9852,7 +9879,6 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                     }
                     this.cboRoom.Focus();
                     cboRoom.Text = "";
-
                 }
             }
             catch (Exception ex)

@@ -19,5 +19,6 @@ namespace HIS.Desktop.Plugins.ApprovalExamSpecialist.Base
 
         public const string HIS_SERE_SERV_2_GET = "api/HisSereServ/GetDHisSereServ2";
 
+        public const string HIS_TREATMENT_GET = "api/HisTreatment/Get";
     }
 }

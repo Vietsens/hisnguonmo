@@ -38,6 +38,7 @@ namespace HIS.Desktop.Plugins.ImpMestAggregate
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(UCImpMestAggregate));
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject1 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject2 = new DevExpress.Utils.SerializableAppearanceObject();
@@ -55,7 +56,7 @@ namespace HIS.Desktop.Plugins.ImpMestAggregate
             this.layoutControl1 = new DevExpress.XtraLayout.LayoutControl();
             this.layoutControl3 = new DevExpress.XtraLayout.LayoutControl();
             this.chkThuocVTTheoPhieuNhap = new DevExpress.XtraEditors.CheckEdit();
-            this.barManager1 = new DevExpress.XtraBars.BarManager();
+            this.barManager1 = new DevExpress.XtraBars.BarManager(this.components);
             this.barDockControlTop = new DevExpress.XtraBars.BarDockControl();
             this.barDockControlBottom = new DevExpress.XtraBars.BarDockControl();
             this.barDockControlLeft = new DevExpress.XtraBars.BarDockControl();
@@ -77,6 +78,8 @@ namespace HIS.Desktop.Plugins.ImpMestAggregate
             this.grdColExpIntructionTime = new DevExpress.XtraGrid.Columns.GridColumn();
             this.grdColExpTreatmentCode = new DevExpress.XtraGrid.Columns.GridColumn();
             this.grdColExpPatientCode = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.grdColBedCode = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.grdColRoomName = new DevExpress.XtraGrid.Columns.GridColumn();
             this.layoutControlGroup12 = new DevExpress.XtraLayout.LayoutControlGroup();
             this.layoutControlItem23 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem25 = new DevExpress.XtraLayout.LayoutControlItem();
@@ -186,9 +189,9 @@ namespace HIS.Desktop.Plugins.ImpMestAggregate
             this.layoutControlGroup1 = new DevExpress.XtraLayout.LayoutControlGroup();
             this.layoutControlItem1 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem2 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.toolTipController1 = new DevExpress.Utils.ToolTipController();
-            this.imageListIcon = new System.Windows.Forms.ImageList();
-            this.imageListCheck = new System.Windows.Forms.ImageList();
+            this.toolTipController1 = new DevExpress.Utils.ToolTipController(this.components);
+            this.imageListIcon = new System.Windows.Forms.ImageList(this.components);
+            this.imageListCheck = new System.Windows.Forms.ImageList(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
             this.layoutControl1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl3)).BeginInit();
@@ -438,7 +441,9 @@ namespace HIS.Desktop.Plugins.ImpMestAggregate
             this.grdColExpReqUserName,
             this.grdColExpIntructionTime,
             this.grdColExpTreatmentCode,
-            this.grdColExpPatientCode});
+            this.grdColExpPatientCode,
+            this.grdColBedCode,
+            this.grdColRoomName});
             this.gridViewImpMestReq.GridControl = this.gridControlImpMestReq;
             this.gridViewImpMestReq.Name = "gridViewImpMestReq";
             this.gridViewImpMestReq.OptionsSelection.ShowCheckBoxSelectorInColumnHeader = DevExpress.Utils.DefaultBoolean.False;
@@ -541,6 +546,27 @@ namespace HIS.Desktop.Plugins.ImpMestAggregate
             this.grdColExpPatientCode.Visible = true;
             this.grdColExpPatientCode.VisibleIndex = 3;
             this.grdColExpPatientCode.Width = 120;
+            // 
+            // grdColBedCode
+            // 
+            this.grdColBedCode.Caption = "Mã giường";
+            this.grdColBedCode.FieldName = "BED_CODE";
+            this.grdColBedCode.Name = "grdColBedCode";
+            this.grdColBedCode.OptionsColumn.AllowEdit = false;
+            this.grdColBedCode.Visible = true;
+            this.grdColBedCode.VisibleIndex = 7;
+            this.grdColBedCode.Width = 120;
+            // 
+            // grdColRoomName
+            // 
+            this.grdColRoomName.Caption = "Tên phòng";
+            this.grdColRoomName.FieldName = "ROOM_NAME";
+            this.grdColRoomName.Name = "grdColRoomName";
+            this.grdColRoomName.OptionsColumn.AllowEdit = false;
+            this.grdColRoomName.UnboundType = DevExpress.Data.UnboundColumnType.Object;
+            this.grdColRoomName.Visible = true;
+            this.grdColRoomName.VisibleIndex = 8;
+            this.grdColRoomName.Width = 120;
             // 
             // layoutControlGroup12
             // 
@@ -1016,7 +1042,7 @@ namespace HIS.Desktop.Plugins.ImpMestAggregate
             // 
             this.gridColumnCheck.FieldName = "IsCheck";
             this.gridColumnCheck.Fixed = DevExpress.XtraGrid.Columns.FixedStyle.Left;
-            this.gridColumnCheck.Image = global::HIS.Desktop.Plugins.ImpMestAggregate.Properties.Resources.dau_tích_02;
+            this.gridColumnCheck.Image = global::HIS.Desktop.Plugins.ImpMestAggregate.Properties.Resources.dau_tich_02;
             this.gridColumnCheck.ImageAlignment = System.Drawing.StringAlignment.Center;
             this.gridColumnCheck.Name = "gridColumnCheck";
             this.gridColumnCheck.OptionsColumn.AllowSort = DevExpress.Utils.DefaultBoolean.False;
@@ -2039,5 +2065,7 @@ namespace HIS.Desktop.Plugins.ImpMestAggregate
         private DevExpress.XtraEditors.CheckEdit chkThuocVTTheoPhieuNhap;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem3;
         private DevExpress.XtraLayout.EmptySpaceItem emptySpaceItem1;
+        private DevExpress.XtraGrid.Columns.GridColumn grdColBedCode;
+        private DevExpress.XtraGrid.Columns.GridColumn grdColRoomName;
     }
 }

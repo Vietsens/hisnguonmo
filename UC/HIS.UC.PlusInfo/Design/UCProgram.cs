@@ -36,6 +36,7 @@ using Inventec.Desktop.Common.LanguageManager;
 using MOS.EFMODEL.DataModels;
 using System.Resources;
 using HIS.Desktop.LocalStorage.HisConfig;
+using DevExpress.XtraGrid;
 
 namespace HIS.UC.PlusInfo.Design
 {
@@ -257,7 +258,7 @@ namespace HIS.UC.PlusInfo.Design
 
                     var patientPrograms = this._HisPatientPrograms.Where(p => p.PATIENT_ID == patientID).ToList();
                     _shareMethod.InitComboCommon(this.cboProgram, patientPrograms, "PROGRAM_ID", "PROGRAM_NAME", "PROGRAM_CODE");
-                    if (HIS.Desktop.Plugins.Library.RegisterConfig.HisConfigCFG.ISALLOWPROGRAMPATIENTOLD == "1" && patientPrograms.Any(p => p.PROGRAM_ID == programid) )
+                    if (HIS.Desktop.Plugins.Library.RegisterConfig.HisConfigCFG.IsAllowProgramPatientOld == "1" && patientPrograms.Any(p => p.PROGRAM_ID == programid) )
                     {
                         this.cboProgram.EditValue = programid;
                         var selectedProgram = patientPrograms.FirstOrDefault(p => p.PROGRAM_ID == programid);
@@ -357,6 +358,28 @@ namespace HIS.UC.PlusInfo.Design
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        internal void RefreshUserControl(bool loadDataAgain)
+        {
+            try
+            {
+                if (loadDataAgain)
+                {
+                    this.cboProgram.Properties.DataSource = null;
+                    this.cboProgram.EditValue = null;
+                    this.txtProgramCode.Text = "";
+                }
+                else
+                {
+                    this.cboProgram.EditValue = null;
+                    this.txtProgramCode.Text = "";
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn("Tiep don: UCPlusInfo/UCProgram/RefreshUserControl: \n" + ex);
             }
         }
     }

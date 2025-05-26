@@ -72,14 +72,14 @@ namespace HIS.UC.UCPatientRaw
 					return GetDataQrCodeHeinCard(code);
 				}
 				else
-				{
+				{    
 					CommonParam param = new CommonParam();
 					HisPatientAdvanceFilter filter = new HisPatientAdvanceFilter();
-                    if (HIS.Desktop.Plugins.Library.RegisterConfig.HisConfigCFG.ISALLOWPROGRAMPATIENTOLD == "1" && this.typeCodeFind == ResourceMessage.typeCodeFind__MaBA)
+                    if (HIS.Desktop.Plugins.Library.RegisterConfig.HisConfigCFG.IsAllowProgramPatientOld == "1" && this.typeCodeFind == ResourceMessage.typeCodeFind__MaBA)
                     {
                         filter.STORE_CODE__EXACT = code;
                     }
-					else if ((HIS.Desktop.Plugins.Library.RegisterConfig.HisConfigCFG.ISALLOWPROGRAMPATIENTOLD == "1" && this.typeCodeFind != ResourceMessage.typeCodeFind__MaBA))
+					else if ((HIS.Desktop.Plugins.Library.RegisterConfig.HisConfigCFG.IsAllowProgramPatientOld == "1" && this.typeCodeFind != ResourceMessage.typeCodeFind__MaBA))
 					{
                         if (!String.IsNullOrWhiteSpace(type))
                         {
@@ -105,7 +105,7 @@ namespace HIS.UC.UCPatientRaw
                             filter.PATIENT_CODE__EXACT = string.Format("{0:0000000000}", Convert.ToInt64(code));
                         }
                     }
-					else if (HIS.Desktop.Plugins.Library.RegisterConfig.HisConfigCFG.ISALLOWPROGRAMPATIENTOLD != "1")
+					else if (HIS.Desktop.Plugins.Library.RegisterConfig.HisConfigCFG.IsAllowProgramPatientOld != "1")
 					{
 						if (!String.IsNullOrWhiteSpace(type))
 						{

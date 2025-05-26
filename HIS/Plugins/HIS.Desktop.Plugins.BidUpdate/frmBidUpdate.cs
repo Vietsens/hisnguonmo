@@ -4150,7 +4150,7 @@ namespace HIS.Desktop.Plugins.BidUpdate
         {
             if (e.Button.Kind == ButtonPredefines.Delete)
             {
-                cboDosageForm.EditValue = null;
+                cboInformationBid.EditValue = null;
             }
         }
 

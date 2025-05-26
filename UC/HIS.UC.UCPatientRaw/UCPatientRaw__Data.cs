@@ -45,31 +45,31 @@ namespace HIS.UC.UCPatientRaw
 				popupControlContainer1.HidePopup();
 				if (this.typeCodeFind == ResourceMessage.typeCodeFind__MaBN)
 				{
-					dataGet.EMPLOYEE_CODE = this.txtPatientCode.Text;
+					dataGet.EMPLOYEE_CODE = this.txtPatientCode.Text.Trim();
 					dataGet.IS_FIND_BY_PATIENT_CODE = 1;
 				}
 				if (this.typeCodeFind == ResourceMessage.typeCodeFind__MaNV)
 				{
 					dataGet.PATIENT_ID = patientId;
-					dataGet.EMPLOYEE_CODE = this.txtPatientCode.Text;
+					dataGet.EMPLOYEE_CODE = this.txtPatientCode.Text.Trim();
 				}
                 if (this.typeCodeFind == ResourceMessage.typeCodeFind__MaCMCC && isReadQrCode)
                 {
 					dataGet.IsReadQrCccd = true;
                 }
-                dataGet.PATIENT_NAME = this.txtPatientName.Text;
+                dataGet.PATIENT_NAME = this.txtPatientName.Text.Trim();
 				if (this.cboCareer.EditValue != null)
 				{
 					dataGet.CARRER_ID = Inventec.Common.TypeConvert.Parse.ToInt64(this.cboCareer.EditValue.ToString());
 				}
-				dataGet.CARRER_NAME = this.cboCareer.Text;
-				dataGet.CARRER_CODE = this.txtCareerCode.Text;
+				dataGet.CARRER_NAME = this.cboCareer.Text.Trim();
+				dataGet.CARRER_CODE = this.txtCareerCode.Text.Trim();
 
 				if (lciFortxtEthnicCode.Visibility == DevExpress.XtraLayout.Utils.LayoutVisibility.Always)
 				{
 					//dataGet.ETHNIC_ID = this.cboEthnic.EditValue == null ? null : (long?)Inventec.Common.TypeConvert.Parse.ToInt64(this.cboEthnic.EditValue.ToString());
 					dataGet.ETHNIC_NAME = this.cboEthnic.Text;
-					dataGet.ETHNIC_CODE = this.txtEthnicCode.Text;
+					dataGet.ETHNIC_CODE = this.txtEthnicCode.Text.Trim();
 				}
 
                 if (this.dtPatientDob.EditValue != null)
@@ -95,7 +95,7 @@ namespace HIS.UC.UCPatientRaw
 					}
 				}
 
-				dataGet.PATIENT_CODE = this.txtPatientCode.Text;
+				dataGet.PATIENT_CODE = this.txtPatientCode.Text.Trim();
 				dataGet.GENDER_ID = (this.cboGender.EditValue) == null ? 0 : Inventec.Common.TypeConvert.Parse.ToInt64(this.cboGender.EditValue.ToString());
 				dataGet.PATIENTTYPE_ID = this.cboPatientType.EditValue == null ? 0 : Inventec.Common.TypeConvert.Parse.ToInt64(this.cboPatientType.EditValue.ToString());
 				string patientName = this.txtPatientName.Text.Trim();
@@ -162,7 +162,7 @@ namespace HIS.UC.UCPatientRaw
 			UCPatientRawADO dataGet = new UCPatientRawADO();
 			try
 			{
-				dataGet.PATIENT_NAME = this.txtPatientName.Text;
+				dataGet.PATIENT_NAME = this.txtPatientName.Text.Trim();
 				if (this.dtPatientDob.EditValue != null)
 				{
 					string dateDob = this.dtPatientDob.DateTime.ToString("yyyyMMdd");

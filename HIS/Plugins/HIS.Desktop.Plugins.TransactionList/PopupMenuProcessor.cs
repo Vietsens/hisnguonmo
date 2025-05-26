@@ -79,7 +79,8 @@ namespace HIS.Desktop.Plugins.TransactionList
             Mps000439_BienBanDieuChinhThongTinHanhChinhHoaDon__,
             Mps000440_BienBanDieuChinhTangGiamTrenHoaDon__,
             HuyHoaDonDienTu,
-            ThayThe
+            ThayThe,
+            InHoaDonNhap
         }
 
         internal PopupMenuProcessor(V_HIS_TRANSACTION transaction, BarManager barmanager, TransactionMouseRightClick mouseRightClick, Inventec.Desktop.Common.Modules.Module currentModule)
@@ -134,6 +135,30 @@ namespace HIS.Desktop.Plugins.TransactionList
                         btnEInvoice.Tag = ItemType.TransactionEInvoice;
                         btnEInvoice.ItemClick += new ItemClickEventHandler(this._MouseRightClick);
                         items.Add(btnEInvoice);
+
+                        // In hóa đơn nháp
+                        BarButtonItem btnInHoaDonNhap = new BarButtonItem(this._BarManager, "In hóa đơn nháp", 6);
+                        btnInHoaDonNhap.Tag = ItemType.InHoaDonNhap;
+                        btnInHoaDonNhap.ItemClick += new ItemClickEventHandler(this._MouseRightClick);
+                        items.Add(btnInHoaDonNhap);
+
+                        // chuyển đổi hóa đơn điện tử
+                        //qtcode
+                        if (!String.IsNullOrEmpty(this._Transaction.INVOICE_CODE)
+                            && !String.IsNullOrEmpty(this._Transaction.INVOICE_SYS)
+                            && this._Transaction.TRANSACTION_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TRANSACTION_TYPE.ID__TT)
+                        {
+                            if (this._Transaction.EINVOICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_EINVOICE_TYPE.ID__VNPT ||
+                                (this._Transaction.EINVOICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_EINVOICE_TYPE.ID__VIETEL && HisConfigCFG.autoPrintType == "1") ||
+                                (this._Transaction.EINVOICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_EINVOICE_TYPE.ID__CYBERBILL && HisConfigCFG.autoPrintType == "1"))
+                            {
+                                BarButtonItem btnChuyenDoiHoaDonDienTu = new BarButtonItem(this._BarManager, "Chuyển đổi hóa đơn điện tử", 3);
+                                btnChuyenDoiHoaDonDienTu.Tag = ItemType.ChuyenDoiHoaDonDienTu;
+                                btnChuyenDoiHoaDonDienTu.ItemClick += new ItemClickEventHandler(this._MouseRightClick);
+                                items.Add(btnChuyenDoiHoaDonDienTu);
+                            }
+                        }
+                        //qtcode
                     }
 
                     this._PopupMenu.AddItems(items.ToArray());
@@ -233,6 +258,12 @@ namespace HIS.Desktop.Plugins.TransactionList
                         btnEInvoice.Tag = ItemType.TransactionEInvoice;
                         btnEInvoice.ItemClick += new ItemClickEventHandler(this._MouseRightClick);
                         this._PopupMenu.AddItem(btnEInvoice);
+
+                        // In hóa đơn nháp
+                        BarButtonItem btnInHoaDonNhap = new BarButtonItem(this._BarManager, "In hóa đơn nháp", 6);
+                        btnInHoaDonNhap.Tag = ItemType.InHoaDonNhap;
+                        btnInHoaDonNhap.ItemClick += new ItemClickEventHandler(this._MouseRightClick);
+                        this._PopupMenu.AddItem(btnInHoaDonNhap);
                     }
 
                     if (!string.IsNullOrEmpty(this._Transaction.INVOICE_CODE) && this._Transaction.IS_CANCEL_EINVOICE != 1 && HisConfigCFG.Cancel_Option == "1" && frmTransactionList.controlAcs != null && frmTransactionList.controlAcs.Exists(o => o.CONTROL_CODE == "HIS000040"))

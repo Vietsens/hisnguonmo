@@ -85,6 +85,8 @@ namespace MPS.Processor.Mps000346.PDO
         public string MEDICINE_PARENT_CODE { get; set; }
         public long? MEDICINE_PARENT_ID { get; set; }
         public string MEDICINE_PARENT_NAME { get; set; }
+        public string STORAGE_CONDITION_CODE { get; set; }
+        public string STORAGE_CONDITION_NAME { get; set; }
 
         public Mps000346ADO()
         {
@@ -120,6 +122,8 @@ namespace MPS.Processor.Mps000346.PDO
                         this.MEDICINE_PARENT_ID = data.PARENT_ID;
                         this.MEDICINE_PARENT_CODE = data.PARENT_CODE;
                         this.MEDICINE_PARENT_NAME = data.PARENT_NAME;
+                        this.STORAGE_CONDITION_CODE = data.STORAGE_CONDITION_CODE;
+                        this.STORAGE_CONDITION_NAME = data.STORAGE_CONDITION_NAME;
                     }
 
                     if (_ChmsExpMest.EXP_MEST_STT_ID == _expMesttSttId__Approval || _ChmsExpMest.EXP_MEST_STT_ID == _expMesttSttId__Export

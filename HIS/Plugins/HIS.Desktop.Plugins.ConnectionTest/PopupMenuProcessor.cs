@@ -46,7 +46,8 @@ namespace HIS.Desktop.Plugins.ConnectionTest
             PrintEmr,
             CapNhatBarcode,
             InGopBarcode,
-            AttachTestFile
+            AttachTestFile,
+            EditSampleInfo
         }
 
         internal PopupMenuProcessor(V_LIS_SAMPLE sample, BarManager barmanager, MouseRightClick mouseRightClick, bool IsMultilCheck)
@@ -118,6 +119,14 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                     btnPrintEmr.Tag = ItemType.PrintEmr;
                     btnPrintEmr.ItemClick += new ItemClickEventHandler(this._MouseRightClick);
                     this._PopupMenu.AddItems(new BarItem[] { btnPrintEmr });
+                }
+
+                if (!String.IsNullOrWhiteSpace(_Sample.BARCODE))
+                {
+                    BarButtonItem btnEditSampleInfo = new BarButtonItem(this._BarManager, "Sửa thông tin mẫu", 1);
+                    btnEditSampleInfo.Tag = ItemType.EditSampleInfo;
+                    btnEditSampleInfo.ItemClick += new ItemClickEventHandler(this._MouseRightClick);
+                    this._PopupMenu.AddItems(new BarItem[] { btnEditSampleInfo });
                 }
 
                 this._PopupMenu.ShowPopup(Cursor.Position);

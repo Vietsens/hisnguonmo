@@ -266,6 +266,8 @@ namespace MPS.Processor.Mps000346
                                     adoMediGr.MEDICINE_PARENT_ID = _dataMedi.PARENT_ID;
                                     adoMediGr.MEDICINE_PARENT_CODE = _dataMedi.PARENT_CODE;
                                     adoMediGr.MEDICINE_PARENT_NAME = _dataMedi.PARENT_NAME;
+                                    adoMediGr.STORAGE_CONDITION_CODE = _dataMedi.STORAGE_CONDITION_CODE;
+                                    adoMediGr.STORAGE_CONDITION_NAME = _dataMedi.STORAGE_CONDITION_NAME;
                                 }
 
                                 var medicines = rdo._Medicines.Where(p => mediGr.Select(x => x.MEDICINE_ID).ToList().Contains(p.ID)).ToList();
@@ -322,6 +324,8 @@ namespace MPS.Processor.Mps000346
                                 ado.MEDICINE_PARENT_ID = data.PARENT_ID;
                                 ado.MEDICINE_PARENT_CODE = data.PARENT_CODE;
                                 ado.MEDICINE_PARENT_NAME = data.PARENT_NAME;
+                                ado.STORAGE_CONDITION_NAME = data.STORAGE_CONDITION_NAME;
+                                ado.STORAGE_CONDITION_CODE = data.STORAGE_CONDITION_CODE;
 
                             }
 
