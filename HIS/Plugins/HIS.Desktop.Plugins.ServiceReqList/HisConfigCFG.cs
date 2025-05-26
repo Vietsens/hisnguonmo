@@ -40,6 +40,7 @@ namespace HIS.Desktop.Plugins.ServiceReqList
         private const string CONFIG_KEY__ShowPresAmount = "HIS.Desktop.Plugins.AssignPrescriptionPK.ShowPresAmount";
         private const string CONFIG_KEY__AutoDeleteEmrDocumentWhenEditReq = "HIS.Desktop.Plugins.ServiceReqList.AutoDeleteEmrDocumentWhenEditReq";
         internal const string CONFIG_KEY__ShowResultWhenReqComplete = "HIS.Desktop.Plugins.ContentSubclinical.ShowResultWhenReqComplete";
+        internal const string HIS_CONFIG_KEY__MaxTimeFilter__Option = "HIS.Desktop.Plugins.MaxTimeFilter.Option";
 
 
         internal static bool IsShowPresAmount;
@@ -50,11 +51,13 @@ namespace HIS.Desktop.Plugins.ServiceReqList
         internal static bool ConnectDrugInterventionInfo;
         internal static string AutoDeleteEmrDocumentWhenEditReq;
         internal static string ShowResultWhenReqComplete;
+        internal static string MaxTimeFilterOption;
 
         internal static void LoadConfig()
         {
             try
             {
+                MaxTimeFilterOption = GetValue(HIS_CONFIG_KEY__MaxTimeFilter__Option);
                 IsmergeOptionMergePrint = GetValue(CONFIG_KEY__OptionMergePrintIsmerge) == GlobalVariables.CommonStringTrue;
                 string oldSystem = GetValue(CONFIG_KEY__OLD_SYSTEM_INTEGRATION_TYPE);
                 IsUseGetDynamic = GetValue(CONFIG_KEY__IsUseGetDynamic) == GlobalVariables.CommonStringTrue;
