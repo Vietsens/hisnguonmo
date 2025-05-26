@@ -57,6 +57,8 @@ namespace HIS.Desktop.Plugins.LisSampleUpdate
 
         private LIS_SAMPLE sample;
         List<LIS_SAMPLE_TYPE> sampleTypes = new List<LIS_SAMPLE_TYPE>();
+        V_LIS_SAMPLE _dataLisSample ;
+
         bool isSearchOrderByXHT = false;
         internal bool isNotPatientDayDob = false;
         private List<HIS_MEDI_ORG> listMediOrg = new List<HIS_MEDI_ORG>();
@@ -70,10 +72,11 @@ namespace HIS.Desktop.Plugins.LisSampleUpdate
 
         internal bool isDobTextEditKeyEnter;
 
-        public frmUpdateLisSample(Inventec.Desktop.Common.Modules.Module module)
+        public frmUpdateLisSample(Inventec.Desktop.Common.Modules.Module module, V_LIS_SAMPLE dataLisSample)
             : base(module)
         {
             InitializeComponent();
+            this._dataLisSample = dataLisSample;
         }
 
         void InitControlState()
@@ -455,6 +458,14 @@ namespace HIS.Desktop.Plugins.LisSampleUpdate
                 }
                 else
                     sampleRaw.SPECIMEN_ORDER = null;
+
+                sampleRaw.SAMPLE_NAME = TextEditHelper.GetTrimmedTextOrNull(txtSampleName);
+                sampleRaw.SAMPLE_STATE = TextEditHelper.GetTrimmedTextOrNull(txtSampleState);
+                sampleRaw.SAMPLE_POSITION = TextEditHelper.GetTrimmedTextOrNull(txtSamplePosition);
+                sampleRaw.CARTRIDGE_LOT = TextEditHelper.GetTrimmedTextOrNull(txtCartridgeLot);
+                sampleRaw.CARTRIDGE_CAL = TextEditHelper.GetTrimmedTextOrNull(txtCartridgeCal);
+                sampleRaw.RANGE_TIMES = TextEditHelper.GetTrimmedTextOrNull(txtRangeTimes);
+
                 sampleRaw.NOTE = txtNote.Text.Trim();
 
                 LisSampleInfoSDO sdo = new LisSampleInfoSDO();
@@ -1765,6 +1776,13 @@ namespace HIS.Desktop.Plugins.LisSampleUpdate
 
                 dtTGNhanMau.EditValue = this.sample != null ? Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(this.sample.RESULT_TIME ?? 0) : null;
                 txtNote.Text = this.sample != null ? this.sample.NOTE : "";
+                txtSampleName.EditValue = this.sample != null ? this.sample.SAMPLE_NAME : "";
+                txtSampleState.EditValue = this.sample != null ? this.sample.SAMPLE_STATE : "";
+                txtSamplePosition.EditValue = this.sample != null ? this.sample.SAMPLE_POSITION : "";
+                txtCartridgeLot.EditValue = this.sample != null ? this.sample.CARTRIDGE_LOT : "";
+                txtCartridgeCal.EditValue = this.sample != null ? this.sample.CARTRIDGE_CAL : "";
+                txtRangeTimes.EditValue = this.sample != null ? this.sample.RANGE_TIMES : null;
+
                 if ((this.sample != null && this.sample.SPECIMEN_ORDER != null))
                 {
                     txtSPECIMEN_ORDER.Text = (this.sample != null && this.sample.SPECIMEN_ORDER != null) ? this.sample.SPECIMEN_ORDER.Value.ToString() : "";
@@ -3320,7 +3338,15 @@ namespace HIS.Desktop.Plugins.LisSampleUpdate
             }
         }
 
-        
+        public static class TextEditHelper
+        {
+            public static string GetTrimmedTextOrNull(TextEdit textEdit)
+            {
+                var value = textEdit?.EditValue?.ToString();
+                return string.IsNullOrWhiteSpace(value) ? null : value.Trim();
+            }
+        }
+
     }
 }
 
