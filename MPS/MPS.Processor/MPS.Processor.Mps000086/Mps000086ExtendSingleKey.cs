@@ -45,6 +45,5 @@ namespace MPS.Processor.Mps000086
         internal static string SUM_TOTAL_PRICE_NO_VAT = "SUM_TOTAL_PRICE_NO_VAT";
         internal static string SUM_TOTAL_PRICE_NO_VAT_TEXT = "SUM_TOTAL_PRICE_NO_VAT_TEXT";
 
-
     }
 }

@@ -102,6 +102,8 @@ namespace MPS.Processor.Mps000086.PDO
         public string BID_YEAR { get; set; }
         public decimal EXP_PRICE_VP { get; set; }
         public decimal EXP_VAT_RATIO_VP { get; set; }
+        public string STORAGE_CONDITION_CODE { get; set; }
+        public string STORAGE_CONDITION_NAME { get; set; }
 
         public Mps000086ADO()
         {

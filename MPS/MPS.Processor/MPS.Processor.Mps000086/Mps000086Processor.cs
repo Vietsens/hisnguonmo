@@ -94,6 +94,15 @@ namespace MPS.Processor.Mps000086
                             ado.AMOUNT_EXPORT_STRING = Inventec.Common.String.Convert.CurrencyToVneseString(string.Format("{0:0.####}", Inventec.Common.Number.Convert.NumberToNumberRoundMax4(ado.TOTAL_AMOUNT_IN_EXPORT)));
                             ado.EXP_PRICE_VP = itemGroup.FirstOrDefault().EXP_PRICE_VP;
                             ado.EXP_VAT_RATIO_VP = itemGroup.FirstOrDefault().EXP_VAT_RATIO_VP;
+                            if (ado.TYPE_ID == 1 && ado.MEDI_MATE_TYPE_ID > 0 && rdo._MedicineTypes != null)
+                            {
+                                var medicineType = rdo._MedicineTypes.FirstOrDefault(m => m.ID == (ado.MEDI_MATE_TYPE_ID % 10 == ado.TYPE_ID ? ado.MEDI_MATE_TYPE_ID / 10 : ado.MEDI_MATE_TYPE_ID));
+                                if (medicineType != null)
+                                {
+                                    ado.STORAGE_CONDITION_CODE = medicineType.STORAGE_CONDITION_CODE;
+                                    ado.STORAGE_CONDITION_NAME = medicineType.STORAGE_CONDITION_NAME;
+                                }
+                            }
                             listAdoPrint.Add(ado);
                         }
                         //listAdoPrintSplitedByPackage ProcessData
@@ -130,13 +139,37 @@ namespace MPS.Processor.Mps000086
                             ado.AMOUNT_EXPORT_STRING = Inventec.Common.String.Convert.CurrencyToVneseString(string.Format("{0:0.####}", Inventec.Common.Number.Convert.NumberToNumberRoundMax4(ado.TOTAL_AMOUNT_IN_EXPORT)));
                             ado.EXP_PRICE_VP = itemGroup.FirstOrDefault().EXP_PRICE_VP;
                             ado.EXP_VAT_RATIO_VP = itemGroup.FirstOrDefault().EXP_VAT_RATIO_VP;
+
+                            // Gán STORAGE_CONDITION_CODE và STORAGE_CONDITION_NAME
+                            if (ado.TYPE_ID == 1 && ado.MEDI_MATE_TYPE_ID > 0 && rdo._MedicineTypes != null)
+                            {
+                                var medicineType = rdo._MedicineTypes.FirstOrDefault(m => m.ID == (ado.MEDI_MATE_TYPE_ID % 10 == ado.TYPE_ID ? ado.MEDI_MATE_TYPE_ID / 10 : ado.MEDI_MATE_TYPE_ID));
+                                if (medicineType != null)
+                                {
+                                    ado.STORAGE_CONDITION_CODE = medicineType.STORAGE_CONDITION_CODE;
+                                    ado.STORAGE_CONDITION_NAME = medicineType.STORAGE_CONDITION_NAME;
+                                }
+                            }
                             listAdoPrintSplitedByPackage.Add(ado);
                         }
                     }
                     else
                     {
                         listAdoPrint = rdo.listAdo.ToList();
-                    }
+                        // Gán giá trị cho listAdoPrint nếu chưa có
+                        foreach (var ado in listAdoPrint)
+                        {
+                            if (ado.TYPE_ID == 1 && ado.MEDI_MATE_TYPE_ID > 0 && rdo._MedicineTypes != null)
+                            {
+                                var medicineType = rdo._MedicineTypes.FirstOrDefault(m => m.ID == (ado.MEDI_MATE_TYPE_ID % 10 == ado.TYPE_ID ? ado.MEDI_MATE_TYPE_ID / 10 : ado.MEDI_MATE_TYPE_ID));
+                                if (medicineType != null)
+                                {
+                                    ado.STORAGE_CONDITION_CODE = medicineType.STORAGE_CONDITION_CODE;
+                                    ado.STORAGE_CONDITION_NAME = medicineType.STORAGE_CONDITION_NAME;
+                                }
+                            }
+                        }
+                     }
                     Inventec.Common.Logging.LogSystem.Debug("rdo.OderKey:____" + rdo.OrderKey);
                     Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData("listAdoPrint:____", listAdoPrint));
                     if (rdo.OrderKey != 0)
@@ -288,6 +321,9 @@ namespace MPS.Processor.Mps000086
                                         adoMediGr.PARENT_MEDICINE_TYPE_NAME = _parentMedicineType.MEDICINE_TYPE_NAME;
                                     }
 
+                                    // Gán STORAGE_CONDITION_CODE và STORAGE_CONDITION_NAME
+                                    adoMediGr.STORAGE_CONDITION_CODE = _dataMedi.STORAGE_CONDITION_CODE;
+                                    adoMediGr.STORAGE_CONDITION_NAME = _dataMedi.STORAGE_CONDITION_NAME;
                                 }
 
                                 var medicines = rdo._Medicines.Where(p => mediGr.Select(x => x.MEDICINE_ID).ToList().Contains(p.ID)).ToList();
@@ -385,6 +421,9 @@ namespace MPS.Processor.Mps000086
                                 ado.ACTIVE_INGR_BHYT_NAME = data.ACTIVE_INGR_BHYT_NAME;
                                 ado.MANUFACTURER_CODE = data.MANUFACTURER_CODE;
                                 ado.MANUFACTURER_NAME = data.MANUFACTURER_NAME;
+                                // Gán STORAGE_CONDITION_CODE và STORAGE_CONDITION_NAME
+                                ado.STORAGE_CONDITION_CODE = data.STORAGE_CONDITION_CODE;
+                                ado.STORAGE_CONDITION_NAME = data.STORAGE_CONDITION_NAME;
                                 if (rdo._MedicineUserForms != null && rdo._MedicineUserForms.Count > 0)
                                 {
                                     ado.MEDICINE_USE_FORM_NUM_ORDER = rdo._MedicineUserForms.Where(o => o.ID == data.MEDICINE_USE_FORM_ID).First().NUM_ORDER;
@@ -671,7 +710,7 @@ namespace MPS.Processor.Mps000086
 
                 SetSingleKey(new KeyValue(Mps000086ExtendSingleKey.IS_PLAY_CHECK, rdo._keyPhieuTra));
                 SetSingleKey(new KeyValue(Mps000086ExtendSingleKey.REQ_DEPARTMENT_NAME, rdo.Req_Department_Name));
-                SetSingleKey(new KeyValue(Mps000086ExtendSingleKey.REQ_ROOM_NAME, rdo.Req_Room_Name));
+                SetSingleKey(new KeyValue(Mps000086ExtendSingleKey.REQ_ROOM_NAME, rdo.Req_Room_Name)); 
                 SetSingleKey(new KeyValue(Mps000086ExtendSingleKey.EXP_DEPARTMENT_NAME, rdo.Exp_Department_Name));
                 SetSingleKey(new KeyValue(Mps000086ExtendSingleKey.KEY_NAMES, rdo.KeyNames));
                 SetSingleKey(new KeyValue(Mps000086ExtendSingleKey.SUM_TOTAL_PRICE, totalPrice));
@@ -679,7 +718,6 @@ namespace MPS.Processor.Mps000086
                 //string sumText = String.Format("0:0.####", Inventec.Common.Number.Convert.NumberToNumberRoundMax4(totalPrice));
                 SetSingleKey(new KeyValue(Mps000086ExtendSingleKey.SUM_TOTAL_PRICE_TEXT, Inventec.Common.String.Convert.CurrencyToVneseString(string.Format("{0:0.####}", Inventec.Common.Number.Convert.NumberToNumberRoundMax4(totalPrice)))));
                 SetSingleKey(new KeyValue(Mps000086ExtendSingleKey.SUM_TOTAL_PRICE_NO_VAT_TEXT, Inventec.Common.String.Convert.CurrencyToVneseString(string.Format("{0:0.####}", Inventec.Common.Number.Convert.NumberToNumberRoundMax4(totalPriceNoVat)))));
-
                 rdo.listAdo = rdo.listAdo.OrderBy(o => o.TYPE_ID).ThenByDescending(t => t.NUM_ORDER).ToList();
             }
             catch (Exception ex)
