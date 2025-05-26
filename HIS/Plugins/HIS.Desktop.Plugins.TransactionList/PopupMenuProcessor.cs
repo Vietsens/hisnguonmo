@@ -119,7 +119,23 @@ namespace HIS.Desktop.Plugins.TransactionList
                     btnHoaDonXuatBan.Tag = ItemType.InHoaDonXuatBan;
                     btnHoaDonXuatBan.ItemClick += new ItemClickEventHandler(this._MouseRightClick);
                     items.Add(btnHoaDonXuatBan);
-
+                    // chuyển đổi hóa đơn điện tử
+                    //qtcode
+                    if (!String.IsNullOrEmpty(this._Transaction.INVOICE_CODE)
+                        && !String.IsNullOrEmpty(this._Transaction.INVOICE_SYS)
+                        && this._Transaction.TRANSACTION_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TRANSACTION_TYPE.ID__TT)
+                    {
+                        if (this._Transaction.EINVOICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_EINVOICE_TYPE.ID__VNPT ||
+                            (this._Transaction.EINVOICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_EINVOICE_TYPE.ID__VIETEL && HisConfigCFG.autoPrintType == "1") ||
+                            (this._Transaction.EINVOICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_EINVOICE_TYPE.ID__CYBERBILL && HisConfigCFG.autoPrintType == "1"))
+                        {
+                            BarButtonItem btnChuyenDoiHoaDonDienTu = new BarButtonItem(this._BarManager, "Chuyển đổi hóa đơn điện tử", 3);
+                            btnChuyenDoiHoaDonDienTu.Tag = ItemType.ChuyenDoiHoaDonDienTu;
+                            btnChuyenDoiHoaDonDienTu.ItemClick += new ItemClickEventHandler(this._MouseRightClick);
+                            items.Add(btnChuyenDoiHoaDonDienTu);
+                        }
+                    }
+                    //qtcode
                     if (String.IsNullOrWhiteSpace(this._Transaction.INVOICE_CODE)
                          && this._Transaction.IS_CANCEL != 1
                          && (this._Transaction.AMOUNT - (this._Transaction.EXEMPTION ?? 0) - (this._Transaction.TDL_BILL_FUND_AMOUNT ?? 0) > 0))
@@ -141,24 +157,6 @@ namespace HIS.Desktop.Plugins.TransactionList
                         btnInHoaDonNhap.Tag = ItemType.InHoaDonNhap;
                         btnInHoaDonNhap.ItemClick += new ItemClickEventHandler(this._MouseRightClick);
                         items.Add(btnInHoaDonNhap);
-
-                        // chuyển đổi hóa đơn điện tử
-                        //qtcode
-                        if (!String.IsNullOrEmpty(this._Transaction.INVOICE_CODE)
-                            && !String.IsNullOrEmpty(this._Transaction.INVOICE_SYS)
-                            && this._Transaction.TRANSACTION_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TRANSACTION_TYPE.ID__TT)
-                        {
-                            if (this._Transaction.EINVOICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_EINVOICE_TYPE.ID__VNPT ||
-                                (this._Transaction.EINVOICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_EINVOICE_TYPE.ID__VIETEL && HisConfigCFG.autoPrintType == "1") ||
-                                (this._Transaction.EINVOICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_EINVOICE_TYPE.ID__CYBERBILL && HisConfigCFG.autoPrintType == "1"))
-                            {
-                                BarButtonItem btnChuyenDoiHoaDonDienTu = new BarButtonItem(this._BarManager, "Chuyển đổi hóa đơn điện tử", 3);
-                                btnChuyenDoiHoaDonDienTu.Tag = ItemType.ChuyenDoiHoaDonDienTu;
-                                btnChuyenDoiHoaDonDienTu.ItemClick += new ItemClickEventHandler(this._MouseRightClick);
-                                items.Add(btnChuyenDoiHoaDonDienTu);
-                            }
-                        }
-                        //qtcode
                     }
 
                     this._PopupMenu.AddItems(items.ToArray());
