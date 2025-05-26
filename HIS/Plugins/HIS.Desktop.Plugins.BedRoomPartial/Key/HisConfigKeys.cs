@@ -29,5 +29,6 @@ namespace HIS.Desktop.Plugins.BedRoomPartial.Key
         internal const string HIS_CONFIG_KEY__PATIENT_TYPE_CODE__VP = "MOS.HIS_PATIENT_TYPE.PATIENT_TYPE_CODE.HOSPITAL_FEE";//Doi tuong VP
         internal const string HIS_CONFIG_KEY__FormClosingOption = "HIS.Desktop.FormClosingOption";
         internal const string HIS_CONFIG_KEY__ModuleLinkApply = "HIS.Desktop.FormClosingOption.ModuleLinkApply";
+        internal const string HIS_CONFIG_KEY__MaxTimeFilter__Option = "HIS.Desktop.Plugins.MaxTimeFilter.Option";
     }
 }
