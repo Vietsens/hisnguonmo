@@ -3343,7 +3343,7 @@ namespace HIS.Desktop.Plugins.LisSampleUpdate
         {
             if (_dataLisSample != null)
             {
-                if (_dataLisSample.BARCODE != null)
+                if (_dataLisSample.BARCODE != null && _dataLisSample.SAMPLE_TYPE_ID != null)
                 {
                     txtBarcode.Text = _dataLisSample.BARCODE;
                     txtBarcode.Enabled = false;
