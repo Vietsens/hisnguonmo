@@ -180,6 +180,14 @@ namespace MPS.Processor.Mps000096
 
                     SetSingleKey(new KeyValue(Mps000096ExtendSingleKey.TDL_PATIENT_DOB, rdo.currentSample.DOB));
                     SetSingleKey(new KeyValue(Mps000096ExtendSingleKey.VIR_ADDRESS, rdo.currentSample.ADDRESS));
+                    //Dangth
+                    SetSingleKey(new KeyValue(Mps000096ExtendSingleKey.SAMPLE_NAME, rdo.currentSample.SAMPLE_NAME));
+                    SetSingleKey(new KeyValue(Mps000096ExtendSingleKey.SAMPLE_STATE, rdo.currentSample.SAMPLE_STATE));
+                    SetSingleKey(new KeyValue(Mps000096ExtendSingleKey.SAMPLE_POSITION, rdo.currentSample.SAMPLE_POSITION));
+                    SetSingleKey(new KeyValue(Mps000096ExtendSingleKey.CARTRIDGE_LOT, rdo.currentSample.CARTRIDGE_LOT));
+                    SetSingleKey(new KeyValue(Mps000096ExtendSingleKey.CARTRIDGE_CAL, rdo.currentSample.CARTRIDGE_CAL));
+                    SetSingleKey(new KeyValue(Mps000096ExtendSingleKey.RANGE_TIMES, rdo.currentSample.RANGE_TIMES));
+
                     SetSingleKey(new KeyValue(Mps000096ExtendSingleKey.IS_HEIN, ""));
                     SetSingleKey(new KeyValue(Mps000096ExtendSingleKey.IS_NOT_HEIN, ""));
                     SetSingleKey(new KeyValue(Mps000096ExtendSingleKey.IS_RIGHT_ROUTE, ""));
