@@ -1070,12 +1070,16 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                         ListTuberculosisTreat = new List<HIS_TUBERCULOSIS_TREAT>();
                         string message = "";
                         isExportXml = true;
+                        //qtcode
+                         MemoryStream memoryStreamXml12 = new MemoryStream();
+                        //qtcode
                         CreateThreadGetData(limit);
                         isExportXml = false;
                         if (chkSignFileCertUtil.Checked == false)
                         {
                             isNotFileSign = true;
-                            message = ProcessExportXmlDetail(ref result, ref memoryStream, viewXml, xuatXmlTT, xuatXml12, HisTreatments, ListPatientTypeAlter, ListSereServ, ListDhst, HisSereServTeins, HisTrackings, HisSereServPttts, ListEkipUser, ListBedlog, ListDebates, ListBaby, ListMedicalAssessment, ListHivTreatment, HisSereServSuin, ListTuberculosisTreat);
+                            //qtcode
+                            message = ProcessExportXmlDetail(ref result, ref memoryStream, ref memoryStreamXml12, viewXml, xuatXmlTT, xuatXml12, HisTreatments, ListPatientTypeAlter, ListSereServ, ListDhst, HisSereServTeins, HisTrackings, HisSereServPttts, ListEkipUser, ListBedlog, ListDebates, ListBaby, ListMedicalAssessment, ListHivTreatment, HisSereServSuin, ListTuberculosisTreat);
                         }
                         else
                         {
@@ -1088,13 +1092,13 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                                 else
                                 {
                                     isNotFileSign = true;
-                                    message = ProcessExportXmlDetail(ref result, ref memoryStream, viewXml, xuatXmlTT, xuatXml12, HisTreatments, ListPatientTypeAlter, ListSereServ, ListDhst, HisSereServTeins, HisTrackings, HisSereServPttts, ListEkipUser, ListBedlog, ListDebates, ListBaby, ListMedicalAssessment, ListHivTreatment, HisSereServSuin, ListTuberculosisTreat);
+                                    message = ProcessExportXmlDetail(ref result, ref memoryStream, ref memoryStreamXml12, viewXml, xuatXmlTT, xuatXml12, HisTreatments, ListPatientTypeAlter, ListSereServ, ListDhst, HisSereServTeins, HisTrackings, HisSereServPttts, ListEkipUser, ListBedlog, ListDebates, ListBaby, ListMedicalAssessment, ListHivTreatment, HisSereServSuin, ListTuberculosisTreat);
                                 }
                             }
                             else
                             {
                                 isNotFileSign = false;
-                                message = ProcessExportXmlDetail(ref result, ref memoryStream, viewXml, xuatXmlTT, xuatXml12, HisTreatments, ListPatientTypeAlter, ListSereServ, ListDhst, HisSereServTeins, HisTrackings, HisSereServPttts, ListEkipUser, ListBedlog, ListDebates, ListBaby, ListMedicalAssessment, ListHivTreatment, HisSereServSuin, ListTuberculosisTreat);
+                                message = ProcessExportXmlDetail(ref result, ref memoryStream, ref memoryStreamXml12, viewXml, xuatXmlTT, xuatXml12, HisTreatments, ListPatientTypeAlter, ListSereServ, ListDhst, HisSereServTeins, HisTrackings, HisSereServPttts, ListEkipUser, ListBedlog, ListDebates, ListBaby, ListMedicalAssessment, ListHivTreatment, HisSereServSuin, ListTuberculosisTreat);
                             }
                         }
                         if (!String.IsNullOrEmpty(message))
@@ -1688,60 +1692,72 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
         private string DataSignXML(string SourceFile, string element)
         {
             string result = null;
-
-            // Lấy đường dẫn đến thư mục hiện tại của chương trình
-            string currentDirectory = Directory.GetCurrentDirectory();
+            //qtcode
+            if (isNotFileSign)
+            {
+                return SourceFile; // nội dung của xml cần ký, nếu k cần ký thì trả lại nọi dung gốc 
+            }
+            //qtcode
+                // Lấy đường dẫn đến thư mục hiện tại của chương trình
+                string currentDirectory = Directory.GetCurrentDirectory();
 
             // Tạo đường dẫn đến thư mục tạm trong thư mục hiện tại
             string tempFolderPath = Path.Combine(currentDirectory, "Temp");
-            try
+           
+                try
             {
-                if (VerifyServiceSignProcessorIsRunning() && !string.IsNullOrEmpty(SourceFile))
+                if (!string.IsNullOrEmpty(SourceFile))
                 {
-
-                    // Tạo thư mục tạm nếu chưa tồn tại
-                    Directory.CreateDirectory(tempFolderPath);
-
-                    string fullFileName = Guid.NewGuid().ToString() + ".xml";
-                    // Tạo đường dẫn đến file tạm 
-                    string tempFilePath = Path.Combine(tempFolderPath, fullFileName);
-                    File.Create(tempFilePath).Close();
-
-                    var sourceXml = Guid.NewGuid().ToString() + ".xml";
-                    // Write the string array to a new file named "xml".
-                    using (StreamWriter outputFile = new StreamWriter(Path.Combine(tempFolderPath, sourceXml)))
+                    if (VerifyServiceSignProcessorIsRunning())
                     {
-                        outputFile.WriteLine(SourceFile);
-                    }
 
+                        // Tạo thư mục tạm nếu chưa tồn tại
+                        Directory.CreateDirectory(tempFolderPath);
 
-                    WcfSignDCO wcfSignDCO = new WcfSignDCO();
-                    wcfSignDCO.SerialNumber = SerialNumber;
-                    wcfSignDCO.OutputFile = tempFilePath;
-                    wcfSignDCO.PIN = "";
+                        string fullFileName = Guid.NewGuid().ToString() + ".xml";
+                        // Tạo đường dẫn đến file tạm 
+                        string tempFilePath = Path.Combine(tempFolderPath, fullFileName);
+                        File.Create(tempFilePath).Close();
 
-                    wcfSignDCO.SourceFile = Path.Combine(tempFolderPath, sourceXml);
-
-                    wcfSignDCO.fieldSigned = element;
-                    string jsonData = JsonConvert.SerializeObject(wcfSignDCO);
-                    SignProcessorClient signProcessorClient = new SignProcessorClient();
-                    string pathAfterFileSign = SourceFile;
-
-                    var wcfSignResultDCO = signProcessorClient.SignXml130(jsonData);
-                    if (wcfSignResultDCO != null && wcfSignResultDCO.Success)
-                    {
-                        pathAfterFileSign = wcfSignResultDCO.OutputFile;
-                    }
-                    result = Encoding.UTF8.GetString(File.ReadAllBytes(pathAfterFileSign));
-
-                    if (configSync != null && !this.configSync.dontSend && string.IsNullOrEmpty(this.configSync.folderPath))
-                    {
-                        if (File.Exists(wcfSignDCO.SourceFile))
+                        var sourceXml = Guid.NewGuid().ToString() + ".xml";
+                        // Write the string array to a new file named "xml".
+                        using (StreamWriter outputFile = new StreamWriter(Path.Combine(tempFolderPath, sourceXml)))
                         {
-                            File.Delete(wcfSignDCO.SourceFile);
+                            outputFile.WriteLine(SourceFile);
+                        }
+
+
+                        WcfSignDCO wcfSignDCO = new WcfSignDCO();
+                        wcfSignDCO.SerialNumber = SerialNumber;
+                        wcfSignDCO.OutputFile = tempFilePath;
+                        wcfSignDCO.PIN = "";
+
+                        wcfSignDCO.SourceFile = Path.Combine(tempFolderPath, sourceXml);
+
+                        wcfSignDCO.fieldSigned = element;
+                        string jsonData = JsonConvert.SerializeObject(wcfSignDCO);
+                       
+                            SignProcessorClient signProcessorClient = new SignProcessorClient();
+                            string pathAfterFileSign = SourceFile;
+
+                            var wcfSignResultDCO = signProcessorClient.SignXml130(jsonData);
+                            if (wcfSignResultDCO != null && wcfSignResultDCO.Success)
+                            {
+                                pathAfterFileSign = wcfSignResultDCO.OutputFile;
+                            }
+                            result = Encoding.UTF8.GetString(File.ReadAllBytes(pathAfterFileSign));
+
+
+                        if (configSync != null && !this.configSync.dontSend && string.IsNullOrEmpty(this.configSync.folderPath))
+                        {
+                            if (File.Exists(wcfSignDCO.SourceFile))
+                            {
+                                File.Delete(wcfSignDCO.SourceFile);
+                            }
                         }
                     }
                 }
+
                 else
                     return SourceFile;
             }
@@ -2394,7 +2410,9 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                                 List<V_HIS_TREATMENT_1> listTreatments = new List<V_HIS_TREATMENT_1>();
                                 listTreatments.Add(treatment1);
                                 Inventec.Common.Logging.LogSystem.Info("btnExportXml_Click Begin");
-                                success = this.GenerateXml(ref param, ref memoryStream,ref memoryStreamXml12, true, false, true, listTreatments);
+                                //qtcode
+                                //success = this.GenerateXml(ref param, ref memoryStream,ref memoryStreamXml12, true, false, true, listTreatments);
+                                success = this.GenerateXml(ref param, ref memoryStream, true, false, true, listTreatments);
                                 isNotFileSign = false;
                                 Inventec.Common.Logging.LogSystem.Info("btnExportXml_Click End");
                                 WaitingManager.Hide();
@@ -3679,6 +3697,9 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                 }
                 else
                 {
+                    //qtcode
+                    isNotFileSign = true;
+                    //qtcode
                     WaitingManager.Show();
                     callSyncSuccess = false;
                     isSendCollinearXml = false;
@@ -3721,7 +3742,13 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                     return;
                 }
 
-                isNotFileSign = false;
+                isNotFileSign = false; 
+                //qtcode
+                if(chkSignFileCertUtil.Checked == false)
+                {
+                    isNotFileSign = true;
+                }
+               //qtcode
                 WaitingManager.Show();
                 callSyncSuccess = false;
                 isSendCollinearXml = true;
@@ -4295,6 +4322,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                                 bool success = false;
                                 try
                                 {
+                                    //qtcode để ý
                                     resultSync = xmlProcessor.RunCollinearXml(ref errorMess);
                                     if (string.IsNullOrEmpty(errMessage)) success = true;
                                 }
@@ -5024,6 +5052,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                         startInfo.FileName = exeSignPath;
                         try
                         {
+                           
                             Process.Start(startInfo);
                             Inventec.Common.Logging.LogSystem.Debug("GetSerialNumber.4");
                             Thread.Sleep(500);
