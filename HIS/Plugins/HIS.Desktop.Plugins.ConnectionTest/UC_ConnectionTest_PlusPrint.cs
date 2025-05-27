@@ -840,11 +840,12 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                             string mlct = Inventec.Common.Calculate.Calculation.MucLocCauThanCrCleGFR(this.currentServiceReq.TDL_PATIENT_DOB, weight, height, chiso, this.currentServiceReq.TDL_PATIENT_GENDER_ID == IMSys.DbConfig.HIS_RS.HIS_GENDER.ID__MALE);
                             if (!string.IsNullOrEmpty(mlct))
                             {
-                                if (mlct.EndsWith("(CrCl)"))
+
+                               if(mlct.StartsWith("CrCl"))
                                 {
                                     mlctado.CRCL = mlct.Replace("(CrCl)", "");
                                 }
-                                else if (mlct.EndsWith("(eGFR)"))
+                                else if (mlct.StartsWith("(eGFR)"))
                                 {
                                     mlctado.EGFR = mlct.Replace("(eGFR)", "");
                                 }
