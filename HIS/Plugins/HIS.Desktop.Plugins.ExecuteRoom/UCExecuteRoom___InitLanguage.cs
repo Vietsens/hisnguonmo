@@ -103,6 +103,8 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
                 this.btnFind.Text = Inventec.Common.Resource.Get.Value("UCExecuteRoom.btnFind.Text", ResourceLangManager.LanguageUCExecuteRoom, LanguageManager.GetCulture());
                 this.txtSearchKey.Properties.NullValuePrompt = Inventec.Common.Resource.Get.Value("UCExecuteRoom.txtSearchKey.Properties.NullValuePrompt", ResourceLangManager.LanguageUCExecuteRoom, LanguageManager.GetCulture());
                 this.txtServiceReqCode.Properties.NullValuePrompt = Inventec.Common.Resource.Get.Value("UCExecuteRoom.txtTreatmentCode.Properties.NullValuePrompt", ResourceLangManager.LanguageUCExecuteRoom, LanguageManager.GetCulture());
+                this.txtPatientCode.Properties.NullValuePrompt = Inventec.Common.Resource.Get.Value("UCExecuteRoom.txtPatientCode.Properties.NullValuePrompt", ResourceLangManager.LanguageUCExecuteRoom, LanguageManager.GetCulture());
+
                 this.repositoryItemButton_CallPatient.Buttons[0].ToolTip = Inventec.Common.Resource.Get.Value("UCExecuteRoom.CallPatientTooltip.Text", ResourceLangManager.LanguageUCExecuteRoom, LanguageManager.GetCulture());
                 this.repositoryItemBtnMedisoftHistory.Buttons[0].ToolTip = Inventec.Common.Resource.Get.Value("UCExecuteRoom.CallPatientNhoTooltip.Text", ResourceLangManager.LanguageUCExecuteRoom, LanguageManager.GetCulture());
                 this.grdColFinishTime.Caption = Inventec.Common.Resource.Get.Value("UCExecuteRoom.grdColFinishTime.Caption", ResourceLangManager.LanguageUCExecuteRoom, LanguageManager.GetCulture());

@@ -16,47 +16,48 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Drawing;
 using System.Data;
+using System.Drawing;
+using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using System.Collections;
-using Inventec.Desktop.Common.Message;
-using Inventec.Core;
-using Inventec.Common.Logging;
-using HIS.Desktop.Controls.Session;
-using MOS.Filter;
-using Inventec.Common.Adapter;
-using HIS.Desktop.ApiConsumer;
-using HIS.UC.TreeSereServ7V2;
-using MOS.SDO;
-using MOS.EFMODEL.DataModels;
-using HIS.Desktop.LocalStorage.LocalData;
-using Inventec.Common.RichEditor.Base;
-using HIS.Desktop.ADO;
-using System.Reflection;
-using HIS.Desktop.Plugins.ExecuteRoom.Base;
-using Inventec.Desktop.Common.LanguageManager;
-using HIS.Desktop.LocalStorage.ConfigApplication;
-using Inventec.Common.ThreadCustom;
-using HIS.Desktop.LocalStorage.BackendData;
-using System.IO;
-using HIS.Desktop.LocalStorage.HisConfig;
-using HIS.Desktop.Common;
-using HIS.Desktop.Utility;
-using HIS.Desktop.Plugins.ExecuteRoom.Resources;
-using HIS.Desktop.Plugins.ExecuteRoom.ADO;
-using EMR.EFMODEL.DataModels;
+using DevExpress.Utils;
 using DevExpress.XtraEditors;
 using DevExpress.XtraTab;
-using DevExpress.Utils;
+using EMR.EFMODEL.DataModels;
 using EMR.SDO;
-using Inventec.Common.QrCodeBHYT;
+using HIS.Desktop.ADO;
+using HIS.Desktop.ApiConsumer;
+using HIS.Desktop.Common;
+using HIS.Desktop.Controls.Session;
+using HIS.Desktop.LocalStorage.BackendData;
+using HIS.Desktop.LocalStorage.ConfigApplication;
+using HIS.Desktop.LocalStorage.HisConfig;
+using HIS.Desktop.LocalStorage.LocalData;
+using HIS.Desktop.Plugins.ExecuteRoom.ADO;
+using HIS.Desktop.Plugins.ExecuteRoom.Base;
+using HIS.Desktop.Plugins.ExecuteRoom.Resources;
 using HIS.Desktop.Plugins.Library.CheckHeinGOV;
+using HIS.Desktop.Utility;
+using HIS.UC.TreeSereServ7V2;
+using Inventec.Common.Adapter;
+using Inventec.Common.Logging;
+using Inventec.Common.QrCodeBHYT;
+using Inventec.Common.RichEditor.Base;
+using Inventec.Common.ThreadCustom;
+using Inventec.Core;
+using Inventec.Desktop.Common.LanguageManager;
+using Inventec.Desktop.Common.Message;
+using MOS.EFMODEL.DataModels;
+using MOS.Filter;
+using MOS.SDO;
 //using static Aspose.Pdf.Operator;
 
 namespace HIS.Desktop.Plugins.ExecuteRoom
@@ -72,7 +73,7 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
             {
                 if (this.typeCodeFind__KeyWork_InDate == this.typeCodeFind_RangeDate)
                 {
-                    if (String.IsNullOrWhiteSpace(txtServiceReqCode.Text) && (dtIntructionDate.EditValue == null || dtIntructionDateTo.EditValue == null))
+                    if (String.IsNullOrWhiteSpace(txtServiceReqCode.Text) && String.IsNullOrWhiteSpace(txtPatientCode.Text) && (dtIntructionDate.EditValue == null || dtIntructionDateTo.EditValue == null))
                     {
                         MessageBox.Show("Bạn cần nhập đầy đủ thời gian trước khi thực hiện tìm kiếm", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                         if (String.IsNullOrWhiteSpace(txtServiceReqCode.Text))
@@ -174,32 +175,48 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
 
                 hisServiceReqFilter.IS_NOT_KSK_REQURIED_APROVAL__OR__IS_KSK_APPROVE = true;
                 hisServiceReqFilter.KEYWORD__SERVICE_REQ_CODE__TREATMENT_CODE__PATIENT_NAME__PATIENT_CODE = txtSearchKey.Text.Trim();
+
+                bool isSearchByPatientCode = false;
+                if (!string.IsNullOrWhiteSpace(txtPatientCode.Text))
+                {
+                    string patientCode = txtPatientCode.Text.Trim();
+                    if (patientCode.Length < 10)
+                    {
+                        patientCode = string.Format("{0:0000000000}", Convert.ToInt64(patientCode));
+                        txtPatientCode.Text = patientCode;
+                    }
+                    hisServiceReqFilter.TDL_PATIENT_CODE = patientCode;
+                    isSearchByPatientCode = true;
+                }
                 //if (dtCreatefrom.EditValue != null && dtCreatefrom.DateTime != DateTime.MinValue)
                 //    hisServiceReqFilter.INTRUCTION_TIME_FROM = Inventec.Common.TypeConvert.Parse.ToInt64(Convert.ToDateTime(dtCreatefrom.EditValue).ToString("yyyyMMddHHmm") + "00");
                 //if (dtCreateTo.EditValue != null && dtCreateTo.DateTime != DateTime.MinValue)
                 //    hisServiceReqFilter.INTRUCTION_TIME_TO = Inventec.Common.TypeConvert.Parse.ToInt64(Convert.ToDateTime(dtCreateTo.EditValue).ToString("yyyyMMddHHmm") + "59");
 
-                if (this.typeCodeFind__KeyWork_InDate == this.typeCodeFind_InDate
-                   && dtIntructionDate.EditValue != null && dtIntructionDate.DateTime != DateTime.MinValue)
+                if (!isSearchByPatientCode)
                 {
-                    hisServiceReqFilter.INTRUCTION_DATE__EQUAL = Inventec.Common.TypeConvert.Parse.ToInt64(
-                    Convert.ToDateTime(dtIntructionDate.EditValue).ToString("yyyyMMdd") + "000000");
-                }
-                else if (this.typeCodeFind__KeyWork_InDate == typeCodeFind__InMonth
-                    && dtIntructionDate.EditValue != null && dtIntructionDate.DateTime != DateTime.MinValue)
-                {
-                    hisServiceReqFilter.VIR_INTRUCTION_MONTH__EQUAL = Inventec.Common.TypeConvert.Parse.ToInt64(
-                    Convert.ToDateTime(dtIntructionDate.EditValue).ToString("yyyyMM") + "00000000");
-                }
-                else if (this.typeCodeFind__KeyWork_InDate == typeCodeFind_RangeDate
-                    && dtIntructionDate.EditValue != null && dtIntructionDate.DateTime != DateTime.MinValue
-                    && dtIntructionDateTo.EditValue != null && dtIntructionDateTo.DateTime != DateTime.MinValue)
-                {
-                    hisServiceReqFilter.INTRUCTION_TIME_FROM = Inventec.Common.TypeConvert.Parse.ToInt64(
-                    Convert.ToDateTime(dtIntructionDate.EditValue).ToString("yyyyMMdd") + "000000");
+                    if (this.typeCodeFind__KeyWork_InDate == this.typeCodeFind_InDate
+                       && dtIntructionDate.EditValue != null && dtIntructionDate.DateTime != DateTime.MinValue)
+                    {
+                        hisServiceReqFilter.INTRUCTION_DATE__EQUAL = Inventec.Common.TypeConvert.Parse.ToInt64(
+                        Convert.ToDateTime(dtIntructionDate.EditValue).ToString("yyyyMMdd") + "000000");
+                    }
+                    else if (this.typeCodeFind__KeyWork_InDate == typeCodeFind__InMonth
+                        && dtIntructionDate.EditValue != null && dtIntructionDate.DateTime != DateTime.MinValue)
+                    {
+                        hisServiceReqFilter.VIR_INTRUCTION_MONTH__EQUAL = Inventec.Common.TypeConvert.Parse.ToInt64(
+                        Convert.ToDateTime(dtIntructionDate.EditValue).ToString("yyyyMM") + "00000000");
+                    }
+                    else if (this.typeCodeFind__KeyWork_InDate == typeCodeFind_RangeDate
+                        && dtIntructionDate.EditValue != null && dtIntructionDate.DateTime != DateTime.MinValue
+                        && dtIntructionDateTo.EditValue != null && dtIntructionDateTo.DateTime != DateTime.MinValue)
+                    {
+                        hisServiceReqFilter.INTRUCTION_TIME_FROM = Inventec.Common.TypeConvert.Parse.ToInt64(
+                        Convert.ToDateTime(dtIntructionDate.EditValue).ToString("yyyyMMdd") + "000000");
 
-                    hisServiceReqFilter.INTRUCTION_TIME_TO = Inventec.Common.TypeConvert.Parse.ToInt64(
-                    Convert.ToDateTime(dtIntructionDateTo.EditValue).ToString("yyyyMMdd") + "235959");
+                        hisServiceReqFilter.INTRUCTION_TIME_TO = Inventec.Common.TypeConvert.Parse.ToInt64(
+                        Convert.ToDateTime(dtIntructionDateTo.EditValue).ToString("yyyyMMdd") + "235959");
+                    }
                 }
 
                 List<long> lstServiceReqSTT = new List<long>();

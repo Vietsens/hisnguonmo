@@ -155,6 +155,18 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
-        
+
+        public void FocusControl_txtPatientCode()
+        {
+            try
+            {
+                txtPatientCode.Focus();
+                txtPatientCode.SelectAll();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
     }
 }
