@@ -770,7 +770,11 @@ namespace HIS.Desktop.Plugins.SyncHsskSyt
             {
                 LoginData dfilter = new LoginData();
                 dfilter.username = user;
-                dfilter.password = ConvertStringToMD5(pass);
+                //dfilter.password = ConvertStringToMD5(pass);
+                //qtcode
+                bool checkConfig = !string.IsNullOrEmpty(HisConfigHSSKSYT.HSSK_SYT__CONNECTION_INFO);
+                dfilter.password = checkConfig ? pass : ConvertStringToMD5(pass);
+                //qtcode
                 //client.Timeout = new TimeSpan(0, 3, 0);
                 client.Timeout = TimeSpan.FromMinutes(5);
                 var json = Newtonsoft.Json.JsonConvert.SerializeObject(dfilter);
