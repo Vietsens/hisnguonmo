@@ -58,7 +58,7 @@ namespace HIS.UC.UCPatientRaw
 		public bool IsSearchCCCDByInfo = false;
         public async void SearchPatientByCodeOrQrCode(string strValue, string keyTypeFind = null)
         {
-            oldTypeFind = this.typeCodeFind;
+            oldTypeFind = this.typeCodeFind;    
             try
 			{
 				this.isAlertTreatmentEndInDay = false;
