@@ -59,5 +59,15 @@ namespace HIS.Desktop.Plugins.SyncHsskSyt.Properties {
                 resourceCulture = value;
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap open_16x16 {
+            get {
+                object obj = ResourceManager.GetObject("open_16x16", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
     }
 }
