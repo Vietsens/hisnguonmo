@@ -45,16 +45,11 @@ namespace HIS.Desktop.Plugins.SyncHsskSyt
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmSyncHsskSyt));
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject1 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject2 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject3 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject4 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject5 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject6 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject7 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject8 = new DevExpress.Utils.SerializableAppearanceObject();
             this.layoutControl1 = new DevExpress.XtraLayout.LayoutControl();
             this.xtraTabControl1 = new DevExpress.XtraTab.XtraTabControl();
             this.xtraTabPage1 = new DevExpress.XtraTab.XtraTabPage();
@@ -68,7 +63,7 @@ namespace HIS.Desktop.Plugins.SyncHsskSyt
             this.repositoryItemPictureEdit1 = new DevExpress.XtraEditors.Repository.RepositoryItemPictureEdit();
             this.gridColumn4 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.statusPicture = new DevExpress.XtraEditors.Repository.RepositoryItemImageEdit();
-            this.imageList1 = new System.Windows.Forms.ImageList(this.components);
+            this.imageList1 = new System.Windows.Forms.ImageList();
             this.layoutControlGroup3 = new DevExpress.XtraLayout.LayoutControlGroup();
             this.layoutControlItem6 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControl2 = new DevExpress.XtraLayout.LayoutControl();
@@ -158,9 +153,10 @@ namespace HIS.Desktop.Plugins.SyncHsskSyt
             this.layoutControl1.Controls.Add(this.xtraTabControl1);
             this.layoutControl1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.layoutControl1.Location = new System.Drawing.Point(0, 0);
+            this.layoutControl1.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
             this.layoutControl1.Name = "layoutControl1";
             this.layoutControl1.Root = this.layoutControlGroup1;
-            this.layoutControl1.Size = new System.Drawing.Size(910, 466);
+            this.layoutControl1.Size = new System.Drawing.Size(758, 466);
             this.layoutControl1.TabIndex = 0;
             this.layoutControl1.Text = "layoutControl1";
             // 
@@ -170,7 +166,7 @@ namespace HIS.Desktop.Plugins.SyncHsskSyt
             this.xtraTabControl1.Margin = new System.Windows.Forms.Padding(0);
             this.xtraTabControl1.Name = "xtraTabControl1";
             this.xtraTabControl1.SelectedTabPage = this.xtraTabPage1;
-            this.xtraTabControl1.Size = new System.Drawing.Size(906, 462);
+            this.xtraTabControl1.Size = new System.Drawing.Size(754, 462);
             this.xtraTabControl1.TabIndex = 4;
             this.xtraTabControl1.TabPages.AddRange(new DevExpress.XtraTab.XtraTabPage[] {
             this.xtraTabPage1,
@@ -180,8 +176,9 @@ namespace HIS.Desktop.Plugins.SyncHsskSyt
             // 
             this.xtraTabPage1.Controls.Add(this.layoutControl3);
             this.xtraTabPage1.Controls.Add(this.layoutControl2);
+            this.xtraTabPage1.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
             this.xtraTabPage1.Name = "xtraTabPage1";
-            this.xtraTabPage1.Size = new System.Drawing.Size(900, 434);
+            this.xtraTabPage1.Size = new System.Drawing.Size(748, 434);
             this.xtraTabPage1.Text = "XML 4210";
             // 
             // layoutControl3
@@ -189,22 +186,25 @@ namespace HIS.Desktop.Plugins.SyncHsskSyt
             this.layoutControl3.Controls.Add(this.gridControl1);
             this.layoutControl3.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.layoutControl3.Location = new System.Drawing.Point(0, 40);
+            this.layoutControl3.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
             this.layoutControl3.Name = "layoutControl3";
             this.layoutControl3.Root = this.layoutControlGroup3;
-            this.layoutControl3.Size = new System.Drawing.Size(900, 394);
+            this.layoutControl3.Size = new System.Drawing.Size(748, 394);
             this.layoutControl3.TabIndex = 1;
             this.layoutControl3.Text = "layoutControl3";
             // 
             // gridControl1
             // 
+            this.gridControl1.EmbeddedNavigator.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
             this.gridControl1.Location = new System.Drawing.Point(2, 5);
             this.gridControl1.MainView = this.gridView4210;
+            this.gridControl1.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
             this.gridControl1.Name = "gridControl1";
             this.gridControl1.RepositoryItems.AddRange(new DevExpress.XtraEditors.Repository.RepositoryItem[] {
             this.choose,
             this.statusPicture,
             this.repositoryItemPictureEdit1});
-            this.gridControl1.Size = new System.Drawing.Size(896, 387);
+            this.gridControl1.Size = new System.Drawing.Size(744, 387);
             this.gridControl1.TabIndex = 4;
             this.gridControl1.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
             this.gridView4210});
@@ -295,7 +295,7 @@ namespace HIS.Desktop.Plugins.SyncHsskSyt
             this.layoutControlGroup3.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup3.Name = "layoutControlGroup3";
             this.layoutControlGroup3.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 3, 0);
-            this.layoutControlGroup3.Size = new System.Drawing.Size(900, 394);
+            this.layoutControlGroup3.Size = new System.Drawing.Size(748, 394);
             this.layoutControlGroup3.TextVisible = false;
             // 
             // layoutControlItem6
@@ -303,7 +303,7 @@ namespace HIS.Desktop.Plugins.SyncHsskSyt
             this.layoutControlItem6.Control = this.gridControl1;
             this.layoutControlItem6.Location = new System.Drawing.Point(0, 0);
             this.layoutControlItem6.Name = "layoutControlItem6";
-            this.layoutControlItem6.Size = new System.Drawing.Size(900, 391);
+            this.layoutControlItem6.Size = new System.Drawing.Size(748, 391);
             this.layoutControlItem6.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem6.TextVisible = false;
             // 
@@ -318,15 +318,16 @@ namespace HIS.Desktop.Plugins.SyncHsskSyt
             this.layoutControl2.Margin = new System.Windows.Forms.Padding(0);
             this.layoutControl2.Name = "layoutControl2";
             this.layoutControl2.Root = this.layoutControlGroup2;
-            this.layoutControl2.Size = new System.Drawing.Size(900, 49);
+            this.layoutControl2.Size = new System.Drawing.Size(748, 49);
             this.layoutControl2.TabIndex = 0;
             this.layoutControl2.Text = "layoutControl2";
             // 
             // btnSend4210
             // 
-            this.btnSend4210.Location = new System.Drawing.Point(780, 12);
+            this.btnSend4210.Location = new System.Drawing.Point(645, 12);
+            this.btnSend4210.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
             this.btnSend4210.Name = "btnSend4210";
-            this.btnSend4210.Size = new System.Drawing.Size(108, 22);
+            this.btnSend4210.Size = new System.Drawing.Size(91, 22);
             this.btnSend4210.StyleController = this.layoutControl2;
             this.btnSend4210.TabIndex = 9;
             this.btnSend4210.Text = "Gửi";
@@ -334,9 +335,10 @@ namespace HIS.Desktop.Plugins.SyncHsskSyt
             // 
             // btnReset4210
             // 
-            this.btnReset4210.Location = new System.Drawing.Point(678, 12);
+            this.btnReset4210.Location = new System.Drawing.Point(561, 12);
+            this.btnReset4210.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
             this.btnReset4210.Name = "btnReset4210";
-            this.btnReset4210.Size = new System.Drawing.Size(98, 22);
+            this.btnReset4210.Size = new System.Drawing.Size(80, 22);
             this.btnReset4210.StyleController = this.layoutControl2;
             this.btnReset4210.TabIndex = 8;
             this.btnReset4210.Text = "Tải lại tệp";
@@ -344,12 +346,11 @@ namespace HIS.Desktop.Plugins.SyncHsskSyt
             // 
             // btnChooseFile4210
             // 
-            this.btnChooseFile4210.Location = new System.Drawing.Point(399, 12);
+            this.btnChooseFile4210.Location = new System.Drawing.Point(331, 12);
+            this.btnChooseFile4210.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
             this.btnChooseFile4210.Name = "btnChooseFile4210";
-            this.btnChooseFile4210.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, global::HIS.Desktop.Plugins.SyncHsskSyt.Properties.Resources.open_16x16, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject1, serializableAppearanceObject2, serializableAppearanceObject3, serializableAppearanceObject4, "", null, null, true)});
             this.btnChooseFile4210.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
-            this.btnChooseFile4210.Size = new System.Drawing.Size(62, 22);
+            this.btnChooseFile4210.Size = new System.Drawing.Size(50, 10);
             this.btnChooseFile4210.StyleController = this.layoutControl2;
             this.btnChooseFile4210.TabIndex = 7;
             this.btnChooseFile4210.Click += new System.EventHandler(this.btnChooseFile4210_Click);
@@ -358,8 +359,9 @@ namespace HIS.Desktop.Plugins.SyncHsskSyt
             // 
             this.txtFilePath4210.Enabled = false;
             this.txtFilePath4210.Location = new System.Drawing.Point(60, 12);
+            this.txtFilePath4210.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
             this.txtFilePath4210.Name = "txtFilePath4210";
-            this.txtFilePath4210.Size = new System.Drawing.Size(335, 20);
+            this.txtFilePath4210.Size = new System.Drawing.Size(267, 20);
             this.txtFilePath4210.StyleController = this.layoutControl2;
             this.txtFilePath4210.TabIndex = 4;
             // 
@@ -375,7 +377,7 @@ namespace HIS.Desktop.Plugins.SyncHsskSyt
             this.layoutControlItem5});
             this.layoutControlGroup2.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup2.Name = "Root";
-            this.layoutControlGroup2.Size = new System.Drawing.Size(900, 49);
+            this.layoutControlGroup2.Size = new System.Drawing.Size(748, 49);
             this.layoutControlGroup2.TextVisible = false;
             // 
             // layoutControlItem2
@@ -383,42 +385,42 @@ namespace HIS.Desktop.Plugins.SyncHsskSyt
             this.layoutControlItem2.Control = this.txtFilePath4210;
             this.layoutControlItem2.Location = new System.Drawing.Point(0, 0);
             this.layoutControlItem2.Name = "layoutControlItem2";
-            this.layoutControlItem2.Size = new System.Drawing.Size(387, 29);
+            this.layoutControlItem2.Size = new System.Drawing.Size(319, 29);
             this.layoutControlItem2.Text = "Thư mục:";
             this.layoutControlItem2.TextSize = new System.Drawing.Size(45, 13);
             // 
             // layoutControlItem3
             // 
             this.layoutControlItem3.Control = this.btnChooseFile4210;
-            this.layoutControlItem3.Location = new System.Drawing.Point(387, 0);
+            this.layoutControlItem3.Location = new System.Drawing.Point(319, 0);
             this.layoutControlItem3.Name = "layoutControlItem3";
-            this.layoutControlItem3.Size = new System.Drawing.Size(66, 29);
+            this.layoutControlItem3.Size = new System.Drawing.Size(54, 29);
             this.layoutControlItem3.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem3.TextVisible = false;
             // 
             // emptySpaceItem1
             // 
             this.emptySpaceItem1.AllowHotTrack = false;
-            this.emptySpaceItem1.Location = new System.Drawing.Point(453, 0);
+            this.emptySpaceItem1.Location = new System.Drawing.Point(373, 0);
             this.emptySpaceItem1.Name = "emptySpaceItem1";
-            this.emptySpaceItem1.Size = new System.Drawing.Size(213, 29);
+            this.emptySpaceItem1.Size = new System.Drawing.Size(176, 29);
             this.emptySpaceItem1.TextSize = new System.Drawing.Size(0, 0);
             // 
             // layoutControlItem4
             // 
             this.layoutControlItem4.Control = this.btnReset4210;
-            this.layoutControlItem4.Location = new System.Drawing.Point(666, 0);
+            this.layoutControlItem4.Location = new System.Drawing.Point(549, 0);
             this.layoutControlItem4.Name = "layoutControlItem4";
-            this.layoutControlItem4.Size = new System.Drawing.Size(102, 29);
+            this.layoutControlItem4.Size = new System.Drawing.Size(84, 29);
             this.layoutControlItem4.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem4.TextVisible = false;
             // 
             // layoutControlItem5
             // 
             this.layoutControlItem5.Control = this.btnSend4210;
-            this.layoutControlItem5.Location = new System.Drawing.Point(768, 0);
+            this.layoutControlItem5.Location = new System.Drawing.Point(633, 0);
             this.layoutControlItem5.Name = "layoutControlItem5";
-            this.layoutControlItem5.Size = new System.Drawing.Size(112, 29);
+            this.layoutControlItem5.Size = new System.Drawing.Size(95, 29);
             this.layoutControlItem5.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem5.TextVisible = false;
             // 
@@ -426,8 +428,9 @@ namespace HIS.Desktop.Plugins.SyncHsskSyt
             // 
             this.xtraTabPage2.Controls.Add(this.layoutControl5);
             this.xtraTabPage2.Controls.Add(this.layoutControl4);
+            this.xtraTabPage2.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
             this.xtraTabPage2.Name = "xtraTabPage2";
-            this.xtraTabPage2.Size = new System.Drawing.Size(900, 434);
+            this.xtraTabPage2.Size = new System.Drawing.Size(748, 434);
             this.xtraTabPage2.Text = "XML 130";
             // 
             // layoutControl5
@@ -435,21 +438,24 @@ namespace HIS.Desktop.Plugins.SyncHsskSyt
             this.layoutControl5.Controls.Add(this.gridControl2);
             this.layoutControl5.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.layoutControl5.Location = new System.Drawing.Point(0, 40);
+            this.layoutControl5.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
             this.layoutControl5.Name = "layoutControl5";
             this.layoutControl5.Root = this.layoutControlGroup5;
-            this.layoutControl5.Size = new System.Drawing.Size(900, 394);
+            this.layoutControl5.Size = new System.Drawing.Size(748, 394);
             this.layoutControl5.TabIndex = 1;
             this.layoutControl5.Text = "layoutControl5";
             // 
             // gridControl2
             // 
+            this.gridControl2.EmbeddedNavigator.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
             this.gridControl2.Location = new System.Drawing.Point(2, 5);
             this.gridControl2.MainView = this.gridView130;
+            this.gridControl2.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
             this.gridControl2.Name = "gridControl2";
             this.gridControl2.RepositoryItems.AddRange(new DevExpress.XtraEditors.Repository.RepositoryItem[] {
             this.repositoryItemImageEdit1,
             this.repositoryItemPictureEdit2});
-            this.gridControl2.Size = new System.Drawing.Size(896, 387);
+            this.gridControl2.Size = new System.Drawing.Size(744, 387);
             this.gridControl2.TabIndex = 4;
             this.gridControl2.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
             this.gridView130});
@@ -491,6 +497,7 @@ namespace HIS.Desktop.Plugins.SyncHsskSyt
             // 
             // repositoryItemPictureEdit2
             // 
+            this.repositoryItemPictureEdit2.InitialImage = ((System.Drawing.Image)(resources.GetObject("repositoryItemPictureEdit2.InitialImage")));
             this.repositoryItemPictureEdit2.Name = "repositoryItemPictureEdit2";
             // 
             // gridColumn8
@@ -507,7 +514,7 @@ namespace HIS.Desktop.Plugins.SyncHsskSyt
             // 
             this.repositoryItemImageEdit1.AutoHeight = false;
             this.repositoryItemImageEdit1.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("repositoryItemImageEdit1.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject1, serializableAppearanceObject2, serializableAppearanceObject3, serializableAppearanceObject4, "", null, null, true)});
             this.repositoryItemImageEdit1.Images = this.imageList1;
             this.repositoryItemImageEdit1.Name = "repositoryItemImageEdit1";
             // 
@@ -520,7 +527,7 @@ namespace HIS.Desktop.Plugins.SyncHsskSyt
             this.layoutControlGroup5.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup5.Name = "layoutControlGroup5";
             this.layoutControlGroup5.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 3, 0);
-            this.layoutControlGroup5.Size = new System.Drawing.Size(900, 394);
+            this.layoutControlGroup5.Size = new System.Drawing.Size(748, 394);
             this.layoutControlGroup5.TextVisible = false;
             // 
             // layoutControlItem11
@@ -528,7 +535,7 @@ namespace HIS.Desktop.Plugins.SyncHsskSyt
             this.layoutControlItem11.Control = this.gridControl2;
             this.layoutControlItem11.Location = new System.Drawing.Point(0, 0);
             this.layoutControlItem11.Name = "layoutControlItem11";
-            this.layoutControlItem11.Size = new System.Drawing.Size(900, 391);
+            this.layoutControlItem11.Size = new System.Drawing.Size(748, 391);
             this.layoutControlItem11.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem11.TextVisible = false;
             // 
@@ -540,17 +547,19 @@ namespace HIS.Desktop.Plugins.SyncHsskSyt
             this.layoutControl4.Controls.Add(this.txtFilePath130);
             this.layoutControl4.Dock = System.Windows.Forms.DockStyle.Top;
             this.layoutControl4.Location = new System.Drawing.Point(0, 0);
+            this.layoutControl4.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
             this.layoutControl4.Name = "layoutControl4";
             this.layoutControl4.Root = this.layoutControlGroup4;
-            this.layoutControl4.Size = new System.Drawing.Size(900, 46);
+            this.layoutControl4.Size = new System.Drawing.Size(748, 46);
             this.layoutControl4.TabIndex = 0;
             this.layoutControl4.Text = "layoutControl4";
             // 
             // btnSend130
             // 
-            this.btnSend130.Location = new System.Drawing.Point(785, 12);
+            this.btnSend130.Location = new System.Drawing.Point(652, 12);
+            this.btnSend130.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
             this.btnSend130.Name = "btnSend130";
-            this.btnSend130.Size = new System.Drawing.Size(103, 22);
+            this.btnSend130.Size = new System.Drawing.Size(84, 22);
             this.btnSend130.StyleController = this.layoutControl4;
             this.btnSend130.TabIndex = 10;
             this.btnSend130.Text = "Gửi ";
@@ -558,9 +567,10 @@ namespace HIS.Desktop.Plugins.SyncHsskSyt
             // 
             // btnReset130
             // 
-            this.btnReset130.Location = new System.Drawing.Point(683, 12);
+            this.btnReset130.Location = new System.Drawing.Point(570, 12);
+            this.btnReset130.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
             this.btnReset130.Name = "btnReset130";
-            this.btnReset130.Size = new System.Drawing.Size(98, 22);
+            this.btnReset130.Size = new System.Drawing.Size(78, 22);
             this.btnReset130.StyleController = this.layoutControl4;
             this.btnReset130.TabIndex = 9;
             this.btnReset130.Text = "Tải lại tệp";
@@ -568,12 +578,11 @@ namespace HIS.Desktop.Plugins.SyncHsskSyt
             // 
             // btnChooseFile130
             // 
-            this.btnChooseFile130.Location = new System.Drawing.Point(410, 12);
+            this.btnChooseFile130.Location = new System.Drawing.Point(340, 12);
+            this.btnChooseFile130.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
             this.btnChooseFile130.Name = "btnChooseFile130";
-            this.btnChooseFile130.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, global::HIS.Desktop.Plugins.SyncHsskSyt.Properties.Resources.open_16x16, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject5, serializableAppearanceObject6, serializableAppearanceObject7, serializableAppearanceObject8, "", null, null, true)});
             this.btnChooseFile130.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
-            this.btnChooseFile130.Size = new System.Drawing.Size(51, 22);
+            this.btnChooseFile130.Size = new System.Drawing.Size(50, 10);
             this.btnChooseFile130.StyleController = this.layoutControl4;
             this.btnChooseFile130.TabIndex = 8;
             this.btnChooseFile130.Click += new System.EventHandler(this.btnChooseFile130_Click);
@@ -582,8 +591,9 @@ namespace HIS.Desktop.Plugins.SyncHsskSyt
             // 
             this.txtFilePath130.Enabled = false;
             this.txtFilePath130.Location = new System.Drawing.Point(60, 12);
+            this.txtFilePath130.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
             this.txtFilePath130.Name = "txtFilePath130";
-            this.txtFilePath130.Size = new System.Drawing.Size(346, 20);
+            this.txtFilePath130.Size = new System.Drawing.Size(276, 20);
             this.txtFilePath130.StyleController = this.layoutControl4;
             this.txtFilePath130.TabIndex = 4;
             // 
@@ -599,7 +609,7 @@ namespace HIS.Desktop.Plugins.SyncHsskSyt
             this.layoutControlItem10});
             this.layoutControlGroup4.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup4.Name = "layoutControlGroup4";
-            this.layoutControlGroup4.Size = new System.Drawing.Size(900, 46);
+            this.layoutControlGroup4.Size = new System.Drawing.Size(748, 46);
             this.layoutControlGroup4.TextVisible = false;
             // 
             // layoutControlItem7
@@ -608,42 +618,42 @@ namespace HIS.Desktop.Plugins.SyncHsskSyt
             this.layoutControlItem7.CustomizationFormText = "Thư mục:";
             this.layoutControlItem7.Location = new System.Drawing.Point(0, 0);
             this.layoutControlItem7.Name = "layoutControlItem7";
-            this.layoutControlItem7.Size = new System.Drawing.Size(398, 26);
+            this.layoutControlItem7.Size = new System.Drawing.Size(328, 26);
             this.layoutControlItem7.Text = "Thư mục:";
             this.layoutControlItem7.TextSize = new System.Drawing.Size(45, 13);
             // 
             // layoutControlItem8
             // 
             this.layoutControlItem8.Control = this.btnChooseFile130;
-            this.layoutControlItem8.Location = new System.Drawing.Point(398, 0);
+            this.layoutControlItem8.Location = new System.Drawing.Point(328, 0);
             this.layoutControlItem8.Name = "layoutControlItem8";
-            this.layoutControlItem8.Size = new System.Drawing.Size(55, 26);
+            this.layoutControlItem8.Size = new System.Drawing.Size(54, 26);
             this.layoutControlItem8.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem8.TextVisible = false;
             // 
             // emptySpaceItem2
             // 
             this.emptySpaceItem2.AllowHotTrack = false;
-            this.emptySpaceItem2.Location = new System.Drawing.Point(453, 0);
+            this.emptySpaceItem2.Location = new System.Drawing.Point(382, 0);
             this.emptySpaceItem2.Name = "emptySpaceItem2";
-            this.emptySpaceItem2.Size = new System.Drawing.Size(218, 26);
+            this.emptySpaceItem2.Size = new System.Drawing.Size(176, 26);
             this.emptySpaceItem2.TextSize = new System.Drawing.Size(0, 0);
             // 
             // layoutControlItem9
             // 
             this.layoutControlItem9.Control = this.btnReset130;
-            this.layoutControlItem9.Location = new System.Drawing.Point(671, 0);
+            this.layoutControlItem9.Location = new System.Drawing.Point(558, 0);
             this.layoutControlItem9.Name = "layoutControlItem9";
-            this.layoutControlItem9.Size = new System.Drawing.Size(102, 26);
+            this.layoutControlItem9.Size = new System.Drawing.Size(82, 26);
             this.layoutControlItem9.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem9.TextVisible = false;
             // 
             // layoutControlItem10
             // 
             this.layoutControlItem10.Control = this.btnSend130;
-            this.layoutControlItem10.Location = new System.Drawing.Point(773, 0);
+            this.layoutControlItem10.Location = new System.Drawing.Point(640, 0);
             this.layoutControlItem10.Name = "layoutControlItem10";
-            this.layoutControlItem10.Size = new System.Drawing.Size(107, 26);
+            this.layoutControlItem10.Size = new System.Drawing.Size(88, 26);
             this.layoutControlItem10.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem10.TextVisible = false;
             // 
@@ -656,7 +666,7 @@ namespace HIS.Desktop.Plugins.SyncHsskSyt
             this.layoutControlGroup1.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup1.Name = "layoutControlGroup1";
             this.layoutControlGroup1.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
-            this.layoutControlGroup1.Size = new System.Drawing.Size(910, 466);
+            this.layoutControlGroup1.Size = new System.Drawing.Size(758, 466);
             this.layoutControlGroup1.TextVisible = false;
             // 
             // layoutControlItem1
@@ -664,16 +674,17 @@ namespace HIS.Desktop.Plugins.SyncHsskSyt
             this.layoutControlItem1.Control = this.xtraTabControl1;
             this.layoutControlItem1.Location = new System.Drawing.Point(0, 0);
             this.layoutControlItem1.Name = "layoutControlItem1";
-            this.layoutControlItem1.Size = new System.Drawing.Size(910, 466);
+            this.layoutControlItem1.Size = new System.Drawing.Size(758, 466);
             this.layoutControlItem1.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem1.TextVisible = false;
             // 
             // frmSyncHsskSyt
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(5F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(910, 466);
+            this.ClientSize = new System.Drawing.Size(758, 466);
             this.Controls.Add(this.layoutControl1);
+            this.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
             this.Name = "frmSyncHsskSyt";
             this.Text = "Liên thông dữ liệu HSSK";
             this.Load += new System.EventHandler(this.frmSyncHsskSyt_Load);
