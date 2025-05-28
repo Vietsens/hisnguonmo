@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.36001.139
+# Visual Studio Version 17
+VisualStudioVersion = 17.13.35825.156
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HIS.Desktop", "HIS.Desktop\HIS.Desktop.csproj", "{8207ACB0-A325-42C6-97CB-FB54AE1AE6B8}"
 EndProject
@@ -1122,6 +1122,12 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HIS.Desktop.Plugins.XMLViewer130", "Plugins\HIS.Desktop.Plugins.XMLViewer130\HIS.Desktop.Plugins.XMLViewer130.csproj", "{2B9A4EE5-0FC5-4C46-9AFF-F13AA62114C8}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HIS.Desktop.Plugins.AttackFile", "Plugins\HIS.Desktop.Plugins.AttackFile\HIS.Desktop.Plugins.AttackFile.csproj", "{F74446A4-9143-4736-925C-A392CDC7CA9A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MPS.Processor.Mps000315", "..\MPS\MPS.Processor\MPS.Processor.Mps000315\MPS.Processor.Mps000315.csproj", "{0EE7E127-02FD-4243-8FBA-05FACD5AC4F5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MPS.Processor.Mps000315.PDO", "..\MPS\MPS.Processor\MPS.Processor.Mps000315.PDO\MPS.Processor.Mps000315.PDO.csproj", "{0376BC73-A013-48CA-B241-5DEB46237EC6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "His.Bhyt.ExportXml.XML130.XML7", "..\..\common\HISUTIL\His.Bhyt\His.Bhyt.ExportXml.XML130.XML7\His.Bhyt.ExportXml.XML130.XML7.csproj", "{A7847E18-77BF-47B8-8CD4-78570B5C6656}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -4437,6 +4443,30 @@ Global
 		{F74446A4-9143-4736-925C-A392CDC7CA9A}.Release|Any CPU.Build.0 = Release|Any CPU
 		{F74446A4-9143-4736-925C-A392CDC7CA9A}.Release|x86.ActiveCfg = Release|Any CPU
 		{F74446A4-9143-4736-925C-A392CDC7CA9A}.Release|x86.Build.0 = Release|Any CPU
+		{0EE7E127-02FD-4243-8FBA-05FACD5AC4F5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0EE7E127-02FD-4243-8FBA-05FACD5AC4F5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0EE7E127-02FD-4243-8FBA-05FACD5AC4F5}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{0EE7E127-02FD-4243-8FBA-05FACD5AC4F5}.Debug|x86.Build.0 = Debug|Any CPU
+		{0EE7E127-02FD-4243-8FBA-05FACD5AC4F5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0EE7E127-02FD-4243-8FBA-05FACD5AC4F5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0EE7E127-02FD-4243-8FBA-05FACD5AC4F5}.Release|x86.ActiveCfg = Release|Any CPU
+		{0EE7E127-02FD-4243-8FBA-05FACD5AC4F5}.Release|x86.Build.0 = Release|Any CPU
+		{0376BC73-A013-48CA-B241-5DEB46237EC6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0376BC73-A013-48CA-B241-5DEB46237EC6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0376BC73-A013-48CA-B241-5DEB46237EC6}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{0376BC73-A013-48CA-B241-5DEB46237EC6}.Debug|x86.Build.0 = Debug|Any CPU
+		{0376BC73-A013-48CA-B241-5DEB46237EC6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0376BC73-A013-48CA-B241-5DEB46237EC6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0376BC73-A013-48CA-B241-5DEB46237EC6}.Release|x86.ActiveCfg = Release|Any CPU
+		{0376BC73-A013-48CA-B241-5DEB46237EC6}.Release|x86.Build.0 = Release|Any CPU
+		{A7847E18-77BF-47B8-8CD4-78570B5C6656}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A7847E18-77BF-47B8-8CD4-78570B5C6656}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A7847E18-77BF-47B8-8CD4-78570B5C6656}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{A7847E18-77BF-47B8-8CD4-78570B5C6656}.Debug|x86.Build.0 = Debug|Any CPU
+		{A7847E18-77BF-47B8-8CD4-78570B5C6656}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A7847E18-77BF-47B8-8CD4-78570B5C6656}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A7847E18-77BF-47B8-8CD4-78570B5C6656}.Release|x86.ActiveCfg = Release|Any CPU
+		{A7847E18-77BF-47B8-8CD4-78570B5C6656}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
