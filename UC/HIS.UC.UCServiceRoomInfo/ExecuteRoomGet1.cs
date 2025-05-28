@@ -70,7 +70,7 @@ namespace HIS.UC.UCServiceRoomInfo
         {
             try
             {
-                HisRoomCounterLViewFilter exetuteFilter = new HisRoomCounterLViewFilter();
+                HisRoomCounterLView2Filter exetuteFilter = new HisRoomCounterLView2Filter();
                 exetuteFilter.IS_EXAM = true;
                 exetuteFilter.IS_ACTIVE = IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE;
                 exetuteFilter.BRANCH_ID = WorkPlace.GetBranchId();
@@ -87,7 +87,7 @@ namespace HIS.UC.UCServiceRoomInfo
         {
             try
             {
-                HisRoomCounterLViewFilter exetuteFilter = new HisRoomCounterLViewFilter();
+                HisRoomCounterLView2Filter exetuteFilter = new HisRoomCounterLView2Filter();
                 exetuteFilter.IS_EXAM = true;
                 exetuteFilter.IS_ACTIVE = IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE;
                 exetuteFilter.BRANCH_ID = WorkPlace.GetBranchId();
