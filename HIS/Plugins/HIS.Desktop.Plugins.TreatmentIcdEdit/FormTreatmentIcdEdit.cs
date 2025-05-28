@@ -968,6 +968,7 @@ namespace HIS.Desktop.Plugins.TreatmentIcdEdit
                     this.TxtSoThe.Text = currentVHisTreatment.FUND_NUMBER;
                     this.txtSanPham.Text = currentVHisTreatment.FUND_TYPE_NAME;
                     this.txtReasonVV.Text = currentVHisTreatment.HOSPITALIZATION_REASON;
+                    this.txtPatientNote.Text = currentVHisTreatment.TDL_PATIENT_NOTE;
                     //Dangth
                     this.txtProvisionalDianosis.Text = currentVHisTreatment.PROVISIONAL_DIAGNOSIS;
                     this.txtTreatmentInstruction.Text = currentVHisTreatment.TREATMENT_METHOD;
@@ -1073,6 +1074,15 @@ namespace HIS.Desktop.Plugins.TreatmentIcdEdit
                     else
                     {
                         txtReasonVV.Text = "";
+                    }
+
+                    if (!String.IsNullOrEmpty(currentVHisTreatment.TDL_PATIENT_NOTE))
+                    {
+                        txtPatientNote.Text = currentVHisTreatment.TDL_PATIENT_NOTE;
+                    }
+                    else
+                    {
+                        txtPatientNote.Text = "";
                     }
 
                     //Dangth                 
@@ -1357,6 +1367,9 @@ namespace HIS.Desktop.Plugins.TreatmentIcdEdit
                 ValidTextControlMaxlength(this.txtReasonVV, 200, false);
                 ValidTextControlMaxlength(this.txtReasonNTCode, 10, false);
                 ValidTextControlMaxlength(this.cboReasonNT, 1000, false);
+
+                ValidTextControlMaxlength(this.txtPatientNote, 2000, true);
+
                 layoutControlItem39.AppearanceItemCaption.ForeColor = Color.Black;
                 if (dtClinicalInTime.EditValue != null)
                 {
@@ -1774,6 +1787,7 @@ namespace HIS.Desktop.Plugins.TreatmentIcdEdit
                 data.FundCompanyName = this.txtCongTy.Text;
                 data.FundTypeName = this.txtSanPham.Text;
                 data.HospitalizationReason = this.txtReasonVV.Text;
+                data.TdlPatientNote = this.txtPatientNote.Text;
                 data.FundCustomerName = this.txtTenKhachHang.Text;
                 if (dtThoiHanTu.EditValue != null && dtThoiHanTu.DateTime != DateTime.MinValue)
                 {
@@ -1898,7 +1912,10 @@ namespace HIS.Desktop.Plugins.TreatmentIcdEdit
                 {
                     data.TuberculosisCode = txtNumManager.Text;
                 }
-                
+                if(!string.IsNullOrEmpty(txtPatientNote.Text))
+                {
+                    data.TdlPatientNote = txtPatientNote.Text;
+                }
 
                 HisTreatmentCommonInfoUpdateSDO result = new BackendAdapter(param).Post<HisTreatmentCommonInfoUpdateSDO>(RequestUriStore.HIS_TREATMENT_UPDATE_COMMON_INFO, ApiConsumer.ApiConsumers.MosConsumer, data, param);
 
@@ -2908,6 +2925,7 @@ namespace HIS.Desktop.Plugins.TreatmentIcdEdit
                 TxtSoThe = null;
                 txtSanPham = null;
                 txtReasonVV = null;
+                txtPatientNote = null;
                 layoutControlItem6 = null;
                 labelControl1 = null;
                 layoutControlItem27 = null;
