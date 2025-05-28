@@ -579,11 +579,11 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.VNPT
 
                 invoice.InvoiceDetail.CurrencyUnit = "VND";
 
-                decimal amount = 0, VATRateMax = -1, SumVATAmount = -1;
+                decimal amount = 0, VATRateMax = -1, SumVATAmount = 0;
                 invoice.InvoiceDetail.Products = this.GetProductElectronicBill(electronicBillDataInput, notShowTaxBreakdown, ref amount, ref SumVATAmount, ref VATRateMax);
 
                 amount = Math.Round(amount - (electronicBillDataInput.Discount ?? 0), 0, MidpointRounding.AwayFromZero);
-                invoice.InvoiceDetail.Total = String.Format("{0:0.####}", amount);
+                invoice.InvoiceDetail.Total = String.Format("{0:0.####}", amount - SumVATAmount);
 
                 if (notShowTaxBreakdown)
                 {
@@ -746,7 +746,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.VNPT
                             product.ProdPrice = String.Format("{0:0.####}", item.ProdPrice ?? 0);
                         }
 
-                        product.Total = Math.Round(item.Amount, 0, MidpointRounding.AwayFromZero).ToString();
+                        product.Total = Math.Round(item.AmountWithoutTax??0, 0, MidpointRounding.AwayFromZero).ToString();
                         totalAmount += item.Amount;
                         SumVATAmount += item.TaxAmount ?? 0;
 

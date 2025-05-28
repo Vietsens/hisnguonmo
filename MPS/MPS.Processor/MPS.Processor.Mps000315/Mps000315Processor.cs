@@ -130,10 +130,17 @@ namespace MPS.Processor.Mps000315
                     rdo._KSK_HealthExamRank = new List<HIS_HEALTH_EXAM_RANK>();
                 }
 
-                objectTag.AddObjectData(store, "KskRank", rdo._KSK_HealthExamRank);
-                objectTag.AddObjectData(store, "Patient", rdo._KSK_Patients);
-                objectTag.AddObjectData(store, "KskGeneral", rdo._KskGeneral);
 
+                objectTag.AddObjectData(store, "KskRank", rdo._KSK_HealthExamRank);
+                if(rdo._KSK_Patients != null)
+                {
+                    objectTag.AddObjectData(store, "Patient", rdo._KSK_Patients);
+                }             
+                if (rdo._KskGeneral == null)
+                {
+                    rdo._KskGeneral = new List<HIS_KSK_GENERAL>();
+                }
+                objectTag.AddObjectData(store, "KskGeneral", rdo._KskGeneral);
                 result = true;
             }
             catch (Exception ex)
