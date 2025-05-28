@@ -2315,17 +2315,38 @@ namespace HIS.Desktop.Plugins.DepositService.DepositService
                 if (hisPolicies1 == null || hisPolicies1.Count == 0)
                     return true;
 
-             
-                var allowedPatientTypeIds = hIS_HOLIDAY_POLICIES
-                    .Where(p => p.PATIENT_TYPE_ID != null)
-                    .Select(p => (long)p.PATIENT_TYPE_ID)
+                // Lấy danh sách patient_type_id của bệnh nhân hiện tại
+                var selectedPatientTypeIds = sSByTreatment?
+                    .Where(x => x.PATIENT_TYPE_ID != null)
+                    .Select(x => (long)x.PATIENT_TYPE_ID)
                     .Distinct()
                     .ToList();
 
-             
+               
+                Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData("hisPolicies1.Count = ", hisPolicies1?.Count ?? 0));
+                foreach (var policy in hisPolicies1)
+                {
+                    
+                    if ((policy.DAY_OF_WEEK == 1 || policy.DAY_OF_WEEK == 2) && selectedPatientTypeIds != null && selectedPatientTypeIds.Contains(42))
+                    {
+                        Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData("selectedPatientTypeId2:", selectedPatientTypeIds));
+                        return true;
+                    }
+                    else if (policy.HOLIDAY == Convert.ToInt64(dtTransactionTime.EditValue) && selectedPatientTypeIds != null && selectedPatientTypeIds.Contains(43))
+                    {
+                        return true;
+                    }
+                }
+
+                // Lấy các patient_type_id được phép theo chính sách ngày nghỉ
+                var allowedPatientTypeIds = hisPolicies1
+                    .Where(p => p.PATIENT_TYPE_ID != 42)
+                    .Select(p => (long)p.PATIENT_TYPE_ID)
+                    .Distinct()
+                    .ToList();
+                Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData("allowedPatientTypeIdszzz:", allowedPatientTypeIds));
                 var checkedServices = ssTreeProcessor.GetListCheck(ucSereServTree);
 
-               
                 var notAllowed = checkedServices
                     .Where(s => !allowedPatientTypeIds.Contains(s.PATIENT_TYPE_ID))
                     .GroupBy(s => s.PATIENT_TYPE_ID)
@@ -2333,12 +2354,10 @@ namespace HIS.Desktop.Plugins.DepositService.DepositService
                         g => g.Key,
                         g => g.Select(s => s.TDL_SERVICE_CODE).ToList()
                     );
-
-              
+                Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData("notAllowed:", notAllowed));
                 if (!notAllowed.Any())
                     return true;
 
-              
                 var msg = new StringBuilder();
                 foreach (var kv in notAllowed)
                 {
@@ -2349,35 +2368,28 @@ namespace HIS.Desktop.Plugins.DepositService.DepositService
                 var result = MessageBox.Show(msg.ToString(), "Cảnh báo", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
                 if (result == DialogResult.Yes)
                 {
-                
                     return true;
                 }
                 else
                 {
                     List<object> listArgs = new List<object>();
-
                     listArgs.Add(treatmentId);
-
                     HIS.Desktop.ModuleExt.PluginInstanceBehavior.ShowModule(
                         "HIS.Desktop.Plugins.Bordereau",
                         this.moduleData.RoomId,
                         this.moduleData.RoomTypeId,
                         listArgs
-                        );
-
-
-                      
+                    );
                     return false;
                 }
             }
             catch (Exception ex)
             {
-
                 Inventec.Common.Logging.LogSystem.Error(ex);
                 return false;
             }
-        }
-            
+       }
+        
         List<HIS_CONFIG> listConfig = new List<HIS_CONFIG>();
         HIS_CONFIG selectedConfig = new HIS_CONFIG();
         private void loadConfig()
