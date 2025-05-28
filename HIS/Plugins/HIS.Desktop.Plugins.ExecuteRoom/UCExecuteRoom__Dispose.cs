@@ -130,6 +130,7 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
                 this.btnNextIntructionDate.Click -= new System.EventHandler(this.btnNextIntructionDate_Click);
                 this.btnPreviewIntructionDate.Click -= new System.EventHandler(this.btnPreviewIntructionDate_Click);
                 this.txtServiceReqCode.PreviewKeyDown -= new System.Windows.Forms.PreviewKeyDownEventHandler(this.txtTreatmentCode_PreviewKeyDown);
+                this.txtPatientCode.PreviewKeyDown -= new System.Windows.Forms.PreviewKeyDownEventHandler(this.txtPatientCode_PreviewKeyDown);
                 this.cboInDebt.SelectedIndexChanged -= new System.EventHandler(this.cboInDebt_SelectedIndexChanged);
                 this.gridViewPatientType.RowCellStyle -= new DevExpress.XtraGrid.Views.Grid.RowCellStyleEventHandler(this.gridViewPatientType_RowCellStyle);
                 this.gridViewPatientType.RowStyle -= new DevExpress.XtraGrid.Views.Grid.RowStyleEventHandler(this.gridViewPatientType_RowStyle);
@@ -335,6 +336,7 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
                 btnCodeFind = null;
                 layoutControlItem32 = null;
                 txtServiceReqCode = null;
+                txtPatientCode = null;
                 emptySpaceItem2 = null;
                 layoutControlItem37 = null;
                 cboInDebt = null;

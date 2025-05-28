@@ -855,6 +855,9 @@
   <data name="UCExecuteRoom.txtTreatmentCode.Properties.NullValuePrompt" xml:space="preserve">
     <value>Treatment code (F3)</value>
   </data>
+	<data name="UCExecuteRoom.txtPatientCode.Properties.NullValuePrompt" xml:space="preserve">
+    <value>Patient Code (F8)</value>
+  </data>
   <data name="UCExecuteRoom.xtraTabDocumentReq.Text" xml:space="preserve">
     <value>Specify votes</value>
   </data>

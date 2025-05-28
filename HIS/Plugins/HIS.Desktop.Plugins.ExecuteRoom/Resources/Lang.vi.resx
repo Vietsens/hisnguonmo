@@ -855,6 +855,9 @@
   <data name="UCExecuteRoom.txtTreatmentCode.Properties.NullValuePrompt" xml:space="preserve">
     <value>Mã chỉ định (F3)</value>
   </data>
+  <data name="UCExecuteRoom.txtPatientCode.Properties.NullValuePrompt" xml:space="preserve">
+    <value>Mã bệnh nhân (F8)</value>
+  </data>
   <data name="UCExecuteRoom.xtraTabDocumentReq.Text" xml:space="preserve">
     <value>Phiếu chỉ định</value>
   </data>

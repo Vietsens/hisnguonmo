@@ -290,6 +290,8 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
             this.LciGroupEmrDocument = new DevExpress.XtraLayout.LayoutControlGroup();
             this.layoutControlItem41 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControl2 = new DevExpress.XtraLayout.LayoutControl();
+            this.maskedTextBox1 = new System.Windows.Forms.MaskedTextBox();
+            this.txtPatientCode = new DevExpress.XtraEditors.TextEdit();
             this.btnBreakOrContinue = new DevExpress.XtraEditors.SimpleButton();
             this.txtBedCodeBedName = new DevExpress.XtraEditors.TextEdit();
             this.chkCPA = new DevExpress.XtraEditors.CheckEdit();
@@ -386,6 +388,8 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
             this.layoutControlItem32 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem55 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem68 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.layoutControlItem69 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.layoutControlItem70 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlGroup1 = new DevExpress.XtraLayout.LayoutControlGroup();
             this.layoutControlItem1 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem2 = new DevExpress.XtraLayout.LayoutControlItem();
@@ -552,6 +556,7 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem41)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl2)).BeginInit();
             this.layoutControl2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.txtPatientCode.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtBedCodeBedName.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.chkCPA.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboDaKe.Properties)).BeginInit();
@@ -617,6 +622,8 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem32)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem55)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem68)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem69)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem70)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem2)).BeginInit();
@@ -2854,6 +2861,8 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
             // 
             // layoutControl2
             // 
+            this.layoutControl2.Controls.Add(this.maskedTextBox1);
+            this.layoutControl2.Controls.Add(this.txtPatientCode);
             this.layoutControl2.Controls.Add(this.btnBreakOrContinue);
             this.layoutControl2.Controls.Add(this.txtBedCodeBedName);
             this.layoutControl2.Controls.Add(this.chkCPA);
@@ -2884,6 +2893,26 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
             this.layoutControl2.Size = new System.Drawing.Size(405, 737);
             this.layoutControl2.TabIndex = 4;
             this.layoutControl2.Text = "layoutControl2";
+            // 
+            // maskedTextBox1
+            // 
+            this.maskedTextBox1.Location = new System.Drawing.Point(104, 715);
+            this.maskedTextBox1.Name = "maskedTextBox1";
+            this.maskedTextBox1.Size = new System.Drawing.Size(299, 20);
+            this.maskedTextBox1.TabIndex = 32;
+            // 
+            // txtPatientCode
+            // 
+            this.txtPatientCode.Location = new System.Drawing.Point(148, 100);
+            this.txtPatientCode.MenuManager = this.barManager1;
+            this.txtPatientCode.Name = "txtPatientCode";
+            this.txtPatientCode.Properties.NullValuePrompt = "Mã bệnh nhân (F8)";
+            this.txtPatientCode.Properties.NullValuePromptShowForEmptyValue = true;
+            this.txtPatientCode.Properties.ShowNullValuePromptWhenFocused = true;
+            this.txtPatientCode.Size = new System.Drawing.Size(115, 20);
+            this.txtPatientCode.StyleController = this.layoutControl2;
+            this.txtPatientCode.TabIndex = 1;
+            this.txtPatientCode.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.txtPatientCode_PreviewKeyDown);
             // 
             // btnBreakOrContinue
             // 
@@ -3154,9 +3183,9 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
             // 
             // ucPaging1
             // 
-            this.ucPaging1.Location = new System.Drawing.Point(2, 714);
+            this.ucPaging1.Location = new System.Drawing.Point(2, 691);
             this.ucPaging1.Name = "ucPaging1";
-            this.ucPaging1.Size = new System.Drawing.Size(401, 21);
+            this.ucPaging1.Size = new System.Drawing.Size(401, 20);
             this.ucPaging1.TabIndex = 11;
             // 
             // gridControlServiceReq
@@ -3183,7 +3212,7 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
             this.repositoryItemBtnDangGoi,
             this.repositoryItemPictureEdit7,
             this.repositoryItemTextEdit});
-            this.gridControlServiceReq.Size = new System.Drawing.Size(401, 584);
+            this.gridControlServiceReq.Size = new System.Drawing.Size(401, 561);
             this.gridControlServiceReq.TabIndex = 9;
             this.gridControlServiceReq.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
             this.gridViewServiceReq});
@@ -3708,7 +3737,7 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
             this.txtSearchKey.Name = "txtSearchKey";
             this.txtSearchKey.Properties.NullValuePrompt = "Nhập từ khóa tìm kiếm (F2)";
             this.txtSearchKey.Properties.NullValuePromptShowForEmptyValue = true;
-            this.txtSearchKey.Size = new System.Drawing.Size(261, 20);
+            this.txtSearchKey.Size = new System.Drawing.Size(142, 20);
             this.txtSearchKey.StyleController = this.layoutControl2;
             this.txtSearchKey.TabIndex = 6;
             this.txtSearchKey.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.txtSearchKey_PreviewKeyDown);
@@ -3741,7 +3770,9 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
             this.layoutControlItem36,
             this.layoutControlItem32,
             this.layoutControlItem55,
-            this.layoutControlItem68});
+            this.layoutControlItem68,
+            this.layoutControlItem69,
+            this.layoutControlItem70});
             this.Root.Location = new System.Drawing.Point(0, 0);
             this.Root.Name = "Root";
             this.Root.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
@@ -3762,16 +3793,16 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
             this.layoutControlItem8.Control = this.gridControlServiceReq;
             this.layoutControlItem8.Location = new System.Drawing.Point(0, 124);
             this.layoutControlItem8.Name = "layoutControlItem8";
-            this.layoutControlItem8.Size = new System.Drawing.Size(405, 588);
+            this.layoutControlItem8.Size = new System.Drawing.Size(405, 565);
             this.layoutControlItem8.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem8.TextVisible = false;
             // 
             // layoutControlItem10
             // 
             this.layoutControlItem10.Control = this.ucPaging1;
-            this.layoutControlItem10.Location = new System.Drawing.Point(0, 712);
+            this.layoutControlItem10.Location = new System.Drawing.Point(0, 689);
             this.layoutControlItem10.Name = "layoutControlItem10";
-            this.layoutControlItem10.Size = new System.Drawing.Size(405, 25);
+            this.layoutControlItem10.Size = new System.Drawing.Size(405, 24);
             this.layoutControlItem10.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem10.TextVisible = false;
             // 
@@ -3871,7 +3902,7 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
             this.layoutControlItem5.Control = this.txtSearchKey;
             this.layoutControlItem5.Location = new System.Drawing.Point(0, 98);
             this.layoutControlItem5.Name = "layoutControlItem5";
-            this.layoutControlItem5.Size = new System.Drawing.Size(265, 26);
+            this.layoutControlItem5.Size = new System.Drawing.Size(146, 26);
             this.layoutControlItem5.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem5.TextVisible = false;
             // 
@@ -3987,6 +4018,23 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
             this.layoutControlItem68.Size = new System.Drawing.Size(84, 26);
             this.layoutControlItem68.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem68.TextVisible = false;
+            // 
+            // layoutControlItem69
+            // 
+            this.layoutControlItem69.Control = this.txtPatientCode;
+            this.layoutControlItem69.Location = new System.Drawing.Point(146, 98);
+            this.layoutControlItem69.Name = "layoutControlItem69";
+            this.layoutControlItem69.Size = new System.Drawing.Size(119, 26);
+            this.layoutControlItem69.TextSize = new System.Drawing.Size(0, 0);
+            this.layoutControlItem69.TextVisible = false;
+            // 
+            // layoutControlItem70
+            // 
+            this.layoutControlItem70.Control = this.maskedTextBox1;
+            this.layoutControlItem70.Location = new System.Drawing.Point(0, 713);
+            this.layoutControlItem70.Name = "layoutControlItem70";
+            this.layoutControlItem70.Size = new System.Drawing.Size(405, 24);
+            this.layoutControlItem70.TextSize = new System.Drawing.Size(99, 13);
             // 
             // layoutControlGroup1
             // 
@@ -4494,6 +4542,7 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem41)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl2)).EndInit();
             this.layoutControl2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.txtPatientCode.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtBedCodeBedName.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.chkCPA.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboDaKe.Properties)).EndInit();
@@ -4559,6 +4608,8 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem32)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem55)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem68)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem69)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem70)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem2)).EndInit();
@@ -4920,5 +4971,9 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem67;
         private DevExpress.XtraEditors.SimpleButton btnBreakOrContinue;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem68;
+        private System.Windows.Forms.MaskedTextBox maskedTextBox1;
+        private DevExpress.XtraEditors.TextEdit txtPatientCode;
+        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem69;
+        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem70;
     }
 }
