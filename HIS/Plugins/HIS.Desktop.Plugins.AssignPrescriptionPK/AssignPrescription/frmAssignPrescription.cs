@@ -12843,7 +12843,26 @@ o.SERVICE_ID == medi.SERVICE_ID && o.TDL_INTRUCTION_TIME.ToString().Substring(0,
                     top_n = 5
                 };
 
-                var jsonPayload = JsonConvert.SerializeObject(requestData);
+                var aiResponse = await CallAISuggestionAPI(requestData);
+
+                if (aiResponse != null && aiResponse.AI_Suggestion != null)
+                {
+                    // Hiển thị thông báo thành công và dữ liệu trả về
+                    string message = $"AI đã gợi ý {aiResponse.AI_Suggestion.SuggestedPrescriptions?.Count ?? 0} thuốc/vật tư.\n\n";
+                    message += $"Giải thích: {aiResponse.AI_Suggestion.Explanation}";
+
+                    DevExpress.XtraEditors.XtraMessageBox.Show(message, "Kết quả gợi ý AI",
+                        MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                    // Log dữ liệu trả về để debug
+                    string responseJson = Newtonsoft.Json.JsonConvert.SerializeObject(aiResponse, Newtonsoft.Json.Formatting.Indented);
+                    Inventec.Common.Logging.LogSystem.Info("AI Response: " + responseJson);
+                }
+                else
+                {
+                    DevExpress.XtraEditors.XtraMessageBox.Show("Không có dữ liệu gợi ý từ AI", "Thông báo",
+                        MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
 
             }
             catch (Exception ex)
@@ -12854,7 +12873,7 @@ o.SERVICE_ID == medi.SERVICE_ID && o.TDL_INTRUCTION_TIME.ToString().Substring(0,
 
         }
 
-        private async Task<MediMateTypeADO> CallAISuggestionAPI(object requestData)
+        private async Task<SuggestPrescriptionsInfoADO> CallAISuggestionAPI(object requestData)
         {
             try
             {
