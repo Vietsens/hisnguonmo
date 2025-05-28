@@ -1368,7 +1368,7 @@ namespace HIS.Desktop.Plugins.TreatmentIcdEdit
                 ValidTextControlMaxlength(this.txtReasonNTCode, 10, false);
                 ValidTextControlMaxlength(this.cboReasonNT, 1000, false);
 
-                ValidTextControlMaxlength(this.txtPatientNote, 2000, true);
+                ValidTextControlMaxlength(this.txtPatientNote, 2000, false);
 
                 layoutControlItem39.AppearanceItemCaption.ForeColor = Color.Black;
                 if (dtClinicalInTime.EditValue != null)
@@ -1787,7 +1787,7 @@ namespace HIS.Desktop.Plugins.TreatmentIcdEdit
                 data.FundCompanyName = this.txtCongTy.Text;
                 data.FundTypeName = this.txtSanPham.Text;
                 data.HospitalizationReason = this.txtReasonVV.Text;
-                data.TdlPatientNote = this.txtPatientNote.Text;
+                data.TdlPatientNote = this.txtPatientNote.Text.Trim();
                 data.FundCustomerName = this.txtTenKhachHang.Text;
                 if (dtThoiHanTu.EditValue != null && dtThoiHanTu.DateTime != DateTime.MinValue)
                 {
