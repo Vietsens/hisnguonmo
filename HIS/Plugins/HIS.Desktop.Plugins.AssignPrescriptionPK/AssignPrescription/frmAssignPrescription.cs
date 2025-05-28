@@ -78,6 +78,14 @@ using HIS.UC.Icd.ADO;
 using DevExpress.XtraGrid;
 using System.ComponentModel.DataAnnotations;
 using static MPS.ProcessorBase.PrintConfig;
+using Newtonsoft.Json;
+using HIS.Desktop.LocalStorage.HisConfig;
+using System.Net.Http;
+using System.Net.Http.Headers;
+using System.Web;
+using System.Configuration;
+using System.Net;
+
 
 namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
 {
@@ -12808,6 +12816,90 @@ o.SERVICE_ID == medi.SERVICE_ID && o.TDL_INTRUCTION_TIME.ToString().Substring(0,
             if (memHtu.Text != expected)
             {
                 shouldAutoUpdateMemHtu = false;     
+            }
+        }
+
+        private async void btnPrescriptionAI_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (cboMediStockExport.EditValue == null || string.IsNullOrWhiteSpace(cboMediStockExport.Text))
+                {
+                    XtraMessageBox.Show("Bạn chưa chọn kho xuất", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+                if (!string.IsNullOrEmpty(txtIcdCode.Text) || !string.IsNullOrEmpty(txtIcdMainText.Text))
+                {
+                    XtraMessageBox.Show("Thiếu thông tin chẩn đoán chính. Vui lòng kiểm tra lại", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
+
+                var requestData = new
+                {
+                    icd_code = txtIcdCode.Text.Trim(),
+                    gender = lblGenderName.Text.Trim(),
+                    age = MPS.AgeUtil.CalculateFullAge(currentTreatmentWithPatientType.TDL_PATIENT_DOB),
+                    top_n = 5
+                };
+
+                var jsonPayload = JsonConvert.SerializeObject(requestData);
+
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
+
+        }
+
+        private async Task<MediMateTypeADO> CallAISuggestionAPI(object requestData)
+        {
+            try
+            {
+                string apiUrl = Config.HisConfigCFG.SuggestPrescriptionsInfo;
+
+                if (string.IsNullOrEmpty(apiUrl))
+                {
+                    throw new Exception("Chưa cấu hình URL API AI");
+                }
+
+                using (var client = new System.Net.Http.HttpClient())
+                {
+                    client.Timeout = TimeSpan.FromMinutes(2);
+
+                    // Thêm header nếu cần
+                    client.DefaultRequestHeaders.Accept.Clear();
+                    client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+                    string jsonContent = Newtonsoft.Json.JsonConvert.SerializeObject(requestData);
+                    var content = new StringContent(jsonContent, Encoding.UTF8, "application/json");
+
+                    // Log request để debug
+                    Inventec.Common.Logging.LogSystem.Info("AI Request URL: " + apiUrl);
+                    Inventec.Common.Logging.LogSystem.Info("AI Request Data: " + jsonContent);
+
+                    var response = await client.PostAsync(apiUrl, content);
+
+                    if (response.IsSuccessStatusCode)
+                    {
+                        string responseContent = await response.Content.ReadAsStringAsync();
+                        Inventec.Common.Logging.LogSystem.Info("AI Response Content: " + responseContent);
+
+                        return Newtonsoft.Json.JsonConvert.DeserializeObject<MediMateTypeADO>(responseContent);
+                    }
+                    else
+                    {
+                        string errorContent = await response.Content.ReadAsStringAsync();
+                        throw new Exception($"API trả về lỗi: {response.StatusCode} - {response.ReasonPhrase}. Content: {errorContent}");
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+                return null;
             }
         }
 

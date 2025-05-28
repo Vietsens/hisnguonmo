@@ -399,10 +399,12 @@
     <Reference Include="System.Data.Linq" />
     <Reference Include="System.Deployment" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Net.Http" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Runtime.Serialization.Formatters.Soap" />
     <Reference Include="System.Security" />
     <Reference Include="System.Transactions" />
+    <Reference Include="System.Web" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -427,6 +429,7 @@
     <Compile Include="ADO\PresMedicineADO.cs" />
     <Compile Include="ADO\RoomExamADO.cs" />
     <Compile Include="ADO\StringUtil.cs" />
+    <Compile Include="ADO\SuggestPrescriptionsInfoADO.cs" />
     <Compile Include="ADO\TrackingADO.cs" />
     <Compile Include="ADO\TreatmentOverReason.cs" />
     <Compile Include="ADO\TuberCulosisADO.cs" />

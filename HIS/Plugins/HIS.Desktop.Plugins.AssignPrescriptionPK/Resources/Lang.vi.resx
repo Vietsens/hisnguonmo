@@ -283,6 +283,9 @@
   <data name="frmAssignPrescription.btnShowDetail.Text" xml:space="preserve">
     <value>DS y lệnh</value>
   </data>
+	<data name="frmAssignPrescription.btnPrescriptionAI.Text" xml:space="preserve">
+    <value>Gợi ý\n kê đơn (AI)</value>
+  </data>
   <data name="frmAssignPrescription.btnShowDetail.ToolTip" xml:space="preserve">
     <value>Danh sách y lệnh</value>
   </data>
