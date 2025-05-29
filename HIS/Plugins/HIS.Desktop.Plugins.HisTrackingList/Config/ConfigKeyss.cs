@@ -40,6 +40,8 @@ namespace HIS.Desktop.Plugins.HisTrackingList.Config
         public const string DBCODE__HIS_DESKTOP_PLUGINS_TRACKINGPRINT_USED_DAY_COUNTING_OUT_STOCK_OPTION = "HIS.Desktop.Plugins.TrackingPrint.UsedDayCountingOutStockOption";
         public const string DBCODE__HIS_DESKTOP_PLUGINS_HISTRACKINGLIST_AUTO_DELETE_EMR_DOCUMENT_WHEN_EDIT_OR_DELETE_TRACKING = "HIS.Desktop.Plugins.HisTrackingList.AutoDeleteEmrDocumentWhenEditOrDeleteTracking";
         
+        public const string DBCODE__MOS_HIS_TRACKING_IS_READ_ONLY_SHEET_ORDER = "MOS.HIS_TRACKING.IS_READ_ONLY_SHEET_ORDER";
+
         internal const string BtnEdit = "HIS000033";
     }
 }

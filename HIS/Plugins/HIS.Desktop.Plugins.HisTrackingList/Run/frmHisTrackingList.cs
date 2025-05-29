@@ -438,6 +438,21 @@ namespace HIS.Desktop.Plugins.HisTrackingList.Run
             }
         }
 
+        private void SetSheetOrderColumnReadOnly()
+        {
+            try
+            {
+                string isReadOnlySheetOrder = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>("MOS.HIS_TRACKING.IS_READ_ONLY_SHEET_ORDER");
+                bool isSheetOrderReadOnly = isReadOnlySheetOrder == "1";
+                gridViewTrackings.Columns["SHEET_ORDER"].OptionsColumn.ReadOnly = isSheetOrderReadOnly;
+                gridViewTrackings.Columns["SHEET_ORDER"].OptionsColumn.AllowEdit = !isSheetOrderReadOnly;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
         private void LoadDataTrackingList()
         {
             try
@@ -456,6 +471,15 @@ namespace HIS.Desktop.Plugins.HisTrackingList.Run
                 param.Count = dataTotal;
                 ucPaging1.Init(ucPagingData, param, (int)pageSize, gridControlTrackings);
                 GetEmrDocument();
+
+                gridControlTrackings.EndUpdate();
+                gridViewTrackings.OptionsSelection.EnableAppearanceFocusedCell = false;
+                gridViewTrackings.OptionsSelection.EnableAppearanceFocusedRow = false;
+                //gridViewTrackings.BestFitColumns();
+                WaitingManager.Hide();
+
+                // Set read-only state for SHEET_ORDER column
+                SetSheetOrderColumnReadOnly();
             }
             catch (Exception ex)
             {
