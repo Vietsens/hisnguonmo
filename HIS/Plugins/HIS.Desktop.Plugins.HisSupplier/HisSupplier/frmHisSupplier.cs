@@ -864,7 +864,7 @@ namespace HIS.Desktop.Plugins.HisSupplier.HisSupplier
         {
             try
             {
-                ValidationControlMaxLength(txtSupplierCode, 10,true);
+                ValidationControlMaxLength(txtSupplierCode, 30,true);
                 ValidationControlMaxLength(txtSupplierName, 1000,true);
                 ValidationControlMaxLength(txtSupplierShortName, 100,false);
                 ValidationControlMaxLength(txtEmail, 100,false);
