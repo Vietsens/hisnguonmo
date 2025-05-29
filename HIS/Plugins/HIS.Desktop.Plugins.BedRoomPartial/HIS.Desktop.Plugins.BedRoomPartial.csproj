@@ -21,6 +21,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <PlatformTarget>AnyCPU</PlatformTarget>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -63,9 +64,8 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\LIB\EMR\EMR.SDO.dll</HintPath>
     </Reference>
-    <Reference Include="EMR_MAIN, Version=25.1.12.1, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\EMR_MAIN.dll</HintPath>
+    <Reference Include="EMR_MAIN">
+      <HintPath>..\..\..\..\lib\EMRLinksoft\EMR_MAIN.dll</HintPath>
     </Reference>
     <Reference Include="HIS.Common.Treatment, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
