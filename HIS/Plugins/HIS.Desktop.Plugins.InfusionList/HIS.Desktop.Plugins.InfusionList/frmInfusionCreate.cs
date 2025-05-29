@@ -839,28 +839,16 @@ namespace HIS.Desktop.Plugins.InfusionCreate
                 Infusionfilter.ORDER_DIRECTION = "DESC";
                 Infusionfilter.ORDER_FIELD1 = "MODIFY_TIME";
                 Infusionfilter.ORDER_DIRECTION1 = "DESC";
-
-                ListInfusion = new Inventec.Common.Adapter.BackendAdapter(param).Get<List<V_HIS_INFUSION>>(
-                    HisRequestUriStore.HIS_INFUSION_GETVIEW,
-                    ApiConsumers.MosConsumer,
-                    Infusionfilter,
-                    param
-                );
+                ListInfusion = new Inventec.Common.Adapter.BackendAdapter(param).Get<List<V_HIS_INFUSION>>(HisRequestUriStore.HIS_INFUSION_GETVIEW, ApiConsumers.MosConsumer, Infusionfilter, param);
                 if (ListInfusion != null)
                 {
                     gridControl1.BeginUpdate();
                     gridControl1.DataSource = ListInfusion;
+                    //Lấy thông tin medicine type
                     HisMedicineViewFilter filterMedicine = new HisMedicineViewFilter();
                     filterMedicine.IS_ACTIVE = IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE;
                     filterMedicine.IDs = ListInfusion.Select(mt => mt.MEDICINE_ID ?? 0).ToList();
-
-                    glstMedicine = new Inventec.Common.Adapter.BackendAdapter(param).Get<List<V_HIS_MEDICINE>>(
-                        "api/HisMedicine/GetView",
-                        ApiConsumers.MosConsumer,
-                        filterMedicine,
-                        null
-                    );
-
+                    glstMedicine = new Inventec.Common.Adapter.BackendAdapter(param).Get<List<V_HIS_MEDICINE>>("api/HisMedicine/GetView", ApiConsumers.MosConsumer, filterMedicine, null);
                     gridControl1.EndUpdate();
                 }
             }
