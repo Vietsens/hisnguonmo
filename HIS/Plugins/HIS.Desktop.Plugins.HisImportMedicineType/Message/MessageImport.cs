@@ -25,7 +25,7 @@ namespace  HIS.Desktop.Plugins.HisImportMedicineType.Message
 {
     class MessageImport
     {
-        internal const string Maxlength = "{0} vượt quá độ dài cho phép|";
+        internal const string Maxlength = "{0} vượt quá độ dài cho phép, tối đa {1} ký tự|";
         internal const string KhongHopLe = "{0} không hợp lệ|";
         internal const string KhongTimThayThongTinLoaiThuocVoiSoLo = "Không tìm thấy loại thuốc gắn với lô|";
         internal const string KhongTimThayThongTinLoaiVatTuVoiSoLo = "Không tìm thấy loại vật tư gắn với lô|";
