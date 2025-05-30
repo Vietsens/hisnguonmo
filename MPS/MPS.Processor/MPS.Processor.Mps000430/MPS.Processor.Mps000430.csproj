@@ -33,6 +33,9 @@
     <Reference Include="FlexCel">
       <HintPath>..\..\..\..\LIB\Inventec.Common\Inventec.Common.FlexCelExport\FlexCel.dll</HintPath>
     </Reference>
+    <Reference Include="HIS.Desktop.LocalStorage.BackendData">
+      <HintPath>..\..\..\..\..\histest\x64\ReferencedAssemblies\HIS.Desktop.LocalStorage.BackendData.dll</HintPath>
+    </Reference>
     <Reference Include="IMSys.DbConfig.HIS_RS">
       <HintPath>..\..\..\..\LIB\IMSys.DbConfig\IMSys.DbConfig.HIS_RS\IMSys.DbConfig.HIS_RS.dll</HintPath>
     </Reference>
@@ -89,10 +92,6 @@
     <Compile Include="SererServADO.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\FE\YTE\DESKTOP\HIS\HIS.Desktop.LocalStorage.BackendData\HIS.Desktop.LocalStorage.BackendData.csproj">
-      <Project>{86709a9c-a149-4ebb-a817-1bf8f4f4bc07}</Project>
-      <Name>HIS.Desktop.LocalStorage.BackendData</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\MPS.ProcessorBase\MPS.ProcessorBase.csproj">
       <Project>{075d8b91-153f-4e19-a00a-77547e6f2bd0}</Project>
       <Name>MPS.ProcessorBase</Name>
