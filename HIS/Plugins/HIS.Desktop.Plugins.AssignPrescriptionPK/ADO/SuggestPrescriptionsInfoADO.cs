@@ -10,12 +10,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.ADO
 {
     public class SuggestPrescriptionsInfoADO
     {
-        public AISuggestionData AI_Suggestion { get; set; }
-    }
-
-    public class AISuggestionData
-    {
-        public List<MediMatyTypeADO> SuggestedPrescriptions { get; set; }
-        public string Explanation { get; set; }
+        [JsonProperty("ai_suggestion")]
+        public AISuggestionData ai_suggestion { get; set; }
     }
 }
