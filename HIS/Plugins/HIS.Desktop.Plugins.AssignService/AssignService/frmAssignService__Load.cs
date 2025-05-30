@@ -52,6 +52,7 @@ using HIS.Desktop.Controls.Session;
 using HIS.UC.Icd.ADO;
 using HIS.UC.SecondaryIcd.ADO;
 using System.Drawing;
+using DevExpress.XtraExport;
 
 namespace HIS.Desktop.Plugins.AssignService.AssignService
 {
@@ -2792,6 +2793,8 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                 this.chkIsNotRequireFee.CheckState = CheckState.Unchecked;
                 this.txtProvisionalDiagnosis.Text = this.provisionalDiagnosis;
                 this.dSignedList = new Dictionary<long, List<Inventec.Common.SignLibrary.DTO.DocumentSignedUpdateIGSysResultDTO>>();
+                this.repositoryItemSpinNumberOfTimes__Disable_TabService.ReadOnly = true;
+                this.repositoryItemSpinNumberOfTimes__Disable_TabService.Enabled = false;
                 //this.txtAssignRoomCode.Text = "";
                 //this.cboAssignRoom.EditValue = null;
 
@@ -2978,6 +2981,17 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                 else
                 {
                     this.gridColumn_Service_PrimaryPatientType.Visible = false;
+                }
+
+                //Ẩn hiện button Gợi ý chỉ định (AI)
+                bool isVisibilitylayoutControlItem36 = !string.IsNullOrEmpty(HisConfigCFG.SuggestAssignServicesInfo);               
+                if (isVisibilitylayoutControlItem36)
+                {
+                    layoutControlItem36.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
+                }
+                else
+                {
+                    layoutControlItem36.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
                 }
             }
             catch (Exception ex)

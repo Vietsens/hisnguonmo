@@ -190,7 +190,9 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                         this.ServiceParentADOs = this.ServiceParentADOs.Where(o => !lstNotDisplayIds.Exists(p => p == o.SERVICE_TYPE_ID)).ToList();
                         this.ServiceParentADOForGridServices = this.ServiceParentADOForGridServices.Where(o => !lstNotDisplayIds.Exists(p => p == o.SERVICE_TYPE_ID)).ToList();
                         this.ServiceIsleafADOs = this.ServiceIsleafADOs.Where(o => !lstNotDisplayIds.Exists(p => p == o.SERVICE_TYPE_ID)).ToList();
-                    }                        
+                    }
+                    var serviceByID = default(HIS_SERVICE);
+                    var serviceByIDSet = default(HIS_SERVICE);
 
                     foreach (var item in this.ServiceIsleafADOs)
                     {
@@ -235,6 +237,8 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                         item.TEST_SAMPLE_TYPE_CODE = null;
                         item.TEST_SAMPLE_TYPE_NAME = null;
                         item.SereServEkipADO = null;
+                        item.NumberOfTimes = 1;
+                        item.IS_MULTIPLE_EXECUTE = BackendDataWorker.Get<HIS_SERVICE>().Where(o => o.ID == item.SERVICE_ID).FirstOrDefault().IS_MULTIPLE_EXECUTE;
                     }
                 }
                 else
