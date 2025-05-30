@@ -27,13 +27,13 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.ADO
         [JsonProperty("Số lượng")]
         public decimal AMOUNT { get; set; }
         [JsonProperty("Sáng")]
-        public int Morning { get; set; }
+        public decimal Morning { get; set; }
         [JsonProperty("Trưa")]
-        public int Noon { get; set; }
+        public decimal Noon { get; set; }
         [JsonProperty("Chiều")]
-        public int Afternoon { get; set; }
+        public decimal Afternoon { get; set; }
         [JsonProperty("Tối")]
-        public int Evening { get; set; }
+        public decimal Evening { get; set; }
         [JsonProperty("Hướng dẫn sử dụng")]
         public string TUTORIAL { get; set; }
         [JsonProperty("Hao phí")]
