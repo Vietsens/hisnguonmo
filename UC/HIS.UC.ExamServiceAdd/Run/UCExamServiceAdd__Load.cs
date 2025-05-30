@@ -36,12 +36,16 @@ using Inventec.Common.Adapter;
 using HIS.Desktop.ApiConsumer;
 using HIS.Desktop.LocalStorage.BackendData;
 using HIS.UC.HisExamServiceAdd.Config;
+using DevExpress.XtraGrid.Views.Grid;
+using DevExpress.XtraGrid.Columns;
 
 namespace HIS.UC.ExamServiceAdd.Run
 {
 
     public partial class UCExamServiceAdd : UserControl
     {
+        private List<L_HIS_ROOM_COUNTER> cachedRoomCounters = null;
+        private DateTime? lastRoomCounterFetchTime = null;
         private void LoadDataCboExecuteRoom()
         {
             try
@@ -55,27 +59,58 @@ namespace HIS.UC.ExamServiceAdd.Run
                         && o.ROOM_ID != examServiceAddInitADO.roomId
                         )
                         .ToList();// && o.ROOM_ID == examServiceAddInitADO.roomId).ToList();
-                if(chkIsBranch.Checked)
-				{
+                if (chkIsBranch.Checked)
+                {
                     roomExams = roomExams.Where(o => o.BRANCH_ID == branchId).ToList();
-				}                    
+                }
                 if (chk_IsDepartment.Checked)
                 {
                     var dataRoom = BackendDataWorker.Get<V_HIS_ROOM>().FirstOrDefault(o => o.ID == examServiceAddInitADO.roomId);
                     roomExams = roomExams.Where(o => o.DEPARTMENT_ID == dataRoom.DEPARTMENT_ID).ToList();
                 }
-
-                List<ColumnInfo> columnInfos = new List<ColumnInfo>();
-                columnInfos.Add(new ColumnInfo("EXECUTE_ROOM_CODE", "", 150, 1));
-                columnInfos.Add(new ColumnInfo("EXECUTE_ROOM_NAME", "", 250, 2));
-                ControlEditorADO controlEditorADO = new ControlEditorADO("EXECUTE_ROOM_NAME", "ROOM_ID", columnInfos, false, 250);
-                ControlEditorLoader.Load(cboExecuteRoom, roomExams, controlEditorADO);
-
+                LoadCboExecuteRoom();
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
+        }
+        private void LoadCboExecuteRoom(List<L_HIS_ROOM_COUNTER> rooms)
+        {
+            try
+            {
+                List<ColumnInfo> columnInfos = new List<ColumnInfo>();
+                columnInfos.Add(new ColumnInfo("EXECUTE_ROOM_CODE", "Mã", 150, 1));
+                columnInfos.Add(new ColumnInfo("EXECUTE_ROOM_NAME", "Tên", 250, 2));
+                columnInfos.Add(new ColumnInfo("TOTAL_TODAY_SERVICE_REQ", "Tổng", 120, 3));
+                columnInfos.Add(new ColumnInfo("TOTAL_NEW_SERVICE_REQ", "Chưa", 120, 4));
+                columnInfos.Add(new ColumnInfo("TOTAL_END_SERVICE_REQ", "Kết thúc", 120, 5));
+                columnInfos.Add(new ColumnInfo("TOTAL_WAIT_TODAY_SERVICE_REQ", "CLS", 130, 6));
+                columnInfos.Add(new ColumnInfo("TOTAL_OPEN_SERVICE_REQ", "Đã", 130, 7));
+                columnInfos.Add(new ColumnInfo("MAX_REQUEST_BY_DAY", "Tối đa", 130, 8));
+                columnInfos.Add(new ColumnInfo("MAX_REQ_BHYT_BY_DAY", "Tối đa BHYT", 130, 9));
+                columnInfos.Add(new ColumnInfo("RESPONSIBLE_USERNAME_DISPLAY", "Tên bác sỹ", 250, 10));
+                ControlEditorADO controlEditorADO = new ControlEditorADO("EXECUTE_ROOM_NAME", "ROOM_ID", columnInfos, false, 1000);
+                ControlEditorLoader.Load(cboExecuteRoom, rooms, controlEditorADO);
+
+                GridView view = cboExecuteRoom.Properties.View;
+                view.OptionsView.ShowColumnHeaders = true;
+
+                for (int i = 0; i < view.Columns.Count; i++)
+                {
+                    if (i >= columnInfos.Count) break;
+
+                    var col = view.Columns[i];
+                    col.Caption = columnInfos[i].caption;
+                    col.Width = columnInfos[i].width;
+                    col.VisibleIndex = columnInfos[i].VisibleIndex;
+                }
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }           
         }
 
         private void LoadDataCboExamService(V_HIS_EXECUTE_ROOM executeRoom)

@@ -160,8 +160,9 @@
     <Reference Include="HIS.UC.ExamTreatmentFinish">
       <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\HIS.UC.ExamTreatmentFinish.dll</HintPath>
     </Reference>
-    <Reference Include="HIS.UC.HisExamServiceAdd">
-      <HintPath>..\..\..\..\LIB\HIS\HIS.UC.ExamServiceAdd\HIS.UC.HisExamServiceAdd.dll</HintPath>
+    <Reference Include="HIS.UC.HisExamServiceAdd, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\UC\HIS.UC.ExamServiceAdd\bin\Debug\HIS.UC.HisExamServiceAdd.dll</HintPath>
     </Reference>
     <Reference Include="HIS.UC.Hospitalize">
       <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\HIS.UC.Hospitalize.dll</HintPath>
