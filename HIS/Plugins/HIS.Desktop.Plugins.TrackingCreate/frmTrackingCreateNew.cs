@@ -116,6 +116,7 @@ namespace HIS.Desktop.Plugins.TrackingCreate
         public List<object> Args { get; set; }
         long SheetOderMax = 0;
         int initialSheetOrder = 0;
+        int lastSavedSheetOrder = 0;
         internal SecondaryIcdProcessor subIcdProcessor;
         internal UserControl ucSecondaryIcd;
         internal SecondaryIcdProcessor subIcdYhctProcessor;
@@ -730,52 +731,32 @@ namespace HIS.Desktop.Plugins.TrackingCreate
                 //spinEditSpo2.EditValue = null;
                 //txtNote.Text = "";
 
-                //txtSheetOrder.Text = "";
-
-                if(initialSheetOrder == 0)
-                {
-                    if (this.Args != null && this.Args.Count > 2 && this.SheetOderMax == 0)
-                    {
-                        if (this.Args[2] is int intVal)
-                            this.SheetOderMax = intVal + 1;
-                        else if (this.Args[2] is long longVal)
-                            this.SheetOderMax = (int)(longVal + 1);
-                        else
-                            this.SheetOderMax = 0;
-                    }
-                    else
-                    {
-                        this.SheetOderMax += 1;
-                    }
-
-                    initialSheetOrder = (int)this.SheetOderMax;
-                }
-                //if (this.Args != null && this.Args.Count > 2 && this.SheetOderMax == 0)
-                //{
-                //    if (this.Args[2] is int intVal)
-                //        this.SheetOderMax = intVal + 1;
-                //    else if (this.Args[2] is long longVal)
-                //        this.SheetOderMax = longVal + 1;
-                //    else
-                //        this.SheetOderMax = 1;
-                //}
-                //else
-                //{
-                //    this.SheetOderMax += 1;
-                //}
-                int currentSheetOrder = initialSheetOrder;
+                //txtSheetOrder.Text = "";                
+                int currentInputSheetOrder = 0;
                 if (int.TryParse(txtSheetOrder.Text, out int inputVal))
                 {
-                    if (inputVal != initialSheetOrder)
-                        currentSheetOrder = inputVal + 1;
+                    currentInputSheetOrder = inputVal;
                 }
-                this.SheetOderMax = currentSheetOrder;
-                txtSheetOrder.Text = this.SheetOderMax.ToString();
+                if (lastSavedSheetOrder == 0)
+                {
+                    if (this.Args != null && this.Args.Count > 2)
+                    {
+                        if (this.Args[2] is int intVal)
+                            lastSavedSheetOrder = intVal;
+                        else if (this.Args[2] is long longVal)
+                            lastSavedSheetOrder = (int)longVal;
+                        else
+                            lastSavedSheetOrder = 0;
+                    }
+                }
+                int nextSheetOrder = Math.Max(lastSavedSheetOrder, currentInputSheetOrder);
+                nextSheetOrder++;
+                txtSheetOrder.Text = nextSheetOrder.ToString();
 
                 string configValue = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(ConfigKeyss.DBCODE__MOS_HIS_TRACKING_IS_READ_ONLY_SHEET_ORDER);
                 bool isReadOnlySheetOrder = (configValue == "1");
                 txtSheetOrder.ReadOnly = isReadOnlySheetOrder;
-                        
+
                 btnAssService.Enabled = false;
                 btnKeDonThuoc.Enabled = false;
                 btnKeDonYHCT.Enabled = false;
