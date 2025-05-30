@@ -45,7 +45,7 @@ namespace HIS.Desktop.Plugins.HisImport
     {
         Inventec.Desktop.Common.Modules.Module _Module { get; set; }
         RefeshReference delegateRefresh;
-        List<ImportADO> _ImportAdos;
+        List<ImportADO> _ImportAdos; 
         List<ImportADO> _CurrentAdos;
         List<HIS_SUPPLIER> _ListSuppliers { get; set; }
 
@@ -146,7 +146,7 @@ namespace HIS.Desktop.Plugins.HisImport
 
                     if (saveFileDialog.ShowDialog() == DialogResult.OK)
                     {
-                        File.Copy(fileName, saveFileDialog.FileName);
+                        File.Copy(fileName, saveFileDialog.FileName); 
                         MessageManager.Show(this.ParentForm, param, true);
                         if (DevExpress.XtraEditors.XtraMessageBox.Show("Bạn có muốn mở file ngay?", "Xác nhận", MessageBoxButtons.YesNo) == DialogResult.Yes)
                         {
@@ -269,9 +269,9 @@ namespace HIS.Desktop.Plugins.HisImport
                     var serAdo = new ImportADO();
                     Inventec.Common.Mapper.DataObjectMapper.Map<ImportADO>(serAdo, item);
 
-                    if (!string.IsNullOrEmpty(item.SUPPLIER_CODE))
+                    if (!string.IsNullOrEmpty(item.SUPPLIER_CODE)) 
                     {
-                        if (item.SUPPLIER_CODE.Length > 10)
+                        if (item.SUPPLIER_CODE.Length > 30)
                         {
                             error += string.Format(Message.MessageImport.Maxlength, "SUPPLIER_CODE");
                         }
@@ -449,31 +449,31 @@ namespace HIS.Desktop.Plugins.HisImport
 
         private void repositoryItemButton_Delete_ButtonClick(object sender, DevExpress.XtraEditors.Controls.ButtonPressedEventArgs e)
         {
+            btnEdit.Enabled = false;
             try
             {
-                var row = (ImportADO)gridViewData.GetFocusedRow();
-                if (row != null)
+                CommonParam param = new CommonParam();
+                var rowData = (HIS_HOLIDAY_POLICIES)gridViewPolicies.GetFocusedRow();
+                if (MessageBox.Show(HIS.Desktop.LibraryMessage.MessageUtil.GetMessage
+                    (HIS.Desktop.LibraryMessage.Message.Enum.HeThongTBCuaSoThongBaoBanCoMuonXoaDuLieuKhong),
+                    "", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
                 {
-                    if (this._ImportAdos != null && this._ImportAdos.Count > 0)
+                    if (rowData != null)
                     {
-                        this._ImportAdos.Remove(row);
-                        var dataCheck = this._ImportAdos.Where(p => p.SUPPLIER_CODE == row.SUPPLIER_CODE).ToList();
-                        if (dataCheck != null && dataCheck.Count == 1)
+                        bool success = false;
+                        success = new BackendAdapter(param).Post<bool>(HisRequestUriStore.HIS_DAY_POLICIES_DELETE, ApiConsumers.MosConsumer, rowData.ID, param);
+                        if (success)
                         {
-                            if (!string.IsNullOrEmpty(dataCheck[0].ERROR))
-                            {
-                                string erro = string.Format(Message.MessageImport.FileImportDaTonTai, dataCheck[0].SUPPLIER_CODE);
-                                dataCheck[0].ERROR = dataCheck[0].ERROR.Replace(erro, "");
-                            }
-
+                            FillDataToControl();
+                            currentModule = ((List<HIS_HOLIDAY_POLICIES>)gridControl1.DataSource).FirstOrDefault();
                         }
-                        SetDataSource(this._ImportAdos);
+                        MessageManager.Show(this, param, success);
                     }
                 }
             }
             catch (Exception ex)
             {
-                Inventec.Common.Logging.LogSystem.Error(ex);
+                Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
 
@@ -511,7 +511,7 @@ namespace HIS.Desktop.Plugins.HisImport
                 btnImport.Focus();
                 var lisData = (List<ImportADO>)gridControlData.DataSource;
                 if (lisData == null || lisData.Count <= 0) return;
-                if (lisData.Exists(o => String.IsNullOrEmpty(o.ERROR))) return;
+                if (lisData.Exists(o => !String.IsNullOrEmpty(o.ERROR))) return;
                 bool success = false;
                 WaitingManager.Show();
                 List<HIS_SUPPLIER> datas = new List<HIS_SUPPLIER>();
