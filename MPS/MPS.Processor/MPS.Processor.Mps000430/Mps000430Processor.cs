@@ -235,6 +235,23 @@ namespace MPS.Processor.Mps000430
                 SetSingleKey(new KeyValue(Mps000430ExtendSingleKey.AMOUNT_TEXT, amountText));
                 SetSingleKey(new KeyValue(Mps000430ExtendSingleKey.AMOUNT_TEXT_UPPER_FIRST, Inventec.Common.String.Convert.UppercaseFirst(amountText)));
 
+                string payFormCode = "";
+                string payFormName = "";
+                if (rdo._Transaction != null && rdo._Transaction.Count > 0)
+                {
+                    var depositTransaction = rdo._Transaction.FirstOrDefault(o => o.TRANSACTION_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TRANSACTION_TYPE.ID__TU);
+                    if (depositTransaction != null)
+                    {
+                        payFormCode = depositTransaction.PAY_FORM_CODE;
+                        payFormName = depositTransaction.PAY_FORM_NAME;
+                    }
+                }
+
+                // Gán giá trị vào key đơn
+                SetSingleKey(new KeyValue(Mps000430ExtendSingleKey.PAY_FORM_CODE, payFormCode));
+                SetSingleKey(new KeyValue(Mps000430ExtendSingleKey.PAY_FORM_NAME, payFormName));
+
+
                 LstSererServADO = LstSererServADO.OrderBy(o => o.SERVICE_TYPE_NUM_ORDER ?? 9999).ThenBy(o => o.TDL_SERVICE_NAME).ThenBy(o => o.ID).ToList();
                 List<SererServADO> SereServTotal = new List<SererServADO>();
 

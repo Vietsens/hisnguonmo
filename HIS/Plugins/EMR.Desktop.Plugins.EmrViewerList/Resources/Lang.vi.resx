@@ -162,7 +162,10 @@
   <data name="IVT_LANGUAGE_KEY__UC_EMR_VIEWER_LIST__GC_CLINICAL_IN_TIME" xml:space="preserve">
     <value>Thời gian nhập viện</value>
   </data>
-  <data name="IVT_LANGUAGE_KEY__UC_EMR_VIEWER_LIST__GC_DEPARTMENT_NAME" xml:space="preserve">
+	<data name="IVT_LANGUAGE_KEY__UC_EMR_VIEWER_LIST__GC_DATA_STORE_NAME" xml:space="preserve">
+    <value>Kho lưu trữ</value>
+  </data>
+	<data name="IVT_LANGUAGE_KEY__UC_EMR_VIEWER_LIST__GC_DEPARTMENT_NAME" xml:space="preserve">
     <value>Khoa yêu cầu</value>
   </data>
   <data name="IVT_LANGUAGE_KEY__UC_EMR_VIEWER_LIST__GC_DIS_APPROVAL" xml:space="preserve">

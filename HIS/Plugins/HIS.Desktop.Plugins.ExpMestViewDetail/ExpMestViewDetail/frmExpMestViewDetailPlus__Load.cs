@@ -468,29 +468,60 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
             List<V_HIS_EXP_MEST_MEDICINE_1> result = new List<V_HIS_EXP_MEST_MEDICINE_1>();
             try
             {
-                var dataGroups = expMestmedicineTemps.GroupBy(o => new
+                bool isExpMestKhac = (_CurrentExpMest != null && _CurrentExpMest.EXP_MEST_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_EXP_MEST_TYPE.ID__KHAC);
+                if (isExpMestKhac)
                 {
-                    o.MEDICINE_TYPE_ID,
-                    o.PRICE,
-                    o.IMP_PRICE,
-                    o.IMP_VAT_RATIO,
-                    o.IS_NOT_PRES,
-                    o.PATIENT_TYPE_ID,
-                    o.OTHER_PAY_SOURCE_ID,
-                    o.IS_EXPEND
-                }).ToList();
+                    // Gom nhóm thêm PACKAGE_NUMBER và EXPIRED_DATE
+                    var dataGroups = expMestMedicine1s.GroupBy(o => new
+                    {
+                        o.MEDICINE_TYPE_ID,
+                        o.PRICE,
+                        o.IMP_PRICE,
+                        o.IMP_VAT_RATIO,
+                        o.IS_NOT_PRES,
+                        o.PATIENT_TYPE_ID,
+                        o.OTHER_PAY_SOURCE_ID,
+                        o.IS_EXPEND,
+                        o.PACKAGE_NUMBER, // Thêm số lô
+                        o.EXPIRED_DATE    // Thêm hạn sử dụng
+                    }).ToList();
 
-                foreach (var dataGroup in dataGroups)
-                {
-                    V_HIS_EXP_MEST_MEDICINE_1 expMestmedicine = new V_HIS_EXP_MEST_MEDICINE_1();
-                    expMestmedicine = dataGroup.First();
-                    expMestmedicine.AMOUNT = dataGroup.Sum(o => o.AMOUNT);
-                    expMestmedicine.PRES_AMOUNT = dataGroup.Sum(o => o.PRES_AMOUNT ?? o.AMOUNT);
-                    expMestmedicine.SUM_BY_MEDICINE_IN_STOCK = dataGroup.Sum(o => o.SUM_BY_MEDICINE_IN_STOCK);
-                    result.Add(expMestmedicine);
+                    foreach (var dataGroup in dataGroups)
+                    {
+                        V_HIS_EXP_MEST_MEDICINE_1 expMestMedicine = dataGroup.First();
+                        expMestMedicine.AMOUNT = dataGroup.Sum(o => o.AMOUNT);
+                        expMestMedicine.PRES_AMOUNT = dataGroup.Sum(o => o.PRES_AMOUNT ?? o.AMOUNT);
+                        expMestMedicine.SUM_BY_MEDICINE_IN_STOCK = dataGroup.Sum(o => o.SUM_BY_MEDICINE_IN_STOCK);
+                        result.Add(expMestMedicine);
+                    }
                 }
+                else
+                {
 
-                result = result.OrderBy(o => o.MEDICINE_TYPE_NAME).ToList();
+                    var dataGroups = expMestmedicineTemps.GroupBy(o => new
+                    {
+                        o.MEDICINE_TYPE_ID,
+                        o.PRICE,
+                        o.IMP_PRICE,
+                        o.IMP_VAT_RATIO,
+                        o.IS_NOT_PRES,
+                        o.PATIENT_TYPE_ID,
+                        o.OTHER_PAY_SOURCE_ID,
+                        o.IS_EXPEND
+                    }).ToList();
+
+                    foreach (var dataGroup in dataGroups)
+                    {
+                        V_HIS_EXP_MEST_MEDICINE_1 expMestmedicine = new V_HIS_EXP_MEST_MEDICINE_1();
+                        expMestmedicine = dataGroup.First();
+                        expMestmedicine.AMOUNT = dataGroup.Sum(o => o.AMOUNT);
+                        expMestmedicine.PRES_AMOUNT = dataGroup.Sum(o => o.PRES_AMOUNT ?? o.AMOUNT);
+                        expMestmedicine.SUM_BY_MEDICINE_IN_STOCK = dataGroup.Sum(o => o.SUM_BY_MEDICINE_IN_STOCK);
+                        result.Add(expMestmedicine);
+                    }
+
+                    result = result.OrderBy(o => o.MEDICINE_TYPE_NAME).ToList();
+                }
             }
             catch (Exception ex)
             {
@@ -514,27 +545,59 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
                 AutoMapper.Mapper.CreateMap<V_HIS_EXP_MEST_MATERIAL_1, V_HIS_EXP_MEST_MATERIAL_1>();
                 expMestMaterialTemp = AutoMapper.Mapper.Map<List<V_HIS_EXP_MEST_MATERIAL_1>>(expMestMedicine1s);
 
-                var dataGroups = expMestMaterialTemp.GroupBy(o => new
+                // Kiểm tra loại phiếu xuất
+                bool isExpMestKhac = (_CurrentExpMest != null && _CurrentExpMest.EXP_MEST_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_EXP_MEST_TYPE.ID__KHAC);
+                if (isExpMestKhac)
                 {
-                    o.MATERIAL_TYPE_ID,
-                    o.PRICE,
-                    o.IMP_PRICE,
-                    o.IMP_VAT_RATIO,
-                    o.IS_NOT_PRES,
-                    o.PATIENT_TYPE_ID,
-                    o.OTHER_PAY_SOURCE_ID,
-                    o.IS_EXPEND
-                }).ToList();
+                    // Gom nhóm thêm PACKAGE_NUMBER và EXPIRED_DATE
+                    var dataGroups = expMestMaterialTemp.GroupBy(o => new
+                    {
+                        o.MATERIAL_TYPE_ID,
+                        o.PRICE,
+                        o.IMP_PRICE,
+                        o.IMP_VAT_RATIO,
+                        o.IS_NOT_PRES,
+                        o.PATIENT_TYPE_ID,
+                        o.OTHER_PAY_SOURCE_ID,
+                        o.IS_EXPEND,
+                        o.PACKAGE_NUMBER, // Thêm số lô
+                        o.EXPIRED_DATE    // Thêm hạn sử dụng
+                    }).ToList();
 
-                foreach (var dataGroup in dataGroups)
-                {
-                    V_HIS_EXP_MEST_MATERIAL_1 expMestmedicine = new V_HIS_EXP_MEST_MATERIAL_1();
-                    expMestmedicine = dataGroup.First();
-                    expMestmedicine.AMOUNT = dataGroup.Sum(o => o.AMOUNT);
-                    expMestmedicine.PRES_AMOUNT = dataGroup.Sum(o => o.PRES_AMOUNT?? o.AMOUNT);
-                    result.Add(expMestmedicine);
+                    foreach (var dataGroup in dataGroups)
+                    {
+                        V_HIS_EXP_MEST_MATERIAL_1 expMestMaterial = dataGroup.First();
+                        expMestMaterial.AMOUNT = dataGroup.Sum(o => o.AMOUNT);
+                        expMestMaterial.PRES_AMOUNT = dataGroup.Sum(o => o.PRES_AMOUNT ?? o.AMOUNT);
+                        result.Add(expMestMaterial);
+                    }
                 }
-                result = result != null ? result.OrderBy(o => o.MATERIAL_TYPE_NAME).ToList() : result;
+                else
+                {
+
+
+                    var dataGroups = expMestMaterialTemp.GroupBy(o => new
+                    {
+                        o.MATERIAL_TYPE_ID,
+                        o.PRICE,
+                        o.IMP_PRICE,
+                        o.IMP_VAT_RATIO,
+                        o.IS_NOT_PRES,
+                        o.PATIENT_TYPE_ID,
+                        o.OTHER_PAY_SOURCE_ID,
+                        o.IS_EXPEND
+                    }).ToList();
+
+                    foreach (var dataGroup in dataGroups)
+                    {
+                        V_HIS_EXP_MEST_MATERIAL_1 expMestmedicine = new V_HIS_EXP_MEST_MATERIAL_1();
+                        expMestmedicine = dataGroup.First();
+                        expMestmedicine.AMOUNT = dataGroup.Sum(o => o.AMOUNT);
+                        expMestmedicine.PRES_AMOUNT = dataGroup.Sum(o => o.PRES_AMOUNT ?? o.AMOUNT);
+                        result.Add(expMestmedicine);
+                    }
+                    result = result != null ? result.OrderBy(o => o.MATERIAL_TYPE_NAME).ToList() : result;
+                }
             }
             catch (Exception ex)
             {
