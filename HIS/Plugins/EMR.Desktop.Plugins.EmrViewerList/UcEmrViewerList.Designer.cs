@@ -22,7 +22,7 @@ namespace EMR.Desktop.Plugins.EmrViewerList
         /// <summary> 
         /// Required designer variable.
         /// </summary>
-        private System.ComponentModel.IContainer components = null;
+        private System.ComponentModel.IContainer components = null; 
 
         /// <summary> 
         /// Clean up any resources being used.
@@ -47,30 +47,30 @@ namespace EMR.Desktop.Plugins.EmrViewerList
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(UcEmrViewerList));
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject121 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject122 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject123 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject124 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject125 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject126 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject127 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject128 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject129 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject130 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject131 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject132 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject133 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject134 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject135 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject136 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject137 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject138 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject139 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject140 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject141 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject142 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject143 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject144 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject1 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject2 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject3 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject4 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject5 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject6 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject7 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject8 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject9 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject10 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject11 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject12 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject13 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject14 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject15 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject16 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject17 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject18 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject19 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject20 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject21 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject22 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject23 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject24 = new DevExpress.Utils.SerializableAppearanceObject();
             this.layoutControl1 = new DevExpress.XtraLayout.LayoutControl();
             this.ucPaging = new Inventec.UC.Paging.UcPaging();
             this.navBarControl1 = new DevExpress.XtraNavBar.NavBarControl();
@@ -116,6 +116,7 @@ namespace EMR.Desktop.Plugins.EmrViewerList
             this.Gc_RequestName = new DevExpress.XtraGrid.Columns.GridColumn();
             this.Gc_DepartmentName = new DevExpress.XtraGrid.Columns.GridColumn();
             this.Gc_RequestFinishTime = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.Gc_DataStoreName = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn1 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.Gc_FinishTime = new DevExpress.XtraGrid.Columns.GridColumn();
             this.Gc_ApprovalUsername = new DevExpress.XtraGrid.Columns.GridColumn();
@@ -618,6 +619,7 @@ namespace EMR.Desktop.Plugins.EmrViewerList
             this.Gc_RequestName,
             this.Gc_DepartmentName,
             this.Gc_RequestFinishTime,
+            this.Gc_DataStoreName,
             this.gridColumn1,
             this.Gc_FinishTime,
             this.Gc_ApprovalUsername,
@@ -732,6 +734,16 @@ namespace EMR.Desktop.Plugins.EmrViewerList
             this.Gc_RequestFinishTime.VisibleIndex = 6;
             this.Gc_RequestFinishTime.Width = 120;
             // 
+            // Gc_DataStoreName
+            // 
+            this.Gc_DataStoreName.Caption = "Kho lưu trữ";
+            this.Gc_DataStoreName.FieldName = "DATA_STORE_NAME";
+            this.Gc_DataStoreName.Name = "Gc_DataStoreName";
+            this.Gc_DataStoreName.OptionsColumn.AllowEdit = false;
+            this.Gc_DataStoreName.Visible = true;
+            this.Gc_DataStoreName.VisibleIndex = 7;
+            this.Gc_DataStoreName.Width = 150;
+            // 
             // gridColumn1
             // 
             this.gridColumn1.Caption = "Lý do";
@@ -739,7 +751,7 @@ namespace EMR.Desktop.Plugins.EmrViewerList
             this.gridColumn1.Name = "gridColumn1";
             this.gridColumn1.OptionsColumn.AllowEdit = false;
             this.gridColumn1.Visible = true;
-            this.gridColumn1.VisibleIndex = 7;
+            this.gridColumn1.VisibleIndex = 8;
             this.gridColumn1.Width = 150;
             // 
             // Gc_FinishTime
@@ -750,7 +762,7 @@ namespace EMR.Desktop.Plugins.EmrViewerList
             this.Gc_FinishTime.OptionsColumn.AllowEdit = false;
             this.Gc_FinishTime.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.Gc_FinishTime.Visible = true;
-            this.Gc_FinishTime.VisibleIndex = 8;
+            this.Gc_FinishTime.VisibleIndex = 9;
             this.Gc_FinishTime.Width = 130;
             // 
             // Gc_ApprovalUsername
@@ -760,7 +772,7 @@ namespace EMR.Desktop.Plugins.EmrViewerList
             this.Gc_ApprovalUsername.Name = "Gc_ApprovalUsername";
             this.Gc_ApprovalUsername.OptionsColumn.AllowEdit = false;
             this.Gc_ApprovalUsername.Visible = true;
-            this.Gc_ApprovalUsername.VisibleIndex = 9;
+            this.Gc_ApprovalUsername.VisibleIndex = 10;
             this.Gc_ApprovalUsername.Width = 100;
             // 
             // Gc_ApprovalTime
@@ -771,7 +783,7 @@ namespace EMR.Desktop.Plugins.EmrViewerList
             this.Gc_ApprovalTime.OptionsColumn.AllowEdit = false;
             this.Gc_ApprovalTime.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.Gc_ApprovalTime.Visible = true;
-            this.Gc_ApprovalTime.VisibleIndex = 10;
+            this.Gc_ApprovalTime.VisibleIndex = 11;
             this.Gc_ApprovalTime.Width = 120;
             // 
             // Gc_TreatmentCode
@@ -781,7 +793,7 @@ namespace EMR.Desktop.Plugins.EmrViewerList
             this.Gc_TreatmentCode.Name = "Gc_TreatmentCode";
             this.Gc_TreatmentCode.OptionsColumn.AllowEdit = false;
             this.Gc_TreatmentCode.Visible = true;
-            this.Gc_TreatmentCode.VisibleIndex = 11;
+            this.Gc_TreatmentCode.VisibleIndex = 12;
             this.Gc_TreatmentCode.Width = 100;
             // 
             // Gc_PatientCode
@@ -791,7 +803,7 @@ namespace EMR.Desktop.Plugins.EmrViewerList
             this.Gc_PatientCode.Name = "Gc_PatientCode";
             this.Gc_PatientCode.OptionsColumn.AllowEdit = false;
             this.Gc_PatientCode.Visible = true;
-            this.Gc_PatientCode.VisibleIndex = 12;
+            this.Gc_PatientCode.VisibleIndex = 13;
             this.Gc_PatientCode.Width = 100;
             // 
             // Gc_PatientName
@@ -801,7 +813,7 @@ namespace EMR.Desktop.Plugins.EmrViewerList
             this.Gc_PatientName.Name = "Gc_PatientName";
             this.Gc_PatientName.OptionsColumn.AllowEdit = false;
             this.Gc_PatientName.Visible = true;
-            this.Gc_PatientName.VisibleIndex = 13;
+            this.Gc_PatientName.VisibleIndex = 14;
             this.Gc_PatientName.Width = 150;
             // 
             // Gc_Dob
@@ -812,7 +824,7 @@ namespace EMR.Desktop.Plugins.EmrViewerList
             this.Gc_Dob.OptionsColumn.AllowEdit = false;
             this.Gc_Dob.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.Gc_Dob.Visible = true;
-            this.Gc_Dob.VisibleIndex = 14;
+            this.Gc_Dob.VisibleIndex = 15;
             this.Gc_Dob.Width = 100;
             // 
             // Gc_Gender
@@ -822,7 +834,7 @@ namespace EMR.Desktop.Plugins.EmrViewerList
             this.Gc_Gender.Name = "Gc_Gender";
             this.Gc_Gender.OptionsColumn.AllowEdit = false;
             this.Gc_Gender.Visible = true;
-            this.Gc_Gender.VisibleIndex = 15;
+            this.Gc_Gender.VisibleIndex = 16;
             this.Gc_Gender.Width = 60;
             // 
             // Gc_HeinCardNumber
@@ -832,7 +844,7 @@ namespace EMR.Desktop.Plugins.EmrViewerList
             this.Gc_HeinCardNumber.Name = "Gc_HeinCardNumber";
             this.Gc_HeinCardNumber.OptionsColumn.AllowEdit = false;
             this.Gc_HeinCardNumber.Visible = true;
-            this.Gc_HeinCardNumber.VisibleIndex = 16;
+            this.Gc_HeinCardNumber.VisibleIndex = 17;
             this.Gc_HeinCardNumber.Width = 90;
             // 
             // Gc_InTime
@@ -843,7 +855,7 @@ namespace EMR.Desktop.Plugins.EmrViewerList
             this.Gc_InTime.OptionsColumn.AllowEdit = false;
             this.Gc_InTime.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.Gc_InTime.Visible = true;
-            this.Gc_InTime.VisibleIndex = 17;
+            this.Gc_InTime.VisibleIndex = 18;
             this.Gc_InTime.Width = 120;
             // 
             // Gc_OutTime
@@ -854,7 +866,7 @@ namespace EMR.Desktop.Plugins.EmrViewerList
             this.Gc_OutTime.OptionsColumn.AllowEdit = false;
             this.Gc_OutTime.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.Gc_OutTime.Visible = true;
-            this.Gc_OutTime.VisibleIndex = 18;
+            this.Gc_OutTime.VisibleIndex = 19;
             this.Gc_OutTime.Width = 120;
             // 
             // Gc_ClinicalInTime
@@ -865,7 +877,7 @@ namespace EMR.Desktop.Plugins.EmrViewerList
             this.Gc_ClinicalInTime.OptionsColumn.AllowEdit = false;
             this.Gc_ClinicalInTime.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.Gc_ClinicalInTime.Visible = true;
-            this.Gc_ClinicalInTime.VisibleIndex = 19;
+            this.Gc_ClinicalInTime.VisibleIndex = 20;
             this.Gc_ClinicalInTime.Width = 120;
             // 
             // Gc_IcdCode
@@ -875,7 +887,7 @@ namespace EMR.Desktop.Plugins.EmrViewerList
             this.Gc_IcdCode.Name = "Gc_IcdCode";
             this.Gc_IcdCode.OptionsColumn.AllowEdit = false;
             this.Gc_IcdCode.Visible = true;
-            this.Gc_IcdCode.VisibleIndex = 20;
+            this.Gc_IcdCode.VisibleIndex = 21;
             this.Gc_IcdCode.Width = 60;
             // 
             // Gc_IcdName
@@ -885,7 +897,7 @@ namespace EMR.Desktop.Plugins.EmrViewerList
             this.Gc_IcdName.Name = "Gc_IcdName";
             this.Gc_IcdName.OptionsColumn.AllowEdit = false;
             this.Gc_IcdName.Visible = true;
-            this.Gc_IcdName.VisibleIndex = 21;
+            this.Gc_IcdName.VisibleIndex = 22;
             this.Gc_IcdName.Width = 200;
             // 
             // Gc_IcdText
@@ -895,14 +907,14 @@ namespace EMR.Desktop.Plugins.EmrViewerList
             this.Gc_IcdText.Name = "Gc_IcdText";
             this.Gc_IcdText.OptionsColumn.AllowEdit = false;
             this.Gc_IcdText.Visible = true;
-            this.Gc_IcdText.VisibleIndex = 22;
+            this.Gc_IcdText.VisibleIndex = 23;
             this.Gc_IcdText.Width = 200;
             // 
             // repositoryItemBtnApproval
             // 
             this.repositoryItemBtnApproval.AutoHeight = false;
             this.repositoryItemBtnApproval.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("repositoryItemBtnApproval.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject121, serializableAppearanceObject122, serializableAppearanceObject123, serializableAppearanceObject124, "Duyệt", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("repositoryItemBtnApproval.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject1, serializableAppearanceObject2, serializableAppearanceObject3, serializableAppearanceObject4, "Duyệt", null, null, true)});
             this.repositoryItemBtnApproval.Name = "repositoryItemBtnApproval";
             this.repositoryItemBtnApproval.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             this.repositoryItemBtnApproval.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.repositoryItemBtnApproval_ButtonClick);
@@ -911,7 +923,7 @@ namespace EMR.Desktop.Plugins.EmrViewerList
             // 
             this.repositoryItemBtnApprovalDisable.AutoHeight = false;
             this.repositoryItemBtnApprovalDisable.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, false, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("repositoryItemBtnApprovalDisable.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject125, serializableAppearanceObject126, serializableAppearanceObject127, serializableAppearanceObject128, "Duyệt", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, false, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("repositoryItemBtnApprovalDisable.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject5, serializableAppearanceObject6, serializableAppearanceObject7, serializableAppearanceObject8, "Duyệt", null, null, true)});
             this.repositoryItemBtnApprovalDisable.Name = "repositoryItemBtnApprovalDisable";
             this.repositoryItemBtnApprovalDisable.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             // 
@@ -919,7 +931,7 @@ namespace EMR.Desktop.Plugins.EmrViewerList
             // 
             this.repositoryItemBtnDisApproval.AutoHeight = false;
             this.repositoryItemBtnDisApproval.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("repositoryItemBtnDisApproval.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject129, serializableAppearanceObject130, serializableAppearanceObject131, serializableAppearanceObject132, "Từ chối duyệt", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("repositoryItemBtnDisApproval.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject9, serializableAppearanceObject10, serializableAppearanceObject11, serializableAppearanceObject12, "Từ chối duyệt", null, null, true)});
             this.repositoryItemBtnDisApproval.Name = "repositoryItemBtnDisApproval";
             this.repositoryItemBtnDisApproval.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             this.repositoryItemBtnDisApproval.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.repositoryItemBtnDisApproval_ButtonClick);
@@ -928,7 +940,7 @@ namespace EMR.Desktop.Plugins.EmrViewerList
             // 
             this.repositoryItemBtnDisApprovalDisable.AutoHeight = false;
             this.repositoryItemBtnDisApprovalDisable.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, false, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("repositoryItemBtnDisApprovalDisable.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject133, serializableAppearanceObject134, serializableAppearanceObject135, serializableAppearanceObject136, "Từ chối duyệt", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, false, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("repositoryItemBtnDisApprovalDisable.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject13, serializableAppearanceObject14, serializableAppearanceObject15, serializableAppearanceObject16, "Từ chối duyệt", null, null, true)});
             this.repositoryItemBtnDisApprovalDisable.Name = "repositoryItemBtnDisApprovalDisable";
             this.repositoryItemBtnDisApprovalDisable.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             // 
@@ -936,7 +948,7 @@ namespace EMR.Desktop.Plugins.EmrViewerList
             // 
             this.repositoryItemBtnCancelApproval.AutoHeight = false;
             this.repositoryItemBtnCancelApproval.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("repositoryItemBtnCancelApproval.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject137, serializableAppearanceObject138, serializableAppearanceObject139, serializableAppearanceObject140, "Hủy duyệt", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("repositoryItemBtnCancelApproval.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject17, serializableAppearanceObject18, serializableAppearanceObject19, serializableAppearanceObject20, "Hủy duyệt", null, null, true)});
             this.repositoryItemBtnCancelApproval.Name = "repositoryItemBtnCancelApproval";
             this.repositoryItemBtnCancelApproval.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             this.repositoryItemBtnCancelApproval.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.repositoryItemBtnCancelApproval_ButtonClick);
@@ -945,7 +957,7 @@ namespace EMR.Desktop.Plugins.EmrViewerList
             // 
             this.repositoryItemBtnCancelDisApproval.AutoHeight = false;
             this.repositoryItemBtnCancelDisApproval.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("repositoryItemBtnCancelDisApproval.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject141, serializableAppearanceObject142, serializableAppearanceObject143, serializableAppearanceObject144, "Hủy từ chối duyệt", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("repositoryItemBtnCancelDisApproval.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject21, serializableAppearanceObject22, serializableAppearanceObject23, serializableAppearanceObject24, "Hủy từ chối duyệt", null, null, true)});
             this.repositoryItemBtnCancelDisApproval.Name = "repositoryItemBtnCancelDisApproval";
             this.repositoryItemBtnCancelDisApproval.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             this.repositoryItemBtnCancelDisApproval.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.repositoryItemBtnCancelDisApproval_ButtonClick);
@@ -1191,5 +1203,6 @@ namespace EMR.Desktop.Plugins.EmrViewerList
         private DevExpress.XtraLayout.EmptySpaceItem emptySpaceItem1;
         private DevExpress.XtraLayout.EmptySpaceItem emptySpaceItem2;
         private DevExpress.XtraLayout.EmptySpaceItem emptySpaceItem3;
+        private DevExpress.XtraGrid.Columns.GridColumn Gc_DataStoreName;
     }
 }

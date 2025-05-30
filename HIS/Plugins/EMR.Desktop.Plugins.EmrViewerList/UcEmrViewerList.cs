@@ -203,12 +203,12 @@ namespace EMR.Desktop.Plugins.EmrViewerList
                 if (!String.IsNullOrEmpty(TxtKeyword.Text)) filter.KEY_WORD = TxtKeyword.Text.Trim();
 
                 if (ChkYeuCau.Checked) filter.REQUEST_LOGINNAME__EXACT = LogginName;
-                else filter.DATA_STORE_CODE__EXACT = RoomCode;
+                //else filter.DATA_STORE_CODE__EXACT = RoomCode;
 
-                if (cboRoomArchive.EditValue != null)
-                {
-                    filter.DATA_STORE_CODE__EXACT = cboRoomArchive.EditValue.ToString();
-                }
+                //if (cboRoomArchive.EditValue != null)
+                //{
+                //    filter.DATA_STORE_CODE__EXACT = cboRoomArchive.EditValue.ToString();
+                //}
                 //if (!IsRoomLt) filter.REQUEST_LOGINNAME__EXACT = LogginName;
                 //else filter.DATA_STORE_CODE__EXACT = RoomCode;
 
@@ -283,6 +283,7 @@ namespace EMR.Desktop.Plugins.EmrViewerList
                 this.Gc_ApprovalUsername.Caption = GetLanguageControl("IVT_LANGUAGE_KEY__UC_EMR_VIEWER_LIST__GC_APPROVAL_USERNAME");
                 this.Gc_ClinicalInTime.Caption = GetLanguageControl("IVT_LANGUAGE_KEY__UC_EMR_VIEWER_LIST__GC_CLINICAL_IN_TIME");
                 this.Gc_DepartmentName.Caption = GetLanguageControl("IVT_LANGUAGE_KEY__UC_EMR_VIEWER_LIST__GC_DEPARTMENT_NAME");
+                this.Gc_DataStoreName.Caption = GetLanguageControl("IVT_LANGUAGE_KEY__UC_EMR_VIEWER_LIST__GC_DATA_STORE_NAME");
                 this.Gc_DisApproval.Caption = GetLanguageControl("IVT_LANGUAGE_KEY__UC_EMR_VIEWER_LIST__GC_DIS_APPROVAL");
                 this.Gc_Dob.Caption = GetLanguageControl("IVT_LANGUAGE_KEY__UC_EMR_VIEWER_LIST__GC_DOB");
                 this.Gc_FinishTime.Caption = GetLanguageControl("IVT_LANGUAGE_KEY__UC_EMR_VIEWER_LIST__GC_FINISH_TIME");
@@ -342,7 +343,7 @@ namespace EMR.Desktop.Plugins.EmrViewerList
 
         private void repositoryItemBtnDisApproval_ButtonClick(object sender, DevExpress.XtraEditors.Controls.ButtonPressedEventArgs e)
         {
-            try
+            try 
             {
                 var row = (EMR.EFMODEL.DataModels.V_EMR_VIEWER)gridViewViewer.GetFocusedRow();
                 if (row != null)
