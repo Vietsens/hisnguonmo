@@ -713,6 +713,7 @@ namespace HIS.UC.UCPatientRaw
 
                     if ((txtPatientCode.Text.Trim().Length == 12 && !string.IsNullOrEmpty(txtPatientName.Text) && (!string.IsNullOrEmpty(txtPatientDob.Text) || dtPatientDob.EditValue != null)) && this.typeCodeFind == ResourceMessage.typeCodeFind__MaCMCC)
                     {
+                        IsSearchCCCDByInfo = true;
                         SearchPatientByCodeOrQrCode(txtPatientCode.Text.Trim());
 
                     }
@@ -1048,6 +1049,7 @@ namespace HIS.UC.UCPatientRaw
                     }
                     if ((txtPatientCode.Text.Trim().Length == 12 && !string.IsNullOrEmpty(txtPatientName.Text) && (!string.IsNullOrEmpty(txtPatientDob.Text) || dtPatientDob.EditValue != null)) && this.typeCodeFind == ResourceMessage.typeCodeFind__MaCMCC)
                     {
+                        IsSearchCCCDByInfo = true;
                         SearchPatientByCodeOrQrCode(txtPatientCode.Text.Trim());
 
                     }
@@ -1241,6 +1243,7 @@ namespace HIS.UC.UCPatientRaw
                 {
                     if ((txtPatientCode.Text.Trim().Length == 12 && !string.IsNullOrEmpty(txtPatientName.Text) && (!string.IsNullOrEmpty(txtPatientDob.Text) || dtPatientDob.EditValue != null)) && this.typeCodeFind == ResourceMessage.typeCodeFind__MaCMCC)
                     {
+                        IsSearchCCCDByInfo = true;
                         SearchPatientByCodeOrQrCode(txtPatientCode.Text.Trim());
 
                     }
@@ -1513,6 +1516,7 @@ namespace HIS.UC.UCPatientRaw
                 {
                     IsLoadFromSearchTxtCode = true;
                     string strValue = (sender as DevExpress.XtraEditors.TextEdit).Text;
+                    IsSearchCCCDByInfo = true;
                     SearchPatientByCodeOrQrCode(strValue);
                     IsLoadFromSearchTxtCode = false;
                 }

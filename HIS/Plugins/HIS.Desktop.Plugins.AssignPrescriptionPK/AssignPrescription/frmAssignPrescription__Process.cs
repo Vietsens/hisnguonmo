@@ -3033,6 +3033,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                 var dataSourceTmp = mediMatyTypeADOs;
                 mediMatyTypeADOs = new List<MediMatyTypeADO>();
                 this.ProcessDataMediStock(dataSourceTmp);
+
                 if (!CheckMaterialReusableOrIdentityManager() || !CheckValidMaterial(true) || !CheckMedicineGroupTuberCulosis(true))
                     return;
                 this.ProcessInstructionTimeMediForEdit();
@@ -3534,7 +3535,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
 
                     //Check trong kho
                     this.ProcessDataMediStock(mediMatyTypeADOAdds);
-                }
+                }   
             }
             catch (Exception ex)
             {
@@ -3611,7 +3612,6 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
             }
         }
 
-        //Vật tư trong kho
 
         private void ProcessGetExpMestMaterial(List<V_HIS_EXP_MEST_MATERIAL> lstExpMestMaterial, bool isEdit)
         {
@@ -4052,6 +4052,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                 var dataSourceTmp = mediMatyTypeADOs;
                 mediMatyTypeADOs = new List<MediMatyTypeADO>();
                 this.ProcessDataMediStock(dataSourceTmp);
+
                 if (!CheckMaterialReusableOrIdentityManager() || !CheckValidMaterial(true) || !CheckMedicineGroupTuberCulosis(true))
                     return;
                 this.ProcessInstructionTimeMediForEdit();
