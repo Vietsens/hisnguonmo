@@ -46,7 +46,7 @@ using System.Windows.Forms;
 namespace HIS.Desktop.Plugins.CallPatientVer5
 {
     public partial class frmWaitingScreen9 : HIS.Desktop.Utility.FormBase
-    {
+    {       
         internal MOS.EFMODEL.DataModels.V_HIS_SERVICE_REQ_1 hisServiceReq;
         int countTimer = 0;
         List<MOS.EFMODEL.DataModels.V_HIS_SERVICE_REQ_1> datas = null;
