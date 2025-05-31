@@ -1616,7 +1616,9 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.ADO
                     if (maty != null)
                     {
                         Inventec.Common.Mapper.DataObjectMapper.Map<MediMatyTypeADO>(this, maty);
-                       
+
+                        this.MEDICINE_TYPE_CODE = maty.MATERIAL_TYPE_CODE;
+                        this.MEDICINE_TYPE_NAME = maty.MATERIAL_TYPE_NAME;
                         if (
                             (HisConfigCFG.SplitOffset == GlobalVariables.CommonStringTrue)
                             && (GlobalStore.IsTreatmentIn && !GlobalStore.IsCabinet)
