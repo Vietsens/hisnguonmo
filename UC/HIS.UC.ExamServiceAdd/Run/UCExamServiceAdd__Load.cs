@@ -56,17 +56,17 @@ namespace HIS.UC.ExamServiceAdd.Run
                 if (examServiceAddInitADO == null && branchId <= 0)
                     throw new Exception("branchId null hoặc examServiceAddInitADO null");
                 DateTime now = DateTime.Now;
-                if (_cachedRoomCounters == null || (now - _lastApiCallTime).TotalSeconds > 30)
+                long? departmentId = null;
+                if (chk_IsDepartment.Checked)
                 {
-                    long? departmentId = null;
-                    if (chk_IsDepartment.Checked)
+                    var currentRoom = BackendDataWorker.Get<V_HIS_ROOM>().FirstOrDefault(o => o.ID == examServiceAddInitADO.roomId);
+                    if (currentRoom != null)
                     {
-                        var currentRoom = BackendDataWorker.Get<V_HIS_ROOM>().FirstOrDefault(o => o.ID == examServiceAddInitADO.roomId);
-                        if (currentRoom != null)
-                        {
-                            departmentId = currentRoom.DEPARTMENT_ID;
-                        }
+                        departmentId = currentRoom.DEPARTMENT_ID;
                     }
+                }
+                if (_cachedRoomCounters == null || (now - _lastApiCallTime).TotalSeconds > 30)
+                {                                     
                     CommonParam param = new CommonParam();
                     var filter = new HisRoomCounterLViewFilter
                     {
@@ -81,7 +81,21 @@ namespace HIS.UC.ExamServiceAdd.Run
                     _cachedRoomCounters = result ?? new List<L_HIS_ROOM_COUNTER>();
                     _lastApiCallTime = DateTime.Now;
                 }
-                LoadCboExecuteRoom(_cachedRoomCounters);
+                var filteredRoomCounters = _cachedRoomCounters;
+                if (chkIsBranch.Checked)
+                {
+                    filteredRoomCounters = filteredRoomCounters.Where(o => o.BRANCH_ID == branchId).ToList();
+                }
+
+                if (chk_IsDepartment.Checked)
+                {
+                    var currentRoom = BackendDataWorker.Get<V_HIS_ROOM>().FirstOrDefault(o => o.ID == examServiceAddInitADO.roomId);
+                    if (currentRoom != null)
+                    {
+                        filteredRoomCounters = filteredRoomCounters.Where(o => o.DEPARTMENT_ID == currentRoom.DEPARTMENT_ID).ToList();
+                    }
+                }
+                LoadCboExecuteRoom(filteredRoomCounters);
             }
             catch (Exception ex)
             {
