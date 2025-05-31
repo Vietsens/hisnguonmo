@@ -111,7 +111,7 @@ namespace HIS.Desktop.Plugins.DepositService.DepositService
             : base(_module)
         {
             try
-            {
+            {   
                 Inventec.Common.Logging.LogSystem.Debug("frmDepositService.InitializeComponent. 1");
                 InitializeComponent();
                 this.treatmentId = hisTreatmentId;
@@ -2309,86 +2309,119 @@ namespace HIS.Desktop.Plugins.DepositService.DepositService
             try
             {
                 CommonParam param = new CommonParam();
-                List<HIS_HOLIDAY_POLICIES> hIS_HOLIDAY_POLICIES = new List<HIS_HOLIDAY_POLICIES>();
                 this.hisPolicies1 = BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_HOLIDAY_POLICIES>();
 
                 if (hisPolicies1 == null || hisPolicies1.Count == 0)
                     return true;
 
-                // Lấy danh sách patient_type_id của bệnh nhân hiện tại
-                var selectedPatientTypeIds = sSByTreatment?
-                    .Where(x => x.PATIENT_TYPE_ID != null)
-                    .Select(x => (long)x.PATIENT_TYPE_ID)
-                    .Distinct()
-                    .ToList();
+                DateTime? transactionDate = dtTransactionTime.EditValue as DateTime?;
+                if (!transactionDate.HasValue)
+                    transactionDate = DateTime.Now;
 
-               
-                Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData("hisPolicies1.Count = ", hisPolicies1?.Count ?? 0));
-                foreach (var policy in hisPolicies1)
-                {
-                    
-                    if ((policy.DAY_OF_WEEK == 1 || policy.DAY_OF_WEEK == 2) && selectedPatientTypeIds != null && selectedPatientTypeIds.Contains(42))
-                    {
-                        Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData("selectedPatientTypeId2:", selectedPatientTypeIds));
-                        return true;
-                    }
-                    else if (policy.HOLIDAY == Convert.ToInt64(dtTransactionTime.EditValue) && selectedPatientTypeIds != null && selectedPatientTypeIds.Contains(43))
-                    {
-                        return true;
-                    }
-                }
-
-                // Lấy các patient_type_id được phép theo chính sách ngày nghỉ
-                var allowedPatientTypeIds = hisPolicies1
-                    .Where(p => p.PATIENT_TYPE_ID != 42)
-                    .Select(p => (long)p.PATIENT_TYPE_ID)
-                    .Distinct()
-                    .ToList();
-                Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData("allowedPatientTypeIdszzz:", allowedPatientTypeIds));
+                // Lấy các dịch vụ được chọn
                 var checkedServices = ssTreeProcessor.GetListCheck(ucSereServTree);
 
-                var notAllowed = checkedServices
-                    .Where(s => !allowedPatientTypeIds.Contains(s.PATIENT_TYPE_ID))
-                    .GroupBy(s => s.PATIENT_TYPE_ID)
-                    .ToDictionary(
-                        g => g.Key,
-                        g => g.Select(s => s.TDL_SERVICE_CODE).ToList()
-                    );
-                Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData("notAllowed:", notAllowed));
-                if (!notAllowed.Any())
-                    return true;
+                // Gộp kiểm tra theo DAY_OF_WEEK, DAY_OF_YEAR, HOLIDAY
+                var todayPolicies = new List<MOS.EFMODEL.DataModels.HIS_HOLIDAY_POLICIES>();
 
-                var msg = new StringBuilder();
-                foreach (var kv in notAllowed)
+                // 1. Theo DAY_OF_WEEK
+                var policiesByDayOfWeek = hisPolicies1.Where(p => p.DAY_OF_WEEK != null).ToList();
+                if (policiesByDayOfWeek.Count > 0)
                 {
-                    msg.AppendLine($"Dịch vụ {string.Join(", ", kv.Value)} có đối tượng thanh toán {kv.Key} không được thiết lập thanh toán ngoài giờ.");
+                    int currentDayOfWeek = (int)transactionDate.Value.DayOfWeek;
+                    int dbDayOfWeek = currentDayOfWeek == 0 ? 1 : currentDayOfWeek + 1;
+                    todayPolicies.AddRange(policiesByDayOfWeek.Where(p => p.DAY_OF_WEEK == dbDayOfWeek));
                 }
-                msg.AppendLine("Bạn có muốn tiếp tục không?");
 
-                var result = MessageBox.Show(msg.ToString(), "Cảnh báo", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
-                if (result == DialogResult.Yes)
+                // 2. Theo DAY_OF_YEAR (ngày/tháng)
+                var policiesByDayOfYear = hisPolicies1.Where(p => p.DAY_OF_WEEK == null && p.DAY_OF_YEAR != null).ToList();
+                if (policiesByDayOfYear.Count > 0)
                 {
-                    return true;
+                    int currentDay = transactionDate.Value.Day;
+                    int currentMonth = transactionDate.Value.Month;
+                    todayPolicies.AddRange(policiesByDayOfYear
+                        .Where(p =>
+                            p.DAY_OF_YEAR.HasValue &&
+                            ((p.DAY_OF_YEAR.Value / 100) == currentMonth) &&
+                            ((p.DAY_OF_YEAR.Value % 100) == currentDay)
+                        ));
                 }
-                else
+
+                // 3. Theo HOLIDAY
+                var policiesByHoliday = hisPolicies1.Where(p => p.DAY_OF_WEEK == null && p.DAY_OF_YEAR == null && p.HOLIDAY != null).ToList();
+                if (policiesByHoliday.Count > 0)
                 {
-                    List<object> listArgs = new List<object>();
-                    listArgs.Add(treatmentId);
-                    HIS.Desktop.ModuleExt.PluginInstanceBehavior.ShowModule(
-                        "HIS.Desktop.Plugins.Bordereau",
-                        this.moduleData.RoomId,
-                        this.moduleData.RoomTypeId,
-                        listArgs
-                    );
-                    return false;
+                    int currentDateInt = int.Parse(transactionDate.Value.ToString("yyyyMMdd"));
+                    todayPolicies.AddRange(policiesByHoliday.Where(p => p.HOLIDAY == currentDateInt));
                 }
+
+                if (todayPolicies.Count > 0)
+                {
+                    var allowedPatientTypeIds = todayPolicies
+                        .Where(p => p.PATIENT_TYPE_ID != null)
+                        .Select(p => (long)p.PATIENT_TYPE_ID)
+                        .Distinct()
+                        .ToList();
+                        
+                    var notAllowed = checkedServices
+                        .Where(s => !allowedPatientTypeIds.Contains(s.PATIENT_TYPE_ID))
+                        .GroupBy(s => s.PATIENT_TYPE_ID)
+                        .ToDictionary(
+                            g => g.Key,
+                            g => g.Select(s => s.TDL_SERVICE_CODE).ToList()
+                        );
+
+                    Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData("notAllowed:", notAllowed));
+                    if (!notAllowed.Any())
+                        return true;
+
+                    var msg = new StringBuilder();
+                    foreach (var kv in notAllowed)
+                    {
+                        Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData("notAllowed2:", kv));
+                        // Lấy tên đối tượng thanh toán từ ListPatientType
+                        string patientTypeName = "";
+                        if (ListPatientType != null)
+                        {
+                            var pt = ListPatientType.FirstOrDefault(ptype => ptype.ID == kv.Key);
+                            if (pt != null)
+                                patientTypeName = pt.PATIENT_TYPE_NAME;
+                        }
+                        if (string.IsNullOrEmpty(patientTypeName))
+                            patientTypeName = kv.Key.ToString();
+                        msg.AppendLine($"Dịch vụ {string.Join(", ", kv.Value)} có đối tượng thanh toán {patientTypeName} không được thiết lập thanh toán ngoài giờ.");
+                    }
+                    msg.AppendLine("Bạn có muốn tiếp tục không?");
+
+                    var result = MessageBox.Show(msg.ToString(), "Cảnh báo", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+                    if (result == DialogResult.Yes)
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        List<object> listArgs = new List<object>();
+                        listArgs.Add(treatmentId);
+                        HIS.Desktop.ModuleExt.PluginInstanceBehavior.ShowModule(
+                            "HIS.Desktop.Plugins.Bordereau",
+                            this.moduleData.RoomId,
+                            this.moduleData.RoomTypeId,
+                            listArgs
+                        );
+                        LoadSereServByTreatment();
+                        return false;
+                    }
+                }
+
+                // Nếu không có policy phù hợp, cho phép lưu
+                return true;
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
                 return false;
             }
-       }
+        }
         
         List<HIS_CONFIG> listConfig = new List<HIS_CONFIG>();
         HIS_CONFIG selectedConfig = new HIS_CONFIG();
@@ -2587,13 +2620,14 @@ namespace HIS.Desktop.Plugins.DepositService.DepositService
                 Inventec.Common.Logging.LogSystem.Fatal(ex);
             }
         }
-
+            
         private void bbtnSave_ItemClick(object sender, ItemClickEventArgs e)
         {
             if (btnSave.Enabled)
             {
                 if (!CheckHolidayPoliciesBeforeSave())
-                    return; 
+                    return;
+
 
                 btnSave_Click(null, null);
             }
@@ -2627,6 +2661,8 @@ namespace HIS.Desktop.Plugins.DepositService.DepositService
         {
             if (btnSaveAndPrint.Enabled)
             {
+                if (!CheckHolidayPoliciesBeforeSave())
+                    return;
                 btnSaveAndPrint_Click(null, null);
             }
         }
@@ -3566,7 +3602,10 @@ namespace HIS.Desktop.Plugins.DepositService.DepositService
             try
             {
                 if (!btnSavePrintAndTrans.Enabled) return;
+                if (!CheckHolidayPoliciesBeforeSave())
+                    return;
                 SaveProcess(true, true, false);
+                
             }
             catch (Exception ex)
             {
@@ -3579,7 +3618,10 @@ namespace HIS.Desktop.Plugins.DepositService.DepositService
             try
             {
                 if (btnSavePrintAndTrans.Enabled)
-                    btnSavePrintAndTrans_Click(null, null);
+                    if (!CheckHolidayPoliciesBeforeSave())
+                        return;
+                btnSavePrintAndTrans_Click(null, null);
+               
             }
             catch (Exception ex)
             {
@@ -3602,6 +3644,8 @@ namespace HIS.Desktop.Plugins.DepositService.DepositService
         private void btnAddSign_Click(object sender, EventArgs e)
         {
             if (!btnAddSign.Enabled) return;
+            if (!CheckHolidayPoliciesBeforeSave())
+                return;
             SaveProcess(false, true, true);
         }
     }
