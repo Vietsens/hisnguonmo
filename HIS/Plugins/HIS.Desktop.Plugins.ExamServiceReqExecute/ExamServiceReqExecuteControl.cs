@@ -969,10 +969,10 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                 cboContraindication.Properties.View.OptionsSelection.ShowCheckBoxSelectorInColumnHeader = DefaultBoolean.True;
 
                 GridCheckMarksSelection gridCheckMark = cboContraindication.Properties.Tag as GridCheckMarksSelection;
-                if (gridCheckMark != null)
-                {
-                    gridCheckMark.SelectAll(cboContraindication.Properties.DataSource);
-                }
+                //if (gridCheckMark != null)
+                //{
+                //    gridCheckMark.SelectAll(cboContraindication.Properties.DataSource);
+                //}
             }
             catch (Exception ex)
             {
