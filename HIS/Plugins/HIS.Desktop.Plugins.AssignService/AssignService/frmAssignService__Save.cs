@@ -1608,6 +1608,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                         sdo.RoomId = item.TDL_EXECUTE_ROOM_ID;
                         sdo.ServiceId = item.SERVICE_ID;
                         sdo.ParentId = null;
+                        sdo.MultipleExecute = item.NumberOfTimes;
                         sdo.InstructionNote = item.InstructionNote;
                         sdo.IsExpend = (item.IsExpend == true ? 1 : (short?)null);
                         sdo.IsOutParentFee = (item.IsOutKtcFee == true ? 1 : (short?)null);

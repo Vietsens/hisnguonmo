@@ -598,6 +598,8 @@ namespace HIS.Desktop.Plugins.HisService
         {
             try
             {
+                //dangth
+                chkExcuteMore.Checked = false;
                 currentData = null;
                 this.ActionType = GlobalVariables.ActionAdd;
                 txtNotice.EditValue = null;
@@ -2225,6 +2227,8 @@ namespace HIS.Desktop.Plugins.HisService
                     chkIS_OUT_OF_MANAGEMENT.Checked = data.IS_OUT_OF_MANAGEMENT == 1 ? true : false;
                     chkIS_NOT_SHOW_TRACKING.Checked = data.IS_NOT_SHOW_TRACKING == 1 ? true : false;
                     chkNOT_REQUIRED_COMPLETE.Checked = data.IS_NOT_REQUIRED_COMPLETE == 1 ? true : false;
+                    //dangth
+                    chkExcuteMore.Checked = data.IS_MULTIPLE_EXECUTE == 1 ? true : false;
                     chkIsDisAllowanceNoExecute.Checked = data.IS_DISALLOWANCE_NO_EXECUTE == 1 ? true : false;
                     chkAllowSendPacs.Checked = data.ALLOW_SEND_PACS == 1 ? true : false;
                     cboExeServiceModule.EditValue = data.EXE_SERVICE_MODULE_ID;
@@ -2960,6 +2964,14 @@ namespace HIS.Desktop.Plugins.HisService
                 {
                     currentDTO.IS_NOT_REQUIRED_COMPLETE = null;
                 }
+                if(chkExcuteMore.Checked == true)
+                {
+                    currentDTO.IS_MULTIPLE_EXECUTE = 1;
+                }
+                else
+                {
+                    currentDTO.IS_MULTIPLE_EXECUTE = null;
+                }
 
                 if (cboPart.EditValue != null)
                 {
@@ -3279,6 +3291,14 @@ namespace HIS.Desktop.Plugins.HisService
                 else
                 {
                     currentDTO.IS_NOT_REQUIRED_COMPLETE = null;
+                }
+                if (chkExcuteMore.Checked)
+                {
+                    currentDTO.IS_MULTIPLE_EXECUTE = 1;
+                }
+                else
+                {
+                    currentDTO.IS_MULTIPLE_EXECUTE = null;
                 }
                 if (chkAllowSendPacs.Checked)
                 {

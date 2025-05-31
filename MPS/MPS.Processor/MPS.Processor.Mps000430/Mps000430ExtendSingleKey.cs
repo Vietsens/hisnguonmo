@@ -40,5 +40,9 @@ namespace MPS.Processor.Mps000430
 
         internal const string PATIENT_TYPE_NAME = "PATIENT_TYPE_NAME";
 
+        internal const string PAY_FORM_CODE = "PAY_FORM_CODE";
+        internal const string PAY_FORM_NAME = "PAY_FORM_NAME";
+
+
     }
 }

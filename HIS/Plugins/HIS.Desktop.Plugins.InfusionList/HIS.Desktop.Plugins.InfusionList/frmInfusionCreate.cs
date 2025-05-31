@@ -829,15 +829,16 @@ namespace HIS.Desktop.Plugins.InfusionCreate
             }
 
         }
-
         private void Loaddatatogrid()
         {
             try
             {
                 HisInfusionViewFilter Infusionfilter = new HisInfusionViewFilter();
                 Infusionfilter.INFUSION_SUM_ID = data.InfusionSumId;
-                Infusionfilter.ORDER_FIELD = "MODIFY_TIME";
+                Infusionfilter.ORDER_FIELD = "START_TIME";
                 Infusionfilter.ORDER_DIRECTION = "DESC";
+                Infusionfilter.ORDER_FIELD1 = "MODIFY_TIME";
+                Infusionfilter.ORDER_DIRECTION1 = "DESC";
                 ListInfusion = new Inventec.Common.Adapter.BackendAdapter(param).Get<List<V_HIS_INFUSION>>(HisRequestUriStore.HIS_INFUSION_GETVIEW, ApiConsumers.MosConsumer, Infusionfilter, param);
                 if (ListInfusion != null)
                 {
@@ -849,22 +850,13 @@ namespace HIS.Desktop.Plugins.InfusionCreate
                     filterMedicine.IDs = ListInfusion.Select(mt => mt.MEDICINE_ID ?? 0).ToList();
                     glstMedicine = new Inventec.Common.Adapter.BackendAdapter(param).Get<List<V_HIS_MEDICINE>>("api/HisMedicine/GetView", ApiConsumers.MosConsumer, filterMedicine, null);
                     gridControl1.EndUpdate();
-
-
                 }
-
-
-
-
             }
             catch (Exception ex)
             {
-
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
-
         }
-
         private void gridView1_CustomUnboundColumnData(object sender, DevExpress.XtraGrid.Views.Base.CustomColumnDataEventArgs e)
         {
             try

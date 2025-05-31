@@ -15,6 +15,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+using DevExpress.XtraCharts.Native;
 using HIS.Desktop.LocalStorage.BackendData;
 using HIS.Desktop.LocalStorage.HisConfig;
 using HIS.Desktop.LocalStorage.LocalData;
@@ -28,6 +29,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.Config
 {
     class HisConfigCFG
     {
+        private const string CONFIG_KEY__SuggestPrescriptionsInfo = "HIS.Desktop.AI.SuggestPrescriptionsInfo";
         private const string IS_ALLOW_SIGNATURE_PRINT_MODULELINKS = "HIS.Desktop.Plugins.IsAllowSignaturePrint.ModuleLinks";
         private const string CONFIG_KEY__ASSIGNPRESCRIPTION_EGFROPTION = "HIS.Desktop.Plugins.AssignPrescription.EgfrOption";   
         private const string CONFIG_KEY__ICD_SERVICE__CONTRAINDICATED__WARNING_OPTION = "HIS.ICD_SERVICE.CONTRAINDICATED.WARNING_OPTION";
@@ -169,6 +171,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.Config
         internal static string ModuleLinkApply;
         internal static string MODULELINKS;
         internal static string ASSIGNPRESCRIPTION_EGFROPTION;
+        internal static string SuggestPrescriptionsInfo;
 
         /// <summary>
         /// :Có tự động focus vào ô lời dặn không. 1-có, 0-không
@@ -446,6 +449,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.Config
         {
             try
             {
+                SuggestPrescriptionsInfo = GetValue(CONFIG_KEY__SuggestPrescriptionsInfo);
                 ASSIGNPRESCRIPTION_EGFROPTION = GetValue(CONFIG_KEY__ASSIGNPRESCRIPTION_EGFROPTION);
                 MODULELINKS = GetValue(IS_ALLOW_SIGNATURE_PRINT_MODULELINKS);
                 AllowAssignOffListMedicineMaterialHeinCardNumberPrefix = GetValue(KEY_ALLOW_ASSIGN_OFF_LIST_MEDICINE_MATERIAL__HEIN_CARD_NUMBER_PREFIX);

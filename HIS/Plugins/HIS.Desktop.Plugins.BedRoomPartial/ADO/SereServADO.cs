@@ -35,7 +35,6 @@ namespace HIS.Desktop.Plugins.BedRoomPartial.ADO
         public string AMOUNT_SER { get; set; }
         public long SERVICE_REQ_TYPE_ID { get; set; }
         public long child { get; set; }
-        public long REQUEST_DEPARTMENT_ID { get; set; }
         public long EXECUTE_DEPARTMENT_ID { get; set; }
         //ServiceReq
         public long? SAMPLE_TIME { get; set; }

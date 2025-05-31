@@ -57,6 +57,8 @@ namespace HIS.Desktop.Plugins.LisSampleUpdate
 
         private LIS_SAMPLE sample;
         List<LIS_SAMPLE_TYPE> sampleTypes = new List<LIS_SAMPLE_TYPE>();
+        V_LIS_SAMPLE _dataLisSample ;
+
         bool isSearchOrderByXHT = false;
         internal bool isNotPatientDayDob = false;
         private List<HIS_MEDI_ORG> listMediOrg = new List<HIS_MEDI_ORG>();
@@ -70,10 +72,11 @@ namespace HIS.Desktop.Plugins.LisSampleUpdate
 
         internal bool isDobTextEditKeyEnter;
 
-        public frmUpdateLisSample(Inventec.Desktop.Common.Modules.Module module)
+        public frmUpdateLisSample(Inventec.Desktop.Common.Modules.Module module, V_LIS_SAMPLE dataLisSample)
             : base(module)
         {
             InitializeComponent();
+            this._dataLisSample = dataLisSample;          
         }
 
         void InitControlState()
@@ -288,6 +291,7 @@ namespace HIS.Desktop.Plugins.LisSampleUpdate
                 this.InitComboCommon(this.cboCommune, BackendDataWorker.Get<SDA.EFMODEL.DataModels.V_SDA_COMMUNE>(), "COMMUNE_CODE", "RENDERER_COMMUNE_NAME", "SEARCH_CODE");
                 this.InitComboCommon(this.cboGender, BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_GENDER>(), "GENDER_CODE", "GENDER_NAME", "GENDER_CODE");
                 this.InitControlState();
+                this.hasBarcode();
                 WaitingManager.Hide();
                 this.KeyPreview = true;
             }
@@ -425,6 +429,7 @@ namespace HIS.Desktop.Plugins.LisSampleUpdate
                 sampleRaw.COMMUNE_NAME = cboCommune.Text;
                 sampleRaw.ADDRESS = txtAddress.Text;
                 sampleRaw.PHONE_NUMBER = txtPhone.Text;
+               
                 if (cboMediOrgCode.EditValue != null)
                 {
                     HIS_MEDI_ORG org = listMediOrg != null ? listMediOrg.FirstOrDefault(o => o.MEDI_ORG_CODE == cboMediOrgCode.EditValue.ToString()) : null;
@@ -455,6 +460,14 @@ namespace HIS.Desktop.Plugins.LisSampleUpdate
                 }
                 else
                     sampleRaw.SPECIMEN_ORDER = null;
+
+                sampleRaw.SAMPLE_NAME = txtSampleName.Text;
+                sampleRaw.SAMPLE_STATE = txtSampleState.Text;
+                sampleRaw.SAMPLE_POSITION = txtSamplePosition.Text;
+                sampleRaw.CARTRIDGE_LOT = txtCartridgeLot.Text;
+                sampleRaw.CARTRIDGE_CAL = txtCartridgeCal.Text;
+                sampleRaw.RANGE_TIMES = txtRangeTimes.Text;
+
                 sampleRaw.NOTE = txtNote.Text.Trim();
 
                 LisSampleInfoSDO sdo = new LisSampleInfoSDO();
@@ -1723,6 +1736,12 @@ namespace HIS.Desktop.Plugins.LisSampleUpdate
                 txtAddress.Text = this.sample != null ? this.sample.ADDRESS : "";
                 txtPhone.Text = this.sample != null ? this.sample.PHONE_NUMBER : "";
                 txtQrSdt.Text = this.sample != null ? this.sample.PHONE_NUMBER : "";
+                txtSampleName.Text = this.sample != null ? this.sample.SAMPLE_NAME : "";
+                txtSampleState.Text = this.sample != null ? this.sample.SAMPLE_STATE : "";
+                txtSamplePosition.Text = this.sample != null ? this.sample.SAMPLE_POSITION : "";
+                txtCartridgeLot.Text = this.sample != null ? this.sample.CARTRIDGE_LOT : "";
+                txtCartridgeCal.Text = this.sample != null ? this.sample.CARTRIDGE_CAL : "";
+                txtRangeTimes.Text = this.sample != null ? this.sample.RANGE_TIMES : null;
                 if (!String.IsNullOrWhiteSpace(this.sample.SAMPLE_SENDER_CODE) || !String.IsNullOrWhiteSpace(this.sample.SAMPLE_SENDER))
                 {
                     if (!String.IsNullOrWhiteSpace(this.sample.SAMPLE_SENDER_CODE))
@@ -1764,7 +1783,8 @@ namespace HIS.Desktop.Plugins.LisSampleUpdate
                 dtSampleTime.EditValue = this.sample != null ? Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(this.sample.SAMPLE_TIME ?? 0) : null;
 
                 dtTGNhanMau.EditValue = this.sample != null ? Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(this.sample.RESULT_TIME ?? 0) : null;
-                txtNote.Text = this.sample != null ? this.sample.NOTE : "";
+                txtNote.Text = this.sample != null ? this.sample.NOTE : "";             
+
                 if ((this.sample != null && this.sample.SPECIMEN_ORDER != null))
                 {
                     txtSPECIMEN_ORDER.Text = (this.sample != null && this.sample.SPECIMEN_ORDER != null) ? this.sample.SPECIMEN_ORDER.Value.ToString() : "";
@@ -3319,8 +3339,19 @@ namespace HIS.Desktop.Plugins.LisSampleUpdate
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
-
-        
+        private void hasBarcode()
+        {
+            if (_dataLisSample != null)
+            {
+                if (_dataLisSample.BARCODE != null )
+                {
+                    txtBarcode.Text = _dataLisSample.BARCODE;
+                    txtBarcode.Enabled = false;
+                    this.btnSave.Enabled = true;
+                    txtBarcode_PreviewKeyDown(null, new PreviewKeyDownEventArgs(Keys.Enter));
+                }
+            }
+        }
     }
 }
 

@@ -1082,7 +1082,7 @@ namespace HIS.Desktop.Plugins.ServiceReqList
                         var medicines = await new BackendAdapter(paramCommon).GetAsync<List<HIS_EXP_MEST_MEDICINE>>(RequestUriStore.HIS_EXP_MEST_MEDICINE_GET, ApiConsumers.MosConsumer, mediFilter, HIS.Desktop.Controls.Session.SessionManager.ActionLostToken, paramCommon);
                         if (medicines != null && medicines.Count > 0)
                         {
-                            var expMestMetyGroups = medicines.GroupBy(o => new { o.TDL_MEDICINE_TYPE_ID, o.TUTORIAL, o.HTU_TEXT}).ToList();
+                            var expMestMetyGroups = medicines.GroupBy(o => new { o.TDL_MEDICINE_TYPE_ID, o.TUTORIAL, o.HTU_TEXT }).ToList();
                             foreach (var expMestMetyGroup in expMestMetyGroups)
                             {
                                 ADO.ListMedicineADO metyExpmestTypeADO = new ADO.ListMedicineADO();
@@ -1188,7 +1188,7 @@ namespace HIS.Desktop.Plugins.ServiceReqList
 
                         if (!metys.Exists(p => p.MEDICINE_TYPE_ID == null))
                         {
-                            var expMestMetyGroups = metys.GroupBy(o => new { o.MEDICINE_TYPE_ID, o.TUTORIAL}).ToList();
+                            var expMestMetyGroups = metys.GroupBy(o => new { o.MEDICINE_TYPE_ID, o.TUTORIAL }).ToList();
                             foreach (var expMestMetyGroup in expMestMetyGroups)
                             {
                                 ADO.ListMedicineADO metyExpmestTypeADO = new ADO.ListMedicineADO();
@@ -1205,7 +1205,7 @@ namespace HIS.Desktop.Plugins.ServiceReqList
                                 metyExpmestTypeADO.serviceReqMety = expMestMetyGroup.First();
                                 metyExpmestTypeADO.USE_TIME = serviceClick.USE_TIME;
 
-                                
+
                                 var mety = BackendDataWorker.Get<V_HIS_MEDICINE_TYPE>().FirstOrDefault(o => o.ID == expMestMetyGroup.First().MEDICINE_TYPE_ID);
                                 if (mety != null)
                                 {
@@ -1221,7 +1221,7 @@ namespace HIS.Desktop.Plugins.ServiceReqList
                                 }
                                 listMedicine.Add(metyExpmestTypeADO);
                             }
-                           
+
                         }
                         else
                         {
@@ -1266,7 +1266,7 @@ namespace HIS.Desktop.Plugins.ServiceReqList
                             var Null = metys.Where(o => o.MEDICINE_TYPE_ID == null).ToList();
                             if (Null != null && Null.Count > 0)
                             {
-                                var expMestMetyGroups = Null.GroupBy(o => new { o.MEDICINE_TYPE_NAME, o.MEDICINE_USE_FORM_ID, o.TUTORIAL}).ToList();
+                                var expMestMetyGroups = Null.GroupBy(o => new { o.MEDICINE_TYPE_NAME, o.MEDICINE_USE_FORM_ID, o.TUTORIAL }).ToList();
                                 foreach (var expMestMetyGroup in expMestMetyGroups)
                                 {
                                     ADO.ListMedicineADO metyExpmestTypeADO = new ADO.ListMedicineADO();
@@ -1297,7 +1297,7 @@ namespace HIS.Desktop.Plugins.ServiceReqList
                     {
                         if (!matys.Exists(p => p.MATERIAL_TYPE_ID == null))
                         {
-                            var expMestMatyGroups = matys.GroupBy(o => new { o.MATERIAL_TYPE_ID, o.TUTORIAL}).ToList();
+                            var expMestMatyGroups = matys.GroupBy(o => new { o.MATERIAL_TYPE_ID, o.TUTORIAL }).ToList();
                             foreach (var expMestMatyGroup in expMestMatyGroups)
                             {
                                 ADO.ListMedicineADO matyExpmestTypeADO = new ADO.ListMedicineADO();
@@ -1364,7 +1364,7 @@ namespace HIS.Desktop.Plugins.ServiceReqList
                             var Null = matys.Where(o => o.MATERIAL_TYPE_ID == null).ToList();
                             if (Null != null && Null.Count > 0)
                             {
-                                var expMestMatyGroups = Null.GroupBy(o => new { o.MATERIAL_TYPE_ID, o.TUTORIAL, o.HTU_TEXT}).ToList();
+                                var expMestMatyGroups = Null.GroupBy(o => new { o.MATERIAL_TYPE_ID, o.TUTORIAL, o.HTU_TEXT }).ToList();
                                 foreach (var expMestMatyGroup in expMestMatyGroups)
                                 {
                                     ADO.ListMedicineADO matyExpmestTypeADO = new ADO.ListMedicineADO();
@@ -1376,7 +1376,7 @@ namespace HIS.Desktop.Plugins.ServiceReqList
                                     matyExpmestTypeADO.type = 0;
                                     matyExpmestTypeADO.SERVICE_UNIT_NAME = expMestMatyGroup.First().UNIT_NAME;
                                     matyExpmestTypeADO.HuongDanSuDung = expMestMatyGroup.First().TUTORIAL;
-                                  
+
                                     matyExpmestTypeADO.USE_TIME = serviceClick.USE_TIME;
                                     listMedicine.Add(matyExpmestTypeADO);
                                 }
@@ -1688,7 +1688,7 @@ namespace HIS.Desktop.Plugins.ServiceReqList
                             {
                                 e.Value = Inventec.Common.DateTime.Convert.TimeNumberToTimeString(data.INTRUCTION_TIME);
                             }
-                            catch (Exception ex) 
+                            catch (Exception ex)
                             {
                                 Inventec.Common.Logging.LogSystem.Error(ex);
                             }
@@ -4243,50 +4243,27 @@ namespace HIS.Desktop.Plugins.ServiceReqList
         {
             try
             {
-                if (string.IsNullOrWhiteSpace(txtServiceReqCode.Text) && string.IsNullOrWhiteSpace(txtTreatmentCode.Text))
+                if (string.IsNullOrWhiteSpace(txtServiceReqCode.Text) && string.IsNullOrWhiteSpace(txtTreatmentCode.Text) && !string.IsNullOrEmpty(HisConfigCFG.MaxTimeFilterOption))
                 {
-                    if (dtIntructionTimeFrom.EditValue != null)
-                    {
-                        if (dtIntructionTimeTo.EditValue != null)
-                        {
-                            if ((dtIntructionTimeTo.DateTime.Date - dtIntructionTimeFrom.DateTime.Date).TotalDays > 90)
-                            {
-                                XtraMessageBox.Show("Khoảng thời gian tìm kiếm quá dài, vui lòng chọn tối đa 3 tháng!",
-                                    "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                                return;
-                            }
-                            WaitingManager.Show();
-                            FillDataToGrid();
-                            WaitingManager.Hide();
-                        }
-                        else
-                        {
-                            dtIntructionTimeTo.EditValue = DateTime.Now;
-                            if ((dtIntructionTimeTo.DateTime.Date - dtIntructionTimeFrom.DateTime.Date).TotalDays > 90)
-                            {
-                                XtraMessageBox.Show("Khoảng thời gian tìm kiếm quá dài, vui lòng chọn tối đa 3 tháng!",
-                                    "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                                return;
-                            }
-                            WaitingManager.Show();
-                            FillDataToGrid();
-                            WaitingManager.Hide();
-                        }
-                    }
-                    else
+                    if (dtIntructionTimeFrom.EditValue == null)
                     {
                         XtraMessageBox.Show("Thời gian từ không được bỏ trống",
                                     "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                         return;
                     }
+                    int value = int.Parse(HisConfigCFG.MaxTimeFilterOption);
+                    if ((dtIntructionTimeTo.EditValue != null && (dtIntructionTimeTo.DateTime.Date - dtIntructionTimeFrom.DateTime.Date).TotalDays > value) 
+                        || (dtIntructionTimeTo.EditValue == null && (DateTime.Now.Date - dtIntructionTimeFrom.DateTime.Date).TotalDays > value))
+                    {
+                        XtraMessageBox.Show("Khoảng thời gian tìm kiếm quá dài, vui lòng tìm kiếm trong " + value + " ngày",
+                            "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        return;
+                    }   
                 }
-                else
-                {
-                    WaitingManager.Show();
-                    FillDataToGrid();
-                    WaitingManager.Hide();
-                }
-                
+                WaitingManager.Show();
+                FillDataToGrid();
+                WaitingManager.Hide();
+
             }
             catch (Exception ex)
             {
@@ -6790,7 +6767,7 @@ namespace HIS.Desktop.Plugins.ServiceReqList
                         DevExpress.XtraEditors.XtraMessageBox.Show(string.Format("Dịch vụ {0} có đối tượng thanh toán được tích \"Không cho phép sửa xóa dịch vụ đã chỉ định\", vui lòng liên hệ với quản trị hệ thống", data.TDL_SERVICE_NAME), "Thông báo");
                         return;
                     }
-                    
+
                     if (MessageBox.Show(string.Format("Có chắc muốn xóa dịch vụ {0} không?", data.TDL_SERVICE_NAME), Resources.ResourceMessage.ThongBao, MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
                     {
 

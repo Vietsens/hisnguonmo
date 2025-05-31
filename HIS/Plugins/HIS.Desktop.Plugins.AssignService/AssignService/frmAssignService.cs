@@ -17,6 +17,8 @@
  */
 using DevExpress.Data;
 using DevExpress.Utils;
+using DevExpress.XtraBars;
+using DevExpress.XtraBars.Controls;
 using DevExpress.XtraEditors;
 using DevExpress.XtraEditors.Controls;
 using DevExpress.XtraEditors.DXErrorProvider;
@@ -35,17 +37,21 @@ using HIS.Desktop.LibraryMessage;
 using HIS.Desktop.LocalStorage.BackendData;
 using HIS.Desktop.LocalStorage.BackendData.ADO;
 using HIS.Desktop.LocalStorage.ConfigApplication;
+using HIS.Desktop.LocalStorage.ConfigSystem;
 using HIS.Desktop.LocalStorage.HisConfig;
 using HIS.Desktop.LocalStorage.LocalData;
 using HIS.Desktop.Plugins.AssignService.ADO;
 using HIS.Desktop.Plugins.AssignService.Config;
 using HIS.Desktop.Plugins.AssignService.Resources;
+using HIS.Desktop.Plugins.Library.CheckIcd;
 using HIS.Desktop.Print;
 using HIS.Desktop.Utilities;
 using HIS.Desktop.Utilities.Extensions;
 using HIS.Desktop.Utilities.Extentions;
 using HIS.Desktop.Utility;
 using HIS.UC.DateEditor;
+using HIS.UC.Icd;
+using HIS.UC.Icd.ADO;
 using HIS.UC.PatientSelect;
 using HIS.UC.SecondaryIcd;
 using Inventec.Common.Adapter;
@@ -55,28 +61,22 @@ using Inventec.Common.Logging;
 using Inventec.Core;
 using Inventec.Desktop.Common.LanguageManager;
 using Inventec.Desktop.Common.Message;
+using Inventec.Desktop.Common.Modules;
 using MOS.EFMODEL.DataModels;
 using MOS.Filter;
 using MOS.SDO;
+using SDA.EFMODEL.DataModels;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
 using System.Linq;
+using System.Reflection;
 using System.Resources;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using HIS.Desktop.Plugins.Library.CheckIcd;
-using SDA.EFMODEL.DataModels;
-using HIS.Desktop.LocalStorage.ConfigSystem;
-using System.Reflection;
-using Inventec.Desktop.Common.Modules;
-using DevExpress.XtraBars;
-using HIS.UC.Icd;
-using HIS.UC.Icd.ADO;
-using DevExpress.XtraBars.Controls;
 using static MPS.ProcessorBase.PrintConfig;
 
 namespace HIS.Desktop.Plugins.AssignService.AssignService
@@ -1014,7 +1014,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
 			try
 			{
 				LogSystem.Debug("frmAssignService_Load => Starting...");
-				LoadHisServiceFromRam();
+                LoadHisServiceFromRam();
 				this.IsFirstloadForm = true;
 				this.isInitTracking = true;
 				this.requestRoom = GetRequestRoom(this.currentModule.RoomId);
@@ -1506,6 +1506,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
 					item.BedId = null;
 					item.BedStartTime = null;
                     item.SereServEkipADO = null;
+                    item.NumberOfTimes = 1;
                 }
 
 				var allDatas = this.ServiceIsleafADOs != null && this.ServiceIsleafADOs.Count > 0 ? this.ServiceIsleafADOs.AsQueryable() : null;
@@ -2284,7 +2285,22 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
 						else
 							e.RepositoryItem = this.repositoryItemSpinAmount__Disable_TabService;
 					}
-				}
+                    else if (e.Column.FieldName == "NumberOfTimes")
+                    {
+                        short isMultipleExecute = Inventec.Common.TypeConvert.Parse.ToInt16(
+							(gridViewServiceProcess.GetRowCellValue(e.RowHandle, "IS_MULTIPLE_EXECUTE") ?? "").ToString()
+						);
+
+                        if (isMultipleExecute == 1)
+                        {
+                            e.RepositoryItem = repositoryItemSpinNumberOfTimes_TabService;
+                        }
+                        else
+                        {
+                            e.RepositoryItem = repositoryItemSpinNumberOfTimes__Disable_TabService;
+                        }
+                    }
+                }
 			}
 			catch (Exception ex)
 			{
@@ -5888,6 +5904,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
 					item.TEST_SAMPLE_TYPE_CODE = null;
 					item.TEST_SAMPLE_TYPE_NAME = null;
 					item.SereServEkipADO = null;
+					item.NumberOfTimes = 1;
 				}
 
 				this.isNotHandlerWhileChangeToggetSwith = true;
@@ -10048,9 +10065,114 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
 				Inventec.Common.Logging.LogSystem.Error(ex);
 			}
 		}
+
         #endregion
 
-        
+        private void btnAssignAI_Click(object sender, EventArgs e)
+        {
+			try
+			{
+                if (!CheckIcd())
+                {
+                    return;
+                }
+                int ageValue = DateTime.Now.Year - int.Parse(currentHisTreatment.TDL_PATIENT_DOB.ToString().Substring(0, 4));
+				var r = new RequestAIADO
+				{
+					icd_code = txtIcdCode.Text,
+					gender_name = currentHisTreatment.TDL_PATIENT_GENDER_NAME,
+					age = ageValue
+				};
+				using (frmSuggestServiceAi frmSSA = new frmSuggestServiceAi(r,
+					(selectedList) =>
+
+					{
+						if (selectedList != null && selectedList.Any())
+						{
+							foreach (var item in selectedList)
+							{
+								var service = this.ServiceIsleafADOs.FirstOrDefault(o => item.TDL_SERVICE_CODE == o.TDL_SERVICE_CODE);
+                                if (service != null)
+								{
+
+									//Phân biệt giá trị TEST_SAMPLE_TYPE_CODE mặc định bởi TEST_SAMPLE_TYPE_ID = 0;
+									if (((HisConfigCFG.IntegrationVersionValue == "1" && HisConfigCFG.IntegrationOptionValue != "1") || (HisConfigCFG.IntegrationVersionValue == "2" && HisConfigCFG.IntegrationTypeValue != "1")) && service.SERVICE_TYPE_ID > 0 && serviceTypeIdSplitReq != null && serviceTypeIdSplitReq.Count > 0 && serviceTypeIdSplitReq.Exists(o => o == service.SERVICE_TYPE_ID))
+									{
+										if (dataListTestSampleType != null && dataListTestSampleType.Count > 0 && service.TEST_SAMPLE_TYPE_ID == 0 && !string.IsNullOrEmpty(service.TEST_SAMPLE_TYPE_CODE_DEFAULT))
+										{
+											var sampleType = dataListTestSampleType.FirstOrDefault(o => o.TEST_SAMPLE_TYPE_CODE == service.TEST_SAMPLE_TYPE_CODE_DEFAULT);
+											if (sampleType != null)
+											{
+												service.TEST_SAMPLE_TYPE_ID = sampleType.ID;
+												service.TEST_SAMPLE_TYPE_CODE = service.TEST_SAMPLE_TYPE_CODE_DEFAULT;
+												service.TEST_SAMPLE_TYPE_NAME = sampleType.TEST_SAMPLE_TYPE_NAME;
+											}
+										}
+									}
+									service.AMOUNT = item.AMOUNT;
+                                    service.InstructionNote = item.InstructionNote;
+                                    service.IsExpend = item.IsExpend;
+                                    service.IsChecked = true;
+									this.SetAssignNumOrder(service);
+									service.IsKHBHYT = false;
+									this.ChoosePatientTypeDefaultlService(this.currentHisPatientTypeAlter.PATIENT_TYPE_ID, service.SERVICE_ID, service);
+
+									if (!VerifyCheckFeeWhileAssign())
+									{
+										this.ResetOneService(service);
+										service.IsChecked = false;
+										break;
+									}
+
+									this.FillDataOtherPaySourceDataRow(service);
+
+									List<V_HIS_EXECUTE_ROOM> executeRoomList = null;
+									FilterExecuteRoom(service, ref executeRoomList);
+
+									long executeRoomId = this.SetPriorityRequired(executeRoomList);
+
+									if (executeRoomId <= 0)
+										executeRoomId = this.SetDefaultExcuteRoom(executeRoomList);
+
+									//data.TDL_EXECUTE_ROOM_ID = executeRoomDefault;
+									if (service.TDL_EXECUTE_ROOM_ID <= 0)
+									{
+										service.TDL_EXECUTE_ROOM_ID = executeRoomId;
+									}
+
+									this.ValidServiceDetailProcessing(service);
+								}
+                            }
+                            var services = this.ServiceIsleafADOs.Where(o => o.IsChecked).OrderByDescending(o => o.SERVICE_NUM_ORDER).ThenBy(o => o.TDL_SERVICE_NAME).ToList();
+                            if ((this.toggleSwitchDataChecked.EditValue ?? "").ToString().ToLower() != "true")
+                                this.toggleSwitchDataChecked.EditValue = true;
+
+                            this.SetEnableButtonControl(this.actionType);
+                            this.SetDefaultSerServTotalPrice();
+                            this.VerifyWarningOverCeiling();
+
+                            this.gridControlServiceProcess.DataSource = null;
+                            this.gridControlServiceProcess.DataSource = services;
+                        }
+					}))
+				{
+					frmSSA.ShowDialog();
+				}
+			}
+			catch (Exception ex)
+			{
+				Inventec.Common.Logging.LogSystem.Error(ex);
+			}
+		}
+        private bool CheckIcd()
+        {
+            if (string.IsNullOrWhiteSpace(txtIcdCode.Text))
+            {
+                MessageBox.Show("Thiếu thông tin chẩn đoán chính. Vui lòng kiểm tra lại", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return false;
+            }
+            return true;
+        }
     }
     public class BankInfo
     {

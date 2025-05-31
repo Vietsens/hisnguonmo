@@ -3202,6 +3202,21 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
             }
         }
 
+        private void txtPatientCode_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
+        {
+            try
+            {
+                if (e.KeyCode == Keys.Enter)
+                {
+                    btnFind_Click(null, null);
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
         private void btnPreviewIntructionDate_Click(object sender, EventArgs e)
         {
             try

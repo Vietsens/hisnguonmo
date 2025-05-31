@@ -71,7 +71,7 @@ using System.Windows.Forms;
 namespace HIS.Desktop.Plugins.TrackingCreate
 {
     public partial class frmTrackingCreateNew : FormBase
-    {           
+    {
         #region Declare
         internal Inventec.Desktop.Common.Modules.Module currentModule;
         int action = -1;
@@ -88,7 +88,6 @@ namespace HIS.Desktop.Plugins.TrackingCreate
         List<long> serviceReqIdsIncludeByTrackingCreated;
         List<long> careIdsIncludeByTrackingCreated;
         List<HIS_TRACKING_TEMP> trackingTemps { get; set; }
-
         List<HIS_TRACKING> trackingOlds;
         List<HisTrackingADO> HisTrackingADO;
 
@@ -112,6 +111,12 @@ namespace HIS.Desktop.Plugins.TrackingCreate
         string IsCheckSubIcdExceedLimit = "";
         string IsReadOnlyCareInstruction = "";
         string ServiceReqIcdOption = "";
+        bool isReadOnlySheetOrder = false;
+        private int maxSheetOrderFromParent = 0;
+        public List<object> Args { get; set; }
+        long SheetOderMax = 0;
+        int initialSheetOrder = 0;
+        int lastSavedSheetOrder = 0;
         internal SecondaryIcdProcessor subIcdProcessor;
         internal UserControl ucSecondaryIcd;
         internal SecondaryIcdProcessor subIcdYhctProcessor;
@@ -576,7 +581,7 @@ namespace HIS.Desktop.Plugins.TrackingCreate
             try
             {
                 isNotLoadWhileChangeControlStateInFirst = true;
-                SetIconFrm();          
+                SetIconFrm();
                 this.SetCaptionByLanguageKey();
                 if (this.action == GlobalVariables.ActionEdit)
                     lciUpdateTimeDHST.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
@@ -726,7 +731,31 @@ namespace HIS.Desktop.Plugins.TrackingCreate
                 //spinEditSpo2.EditValue = null;
                 //txtNote.Text = "";
 
-                txtSheetOrder.Text = "";
+                //txtSheetOrder.Text = "";                
+                int currentInputSheetOrder = 0;
+                if (int.TryParse(txtSheetOrder.Text, out int inputVal))
+                {
+                    currentInputSheetOrder = inputVal;
+                }
+                if (lastSavedSheetOrder == 0)
+                {
+                    if (this.Args != null && this.Args.Count > 2)
+                    {
+                        if (this.Args[2] is int intVal)
+                            lastSavedSheetOrder = intVal;
+                        else if (this.Args[2] is long longVal)
+                            lastSavedSheetOrder = (int)longVal;
+                        else
+                            lastSavedSheetOrder = 0;
+                    }
+                }
+                int nextSheetOrder = Math.Max(lastSavedSheetOrder, currentInputSheetOrder);
+                nextSheetOrder++;
+                txtSheetOrder.Text = nextSheetOrder.ToString();
+
+                string configValue = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(ConfigKeyss.DBCODE__MOS_HIS_TRACKING_IS_READ_ONLY_SHEET_ORDER);
+                bool isReadOnlySheetOrder = (configValue == "1");
+                txtSheetOrder.ReadOnly = isReadOnlySheetOrder;
 
                 btnAssService.Enabled = false;
                 btnKeDonThuoc.Enabled = false;
@@ -3864,7 +3893,7 @@ namespace HIS.Desktop.Plugins.TrackingCreate
                 txtResultCLS.Text = null;
                 txtTheoDoiChamSoc.Text = null;
                 memReha.Text = null;
-                txtSheetOrder.Text = null;
+                //txtSheetOrder.Text = null;                
                 txtDiseaseStage.Text = null;
                 this.currentTracking = null;
                 if (action == GlobalVariables.ActionEdit)
@@ -4829,5 +4858,22 @@ namespace HIS.Desktop.Plugins.TrackingCreate
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
+        //private int GetNextSheetOrder()
+        //{
+        //    try
+        //    {
+        //        if (treatmentId <= 0)
+        //            return 1;
+
+        //        var maxSheetOrder = BackendDataWorker.Get<HIS_TRACKING>().Where(x => x.TREATMENT_ID == treatmentId && x.SHEET_ORDER.HasValue).Select(x => (int?)x.SHEET_ORDER.Value).Max();
+        //        var result = (maxSheetOrder ?? 0);
+        //        return result + 1; 
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Inventec.Common.Logging.LogSystem.Error(ex);
+        //        return 1;
+        //    }
+        //}
     }
 }

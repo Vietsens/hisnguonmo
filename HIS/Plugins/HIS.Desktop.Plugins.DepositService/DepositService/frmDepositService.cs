@@ -20,6 +20,7 @@ using DevExpress.XtraEditors;
 using DevExpress.XtraEditors.Controls;
 using DevExpress.XtraTreeList;
 using DevExpress.XtraTreeList.Nodes;
+using HIS.Desktop.ADO;
 using HIS.Desktop.ApiConsumer;
 using HIS.Desktop.Controls.Session;
 using HIS.Desktop.LibraryMessage;
@@ -30,12 +31,14 @@ using HIS.Desktop.LocalStorage.Location;
 using HIS.Desktop.Plugins.DepositService.Config;
 using HIS.Desktop.Plugins.DepositService.DepositService.Validtion;
 using HIS.Desktop.Print;
+using HIS.Desktop.Utility;
 using HIS.UC.SereServTree;
 using Inventec.Common.Adapter;
 using Inventec.Common.Controls.EditorLoader;
 using Inventec.Common.Logging;
 using Inventec.Common.Logging;
 using Inventec.Core;
+using Inventec.Desktop.Common.LanguageManager;
 using Inventec.Desktop.Common.Message;
 using Inventec.WCF.JsonConvert;
 using MOS.EFMODEL.DataModels;
@@ -47,13 +50,11 @@ using System.Configuration;
 using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using WCF;
 using WCF.Client;
-using HIS.Desktop.Utility;
-using Inventec.Desktop.Common.LanguageManager;
-using HIS.Desktop.ADO;
 
 namespace HIS.Desktop.Plugins.DepositService.DepositService
 {
@@ -65,7 +66,7 @@ namespace HIS.Desktop.Plugins.DepositService.DepositService
         MOS.EFMODEL.DataModels.V_HIS_TRANSACTION hisDeposit { get; set; }
         int positionHandle = -1;
         decimal totalAmountDeposit = 0;
-
+        MOS.EFMODEL.DataModels.HIS_HOLIDAY_POLICIES hisPolicies { get; set; }
         bool isNotLoadWhilechkAutoCloseStateInFirst = true;
         bool isNotLoadWhileChangeControlStateInFirst;
         HIS.Desktop.Library.CacheClient.ControlStateWorker controlStateWorker;
@@ -73,9 +74,11 @@ namespace HIS.Desktop.Plugins.DepositService.DepositService
         string moduleLink = "HIS.Desktop.Plugins.DepositService";
 
         List<MOS.EFMODEL.DataModels.HIS_PAY_FORM> ListPayForm;
+        List<MOS.EFMODEL.DataModels.HIS_HOLIDAY_POLICIES> hisPolicies1;
         List<MOS.EFMODEL.DataModels.V_HIS_CASHIER_ROOM> ListCashierRoom;
         List<MOS.EFMODEL.DataModels.V_HIS_ACCOUNT_BOOK> ListAccountBook;
         List<V_HIS_SERE_SERV_5> sereServByTreatment;
+        V_HIS_SERE_SERV_5 sSByTreatment2 = null;
         List<V_HIS_SERE_SERV_5> sSByTreatment;
         List<MOS.EFMODEL.DataModels.HIS_PATIENT_TYPE> ListPatientType;
         long? branchId;
@@ -87,7 +90,9 @@ namespace HIS.Desktop.Plugins.DepositService.DepositService
         UserControl ucSereServTree;
         bool isPrintNow = false;
         bool isSign = false;
+
         Inventec.Desktop.Common.Modules.Module moduleData;
+
         HIS.Desktop.Common.DelegateReturnSuccess returnData = null;
         bool? IsDepositAll = null;
 
@@ -150,6 +155,7 @@ namespace HIS.Desktop.Plugins.DepositService.DepositService
                 this.hisTreatment = hisTreatment;
                 this.cashierRoomId = cashierRoomId;
                 this.hisDepositSDO = _hisDepositSDO;
+                
                 this.branchId = _branchId;
                 this.sendResultToOtherForm = _sendResultToOtherForm;
                 this.sSByTreatment = sereServs;
@@ -2297,6 +2303,81 @@ namespace HIS.Desktop.Plugins.DepositService.DepositService
                 Inventec.Common.Logging.LogSystem.Fatal(ex);
             }
         }
+
+        private bool CheckHolidayPoliciesBeforeSave()
+        {
+            try
+            {
+                CommonParam param = new CommonParam();
+                List<HIS_HOLIDAY_POLICIES> hIS_HOLIDAY_POLICIES = new List<HIS_HOLIDAY_POLICIES>();
+                this.hisPolicies1 = BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_HOLIDAY_POLICIES>();
+
+                if (hisPolicies1 == null || hisPolicies1.Count == 0)
+                    return true;
+
+             
+                var allowedPatientTypeIds = hIS_HOLIDAY_POLICIES
+                    .Where(p => p.PATIENT_TYPE_ID != null)
+                    .Select(p => (long)p.PATIENT_TYPE_ID)
+                    .Distinct()
+                    .ToList();
+
+             
+                var checkedServices = ssTreeProcessor.GetListCheck(ucSereServTree);
+
+               
+                var notAllowed = checkedServices
+                    .Where(s => !allowedPatientTypeIds.Contains(s.PATIENT_TYPE_ID))
+                    .GroupBy(s => s.PATIENT_TYPE_ID)
+                    .ToDictionary(
+                        g => g.Key,
+                        g => g.Select(s => s.TDL_SERVICE_CODE).ToList()
+                    );
+
+              
+                if (!notAllowed.Any())
+                    return true;
+
+              
+                var msg = new StringBuilder();
+                foreach (var kv in notAllowed)
+                {
+                    msg.AppendLine($"Dịch vụ {string.Join(", ", kv.Value)} có đối tượng thanh toán {kv.Key} không được thiết lập thanh toán ngoài giờ.");
+                }
+                msg.AppendLine("Bạn có muốn tiếp tục không?");
+
+                var result = MessageBox.Show(msg.ToString(), "Cảnh báo", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+                if (result == DialogResult.Yes)
+                {
+                
+                    return true;
+                }
+                else
+                {
+                    List<object> listArgs = new List<object>();
+
+                    listArgs.Add(treatmentId);
+
+                    HIS.Desktop.ModuleExt.PluginInstanceBehavior.ShowModule(
+                        "HIS.Desktop.Plugins.Bordereau",
+                        this.moduleData.RoomId,
+                        this.moduleData.RoomTypeId,
+                        listArgs
+                        );
+
+
+                      
+                    return false;
+                }
+            }
+            catch (Exception ex)
+            {
+
+                Inventec.Common.Logging.LogSystem.Error(ex);
+                return false;
+            }
+        }
+            
         List<HIS_CONFIG> listConfig = new List<HIS_CONFIG>();
         HIS_CONFIG selectedConfig = new HIS_CONFIG();
         private void loadConfig()
@@ -2478,12 +2559,15 @@ namespace HIS.Desktop.Plugins.DepositService.DepositService
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
-
+            
         private void btnSave_Click(object sender, EventArgs e)
         {
             try
             {
                 if (!btnSave.Enabled) return;
+                 if (!CheckHolidayPoliciesBeforeSave())
+                    return; 
+                  
                 SaveProcess(false, false, false);
             }
             catch (Exception ex)
@@ -2496,6 +2580,9 @@ namespace HIS.Desktop.Plugins.DepositService.DepositService
         {
             if (btnSave.Enabled)
             {
+                if (!CheckHolidayPoliciesBeforeSave())
+                    return; 
+
                 btnSave_Click(null, null);
             }
         }
@@ -2513,6 +2600,9 @@ namespace HIS.Desktop.Plugins.DepositService.DepositService
             try
             {
                 if (!btnSaveAndPrint.Enabled) return;
+                if (!CheckHolidayPoliciesBeforeSave())
+                    return; 
+
                 SaveProcess(true, false, false);
             }
             catch (Exception ex)

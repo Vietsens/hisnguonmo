@@ -37,7 +37,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.Template
 
         public object Run()
         {
-            List<ProductBasePlus> result = new List<ProductBasePlus>();
+            List<ProductBase> result = new List<ProductBase>();
             try
             {
                 if (DataInput.SereServBill != null && DataInput.SereServBill.Count > 0)
@@ -64,7 +64,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.Template
 
                     if (sereServExam != null && sereServExam.Count > 0)
                     {
-                        ProductBasePlus product = new ProductBasePlus();
+                        ProductBase product = new ProductBase();
                         product.ProdName = "Khám bệnh";
                         product.ProdPrice = Inventec.Common.Number.Convert.NumberToNumberRoundMax4(sereServExam.Sum(s => s.PRICE));
                         product.ProdQuantity = 1;
@@ -77,7 +77,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.Template
 
                     if (sereServSubclinical != null && sereServSubclinical.Count > 0)
                     {
-                        ProductBasePlus product = new ProductBasePlus();
+                        ProductBase product = new ProductBase();
                         product.ProdName = "Cận lâm sàng";
                         product.ProdPrice = Inventec.Common.Number.Convert.NumberToNumberRoundMax4(sereServSubclinical.Sum(s => s.PRICE));
                         product.ProdQuantity = 1;
@@ -90,7 +90,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.Template
 
                     if (sereServPttt != null && sereServPttt.Count > 0)
                     {
-                        ProductBasePlus product = new ProductBasePlus();
+                        ProductBase product = new ProductBase();
                         product.ProdName = "Phẫu thuật, thủ thuật";
                         product.ProdPrice = Inventec.Common.Number.Convert.NumberToNumberRoundMax4(sereServPttt.Sum(s => s.PRICE));
                         product.ProdQuantity = 1;
@@ -103,7 +103,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.Template
 
                     if (sereServBed != null && sereServBed.Count > 0)
                     {
-                        ProductBasePlus product = new ProductBasePlus();
+                        ProductBase product = new ProductBase();
                         product.ProdName = "Giường bệnh";
                         product.ProdPrice = Inventec.Common.Number.Convert.NumberToNumberRoundMax4(sereServBed.Sum(s => s.PRICE));
                         product.ProdQuantity = 1;
@@ -116,7 +116,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.Template
 
                     if (sereServMediMate != null && sereServMediMate.Count > 0)
                     {
-                        ProductBasePlus product = new ProductBasePlus();
+                        ProductBase product = new ProductBase();
                         product.ProdName = "Thuốc, VTYT";
                         product.ProdPrice = Inventec.Common.Number.Convert.NumberToNumberRoundMax4(sereServMediMate.Sum(s => s.PRICE));
                         product.ProdQuantity = 1;
@@ -136,7 +136,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.Template
                             var serviceTypesZero = sereServOther.Where(o => o.TDL_SERVICE_TYPE_ID == 0).ToList();
                             foreach (var item in serviceTypesZero)
                             {
-                                ProductBasePlus product = new ProductBasePlus();
+                                ProductBase product = new ProductBase();
                                 product.ProdName = item.TDL_SERVICE_NAME;
                                 product.ProdPrice = Inventec.Common.Number.Convert.NumberToNumberRoundMax4(item.PRICE);
                                 product.ProdQuantity = 1;
@@ -151,7 +151,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.Template
                             var ssOther = sereServOther.Where(o => o.TDL_SERVICE_TYPE_ID > 0).ToList();
                             if (ssOther != null && ssOther.Count > 0)
                             {
-                                ProductBasePlus product = new ProductBasePlus();
+                                ProductBase product = new ProductBase();
                                 product.ProdName = "Dịch vụ khác";
                                 product.ProdPrice = Inventec.Common.Number.Convert.NumberToNumberRoundMax4(ssOther.Sum(s => s.PRICE));
                                 product.ProdQuantity = 1;
@@ -165,7 +165,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.Template
                         }
                         else
                         {
-                            ProductBasePlus product = new ProductBasePlus();
+                            ProductBase product = new ProductBase();
                             product.ProdName = "Dịch vụ khác";
                             product.ProdPrice = Inventec.Common.Number.Convert.NumberToNumberRoundMax4(sereServOther.Sum(s => s.PRICE));
                             product.ProdQuantity = 1;

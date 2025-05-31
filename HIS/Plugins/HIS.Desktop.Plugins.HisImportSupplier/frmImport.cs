@@ -271,7 +271,7 @@ namespace HIS.Desktop.Plugins.HisImport
 
                     if (!string.IsNullOrEmpty(item.SUPPLIER_CODE))
                     {
-                        if (item.SUPPLIER_CODE.Length > 10)
+                        if (item.SUPPLIER_CODE.Length > 30)
                         {
                             error += string.Format(Message.MessageImport.Maxlength, "SUPPLIER_CODE");
                         }

@@ -39,7 +39,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.Template
 
         public object Run()
         {
-            List<ProductBasePlus> result = new List<ProductBasePlus>();
+            List<ProductBase> result = new List<ProductBase>();
             try
             {
                 if (DataInput.SereServBill != null && DataInput.SereServBill.Count > 0)
@@ -50,7 +50,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.Template
                     foreach (var item in groupPrice)
                     {
                         V_HIS_SERVICE service = services != null ? services.FirstOrDefault(o => o.ID == item.First().TDL_SERVICE_ID) : null;
-                        ProductBasePlus product = new ProductBasePlus();
+                        ProductBase product = new ProductBase();
                         product.ProdName = item.First().TDL_SERVICE_NAME;
                         product.ProdCode = item.First().TDL_SERVICE_CODE;
                         //product.ProdPrice = Inventec.Common.Number.Convert.NumberToNumberRoundMax4(item.First().TDL_REAL_PRICE ?? 0);

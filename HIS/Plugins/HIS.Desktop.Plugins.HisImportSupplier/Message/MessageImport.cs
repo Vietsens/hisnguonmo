@@ -26,7 +26,7 @@ namespace HIS.Desktop.Plugins.HisImport.Message
     class MessageImport
     {
         internal const string Maxlength = "{0} vượt quá maxlength|";
-        internal const string KhongHopLe = "{0} không hợp lệ|";
+        internal const string KhongHopLe = "Mã nhà cung cấp vượt quá 30 ký tự cho phép";
         internal const string ThieuTruongDL = "Thiếu trường dữ liệu bắt buộc {0}|";
         internal const string DaTonTai = " {0} đã tồn tại dữ liệu nhà cung cấp|";
         internal const string TonTaiTrungNhauTrongFileImport = "Tồn tại {0} trùng nhau trong file import|";

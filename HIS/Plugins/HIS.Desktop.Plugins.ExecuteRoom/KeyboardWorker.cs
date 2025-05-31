@@ -36,6 +36,8 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
     [KeyboardAction("123321", "HIS.Desktop.Plugins.ExecuteRoom.UCExecuteRoom", "123321", KeyStroke = XKeys.F11)]
     [KeyboardAction("FindFocus", "HIS.Desktop.Plugins.ExecuteRoom.UCExecuteRoom", "FindFocus", KeyStroke = XKeys.F2)]
     [KeyboardAction("FocusControl", "HIS.Desktop.Plugins.ExecuteRoom.UCExecuteRoom", "FocusControl", KeyStroke = XKeys.F3)]
+    [KeyboardAction("FocusControl_txtPatientCode", "HIS.Desktop.Plugins.ExecuteRoom.UCExecuteRoom", "FocusControl_txtPatientCode", KeyStroke = XKeys.F8)]
+
     [ExtensionOf(typeof(DesktopToolExtensionPoint))]
     public sealed class KeyboardWorker : Tool<IDesktopToolContext>
     {

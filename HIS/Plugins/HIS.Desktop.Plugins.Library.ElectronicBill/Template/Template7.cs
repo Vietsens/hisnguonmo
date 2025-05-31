@@ -44,7 +44,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.Template
 
         public object Run()
         {
-            List<ProductBasePlus> result = new List<ProductBasePlus>();
+            List<ProductBase> result = new List<ProductBase>();
             try
             {
                 if (DataInput.SereServBill != null && DataInput.SereServBill.Count > 0)
@@ -67,7 +67,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.Template
                                 return null;
                             }
 
-                            ProductBasePlus product = new ProductBasePlus();
+                            ProductBase product = new ProductBase();
                             product.Amount = Inventec.Common.Number.Convert.NumberToNumberRoundMax4(sereServBhyt.Sum(o => o.TDL_TOTAL_PATIENT_PRICE_BHYT ?? 0));
 
                             decimal ratio = (new MOS.LibraryHein.Bhyt.BhytHeinProcessor().GetDefaultHeinRatio(DataInput.LastPatientTypeAlter.HEIN_TREATMENT_TYPE_CODE, DataInput.LastPatientTypeAlter.HEIN_CARD_NUMBER, DataInput.Branch.HEIN_LEVEL_CODE, DataInput.LastPatientTypeAlter.RIGHT_ROUTE_CODE) ?? 0) * 100;
@@ -131,7 +131,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.Template
                                 var groupPrice = bncct.GroupBy(o => new { o.TDL_SERVICE_ID, o.TDL_REAL_PRICE }).ToList();
                                 foreach (var item in groupPrice)
                                 {
-                                    ProductBasePlus product1 = new ProductBasePlus();
+                                    ProductBase product1 = new ProductBase();
                                     V_HIS_SERVICE service = services != null ? services.FirstOrDefault(o => o.ID == item.First().TDL_SERVICE_ID) : null;
                                     product1.ProdName = service != null ? (service.HEIN_SERVICE_BHYT_NAME ?? service.SERVICE_NAME) : item.First().TDL_SERVICE_NAME;
                                     product1.ProdQuantity = item.Sum(s => s.TDL_AMOUNT ?? 0);
@@ -152,7 +152,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.Template
                             foreach (var item in groupPrice)
                             {
                                 V_HIS_SERVICE service = services != null ? services.FirstOrDefault(o => o.ID == item.First().TDL_SERVICE_ID) : null;
-                                ProductBasePlus product = new ProductBasePlus();
+                                ProductBase product = new ProductBase();
                                 product.ProdName = item.First().TDL_SERVICE_NAME;
                                 //product.ProdPrice = Inventec.Common.Number.Convert.NumberToNumberRoundMax4(item.First().TDL_REAL_PRICE ?? 0);
                                 product.ProdQuantity = item.Sum(s => s.TDL_AMOUNT ?? 0);
@@ -172,7 +172,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.Template
                         foreach (var item in groupPrice)
                         {
                             V_HIS_SERVICE service = services != null ? services.FirstOrDefault(o => o.ID == item.First().TDL_SERVICE_ID) : null;
-                            ProductBasePlus product = new ProductBasePlus();
+                            ProductBase product = new ProductBase();
                             product.ProdName = item.First().TDL_SERVICE_NAME;
                             //product.ProdPrice = Inventec.Common.Number.Convert.NumberToNumberRoundMax4(item.First().TDL_REAL_PRICE ?? 0);
                             product.ProdQuantity = item.Sum(s => s.TDL_AMOUNT ?? 0);

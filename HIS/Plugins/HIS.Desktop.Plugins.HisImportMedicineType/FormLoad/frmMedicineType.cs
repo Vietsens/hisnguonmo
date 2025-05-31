@@ -1022,7 +1022,7 @@ namespace HIS.Desktop.Plugins.HisImportMedicineType.FormLoad
                     {
                         if (item.PARENT_CODE.Length > 25)
                         {
-                            error += string.Format(Message.MessageImport.Maxlength, "Mã cha");
+                            error += string.Format(Message.MessageImport.Maxlength, "Mã cha", 25);
                             mediAdo.PARENT_CODE_ERROR = 1;
                         }
 
@@ -1191,7 +1191,7 @@ namespace HIS.Desktop.Plugins.HisImportMedicineType.FormLoad
                     {
                         if (item.HEIN_SERVICE_TYPE_CODE.Length > 10)
                         {
-                            error += string.Format(Message.MessageImport.Maxlength, "Mã loại dịch vụ BH");
+                            error += string.Format(Message.MessageImport.Maxlength, "Mã loại dịch vụ BH", 10);
                             mediAdo.HEIN_SERVICE_TYPE_CODE_ERROR = 1;
                         }
 
@@ -1212,7 +1212,7 @@ namespace HIS.Desktop.Plugins.HisImportMedicineType.FormLoad
                     {
                         if (item.SERVICE_UNIT_CODE.Length > 3)
                         {
-                            error += string.Format(Message.MessageImport.Maxlength, "Đơn vị tính");
+                            error += string.Format(Message.MessageImport.Maxlength, "Đơn vị tính", 3);
                             mediAdo.SERVICE_UNIT_CODE_ERROR = 1;
                         }
 
@@ -1288,7 +1288,7 @@ namespace HIS.Desktop.Plugins.HisImportMedicineType.FormLoad
                     {
                         if (item.HEIN_SERVICE_BHYT_CODE.Length > 100)
                         {
-                            error += string.Format(Message.MessageImport.Maxlength, "Mã BHYT");
+                            error += string.Format(Message.MessageImport.Maxlength, "Mã BHYT", 100);
                             mediAdo.HEIN_SERVICE_BHYT_CODE_ERROR = 1;
                         }
 
@@ -1303,7 +1303,7 @@ namespace HIS.Desktop.Plugins.HisImportMedicineType.FormLoad
                     {
                         if (item.HEIN_SERVICE_BHYT_NAME.Length > 1500)
                         {
-                            error += string.Format(Message.MessageImport.Maxlength, "Tên BHYT");
+                            error += string.Format(Message.MessageImport.Maxlength, "Tên BHYT", 1500);
                             mediAdo.HEIN_SERVICE_BHYT_NAME_ERROR = 1;
                         }
 
@@ -1318,7 +1318,7 @@ namespace HIS.Desktop.Plugins.HisImportMedicineType.FormLoad
                     {
                         if (item.HEIN_ORDER.Length > 20)
                         {
-                            error += string.Format(Message.MessageImport.Maxlength, "STT BHYT");
+                            error += string.Format(Message.MessageImport.Maxlength, "STT BHYT", 20);
                             mediAdo.HEIN_ORDER_ERROR = 1;
                         }
                     }
@@ -1525,7 +1525,7 @@ namespace HIS.Desktop.Plugins.HisImportMedicineType.FormLoad
                     {
                         if (!CheckMaxLenth(item.MEDICINE_TYPE_CODE, 25))
                         {
-                            error += string.Format(Message.MessageImport.Maxlength, "Mã loại thuốc");
+                            error += string.Format(Message.MessageImport.Maxlength, "Mã loại thuốc", 25);
                             mediAdo.MEDICINE_TYPE_CODE_ERROR = 1;
                         }
 
@@ -1559,7 +1559,7 @@ namespace HIS.Desktop.Plugins.HisImportMedicineType.FormLoad
                     {
                         if (!CheckMaxLenth(item.MEDICINE_TYPE_NAME, 1500))
                         {
-                            error += string.Format(Message.MessageImport.Maxlength, "Tên loại thuốc");
+                            error += string.Format(Message.MessageImport.Maxlength, "Tên loại thuốc", 1500);
                             mediAdo.MEDICINE_TYPE_NAME_ERROR = 1;
                         }
                     }
@@ -1573,7 +1573,7 @@ namespace HIS.Desktop.Plugins.HisImportMedicineType.FormLoad
                     {
                         if (Inventec.Common.String.CheckString.IsOverMaxLengthUTF8(item.PACKING_TYPE_NAME, 300))
                         {
-                            error += string.Format(Message.MessageImport.Maxlength, "Loại đóng gói");
+                            error += string.Format(Message.MessageImport.Maxlength, "Loại đóng gói", 300);
                             mediAdo.PACKING_TYPE_NAME_ERROR = 1;
                         }
                     }
@@ -1595,7 +1595,7 @@ namespace HIS.Desktop.Plugins.HisImportMedicineType.FormLoad
                     {
                         if (!CheckMaxLenth(item.NATIONAL_NAME, 100))
                         {
-                            error += string.Format(Message.MessageImport.Maxlength, "Tên quốc gia");
+                            error += string.Format(Message.MessageImport.Maxlength, "Tên quốc gia", 100);
                             mediAdo.NATIONAL_NAME_ERROR = 1;
                         }
                         else
@@ -1608,7 +1608,7 @@ namespace HIS.Desktop.Plugins.HisImportMedicineType.FormLoad
                     {
                         if (!CheckMaxLenth(item.MANUFACTURER_CODE, 6))
                         {
-                            error += string.Format(Message.MessageImport.Maxlength, "Mã hãng sản xuất");
+                            error += string.Format(Message.MessageImport.Maxlength, "Mã hãng sản xuất", 6);
                             mediAdo.MANUFACTURER_CODE_ERROR = 1;
                         }
 
@@ -1629,7 +1629,7 @@ namespace HIS.Desktop.Plugins.HisImportMedicineType.FormLoad
                     {
                         if (!CheckMaxLenth(item.MANUFACTURER_NAME, 100))
                         {
-                            error += string.Format(Message.MessageImport.Maxlength, "Tên hãng sản xuất");
+                            error += string.Format(Message.MessageImport.Maxlength, "Tên hãng sản xuất", 100);
                             mediAdo.MANUFACTURER_NAME_ERROR = 1;
                         }
 
@@ -1653,7 +1653,7 @@ namespace HIS.Desktop.Plugins.HisImportMedicineType.FormLoad
                     {
                         if (!CheckMaxLenth(item.MEDICINE_GROUP_CODE, 4))
                         {
-                            error += string.Format(Message.MessageImport.Maxlength, "Nhóm thuốc");
+                            error += string.Format(Message.MessageImport.Maxlength, "Nhóm thuốc", 4);
                             mediAdo.MEDICINE_GROUP_CODE_ERROR = 1;
                         }
 
@@ -1674,7 +1674,7 @@ namespace HIS.Desktop.Plugins.HisImportMedicineType.FormLoad
                     {
                         if (!CheckMaxLenth(item.DESCRIPTION, 2000))
                         {
-                            error += string.Format(Message.MessageImport.Maxlength, "Mô tả");
+                            error += string.Format(Message.MessageImport.Maxlength, "Mô tả", 2000);
                             mediAdo.DESCRIPTION_ERROR = 1;
                         }
                     }
@@ -1683,7 +1683,7 @@ namespace HIS.Desktop.Plugins.HisImportMedicineType.FormLoad
                     {
                         if (Inventec.Common.String.CheckString.IsOverMaxLengthUTF8(item.CONCENTRA, 500))
                         {
-                            error += string.Format(Message.MessageImport.Maxlength, "Hàm lượng nồng độ");
+                            error += string.Format(Message.MessageImport.Maxlength, "Hàm lượng nồng độ", 500);
                             mediAdo.CONCENTRA_ERROR = 1;
                         }
                     }
@@ -1692,7 +1692,7 @@ namespace HIS.Desktop.Plugins.HisImportMedicineType.FormLoad
                     {
                         if (!CheckMaxLenth(item.MEDICINE_TYPE_PROPRIETARY_NAME, 200))
                         {
-                            error += string.Format(Message.MessageImport.Maxlength, "Tên biệt dược");
+                            error += string.Format(Message.MessageImport.Maxlength, "Tên biệt dược", 200);
                             mediAdo.MEDICINE_TYPE_PROPRIETARY_NAME_ERROR = 1;
                         }
                     }
@@ -1701,7 +1701,7 @@ namespace HIS.Desktop.Plugins.HisImportMedicineType.FormLoad
                     {
                         if (!CheckMaxLenth(item.TUTORIAL, 2000))
                         {
-                            error += string.Format(Message.MessageImport.Maxlength, "HDSD thuốc");
+                            error += string.Format(Message.MessageImport.Maxlength, "HDSD thuốc", 2000);
                             mediAdo.TUTORIAL_ERROR = 1;
                         }
                     }
@@ -1710,7 +1710,7 @@ namespace HIS.Desktop.Plugins.HisImportMedicineType.FormLoad
                     {
                         if (!CheckMaxLenth(item.ACTIVE_INGR_BHYT_CODE, 500))
                         {
-                            error += string.Format(Message.MessageImport.Maxlength, "Mã hoạt chất");
+                            error += string.Format(Message.MessageImport.Maxlength, "Mã hoạt chất", 500);
                             mediAdo.ACTIVE_INGR_BHYT_CODE_ERROR = 1;
                         }
                     }
@@ -1719,7 +1719,7 @@ namespace HIS.Desktop.Plugins.HisImportMedicineType.FormLoad
                     {
                         if (Inventec.Common.String.CheckString.IsOverMaxLengthUTF8(item.ACTIVE_INGR_BHYT_NAME, 1000))
                         {
-                            error += string.Format(Message.MessageImport.Maxlength, "Tên hoạt chất");
+                            error += string.Format(Message.MessageImport.Maxlength, "Tên hoạt chất", 1000);
                             mediAdo.ACTIVE_INGR_BHYT_NAME_ERROR = 1;
                         }
                     }
@@ -1737,7 +1737,7 @@ namespace HIS.Desktop.Plugins.HisImportMedicineType.FormLoad
                     {
                         if (Inventec.Common.String.CheckString.IsOverMaxLengthUTF8(item.REGISTER_NUMBER, 500))
                         {
-                            error += string.Format(Message.MessageImport.Maxlength, "Số đăng ký");
+                            error += string.Format(Message.MessageImport.Maxlength, "Số đăng ký", 500);
                             mediAdo.REGISTER_NUMBER_ERROR = 1;
                         }
                     }
@@ -1746,7 +1746,7 @@ namespace HIS.Desktop.Plugins.HisImportMedicineType.FormLoad
                     {
                         if (Inventec.Common.String.CheckString.IsOverMaxLengthUTF8(item.QUALITY_STANDARDS, 1000))
                         {
-                            error += string.Format(Message.MessageImport.Maxlength, "Tiêu chuẩn chất lượng");
+                            error += string.Format(Message.MessageImport.Maxlength, "Tiêu chuẩn chất lượng", 1000);
                             mediAdo.QUALITY_STANDARDS_ERROR = 1;
                         }
                     }
@@ -1794,7 +1794,7 @@ namespace HIS.Desktop.Plugins.HisImportMedicineType.FormLoad
 
                         if (Inventec.Common.String.CheckString.IsOverMaxLengthUTF8(item.PREPROCESSING, 1000))
                         {
-                            error += string.Format(Message.MessageImport.Maxlength, "Sơ chế");
+                            error += string.Format(Message.MessageImport.Maxlength, "Sơ chế", 1000);
                             mediAdo.PREPROCESSING_ERROR = 1;
                         }
                     }
@@ -1842,12 +1842,12 @@ namespace HIS.Desktop.Plugins.HisImportMedicineType.FormLoad
 
                         if (Inventec.Common.String.CheckString.IsOverMaxLengthUTF8(item.PREPROCESSING, 1000))
                         {
-                            error += string.Format(Message.MessageImport.Maxlength, "Sơ chế");
+                            error += string.Format(Message.MessageImport.Maxlength, "Sơ chế", 1000);
                             mediAdo.PREPROCESSING_ERROR = 1;
                         }
                         if (Inventec.Common.String.CheckString.IsOverMaxLengthUTF8(item.PROCESSING, 1000))
                         {
-                            error += string.Format(Message.MessageImport.Maxlength, "Phức chế");
+                            error += string.Format(Message.MessageImport.Maxlength, "Phức chế", 1000);
                             mediAdo.PROCESSING_ERROR = 1;
                         }
                     }
@@ -1855,7 +1855,7 @@ namespace HIS.Desktop.Plugins.HisImportMedicineType.FormLoad
                     {
                         if (Inventec.Common.String.CheckString.IsOverMaxLengthUTF8(item.USED_PART, 500))
                         {
-                            error += string.Format(Message.MessageImport.Maxlength, "Bộ phận dùng");
+                            error += string.Format(Message.MessageImport.Maxlength, "Bộ phận dùng", 500);
                             mediAdo.USED_PART_ERROR = 1;
                         }
                     }
@@ -1863,7 +1863,7 @@ namespace HIS.Desktop.Plugins.HisImportMedicineType.FormLoad
                     {
                         if (Inventec.Common.String.CheckString.IsOverMaxLengthUTF8(item.CONTRAINDICATION, 4000))
                         {
-                            error += string.Format(Message.MessageImport.Maxlength, "Ghi chú chống chỉ định");
+                            error += string.Format(Message.MessageImport.Maxlength, "Ghi chú chống chỉ định", 4000);
                             mediAdo.CONTRAINDICATION_ERROR = 1;
                         }
                     }
@@ -1872,15 +1872,16 @@ namespace HIS.Desktop.Plugins.HisImportMedicineType.FormLoad
                     {
                         if (Inventec.Common.String.CheckString.IsOverMaxLengthUTF8(item.DISTRIBUTED_AMOUNT, 500))
                         {
-                            error += string.Format(Message.MessageImport.Maxlength, "Số lượng phân bổ");
+                            error += string.Format(Message.MessageImport.Maxlength, "Số lượng phân bổ", 500);
                             mediAdo.DISTRIBUTED_AMOUNT_ERROR = 1;
                         }
                     }
                     if (!string.IsNullOrEmpty(item.DOSAGE_FORM))
                     {
-                        if (Inventec.Common.String.CheckString.IsOverMaxLengthUTF8(item.DOSAGE_FORM, 100))
+                        //qtcode
+                        if (Inventec.Common.String.CheckString.IsOverMaxLengthUTF8(item.DOSAGE_FORM, 2000))
                         {
-                            error += string.Format(Message.MessageImport.Maxlength, "Dạng bào chế");
+                            error += string.Format(Message.MessageImport.Maxlength, "Dạng bào chế", 2000);
                             mediAdo.DOSAGE_FORM_ERROR = 1;
                         }
                     }
@@ -1889,7 +1890,7 @@ namespace HIS.Desktop.Plugins.HisImportMedicineType.FormLoad
                     {
                         if (!CheckMaxLenth(item.TCY_NUM_ORDER, 20))
                         {
-                            error += string.Format(Message.MessageImport.Maxlength, "STT theo TT31-12");
+                            error += string.Format(Message.MessageImport.Maxlength, "STT theo TT31-12", 20);
                             mediAdo.TCY_NUM_ORDER_ERROR = 1;
                         }
                     }
@@ -1898,7 +1899,7 @@ namespace HIS.Desktop.Plugins.HisImportMedicineType.FormLoad
                     {
                         if (!CheckMaxLenth(item.BYT_NUM_ORDER, 50))
                         {
-                            error += string.Format(Message.MessageImport.Maxlength, "STT theo TT40 (Bộ y tế)");
+                            error += string.Format(Message.MessageImport.Maxlength, "STT theo TT40 (Bộ y tế)", 50);
                             mediAdo.BYT_NUM_ORDER_ERROR = 1;
                         }
                     }
@@ -1907,7 +1908,7 @@ namespace HIS.Desktop.Plugins.HisImportMedicineType.FormLoad
                     {
                         if (!CheckMaxLenth(item.MEDICINE_USE_FORM_CODE, 6))
                         {
-                            error += string.Format(Message.MessageImport.Maxlength, "Dạng dùng");
+                            error += string.Format(Message.MessageImport.Maxlength, "Dạng dùng", 6);
                             mediAdo.MEDICINE_USE_FORM_CODE_ERROR = 1;
                         }
 
@@ -1933,7 +1934,7 @@ namespace HIS.Desktop.Plugins.HisImportMedicineType.FormLoad
                     {
                         if (!CheckMaxLenth(item.MEDICINE_LINE_CODE, 2))
                         {
-                            error += string.Format(Message.MessageImport.Maxlength, "Dòng thuốc");
+                            error += string.Format(Message.MessageImport.Maxlength, "Dòng thuốc", 2);
                             mediAdo.MEDICINE_LINE_CODE_ERROR = 1;
                         }
 
@@ -2036,7 +2037,7 @@ namespace HIS.Desktop.Plugins.HisImportMedicineType.FormLoad
                     {
                         if (!CheckMaxLenth(item.RECORDING_TRANSACTION, 20))
                         {
-                            error += string.Format(Message.MessageImport.Maxlength, "Định khoản kế toán");
+                            error += string.Format(Message.MessageImport.Maxlength, "Định khoản kế toán", 20);
                             mediAdo.RECORDING_TRANSACTION_ERROR = 1;
                         }
                         mediAdo.RECORDING_TRANSACTION = item.RECORDING_TRANSACTION;

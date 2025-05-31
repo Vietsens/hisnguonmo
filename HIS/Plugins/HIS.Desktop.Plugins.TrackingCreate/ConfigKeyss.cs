@@ -42,5 +42,6 @@ namespace HIS.Desktop.Plugins.TrackingCreate
         public const string DBCODE__HIS_DESKTOP_PLUGINS_TRACKINGPRINT_USED_DAY_COUNTING_FORMAT_OPTION = "HIS.Desktop.Plugins.TrackingPrint.UsedDayCountingFormatOption";
         public const string DBCODE__HIS_DESKTOP_PLUGINS_TRACKINGPRINT_USED_DAY_COUNTING_OUT_STOCK_OPTION = "HIS.Desktop.Plugins.TrackingPrint.UsedDayCountingOutStockOption";
         public const string DBCODE__HIS_TRACKING_SERVICE_REQ_ICD_OPTION = "HIS.HIS_TRACKING.SERVICE_REQ_ICD_OPTION";
+        public const string DBCODE__MOS_HIS_TRACKING_IS_READ_ONLY_SHEET_ORDER = "MOS.HIS_TRACKING.IS_READ_ONLY_SHEET_ORDER";
     }
 }
