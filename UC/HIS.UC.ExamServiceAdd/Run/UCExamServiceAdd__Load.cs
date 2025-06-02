@@ -67,7 +67,7 @@ namespace HIS.UC.ExamServiceAdd.Run
                     }
                 }
                 if (_cachedRoomCounters == null || (now - _lastApiCallTime).TotalSeconds > 30)
-                {                                     
+                {
                     CommonParam param = new CommonParam();
                     var filter = new HisRoomCounterLViewFilter
                     {
@@ -136,15 +136,15 @@ namespace HIS.UC.ExamServiceAdd.Run
                 List<ColumnInfo> columnInfos = new List<ColumnInfo>();
                 columnInfos.Add(new ColumnInfo("EXECUTE_ROOM_CODE", "Mã", 120, 1));
                 columnInfos.Add(new ColumnInfo("EXECUTE_ROOM_NAME", "Tên", 300, 2));
-                columnInfos.Add(new ColumnInfo("TOTAL_TODAY_SERVICE_REQ", "Tổng", 140, 3));
-                columnInfos.Add(new ColumnInfo("TOTAL_NEW_SERVICE_REQ", "Chưa", 130, 4));
-                columnInfos.Add(new ColumnInfo("TOTAL_END_SERVICE_REQ", "Kết thúc", 130, 5));
+                columnInfos.Add(new ColumnInfo("TOTAL_TODAY_SERVICE_REQ", "Tổng", 100, 3));
+                columnInfos.Add(new ColumnInfo("TOTAL_NEW_SERVICE_REQ", "Chưa", 100, 4));
+                columnInfos.Add(new ColumnInfo("TOTAL_END_SERVICE_REQ", "Kết thúc", 100, 5));
                 columnInfos.Add(new ColumnInfo("TOTAL_WAIT_TODAY_SERVICE_REQ", "CLS", 130, 6));
                 columnInfos.Add(new ColumnInfo("TOTAL_OPEN_SERVICE_REQ", "Đã", 130, 7));
-                columnInfos.Add(new ColumnInfo("MAX_REQUEST_BY_DAY", "Tối đa", 130, 8));
-                columnInfos.Add(new ColumnInfo("MAX_REQ_BHYT_BY_DAY", "Tối đa BHYT", 140, 9));
+                columnInfos.Add(new ColumnInfo("MAX_REQUEST_BY_DAY", "Tối đa", 100, 8));
+                columnInfos.Add(new ColumnInfo("MAX_REQ_BHYT_BY_DAY", "Tối đa BHYT", 100, 9));
                 columnInfos.Add(new ColumnInfo("RESPONSIBLE_USERNAME_DISPLAY", "Tên bác sỹ", 250, 10));
-                ControlEditorADO controlEditorADO = new ControlEditorADO("EXECUTE_ROOM_NAME", "ROOM_ID", columnInfos, false, 1500);
+                ControlEditorADO controlEditorADO = new ControlEditorADO("EXECUTE_ROOM_NAME", "ROOM_ID", columnInfos, false, 1400);
                 ControlEditorLoader.Load(cboExecuteRoom, rooms, controlEditorADO);
 
                 GridView view = cboExecuteRoom.Properties.View;
@@ -152,8 +152,13 @@ namespace HIS.UC.ExamServiceAdd.Run
                 view.OptionsView.ColumnAutoWidth = false;
                 //view.Appearance.Row.Font = new Font("Tahoma", 11F);
                 view.Appearance.HeaderPanel.Font = new Font("Tahoma", 11F, FontStyle.Bold);
-                cboExecuteRoom.Properties.PopupFormWidth = 1500;
+                cboExecuteRoom.Properties.PopupFormWidth = 1400;
                 view.BestFitColumns();
+                var openReqCol = view.Columns.ColumnByFieldName("TOTAL_OPEN_SERVICE_REQ");
+                if (openReqCol != null)
+                {
+                    openReqCol.UnboundType = DevExpress.Data.UnboundColumnType.Decimal;
+                }
                 for (int i = 0; i < view.Columns.Count; i++)
                 {
                     if (i >= columnInfos.Count) break;
@@ -178,18 +183,17 @@ namespace HIS.UC.ExamServiceAdd.Run
                 if (e.Column.FieldName == "TOTAL_OPEN_SERVICE_REQ")
                 {
                     var view = sender as DevExpress.XtraGrid.Views.Grid.GridView;
-                    if(view != null || e.ListSourceRowIndex >= 0)
+                    if (view != null && e.ListSourceRowIndex >= 0)
                     {
                         var row = view.GetRow(e.ListSourceRowIndex) as L_HIS_ROOM_COUNTER;
                         if (row != null)
                         {
-                            decimal value = (row.TOTAL_TODAY_SERVICE_REQ ?? 0 - row.TOTAL_NEW_SERVICE_REQ ?? 0);
-                            if (value == Math.Floor(value))
-                                e.DisplayText = ((int)value).ToString();
-                            else
-                                e.DisplayText = value.ToString("0.##");
+                            decimal totalToday = row.TOTAL_TODAY_SERVICE_REQ ?? 0;
+                            decimal totalNew = row.TOTAL_NEW_SERVICE_REQ ?? 0;
+                            decimal value = totalToday - totalNew;
+                            e.DisplayText = value.ToString("0.##");
                         }
-                    }                    
+                    }
                     return;
                 }
                 if (e.Column.FieldName == "RESPONSIBLE_USERNAME_DISPLAY")
@@ -200,12 +204,21 @@ namespace HIS.UC.ExamServiceAdd.Run
                         var row = view.GetRow(e.ListSourceRowIndex) as L_HIS_ROOM_COUNTER;
                         if (row != null)
                         {
-                            e.DisplayText = $"{row.RESPONSIBLE_LOGINNAME ?? ""} - {row.RESPONSIBLE_USERNAME ?? ""}";
+                            string loginName = row.RESPONSIBLE_LOGINNAME?.Trim();
+                            string userName = row.RESPONSIBLE_USERNAME?.Trim();
+
+                            if (!string.IsNullOrEmpty(loginName) && !string.IsNullOrEmpty(userName))
+                                e.DisplayText = $"{loginName} - {userName}";
+                            else if (!string.IsNullOrEmpty(loginName))
+                                e.DisplayText = loginName;
+                            else if (!string.IsNullOrEmpty(userName))
+                                e.DisplayText = userName;
+                            else
+                                e.DisplayText = "";
                         }
                     }
                     return;
                 }
-
                 var numericFields = new[]
                 {
                     "TOTAL_TODAY_SERVICE_REQ",
@@ -229,7 +242,7 @@ namespace HIS.UC.ExamServiceAdd.Run
             catch (Exception ex)
             {
                 LogSystem.Error(ex);
-            }            
+            }
         }
 
         private void LoadDataCboExamService(V_HIS_EXECUTE_ROOM executeRoom)
