@@ -6778,7 +6778,6 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
             // 
             // btnShowDetail
             // 
-            this.btnShowDetail.Enabled = false;
             this.btnShowDetail.Location = new System.Drawing.Point(350, 645);
             this.btnShowDetail.Name = "btnShowDetail";
             this.btnShowDetail.Size = new System.Drawing.Size(79, 36);
