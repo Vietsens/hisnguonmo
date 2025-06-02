@@ -146,19 +146,16 @@ namespace HIS.UC.ExamServiceAdd.Run
                 columnInfos.Add(new ColumnInfo("RESPONSIBLE_USERNAME_DISPLAY", "Tên bác sỹ", 250, 10));
                 ControlEditorADO controlEditorADO = new ControlEditorADO("EXECUTE_ROOM_NAME", "ROOM_ID", columnInfos, false, 1400);
                 ControlEditorLoader.Load(cboExecuteRoom, rooms, controlEditorADO);
-
+                cboExecuteRoom.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.DisableTextEditor;
+                cboExecuteRoom.Properties.Buttons.Clear();
+                cboExecuteRoom.Properties.Buttons.Add(new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo));
+                cboExecuteRoom.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.DisableTextEditor;
                 GridView view = cboExecuteRoom.Properties.View;
                 view.OptionsView.ShowColumnHeaders = true;
                 view.OptionsView.ColumnAutoWidth = false;
-                //view.Appearance.Row.Font = new Font("Tahoma", 11F);
+                view.OptionsView.ShowIndicator = false;
                 view.Appearance.HeaderPanel.Font = new Font("Tahoma", 11F, FontStyle.Bold);
-                cboExecuteRoom.Properties.PopupFormWidth = 1400;
-                view.BestFitColumns();
-                var openReqCol = view.Columns.ColumnByFieldName("TOTAL_OPEN_SERVICE_REQ");
-                if (openReqCol != null)
-                {
-                    openReqCol.UnboundType = DevExpress.Data.UnboundColumnType.Decimal;
-                }
+                cboExecuteRoom.Properties.PopupFormSize = new Size(1400,400);
                 for (int i = 0; i < view.Columns.Count; i++)
                 {
                     if (i >= columnInfos.Count) break;
@@ -168,6 +165,12 @@ namespace HIS.UC.ExamServiceAdd.Run
                     col.Width = columnInfos[i].width;
                     col.VisibleIndex = columnInfos[i].VisibleIndex;
                 }
+                var openReqCol = view.Columns.ColumnByFieldName("TOTAL_OPEN_SERVICE_REQ");
+                if (openReqCol != null)
+                {
+                    openReqCol.UnboundType = DevExpress.Data.UnboundColumnType.Decimal;
+                }
+                view.CustomColumnDisplayText -= View_CustomColumnDisplayText;
                 view.CustomColumnDisplayText += View_CustomColumnDisplayText;
             }
             catch (Exception)
