@@ -39,6 +39,7 @@ using HIS.UC.HisExamServiceAdd.Config;
 using DevExpress.XtraGrid.Views.Grid;
 using DevExpress.XtraGrid.Columns;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.TreeView;
+using Inventec.Common.Logging;
 
 namespace HIS.UC.ExamServiceAdd.Run
 {
@@ -172,26 +173,63 @@ namespace HIS.UC.ExamServiceAdd.Run
         }
         private void View_CustomColumnDisplayText(object sender, DevExpress.XtraGrid.Views.Base.CustomColumnDisplayTextEventArgs e)
         {
-            var numericFields = new[]
+            try
             {
-                "TOTAL_TODAY_SERVICE_REQ",
-                "TOTAL_NEW_SERVICE_REQ",
-                "TOTAL_END_SERVICE_REQ",
-                "TOTAL_WAIT_TODAY_SERVICE_REQ",
-                "TOTAL_OPEN_SERVICE_REQ",
-                "MAX_REQUEST_BY_DAY",
-                "MAX_REQ_BHYT_BY_DAY"
-            };
-            if (numericFields.Contains(e.Column.FieldName) && e.Value != null)
-            {
-                if (decimal.TryParse(e.Value.ToString(), out decimal val))
+                if (e.Column.FieldName == "TOTAL_OPEN_SERVICE_REQ")
                 {
-                    if (val == Math.Floor(val))
-                        e.DisplayText = ((int)val).ToString();
-                    else
-                        e.DisplayText = val.ToString("0.##");
+                    var view = sender as DevExpress.XtraGrid.Views.Grid.GridView;
+                    if(view != null || e.ListSourceRowIndex >= 0)
+                    {
+                        var row = view.GetRow(e.ListSourceRowIndex) as L_HIS_ROOM_COUNTER;
+                        if (row != null)
+                        {
+                            decimal value = (row.TOTAL_TODAY_SERVICE_REQ ?? 0 - row.TOTAL_NEW_SERVICE_REQ ?? 0);
+                            if (value == Math.Floor(value))
+                                e.DisplayText = ((int)value).ToString();
+                            else
+                                e.DisplayText = value.ToString("0.##");
+                        }
+                    }                    
+                    return;
+                }
+                if (e.Column.FieldName == "RESPONSIBLE_USERNAME_DISPLAY")
+                {
+                    var view = sender as DevExpress.XtraGrid.Views.Grid.GridView;
+                    if (view != null && e.ListSourceRowIndex >= 0)
+                    {
+                        var row = view.GetRow(e.ListSourceRowIndex) as L_HIS_ROOM_COUNTER;
+                        if (row != null)
+                        {
+                            e.DisplayText = $"{row.RESPONSIBLE_LOGINNAME ?? ""} - {row.RESPONSIBLE_USERNAME ?? ""}";
+                        }
+                    }
+                    return;
+                }
+
+                var numericFields = new[]
+                {
+                    "TOTAL_TODAY_SERVICE_REQ",
+                    "TOTAL_NEW_SERVICE_REQ",
+                    "TOTAL_END_SERVICE_REQ",
+                    "TOTAL_WAIT_TODAY_SERVICE_REQ",
+                    "MAX_REQUEST_BY_DAY",
+                    "MAX_REQ_BHYT_BY_DAY"
+                };
+                if (numericFields.Contains(e.Column.FieldName) && e.Value != null)
+                {
+                    if (decimal.TryParse(e.Value.ToString(), out decimal val))
+                    {
+                        if (val == Math.Floor(val))
+                            e.DisplayText = ((int)val).ToString();
+                        else
+                            e.DisplayText = val.ToString("0.##");
+                    }
                 }
             }
+            catch (Exception ex)
+            {
+                LogSystem.Error(ex);
+            }            
         }
 
         private void LoadDataCboExamService(V_HIS_EXECUTE_ROOM executeRoom)
