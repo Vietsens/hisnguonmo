@@ -1561,11 +1561,12 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.ADO
                 if (inputData.DataType == HIS.Desktop.LocalStorage.BackendData.ADO.MedicineMaterialTypeComboADO.THUOC_DM || inputData.DataType == HIS.Desktop.LocalStorage.BackendData.ADO.MedicineMaterialTypeComboADO.THUOC)
                 {
 
-                    var mety = BackendDataWorker.Get<V_HIS_MEDICINE_TYPE>().FirstOrDefault(o => o.MEDICINE_TYPE_CODE == inputData.MEDICINE_TYPE_CODE);
+                    this.DataType = inputData.DataType;
+                    var mety = BackendDataWorker.Get<V_HIS_MEDICINE_TYPE>().FirstOrDefault(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE && o.MEDICINE_TYPE_CODE == inputData.MEDICINE_TYPE_CODE);
                     if (mety != null)
                     {
                         Inventec.Common.Mapper.DataObjectMapper.Map<MediMatyTypeADO>(this, mety);
-                       
+
                         this.TUTORIAL = (String.IsNullOrEmpty(inputData.TUTORIAL) ? mety.TUTORIAL : inputData.TUTORIAL);
                         if (
                             (HisConfigCFG.SplitOffset == GlobalVariables.CommonStringTrue || (mety.IS_SPLIT_COMPENSATION.HasValue && mety.IS_SPLIT_COMPENSATION == 1))
@@ -1584,7 +1585,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.ADO
                         //Lay doi tuong mac dinh
                         MOS.EFMODEL.DataModels.HIS_PATIENT_TYPE patientType = new MOS.EFMODEL.DataModels.HIS_PATIENT_TYPE();
                         patientType = AssignPrescriptionWorker.Instance.MediMatyCreateWorker.choosePatientTypeDefaultlServiceOther(AssignPrescriptionWorker.Instance.MediMatyCreateWorker.getPatientTypeId(), mety.SERVICE_ID, mety.SERVICE_TYPE_ID);
-                        if (patientType != null)
+                        if (patientType != null && inputData.DataType == HIS.Desktop.LocalStorage.BackendData.ADO.MedicineMaterialTypeComboADO.THUOC)
                         {
                             this.PATIENT_TYPE_ID = patientType.ID;
                             this.PATIENT_TYPE_CODE = patientType.PATIENT_TYPE_CODE;
@@ -1601,18 +1602,20 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.ADO
                         this.MEDICINE_GROUP_ID = mety.MEDICINE_GROUP_ID;
                         this.TUTORIAL = inputData.TUTORIAL;
 
-                            this.IsExpend = inputData.IsExpend;
+                        this.IsExpend = inputData.IsExpend;
                         this.IsAllowOdd = (mety.IS_ALLOW_ODD == 1) ? true : false;
                         this.IsAllowOddAndExportOdd = (mety.IS_ALLOW_ODD == 1 && mety.IS_ALLOW_EXPORT_ODD == 1) ? true : false;
                         this.IsKHBHYT = false;
                         this.PrimaryKey = mety.SERVICE_ID + "__" + Inventec.Common.DateTime.Get.Now() + "__" + Guid.NewGuid().ToString();
                     }
-                    this.DataType = inputData.DataType;
+                    else
+                        goto TuTuc;
                 }
                 else if (inputData.DataType == HIS.Desktop.LocalStorage.BackendData.ADO.MedicineMaterialTypeComboADO.VATTU_DM || inputData.DataType == HIS.Desktop.LocalStorage.BackendData.ADO.MedicineMaterialTypeComboADO.VATTU || inputData.DataType == HIS.Desktop.LocalStorage.BackendData.ADO.MedicineMaterialTypeComboADO.VATTU_TSD)
                 {
 
-                    var maty = BackendDataWorker.Get<V_HIS_MATERIAL_TYPE>().FirstOrDefault(o => o.MATERIAL_TYPE_CODE == inputData.MEDICINE_TYPE_CODE);
+                    this.DataType = inputData.DataType;
+                    var maty = BackendDataWorker.Get<V_HIS_MATERIAL_TYPE>().FirstOrDefault(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE && o.MATERIAL_TYPE_CODE == inputData.MEDICINE_TYPE_CODE);
                     if (maty != null)
                     {
                         Inventec.Common.Mapper.DataObjectMapper.Map<MediMatyTypeADO>(this, maty);
@@ -1640,7 +1643,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.ADO
 
                         MOS.EFMODEL.DataModels.HIS_PATIENT_TYPE patientType = new MOS.EFMODEL.DataModels.HIS_PATIENT_TYPE();
                         patientType = AssignPrescriptionWorker.Instance.MediMatyCreateWorker.choosePatientTypeDefaultlServiceOther(AssignPrescriptionWorker.Instance.MediMatyCreateWorker.getPatientTypeId(), (maty.SERVICE_ID), maty.SERVICE_TYPE_ID);
-                        if (patientType != null)
+                        if (patientType != null && (inputData.DataType == HIS.Desktop.LocalStorage.BackendData.ADO.MedicineMaterialTypeComboADO.VATTU || inputData.DataType == HIS.Desktop.LocalStorage.BackendData.ADO.MedicineMaterialTypeComboADO.VATTU_TSD))
                         {
                             this.PATIENT_TYPE_ID = patientType.ID;
                             this.PATIENT_TYPE_CODE = patientType.PATIENT_TYPE_CODE;
@@ -1661,22 +1664,12 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.ADO
                         this.IsKHBHYT = false;
                         this.PrimaryKey = maty.SERVICE_ID + "__" + Inventec.Common.DateTime.Get.Now() + "__" + Guid.NewGuid().ToString();
                     }
-                    this.DataType = inputData.DataType;
+                    else
+                        goto TuTuc;
                 }
                 else
                 {
-                    this.MEDICINE_TYPE_CODE = inputData.MEDICINE_TYPE_CODE;
-                    this.MEDICINE_TYPE_NAME = inputData.MEDICINE_TYPE_NAME;
-                    this.IsExpend = inputData.IsExpend;
-
-                    this.TUTORIAL = inputData.TUTORIAL;
-                    this.AMOUNT = inputData.AMOUNT;
-                    this.PRES_AMOUNT = this.AMOUNT;
-                    this.TotalPrice = (this.PRICE ?? 0) * (this.AMOUNT ?? 0);
-
-
-                    this.PrimaryKey = 0 + "__" + Inventec.Common.DateTime.Get.Now() + "__" + Guid.NewGuid().ToString();
-                    this.DataType = HIS.Desktop.LocalStorage.BackendData.ADO.MedicineMaterialTypeComboADO.THUOC_TUTUC;
+                    goto TuTuc;
                 }
                 if (unit != null)
                 {
@@ -1686,9 +1679,9 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.ADO
                 }
                 else
                 {
-                   this.SERVICE_UNIT_NAME = inputData.SERVICE_UNIT_CODE_NAME;
+                    this.SERVICE_UNIT_NAME = inputData.SERVICE_UNIT_CODE_NAME;
                 }
-                    this.NUM_ORDER = AssignPrescriptionWorker.Instance.MediMatyCreateWorker.getNumRow();
+                this.NUM_ORDER = AssignPrescriptionWorker.Instance.MediMatyCreateWorker.getNumRow();
                 if (htu != null)
                 {
                     this.HTU_IDs = new List<long>() { htu.ID };
@@ -1717,6 +1710,20 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.ADO
                 }
 
                 AssignPrescriptionWorker.Instance.MediMatyCreateWorker.setNumRow();
+            TuTuc:
+                this.MEDICINE_TYPE_CODE = inputData.MEDICINE_TYPE_CODE;
+                this.MEDICINE_TYPE_NAME = inputData.MEDICINE_TYPE_NAME;
+                this.IsExpend = inputData.IsExpend;
+
+                this.TUTORIAL = inputData.TUTORIAL;
+                this.AMOUNT = inputData.AMOUNT;
+                this.PRES_AMOUNT = this.AMOUNT;
+                this.TotalPrice = (this.PRICE ?? 0) * (this.AMOUNT ?? 0);
+
+
+                this.PrimaryKey = 0 + "__" + Inventec.Common.DateTime.Get.Now() + "__" + Guid.NewGuid().ToString();
+                this.DataType = HIS.Desktop.LocalStorage.BackendData.ADO.MedicineMaterialTypeComboADO.THUOC_TUTUC;
+
             }
             catch (Exception ex)
             {
