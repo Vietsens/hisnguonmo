@@ -1562,7 +1562,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.ADO
                 {
 
                     this.DataType = inputData.DataType;
-                    var mety = BackendDataWorker.Get<V_HIS_MEDICINE_TYPE>().FirstOrDefault(o => o.MEDICINE_TYPE_CODE == inputData.MEDICINE_TYPE_CODE);
+                    var mety = BackendDataWorker.Get<V_HIS_MEDICINE_TYPE>().FirstOrDefault(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE && o.MEDICINE_TYPE_CODE == inputData.MEDICINE_TYPE_CODE);
                     if (mety != null)
                     {
                         Inventec.Common.Mapper.DataObjectMapper.Map<MediMatyTypeADO>(this, mety);
@@ -1615,7 +1615,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.ADO
                 {
 
                     this.DataType = inputData.DataType;
-                    var maty = BackendDataWorker.Get<V_HIS_MATERIAL_TYPE>().FirstOrDefault(o => o.MATERIAL_TYPE_CODE == inputData.MEDICINE_TYPE_CODE);
+                    var maty = BackendDataWorker.Get<V_HIS_MATERIAL_TYPE>().FirstOrDefault(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE && o.MATERIAL_TYPE_CODE == inputData.MEDICINE_TYPE_CODE);
                     if (maty != null)
                     {
                         Inventec.Common.Mapper.DataObjectMapper.Map<MediMatyTypeADO>(this, maty);
