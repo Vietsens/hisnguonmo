@@ -246,6 +246,8 @@
     <Compile Include="ProviderBehavior\CYBERBILL\Model\LoginDataCyberbill.cs" />
     <Compile Include="ProviderBehavior\CYBERBILL\Model\LoginResultCyberbill.cs" />
     <Compile Include="ProviderBehavior\CYBERBILL\Model\SignElectronicBill.cs" />
+    <Compile Include="ProviderBehavior\MInvoice\InvoiceADO.cs" />
+    <Compile Include="ProviderBehavior\MInvoice\MInvoiceBehavior.cs" />
     <Compile Include="ProviderBehavior\MOBIFONE\Model\CancelInvResult.cs" />
     <Compile Include="ProviderBehavior\MOBIFONE\Model\DataReferences.cs" />
     <Compile Include="ProviderBehavior\MOBIFONE\Model\HoaDon78Init.cs" />

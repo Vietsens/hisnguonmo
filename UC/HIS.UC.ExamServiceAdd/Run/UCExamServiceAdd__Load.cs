@@ -136,26 +136,25 @@ namespace HIS.UC.ExamServiceAdd.Run
                 List<ColumnInfo> columnInfos = new List<ColumnInfo>();
                 columnInfos.Add(new ColumnInfo("EXECUTE_ROOM_CODE", "Mã", 120, 1));
                 columnInfos.Add(new ColumnInfo("EXECUTE_ROOM_NAME", "Tên", 300, 2));
-                columnInfos.Add(new ColumnInfo("TOTAL_TODAY_SERVICE_REQ", "Tổng", 100, 3));
-                columnInfos.Add(new ColumnInfo("TOTAL_NEW_SERVICE_REQ", "Chưa", 100, 4));
-                columnInfos.Add(new ColumnInfo("TOTAL_END_SERVICE_REQ", "Kết thúc", 100, 5));
-                columnInfos.Add(new ColumnInfo("TOTAL_WAIT_TODAY_SERVICE_REQ", "CLS", 130, 6));
-                columnInfos.Add(new ColumnInfo("TOTAL_OPEN_SERVICE_REQ", "Đã", 130, 7));
-                columnInfos.Add(new ColumnInfo("MAX_REQUEST_BY_DAY", "Tối đa", 100, 8));
+                columnInfos.Add(new ColumnInfo("TOTAL_TODAY_SERVICE_REQ", "Tổng", 60, 3));
+                columnInfos.Add(new ColumnInfo("TOTAL_NEW_SERVICE_REQ", "Chưa", 60, 4));
+                columnInfos.Add(new ColumnInfo("TOTAL_END_SERVICE_REQ", "Kết thúc", 80, 5));
+                columnInfos.Add(new ColumnInfo("TOTAL_WAIT_TODAY_SERVICE_REQ", "CLS", 60, 6));
+                columnInfos.Add(new ColumnInfo("TOTAL_OPEN_SERVICE_REQ", "Đã", 60, 7));
+                columnInfos.Add(new ColumnInfo("MAX_REQUEST_BY_DAY", "Tối đa", 60, 8));
                 columnInfos.Add(new ColumnInfo("MAX_REQ_BHYT_BY_DAY", "Tối đa BHYT", 100, 9));
                 columnInfos.Add(new ColumnInfo("RESPONSIBLE_USERNAME_DISPLAY", "Tên bác sỹ", 250, 10));
-                ControlEditorADO controlEditorADO = new ControlEditorADO("EXECUTE_ROOM_NAME", "ROOM_ID", columnInfos, false, 1400);
+                ControlEditorADO controlEditorADO = new ControlEditorADO("EXECUTE_ROOM_NAME", "ROOM_ID", columnInfos, false, 1100);
                 ControlEditorLoader.Load(cboExecuteRoom, rooms, controlEditorADO);
-                cboExecuteRoom.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.DisableTextEditor;
+                cboExecuteRoom.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.Standard;
                 cboExecuteRoom.Properties.Buttons.Clear();
                 cboExecuteRoom.Properties.Buttons.Add(new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo));
-                cboExecuteRoom.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.DisableTextEditor;
                 GridView view = cboExecuteRoom.Properties.View;
                 view.OptionsView.ShowColumnHeaders = true;
-                view.OptionsView.ColumnAutoWidth = false;
+                view.OptionsView.ColumnAutoWidth = false;         
                 view.OptionsView.ShowIndicator = false;
                 view.Appearance.HeaderPanel.Font = new Font("Tahoma", 11F, FontStyle.Bold);
-                cboExecuteRoom.Properties.PopupFormSize = new Size(1400,400);
+                cboExecuteRoom.Properties.PopupFormSize = new Size(1100, 400);
                 for (int i = 0; i < view.Columns.Count; i++)
                 {
                     if (i >= columnInfos.Count) break;

@@ -48,6 +48,7 @@
             this.checkReciveAlert = new DevExpress.XtraEditors.Repository.RepositoryItemCheckEdit();
             this.gridColumn12 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.checkReciveAlertSecurity = new DevExpress.XtraEditors.Repository.RepositoryItemCheckEdit();
+            this.gridColumn14 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.repositoryItemRadioGroup3 = new DevExpress.XtraEditors.Repository.RepositoryItemRadioGroup();
             this.gridControlDepartmentAlert = new DevExpress.XtraGrid.GridControl();
             this.gridViewDepartmentAlert = new DevExpress.XtraGrid.Views.Grid.GridView();
@@ -61,6 +62,7 @@
             this.checkAlert = new DevExpress.XtraEditors.Repository.RepositoryItemCheckEdit();
             this.gridColumn6 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.checkAlertSecurity = new DevExpress.XtraEditors.Repository.RepositoryItemCheckEdit();
+            this.gridColumn13 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.repositoryItemRadioGroup2 = new DevExpress.XtraEditors.Repository.RepositoryItemRadioGroup();
             this.cbotype = new DevExpress.XtraEditors.GridLookUpEdit();
             this.gridLookUpEdit1View = new DevExpress.XtraGrid.Views.Grid.GridView();
@@ -78,8 +80,6 @@
             this.layoutControlItem10 = new DevExpress.XtraLayout.LayoutControlItem();
             this.emptySpaceItem2 = new DevExpress.XtraLayout.EmptySpaceItem();
             this.emptySpaceItem3 = new DevExpress.XtraLayout.EmptySpaceItem();
-            this.gridColumn13 = new DevExpress.XtraGrid.Columns.GridColumn();
-            this.gridColumn14 = new DevExpress.XtraGrid.Columns.GridColumn();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
             this.layoutControl1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.txtSearchValue2.Properties)).BeginInit();
@@ -328,6 +328,12 @@
             this.checkReciveAlertSecurity.Name = "checkReciveAlertSecurity";
             this.checkReciveAlertSecurity.NullStyle = DevExpress.XtraEditors.Controls.StyleIndeterminate.Unchecked;
             // 
+            // gridColumn14
+            // 
+            this.gridColumn14.Caption = "gridColumn14";
+            this.gridColumn14.FieldName = "SORT_ORDER";
+            this.gridColumn14.Name = "gridColumn14";
+            // 
             // repositoryItemRadioGroup3
             // 
             this.repositoryItemRadioGroup3.Items.AddRange(new DevExpress.XtraEditors.Controls.RadioGroupItem[] {
@@ -470,6 +476,12 @@
             this.checkAlertSecurity.AutoHeight = false;
             this.checkAlertSecurity.Name = "checkAlertSecurity";
             this.checkAlertSecurity.NullStyle = DevExpress.XtraEditors.Controls.StyleIndeterminate.Unchecked;
+            // 
+            // gridColumn13
+            // 
+            this.gridColumn13.Caption = "gridColumn13";
+            this.gridColumn13.FieldName = "SORT_ORDER";
+            this.gridColumn13.Name = "gridColumn13";
             // 
             // repositoryItemRadioGroup2
             // 
@@ -636,18 +648,6 @@
             this.emptySpaceItem3.Name = "emptySpaceItem3";
             this.emptySpaceItem3.Size = new System.Drawing.Size(213, 26);
             this.emptySpaceItem3.TextSize = new System.Drawing.Size(0, 0);
-            // 
-            // gridColumn13
-            // 
-            this.gridColumn13.Caption = "gridColumn13";
-            this.gridColumn13.FieldName = "SORT_ORDER";
-            this.gridColumn13.Name = "gridColumn13";
-            // 
-            // gridColumn14
-            // 
-            this.gridColumn14.Caption = "gridColumn14";
-            this.gridColumn14.FieldName = "SORT_ORDER";
-            this.gridColumn14.Name = "gridColumn14";
             // 
             // frmAlert
             // 
