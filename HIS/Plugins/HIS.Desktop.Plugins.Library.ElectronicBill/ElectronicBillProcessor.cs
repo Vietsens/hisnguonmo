@@ -40,6 +40,7 @@ using Inventec.Core;
 using Inventec.Common.Adapter;
 using HIS.Desktop.ApiConsumer;
 using HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.CYBERBILL;
+using HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.MInvoice;
 
 namespace HIS.Desktop.Plugins.Library.ElectronicBill
 {
@@ -143,6 +144,11 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill
                             serviceConfig = string.Format("{0}|{1}", ProviderType.SoftDream, sodr != null ? sodr.VALUE : "");
                             accountConfig = ConfigApplicationWorker.Get<string>(SdaConfigKey.ACCOUNT_CONFIG_KEY__SOFTDREAM);
                             break;
+                        case IMSys.DbConfig.HIS_RS.HIS_EINVOICE_TYPE.ID__MINVOICE:
+                            var minvoice = BackendDataWorker.Get<HIS_EINVOICE_TYPE>().FirstOrDefault(o => o.ID == IMSys.DbConfig.HIS_RS.HIS_EINVOICE_TYPE.ID__MINVOICE);
+                            serviceConfig = string.Format("{0}|{1}", ProviderType.MINVOICE, minvoice != null ? minvoice.VALUE : "");
+                            accountConfig = ConfigApplicationWorker.Get<string>(SdaConfigKey.ACCOUNT_CONFIG_KEY__MINVOICE);
+                            break;
                         default:
                             break;
                     }
@@ -192,6 +198,9 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill
                             break;
                         case ProviderType.CYBERBILL:
                             iRun = new CYBERBILLBehavior(this.ElectronicBillDataInput, serviceConfig, accountConfig);
+                            break;
+                        case ProviderType.MINVOICE:
+                            iRun = new MInvoiceBehavior(this.ElectronicBillDataInput, serviceConfig, accountConfig);
                             break;
                         default:
                             break;
