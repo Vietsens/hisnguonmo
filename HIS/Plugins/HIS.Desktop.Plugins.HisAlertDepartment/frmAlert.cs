@@ -132,11 +132,8 @@ namespace HIS.Desktop.Plugins.HisAlertDepartment
             {
                 try
                 {
-
                     WaitingManager.Show();
-
-
-                    int pageSize = 0;
+                    int pageSize;
                     if (ucPaging1.pagingGrid != null)
                     {
                         pageSize = ucPaging1.pagingGrid.PageSize;
@@ -209,17 +206,22 @@ namespace HIS.Desktop.Plugins.HisAlertDepartment
         {
             try
             {
+                WaitingManager.Show();
                 Inventec.Common.Logging.LogSystem.Debug("Load data to list alert");
                 CommonParam paramCommon;
+
                 var startPage =  ((CommonParam)param).Start ?? 0;
                 int limit = ((CommonParam)param).Limit ?? 0;
                 paramCommon = new CommonParam(startPage, limit);
+
                 this.gridControlDepartmentAlert.BeginUpdate();
                 Inventec.Core.ApiResultObject<List<HIS_DEPARTMENT>> apiResult = null;
+
                 HisDepartmentFilter filter = new HisDepartmentFilter();
                 filter.IS_ACTIVE = 1;
                 filter.ORDER_DIRECTION = "DESC";
                 filter.ORDER_FIELD = "MODIFY_TIME";
+
                 if (!string.IsNullOrEmpty(txtSearchValue1.Text)) filter.KEY_WORD = txtSearchValue1.Text;
                 apiResult = new BackendAdapter(paramCommon).GetRO<List<HIS_DEPARTMENT>>("/api/HisDepartment/Get", ApiConsumers.MosConsumer, filter, paramCommon);
                 if (apiResult != null)
@@ -235,11 +237,14 @@ namespace HIS.Desktop.Plugins.HisAlertDepartment
 
                     }
                 }
+
+
                 gridControlDepartmentAlert.EndUpdate();
+                WaitingManager.Hide();
             }
             catch (Exception ex)
             {
-                
+                WaitingManager.Hide();
                 LogSystem.Warn(ex);
             }
         }
@@ -247,12 +252,13 @@ namespace HIS.Desktop.Plugins.HisAlertDepartment
         {
             try
             {
+                WaitingManager.Show();
                 Inventec.Common.Logging.LogSystem.Debug("Load data to list recive");
                 CommonParam paramCommon;
                 var startPage = ((CommonParam)param).Start ?? 0;
                 int limit = ((CommonParam)param).Limit ?? 0;
                 paramCommon = new CommonParam(startPage, limit);
-                this.gridControlDepartmentRecive.BeginUpdate();
+                this.gridControlDepartmentRecive.BeginUpdate();  
                 Inventec.Core.ApiResultObject<List<HIS_DEPARTMENT>> apiResult = null;
                 HisDepartmentFilter filter = new HisDepartmentFilter();
                 filter.IS_ACTIVE = 1;
@@ -276,10 +282,11 @@ namespace HIS.Desktop.Plugins.HisAlertDepartment
                     }
                 }
                 gridControlDepartmentRecive.EndUpdate();
+                WaitingManager.Hide();
             }
             catch (Exception ex)
             {
-
+                WaitingManager.Hide();
                 LogSystem.Warn(ex);
             }
         }
@@ -883,18 +890,20 @@ namespace HIS.Desktop.Plugins.HisAlertDepartment
         {
             if (isChecked)
             {
-                if (!listDepartmentRecive.Contains(rowData))
+                // Kiểm tra theo ID thay vì object reference
+                if (!listDepartmentRecive.Any(x => x.ID == rowData.ID))
                 {
                     if (Convert.ToInt16(cbotype.EditValue) == 1) listDepartmentRecive.Clear();
                     listDepartmentRecive.Add(rowData);
-
                 }
             }
             else
             {
-                if (listDepartmentRecive.Contains(rowData))
+                // Remove theo ID
+                var itemToRemove = listDepartmentRecive.FirstOrDefault(x => x.ID == rowData.ID);
+                if (itemToRemove != null)
                 {
-                    listDepartmentRecive.Remove(rowData);
+                    listDepartmentRecive.Remove(itemToRemove);
                 }
             }
         }
@@ -1071,11 +1080,6 @@ namespace HIS.Desktop.Plugins.HisAlertDepartment
                 LogSystem.Warn(ex);
             }
         }
-
-       
-
-
-
         #endregion
 
 
@@ -1143,7 +1147,6 @@ namespace HIS.Desktop.Plugins.HisAlertDepartment
         {
             try
             {
-
                 CommonParam param = new CommonParam();
                 HisAlertDepartmentFilter filter = new HisAlertDepartmentFilter();
                 if(type == 1)
@@ -1175,10 +1178,14 @@ namespace HIS.Desktop.Plugins.HisAlertDepartment
                                 {
                                     record.IS_MEDICAL = 1;
                                 }
+                                else
+                                    record.IS_MEDICAL = 0;
                                 if (dicIsSecurityRecive.ContainsKey(recive.ID) && dicIsSecurityRecive[recive.ID] == true)
                                 {
                                     record.IS_SECURITY = 1;
                                 }
+                                else
+                                    record.IS_SECURITY = 0;
                                 listDTO.Add(record);
                                 record.DEPARTMENT_ID = listDepartmentAlert.First().ID;
                                 
@@ -1440,8 +1447,6 @@ namespace HIS.Desktop.Plugins.HisAlertDepartment
                 LogSystem.Warn(ex);
             }
         }
-
-
 
         //Vẽ ô checkbox trên header cho các cột
         bool isHeaderCheckBoxChecked = false;
