@@ -67,14 +67,14 @@ namespace HIS.Desktop.Plugins.ExpMestChmsUpdate.ADO
 
         public MediMateTypeADO() { }
 
-        public MediMateTypeADO(HisMedicineInStockSDO medicine)
+        public MediMateTypeADO(HisMedicineInStockSDO medicine, bool? isCheckedHienThiLo)
         {
             try
             {
                 if (medicine != null)
                 {
                     this.IsMedicine = true;
-                    this.SERVICE_ID = medicine.SERVICE_ID;
+                    this.SERVICE_ID = (isCheckedHienThiLo != null && isCheckedHienThiLo == true) ? medicine.ID : medicine.SERVICE_ID;
                     this.MEDI_MATE_TYPE_ID = medicine.MEDICINE_TYPE_ID;
                     this.MEDI_MATE_TYPE_CODE = medicine.MEDICINE_TYPE_CODE;
                     this.MEDI_MATE_TYPE_NAME = medicine.MEDICINE_TYPE_NAME;
@@ -96,14 +96,14 @@ namespace HIS.Desktop.Plugins.ExpMestChmsUpdate.ADO
             }
         }
 
-        public MediMateTypeADO(HisMaterialInStockSDO material)
+        public MediMateTypeADO(HisMaterialInStockSDO material, bool? flag)
         {
             try
             {
                 if (material != null)
                 {
                     this.IsMedicine = false;
-                    this.SERVICE_ID = material.SERVICE_ID;
+                    this.SERVICE_ID = (flag != null && flag == true) ? material.ID : material.SERVICE_ID;
                     this.MEDI_MATE_TYPE_ID = material.MATERIAL_TYPE_ID;
                     this.MEDI_MATE_TYPE_CODE = material.MATERIAL_TYPE_CODE;
                     this.MEDI_MATE_TYPE_NAME = material.MATERIAL_TYPE_NAME;
