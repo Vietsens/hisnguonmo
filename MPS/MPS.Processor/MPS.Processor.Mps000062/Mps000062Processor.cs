@@ -5853,15 +5853,43 @@ namespace MPS.Processor.Mps000062
                             {
                                 string s1 = "", s2 = "";
 
-                                if (IMedi.USE_TIME_OLD != null && UseTime != IMedi.USE_TIME_OLD)
+                                //if (IMedi.USE_TIME_OLD != null && UseTime != IMedi.USE_TIME_OLD)
+                                //{
+                                //    UseTime = IMedi.USE_TIME_OLD;
+                                //    item.MOBA_IMP_MEST_MEDICINE__DATA += Inventec.Desktop.Common.HtmlString.ProcessorString.InsertFontStyle("Hoàn trả thuốc dự trù ngày " + Inventec.Common.DateTime.Convert.TimeNumberToDateString(UseTime ?? 0), FontStyle.Bold);
+                                //}
+                                //else if (IMedi.INTRUCTION_TIME_OLD != null && IntructionTime != IMedi.INTRUCTION_TIME_OLD)
+                                //{
+                                //    IntructionTime = IMedi.INTRUCTION_TIME_OLD;
+                                //    item.MOBA_IMP_MEST_MEDICINE__DATA += Inventec.Desktop.Common.HtmlString.ProcessorString.InsertFontStyle("Hoàn trả thuốc sử dụng ngày " + Inventec.Common.DateTime.Convert.TimeNumberToDateString(IntructionTime ?? 0), FontStyle.Bold);
+                                //}
+                                if (IMedi.INTRUCTION_TIME_OLD != null && IMedi.USE_TIME_OLD != null)
                                 {
-                                    UseTime = IMedi.USE_TIME_OLD;
-                                    item.MOBA_IMP_MEST_MEDICINE__DATA += Inventec.Desktop.Common.HtmlString.ProcessorString.InsertFontStyle("Hoàn trả thuốc dự trù ngày " + Inventec.Common.DateTime.Convert.TimeNumberToDateString(UseTime ?? 0), FontStyle.Bold);
-                                }
-                                else if (IMedi.INTRUCTION_TIME_OLD != null && IntructionTime != IMedi.INTRUCTION_TIME_OLD)
-                                {
-                                    IntructionTime = IMedi.INTRUCTION_TIME_OLD;
-                                    item.MOBA_IMP_MEST_MEDICINE__DATA += Inventec.Desktop.Common.HtmlString.ProcessorString.InsertFontStyle("Hoàn trả thuốc sử dụng ngày " + Inventec.Common.DateTime.Convert.TimeNumberToDateString(IntructionTime ?? 0), FontStyle.Bold);
+                                    var instructionDateString = Inventec.Common.DateTime.Convert.TimeNumberToDateString(IMedi.INTRUCTION_TIME_OLD.Value);
+                                    DateTime instructionDate = DateTime.Parse(instructionDateString).Date;
+                                    var useDateString = Inventec.Common.DateTime.Convert.TimeNumberToDateString(IMedi.USE_TIME_OLD.Value);
+                                    DateTime useDate = DateTime.Parse(useDateString).Date;
+
+                                    if (instructionDate != useDate)
+                                    {
+                                        if (UseTime != IMedi.USE_TIME_OLD)
+                                        {
+                                            UseTime = IMedi.USE_TIME_OLD;
+                                            item.MOBA_IMP_MEST_MEDICINE__DATA += Inventec.Desktop.Common.HtmlString.ProcessorString.InsertFontStyle(
+                                                "Hoàn trả thuốc dự trù ngày " + Inventec.Common.DateTime.Convert.TimeNumberToDateString(UseTime ?? 0),
+                                                FontStyle.Bold);
+                                        }
+                                    }
+                                    else
+                                    {
+                                        if (IntructionTime != IMedi.INTRUCTION_TIME_OLD)
+                                        {
+                                            IntructionTime = IMedi.INTRUCTION_TIME_OLD;
+                                            item.MOBA_IMP_MEST_MEDICINE__DATA += Inventec.Desktop.Common.HtmlString.ProcessorString.InsertFontStyle(
+                                                "Hoàn trả thuốc sử dụng ngày " + Inventec.Common.DateTime.Convert.TimeNumberToDateString(IntructionTime ?? 0),
+                                                FontStyle.Bold);
+                                        }
+                                    }
                                 }
 
                                 s1 = IMedi.MEDICINE_TYPE_NAME;
@@ -5887,15 +5915,33 @@ namespace MPS.Processor.Mps000062
                             {
                                 string s1 = "", s2 = "";
 
-                                if (IMate.USE_TIME_OLD != null && UseTime != IMate.USE_TIME_OLD)
+                                if (IMate.INTRUCTION_TIME_OLD != null && IMate.USE_TIME_OLD != null)
                                 {
-                                    UseTime = IMate.USE_TIME_OLD;
-                                    item.MOBA_IMP_MEST_MATERIAL__DATA += Inventec.Desktop.Common.HtmlString.ProcessorString.InsertFontStyle("Hoàn trả vật tư dự trù ngày " + Inventec.Common.DateTime.Convert.TimeNumberToDateString(UseTime ?? 0), FontStyle.Bold);
-                                }
-                                else if (IMate.INTRUCTION_TIME_OLD != null && IntructionTime != IMate.INTRUCTION_TIME_OLD)
-                                {
-                                    IntructionTime = IMate.INTRUCTION_TIME_OLD;
-                                    item.MOBA_IMP_MEST_MATERIAL__DATA += Inventec.Desktop.Common.HtmlString.ProcessorString.InsertFontStyle("Hoàn trả vật tư sử dụng ngày " + Inventec.Common.DateTime.Convert.TimeNumberToDateString(IntructionTime ?? 0), FontStyle.Bold);
+                                    var instructionDateString = Inventec.Common.DateTime.Convert.TimeNumberToDateString(IMate.INTRUCTION_TIME_OLD.Value);
+                                    DateTime instructionDate = DateTime.Parse(instructionDateString).Date;
+                                    var useDateString = Inventec.Common.DateTime.Convert.TimeNumberToDateString(IMate.USE_TIME_OLD.Value);
+                                    DateTime useDate = DateTime.Parse(useDateString).Date;
+
+                                    if (instructionDate != useDate)
+                                    {
+                                        if (UseTime != IMate.USE_TIME_OLD)
+                                        {
+                                            UseTime = IMate.USE_TIME_OLD;
+                                            item.MOBA_IMP_MEST_MATERIAL__DATA += Inventec.Desktop.Common.HtmlString.ProcessorString.InsertFontStyle(
+                                                "Hoàn trả vật tư dự trù ngày " + Inventec.Common.DateTime.Convert.TimeNumberToDateString(UseTime ?? 0),
+                                                FontStyle.Bold);
+                                        }
+                                    }
+                                    else
+                                    {
+                                        if (IntructionTime != IMate.INTRUCTION_TIME_OLD)
+                                        {
+                                            IntructionTime = IMate.INTRUCTION_TIME_OLD;
+                                            item.MOBA_IMP_MEST_MATERIAL__DATA += Inventec.Desktop.Common.HtmlString.ProcessorString.InsertFontStyle(
+                                                "Hoàn trả vật tư sử dụng ngày " + Inventec.Common.DateTime.Convert.TimeNumberToDateString(IntructionTime ?? 0),
+                                                FontStyle.Bold);
+                                        }
+                                    }
                                 }
 
                                 s1 = IMate.MATERIAL_TYPE_NAME;
