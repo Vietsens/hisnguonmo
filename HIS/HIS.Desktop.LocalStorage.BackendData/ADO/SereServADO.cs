@@ -93,6 +93,8 @@ namespace HIS.Desktop.LocalStorage.BackendData.ADO
         public string TEST_SAMPLE_TYPE_CODE { get; set; }
         public string TEST_SAMPLE_TYPE_NAME { get; set; }
         public string TEST_SAMPLE_TYPE_CODE_DEFAULT { get; set; }
+        public short? IS_MULTIPLE_EXECUTE { get; set; }
+        public long NumberOfTimes { get; set; }
         public SereServADO()
         {
 
@@ -207,6 +209,7 @@ namespace HIS.Desktop.LocalStorage.BackendData.ADO
                 this.SERVICE_CODE_HIDDEN = convertToUnSign3(this.TDL_SERVICE_CODE) + this.TDL_SERVICE_CODE;
                 this.DEFAULT_PATIENT_TYPE_ID = service.DEFAULT_PATIENT_TYPE_ID;
                 this.DO_NOT_USE_BHYT = service.DO_NOT_USE_BHYT;
+                this.IS_MULTIPLE_EXECUTE = service.IS_MULTIPLE_EXECUTE;
             }
             catch (Exception ex)
             {

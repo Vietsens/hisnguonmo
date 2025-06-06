@@ -141,6 +141,7 @@ namespace HIS.Desktop.Plugins.EmrDocumentGroup
             SetDefaultFocus();
 
             this.InItComboParent(null);
+            this.InitComboMediaDocType();
         }
 
 
@@ -181,6 +182,33 @@ namespace HIS.Desktop.Plugins.EmrDocumentGroup
                 columnInfos.Add(new ColumnInfo("DOCUMENT_GROUP_NAME", "", 250, 2));
                 ControlEditorADO controlEditorADO = new ControlEditorADO("DOCUMENT_GROUP_NAME", "ID", columnInfos, false, 350);
                 ControlEditorLoader.Load(cboParent, listParentService, controlEditorADO);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void InitComboMediaDocType()
+        {
+            try
+            {               
+                var listMediaDocType = BackendDataWorker.Get<EMR_MEDIA_DOC_TYPE>().ToList();
+                cboMediaDoc.Properties.DataSource = listMediaDocType;
+                cboMediaDoc.Properties.DisplayMember = "MEDIA_DOC_TYPE_NAME";
+                cboMediaDoc.Properties.ValueMember = "ID";
+                cboMediaDoc.Properties.NullText = "";
+                cboMediaDoc.Properties.ImmediatePopup = true;
+                cboMediaDoc.Properties.PopupFilterMode = DevExpress.XtraEditors.PopupFilterMode.Contains;
+                cboMediaDoc.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.Standard;
+                cboMediaDoc.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
+
+                if (cboMediaDoc.Properties.View.Columns.Count == 0)
+                {
+                    cboMediaDoc.Properties.View.Columns.AddVisible("MEDIA_DOC_TYPE_CODE", "Mã loại");
+                    cboMediaDoc.Properties.View.Columns.AddVisible("MEDIA_DOC_TYPE_NAME", "Tên loại");
+                    cboMediaDoc.Properties.View.BestFitColumns();
+                }
             }
             catch (Exception ex)
             {
@@ -414,6 +442,7 @@ namespace HIS.Desktop.Plugins.EmrDocumentGroup
                         txtEmrDocumentGroupName.Text = "";
                         txtSTT.Text = "";
                         cboParent.EditValue = null;
+                        cboMediaDoc.EditValue = null;
                         RefeshDataAfterSave(resultData);
                         ResetFormData();
                     }
@@ -536,6 +565,15 @@ namespace HIS.Desktop.Plugins.EmrDocumentGroup
                     currentDTO.PARENT_ID = null;
                 }
 
+                if (cboMediaDoc.EditValue != null)
+                {
+                    currentDTO.MEDIA_DOC_TYPE_ID = Inventec.Common.TypeConvert.Parse.ToInt64(cboMediaDoc.EditValue.ToString());
+                }
+                else
+                {
+                    currentDTO.MEDIA_DOC_TYPE_ID = null;
+                }
+
                 if (!String.IsNullOrWhiteSpace(txtSTT.Text))
                 {
                     currentDTO.NUM_ORDER = long.Parse(txtSTT.Text);
@@ -580,6 +618,7 @@ namespace HIS.Desktop.Plugins.EmrDocumentGroup
                 txtFind.Text = "";
                 txtSTT.Text = "";
                 cboParent.EditValue = null;
+                cboMediaDoc.EditValue = null;
                 Inventec.Desktop.Controls.ControlWorker.ValidationProviderRemoveControlError(dxValidationProvider1, dxErrorProvider1);
                 ResetFormData();
                 SetFocusEditor();
@@ -706,6 +745,7 @@ namespace HIS.Desktop.Plugins.EmrDocumentGroup
                     txtEmrDocumentGroupName.Text = data.DOCUMENT_GROUP_NAME;
                     txtSTT.Text = data.NUM_ORDER.ToString();
                     cboParent.EditValue = data.PARENT_ID;
+                    cboMediaDoc.EditValue = data.MEDIA_DOC_TYPE_ID;
                 }
             }
             catch (Exception ex)
@@ -1114,14 +1154,6 @@ namespace HIS.Desktop.Plugins.EmrDocumentGroup
             }
         }
 
-        private void cboParent_ButtonClick(object sender, DevExpress.XtraEditors.Controls.ButtonPressedEventArgs e)
-        {
-            if (e.Button.Kind == DevExpress.XtraEditors.Controls.ButtonPredefines.Delete)
-            {
-                cboParent.EditValue = null;
-            }
-        }
-
         private void cboParent_Closed(object sender, DevExpress.XtraEditors.Controls.ClosedEventArgs e)
         {
             try
@@ -1143,6 +1175,58 @@ namespace HIS.Desktop.Plugins.EmrDocumentGroup
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
+        private void cboParent_ButtonClick(object sender, DevExpress.XtraEditors.Controls.ButtonPressedEventArgs e)
+        {
+            if (e.Button.Kind == DevExpress.XtraEditors.Controls.ButtonPredefines.Delete)
+            {
+                cboParent.EditValue = null;
+            }
+        }
 
+        private void cboMediaDoc_ButtonClick(object sender, DevExpress.XtraEditors.Controls.ButtonPressedEventArgs e)
+        {
+            if (e.Button.Kind == DevExpress.XtraEditors.Controls.ButtonPredefines.Delete)
+            {
+                cboMediaDoc.EditValue = null;
+            }
+        }
+
+        private void cboMediaDoc_Closed(object sender, DevExpress.XtraEditors.Controls.ClosedEventArgs e)
+        {
+            try
+            {
+                if (e.CloseMode == PopupCloseMode.Normal)
+                {
+                    if (this.ActionType == GlobalVariables.ActionAdd)
+                    {
+                        btnAdd.Focus();
+                    }
+                    else
+                    {
+                        btnEdit.Focus();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void cboMediaDoc_KeyDown(object sender, KeyEventArgs e)
+        {
+            try
+            {
+                if (e.KeyCode == Keys.Enter)
+                {
+                    cboMediaDoc.ShowPopup();
+                    e.Handled = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
     }
 }

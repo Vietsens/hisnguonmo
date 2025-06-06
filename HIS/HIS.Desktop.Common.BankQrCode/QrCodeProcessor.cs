@@ -26,8 +26,12 @@ using MOS.TDO;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
+using System.IO;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 
 namespace HIS.Desktop.Common.BankQrCode
 {
@@ -129,6 +133,11 @@ namespace HIS.Desktop.Common.BankQrCode
                                 if (IsGenQrBidvApi && QrBidv != null && QrBidv.TransReqId == data.ID)
                                 {
                                     result[key] = Convert.FromBase64String(ConvertString(QrBidv.ImgQrBase64));
+                                    using (var ms = new MemoryStream((byte[])result[key]))
+                                    {
+                                        QRCodeResult[] QRCodeResultArray = (new QRDecoder()).ImageDecoder(new Bitmap(ms));
+                                        DicContentBank[data.TRANS_REQ_CODE] = QRCodeResult.ConvertResultToDisplayString(QRCodeResultArray);
+                                    }
                                 }
                                 else
                                 {

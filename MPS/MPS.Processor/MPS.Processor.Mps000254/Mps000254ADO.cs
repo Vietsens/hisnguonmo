@@ -57,6 +57,9 @@ namespace MPS.Processor.Mps000254
         public string REPLACE_NAME { get; set; }
         public string REPLACE_CODE { get; set; }
         public long KEY_GROUP { get; set; }
+
+        public string STORAGE_CONDITION_CODE { get; set; }
+        public string STORAGE_CONDITION_NAME { get; set; }
         public Mps000254ADO()
         {
         }
@@ -81,6 +84,9 @@ namespace MPS.Processor.Mps000254
                     this.CONCENTRA = data.CONCENTRA;
                     this.ACTIVE_INGR_BHYT_CODE = data.ACTIVE_INGR_BHYT_CODE;
                     this.ACTIVE_INGR_BHYT_NAME = data.ACTIVE_INGR_BHYT_NAME;
+
+                    this.STORAGE_CONDITION_NAME = data.STORAGE_CONDITION_NAME;
+                    this.STORAGE_CONDITION_CODE = data.STORAGE_CONDITION_CODE;
                 }
 
                 if (expMest.EXP_MEST_STT_ID == IMSys.DbConfig.HIS_RS.HIS_EXP_MEST_STT.ID__EXECUTE || expMest.EXP_MEST_STT_ID == IMSys.DbConfig.HIS_RS.HIS_EXP_MEST_STT.ID__DONE)
@@ -125,12 +131,16 @@ namespace MPS.Processor.Mps000254
                     this.CONCENTRA = replace.CONCENTRA;
                     this.ACTIVE_INGR_BHYT_CODE = replace.ACTIVE_INGR_BHYT_CODE;
                     this.ACTIVE_INGR_BHYT_NAME = replace.ACTIVE_INGR_BHYT_NAME;
+                    this.STORAGE_CONDITION_NAME = replace.STORAGE_CONDITION_NAME;
+                    this.STORAGE_CONDITION_CODE = replace.STORAGE_CONDITION_CODE;
                 }
                 var data = _medicineTypes.FirstOrDefault(p => p.ID == req.First().MEDICINE_TYPE_ID);
                 if (data != null)
                 {
                     this.REPLACE_NAME = data.MEDICINE_TYPE_NAME;
                     this.REPLACE_CODE = data.MEDICINE_TYPE_CODE;
+                    this.STORAGE_CONDITION_NAME = replace.STORAGE_CONDITION_NAME;
+                    this.STORAGE_CONDITION_CODE = replace.STORAGE_CONDITION_CODE;
                 }
                 if (expMest.EXP_MEST_STT_ID == IMSys.DbConfig.HIS_RS.HIS_EXP_MEST_STT.ID__EXECUTE || expMest.EXP_MEST_STT_ID == IMSys.DbConfig.HIS_RS.HIS_EXP_MEST_STT.ID__DONE)
                 {

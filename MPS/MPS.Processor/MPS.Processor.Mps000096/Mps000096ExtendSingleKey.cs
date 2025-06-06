@@ -75,5 +75,12 @@ namespace MPS.Processor.Mps000096
         internal const string BED_CODE = "BED_CODE";
         internal const string SAMPLE_TYPE_NAMEs = "SAMPLE_TYPE_NAMEs";
 
+        //Dangth
+        internal const string SAMPLE_NAME = "SAMPLE_NAME";
+        internal const string SAMPLE_STATE = "SAMPLE_STATE";
+        internal const string SAMPLE_POSITION = "SAMPLE_POSITION";
+        internal const string CARTRIDGE_LOT = "CARTRIDGE_LOT";
+        internal const string CARTRIDGE_CAL = "CARTRIDGE_CAL";
+        internal const string RANGE_TIMES = "RANGE_TIMES";
     }
 }

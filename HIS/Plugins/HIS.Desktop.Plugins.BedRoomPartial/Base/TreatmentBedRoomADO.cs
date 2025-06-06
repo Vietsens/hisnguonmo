@@ -27,8 +27,6 @@ namespace HIS.Desktop.Plugins.BedRoomPartial.Base
     public class TreatmentBedRoomADO : MOS.EFMODEL.DataModels.L_HIS_TREATMENT_BED_ROOM
     {
         public string ADD_TIME_STR { get; set; }
-        public string PATIENT_CLASSIFY_NAME { get; set; }
-        public string DISPLAY_COLOR { get; set; }
 
         public TreatmentBedRoomADO() { }
 

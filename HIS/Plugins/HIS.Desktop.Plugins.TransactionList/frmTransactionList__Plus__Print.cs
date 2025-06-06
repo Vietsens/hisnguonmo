@@ -181,7 +181,7 @@ namespace HIS.Desktop.Plugins.TransactionList
             {
                 switch (printCode)
                 {
-                   
+
                     case MPS.Processor.Mps000431.PDO.Mps000431PDO.printTypeCode:
                         InHoaDonDienTuNhap( printCode, fileName, ref result);
                         break;
@@ -196,12 +196,12 @@ namespace HIS.Desktop.Plugins.TransactionList
             }
             return result;
         }
-        private bool InHoaDonDienTuNhap( string printTypeCode, string fileName, ref bool result)
+        private bool InHoaDonDienTuNhap(string printTypeCode, string fileName, ref bool result)
         {
             try
             {
                 var transaction = transactionPrint;
-                List<V_HIS_SERE_SERV_5> sereServ5s = new List<V_HIS_SERE_SERV_5>(); 
+                List<V_HIS_SERE_SERV_5> sereServ5s = new List<V_HIS_SERE_SERV_5>();
                 List<HIS_SERE_SERV_BILL> sereServBill = null;
                 var filterParam = new CommonParam();
                 var ssbFilter = new HisSereServBillFilter() { BILL_ID = transaction.ID };
@@ -209,8 +209,6 @@ namespace HIS.Desktop.Plugins.TransactionList
 
                 if (sereServBill != null && sereServBill.Count > 0)
                 {
-                    if (sereServ5s == null)
-                        sereServ5s = new List<V_HIS_SERE_SERV_5>();
                     foreach (var item in sereServBill)
                     {
                         V_HIS_SERE_SERV_5 sereServBill5 = new V_HIS_SERE_SERV_5();
@@ -225,30 +223,37 @@ namespace HIS.Desktop.Plugins.TransactionList
                 }
                 else if (sereServBill == null || sereServBill.Count == 0)
                 {
-                    var bgFilter = new HisBillGoodsFilter();
-                    bgFilter.BILL_ID = transaction.ID;
+                    var bgFilter = new HisBillGoodsFilter { BILL_ID = transaction.ID };
                     var billGoods = new BackendAdapter(filterParam).Get<List<HIS_BILL_GOODS>>("api/HisBillGoods/Get", ApiConsumers.MosConsumer, bgFilter, filterParam);
 
                     if (billGoods != null && billGoods.Count > 0)
                     {
-                        sereServ5s = new List<V_HIS_SERE_SERV_5>();
                         int dem = 0;
                         foreach (var item in billGoods)
                         {
+                            decimal amount = item.AMOUNT;
+                            decimal vatRatio = item.VAT_RATIO ?? 0;
+                            decimal priceWithVat = item.PRICE;
+                            decimal discount = item.DISCOUNT ?? 0;
+
+                            decimal unitPrice = amount != 0 ? ((priceWithVat / (1 + vatRatio)) * amount - discount) / amount : 0;
+                            decimal totalPriceBeforeVat = unitPrice * amount;
+                            decimal totalPriceWithVat = totalPriceBeforeVat * (1 + vatRatio);
+
                             var ssb = new V_HIS_SERE_SERV_5
                             {
                                 SERVICE_ID = item.NONE_MEDI_SERVICE_ID ?? item.MATERIAL_TYPE_ID ?? item.MEDICINE_TYPE_ID ?? dem,
                                 MEDICINE_ID = item.MEDICINE_TYPE_ID,
                                 MATERIAL_ID = item.MATERIAL_TYPE_ID,
                                 OTHER_PAY_SOURCE_ID = item.NONE_MEDI_SERVICE_ID,
-                                AMOUNT = item.AMOUNT,
-                                VAT_RATIO = item.VAT_RATIO ?? 0,
+                                AMOUNT = amount,
+                                VAT_RATIO = vatRatio,
                                 TDL_SERVICE_CODE = "",
                                 TDL_SERVICE_NAME = item.GOODS_NAME,
                                 SERVICE_UNIT_NAME = item.GOODS_UNIT_NAME,
-                                PRICE = item.PRICE - ((item.DISCOUNT ?? 0) / item.AMOUNT),
-                                VIR_PRICE = item.PRICE - ((item.DISCOUNT ?? 0) / item.AMOUNT),
-                                VIR_TOTAL_PATIENT_PRICE = (item.PRICE - ((item.DISCOUNT ?? 0) / item.AMOUNT)) * (1 + (item.VAT_RATIO ?? 0)) * item.AMOUNT
+                                PRICE = unitPrice,
+                                VIR_PRICE = unitPrice,
+                                VIR_TOTAL_PATIENT_PRICE = totalPriceWithVat
                             };
                             sereServ5s.Add(ssb);
                             dem++;
@@ -303,28 +308,49 @@ namespace HIS.Desktop.Plugins.TransactionList
                 Inventec.Common.Mapper.DataObjectMapper.Map<HIS_TRANSACTION>(tran, transaction);
                 dataInput.Transaction = tran;
 
-                long Template = long.Parse(TransactionListConfig.InvoiceTemplateCreate);
                 TemplateEnum.TYPE typ = TemplateEnum.TYPE.Template1;
-                try
+
+                if (transaction.SALE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SALE_TYPE.ID__SALE_EXP)
                 {
-                    typ = (TemplateEnum.TYPE)Template;
+                    typ = TemplateEnum.TYPE.TemplateNhaThuoc;
                 }
-                catch (Exception)
+                else
                 {
-                    typ = TemplateEnum.TYPE.Template1;
+                    try
+                    {
+                        long templateConfig = long.Parse(TransactionListConfig.InvoiceTemplateCreate);
+                        typ = (TemplateEnum.TYPE)templateConfig;
+                    }
+                    catch
+                    {
+                        typ = TemplateEnum.TYPE.Template1;
+                    }
                 }
 
-                IRunTemplate iRunTemplate = TemplateFactory.MakeIRun(typ, dataInput);
-
-                var listProduct = iRunTemplate.Run();
 
                 List<MPS.Processor.Mps000431.PDO.ProductADO> lstProductADO = new List<MPS.Processor.Mps000431.PDO.ProductADO>();
-                var lst = (List<ProductBase>)listProduct;
-                foreach (var item in lst)
+                IRunTemplate iRunTemplate = TemplateFactory.MakeIRun(typ, dataInput);
+                var listProduct = iRunTemplate.Run();
+
+                if (transaction.SALE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SALE_TYPE.ID__SALE_EXP)
                 {
-                    MPS.Processor.Mps000431.PDO.ProductADO ado = new MPS.Processor.Mps000431.PDO.ProductADO();
-                    Inventec.Common.Mapper.DataObjectMapper.Map<MPS.Processor.Mps000431.PDO.ProductADO>(ado, item);
-                    lstProductADO.Add(ado);
+                    var lst = (List<ProductBasePlus>)listProduct;
+                    foreach (var item in lst)
+                    {
+                        MPS.Processor.Mps000431.PDO.ProductADO ado = new MPS.Processor.Mps000431.PDO.ProductADO();
+                        Inventec.Common.Mapper.DataObjectMapper.Map<MPS.Processor.Mps000431.PDO.ProductADO>(ado, item);
+                        lstProductADO.Add(ado);
+                    }
+                }
+                else
+                {
+                    var lst = (List<ProductBase>)listProduct;
+                    foreach (var item in lst)
+                    {
+                        MPS.Processor.Mps000431.PDO.ProductADO ado = new MPS.Processor.Mps000431.PDO.ProductADO();
+                        Inventec.Common.Mapper.DataObjectMapper.Map<MPS.Processor.Mps000431.PDO.ProductADO>(ado, item);
+                        lstProductADO.Add(ado);
+                    }
                 }
 
                 MPS.Processor.Mps000431.PDO.Mps000431PDO rdo = new MPS.Processor.Mps000431.PDO.Mps000431PDO(transaction, lstProductADO);
@@ -337,16 +363,12 @@ namespace HIS.Desktop.Plugins.TransactionList
                     printerName = GlobalVariables.dicPrinter[printTypeCode];
                 }
 
-                Inventec.Common.SignLibrary.ADO.InputADO inputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode((this.currentTreatment != null ? this.currentTreatment.TREATMENT_CODE : ""), printTypeCode, currentModule != null ? currentModule.RoomId : 0);
+                var inputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor()
+                    .GenerateInputADOWithPrintTypeCode((this.currentTreatment != null ? this.currentTreatment.TREATMENT_CODE : ""), printTypeCode, currentModule != null ? currentModule.RoomId : 0);
 
-                if (isPrintNow)
-                {
-                    result = MPS.MpsPrinter.Run(new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, rdo, MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow, printerName) { EmrInputADO = inputADO });
-                }
-                else
-                {
-                    result = MPS.MpsPrinter.Run(new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, rdo, MPS.ProcessorBase.PrintConfig.PreviewType.ShowDialog, printerName) { EmrInputADO = inputADO });
-                }
+                result = isPrintNow
+                    ? MPS.MpsPrinter.Run(new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, rdo, MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow, printerName) { EmrInputADO = inputADO })
+                    : MPS.MpsPrinter.Run(new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, rdo, MPS.ProcessorBase.PrintConfig.PreviewType.ShowDialog, printerName) { EmrInputADO = inputADO });
             }
             catch (Exception ex)
             {
@@ -354,6 +376,8 @@ namespace HIS.Desktop.Plugins.TransactionList
             }
             return result;
         }
+
+
 
         private void MouseRight_XuatHoaDonDienTu(V_HIS_TRANSACTION transactionBill)
         {
@@ -369,7 +393,7 @@ namespace HIS.Desktop.Plugins.TransactionList
                         return;
                     }
                 }
-                if(transactionBill.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__FALSE && (MessageBox.Show("Giao dịch đang tạm khóa bạn có muốn tiếp tục", Resources.ResourceMessage.ThongBao, MessageBoxButtons.YesNo) == DialogResult.No))
+                if (transactionBill.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__FALSE && (MessageBox.Show("Giao dịch đang tạm khóa bạn có muốn tiếp tục", Resources.ResourceMessage.ThongBao, MessageBoxButtons.YesNo) == DialogResult.No))
                 {
                     return;
                 }
@@ -3946,7 +3970,7 @@ namespace HIS.Desktop.Plugins.TransactionList
                 //MessageBox.Show(param.Messages.ToString());
             }
             catch (Exception ex)
-            {            
+            {
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
             return result;

@@ -15,14 +15,15 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-using Inventec.Core;
-using Inventec.Desktop.Core;
-using Inventec.Desktop.Core.Tools;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Inventec.Core;
+using Inventec.Desktop.Core;
+using Inventec.Desktop.Core.Tools;
+using LIS.EFMODEL.DataModels;
 
 namespace HIS.Desktop.Plugins.LisSampleUpdate.ConnectionTest
 {
@@ -48,18 +49,29 @@ namespace HIS.Desktop.Plugins.LisSampleUpdate.ConnectionTest
             object result = null;
             try
             {
-                if (entity != null && entity.Count() > 0)
+                if (entity != null && entity.Length > 0)
                 {
+                    V_LIS_SAMPLE currentSample = null;
+
                     foreach (var item in entity)
                     {
                         if (item is Inventec.Desktop.Common.Modules.Module)
                         {
                             currentModule = (Inventec.Desktop.Common.Modules.Module)item;
                         }
+                        else if (item is V_LIS_SAMPLE)
+                        {
+                            currentSample = (V_LIS_SAMPLE)item;
+                        }
                     }
-                    if (currentModule != null)
+
+                    if (currentModule != null && currentSample != null)
                     {
-                        result = new frmUpdateLisSample(currentModule);
+                        result = new frmUpdateLisSample(currentModule, currentSample);
+                    }
+                    else if (currentModule != null)
+                    {
+                        result = new frmUpdateLisSample(currentModule, null);
                     }
                 }
             }
@@ -70,5 +82,6 @@ namespace HIS.Desktop.Plugins.LisSampleUpdate.ConnectionTest
             }
             return result;
         }
+
     }
 }

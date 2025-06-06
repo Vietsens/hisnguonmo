@@ -78,6 +78,16 @@ using HIS.UC.Icd.ADO;
 using DevExpress.XtraGrid;
 using System.ComponentModel.DataAnnotations;
 using static MPS.ProcessorBase.PrintConfig;
+using Newtonsoft.Json;
+using HIS.Desktop.LocalStorage.HisConfig;
+using System.Net.Http;
+using System.Net.Http.Headers;
+using System.Web;
+using System.Configuration;
+using System.Net;
+using HIS.Desktop.Plugins.AssignPrescriptionPK.SuggestPrescriptionsInfo;
+using DevExpress.Utils.OAuth.Provider;
+
 
 namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
 {
@@ -12808,6 +12818,117 @@ o.SERVICE_ID == medi.SERVICE_ID && o.TDL_INTRUCTION_TIME.ToString().Substring(0,
             if (memHtu.Text != expected)
             {
                 shouldAutoUpdateMemHtu = false;     
+            }
+        }
+
+        private void btnPrescriptionAI_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (currentMediStock == null || currentMediStock.Count == 0)           
+                {
+                    mediMatyTypeADOs = new List<MediMatyTypeADO>();
+                    var myResult = DevExpress.XtraEditors.XtraMessageBox.Show(ResourceMessage.BanChuaChonKhoXuat, HIS.Desktop.LibraryMessage.MessageUtil.GetMessage(LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaThongBao), MessageBoxButtons.OK);
+                    cboMediStockExport.Focus();
+                    cboMediStockExport.SelectAll();
+                    return;
+                }
+                if (string.IsNullOrEmpty(txtIcdCode.Text) || string.IsNullOrEmpty(txtIcdMainText.Text))
+                {
+                    XtraMessageBox.Show("Thiếu thông tin chẩn đoán chính. Vui lòng kiểm tra lại", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
+
+                var requestData = new
+                {
+                    icd_code = txtIcdCode.Text.Trim(),
+                    gender = lblGenderName.Text.Trim(),
+                    age = CalculateAge(currentTreatmentWithPatientType.TDL_PATIENT_DOB),
+                    top_n = 5
+                };
+                ShowAISuggestionForm(requestData);
+
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+
+        }
+
+        public static int CalculateAge(long dobLong)
+        {
+            string dobString = dobLong.ToString();
+
+            DateTime dob = DateTime.ParseExact(dobString, "yyyyMMddHHmmss", CultureInfo.InvariantCulture);
+            DateTime today = DateTime.Now;
+
+            int age = today.Year - dob.Year;
+
+            if (today < dob.AddYears(age))
+            {
+                age--;
+            }
+
+            return age < 1 ? 1 : age;
+        }
+
+        private void ShowAISuggestionForm(object requestData)
+        {
+            try
+            {
+                var frmAISuggestion = new frmSuggestPrescriptionsInfo(mediMatySelected =>
+                {
+                    if (mediMatySelected != null && mediMatySelected.Count > 0)
+                    {
+                        mediMatyTypeADOs = mediMatySelected;
+                        //Check trong kho
+                        //Gắn biến tạm để không bị gấp đôi số lượng khi kiểm tra danh sách
+                        var dataSourceTmp = mediMatyTypeADOs;
+                        mediMatyTypeADOs = new List<MediMatyTypeADO>();
+                        this.ProcessDataMediStock(dataSourceTmp);
+
+                        if (!CheckMedicineGroupTuberCulosis(true))
+                            return;
+                        this.ProcessInstructionTimeMediForEdit();
+                        if (this.ProcessCheckAllergenicByPatientAfterChoose()
+                            && this.ProcessCheckContraindicaterWarningOptionAfterChoose())
+                        {
+                            this.ProcessMergeDuplicateRowForListProcessing();
+                            if (!((this.serviceReqMain != null && this.serviceReqMain.IS_MAIN_EXAM != 1) && (HisConfigCFG.IsUsingSubPrescriptionMechanism == "1")) || GlobalStore.IsCabinet)
+                            {
+                                this.ProcessAddListRowDataIntoGridWithTakeBean();
+                            }
+                            else
+                            {
+                                List<MediMatyTypeADO> mediMatycheck = new List<MediMatyTypeADO>();
+                                foreach (var item in this.mediMatyTypeADOs)
+                                {
+                                    if (item.DataType == HIS.Desktop.LocalStorage.BackendData.ADO.MedicineMaterialTypeComboADO.THUOC || item.DataType == HIS.Desktop.LocalStorage.BackendData.ADO.MedicineMaterialTypeComboADO.VATTU || item.DataType == HIS.Desktop.LocalStorage.BackendData.ADO.MedicineMaterialTypeComboADO.VATTU_TSD)
+                                    {
+                                        item.IS_SUB_PRES = 1;
+                                    }
+                                    UpdateExpMestReasonInDataRow(item);
+                                    if (ValidAcinInteractiveWorker.ValidGrade(item, mediMatycheck, ref txtInteractionReason, this))
+                                    {
+                                        mediMatycheck.Add(item);
+                                    }
+                                }
+                                this.mediMatyTypeADOs = mediMatycheck;
+
+                                this.RefeshResourceGridMedicine();
+                            }
+                            this.ReloadDataAvaiableMediBeanInCombo();
+                        }
+                        TickAllMediMateAssignPresed();
+                    }
+                }, requestData);
+                frmAISuggestion.ShowDialog();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
 

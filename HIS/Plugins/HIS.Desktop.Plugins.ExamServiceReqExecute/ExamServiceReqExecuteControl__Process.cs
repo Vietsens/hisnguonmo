@@ -2019,7 +2019,12 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                         {
                             serviceReqUpdateSDO.TreatmentFinishSDO.TreatmentMethod = txtTreatmentInstruction.Text.Trim();
                         }
-                        
+
+                        if (!string.IsNullOrEmpty(txtPathologicalProcess.Text.Trim()))
+                        {
+                            serviceReqUpdateSDO.TreatmentFinishSDO.ClinicalNote = txtPathologicalProcess.Text.Trim();
+                        }
+
                         if (!String.IsNullOrEmpty(treatmentFinish.TreatmentFinishSDO.SickLoginname))
                         {
                             serviceReqUpdateSDO.TreatmentFinishSDO.SickLoginname = treatmentFinish.TreatmentFinishSDO.SickLoginname;

@@ -83,6 +83,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\lib\DevLib\DevExpress.XtraNavBar.v15.2.dll</HintPath>
     </Reference>
+    <Reference Include="DevExpress.XtraPrinting.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
+    <Reference Include="DevExpress.XtraScheduler.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.XtraScheduler.v15.2.Core, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
     <Reference Include="DevExpress.XtraTreeList.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\lib\DevLib\DevExpress.XtraTreeList.v15.2.dll</HintPath>
@@ -132,7 +135,7 @@
     </Reference>
     <Reference Include="HIS.Desktop.Plugins.Library.PrintTreatmentFinish, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\His Test\histest\x64\ReferencedAssemblies\HIS.Desktop.Plugins.Library.PrintTreatmentFinish.dll</HintPath>
+      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\HIS.Desktop.Plugins.Library.PrintTreatmentFinish.dll</HintPath>
     </Reference>
     <Reference Include="HIS.Desktop.Print, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -399,10 +402,12 @@
     <Reference Include="System.Data.Linq" />
     <Reference Include="System.Deployment" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Net.Http" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Runtime.Serialization.Formatters.Soap" />
     <Reference Include="System.Security" />
     <Reference Include="System.Transactions" />
+    <Reference Include="System.Web" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -412,6 +417,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ADO\AdviseFormADO.cs" />
+    <Compile Include="ADO\AISuggestionData.cs" />
     <Compile Include="ADO\AlertLogADO.cs" />
     <Compile Include="ADO\ConfigADO.cs" />
     <Compile Include="ADO\HtuADO.cs" />
@@ -420,6 +426,7 @@
     <Compile Include="ADO\MedicineAcinInteractiveWarnADO.cs" />
     <Compile Include="ADO\DMediStock1ADO.cs" />
     <Compile Include="ADO\ICDADO.cs" />
+    <Compile Include="ADO\MediMatySuggestionsADO.cs" />
     <Compile Include="ADO\MediStockADO.cs" />
     <Compile Include="ADO\MissingIcdADO.cs" />
     <Compile Include="ADO\OutPatientPresADO.cs" />
@@ -427,6 +434,7 @@
     <Compile Include="ADO\PresMedicineADO.cs" />
     <Compile Include="ADO\RoomExamADO.cs" />
     <Compile Include="ADO\StringUtil.cs" />
+    <Compile Include="ADO\SuggestPrescriptionsInfoADO.cs" />
     <Compile Include="ADO\TrackingADO.cs" />
     <Compile Include="ADO\TreatmentOverReason.cs" />
     <Compile Include="ADO\TuberCulosisADO.cs" />
@@ -602,6 +610,12 @@
       <DependentUpon>frmMixedInfusion.cs</DependentUpon>
     </Compile>
     <Compile Include="Properties\Resources.Designer.cs" />
+    <Compile Include="SuggestPrescriptionsInfo\frmSuggestPrescriptionsInfo.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SuggestPrescriptionsInfo\frmSuggestPrescriptionsInfo.Designer.cs">
+      <DependentUpon>frmSuggestPrescriptionsInfo.cs</DependentUpon>
+    </Compile>
     <Compile Include="Util\IcdUtil.cs" />
     <Compile Include="MessageBoxForm\frmMessageBoxChooseVT.cs">
       <SubType>Form</SubType>
@@ -916,6 +930,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Resources\Message.Lang.vi.resx">
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SuggestPrescriptionsInfo\frmSuggestPrescriptionsInfo.resx">
+      <DependentUpon>frmSuggestPrescriptionsInfo.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

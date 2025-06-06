@@ -511,6 +511,7 @@ namespace HIS.Desktop.Plugins.EmrDocumentType
                 txtSTT.Text = "";
                 txtKDK.Text = "";
                 chkRequire.EditValue = false;
+                chkWarn.EditValue = false;
                 chkIS_HAS_ONE.EditValue = false;
                 chkIsSignParallel.EditValue = false;
                 chkIS_MULTI_SIGN.EditValue = false;
@@ -552,6 +553,11 @@ namespace HIS.Desktop.Plugins.EmrDocumentType
                     currentDTO.IS_MANDATORY = (short)1;
                 else
                     currentDTO.IS_MANDATORY = null;
+
+                if (chkWarn.Checked)
+                    currentDTO.IS_WARNING_CHANGE_DEPARTMENT = (short)1;
+                else
+                    currentDTO.IS_WARNING_CHANGE_DEPARTMENT = null;
 
                 if (chkIS_HAS_ONE.Checked)
                     currentDTO.IS_HAS_ONE = (short)1;
@@ -721,6 +727,10 @@ namespace HIS.Desktop.Plugins.EmrDocumentType
                     {
                         e.Value = pData.IS_REQUIRED_TO_COMPLETE == 1 ? true : false;
                     }
+                    else if (e.Column.FieldName == "IS_WARNING_CHANGE_DEPARTMENT_ch")
+                    {
+                        e.Value = pData.IS_WARNING_CHANGE_DEPARTMENT == 1 ? true : false;
+                    }
                 }
             }
             catch (Exception ex)
@@ -809,6 +819,7 @@ namespace HIS.Desktop.Plugins.EmrDocumentType
                     chkIS_HAS_ONE.EditValue = data.IS_HAS_ONE == 1 ? true : false;
                     chkIS_MULTI_SIGN.EditValue = data.IS_MULTI_SIGN == 1 ? true : false;
                     chkIsSignParallel.EditValue = data.IS_SIGN_PARALLEL == 1 ? true : false;
+                    chkWarn.EditValue = data.IS_WARNING_CHANGE_DEPARTMENT == 1 ? true : false;
                     txtCode.Text = data.DOCUMENT_TYPE_CODE;
                     txtName.Text = data.DOCUMENT_TYPE_NAME;
                     txtSTT.Text = data.NUM_ORDER !=null ?data.NUM_ORDER.ToString():null;
@@ -1103,7 +1114,7 @@ namespace HIS.Desktop.Plugins.EmrDocumentType
             {
                 if (e.KeyCode == Keys.Enter)
                 {
-                    chkAllowDuplicateHisCode.Focus();
+                    chkWarn.Focus();
                 }
             }
             catch (Exception ex)
@@ -1311,7 +1322,19 @@ namespace HIS.Desktop.Plugins.EmrDocumentType
             }
         }
 
-  
-       
+        private void chkWarn_KeyDown(object sender, KeyEventArgs e)
+        {
+            try
+            {
+                if (e.KeyCode == Keys.Enter)
+                {
+                    chkIsAllowPatientIssue.Focus();
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
     }
 }

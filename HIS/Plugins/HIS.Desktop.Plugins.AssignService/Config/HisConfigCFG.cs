@@ -95,6 +95,7 @@ namespace HIS.Desktop.Plugins.AssignService.Config
         private const string KEY_ASSIGN_SERVICE_SIMULTANEITY_OPTION = "MOS.HIS_SERVICE_REQ.ASSIGN_SERVICE_SIMULTANEITY_OPTION";
         private const string KEY_ASSIGN_ROOM_BY_PATIENT_TYPE = "MOS.HIS_SERVICE_REQ.ASSIGN_ROOM_BY_PATIENT_TYPE";
         private const string IS_ALLOW_SIGN_NATURE_PRINT = "HIS.Desktop.Plugins.IsAllowSignaturePrint.ModuleLinks";
+        internal const string CONFIG_KEY__SuggestAssignServicesInfo = "HIS.Desktop.AI.SuggestAssignServicesInfo";
         internal static bool IsAssignRoomByPatientType;
         internal static string ASSIGN_SERVICE_SIMULTANEITY_OPTION;
         internal static string InstructionTimeServiceMustBeGreaterThanStartTimeExam;
@@ -190,6 +191,8 @@ namespace HIS.Desktop.Plugins.AssignService.Config
 
         internal static bool AllowAssignOxygen;
 
+        internal static string SuggestAssignServicesInfo;
+
         static MOS.EFMODEL.DataModels.HIS_PATIENT_TYPE GetPatientTypeByCode(string code)
         {
             MOS.EFMODEL.DataModels.HIS_PATIENT_TYPE result = new MOS.EFMODEL.DataModels.HIS_PATIENT_TYPE();
@@ -275,6 +278,7 @@ namespace HIS.Desktop.Plugins.AssignService.Config
                 contraindicated = HisConfigs.Get<long>(CONFIG_KEY_HIS_ICD_SERVICE_CONTRAINDICATED_WARNING_OPTION);
                 IsCheckDepartmentInTimeWhenPresOrAssign = GetValue(CONFIG_KEY_CheckDepartmentInTimeWhenPresOrAssign) == GlobalVariables.CommonStringTrue;
                 AllowAssignOxygen = GetValue(CONFIG_KEY_ALLOW_ASSIGN_OXYGEN) == GlobalVariables.CommonStringTrue;
+                SuggestAssignServicesInfo = GetValue(CONFIG_KEY__SuggestAssignServicesInfo);
             }
             catch (Exception ex)
             {

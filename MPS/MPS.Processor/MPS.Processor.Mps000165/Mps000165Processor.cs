@@ -1,4 +1,4 @@
-/* IVT
+﻿/* IVT
  * @Project : hisnguonmo
  * Copyright (C) 2017 INVENTEC
  *  
@@ -233,18 +233,89 @@ namespace MPS.Processor.Mps000165
                     AddObjectKeyIntoListkey(rdo.OtherExpMest, false);
                 }
 
+                //if (rdo._medicines != null && rdo._medicines.count > 0)
+                //{
+
+                //    discount += rdo._medicines.sum(o => o.discount ?? 0);
+                //    var group = rdo._medicines.groupby(g => new { g.medicine_type_id, g.imp_price, g.imp_vat_ratio, g.discount }).tolist();
+                //    foreach (var group in group)
+                //    {
+                //        var listbygroup = group.tolist<v_his_exp_mest_medicine>();
+                //        rdo.listado.add(new mps000165ado(listbygroup));
+                //        foreach (var item in listbygroup)
+                //        {
+                //            totalprice += item.amount * item.imp_price * (item.imp_vat_ratio + 1);
+                //        }
+                //    }
+                //}
+
+                //if (rdo._materials != null && rdo._materials.count > 0)
+                //{
+                //    rdo._materials = rdo._materials.orderby(o => o.id).tolist();
+                //    discount += rdo._materials.sum(s => s.discount ?? 0);
+                //    var group = rdo._materials.groupby(g => new { g.material_type_id, g.imp_price, g.imp_vat_ratio, g.discount }).tolist();
+                //    foreach (var group in group)
+                //    {
+                //        var listbygroup = group.tolist<v_his_exp_mest_material>();
+                //        rdo.listado.add(new mps000165ado(listbygroup));
+                //        foreach (var item in listbygroup)
+                //        {
+                //            totalprice += item.amount * (item.imp_price) * (item.imp_vat_ratio + 1);
+                //        }
+                //    }
+                //}
+
                 if (rdo._Medicines != null && rdo._Medicines.Count > 0)
                 {
-
                     discount += rdo._Medicines.Sum(o => o.DISCOUNT ?? 0);
-                    var Group = rdo._Medicines.GroupBy(g => new { g.MEDICINE_TYPE_ID, g.IMP_PRICE, g.IMP_VAT_RATIO, g.DISCOUNT }).ToList();
-                    foreach (var group in Group)
+
+                    bool isXuatKhac = rdo.OtherExpMest != null &&
+                                      rdo.OtherExpMest.EXP_MEST_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_EXP_MEST_TYPE.ID__KHAC;
+
+                    if (isXuatKhac)
                     {
-                        var listByGroup = group.ToList<V_HIS_EXP_MEST_MEDICINE>();
-                        rdo.listAdo.Add(new Mps000165ADO(listByGroup));
-                        foreach (var item in listByGroup)
+                        var Group = rdo._Medicines
+                            .GroupBy(g => new
+                            {
+                                g.MEDICINE_TYPE_ID,
+                                g.IMP_PRICE,
+                                g.IMP_VAT_RATIO,
+                                g.DISCOUNT,
+                                g.PACKAGE_NUMBER,
+                                g.EXPIRED_DATE
+                            })
+                            .ToList();
+
+                        foreach (var group in Group)
                         {
-                            totalPrice += item.AMOUNT * item.IMP_PRICE * (item.IMP_VAT_RATIO + 1);
+                            var listByGroup = group.ToList();
+                            rdo.listAdo.Add(new Mps000165ADO(listByGroup));
+                            foreach (var item in listByGroup)
+                            {
+                                totalPrice += item.AMOUNT * item.IMP_PRICE * (item.IMP_VAT_RATIO + 1);
+                            }
+                        }
+                    }
+                    else
+                    {
+                        var Group = rdo._Medicines
+                            .GroupBy(g => new
+                            {
+                                g.MEDICINE_TYPE_ID,
+                                g.IMP_PRICE,
+                                g.IMP_VAT_RATIO,
+                                g.DISCOUNT
+                            })
+                            .ToList();
+
+                        foreach (var group in Group)
+                        {
+                            var listByGroup = group.ToList();
+                            rdo.listAdo.Add(new Mps000165ADO(listByGroup));
+                            foreach (var item in listByGroup)
+                            {
+                                totalPrice += item.AMOUNT * item.IMP_PRICE * (item.IMP_VAT_RATIO + 1);
+                            }
                         }
                     }
                 }
@@ -253,14 +324,54 @@ namespace MPS.Processor.Mps000165
                 {
                     rdo._Materials = rdo._Materials.OrderBy(o => o.ID).ToList();
                     discount += rdo._Materials.Sum(s => s.DISCOUNT ?? 0);
-                    var Group = rdo._Materials.GroupBy(g => new { g.MATERIAL_TYPE_ID, g.IMP_PRICE, g.IMP_VAT_RATIO, g.DISCOUNT }).ToList();
-                    foreach (var group in Group)
+
+                    bool isXuatKhac = rdo.OtherExpMest != null &&
+                                      rdo.OtherExpMest.EXP_MEST_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_EXP_MEST_TYPE.ID__KHAC;
+
+                    if (isXuatKhac)
                     {
-                        var listByGroup = group.ToList<V_HIS_EXP_MEST_MATERIAL>();
-                        rdo.listAdo.Add(new Mps000165ADO(listByGroup));
-                        foreach (var item in listByGroup)
+                        var Group = rdo._Materials
+                            .GroupBy(g => new
+                            {
+                                g.MATERIAL_TYPE_ID,
+                                g.IMP_PRICE,
+                                g.IMP_VAT_RATIO,
+                                g.DISCOUNT,
+                                g.PACKAGE_NUMBER,
+                                g.EXPIRED_DATE
+                            })
+                            .ToList();
+
+                        foreach (var group in Group)
                         {
-                            totalPrice += item.AMOUNT * (item.IMP_PRICE) * (item.IMP_VAT_RATIO + 1);
+                            var listByGroup = group.ToList();
+                            rdo.listAdo.Add(new Mps000165ADO(listByGroup));
+                            foreach (var item in listByGroup)
+                            {
+                                totalPrice += item.AMOUNT * item.IMP_PRICE * (item.IMP_VAT_RATIO + 1);
+                            }
+                        }
+                    }
+                    else
+                    {
+                        var Group = rdo._Materials
+                            .GroupBy(g => new
+                            {
+                                g.MATERIAL_TYPE_ID,
+                                g.IMP_PRICE,
+                                g.IMP_VAT_RATIO,
+                                g.DISCOUNT
+                            })
+                            .ToList();
+
+                        foreach (var group in Group)
+                        {
+                            var listByGroup = group.ToList();
+                            rdo.listAdo.Add(new Mps000165ADO(listByGroup));
+                            foreach (var item in listByGroup)
+                            {
+                                totalPrice += item.AMOUNT * item.IMP_PRICE * (item.IMP_VAT_RATIO + 1);
+                            }
                         }
                     }
                 }

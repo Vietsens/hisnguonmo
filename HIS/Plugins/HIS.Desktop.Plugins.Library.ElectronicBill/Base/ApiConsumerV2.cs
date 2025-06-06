@@ -117,6 +117,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.Base
 
         public static T CreateRequest<T>(string method, string baseUri, string requestUri, string token, string maDvcs, string sendJsonData)
         {
+            System.Net.ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls12 | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls;
             using (var client = new HttpClient())
             {
                 client.BaseAddress = new Uri(baseUri);
@@ -180,6 +181,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.Base
         }
         public static byte[] CreateRequestGetByte(string method, string baseUri, string requestUri, string token, string maDvcs)
         {
+            System.Net.ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls12 | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls;
             using (var client = new HttpClient())
             {
                 client.BaseAddress = new Uri(baseUri);

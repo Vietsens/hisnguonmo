@@ -58,6 +58,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using static Aspose.Pdf.Operator;
 
 namespace HIS.Desktop.Plugins.HisTrackingList.Run
 {
@@ -438,6 +439,21 @@ namespace HIS.Desktop.Plugins.HisTrackingList.Run
             }
         }
 
+        private void SetSheetOrderColumnReadOnly()
+        {
+            try
+            {
+                string isReadOnlySheetOrder = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>("MOS.HIS_TRACKING.IS_READ_ONLY_SHEET_ORDER");
+                bool isSheetOrderReadOnly = isReadOnlySheetOrder == "1";
+                gridViewTrackings.Columns["SHEET_ORDER"].OptionsColumn.ReadOnly = isSheetOrderReadOnly;
+                gridViewTrackings.Columns["SHEET_ORDER"].OptionsColumn.AllowEdit = !isSheetOrderReadOnly;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
         private void LoadDataTrackingList()
         {
             try
@@ -456,6 +472,15 @@ namespace HIS.Desktop.Plugins.HisTrackingList.Run
                 param.Count = dataTotal;
                 ucPaging1.Init(ucPagingData, param, (int)pageSize, gridControlTrackings);
                 GetEmrDocument();
+
+                gridControlTrackings.EndUpdate();
+                gridViewTrackings.OptionsSelection.EnableAppearanceFocusedCell = false;
+                gridViewTrackings.OptionsSelection.EnableAppearanceFocusedRow = false;
+                //gridViewTrackings.BestFitColumns();
+                WaitingManager.Hide();
+
+                // Set read-only state for SHEET_ORDER column
+                SetSheetOrderColumnReadOnly();
             }
             catch (Exception ex)
             {
@@ -1288,11 +1313,16 @@ namespace HIS.Desktop.Plugins.HisTrackingList.Run
                     }
                     if (DataTransferTreatmentBedRoomFilter != null)
                         listArgs.Add(DataTransferTreatmentBedRoomFilter);
-
+                    int maxSheetOrder = GetMaxSheetOrderInCurrentList();
+                    listArgs.Add(maxSheetOrder);
                     listArgs.Add(PluginInstance.GetModuleWithWorkingRoom(moduleData, this.currentModule.RoomId, this.currentModule.RoomTypeId));
                     var extenceInstance = PluginInstance.GetPluginInstance(PluginInstance.GetModuleWithWorkingRoom(moduleData, this.currentModule.RoomId, this.currentModule.RoomTypeId), listArgs);
                     if (extenceInstance == null) throw new ArgumentNullException("moduleData is null");
-
+                    var argsProp = extenceInstance.GetType().GetProperty("Args");
+                    if (argsProp != null && argsProp.CanWrite)
+                    {
+                        argsProp.SetValue(extenceInstance, listArgs);
+                    }
                     ((Form)extenceInstance).ShowDialog();
 
                     //Load lại tracking
@@ -1306,6 +1336,26 @@ namespace HIS.Desktop.Plugins.HisTrackingList.Run
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
+        private int GetMaxSheetOrderInCurrentList()
+        {
+            try
+            {
+                if (vHisTrackingList != null && vHisTrackingList.Count > 0)
+                {
+                    var listFilter = vHisTrackingList.Where(x => x.TREATMENT_ID == treatmentId && x.SHEET_ORDER.HasValue);
+                    if (listFilter.Any())
+                    {
+                        return listFilter.Max(x => (int)x.SHEET_ORDER.Value);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+            return 0;
+        }
+
 
         private void btnPrint_Click(object sender, EventArgs e)
         {

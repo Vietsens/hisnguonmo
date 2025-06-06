@@ -157,11 +157,13 @@
     <Reference Include="HIS.UC.ExamFinish">
       <HintPath>..\..\..\..\lib\HIS\HIS.UC.ExamFinish\HIS.UC.ExamFinish.dll</HintPath>
     </Reference>
-    <Reference Include="HIS.UC.ExamTreatmentFinish">
-      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\HIS.UC.ExamTreatmentFinish.dll</HintPath>
+    <Reference Include="HIS.UC.ExamTreatmentFinish, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\His Test\histest\x64\ReferencedAssemblies\HIS.UC.ExamTreatmentFinish.dll</HintPath>
     </Reference>
-    <Reference Include="HIS.UC.HisExamServiceAdd">
-      <HintPath>..\..\..\..\LIB\HIS\HIS.UC.ExamServiceAdd\HIS.UC.HisExamServiceAdd.dll</HintPath>
+    <Reference Include="HIS.UC.HisExamServiceAdd, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\UC\HIS.UC.ExamServiceAdd\bin\Debug\HIS.UC.HisExamServiceAdd.dll</HintPath>
     </Reference>
     <Reference Include="HIS.UC.Hospitalize">
       <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\HIS.UC.Hospitalize.dll</HintPath>
@@ -728,6 +730,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\dau tích-02.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Connected Services\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

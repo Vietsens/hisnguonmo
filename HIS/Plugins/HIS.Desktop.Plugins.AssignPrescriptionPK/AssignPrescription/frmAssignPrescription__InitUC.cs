@@ -125,6 +125,10 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                         }
                     }
                 }
+                if(string.IsNullOrEmpty(HisConfigCFG.SuggestPrescriptionsInfo))
+                    layoutControlItem44.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+                else
+                    layoutControlItem44.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
                 //this.lciUCBottomPanel.MinSize = new System.Drawing.Size(this.lciUCBottomPanel.Width, heightUCBottom);//110
                 //this.lciUCBottomPanel.Height = heightUCBottom;
                 //this.lciUCTopPanel.Height = heightUCTop;

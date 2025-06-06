@@ -1941,23 +1941,25 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
         {   
             try
             {
-                if ((dtTo.DateTime.Date - dtFrom.DateTime.Date).TotalDays > 90)
+                if (dtFrom.Enabled == true && dtTo.Enabled == true 
+                    && !string.IsNullOrEmpty(HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(HisConfigKeys.HIS_CONFIG_KEY__MaxTimeFilter__Option)))
                 {
-                    XtraMessageBox.Show("Khoảng thời gian tìm kiếm quá dài, vui lòng chọn tối đa 3 tháng!",
-                                    "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    return;
+                    if (dtFrom.DateTime == DateTime.MinValue)
+                    {
+                        XtraMessageBox.Show("Không được để trống thời gian từ",
+                                                "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        return;
+                    }
+                    int value = int.Parse(HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(HisConfigKeys.HIS_CONFIG_KEY__MaxTimeFilter__Option));
+                    if ((dtTo.DateTime != DateTime.MinValue && (dtTo.DateTime.Date - dtFrom.DateTime.Date).TotalDays > value) 
+                        || (dtTo.DateTime == DateTime.MinValue && (DateTime.Now.Date - dtFrom.DateTime.Date).TotalDays > value))
+                    {
+                            XtraMessageBox.Show("Khoảng thời gian tìm kiếm quá dài, vui lòng tìm kiếm trong " + value + " ngày",
+                                            "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                            return;
+                    }
                 }
-
-                if (dtTo.DateTime.Date > DateTime.Now)
-                {
-                    XtraMessageBox.Show("Khoảng thời gian tìm kiếm quá dài, vui lòng chọn tối đa 3 tháng!",
-                                    "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    dtTo.EditValue = DateTime.Now;
-                }
-                if (dtFrom.DateTime.Date > DateTime.Now)
-                {
-                    dtFrom.EditValue = DateTime.Now;
-                }
+                
                 treeListDateTime.DataSource = null;
                 LoadDataSereServByTreatmentId(null);
                 FillDataToLableControl(null);

@@ -51,9 +51,14 @@ namespace HIS.UC.UCPatientRaw
 		string hrmEmployeeCode = "";
         public string oldValue = "";
 		public string oldTypeFind = ResourceMessage.typeCodeFind__MaBN;
+		/// <summary>
+		/// True: Khi sử dụng để kiềm tra CCCD khi nhập đủ thông tin
+		/// False: Không nhấn kiểm tra, để đảm bảo chức năng bên ngoài sử dụng được tìm kiếm CCCD
+		/// </summary>
+		public bool IsSearchCCCDByInfo = false;
         public async void SearchPatientByCodeOrQrCode(string strValue, string keyTypeFind = null)
         {
-            oldTypeFind = this.typeCodeFind;
+            oldTypeFind = this.typeCodeFind;    
             try
 			{
 				this.isAlertTreatmentEndInDay = false;
@@ -368,7 +373,9 @@ namespace HIS.UC.UCPatientRaw
 					#region ---- CMND/CCCD
 					else if (this.typeCodeFind == ResourceMessage.typeCodeFind__MaCMCC)
 					{
-						if (!((strValue.Trim().Length > 12 && strValue.Trim().Contains("|")) || (strValue.Trim().Length == 12 && !string.IsNullOrEmpty(txtPatientName.Text) && (!string.IsNullOrEmpty(txtPatientDob.Text) || dtPatientDob.EditValue != null))) || ((strValue.Trim().Length == 12 || strValue.Trim().Length == 9) && !strValue.Trim().Contains("|")))
+						if (!((strValue.Trim().Length > 12 && strValue.Trim().Contains("|")) && IsSearchCCCDByInfo
+                            || (strValue.Trim().Length == 12 && !string.IsNullOrEmpty(txtPatientName.Text) && (!string.IsNullOrEmpty(txtPatientDob.Text) || dtPatientDob.EditValue != null) && IsSearchCCCDByInfo)) 
+							|| ((strValue.Trim().Length == 12 || strValue.Trim().Length == 9) && !strValue.Trim().Contains("|") && !IsSearchCCCDByInfo))
 						{
 								param = new CommonParam();
 								HisPatientAdvanceFilter filter = new HisPatientAdvanceFilter();
@@ -418,7 +425,7 @@ namespace HIS.UC.UCPatientRaw
 											this.ResultDataADO = await heinGOVManager.Check(heinCardDataForCheckGOV, null, false, _PatientSDO.ADDRESS, dtIntructionTime, isReadQrCode);
 										}
 
-										if (this.ResultDataADO != null && this.ResultDataADO.ResultHistoryLDO != null)
+										if (this.ResultDataADO != null && this.ResultDataADO.ResultHistoryLDO != null)    
 										{
 											heinCardDataForCheckGOV.HeinCardNumber = this.ResultDataADO.IsUsedNewCard ? this.ResultDataADO.ResultHistoryLDO.maTheMoi : this.ResultDataADO.ResultHistoryLDO.maThe;
                                         //Trường hợp tìm kiếm BN theo qrocde & BN có số thẻ bhyt mới, cần tìm kiếm BN theo số thẻ mới này & người dùng chọn lấy thông tin thẻ mới => tìm kiếm Bn theo số thẻ mới
@@ -428,7 +435,7 @@ namespace HIS.UC.UCPatientRaw
                                             {
                                                 heinCardDataForCheckGOV = this.ResultDataADO.HeinCardData;
                                             }
-                                            dataResult.HeinCardData = heinCardDataForCheckGOV;
+                                            dataResult.HeinCardData = heinCardDataForCheckGOV;    
                                         }
 										}
 									}
@@ -671,8 +678,8 @@ namespace HIS.UC.UCPatientRaw
 					if (!string.IsNullOrEmpty(hrmEmployeeCode) && this.dlgShowControlHrmKskCodeNotValid != null)
 							this.dlgShowControlHrmKskCodeNotValid(true);
 					}
-
-					if (this.typeCodeFind == ResourceMessage.typeCodeFind__MaTV)
+                    #region MaTV
+                    if (this.typeCodeFind == ResourceMessage.typeCodeFind__MaTV)
 					{
                         int n;
                         bool isNumeric = int.TryParse(this.txtPatientCode.Text, out n);
@@ -742,7 +749,8 @@ namespace HIS.UC.UCPatientRaw
                             this.txtPatientCode.SelectAll();
                         }
                     }
-					WaitingManager.Hide();
+                    #endregion
+                    WaitingManager.Hide();
 					if(dataResult != null && ((this.typeCodeFind == ResourceMessage.typeCodeFind__MaCMCC && oldValue.Trim().Contains("|")) || (this.typeCodeFind == ResourceMessage.typeCodeFind__MaBN && oldValue.Trim().Contains("|"))))
                     {
 						dataResult.IsReadQr = true;
@@ -769,7 +777,8 @@ namespace HIS.UC.UCPatientRaw
 			}
 			finally
 			{
-				typeCodeFind = oldTypeFind;
+				IsSearchCCCDByInfo = false;
+                typeCodeFind = oldTypeFind;
 			}
 		}
         private void MapHeinCardToPatientSDO()

@@ -968,6 +968,7 @@ namespace HIS.Desktop.Plugins.TreatmentIcdEdit
                     this.TxtSoThe.Text = currentVHisTreatment.FUND_NUMBER;
                     this.txtSanPham.Text = currentVHisTreatment.FUND_TYPE_NAME;
                     this.txtReasonVV.Text = currentVHisTreatment.HOSPITALIZATION_REASON;
+                    this.txtPatientNote.Text = currentVHisTreatment.TDL_PATIENT_NOTE;
                     //Dangth
                     this.txtProvisionalDianosis.Text = currentVHisTreatment.PROVISIONAL_DIAGNOSIS;
                     this.txtTreatmentInstruction.Text = currentVHisTreatment.TREATMENT_METHOD;
@@ -1075,6 +1076,15 @@ namespace HIS.Desktop.Plugins.TreatmentIcdEdit
                         txtReasonVV.Text = "";
                     }
 
+                    if (!String.IsNullOrEmpty(currentVHisTreatment.TDL_PATIENT_NOTE))
+                    {
+                        txtPatientNote.Text = currentVHisTreatment.TDL_PATIENT_NOTE;
+                    }
+                    else
+                    {
+                        txtPatientNote.Text = "";
+                    }
+
                     //Dangth                 
                     if (!String.IsNullOrEmpty(currentVHisTreatment.PROVISIONAL_DIAGNOSIS))
                     {
@@ -1134,6 +1144,7 @@ namespace HIS.Desktop.Plugins.TreatmentIcdEdit
                 HisTreatmentExtFilter hisTreatmentExtFilter = new HisTreatmentExtFilter();
                 hisTreatmentExtFilter.TREATMENT_ID = currentVHisTreatment.ID;
                 var TreatmentId = new BackendAdapter(new CommonParam()).Get<List<HIS_TREATMENT_EXT>>("api/HisTreatmentExt/Get", ApiConsumers.MosConsumer, hisTreatmentExtFilter, new CommonParam());
+                Inventec.Common.Logging.LogSystem.Debug("Dangth : " + Inventec.Common.Logging.LogUtil.TraceData("Dangth", TreatmentId));
                 if (TreatmentId != null && TreatmentId.Count > 0)
                 {
                     HIS_TREATMENT_EXT hisTreatmentExtResult = TreatmentId.FirstOrDefault();
@@ -1153,6 +1164,12 @@ namespace HIS.Desktop.Plugins.TreatmentIcdEdit
                     {
                         txtPathologicalProcess.Text = "";
                     }
+                }
+                else
+                {
+                    txtSubclinical.Text = "";
+                    txtPathologicalProcess.Text = "";
+                    XtraMessageBox.Show(string.Format("Không có dữ liệu thông tin bệnh nhân (Mã điều trị: {0}).", currentVHisTreatment.TREATMENT_CODE), "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
                 //else
                 //{
@@ -1357,6 +1374,9 @@ namespace HIS.Desktop.Plugins.TreatmentIcdEdit
                 ValidTextControlMaxlength(this.txtReasonVV, 200, false);
                 ValidTextControlMaxlength(this.txtReasonNTCode, 10, false);
                 ValidTextControlMaxlength(this.cboReasonNT, 1000, false);
+
+                ValidTextControlMaxlength(this.txtPatientNote, 2000, false);
+
                 layoutControlItem39.AppearanceItemCaption.ForeColor = Color.Black;
                 if (dtClinicalInTime.EditValue != null)
                 {
@@ -1774,6 +1794,7 @@ namespace HIS.Desktop.Plugins.TreatmentIcdEdit
                 data.FundCompanyName = this.txtCongTy.Text;
                 data.FundTypeName = this.txtSanPham.Text;
                 data.HospitalizationReason = this.txtReasonVV.Text;
+                data.TdlPatientNote = this.txtPatientNote.Text.Trim();
                 data.FundCustomerName = this.txtTenKhachHang.Text;
                 if (dtThoiHanTu.EditValue != null && dtThoiHanTu.DateTime != DateTime.MinValue)
                 {
@@ -1898,7 +1919,10 @@ namespace HIS.Desktop.Plugins.TreatmentIcdEdit
                 {
                     data.TuberculosisCode = txtNumManager.Text;
                 }
-                
+                if(!string.IsNullOrEmpty(txtPatientNote.Text))
+                {
+                    data.TdlPatientNote = txtPatientNote.Text;
+                }
 
                 HisTreatmentCommonInfoUpdateSDO result = new BackendAdapter(param).Post<HisTreatmentCommonInfoUpdateSDO>(RequestUriStore.HIS_TREATMENT_UPDATE_COMMON_INFO, ApiConsumer.ApiConsumers.MosConsumer, data, param);
 
@@ -2908,6 +2932,7 @@ namespace HIS.Desktop.Plugins.TreatmentIcdEdit
                 TxtSoThe = null;
                 txtSanPham = null;
                 txtReasonVV = null;
+                txtPatientNote = null;
                 layoutControlItem6 = null;
                 labelControl1 = null;
                 layoutControlItem27 = null;

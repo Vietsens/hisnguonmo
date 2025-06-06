@@ -26,7 +26,7 @@ using System.Threading.Tasks;
 namespace MPS.Processor.Mps000315.PDO
 {
     public class Mps000315PDO : RDOBase
-    {
+    {        
         public List<V_HIS_TREATMENT_4> _KSK_Treatments { get; set; }
         public List<V_HIS_SERVICE_REQ> _KSK_ServiceReqs { get; set; }
         public List<V_HIS_SERE_SERV> _KSK_SereServs { get; set; }

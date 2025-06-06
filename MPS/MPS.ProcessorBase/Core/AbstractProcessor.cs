@@ -120,7 +120,17 @@ namespace MPS.ProcessorBase.Core
                             return false;
                         }
 
-                        emrInputADO.SignerConfigs = ProcessSignerConfigs();
+                        // bên ngoài không truyền vào thì lấy theo mps
+                        if (emrInputADO.SignerConfigs == null)
+                        {
+                            emrInputADO.SignerConfigs = new List<SignerConfigDTO>();
+                        }
+
+                        List<SignerConfigDTO> signerConfigs = ProcessSignerConfigs();
+                        if (signerConfigs != null && signerConfigs.Count > 0)
+                        {
+                            emrInputADO.SignerConfigs.AddRange(signerConfigs);
+                        }
                     }
                     this.printDataBase.EmrInputADO = emrInputADO;
                     //proc = System.Diagnostics.Process.GetCurrentProcess();

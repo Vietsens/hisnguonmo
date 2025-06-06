@@ -30,8 +30,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="LIS.EFMODEL">
-      <HintPath>..\..\..\..\LIB\LIS\LIS.EFMODEL.dll</HintPath>
+    <Reference Include="LIS.EFMODEL, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\lib\LIS\LIS.EFMODEL.dll</HintPath>
     </Reference>
     <Reference Include="MOS.EFMODEL">
       <HintPath>..\..\..\..\lib_1\MOS\MOS.EFMODEL.dll</HintPath>

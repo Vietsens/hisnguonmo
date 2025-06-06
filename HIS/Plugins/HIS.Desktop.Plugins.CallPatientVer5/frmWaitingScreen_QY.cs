@@ -1129,9 +1129,9 @@ namespace HIS.Desktop.Plugins.CallPatientVer5
                 ServiceReq1ADO serviceReq1ADO = new ServiceReq1ADO();
                 ServiceReq1ADO PatientIsCall = (this.serviceReqStts != null && this.serviceReqStts.Count > 0) ? CallPatientDataWorker.DicCallPatient[room.ID].FirstOrDefault(o => o.CallPatientSTT) : null;
                 serviceReq1ADO = PatientIsCall;
-                if (serviceReqStatics.FirstOrDefault(o => o.ID == serviceReq1ADO.ID) != null && !lstCalled.Exists(o=>o.ID == serviceReq1ADO.ID))
+                if (serviceReqStatics.FirstOrDefault(o => o.ID == serviceReq1ADO.ID) != null)
                 {
-                    lstCalled.Add(serviceReqStatics.FirstOrDefault(o => o.ID == serviceReq1ADO.ID));
+                    //lstCalled.Add(serviceReqStatics.FirstOrDefault(o => o.ID == serviceReq1ADO.ID));
                     SetDataToCurrentPatientCall(serviceReq1ADO);
                 }
             }

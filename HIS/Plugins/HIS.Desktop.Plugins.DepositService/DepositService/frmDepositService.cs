@@ -20,6 +20,7 @@ using DevExpress.XtraEditors;
 using DevExpress.XtraEditors.Controls;
 using DevExpress.XtraTreeList;
 using DevExpress.XtraTreeList.Nodes;
+using HIS.Desktop.ADO;
 using HIS.Desktop.ApiConsumer;
 using HIS.Desktop.Controls.Session;
 using HIS.Desktop.LibraryMessage;
@@ -30,12 +31,14 @@ using HIS.Desktop.LocalStorage.Location;
 using HIS.Desktop.Plugins.DepositService.Config;
 using HIS.Desktop.Plugins.DepositService.DepositService.Validtion;
 using HIS.Desktop.Print;
+using HIS.Desktop.Utility;
 using HIS.UC.SereServTree;
 using Inventec.Common.Adapter;
 using Inventec.Common.Controls.EditorLoader;
 using Inventec.Common.Logging;
 using Inventec.Common.Logging;
 using Inventec.Core;
+using Inventec.Desktop.Common.LanguageManager;
 using Inventec.Desktop.Common.Message;
 using Inventec.WCF.JsonConvert;
 using MOS.EFMODEL.DataModels;
@@ -47,13 +50,11 @@ using System.Configuration;
 using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using WCF;
 using WCF.Client;
-using HIS.Desktop.Utility;
-using Inventec.Desktop.Common.LanguageManager;
-using HIS.Desktop.ADO;
 
 namespace HIS.Desktop.Plugins.DepositService.DepositService
 {
@@ -65,7 +66,7 @@ namespace HIS.Desktop.Plugins.DepositService.DepositService
         MOS.EFMODEL.DataModels.V_HIS_TRANSACTION hisDeposit { get; set; }
         int positionHandle = -1;
         decimal totalAmountDeposit = 0;
-
+        MOS.EFMODEL.DataModels.HIS_HOLIDAY_POLICIES hisPolicies { get; set; }
         bool isNotLoadWhilechkAutoCloseStateInFirst = true;
         bool isNotLoadWhileChangeControlStateInFirst;
         HIS.Desktop.Library.CacheClient.ControlStateWorker controlStateWorker;
@@ -73,9 +74,11 @@ namespace HIS.Desktop.Plugins.DepositService.DepositService
         string moduleLink = "HIS.Desktop.Plugins.DepositService";
 
         List<MOS.EFMODEL.DataModels.HIS_PAY_FORM> ListPayForm;
+        List<MOS.EFMODEL.DataModels.HIS_HOLIDAY_POLICIES> hisPolicies1;
         List<MOS.EFMODEL.DataModels.V_HIS_CASHIER_ROOM> ListCashierRoom;
         List<MOS.EFMODEL.DataModels.V_HIS_ACCOUNT_BOOK> ListAccountBook;
         List<V_HIS_SERE_SERV_5> sereServByTreatment;
+        V_HIS_SERE_SERV_5 sSByTreatment2 = null;
         List<V_HIS_SERE_SERV_5> sSByTreatment;
         List<MOS.EFMODEL.DataModels.HIS_PATIENT_TYPE> ListPatientType;
         long? branchId;
@@ -87,7 +90,9 @@ namespace HIS.Desktop.Plugins.DepositService.DepositService
         UserControl ucSereServTree;
         bool isPrintNow = false;
         bool isSign = false;
+
         Inventec.Desktop.Common.Modules.Module moduleData;
+
         HIS.Desktop.Common.DelegateReturnSuccess returnData = null;
         bool? IsDepositAll = null;
 
@@ -106,7 +111,7 @@ namespace HIS.Desktop.Plugins.DepositService.DepositService
             : base(_module)
         {
             try
-            {
+            {   
                 Inventec.Common.Logging.LogSystem.Debug("frmDepositService.InitializeComponent. 1");
                 InitializeComponent();
                 this.treatmentId = hisTreatmentId;
@@ -150,6 +155,7 @@ namespace HIS.Desktop.Plugins.DepositService.DepositService
                 this.hisTreatment = hisTreatment;
                 this.cashierRoomId = cashierRoomId;
                 this.hisDepositSDO = _hisDepositSDO;
+                
                 this.branchId = _branchId;
                 this.sendResultToOtherForm = _sendResultToOtherForm;
                 this.sSByTreatment = sereServs;
@@ -2297,6 +2303,126 @@ namespace HIS.Desktop.Plugins.DepositService.DepositService
                 Inventec.Common.Logging.LogSystem.Fatal(ex);
             }
         }
+
+        private bool CheckHolidayPoliciesBeforeSave()
+        {
+            try
+            {
+                CommonParam param = new CommonParam();
+                this.hisPolicies1 = BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_HOLIDAY_POLICIES>();
+
+                if (hisPolicies1 == null || hisPolicies1.Count == 0)
+                    return true;
+
+                DateTime? transactionDate = dtTransactionTime.EditValue as DateTime?;
+                if (!transactionDate.HasValue)
+                    transactionDate = DateTime.Now;
+
+                // Lấy các dịch vụ được chọn
+                var checkedServices = ssTreeProcessor.GetListCheck(ucSereServTree);
+
+                // Gộp kiểm tra theo DAY_OF_WEEK, DAY_OF_YEAR, HOLIDAY
+                var todayPolicies = new List<MOS.EFMODEL.DataModels.HIS_HOLIDAY_POLICIES>();
+
+                // 1. Theo DAY_OF_WEEK
+                var policiesByDayOfWeek = hisPolicies1.Where(p => p.DAY_OF_WEEK != null).ToList();
+                if (policiesByDayOfWeek.Count > 0)
+                {
+                    int currentDayOfWeek = (int)transactionDate.Value.DayOfWeek;
+                    int dbDayOfWeek = currentDayOfWeek == 0 ? 1 : currentDayOfWeek + 1;
+                    todayPolicies.AddRange(policiesByDayOfWeek.Where(p => p.DAY_OF_WEEK == dbDayOfWeek));
+                }
+
+                // 2. Theo DAY_OF_YEAR (ngày/tháng)
+                var policiesByDayOfYear = hisPolicies1.Where(p => p.DAY_OF_WEEK == null && p.DAY_OF_YEAR != null).ToList();
+                if (policiesByDayOfYear.Count > 0)
+                {
+                    int currentDay = transactionDate.Value.Day;
+                    int currentMonth = transactionDate.Value.Month;
+                    todayPolicies.AddRange(policiesByDayOfYear
+                        .Where(p =>
+                            p.DAY_OF_YEAR.HasValue &&
+                            ((p.DAY_OF_YEAR.Value / 100) == currentMonth) &&
+                            ((p.DAY_OF_YEAR.Value % 100) == currentDay)
+                        ));
+                }
+
+                // 3. Theo HOLIDAY
+                var policiesByHoliday = hisPolicies1.Where(p => p.DAY_OF_WEEK == null && p.DAY_OF_YEAR == null && p.HOLIDAY != null).ToList();
+                if (policiesByHoliday.Count > 0)
+                {
+                    int currentDateInt = int.Parse(transactionDate.Value.ToString("yyyyMMdd"));
+                    todayPolicies.AddRange(policiesByHoliday.Where(p => p.HOLIDAY == currentDateInt));
+                }
+
+                if (todayPolicies.Count > 0)
+                {
+                    var allowedPatientTypeIds = todayPolicies
+                        .Where(p => p.PATIENT_TYPE_ID != null)
+                        .Select(p => (long)p.PATIENT_TYPE_ID)
+                        .Distinct()
+                        .ToList();
+                        
+                    var notAllowed = checkedServices
+                        .Where(s => !allowedPatientTypeIds.Contains(s.PATIENT_TYPE_ID))
+                        .GroupBy(s => s.PATIENT_TYPE_ID)
+                        .ToDictionary(
+                            g => g.Key,
+                            g => g.Select(s => s.TDL_SERVICE_CODE).ToList()
+                        );
+
+                    Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData("notAllowed:", notAllowed));
+                    if (!notAllowed.Any())
+                        return true;
+
+                    var msg = new StringBuilder();
+                    foreach (var kv in notAllowed)
+                    {
+                        Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData("notAllowed2:", kv));
+                        // Lấy tên đối tượng thanh toán từ ListPatientType
+                        string patientTypeName = "";
+                        if (ListPatientType != null)
+                        {
+                            var pt = ListPatientType.FirstOrDefault(ptype => ptype.ID == kv.Key);
+                            if (pt != null)
+                                patientTypeName = pt.PATIENT_TYPE_NAME;
+                        }
+                        if (string.IsNullOrEmpty(patientTypeName))
+                            patientTypeName = kv.Key.ToString();
+                        msg.AppendLine($"Dịch vụ {string.Join(", ", kv.Value)} có đối tượng thanh toán {patientTypeName} không được thiết lập thanh toán ngoài giờ.");
+                    }
+                    msg.AppendLine("Bạn có muốn tiếp tục không?");
+
+                    var result = MessageBox.Show(msg.ToString(), "Cảnh báo", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+                    if (result == DialogResult.Yes)
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        List<object> listArgs = new List<object>();
+                        listArgs.Add(treatmentId);
+                        HIS.Desktop.ModuleExt.PluginInstanceBehavior.ShowModule(
+                            "HIS.Desktop.Plugins.Bordereau",
+                            this.moduleData.RoomId,
+                            this.moduleData.RoomTypeId,
+                            listArgs
+                        );
+                        LoadSereServByTreatment();
+                        return false;
+                    }
+                }
+
+                // Nếu không có policy phù hợp, cho phép lưu
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+                return false;
+            }
+        }
+        
         List<HIS_CONFIG> listConfig = new List<HIS_CONFIG>();
         HIS_CONFIG selectedConfig = new HIS_CONFIG();
         private void loadConfig()
@@ -2478,12 +2604,15 @@ namespace HIS.Desktop.Plugins.DepositService.DepositService
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
-
+            
         private void btnSave_Click(object sender, EventArgs e)
         {
             try
             {
                 if (!btnSave.Enabled) return;
+                 if (!CheckHolidayPoliciesBeforeSave())
+                    return; 
+                  
                 SaveProcess(false, false, false);
             }
             catch (Exception ex)
@@ -2491,11 +2620,15 @@ namespace HIS.Desktop.Plugins.DepositService.DepositService
                 Inventec.Common.Logging.LogSystem.Fatal(ex);
             }
         }
-
+            
         private void bbtnSave_ItemClick(object sender, ItemClickEventArgs e)
         {
             if (btnSave.Enabled)
             {
+                if (!CheckHolidayPoliciesBeforeSave())
+                    return;
+
+
                 btnSave_Click(null, null);
             }
         }
@@ -2513,6 +2646,9 @@ namespace HIS.Desktop.Plugins.DepositService.DepositService
             try
             {
                 if (!btnSaveAndPrint.Enabled) return;
+                if (!CheckHolidayPoliciesBeforeSave())
+                    return; 
+
                 SaveProcess(true, false, false);
             }
             catch (Exception ex)
@@ -2525,6 +2661,8 @@ namespace HIS.Desktop.Plugins.DepositService.DepositService
         {
             if (btnSaveAndPrint.Enabled)
             {
+                if (!CheckHolidayPoliciesBeforeSave())
+                    return;
                 btnSaveAndPrint_Click(null, null);
             }
         }
@@ -3464,7 +3602,10 @@ namespace HIS.Desktop.Plugins.DepositService.DepositService
             try
             {
                 if (!btnSavePrintAndTrans.Enabled) return;
+                if (!CheckHolidayPoliciesBeforeSave())
+                    return;
                 SaveProcess(true, true, false);
+                
             }
             catch (Exception ex)
             {
@@ -3477,7 +3618,10 @@ namespace HIS.Desktop.Plugins.DepositService.DepositService
             try
             {
                 if (btnSavePrintAndTrans.Enabled)
-                    btnSavePrintAndTrans_Click(null, null);
+                    if (!CheckHolidayPoliciesBeforeSave())
+                        return;
+                btnSavePrintAndTrans_Click(null, null);
+               
             }
             catch (Exception ex)
             {
@@ -3500,6 +3644,8 @@ namespace HIS.Desktop.Plugins.DepositService.DepositService
         private void btnAddSign_Click(object sender, EventArgs e)
         {
             if (!btnAddSign.Enabled) return;
+            if (!CheckHolidayPoliciesBeforeSave())
+                return;
             SaveProcess(false, true, true);
         }
     }
