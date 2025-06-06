@@ -1144,6 +1144,7 @@ namespace HIS.Desktop.Plugins.TreatmentIcdEdit
                 HisTreatmentExtFilter hisTreatmentExtFilter = new HisTreatmentExtFilter();
                 hisTreatmentExtFilter.TREATMENT_ID = currentVHisTreatment.ID;
                 var TreatmentId = new BackendAdapter(new CommonParam()).Get<List<HIS_TREATMENT_EXT>>("api/HisTreatmentExt/Get", ApiConsumers.MosConsumer, hisTreatmentExtFilter, new CommonParam());
+                Inventec.Common.Logging.LogSystem.Debug("Dangth : " + Inventec.Common.Logging.LogUtil.TraceData("Dangth", TreatmentId));
                 if (TreatmentId != null && TreatmentId.Count > 0)
                 {
                     HIS_TREATMENT_EXT hisTreatmentExtResult = TreatmentId.FirstOrDefault();
@@ -1163,6 +1164,12 @@ namespace HIS.Desktop.Plugins.TreatmentIcdEdit
                     {
                         txtPathologicalProcess.Text = "";
                     }
+                }
+                else
+                {
+                    txtSubclinical.Text = "";
+                    txtPathologicalProcess.Text = "";
+                    XtraMessageBox.Show(string.Format("Không có dữ liệu thông tin bệnh nhân (Mã điều trị: {0}).", currentVHisTreatment.TREATMENT_CODE), "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
                 //else
                 //{
