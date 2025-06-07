@@ -65,6 +65,8 @@ namespace HIS.Desktop.Plugins.ExpMestChmsCreate
 
         List<V_HIS_MEDI_STOCK> listExpMediStock = new List<V_HIS_MEDI_STOCK>();
         List<V_HIS_MEDI_STOCK> listImpMediStock = new List<V_HIS_MEDI_STOCK>();
+        //qtcode
+        List<HIS_MEDI_STOCK> medi = new List<HIS_MEDI_STOCK>();
 
         Dictionary<long, MediMateTypeADO> dicMediMateAdo = new Dictionary<long, MediMateTypeADO>();
 
@@ -136,7 +138,8 @@ namespace HIS.Desktop.Plugins.ExpMestChmsCreate
                 IsReasonRequired = HisConfigs.Get<string>(AppConfigKeys.CONFIG_KEY__IS_REASON_REQUIRED) == "1";
                 LoadKeyUCLanguage();
                 ValidControl();
-                LoadDataToComboImpMediStock();
+                //qtcode
+                LoadDataToComboImpMediStock(medi);
                 LoadDataToComboReasonRequired();
                 // LoadDataToComboExpMediStock();
                 LoadKhoXuat();
@@ -147,7 +150,6 @@ namespace HIS.Desktop.Plugins.ExpMestChmsCreate
                 InitComboBloodRH();
                 InitComboRespositoryBloodABO();
                 InitComboRespositoryBloodRH();
-                txtExpMediStock.Focus();
                 gridColumnMedicine_Chon.Image = imageCollectionExpMest.Images[1];
                 gridColumnMaterial_Chon.Image = imageCollectionExpMest.Images[1];
                 GetConfig();
@@ -158,16 +160,16 @@ namespace HIS.Desktop.Plugins.ExpMestChmsCreate
                     isUpdate = true;
                     mestRoom = listExpMediStock.FirstOrDefault(o => o.ID == this._ExpMestChmsUpdate.MEDI_STOCK_ID);
                     cboExpMediStock.EditValue = this._ExpMestChmsUpdate.MEDI_STOCK_ID;
-                    if (mestRoom != null)
-                    {
-                        txtExpMediStock.Properties.Buttons[1].Visible = true;
-                        txtExpMediStock.Text = mestRoom.MEDI_STOCK_NAME;
-                    }
-                    else
-                    {
-                        txtExpMediStock.Properties.Buttons[1].Visible = false;
-                        txtExpMediStock.Text = "";
-                    }
+                    //if (mestRoom != null)
+                    //{
+                    //    txtExpMediStock.Properties.Buttons[1].Visible = true;
+                    //    txtExpMediStock.Text = mestRoom.MEDI_STOCK_NAME;
+                    //}
+                    //else
+                    //{
+                    //    txtExpMediStock.Properties.Buttons[1].Visible = false;
+                    //    txtExpMediStock.Text = "";
+                    //}
 
                     ResetGridControlDetail();
 
@@ -1335,8 +1337,6 @@ ApiConsumers.MosConsumer, medicineFilter, param);
                 chkIsNotAvailableButHaveInStock.CheckState = CheckState.Unchecked;
                 cboReasonRequired.EditValue = null;
                 dxValidationProvider1.RemoveControlError(txtDescription);
-                dxValidationProvider1.RemoveControlError(txtImpMediStock);
-                dxValidationProvider1.RemoveControlError(txtExpMediStock);
 
                 dxValidationProvider2.RemoveControlError(txtNote);
                 dxValidationProvider2.RemoveControlError(spinExpAmount);
@@ -1379,16 +1379,44 @@ ApiConsumers.MosConsumer, medicineFilter, param);
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
-
-        private void LoadDataToComboImpMediStock()
+        //qtcode
+        private void LoadDataToComboImpMediStock(List<HIS_MEDI_STOCK> data)
         {
             try
             {
-                List<ColumnInfo> columnInfos = new List<ColumnInfo>();
-                columnInfos.Add(new ColumnInfo("MEDI_STOCK_CODE", "", 50, 1));
-                columnInfos.Add(new ColumnInfo("MEDI_STOCK_NAME", "", 200, 2));
-                ControlEditorADO controlEditorADO = new ControlEditorADO("MEDI_STOCK_NAME", "ID", columnInfos, false, 250);
-                ControlEditorLoader.Load(cboImpMediStock, null, controlEditorADO);
+
+                cboImpMediStock.Properties.DataSource = data;
+                cboImpMediStock.Properties.DisplayMember = "MEDI_STOCK_NAME";
+                cboImpMediStock.Properties.ValueMember = "ID";
+                //qtcode cy
+                cboImpMediStock.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.Standard;
+                cboImpMediStock.Properties.PopupFilterMode = DevExpress.XtraEditors.PopupFilterMode.Contains;
+                cboImpMediStock.ForceInitialize();
+                cboImpMediStock.Properties.View.Columns.Clear();
+                cboImpMediStock.Properties.ImmediatePopup = true;
+                DevExpress.XtraGrid.Columns.GridColumn aColumnCode = cboImpMediStock.Properties.View.Columns.AddField("MEDI_STOCK_CODE");
+                aColumnCode.Caption = "Mã kho";
+                aColumnCode.Visible = true;
+                aColumnCode.VisibleIndex = 1;
+                aColumnCode.Width = 140;
+
+                DevExpress.XtraGrid.Columns.GridColumn aColumnName = cboImpMediStock.Properties.View.Columns.AddField("MEDI_STOCK_NAME");
+                aColumnName.Caption = "Tên kho";
+                aColumnName.Visible = true;
+                aColumnName.VisibleIndex = 2;
+                //aColumnName.ColumnEdit = repositoryItemMemoEdit1;
+                aColumnName.AppearanceCell.TextOptions.Trimming = DevExpress.Utils.Trimming.Word;
+                aColumnName.AppearanceCell.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
+                aColumnName.Width = 420;
+
+
+
+
+                //List<ColumnInfo> columnInfos = new List<ColumnInfo>();
+                //columnInfos.Add(new ColumnInfo("MEDI_STOCK_CODE", "", 50, 1));
+                //columnInfos.Add(new ColumnInfo("MEDI_STOCK_NAME", "", 200, 2));
+                //ControlEditorADO controlEditorADO = new ControlEditorADO("MEDI_STOCK_NAME", "ID", columnInfos, false, 250);
+                //ControlEditorLoader.Load(cboImpMediStock, null, controlEditorADO);
 
             }
             catch (Exception ex)
@@ -1557,11 +1585,8 @@ ApiConsumers.MosConsumer, medicineFilter, param);
                     listImpMediStock = listCurrentMediStock;
                     cboImpMediStock.EditValue = null;
                     cboImpMediStock.Enabled = false;
-                    txtImpMediStock.Enabled = false;
                     cboExpMediStock.EditValue = null;
-                    txtExpMediStock.Text = "";
                     cboExpMediStock.Enabled = true;
-                    txtExpMediStock.Enabled = true;
                     cboImpMediStock.Properties.DataSource = listImpMediStock;
 
                     if (currentMediStock != null)
@@ -1594,11 +1619,8 @@ ApiConsumers.MosConsumer, medicineFilter, param);
                     listExpMediStock = listCurrentMediStock;
                     cboImpMediStock.EditValue = null;
                     cboImpMediStock.Enabled = true;
-                    txtImpMediStock.Enabled = true;
-                    txtImpMediStock.Text = "";
                     cboExpMediStock.EditValue = null;
                     cboExpMediStock.Enabled = false;
-                    txtExpMediStock.Enabled = false;
                     cboExpMediStock.Properties.DataSource = listExpMediStock;
 
                     if (this.currentMediStock != null)
@@ -1658,8 +1680,6 @@ ApiConsumers.MosConsumer, medicineFilter, param);
             {
                 cboExpMediStock.Enabled = enable;
                 cboImpMediStock.Enabled = enable;
-                txtExpMediStock.Enabled = enable;
-                txtImpMediStock.Enabled = enable;
                 btnSave.Enabled = enable;
                 btnUpdate.Enabled = !enable;
             }
@@ -1678,8 +1698,6 @@ ApiConsumers.MosConsumer, medicineFilter, param);
                 ValidControlExpAmount();
                 ValidationSingleControl(cboChooseABO);
                 ValidationSingleControl(cboChooseRH);
-                ValidationSingleControlProvider1(txtImpMediStock);
-                ValidationSingleControlProvider1(txtExpMediStock);
                 lciReasonRequired.AppearanceItemCaption.ForeColor = Color.Black;
                 if (IsReasonRequired)
                 {
@@ -1699,8 +1717,6 @@ ApiConsumers.MosConsumer, medicineFilter, param);
             {
                 ImpMediStockValidationRule impMestRule = new ImpMediStockValidationRule();
                 TxtExpMediStockValidationRule txtimpMestRule = new TxtExpMediStockValidationRule();
-                txtimpMestRule.txtText = txtImpMediStock;
-                dxValidationProvider2.SetValidationRule(txtImpMediStock, txtimpMestRule);
                 impMestRule.cboImpMediStock = cboImpMediStock;
                 dxValidationProvider1.SetValidationRule(cboImpMediStock, impMestRule);
             }
@@ -2547,29 +2563,62 @@ ApiConsumers.MosConsumer, medicineFilter, param);
         List<V_HIS_MEDI_STOCK> mestRoom_ = new List<V_HIS_MEDI_STOCK>();
         private void InitCombo(GridLookUpEdit cbo, object data, string DisplayValue1, string DisplayValue2, string ValueMember)
         {
+            //try
+            //{
+            //    cbo.Properties.DataSource = data;
+            //    cbo.Properties.DisplayMember = DisplayValue1;
+            //    cbo.Properties.ValueMember = ValueMember;
+            //    DevExpress.XtraGrid.Columns.GridColumn col2 = cbo.Properties.View.Columns.AddField(DisplayValue1);
+
+            //    col2.VisibleIndex = 1;
+            //    col2.Width = 100;
+            //    col2.Caption = "Mã kho";
+
+
+            //    DevExpress.XtraGrid.Columns.GridColumn col3 = cbo.Properties.View.Columns.AddField(DisplayValue2);
+            //    col3.VisibleIndex = 1;
+            //    col3.Width = 200;
+            //    col3.Caption = "Tên kho";
+
+            //    cbo.Properties.PopupFormWidth = 300;
+            //    // cbo.Properties.View.OptionsView.ShowColumnHeaders = false;
+            //    cbo.Properties.View.OptionsView.ShowColumnHeaders = true;
+            //    cbo.Properties.View.OptionsSelection.MultiSelect = true;
+            //    GridCheckMarksSelection gridCheckMark = cbo.Properties.Tag as GridCheckMarksSelection;
+            //    if (gridCheckMark != null)
+            //    {
+            //        gridCheckMark.SelectAll(cbo.Properties.DataSource);
+            //    }
+            //}
+            //catch (Exception ex)
+            //{
+            //    Inventec.Common.Logging.LogSystem.Warn(ex);
+            //}
             try
             {
                 cbo.Properties.DataSource = data;
                 cbo.Properties.DisplayMember = DisplayValue1;
                 cbo.Properties.ValueMember = ValueMember;
-                DevExpress.XtraGrid.Columns.GridColumn col2 = cbo.Properties.View.Columns.AddField(DisplayValue1);
-
-                col2.VisibleIndex = 1;
-                col2.Width = 100;
-                col2.Caption = "Mã kho";
-
-
-                DevExpress.XtraGrid.Columns.GridColumn col3 = cbo.Properties.View.Columns.AddField(DisplayValue2);
-                col3.VisibleIndex = 1;
-                col3.Width = 200;
-                col3.Caption = "Tên kho";
-
+                var view = cbo.Properties.View;
+                view.Columns.Clear();
+                var colCode = view.Columns.AddField(DisplayValue1);
+                colCode.VisibleIndex = 0;
+                colCode.Width = 100;
+                colCode.Caption = "Mã kho";
+                colCode.OptionsFilter.AutoFilterCondition = DevExpress.XtraGrid.Columns.AutoFilterCondition.Contains;
+                var colName = view.Columns.AddField(DisplayValue2);
+                colName.VisibleIndex = 1;
+                colName.Width = 200;
+                colName.Caption = "Tên kho";
+                colName.OptionsFilter.AutoFilterCondition = DevExpress.XtraGrid.Columns.AutoFilterCondition.Contains;
+                view.OptionsView.ShowAutoFilterRow = true;
+                view.OptionsView.ShowColumnHeaders = true;
+                view.OptionsView.ShowIndicator = false;
+                view.OptionsSelection.MultiSelect = true;
+                view.OptionsView.ShowGroupPanel = false;
+                cbo.Properties.ImmediatePopup = true;
                 cbo.Properties.PopupFormWidth = 300;
-                // cbo.Properties.View.OptionsView.ShowColumnHeaders = false;
-                cbo.Properties.View.OptionsView.ShowColumnHeaders = true;
-                cbo.Properties.View.OptionsSelection.MultiSelect = true;
-                GridCheckMarksSelection gridCheckMark = cbo.Properties.Tag as GridCheckMarksSelection;
-                if (gridCheckMark != null)
+                if (cbo.Properties.Tag is GridCheckMarksSelection gridCheckMark)
                 {
                     gridCheckMark.SelectAll(cbo.Properties.DataSource);
                 }
@@ -2578,8 +2627,8 @@ ApiConsumers.MosConsumer, medicineFilter, param);
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
-
         }
+        //qtcode
         private void InitCheck(GridLookUpEdit cbo, GridCheckMarksSelection.SelectionChangedEventHandler eventSelect)
         {
             try
@@ -2625,11 +2674,7 @@ ApiConsumers.MosConsumer, medicineFilter, param);
                             mestRoom_.Add(mestRoomK);
 
                         }
-                        txtExpMediStock.Properties.Buttons[1].Visible = true;
-                        txtExpMediStock.Text = "";
                         mestRoom_.Select(o => o.MEDI_STOCK_NAME).ToList();
-                        txtExpMediStock.Text = string.Join(",", mestRoom_.Select(o => o.MEDI_STOCK_NAME).ToList());
-                        dxValidationProvider1.RemoveControlError(txtExpMediStock);
                     }
 
                     FillDataToTrees();
@@ -2641,33 +2686,74 @@ ApiConsumers.MosConsumer, medicineFilter, param);
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
+        //qtcode
         private void LoadKhoXuat()
         {
 
+            //try
+            //{
+            //    if (chkPlanningExport.Checked == true)
+            //    {
+            //        // LoadDataToComboExpMediStock();
+            //        List<ColumnInfo> columnInfos = new List<ColumnInfo>();
+            //        columnInfos.Add(new ColumnInfo("MEDI_STOCK_CODE", "", 50, 1));
+            //        columnInfos.Add(new ColumnInfo("MEDI_STOCK_NAME", "", 200, 2));
+            //        ControlEditorADO controlEditorADO = new ControlEditorADO("MEDI_STOCK_NAME", "ID", columnInfos, false, 250);
+            //        ControlEditorLoader.Load(cboImpMediStock, listExpMediStock, controlEditorADO);
+
+            //    }
+            //    else
+            //    {
+            //        InitCombo(cboExpMediStock, listExpMediStock, "MEDI_STOCK_CODE", "MEDI_STOCK_NAME", "ID");
+            //        InitCheck(cboExpMediStock, SelectionGrid__ExpMediStock);
+            //    }
+
+            //}
+            //catch (Exception ex)
+            //{
+            //    Inventec.Common.Logging.LogSystem.Error(ex);
+            //}
             try
             {
-                if (chkPlanningExport.Checked == true)
+                if (chkPlanningExport.Checked)
                 {
-                    // LoadDataToComboExpMediStock();
-                    List<ColumnInfo> columnInfos = new List<ColumnInfo>();
-                    columnInfos.Add(new ColumnInfo("MEDI_STOCK_CODE", "", 50, 1));
-                    columnInfos.Add(new ColumnInfo("MEDI_STOCK_NAME", "", 200, 2));
-                    ControlEditorADO controlEditorADO = new ControlEditorADO("MEDI_STOCK_NAME", "ID", columnInfos, false, 250);
-                    ControlEditorLoader.Load(cboImpMediStock, listExpMediStock, controlEditorADO);
-
+                    // Gán datasource và cấu hình giao diện lọc theo mã/tên kho cho cboImpMediStock
+                    cboExpMediStock.Properties.DataSource = listExpMediStock;
+                    cboExpMediStock.Properties.DisplayMember = "MEDI_STOCK_NAME";
+                    cboExpMediStock.Properties.ValueMember = "ID";
+                    var view = cboExpMediStock.Properties.View;
+                    view.Columns.Clear();
+                    // Cột mã kho
+                    var colCode = view.Columns.AddField("MEDI_STOCK_CODE");
+                    colCode.Caption = "Mã kho";
+                    colCode.VisibleIndex = 0;
+                    colCode.Width = 100;
+                    colCode.OptionsFilter.AutoFilterCondition = DevExpress.XtraGrid.Columns.AutoFilterCondition.Contains;
+                    // Cột tên kho
+                    var colName = view.Columns.AddField("MEDI_STOCK_NAME");
+                    colName.Caption = "Tên kho";
+                    colName.VisibleIndex = 1;
+                    colName.Width = 200;
+                    colName.OptionsFilter.AutoFilterCondition = DevExpress.XtraGrid.Columns.AutoFilterCondition.Contains;
+                    cboExpMediStock.Properties.PopupFormWidth = 350;
+                    view.OptionsView.ShowColumnHeaders = true;
+                    view.OptionsView.ShowAutoFilterRow = true;
+                    view.OptionsView.ShowIndicator = false;
+                    view.OptionsSelection.MultiSelect = false;
+                    view.OptionsView.ShowGroupPanel = false;
+                    cboExpMediStock.Properties.ImmediatePopup = true;
                 }
                 else
                 {
+                    // Trường hợp xuất thường dùng combobox có chọn nhiều checkbox
                     InitCombo(cboExpMediStock, listExpMediStock, "MEDI_STOCK_CODE", "MEDI_STOCK_NAME", "ID");
                     InitCheck(cboExpMediStock, SelectionGrid__ExpMediStock);
                 }
-
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
-
         }
 
         private void gridViewMaterial_CustomDrawGroupRow(object sender, RowObjectCustomDrawEventArgs e)
@@ -2727,5 +2813,160 @@ ApiConsumers.MosConsumer, medicineFilter, param);
         {
 
         }
+        //qtcode
+        private void cboExpMediStock_CustomDisplayText(object sender, CustomDisplayTextEventArgs e)
+        {
+            try
+            {
+                string displayText = "";
+
+                if (this.mestRoom_ != null && this.mestRoom_.Count > 0)
+                {
+                    displayText = String.Join(", ", this.mestRoom_.Select(s => s.MEDI_STOCK_NAME).Distinct().ToList());
+                }
+
+                e.DisplayText = displayText;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+
+            }
+        }
+
+        private void cboExpMediStock_ButtonClick(object sender, ButtonPressedEventArgs e)
+        {
+            try
+            {
+                if (e.Button.Kind == ButtonPredefines.Delete)
+                {
+
+                    mestRoom_.Clear();
+                    cboExpMediStock.EditValue = null;
+                    cboExpMediStock.Text = "";
+                    GridCheckMarksSelection gridCheckMark = cboExpMediStock.Properties.Tag as GridCheckMarksSelection;
+                    if (gridCheckMark != null)
+                    {
+                        gridCheckMark.ClearSelection(cboExpMediStock.Properties.View);
+                    }
+                    this.cboExpMediStock.Focus();
+                    FillDataToTrees();
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void cboImpMediStock_ButtonClick(object sender, ButtonPressedEventArgs e)
+        {
+            try
+            {
+                if (e.Button.Kind == ButtonPredefines.Delete)
+                {
+
+                    mestRoom_.Clear();
+                    cboImpMediStock.EditValue = null;
+                    cboImpMediStock.Text = "";
+                    GridCheckMarksSelection gridCheckMark = cboImpMediStock.Properties.Tag as GridCheckMarksSelection;
+                    if (gridCheckMark != null)
+                    {
+                        gridCheckMark.ClearSelection(cboImpMediStock.Properties.View);
+                    }
+                    this.cboImpMediStock.Focus();
+                    FillDataToTrees();
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+        //qtcode
+        private void cboImpMediStock_Closed(object sender, ClosedEventArgs e)
+        {
+            try
+            {
+                if (e.CloseMode == DevExpress.XtraEditors.PopupCloseMode.Normal)
+                {
+                    WaitingManager.Show();
+                    FillDataToTrees();
+                    WaitingManager.Hide();
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+        //qtcode
+        private void cboImpMediStock_EditValueChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                WaitingManager.Show();
+                ResetValueControlCommon1();
+                //ResetGridControlDetail();
+                if (cboImpMediStock.EditValue != null)
+                {
+
+                    stock = listImpMediStock.FirstOrDefault(o => o.ID == Convert.ToInt64(cboImpMediStock.EditValue));
+                    if (stock != null && stock.IS_GOODS_RESTRICT != null)
+                    {
+                        if (stock.IS_GOODS_RESTRICT == 1)
+                        {
+                            List<V_HIS_MEDI_STOCK_MATY> material = new List<V_HIS_MEDI_STOCK_MATY>();
+                            List<V_HIS_MEDI_STOCK_METY> medicine = new List<V_HIS_MEDI_STOCK_METY>();
+                            HisMediStockMatyViewFilter matyFilter = new HisMediStockMatyViewFilter();
+                            matyFilter.MEDI_STOCK_ID = stock.ID;
+                            material = new Inventec.Common.Adapter.BackendAdapter(new CommonParam()).Get<List<V_HIS_MEDI_STOCK_MATY>>(
+                                "api/HisMediStockMaty/GetView", ApiConsumers.MosConsumer, matyFilter, null);
+                            material = material.Where(o => o.IS_GOODS_RESTRICT == 1).ToList();
+                            if (material != null && material.Count > 0)
+                            {
+                                materialTypeIds = material.Select(o => o.MATERIAL_TYPE_ID).ToList();
+                            }
+
+                            HisMediStockMetyViewFilter metyFilter = new HisMediStockMetyViewFilter();
+                            metyFilter.MEDI_STOCK_ID = stock.ID;
+                            medicine = new Inventec.Common.Adapter.BackendAdapter(new CommonParam()).Get<List<V_HIS_MEDI_STOCK_METY>>(
+                               "api/HisMediStockMety/GetView", ApiConsumers.MosConsumer, metyFilter, null);
+                            medicine = medicine.Where(o => o.IS_GOODS_RESTRICT == 1).ToList();
+                            if (medicine != null && medicine.Count > 0)
+                            {
+                                medicineTypeIds = medicine.Select(o => o.MEDICINE_TYPE_ID).ToList();
+                            }
+                        }
+                        // LoadDataToTreeList(mestRoom);
+
+                    }
+                    //FillDataToTrees();
+                }
+                //if (stock != null)
+                //{
+                //    txtImpMediStock.Properties.Buttons[1].Visible = true;
+                //    txtImpMediStock.Text = stock.MEDI_STOCK_NAME;
+                //    dxValidationProvider1.RemoveControlError(txtImpMediStock);
+                //}
+                //else
+                //{
+                //    txtImpMediStock.Properties.Buttons[1].Visible = false;
+                //    txtImpMediStock.Text = "";
+                //}
+                //FillDataToGridExpMest();
+                //if (cboExpMediStock.EditValue == null)
+                //{
+                //    //LoadDataToTreeList(null);
+                //    FillDataToTrees();
+                //}
+                WaitingManager.Hide();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
     }
+
 }
