@@ -2869,6 +2869,7 @@ ApiConsumers.MosConsumer, medicineFilter, param);
                     mestRoom_.Clear();
                     cboImpMediStock.EditValue = null;
                     cboImpMediStock.Text = "";
+                    cboImpMediStock.Properties.NullText = "";
                     GridCheckMarksSelection gridCheckMark = cboImpMediStock.Properties.Tag as GridCheckMarksSelection;
                     if (gridCheckMark != null)
                     {
