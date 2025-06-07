@@ -33,6 +33,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.MInvoice
         public decimal tgtthue { get; set; }
         public decimal tgtttbso { get; set; }
         public string tgtttbchu { get; set; }
+        public string nguoi_thu { get; set; }
         public List<InvoiceDetails> details { get; set; }
     }
 

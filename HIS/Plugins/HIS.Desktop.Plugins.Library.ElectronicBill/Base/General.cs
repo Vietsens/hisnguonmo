@@ -172,21 +172,12 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.Base
                     return DicDataBuyerInfo;
                 }
 
-                string yob = "";
-                string age = "";
-                string dobStr = "";
-                string treatmentCode = "";
-                string patientCode = "";
-                string patientTypeName = "";
-                string treatmentTypeName = "";
+                string yob = "", age = "", dobStr = "", gender = "", cccd = "", cmnd ="";
+                string treatmentCode = "", patientCode = "", patientTypeName = "", treatmentTypeName = "";
                 string currentRoomDepartment = "";
-                string cashierUsername = "";
-                string cashierLoginname = "";
-                string inTime = "";
-                string outTime = "";
+                string cashierUsername = "", cashierLoginname = "";
+                string inTime = "", outTime = "", clinicalInTime = "";
                 string numOrder = "";
-                string gender = "";
-                string clinicalInTime = "";
 
                 if (inputData.Treatment != null)
                 {
@@ -211,6 +202,8 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.Base
                     treatmentCode = inputData.Treatment.TREATMENT_CODE;
                     patientCode = inputData.Treatment.TDL_PATIENT_CODE;
                     gender = inputData.Treatment.TDL_PATIENT_GENDER_NAME;
+                    cccd = inputData.Treatment.TDL_PATIENT_CCCD_NUMBER;
+                    cmnd = inputData.Treatment.TDL_PATIENT_CMND_NUMBER;
 
                     var patientType = BackendDataWorker.Get<HIS_PATIENT_TYPE>().FirstOrDefault(o => o.ID == inputData.Treatment.TDL_PATIENT_TYPE_ID);
                     patientTypeName = patientType != null ? patientType.PATIENT_TYPE_NAME : "";
@@ -318,6 +311,8 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.Base
                 result["HEIN_RATIO"] = heinRatio;
                 result["DOB_STR"] = dobStr;
                 result["HEIN_CARD_NUMBER"] = heinCardNumber;
+                result["CCCD_NUMBER"] = cccd;
+                result["CMND_NUMBER"] = cmnd;
             }
             catch (Exception ex)
             {

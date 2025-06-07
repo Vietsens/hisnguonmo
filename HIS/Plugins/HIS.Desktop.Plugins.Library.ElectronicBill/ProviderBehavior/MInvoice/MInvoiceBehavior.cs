@@ -146,7 +146,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.MInvoice
                 data.dchi = inv.BuyerAddress;//Địa chỉ người mua
                 data.email = inv.BuyerEmail;
                 data.stknmua = inv.BuyerAccountNumber;//Số tài khoản ngân hàng người mua
-                data.cccdan = "";//Căn cước công dân người mua
+                data.cccdan = inv.BuyerCCCD;//Căn cước công dân người mua
                 data.sdtnmua = inv.BuyerPhone;//Số điện thoại người mua
                 data.details = GetDetail(templateType);
                 data.tgtttbso = Math.Round(data.details.First().data.Sum(s => s.tgtien), 0);//Tổng tiền bằng số                
@@ -157,20 +157,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.MInvoice
                     data.ttcktmai = ElectronicBillDataInput.Discount ?? 0;//Tổng tiền chiết khấu
                 }
                 data.tgtttbchu = Inventec.Common.String.Convert.CurrencyToVneseString(String.Format("{0:0.##}", Inventec.Common.Number.Convert.NumberToNumberRoundMax4(data.tgtttbso))) + "đồng"; ;//Tổng tiền bằng chữ
-
-                Dictionary<string, string> dataReplate = General.ProcessDicValueString(ElectronicBillDataInput);
-                //Nếu có thay thế dữ liệu thì gán giá trị
-                if (dataReplate.Count > 0)
-                {
-                    System.Reflection.PropertyInfo[] pi = Inventec.Common.Repository.Properties.Get<InvoiceData>();
-                    foreach (var item in pi)
-                    {
-                        if (dataReplate.ContainsKey(item.Name))
-                        {
-                            item.SetValue(data, dataReplate[item.Name]);
-                        }
-                    }
-                }
+                data.nguoi_thu = Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetUserName();//Người thu tiền
 
                 result.data.Add(data);
             }
