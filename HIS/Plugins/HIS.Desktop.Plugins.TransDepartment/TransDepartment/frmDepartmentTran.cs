@@ -48,6 +48,10 @@ using System.Windows.Forms;
 using HIS.UC.SecondaryIcd;
 using Inventec.Common.Logging;
 using HIS.Desktop.LocalStorage.HisConfig;
+using EMR.EFMODEL.DataModels;
+using EMR.Filter;
+using EMR.SDO;
+using RefeshReference = HIS.Desktop.Common.RefeshReference;
 
 namespace HIS.Desktop.Plugins.TransDepartment
 {
@@ -75,6 +79,8 @@ namespace HIS.Desktop.Plugins.TransDepartment
         internal UserControl ucSecondaryIcd;
         public long WarningOptionInCaseOfUnassignTrackingServiceReq;
         public long IsNotShowOutMediAndMate;
+        public long IsShowUnsignedDocument;
+        private Inventec.Desktop.Common.Modules.Module emrDocumentModule;
         public frmDepartmentTran(Inventec.Desktop.Common.Modules.Module moduleData, TransDepartmentADO data, HIS.Desktop.Common.RefeshReference RefeshReference, DelegateReturnSuccess DelegateReturnSuccess)
             : base(moduleData)
         {
@@ -133,6 +139,8 @@ namespace HIS.Desktop.Plugins.TransDepartment
                     this.Icon = Icon.ExtractAssociatedIcon(iconPath);
                     WarningOptionInCaseOfUnassignTrackingServiceReq = Inventec.Common.TypeConvert.Parse.ToInt64(HisConfigs.Get<string>("HIS.Desktop.Plugins.TransDepartment.WarningOptionInCaseOfUnassignTrackingServiceReq"));
                     IsNotShowOutMediAndMate = Inventec.Common.TypeConvert.Parse.ToInt64(HisConfigs.Get<string>("HIS.Desktop.Plugins.TrackingPrint.IsNotShowOutMediAndMate"));
+                    IsShowUnsignedDocument = Inventec.Common.TypeConvert.Parse.ToInt64(HisConfigs.Get<string>("HIS.Desktop.Plugins.TransDepartment.IsShowUnsignedDocument"));
+                    emrDocumentModule = GlobalVariables.currentModuleRaws.FirstOrDefault(o => o.ModuleLink == "HIS.Desktop.Plugins.EmrDocument");
                 }
                 catch (Exception ex)
                 {
@@ -912,6 +920,7 @@ namespace HIS.Desktop.Plugins.TransDepartment
             }
         }
 
+      
         private void btnSave_Click(object sender, EventArgs e)
         {
             bool success = false;
@@ -943,18 +952,114 @@ namespace HIS.Desktop.Plugins.TransDepartment
                         return;
                 }
 
-                WaitingManager.Show();
-                if (WarningOptionInCaseOfUnassignTrackingServiceReq == 0 || (WarningOptionInCaseOfUnassignTrackingServiceReq != 1 && WarningOptionInCaseOfUnassignTrackingServiceReq != 2 && WarningOptionInCaseOfUnassignTrackingServiceReq != 3))
+                // Kiểm tra văn bản chưa hoàn thành chữ ký
+                if (IsShowUnsignedDocument == 1 || IsShowUnsignedDocument == 2)
                 {
-                    ConditionA(ref success, ref param);
-                }
-                else if (WarningOptionInCaseOfUnassignTrackingServiceReq == 1 || WarningOptionInCaseOfUnassignTrackingServiceReq == 2 || WarningOptionInCaseOfUnassignTrackingServiceReq == 3)
-                {
-                    var checkDepartment = listDepartments.FirstOrDefault(o => o.ID == Int64.Parse(cboDepartment.EditValue.ToString()));
+                    HisTreatmentFilter treatmentFilter = new HisTreatmentFilter();
+                    treatmentFilter.ID = treatmentId;
+                    var treatmentCode = string.Empty;
+                    var treatment = new BackendAdapter(new CommonParam()).Get<List<V_HIS_TREATMENT>>("api/HisTreatment/Get", ApiConsumers.MosConsumer, treatmentFilter, null);
+                    if (treatment != null && treatment.Count > 0)
+                    {
+                        treatmentCode = treatment.FirstOrDefault()?.TREATMENT_CODE;
+                    }
 
-                    Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => checkDepartment), checkDepartment));
-                    ConditionB(ref success, ref param, checkDepartment != null && checkDepartment.WARNING_WHEN_IS_NO_SURG == 1);
+                    var documentCheckResult = new BackendAdapter(param).Post<MediRecordCheckingResultSDO>("api/EmrDocument/MediRecordChecking", ApiConsumers.EmrConsumer, treatmentCode, param);
+
+                    if (documentCheckResult != null && documentCheckResult.SignatureMissingDocuments != null && documentCheckResult.SignatureMissingDocuments.Any())
+                    {
+                        var warningDocuments = documentCheckResult.SignatureMissingDocuments
+                            .Where(d => d.IS_WARNING_CHANGE_DEPARTMENT == 1) 
+                            .ToList();
+
+                        if (warningDocuments.Any())
+                        {
+                            string message = "";
+                            foreach (var doc in warningDocuments)
+                            {
+                                if (!string.IsNullOrEmpty(doc.UN_SIGNERS))
+                                {
+                                    message += $"Văn bản {doc.DOCUMENT_NAME} có tài khoản {doc.UN_SIGNERS} chưa hoàn thành chữ ký.\n";
+                                }
+                                else
+                                {
+                                    message += $"Văn bản {doc.DOCUMENT_NAME} chưa hoàn thành chữ ký.\n";
+                                }
+                            }
+
+                            if (IsShowUnsignedDocument == 1)
+                            {
+                                message += "Vui lòng hoàn thiện chữ ký trước khi chuyển khoa!";
+                                MessageBox.Show(message, "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                return;
+                            }
+                            else if (IsShowUnsignedDocument == 2)
+                            {
+                                message += "Bạn có muốn thực hiện ký không?";
+                                if (MessageBox.Show(message, "Thông báo", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                                {
+                                    if (emrDocumentModule != null)
+                                    {
+                                        try
+                                        {
+                                            var workingRoomModule = HIS.Desktop.Utility.PluginInstance.GetModuleWithWorkingRoom(emrDocumentModule, this.roomId, this.currentModule.RoomTypeId);
+                                            List<object> listArgs = new List<object> { treatmentCode };
+                                            LogSystem.Info("workingRoomModule : " + Inventec.Common.Logging.LogUtil.TraceData("workingRoomModule :", workingRoomModule));
+                                            LogSystem.Info("list args" + Inventec.Common.Logging.LogUtil.TraceData("listArgs :", listArgs));
+                                            var extenceInstance = HIS.Desktop.Utility.PluginInstance.GetPluginInstance(workingRoomModule, listArgs);
+                                            LogSystem.Info("Goi module"+ Inventec.Common.Logging.LogUtil.TraceData("extenceInstance :", extenceInstance));
+
+                                            if (extenceInstance != null)
+                                            {
+                                                ((Form)extenceInstance).ShowDialog();
+                                                return;
+                                            }
+                                        }
+                                        catch (Exception ex)
+                                        {
+                                            Inventec.Common.Logging.LogSystem.Error("Lỗi khi gọi module HIS.Desktop.Plugins.EmrDocument: " + ex.Message, ex);
+                                        }
+                                    }
+                                    else
+                                    {
+                                        Inventec.Common.Logging.LogSystem.Error("Không tìm thấy module HIS.Desktop.Plugins.EmrDocument trong GlobalVariables.currentModuleRaws");
+                                    }
+                                }
+                                else
+                                {
+                                    WaitingManager.Show();
+                                    if (WarningOptionInCaseOfUnassignTrackingServiceReq == 0 || (WarningOptionInCaseOfUnassignTrackingServiceReq != 1 && WarningOptionInCaseOfUnassignTrackingServiceReq != 2 && WarningOptionInCaseOfUnassignTrackingServiceReq != 3))
+                                    {
+                                        ConditionA(ref success, ref param);
+                                    }
+                                    else if (WarningOptionInCaseOfUnassignTrackingServiceReq == 1 || WarningOptionInCaseOfUnassignTrackingServiceReq == 2 || WarningOptionInCaseOfUnassignTrackingServiceReq == 3)
+                                    {
+                                        var checkDepartment = listDepartments.FirstOrDefault(o => o.ID == Int64.Parse(cboDepartment.EditValue.ToString()));
+
+                                        Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => checkDepartment), checkDepartment));
+                                        ConditionB(ref success, ref param, checkDepartment != null && checkDepartment.WARNING_WHEN_IS_NO_SURG == 1);
+                                    }
+                                }
+                            }
+                        }
+                    }
                 }
+                else
+                {
+                    WaitingManager.Show();
+                    if (WarningOptionInCaseOfUnassignTrackingServiceReq == 0 || (WarningOptionInCaseOfUnassignTrackingServiceReq != 1 && WarningOptionInCaseOfUnassignTrackingServiceReq != 2 && WarningOptionInCaseOfUnassignTrackingServiceReq != 3))
+                    {
+                        ConditionA(ref success, ref param);
+                    }
+                    else if (WarningOptionInCaseOfUnassignTrackingServiceReq == 1 || WarningOptionInCaseOfUnassignTrackingServiceReq == 2 || WarningOptionInCaseOfUnassignTrackingServiceReq == 3)
+                    {
+                        var checkDepartment = listDepartments.FirstOrDefault(o => o.ID == Int64.Parse(cboDepartment.EditValue.ToString()));
+
+                        Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => checkDepartment), checkDepartment));
+                        ConditionB(ref success, ref param, checkDepartment != null && checkDepartment.WARNING_WHEN_IS_NO_SURG == 1);
+                    }
+                }
+
             }
             catch (Exception ex)
             {
@@ -1151,7 +1256,7 @@ namespace HIS.Desktop.Plugins.TransDepartment
         //    {
         //        string seperate = ";";
         //        string strIcdNames = "";
-        //        string strWrongIcdCodes = "";
+        //        string strWrongIcdCodes = ""; 
         //        string[] periodSeparators = new string[1];
         //        periodSeparators[0] = seperate;
         //        string[] arrIcdExtraCodes = txtICDSub.Text.Split(periodSeparators, StringSplitOptions.RemoveEmptyEntries);
