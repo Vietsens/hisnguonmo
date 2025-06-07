@@ -56,7 +56,7 @@ namespace HIS.Desktop.Plugins.HisTranPatiOutInfo
         internal IcdProcessor icdProcessorTo;
         internal UserControl ucIcdToTranfer;
 
-        internal HIS_TREATMENT currentTreatment { get; set; }
+        internal V_HIS_TREATMENT currentTreatment { get; set; }
         HIS_BRANCH currentBranch = new HIS_BRANCH();
         List<HIS_MEDI_ORG> VHisHeinMediOrg = new List<HIS_MEDI_ORG>();
         List<HIS_TRAN_PATI_FORM> VHisTranPatiForm = new List<HIS_TRAN_PATI_FORM>();
@@ -201,8 +201,8 @@ namespace HIS.Desktop.Plugins.HisTranPatiOutInfo
                 CommonParam param = new CommonParam();
                 MOS.Filter.HisTreatmentFilter filter = new MOS.Filter.HisTreatmentFilter();
                 filter.ID = this.treatmentId;
-                this.currentTreatment = new HIS_TREATMENT();
-                this.currentTreatment = new BackendAdapter(param).Get<List<HIS_TREATMENT>>(HisRequestUriStore.HIS_TREATMENT_GET, ApiConsumers.MosConsumer, filter, param).FirstOrDefault();
+                this.currentTreatment = new V_HIS_TREATMENT();
+                this.currentTreatment = new BackendAdapter(param).Get<List<V_HIS_TREATMENT>>(HisRequestUriStore.HIS_TREATMENT_GETVIEW, ApiConsumers.MosConsumer, filter, param).FirstOrDefault();
                 if (this.currentTreatment != null && this.currentTreatment.TREATMENT_END_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_END_TYPE.ID__CHUYEN)
                 {
                     //Review
@@ -264,8 +264,8 @@ namespace HIS.Desktop.Plugins.HisTranPatiOutInfo
             }
         }
         List<V_HIS_EMPLOYEE> Employees = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<MOS.EFMODEL.DataModels.V_HIS_EMPLOYEE>().Where(o => o.IS_ACTIVE == 1).ToList();
-                    
-        private void FillDataToControlTranPatiToTranfer(HIS_TREATMENT data)
+
+        private void FillDataToControlTranPatiToTranfer(V_HIS_TREATMENT data)
         {
             try
             {
@@ -315,9 +315,9 @@ namespace HIS.Desktop.Plugins.HisTranPatiOutInfo
                         txtDauHieuLamSang.Text = hisTreatment.FirstOrDefault().CLINICAL_SIGNS;
                         txtXetNghiem.Text = hisTreatment.FirstOrDefault().SUBCLINICAL_RESULT;
                     }
-                    //txtDauHieuLamSang.Text = data.CLINICAL_NOTE;
+                    //txtDauHieuLamSang.Text = data.CLINICAL_SIGNS;
                     //txtXetNghiem.Text = data.SUBCLINICAL_RESULT;
-                    txtDauHieuLamSang.Text = data.CLINICAL_SIGNS;
+                    //txtDauHieuLamSang.Text = data.CLINICAL_SIGNS;
                     txtPPKTThuoc.Text = data.TREATMENT_METHOD;
                     txtTinhTrangNguoiBenh.Text = data.PATIENT_CONDITION;
                     txtHuongDieuTri.Text = data.TREATMENT_DIRECTION;
@@ -770,7 +770,6 @@ namespace HIS.Desktop.Plugins.HisTranPatiOutInfo
                 _treatmentUpdate.ICD_SUB_CODE = txtIcdExtraCode.Text;
                 //dangth
                 _treatmentUpdate.CLINICAL_SIGNS = txtDauHieuLamSang.Text;
-                //_treatmentUpdate.CLINICAL_NOTE = txtDauHieuLamSang.Text;
                 //_treatmentUpdate.SUBCLINICAL_RESULT = txtXetNghiem.Text;
                 _treatmentUpdate.TREATMENT_METHOD = txtPPKTThuoc.Text;
                 _treatmentUpdate.PATIENT_CONDITION = txtTinhTrangNguoiBenh.Text;
@@ -803,8 +802,8 @@ namespace HIS.Desktop.Plugins.HisTranPatiOutInfo
                 }
                 else
                     _treatmentUpdate.SURGERY_END_TIME = null;
-                sdoUpdate.HisTreatment = _treatmentUpdate;               
-                //sdoUpdate.ClinicalNote = txtDauHieuLamSang.Text;
+                sdoUpdate.HisTreatment = _treatmentUpdate;
+                sdoUpdate.ClinicalNote = currentTreatment.CLINICAL_NOTE;
                 sdoUpdate.SubclinicalResult = txtXetNghiem.Text;
 
                 Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => sdoUpdate), sdoUpdate));
@@ -812,8 +811,9 @@ namespace HIS.Desktop.Plugins.HisTranPatiOutInfo
                 if (rs != null)
                 {
                     success = true;
-                    this.currentTreatment = rs;
-                    FillDataToControlTranPatiToTranfer(this.currentTreatment);
+                    //this.currentTreatment = rs;
+                    //FillDataToControlTranPatiToTranfer(this.currentTreatment);
+                    LoadDataTreatment();
                     //Nếu thành công
                     btnEdit.Enabled = true;
                     btnSave.Enabled = false;
@@ -1400,7 +1400,7 @@ namespace HIS.Desktop.Plugins.HisTranPatiOutInfo
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
-       
+
         private void cboTransporterLoginName_CustomDisplayText(object sender, CustomDisplayTextEventArgs e)
         {
             //try
@@ -1445,12 +1445,12 @@ namespace HIS.Desktop.Plugins.HisTranPatiOutInfo
             {
                 if (e.Button.Kind == DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)
                 {
-                    
+
                     cboTransporterLoginName.ShowPopup();
                 }
                 else if (e.Button.Kind == DevExpress.XtraEditors.Controls.ButtonPredefines.Delete)
                 {
-                    
+
                     cboTransporterLoginName.EditValue = null;
                     GridCheckMarksSelection gridCheckMark = cboTransporterLoginName.Properties.Tag as GridCheckMarksSelection;
                     if (gridCheckMark != null)
@@ -1459,13 +1459,13 @@ namespace HIS.Desktop.Plugins.HisTranPatiOutInfo
                     }
                     this.cboTransporterLoginName.Focus();
                     buttonEdit1.Text = "";
-                    
+
                 }
             }
             catch (Exception ex)
             {
-                
-               Inventec.Common.Logging.LogSystem.Warn(ex);
+
+                Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
         bool isUpdatingValue = false;

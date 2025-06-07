@@ -190,6 +190,11 @@ namespace HIS.UC.FormType.TimeFromTo
                     dtTimeFrom.EditValue = new System.DateTime(System.DateTime.Now.Year, System.DateTime.Now.Month, System.DateTime.Now.Day, 0, 0, 0);
                     dtTimeTo.EditValue = System.DateTime.Now;
                 }
+                else if (this.config != null && this.config.JSON_OUTPUT.Contains("TODAY"))
+                {
+                    dtTimeFrom.EditValue = new System.DateTime(System.DateTime.Now.Year, System.DateTime.Now.Month, System.DateTime.Now.Day, 0, 0, 0);
+                    dtTimeTo.EditValue = new System.DateTime(System.DateTime.Now.Year, System.DateTime.Now.Month, System.DateTime.Now.Day, 23, 59, 59);
+                }
                 else if (this.config != null && this.config.FORM_FIELD_CODE == "FTHIS000001")
                 {
                     dtTimeFrom.EditValue = new System.DateTime(System.DateTime.Now.Year, System.DateTime.Now.Month, 1);

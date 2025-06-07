@@ -161,17 +161,7 @@
     <Compile Include="CallPatient\CallPatienFactory.cs" />
     <Compile Include="CallPatient\ICallPatien.cs" />
     <Compile Include="ChooseRoomForWaitingScreenProcess.cs" />
-<<<<<<< HEAD
-    <Compile Include="frmChooseRoomForWaitingScreen.cs" />
-    <Compile Include="frmChooseRoomForWaitingScreen.Designer.cs">
-      <DependentUpon>frmChooseRoomForWaitingScreen.cs</DependentUpon>
-    </Compile>
-    <Compile Include="frmWaitingScreen.cs" />
-    <Compile Include="frmWaitingScreen.Designer.cs">
-      <DependentUpon>frmWaitingScreen.cs</DependentUpon>
-    </Compile>
-    <Compile Include="frmWaitingScreen_QY.cs" />
-=======
+
     <Compile Include="Class\DisplayOptionADO.cs" />
     <Compile Include="Class\ServiceReq1ADOWorker.cs" />
     <Compile Include="frmChooseRoomForWaitingScreen.cs">
@@ -201,7 +191,6 @@
     <Compile Include="frmWaitingScreen_QY.cs">
       <SubType>Form</SubType>
     </Compile>
->>>>>>> remotes/origin/Develop
     <Compile Include="frmWaitingScreen_QY.Designer.cs">
       <DependentUpon>frmWaitingScreen_QY.cs</DependentUpon>
     </Compile>

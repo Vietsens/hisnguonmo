@@ -44,88 +44,89 @@ namespace HIS.Desktop.Plugins.ExpMestChmsCreate
     public partial class UCExpMestChmsCreate : HIS.Desktop.Utility.UserControlBase
     {
 
-        private void cboImpMediStock_Closed(object sender, ClosedEventArgs e)
-        {
-            try
-            {
-                if (e.CloseMode == DevExpress.XtraEditors.PopupCloseMode.Normal)
-                {
-                    txtExpMediStock.Focus();
-                    txtExpMediStock.SelectAll();
-                }
-            }
-            catch (Exception ex)
-            {
-                Inventec.Common.Logging.LogSystem.Error(ex);
-            }
-        }
+        //private void cboImpMediStock_Closed(object sender, ClosedEventArgs e)
+        //{
+        //    try
+        //    {
+        //        if (e.CloseMode == DevExpress.XtraEditors.PopupCloseMode.Normal)
+        //        {
+        //            //txtExpMediStock.Focus();
+        //            //txtExpMediStock.SelectAll();
+        //            FillDataToTrees(); 
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Inventec.Common.Logging.LogSystem.Error(ex);
+        //    }
+        //}
 
-        private void cboImpMediStock_EditValueChanged(object sender, EventArgs e)
-        {
-            try
-            {
-                WaitingManager.Show();
-                ResetValueControlCommon1();
-                //ResetGridControlDetail();
-                if (cboImpMediStock.EditValue != null)
-                {
+        //private void cboImpMediStock_EditValueChanged(object sender, EventArgs e)
+        //{
+        //    try
+        //    {
+        //        WaitingManager.Show();
+        //        ResetValueControlCommon1();
+        //        //ResetGridControlDetail();
+        //        if (cboImpMediStock.EditValue != null)
+        //        {
 
-                    stock = listImpMediStock.FirstOrDefault(o => o.ID == Convert.ToInt64(cboImpMediStock.EditValue));
-                    if (stock != null && stock.IS_GOODS_RESTRICT != null) 
-                    {
-                        if (stock.IS_GOODS_RESTRICT == 1)
-                        {
-                            List<V_HIS_MEDI_STOCK_MATY> material = new List<V_HIS_MEDI_STOCK_MATY>();
-                            List<V_HIS_MEDI_STOCK_METY> medicine = new List<V_HIS_MEDI_STOCK_METY>();
-                            HisMediStockMatyViewFilter matyFilter = new HisMediStockMatyViewFilter();
-                            matyFilter.MEDI_STOCK_ID = stock.ID;
-                            material = new Inventec.Common.Adapter.BackendAdapter(new CommonParam()).Get<List<V_HIS_MEDI_STOCK_MATY>>(
-                                "api/HisMediStockMaty/GetView", ApiConsumers.MosConsumer, matyFilter, null);
-                            material = material.Where(o => o.IS_GOODS_RESTRICT == 1).ToList();
-                            if (material != null && material.Count > 0)
-                            {
-                                materialTypeIds = material.Select(o => o.MATERIAL_TYPE_ID).ToList();
-                            }
+        //            stock = listImpMediStock.FirstOrDefault(o => o.ID == Convert.ToInt64(cboImpMediStock.EditValue));
+        //            if (stock != null && stock.IS_GOODS_RESTRICT != null) 
+        //            {
+        //                if (stock.IS_GOODS_RESTRICT == 1)
+        //                {
+        //                    List<V_HIS_MEDI_STOCK_MATY> material = new List<V_HIS_MEDI_STOCK_MATY>();
+        //                    List<V_HIS_MEDI_STOCK_METY> medicine = new List<V_HIS_MEDI_STOCK_METY>();
+        //                    HisMediStockMatyViewFilter matyFilter = new HisMediStockMatyViewFilter();
+        //                    matyFilter.MEDI_STOCK_ID = stock.ID;
+        //                    material = new Inventec.Common.Adapter.BackendAdapter(new CommonParam()).Get<List<V_HIS_MEDI_STOCK_MATY>>(
+        //                        "api/HisMediStockMaty/GetView", ApiConsumers.MosConsumer, matyFilter, null);
+        //                    material = material.Where(o => o.IS_GOODS_RESTRICT == 1).ToList();
+        //                    if (material != null && material.Count > 0)
+        //                    {
+        //                        materialTypeIds = material.Select(o => o.MATERIAL_TYPE_ID).ToList();
+        //                    }
 
-                            HisMediStockMetyViewFilter metyFilter = new HisMediStockMetyViewFilter();
-                            metyFilter.MEDI_STOCK_ID = stock.ID;
-                            medicine = new Inventec.Common.Adapter.BackendAdapter(new CommonParam()).Get<List<V_HIS_MEDI_STOCK_METY>>(
-                               "api/HisMediStockMety/GetView", ApiConsumers.MosConsumer, metyFilter, null);
-                            medicine = medicine.Where(o => o.IS_GOODS_RESTRICT == 1).ToList();
-                            if (medicine != null && medicine.Count > 0)
-                            {
-                                medicineTypeIds = medicine.Select(o => o.MEDICINE_TYPE_ID).ToList();
-                            }
-                        }
-                        // LoadDataToTreeList(mestRoom);
+        //                    HisMediStockMetyViewFilter metyFilter = new HisMediStockMetyViewFilter();
+        //                    metyFilter.MEDI_STOCK_ID = stock.ID;
+        //                    medicine = new Inventec.Common.Adapter.BackendAdapter(new CommonParam()).Get<List<V_HIS_MEDI_STOCK_METY>>(
+        //                       "api/HisMediStockMety/GetView", ApiConsumers.MosConsumer, metyFilter, null);
+        //                    medicine = medicine.Where(o => o.IS_GOODS_RESTRICT == 1).ToList();
+        //                    if (medicine != null && medicine.Count > 0)
+        //                    {
+        //                        medicineTypeIds = medicine.Select(o => o.MEDICINE_TYPE_ID).ToList();
+        //                    }
+        //                }
+        //                // LoadDataToTreeList(mestRoom);
                        
-                    }
-                    FillDataToTrees();
-                }
-                if (stock != null)
-                {
-                    txtImpMediStock.Properties.Buttons[1].Visible = true;
-                    txtImpMediStock.Text = stock.MEDI_STOCK_NAME;
-                    dxValidationProvider1.RemoveControlError(txtImpMediStock);
-                }
-                else
-                {
-                    txtImpMediStock.Properties.Buttons[1].Visible = false;
-                    txtImpMediStock.Text = "";
-                }
-                //FillDataToGridExpMest();
-                //if (cboExpMediStock.EditValue == null)
-                //{
-                //    //LoadDataToTreeList(null);
-                //    FillDataToTrees();
-                //}
-                WaitingManager.Hide();
-            }
-            catch (Exception ex)
-            {
-                Inventec.Common.Logging.LogSystem.Error(ex);
-            }
-        }
+        //            }
+        //            FillDataToTrees();
+        //        }
+        //        //if (stock != null)
+        //        //{
+        //        //    txtImpMediStock.Properties.Buttons[1].Visible = true;
+        //        //    txtImpMediStock.Text = stock.MEDI_STOCK_NAME;
+        //        //    dxValidationProvider1.RemoveControlError(txtImpMediStock);
+        //        //}
+        //        //else
+        //        //{
+        //        //    txtImpMediStock.Properties.Buttons[1].Visible = false;
+        //        //    txtImpMediStock.Text = "";
+        //        //}
+        //        //FillDataToGridExpMest();
+        //        //if (cboExpMediStock.EditValue == null)
+        //        //{
+        //        //    //LoadDataToTreeList(null);
+        //        //    FillDataToTrees();
+        //        //}
+        //        WaitingManager.Hide();
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Inventec.Common.Logging.LogSystem.Error(ex);
+        //    }
+        //}
 
         private void txtImpMediStock_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
         {
@@ -134,16 +135,16 @@ namespace HIS.Desktop.Plugins.ExpMestChmsCreate
                 if (e.KeyCode == Keys.Enter)
                 {
                     bool valid = false;
-                    if (!String.IsNullOrEmpty(txtImpMediStock.Text))
-                    {
-                        string key = txtImpMediStock.Text.ToLower();
-                        var listData = listImpMediStock.Where(o => o.MEDI_STOCK_CODE.ToLower().Contains(key) || o.MEDI_STOCK_NAME.ToLower().Contains(key)).ToList();
-                        if (listData != null && listData.Count == 1)
-                        {
-                            valid = true;
-                            cboImpMediStock.EditValue = listData.First().ID;
-                        }
-                    }
+                    //if (!String.IsNullOrEmpty(txtImpMediStock.Text))
+                    //{
+                    //    string key = txtImpMediStock.Text.ToLower();
+                    //    var listData = listImpMediStock.Where(o => o.MEDI_STOCK_CODE.ToLower().Contains(key) || o.MEDI_STOCK_NAME.ToLower().Contains(key)).ToList();
+                    //    if (listData != null && listData.Count == 1)
+                    //    {
+                    //        valid = true;
+                    //        cboImpMediStock.EditValue = listData.First().ID;
+                    //    }
+                    //}
                     if (!valid)
                     {
                         cboImpMediStock.Focus();
@@ -169,7 +170,7 @@ namespace HIS.Desktop.Plugins.ExpMestChmsCreate
                 else if (e.Button.Kind == ButtonPredefines.Delete)
                 {
                     cboImpMediStock.EditValue = null;
-                    txtImpMediStock.Text = "";
+                   
                     //LoadDataToTreeList(null);
                     FillDataToTrees();
                 }
@@ -184,10 +185,10 @@ namespace HIS.Desktop.Plugins.ExpMestChmsCreate
         {
             try
             {
-                if (txtImpMediStock.EditValue != txtImpMediStock.OldEditValue && String.IsNullOrEmpty(txtImpMediStock.Text) && cboImpMediStock.EditValue != null)
-                {
-                    cboImpMediStock.EditValue = null;
-                }
+                //if (txtImpMediStock.EditValue != txtImpMediStock.OldEditValue && String.IsNullOrEmpty(txtImpMediStock.Text) && cboImpMediStock.EditValue != null)
+                //{
+                //    cboImpMediStock.EditValue = null;
+                //}
             }
             catch (Exception ex)
             {
@@ -224,17 +225,17 @@ namespace HIS.Desktop.Plugins.ExpMestChmsCreate
                     {
                         mestRoom = listExpMediStock.FirstOrDefault(o => o.ID == Convert.ToInt64(cboExpMediStock.EditValue));
                     }
-                    if (mestRoom != null)
-                    {
-                        txtExpMediStock.Properties.Buttons[1].Visible = true;
-                        txtExpMediStock.Text = mestRoom.MEDI_STOCK_NAME;
-                        dxValidationProvider1.RemoveControlError(txtExpMediStock);
-                    }
-                    else
-                    {
-                        txtExpMediStock.Properties.Buttons[1].Visible = false;
-                        txtExpMediStock.Text = "";
-                    }
+                    //if (mestRoom != null)
+                    //{
+                    //    txtExpMediStock.Properties.Buttons[1].Visible = true;
+                    //    txtExpMediStock.Text = mestRoom.MEDI_STOCK_NAME;
+                    //    dxValidationProvider1.RemoveControlError(txtExpMediStock);
+                    //}
+                    //else
+                    //{
+                    //    txtExpMediStock.Properties.Buttons[1].Visible = false;
+                    //    txtExpMediStock.Text = "";
+                    //}
                     //LoadDataToTreeList(mestRoom);
 
                     //ResetGridControlDetail();
@@ -262,7 +263,6 @@ namespace HIS.Desktop.Plugins.ExpMestChmsCreate
                 else if (e.Button.Kind == ButtonPredefines.Delete)
                 {
                     cboExpMediStock.EditValue = null;
-                    txtExpMediStock.Text = "";
                     //LoadDataToTreeList(null);
                     //if (chkPlanningExport.Checked == true)
                     //{
@@ -295,16 +295,16 @@ namespace HIS.Desktop.Plugins.ExpMestChmsCreate
                     if (chkPlanningExport.Checked)
                     {
                         bool valid = false;
-                        if (!String.IsNullOrEmpty(txtExpMediStock.Text))
-                        {
-                            string key = txtExpMediStock.Text.ToLower();
-                            var listData = listExpMediStock.Where(o => o.MEDI_STOCK_CODE.ToLower().Contains(key) || o.MEDI_STOCK_NAME.ToLower().Contains(key)).ToList();
-                            if (listData != null && listData.Count == 1)
-                            {
-                                valid = true;
-                                cboExpMediStock.EditValue = listData.First().ID;
-                            }
-                        }
+                        //if (!String.IsNullOrEmpty(txtExpMediStock.Text))
+                        //{
+                        //    string key = txtExpMediStock.Text.ToLower();
+                        //    var listData = listExpMediStock.Where(o => o.MEDI_STOCK_CODE.ToLower().Contains(key) || o.MEDI_STOCK_NAME.ToLower().Contains(key)).ToList();
+                        //    if (listData != null && listData.Count == 1)
+                        //    {
+                        //        valid = true;
+                        //        cboExpMediStock.EditValue = listData.First().ID;
+                        //    }
+                        //}
                         if (!valid)
                         {
                             cboExpMediStock.Focus();
@@ -324,11 +324,11 @@ namespace HIS.Desktop.Plugins.ExpMestChmsCreate
         {
             try
             {
-                if (txtExpMediStock.EditValue != txtExpMediStock.OldEditValue && String.IsNullOrEmpty(txtExpMediStock.Text) && cboExpMediStock.EditValue != null)
-                {
-                    cboExpMediStock.EditValue = null;
+                //if (txtExpMediStock.EditValue != txtExpMediStock.OldEditValue && String.IsNullOrEmpty(txtExpMediStock.Text) && cboExpMediStock.EditValue != null)
+                //{
+                //    cboExpMediStock.EditValue = null;
 
-                }
+                //}
             }
             catch (Exception ex)
             {
