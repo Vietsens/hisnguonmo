@@ -53,8 +53,8 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.InvoiceInfo
 
                     patientCode = dataInput.Transaction.TDL_PATIENT_CODE;
                     treatmentCode = dataInput.Transaction.TDL_TREATMENT_CODE;
-                    
-                    
+
+
                     if (dataInput.Transaction.PAY_FORM_ID == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__CK)
                     {
                         result.PaymentMethod = "CK";
@@ -74,7 +74,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.InvoiceInfo
                 }
                 else if (dataInput.ListTransaction != null && dataInput.ListTransaction.Count > 0)
                 {
-                    
+
                     var legal = dataInput.ListTransaction.Where(o => !String.IsNullOrWhiteSpace(o.BUYER_ORGANIZATION)).OrderByDescending(o => o.TRANSACTION_TIME).FirstOrDefault();
                     if (legal != null)
                     {
@@ -179,6 +179,11 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.InvoiceInfo
 
                     if (String.IsNullOrWhiteSpace(treatmentCode))
                         treatmentCode = dataInput.Treatment.TREATMENT_CODE;
+
+                    if (String.IsNullOrWhiteSpace(result.BuyerCCCD))
+                        result.BuyerCCCD = dataInput.Treatment.TDL_PATIENT_CCCD_NUMBER;
+                    if (String.IsNullOrWhiteSpace(result.BuyerCCCD))
+                        result.BuyerCCCD = dataInput.Treatment.TDL_PATIENT_CMND_NUMBER;
                 }
 
                 if (!String.IsNullOrWhiteSpace(result.BuyerTaxCode))
@@ -211,6 +216,9 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.InvoiceInfo
                 if (!String.IsNullOrWhiteSpace(result.PaymentMethod))
                     result.PaymentMethod = result.PaymentMethod.Trim();
 
+                if (!String.IsNullOrWhiteSpace(result.BuyerCCCD))
+                    result.BuyerCCCD = result.BuyerCCCD.Trim();
+
                 if (Config.HisConfigCFG.BuyerCodeOption == "1")
                 {
                     result.BuyerCode = patientCode;
@@ -223,15 +231,23 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.InvoiceInfo
                 {
                     result.BuyerCode = "";
                 }
+
                 //Nếu thông tin đơn vị không có giá trị thì hiển thị thông tin tên người mua hàng vào thông tin đơn vị.
                 if (Config.HisConfigCFG.BuyerOrganizationOption == "1" && String.IsNullOrWhiteSpace(result.BuyerOrganization))
                 {
                     result.BuyerOrganization = result.BuyerName;
                 }
+                else if (Config.HisConfigCFG.BuyerOrganizationOption == "2")
+                {
+                    //Nếu cấu hình có giá trị 2 thì hiển thị thông tin đơn vị là thông tin khoa phòng hiện tại của người mua hàng.
+                    Dictionary<string, string> dicTreatmentValues = Base.General.ProcessDicValueString(dataInput);
+                    result.BuyerOrganization = dicTreatmentValues["CURRENT_ROOM_DEPARTMENT"];
+                }
                 //Cho phép khai báo các thông tin gắn kèm với tên của người mua trên hóa đơn điện tử
                 if (!String.IsNullOrWhiteSpace(HisConfigCFG.BuyerNameOption))
                 {
                     Dictionary<string, string> dicTreatmentValues = Base.General.ProcessDicValueString(dataInput);
+                    //Thay thế các giá trị trong tên người mua hàng
                     string addName = HisConfigCFG.BuyerNameOption;
                     foreach (var item in dicTreatmentValues)
                     {

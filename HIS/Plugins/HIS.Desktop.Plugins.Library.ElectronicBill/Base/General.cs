@@ -156,6 +156,12 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.Base
             return result;
         }
 
+        /// <summary>
+        /// Xử lý các giá trị trong từ điển để trả ra các giá trị cần thiết cho hóa đơn điện tử
+        /// Thông tin lưu chung cho từng lần phát hành hóa đơn nên có thể gọi lại tạo dữ liệu
+        /// </summary>
+        /// <param name="inputData"></param>
+        /// <returns></returns>
         internal static Dictionary<string, string> ProcessDicValueString(ElectronicBillDataInput inputData)
         {
             Dictionary<string, string> result = new Dictionary<string, string>();

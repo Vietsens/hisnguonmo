@@ -37,6 +37,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.InvoiceInfo
         public string BuyerEmail { get; set; }
         public string Note { get; set; }
         public string PaymentMethod { get; set; }
+        public string BuyerCCCD { get; set; }
         public long TransactionTime { get; set; }
     }
 }
