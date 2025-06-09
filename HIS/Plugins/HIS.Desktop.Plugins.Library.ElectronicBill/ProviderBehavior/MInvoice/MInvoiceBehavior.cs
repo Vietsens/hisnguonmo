@@ -159,6 +159,9 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.MInvoice
                 data.tgtttbchu = Inventec.Common.String.Convert.CurrencyToVneseString(String.Format("{0:0.##}", Inventec.Common.Number.Convert.NumberToNumberRoundMax4(data.tgtttbso))) + "đồng"; ;//Tổng tiền bằng chữ
                 data.nguoi_thu = Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetUserName();//Người thu tiền
 
+                Dictionary<string, string> dicTreatmentValues = Base.General.ProcessDicValueString(ElectronicBillDataInput);
+                data.thongtin_khoa = dicTreatmentValues["CURRENT_ROOM_DEPARTMENT"];
+
                 result.data.Add(data);
             }
             catch (Exception ex)
