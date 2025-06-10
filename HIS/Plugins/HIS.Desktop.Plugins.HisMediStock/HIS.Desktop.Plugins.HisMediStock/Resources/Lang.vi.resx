@@ -357,4 +357,7 @@
   <data name="frmHisMediStock.chkNotAllowMedicine.ToolTip" xml:space="preserve">
     <value>Không cho phép nhập thuốc ở chức năng “Nhập thuốc vật tư”</value>
   </data>
+  <data name="frmHisMediStock.cboNganHangChiTra.Properties.NullText" xml:space="preserve">
+    <value />
+  </data>
 </root>
