@@ -2,9 +2,11 @@
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
+[assembly: Inventec.Desktop.Core.Plugin]
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
-// associated with an assembly.
+// associated with an assembly.\
+
 [assembly: AssemblyTitle("EMR.Desktop.Plugins.ImportEmrViewer")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]

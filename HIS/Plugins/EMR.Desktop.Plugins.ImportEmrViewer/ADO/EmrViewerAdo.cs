@@ -29,8 +29,12 @@ namespace EMR.Desktop.Plugins.ImportEmrViewer.ADO
         public long IdRow { get; set; }
         public string NUM_ORDER_STR { get; set; }
         public string SIGN_IMAGE_STR { get; set; }
-        public Image IMAGE_SIGN { get; set; }
-
+        public Image IMAGE_VIEW { get; set; }
+        public string TREATMENT_CODE { get; set; }
+        public string PATIENT_CODE { get; set; }
+        public string VIR_PATIENT_NAME { get; set; }
+        public string HEIN_CARD_NUMBER { get; set; }
+        public string ICD_CODE { get; set; }
         public string ERROR { get; set; }
     }
 }

@@ -24,27 +24,29 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace EMR.Desktop.Plugins.ImportEmrSigner
+namespace EMR.Desktop.Plugins.ImportEmrViewer
 {
+
+    
     [ExtensionOf(typeof(DesktopRootExtensionPoint),
-           "EMR.Desktop.Plugins.ImportEmrSigner",
-           "Nhập khẩu tài khoản ký",
+           "EMR.Desktop.Plugins.ImportEmrViewer",
+           "Nhập khẩu xem bệnh án",
            "Common",
            16,
-           "xlsx.png",
+           "",
            "E",
            Module.MODULE_TYPE_ID__FORM,
            true,
            true)
        ]
-    public class ImportEmrSignerProcessor : ModuleBase, IDesktopRoot
+    public class ImportEmrViewerProcessor : ModuleBase, IDesktopRoot
     {
         CommonParam param;
-        public ImportEmrSignerProcessor()
+        public ImportEmrViewerProcessor()
         {
             param = new CommonParam();
         }
-        public ImportEmrSignerProcessor(CommonParam paramBusiness)
+        public ImportEmrViewerProcessor(CommonParam paramBusiness)
         {
             param = (paramBusiness != null ? paramBusiness : new CommonParam());
         }
@@ -55,7 +57,7 @@ namespace EMR.Desktop.Plugins.ImportEmrSigner
             object result = null;
             try
             {
-                ImportEmrSigner.IImportEmrSigner behavior = ImportEmrSigner.ImportEmrSignerFactory.MakeIImportEmrSigner(param, args);
+                ImportEmrViewer.ImportEmrViewer behavior = ImportEmrViewer.ImportEmrViewerFactory.MakeImportEmrViewer(param, args);
                 result = behavior != null ? (behavior.Run()) : null;
             }
             catch (Exception ex)
