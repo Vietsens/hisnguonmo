@@ -1093,16 +1093,10 @@ namespace HIS.Desktop.Plugins.HisExecuteRoom.HisExecuteRoom
                     }
 
                     var room = BackendDataWorker.Get<V_HIS_ROOM>().FirstOrDefault(o => o.ID == data.ROOM_ID);
-                    //qtcode
-                    var hisRoom = BackendDataWorker.Get<HIS_ROOM>().FirstOrDefault(o => o.ID == data.ROOM_ID);
-                    if (hisRoom != null)
-                    {
-                        cboPayerBank.EditValue = hisRoom.PAYER_BANK_ID;
-                        txtPayerAccount.Text = hisRoom.PAYER_ACCOUNT; 
-                    }
-                    //qtcode
                         if (room != null)
                     {
+                        cboPayerBank.EditValue = room.PAYER_BANK_ID;
+                        txtPayerAccount.Text = room.PAYER_ACCOUNT;
                         chkIsBlockNumOrder.Enabled = (data.IS_EXAM == 1 ? true : false);
                         chkIsBlockNumOrder.Checked = (room.IS_BLOCK_NUM_ORDER == 1 ? true : false);
                         chkIsExam.Checked = (data.IS_EXAM == 1 ? true : false);
@@ -1599,7 +1593,7 @@ namespace HIS.Desktop.Plugins.HisExecuteRoom.HisExecuteRoom
                     {
                         try
                         {
-                            var room = BackendDataWorker.Get<HIS_ROOM>().FirstOrDefault(o => o.ID == pData.ROOM_ID);
+                            var room = BackendDataWorker.Get<V_HIS_ROOM>().FirstOrDefault(o => o.ID == pData.ROOM_ID);
                             if (room != null)
                             { e.Value = room.PAYER_ACCOUNT; }
                             else
