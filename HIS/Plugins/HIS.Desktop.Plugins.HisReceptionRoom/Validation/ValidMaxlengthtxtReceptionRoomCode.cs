@@ -26,6 +26,7 @@ namespace HIS.Desktop.Plugins.HisReceptionRoom.Validation
     class ValidMaxlengthtxtReceptionRoomCode : DevExpress.XtraEditors.DXErrorProvider.ValidationRule
     {
         internal DevExpress.XtraEditors.TextEdit txtReceptionRoomCode;
+        internal DevExpress.XtraEditors.TextEdit txtTKCT;
         public override bool Validate(System.Windows.Forms.Control control, object value)
         {
             bool valid = false;
@@ -54,8 +55,6 @@ namespace HIS.Desktop.Plugins.HisReceptionRoom.Validation
                         else
                             valid = true;
                     }
-
-
                 }
             }
             catch (Exception ex)
