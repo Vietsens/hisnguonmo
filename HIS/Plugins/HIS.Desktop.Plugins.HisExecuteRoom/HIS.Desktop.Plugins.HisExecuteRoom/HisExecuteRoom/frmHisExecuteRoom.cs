@@ -1093,7 +1093,15 @@ namespace HIS.Desktop.Plugins.HisExecuteRoom.HisExecuteRoom
                     }
 
                     var room = BackendDataWorker.Get<V_HIS_ROOM>().FirstOrDefault(o => o.ID == data.ROOM_ID);
-                    if (room != null)
+                    //qtcode
+                    var hisRoom = BackendDataWorker.Get<HIS_ROOM>().FirstOrDefault(o => o.ID == data.ROOM_ID);
+                    if (hisRoom != null)
+                    {
+                        cboPayerBank.EditValue = hisRoom.PAYER_BANK_ID;
+                        txtPayerAccount.Text = hisRoom.PAYER_ACCOUNT; 
+                    }
+                    //qtcode
+                        if (room != null)
                     {
                         chkIsBlockNumOrder.Enabled = (data.IS_EXAM == 1 ? true : false);
                         chkIsBlockNumOrder.Checked = (room.IS_BLOCK_NUM_ORDER == 1 ? true : false);
@@ -1581,6 +1589,24 @@ namespace HIS.Desktop.Plugins.HisExecuteRoom.HisExecuteRoom
                             {
                                 e.Value = null;
                             }
+                        }
+                        catch (Exception ex)
+                        {
+                            Inventec.Common.Logging.LogSystem.Error(ex);
+                        }
+                    }
+                    else if (e.Column.FieldName == "PAYER_ACCOUNT_STR")
+                    {
+                        try
+                        {
+                            var room = BackendDataWorker.Get<HIS_ROOM>().FirstOrDefault(o => o.ID == pData.ROOM_ID);
+                            if (room != null)
+                            { e.Value = room.PAYER_ACCOUNT; }
+                            else
+                            {
+                                e.Value = null; 
+                            }
+                            
                         }
                         catch (Exception ex)
                         {
@@ -3019,6 +3045,9 @@ namespace HIS.Desktop.Plugins.HisExecuteRoom.HisExecuteRoom
             try
             {
                 ValidationtxtExecuteRoomCode();
+                //qtcode
+                ValidationtxtPayerAccount();
+                //qtcode
                 ValidationSingleControl(txtExecuteRoomName);
                 ValidationSingleControl(lkRoomId);
                 ValidationLonHon0(spHoldOrder);
@@ -3103,6 +3132,14 @@ namespace HIS.Desktop.Plugins.HisExecuteRoom.HisExecuteRoom
             validRule.txtExecuteRoomCode = this.txtExecuteRoomCode;
             validRule.ErrorType = ErrorType.Warning;
             dxValidationProviderEditorInfo.SetValidationRule(txtExecuteRoomCode, validRule);
+        }
+
+        private void ValidationtxtPayerAccount()
+        {
+            ValidationtxtPayerAccount validRule = new ValidationtxtPayerAccount();
+            validRule.txtPayerAccount = this.txtPayerAccount;
+            validRule.ErrorType = ErrorType.Warning;
+            dxValidationProviderEditorInfo.SetValidationRule(txtPayerAccount, validRule);
         }
 
         #endregion

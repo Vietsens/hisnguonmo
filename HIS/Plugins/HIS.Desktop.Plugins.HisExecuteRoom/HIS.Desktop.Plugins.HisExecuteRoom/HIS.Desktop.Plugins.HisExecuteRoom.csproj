@@ -246,6 +246,7 @@
     </Compile>
     <Compile Include="Resources\ResourceLanguageManager.cs" />
     <Compile Include="Validate2.cs" />
+    <Compile Include="ValidationtxtPayerAccount.cs" />
     <Compile Include="ValidMaxlengthtxtExecuteRoomCode.cs" />
   </ItemGroup>
   <ItemGroup>
