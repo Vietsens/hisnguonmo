@@ -10081,7 +10081,8 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
 				{
 					icd_code = txtIcdCode.Text,
 					gender_name = currentHisTreatment.TDL_PATIENT_GENDER_NAME,
-					age = ageValue
+					age = ageValue,
+					AuthenKey = "j2fyWtvUDZwYoPqT1pyqHYAFGY/3PZVR87/CoghZr8ttkZn1/RHZuQg89cPz9sqCBIG27uisGRNEfe2BP2M/m3qMdf8moG+ypGl7nVHVc7VVLSSaNGDA42iQwW4vnC01ngqrN0CidHiI12ZBawXFlVfFh+2UpLE3lSd8hR2o97nq++6DQ9MBzuEfzKDnV3Qsyq+VwPm4yoKz/2kum7TUWWcqT6pnvZb5qdezXiMItqLY8SI2JRPcc+TDxQ4mD9z3wC9JsEDk/uBXJy259PEqBbTxA+rL+cs+6fevZnnXqhjQgG9MIfe0lcQ0n9xVdDYvZZaE8Q4/CrUb52CjmDvwCw=="
 				};
 				using (frmSuggestServiceAi frmSSA = new frmSuggestServiceAi(r,
 					(selectedList) =>
