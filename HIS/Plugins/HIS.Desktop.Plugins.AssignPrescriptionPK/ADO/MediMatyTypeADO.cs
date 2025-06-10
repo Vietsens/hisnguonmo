@@ -1592,9 +1592,6 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.ADO
                             this.PATIENT_TYPE_NAME = patientType.PATIENT_TYPE_NAME;
                         }
 
-                        //Kiem tra xem thuoc do co trong kho??
-                        AssignPrescriptionWorker.Instance.MediMatyCreateWorker.setDefaultMediStockForData(this);
-                        MestMetyUnitWorker.UpdateUnit(this, GlobalStore.HisMestMetyUnit);
 
 
                         this.PRES_AMOUNT = inputData.AMOUNT;
@@ -1607,6 +1604,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.ADO
                         this.IsAllowOddAndExportOdd = (mety.IS_ALLOW_ODD == 1 && mety.IS_ALLOW_EXPORT_ODD == 1) ? true : false;
                         this.IsKHBHYT = false;
                         this.PrimaryKey = mety.SERVICE_ID + "__" + Inventec.Common.DateTime.Get.Now() + "__" + Guid.NewGuid().ToString();
+                        goto Base;
                     }
                     else
                         goto TuTuc;
@@ -1650,8 +1648,6 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.ADO
                             this.PATIENT_TYPE_NAME = patientType.PATIENT_TYPE_NAME;
                         }
 
-                        //Kiem tra xem thuoc do co trong kho??
-                        AssignPrescriptionWorker.Instance.MediMatyCreateWorker.setDefaultMediStockForData(this);
 
                         this.TUTORIAL = inputData.TUTORIAL;
                         this.UseDays = 1;
@@ -1663,6 +1659,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.ADO
                         this.IsAllowOddAndExportOdd = (maty.IS_ALLOW_ODD == 1 && maty.IS_ALLOW_EXPORT_ODD == 1) ? true : false;
                         this.IsKHBHYT = false;
                         this.PrimaryKey = maty.SERVICE_ID + "__" + Inventec.Common.DateTime.Get.Now() + "__" + Guid.NewGuid().ToString();
+                        goto Base;
                     }
                     else
                         goto TuTuc;
@@ -1671,6 +1668,22 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.ADO
                 {
                     goto TuTuc;
                 }
+            TuTuc:
+
+                this.MEDICINE_TYPE_CODE = inputData.MEDICINE_TYPE_CODE;
+                this.MEDICINE_TYPE_NAME = inputData.MEDICINE_TYPE_NAME;
+                this.IsExpend = inputData.IsExpend;
+
+                this.TUTORIAL = inputData.TUTORIAL;
+                this.AMOUNT = inputData.AMOUNT;
+                this.PRES_AMOUNT = this.AMOUNT;
+                this.TotalPrice = (this.PRICE ?? 0) * (this.AMOUNT ?? 0);
+
+
+                this.PrimaryKey = 0 + "__" + Inventec.Common.DateTime.Get.Now() + "__" + Guid.NewGuid().ToString();
+                this.DataType = HIS.Desktop.LocalStorage.BackendData.ADO.MedicineMaterialTypeComboADO.THUOC_TUTUC;
+                goto Base;
+            Base:
                 if (unit != null)
                 {
                     this.SERVICE_UNIT_ID = unit.ID;
@@ -1694,36 +1707,21 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.ADO
 
                 if (inputData.Morning > 0)
                 {
-                    this.Sang = ConvertNumber.ProcessNumberInterger(inputData.Morning);
+                    this.Sang = inputData.Morning.ToString();
                 }
                 if (inputData.Noon > 0)
                 {
-                    this.Trua = ConvertNumber.ProcessNumberInterger(inputData.Noon);
+                    this.Trua = inputData.Noon.ToString();
                 }
                 if (inputData.Afternoon > 0)
                 {
-                    this.Chieu = ConvertNumber.ProcessNumberInterger(inputData.Afternoon);
+                    this.Chieu = inputData.Afternoon.ToString();
                 }
                 if (inputData.Evening > 0)
                 {
-                    this.Toi = ConvertNumber.ProcessNumberInterger(inputData.Evening);
+                    this.Toi = inputData.Evening.ToString();
                 }
-
                 AssignPrescriptionWorker.Instance.MediMatyCreateWorker.setNumRow();
-            TuTuc:
-                this.MEDICINE_TYPE_CODE = inputData.MEDICINE_TYPE_CODE;
-                this.MEDICINE_TYPE_NAME = inputData.MEDICINE_TYPE_NAME;
-                this.IsExpend = inputData.IsExpend;
-
-                this.TUTORIAL = inputData.TUTORIAL;
-                this.AMOUNT = inputData.AMOUNT;
-                this.PRES_AMOUNT = this.AMOUNT;
-                this.TotalPrice = (this.PRICE ?? 0) * (this.AMOUNT ?? 0);
-
-
-                this.PrimaryKey = 0 + "__" + Inventec.Common.DateTime.Get.Now() + "__" + Guid.NewGuid().ToString();
-                this.DataType = HIS.Desktop.LocalStorage.BackendData.ADO.MedicineMaterialTypeComboADO.THUOC_TUTUC;
-
             }
             catch (Exception ex)
             {
