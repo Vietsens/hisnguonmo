@@ -20,6 +20,7 @@ using DevExpress.XtraEditors;
 using DevExpress.XtraEditors.Controls;
 using DevExpress.XtraTreeList.Nodes;
 using HIS.Desktop.ApiConsumer;
+using HIS.Desktop.Common;
 using HIS.Desktop.Controls.Session;
 using HIS.Desktop.LibraryMessage;
 using HIS.Desktop.LocalStorage.BackendData;
@@ -84,7 +85,6 @@ namespace HIS.Desktop.Plugins.RepayService.RepayService
         internal long? _patientBankAccountId;
 
         SendResultToOtherForm sendResultToOtherForm;
-        DelegateBeneficiaryInfo delegateBeneficiaryInfo;
         #endregion
 
         #region Construct
@@ -223,11 +223,11 @@ namespace HIS.Desktop.Plugins.RepayService.RepayService
         {
             try
             {
-                if (HisTreatment != null)
+                if (hisTransactionRepaySDO != null && hisTransactionRepaySDO.Transaction != null)
                 {
                     CommonParam param = new CommonParam();
-                    HisPatientBankAccountFilter filter = new HisPatientBankAccountFilter();
-                    filter.PATIENT_ID = HisTreatment.PATIENT_ID;
+                    MOS.Filter.HisPatientBankAccountFilter filter = new MOS.Filter.HisPatientBankAccountFilter();
+                    filter.ID = hisTransactionRepaySDO.Transaction.PATIENT_BANK_ACCOUNT_ID;
                     filter.IS_ACTIVE = 1;
 
                     var bankAccounts = new BackendAdapter(param).Get<List<HIS_PATIENT_BANK_ACCOUNT>>(
@@ -2288,14 +2288,17 @@ namespace HIS.Desktop.Plugins.RepayService.RepayService
         {
             try
             {
-                if (HisTreatment != null)
-                {
-                    // Open the bank account selection form
-                    frmHisPatientBankAccount bankAccountForm = new frmHisPatientBankAccount(
-                        HisTreatment.PATIENT_ID,
-                        new DelegateBeneficiaryInfo(SelectBankAccount));
-                    bankAccountForm.ShowDialog();
-                }
+                Inventec.Desktop.Common.Modules.Module moduleData = GlobalVariables.currentModuleRaws.Where(o => o.ModuleLink == "HIS.Desktop.Plugins.HisPatientBankAccount").FirstOrDefault();
+                if (moduleData == null) throw new NullReferenceException("Not found module by ModuleLink = 'HIS.Desktop.Plugins.HisPatientBankAccount'");
+                if (!moduleData.IsPlugin || moduleData.ExtensionInfo == null) throw new NullReferenceException("Module 'HIS.Desktop.Plugins.HisPatientBankAccount");
+                List<object> listArgs = new List<object>();
+                AutoMapper.Mapper.CreateMap<V_HIS_TREATMENT_FEE, HIS_TREATMENT>();
+                listArgs.Add(AutoMapper.Mapper.Map<HIS_TREATMENT>(this.treatment));
+                listArgs.Add((DelegateSelectData)SelectBankAccount);
+                listArgs.Add(PluginInstance.GetModuleWithWorkingRoom(moduleData, this.moduleData.RoomId, this.moduleData.RoomTypeId));
+                var extenceInstance = PluginInstance.GetPluginInstance(PluginInstance.GetModuleWithWorkingRoom(moduleData, this.moduleData.RoomId, this.moduleData.RoomTypeId), listArgs);
+                if (extenceInstance == null) throw new ArgumentNullException("moduleData is null");
+                ((Form)extenceInstance).ShowDialog();
             }
             catch (Exception ex)
             {
@@ -2303,10 +2306,11 @@ namespace HIS.Desktop.Plugins.RepayService.RepayService
             }
         }
 
-        private void SelectBankAccount(HIS_PATIENT_BANK_ACCOUNT bankAccount)
+        private void SelectBankAccount(object data)
         {
             try
             {
+                HIS_PATIENT_BANK_ACCOUNT bankAccount = data as HIS_PATIENT_BANK_ACCOUNT;
                 if (bankAccount != null)
                 {
                     _patientBankAccountId = bankAccount.ID;

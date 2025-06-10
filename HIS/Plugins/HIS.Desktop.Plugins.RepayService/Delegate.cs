@@ -26,5 +26,4 @@ namespace HIS.Desktop.Plugins.RepayService
     public delegate void DelegateRefeshData();
     public delegate void SetConsumer();
     public delegate void SendResultToOtherForm(object result);
-    public delegate void DelegateBeneficiaryInfo(object result);
 }
