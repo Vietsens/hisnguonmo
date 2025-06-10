@@ -62,6 +62,8 @@ namespace HIS.Desktop.Plugins.HisExecuteRoom.HisExecuteRoom
     public partial class frmHisExecuteRoom : HIS.Desktop.Utility.FormBase
     {
         #region Declare
+        //qtcode
+        private List<HIS_BANK> listBanks = new List<HIS_BANK>();
         int rowCount = 0;
         int dataTotal = 0;
         int startPage = 0;
@@ -127,7 +129,102 @@ namespace HIS.Desktop.Plugins.HisExecuteRoom.HisExecuteRoom
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
+        //qtcode
+        private void InitComboPayerBank()
+        {
+            try
+            {
+                cboPayerBank.EditValue = null;
+                CommonParam param = new CommonParam();
+                MOS.Filter.HisBankFilter filter = new MOS.Filter.HisBankFilter();
+                filter.IS_ACTIVE = 1;
+                listBanks = new BackendAdapter(param).Get<List<HIS_BANK>>("api/HisBank/Get", ApiConsumers.MosConsumer, filter, param).ToList();
 
+                if (listBanks != null && listBanks.Count > 0)
+                {
+                    List<ColumnInfo> columnInfos = new List<ColumnInfo>();
+                    columnInfos.Add(new ColumnInfo("BANK_CODE", "", 100, 1));
+                    columnInfos.Add(new ColumnInfo("BANK_NAME", "", 200, 2));
+                    ControlEditorADO controlEditorADO = new ControlEditorADO("BANK_NAME", "ID", columnInfos, false, 300);
+                    ControlEditorLoader.Load(cboPayerBank, listBanks, controlEditorADO);
+                    cboPayerBank.Properties.ImmediatePopup = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+
+        private void cboPayerBank_ButtonClick(object sender, ButtonPressedEventArgs e)
+        {
+            try
+            {
+                if (e.Button.Kind == ButtonPredefines.Delete)
+                {
+                    cboPayerBank.Text = "";
+                    cboPayerBank.EditValue = null;
+                    cboPayerBank.Properties.Buttons[1].Visible = false;
+                    txtPayerAccount.Text = null;
+                    txtPayerAccount.Focus();
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void cboPayerBank_Closed(object sender, ClosedEventArgs e)
+        {
+            try
+            {
+                if (e.CloseMode == PopupCloseMode.Normal)
+                {
+                    if (cboPayerBank.EditValue != null)
+                    {
+                        cboPayerBank.Properties.Buttons[1].Visible = true;
+                        txtPayerAccount.Focus();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void cboPayerBank_KeyUp(object sender, KeyEventArgs e)
+        {
+            try
+            {
+                if (e.KeyCode == Keys.Enter)
+                {
+                    txtPayerAccount.Focus();
+                    txtPayerAccount.SelectAll();
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+        private void txtPayerAccount_KeyUp(object sender, KeyEventArgs e)
+        {
+            try
+            {
+                if (e.KeyCode == Keys.Enter)
+                {
+                    txtDirectorLoginName.Focus();
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+        //qtcode
         private void SetCaptionByLanguageKey()
         {
             try
@@ -996,7 +1093,15 @@ namespace HIS.Desktop.Plugins.HisExecuteRoom.HisExecuteRoom
                     }
 
                     var room = BackendDataWorker.Get<V_HIS_ROOM>().FirstOrDefault(o => o.ID == data.ROOM_ID);
-                    if (room != null)
+                    //qtcode
+                    var hisRoom = BackendDataWorker.Get<HIS_ROOM>().FirstOrDefault(o => o.ID == data.ROOM_ID);
+                    if (hisRoom != null)
+                    {
+                        cboPayerBank.EditValue = hisRoom.PAYER_BANK_ID;
+                        txtPayerAccount.Text = hisRoom.PAYER_ACCOUNT; 
+                    }
+                    //qtcode
+                        if (room != null)
                     {
                         chkIsBlockNumOrder.Enabled = (data.IS_EXAM == 1 ? true : false);
                         chkIsBlockNumOrder.Checked = (room.IS_BLOCK_NUM_ORDER == 1 ? true : false);
@@ -1054,7 +1159,7 @@ namespace HIS.Desktop.Plugins.HisExecuteRoom.HisExecuteRoom
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
-        
+
         private void ProcessSelectBusiness(string p, GridCheckMarksSelection gridCheckMark)
         {
             try
@@ -1223,7 +1328,6 @@ namespace HIS.Desktop.Plugins.HisExecuteRoom.HisExecuteRoom
                 MOS.SDO.HisExecuteRoomSDO executeRoomResultSDO = new MOS.SDO.HisExecuteRoomSDO();
 
                 executeRoomSDO.HisRoom = SetDataRoom();
-
                 executeRoomSDO.HisExecuteRoom = SetDataExecuteRoom();
                 executeRoomSDO.HisExecuteRoom.HOSP_SUBS_DIRECTOR_LOGINNAME = txtDirectorLoginName.Text;
                 executeRoomSDO.HisExecuteRoom.HOSP_SUBS_DIRECTOR_USERNAME = cboDirectorUserName.Text;
@@ -1485,6 +1589,24 @@ namespace HIS.Desktop.Plugins.HisExecuteRoom.HisExecuteRoom
                             {
                                 e.Value = null;
                             }
+                        }
+                        catch (Exception ex)
+                        {
+                            Inventec.Common.Logging.LogSystem.Error(ex);
+                        }
+                    }
+                    else if (e.Column.FieldName == "PAYER_ACCOUNT_STR")
+                    {
+                        try
+                        {
+                            var room = BackendDataWorker.Get<HIS_ROOM>().FirstOrDefault(o => o.ID == pData.ROOM_ID);
+                            if (room != null)
+                            { e.Value = room.PAYER_ACCOUNT; }
+                            else
+                            {
+                                e.Value = null; 
+                            }
+                            
                         }
                         catch (Exception ex)
                         {
@@ -2575,7 +2697,11 @@ namespace HIS.Desktop.Plugins.HisExecuteRoom.HisExecuteRoom
                 spMaxReqBhytByDay.EditValue = null;
                 chkIsBlockNumOrder.Enabled = false;
                 chkIsBlockNumOrder.Checked = false;
-
+                //qtcode
+                cboPayerBank.EditValue = null;
+                cboPayerBank.Properties.Buttons[1].Visible = false;
+                txtPayerAccount.Text = "";
+                //qtcode
                 cboDefaultDrug.EditValue = null;
 
                 GridCheckMarksSelection gridCheckMarkPart = cboDefaultDrug.Properties.Tag as GridCheckMarksSelection;
@@ -2919,6 +3045,9 @@ namespace HIS.Desktop.Plugins.HisExecuteRoom.HisExecuteRoom
             try
             {
                 ValidationtxtExecuteRoomCode();
+                //qtcode
+                ValidationtxtPayerAccount();
+                //qtcode
                 ValidationSingleControl(txtExecuteRoomName);
                 ValidationSingleControl(lkRoomId);
                 ValidationLonHon0(spHoldOrder);
@@ -3003,6 +3132,14 @@ namespace HIS.Desktop.Plugins.HisExecuteRoom.HisExecuteRoom
             validRule.txtExecuteRoomCode = this.txtExecuteRoomCode;
             validRule.ErrorType = ErrorType.Warning;
             dxValidationProviderEditorInfo.SetValidationRule(txtExecuteRoomCode, validRule);
+        }
+
+        private void ValidationtxtPayerAccount()
+        {
+            ValidationtxtPayerAccount validRule = new ValidationtxtPayerAccount();
+            validRule.txtPayerAccount = this.txtPayerAccount;
+            validRule.ErrorType = ErrorType.Warning;
+            dxValidationProviderEditorInfo.SetValidationRule(txtPayerAccount, validRule);
         }
 
         #endregion
@@ -3107,6 +3244,8 @@ namespace HIS.Desktop.Plugins.HisExecuteRoom.HisExecuteRoom
                 LoadComboDirector();
 
                 LoadDirectorData();
+                //qtcode
+                InitComboPayerBank();
 
             }
             catch (Exception ex)
@@ -3799,7 +3938,8 @@ namespace HIS.Desktop.Plugins.HisExecuteRoom.HisExecuteRoom
             try
             {
                 var data = (ConfigSettingsADO)gridView19.GetFocusedRow();
-                if (data != null && !data.IS_VALUE) { 
+                if (data != null && !data.IS_VALUE)
+                {
                     GridLookUpEdit cbo = sender as GridLookUpEdit;
                     data.ID_CONFIG = cbo.EditValue.ToString();
                     gridControl2.RefreshDataSource();
@@ -3879,7 +4019,7 @@ namespace HIS.Desktop.Plugins.HisExecuteRoom.HisExecuteRoom
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
 
-        }    
+        }
         private void txtDirectorLoginName_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
         {
             //try
@@ -3959,7 +4099,7 @@ namespace HIS.Desktop.Plugins.HisExecuteRoom.HisExecuteRoom
             try
             {
                 var acsUser = BackendDataWorker.Get<ACS.EFMODEL.DataModels.ACS_USER>().Where(o => o.IS_ACTIVE == 1).ToList();
-                if(acsUser == null || acsUser.Count == 0)
+                if (acsUser == null || acsUser.Count == 0)
                 {
                     listDirectors = new List<ADO.DirectorADO>();
                 }
@@ -3973,7 +4113,7 @@ namespace HIS.Desktop.Plugins.HisExecuteRoom.HisExecuteRoom
                 //}
                 Base.GlobalStore.LoadDataGridLookUpEdit(cboDirectorUserName, "LOGINNAME", "USERNAME", "LOGINNAME", listDirectors);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 LogSystem.Error(ex);
             }
@@ -4018,7 +4158,7 @@ namespace HIS.Desktop.Plugins.HisExecuteRoom.HisExecuteRoom
                 {
                     chkIsEmergency.Focus();
                     chkIsEmergency.SelectAll();
-                }               
+                }
             }
             catch (Exception ex)
             {
@@ -4052,6 +4192,8 @@ namespace HIS.Desktop.Plugins.HisExecuteRoom.HisExecuteRoom
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
+
+
         //private void frmHisExecuteRoom_KeyDown(object sender, KeyEventArgs e)
         //{
         //    try
