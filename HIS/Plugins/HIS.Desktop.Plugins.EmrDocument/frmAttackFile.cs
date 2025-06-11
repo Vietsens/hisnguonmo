@@ -588,9 +588,25 @@ namespace HIS.Desktop.Plugins.EmrDocument
                             this.fileNameAttack = new AttackADO();
                             this.fileNameAttack.FILE_NAME = item.Substring(lIndex > 0 ? lIndex + 1 : lIndex);
                             this.fileNameAttack.EXTENSION = item.Substring(lIndex1 > 0 ? lIndex1 + 1 : lIndex1);
-                            this.fileNameAttack.Base64Data = Inventec.Common.SignLibrary.Utils.FileToBase64String(item);
-                            this.fileNameAttack.FullName = item;
                             string extension = System.IO.Path.GetExtension(item);
+                            if ((extension ?? "").ToLower() == ".pdf")
+                            {
+                                //từ đường dẫn file pdf là item đọc nội dung file và convert sang file ảnh
+                                string joinPdfPathFile = "";
+                                iTextSharp.text.pdf.PdfReader readerWorking = new iTextSharp.text.pdf.PdfReader(item);
+                                float pageHeight = readerWorking.GetPageSize(1).Height;
+                                Inventec.Common.SignLibrary.PdfDocumentProcess.SplitOnePageToImageAndJoinToNewOnePdf(item, pageHeight, ref joinPdfPathFile);
+                                LogSystem.Debug("joinPdfPathFile:" + joinPdfPathFile);
+                                this.fileNameAttack.Base64Data = Inventec.Common.SignLibrary.Utils.FileToBase64String(joinPdfPathFile);
+                                this.fileNameAttack.FullName = joinPdfPathFile;
+                            }
+                            else
+                            {
+                                this.fileNameAttack.FullName = item;
+                                this.fileNameAttack.Base64Data = Inventec.Common.SignLibrary.Utils.FileToBase64String(item);
+                            }
+
+
                             if ((extension ?? "").ToLower() != ".pdf")
                             {
                                 //int largestEdgeLength = 10;
