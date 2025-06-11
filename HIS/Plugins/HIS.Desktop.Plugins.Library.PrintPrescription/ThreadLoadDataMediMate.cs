@@ -157,7 +157,7 @@ namespace HIS.Desktop.Plugins.Library.PrintPrescription
                             lstServiceReq = new BackendAdapter(new CommonParam()).Get<List<HIS_SERVICE_REQ>>("api/HisServiceReq/Get", ApiConsumers.MosConsumer, serviceReqfilter, null);
                             HisExpMestMedicineViewFilter expMestMedicineFilter = new HisExpMestMedicineViewFilter();
                             expMestMedicineFilter.TDL_TREATMENT_ID = treatment.ID;
-                            lstExpMestMedicine = new BackendAdapter(new CommonParam()).Get<List<V_HIS_EXP_MEST_MEDICINE>>("api/HisExpMestMedicine/Get", ApiConsumers.MosConsumer, expMestMedicineFilter, null);
+                            lstExpMestMedicine = new BackendAdapter(new CommonParam()).Get<List<V_HIS_EXP_MEST_MEDICINE>>("api/HisExpMestMedicine/GetView", ApiConsumers.MosConsumer, expMestMedicineFilter, null);
                         }
                         var expMestMedicineGroups = lstmedicine.GroupBy(o => new { o.TDL_MEDICINE_TYPE_ID, o.PRICE, o.IS_EXPEND, o.EXP_MEST_ID });
 
@@ -384,7 +384,7 @@ namespace HIS.Desktop.Plugins.Library.PrintPrescription
                     {
                         HisExpMestMaterialViewFilter expMestMaterialFilter = new HisExpMestMaterialViewFilter();
                         expMestMaterialFilter.TDL_TREATMENT_ID = treatment.ID;
-                        lstExpMestMaterial = new BackendAdapter(new CommonParam()).Get<List<V_HIS_EXP_MEST_MATERIAL>>("api/HisExpMestMaterial/Get", ApiConsumers.MosConsumer, expMestMaterialFilter, null);
+                        lstExpMestMaterial = new BackendAdapter(new CommonParam()).Get<List<V_HIS_EXP_MEST_MATERIAL>>("api/HisExpMestMaterial/GetView", ApiConsumers.MosConsumer, expMestMaterialFilter, null);
                     }
                     //#40883
                     //lấy thuốc/vật tư được đánh dấu "ko phải thuốc bác sỹ kê"
@@ -717,7 +717,6 @@ namespace HIS.Desktop.Plugins.Library.PrintPrescription
                                 matyExpmestADO.MEDICINE_TYPE_NAME = maty.MATERIAL_TYPE_NAME;
                                 matyExpmestADO.SERVICE_UNIT_NAME = maty.SERVICE_UNIT_NAME;
                                 matyExpmestADO.CONCENTRA = maty.CONCENTRA;
-
                                 matyExpmestADO.CONVERT_RATIO = maty.CONVERT_RATIO;
                                 matyExpmestADO.CONVERT_UNIT_NAME = maty.CONVERT_UNIT_NAME;
                                 matyExpmestADO.IS_OUT_HOSPITAL = maty.IS_OUT_HOSPITAL;
