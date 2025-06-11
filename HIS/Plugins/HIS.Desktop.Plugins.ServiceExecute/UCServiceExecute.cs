@@ -2522,10 +2522,10 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                     itemStt.ItemClick += new ItemClickEventHandler(MouseRightClick);
                     menu.AddItems(new BarItem[] { itemStt });
 
-                    BarButtonItem itemPTHAYK = new BarButtonItem(this.barManager1, ResourceMessage.PhanTichHinhAnhYKhoa);
-                    itemPTHAYK.Tag = RightButtonType.PhanTichHinhAnhYKhoa;
-                    itemPTHAYK.ItemClick += new ItemClickEventHandler(MouseRightClick);
-                    menu.AddItems(new BarItem[] { itemPTHAYK });
+                    //BarButtonItem itemPTHAYK = new BarButtonItem(this.barManager1, ResourceMessage.PhanTichHinhAnhYKhoa);
+                    //itemPTHAYK.Tag = RightButtonType.PhanTichHinhAnhYKhoa;
+                    //itemPTHAYK.ItemClick += new ItemClickEventHandler(MouseRightClick);
+                    //menu.AddItems(new BarItem[] { itemPTHAYK });
                 }
 
                 menu.ShowPopup(Cursor.Position);
