@@ -373,6 +373,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ADO\AnalyzeImageADO.cs" />
     <Compile Include="ADO\BenhAnCommonADO.cs" />
     <Compile Include="ADO\ChiDinhDichVuADO.cs" />
     <Compile Include="ADO\ExcellDataADO.cs" />
@@ -417,6 +418,12 @@
       <DependentUpon>frmTuberculosisTreatment.cs</DependentUpon>
     </Compile>
     <Compile Include="LaunchChrome.cs" />
+    <Compile Include="Popup\frmAIViewChatUrlFormat.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Popup\frmAIViewChatUrlFormat.Designer.cs">
+      <DependentUpon>frmAIViewChatUrlFormat.cs</DependentUpon>
+    </Compile>
     <Compile Include="Print.cs" />
     <Compile Include="Resources\ResourceMessage.cs" />
     <Compile Include="PopupMenuProcessor.cs" />
@@ -476,6 +483,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="frmTuberculosisTreatment.resx">
       <DependentUpon>frmTuberculosisTreatment.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Popup\frmAIViewChatUrlFormat.resx">
+      <DependentUpon>frmAIViewChatUrlFormat.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

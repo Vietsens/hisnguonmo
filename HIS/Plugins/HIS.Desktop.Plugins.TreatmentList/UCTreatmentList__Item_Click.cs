@@ -39,6 +39,8 @@ using HIS.Desktop.Controls.Session;
 using HIS.Desktop.ApiConsumer;
 using Inventec.Core;
 using HIS.Desktop.Plugins.TreatmentList.Config;
+using HIS.Desktop.Plugins.TreatmentList.ADO;
+using HIS.Desktop.Plugins.TreatmentList.Popup;
 
 namespace HIS.Desktop.Plugins.TreatmentList
 {
@@ -701,6 +703,68 @@ namespace HIS.Desktop.Plugins.TreatmentList
                     SessionManager.ProcessTokenLost(param);
                     #endregion
                 }
+            }
+            catch (Exception ex)
+            {
+                WaitingManager.Hide();
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+        private void repositoryItembtnBeneficiaryInfo_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                var row = (MOS.EFMODEL.DataModels.V_HIS_TREATMENT_4)gridViewtreatmentList.GetFocusedRow();
+                if (row != null)
+                {                    
+                    List<object> listArgs = new List<object>();                   
+                    listArgs.Add(row.ID);                   
+                    HIS.Desktop.ModuleExt.PluginInstanceBehavior.ShowModule("HIS.Desktop.Plugins.HisPatientBankAccount", this.currentModule.RoomId, this.currentModule.RoomTypeId, listArgs);
+                }
+                WaitingManager.Hide();
+            }
+            catch (Exception ex)
+            {
+                WaitingManager.Hide();
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+        private void repositoryItembtnAiMedicalAnalysis_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                var row = (MOS.EFMODEL.DataModels.V_HIS_TREATMENT_4)gridViewtreatmentList.GetFocusedRow();
+                if (row != null)
+                {
+                    var analyzeInput = new AnalyzeImageADO()
+                    {
+                        TreatmentId = row.ID
+                    };
+                    List<object> listArgs = new List<object>();
+                    listArgs.Add(analyzeInput);
+                    HIS.Desktop.ModuleExt.PluginInstanceBehavior.ShowModule("HIS.Desktop.Plugins.AnalyzeMedicalImage", this.currentModule.RoomId, this.currentModule.RoomTypeId, listArgs);
+                }
+                WaitingManager.Hide();
+            }
+            catch (Exception ex)
+            {
+                WaitingManager.Hide();
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void repositoryItembtnViewMedicalHIstory_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                var row = (MOS.EFMODEL.DataModels.V_HIS_TREATMENT_4)gridViewtreatmentList.GetFocusedRow();
+                if (row != null)
+                {
+                    string Uri = "https://hisai.onelink.vn/view-chat?login_name=<PERSON_CODE>&app_code=VNT";
+                    frmAIViewChatUrlFormat frm = new frmAIViewChatUrlFormat(Uri);
+                    frm.ShowDialog();
+                }
+                WaitingManager.Hide();
             }
             catch (Exception ex)
             {
