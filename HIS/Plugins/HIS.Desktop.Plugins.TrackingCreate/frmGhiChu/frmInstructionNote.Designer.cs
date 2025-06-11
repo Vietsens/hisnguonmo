@@ -54,12 +54,12 @@ namespace HIS.Desktop.Plugins.TrackingCreate.frmGhiChu
             this.layoutControlItem2 = new DevExpress.XtraLayout.LayoutControlItem();
             this.emptySpaceItem1 = new DevExpress.XtraLayout.EmptySpaceItem();
             this.barManager1 = new DevExpress.XtraBars.BarManager(this.components);
+            this.bar1 = new DevExpress.XtraBars.Bar();
+            this.barButtonI__Save = new DevExpress.XtraBars.BarButtonItem();
             this.barDockControlTop = new DevExpress.XtraBars.BarDockControl();
             this.barDockControlBottom = new DevExpress.XtraBars.BarDockControl();
             this.barDockControlLeft = new DevExpress.XtraBars.BarDockControl();
             this.barDockControlRight = new DevExpress.XtraBars.BarDockControl();
-            this.bar1 = new DevExpress.XtraBars.Bar();
-            this.barButtonI__Save = new DevExpress.XtraBars.BarButtonItem();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
             this.layoutControl1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.txtGhiChu.Properties)).BeginInit();
@@ -145,21 +145,36 @@ namespace HIS.Desktop.Plugins.TrackingCreate.frmGhiChu
             // 
             this.barManager1.Bars.AddRange(new DevExpress.XtraBars.Bar[] {
             this.bar1});
-            this.barManager1.DockControls.Add(this.barDockControlTop);
-            this.barManager1.DockControls.Add(this.barDockControlBottom);
-            this.barManager1.DockControls.Add(this.barDockControlLeft);
-            this.barManager1.DockControls.Add(this.barDockControlRight);
             this.barManager1.Form = this;
             this.barManager1.Items.AddRange(new DevExpress.XtraBars.BarItem[] {
             this.barButtonI__Save});
             this.barManager1.MaxItemId = 1;
             // 
+            // bar1
+            // 
+            this.bar1.BarName = "Tools";
+            this.bar1.DockCol = 0;
+            this.bar1.DockRow = 0;
+            this.bar1.DockStyle = DevExpress.XtraBars.BarDockStyle.Top;
+            this.bar1.LinksPersistInfo.AddRange(new DevExpress.XtraBars.LinkPersistInfo[] {
+            new DevExpress.XtraBars.LinkPersistInfo(this.barButtonI__Save)});
+            this.bar1.Text = "Tools";
+            this.bar1.Visible = false;
+            // 
+            // barButtonI__Save
+            // 
+            this.barButtonI__Save.Caption = "luu";
+            this.barButtonI__Save.Id = 0;
+            this.barButtonI__Save.ItemShortcut = new DevExpress.XtraBars.BarShortcut((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S));
+            this.barButtonI__Save.Name = "barButtonI__Save";
+            this.barButtonI__Save.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.barButtonI__Save_ItemClick);
+            // 
             // barDockControlTop
             // 
             this.barDockControlTop.CausesValidation = false;
             this.barDockControlTop.Dock = System.Windows.Forms.DockStyle.Top;
-            this.barDockControlTop.Location = new System.Drawing.Point(0, 0);
-            this.barDockControlTop.Size = new System.Drawing.Size(538, 29);
+            this.barDockControlTop.Location = new System.Drawing.Point(0, 29);
+            this.barDockControlTop.Size = new System.Drawing.Size(538, 0);
             // 
             // barDockControlBottom
             // 
@@ -182,25 +197,6 @@ namespace HIS.Desktop.Plugins.TrackingCreate.frmGhiChu
             this.barDockControlRight.Location = new System.Drawing.Point(538, 29);
             this.barDockControlRight.Size = new System.Drawing.Size(0, 161);
             // 
-            // bar1
-            // 
-            this.bar1.BarName = "Tools";
-            this.bar1.DockCol = 0;
-            this.bar1.DockRow = 0;
-            this.bar1.DockStyle = DevExpress.XtraBars.BarDockStyle.Top;
-            this.bar1.LinksPersistInfo.AddRange(new DevExpress.XtraBars.LinkPersistInfo[] {
-            new DevExpress.XtraBars.LinkPersistInfo(this.barButtonI__Save)});
-            this.bar1.Text = "Tools";
-            this.bar1.Visible = false;
-            // 
-            // barButtonI__Save
-            // 
-            this.barButtonI__Save.Caption = "luu";
-            this.barButtonI__Save.Id = 0;
-            this.barButtonI__Save.ItemShortcut = new DevExpress.XtraBars.BarShortcut((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S));
-            this.barButtonI__Save.Name = "barButtonI__Save";
-            this.barButtonI__Save.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.barButtonI__Save_ItemClick);
-            // 
             // frmInstructionNote
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -215,6 +211,11 @@ namespace HIS.Desktop.Plugins.TrackingCreate.frmGhiChu
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Ghi chú";
             this.Load += new System.EventHandler(this.frmInstructionNote_Load);
+            this.Controls.SetChildIndex(this.barDockControlTop, 0);
+            this.Controls.SetChildIndex(this.barDockControlBottom, 0);
+            this.Controls.SetChildIndex(this.barDockControlRight, 0);
+            this.Controls.SetChildIndex(this.barDockControlLeft, 0);
+            this.Controls.SetChildIndex(this.layoutControl1, 0);
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).EndInit();
             this.layoutControl1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.txtGhiChu.Properties)).EndInit();
