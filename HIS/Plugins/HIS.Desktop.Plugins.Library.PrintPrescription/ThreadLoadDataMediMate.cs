@@ -445,7 +445,7 @@ namespace HIS.Desktop.Plugins.Library.PrintPrescription
                                 mateExpmestADO.PATIENT_TYPE_NAME = patientType.PATIENT_TYPE_NAME;
                             }
 
-                            var lstEMMedicinematerial = lstExpMestMaterial.FirstOrDefault(p => p.TDL_MATERIAL_TYPE_ID == lstExpMestMaterial.FirstOrDefault().TDL_MATERIAL_TYPE_ID && p.PRICE == lstExpMestMaterial.FirstOrDefault().PRICE && p.IS_EXPEND == lstExpMestMaterial.FirstOrDefault().IS_EXPEND && p.EXP_MEST_ID == lstExpMestMaterial.FirstOrDefault().EXP_MEST_ID);
+                            var lstEMMedicinematerial = lstExpMestMaterial.FirstOrDefault(p => p.TDL_MATERIAL_TYPE_ID == expMestMaterialGroup.FirstOrDefault().TDL_MATERIAL_TYPE_ID && p.PRICE == expMestMaterialGroup.FirstOrDefault().PRICE && p.IS_EXPEND == expMestMaterialGroup.FirstOrDefault().IS_EXPEND && p.EXP_MEST_ID == expMestMaterialGroup.FirstOrDefault().EXP_MEST_ID);
                             if (lstEMMedicinematerial != null)
                             {
                                 mateExpmestADO.PACKAGE_NUMBER = lstEMMedicinematerial.PACKAGE_NUMBER;
