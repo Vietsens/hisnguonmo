@@ -42,6 +42,12 @@ namespace HIS.Desktop.Plugins.TreatmentList.Config
         private const string CONFIG_KEY__UnlockConditionOption = "HIS.Desktop.Plugins.TreatmentList.UnlockConditionOption";
         private const string CONFIG_KEY__IsRequiredReasonWhenOpenTreatment = "HIS.Desktop.Plugins.TreatmentList.IsRequiredReasonWhenOpenTreatment";
         private const string CONFIG_KEY__SearchPatientsAcrossHospital = "HIS.Desktop.Plugins.TreatmentList.SearchPatientsAcrossHospital";
+        private const string CONFIG_KEY__AIConnectionInfo = "HIS.Desktop.AI.ConnectionInfo";
+        private const string CONFIG_KEY__AIViewChatUrlFormat = "HIS.Desktop.AI.ViewChatUrlFormat";
+        
+        
+        internal static string AIViewChatUrlFormat;
+        internal static string AIConnectionInfo;
         internal static bool SearchPatientsAcrossHospital;
         internal static bool IsRequiredReasonWhenOpenTreatment;
         internal static bool IsUnlockConditionOption;
@@ -91,6 +97,8 @@ namespace HIS.Desktop.Plugins.TreatmentList.Config
                 IsAllowPrintNoMedicine = GetValue(CONFIG_KEY__IS_ALLOW_PRINT_NO_MEDICINE) == GlobalVariables.CommonStringTrue;
                 MPS_PrintPrescription = GetValue(CONFIG_KEY__MPS_PrintPrescription);
                 SearchPatientsAcrossHospital = GetValue(CONFIG_KEY__SearchPatientsAcrossHospital) == "1";
+                AIConnectionInfo = GetValue(CONFIG_KEY__AIConnectionInfo);
+                AIViewChatUrlFormat = GetValue(CONFIG_KEY__AIViewChatUrlFormat);
             }
             catch (Exception ex)
             {

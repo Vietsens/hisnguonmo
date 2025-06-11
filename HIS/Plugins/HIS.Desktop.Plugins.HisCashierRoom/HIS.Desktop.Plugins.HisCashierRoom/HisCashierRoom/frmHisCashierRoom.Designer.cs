@@ -88,6 +88,7 @@ namespace HIS.Desktop.Plugins.HisCashierRoom.HisCashierRoom
             this.gridColumn5 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn7 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn6 = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.grdColPayerAccount = new DevExpress.XtraGrid.Columns.GridColumn();
             this.grdColCreateTime = new DevExpress.XtraGrid.Columns.GridColumn();
             this.grdColCreator = new DevExpress.XtraGrid.Columns.GridColumn();
             this.grdColModifyTime = new DevExpress.XtraGrid.Columns.GridColumn();
@@ -103,6 +104,15 @@ namespace HIS.Desktop.Plugins.HisCashierRoom.HisCashierRoom
             this.layoutControlItem3 = new DevExpress.XtraLayout.LayoutControlItem();
             this.emptySpaceItem3 = new DevExpress.XtraLayout.EmptySpaceItem();
             this.lcEditorInfo = new DevExpress.XtraLayout.LayoutControl();
+            this.txtPayerAccount = new DevExpress.XtraEditors.TextEdit();
+            this.barManager1 = new DevExpress.XtraBars.BarManager(this.components);
+            this.bar1 = new DevExpress.XtraBars.Bar();
+            this.bbtnSearch = new DevExpress.XtraBars.BarButtonItem();
+            this.bbtnEdit = new DevExpress.XtraBars.BarButtonItem();
+            this.bbtnAdd = new DevExpress.XtraBars.BarButtonItem();
+            this.bbtnReset = new DevExpress.XtraBars.BarButtonItem();
+            this.bbtnFocusDefault = new DevExpress.XtraBars.BarButtonItem();
+            this.cboPayerBank = new DevExpress.XtraEditors.LookUpEdit();
             this.popupControlContainerTLQR = new DevExpress.XtraBars.PopupControlContainer(this.components);
             this.labelControl1 = new DevExpress.XtraEditors.LabelControl();
             this.btnSave = new DevExpress.XtraEditors.SimpleButton();
@@ -112,13 +122,6 @@ namespace HIS.Desktop.Plugins.HisCashierRoom.HisCashierRoom
             this.gridColumnKey = new DevExpress.XtraGrid.Columns.GridColumn();
             this.repositoryItemCboBank1 = new DevExpress.XtraEditors.Repository.RepositoryItemComboBox();
             this.gridColAdd = new DevExpress.XtraGrid.Columns.GridColumn();
-            this.barManager1 = new DevExpress.XtraBars.BarManager(this.components);
-            this.bar1 = new DevExpress.XtraBars.Bar();
-            this.bbtnSearch = new DevExpress.XtraBars.BarButtonItem();
-            this.bbtnEdit = new DevExpress.XtraBars.BarButtonItem();
-            this.bbtnAdd = new DevExpress.XtraBars.BarButtonItem();
-            this.bbtnReset = new DevExpress.XtraBars.BarButtonItem();
-            this.bbtnFocusDefault = new DevExpress.XtraBars.BarButtonItem();
             this.repositoryBtnAdd = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
             this.repositoryBtnDelete = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
             this.txtConfigValue = new DevExpress.XtraEditors.Repository.RepositoryItemTextEdit();
@@ -152,6 +155,8 @@ namespace HIS.Desktop.Plugins.HisCashierRoom.HisCashierRoom
             this.layoutControlItem13 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem14 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem15 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.lcPayerBank = new DevExpress.XtraLayout.LayoutControlItem();
+            this.lcPayerAccount = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlGroup3 = new DevExpress.XtraLayout.LayoutControlGroup();
             this.layoutControlItem4 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem5 = new DevExpress.XtraLayout.LayoutControlItem();
@@ -183,12 +188,14 @@ namespace HIS.Desktop.Plugins.HisCashierRoom.HisCashierRoom
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lcEditorInfo)).BeginInit();
             this.lcEditorInfo.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.txtPayerAccount.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.barManager1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cboPayerBank.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.popupControlContainerTLQR)).BeginInit();
             this.popupControlContainerTLQR.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gridControlSetTTQR)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridViewSetTTQR)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemCboBank1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.barManager1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryBtnAdd)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryBtnDelete)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtConfigValue)).BeginInit();
@@ -218,6 +225,8 @@ namespace HIS.Desktop.Plugins.HisCashierRoom.HisCashierRoom
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem13)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem14)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem15)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lcPayerBank)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lcPayerAccount)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem4)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem5)).BeginInit();
@@ -291,6 +300,7 @@ namespace HIS.Desktop.Plugins.HisCashierRoom.HisCashierRoom
             this.gridControlFormList.TabIndex = 8;
             this.gridControlFormList.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
             this.gridviewFormList});
+            this.gridControlFormList.Click += new System.EventHandler(this.gridControlFormList_Click);
             this.gridControlFormList.DoubleClick += new System.EventHandler(this.gridControlFormList_DoubleClick);
             // 
             // gridviewFormList
@@ -308,6 +318,7 @@ namespace HIS.Desktop.Plugins.HisCashierRoom.HisCashierRoom
             this.gridColumn5,
             this.gridColumn7,
             this.gridColumn6,
+            this.grdColPayerAccount,
             this.grdColCreateTime,
             this.grdColCreator,
             this.grdColModifyTime,
@@ -485,6 +496,15 @@ namespace HIS.Desktop.Plugins.HisCashierRoom.HisCashierRoom
             this.gridColumn6.VisibleIndex = 11;
             this.gridColumn6.Width = 100;
             // 
+            // grdColPayerAccount
+            // 
+            this.grdColPayerAccount.Caption = "Tài khoản chi trả";
+            this.grdColPayerAccount.FieldName = "PAYER_ACCOUNT";
+            this.grdColPayerAccount.Name = "grdColPayerAccount";
+            this.grdColPayerAccount.Visible = true;
+            this.grdColPayerAccount.VisibleIndex = 12;
+            this.grdColPayerAccount.Width = 120;
+            // 
             // grdColCreateTime
             // 
             this.grdColCreateTime.Caption = "Thời gian tạo";
@@ -494,7 +514,7 @@ namespace HIS.Desktop.Plugins.HisCashierRoom.HisCashierRoom
             this.grdColCreateTime.ToolTip = "CREATE_TIME";
             this.grdColCreateTime.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.grdColCreateTime.Visible = true;
-            this.grdColCreateTime.VisibleIndex = 12;
+            this.grdColCreateTime.VisibleIndex = 13;
             this.grdColCreateTime.Width = 120;
             // 
             // grdColCreator
@@ -505,7 +525,7 @@ namespace HIS.Desktop.Plugins.HisCashierRoom.HisCashierRoom
             this.grdColCreator.OptionsColumn.AllowEdit = false;
             this.grdColCreator.ToolTip = "CREATOR";
             this.grdColCreator.Visible = true;
-            this.grdColCreator.VisibleIndex = 13;
+            this.grdColCreator.VisibleIndex = 14;
             this.grdColCreator.Width = 100;
             // 
             // grdColModifyTime
@@ -517,7 +537,7 @@ namespace HIS.Desktop.Plugins.HisCashierRoom.HisCashierRoom
             this.grdColModifyTime.ToolTip = "MODIFY_TIME";
             this.grdColModifyTime.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.grdColModifyTime.Visible = true;
-            this.grdColModifyTime.VisibleIndex = 14;
+            this.grdColModifyTime.VisibleIndex = 15;
             this.grdColModifyTime.Width = 120;
             // 
             // grdColModifier
@@ -528,7 +548,7 @@ namespace HIS.Desktop.Plugins.HisCashierRoom.HisCashierRoom
             this.grdColModifier.OptionsColumn.AllowEdit = false;
             this.grdColModifier.ToolTip = "MODIFIER";
             this.grdColModifier.Visible = true;
-            this.grdColModifier.VisibleIndex = 15;
+            this.grdColModifier.VisibleIndex = 16;
             this.grdColModifier.Width = 100;
             // 
             // DeleteDisable
@@ -629,6 +649,8 @@ namespace HIS.Desktop.Plugins.HisCashierRoom.HisCashierRoom
             // 
             // lcEditorInfo
             // 
+            this.lcEditorInfo.Controls.Add(this.txtPayerAccount);
+            this.lcEditorInfo.Controls.Add(this.cboPayerBank);
             this.lcEditorInfo.Controls.Add(this.popupControlContainerTLQR);
             this.lcEditorInfo.Controls.Add(this.btnEditTTQR);
             this.lcEditorInfo.Controls.Add(this.txtTLQR);
@@ -649,6 +671,100 @@ namespace HIS.Desktop.Plugins.HisCashierRoom.HisCashierRoom
             this.lcEditorInfo.Size = new System.Drawing.Size(329, 478);
             this.lcEditorInfo.TabIndex = 4;
             this.lcEditorInfo.Text = "layoutControl5";
+            // 
+            // txtPayerAccount
+            // 
+            this.txtPayerAccount.Location = new System.Drawing.Point(97, 219);
+            this.txtPayerAccount.MenuManager = this.barManager1;
+            this.txtPayerAccount.Name = "txtPayerAccount";
+            this.txtPayerAccount.Size = new System.Drawing.Size(230, 20);
+            this.txtPayerAccount.StyleController = this.lcEditorInfo;
+            this.txtPayerAccount.TabIndex = 54;
+            // 
+            // barManager1
+            // 
+            this.barManager1.Bars.AddRange(new DevExpress.XtraBars.Bar[] {
+            this.bar1});
+            this.barManager1.Form = this;
+            this.barManager1.Items.AddRange(new DevExpress.XtraBars.BarItem[] {
+            this.bbtnSearch,
+            this.bbtnEdit,
+            this.bbtnAdd,
+            this.bbtnReset,
+            this.bbtnFocusDefault});
+            this.barManager1.MaxItemId = 5;
+            // 
+            // bar1
+            // 
+            this.bar1.BarName = "Tools";
+            this.bar1.DockCol = 0;
+            this.bar1.DockRow = 0;
+            this.bar1.DockStyle = DevExpress.XtraBars.BarDockStyle.Top;
+            this.bar1.LinksPersistInfo.AddRange(new DevExpress.XtraBars.LinkPersistInfo[] {
+            new DevExpress.XtraBars.LinkPersistInfo(this.bbtnSearch),
+            new DevExpress.XtraBars.LinkPersistInfo(this.bbtnEdit),
+            new DevExpress.XtraBars.LinkPersistInfo(this.bbtnAdd),
+            new DevExpress.XtraBars.LinkPersistInfo(this.bbtnReset),
+            new DevExpress.XtraBars.LinkPersistInfo(this.bbtnFocusDefault)});
+            this.bar1.Text = "Tools";
+            this.bar1.Visible = false;
+            // 
+            // bbtnSearch
+            // 
+            this.bbtnSearch.Caption = "Tìm (Ctrl F)";
+            this.bbtnSearch.Id = 0;
+            this.bbtnSearch.ItemShortcut = new DevExpress.XtraBars.BarShortcut((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.F));
+            this.bbtnSearch.Name = "bbtnSearch";
+            this.bbtnSearch.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.bbtnSearch_ItemClick);
+            // 
+            // bbtnEdit
+            // 
+            this.bbtnEdit.Caption = "Sửa (Ctrl S)";
+            this.bbtnEdit.Id = 1;
+            this.bbtnEdit.ItemShortcut = new DevExpress.XtraBars.BarShortcut((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S));
+            this.bbtnEdit.Name = "bbtnEdit";
+            this.bbtnEdit.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.bbtnEdit_ItemClick);
+            // 
+            // bbtnAdd
+            // 
+            this.bbtnAdd.Caption = "Thêm (Ctrl N)";
+            this.bbtnAdd.Id = 2;
+            this.bbtnAdd.ItemShortcut = new DevExpress.XtraBars.BarShortcut((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.N));
+            this.bbtnAdd.Name = "bbtnAdd";
+            this.bbtnAdd.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.bbtnAdd_ItemClick);
+            // 
+            // bbtnReset
+            // 
+            this.bbtnReset.Caption = "Làm lại (Ctrl R)";
+            this.bbtnReset.Id = 3;
+            this.bbtnReset.ItemShortcut = new DevExpress.XtraBars.BarShortcut((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.R));
+            this.bbtnReset.Name = "bbtnReset";
+            this.bbtnReset.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.bbtnReset_ItemClick);
+            // 
+            // bbtnFocusDefault
+            // 
+            this.bbtnFocusDefault.Caption = "F2";
+            this.bbtnFocusDefault.Id = 4;
+            this.bbtnFocusDefault.ItemShortcut = new DevExpress.XtraBars.BarShortcut(System.Windows.Forms.Keys.F2);
+            this.bbtnFocusDefault.Name = "bbtnFocusDefault";
+            this.bbtnFocusDefault.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.bbtnFocusDefault_ItemClick);
+            // 
+            // cboPayerBank
+            // 
+            this.cboPayerBank.Location = new System.Drawing.Point(97, 195);
+            this.cboPayerBank.MenuManager = this.barManager1;
+            this.cboPayerBank.Name = "cboPayerBank";
+            this.cboPayerBank.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo),
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete)});
+            this.cboPayerBank.Properties.NullText = "";
+            this.cboPayerBank.Size = new System.Drawing.Size(230, 20);
+            this.cboPayerBank.StyleController = this.lcEditorInfo;
+            this.cboPayerBank.TabIndex = 53;
+            this.cboPayerBank.Closed += new DevExpress.XtraEditors.Controls.ClosedEventHandler(this.cboPayerBank_Closed);
+            this.cboPayerBank.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.cboPayerBank_ButtonClick);
+            this.cboPayerBank.EditValueChanged += new System.EventHandler(this.cboPayerBank_EditValueChanged);
+            this.cboPayerBank.KeyUp += new System.Windows.Forms.KeyEventHandler(this.cboPayerBank_KeyUp);
             // 
             // popupControlContainerTLQR
             // 
@@ -744,74 +860,6 @@ namespace HIS.Desktop.Plugins.HisCashierRoom.HisCashierRoom
             this.gridColAdd.OptionsColumn.ShowCaption = false;
             this.gridColAdd.Width = 23;
             // 
-            // barManager1
-            // 
-            this.barManager1.Bars.AddRange(new DevExpress.XtraBars.Bar[] {
-            this.bar1});
-            this.barManager1.Form = this;
-            this.barManager1.Items.AddRange(new DevExpress.XtraBars.BarItem[] {
-            this.bbtnSearch,
-            this.bbtnEdit,
-            this.bbtnAdd,
-            this.bbtnReset,
-            this.bbtnFocusDefault});
-            this.barManager1.MaxItemId = 5;
-            // 
-            // bar1
-            // 
-            this.bar1.BarName = "Tools";
-            this.bar1.DockCol = 0;
-            this.bar1.DockRow = 0;
-            this.bar1.DockStyle = DevExpress.XtraBars.BarDockStyle.Top;
-            this.bar1.LinksPersistInfo.AddRange(new DevExpress.XtraBars.LinkPersistInfo[] {
-            new DevExpress.XtraBars.LinkPersistInfo(this.bbtnSearch),
-            new DevExpress.XtraBars.LinkPersistInfo(this.bbtnEdit),
-            new DevExpress.XtraBars.LinkPersistInfo(this.bbtnAdd),
-            new DevExpress.XtraBars.LinkPersistInfo(this.bbtnReset),
-            new DevExpress.XtraBars.LinkPersistInfo(this.bbtnFocusDefault)});
-            this.bar1.Text = "Tools";
-            this.bar1.Visible = false;
-            // 
-            // bbtnSearch
-            // 
-            this.bbtnSearch.Caption = "Tìm (Ctrl F)";
-            this.bbtnSearch.Id = 0;
-            this.bbtnSearch.ItemShortcut = new DevExpress.XtraBars.BarShortcut((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.F));
-            this.bbtnSearch.Name = "bbtnSearch";
-            this.bbtnSearch.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.bbtnSearch_ItemClick);
-            // 
-            // bbtnEdit
-            // 
-            this.bbtnEdit.Caption = "Sửa (Ctrl S)";
-            this.bbtnEdit.Id = 1;
-            this.bbtnEdit.ItemShortcut = new DevExpress.XtraBars.BarShortcut((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S));
-            this.bbtnEdit.Name = "bbtnEdit";
-            this.bbtnEdit.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.bbtnEdit_ItemClick);
-            // 
-            // bbtnAdd
-            // 
-            this.bbtnAdd.Caption = "Thêm (Ctrl N)";
-            this.bbtnAdd.Id = 2;
-            this.bbtnAdd.ItemShortcut = new DevExpress.XtraBars.BarShortcut((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.N));
-            this.bbtnAdd.Name = "bbtnAdd";
-            this.bbtnAdd.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.bbtnAdd_ItemClick);
-            // 
-            // bbtnReset
-            // 
-            this.bbtnReset.Caption = "Làm lại (Ctrl R)";
-            this.bbtnReset.Id = 3;
-            this.bbtnReset.ItemShortcut = new DevExpress.XtraBars.BarShortcut((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.R));
-            this.bbtnReset.Name = "bbtnReset";
-            this.bbtnReset.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.bbtnReset_ItemClick);
-            // 
-            // bbtnFocusDefault
-            // 
-            this.bbtnFocusDefault.Caption = "F2";
-            this.bbtnFocusDefault.Id = 4;
-            this.bbtnFocusDefault.ItemShortcut = new DevExpress.XtraBars.BarShortcut(System.Windows.Forms.Keys.F2);
-            this.bbtnFocusDefault.Name = "bbtnFocusDefault";
-            this.bbtnFocusDefault.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.bbtnFocusDefault_ItemClick);
-            // 
             // repositoryBtnAdd
             // 
             this.repositoryBtnAdd.AutoHeight = false;
@@ -900,7 +948,7 @@ namespace HIS.Desktop.Plugins.HisCashierRoom.HisCashierRoom
             // 
             // chkPause
             // 
-            this.chkPause.Location = new System.Drawing.Point(97, 195);
+            this.chkPause.Location = new System.Drawing.Point(97, 243);
             this.chkPause.MenuManager = this.barManager1;
             this.chkPause.Name = "chkPause";
             this.chkPause.Properties.Caption = "";
@@ -929,7 +977,7 @@ namespace HIS.Desktop.Plugins.HisCashierRoom.HisCashierRoom
             // 
             // btnRefresh
             // 
-            this.btnRefresh.Location = new System.Drawing.Point(221, 219);
+            this.btnRefresh.Location = new System.Drawing.Point(221, 267);
             this.btnRefresh.Name = "btnRefresh";
             this.btnRefresh.Size = new System.Drawing.Size(106, 22);
             this.btnRefresh.StyleController = this.lcEditorInfo;
@@ -939,7 +987,7 @@ namespace HIS.Desktop.Plugins.HisCashierRoom.HisCashierRoom
             // 
             // btnAdd
             // 
-            this.btnAdd.Location = new System.Drawing.Point(112, 219);
+            this.btnAdd.Location = new System.Drawing.Point(112, 267);
             this.btnAdd.Name = "btnAdd";
             this.btnAdd.Size = new System.Drawing.Size(105, 22);
             this.btnAdd.StyleController = this.lcEditorInfo;
@@ -949,7 +997,7 @@ namespace HIS.Desktop.Plugins.HisCashierRoom.HisCashierRoom
             // 
             // btnEdit
             // 
-            this.btnEdit.Location = new System.Drawing.Point(2, 219);
+            this.btnEdit.Location = new System.Drawing.Point(2, 267);
             this.btnEdit.Name = "btnEdit";
             this.btnEdit.Size = new System.Drawing.Size(106, 22);
             this.btnEdit.StyleController = this.lcEditorInfo;
@@ -1026,7 +1074,9 @@ namespace HIS.Desktop.Plugins.HisCashierRoom.HisCashierRoom
             this.layoutControlItem12,
             this.layoutControlItem13,
             this.layoutControlItem14,
-            this.layoutControlItem15});
+            this.layoutControlItem15,
+            this.lcPayerBank,
+            this.lcPayerAccount});
             this.layoutControlGroup4.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup4.Name = "layoutControlGroup4";
             this.layoutControlGroup4.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
@@ -1046,9 +1096,9 @@ namespace HIS.Desktop.Plugins.HisCashierRoom.HisCashierRoom
             // emptySpaceItem1
             // 
             this.emptySpaceItem1.AllowHotTrack = false;
-            this.emptySpaceItem1.Location = new System.Drawing.Point(0, 243);
+            this.emptySpaceItem1.Location = new System.Drawing.Point(0, 291);
             this.emptySpaceItem1.Name = "emptySpaceItem1";
-            this.emptySpaceItem1.Size = new System.Drawing.Size(329, 235);
+            this.emptySpaceItem1.Size = new System.Drawing.Size(329, 187);
             this.emptySpaceItem1.TextSize = new System.Drawing.Size(0, 0);
             // 
             // lciCashierRoomCode
@@ -1084,7 +1134,7 @@ namespace HIS.Desktop.Plugins.HisCashierRoom.HisCashierRoom
             // layoutControlItem6
             // 
             this.layoutControlItem6.Control = this.btnEdit;
-            this.layoutControlItem6.Location = new System.Drawing.Point(0, 217);
+            this.layoutControlItem6.Location = new System.Drawing.Point(0, 265);
             this.layoutControlItem6.Name = "layoutControlItem6";
             this.layoutControlItem6.Size = new System.Drawing.Size(110, 26);
             this.layoutControlItem6.TextSize = new System.Drawing.Size(0, 0);
@@ -1093,7 +1143,7 @@ namespace HIS.Desktop.Plugins.HisCashierRoom.HisCashierRoom
             // layoutControlItem7
             // 
             this.layoutControlItem7.Control = this.btnAdd;
-            this.layoutControlItem7.Location = new System.Drawing.Point(110, 217);
+            this.layoutControlItem7.Location = new System.Drawing.Point(110, 265);
             this.layoutControlItem7.Name = "layoutControlItem7";
             this.layoutControlItem7.Size = new System.Drawing.Size(109, 26);
             this.layoutControlItem7.TextSize = new System.Drawing.Size(0, 0);
@@ -1102,7 +1152,7 @@ namespace HIS.Desktop.Plugins.HisCashierRoom.HisCashierRoom
             // layoutControlItem9
             // 
             this.layoutControlItem9.Control = this.btnRefresh;
-            this.layoutControlItem9.Location = new System.Drawing.Point(219, 217);
+            this.layoutControlItem9.Location = new System.Drawing.Point(219, 265);
             this.layoutControlItem9.Name = "layoutControlItem9";
             this.layoutControlItem9.Size = new System.Drawing.Size(110, 26);
             this.layoutControlItem9.TextSize = new System.Drawing.Size(0, 0);
@@ -1128,7 +1178,7 @@ namespace HIS.Desktop.Plugins.HisCashierRoom.HisCashierRoom
             this.layoutControlItem11.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem11.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem11.Control = this.chkPause;
-            this.layoutControlItem11.Location = new System.Drawing.Point(0, 193);
+            this.layoutControlItem11.Location = new System.Drawing.Point(0, 241);
             this.layoutControlItem11.Name = "layoutControlItem11";
             this.layoutControlItem11.Size = new System.Drawing.Size(329, 24);
             this.layoutControlItem11.Text = "Tạm dừng:";
@@ -1199,6 +1249,34 @@ namespace HIS.Desktop.Plugins.HisCashierRoom.HisCashierRoom
             this.layoutControlItem15.Size = new System.Drawing.Size(54, 26);
             this.layoutControlItem15.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem15.TextVisible = false;
+            // 
+            // lcPayerBank
+            // 
+            this.lcPayerBank.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.lcPayerBank.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.lcPayerBank.Control = this.cboPayerBank;
+            this.lcPayerBank.Location = new System.Drawing.Point(0, 193);
+            this.lcPayerBank.Name = "lcPayerBank";
+            this.lcPayerBank.OptionsToolTip.ToolTip = "Ngân hàng chi trả";
+            this.lcPayerBank.Size = new System.Drawing.Size(329, 24);
+            this.lcPayerBank.Text = "NH chi trả:";
+            this.lcPayerBank.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.lcPayerBank.TextSize = new System.Drawing.Size(90, 20);
+            this.lcPayerBank.TextToControlDistance = 5;
+            // 
+            // lcPayerAccount
+            // 
+            this.lcPayerAccount.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.lcPayerAccount.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.lcPayerAccount.Control = this.txtPayerAccount;
+            this.lcPayerAccount.Location = new System.Drawing.Point(0, 217);
+            this.lcPayerAccount.Name = "lcPayerAccount";
+            this.lcPayerAccount.OptionsToolTip.ToolTip = "Tài khoản chi trả";
+            this.lcPayerAccount.Size = new System.Drawing.Size(329, 24);
+            this.lcPayerAccount.Text = "TK chi trả:";
+            this.lcPayerAccount.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.lcPayerAccount.TextSize = new System.Drawing.Size(90, 13);
+            this.lcPayerAccount.TextToControlDistance = 5;
             // 
             // layoutControlGroup3
             // 
@@ -1314,13 +1392,15 @@ namespace HIS.Desktop.Plugins.HisCashierRoom.HisCashierRoom
             ((System.ComponentModel.ISupportInitialize)(this.lcEditorInfo)).EndInit();
             this.lcEditorInfo.ResumeLayout(false);
             this.lcEditorInfo.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.txtPayerAccount.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.barManager1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cboPayerBank.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.popupControlContainerTLQR)).EndInit();
             this.popupControlContainerTLQR.ResumeLayout(false);
             this.popupControlContainerTLQR.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gridControlSetTTQR)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridViewSetTTQR)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemCboBank1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.barManager1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryBtnAdd)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryBtnDelete)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtConfigValue)).EndInit();
@@ -1350,6 +1430,8 @@ namespace HIS.Desktop.Plugins.HisCashierRoom.HisCashierRoom
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem13)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem14)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem15)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lcPayerBank)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lcPayerAccount)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup3)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem4)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem5)).EndInit();
@@ -1460,5 +1542,10 @@ private DevExpress.XtraLayout.LayoutControlItem lciCashierRoomName;
         private DevExpress.XtraEditors.Repository.RepositoryItemTextEdit txtConfigValue;
         private DevExpress.XtraEditors.Repository.RepositoryItemGridLookUpEdit repositoryItemCboBank;
         private DevExpress.XtraGrid.Views.Grid.GridView repositoryItemGridLookUpEdit1View;
+        private DevExpress.XtraGrid.Columns.GridColumn grdColPayerAccount;
+        private DevExpress.XtraEditors.LookUpEdit cboPayerBank;
+        private DevExpress.XtraLayout.LayoutControlItem lcPayerBank;
+        private DevExpress.XtraEditors.TextEdit txtPayerAccount;
+        private DevExpress.XtraLayout.LayoutControlItem lcPayerAccount;
     }
 }

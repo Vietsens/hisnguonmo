@@ -20,6 +20,7 @@ using HIS.Desktop.Common;
 using HIS.Desktop.LocalStorage.BackendData;
 using HIS.Desktop.Plugins.Library.FormMedicalRecord;
 using HIS.Desktop.Plugins.Library.FormOtherTreatment;
+using HIS.Desktop.Plugins.TreatmentList.Config;
 using HIS.Desktop.Plugins.TreatmentList.Resources;
 using MOS.EFMODEL.DataModels;
 using System;
@@ -135,6 +136,7 @@ namespace HIS.Desktop.Plugins.TreatmentList
             HoSoGiayToDinhKem,
             ChiTietBenhAn,
             ThongTinDichTe,
+            ThongTinThuHuong,
             InDonThuoc,
             ChanDoanTuVong,
             InDonThuocPTTT,
@@ -142,7 +144,9 @@ namespace HIS.Desktop.Plugins.TreatmentList
             TuVong,
             HivTreatment,
             MedicalAssessment,
-            TuberclusisTreatment
+            TuberclusisTreatment,
+            AiMedicalAnalysis,
+            AIViewChatUrlFormat
 
             //ThongTinCungChiTra
         }
@@ -235,6 +239,19 @@ namespace HIS.Desktop.Plugins.TreatmentList
                 bbtnEpidemiologyInfo.Tag = ItemType.ThongTinDichTe;
                 bbtnEpidemiologyInfo.ItemClick += new ItemClickEventHandler(this._MouseRightClick);
                 subBenhNhan.AddItem(bbtnEpidemiologyInfo);
+                // Thông tin thụ hưởng
+                BarButtonItem bbtnBeneficiaryInfo = new BarButtonItem(this._BarManager, "Thông tin thụ hưởng", 1);
+                bbtnBeneficiaryInfo.Tag = ItemType.ThongTinThuHuong;
+                bbtnBeneficiaryInfo.ItemClick += new ItemClickEventHandler(this._MouseRightClick);
+                subBenhNhan.AddItem(bbtnBeneficiaryInfo);                
+                //Phân tích hình ảnh y khoa AI
+                if (!string.IsNullOrEmpty(HisConfigCFG.AIConnectionInfo))
+                {
+                    BarButtonItem bbtnAiMedicalAnalysis = new BarButtonItem(this._BarManager, "Phân tích hình ảnh y khoa AI", 1);
+                    bbtnAiMedicalAnalysis.Tag = ItemType.AiMedicalAnalysis;
+                    bbtnAiMedicalAnalysis.ItemClick += new ItemClickEventHandler(this._MouseRightClick);
+                    subBenhNhan.AddItem(bbtnAiMedicalAnalysis);                    
+                }
                 this._Menu.AddItems(new BarItem[] { subBenhNhan });
 
                 BarSubItem subCongKhai = new BarSubItem(this._BarManager, "Công khai thuốc, dịch vụ", 2);
@@ -394,6 +411,12 @@ namespace HIS.Desktop.Plugins.TreatmentList
                 bbtnTracking.Tag = ItemType.Tracking;
                 bbtnTracking.ItemClick += new ItemClickEventHandler(this._MouseRightClick);
                 subDieuTri.AddItem(bbtnTracking);
+
+                //Xem lịch sử hỏi bệnh
+                BarButtonItem bbtnAIViewChatUrlFormat = new BarButtonItem(this._BarManager, "Xem lịch sử hỏi bệnh", 0);
+                bbtnAIViewChatUrlFormat.Tag = ItemType.AIViewChatUrlFormat;
+                bbtnAIViewChatUrlFormat.ItemClick += new ItemClickEventHandler(this._MouseRightClick);
+                subDieuTri.AddItem(bbtnAIViewChatUrlFormat);
 
                 this._Menu.AddItems(new BarItem[] { subDieuTri });
 
