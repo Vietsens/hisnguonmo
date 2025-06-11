@@ -2611,5 +2611,30 @@ namespace HIS.Desktop.Plugins.HisReceptionRoom
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
+
+        private void gridView19_CustomUnboundColumnData(object sender, CustomColumnDataEventArgs e)
+        {
+
+            try
+            {
+                if (e.IsGetData && e.Column.UnboundType != UnboundColumnType.Bound)
+                {
+                    DevExpress.XtraGrid.Views.Grid.GridView view = sender as DevExpress.XtraGrid.Views.Grid.GridView;
+                    ConfigSettingsADO pData = (ConfigSettingsADO)((IList)((BaseView)sender).DataSource)[e.ListSourceRowIndex];
+                    if (e.Column.FieldName == "VALUE")
+                    {
+                        if (pData.IS_VALUE)
+                            e.Value = pData.VALUE_CONFIG;
+                        else
+                            e.Value = pData.ID_CONFIG;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+
+        }
     }
 }
