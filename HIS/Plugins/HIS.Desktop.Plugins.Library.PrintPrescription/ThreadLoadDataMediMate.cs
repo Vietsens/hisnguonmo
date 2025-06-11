@@ -320,8 +320,24 @@ namespace HIS.Desktop.Plugins.Library.PrintPrescription
                                 mediExpmestADO.PRICE = mediExpmestADO.PRICE / mediExpmestADO.CONVERT_RATIO.Value;
                                 mediExpmestADO.SERVICE_UNIT_NAME = mediExpmestADO.CONVERT_UNIT_NAME;
                             }
+                            var lstEMMedicine = lstExpMestMedicine.FirstOrDefault(p => p.TDL_MEDICINE_TYPE_ID == expMestMedicineGroup.FirstOrDefault().TDL_MEDICINE_TYPE_ID && p.PRICE == expMestMedicineGroup.FirstOrDefault().PRICE && p.IS_EXPEND == expMestMedicineGroup.FirstOrDefault().IS_EXPEND && p.EXP_MEST_ID == expMestMedicineGroup.FirstOrDefault().EXP_MEST_ID);
+                            if (lstEMMedicine != null)
+                            {
+                                mediExpmestADO.PACKAGE_NUMBER = lstEMMedicine.PACKAGE_NUMBER;
+                                mediExpmestADO.EXPIRED_DATE = lstEMMedicine.EXPIRED_DATE;
+                                mediExpmestADO.MEDI_STOCK_ID = lstEMMedicine.MEDI_STOCK_ID;
+                                mediExpmestADO.MEDI_STOCK_CODE = lstEMMedicine.MEDI_STOCK_CODE;
+                                mediExpmestADO.MEDI_STOCK_NAME = lstEMMedicine.MEDI_STOCK_NAME;
+                                mediExpmestADO.TUTORIAL = lstEMMedicine.TUTORIAL;
+                                mediExpmestADO.SUPPLIER_ID = lstEMMedicine.SUPPLIER_ID;
+                                mediExpmestADO.SUPPLIER_CODE = lstEMMedicine.SUPPLIER_CODE;
+                                mediExpmestADO.SUPPLIER_NAME = lstEMMedicine.SUPPLIER_NAME;
+                                mediExpmestADO.IMP_PRICE = lstEMMedicine.IMP_PRICE;
+                            }
 
-                            threadMedicineADO.DicLstMediMateExpMestTypeADO[mediExpmestADO.EXP_MEST_ID ?? 0].Add(mediExpmestADO);
+                            if (ServiceReq != null)
+
+                                threadMedicineADO.DicLstMediMateExpMestTypeADO[mediExpmestADO.EXP_MEST_ID ?? 0].Add(mediExpmestADO);
                         }
                     }
                 }
@@ -363,6 +379,13 @@ namespace HIS.Desktop.Plugins.Library.PrintPrescription
                         lstmaterial = new Inventec.Common.Adapter.BackendAdapter(paramCommon).Get<List<HIS_EXP_MEST_MATERIAL>>(RequestUriStore.HIS_EXP_MEST_MATERIAL_GET, ApiConsumer.ApiConsumers.MosConsumer, materialFilter, HIS.Desktop.Controls.Session.SessionManager.ActionLostToken, paramCommon);
                     }
 
+                    List<V_HIS_EXP_MEST_MATERIAL> lstExpMestMaterial = new List<V_HIS_EXP_MEST_MATERIAL>();
+                    if (treatment != null)
+                    {
+                        HisExpMestMaterialViewFilter expMestMaterialFilter = new HisExpMestMaterialViewFilter();
+                        expMestMaterialFilter.TDL_TREATMENT_ID = treatment.ID;
+                        lstExpMestMaterial = new BackendAdapter(new CommonParam()).Get<List<V_HIS_EXP_MEST_MATERIAL>>("api/HisExpMestMaterial/Get", ApiConsumers.MosConsumer, expMestMaterialFilter, null);
+                    }
                     //#40883
                     //lấy thuốc/vật tư được đánh dấu "ko phải thuốc bác sỹ kê"
                     //bổ sung key số lượng bác sĩ kê.
@@ -420,6 +443,21 @@ namespace HIS.Desktop.Plugins.Library.PrintPrescription
                             {
                                 mateExpmestADO.PATIENT_TYPE_ID = patientType.ID;
                                 mateExpmestADO.PATIENT_TYPE_NAME = patientType.PATIENT_TYPE_NAME;
+                            }
+
+                            var lstEMMedicinematerial = lstExpMestMaterial.FirstOrDefault(p => p.TDL_MATERIAL_TYPE_ID == lstExpMestMaterial.FirstOrDefault().TDL_MATERIAL_TYPE_ID && p.PRICE == lstExpMestMaterial.FirstOrDefault().PRICE && p.IS_EXPEND == lstExpMestMaterial.FirstOrDefault().IS_EXPEND && p.EXP_MEST_ID == lstExpMestMaterial.FirstOrDefault().EXP_MEST_ID);
+                            if (lstEMMedicinematerial != null)
+                            {
+                                mateExpmestADO.PACKAGE_NUMBER = lstEMMedicinematerial.PACKAGE_NUMBER;
+                                mateExpmestADO.EXPIRED_DATE = lstEMMedicinematerial.EXPIRED_DATE;
+                                mateExpmestADO.MEDI_STOCK_ID = lstEMMedicinematerial.MEDI_STOCK_ID;
+                                mateExpmestADO.MEDI_STOCK_CODE = lstEMMedicinematerial.MEDI_STOCK_CODE;
+                                mateExpmestADO.MEDI_STOCK_NAME = lstEMMedicinematerial.MEDI_STOCK_NAME;
+                                mateExpmestADO.TUTORIAL = lstEMMedicinematerial.TUTORIAL;
+                                mateExpmestADO.SUPPLIER_ID = lstEMMedicinematerial.SUPPLIER_ID;
+                                mateExpmestADO.SUPPLIER_CODE = lstEMMedicinematerial.SUPPLIER_CODE;
+                                mateExpmestADO.SUPPLIER_NAME = lstEMMedicinematerial.SUPPLIER_NAME;
+                                mateExpmestADO.IMP_PRICE = lstEMMedicinematerial.IMP_PRICE;
                             }
 
                             if (!threadMedicineADO.DicLstMediMateExpMestTypeADO.ContainsKey(mateExpmestADO.EXP_MEST_ID ?? 0))

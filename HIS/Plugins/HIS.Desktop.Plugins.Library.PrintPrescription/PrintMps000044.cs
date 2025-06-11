@@ -149,12 +149,7 @@ namespace HIS.Desktop.Plugins.Library.PrintPrescription
                         var listTienChat = new List<ExpMestMedicineSDO>();
                         listSPHoTro = new List<ExpMestMedicineSDO>();
 
-                        if (mediMateIn.DicLstMediMateExpMestTypeADO.ContainsKey(item.ID) &&
-                            mediMateIn.DicLstMediMateExpMestTypeADO[item.ID] != null &&
-                            mediMateIn.DicLstMediMateExpMestTypeADO[item.ID].Count > 0)
-                        {
-                            lstMedicineExpmestTypeADO.AddRange(mediMateIn.DicLstMediMateExpMestTypeADO[item.ID]);
-                        }
+                        
 
                         if (mediMateOut.DicLstMediMateExpMestTypeADO.ContainsKey(item.SERVICE_REQ_ID ?? 0))
                         {
