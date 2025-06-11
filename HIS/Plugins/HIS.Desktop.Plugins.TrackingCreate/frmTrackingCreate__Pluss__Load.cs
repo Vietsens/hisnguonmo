@@ -270,7 +270,7 @@ namespace HIS.Desktop.Plugins.TrackingCreate
                     List<TreeSereServADO> SereServADOs = new List<TreeSereServADO>();
                     treeListServiceReq.DataSource = null;
                     var listRootSety = (rsSereServ != null && rsSereServ.Count > 0) ? rsSereServ.GroupBy(g => g.TDL_INTRUCTION_DATE).ToList() : null;
-                    if (listRootSety != null && listRootSety.Count > 0)
+                    if (listRootSety != null && listRootSety.Count > 0) // lv1
                     {
                         foreach (var rootSety in listRootSety)
                         {
@@ -283,7 +283,7 @@ namespace HIS.Desktop.Plugins.TrackingCreate
                             SereServADOs.Add(ssInTime);
                             int demm = 0;
                             List<TreeSereServADO> listSSTemp = new List<TreeSereServADO>();
-                            foreach (var itemSS in listBySety)
+                            foreach (var itemSS in listBySety) // lv2, dịch vụ
                             {
                                 TreeSereServADO ssServiceType = new TreeSereServADO();
                                 ssServiceType.CONCRETE_ID__IN_SETY = ssInTime.CONCRETE_ID__IN_SETY + "_" + itemSS.First().TDL_SERVICE_TYPE_ID + "";
@@ -315,7 +315,8 @@ namespace HIS.Desktop.Plugins.TrackingCreate
                                 int d = 0;
                                 int dem = 0;
                                 List<TreeSereServADO> listTemp = new List<TreeSereServADO>();
-                                foreach (var itemSSChild in itemSS)
+                                foreach (var itemSSChild in itemSS) //lv3, itemSSChild là dòng ở dưới, key trong itemSS không liên quan 
+                                    //itemSS là từng thằng dịch vụ 
                                 {
                                     bool IsNotShowMediAndMate = false;
                                     string CONCRETE_ID__IN_SETY = "";
@@ -336,9 +337,21 @@ namespace HIS.Desktop.Plugins.TrackingCreate
                                         ServiceReq.USE_TIME != null &&
                                         ServiceReq.USE_TIME > ServiceReq.INTRUCTION_DATE)
                                     {
-                                        string CONCRETE_ID__IN_SETY_USE_TIME = ssServiceType.CONCRETE_ID__IN_SETY + "_" + itemSSChild.USE_TIME;
+                                        //string useTimeDate = null;
+                                        //if (itemSSChild.USE_TIME != null)
+                                        //{
+                                        //    useTimeDate = Inventec.Common.DateTime.Convert.TimeNumberToDateString(itemSSChild.USE_TIME.ToString());
+                                        //}
+                                        //else if (ServiceReq != null && ServiceReq.USE_TIME != null)
+                                        //{
+                                        //    useTimeDate = Inventec.Common.DateTime.Convert.TimeNumberToDateString(ServiceReq.USE_TIME.Value.ToString());
+                                        //}
+
+                                        //string CONCRETE_ID__IN_SETY_USE_TIME = ssServiceType.CONCRETE_ID__IN_SETY + "_" + useTimeDate.Replace("/", "_");
+                                        string CONCRETE_ID__IN_SETY_USE_TIME = ssServiceType.CONCRETE_ID__IN_SETY + "_" + ServiceReq.USE_TIME;
                                         if (SereServADOs != null && SereServADOs.Count > 0 && !SereServADOs.Exists(o => o.CONCRETE_ID__IN_SETY == CONCRETE_ID__IN_SETY_USE_TIME))
                                         {
+                                            
                                             TreeSereServADO ssServiceReqUseTime = new TreeSereServADO();
                                             ssServiceReqUseTime.LEVER = 3;
                                             ssServiceReqUseTime.CONCRETE_ID__IN_SETY = CONCRETE_ID__IN_SETY_USE_TIME;
