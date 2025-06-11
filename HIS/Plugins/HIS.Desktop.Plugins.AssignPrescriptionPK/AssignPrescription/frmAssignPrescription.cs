@@ -12839,13 +12839,14 @@ o.SERVICE_ID == medi.SERVICE_ID && o.TDL_INTRUCTION_TIME.ToString().Substring(0,
                     return;
                 }
 
-
                 var requestData = new
                 {
                     icd_code = txtIcdCode.Text.Trim(),
                     gender = lblGenderName.Text.Trim(),
                     age = CalculateAge(currentTreatmentWithPatientType.TDL_PATIENT_DOB),
-                    top_n = 5
+                    top_n = 5,
+                    //Dangth
+                    servicereq_type_id = GetServiceReqTypeIdFromGlobalStore() 
                 };
                 ShowAISuggestionForm(requestData);
 
@@ -12856,6 +12857,16 @@ o.SERVICE_ID == medi.SERVICE_ID && o.TDL_INTRUCTION_TIME.ToString().Substring(0,
             }
 
         }
+        private long GetServiceReqTypeIdFromGlobalStore()
+        {
+            if (GlobalStore.IsCabinet)
+                return IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__DONTT; // 14
+            else if (GlobalStore.IsTreatmentIn)
+                return IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__DONDT; // 15
+            else
+                return IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__DONK;  // 6
+        }
+
 
         public static int CalculateAge(long dobLong)
         {
