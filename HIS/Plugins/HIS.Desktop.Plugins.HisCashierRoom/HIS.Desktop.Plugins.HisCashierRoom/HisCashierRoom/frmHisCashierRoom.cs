@@ -292,6 +292,7 @@ namespace HIS.Desktop.Plugins.HisCashierRoom.HisCashierRoom
                 InitComboRoomTypeId();
                 InitComboDepartmentId();
                 InitCboArea();
+                InitCboPayerBank();
                 //TODO
             }
             catch (Exception ex)
@@ -624,12 +625,18 @@ namespace HIS.Desktop.Plugins.HisCashierRoom.HisCashierRoom
                     txtEinvoiceRoomCode.Text = data.EINVOICE_ROOM_CODE;
                     txtEinvoiceRoomName.Text = data.EINVOICE_ROOM_NAME;
                     //lkRoomTypeId.EditValue = data.ROOM_TYPE_ID;
+                    txtPayerAccount.Text = data.PAYER_ACCOUNT;
                     lkDepartmentId.EditValue = data.DEPARTMENT_ID;
                     cboHisArea.EditValue = data.AREA_ID;
+                    cboPayerBank.EditValue = data.PAYER_BANK_ID;
                     if (data.AREA_ID != null && data.AREA_ID > 0)
                         cboHisArea.Properties.Buttons[1].Visible = true;
                     else
                         cboHisArea.Properties.Buttons[1].Visible = false;
+                    if (data.PAYER_BANK_ID != null && data.PAYER_BANK_ID > 0)
+                        cboPayerBank.Properties.Buttons[1].Visible = true;
+                    else
+                        cboPayerBank.Properties.Buttons[1].Visible = false;
                     chkPause.Checked = (data.IS_PAUSE == 1 ? true : false);
 
                     CommonParam param = new CommonParam();
@@ -779,7 +786,9 @@ namespace HIS.Desktop.Plugins.HisCashierRoom.HisCashierRoom
                 SetDefaultValue();
                 //FillDataToGridControl();
                 InitCboArea();
+                InitCboPayerBank();
                 cboHisArea.Properties.Buttons[1].Visible = false;
+                cboPayerBank.Properties.Buttons[1].Visible = false;
             }
             catch (Exception ex)
             {
@@ -876,9 +885,15 @@ namespace HIS.Desktop.Plugins.HisCashierRoom.HisCashierRoom
                 if (chkPause.EditValue != null) room.IS_PAUSE = (short)(chkPause.Checked ? 1 : 0);
                 if (cboHisArea.EditValue != null)
                     room.AREA_ID = Inventec.Common.TypeConvert.Parse.ToInt64((cboHisArea.EditValue ?? "0").ToString());
+                if (cboPayerBank.EditValue != null)
+                    room.PAYER_BANK_ID = Inventec.Common.TypeConvert.Parse.ToInt64((cboPayerBank.EditValue ?? "0").ToString());
                 if (!string.IsNullOrEmpty(txtTLQR.Text))
                 {
                     room.QR_CONFIG_JSON = txtTLQR.Text.Trim();
+                }
+                if (!string.IsNullOrEmpty(txtPayerAccount.Text))
+                {
+                    room.PAYER_ACCOUNT = txtPayerAccount.Text.Trim();
                 }
                 sdo.HisRoom = room;
 
@@ -955,6 +970,31 @@ namespace HIS.Desktop.Plugins.HisCashierRoom.HisCashierRoom
                 currentDTO.CASHIER_ROOM_NAME = txtCashierRoomName.Text.Trim();
                 currentDTO.EINVOICE_ROOM_CODE = !string.IsNullOrEmpty(txtEinvoiceRoomCode.Text) ? txtEinvoiceRoomCode.Text : null;
                 currentDTO.EINVOICE_ROOM_NAME = !string.IsNullOrEmpty(txtEinvoiceRoomName.Text) ? txtEinvoiceRoomName.Text : null;
+                
+                var firstRoom = currentDTO.HIS_ROOM1?.FirstOrDefault();
+                if (firstRoom != null)
+                {
+                    if (cboPayerBank.EditValue != null)
+                    {
+                        firstRoom.PAYER_BANK_ID = Convert.ToInt64(cboPayerBank.EditValue);
+                    }
+                    else
+                    {
+                        firstRoom.PAYER_BANK_ID = null;
+                        firstRoom.PAYER_ACCOUNT = null;
+                    }
+                    if (firstRoom.PAYER_BANK_ID != null)
+                    {
+                        if (!string.IsNullOrWhiteSpace(txtPayerAccount.Text))
+                        {
+                            firstRoom.PAYER_ACCOUNT = txtPayerAccount.Text.Trim();
+                        }
+                        else
+                        {
+                            firstRoom.PAYER_ACCOUNT = null;
+                        }
+                    }
+                }
                 //if (lkRoomTypeId.EditValue != null) currentDTO.ROOM_ID = Inventec.Common.TypeConvert.Parse.ToInt64((lkRoomTypeId.EditValue ?? "0").ToString());
                 //if (lkDepartmentId.EditValue != null) currentDTO. = Inventec.Common.TypeConvert.Parse.ToInt64((lkDepartmentId.EditValue ?? "0").ToString());
 
@@ -978,6 +1018,7 @@ namespace HIS.Desktop.Plugins.HisCashierRoom.HisCashierRoom
                 ValidationSingleControl(lkDepartmentId);
                 ValidateMaxLengthTxt(txtEinvoiceRoomCode,10);
                 ValidateMaxLengthTxt(txtEinvoiceRoomName, 100);
+                ValidateMaxLengthTxt(txtPayerAccount, 100);
             }
             catch (Exception ex)
             {
@@ -1433,7 +1474,24 @@ namespace HIS.Desktop.Plugins.HisCashierRoom.HisCashierRoom
                 LogSystem.Warn(ex);
             }
         }
-
+        private void InitCboPayerBank()
+        {
+            try
+            {
+                CommonParam param = new CommonParam();
+                List<HIS_BANK> lstData = BackendDataWorker.Get<HIS_BANK>().Where(o => o.IS_ACTIVE == 1).ToList();
+                if(lstData == null || lstData.Count == 0) return;
+                List<ColumnInfo> colum = new List<ColumnInfo>();
+                colum.Add(new ColumnInfo("BANK_CODE", "", 100, 1));
+                colum.Add(new ColumnInfo("BANK_NAME", "", 250, 1));
+                ControlEditorADO controlAdo = new ControlEditorADO("BANK_NAME", "ID", colum, false, 350);
+                ControlEditorLoader.Load(this.cboPayerBank, lstData, controlAdo);
+            }
+            catch (Exception ex)
+            {
+                LogSystem.Warn(ex);
+            }
+        }
         private void lkDepartmentId_Closed(object sender, DevExpress.XtraEditors.Controls.ClosedEventArgs e)
         {
             try
@@ -1784,6 +1842,87 @@ namespace HIS.Desktop.Plugins.HisCashierRoom.HisCashierRoom
 
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
+        }
+
+        private void cboPayerBank_Closed(object sender, ClosedEventArgs e)
+        {
+            try
+            {
+                if (e.CloseMode == PopupCloseMode.Normal)
+                {
+                    if (cboPayerBank.EditValue != null)
+                    {
+                        cboPayerBank.Properties.Buttons[1].Visible = true;
+                        txtPayerAccount.Focus();
+                    }
+                    else
+                        cboPayerBank.ShowPopup();
+                }
+            }
+            catch (Exception ex)
+            {
+
+                LogSystem.Error(ex);
+            }
+        }
+
+        private void cboPayerBank_ButtonClick(object sender, ButtonPressedEventArgs e)
+        {
+            try
+            {
+                if (e.Button.Kind == DevExpress.XtraEditors.Controls.ButtonPredefines.Delete)
+                {
+                    cboPayerBank.EditValue = null;
+                    cboPayerBank.Properties.Buttons[1].Visible = false;
+                    txtPayerAccount.Focus();
+                }
+            }
+            catch (Exception ex)
+            {
+
+                LogSystem.Error(ex);
+            }
+        }
+
+        private void cboPayerBank_KeyUp(object sender, KeyEventArgs e)
+        {
+            try
+            {
+                if (e.KeyCode == Keys.Enter)
+                {
+                    if (cboPayerBank.EditValue != null)
+                        txtPayerAccount.Focus();
+                    else
+                        cboPayerBank.ShowPopup();
+
+                }
+                e.Handled = true;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSession.Warn(ex);
+            }
+        }
+
+        private void cboPayerBank_EditValueChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                if (cboPayerBank.EditValue == null)
+                {
+                    txtPayerAccount.Text = string.Empty;
+                }
+            }
+            catch (Exception ex)
+            {
+
+                LogSystem.Error(ex);
+            }
+        }
+
+        private void gridControlFormList_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }
