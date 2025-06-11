@@ -165,7 +165,6 @@ namespace HIS.Desktop.Plugins.HisExecuteRoom.HisExecuteRoom
                 {
                     cboPayerBank.Text = "";
                     cboPayerBank.EditValue = null;
-                    cboPayerBank.Properties.Buttons[1].Visible = false;
                     txtPayerAccount.Text = null;
                     txtPayerAccount.Focus();
                 }
@@ -184,7 +183,6 @@ namespace HIS.Desktop.Plugins.HisExecuteRoom.HisExecuteRoom
                 {
                     if (cboPayerBank.EditValue != null)
                     {
-                        cboPayerBank.Properties.Buttons[1].Visible = true;
                         txtPayerAccount.Focus();
                     }
                 }
@@ -2693,7 +2691,6 @@ namespace HIS.Desktop.Plugins.HisExecuteRoom.HisExecuteRoom
                 chkIsBlockNumOrder.Checked = false;
                 //qtcode
                 cboPayerBank.EditValue = null;
-                cboPayerBank.Properties.Buttons[1].Visible = false;
                 txtPayerAccount.Text = "";
                 //qtcode
                 cboDefaultDrug.EditValue = null;
