@@ -29,6 +29,7 @@ namespace HIS.Desktop.Plugins.ExecuteRoom.ADO
         public string DOB_DISPLAY { get; set; }
         public string REQUEST_DEPARTMENT_DISPLAY { get; set; }
         public string REQUEST_ROOM_DISPLAY { get; set; }
+        public string REQUEST_USER_DISPLAY { get; set; }
         public string PATIENT_CLASSIFY_NAME { get; set; }
         public string DISPLAY_COLOR { get; set; }
         public long? SAMPLE_TIME { get; set; }
@@ -45,6 +46,9 @@ namespace HIS.Desktop.Plugins.ExecuteRoom.ADO
 
                 V_HIS_ROOM room = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<V_HIS_ROOM>().FirstOrDefault(o => o.ID == data.REQUEST_ROOM_ID);
                 REQUEST_ROOM_DISPLAY = room != null ? room.ROOM_NAME : null;
+
+                REQUEST_USER_DISPLAY = string.Format("{0} - {1}", data.REQUEST_USERNAME, data.REQUEST_LOGINNAME);
+
 
                 if (data.TDL_PATIENT_CLASSIFY_ID.HasValue)
                 {
@@ -67,6 +71,7 @@ namespace HIS.Desktop.Plugins.ExecuteRoom.ADO
 
                 V_HIS_ROOM room = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<V_HIS_ROOM>().FirstOrDefault(o => o.ID == data.REQUEST_ROOM_ID);
                 REQUEST_ROOM_DISPLAY = room != null ? room.ROOM_NAME : null;
+                REQUEST_USER_DISPLAY = string.Format("{0} {1}", data.REQUEST_USERNAME, data.REQUEST_LOGINNAME);
                 if (data.TDL_PATIENT_CLASSIFY_ID.HasValue)
                 {
                     HIS_PATIENT_CLASSIFY classify = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<HIS_PATIENT_CLASSIFY>().FirstOrDefault(o => o.ID == data.TDL_PATIENT_CLASSIFY_ID);

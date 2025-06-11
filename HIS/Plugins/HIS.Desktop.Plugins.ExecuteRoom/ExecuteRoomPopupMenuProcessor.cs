@@ -18,6 +18,8 @@
 using DevExpress.XtraBars;
 using HIS.Desktop.ApiConsumer;
 using HIS.Desktop.LocalStorage.BackendData;
+using HIS.Desktop.LocalStorage.ConfigApplication;
+using HIS.Desktop.Plugins.ExecuteRoom;
 using HIS.Desktop.Plugins.ExecuteRoom.ADO;
 using HIS.Desktop.Plugins.ExecuteRoom.Base;
 using HIS.Desktop.Plugins.Library.FormMedicalRecord;
@@ -67,6 +69,7 @@ namespace Inventec.Desktop.Plugins.ExecuteRoom
             SuaYeuCauKham,
             AssignPaan,
             TreatmentList,
+            AnalyzeMedicalImageAI,
             AllergyCard,
             ThongTinChuyenDen,
             InPhieuKetQuaDaKy,
@@ -99,8 +102,6 @@ namespace Inventec.Desktop.Plugins.ExecuteRoom
                     menu = new PopupMenu(barManager);
                 // Add item and show
                 menu.ItemLinks.Clear();
-
-
                 //Vỏ bệnh án
                 HisTreatmentFilter treatmentFilter = new HisTreatmentFilter();
                 treatmentFilter.ID = this.serviceReqRightClick.TREATMENT_ID;
@@ -325,8 +326,20 @@ namespace Inventec.Desktop.Plugins.ExecuteRoom
                     {
                         menu.AddItems(new BarItem[] { itemInphieuketquadaky });
                     }
-                    menu.AddItems(new BarItem[] { itemBordereau, itemAggrHospitalFees, itemTreatmentList, itemServiceReqList, itemTreatmentHistory, itemOtherForm, itemBenhAnNgoaiTru, itemDebate, itemAssignPaan,itemPhanLoaiBenhNhan, itemAllergyCard, itemThongTinChuyenDen });
-
+                    string aiConnectionInfo = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>("HIS.Desktop.AI.ConnectionInfo");
+                    if (!string.IsNullOrEmpty(aiConnectionInfo))
+                    {
+                        // Tạo menu "Phân tích hình ảnh y khoa AI"
+                        BarButtonItem itemAnalyzeMedicalImageAI = new BarButtonItem(barManager, Inventec.Common.Resource.Get.Value("UCExecuteRoom.btnAnalyzeMedicalImageAI.Text", ResourceLangManager.LanguageUCExecuteRoom, LanguageManager.GetCulture()), 3);
+                        itemAnalyzeMedicalImageAI.Tag = ModuleType.AnalyzeMedicalImageAI;
+                        itemAnalyzeMedicalImageAI.ItemClick += new ItemClickEventHandler(executeRoomMouseRightClick);
+                        // Thêm menu vào dưới menu "Hồ sơ điều trị"
+                        menu.AddItems(new BarItem[] { itemBordereau, itemAggrHospitalFees, itemTreatmentList, itemAnalyzeMedicalImageAI, itemServiceReqList, itemTreatmentHistory, itemOtherForm, itemBenhAnNgoaiTru, itemDebate, itemAssignPaan, itemPhanLoaiBenhNhan, itemAllergyCard, itemThongTinChuyenDen });
+                    }
+                    else
+                    {
+                        menu.AddItems(new BarItem[] { itemBordereau, itemAggrHospitalFees, itemTreatmentList, itemServiceReqList, itemTreatmentHistory, itemOtherForm, itemBenhAnNgoaiTru, itemDebate, itemAssignPaan, itemPhanLoaiBenhNhan, itemAllergyCard, itemThongTinChuyenDen });
+                    }
                     menu.AddItems(new BarItem[] { itemSummaryInforTreatmentRecords });
 
                     if (this.serviceReqRightClick.SERVICE_REQ_STT_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_STT.ID__DXL
@@ -344,7 +357,6 @@ namespace Inventec.Desktop.Plugins.ExecuteRoom
                     menu.AddItems(new BarItem[] { itemBenhLao });
                     menu.AddItems(new BarItem[] { itemMachine });
                 }
-
                 menu.ShowPopup(Cursor.Position);
 
             }
