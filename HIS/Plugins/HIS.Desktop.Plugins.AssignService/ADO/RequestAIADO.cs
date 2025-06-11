@@ -12,7 +12,5 @@ namespace HIS.Desktop.Plugins.AssignService.ADO
         public string gender_name { get; set; }
         public int age { get; set; }
         public int top_n { get; set; }
-        //qtcode
-        public string AuthenKey { get; set; }
     }
 }
