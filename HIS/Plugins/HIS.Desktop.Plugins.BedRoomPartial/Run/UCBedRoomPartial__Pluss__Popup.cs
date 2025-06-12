@@ -25,6 +25,7 @@ using HIS.Desktop.Controls.Session;
 using HIS.Desktop.LocalStorage.BackendData;
 using HIS.Desktop.LocalStorage.HisConfig;
 using HIS.Desktop.LocalStorage.LocalData;
+using HIS.Desktop.Plugins.BedRoomPartial.ADO;
 using HIS.Desktop.Plugins.BedRoomPartial.Key;
 using HIS.Desktop.Plugins.BedRoomPartial.Popup;
 using HIS.Desktop.Plugins.Library.FormMedicalRecord.Base;
@@ -281,8 +282,10 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
                         case BedRoomPopupMenuProcessor.ModuleType.PhanLoaiBenhNhan:
                             PhanLoaiBenhNhan();
                             break;
-
-                        #endregion
+                        case BedRoomPopupMenuProcessor.ModuleType.BeneficiaryInfo:
+                            btnBeneficiaryInfoClick();
+                            break;
+                            #endregion
                     }
                 }
             }
@@ -2859,6 +2862,64 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
                     if (form != null)
                     {
                         form.ShowDialog();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+        private void btnBeneficiaryInfoClick()
+        {
+            try
+            {
+                if (treatmentBedRoomRow != null)
+                {
+                    Inventec.Desktop.Common.Modules.Module moduleData = GlobalVariables.currentModuleRaws.Where(o => o.ModuleLink == " HIS.Desktop.Plugins.HisPatientBankAccount").FirstOrDefault();
+                    if (moduleData == null) Inventec.Common.Logging.LogSystem.Error("khong tim thay moduleLink = HIS.Desktop.Plugins.HisPatientBankAccount");
+                    if (moduleData.IsPlugin && moduleData.ExtensionInfo != null)
+                    {
+                        List<object> listArgs = new List<object>();
+                        listArgs.Add(treatmentBedRoomRow.TREATMENT_ID);
+                        listArgs.Add(PluginInstance.GetModuleWithWorkingRoom(moduleData, this.wkRoomId, this.wkRoomTypeId));
+                        var extenceInstance = PluginInstance.GetPluginInstance(PluginInstance.GetModuleWithWorkingRoom(moduleData, this.wkRoomId, this.wkRoomTypeId), listArgs);
+                        if (extenceInstance == null) throw new ArgumentNullException("moduleData is null");
+
+                        ((Form)extenceInstance).ShowDialog();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+        private void btnAnalyzeMedicalImageClick()
+        {
+            try
+            {
+                if (treatmentBedRoomRow != null)
+                {
+                    Inventec.Desktop.Common.Modules.Module moduleData = GlobalVariables.currentModuleRaws.Where(o => o.ModuleLink == "HIS.Desktop.Plugins.AnalyzeMedicalImage").FirstOrDefault();
+                    if (moduleData == null) Inventec.Common.Logging.LogSystem.Error("khong tim thay moduleLink = HIS.Desktop.Plugins.AnalyzeMedicalImage");
+                    if (moduleData.IsPlugin && moduleData.ExtensionInfo != null)
+                    {
+                        var ado = new AnalyzeImageADO
+                        {
+                            TreatmentId = treatmentBedRoomRow.TREATMENT_ID
+                        };
+                        var args = new List<object> { ado };
+                        var pluginInstance = PluginInstance.GetPluginInstance(
+                            PluginInstance.GetModuleWithWorkingRoom(moduleData, wkRoomId, wkRoomTypeId),
+                            args
+                        );
+                        if (pluginInstance == null)
+                        {
+                            throw new ArgumentNullException("pluginInstance is null");
+                        }
+
+                ((Form)pluginInstance).ShowDialog();
                     }
                 }
             }
