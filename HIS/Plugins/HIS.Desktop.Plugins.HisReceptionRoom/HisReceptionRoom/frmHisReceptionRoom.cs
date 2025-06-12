@@ -1330,12 +1330,22 @@ namespace HIS.Desktop.Plugins.HisReceptionRoom
                 }
                 if (cboDTTT.EditValue != null)
                 {
-                    updateDTO.DEFAULT_PATIENT_TYPE_ID = Inventec.Common.TypeConvert.Parse.ToInt64((cboDTTT.EditValue ?? "0").ToString());
+                    updateDTO.DEFAULT_PATIENT_TYPE_ID = Inventec.Common.TypeConvert.Parse.ToInt64(cboDTTT.EditValue.ToString());
                 }
+                else
+                {
+                    updateDTO.DEFAULT_PATIENT_TYPE_ID = null;
+                }
+
                 if (cboDTPT.EditValue != null)
                 {
-                    updateDTO.BILL_PATIENT_TYPE_ID = Inventec.Common.TypeConvert.Parse.ToInt64((cboDTPT.EditValue ?? "0").ToString());
-                }    
+                    updateDTO.BILL_PATIENT_TYPE_ID = Inventec.Common.TypeConvert.Parse.ToInt64(cboDTPT.EditValue.ToString());
+                }
+                else
+                {
+                    updateDTO.BILL_PATIENT_TYPE_ID = null;
+                }
+
                 if (cboDepositAccountBook.EditValue != null)
                 {
                     room.DEPOSIT_ACCOUNT_BOOK_ID = Inventec.Common.TypeConvert.Parse.ToInt64((cboDepositAccountBook.EditValue ?? "0").ToString());
