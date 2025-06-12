@@ -285,6 +285,9 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
                         case BedRoomPopupMenuProcessor.ModuleType.BeneficiaryInfo:
                             btnBeneficiaryInfoClick();
                             break;
+                        case BedRoomPopupMenuProcessor.ModuleType.AnalyzeMedicalImage:
+                            btnAnalyzeMedicalImageClick();
+                            break;
                             #endregion
                     }
                 }
