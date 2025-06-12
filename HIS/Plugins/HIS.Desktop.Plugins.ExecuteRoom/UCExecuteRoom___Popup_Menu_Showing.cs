@@ -120,6 +120,9 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
                         case ExecuteRoomPopupMenuProcessor.ModuleType.TreatmentList:
                             TreatmentListClick(this.serviceReqRightClick);
                             break;
+                        case ExecuteRoomPopupMenuProcessor.ModuleType.AnalyzeMedicalImageAI:
+                            AnalyzeMedicalImageAIClick(this.serviceReqRightClick);
+                            break;
                         case ExecuteRoomPopupMenuProcessor.ModuleType.AllergyCard:
                             AllergyCardClick(this.serviceReqRightClick);
                             break;
@@ -629,6 +632,27 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
                     var extenceInstance = HIS.Desktop.Utility.PluginInstance.GetPluginInstance(currentModule, listArgs);
                     if (extenceInstance == null) throw new ArgumentNullException("moduleData is null");
                     HIS.Desktop.ModuleExt.TabControlBaseProcess.TabCreating(SessionManager.GetTabControlMain(), currentModule.ExtensionInfo.Code + serviceReq.SERVICE_REQ_CODE + serviceReq.TDL_TREATMENT_CODE, serviceReq.TDL_TREATMENT_CODE + " - " + serviceReq.TDL_PATIENT_NAME, (System.Windows.Forms.UserControl)extenceInstance, currentModule);
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void AnalyzeMedicalImageAIClick(L_HIS_SERVICE_REQ serviceReq)
+        {
+            try
+            {
+                Inventec.Desktop.Common.Modules.Module moduleData = GlobalVariables.currentModuleRaws.Where(o => o.ModuleLink == "HIS.Desktop.Plugins.AnalyzeMedicalImage").FirstOrDefault();
+                if (moduleData == null) Inventec.Common.Logging.LogSystem.Error("khong tim thay moduleLink = HIS.Desktop.Plugins.AnalyzeMedicalImage");
+                if (moduleData.IsPlugin && moduleData.ExtensionInfo != null)
+                {
+                    List<object> listArgs = new List<object>();
+                    listArgs.Add(serviceReq.TREATMENT_ID);
+                    var extenceInstance = PluginInstance.GetPluginInstance(HIS.Desktop.Utility.PluginInstance.GetModuleWithWorkingRoom(moduleData, roomId, roomTypeId), listArgs);
+                    if (extenceInstance == null) throw new ArgumentNullException("moduleData is null");
+                    ((Form)extenceInstance).Show();
                 }
             }
             catch (Exception ex)

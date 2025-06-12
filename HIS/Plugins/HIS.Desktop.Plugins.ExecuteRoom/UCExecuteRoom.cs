@@ -230,7 +230,7 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
                 LoadServiceReqCount(true, 0);
                 this.isInit = false;
                 //RegisterTimer(currentModule.ModuleLink, "timerDoubleClick", timerDoubleClick.Interval, timer1_Tick);
-                Inventec.Common.Logging.LogSystem.Debug("UCExecuteRoom_Load.12");
+                Inventec.Common.Logging.LogSystem.Debug("UCExecuteRoom_Load.12");                
             }
             catch (Exception ex)
             {
@@ -448,6 +448,8 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
                 //this.repositoryItemPictureEdit5.NullText = Inventec.Common.Resource.Get.Value("UCExecuteRoom.repositoryItemPictureEdit5.NullText", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.grdColPRIORIRY_DISPLAY.Caption = Inventec.Common.Resource.Get.Value("UCExecuteRoom.grdColPRIORIRY_DISPLAY.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.grdColPRIORIRY_DISPLAY.ToolTip = Inventec.Common.Resource.Get.Value("UCExecuteRoom.grdColPRIORIRY_DISPLAY.ToolTip", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.gridColumn20.Caption = Inventec.Common.Resource.Get.Value("UCExecuteRoom.gridColumn20.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.gridColumn21.Caption = Inventec.Common.Resource.Get.Value("UCExecuteRoom.gridColumn21.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 //this.repositoryItemPictureEdit2.NullText = Inventec.Common.Resource.Get.Value("UCExecuteRoom.repositoryItemPictureEdit2.NullText", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 //this.grdColNUM_ORDER.Caption = Inventec.Common.Resource.Get.Value("UCExecuteRoom.grdColNUM_ORDER.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.gridColumnBusyCount.Caption = Inventec.Common.Resource.Get.Value("UCExecuteRoom.gridColumnBusyCount.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
@@ -977,7 +979,14 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
                 {
                     ServiceReqADO dataRow = (ServiceReqADO)((IList)((BaseView)sender).DataSource)[e.ListSourceRowIndex];
 
-
+                    if (e.Column.FieldName == "USE_TIME_DISPLAY")
+                    {
+                        e.Value = Inventec.Common.DateTime.Convert.TimeNumberToDateString(dataRow.USE_TIME ?? 0);
+                    }
+                    if (e.Column.FieldName == "REQUEST_USER_DISPLAY")
+                    {
+                        e.Value = dataRow.REQUEST_USER_DISPLAY;
+                    }
 
                     if (e.Column.FieldName == "CallPatient")
                     {
