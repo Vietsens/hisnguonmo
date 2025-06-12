@@ -27,7 +27,7 @@ using HIS.Desktop.Common;
 using HIS.Desktop.Controls.Session;
 using HIS.Desktop.LocalStorage.BackendData;
 using Inventec.Common.Adapter;
-using Inventec.Common.DateTime; 
+using Inventec.Common.DateTime;
 using Inventec.Core;
 using Inventec.Desktop.Common.Message;
 using MOS.EFMODEL.DataModels;
@@ -113,11 +113,8 @@ namespace EMR.Desktop.Plugins.ImportEmrViewer
         {
             try
             {
-                _ListViewer = new List<EMR_VIEWER>();
-                EMR.Filter.EmrViewerFilter filter = new Filter.EmrViewerFilter();
-                _ListViewer = new BackendAdapter(new CommonParam()).Get<List<EMR_VIEWER>>("api/EmrViewer/Get", ApiConsumers.EmrConsumer, filter, null);
 
-             
+
             }
             catch (Exception ex)
             {
@@ -190,7 +187,7 @@ namespace EMR.Desktop.Plugins.ImportEmrViewer
                         var emrViewerImport = import.GetWithCheck<ADO.EmrViewerAdo>(0);
                         if (emrViewerImport != null && emrViewerImport.Count > 0)
                         {
-                           
+
                             WaitingManager.Hide();
 
                             this._CurrentAdos = emrViewerImport.Where(p => checkNull(p)).ToList();
@@ -200,6 +197,10 @@ namespace EMR.Desktop.Plugins.ImportEmrViewer
                                 btnShowLineError.Enabled = true;
                                 this._ImportAdos = new List<ADO.EmrViewerAdo>();
 
+                                _ListViewer = new List<EMR_VIEWER>();
+                                EMR.Filter.EmrViewerFilter filter = new Filter.EmrViewerFilter();
+                                //filter.REQUEST_USERNAME = _CurrentAdos.Select(o => o.TREATMENT_CODE).ToList();
+                                _ListViewer = new BackendAdapter(new CommonParam()).Get<List<EMR_VIEWER>>("api/EmrViewer/Get", ApiConsumers.EmrConsumer, filter, null);
 
 
                                 EMR_TREATMENT treatment = new EMR_TREATMENT();
@@ -208,7 +209,20 @@ namespace EMR.Desktop.Plugins.ImportEmrViewer
                                 _ListTreatment = new BackendAdapter(new CommonParam()).Get<List<EMR_TREATMENT>>("api/EmrTreatment/Get", ApiConsumers.EmrConsumer, emrfilter, null);
                                 EMR.Filter.EmrDocumentViewFilter documentFilter = new EMR.Filter.EmrDocumentViewFilter();
 
-                                addServiceToProcessList(_CurrentAdos, ref this._ImportAdos, _ListTreatment);
+                                //LIST DEPARTMENT
+                                var _ListDepartment = new List<HIS_DEPARTMENT>();
+                                HisDepartmentFilter departmentFilter = new HisDepartmentFilter();
+                                _ListDepartment = new BackendAdapter(new CommonParam())
+                                    .Get<List<HIS_DEPARTMENT>>("api/HisDepartment/Get", ApiConsumers.MosConsumer, departmentFilter, null);
+
+                                // ACS_USER
+
+
+
+                                HIS_EMPLOYEE employ = new HIS_EMPLOYEE();
+                                HisEmployeeFilter employFilter = new HisEmployeeFilter();
+
+                                addServiceToProcessList(_CurrentAdos, ref this._ImportAdos, _ListTreatment, _ListDepartment);
                                 SetDataSource(this._ImportAdos);
                             }
 
@@ -241,10 +255,9 @@ namespace EMR.Desktop.Plugins.ImportEmrViewer
                 if (data != null)
                 {
                     if (string.IsNullOrEmpty(data.REQUEST_LOGINNAME)
-                        && string.IsNullOrEmpty(data.REQUEST_USERNAME)
-                        && string.IsNullOrEmpty(data.DEPARTMENT_NAME)
-                        && string.IsNullOrEmpty(data.REASON)
-                       
+                        && !data.FINISH_TIME.HasValue
+                        && string.IsNullOrEmpty(data.TREATMENT_CODE)
+
                         )
                     {
                         result = false;
@@ -261,7 +274,7 @@ namespace EMR.Desktop.Plugins.ImportEmrViewer
             return result;
         }
 
-        private void addServiceToProcessList(List<ADO.EmrViewerAdo> _service, ref List<ADO.EmrViewerAdo> _importAdoRef, List<EMR_TREATMENT> _ListTreatment)
+        private void addServiceToProcessList(List<ADO.EmrViewerAdo> _service, ref List<ADO.EmrViewerAdo> _importAdoRef, List<EMR_TREATMENT> _ListTreatment, List<HIS_DEPARTMENT> _ListDepartment)
         {
             try
             {
@@ -274,32 +287,59 @@ namespace EMR.Desktop.Plugins.ImportEmrViewer
                     var serAdo = new ADO.EmrViewerAdo();
                     Inventec.Common.Mapper.DataObjectMapper.Map<ADO.EmrViewerAdo>(serAdo, item);
 
-               
-                    if (!string.IsNullOrEmpty(item.REQUEST_USERNAME))
-                    {
-                        if (item.REQUEST_USERNAME.Length > 100)
-                        {
-                            error += string.Format(Message.ResourceLanguageManager.Maxlength, item.REQUEST_USERNAME);
 
+                 
+                    if (!string.IsNullOrEmpty(item.REQUEST_LOGINNAME))
+                    {
+                        if (item.REQUEST_LOGINNAME.Length > 50)
+                        {
+                            error += string.Format(Message.ResourceLanguageManager.Maxlength, item.REQUEST_LOGINNAME);
+                        }
+                        var hisEmployeedatas = BackendDataWorker.Get<HIS_EMPLOYEE>().FirstOrDefault(o => o.LOGINNAME == item.REQUEST_LOGINNAME);
+
+
+
+                        if (hisEmployeedatas == null)
+                        {
+                            error += string.Format("Tài khoản không tồn tại: {0}", item.REQUEST_LOGINNAME);
+                        }
+                        else
+                        {
+                            serAdo.REQUEST_USERNAME = hisEmployeedatas.TDL_USERNAME; // hoặc employee.REQUEST_USERNAME nếu đúng tên property
                         }
                     }
                     else
                     {
-                        error += string.Format(Message.ResourceLanguageManager.ThieuTruongDL, "Họ tên");
+                        error += string.Format(Message.ResourceLanguageManager.ThieuTruongDL, "Tên đăng nhập");
                     }
 
 
-
-                    if (!string.IsNullOrEmpty(item.DEPARTMENT_NAME))
+                    if (!string.IsNullOrEmpty(item.DEPARTMENT_CODE))
                     {
-                        if (item.DEPARTMENT_NAME.Length > 100)
+                        if (item.DEPARTMENT_CODE.Length > 4)
                         {
-                            error += string.Format(Message.ResourceLanguageManager.Maxlength, item.DEPARTMENT_NAME);
-
+                            error += string.Format(Message.ResourceLanguageManager.Maxlength, item.DEPARTMENT_CODE);
                         }
 
+
+
+                        var department = BackendDataWorker.Get<HIS_DEPARTMENT>().FirstOrDefault(o => o.DEPARTMENT_CODE == item.DEPARTMENT_CODE);
+
+                        if (department != null)
+                        {
+                            serAdo.DEPARTMENT_CODE = department.DEPARTMENT_CODE;
+                            serAdo.DEPARTMENT_NAME = department.DEPARTMENT_NAME;
+                        }
+                        else
+                        {
+                            error += string.Format("Không tìm thấy khoa với ID: {0}", item.DEPARTMENT_CODE);
+                        }
                     }
-                    
+                    else
+                    {
+                        error += string.Format(Message.ResourceLanguageManager.ThieuTruongDL, "Khoa yêu cầu");
+                    }
+
                     if (!string.IsNullOrEmpty(item.REASON))
                     {
                         if (Inventec.Common.String.CountVi.Count(item.REASON) > 100)
@@ -308,14 +348,13 @@ namespace EMR.Desktop.Plugins.ImportEmrViewer
                         }
                     }
 
-
                     if (item.FINISH_TIME.HasValue)
                     {
-                        string finishTimeStr = item.FINISH_TIME.Value.ToString();
-
-                        if (Inventec.Common.String.CountVi.Count(finishTimeStr) > 14)
+                        string finishTimeStr = item.FINISH_TIME.Value.ToString("yyyyMMddHHmmss");
+                        finishTimeStr = finishTimeStr.Trim();
+                        if (finishTimeStr.Length != 14)
                         {
-                            error += string.Format(Message.ResourceLanguageManager.Maxlength, finishTimeStr);
+                            error += string.Format("Thời gian được duyệt không hợp lệ (phải là số 14 ký tự: yyyyMMddHHmmss).");
                         }
                     }
                     else
@@ -325,22 +364,27 @@ namespace EMR.Desktop.Plugins.ImportEmrViewer
 
 
                     var treatment = _ListTreatment.FirstOrDefault(x => x.ID == item.TREATMENT_ID);
-                    if(treatment != null)
+                    if (treatment != null)
                     {
                         item.PATIENT_CODE = treatment.PATIENT_CODE;
                         item.VIR_PATIENT_NAME = treatment.VIR_PATIENT_NAME;
                         item.HEIN_CARD_NUMBER = treatment.HEIN_CARD_NUMBER;
                         item.ICD_CODE = treatment.ICD_CODE;
                     }
-                    
-                   
+
+
                     if (!string.IsNullOrWhiteSpace(item.TREATMENT_CODE))
                     {
                         if (Inventec.Common.String.CountVi.Count(item.TREATMENT_CODE) > 12)
                         {
                             error += string.Format(Message.ResourceLanguageManager.Maxlength, item.TREATMENT_CODE);
                         }
-                        
+                        // Kiểm tra tồn tại mã điều trị trong danh sách (giả sử bạn có _ListTreatment)
+                        var treatmentZ = _ListTreatment.FirstOrDefault(x => x.TREATMENT_CODE == item.TREATMENT_CODE);
+                        if (treatmentZ == null)
+                        {
+                            error += string.Format("Mã điều trị không tồn tại: {0}", item.TREATMENT_CODE);
+                        }
                     }
                     else
                     {
@@ -370,7 +414,7 @@ namespace EMR.Desktop.Plugins.ImportEmrViewer
                     }
 
 
-                    
+
                     serAdo.ERROR = error;
                     serAdo.ID = i;
 
@@ -462,7 +506,7 @@ namespace EMR.Desktop.Plugins.ImportEmrViewer
                             if (!string.IsNullOrEmpty(dataCheck[0].ERROR))
                             {
                                 string erro = string.Format(Message.ResourceLanguageManager.FileImportDaTonTai, dataCheck[0].REQUEST_LOGINNAME);
-                                //string[] Codes = dataCheck[0].ERROR.Split('|');
+                              
                                 dataCheck[0].ERROR = dataCheck[0].ERROR.Replace(erro, "");
                             }
 
@@ -525,7 +569,7 @@ namespace EMR.Desktop.Plugins.ImportEmrViewer
                 bool success = false;
                 WaitingManager.Show();
 
-                // Lấy thông tin tài khoản hiện tại
+              
                 string loginName = Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName();
                 string userName = Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetUserName();
 
@@ -533,50 +577,32 @@ namespace EMR.Desktop.Plugins.ImportEmrViewer
 
                 foreach (var item in listData)
                 {
+                   
                     var treatment = _ListTreatment.FirstOrDefault(x => x.TREATMENT_CODE == item.TREATMENT_CODE);
                     if (treatment != null)
                     {
                         item.TREATMENT_ID = treatment.ID;
-                        //    item.PATIENT_CODE = treatment.PATIENT_CODE;
-                        //    item.VIR_PATIENT_NAME = treatment.VIR_PATIENT_NAME;
-                        //    item.HEIN_CARD_NUMBER = treatment.HEIN_CARD_NUMBER;
-                        //    item.ICD_CODE = treatment.ICD_CODE;
+
                     }
 
-                        EMR_VIEWER viewer = new EMR_VIEWER();
-                    viewer.EMR_TREATMENT = new EMR_TREATMENT();
-                    //id trong erm_treatment = treatment_id trong emr viewer 
-                    viewer.TREATMENT_ID = item.TREATMENT_ID;
+                    EMR_VIEWER viewer = new EMR_VIEWER();
+
+                    viewer.REQUEST_LOGINNAME = item.REQUEST_LOGINNAME;
+                    viewer.REQUEST_USERNAME = item.REQUEST_USERNAME;
                     viewer.DEPARTMENT_CODE = item.DEPARTMENT_CODE;
                     viewer.DEPARTMENT_NAME = item.DEPARTMENT_NAME;
+
                     viewer.REASON = item.REASON;
+                    viewer.FINISH_TIME = item.FINISH_TIME;
+
+
+
+                    viewer.TREATMENT_ID = item.TREATMENT_ID;
                     viewer.REQUEST_FINISH_TIME = long.Parse(DateTime.Now.ToString("yyyyMMddHHmmss"));
                     viewer.APPROVAL_TIME = long.Parse(DateTime.Now.ToString("yyyyMMddHHmmss"));
-                   
-                    viewer.REQUEST_LOGINNAME = loginName;
-                    viewer.REQUEST_USERNAME = userName;
-                    viewer.EMR_TREATMENT.FIRST_NAME = treatment.FIRST_NAME;
-                    viewer.EMR_TREATMENT.LAST_NAME = treatment.LAST_NAME;
-
                     viewer.APPROVAL_LOGINNAME = loginName;
                     viewer.APPROVAL_USERNAME = userName;
 
-                    if (treatment != null)
-                    {
-                        viewer.EMR_TREATMENT.TREATMENT_CODE = treatment.TREATMENT_CODE;
-                        viewer.EMR_TREATMENT.PATIENT_CODE = treatment.PATIENT_CODE;
-                        viewer.EMR_TREATMENT.VIR_PATIENT_NAME = treatment.VIR_PATIENT_NAME;
-                        viewer.EMR_TREATMENT.HEIN_CARD_NUMBER = treatment.HEIN_CARD_NUMBER;
-                        viewer.EMR_TREATMENT.ICD_CODE = treatment.ICD_CODE;
-                    }
-                    else
-                    {
-                        viewer.EMR_TREATMENT.TREATMENT_CODE = item.TREATMENT_CODE;
-                        viewer.EMR_TREATMENT.PATIENT_CODE = item.PATIENT_CODE;
-                        viewer.EMR_TREATMENT.VIR_PATIENT_NAME = item.VIR_PATIENT_NAME;
-                        viewer.EMR_TREATMENT.HEIN_CARD_NUMBER = item.HEIN_CARD_NUMBER;
-                        viewer.EMR_TREATMENT.ICD_CODE = item.ICD_CODE;
-                    }
 
                     listViewer.Add(viewer);
                 }
@@ -662,14 +688,78 @@ namespace EMR.Desktop.Plugins.ImportEmrViewer
         }
         protected override bool ProcessCmdKey(ref System.Windows.Forms.Message msg, Keys keyData)
         {
-          
+
             if (keyData == (Keys.Control | Keys.S))
             {
                 btnImport.PerformClick();
                 return true;
             }
-           
+
             return base.ProcessCmdKey(ref msg, keyData);
+        }
+        // Bổ sung xử lý hiển thị giá trị các cột như patient_code, icd_code,... trên grid theo EMR_TREATMENT lấy theo treatment_code
+
+        private void gridViewData_CustomColumnDisplayText(object sender, DevExpress.XtraGrid.Views.Base.CustomColumnDisplayTextEventArgs e)
+        {
+            try
+            {
+
+
+                var gridView = sender as DevExpress.XtraGrid.Views.Grid.GridView;
+                if (gridView == null || _ListTreatment == null) return;
+
+                int rowHandle = e.ListSourceRowIndex;
+                if (rowHandle < 0) return;
+
+                var row = gridView.GetRow(rowHandle) as ADO.EmrViewerAdo;
+                if (row == null) return;
+
+                // Lấy treatment theo treatment_code
+                var treatment = _ListTreatment.FirstOrDefault(x => x.TREATMENT_CODE == row.TREATMENT_CODE);
+
+                if (treatment == null) return;
+
+                switch (e.Column.FieldName)
+                {
+                    case "PATIENT_CODE":
+                        e.DisplayText = treatment.PATIENT_CODE;
+                        break;
+                    case "VIR_PATIENT_NAME":
+                        e.DisplayText = treatment.VIR_PATIENT_NAME;
+                        break;
+                    case "HEIN_CARD_NUMBER":
+                        e.DisplayText = treatment.HEIN_CARD_NUMBER;
+                        break;
+                    case "ICD_CODE":
+                        e.DisplayText = treatment.ICD_CODE;
+                        break;
+                    case "REQUEST_USERNAME":
+                        e.DisplayText = row.REQUEST_USERNAME;
+                        break;
+                    case "DEPARTMENT_NAME":
+                        e.DisplayText = row.DEPARTMENT_NAME;
+                        break;
+
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        // Đăng ký event này trong hàm khởi tạo hoặc frmImportViewer_Load
+        protected override void OnLoad(EventArgs e)
+        {
+            base.OnLoad(e);
+            try
+            {
+                gridViewData.CustomColumnDisplayText += gridViewData_CustomColumnDisplayText;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
         }
     }
 }

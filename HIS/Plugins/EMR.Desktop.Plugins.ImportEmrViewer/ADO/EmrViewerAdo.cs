@@ -27,9 +27,8 @@ namespace EMR.Desktop.Plugins.ImportEmrViewer.ADO
     class EmrViewerAdo : EMR.EFMODEL.DataModels.EMR_VIEWER
     {
         public long IdRow { get; set; }
-        public string NUM_ORDER_STR { get; set; }
-        public string SIGN_IMAGE_STR { get; set; }
-        public Image IMAGE_VIEW { get; set; }
+       public long ID { get; set; }
+
         public string TREATMENT_CODE { get; set; }
         public string PATIENT_CODE { get; set; }
         public string VIR_PATIENT_NAME { get; set; }
