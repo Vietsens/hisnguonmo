@@ -2887,7 +2887,10 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
                     if (moduleData.IsPlugin && moduleData.ExtensionInfo != null)
                     {
                         List<object> listArgs = new List<object>();
-                        listArgs.Add(treatmentBedRoomRow);
+                        var treatment = new HIS_TREATMENT();
+                        Inventec.Common.Mapper.DataObjectMapper.Map<HIS_TREATMENT>(treatment, treatmentBedRoomRow);
+                        treatment.ID = treatmentBedRoomRow.TREATMENT_ID;
+                        listArgs.Add(treatment);
                         var extenceInstance = PluginInstance.GetPluginInstance(PluginInstance.GetModuleWithWorkingRoom(moduleData, this.wkRoomId, this.wkRoomTypeId), listArgs);
                         if (extenceInstance == null) throw new ArgumentNullException("moduleData is null");
                         ((Form)extenceInstance).ShowDialog();
