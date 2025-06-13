@@ -81,7 +81,6 @@ namespace HIS.Desktop.Plugins.TransactionRepay
                     this.currentHisPatientTypeAlter = data.PatientTypeAlter;
                 }
                 this.currentModule = module;
-                this.Size = new Size(896, 175);
                 try
                 {
                     string iconPath = System.IO.Path.Combine(System.Windows.Forms.Application.StartupPath, System.Configuration.ConfigurationSettings.AppSettings["Inventec.Desktop.Icon"]);
@@ -1995,10 +1994,10 @@ namespace HIS.Desktop.Plugins.TransactionRepay
                 WaitingManager.Hide();
                 ((Form)extenceInstance).ShowDialog();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-
-                throw;
+                WaitingManager.Hide();
+                Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
     }
