@@ -16,6 +16,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 using DevExpress.XtraBars;
+using EMR_MAIN.ChucNangKhac;
 using HIS.Desktop.Common;
 using HIS.Desktop.LocalStorage.BackendData;
 using HIS.Desktop.Plugins.Library.FormMedicalRecord;
@@ -136,7 +137,6 @@ namespace HIS.Desktop.Plugins.TreatmentList
             HoSoGiayToDinhKem,
             ChiTietBenhAn,
             ThongTinDichTe,
-            ThongTinThuHuong,
             InDonThuoc,
             ChanDoanTuVong,
             InDonThuocPTTT,
@@ -145,6 +145,7 @@ namespace HIS.Desktop.Plugins.TreatmentList
             HivTreatment,
             MedicalAssessment,
             TuberclusisTreatment,
+            BeneficiaryInfo,
             AiMedicalAnalysis,
             AIViewChatUrlFormat
 
@@ -241,17 +242,10 @@ namespace HIS.Desktop.Plugins.TreatmentList
                 subBenhNhan.AddItem(bbtnEpidemiologyInfo);
                 // Thông tin thụ hưởng
                 BarButtonItem bbtnBeneficiaryInfo = new BarButtonItem(this._BarManager, "Thông tin thụ hưởng", 1);
-                bbtnBeneficiaryInfo.Tag = ItemType.ThongTinThuHuong;
+                bbtnBeneficiaryInfo.Tag = ItemType.BeneficiaryInfo;
                 bbtnBeneficiaryInfo.ItemClick += new ItemClickEventHandler(this._MouseRightClick);
                 subBenhNhan.AddItem(bbtnBeneficiaryInfo);                
-                //Phân tích hình ảnh y khoa AI
-                if (!string.IsNullOrEmpty(HisConfigCFG.AIConnectionInfo))
-                {
-                    BarButtonItem bbtnAiMedicalAnalysis = new BarButtonItem(this._BarManager, "Phân tích hình ảnh y khoa AI", 1);
-                    bbtnAiMedicalAnalysis.Tag = ItemType.AiMedicalAnalysis;
-                    bbtnAiMedicalAnalysis.ItemClick += new ItemClickEventHandler(this._MouseRightClick);
-                    subBenhNhan.AddItem(bbtnAiMedicalAnalysis);                    
-                }
+                
                 this._Menu.AddItems(new BarItem[] { subBenhNhan });
 
                 BarSubItem subCongKhai = new BarSubItem(this._BarManager, "Công khai thuốc, dịch vụ", 2);
@@ -413,10 +407,13 @@ namespace HIS.Desktop.Plugins.TreatmentList
                 subDieuTri.AddItem(bbtnTracking);
 
                 //Xem lịch sử hỏi bệnh
-                BarButtonItem bbtnAIViewChatUrlFormat = new BarButtonItem(this._BarManager, "Xem lịch sử hỏi bệnh", 0);
-                bbtnAIViewChatUrlFormat.Tag = ItemType.AIViewChatUrlFormat;
-                bbtnAIViewChatUrlFormat.ItemClick += new ItemClickEventHandler(this._MouseRightClick);
-                subDieuTri.AddItem(bbtnAIViewChatUrlFormat);
+                if(!string.IsNullOrWhiteSpace(HisConfigCFG.AIViewChatUrlFormat) && (!string.IsNullOrWhiteSpace(_TreatmentPoppupPrint.PERSON_CODE) || !string.IsNullOrWhiteSpace(_TreatmentPoppupPrint.TDL_PATIENT_CCCD_NUMBER)))
+                {
+                    BarButtonItem bbtnAIViewChatUrlFormat = new BarButtonItem(this._BarManager, "Xem lịch sử hỏi bệnh", 0);
+                    bbtnAIViewChatUrlFormat.Tag = ItemType.AIViewChatUrlFormat;
+                    bbtnAIViewChatUrlFormat.ItemClick += new ItemClickEventHandler(this._MouseRightClick);
+                    subDieuTri.AddItem(bbtnAIViewChatUrlFormat);
+                }               
 
                 this._Menu.AddItems(new BarItem[] { subDieuTri });
 
@@ -502,12 +499,16 @@ namespace HIS.Desktop.Plugins.TreatmentList
                 itemBenhAnNgoaiTruGlaucoma.Tag = ItemType.BenhAnNgoaiTruGlaucoma;
                 itemBenhAnNgoaiTruGlaucoma.ItemClick += new ItemClickEventHandler(_MouseRightClick);
                 subBenhAn.AddItem(itemBenhAnNgoaiTruGlaucoma);
-                
-                
-                
 
-                
-                
+                //Phân tích hình ảnh y khoa AI
+                if (!string.IsNullOrEmpty(HisConfigCFG.AIConnectionInfo))
+                {
+                    BarButtonItem bbtnAiMedicalAnalysis = new BarButtonItem(_BarManager, "Phân tích hình ảnh y khoa AI", 9);
+                    bbtnAiMedicalAnalysis.Tag = ItemType.AiMedicalAnalysis;
+                    bbtnAiMedicalAnalysis.ItemClick += new ItemClickEventHandler(this._MouseRightClick);
+                    subBenhAn.AddItem(bbtnAiMedicalAnalysis);
+                }
+
                 if (_TreatmentPoppupPrint.TREATMENT_END_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_END_TYPE.ID__XINRAVIEN && _TreatmentPoppupPrint.TREATMENT_RESULT_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_RESULT.ID__NANG)
                 {
                     //Phiếu tóm tắt thông tin bệnh nặng xin về

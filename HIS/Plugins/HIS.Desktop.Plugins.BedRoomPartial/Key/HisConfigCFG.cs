@@ -29,6 +29,15 @@ namespace HIS.Desktop.Plugins.BedRoomPartial.Key
     class HisConfigCFG
     {
         private const string IS_ShowResultWhenReqComplete = "HIS.Desktop.Plugins.ContentSubclinical.ShowResultWhenReqComplete";
+        private const string AI_ConnectionInfo = "HIS.Desktop.AI.ConnectionInfo";
+        internal static string AIConnectionInfo
+        {
+            get
+            {
+                var AIConec = HisConfigs.Get<string>(AI_ConnectionInfo);
+                return AIConec;
+            }
+        }
         internal static string IsShowResultWhenReqComplete
         {
             get
