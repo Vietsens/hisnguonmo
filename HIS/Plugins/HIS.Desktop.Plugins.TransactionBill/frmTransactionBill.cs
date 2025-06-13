@@ -153,6 +153,7 @@ namespace HIS.Desktop.Plugins.TransactionBill
         private List<V_HIS_TRANSACTION> lstTranPrint { get; set; }
         private List<HIS_SESE_DEPO_REPAY> lstSeseRepayPrint { get; set; }
         private List<HIS_SERE_SERV_DEPOSIT> listSereDepoPrint { get; set; }
+        private V_HIS_PATIENT_BANK_ACCOUNT repayPatientBankAccount { get; set; }
         public frmTransactionBill(Inventec.Desktop.Common.Modules.Module module, V_HIS_TREATMENT_FEE data, List<V_HIS_SERE_SERV_5> _ListSereServ, V_HIS_PATIENT_TYPE_ALTER patientTypeAlter, bool? isDirectlyBilling, V_HIS_TRANSACTION tran)
             : base(module)
         {
@@ -1855,13 +1856,14 @@ namespace HIS.Desktop.Plugins.TransactionBill
                 }
 
                 lblRepayAmount.Text = "0";
+                lblPatientBankAccount.Text = "";
                 RepayAmount = 0;
                 if (chkCoKetChuyen.CheckState == CheckState.Unchecked)
                 {
                     canthuAmount = (totalPatientPrice - totalFund - this.totalDiscount) - SoTienChuyenKhoan;
                     lblReceiveAmount.Text = Inventec.Common.Number.Convert.NumberToString(((totalPatientPrice - totalFund - this.totalDiscount - SoTienChuyenKhoan)), ConfigApplications.NumberSeperator);
                     RepayAmount = totalHienDu;
-                    lblRepayAmount.Text = Inventec.Common.Number.Convert.NumberToString(totalHienDu, ConfigApplications.NumberSeperator);
+                    lblRepayAmount.Text = Inventec.Common.Number.Convert.NumberToString(RepayAmount.Value, ConfigApplications.NumberSeperator);
                 }
                 else
                 {
@@ -1878,7 +1880,7 @@ namespace HIS.Desktop.Plugins.TransactionBill
                     if (totalHienDu > totalPatientPrice)
                     {
                         RepayAmount = totalHienDu - totalPatientPrice;
-                        lblRepayAmount.Text = Inventec.Common.Number.Convert.NumberToString(totalHienDu - totalPatientPrice, ConfigApplications.NumberSeperator);
+                        lblRepayAmount.Text = Inventec.Common.Number.Convert.NumberToString(RepayAmount.Value, ConfigApplications.NumberSeperator);
                     }
                 }
 
@@ -1886,6 +1888,14 @@ namespace HIS.Desktop.Plugins.TransactionBill
                 if (spinAmountBNDua.EditValue != null)
                 {
                     lblAmountTraBN.Text = Inventec.Common.Number.Convert.NumberToStringRoundAuto(spinAmountBNDua.Value - canthuAmount, ConfigApplications.NumberSeperator);
+                }
+                if (RepayAmount.HasValue && RepayAmount.Value > 0)
+                {
+                    btnPatientBankAccount.Enabled = true;
+                }
+                else
+                {
+                    btnPatientBankAccount.Enabled = false;
                 }
             }
             catch (Exception ex)
@@ -3982,5 +3992,6 @@ namespace HIS.Desktop.Plugins.TransactionBill
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
+
     }
 }

@@ -384,5 +384,27 @@ namespace HIS.Desktop.Plugins.TransactionBill
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
+
+        // ...
+
+        private void RefreshPatientBankAccount(object data)
+        {
+            try
+            {
+                if (data is V_HIS_PATIENT_BANK_ACCOUNT dt)
+                {
+                    this.repayPatientBankAccount = dt;
+                    //Hiển thị thông tin người thụ hưởng theo định dạng<Tên ngân hàng>-< Số tài khoản> -< Người thụ hưởng>< Quan hệ nếu có đặt trong ngoặc đơn >
+                    this.lblPatientBankAccount.Text = dt.PAYEE_BANK_NAME
+                        + " - " + dt.PAYEE_ACCOUNT_NUMBER
+                        + " - " + dt.PAYEE_NAME
+                        + (string.IsNullOrEmpty(dt.RELATION_NAME) ? "" : dt.RELATION_NAME);
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
     }
 }
