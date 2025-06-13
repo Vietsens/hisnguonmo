@@ -17,6 +17,7 @@
  */
 using DevExpress.Data;
 using DevExpress.Pdf.Common;
+using DevExpress.XtraEditors;
 using DevExpress.XtraGrid.Views.Grid;
 using HIS.Desktop.LocalStorage.LocalData;
 using HIS.Desktop.Plugins.SyncHsskSyt.ADO;
@@ -217,6 +218,7 @@ namespace HIS.Desktop.Plugins.SyncHsskSyt
                 {
                     lblNextCheckin.Text = time;
                 }
+                Application.DoEvents();
             }
             catch (Exception ex)
             {
@@ -353,8 +355,10 @@ namespace HIS.Desktop.Plugins.SyncHsskSyt
                         lstFiles130.Items.Add(newItem.FILE_NAME); // Thêm tên tệp vào ListBox
                         //lstFiles.Items.Add(Path.GetFileName(file));
                     }
-
-                    MessageManager.ShowAlert(this.ParentForm, "", "Đã tải lại tệp XML 130 thành công.");
+                    if (e != null)
+                    {
+                        MessageManager.ShowAlert(this.ParentForm, "", "Đã tải lại tệp XML 130 thành công.");
+                    }
                 }
                 else
                 {
@@ -463,7 +467,10 @@ namespace HIS.Desktop.Plugins.SyncHsskSyt
                     }
                     if (!File.Exists(fullname))
                     {
-                        MessageManager.ShowAlert(this.ParentForm, "", "Tệp tin: " + fullname + " không tồn tại, vui lòng kiểm tra lại.");
+                        if (e != null)
+                        {
+                            MessageManager.ShowAlert(this.ParentForm, "", "Tệp tin: " + fullname + " không tồn tại, vui lòng kiểm tra lại.");
+                        }
                     }
                     else
                     {
@@ -515,7 +522,6 @@ namespace HIS.Desktop.Plugins.SyncHsskSyt
                             UpdateFileStatusXML130(fullname, 2);
                         }
                     }
-                    Application.DoEvents();
                 }
 
                 FillDataToControlXML130();
@@ -540,7 +546,7 @@ namespace HIS.Desktop.Plugins.SyncHsskSyt
                     }
                     if (e.Column.FieldName == "STATUS_130")
                     {
-                        var documents = fileNamesXMLCheckin;
+                        var documents = fileNamesXML130;
                         if (documents != null && documents.Count > 0)
                         {
                             for (int i = 0; i < documents.Count; i++)
@@ -651,8 +657,10 @@ namespace HIS.Desktop.Plugins.SyncHsskSyt
                         fileNamesXML4210.Add(newItem);
                         lstFiles4210.Items.Add(newItem.FILE_NAME); // Thêm tên tệp vào ListBox
                     }
-
-                    MessageManager.ShowAlert(this.ParentForm, "", "Đã tải lại tệp XML 4210 thành công.");
+                    if (e != null)
+                    {
+                        MessageManager.ShowAlert(this.ParentForm, "", "Đã tải lại tệp XML 4210 thành công.");
+                    }
                 }
                 else
                 {
@@ -751,7 +759,10 @@ namespace HIS.Desktop.Plugins.SyncHsskSyt
                     }
                     if (!File.Exists(fullname))
                     {
-                        MessageManager.ShowAlert(this.ParentForm, "", "Tệp tin: " + fullname +" không tồn tại, vui lòng kiểm tra lại." );
+                        if (e != null)
+                        {
+                            MessageManager.ShowAlert(this.ParentForm, "", "Tệp tin: " + fullname + " không tồn tại, vui lòng kiểm tra lại.");
+                        }
                     }
                     else
                     {
@@ -803,7 +814,6 @@ namespace HIS.Desktop.Plugins.SyncHsskSyt
                             UpdateFileStatusXML4210(fullname, 2);
                         }
                     }
-                    Application.DoEvents();
                 }
                 FillDataToControl();
                 TimerReset(sender, false);
@@ -1416,7 +1426,10 @@ namespace HIS.Desktop.Plugins.SyncHsskSyt
                         lstFilesCheckin.Items.Add(newItem.FILE_NAME);
                         //lstFiles.Items.Add(Path.GetFileName(file));
                     }
-                    MessageManager.ShowAlert(this.ParentForm, "", "Đã tải lại tệp XML Checkin thành công.");
+                    if (e != null)
+                    {
+                        MessageManager.ShowAlert(this.ParentForm, "", "Đã tải lại tệp XML Checkin thành công.");
+                    }
                 }
                 else
                 {
@@ -1488,7 +1501,10 @@ namespace HIS.Desktop.Plugins.SyncHsskSyt
                     }
                     if (!File.Exists(fullname))
                     {
-                        MessageManager.ShowAlert(this.ParentForm, "", "Tệp tin: " + fullname + " không tồn tại, vui lòng kiểm tra lại.");
+                        if (e != null)
+                        {
+                            MessageManager.ShowAlert(this.ParentForm, "", "Tệp tin: " + fullname + " không tồn tại, vui lòng kiểm tra lại.");
+                        }
                     }
                     else
                     {
@@ -1540,7 +1556,6 @@ namespace HIS.Desktop.Plugins.SyncHsskSyt
                             UpdateFileStatusXMLCheckin(fullname, 2);
                         }
                     }
-                    Application.DoEvents();
                 }
                 FillDataToControlXMLCheckin();
                 TimerReset(sender, false);
@@ -1633,125 +1648,76 @@ namespace HIS.Desktop.Plugins.SyncHsskSyt
 
         private void chkAutoSend4210_CheckedChanged(object sender, EventArgs e)
         {
-            if (chkAutoSend4210.Checked)
-            {
-                var executionCycleTime = (double)spinExecutionCycleTime4210.Value;
-                if (string.IsNullOrEmpty(this.txtFilePath4210.Text))
-                {
-                    MessageBox.Show("Vui lòng chọn thư mục");
-                    chkAutoSend4210.Checked = false;
-                    return;
-                }
-                if (executionCycleTime <= 0)
-                {
-                    MessageBox.Show("Vui lòng nhập chu kỳ thực hiện lớn hơn 0.");
-                    chkAutoSend4210.Checked = false;
-                    return;
-                }
-                if (MessageBox.Show("Hệ thống sẽ tự động gửi file XML 4210 lần đầu và lần tiếp theo theo chu kỳ " + executionCycleTime + " phút", "", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
-                {
-                    timer4210.Interval = (int)TimeSpan.FromMinutes(executionCycleTime).TotalMilliseconds;
-                    timer4210_Tick(timer4210, null);
-                    refreshNextTimer(timer4210);
-                    timer4210.Start();
-                    btnChooseFile4210.Enabled = false;
-                    spinExecutionCycleTime4210.Enabled = false;
-                }
-                else
-                {
-                    chkAutoSend4210.Checked = false;
-                    return;
-                }
-            }
-            else
-            {
-                lblNext4210.Text = "";
-                timer4210.Stop();
-                btnChooseFile4210.Enabled = true;
-                spinExecutionCycleTime4210.Enabled = true;
-            }
+            HandleAutoSendCheckedChanged(chkAutoSend4210, txtFilePath4210, spinExecutionCycleTime4210, timer4210, lblNext4210, btnChooseFile4210, btnSend4210);
         }
 
         private void chkAutoSend130_CheckedChanged(object sender, EventArgs e)
         {
-            if (chkAutoSend130.Checked)
-            {
-                if (string.IsNullOrEmpty(this.txtFilePath130.Text))
-                {
-                    MessageBox.Show("Vui lòng chọn thư mục");
-                    chkAutoSend130.Checked = false;
-                    return;
-                }
-                var executionCycleTime = (double)spinExecutionCycleTime130.Value;
-                if (executionCycleTime <= 0)
-                {
-                    MessageBox.Show("Vui lòng nhập chu kỳ thực hiện lớn hơn 0.");
-                    chkAutoSend130.Checked = false;
-                    return;
-                }
-                if (MessageBox.Show("Hệ thống sẽ tự động gửi file XML 130 lần đầu và lần tiếp theo theo chu kỳ " + executionCycleTime + " phút", "", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
-                {
-                    timer130.Interval = (int)TimeSpan.FromMinutes(executionCycleTime).TotalMilliseconds;
-                    timer130_Tick(timer130, null);
-                    refreshNextTimer(timer130);
-                    timer130.Start();
-                    btnChooseFile130.Enabled = false;
-                    spinExecutionCycleTime130.Enabled = false;
-                }
-                else
-                {
-                    chkAutoSend130.Checked = false;
-                    return;
-                }
-            }
-            else
-            {
-                lblNext130.Text = "";
-                timer130.Stop();
-                btnChooseFile130.Enabled = true;
-                spinExecutionCycleTime130.Enabled = true;
-            }
-
+            HandleAutoSendCheckedChanged(chkAutoSend130, txtFilePath130, spinExecutionCycleTime130, timer130, lblNext130, btnChooseFile130, btnSend130);
         }
 
         private void chkAutoSendCheckin_CheckedChanged(object sender, EventArgs e)
         {
-            if (chkAutoSendCheckin.Checked)
+            HandleAutoSendCheckedChanged(chkAutoSendCheckin, txtFilePathCheckin, spinExecutionCycleTimeCheckin, timerCheckin, lblNextCheckin, btnChooseFileCheckin, btnSendCheckin);
+        }
+        private void HandleAutoSendCheckedChanged(
+    CheckEdit chkAutoSend,
+    TextEdit txtFilePath,
+    SpinEdit spinExecutionCycleTime,
+    Timer timer,
+    Label lblNext,
+    ButtonEdit btnChooseFile,
+    SimpleButton btnStart)
+        {
+            if (chkAutoSend.Checked)
             {
-                if (string.IsNullOrEmpty(this.txtFilePathCheckin.Text))
+                if (string.IsNullOrEmpty(txtFilePath.Text))
                 {
                     MessageBox.Show("Vui lòng chọn thư mục");
-                    chkAutoSendCheckin.Checked = false;
+                    chkAutoSend.Checked = false;
                     return;
                 }
-                var executionCycleTime = (double)spinExecutionCycleTimeCheckin.Value;
+                var executionCycleTime = (double)spinExecutionCycleTime.Value;
                 if (executionCycleTime <= 0)
                 {
                     MessageBox.Show("Vui lòng nhập chu kỳ thực hiện lớn hơn 0.");
-                    chkAutoSendCheckin.Checked = false;
+                    chkAutoSend.Checked = false;
                     return;
                 }
-                if (MessageBox.Show("Hệ thống sẽ tự động gửi file XML Checkin lần đầu và lần tiếp theo theo chu kỳ " + executionCycleTime + " phút", "", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                if (MessageBox.Show(
+                    $"Hệ thống sẽ tự động gửi file lần đầu và lần tiếp theo theo chu kỳ {executionCycleTime} phút",
+                    "", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
                 {
-                    timerCheckin.Interval = (int)TimeSpan.FromMinutes(executionCycleTime).TotalMilliseconds;
-                    timerCheckin_Tick(timerCheckin, null);
-                    refreshNextTimer(timerCheckin);
-                    timerCheckin.Start();
-                    btnChooseFileCheckin.Enabled = false;
-                    spinExecutionCycleTimeCheckin.Enabled = false;
+                    timer.Interval = (int)TimeSpan.FromMinutes(executionCycleTime).TotalMilliseconds;
+                    if (chkAutoSend == chkAutoSend4210)
+                    {
+                        timer4210_Tick(timer, null);
+                    }
+                    else if (chkAutoSend == chkAutoSend130)
+                    {
+                        timer130_Tick(timer, null);
+                    }
+                    else if (chkAutoSend == chkAutoSendCheckin)
+                    {
+                        timerCheckin_Tick(timer, null);
+                    }
+                    refreshNextTimer(timer);
+                    timer.Start();
+                    btnChooseFile.Enabled = false;
+                    spinExecutionCycleTime.Enabled = false;
                 }
                 else
                 {
-                    chkAutoSendCheckin.Checked = false;
+                    chkAutoSend.Checked = false;
                     return;
                 }
             }
             else
             {
-                lblNextCheckin.Text = "";
-                timerCheckin.Stop();
-                btnChooseFileCheckin.Enabled = true;
-                spinExecutionCycleTimeCheckin.Enabled = true;
+                lblNext.Text = "";
+                timer.Stop();
+                btnChooseFile.Enabled = true;
+                spinExecutionCycleTime.Enabled = true;
             }
         }
     }
