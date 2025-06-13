@@ -861,7 +861,6 @@ namespace HIS.Desktop.Plugins.SyncHsskSyt
                                 }
                             }
                         }
-
                     }
                 }
             }
@@ -957,6 +956,7 @@ namespace HIS.Desktop.Plugins.SyncHsskSyt
             {
                 txtFilePath4210.Text = directoryPathXML4210;
                 //CredirectoryPathXML4210 = directoryPathXML4210;
+                gridView4210.GridControl.DataSource = null;
                 gridView4210.GridControl.DataSource = fileNamesXML4210;
                 gridView4210.GridControl.RefreshDataSource();
             }
@@ -971,6 +971,7 @@ namespace HIS.Desktop.Plugins.SyncHsskSyt
             {
                 txtFilePath130.Text = directoryPathXML130;
                 //CredirectoryPathXML130 = directoryPathXML130;
+                gridView130.GridControl.DataSource = null;
                 gridView130.GridControl.DataSource = fileNamesXML130;
                 gridView130.GridControl.RefreshDataSource();
             }
@@ -984,6 +985,7 @@ namespace HIS.Desktop.Plugins.SyncHsskSyt
             try
             {
                 txtFilePathCheckin.Text = directoryPathXMLCheckin;
+                gridViewCheckin.GridControl.DataSource = null;
                 gridViewCheckin.GridControl.DataSource = fileNamesXMLCheckin;
                 gridViewCheckin.GridControl.RefreshDataSource();
             }
