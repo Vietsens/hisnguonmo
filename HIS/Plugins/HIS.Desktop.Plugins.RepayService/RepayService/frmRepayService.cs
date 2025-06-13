@@ -235,7 +235,7 @@ namespace HIS.Desktop.Plugins.RepayService.RepayService
                     if (bankAccounts != null && bankAccounts.Count > 0)
                     {
                         // Get the default or first account
-                        defaultAccount = bankAccounts.FirstOrDefault() ?? bankAccounts.FirstOrDefault();
+                        defaultAccount = bankAccounts.FirstOrDefault();
 
                         SelectBankAccount(defaultAccount);
                     }
