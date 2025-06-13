@@ -398,7 +398,7 @@ namespace HIS.Desktop.Plugins.TransactionBill
                     this.lblPatientBankAccount.Text = dt.PAYEE_BANK_NAME
                         + " - " + dt.PAYEE_ACCOUNT_NUMBER
                         + " - " + dt.PAYEE_NAME
-                        + (string.IsNullOrEmpty(dt.RELATION_NAME) ? "" : dt.RELATION_NAME);
+                        + (string.IsNullOrEmpty(dt.RELATION_NAME) ? "" : " ("+dt.RELATION_NAME+")");
                 }
             }
             catch (Exception ex)
