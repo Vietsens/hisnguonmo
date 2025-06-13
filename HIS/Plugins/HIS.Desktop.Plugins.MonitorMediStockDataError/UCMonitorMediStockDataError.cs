@@ -391,6 +391,7 @@ namespace HIS.Desktop.Plugins.MonitorMediStockDataError
                 {
                     BackendDataWorker.Reset<HIS_CONFIG>();
                     Inventec.Common.LocalStorage.SdaConfig.ConfigLoader.Refresh();
+                    HisConfig.LoadConfig();
                     rs = true;
                 }
                 MessageManager.Show(param, rs);

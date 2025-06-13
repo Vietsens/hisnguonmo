@@ -267,6 +267,9 @@
 	<data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__MOUSE_RIGHT__DU_TRU_THUOC_THEO_BENH_NHAN" xml:space="preserve">
     <value>Dự trù thuốc theo bệnh nhân</value>
   </data>
+	<data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__MOUSE_RIGHT__NGOAI_KHAM_CHUA_BENH" xml:space="preserve">
+    <value>Ngoại khám chữa bệnh</value>
+  </data>
 	<data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__MOUSE_RIGHT__GHEP_MA_BENH_NHAN" xml:space="preserve">
     <value>Ghép mã bệnh nhân</value>
   </data>
