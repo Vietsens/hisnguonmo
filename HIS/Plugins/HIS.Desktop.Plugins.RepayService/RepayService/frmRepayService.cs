@@ -83,6 +83,7 @@ namespace HIS.Desktop.Plugins.RepayService.RepayService
         internal Inventec.Desktop.Common.Modules.Module moduleData;
 
         internal long? _patientBankAccountId;
+        internal object defaultAccount;
 
         SendResultToOtherForm sendResultToOtherForm;
         #endregion
@@ -209,8 +210,6 @@ namespace HIS.Desktop.Plugins.RepayService.RepayService
                 timerInitForm.Start();
                 Inventec.Common.Logging.LogSystem.Debug("frmRepayService_Load. 4");
 
-
-
                 InitControlState();
             }
             catch (Exception ex)
@@ -236,18 +235,9 @@ namespace HIS.Desktop.Plugins.RepayService.RepayService
                     if (bankAccounts != null && bankAccounts.Count > 0)
                     {
                         // Get the default or first account
-                        var defaultAccount = bankAccounts.FirstOrDefault() ?? bankAccounts.FirstOrDefault();
+                        defaultAccount = bankAccounts.FirstOrDefault() ?? bankAccounts.FirstOrDefault();
 
-                        if (defaultAccount != null)
-                        {
-                            _patientBankAccountId = defaultAccount.ID;
-
-                            // Format the display string
-                            string relationship = !string.IsNullOrEmpty(defaultAccount.RELATION_NAME)
-                                ? defaultAccount.RELATION_NAME.ToString() : "";
-                            labelAccountInfo.Text = defaultAccount.HIS_BANK.ToString() + " - " + defaultAccount.PAYEE_ACCOUNT_NUMBER.ToString() + " - " +
-                                defaultAccount.PAYEE_NAME.ToString() + "(" + relationship.ToString() + ")";
-                        }
+                        SelectBankAccount(defaultAccount);
                     }
                 }
             }
@@ -2270,6 +2260,7 @@ namespace HIS.Desktop.Plugins.RepayService.RepayService
                     {
                         _patientBankAccountId = null;
                         labelAccountInfo.Text = "";
+                        btnBankAccount.Enabled = true;
                     }
                 }
                 else
@@ -2294,7 +2285,7 @@ namespace HIS.Desktop.Plugins.RepayService.RepayService
                 List<object> listArgs = new List<object>();
                 AutoMapper.Mapper.CreateMap<V_HIS_TREATMENT_FEE, HIS_TREATMENT>();
                 listArgs.Add(AutoMapper.Mapper.Map<HIS_TREATMENT>(this.treatment));
-                listArgs.Add((DelegateSelectData)SelectBankAccount);
+                listArgs.Add((DelegateSelectData)defaultAccount);
                 listArgs.Add(PluginInstance.GetModuleWithWorkingRoom(moduleData, this.moduleData.RoomId, this.moduleData.RoomTypeId));
                 var extenceInstance = PluginInstance.GetPluginInstance(PluginInstance.GetModuleWithWorkingRoom(moduleData, this.moduleData.RoomId, this.moduleData.RoomTypeId), listArgs);
                 if (extenceInstance == null) throw new ArgumentNullException("moduleData is null");
@@ -2318,7 +2309,7 @@ namespace HIS.Desktop.Plugins.RepayService.RepayService
                     string relationship = !string.IsNullOrEmpty(bankAccount.RELATION_NAME)
                                 ? bankAccount.RELATION_NAME.ToString() : "";
                     labelAccountInfo.Text = bankAccount.HIS_BANK.ToString() + " - " + bankAccount.PAYEE_ACCOUNT_NUMBER.ToString() + " - " +
-                        bankAccount.PAYEE_NAME.ToString() + "(" + relationship.ToString() + ")";
+                        bankAccount.PAYEE_NAME.ToString() + "(" + relationship + ")";
                 }
             }
             catch (Exception ex)
