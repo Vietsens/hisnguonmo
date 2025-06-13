@@ -92,7 +92,7 @@ namespace HIS.Desktop.Plugins.SyncHsskSyt
         {
             try
             {
-                string iconPath = System.IO.Path.Combine(HIS.Desktop.LocalStorage.Location.ApplicationStoreLocation.ApplicationStartupPath, System.Configuration.ConfigurationSettings.AppSettings["Inventec.Desktop.Icon"]);
+                //string iconPath = System.IO.Path.Combine(HIS.Desktop.LocalStorage.Location.ApplicationStoreLocation.ApplicationStartupPath, System.Configuration.ConfigurationSettings.AppSettings["Inventec.Desktop.Icon"]);
                 //this.Icon = Icon.ExtractAssociatedIcon(iconPath);
                 checkConfig();
                 WaitingManager.Show();
