@@ -648,8 +648,12 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
                 if (moduleData == null) Inventec.Common.Logging.LogSystem.Error("khong tim thay moduleLink = HIS.Desktop.Plugins.AnalyzeMedicalImage");
                 if (moduleData.IsPlugin && moduleData.ExtensionInfo != null)
                 {
+                    AnalyzeImageADO treatmentAiIdAdo = new AnalyzeImageADO
+                    {
+                        TreatmentId = serviceReq.TREATMENT_ID,
+                    };
                     List<object> listArgs = new List<object>();
-                    listArgs.Add(serviceReq.TREATMENT_ID);
+                    listArgs.Add(treatmentAiIdAdo);
                     var extenceInstance = PluginInstance.GetPluginInstance(HIS.Desktop.Utility.PluginInstance.GetModuleWithWorkingRoom(moduleData, roomId, roomTypeId), listArgs);
                     if (extenceInstance == null) throw new ArgumentNullException("moduleData is null");
                     ((Form)extenceInstance).Show();
@@ -660,6 +664,7 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
+
 
         private void SuaYeuCauKham(L_HIS_SERVICE_REQ serviceReq)
         {
@@ -683,7 +688,6 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
             }
 
         }
-
         private void SummaryInforTreatmentRecordsClick(L_HIS_SERVICE_REQ serviceReq)
         {
             try
