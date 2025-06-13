@@ -15,59 +15,73 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+using DevExpress.Data;
+using DevExpress.Pdf.Common;
+using DevExpress.XtraGrid.Views.Grid;
+using HIS.Desktop.LocalStorage.LocalData;
 using HIS.Desktop.Plugins.SyncHsskSyt.ADO;
+using Inventec.Common.Logging;
+using Inventec.Core;
+using Inventec.Desktop.Common.LanguageManager;
+using Inventec.Desktop.Common.Message;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Net;
+using System.Net.Http;
+using System.Net.NetworkInformation;
+using System.Resources;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using System.Net.Http;
-using System.IO;
-using DevExpress.XtraGrid.Views.Grid;
-using DevExpress.Data;
-using System.Net.NetworkInformation;
-using System.Security.Cryptography;
-using Inventec.Common.Logging;
-using System.Resources;
-using Inventec.Desktop.Common.LanguageManager;
-using Inventec.Desktop.Common.Message;
-using HIS.Desktop.LocalStorage.LocalData;
 namespace HIS.Desktop.Plugins.SyncHsskSyt
 {
-    public partial class frmSyncHsskSyt : DevExpress.XtraEditors.XtraForm
+    public partial class frmSyncHsskSyt : HIS.Desktop.Utility.UserControlBase
     {
         public frmSyncHsskSyt(Inventec.Desktop.Common.Modules.Module moduleData)
         {
             InitializeComponent();
-            this.StartPosition = FormStartPosition.CenterScreen;
-            gridView4210.OptionsSelection.MultiSelect = true;
-            gridView4210.OptionsSelection.MultiSelectMode = GridMultiSelectMode.CheckBoxRowSelect;
-            gridView130.OptionsSelection.MultiSelect = true;
-            gridView130.OptionsSelection.MultiSelectMode = GridMultiSelectMode.CheckBoxRowSelect;
+            //this.StartPosition = FormStartPosition.CenterScreen;
+            //gridView4210.OptionsSelection.MultiSelect = true;
+            //gridView4210.OptionsSelection.MultiSelectMode = GridMultiSelectMode.CheckBoxRowSelect;
+            //gridView130.OptionsSelection.MultiSelect = true;
+            //gridView130.OptionsSelection.MultiSelectMode = GridMultiSelectMode.CheckBoxRowSelect;
+            lblNext4210.Text = "";
+            lblNext130.Text = "";
+            lblNextCheckin.Text = "";
         }
         #region Variables and Constants
         public static string keyFilePathHistory4210 ;
         public static string keyFilePathHistory130;
+        public static string keyFilePathHistoryCheckin;
         static string user = "";
         static string pass = "";
         static string urlLogin = "";
         static string urlXML4210 = "";
         static string urlXML130 = "";
+        static string urlXMLCheckin = "";
         string authen = "";
         string directoryPathXML4210 = "";
         static string CredirectoryPathXML4210;
         string directoryPathXML130 = "" ;
+        string directoryPathXMLCheckin = "" ;
         static string CredirectoryPathXML130;
+        static string CredirectoryPathXMLCheckin;
         List<string> connectInfors = new List<string>();
-        private ListBox lstFiles = new ListBox();
+        //private ListBox lstFiles = new ListBox();
+        private ListBox lstFiles4210 = new ListBox();
+        private ListBox lstFiles130 = new ListBox();
+        private ListBox lstFilesCheckin = new ListBox();
         //bool success = false;
+        private List<FileItem> fileNamesXMLCheckin = new List<FileItem>();
         private List<FileItem> fileNamesXML130 = new List<FileItem>();
         private List<FileItem> fileNamesXML4210 = new List<FileItem>();
+        private List<FileItem> fileNamesXMLCheckinSend = new List<FileItem>();
         private List<FileItem> fileNamesXML130Send = new List<FileItem>();
         private List<FileItem> fileNamesXML4210Send = new List<FileItem>();
         bool XML130;
@@ -79,12 +93,14 @@ namespace HIS.Desktop.Plugins.SyncHsskSyt
             try
             {
                 string iconPath = System.IO.Path.Combine(HIS.Desktop.LocalStorage.Location.ApplicationStoreLocation.ApplicationStartupPath, System.Configuration.ConfigurationSettings.AppSettings["Inventec.Desktop.Icon"]);
-                this.Icon = Icon.ExtractAssociatedIcon(iconPath);
+                //this.Icon = Icon.ExtractAssociatedIcon(iconPath);
                 checkConfig();
                 WaitingManager.Show();
                 authen = await Login(user, pass).ConfigureAwait(false);
                 checkLogin(authen);
                 DefaultFilePath();
+                //
+                //
                 WaitingManager.Hide();
             }
             catch (Exception ex)
@@ -92,7 +108,171 @@ namespace HIS.Desktop.Plugins.SyncHsskSyt
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
+        bool isRunning4210 = false;
+        bool isRunning130 = false;
+        bool isRunningCheckin = false;
 
+        private void timer4210_Tick(object sender, EventArgs e)
+        {
+            try
+            {
+                timer4210.Stop();
+                if (isRunning4210) return;
+                isRunning4210 = true;
+                lblNext4210.Text = "Đang chạy";
+                Application.DoEvents();
+                btnReset4210_Click(null, null);
+                btnSend4210_Click(null, null);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+            finally
+            {
+                refreshNextTimer(sender);
+                timer4210.Start();
+                isRunning4210 = false;
+            }
+        }
+
+        private void timer130_Tick(object sender, EventArgs e)
+        {
+            try
+            {
+                timer130.Stop();
+                if (isRunning130) return;
+                isRunning130 = true;
+                lblNext130.Text = "Đang chạy";
+                Application.DoEvents();
+                btnReset130_Click(null, null);
+                btnSend130_Click(null, null);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+            finally
+            {
+                refreshNextTimer(sender);
+                timer130.Start();
+                isRunning130 = false;
+            }
+        }
+
+        private void timerCheckin_Tick(object sender, EventArgs e)
+        {
+            try
+            {
+                timerCheckin.Stop();
+                if (isRunningCheckin) return;
+                isRunningCheckin = true;
+                lblNextCheckin.Text = "Đang chạy";
+                Application.DoEvents();
+                btnResetCheckin_Click(null, null);
+                btnSendCheckin_Click(null, null);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+            finally
+            {
+                refreshNextTimer(sender);
+                timerCheckin.Start();
+                isRunningCheckin = false;
+            }
+        }
+        private void refreshNextTimer(object sender)
+        {
+            try
+            {
+                System.Windows.Forms.Timer timer = sender as System.Windows.Forms.Timer;
+                DateTime nextRun = DateTime.Now.AddMilliseconds(timer.Interval);
+                string time = "Lần chạy tiếp theo " + nextRun.ToString("HH:mm:ss");
+                if (timer == timer4210)
+                {
+                    lblNext4210.Text = time;
+                }
+                else if (timer == timer130)
+                {
+                    lblNext130.Text = time;
+                }
+                else if (timer == timerCheckin)
+                {
+                    lblNextCheckin.Text = time;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private bool TimerReset(object sender, bool setRunning)
+        {
+            if (sender != null) // nếu người dùng bấm gửi bằng tay
+            {
+                string xml = string.Empty;
+                if (sender == btnReset4210 || sender == btnSend4210)
+                {
+                    if (isRunning4210) // nếu đang chạy thì không cho phép gửi (Có thể là đang chạy tự động hoặc do bấm trước đó)
+                    {
+                        xml = "XML 4210";
+                    }
+                    else
+                    {
+                        isRunning4210 = setRunning;
+                        if (this.chkAutoSend4210.Checked)
+                        {
+                            refreshNextTimer(timer4210);
+                            timer4210.Stop();
+                            timer4210.Start();
+                        }
+                    }
+                }
+                else if (sender == btnReset130 || sender == btnSend130)
+                {
+                    if (isRunning130)
+                    {
+                        xml = "XML 130";
+                    }
+                    else
+                    {
+                        isRunning4210 = setRunning;
+                        if (this.chkAutoSend130.Checked)
+                        {
+                            refreshNextTimer(timer130);
+                            timer130.Stop();
+                            timer130.Start();
+                        }
+                    }
+                }
+                else if (sender == btnResetCheckin || sender == btnSendCheckin)
+                {
+                    if (isRunningCheckin)
+                    {
+                        xml = "XML Checkin";
+                    }
+                    else
+                    {
+                        isRunning4210 = setRunning;
+                        if (this.chkAutoSendCheckin.Checked)
+                        {
+                            refreshNextTimer(timerCheckin);
+                            timerCheckin.Stop();
+                            timerCheckin.Start();
+                        }
+                    }
+                }
+                if (xml != string.Empty)
+                {
+                    MessageManager.ShowAlert(this.ParentForm, "", "Đang gửi tệp " + xml + ". Bạn vui lòng chờ xong và thử lại!");
+                    return true;
+                }
+            }
+            return false;
+        }
         private void SetCaptionByLanguageKey()
         {
             try
@@ -134,7 +314,12 @@ namespace HIS.Desktop.Plugins.SyncHsskSyt
         {
             try
             {
-                lstFiles.Items.Clear();
+                if (TimerReset(sender, true))
+                {
+                    return;
+                }
+                lstFiles130.Items.Clear();
+                gridView130.ClearSelection();
                 WaitingManager.Show();
                 if (Directory.Exists(directoryPathXML130))
                 {
@@ -150,18 +335,19 @@ namespace HIS.Desktop.Plugins.SyncHsskSyt
                             FILE_NAME = file
                         };
                         fileNamesXML130.Add(newItem);
-                        lstFiles.Items.Add(newItem.FILE_NAME); // Thêm tên tệp vào ListBox
+                        lstFiles130.Items.Add(newItem.FILE_NAME); // Thêm tên tệp vào ListBox
                         //lstFiles.Items.Add(Path.GetFileName(file));
                     }
 
-                    MessageBox.Show("Đã tải lại tệp thành công.");
+                    MessageManager.ShowAlert(this.ParentForm, "", "Đã tải lại tệp XML 130 thành công.");
                 }
                 else
                 {
-                    MessageBox.Show("Thư mục không tồn tại.");
+                    MessageManager.ShowAlert(this.ParentForm, "", "Thư mục XML 130 không tồn tại.");
                 }
                 //directoryPathXML130 = "";
                 FillDataToControlXML130();
+                TimerReset(sender, false);
                 WaitingManager.Hide();
             }
             catch (Exception ex)
@@ -209,6 +395,10 @@ namespace HIS.Desktop.Plugins.SyncHsskSyt
         {
             try
             {
+                if (TimerReset(sender, true))
+                {
+                    return;
+                }
                 WaitingManager.Show();
                 string successFolderPath130 ;
                 string failFolderPath130;
@@ -221,6 +411,26 @@ namespace HIS.Desktop.Plugins.SyncHsskSyt
                 {
                     successFolderPath130 = Path.Combine(Environment.CurrentDirectory, "success");
                     failFolderPath130 = Path.Combine(Environment.CurrentDirectory, "fail");
+                }
+                if (sender == null)
+                {
+                    try
+                    {
+                        fileNamesXML130Send.Clear();
+                        int rowCount = gridView130.RowCount;
+                        for (int i = 0; i < rowCount; i++)
+                        {
+                            var fileItem = gridView130.GetRow(i) as FileItem;
+                            if (fileItem != null)
+                            {
+                                fileNamesXML130Send.Add(fileItem);
+                            }
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        Inventec.Common.Logging.LogSystem.Error(ex);
+                    }
                 }
                 foreach (var fileItem in fileNamesXML130Send)
                 {
@@ -238,7 +448,7 @@ namespace HIS.Desktop.Plugins.SyncHsskSyt
                     }
                     if (!File.Exists(fullname))
                     {
-                        MessageBox.Show("Tệp tin: " + fullname + " không tồn tại, vui lòng kiểm tra lại.");
+                        MessageManager.ShowAlert(this.ParentForm, "", "Tệp tin: " + fullname + " không tồn tại, vui lòng kiểm tra lại.");
                     }
                     else
                     {
@@ -290,9 +500,11 @@ namespace HIS.Desktop.Plugins.SyncHsskSyt
                             UpdateFileStatusXML130(fullname, 2);
                         }
                     }
+                    Application.DoEvents();
                 }
 
                 FillDataToControlXML130();
+                TimerReset(sender, false);
                 WaitingManager.Hide();
             }
             catch (Exception ex)
@@ -313,7 +525,7 @@ namespace HIS.Desktop.Plugins.SyncHsskSyt
                     }
                     if (e.Column.FieldName == "STATUS_130")
                     {
-                        var documents = fileNamesXML130;
+                        var documents = fileNamesXMLCheckin;
                         if (documents != null && documents.Count > 0)
                         {
                             for (int i = 0; i < documents.Count; i++)
@@ -351,7 +563,6 @@ namespace HIS.Desktop.Plugins.SyncHsskSyt
         {
             try
             {
-                XML130 = true;
                 using (OpenFileDialog openFileDialog = new OpenFileDialog())
                 {
                     if (txtFilePath130.Text == null)
@@ -402,8 +613,13 @@ namespace HIS.Desktop.Plugins.SyncHsskSyt
         {
             try
             {
+                if (TimerReset(sender, true))
+                {
+                    return;
+                }
                 WaitingManager.Show();
-                lstFiles.Items.Clear();
+                lstFiles4210.Items.Clear();
+                gridView4210.ClearSelection();
                 if (Directory.Exists(directoryPathXML4210))
                 {
                     // Lấy tất cả các tệp XML trong thư mục
@@ -418,17 +634,18 @@ namespace HIS.Desktop.Plugins.SyncHsskSyt
                             FILE_NAME = file
                         };
                         fileNamesXML4210.Add(newItem);
-                        lstFiles.Items.Add(newItem.FILE_NAME); // Thêm tên tệp vào ListBox
+                        lstFiles4210.Items.Add(newItem.FILE_NAME); // Thêm tên tệp vào ListBox
                     }
 
-                    MessageBox.Show("Đã tải lại tệp thành công.");
+                    MessageManager.ShowAlert(this.ParentForm, "", "Đã tải lại tệp XML 4210 thành công.");
                 }
                 else
                 {
-                    MessageBox.Show("Thư mục không tồn tại.");
+                    MessageManager.ShowAlert(this.ParentForm, "", "Thư mục XML 4210 không tồn tại.");
                 }
                 //directoryPathXML4210 = "";
                 FillDataToControl();
+                TimerReset(sender, false);
                 WaitingManager.Hide();
             }
             catch (Exception ex)
@@ -476,10 +693,33 @@ namespace HIS.Desktop.Plugins.SyncHsskSyt
         {
             try
             {
+                if (TimerReset(sender, true))
+                {
+                    return;
+                }
                 string successFolderPath4210;
                 string failFolderPath4210;
                 WaitingManager.Show();
-                
+                if (sender == null)
+                {
+                    try
+                    {
+                        fileNamesXML4210Send.Clear();
+                        int rowCount = gridView4210.RowCount;
+                        for (int i = 0; i < rowCount; i++)
+                        {
+                            var fileItem = gridView4210.GetRow(i) as FileItem;
+                            if (fileItem != null)
+                            {
+                                fileNamesXML4210Send.Add(fileItem);
+                            }
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        Inventec.Common.Logging.LogSystem.Error(ex);
+                    }
+                }
                 foreach (var fileItem in fileNamesXML4210Send)
                 {
                     string fullname = fileItem.FILE_NAME;
@@ -496,7 +736,7 @@ namespace HIS.Desktop.Plugins.SyncHsskSyt
                     }
                     if (!File.Exists(fullname))
                     {
-                        MessageBox.Show("Tệp tin: "+ fullname +" không tồn tại, vui lòng kiểm tra lại." );
+                        MessageManager.ShowAlert(this.ParentForm, "", "Tệp tin: " + fullname +" không tồn tại, vui lòng kiểm tra lại." );
                     }
                     else
                     {
@@ -548,8 +788,10 @@ namespace HIS.Desktop.Plugins.SyncHsskSyt
                             UpdateFileStatusXML4210(fullname, 2);
                         }
                     }
+                    Application.DoEvents();
                 }
                 FillDataToControl();
+                TimerReset(sender, false);
                 WaitingManager.Hide();
             }
             catch (Exception ex)
@@ -609,7 +851,6 @@ namespace HIS.Desktop.Plugins.SyncHsskSyt
         {
             try
             {
-                XML130 = false;
                 using (OpenFileDialog openFileDialog = new OpenFileDialog())
                 {
                     if (txtFilePath4210.Text == null)
@@ -676,7 +917,15 @@ namespace HIS.Desktop.Plugins.SyncHsskSyt
                 fileItem.STATUS = status;
             }
         }
-
+        private void UpdateFileStatusXMLCheckin(string filePath, short status)
+        {
+            // Cập nhật trạng thái file trong danh sách fileNames
+            var fileItem = fileNamesXMLCheckinSend.FirstOrDefault(f => f.FILE_NAME == filePath);
+            if (fileItem != null)
+            {
+                fileItem.STATUS = status;
+            }
+        }
         private void FillDataToControl()
         {
             try
@@ -705,6 +954,19 @@ namespace HIS.Desktop.Plugins.SyncHsskSyt
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
+        private void FillDataToControlXMLCheckin()
+        {
+            try
+            {
+                txtFilePathCheckin.Text = directoryPathXMLCheckin;
+                gridViewCheckin.GridControl.DataSource = fileNamesXMLCheckin;
+                gridViewCheckin.GridControl.RefreshDataSource();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
 
         private void checkConfig()
         {
@@ -717,10 +979,13 @@ namespace HIS.Desktop.Plugins.SyncHsskSyt
                     MessageBox.Show("Cấu hình liên thông dữ liệu không hợp lệ. Vui lòng khai báo cấu hình HIS.HSSK_SYT.CONNECTION_INFO trước khi thực hiện gửi tệp tin");
                     btnReset130.Enabled = false;
                     btnReset4210.Enabled = false;
+                    btnResetCheckin.Enabled = false;
                     btnChooseFile130.Enabled = false;
                     btnChooseFile4210.Enabled = false;
+                    btnChooseFileCheckin.Enabled = false;
                     btnSend130.Enabled = false;
                     btnSend4210.Enabled = false;
+                    btnSendCheckin.Enabled = false;
                 }
                 else
                 {
@@ -730,6 +995,7 @@ namespace HIS.Desktop.Plugins.SyncHsskSyt
                     urlLogin = connectInfors[2];
                     urlXML4210 = connectInfors[3];
                     urlXML130 = connectInfors[4];
+                    urlXMLCheckin = connectInfors[5];
                 }
 
             }
@@ -744,19 +1010,24 @@ namespace HIS.Desktop.Plugins.SyncHsskSyt
         {
             btnSend130.Enabled = false;
             btnSend4210.Enabled = false;
+            btnSendCheckin.Enabled = false;
             if (string.IsNullOrEmpty(token))
             {
                 btnReset130.Enabled = false;
                 btnReset4210.Enabled = false;
+                btnResetCheckin.Enabled = false;
                 btnChooseFile130.Enabled = false;
                 btnChooseFile4210.Enabled = false;
+                btnChooseFileCheckin.Enabled = false;
             }
             else
             {
                 btnReset130.Enabled = true;
                 btnReset4210.Enabled = true;
+                btnResetCheckin.Enabled = true;
                 btnChooseFile130.Enabled = true;
                 btnChooseFile4210.Enabled = true;
+                btnChooseFileCheckin.Enabled = true;
             }
             
         }
@@ -851,6 +1122,8 @@ namespace HIS.Desktop.Plugins.SyncHsskSyt
                         if (response.IsSuccessStatusCode)
                         {
                             Console.WriteLine("File uploaded successfully.");
+                            Console.WriteLine("Response: " + await response.Content.ReadAsStringAsync());
+
                             return true;
                         }
                         else
@@ -892,9 +1165,10 @@ namespace HIS.Desktop.Plugins.SyncHsskSyt
             {
                 keyFilePathHistory130 = "XML130";
                 keyFilePathHistory4210 = "XML4210";
+                keyFilePathHistoryCheckin = "XMLCheckin";
                 if (HIS.Desktop.LocalStorage.LocalData.GlobalVariables.dicPrinter != null)
                 {
-                    if (XML130 == true)
+                    if (xtraTabControl1.SelectedTabPage == xtraTabPage2)
                     {
                         if (!HIS.Desktop.LocalStorage.LocalData.GlobalVariables.dicPrinter.ContainsKey(keyFilePathHistory130))
                         {
@@ -905,7 +1179,18 @@ namespace HIS.Desktop.Plugins.SyncHsskSyt
                             HIS.Desktop.LocalStorage.LocalData.GlobalVariables.dicPrinter[keyFilePathHistory130] = this.directoryPathXML130;
                         }
                     }
-                    else
+                    else if(xtraTabControl1.SelectedTabPage == xtraTabPage3)
+                    {
+                        if (!HIS.Desktop.LocalStorage.LocalData.GlobalVariables.dicPrinter.ContainsKey(keyFilePathHistoryCheckin))
+                        {
+                            HIS.Desktop.LocalStorage.LocalData.GlobalVariables.dicPrinter.Add(keyFilePathHistoryCheckin, this.directoryPathXMLCheckin);
+                        }
+                        else
+                        {
+                            HIS.Desktop.LocalStorage.LocalData.GlobalVariables.dicPrinter[keyFilePathHistoryCheckin] = this.directoryPathXMLCheckin;
+                        }
+                    }
+                    else if (xtraTabControl1.SelectedTabPage == xtraTabPage1)
                     {
                         if (!HIS.Desktop.LocalStorage.LocalData.GlobalVariables.dicPrinter.ContainsKey(keyFilePathHistory4210))
                         {
@@ -922,6 +1207,7 @@ namespace HIS.Desktop.Plugins.SyncHsskSyt
                     HIS.Desktop.LocalStorage.LocalData.GlobalVariables.dicPrinter = new Dictionary<string, string>();
                     HIS.Desktop.LocalStorage.LocalData.GlobalVariables.dicPrinter.Add(keyFilePathHistory130, this.directoryPathXML130);
                     HIS.Desktop.LocalStorage.LocalData.GlobalVariables.dicPrinter.Add(keyFilePathHistory4210, this.directoryPathXML4210);
+                    HIS.Desktop.LocalStorage.LocalData.GlobalVariables.dicPrinter.Add(keyFilePathHistoryCheckin, this.directoryPathXMLCheckin);
                 }
             }
             catch (Exception ex)
@@ -948,6 +1234,11 @@ namespace HIS.Desktop.Plugins.SyncHsskSyt
                            directoryPathXML4210 = item.Value;
                            txtFilePath4210.Text = item.Value;
                        }
+                       else if (item.Key == keyFilePathHistoryCheckin)
+                       {
+                           directoryPathXMLCheckin = item.Value;
+                           txtFilePathCheckin.Text = item.Value;
+                       }
                    }
                 }
             }
@@ -959,5 +1250,421 @@ namespace HIS.Desktop.Plugins.SyncHsskSyt
 
         #endregion
 
+        private void btnChooseFileCheckin_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                using (OpenFileDialog openFileDialog = new OpenFileDialog())
+                {
+                    if (txtFilePathCheckin.Text == null)
+                    {
+                        openFileDialog.InitialDirectory = "c:\\";
+                    }
+                    else
+                    {
+                        openFileDialog.InitialDirectory = txtFilePathCheckin.Text;
+                    }
+                    //openFileDialog.Filter = "All files (*.*)|*.*";
+                    openFileDialog.Filter = "XML files (*.xml)|*.xml|All files (*.*)|*.*";
+                    openFileDialog.FilterIndex = 1;
+                    openFileDialog.RestoreDirectory = true;
+                    openFileDialog.Multiselect = true;
+
+                    DialogResult result = openFileDialog.ShowDialog();
+                    if (result == DialogResult.OK)
+                    {
+                        gridViewCheckin.ClearSelection();
+                        string[] filePaths = openFileDialog.FileNames;
+
+                        // Thêm từng đường dẫn vào danh sách fileNames
+                        foreach (string filePath in filePaths)
+                        {
+                            directoryPathXMLCheckin = Path.GetDirectoryName(filePath);
+                            FileItem newItem = new FileItem()
+                            {
+                                STATUS = 0, //chưa gửi
+                                FILE_NAME = filePath
+                            };
+                            fileNamesXMLCheckin.Add(newItem);
+                        }
+                    }
+                }
+                SaveFilePathHistory();
+                FillDataToControlXMLCheckin();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void btnResetCheckin_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (TimerReset(sender, true))
+                {
+                    return;
+                }
+                CommonParam param = new CommonParam();
+                gridViewCheckin.ClearSelection();
+                lstFilesCheckin.Items.Clear();
+                WaitingManager.Show();
+                if (Directory.Exists(directoryPathXMLCheckin))
+                {
+                    // Lấy tất cả các tệp XML trong thư mục
+                    var xmlFiles = Directory.GetFiles(directoryPathXMLCheckin, "*.xml");
+                    fileNamesXMLCheckin.Clear();
+                    // Thêm từng tệp vào ListBox
+                    foreach (var file in xmlFiles)
+                    {
+                        FileItem newItem = new FileItem()
+                        {
+                            STATUS = 0, // trạng thái chưa gửi
+                            FILE_NAME = file
+                        };
+                        fileNamesXMLCheckin.Add(newItem);
+                        lstFilesCheckin.Items.Add(newItem.FILE_NAME);
+                        //lstFiles.Items.Add(Path.GetFileName(file));
+                    }
+                    MessageManager.ShowAlert(this.ParentForm, "", "Đã tải lại tệp XML Checkin thành công.");
+                }
+                else
+                {
+                    MessageManager.ShowAlert(this.ParentForm, "", "Thư mục XML Checkin không tồn tại.");
+                }
+                FillDataToControlXMLCheckin();
+                TimerReset(sender, false);
+                WaitingManager.Hide();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+        private async void btnSendCheckin_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (TimerReset(sender, true))
+                {
+                    return;
+                }
+                WaitingManager.Show();
+                string successFolderPathCheckin;
+                string failFolderPathCheckin;
+                if (CredirectoryPathXMLCheckin != null)
+                {
+                    successFolderPathCheckin = Path.Combine(CredirectoryPathXMLCheckin, "success");
+                    failFolderPathCheckin = Path.Combine(CredirectoryPathXMLCheckin, "fail");
+                }
+                else
+                {
+                    successFolderPathCheckin = Path.Combine(Environment.CurrentDirectory, "success");
+                    failFolderPathCheckin = Path.Combine(Environment.CurrentDirectory, "fail");
+                }
+                if (sender == null)
+                {
+                    try
+                    {
+                        fileNamesXMLCheckinSend.Clear();
+                        int rowCount = gridViewCheckin.RowCount;
+                        for (int i = 0; i < rowCount; i++)
+                        {
+                            var fileItem = gridViewCheckin.GetRow(i) as FileItem;
+                            if (fileItem != null)
+                            {
+                                fileNamesXMLCheckinSend.Add(fileItem);
+                            }
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        Inventec.Common.Logging.LogSystem.Error(ex);
+                    }
+                }
+                foreach (var fileItem in fileNamesXMLCheckinSend)
+                {
+                    string fullname = fileItem.FILE_NAME;
+                    CredirectoryPathXMLCheckin = Path.GetDirectoryName(fullname);
+                    if (CredirectoryPathXMLCheckin != null)
+                    {
+                        successFolderPathCheckin = Path.Combine(CredirectoryPathXMLCheckin, "success");
+                        failFolderPathCheckin = Path.Combine(CredirectoryPathXMLCheckin, "fail");
+                    }
+                    else
+                    {
+                        successFolderPathCheckin = Path.Combine(Environment.CurrentDirectory, "success");
+                        failFolderPathCheckin = Path.Combine(Environment.CurrentDirectory, "fail");
+                    }
+                    if (!File.Exists(fullname))
+                    {
+                        MessageManager.ShowAlert(this.ParentForm, "", "Tệp tin: " + fullname + " không tồn tại, vui lòng kiểm tra lại.");
+                    }
+                    else
+                    {
+                        string destFilePathSuc = Path.Combine(successFolderPathCheckin, Path.GetFileName(fullname));
+                        string destFilePathFal = Path.Combine(failFolderPathCheckin, Path.GetFileName(fullname));
+                        bool success = await UploadFileAsync(urlXMLCheckin, authen, fullname);
+                        if (success == true)
+                        {
+                            if (!Directory.Exists(successFolderPathCheckin))
+                            {
+                                Directory.CreateDirectory(successFolderPathCheckin);
+
+                                if (File.Exists(destFilePathSuc))
+                                {
+                                    File.Delete(destFilePathSuc);
+                                }
+                                File.Move(fullname, destFilePathSuc);
+                            }
+                            else
+                            {
+                                if (File.Exists(destFilePathSuc))
+                                {
+                                    File.Delete(destFilePathSuc);
+                                }
+                                File.Move(fullname, destFilePathSuc);
+                            }
+                            UpdateFileStatusXMLCheckin(fullname, 1);
+
+                        }
+                        else
+                        {
+                            if (!Directory.Exists(failFolderPathCheckin))
+                            {
+                                Directory.CreateDirectory(failFolderPathCheckin);
+                                if (File.Exists(destFilePathFal))
+                                {
+                                    File.Delete(destFilePathFal);
+                                }
+                                File.Move(fullname, destFilePathFal);
+                            }
+                            else
+                            {
+                                if (File.Exists(destFilePathFal))
+                                {
+                                    File.Delete(destFilePathFal);
+                                }
+                                File.Move(fullname, destFilePathFal);
+                            }
+                            UpdateFileStatusXMLCheckin(fullname, 2);
+                        }
+                    }
+                    Application.DoEvents();
+                }
+                FillDataToControlXMLCheckin();
+                TimerReset(sender, false);
+                WaitingManager.Hide();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+        private void gridViewCheckin_CustomUnboundColumnData(object sender, DevExpress.XtraGrid.Views.Base.CustomColumnDataEventArgs e)
+        {
+            try
+            {
+                if (e.IsGetData && e.Column.UnboundType != UnboundColumnType.Bound)
+                {
+                    if (e.Column.FieldName == "STT")
+                    {
+                        e.Value = e.ListSourceRowIndex + 1;
+                    }
+                    if (e.Column.FieldName == "STATUS_CHECKIN")
+                    {
+                        var documents = fileNamesXMLCheckin;
+                        if (documents != null && documents.Count > 0)
+                        {
+                            for (int i = 0; i < documents.Count; i++)
+                            {
+                                var document = documents[i];
+                                if (e.ListSourceRowIndex == i)
+                                {
+                                    if (document.STATUS == 0)
+                                    {
+                                        e.Value = imageList1.Images[2];
+                                    }
+                                    else if (document.STATUS == 1)
+                                    {
+                                        e.Value = imageList1.Images[0];
+                                    }
+                                    else
+                                    {
+                                        e.Value = imageList1.Images[1];
+                                    }
+                                    break;
+                                }
+                            }
+                        }
+
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+        private void gridViewCheckin_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            try
+            {
+                var selectedRows = gridViewCheckin.GetSelectedRows();
+                if (selectedRows.Length > 0)
+                {
+                    btnSendCheckin.Enabled = true;
+                    fileNamesXMLCheckinSend.Clear();
+                    foreach (var rowHandle in selectedRows)
+                    {
+                        if (rowHandle >= 0)
+                        {
+                            var fileItem = gridViewCheckin.GetRow(rowHandle) as FileItem;
+                            directoryPathXMLCheckin = Path.GetDirectoryName(fileItem.FILE_NAME);
+                            if (fileItem != null)
+                            {
+                                fileNamesXMLCheckinSend.Add(fileItem);
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    btnSendCheckin.Enabled = false;
+                    fileNamesXMLCheckinSend.Clear();
+                }
+                txtFilePathCheckin.Text = directoryPathXMLCheckin;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void chkAutoSend4210_CheckedChanged(object sender, EventArgs e)
+        {
+            if (chkAutoSend4210.Checked)
+            {
+                var executionCycleTime = (double)spinExecutionCycleTime4210.Value;
+                if (string.IsNullOrEmpty(this.txtFilePath4210.Text))
+                {
+                    MessageBox.Show("Vui lòng chọn thư mục");
+                    chkAutoSend4210.Checked = false;
+                    return;
+                }
+                if (executionCycleTime <= 0)
+                {
+                    MessageBox.Show("Vui lòng nhập chu kỳ thực hiện lớn hơn 0.");
+                    chkAutoSend4210.Checked = false;
+                    return;
+                }
+                if (MessageBox.Show("Hệ thống sẽ tự động gửi file XML 4210 lần đầu và lần tiếp theo theo chu kỳ " + executionCycleTime + " phút", "", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                {
+
+                    timer4210.Interval = (int)TimeSpan.FromMinutes(executionCycleTime).TotalMilliseconds;
+                    timer4210_Tick(null, null);
+                    refreshNextTimer(timer4210);
+                    timer4210.Start();
+                    btnChooseFile4210.Enabled = false;
+                    spinExecutionCycleTime4210.Enabled = false;
+                }
+                else
+                {
+                    chkAutoSend4210.Checked = false;
+                    return;
+                }
+            }
+            else
+            {
+                lblNext4210.Text = "";
+                timer4210.Stop();
+                btnChooseFile4210.Enabled = true;
+                spinExecutionCycleTime4210.Enabled = true;
+            }
+        }
+
+        private void chkAutoSend130_CheckedChanged(object sender, EventArgs e)
+        {
+            if (chkAutoSend130.Checked)
+            {
+                if (string.IsNullOrEmpty(this.txtFilePath130.Text))
+                {
+                    MessageBox.Show("Vui lòng chọn thư mục");
+                    chkAutoSend130.Checked = false;
+                    return;
+                }
+                var executionCycleTime = (double)spinExecutionCycleTime130.Value;
+                if (executionCycleTime <= 0)
+                {
+                    MessageBox.Show("Vui lòng nhập chu kỳ thực hiện lớn hơn 0.");
+                    chkAutoSend130.Checked = false;
+                    return;
+                }
+                if (MessageBox.Show("Hệ thống sẽ tự động gửi file XML 130 lần đầu và lần tiếp theo theo chu kỳ " + executionCycleTime + " phút", "", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                {
+                    timer130.Interval = (int)TimeSpan.FromMinutes(executionCycleTime).TotalMilliseconds;
+                    timer130_Tick(null, null);
+                    refreshNextTimer(timer130);
+                    timer130.Start();
+                    btnChooseFile130.Enabled = false;
+                    spinExecutionCycleTime130.Enabled = false;
+                }
+                else
+                {
+                    chkAutoSend130.Checked = false;
+                    return;
+                }
+            }
+            else
+            {
+                lblNext130.Text = "";
+                timer130.Stop();
+                btnChooseFile130.Enabled = true;
+                spinExecutionCycleTime130.Enabled = true;
+            }
+
+        }
+
+        private void chkAutoSendCheckin_CheckedChanged(object sender, EventArgs e)
+        {
+            if (chkAutoSendCheckin.Checked)
+            {
+                if (string.IsNullOrEmpty(this.txtFilePathCheckin.Text))
+                {
+                    MessageBox.Show("Vui lòng chọn thư mục");
+                    chkAutoSendCheckin.Checked = false;
+                    return;
+                }
+                var executionCycleTime = (double)spinExecutionCycleTimeCheckin.Value;
+                if (executionCycleTime <= 0)
+                {
+                    MessageBox.Show("Vui lòng nhập chu kỳ thực hiện lớn hơn 0.");
+                    chkAutoSendCheckin.Checked = false;
+                    return;
+                }
+                if (MessageBox.Show("Hệ thống sẽ tự động gửi file XML Checkin lần đầu và lần tiếp theo theo chu kỳ " + executionCycleTime + " phút", "", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                {
+                    timerCheckin.Interval = (int)TimeSpan.FromMinutes(executionCycleTime).TotalMilliseconds;
+                    timerCheckin_Tick(null, null);
+                    refreshNextTimer(timerCheckin);
+                    timerCheckin.Start();
+                    btnChooseFileCheckin.Enabled = false;
+                    spinExecutionCycleTimeCheckin.Enabled = false;
+                }
+                else
+                {
+                    chkAutoSendCheckin.Checked = false;
+                    return;
+                }
+            }
+            else
+            {
+                lblNextCheckin.Text = "";
+                timerCheckin.Stop();
+                btnChooseFileCheckin.Enabled = true;
+                spinExecutionCycleTimeCheckin.Enabled = true;
+            }
+        }
     }
 }
