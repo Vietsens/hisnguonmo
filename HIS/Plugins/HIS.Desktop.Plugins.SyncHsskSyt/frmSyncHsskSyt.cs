@@ -59,6 +59,9 @@ namespace HIS.Desktop.Plugins.SyncHsskSyt
         public static string keyFilePathHistory4210 ;
         public static string keyFilePathHistory130;
         public static string keyFilePathHistoryCheckin;
+        public static string keyExecutionCycleTime4210;
+        public static string keyExecutionCycleTime130;
+        public static string keyExecutionCycleTimeCheckin;
         static string user = "";
         static string pass = "";
         static string urlLogin = "";
@@ -97,10 +100,22 @@ namespace HIS.Desktop.Plugins.SyncHsskSyt
                 checkConfig();
                 WaitingManager.Show();
                 authen = await Login(user, pass).ConfigureAwait(false);
-                checkLogin(authen);
-                DefaultFilePath();
-                //
-                //
+                if (InvokeRequired)
+                {
+                    Invoke(new Action(() => checkLogin(authen)));
+                }
+                else
+                {
+                    checkLogin(authen);
+                }
+                if (InvokeRequired)
+                {
+                    Invoke(new Action(() => DefaultFilePath()));
+                }
+                else
+                {
+                    DefaultFilePath(); ;
+                }
                 WaitingManager.Hide();
             }
             catch (Exception ex)
@@ -1215,7 +1230,45 @@ namespace HIS.Desktop.Plugins.SyncHsskSyt
                 LogSystem.Error(ex);
             }
         }
-        
+        private void SaveExecutionCycleTimeHistory()
+        {
+            try
+            {
+                keyExecutionCycleTime130 = "ExecutionCycleTime130";
+                keyExecutionCycleTime4210 = "ExecutionCycleTime4210";
+                keyExecutionCycleTimeCheckin = "ExecutionCycleTimeCheckin";
+                var dicPrinter = HIS.Desktop.LocalStorage.LocalData.GlobalVariables.dicPrinter;
+                if (dicPrinter == null)
+                {
+                    HIS.Desktop.LocalStorage.LocalData.GlobalVariables.dicPrinter = dicPrinter = new Dictionary<string, string>();
+                }
+                string key = null;
+                string value = null;
+                if (xtraTabControl1.SelectedTabPage == xtraTabPage1)
+                {
+                    key = keyExecutionCycleTime4210;
+                    value = spinExecutionCycleTime4210.Value.ToString();
+                }
+                else if(xtraTabControl1.SelectedTabPage == xtraTabPage2)
+                {
+                    key = keyExecutionCycleTime130;
+                    value = spinExecutionCycleTime130.Value.ToString();
+                }
+                else if (xtraTabControl1.SelectedTabPage == xtraTabPage3)
+                {
+                    key = keyExecutionCycleTimeCheckin;
+                    value = spinExecutionCycleTimeCheckin.Value.ToString();
+                }
+                if (key != null)
+                {
+                    dicPrinter[key] = value;
+                }
+            }
+            catch (Exception ex)
+            {
+                LogSystem.Error(ex);
+            }
+        }
         private void DefaultFilePath()
         {
             try
@@ -1236,18 +1289,54 @@ namespace HIS.Desktop.Plugins.SyncHsskSyt
                        }
                        else if (item.Key == keyFilePathHistoryCheckin)
                        {
-                           directoryPathXMLCheckin = item.Value;
-                           txtFilePathCheckin.Text = item.Value;
+                            directoryPathXMLCheckin = item.Value;
+                            txtFilePathCheckin.Text = item.Value;
                        }
-                   }
+                       //
+                        if (item.Key == keyExecutionCycleTime130)
+                        {
+                            spinExecutionCycleTime130.Value = Convert.ToDecimal(item.Value);
+                        }
+                        else if (item.Key == keyExecutionCycleTime4210)
+                        {
+                            spinExecutionCycleTime4210.Value = Convert.ToDecimal(item.Value);
+                        }
+                        else if (item.Key == keyExecutionCycleTimeCheckin)
+                        {
+                            this.spinExecutionCycleTimeCheckin.Value = Convert.ToDecimal(item.Value);
+                        }
+                    }
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                throw;
+                Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
 
+        private void spinExecutionCycleTimeCheckin_ValueChanged(object sender, EventArgs e)
+        {
+            if (spinExecutionCycleTimeCheckin.IsEditorActive)
+            {
+                SaveExecutionCycleTimeHistory();
+            }
+        }
+
+        private void spinExecutionCycleTime130_ValueChanged(object sender, EventArgs e)
+        {
+            if (spinExecutionCycleTime130.IsEditorActive)
+            {
+                SaveExecutionCycleTimeHistory();
+            }
+        }
+
+        private void spinExecutionCycleTime4210_ValueChanged(object sender, EventArgs e)
+        {
+            if (spinExecutionCycleTime4210.IsEditorActive)
+            {
+                SaveExecutionCycleTimeHistory();
+            }
+        }
         #endregion
 
         private void btnChooseFileCheckin_Click(object sender, EventArgs e)
@@ -1561,9 +1650,8 @@ namespace HIS.Desktop.Plugins.SyncHsskSyt
                 }
                 if (MessageBox.Show("Hệ thống sẽ tự động gửi file XML 4210 lần đầu và lần tiếp theo theo chu kỳ " + executionCycleTime + " phút", "", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
                 {
-
                     timer4210.Interval = (int)TimeSpan.FromMinutes(executionCycleTime).TotalMilliseconds;
-                    timer4210_Tick(null, null);
+                    timer4210_Tick(timer4210, null);
                     refreshNextTimer(timer4210);
                     timer4210.Start();
                     btnChooseFile4210.Enabled = false;
@@ -1604,7 +1692,7 @@ namespace HIS.Desktop.Plugins.SyncHsskSyt
                 if (MessageBox.Show("Hệ thống sẽ tự động gửi file XML 130 lần đầu và lần tiếp theo theo chu kỳ " + executionCycleTime + " phút", "", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
                 {
                     timer130.Interval = (int)TimeSpan.FromMinutes(executionCycleTime).TotalMilliseconds;
-                    timer130_Tick(null, null);
+                    timer130_Tick(timer130, null);
                     refreshNextTimer(timer130);
                     timer130.Start();
                     btnChooseFile130.Enabled = false;
@@ -1646,7 +1734,7 @@ namespace HIS.Desktop.Plugins.SyncHsskSyt
                 if (MessageBox.Show("Hệ thống sẽ tự động gửi file XML Checkin lần đầu và lần tiếp theo theo chu kỳ " + executionCycleTime + " phút", "", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
                 {
                     timerCheckin.Interval = (int)TimeSpan.FromMinutes(executionCycleTime).TotalMilliseconds;
-                    timerCheckin_Tick(null, null);
+                    timerCheckin_Tick(timerCheckin, null);
                     refreshNextTimer(timerCheckin);
                     timerCheckin.Start();
                     btnChooseFileCheckin.Enabled = false;

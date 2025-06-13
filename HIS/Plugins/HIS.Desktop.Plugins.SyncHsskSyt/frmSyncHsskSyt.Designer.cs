@@ -45,19 +45,20 @@ namespace HIS.Desktop.Plugins.SyncHsskSyt
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmSyncHsskSyt));
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject1 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject2 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject3 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject4 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject5 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject6 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject7 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject8 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject9 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject10 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject11 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject12 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject5 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject6 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject7 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject8 = new DevExpress.Utils.SerializableAppearanceObject();
             this.layoutControl1 = new DevExpress.XtraLayout.LayoutControl();
             this.xtraTabControl1 = new DevExpress.XtraTab.XtraTabControl();
             this.xtraTabPage1 = new DevExpress.XtraTab.XtraTabPage();
@@ -71,7 +72,7 @@ namespace HIS.Desktop.Plugins.SyncHsskSyt
             this.repositoryItemPictureEdit1 = new DevExpress.XtraEditors.Repository.RepositoryItemPictureEdit();
             this.gridColumn4 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.statusPicture = new DevExpress.XtraEditors.Repository.RepositoryItemImageEdit();
-            this.imageList1 = new System.Windows.Forms.ImageList();
+            this.imageList1 = new System.Windows.Forms.ImageList(this.components);
             this.layoutControlGroup3 = new DevExpress.XtraLayout.LayoutControlGroup();
             this.layoutControlItem6 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControl2 = new DevExpress.XtraLayout.LayoutControl();
@@ -163,9 +164,9 @@ namespace HIS.Desktop.Plugins.SyncHsskSyt
             this.layoutControlItem20 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlGroup1 = new DevExpress.XtraLayout.LayoutControlGroup();
             this.layoutControlItem1 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.timer4210 = new System.Windows.Forms.Timer();
-            this.timer130 = new System.Windows.Forms.Timer();
-            this.timerCheckin = new System.Windows.Forms.Timer();
+            this.timer4210 = new System.Windows.Forms.Timer(this.components);
+            this.timer130 = new System.Windows.Forms.Timer(this.components);
+            this.timerCheckin = new System.Windows.Forms.Timer(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
             this.layoutControl1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.xtraTabControl1)).BeginInit();
@@ -481,6 +482,7 @@ namespace HIS.Desktop.Plugins.SyncHsskSyt
             this.spinExecutionCycleTime4210.Size = new System.Drawing.Size(50, 22);
             this.spinExecutionCycleTime4210.StyleController = this.layoutControl2;
             this.spinExecutionCycleTime4210.TabIndex = 21;
+            this.spinExecutionCycleTime4210.ValueChanged += new System.EventHandler(this.spinExecutionCycleTime4210_ValueChanged);
             // 
             // chkAutoSend4210
             // 
@@ -856,6 +858,7 @@ namespace HIS.Desktop.Plugins.SyncHsskSyt
             this.spinExecutionCycleTime130.Size = new System.Drawing.Size(50, 22);
             this.spinExecutionCycleTime130.StyleController = this.layoutControl4;
             this.spinExecutionCycleTime130.TabIndex = 16;
+            this.spinExecutionCycleTime130.ValueChanged += new System.EventHandler(this.spinExecutionCycleTime130_ValueChanged);
             // 
             // chkAutoSend130
             // 
@@ -896,7 +899,7 @@ namespace HIS.Desktop.Plugins.SyncHsskSyt
             this.btnChooseFile130.Name = "btnChooseFile130";
             this.btnChooseFile130.Properties.AutoHeight = false;
             this.btnChooseFile130.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, global::HIS.Desktop.Plugins.SyncHsskSyt.Properties.Resources.open_16x16, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject5, serializableAppearanceObject6, serializableAppearanceObject7, serializableAppearanceObject8, "", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, global::HIS.Desktop.Plugins.SyncHsskSyt.Properties.Resources.open_16x16, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject9, serializableAppearanceObject10, serializableAppearanceObject11, serializableAppearanceObject12, "", null, null, true)});
             this.btnChooseFile130.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             this.btnChooseFile130.Size = new System.Drawing.Size(50, 22);
             this.btnChooseFile130.StyleController = this.layoutControl4;
@@ -1120,6 +1123,7 @@ namespace HIS.Desktop.Plugins.SyncHsskSyt
             this.spinExecutionCycleTimeCheckin.Size = new System.Drawing.Size(50, 22);
             this.spinExecutionCycleTimeCheckin.StyleController = this.layoutControl6;
             this.spinExecutionCycleTimeCheckin.TabIndex = 12;
+            this.spinExecutionCycleTimeCheckin.ValueChanged += new System.EventHandler(this.spinExecutionCycleTimeCheckin_ValueChanged);
             // 
             // chkAutoSendCheckin
             // 
@@ -1240,7 +1244,7 @@ namespace HIS.Desktop.Plugins.SyncHsskSyt
             this.btnChooseFileCheckin.Name = "btnChooseFileCheckin";
             this.btnChooseFileCheckin.Properties.AutoHeight = false;
             this.btnChooseFileCheckin.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, global::HIS.Desktop.Plugins.SyncHsskSyt.Properties.Resources.open_16x16, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject9, serializableAppearanceObject10, serializableAppearanceObject11, serializableAppearanceObject12, "", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, global::HIS.Desktop.Plugins.SyncHsskSyt.Properties.Resources.open_16x16, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject5, serializableAppearanceObject6, serializableAppearanceObject7, serializableAppearanceObject8, "", null, null, true)});
             this.btnChooseFileCheckin.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             this.btnChooseFileCheckin.Size = new System.Drawing.Size(50, 22);
             this.btnChooseFileCheckin.StyleController = this.layoutControl6;
@@ -1534,7 +1538,6 @@ namespace HIS.Desktop.Plugins.SyncHsskSyt
             this.xtraTabPage3.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl6)).EndInit();
             this.layoutControl6.ResumeLayout(false);
-            this.layoutControl6.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.spinExecutionCycleTimeCheckin.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.chkAutoSendCheckin.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridControl3)).EndInit();
