@@ -81,6 +81,7 @@ namespace HIS.Desktop.Plugins.TransactionRepay
                     this.currentHisPatientTypeAlter = data.PatientTypeAlter;
                 }
                 this.currentModule = module;
+                this.Size = new Size(this.ClientSize.Width, this.ClientSize.Height - barDockControlTop.Height+15);
                 try
                 {
                     string iconPath = System.IO.Path.Combine(System.Windows.Forms.Application.StartupPath, System.Configuration.ConfigurationSettings.AppSettings["Inventec.Desktop.Icon"]);
