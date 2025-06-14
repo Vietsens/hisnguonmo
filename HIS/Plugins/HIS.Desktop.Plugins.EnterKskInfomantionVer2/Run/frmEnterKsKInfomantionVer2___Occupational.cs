@@ -330,7 +330,10 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                 obj.RECENT_WORK_TWO_TO = (dteRecentWorkTwoTo8.EditValue != null) ? Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(dteRecentWorkTwoTo8.DateTime) : null;
 
                 obj.PATHOLOGICAL_HISTORY = txtPathologicalHistory7.Text;
-                obj.DHST_RANK = cboDhstRank7.EditValue != null ? (long?)Int64.Parse(cboDhstRank7.EditValue.ToString()) : null;
+                //obj.DHST_RANK = cboDhstRank7.EditValue != null ? (long?)Int64.Parse(cboDhstRank7.EditValue.ToString()) : null;
+
+                obj.DHST_RANK = long.TryParse(cboDhstRank7.EditValue?.ToString(), out var rankVal)? (long?)rankVal: null;
+
                 obj.EXAM_CIRCULATION = txtExamCirculation7.Text;
                 obj.EXAM_CIRCULATION_RANK = cboExamCirculationRank7.EditValue != null ? (long?)Int64.Parse(cboExamCirculationRank7.EditValue.ToString()) : null;
 
@@ -340,7 +343,8 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                 obj.EXAM_DIGESTION_RANK = cboExamDigestionRank7.EditValue != null ? (long?)Int64.Parse(cboExamDigestionRank7.EditValue.ToString()) : null;
 
                 obj.EXAM_KIDNEY_UROLOGY = txtExamKidneyUrology7.Text;
-                obj.EXAM_KIDNEY_UROLOGY_RANK = cboExamKidneyUrologyRank7.EditValue != null ? (long?)Int64.Parse(cboExamKidneyUrologyRank7.EditValue.ToString()) : null;
+                //obj.EXAM_KIDNEY_UROLOGY_RANK = cboExamKidneyUrologyRank7.EditValue != null ? (long?)Int64.Parse(cboExamKidneyUrologyRank7.EditValue.ToString()) : null;
+                obj.EXAM_KIDNEY_UROLOGY_RANK = long.TryParse(cboExamKidneyUrologyRank7.EditValue?.ToString(), out var val)? (long?)val: null;
                 obj.EXAM_NEUROLOGICAL = txtExamOend7.Text;
                 obj.EXAM_NEUROLOGICAL_RANK = cboExamOendRank7.EditValue != null ? (long?)Int64.Parse(cboExamOendRank7.EditValue.ToString()) : null;
 
@@ -391,8 +395,11 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                 obj.HEALTH_EXAM_RANK_ID = cboHealthExamRank7.EditValue != null ? (long?)Int64.Parse(cboHealthExamRank7.EditValue.ToString()) : null;
                 obj.DISEASES = txtDiseases7.Text;
                 obj.NOW_WORK_FROM = ((this.dtpStart7.EditValue != null) ? Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(new DateTime?(this.dtpStart7.DateTime)) : null);
+                //qtcode
+                //obj.EXAM_CIRCULATION_LOGINNAME = cboExamCirculationLoginName7.EditValue != null ? cboExamCirculationLoginName7.EditValue.ToString() : null;
 
-                obj.EXAM_CIRCULATION_LOGINNAME = cboExamCirculationLoginName7.EditValue != null ? cboExamCirculationLoginName7.EditValue.ToString() : null;
+                obj.EXAM_CIRCULATION_LOGINNAME = string.IsNullOrWhiteSpace(cboExamCirculationLoginName7.EditValue?.ToString())? null: cboExamCirculationLoginName7.EditValue.ToString();
+
                 obj.EXAM_EYE_LOGINNAME = cboExamEyeLoginName7.EditValue != null ? cboExamEyeLoginName7.EditValue.ToString() : null;
                 obj.EXAM_ENT_LOGINNAME = cboExamEntLoginName7.EditValue != null ? cboExamEntLoginName7.EditValue.ToString() : null;
                 obj.EXAM_STOMATOLOGY_LOGINNAME = cboExamStomatologyLoginname7.EditValue != null ? cboExamStomatologyLoginname7.EditValue.ToString() : null;
@@ -413,7 +420,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
         }
 
         private HIS_DHST GetValueDhstOccupational()
-        {
+        {//qtcode
             HIS_DHST obj = new HIS_DHST();
             try
             {
@@ -430,8 +437,28 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                 if (spnWeight7.EditValue != null)
                     obj.WEIGHT = Inventec.Common.Number.Get.RoundCurrency(spnWeight7.Value, 2);
 
-                obj.EXECUTE_LOGINNAME = cboExecuteLoginName7.EditValue != null ? cboExecuteLoginName7.EditValue.ToString() : null;
-                obj.EXECUTE_USERNAME = obj.EXECUTE_LOGINNAME != null ? BackendDataWorker.Get<V_HIS_EMPLOYEE>().FirstOrDefault(o => o.LOGINNAME == obj.EXECUTE_LOGINNAME).TDL_USERNAME : null;
+                //obj.EXECUTE_LOGINNAME = cboExecuteLoginName7.EditValue != null ? cboExecuteLoginName7.EditValue.ToString() : null;
+                obj.EXECUTE_LOGINNAME = string.IsNullOrWhiteSpace(cboExecuteLoginName7.EditValue?.ToString())
+                                        ? null
+                                        : cboExecuteLoginName7.EditValue.ToString();
+
+
+
+                //obj.EXECUTE_USERNAME = obj.EXECUTE_LOGINNAME != null ? BackendDataWorker.Get<V_HIS_EMPLOYEE>().FirstOrDefault(o => o.LOGINNAME == obj.EXECUTE_LOGINNAME).TDL_USERNAME : null;
+
+
+                if (obj.EXECUTE_LOGINNAME != null)
+                {
+                    var employee = BackendDataWorker.Get<V_HIS_EMPLOYEE>()
+                                    .FirstOrDefault(o => o.LOGINNAME == obj.EXECUTE_LOGINNAME);
+                    obj.EXECUTE_USERNAME = employee?.TDL_USERNAME;
+                }
+                else
+                {
+                    obj.EXECUTE_USERNAME = null;
+                }
+
+
             }
             catch (Exception ex)
             {
