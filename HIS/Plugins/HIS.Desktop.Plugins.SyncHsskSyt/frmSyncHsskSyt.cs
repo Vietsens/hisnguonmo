@@ -57,7 +57,7 @@ namespace HIS.Desktop.Plugins.SyncHsskSyt
             lblNextCheckin.Text = "";
         }
         #region Variables and Constants
-        public static string keyFilePathHistory4210 ;
+        public static string keyFilePathHistory4210;
         public static string keyFilePathHistory130;
         public static string keyFilePathHistoryCheckin;
         public static string keyExecutionCycleTime4210;
@@ -72,8 +72,8 @@ namespace HIS.Desktop.Plugins.SyncHsskSyt
         string authen = "";
         string directoryPathXML4210 = "";
         static string CredirectoryPathXML4210;
-        string directoryPathXML130 = "" ;
-        string directoryPathXMLCheckin = "" ;
+        string directoryPathXML130 = "";
+        string directoryPathXMLCheckin = "";
         static string CredirectoryPathXML130;
         static string CredirectoryPathXMLCheckin;
         List<string> connectInfors = new List<string>();
@@ -226,7 +226,7 @@ namespace HIS.Desktop.Plugins.SyncHsskSyt
             }
         }
 
-        private bool TimerReset(object sender, bool setRunning)
+        private bool TimerReset(object sender)
         {
             if (sender != null) // nếu người dùng bấm gửi bằng tay
             {
@@ -239,7 +239,6 @@ namespace HIS.Desktop.Plugins.SyncHsskSyt
                     }
                     else
                     {
-                        isRunning4210 = setRunning;
                         if (this.chkAutoSend4210.Checked)
                         {
                             refreshNextTimer(timer4210);
@@ -256,7 +255,6 @@ namespace HIS.Desktop.Plugins.SyncHsskSyt
                     }
                     else
                     {
-                        isRunning4210 = setRunning;
                         if (this.chkAutoSend130.Checked)
                         {
                             refreshNextTimer(timer130);
@@ -273,7 +271,6 @@ namespace HIS.Desktop.Plugins.SyncHsskSyt
                     }
                     else
                     {
-                        isRunning4210 = setRunning;
                         if (this.chkAutoSendCheckin.Checked)
                         {
                             refreshNextTimer(timerCheckin);
@@ -331,7 +328,7 @@ namespace HIS.Desktop.Plugins.SyncHsskSyt
         {
             try
             {
-                if (TimerReset(sender, true))
+                if (TimerReset(sender))
                 {
                     return;
                 }
@@ -366,7 +363,7 @@ namespace HIS.Desktop.Plugins.SyncHsskSyt
                 }
                 //directoryPathXML130 = "";
                 FillDataToControlXML130();
-                TimerReset(sender, false);
+                TimerReset(sender);
                 WaitingManager.Hide();
             }
             catch (Exception ex)
@@ -414,12 +411,12 @@ namespace HIS.Desktop.Plugins.SyncHsskSyt
         {
             try
             {
-                if (TimerReset(sender, true))
+                if (TimerReset(sender))
                 {
                     return;
                 }
                 WaitingManager.Show();
-                string successFolderPath130 ;
+                string successFolderPath130;
                 string failFolderPath130;
                 if (CredirectoryPathXML130 != null)
                 {
@@ -525,7 +522,7 @@ namespace HIS.Desktop.Plugins.SyncHsskSyt
                 }
 
                 FillDataToControlXML130();
-                TimerReset(sender, false);
+                TimerReset(sender);
                 WaitingManager.Hide();
             }
             catch (Exception ex)
@@ -582,51 +579,9 @@ namespace HIS.Desktop.Plugins.SyncHsskSyt
 
         private void btnChooseFile130_Click(object sender, EventArgs e)
         {
-            try
-            {
-                using (OpenFileDialog openFileDialog = new OpenFileDialog())
-                {
-                    if (txtFilePath130.Text == null)
-                    {
-                        openFileDialog.InitialDirectory = "c:\\";
-                    }
-                    else
-                    {
-                        openFileDialog.InitialDirectory = txtFilePath130.Text;
-                    }
-                    //openFileDialog.Filter = "All files (*.*)|*.*";
-                    openFileDialog.Filter = "XML files (*.xml)|*.xml|All files (*.*)|*.*";
-                    openFileDialog.FilterIndex = 1;
-                    openFileDialog.RestoreDirectory = true;
-                    openFileDialog.Multiselect = true;
 
-                    DialogResult result = openFileDialog.ShowDialog();
-                    if (result == DialogResult.OK)
-                    {
-                        string[] filePaths = openFileDialog.FileNames;
-
-                        // Thêm từng đường dẫn vào danh sách fileNames
-                        foreach (string filePath in filePaths)
-                        {
-                            directoryPathXML130 = Path.GetDirectoryName(filePath);
-                            FileItem newItem = new FileItem()
-                            {
-                                STATUS = 0, //chưa gửi
-                                FILE_NAME = filePath
-                            };
-                            fileNamesXML130.Add(newItem);
-                        }
-                    }
-                }
-                SaveFilePathHistory();
-                FillDataToControlXML130();
-            }
-            catch (Exception ex)
-            {
-                Inventec.Common.Logging.LogSystem.Error(ex);
-            }
         }
-    
+
         #endregion
 
         #region XML 4210
@@ -634,7 +589,7 @@ namespace HIS.Desktop.Plugins.SyncHsskSyt
         {
             try
             {
-                if (TimerReset(sender, true))
+                if (TimerReset(sender))
                 {
                     return;
                 }
@@ -668,7 +623,7 @@ namespace HIS.Desktop.Plugins.SyncHsskSyt
                 }
                 //directoryPathXML4210 = "";
                 FillDataToControl();
-                TimerReset(sender, false);
+                TimerReset(sender);
                 WaitingManager.Hide();
             }
             catch (Exception ex)
@@ -688,7 +643,7 @@ namespace HIS.Desktop.Plugins.SyncHsskSyt
                     fileNamesXML4210Send.Clear();
                     foreach (var rowHandle in selectedRows)
                     {
-                        if (rowHandle >= 0) 
+                        if (rowHandle >= 0)
                         {
                             var fileItem = gridView4210.GetRow(rowHandle) as FileItem;
                             directoryPathXML4210 = Path.GetDirectoryName(fileItem.FILE_NAME);
@@ -702,7 +657,7 @@ namespace HIS.Desktop.Plugins.SyncHsskSyt
                 else
                 {
                     btnSend4210.Enabled = false;
-                    fileNamesXML4210Send.Clear(); 
+                    fileNamesXML4210Send.Clear();
                 }
                 txtFilePath4210.Text = directoryPathXML4210;
             }
@@ -716,7 +671,7 @@ namespace HIS.Desktop.Plugins.SyncHsskSyt
         {
             try
             {
-                if (TimerReset(sender, true))
+                if (TimerReset(sender))
                 {
                     return;
                 }
@@ -816,7 +771,7 @@ namespace HIS.Desktop.Plugins.SyncHsskSyt
                     }
                 }
                 FillDataToControl();
-                TimerReset(sender, false);
+                TimerReset(sender);
                 WaitingManager.Hide();
             }
             catch (Exception ex)
@@ -873,55 +828,12 @@ namespace HIS.Desktop.Plugins.SyncHsskSyt
 
         private void btnChooseFile4210_Click(object sender, EventArgs e)
         {
-            try
-            {
-                using (OpenFileDialog openFileDialog = new OpenFileDialog())
-                {
-                    if (txtFilePath4210.Text == null)
-                    {
-                        openFileDialog.InitialDirectory = "c:\\";
-                    }
-                    else
-                    {
-                        openFileDialog.InitialDirectory = txtFilePath4210.Text;
-                    }
-                    //openFileDialog.Filter = "All files (*.*)|*.*";
-                    openFileDialog.Filter = "XML files (*.xml)|*.xml|All files (*.*)|*.*";
-                    openFileDialog.FilterIndex = 1;
-                    openFileDialog.RestoreDirectory = true;
-                    openFileDialog.Multiselect = true;
 
-                    DialogResult result = openFileDialog.ShowDialog();
-                    if (result == DialogResult.OK)
-                    {
-                        string[] filePaths = openFileDialog.FileNames;
-                       
-                        // Thêm từng đường dẫn vào danh sách fileNames
-                        foreach (string filePath in filePaths)
-                        {
-                            directoryPathXML4210 = Path.GetDirectoryName(filePath);
-                            FileItem newItem = new FileItem()
-                            {
-                                STATUS = 0, //chưa gửi
-                                FILE_NAME = filePath
-                            };
-                            fileNamesXML4210.Add(newItem);
-                        }
-                    }
-                }
-                SaveFilePathHistory();
-                FillDataToControl();
-            }
-            catch (Exception ex)
-            {
-                Inventec.Common.Logging.LogSystem.Error(ex);
-            }
         }
 
 
         #endregion
 
-        #region Methods
 
         private void UpdateFileStatusXML130(string filePath, short status)
         {
@@ -1056,7 +968,7 @@ namespace HIS.Desktop.Plugins.SyncHsskSyt
                 btnChooseFile4210.Enabled = true;
                 btnChooseFileCheckin.Enabled = true;
             }
-            
+
         }
 
         private static async Task<string> Login(string user, string pass)
@@ -1206,7 +1118,7 @@ namespace HIS.Desktop.Plugins.SyncHsskSyt
                             HIS.Desktop.LocalStorage.LocalData.GlobalVariables.dicPrinter[keyFilePathHistory130] = this.directoryPathXML130;
                         }
                     }
-                    else if(xtraTabControl1.SelectedTabPage == xtraTabPage3)
+                    else if (xtraTabControl1.SelectedTabPage == xtraTabPage3)
                     {
                         if (!HIS.Desktop.LocalStorage.LocalData.GlobalVariables.dicPrinter.ContainsKey(keyFilePathHistoryCheckin))
                         {
@@ -1261,7 +1173,7 @@ namespace HIS.Desktop.Plugins.SyncHsskSyt
                     key = keyExecutionCycleTime4210;
                     value = spinExecutionCycleTime4210.Value.ToString();
                 }
-                else if(xtraTabControl1.SelectedTabPage == xtraTabPage2)
+                else if (xtraTabControl1.SelectedTabPage == xtraTabPage2)
                 {
                     key = keyExecutionCycleTime130;
                     value = spinExecutionCycleTime130.Value.ToString();
@@ -1285,26 +1197,26 @@ namespace HIS.Desktop.Plugins.SyncHsskSyt
         {
             try
             {
-                if (GlobalVariables.dicPrinter != null )
+                if (GlobalVariables.dicPrinter != null)
                 {
                     foreach (var item in GlobalVariables.dicPrinter)
-                   {
-                       if (item.Key == keyFilePathHistory130)
-                       {
-                           directoryPathXML130 = item.Value;
-                           txtFilePath130.Text = item.Value;
-                       }
-                       else if (item.Key == keyFilePathHistory4210)
-                       {
-                           directoryPathXML4210 = item.Value;
-                           txtFilePath4210.Text = item.Value;
-                       }
-                       else if (item.Key == keyFilePathHistoryCheckin)
-                       {
+                    {
+                        if (item.Key == keyFilePathHistory130)
+                        {
+                            directoryPathXML130 = item.Value;
+                            txtFilePath130.Text = item.Value;
+                        }
+                        else if (item.Key == keyFilePathHistory4210)
+                        {
+                            directoryPathXML4210 = item.Value;
+                            txtFilePath4210.Text = item.Value;
+                        }
+                        else if (item.Key == keyFilePathHistoryCheckin)
+                        {
                             directoryPathXMLCheckin = item.Value;
                             txtFilePathCheckin.Text = item.Value;
-                       }
-                       //
+                        }
+                        //
                         if (item.Key == keyExecutionCycleTime130)
                         {
                             spinExecutionCycleTime130.Value = Convert.ToDecimal(item.Value);
@@ -1349,49 +1261,31 @@ namespace HIS.Desktop.Plugins.SyncHsskSyt
                 SaveExecutionCycleTimeHistory();
             }
         }
-        #endregion
-
-        private void btnChooseFileCheckin_Click(object sender, EventArgs e)
+        private void btnChoosePath_Click(object sender, EventArgs e)
         {
             try
             {
-                using (OpenFileDialog openFileDialog = new OpenFileDialog())
+                var pathMap = new Dictionary<ButtonEdit, Tuple<TextEdit, Action<string>, Action>>
                 {
-                    if (txtFilePathCheckin.Text == null)
-                    {
-                        openFileDialog.InitialDirectory = "c:\\";
-                    }
-                    else
-                    {
-                        openFileDialog.InitialDirectory = txtFilePathCheckin.Text;
-                    }
-                    //openFileDialog.Filter = "All files (*.*)|*.*";
-                    openFileDialog.Filter = "XML files (*.xml)|*.xml|All files (*.*)|*.*";
-                    openFileDialog.FilterIndex = 1;
-                    openFileDialog.RestoreDirectory = true;
-                    openFileDialog.Multiselect = true;
-
-                    DialogResult result = openFileDialog.ShowDialog();
-                    if (result == DialogResult.OK)
-                    {
-                        gridViewCheckin.ClearSelection();
-                        string[] filePaths = openFileDialog.FileNames;
-
-                        // Thêm từng đường dẫn vào danh sách fileNames
-                        foreach (string filePath in filePaths)
-                        {
-                            directoryPathXMLCheckin = Path.GetDirectoryName(filePath);
-                            FileItem newItem = new FileItem()
-                            {
-                                STATUS = 0, //chưa gửi
-                                FILE_NAME = filePath
-                            };
-                            fileNamesXMLCheckin.Add(newItem);
-                        }
-                    }
+                    { btnChooseFile130, Tuple.Create(txtFilePath130, new Action<string>(val => directoryPathXML130 = val), (Action)FillDataToControlXML130) },
+                    { btnChooseFile4210, Tuple.Create(txtFilePath4210, new Action<string>(val => directoryPathXML4210 = val), (Action)FillDataToControl) },
+                    { btnChooseFileCheckin, Tuple.Create(txtFilePathCheckin, new Action<string>(val => directoryPathXMLCheckin = val), (Action)FillDataToControlXMLCheckin) }
+                };
+                var button = (ButtonEdit)sender;
+                var tuple = pathMap[button];
+                var textEdit = tuple.Item1;
+                var setDirPath = tuple.Item2;
+                var fillDataMethod = tuple.Item3;
+                FolderBrowserDialog fbd = new FolderBrowserDialog();
+                fbd.SelectedPath = string.IsNullOrWhiteSpace(textEdit.Text) ? "c:\\" : textEdit.Text;
+                if (fbd.ShowDialog() == DialogResult.OK)
+                {
+                    gridViewCheckin.ClearSelection();
+                    setDirPath(fbd.SelectedPath);
+                    textEdit.Text = fbd.SelectedPath;
                 }
                 SaveFilePathHistory();
-                FillDataToControlXMLCheckin();
+                fillDataMethod?.Invoke();
             }
             catch (Exception ex)
             {
@@ -1403,7 +1297,7 @@ namespace HIS.Desktop.Plugins.SyncHsskSyt
         {
             try
             {
-                if (TimerReset(sender, true))
+                if (TimerReset(sender))
                 {
                     return;
                 }
@@ -1438,7 +1332,7 @@ namespace HIS.Desktop.Plugins.SyncHsskSyt
                     MessageManager.ShowAlert(this.ParentForm, "", "Thư mục XML Checkin không tồn tại.");
                 }
                 FillDataToControlXMLCheckin();
-                TimerReset(sender, false);
+                TimerReset(sender);
                 WaitingManager.Hide();
             }
             catch (Exception ex)
@@ -1450,7 +1344,7 @@ namespace HIS.Desktop.Plugins.SyncHsskSyt
         {
             try
             {
-                if (TimerReset(sender, true))
+                if (TimerReset(sender))
                 {
                     return;
                 }
@@ -1560,7 +1454,7 @@ namespace HIS.Desktop.Plugins.SyncHsskSyt
                     }
                 }
                 FillDataToControlXMLCheckin();
-                TimerReset(sender, false);
+                TimerReset(sender);
                 WaitingManager.Hide();
             }
             catch (Exception ex)
