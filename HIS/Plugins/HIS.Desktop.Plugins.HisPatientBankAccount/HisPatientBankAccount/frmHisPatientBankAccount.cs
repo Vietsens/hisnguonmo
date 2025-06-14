@@ -1,41 +1,45 @@
 ﻿using DevExpress.Data;
 using DevExpress.Utils;
+using DevExpress.XtraBars.Controls;
 using DevExpress.XtraEditors;
+using DevExpress.XtraEditors.Controls;
+using DevExpress.XtraEditors.DXErrorProvider;
 using DevExpress.XtraEditors.ViewInfo;
 using DevExpress.XtraGrid.Views.Base;
+using DevExpress.XtraGrid.Views.Grid;
+using DevExpress.XtraLayout.Converter;
 using DevExpress.XtraNavBar;
-using Inventec.Common.Adapter;
-using Inventec.Common.Controls.EditorLoader;
-using Inventec.Common.Logging;
-using Inventec.Core;
-using Inventec.Desktop.Common.Message;
-using Inventec.UC.Paging;
 using HIS.Desktop.ApiConsumer;
 using HIS.Desktop.Common;
 using HIS.Desktop.Controls.Session;
 using HIS.Desktop.LibraryMessage;
 using HIS.Desktop.LocalStorage.BackendData;
 using HIS.Desktop.LocalStorage.ConfigApplication;
+using HIS.Desktop.LocalStorage.ConfigSystem;
 using HIS.Desktop.LocalStorage.LocalData;
+using HIS.Desktop.Plugins.HisPatientBankAccount.Validate;
 using HIS.Desktop.Utilities;
+using Inventec.Common.Adapter;
+using Inventec.Common.Controls.EditorLoader;
+using Inventec.Common.Logging;
+using Inventec.Core;
+using Inventec.Desktop.Common.Controls.ValidationRule;
+using Inventec.Desktop.Common.LanguageManager;
+using Inventec.Desktop.Common.Message;
+using Inventec.UC.Paging;
 using MOS.EFMODEL.DataModels;
 using MOS.Filter;
+using MOS.SDO;
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using System.Windows.Forms;
-using System.Drawing;
-using Inventec.Desktop.Common.Controls.ValidationRule;
-using DevExpress.XtraEditors.DXErrorProvider;
-using MOS.SDO;
-using Inventec.Desktop.Common.LanguageManager;
-using System.Resources;
-using DevExpress.XtraEditors.Controls;
-using DevExpress.XtraBars.Controls;
 using System.Data;
-using DevExpress.XtraLayout.Converter;
-using HIS.Desktop.LocalStorage.ConfigSystem;
+using System.Drawing;
+using System.Linq;
+using System.Resources;
+using System.Security.Cryptography;
+using System.Windows.Forms;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace HIS.Desktop.Plugins.HisPatientBankAccount.HisPatientBankAccount
 {
@@ -49,7 +53,7 @@ namespace HIS.Desktop.Plugins.HisPatientBankAccount.HisPatientBankAccount
         PagingGrid pagingGrid;
         int ActionType = -1;
         int positionHandle = -1;
-        MOS.EFMODEL.DataModels.HIS_PATIENT_BANK_ACCOUNT currentData;
+        MOS.EFMODEL.DataModels.V_HIS_PATIENT_BANK_ACCOUNT currentVData;
         DelegateSelectData delegateSelectData1;
 
         private HIS_TREATMENT currentTreatment;
@@ -89,14 +93,14 @@ namespace HIS.Desktop.Plugins.HisPatientBankAccount.HisPatientBankAccount
         }
         #endregion
 
-        
+
         #region Private method
         private void frmHisPatientBankAccount_load(object sender, EventArgs e)
         {
             try
             {
                 ShowInfo();
-              
+
             }
             catch (Exception ex)
             {
@@ -108,11 +112,17 @@ namespace HIS.Desktop.Plugins.HisPatientBankAccount.HisPatientBankAccount
         {
             try
             {
+                btnChooseItem.Enabled = false;
                 DisplayPatientInfo(currentTreatment);
-                EnableControlChanged(this.ActionType);
-                FillDataToEditorControl(currentData);
+                SetDefaultValue();
+                if (currentVData != null)
+                {
+                    FillDataToEditorControl(currentVData);
+                }
                 InitComboBankPayer();
                 FillDataToGridControl();
+                ValidateForm();
+
 
 
             }
@@ -121,12 +131,69 @@ namespace HIS.Desktop.Plugins.HisPatientBankAccount.HisPatientBankAccount
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
-
+        private void ValidationControlTxtRelation()
+        {
+            try
+            {
+                ValidControlTextEdit validRule = new ValidControlTextEdit();
+                validRule.txtEdit = txtRelation;
+                validRule.ErrorType = ErrorType.Warning;
+                dxValidationProviderEditorInfo.SetValidationRule(txtRelation, validRule);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+        private void ValidationControlTxtReceiver()
+        {
+            try
+            {
+                ValidControlTextEdit validRule = new ValidControlTextEdit();
+                validRule.txtEdit = txtReceiver;
+                validRule.ErrorType = ErrorType.Warning;
+                dxValidationProviderEditorInfo.SetValidationRule(txtReceiver, validRule);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+        private void ValidationControlTxtAccNumbern()
+        {
+            try
+            {
+                ValidControlTextEdit validRule = new ValidControlTextEdit();
+                validRule.txtEdit = txtAccNumber;
+                validRule.ErrorType = ErrorType.Warning;
+                dxValidationProviderEditorInfo.SetValidationRule(txtAccNumber, validRule);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+        private void ValidationControlGridLookUpEdit(GridLookUpEdit gridLookUpEdit, bool isVisible)
+        {
+            try
+            {
+                ValidGridLookUp validRule = new ValidGridLookUp();
+                validRule.gridLookUpEdit = gridLookUpEdit;
+                validRule.isVisible = isVisible;
+                validRule.ErrorText = HIS.Desktop.LibraryMessage.MessageUtil.GetMessage(HIS.Desktop.LibraryMessage.Message.Enum.TruongDuLieuBatBuoc);
+                validRule.ErrorType = ErrorType.Warning;
+                dxValidationProviderEditorInfo.SetValidationRule(gridLookUpEdit, validRule);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
         private void SetCaptionByLanguageKey()
         {
             try
             {
-                if(delegateSelectData1!=null)
+                if (delegateSelectData1 != null)
                 {
                     V_HIS_PATIENT_BANK_ACCOUNT data = new V_HIS_PATIENT_BANK_ACCOUNT();
                     delegateSelectData1(data);
@@ -148,9 +215,6 @@ namespace HIS.Desktop.Plugins.HisPatientBankAccount.HisPatientBankAccount
                 txtSearch.Text = "";
                 ResetFormData();
                 EnableControlChanged(this.ActionType);
-                CommonParam param = new CommonParam();
-                HisAreaFilter filter = new HisAreaFilter();
-                filter.IS_ACTIVE = IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE;
 
             }
             catch (Exception ex)
@@ -163,11 +227,17 @@ namespace HIS.Desktop.Plugins.HisPatientBankAccount.HisPatientBankAccount
         {
             try
             {
-                cboListBank.EditValue = "";
-                txtAccNumber.Text = ""; 
+                cboListBank.EditValue = null;
+                txtAccNumber.Text = "";
                 txtReceiver.Text = "";
                 txtRelation.Text = "";
-                    
+                dxValidationProviderEditorInfo.RemoveControlError(txtAccNumber);
+                dxValidationProviderEditorInfo.RemoveControlError(cboListBank);
+                dxValidationProviderEditorInfo.RemoveControlError(txtReceiver);
+                dxValidationProviderEditorInfo.RemoveControlError(txtRelation);
+
+
+                dxErrorProvider.ClearErrors(); 
             }
             catch (Exception ex)
             {
@@ -263,12 +333,14 @@ namespace HIS.Desktop.Plugins.HisPatientBankAccount.HisPatientBankAccount
             }
         }
 
+
         /// <summary>
         /// Ham goi api lay du lieu phan trang
         /// </summary>
         /// <param name="param"></param>
         private void LoadPaging(object param)
         {
+
             try
             {
 
@@ -277,8 +349,9 @@ namespace HIS.Desktop.Plugins.HisPatientBankAccount.HisPatientBankAccount
                 CommonParam paramCommon = new CommonParam(startPage, limit);
 
                 HisPatientBankAccountViewFilter filter = new HisPatientBankAccountViewFilter();
+                filter.PATIENT_ID = currentTreatment.PATIENT_ID;
                 filter.IS_ACTIVE = IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE;
-
+                filter.KEY_WORD = txtSearch.Text.Trim();
                 filter.ORDER_DIRECTION = "DESC";
                 filter.ORDER_FIELD = "MODIFY_TIME";
 
@@ -316,23 +389,14 @@ namespace HIS.Desktop.Plugins.HisPatientBankAccount.HisPatientBankAccount
         }
         #endregion
 
-        private void SetFilterNavBar(ref HisCashierRoomViewFilter filter)
-        {
-            try
-            {
-                filter.KEY_WORD = txtSearch.Text.Trim();
-            }
-            catch (Exception ex)
-            {
-                LogSystem.Error(ex);
-            }
-        }
 
         private void SaveProcess()
         {
+            if (!Validate1()) return; 
             CommonParam param = new CommonParam();
             try
             {
+
                 bool success = false;
                 if (!btnEdit.Enabled && !btnAdd.Enabled)
                     return;
@@ -346,11 +410,11 @@ namespace HIS.Desktop.Plugins.HisPatientBankAccount.HisPatientBankAccount
                 MOS.EFMODEL.DataModels.HIS_PATIENT_BANK_ACCOUNT updateDTO = new MOS.EFMODEL.DataModels.HIS_PATIENT_BANK_ACCOUNT();
                 MOS.EFMODEL.DataModels.HIS_BANK updateBank = new MOS.EFMODEL.DataModels.HIS_BANK();
 
-                if (this.currentData != null && this.currentData.ID > 0)
+                if (this.currentVData != null && this.currentVData.ID > 0)
                 {
-                    LoadCurrent(this.currentData.ID, ref updateDTO);
+                    LoadCurrent(this.currentVData.ID, ref updateDTO);
                 }
-                
+
                 UpdateDTOFromDataForm(ref updateDTO, ref updateBank);
 
                 if (ActionType == GlobalVariables.ActionAdd)
@@ -390,6 +454,8 @@ namespace HIS.Desktop.Plugins.HisPatientBankAccount.HisPatientBankAccount
                 if (success)
                 {
                     SetFocusEditor();
+                    ResetFormData();
+
                 }
 
                 WaitingManager.Hide();
@@ -409,14 +475,62 @@ namespace HIS.Desktop.Plugins.HisPatientBankAccount.HisPatientBankAccount
             }
         }
 
+        private bool Validate1()
+        {
+            bool Valid = true;
+            if (string.IsNullOrEmpty(txtAccNumber.Text))
+            {
+                dxErrorProvider.SetError(txtAccNumber, "Trường dữ liệu bắt buộc", DevExpress.XtraEditors.DXErrorProvider.ErrorType.Warning);
+                Valid = false;
+            }else if(Inventec.Common.String.CheckString.IsOverMaxLengthUTF8(txtAccNumber.Text, 100))
+            {
+                dxErrorProvider.SetError(txtAccNumber, "Trường dữ liệu vượt quá 100 ký tự", DevExpress.XtraEditors.DXErrorProvider.ErrorType.Warning);
+                Valid = false;
+            }else
+            {
+                dxErrorProvider.SetError(txtAccNumber, "", DevExpress.XtraEditors.DXErrorProvider.ErrorType.None);
+            }
+
+            if (string.IsNullOrEmpty(txtReceiver.Text))
+            {
+                dxErrorProvider.SetError(txtReceiver, "Trường dữ liệu bắt buộc", DevExpress.XtraEditors.DXErrorProvider.ErrorType.Warning);
+                Valid = false;
+            }
+            else if (Inventec.Common.String.CheckString.IsOverMaxLengthUTF8(txtReceiver.Text, 100))
+            {
+                dxErrorProvider.SetError(txtReceiver, "Trường dữ liệu vượt quá 100 ký tự", DevExpress.XtraEditors.DXErrorProvider.ErrorType.Warning);
+                Valid = false;
+            }
+            else
+            {
+                dxErrorProvider.SetError(txtReceiver, "", DevExpress.XtraEditors.DXErrorProvider.ErrorType.None);
+            }
+            if (string.IsNullOrEmpty(cboListBank.Text))
+            {
+                dxErrorProvider.SetError(cboListBank, "Trường dữ liệu bắt buộc", DevExpress.XtraEditors.DXErrorProvider.ErrorType.Warning);
+                Valid = false;
+            }
+            else
+            {
+                dxErrorProvider.SetError(cboListBank, "", DevExpress.XtraEditors.DXErrorProvider.ErrorType.None);
+            }
+            if (Inventec.Common.String.CheckString.IsOverMaxLengthUTF8(txtRelation.Text, 100))
+            {
+                dxErrorProvider.SetError(txtRelation, "Trường dữ liệu vượt quá 100 ký tự", DevExpress.XtraEditors.DXErrorProvider.ErrorType.Warning);
+                Valid = false;
+            }
+            else
+            {
+                dxErrorProvider.SetError(txtRelation, "", DevExpress.XtraEditors.DXErrorProvider.ErrorType.None);
+            }
+                return Valid;
+        }
+
         private void LoadCurrent(long currentId, ref MOS.EFMODEL.DataModels.HIS_PATIENT_BANK_ACCOUNT currentDTO)
         {
             try
             {
-                CommonParam param = new CommonParam();
-                HisPatientBankAccountViewFilter filter = new HisPatientBankAccountViewFilter();
-                filter.ID = currentId;
-                currentDTO = new BackendAdapter(param).Get<List<MOS.EFMODEL.DataModels.HIS_PATIENT_BANK_ACCOUNT>>(HisRequestUriStore.GET, ApiConsumers.MosConsumer, filter, param).FirstOrDefault();
+                Inventec.Common.Mapper.DataObjectMapper.Map<HIS_PATIENT_BANK_ACCOUNT>(currentDTO, currentVData);
             }
             catch (Exception ex)
             {
@@ -446,15 +560,23 @@ namespace HIS.Desktop.Plugins.HisPatientBankAccount.HisPatientBankAccount
 
         private void SetFocusEditor()
         {
-            throw new NotImplementedException();
+            try
+            {
+                //TODO
+
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Debug(ex);
+            }
         }
 
-       
+
         private void DisplayPatientInfo(HIS_TREATMENT patient)
         {
             try
             {
-                
+
                 Inventec.Common.Logging.LogSystem.Debug(
                     Inventec.Common.Logging.LogUtil.TraceData("Input HIS_TREATMENT:", patient));
 
@@ -472,30 +594,20 @@ namespace HIS.Desktop.Plugins.HisPatientBankAccount.HisPatientBankAccount
 
                 lblPatientCode.Text = patient.TDL_PATIENT_CODE ?? "";
                 lblPatientName.Text = patient.TDL_PATIENT_NAME ?? "";
-
-             
-                if (patient.TDL_PATIENT_DOB != null)
+                if (patient.TDL_PATIENT_IS_HAS_NOT_DAY_DOB == 1)
                 {
-                    DateTime dob;
-                    if (DateTime.TryParse(patient.TDL_PATIENT_DOB.ToString(), out dob))
+                    if (patient.TDL_PATIENT_DOB > 0)
                     {
-                        if (patient.TDL_PATIENT_IS_HAS_NOT_DAY_DOB == 1)
-                        {
-                            lblPatientDOB.Text = dob.Year.ToString();
-                        }
-                        else
-                        {
-                            lblPatientDOB.Text = dob.ToString("dd/MM/yyyy");
-                        }
+                        lblPatientDOB.Text = patient.TDL_PATIENT_DOB.ToString().Substring(0, 4); 
                     }
                     else
                     {
-                        lblPatientDOB.Text = "";
+                        lblPatientDOB.Text = ""; 
                     }
                 }
                 else
                 {
-                    lblPatientDOB.Text = "";
+                    lblPatientDOB.Text = Inventec.Common.DateTime.Convert.TimeNumberToDateString(patient.TDL_PATIENT_DOB);
                 }
 
                 lblPatientGender.Text = patient.TDL_PATIENT_GENDER_NAME ?? "";
@@ -516,15 +628,81 @@ namespace HIS.Desktop.Plugins.HisPatientBankAccount.HisPatientBankAccount
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
-       
+        #region validate
+        private void ValidateForm()
+        {
+            try
+            {
+                ValidatetxtInput(cboListBank, "Trường dữ liệu bắt buộc");
+                ValidatetxtInput(txtAccNumber, "Trường dữ liệu bắt buộc");
+                ValidatetxtInput(txtReceiver, "Trường dữ liệu bắt buộc");
 
+                ValidateMaxLengthTxt(txtAccNumber, 100);
+                ValidateMaxLengthTxt(txtReceiver, 100);
+                ValidateMaxLengthTxt(txtRelation, 100);
+                ValidationInputData(cboListBank, true);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+        #endregion
+        private void ValidateMaxLengthTxt(TextEdit txt, int maxLength)
+        {
+            try
+            {
+                ValidateMaxlength validRule = new ValidateMaxlength();
+                validRule.txt = txt;
+                validRule.maxLength = maxLength;
+                validRule.ErrorText = MessageUtil.GetMessage(LibraryMessage.Message.Enum.TruongDuLieuBatBuoc);
+                validRule.ErrorType = ErrorType.Warning;
+                dxValidationProviderEditorInfo.SetValidationRule(txt, validRule);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+        private void ValidatetxtInput(DevExpress.XtraEditors.TextEdit txtInfo, string errorText)
+        {
+            try
+            {
+                ValidatetxtInput validRule = new ValidatetxtInput();
+                validRule.txtInfo = txtInfo;
+                validRule.ErrorText = HIS.Desktop.LibraryMessage.MessageUtil.GetMessage(HIS.Desktop.LibraryMessage.Message.Enum.TruongDuLieuBatBuoc);
+                validRule.ErrorType = ErrorType.Warning;
+                dxValidationProviderEditorInfo.SetValidationRule(txtInfo, validRule);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void ValidationInputData(GridLookUpEdit gridLookUpEdit, bool isVisible)
+        {
+            try
+            {
+                ValidationGridLookUpEdit validRule = new ValidationGridLookUpEdit();
+                validRule.gridLookUpEdit = gridLookUpEdit;
+                validRule.isVisible = isVisible;
+                validRule.ErrorText = HIS.Desktop.LibraryMessage.MessageUtil.GetMessage(HIS.Desktop.LibraryMessage.Message.Enum.TruongDuLieuBatBuoc);
+                validRule.ErrorType = ErrorType.Warning;
+                dxValidationProviderEditorInfo.SetValidationRule(gridLookUpEdit, validRule);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
         private void gridViewFormList_KeyDown(object sender, KeyEventArgs e)
         {
             try
             {
                 if (e.KeyCode == Keys.Enter)
                 {
-                    var rowData = (MOS.EFMODEL.DataModels.HIS_PATIENT_BANK_ACCOUNT)gridViewFormList.GetFocusedRow();
+                    var rowData = (MOS.EFMODEL.DataModels.V_HIS_PATIENT_BANK_ACCOUNT)gridViewFormList.GetFocusedRow();
                     if (rowData != null)
                     {
                         ChangedDataRow(rowData);
@@ -541,19 +719,20 @@ namespace HIS.Desktop.Plugins.HisPatientBankAccount.HisPatientBankAccount
         }
 
 
-        
-        private void ChangedDataRow(MOS.EFMODEL.DataModels.HIS_PATIENT_BANK_ACCOUNT data)
+
+        private void ChangedDataRow(MOS.EFMODEL.DataModels.V_HIS_PATIENT_BANK_ACCOUNT data)
         {
             try
             {
                 if (data != null)
                 {
+                    this.currentVData = data;
                     FillDataToEditorControl(data);
                     this.ActionType = GlobalVariables.ActionEdit;
                     EnableControlChanged(this.ActionType);
 
 
-                    btnEdit.Enabled = (this.currentData.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE);
+                    btnEdit.Enabled = (this.currentVData.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE);
 
                     positionHandle = -1;
                     Inventec.Desktop.Controls.ControlWorker.ValidationProviderRemoveControlError(dxValidationProviderEditorInfo, dxErrorProvider);
@@ -564,6 +743,7 @@ namespace HIS.Desktop.Plugins.HisPatientBankAccount.HisPatientBankAccount
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
+
         private void InitComboBankPayer()
         {
             try
@@ -576,7 +756,7 @@ namespace HIS.Desktop.Plugins.HisPatientBankAccount.HisPatientBankAccount
                 columnInfos.Add(new ColumnInfo("BANK_CODE", "", 100, 1));
                 columnInfos.Add(new ColumnInfo("BANK_NAME", "", 250, 2));
                 ControlEditorADO controlEditorADO = new ControlEditorADO("BANK_NAME", "ID", columnInfos, false, 350);
-                
+
                 ControlEditorLoader.Load(cboListBank, data, controlEditorADO);
                 cboListBank.Properties.ImmediatePopup = true;
             }
@@ -585,38 +765,42 @@ namespace HIS.Desktop.Plugins.HisPatientBankAccount.HisPatientBankAccount
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
-        private void FillDataToEditorControl(MOS.EFMODEL.DataModels.HIS_PATIENT_BANK_ACCOUNT data)
+        private void FillDataToEditorControl(MOS.EFMODEL.DataModels.V_HIS_PATIENT_BANK_ACCOUNT currentData)
         {
+
             try
             {
-        
-              
-               
-                if (data != null)
+                if (currentData != null)
                 {
-                    
+                    cboListBank.EditValue = currentData.PAYEE_BANK_ID;
+                    txtAccNumber.Text = currentData.PAYEE_ACCOUNT_NUMBER;
+                    txtReceiver.Text = currentData.PAYEE_NAME;
+                    txtRelation.Text = currentData.RELATION_NAME;
+                }
 
-                    txtAccNumber.Text = data.PAYEE_ACCOUNT_NUMBER ?? string.Empty;
-                    txtReceiver.Text = data.PAYEE_NAME ?? string.Empty;
-                    txtRelation.Text = data.RELATION_NAME ?? string.Empty;
-                }
-                else
-                {
-                  
-                    cboListBank.EditValue = null;
-                    txtAccNumber.Text = string.Empty;
-                    txtReceiver.Text = string.Empty;
-                    txtRelation.Text = string.Empty;
-                }
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
+
+
+
         }
-       
 
 
+        private void gridViewFormList_CustomRowCellEdit(object sender, DevExpress.XtraGrid.Views.Grid.CustomRowCellEditEventArgs e)
+        {
+            try
+            {
+                DevExpress.XtraGrid.Views.Grid.GridView view = sender as DevExpress.XtraGrid.Views.Grid.GridView;
+
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
         private void gridViewFormList_CustomUnboundColumnData(object sender, DevExpress.XtraGrid.Views.Base.CustomColumnDataEventArgs e)
         {
             try
@@ -656,7 +840,7 @@ namespace HIS.Desktop.Plugins.HisPatientBankAccount.HisPatientBankAccount
                             Inventec.Common.Logging.LogSystem.Warn("Loi set gia tri cho cot ngay tao MODIFY_TIME", ex);
                         }
                     }
-                    
+
 
 
 
@@ -669,9 +853,68 @@ namespace HIS.Desktop.Plugins.HisPatientBankAccount.HisPatientBankAccount
             }
         }
         #region handleEvent
+        private void btnSearch_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                FillDataToGridControl();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+        private void txtKeyword_KeyUp(object sender, KeyEventArgs e)
+        {
+            try
+            {
+                if (e.KeyCode == Keys.Enter)
+                {
+                    btnSearch_Click(null, null);
+                }
+                else if (e.KeyCode == Keys.Down)
+                {
+                    gridViewFormList.Focus();
+                    gridViewFormList.FocusedRowHandle = 0;
+                    var rowData = (MOS.EFMODEL.DataModels.V_HIS_PATIENT_BANK_ACCOUNT)gridViewFormList.GetFocusedRow();
+                    if (rowData != null)
+                    {
+                        ChangedDataRow(rowData);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+        private void gridViewFormList_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                var rowData = (MOS.EFMODEL.DataModels.V_HIS_PATIENT_BANK_ACCOUNT)gridViewFormList.GetFocusedRow();
+                if (rowData != null)
+                {
+                    btnChooseItem.Enabled = true;
+                    currentVData = rowData;
+                    ChangedDataRow(rowData);
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
         private void btnEdit_Click(object sender, EventArgs e)
         {
-            SaveProcess();
+            try
+            {
+                SaveProcess();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
 
         }
         private void btnAdd_Click(object sender, EventArgs e)
@@ -679,7 +922,7 @@ namespace HIS.Desktop.Plugins.HisPatientBankAccount.HisPatientBankAccount
             try
             {
                 SaveProcess();
-                ResetFormData();
+               
             }
             catch (Exception ex)
             {
@@ -704,13 +947,13 @@ namespace HIS.Desktop.Plugins.HisPatientBankAccount.HisPatientBankAccount
         {
             try
             {
-                var rowData = (MOS.EFMODEL.DataModels.HIS_PATIENT_BANK_ACCOUNT)gridViewFormList.GetFocusedRow();
+                var rowData = (MOS.EFMODEL.DataModels.V_HIS_PATIENT_BANK_ACCOUNT)gridViewFormList.GetFocusedRow();
                 if (rowData != null)
                 {
-                    currentData = rowData;
+                    currentVData = rowData;
                     ChangedDataRow(rowData);
 
-              
+
                     SetFocusEditor();
                 }
             }
@@ -726,7 +969,7 @@ namespace HIS.Desktop.Plugins.HisPatientBankAccount.HisPatientBankAccount
             {
                 if (e.KeyCode == Keys.Enter)
                 {
-                    var rowData = (MOS.EFMODEL.DataModels.HIS_PATIENT_BANK_ACCOUNT)gridViewFormList.GetFocusedRow();
+                    var rowData = (MOS.EFMODEL.DataModels.V_HIS_PATIENT_BANK_ACCOUNT)gridViewFormList.GetFocusedRow();
                     if (rowData != null)
                     {
                         ChangedDataRow(rowData);
@@ -761,7 +1004,6 @@ namespace HIS.Desktop.Plugins.HisPatientBankAccount.HisPatientBankAccount
                         if (success)
                         {
                             FillDataToGridControl();
-                            currentData = ((List<HIS_PATIENT_BANK_ACCOUNT>)gridControlFormList.DataSource).FirstOrDefault();
                         }
                         MessageManager.Show(this, param, success);
                     }
@@ -823,7 +1065,7 @@ namespace HIS.Desktop.Plugins.HisPatientBankAccount.HisPatientBankAccount
 
                 HisPatientFilter patientFilter = new HisPatientFilter();
 
-                patientFilter.ID = currentTreatment.ID;
+                patientFilter.ID = currentTreatment.PATIENT_ID;
 
                 var patient = new Inventec.Common.Adapter.BackendAdapter(param).Get<List<MOS.EFMODEL.DataModels.V_HIS_PATIENT>>
                     (HisRequestUriStore.GETPTVIEW, ApiConsumer.ApiConsumers.MosConsumer, patientFilter, param);
@@ -831,7 +1073,7 @@ namespace HIS.Desktop.Plugins.HisPatientBankAccount.HisPatientBankAccount
 
                 HisPatientBankAccountFilter bankFilter = new HisPatientBankAccountFilter();
 
-                bankFilter.ID = currentData.ID;
+                bankFilter.ID = currentVData.ID;
 
                 var bank = new Inventec.Common.Adapter.BackendAdapter(param).Get<List<MOS.EFMODEL.DataModels.V_HIS_PATIENT_BANK_ACCOUNT>>
                     (HisRequestUriStore.GETVIEW, ApiConsumer.ApiConsumers.MosConsumer, bankFilter, param);
@@ -845,7 +1087,7 @@ namespace HIS.Desktop.Plugins.HisPatientBankAccount.HisPatientBankAccount
                     printerName = GlobalVariables.dicPrinter[printTypeCode];
                 }
 
-                Inventec.Common.SignLibrary.ADO.InputADO inputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode((this.currentData.GROUP_CODE), printTypeCode, currentModuleBase.RoomId);
+                Inventec.Common.SignLibrary.ADO.InputADO inputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode((this.currentTreatment.TREATMENT_CODE), printTypeCode, currentModuleBase.RoomId);
                 WaitingManager.Hide();
                 if (ConfigApplications.CheDoInChoCacChucNangTrongPhanMem == 2)
                 {
@@ -862,6 +1104,53 @@ namespace HIS.Desktop.Plugins.HisPatientBankAccount.HisPatientBankAccount
                 WaitingManager.Hide();
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
+        }
+
+        private void btnChooseItem_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (currentVData != null)
+                {
+                    V_HIS_PATIENT_BANK_ACCOUNT currentDTO = new V_HIS_PATIENT_BANK_ACCOUNT();
+                    //Inventec.Common.Mapper.DataObjectMapper.Map<HIS_PATIENT_BANK_ACCOUNT>(currentDTO, currentVData);
+                    if (delegateSelectData1 != null)
+                        delegateSelectData1(currentVData);
+                    Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(" Filter input:", currentVData));
+                }
+                this.Close();
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
+        }
+        protected override bool ProcessCmdKey(ref System.Windows.Forms.Message msg, Keys keyData)
+        {
+
+            if (keyData == (Keys.Control | Keys.N))
+            {
+                btnAdd.PerformClick();
+                return true;
+            }
+            if (keyData == (Keys.Control | Keys.S))
+            {
+                btnEdit.PerformClick();
+                return true;
+            }
+            if (keyData == (Keys.Control | Keys.R))
+            {
+                btnReset.PerformClick();
+                return true;
+            }
+            if (keyData == (Keys.Control | Keys.R))
+            {
+                btnSearch.PerformClick();
+                return true;
+            }
+
+            return base.ProcessCmdKey(ref msg, keyData);
         }
     }
 }
