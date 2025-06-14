@@ -676,7 +676,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                 CommonParam param = new CommonParam();
                 Inventec.Common.Logging.LogSystem.Debug("INPUT DATA:__api/HisServiceReq/KskExecuteV2 " + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => sdo), sdo));
                 KskExecuteResultV2SDO result = new BackendAdapter(param).Post<KskExecuteResultV2SDO>("api/HisServiceReq/KskExecuteV2", ApiConsumers.MosConsumer, sdo, param);
-                Inventec.Common.Logging.LogSystem.Debug("INPUT DATA:__api/HisServiceReq/KskExecuteV2 " + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => result), result));
+                //Inventec.Common.Logging.LogSystem.Debug("INPUT DATA:__api/HisServiceReq/KskExecuteV2 " + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => result), result));
                 if (result != null)
                 {       
                     success = true;
