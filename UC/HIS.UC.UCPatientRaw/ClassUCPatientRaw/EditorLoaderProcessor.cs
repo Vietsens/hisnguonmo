@@ -39,7 +39,6 @@ namespace HIS.UC.UCPatientRaw.ClassUCPatientRaw
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
-
         internal static void InitComboCommon(Control cboEditor, object data, string valueMember, string displayMember, int displayMemberWidth, string displayMemberCode, int displayMemberCodeWidth)
         {
             try

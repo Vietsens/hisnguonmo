@@ -53,6 +53,7 @@ using HIS.Desktop.LocalStorage.HisConfig;
 using System.Resources;
 using Inventec.Desktop.Common.LanguageManager;
 using SDA.EFMODEL.DataModels;
+using System.Runtime.ConstrainedExecution;
 
 namespace HIS.UC.UCPatientRaw
 {
@@ -107,6 +108,7 @@ namespace HIS.UC.UCPatientRaw
         private UCPatientRawADO _UCPatientRawADO { get; set; }//Luu data de check TT
         public bool isAlertTreatmentEndInDay { get; set; }
         public ResultDataADO ResultDataADO { get; set; }
+        HIS_RECEPTION_ROOM currentReception = new HIS_RECEPTION_ROOM();
 
         List<HIS_PATIENT_TYPE> primaryPatientTypes = new List<HIS_PATIENT_TYPE>();
         List<HIS_PATIENT_TYPE> paties = new List<HIS_PATIENT_TYPE>();
@@ -265,17 +267,15 @@ namespace HIS.UC.UCPatientRaw
 
         public void LoadDataCboDoiTuong(long roomId)
         {
-            try
+            try     
             {
                 List<long> patientIds = new List<long>();
                 List<MOS.EFMODEL.DataModels.HIS_PATIENT_TYPE> resultPatient = new List<MOS.EFMODEL.DataModels.HIS_PATIENT_TYPE>();
                 if (paties != null && paties.Count > 0)
                 {
-
                     patientIds = paties.Select(o => o.ID).ToList();
-
-
                     var dataRecption = BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_RECEPTION_ROOM>().Where(o => o.ROOM_ID == roomId).ToList();
+
                     if (dataRecption != null && dataRecption.Count > 0)
                     {
                         HIS_RECEPTION_ROOM currentReception = dataRecption.FirstOrDefault();
@@ -292,8 +292,8 @@ namespace HIS.UC.UCPatientRaw
                                     }
                                 }
                             }
-
                         }
+
                         if (resultPatient != null && resultPatient.Count > 0)
                         {
                             if (resultPatient.Count == 1)
@@ -302,11 +302,43 @@ namespace HIS.UC.UCPatientRaw
                             }
                             paties = resultPatient;
                         }
+                        if (string.IsNullOrWhiteSpace(HIS.Desktop.Plugins.Library.RegisterConfig.AppConfigs.PatientTypeCodeDefault))
+                        {
+                            MOS.EFMODEL.DataModels.HIS_PATIENT_TYPE defaultPatientType = null;
+
+                            if (currentReception.DEFAULT_PATIENT_TYPE_ID.HasValue)
+                            {
+                                defaultPatientType = BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_PATIENT_TYPE>()
+                                    .Where(o => o.ID == currentReception.DEFAULT_PATIENT_TYPE_ID.Value
+                                               && o.IS_ACTIVE == 1
+                                               && (o.IS_NOT_USE_FOR_PATIENT == null || o.IS_NOT_USE_FOR_PATIENT != 1))
+                                    .FirstOrDefault();
+                            }
+
+                            if (defaultPatientType != null && !paties.Any(p => p.ID == defaultPatientType.ID))
+                            {
+                                paties.Insert(0, defaultPatientType);
+                            }
+
+                            EditorLoaderProcessor.InitComboCommon(this.cboPatientType, paties, "ID", "PATIENT_TYPE_NAME", "PATIENT_TYPE_CODE");
+
+                            if (defaultPatientType != null)
+                            {
+                                this.BeginInvoke(new MethodInvoker(() =>
+                                {
+                                    this.cboPatientType.EditValue = defaultPatientType.ID;
+
+                                    //this.cboPatientType.EditValueChanged += cboPatientType_EditValueChanged;
+
+                                    this.txtPatientTypeCode.Text = defaultPatientType.PATIENT_TYPE_CODE;
+                                    this.isTemp_QN = (defaultPatientType.PATIENT_TYPE_CODE == HIS.Desktop.Plugins.Library.RegisterConfig.HisConfigCFG.PatientTypeCode__QN);
+                                    this.currentPatientType = defaultPatientType;
+                                }));
+                            }
+                        }
+                        EditorLoaderProcessor.InitComboCommon(this.cboPatientType, paties, "ID", "PATIENT_TYPE_NAME", "PATIENT_TYPE_CODE");
                     }
-
                 }
-                EditorLoaderProcessor.InitComboCommon(this.cboPatientType, paties, "ID", "PATIENT_TYPE_NAME", "PATIENT_TYPE_CODE");
-
             }
             catch (Exception ex)
             {
@@ -1306,7 +1338,7 @@ namespace HIS.UC.UCPatientRaw
                                 this.isEnable(true, null);
                             else
                                 this.isEnable(null, false);
-                        }
+                        }   
                         else
                         {
                             Inventec.Common.Logging.LogSystem.Debug("UcPatientRaw__cboPatientType_EditValueChanged____ isEnable is null");
@@ -1922,28 +1954,50 @@ namespace HIS.UC.UCPatientRaw
             }
         }
 
-        private void LoadDataComboPrimaryPatientType()
+        public void LoadDataComboPrimaryPatientType(long? roomId = null)
         {
             try
             {
-                if (HisConfigCFG.IsSetPrimaryPatientType == "2")
+                primaryPatientTypes = new List<HIS_PATIENT_TYPE>();
+                HIS_PATIENT_TYPE defaultBillPatientType = null;
+                if (roomId != null)
                 {
-                    primaryPatientTypes = new List<HIS_PATIENT_TYPE>();
-                    var patyAlows = BackendDataWorker.Get<V_HIS_PATIENT_TYPE_ALLOW>();
-                    if (this.currentPatientType != null)
+                    var dataRecption = BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_RECEPTION_ROOM>().Where(o => o.ROOM_ID == roomId).ToList();
+                    HIS_RECEPTION_ROOM currentReception = dataRecption.FirstOrDefault();
+                    if (currentReception != null && currentReception.BILL_PATIENT_TYPE_ID != null)
                     {
-                        primaryPatientTypes = BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_PATIENT_TYPE>().Where(p => p.IS_ACTIVE == 1 && p.ID != this.currentPatientType.ID
-                            && patyAlows != null && patyAlows.Any(a => a.PATIENT_TYPE_ID == this.currentPatientType.ID && a.PATIENT_TYPE_ALLOW_ID == p.ID)).ToList();
+                        primaryPatientTypes = BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_PATIENT_TYPE>()
+                            .Where(p => p.IS_ACTIVE == 1 && p.IS_ADDITION == 1 && p.ID == currentReception.BILL_PATIENT_TYPE_ID).ToList();
+                        defaultBillPatientType = primaryPatientTypes.FirstOrDefault();
                     }
-                    if (this.cboPrimaryPatientType.EditValue != null && (this.currentPatientType == null || this.currentPatientType.ID == Convert.ToInt64(cboPrimaryPatientType.EditValue)))
+                }
+                else
+                {
+                    if (HisConfigCFG.IsSetPrimaryPatientType == "2")
                     {
-                        this.cboPrimaryPatientType.EditValue = null;
+                        var patyAlows = BackendDataWorker.Get<V_HIS_PATIENT_TYPE_ALLOW>();
+                        if (this.currentPatientType != null)
+                        {
+                            primaryPatientTypes = BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_PATIENT_TYPE>().Where(p => p.IS_ACTIVE == 1 && p.ID != this.currentPatientType.ID
+                                && patyAlows != null && patyAlows.Any(a => a.PATIENT_TYPE_ID == this.currentPatientType.ID && a.PATIENT_TYPE_ALLOW_ID == p.ID)).ToList();
+                        }
+                        if (this.cboPrimaryPatientType.EditValue != null && (this.currentPatientType == null || this.currentPatientType.ID == Convert.ToInt64(cboPrimaryPatientType.EditValue)))
+                        {
+                            this.cboPrimaryPatientType.EditValue = null;
+                        }
+                        if (this.cboPrimaryPatientType.EditValue != null && (primaryPatientTypes == null || !primaryPatientTypes.Any(a => a.ID == Convert.ToInt64(this.cboPrimaryPatientType.EditValue))))
+                        {
+                            this.cboPrimaryPatientType.EditValue = null;
+                        }
                     }
-                    if (this.cboPrimaryPatientType.EditValue != null && (primaryPatientTypes == null || !primaryPatientTypes.Any(a => a.ID == Convert.ToInt64(this.cboPrimaryPatientType.EditValue))))
+                }
+                EditorLoaderProcessor.InitComboCommon(this.cboPrimaryPatientType, primaryPatientTypes, "ID", "PATIENT_TYPE_NAME", "PATIENT_TYPE_CODE");
+                if (defaultBillPatientType != null)
+                {
+                    this.BeginInvoke(new MethodInvoker(() =>
                     {
-                        this.cboPrimaryPatientType.EditValue = null;
-                    }
-                    EditorLoaderProcessor.InitComboCommon(this.cboPrimaryPatientType, primaryPatientTypes, "ID", "PATIENT_TYPE_NAME", "PATIENT_TYPE_CODE");
+                        this.cboPrimaryPatientType.EditValue = defaultBillPatientType.ID;
+                    }));
                 }
             }
             catch (Exception ex)
