@@ -73,6 +73,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AggrExpMestPrintSDO.cs" />
+    <Compile Include="AnalyzeImageADO.cs" />
     <Compile Include="AntibioticRequestADO.cs" />
     <Compile Include="ApproveAggrExpMestSDO.cs" />
     <Compile Include="AssignBloodADO.cs" />
