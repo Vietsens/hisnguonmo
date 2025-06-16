@@ -221,7 +221,7 @@ namespace HIS.Desktop.Plugins.RepayService.RepayService
         {
             try
             {
-                if (hisTransactionRepaySDO != null && hisTransactionRepaySDO.Transaction != null)
+                if (hisTransactionRepaySDO != null && hisTransactionRepaySDO.Transaction != null && hisTransactionRepaySDO.Transaction.PATIENT_BANK_ACCOUNT_ID > 0)
                 {
                     CommonParam param = new CommonParam();
                     MOS.Filter.HisPatientBankAccountFilter filter = new MOS.Filter.HisPatientBankAccountFilter();
@@ -2297,12 +2297,12 @@ namespace HIS.Desktop.Plugins.RepayService.RepayService
             {
                 if (data != null)
                 {
-                    HIS_PATIENT_BANK_ACCOUNT bankAccount = data as HIS_PATIENT_BANK_ACCOUNT;
+                    V_HIS_PATIENT_BANK_ACCOUNT bankAccount = data as V_HIS_PATIENT_BANK_ACCOUNT;
                     _patientBankAccountId = bankAccount.ID;
 
                     string relationship = !string.IsNullOrEmpty(bankAccount.RELATION_NAME)
                                 ? ("(" + bankAccount.RELATION_NAME.ToString() + ")") : "";
-                    labelAccountInfo.Text = bankAccount.HIS_BANK.ToString() + " - " + bankAccount.PAYEE_ACCOUNT_NUMBER.ToString() + " - " +
+                    labelAccountInfo.Text = bankAccount.PAYEE_BANK_NAME.ToString() + " - " + bankAccount.PAYEE_ACCOUNT_NUMBER.ToString() + " - " +
                         bankAccount.PAYEE_NAME.ToString() + relationship;
                 }
                 else
