@@ -313,7 +313,7 @@ namespace EMR.Desktop.Plugins.ImportEmrViewer
                         error += string.Format(Message.ResourceLanguageManager.ThieuTruongDL, "Tên đăng nhập");
                     }
 
-
+                            
                     if (!string.IsNullOrEmpty(item.DEPARTMENT_CODE))
                     {
                         if (item.DEPARTMENT_CODE.Length > 4)
