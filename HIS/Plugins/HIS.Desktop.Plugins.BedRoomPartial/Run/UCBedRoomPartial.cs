@@ -107,6 +107,7 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
         List<HIS_PATIENT_CLASSIFY> patientClassifyFilterSelecteds = new List<HIS_PATIENT_CLASSIFY>();
         List<V_HIS_ROOM> bedRoomAlls;
         List<HIS_TREATMENT> histreatment;
+        HIS_TREATMENT _hisTreatment; 
         /// <summary>
         /// khoa mà người dùng đang làm việc
         /// </summary>

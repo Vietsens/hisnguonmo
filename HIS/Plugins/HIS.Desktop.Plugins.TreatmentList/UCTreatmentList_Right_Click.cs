@@ -50,6 +50,9 @@ using HIS.Desktop.LocalStorage.BackendData;
 using HIS.Desktop.Plugins.Library.FormMedicalRecord;
 using HIS.Desktop.Plugins.TreatmentList.Config;
 using HIS.UC.UCCauseOfDeath.ADO;
+using HIS.Desktop.Plugins.TreatmentList.ADO;
+using HIS.Desktop.Plugins.TreatmentList.Popup;
+using static DevExpress.Data.Helpers.ExpressiveSortInfo;
 
 namespace HIS.Desktop.Plugins.TreatmentList
 {
@@ -337,6 +340,15 @@ namespace HIS.Desktop.Plugins.TreatmentList
                             break;
                         case PopupMenuProcessor.ItemType.InDonThuocPTTT:
                             ThongTinInDonThuocPTTT();
+                            break;
+                        case PopupMenuProcessor.ItemType.BeneficiaryInfo:
+                            btnBeneficiaryInfoClick();
+                            break;
+                        case PopupMenuProcessor.ItemType.AiMedicalAnalysis:
+                            btnAiMedicalAnalysisClick();
+                            break;
+                        case PopupMenuProcessor.ItemType.AIViewChatUrlFormat:
+                            btnAIViewChatUrlFormatClick();
                             break;
                     }
                 }
@@ -3065,6 +3077,81 @@ namespace HIS.Desktop.Plugins.TreatmentList
             {
 
                 Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void btnBeneficiaryInfoClick()
+        {
+            try
+            {
+                if (currentTreatment != null)
+                {
+                    List<object> listArgs = new List<object>();
+                    listArgs.Add(currentTreatment);                
+                    WaitingManager.Hide();
+                    HIS.Desktop.ModuleExt.PluginInstanceBehavior.ShowModule("HIS.Desktop.Plugins.HisPatientBankAccount", this.currentModule.RoomId, this.currentModule.RoomTypeId, listArgs);
+                }
+                WaitingManager.Hide();
+            }
+            catch (Exception ex)
+            {
+                WaitingManager.Hide();
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+
+        }
+        private void btnAiMedicalAnalysisClick()
+        {
+            try
+            {
+                if (currentTreatment != null)
+                {
+                    var analyzeImageADO = new AnalyzeImageADO
+                    {
+                        TreatmentId = currentTreatment.ID
+                    };
+                    List<object> listArgs = new List<object>();
+                    listArgs.Add(analyzeImageADO);
+                    WaitingManager.Hide();
+                    HIS.Desktop.ModuleExt.PluginInstanceBehavior.ShowModule("HIS.Desktop.Plugins.AnalyzeMedicalImage", this.currentModule.RoomId, this.currentModule.RoomTypeId, listArgs);
+                }
+                WaitingManager.Hide();
+            }
+            catch (Exception ex)
+            {
+                WaitingManager.Hide();
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+
+        }
+        private void btnAIViewChatUrlFormatClick()
+        {
+            try
+            {
+                currentTreatment = (V_HIS_TREATMENT_4)gridViewtreatmentList.GetFocusedRow();
+                if (currentTreatment == null) return;
+                if (string.IsNullOrWhiteSpace(HisConfigCFG.AIViewChatUrlFormat)) return;
+                if (string.IsNullOrWhiteSpace(currentTreatment.PERSON_CODE) && string.IsNullOrWhiteSpace(currentTreatment.TDL_PATIENT_CCCD_NUMBER)) return;
+                string id = string.Empty;
+                if (!string.IsNullOrWhiteSpace(currentTreatment.PERSON_CODE))
+                {
+                    id = currentTreatment.PERSON_CODE;
+                }
+                else
+                {
+                    id = "cccd:" + currentTreatment.TDL_PATIENT_CCCD_NUMBER;
+                }
+                string url = HisConfigCFG.AIViewChatUrlFormat.Replace("<ID>", id);
+                frmAIViewChatUrlFormat frm = new frmAIViewChatUrlFormat(url);
+                frm.ShowDialog();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+            finally
+            {
+                WaitingManager.Hide();
             }
         }
     }

@@ -246,4 +246,7 @@
   <data name="frmHisBedRoomList.Text" xml:space="preserve">
     <value />
   </data>
+  <data name="frmHisBedRoomList.PayerAccount.Caption" xml:space="preserve">
+    <value>&#x8;</value>
+  </data>
 </root>

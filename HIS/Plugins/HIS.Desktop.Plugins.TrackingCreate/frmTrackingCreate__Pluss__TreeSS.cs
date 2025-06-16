@@ -54,8 +54,7 @@ namespace HIS.Desktop.Plugins.TrackingCreate
         {
             try
             {
-                //SetCheckChildNode(e.Node, e.Node.CheckState);
-                // SetCheckParentNode(e.Node, e.Node.CheckState);
+                UpdateGoiYAIButtonState();
             }
             catch (Exception ex)
             {

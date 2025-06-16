@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace HIS.Desktop.Plugins.BedRoomPartial.ADO
+namespace HIS.Desktop.Plugins.HisPatientBankAccount.HisPatientBankAccount
 {
-    public class AnalyzeImageADO
+    interface  IHisPatientBankAccount
     {
-        public long? TreatmentId { get; set; }
+        object Run();
     }
 }

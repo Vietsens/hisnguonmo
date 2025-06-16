@@ -155,7 +155,7 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
             try
             {
 
-                Inventec.Common.Logging.LogSystem.Debug("UCRegister_Load .1");
+                Inventec.Common.Logging.LogSystem.Debug("UCRegister_Load .1");   
                 timerInitForm.Enabled = true;
                 timerInitForm.Interval = 1000;
                 RegisterTimer(currentModule.ModuleLink, "timerInitForm", timerInitForm.Interval, timerInitForm_Tick);
@@ -169,6 +169,7 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
                 this.InitControlState();
                 Inventec.Common.Logging.LogSystem.Debug("UCRegister_Load .3");
                 this.ucPatientRaw1.LoadDataCboDoiTuong(roomId);
+                this.ucPatientRaw1.LoadDataComboPrimaryPatientType(roomId);
                 this.ucPatientRaw1.InitData(PatientTypeEditValueChanged, GetIntructionTime, PatientClassifyChanged);
                 Inventec.Common.Logging.LogSystem.Debug("UCRegister_Load .4");
                 SetDelegateForResetRegister();
@@ -1060,6 +1061,8 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
                 this.IsReadCardTheViet = false;
                 this.isCheckSS = false;
                 this.RefreshUserControl();
+                this.ucPatientRaw1.LoadDataCboDoiTuong(roomId);
+                this.ucPatientRaw1.LoadDataComboPrimaryPatientType(roomId);
                 var patientTypeDefault = HIS.Desktop.Plugins.Library.RegisterConfig.AppConfigs.PatientTypeDefault;
                 if (!(patientTypeDefault != null && patientTypeDefault.ID > 0) && !HIS.Desktop.Plugins.Library.RegisterConfig.HisConfigCFG.UsingPatientTypeOfPreviousPatient)
                 {
