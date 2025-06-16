@@ -35,7 +35,7 @@ namespace EMR.Desktop.Plugins.ImportEmrViewer.Message
         internal const string MaNguoiKyDaKhoa = "Mã người ký {0} đã bị khóa| ";
         internal const string FileImportDaTonTai = "File import tồn tại tên đăng nhập giống nhau {0} | ";
         internal const string Khongtontai = "Tên đăng nhập {0} không tồn tại | ";
-        internal const string GioiHanAnh = "Ảnh {0} đã vượt quá giới hạn, kích thước ảnh không thuộc giới hạn dài 600px, cao 200px";
+        internal const string KhongThayKhoa = "Không tìm thấy khóa với mã khoa {0}";
 
     }
 }

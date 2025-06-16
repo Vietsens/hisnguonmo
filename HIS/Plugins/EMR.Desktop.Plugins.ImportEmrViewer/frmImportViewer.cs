@@ -301,7 +301,7 @@ namespace EMR.Desktop.Plugins.ImportEmrViewer
 
                         if (hisEmployeedatas == null)
                         {
-                            error += string.Format("Tài khoản không tồn tại: {0}", item.REQUEST_LOGINNAME);
+                            error += string.Format(Message.ResourceLanguageManager.DaTonTai, item.REQUEST_LOGINNAME);
                         }
                         else
                         {
@@ -332,7 +332,7 @@ namespace EMR.Desktop.Plugins.ImportEmrViewer
                         }
                         else
                         {
-                            error += string.Format("Không tìm thấy khoa với ID: {0}", item.DEPARTMENT_CODE);
+                            error += string.Format(Message.ResourceLanguageManager.KhongThayKhoa, item.DEPARTMENT_CODE);
                         }
                     }
                     else

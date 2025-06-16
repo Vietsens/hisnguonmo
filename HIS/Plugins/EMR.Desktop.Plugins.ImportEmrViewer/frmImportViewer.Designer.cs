@@ -93,6 +93,10 @@
             // 
             // barManager1
             // 
+            this.barManager1.DockControls.Add(this.barDockControlTop);
+            this.barManager1.DockControls.Add(this.barDockControlBottom);
+            this.barManager1.DockControls.Add(this.barDockControlLeft);
+            this.barManager1.DockControls.Add(this.barDockControlRight);
             this.barManager1.Form = this;
             this.barManager1.Items.AddRange(new DevExpress.XtraBars.BarItem[] {
             this.barButtonItem1});
@@ -176,6 +180,7 @@
             this.gridColumn1.FieldName = "STT";
             this.gridColumn1.Name = "gridColumn1";
             this.gridColumn1.OptionsColumn.AllowEdit = false;
+            this.gridColumn1.ToolTip = "STT";
             this.gridColumn1.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumn1.Visible = true;
             this.gridColumn1.VisibleIndex = 0;
@@ -199,6 +204,7 @@
             this.gridColumn3.ColumnEdit = this.repositoryItemButtonEdit2_Delete;
             this.gridColumn3.Name = "gridColumn3";
             this.gridColumn3.OptionsColumn.ShowCaption = false;
+            this.gridColumn3.ToolTip = "Xóa";
             this.gridColumn3.Visible = true;
             this.gridColumn3.VisibleIndex = 2;
             this.gridColumn3.Width = 24;
@@ -217,6 +223,7 @@
             this.gridColumn4.Caption = "Người yêu cầu";
             this.gridColumn4.FieldName = "REQUEST_USERNAME";
             this.gridColumn4.Name = "gridColumn4";
+            this.gridColumn4.ToolTip = "Người yêu cầu";
             this.gridColumn4.Visible = true;
             this.gridColumn4.VisibleIndex = 3;
             this.gridColumn4.Width = 78;
@@ -226,6 +233,7 @@
             this.gridColumn5.Caption = "Khoa yêu cầu";
             this.gridColumn5.FieldName = "DEPARTMENT_NAME";
             this.gridColumn5.Name = "gridColumn5";
+            this.gridColumn5.ToolTip = "Khoa yêu cầu";
             this.gridColumn5.Visible = true;
             this.gridColumn5.VisibleIndex = 4;
             this.gridColumn5.Width = 78;
@@ -235,6 +243,7 @@
             this.gridColumn6.Caption = "Lý do";
             this.gridColumn6.FieldName = "REASON";
             this.gridColumn6.Name = "gridColumn6";
+            this.gridColumn6.ToolTip = "Lý do";
             this.gridColumn6.Visible = true;
             this.gridColumn6.VisibleIndex = 5;
             this.gridColumn6.Width = 78;
@@ -244,6 +253,7 @@
             this.gridColumn7.Caption = "Thời gian được duyệt";
             this.gridColumn7.FieldName = "FINISH_TIME";
             this.gridColumn7.Name = "gridColumn7";
+            this.gridColumn7.ToolTip = "Thời gian được duyệt";
             this.gridColumn7.Visible = true;
             this.gridColumn7.VisibleIndex = 6;
             this.gridColumn7.Width = 78;
@@ -253,6 +263,7 @@
             this.gridColumn8.Caption = "Mã điều trị";
             this.gridColumn8.FieldName = "TREATMENT_CODE";
             this.gridColumn8.Name = "gridColumn8";
+            this.gridColumn8.ToolTip = "Mã điều trị";
             this.gridColumn8.Visible = true;
             this.gridColumn8.VisibleIndex = 7;
             this.gridColumn8.Width = 78;
@@ -262,6 +273,7 @@
             this.gridColumn9.Caption = "Mã bệnh nhân";
             this.gridColumn9.FieldName = "PATIENT_CODE";
             this.gridColumn9.Name = "gridColumn9";
+            this.gridColumn9.ToolTip = "Mã bệnh nhân";
             this.gridColumn9.Visible = true;
             this.gridColumn9.VisibleIndex = 8;
             this.gridColumn9.Width = 78;
@@ -271,6 +283,7 @@
             this.gridColumn10.Caption = "Tên bệnh nhân";
             this.gridColumn10.FieldName = "VIR_PATIENT_NAME";
             this.gridColumn10.Name = "gridColumn10";
+            this.gridColumn10.ToolTip = "Tên bệnh nhân";
             this.gridColumn10.Visible = true;
             this.gridColumn10.VisibleIndex = 9;
             this.gridColumn10.Width = 78;
@@ -280,6 +293,7 @@
             this.gridColumn11.Caption = "Thẻ BHYT";
             this.gridColumn11.FieldName = "HEIN_CARD_NUMBER";
             this.gridColumn11.Name = "gridColumn11";
+            this.gridColumn11.ToolTip = "Thẻ BHYT";
             this.gridColumn11.Visible = true;
             this.gridColumn11.VisibleIndex = 10;
             this.gridColumn11.Width = 78;
@@ -289,6 +303,7 @@
             this.gridColumn12.Caption = "Mã bệnh";
             this.gridColumn12.FieldName = "ICD_CODE";
             this.gridColumn12.Name = "gridColumn12";
+            this.gridColumn12.ToolTip = "Mã bệnh";
             this.gridColumn12.Visible = true;
             this.gridColumn12.VisibleIndex = 11;
             this.gridColumn12.Width = 114;
