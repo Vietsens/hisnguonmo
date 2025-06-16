@@ -301,7 +301,7 @@ namespace EMR.Desktop.Plugins.ImportEmrViewer
 
                         if (hisEmployeedatas == null)
                         {
-                            error += string.Format(Message.ResourceLanguageManager.DaTonTai, item.REQUEST_LOGINNAME);
+                            error += string.Format(Message.ResourceLanguageManager.Khongtontai, item.REQUEST_LOGINNAME);
                         }
                         else
                         {
