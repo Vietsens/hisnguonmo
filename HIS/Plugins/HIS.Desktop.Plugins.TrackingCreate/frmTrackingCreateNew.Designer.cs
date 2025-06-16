@@ -96,6 +96,8 @@ namespace HIS.Desktop.Plugins.TrackingCreate
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject47 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject48 = new DevExpress.Utils.SerializableAppearanceObject();
             this.layoutControl1 = new DevExpress.XtraLayout.LayoutControl();
+            this.btnGoiYAI = new DevExpress.XtraEditors.SimpleButton();
+            this.toolTipController1 = new DevExpress.Utils.ToolTipController(this.components);
             this.btnAssignPan = new DevExpress.XtraEditors.SimpleButton();
             this.btnNew = new DevExpress.XtraEditors.SimpleButton();
             this.btnPhieuVoBenhAn = new DevExpress.XtraEditors.SimpleButton();
@@ -347,7 +349,7 @@ namespace HIS.Desktop.Plugins.TrackingCreate
             this.emptySpaceItem9 = new DevExpress.XtraLayout.EmptySpaceItem();
             this.emptySpaceItem10 = new DevExpress.XtraLayout.EmptySpaceItem();
             this.emptySpaceItem11 = new DevExpress.XtraLayout.EmptySpaceItem();
-            this.toolTipController1 = new DevExpress.Utils.ToolTipController(this.components);
+            this.layoutControlItem70 = new DevExpress.XtraLayout.LayoutControlItem();
             this.imageCollection1 = new DevExpress.Utils.ImageCollection(this.components);
             this.dxValidationProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider(this.components);
             this.imageListIcon = new System.Windows.Forms.ImageList(this.components);
@@ -568,6 +570,7 @@ namespace HIS.Desktop.Plugins.TrackingCreate
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem9)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem10)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem11)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem70)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.imageCollection1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxValidationProvider1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxErrorProvider1)).BeginInit();
@@ -575,6 +578,7 @@ namespace HIS.Desktop.Plugins.TrackingCreate
             // 
             // layoutControl1
             // 
+            this.layoutControl1.Controls.Add(this.btnGoiYAI);
             this.layoutControl1.Controls.Add(this.btnAssignPan);
             this.layoutControl1.Controls.Add(this.btnNew);
             this.layoutControl1.Controls.Add(this.btnPhieuVoBenhAn);
@@ -601,6 +605,23 @@ namespace HIS.Desktop.Plugins.TrackingCreate
             this.layoutControl1.Size = new System.Drawing.Size(1263, 655);
             this.layoutControl1.TabIndex = 0;
             this.layoutControl1.Text = "layoutControl1";
+            // 
+            // btnGoiYAI
+            // 
+            this.btnGoiYAI.Location = new System.Drawing.Point(108, 621);
+            this.btnGoiYAI.Name = "btnGoiYAI";
+            this.btnGoiYAI.Size = new System.Drawing.Size(76, 22);
+            this.btnGoiYAI.StyleController = this.layoutControl1;
+            this.btnGoiYAI.TabIndex = 22;
+            this.btnGoiYAI.Text = "Gợi ý AI";
+            this.btnGoiYAI.ToolTip = "Chỉ áp dụng với các loại y lệnh nội soi, siêu âm, phẫu thuật, thủ thuật, chẩn đoá" +
+    "n hình ảnh, giải phẫu bệnh lý";
+            this.btnGoiYAI.ToolTipController = this.toolTipController1;
+            this.btnGoiYAI.Click += new System.EventHandler(this.btnGoiYAI_Click);
+            // 
+            // toolTipController1
+            // 
+            this.toolTipController1.GetActiveObjectInfo += new DevExpress.Utils.ToolTipControllerGetActiveObjectInfoEventHandler(this.toolTipController1_GetActiveObjectInfo);
             // 
             // btnAssignPan
             // 
@@ -630,7 +651,7 @@ namespace HIS.Desktop.Plugins.TrackingCreate
             this.btnPhieuVoBenhAn.Location = new System.Drawing.Point(12, 621);
             this.btnPhieuVoBenhAn.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
             this.btnPhieuVoBenhAn.Name = "btnPhieuVoBenhAn";
-            this.btnPhieuVoBenhAn.Size = new System.Drawing.Size(154, 22);
+            this.btnPhieuVoBenhAn.Size = new System.Drawing.Size(92, 22);
             this.btnPhieuVoBenhAn.StyleController = this.layoutControl1;
             this.btnPhieuVoBenhAn.TabIndex = 19;
             this.btnPhieuVoBenhAn.Text = "Phiếu vỏ bệnh án";
@@ -715,10 +736,10 @@ namespace HIS.Desktop.Plugins.TrackingCreate
             // 
             // btnKeDonThuoc
             // 
-            this.btnKeDonThuoc.Location = new System.Drawing.Point(250, 621);
+            this.btnKeDonThuoc.Location = new System.Drawing.Point(257, 621);
             this.btnKeDonThuoc.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
             this.btnKeDonThuoc.Name = "btnKeDonThuoc";
-            this.btnKeDonThuoc.Size = new System.Drawing.Size(111, 22);
+            this.btnKeDonThuoc.Size = new System.Drawing.Size(104, 22);
             this.btnKeDonThuoc.StyleController = this.layoutControl1;
             this.btnKeDonThuoc.TabIndex = 11;
             this.btnKeDonThuoc.Text = "Kê đơn dược (F8)";
@@ -737,10 +758,10 @@ namespace HIS.Desktop.Plugins.TrackingCreate
             // 
             // btnKeDonMau
             // 
-            this.btnKeDonMau.Location = new System.Drawing.Point(170, 621);
+            this.btnKeDonMau.Location = new System.Drawing.Point(188, 621);
             this.btnKeDonMau.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
             this.btnKeDonMau.Name = "btnKeDonMau";
-            this.btnKeDonMau.Size = new System.Drawing.Size(76, 22);
+            this.btnKeDonMau.Size = new System.Drawing.Size(65, 22);
             this.btnKeDonMau.StyleController = this.layoutControl1;
             this.btnKeDonMau.TabIndex = 9;
             this.btnKeDonMau.Text = "Kê đơn máu";
@@ -3206,7 +3227,8 @@ namespace HIS.Desktop.Plugins.TrackingCreate
             this.emptySpaceItem8,
             this.emptySpaceItem9,
             this.emptySpaceItem10,
-            this.emptySpaceItem11});
+            this.emptySpaceItem11,
+            this.layoutControlItem70});
             this.layoutControlGroup1.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup1.Name = "layoutControlGroup1";
             this.layoutControlGroup1.Size = new System.Drawing.Size(1263, 655);
@@ -3268,9 +3290,9 @@ namespace HIS.Desktop.Plugins.TrackingCreate
             // layoutControlItem29
             // 
             this.layoutControlItem29.Control = this.btnKeDonMau;
-            this.layoutControlItem29.Location = new System.Drawing.Point(158, 609);
+            this.layoutControlItem29.Location = new System.Drawing.Point(176, 609);
             this.layoutControlItem29.Name = "layoutControlItem29";
-            this.layoutControlItem29.Size = new System.Drawing.Size(80, 26);
+            this.layoutControlItem29.Size = new System.Drawing.Size(69, 26);
             this.layoutControlItem29.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem29.TextVisible = false;
             // 
@@ -3286,9 +3308,9 @@ namespace HIS.Desktop.Plugins.TrackingCreate
             // layoutControlItem31
             // 
             this.layoutControlItem31.Control = this.btnKeDonThuoc;
-            this.layoutControlItem31.Location = new System.Drawing.Point(238, 609);
+            this.layoutControlItem31.Location = new System.Drawing.Point(245, 609);
             this.layoutControlItem31.Name = "layoutControlItem31";
-            this.layoutControlItem31.Size = new System.Drawing.Size(115, 26);
+            this.layoutControlItem31.Size = new System.Drawing.Size(108, 26);
             this.layoutControlItem31.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem31.TextVisible = false;
             // 
@@ -3361,7 +3383,7 @@ namespace HIS.Desktop.Plugins.TrackingCreate
             this.layoutControlItem50.Location = new System.Drawing.Point(0, 609);
             this.layoutControlItem50.Name = "layoutControlItem50";
             this.layoutControlItem50.OptionsToolTip.ToolTip = "Mở phiếu chăm sóc (CS2) của vỏ bệnh án";
-            this.layoutControlItem50.Size = new System.Drawing.Size(158, 26);
+            this.layoutControlItem50.Size = new System.Drawing.Size(96, 26);
             this.layoutControlItem50.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem50.TextVisible = false;
             // 
@@ -3388,23 +3410,23 @@ namespace HIS.Desktop.Plugins.TrackingCreate
             this.emptySpaceItem2.AllowHotTrack = false;
             this.emptySpaceItem2.Location = new System.Drawing.Point(0, 585);
             this.emptySpaceItem2.Name = "emptySpaceItem2";
-            this.emptySpaceItem2.Size = new System.Drawing.Size(158, 24);
+            this.emptySpaceItem2.Size = new System.Drawing.Size(176, 24);
             this.emptySpaceItem2.TextSize = new System.Drawing.Size(0, 0);
             // 
             // emptySpaceItem4
             // 
             this.emptySpaceItem4.AllowHotTrack = false;
-            this.emptySpaceItem4.Location = new System.Drawing.Point(158, 585);
+            this.emptySpaceItem4.Location = new System.Drawing.Point(176, 585);
             this.emptySpaceItem4.Name = "emptySpaceItem4";
-            this.emptySpaceItem4.Size = new System.Drawing.Size(80, 24);
+            this.emptySpaceItem4.Size = new System.Drawing.Size(69, 24);
             this.emptySpaceItem4.TextSize = new System.Drawing.Size(0, 0);
             // 
             // emptySpaceItem5
             // 
             this.emptySpaceItem5.AllowHotTrack = false;
-            this.emptySpaceItem5.Location = new System.Drawing.Point(238, 585);
+            this.emptySpaceItem5.Location = new System.Drawing.Point(245, 585);
             this.emptySpaceItem5.Name = "emptySpaceItem5";
-            this.emptySpaceItem5.Size = new System.Drawing.Size(115, 24);
+            this.emptySpaceItem5.Size = new System.Drawing.Size(108, 24);
             this.emptySpaceItem5.TextSize = new System.Drawing.Size(0, 0);
             // 
             // emptySpaceItem6
@@ -3455,9 +3477,14 @@ namespace HIS.Desktop.Plugins.TrackingCreate
             this.emptySpaceItem11.Size = new System.Drawing.Size(85, 24);
             this.emptySpaceItem11.TextSize = new System.Drawing.Size(0, 0);
             // 
-            // toolTipController1
+            // layoutControlItem70
             // 
-            this.toolTipController1.GetActiveObjectInfo += new DevExpress.Utils.ToolTipControllerGetActiveObjectInfoEventHandler(this.toolTipController1_GetActiveObjectInfo);
+            this.layoutControlItem70.Control = this.btnGoiYAI;
+            this.layoutControlItem70.Location = new System.Drawing.Point(96, 609);
+            this.layoutControlItem70.Name = "layoutControlItem70";
+            this.layoutControlItem70.Size = new System.Drawing.Size(80, 26);
+            this.layoutControlItem70.TextSize = new System.Drawing.Size(0, 0);
+            this.layoutControlItem70.TextVisible = false;
             // 
             // imageCollection1
             // 
@@ -3732,6 +3759,7 @@ namespace HIS.Desktop.Plugins.TrackingCreate
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem9)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem10)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem11)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem70)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.imageCollection1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxValidationProvider1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxErrorProvider1)).EndInit();
@@ -4002,5 +4030,7 @@ namespace HIS.Desktop.Plugins.TrackingCreate
         private DevExpress.XtraLayout.EmptySpaceItem emptySpaceItem9;
         private DevExpress.XtraLayout.EmptySpaceItem emptySpaceItem10;
         private DevExpress.XtraLayout.EmptySpaceItem emptySpaceItem11;
+        private DevExpress.XtraEditors.SimpleButton btnGoiYAI;
+        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem70;
     }
 }

@@ -24,6 +24,7 @@ using DevExpress.XtraTreeList;
 using DevExpress.XtraTreeList.Nodes;
 using HIS.Desktop.ADO;
 using HIS.Desktop.ApiConsumer;
+using HIS.Desktop.Common;
 using HIS.Desktop.Controls.Session;
 using HIS.Desktop.IsAdmin;
 using HIS.Desktop.LibraryMessage;
@@ -111,6 +112,7 @@ namespace HIS.Desktop.Plugins.TrackingCreate
         string IsCheckSubIcdExceedLimit = "";
         string IsReadOnlyCareInstruction = "";
         string ServiceReqIcdOption = "";
+        string AIConnectionInfo = "";
         bool isReadOnlySheetOrder = false;
         private int maxSheetOrderFromParent = 0;
         public List<object> Args { get; set; }
@@ -137,6 +139,7 @@ namespace HIS.Desktop.Plugins.TrackingCreate
         HisTreatmentBedRoomLViewFilter DataTransferTreatmentBedRoomFilter { get; set; }
         public List<ACS_USER> ListUsser { get; private set; }
         bool IsFirstLoadForm = true;
+        private bool hasValidServiceReq = false;
 
         bool checksign;
         #endregion
@@ -464,7 +467,8 @@ namespace HIS.Desktop.Plugins.TrackingCreate
                             result = false;
                         }
                         LogSystem.Debug("SetError: " + error);
-                        this.subIcdPbProcessor.SetError(ucSecondaryIcdPb, error);
+                        //this.subIcdPbProcessor.SetError(ucSecondaryIcdPb, error);
+                        dxErrorProvider1.SetError(ucSecondaryIcdPb, error);
                     }
 
                 }
@@ -602,9 +606,18 @@ namespace HIS.Desktop.Plugins.TrackingCreate
                 this.IsCheckSubIcdExceedLimit = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(ConfigKeyss.DBCODE__HIS_DESKTOP_PLUGINS_IsCheckSubIcdExceedLimit);
                 BloodPresOption = (HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>("HIS.Desktop.Plugins.TrackingCreate.BloodPresOption") == "1");
                 this.ServiceReqIcdOption = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(ConfigKeyss.DBCODE__HIS_TRACKING_SERVICE_REQ_ICD_OPTION);
+                this.AIConnectionInfo = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(ConfigKeyss.HIS_DESKTOP_AI_CONNECTIONINFO);
 
                 var IsMine = Inventec.Common.TypeConvert.Parse.ToInt64(HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(ConfigKeyss.DBCODE__HIS_DESKTOP_PLUGINS_TRACKING_CRETATE_IS_MINE_CHECKED_BY_DEFAULT));
 
+                if (AIConnectionInfo == null && AIConnectionInfo == "")
+                {
+                    btnGoiYAI.Enabled = false;
+                }
+                else
+                {
+                    UpdateGoiYAIButtonState();
+                }
                 if (IsMine == 1)
                 {
                     chkIsMineNew.CheckState = CheckState.Checked;
@@ -670,6 +683,73 @@ namespace HIS.Desktop.Plugins.TrackingCreate
 
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
+        }
+
+        private void UpdateGoiYAIButtonState()
+        {
+            try
+            {
+                bool hasValidServiceReq = false;
+                var checkedServiceReqs = GetCheckedServiceReqs();
+                if (checkedServiceReqs != null && checkedServiceReqs.Count > 0)
+                {
+                    hasValidServiceReq = true;
+                }
+
+                if (hasValidServiceReq)
+                {
+                    btnGoiYAI.BackColor = SystemColors.Control;
+                    btnGoiYAI.ForeColor = SystemColors.ControlText;
+                }
+                else
+                {
+                    btnGoiYAI.ForeColor = Color.Gray;
+                    btnGoiYAI.BackColor = Color.Gray;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private List<TreeSereServADO> GetCheckedServiceReqs()
+        {
+            List<TreeSereServADO> result = new List<TreeSereServADO>();
+            try
+            {
+                var allDatas = treeListServiceReq.DataSource as BindingList<TreeSereServADO>;
+                if (allDatas != null)
+                {
+                    var checkedNodes = treeListServiceReq.GetAllCheckedNodes();
+                    foreach (var node in checkedNodes)
+                    {
+                        var data = treeListServiceReq.GetDataRecordByNode(node) as TreeSereServADO;
+                        if (data != null && data.SERVICE_REQ_ID != null) 
+                        {
+                            var validTypes = new List<long>
+                    {
+                        IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__NS,
+                        IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__SA,
+                        IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__PT,
+                        IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__TT,
+                        IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__CDHA,
+                        IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__GPBL,
+                        IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__XN
+                    };
+                            if (validTypes.Contains(data.TDL_SERVICE_TYPE_ID))
+                            {
+                                result.Add(data);
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+            return result;
         }
         private void LoadTreatment()
         {
@@ -4856,6 +4936,58 @@ namespace HIS.Desktop.Plugins.TrackingCreate
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void btnGoiYAI_Click(object sender, EventArgs e)
+        {
+            if (hasValidServiceReq)
+            {
+                try
+                {
+                    Inventec.Desktop.Common.Modules.Module moduleData = GlobalVariables.currentModuleRaws
+                        .Where(o => o.ModuleLink == "HIS.Desktop.Plugins.AnalyzeMedicalImage").FirstOrDefault();
+                    if (moduleData == null) throw new NullReferenceException("Not found module by ModuleLink = 'HIS.Desktop.Plugins.AnalyzeMedicalImage'");
+                    if (!moduleData.IsPlugin || moduleData.ExtensionInfo == null) throw new NullReferenceException("Module 'HIS.Desktop.Plugins.AnalyzeMedicalImage' is not plugins");
+                    var checkedServiceReqs = GetCheckedServiceReqs();
+                    if (checkedServiceReqs == null || checkedServiceReqs.Count == 0)
+                    {
+                        return;
+                    }
+                    List<HIS_SERE_SERV> sereServs = checkedServiceReqs.Select(x => new HIS_SERE_SERV
+                    {
+                        ID = x.ID,
+                        SERVICE_REQ_ID = x.SERVICE_REQ_ID,
+                        SERVICE_ID = x.SERVICE_ID,
+                    }).ToList();
+                    // Tạo delegate function cho DelSelectData
+                    DelegateSelectData delSelectData = new DelegateSelectData(SelectDataCallback);
+                    AnalyzeImageADO analyzeImageADO = new AnalyzeImageADO
+                    {
+                        TreatmentId = this.treatmentId,
+                        DelSelectData = delSelectData,
+                        SereServs = sereServs
+                    };
+                    Inventec.Common.Logging.LogSystem.Info($"btnGoiYAI_Click - AnalyzeImageADO created: TreatmentId={analyzeImageADO.TreatmentId},DelSelectData: {(delSelectData != null ? delSelectData.Method?.Name ?? "Unknown Method" : "NULL")}, IsStatic: {delSelectData.Method?.IsStatic ?? false}, SereServs count={analyzeImageADO.SereServs?.Count ?? 0}");
+                    List<object> listArgs = new List<object>();
+                    listArgs.Add(analyzeImageADO);
+                    var extenceInstance = HIS.Desktop.Utility.PluginInstance.GetPluginInstance(
+                        HIS.Desktop.Utility.PluginInstance.GetModuleWithWorkingRoom(moduleData, this.currentModule.RoomId, this.currentModule.RoomTypeId), listArgs);
+                    if (extenceInstance == null) throw new ArgumentNullException("Khoi tao moduleData that bai. extenceInstance = null");
+                    ((Form)extenceInstance).Show(this);
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Error(ex);
+                }
+            }
+        }
+
+        private void SelectDataCallback(object data)
+        {
+            if (data != null)
+            {
+                txtMedicalInstruction.Text = data.ToString();
             }
         }
         //private int GetNextSheetOrder()
