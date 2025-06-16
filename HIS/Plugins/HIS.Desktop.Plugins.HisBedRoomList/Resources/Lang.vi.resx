@@ -249,4 +249,7 @@
   <data name="frmHisBedRoomList.layoutControlItem21.Text" xml:space="preserve">
     <value>Phòng thu ngân:</value>
   </data>
+  <data name="frmHisBedRoomList.PayerAccount.Caption" xml:space="preserve">
+    <value>Tài khoản chi trả</value>
+  </data>
 </root>

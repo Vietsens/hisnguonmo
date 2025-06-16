@@ -160,6 +160,7 @@ namespace HIS.Desktop.Plugins.HisBedRoomList
                 InitComboDefaultsCLS();
                 InitComboTreatmentTypeIds();
                 InitComboAccountBook();
+                InitComboPayerBank();
                 //InitComboControlConfig();
                 SetCaptionByLanguageKey();
                 WaitingManager.Hide();
@@ -171,7 +172,24 @@ namespace HIS.Desktop.Plugins.HisBedRoomList
             }
         }
 
-
+        private void InitComboPayerBank()
+        {
+            try
+            {
+                var banks = BackendDataWorker.Get<HIS_BANK>()
+                    .Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE)
+                    .ToList();
+                List<ColumnInfo> columnInfos = new List<ColumnInfo>();
+                columnInfos.Add(new ColumnInfo("BANK_CODE", "", 100, 1));
+                columnInfos.Add(new ColumnInfo("BANK_NAME", "", 250, 2));
+                ControlEditorADO controlEditorADO = new ControlEditorADO("BANK_NAME", "ID", columnInfos, false, 350);
+                ControlEditorLoader.Load(cboPayerBank, banks, controlEditorADO);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
 
         private void InitComboCashierRoom()
         {
@@ -391,6 +409,7 @@ namespace HIS.Desktop.Plugins.HisBedRoomList
                 this.IsSurgery.Caption = Inventec.Common.Resource.Get.Value("frmHisBedRoomList.IsSurgery.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 //this.IsPauce.Caption = Inventec.Common.Resource.Get.Value("frmHisBedRoomList.IsPauce.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.Status.Caption = Inventec.Common.Resource.Get.Value("frmHisBedRoomList.Status.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.PayerAccount.Caption = Inventec.Common.Resource.Get.Value("frmHisBedRoomList.PayerAccount.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.Create_time.Caption = Inventec.Common.Resource.Get.Value("frmHisBedRoomList.Create_time.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.Creator.Caption = Inventec.Common.Resource.Get.Value("frmHisBedRoomList.Creator.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.ModifiTime.Caption = Inventec.Common.Resource.Get.Value("frmHisBedRoomList.ModifiTime.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
@@ -440,12 +459,29 @@ namespace HIS.Desktop.Plugins.HisBedRoomList
                 ValidBedRoomCode();
                 ValidBedRoomName();
                 ValidDepartment();
+                ValidPayerAccount();
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
+
+        private void ValidPayerAccount()
+        {
+            try
+            {
+                PayerAccountValidationRule payerAccount = new PayerAccountValidationRule();
+                payerAccount.txtPayerAccount = this.txtPayerAccount;
+                payerAccount.ErrorType = DevExpress.XtraEditors.DXErrorProvider.ErrorType.Warning;
+                dxValidationProvider1.SetValidationRule(this.txtPayerAccount, payerAccount);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
         private void ValidBedRoomCode()
         {
             try
@@ -508,6 +544,8 @@ namespace HIS.Desktop.Plugins.HisBedRoomList
                 txtConfig.Text = "";
                 txtConfig.ReadOnly = true;
                 cboAccountBook.EditValue = null;
+                cboPayerBank.EditValue = null;
+                txtPayerAccount.Text = "";
                 this.ActionType = GlobalVariables.ActionAdd;
                 EnableControlChanged(this.ActionType);
                 this.txtBedRoomCode.Focus();
@@ -587,11 +625,11 @@ namespace HIS.Desktop.Plugins.HisBedRoomList
 
                 }
 
+
                 var listDataSDO = (from r in listData select new VHisBedRoomADO(r)).ToList();
                 gridControlBedRoom.BeginUpdate();
                 gridControlBedRoom.DataSource = listDataSDO;
                 gridControlBedRoom.EndUpdate();
-
 
                 //gridControlBedRoom .DataSource = null;
             }
@@ -902,6 +940,21 @@ namespace HIS.Desktop.Plugins.HisBedRoomList
                                 Inventec.Common.Logging.LogSystem.Error(ex);
                             }
                         }
+                        else if (e.Column.FieldName == "PAYER_ACCOUNT")
+                        {
+                            try
+                            {
+                                if (data.ROOM_ID > 0)
+                                {
+                                    var room = BackendDataWorker.Get<V_HIS_ROOM>().FirstOrDefault(x => x.ID == data.ROOM_ID);
+                                    e.Value = room.PAYER_ACCOUNT;
+                                }
+                            }
+                            catch (Exception ex)
+                            {
+                                Inventec.Common.Logging.LogSystem.Error(ex);
+                            }
+                        }    
                     }
                 }
             }
@@ -942,12 +995,17 @@ namespace HIS.Desktop.Plugins.HisBedRoomList
                     if (row.IS_ACTIVE == IS_ACTIVE_TRUE)
                     {
                         CommonParam param = new CommonParam();
-                        HisSpecialityFilter filter = new HisSpecialityFilter();
+                        //HisSpecialityFilter filter = new HisSpecialityFilter();
+                        HisRoomFilter filter = new HisRoomFilter();
                         filter.IS_ACTIVE = 1;
                         List<HIS_ROOM> data = new BackendAdapter(param).Get<List<HIS_ROOM>>("api/HisRoom/Get", ApiConsumers.MosConsumer, filter, param);
 
                         cboDefaultsCLS.EditValue = data.Where(p => p.ID == row.ROOM_ID).FirstOrDefault().DEFAULT_INSTR_PATIENT_TYPE_ID;
                         cboKhuVuc.EditValue = data.Where(p => p.ID == row.ROOM_ID).FirstOrDefault().AREA_ID;
+
+                            cboPayerBank.EditValue = data.Where(p => p.ID == row.ROOM_ID).FirstOrDefault().PAYER_BANK_ID;
+                        
+                            txtPayerAccount.Text = data.Where(p => p.ID == row.ROOM_ID).FirstOrDefault().PAYER_ACCOUNT;
                         Inventec.Common.Logging.LogSystem.Warn("api/HisRoom/Get        " + data.FirstOrDefault().AREA_ID);
                         cboKhuVuc.Refresh();
                         txtConfig.Text = data.Where(p => p.ID == row.ROOM_ID).FirstOrDefault() != null ? data.Where(p => p.ID == row.ROOM_ID).FirstOrDefault().QR_CONFIG_JSON : "";
@@ -1016,7 +1074,7 @@ namespace HIS.Desktop.Plugins.HisBedRoomList
                 if (this.ActionType == GlobalVariables.ActionAdd)
                 {
                     currentBedRoom = new V_HIS_BED_ROOM();
-                }
+                }   
                 currentBedRoom.BED_ROOM_CODE = txtBedRoomCode.Text;
                 currentBedRoom.BED_ROOM_NAME = txtBedRoomName.Text;
                 currentBedRoom.DEPARTMENT_ID = Inventec.Common.TypeConvert.Parse.ToInt64((cboDepartment.EditValue ?? 0).ToString());
@@ -1048,10 +1106,10 @@ namespace HIS.Desktop.Plugins.HisBedRoomList
                 Mapper.CreateMap<V_HIS_BED_ROOM, HIS_ROOM>();
 
                 HIS_ROOM hisRoom = new HIS_ROOM();
+                hisRoom.ID = currentBedRoom.ROOM_ID;
                 hisRoom.IS_RESTRICT_EXECUTE_ROOM = checkEdit1.Checked ? (short)1 : (short)0;
                 hisRoom.DEPARTMENT_ID = Inventec.Common.TypeConvert.Parse.ToInt64((cboDepartment.EditValue ?? 0).ToString());
                 hisRoom.ROOM_TYPE_ID = IMSys.DbConfig.HIS_RS.HIS_ROOM_TYPE.ID__BUONG;
-                hisRoom.ID = currentBedRoom.ROOM_ID;
                 hisRoom.IS_PAUSE = chkIsPause.Checked ? (short)1 : (short)0;
                 hisRoom.IS_RESTRICT_REQ_SERVICE = chkIsRestrictReqService.Checked ? (short)1 : (short)0;
                 if (cboAccountBook.EditValue != null) hisRoom.QR_ACCOUNT_BOOK_ID = Convert.ToInt64(Convert.ToInt64(cboAccountBook.EditValue));
@@ -1085,6 +1143,16 @@ namespace HIS.Desktop.Plugins.HisBedRoomList
                     hisRoom.DEFAULT_INSTR_PATIENT_TYPE_ID = Inventec.Common.TypeConvert.Parse.ToInt64((cboDefaultsCLS.EditValue ?? "0").ToString());
                 }
 
+                if (cboPayerBank.EditValue != null) 
+                {
+                    hisRoom.PAYER_BANK_ID = Inventec.Common.TypeConvert.Parse.ToInt64(cboPayerBank.EditValue.ToString());
+                }
+                else 
+                {
+                    hisRoom.PAYER_BANK_ID = null;
+                }
+                hisRoom.PAYER_ACCOUNT = string.IsNullOrEmpty(txtPayerAccount.Text) ? null : txtPayerAccount.Text.Trim();
+
                 HisBedRoomSDO.HisRoom = hisRoom;
 
                 WaitingManager.Show();
@@ -1095,12 +1163,15 @@ namespace HIS.Desktop.Plugins.HisBedRoomList
                 {
 
                     result = new Inventec.Common.Adapter.BackendAdapter(param).Post<HisBedRoomSDO>(RequestUriStore.HIS_BED_ROOM_CREATE, ApiConsumer.ApiConsumers.MosConsumer, HisBedRoomSDO, param);
+
                 }
                 if (this.ActionType == GlobalVariables.ActionEdit)
                 {
 
                     result = new Inventec.Common.Adapter.BackendAdapter(param).Post<HisBedRoomSDO>(RequestUriStore.HIS_BED_ROOM_UPDATE, ApiConsumer.ApiConsumers.MosConsumer, HisBedRoomSDO, param);
                     if (result != null) this.ActionType = GlobalVariables.ActionAdd;
+
+
                 }
                 if (result != null)
                 {
@@ -1885,6 +1956,39 @@ namespace HIS.Desktop.Plugins.HisBedRoomList
             {
 
                 Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void cboPayerBank_ButtonClick(object sender, ButtonPressedEventArgs e)
+        {
+            try
+            {
+                if (e.Button.Kind == ButtonPredefines.Delete)
+                {
+                    cboPayerBank.DataBindings.Clear();
+                    cboPayerBank.EditValue = null;
+                    txtPayerAccount.Text = string.Empty;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void frmHisBedRoomList_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Control && e.KeyCode == Keys.S && btnEdit.Enabled)
+            {
+                btnEdit_Click(null, null);
+            }
+            else if (e.Control && e.KeyCode == Keys.N && btnAdd.Enabled)
+            {
+                btnAdd_Click(null, null);
+            }
+            else if (e.Control && e.KeyCode == Keys.R && btnRefresh.Enabled)
+            {
+                btnRefesh_Click(null, null);
             }
         }
     }
