@@ -610,14 +610,7 @@ namespace HIS.Desktop.Plugins.TrackingCreate
 
                 var IsMine = Inventec.Common.TypeConvert.Parse.ToInt64(HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(ConfigKeyss.DBCODE__HIS_DESKTOP_PLUGINS_TRACKING_CRETATE_IS_MINE_CHECKED_BY_DEFAULT));
 
-                if (AIConnectionInfo == null && AIConnectionInfo == "")
-                {
-                    btnGoiYAI.Enabled = false;
-                }
-                else
-                {
-                    UpdateGoiYAIButtonState();
-                }
+                
                 if (IsMine == 1)
                 {
                     chkIsMineNew.CheckState = CheckState.Checked;
@@ -677,6 +670,14 @@ namespace HIS.Desktop.Plugins.TrackingCreate
                 //LoadConfigHisAcc();
                 InitConfigAcs();
                 isNotLoadWhileChangeControlStateInFirst = false;
+                if (AIConnectionInfo == null && AIConnectionInfo == "")
+                {
+                    btnGoiYAI.Enabled = false;
+                }
+                else
+                {
+                    UpdateGoiYAIButtonState();
+                }
             }
             catch (Exception ex)
             {
@@ -689,7 +690,7 @@ namespace HIS.Desktop.Plugins.TrackingCreate
         {
             try
             {
-                bool hasValidServiceReq = false;
+                hasValidServiceReq = false;
                 var checkedServiceReqs = GetCheckedServiceReqs();
                 if (checkedServiceReqs != null && checkedServiceReqs.Count > 0)
                 {
@@ -3234,6 +3235,7 @@ namespace HIS.Desktop.Plugins.TrackingCreate
                 isSearch = true;
                 //backgroundWorker1.RunWorkerAsync();
                 LoadDataSS(true);
+                UpdateGoiYAIButtonState();
             }
             catch (Exception ex)
             {
@@ -4941,6 +4943,7 @@ namespace HIS.Desktop.Plugins.TrackingCreate
 
         private void btnGoiYAI_Click(object sender, EventArgs e)
         {
+            UpdateGoiYAIButtonState();
             if (hasValidServiceReq)
             {
                 try
@@ -4990,6 +4993,8 @@ namespace HIS.Desktop.Plugins.TrackingCreate
                 txtMedicalInstruction.Text = data.ToString();
             }
         }
+
+
         //private int GetNextSheetOrder()
         //{
         //    try
