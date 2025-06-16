@@ -3087,7 +3087,10 @@ namespace HIS.Desktop.Plugins.TreatmentList
                 if (currentTreatment != null)
                 {
                     List<object> listArgs = new List<object>();
-                    listArgs.Add(currentTreatment);                
+                    var treatment = new HIS_TREATMENT();
+                    Inventec.Common.Mapper.DataObjectMapper.Map<HIS_TREATMENT>(treatment, currentTreatment);
+                    treatment.ID = currentTreatment.ID;
+                    listArgs.Add(treatment);
                     WaitingManager.Hide();
                     HIS.Desktop.ModuleExt.PluginInstanceBehavior.ShowModule("HIS.Desktop.Plugins.HisPatientBankAccount", this.currentModule.RoomId, this.currentModule.RoomTypeId, listArgs);
                 }
