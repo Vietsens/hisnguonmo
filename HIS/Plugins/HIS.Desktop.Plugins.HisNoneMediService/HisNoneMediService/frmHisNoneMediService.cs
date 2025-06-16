@@ -633,6 +633,7 @@ namespace HIS.Desktop.Plugins.HisNoneMediService
                     cboServiceUnit.EditValue = data.SERVICE_UNIT_ID;
                     spPrice.EditValue = data.PRICE;
                     spNumOrder.EditValue = data.NUM_ORDER;
+                    spinVat.EditValue = data.VAT_RATIO != null ? data.VAT_RATIO * 100 : null;
                 }
             }
             catch (Exception ex)
@@ -680,6 +681,8 @@ namespace HIS.Desktop.Plugins.HisNoneMediService
                             dxValidationProviderEditorInfo.RemoveControlError(spPrice);
                             dxValidationProviderEditorInfo.RemoveControlError(spNumOrder);
                             dxValidationProviderEditorInfo.RemoveControlError(cboServiceUnit);
+                            dxValidationProviderEditorInfo.RemoveControlError(spinVat);
+
                         }
                     }
                 }
@@ -967,6 +970,16 @@ namespace HIS.Desktop.Plugins.HisNoneMediService
                     currentDTO.NUM_ORDER = Inventec.Common.TypeConvert.Parse.ToInt64(spNumOrder.Value.ToString());
                 else
                     currentDTO.NUM_ORDER = null;
+
+                if (spinVat.EditValue != null)
+                {
+                    decimal vatInput = Inventec.Common.TypeConvert.Parse.ToDecimal(spinVat.Value.ToString());
+                    currentDTO.VAT_RATIO = vatInput / 100;
+                }
+                else
+                {
+                    currentDTO.VAT_RATIO = null;
+                }
                 //currentDTO.MAX_CAPACITY = (long)spMaxCapacity.Value;
 
             }
@@ -988,6 +1001,7 @@ namespace HIS.Desktop.Plugins.HisNoneMediService
                 ValidationSingleControl(cboServiceUnit);
                 ValidationSpin(spPrice);
                 ValidationSpin(spNumOrder);
+                ValidationSpin(spinVat);
                 //ValidationSingleControl1();
 
             }
@@ -1399,8 +1413,8 @@ namespace HIS.Desktop.Plugins.HisNoneMediService
             {
                 if (e.KeyCode == Keys.Enter)
                 {
-                    spNumOrder.Focus();
-                    spNumOrder.SelectAll();
+                    spinVat.Focus();
+                    spinVat.SelectAll();
                 }
             }
             catch (Exception ex)
@@ -1458,6 +1472,36 @@ namespace HIS.Desktop.Plugins.HisNoneMediService
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
+        }
+        private void spinVat_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            try
+            {
+                if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar))
+                {
+                    e.Handled = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+        private void spinVat_KeyUp(object sender, KeyEventArgs e)
+        {
+            try
+            {
+                if (e.KeyCode == Keys.Enter)
+                {
+                    spNumOrder.Focus();
+                    spNumOrder.SelectAll();
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+
         }
     }
 }

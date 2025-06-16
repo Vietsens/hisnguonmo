@@ -1,45 +1,45 @@
-﻿
-using DevExpress.Data;
+﻿using DevExpress.Data;
 using DevExpress.Utils;
+using DevExpress.XtraBars.Controls;
 using DevExpress.XtraEditors;
+using DevExpress.XtraEditors.Controls;
+using DevExpress.XtraEditors.DXErrorProvider;
 using DevExpress.XtraEditors.ViewInfo;
 using DevExpress.XtraGrid.Views.Base;
+using DevExpress.XtraGrid.Views.Grid;
+using DevExpress.XtraLayout.Converter;
 using DevExpress.XtraNavBar;
-using Inventec.Common.Adapter;
-using Inventec.Common.Controls.EditorLoader;
-using Inventec.Common.Logging;
-using Inventec.Core;
-using Inventec.Desktop.Common.Message;
-using Inventec.UC.Paging;
 using HIS.Desktop.ApiConsumer;
 using HIS.Desktop.Common;
 using HIS.Desktop.Controls.Session;
 using HIS.Desktop.LibraryMessage;
 using HIS.Desktop.LocalStorage.BackendData;
 using HIS.Desktop.LocalStorage.ConfigApplication;
+using HIS.Desktop.LocalStorage.ConfigSystem;
 using HIS.Desktop.LocalStorage.LocalData;
+using HIS.Desktop.Plugins.HisPatientBankAccount.Validate;
 using HIS.Desktop.Utilities;
+using Inventec.Common.Adapter;
+using Inventec.Common.Controls.EditorLoader;
+using Inventec.Common.Logging;
+using Inventec.Core;
+using Inventec.Desktop.Common.Controls.ValidationRule;
+using Inventec.Desktop.Common.LanguageManager;
+using Inventec.Desktop.Common.Message;
+using Inventec.UC.Paging;
 using MOS.EFMODEL.DataModels;
 using MOS.Filter;
+using MOS.SDO;
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using System.Windows.Forms;
-using System.Drawing;
-using Inventec.Desktop.Common.Controls.ValidationRule;
-using DevExpress.XtraEditors.DXErrorProvider;
-using MOS.SDO;
-using Inventec.Desktop.Common.LanguageManager;
-using System.Resources;
-using DevExpress.XtraEditors.Controls;
-using DevExpress.XtraBars.Controls;
 using System.Data;
-using DevExpress.XtraLayout.Converter;
-
-
-
-
+using System.Drawing;
+using System.Linq;
+using System.Resources;
+using System.Security.Cryptography;
+using System.Windows.Forms;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace HIS.Desktop.Plugins.HisPatientBankAccount.HisPatientBankAccount
 {
@@ -53,14 +53,18 @@ namespace HIS.Desktop.Plugins.HisPatientBankAccount.HisPatientBankAccount
         PagingGrid pagingGrid;
         int ActionType = -1;
         int positionHandle = -1;
-        MOS.EFMODEL.DataModels.V_HIS_PATIENT_BANK_ACCOUNT currentData;
+        MOS.EFMODEL.DataModels.V_HIS_PATIENT_BANK_ACCOUNT currentVData;
+        DelegateSelectData delegateSelectData1;
+
+        private HIS_TREATMENT currentTreatment;
+
         List<string> arrControlEnableNotChange = new List<string>();
         Dictionary<string, int> dicOrderTabIndexControl = new Dictionary<string, int>();
         Inventec.Desktop.Common.Modules.Module moduleData;
 
         #endregion
         #region Construct
-        public frmHisPatientBankAccount(Inventec.Desktop.Common.Modules.Module moduleData)
+        public frmHisPatientBankAccount(Inventec.Desktop.Common.Modules.Module moduleData, HIS_TREATMENT _currentTreatment, DelegateSelectData _delegateSelectData)
             : base(moduleData)
         {
             try
@@ -69,8 +73,9 @@ namespace HIS.Desktop.Plugins.HisPatientBankAccount.HisPatientBankAccount
 
                 pagingGrid = new PagingGrid();
                 this.moduleData = moduleData;
-                // gridControlFormList.ToolTipController = toolTipControllerGrid;
+                this.currentTreatment = _currentTreatment;
 
+                this.delegateSelectData1 = _delegateSelectData;
                 try
                 {
                     string iconPath = System.IO.Path.Combine(HIS.Desktop.LocalStorage.Location.ApplicationStoreLocation.ApplicationStartupPath, System.Configuration.ConfigurationSettings.AppSettings["Inventec.Desktop.Icon"]);
@@ -88,13 +93,14 @@ namespace HIS.Desktop.Plugins.HisPatientBankAccount.HisPatientBankAccount
         }
         #endregion
 
+
         #region Private method
-        private void frmHisPatientBankAccount_Load(object sender, EventArgs e)
+        private void frmHisPatientBankAccount_load(object sender, EventArgs e)
         {
             try
             {
                 ShowInfo();
-              
+
             }
             catch (Exception ex)
             {
@@ -106,18 +112,35 @@ namespace HIS.Desktop.Plugins.HisPatientBankAccount.HisPatientBankAccount
         {
             try
             {
-                ShowInfo();
+                btnChooseItem.Enabled = false;
+                DisplayPatientInfo(currentTreatment);
+                SetDefaultValue();
+                if (currentVData != null)
+                {
+                    FillDataToEditorControl(currentVData);
+                }
+                InitComboBankPayer();
+                FillDataToGridControl();
+                ValidateForm();
+
+
+
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
+      
         private void SetCaptionByLanguageKey()
         {
             try
             {
-
+                if (delegateSelectData1 != null)
+                {
+                    V_HIS_PATIENT_BANK_ACCOUNT data = new V_HIS_PATIENT_BANK_ACCOUNT();
+                    delegateSelectData1(data);
+                }
 
             }
             catch (Exception ex)
@@ -125,6 +148,7 @@ namespace HIS.Desktop.Plugins.HisPatientBankAccount.HisPatientBankAccount
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
+
         private void SetDefaultValue()
         {
             try
@@ -134,9 +158,6 @@ namespace HIS.Desktop.Plugins.HisPatientBankAccount.HisPatientBankAccount
                 txtSearch.Text = "";
                 ResetFormData();
                 EnableControlChanged(this.ActionType);
-                CommonParam param = new CommonParam();
-                HisAreaFilter filter = new HisAreaFilter();
-                filter.IS_ACTIVE = IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE;
 
             }
             catch (Exception ex)
@@ -144,11 +165,22 @@ namespace HIS.Desktop.Plugins.HisPatientBankAccount.HisPatientBankAccount
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
+
         private void ResetFormData()
         {
             try
             {
+                cboListBank.EditValue = null;
+                txtAccNumber.Text = "";
+                txtReceiver.Text = "";
+                txtRelation.Text = "";
+                dxValidationProviderEditorInfo.RemoveControlError(txtAccNumber);
+                dxValidationProviderEditorInfo.RemoveControlError(cboListBank);
+                dxValidationProviderEditorInfo.RemoveControlError(txtReceiver);
+                dxValidationProviderEditorInfo.RemoveControlError(txtRelation);
 
+
+                dxErrorProvider.ClearErrors(); 
             }
             catch (Exception ex)
             {
@@ -178,13 +210,13 @@ namespace HIS.Desktop.Plugins.HisPatientBankAccount.HisPatientBankAccount
             {
                 btnEdit.Enabled = (action == GlobalVariables.ActionEdit);
                 btnAdd.Enabled = (action == GlobalVariables.ActionAdd);
-
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
+
         private void InitComboDepartmentId()
         {
             try
@@ -244,12 +276,14 @@ namespace HIS.Desktop.Plugins.HisPatientBankAccount.HisPatientBankAccount
             }
         }
 
+
         /// <summary>
         /// Ham goi api lay du lieu phan trang
         /// </summary>
         /// <param name="param"></param>
         private void LoadPaging(object param)
         {
+
             try
             {
 
@@ -258,15 +292,16 @@ namespace HIS.Desktop.Plugins.HisPatientBankAccount.HisPatientBankAccount
                 CommonParam paramCommon = new CommonParam(startPage, limit);
 
                 HisPatientBankAccountViewFilter filter = new HisPatientBankAccountViewFilter();
+                filter.PATIENT_ID = currentTreatment.PATIENT_ID;
                 filter.IS_ACTIVE = IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE;
-
+                filter.KEY_WORD = txtSearch.Text.Trim();
                 filter.ORDER_DIRECTION = "DESC";
                 filter.ORDER_FIELD = "MODIFY_TIME";
 
                 gridViewFormList.BeginUpdate();
 
                 var apiResult = new BackendAdapter(paramCommon).GetRO<List<MOS.EFMODEL.DataModels.V_HIS_PATIENT_BANK_ACCOUNT>>(
-                    HisRequestUriStore.GET,
+                    HisRequestUriStore.GETVIEW,
                     ApiConsumers.MosConsumer,
                     filter,
                     paramCommon);
@@ -297,22 +332,14 @@ namespace HIS.Desktop.Plugins.HisPatientBankAccount.HisPatientBankAccount
         }
         #endregion
 
-        private void SetFilterNavBar(ref HisCashierRoomViewFilter filter)
-        {
-            try
-            {
-                filter.KEY_WORD = txtSearch.Text.Trim();
-            }
-            catch (Exception ex)
-            {
-                LogSystem.Error(ex);
-            }
-        }
+
         private void SaveProcess()
         {
+            if (!Validate1()) return; 
             CommonParam param = new CommonParam();
             try
             {
+
                 bool success = false;
                 if (!btnEdit.Enabled && !btnAdd.Enabled)
                     return;
@@ -323,12 +350,12 @@ namespace HIS.Desktop.Plugins.HisPatientBankAccount.HisPatientBankAccount
 
                 WaitingManager.Show();
 
-                MOS.EFMODEL.DataModels.V_HIS_PATIENT_BANK_ACCOUNT updateDTO = new MOS.EFMODEL.DataModels.V_HIS_PATIENT_BANK_ACCOUNT();
+                MOS.EFMODEL.DataModels.HIS_PATIENT_BANK_ACCOUNT updateDTO = new MOS.EFMODEL.DataModels.HIS_PATIENT_BANK_ACCOUNT();
                 MOS.EFMODEL.DataModels.HIS_BANK updateBank = new MOS.EFMODEL.DataModels.HIS_BANK();
 
-                if (this.currentData != null && this.currentData.ID > 0)
+                if (this.currentVData != null && this.currentVData.ID > 0)
                 {
-                    LoadCurrent(this.currentData.ID, ref updateDTO);
+                    LoadCurrent(this.currentVData.ID, ref updateDTO);
                 }
 
                 UpdateDTOFromDataForm(ref updateDTO, ref updateBank);
@@ -336,8 +363,8 @@ namespace HIS.Desktop.Plugins.HisPatientBankAccount.HisPatientBankAccount
                 if (ActionType == GlobalVariables.ActionAdd)
                 {
                     updateDTO.IS_ACTIVE = IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE;
-
-                    var resultData = new BackendAdapter(param).Post<MOS.EFMODEL.DataModels.V_HIS_PATIENT_BANK_ACCOUNT>(
+                    updateDTO.PATIENT_ID = currentTreatment.PATIENT_ID;
+                    var resultData = new BackendAdapter(param).Post<MOS.EFMODEL.DataModels.HIS_PATIENT_BANK_ACCOUNT>(
                         HisRequestUriStore.CREATE,
                         ApiConsumers.MosConsumer,
                         updateDTO,
@@ -353,7 +380,7 @@ namespace HIS.Desktop.Plugins.HisPatientBankAccount.HisPatientBankAccount
                 }
                 else
                 {
-                    var resultData = new BackendAdapter(param).Post<MOS.EFMODEL.DataModels.V_HIS_PATIENT_BANK_ACCOUNT>(
+                    var resultData = new BackendAdapter(param).Post<MOS.EFMODEL.DataModels.HIS_PATIENT_BANK_ACCOUNT>(
                         HisRequestUriStore.UPDATE,
                         ApiConsumers.MosConsumer,
                         updateDTO,
@@ -370,6 +397,8 @@ namespace HIS.Desktop.Plugins.HisPatientBankAccount.HisPatientBankAccount
                 if (success)
                 {
                     SetFocusEditor();
+                    ResetFormData();
+
                 }
 
                 WaitingManager.Hide();
@@ -389,14 +418,62 @@ namespace HIS.Desktop.Plugins.HisPatientBankAccount.HisPatientBankAccount
             }
         }
 
-        private void LoadCurrent(long currentId, ref MOS.EFMODEL.DataModels.V_HIS_PATIENT_BANK_ACCOUNT currentDTO)
+        private bool Validate1()
+        {
+            bool Valid = true;
+            if (string.IsNullOrEmpty(txtAccNumber.Text))
+            {
+                dxErrorProvider.SetError(txtAccNumber, "Trường dữ liệu bắt buộc", DevExpress.XtraEditors.DXErrorProvider.ErrorType.Warning);
+                Valid = false;
+            }else if(Inventec.Common.String.CheckString.IsOverMaxLengthUTF8(txtAccNumber.Text, 100))
+            {
+                dxErrorProvider.SetError(txtAccNumber, "Trường dữ liệu vượt quá 100 ký tự", DevExpress.XtraEditors.DXErrorProvider.ErrorType.Warning);
+                Valid = false;
+            }else
+            {
+                dxErrorProvider.SetError(txtAccNumber, "", DevExpress.XtraEditors.DXErrorProvider.ErrorType.None);
+            }
+
+            if (string.IsNullOrEmpty(txtReceiver.Text))
+            {
+                dxErrorProvider.SetError(txtReceiver, "Trường dữ liệu bắt buộc", DevExpress.XtraEditors.DXErrorProvider.ErrorType.Warning);
+                Valid = false;
+            }
+            else if (Inventec.Common.String.CheckString.IsOverMaxLengthUTF8(txtReceiver.Text, 100))
+            {
+                dxErrorProvider.SetError(txtReceiver, "Trường dữ liệu vượt quá 100 ký tự", DevExpress.XtraEditors.DXErrorProvider.ErrorType.Warning);
+                Valid = false;
+            }
+            else
+            {
+                dxErrorProvider.SetError(txtReceiver, "", DevExpress.XtraEditors.DXErrorProvider.ErrorType.None);
+            }
+            if (string.IsNullOrEmpty(cboListBank.Text))
+            {
+                dxErrorProvider.SetError(cboListBank, "Trường dữ liệu bắt buộc", DevExpress.XtraEditors.DXErrorProvider.ErrorType.Warning);
+                Valid = false;
+            }
+            else
+            {
+                dxErrorProvider.SetError(cboListBank, "", DevExpress.XtraEditors.DXErrorProvider.ErrorType.None);
+            }
+            if (Inventec.Common.String.CheckString.IsOverMaxLengthUTF8(txtRelation.Text, 100))
+            {
+                dxErrorProvider.SetError(txtRelation, "Trường dữ liệu vượt quá 100 ký tự", DevExpress.XtraEditors.DXErrorProvider.ErrorType.Warning);
+                Valid = false;
+            }
+            else
+            {
+                dxErrorProvider.SetError(txtRelation, "", DevExpress.XtraEditors.DXErrorProvider.ErrorType.None);
+            }
+                return Valid;
+        }
+
+        private void LoadCurrent(long currentId, ref MOS.EFMODEL.DataModels.HIS_PATIENT_BANK_ACCOUNT currentDTO)
         {
             try
             {
-                CommonParam param = new CommonParam();
-                HisCashierRoomFilter filter = new HisCashierRoomFilter();
-                filter.ID = currentId;
-                currentDTO = new BackendAdapter(param).Get<List<MOS.EFMODEL.DataModels.V_HIS_PATIENT_BANK_ACCOUNT>>(HisRequestUriStore.GET, ApiConsumers.MosConsumer, filter, param).FirstOrDefault();
+                Inventec.Common.Mapper.DataObjectMapper.Map<HIS_PATIENT_BANK_ACCOUNT>(currentDTO, currentVData);
             }
             catch (Exception ex)
             {
@@ -404,11 +481,12 @@ namespace HIS.Desktop.Plugins.HisPatientBankAccount.HisPatientBankAccount
             }
         }
 
-        private void UpdateDTOFromDataForm(ref MOS.EFMODEL.DataModels.V_HIS_PATIENT_BANK_ACCOUNT currentDTO, ref MOS.EFMODEL.DataModels.HIS_BANK currentBank)
+        private void UpdateDTOFromDataForm(ref MOS.EFMODEL.DataModels.HIS_PATIENT_BANK_ACCOUNT currentDTO, ref MOS.EFMODEL.DataModels.HIS_BANK currentBank)
         {
             try
             {
-                if (cboListBank.EditValue != null) currentBank.BANK_CODE = cboListBank.EditValue.ToString();
+                if (cboListBank.EditValue != null)
+                    currentDTO.PAYEE_BANK_ID = Convert.ToInt64(cboListBank.EditValue);
                 currentDTO.PAYEE_ACCOUNT_NUMBER = txtAccNumber.Text.Trim();
                 currentDTO.PAYEE_NAME = txtReceiver.Text.Trim();
                 currentDTO.RELATION_NAME = txtRelation.Text.Trim();
@@ -425,13 +503,27 @@ namespace HIS.Desktop.Plugins.HisPatientBankAccount.HisPatientBankAccount
 
         private void SetFocusEditor()
         {
-            throw new NotImplementedException();
+            try
+            {
+                //TODO
+
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Debug(ex);
+            }
         }
+
 
         private void DisplayPatientInfo(HIS_TREATMENT patient)
         {
             try
             {
+
+                Inventec.Common.Logging.LogSystem.Debug(
+                    Inventec.Common.Logging.LogUtil.TraceData("Input HIS_TREATMENT:", patient));
+
+                currentTreatment = patient;
                 if (patient == null)
                 {
                     lblPatientCode.Text = "";
@@ -443,47 +535,28 @@ namespace HIS.Desktop.Plugins.HisPatientBankAccount.HisPatientBankAccount
                     return;
                 }
 
-                HisTreatmentFilter patientFilter = new HisTreatmentFilter();
-                patientFilter.ID = patient.ID;
-
-                var param = new CommonParam();
-                var patients = new BackendAdapter(param).Get<List<HIS_TREATMENT>>(
-                    "api/HisTreatment/Get",
-                    ApiConsumers.MosConsumer,
-                    patientFilter,
-                    param
-                );
-
                 lblPatientCode.Text = patient.TDL_PATIENT_CODE ?? "";
                 lblPatientName.Text = patient.TDL_PATIENT_NAME ?? "";
-                if (patient.TDL_PATIENT_DOB != null)
+                if (patient.TDL_PATIENT_IS_HAS_NOT_DAY_DOB == 1)
                 {
-                    DateTime dob;
-                    if (DateTime.TryParse(patient.TDL_PATIENT_DOB.ToString(), out dob))
+                    if (patient.TDL_PATIENT_DOB > 0)
                     {
-                        if (patient.TDL_PATIENT_IS_HAS_NOT_DAY_DOB == 1)
-                        {
-                            lblPatientDOB.Text = dob.Year.ToString();
-                        }
-                        else
-                        {
-                            lblPatientDOB.Text = dob.ToString("dd/MM/yyyy");
-                        }
+                        lblPatientDOB.Text = patient.TDL_PATIENT_DOB.ToString().Substring(0, 4); 
                     }
                     else
                     {
-                        lblPatientDOB.Text = "";
+                        lblPatientDOB.Text = ""; 
                     }
                 }
                 else
                 {
-                    lblPatientDOB.Text = "";
+                    lblPatientDOB.Text = Inventec.Common.DateTime.Convert.TimeNumberToDateString(patient.TDL_PATIENT_DOB);
                 }
 
                 lblPatientGender.Text = patient.TDL_PATIENT_GENDER_NAME ?? "";
                 lblPatientAddress.Text = patient.TDL_PATIENT_ADDRESS ?? "";
 
-
+                // Identity information
                 if (!string.IsNullOrWhiteSpace(patient.TDL_PATIENT_CCCD_NUMBER))
                     lblPatientIdentity.Text = patient.TDL_PATIENT_CCCD_NUMBER;
                 else if (!string.IsNullOrWhiteSpace(patient.TDL_PATIENT_CMND_NUMBER))
@@ -492,26 +565,117 @@ namespace HIS.Desktop.Plugins.HisPatientBankAccount.HisPatientBankAccount
                     lblPatientIdentity.Text = patient.TDL_PATIENT_PASSPORT_NUMBER;
                 else
                     lblPatientIdentity.Text = "";
-
-
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
+        #region validate
+        private void ValidateForm()
+        {
+            try
+            {
+                ValidatetxtInput(cboListBank, "Trường dữ liệu bắt buộc");
+                ValidatetxtInput(txtAccNumber, "Trường dữ liệu bắt buộc");
+                ValidatetxtInput(txtReceiver, "Trường dữ liệu bắt buộc");
+
+                ValidateMaxLengthTxt(txtAccNumber, 100);
+                ValidateMaxLengthTxt(txtReceiver, 100);
+                ValidateMaxLengthTxt(txtRelation, 100);
+                ValidationInputData(cboListBank, true);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+        #endregion
+        private void ValidateMaxLengthTxt(TextEdit txt, int maxLength)
+        {
+            try
+            {
+                ValidateMaxlength validRule = new ValidateMaxlength();
+                validRule.txt = txt;
+                validRule.maxLength = maxLength;
+                validRule.ErrorText = MessageUtil.GetMessage(LibraryMessage.Message.Enum.TruongDuLieuBatBuoc);
+                validRule.ErrorType = ErrorType.Warning;
+                dxValidationProviderEditorInfo.SetValidationRule(txt, validRule);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+        private void ValidatetxtInput(DevExpress.XtraEditors.TextEdit txtInfo, string errorText)
+        {
+            try
+            {
+                ValidatetxtInput validRule = new ValidatetxtInput();
+                validRule.txtInfo = txtInfo;
+                validRule.ErrorText = HIS.Desktop.LibraryMessage.MessageUtil.GetMessage(HIS.Desktop.LibraryMessage.Message.Enum.TruongDuLieuBatBuoc);
+                validRule.ErrorType = ErrorType.Warning;
+                dxValidationProviderEditorInfo.SetValidationRule(txtInfo, validRule);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void ValidationInputData(GridLookUpEdit gridLookUpEdit, bool isVisible)
+        {
+            try
+            {
+                ValidationGridLookUpEdit validRule = new ValidationGridLookUpEdit();
+                validRule.gridLookUpEdit = gridLookUpEdit;
+                validRule.isVisible = isVisible;
+                validRule.ErrorText = HIS.Desktop.LibraryMessage.MessageUtil.GetMessage(HIS.Desktop.LibraryMessage.Message.Enum.TruongDuLieuBatBuoc);
+                validRule.ErrorType = ErrorType.Warning;
+                dxValidationProviderEditorInfo.SetValidationRule(gridLookUpEdit, validRule);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+        private void gridViewFormList_KeyDown(object sender, KeyEventArgs e)
+        {
+            try
+            {
+                if (e.KeyCode == Keys.Enter)
+                {
+                    var rowData = (MOS.EFMODEL.DataModels.V_HIS_PATIENT_BANK_ACCOUNT)gridViewFormList.GetFocusedRow();
+                    if (rowData != null)
+                    {
+                        ChangedDataRow(rowData);
+
+                        //Set focus vào control editor đầu tiên
+                        SetFocusEditor();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+
+
         private void ChangedDataRow(MOS.EFMODEL.DataModels.V_HIS_PATIENT_BANK_ACCOUNT data)
         {
             try
             {
                 if (data != null)
                 {
+                    this.currentVData = data;
                     FillDataToEditorControl(data);
                     this.ActionType = GlobalVariables.ActionEdit;
                     EnableControlChanged(this.ActionType);
 
 
-                    btnEdit.Enabled = (this.currentData.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE);
+                    btnEdit.Enabled = (this.currentVData.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE);
 
                     positionHandle = -1;
                     Inventec.Desktop.Controls.ControlWorker.ValidationProviderRemoveControlError(dxValidationProviderEditorInfo, dxErrorProvider);
@@ -523,55 +687,63 @@ namespace HIS.Desktop.Plugins.HisPatientBankAccount.HisPatientBankAccount
             }
         }
 
-        private void FillDataToEditorControl(MOS.EFMODEL.DataModels.V_HIS_PATIENT_BANK_ACCOUNT data)
+        private void InitComboBankPayer()
         {
             try
             {
-                if (data != null)
+                cboListBank.EditValue = null;
+                List<HIS_BANK> data = BackendDataWorker.Get<HIS_BANK>()
+                    .Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE)
+                    .ToList();
+                List<ColumnInfo> columnInfos = new List<ColumnInfo>();
+                columnInfos.Add(new ColumnInfo("BANK_CODE", "", 100, 1));
+                columnInfos.Add(new ColumnInfo("BANK_NAME", "", 250, 2));
+                ControlEditorADO controlEditorADO = new ControlEditorADO("BANK_NAME", "ID", columnInfos, false, 350);
+
+                ControlEditorLoader.Load(cboListBank, data, controlEditorADO);
+                cboListBank.Properties.ImmediatePopup = true;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+        private void FillDataToEditorControl(MOS.EFMODEL.DataModels.V_HIS_PATIENT_BANK_ACCOUNT currentData)
+        {
+
+            try
+            {
+                if (currentData != null)
                 {
-                    // Bank
-                    cboListBank.Properties.DataSource = GetActiveBanks();
-                    cboListBank.Properties.DisplayMember = "BANK_CODE";
-                    cboListBank.Properties.ValueMember = "BANK_CODE";
-
-                    string selectedBankCode = string.Empty;
-                    if (data.PAYEE_BANK_ID != 0)
-                    {
-                        var bank = ((List<HIS_BANK>)cboListBank.Properties.DataSource)
-                            .FirstOrDefault(x => x.ID == data.PAYEE_BANK_ID);
-                        if (bank != null)
-                            selectedBankCode = bank.BANK_CODE;
-                    }
-                    cboListBank.EditValue = selectedBankCode;
-
-                    txtAccNumber.Text = data.PAYEE_ACCOUNT_NUMBER ?? string.Empty;
-                    txtReceiver.Text = data.PAYEE_NAME ?? string.Empty;
-                    txtRelation.Text = data.RELATION_NAME ?? string.Empty;
+                    cboListBank.EditValue = currentData.PAYEE_BANK_ID;
+                    txtAccNumber.Text = currentData.PAYEE_ACCOUNT_NUMBER;
+                    txtReceiver.Text = currentData.PAYEE_NAME;
+                    txtRelation.Text = currentData.RELATION_NAME;
                 }
+
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
+
+
+
         }
 
-        private List<HIS_BANK> GetActiveBanks()
+
+        private void gridViewFormList_CustomRowCellEdit(object sender, DevExpress.XtraGrid.Views.Grid.CustomRowCellEditEventArgs e)
         {
             try
             {
-                CommonParam param = new CommonParam();
-                HisBankFilter filter = new HisBankFilter();
-                filter.IS_ACTIVE = IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE;
-                var result = new BackendAdapter(param).Get<List<HIS_BANK>>("api/HisBank/Get", ApiConsumers.MosConsumer, filter, null);
-                return result ?? new List<HIS_BANK>();
+                DevExpress.XtraGrid.Views.Grid.GridView view = sender as DevExpress.XtraGrid.Views.Grid.GridView;
+
             }
             catch (Exception ex)
             {
-                Inventec.Common.Logging.LogSystem.Warn(ex);
-                return new List<HIS_BANK>();
+                Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
-
         private void gridViewFormList_CustomUnboundColumnData(object sender, DevExpress.XtraGrid.Views.Base.CustomColumnDataEventArgs e)
         {
             try
@@ -613,6 +785,8 @@ namespace HIS.Desktop.Plugins.HisPatientBankAccount.HisPatientBankAccount
                     }
 
 
+
+
                     gridControlFormList.RefreshDataSource();
                 }
             }
@@ -622,9 +796,68 @@ namespace HIS.Desktop.Plugins.HisPatientBankAccount.HisPatientBankAccount
             }
         }
         #region handleEvent
+        private void btnSearch_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                FillDataToGridControl();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+        private void txtKeyword_KeyUp(object sender, KeyEventArgs e)
+        {
+            try
+            {
+                if (e.KeyCode == Keys.Enter)
+                {
+                    btnSearch_Click(null, null);
+                }
+                else if (e.KeyCode == Keys.Down)
+                {
+                    gridViewFormList.Focus();
+                    gridViewFormList.FocusedRowHandle = 0;
+                    var rowData = (MOS.EFMODEL.DataModels.V_HIS_PATIENT_BANK_ACCOUNT)gridViewFormList.GetFocusedRow();
+                    if (rowData != null)
+                    {
+                        ChangedDataRow(rowData);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+        private void gridViewFormList_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                var rowData = (MOS.EFMODEL.DataModels.V_HIS_PATIENT_BANK_ACCOUNT)gridViewFormList.GetFocusedRow();
+                if (rowData != null)
+                {
+                    btnChooseItem.Enabled = true;
+                    currentVData = rowData;
+                    ChangedDataRow(rowData);
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
         private void btnEdit_Click(object sender, EventArgs e)
         {
-            SaveProcess();
+            try
+            {
+                SaveProcess();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
 
         }
         private void btnAdd_Click(object sender, EventArgs e)
@@ -632,6 +865,7 @@ namespace HIS.Desktop.Plugins.HisPatientBankAccount.HisPatientBankAccount
             try
             {
                 SaveProcess();
+               
             }
             catch (Exception ex)
             {
@@ -643,6 +877,7 @@ namespace HIS.Desktop.Plugins.HisPatientBankAccount.HisPatientBankAccount
             try
             {
                 SetDefaultValue();
+                ResetFormData();
                 //FillDataToGridControl();
 
             }
@@ -658,10 +893,10 @@ namespace HIS.Desktop.Plugins.HisPatientBankAccount.HisPatientBankAccount
                 var rowData = (MOS.EFMODEL.DataModels.V_HIS_PATIENT_BANK_ACCOUNT)gridViewFormList.GetFocusedRow();
                 if (rowData != null)
                 {
-                    currentData = rowData;
+                    currentVData = rowData;
                     ChangedDataRow(rowData);
 
-                    //Set focus vào control editor đầu tiên
+
                     SetFocusEditor();
                 }
             }
@@ -693,14 +928,178 @@ namespace HIS.Desktop.Plugins.HisPatientBankAccount.HisPatientBankAccount
             }
         }
 
+        private void repoDelete_ButtonClick(object sender, DevExpress.XtraEditors.Controls.ButtonPressedEventArgs e)
+        {
+            try
+            {
+                CommonParam param = new CommonParam();
+                var rowData = (MOS.EFMODEL.DataModels.V_HIS_PATIENT_BANK_ACCOUNT)gridViewFormList.GetFocusedRow();
+                if (MessageBox.Show(LibraryMessage.MessageUtil.GetMessage(LibraryMessage.Message.Enum.HeThongTBCuaSoThongBaoBanCoMuonXoaDuLieuKhong), "", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                {
+                    HisPatientBankAccountFilter filter = new HisPatientBankAccountFilter();
+                    filter.ID = rowData.ID;
+                    var data = new BackendAdapter(param).Get<List<HIS_PATIENT_BANK_ACCOUNT>>(HisRequestUriStore.GET, ApiConsumers.MosConsumer, filter, param).FirstOrDefault();
+
+                    if (rowData != null)
+                    {
+                        bool success = false;
+                        success = new BackendAdapter(param).Post<bool>(HisRequestUriStore.DELETE, ApiConsumers.MosConsumer, data.ID, param);
+                        if (success)
+                        {
+                            FillDataToGridControl();
+                        }
+                        MessageManager.Show(this, param, success);
+                    }
+                }
+                if (delegateSelectData1 != null)
+                    delegateSelectData1(null);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+
 
 
 
         #endregion
 
-        private void CustomRowCellEdit(object sender, DevExpress.XtraGrid.Views.Grid.CustomRowCellEditEventArgs e)
+        private void repoPrint_ButtonClick(object sender, ButtonPressedEventArgs e)
+        {
+            try
+            {
+                var gridView = gridViewFormList;
+                int rowHandle = gridView.FocusedRowHandle;
+                var vData = gridView.GetRow(rowHandle) as V_HIS_PATIENT_BANK_ACCOUNT;
+                currentVData = vData;
+                Inventec.Common.RichEditor.RichEditorStore store = new Inventec.Common.RichEditor.RichEditorStore(ApiConsumers.SarConsumer, ConfigSystems.URI_API_SAR, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetLanguage(), GlobalVariables.TemnplatePathFolder);
+                store.RunPrintTemplate("Mps000501", DeletegatePrintTemplate);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+        private bool DeletegatePrintTemplate(string printCode, string fileName)
+        {
+            bool result = false;
+            try
+            {
+                switch (printCode)
+                {
+                    case "Mps000501":
+                        Inphieuxacnhanthongtinnguoithuhuong(printCode, fileName, ref result);
+                        break;
+                    default:
+                        break;
+
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+                result = false;
+            }
+            return result;
+        }
+        private void Inphieuxacnhanthongtinnguoithuhuong(string printTypeCode, string fileName, ref bool result)
+        {
+            try
+            {
+                WaitingManager.Show();
+                CommonParam param = new CommonParam();
+
+
+                HisPatientFilter patientFilter = new HisPatientFilter();
+
+                patientFilter.ID = currentTreatment.PATIENT_ID;
+
+                var patient = new Inventec.Common.Adapter.BackendAdapter(param).Get<List<MOS.EFMODEL.DataModels.V_HIS_PATIENT>>
+                    (HisRequestUriStore.GETPTVIEW, ApiConsumer.ApiConsumers.MosConsumer, patientFilter, param);
+                var patientItem = patient.FirstOrDefault();
+
+                HisPatientBankAccountFilter bankFilter = new HisPatientBankAccountFilter();
+
+                bankFilter.ID = currentVData.ID;
+
+                var bank = new Inventec.Common.Adapter.BackendAdapter(param).Get<List<MOS.EFMODEL.DataModels.V_HIS_PATIENT_BANK_ACCOUNT>>
+                    (HisRequestUriStore.GETVIEW, ApiConsumer.ApiConsumers.MosConsumer, bankFilter, param);
+                var bankItem = bank.FirstOrDefault();
+
+                MPS.Processor.Mps000501.PDO.Mps000501PDO pdo = new MPS.Processor.Mps000501.PDO.Mps000501PDO(bankItem, patientItem);
+
+                string printerName = "";
+                if (GlobalVariables.dicPrinter.ContainsKey(printTypeCode))
+                {
+                    printerName = GlobalVariables.dicPrinter[printTypeCode];
+                }
+
+                Inventec.Common.SignLibrary.ADO.InputADO inputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode((this.currentTreatment.TREATMENT_CODE), printTypeCode, currentModuleBase.RoomId);
+                WaitingManager.Hide();
+                if (ConfigApplications.CheDoInChoCacChucNangTrongPhanMem == 2)
+                {
+
+                    result = MPS.MpsPrinter.Run(new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, pdo, MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow, printerName) { EmrInputADO = inputADO });
+                }
+                else
+                {
+                    result = MPS.MpsPrinter.Run(new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, pdo, MPS.ProcessorBase.PrintConfig.PreviewType.Show, printerName) { EmrInputADO = inputADO });
+                }
+            }
+            catch (Exception ex)
+            {
+                WaitingManager.Hide();
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void btnChooseItem_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (currentVData != null)
+                {
+                    V_HIS_PATIENT_BANK_ACCOUNT currentDTO = new V_HIS_PATIENT_BANK_ACCOUNT();
+                    //Inventec.Common.Mapper.DataObjectMapper.Map<HIS_PATIENT_BANK_ACCOUNT>(currentDTO, currentVData);
+                    if (delegateSelectData1 != null)
+                        delegateSelectData1(currentVData);
+                    Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(" Filter input:", currentVData));
+                }
+                this.Close();
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
+        }
+        protected override bool ProcessCmdKey(ref System.Windows.Forms.Message msg, Keys keyData)
         {
 
+            if (keyData == (Keys.Control | Keys.N))
+            {
+                btnAdd.PerformClick();
+                return true;
+            }
+            if (keyData == (Keys.Control | Keys.S))
+            {
+                btnEdit.PerformClick();
+                return true;
+            }
+            if (keyData == (Keys.Control | Keys.R))
+            {
+                btnReset.PerformClick();
+                return true;
+            }
+            if (keyData == (Keys.Control | Keys.R))
+            {
+                btnSearch.PerformClick();
+                return true;
+            }
+
+            return base.ProcessCmdKey(ref msg, keyData);
         }
     }
 }

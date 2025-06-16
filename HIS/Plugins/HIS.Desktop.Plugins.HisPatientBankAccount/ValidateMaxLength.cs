@@ -15,13 +15,16 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+
+using DevExpress.XtraEditors;
+using DevExpress.XtraEditors.DXErrorProvider;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace HIS.Desktop.Plugins.HisCashierRoom
+namespace HIS.Desktop.Plugins.HisPatientBankAccount
 {
     public class ValidateMaxlength : DevExpress.XtraEditors.DXErrorProvider.ValidationRule
     {
@@ -32,7 +35,7 @@ namespace HIS.Desktop.Plugins.HisCashierRoom
             bool valid = false;
             try
             {
-                if (txt == null) return valid;
+                
                 if (!string.IsNullOrEmpty(txt.Text) && Inventec.Common.String.CheckString.IsOverMaxLengthUTF8(txt.Text, maxLength))
                 {
                     this.ErrorText = string.Format("Trường dữ liệu vượt quá ký tự cho phép ({0} ký tự)", maxLength);
@@ -47,4 +50,60 @@ namespace HIS.Desktop.Plugins.HisCashierRoom
             return valid;
         }
     }
+    public class ValidationGridLookUpEdit : ValidationRule
+    {
+        internal GridLookUpEdit gridLookUpEdit;
+        internal bool isVisible;
+
+        public override bool Validate(System.Windows.Forms.Control control, object value)
+        {
+            bool valid = false;
+
+            try
+            {
+                if (!isVisible) return true; 
+                if (gridLookUpEdit.EditValue == null)
+                {
+                    this.ErrorText = HIS.Desktop.LibraryMessage.MessageUtil.GetMessage(HIS.Desktop.LibraryMessage.Message.Enum.TruongDuLieuBatBuoc);
+                    return valid;
+                }
+
+                valid = true;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+            return valid;
+        }
+    }
+    class ValidatetxtInput : DevExpress.XtraEditors.DXErrorProvider.ValidationRule
+    {
+        internal DevExpress.XtraEditors.TextEdit txtInfo;
+        internal bool isVisible;
+
+        public override bool Validate(System.Windows.Forms.Control control, object value)
+        {
+            bool valid = false;
+
+            try
+            {
+                if (!isVisible) return true;
+                if (txtInfo.Text == null)
+                {
+                    this.ErrorText = HIS.Desktop.LibraryMessage.MessageUtil.GetMessage(HIS.Desktop.LibraryMessage.Message.Enum.TruongDuLieuBatBuoc);
+                    return valid;
+                }
+
+                valid = true;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+            return valid;
+        }
+    }
+
+
 }

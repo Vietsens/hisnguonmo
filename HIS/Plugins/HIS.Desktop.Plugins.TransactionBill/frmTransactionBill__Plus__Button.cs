@@ -3952,6 +3952,7 @@ namespace HIS.Desktop.Plugins.TransactionBill
                     List<object> listArgs = new List<object>();
                     HIS_TREATMENT treatment = GetTreatment(treatmentId);
                     listArgs.Add(treatment);
+                    listArgs.Add(this.repayPatientBankAccount);
                     listArgs.Add(PluginInstance.GetModuleWithWorkingRoom(moduleData, this.currentModule.RoomId, this.currentModule.RoomTypeId));
                     listArgs.Add((DelegateSelectData)RefreshPatientBankAccount);
                     var extenceInstance = PluginInstance.GetPluginInstance(PluginInstance.GetModuleWithWorkingRoom(moduleData, this.currentModule.RoomId, this.currentModule.RoomTypeId), listArgs);

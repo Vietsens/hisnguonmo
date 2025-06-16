@@ -36,8 +36,6 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\lib\DEVEXPRESS\DevExpress.Data.v15.2.dll</HintPath>
     </Reference>
-    <Reference Include="DevExpress.DXCore.Controls.Utils.v6.3, Version=15.2.9.0, Culture=neutral, PublicKeyToken=35c9f04b7764aa3d" />
-    <Reference Include="DevExpress.DXCore.Controls.XtraEditors.v6.3, Version=15.2.9.0, Culture=neutral, PublicKeyToken=35c9f04b7764aa3d, processorArchitecture=MSIL" />
     <Reference Include="DevExpress.Utils.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\lib\DEVEXPRESS\DevExpress.Utils.v15.2.dll</HintPath>
@@ -100,6 +98,9 @@
     <Reference Include="HIS.Desktop.LocalStorage.SdaConfigKey">
       <HintPath>..\..\..\..\his_push\histest\x64\ReferencedAssemblies\HIS.Desktop.LocalStorage.SdaConfigKey.dll</HintPath>
     </Reference>
+    <Reference Include="HIS.Desktop.Plugins.Library.EmrGenerate">
+      <HintPath>..\..\..\..\..\His_test\histest\x64\ReferencedAssemblies\HIS.Desktop.Plugins.Library.EmrGenerate.dll</HintPath>
+    </Reference>
     <Reference Include="HIS.Desktop.Utility">
       <HintPath>..\..\..\lib\HIS\HIS.Desktop.Utilities\HIS.Desktop.Utility.dll</HintPath>
     </Reference>
@@ -126,6 +127,12 @@
     </Reference>
     <Reference Include="Inventec.Common.Resource">
       <HintPath>..\..\..\lib\Inventec.Common\Inventec.Common.Resource\Inventec.Common.Resource.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Common.RichEditor">
+      <HintPath>..\..\..\..\..\His_test\histest\x64\Inventec.Common.RichEditor.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Common.SignLibrary">
+      <HintPath>..\..\..\..\..\His_test\histest\x64\Integrate\EMR\SignLibraryIntergrate\Inventec.Common.SignLibrary.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Common.String">
       <HintPath>..\..\..\lib\Inventec.Common\Inventec.Common.String\Inventec.Common.String.dll</HintPath>
@@ -187,6 +194,18 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\lib\MOS\MOS.SDO.dll</HintPath>
     </Reference>
+    <Reference Include="MPS">
+      <HintPath>..\..\..\..\..\His_test\histest\x64\ReferencedAssemblies\MPS.dll</HintPath>
+    </Reference>
+    <Reference Include="MPS.Processor.Mps000501">
+      <HintPath>..\..\..\..\lib\MPSv2\MPS.Processor\MPS.Processor.Mps000501.dll</HintPath>
+    </Reference>
+    <Reference Include="MPS.Processor.Mps000501.PDO">
+      <HintPath>..\..\..\..\lib\MPSv2\MPS.PDO\MPS.Processor.Mps000501.PDO.dll</HintPath>
+    </Reference>
+    <Reference Include="MPS.ProcessorBase">
+      <HintPath>..\..\..\..\..\His_test\histest\x64\ReferencedAssemblies\MPS.ProcessorBase.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
@@ -219,6 +238,8 @@
     <Compile Include="Resources\ResourceLanguangeManager.cs" />
     <Compile Include="Resources\ResourceMessage.cs" />
     <Compile Include="ValidateMaxLength.cs" />
+    <Compile Include="Validate\ValidGridLookUp.cs" />
+    <Compile Include="Validate\ValidControlTextEdit.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="HisPatientBankAccount\frmHisPatientBankAccount.resx">
@@ -229,9 +250,13 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Lang.vi.resx" />
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Connected Services\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\delete_16x16.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
