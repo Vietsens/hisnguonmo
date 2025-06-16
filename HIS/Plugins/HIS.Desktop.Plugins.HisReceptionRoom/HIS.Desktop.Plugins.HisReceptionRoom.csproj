@@ -36,7 +36,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="ACS.EFMODEL">
-      <HintPath>..\..\..\TEST\HIS\x64\ReferencedAssemblies\ACS.EFMODEL.dll</HintPath>
+      <HintPath>..\..\..\..\..\HISTEST\histest\x64\ReferencedAssemblies\ACS.EFMODEL.dll</HintPath>
     </Reference>
     <Reference Include="DevExpress.Data.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
     <Reference Include="DevExpress.Utils.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
@@ -67,6 +67,10 @@
     </Reference>
     <Reference Include="Inventec.Common.DateTime">
       <HintPath>..\..\..\..\LIB\Inventec.Common\Inventec.Common.DateTime\Inventec.Common.DateTime.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Common.FlexCelPrint, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\lib\Inventec.Common\Inventec.Common.FlexCelPrint\Inventec.Common.FlexCelPrint.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Common.Logging">
       <HintPath>..\..\..\..\LIB\Inventec.Common\Inventec.Common.Logging\Inventec.Common.Logging.dll</HintPath>
@@ -138,14 +142,21 @@
     <Reference Include="Inventec.UC.Paging">
       <HintPath>..\..\..\..\LIB\Inventec.UC\Inventec.UC.Paging\Inventec.UC.Paging.dll</HintPath>
     </Reference>
-    <Reference Include="MOS.EFMODEL">
-      <HintPath>..\..\..\..\LIB\MOS\MOS.EFMODEL.dll</HintPath>
+    <Reference Include="MOS.EFMODEL, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\lib\MOS\MOS.EFMODEL.dll</HintPath>
     </Reference>
-    <Reference Include="MOS.Filter">
-      <HintPath>..\..\..\..\LIB\MOS\MOS.Filter.dll</HintPath>
+    <Reference Include="MOS.Filter, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\lib\MOS\MOS.Filter.dll</HintPath>
     </Reference>
-    <Reference Include="MOS.SDO">
-      <HintPath>..\..\..\..\LIB\MOS\MOS.SDO.dll</HintPath>
+    <Reference Include="MOS.SDO, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\lib\MOS\MOS.SDO.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=13.0.1.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\HISTEST\histest\x64\ReferencedAssemblies\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -159,6 +170,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ADO\BankInfo.cs" />
+    <Compile Include="ADO\ConfigADO.cs" />
+    <Compile Include="ADO\ConfigSettingsADO.cs" />
     <Compile Include="HisRequestUriStore.cs" />
     <Compile Include="HisReceptionRoomProcessor.cs" />
     <Compile Include="HisReceptionRoom\frmHisReceptionRoom.cs">
@@ -179,6 +193,7 @@
     </Compile>
     <Compile Include="Resources\ResourceLanguageManager.cs" />
     <Compile Include="Resources\ResourceMessage.cs" />
+    <Compile Include="Validation\ValidMaxLengthTKCT.cs" />
     <Compile Include="Validation\ValidMaxlengthtxtReceptionRoomCode.cs" />
     <EmbeddedResource Include="HisReceptionRoom\frmHisReceptionRoom.resx">
       <DependentUpon>frmHisReceptionRoom.cs</DependentUpon>

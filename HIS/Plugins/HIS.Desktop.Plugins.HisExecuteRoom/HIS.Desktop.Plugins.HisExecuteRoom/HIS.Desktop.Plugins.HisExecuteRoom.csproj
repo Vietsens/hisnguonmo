@@ -76,8 +76,9 @@
     <Reference Include="HIS.Desktop.LocalStorage.ConfigApplication">
       <HintPath>..\..\..\..\..\lib\HIS\HIS.Desktop.Plugins.Library.EmrGenerate\HIS.Desktop.LocalStorage.ConfigApplication.dll</HintPath>
     </Reference>
-    <Reference Include="HIS.Desktop.LocalStorage.LocalData">
-      <HintPath>..\..\..\..\..\lib\HIS\HIS.Desktop.Plugins.Library.EmrGenerate\HIS.Desktop.LocalStorage.LocalData.dll</HintPath>
+    <Reference Include="HIS.Desktop.LocalStorage.LocalData, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\lib\HIS\HIS.Desktop.LocalStorage.LocalData\HIS.Desktop.LocalStorage.LocalData.dll</HintPath>
     </Reference>
     <Reference Include="HIS.Desktop.ModuleExt">
       <HintPath>..\..\..\..\..\lib\HIS\HIS.Desktop.ModuleExt\HIS.Desktop.ModuleExt.dll</HintPath>
@@ -87,6 +88,9 @@
     </Reference>
     <Reference Include="HIS.UC.TreeSereServ7V2">
       <HintPath>..\..\..\..\..\lib\HIS\HIS.UC.TreeSereServ7V2\HIS.UC.TreeSereServ7V2.dll</HintPath>
+    </Reference>
+    <Reference Include="IMSys.DbConfig.HIS_RS">
+      <HintPath>..\..\..\..\..\lib\IMSys.DbConfig\IMSys.DbConfig.HIS_RS\IMSys.DbConfig.HIS_RS.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Common.Adapter">
       <HintPath>..\..\..\..\..\lib\Inventec.Common\Inventec.Common.Adapter\Inventec.Common.Adapter.dll</HintPath>
@@ -169,9 +173,6 @@
     <Reference Include="Inventec.UC.Paging">
       <HintPath>..\..\..\..\..\lib\Inventec.UC\Inventec.UC.Paging\Inventec.UC.Paging.dll</HintPath>
     </Reference>
-    <Reference Include="IMSys.DbConfig.HIS_RS.dll">
-      <HintPath>..\..\..\..\..\lib\IMSys.DbConfig\IMSys.DbConfig.HIS_RS\IMSys.DbConfig.HIS_RS.dll</HintPath>
-    </Reference>
     <Reference Include="log4net, Version=1.2.10.0, Culture=neutral, PublicKeyToken=1b44e1d426115821, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\..\lib\Library packages\log4net.1.2.10\log4net.dll</HintPath>
@@ -245,6 +246,7 @@
     </Compile>
     <Compile Include="Resources\ResourceLanguageManager.cs" />
     <Compile Include="Validate2.cs" />
+    <Compile Include="ValidationtxtPayerAccount.cs" />
     <Compile Include="ValidMaxlengthtxtExecuteRoomCode.cs" />
   </ItemGroup>
   <ItemGroup>

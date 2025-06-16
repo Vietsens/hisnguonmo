@@ -221,6 +221,7 @@ namespace HIS.Desktop.Plugins.HisMediStock.HisMediStock
 
                 this.lcEditorInfo.Text = Inventec.Common.Resource.Get.Value("frmHisMediStock.lcEditorInfo.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.cboParent.Properties.NullText = Inventec.Common.Resource.Get.Value("frmHisMediStock.cboParent.Properties.NullText", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.cboNganHangChiTra.Properties.NullText = Inventec.Common.Resource.Get.Value("frmHisMediStock.cboNganHangChiTra.Properties.NullText", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.cboDepartMentName.Properties.NullText = Inventec.Common.Resource.Get.Value("frmHisMediStock.cboDepartMentName.Properties.NullText", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.btnCancel.Text = Inventec.Common.Resource.Get.Value("frmHisMediStock.btnCancel.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.btnAdd.Text = Inventec.Common.Resource.Get.Value("frmHisMediStock.btnAdd.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
@@ -308,6 +309,7 @@ namespace HIS.Desktop.Plugins.HisMediStock.HisMediStock
             {
                 InitComboDepartment();
                 InitComboParent();
+                InitComboBank();
 
                 //TODO
             }
@@ -333,6 +335,26 @@ namespace HIS.Desktop.Plugins.HisMediStock.HisMediStock
                 columnInfos.Add(new ColumnInfo("MEDI_STOCK_NAME", "", 250, 2));
                 ControlEditorADO controlEditorADO = new ControlEditorADO("MEDI_STOCK_NAME", "ID", columnInfos, false, 350);
                 ControlEditorLoader.Load(cboParent, mediStock, controlEditorADO);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+        private void InitComboBank()
+        {
+            try
+            {
+                var banks = BackendDataWorker.Get<HIS_BANK>()
+                    .Where(b => b.IS_ACTIVE == 1)
+                    .ToList();
+                List<ColumnInfo> columnInfos = new List<ColumnInfo>
+        {
+            new ColumnInfo("BANK_CODE", "", 100, 1),
+            new ColumnInfo("BANK_NAME", "", 200, 2)
+        };
+                ControlEditorADO controlEditorADO = new ControlEditorADO("BANK_NAME", "ID", columnInfos, false, 350);
+                ControlEditorLoader.Load(cboNganHangChiTra, banks, controlEditorADO);
             }
             catch (Exception ex)
             {
@@ -474,6 +496,8 @@ namespace HIS.Desktop.Plugins.HisMediStock.HisMediStock
                     chkIS_MOBA_CHANGE_AMOUNT.Checked = (data.IS_MOBA_CHANGE_AMOUNT == 1 ? true : false);
                     chkIsExpend.Checked = (data.IS_EXPEND == 1 ? true : false);
                     chkIsShowAnticipate.Checked = (data.IS_SHOW_ANTICIPATE == 1 ? true : false);
+                    cboNganHangChiTra.EditValue = data.PAYER_BANK_ID;
+                    txtTaiKhoanChiTra.Text = data.PAYER_ACCOUNT;
                     CommonParam param = new CommonParam();
 
                     GridCheckMarksSelection gridCheckMarkExpApprove = cboExpMestTypeApprove.Properties.Tag as GridCheckMarksSelection;
@@ -636,6 +660,8 @@ namespace HIS.Desktop.Plugins.HisMediStock.HisMediStock
                 cboRooomTN.EditValue = null;
                 cboDepartMentName.EditValue = null;
                 cboParent.EditValue = null;
+                cboNganHangChiTra.EditValue = null;
+                txtTaiKhoanChiTra.Text = "";
                 GridCheckMarksSelection gridCheckMark = cboExpMestTypeApprove.Properties.Tag as GridCheckMarksSelection;
                 if (gridCheckMark != null)
                 {
@@ -1025,6 +1051,14 @@ namespace HIS.Desktop.Plugins.HisMediStock.HisMediStock
                 }
                 if (cboDepartMentName.EditValue != null)
                     Parent.DEPARTMENT_ID = Inventec.Common.TypeConvert.Parse.ToInt64(cboDepartMentName.EditValue.ToString());
+
+                if (cboNganHangChiTra.EditValue != null)
+                    Parent.PAYER_BANK_ID = Inventec.Common.TypeConvert.Parse.ToInt64(cboNganHangChiTra.EditValue.ToString());
+                else
+                    Parent.PAYER_BANK_ID = null;
+
+                Parent.PAYER_ACCOUNT = txtTaiKhoanChiTra.Text;
+
             }
             catch (Exception ex)
             {
@@ -1695,7 +1729,6 @@ namespace HIS.Desktop.Plugins.HisMediStock.HisMediStock
                         try
                         {
                             e.Value = Inventec.Common.DateTime.Convert.TimeNumberToTimeString(Inventec.Common.TypeConvert.Parse.ToInt64(pData.CREATE_TIME.ToString()));
-
                         }
                         catch (Exception ex)
                         {
@@ -3228,6 +3261,36 @@ namespace HIS.Desktop.Plugins.HisMediStock.HisMediStock
             {
                 if (cboRooomTN.EditValue != null)
                     cboRooomTN.Properties.Buttons[1].Visible = true;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void cboNganHangChiTra_ButtonClick(object sender, ButtonPressedEventArgs e)
+        {
+            try
+            {
+                if (e.Button.Kind == ButtonPredefines.Delete)
+                {
+                    cboNganHangChiTra.Properties.Buttons[1].Visible = false;
+                    cboNganHangChiTra.EditValue = null;
+                    txtTaiKhoanChiTra.Text = null;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void cboNganHangChiTra_EditValueChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                if (cboNganHangChiTra.EditValue != null)
+                    cboNganHangChiTra.Properties.Buttons[1].Visible = true;
             }
             catch (Exception ex)
             {

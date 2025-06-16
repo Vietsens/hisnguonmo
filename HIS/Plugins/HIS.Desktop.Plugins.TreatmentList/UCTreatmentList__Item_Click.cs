@@ -39,6 +39,8 @@ using HIS.Desktop.Controls.Session;
 using HIS.Desktop.ApiConsumer;
 using Inventec.Core;
 using HIS.Desktop.Plugins.TreatmentList.Config;
+using HIS.Desktop.Plugins.TreatmentList.ADO;
+using HIS.Desktop.Plugins.TreatmentList.Popup;
 
 namespace HIS.Desktop.Plugins.TreatmentList
 {
@@ -707,6 +709,21 @@ namespace HIS.Desktop.Plugins.TreatmentList
                 WaitingManager.Hide();
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
+        }
+
+        private void repositoryItembtnAIViewChatUrlFormat_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void repositoryItembtnAiMedicalAnalysis_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void repositoryItembtnBeneficiaryInfo_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

@@ -20,6 +20,7 @@ using DevExpress.XtraEditors;
 using DevExpress.XtraEditors.Controls;
 using DevExpress.XtraTreeList.Nodes;
 using HIS.Desktop.ApiConsumer;
+using HIS.Desktop.Common;
 using HIS.Desktop.Controls.Session;
 using HIS.Desktop.LibraryMessage;
 using HIS.Desktop.LocalStorage.BackendData;
@@ -29,6 +30,7 @@ using HIS.Desktop.Plugins.RepayService.Config;
 using HIS.Desktop.Plugins.RepayService.RepayService.Validtion;
 using HIS.Desktop.Print;
 using HIS.Desktop.Utilities.Extentions;
+using HIS.Desktop.Utility;
 using Inventec.Common.Adapter;
 using Inventec.Common.Controls.EditorLoader;
 using Inventec.Common.Logging;
@@ -71,12 +73,17 @@ namespace HIS.Desktop.Plugins.RepayService.RepayService
         internal List<MOS.EFMODEL.DataModels.HIS_PATIENT_TYPE> ListHisPatientType;
         internal List<MOS.EFMODEL.DataModels.V_HIS_CASHIER_ROOM> ListCashierRoom;
         internal List<V_HIS_SERE_SERV_5> ListSereServ;
+        internal List<HIS_PATIENT_BANK_ACCOUNT> bankAccount;
+
         //internal string HIS_PAY_FORM_CODE_DEFAULT;//Not use
         const string REPAY_REASON_CODE_DEFAULT = "03";
         long? branchId;
         bool isPrintNow;
         internal long cashierRoomId;
         internal Inventec.Desktop.Common.Modules.Module moduleData;
+
+        internal long? _patientBankAccountId;
+        internal object defaultAccount;
 
         SendResultToOtherForm sendResultToOtherForm;
         #endregion
@@ -174,6 +181,7 @@ namespace HIS.Desktop.Plugins.RepayService.RepayService
                 {
                     AutoMapper.Mapper.CreateMap<V_HIS_TREATMENT_FEE, V_HIS_TREATMENT_1>();
                     this.HisTreatment = AutoMapper.Mapper.Map<V_HIS_TREATMENT_1>(this.treatment);
+                    LoadBeneficiaryInfo();
                 }
                 positionHandle = -1;
                 LoadDataToControl();
@@ -202,13 +210,40 @@ namespace HIS.Desktop.Plugins.RepayService.RepayService
                 timerInitForm.Start();
                 Inventec.Common.Logging.LogSystem.Debug("frmRepayService_Load. 4");
 
-
-
                 InitControlState();
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void LoadBeneficiaryInfo()
+        {
+            try
+            {
+                if (hisTransactionRepaySDO != null && hisTransactionRepaySDO.Transaction != null)
+                {
+                    CommonParam param = new CommonParam();
+                    MOS.Filter.HisPatientBankAccountFilter filter = new MOS.Filter.HisPatientBankAccountFilter();
+                    filter.ID = hisTransactionRepaySDO.Transaction.PATIENT_BANK_ACCOUNT_ID;
+                    filter.IS_ACTIVE = 1;
+
+                    var bankAccounts = new BackendAdapter(param).Get<List<HIS_PATIENT_BANK_ACCOUNT>>(
+                        "api/HisPatientBankAccount/Get", ApiConsumers.MosConsumer, filter, param);
+
+                    if (bankAccounts != null && bankAccounts.Count > 0)
+                    {
+                        // Get the default or first account
+                        defaultAccount = bankAccounts.FirstOrDefault();
+
+                        SelectBankAccount(defaultAccount);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
 
@@ -2212,5 +2247,75 @@ namespace HIS.Desktop.Plugins.RepayService.RepayService
             }
         }
 
+        private void spinAmount_EditValueChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                decimal amount = 0;
+                if (decimal.TryParse(spinAmount.Text.Replace(",", ""), out amount))
+                {
+                    btnBankAccount.Enabled = amount > 0;
+                    
+                    if (amount <= 0)
+                    {
+                        _patientBankAccountId = null;
+                        labelAccountInfo.Text = "";
+                        btnBankAccount.Enabled = true;
+                    }
+                }
+                else
+                {
+                    btnBankAccount.Enabled = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        
+        private void btnBankAccount_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                Inventec.Desktop.Common.Modules.Module moduleData = GlobalVariables.currentModuleRaws.Where(o => o.ModuleLink == "HIS.Desktop.Plugins.HisPatientBankAccount").FirstOrDefault();
+                if (moduleData == null) throw new NullReferenceException("Not found module by ModuleLink = 'HIS.Desktop.Plugins.HisPatientBankAccount'");
+                if (!moduleData.IsPlugin || moduleData.ExtensionInfo == null) throw new NullReferenceException("Module 'HIS.Desktop.Plugins.HisPatientBankAccount");
+                List<object> listArgs = new List<object>();
+                AutoMapper.Mapper.CreateMap<V_HIS_TREATMENT_FEE, HIS_TREATMENT>();
+                listArgs.Add(AutoMapper.Mapper.Map<HIS_TREATMENT>(this.treatment));
+                listArgs.Add((DelegateSelectData)defaultAccount);
+                listArgs.Add(PluginInstance.GetModuleWithWorkingRoom(moduleData, this.moduleData.RoomId, this.moduleData.RoomTypeId));
+                var extenceInstance = PluginInstance.GetPluginInstance(PluginInstance.GetModuleWithWorkingRoom(moduleData, this.moduleData.RoomId, this.moduleData.RoomTypeId), listArgs);
+                if (extenceInstance == null) throw new ArgumentNullException("moduleData is null");
+                ((Form)extenceInstance).ShowDialog();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void SelectBankAccount(object data)
+        {
+            try
+            {
+                HIS_PATIENT_BANK_ACCOUNT bankAccount = data as HIS_PATIENT_BANK_ACCOUNT;
+                if (bankAccount != null)
+                {
+                    _patientBankAccountId = bankAccount.ID;
+
+                    string relationship = !string.IsNullOrEmpty(bankAccount.RELATION_NAME)
+                                ? bankAccount.RELATION_NAME.ToString() : "";
+                    labelAccountInfo.Text = bankAccount.HIS_BANK.ToString() + " - " + bankAccount.PAYEE_ACCOUNT_NUMBER.ToString() + " - " +
+                        bankAccount.PAYEE_NAME.ToString() + "(" + relationship + ")";
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
     }
 }

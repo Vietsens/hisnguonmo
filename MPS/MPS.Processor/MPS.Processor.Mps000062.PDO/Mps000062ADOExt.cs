@@ -286,9 +286,14 @@ namespace MPS.Processor.Mps000062.PDO
         public string MEDICINES_OutStock_THDT_HTU__DATA { get; set; }
 
         public string MEDICINES_MERGE___DATA { get; set; } // thuốc pha truyền và thuốc không pha truyền
+        public string MEDICINES_MERGE_DATE___DATA { get; set; }
         public string MEDICINES_MERGE_HTU___DATA { get; set; } 
         public string MEDICINES_MERGE_DUTRU___DATA { get; set; } // thuốc dự trù pha truyền và thuốc dự trù không pha truyền
         public string MEDICINES_MERGE_DUTRU_HTU___DATA { get; set; }
+
+        public string MEDICINES_MERGE_DATE_DUTRU___DATA { get; set; }
+        public string MEDICINES_MERGE_DATE_THDT___DATA { get; set; }
+        public string SERVICE_MERGE_X01___DATA1 { get; set; }
         /// <summary>
         /// Tổng hợp chi tiết của MEDICINES___DATA, MEDICINES_DuTru___DATA,  MEDICINES_THDT___DATA
         /// </summary>
@@ -748,6 +753,7 @@ namespace MPS.Processor.Mps000062.PDO
         public long? MEDICINE_GROUP_ID { get; set; }
         public string ACTIVE_INGR_BHYT_CODE { get; set; }
         public string ACTIVE_INGR_BHYT_NAME { get; set; }
+        public long INTRUCTION_DATE { get; set; }
         public string CONCENTRA { get; set; }
         public ServiceReqMetyADO() { }
         public ServiceReqMetyADO(HIS_SERVICE_REQ_METY data, long trackingId, List<HIS_SERVICE_REQ> ServiceReqs)
@@ -763,6 +769,7 @@ namespace MPS.Processor.Mps000062.PDO
                     if (ServiceReqs != null && ServiceReqs.Count > 0)
                     {
                         var serviceReq = ServiceReqs.FirstOrDefault(o => o.ID == data.SERVICE_REQ_ID);
+                        this.INTRUCTION_DATE = serviceReq != null ? serviceReq.INTRUCTION_DATE : 0;
                         this.INTRUCTION_TIME_STR = serviceReq != null ? serviceReq.INTRUCTION_DATE : 0;
                         this.USE_TIME = serviceReq != null ? serviceReq.USE_TIME : null;
                         this.USED_FOR_TRACKING_ID = serviceReq != null ? serviceReq.USED_FOR_TRACKING_ID : null;

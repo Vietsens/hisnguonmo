@@ -223,23 +223,15 @@ namespace HIS.Desktop.Plugins.ExpMestChmsUpdate
                         foreach (var item in _ExpMestMedicines)
                         {
                             var data = this.listMediInStock.FirstOrDefault(p => p.ID == item.MEDICINE_ID);
-                            if (data != null)
-                            {
-                                MediMateTypeADO ado = new MediMateTypeADO(data);
-                                ado.EXP_AMOUNT = item.AMOUNT;
-                                ado.DESCRIPTION = item.DESCRIPTION;
-                                ado.NUM_ORDER = item.NUM_ORDER;
-                                ado.MEDI_MATE_REQ_ID = item.ID;
-                                ado.AVAILABLE_AMOUNT = data.AvailableAmount;
-                                ado.MEDICINE_ID = item.MEDICINE_ID ?? 0;
-                                ado.IsPackage = chkHienThiLo.Checked;
-                                dicMediMateAdo[ado.SERVICE_ID] = ado;
-                            }
-                            else
-                            {
-                                var medi = BackendDataWorker.Get<V_HIS_MEDICINE_TYPE>().FirstOrDefault(p => p.ID == item.TDL_MEDICINE_TYPE_ID);
-                                _errMessMedicine.Add(medi != null ? medi.MEDICINE_TYPE_NAME : "");
-                            }
+                            MediMateTypeADO ado = new MediMateTypeADO(data, true);
+                            ado.EXP_AMOUNT = item.AMOUNT;
+                            ado.DESCRIPTION = item.DESCRIPTION;
+                            ado.NUM_ORDER = item.NUM_ORDER;
+                            ado.MEDI_MATE_REQ_ID = item.ID;
+                            ado.AVAILABLE_AMOUNT = item.AMOUNT + (data != null ? data.AvailableAmount : 0);
+                            ado.MEDICINE_ID = item.MEDICINE_ID ?? 0;
+                            ado.IsPackage = chkHienThiLo.Checked;
+                            dicMediMateAdo[ado.SERVICE_ID] = ado;
                         }
                     }
 
@@ -254,21 +246,21 @@ namespace HIS.Desktop.Plugins.ExpMestChmsUpdate
                             var data = this.listMateInStock.FirstOrDefault(p => p.ID == item.MATERIAL_ID);
                             if (data != null)
                             {
-                                MediMateTypeADO ado = new MediMateTypeADO(data);
+                                MediMateTypeADO ado = new MediMateTypeADO(data, true);
                                 ado.EXP_AMOUNT = item.AMOUNT;
                                 ado.DESCRIPTION = item.DESCRIPTION;
                                 ado.NUM_ORDER = item.NUM_ORDER;
                                 ado.MEDI_MATE_REQ_ID = item.ID;
-                                ado.AVAILABLE_AMOUNT = data.AvailableAmount;
+                                ado.AVAILABLE_AMOUNT = data.AvailableAmount + (data != null ? data.AvailableAmount : 0);
                                 ado.MATERIAL_ID = item.MATERIAL_ID ?? 0;
                                 ado.IsPackage = chkHienThiLo.Checked;
                                 dicMediMateAdo[ado.SERVICE_ID] = ado;
                             }
-                            else
-                            {
-                                var mate = BackendDataWorker.Get<V_HIS_MATERIAL_TYPE>().FirstOrDefault(p => p.ID == item.TDL_MATERIAL_TYPE_ID);
-                                _errMessMaterial.Add(mate != null ? mate.MATERIAL_TYPE_NAME : "");
-                            }
+                            //else
+                            //{
+                            //    var mate = BackendDataWorker.Get<V_HIS_MATERIAL_TYPE>().FirstOrDefault(p => p.ID == item.TDL_MATERIAL_TYPE_ID);
+                            //    _errMessMaterial.Add(mate != null ? mate.MATERIAL_TYPE_NAME : "");
+                            //}
                         }
                     }
                 }
@@ -285,7 +277,7 @@ namespace HIS.Desktop.Plugins.ExpMestChmsUpdate
                             var data = this.listMediInStock.FirstOrDefault(p => p.MEDICINE_TYPE_ID == item.MEDICINE_TYPE_ID);
                             if (data != null)
                             {
-                                MediMateTypeADO ado = new MediMateTypeADO(data);
+                                MediMateTypeADO ado = new MediMateTypeADO(data, null);
                                 ado.EXP_AMOUNT = item.AMOUNT;
                                 ado.DESCRIPTION = item.DESCRIPTION;
                                 ado.NUM_ORDER = item.NUM_ORDER;
@@ -313,7 +305,7 @@ namespace HIS.Desktop.Plugins.ExpMestChmsUpdate
                             var data = this.listMateInStock.FirstOrDefault(p => p.MATERIAL_TYPE_ID == item.MATERIAL_TYPE_ID);
                             if (data != null)
                             {
-                                MediMateTypeADO ado = new MediMateTypeADO(data);
+                                MediMateTypeADO ado = new MediMateTypeADO(data, null);
                                 ado.EXP_AMOUNT = item.AMOUNT;
                                 ado.DESCRIPTION = item.DESCRIPTION;
                                 ado.NUM_ORDER = item.NUM_ORDER;
@@ -470,8 +462,9 @@ namespace HIS.Desktop.Plugins.ExpMestChmsUpdate
                 else
                 {
                     _datas = _datas.Where(o =>
-                       o.AvailableAmount > 0
-                       && IS_GOODS_RESTRICT(o)
+                       //o.AvailableAmount > 0
+                       //&& 
+                       IS_GOODS_RESTRICT(o)
                        && IsCheckMedicine(medicineTypeList, this.mestRoom.IS_BUSINESS == 1 ? true : false, o.MEDICINE_TYPE_ID)
                        ).ToList();
                     this.listMediInStock = _datas;
@@ -579,8 +572,9 @@ namespace HIS.Desktop.Plugins.ExpMestChmsUpdate
                 else
                 {
                     _datas = _datas.Where(o =>
-                       o.AvailableAmount > 0
-                       && IS_GOODS_RESTRICT(o)
+                       //o.AvailableAmount > 0
+                       //&& 
+                       IS_GOODS_RESTRICT(o)
                        && IsCheckMaterial(materialTypeList, this.mestRoom.IS_BUSINESS == 1 ? true : false, o.MATERIAL_TYPE_ID)
                        ).ToList();
                     this.listMateInStock = _datas;
@@ -1462,11 +1456,12 @@ namespace HIS.Desktop.Plugins.ExpMestChmsUpdate
         {
             try
             {
+                var isCheckedHienThiLo = chkHienThiLo.Checked; 
                 this.currentMediMate = null;
                 var row = (HisMedicineInStockSDO)gridViewMedicine.GetFocusedRow();
                 if (row != null)
                 {
-                    this.currentMediMate = new ADO.MediMateTypeADO(row);
+                    this.currentMediMate = new ADO.MediMateTypeADO(row, isCheckedHienThiLo);
                     ResetValueControlDetail();
                 }
             }
@@ -1499,11 +1494,12 @@ namespace HIS.Desktop.Plugins.ExpMestChmsUpdate
         {
             try
             {
+                var isCheckedHienThiLo = chkHienThiLo.Checked;
                 this.currentMediMate = null;
                 var row = (HisMaterialInStockSDO)gridViewMaterial.GetFocusedRow();
                 if (row != null)
                 {
-                    this.currentMediMate = new ADO.MediMateTypeADO(row);
+                    this.currentMediMate = new ADO.MediMateTypeADO(row, isCheckedHienThiLo);
                     ResetValueControlDetail();
                 }
             }

@@ -38,7 +38,7 @@ namespace HIS.Desktop.Plugins.RepayService.RepayService
     internal class RepayServiceProcess
     {
         //xemlai...
-        internal static void UpdateDataFormTransactionDepositToDTO(HisTransactionRepaySDO transactionData, MOS.EFMODEL.DataModels.V_HIS_TREATMENT_1 treatment, frmRepayService control)
+        public static void UpdateDataFormTransactionDepositToDTO(HisTransactionRepaySDO transactionData, MOS.EFMODEL.DataModels.V_HIS_TREATMENT_1 treatment, frmRepayService control)
         {
             try
             {
@@ -99,10 +99,16 @@ namespace HIS.Desktop.Plugins.RepayService.RepayService
                 {
                     SetSereServToDataTransfer(node, transactionData);
                 }
+
+                // Add the patient bank account ID if available
+                if (control._patientBankAccountId.HasValue)
+                {
+                    transactionData.Transaction.PATIENT_BANK_ACCOUNT_ID = control._patientBankAccountId;
+                }
             }
             catch (Exception ex)
             {
-                Inventec.Common.Logging.LogSystem.Warn(ex);
+                Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
 

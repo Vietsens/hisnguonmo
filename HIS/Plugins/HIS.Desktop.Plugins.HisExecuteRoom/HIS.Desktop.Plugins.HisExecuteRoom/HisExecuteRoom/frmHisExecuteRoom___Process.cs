@@ -278,7 +278,16 @@ namespace HIS.Desktop.Plugins.HisExecuteRoom.HisExecuteRoom
                 {
                     room.DEFAULT_INSTR_PATIENT_TYPE_ID = null;
                 }
-
+                //qtcode
+                if (cboPayerBank.EditValue != null)
+                {
+                    room.PAYER_BANK_ID = Int64.Parse(cboPayerBank.EditValue.ToString());
+                }
+                else
+                {
+                    room.PAYER_BANK_ID = null;
+                }
+                room.PAYER_ACCOUNT = txtPayerAccount.Text.Trim();
                 room.QR_ACCOUNT_BOOK_ID = cboAccountQr.EditValue != null ? (long?)Int64.Parse(cboAccountQr.EditValue.ToString()) : null;
                 room.QR_CONFIG_JSON = txtJsonQr.Text;
             }

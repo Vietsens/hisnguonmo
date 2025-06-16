@@ -135,7 +135,7 @@
     </Reference>
     <Reference Include="HIS.Desktop.Plugins.Library.PrintTreatmentFinish, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\His Test\histest\x64\ReferencedAssemblies\HIS.Desktop.Plugins.Library.PrintTreatmentFinish.dll</HintPath>
+      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\HIS.Desktop.Plugins.Library.PrintTreatmentFinish.dll</HintPath>
     </Reference>
     <Reference Include="HIS.Desktop.Print, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>

@@ -16,10 +16,12 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 using DevExpress.XtraBars;
+using EMR_MAIN.ChucNangKhac;
 using HIS.Desktop.Common;
 using HIS.Desktop.LocalStorage.BackendData;
 using HIS.Desktop.Plugins.Library.FormMedicalRecord;
 using HIS.Desktop.Plugins.Library.FormOtherTreatment;
+using HIS.Desktop.Plugins.TreatmentList.Config;
 using HIS.Desktop.Plugins.TreatmentList.Resources;
 using MOS.EFMODEL.DataModels;
 using System;
@@ -142,7 +144,10 @@ namespace HIS.Desktop.Plugins.TreatmentList
             TuVong,
             HivTreatment,
             MedicalAssessment,
-            TuberclusisTreatment
+            TuberclusisTreatment,
+            BeneficiaryInfo,
+            AiMedicalAnalysis,
+            AIViewChatUrlFormat
 
             //ThongTinCungChiTra
         }
@@ -235,6 +240,12 @@ namespace HIS.Desktop.Plugins.TreatmentList
                 bbtnEpidemiologyInfo.Tag = ItemType.ThongTinDichTe;
                 bbtnEpidemiologyInfo.ItemClick += new ItemClickEventHandler(this._MouseRightClick);
                 subBenhNhan.AddItem(bbtnEpidemiologyInfo);
+                // Thông tin thụ hưởng
+                BarButtonItem bbtnBeneficiaryInfo = new BarButtonItem(this._BarManager, "Thông tin thụ hưởng", 1);
+                bbtnBeneficiaryInfo.Tag = ItemType.BeneficiaryInfo;
+                bbtnBeneficiaryInfo.ItemClick += new ItemClickEventHandler(this._MouseRightClick);
+                subBenhNhan.AddItem(bbtnBeneficiaryInfo);                
+                
                 this._Menu.AddItems(new BarItem[] { subBenhNhan });
 
                 BarSubItem subCongKhai = new BarSubItem(this._BarManager, "Công khai thuốc, dịch vụ", 2);
@@ -395,6 +406,15 @@ namespace HIS.Desktop.Plugins.TreatmentList
                 bbtnTracking.ItemClick += new ItemClickEventHandler(this._MouseRightClick);
                 subDieuTri.AddItem(bbtnTracking);
 
+                //Xem lịch sử hỏi bệnh
+                if(!string.IsNullOrWhiteSpace(HisConfigCFG.AIViewChatUrlFormat) && (!string.IsNullOrWhiteSpace(_TreatmentPoppupPrint.PERSON_CODE) || !string.IsNullOrWhiteSpace(_TreatmentPoppupPrint.TDL_PATIENT_CCCD_NUMBER)))
+                {
+                    BarButtonItem bbtnAIViewChatUrlFormat = new BarButtonItem(this._BarManager, "Xem lịch sử hỏi bệnh", 0);
+                    bbtnAIViewChatUrlFormat.Tag = ItemType.AIViewChatUrlFormat;
+                    bbtnAIViewChatUrlFormat.ItemClick += new ItemClickEventHandler(this._MouseRightClick);
+                    subDieuTri.AddItem(bbtnAIViewChatUrlFormat);
+                }               
+
                 this._Menu.AddItems(new BarItem[] { subDieuTri });
 
                 #region ----- Yêu cầu mở hồ sơ điều trị
@@ -479,12 +499,16 @@ namespace HIS.Desktop.Plugins.TreatmentList
                 itemBenhAnNgoaiTruGlaucoma.Tag = ItemType.BenhAnNgoaiTruGlaucoma;
                 itemBenhAnNgoaiTruGlaucoma.ItemClick += new ItemClickEventHandler(_MouseRightClick);
                 subBenhAn.AddItem(itemBenhAnNgoaiTruGlaucoma);
-                
-                
-                
 
-                
-                
+                //Phân tích hình ảnh y khoa AI
+                if (!string.IsNullOrEmpty(HisConfigCFG.AIConnectionInfo))
+                {
+                    BarButtonItem bbtnAiMedicalAnalysis = new BarButtonItem(_BarManager, "Phân tích hình ảnh y khoa AI", 9);
+                    bbtnAiMedicalAnalysis.Tag = ItemType.AiMedicalAnalysis;
+                    bbtnAiMedicalAnalysis.ItemClick += new ItemClickEventHandler(this._MouseRightClick);
+                    subBenhAn.AddItem(bbtnAiMedicalAnalysis);
+                }
+
                 if (_TreatmentPoppupPrint.TREATMENT_END_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_END_TYPE.ID__XINRAVIEN && _TreatmentPoppupPrint.TREATMENT_RESULT_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_RESULT.ID__NANG)
                 {
                     //Phiếu tóm tắt thông tin bệnh nặng xin về

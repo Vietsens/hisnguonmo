@@ -62,6 +62,7 @@ namespace HIS.Desktop.Plugins.ExpMestChmsUpdate
 
         Inventec.Common.RichEditor.RichEditorStore richEditorMain;
 
+
         private void btnAdd_Click(object sender, EventArgs e)
         {
             try
@@ -141,7 +142,6 @@ namespace HIS.Desktop.Plugins.ExpMestChmsUpdate
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
-
         private void btnSave_Click(object sender, EventArgs e)
         {
             try

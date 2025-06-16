@@ -102,6 +102,7 @@ namespace HIS.Desktop.Plugins.CallPatientVer5
             }
 
         }
+        System.Windows.Forms.Timer timer = new System.Windows.Forms.Timer();
         private void frmWaitingScreen_QY_Load(object sender, EventArgs e)
         {
             try
@@ -126,14 +127,22 @@ namespace HIS.Desktop.Plugins.CallPatientVer5
                 InitRestoreLayoutGridViewFromXml(gridViewWaitingCls);
                 InitRestoreLayoutGridViewFromXml(gridViewWatingExams);
 
-                //Set color Form
-                setFromConfigToControl();
+                RegisterTimer(ModuleLink, "timerInitForm", 500, StartInitForm);
+                StartTimer(ModuleLink, "timerInitForm");
+               
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
+
+        private void StartInitForm()
+        { //Set color Form
+            setFromConfigToControl();
+            StopTimer(ModuleLink, "timerInitForm");
+        }
+
         private void StartAllTimer()
         {
             try

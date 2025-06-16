@@ -25,6 +25,7 @@ using HIS.Desktop.Controls.Session;
 using HIS.Desktop.LocalStorage.BackendData;
 using HIS.Desktop.LocalStorage.HisConfig;
 using HIS.Desktop.LocalStorage.LocalData;
+using HIS.Desktop.Plugins.BedRoomPartial.ADO;
 using HIS.Desktop.Plugins.BedRoomPartial.Key;
 using HIS.Desktop.Plugins.BedRoomPartial.Popup;
 using HIS.Desktop.Plugins.Library.FormMedicalRecord.Base;
@@ -281,8 +282,16 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
                         case BedRoomPopupMenuProcessor.ModuleType.PhanLoaiBenhNhan:
                             PhanLoaiBenhNhan();
                             break;
-
-                        #endregion
+                        case BedRoomPopupMenuProcessor.ModuleType.BeneficiaryInfo:
+                            btnBeneficiaryInfoClick();
+                            break;
+                        case BedRoomPopupMenuProcessor.ModuleType.AnalyzeMedicalImage:
+                            btnAnalyzeMedicalImageClick();
+                            break;
+                        case BedRoomPopupMenuProcessor.ModuleType.MedicalTreamentOut:
+                            btnMedicalTreamentOutClick();
+                            break;
+                            #endregion
                     }
                 }
             }
@@ -1851,7 +1860,7 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
                                     GlobalVariables.FormAssignService.ShowInTaskbar = true;
                                     Type classType = GlobalVariables.FormAssignService.GetType();
                                     MethodInfo methodInfo = classType.GetMethod("ReloadModuleByInputData");
-                                    methodInfo.Invoke(GlobalVariables.FormAssignService, new object[] { currentModule,assignServiceADO });
+                                    methodInfo.Invoke(GlobalVariables.FormAssignService, new object[] { currentModule, assignServiceADO });
                                     Inventec.Common.Logging.LogSystem.Error("CASE 2 _START");
                                     GlobalVariables.FormAssignService.Activate();
                                     Inventec.Common.Logging.LogSystem.Error("CASE 2 _END");
@@ -1932,10 +1941,10 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
                         listArgs.Add(treatFilter);
 
                         listArgs.Add(PluginInstance.GetModuleWithWorkingRoom(moduleData, this.wkRoomId, this.wkRoomTypeId));
-						var extenceInstance = PluginInstance.GetPluginInstance(HIS.Desktop.Utility.PluginInstance.GetModuleWithWorkingRoom(moduleData, this.currentModule.RoomId, this.currentModule.RoomTypeId), listArgs);
-						if (extenceInstance == null) throw new ArgumentNullException("moduleData is null");
-						((Form)extenceInstance).ShowDialog();
-					}
+                        var extenceInstance = PluginInstance.GetPluginInstance(HIS.Desktop.Utility.PluginInstance.GetModuleWithWorkingRoom(moduleData, this.currentModule.RoomId, this.currentModule.RoomTypeId), listArgs);
+                        if (extenceInstance == null) throw new ArgumentNullException("moduleData is null");
+                        ((Form)extenceInstance).ShowDialog();
+                    }
                 }
             }
             catch (Exception ex)
@@ -1968,10 +1977,10 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
                         listArgs.Add(treatFilter);
 
                         listArgs.Add(PluginInstance.GetModuleWithWorkingRoom(moduleData, this.wkRoomId, this.wkRoomTypeId));
-						var extenceInstance = PluginInstance.GetPluginInstance(HIS.Desktop.Utility.PluginInstance.GetModuleWithWorkingRoom(moduleData, this.currentModule.RoomId, this.currentModule.RoomTypeId), listArgs);
-						if (extenceInstance == null) throw new ArgumentNullException("moduleData is null");
-						((Form)extenceInstance).ShowDialog();
-					}
+                        var extenceInstance = PluginInstance.GetPluginInstance(HIS.Desktop.Utility.PluginInstance.GetModuleWithWorkingRoom(moduleData, this.currentModule.RoomId, this.currentModule.RoomTypeId), listArgs);
+                        if (extenceInstance == null) throw new ArgumentNullException("moduleData is null");
+                        ((Form)extenceInstance).ShowDialog();
+                    }
                 }
             }
             catch (Exception ex)
@@ -2628,7 +2637,7 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
                 {
                     FrmFollow frm = new FrmFollow(treatmentBedRoomRow, (HIS.Desktop.Common.DelegateRefreshData)RefreshData);
                     frm.ShowDialog();
-                    frm.Focus();    
+                    frm.Focus();
                 }
             }
             catch (Exception ex)
@@ -2655,7 +2664,7 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
 
                     if (success)
                     {
-                        
+
                         MessageManager.Show(this.ParentForm, param, success);
                         RefreshData();
                     }
@@ -2867,7 +2876,127 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
+        private void btnBeneficiaryInfoClick()
+        {
+            try
+            {         
+                if (treatmentBedRoomRow != null)
+                {
+                    Inventec.Desktop.Common.Modules.Module moduleData = GlobalVariables.currentModuleRaws.Where(o => o.ModuleLink == "HIS.Desktop.Plugins.HisPatientBankAccount").FirstOrDefault();
+                    if (moduleData == null) Inventec.Common.Logging.LogSystem.Error("khong tim thay moduleLink = HIS.Desktop.Plugins.HisPatientBankAccount");
+                    if (moduleData.IsPlugin && moduleData.ExtensionInfo != null)
+                    {
+                        List<object> listArgs = new List<object>();
+                        var treatment = new HIS_TREATMENT();
+                        Inventec.Common.Mapper.DataObjectMapper.Map<HIS_TREATMENT>(treatment, treatmentBedRoomRow);
+                        treatment.ID = treatmentBedRoomRow.TREATMENT_ID;
+                        listArgs.Add(treatment);
+                        var extenceInstance = PluginInstance.GetPluginInstance(PluginInstance.GetModuleWithWorkingRoom(moduleData, this.wkRoomId, this.wkRoomTypeId), listArgs);
+                        if (extenceInstance == null) throw new ArgumentNullException("moduleData is null");
+                        ((Form)extenceInstance).ShowDialog();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+        private void btnAnalyzeMedicalImageClick()
+        {
+            try
+            {
+                if (treatmentBedRoomRow != null)
+                {
+                    Inventec.Desktop.Common.Modules.Module moduleData = GlobalVariables.currentModuleRaws.Where(o => o.ModuleLink == "HIS.Desktop.Plugins.AnalyzeMedicalImage").FirstOrDefault();
+                    if (moduleData == null) Inventec.Common.Logging.LogSystem.Error("khong tim thay moduleLink = HIS.Desktop.Plugins.AnalyzeMedicalImage");
+                    if (moduleData.IsPlugin && moduleData.ExtensionInfo != null)
+                    {
+                        AnalyzeImageADO treatmentAiIdAdo = new AnalyzeImageADO
+                        {
+                            TreatmentId = treatmentBedRoomRow.TREATMENT_ID,
+                        };
+                        List<object> listArgs = new List<object>();
+                        listArgs.Add(treatmentAiIdAdo);
+                        var pluginInstance = PluginInstance.GetPluginInstance(PluginInstance.GetModuleWithWorkingRoom(moduleData, wkRoomId, wkRoomTypeId), listArgs);
+                        if (pluginInstance == null)
+                        {
+                            Inventec.Common.Logging.LogSystem.Info($"Không lấy được module với RoomId = {wkRoomId}, RoomTypeId = {wkRoomTypeId}");
+                            return;
+                        }
+                        ((Form)pluginInstance).ShowDialog();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+        private void btnMedicalTreamentOutClick()
+        {
+            try
+            {
+                if (treatmentBedRoomRow != null && IsCheckDepartmentTran())
+                {
+                    Inventec.Desktop.Common.Modules.Module moduleData = GlobalVariables.currentModuleRaws.Where(o => o.ModuleLink == "HIS.Desktop.Plugins.AssignNoneMediService").FirstOrDefault();
+                    if (moduleData == null) Inventec.Common.Logging.LogSystem.Error("khong tim thay moduleLink = HIS.Desktop.Plugins.AssignNoneMediService");
+                    if (moduleData.IsPlugin && moduleData.ExtensionInfo != null)
+                    {
+                        List<object> listArgs = new List<object>();
+                        listArgs.Add(treatmentBedRoomRow.TREATMENT_ID);
+                        HIS.Desktop.ADO.AssignServiceADO assignServiceADO = new HIS.Desktop.ADO.AssignServiceADO(treatmentBedRoomRow.TREATMENT_ID, 0, 0);
+                        assignServiceADO.PatientDob = treatmentBedRoomRow.TDL_PATIENT_DOB;
+                        assignServiceADO.PatientName = treatmentBedRoomRow.TDL_PATIENT_NAME;
+                        assignServiceADO.GenderName = treatmentBedRoomRow.TDL_PATIENT_GENDER_NAME;
+                        listArgs.Add(assignServiceADO);
+                        listArgs.Add(PluginInstance.GetModuleWithWorkingRoom(moduleData, this.wkRoomId, this.wkRoomTypeId));
 
+
+                        if (!IsApplyFormClosingOption(moduleData.ModuleLink))
+                        {
+                            var extenceInstance = PluginInstance.GetPluginInstance(PluginInstance.GetModuleWithWorkingRoom(moduleData, wkRoomId, wkRoomTypeId), listArgs);
+                            if (extenceInstance == null) throw new ArgumentNullException("moduleData is null");
+
+                            ((Form)extenceInstance).ShowDialog();
+
+                        }
+                        else
+                        {
+                            if (lstModuleLinkApply.FirstOrDefault(o => o == moduleData.ModuleLink) != null)
+                            {
+                                if (GlobalVariables.FormAssignService != null)
+                                {
+                                    GlobalVariables.FormAssignService.WindowState = FormWindowState.Maximized;
+                                    GlobalVariables.FormAssignService.ShowInTaskbar = true;
+                                    Type classType = GlobalVariables.FormAssignService.GetType();
+                                    MethodInfo methodInfo = classType.GetMethod("ReloadModuleByInputData");
+                                    methodInfo.Invoke(GlobalVariables.FormAssignService, new object[] { currentModule, assignServiceADO });
+                                    Inventec.Common.Logging.LogSystem.Error("CASE 2 _START");
+                                    GlobalVariables.FormAssignService.Activate();
+                                    Inventec.Common.Logging.LogSystem.Error("CASE 2 _END");
+                                }
+                                else
+                                {
+                                    GlobalVariables.FormAssignService = (Form)PluginInstance.GetPluginInstance(PluginInstance.GetModuleWithWorkingRoom(moduleData, wkRoomId, wkRoomTypeId), listArgs);
+                                    GlobalVariables.FormAssignService.ShowInTaskbar = true;
+                                    if (GlobalVariables.FormAssignService == null) throw new ArgumentNullException("moduleData is null");
+                                    GlobalVariables.FormAssignService.Show();
+
+                                    Type classType = GlobalVariables.FormAssignService.GetType();
+                                    MethodInfo methodInfo = classType.GetMethod("ChangeIsUseApplyFormClosingOption");
+                                    methodInfo.Invoke(GlobalVariables.FormAssignService, new object[] { true });
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
         private void CheckingTreatmentEmr()
         {
             try
@@ -3016,10 +3145,10 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
                         assignServiceADO.IsAutoCheckExpend = true;
                         listArgs.Add(assignServiceADO);
                         listArgs.Add(PluginInstance.GetModuleWithWorkingRoom(moduleData, this.wkRoomId, this.wkRoomTypeId));
-						var extenceInstance = PluginInstance.GetPluginInstance(HIS.Desktop.Utility.PluginInstance.GetModuleWithWorkingRoom(moduleData, this.currentModule.RoomId, this.currentModule.RoomTypeId), listArgs);
-						if (extenceInstance == null) throw new ArgumentNullException("moduleData is null");
-						((Form)extenceInstance).ShowDialog();
-					}
+                        var extenceInstance = PluginInstance.GetPluginInstance(HIS.Desktop.Utility.PluginInstance.GetModuleWithWorkingRoom(moduleData, this.currentModule.RoomId, this.currentModule.RoomTypeId), listArgs);
+                        if (extenceInstance == null) throw new ArgumentNullException("moduleData is null");
+                        ((Form)extenceInstance).ShowDialog();
+                    }
                 }
             }
             catch (Exception ex)

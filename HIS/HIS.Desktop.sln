@@ -1133,6 +1133,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HIS.UC.ExamTreatmentFinish"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HIS.UC.HisExamServiceAdd", "..\UC\HIS.UC.ExamServiceAdd\HIS.UC.HisExamServiceAdd.csproj", "{7C454DA4-ACCB-4481-AA0C-28EE90E90827}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MPS.Processor.Mps000062", "..\MPS\MPS.Processor\MPS.Processor.Mps000062\MPS.Processor.Mps000062.csproj", "{E2F7F600-F81E-436C-9BB4-B4BCD83218D0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -4487,6 +4489,14 @@ Global
 		{7C454DA4-ACCB-4481-AA0C-28EE90E90827}.Release|Any CPU.Build.0 = Release|Any CPU
 		{7C454DA4-ACCB-4481-AA0C-28EE90E90827}.Release|x86.ActiveCfg = Release|Any CPU
 		{7C454DA4-ACCB-4481-AA0C-28EE90E90827}.Release|x86.Build.0 = Release|Any CPU
+		{E2F7F600-F81E-436C-9BB4-B4BCD83218D0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E2F7F600-F81E-436C-9BB4-B4BCD83218D0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E2F7F600-F81E-436C-9BB4-B4BCD83218D0}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{E2F7F600-F81E-436C-9BB4-B4BCD83218D0}.Debug|x86.Build.0 = Debug|Any CPU
+		{E2F7F600-F81E-436C-9BB4-B4BCD83218D0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E2F7F600-F81E-436C-9BB4-B4BCD83218D0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E2F7F600-F81E-436C-9BB4-B4BCD83218D0}.Release|x86.ActiveCfg = Release|Any CPU
+		{E2F7F600-F81E-436C-9BB4-B4BCD83218D0}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

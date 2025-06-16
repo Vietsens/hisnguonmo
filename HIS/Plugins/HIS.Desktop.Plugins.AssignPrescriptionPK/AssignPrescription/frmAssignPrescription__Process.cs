@@ -1047,7 +1047,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                             medimatyWorker.PATIENT_TYPE_ID = null;
                             medimatyWorker.PATIENT_TYPE_CODE = null;
                             medimatyWorker.PATIENT_TYPE_NAME = null;
-                            medimatyWorker.DataType = (item.SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__THUOC ? HIS.Desktop.LocalStorage.BackendData.ADO.MedicineMaterialTypeComboADO.THUOC_DM : HIS.Desktop.LocalStorage.BackendData.ADO.MedicineMaterialTypeComboADO.VATTU_DM);
+                            medimatyWorker.DataType = medimatyWorker.DataType == HIS.Desktop.LocalStorage.BackendData.ADO.MedicineMaterialTypeComboADO.THUOC_TUTUC ? medimatyWorker.DataType = HIS.Desktop.LocalStorage.BackendData.ADO.MedicineMaterialTypeComboADO.THUOC_TUTUC : (item.SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__THUOC ? HIS.Desktop.LocalStorage.BackendData.ADO.MedicineMaterialTypeComboADO.THUOC_DM : HIS.Desktop.LocalStorage.BackendData.ADO.MedicineMaterialTypeComboADO.VATTU_DM);
                             medimatyWorker.AmountAlert = null;
                             medimatyWorker.MEDI_STOCK_ID = null;
                             medimatyWorker.MEDI_STOCK_CODE = null;

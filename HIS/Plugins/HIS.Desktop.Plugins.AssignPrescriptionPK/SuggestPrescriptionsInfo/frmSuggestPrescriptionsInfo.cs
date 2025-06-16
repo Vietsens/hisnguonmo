@@ -82,6 +82,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.SuggestPrescriptionsInfo
                     client.BaseAddress = new Uri(requestUri);
                     client.Timeout = new TimeSpan(0, 5, 0);
                     client.DefaultRequestHeaders.Accept.Clear();
+                    client.DefaultRequestHeaders.Add("AuthenKey", "j2fyWtvUDZwYoPqT1pyqHYAFGY/3PZVR87/CoghZr8ttkZn1/RHZuQg89cPz9sqCBIG27uisGRNEfe2BP2M/m3qMdf8moG+ypGl7nVHVc7VVLSSaNGDA42iQwW4vnC01ngqrN0CidHiI12ZBawXFlVfFh+2UpLE3lSd8hR2o97nq++6DQ9MBzuEfzKDnV3Qsyq+VwPm4yoKz/2kum7TUWWcqT6pnvZb5qdezXiMItqLY8SI2JRPcc+TDxQ4mD9z3wC9JsEDk/uBXJy259PEqBbTxA+rL+cs+6fevZnnXqhjQgG9MIfe0lcQ0n9xVdDYvZZaE8Q4/CrUb52CjmDvwCw==");
                     var stringPayload = JsonConvert.SerializeObject(sendData);
                     var content = new StringContent(stringPayload, Encoding.UTF8, "application/json");
 

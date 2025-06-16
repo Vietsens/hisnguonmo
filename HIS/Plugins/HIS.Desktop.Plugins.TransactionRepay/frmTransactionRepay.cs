@@ -15,11 +15,19 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+using System;
+using System.Collections.Generic;
+using System.Drawing;
+using System.Linq;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+using DevExpress.DocumentView.Controls;
 using DevExpress.XtraEditors;
 using DevExpress.XtraEditors.Controls;
 using DevExpress.XtraEditors.ViewInfo;
 using HIS.Desktop.ADO;
 using HIS.Desktop.ApiConsumer;
+using HIS.Desktop.Common;
 using HIS.Desktop.Controls.Session;
 using HIS.Desktop.LocalStorage.BackendData;
 using HIS.Desktop.LocalStorage.ConfigApplication;
@@ -28,6 +36,7 @@ using HIS.Desktop.LocalStorage.LocalData;
 using HIS.Desktop.Plugins.TransactionRepay.Config;
 using HIS.Desktop.Plugins.TransactionRepay.Validation;
 using HIS.Desktop.Print;
+using HIS.Desktop.Utility;
 using Inventec.Common.Adapter;
 using Inventec.Core;
 using Inventec.Desktop.Common.LanguageManager;
@@ -35,12 +44,6 @@ using Inventec.Desktop.Common.Message;
 using MOS.EFMODEL.DataModels;
 using MOS.Filter;
 using MOS.SDO;
-using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 
 namespace HIS.Desktop.Plugins.TransactionRepay
 {
@@ -55,6 +58,7 @@ namespace HIS.Desktop.Plugins.TransactionRepay
         V_HIS_TRANSACTION resultTransaction = null;
         List<V_HIS_ACCOUNT_BOOK> ListAccountBook = new List<V_HIS_ACCOUNT_BOOK>();
         V_HIS_PATIENT_TYPE_ALTER currentHisPatientTypeAlter;
+        V_HIS_PATIENT_BANK_ACCOUNT currentPatientBankAccount = null;
 
         bool isNotLoadWhilechkAutoCloseStateInFirst = true;
         HIS.Desktop.Library.CacheClient.ControlStateWorker controlStateWorker;
@@ -77,7 +81,7 @@ namespace HIS.Desktop.Plugins.TransactionRepay
                     this.currentHisPatientTypeAlter = data.PatientTypeAlter;
                 }
                 this.currentModule = module;
-                this.Size = new Size(896, 175);
+                this.Size = new Size(this.ClientSize.Width, this.ClientSize.Height - barDockControlTop.Height+15);
                 try
                 {
                     string iconPath = System.IO.Path.Combine(System.Windows.Forms.Application.StartupPath, System.Configuration.ConfigurationSettings.AppSettings["Inventec.Desktop.Icon"]);
@@ -678,7 +682,8 @@ namespace HIS.Desktop.Plugins.TransactionRepay
                 txtRepayReason.Text = "";
                 btnPrint.Enabled = false;
                 btnSave.Enabled = true;
-
+                txtNguoiThuHuong.Text = "";
+                currentPatientBankAccount = null;
                 if (HisConfigCFG.ShowServerTimeByDefault == "1")
                 {
                     dtTransactionTime.DateTime = dteCommonParam;
@@ -1245,6 +1250,11 @@ namespace HIS.Desktop.Plugins.TransactionRepay
 
                 data.Transaction.CASHIER_ROOM_ID = this.cashierRoomId;
                 data.Transaction.AMOUNT = txtTotalAmount.Value;
+
+                if(currentPatientBankAccount!=null && currentPatientBankAccount.ID > 0)
+                {
+                    data.Transaction.PATIENT_BANK_ACCOUNT_ID = currentPatientBankAccount.ID;
+                }
 
                 if (payForm != null)
                 {
@@ -1924,6 +1934,70 @@ namespace HIS.Desktop.Plugins.TransactionRepay
             }
             catch (Exception ex)
             {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+        private void onSendDelegate(object data)
+        {
+            currentPatientBankAccount = null;
+            if(data != null)
+            {
+                currentPatientBankAccount = ((MOS.EFMODEL.DataModels.V_HIS_PATIENT_BANK_ACCOUNT)data);
+
+                var parts = new List<string>();
+
+                if (!string.IsNullOrWhiteSpace(currentPatientBankAccount.PAYEE_BANK_NAME))
+                    parts.Add(currentPatientBankAccount.PAYEE_BANK_NAME);
+
+                if (!string.IsNullOrWhiteSpace(currentPatientBankAccount.PAYEE_ACCOUNT_NUMBER))
+                    parts.Add(currentPatientBankAccount.PAYEE_ACCOUNT_NUMBER);
+
+                if (!string.IsNullOrWhiteSpace(currentPatientBankAccount.PAYEE_NAME))
+                    parts.Add(currentPatientBankAccount.PAYEE_NAME);
+
+                string beneficiary = string.Join(" - ", parts);
+
+                if (!string.IsNullOrWhiteSpace(currentPatientBankAccount.RELATION_NAME))
+                {
+                    beneficiary += " (" + currentPatientBankAccount.RELATION_NAME + ")";
+                }
+
+                txtNguoiThuHuong.Text = beneficiary;
+            }
+        }
+        private void btnThuHuong_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                WaitingManager.Show();
+                Inventec.Desktop.Common.Modules.Module moduleData = GlobalVariables.currentModuleRaws.Where(o => o.ModuleLink == "HIS.Desktop.Plugins.HisPatientBankAccount").FirstOrDefault();
+                if (moduleData == null) throw new NullReferenceException("Not found module by ModuleLink = 'HIS.Desktop.Plugins.HisPatientBankAccount'");
+                if (!moduleData.IsPlugin || moduleData.ExtensionInfo == null) throw new NullReferenceException("Module 'HIS.Desktop.Plugins.HisPatientBankAccount' is not plugins");
+                List<object> listArgs = new List<object>();
+                var Histreatment = new HIS_TREATMENT();
+                Inventec.Common.Mapper.DataObjectMapper.Map<HIS_TREATMENT>(Histreatment, this.Treatment);
+                //try
+                //{
+                //    CommonParam param = new CommonParam();
+                //    HisTreatmentFilter filter = new HisTreatmentFilter();
+                    //filter.ID = this.treatmentId;
+                //    Histreatment = new BackendAdapter(param).Get<List<HIS_TREATMENT>>("api/HisTreatment/Get", ApiConsumers.MosConsumer, filter, param).FirstOrDefault();
+                //}
+                //catch (Exception ex)
+                //{
+                //    Inventec.Common.Logging.LogSystem.Error(ex);
+                //}
+                listArgs.Add(Histreatment);
+                listArgs.Add((DelegateSelectData)onSendDelegate);
+                var extenceInstance = HIS.Desktop.Utility.PluginInstance.GetPluginInstance(PluginInstance.GetModuleWithWorkingRoom(moduleData, this.currentModule.RoomId, this.currentModule.RoomTypeId), listArgs);
+                if (extenceInstance == null) throw new ArgumentNullException("Khoi tao moduleData that bai. extenceInstance = null");
+
+                WaitingManager.Hide();
+                ((Form)extenceInstance).ShowDialog();
+            }
+            catch (Exception ex)
+            {
+                WaitingManager.Hide();
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }

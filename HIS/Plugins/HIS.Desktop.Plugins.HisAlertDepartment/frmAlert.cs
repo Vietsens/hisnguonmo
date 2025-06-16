@@ -132,11 +132,8 @@ namespace HIS.Desktop.Plugins.HisAlertDepartment
             {
                 try
                 {
-
                     WaitingManager.Show();
-
-
-                    int pageSize = 0;
+                    int pageSize;
                     if (ucPaging1.pagingGrid != null)
                     {
                         pageSize = ucPaging1.pagingGrid.PageSize;
@@ -209,17 +206,22 @@ namespace HIS.Desktop.Plugins.HisAlertDepartment
         {
             try
             {
+                WaitingManager.Show();
                 Inventec.Common.Logging.LogSystem.Debug("Load data to list alert");
                 CommonParam paramCommon;
+
                 var startPage =  ((CommonParam)param).Start ?? 0;
                 int limit = ((CommonParam)param).Limit ?? 0;
                 paramCommon = new CommonParam(startPage, limit);
+
                 this.gridControlDepartmentAlert.BeginUpdate();
                 Inventec.Core.ApiResultObject<List<HIS_DEPARTMENT>> apiResult = null;
+
                 HisDepartmentFilter filter = new HisDepartmentFilter();
                 filter.IS_ACTIVE = 1;
                 filter.ORDER_DIRECTION = "DESC";
                 filter.ORDER_FIELD = "MODIFY_TIME";
+
                 if (!string.IsNullOrEmpty(txtSearchValue1.Text)) filter.KEY_WORD = txtSearchValue1.Text;
                 apiResult = new BackendAdapter(paramCommon).GetRO<List<HIS_DEPARTMENT>>("/api/HisDepartment/Get", ApiConsumers.MosConsumer, filter, paramCommon);
                 if (apiResult != null)
@@ -235,11 +237,14 @@ namespace HIS.Desktop.Plugins.HisAlertDepartment
 
                     }
                 }
+
+
                 gridControlDepartmentAlert.EndUpdate();
+                WaitingManager.Hide();
             }
             catch (Exception ex)
             {
-                
+                WaitingManager.Hide();
                 LogSystem.Warn(ex);
             }
         }
@@ -247,12 +252,13 @@ namespace HIS.Desktop.Plugins.HisAlertDepartment
         {
             try
             {
+                WaitingManager.Show();
                 Inventec.Common.Logging.LogSystem.Debug("Load data to list recive");
                 CommonParam paramCommon;
                 var startPage = ((CommonParam)param).Start ?? 0;
                 int limit = ((CommonParam)param).Limit ?? 0;
                 paramCommon = new CommonParam(startPage, limit);
-                this.gridControlDepartmentRecive.BeginUpdate();
+                this.gridControlDepartmentRecive.BeginUpdate();  
                 Inventec.Core.ApiResultObject<List<HIS_DEPARTMENT>> apiResult = null;
                 HisDepartmentFilter filter = new HisDepartmentFilter();
                 filter.IS_ACTIVE = 1;
@@ -276,10 +282,11 @@ namespace HIS.Desktop.Plugins.HisAlertDepartment
                     }
                 }
                 gridControlDepartmentRecive.EndUpdate();
+                WaitingManager.Hide();
             }
             catch (Exception ex)
             {
-
+                WaitingManager.Hide();
                 LogSystem.Warn(ex);
             }
         }
@@ -385,27 +392,155 @@ namespace HIS.Desktop.Plugins.HisAlertDepartment
         {
             try
             {
-                if(cbotype.EditValue != null )
+                if (cbotype.EditValue != null)
                 {
-                    LogSystem.Debug("_____________Loai:"+ Convert.ToInt64(cbotype.EditValue));
-                    LogSystem.Debug("_____________Loai: _______1 : chon nhieu khoa tao - 1 khoa nhan;______2; chon 1 khoa tao - nhieu khoa nhan ");
-
                     EnableControlSelect(Convert.ToInt64(cbotype.EditValue));
+
                     dicIsMedicalAlert.Clear();
                     dicIsSecurityAlert.Clear();
                     dicIsMedicalRecive.Clear();
                     dicIsSecurityRecive.Clear();
 
-                    ClearDataSelected(gridViewDepartmentAlert,listDepartmentAlert, checkboxStates,dicIsMedicalAlert,dicIsSecurityAlert);
-                    ClearDataSelected(gridViewDepartmentRecive,listDepartmentRecive, checkboxStatesRecive,dicIsMedicalRecive,dicIsSecurityRecive);
+                    ClearAllCheckboxes(gridViewDepartmentAlert, checkboxStates, dicIsMedicalAlert, dicIsSecurityAlert);
+                    ClearAllCheckboxes(gridViewDepartmentRecive, checkboxStatesRecive, dicIsMedicalRecive, dicIsSecurityRecive);
+
                     TYPE = Convert.ToInt64(cbotype.EditValue);
-                    
                 }
             }
             catch (Exception ex)
             {
+                LogSystem.Warn("Error in cbotype_EditValueChanged: " + ex.Message, ex);
+            }
+        }
 
-                LogSystem.Warn(ex);
+        private void ClearAllCheckboxes(GridView gridView, Dictionary<long, bool> checkboxStates, Dictionary<long, bool> dicMedical, Dictionary<long, bool> dicSecurity)
+        {
+            try
+            {
+                checkboxStates?.Clear();
+                dicMedical?.Clear();
+                dicSecurity?.Clear();
+
+                gridView.ClearSelection();
+
+                for (int i = 0; i < gridView.RowCount; i++)
+                {
+                    int rowHandle = gridView.GetRowHandle(i);
+                    if (rowHandle >= 0)
+                    {
+                        var row = (DepartmentDTO)gridView.GetRow(rowHandle);
+                        if (row != null)
+                        {
+                            gridView.SetRowCellValue(rowHandle, "SELECT_ONE", false);
+                            gridView.SetRowCellValue(rowHandle, "SELECT_MANY", false);
+                        }
+                    }
+                }
+
+                gridView.RefreshData();
+                ReapplyRadioBehavior(gridView);
+            }
+            catch (Exception ex)
+            {
+                LogSystem.Warn("Error in ClearAllCheckboxes: " + ex.Message, ex);
+            }
+        }
+
+        private void ReapplyRadioBehavior(GridView gridView)
+        {
+            try
+            {
+                if (gridView == gridViewDepartmentAlert)
+                {
+                    gridView.CellValueChanging -= GridViewDepartmentAlert_CellValueChanging;
+                    gridView.CellValueChanging += GridViewDepartmentAlert_CellValueChanging;
+                }
+                else if (gridView == gridViewDepartmentRecive)
+                {
+                    gridView.CellValueChanging -= GridViewDepartmentRecive_CellValueChanging;
+                    gridView.CellValueChanging += GridViewDepartmentRecive_CellValueChanging;
+                }
+
+                gridView.OptionsSelection.MultiSelect = false;
+                gridView.OptionsSelection.EnableAppearanceFocusedCell = false;
+                gridView.OptionsSelection.EnableAppearanceFocusedRow = true;
+            }     
+            catch (Exception ex)
+            {
+                LogSystem.Warn("Error in ReapplyRadioBehavior: " + ex.Message, ex);
+            }
+        }
+
+
+        private void GridViewDepartmentAlert_CellValueChanging(object sender, DevExpress.XtraGrid.Views.Base.CellValueChangedEventArgs e)
+        {
+            try
+            {
+                if (e.Column.FieldName == "SELECT_ONE" && Convert.ToBoolean(e.Value) == true)
+                {
+                    GridView gridView = sender as GridView;
+                    for (int i = 0; i < gridView.RowCount; i++)
+                    {
+                        if (i != e.RowHandle)
+                        {
+                            gridView.SetRowCellValue(i, "SELECT_ONE", false);
+
+                            var row = (DepartmentDTO)gridView.GetRow(i);
+                            if (row != null)
+                            {
+                                checkboxStates[row.ID] = false;
+                                dicIsMedicalAlert[row.ID] = false;
+                                dicIsSecurityAlert[row.ID] = false;
+                            }
+                        }
+                    }
+
+                    //var selectedRow = (DepartmentDTO)gridView.GetRow(e.RowHandle);
+                    //if (selectedRow != null)
+                    //{
+                    //    checkboxStates[selectedRow.ID] = true;
+                    //}
+                }
+            }
+            catch (Exception ex)
+            {
+                LogSystem.Warn("Error in GridViewDepartmentAlert_CellValueChanged: " + ex.Message, ex);
+            }
+        }
+
+        private void GridViewDepartmentRecive_CellValueChanging(object sender, DevExpress.XtraGrid.Views.Base.CellValueChangedEventArgs e)
+        {
+            try
+            {
+                if (e.Column.FieldName == "SELECT_ONE" && Convert.ToBoolean(e.Value) == true)
+                {
+                    GridView gridView = sender as GridView;
+                    for (int i = 0; i < gridView.RowCount; i++)
+                    {
+                        if (i != e.RowHandle)
+                        {
+                            gridView.SetRowCellValue(i, "SELECT_ONE", false);
+
+                            var row = (DepartmentDTO)gridView.GetRow(i);
+                            if (row != null)
+                            {
+                                checkboxStatesRecive[row.ID] = false;
+                                dicIsMedicalRecive[row.ID] = false;
+                                dicIsSecurityRecive[row.ID] = false;
+                            }
+                        }
+                    }
+
+                    //var selectedRow = (DepartmentDTO)gridView.GetRow(e.RowHandle);
+                    //if (selectedRow != null)
+                    //{
+                    //    checkboxStatesRecive[selectedRow.ID] = true;
+                    //}
+                }
+            }
+            catch (Exception ex)
+            {
+                LogSystem.Warn("Error in GridViewDepartmentRecive_CellValueChanged: " + ex.Message, ex);
             }
         }
 
@@ -415,36 +550,39 @@ namespace HIS.Desktop.Plugins.HisAlertDepartment
             {
                 // Lấy danh sách các row đã chọn
                 int[] selectedRowHandles = control.GetSelectedRows();
-
                 foreach (int rowHandle in selectedRowHandles)
                 {
                     if (rowHandle >= 0)
                     {
                         var row = (DepartmentDTO)control.GetRow(rowHandle);
-                        long rowKey = row.ID;
+                        if (row != null)
+                        {
+                            long rowKey = row.ID;
 
-                        // Xóa dòng khỏi GridView
-                        control.DeleteRow(rowHandle);
+                            // Xóa dòng khỏi GridView
+                            control.DeleteRow(rowHandle);
 
-                        // Xóa trạng thái checkbox từ từ điển
-                        dic?.Remove(rowKey);
-                        dicMedical?.Remove(rowKey);
-                        dicSecurity?.Remove(rowKey);
+                            // Xóa trạng thái checkbox từ từ điển
+                            dic?.Remove(rowKey);
+                            dicMedical?.Remove(rowKey);
+                            dicSecurity?.Remove(rowKey);
 
-                        // Xóa dòng khỏi danh sách nếu cần
-                        list.Remove(row);
+                            // Xóa dòng khỏi danh sách nếu cần
+                            list?.Remove(row);
+                        }
                     }
                 }
 
                 // Làm mới lại GridView
                 control.RefreshData();
+
+                LogSystem.Debug("Cleared selected data from GridView: " + control.Name);
             }
             catch (Exception ex)
             {
-                LogSystem.Warn(ex);
+                LogSystem.Warn("Error in ClearDataSelected: " + ex.Message, ex);
             }
         }
-
 
         private void EnableControlSelect(long value)
         {
@@ -606,17 +744,18 @@ namespace HIS.Desktop.Plugins.HisAlertDepartment
         {
             if (isChecked)
             {
-                if (!listDepartmentAlert.Contains(rowData))
+                if (!listDepartmentAlert.Any(x => x.ID == rowData.ID))
                 {
-                    if (Convert.ToInt16(cbotype.EditValue) == 2) listDepartmentAlert.Clear();
+                    if (Convert.ToInt16(cbotype.EditValue) == 1) listDepartmentAlert.Clear();
                     listDepartmentAlert.Add(rowData);
                 }
             }
             else
             {
-                if (listDepartmentAlert.Contains(rowData))
+                var itemToRemove = listDepartmentAlert.FirstOrDefault(x => x.ID == rowData.ID);
+                if (itemToRemove != null)
                 {
-                    listDepartmentAlert.Remove(rowData);
+                    listDepartmentAlert.Remove(itemToRemove);
                 }
             }
         }
@@ -759,14 +898,13 @@ namespace HIS.Desktop.Plugins.HisAlertDepartment
             }
         }
 
-        
+
 
         private void repositoryItemCheckEdit2_CheckedChanged(object sender, EventArgs e)
         {
             try
             {
                 DepartmentDTO rowData = (DepartmentDTO)gridViewDepartmentAlert.GetFocusedRow();
-                listDepartmentRecive.Clear();
                 CheckEdit check = sender as CheckEdit;
                 rowData.SELECT_ONE = check.Checked;
                 foreach (var department in listDepartmentSourceAlert)
@@ -777,18 +915,17 @@ namespace HIS.Desktop.Plugins.HisAlertDepartment
                     }
                 }
                 UpdateSelectedRows(rowData, check.Checked);
-                if (rowData != null) LoadDataWithDepartment(rowData, check.Checked);
-                // Refresh lại dữ liệu trong grid để cập nhật thay đổi
-                if (listDepartmentAlert.Count == 0)
+
+                // KHÔNG clear listDepartmentRecive, KHÔNG gọi ClearDataSelected khi bỏ chọn
+                // Chỉ load lại dữ liệu khi check (chọn)
+                if (rowData != null && check.Checked)
                 {
-                    ClearDataSelected(gridViewDepartmentRecive, listDepartmentRecive, checkboxStatesRecive,dicIsMedicalRecive,dicIsSecurityRecive);
+                    LoadDataWithDepartment(rowData, true);
                 }
                 gridViewDepartmentAlert.RefreshData();
-
             }
             catch (Exception ex)
             {
-
                 LogSystem.Warn(ex);
             }
         }
@@ -883,18 +1020,20 @@ namespace HIS.Desktop.Plugins.HisAlertDepartment
         {
             if (isChecked)
             {
-                if (!listDepartmentRecive.Contains(rowData))
+                // Kiểm tra theo ID thay vì object reference
+                if (!listDepartmentRecive.Any(x => x.ID == rowData.ID))
                 {
                     if (Convert.ToInt16(cbotype.EditValue) == 1) listDepartmentRecive.Clear();
                     listDepartmentRecive.Add(rowData);
-
                 }
             }
             else
             {
-                if (listDepartmentRecive.Contains(rowData))
+                // Remove theo ID
+                var itemToRemove = listDepartmentRecive.FirstOrDefault(x => x.ID == rowData.ID);
+                if (itemToRemove != null)
                 {
-                    listDepartmentRecive.Remove(rowData);
+                    listDepartmentRecive.Remove(itemToRemove);
                 }
             }
         }
@@ -941,103 +1080,85 @@ namespace HIS.Desktop.Plugins.HisAlertDepartment
             try
             {
                 var rowData = (DepartmentDTO)e.Row;
+                if (rowData == null) return;
+
+                long rowKey = rowData.ID;
+
+                // Xử lý cột SELECT_MANY
                 if (e.Column.FieldName == "SELECT_MANY")
                 {
                     if (!CheckEnable(gridViewDepartmentRecive, "SELECT_MANY")) return;
+
                     if (e.IsGetData)
                     {
-                        if (rowData != null && checkboxStatesRecive.ContainsKey(rowData.ID))
-                        {
-                            e.Value = checkboxStatesRecive[rowData.ID];
-                        }
-                        else
-                        {
-                            e.Value = false;
-                        }
+                        e.Value = checkboxStatesRecive.ContainsKey(rowKey) ? checkboxStatesRecive[rowKey] : false;
                     }
+
                     if (e.IsSetData)
                     {
                         bool isChecked = (bool)e.Value;
-                        long rowKey = rowData.ID;
+
                         if (checkboxStatesRecive.ContainsKey(rowKey))
-                        {
                             checkboxStatesRecive[rowKey] = isChecked;
-                        }
                         else
-                        {
                             checkboxStatesRecive.Add(rowKey, isChecked);
+
+                        // Nếu bỏ chọn SELECT_MANY thì cũng bỏ CHECK_ALERT và CHECK_SECURITY
+                        if (!isChecked)
+                        {
+                            dicIsMedicalRecive[rowKey] = false;
+                            dicIsSecurityRecive[rowKey] = false;
+
+                            // Cập nhật lại hàng hiện tại để grid hiển thị đúng
+                            gridViewDepartmentRecive.RefreshRow(e.ListSourceRowIndex);
                         }
 
                         UpdateSelectedRowsRecive(rowData, isChecked);
                     }
                 }
 
-
+                // Xử lý cột CHECK_ALERT
                 if (e.Column.FieldName == "CHECK_ALERT")
                 {
                     if (e.IsGetData)
                     {
-                        if (rowData != null && dicIsMedicalRecive.ContainsKey(rowData.ID))
-                        {
-                            e.Value = dicIsMedicalRecive[rowData.ID];
-                        }
-                        else
-                        {
-                            e.Value = false;
-                        }
+                        e.Value = dicIsMedicalRecive.ContainsKey(rowKey) ? dicIsMedicalRecive[rowKey] : false;
                     }
+
                     if (e.IsSetData)
                     {
                         bool isChecked = (bool)e.Value;
-                        long rowKey = rowData.ID;
                         if (dicIsMedicalRecive.ContainsKey(rowKey))
-                        {
                             dicIsMedicalRecive[rowKey] = isChecked;
-                        }
                         else
-                        {
                             dicIsMedicalRecive.Add(rowKey, isChecked);
-                        }
-
-                        
                     }
                 }
+
+                // Xử lý cột CHECK_SECURITY
                 if (e.Column.FieldName == "CHECK_SECURITY")
                 {
                     if (e.IsGetData)
                     {
-                        if (rowData != null && dicIsSecurityRecive.ContainsKey(rowData.ID))
-                        {
-                            e.Value = dicIsSecurityRecive[rowData.ID];
-                        }
-                        else
-                        {
-                            e.Value = false;
-                        }
+                        e.Value = dicIsSecurityRecive.ContainsKey(rowKey) ? dicIsSecurityRecive[rowKey] : false;
                     }
+
                     if (e.IsSetData)
                     {
                         bool isChecked = (bool)e.Value;
-                        long rowKey = rowData.ID;
                         if (dicIsSecurityRecive.ContainsKey(rowKey))
-                        {
                             dicIsSecurityRecive[rowKey] = isChecked;
-                        }
                         else
-                        {
                             dicIsSecurityRecive.Add(rowKey, isChecked);
-                        }
-
-                       
                     }
                 }
             }
             catch (Exception ex)
             {
-
                 LogSystem.Warn(ex);
             }
         }
+
         private void repositoryItemCheckEdit3_CheckedChanged(object sender, EventArgs e)
         {
             try
@@ -1056,12 +1177,12 @@ namespace HIS.Desktop.Plugins.HisAlertDepartment
                     }
                 }
                 UpdateSelectedRowsRecive(rowData, check.Checked);
-                if(rowData != null) LoadDataWithDepartment(rowData,check.Checked);
+                if(rowData != null && check.Checked) LoadDataWithDepartment(rowData,check.Checked);
                 // Refresh lại dữ liệu trong grid để cập nhật thay đổi
-                if(listDepartmentRecive.Count == 0)
-                {
-                    ClearDataSelected(gridViewDepartmentAlert, listDepartmentAlert, checkboxStates,dicIsMedicalAlert,dicIsSecurityAlert);
-                }
+                //if(listDepartmentRecive.Count == 0)
+                //{
+                //    ClearDataSelected(gridViewDepartmentAlert, listDepartmentAlert, checkboxStates,dicIsMedicalAlert,dicIsSecurityAlert);
+                //}
                 gridViewDepartmentRecive.RefreshData();
 
             }
@@ -1071,11 +1192,6 @@ namespace HIS.Desktop.Plugins.HisAlertDepartment
                 LogSystem.Warn(ex);
             }
         }
-
-       
-
-
-
         #endregion
 
 
@@ -1143,7 +1259,6 @@ namespace HIS.Desktop.Plugins.HisAlertDepartment
         {
             try
             {
-
                 CommonParam param = new CommonParam();
                 HisAlertDepartmentFilter filter = new HisAlertDepartmentFilter();
                 if(type == 1)
@@ -1175,10 +1290,14 @@ namespace HIS.Desktop.Plugins.HisAlertDepartment
                                 {
                                     record.IS_MEDICAL = 1;
                                 }
+                                else
+                                    record.IS_MEDICAL = 0;
                                 if (dicIsSecurityRecive.ContainsKey(recive.ID) && dicIsSecurityRecive[recive.ID] == true)
                                 {
                                     record.IS_SECURITY = 1;
                                 }
+                                else
+                                    record.IS_SECURITY = 0;
                                 listDTO.Add(record);
                                 record.DEPARTMENT_ID = listDepartmentAlert.First().ID;
                                 
@@ -1440,8 +1559,6 @@ namespace HIS.Desktop.Plugins.HisAlertDepartment
                 LogSystem.Warn(ex);
             }
         }
-
-
 
         //Vẽ ô checkbox trên header cho các cột
         bool isHeaderCheckBoxChecked = false;

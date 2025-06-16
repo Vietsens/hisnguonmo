@@ -71,6 +71,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\LIB\HIS\HIS.Common\HIS.Common.Treatment\HIS.Common.Treatment.dll</HintPath>
     </Reference>
+    <Reference Include="HIS.Desktop.ADO, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\HIS.Desktop.ADO.dll</HintPath>
+    </Reference>
     <Reference Include="HIS.Desktop.IsAdmin">
       <HintPath>..\..\..\..\lib\HIS\HIS.Desktop.IsAdmin\HIS.Desktop.IsAdmin.dll</HintPath>
     </Reference>
@@ -192,7 +196,8 @@
     <Reference Include="Inventec.UC.Paging">
       <HintPath>..\..\..\..\LIB\Inventec.UC\Inventec.UC.Paging\Inventec.UC.Paging.dll</HintPath>
     </Reference>
-    <Reference Include="MOS.EFMODEL">
+    <Reference Include="MOS.EFMODEL, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\lib\MOS\MOS.EFMODEL.dll</HintPath>
     </Reference>
     <Reference Include="MOS.Filter">
@@ -381,10 +386,6 @@
     <Folder Include="Image\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\HIS.Desktop.ADO\HIS.Desktop.ADO.csproj">
-      <Project>{808c25cd-0925-417f-bbf9-caf9604da879}</Project>
-      <Name>HIS.Desktop.ADO</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\HIS.Desktop.ApiConsumer\HIS.Desktop.ApiConsumer.csproj">
       <Project>{861bfedb-026f-4b6f-a3cf-32843ae8c03d}</Project>
       <Name>HIS.Desktop.ApiConsumer</Name>

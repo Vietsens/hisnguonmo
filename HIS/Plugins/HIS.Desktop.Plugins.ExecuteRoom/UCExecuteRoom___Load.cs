@@ -1620,18 +1620,19 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
                     if (sereServByServiceReqs != null && sereServByServiceReqs.Count > 0)
                     {
                         List<HIS_SERE_SERV_EXT> lstExt = new List<HIS_SERE_SERV_EXT>();
-                        if (serviceReq.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__CDHA ||
-                            serviceReq.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__NS ||
-                            serviceReq.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__SA ||
-                             serviceReq.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__XN ||
-                            serviceReq.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__TDCN)
-                        {
-                            CommonParam param = new CommonParam();
-                            HisSereServExtFilter extFilter = new HisSereServExtFilter();
-                            extFilter.SERE_SERV_IDs = sereServByServiceReqs.Select(s => s.ID).ToList();
-                            lstExt = await new BackendAdapter(param).GetAsync<List<HIS_SERE_SERV_EXT>>("api/HisSereServExt/Get", ApiConsumers.MosConsumer, extFilter, param);
-                            Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData("lstExV_HIS_SERE_SERV_6t: ", lstExt));
-                        }
+                        //if (serviceReq.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__CDHA ||
+                        //    serviceReq.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__NS ||
+                        //    serviceReq.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__SA ||
+                        //     serviceReq.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__XN ||
+                        //    serviceReq.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__TDCN)
+                        //{
+
+                        //}
+                        CommonParam param = new CommonParam();
+                        HisSereServExtFilter extFilter = new HisSereServExtFilter();
+                        extFilter.SERE_SERV_IDs = sereServByServiceReqs.Select(s => s.ID).ToList();
+                        lstExt = await new BackendAdapter(param).GetAsync<List<HIS_SERE_SERV_EXT>>("api/HisSereServExt/Get", ApiConsumers.MosConsumer, extFilter, param);
+                        Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData("lstExV_HIS_SERE_SERV_6t: ", lstExt));
 
                         foreach (var item in sereServByServiceReqs)
                         {

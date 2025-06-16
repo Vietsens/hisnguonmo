@@ -47,7 +47,8 @@ namespace HIS.Desktop.Utility
             {
                 try
                 {
-                    isUseShortcutReplaceKeyBase = (HIS.Desktop.LocalStorage.ConfigApplication.ConfigApplicationWorker.Get<string>(CONFIG_KEY__HIS_IS_USE_SHORTCUT_REPLACE_KEY) == "1");
+                    string configValue = HIS.Desktop.LocalStorage.ConfigApplication.ConfigApplicationWorker.Get<string>(CONFIG_KEY__HIS_IS_USE_SHORTCUT_REPLACE_KEY);
+                    isUseShortcutReplaceKeyBase = (configValue == "1" || configValue == "2");
                     return isUseShortcutReplaceKeyBase.Value;
                 }
                 catch (Exception ex)
@@ -84,14 +85,29 @@ namespace HIS.Desktop.Utility
             string replaceKey = "";
             try
             {
-                string loginName = Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName();
-                var textLibs = BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_TEXT_LIB>().Where(o => o.HOT_KEY == key && (o.CREATOR == loginName || o.IS_PUBLIC == 1)).ToList();
-                if (textLibs != null && textLibs.Count > 0)
+                if ((HIS.Desktop.LocalStorage.ConfigApplication.ConfigApplicationWorker.Get<string>(CONFIG_KEY__HIS_IS_USE_SHORTCUT_REPLACE_KEY)) == "1")
                 {
-                    replaceKey = HIS.Desktop.Utility.TextLibHelper.BytesToStringGeneral(textLibs[0].CONTENT, libType);
-                    rtfRepValue = HIS.Desktop.Utility.TextLibHelper.BytesToRtfTextGeneral(textLibs[0].CONTENT, libType);
-                    htmlRepValue = HIS.Desktop.Utility.TextLibHelper.BytesToHtmlTextGeneral(textLibs[0].CONTENT, libType);
+                    string loginName = Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName();
+                    var textLibs = BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_TEXT_LIB>().Where(o => o.HOT_KEY == key && (o.CREATOR == loginName || o.IS_PUBLIC == 1)).ToList();
+                    if (textLibs != null && textLibs.Count > 0)
+                    {
+                        replaceKey = HIS.Desktop.Utility.TextLibHelper.BytesToStringGeneral(textLibs[0].CONTENT, libType);
+                        rtfRepValue = HIS.Desktop.Utility.TextLibHelper.BytesToRtfTextGeneral(textLibs[0].CONTENT, libType);
+                        htmlRepValue = HIS.Desktop.Utility.TextLibHelper.BytesToHtmlTextGeneral(textLibs[0].CONTENT, libType);
+                    }
                 }
+                else if ((HIS.Desktop.LocalStorage.ConfigApplication.ConfigApplicationWorker.Get<string>(CONFIG_KEY__HIS_IS_USE_SHORTCUT_REPLACE_KEY)) == "2")
+                {
+                    string loginName = Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName();
+                    var textLibs = BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_TEXT_LIB>().Where(o => o.HOT_KEY == key && o.CREATOR == loginName).ToList();
+                    if (textLibs != null && textLibs.Count > 0)
+                    {
+                        replaceKey = HIS.Desktop.Utility.TextLibHelper.BytesToStringGeneral(textLibs[0].CONTENT, libType);
+                        rtfRepValue = HIS.Desktop.Utility.TextLibHelper.BytesToRtfTextGeneral(textLibs[0].CONTENT, libType);
+                        htmlRepValue = HIS.Desktop.Utility.TextLibHelper.BytesToHtmlTextGeneral(textLibs[0].CONTENT, libType);
+                    }
+                }
+                
             }
             catch (Exception ex)
             {
@@ -136,16 +152,26 @@ namespace HIS.Desktop.Utility
                     departmentId = null;
                 }
                 List<HIS_TEXT_LIB> textLibs = new List<HIS_TEXT_LIB>();
-                if (departmentId != null)
+
+                if ((HIS.Desktop.LocalStorage.ConfigApplication.ConfigApplicationWorker.Get<string>(CONFIG_KEY__HIS_IS_USE_SHORTCUT_REPLACE_KEY)) == "1")
                 {
-                    Inventec.Common.Logging.LogSystem.Debug("textLibs 1");
-                    textLibs = BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_TEXT_LIB>().Where(o => o.HOT_KEY == key && (o.CREATOR == loginName || o.IS_PUBLIC == 1 || o.IS_PUBLIC_IN_DEPARTMENT == 1 || o.DEPARTMENT_ID == departmentId)).ToList();
+                    if (departmentId != null)
+                    {
+                        Inventec.Common.Logging.LogSystem.Debug("textLibs 1");
+                        textLibs = BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_TEXT_LIB>().Where(o => o.HOT_KEY == key && (o.CREATOR == loginName || o.IS_PUBLIC == 1 || o.IS_PUBLIC_IN_DEPARTMENT == 1 || o.DEPARTMENT_ID == departmentId)).ToList();
+                    }
+                    else
+                    {
+                        Inventec.Common.Logging.LogSystem.Debug("textLibs 2");
+                        textLibs = BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_TEXT_LIB>().Where(o => o.HOT_KEY == key && (o.CREATOR == loginName || o.IS_PUBLIC == 1 || (o.IS_PUBLIC_IN_DEPARTMENT == 1 && o.DEPARTMENT_ID == departmentId))).ToList();
+                    }
                 }
-                else
+                else if ((HIS.Desktop.LocalStorage.ConfigApplication.ConfigApplicationWorker.Get<string>(CONFIG_KEY__HIS_IS_USE_SHORTCUT_REPLACE_KEY)) == "2")
                 {
-                    Inventec.Common.Logging.LogSystem.Debug("textLibs 2");
-                    textLibs = BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_TEXT_LIB>().Where(o => o.HOT_KEY == key && (o.CREATOR == loginName || o.IS_PUBLIC == 1 || (o.IS_PUBLIC_IN_DEPARTMENT == 1 && o.DEPARTMENT_ID == departmentId))).ToList();
+                    Inventec.Common.Logging.LogSystem.Debug("textLibs 3");
+                    textLibs = BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_TEXT_LIB>().Where(o => o.HOT_KEY == key && o.CREATOR == loginName).ToList();
                 }
+
                 if (textLibs != null && textLibs.Count > 0)
                 {
                     replaceKey = HIS.Desktop.Utility.TextLibHelper.BytesToStringGeneral(textLibs[0].CONTENT, libType);

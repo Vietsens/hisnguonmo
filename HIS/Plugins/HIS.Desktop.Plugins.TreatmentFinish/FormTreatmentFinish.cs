@@ -1410,6 +1410,7 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
                     }
                     else
                     {
+                        //qtcode
                         var _vHisExecuteRooms = BackendDataWorker.Get<HIS_EXECUTE_ROOM>().FirstOrDefault(p => p.ROOM_ID == module.RoomId);
                         if (_vHisExecuteRooms != null && _vHisExecuteRooms.HOSP_SUBS_DIRECTOR_LOGINNAME != null)
                         {
@@ -1421,8 +1422,8 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
                             var depar = hisDepartments.FirstOrDefault(s => s.HOSP_SUBS_DIRECTOR_LOGINNAME != null);
                             if (depar != null)
                             {
-                                txtHospSubsDirector.Text = _vHisExecuteRooms.HOSP_SUBS_DIRECTOR_LOGINNAME;
-                                cboHospSubsDirector.EditValue = _vHisExecuteRooms.HOSP_SUBS_DIRECTOR_LOGINNAME;
+                                txtHospSubsDirector.Text = depar.HOSP_SUBS_DIRECTOR_LOGINNAME;
+                                cboHospSubsDirector.EditValue = depar.HOSP_SUBS_DIRECTOR_LOGINNAME;
                             }
                         }  
                     }
@@ -1440,6 +1441,7 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
                         if (lst != null && lst.Count > 0 && lst.FirstOrDefault(o => o.HOSPITALIZE_REASON_CODE == data.HOSPITALIZE_REASON_CODE) != null)
                         {
                             cboHosReason.EditValue = lst.FirstOrDefault(o => o.HOSPITALIZE_REASON_CODE == data.HOSPITALIZE_REASON_CODE).ID;
+
                         }
                         else
                         {

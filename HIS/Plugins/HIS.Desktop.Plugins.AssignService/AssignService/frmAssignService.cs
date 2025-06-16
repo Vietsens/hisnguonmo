@@ -10081,8 +10081,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
 				{
 					icd_code = txtIcdCode.Text,
 					gender_name = currentHisTreatment.TDL_PATIENT_GENDER_NAME,
-					age = ageValue
-				};
+					age = ageValue,				};
 				using (frmSuggestServiceAi frmSSA = new frmSuggestServiceAi(r,
 					(selectedList) =>
 

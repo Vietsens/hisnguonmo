@@ -12839,13 +12839,14 @@ o.SERVICE_ID == medi.SERVICE_ID && o.TDL_INTRUCTION_TIME.ToString().Substring(0,
                     return;
                 }
 
-
                 var requestData = new
                 {
                     icd_code = txtIcdCode.Text.Trim(),
                     gender = lblGenderName.Text.Trim(),
                     age = CalculateAge(currentTreatmentWithPatientType.TDL_PATIENT_DOB),
-                    top_n = 5
+                    top_n = 5,
+                    //Dangth
+                    servicereq_type_id = GetServiceReqTypeIdFromGlobalStore() 
                 };
                 ShowAISuggestionForm(requestData);
 
@@ -12856,6 +12857,16 @@ o.SERVICE_ID == medi.SERVICE_ID && o.TDL_INTRUCTION_TIME.ToString().Substring(0,
             }
 
         }
+        private long GetServiceReqTypeIdFromGlobalStore()
+        {
+            if (GlobalStore.IsCabinet)
+                return IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__DONTT; // 14
+            else if (GlobalStore.IsTreatmentIn)
+                return IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__DONDT; // 15
+            else
+                return IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__DONK;  // 6
+        }
+
 
         public static int CalculateAge(long dobLong)
         {
@@ -12878,20 +12889,25 @@ o.SERVICE_ID == medi.SERVICE_ID && o.TDL_INTRUCTION_TIME.ToString().Substring(0,
         {
             try
             {
+                this.idRow = 1;
                 var frmAISuggestion = new frmSuggestPrescriptionsInfo(mediMatySelected =>
                 {
                     if (mediMatySelected != null && mediMatySelected.Count > 0)
                     {
+
+                        Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => mediMatySelected.Select(o=>o.DataType)), mediMatySelected.Select(o=>o.DataType))); 
                         mediMatyTypeADOs = mediMatySelected;
                         //Check trong kho
                         //Gắn biến tạm để không bị gấp đôi số lượng khi kiểm tra danh sách
                         var dataSourceTmp = mediMatyTypeADOs;
                         mediMatyTypeADOs = new List<MediMatyTypeADO>();
                         this.ProcessDataMediStock(dataSourceTmp);
-
                         if (!CheckMedicineGroupTuberCulosis(true))
                             return;
+                        Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => mediMatyTypeADOs.Select(o => o.DataType)), mediMatyTypeADOs.Select(o => o.DataType)));
                         this.ProcessInstructionTimeMediForEdit();
+
+                        Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => mediMatyTypeADOs.Select(o => o.DataType)), mediMatyTypeADOs.Select(o => o.DataType)));
                         if (this.ProcessCheckAllergenicByPatientAfterChoose()
                             && this.ProcessCheckContraindicaterWarningOptionAfterChoose())
                         {
@@ -12921,6 +12937,8 @@ o.SERVICE_ID == medi.SERVICE_ID && o.TDL_INTRUCTION_TIME.ToString().Substring(0,
                             }
                             this.ReloadDataAvaiableMediBeanInCombo();
                         }
+
+                        Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => mediMatyTypeADOs.Select(o => o.DataType)), mediMatyTypeADOs.Select(o => o.DataType)));
                         TickAllMediMateAssignPresed();
                     }
                 }, requestData);

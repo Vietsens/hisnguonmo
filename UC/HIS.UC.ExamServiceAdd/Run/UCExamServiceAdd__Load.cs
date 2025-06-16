@@ -38,64 +38,123 @@ using HIS.Desktop.LocalStorage.BackendData;
 using HIS.UC.HisExamServiceAdd.Config;
 using DevExpress.XtraGrid.Views.Grid;
 using DevExpress.XtraGrid.Columns;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.TreeView;
+using Inventec.Common.Logging;
 
 namespace HIS.UC.ExamServiceAdd.Run
 {
 
     public partial class UCExamServiceAdd : UserControl
     {
-        private List<L_HIS_ROOM_COUNTER> cachedRoomCounters = null;
-        private DateTime? lastRoomCounterFetchTime = null;
+        private List<L_HIS_ROOM_COUNTER> _cachedRoomCounters = null;
+        private DateTime _lastApiCallTime = DateTime.MinValue;
         private void LoadDataCboExecuteRoom()
         {
             try
             {
                 long branchId = HIS.Desktop.LocalStorage.BackendData.BranchDataWorker.GetCurrentBranchId();
-                if (examServiceAddInitADO == null && branchId <= 0)// || !examServiceAddInitADO.roomId.HasValue)
-                    throw new Exception("branchId null");
-                List<V_HIS_EXECUTE_ROOM> roomExams = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<V_HIS_EXECUTE_ROOM>().Where(
-                    o => o.IS_EXAM == 1 && o.IS_ACTIVE == 1
-                        && o.IS_PAUSE_ENCLITIC != 1
-                        && o.ROOM_ID != examServiceAddInitADO.roomId
-                        )
-                        .ToList();// && o.ROOM_ID == examServiceAddInitADO.roomId).ToList();
-                if (chkIsBranch.Checked)
-                {
-                    roomExams = roomExams.Where(o => o.BRANCH_ID == branchId).ToList();
-                }
+
+                if (examServiceAddInitADO == null && branchId <= 0)
+                    throw new Exception("branchId null hoặc examServiceAddInitADO null");
+                DateTime now = DateTime.Now;
+                long? departmentId = null;
                 if (chk_IsDepartment.Checked)
                 {
-                    var dataRoom = BackendDataWorker.Get<V_HIS_ROOM>().FirstOrDefault(o => o.ID == examServiceAddInitADO.roomId);
-                    roomExams = roomExams.Where(o => o.DEPARTMENT_ID == dataRoom.DEPARTMENT_ID).ToList();
+                    var currentRoom = BackendDataWorker.Get<V_HIS_ROOM>().FirstOrDefault(o => o.ID == examServiceAddInitADO.roomId);
+                    if (currentRoom != null)
+                    {
+                        departmentId = currentRoom.DEPARTMENT_ID;
+                    }
                 }
-                LoadCboExecuteRoom();
+                if (_cachedRoomCounters == null || (now - _lastApiCallTime).TotalSeconds > 30)
+                {
+                    CommonParam param = new CommonParam();
+                    var filter = new HisRoomCounterLViewFilter
+                    {
+                        IS_ACTIVE = 1,
+                        IS_EXAM = true,
+                        IS_PAUSE_ENCLITIC = false,
+                        BRANCH_ID = chkIsBranch.Checked ? branchId : (long?)null,
+                        DEPARTMENT_ID = chk_IsDepartment.Checked ? departmentId : (long?)null
+                    };
+                    var result = new BackendAdapter(param).Get<List<L_HIS_ROOM_COUNTER>>("api/HisRoom/GetCounterLView", ApiConsumers.MosConsumer, filter, null);
+
+                    _cachedRoomCounters = result ?? new List<L_HIS_ROOM_COUNTER>();
+                    _lastApiCallTime = DateTime.Now;
+                }
+                var filteredRoomCounters = _cachedRoomCounters;
+                if (chkIsBranch.Checked)
+                {
+                    filteredRoomCounters = filteredRoomCounters.Where(o => o.BRANCH_ID == branchId).ToList();
+                }
+
+                if (chk_IsDepartment.Checked)
+                {
+                    var currentRoom = BackendDataWorker.Get<V_HIS_ROOM>().FirstOrDefault(o => o.ID == examServiceAddInitADO.roomId);
+                    if (currentRoom != null)
+                    {
+                        filteredRoomCounters = filteredRoomCounters.Where(o => o.DEPARTMENT_ID == currentRoom.DEPARTMENT_ID).ToList();
+                    }
+                }
+                LoadCboExecuteRoom(filteredRoomCounters);
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
+            //try
+            //{
+            //    long branchId = HIS.Desktop.LocalStorage.BackendData.BranchDataWorker.GetCurrentBranchId();
+            //    if (examServiceAddInitADO == null && branchId <= 0)// || !examServiceAddInitADO.roomId.HasValue)
+            //        throw new Exception("branchId null");
+            //    List<V_HIS_EXECUTE_ROOM> roomExams = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<V_HIS_EXECUTE_ROOM>().Where(
+            //        o => o.IS_EXAM == 1 && o.IS_ACTIVE == 1
+            //            && o.IS_PAUSE_ENCLITIC != 1
+            //            && o.ROOM_ID != examServiceAddInitADO.roomId
+            //            )
+            //            .ToList();// && o.ROOM_ID == examServiceAddInitADO.roomId).ToList();
+            //    if (chkIsBranch.Checked)
+            //    {
+            //        roomExams = roomExams.Where(o => o.BRANCH_ID == branchId).ToList();
+            //    }
+            //    if (chk_IsDepartment.Checked)
+            //    {
+            //        var dataRoom = BackendDataWorker.Get<V_HIS_ROOM>().FirstOrDefault(o => o.ID == examServiceAddInitADO.roomId);
+            //        roomExams = roomExams.Where(o => o.DEPARTMENT_ID == dataRoom.DEPARTMENT_ID).ToList();
+            //    }
+            //    LoadCboExecuteRoom();
+            //}
+            //catch (Exception ex)
+            //{
+            //    Inventec.Common.Logging.LogSystem.Error(ex);
+            //}
         }
         private void LoadCboExecuteRoom(List<L_HIS_ROOM_COUNTER> rooms)
         {
             try
             {
                 List<ColumnInfo> columnInfos = new List<ColumnInfo>();
-                columnInfos.Add(new ColumnInfo("EXECUTE_ROOM_CODE", "Mã", 150, 1));
-                columnInfos.Add(new ColumnInfo("EXECUTE_ROOM_NAME", "Tên", 250, 2));
-                columnInfos.Add(new ColumnInfo("TOTAL_TODAY_SERVICE_REQ", "Tổng", 120, 3));
-                columnInfos.Add(new ColumnInfo("TOTAL_NEW_SERVICE_REQ", "Chưa", 120, 4));
-                columnInfos.Add(new ColumnInfo("TOTAL_END_SERVICE_REQ", "Kết thúc", 120, 5));
-                columnInfos.Add(new ColumnInfo("TOTAL_WAIT_TODAY_SERVICE_REQ", "CLS", 130, 6));
-                columnInfos.Add(new ColumnInfo("TOTAL_OPEN_SERVICE_REQ", "Đã", 130, 7));
-                columnInfos.Add(new ColumnInfo("MAX_REQUEST_BY_DAY", "Tối đa", 130, 8));
-                columnInfos.Add(new ColumnInfo("MAX_REQ_BHYT_BY_DAY", "Tối đa BHYT", 130, 9));
+                columnInfos.Add(new ColumnInfo("EXECUTE_ROOM_CODE", "Mã", 120, 1));
+                columnInfos.Add(new ColumnInfo("EXECUTE_ROOM_NAME", "Tên", 300, 2));
+                columnInfos.Add(new ColumnInfo("TOTAL_TODAY_SERVICE_REQ", "Tổng", 60, 3));
+                columnInfos.Add(new ColumnInfo("TOTAL_NEW_SERVICE_REQ", "Chưa", 60, 4));
+                columnInfos.Add(new ColumnInfo("TOTAL_END_SERVICE_REQ", "Kết thúc", 80, 5));
+                columnInfos.Add(new ColumnInfo("TOTAL_WAIT_TODAY_SERVICE_REQ", "CLS", 60, 6));
+                columnInfos.Add(new ColumnInfo("TOTAL_OPEN_SERVICE_REQ", "Đã", 60, 7));
+                columnInfos.Add(new ColumnInfo("MAX_REQUEST_BY_DAY", "Tối đa", 60, 8));
+                columnInfos.Add(new ColumnInfo("MAX_REQ_BHYT_BY_DAY", "Tối đa BHYT", 100, 9));
                 columnInfos.Add(new ColumnInfo("RESPONSIBLE_USERNAME_DISPLAY", "Tên bác sỹ", 250, 10));
-                ControlEditorADO controlEditorADO = new ControlEditorADO("EXECUTE_ROOM_NAME", "ROOM_ID", columnInfos, false, 1000);
+                ControlEditorADO controlEditorADO = new ControlEditorADO("EXECUTE_ROOM_NAME", "ROOM_ID", columnInfos, false, 1100);
                 ControlEditorLoader.Load(cboExecuteRoom, rooms, controlEditorADO);
-
+                cboExecuteRoom.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.Standard;
+                cboExecuteRoom.Properties.Buttons.Clear();
+                cboExecuteRoom.Properties.Buttons.Add(new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo));
                 GridView view = cboExecuteRoom.Properties.View;
                 view.OptionsView.ShowColumnHeaders = true;
-
+                view.OptionsView.ColumnAutoWidth = false;         
+                view.OptionsView.ShowIndicator = false;
+                view.Appearance.HeaderPanel.Font = new Font("Tahoma", 11F, FontStyle.Bold);
+                cboExecuteRoom.Properties.PopupFormSize = new Size(1100, 400);
                 for (int i = 0; i < view.Columns.Count; i++)
                 {
                     if (i >= columnInfos.Count) break;
@@ -105,12 +164,87 @@ namespace HIS.UC.ExamServiceAdd.Run
                     col.Width = columnInfos[i].width;
                     col.VisibleIndex = columnInfos[i].VisibleIndex;
                 }
+                var openReqCol = view.Columns.ColumnByFieldName("TOTAL_OPEN_SERVICE_REQ");
+                if (openReqCol != null)
+                {
+                    openReqCol.UnboundType = DevExpress.Data.UnboundColumnType.Decimal;
+                }
+                view.CustomColumnDisplayText -= View_CustomColumnDisplayText;
+                view.CustomColumnDisplayText += View_CustomColumnDisplayText;
             }
             catch (Exception)
             {
 
                 throw;
-            }           
+            }
+        }
+        private void View_CustomColumnDisplayText(object sender, DevExpress.XtraGrid.Views.Base.CustomColumnDisplayTextEventArgs e)
+        {
+            try
+            {
+                if (e.Column.FieldName == "TOTAL_OPEN_SERVICE_REQ")
+                {
+                    var view = sender as DevExpress.XtraGrid.Views.Grid.GridView;
+                    if (view != null && e.ListSourceRowIndex >= 0)
+                    {
+                        var row = view.GetRow(e.ListSourceRowIndex) as L_HIS_ROOM_COUNTER;
+                        if (row != null)
+                        {
+                            decimal totalToday = row.TOTAL_TODAY_SERVICE_REQ ?? 0;
+                            decimal totalNew = row.TOTAL_NEW_SERVICE_REQ ?? 0;
+                            decimal value = totalToday - totalNew;
+                            e.DisplayText = value.ToString("0.##");
+                        }
+                    }
+                    return;
+                }
+                if (e.Column.FieldName == "RESPONSIBLE_USERNAME_DISPLAY")
+                {
+                    var view = sender as DevExpress.XtraGrid.Views.Grid.GridView;
+                    if (view != null && e.ListSourceRowIndex >= 0)
+                    {
+                        var row = view.GetRow(e.ListSourceRowIndex) as L_HIS_ROOM_COUNTER;
+                        if (row != null)
+                        {
+                            string loginName = row.RESPONSIBLE_LOGINNAME?.Trim();
+                            string userName = row.RESPONSIBLE_USERNAME?.Trim();
+
+                            if (!string.IsNullOrEmpty(loginName) && !string.IsNullOrEmpty(userName))
+                                e.DisplayText = $"{loginName} - {userName}";
+                            else if (!string.IsNullOrEmpty(loginName))
+                                e.DisplayText = loginName;
+                            else if (!string.IsNullOrEmpty(userName))
+                                e.DisplayText = userName;
+                            else
+                                e.DisplayText = "";
+                        }
+                    }
+                    return;
+                }
+                var numericFields = new[]
+                {
+                    "TOTAL_TODAY_SERVICE_REQ",
+                    "TOTAL_NEW_SERVICE_REQ",
+                    "TOTAL_END_SERVICE_REQ",
+                    "TOTAL_WAIT_TODAY_SERVICE_REQ",
+                    "MAX_REQUEST_BY_DAY",
+                    "MAX_REQ_BHYT_BY_DAY"
+                };
+                if (numericFields.Contains(e.Column.FieldName) && e.Value != null)
+                {
+                    if (decimal.TryParse(e.Value.ToString(), out decimal val))
+                    {
+                        if (val == Math.Floor(val))
+                            e.DisplayText = ((int)val).ToString();
+                        else
+                            e.DisplayText = val.ToString("0.##");
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                LogSystem.Error(ex);
+            }
         }
 
         private void LoadDataCboExamService(V_HIS_EXECUTE_ROOM executeRoom)
@@ -152,11 +286,11 @@ namespace HIS.UC.ExamServiceAdd.Run
                             && servicePatyIds.Contains(o.SERVICE_ID)
                             && serviceIds.Contains(o.SERVICE_ID)
                             && o.IS_ACTIVE == 1).ToList();
-                if(chkIsBranch.Checked)
-				{
-                    serviceRooms = serviceRooms.Where(o=>o.BRANCH_ID == HIS.Desktop.LocalStorage.BackendData.BranchDataWorker.GetCurrentBranchId()).ToList();
+                if (chkIsBranch.Checked)
+                {
+                    serviceRooms = serviceRooms.Where(o => o.BRANCH_ID == HIS.Desktop.LocalStorage.BackendData.BranchDataWorker.GetCurrentBranchId()).ToList();
 
-                }                    
+                }
                 Inventec.Common.Logging.LogSystem.Debug("LoadDataCboExamService 3");
                 List<ColumnInfo> columnInfos = new List<ColumnInfo>();
                 columnInfos.Add(new ColumnInfo("SERVICE_CODE", "", 150, 1));
@@ -356,14 +490,14 @@ namespace HIS.UC.ExamServiceAdd.Run
                 currentServicePatys = BackendDataWorker.Get<MOS.EFMODEL.DataModels.V_HIS_SERVICE_PATY>()
                                         .Where(t => (currentPatientTypeIds.Contains(t.PATIENT_TYPE_ID) || BranchDataWorker.CheckPatientTypeInherit(t.INHERIT_PATIENT_TYPE_IDS, currentPatientTypeIds.ToList()))
                                             && t.IS_ACTIVE == HIS.Desktop.LocalStorage.LocalData.GlobalVariables.CommonNumberTrue
-                                           
-                    //&& t.SERVICE_ID == serviceId
-                                            ).ToList();
-                if(chkIsBranch.Checked)
-				{
-                    currentServicePatys = currentServicePatys.Where(t=> t.BRANCH_ID == BranchDataWorker.GetCurrentBranchId()).ToList();
 
-                }                    
+                                            //&& t.SERVICE_ID == serviceId
+                                            ).ToList();
+                if (chkIsBranch.Checked)
+                {
+                    currentServicePatys = currentServicePatys.Where(t => t.BRANCH_ID == BranchDataWorker.GetCurrentBranchId()).ToList();
+
+                }
                 if (currentServicePatys == null || currentServicePatys.Count == 0)
                 {
                     Inventec.Common.Logging.LogSystem.Error("Khong tim thay danh sach chinh sach gia dich vu");
@@ -593,7 +727,7 @@ namespace HIS.UC.ExamServiceAdd.Run
                 }
                 patientTypeIds = patientTypeIds.Where(k => currentPatientTypeIds.Contains(k)).Distinct().ToList();
 
-   
+
                 //patientTypeIds = patientTypeIds.Where(o =>
                 //   servicePatyByService.Exists(k => k.PATIENT_TYPE_ID == o || BranchDataWorker.CheckPatientTypeInherit(k.INHERIT_PATIENT_TYPE_IDS, patientTypeIds))).ToList();
 
@@ -660,7 +794,7 @@ namespace HIS.UC.ExamServiceAdd.Run
                     {
                         chkKetThucKhamHienTai.Enabled = false;
                     }
-                    
+
                     if (examServiceAddInitADO.IsNotRequiredFee)
                         chkNotRequireFeeNonBHYT.Checked = true;
                     else

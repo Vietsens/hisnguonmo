@@ -20,6 +20,7 @@ using DevExpress.Utils.Menu;
 using DevExpress.Utils.MVVM.Services;
 using DevExpress.XtraEditors;
 using HIS.Desktop.ApiConsumer;
+using HIS.Desktop.Common;
 using HIS.Desktop.Controls.Session;
 using HIS.Desktop.IsAdmin;
 using HIS.Desktop.LibraryMessage;
@@ -39,6 +40,7 @@ using HIS.Desktop.Plugins.TransactionBill.ADO;
 using HIS.Desktop.Plugins.TransactionBill.Base;
 using HIS.Desktop.Plugins.TransactionBill.Config;
 using HIS.Desktop.Print;
+using HIS.Desktop.Utility;
 using Inventec.Common.Adapter;
 using Inventec.Common.DocumentViewer;
 using Inventec.Common.Logging;
@@ -1022,6 +1024,11 @@ namespace HIS.Desktop.Plugins.TransactionBill
                 {
                     data.Transaction.PAY_FORM_ID = payFormId;
                     data.Transaction.BANK_ID = null;
+                }
+                if (repayPatientBankAccount != null)
+                {
+                    data.Transaction.PATIENT_BANK_ACCOUNT_ID = repayPatientBankAccount.ID;
+                    data.RepayPatientBankAccountId = repayPatientBankAccount.ID;
                 }
                 data.Transaction.AMOUNT = totalPatientPrice;
                 if (dtTransactionTime.EditValue != null && dtTransactionTime.DateTime != DateTime.MinValue)
@@ -3932,6 +3939,30 @@ namespace HIS.Desktop.Plugins.TransactionBill
             finally
             {
                 SetEnableButtonSave(!success);
+            }
+        }
+        private void btnPatientBankAccount_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                Inventec.Desktop.Common.Modules.Module moduleData = GlobalVariables.currentModuleRaws.Where(o => o.ModuleLink == "HIS.Desktop.Plugins.HisPatientBankAccount").FirstOrDefault();
+                if (moduleData == null) Inventec.Common.Logging.LogSystem.Error("khong tim thay moduleLink = HIS.Desktop.Plugins.HisPatientBankAccount");
+                if (moduleData.IsPlugin && moduleData.ExtensionInfo != null)
+                {
+                    List<object> listArgs = new List<object>();
+                    HIS_TREATMENT treatment = GetTreatment(treatmentId);
+                    listArgs.Add(treatment);
+                    listArgs.Add(PluginInstance.GetModuleWithWorkingRoom(moduleData, this.currentModule.RoomId, this.currentModule.RoomTypeId));
+                    listArgs.Add((DelegateSelectData)RefreshPatientBankAccount);
+                    var extenceInstance = PluginInstance.GetPluginInstance(PluginInstance.GetModuleWithWorkingRoom(moduleData, this.currentModule.RoomId, this.currentModule.RoomTypeId), listArgs);
+                    if (extenceInstance == null) throw new ArgumentNullException("moduleData is null");
+
+                    ((Form)extenceInstance).ShowDialog();
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
     }
