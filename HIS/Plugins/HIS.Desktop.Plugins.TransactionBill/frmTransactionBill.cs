@@ -1521,6 +1521,8 @@ namespace HIS.Desktop.Plugins.TransactionBill
         {
             try
             {
+                repayPatientBankAccount = null;
+                lblPatientBankAccount.Text = "";
                 ListBillFund = new List<VHisBillFundADO>();
                 resultTranBill = null;
                 totalPatientPrice = 0;
@@ -1856,7 +1858,6 @@ namespace HIS.Desktop.Plugins.TransactionBill
                 }
 
                 lblRepayAmount.Text = "0";
-                lblPatientBankAccount.Text = "";
                 RepayAmount = 0;
                 if (chkCoKetChuyen.CheckState == CheckState.Unchecked)
                 {
