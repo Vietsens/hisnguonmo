@@ -1027,7 +1027,6 @@ namespace HIS.Desktop.Plugins.TransactionBill
                 }
                 if (repayPatientBankAccount != null)
                 {
-                    data.Transaction.PATIENT_BANK_ACCOUNT_ID = repayPatientBankAccount.ID;
                     data.RepayPatientBankAccountId = repayPatientBankAccount.ID;
                 }
                 data.Transaction.AMOUNT = totalPatientPrice;
