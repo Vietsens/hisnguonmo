@@ -1964,6 +1964,9 @@ namespace HIS.Desktop.Plugins.TransactionRepay
 
                 txtNguoiThuHuong.Text = beneficiary;
             }
+            else {                 
+                txtNguoiThuHuong.Text = null;
+            }
         }
         private void btnThuHuong_Click(object sender, EventArgs e)
         {
