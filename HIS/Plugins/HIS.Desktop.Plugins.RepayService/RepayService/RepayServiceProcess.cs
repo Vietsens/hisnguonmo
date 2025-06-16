@@ -101,9 +101,9 @@ namespace HIS.Desktop.Plugins.RepayService.RepayService
                 }
 
                 // Add the patient bank account ID if available
-                if (control._patientBankAccountId.HasValue)
+                if (control._patientBankAccount != null )
                 {
-                    transactionData.Transaction.PATIENT_BANK_ACCOUNT_ID = control._patientBankAccountId;
+                    transactionData.Transaction.PATIENT_BANK_ACCOUNT_ID = control._patientBankAccount.ID;
                 }
             }
             catch (Exception ex)
