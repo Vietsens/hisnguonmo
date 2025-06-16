@@ -131,64 +131,7 @@ namespace HIS.Desktop.Plugins.HisPatientBankAccount.HisPatientBankAccount
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
-        private void ValidationControlTxtRelation()
-        {
-            try
-            {
-                ValidControlTextEdit validRule = new ValidControlTextEdit();
-                validRule.txtEdit = txtRelation;
-                validRule.ErrorType = ErrorType.Warning;
-                dxValidationProviderEditorInfo.SetValidationRule(txtRelation, validRule);
-            }
-            catch (Exception ex)
-            {
-                Inventec.Common.Logging.LogSystem.Warn(ex);
-            }
-        }
-        private void ValidationControlTxtReceiver()
-        {
-            try
-            {
-                ValidControlTextEdit validRule = new ValidControlTextEdit();
-                validRule.txtEdit = txtReceiver;
-                validRule.ErrorType = ErrorType.Warning;
-                dxValidationProviderEditorInfo.SetValidationRule(txtReceiver, validRule);
-            }
-            catch (Exception ex)
-            {
-                Inventec.Common.Logging.LogSystem.Warn(ex);
-            }
-        }
-        private void ValidationControlTxtAccNumbern()
-        {
-            try
-            {
-                ValidControlTextEdit validRule = new ValidControlTextEdit();
-                validRule.txtEdit = txtAccNumber;
-                validRule.ErrorType = ErrorType.Warning;
-                dxValidationProviderEditorInfo.SetValidationRule(txtAccNumber, validRule);
-            }
-            catch (Exception ex)
-            {
-                Inventec.Common.Logging.LogSystem.Warn(ex);
-            }
-        }
-        private void ValidationControlGridLookUpEdit(GridLookUpEdit gridLookUpEdit, bool isVisible)
-        {
-            try
-            {
-                ValidGridLookUp validRule = new ValidGridLookUp();
-                validRule.gridLookUpEdit = gridLookUpEdit;
-                validRule.isVisible = isVisible;
-                validRule.ErrorText = HIS.Desktop.LibraryMessage.MessageUtil.GetMessage(HIS.Desktop.LibraryMessage.Message.Enum.TruongDuLieuBatBuoc);
-                validRule.ErrorType = ErrorType.Warning;
-                dxValidationProviderEditorInfo.SetValidationRule(gridLookUpEdit, validRule);
-            }
-            catch (Exception ex)
-            {
-                Inventec.Common.Logging.LogSystem.Warn(ex);
-            }
-        }
+      
         private void SetCaptionByLanguageKey()
         {
             try
@@ -1008,6 +951,8 @@ namespace HIS.Desktop.Plugins.HisPatientBankAccount.HisPatientBankAccount
                         MessageManager.Show(this, param, success);
                     }
                 }
+                if (delegateSelectData1 != null)
+                    delegateSelectData1(null);
             }
             catch (Exception ex)
             {
@@ -1025,6 +970,10 @@ namespace HIS.Desktop.Plugins.HisPatientBankAccount.HisPatientBankAccount
         {
             try
             {
+                var gridView = gridViewFormList;
+                int rowHandle = gridView.FocusedRowHandle;
+                var vData = gridView.GetRow(rowHandle) as V_HIS_PATIENT_BANK_ACCOUNT;
+                currentVData = vData;
                 Inventec.Common.RichEditor.RichEditorStore store = new Inventec.Common.RichEditor.RichEditorStore(ApiConsumers.SarConsumer, ConfigSystems.URI_API_SAR, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetLanguage(), GlobalVariables.TemnplatePathFolder);
                 store.RunPrintTemplate("Mps000501", DeletegatePrintTemplate);
             }
