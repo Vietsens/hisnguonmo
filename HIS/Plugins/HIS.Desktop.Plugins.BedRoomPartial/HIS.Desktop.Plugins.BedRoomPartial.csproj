@@ -235,6 +235,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ADO\AnalyzeImageADO.cs" />
     <Compile Include="ADO\DepartmentADO.cs" />
     <Compile Include="ADO\DepartmentFilterADO.cs" />
     <Compile Include="ADO\EmployeeADO.cs" />

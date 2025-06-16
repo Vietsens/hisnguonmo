@@ -117,7 +117,8 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
             TuberclusisTreatment,
             Specialty,
             Consultation,
-
+            BeneficiaryInfo,
+            AnalyzeMedicalImage
         }
         internal ModuleType moduleType { get; set; }
 
@@ -332,6 +333,11 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
                 itemTranPatiToInfo.Tag = ModuleType.TranPatiToInfo;
                 itemTranPatiToInfo.ItemClick += new ItemClickEventHandler(bedRoomMouseRightClick);
                 subThongTin.AddItem(itemTranPatiToInfo);
+
+                BarButtonItem itemBeneficiaryInfo = new BarButtonItem(barManager, Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__MOUSE_RIGHT__THONG_TIN_THU_HUONG", Base.ResourceLangManager.LanguageUCBedRoomPartial, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture()), 3);
+                itemBeneficiaryInfo.Tag = ModuleType.BeneficiaryInfo;
+                itemBeneficiaryInfo.ItemClick += new ItemClickEventHandler(bedRoomMouseRightClick);
+                subThongTin.AddItem(itemBeneficiaryInfo);
                 #region ----- Giam dinh y khoa
                 BarButtonItem itemMedicalAssessment = new BarButtonItem(barManager, Inventec.Common.Resource.Get.Value("GiamDinhYKhoa", Base.ResourceLangManager.LanguageUCBedRoomPartial, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture()), 8);
                 itemMedicalAssessment.Tag = ModuleType.MedicalAssessment;
@@ -619,10 +625,21 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
                 itemHisSoKetBenhAnTruocPhauThuat.ItemClick += new ItemClickEventHandler(bedRoomMouseRightClick);
                 subBenhAn.AddItem(itemHisSoKetBenhAnTruocPhauThuat);
 
-                BarButtonItem itemHisSoKetBenhAnTruocThuThuat = new BarButtonItem(barManager, Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__MOUSE_RIGHT__HisSoKetBenhAnTruocThuThuat", Base.ResourceLangManager.LanguageUCBedRoomPartial, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture()), 9);
-                itemHisSoKetBenhAnTruocThuThuat.Tag = ModuleType.HisSoKetBenhAnTruocThuThuat;
-                itemHisSoKetBenhAnTruocThuThuat.ItemClick += new ItemClickEventHandler(bedRoomMouseRightClick);
-                subBenhAn.AddItem(itemHisSoKetBenhAnTruocThuThuat);
+                if (!string.IsNullOrWhiteSpace(HisConfigKeys.HIS_CONFIG_KEY__AI_ConnectionInfo))
+                {
+                    BarButtonItem itemHisSoKetBenhAnTruocThuThuat = new BarButtonItem(barManager, Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__MOUSE_RIGHT__HisSoKetBenhAnTruocThuThuat", Base.ResourceLangManager.LanguageUCBedRoomPartial, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture()), 9);
+                    itemHisSoKetBenhAnTruocThuThuat.Tag = ModuleType.HisSoKetBenhAnTruocThuThuat;
+                    itemHisSoKetBenhAnTruocThuThuat.ItemClick += new ItemClickEventHandler(bedRoomMouseRightClick);
+                    subBenhAn.AddItem(itemHisSoKetBenhAnTruocThuThuat);
+                }
+
+                if (!string.IsNullOrWhiteSpace(HisConfigKeys.HIS_CONFIG_KEY__AI_ConnectionInfo))
+                {
+                    BarButtonItem itemAnalyzeMedicalImage = new BarButtonItem(barManager, Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__MOUSE_RIGHT__PHAN_TICH_HINH_ANH_Y_KHOA_AI", Base.ResourceLangManager.LanguageUCBedRoomPartial, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture()), 9);
+                    itemAnalyzeMedicalImage.Tag = ModuleType.AnalyzeMedicalImage;
+                    itemAnalyzeMedicalImage.ItemClick += new ItemClickEventHandler(bedRoomMouseRightClick);
+                    subBenhAn.AddItem(itemAnalyzeMedicalImage);
+                }                
 
                 menu.AddItems(new BarItem[] { subBenhAn });
 
@@ -644,7 +661,7 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
                 itemPhanLoaiBenhNhan.Tag = ModuleType.PhanLoaiBenhNhan;
                 itemPhanLoaiBenhNhan.ItemClick += new ItemClickEventHandler(bedRoomMouseRightClick);
                 menu.AddItems(new BarItem[] { itemPhanLoaiBenhNhan });
-
+               
                 menu.ShowPopup(Cursor.Position);
             }
             catch (Exception ex)
