@@ -197,6 +197,7 @@ namespace HIS.Desktop.Plugins.HisServiceFollow.HisServiceFollow
                 spAmount.EditValue = null;
                 spnAmountCondition.EditValue = null;
                 chkAddIfNotAssigned.Text = "Chỉ đính kèm nếu trong cùng lượt \nchỉ định chưa có dịch vụ này";
+                chkFollow.Text = "Kiểm tra dịch vụ đi kèm khi xuất viện, chuyển khoa";
             }
             catch (Exception ex)
             {
@@ -541,6 +542,17 @@ namespace HIS.Desktop.Plugins.HisServiceFollow.HisServiceFollow
                             Inventec.Common.Logging.LogSystem.Warn("Loi set gia tri cho cot la khoa lam sang IS_EXPEND_STR", ex);
                         }
                     }
+                    else if (e.Column.FieldName == "CHECK_FOLLOW_WHEN_OUT_STR")
+                    {
+                        try
+                        {
+                            e.Value = pData != null && pData.CHECK_FOLLOW_WHEN_OUT == 1 ? true : false;
+                        }
+                        catch (Exception ex)
+                        {
+                            Inventec.Common.Logging.LogSystem.Warn("Loi set gia tri cho cot CHECK_FOLLOW_WHEN_OUT_STR", ex);
+                        }
+                    }
                     gridControlFormList.RefreshDataSource();
                 }
             }
@@ -666,6 +678,7 @@ namespace HIS.Desktop.Plugins.HisServiceFollow.HisServiceFollow
 
                     chkIsExpend.Checked = (data.IS_EXPEND == 1 ? true : false);
                     chkAddIfNotAssigned.Checked = (data.ADD_IF_NOT_ASSIGNED == 1 ? true : false);
+                    chkFollow.Checked = (data.CHECK_FOLLOW_WHEN_OUT == 1 ? true : false);
                 }
             }
             catch (Exception ex)
@@ -759,6 +772,7 @@ namespace HIS.Desktop.Plugins.HisServiceFollow.HisServiceFollow
                     }
                     chkIsExpend.Text = "Hao phí";
                     chkAddIfNotAssigned.Text = "Chỉ đính kèm nếu trong cùng lượt \nchỉ định chưa có dịch vụ này";
+                    chkFollow.Text = "Kiểm tra dịch vụ đi kèm khi xuất viện, chuyển khoa";
                 }
                 catch (Exception ex)
                 {
@@ -954,6 +968,7 @@ namespace HIS.Desktop.Plugins.HisServiceFollow.HisServiceFollow
                     if (ActionType == GlobalVariables.ActionAdd)
                     {
                         var resultData = new BackendAdapter(param).Post<MOS.EFMODEL.DataModels.V_HIS_SERVICE_FOLLOW>(HisRequestUriStore.MOSV_HIS_SERVICE_FOLLOW_CREATE, ApiConsumers.MosConsumer, updateDTO, param);
+                        Inventec.Common.Logging.LogSystem.Debug("API Create Result: " + Inventec.Common.Logging.LogUtil.TraceData("DANGTH", updateDTO));
                         if (resultData != null)
                         {
                             success = true;
@@ -1055,11 +1070,13 @@ namespace HIS.Desktop.Plugins.HisServiceFollow.HisServiceFollow
                     //ValidationSingleAmount(spAmount);
                     vali = false;
                 }
-                currentDTO.IS_EXPEND = (short)(chkIsExpend.Checked ? 1 : 0);
+                currentDTO.IS_EXPEND = (short)(chkIsExpend.Checked ? 1 : 0);            
                 if (chkAddIfNotAssigned.Checked)
                     currentDTO.ADD_IF_NOT_ASSIGNED = (short)1;
                 else
                     currentDTO.ADD_IF_NOT_ASSIGNED = null;
+                //Dangth
+                currentDTO.CHECK_FOLLOW_WHEN_OUT = (short)(chkFollow.Checked ? 1 : 0);
                 currentDTO.IS_ACTIVE = 1;
                 if (treatmentTypeNameSelecteds != null && treatmentTypeNameSelecteds.Count > 0)
                 {
@@ -1725,7 +1742,7 @@ namespace HIS.Desktop.Plugins.HisServiceFollow.HisServiceFollow
         {
             try
             {
-                if(gridLookUpEdit1.EditValue != null)
+                if (gridLookUpEdit1.EditValue != null)
                 {
                     var hisService = BackendDataWorker.Get<V_HIS_SERVICE>().FirstOrDefault(o => o.ID == (long)gridLookUpEdit1.EditValue);
                     if (hisService != null && hisService.SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__MAU)
@@ -1735,11 +1752,32 @@ namespace HIS.Desktop.Plugins.HisServiceFollow.HisServiceFollow
                         chkAddIfNotAssigned.Enabled = false;
                         chkAddIfNotAssigned.Checked = false;
                     }
+
+                    //Dangth
+                    if (hisService != null &&
+                        (hisService.SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__PT ||
+                        hisService.SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__TT ||
+                        hisService.SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__G ||
+                        hisService.SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__NS ||
+                        hisService.SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__SA ||
+                        hisService.SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__TDCN ||
+                        hisService.SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__CDHA))
+                    {
+                        chkFollow.Enabled = true;
+                    }
+                    else
+                    {
+                        chkFollow.Enabled = false;
+                        chkFollow.Checked = false;
+                    }
                 }
                 else
                 {
                     chkAddIfNotAssigned.Enabled = false;
                     chkAddIfNotAssigned.Checked = false;
+
+                    chkFollow.Enabled = false;
+                    chkFollow.Checked = false;
                 }
             }
             catch (Exception ex)
