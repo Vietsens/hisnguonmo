@@ -76,6 +76,7 @@ namespace HIS.Desktop.Plugins.TreatmentFinish.Config
         private const string KEY_TreatmentEndTypeIsTransfer = "HIS.Desktop.Plugins.TreatmentFinish.TreatmentEndTypeIsTransfer";
         private const string KEY_IsCheckSubIcdExceedLimit = "HIS.Desktop.Plugins.IsCheckSubIcdExceedLimit";
         private const string KEY_WarnNotRequiredCompleteHasNoSample = "HIS.Desktop.Plugins.TreatmentFinish.WarnNotRequiredCompleteHasNoSample";
+        private const string KEY_IsCheckServiceFollowWhenOut = "HIS.Desktop.Plugins.IsCheckServiceFollowWhenOut";
 
         internal static string OptionTreatmentEndTypeIsTransfer;
         internal static string MustChooseSeviceExamOption;
@@ -89,6 +90,7 @@ namespace HIS.Desktop.Plugins.TreatmentFinish.Config
         internal static long ALOW_PRINT_FINISH { get; set; }
         internal static string IsShowDoctor { get; set; }
         internal static string PatienTypeCode_BHYT { get; set; }
+        internal static long PatientTypeId__BHYT;
         internal static bool IsWarningOverTotalPatientPrice;
         internal static decimal WarningOverTotalPatientPrice;
         internal static bool IsMustSetProgramWhenFinishingInPatient;
@@ -99,7 +101,7 @@ namespace HIS.Desktop.Plugins.TreatmentFinish.Config
         internal static string ExportXml2076Option { get; set; }
         internal static string MustChooseSeviceInCaseOfAppointment;
         internal static string WarnNotRequiredCompleteHasNoSample;
-
+        internal static string IsCheckServiceFollowWhenOut;
 
         internal static long WarningOption { get; set; }
 
@@ -140,6 +142,8 @@ namespace HIS.Desktop.Plugins.TreatmentFinish.Config
                 ALOW_PRINT_FINISH = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<long>(HIS_DESKTOP_ALLOW_PRINT_FINISH);
                 IsShowDoctor = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(ShowDoctor);
                 WarnNotRequiredCompleteHasNoSample = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(KEY_WarnNotRequiredCompleteHasNoSample);
+                IsCheckServiceFollowWhenOut = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(KEY_IsCheckServiceFollowWhenOut);
+                PatientTypeId__BHYT = GetPatientTypeByCode(PatienTypeCode_BHYT).ID;
 
                 WarningOption = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<long>(WARNING_OPTION);
 
@@ -192,6 +196,20 @@ namespace HIS.Desktop.Plugins.TreatmentFinish.Config
                 result = null;
             }
             return result;
+        }
+        static MOS.EFMODEL.DataModels.HIS_PATIENT_TYPE GetPatientTypeByCode(string code)
+        {
+            MOS.EFMODEL.DataModels.HIS_PATIENT_TYPE result = new MOS.EFMODEL.DataModels.HIS_PATIENT_TYPE();
+            try
+            {
+                result = BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_PATIENT_TYPE>().FirstOrDefault(o => o.PATIENT_TYPE_CODE == code);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+
+            return result ?? new MOS.EFMODEL.DataModels.HIS_PATIENT_TYPE();
         }
 
     }
