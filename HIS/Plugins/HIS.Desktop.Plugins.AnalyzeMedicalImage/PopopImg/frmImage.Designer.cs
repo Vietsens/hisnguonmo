@@ -28,22 +28,23 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmImage));
             this.layoutControl1 = new DevExpress.XtraLayout.LayoutControl();
+            this.richEditControl = new DevExpress.XtraRichEdit.RichEditControl();
             this.pdfViewer1 = new DevExpress.XtraPdfViewer.PdfViewer();
             this.pteAnhChupFileDinhKem = new DevExpress.XtraEditors.PictureEdit();
             this.layoutControlGroup1 = new DevExpress.XtraLayout.LayoutControlGroup();
             this.layoutControlItem1 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem2 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.richEditControl = new DevExpress.XtraRichEdit.RichEditControl();
-            this.layoutControlItem3 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.wordview = new DevExpress.XtraLayout.LayoutControlItem();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
             this.layoutControl1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pteAnhChupFileDinhKem.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem2)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem3)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.wordview)).BeginInit();
             this.SuspendLayout();
             // 
             // layoutControl1
@@ -59,14 +60,23 @@
             this.layoutControl1.TabIndex = 4;
             this.layoutControl1.Text = "layoutControl1";
             // 
+            // richEditControl
+            // 
+            this.richEditControl.Location = new System.Drawing.Point(12, 12);
+            this.richEditControl.Name = "richEditControl";
+            this.richEditControl.ReadOnly = true;
+            this.richEditControl.Size = new System.Drawing.Size(780, 193);
+            this.richEditControl.TabIndex = 6;
+            this.richEditControl.Text = "richEditControl1";
+            // 
             // pdfViewer1
             // 
-            this.pdfViewer1.Location = new System.Drawing.Point(12, 370);
+            this.pdfViewer1.Location = new System.Drawing.Point(12, 444);
             this.pdfViewer1.Name = "pdfViewer1";
             this.pdfViewer1.NavigationPaneInitialVisibility = DevExpress.XtraPdfViewer.PdfNavigationPaneVisibility.Hidden;
             this.pdfViewer1.ReadOnly = true;
             this.pdfViewer1.ShowPrintStatusDialog = false;
-            this.pdfViewer1.Size = new System.Drawing.Size(780, 329);
+            this.pdfViewer1.Size = new System.Drawing.Size(780, 255);
             this.pdfViewer1.TabIndex = 5;
             this.pdfViewer1.TabStop = false;
             this.pdfViewer1.Visible = false;
@@ -74,10 +84,10 @@
             // 
             // pteAnhChupFileDinhKem
             // 
-            this.pteAnhChupFileDinhKem.Location = new System.Drawing.Point(12, 165);
+            this.pteAnhChupFileDinhKem.Location = new System.Drawing.Point(12, 209);
             this.pteAnhChupFileDinhKem.Name = "pteAnhChupFileDinhKem";
             this.pteAnhChupFileDinhKem.Properties.ShowCameraMenuItem = DevExpress.XtraEditors.Controls.CameraMenuItemVisibility.Auto;
-            this.pteAnhChupFileDinhKem.Size = new System.Drawing.Size(780, 201);
+            this.pteAnhChupFileDinhKem.Size = new System.Drawing.Size(780, 231);
             this.pteAnhChupFileDinhKem.StyleController = this.layoutControl1;
             this.pteAnhChupFileDinhKem.TabIndex = 4;
             // 
@@ -88,7 +98,7 @@
             this.layoutControlGroup1.Items.AddRange(new DevExpress.XtraLayout.BaseLayoutItem[] {
             this.layoutControlItem1,
             this.layoutControlItem2,
-            this.layoutControlItem3});
+            this.wordview});
             this.layoutControlGroup1.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup1.Name = "layoutControlGroup1";
             this.layoutControlGroup1.Size = new System.Drawing.Size(804, 711);
@@ -97,37 +107,29 @@
             // layoutControlItem1
             // 
             this.layoutControlItem1.Control = this.pteAnhChupFileDinhKem;
-            this.layoutControlItem1.Location = new System.Drawing.Point(0, 153);
+            this.layoutControlItem1.Location = new System.Drawing.Point(0, 197);
             this.layoutControlItem1.Name = "layoutControlItem1";
-            this.layoutControlItem1.Size = new System.Drawing.Size(784, 205);
+            this.layoutControlItem1.Size = new System.Drawing.Size(784, 235);
             this.layoutControlItem1.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem1.TextVisible = false;
             // 
             // layoutControlItem2
             // 
             this.layoutControlItem2.Control = this.pdfViewer1;
-            this.layoutControlItem2.Location = new System.Drawing.Point(0, 358);
+            this.layoutControlItem2.Location = new System.Drawing.Point(0, 432);
             this.layoutControlItem2.Name = "layoutControlItem2";
-            this.layoutControlItem2.Size = new System.Drawing.Size(784, 333);
+            this.layoutControlItem2.Size = new System.Drawing.Size(784, 259);
             this.layoutControlItem2.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem2.TextVisible = false;
             // 
-            // richEditControl
+            // wordview
             // 
-            this.richEditControl.Location = new System.Drawing.Point(12, 12);
-            this.richEditControl.Name = "richEditControl";
-            this.richEditControl.Size = new System.Drawing.Size(780, 149);
-            this.richEditControl.TabIndex = 6;
-            this.richEditControl.Text = "richEditControl1";
-            // 
-            // layoutControlItem3
-            // 
-            this.layoutControlItem3.Control = this.richEditControl;
-            this.layoutControlItem3.Location = new System.Drawing.Point(0, 0);
-            this.layoutControlItem3.Name = "layoutControlItem3";
-            this.layoutControlItem3.Size = new System.Drawing.Size(784, 153);
-            this.layoutControlItem3.TextSize = new System.Drawing.Size(0, 0);
-            this.layoutControlItem3.TextVisible = false;
+            this.wordview.Control = this.richEditControl;
+            this.wordview.Location = new System.Drawing.Point(0, 0);
+            this.wordview.Name = "wordview";
+            this.wordview.Size = new System.Drawing.Size(784, 197);
+            this.wordview.TextSize = new System.Drawing.Size(0, 0);
+            this.wordview.TextVisible = false;
             // 
             // frmImage
             // 
@@ -138,8 +140,7 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "frmImage";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Chi tiết ảnh";
-            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.frmImage_FormClosing);
+            this.Text = "Chi tiết";
             this.Load += new System.EventHandler(this.frmImage_Load);
             this.Controls.SetChildIndex(this.layoutControl1, 0);
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).EndInit();
@@ -148,7 +149,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem2)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem3)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.wordview)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -163,6 +164,6 @@
         private DevExpress.XtraPdfViewer.PdfViewer pdfViewer1;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem2;
         private DevExpress.XtraRichEdit.RichEditControl richEditControl;
-        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem3;
+        private DevExpress.XtraLayout.LayoutControlItem wordview;
     }
 }
