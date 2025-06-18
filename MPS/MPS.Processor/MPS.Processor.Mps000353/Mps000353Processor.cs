@@ -261,6 +261,18 @@ namespace MPS.Processor.Mps000353
                     SetSingleKey((new KeyValue(Mps000353ExtendSingleKey.PART_EXAM_EYESIGHT_GLASS_LEFT_STR, ProcessDataEye(rdo.hisServiceReq_Exam.PART_EXAM_EYESIGHT_GLASS_LEFT))));
                     SetSingleKey((new KeyValue(Mps000353ExtendSingleKey.PART_EXAM_EYESIGHT_GLASS_RIGHT_STR, ProcessDataEye(rdo.hisServiceReq_Exam.PART_EXAM_EYESIGHT_GLASS_RIGHT))));
                 }
+                if (rdo.HisExpMest != null)
+                {
+                    AddObjectKeyIntoListkey(rdo.HisExpMest, false);
+
+                    string title = "C";
+                    var expMestMedicine = rdo.expMestMedicines != null && rdo.expMestMedicines.Count() > 0 ? rdo.expMestMedicines.FirstOrDefault() : null;
+                    if (expMestMedicine != null && expMestMedicine.IS_NEUROLOGICAL == 1) title = "H";
+                    else if (expMestMedicine != null && expMestMedicine.IS_ADDICTIVE == 1) title = "G";
+                    string serviceReqCode = rdo.HisPrescription != null ? (rdo.HisPrescription.SERVICE_REQ_CODE) : null;
+                    string electronicExpMestCode = string.Format("{0}{1}-{2}", MPS.ProcessorBase.PrintConfig.MediOrgCode, HIS.ERXConnect.ERXCode.Encode(Convert.ToInt64(serviceReqCode)), title);
+                    SetSingleKey(new KeyValue(Mps000353ExtendSingleKey.ELECTRONIC_EXP_MEST_CODE, electronicExpMestCode));
+                }
 
                 string ttServiceNames = "";
                 string clsServiceNames = "";
