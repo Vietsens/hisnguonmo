@@ -113,6 +113,18 @@ namespace MPS.Processor.Mps000037
                 singleTag.ProcessData(store, singleValueDictionary);
                 barCodeTag.ProcessData(store, dicImage);
 
+                if(rdo.ListSereNmse != null && rdo.ListSereNmse.Count > 0)
+                {
+                    objectTag.AddObjectData(store, "ListSereNmse", rdo.ListSereNmse);
+                   
+                }
+                else
+                {
+                  
+                    objectTag.AddObjectData(store, "ListSereNmse", new List<object>());
+                   
+                }
+
                 var ExecuteRoomGroups = new List<SereServGroupPlusADO>();
 
                 // minhnq
@@ -480,6 +492,8 @@ namespace MPS.Processor.Mps000037
                 AddObjectKeyIntoListkey<V_HIS_PATIENT_TYPE_ALTER>(rdo.V_HIS_PATIENT_TYPE_ALTER, false);
                 AddObjectKeyIntoListkey<V_HIS_SERVICE_REQ>(rdo.lstServiceReq);
                 AddObjectKeyIntoListkey<HIS_TREATMENT>(rdo.currentHisTreatment, true);
+
+                
             }
             catch (Exception ex)
             {
@@ -551,6 +565,7 @@ namespace MPS.Processor.Mps000037
 
                     ListAdo.Add(sereServ_service37);
                 }
+               
             }
             catch (Exception ex)
             {

@@ -52,7 +52,7 @@ namespace MPS.Processor.Mps000353.PDO
         public string EXECUTE_PHONE { get; set; }
         public string REQUEST_USER_MOBILE { get; set; }
     }
-
+      
     public class ExpMestMedicineSDO : V_HIS_EXP_MEST_MEDICINE
     {
         public short? IS_ADDICTIVE { get; set; }
