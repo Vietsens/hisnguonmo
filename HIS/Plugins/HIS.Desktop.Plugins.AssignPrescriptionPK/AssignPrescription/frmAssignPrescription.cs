@@ -242,6 +242,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
         List<MOS.EFMODEL.DataModels.HIS_SERVICE_REQ_METY> serviceReqMetys { get; set; }
         List<MOS.EFMODEL.DataModels.HIS_SERVICE_REQ_MATY> serviceReqMatys { get; set; }
         MOS.EFMODEL.DataModels.V_HIS_ROOM requestRoom;
+        HisServiceReqListResultSDO serviceReqComboResultSDO { get; set; }
         HIS_DHST currentDhst;
         bool isNotLoadMediMatyByMediStockInitForm;
         bool IsHandlerWhileOpionGroupSelectedIndexChanged;
@@ -2153,6 +2154,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
         {
             try
             {
+
                 this.bIsSelectMultiPatientProcessing = false;
 
                 if (this.gridViewServiceProcess.IsEditing)
