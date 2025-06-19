@@ -21,28 +21,31 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using HIS.Desktop.LocalStorage.LocalData;
-using Inventec.Desktop.Common.Message;
-using HIS.Desktop.LibraryMessage;
-using HIS.Desktop.LocalStorage.ConfigSystem;
-using HIS.Desktop.LocalStorage.Location;
-using Inventec.Core;
-using HIS.Desktop.Utility;
+using DevExpress.Utils.Menu;
+using DevExpress.XtraBars;
 using DevExpress.XtraEditors;
-using HIS.Desktop.Plugins.TreatmentFinish.Config;
-using MOS.Filter;
-using Inventec.Common.Adapter;
+using HIS.Desktop.ADO;
 using HIS.Desktop.ApiConsumer;
-using HIS.Desktop.LocalStorage.ConfigApplication;
-using HIS.UC.SecondaryIcd.ADO;
-using HIS.UC.SecondaryIcd;
-using HIS.UC.Icd.ADO;
+using HIS.Desktop.LibraryMessage;
 using HIS.Desktop.LocalStorage.BackendData;
-using MOS.EFMODEL.DataModels;
-using HIS.Desktop.Plugins.TreatmentFinish.TreatmentFinish;
-using MOS.SDO;
-using Inventec.Common.QrCodeBHYT;
+using HIS.Desktop.LocalStorage.ConfigApplication;
+using HIS.Desktop.LocalStorage.ConfigSystem;
+using HIS.Desktop.LocalStorage.LocalData;
+using HIS.Desktop.LocalStorage.Location;
 using HIS.Desktop.Plugins.Library.CheckHeinGOV;
+using HIS.Desktop.Plugins.TreatmentFinish.Config;
+using HIS.Desktop.Plugins.TreatmentFinish.TreatmentFinish;
+using HIS.Desktop.Utility;
+using HIS.UC.Icd.ADO;
+using HIS.UC.SecondaryIcd;
+using HIS.UC.SecondaryIcd.ADO;
+using Inventec.Common.Adapter;
+using Inventec.Common.QrCodeBHYT;
+using Inventec.Core;
+using Inventec.Desktop.Common.Message;
+using MOS.EFMODEL.DataModels;
+using MOS.Filter;
+using MOS.SDO;
 
 namespace HIS.Desktop.Plugins.TreatmentFinish
 {
@@ -146,6 +149,47 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
                 bangKeThanhToan.Tag = ModuleTypePrint.BANG_KE_THANH_TOAN;
                 bangKeThanhToan.Click += PrintCloseTreatment_Click;
                 menu_print.Items.Add(bangKeThanhToan);
+
+                DevExpress.Utils.Menu.DXSubMenuItem taoQrThanhToan = new DevExpress.Utils.Menu.DXSubMenuItem(
+                    GetStringFromKey("IVT_LANGUAGE_KEY__FORM_TREATMENT_FINISH__CREATE_QR"));
+                taoQrThanhToan.Tag = ModuleTypePrint.TAO_QR_THANH_TOAN;
+                taoQrThanhToan.Click += PrintCloseTreatment_Click;
+                var currentRoom = this.hisRooms.FirstOrDefault(o => o.ID == this.module.RoomId);
+
+                if (listConfig != null)
+                {
+                    if (string.IsNullOrEmpty(currentRoom.QR_CONFIG_JSON) && listConfig.Count > 1)
+                    {
+                        foreach (var item in listConfig)
+                        {
+                            string key = "";
+                            string value = item.KEY;
+                            int index = value.IndexOf("Info");
+
+                            if (index > 0)
+                            {
+                                var shotkey = value.Substring(0, index);
+                                string[] parts = shotkey.Split('.');
+                                if (parts.Length > 0)
+                                {
+                                    key = parts[parts.Length - 1];
+                                }
+                            }
+                            else
+                            {
+                                key = item.KEY;
+                            }
+
+                            DevExpress.Utils.Menu.DXMenuItem itemBank = new DevExpress.Utils.Menu.DXMenuItem(key);
+                            itemBank.Tag = item.KEY;
+                            itemBank.Click += ItemBank_Click;
+                            taoQrThanhToan.Items.Add(itemBank);
+                        }
+                    }
+
+                }
+
+                menu_print.Items.Add(taoQrThanhToan);
 
                 DevExpress.Utils.Menu.DXMenuItem bieuMauKhac = new DevExpress.Utils.Menu.DXMenuItem(
                     GetStringFromKey("IVT_LANGUAGE_KEY__FORM_TREATMENT_FINISH__PRINT_BIEU_MAU_KHAC"));
@@ -517,7 +561,7 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
 
                 hisTreatmentFinishSDO.IsExpXml4210Collinear = ChkExpXml4210.Checked;
 
-                if (ucSecondaryIcdYhct != null)     
+                if (ucSecondaryIcdYhct != null)
                 {
                     var subIcd = subIcdYhctProcessor.GetValue(ucSecondaryIcdYhct);
                     if (subIcd != null && subIcd is SecondaryIcdDataADO)
@@ -635,7 +679,7 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
                 currentTreatmentFinishSDO = new MOS.SDO.HisTreatmentFinishSDO();
                 currentTreatmentFinishSDO.TreatmentId = data.ID;
                 currentTreatmentFinishSDO.Advise = data.ADVISE;
-                currentTreatmentFinishSDO.ClinicalNote = this.currentTreatmentExt != null ? this.currentTreatmentExt.CLINICAL_NOTE:"";
+                currentTreatmentFinishSDO.ClinicalNote = this.currentTreatmentExt != null ? this.currentTreatmentExt.CLINICAL_NOTE : "";
                 currentTreatmentFinishSDO.DeathCauseId = data.DEATH_CAUSE_ID;
                 currentTreatmentFinishSDO.DeathTime = data.DEATH_TIME;
                 currentTreatmentFinishSDO.DeathWithinId = data.DEATH_WITHIN_ID;
@@ -648,7 +692,7 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
                 currentTreatmentFinishSDO.MainCause = data.MAIN_CAUSE;
                 currentTreatmentFinishSDO.PatientCondition = data.PATIENT_CONDITION;
                 currentTreatmentFinishSDO.ClinicalSigns = data.CLINICAL_SIGNS;
-                currentTreatmentFinishSDO.SubclinicalResult = this.currentTreatmentExt != null ? this.currentTreatmentExt.SUBCLINICAL_RESULT:"";
+                currentTreatmentFinishSDO.SubclinicalResult = this.currentTreatmentExt != null ? this.currentTreatmentExt.SUBCLINICAL_RESULT : "";
                 currentTreatmentFinishSDO.Surgery = data.SURGERY;
                 currentTreatmentFinishSDO.TranPatiFormId = data.TRAN_PATI_FORM_ID;
                 currentTreatmentFinishSDO.TranPatiReasonId = data.TRAN_PATI_REASON_ID;
@@ -728,7 +772,7 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
                 currentTreatmentFinishSDO.DeathIssuedDate = data.DEATH_ISSUED_DATE;
                 currentTreatmentFinishSDO.DeathCertIssuerLoginname = data.DEATH_CERT_ISSUER_LOGINNAME;
                 currentTreatmentFinishSDO.DeathCertIssuerUsername = data.DEATH_CERT_ISSUER_USERNAME;
-                currentTreatmentFinishSDO.DeathDocumentTypeCode = data.DEATH_DOCUMENT_TYPE_CODE;              
+                currentTreatmentFinishSDO.DeathDocumentTypeCode = data.DEATH_DOCUMENT_TYPE_CODE;
                 currentTreatmentFinishSDO.DeathStatus = data.DEATH_STATUS;
                 currentTreatmentFinishSDO.SurgeryName = data.SURGERY_NAME;
                 currentTreatmentFinishSDO.SurgeryBeginTime = data.SURGERY_BEGIN_TIME;
@@ -1302,5 +1346,33 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
+        private void ItemBank_Click(object sender, EventArgs e)
+        {
+            var item = sender as DevExpress.Utils.Menu.DXMenuItem;
+            if (item != null && item.Tag is string bankKey)
+            {
+                var selectedConfig = listConfig.FirstOrDefault(o => o.KEY == bankKey);
+                if (selectedConfig != null && currentHisTreatment != null)
+                {
+                    List<object> listArgs = new List<object>();
+                    TransReqQRADO adoqr = new TransReqQRADO
+                    {
+                        TreatmentId = currentHisTreatment.ID,
+                        TransReqId = CreateReqType.Deposit,
+                        ConfigValue = selectedConfig,
+                        BankName = bankKey
+                    };
+
+                    listArgs.Add(adoqr);
+                    HIS.Desktop.ModuleExt.PluginInstanceBehavior.ShowModule(
+                        "HIS.Desktop.Plugins.CreateTransReqQR",
+                        this.module.RoomId,
+                        this.module.RoomTypeId,
+                        listArgs
+                    );
+                }
+            }
+        }
+
     }
 }

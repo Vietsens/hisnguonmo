@@ -335,6 +335,8 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
                 SetupPrintConfig();
                 InitPopupPrintConfig();
 
+                CheckEnableBtnQR();
+
                 InitControlState();
                 Inventec.Common.Logging.LogSystem.Error("TreatmentFinish End");
                 //
@@ -615,7 +617,7 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
                     var currentRoom = this.hisRooms.FirstOrDefault(o => o.ID == this.module.RoomId);
                     branchId = currentRoom.BRANCH_ID;
                 }
-
+               
                 MOS.Filter.HisDataStoreViewFilter dataStoreFilter = new HisDataStoreViewFilter();
                 dataStoreFilter.BRANCH_ID = branchId;
                 this.DataStores = new BackendAdapter(new CommonParam()).Get<List<V_HIS_DATA_STORE>>("api/HisDataStore/GetView", ApiConsumer.ApiConsumers.MosConsumer, dataStoreFilter, null);
@@ -6053,6 +6055,19 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+        private HIS_CONFIG selectedConfig = new HIS_CONFIG();
+        List<HIS_CONFIG> listConfig = new List<HIS_CONFIG>();
+        private void CheckEnableBtnQR()
+        {
+            try
+            {
+                listConfig = BackendDataWorker.Get<HIS_CONFIG>().Where(o => o.KEY.StartsWith("HIS.Desktop.Plugins.PaymentQrCode") && !string.IsNullOrEmpty(o.VALUE)).ToList();
+            }
+            catch (Exception ex)
+            {
+                LogSystem.Error(ex);
             }
         }
     }
