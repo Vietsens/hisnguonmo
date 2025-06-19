@@ -999,7 +999,10 @@
   <data name="IVT_LANGUAGE_KEY__FORM_TREATMENT_FINISH__PRINT_BANG_KE_THANH_TOAN" xml:space="preserve">
     <value>Payment list</value>
   </data>
-  <data name="IVT_LANGUAGE_KEY__FORM_TREATMENT_FINISH__PRINT_BIEU_MAU_KHAC" xml:space="preserve">
+	<data name="IVT_LANGUAGE_KEY__FORM_TREATMENT_FINISH__CREATE_QR" xml:space="preserve">
+    <value>Create QR payment (Print receipt)</value>
+  </data>
+	<data name="IVT_LANGUAGE_KEY__FORM_TREATMENT_FINISH__PRINT_BIEU_MAU_KHAC" xml:space="preserve">
     <value>Medical records</value>
   </data>
   <data name="IVT_LANGUAGE_KEY__FORM_TREATMENT_FINISH__PRINT_GIAY_BAO_TU" xml:space="preserve">

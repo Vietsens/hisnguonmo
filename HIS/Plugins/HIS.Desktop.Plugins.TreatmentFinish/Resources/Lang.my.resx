@@ -999,6 +999,9 @@
   <data name="IVT_LANGUAGE_KEY__FORM_TREATMENT_FINISH__PRINT_BANG_KE_THANH_TOAN" xml:space="preserve">
     <value>ငွေပေးချေမှုစာရင်း</value>
   </data>
+	<data name="IVT_LANGUAGE_KEY__FORM_TREATMENT_FINISH__CREATE_QR" xml:space="preserve">
+    <value>ငွေပေးချေမှု QR ကို ဖန်တီးပါ (ငွေသားလက်ခံပြေစာ ထုတ်မည်)</value>
+  </data>
   <data name="IVT_LANGUAGE_KEY__FORM_TREATMENT_FINISH__PRINT_BIEU_MAU_KHAC" xml:space="preserve">
     <value>ဆေးမှတ်တမ်းများကို ပုံနှိပ်ပါ။</value>
   </data>

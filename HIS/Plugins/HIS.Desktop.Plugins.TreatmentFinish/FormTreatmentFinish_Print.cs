@@ -1,4 +1,4 @@
-/* IVT
+﻿/* IVT
  * @Project : hisnguonmo
  * Copyright (C) 2017 INVENTEC
  *  
@@ -18,28 +18,32 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using DevExpress.XtraEditors;
+using HIS.Desktop.ADO;
+using HIS.Desktop.ApiConsumer;
+using HIS.Desktop.LibraryMessage;
+using HIS.Desktop.LocalStorage.BackendData;
 using HIS.Desktop.LocalStorage.ConfigSystem;
+using HIS.Desktop.LocalStorage.LocalData;
 using HIS.Desktop.LocalStorage.Location;
+using HIS.Desktop.Plugins.Library.PrintTreatmentEndTypeExt;
+using HIS.Desktop.Plugins.TreatmentFinish.ADO;
+using HIS.Desktop.Utility;
+using Inventec.Common.Adapter;
+using Inventec.Common.LocalStorage.SdaConfig;
+using Inventec.Common.Logging;
 using Inventec.Core;
 using Inventec.Desktop.Common.Message;
 using MOS.EFMODEL.DataModels;
 using MOS.Filter;
-using MPS.ADO;
-using Inventec.Common.Logging;
 using MOS.LibraryHein.Bhyt.HeinTreatmentType;
-using System.Reflection;
-using HIS.Desktop.LocalStorage.LocalData;
-using HIS.Desktop.Utility;
-using HIS.Desktop.LibraryMessage;
-using Inventec.Common.Adapter;
-using HIS.Desktop.ApiConsumer;
-using Inventec.Common.LocalStorage.SdaConfig;
-using HIS.Desktop.Plugins.Library.PrintTreatmentEndTypeExt;
-using HIS.Desktop.LocalStorage.BackendData;
-using HIS.Desktop.Plugins.TreatmentFinish.ADO;
+using MOS.SDO;
+using MPS.ADO;
+using Newtonsoft.Json;
 using static MPS.ProcessorBase.PrintConfig;
 
 namespace HIS.Desktop.Plugins.TreatmentFinish
@@ -58,6 +62,7 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
             IN_GIAY_RA_VIEN,
             HEN_KHAM_LAI,
             BANG_KE_THANH_TOAN,
+            TAO_QR_THANH_TOAN,
             BIEU_MAU_KHAC,
             _IN_GIAY_CHUNG_NHAN_PTTT,
             _IN_GIAY_CHUNG_NHAN_TT,
@@ -177,6 +182,9 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
                             break;
                         case ModuleTypePrint.BANG_KE_THANH_TOAN:
                             BangKeThanhToanClick();
+                            break;
+                        case ModuleTypePrint.TAO_QR_THANH_TOAN:
+                            TaoQrThanhToan();
                             break;
                         case ModuleTypePrint.BIEU_MAU_KHAC:
                             TaoBieuMauKhac(currentHisTreatment);
@@ -591,6 +599,69 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
+       
+        private void TaoQrThanhToan()
+        {
+            try
+            {
+                var currentRoom = this.hisRooms.FirstOrDefault(o => o.ID == this.module.RoomId);
+
+                if (currentRoom != null && !string.IsNullOrEmpty(currentRoom.QR_CONFIG_JSON))
+                {
+                    ItemConfig itemConfig = JsonConvert.DeserializeObject<ItemConfig>(currentRoom.QR_CONFIG_JSON);
+                    string key = string.Format("HIS.Desktop.Plugins.PaymentQrCode.{0}Info", itemConfig.BANK);
+
+                    this.selectedConfig = (
+                        from o in this.listConfig
+                        where o.KEY == key
+                        select o).FirstOrDefault<HIS_CONFIG>();
+                    this.selectedConfig.VALUE = itemConfig.VALUE;
+
+                    List<object> listArgs = new List<object>();
+                    TransReqQRADO adoqr = new TransReqQRADO();
+                    adoqr.TreatmentId = this.currentHisTreatment.ID;
+                    adoqr.TransReqId = CreateReqType.TransactionBill;
+                    adoqr.ConfigValue = selectedConfig;
+                    listArgs.Add(adoqr);
+
+                    HIS.Desktop.ModuleExt.PluginInstanceBehavior.ShowModule("HIS.Desktop.Plugins.CreateTransReqQR", this.module.RoomId, this.module.RoomTypeId, listArgs);
+                }
+                else if (listConfig!=null && listConfig.Count==1)
+                {
+                    selectedConfig = listConfig[0];
+                    List<object> listArgs = new List<object>();
+                    TransReqQRADO adoqr = new TransReqQRADO();
+                    adoqr.TreatmentId = this.currentHisTreatment.ID;
+                    adoqr.TransReqId = CreateReqType.TransactionBill;
+                    adoqr.ConfigValue = selectedConfig;
+
+                    string key = "";
+                    string value = selectedConfig.KEY;
+                    int index = value.IndexOf("Info");
+                    if (index > 0)
+                    {
+                        var shotkey = value.Substring(0, index);
+                        string[] parts = shotkey.Split('.');
+                        if (parts.Length > 0)
+                        {
+                            key = parts[parts.Length - 1]; // Lấy phần cuối cùng sau khi tách
+                        }
+                    }
+                    else
+                    {
+                        key = selectedConfig.KEY;
+                    }
+
+                    adoqr.BankName = key;
+                    listArgs.Add(adoqr);
+                    HIS.Desktop.ModuleExt.PluginInstanceBehavior.ShowModule("HIS.Desktop.Plugins.CreateTransReqQR", this.module.RoomId, this.module.RoomTypeId, listArgs);
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
 
         private void DelegateRunPrinter(string printTypeCode)
         {
@@ -690,5 +761,11 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
             }
         }
         #endregion
+    }
+    public class BankInfo
+    {
+        public BankInfo() { }
+        public string BANK { get; set; }
+        public string VALUE { get; set; }
     }
 }
