@@ -43,8 +43,12 @@ namespace HIS.Desktop.Plugins.Library.PrintServiceReq
         private Dictionary<long, List<V_HIS_SERVICE_REQ>> dicServiceReqData;
         private Dictionary<long, List<V_HIS_SERE_SERV>> dicSereServData;
         private Dictionary<long, HIS_SERE_SERV_EXT> dicSereServExtData;
+        private Dictionary<long, List<HIS_SERE_NMSE>> dicSereNmseData;
+
         private HisServiceReqListResultSDO HisServiceReqListResultSDO { get; set; }
+        private HisNoneMediServiceReqResultSDO HisNoneMediServiceReqResultSDO { get; set; }
         private HisTreatmentWithPatientTypeInfoSDO HisTreatmentWithPatientTypeInfoSDO { get; set; }
+        private HIS_TREATMENT Treatment { get; set; }
         private List<V_HIS_BED_LOG> BedLogs { get; set; }
         private ChiDinhDichVuADO chiDinhDichVuADO = new ChiDinhDichVuADO();
         private long? roomId;
@@ -66,6 +70,7 @@ namespace HIS.Desktop.Plugins.Library.PrintServiceReq
         private bool IsMethodSaveNPrint = false;
         private MPS.ProcessorBase.PrintConfig.PreviewType? PreviewType = null;
         private List<HisServiceReqMaxNumOrderSDO> ReqMaxNumOrderSDO;
+        public List<HIS_SERE_NMSE> listSereNmseData;
         private Action<Inventec.Common.SignLibrary.DTO.DocumentSignedUpdateIGSysResultDTO> DlgSendResultSigned { get; set; }
         public PrintServiceReqProcessor(HisServiceReqListResultSDO _ServiceReqResult,
            HisTreatmentWithPatientTypeInfoSDO TreatmentWithPatientTypeInfo, List<V_HIS_BED_LOG> _bedLogs)
@@ -91,7 +96,7 @@ namespace HIS.Desktop.Plugins.Library.PrintServiceReq
             }
         }
         public PrintServiceReqProcessor(HisServiceReqListResultSDO _ServiceReqResult,
-    HisTreatmentWithPatientTypeInfoSDO TreatmentWithPatientTypeInfo, List<V_HIS_BED_LOG> _bedLogs, long? roomId,string gate)
+    HisTreatmentWithPatientTypeInfoSDO TreatmentWithPatientTypeInfo, List<V_HIS_BED_LOG> _bedLogs, long? roomId, string gate)
         {
             try
             {
@@ -162,14 +167,27 @@ HisTreatmentWithPatientTypeInfoSDO TreatmentWithPatientTypeInfo, List<V_HIS_BED_
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
-
+        public PrintServiceReqProcessor(HisNoneMediServiceReqResultSDO _ServiceReqResult, HIS_TREATMENT Treatment, MPS.ProcessorBase.PrintConfig.PreviewType _PreviewType)
+        {
+            try
+            {
+                this.HisNoneMediServiceReqResultSDO = _ServiceReqResult;
+                this.Treatment = Treatment;
+                Config.LoadConfig();
+                this.PreviewType = _PreviewType;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
         private void GetDataPrintQrCode()
         {
             try
             {
 
                 lstConfig = new List<HIS_CONFIG>();
-                 var currentWorkingRoom = BackendDataWorker.Get<V_HIS_ROOM>().FirstOrDefault(o => o.ID == roomId);
+                var currentWorkingRoom = BackendDataWorker.Get<V_HIS_ROOM>().FirstOrDefault(o => o.ID == roomId);
                 if (currentWorkingRoom != null && !string.IsNullOrEmpty(currentWorkingRoom.QR_CONFIG_JSON))
                 {
                     List<object> listArgs = new List<object>();
@@ -210,7 +228,7 @@ HisTreatmentWithPatientTypeInfoSDO TreatmentWithPatientTypeInfo, List<V_HIS_BED_
                         filter.TREATMENT_ID = HisServiceReqListResultSDO.ServiceReqs[0].TREATMENT_ID;
                         transReq = new Inventec.Common.Adapter.BackendAdapter(param)
                           .Get<List<MOS.EFMODEL.DataModels.HIS_TRANS_REQ>>("api/HisTransReq/Get", ApiConsumer.ApiConsumers.MosConsumer, filter, param);
-                        if(transReq != null && transReq.Count > 0)
+                        if (transReq != null && transReq.Count > 0)
                             transReq = transReq.Where(o => o.TRANS_REQ_TYPE == IMSys.DbConfig.HIS_RS.HIS_TRANS_REQ_TYPE.ID__BY_SERVICE).ToList();
                     }
                 }
@@ -603,6 +621,33 @@ HisTreatmentWithPatientTypeInfoSDO TreatmentWithPatientTypeInfo, List<V_HIS_BED_
             }
         }
 
+        public void InPhieuChiDinhNgoaiKhamBenh(string reportTypeCode)
+        {
+            try
+            {
+                this.IsProcessDataPrint = true;
+                chiDinhDichVuADO.treament = Treatment;
+                dicServiceReqData = new Dictionary<long, List<V_HIS_SERVICE_REQ>>() { { IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__OT, HisNoneMediServiceReqResultSDO.ServiceReqs } };
+                var group = HisNoneMediServiceReqResultSDO.SereNmse.GroupBy(o => o.SERVICE_REQ_ID).ToList();
+                TotalSereServPrint = HisNoneMediServiceReqResultSDO.SereNmse.Count;
+                foreach (var item in group)
+                {
+                    if (dicSereNmseData == null)
+                        dicSereNmseData = new Dictionary<long, List<HIS_SERE_NMSE>>();
+                    if (dicSereNmseData.ContainsKey(item.Key))
+                        dicSereNmseData[item.Key].AddRange(item.ToList());
+                    else
+                        dicSereNmseData.Add(item.Key, item.ToList());
+                }
+                PrintNow(reportTypeCode);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+
         private void InCacPhieuChiDinhProcess(Inventec.Common.RichEditor.RichEditorStore richEditorMain)
         {
             try
@@ -745,6 +790,8 @@ HisTreatmentWithPatientTypeInfoSDO TreatmentWithPatientTypeInfo, List<V_HIS_BED_
                 WaitingManager.Show();
                 if (IsProcessDataPrint || ProcessDataBeforePrint())
                 {
+                    if (chiDinhDichVuADO != null && listSereNmseData != null)
+                        chiDinhDichVuADO.SereNmses = listSereNmseData;
                     string treatmentCode = !String.IsNullOrEmpty(EmrDataStore.treatmentCode) ? ProcessDeleteZeroFromCode(EmrDataStore.treatmentCode) : "";
                     if (chiDinhDichVuADO != null && chiDinhDichVuADO.treament != null && treatmentCode != chiDinhDichVuADO.treament.TREATMENT_CODE)
                     {
@@ -830,6 +877,9 @@ HisTreatmentWithPatientTypeInfoSDO TreatmentWithPatientTypeInfo, List<V_HIS_BED_
                         case PrintTypeCodeStore.IN__MPS000432__XET_NGHIEM_GOP_KHOA_XU_LY:
                             new InGopXetNghiem(printTypeCode, fileName, chiDinhDichVuADO, dicServiceReqData, dicSereServData, dicSereServExtData, this.BedLogs, printNow, ref result, roomId, IsView, this.PreviewType, ReqMaxNumOrderSDO, IsMethodSaveNPrint, SetDataGroup, CancelChooseTemplate, DlgSendResultSigned);
                             break;
+                        case PrintTypeCodeStore.IN__MPS000502__DICHVU_NGOAI_KCB:
+                            new InDichVuNgoaiKCB(printTypeCode, fileName, chiDinhDichVuADO, dicServiceReqData, dicSereNmseData, printNow, ref result, roomId, IsView, this.PreviewType, IsMethodSaveNPrint, SetDataGroup, CancelChooseTemplate, DlgSendResultSigned);
+                            break;
                         default:
                             break;
                     }
@@ -871,7 +921,7 @@ HisTreatmentWithPatientTypeInfoSDO TreatmentWithPatientTypeInfo, List<V_HIS_BED_
             Thread threadSereServ = new Thread(LoadThreadDataSereServ);
             Thread threadMaxNumOrder = new Thread(ProcessGetMaxNumOrder);
             Thread threadQrCode = new Thread(GetDataPrintQrCode);
-            Thread threadCard= new Thread(GetDataCard);
+            Thread threadCard = new Thread(GetDataCard);
             try
             {
                 threadCard.Start();
