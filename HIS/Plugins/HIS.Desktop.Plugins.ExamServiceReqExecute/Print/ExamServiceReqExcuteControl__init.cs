@@ -16,7 +16,9 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 using DevExpress.Utils.Menu;
+using HIS.Desktop.ADO;
 using HIS.Desktop.ApiConsumer;
+using HIS.Desktop.LocalStorage.BackendData;
 using HIS.Desktop.LocalStorage.ConfigSystem;
 using HIS.Desktop.LocalStorage.LocalData;
 using HIS.Desktop.Plugins.ExamServiceReqExecute.Base;
@@ -30,10 +32,12 @@ using Inventec.Desktop.Common.Message;
 using MOS.EFMODEL.DataModels;
 using MOS.Filter;
 using MOS.SDO;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
+using static DevExpress.XtraEditors.ViewInfo.BaseListBoxViewInfo;
 
 
 namespace HIS.Desktop.Plugins.ExamServiceReqExecute
@@ -55,6 +59,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
         /// </summary>
         /// <param name="isAppoinment">Khởi tạo in hẹn khám và in</param>
         /// <param name="isBordereau">Khởi tạo in bệnh án ngoại trú và in</param>
+
         private void FillDataToButtonPrintAndAutoPrint()
         {
             try
@@ -65,8 +70,47 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
 
                 if (menu == null || menu.Items == null || menu.Items.Count == 0)
                 {
-                    #region Khởi tạo mới các menu in ấn
                     menu = new DXPopupMenu();
+                    #region Khởi tạo mới các menu in ấn
+                    // && !string.IsNullOrEmpty(o.VALUE)
+                    var qrCodeBankInfo1 = BackendDataWorker.Get<HIS_CONFIG>().Where(o => o.KEY.StartsWith("HIS.Desktop.Plugins.PaymentQrCode.")).ToList();
+                    var qrCodeBankInfo2 = qrCodeBankInfo1.Where(w => !string.IsNullOrEmpty(w.VALUE)).ToList();
+                    var hisRoom = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<HIS_ROOM>().FirstOrDefault(p => p.ID == this.moduleData.RoomId);
+                    if (qrCodeBankInfo2.Count == 1 || hisRoom.QR_CONFIG_JSON != null)
+                    {
+                        HIS_CONFIG bInfo = new HIS_CONFIG();
+                        if (hisRoom.QR_CONFIG_JSON != null)
+                        {
+                            var jsonObj = JsonConvert.DeserializeObject<Dictionary<string, string>>(hisRoom.QR_CONFIG_JSON);
+                            string bank = jsonObj.ContainsKey("BANK") ? jsonObj["BANK"] : null;
+                            string value = jsonObj.ContainsKey("VALUE") ? jsonObj["VALUE"] : null;
+                            HIS_CONFIG req = qrCodeBankInfo1.Where(w => w.KEY.EndsWith(bank + "Info") && w.VALUE == value).FirstOrDefault();
+                            Inventec.Common.Mapper.DataObjectMapper.Map<HIS_CONFIG>(bInfo, req);
+                            bInfo.VALUE = value;
+                        }
+                        else
+                        {
+                            Inventec.Common.Mapper.DataObjectMapper.Map<HIS_CONFIG>(bInfo, qrCodeBankInfo2[0]);
+                        }
+                        DXMenuItem itemQRThanhToan = new DXMenuItem(Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY_EXAM_SERVICE_REQ_EXCUTE_CONTROL_QR_THANH_TOAN", ResourceLangManager.LanguageUCExamServiceReqExecute, LanguageManager.GetCulture()), new EventHandler(onClickInQRThanhToan));
+                        itemQRThanhToan.Tag = bInfo;
+                        menu.Items.Add(itemQRThanhToan);
+                    }
+                    else
+                    {
+                        DXSubMenuItem itemSubQRThanhToan = new DXSubMenuItem(Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY_EXAM_SERVICE_REQ_EXCUTE_CONTROL_QR_THANH_TOAN", ResourceLangManager.LanguageUCExamServiceReqExecute, LanguageManager.GetCulture()));
+                        foreach (HIS_CONFIG req in qrCodeBankInfo2)
+                        {
+                            HIS_CONFIG bInfo = new HIS_CONFIG();
+                            Inventec.Common.Mapper.DataObjectMapper.Map<HIS_CONFIG>(bInfo, req);
+                            var bank = bInfo.KEY.Split('.').Last().Replace("Info", "");
+                            DXMenuItem itembInfo = new DXMenuItem(bank, new EventHandler(onClickInQRThanhToan));
+                            itembInfo.Tag = bInfo;
+                            itemSubQRThanhToan.Items.Add(itembInfo);
+                        }
+                        menu.Items.Add(itemSubQRThanhToan);
+                    }
+                    //
                     DXMenuItem itemKhamBenhVaoVien = new DXMenuItem(Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY_EXAM_SERVICE_REQ_EXCUTE_CONTROL_PHIEU_KHAM_BENH_VAO_VIEN", ResourceLangManager.LanguageUCExamServiceReqExecute, LanguageManager.GetCulture()), new EventHandler(onClickInPhieuKhamBenh));
                     itemKhamBenhVaoVien.Tag = PrintType.KHAM_BENH_VAO_VIEN;
                     menu.Items.Add(itemKhamBenhVaoVien);
@@ -422,6 +466,35 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             PHIEU_THU_THANH_TOAN,
             PHIEU_CHAN_DOAN_NGUYEN_NHAN_TU_VONG,
             IN_THE_BN
+        }
+
+        private void onClickInQRThanhToan(object sender, EventArgs e)
+        {
+            try
+            {
+                var bbtnItem = sender as DXMenuItem;
+                HIS_CONFIG hf = (HIS_CONFIG)(bbtnItem.Tag);
+                List<object> listArgs = new List<object>();
+                TransReqQRADO adoqr = new TransReqQRADO
+                {
+                    TreatmentId = treatment.ID,
+                    TransReqId = CreateReqType.Deposit,
+                    ConfigValue = hf,
+                    BankName = hf.KEY.Split('.').Last().Replace("Info", "")
+                };
+                listArgs.Add(adoqr);
+                HIS.Desktop.ModuleExt.PluginInstanceBehavior.ShowModule(
+                    "HIS.Desktop.Plugins.CreateTransReqQR",
+                    this.moduleData.RoomId,
+                    this.moduleData.RoomTypeId,
+                    listArgs
+                );
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+                WaitingManager.Hide();
+            }
         }
 
         private void onClickInPhieuKhamBenh(object sender, EventArgs e)

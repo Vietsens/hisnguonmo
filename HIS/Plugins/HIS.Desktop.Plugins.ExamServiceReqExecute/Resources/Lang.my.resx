@@ -975,6 +975,9 @@
   <data name="IVT_LANGUAGE_KEY_EXAM_SERVICE_REQ_EXCUTE_CONTROL_PHIEU_KIEM_TRA_KHAM_SUC_KHOE_DINH_KY" xml:space="preserve">
     <value>ကျန်းမာရေးစစ်ဆေးချက်စာရွက်</value>
   </data>
+  <data name="IVT_LANGUAGE_KEY_EXAM_SERVICE_REQ_EXCUTE_CONTROL_QR_THANH_TOAN" xml:space="preserve">
+    <value>Tạo QR thanh toán (In phiếu thu)</value>
+  </data>
   <data name="IVT_LANGUAGE_KEY_EXAM_SERVICE_REQ_EXCUTE_CONTROL_PHIEU_PTTT" xml:space="preserve">
     <value>ခွဲစိတ်မှု ကတ်ပြား</value>
   </data>
