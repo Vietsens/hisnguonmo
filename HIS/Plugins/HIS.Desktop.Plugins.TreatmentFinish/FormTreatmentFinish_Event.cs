@@ -1358,7 +1358,7 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
                     TransReqQRADO adoqr = new TransReqQRADO
                     {
                         TreatmentId = currentHisTreatment.ID,
-                        TransReqId = CreateReqType.Deposit,
+                        TransReqId = CreateReqType.TransactionBill,
                         ConfigValue = selectedConfig,
                         BankName = bankKey
                     };
