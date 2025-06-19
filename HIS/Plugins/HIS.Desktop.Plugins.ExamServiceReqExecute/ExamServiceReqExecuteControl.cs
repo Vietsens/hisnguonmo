@@ -2946,7 +2946,10 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                     if (!hisServiceReqSDO.FinishTime.HasValue)
                         hisServiceReqSDO.FinishTime = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(DateTime.Now);
                 }
-
+                if (!this.IsCheckServiceFollowWhenOut())
+                {
+                    return;
+                }
 
                 bool valid = true;
 
@@ -3002,7 +3005,31 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
-
+        private bool IsCheckServiceFollowWhenOut()
+        {
+            bool valid = true;
+            try
+            {
+                if (HisConfigCFG.IsCheckServiceFollowWhenOut && this.treatment.TDL_PATIENT_TYPE_ID == HisPatientTypeCFG.PATIENT_TYPE_ID__BHYT)
+                {
+                    CommonParam param = new CommonParam();
+                    var result = new BackendAdapter(param).Post<bool>("api/HisTreatment/CheckServiceFollow", ApiConsumers.MosConsumer, this.treatment.ID, param);
+                    if (result == false)
+                    {
+                        if (XtraMessageBox.Show(param.GetMessage() + Environment.NewLine + "Bạn có muốn tiếp tục xử lý không?", ResourceMessage.ThongBao, MessageBoxButtons.YesNo, DevExpress.Utils.DefaultBoolean.True) != System.Windows.Forms.DialogResult.Yes)
+                        {
+                            return false;
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+                valid = false;
+            }
+            return valid;
+        }
         private bool CheckIcd(HisTreatmentFinishSDO TreatmentFinishSDO = null)
         {
             bool valid = true;
