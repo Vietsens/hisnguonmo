@@ -502,17 +502,11 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                     if (HisConfigCFG.IsCheckServiceFollowWhenOut == "1")
                     {
                         CommonParam param = new CommonParam();
-                        CheckServiceFollowSDO sdo = new CheckServiceFollowSDO();
-                        sdo.TreatmentId = this.treatmentId;
-                        bool checkFollow = new BackendAdapter(param).Post<bool>(RequestUriStore.HIS_TREATHER__CHECKSERVICE_fOLLOW, ApiConsumers.MosConsumer, sdo, ProcessLostToken, param);
-                        LogSystem.Info("checkFollow " + checkFollow);
-
+                        bool checkFollow = new BackendAdapter(param).Post<bool>(RequestUriStore.HIS_TREATHER__CHECKSERVICE_fOLLOW, ApiConsumers.MosConsumer, this.treatmentId, param);
                         if (!checkFollow)
                         {
-                            DialogResult result = MessageBox.Show("Dịch vụ chưa có thuốc đi kèm. Bạn có muốn tiếp tục?", "Cảnh báo", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
-
-                            if (result == DialogResult.No)
-                                return;
+                            XtraMessageBox.Show( param.GetMessage() + ". Bạn có muốn tiếp tục?", "Thông báo", MessageBoxButtons.YesNo);
+                            return ;
                         }
                     }
                     if (subIcd != null && !string.IsNullOrEmpty(subIcd.ICD_SUB_CODE))
