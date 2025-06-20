@@ -183,7 +183,7 @@ namespace HIS.Desktop.Plugins.TransactionList
                 {
 
                     case MPS.Processor.Mps000431.PDO.Mps000431PDO.printTypeCode:
-                        InHoaDonDienTuNhap( printCode, fileName, ref result);
+                        InHoaDonDienTuNhap(printCode, fileName, ref result);
                         break;
                     default:
                         break;
@@ -631,8 +631,10 @@ namespace HIS.Desktop.Plugins.TransactionList
         {
             try
             {
-                if (this.transactionPrint == null || !this.transactionPrint.TREATMENT_ID.HasValue)
+                //if (this.transactionPrint == null || !this.transactionPrint.TREATMENT_ID.HasValue)
+                if (this.transactionPrint == null)
                     return;
+
 
                 //List<object> listArgs = new List<object>();
                 //listArgs.Add(this.transactionPrint);
@@ -645,7 +647,7 @@ namespace HIS.Desktop.Plugins.TransactionList
                 //HIS.Desktop.ModuleExt.PluginInstanceBehavior.ShowModule("HIS.Desktop.Plugins.TransactionBill", currentModule.RoomId, currentModule.RoomTypeId, listArgs);
                 if (this.transactionPrint.SALE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SALE_TYPE.ID__SALE_EXP)
                 {
-                   
+
                     long? expMestId = null;
                     if (!string.IsNullOrEmpty(this.transactionPrint.TDL_EXP_MEST_CODE))
                     {
@@ -660,7 +662,6 @@ namespace HIS.Desktop.Plugins.TransactionList
                         else
                         {
                             Inventec.Common.Logging.LogSystem.Warn($"Không tìm thấy phiếu xuất với EXP_MEST_CODE: {this.transactionPrint.TDL_EXP_MEST_CODE}");
-                            MessageBox.Show("Không tìm thấy thông tin phiếu xuất tương ứng!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                             return;
                         }
                     }
@@ -670,8 +671,8 @@ namespace HIS.Desktop.Plugins.TransactionList
                         return;
                     }
                     List<object> listArgs = new List<object>();
-                    listArgs.Add(expMestId); //ID của phiếu xuất
-                    listArgs.Add(this.transactionPrint); // giaO dịch đang thực hiện thay thế
+                    listArgs.Add(expMestId);
+                    listArgs.Add(this.transactionPrint);
                     HIS.Desktop.ModuleExt.PluginInstanceBehavior.ShowModule("HIS.Desktop.Plugins.MedicineSaleBill", currentModule.RoomId, currentModule.RoomTypeId, listArgs);
                 }
                 else if (this.transactionPrint.SALE_TYPE_ID != null && this.transactionPrint.SALE_TYPE_ID != IMSys.DbConfig.HIS_RS.HIS_SALE_TYPE.ID__SALE_EXP)
@@ -679,7 +680,7 @@ namespace HIS.Desktop.Plugins.TransactionList
                     MessageBox.Show("Tính năng đang phát triển, vui lòng thử lại sau!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     return;
                 }
-                else
+                else if(this.transactionPrint.TREATMENT_ID.HasValue)
                 {
                     List<object> listArgs = new List<object>();
                     listArgs.Add(this.transactionPrint);
