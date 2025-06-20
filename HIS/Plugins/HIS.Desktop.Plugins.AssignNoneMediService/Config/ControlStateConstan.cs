@@ -21,17 +21,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MPS.Processor.Mps000276
+namespace HIS.Desktop.Plugins.AssignNoneMediService.Config
 {
-    public class ServiceNumOderAdo
+    internal class ControlStateConstant
     {
-        public long? SERVICE_ID { get; set; }
-        public string SERVICE_CODE { get; set; }
-        public string SERVICE_NAME { get; set; }
-        public long NUM_ORDER { get; set; }
-        public string SEQUENCE { get; set; }
-        public string ASSIGN_TURN_CODE { get; set; }
-        public string SERVICE_REQ_CODE { get; set; }
-        public string SERVICE_TYPE_CODE { get; set; }
+        internal const string chkPrint = "chkPrint";
+        internal const string chkSign = "chkSign";
+        internal const string chkPrintDocumentSigned = "chkPrintDocumentSigned";
+        internal const string ckTK = "ckTK";
+        internal const string ekipUser = "ekipUser";
     }
 }

@@ -76,7 +76,8 @@ namespace HIS.Desktop.Plugins.Library.PrintServiceReq
                     req,
                     lstExt,
                     BackendDataWorker.Get<V_HIS_SERVICE>(),
-                    BackendDataWorker.Get<HIS_SERVICE_REQ_TYPE>());
+                    BackendDataWorker.Get<HIS_SERVICE_REQ_TYPE>(),
+                    chiDinhDichVuADO.SereNmses);
 
                 Print.PrintData(printTypeCode, fileName, mps000037PDO, printNow, ref result, roomId, isView, PreviewType, lstSereServ.Count, savedData, dicServiceReqData.FirstOrDefault().Value.FirstOrDefault().TREATMENT_CODE, DlgSendResultSigned);
             }

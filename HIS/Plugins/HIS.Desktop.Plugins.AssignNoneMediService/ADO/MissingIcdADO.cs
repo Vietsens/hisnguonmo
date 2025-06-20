@@ -21,17 +21,16 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MPS.Processor.Mps000276
+namespace HIS.Desktop.Plugins.AssignNoneMediService.ADO
 {
-    public class ServiceNumOderAdo
+    public class MissingIcdADO
     {
-        public long? SERVICE_ID { get; set; }
-        public string SERVICE_CODE { get; set; }
+        public long ID { get; set; }
+        public long SERVICE_ID { get; set; }
         public string SERVICE_NAME { get; set; }
-        public long NUM_ORDER { get; set; }
-        public string SEQUENCE { get; set; }
-        public string ASSIGN_TURN_CODE { get; set; }
-        public string SERVICE_REQ_CODE { get; set; }
-        public string SERVICE_TYPE_CODE { get; set; }
+        public string ICD_CODE { get; set; }
+        public string ICD_NAME { get; set; }
+        public bool ICD_CAUSE_CHECK { get; set; }
+        public bool ICD_MAIN_CHECK { get; set; }
     }
 }

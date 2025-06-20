@@ -206,6 +206,9 @@
     <Reference Include="MPS.Processor.Mps000467.PDO">
       <HintPath>..\..\..\..\LIB\MPSv2\MPS.PDO\MPS.Processor.Mps000467.PDO.dll</HintPath>
     </Reference>
+    <Reference Include="MPS.Processor.Mps000502.PDO">
+      <HintPath>..\..\..\..\lib\MPSv2\MPS.PDO\MPS.Processor.Mps000502.PDO.dll</HintPath>
+    </Reference>
     <Reference Include="MPS.ProcessorBase">
       <HintPath>..\..\..\..\LIB\MPSv2\MPS.ProcessorBase\MPS.ProcessorBase.dll</HintPath>
     </Reference>
@@ -222,6 +225,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="InDichVuNgoaiKCB.cs" />
     <Compile Include="PrintServiceReqProcessor.cs" />
     <Compile Include="ProcessDictionaryData.cs" />
     <Compile Include="ADO\ChiDinhDichVuADO.cs" />
