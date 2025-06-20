@@ -1003,6 +1003,36 @@ namespace HIS.Desktop.Plugins.TransDepartment
                                 }
                             }
                         }
+                        else
+                        {
+                            WaitingManager.Show();
+                            if (WarningOptionInCaseOfUnassignTrackingServiceReq == 0 || (WarningOptionInCaseOfUnassignTrackingServiceReq != 1 && WarningOptionInCaseOfUnassignTrackingServiceReq != 2 && WarningOptionInCaseOfUnassignTrackingServiceReq != 3))
+                            {
+                                ConditionA(ref success, ref param);
+                            }
+                            else if (WarningOptionInCaseOfUnassignTrackingServiceReq == 1 || WarningOptionInCaseOfUnassignTrackingServiceReq == 2 || WarningOptionInCaseOfUnassignTrackingServiceReq == 3)
+                            {
+                                var checkDepartment = listDepartments.FirstOrDefault(o => o.ID == Int64.Parse(cboDepartment.EditValue.ToString()));
+
+                                Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => checkDepartment), checkDepartment));
+                                ConditionB(ref success, ref param, checkDepartment != null && checkDepartment.WARNING_WHEN_IS_NO_SURG == 1);
+                            }
+                        }    
+                    }
+                    else
+                    {
+                        WaitingManager.Show();
+                        if (WarningOptionInCaseOfUnassignTrackingServiceReq == 0 || (WarningOptionInCaseOfUnassignTrackingServiceReq != 1 && WarningOptionInCaseOfUnassignTrackingServiceReq != 2 && WarningOptionInCaseOfUnassignTrackingServiceReq != 3))
+                        {
+                            ConditionA(ref success, ref param);
+                        }
+                        else if (WarningOptionInCaseOfUnassignTrackingServiceReq == 1 || WarningOptionInCaseOfUnassignTrackingServiceReq == 2 || WarningOptionInCaseOfUnassignTrackingServiceReq == 3)
+                        {
+                            var checkDepartment = listDepartments.FirstOrDefault(o => o.ID == Int64.Parse(cboDepartment.EditValue.ToString()));
+
+                            Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => checkDepartment), checkDepartment));
+                            ConditionB(ref success, ref param, checkDepartment != null && checkDepartment.WARNING_WHEN_IS_NO_SURG == 1);
+                        }
                     }
                 }
 

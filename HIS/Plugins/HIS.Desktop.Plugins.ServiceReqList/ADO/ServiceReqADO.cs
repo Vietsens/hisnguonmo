@@ -1,4 +1,4 @@
-/* IVT
+﻿/* IVT
  * @Project : hisnguonmo
  * Copyright (C) 2017 INVENTEC
  *  
@@ -15,8 +15,12 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+using HIS.Desktop.ApiConsumer;
 using HIS.Desktop.LocalStorage.BackendData;
+using Inventec.Common.Adapter;
+using Inventec.Core;
 using MOS.EFMODEL.DataModels;
+using MOS.Filter;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -46,6 +50,7 @@ namespace HIS.Desktop.Plugins.ServiceReqList.ADO
 
         public string SAMPLE_ROOM_CODE { get; set; }
         public string SAMPLE_ROOM_NAME { get; set; }
+        public long? SERVICE_ID { get; set; }
 
 
         public ServiceReqADO()
@@ -53,7 +58,7 @@ namespace HIS.Desktop.Plugins.ServiceReqList.ADO
 
         }
 
-        public ServiceReqADO(HIS_SERVICE_REQ data)
+        public ServiceReqADO(HIS_SERVICE_REQ data, List<HIS_SERE_SERV> allSereServ = null)
         {
             try
             {
@@ -109,11 +114,11 @@ namespace HIS.Desktop.Plugins.ServiceReqList.ADO
                     {
                         var sampleRoom = BackendDataWorker.Get<HIS_SAMPLE_ROOM>().FirstOrDefault(o => o.ID == data.SAMPLE_ROOM_ID);
                         if (sampleRoom != null)
-                        {
+                        { 
                             this.SAMPLE_ROOM_CODE = sampleRoom.SAMPLE_ROOM_CODE;
                             this.SAMPLE_ROOM_NAME  = sampleRoom.SAMPLE_ROOM_NAME;
                         }
-                    }
+                    }                 
 
                     this.isCheck = false;
                 }
