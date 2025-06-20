@@ -499,9 +499,12 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                 bool isHasTreatmentFinishChecked = (treatUC != null && treatUC.IsAutoTreatmentFinish);
                 if (isHasTreatmentFinishChecked && treatUC != null)
                 {
-                    if (HisConfigCFG.IsCheckServiceFollowWhenOut == "1")
+                    var bhyt = BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_PATIENT_TYPE>()
+                        .FirstOrDefault(o => o.PATIENT_TYPE_CODE == Config.HisConfigCFG.PatientTypeCode__BHYT);
+                    if (HisConfigCFG.IsCheckServiceFollowWhenOut == "1" && this.currentTreatment.TDL_PATIENT_TYPE_ID == bhyt.ID)
                     {
-                        CommonParam param = new CommonParam();
+                           
+                        CommonParam param = new CommonParam();  
                         bool checkFollow = new BackendAdapter(param).Post<bool>(RequestUriStore.HIS_TREATHER__CHECKSERVICE_fOLLOW, ApiConsumers.MosConsumer, this.treatmentId, param);
                         if (!checkFollow)
                         {
