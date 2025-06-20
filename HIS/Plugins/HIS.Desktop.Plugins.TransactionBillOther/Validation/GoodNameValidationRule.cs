@@ -43,9 +43,9 @@ namespace HIS.Desktop.Plugins.TransactionBillOther.Validation
                     return valid;
                 }
 
-                if (txtGoodName.Text.Length >= 500)
+                if (txtGoodName.Text.Length >= 1500)
                 {
-                    ErrorText = String.Format(ResourceMessageManager.DoDaiKhongDuocVuotQua, ResourceMessageManager.TenDichVu, 500);
+                    ErrorText = String.Format(ResourceMessageManager.DoDaiKhongDuocVuotQua, ResourceMessageManager.TenDichVu, 1500);
                     ErrorType = DevExpress.XtraEditors.DXErrorProvider.ErrorType.Warning;
                     return valid;
                 }
