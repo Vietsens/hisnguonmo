@@ -57,6 +57,7 @@ using System.Linq;
 using System.Resources;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
+using System.Threading.Tasks;
 
 
 namespace HIS.Desktop.Plugins.MedicineSaleBill
@@ -76,13 +77,11 @@ namespace HIS.Desktop.Plugins.MedicineSaleBill
         List<HIS.Desktop.Plugins.MedicineSaleBill.ADO.MediMateTypeADO> listMediMateAdo = new List<HIS.Desktop.Plugins.MedicineSaleBill.ADO.MediMateTypeADO>();
         List<V_HIS_EXP_MEST_MEDICINE> listExpMestMedicine;
         List<V_HIS_EXP_MEST_MATERIAL> listExpMestMaterial;
-        long? expMestIdForEdit = null;
         long? patientIdForEdit = null;
         List<long> expMestIdForEdits = null;
         List<V_HIS_EXP_MEST> ExpMests;
         List<HIS_PATIENT> Patients;
         MOS.EFMODEL.DataModels.HIS_PATIENT patient = null;
-        //V_HIS_PATIENT patient;
         V_HIS_TRANSACTION transactionBillResult;
         DelegateSelectData delegateSelectData;
         V_HIS_TREATMENT_FEE currentTreatment;
@@ -93,38 +92,16 @@ namespace HIS.Desktop.Plugins.MedicineSaleBill
         HIS.Desktop.Library.CacheClient.ControlStateWorker controlStateWorker;
         List<HIS.Desktop.Library.CacheClient.ControlStateRDO> currentControlStateRDO;
         bool isNotLoadWhileChangeControlStateInFirst;
+        V_HIS_TRANSACTION originalTransaction;
+        List<ReplaceTransactionADO> replaceTransactionADOs = null;
 
         public frmMedicineSaleBill()
         {
             InitializeComponent();
         }
 
-        public frmMedicineSaleBill(Inventec.Desktop.Common.Modules.Module module, long expMestId, DelegateSelectData _delegateSelectData)
-            : base(module)
-        {
-            InitializeComponent();
-            // TODO: Complete member initialization
-            try
-            {
-                this.delegateSelectData = _delegateSelectData;
-                SetIcon();
-                Base.ResourceLangManager.InitResourceLanguageManager();
-                this.module = module;
-                if (this.module != null)
-                {
-                    this.roomId = module.RoomId;
-                    this.roomTypeId = module.RoomTypeId;
-                }
-                expMestIdForEdit = expMestId;
-            }
-            catch (Exception ex)
-            {
-
-                Inventec.Common.Logging.LogSystem.Error(ex);
-            }
-        }
-
-        public frmMedicineSaleBill(Inventec.Desktop.Common.Modules.Module module, List<long> expMestIds, DelegateSelectData _delegateSelectData)
+        public frmMedicineSaleBill(Inventec.Desktop.Common.Modules.Module module,
+            List<long> expMestIds, DelegateSelectData _delegateSelectData, V_HIS_TRANSACTION _OriginalTransaction)
             : base(module)
         {
             InitializeComponent();
@@ -141,28 +118,7 @@ namespace HIS.Desktop.Plugins.MedicineSaleBill
                     this.roomTypeId = module.RoomTypeId;
                 }
                 expMestIdForEdits = expMestIds;
-            }
-            catch (Exception ex)
-            {
-
-                Inventec.Common.Logging.LogSystem.Error(ex);
-            }
-        }
-
-        public frmMedicineSaleBill(Inventec.Desktop.Common.Modules.Module module)
-            : base(module)
-        {
-            InitializeComponent();
-            try
-            {
-                SetIcon();
-                Base.ResourceLangManager.InitResourceLanguageManager();
-                this.module = module;
-                if (this.module != null)
-                {
-                    this.roomId = module.RoomId;
-                    this.roomTypeId = module.RoomTypeId;
-                }
+                originalTransaction = _OriginalTransaction;
             }
             catch (Exception ex)
             {
@@ -204,8 +160,6 @@ namespace HIS.Desktop.Plugins.MedicineSaleBill
                     LoadExpMest();
                     InitResultSdoByExpMest();
                     ddBtnPrint.Enabled = false;
-                    //btnSave.Enabled = true;
-                    //GenerateMenuPrint();
                     ValidateForm();
                     SetDefaultAccountBook();
                     SetDefaultPayForm();
@@ -214,7 +168,7 @@ namespace HIS.Desktop.Plugins.MedicineSaleBill
                     SetDefaultCreateQR();
                 }
 
-                if (expMestIdForEdit > 0 || (expMestIdForEdits != null && expMestIdForEdits.Count > 0))
+                if (expMestIdForEdits != null && expMestIdForEdits.Count > 0)
                 {
                     btnSave.Enabled = true;
                     btnSavePrint.Enabled = true;
@@ -242,6 +196,7 @@ namespace HIS.Desktop.Plugins.MedicineSaleBill
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
+
         private void SetDefaultCreateQR()
         {
             try
@@ -262,6 +217,7 @@ namespace HIS.Desktop.Plugins.MedicineSaleBill
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
+
         private void LoadTreatmentFee()
         {
             try
@@ -696,6 +652,43 @@ namespace HIS.Desktop.Plugins.MedicineSaleBill
             }
         }
 
+        private void LoadDataToComboTransaction(List<HIS_TRANSACTION> datas)
+        {
+            try
+            {
+                replaceTransactionADOs = new List<ReplaceTransactionADO>();
+                if (datas != null && datas.Count > 0)
+                {
+                    this.lciOriginalTransaction.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
+                    this.lciReplaceReason.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
+                    foreach (var item in datas)
+                    {
+                        replaceTransactionADOs.Add(new ReplaceTransactionADO(item));
+                    }
+                }
+
+                List<ColumnInfo> columnInfos = new List<ColumnInfo>();
+                columnInfos.Add(new ColumnInfo("TRANSACTION_CODE", "", 100, 1));
+                columnInfos.Add(new ColumnInfo("TRANSACTION_TIME", "", 150, 2));
+                columnInfos.Add(new ColumnInfo("NUM_ORDER", "", 50, 3));
+                ControlEditorADO controlEditorADO = new ControlEditorADO("TRANSACTION_CODE", "ID", columnInfos, false, 350);
+                ControlEditorLoader.Load(cboOriginalTransaction, replaceTransactionADOs, controlEditorADO);
+
+                //có giao dịch thay thế truyền vào thì gắn giao dịch
+                if (this.originalTransaction != null && replaceTransactionADOs.Exists(e => e.ID == this.originalTransaction.ID))
+                {
+
+                    cboOriginalTransaction.EditValue = this.originalTransaction.ID;
+                    cboOriginalTransaction.Enabled = false;
+                }
+            }
+            catch (Exception ex)
+            {
+
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
         private void LoadDataToComboAccountBook()
         {
             try
@@ -768,19 +761,7 @@ namespace HIS.Desktop.Plugins.MedicineSaleBill
             try
             {
                 this.ExpMests = null;
-                if (this.expMestIdForEdit.HasValue && this.expMestIdForEdit.Value > 0)
-                {
-                    HisExpMestViewFilter expMestFilter = new HisExpMestViewFilter();
-                    expMestFilter.ID = this.expMestIdForEdit.Value;
-                    expMestFilter.HAS_BILL_ID = false;
-                    var listExpMest = new Inventec.Common.Adapter.BackendAdapter(new CommonParam()).Get<List<V_HIS_EXP_MEST>>("api/HisExpMest/GetView", ApiConsumers.MosConsumer, expMestFilter, null);
-                    if (listExpMest == null || listExpMest.Count != 1)
-                    {
-                        throw new Exception("Khong lay duoc expMest theo id: " + expMestIdForEdit.Value);
-                    }
-                    this.ExpMests = listExpMest;
-                }
-                else if (expMestIdForEdits != null && expMestIdForEdits.Count > 0)
+                if (expMestIdForEdits != null && expMestIdForEdits.Count > 0)
                 {
                     HisExpMestViewFilter expMestFilter = new HisExpMestViewFilter();
                     expMestFilter.IDs = this.expMestIdForEdits;
@@ -790,7 +771,7 @@ namespace HIS.Desktop.Plugins.MedicineSaleBill
                     var listExpMest = new Inventec.Common.Adapter.BackendAdapter(new CommonParam()).Get<List<V_HIS_EXP_MEST>>("api/HisExpMest/GetView", ApiConsumers.MosConsumer, expMestFilter, null);
                     if (listExpMest == null || listExpMest.Count == 0)
                     {
-                        throw new Exception("Khong lay duoc expMest theo id: " + expMestIdForEdit.Value);
+                        throw new Exception("Khong lay duoc expMest theo id: " + string.Join(", ", expMestIdForEdits));
                     }
                     this.ExpMests = listExpMest;
                 }
@@ -807,36 +788,62 @@ namespace HIS.Desktop.Plugins.MedicineSaleBill
             {
                 if (this.ExpMests != null && this.ExpMests.Count > 0)
                 {
-                    HisExpMestMedicineViewFilter expMestMedicineFilter = new HisExpMestMedicineViewFilter();
-                    expMestMedicineFilter.EXP_MEST_IDs = this.ExpMests.Select(s => s.ID).ToList();
-                    listExpMestMedicine = new Inventec.Common.Adapter.BackendAdapter(new CommonParam()).Get<List<V_HIS_EXP_MEST_MEDICINE>>("api/HisExpMestMedicine/GetView", ApiConsumers.MosConsumer, expMestMedicineFilter, null);
-
-                    HisExpMestMaterialViewFilter expMestMaterialFilter = new HisExpMestMaterialViewFilter();
-                    expMestMaterialFilter.EXP_MEST_IDs = this.ExpMests.Select(s => s.ID).ToList();
-                    listExpMestMaterial = new Inventec.Common.Adapter.BackendAdapter(new CommonParam()).Get<List<V_HIS_EXP_MEST_MATERIAL>>("api/HisExpMestMaterial/GetView", ApiConsumers.MosConsumer, expMestMaterialFilter, null);
-
                     listMediMateAdo = new List<HIS.Desktop.Plugins.MedicineSaleBill.ADO.MediMateTypeADO>();
 
-                    var listExpMestMedicineGroup = listExpMestMedicine.GroupBy(o => new { o.EXP_MEST_ID, o.MEDICINE_ID, o.PRICE, o.VAT_RATIO });
-                    foreach (var ExpMestMedicineGroup in listExpMestMedicineGroup)
+                    List<Task> taskall = new List<Task>();
+                    Task tsMedicine = Task.Factory.StartNew((object obj) =>
                     {
-                        HIS.Desktop.Plugins.MedicineSaleBill.ADO.MediMateTypeADO MediMateTypeADO = new HIS.Desktop.Plugins.MedicineSaleBill.ADO.MediMateTypeADO(ExpMestMedicineGroup.ToList(), this.ExpMests.FirstOrDefault(o => o.ID == ExpMestMedicineGroup.Key.EXP_MEST_ID));
-                        if (MediMateTypeADO.EXP_AMOUNT > 0)
-                            listMediMateAdo.Add(MediMateTypeADO);
-                    }
+                        List<V_HIS_EXP_MEST> data = obj as List<V_HIS_EXP_MEST>;
+                        HisExpMestMedicineViewFilter expMestMedicineFilter = new HisExpMestMedicineViewFilter();
+                        expMestMedicineFilter.EXP_MEST_IDs = data.Select(s => s.ID).ToList();
+                        listExpMestMedicine = new Inventec.Common.Adapter.BackendAdapter(new CommonParam()).Get<List<V_HIS_EXP_MEST_MEDICINE>>("api/HisExpMestMedicine/GetView", ApiConsumers.MosConsumer, expMestMedicineFilter, null);
+                        var listExpMestMedicineGroup = listExpMestMedicine.GroupBy(o => new { o.EXP_MEST_ID, o.MEDICINE_ID, o.PRICE, o.VAT_RATIO });
+                        foreach (var ExpMestMedicineGroup in listExpMestMedicineGroup)
+                        {
+                            HIS.Desktop.Plugins.MedicineSaleBill.ADO.MediMateTypeADO MediMateTypeADO = new HIS.Desktop.Plugins.MedicineSaleBill.ADO.MediMateTypeADO(ExpMestMedicineGroup.ToList(), this.ExpMests.FirstOrDefault(o => o.ID == ExpMestMedicineGroup.Key.EXP_MEST_ID));
+                            if (MediMateTypeADO.EXP_AMOUNT > 0)
+                                listMediMateAdo.Add(MediMateTypeADO);
+                        }
+                    }, this.ExpMests);
+                    taskall.Add(tsMedicine);
 
-                    var listExpMestMaterialGroup = listExpMestMaterial.GroupBy(o => new { o.EXP_MEST_ID, o.MATERIAL_ID, o.PRICE, o.VAT_RATIO });
-                    foreach (var ExpMestMedicineGroup in listExpMestMaterialGroup)
+                    Task tsMaterial = Task.Factory.StartNew((object obj) =>
                     {
-                        HIS.Desktop.Plugins.MedicineSaleBill.ADO.MediMateTypeADO MediMateTypeADO = new HIS.Desktop.Plugins.MedicineSaleBill.ADO.MediMateTypeADO(ExpMestMedicineGroup.ToList(), this.ExpMests.FirstOrDefault(o => o.ID == ExpMestMedicineGroup.Key.EXP_MEST_ID));
-                        if (MediMateTypeADO.EXP_AMOUNT > 0)
-                            listMediMateAdo.Add(MediMateTypeADO);
-                    }
+                        List<V_HIS_EXP_MEST> data = obj as List<V_HIS_EXP_MEST>;
+                        HisExpMestMaterialViewFilter expMestMaterialFilter = new HisExpMestMaterialViewFilter();
+                        expMestMaterialFilter.EXP_MEST_IDs = data.Select(s => s.ID).ToList();
+                        listExpMestMaterial = new Inventec.Common.Adapter.BackendAdapter(new CommonParam()).Get<List<V_HIS_EXP_MEST_MATERIAL>>("api/HisExpMestMaterial/GetView", ApiConsumers.MosConsumer, expMestMaterialFilter, null);
+                        var listExpMestMaterialGroup = listExpMestMaterial.GroupBy(o => new { o.EXP_MEST_ID, o.MATERIAL_ID, o.PRICE, o.VAT_RATIO });
+                        foreach (var ExpMestMedicineGroup in listExpMestMaterialGroup)
+                        {
+                            HIS.Desktop.Plugins.MedicineSaleBill.ADO.MediMateTypeADO MediMateTypeADO = new HIS.Desktop.Plugins.MedicineSaleBill.ADO.MediMateTypeADO(ExpMestMedicineGroup.ToList(), this.ExpMests.FirstOrDefault(o => o.ID == ExpMestMedicineGroup.Key.EXP_MEST_ID));
+                            if (MediMateTypeADO.EXP_AMOUNT > 0)
+                                listMediMateAdo.Add(MediMateTypeADO);
+                        }
+                    }, this.ExpMests);
+                    taskall.Add(tsMaterial);
+
+                    List<HIS_TRANSACTION> originalTran = null;
+
+                    Task tsTrans = Task.Factory.StartNew((object obj) =>
+                    {
+                        List<V_HIS_EXP_MEST> data = obj as List<V_HIS_EXP_MEST>;
+                        HisTransactionReplaceFilter tranReplaceFilter = new HisTransactionReplaceFilter();
+                        tranReplaceFilter.TDL_EXP_MEST_CODEs = data.Select(s => s.EXP_MEST_CODE).ToList();
+                        originalTran = new Inventec.Common.Adapter.BackendAdapter(new CommonParam()).Get<List<HIS_TRANSACTION>>("api/HisTransaction/GetReplaceTransaction", ApiConsumers.MosConsumer, tranReplaceFilter, null);
+
+                    }, this.ExpMests);
+                    taskall.Add(tsTrans);
+
+                    Task.WaitAll(taskall.ToArray());
+
                     if (listMediMateAdo.Count <= 0)
                     {
                         XtraMessageBox.Show("Không có chi tiết thuốc/ vật tư, hoặc thuốc/ vật tư đã bị thu hồi", "Thông báo", DefaultBoolean.True);
                         return;
                     }
+
+                    LoadDataToComboTransaction(originalTran);
                 }
                 FillDataGridExpMestDetail(this.listMediMateAdo);
                 SetTotalPrice();
@@ -890,10 +897,10 @@ namespace HIS.Desktop.Plugins.MedicineSaleBill
 
         private void SetBuyerInfo()
         {
-            
+
             if (this.ExpMests != null && this.ExpMests.Count > 0)
             {
-                
+
                 var expMest = ExpMests.FirstOrDefault();
 
                 txtBuyerAccountCode.Text = ExpMests.FirstOrDefault().TDL_PATIENT_ACCOUNT_NUMBER;
@@ -975,6 +982,11 @@ namespace HIS.Desktop.Plugins.MedicineSaleBill
         {
             try
             {
+                if (transactionBillResult == null || transactionBillResult.ID <= 0)
+                {
+                    return;
+                }
+
                 if (mediStock != null && !string.IsNullOrEmpty(mediStock.QR_CONFIG_JSON))
                 {
                     ItemConfig config = Newtonsoft.Json.JsonConvert.DeserializeObject<ItemConfig>(mediStock.QR_CONFIG_JSON);
@@ -1130,21 +1142,18 @@ namespace HIS.Desktop.Plugins.MedicineSaleBill
                     data.HisBillGoods = billGooDs;
                 }
 
-                //if (isLuuKy && InvoiceTypeCreate == invoiceTypeCreate__CreateInvoiceVnpt)
-                //{
-                //    //Tao hoa don dien thu ben thu3 
-                //    ElectronicBillResult electronicBillResult = TaoHoaDonDienTuBenThu3CungCap(data.HisTransaction, seleteds);
-                //    if (electronicBillResult == null || !electronicBillResult.Success)
-                //    {
-                //        param.Messages.Add("Tạo hóa đơn điện tử thất bại");
-                //        MessageManager.Show(this.ParentForm, param, success);
-                //        return false;
-                //    }
-
-                //    data.HisTransaction.INVOICE_CODE = electronicBillResult.InvoiceCode;
-                //    data.HisTransaction.INVOICE_SYS = electronicBillResult.InvoiceSys;
-                //    data.HisTransaction.EINVOICE_NUM_ORDER = electronicBillResult.InvoiceNumOrder;
-                //}
+                if (lciOriginalTransaction.Visibility == DevExpress.XtraLayout.Utils.LayoutVisibility.Always
+                    && cboOriginalTransaction.EditValue != null)
+                {
+                    if (String.IsNullOrWhiteSpace(txtReplaceReason.Text))
+                    {
+                        MessageBox.Show("Vui lòng nhập lý do thay thế");
+                        txtReplaceReason.Focus();
+                        return false;
+                    }
+                    data.OriginalTransactionId = Inventec.Common.TypeConvert.Parse.ToInt64(cboOriginalTransaction.EditValue.ToString());
+                    data.ReplaceReason = txtReplaceReason.Text;
+                }
 
                 this.transactionBillResult = new BackendAdapter(param).Post<V_HIS_TRANSACTION>("api/HisTransaction/CreateBillWithBillGood", ApiConsumers.MosConsumer, data, param);
 
@@ -1394,48 +1403,6 @@ namespace HIS.Desktop.Plugins.MedicineSaleBill
             }
         }
 
-        //private void txtAccountBookCode_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
-        //{
-        //    try
-        //    {
-        //        if (e.KeyCode == Keys.Enter)
-        //        {
-        //            bool valid = false;
-        //            if (!String.IsNullOrEmpty(txtAccountBookCode.Text))
-        //            {
-        //                string key = txtAccountBookCode.Text.ToUpper();
-        //                var data = ListAccountBook.Where(o => o.ACCOUNT_BOOK_CODE.ToUpper().Contains(key) || o.ACCOUNT_BOOK_NAME.ToUpper().Contains(key)).ToList();
-        //                if (data != null && data.Count == 1)
-        //                {
-        //                    valid = true;
-        //                    txtAccountBookCode.Text = data.First().ACCOUNT_BOOK_CODE;
-        //                    cboAccountBook.EditValue = data.First().ID;
-        //                    if (spinNumOrder.Enabled)
-        //                    {
-        //                        spinNumOrder.Focus();
-        //                        spinNumOrder.SelectAll();
-        //                    }
-        //                    else
-        //                    {
-        //                        txtCashierRoomCode.Focus();
-        //                        txtCashierRoomCode.SelectAll();
-        //                    }
-        //                }
-        //            }
-        //            if (!valid)
-        //            {
-        //                cboAccountBook.Focus();
-        //                cboAccountBook.ShowPopup();
-        //            }
-        //        }
-        //    }
-        //    catch (Exception ex)
-        //    {
-
-        //        Inventec.Common.Logging.LogSystem.Error(ex);
-        //    }
-        //}
-
         private void cboAccountBook_Closed(object sender, DevExpress.XtraEditors.Controls.ClosedEventArgs e)
         {
             try
@@ -1598,41 +1565,6 @@ namespace HIS.Desktop.Plugins.MedicineSaleBill
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
-
-        //private void txtPayFormCode_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
-        //{
-        //    try
-        //    {
-        //        if (e.KeyCode == Keys.Enter)
-        //        {
-        //            bool valid = false;
-        //            if (!String.IsNullOrEmpty(txtPayFormCode.Text))
-        //            {
-        //                string key = txtPayFormCode.Text.ToUpper();
-        //                var data = BackendDataWorker.Get<HIS_PAY_FORM>().Where(o => o.PAY_FORM_CODE.ToUpper().Contains(key) ||
-        //                    o.PAY_FORM_NAME.ToUpper().Contains(key)).ToList();
-        //                if (data != null && data.Count == 1)
-        //                {
-        //                    valid = true;
-        //                    txtPayFormCode.Text = data.First().PAY_FORM_CODE;
-        //                    cboPayFrom.EditValue = data.First().ID;
-        //                    dtTransactionTime.Focus();
-        //                    dtTransactionTime.SelectAll();
-        //                }
-        //            }
-        //            if (!valid)
-        //            {
-        //                cboPayFrom.Focus();
-        //                cboPayFrom.ShowPopup();
-        //            }
-        //        }
-        //    }
-        //    catch (Exception ex)
-        //    {
-
-        //        Inventec.Common.Logging.LogSystem.Error(ex);
-        //    }
-        //}
 
         private void cboPayFrom_Closed(object sender, DevExpress.XtraEditors.Controls.ClosedEventArgs e)
         {
@@ -1870,10 +1802,8 @@ namespace HIS.Desktop.Plugins.MedicineSaleBill
                 this.listMediMateAdo = new List<HIS.Desktop.Plugins.MedicineSaleBill.ADO.MediMateTypeADO>();
                 this.listExpMestMedicine = null;
                 this.listExpMestMaterial = null;
-                this.expMestIdForEdit = null;
                 this.ExpMests = null;
                 this.Patients = null;
-                //this.patient = null;
                 this.transactionBillResult = null;
                 this.delegateSelectData = null;
                 txtBuyerAccountCode.Text = "";
@@ -1890,6 +1820,11 @@ namespace HIS.Desktop.Plugins.MedicineSaleBill
                 BtnSaveSign.Enabled = true;
                 this.currentTreatment = null;
                 checkOverTime.Checked = GlobalVariables.MedicineSaleBill__IsOverTime;
+                this.lciOriginalTransaction.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+                this.lciReplaceReason.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+                this.cboOriginalTransaction.Enabled = true;
+                this.cboOriginalTransaction.EditValue = null;
+                this.txtReplaceReason.Text = null;
             }
             catch (Exception ex)
             {
@@ -1940,13 +1875,14 @@ namespace HIS.Desktop.Plugins.MedicineSaleBill
             try
             {
                 CommonParam param = new CommonParam();
+                HisExpMestViewFilter filter = new HisExpMestViewFilter();
+                filter.EXP_MEST_TYPE_ID = IMSys.DbConfig.HIS_RS.HIS_EXP_MEST_TYPE.ID__BAN;
+                filter.MEDI_STOCK_ID = this.mediStock.ID;
+                filter.HAS_BILL_ID = false;
+                filter.IS_NOT_TAKEN = false;
+
                 if (!String.IsNullOrWhiteSpace(txtTreatmentCode.Text))
                 {
-                    HisExpMestViewFilter filter = new HisExpMestViewFilter();
-                    filter.EXP_MEST_TYPE_ID = IMSys.DbConfig.HIS_RS.HIS_EXP_MEST_TYPE.ID__BAN;
-                    filter.MEDI_STOCK_ID = this.mediStock.ID;
-                    filter.HAS_BILL_ID = false;
-                    filter.IS_NOT_TAKEN = false;
                     string code = txtTreatmentCode.Text.Trim();
                     if (code.Length < 12)
                     {
@@ -1954,27 +1890,9 @@ namespace HIS.Desktop.Plugins.MedicineSaleBill
                         txtTreatmentCode.Text = code;
                     }
                     filter.TDL_TREATMENT_CODE__EXACT = code;
-
-                    var listExpMest = new BackendAdapter(param).Get<List<V_HIS_EXP_MEST>>("api/HisExpMest/GetView", ApiConsumers.MosConsumer, filter, param);
-                    if (listExpMest != null && listExpMest.Count > 0)
-                    {
-                        this.ExpMests = listExpMest;
-                        return true;
-                    }
-                    else
-                    {
-                        WaitingManager.Hide();
-                        XtraMessageBox.Show("Không tìm thấy phiếu xuất nào", "Thông báo", DevExpress.Utils.DefaultBoolean.True);
-                        return false;
-                    }
                 }
                 else if (!String.IsNullOrEmpty(txtExpMestCode.Text))
                 {
-                    HisExpMestViewFilter filter = new HisExpMestViewFilter();
-                    filter.EXP_MEST_TYPE_ID = IMSys.DbConfig.HIS_RS.HIS_EXP_MEST_TYPE.ID__BAN;
-                    filter.MEDI_STOCK_ID = this.mediStock.ID;
-                    filter.HAS_BILL_ID = false;
-                    filter.IS_NOT_TAKEN = false;
                     string code = txtExpMestCode.Text.Trim();
                     if (code.Length < 12)
                     {
@@ -1982,19 +1900,19 @@ namespace HIS.Desktop.Plugins.MedicineSaleBill
                         txtExpMestCode.Text = code;
                     }
                     filter.EXP_MEST_CODE__EXACT = code;
+                }
 
-                    var listExpMest = new BackendAdapter(param).Get<List<V_HIS_EXP_MEST>>("api/HisExpMest/GetView", ApiConsumers.MosConsumer, filter, param);
-                    if (listExpMest != null && listExpMest.Count == 1)
-                    {
-                        this.ExpMests = listExpMest;
-                        return true;
-                    }
-                    else
-                    {
-                        WaitingManager.Hide();
-                        XtraMessageBox.Show("Không tìm thấy phiếu xuất nào", "Thông báo", DevExpress.Utils.DefaultBoolean.True);
-                        return false;
-                    }
+                var listExpMest = new BackendAdapter(param).Get<List<V_HIS_EXP_MEST>>("api/HisExpMest/GetView", ApiConsumers.MosConsumer, filter, param);
+                if (listExpMest != null && listExpMest.Count > 0)
+                {
+                    this.ExpMests = listExpMest;
+                    return true;
+                }
+                else
+                {
+                    WaitingManager.Hide();
+                    XtraMessageBox.Show("Không tìm thấy phiếu xuất nào", "Thông báo", DevExpress.Utils.DefaultBoolean.True);
+                    return false;
                 }
             }
             catch (Exception ex)
@@ -2415,6 +2333,15 @@ namespace HIS.Desktop.Plugins.MedicineSaleBill
                 if (!BtnSaveSign.Enabled || !dxValidationProviderEditorInfo.Validate())
                     return;
 
+                if (this.replaceTransactionADOs != null && this.replaceTransactionADOs.Count > 0 && this.cboOriginalTransaction.EditValue == null)
+                {
+                    if (MessageBox.Show("Tồn tại hóa đơn điện từ có thể thay thế. Bạn có muốn thay thế không?", "Thông báo", MessageBoxButtons.OKCancel) == DialogResult.OK)
+                    {
+                        this.cboOriginalTransaction.Focus();
+                        return;
+                    }
+                }
+
                 if (this.SaveProcess(true))
                 {
                     if (!chkHideHddt.Checked)
@@ -2458,12 +2385,7 @@ namespace HIS.Desktop.Plugins.MedicineSaleBill
                 HIS_TRANSACTION tran = new HIS_TRANSACTION();
                 Inventec.Common.Mapper.DataObjectMapper.Map<HIS_TRANSACTION>(tran, transactionBillResult);
                 dataInput.Transaction = tran;
-                List<V_HIS_TRANSACTION> vtran = new List<V_HIS_TRANSACTION>();
-                vtran.Add(transactionBillResult);
-                dataInput.ListTransaction = vtran;
-                //V_HIS_TREATMENT_2 treatment2 = new V_HIS_TREATMENT_2();
-                //AutoMapper.Mapper.CreateMap<V_HIS_TREATMENT_FEE, V_HIS_TREATMENT_2>();
-                //treatment2 = AutoMapper.Mapper.Map<V_HIS_TREATMENT_2>(this.currentTreatment);
+
                 if (currentTreatment == null)
                 {
                     this.currentTreatment = new V_HIS_TREATMENT_FEE();
@@ -2482,14 +2404,8 @@ namespace HIS.Desktop.Plugins.MedicineSaleBill
                 dataInput.Branch = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<HIS_BRANCH>().FirstOrDefault(o => o.ID == HIS.Desktop.LocalStorage.LocalData.WorkPlace.GetBranchId());
                 ElectronicBillProcessor electronicBillProcessor = new ElectronicBillProcessor(dataInput);
                 ElectronicBillResult electronicBillResult = null;
-                //if (TransactionBillConfig.InvoiceTypeCreate == invoiceTypeCreate__CreateInvoiceHIS)
-                //{
+
                 electronicBillResult = electronicBillProcessor.Run(ElectronicBillType.ENUM.GET_INVOICE_LINK);
-                //}
-                //else
-                //{
-                //    electronicBillResult = electronicBillProcessor.Run(ElectronicBillType.ENUM.downloadInvPDFFkeyNoPay);
-                //}
 
                 if (electronicBillResult == null || String.IsNullOrEmpty(electronicBillResult.InvoiceLink))
                 {
@@ -2689,6 +2605,21 @@ namespace HIS.Desktop.Plugins.MedicineSaleBill
             catch (Exception ex)
             {
                 LogSystem.Error("Loi khi thuc hien thanh toan QR tam thu: " + ex);
+            }
+        }
+
+        private void cboOriginalTransaction_Properties_ButtonClick(object sender, DevExpress.XtraEditors.Controls.ButtonPressedEventArgs e)
+        {
+            try
+            {
+                if (e.Button.Kind == DevExpress.XtraEditors.Controls.ButtonPredefines.Delete)
+                {
+                    cboOriginalTransaction.EditValue = null;
+                }
+            }
+            catch (Exception ex)
+            {
+                LogSystem.Error("cboOriginalTransaction_Properties_ButtonClick: " + ex);
             }
         }
     }
