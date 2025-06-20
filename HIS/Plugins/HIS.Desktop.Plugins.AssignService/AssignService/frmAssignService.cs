@@ -962,6 +962,10 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
 							if (chkPrint.Checked)
 								chkPrintDocumentSigned.Checked = false;
 						}
+						else if (item.KEY == chkPrintVBA.Name)
+						{
+							chkPrintVBA.Checked = item.VALUE == "1";
+						}
 						else if (item.KEY == ControlStateConstant.chkSign)
 						{
 							chkSign.Checked = item.VALUE == "1";
@@ -5722,88 +5726,8 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
 
 								MessageManager.Show(this, new CommonParam(), true);
 								this.actionType = GlobalVariables.ActionEdit;
-                               // qtcode
-                                if (chkPrintVBA.Checked && (type == TypeButton.SAVE || type == TypeButton.SAVE_AND_PRINT))
-                                {
-                                    WaitingManager.Show();
-                                    var sereServs = serviceReqComboResultSDO.SereServs;
-                                    var services = BackendDataWorker.Get<V_HIS_SERVICE>()
-                                        .Where(o => sereServs.Select(s => s.SERVICE_ID).Contains(o.ID))
-                                        .ToList();
-                                    var printGroups = sereServs
-                                        .Join(services,
-                                            ss => ss.SERVICE_ID,
-                                            s => s.ID,
-                                            (ss, s) => new { SereServ = ss, Service = s })
-                                        .Where(o => !string.IsNullOrEmpty(o.Service.ATTACH_ASSIGN_PRINT_TYPE_CODE))
-                                        .GroupBy(o => o.Service.ATTACH_ASSIGN_PRINT_TYPE_CODE)
-                                        .ToList();
-                                    if (printGroups.Any())
-                                    {
-                                        MediRecordMenuPopupProcessor processor = new MediRecordMenuPopupProcessor();
-                                        foreach (var group in printGroups)
-                                        {
-                                            var printTypeCode = group.Key;
-                                            var ado = new Library.FormMedicalRecord.Base.EmrInputADO()
-                                            {
-                                                TreatmentId = this.treatmentId,
-                                                roomId = this.currentModule.RoomId
-                                            };
-                                            if (currentTreatment != null && currentTreatment.EMR_COVER_TYPE_ID != null)
-                                            {
-                                                ado.EmrCoverTypeId = currentTreatment.EMR_COVER_TYPE_ID.Value;
-                                                ado.PatientId = currentTreatment.PATIENT_ID;
-                                            }
-                                            else
-                                            {
-                                                var data = BackendDataWorker.Get<HIS_EMR_COVER_CONFIG>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE
-                                                    && o.ROOM_ID == this.currentModule.RoomId
-                                                    && o.TREATMENT_TYPE_ID == (currentHisPatientTypeAlter != null ? currentHisPatientTypeAlter.TREATMENT_TYPE_ID : 0)
-                                                ).ToList();
-                                                if (data != null && data.Count > 0)
-                                                {
-                                                    if (data.Count == 1)
-                                                    {
-                                                        ado.EmrCoverTypeId = data.FirstOrDefault().EMR_COVER_TYPE_ID;
-                                                    }
-                                                    else
-                                                    {
-                                                        ado.lstEmrCoverTypeId = new List<long>();
-                                                        ado.lstEmrCoverTypeId = data.Select(o => o.EMR_COVER_TYPE_ID).ToList();
-                                                    }
-                                                }
-                                                else
-                                                {
-                                                    var departmentId = HIS.Desktop.LocalStorage.LocalData.WorkPlace.WorkPlaceSDO
-                                                        .FirstOrDefault(o => o.RoomId == this.currentModule.RoomId)?.DepartmentId ?? 0;
-                                                    var dataConfig = BackendDataWorker.Get<HIS_EMR_COVER_CONFIG>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE
-                                                        && o.DEPARTMENT_ID == departmentId
-                                                        && o.TREATMENT_TYPE_ID == (currentHisPatientTypeAlter != null ? currentHisPatientTypeAlter.TREATMENT_TYPE_ID : 0)
-                                                    ).ToList();
-                                                    if (dataConfig != null && dataConfig.Count > 0)
-                                                    {
-                                                        if (dataConfig.Count == 1)
-                                                        {
-                                                            ado.EmrCoverTypeId = dataConfig.FirstOrDefault().EMR_COVER_TYPE_ID;
-                                                        }
-                                                        else
-                                                        {
-                                                            ado.lstEmrCoverTypeId = new List<long>();
-                                                            ado.lstEmrCoverTypeId = dataConfig.Select(o => o.EMR_COVER_TYPE_ID).ToList();
-                                                        }
-                                                    }
-                                                }
-                                            }
-                                            long emrCoverTypeId = ado.EmrCoverTypeId ?? 0;
-                                            long emrCoverTypeIdSend = emrCoverTypeId <= 0 ? 0 : emrCoverTypeId;
-                                            processor.FormOpenEmr(emrCoverTypeIdSend, ado, printTypeCode);
-                                        }
-                                    }
-                                    WaitingManager.Hide();
-                                }
-
                             }
-
+							
 							if (isSaveAndPrint)
 							{
 								long isClosedForm = ConfigApplicationWorker.Get<long>(AppConfigKeys.CONFIG_KEY_HIS_DESKTOP_ASSIGN_SERVICE_CLOSED_FORM_AFTER_PRINT);
@@ -5818,7 +5742,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
 
 					}
 				}
-
+				
 				if (!assignMulti)
 				{
 					switch (type)
