@@ -78,6 +78,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using static MPS.ProcessorBase.PrintConfig;
+using HIS.Desktop.Plugins.Library.FormMedicalRecord; 
 
 namespace HIS.Desktop.Plugins.AssignService.AssignService
 {
@@ -960,6 +961,10 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
 							chkPrint.Checked = item.VALUE == "1";
 							if (chkPrint.Checked)
 								chkPrintDocumentSigned.Checked = false;
+						}
+						else if (item.KEY == chkPrintVBA.Name)
+						{
+							chkPrintVBA.Checked = item.VALUE == "1";
 						}
 						else if (item.KEY == ControlStateConstant.chkSign)
 						{
@@ -5446,6 +5451,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
 		{
 			try
 			{
+				//kiểm tra cấu hình 
                 if (!string.IsNullOrEmpty(HisConfigCFG.InstructionTimeServiceMustBeGreaterThanStartTimeExam))
 				{
 					LoadVServiceReq();
@@ -5720,8 +5726,8 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
 
 								MessageManager.Show(this, new CommonParam(), true);
 								this.actionType = GlobalVariables.ActionEdit;
-							}
-
+                            }
+							
 							if (isSaveAndPrint)
 							{
 								long isClosedForm = ConfigApplicationWorker.Get<long>(AppConfigKeys.CONFIG_KEY_HIS_DESKTOP_ASSIGN_SERVICE_CLOSED_FORM_AFTER_PRINT);
@@ -5736,7 +5742,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
 
 					}
 				}
-
+				
 				if (!assignMulti)
 				{
 					switch (type)
@@ -10172,7 +10178,43 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
             }
             return true;
         }
-    }
+
+
+		//qtcode
+        private void chkPrintVBA_CheckedChanged(object sender, EventArgs e)
+        {
+			try
+            {
+                if (isNotLoadWhileChangeControlStateInFirst)
+                    return;
+                WaitingManager.Show();
+                HIS.Desktop.Library.CacheClient.ControlStateRDO csAddOrUpdate = currentControlStateRDO?.FirstOrDefault(o => o.KEY == chkPrintVBA.Name && o.MODULE_LINK == this.moduleLink);
+                if (csAddOrUpdate != null)
+                {
+                    csAddOrUpdate.VALUE = chkPrintVBA.Checked ? "1" : "";
+                }
+                else
+                {
+                    csAddOrUpdate = new HIS.Desktop.Library.CacheClient.ControlStateRDO
+                    {
+                        KEY = chkPrintVBA.Name,
+                        VALUE = chkPrintVBA.Checked ? "1" : "",
+                        MODULE_LINK = this.moduleLink
+                    };
+                    if (currentControlStateRDO == null)
+                        currentControlStateRDO = new List<HIS.Desktop.Library.CacheClient.ControlStateRDO>();
+                    currentControlStateRDO.Add(csAddOrUpdate);
+                }
+                controlStateWorker.SetData(currentControlStateRDO);
+                WaitingManager.Hide();
+            }
+            catch (Exception ex)
+            {
+                WaitingManager.Hide();
+                LogSystem.Warn(ex);
+            }
+        }
+	}
     public class BankInfo
     {
         public BankInfo() { }

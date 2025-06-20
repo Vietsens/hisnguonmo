@@ -183,7 +183,7 @@ namespace HIS.Desktop.Plugins.TransactionList
                 {
 
                     case MPS.Processor.Mps000431.PDO.Mps000431PDO.printTypeCode:
-                        InHoaDonDienTuNhap( printCode, fileName, ref result);
+                        InHoaDonDienTuNhap(printCode, fileName, ref result);
                         break;
                     default:
                         break;
@@ -631,18 +631,67 @@ namespace HIS.Desktop.Plugins.TransactionList
         {
             try
             {
-                if (this.transactionPrint == null || !this.transactionPrint.TREATMENT_ID.HasValue)
+                //if (this.transactionPrint == null || !this.transactionPrint.TREATMENT_ID.HasValue)
+                if (this.transactionPrint == null)
                     return;
 
-                List<object> listArgs = new List<object>();
-                listArgs.Add(this.transactionPrint);
-                V_HIS_TREATMENT_FEE treatment = GetTreatmentById(this.transactionPrint.TREATMENT_ID.Value);
-                listArgs.Add(treatment);
-                List<V_HIS_SERE_SERV_5> listSereServ = GetListSereServ5ByTreatmentId(this.transactionPrint.TREATMENT_ID.Value);
-                listArgs.Add(listSereServ);
-                V_HIS_PATIENT_TYPE_ALTER patientTypeAlter = GetPatientTypeAlterByTreatmentId(this.transactionPrint.TREATMENT_ID.Value);
-                listArgs.Add(patientTypeAlter);
-                HIS.Desktop.ModuleExt.PluginInstanceBehavior.ShowModule("HIS.Desktop.Plugins.TransactionBill", currentModule.RoomId, currentModule.RoomTypeId, listArgs);
+
+                //List<object> listArgs = new List<object>();
+                //listArgs.Add(this.transactionPrint);
+                //V_HIS_TREATMENT_FEE treatment = GetTreatmentById(this.transactionPrint.TREATMENT_ID.Value);
+                //listArgs.Add(treatment);
+                //List<V_HIS_SERE_SERV_5> listSereServ = GetListSereServ5ByTreatmentId(this.transactionPrint.TREATMENT_ID.Value);
+                //listArgs.Add(listSereServ);
+                //V_HIS_PATIENT_TYPE_ALTER patientTypeAlter = GetPatientTypeAlterByTreatmentId(this.transactionPrint.TREATMENT_ID.Value);
+                //listArgs.Add(patientTypeAlter);
+                //HIS.Desktop.ModuleExt.PluginInstanceBehavior.ShowModule("HIS.Desktop.Plugins.TransactionBill", currentModule.RoomId, currentModule.RoomTypeId, listArgs);
+                if (this.transactionPrint.SALE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SALE_TYPE.ID__SALE_EXP)
+                {
+
+                    long? expMestId = null;
+                    if (!string.IsNullOrEmpty(this.transactionPrint.TDL_EXP_MEST_CODE))
+                    {
+                        CommonParam param = new CommonParam();
+                        HisExpMestFilter expMestFilter = new HisExpMestFilter();
+                        expMestFilter.EXP_MEST_CODE__EXACT = this.transactionPrint.TDL_EXP_MEST_CODE;
+                        var expMestData = new BackendAdapter(param).Get<List<HIS_EXP_MEST>>("api/HisExpMest/Get", ApiConsumers.MosConsumer, expMestFilter, param);
+                        if (expMestData != null && expMestData.Count > 0)
+                        {
+                            expMestId = expMestData.First().ID;
+                        }
+                        else
+                        {
+                            Inventec.Common.Logging.LogSystem.Warn($"Không tìm thấy phiếu xuất với EXP_MEST_CODE: {this.transactionPrint.TDL_EXP_MEST_CODE}");
+                            return;
+                        }
+                    }
+                    else
+                    {
+                        MessageBox.Show("Không có thông tin mã phiếu xuất trong giao dịch!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        return;
+                    }
+                    List<object> listArgs = new List<object>();
+                    listArgs.Add(expMestId);
+                    listArgs.Add(this.transactionPrint);
+                    HIS.Desktop.ModuleExt.PluginInstanceBehavior.ShowModule("HIS.Desktop.Plugins.MedicineSaleBill", currentModule.RoomId, currentModule.RoomTypeId, listArgs);
+                }
+                else if (this.transactionPrint.SALE_TYPE_ID != null && this.transactionPrint.SALE_TYPE_ID != IMSys.DbConfig.HIS_RS.HIS_SALE_TYPE.ID__SALE_EXP)
+                {
+                    MessageBox.Show("Tính năng đang phát triển, vui lòng thử lại sau!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    return;
+                }
+                else if(this.transactionPrint.TREATMENT_ID.HasValue)
+                {
+                    List<object> listArgs = new List<object>();
+                    listArgs.Add(this.transactionPrint);
+                    V_HIS_TREATMENT_FEE treatment = GetTreatmentById(this.transactionPrint.TREATMENT_ID.Value);
+                    listArgs.Add(treatment);
+                    List<V_HIS_SERE_SERV_5> listSereServ = GetListSereServ5ByTreatmentId(this.transactionPrint.TREATMENT_ID.Value);
+                    listArgs.Add(listSereServ);
+                    V_HIS_PATIENT_TYPE_ALTER patientTypeAlter = GetPatientTypeAlterByTreatmentId(this.transactionPrint.TREATMENT_ID.Value);
+                    listArgs.Add(patientTypeAlter);
+                    HIS.Desktop.ModuleExt.PluginInstanceBehavior.ShowModule("HIS.Desktop.Plugins.TransactionBill", currentModule.RoomId, currentModule.RoomTypeId, listArgs);
+                }
             }
             catch (Exception ex)
             {
