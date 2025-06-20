@@ -148,7 +148,7 @@ namespace HIS.Desktop.Plugins.Library.EmrGenerate
                 inputADO.IsAutoChooseBusiness = (pr.IS_AUTO_CHOOSE_BUSINESS == 1);
             }
 
-            inputADO.DTI = String.Format("{0}|{1}|{2}|{3}|{4}|{5}", ConfigSystems.URI_API_ACS, ConfigSystems.URI_API_EMR, ConfigSystems.URI_API_FSS, Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetTokenData().TokenCode, Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName(), Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetUserName());
+            inputADO.DTI = String.Format("{0}|{1}|{2}|{3}|{4}|{5}|{6}", ConfigSystems.URI_API_ACS, ConfigSystems.URI_API_EMR, ConfigSystems.URI_API_FSS, Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetTokenData().TokenCode, Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName(), Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetUserName(), ConfigSystems.URI_API_HPS);
             inputADO.IsSign = isSign;
             inputADO.IsSelectRangeRectangle = false;
             inputADO.IsPrintOnlyContent = HisConfigCFG.IsNotShowingSignInformation;
