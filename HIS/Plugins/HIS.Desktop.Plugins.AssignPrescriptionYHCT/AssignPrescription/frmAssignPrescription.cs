@@ -525,7 +525,6 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
                     && !GlobalStore.IsCabinet) ? DevExpress.XtraLayout.Utils.LayoutVisibility.Always : DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
 
                 this.isNotLoadWhileChangeInstructionTimeInFirst = false;
-                CheckEnableBtnQR();
                 WaitingManager.Hide();
             }
             catch (Exception ex)
@@ -771,6 +770,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
                 //this.ProcessSaveForListSelect(false);
                 LogTheadInSessionInfo(() => this.ProcessSaveForListSelect(false), "btnSave_Click");
                 //this.ProcessSaveData(false);
+                CheckEnableBtnQR();
             }
             catch (Exception ex)
             {
@@ -785,6 +785,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
                 //this.ProcessSaveForListSelect(true);
                 LogTheadInSessionInfo(() => this.ProcessSaveForListSelect(true), "btnSaveAndPrint_Click");
                 //this.ProcessSaveData(true);
+                CheckEnableBtnQR();
             }
             catch (Exception ex)
             {
