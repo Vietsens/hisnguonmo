@@ -71,10 +71,9 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                     #region Khởi tạo mới các menu in ấn
                     menu = new DXPopupMenu();
                     //
-                    var qrCodeBankInfo1 = BackendDataWorker.Get<HIS_CONFIG>().Where(o => o.KEY.StartsWith("HIS.Desktop.Plugins.PaymentQrCode.")).ToList();
-                    var qrCodeBankInfo2 = qrCodeBankInfo1.Where(w => !string.IsNullOrEmpty(w.VALUE)).ToList();
+                    var qrCodeBankInfo = BackendDataWorker.Get<HIS_CONFIG>().Where(w => w.KEY.StartsWith("HIS.Desktop.Plugins.PaymentQrCode.") && !string.IsNullOrEmpty(w.VALUE)).ToList();
                     var hisRoom = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<HIS_ROOM>().FirstOrDefault(p => p.ID == this.moduleData.RoomId);
-                    if (qrCodeBankInfo2.Count == 1 || hisRoom.QR_CONFIG_JSON != null)
+                    if (qrCodeBankInfo.Count == 1 || hisRoom.QR_CONFIG_JSON != null)
                     {
                         HIS_CONFIG bInfo = new HIS_CONFIG();
                         if (hisRoom.QR_CONFIG_JSON != null)
@@ -82,13 +81,12 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                             var jsonObj = JsonConvert.DeserializeObject<Dictionary<string, string>>(hisRoom.QR_CONFIG_JSON);
                             string bank = jsonObj.ContainsKey("BANK") ? jsonObj["BANK"] : null;
                             string value = jsonObj.ContainsKey("VALUE") ? jsonObj["VALUE"] : null;
-                            HIS_CONFIG req = qrCodeBankInfo1.Where(w => w.KEY.EndsWith(bank + "Info") && w.VALUE == value).FirstOrDefault();
-                            Inventec.Common.Mapper.DataObjectMapper.Map<HIS_CONFIG>(bInfo, req);
+                            bInfo.KEY = string.Format("HIS.Desktop.Plugins.PaymentQrCode.{0}Info", bank.Trim());
                             bInfo.VALUE = value;
                         }
                         else
                         {
-                            Inventec.Common.Mapper.DataObjectMapper.Map<HIS_CONFIG>(bInfo, qrCodeBankInfo2[0]);
+                            Inventec.Common.Mapper.DataObjectMapper.Map<HIS_CONFIG>(bInfo, qrCodeBankInfo[0]);
                         }
                         DXMenuItem itemQRThanhToan = new DXMenuItem(Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY_EXAM_SERVICE_REQ_EXCUTE_CONTROL_QR_THANH_TOAN", ResourceLangManager.LanguageUCExamServiceReqExecute, LanguageManager.GetCulture()), new EventHandler(onClickInQRThanhToan));
                         itemQRThanhToan.Tag = bInfo;
@@ -97,7 +95,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                     else
                     {
                         DXSubMenuItem itemSubQRThanhToan = new DXSubMenuItem(Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY_EXAM_SERVICE_REQ_EXCUTE_CONTROL_QR_THANH_TOAN", ResourceLangManager.LanguageUCExamServiceReqExecute, LanguageManager.GetCulture()));
-                        foreach (HIS_CONFIG req in qrCodeBankInfo2)
+                        foreach (HIS_CONFIG req in qrCodeBankInfo)
                         {
                             HIS_CONFIG bInfo = new HIS_CONFIG();
                             Inventec.Common.Mapper.DataObjectMapper.Map<HIS_CONFIG>(bInfo, req);
