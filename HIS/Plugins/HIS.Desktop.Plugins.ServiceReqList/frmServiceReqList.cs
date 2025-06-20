@@ -719,7 +719,7 @@ namespace HIS.Desktop.Plugins.ServiceReqList
             {
                 WaitingManager.Hide();
                 Inventec.Common.Logging.LogSystem.Error(ex);
-            }
+            }       
         }
 
         private void SetFilter(ref HisServiceReqFilter filter)
@@ -1517,17 +1517,64 @@ namespace HIS.Desktop.Plugins.ServiceReqList
                                 expMest = new HIS_EXP_MEST();
                                 expMest.SERVICE_REQ_ID = serviceClick.ID;
                             }
+                            this.FillDataGridDetail(expMest, serviceClick);
+                        }
+                        else if (serviceClick.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__OT)
+                        {
+                            FillDataGridDetailForNoneMediService(serviceClick.ID);
+                        }
+                        else
+                        {
+                            FillDataGridDetail(expMest, serviceClick);
                         }
 
-                        this.FillDataGridDetail(expMest, serviceClick);
                         this.FillDataToControl(expMest, serviceClick);
                         WaitingManager.Hide();
+
+                        //this.FillDataGridDetail(expMest, serviceClick);
+                        //this.FillDataToControl(expMest, serviceClick);
+                        //WaitingManager.Hide();
                     }
                 }
             }
             catch (Exception ex)
             {
                 WaitingManager.Hide();
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void FillDataGridDetailForNoneMediService(long id)
+        {
+            try
+            {
+                CommonParam param = new CommonParam();
+                HisSereNmseFilter filter = new HisSereNmseFilter();
+                filter.SERVICE_REQ_ID = id;
+                var sereNmseList = new BackendAdapter(param).Get<List<HIS_SERE_NMSE>>("api/HisSereNmse/Get", ApiConsumers.MosConsumer, filter, param);
+
+                if (sereNmseList != null && sereNmseList.Count > 0)
+                {
+                    var displayList = sereNmseList.Select(o => new ListMedicineADO
+                    {
+                        TDL_SERVICE_NAME = o.TDL_NONE_MEDI_SERVICE_NAME, 
+                        AMOUNT = o.AMOUNT,                                
+                        PRICE = o.PRICE,                                  
+                        VAT_RATIO = o.VAT_RATIO,                          
+                        SERVICE_UNIT_NAME = o.TDL_SERVICE_UNIT_NAME,      
+                        VIR_TOTAL_PRICE = o.VIR_TOTAL_PRICE,              
+                        VIR_TOTAL_PATIENT_PRICE = o.VIR_TOTAL_PATIENT_PRICE,                                      
+                    }).ToList();
+
+                    grdSereServServiceReq.DataSource = displayList;
+                }
+                else
+                {
+                    grdSereServServiceReq.DataSource = null;
+                }
+            }
+            catch (Exception ex)
+            {
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
@@ -1582,7 +1629,7 @@ namespace HIS.Desktop.Plugins.ServiceReqList
                 if (gridViewServiceReq.FocusedRowHandle >= 0)
                 {
                     var serviceClick = (ADO.ServiceReqADO)gridViewServiceReq.GetFocusedRow();
-                    Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData("serviceClick___", serviceClick));
+                    Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData("serviceClick___", serviceClick)); 
                     if (serviceClick != null && serviceClick.ID != 0)
                     {
                         this.currentServiceReq = serviceClick;
@@ -1698,7 +1745,7 @@ namespace HIS.Desktop.Plugins.ServiceReqList
                         {
                             try
                             {
-                                e.Value = Inventec.Common.DateTime.Convert.TimeNumberToDateString(data.USE_TIME.Value);
+                                e.Value = Inventec.Common.DateTime.Convert.TimeNumberToDateString(data.USE_TIME ?? 0);
                             }
                             catch (Exception ex)
                             {
@@ -3692,6 +3739,10 @@ namespace HIS.Desktop.Plugins.ServiceReqList
                 {
                     bool IsBreak = false;
                     var data = (ADO.ServiceReqADO)gridViewServiceReq.GetFocusedRow();
+                    if (data.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__OT)
+                    {
+                        return; 
+                    }
                     List<string> lstServiceName = new List<string>();
                     if (!CheckLoginAdmin.IsAdmin(this.loginName))
                     {
@@ -6430,8 +6481,93 @@ namespace HIS.Desktop.Plugins.ServiceReqList
 
                 menu.Items.Add(new DevExpress.Utils.Menu.DXMenuItem("Phiếu in tổng hợp", new EventHandler(btnPrintNew_Click)));
                 menu.Items.Add(new DevExpress.Utils.Menu.DXMenuItem("Phiếu hướng dẫn bệnh nhân thực hiện CLS", new EventHandler(onClickPhieuHuongDan)));
+                menu.Items.Add(new DevExpress.Utils.Menu.DXMenuItem("Phiếu in vỏ bệnh án", new EventHandler(OnClickPhieuInVoBenhAn)));
 
                 btnDropDownPrint.DropDownControl = menu;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void OnClickPhieuInVoBenhAn(object sender, EventArgs e)
+        {
+            try
+            {
+                var listData = (List<ADO.ServiceReqADO>)gridControlServiceReq.DataSource;
+                var selectedServiceReqs = listData.Where(o => o.isCheck).ToList();
+
+                if (selectedServiceReqs == null || selectedServiceReqs.Count == 0)
+                { 
+                    DevExpress.XtraEditors.XtraMessageBox.Show("Bạn chưa chọn dịch vụ", "Thông báo");
+                    return;
+                }
+
+                var serviceReqIdsWithoutServiceId = selectedServiceReqs.Where(o => o.SERVICE_ID == null).Select(o => o.ID).ToList();
+                if (serviceReqIdsWithoutServiceId.Any())
+                {
+                    CommonParam param = new CommonParam();
+                    HisSereServFilter sereServFilter = new HisSereServFilter { SERVICE_REQ_IDs = serviceReqIdsWithoutServiceId };
+                    var sereServData = new BackendAdapter(param).Get<List<HIS_SERE_SERV>>("api/HisSereServ/Get", ApiConsumers.MosConsumer, sereServFilter, param);
+
+                    if (sereServData != null && sereServData.Any())
+                    {
+                        foreach (var req in selectedServiceReqs) 
+                        {
+                            if (req.SERVICE_ID == null)
+                            {
+                                var sereServ = sereServData.FirstOrDefault(o => o.SERVICE_REQ_ID == req.ID);
+                                if (sereServ != null)
+                                {
+                                    req.SERVICE_ID = sereServ.SERVICE_ID;
+                                }
+                            }
+                        }
+                    }
+                    else
+                    {
+                        Inventec.Common.Logging.LogSystem.Warn("Không thể lấy được HIS_SERE_SERV cho các SERVICE_REQ_ID: " + string.Join(", ", serviceReqIdsWithoutServiceId));
+                    }
+                }
+
+                // Kiểm tra lại danh sách SERVICE_ID
+                var serviceIds = selectedServiceReqs.Select(o => o.SERVICE_ID).Distinct().ToList();
+                if (serviceIds == null || serviceIds.Count == 0 || serviceIds.Any(id => id == null))
+                {
+                    DevExpress.XtraEditors.XtraMessageBox.Show("Không tìm thấy thông tin dịch vụ", "Thông báo");
+                    return;
+                }
+
+                var services = BackendDataWorker.Get<HIS_SERVICE>().Where(s => serviceIds.Contains(s.ID)).ToList();
+                if (services == null || services.Count == 0)
+                {
+                    DevExpress.XtraEditors.XtraMessageBox.Show("Không tìm thấy thông tin dịch vụ", "Thông báo");
+                    return;
+                }
+
+                foreach (var serviceReq in selectedServiceReqs)
+                {
+                    var service = services.FirstOrDefault(s => s.ID == serviceReq.SERVICE_ID);
+                    if (service != null)
+                    {
+                        if (!string.IsNullOrEmpty(service.ATTACH_ASSIGN_PRINT_TYPE_CODE))
+                        {
+                            // Gọi thư viện FormMedicalRecord để mở phiếu
+                            HIS.Desktop.Plugins.Library.FormMedicalRecord.Base.EmrInputADO emrInputAdo = new Library.FormMedicalRecord.Base.EmrInputADO();
+                            emrInputAdo.TreatmentId = serviceReq.TREATMENT_ID;
+                            emrInputAdo.PatientId = serviceReq.TDL_PATIENT_ID;
+                            emrInputAdo.roomId = WorkPlace.WorkPlaceSDO.FirstOrDefault(o => o.RoomId == this.currentModule.RoomId)?.RoomId ?? 0;
+
+                            HIS.Desktop.Plugins.Library.FormMedicalRecord.MediRecordMenuPopupProcessor processor = new Library.FormMedicalRecord.MediRecordMenuPopupProcessor();
+                            processor.FormOpenEmr(0, emrInputAdo, service.ATTACH_ASSIGN_PRINT_TYPE_CODE);
+                        }
+                        else
+                        {
+                            DevExpress.XtraEditors.XtraMessageBox.Show($"Dịch vụ không được thiết lập mẫu in đính kèm", "Thông báo");
+                        }
+                    }
+                }
             }
             catch (Exception ex)
             {
@@ -6911,7 +7047,7 @@ namespace HIS.Desktop.Plugins.ServiceReqList
             }
         }
 
-        private void popupControlContainer1_CloseUp(object sender, EventArgs e)
+        private void popupControlContainer1_CloseUp(object sender, EventArgs e) 
         {
             try
             {

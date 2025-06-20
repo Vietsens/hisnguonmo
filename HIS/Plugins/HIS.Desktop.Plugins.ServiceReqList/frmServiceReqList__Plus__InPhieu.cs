@@ -17,13 +17,17 @@
  */
 using HIS.Desktop.ApiConsumer;
 using HIS.Desktop.LocalStorage.LocalData;
+using HIS.Desktop.Plugins.Library.PrintServiceReq;
 using HIS.Desktop.Plugins.ServiceReqList.ADO;
 using HIS.Desktop.Print;
+using Inventec.Common.Adapter;
 using Inventec.Core;
 using Inventec.Desktop.Common.LanguageManager;
 using Inventec.Desktop.Common.Message;
 using MOS.EFMODEL.DataModels;
 using MOS.Filter;
+using MOS.SDO;
+using MPS.ProcessorBase;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -200,6 +204,30 @@ namespace HIS.Desktop.Plugins.ServiceReqList
                 //giải phẫu bệnh lý
                 {
                     InPhieuYeuCauDichVu(MPS000167);
+                }
+                else if (this.currentServiceReqPrint.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__OT)
+                {
+                    CommonParam param = new CommonParam();
+
+                    HisServiceReqViewFilter reqFilter = new HisServiceReqViewFilter();
+                    reqFilter.ID = this.currentServiceReqPrint.ID;
+                    var serviceReq = new BackendAdapter(param).Get<List<V_HIS_SERVICE_REQ>>("api/HisServiceReq/GetView", ApiConsumers.MosConsumer, reqFilter, param).FirstOrDefault();
+
+                    HisTreatmentFilter treatFilter = new HisTreatmentFilter();
+                    treatFilter.ID = this.currentServiceReqPrint.TREATMENT_ID;
+                    var treatment = new BackendAdapter(param).Get<List<HIS_TREATMENT>>("api/HisTreatment/Get", ApiConsumers.MosConsumer, treatFilter, param).FirstOrDefault();
+
+                    HisSereNmseFilter sereNmseFilter = new HisSereNmseFilter();
+                    sereNmseFilter.SERVICE_REQ_ID = this.currentServiceReqPrint.ID;
+                    var sereNmseList = new BackendAdapter(param).Get<List<HIS_SERE_NMSE>>("api/HisSereNmse/Get", ApiConsumers.MosConsumer, sereNmseFilter, param);
+
+                    HisNoneMediServiceReqResultSDO hisNoneMediServiceReqResultSDO = new HisNoneMediServiceReqResultSDO(
+                        new List<V_HIS_SERVICE_REQ> { serviceReq },
+                        sereNmseList
+                    );
+
+                    var printProcessor = new PrintServiceReqProcessor(hisNoneMediServiceReqResultSDO, treatment, PrintConfig.PreviewType.Show);
+                    printProcessor.InPhieuChiDinhNgoaiKhamBenh(MPS000502);
                 }
             }
             catch (Exception ex)
