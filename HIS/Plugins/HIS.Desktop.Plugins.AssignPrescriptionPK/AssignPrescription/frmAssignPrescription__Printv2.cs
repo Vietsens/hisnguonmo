@@ -42,6 +42,8 @@ using Inventec.Desktop.Common.Message;
 using HIS.Desktop.Plugins.Library.EmrGenerate;
 using static MPS.ProcessorBase.PrintConfig;
 using HIS.Desktop.Plugins.AssignPrescriptionPK.Config;
+using HIS.Desktop.ADO;
+using DevExpress.XtraBars;
 
 namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
 {
@@ -55,6 +57,13 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                 Inventec.Common.Logging.LogSystem.Debug("InitMenuToButtonPrint .1");
                 HIS.UC.MenuPrint.MenuPrintProcessor menuPrintProcessor = new HIS.UC.MenuPrint.MenuPrintProcessor();
                 menuPrintADOs = new List<HIS.UC.MenuPrint.ADO.MenuPrintADO>();
+
+                //HIS.UC.MenuPrint.ADO.MenuPrintADO qr = new HIS.UC.MenuPrint.ADO.MenuPrintADO();
+                //qr.Caption = "tạo qr thanh toán (in phiếu thu tiền)";
+                //qr.EventHandler = new EventHandler(OnClickPrintQR);f
+                //qr.PrintTypeCode = "";
+                //qr.Tag = "";
+                //menuPrintADOs.Add(qr);
 
                 HIS.UC.MenuPrint.ADO.MenuPrintADO vttsd = new HIS.UC.MenuPrint.ADO.MenuPrintADO();
                 vttsd.Caption = "In tem vật tư tái sử dụng";
@@ -205,6 +214,118 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
+        //List<HIS_CONFIG> listConfig = new List<HIS_CONFIG>();
+        //private HIS_CONFIG selectedConfig = new HIS_CONFIG();
+        //private void OnClickPrintQR(object sender, EventArgs e)
+        //{
+        //    List<HIS.UC.MenuPrint.ADO.MenuPrintADO> menuPrintQR = new List<HIS.UC.MenuPrint.ADO.MenuPrintADO>(); ;
+        //    try
+        //    {
+        //        if (this.requestRoom.QR_CONFIG_JSON != null)
+        //        {
+        //            List<object> listArgs = new List<object>();
+        //            TransReqQRADO adoqr = new TransReqQRADO();
+        //            try
+        //            {
+        //                var json = Newtonsoft.Json.JsonConvert.DeserializeObject<BankInfo>(this.requestRoom.QR_CONFIG_JSON);
+        //                if (json != null)
+        //                {
+        //                    adoqr.ConfigValue = new HIS_CONFIG() { VALUE = json.VALUE, KEY = string.Format("HIS.Desktop.Plugins.PaymentQrCode.{0}Info", json.BANK) };
+        //                    adoqr.BankName = json.BANK;
+        //                }
+        //            }
+        //            catch (Exception ex)
+        //            {
+        //                Inventec.Common.Logging.LogSystem.Error(ex);
+        //                XtraMessageBox.Show("Định dạng Qr thiết lập trong kho phòng không hợp lệ");
+        //                return;
+        //            }
+        //            listArgs.Add(adoqr);
+        //            HIS.Desktop.ModuleExt.PluginInstanceBehavior.ShowModule("HIS.Desktop.Plugins.CreateTransReqQR", this.currentModule.RoomId, this.currentModule.RoomTypeId, listArgs);
+        //        }
+        //        else
+        //        {
+        //            if (listConfig != null)
+        //            {
+        //                if (listConfig.Count > 1)
+        //                {
+        //                    menuPrintQR.Clear();
+        //                    foreach (var item in listConfig)
+        //                    {
+        //                        string key = "";
+        //                        string value = item.KEY;
+        //                        int index = value.IndexOf("Info");
+        //                        if (index > 0)
+        //                        {
+        //                            var shotkey = value.Substring(0, index);
+        //                            string[] parts = shotkey.Split('.');
+        //                            if (parts.Length > 0)
+        //                            {
+        //                                key = parts[parts.Length - 1];
+        //                            }
+        //                        }
+        //                        else
+        //                        {
+        //                            key = item.KEY;
+        //                        }
+
+        //                        selectedConfig = item;
+        //                        List<object> listArgs = new List<object>();
+        //                        TransReqQRADO adoqr = new TransReqQRADO();
+        //                        adoqr.ConfigValue = selectedConfig;
+        //                        adoqr.BankName = key;
+        //                        listArgs.Add(adoqr);
+        //                        LogSystem.Debug("_____Load module : HIS.Desktop.Plugins.CreateTransReqQR ; KEY: " + selectedConfig.KEY);
+
+        //                        HIS.Desktop.ModuleExt.PluginInstanceBehavior.ShowModule("HIS.Desktop.Plugins.CreateTransReqQR", this.currentModule.RoomId, this.currentModule.RoomTypeId, listArgs);
+
+        //                        HIS.UC.MenuPrint.ADO.MenuPrintADO PrintQR = new HIS.UC.MenuPrint.ADO.MenuPrintADO();
+        //                        PrintQR.Caption = key;
+        //                        menuPrintQR.Add(PrintQR);
+        //                    }
+
+        //                }
+        //                else
+        //                {
+        //                    selectedConfig = listConfig[0];
+        //                    List<object> listArgs = new List<object>();
+        //                    TransReqQRADO adoqr = new TransReqQRADO();
+        //                    adoqr.ConfigValue = selectedConfig;
+
+        //                    string key = "";
+        //                    string value = selectedConfig.KEY;
+        //                    int index = value.IndexOf("Info");
+        //                    if (index > 0)
+        //                    {
+        //                        var shotkey = value.Substring(0, index);
+        //                        string[] parts = shotkey.Split('.');
+        //                        if (parts.Length > 0)
+        //                        {
+        //                            key = parts[parts.Length - 1];
+        //                        }
+        //                    }
+        //                    else
+        //                    {
+        //                        key = selectedConfig.KEY;
+        //                    }
+
+        //                    adoqr.BankName = key;
+        //                    listArgs.Add(adoqr);
+        //                    LogSystem.Debug("_____Load module : HIS.Desktop.Plugins.CreateTransReqQR " + selectedConfig.KEY);
+        //                    HIS.Desktop.ModuleExt.PluginInstanceBehavior.ShowModule("HIS.Desktop.Plugins.CreateTransReqQR", this.currentModule.RoomId, this.currentModule.RoomTypeId, listArgs);
+
+
+        //                }
+
+        //            }
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+
+        //        throw;
+        //    }
+        //}
 
         /// <summary>
         /// Hàm khi báo cho sự kiện nhấn nút in động
@@ -811,5 +932,11 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
             return result;
         }
 
+    }
+    public class BankInfo
+    {
+        public BankInfo() { }
+        public string BANK { get; set; }
+        public string VALUE { get; set; }
     }
 }

@@ -94,6 +94,10 @@
     <Reference Include="Inventec.Common.Logging">
       <HintPath>..\..\..\..\lib\Inventec.Common\Inventec.Common.Logging\Inventec.Common.Logging.dll</HintPath>
     </Reference>
+    <Reference Include="Inventec.Common.TypeConvert, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\lib\Inventec.Common\Inventec.Common.TypeConvert\Inventec.Common.TypeConvert.dll</HintPath>
+    </Reference>
     <Reference Include="Inventec.Common.WebApiClient">
       <HintPath>..\..\..\..\lib\Inventec.Common\Inventec.Common.WebApiClient\Inventec.Common.WebApiClient.dll</HintPath>
     </Reference>

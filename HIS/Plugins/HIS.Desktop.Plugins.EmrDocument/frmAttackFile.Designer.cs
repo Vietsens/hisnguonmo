@@ -45,6 +45,7 @@ namespace HIS.Desktop.Plugins.EmrDocument
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmAttackFile));
             DevExpress.Utils.SuperToolTip superToolTip2 = new DevExpress.Utils.SuperToolTip();
             DevExpress.Utils.ToolTipItem toolTipItem2 = new DevExpress.Utils.ToolTipItem();
@@ -63,7 +64,7 @@ namespace HIS.Desktop.Plugins.EmrDocument
             this.btnRotateRight = new DevExpress.XtraEditors.SimpleButton();
             this.btnRotateLeft = new DevExpress.XtraEditors.SimpleButton();
             this.chkPrintDupicate = new DevExpress.XtraEditors.CheckEdit();
-            this.barManager1 = new DevExpress.XtraBars.BarManager();
+            this.barManager1 = new DevExpress.XtraBars.BarManager(this.components);
             this.bar1 = new DevExpress.XtraBars.Bar();
             this.bbtnAttackFile = new DevExpress.XtraBars.BarButtonItem();
             this.barDockControlTop = new DevExpress.XtraBars.BarDockControl();
@@ -107,6 +108,8 @@ namespace HIS.Desktop.Plugins.EmrDocument
             this.emptySpaceItem6 = new DevExpress.XtraLayout.EmptySpaceItem();
             this.emptySpaceItem7 = new DevExpress.XtraLayout.EmptySpaceItem();
             this.layoutControlItem10 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.pteAnhChupFileDinhKem2 = new DevExpress.XtraEditors.PictureEdit();
+            this.imageview2 = new DevExpress.XtraLayout.LayoutControlItem();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
             this.layoutControl1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.chkPrintDupicate.Properties)).BeginInit();
@@ -141,6 +144,8 @@ namespace HIS.Desktop.Plugins.EmrDocument
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem6)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem7)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem10)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pteAnhChupFileDinhKem2.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.imageview2)).BeginInit();
             this.SuspendLayout();
             // 
             // btnOpenFileInComputer
@@ -159,6 +164,7 @@ namespace HIS.Desktop.Plugins.EmrDocument
             // 
             // layoutControl1
             // 
+            this.layoutControl1.Controls.Add(this.pteAnhChupFileDinhKem2);
             this.layoutControl1.Controls.Add(this.btnRotateRight);
             this.layoutControl1.Controls.Add(this.btnRotateLeft);
             this.layoutControl1.Controls.Add(this.chkPrintDupicate);
@@ -295,12 +301,12 @@ namespace HIS.Desktop.Plugins.EmrDocument
             // pdfViewer1
             // 
             this.pdfViewer1.ImeMode = System.Windows.Forms.ImeMode.Off;
-            this.pdfViewer1.Location = new System.Drawing.Point(318, 208);
+            this.pdfViewer1.Location = new System.Drawing.Point(391, 208);
             this.pdfViewer1.Name = "pdfViewer1";
             this.pdfViewer1.NavigationPaneInitialVisibility = DevExpress.XtraPdfViewer.PdfNavigationPaneVisibility.Hidden;
             this.pdfViewer1.ReadOnly = true;
             this.pdfViewer1.ShowPrintStatusDialog = false;
-            this.pdfViewer1.Size = new System.Drawing.Size(279, 272);
+            this.pdfViewer1.Size = new System.Drawing.Size(206, 272);
             this.pdfViewer1.TabIndex = 0;
             this.pdfViewer1.TabStop = false;
             this.pdfViewer1.Visible = false;
@@ -445,12 +451,12 @@ namespace HIS.Desktop.Plugins.EmrDocument
             // 
             // pteAnhChupFileDinhKem
             // 
-            this.pteAnhChupFileDinhKem.Location = new System.Drawing.Point(12, 208);
+            this.pteAnhChupFileDinhKem.Location = new System.Drawing.Point(201, 208);
             this.pteAnhChupFileDinhKem.Name = "pteAnhChupFileDinhKem";
             this.pteAnhChupFileDinhKem.Properties.NullText = "File ảnh đính kèm";
             this.pteAnhChupFileDinhKem.Properties.ShowCameraMenuItem = DevExpress.XtraEditors.Controls.CameraMenuItemVisibility.Auto;
             this.pteAnhChupFileDinhKem.Properties.SizeMode = DevExpress.XtraEditors.Controls.PictureSizeMode.Stretch;
-            this.pteAnhChupFileDinhKem.Size = new System.Drawing.Size(302, 272);
+            this.pteAnhChupFileDinhKem.Size = new System.Drawing.Size(186, 272);
             this.pteAnhChupFileDinhKem.StyleController = this.layoutControl1;
             this.pteAnhChupFileDinhKem.TabIndex = 3;
             this.pteAnhChupFileDinhKem.ImageChanged += new System.EventHandler(this.pteAnhChupFileDinhKem_ImageChanged);
@@ -494,7 +500,8 @@ namespace HIS.Desktop.Plugins.EmrDocument
             this.layoutControlItem9,
             this.emptySpaceItem6,
             this.emptySpaceItem7,
-            this.layoutControlItem10});
+            this.layoutControlItem10,
+            this.imageview2});
             this.layoutControlGroup1.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup1.Name = "layoutControlGroup1";
             this.layoutControlGroup1.Size = new System.Drawing.Size(609, 578);
@@ -551,9 +558,9 @@ namespace HIS.Desktop.Plugins.EmrDocument
             // imageview
             // 
             this.imageview.Control = this.pteAnhChupFileDinhKem;
-            this.imageview.Location = new System.Drawing.Point(0, 196);
+            this.imageview.Location = new System.Drawing.Point(189, 196);
             this.imageview.Name = "imageview";
-            this.imageview.Size = new System.Drawing.Size(306, 276);
+            this.imageview.Size = new System.Drawing.Size(190, 276);
             this.imageview.TextSize = new System.Drawing.Size(0, 0);
             this.imageview.TextVisible = false;
             // 
@@ -625,9 +632,9 @@ namespace HIS.Desktop.Plugins.EmrDocument
             // pdfview
             // 
             this.pdfview.Control = this.pdfViewer1;
-            this.pdfview.Location = new System.Drawing.Point(306, 196);
+            this.pdfview.Location = new System.Drawing.Point(379, 196);
             this.pdfview.Name = "pdfview";
-            this.pdfview.Size = new System.Drawing.Size(283, 276);
+            this.pdfview.Size = new System.Drawing.Size(210, 276);
             this.pdfview.TextSize = new System.Drawing.Size(0, 0);
             this.pdfview.TextVisible = false;
             // 
@@ -700,6 +707,26 @@ namespace HIS.Desktop.Plugins.EmrDocument
             this.layoutControlItem10.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem10.TextVisible = false;
             // 
+            // pteAnhChupFileDinhKem2
+            // 
+            this.pteAnhChupFileDinhKem2.Location = new System.Drawing.Point(12, 208);
+            this.pteAnhChupFileDinhKem2.MenuManager = this.barManager1;
+            this.pteAnhChupFileDinhKem2.Name = "pteAnhChupFileDinhKem2";
+            this.pteAnhChupFileDinhKem2.Properties.ShowCameraMenuItem = DevExpress.XtraEditors.Controls.CameraMenuItemVisibility.Auto;
+            this.pteAnhChupFileDinhKem2.Size = new System.Drawing.Size(185, 272);
+            this.pteAnhChupFileDinhKem2.StyleController = this.layoutControl1;
+            this.pteAnhChupFileDinhKem2.TabIndex = 13;
+            // 
+            // imageview2
+            // 
+            this.imageview2.Control = this.pteAnhChupFileDinhKem2;
+            this.imageview2.Location = new System.Drawing.Point(0, 196);
+            this.imageview2.Name = "imageview2";
+            this.imageview2.Size = new System.Drawing.Size(189, 276);
+            this.imageview2.TextSize = new System.Drawing.Size(0, 0);
+            this.imageview2.TextVisible = false;
+            this.imageview2.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+            // 
             // frmAttackFile
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -748,6 +775,8 @@ namespace HIS.Desktop.Plugins.EmrDocument
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem6)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem7)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem10)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pteAnhChupFileDinhKem2.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.imageview2)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -806,5 +835,7 @@ namespace HIS.Desktop.Plugins.EmrDocument
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem9;
         private DevExpress.XtraLayout.EmptySpaceItem emptySpaceItem7;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem10;
+        private DevExpress.XtraEditors.PictureEdit pteAnhChupFileDinhKem2;
+        private DevExpress.XtraLayout.LayoutControlItem imageview2;
     }
 }

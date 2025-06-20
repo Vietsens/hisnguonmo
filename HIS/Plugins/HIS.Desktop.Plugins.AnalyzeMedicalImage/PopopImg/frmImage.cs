@@ -16,8 +16,8 @@ namespace HIS.Desktop.Plugins.AnalyzeMedicalImage.PopopImg
 {
     public partial class frmImage : FormBase
     {
-        List<SereServFileADO> sereServFileADOs = new List<SereServFileADO>();
-        public frmImage(List<SereServFileADO> sereServFileADO)
+        SereServFileADO sereServFileADOs = new SereServFileADO();
+        public frmImage(SereServFileADO sereServFileADO)
         {
             InitializeComponent();
             try
@@ -47,64 +47,57 @@ namespace HIS.Desktop.Plugins.AnalyzeMedicalImage.PopopImg
             try
             {
                 string[] validExtensions = new[] { ".png", ".jpg", ".jpeg" };
-                foreach (var item in sereServFileADOs)
+                string ext = Path.GetExtension(this.sereServFileADOs.URL)?.ToLower();
+                if (!validExtensions.Contains(ext))
                 {
-                    if (item.IsFss)
-                    {
-                        string ext = Path.GetExtension(item.URL)?.ToLower();
-                        if (!validExtensions.Contains(ext))
-                        {
-                            
-                            if (item.FileContent != null )
-                            {
-                                this.layoutControlItem2.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
-                                this.layoutControlItem1.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
-                                this.layoutControlItem3.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
-                                richEditControl.RtfText = Utility.TextLibHelper.BytesToStringConverted(item.FileContent);
-                            }
-                            else
-                            {
-                                this.layoutControlItem2.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
-                                this.layoutControlItem1.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
-                                this.layoutControlItem3.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
 
-                                Stream stream = Inventec.Fss.Client.FileDownload.GetFile(item.URL);
-                                stream.Position = 0;
-                                pdfViewer1.LoadDocument(stream);
-                            }
+                    if (this.sereServFileADOs.Content != null )
+                    {
+                        this.layoutControlItem2.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+                        this.layoutControlItem1.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+                        this.wordview.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
+
+                        if (this.sereServFileADOs.FileContent != null)
+                        {
+                            richEditControl.RtfText = Utility.TextLibHelper.BytesToStringConverted(this.sereServFileADOs.FileContent);
                         }
                         else
                         {
-                            this.layoutControlItem2.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
-                            this.layoutControlItem1.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
-                            this.layoutControlItem3.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
-
-                            var stream = Inventec.Fss.Client.FileDownload.GetFile(item.URL);
-                            pteAnhChupFileDinhKem.Image = System.Drawing.Image.FromStream(stream);
-                            pteAnhChupFileDinhKem.Properties.SizeMode = DevExpress.XtraEditors.Controls.PictureSizeMode.Stretch;
-                            stream.Close();
+                            string tempDescription = "";
+                            if (this.sereServFileADOs.Content.Trim().Contains("<br/>"))
+                            {
+                                tempDescription = this.sereServFileADOs.Content.Replace("<br/>", "\r\n");
+                                richEditControl.Text = tempDescription;
+                            }
+                            else
+                            {
+                                richEditControl.Text = this.sereServFileADOs.Content;
+                            }
                         }
-                        Inventec.Desktop.Common.Message.WaitingManager.Hide();
                     }
-                }
-            }
-            catch (Exception ex)
-            {
-                Inventec.Common.Logging.LogSystem.Error(ex);
-            }
-        }
-
-        private void frmImage_FormClosing(object sender, FormClosingEventArgs e)
-        {
-            try
-            {
-                foreach (var item in sereServFileADOs)
-                {
-                    if (item.IsFss)
+                    else
                     {
-                        item.IsFss = false;
+                        this.layoutControlItem2.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
+                        this.layoutControlItem1.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+                        this.wordview.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+
+                        Stream stream = Inventec.Fss.Client.FileDownload.GetFile(this.sereServFileADOs.URL);
+                        stream.Position = 0;
+                        pdfViewer1.LoadDocument(stream);
                     }
                 }
+                else
+                {
+                    this.layoutControlItem2.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+                    this.layoutControlItem1.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
+                    this.wordview.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+
+                    var stream = Inventec.Fss.Client.FileDownload.GetFile(this.sereServFileADOs.URL);
+                    pteAnhChupFileDinhKem.Image = System.Drawing.Image.FromStream(stream);
+                    pteAnhChupFileDinhKem.Properties.SizeMode = DevExpress.XtraEditors.Controls.PictureSizeMode.Stretch;
+                    stream.Close();
+                }
+                Inventec.Desktop.Common.Message.WaitingManager.Hide();
             }
             catch (Exception ex)
             {

@@ -499,6 +499,20 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                 bool isHasTreatmentFinishChecked = (treatUC != null && treatUC.IsAutoTreatmentFinish);
                 if (isHasTreatmentFinishChecked && treatUC != null)
                 {
+                    var bhyt = BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_PATIENT_TYPE>()
+                        .FirstOrDefault(o => o.PATIENT_TYPE_CODE == Config.HisConfigCFG.PatientTypeCode__BHYT);
+                    if (HisConfigCFG.IsCheckServiceFollowWhenOut == "1" && this.currentTreatment.TDL_PATIENT_TYPE_ID == bhyt.ID)
+                    {
+                           
+                        CommonParam param = new CommonParam();  
+                        bool checkFollow = new BackendAdapter(param).Post<bool>(RequestUriStore.HIS_TREATHER__CHECKSERVICE_fOLLOW, ApiConsumers.MosConsumer, this.treatmentId, param);
+                        if (!checkFollow)
+                        {
+                            var result = XtraMessageBox.Show( param.GetMessage() + ". Bạn có muốn tiếp tục?", "Thông báo", MessageBoxButtons.YesNo);
+                            if (result == DialogResult.No)
+                                return;
+                        }
+                    }
                     if (subIcd != null && !string.IsNullOrEmpty(subIcd.ICD_SUB_CODE))
                     {
                         var subIcdList = subIcd.ICD_SUB_CODE.Split(new string[] { ";" }, StringSplitOptions.RemoveEmptyEntries).ToList();
