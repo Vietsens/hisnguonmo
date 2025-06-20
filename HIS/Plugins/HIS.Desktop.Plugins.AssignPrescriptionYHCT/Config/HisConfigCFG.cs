@@ -95,6 +95,8 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.Config
         private const string KEY__InstructionTimeServiceMustBeGreaterThanStartTimeExam = "HIS.Desktop.Plugins.InstructionTimeServiceMustBeGreaterThanStartTimeExam";
         private const string KEY_ASSIGN_SERVICE_SIMULTANEITY_OPTION = "MOS.HIS_SERVICE_REQ.ASSIGN_SERVICE_SIMULTANEITY_OPTION";
         private const string KEY_IsCheckSubIcdExceedLimit = "HIS.Desktop.Plugins.IsCheckSubIcdExceedLimit";
+        private const string CONFIG_KEY__IS_CHECK_SERVICE_FOLLOW_WHEN_OUT = "HIS.Desktop.Plugins.IsCheckServiceFollowWhenOut";
+        internal static string IsCheckServiceFollowWhenOut;
         internal static string IsCheckSubIcdExceedLimit;
         internal static string ASSIGN_SERVICE_SIMULTANEITY_OPTION;
         internal static string InstructionTimeServiceMustBeGreaterThanStartTimeExam;
@@ -301,6 +303,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.Config
                 DrugStoreComboboxOption = GetValue(CONFIG_KEY__DRUG_STORE_COMBOBOX_OPTION) == GlobalVariables.CommonStringTrue;
                 AcinInteractiveOption = GetValue(CONFIG_KEY__ACIN_INTERACTIVE_OPTION);
                 IsAutoCreateSaleExpMest = GetValue(CONFIG_KEY__IS_AUTO_CREATE_SALE_EXP_MEST) == GlobalVariables.CommonStringTrue;
+                IsCheckServiceFollowWhenOut = GetValue(CONFIG_KEY__IS_CHECK_SERVICE_FOLLOW_WHEN_OUT);
             }
             catch (Exception ex)
             {

@@ -63,19 +63,32 @@
     <Reference Include="HIS.Desktop.ModuleExt">
       <HintPath>..\..\..\..\lib\HIS\HIS.Desktop.ModuleExt\HIS.Desktop.ModuleExt.dll</HintPath>
     </Reference>
+    <Reference Include="HIS.Desktop.Plugins.CreateTransReqQR">
+      <HintPath>..\..\..\..\histest\x64\Plugins\Module\HIS.Desktop.Plugins.CreateTransReqQR.dll</HintPath>
+    </Reference>
     <Reference Include="HIS.Desktop.Plugins.Library.CheckIcd, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\HIS.Desktop.Plugins.Library.CheckIcd.dll</HintPath>
     </Reference>
+    <Reference Include="HIS.Desktop.Plugins.Library.FormMedicalRecord">
+      <HintPath>..\HIS.Desktop.Plugins.Library.FormMedicalRecord\bin\Debug\HIS.Desktop.Plugins.Library.FormMedicalRecord.dll</HintPath>
+    </Reference>
     <Reference Include="HIS.Desktop.Plugins.Library.PrintBordereau">
       <HintPath>..\..\..\..\LIB\HIS\HIS.Desktop.Plugins.Library.PrintBordereau\HIS.Desktop.Plugins.Library.PrintBordereau.dll</HintPath>
+    </Reference>
+    <Reference Include="HIS.Desktop.Plugins.Library.PrintServiceReq">
+      <HintPath>..\HIS.Desktop.Plugins.Library.PrintServiceReq\bin\Debug\HIS.Desktop.Plugins.Library.PrintServiceReq.dll</HintPath>
+    </Reference>
+    <Reference Include="HIS.Desktop.Plugins.Library.PrintServiceReqTreatment">
+      <HintPath>..\HIS.Desktop.Plugins.Library.PrintServiceReqTreatment\bin\Debug\HIS.Desktop.Plugins.Library.PrintServiceReqTreatment.dll</HintPath>
     </Reference>
     <Reference Include="HIS.Desktop.Plugins.Library.PrintTreatmentFinish, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\LIB\HIS\HIS.Desktop.Plugins.Library.PrintTreatmentFinish\HIS.Desktop.Plugins.Library.PrintTreatmentFinish.dll</HintPath>
     </Reference>
-    <Reference Include="HIS.Desktop.Print">
-      <HintPath>..\..\..\..\lib\HIS\HIS.Desktop.Print\HIS.Desktop.Print.dll</HintPath>
+    <Reference Include="HIS.Desktop.Print, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\HIS.Desktop.Print\bin\Debug\HIS.Desktop.Print.dll</HintPath>
     </Reference>
     <Reference Include="HIS.Desktop.Utility, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -89,8 +102,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\lib\HIS\His.UC.Icd\HIS.UC.Icd.dll</HintPath>
     </Reference>
-    <Reference Include="HIS.UC.MenuPrint">
-      <HintPath>..\..\..\..\LIB\HIS\HIS.UC.MenuPrint\HIS.UC.MenuPrint.dll</HintPath>
+    <Reference Include="HIS.UC.MenuPrint, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\HIS.UC.MenuPrint.dll</HintPath>
     </Reference>
     <Reference Include="HIS.UC.PatientSelect, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -149,6 +163,10 @@
     </Reference>
     <Reference Include="Inventec.Common.RichEditor">
       <HintPath>..\..\..\..\LIB\Inventec.Common\Inventec.Common.RichEditor\Inventec.Common.RichEditor.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Common.SignLibrary, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\Inventec.Common.SignLibrary.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Common.ThreadCustom, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -216,7 +234,7 @@
     </Reference>
     <Reference Include="MOS.EFMODEL, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\lib\MOS\MOS.EFMODEL.dll</HintPath>
+      <HintPath>..\..\..\..\histest\x64\MOS.EFMODEL.dll</HintPath>
     </Reference>
     <Reference Include="MOS.Filter, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -311,6 +329,7 @@
   <ItemGroup>
     <Compile Include="ADO\DMediStock1ADO.cs" />
     <Compile Include="ADO\ICDADO.cs" />
+    <Compile Include="ADO\LoaiPhieuInADO.cs" />
     <Compile Include="ADO\StringUtil.cs" />
     <Compile Include="ADO\TrackingADO.cs" />
     <Compile Include="AssignPrescription\frmAssignPrescription__Dispose.cs">

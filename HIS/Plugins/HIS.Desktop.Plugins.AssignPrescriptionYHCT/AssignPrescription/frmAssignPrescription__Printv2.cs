@@ -31,17 +31,25 @@ using System.Linq;
 using HIS.Desktop.LocalStorage.LocalData;
 using HIS.Desktop.Plugins.AssignPrescriptionYHCT.Config;
 using MPS.ProcessorBase;
+using HIS.Desktop.Plugins.Library.PrintBordereau.ADO;
+using HIS.Desktop.Plugins.Library.PrintBordereau.Base;
+using HIS.Desktop.Plugins.Library.PrintBordereau;
+using Inventec.Core;
+using Inventec.Desktop.Common.Message;
+using Inventec.Common.SignLibrary.DTO;
 
 namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
 {
     public partial class frmAssignPrescription : HIS.Desktop.Utility.FormBase
     {
+        Library.PrintServiceReq.PrintServiceReqProcessor PrintServiceReqProcessor;
+        Dictionary<long, List<DocumentSignedUpdateIGSysResultDTO>> dSignedList = new Dictionary<long, List<DocumentSignedUpdateIGSysResultDTO>>();
         private void InitMenuToButtonPrint()
         {
             try
             {
                 HIS.UC.MenuPrint.MenuPrintProcessor menuPrintProcessor = new HIS.UC.MenuPrint.MenuPrintProcessor();
-                List<HIS.UC.MenuPrint.ADO.MenuPrintADO> menuPrintADOs = new List<HIS.UC.MenuPrint.ADO.MenuPrintADO>();
+                List<HIS.UC.MenuPrint.ADO.MenuPrintADO> menuPrintADOs = new List<HIS.UC.MenuPrint.ADO.MenuPrintADO>();              
 
                 HIS.UC.MenuPrint.ADO.MenuPrintADO menuPrintADO__ThuocTongHop = new HIS.UC.MenuPrint.ADO.MenuPrintADO();
                 menuPrintADO__ThuocTongHop.EventHandler = new EventHandler(OnClickInChiDinhDichVu);
@@ -413,6 +421,131 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
+        }
+
+        private void InPhieuYeuCauDichVu(bool isSaveAndShow, MPS.ProcessorBase.PrintConfig.PreviewType? previewType = null)
+        {
+            try
+            {
+                string configValue = HisConfigCFG.AllowSignaturePrintModules;
+
+                if (!string.IsNullOrWhiteSpace(configValue))
+                {
+                    var allowedModules = configValue
+                        .Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries)
+                        .Select(x => x.Trim())
+                        .ToList();
+
+                    if (allowedModules.Contains("HIS.Desktop.Plugins.AssignService"))
+                    {
+                        previewType = MPS.ProcessorBase.PrintConfig.PreviewType.EmrSignAndPrintPreview;
+                    }
+                    else
+                    {
+                        previewType = MPS.ProcessorBase.PrintConfig.PreviewType.EmrSignNow;
+                    }
+                }
+                if (serviceReqComboResultSDO != null)
+                {
+                    CommonParam param = new CommonParam();
+                    List<V_HIS_BED_LOG> bedLogs = new List<V_HIS_BED_LOG>();
+                    // get bedLog
+                    if (this.currentTreatmentWithPatientType != null && this.serviceReqComboResultSDO != null && this.serviceReqComboResultSDO.ServiceReqs != null && this.serviceReqComboResultSDO.ServiceReqs.Count > 0)
+                    {
+                        MOS.Filter.HisBedLogViewFilter bedLogViewFilter = new MOS.Filter.HisBedLogViewFilter();
+                        bedLogViewFilter.TREATMENT_ID = currentTreatmentWithPatientType.ID;
+                        bedLogViewFilter.DEPARTMENT_IDs = this.serviceReqComboResultSDO.ServiceReqs.Select(o => o.REQUEST_DEPARTMENT_ID).Distinct().ToList();
+                        bedLogs = new Inventec.Common.Adapter.BackendAdapter(param).Get<List<V_HIS_BED_LOG>>("api/HisBedLog/GetView", ApiConsumer.ApiConsumers.MosConsumer, bedLogViewFilter, param);
+                    }
+                    var PrintServiceReqProcessor = previewType != null ? new Library.PrintServiceReq.PrintServiceReqProcessor(serviceReqComboResultSDO, currentTreatmentWithPatientType, bedLogs, (currentModule != null ? currentModule.RoomId : 0), previewType.Value, GetDocmentSigned)
+                        : new Library.PrintServiceReq.PrintServiceReqProcessor(serviceReqComboResultSDO, currentTreatmentWithPatientType, bedLogs, (currentModule != null ? currentModule.RoomId : 0));
+                    PrintServiceReqProcessor.SaveNPrint(isSaveAndShow);
+
+                    if (this.serviceReqComboResultSDO.SereServs != null)
+                    {
+                        ProcessOpenVoBenhAn(serviceReqComboResultSDO.SereServs);
+                        Inventec.Common.Logging.LogSystem.Debug("PRINT NOW serviceReqComboResultSDO.SereServs: " + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => this.serviceReqComboResultSDO.SereServs), this.serviceReqComboResultSDO.SereServs));
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+                WaitingManager.Hide();
+            }
+        }
+        private void InPhieuHuoangDanBenhNhan(bool isSaveAndShow)
+        {
+            try
+            {
+
+                var PrintServiceReqProcessor = new HIS.Desktop.Plugins.Library.PrintServiceReqTreatment.PrintServiceReqTreatmentProcessor(this.serviceReqComboResultSDO.ServiceReqs, currentModule != null ? this.currentModule.RoomId : 0);
+                PrintServiceReqProcessor.DlgSendResultSigned = GetDocmentSigned;
+                PrintServiceReqProcessor.Print("Mps000276", true);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+                WaitingManager.Hide();
+            }
+        }
+        private void InYeuCauThanhToanQR(bool printTH, bool isSign, bool isPrintPreview)
+        {
+            try
+            {
+
+                if (serviceReqComboResultSDO != null || IsActionButtonPrintBill)
+                {
+                    BordereauInitData data = new BordereauInitData();
+                    HIS.Desktop.Plugins.Library.PrintBordereau.PrintBordereauProcessor processor = new PrintBordereauProcessor(this.currentModule.RoomId, this.currentModule.RoomTypeId, treatmentId, patientPrint.ID, null, null, GetDocmentSigned);
+                    if (IsActionButtonPrintBill)
+                        processor.IsActionButtonPrintBill = true;
+                    if (printTH && !isSign)
+                    {
+                        Inventec.Common.Logging.LogSystem.Error("Mps000446_____ PRINT_NOW");
+                        processor.Print("Mps000446", PrintOption.Value.PRINT_NOW, null);
+                    }
+                    else if (printTH && isSign)
+                    {
+                        Inventec.Common.Logging.LogSystem.Error("Mps000446_____ PRINT_NOW_AND_EMR_SIGN_NOW");
+                        processor.Print("Mps000446", PrintOption.Value.PRINT_NOW_AND_EMR_SIGN_NOW, null);
+                    }
+                    else if (isPrintPreview && isSign)
+                    {
+                        Inventec.Common.Logging.LogSystem.Error("Mps000446_____ EMR_SIGN_AND_PRINT_PREVIEW");
+                        processor.Print("Mps000446", PrintOption.Value.EMR_SIGN_AND_PRINT_PREVIEW, null);
+                    }
+                    else if (!printTH && isSign)
+                    {
+                        Inventec.Common.Logging.LogSystem.Error("Mps000446_____ EMR_SIGN_NOW");
+                        processor.Print("Mps000446", PrintOption.Value.EMR_SIGN_NOW, null);
+                    }
+                    else if (isPrintPreview)
+                    {
+                        Inventec.Common.Logging.LogSystem.Error("Mps000446_____ NULL");
+                        processor.Print("Mps000446", null, null);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void GetDocmentSigned(DocumentSignedUpdateIGSysResultDTO dTO)
+        {
+            try
+            {
+                if (!dSignedList.ContainsKey(this.serviceReqComboResultSDO.ServiceReqs[0].TREATMENT_ID))
+                    dSignedList[this.serviceReqComboResultSDO.ServiceReqs[0].TREATMENT_ID] = new List<DocumentSignedUpdateIGSysResultDTO>();
+                dSignedList[this.serviceReqComboResultSDO.ServiceReqs[0].TREATMENT_ID].Add(dTO);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+
         }
     }
 }

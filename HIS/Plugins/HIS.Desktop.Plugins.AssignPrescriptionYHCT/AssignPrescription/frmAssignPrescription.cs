@@ -66,6 +66,10 @@ using System.Windows.Forms;
 using Inventec.Common.Controls.EditorLoader;
 using HIS.Desktop.LocalStorage.HisConfig;
 using DevExpress.XtraBars.Controls;
+using DevExpress.XtraBars;
+using HIS.Desktop.Plugins.Library.PrintBordereau.ADO;
+using HIS.Desktop.Plugins.Library.PrintBordereau.Base;
+using HIS.Desktop.Plugins.Library.PrintBordereau;
 
 namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
 {
@@ -112,18 +116,21 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
         internal MOS.EFMODEL.DataModels.V_HIS_PATIENT_TYPE_ALTER currentHisPatientTypeAlter = null;
         List<MOS.EFMODEL.DataModels.HIS_PATIENT_TYPE> currentPatientTypeWithPatientTypeAlter = null;
         List<MOS.EFMODEL.DataModels.HIS_PATIENT_TYPE> currentPatientTypes = null;
+        List<LoaiPhieuInADO> lstLoaiPhieu;
+        List<V_HIS_SERVICE> lstService = null;
+        V_HIS_PATIENT patientPrint;
         HIS_MEDICINE_TYPE_TUT medicineTypeTutSelected;
         MOS.EFMODEL.DataModels.V_HIS_ROOM requestRoom;
-
+        public HIS_ROOM hisRoom { get; set; }
         internal List<MediMatyTypeADO> mediMatyTypeADOs;
         internal MediMatyTypeADO currentMedicineTypeADOForEdit;
-
+        private bool IsActionButtonPrintBill = false;
         internal List<DMediStock1ADO> mediStockD1ADOs;
         internal List<V_HIS_MEDICINE_TYPE> currentMedicineTypes;
         List<V_HIS_MATERIAL_TYPE> currentMaterialTypes;
 
         internal HIS_ICD icdChoose { get; set; }
-
+        HisServiceReqListResultSDO serviceReqComboResultSDO { get; set; }
         List<MOS.EFMODEL.DataModels.V_HIS_SERE_SERV_1> sereServWithTreatment = new List<MOS.EFMODEL.DataModels.V_HIS_SERE_SERV_1>();
 
         public Inventec.Desktop.Common.Modules.Module currentModule;
@@ -518,7 +525,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
                     && !GlobalStore.IsCabinet) ? DevExpress.XtraLayout.Utils.LayoutVisibility.Always : DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
 
                 this.isNotLoadWhileChangeInstructionTimeInFirst = false;
-                
+                CheckEnableBtnQR();
                 WaitingManager.Hide();
             }
             catch (Exception ex)
@@ -770,7 +777,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
-
+       
         private void btnSaveAndPrint_Click(object sender, EventArgs e)
         {
             try
@@ -4296,9 +4303,205 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
-
         }
 
+        List<HIS_CONFIG> listConfig = new List<HIS_CONFIG>();
+        private void CheckEnableBtnQR()
+        {
+            try
+            {
+                listConfig = BackendDataWorker.Get<HIS_CONFIG>().Where(o => o.KEY.StartsWith("HIS.Desktop.Plugins.PaymentQrCode") && !string.IsNullOrEmpty(o.VALUE)).ToList();
+
+                btnQRPay.Enabled = true;
+            }
+            catch (Exception ex)
+            {
+                LogSystem.Error(ex);
+            }
+        }
+        private void IN_QR()
+        {
+            try
+            {
+
+                if (this.lstLoaiPhieu != null && this.lstLoaiPhieu.Count > 0)
+                {
+                    var checkHDBN = this.lstLoaiPhieu.FirstOrDefault(o => o.Check == true && o.ID == "gridView7_2");
+
+                    var checkYCDV = this.lstLoaiPhieu.FirstOrDefault(o => o.Check == true && o.ID == "gridView7_1");
+
+                    var checkQR = this.lstLoaiPhieu.FirstOrDefault(o => o.Check == true && o.ID == "gridView7_3");
+
+                    if (checkHDBN != null)
+                    {
+                        InPhieuHuoangDanBenhNhan(true);
+                    }
+
+                    if (checkYCDV != null)
+                    {
+                        InPhieuYeuCauDichVu(true);
+                    }
+
+                    if (checkQR != null)
+                    {
+                        InYeuCauThanhToanQR(false, false, true);
+                    }
+                }
+
+
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private HIS_CONFIG selectedConfig = new HIS_CONFIG();
+        private void btnQRPay_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (requestRoom != null && !string.IsNullOrEmpty(requestRoom.QR_CONFIG_JSON))
+                {
+                    List<object> listArgs = new List<object>();
+                    TransReqQRADO adoqr = new TransReqQRADO();
+                    try
+                    {
+                        var json = Newtonsoft.Json.JsonConvert.DeserializeObject<BankInfo>(requestRoom.QR_CONFIG_JSON);
+                        if (json != null)
+                        {
+                            adoqr.ConfigValue = new HIS_CONFIG() { VALUE = json.VALUE, KEY = string.Format("HIS.Desktop.Plugins.PaymentQrCode.{0}Info", json.BANK) };
+                            adoqr.BankName = json.BANK;
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        Inventec.Common.Logging.LogSystem.Error(ex);
+                        XtraMessageBox.Show("Định dạng Qr thiết lập trong kho phòng không hợp lệ");
+                        return;
+                    }
+                    adoqr.TreatmentId = this.treatmentId;
+                    adoqr.TransReqId = 0;
+                    adoqr.DelegtePrint = this.serviceReqComboResultSDO != null ? (HIS.Desktop.Common.RefeshReference)IN_QR : null;
+                    listArgs.Add(adoqr);
+                    LogSystem.Debug("_____Load module : HIS.Desktop.Plugins.CreateTransReqQR ; KEY: " + selectedConfig.KEY);
+
+                    HIS.Desktop.ModuleExt.PluginInstanceBehavior.ShowModule("HIS.Desktop.Plugins.CreateTransReqQR", this.currentModule.RoomId, this.currentModule.RoomTypeId, listArgs);
+                }
+                else
+                {
+                    if (listConfig != null)
+                    {
+                        if (listConfig.Count > 1)
+                        {
+                            popupMenu1.ClearLinks();
+                            foreach (var item in listConfig)
+                            {
+                                string key = "";
+                                string value = item.KEY;
+                                int index = value.IndexOf("Info");
+                                if (index > 0)
+                                {
+                                    var shotkey = value.Substring(0, index);
+                                    string[] parts = shotkey.Split('.');
+                                    if (parts.Length > 0)
+                                    {
+                                        key = parts[parts.Length - 1];
+                                    }
+                                }
+                                else
+                                {
+                                    key = item.KEY;
+                                }
+                                BarButtonItem btnOption = new BarButtonItem(null, key);
+                                btnOption.ItemClick += (s, args) =>
+                                {
+
+                                    selectedConfig = item;
+                                    List<object> listArgs = new List<object>();
+                                    TransReqQRADO adoqr = new TransReqQRADO();
+                                    adoqr.TreatmentId = this.treatmentId;
+                                    adoqr.ConfigValue = selectedConfig;
+                                    adoqr.TransReqId = 0;
+                                    adoqr.DelegtePrint = this.serviceReqComboResultSDO != null ? (HIS.Desktop.Common.RefeshReference)IN_QR : null;
+                                    adoqr.BankName = key;
+                                    listArgs.Add(adoqr);
+                                    LogSystem.Debug("_____Load module : HIS.Desktop.Plugins.CreateTransReqQR ; KEY: " + selectedConfig.KEY);
+
+                                    HIS.Desktop.ModuleExt.PluginInstanceBehavior.ShowModule("HIS.Desktop.Plugins.CreateTransReqQR", this.currentModule.RoomId, this.currentModule.RoomTypeId, listArgs);
+
+                                };
+                                popupMenu1.AddItem(btnOption);
+                            }
+
+                            popupMenu1.ShowPopup(Control.MousePosition);
+                        }
+                        else
+                        {
+                            selectedConfig = listConfig[0];
+                            List<object> listArgs = new List<object>();
+                            TransReqQRADO adoqr = new TransReqQRADO();
+                            adoqr.TreatmentId = this.treatmentId;
+                            adoqr.ConfigValue = selectedConfig;
+                            adoqr.TransReqId = 0;
+                            adoqr.DelegtePrint = this.serviceReqComboResultSDO != null ? (HIS.Desktop.Common.RefeshReference)IN_QR : null;
+
+                            string key = "";
+                            string value = selectedConfig.KEY;
+                            int index = value.IndexOf("Info");
+                            if (index > 0)
+                            {
+                                var shotkey = value.Substring(0, index);
+                                string[] parts = shotkey.Split('.');
+                                if (parts.Length > 0)
+                                {
+                                    key = parts[parts.Length - 1];
+                                }
+                            }
+                            else
+                            {
+                                key = selectedConfig.KEY;
+                            }
+
+                            adoqr.BankName = key;
+                            listArgs.Add(adoqr);
+                            LogSystem.Debug("_____Load module : HIS.Desktop.Plugins.CreateTransReqQR " + selectedConfig.KEY);
+                            HIS.Desktop.ModuleExt.PluginInstanceBehavior.ShowModule("HIS.Desktop.Plugins.CreateTransReqQR", this.currentModule.RoomId, this.currentModule.RoomTypeId, listArgs);
+                        }
+
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                LogSystem.Error("Loi khi thuc hien thanh toan QR tam thu: " + ex);
+            }
+        }
+
+        private string GetBankNameFromKey(string key)
+        {
+            try
+            {
+                if (string.IsNullOrWhiteSpace(key)) return "";
+                string marker = "PaymentQrCode.";
+                int start = key.IndexOf(marker);
+                if (start < 0) return "";
+
+                start += marker.Length;
+                int end = key.IndexOf("Info", start);
+
+                if (end > start)
+                {
+                    return key.Substring(start, end - start);
+                }
+
+                return key.Substring(start);
+            }
+            catch
+            {
+                return "";
+            }
+        }
 
         // Hàm cập nhật TextEdit với chuỗi ngày đã chọn
         private void UpdateSelectedDatesText()
@@ -4350,6 +4553,11 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
             }
         }
         #endregion
-
+        public class BankInfo
+        {
+            public BankInfo() { }
+            public string BANK { get; set; }
+            public string VALUE { get; set; }
+        }
     }
 }

@@ -40,6 +40,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Xml;
 using System.Xml.Serialization;
+using static Telerik.WinControls.UI.ValueMapper;
 
 namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.VNPT
 {
@@ -221,8 +222,12 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.VNPT
                         {
                             foreach (var item in pi)
                             {
-                                if (dataReplate.ContainsKey(item.Name))
+                                if (dataReplate.ContainsKey(item.Name) && !string.IsNullOrWhiteSpace(dataReplate[item.Name]))
                                 {
+                                    if (dataReplate[item.Name].StartsWith("<![CDATA[") && dataReplate[item.Name].EndsWith("]]>"))
+                                    {
+                                        dataReplate[item.Name] = dataReplate[item.Name].Substring(9, dataReplate[item.Name].Length - 12);
+                                    }
                                     item.SetValue(inv.InvoiceDetail, dataReplate[item.Name]);
                                 }
                             }
@@ -898,7 +903,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.VNPT
                 //invoice.dLHDon.nDHDon.nMua.Ten = adoInfo.BuyerOrganization;
                 //invoice.dLHDon.nDHDon.nMua.HVTNMHang = adoInfo.BuyerName;
                 invoice.dLHDon.nDHDon.nMua.DChi = adoInfo.BuyerAddress;
-                invoice.dLHDon.nDHDon.nMua.DCTDTu = adoInfo.BuyerEmail;
+                //invoice.dLHDon.nDHDon.nMua.DCTDTu = adoInfo.BuyerEmail;
                 invoice.dLHDon.nDHDon.nMua.MKHang = adoInfo.BuyerCode;
                 invoice.dLHDon.nDHDon.nMua.MST = adoInfo.BuyerTaxCode;
                 invoice.dLHDon.nDHDon.nMua.SDThoai = adoInfo.BuyerPhone;
