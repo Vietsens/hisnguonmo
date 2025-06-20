@@ -57,5 +57,6 @@ namespace HIS.Desktop.Plugins.Library.PrintServiceReq
         internal const string IN__MPS000467__XN__NT = "Mps000467";
 
         internal const string IN__MPS000432__XET_NGHIEM_GOP_KHOA_XU_LY = "Mps000432";
+        internal const string IN__MPS000502__DICHVU_NGOAI_KCB = "Mps000502";
     }
 }

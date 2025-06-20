@@ -21,17 +21,22 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MPS.Processor.Mps000276
+namespace HIS.Desktop.Plugins.AssignNoneMediService
 {
-    public class ServiceNumOderAdo
+    class IcdUtil
     {
-        public long? SERVICE_ID { get; set; }
-        public string SERVICE_CODE { get; set; }
-        public string SERVICE_NAME { get; set; }
-        public long NUM_ORDER { get; set; }
-        public string SEQUENCE { get; set; }
-        public string ASSIGN_TURN_CODE { get; set; }
-        public string SERVICE_REQ_CODE { get; set; }
-        public string SERVICE_TYPE_CODE { get; set; }
+        internal const string seperator = ";";
+        internal static string AddSeperateToKey(string key)
+        {
+            try
+            {
+                return String.Format("{0}{1}{2}", seperator, key, seperator);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+            return "";
+        }
     }
 }
