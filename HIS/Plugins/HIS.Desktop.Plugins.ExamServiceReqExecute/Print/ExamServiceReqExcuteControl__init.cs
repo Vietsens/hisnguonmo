@@ -478,7 +478,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                 TransReqQRADO adoqr = new TransReqQRADO
                 {
                     TreatmentId = treatment.ID,
-                    TransReqId = CreateReqType.Deposit,
+                    TransReqId = CreateReqType.TransactionBill,
                     ConfigValue = hf,
                     BankName = hf.KEY.Split('.').Last().Replace("Info", "")
                 };
