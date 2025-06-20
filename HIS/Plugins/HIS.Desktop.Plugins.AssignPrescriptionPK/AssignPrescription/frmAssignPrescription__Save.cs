@@ -505,8 +505,9 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                         bool checkFollow = new BackendAdapter(param).Post<bool>(RequestUriStore.HIS_TREATHER__CHECKSERVICE_fOLLOW, ApiConsumers.MosConsumer, this.treatmentId, param);
                         if (!checkFollow)
                         {
-                            XtraMessageBox.Show( param.GetMessage() + ". Bạn có muốn tiếp tục?", "Thông báo", MessageBoxButtons.YesNo);
-                            return ;
+                            var result = XtraMessageBox.Show( param.GetMessage() + ". Bạn có muốn tiếp tục?", "Thông báo", MessageBoxButtons.YesNo);
+                            if (result == DialogResult.No)
+                                return;
                         }
                     }
                     if (subIcd != null && !string.IsNullOrEmpty(subIcd.ICD_SUB_CODE))

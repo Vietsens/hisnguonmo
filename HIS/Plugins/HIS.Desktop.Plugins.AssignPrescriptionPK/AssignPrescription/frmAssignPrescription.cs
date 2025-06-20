@@ -2458,6 +2458,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                                 AlertLogADO ado = new AlertLogADO(sdo, mediMatyType);
                                 AlertLogsSdo.Add(ado);
                             }, minType, minOverDose.FirstOrDefault(), AmountInDay);
+                            LogSystem.Info("minType: " + minType);
                             frm.ShowDialog();
                         }
                         else
@@ -2705,6 +2706,7 @@ o.SERVICE_ID == medi.SERVICE_ID && o.TDL_INTRUCTION_TIME.ToString().Substring(0,
                                                         medi.IsNoPrescription = false;
                                                     }
                                                 }, medi, false, false, treatmentId, null, minType, minOverDose.FirstOrDefault(), AmountInDay);
+                                                LogSystem.Info("minType1: " + minType);
                                                 frm.ShowDialog();
                                             }
                                             else
@@ -2844,6 +2846,7 @@ o.SERVICE_ID == medi.SERVICE_ID && o.TDL_INTRUCTION_TIME.ToString().Substring(0,
                                                     AlertLogADO ado = new AlertLogADO(sdo, medi);
                                                     AlertLogsSdo.Add(ado);
                                                 }, minOverDose.Select(o => GetValueFromDataType(o.DATA_TYPE, ConvertToDecimal(lstSereServTein.FirstOrDefault(p => p.TEST_INDEX_ID == o.TEST_INDEX_ID).VALUE), dhst, chiSoMLCT)).Min(), minOverDose.FirstOrDefault(), AmountInDay);
+                                                LogSystem.Info("minType3: " + minOverDose.Select(o => GetValueFromDataType(o.DATA_TYPE, ConvertToDecimal(lstSereServTein.FirstOrDefault(p => p.TEST_INDEX_ID == o.TEST_INDEX_ID).VALUE), dhst, chiSoMLCT)).Min());
                                                 frm.ShowDialog();
                                             }
                                             else
@@ -3081,7 +3084,28 @@ o.SERVICE_ID == medi.SERVICE_ID && o.TDL_INTRUCTION_TIME.ToString().Substring(0,
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
-
+        private static int Age(long dob)
+        {
+            int result = -1;
+            try
+            {
+                if (dob > 0)
+                {
+                    System.DateTime? sysDob = System.DateTime.ParseExact(dob.ToString(), "yyyyMMddHHmmss",
+                                       System.Globalization.CultureInfo.InvariantCulture);
+                    if (sysDob != null)
+                    {
+                        System.DateTime today = System.DateTime.Today;
+                        result = today.Year - sysDob.Value.Year;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                result = -1;
+            }
+            return result;
+        }
 
         internal decimal GetValueFromDataType(short? type, decimal value, HIS_DHST dhst, decimal? chiSoMLCT)
         {
@@ -3094,19 +3118,20 @@ o.SERVICE_ID == medi.SERVICE_ID && o.TDL_INTRUCTION_TIME.ToString().Substring(0,
                         //Công thức eGFR 
                         if (HisConfigCFG.ASSIGNPRESCRIPTION_EGFROPTION == "1")
                         {
-                            result = 186 * (decimal)Math.Pow((double)(chiSoMLCT * value), (double)(-1.154)) * (decimal)Math.Pow(Inventec.Common.DateTime.Calculation.Age(patientDob),
+                            result = 186 * (decimal)Math.Pow((double)(chiSoMLCT * value), (double)(-1.154)) * (decimal)Math.Pow(Age(patientDob),
                                 (double)(-0.203)) * (genderName.ToLower().Equals("nữ") ? (decimal)0.742 : 1);
                         }
                         else
                         {
-                            result = 175 * (decimal)Math.Pow((double)(chiSoMLCT * value), (double)(-1.154)) * (decimal)Math.Pow(Inventec.Common.DateTime.Calculation.Age(patientDob),
+                            result = 175 * (decimal)Math.Pow((double)(chiSoMLCT * value), (double)(-1.154)) * (decimal)Math.Pow(Age(patientDob),
                                 (double)(-0.203)) * (genderName.ToLower().Equals("nữ") ? (decimal)0.742 : 1);
                         }
 
                         break;
                     case IMSys.DbConfig.HIS_RS.HIS_MEDICINE_SERVICE.DATA_TYPE__CRCL:
                         //Công thức CrCl
-                        result = ((140 - Inventec.Common.DateTime.Calculation.Age(patientDob)) * (dhst != null && dhst.ID > 0 ? dhst.WEIGHT * (genderName.ToLower().Equals("nữ") ? (decimal)0.85 : 1) : 1)) / (72 * chiSoMLCT * value) ?? 0;
+                        result = ((140 - Age(patientDob)) * (dhst != null && dhst.ID > 0 ? dhst.WEIGHT * (genderName.ToLower().Equals("nữ") ? (decimal)0.85 : 1) : 1)) / (72 * chiSoMLCT * value) ?? 0;
+                        LogSystem.Info("result; " + result);
                         break;
                     default:
                         break;
@@ -3119,6 +3144,8 @@ o.SERVICE_ID == medi.SERVICE_ID && o.TDL_INTRUCTION_TIME.ToString().Substring(0,
             Inventec.Common.Logging.LogSystem.Warn(result + "__VALUE" + value);
             return result;
         }
+
+
 
         internal decimal ConvertToDecimal(string value)
         {

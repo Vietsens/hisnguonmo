@@ -58,12 +58,12 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                 HIS.UC.MenuPrint.MenuPrintProcessor menuPrintProcessor = new HIS.UC.MenuPrint.MenuPrintProcessor();
                 menuPrintADOs = new List<HIS.UC.MenuPrint.ADO.MenuPrintADO>();
 
-                //HIS.UC.MenuPrint.ADO.MenuPrintADO QR = new HIS.UC.MenuPrint.ADO.MenuPrintADO();
-                //QR.Caption = "tạo qr thanh toán (in phiếu thu tiền)";
-                //QR.EventHandler = new EventHandler(OnClickPrintQR);
-                //QR.PrintTypeCode = "";
-                //QR.Tag = "";
-                //menuPrintADOs.Add(QR);
+                //HIS.UC.MenuPrint.ADO.MenuPrintADO qr = new HIS.UC.MenuPrint.ADO.MenuPrintADO();
+                //qr.Caption = "tạo qr thanh toán (in phiếu thu tiền)";
+                //qr.EventHandler = new EventHandler(OnClickPrintQR);f
+                //qr.PrintTypeCode = "";
+                //qr.Tag = "";
+                //menuPrintADOs.Add(qr);
 
                 HIS.UC.MenuPrint.ADO.MenuPrintADO vttsd = new HIS.UC.MenuPrint.ADO.MenuPrintADO();
                 vttsd.Caption = "In tem vật tư tái sử dụng";
