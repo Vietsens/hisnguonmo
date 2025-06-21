@@ -84,7 +84,7 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
                 WaitingManager.Hide();
                 var btnIn = sender as DevExpress.Utils.Menu.DXMenuItem;
                 ModuleTypePrint printType = (ModuleTypePrint)btnIn.Tag;
-                if(AppointmentPrintOptionsStorageADO.InPhieuHenKham || AppointmentPrintOptionsStorageADO.KyPhieuHenKham || AppointmentPrintOptionsStorageADO.XemTruocKhiIn)
+                if (AppointmentPrintOptionsStorageADO.InPhieuHenKham || AppointmentPrintOptionsStorageADO.KyPhieuHenKham || AppointmentPrintOptionsStorageADO.XemTruocKhiIn)
                 {
                     if (printType == ModuleTypePrint.HEN_KHAM_LAI)
                     {
@@ -218,7 +218,7 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
                         default:
                             break;
                     }
-                }                
+                }
             }
             catch (Exception ex)
             {
@@ -366,7 +366,7 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
                     var patientTypeAlterData = new BackendAdapter(param).Get<List<HIS_PATIENT_TYPE_ALTER>>("api/HisPatientTypeAlter/Get", ApiConsumers.MosConsumer, patientTypeAlterFilter, param);
                     if (patientTypeAlterData != null && patientTypeAlterData.Count > 0)
                     {
-                        patientTypeAlter = patientTypeAlterData.OrderByDescending(o=>o.CREATE_TIME).ToList()[0];
+                        patientTypeAlter = patientTypeAlterData.OrderByDescending(o => o.CREATE_TIME).ToList()[0];
                     }
                     HIS_PATIENT patient = GetPatientByID(treatment.PATIENT_ID);
                     HIS_BRANCH branch = this.hisBranchs.FirstOrDefault(o => o.ID == HIS.Desktop.LocalStorage.LocalData.WorkPlace.GetBranchId());
@@ -599,7 +599,7 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
-       
+
         private void TaoQrThanhToan()
         {
             try
@@ -611,10 +611,8 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
                     ItemConfig itemConfig = JsonConvert.DeserializeObject<ItemConfig>(currentRoom.QR_CONFIG_JSON);
                     string key = string.Format("HIS.Desktop.Plugins.PaymentQrCode.{0}Info", itemConfig.BANK);
 
-                    this.selectedConfig = (
-                        from o in this.listConfig
-                        where o.KEY == key
-                        select o).FirstOrDefault<HIS_CONFIG>();
+                    this.selectedConfig = new HIS_CONFIG();
+                    this.selectedConfig.KEY = key;
                     this.selectedConfig.VALUE = itemConfig.VALUE;
 
                     List<object> listArgs = new List<object>();
@@ -626,7 +624,7 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
 
                     HIS.Desktop.ModuleExt.PluginInstanceBehavior.ShowModule("HIS.Desktop.Plugins.CreateTransReqQR", this.module.RoomId, this.module.RoomTypeId, listArgs);
                 }
-                else if (listConfig!=null && listConfig.Count==1)
+                else if (listConfig != null && listConfig.Count == 1)
                 {
                     selectedConfig = listConfig[0];
                     List<object> listArgs = new List<object>();
