@@ -633,6 +633,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
         private void btnNew_Click(object sender, EventArgs e)
         {
             LogTheadInSessionInfo(New_Click, "btnNew_Click");
+            btnQRPay.Enabled = false;
         }
 
         private void New_Click()

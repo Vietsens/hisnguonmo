@@ -2027,6 +2027,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
         private void btnNew_Click(object sender, EventArgs e)
         {
             LogTheadInSessionInfo(NewClick, !GlobalStore.IsCabinet ? "NewPrescription" : "NewMedicalStore");
+            btnQR.Enabled = false;
         }
 
         private void NewClick()

@@ -2673,5 +2673,9 @@ namespace HIS.UC.TreatmentFinish.Run
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
+        public bool IsAutoTreatmentFinishChecked
+        {
+            get { return chkAutoTreatmentFinish.Checked; }
+        }
     }
 }
