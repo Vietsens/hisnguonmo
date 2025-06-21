@@ -54,6 +54,7 @@ namespace HIS.Desktop.Plugins.HisPatientBankAccount.HisPatientBankAccount
         int ActionType = -1;
         int positionHandle = -1;
         MOS.EFMODEL.DataModels.V_HIS_PATIENT_BANK_ACCOUNT currentVData;
+        MOS.EFMODEL.DataModels.V_HIS_PATIENT_BANK_ACCOUNT currentVData2;
         DelegateSelectData delegateSelectData1;
 
         private HIS_TREATMENT currentTreatment;
@@ -64,7 +65,7 @@ namespace HIS.Desktop.Plugins.HisPatientBankAccount.HisPatientBankAccount
 
         #endregion
         #region Construct
-        public frmHisPatientBankAccount(Inventec.Desktop.Common.Modules.Module moduleData, HIS_TREATMENT _currentTreatment, DelegateSelectData _delegateSelectData)
+        public frmHisPatientBankAccount(Inventec.Desktop.Common.Modules.Module moduleData, HIS_TREATMENT _currentTreatment, DelegateSelectData _delegateSelectData, V_HIS_PATIENT_BANK_ACCOUNT patientBank)
             : base(moduleData)
         {
             try
@@ -74,6 +75,7 @@ namespace HIS.Desktop.Plugins.HisPatientBankAccount.HisPatientBankAccount
                 pagingGrid = new PagingGrid();
                 this.moduleData = moduleData;
                 this.currentTreatment = _currentTreatment;
+                this.currentVData2 = patientBank;
 
                 this.delegateSelectData1 = _delegateSelectData;
                 try
@@ -951,8 +953,11 @@ namespace HIS.Desktop.Plugins.HisPatientBankAccount.HisPatientBankAccount
                         MessageManager.Show(this, param, success);
                     }
                 }
-                if (delegateSelectData1 != null)
-                    delegateSelectData1(null);
+                if (currentVData2 != null && currentVData2.ID == rowData.ID)
+                {
+                    if (delegateSelectData1 != null)
+                        delegateSelectData1(null);
+                }
             }
             catch (Exception ex)
             {

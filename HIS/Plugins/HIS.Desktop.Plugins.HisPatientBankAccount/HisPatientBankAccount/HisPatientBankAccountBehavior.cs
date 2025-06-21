@@ -46,6 +46,7 @@ namespace HIS.Desktop.Plugins.HisPatientBankAccount.HisPatientBankAccount
                 Inventec.Desktop.Common.Modules.Module moduleData = null;
                 long treatmentID = 0;
                 HIS_TREATMENT obj = null;
+                V_HIS_PATIENT_BANK_ACCOUNT ptba = null;
                 DelegateSelectData dlg = null;
                 if (entity.GetType() == typeof(object[]))
                 {
@@ -69,11 +70,15 @@ namespace HIS.Desktop.Plugins.HisPatientBankAccount.HisPatientBankAccount
                             {
                                 dlg = (DelegateSelectData)entity[i];
                             }
+                            else if (entity[i] is V_HIS_PATIENT_BANK_ACCOUNT)
+                            {
+                                ptba = (V_HIS_PATIENT_BANK_ACCOUNT)entity[i];
+                            }
                         }
                     }
                 }
 
-                return new frmHisPatientBankAccount(moduleData, obj, dlg);
+                return new frmHisPatientBankAccount(moduleData, obj, dlg, ptba) ;
             }
             catch (Exception ex)
             {
