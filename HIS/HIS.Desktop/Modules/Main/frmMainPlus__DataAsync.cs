@@ -52,83 +52,83 @@ namespace HIS.Desktop.Modules.Main
                 if (isRunInBackgroundLoadDataToRamAfterLogin == GlobalVariables.CommonStringTrue)
                 {
                     //TheadProcessInitRegisterBackgroundData();
+                    //LoadDataPatientTypeAllow();
                     LoadDataPatientType();
-                    LoadDataPatientTypeAllow();
                     LoadDataServiceType();
                     LoadDataTreatmentType();
                     LoadDataRoom();
                     LoadDataUser();
-                    LoadDataHisAgeType();
+                    //LoadDataHisAgeType();
 
-                    var moduleLinks = GlobalVariables.currentModuleRaws.Select(o => o.ModuleLink).ToArray();
+                    //var moduleLinks = GlobalVariables.currentModuleRaws.Select(o => o.ModuleLink).ToArray();
 
                     ////Nếu người dùng có quyền vào chức năng Tiếp đón thì load sẵn các dữ liệu sẽ dùng trong chức năng này về ram
-                    if (moduleLinks.Contains("HIS.Desktop.Plugins.RegisterV2") || moduleLinks.Contains("HIS.Desktop.Plugins.Register") || moduleLinks.Contains("HIS.Desktop.Plugins.RegisterV3"))
-                    {
-                        LoadDataGender();
-                        LoadDataCareer();
-                        LoadDataNational();
-                        LoadDataEthnic();
-                        LoadDataHisPosition();
-                        LoadDataMilitaryRank();
-                        LoadDataBhytWhiteList();
-                        LoadDataPatientClassify();
-                        LoadDataHisReceptionRoom();
-                        var task1 = LoadDataProvince();
-                        var task2 = LoadDataDistrict();
-                        var task3 = LoadDataCommune();
-                        await Task.WhenAll(task1, task2, task3);
-                        var CommuneADOs = BackendDataWorkerSet.Set<HIS.Desktop.LocalStorage.BackendData.ADO.CommuneADO>(false, true);
-                    }
+                    //if (moduleLinks.Contains("HIS.Desktop.Plugins.RegisterV2") || moduleLinks.Contains("HIS.Desktop.Plugins.Register") || moduleLinks.Contains("HIS.Desktop.Plugins.RegisterV3"))
+                    //{
+                    //    LoadDataGender();
+                    //    LoadDataCareer();
+                    //    LoadDataNational();
+                    //    LoadDataEthnic();
+                    //    //LoadDataHisPosition();
+                    //    //LoadDataMilitaryRank();
+                    //    //LoadDataBhytWhiteList();
+                    //    //LoadDataPatientClassify();
+                    //    //LoadDataHisReceptionRoom();
+                    //    var task1 = LoadDataProvince();
+                    //    var task2 = LoadDataDistrict();
+                    //    var task3 = LoadDataCommune();
+                    //    await Task.WhenAll(task1, task2, task3);
+                    //    var CommuneADOs = BackendDataWorkerSet.Set<HIS.Desktop.LocalStorage.BackendData.ADO.CommuneADO>(false, true);
+                    //}
 
                     ////Nếu người dùng có quyền vào chức năng Kê đơn thì load sẵn các dữ liệu sẽ dùng trong chức năng này về ram
-                    if (moduleLinks.Contains("HIS.Desktop.Plugins.AssignPrescriptionPK") || moduleLinks.Contains("HIS.Desktop.Plugins.AssignPrescriptionYHCT"))
-                    {
-                        LoadDataHisMedicineType();
-                        LoadDataHisMaterialType();
-                        LoadDataMediStock();
-                        LoadDataMestRoom();
-                        LoadDataMestPatientType();
-                        LoadDataMediStockMety();
-                        LoadDataMestMetyDepa();
+                    //if (moduleLinks.Contains("HIS.Desktop.Plugins.AssignPrescriptionPK") || moduleLinks.Contains("HIS.Desktop.Plugins.AssignPrescriptionYHCT"))
+                    //{
+                    //    LoadDataHisMedicineType();
+                    //    LoadDataHisMaterialType();
+                    //    LoadDataMediStock();
+                    //    LoadDataMestRoom();
+                    //    LoadDataMestPatientType();
+                    //    LoadDataMediStockMety();
+                    //    LoadDataMestMetyDepa();
 
-                        LoadDataMedicineUseForm();
-                        LoadDataHisMedicineTypeRoom();
-                        LoadDataHisEmployee();
-                        LoadDataHisMestMetyUnit();
-                        LoadDataTreatmentEndType();
-                        LoadDataTreatmentEndTypeExt();
-                        LoadDataHisExpMestReason();
-                        LoadDataHisServiceCondition();
-                    }
+                    //    //LoadDataMedicineUseForm();
+                    //    //LoadDataHisMedicineTypeRoom();
+                    //    //LoadDataHisEmployee();
+                    //    //LoadDataHisMestMetyUnit();
+                    //    //LoadDataTreatmentEndType();
+                    //    //LoadDataTreatmentEndTypeExt();
+                    //    //LoadDataHisExpMestReason();
+                    //    //LoadDataHisServiceCondition();
+                    //}
 
                     ////Nếu người dùng có quyền vào chức năng Chỉ định thì load sẵn các dữ liệu sẽ dùng trong chức năng này về ram
-                    if (moduleLinks.Contains("HIS.Desktop.Plugins.AssignService"))
-                    {                        
-                        LoadDataServiceGroup();
-                        LoadDataRoomTimes();
-                    }
+                    //if (moduleLinks.Contains("HIS.Desktop.Plugins.AssignService"))
+                    //{                        
+                    //    LoadDataServiceGroup();
+                    //    LoadDataRoomTimes();
+                    //}
 
-                    if (moduleLinks.Contains("HIS.Desktop.Plugins.AssignService") || moduleLinks.Contains("HIS.Desktop.Plugins.ExecuteRoom"))
-                    {
-                        LoadDataExecuteRoom();
-                    }
+                    //if (moduleLinks.Contains("HIS.Desktop.Plugins.AssignService") || moduleLinks.Contains("HIS.Desktop.Plugins.ExecuteRoom"))
+                    //{
+                    //    LoadDataExecuteRoom();
+                    //}
 
-                    if (moduleLinks.Contains("HIS.Desktop.Plugins.ServiceExecute")
-                      || moduleLinks.Contains("HIS.Desktop.Plugins.ExamServiceReqExecute")
-                      || moduleLinks.Contains("HIS.Desktop.Plugins.ExecuteRoom"))
-                    {
-                        LoadDataTextLib();
-                        LoadDataTestIndex();
-                        LoadDataKskContract();
-                        LoadDataExeServiceModule();
-                    }
+                    //if (moduleLinks.Contains("HIS.Desktop.Plugins.ServiceExecute")
+                    //  || moduleLinks.Contains("HIS.Desktop.Plugins.ExamServiceReqExecute")
+                    //  || moduleLinks.Contains("HIS.Desktop.Plugins.ExecuteRoom"))
+                    //{
+                    //    LoadDataTextLib();
+                    //    LoadDataTestIndex();
+                    //    LoadDataKskContract();
+                    //    LoadDataExeServiceModule();
+                    //}
 
 
-                    if (moduleLinks.Contains("HIS.Desktop.Plugins.Transaction"))
-                    {
-                        await LoadDataTreatmentResult();
-                    }
+                    //if (moduleLinks.Contains("HIS.Desktop.Plugins.Transaction"))
+                    //{
+                    //    await LoadDataTreatmentResult();
+                    //}
                 }
             }
             catch (Exception ex)
