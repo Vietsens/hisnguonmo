@@ -3420,7 +3420,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                 long? sample_time = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(DateLM.DateTime);
                 long? result_time = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(DateKQ.DateTime);
                 var serviceReq = GetServiceReq();
-                if ((HisConfigCFG.StartTimeMustBeGreaterThanInstructionTime == "1" || HisConfigCFG.StartTimeMustBeGreaterThanInstructionTime == "2") && result_time < serviceReq.INTRUCTION_TIME)
+                if (serviceReq != null && (HisConfigCFG.StartTimeMustBeGreaterThanInstructionTime == "1" || HisConfigCFG.StartTimeMustBeGreaterThanInstructionTime == "2") && result_time < serviceReq.INTRUCTION_TIME)
                 {
                     XtraMessageBox.Show("Thời gian trả kết quả không được nhỏ hơn thời gian y lệnh.", "Thông báo");
                     return;
@@ -4564,17 +4564,56 @@ namespace HIS.Desktop.Plugins.ConnectionTest
 
         private void treeList1_CustomDrawNodeCell(object sender, DevExpress.XtraTreeList.CustomDrawNodeCellEventArgs e)
         {
+            //try
+            //{
+            //    TestLisResultADO testLisResultADO = new TestLisResultADO();
+            //    var data = this.treeListSereServTein.GetDataRecordByNode(e.Node);
+            //    if (data != null && data is TestLisResultADO)
+            //    {
+            //        testLisResultADO = (TestLisResultADO)data;
+            //        if (testLisResultADO.IS_PARENT == 1 && testLisResultADO.IS_NO_EXECUTE == 1)
+            //        {
+            //            e.Appearance.FontStyleDelta = FontStyle.Strikeout;
+            //        }
+            //    }
+            //}
+            //catch (Exception ex)
+            //{
+            //    Inventec.Common.Logging.LogSystem.Error(ex);
+            //}
             try
             {
-                TestLisResultADO testLisResultADO = new TestLisResultADO();
-                var data = this.treeListSereServTein.GetDataRecordByNode(e.Node);
-                if (data != null && data is TestLisResultADO)
+                var data = this.treeListSereServTein.GetDataRecordByNode(e.Node) as TestLisResultADO;
+                if (data == null) return;
+
+                if (data.IS_PARENT == 1 && data.IS_NO_EXECUTE == 1)
                 {
-                    testLisResultADO = (TestLisResultADO)data;
-                    if (testLisResultADO.IS_PARENT == 1 && testLisResultADO.IS_NO_EXECUTE == 1)
+                    e.Appearance.FontStyleDelta = FontStyle.Strikeout;
+                }
+
+                if (e.Column.FieldName == "VALUE_RANGE_DISPLAY" &&
+                    !string.IsNullOrWhiteSpace(data.OLD_VALUE) &&
+                    data.VALUE.HasValue &&
+                    decimal.TryParse(data.VALUE.ToString(), out var valueNew) &&
+                    decimal.TryParse(data.OLD_VALUE, out var valueOld))
+                {
+                    Image arrowImage = null;
+                    if (valueNew > valueOld)
+                        arrowImage = imageList1.Images[5];
+                    else if (valueNew < valueOld)
+                        arrowImage = imageList1.Images[6];
+                    e.Appearance.DrawString(e.Cache, e.CellText, e.Bounds);
+                    if (arrowImage != null)
                     {
-                        e.Appearance.FontStyleDelta = FontStyle.Strikeout;
+                        int imageWidth = 16;
+                        int imageHeight = 16;
+                        int textWidth = (int)e.Graphics.MeasureString(e.CellText, e.Appearance.Font).Width;
+                        int x = e.Bounds.X + textWidth + 4;
+                        int y = e.Bounds.Y + (e.Bounds.Height - imageHeight) / 2;
+
+                        e.Graphics.DrawImage(arrowImage, x, y, imageWidth, imageHeight);
                     }
+                    e.Handled = true;
                 }
             }
             catch (Exception ex)
@@ -4796,13 +4835,19 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                 if (e.Column.FieldName == "VALUE_RANGE_DISPLAY")
                 {
                     LogSystem.Debug("VALUE_RANGE_DISPLAY");
-                    var data = this.treeListSereServTein.GetDataRecordByNode(e.Node);
+                    var data = this.treeListSereServTein.GetDataRecordByNode(e.Node) as TestLisResultADO;
                     if (data != null && data is TestLisResultADO && ((TestLisResultADO)data).LIS_RESULT_ID > 0 && !string.IsNullOrEmpty(((TestLisResultADO)data).VALUE_RANGE))
                     {
-                        ((TestLisResultADO)data).Item_Edit_Value = 1;
+                        if (decimal.TryParse(e.Value?.ToString(), out var newVal))
+                        {
+                            data.VALUE = newVal;
+                        }
+                        data.Item_Edit_Value = 1;
+                        treeListSereServTein.CloseEditor();
+                        treeListSereServTein.EndCurrentEdit();
+                        treeListSereServTein.RefreshNode(e.Node);
+                        treeListSereServTein.InvalidateNode(e.Node);
                     }
-
-
                 }
                 else if (e.Column.FieldName == "NOTE")
                 {
@@ -4839,7 +4884,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                         WaitingManager.Hide();
                         MessageManager.Show(this.ParentForm, param, success);
                     }
-                }
+                }                
             }
             catch (Exception ex)
             {
@@ -10047,6 +10092,42 @@ namespace HIS.Desktop.Plugins.ConnectionTest
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
+        }
+
+        private void treeListSereServTein_HiddenEditor(object sender, EventArgs e)
+        {       
+            try
+            {
+                var editor = sender as DevExpress.XtraTreeList.TreeList;
+                if (editor.FocusedNode != null)
+                {
+                    editor.RefreshNode(editor.FocusedNode);
+                    editor.Invalidate();
+                }
+            }
+            catch (Exception ex)
+            {
+                LogSystem.Error(ex);
+            }
+        }
+
+        private void treeListSereServTein_ValidatingEditor(object sender, DevExpress.XtraEditors.Controls.BaseContainerValidateEditorEventArgs e)
+        {
+            try
+            {
+                if (treeListSereServTein.FocusedColumn.FieldName == "VALUE_RANGE_DISPLAY")
+                {
+                    var data = treeListSereServTein.GetDataRecordByNode(treeListSereServTein.FocusedNode) as TestLisResultADO;
+                    if (data != null && decimal.TryParse(e.Value?.ToString(), out var val))
+                    {
+                        data.VALUE = val;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                LogSystem.Error(ex);
+            }          
         }
     }
 }
