@@ -1527,67 +1527,59 @@ namespace HIS.Desktop.Plugins.HisImportBid
 
         private void CheckDuplicateBatchDivisionCode()
         {
-            try
+            var duplicates = ListDataImport
+                .Where(o => !string.IsNullOrWhiteSpace(o.BATCH_DIVISION_CODE))
+                .GroupBy(o => o.BATCH_DIVISION_CODE)
+                .Where(g => g.Count() > 1)
+                .ToList();
+
+            if (duplicates.Count == 0) return;
+
+            List<string> errorMessages = new List<string>();
+
+            foreach (var dup in duplicates)
             {
-                if (ListDataImport == null || ListDataImport.Count == 0)
-                    return;
+                var group = dup.ToList();
+                string batchCode = dup.Key;
 
-                var duplicates = ListDataImport
-                    .Where(o => !string.IsNullOrWhiteSpace(o.BATCH_DIVISION_CODE))
-                    .GroupBy(o => o.BATCH_DIVISION_CODE)
-                    .Where(g => g.Count() > 1)
-                    .ToList();
+                var typeMap = new Dictionary<string, List<string>> {
+            { "thuốc", new List<string>() },
+            { "vật tư", new List<string>() },
+            { "máu", new List<string>() }
+                };
 
-                if (duplicates.Count == 0)
-                    return;
-
-                foreach (var dup in duplicates)
+                foreach (var item in group)
                 {
-                    var group = dup.ToList();
-                    string batchCode = dup.Key;
-
-                    var typeMap = new Dictionary<int, List<string>> {
-                        { THUOC, new List<string>() },
-                        { VATTU, new List<string>() },
-                        { MAU, new List<string>() }
-                    };
-
-                    foreach (var item in group)
+                    switch (item.Type)
                     {
-                        if (item.Type == THUOC)
-                            typeMap[THUOC].Add(item.MEDICINE_TYPE_NAME);
-                        else if (item.Type == VATTU)
-                            typeMap[VATTU].Add(item.MEDICINE_TYPE_NAME);
-                        else if (item.Type == MAU)
-                            typeMap[MAU].Add(item.MEDICINE_TYPE_NAME);
-                    }
-
-                    var parts = new List<string>();
-                    if (typeMap[THUOC].Count > 0)
-                        parts.Add("thuốc: " + string.Join(", ", typeMap[THUOC].Distinct()));
-                    if (typeMap[VATTU].Count > 0)
-                        parts.Add("vật tư: " + string.Join(", ", typeMap[VATTU].Distinct()));
-                    if (typeMap[MAU].Count > 0)
-                        parts.Add("máu: " + string.Join(", ", typeMap[MAU].Distinct()));
-
-                    if (parts.Count > 1)
-                    {
-                        string errorMessage = $"Mã phần lô {batchCode} đã được sử dụng bởi {string.Join("; ", parts)}";
-                        
-                        foreach (var item in group)
-                        {
-                            if (string.IsNullOrEmpty(item.ERROR))
-                                item.ERROR = errorMessage;
-                            else
-                                item.ERROR += "; " + errorMessage;
-                        }
+                        case var t when t == Base.GlobalConfig.THUOC:
+                            typeMap["thuốc"].Add(item.MEDICINE_TYPE_NAME);
+                            break;
+                        case var t when t == Base.GlobalConfig.VATTU:
+                            typeMap["vật tư"].Add(item.MEDICINE_TYPE_NAME);
+                            break;
+                        case var t when t == Base.GlobalConfig.MAU:
+                            typeMap["máu"].Add(item.MEDICINE_TYPE_NAME);
+                            break;
                     }
                 }
+
+                var parts = typeMap
+                    .Where(p => p.Value.Any())
+                    .Select(p => $"{p.Key}: {string.Join(", ", p.Value.Distinct())}")
+                    .ToList();
+
+                if (parts.Count > 1)
+                {
+                    errorMessages.Add($"Mã phần lô đã được sử dụng bởi {string.Join("; ", parts)}");
+                }
             }
-            catch (Exception ex)
+
+            if (errorMessages.Any())
             {
-                Inventec.Common.Logging.LogSystem.Error(ex);
+                MessageBox.Show(string.Join(Environment.NewLine, errorMessages), "Lỗi mã phần lô", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
         }
+
     }
 }
