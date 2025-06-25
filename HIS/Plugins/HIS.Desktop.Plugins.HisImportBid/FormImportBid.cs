@@ -703,12 +703,18 @@ namespace HIS.Desktop.Plugins.HisImportBid
                         {
                             medicineType.ERROR = "Mã vật tư không hợp lệ. ";
                         }
+
                     }
                     else
                     {
                         Inventec.Common.Mapper.DataObjectMapper.Map<ADO.ImportADO>(medicineType, materialTypeNotExist);
                         medicineType.MEDICINE_TYPE_CODE = materialTypeNotExist.MATERIAL_TYPE_CODE;
                         medicineType.MEDICINE_TYPE_NAME = materialTypeNotExist.MATERIAL_TYPE_NAME;
+                    }
+
+                    if (medicineType.BATCH_DIVISION_CODE.Length > 25) 
+                    {
+                        medicineType.ERROR = "Mã phần lô vượt quá ký tự cho phép, 25 ký tự. ";
                     }
 
                     if (!string.IsNullOrEmpty(materialTypeImport.MATERIAL_TYPE_MAP_CODE))
