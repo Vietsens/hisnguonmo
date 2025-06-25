@@ -1445,7 +1445,7 @@ namespace HIS.Desktop.Plugins.InfantInformation
                 LoadMotherAddress(this.patient);
                 loadInfoMother();
                 ResetFormData();
-                LoadInfoComplementFromTreatment(this.treatment);
+                //LoadInfoComplementFromTreatment(this.treatment);
             }
             catch (Exception ex)
             {
