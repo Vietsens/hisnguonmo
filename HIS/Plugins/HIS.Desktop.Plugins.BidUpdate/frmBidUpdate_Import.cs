@@ -15,16 +15,17 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-using HIS.Desktop.LocalStorage.BackendData;
-using Inventec.Common.Logging;
-using Inventec.Desktop.Common.Message;
-using MOS.EFMODEL.DataModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using HIS.Desktop.LocalStorage.BackendData;
+using HIS.UC.MedicineType;
+using Inventec.Common.Logging;
+using Inventec.Desktop.Common.Message;
+using MOS.EFMODEL.DataModels;
 
 namespace HIS.Desktop.Plugins.BidUpdate
 {
@@ -49,10 +50,10 @@ namespace HIS.Desktop.Plugins.BidUpdate
                         {
                             this.ListAdoImport = new List<ADO.MedicineTypeADO>();
                             var listMedicine = ImpMestListProcessor.Where(o => !String.IsNullOrWhiteSpace(o.IS_MEDICINE) && o.IS_MEDICINE.Trim().ToLower() == Base.GlobalConfig.IsMedicine.ToLower()).ToList();
-                            var listMaterial = ImpMestListProcessor.Where(o => String.IsNullOrWhiteSpace(o.IS_MEDICINE)&&o.IsNotNullRow).ToList();
+                            var listMaterial = ImpMestListProcessor.Where(o => String.IsNullOrWhiteSpace(o.IS_MEDICINE) && o.IsNotNullRow).ToList();
                             addListMedicineTypeToProcessList(listMedicine);
                             addListMaterialTypeToProcessList(listMaterial);
-
+                            CheckDuplicateBatchDivisionCode();
                             List<ADO.MedicineTypeADO> listError = new List<ADO.MedicineTypeADO>();
                             if (ListAdoImport != null && ListAdoImport.Count > 0)
                             {
@@ -178,7 +179,10 @@ namespace HIS.Desktop.Plugins.BidUpdate
 
                     medicineType.IMP_PRICE = Inventec.Common.TypeConvert.Parse.ToDecimal(medicineTypeImport.IMP_PRICE.ToString());
                     medicineType.AMOUNT = Inventec.Common.TypeConvert.Parse.ToDecimal(medicineTypeImport.AMOUNT.ToString());
-
+                    if (!string.IsNullOrEmpty(medicineTypeImport.BATCH_DIVISION_CODE))
+                    {
+                        medicineType.BATCH_DIVISION_CODE = medicineTypeImport.BATCH_DIVISION_CODE;
+                    }
                     if (medicineTypeImport.SERVICE_UNIT_CODE != null)
                     {
                         var serrviceUnit = Base.GlobalConfig.ListServiceUnit.FirstOrDefault(o => o.SERVICE_UNIT_CODE == medicineTypeImport.SERVICE_UNIT_CODE);
@@ -446,7 +450,10 @@ namespace HIS.Desktop.Plugins.BidUpdate
                     medicineType.IdRow = setIdRow(this.ListAdoImport);
                     medicineType.IMP_PRICE = materialTypeImport.IMP_PRICE;
                     medicineType.AMOUNT = materialTypeImport.AMOUNT;
-
+                    if (!string.IsNullOrEmpty(materialTypeImport.BATCH_DIVISION_CODE))
+                    {
+                        medicineType.BATCH_DIVISION_CODE = materialTypeImport.BATCH_DIVISION_CODE;
+                    }
                     if (materialTypeImport.SERVICE_UNIT_CODE != null)
                     {
                         var serrviceUnit = Base.GlobalConfig.ListServiceUnit.FirstOrDefault(o => o.SERVICE_UNIT_CODE == materialTypeImport.SERVICE_UNIT_CODE);
@@ -649,6 +656,61 @@ namespace HIS.Desktop.Plugins.BidUpdate
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+        private void CheckDuplicateBatchDivisionCode()
+        {
+            var duplicates = ListAdoImport
+                .Where(o => !string.IsNullOrWhiteSpace(o.BATCH_DIVISION_CODE))
+                .GroupBy(o => o.BATCH_DIVISION_CODE)
+                .Where(g => g.Count() > 1)
+                .ToList();
+
+            if (duplicates.Count == 0) return;
+
+            List<string> errorMessages = new List<string>();
+
+            foreach (var dup in duplicates)
+            {
+                var group = dup.ToList();
+                string batchCode = dup.Key;
+
+                var typeMap = new Dictionary<string, List<string>> {
+            { "thuốc", new List<string>() },
+            { "vật tư", new List<string>() },
+            { "máu", new List<string>() }
+                };
+
+                foreach (var item in group)
+                {
+                    switch (item.Type)
+                    {
+                        case var t when t == Base.GlobalConfig.THUOC:
+                            typeMap["thuốc"].Add(item.MEDICINE_TYPE_NAME);
+                            break;
+                        case var t when t == Base.GlobalConfig.VATTU:
+                            typeMap["vật tư"].Add(item.MEDICINE_TYPE_NAME);
+                            break;
+                        case var t when t == Base.GlobalConfig.MAU:
+                            typeMap["máu"].Add(item.MEDICINE_TYPE_NAME);
+                            break;
+                    }
+                }
+
+                var parts = typeMap
+                    .Where(p => p.Value.Any())
+                    .Select(p => $"{p.Key}: {string.Join(", ", p.Value.Distinct())}")
+                    .ToList();
+
+                if (parts.Count > 1)
+                {
+                    errorMessages.Add($"Mã phần lô đã được sử dụng bởi {string.Join("; ", parts)}");
+                }
+            }
+
+            if (errorMessages.Any())
+            {
+                MessageBox.Show(string.Join(Environment.NewLine, errorMessages), "Lỗi mã phần lô", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
         }
     }

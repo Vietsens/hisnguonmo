@@ -51,6 +51,7 @@ namespace HIS.Desktop.Plugins.BidUpdate
                 ValidMaxlengthDosageForm();
                 ValidMaxlengthTenTT();
                 ValidMaxlengthTenBhyt();
+                ValidMaxlengthMaPhanLo();
             }
             catch (Exception ex)
             {
@@ -133,6 +134,21 @@ namespace HIS.Desktop.Plugins.BidUpdate
                 validateMaxLength.maxLength = 1500;
                 validateMaxLength.ErrorType = DevExpress.XtraEditors.DXErrorProvider.ErrorType.Warning;
                 dxValidationProviderLeft.SetValidationRule(txtTenBHYT, validateMaxLength);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+        void ValidMaxlengthMaPhanLo()
+        {
+            try
+            {
+                ValidateMaxLength validateMaxLength = new ValidateMaxLength();
+                validateMaxLength.textEdit = txtBatchDivisionCode;
+                validateMaxLength.maxLength = 25;
+                validateMaxLength.ErrorType = DevExpress.XtraEditors.DXErrorProvider.ErrorType.Warning;
+                dxValidationProviderLeft.SetValidationRule(txtBatchDivisionCode, validateMaxLength);
             }
             catch (Exception ex)
             {

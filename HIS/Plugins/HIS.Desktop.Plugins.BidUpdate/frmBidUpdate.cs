@@ -930,6 +930,7 @@ namespace HIS.Desktop.Plugins.BidUpdate
                     }
                     //cboDosageForm.EditValue = this.medicineType.DOSAGE_FORM;
                     txtNOTE.Text = this.medicineType.NOTE;
+                    txtBatchDivisionCode.Text = this.medicineType.BATCH_DIVISION_CODE;
 
                     cboDosageForm.Enabled = true;
                     EnableLeftControl(true);
@@ -967,6 +968,7 @@ namespace HIS.Desktop.Plugins.BidUpdate
                     txtMaTT.Text = this.materialType.BID_MATERIAL_TYPE_CODE ?? "";
                     txtMaDT.Text = this.medicineType.JOIN_BID_MATERIAL_TYPE_CODE;
                     txtNOTE.Text = this.materialType.NOTE;
+                    txtBatchDivisionCode.Text = this.materialType.BATCH_DIVISION_CODE;
                     txtTenBHYT.Text = this.materialType.HEIN_SERVICE_BHYT_NAME;
                     txtPackingType.Text = this.materialType.PACKING_TYPE_NAME;
                     EnableLeftControl(true);
@@ -1017,6 +1019,7 @@ namespace HIS.Desktop.Plugins.BidUpdate
                 spinImpVat.EditValue = data.IMP_VAT_RATIO * 100;
                 spinImpMoreRatio.EditValue = data.ImpMoreRatio;
                 txtBidNumOrder.Text = data.BID_NUM_ORDER;
+                txtBatchDivisionCode.Text = data.BATCH_DIVISION_CODE;
                 if (!string.IsNullOrEmpty(data.BID_GROUP_CODE))
                 {
                     txtBidGroupCode.Text = data.BID_GROUP_CODE;
@@ -1082,6 +1085,7 @@ namespace HIS.Desktop.Plugins.BidUpdate
                 dxValidationProviderLeft.RemoveControlError(spinImpVat);
                 dxValidationProviderLeft.RemoveControlError(txtBidNumOrder);
                 dxValidationProviderLeft.RemoveControlError(cboSupplier);
+                dxValidationProviderLeft.RemoveControlError(txtBatchDivisionCode);
             }
             catch (Exception ex)
             {
@@ -1339,12 +1343,15 @@ namespace HIS.Desktop.Plugins.BidUpdate
                 spinMonthLifeSpan.EditValue = null;
                 spinDayLifeSpan.EditValue = null;
                 spinHourLifeSpan.EditValue = null;
+                txtBatchDivisionCode.Text = "";
 
                 dxValidationProviderLeft.RemoveControlError(spinImpPrice);
                 dxValidationProviderLeft.RemoveControlError(spinAmount);
                 dxValidationProviderLeft.RemoveControlError(spinImpVat);
                 dxValidationProviderLeft.RemoveControlError(txtBidNumOrder);
                 dxValidationProviderLeft.RemoveControlError(cboSupplier);
+                dxValidationProviderLeft.RemoveControlError(txtBatchDivisionCode);
+
                 //trang thai nut
                 EnableButton(this.ActionType);
                 VisibleButton(this.ActionType);
@@ -1847,6 +1854,7 @@ namespace HIS.Desktop.Plugins.BidUpdate
                 spinImpPrice.Value = 0;
                 txtBidNumOrder.Text = "";
                 txtNOTE.Text = null;
+                txtBatchDivisionCode.Text = "";
                 if (chkClearToAdd.Checked)
                 {
                     txtBidPackageCode.Text = "";
@@ -2011,6 +2019,7 @@ namespace HIS.Desktop.Plugins.BidUpdate
                 dxValidationProviderLeft.RemoveControlError(txtBidGroupCode);
                 dxValidationProviderLeft.RemoveControlError(txtTenBHYT);
                 dxValidationProviderLeft.RemoveControlError(txtTenTT);
+                dxValidationProviderLeft.RemoveControlError(txtBatchDivisionCode);
             }
             catch (Exception ex)
             {
@@ -2031,6 +2040,11 @@ namespace HIS.Desktop.Plugins.BidUpdate
                 this.medicineType.AMOUNT = spinAmount.Value;
                 this.medicineType.BID_GROUP_CODE = txtBidGroupCode.Text;
                 this.medicineType.BID_PACKAGE_CODE = txtBidPackageCode.Text;
+
+                if (!string.IsNullOrEmpty(txtBatchDivisionCode.Text))
+                {
+                    this.medicineType.BATCH_DIVISION_CODE = txtBatchDivisionCode.Text;
+                }
                 this.medicineType.IdRow = setIdRow(this.ListMedicineTypeAdoProcess);
                 if (cboSupplier.EditValue != null)
                 {
@@ -2146,6 +2160,10 @@ namespace HIS.Desktop.Plugins.BidUpdate
                 this.materialType.BID_NUM_ORDER = txtBidNumOrder.Text;
                 this.materialType.IMP_VAT_RATIO = spinImpVat.Value / 100;
                 this.materialType.AMOUNT = spinAmount.Value;
+                if (!string.IsNullOrEmpty(txtBatchDivisionCode.Text))
+                {
+                    this.materialType.BATCH_DIVISION_CODE = txtBatchDivisionCode.Text;
+                }
                 ADO.MedicineTypeADO aMedicineSdo = new ADO.MedicineTypeADO();
                 AutoMapper.Mapper.CreateMap<ADO.MaterialTypeADO, ADO.MedicineTypeADO>();
                 aMedicineSdo = AutoMapper.Mapper.Map<ADO.MaterialTypeADO, ADO.MedicineTypeADO>(this.materialType);
@@ -2245,6 +2263,10 @@ namespace HIS.Desktop.Plugins.BidUpdate
                 this.bloodType.BID_NUM_ORDER = txtBidNumOrder.Text;
                 this.bloodType.IMP_VAT_RATIO = spinImpVat.Value / 100;
                 this.bloodType.AMOUNT = spinAmount.Value;
+                if (!string.IsNullOrEmpty(txtBatchDivisionCode.Text))
+                {
+                    this.bloodType.BATCH_DIVISION_CODE = txtBatchDivisionCode.Text;
+                }
                 ADO.MedicineTypeADO aMedicineSdo = new ADO.MedicineTypeADO();
                 AutoMapper.Mapper.CreateMap<ADO.BloodTypeADO, ADO.MedicineTypeADO>();
                 aMedicineSdo = AutoMapper.Mapper.Map<ADO.BloodTypeADO, ADO.MedicineTypeADO>(this.bloodType);
@@ -2519,6 +2541,7 @@ namespace HIS.Desktop.Plugins.BidUpdate
                         cboNational.EditValue = null;
                         cboManufacture.EditValue = null;
                         txtNOTE.Text = "";
+                        txtBatchDivisionCode.Text = "";
                         if (refeshData != null)
                             refeshData();
                         ListMedicineTypeAdoProcess = new List<MedicineTypeADO>();
@@ -2605,6 +2628,10 @@ namespace HIS.Desktop.Plugins.BidUpdate
                         bidMedicineType.MEDICINE_TYPE_ID = item.ID;
                         bidMedicineType.BID_NUM_ORDER = item.BID_NUM_ORDER;
                         bidMedicineType.SUPPLIER_ID = (long)(item.SUPPLIER_ID ?? 0);
+                        if (!string.IsNullOrEmpty(item.BATCH_DIVISION_CODE))
+                        {
+                            bidMedicineType.BATCH_DIVISION_CODE = item.BATCH_DIVISION_CODE;
+                        }
                         string bid_group_code = null;
                         if (!string.IsNullOrEmpty(item.BID_GROUP_CODE))
                         {
@@ -2642,6 +2669,10 @@ namespace HIS.Desktop.Plugins.BidUpdate
                         bidMaterialType.ADJUST_AMOUNT = item.ADJUST_AMOUNT;
                         bidMaterialType.IMP_VAT_RATIO = item.IMP_VAT_RATIO;
                         bidMaterialType.IMP_MORE_RATIO = item.ImpMoreRatio != null ? item.ImpMoreRatio / 100 : null;
+                        if (!string.IsNullOrEmpty(item.BATCH_DIVISION_CODE))
+                        {
+                            bidMaterialType.BATCH_DIVISION_CODE = item.BATCH_DIVISION_CODE;
+                        }
                         if (item.IsMaterialTypeMap)
                         {
                             bidMaterialType.MATERIAL_TYPE_MAP_ID = item.ID;
@@ -2688,6 +2719,10 @@ namespace HIS.Desktop.Plugins.BidUpdate
                         bidBloodType.BLOOD_TYPE_ID = item.ID;
                         bidBloodType.BID_NUM_ORDER = item.BID_NUM_ORDER;
                         bidBloodType.SUPPLIER_ID = (long)(item.SUPPLIER_ID ?? 0);
+                        if (!string.IsNullOrEmpty(item.BATCH_DIVISION_CODE))
+                        {
+                            bidBloodType.BATCH_DIVISION_CODE = item.BATCH_DIVISION_CODE;
+                        }
                         this.bidModel.HIS_BID_BLOOD_TYPE.Add(bidBloodType);
                     }
                 }
@@ -3022,6 +3057,7 @@ namespace HIS.Desktop.Plugins.BidUpdate
                 txtTenTT.Enabled = Enable;
                 txtMaDT.Enabled = Enable;
                 txtMaTT.Enabled = Enable;
+                txtBatchDivisionCode.Enabled = Enable;
             }
             catch (Exception ex)
             {
@@ -3052,7 +3088,7 @@ namespace HIS.Desktop.Plugins.BidUpdate
                 cboDosageForm.Text = "";
                 txtActiveBhyt.Text = "";
                 cboMediUseForm.EditValue = null;
-
+                txtBatchDivisionCode.Text = "";
             }
             catch (Exception ex)
             {
