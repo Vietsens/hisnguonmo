@@ -993,7 +993,7 @@ namespace HIS.Desktop.Plugins.HisImportBid
                 if (!String.IsNullOrWhiteSpace(item.BID_PACKAGE_CODE) && item.Type == VATTU && item.BID_PACKAGE_CODE.Length > 4)
                     messageErr.Add("mã gói thầu dài hơn 4 ký tự ");
 
-                if (!String.IsNullOrEmpty(item.BID_YEAR))
+                if (!string.IsNullOrEmpty(item.BID_YEAR))
                 {
                     bool valid = true;
                     if (item.BID_YEAR.Length > 4)
@@ -1531,42 +1531,56 @@ namespace HIS.Desktop.Plugins.HisImportBid
             {
                 if (ListDataImport == null || ListDataImport.Count == 0)
                     return;
-                    
-                // Group by BATCH_DIVISION_CODE
-                var duplicateBatchDivisions = ListDataImport
-                    .Where(x => !string.IsNullOrEmpty(x.BATCH_DIVISION_CODE))
-                    .GroupBy(x => x.BATCH_DIVISION_CODE)
+
+                var duplicates = ListDataImport
+                    .Where(o => !string.IsNullOrWhiteSpace(o.BATCH_DIVISION_CODE))
+                    .GroupBy(o => o.BATCH_DIVISION_CODE)
                     .Where(g => g.Count() > 1)
                     .ToList();
-                    
-                foreach (var group in duplicateBatchDivisions)
+
+                if (duplicates.Count == 0)
+                    return;
+
+                foreach (var dup in duplicates)
                 {
-                    var duplicates = group.ToList();
-                    
-                    // Generate error message for each type
-                    var medicineNames = duplicates.Where(x => x.Type == THUOC)
-                        .Select(x => x.MEDICINE_TYPE_NAME);
-                    var materialNames = duplicates.Where(x => x.Type == VATTU)
-                        .Select(x => x.MEDICINE_TYPE_NAME);
-                    var bloodNames = duplicates.Where(x => x.Type == MAU)
-                        .Select(x => x.MEDICINE_TYPE_NAME);
-                        
-                    var errorParts = new List<string>();
-                    if (medicineNames.Any())
-                        errorParts.Add($"thuốc: {string.Join(", ", medicineNames)}");
-                    if (materialNames.Any()) 
-                        errorParts.Add($"vật tư: {string.Join(", ", materialNames)}");
-                    if (bloodNames.Any())
-                        errorParts.Add($"máu: {string.Join(", ", bloodNames)}");
-                        
-                    string errorMsg = $"Mã phần lô đã được sử dụng bởi {string.Join("; ", errorParts)}";
-                    
-                    // Add error message to each duplicate item
-                    foreach (var item in duplicates)
+                    var group = dup.ToList();
+                    string batchCode = dup.Key;
+
+                    var typeMap = new Dictionary<int, List<string>> {
+                        { THUOC, new List<string>() },
+                        { VATTU, new List<string>() },
+                        { MAU, new List<string>() }
+                    };
+
+                    foreach (var item in group)
                     {
-                        item.ERROR = string.IsNullOrEmpty(item.ERROR) 
-                            ? errorMsg 
-                            : item.ERROR + " | " + errorMsg;
+                        if (item.Type == THUOC)
+                            typeMap[THUOC].Add(item.MEDICINE_TYPE_NAME);
+                        else if (item.Type == VATTU)
+                            typeMap[VATTU].Add(item.MEDICINE_TYPE_NAME);
+                        else if (item.Type == MAU)
+                            typeMap[MAU].Add(item.MEDICINE_TYPE_NAME);
+                    }
+
+                    var parts = new List<string>();
+                    if (typeMap[THUOC].Count > 0)
+                        parts.Add("thuốc: " + string.Join(", ", typeMap[THUOC].Distinct()));
+                    if (typeMap[VATTU].Count > 0)
+                        parts.Add("vật tư: " + string.Join(", ", typeMap[VATTU].Distinct()));
+                    if (typeMap[MAU].Count > 0)
+                        parts.Add("máu: " + string.Join(", ", typeMap[MAU].Distinct()));
+
+                    if (parts.Count > 1)
+                    {
+                        string errorMessage = $"Mã phần lô {batchCode} đã được sử dụng bởi {string.Join("; ", parts)}";
+                        
+                        foreach (var item in group)
+                        {
+                            if (string.IsNullOrEmpty(item.ERROR))
+                                item.ERROR = errorMessage;
+                            else
+                                item.ERROR += "; " + errorMessage;
+                        }
                     }
                 }
             }
