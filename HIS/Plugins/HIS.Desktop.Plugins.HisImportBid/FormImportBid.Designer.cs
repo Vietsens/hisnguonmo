@@ -45,6 +45,7 @@ namespace HIS.Desktop.Plugins.HisImportBid
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormImportBid));
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject1 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject2 = new DevExpress.Utils.SerializableAppearanceObject();
@@ -56,7 +57,7 @@ namespace HIS.Desktop.Plugins.HisImportBid
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject8 = new DevExpress.Utils.SerializableAppearanceObject();
             this.GcBid_STT = new DevExpress.XtraGrid.Columns.GridColumn();
             this.bar1 = new DevExpress.XtraBars.Bar();
-            this.barManager1 = new DevExpress.XtraBars.BarManager();
+            this.barManager1 = new DevExpress.XtraBars.BarManager(this.components);
             this.bar2 = new DevExpress.XtraBars.Bar();
             this.BarButtonSave = new DevExpress.XtraBars.BarButtonItem();
             this.barDockControlTop = new DevExpress.XtraBars.BarDockControl();
@@ -92,6 +93,9 @@ namespace HIS.Desktop.Plugins.HisImportBid
             this.GcBid_BidPackageCode = new DevExpress.XtraGrid.Columns.GridColumn();
             this.GcBid_BidGroupCode = new DevExpress.XtraGrid.Columns.GridColumn();
             this.GcBid_BidYear = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gridColumn13 = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gridColumn12 = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gridColumn7 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.GcBid_BidTypeCode = new DevExpress.XtraGrid.Columns.GridColumn();
             this.GcBid_NationalName = new DevExpress.XtraGrid.Columns.GridColumn();
             this.GcBid_ManufactureName = new DevExpress.XtraGrid.Columns.GridColumn();
@@ -115,9 +119,8 @@ namespace HIS.Desktop.Plugins.HisImportBid
             this.layoutControlItem4 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem5 = new DevExpress.XtraLayout.LayoutControlItem();
             this.LblBtnExportError = new DevExpress.XtraLayout.LayoutControlItem();
-            this.gridColumn7 = new DevExpress.XtraGrid.Columns.GridColumn();
-            this.gridColumn12 = new DevExpress.XtraGrid.Columns.GridColumn();
-            this.gridColumn13 = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.GcBid_BatchDivisionCode = new DevExpress.XtraGrid.Columns.GridColumn();
             ((System.ComponentModel.ISupportInitialize)(this.barManager1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
             this.layoutControl1.SuspendLayout();
@@ -191,14 +194,14 @@ namespace HIS.Desktop.Plugins.HisImportBid
             this.barDockControlTop.CausesValidation = false;
             this.barDockControlTop.Dock = System.Windows.Forms.DockStyle.Top;
             this.barDockControlTop.Location = new System.Drawing.Point(0, 29);
-            this.barDockControlTop.Size = new System.Drawing.Size(1236, 0);
+            this.barDockControlTop.Size = new System.Drawing.Size(1327, 0);
             // 
             // barDockControlBottom
             // 
             this.barDockControlBottom.CausesValidation = false;
             this.barDockControlBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.barDockControlBottom.Location = new System.Drawing.Point(0, 511);
-            this.barDockControlBottom.Size = new System.Drawing.Size(1236, 0);
+            this.barDockControlBottom.Size = new System.Drawing.Size(1327, 0);
             // 
             // barDockControlLeft
             // 
@@ -211,14 +214,14 @@ namespace HIS.Desktop.Plugins.HisImportBid
             // 
             this.barDockControlRight.CausesValidation = false;
             this.barDockControlRight.Dock = System.Windows.Forms.DockStyle.Right;
-            this.barDockControlRight.Location = new System.Drawing.Point(1236, 29);
+            this.barDockControlRight.Location = new System.Drawing.Point(1327, 29);
             this.barDockControlRight.Size = new System.Drawing.Size(0, 482);
             // 
             // BtnDownload
             // 
             this.BtnDownload.Location = new System.Drawing.Point(2, 2);
             this.BtnDownload.Name = "BtnDownload";
-            this.BtnDownload.Size = new System.Drawing.Size(106, 22);
+            this.BtnDownload.Size = new System.Drawing.Size(114, 22);
             this.BtnDownload.StyleController = this.layoutControl1;
             this.BtnDownload.TabIndex = 0;
             this.BtnDownload.Text = "Tải file mẫu";
@@ -235,16 +238,17 @@ namespace HIS.Desktop.Plugins.HisImportBid
             this.layoutControl1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.layoutControl1.Location = new System.Drawing.Point(0, 29);
             this.layoutControl1.Name = "layoutControl1";
+            this.layoutControl1.OptionsCustomizationForm.DesignTimeCustomizationFormPositionAndSize = new System.Drawing.Rectangle(2604, 300, 250, 350);
             this.layoutControl1.Root = this.layoutControlGroup1;
-            this.layoutControl1.Size = new System.Drawing.Size(1236, 482);
+            this.layoutControl1.Size = new System.Drawing.Size(1327, 482);
             this.layoutControl1.TabIndex = 0;
             this.layoutControl1.Text = "layoutControl1";
             // 
             // BtnExportError
             // 
-            this.BtnExportError.Location = new System.Drawing.Point(442, 2);
+            this.BtnExportError.Location = new System.Drawing.Point(474, 2);
             this.BtnExportError.Name = "BtnExportError";
-            this.BtnExportError.Size = new System.Drawing.Size(106, 22);
+            this.BtnExportError.Size = new System.Drawing.Size(114, 22);
             this.BtnExportError.StyleController = this.layoutControl1;
             this.BtnExportError.TabIndex = 6;
             this.BtnExportError.Text = "Xuất dữ liệu lỗi";
@@ -252,9 +256,9 @@ namespace HIS.Desktop.Plugins.HisImportBid
             // 
             // BtnSave
             // 
-            this.BtnSave.Location = new System.Drawing.Point(332, 2);
+            this.BtnSave.Location = new System.Drawing.Point(356, 2);
             this.BtnSave.Name = "BtnSave";
-            this.BtnSave.Size = new System.Drawing.Size(106, 22);
+            this.BtnSave.Size = new System.Drawing.Size(114, 22);
             this.BtnSave.StyleController = this.layoutControl1;
             this.BtnSave.TabIndex = 4;
             this.BtnSave.Text = "Lưu(Ctrl S)";
@@ -262,9 +266,9 @@ namespace HIS.Desktop.Plugins.HisImportBid
             // 
             // BtnImport
             // 
-            this.BtnImport.Location = new System.Drawing.Point(112, 2);
+            this.BtnImport.Location = new System.Drawing.Point(120, 2);
             this.BtnImport.Name = "BtnImport";
-            this.BtnImport.Size = new System.Drawing.Size(106, 22);
+            this.BtnImport.Size = new System.Drawing.Size(114, 22);
             this.BtnImport.StyleController = this.layoutControl1;
             this.BtnImport.TabIndex = 2;
             this.BtnImport.Text = "Nhập khẩu";
@@ -272,9 +276,9 @@ namespace HIS.Desktop.Plugins.HisImportBid
             // 
             // BtnShowLineError
             // 
-            this.BtnShowLineError.Location = new System.Drawing.Point(222, 2);
+            this.BtnShowLineError.Location = new System.Drawing.Point(238, 2);
             this.BtnShowLineError.Name = "BtnShowLineError";
-            this.BtnShowLineError.Size = new System.Drawing.Size(106, 22);
+            this.BtnShowLineError.Size = new System.Drawing.Size(114, 22);
             this.BtnShowLineError.StyleController = this.layoutControl1;
             this.BtnShowLineError.TabIndex = 3;
             this.BtnShowLineError.Text = "Dòng lỗi";
@@ -288,7 +292,7 @@ namespace HIS.Desktop.Plugins.HisImportBid
             this.GridControlBid.RepositoryItems.AddRange(new DevExpress.XtraEditors.Repository.RepositoryItem[] {
             this.RepositoryItemButtonDelete,
             this.RepositoryItemButtonError});
-            this.GridControlBid.Size = new System.Drawing.Size(1232, 452);
+            this.GridControlBid.Size = new System.Drawing.Size(1323, 452);
             this.GridControlBid.TabIndex = 5;
             this.GridControlBid.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
             this.GridViewBid,
@@ -301,6 +305,7 @@ namespace HIS.Desktop.Plugins.HisImportBid
             this.gridColumn1,
             this.gridColumn23,
             this.gridColumn2,
+            this.GcBid_BatchDivisionCode,
             this.GcBid_MedicineTypeCode,
             this.GcBid_MedicineTypeName,
             this.GcBid_ServiceUnitName,
@@ -397,7 +402,7 @@ namespace HIS.Desktop.Plugins.HisImportBid
             this.GcBid_MedicineTypeCode.Name = "GcBid_MedicineTypeCode";
             this.GcBid_MedicineTypeCode.OptionsColumn.AllowEdit = false;
             this.GcBid_MedicineTypeCode.Visible = true;
-            this.GcBid_MedicineTypeCode.VisibleIndex = 4;
+            this.GcBid_MedicineTypeCode.VisibleIndex = 5;
             this.GcBid_MedicineTypeCode.Width = 80;
             // 
             // GcBid_MedicineTypeName
@@ -407,7 +412,7 @@ namespace HIS.Desktop.Plugins.HisImportBid
             this.GcBid_MedicineTypeName.Name = "GcBid_MedicineTypeName";
             this.GcBid_MedicineTypeName.OptionsColumn.AllowEdit = false;
             this.GcBid_MedicineTypeName.Visible = true;
-            this.GcBid_MedicineTypeName.VisibleIndex = 5;
+            this.GcBid_MedicineTypeName.VisibleIndex = 6;
             this.GcBid_MedicineTypeName.Width = 150;
             // 
             // GcBid_ServiceUnitName
@@ -417,7 +422,7 @@ namespace HIS.Desktop.Plugins.HisImportBid
             this.GcBid_ServiceUnitName.Name = "GcBid_ServiceUnitName";
             this.GcBid_ServiceUnitName.OptionsColumn.AllowEdit = false;
             this.GcBid_ServiceUnitName.Visible = true;
-            this.GcBid_ServiceUnitName.VisibleIndex = 6;
+            this.GcBid_ServiceUnitName.VisibleIndex = 7;
             this.GcBid_ServiceUnitName.Width = 50;
             // 
             // GcBid_Amount
@@ -433,7 +438,7 @@ namespace HIS.Desktop.Plugins.HisImportBid
             this.GcBid_Amount.Name = "GcBid_Amount";
             this.GcBid_Amount.OptionsColumn.AllowEdit = false;
             this.GcBid_Amount.Visible = true;
-            this.GcBid_Amount.VisibleIndex = 7;
+            this.GcBid_Amount.VisibleIndex = 8;
             this.GcBid_Amount.Width = 80;
             // 
             // GcBid_ImpPrice
@@ -449,7 +454,7 @@ namespace HIS.Desktop.Plugins.HisImportBid
             this.GcBid_ImpPrice.Name = "GcBid_ImpPrice";
             this.GcBid_ImpPrice.OptionsColumn.AllowEdit = false;
             this.GcBid_ImpPrice.Visible = true;
-            this.GcBid_ImpPrice.VisibleIndex = 8;
+            this.GcBid_ImpPrice.VisibleIndex = 9;
             this.GcBid_ImpPrice.Width = 120;
             // 
             // GcBid_ImpVatRatio
@@ -465,7 +470,7 @@ namespace HIS.Desktop.Plugins.HisImportBid
             this.GcBid_ImpVatRatio.Name = "GcBid_ImpVatRatio";
             this.GcBid_ImpVatRatio.OptionsColumn.AllowEdit = false;
             this.GcBid_ImpVatRatio.Visible = true;
-            this.GcBid_ImpVatRatio.VisibleIndex = 9;
+            this.GcBid_ImpVatRatio.VisibleIndex = 10;
             this.GcBid_ImpVatRatio.Width = 60;
             // 
             // gridColumn3
@@ -475,7 +480,7 @@ namespace HIS.Desktop.Plugins.HisImportBid
             this.gridColumn3.Name = "gridColumn3";
             this.gridColumn3.OptionsColumn.AllowEdit = false;
             this.gridColumn3.Visible = true;
-            this.gridColumn3.VisibleIndex = 12;
+            this.gridColumn3.VisibleIndex = 13;
             // 
             // gridColumn4
             // 
@@ -484,7 +489,7 @@ namespace HIS.Desktop.Plugins.HisImportBid
             this.gridColumn4.Name = "gridColumn4";
             this.gridColumn4.OptionsColumn.AllowEdit = false;
             this.gridColumn4.Visible = true;
-            this.gridColumn4.VisibleIndex = 11;
+            this.gridColumn4.VisibleIndex = 12;
             this.gridColumn4.Width = 81;
             // 
             // gridColumn5
@@ -494,7 +499,7 @@ namespace HIS.Desktop.Plugins.HisImportBid
             this.gridColumn5.Name = "gridColumn5";
             this.gridColumn5.OptionsColumn.AllowEdit = false;
             this.gridColumn5.Visible = true;
-            this.gridColumn5.VisibleIndex = 10;
+            this.gridColumn5.VisibleIndex = 11;
             this.gridColumn5.Width = 92;
             // 
             // GcBid_SupplierName
@@ -504,7 +509,7 @@ namespace HIS.Desktop.Plugins.HisImportBid
             this.GcBid_SupplierName.Name = "GcBid_SupplierName";
             this.GcBid_SupplierName.OptionsColumn.AllowEdit = false;
             this.GcBid_SupplierName.Visible = true;
-            this.GcBid_SupplierName.VisibleIndex = 13;
+            this.GcBid_SupplierName.VisibleIndex = 14;
             this.GcBid_SupplierName.Width = 120;
             // 
             // GcBid_BidName
@@ -514,7 +519,7 @@ namespace HIS.Desktop.Plugins.HisImportBid
             this.GcBid_BidName.Name = "GcBid_BidName";
             this.GcBid_BidName.OptionsColumn.AllowEdit = false;
             this.GcBid_BidName.Visible = true;
-            this.GcBid_BidName.VisibleIndex = 14;
+            this.GcBid_BidName.VisibleIndex = 15;
             this.GcBid_BidName.Width = 121;
             // 
             // GcBid_BidCode
@@ -524,7 +529,7 @@ namespace HIS.Desktop.Plugins.HisImportBid
             this.GcBid_BidCode.Name = "GcBid_BidCode";
             this.GcBid_BidCode.OptionsColumn.AllowEdit = false;
             this.GcBid_BidCode.Visible = true;
-            this.GcBid_BidCode.VisibleIndex = 15;
+            this.GcBid_BidCode.VisibleIndex = 16;
             // 
             // GcBid_BidNumber
             // 
@@ -533,7 +538,7 @@ namespace HIS.Desktop.Plugins.HisImportBid
             this.GcBid_BidNumber.Name = "GcBid_BidNumber";
             this.GcBid_BidNumber.OptionsColumn.AllowEdit = false;
             this.GcBid_BidNumber.Visible = true;
-            this.GcBid_BidNumber.VisibleIndex = 16;
+            this.GcBid_BidNumber.VisibleIndex = 17;
             this.GcBid_BidNumber.Width = 111;
             // 
             // GcBid_BidNumOrder
@@ -543,7 +548,7 @@ namespace HIS.Desktop.Plugins.HisImportBid
             this.GcBid_BidNumOrder.Name = "GcBid_BidNumOrder";
             this.GcBid_BidNumOrder.OptionsColumn.AllowEdit = false;
             this.GcBid_BidNumOrder.Visible = true;
-            this.GcBid_BidNumOrder.VisibleIndex = 17;
+            this.GcBid_BidNumOrder.VisibleIndex = 18;
             this.GcBid_BidNumOrder.Width = 61;
             // 
             // GcBid_BidPackageCode
@@ -553,7 +558,7 @@ namespace HIS.Desktop.Plugins.HisImportBid
             this.GcBid_BidPackageCode.Name = "GcBid_BidPackageCode";
             this.GcBid_BidPackageCode.OptionsColumn.AllowEdit = false;
             this.GcBid_BidPackageCode.Visible = true;
-            this.GcBid_BidPackageCode.VisibleIndex = 18;
+            this.GcBid_BidPackageCode.VisibleIndex = 19;
             this.GcBid_BidPackageCode.Width = 52;
             // 
             // GcBid_BidGroupCode
@@ -563,7 +568,7 @@ namespace HIS.Desktop.Plugins.HisImportBid
             this.GcBid_BidGroupCode.Name = "GcBid_BidGroupCode";
             this.GcBid_BidGroupCode.OptionsColumn.AllowEdit = false;
             this.GcBid_BidGroupCode.Visible = true;
-            this.GcBid_BidGroupCode.VisibleIndex = 19;
+            this.GcBid_BidGroupCode.VisibleIndex = 20;
             this.GcBid_BidGroupCode.Width = 61;
             // 
             // GcBid_BidYear
@@ -573,8 +578,32 @@ namespace HIS.Desktop.Plugins.HisImportBid
             this.GcBid_BidYear.Name = "GcBid_BidYear";
             this.GcBid_BidYear.OptionsColumn.AllowEdit = false;
             this.GcBid_BidYear.Visible = true;
-            this.GcBid_BidYear.VisibleIndex = 20;
+            this.GcBid_BidYear.VisibleIndex = 21;
             this.GcBid_BidYear.Width = 87;
+            // 
+            // gridColumn13
+            // 
+            this.gridColumn13.Caption = "Hiệu lực từ";
+            this.gridColumn13.FieldName = "VALID_FROM_TIME";
+            this.gridColumn13.Name = "gridColumn13";
+            this.gridColumn13.Visible = true;
+            this.gridColumn13.VisibleIndex = 22;
+            // 
+            // gridColumn12
+            // 
+            this.gridColumn12.Caption = "Hiệu lực đến";
+            this.gridColumn12.FieldName = "VALID_TO_TIME";
+            this.gridColumn12.Name = "gridColumn12";
+            this.gridColumn12.Visible = true;
+            this.gridColumn12.VisibleIndex = 23;
+            // 
+            // gridColumn7
+            // 
+            this.gridColumn7.Caption = "Mã áp thầu";
+            this.gridColumn7.FieldName = "BID_APTHAU_CODE";
+            this.gridColumn7.Name = "gridColumn7";
+            this.gridColumn7.Visible = true;
+            this.gridColumn7.VisibleIndex = 24;
             // 
             // GcBid_BidTypeCode
             // 
@@ -583,7 +612,7 @@ namespace HIS.Desktop.Plugins.HisImportBid
             this.GcBid_BidTypeCode.Name = "GcBid_BidTypeCode";
             this.GcBid_BidTypeCode.OptionsColumn.AllowEdit = false;
             this.GcBid_BidTypeCode.Visible = true;
-            this.GcBid_BidTypeCode.VisibleIndex = 24;
+            this.GcBid_BidTypeCode.VisibleIndex = 25;
             this.GcBid_BidTypeCode.Width = 87;
             // 
             // GcBid_NationalName
@@ -593,7 +622,7 @@ namespace HIS.Desktop.Plugins.HisImportBid
             this.GcBid_NationalName.Name = "GcBid_NationalName";
             this.GcBid_NationalName.OptionsColumn.AllowEdit = false;
             this.GcBid_NationalName.Visible = true;
-            this.GcBid_NationalName.VisibleIndex = 25;
+            this.GcBid_NationalName.VisibleIndex = 26;
             this.GcBid_NationalName.Width = 100;
             // 
             // GcBid_ManufactureName
@@ -603,7 +632,7 @@ namespace HIS.Desktop.Plugins.HisImportBid
             this.GcBid_ManufactureName.Name = "GcBid_ManufactureName";
             this.GcBid_ManufactureName.OptionsColumn.AllowEdit = false;
             this.GcBid_ManufactureName.Visible = true;
-            this.GcBid_ManufactureName.VisibleIndex = 26;
+            this.GcBid_ManufactureName.VisibleIndex = 27;
             this.GcBid_ManufactureName.Width = 150;
             // 
             // GcBid_ActiveIngrBhytCode
@@ -613,7 +642,7 @@ namespace HIS.Desktop.Plugins.HisImportBid
             this.GcBid_ActiveIngrBhytCode.Name = "GcBid_ActiveIngrBhytCode";
             this.GcBid_ActiveIngrBhytCode.OptionsColumn.AllowEdit = false;
             this.GcBid_ActiveIngrBhytCode.Visible = true;
-            this.GcBid_ActiveIngrBhytCode.VisibleIndex = 27;
+            this.GcBid_ActiveIngrBhytCode.VisibleIndex = 28;
             this.GcBid_ActiveIngrBhytCode.Width = 60;
             // 
             // GcBid_ActiveIngrBhytName
@@ -623,7 +652,7 @@ namespace HIS.Desktop.Plugins.HisImportBid
             this.GcBid_ActiveIngrBhytName.Name = "GcBid_ActiveIngrBhytName";
             this.GcBid_ActiveIngrBhytName.OptionsColumn.AllowEdit = false;
             this.GcBid_ActiveIngrBhytName.Visible = true;
-            this.GcBid_ActiveIngrBhytName.VisibleIndex = 28;
+            this.GcBid_ActiveIngrBhytName.VisibleIndex = 29;
             this.GcBid_ActiveIngrBhytName.Width = 150;
             // 
             // GcBid_Concentra
@@ -633,7 +662,7 @@ namespace HIS.Desktop.Plugins.HisImportBid
             this.GcBid_Concentra.Name = "GcBid_Concentra";
             this.GcBid_Concentra.OptionsColumn.AllowEdit = false;
             this.GcBid_Concentra.Visible = true;
-            this.GcBid_Concentra.VisibleIndex = 29;
+            this.GcBid_Concentra.VisibleIndex = 30;
             this.GcBid_Concentra.Width = 120;
             // 
             // GcBid_PackingTypeName
@@ -643,7 +672,7 @@ namespace HIS.Desktop.Plugins.HisImportBid
             this.GcBid_PackingTypeName.Name = "GcBid_PackingTypeName";
             this.GcBid_PackingTypeName.OptionsColumn.AllowEdit = false;
             this.GcBid_PackingTypeName.Visible = true;
-            this.GcBid_PackingTypeName.VisibleIndex = 30;
+            this.GcBid_PackingTypeName.VisibleIndex = 31;
             this.GcBid_PackingTypeName.Width = 150;
             // 
             // gc_MedicineUseFormCode
@@ -653,7 +682,7 @@ namespace HIS.Desktop.Plugins.HisImportBid
             this.gc_MedicineUseFormCode.Name = "gc_MedicineUseFormCode";
             this.gc_MedicineUseFormCode.OptionsColumn.AllowEdit = false;
             this.gc_MedicineUseFormCode.Visible = true;
-            this.gc_MedicineUseFormCode.VisibleIndex = 31;
+            this.gc_MedicineUseFormCode.VisibleIndex = 32;
             this.gc_MedicineUseFormCode.Width = 90;
             // 
             // gridColumn6
@@ -663,7 +692,7 @@ namespace HIS.Desktop.Plugins.HisImportBid
             this.gridColumn6.Name = "gridColumn6";
             this.gridColumn6.OptionsColumn.AllowEdit = false;
             this.gridColumn6.Visible = true;
-            this.gridColumn6.VisibleIndex = 32;
+            this.gridColumn6.VisibleIndex = 33;
             // 
             // gridColumn8
             // 
@@ -672,7 +701,7 @@ namespace HIS.Desktop.Plugins.HisImportBid
             this.gridColumn8.Name = "gridColumn8";
             this.gridColumn8.OptionsColumn.AllowEdit = false;
             this.gridColumn8.Visible = true;
-            this.gridColumn8.VisibleIndex = 33;
+            this.gridColumn8.VisibleIndex = 34;
             // 
             // gridColumn9
             // 
@@ -681,7 +710,7 @@ namespace HIS.Desktop.Plugins.HisImportBid
             this.gridColumn9.Name = "gridColumn9";
             this.gridColumn9.OptionsColumn.AllowEdit = false;
             this.gridColumn9.Visible = true;
-            this.gridColumn9.VisibleIndex = 34;
+            this.gridColumn9.VisibleIndex = 35;
             this.gridColumn9.Width = 80;
             // 
             // gridColumn10
@@ -691,7 +720,7 @@ namespace HIS.Desktop.Plugins.HisImportBid
             this.gridColumn10.Name = "gridColumn10";
             this.gridColumn10.OptionsColumn.AllowEdit = false;
             this.gridColumn10.Visible = true;
-            this.gridColumn10.VisibleIndex = 35;
+            this.gridColumn10.VisibleIndex = 36;
             // 
             // gridColumn11
             // 
@@ -700,7 +729,7 @@ namespace HIS.Desktop.Plugins.HisImportBid
             this.gridColumn11.Name = "gridColumn11";
             this.gridColumn11.OptionsColumn.AllowEdit = false;
             this.gridColumn11.Visible = true;
-            this.gridColumn11.VisibleIndex = 36;
+            this.gridColumn11.VisibleIndex = 37;
             // 
             // RepositoryItemButtonError
             // 
@@ -729,9 +758,9 @@ namespace HIS.Desktop.Plugins.HisImportBid
             this.layoutControlItem5,
             this.LblBtnExportError});
             this.layoutControlGroup1.Location = new System.Drawing.Point(0, 0);
-            this.layoutControlGroup1.Name = "layoutControlGroup1";
+            this.layoutControlGroup1.Name = "Root";
             this.layoutControlGroup1.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
-            this.layoutControlGroup1.Size = new System.Drawing.Size(1236, 482);
+            this.layoutControlGroup1.Size = new System.Drawing.Size(1327, 482);
             this.layoutControlGroup1.TextVisible = false;
             // 
             // layoutControlItem1
@@ -739,7 +768,7 @@ namespace HIS.Desktop.Plugins.HisImportBid
             this.layoutControlItem1.Control = this.BtnDownload;
             this.layoutControlItem1.Location = new System.Drawing.Point(0, 0);
             this.layoutControlItem1.Name = "layoutControlItem1";
-            this.layoutControlItem1.Size = new System.Drawing.Size(110, 26);
+            this.layoutControlItem1.Size = new System.Drawing.Size(118, 26);
             this.layoutControlItem1.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem1.TextVisible = false;
             // 
@@ -748,83 +777,74 @@ namespace HIS.Desktop.Plugins.HisImportBid
             this.layoutControlItem2.Control = this.GridControlBid;
             this.layoutControlItem2.Location = new System.Drawing.Point(0, 26);
             this.layoutControlItem2.Name = "layoutControlItem2";
-            this.layoutControlItem2.Size = new System.Drawing.Size(1236, 456);
+            this.layoutControlItem2.Size = new System.Drawing.Size(1327, 456);
             this.layoutControlItem2.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem2.TextVisible = false;
             // 
             // emptySpaceItem1
             // 
             this.emptySpaceItem1.AllowHotTrack = false;
-            this.emptySpaceItem1.Location = new System.Drawing.Point(550, 0);
+            this.emptySpaceItem1.Location = new System.Drawing.Point(590, 0);
             this.emptySpaceItem1.Name = "emptySpaceItem1";
-            this.emptySpaceItem1.Size = new System.Drawing.Size(686, 26);
+            this.emptySpaceItem1.Size = new System.Drawing.Size(737, 26);
             this.emptySpaceItem1.TextSize = new System.Drawing.Size(0, 0);
             // 
             // layoutControlItem3
             // 
             this.layoutControlItem3.Control = this.BtnShowLineError;
-            this.layoutControlItem3.Location = new System.Drawing.Point(220, 0);
+            this.layoutControlItem3.Location = new System.Drawing.Point(236, 0);
             this.layoutControlItem3.Name = "layoutControlItem3";
-            this.layoutControlItem3.Size = new System.Drawing.Size(110, 26);
+            this.layoutControlItem3.Size = new System.Drawing.Size(118, 26);
             this.layoutControlItem3.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem3.TextVisible = false;
             // 
             // layoutControlItem4
             // 
             this.layoutControlItem4.Control = this.BtnImport;
-            this.layoutControlItem4.Location = new System.Drawing.Point(110, 0);
+            this.layoutControlItem4.Location = new System.Drawing.Point(118, 0);
             this.layoutControlItem4.Name = "layoutControlItem4";
-            this.layoutControlItem4.Size = new System.Drawing.Size(110, 26);
+            this.layoutControlItem4.Size = new System.Drawing.Size(118, 26);
             this.layoutControlItem4.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem4.TextVisible = false;
             // 
             // layoutControlItem5
             // 
             this.layoutControlItem5.Control = this.BtnSave;
-            this.layoutControlItem5.Location = new System.Drawing.Point(330, 0);
+            this.layoutControlItem5.Location = new System.Drawing.Point(354, 0);
             this.layoutControlItem5.Name = "layoutControlItem5";
-            this.layoutControlItem5.Size = new System.Drawing.Size(110, 26);
+            this.layoutControlItem5.Size = new System.Drawing.Size(118, 26);
             this.layoutControlItem5.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem5.TextVisible = false;
             // 
             // LblBtnExportError
             // 
             this.LblBtnExportError.Control = this.BtnExportError;
-            this.LblBtnExportError.Location = new System.Drawing.Point(440, 0);
+            this.LblBtnExportError.Location = new System.Drawing.Point(472, 0);
             this.LblBtnExportError.Name = "LblBtnExportError";
-            this.LblBtnExportError.Size = new System.Drawing.Size(110, 26);
+            this.LblBtnExportError.Size = new System.Drawing.Size(118, 26);
             this.LblBtnExportError.TextSize = new System.Drawing.Size(0, 0);
             this.LblBtnExportError.TextVisible = false;
             // 
-            // gridColumn7
+            // contextMenuStrip1
             // 
-            this.gridColumn7.Caption = "Mã áp thầu";
-            this.gridColumn7.FieldName = "BID_APTHAU_CODE";
-            this.gridColumn7.Name = "gridColumn7";
-            this.gridColumn7.Visible = true;
-            this.gridColumn7.VisibleIndex = 23;
+            this.contextMenuStrip1.Name = "contextMenuStrip1";
+            this.contextMenuStrip1.Size = new System.Drawing.Size(61, 4);
             // 
-            // gridColumn12
+            // GcBid_BatchDivisionCode
             // 
-            this.gridColumn12.Caption = "Hiệu lực đến";
-            this.gridColumn12.FieldName = "VALID_TO_TIME";
-            this.gridColumn12.Name = "gridColumn12";
-            this.gridColumn12.Visible = true;
-            this.gridColumn12.VisibleIndex = 22;
-            // 
-            // gridColumn13
-            // 
-            this.gridColumn13.Caption = "Hiệu lực từ";
-            this.gridColumn13.FieldName = "VALID_FROM_TIME";
-            this.gridColumn13.Name = "gridColumn13";
-            this.gridColumn13.Visible = true;
-            this.gridColumn13.VisibleIndex = 21;
+            this.GcBid_BatchDivisionCode.Caption = "Mã phần lô";
+            this.GcBid_BatchDivisionCode.FieldName = "BATCH_DIVISION_CODE";
+            this.GcBid_BatchDivisionCode.Name = "GcBid_BatchDivisionCode";
+            this.GcBid_BatchDivisionCode.OptionsColumn.AllowEdit = false;
+            this.GcBid_BatchDivisionCode.Visible = true;
+            this.GcBid_BatchDivisionCode.VisibleIndex = 4;
+            this.GcBid_BatchDivisionCode.Width = 90;
             // 
             // FormImportBid
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1236, 511);
+            this.ClientSize = new System.Drawing.Size(1327, 511);
             this.Controls.Add(this.layoutControl1);
             this.Controls.Add(this.barDockControlLeft);
             this.Controls.Add(this.barDockControlRight);
@@ -866,10 +886,7 @@ namespace HIS.Desktop.Plugins.HisImportBid
         private DevExpress.XtraBars.BarManager barManager1;
         private DevExpress.XtraBars.Bar bar2;
         private DevExpress.XtraBars.BarButtonItem BarButtonSave;
-        private DevExpress.XtraBars.BarDockControl barDockControlTop;
-        private DevExpress.XtraBars.BarDockControl barDockControlBottom;
-        private DevExpress.XtraBars.BarDockControl barDockControlLeft;
-        private DevExpress.XtraBars.BarDockControl barDockControlRight;
+
         private DevExpress.XtraLayout.LayoutControl layoutControl1;
         private DevExpress.XtraEditors.SimpleButton BtnSave;
         private DevExpress.XtraEditors.SimpleButton BtnImport;
@@ -926,5 +943,11 @@ namespace HIS.Desktop.Plugins.HisImportBid
         private DevExpress.XtraGrid.Columns.GridColumn gridColumn13;
         private DevExpress.XtraGrid.Columns.GridColumn gridColumn12;
         private DevExpress.XtraGrid.Columns.GridColumn gridColumn7;
+        private DevExpress.XtraBars.BarDockControl barDockControlTop;
+        private DevExpress.XtraBars.BarDockControl barDockControlBottom;
+        private DevExpress.XtraBars.BarDockControl barDockControlLeft;
+        private DevExpress.XtraBars.BarDockControl barDockControlRight;
+        private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
+        private DevExpress.XtraGrid.Columns.GridColumn GcBid_BatchDivisionCode;
     }
 }
