@@ -230,6 +230,8 @@ namespace HIS.Desktop.Plugins.HisImportBid
                             if (this.ListDataImport != null && this.ListDataImport.Count > 0)
                             {
                                 CheckValidData(ListDataImport);
+                                CheckDuplicateBatchDivisionCode();
+                                CheckErrorLine();
                                 SetDataSource(ListDataImport);
 
                                 checkClick = false;
@@ -516,6 +518,9 @@ namespace HIS.Desktop.Plugins.HisImportBid
 
                     if (medicineTypeNotExist == null && bloodTypeNotExist == null)
                         medicineType.ERROR = "Mã thuốc không hợp lệ. ";
+
+                    if (medicineType.BATCH_DIVISION_CODE.Length > 25)
+                        medicineType.ERROR = "Mã phần lô vượt quá ký tự cho phép, 25 ký tự. ";
 
                     if (medicineTypeNotExist != null)
                     {
@@ -1354,6 +1359,7 @@ namespace HIS.Desktop.Plugins.HisImportBid
                                 bidMedicineType.MONTH_LIFESPAN = item.MONTH_LIFESPAN;
                                 bidMedicineType.DAY_LIFESPAN = item.DAY_LIFESPAN;
                                 bidMedicineType.HOUR_LIFESPAN = item.HOUR_LIFESPAN;
+                                bidMedicineType.BATCH_DIVISION_CODE = item.BATCH_DIVISION_CODE;
 
                                 bidModel.HIS_BID_MEDICINE_TYPE.Add(bidMedicineType);
                             }
@@ -1387,6 +1393,7 @@ namespace HIS.Desktop.Plugins.HisImportBid
                                 bidMaterialType.MONTH_LIFESPAN = item.MONTH_LIFESPAN;
                                 bidMaterialType.DAY_LIFESPAN = item.DAY_LIFESPAN;
                                 bidMaterialType.HOUR_LIFESPAN = item.HOUR_LIFESPAN;
+                                bidMaterialType.BATCH_DIVISION_CODE = item.BATCH_DIVISION_CODE;
 
                                 bidModel.HIS_BID_MATERIAL_TYPE.Add(bidMaterialType);
                             }
@@ -1399,6 +1406,7 @@ namespace HIS.Desktop.Plugins.HisImportBid
                                 bidBloodType.BLOOD_TYPE_ID = item.ID;
                                 bidBloodType.BID_NUM_ORDER = item.BID_NUM_ORDER;
                                 bidBloodType.SUPPLIER_ID = (long)(item.SUPPLIER_ID ?? 0);
+                                bidBloodType.BATCH_DIVISION_CODE = item.BATCH_DIVISION_CODE;
 
                                 bidModel.HIS_BID_BLOOD_TYPE.Add(bidBloodType);
                             }
@@ -1503,6 +1511,57 @@ namespace HIS.Desktop.Plugins.HisImportBid
 
                     store.SetCommonFunctions();
                     objectTag.AddObjectData(store, "ExportData", errorList);
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void CheckDuplicateBatchDivisionCode()
+        {
+            try
+            {
+                if (ListDataImport == null || ListDataImport.Count == 0)
+                    return;
+                    
+                // Group by BATCH_DIVISION_CODE
+                var duplicateBatchDivisions = ListDataImport
+                    .Where(x => !string.IsNullOrEmpty(x.BATCH_DIVISION_CODE))
+                    .GroupBy(x => x.BATCH_DIVISION_CODE)
+                    .Where(g => g.Count() > 1)
+                    .ToList();
+                    
+                foreach (var group in duplicateBatchDivisions)
+                {
+                    var duplicates = group.ToList();
+                    
+                    // Generate error message for each type
+                    var medicineNames = duplicates.Where(x => x.Type == THUOC)
+                        .Select(x => x.MEDICINE_TYPE_NAME);
+                    var materialNames = duplicates.Where(x => x.Type == VATTU)
+                        .Select(x => x.MEDICINE_TYPE_NAME);
+                    var bloodNames = duplicates.Where(x => x.Type == MAU)
+                        .Select(x => x.MEDICINE_TYPE_NAME);
+                        
+                    var errorParts = new List<string>();
+                    if (medicineNames.Any())
+                        errorParts.Add($"thuốc: {string.Join(", ", medicineNames)}");
+                    if (materialNames.Any()) 
+                        errorParts.Add($"vật tư: {string.Join(", ", materialNames)}");
+                    if (bloodNames.Any())
+                        errorParts.Add($"máu: {string.Join(", ", bloodNames)}");
+                        
+                    string errorMsg = $"Mã phần lô đã được sử dụng bởi {string.Join("; ", errorParts)}";
+                    
+                    // Add error message to each duplicate item
+                    foreach (var item in duplicates)
+                    {
+                        item.ERROR = string.IsNullOrEmpty(item.ERROR) 
+                            ? errorMsg 
+                            : item.ERROR + " | " + errorMsg;
+                    }
                 }
             }
             catch (Exception ex)
