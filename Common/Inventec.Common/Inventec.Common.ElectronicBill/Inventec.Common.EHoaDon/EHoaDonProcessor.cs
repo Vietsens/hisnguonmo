@@ -57,6 +57,9 @@ namespace Inventec.Common.EHoaDon
                     case CmdType.CreateInvoiceWithFormSerial:
                     case CmdType.CreateInvoiceWithFormSerialNo:
                     case CmdType.CreateInvoiceWithFormSerialReturnNo:
+                    case CmdType.CreateInvoiceReplace:
+                    case CmdType.CreateInvoiceReplaceReturnNo:
+                    case CmdType.CreateInvoiceReplaceOut:
                         string sGUID = null;
                         result = DoCreateInvoice(cmdType, out sGUID);
                         break;

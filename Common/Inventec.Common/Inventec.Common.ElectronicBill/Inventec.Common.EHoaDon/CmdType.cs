@@ -36,6 +36,8 @@ namespace Inventec.Common.EHoaDon
 
         public const int CreateInvoiceReplace = 120; // Tạo Hóa đơn thay thế cho 1 Hoá đơn khác
         public const int CreateInvoiceAdjust = 121; // Tạo Hóa đơn điều chỉnh cho 1 Hoá đơn khác
+        public const int CreateInvoiceReplaceReturnNo = 123; // Tạo Hóa đơn thay thế, số HĐ do Bkav cấp (Hóa đơn cấp số khi tạo thành công)
+        public const int CreateInvoiceReplaceOut = 128; // Tạo Hóa đơn Thay thế cho Hoá đơn ngoài hệ thống, số HĐ do Bkav cấp khi tạo thành công (Hoá đơn chờ)
         // 2xx: Cập nhật
         public const int UpdateInvoiceByPartnerInvoiceID = 200; // Cập nhật thông tin của Hoá đơn
         public const int UpdateInvoiceByInvoiceGUID = 204; // Cập nhật thông tin của Hoá đơn
