@@ -1857,7 +1857,7 @@ namespace HIS.Desktop.Plugins.HisImportMedicineType.FormLoad
 
 
 
-                    
+
 
                     //if (item.SOURCE_MEDICINE != null)
                     //{
@@ -1881,7 +1881,7 @@ namespace HIS.Desktop.Plugins.HisImportMedicineType.FormLoad
                             var src = listSourceMedicine.FirstOrDefault(x => x.SOURCE_MEDICINE_CODE == item.SOURCE_MEDICINE_CODE);
                             if (src != null)
                             {
-                                mediAdo.SOURCE_MEDICINE_ID = src.ID;
+                                mediAdo.SOURCE_MEDICINE = (short?)src.ID;
                                 mediAdo.SOURCE_MEDICINE_NAME = src.SOURCE_MEDICINE_NAME;
                             }
                             else
@@ -1896,7 +1896,7 @@ namespace HIS.Desktop.Plugins.HisImportMedicineType.FormLoad
                         var src = listSourceMedicine.FirstOrDefault(x => x.SOURCE_MEDICINE_NAME == item.SOURCE_MEDICINE_NAME);
                         if (src != null)
                         {
-                            mediAdo.SOURCE_MEDICINE_ID = src.ID;
+                            mediAdo.SOURCE_MEDICINE = (short?)src.ID;
                             mediAdo.SOURCE_MEDICINE_CODE = src.SOURCE_MEDICINE_CODE;
                         }
                         else
