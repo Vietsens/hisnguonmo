@@ -248,7 +248,7 @@ namespace HIS.UC.PlusInfo
                         default:
                             break;
 
-                        #endregion
+                            #endregion
                     }
                 }
             }
@@ -386,7 +386,7 @@ namespace HIS.UC.PlusInfo
                             default:
                                 break;
 
-                            #endregion
+                                #endregion
                         }
                     }
                     catch (Exception exx)
@@ -468,6 +468,50 @@ namespace HIS.UC.PlusInfo
             }
         }
 
+        public void GetStateChangeStrucAddess(bool IsChangeStrucAdreess)
+        {
+            this.IsChangeStrucAddress = IsChangeStrucAdreess;
+            if (ucCommuneNow1 != null)
+            {
+                ucCommuneNow1.IsChangeStrucAddress = IsChangeStrucAddress;
+            }
+            if (ucProvinceNow1 != null)
+            {
+                ucProvinceNow1.IsChangeStrucAddress = IsChangeStrucAddress;
+            }
+            if (IsChangeStrucAdreess)
+            {
+                if (ucDistrictNow1 != null)
+                {
+                    ucDistrictNow1.VisibleControl(false);
+                }
+                if (ucCommuneNow1 != null)
+                {
+                    ucCommuneNow1.RefreshUserControl(false);
+                }
+                if (ucProvinceNow1 != null)
+                {
+                    ucProvinceNow1.SetValue(new UCPlusInfoADO());
+                }
+            }
+            else
+            {
+                if (ucDistrictNow1 != null)
+                {
+                    ucDistrictNow1.VisibleControl(true);
+                }
+                if (ucCommuneNow1 != null)
+                {
+                    ucCommuneNow1.RefreshUserControl(false);
+                    ucCommuneNow1.LoadCommune("", "Fake");
+                }
+                if (ucProvinceNow1 != null)
+                {
+                    ucProvinceNow1.SetValue(new UCPlusInfoADO());
+                    ucProvinceNow1.UCProvinceInit();
+                }
+            }
+        }
         #endregion
 
     }

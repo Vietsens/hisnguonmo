@@ -73,6 +73,6 @@ namespace HIS.UC.PlusInfo
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
-        }    
+        }   
     }
 }

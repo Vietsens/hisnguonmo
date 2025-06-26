@@ -129,7 +129,8 @@
     <Reference Include="Inventec.Common.Adapter">
       <HintPath>..\..\..\..\lib\Inventec.Common\Inventec.Common.Adapter\Inventec.Common.Adapter.dll</HintPath>
     </Reference>
-    <Reference Include="Inventec.Common.Address">
+    <Reference Include="Inventec.Common.Address, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\lib\Inventec.Common\Inventec.Common.Address\Inventec.Common.Address.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Common.Controls.EditorLoader">

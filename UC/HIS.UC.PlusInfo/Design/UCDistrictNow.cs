@@ -43,7 +43,7 @@ namespace HIS.UC.PlusInfo.Design
         IShareMethodInit _shareMethod = new ShareMethodDetail();
         DelegateNextControl dlgFocusNextUserControl;
         DelegateSetValueForUCPlusInfo dlgLoadCommune;
-
+        public bool IsChangeStrucAdreess;
         #endregion
 
         #region Constructor - Load
@@ -69,6 +69,27 @@ namespace HIS.UC.PlusInfo.Design
         {
             try
             {
+
+                this.cboDistrictNowName.Properties.GetNotInListValue += new DevExpress.XtraEditors.Controls.GetNotInListValueEventHandler(this.cbo_Properties_GetNotInListValue);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+        private void cbo_Properties_GetNotInListValue(object sender, DevExpress.XtraEditors.Controls.GetNotInListValueEventArgs e)
+        {
+            try
+            {
+                if (e.RecordIndex > -1)
+                {
+                    if (e.FieldName == "RENDERER_DISTRICT_NAME")
+                    {
+                        var item = ((List<SDA.EFMODEL.DataModels.V_SDA_DISTRICT>)this.cboDistrictNowName.Properties.DataSource)[e.RecordIndex];
+                        if (item != null)
+                            e.Value = string.Format("{0} {1}", item.INITIAL_NAME, item.DISTRICT_NAME);
+                    }
+                }
             }
             catch (Exception ex)
             {
@@ -278,7 +299,7 @@ namespace HIS.UC.PlusInfo.Design
                         this.cboDistrictNowName.EditValue = null;
                         this.cboDistrictNowName.Properties.DataSource = null;
                         if (listResult.Count > 0)
-                            this._shareMethod.InitComboCommon(this.cboDistrictNowName, listResult, "DISTRICT_CODE", "DISTRICT_NAME", "SEARCH_CODE");
+                            this._shareMethod.InitComboCommon(this.cboDistrictNowName, listResult, "DISTRICT_CODE", "RENDERER_DISTRICT_NAME", "SEARCH_CODE");
                         //this.cboDistrictNowName.Properties.DataSource = listResult;
                         this.txtDistrictNowCode.Text = "";
                         if (String.IsNullOrEmpty(provinceCode))
@@ -318,6 +339,20 @@ namespace HIS.UC.PlusInfo.Design
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Warn("Tiep don: UCPlusInfo/UCCommuneNow/RefreshUserControl: \n" + ex);
+            }
+        }
+        internal void VisibleControl(bool isVisible)
+        {
+            try
+            {
+                this.lciDistrictNow.Visibility = isVisible ? DevExpress.XtraLayout.Utils.LayoutVisibility.Always : DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+                this.layoutControlItem1.Visibility = isVisible ? DevExpress.XtraLayout.Utils.LayoutVisibility.Always : DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+                this.txtDistrictNowCode.Visible = isVisible;
+                this.cboDistrictNowName.Visible = isVisible;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
 

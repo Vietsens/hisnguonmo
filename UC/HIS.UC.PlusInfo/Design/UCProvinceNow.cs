@@ -33,6 +33,7 @@ using Inventec.Common.Controls.EditorLoader;
 using HIS.UC.PlusInfo.ADO;
 using Inventec.Desktop.Common.LanguageManager;
 using System.Resources;
+using SDA.EFMODEL.DataModels;
 
 namespace HIS.UC.PlusInfo.Design
 {
@@ -42,9 +43,10 @@ namespace HIS.UC.PlusInfo.Design
 
         IShareMethodInit _shareMethod = new ShareMethodDetail();
         DelegateSetValueForUCPlusInfo dlgLoadDistrict;
+        DelegateSetValueForUCPlusInfo dlgLoadCommune;
         DelegateNextControl dlgFocusNextUserControl;
         DelegateReloadData dlgReloadData;
-
+        public bool IsChangeStrucAddress;
         #endregion
 
         #region Constructor - Load
@@ -81,7 +83,7 @@ namespace HIS.UC.PlusInfo.Design
         {
             try
             {
-                _shareMethod.InitComboCommon(this.cboProvinceNowName, BackendDataWorker.Get<SDA.EFMODEL.DataModels.V_SDA_PROVINCE>(), "PROVINCE_CODE", "PROVINCE_NAME", "SEARCH_CODE");
+                _shareMethod.InitComboCommon(this.cboProvinceNowName, IsChangeStrucAddress ? BackendDataWorker.Get<SDA.EFMODEL.DataModels.V_SDA_PROVINCE>().Where(o=>o.IS_NO_DISTRICT == 1).ToList() : BackendDataWorker.Get<SDA.EFMODEL.DataModels.V_SDA_PROVINCE>().Where(o=>o.IS_NO_DISTRICT != 1).ToList(), "PROVINCE_CODE", "PROVINCE_NAME", "SEARCH_CODE");
             }
             catch (Exception ex)
             {
@@ -159,7 +161,7 @@ namespace HIS.UC.PlusInfo.Design
                 if (!String.IsNullOrEmpty(dataSet.HT_PROVINCE_CODE))
                 {
                     string proCode = this._shareMethod.GenerateProvinceCode(dataSet.HT_PROVINCE_CODE);
-                    var province = BackendDataWorker.Get<SDA.EFMODEL.DataModels.V_SDA_PROVINCE>().SingleOrDefault(o => o.PROVINCE_CODE == proCode);
+                    var province = (cboProvinceNowName.Properties.DataSource as List<V_SDA_PROVINCE>).FirstOrDefault(o => o.PROVINCE_CODE == proCode);
                     if (province != null)
                     {
                         this.txtProvinceNowCode.Text = province.PROVINCE_CODE;
@@ -168,7 +170,7 @@ namespace HIS.UC.PlusInfo.Design
                 }
                 else if (!String.IsNullOrEmpty(dataSet.HT_PROVINCE_NAME))
                 {
-                    var province = BackendDataWorker.Get<SDA.EFMODEL.DataModels.V_SDA_PROVINCE>().SingleOrDefault(o => o.PROVINCE_NAME == dataSet.HT_PROVINCE_NAME);
+                    var province = (cboProvinceNowName.Properties.DataSource as List<V_SDA_PROVINCE>).FirstOrDefault(o => o.PROVINCE_NAME == dataSet.HT_PROVINCE_NAME);
                     if (province != null)
                     {
                         this.txtProvinceNowCode.Text = province.SEARCH_CODE;
@@ -179,7 +181,7 @@ namespace HIS.UC.PlusInfo.Design
                 {
                     this.txtProvinceNowCode.Text = "";
                     this.cboProvinceNowName.EditValue = null;
-                    _shareMethod.InitComboCommon(this.cboProvinceNowName, BackendDataWorker.Get<SDA.EFMODEL.DataModels.V_SDA_PROVINCE>(), "PROVINCE_CODE", "PROVINCE_NAME", "SEARCH_CODE");
+                    _shareMethod.InitComboCommon(this.cboProvinceNowName, IsChangeStrucAddress ? BackendDataWorker.Get<SDA.EFMODEL.DataModels.V_SDA_PROVINCE>().Where(o => o.IS_NO_DISTRICT == 1).ToList() : BackendDataWorker.Get<SDA.EFMODEL.DataModels.V_SDA_PROVINCE>().Where(o => o.IS_NO_DISTRICT != 1).ToList(), "PROVINCE_CODE", "PROVINCE_NAME", "SEARCH_CODE");
                 }
                 //this.txtProvinceNowCode.TabIndex = this.TabIndex;
             }
@@ -227,6 +229,8 @@ namespace HIS.UC.PlusInfo.Design
                         this.cboProvinceNowName.EditValue = data.PROVINCE_CODE;
                         if (this.dlgLoadDistrict != null)
                             this.dlgLoadDistrict(data, isCallByUCAddress);
+                        if (this.dlgLoadCommune != null && IsChangeStrucAddress)
+                            this.dlgLoadCommune(data, isCallByUCAddress);
                         //Gán lại datasource của combo district && reset datasource của combo commune
                         //this.dlgLoadDistrict(data, false);
                     }
@@ -248,12 +252,14 @@ namespace HIS.UC.PlusInfo.Design
             }
         }
 
-        internal void SetDelegateLoadDistrictByProvince(DelegateSetValueForUCPlusInfo _dlgLoadDistrict)
+        internal void SetDelegateLoadDistrictByProvince(DelegateSetValueForUCPlusInfo _dlgLoadDistrict, DelegateSetValueForUCPlusInfo _dlgLoadCommune)
         {
             try
             {
                 if (_dlgLoadDistrict != null)
                     this.dlgLoadDistrict = _dlgLoadDistrict;
+                if(_dlgLoadCommune != null)
+                    this.dlgLoadCommune = _dlgLoadCommune;
             }
             catch (Exception ex)
             {
@@ -290,11 +296,16 @@ namespace HIS.UC.PlusInfo.Design
                         if (this.dlgReloadData != null)
                             this.dlgReloadData(false);
 
-                        var pro = BackendDataWorker.Get<SDA.EFMODEL.DataModels.V_SDA_PROVINCE>().FirstOrDefault(o => o.PROVINCE_CODE == this.cboProvinceNowName.EditValue.ToString());
+                        var pro = ((List<V_SDA_PROVINCE>)cboProvinceNowName.Properties.DataSource).FirstOrDefault(o => o.PROVINCE_CODE == this.cboProvinceNowName.EditValue.ToString());
                         if (pro != null)
                         {
                             this.txtProvinceNowCode.Text = pro.PROVINCE_CODE;
-                            this.dlgLoadDistrict(pro, false);
+
+                            if (this.dlgLoadDistrict != null && !IsChangeStrucAddress)
+                                this.dlgLoadDistrict(pro, false);
+
+                            if (this.dlgLoadCommune != null && IsChangeStrucAddress)
+                                this.dlgLoadCommune(pro, false);
                         }
                     }
                     if (this.dlgFocusNextUserControl != null)
@@ -315,8 +326,7 @@ namespace HIS.UC.PlusInfo.Design
                 {
                     if (this.cboProvinceNowName.EditValue != null)
                     {
-                        SDA.EFMODEL.DataModels.V_SDA_PROVINCE commune = BackendDataWorker.Get<SDA.EFMODEL.DataModels.V_SDA_PROVINCE>()
-                            .SingleOrDefault(o => o.PROVINCE_CODE == this.cboProvinceNowName.EditValue.ToString());
+                        SDA.EFMODEL.DataModels.V_SDA_PROVINCE commune = (cboProvinceNowName.Properties.DataSource as List<V_SDA_PROVINCE>).FirstOrDefault(o => o.PROVINCE_CODE == this.cboProvinceNowName.EditValue.ToString());
                         if (commune != null)
                             this.txtProvinceNowCode.Text = commune.PROVINCE_CODE;
                     }
@@ -372,11 +382,11 @@ namespace HIS.UC.PlusInfo.Design
                         try
                         {
                             int provinceCode = Convert.ToInt32(strSearch);
-                            listResult = BackendDataWorker.Get<SDA.EFMODEL.DataModels.V_SDA_PROVINCE>().Where(o => o.PROVINCE_CODE == strSearch).ToList();
+                            listResult = (cboProvinceNowName.Properties.DataSource as List<V_SDA_PROVINCE>).Where(o => o.PROVINCE_CODE == strSearch).ToList();
                         }
                         catch (Exception)
                         {
-                            listResult = BackendDataWorker.Get<SDA.EFMODEL.DataModels.V_SDA_PROVINCE>().Where(o => o.SEARCH_CODE.Contains(strSearch)).ToList();
+                            listResult = (cboProvinceNowName.Properties.DataSource as List<V_SDA_PROVINCE>).Where(o => o.SEARCH_CODE.Contains(strSearch)).ToList();
                         }
                         if (listResult.Count == 1)
                         {
@@ -390,8 +400,11 @@ namespace HIS.UC.PlusInfo.Design
                                 this.cboProvinceNowName.EditValue = listResult[0].PROVINCE_CODE;
                                 this.txtProvinceNowCode.Text = listResult[0].PROVINCE_CODE;
 
-                                if (this.dlgLoadDistrict != null)
+                                if (this.dlgLoadDistrict != null && !IsChangeStrucAddress)
                                     this.dlgLoadDistrict(listResult[0], true);
+
+                                if (this.dlgLoadCommune != null && IsChangeStrucAddress)
+                                    this.dlgLoadCommune(listResult[0], true);
 
                                 if (this.dlgReloadData != null)
                                     this.dlgReloadData(false);

@@ -28,6 +28,7 @@ using Inventec.Common.Logging;
 using Inventec.Core;
 using MOS.EFMODEL.DataModels;
 using MOS.Filter;
+using SDA.EFMODEL.DataModels;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -49,6 +50,9 @@ namespace HIS.Desktop.Plugins.Register.PatientExtend
         PatientInfoResult delegatePatientInfoResult;
         int positionHandleControl = -1;
         List<HID.EFMODEL.DataModels.HID_HOUSEHOLD_RELATION> houseHoldRelates;
+        List<V_SDA_PROVINCE> SdaProvinces;
+        List<V_SDA_DISTRICT> SdaDistrict;
+        List<V_SDA_COMMUNE> SdaCommunes;
         #endregion
 
         #region Construct
@@ -57,11 +61,14 @@ namespace HIS.Desktop.Plugins.Register.PatientExtend
             InitializeComponent();
         }
 
-        public frmPatientExtend(PatientInformationADO patientInformation, PatientInfoResult delegatePatientInfoResult)
+        public frmPatientExtend(PatientInformationADO patientInformation, PatientInfoResult delegatePatientInfoResult, List<V_SDA_PROVINCE> SdaProvinces, List<V_SDA_DISTRICT> SdaDistrict, List<V_SDA_COMMUNE> SdaCommunes)
         {
             InitializeComponent();
             this.patientInformation = patientInformation;
             this.delegatePatientInfoResult = delegatePatientInfoResult;
+            this.SdaProvinces = SdaProvinces;
+            this.SdaDistrict = SdaDistrict;
+            this.SdaCommunes = SdaCommunes;
         }
         #endregion
 
@@ -76,7 +83,7 @@ namespace HIS.Desktop.Plugins.Register.PatientExtend
                 InitComboBloodABO();
                 InitComboBloodRH();
                 InitComboHoldHouse();
-                InitComboProvince(cboProvince, BackendDataWorker.Get<SDA.EFMODEL.DataModels.V_SDA_PROVINCE>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.SDA_RS.COMMON.IS_ACTIVE__TRUE).ToList());
+                InitComboProvince(cboProvince, SdaProvinces);
 
                 //Load data default
                 LoadDefaultPatientInfo();

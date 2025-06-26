@@ -25,27 +25,41 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using HIS.Desktop.LocalStorage.BackendData.ADO;
 
 namespace HIS.Desktop.LocalStorage.BackendData.Get
 {
     class SdaCommuneADOGetList1Behavior : BusinessBase, IGetDataT
     {
-        internal SdaCommuneADOGetList1Behavior(CommonParam param)
+        object entity;
+        internal SdaCommuneADOGetList1Behavior(CommonParam param, object filter)
             : base(param)
         {
-
+            this.entity = filter;
         }
 
         object IGetDataT.Execute<T>()
         {
             try
             {
+                return ProcessDataCommune();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+                return null;
+            }
+        }
+
+        private object ProcessDataCommune()
+        {
+            try
+            {
                 List<ADO.CommuneADO> result = new List<ADO.CommuneADO>();
-                var communes = BackendDataWorker.Get<SDA.EFMODEL.DataModels.V_SDA_COMMUNE>().Where(o=>o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE).ToList();
+                var communes = BackendDataWorker.Get<SDA.EFMODEL.DataModels.V_SDA_COMMUNE>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE).ToList();
                 var districts = BackendDataWorker.Get<SDA.EFMODEL.DataModels.V_SDA_DISTRICT>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE).ToList();
                 var provinces = BackendDataWorker.Get<SDA.EFMODEL.DataModels.V_SDA_PROVINCE>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE).ToList();
                 if (communes != null && communes.Count > 0
-                    && districts != null && districts.Count > 0
                     && provinces != null && provinces.Count > 0
                     )
                 {
@@ -83,7 +97,7 @@ namespace HIS.Desktop.LocalStorage.BackendData.Get
                     }
                 }
 
-                return result.Where(o=> (string.IsNullOrEmpty(o.COMMUNE_CODE) || communes.Exists(p=>p.COMMUNE_CODE.Equals(o.COMMUNE_CODE))) && (string.IsNullOrEmpty(o.DISTRICT_CODE) || districts.Exists(p=>p.DISTRICT_CODE == o.DISTRICT_CODE)) && (string.IsNullOrEmpty(o.PROVINCE_CODE) || provinces.Exists(p=>p.PROVINCE_CODE == o.PROVINCE_CODE))).OrderBy(o => o.SEARCH_CODE_COMMUNE).ToList();
+                return result.Where(o => (string.IsNullOrEmpty(o.COMMUNE_CODE) || communes.Exists(p => p.COMMUNE_CODE.Equals(o.COMMUNE_CODE))) && ((string.IsNullOrEmpty(o.DISTRICT_CODE) || districts.Exists(p => p.DISTRICT_CODE == o.DISTRICT_CODE)) && (string.IsNullOrEmpty(o.PROVINCE_CODE) || provinces.Exists(p => p.PROVINCE_CODE == o.PROVINCE_CODE)))).OrderBy(o => o.SEARCH_CODE_COMMUNE).ToList();
             }
             catch (Exception ex)
             {

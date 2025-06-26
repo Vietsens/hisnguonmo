@@ -52,11 +52,11 @@ namespace HIS.Desktop.LocalStorage.BackendData
                     bool isSearchOrderByXHT = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>("HIS_DESKTOP_REGISTER__SEARCH_CODE__X/H/T") == "1" ? true : false;
                     if (isSearchOrderByXHT)
                     {
-                        result = new SdaCommuneADOGetList1Behavior(param);
+                        result = new SdaCommuneADOGetList1Behavior(param, filterQuery);
                     }
                     else
                     {
-                        result = new SdaCommuneADOGetListBehavior(param);
+                        result = new SdaCommuneADOGetListBehavior(param, filterQuery);
                     }
                 }
                 else if (type == typeof(AgeADO))

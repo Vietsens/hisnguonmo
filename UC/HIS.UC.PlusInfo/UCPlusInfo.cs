@@ -55,6 +55,7 @@ namespace HIS.UC.PlusInfo
         UCPatientExtendADO patientExtendADO = new ADO.UCPatientExtendADO();
         WorkPlaceADO dataWorkPlaceADO = new ADO.WorkPlaceADO();
         DelegateFocusNextUserControl dlgFocusNextUserControl;
+        DelegateReloadData dlgReloadControl;
 
         int indexOfControlEnd = 0;
         int tagIndex = 0;
@@ -66,7 +67,7 @@ namespace HIS.UC.PlusInfo
         List<string> userControlNameAdded = null;
         int totalModule = 0;
         int totalRowLimit;
-
+        bool IsChangeStrucAddress = false;
         #endregion
 
         #region Khoi tao control
@@ -146,9 +147,7 @@ namespace HIS.UC.PlusInfo
                 Inventec.Common.Logging.LogSystem.Debug("UCPlusInfo_Load 1");
                 //SetCaptionByLanguageKey();
                 timer1.Enabled = true;
-                timer1.Interval = 2000;
-                timer1.Start();
-                this.InitFieldFromAsync();
+                timer1.Interval = 100;
                 Inventec.Common.Logging.LogSystem.Debug("UCPlusInfo_Load 2");
             }
             catch (Exception ex)
@@ -178,6 +177,7 @@ namespace HIS.UC.PlusInfo
                         this.GetTempControl(moduleField[i]);
                     }
                 }
+                timer1.Start();
                 this.PositionControl(listControl);
 
                 if (this.ucExtend1 != null)
@@ -191,11 +191,17 @@ namespace HIS.UC.PlusInfo
                     this.ucProvinceNow1.ReloadDataDistrictAndCommune(this.RefreshDataDistrictAndCommune);
                 if (this.ucProvinceOfBirth1 != null)
                     this.ucProvinceOfBirth1.ReloadDataDistrictAndCommune(this.RefreshDataDistrictAndCommuneOfBirth);
+                if (dlgReloadControl != null)
+                    dlgReloadControl(true);
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
+        }
+        public void SetDelegateInitTHX(DelegateReloadData dlg)
+        {
+            this.dlgReloadControl = dlg;
         }
 
         /// <summary>
@@ -512,12 +518,14 @@ namespace HIS.UC.PlusInfo
                         ucCommuneNow1 = new Design.UCCommuneNow();
                         ucCommuneNow1.TabIndex = tagIndex;
                         ucCommuneNow1.FocusNextControl(this.FocusNextUserControl);
+                        ucCommuneNow1.IsChangeStrucAddress = IsChangeStrucAddress;
                         listControl.Add(ucCommuneNow1);
                         break;
                     case ChoiceControl.ucDistrictNow:
                         ucDistrictNow1 = new Design.UCDistrictNow();
                         ucDistrictNow1.TabIndex = tagIndex;
                         ucDistrictNow1.FocusNextControl(this.FocusNextUserControl);
+                        ucDistrictNow1.IsChangeStrucAdreess = IsChangeStrucAddress;
                         listControl.Add(ucDistrictNow1);
                         break;
                     case ChoiceControl.ucEmai:
@@ -593,6 +601,7 @@ namespace HIS.UC.PlusInfo
                         ucProvinceNow1 = new Design.UCProvinceNow();
                         ucProvinceNow1.TabIndex = tagIndex;
                         ucProvinceNow1.FocusNextControl(this.FocusNextUserControl);
+                        ucProvinceNow1.IsChangeStrucAddress = IsChangeStrucAddress;
                         listControl.Add(ucProvinceNow1);
                         break;
                     case ChoiceControl.ucProvinceOfBirth:
