@@ -45,7 +45,6 @@ namespace HIS.Desktop.Plugins.HisImportBid
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormImportBid));
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject1 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject2 = new DevExpress.Utils.SerializableAppearanceObject();
@@ -57,7 +56,7 @@ namespace HIS.Desktop.Plugins.HisImportBid
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject8 = new DevExpress.Utils.SerializableAppearanceObject();
             this.GcBid_STT = new DevExpress.XtraGrid.Columns.GridColumn();
             this.bar1 = new DevExpress.XtraBars.Bar();
-            this.barManager1 = new DevExpress.XtraBars.BarManager(this.components);
+            this.barManager1 = new DevExpress.XtraBars.BarManager();
             this.bar2 = new DevExpress.XtraBars.Bar();
             this.BarButtonSave = new DevExpress.XtraBars.BarButtonItem();
             this.barDockControlTop = new DevExpress.XtraBars.BarDockControl();
@@ -76,6 +75,7 @@ namespace HIS.Desktop.Plugins.HisImportBid
             this.gridColumn23 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.RepositoryItemButtonDelete = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
             this.gridColumn2 = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.GcBid_BatchDivisionCode = new DevExpress.XtraGrid.Columns.GridColumn();
             this.GcBid_MedicineTypeCode = new DevExpress.XtraGrid.Columns.GridColumn();
             this.GcBid_MedicineTypeName = new DevExpress.XtraGrid.Columns.GridColumn();
             this.GcBid_ServiceUnitName = new DevExpress.XtraGrid.Columns.GridColumn();
@@ -119,8 +119,7 @@ namespace HIS.Desktop.Plugins.HisImportBid
             this.layoutControlItem4 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem5 = new DevExpress.XtraLayout.LayoutControlItem();
             this.LblBtnExportError = new DevExpress.XtraLayout.LayoutControlItem();
-            this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.GcBid_BatchDivisionCode = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip();
             ((System.ComponentModel.ISupportInitialize)(this.barManager1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
             this.layoutControl1.SuspendLayout();
@@ -165,6 +164,10 @@ namespace HIS.Desktop.Plugins.HisImportBid
             // 
             this.barManager1.Bars.AddRange(new DevExpress.XtraBars.Bar[] {
             this.bar2});
+            this.barManager1.DockControls.Add(this.barDockControlTop);
+            this.barManager1.DockControls.Add(this.barDockControlBottom);
+            this.barManager1.DockControls.Add(this.barDockControlLeft);
+            this.barManager1.DockControls.Add(this.barDockControlRight);
             this.barManager1.Form = this;
             this.barManager1.Items.AddRange(new DevExpress.XtraBars.BarItem[] {
             this.BarButtonSave});
@@ -193,8 +196,8 @@ namespace HIS.Desktop.Plugins.HisImportBid
             // 
             this.barDockControlTop.CausesValidation = false;
             this.barDockControlTop.Dock = System.Windows.Forms.DockStyle.Top;
-            this.barDockControlTop.Location = new System.Drawing.Point(0, 29);
-            this.barDockControlTop.Size = new System.Drawing.Size(1327, 0);
+            this.barDockControlTop.Location = new System.Drawing.Point(0, 0);
+            this.barDockControlTop.Size = new System.Drawing.Size(1327, 29);
             // 
             // barDockControlBottom
             // 
@@ -394,6 +397,16 @@ namespace HIS.Desktop.Plugins.HisImportBid
             this.gridColumn2.ToolTip = "Mã vật tư tương đương";
             this.gridColumn2.Visible = true;
             this.gridColumn2.VisibleIndex = 3;
+            // 
+            // GcBid_BatchDivisionCode
+            // 
+            this.GcBid_BatchDivisionCode.Caption = "Mã phần lô";
+            this.GcBid_BatchDivisionCode.FieldName = "BATCH_DIVISION_CODE";
+            this.GcBid_BatchDivisionCode.Name = "GcBid_BatchDivisionCode";
+            this.GcBid_BatchDivisionCode.OptionsColumn.AllowEdit = false;
+            this.GcBid_BatchDivisionCode.Visible = true;
+            this.GcBid_BatchDivisionCode.VisibleIndex = 4;
+            this.GcBid_BatchDivisionCode.Width = 90;
             // 
             // GcBid_MedicineTypeCode
             // 
@@ -830,16 +843,6 @@ namespace HIS.Desktop.Plugins.HisImportBid
             this.contextMenuStrip1.Name = "contextMenuStrip1";
             this.contextMenuStrip1.Size = new System.Drawing.Size(61, 4);
             // 
-            // GcBid_BatchDivisionCode
-            // 
-            this.GcBid_BatchDivisionCode.Caption = "Mã phần lô";
-            this.GcBid_BatchDivisionCode.FieldName = "BATCH_DIVISION_CODE";
-            this.GcBid_BatchDivisionCode.Name = "GcBid_BatchDivisionCode";
-            this.GcBid_BatchDivisionCode.OptionsColumn.AllowEdit = false;
-            this.GcBid_BatchDivisionCode.Visible = true;
-            this.GcBid_BatchDivisionCode.VisibleIndex = 4;
-            this.GcBid_BatchDivisionCode.Width = 90;
-            // 
             // FormImportBid
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -943,11 +946,12 @@ namespace HIS.Desktop.Plugins.HisImportBid
         private DevExpress.XtraGrid.Columns.GridColumn gridColumn13;
         private DevExpress.XtraGrid.Columns.GridColumn gridColumn12;
         private DevExpress.XtraGrid.Columns.GridColumn gridColumn7;
+
+        private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
+        private DevExpress.XtraGrid.Columns.GridColumn GcBid_BatchDivisionCode;
         private DevExpress.XtraBars.BarDockControl barDockControlTop;
         private DevExpress.XtraBars.BarDockControl barDockControlBottom;
         private DevExpress.XtraBars.BarDockControl barDockControlLeft;
         private DevExpress.XtraBars.BarDockControl barDockControlRight;
-        private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
-        private DevExpress.XtraGrid.Columns.GridColumn GcBid_BatchDivisionCode;
     }
 }
