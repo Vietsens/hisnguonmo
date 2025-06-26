@@ -1216,8 +1216,7 @@ namespace HIS.Desktop.Plugins.Library.CheckHeinGOV
                     try
                     {
                         if (HisConfigCFG.WarningInvalidCheckHistoryHeinCard
-                            && rsData.ResultHistoryLDO != null
-                            && rsData.ResultHistoryLDO.dsLichSuKT2018 != null
+                            && rsData.ResultHistoryLDO != null && rsData.ResultHistoryLDO.dsLichSuKT2018 != null
                             && rsData.ResultHistoryLDO.dsLichSuKT2018.Count > 0
                             && rsData.ResultHistoryLDO.dsLichSuKCB2018 != null
                             && rsData.ResultHistoryLDO.dsLichSuKCB2018.Count > 0)
@@ -1226,41 +1225,37 @@ namespace HIS.Desktop.Plugins.Library.CheckHeinGOV
                             foreach (var p in rsData.ResultHistoryLDO.dsLichSuKCB2018)
                             {
                                 long ngayRa;
-                                if (long.TryParse(p.ngayRa, out ngayRa))
-                                {
-                                    if (ngayRa > maxNgayRa) maxNgayRa = ngayRa;
-                                }
+                                if (long.TryParse(p.ngayRa, out ngayRa) && ngayRa > maxNgayRa)
+                                    maxNgayRa = ngayRa;
                             }
                             var otherChecks = new List<dynamic>();
                             foreach (var o in rsData.ResultHistoryLDO.dsLichSuKT2018)
                             {
                                 long thoiGianKT;
-                                if (long.TryParse(o.thoiGianKT, out thoiGianKT))
+                                if (!long.TryParse(o.thoiGianKT, out thoiGianKT))
+                                    continue;
+                                string userKT = o.userKT ?? "";
+                                string currentMediOrgCode = HIS.Desktop.LocalStorage.BackendData.BranchDataWorker.Branch.HEIN_MEDI_ORG_CODE;
+
+                                if (thoiGianKT > maxNgayRa && !string.IsNullOrEmpty(userKT) && userKT.IndexOf(currentMediOrgCode) < 0 && (o.maLoi == "000" || o.maLoi == "001" || o.maLoi == "002" || o.maLoi == "003"))
                                 {
-                                    if (thoiGianKT > maxNgayRa
-                                        && (o.userKT ?? "").IndexOf(HIS.Desktop.LocalStorage.BackendData.BranchDataWorker.Branch.HEIN_MEDI_ORG_CODE) < 0
-                                        && (o.maLoi == "000" || o.maLoi == "001" || o.maLoi == "002" || o.maLoi == "003"))
-                                    {
-                                        otherChecks.Add(o);
-                                    }
+                                    otherChecks.Add(o);
                                 }
                             }
-                            var filteredChecks = new List<dynamic>();
                             var grouped = new Dictionary<string, dynamic>();
                             foreach (var check in otherChecks)
                             {
                                 string userKT = check.userKT ?? "";
                                 long thoiGianKT;
-                                long.TryParse(check.thoiGianKT, out thoiGianKT);
+                                if (!long.TryParse(check.thoiGianKT, out thoiGianKT))
+                                    continue;
+
                                 if (!grouped.ContainsKey(userKT) || long.Parse(grouped[userKT].thoiGianKT) < thoiGianKT)
                                 {
                                     grouped[userKT] = check;
                                 }
                             }
-                            foreach (var item in grouped.Values)
-                            {
-                                filteredChecks.Add(item);
-                            }
+                            var filteredChecks = new List<dynamic>(grouped.Values);
                             if (filteredChecks.Count > 0)
                             {
                                 var mediOrgs = BackendDataWorker.Get<HIS_MEDI_ORG>().ToList();
@@ -1270,22 +1265,31 @@ namespace HIS.Desktop.Plugins.Library.CheckHeinGOV
                                     string userKT = check.userKT ?? "";
                                     string mediOrgCode = userKT.Length >= 5 ? userKT.Substring(0, 5) : userKT;
                                     var mediOrg = mediOrgs.FirstOrDefault(m => m.MEDI_ORG_CODE == mediOrgCode);
+
                                     long thoiGianKT;
                                     long.TryParse(check.thoiGianKT, out thoiGianKT);
-                                    string timeStr = Inventec.Common.DateTime.Convert.TimeNumberToTimeStringWithoutSecond(thoiGianKT);
-                                    string detail;
-                                    if (mediOrg != null && !string.IsNullOrEmpty(mediOrg.MEDI_ORG_NAME))
+
+                                    string timeStrRaw = thoiGianKT.ToString();
+                                    if (timeStrRaw.Length == 12)
                                     {
-                                        detail = string.Format("{0} ({1}) [{2}]", mediOrg.MEDI_ORG_NAME, mediOrg.MEDI_ORG_CODE, timeStr);
+                                        DateTime dt = DateTime.ParseExact(timeStrRaw, "yyyyMMddHHmm", null);
+                                        string timeStr = dt.ToString("dd/MM/yyyy HH:mm");
+
+                                        string detail = "";
+                                        if (mediOrg != null && !string.IsNullOrEmpty(mediOrg.MEDI_ORG_NAME))
+                                        {
+                                            detail = string.Format("{0} ({1}) [{2}]", mediOrg.MEDI_ORG_NAME, mediOrg.MEDI_ORG_CODE, timeStr);
+                                        }
+                                        else
+                                        {
+                                            detail = string.Format("Tài khoản {0} [{1}]", userKT, timeStr);
+                                        }
+
+                                        errorDetails.Add(detail);
                                     }
-                                    else
-                                    {
-                                        detail = string.Format("Tài khoản {0} [{1}]", userKT, timeStr);
-                                    }
-                                    errorDetails.Add(detail);
                                 }
                                 rsData.ResultHistoryLDO.message = "Thẻ BHYT có thông tin kiểm tra thẻ tại " + string.Join("; ", errorDetails);
-                                rsData.ResultHistoryLDO.maKetQua = "9999";
+                                rsData.ResultHistoryLDO.maKetQua = "8888";
                             }
                         }
                     }
