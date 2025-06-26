@@ -1527,7 +1527,7 @@ namespace HIS.Desktop.Plugins.HisImportBid
 
         private void CheckDuplicateBatchDivisionCode()
         {
-            var duplicates = ListDataImport
+            var duplicates = this.ListDataImport
                 .Where(o => !string.IsNullOrWhiteSpace(o.BATCH_DIVISION_CODE))
                 .GroupBy(o => o.BATCH_DIVISION_CODE)
                 .Where(g => g.Count() > 1)
@@ -1546,7 +1546,7 @@ namespace HIS.Desktop.Plugins.HisImportBid
             { "thuốc", new List<string>() },
             { "vật tư", new List<string>() },
             { "máu", new List<string>() }
-                };
+        };
 
                 foreach (var item in group)
                 {
@@ -1564,14 +1564,21 @@ namespace HIS.Desktop.Plugins.HisImportBid
                     }
                 }
 
-                var parts = typeMap
-                    .Where(p => p.Value.Any())
-                    .Select(p => $"{p.Key}: {string.Join(", ", p.Value.Distinct())}")
-                    .ToList();
-
-                if (parts.Count > 1)
+                // Check lặp khác loại
+                var usedTypes = typeMap.Where(p => p.Value.Any()).ToList();
+                if (usedTypes.Count > 1)
                 {
-                    errorMessages.Add($"Mã phần lô đã được sử dụng bởi {string.Join("; ", parts)}");
+                    var parts = usedTypes.Select(p => $"{p.Key}: {string.Join(", ", p.Value.Distinct())}").ToList();
+                    errorMessages.Add("Mã phần lô " + batchCode.ToString() + " đã được sử dụng bởi " + (string.Join("; ", parts)).ToString());
+                }
+
+                // Check lặp cùng loại
+                foreach (var type in usedTypes)
+                {
+                    if (type.Value.Distinct().Count() > 1)
+                    {
+                        errorMessages.Add("Mã phần lô " + batchCode.ToString() + " đã được sử dụng bởi " + (string.Join(", ", type.Value.Distinct())).ToString());
+                    }
                 }
             }
 
@@ -1580,6 +1587,5 @@ namespace HIS.Desktop.Plugins.HisImportBid
                 MessageBox.Show(string.Join(Environment.NewLine, errorMessages), "Lỗi mã phần lô", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
         }
-
     }
 }
