@@ -104,7 +104,7 @@ namespace Inventec.Common.Address
                             if (existDistrict.Count > 0)
                             {
                                 district = existDistrict;
-                                continue;
+                                //continue;
                             }
                         }
 
@@ -112,19 +112,27 @@ namespace Inventec.Common.Address
                         {
                             string lowerPath = string.Format(formatCheck, checkData.ToLower());
                             List<V_SDA_COMMUNE> communes = new List<V_SDA_COMMUNE>();
-                            communes.AddRange(VSdaCommune);
 
                             if (district != null)
                             {
                                 List<long> districtIds = district.Select(s => s.ID).ToList();
-                                communes = communes.Where(o => districtIds.Contains(o.DISTRICT_ID ?? 0)).ToList();
+                                var dCommunes = VSdaCommune.Where(o => districtIds.Contains(o.DISTRICT_ID ?? 0)).ToList();
+                                if (dCommunes.Count > 0)
+                                {
+                                    communes.AddRange(dCommunes);
+                                }
                             }
 
                             if (provinces != null)
                             {
                                 List<long> provinceIds = provinces.Select(s => s.ID).ToList();
                                 List<long> districtIds = VSdaDistrict.Where(o => provinceIds.Contains(o.PROVINCE_ID)).Select(s => s.ID).ToList();
-                                communes = communes.Where(o => districtIds.Contains(o.DISTRICT_ID ?? 0) || provinceIds.Contains(o.PROVINCE_ID ?? 0)).ToList();
+                                List<long> notInIds = communes.Select(s => s.ID).ToList();
+                                var dCommunes = VSdaCommune.Where(o => (districtIds.Contains(o.DISTRICT_ID ?? 0) || provinceIds.Contains(o.PROVINCE_ID ?? 0)) && !notInIds.Contains(o.ID)).ToList();
+                                if (dCommunes.Count > 0)
+                                {
+                                    communes.AddRange(dCommunes);
+                                }
                             }
 
                             //Lấy ra tất cả các trường hợp
@@ -202,7 +210,9 @@ namespace Inventec.Common.Address
 
                     for (int i = 0; i < joinsAdd.Length; i++)
                     {
-                        if (joinsAdd[i] == result.CommuneName || joinsAdd[i] == result.DistrictName || joinsAdd[i] == result.ProvinceName)
+                        if (joinsAdd[i].ToLower() == result.CommuneName.ToLower()
+                            || (!String.IsNullOrWhiteSpace(result.DistrictName) && joinsAdd[i].ToLower() == result.DistrictName.ToLower())
+                            || joinsAdd[i].ToLower() == result.ProvinceName.ToLower())
                         {
                             joinsAdd[i] = "";
                         }
