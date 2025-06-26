@@ -2104,6 +2104,7 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
                     this.cboTHX.Properties.Buttons[1].Visible = false;
                     this.txtMaTHX.Text = "";
                     //TODO -- 
+                    LoadAddressData(isNewStructure: true);
                 }
             }
             catch (Exception ex)
@@ -7946,7 +7947,8 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
             {
                 toggleSwitch1.Invalidate();
                 toggleSwitch1.Update();
-                bool isNewStructure = toggleSwitch1.IsOn;              
+                bool isNewStructure = toggleSwitch1.IsOn;
+                Properties.Settings.Default.UseNewAddressStructure = isNewStructure;
                 Properties.Settings.Default.Save();
                 SetToggleSwitchTooltip(isNewStructure);
                 LoadAddressData(isNewStructure);

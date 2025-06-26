@@ -49,7 +49,6 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(UCExpMestSaleCreate));
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject9 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject10 = new DevExpress.Utils.SerializableAppearanceObject();
@@ -61,7 +60,7 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject4 = new DevExpress.Utils.SerializableAppearanceObject();
             this.layoutControl1 = new DevExpress.XtraLayout.LayoutControl();
             this.toggleSwitch1 = new DevExpress.XtraEditors.ToggleSwitch();
-            this.barManager1 = new DevExpress.XtraBars.BarManager(this.components);
+            this.barManager1 = new DevExpress.XtraBars.BarManager();
             this.bar1 = new DevExpress.XtraBars.Bar();
             this.btnCtrlA = new DevExpress.XtraBars.BarButtonItem();
             this.btnCtrlI = new DevExpress.XtraBars.BarButtonItem();
@@ -151,11 +150,11 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
             this.chkPrintNow = new DevExpress.XtraEditors.CheckEdit();
             this.btnNewExpMest = new DevExpress.XtraEditors.SimpleButton();
             this.btnCancelExport = new DevExpress.XtraEditors.SimpleButton();
-            this.popupControlContainerMediMaty = new DevExpress.XtraBars.PopupControlContainer(this.components);
+            this.popupControlContainerMediMaty = new DevExpress.XtraBars.PopupControlContainer();
             this.gridControlMediMaty = new Inventec.Desktop.CustomControl.CustomGridControlWithFilterMultiColumn();
             this.gridViewMediMaty = new Inventec.Desktop.CustomControl.CustomGridViewWithFilterMultiColumn();
             this.txtMediMatyForPrescription = new DevExpress.XtraEditors.ButtonEdit();
-            this.popupControlContainer1 = new DevExpress.XtraBars.PopupControlContainer(this.components);
+            this.popupControlContainer1 = new DevExpress.XtraBars.PopupControlContainer();
             this.gridControlPopupUser = new DevExpress.XtraGrid.GridControl();
             this.gridViewPopupUser = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.cboAge = new DevExpress.XtraEditors.LookUpEdit();
@@ -207,7 +206,7 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
             this.treeListColumn8 = new DevExpress.XtraTreeList.Columns.TreeListColumn();
             this.repositoryItemSpinEdit__Amount = new DevExpress.XtraEditors.Repository.RepositoryItemSpinEdit();
             this.repositoryItemBtnView = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
-            this.imageCollection1 = new DevExpress.Utils.ImageCollection(this.components);
+            this.imageCollection1 = new DevExpress.Utils.ImageCollection();
             this.cboGender = new DevExpress.XtraEditors.GridLookUpEdit();
             this.gridLookUpEdit1View = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.txtTreatmentCode = new DevExpress.XtraEditors.TextEdit();
@@ -271,9 +270,9 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
             this.layoutControlItem50 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem51 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem52 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.dxValidationProvider_Save = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider(this.components);
-            this.dxValidationProvider_Add = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider(this.components);
-            this.toolTipController1 = new DevExpress.Utils.ToolTipController(this.components);
+            this.dxValidationProvider_Save = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider();
+            this.dxValidationProvider_Add = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider();
+            this.toolTipController1 = new DevExpress.Utils.ToolTipController();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
             this.layoutControl1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.toggleSwitch1.Properties)).BeginInit();
@@ -1140,7 +1139,6 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
             this.treeListColumn_Result_ServiceUnitName,
             this.treeListColumn_Result_Concentra,
             this.treeListColumn_Result_NationalName});
-            this.treeListResult.Cursor = System.Windows.Forms.Cursors.Default;
             this.treeListResult.Location = new System.Drawing.Point(2, 348);
             this.treeListResult.Name = "treeListResult";
             this.treeListResult.OptionsView.AutoWidth = false;
@@ -2272,7 +2270,6 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
             this.treeListColumn9,
             this.treeListColumn7,
             this.treeListColumn8});
-            this.treeListMediMate.Cursor = System.Windows.Forms.Cursors.Default;
             this.treeListMediMate.KeyFieldName = "CONCRETE_ID__IN_SETY";
             this.treeListMediMate.Location = new System.Drawing.Point(2, 204);
             this.treeListMediMate.Name = "treeListMediMate";
