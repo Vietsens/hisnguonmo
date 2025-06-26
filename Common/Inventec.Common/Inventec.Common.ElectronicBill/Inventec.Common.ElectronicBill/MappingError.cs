@@ -26,6 +26,7 @@ namespace Inventec.Common.ElectronicBill
     public class MappingError
     {
         public Dictionary<string, string> dicMapping;
+        public Dictionary<string, string> dicMappingReplace;
         public MappingError()
         {
             dicMapping = new Dictionary<string, string>();
@@ -42,6 +43,21 @@ namespace Inventec.Common.ElectronicBill
             dicMapping.Add("ERR:11", "Hóa đơn chưa được thanh toán");
             dicMapping.Add("ERR:13", "Hóa đơn đã gạch nợ rồi");
             dicMapping.Add("ERR:20", "Pattern và serial không phù hợp, hoặc không tồn tại hóa đơn đã đăng kí có sử dụng Pattern và serial truyền vào");
+
+            dicMappingReplace = new Dictionary<string, string>();
+            dicMappingReplace.Add("ERR:1", "Tài khoản đăng nhập sai hoặc không có quyền thêm khách hàng");
+            dicMappingReplace.Add("ERR:2", "Không tồn tại hóa đơn cần thay thế");
+            dicMappingReplace.Add("ERR:3", "Dữ liệu xml đầu vào không đúng quy định");
+            dicMappingReplace.Add("ERR:5", "Có lỗi trong quá trình thay thế hóa đơn");
+            dicMappingReplace.Add("ERR:6", "Dải hóa đơn cũ đã hết");
+            dicMappingReplace.Add("ERR:7", "User name không phù hợp, không tìm thấy company tương ứng cho user.");
+            dicMappingReplace.Add("ERR:8", "Hóa đơn đã được thay thế rồi. Không thể thay thế nữa.");
+            dicMappingReplace.Add("ERR:14", "Lỗi trong quá trình thực hiện cấp số hóa đơn");
+            dicMappingReplace.Add("ERR:15", "Lỗi khi thực hiện Deserialize chuỗi hóa đơn đầu vào");
+            dicMappingReplace.Add("ERR:20", "Pattern và serial không phù hợp");
+            dicMappingReplace.Add("ERR:29", "Lỗi chứng thư hết hạn");
+            dicMappingReplace.Add("ERR:30", "Danh sách hóa đơn tồn tại ngày hóa đơn nhỏ hơn ngày hóa đơn đã phát hành");
+            dicMappingReplace.Add("ERR:9", "Trạng thái hóa đơn ko được thay thế");
         }
     }
 }
