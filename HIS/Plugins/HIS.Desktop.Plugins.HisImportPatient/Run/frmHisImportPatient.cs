@@ -634,21 +634,20 @@ namespace HIS.Desktop.Plugins.HisImportPatient.Run
 					#endregion
 
 					#region Lỗi nhập thông tin THX
-					if (string.IsNullOrEmpty(item.PROVINCE_CODE) && (!string.IsNullOrEmpty(item.DISTRICT_CODE) || !string.IsNullOrEmpty(item.COMMUNE_CODE))
-						|| (string.IsNullOrEmpty(item.PROVINCE_CODE) || string.IsNullOrEmpty(item.DISTRICT_CODE)) && !string.IsNullOrEmpty(item.COMMUNE_CODE)
-						)
+					if (string.IsNullOrEmpty(item.PROVINCE_CODE) && (!string.IsNullOrEmpty(item.DISTRICT_CODE) || !string.IsNullOrEmpty(item.COMMUNE_CODE)))
 					{
-						error += string.Format(Message.MessageImport.KhongHopLe, "Tỉnh / Huyện/ Xã");
+						error += string.Format(Message.MessageImport.ThieuTruongDL, "Tỉnh");
 					}
 					#endregion
 
 					#region Tỉnh
 					if (!string.IsNullOrEmpty(item.PROVINCE_CODE))
 					{
-						if (lstProvince != null && lstProvince.Count > 0 && lstProvince.FirstOrDefault(o => o.PROVINCE_CODE == item.PROVINCE_CODE) != null)
+						V_SDA_PROVINCE province = lstProvince.FirstOrDefault(o => o.PROVINCE_CODE == item.PROVINCE_CODE && o.IS_ACTIVE == IMSys.DbConfig.SDA_RS.COMMON.IS_ACTIVE__TRUE);
+						if (province != null)
 						{
-							kskAdo.PROVINCE_NAME = lstProvince.FirstOrDefault(o => o.PROVINCE_CODE == item.PROVINCE_CODE).PROVINCE_NAME;
-							currentProvince = lstProvince.FirstOrDefault(o => o.PROVINCE_CODE == item.PROVINCE_CODE);
+							kskAdo.PROVINCE_NAME = province.PROVINCE_NAME;
+							currentProvince = province;
 						}
 						else
 						{
@@ -661,14 +660,20 @@ namespace HIS.Desktop.Plugins.HisImportPatient.Run
 					#region Huyện
 					if (!string.IsNullOrEmpty(item.DISTRICT_CODE))
 					{
+						// District code is provided - validate it belongs to the specified province
 						string provinceCode = "";
 						if (currentProvince != null)
 							provinceCode = currentProvince.PROVINCE_CODE;
-						var lstDisTemp = lstDistrict.Where(o => o.SEARCH_CODE.ToUpper().Contains("") && (provinceCode == "" || o.PROVINCE_CODE == provinceCode)).ToList();
-						if (lstDisTemp != null && lstDisTemp.Count > 0 && lstDisTemp.FirstOrDefault(o => o.DISTRICT_CODE == item.DISTRICT_CODE) != null)
+						
+						var district = lstDistrict.FirstOrDefault(o => 
+							o.DISTRICT_CODE == item.DISTRICT_CODE && 
+							o.IS_ACTIVE == IMSys.DbConfig.SDA_RS.COMMON.IS_ACTIVE__TRUE && 
+							(provinceCode == "" || o.PROVINCE_CODE == provinceCode));
+						
+						if (district != null)
 						{
-							kskAdo.DISTRICT_NAME = lstDisTemp.FirstOrDefault(o => o.DISTRICT_CODE == item.DISTRICT_CODE).DISTRICT_NAME;
-							currentDistrict = lstDisTemp.FirstOrDefault(o => o.DISTRICT_CODE == item.DISTRICT_CODE);
+							kskAdo.DISTRICT_NAME = district.DISTRICT_NAME;
+							currentDistrict = district;
 						}
 						else
 						{
@@ -676,19 +681,56 @@ namespace HIS.Desktop.Plugins.HisImportPatient.Run
 							error += string.Format(Message.MessageImport.KhongHopLe, "Huyện");
 						}
 					}
+					else if (!string.IsNullOrEmpty(item.COMMUNE_CODE) && currentProvince != null)
+					{
+						// District code is not provided but commune code is - find a province with IS_NO_DISTRICT=1
+						V_SDA_PROVINCE noDistrictProvince = lstProvince.FirstOrDefault(o => 
+							o.IS_ACTIVE == IMSys.DbConfig.SDA_RS.COMMON.IS_ACTIVE__TRUE && 
+							o.IS_NO_DISTRICT == 1 && 
+							o.ID == currentProvince.ID);
+					}
 					#endregion
 
 					#region Xã
 					if (!string.IsNullOrEmpty(item.COMMUNE_CODE))
 					{
-						string districCode = "";
 						if (currentDistrict != null)
-							districCode = currentDistrict.DISTRICT_CODE;
-						var lstComTemp = lstCommune.Where(o => o.SEARCH_CODE.ToUpper().Contains("") && (districCode == "" || o.DISTRICT_CODE == districCode)).ToList();
-						if (lstComTemp != null && lstComTemp.Count > 0 && lstComTemp.FirstOrDefault(o => o.COMMUNE_CODE == item.COMMUNE_CODE) != null)
 						{
-							kskAdo.COMMUNE_NAME = lstComTemp.FirstOrDefault(o => o.COMMUNE_CODE == item.COMMUNE_CODE).COMMUNE_NAME;
-							currentCommune = lstComTemp.FirstOrDefault(o => o.COMMUNE_CODE == item.COMMUNE_CODE);
+							// If district is provided, validate commune belongs to district
+							var commune = lstCommune.FirstOrDefault(o => 
+								o.COMMUNE_CODE == item.COMMUNE_CODE && 
+								o.IS_ACTIVE == IMSys.DbConfig.SDA_RS.COMMON.IS_ACTIVE__TRUE && 
+								o.DISTRICT_CODE == currentDistrict.DISTRICT_CODE);
+							
+							if (commune != null)
+							{
+								kskAdo.COMMUNE_NAME = commune.COMMUNE_NAME;
+								currentCommune = commune;
+							}
+							else
+							{
+								kskAdo.COMMUNE_NAME = item.COMMUNE_CODE;
+								error += string.Format(Message.MessageImport.KhongHopLe, "Xã không thuộc huyện đã chọn");
+							}
+						}
+						else if (currentProvince != null)
+						{
+							// No district provided - check if commune belongs directly to province
+							var commune = lstCommune.FirstOrDefault(o => 
+								o.COMMUNE_CODE == item.COMMUNE_CODE && 
+								o.IS_ACTIVE == IMSys.DbConfig.SDA_RS.COMMON.IS_ACTIVE__TRUE && 
+								o.PROVINCE_CODE == currentProvince.PROVINCE_CODE);
+							
+							if (commune != null)
+							{
+								kskAdo.COMMUNE_NAME = commune.COMMUNE_NAME;
+								currentCommune = commune;
+							}
+							else
+							{
+								kskAdo.COMMUNE_NAME = item.COMMUNE_CODE;
+								error += string.Format(Message.MessageImport.KhongHopLe, "Xã không thuộc tỉnh đã chọn");
+							}
 						}
 						else
 						{
