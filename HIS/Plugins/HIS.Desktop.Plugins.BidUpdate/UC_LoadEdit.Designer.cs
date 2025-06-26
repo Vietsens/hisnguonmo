@@ -15,6 +15,8 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+using DevExpress.XtraEditors.Repository;
+
 namespace HIS.Desktop.Plugins.BidUpdate
 {
     partial class UC_LoadEdit
@@ -83,6 +85,7 @@ namespace HIS.Desktop.Plugins.BidUpdate
             this.gridColumn8 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn9 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn18 = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.repoTextEdit25 = new DevExpress.XtraEditors.Repository.RepositoryItemTextEdit();
             this.gridColumn13 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn10 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn11 = new DevExpress.XtraGrid.Columns.GridColumn();
@@ -116,6 +119,7 @@ namespace HIS.Desktop.Plugins.BidUpdate
             ((System.ComponentModel.ISupportInitialize)(this.spAmount)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.spPrice)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.spVat)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repoTextEdit25)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.spAdjustAmount)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.spAdjustAmountDisable)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.repAdjustAmount)).BeginInit();
@@ -163,7 +167,8 @@ namespace HIS.Desktop.Plugins.BidUpdate
             this.spAdjustAmount,
             this.spAdjustAmountDisable,
             this.repAdjustAmount,
-            this.repAdjustAmountDis});
+            this.repAdjustAmountDis,
+            this.repoTextEdit25});
             this.gridControlEdit.Size = new System.Drawing.Size(585, 282);
             this.gridControlEdit.TabIndex = 4;
             this.gridControlEdit.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
@@ -399,10 +404,17 @@ namespace HIS.Desktop.Plugins.BidUpdate
             // gridColumn18
             // 
             this.gridColumn18.Caption = "Mã phần lô";
+            this.gridColumn18.ColumnEdit = this.repoTextEdit25;
             this.gridColumn18.FieldName = "BATCH_DIVISION_CODE";
             this.gridColumn18.Name = "gridColumn18";
             this.gridColumn18.Visible = true;
             this.gridColumn18.VisibleIndex = 12;
+            // 
+            // repoTextEdit25
+            // 
+            this.repoTextEdit25.Name = "repoTextEdit25";
+            this.repoTextEdit25.EditValueChanging += RepoTextEdit25_EditValueChanging;
+            this.gridControlEdit.RepositoryItems.Add(this.repoTextEdit25);
             // 
             // gridColumn13
             // 
@@ -685,6 +697,7 @@ namespace HIS.Desktop.Plugins.BidUpdate
             ((System.ComponentModel.ISupportInitialize)(this.spAmount)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.spPrice)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.spVat)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repoTextEdit25)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.spAdjustAmount)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.spAdjustAmountDisable)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.repAdjustAmount)).EndInit();
@@ -743,5 +756,6 @@ namespace HIS.Desktop.Plugins.BidUpdate
         private DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit repAdjustAmount;
         private DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit repAdjustAmountDis;
         private DevExpress.XtraGrid.Columns.GridColumn gridColumn18;
+        private RepositoryItemTextEdit repoTextEdit25;
     }
 }
