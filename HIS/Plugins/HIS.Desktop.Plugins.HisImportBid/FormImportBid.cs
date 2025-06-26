@@ -226,11 +226,11 @@ namespace HIS.Desktop.Plugins.HisImportBid
                             var listMaterial = ImpMestListProcessor.Where(o => String.IsNullOrWhiteSpace(o.IS_MEDICINE)&&o.IsNotNullRow==true).ToList();
                             addListMedicineTypeToProcessList(listMedicine);
                             addListMaterialTypeToProcessList(listMaterial);
+                            CheckDuplicateBatchDivisionCode();
                             Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => ListDataImport), ListDataImport));
                             if (this.ListDataImport != null && this.ListDataImport.Count > 0)
                             {
                                 CheckValidData(ListDataImport);
-                                CheckDuplicateBatchDivisionCode();
                                 CheckErrorLine();
                                 SetDataSource(ListDataImport);
 
