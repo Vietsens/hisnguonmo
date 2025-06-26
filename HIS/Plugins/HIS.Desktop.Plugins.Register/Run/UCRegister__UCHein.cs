@@ -668,7 +668,7 @@ namespace HIS.Desktop.Plugins.Register.Run
                     }
                     if (this.cboCommune.EditValue != null)
                     {
-                        SDA.EFMODEL.DataModels.V_SDA_COMMUNE commune = BackendDataWorker.Get<SDA.EFMODEL.DataModels.V_SDA_COMMUNE>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.SDA_RS.COMMON.IS_ACTIVE__TRUE)
+                        SDA.EFMODEL.DataModels.V_SDA_COMMUNE commune = SdaCommunes.Where(o => o.IS_ACTIVE == IMSys.DbConfig.SDA_RS.COMMON.IS_ACTIVE__TRUE)
                         .SingleOrDefault(o =>
                             o.COMMUNE_CODE == this.cboCommune.EditValue.ToString()
                                 && (String.IsNullOrEmpty((this.cboDistrict.EditValue ?? "").ToString()) || o.DISTRICT_CODE == (this.cboDistrict.EditValue ?? "").ToString())
@@ -691,7 +691,7 @@ namespace HIS.Desktop.Plugins.Register.Run
                     }
                     if (this.cboProvince.EditValue != null)
                     {
-                        SDA.EFMODEL.DataModels.V_SDA_PROVINCE province = BackendDataWorker.Get<SDA.EFMODEL.DataModels.V_SDA_PROVINCE>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.SDA_RS.COMMON.IS_ACTIVE__TRUE).SingleOrDefault(o => o.PROVINCE_CODE == cboProvince.EditValue.ToString());
+                        SDA.EFMODEL.DataModels.V_SDA_PROVINCE province = SdaProvinces.Where(o => o.IS_ACTIVE == IMSys.DbConfig.SDA_RS.COMMON.IS_ACTIVE__TRUE).SingleOrDefault(o => o.PROVINCE_CODE == cboProvince.EditValue.ToString());
                         if (province != null)
                         {
                             adress += province.PROVINCE_NAME;

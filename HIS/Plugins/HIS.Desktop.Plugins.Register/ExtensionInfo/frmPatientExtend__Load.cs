@@ -129,14 +129,37 @@ namespace HIS.Desktop.Plugins.Register.PatientExtend
 
                     if (!String.IsNullOrEmpty(patientInformation.HT_PROVINCE_CODE))
                     {
-                        var province = BackendDataWorker.Get<SDA.EFMODEL.DataModels.V_SDA_PROVINCE>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.SDA_RS.COMMON.IS_ACTIVE__TRUE).SingleOrDefault(o => o.PROVINCE_CODE == patientInformation.HT_PROVINCE_CODE);
+                        var province = SdaProvinces.Where(o => o.IS_ACTIVE == IMSys.DbConfig.SDA_RS.COMMON.IS_ACTIVE__TRUE).SingleOrDefault(o => o.PROVINCE_CODE == patientInformation.HT_PROVINCE_CODE);
                         if (province != null)
                         {
                             txtProvince.Text = patientInformation.HT_PROVINCE_CODE;
                             cboProvince.EditValue = province.ID;
 
+                            if (patientInformation.IsChangeStrucAddress)
+                            {
+                                List<SDA.EFMODEL.DataModels.V_SDA_COMMUNE> communes = new List<SDA.EFMODEL.DataModels.V_SDA_COMMUNE>();
+                                communes = SdaCommunes.Where(o => o.IS_ACTIVE == IMSys.DbConfig.SDA_RS.COMMON.IS_ACTIVE__TRUE).Where(o => o.PROVINCE_CODE == province.PROVINCE_CODE).ToList();
+                                if (communes != null && communes.Count > 0)
+                                {
+                                    InitComboCommune(cboCommune, communes);
+                                    if (!String.IsNullOrEmpty(patientInformation.HT_COMMUNE_CODE))
+                                    {
+                                        var commune = communes.SingleOrDefault(o => o.COMMUNE_CODE == patientInformation.HT_COMMUNE_CODE);
+                                        if (commune != null)
+                                        {
+                                            txtCommune.Text = patientInformation.HT_COMMUNE_CODE;
+                                            cboCommune.EditValue = commune.ID;
+                                        }
+                                    }
+                                }
+                                layoutControlItem16.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+                                layoutControlItem17.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+                                return;
+                            }
+
+
                             List<SDA.EFMODEL.DataModels.V_SDA_DISTRICT> districts = new List<SDA.EFMODEL.DataModels.V_SDA_DISTRICT>();
-                            districts = BackendDataWorker.Get<SDA.EFMODEL.DataModels.V_SDA_DISTRICT>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.SDA_RS.COMMON.IS_ACTIVE__TRUE).Where(o => o.PROVINCE_CODE == patientInformation.HT_PROVINCE_CODE).ToList();
+                            districts = SdaDistrict.Where(o => o.IS_ACTIVE == IMSys.DbConfig.SDA_RS.COMMON.IS_ACTIVE__TRUE).Where(o => o.PROVINCE_CODE == patientInformation.HT_PROVINCE_CODE).ToList();
 
                             if (districts != null && districts.Count > 0)
                             {
@@ -150,7 +173,7 @@ namespace HIS.Desktop.Plugins.Register.PatientExtend
                                         cboDistrict.EditValue = district.ID;
 
                                         List<SDA.EFMODEL.DataModels.V_SDA_COMMUNE> communes = new List<SDA.EFMODEL.DataModels.V_SDA_COMMUNE>();
-                                        communes = BackendDataWorker.Get<SDA.EFMODEL.DataModels.V_SDA_COMMUNE>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.SDA_RS.COMMON.IS_ACTIVE__TRUE).Where(o => o.DISTRICT_ID == district.ID).ToList();
+                                        communes = SdaCommunes.Where(o => o.IS_ACTIVE == IMSys.DbConfig.SDA_RS.COMMON.IS_ACTIVE__TRUE).Where(o => o.DISTRICT_ID == district.ID).ToList();
                                         if (communes != null && communes.Count > 0)
                                         {
                                             InitComboCommune(cboCommune, communes);
@@ -337,6 +360,11 @@ namespace HIS.Desktop.Plugins.Register.PatientExtend
         {
             try
             {
+                if(patientInformation.IsChangeStrucAddress)
+                {
+                    LoadCommuneCombo(searchCode, Int64.Parse(provinceId), isExpand);
+                    return;
+                }    
                 List<SDA.EFMODEL.DataModels.V_SDA_DISTRICT> listResult = new List<SDA.EFMODEL.DataModels.V_SDA_DISTRICT>();
                 listResult = BackendDataWorker.Get<SDA.EFMODEL.DataModels.V_SDA_DISTRICT>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.SDA_RS.COMMON.IS_ACTIVE__TRUE).Where(o => o.DISTRICT_CODE.Contains(searchCode) && (provinceId == "" || o.PROVINCE_ID == Inventec.Common.TypeConvert.Parse.ToInt64(provinceId))).ToList();
 
@@ -398,6 +426,50 @@ namespace HIS.Desktop.Plugins.Register.PatientExtend
                 InitComboCommune(cboCommune, listResult);
 
                 if (String.IsNullOrEmpty(searchCode) && String.IsNullOrEmpty(districtID) && listResult.Count > 0)
+                {
+                    cboCommune.EditValue = null;
+                    txtCommune.Text = "";
+                    cboCommune.Focus();
+                    cboCommune.ShowPopup();
+                    PopupLoader.SelectFirstRowPopup(cboCommune);
+                }
+                else
+                {
+                    if (listResult.Count == 1)
+                    {
+                        cboCommune.EditValue = listResult[0].ID;
+                        txtCommune.Text = listResult[0].COMMUNE_CODE;
+                        if (isExpand)
+                        {
+                            txtAdressRelation.Focus();
+                            txtAdressRelation.SelectAll();
+                        }
+                    }
+                    else if (isExpand && listResult.Count > 1)
+                    {
+                        cboCommune.EditValue = null;
+                        cboCommune.Focus();
+                        cboCommune.ShowPopup();
+                        PopupLoader.SelectFirstRowPopup(cboCommune);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void LoadCommuneCombo(string searchCode, long provinceID, bool isExpand)
+        {
+            try
+            {
+                List<SDA.EFMODEL.DataModels.V_SDA_COMMUNE> listResult = new List<SDA.EFMODEL.DataModels.V_SDA_COMMUNE>();
+                listResult = BackendDataWorker.Get<SDA.EFMODEL.DataModels.V_SDA_COMMUNE>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.SDA_RS.COMMON.IS_ACTIVE__TRUE).Where(o => o.COMMUNE_CODE.Contains(searchCode) &&  o.PROVINCE_ID == provinceID).ToList();
+
+                InitComboCommune(cboCommune, listResult);
+
+                if (String.IsNullOrEmpty(searchCode) && provinceID > 0 && listResult.Count > 0)
                 {
                     cboCommune.EditValue = null;
                     txtCommune.Text = "";

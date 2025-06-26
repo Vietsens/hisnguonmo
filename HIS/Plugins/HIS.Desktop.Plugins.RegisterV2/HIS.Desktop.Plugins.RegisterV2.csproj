@@ -110,20 +110,12 @@
     <Reference Include="His.EventLog">
       <HintPath>..\..\..\..\lib\HIS\His.EventLog\His.EventLog.dll</HintPath>
     </Reference>
-    <Reference Include="HIS.UC.AddressCombo, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\His Test\histest\x64\ReferencedAssemblies\HIS.UC.AddressCombo.dll</HintPath>
-    </Reference>
     <Reference Include="HIS.UC.KskContract">
       <HintPath>..\..\..\..\lib\HIS\HIS.UC.KskContract\HIS.UC.KskContract.dll</HintPath>
     </Reference>
-    <Reference Include="HIS.UC.PlusInfo, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\His Test\histest\x64\ReferencedAssemblies\HIS.UC.PlusInfo.dll</HintPath>
-    </Reference>
     <Reference Include="HIS.UC.ServiceRoom, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\His Test\histest\x64\ReferencedAssemblies\HIS.UC.ServiceRoom.dll</HintPath>
+      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\HIS.UC.ServiceRoom.dll</HintPath>
     </Reference>
     <Reference Include="HIS.UC.TranPati">
       <HintPath>..\..\..\..\lib\HIS\HIS.UC.TranPati\HIS.UC.TranPati.dll</HintPath>
@@ -145,17 +137,13 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\..\His Test\histest\x64\ReferencedAssemblies\HIS.UC.UCOtherServiceReqInfo.dll</HintPath>
     </Reference>
-    <Reference Include="HIS.UC.UCPatientRaw, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\His Test\histest\x64\ReferencedAssemblies\HIS.UC.UCPatientRaw.dll</HintPath>
-    </Reference>
     <Reference Include="HIS.UC.UCRelativeInfo, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\..\His Test\histest\x64\ReferencedAssemblies\HIS.UC.UCRelativeInfo.dll</HintPath>
     </Reference>
     <Reference Include="HIS.UC.UCServiceRoomInfo, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\His Test\histest\x64\ReferencedAssemblies\HIS.UC.UCServiceRoomInfo.dll</HintPath>
+      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\HIS.UC.UCServiceRoomInfo.dll</HintPath>
     </Reference>
     <Reference Include="HIS.UC.UCTransPati">
       <HintPath>..\..\..\..\lib\HIS\HIS.UC.UCTransPati\HIS.UC.UCTransPati.dll</HintPath>
@@ -189,7 +177,7 @@
       <HintPath>..\..\..\..\lib\Inventec.Common\Inventec.Common.Mapper\Inventec.Common.Mapper.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Common.QrCodeBHYT ">
-      <HintPath>..\..\..\..\..\His Test\histest\x64\ReferencedAssemblies\Inventec.Common.QrCodeBHYT .dll</HintPath>
+      <HintPath>..\..\..\..\lib\Inventec.Common\Inventec.Common.QrCodeBHYT\Inventec.Common.QrCodeBHYT .dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Common.Resource">
       <HintPath>..\..\..\..\lib\Inventec.Common\Inventec.Common.Resource\Inventec.Common.Resource.dll</HintPath>
@@ -553,6 +541,18 @@
     <Compile Include="ValidationRule\PatientDob__ValidationRule.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\UC\HIS.UC.AddressCombo\HIS.UC.AddressCombo.csproj">
+      <Project>{c1883745-707d-4e4b-944f-8fe48d8eae62}</Project>
+      <Name>HIS.UC.AddressCombo</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\UC\HIS.UC.PlusInfo\HIS.UC.PlusInfo.csproj">
+      <Project>{dfa6e196-bae2-4ba0-81f6-7363e985c083}</Project>
+      <Name>HIS.UC.PlusInfo</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\UC\HIS.UC.UCPatientRaw\HIS.UC.UCPatientRaw.csproj">
+      <Project>{56fea3a2-be4c-4025-880d-e4a5f89b6ff6}</Project>
+      <Name>HIS.UC.UCPatientRaw</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\HIS.Desktop.ADO\HIS.Desktop.ADO.csproj">
       <Project>{808c25cd-0925-417f-bbf9-caf9604da879}</Project>
       <Name>HIS.Desktop.ADO</Name>

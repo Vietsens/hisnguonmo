@@ -19,7 +19,7 @@ namespace HIS.Desktop.Plugins.BloodList.Properties {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     internal class Resources {
@@ -63,9 +63,9 @@ namespace HIS.Desktop.Plugins.BloodList.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap hmenu_lock {
+        internal static System.Drawing.Bitmap khoa {
             get {
-                object obj = ResourceManager.GetObject("hmenu-lock", resourceCulture);
+                object obj = ResourceManager.GetObject("khoa", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -73,9 +73,9 @@ namespace HIS.Desktop.Plugins.BloodList.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap hmenu_unlock {
+        internal static System.Drawing.Bitmap mo_khoa {
             get {
-                object obj = ResourceManager.GetObject("hmenu-unlock", resourceCulture);
+                object obj = ResourceManager.GetObject("mo_khoa", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

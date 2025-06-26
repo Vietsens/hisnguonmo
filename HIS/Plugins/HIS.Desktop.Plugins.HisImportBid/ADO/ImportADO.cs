@@ -25,8 +25,9 @@ using System.Threading.Tasks;
 
 namespace HIS.Desktop.Plugins.HisImportBid.ADO
 {
-    class ImportADO : MOS.EFMODEL.DataModels.V_HIS_MEDICINE_TYPE
+    public class ImportADO : MOS.EFMODEL.DataModels.V_HIS_MEDICINE_TYPE
     {
+        public string BATCH_DIVISION_CODE { get; set; }
         // boo sung hieu luc tu hieu luc den ma ap thau
         public string VALID_FROM_TIME { get; set; }
         public string VALID_TO_TIME { get; set; }

@@ -153,6 +153,7 @@ namespace Inventec.Common.EHoaDon
         /// </summary>
         public string OriginalInvoiceIdentify { get; set; }
 
+        public string Reason { get; set; }
     }
 
     [Serializable]

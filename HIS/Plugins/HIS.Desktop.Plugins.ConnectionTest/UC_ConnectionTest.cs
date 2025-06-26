@@ -4591,17 +4591,16 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                     e.Appearance.FontStyleDelta = FontStyle.Strikeout;
                 }
 
-                if (e.Column.FieldName == "VALUE_RANGE_DISPLAY" &&
-                    !string.IsNullOrWhiteSpace(data.OLD_VALUE) &&
-                    data.VALUE.HasValue &&
-                    decimal.TryParse(data.VALUE.ToString(), out var valueNew) &&
-                    decimal.TryParse(data.OLD_VALUE, out var valueOld))
+                if (e.Column.FieldName == "VALUE_RANGE_DISPLAY" && !string.IsNullOrWhiteSpace(data.OLD_VALUE) && data.VALUE.HasValue && decimal.TryParse(data.VALUE.ToString(), out var valueNew) && decimal.TryParse(data.OLD_VALUE, out var valueOld))
                 {
                     Image arrowImage = null;
-                    if (valueNew > valueOld)
-                        arrowImage = imageList1.Images[5];
-                    else if (valueNew < valueOld)
-                        arrowImage = imageList1.Images[6];
+                    if (decimal.TryParse(data.OLD_VALUE, System.Globalization.NumberStyles.Any, CultureInfo.InvariantCulture, out var oldVal) && decimal.TryParse(e.CellText, System.Globalization.NumberStyles.Any, CultureInfo.InvariantCulture, out var newVal))
+                    {
+                        if (newVal > oldVal)
+                            arrowImage = imageList1.Images[5];
+                        else if (newVal < oldVal)
+                            arrowImage = imageList1.Images[6];
+                    }
                     e.Appearance.DrawString(e.Cache, e.CellText, e.Bounds);
                     if (arrowImage != null)
                     {
@@ -4840,7 +4839,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                     {
                         if (decimal.TryParse(e.Value?.ToString(), out var newVal))
                         {
-                            data.VALUE = newVal;
+                            data.VALUE = newVal;                            
                         }
                         data.Item_Edit_Value = 1;
                         treeListSereServTein.CloseEditor();
@@ -10095,14 +10094,16 @@ namespace HIS.Desktop.Plugins.ConnectionTest
         }
 
         private void treeListSereServTein_HiddenEditor(object sender, EventArgs e)
-        {       
+        {
             try
             {
-                var editor = sender as DevExpress.XtraTreeList.TreeList;
-                if (editor.FocusedNode != null)
+                var treeList = sender as DevExpress.XtraTreeList.TreeList;
+                if (treeList.FocusedNode != null)
                 {
-                    editor.RefreshNode(editor.FocusedNode);
-                    editor.Invalidate();
+                    treeList.PostEditor(); 
+                    treeList.EndCurrentEdit(); 
+                    treeList.RefreshNode(treeList.FocusedNode); 
+                    treeList.InvalidateNode(treeList.FocusedNode);
                 }
             }
             catch (Exception ex)

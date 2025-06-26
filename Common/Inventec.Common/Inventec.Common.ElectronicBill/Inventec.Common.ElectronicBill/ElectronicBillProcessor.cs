@@ -89,6 +89,9 @@ namespace Inventec.Common.ElectronicBill
                     case CmdType.GetInvErrorViewFkey:
                         result = this.GetInvErrorViewFkey();
                         break;
+                    case CmdType.ReplaceInvoiceAction:
+                        result = this.ReplaceInvoiceAction();
+                        break;
                     default:
                         break;
                 }
@@ -101,7 +104,110 @@ namespace Inventec.Common.ElectronicBill
             return result;
         }
 
-        public ElectronicBillResult ImportAndPublishInv()
+        private ElectronicBillResult ReplaceInvoiceAction()
+        {
+            Inventec.Common.Logging.LogSystem.Info("ReplaceInvoiceAction");
+            ElectronicBillResult result = new ElectronicBillResult();
+            result.Success = false;
+            result.Messages = new List<string>();
+            bool vali = true;
+            try
+            {
+                vali = vali & !String.IsNullOrEmpty(electronicBillInput.account);
+                vali = vali & !String.IsNullOrEmpty(electronicBillInput.acPass);
+                vali = vali & !String.IsNullOrEmpty(electronicBillInput.serviceUrl);
+                vali = vali & !String.IsNullOrEmpty(electronicBillInput.userName);
+                vali = vali & !String.IsNullOrEmpty(electronicBillInput.passWord);
+                vali = vali & !String.IsNullOrEmpty(electronicBillInput.pattern);
+                if (!vali)
+                {
+                    result.Messages.Add(ResultCode.WRONG_DATA);
+                    return result;
+                }
+
+                string xmlInvData = "";
+
+                if (electronicBillInput.replaceInvoices != null && electronicBillInput.replaceInvoices.Count > 0)
+                {
+                    foreach (var item in electronicBillInput.replaceInvoices)
+                    {
+                        item.Amount = FormatReplaceStringPrice(item.Amount);
+                        item.Total = FormatReplaceStringPrice(item.Total);
+                        item.DiscountAmount = FormatReplaceStringPrice(item.DiscountAmount);
+                        item.VATAmount = FormatReplaceStringPrice(item.VATAmount);
+                        if (item.Products != null && item.Products.Count > 0)
+                        {
+                            foreach (var product in item.Products)
+                            {
+                                product.Amount = FormatReplaceStringPrice(product.Amount);
+                                product.ProdQuantity = FormatReplaceStringPrice(product.ProdQuantity);
+                                product.ProdPrice = FormatReplaceStringPrice(product.ProdPrice);
+                            }
+                        }
+                    }
+
+                    xmlInvData = ConvertListInvoiceToStringXmlFormat(electronicBillInput.invoices);
+
+                    if (!String.IsNullOrWhiteSpace(electronicBillInput.DataXmlStringPlus))
+                    {
+                        xmlInvData = xmlInvData.Replace("</Invoice>", electronicBillInput.DataXmlStringPlus + "</Invoice>");
+                        Inventec.Common.Logging.LogSystem.Info(Inventec.Common.Logging.LogUtil.TraceData("xmlInvData", xmlInvData));
+                    }
+                    else
+                    {
+                        Inventec.Common.Logging.LogSystem.Info(Inventec.Common.Logging.LogUtil.TraceData("xmlInvData", xmlInvData));
+                    }
+                }
+
+                //Convert list invoice to string xml format
+                BusinessserviceVNPT.ReplaceInvoiceActionRequestBody body = new BusinessserviceVNPT.ReplaceInvoiceActionRequestBody();
+                body.Account = electronicBillInput.account;
+                body.ACpass = electronicBillInput.acPass;
+                body.username = electronicBillInput.userName;
+                body.pass = electronicBillInput.passWord;
+                body.fkey = electronicBillInput.fKey;
+                body.pattern = electronicBillInput.pattern;
+                body.serial = electronicBillInput.serial;
+                body.convert = electronicBillInput.convert;
+                body.xmlInvData = xmlInvData;
+
+                BasicHttpBinding binding = new BasicHttpBinding();
+                binding.Security.Mode = BasicHttpSecurityMode.Transport;
+                BusinessserviceVNPT.ReplaceInvoiceActionRequest request = new BusinessserviceVNPT.ReplaceInvoiceActionRequest(body);
+                EndpointAddress epAdd = new EndpointAddress(electronicBillInput.serviceUrl + "/businessservice.asmx");//+"/PublishService.asmx"
+
+                BusinessserviceVNPT.BusinessServiceSoap businessServiceSoap = new BusinessserviceVNPT.BusinessServiceSoapClient(binding, epAdd);
+                BusinessserviceVNPT.ReplaceInvoiceActionResponse response = businessServiceSoap.ReplaceInvoiceAction(request);
+                string strResponse = "";
+                if (response != null)
+                {
+                    strResponse = response.Body.ReplaceInvoiceActionResult;
+                    if (strResponse.Contains("OK"))
+                    {
+                        result.Success = true;
+                        result.Data = strResponse;
+                    }
+                    else
+                    {
+                        string message = strResponse;
+                        if (mapError.dicMapping.ContainsKey(strResponse))
+                        {
+                            message += string.Format(" ({0})", mapError.dicMapping[strResponse]);
+                        }
+                        result.Messages.Add(message);
+                    }
+                }
+                return result;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+                //result = null;
+            }
+            return result;
+        }
+
+        private ElectronicBillResult ImportAndPublishInv()
         {
             ElectronicBillResult result = new ElectronicBillResult();
             result.Success = false;
@@ -150,7 +256,7 @@ namespace Inventec.Common.ElectronicBill
                             }
                         }
 
-                        xmlInvData = ElectronicBillProcessor.ConvertListInvoiceToStringXmlFormat(electronicBillInput.invoices);
+                        xmlInvData = ConvertListInvoiceToStringXmlFormat(electronicBillInput.invoices);
 
                         if (!String.IsNullOrWhiteSpace(electronicBillInput.DataXmlStringPlus))
                         {
@@ -191,7 +297,7 @@ namespace Inventec.Common.ElectronicBill
                             }
                         }
 
-                        xmlInvData = ElectronicBillProcessor.ConvertListInvoiceToStringXmlFormat(electronicBillInput.invoiceTT78s, "DSHDon");
+                        xmlInvData = ConvertListInvoiceToStringXmlFormat(electronicBillInput.invoiceTT78s, "DSHDon");
                         Inventec.Common.Logging.LogSystem.Info(Inventec.Common.Logging.LogUtil.TraceData("xmlInvData TT78:", xmlInvData));
                     }
 
@@ -255,7 +361,7 @@ namespace Inventec.Common.ElectronicBill
                         }
                     }
 
-                    string xmlInvData = ElectronicBillProcessor.ConvertListInvoiceToStringXmlFormat(electronicBillInput.invoicesBm);
+                    string xmlInvData = ConvertListInvoiceToStringXmlFormat(electronicBillInput.invoicesBm);
 
                     Inventec.Common.Logging.LogSystem.Info("xmlInvDataBM:\r\n" + xmlInvData);
 
@@ -353,7 +459,7 @@ namespace Inventec.Common.ElectronicBill
             return result;
         }
 
-        public ElectronicBillResult DeleteInvFKey()
+        private ElectronicBillResult DeleteInvFKey()
         {
             Inventec.Common.Logging.LogSystem.Info("DeleteInvFKey");
             ElectronicBillResult result = new ElectronicBillResult();
@@ -419,7 +525,7 @@ namespace Inventec.Common.ElectronicBill
             return result;
         }
 
-        public ElectronicBillResult DeleteInvoiceByFkey()
+        private ElectronicBillResult DeleteInvoiceByFkey()
         {
             Inventec.Common.Logging.LogSystem.Info("DeleteInvoiceByFkey");
             ElectronicBillResult result = new ElectronicBillResult();
@@ -485,7 +591,7 @@ namespace Inventec.Common.ElectronicBill
             return result;
         }
 
-        public ElectronicBillResult CancelInv()
+        private ElectronicBillResult CancelInv()
         {
             Inventec.Common.Logging.LogSystem.Info("CancelInv");
             ElectronicBillResult result = new ElectronicBillResult();
@@ -550,7 +656,7 @@ namespace Inventec.Common.ElectronicBill
             return result;
         }
 
-        public ElectronicBillResult CancelInvNoPay()
+        private ElectronicBillResult CancelInvNoPay()
         {
             Inventec.Common.Logging.LogSystem.Info("CancelInvNoPay");
             ElectronicBillResult result = new ElectronicBillResult();
@@ -615,7 +721,7 @@ namespace Inventec.Common.ElectronicBill
             return result;
         }
 
-        public static string FormatReplaceStringPrice(string price, bool removeDecimal = false)
+        private static string FormatReplaceStringPrice(string price, bool removeDecimal = false)
         {
             string result = "";
             try
@@ -647,7 +753,7 @@ namespace Inventec.Common.ElectronicBill
             return result;
         }
 
-        public ElectronicBillResult downloadInvPDFFkeyNoPay()
+        private ElectronicBillResult downloadInvPDFFkeyNoPay()
         {
             Inventec.Common.Logging.LogSystem.Info("downloadInvPDFFkeyNoPay");
             ElectronicBillResult result = new ElectronicBillResult();
@@ -712,7 +818,7 @@ namespace Inventec.Common.ElectronicBill
             return result;
         }
 
-        public ElectronicBillResult ConvertForStoreFkey()
+        private ElectronicBillResult ConvertForStoreFkey()
         {
             Inventec.Common.Logging.LogSystem.Info("ConvertForStoreFkey");
             ElectronicBillResult result = new ElectronicBillResult();
@@ -777,7 +883,7 @@ namespace Inventec.Common.ElectronicBill
             return result;
         }
 
-        public ElectronicBillResult GetInvErrorViewFkey()
+        private ElectronicBillResult GetInvErrorViewFkey()
         {
             Inventec.Common.Logging.LogSystem.Info("GetInvErrorViewFkey");
             ElectronicBillResult result = new ElectronicBillResult();
@@ -842,7 +948,7 @@ namespace Inventec.Common.ElectronicBill
             return result;
         }
 
-        public ElectronicBillResult ConvertForVerifyFkey()
+        private ElectronicBillResult ConvertForVerifyFkey()
         {
             Inventec.Common.Logging.LogSystem.Info("ConvertForVerifyFkey");
             ElectronicBillResult result = new ElectronicBillResult();
@@ -1112,7 +1218,7 @@ namespace Inventec.Common.ElectronicBill
             return result;
         }
 
-        public ElectronicBillResult ListInvByCusFkey()
+        private ElectronicBillResult ListInvByCusFkey()
         {
             Inventec.Common.Logging.LogSystem.Info("GetInvViewFkeyNoPay");
             ElectronicBillResult result = new ElectronicBillResult();

@@ -32,5 +32,7 @@ namespace Inventec.Common.Address
         public string CommuneCode { get; set; }
         public string CommuneName { get; set; }
         public string Address { get; set; }
+
+        public bool IsNoDistrict { get; set; }
     }
 }

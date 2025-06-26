@@ -122,7 +122,6 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
 				this.ucAddressCombo1.SetDelegateSetAddressUCHein(this.SetDelegateSetAddressUCHein);
 				this.ucAddressCombo1.SetDelegateSetAddressUCPlusInfo(this.SetDelegateSetAddressUCProvinceOfBirth);
 				this.ucAddressCombo1.SetDelegateSendProvince(this.SendCodeProvince);
-				this.ucAddressCombo1.SetDelegateSendCardSDO(SendCardSDO);
 				this.ucHeinInfo1.SetEnableControlEmergency(this.SetEnableEmergency);
 				this.ucHeinInfo1.SetShowThongTinChuyenTuyen(this.ShowFormThongTinChuyenTuyen);
 				this.ucHeinInfo1.SetCareerByHeinCardNumber(this.SetCareerByCardNumber);
@@ -138,7 +137,19 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
 			{
 				Inventec.Common.Logging.LogSystem.Warn(ex);
 			}
-		}
+        }
+        private void SendStateStrucAddress(bool isReloadState)
+        {
+            try
+            {
+                this.ucPlusInfo1.GetStateChangeStrucAddess(isReloadState);
+				this.ucPatientRaw1.GetStateChangeStrucAddess(isReloadState);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
 
         private void SendCardSDO(HisCardSDO cardSDO)
         {

@@ -33,14 +33,14 @@
   <ItemGroup>
     <Reference Include="EO.Base, Version=18.2.74.0, Culture=neutral, PublicKeyToken=e92353a6bf73fffc, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\RELEASE\Library packages\EO.WebBrowser.20.3.34\EO.Base.dll</HintPath>
+      <HintPath>..\..\..\..\..\lib\Library packages\EO.WebBrowser.20.3.34\EO.Base.dll</HintPath>
     </Reference>
     <Reference Include="EO.Pdf, Version=18.2.74.0, Culture=neutral, PublicKeyToken=e92353a6bf73fffc, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\RELEASE\Library packages\EO.WebBrowser.20.3.34\EO.Pdf.dll</HintPath>
+      <HintPath>..\..\..\..\..\lib\Library packages\EO.WebBrowser.20.3.34\EO.Pdf.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Common.Logging">
-      <HintPath>..\..\..\..\RELEASE\Inventec.Common\Inventec.Common.Logging\Inventec.Common.Logging.dll</HintPath>
+      <HintPath>..\..\..\..\..\lib\Inventec.Common\Inventec.Common.Logging\Inventec.Common.Logging.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
@@ -76,6 +76,7 @@
     <Compile Include="MD\ListInv.cs" />
     <Compile Include="MD\Product.cs" />
     <Compile Include="MD\ProductBm.cs" />
+    <Compile Include="MD\ReplaceInv.cs" />
     <Compile Include="ModelTT78\DLHDon.cs" />
     <Compile Include="ModelTT78\HDon.cs" />
     <Compile Include="ModelTT78\HHDVu.cs" />
