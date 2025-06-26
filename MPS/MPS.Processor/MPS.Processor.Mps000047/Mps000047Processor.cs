@@ -94,6 +94,10 @@ namespace MPS.Processor.Mps000047
 
                         System.Reflection.PropertyInfo piMedicineUF = typeof(ExpMestAggregatePrintByPageADO).GetProperty("MEDICINE_USE_FORM_NAME" + i);
                         singleValueDictionary.Add("MEDICINE_USE_FORM_NAME" + i, piMedicineUF.GetValue(item));
+
+                        //qtcode
+                        System.Reflection.PropertyInfo piMedicineUnit = typeof(ExpMestAggregatePrintByPageADO).GetProperty("MEDICINE_UNIT_NAME" + i);
+                        singleValueDictionary.Add("MEDICINE_UNIT_NAME" + i, piMedicineUnit.GetValue(item));
                     }
 
 
@@ -179,9 +183,25 @@ namespace MPS.Processor.Mps000047
 
             return result;
         }
-//        Các bước lấy ra dữ liệu buồng như sau:
-//- B1: Lấy ra dữ liệu buồng của hồ sơ điều trị đó và tương ứng với khoa (V_HIS_TREATMENT_BED_ROOM có DEPARTMENT_ID tương ứng với khoa, TREATMENT_ID tương ứng với hồ sơ điều trị)
-//- B2: Kiểm tra, trong dữ liệu buồng có được ở B1, nếu tồn tại V_HIS_TREATMENT_BED_ROOM có REMOVE_TIME null thì lấy V_HIS_TREATMENT_BED_ROOM có ADD_TIME lớn nhất mà REMOVE_TIME null
+
+        //qtcode
+        string GetServiceUnitName(long serviceId)
+        {
+            string result = "";
+            try
+            {
+                result = rdo.MedicineExpmestTypeADOs.FirstOrDefault(o => o.SERVICE_ID == serviceId).SERVICE_UNIT_NAME ?? "";
+            }
+            catch (Exception ex)
+            {
+                result = "";
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+            return result;
+        }
+        //        Các bước lấy ra dữ liệu buồng như sau:
+        //- B1: Lấy ra dữ liệu buồng của hồ sơ điều trị đó và tương ứng với khoa (V_HIS_TREATMENT_BED_ROOM có DEPARTMENT_ID tương ứng với khoa, TREATMENT_ID tương ứng với hồ sơ điều trị)
+        //- B2: Kiểm tra, trong dữ liệu buồng có được ở B1, nếu tồn tại V_HIS_TREATMENT_BED_ROOM có REMOVE_TIME null thì lấy V_HIS_TREATMENT_BED_ROOM có ADD_TIME lớn nhất mà REMOVE_TIME null
         //- B3: Nếu không tồn tại V_HIS_TREATMENT_BED_ROOM nào có REMOVE_TIME null thì lấy V_HIS_TREATMENT_BED_ROOM có REMOVE_TIME lớn nhất.
         string GetBedRoomByPatient(long treatmentId)
         {
@@ -297,6 +317,10 @@ namespace MPS.Processor.Mps000047
                         System.Reflection.PropertyInfo piMedicineUF = typeof(ExpMestAggregatePrintByPageADO).GetProperty("MEDICINE_USE_FORM_NAME" + i);
                         if (piMedicineUF != null)
                             piMedicineUF.SetValue(sdo, index < distinctDates.Count ? GetMediUseForm(distinctDates[index]) : "");
+                        //qtcode
+                        System.Reflection.PropertyInfo piMedicineUnit = typeof(ExpMestAggregatePrintByPageADO).GetProperty("MEDICINE_UNIT_NAME" + i);
+                        if (piMedicineUnit != null)
+                            piMedicineUnit.SetValue(sdo, index < distinctDates.Count ? GetServiceUnitName(distinctDates[index]) : "");
 
                         index++;
                     }
