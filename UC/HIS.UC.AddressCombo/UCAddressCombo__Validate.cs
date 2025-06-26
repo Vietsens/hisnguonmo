@@ -98,13 +98,14 @@ namespace HIS.UC.AddressCombo
                     lciDistrict.AppearanceItemCaption.ForeColor = Color.Maroon;
                     lciCommune.AppearanceItemCaption.ForeColor = Color.Maroon;
                     SetValidate();
-                }else if(_isValidate == "2")
+                }
+                else if (_isValidate == "2")
                 {
                     lciProvince.AppearanceItemCaption.ForeColor = Color.Maroon;
                     lciDistrict.AppearanceItemCaption.ForeColor = Color.Maroon;
                     ValidateProvince();
                     ValidateDistrict();
-                }    
+                }
                 else
                 {
                     lciProvince.AppearanceItemCaption.ForeColor = Color.Black;
@@ -143,7 +144,8 @@ namespace HIS.UC.AddressCombo
             {
                 ValidateProvince();
                 ValidateDistrict();
-                ValidateCommune();
+                if (!IsChangeStrucAdreess)
+                    ValidateCommune();
             }
             catch (Exception ex)
             {

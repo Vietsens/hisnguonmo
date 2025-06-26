@@ -36,6 +36,7 @@ namespace HIS.UC.AddressCombo.ADO
         public string Commune_Name { get; set; }
         public string Address { get; set; }
         public string Phone { get; set; }
+        public string PatientId { get; set; }
 
         public DelegateFocusNextUserControl _FocusNextUserControl { get; set; }
     }

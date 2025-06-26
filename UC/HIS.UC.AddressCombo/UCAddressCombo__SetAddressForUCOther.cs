@@ -47,13 +47,17 @@ namespace HIS.UC.AddressCombo
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
-        public void SetDelegateSendCardSDO(DelegateSendCardSDO _dlg)
+        public void SetDelegateSendCardSDO(DelegateSendCardSDO _dlg, DelegateReloadData _dlgReload)
         {
             try
             {
                 if (_dlg != null)
                 {
                     this.dlgSendCardSDO = _dlg;
+                }
+                if (_dlgReload != null)
+                {
+                    this.dlgReloadData = _dlgReload;
                 }
             }
             catch (Exception ex)
@@ -104,16 +108,24 @@ namespace HIS.UC.AddressCombo
                     province = BackendDataWorker.Get<V_SDA_PROVINCE>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.SDA_RS.COMMON.IS_ACTIVE__TRUE).ToList().FirstOrDefault(o => o.PROVINCE_CODE == (string)this.cboProvince.EditValue);
                     this.ChangeReplaceAddress(cboProvince.Text, "Tỉnh", ref address);
                 }
-                if (this.cboDistrict.EditValue != null)
+                if (!IsChangeStrucAdreess)
                 {
-                    district = BackendDataWorker.Get<V_SDA_DISTRICT>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.SDA_RS.COMMON.IS_ACTIVE__TRUE).ToList().FirstOrDefault(o => o.DISTRICT_CODE == (string)this.cboDistrict.EditValue);
-                    this.ChangeReplaceAddress(cboDistrict.Text, "Huyện", ref address);
-                }
+                    if (this.cboDistrict.EditValue != null)
+                    {
+                        district = BackendDataWorker.Get<V_SDA_DISTRICT>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.SDA_RS.COMMON.IS_ACTIVE__TRUE).ToList().FirstOrDefault(o => o.DISTRICT_CODE == (string)this.cboDistrict.EditValue);
+                        this.ChangeReplaceAddress(cboDistrict.Text, "Huyện", ref address);
+                    }
 
-                if (this.cboCommune.EditValue != null)
+                    if (this.cboCommune.EditValue != null)
+                    {
+                        commune = BackendDataWorker.Get<V_SDA_COMMUNE>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.SDA_RS.COMMON.IS_ACTIVE__TRUE && o.IS_NO_DISTRICT != 1).ToList().FirstOrDefault(o => o.COMMUNE_CODE == (string)this.cboCommune.EditValue);
+                        this.ChangeReplaceAddress(cboCommune.Text, "Xã", ref address);
+                    }
+                }
+                else
                 {
-                    commune = BackendDataWorker.Get<V_SDA_COMMUNE>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.SDA_RS.COMMON.IS_ACTIVE__TRUE).ToList().FirstOrDefault(o => o.COMMUNE_CODE == (string)this.cboCommune.EditValue);
-                    this.ChangeReplaceAddress(cboCommune.Text, "Xã", ref address);
+                    commune = BackendDataWorker.Get<V_SDA_COMMUNE>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.SDA_RS.COMMON.IS_ACTIVE__TRUE && o.IS_NO_DISTRICT == 1).ToList().FirstOrDefault(o => o.COMMUNE_CODE == (string)this.cboDistrict.EditValue);
+                    this.ChangeReplaceAddress(cboDistrict.Text, "Xã", ref address);
                 }
 
                 IsNotLoadChangeAddressTxt = true;
@@ -130,7 +142,8 @@ namespace HIS.UC.AddressCombo
                 //if (isPatientBHYT)//Bo di de th bn cu van fill du lieu uc hein
                 //    return;
                 string heinAddress = string.Format("{0}{1}{2}{3}", address, (commune != null ? " " + commune.INITIAL_NAME + " " + commune.COMMUNE_NAME : ""), (district != null ? ", " + district.INITIAL_NAME + " " + district.DISTRICT_NAME : ""), (province != null ? ", " + province.PROVINCE_NAME : ""));
-                this.dlgSetAddressUCHein(heinAddress);
+                if (dlgSetAddressUCHein != null)
+                    this.dlgSetAddressUCHein(heinAddress);
             }
             catch (Exception ex)
             {
@@ -170,10 +183,18 @@ namespace HIS.UC.AddressCombo
                 province = BackendDataWorker.Get<V_SDA_PROVINCE>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.SDA_RS.COMMON.IS_ACTIVE__TRUE).ToList().FirstOrDefault(o => o.PROVINCE_CODE == (string)this.cboProvince.EditValue);
                 if (this.dlgSetAddressUCProvinceOfBirth != null)
                     this.dlgSetAddressUCProvinceOfBirth(province, true);
-                district = BackendDataWorker.Get<V_SDA_DISTRICT>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.SDA_RS.COMMON.IS_ACTIVE__TRUE).ToList().FirstOrDefault(o => o.DISTRICT_CODE == (string)this.cboDistrict.EditValue);
-                if (this.dlgSetAddressUCProvinceOfBirth != null)
-                    this.dlgSetAddressUCProvinceOfBirth(district, true);
-                commune = BackendDataWorker.Get<V_SDA_COMMUNE>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.SDA_RS.COMMON.IS_ACTIVE__TRUE).ToList().FirstOrDefault(o => o.COMMUNE_CODE == (string)this.cboCommune.EditValue);
+                if (!IsChangeStrucAdreess)
+                {
+                    district = BackendDataWorker.Get<V_SDA_DISTRICT>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.SDA_RS.COMMON.IS_ACTIVE__TRUE).ToList().FirstOrDefault(o => o.DISTRICT_CODE == (string)this.cboDistrict.EditValue);
+                    if (this.dlgSetAddressUCProvinceOfBirth != null)
+                        this.dlgSetAddressUCProvinceOfBirth(district, true);
+                    commune = BackendDataWorker.Get<V_SDA_COMMUNE>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.SDA_RS.COMMON.IS_ACTIVE__TRUE && o.IS_NO_DISTRICT != 1).ToList().FirstOrDefault(o => o.COMMUNE_CODE == (string)this.cboCommune.EditValue);
+                }
+                else
+                {
+
+                    commune = BackendDataWorker.Get<V_SDA_COMMUNE>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.SDA_RS.COMMON.IS_ACTIVE__TRUE && o.IS_NO_DISTRICT == 1).ToList().FirstOrDefault(o => o.COMMUNE_CODE == (string)this.cboDistrict.EditValue);
+                }
                 if (this.dlgSetAddressUCProvinceOfBirth != null)
                     this.dlgSetAddressUCProvinceOfBirth(commune, true);
                 if (this.dlgSendCodeProvince != null)

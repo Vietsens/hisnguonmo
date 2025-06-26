@@ -17,6 +17,7 @@
  */
 using HIS.Desktop.Library.CacheClient;
 using HIS.Desktop.Library.CacheClient.Redis;
+using HIS.Desktop.LocalStorage.BackendData.ADO;
 using HIS.Desktop.LocalStorage.BackendData.Core;
 using HIS.Desktop.LocalStorage.ConfigApplication;
 using Inventec.Common.Logging;
@@ -189,7 +190,115 @@ namespace HIS.Desktop.LocalStorage.BackendData
                 result = null;
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
+            return result;
+        }
 
+        public static List<T> Get<T>(object filter) where T : class
+        {
+            return Get<T>(filter, false, false, false, true);
+        }
+
+        public static List<T> Get<T>(object filter, bool isTranslate, bool isNotGetInCache, bool islock, bool isSaveToRam)
+        {
+            List<T> result = null;
+            object resultTemp = null;
+            try
+            {
+                Process proc = Process.GetCurrentProcess();
+                Type type = typeof(T);
+                //Inventec.Common.Logging.LogAction.Debug("Dung lượng RAM trước khi gọi/lưu vào BackendDataWorker get data " + type.ToString() + " trong cache local là:" + ((decimal)proc.PrivateMemorySize64 / (1024 * 1024)) + "MB");
+                if (
+                    !isSaveToRam
+                    //|| (
+                    //    !CacheMonitorGet.IsExistsCode(type.ToString())
+                    //    && !RamMonitorGet.IsExistsCode(type.ToString())
+                    //)
+                    )
+                {
+                    resultTemp = GetDataByType<T>(filter, isNotGetInCache);
+                    //if (isTranslate)
+                    TranslateWorker.TranslateData(resultTemp as List<T>);
+                    result = ((List<T>)resultTemp);
+                }
+                else
+                {
+                    if (!dic.ContainsKey(type))
+                    {
+                        LogSystem.Debug("dic khong ContainsKey Key: " + type.ToString());
+                        if (islock)
+                        {
+                            lock (thisLock)
+                            {
+                                resultTemp = GetDataByType<T>(filter, isNotGetInCache);
+                                //if (isTranslate)
+                                TranslateWorker.TranslateData(resultTemp as List<T>);
+
+                                if (!dic.TryAdd(type, resultTemp))
+                                {
+                                    LogSystem.Info("Khong Add duoc cau hinh vao dictionary Key: " + type.ToString());
+                                }
+
+                                SetSyncTime<T>(DateTime.Now.ToString("yyyyMMddHHmmss"));
+                                result = ((List<T>)resultTemp);
+                            }
+                        }
+                        else
+                        {
+                            resultTemp = GetDataByType<T>(filter, isNotGetInCache);
+
+                            //if (isTranslate)
+                            TranslateWorker.TranslateData(resultTemp as List<T>);
+
+                            if (!dic.TryAdd(type, resultTemp))
+                            {
+                                LogSystem.Info("Khong Add duoc cau hinh vao dictionary Key: " + type.ToString());
+                            }
+
+                            SetSyncTime<T>(DateTime.Now.ToString("yyyyMMddHHmmss"));
+                            result = ((List<T>)resultTemp);
+
+                        }
+                        Inventec.Common.Logging.LogSystem.Debug("BackendDataWorker => Loaded type " + type.ToString() + " success. Data Count = " + (result != null ? result.Count : 0));
+                        //Inventec.Common.Logging.LogAction.Debug("Tổng số dữ liệu đang lưu BackendDataWorker trong cache RAM local Dictionary.count=" + dic.Count);
+                        //Inventec.Common.Logging.LogAction.Debug("Chi tiết các dữ liệu đang lưu BackendDataWorker trong cache RAM local: " + String.Join(", ", dic.Keys.Select(k => k.ToString()).ToArray()));
+
+                    }
+                    else
+                    {
+                        if (!dic.TryGetValue(type, out resultTemp))
+                        {
+                            LogSystem.Debug("Khong get duoc cau hinh trong dictionary Key: " + type.ToString());
+                            resultTemp = GetDataByType<T>(filter, isNotGetInCache);
+
+                            //if (isTranslate)
+                            TranslateWorker.TranslateData(resultTemp as List<T>);
+
+                            if (!dic.TryAdd(type, resultTemp))
+                            {
+                                LogSystem.Debug("Khong Add duoc cau hinh vao dictionary Key: " + type.ToString());
+                            }
+
+                            SetSyncTime<T>(DateTime.Now.ToString("yyyyMMddHHmmss"));
+
+                            Inventec.Common.Logging.LogSystem.Debug("BackendDataWorker => Loaded type " + type.ToString() + " success. Data Count = " + (((List<T>)resultTemp) != null ? ((List<T>)resultTemp).Count : 0));
+                        }
+
+                        result = ((List<T>)resultTemp);
+                        //if (isTranslate)
+
+                        if (result == null || result.Count == 0)
+                        {
+                            Inventec.Common.Logging.LogSystem.Debug("BackendDataWorker => List<T> Get<T> => result == null || result.Count == 0" + ", type = " + type.ToString() + "____" + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => resultTemp), resultTemp));
+                        }
+                    }
+                }
+
+            }
+            catch (Exception ex)
+            {
+                result = null;
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
             return result;
         }
 

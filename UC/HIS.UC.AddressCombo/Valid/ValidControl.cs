@@ -50,7 +50,7 @@ namespace HIS.UC.UCAddressCombo.Valid
     class Valid_District_Control : DevExpress.XtraEditors.DXErrorProvider.ValidationRule
     {
         internal DevExpress.XtraEditors.TextEdit txtDistrict;
-        internal DevExpress.XtraEditors.LookUpEdit cboDistrict;
+        internal DevExpress.XtraEditors.GridLookUpEdit cboDistrict;
         
         public override bool Validate(Control control, object value)
         {
