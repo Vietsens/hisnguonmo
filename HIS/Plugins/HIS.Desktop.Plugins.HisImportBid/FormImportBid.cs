@@ -1543,10 +1543,10 @@ namespace HIS.Desktop.Plugins.HisImportBid
                 string batchCode = dup.Key;
 
                 var typeMap = new Dictionary<string, List<string>> {
-            { "thuốc", new List<string>() },
-            { "vật tư", new List<string>() },
-            { "máu", new List<string>() }
-        };
+                    { "thuốc", new List<string>() },
+                    { "vật tư", new List<string>() },
+                    { "máu", new List<string>() }
+                };
 
                 foreach (var item in group)
                 {
@@ -1569,15 +1569,36 @@ namespace HIS.Desktop.Plugins.HisImportBid
                 if (usedTypes.Count > 1)
                 {
                     var parts = usedTypes.Select(p => $"{p.Key}: {string.Join(", ", p.Value.Distinct())}").ToList();
-                    errorMessages.Add("Mã phần lô " + batchCode.ToString() + " đã được sử dụng bởi " + (string.Join("; ", parts)).ToString());
+                    string errorMessage = "Mã phần lô " + batchCode + " đã được sử dụng bởi " + string.Join("; ", parts);
+                    errorMessages.Add(errorMessage);
+                    
+                    foreach (var item in group)
+                    {
+                        if (string.IsNullOrEmpty(item.ERROR))
+                            item.ERROR = errorMessage;
+                        else
+                            item.ERROR += "; " + errorMessage;
+                    }
                 }
 
-                // Check lặp cùng loại
+                // Check lặp cùng loại (same-type duplicates)
                 foreach (var type in usedTypes)
                 {
                     if (type.Value.Distinct().Count() > 1)
                     {
-                        errorMessages.Add("Mã phần lô " + batchCode.ToString() + " đã được sử dụng bởi " + (string.Join(", ", type.Value.Distinct())).ToString());
+                        string errorMessage = "Mã phần lô " + batchCode + " được sử dụng cho nhiều " + type.Key + " khác nhau: " + string.Join(", ", type.Value.Distinct());
+                        errorMessages.Add(errorMessage);
+                        
+                        foreach (var item in group.Where(i => 
+                            (i.Type == THUOC && type.Key == "thuốc") || 
+                            (i.Type == VATTU && type.Key == "vật tư") || 
+                            (i.Type == MAU && type.Key == "máu")))
+                        {
+                            if (string.IsNullOrEmpty(item.ERROR))
+                                item.ERROR = errorMessage;
+                            else
+                                item.ERROR += "; " + errorMessage;
+                        }
                     }
                 }
             }
