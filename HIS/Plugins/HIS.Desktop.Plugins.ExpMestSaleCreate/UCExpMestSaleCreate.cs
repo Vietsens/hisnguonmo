@@ -12,7 +12,7 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.See the
  * GNU General Public License for more details.
  *  
- * You should have received a copy of the GNU General Public LicensecboTHX
+ * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 using System;
@@ -70,6 +70,8 @@ using WCF.Client;
 using DevExpress.XtraBars;
 using HIS.Desktop.ADO;
 using MediMateTypeADO = HIS.Desktop.Plugins.ExpMestSaleCreate.ADO.MediMateTypeADO;
+using HIS.Desktop.LocalStorage.BackendData.ADO;
+using DevExpress.Utils;
 
 namespace HIS.Desktop.Plugins.ExpMestSaleCreate
 {
@@ -127,6 +129,7 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
         bool isShowContainerMediMaty = false;
         bool isShowContainerMediMatyForChoose = false;
         bool isShow = true;
+        private bool isNewAddressStructure = false;
         MediMateTypeADO currentMedicineTypeADOForEdit;
         //readonly long taiQuayTrongGioID = 100000;
         //readonly long taiQuayNgoaiGioID = 100001;
@@ -214,6 +217,10 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
 
                 spinBaseValue.EditValue = HisConfigCFG.IS_ROUND_PRICE_BASE;
                 CheckEnableBtnQR();
+                isNewAddressStructure = Properties.Settings.Default.UseNewAddressStructure;
+                toggleSwitch1.IsOn = isNewAddressStructure;
+                SetToggleSwitchTooltip(toggleSwitch1.IsOn);
+                LoadAddressData(isNewAddressStructure);
             }
             catch (Exception ex)
             {
@@ -2271,25 +2278,34 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
                     var item = ((List<HIS.Desktop.LocalStorage.BackendData.ADO.CommuneADO>)this.cboTHX.Properties.DataSource)[e.RecordIndex];
                     if (item != null)
                     {
-                        if (isSearchOrderByXHT)
+                        if (isNewAddressStructure)
                         {
-                            string x1 = (String.IsNullOrEmpty(item.COMMUNE_NAME) ? "" : "" + item.INITIAL_NAME + " " + item.COMMUNE_NAME);
-                            string h1 = (String.IsNullOrEmpty(item.DISTRICT_INITIAL_NAME) ? "" : (String.IsNullOrEmpty(x1) ? "" : " - ") + item.DISTRICT_INITIAL_NAME) + (String.IsNullOrEmpty(item.DISTRICT_NAME) ? "" : " " + item.DISTRICT_NAME);
-                            string t1 = (String.IsNullOrEmpty(item.PROVINCE_NAME) ? "" : " - " + item.PROVINCE_NAME);
-                            e.Value = string.Format("{0}{1}{2}", x1, h1, t1);
+                            string x1 = string.IsNullOrEmpty(item.COMMUNE_NAME) ? "" : item.INITIAL_NAME + " " + item.COMMUNE_NAME;
+                            string t1 = string.IsNullOrEmpty(item.PROVINCE_NAME) ? "" : " - " + item.PROVINCE_NAME;
+                            e.Value = string.Format("{0}{1}", x1, t1);
                         }
                         else
                         {
-                            string t1 = item.PROVINCE_NAME;
+                            if (isSearchOrderByXHT)
+                            {
+                                string x1 = (String.IsNullOrEmpty(item.COMMUNE_NAME) ? "" : "" + item.INITIAL_NAME + " " + item.COMMUNE_NAME);
+                                string h1 = (String.IsNullOrEmpty(item.DISTRICT_INITIAL_NAME) ? "" : (String.IsNullOrEmpty(x1) ? "" : " - ") + item.DISTRICT_INITIAL_NAME) + (String.IsNullOrEmpty(item.DISTRICT_NAME) ? "" : " " + item.DISTRICT_NAME);
+                                string t1 = (String.IsNullOrEmpty(item.PROVINCE_NAME) ? "" : " - " + item.PROVINCE_NAME);
+                                e.Value = string.Format("{0}{1}{2}", x1, h1, t1);
+                            }
+                            else
+                            {
+                                string t1 = item.PROVINCE_NAME;
 
-                            string h1 = (String.IsNullOrEmpty(item.DISTRICT_INITIAL_NAME) ? "" : " - " + item.DISTRICT_INITIAL_NAME);
-                            string h2 = !String.IsNullOrEmpty(item.DISTRICT_NAME) ?
-                                String.IsNullOrEmpty(h1) ? "- " + item.DISTRICT_NAME : item.DISTRICT_NAME : "";
+                                string h1 = (String.IsNullOrEmpty(item.DISTRICT_INITIAL_NAME) ? "" : " - " + item.DISTRICT_INITIAL_NAME);
+                                string h2 = !String.IsNullOrEmpty(item.DISTRICT_NAME) ?
+                                    String.IsNullOrEmpty(h1) ? "- " + item.DISTRICT_NAME : item.DISTRICT_NAME : "";
 
-                            string x1 = (String.IsNullOrEmpty(item.COMMUNE_NAME) ? "" : " - " + item.INITIAL_NAME + " " + item.COMMUNE_NAME);
+                                string x1 = (String.IsNullOrEmpty(item.COMMUNE_NAME) ? "" : " - " + item.INITIAL_NAME + " " + item.COMMUNE_NAME);
 
-                            e.Value = string.Format("{0}{1} {2}{3}", t1, h1, h2, x1);
-                        }
+                                e.Value = string.Format("{0}{1} {2}{3}", t1, h1, h2, x1);
+                            }
+                        }                        
                     }
                 }
             }
@@ -4724,16 +4740,29 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
                 if (e.KeyCode == Keys.Enter)
                 {
                     string maTHX = (sender as DevExpress.XtraEditors.TextEdit).Text.Trim();
+                    bool isNewStructure = toggleSwitch1.IsOn;
+                    List<CommuneADO> allCommunes = BackendDataWorker.Get<CommuneADO>();
+                    List<CommuneADO> filteredCommunes;
+
+                    if (isNewStructure)
+                    {
+                        filteredCommunes = allCommunes.Where(c => c.IS_ACTIVE == 1 && c.PROVINCE_ID != 0 && c.IS_NO_DISTRICT == 1).ToList();
+                    }
+                    else
+                    {
+                        filteredCommunes = allCommunes.Where(c => c.IS_ACTIVE == 1 && c.DISTRICT_ID != null && c.IS_NO_DISTRICT != 1).ToList();
+                    }
                     if (String.IsNullOrEmpty(maTHX))
                     {
-                        this.SetSourceValueTHX(BackendDataWorker.Get<HIS.Desktop.LocalStorage.BackendData.ADO.CommuneADO>());
+                        this.SetSourceValueTHX(filteredCommunes);
                         return;
                     }
-                    this.SetSourceValueTHX(BackendDataWorker.Get<HIS.Desktop.LocalStorage.BackendData.ADO.CommuneADO>());//Load lai trong TH cbo bi set lai dataSource
+                    this.SetSourceValueTHX(filteredCommunes);//Load lai trong TH cbo bi set lai dataSource
                     this.cboTHX.EditValue = null;
-                    List<HIS.Desktop.LocalStorage.BackendData.ADO.CommuneADO> listResult = BackendDataWorker.Get<HIS.Desktop.LocalStorage.BackendData.ADO.CommuneADO>()
-                        .Where(o => (o.SEARCH_CODE_COMMUNE != null
-                            && o.SEARCH_CODE_COMMUNE.ToUpper().StartsWith(maTHX.ToUpper()))).ToList();
+                    //List<HIS.Desktop.LocalStorage.BackendData.ADO.CommuneADO> listResult = BackendDataWorker.Get<HIS.Desktop.LocalStorage.BackendData.ADO.CommuneADO>()
+                    //    .Where(o => (o.SEARCH_CODE_COMMUNE != null
+                    //        && o.SEARCH_CODE_COMMUNE.ToUpper().StartsWith(maTHX.ToUpper()))).ToList();
+                    List<CommuneADO> listResult = filteredCommunes.Where(o => o.SEARCH_CODE_COMMUNE != null && o.SEARCH_CODE_COMMUNE.ToUpper().StartsWith(maTHX.ToUpper())).ToList();
                     if (listResult != null && listResult.Count >= 1)
                     {
                         var dataNoCommunes = listResult.Where(o => o.ID < 0).ToList();
@@ -4751,7 +4780,7 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
                         }
                         else if (listResult.Count == 1)
                         {
-                            this.SetSourceValueTHX(BackendDataWorker.Get<HIS.Desktop.LocalStorage.BackendData.ADO.CommuneADO>());
+                            this.SetSourceValueTHX(filteredCommunes);
                             this.cboTHX.Properties.Buttons[1].Visible = true;
                             this.cboTHX.EditValue = listResult[0].ID_RAW;
                             this.txtMaTHX.Text = listResult[0].SEARCH_CODE_COMMUNE;
@@ -7910,6 +7939,56 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
+
+        private void toggleSwitch1_Toggled(object sender, EventArgs e)
+        {
+            try
+            {
+                toggleSwitch1.Invalidate();
+                toggleSwitch1.Update();
+                bool isNewStructure = toggleSwitch1.IsOn;              
+                Properties.Settings.Default.Save();
+                SetToggleSwitchTooltip(isNewStructure);
+                LoadAddressData(isNewStructure);
+            }
+            catch (Exception ex)
+            {
+                LogSystem.Error(ex);
+            }
+            
+        }
+        private void LoadAddressData(bool isNewStructure)
+        {
+            try
+            {
+                List<CommuneADO> allCommunes = BackendDataWorker.Get<CommuneADO>();
+                
+                List<CommuneADO> communes;
+
+                if (isNewStructure)
+                {
+                    communes = allCommunes.Where(c => c.IS_ACTIVE == 1 && c.PROVINCE_ID != 0 && c.IS_NO_DISTRICT == 1).ToList();
+                }
+                else
+                {
+                    communes = allCommunes.Where(c => c.IS_ACTIVE == 1 && c.DISTRICT_ID != null && c.IS_NO_DISTRICT != 1).ToList();
+                }                
+                cboTHX.Properties.DataSource = communes;
+                this.InitComboCommonUtil(cboTHX, communes, "ID_RAW", "RENDERER_PDC_NAME", 250, "SEARCH_CODE_COMMUNE", 100);
+            }
+            catch (Exception ex)
+            {
+                LogSystem.Error(ex);
+            }
+        }
+        private void SetToggleSwitchTooltip(bool isNewStructure)
+        {
+            SuperToolTip superTip = new SuperToolTip();
+            superTip.Items.Add(isNewStructure ? "Sử dụng cấu trúc địa chỉ Xã - Tỉnh (không có Huyện)" : "Sử dụng cấu trúc địa chỉ Xã - Tỉnh(không có Huyện)");
+            toggleSwitch1.SuperTip = superTip;
+        }
+
+
     }
     public class BankInfo
     {
