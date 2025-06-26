@@ -676,9 +676,9 @@ namespace HIS.Desktop.Plugins.BidUpdate
                 string batchCode = dup.Key;
 
                 var typeMap = new Dictionary<string, List<string>> {
-            { "thuốc", new List<string>() },
-            { "vật tư", new List<string>() },
-            { "máu", new List<string>() }
+                    { "thuốc", new List<string>() },
+                    { "vật tư", new List<string>() },
+                    { "máu", new List<string>() }
                 };
 
                 foreach (var item in group)
@@ -696,15 +696,20 @@ namespace HIS.Desktop.Plugins.BidUpdate
                             break;
                     }
                 }
-
-                var parts = typeMap
-                    .Where(p => p.Value.Any())
-                    .Select(p => $"{p.Key}: {string.Join(", ", p.Value.Distinct())}")
-                    .ToList();
-
-                if (parts.Count > 1)
+                //check batch code lặp khác loại
+                var usedTypes = typeMap.Where(p => p.Value.Any()).ToList();
+                if (usedTypes.Count > 1)
                 {
-                    errorMessages.Add($"Mã phần lô đã được sử dụng bởi {string.Join("; ", parts)}");
+                    var parts = usedTypes.Select(p => $"{p.Key}: {string.Join(", ", p.Value.Distinct())}").ToList();
+                    errorMessages.Add($"Mã phần lô {batchCode} đã được sử dụng bởi {string.Join("; ", parts)}");
+                }
+                //check batch code lặp khác loại
+                foreach (var type in usedTypes)
+                {
+                    if (type.Value.Distinct().Count() > 1)
+                    {
+                        errorMessages.Add($"Mã phần lô {batchCode} đã được sử dụng bởi {string.Join(", ", type.Value.Distinct())}");
+                    }
                 }
             }
 
