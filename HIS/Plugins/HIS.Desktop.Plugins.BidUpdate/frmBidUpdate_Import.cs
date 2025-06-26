@@ -53,7 +53,6 @@ namespace HIS.Desktop.Plugins.BidUpdate
                             var listMaterial = ImpMestListProcessor.Where(o => String.IsNullOrWhiteSpace(o.IS_MEDICINE) && o.IsNotNullRow).ToList();
                             addListMedicineTypeToProcessList(listMedicine);
                             addListMaterialTypeToProcessList(listMaterial);
-                            CheckDuplicateBatchDivisionCode();
                             List<ADO.MedicineTypeADO> listError = new List<ADO.MedicineTypeADO>();
                             if (ListAdoImport != null && ListAdoImport.Count > 0)
                             {
@@ -656,61 +655,6 @@ namespace HIS.Desktop.Plugins.BidUpdate
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
-            }
-        }
-        private void CheckDuplicateBatchDivisionCode()
-        {
-            var duplicates = ListAdoImport
-                .Where(o => !string.IsNullOrWhiteSpace(o.BATCH_DIVISION_CODE))
-                .GroupBy(o => o.BATCH_DIVISION_CODE)
-                .Where(g => g.Count() > 1)
-                .ToList();
-
-            if (duplicates.Count == 0) return;
-
-            List<string> errorMessages = new List<string>();
-
-            foreach (var dup in duplicates)
-            {
-                var group = dup.ToList();
-                string batchCode = dup.Key;
-
-                var typeMap = new Dictionary<string, List<string>> {
-            { "thuốc", new List<string>() },
-            { "vật tư", new List<string>() },
-            { "máu", new List<string>() }
-                };
-
-                foreach (var item in group)
-                {
-                    switch (item.Type)
-                    {
-                        case var t when t == Base.GlobalConfig.THUOC:
-                            typeMap["thuốc"].Add(item.MEDICINE_TYPE_NAME);
-                            break;
-                        case var t when t == Base.GlobalConfig.VATTU:
-                            typeMap["vật tư"].Add(item.MEDICINE_TYPE_NAME);
-                            break;
-                        case var t when t == Base.GlobalConfig.MAU:
-                            typeMap["máu"].Add(item.MEDICINE_TYPE_NAME);
-                            break;
-                    }
-                }
-
-                var parts = typeMap
-                    .Where(p => p.Value.Any())
-                    .Select(p => $"{p.Key}: {string.Join(", ", p.Value.Distinct())}")
-                    .ToList();
-
-                if (parts.Count > 1)
-                {
-                    errorMessages.Add($"Mã phần lô đã được sử dụng bởi {string.Join("; ", parts)}");
-                }
-            }
-
-            if (errorMessages.Any())
-            {
-                MessageBox.Show(string.Join(Environment.NewLine, errorMessages), "Lỗi mã phần lô", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
         }
     }

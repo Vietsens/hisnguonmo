@@ -1,4 +1,4 @@
-/* IVT
+﻿/* IVT
  * @Project : hisnguonmo
  * Copyright (C) 2017 INVENTEC
  *  
@@ -350,6 +350,18 @@ namespace HIS.Desktop.Plugins.BidUpdate
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+        private void RepoTextEdit25_EditValueChanging(object sender, DevExpress.XtraEditors.Controls.ChangingEventArgs e)
+        {
+            if (e.NewValue == null)
+                return;
+
+            string input = e.NewValue.ToString();
+
+            if (Inventec.Common.String.CountVi.Count(input) > 25)
+            {
+                e.Cancel = true;
             }
         }
     }
