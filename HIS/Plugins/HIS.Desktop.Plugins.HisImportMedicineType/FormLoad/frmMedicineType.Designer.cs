@@ -99,9 +99,14 @@ namespace  HIS.Desktop.Plugins.HisImportMedicineType.FormLoad
             this.gridColumn40 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn41 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn42 = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gridColumn73 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn43 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn44 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn45 = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gridColumn77 = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gridColumn76 = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gridColumn75 = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gridColumn74 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn46 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn67 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn47 = new DevExpress.XtraGrid.Columns.GridColumn();
@@ -116,6 +121,7 @@ namespace  HIS.Desktop.Plugins.HisImportMedicineType.FormLoad
             this.gridColumn37 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn13 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn28 = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gridColumn72 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn53 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn54 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn63 = new DevExpress.XtraGrid.Columns.GridColumn();
@@ -247,9 +253,14 @@ namespace  HIS.Desktop.Plugins.HisImportMedicineType.FormLoad
             this.gridColumn40,
             this.gridColumn41,
             this.gridColumn42,
+            this.gridColumn73,
             this.gridColumn43,
             this.gridColumn44,
             this.gridColumn45,
+            this.gridColumn77,
+            this.gridColumn76,
+            this.gridColumn75,
+            this.gridColumn74,
             this.gridColumn46,
             this.gridColumn67,
             this.gridColumn47,
@@ -264,6 +275,7 @@ namespace  HIS.Desktop.Plugins.HisImportMedicineType.FormLoad
             this.gridColumn37,
             this.gridColumn13,
             this.gridColumn28,
+            this.gridColumn72,
             this.gridColumn53,
             this.gridColumn54,
             this.gridColumn63,
@@ -380,7 +392,7 @@ namespace  HIS.Desktop.Plugins.HisImportMedicineType.FormLoad
             this.gridColumn11.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumn11.Visible = true;
             this.gridColumn11.VisibleIndex = 10;
-            this.gridColumn11.Width = 87;
+            this.gridColumn11.Width = 133;
             // 
             // gridColumn17
             // 
@@ -510,6 +522,7 @@ namespace  HIS.Desktop.Plugins.HisImportMedicineType.FormLoad
             this.gridColumn25.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumn25.Visible = true;
             this.gridColumn25.VisibleIndex = 22;
+            this.gridColumn25.Width = 112;
             // 
             // gridColumn23
             // 
@@ -686,12 +699,22 @@ namespace  HIS.Desktop.Plugins.HisImportMedicineType.FormLoad
             // 
             // gridColumn42
             // 
-            this.gridColumn42.Caption = "Cha";
+            this.gridColumn42.Caption = "Mã nhóm cha";
             this.gridColumn42.FieldName = "PARENT_CODE";
             this.gridColumn42.Name = "gridColumn42";
             this.gridColumn42.OptionsColumn.AllowEdit = false;
             this.gridColumn42.Visible = true;
             this.gridColumn42.VisibleIndex = 38;
+            this.gridColumn42.Width = 98;
+            // 
+            // gridColumn73
+            // 
+            this.gridColumn73.Caption = "Tên nhóm cha";
+            this.gridColumn73.FieldName = "PARENT_NAME";
+            this.gridColumn73.Name = "gridColumn73";
+            this.gridColumn73.Visible = true;
+            this.gridColumn73.VisibleIndex = 39;
+            this.gridColumn73.Width = 88;
             // 
             // gridColumn43
             // 
@@ -700,7 +723,8 @@ namespace  HIS.Desktop.Plugins.HisImportMedicineType.FormLoad
             this.gridColumn43.Name = "gridColumn43";
             this.gridColumn43.OptionsColumn.AllowEdit = false;
             this.gridColumn43.Visible = true;
-            this.gridColumn43.VisibleIndex = 39;
+            this.gridColumn43.VisibleIndex = 40;
+            this.gridColumn43.Width = 114;
             // 
             // gridColumn44
             // 
@@ -709,7 +733,8 @@ namespace  HIS.Desktop.Plugins.HisImportMedicineType.FormLoad
             this.gridColumn44.Name = "gridColumn44";
             this.gridColumn44.OptionsColumn.AllowEdit = false;
             this.gridColumn44.Visible = true;
-            this.gridColumn44.VisibleIndex = 40;
+            this.gridColumn44.VisibleIndex = 41;
+            this.gridColumn44.Width = 152;
             // 
             // gridColumn45
             // 
@@ -718,7 +743,47 @@ namespace  HIS.Desktop.Plugins.HisImportMedicineType.FormLoad
             this.gridColumn45.Name = "gridColumn45";
             this.gridColumn45.OptionsColumn.AllowEdit = false;
             this.gridColumn45.Visible = true;
-            this.gridColumn45.VisibleIndex = 41;
+            this.gridColumn45.VisibleIndex = 42;
+            this.gridColumn45.Width = 140;
+            // 
+            // gridColumn77
+            // 
+            this.gridColumn77.Caption = "Thuốc Generic";
+            this.gridColumn77.ColumnEdit = this.Item_Check;
+            this.gridColumn77.FieldName = "IS__GENERIC";
+            this.gridColumn77.Name = "gridColumn77";
+            this.gridColumn77.UnboundType = DevExpress.Data.UnboundColumnType.Object;
+            this.gridColumn77.Visible = true;
+            this.gridColumn77.VisibleIndex = 44;
+            this.gridColumn77.Width = 88;
+            // 
+            // gridColumn76
+            // 
+            this.gridColumn76.Caption = "Sinh phẩm";
+            this.gridColumn76.ColumnEdit = this.Item_Check;
+            this.gridColumn76.FieldName = "IS__BIOLOGIC";
+            this.gridColumn76.Name = "gridColumn76";
+            this.gridColumn76.UnboundType = DevExpress.Data.UnboundColumnType.Object;
+            this.gridColumn76.Visible = true;
+            this.gridColumn76.VisibleIndex = 45;
+            // 
+            // gridColumn75
+            // 
+            this.gridColumn75.Caption = "Biệt dược gốc";
+            this.gridColumn75.ColumnEdit = this.Item_Check;
+            this.gridColumn75.FieldName = "IS__ORIGINAL_BRAND_NAME";
+            this.gridColumn75.Name = "gridColumn75";
+            this.gridColumn75.UnboundType = DevExpress.Data.UnboundColumnType.Object;
+            this.gridColumn75.Visible = true;
+            this.gridColumn75.VisibleIndex = 46;
+            // 
+            // gridColumn74
+            // 
+            this.gridColumn74.Caption = "Tên khoa học";
+            this.gridColumn74.FieldName = "SCIENTIFIC_NAME";
+            this.gridColumn74.Name = "gridColumn74";
+            this.gridColumn74.Visible = true;
+            this.gridColumn74.VisibleIndex = 47;
             // 
             // gridColumn46
             // 
@@ -727,7 +792,7 @@ namespace  HIS.Desktop.Plugins.HisImportMedicineType.FormLoad
             this.gridColumn46.Name = "gridColumn46";
             this.gridColumn46.OptionsColumn.AllowEdit = false;
             this.gridColumn46.Visible = true;
-            this.gridColumn46.VisibleIndex = 42;
+            this.gridColumn46.VisibleIndex = 43;
             // 
             // gridColumn67
             // 
@@ -736,7 +801,7 @@ namespace  HIS.Desktop.Plugins.HisImportMedicineType.FormLoad
             this.gridColumn67.Name = "gridColumn67";
             this.gridColumn67.OptionsColumn.AllowEdit = false;
             this.gridColumn67.Visible = true;
-            this.gridColumn67.VisibleIndex = 43;
+            this.gridColumn67.VisibleIndex = 48;
             this.gridColumn67.Width = 100;
             // 
             // gridColumn47
@@ -746,7 +811,7 @@ namespace  HIS.Desktop.Plugins.HisImportMedicineType.FormLoad
             this.gridColumn47.Name = "gridColumn47";
             this.gridColumn47.OptionsColumn.AllowEdit = false;
             this.gridColumn47.Visible = true;
-            this.gridColumn47.VisibleIndex = 44;
+            this.gridColumn47.VisibleIndex = 49;
             // 
             // gridColumn48
             // 
@@ -755,7 +820,7 @@ namespace  HIS.Desktop.Plugins.HisImportMedicineType.FormLoad
             this.gridColumn48.Name = "gridColumn48";
             this.gridColumn48.OptionsColumn.AllowEdit = false;
             this.gridColumn48.Visible = true;
-            this.gridColumn48.VisibleIndex = 45;
+            this.gridColumn48.VisibleIndex = 50;
             // 
             // gridColumn49
             // 
@@ -764,7 +829,7 @@ namespace  HIS.Desktop.Plugins.HisImportMedicineType.FormLoad
             this.gridColumn49.Name = "gridColumn49";
             this.gridColumn49.OptionsColumn.AllowEdit = false;
             this.gridColumn49.Visible = true;
-            this.gridColumn49.VisibleIndex = 46;
+            this.gridColumn49.VisibleIndex = 51;
             this.gridColumn49.Width = 83;
             // 
             // gridColumn50
@@ -774,7 +839,7 @@ namespace  HIS.Desktop.Plugins.HisImportMedicineType.FormLoad
             this.gridColumn50.Name = "gridColumn50";
             this.gridColumn50.OptionsColumn.AllowEdit = false;
             this.gridColumn50.Visible = true;
-            this.gridColumn50.VisibleIndex = 47;
+            this.gridColumn50.VisibleIndex = 52;
             this.gridColumn50.Width = 93;
             // 
             // gridColumn62
@@ -784,7 +849,7 @@ namespace  HIS.Desktop.Plugins.HisImportMedicineType.FormLoad
             this.gridColumn62.Name = "gridColumn62";
             this.gridColumn62.OptionsColumn.AllowEdit = false;
             this.gridColumn62.Visible = true;
-            this.gridColumn62.VisibleIndex = 48;
+            this.gridColumn62.VisibleIndex = 53;
             this.gridColumn62.Width = 93;
             // 
             // gridColumn51
@@ -794,7 +859,7 @@ namespace  HIS.Desktop.Plugins.HisImportMedicineType.FormLoad
             this.gridColumn51.Name = "gridColumn51";
             this.gridColumn51.OptionsColumn.AllowEdit = false;
             this.gridColumn51.Visible = true;
-            this.gridColumn51.VisibleIndex = 49;
+            this.gridColumn51.VisibleIndex = 54;
             this.gridColumn51.Width = 90;
             // 
             // gridColumn65
@@ -804,8 +869,8 @@ namespace  HIS.Desktop.Plugins.HisImportMedicineType.FormLoad
             this.gridColumn65.Name = "gridColumn65";
             this.gridColumn65.OptionsColumn.AllowEdit = false;
             this.gridColumn65.Visible = true;
-            this.gridColumn65.VisibleIndex = 50;
-            this.gridColumn65.Width = 90;
+            this.gridColumn65.VisibleIndex = 55;
+            this.gridColumn65.Width = 127;
             // 
             // gridColumn66
             // 
@@ -816,8 +881,8 @@ namespace  HIS.Desktop.Plugins.HisImportMedicineType.FormLoad
             this.gridColumn66.OptionsColumn.AllowEdit = false;
             this.gridColumn66.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumn66.Visible = true;
-            this.gridColumn66.VisibleIndex = 51;
-            this.gridColumn66.Width = 90;
+            this.gridColumn66.VisibleIndex = 56;
+            this.gridColumn66.Width = 157;
             // 
             // gridColumn52
             // 
@@ -826,7 +891,7 @@ namespace  HIS.Desktop.Plugins.HisImportMedicineType.FormLoad
             this.gridColumn52.Name = "gridColumn52";
             this.gridColumn52.OptionsColumn.AllowEdit = false;
             this.gridColumn52.Visible = true;
-            this.gridColumn52.VisibleIndex = 52;
+            this.gridColumn52.VisibleIndex = 57;
             this.gridColumn52.Width = 150;
             // 
             // gridColumn37
@@ -836,7 +901,8 @@ namespace  HIS.Desktop.Plugins.HisImportMedicineType.FormLoad
             this.gridColumn37.Name = "gridColumn37";
             this.gridColumn37.OptionsColumn.AllowEdit = false;
             this.gridColumn37.Visible = true;
-            this.gridColumn37.VisibleIndex = 53;
+            this.gridColumn37.VisibleIndex = 58;
+            this.gridColumn37.Width = 129;
             // 
             // gridColumn13
             // 
@@ -845,7 +911,7 @@ namespace  HIS.Desktop.Plugins.HisImportMedicineType.FormLoad
             this.gridColumn13.Name = "gridColumn13";
             this.gridColumn13.OptionsColumn.AllowEdit = false;
             this.gridColumn13.Visible = true;
-            this.gridColumn13.VisibleIndex = 54;
+            this.gridColumn13.VisibleIndex = 59;
             this.gridColumn13.Width = 65;
             // 
             // gridColumn28
@@ -855,17 +921,28 @@ namespace  HIS.Desktop.Plugins.HisImportMedicineType.FormLoad
             this.gridColumn28.Name = "gridColumn28";
             this.gridColumn28.OptionsColumn.AllowEdit = false;
             this.gridColumn28.Visible = true;
-            this.gridColumn28.VisibleIndex = 55;
+            this.gridColumn28.VisibleIndex = 60;
+            this.gridColumn28.Width = 125;
+            // 
+            // gridColumn72
+            // 
+            this.gridColumn72.Caption = "Mã Nguồn gốc";
+            this.gridColumn72.FieldName = "SOURCE_MEDICINE_CODE";
+            this.gridColumn72.Name = "gridColumn72";
+            this.gridColumn72.Visible = true;
+            this.gridColumn72.VisibleIndex = 61;
+            this.gridColumn72.Width = 122;
             // 
             // gridColumn53
             // 
-            this.gridColumn53.Caption = "Nguồn gốc";
-            this.gridColumn53.FieldName = "SOURCE_MEDICINE_STR";
+            this.gridColumn53.Caption = "Tên Nguồn gốc";
+            this.gridColumn53.FieldName = "SOURCE_MEDICINE_NAME";
             this.gridColumn53.Name = "gridColumn53";
             this.gridColumn53.OptionsColumn.AllowEdit = false;
             this.gridColumn53.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumn53.Visible = true;
-            this.gridColumn53.VisibleIndex = 56;
+            this.gridColumn53.VisibleIndex = 62;
+            this.gridColumn53.Width = 115;
             // 
             // gridColumn54
             // 
@@ -875,7 +952,7 @@ namespace  HIS.Desktop.Plugins.HisImportMedicineType.FormLoad
             this.gridColumn54.OptionsColumn.AllowEdit = false;
             this.gridColumn54.ToolTip = "Tiêu chuẩn chất lượng";
             this.gridColumn54.Visible = true;
-            this.gridColumn54.VisibleIndex = 57;
+            this.gridColumn54.VisibleIndex = 63;
             // 
             // gridColumn63
             // 
@@ -884,7 +961,8 @@ namespace  HIS.Desktop.Plugins.HisImportMedicineType.FormLoad
             this.gridColumn63.Name = "gridColumn63";
             this.gridColumn63.OptionsColumn.AllowEdit = false;
             this.gridColumn63.Visible = true;
-            this.gridColumn63.VisibleIndex = 58;
+            this.gridColumn63.VisibleIndex = 64;
+            this.gridColumn63.Width = 105;
             // 
             // gridColumn55
             // 
@@ -893,7 +971,7 @@ namespace  HIS.Desktop.Plugins.HisImportMedicineType.FormLoad
             this.gridColumn55.Name = "gridColumn55";
             this.gridColumn55.OptionsColumn.AllowEdit = false;
             this.gridColumn55.Visible = true;
-            this.gridColumn55.VisibleIndex = 59;
+            this.gridColumn55.VisibleIndex = 65;
             // 
             // gridColumn64
             // 
@@ -902,7 +980,8 @@ namespace  HIS.Desktop.Plugins.HisImportMedicineType.FormLoad
             this.gridColumn64.Name = "gridColumn64";
             this.gridColumn64.OptionsColumn.AllowEdit = false;
             this.gridColumn64.Visible = true;
-            this.gridColumn64.VisibleIndex = 60;
+            this.gridColumn64.VisibleIndex = 66;
+            this.gridColumn64.Width = 125;
             // 
             // gridColumn56
             // 
@@ -911,7 +990,7 @@ namespace  HIS.Desktop.Plugins.HisImportMedicineType.FormLoad
             this.gridColumn56.Name = "gridColumn56";
             this.gridColumn56.OptionsColumn.AllowEdit = false;
             this.gridColumn56.Visible = true;
-            this.gridColumn56.VisibleIndex = 61;
+            this.gridColumn56.VisibleIndex = 67;
             // 
             // gridColumn57
             // 
@@ -920,7 +999,7 @@ namespace  HIS.Desktop.Plugins.HisImportMedicineType.FormLoad
             this.gridColumn57.Name = "gridColumn57";
             this.gridColumn57.OptionsColumn.AllowEdit = false;
             this.gridColumn57.Visible = true;
-            this.gridColumn57.VisibleIndex = 62;
+            this.gridColumn57.VisibleIndex = 68;
             // 
             // gridColumn59
             // 
@@ -930,7 +1009,7 @@ namespace  HIS.Desktop.Plugins.HisImportMedicineType.FormLoad
             this.gridColumn59.OptionsColumn.AllowEdit = false;
             this.gridColumn59.ToolTip = "Ghi chú chống chỉ định";
             this.gridColumn59.Visible = true;
-            this.gridColumn59.VisibleIndex = 63;
+            this.gridColumn59.VisibleIndex = 69;
             // 
             // gridColumn60
             // 
@@ -939,7 +1018,8 @@ namespace  HIS.Desktop.Plugins.HisImportMedicineType.FormLoad
             this.gridColumn60.Name = "gridColumn60";
             this.gridColumn60.OptionsColumn.AllowEdit = false;
             this.gridColumn60.Visible = true;
-            this.gridColumn60.VisibleIndex = 64;
+            this.gridColumn60.VisibleIndex = 70;
+            this.gridColumn60.Width = 150;
             // 
             // gridColumn61
             // 
@@ -949,7 +1029,7 @@ namespace  HIS.Desktop.Plugins.HisImportMedicineType.FormLoad
             this.gridColumn61.OptionsColumn.AllowEdit = false;
             this.gridColumn61.UnboundExpression = "Dạng bào chế";
             this.gridColumn61.Visible = true;
-            this.gridColumn61.VisibleIndex = 65;
+            this.gridColumn61.VisibleIndex = 71;
             // 
             // gridColumn68
             // 
@@ -958,7 +1038,7 @@ namespace  HIS.Desktop.Plugins.HisImportMedicineType.FormLoad
             this.gridColumn68.Name = "gridColumn68";
             this.gridColumn68.OptionsColumn.AllowEdit = false;
             this.gridColumn68.Visible = true;
-            this.gridColumn68.VisibleIndex = 66;
+            this.gridColumn68.VisibleIndex = 72;
             // 
             // gridColumn69
             // 
@@ -967,7 +1047,8 @@ namespace  HIS.Desktop.Plugins.HisImportMedicineType.FormLoad
             this.gridColumn69.Name = "gridColumn69";
             this.gridColumn69.OptionsColumn.AllowEdit = false;
             this.gridColumn69.Visible = true;
-            this.gridColumn69.VisibleIndex = 67;
+            this.gridColumn69.VisibleIndex = 73;
+            this.gridColumn69.Width = 110;
             // 
             // gridColumn71
             // 
@@ -978,7 +1059,8 @@ namespace  HIS.Desktop.Plugins.HisImportMedicineType.FormLoad
             this.gridColumn71.OptionsColumn.AllowEdit = false;
             this.gridColumn71.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumn71.Visible = true;
-            this.gridColumn71.VisibleIndex = 68;
+            this.gridColumn71.VisibleIndex = 74;
+            this.gridColumn71.Width = 212;
             // 
             // gridColumn70
             // 
@@ -1359,5 +1441,11 @@ namespace  HIS.Desktop.Plugins.HisImportMedicineType.FormLoad
         private DevExpress.XtraGrid.Columns.GridColumn gridColumn69;
         private DevExpress.XtraGrid.Columns.GridColumn gridColumn70;
         private DevExpress.XtraGrid.Columns.GridColumn gridColumn71;
-	}
+        private DevExpress.XtraGrid.Columns.GridColumn gridColumn72;
+        private DevExpress.XtraGrid.Columns.GridColumn gridColumn77;
+        private DevExpress.XtraGrid.Columns.GridColumn gridColumn76;
+        private DevExpress.XtraGrid.Columns.GridColumn gridColumn75;
+        private DevExpress.XtraGrid.Columns.GridColumn gridColumn74;
+        private DevExpress.XtraGrid.Columns.GridColumn gridColumn73;
+    }
 }

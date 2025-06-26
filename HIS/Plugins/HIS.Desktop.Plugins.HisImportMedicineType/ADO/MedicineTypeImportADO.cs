@@ -160,6 +160,12 @@ namespace HIS.Desktop.Plugins.HisImportMedicineType.ADO
         public int VOLUME_STR_ERROR { get; set; }
 
         public string IS_TREATMENT_DAY_COUNT_STR { get; set; }
-        public short? IS_TREATMENT_DAY_COUNT { get; set; }
+        public string SOURCE_MEDICINE_CODE { get; internal set; }
+        public string SOURCE_MEDICINE_NAME { get; internal set; }
+        public string IS_ORIGINAL_BRAND_NAME_STR { get; set; }
+
+        public string IS_GENERIC_STR { get; set; }
+
+        public string IS_BIOLOGIC_STR { get; set; }
     }
 }

@@ -40,5 +40,6 @@ namespace  HIS.Desktop.Plugins.HisImportMedicineType.Message
         internal const string TonTaiTrungNhauTrongFileImport = "Tồn tại {0} trùng nhau trong file import|";
         internal const string CoThiPhaiNhap = "Có {0} thì phải nhập {1}|";
         internal const string TruongDuBatBuoc = "Trường dữ liệu {0} bắt buộc nhập|";
+        internal const string TenKhongCoTrongDanhMuc = "Tên {0} không có trong danh mục {1}|";
     }
 }
