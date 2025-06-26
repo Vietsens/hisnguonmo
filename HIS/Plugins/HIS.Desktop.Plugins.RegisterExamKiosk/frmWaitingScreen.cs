@@ -1896,7 +1896,7 @@ namespace HIS.Desktop.Plugins.RegisterExamKiosk
                 {
                     Inventec.Common.Address.AddressProcessor adProc = new Inventec.Common.Address.AddressProcessor(BackendDataWorker.Get<V_SDA_PROVINCE>(), BackendDataWorker.Get<V_SDA_DISTRICT>(), BackendDataWorker.Get<V_SDA_COMMUNE>());
                     Inventec.Common.Address.AddressADO splitAdress = adProc.SplitFromFullAddress(card.Address);
-                    if (splitAdress != null && !string.IsNullOrEmpty(splitAdress.ProvinceName) && !string.IsNullOrEmpty(splitAdress.DistrictName) && !string.IsNullOrEmpty(splitAdress.CommuneName))
+                    if (splitAdress != null && !string.IsNullOrEmpty(splitAdress.ProvinceName) || !string.IsNullOrEmpty(splitAdress.DistrictName) || !string.IsNullOrEmpty(splitAdress.CommuneName))
                     {
                         result.DISTRICT_CODE = splitAdress.DistrictCode;
                         result.DISTRICT_NAME = splitAdress.DistrictName;
