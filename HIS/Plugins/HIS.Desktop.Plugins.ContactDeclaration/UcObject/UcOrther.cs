@@ -47,6 +47,9 @@ namespace HIS.Desktop.Plugins.ContactDeclaration.UcObject
 {
     public partial class UcOrther : UserControl
     {
+        HIS.Desktop.Library.CacheClient.ControlStateWorker controlStateWorker;
+        string moduleLink = "HIS.Desktop.Plugins.ContactDeclaration";
+        List<HIS.Desktop.Library.CacheClient.ControlStateRDO> currentControlStateRDO;
         public UpdateVContactPoint updateVContactPoint;
         V_HIS_CONTACT_POINT CurrentContactPoint = new V_HIS_CONTACT_POINT();
 
@@ -60,6 +63,8 @@ namespace HIS.Desktop.Plugins.ContactDeclaration.UcObject
         List<V_SDA_COMMUNE> lstSdaCommune = new List<V_SDA_COMMUNE>();
         int positionHandle = -1;
         bool check = true;
+        private bool useNewAddressStructurePatient;
+        private bool useNewAddressStructureContact;
 
         public UcOrther() { }
 
@@ -167,6 +172,7 @@ namespace HIS.Desktop.Plugins.ContactDeclaration.UcObject
                     this.cboProvince.EditValue = null;
                     this.cboDistrict.EditValue = null;
                     this.cboCommune.EditValue = null;
+                    this.toggleSwitchDataChecked.EditValue = false;
                 }
             }
             catch (Exception ex)
@@ -1842,6 +1848,146 @@ namespace HIS.Desktop.Plugins.ContactDeclaration.UcObject
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);                
+            }
+        }
+
+        private void toggleSwitchDataChecked_Toggled(object sender, EventArgs e)
+        {
+            try
+            {
+                useNewAddressStructurePatient = toggleSwitchDataChecked.IsOn;
+                LoadAddressDataForPatient();
+                SaveStatus();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+        private void LoadAddressDataForPatient()
+        {
+            // Lưu các giá trị đang chọn để gán lại sau khi load
+            var selectedProvince = cboProvince.EditValue != null ? cboProvince.EditValue.ToString() : null;
+            var selectedDistrict = cboDistrict.EditValue != null ? cboDistrict.EditValue.ToString() : null;
+            var selectedCommune = cboCommune.EditValue != null ? cboCommune.EditValue.ToString() : null;
+            var selectedTHX = cboTHX.EditValue != null ? cboTHX.EditValue.ToString() : null;
+
+            if (useNewAddressStructurePatient)
+            {
+                // --- T/H/X: load xã có IS_NO_DISTRICT = 1 ---
+                var thxList = lstCommuneADO
+                    .Where(x => x.IS_NO_DISTRICT == 1 && x.IS_ACTIVE == 1)
+                    .ToList();
+                LoadComboboxTHX(thxList);
+                if (!string.IsNullOrEmpty(selectedTHX) && thxList.Any(x => x.COMMUNE_CODE == selectedTHX))
+                    cboTHX.EditValue = selectedTHX;
+
+                // --- Tỉnh: IS_NO_DISTRICT = 1 ---
+                var provinces = lstSdaProvince
+                    .Where(x => x.IS_ACTIVE == 1 && x.IS_NO_DISTRICT == 1)
+                    .ToList();
+                LoadComboboxProvince(provinces);
+                if (!string.IsNullOrEmpty(selectedProvince) && provinces.Any(x => x.PROVINCE_CODE == selectedProvince))
+                    cboProvince.EditValue = selectedProvince;
+
+                // --- Ẩn huyện ---
+                if (cboDistrict != null)
+                    cboDistrict.Visible = false;
+                layoutControlItem9.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+                layoutControlItem12.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+
+                // --- Xã: theo tỉnh đang chọn ---
+                var communes = new List<V_SDA_COMMUNE>();
+                if (!string.IsNullOrEmpty(selectedProvince))
+                {
+                    communes = lstSdaCommune
+                        .Where(x => x.IS_ACTIVE == 1 && x.PROVINCE_CODE == selectedProvince)
+                        .ToList();
+                }
+                LoadComboboxCommune(communes);
+                if (!string.IsNullOrEmpty(selectedCommune) && communes.Any(x => x.COMMUNE_CODE == selectedCommune))
+                    cboCommune.EditValue = selectedCommune;
+            }
+            else
+            {
+                // --- T/H/X: load xã có IS_NO_DISTRICT != 1 hoặc null ---
+                var thxList = lstCommuneADO
+                    .Where(x => (x.IS_NO_DISTRICT != 1 || x.IS_NO_DISTRICT == null) && x.IS_ACTIVE == 1)
+                    .ToList();
+                LoadComboboxTHX(thxList);
+                if (!string.IsNullOrEmpty(selectedTHX) && thxList.Any(x => x.COMMUNE_CODE == selectedTHX))
+                    cboTHX.EditValue = selectedTHX;
+
+                // --- Tỉnh: IS_NO_DISTRICT != 1 hoặc null ---
+                var provinces = lstSdaProvince
+                    .Where(x => x.IS_ACTIVE == 1 && (x.IS_NO_DISTRICT != 1 || x.IS_NO_DISTRICT == null))
+                    .ToList();
+                LoadComboboxProvince(provinces);
+                if (!string.IsNullOrEmpty(selectedProvince) && provinces.Any(x => x.PROVINCE_CODE == selectedProvince))
+                    cboProvince.EditValue = selectedProvince;
+
+                // --- Hiện huyện ---
+                if (cboDistrict != null)
+                    cboDistrict.Visible = true;
+                layoutControlItem9.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
+                layoutControlItem12.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
+
+                // --- Huyện: IS_ACTIVE = 1 ---
+                var districts = lstSdaDistrict
+                    .Where(x => x.IS_ACTIVE == 1)
+                    .ToList();
+                LoadComboboxDistrict(districts);
+                if (!string.IsNullOrEmpty(selectedDistrict) && districts.Any(x => x.DISTRICT_CODE == selectedDistrict))
+                    cboDistrict.EditValue = selectedDistrict;
+
+                // --- Xã: theo huyện đang chọn ---
+                var communes = new List<V_SDA_COMMUNE>();
+                if (!string.IsNullOrEmpty(selectedDistrict))
+                {
+                    communes = lstSdaCommune
+                        .Where(x => x.IS_ACTIVE == 1 && x.DISTRICT_CODE == selectedDistrict)
+                        .ToList();
+                }
+                LoadComboboxCommune(communes);
+                if (!string.IsNullOrEmpty(selectedCommune) && communes.Any(x => x.COMMUNE_CODE == selectedCommune))
+                    cboCommune.EditValue = selectedCommune;
+            }
+        }
+
+        bool isNotLoadWhileChangeControlStateInFirst;
+        private void SaveStatus()
+        {
+            try
+            {
+
+                if (isNotLoadWhileChangeControlStateInFirst)
+                {
+                    return;
+                }
+                WaitingManager.Show();
+                HIS.Desktop.Library.CacheClient.ControlStateRDO csAddOrUpdate = (this.currentControlStateRDO != null && this.currentControlStateRDO.Count > 0) ? this.currentControlStateRDO.Where(o => o.KEY == toggleSwitchDataChecked.Name && o.MODULE_LINK == moduleLink).FirstOrDefault() : null;
+                //Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => csAddOrUpdate), csAddOrUpdate));
+                if (csAddOrUpdate != null)
+                {
+                    csAddOrUpdate.VALUE = (toggleSwitchDataChecked.IsOn ? "1" : "");
+                }
+                else
+                {
+                    csAddOrUpdate = new HIS.Desktop.Library.CacheClient.ControlStateRDO();
+                    csAddOrUpdate.KEY = toggleSwitchDataChecked.Name;
+                    csAddOrUpdate.VALUE = (toggleSwitchDataChecked.IsOn ? "1" : "");
+                    csAddOrUpdate.MODULE_LINK = moduleLink;
+                    if (this.currentControlStateRDO == null)
+                        this.currentControlStateRDO = new List<HIS.Desktop.Library.CacheClient.ControlStateRDO>();
+                    this.currentControlStateRDO.Add(csAddOrUpdate);
+                }
+                this.controlStateWorker.SetData(this.currentControlStateRDO);
+                WaitingManager.Hide();
+            }
+            catch (Exception ex)
+            {
+                WaitingManager.Hide();
+                Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
     }
