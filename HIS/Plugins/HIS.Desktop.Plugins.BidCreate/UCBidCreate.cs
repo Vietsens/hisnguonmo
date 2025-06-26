@@ -568,6 +568,7 @@ namespace HIS.Desktop.Plugins.BidCreate
                 txtConcentra.Text = "";
                 txtTenTT.Text = "";
                 txtMaTT.Text = "";
+                txtBatchDivisionCode.Text = "";  
                 cboSupplier.Text = "";
                 cboSupplier.EditValue = null;
                 cboSupplier.Properties.Buttons[1].Visible = false;
@@ -588,6 +589,7 @@ namespace HIS.Desktop.Plugins.BidCreate
                 dxValidationProviderLeft.RemoveControlError(cboDosageForm);
                 dxValidationProviderLeft.RemoveControlError(cboNational);
                 dxValidationProviderLeft.RemoveControlError(cboManufacture);
+                dxValidationProviderLeft.RemoveControlError(txtBatchDivisionCode);
                 DtExpiredDate.EditValue = null;
                 //trang thai nut
                 EnableButton(this.ActionType);
@@ -1201,6 +1203,7 @@ namespace HIS.Desktop.Plugins.BidCreate
                 spinImpMoreRatio.Value = 0;
                 spinImpPrice.Value = 0;
                 txtBidNumOrder.Text = "";
+                txtBatchDivisionCode.Text = "";
                 this.DtExpiredDate.EditValue = null;
                 spinAmount.Focus();
                 spinAmount.SelectAll();
@@ -1395,6 +1398,7 @@ namespace HIS.Desktop.Plugins.BidCreate
                 dxValidationProviderLeft.RemoveControlError(txtRegisterNumber);
                 dxValidationProviderLeft.RemoveControlError(txtTenTT);
                 dxValidationProviderLeft.RemoveControlError(txtTenBHYT);
+                dxValidationProviderLeft.RemoveControlError(txtBatchDivisionCode);
             }
             catch (Exception ex)
             {
@@ -3181,6 +3185,7 @@ namespace HIS.Desktop.Plugins.BidCreate
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
+
         private void LoadDataToCboDosageForm()
         {
             try

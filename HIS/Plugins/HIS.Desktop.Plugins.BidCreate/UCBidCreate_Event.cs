@@ -213,6 +213,7 @@ namespace HIS.Desktop.Plugins.BidCreate
                         txtBidPackageCode.Text = "";
                         txtMaTT.Text = "";
                         txtTenTT.Text = "";
+                        txtBatchDivisionCode.Text = "";
                         LoadBidMedicineType(bidPrint.ID);
                         LoadBidMaterialType(bidPrint.ID);
                         gridControlProcess.RefreshDataSource();
@@ -373,6 +374,8 @@ namespace HIS.Desktop.Plugins.BidCreate
                         bidMedicineType.ACTIVE_INGR_BHYT_NAME = item.ACTIVE_INGR_BHYT_NAME;
                         bidMedicineType.DOSAGE_FORM = item.DOSAGE_FORM;
                         bidMedicineType.MEDICINE_USE_FORM_ID = item.MEDICINE_USE_FORM_ID;
+                        bidMedicineType.BATCH_DIVISION_CODE = item.BATCH_DIVISION_CODE;
+
 
                         this.bidModel.HIS_BID_MEDICINE_TYPE.Add(bidMedicineType);
 
@@ -412,6 +415,7 @@ namespace HIS.Desktop.Plugins.BidCreate
                         bidMaterialType.HOUR_LIFESPAN = item.HOUR_LIFESPAN;
                         bidMaterialType.MONTH_LIFESPAN = item.MONTH_LIFESPAN;
                         bidMaterialType.INFORMATION_BID = item.INFORMATION_BID;
+                        bidMaterialType.BATCH_DIVISION_CODE = item.BATCH_DIVISION_CODE;
                         this.bidModel.HIS_BID_MATERIAL_TYPE.Add(bidMaterialType);
                     }
                     else if (item.Type == Base.GlobalConfig.MAU)
@@ -422,6 +426,7 @@ namespace HIS.Desktop.Plugins.BidCreate
                         bidBloodType.IMP_VAT_RATIO = item.IMP_VAT_RATIO;
                         bidBloodType.BLOOD_TYPE_ID = item.ID;
                         bidBloodType.BID_NUM_ORDER = item.BID_NUM_ORDER;
+                        bidBloodType.BATCH_DIVISION_CODE = item.BATCH_DIVISION_CODE;
                         bidBloodType.SUPPLIER_ID = (long)(item.SUPPLIER_ID ?? 0);
 
                         this.bidModel.HIS_BID_BLOOD_TYPE.Add(bidBloodType);
@@ -491,6 +496,12 @@ namespace HIS.Desktop.Plugins.BidCreate
                         {
                             result = false;
                             messageErr += " " + Resources.ResourceMessage.SttThauQuaDai;
+                        }
+
+                        if (!String.IsNullOrEmpty(item.BATCH_DIVISION_CODE) && item.BATCH_DIVISION_CODE.Length > 25)
+                        {
+                            result = false;
+                            messageErr += " " + Resources.ResourceMessage.MaPhanLoQuaDai;
                         }
 
                         if (!String.IsNullOrWhiteSpace(item.BID_GROUP_CODE) && item.BID_GROUP_CODE.Length > 4)
@@ -722,6 +733,7 @@ namespace HIS.Desktop.Plugins.BidCreate
                     txtBidNumOrder.Text = row.BID_NUM_ORDER;
                     txtBidGroupCode.Text = row.BID_GROUP_CODE;
                     txtBidPackageCode.Text = row.BID_PACKAGE_CODE;
+                    txtBatchDivisionCode.Text = row.BATCH_DIVISION_CODE;
 
                     if (row.EXPIRED_DATE.HasValue)
                     {
@@ -762,6 +774,7 @@ namespace HIS.Desktop.Plugins.BidCreate
                     dxValidationProviderLeft.RemoveControlError(cboSupplier);
                     dxValidationProviderLeft.RemoveControlError(cboNational);
                     dxValidationProviderLeft.RemoveControlError(cboManufacture);
+                    dxValidationProviderLeft.RemoveControlError(txtBatchDivisionCode);
                 }
             }
             catch (Exception ex)
@@ -821,6 +834,22 @@ namespace HIS.Desktop.Plugins.BidCreate
         }
 
         private void txtBidNumOrder_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
+        {
+            try
+            {
+                if (e.KeyCode == Keys.Enter)
+                {
+                    txtSupplierCode.Focus();
+                    txtSupplierCode.SelectAll();
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void txtBatchDivisionCode_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
         {
             try
             {
@@ -986,6 +1015,8 @@ namespace HIS.Desktop.Plugins.BidCreate
                 this.medicineType.HEIN_SERVICE_BHYT_NAME = txtTenBHYT.Text.Trim();
                 this.medicineType.PACKING_TYPE_NAME = txtQCĐG.Text.Trim();
                 this.medicineType.ACTIVE_INGR_BHYT_NAME = txtActiveBhyt.Text.Trim();
+                this.medicineType.BATCH_DIVISION_CODE = txtBatchDivisionCode.Text.Trim();
+
                 //this.medicineType.DOSAGE_FORM = txtDosageForm.Text.Trim();
                 if (cboMediUserForm.EditValue != null)
                 {
@@ -1102,6 +1133,8 @@ namespace HIS.Desktop.Plugins.BidCreate
                 this.materialType.BID_NUM_ORDER = txtBidNumOrder.Text;
                 this.materialType.IMP_VAT_RATIO = spinImpVat.Value / 100;
                 this.materialType.AMOUNT = spinAmount.Value;
+                this.materialType.BATCH_DIVISION_CODE = txtBatchDivisionCode.Text;
+
                 ADO.MedicineTypeADO aMedicineSdo = new ADO.MedicineTypeADO();
                 AutoMapper.Mapper.CreateMap<ADO.MaterialTypeADO, ADO.MedicineTypeADO>();
                 aMedicineSdo = AutoMapper.Mapper.Map<ADO.MaterialTypeADO, ADO.MedicineTypeADO>(this.materialType);
@@ -1196,6 +1229,8 @@ namespace HIS.Desktop.Plugins.BidCreate
                 this.bloodType.BID_NUM_ORDER = txtBidNumOrder.Text;
                 this.bloodType.IMP_VAT_RATIO = spinImpVat.Value / 100;
                 this.bloodType.AMOUNT = spinAmount.Value;
+                this.bloodType.BATCH_DIVISION_CODE = txtBatchDivisionCode.Text;
+
                 ADO.MedicineTypeADO aMedicineSdo = new ADO.MedicineTypeADO();
                 AutoMapper.Mapper.CreateMap<ADO.BloodTypeADO, ADO.MedicineTypeADO>();
                 aMedicineSdo = AutoMapper.Mapper.Map<ADO.BloodTypeADO, ADO.MedicineTypeADO>(this.bloodType);
