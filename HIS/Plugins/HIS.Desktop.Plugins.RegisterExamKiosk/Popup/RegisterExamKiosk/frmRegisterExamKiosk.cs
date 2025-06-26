@@ -1140,7 +1140,7 @@ namespace HIS.Desktop.Plugins.RegisterExamKiosk.Popup.RegisterExamKiosk
                 {
                     AddressProcessor addressProcessor = new AddressProcessor(BackendDataWorker.Get<V_SDA_PROVINCE>(), BackendDataWorker.Get<V_SDA_DISTRICT>(), BackendDataWorker.Get<V_SDA_COMMUNE>());
                     AddressADO addressADO = addressProcessor.SplitFromFullAddress(address);
-                    bool flag2 = addressADO != null && !string.IsNullOrEmpty(addressADO.ProvinceName) && !string.IsNullOrEmpty(addressADO.DistrictName) && !string.IsNullOrEmpty(addressADO.CommuneName);
+                    bool flag2 = addressADO != null && (!string.IsNullOrEmpty(addressADO.ProvinceName) || !string.IsNullOrEmpty(addressADO.DistrictName) || !string.IsNullOrEmpty(addressADO.CommuneName));
                     if (flag2)
                     {
                         patient.DISTRICT_CODE = addressADO.DistrictCode;
