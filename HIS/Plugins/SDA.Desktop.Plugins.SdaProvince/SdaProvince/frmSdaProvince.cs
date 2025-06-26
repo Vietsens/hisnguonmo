@@ -53,6 +53,7 @@ using SDA.Desktop.Plugins.SdaProvince.Validtion;
 using SDA.Desktop.Plugin.Province.Validtion;
 using SDA.Desktop.Plugins.Province.Validtion;
 using DevExpress.XtraEditors.Controls;
+using IMSys.DbConfig;
 
 namespace SDA.Desktop.Plugins.SdaProvince
 {
@@ -942,12 +943,13 @@ namespace SDA.Desktop.Plugins.SdaProvince
                 if(txtSearchCode.EditValue !=null)
                 {
                     currentDTO.SEARCH_CODE = txtSearchCode.Text.Trim();
-
+                      
                 }
                 else
                 {
                     currentDTO.SEARCH_CODE = null;
                 }
+                currentDTO.IS_NO_DISTRICT = (short)(chkNotDistrict.Checked ? 1 : 0);
 
             }
             catch (Exception ex)
