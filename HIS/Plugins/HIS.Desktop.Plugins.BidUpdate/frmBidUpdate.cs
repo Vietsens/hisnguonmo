@@ -2444,17 +2444,16 @@ namespace HIS.Desktop.Plugins.BidUpdate
                     var listThuoc = ListMedicineTypeAdoProcess.Where(o => o.Type == Base.GlobalConfig.THUOC).ToList();
                     var listVattu = ListMedicineTypeAdoProcess.Where(o => o.Type == Base.GlobalConfig.VATTU).ToList();
                     var listMau = ListMedicineTypeAdoProcess.Where(o => o.Type == Base.GlobalConfig.MAU).ToList();
-
+                    if (!CheckBatchDivisionCodeLengthAfterRules(ListAdoImport))
+                    {
+                        WaitingManager.Hide();
+                    }
                     if (!CheckBatchDivisionCodeAllRules(listThuoc, listVattu, listMau))
                     {
                         WaitingManager.Hide();
                         return;
                     }
-                    if (!CheckBatchDivisionCodeLengthAfterRules(ListAdoImport))
-                    {
-                        WaitingManager.Hide();
-                        return;
-                    }
+                    
 
                     getDataForProcess();
                     if (this.bidModel == null ||

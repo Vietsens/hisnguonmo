@@ -112,9 +112,8 @@
     <Reference Include="MOS.Filter">
       <HintPath>..\..\..\..\LIB\MOS\MOS.Filter.dll</HintPath>
     </Reference>
-    <Reference Include="SDA.EFMODEL, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\LIB\SDA\SDA.EFMODEL.dll</HintPath>
+    <Reference Include="SDA.EFMODEL">
+      <HintPath>..\..\..\..\lib\SDA\SDA.EFMODEL.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />

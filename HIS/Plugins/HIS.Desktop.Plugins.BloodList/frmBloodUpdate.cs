@@ -57,6 +57,7 @@ namespace HIS.Desktop.Plugins.BloodList
     {
         V_HIS_BLOOD currentBlood;
         HIS_BLOOD_GIVER currentBloodGiver;
+        List<V_SDA_PROVINCE> province = new List<V_SDA_PROVINCE>();
         int positionHandleControl = -1;
         bool isNotLoadWhileChangeControlStateInFirst;
         private HIS.Desktop.Library.CacheClient.ControlStateWorker controlStateWorker;
@@ -185,7 +186,23 @@ namespace HIS.Desktop.Plugins.BloodList
                 InitComboDefault("ID", "WORK_PLACE_NAME", "WORK_PLACE_CODE", BackendDataWorker.Get<HIS_WORK_PLACE>(), cboWorkPlace);
                 InitComboDefault("ID", "CAREER_NAME", "CAREER_CODE", BackendDataWorker.Get<HIS_CAREER>(), cboCareer);
                 InitComboDefault("NATIONAL_CODE", "NATIONAL_NAME", "NATIONAL_CODE", BackendDataWorker.Get<SDA_NATIONAL>(), cboNational);
-                InitComboDefault("PROVINCE_CODE", "PROVINCE_NAME", "PROVINCE_CODE", BackendDataWorker.Get<SDA_PROVINCE>(), cboProvinceBlood);
+                if (!toggleCheck.IsOn)
+                {
+                    this.province = BackendDataWorker.Get<V_SDA_PROVINCE>().Where(o => o.IS_ACTIVE == 1 && o.IS_NO_DISTRICT != 1).ToList();
+                    if (province != null)
+                    {
+                        InitComboDefault("PROVINCE_CODE", "PROVINCE_NAME", "PROVINCE_CODE", this.province, cboProvinceBlood);
+                    }
+                }
+                else
+                {
+                    this.province = BackendDataWorker.Get<V_SDA_PROVINCE>().Where(o => o.IS_ACTIVE == 1 && o.IS_NO_DISTRICT == 1).ToList();
+                    if (province != null)
+                    {
+                        InitComboDefault("PROVINCE_CODE", "PROVINCE_NAME", "PROVINCE_CODE", this.province, cboProvinceBlood);
+                    }
+                }
+
                 InitComboDefault("PROVINCE_CODE", "PROVINCE_NAME", "PROVINCE_CODE", BackendDataWorker.Get<SDA_PROVINCE>(), cboProvince);
                 InitComboDefault("LOGINNAME", "USERNAME", "LOGINNAME", BackendDataWorker.Get<ACS_USER>(), cboExamName);
                 InitComboExecuteName();
@@ -222,7 +239,11 @@ namespace HIS.Desktop.Plugins.BloodList
         {
             try
             {
-                List<HIS.Desktop.LocalStorage.BackendData.ADO.CommuneADO> communeADOs = BackendDataWorker.Get<HIS.Desktop.LocalStorage.BackendData.ADO.CommuneADO>();
+                List<HIS.Desktop.LocalStorage.BackendData.ADO.CommuneADO> communeADOs = new List<CommuneADO>();
+                if (!toggleCheck.IsOn)
+                    communeADOs = BackendDataWorker.Get<HIS.Desktop.LocalStorage.BackendData.ADO.CommuneADO>().Where(o => o.IS_NO_DISTRICT != 1).ToList();
+                else
+                    communeADOs = BackendDataWorker.Get<HIS.Desktop.LocalStorage.BackendData.ADO.CommuneADO>().Where(o => o.IS_NO_DISTRICT == 1).ToList();
                 if (communeADOs != null)
                 {
                     this.InitComboCommonUtil(this.cboPermanentAddress, communeADOs, "ID_RAW", "RENDERER_PDC_NAME", 650, "SEARCH_CODE_COMMUNE", 150, "RENDERER_PDC_NAME_UNSIGNED", 5, 0);
@@ -1832,11 +1853,17 @@ namespace HIS.Desktop.Plugins.BloodList
             }
         }
 
-        private void cboProvinceBlood_EditValueChanged(object sender, EventArgs e)
+        private void cboProvinceBlood_EditValueChanged(object sender, EventArgs e)    
         {
             try
             {
-                if (cboProvinceBlood.EditValue != null) LoadDistrictsBloodCombo(cboProvinceBlood.EditValue.ToString());
+                if (cboProvinceBlood.EditValue != null)
+                {
+                    if (!toggleCheck.IsOn)
+                        LoadDistrictsBloodCombo(cboProvinceBlood.EditValue.ToString());
+                    else
+                        LoadCommuneCombo(cboProvinceBlood.EditValue.ToString());
+                }
                 cboDistrictBlood.Focus();
             }
             catch (Exception ex)
@@ -1863,7 +1890,6 @@ namespace HIS.Desktop.Plugins.BloodList
             try
             {
                 if (cboDistrict.EditValue != null && !toggleCheck.IsOn) LoadCommuneCombo(cboDistrict.EditValue.ToString());
-                else if (cboDistrict.EditValue != null && toggleCheck.IsOn) LoadCommuneCombo(cboProvince.EditValue.ToString());
                 cboCommune.Focus();
             }
             catch (Exception ex)
@@ -1915,6 +1941,7 @@ namespace HIS.Desktop.Plugins.BloodList
 
         private void toggleCheck_Toggled(object sender, EventArgs e)
         {
+            this.UpdateAddressControls();
             HIS.Desktop.Library.CacheClient.ControlStateRDO csAddOrUpdate;
             if (isNotLoadWhileChangeControlStateInFirst)
                 return;
@@ -1972,6 +1999,48 @@ namespace HIS.Desktop.Plugins.BloodList
 
                 layoutControlItem28.Visibility = visibility;
                 layoutControlItem35.Visibility = visibility;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void UpdateAddressControls()
+        {
+            try
+            {
+                if (toggleCheck.IsOn)
+                {
+                    toggleCheck.ToolTip = "Sử dụng cấu trúc địa chỉ Xã - Huyện - Tỉnh";
+                }
+                else
+                {
+                    toggleCheck.ToolTip = "Sử dụng cấu trúc địa chỉ Xã - Tỉnh (không có Huyện)";
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void cboNational_Closed(object sender, ClosedEventArgs e)
+        {
+            try
+            {
+                if (e.CloseMode == PopupCloseMode.Normal)
+                {
+                    if (cboNational.EditValue != null && 
+                        cboNational.EditValue != this.cboNational.OldEditValue)
+                    {
+                        var national = this.province.SingleOrDefault(o => o.NATIONAL_CODE == cboNational.EditValue.ToString());
+                        if(national != null)
+                        {
+                            InitComboDefault("PROVINCE_CODE", "PROVINCE_NAME", "PROVINCE_CODE", national, cboProvinceBlood);
+                        }
+                    }
+                }
             }
             catch (Exception ex)
             {
