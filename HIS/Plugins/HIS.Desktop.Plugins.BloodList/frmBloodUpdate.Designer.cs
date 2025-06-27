@@ -45,10 +45,9 @@ namespace HIS.Desktop.Plugins.BloodList
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             this.layoutControl1 = new DevExpress.XtraLayout.LayoutControl();
             this.toggleCheck = new DevExpress.XtraEditors.ToggleSwitch();
-            this.barManager1 = new DevExpress.XtraBars.BarManager(this.components);
+            this.barManager1 = new DevExpress.XtraBars.BarManager();
             this.bar1 = new DevExpress.XtraBars.Bar();
             this.barButtonItem1 = new DevExpress.XtraBars.BarButtonItem();
             this.barDockControlTop = new DevExpress.XtraBars.BarDockControl();
@@ -240,7 +239,7 @@ namespace HIS.Desktop.Plugins.BloodList
             this.emptySpaceItem1 = new DevExpress.XtraLayout.EmptySpaceItem();
             this.emptySpaceItem3 = new DevExpress.XtraLayout.EmptySpaceItem();
             this.layoutControlItem7 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.dxValidationProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider(this.components);
+            this.dxValidationProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
             this.layoutControl1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.toggleCheck.Properties)).BeginInit();
@@ -1285,6 +1284,7 @@ namespace HIS.Desktop.Plugins.BloodList
             this.cboNational.Size = new System.Drawing.Size(124, 20);
             this.cboNational.StyleController = this.layoutControl1;
             this.cboNational.TabIndex = 37;
+            this.cboNational.Closed += new DevExpress.XtraEditors.Controls.ClosedEventHandler(this.cboNational_Closed);
             // 
             // gridView5
             // 
