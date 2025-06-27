@@ -663,13 +663,15 @@ namespace SDA.Desktop.Plugins.SdaProvince
                         if (lci != null && lci.Control != null && lci.Control is BaseEdit)
                         {
                             DevExpress.XtraEditors.BaseEdit fomatFrm = lci.Control as DevExpress.XtraEditors.BaseEdit;
-
+                           
                             fomatFrm.ResetText();
-
-                            chkNotDistrict.CheckState = CheckState.Unchecked;
                             fomatFrm.EditValue = null;
                         }
                     }
+                    //chkNotDistrict.Properties.AllowGrayed = false;
+                    //chkNotDistrict.CheckState = CheckState.Unchecked;
+                    chkNotDistrict.Checked = false;
+                    chkNotDistrict.Text = "Không huyện";
                 }
                 catch (Exception ex)
                 {
@@ -1120,6 +1122,10 @@ namespace SDA.Desktop.Plugins.SdaProvince
 
                 //Focus default
                 SetDefaultFocus();
+
+
+                chkNotDistrict.Properties.AllowGrayed = false;
+               // txtProvinceCode.Focus();
             }
             catch (Exception ex)
             {
