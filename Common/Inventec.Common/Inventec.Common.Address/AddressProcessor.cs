@@ -208,8 +208,6 @@ namespace Inventec.Common.Address
                         }
                     }
 
-                    Inventec.Common.Logging.LogSystem.Debug(string.Join(", ", joinsAdd));
-
                     for (int i = 0; i < joinsAdd.Length; i++)
                     {
                         if (joinsAdd[i] == null) continue;
