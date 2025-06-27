@@ -78,7 +78,7 @@ namespace SDA.Desktop.Plugins.SdaCommune
             try
             {
                 InitializeComponent();
-
+                this.KeyPreview = true;
                 pagingGrid = new PagingGrid();
                 this.moduleData = moduleData;
                 gridControlFormList.ToolTipController = toolTipControllerGrid;
@@ -267,6 +267,7 @@ namespace SDA.Desktop.Plugins.SdaCommune
             try
             {
                 InitComboDistrict();
+                InitComboProvince();
 
 
                 //TODO
@@ -283,10 +284,28 @@ namespace SDA.Desktop.Plugins.SdaCommune
             try
             {
                 List<ColumnInfo> columnInfos = new List<ColumnInfo>();
-                columnInfos.Add(new ColumnInfo("DISTRICT_CODE", "", 4, 1));
+                columnInfos.Add(new ColumnInfo("DISTRICT_CODE", "", 50, 1));
                 columnInfos.Add(new ColumnInfo("DISTRICT_NAME", "", 100, 2));
                 ControlEditorADO controlEditorADO = new ControlEditorADO("DISTRICT_NAME", "ID", columnInfos, false, 104);
                 ControlEditorLoader.Load(cboDistrict, BackendDataWorker.Get<SDA_DISTRICT>(), controlEditorADO);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void InitComboProvince()
+        {
+            try
+            {
+                var provinceData = BackendDataWorker.Get<SDA_PROVINCE>().Where(p => p.IS_ACTIVE == IMSys.DbConfig.SDA_RS.COMMON.IS_ACTIVE__TRUE).ToList();
+
+                List<ColumnInfo> columnInfos = new List<ColumnInfo>();
+                columnInfos.Add(new ColumnInfo("PROVINCE_CODE", "Mã tỉnh", 100, 1));
+                columnInfos.Add(new ColumnInfo("PROVINCE_NAME", "Tên tỉnh", 200, 2));
+                ControlEditorADO controlEditorADO = new ControlEditorADO("PROVINCE_NAME", "ID", columnInfos, false, 300);
+                ControlEditorLoader.Load(cboProvince, provinceData, controlEditorADO);
             }
             catch (Exception ex)
             {
@@ -350,6 +369,7 @@ namespace SDA.Desktop.Plugins.SdaCommune
                 dnNavigation.DataSource = null;
                 gridviewFormList.BeginUpdate();
                 apiResult = new BackendAdapter(paramCommon).GetRO<List<SDA.EFMODEL.DataModels.SDA_COMMUNE>>(HisRequestUriStore.SDA_COMMUNE_GET, ApiConsumers.SdaConsumer, filter, paramCommon);
+                Inventec.Common.Logging.LogSystem.Debug("SDA_COMMUNE_GET: " + apiResult.ToString());
                 if (apiResult != null)
                 {
                     var data = (List<SDA.EFMODEL.DataModels.SDA_COMMUNE>)apiResult.Data;
@@ -590,7 +610,7 @@ namespace SDA.Desktop.Plugins.SdaCommune
                     cboDistrict.EditValue = data.DISTRICT_ID;
                     txtSearchCode.EditValue = data.SEARCH_CODE;
                     cboInitialName.EditValue = data.INITIAL_NAME;
-
+                    cboProvince.EditValue = data.PROVINCE_ID;
 
                 }
             }
@@ -828,6 +848,13 @@ namespace SDA.Desktop.Plugins.SdaCommune
                 if (!dxValidationProviderEditorInfo.Validate())
                     return;
 
+                // Kiểm tra nếu cả tỉnh và huyện đều được chọn
+                if (cboProvince.EditValue != null && cboDistrict.EditValue != null)
+                {
+                    MessageBox.Show("Không thể chọn đồng thời huyện và tỉnh", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning); 
+                    return;
+                }
+
 
                 WaitingManager.Show();
                 SDA.EFMODEL.DataModels.SDA_COMMUNE updateDTO = new SDA.EFMODEL.DataModels.SDA_COMMUNE();
@@ -915,7 +942,8 @@ namespace SDA.Desktop.Plugins.SdaCommune
             {
                 currentDTO.COMMUNE_CODE = txtCommuneCode.Text.Trim();
                 currentDTO.COMMUNE_NAME = txtCommuneName.Text.Trim();
-                currentDTO.DISTRICT_ID = (long)cboDistrict.EditValue;
+                currentDTO.DISTRICT_ID = (long?)cboDistrict.EditValue;
+                currentDTO.PROVINCE_ID = (long?)cboProvince.EditValue;
                 if (cboInitialName.EditValue != null)
                 {
                     currentDTO.INITIAL_NAME = cboInitialName.SelectedItem.ToString();
@@ -937,6 +965,39 @@ namespace SDA.Desktop.Plugins.SdaCommune
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
+        private void ValidateProvinceWhenNoDistrict()
+        {
+            try
+            {
+                CustomProvinceValidationRule validRule = new CustomProvinceValidationRule();
+                validRule.cboProvince = cboProvince;
+                validRule.cboDistrict = cboDistrict;
+                validRule.ErrorText = MessageUtil.GetMessage(HIS.Desktop.LibraryMessage.Message.Enum.TruongDuLieuBatBuoc);
+                validRule.ErrorType = ErrorType.Warning;
+                dxValidationProviderEditorInfo.SetValidationRule(cboProvince, validRule);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void ValidateDistrictWhenNoProvince()
+        {
+            try
+            {
+                CustomDistrictValidationRule validRule = new CustomDistrictValidationRule();
+                validRule.cboDistrict = cboDistrict;
+                validRule.cboProvince = cboProvince;
+                validRule.ErrorText = MessageUtil.GetMessage(HIS.Desktop.LibraryMessage.Message.Enum.TruongDuLieuBatBuoc);
+                validRule.ErrorType = ErrorType.Warning;
+                dxValidationProviderEditorInfo.SetValidationRule(cboDistrict, validRule);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
 
         #endregion
 
@@ -950,6 +1011,8 @@ namespace SDA.Desktop.Plugins.SdaCommune
                 ValidationSingleControl(cboDistrict);
                 ValidMaxlengthtxtSearchCode();
                 ValidMaxlengthtxtInitialName();
+                ValidateProvinceWhenNoDistrict();
+                ValidateDistrictWhenNoProvince();
                 //ValidationTextEditNumber();
                 //ValidationSingleControl1();
 
@@ -1382,7 +1445,7 @@ namespace SDA.Desktop.Plugins.SdaCommune
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
-            }
+            } 
         }
 
         private void cboDistrict_ButtonClick(object sender, ButtonPressedEventArgs e)
@@ -1392,6 +1455,22 @@ namespace SDA.Desktop.Plugins.SdaCommune
                 if (e.Button.Kind == ButtonPredefines.Delete)
                 {
                     cboDistrict.EditValue = null;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+
+        }
+
+        private void cboProvince_ButtonClick(object sender, ButtonPressedEventArgs e)
+        {
+            try
+            {
+                if (e.Button.Kind == ButtonPredefines.Delete)
+                {
+                    cboProvince.EditValue = null;
                 }
             }
             catch (Exception ex)
@@ -1521,24 +1600,47 @@ namespace SDA.Desktop.Plugins.SdaCommune
         {
             if (e.Control)
             {
-                if (e.Control && e.KeyCode == Keys.N)
+                switch (e.KeyCode)
                 {
-                    btnAdd_Click(null, null);
-                }
-                if (e.Control && e.KeyCode == Keys.S)
-                {
-                    btnEdit_Click(null, null);
-                }
-                if (e.Control && e.KeyCode == Keys.R)
-                {
-                    btnRefesh_Click(null, null);
+                    case Keys.N:
+                        if (btnAdd.Enabled && ActionType == GlobalVariables.ActionAdd)
+                        {
+                            btnAdd_Click(null, null);
+                            e.Handled = true; 
+                        }
+                        break;
+                    case Keys.S:
+                        if (btnEdit.Enabled && ActionType == GlobalVariables.ActionEdit)
+                        {
+                            btnEdit_Click(null, null);
+                            e.Handled = true;
+                        }
+                        break;
+                    case Keys.R:
+                        btnRefesh_Click(null, null);
+                        e.Handled = true;
+                        break;
                 }
             }
         }
 
-
-       
-
-
+        private void cboProvince_EditValueChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                if (cboProvince.EditValue != null)
+                {
+                    cboProvince.Properties.Buttons[1].Visible = true; // Nút Delete là nút thứ 2 (index 1)
+                }
+                else
+                {
+                    cboProvince.Properties.Buttons[1].Visible = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
     }
 }
