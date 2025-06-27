@@ -72,6 +72,7 @@ using HIS.Desktop.ADO;
 using MediMateTypeADO = HIS.Desktop.Plugins.ExpMestSaleCreate.ADO.MediMateTypeADO;
 using HIS.Desktop.LocalStorage.BackendData.ADO;
 using DevExpress.Utils;
+using SDA.EFMODEL.DataModels;
 
 namespace HIS.Desktop.Plugins.ExpMestSaleCreate
 {
@@ -1097,7 +1098,6 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
                 btnSave.Enabled = true;
                 btnSavePrint.Enabled = true;
                 btnCancelExport.Enabled = false;
-
                 this.serviceReq = null;
                 this.expMestId = null;
                 this.Patient = null;
@@ -5607,6 +5607,11 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
                     if (!String.IsNullOrEmpty(txtPatientCode.Text))
                     {
                         ProcessorSearchPatient();
+                        if (Patient != null)
+                        {
+                            UpdateNoDistrictToggleByPatientAddress();
+                            LoadAddressData(toggleSwitch1.IsOn);
+                        }
                     }
                 }
 
@@ -5757,6 +5762,11 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
                     if (!String.IsNullOrEmpty(txtPatientCode.Text))
                     {
                         ProcessorSearchPatient();
+                        if (Patient != null)
+                        {
+                            UpdateNoDistrictToggleByPatientAddress();
+                            LoadAddressData(toggleSwitch1.IsOn);
+                        }
                     }
                 }
 
@@ -5897,6 +5907,11 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
                     if (!String.IsNullOrEmpty(txtPatientCode.Text))  
                     {
                         ProcessorSearchPatient();
+                        if (Patient != null)
+                        {
+                            UpdateNoDistrictToggleByPatientAddress();
+                            LoadAddressData(toggleSwitch1.IsOn);
+                        }
                     }
                 }
 
@@ -7952,6 +7967,8 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
                 Properties.Settings.Default.Save();
                 SetToggleSwitchTooltip(isNewStructure);
                 LoadAddressData(isNewStructure);
+                cboTHX.EditValue = null;
+                txtMaTHX.Text = string.Empty;
             }
             catch (Exception ex)
             {
@@ -7977,6 +7994,7 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
                 }                
                 cboTHX.Properties.DataSource = communes;
                 this.InitComboCommonUtil(cboTHX, communes, "ID_RAW", "RENDERER_PDC_NAME", 250, "SEARCH_CODE_COMMUNE", 100);
+                ApplyPatientCommuneToUI(communes);
             }
             catch (Exception ex)
             {
@@ -7986,10 +8004,48 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
         private void SetToggleSwitchTooltip(bool isNewStructure)
         {
             SuperToolTip superTip = new SuperToolTip();
-            superTip.Items.Add(isNewStructure ? "Sử dụng cấu trúc địa chỉ Xã - Tỉnh (không có Huyện)" : "Sử dụng cấu trúc địa chỉ Xã - Tỉnh(không có Huyện)");
+            superTip.Items.Add(isNewStructure ? "Sử dụng cấu trúc địa chỉ Xã - Huyện - Tỉnh" : "Sử dụng cấu trúc địa chỉ Xã - Tỉnh (không có Huyện)");
             toggleSwitch1.SuperTip = superTip;
         }
+        private void UpdateNoDistrictToggleByPatientAddress()
+        {
+            try
+            {
+                if (string.IsNullOrWhiteSpace(Patient.PROVINCE_CODE)) return;
+                var provinces = BackendDataWorker.Get<V_SDA_PROVINCE>().Where(p => p.PROVINCE_CODE == Patient.PROVINCE_CODE).ToList();
 
+                if (provinces.Count() == 1)
+                {
+                    toggleSwitch1.IsOn = provinces[0].IS_NO_DISTRICT == 1;
+                }
+                else if (provinces.Count() > 1)
+                {
+                    toggleSwitch1.IsOn = string.IsNullOrEmpty(Patient.DISTRICT_CODE);
+                }
+            }
+            catch (Exception ex)
+            {
+                LogSystem.Error(ex);
+            }
+        }
+        private void ApplyPatientCommuneToUI(List<CommuneADO> communes)
+        {
+            try
+            {
+                if (Patient == null || string.IsNullOrWhiteSpace(Patient.COMMUNE_CODE)) return;
+
+                var selectedCommune = communes.FirstOrDefault(c => c.COMMUNE_CODE == Patient.COMMUNE_CODE);
+                if (selectedCommune != null)
+                {
+                    txtMaTHX.Text = selectedCommune.SEARCH_CODE_COMMUNE;
+                    cboTHX.EditValue = selectedCommune.ID_RAW;
+                }
+            }
+            catch (Exception ex)
+            {
+                LogSystem.Error(ex);
+            }
+        }
 
     }
     public class BankInfo
