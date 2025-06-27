@@ -3054,10 +3054,16 @@ namespace HIS.Desktop.Plugins.ImportBlood
             }
         }
         //qtcode
+        public void ResetFieldVir()
+        {
+            cboVirAddress.EditValue = null; 
+            txtVirAddress.Text = null; 
+        }
         private void Switch_THX_Toggled(object sender, EventArgs e)
         {
             try
             {
+                ResetFieldVir(); 
                 isUseNewStructure = ((DevExpress.XtraEditors.ToggleSwitch)sender).IsOn;
                 Switch_THX.ToolTip = isUseNewStructure == true ? "Sử dụng cấu trúc địa chỉ Xã - Huyện - Tỉnh" : "Sử dụng cấu trúc địa chỉ Xã - Tỉnh(không có Huyện)";
                 // Cập nhật hiển thị control

@@ -2222,7 +2222,8 @@ namespace HIS.Desktop.Plugins.ImportBlood
 
                         dataSource = BackendDataWorker.Get<V_SDA_COMMUNE>()
                             .Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE
-                                    && o.PROVINCE_CODE == provinceCode)
+                                    && o.PROVINCE_CODE == provinceCode
+                                    && o.IS_NO_DISTRICT == 1)
                             .ToList();
                     }
                 }
