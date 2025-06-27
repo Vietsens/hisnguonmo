@@ -43,7 +43,7 @@
       <HintPath>..\..\..\..\..\LIBRARY\DevLib\DevExpress.XtraEditors.v15.2.dll</HintPath>
     </Reference>
     <Reference Include="His.Bhyt.InsuranceExpertise">
-      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\His.Bhyt.InsuranceExpertise.dll</HintPath>
+      <HintPath>..\..\..\..\lib\HIS\His.Bhyt.InsuranceExpertise\His.Bhyt.InsuranceExpertise.dll</HintPath>
     </Reference>
     <Reference Include="HIS.Desktop.Utility, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>

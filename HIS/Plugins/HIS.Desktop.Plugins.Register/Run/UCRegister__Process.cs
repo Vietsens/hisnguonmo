@@ -786,7 +786,7 @@ namespace HIS.Desktop.Plugins.Register.Run
                 SDA.EFMODEL.DataModels.V_SDA_PROVINCE province = null;
                 if (cboProvince.EditValue != null)
                 {
-                    province = BackendDataWorker.Get<V_SDA_PROVINCE>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.SDA_RS.COMMON.IS_ACTIVE__TRUE).FirstOrDefault(o => o.PROVINCE_CODE == (string)this.cboProvince.EditValue);
+                    province = SdaProvinces.Where(o => o.IS_ACTIVE == IMSys.DbConfig.SDA_RS.COMMON.IS_ACTIVE__TRUE).FirstOrDefault(o => o.PROVINCE_CODE == (string)this.cboProvince.EditValue);
                     this.ChangeReplaceAddress(cboProvince.Text, "Tỉnh");
                 }
                 if (this.cboDistrict.EditValue != null)
@@ -797,7 +797,7 @@ namespace HIS.Desktop.Plugins.Register.Run
 
                 if (this.cboCommune.EditValue != null)
                 {
-                    commune = BackendDataWorker.Get<V_SDA_COMMUNE>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.SDA_RS.COMMON.IS_ACTIVE__TRUE).FirstOrDefault(o => o.COMMUNE_CODE == (string)this.cboCommune.EditValue);
+                    commune = SdaCommunes.Where(o => o.IS_ACTIVE == IMSys.DbConfig.SDA_RS.COMMON.IS_ACTIVE__TRUE).FirstOrDefault(o => o.COMMUNE_CODE == (string)this.cboCommune.EditValue);
                     this.ChangeReplaceAddress(cboCommune.Text, "Xã");
                 }
 

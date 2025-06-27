@@ -45,10 +45,11 @@ namespace HIS.Desktop.Plugins.Register.Run
         /// </summary>
         private void InitializeComponent()
         {
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject1 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject2 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject3 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject4 = new DevExpress.Utils.SerializableAppearanceObject();
+            this.components = new System.ComponentModel.Container();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject5 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject6 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject7 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject8 = new DevExpress.Utils.SerializableAppearanceObject();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(UCRegister));
             this.lciRegisterEditor = new DevExpress.XtraLayout.LayoutControl();
             this.chkNoCCCD = new DevExpress.XtraEditors.CheckEdit();
@@ -229,10 +230,12 @@ namespace HIS.Desktop.Plugins.Register.Run
             this.lciRecalPatient = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem12 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem15 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.dxValidationProviderControl = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider();
-            this.dxErrorProviderControl = new DevExpress.XtraEditors.DXErrorProvider.DXErrorProvider();
-            this.timer1 = new System.Windows.Forms.Timer();
-            this.dxValidationProviderPlusInfomation = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider();
+            this.dxValidationProviderControl = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider(this.components);
+            this.dxErrorProviderControl = new DevExpress.XtraEditors.DXErrorProvider.DXErrorProvider(this.components);
+            this.timer1 = new System.Windows.Forms.Timer(this.components);
+            this.dxValidationProviderPlusInfomation = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider(this.components);
+            this.togChangeStructAdress = new DevExpress.XtraEditors.ToggleSwitch();
+            this.layoutControlItem18 = new DevExpress.XtraLayout.LayoutControlItem();
             ((System.ComponentModel.ISupportInitialize)(this.lciRegisterEditor)).BeginInit();
             this.lciRegisterEditor.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.chkNoCCCD.Properties)).BeginInit();
@@ -392,10 +395,13 @@ namespace HIS.Desktop.Plugins.Register.Run
             ((System.ComponentModel.ISupportInitialize)(this.dxValidationProviderControl)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxErrorProviderControl)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxValidationProviderPlusInfomation)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.togChangeStructAdress.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem18)).BeginInit();
             this.SuspendLayout();
             // 
             // lciRegisterEditor
             // 
+            this.lciRegisterEditor.Controls.Add(this.togChangeStructAdress);
             this.lciRegisterEditor.Controls.Add(this.chkNoCCCD);
             this.lciRegisterEditor.Controls.Add(this.panelLayoutHosReason);
             this.lciRegisterEditor.Controls.Add(this.txtReasonVV);
@@ -480,7 +486,7 @@ namespace HIS.Desktop.Plugins.Register.Run
             // 
             // chkNoCCCD
             // 
-            this.chkNoCCCD.Location = new System.Drawing.Point(1099, 305);
+            this.chkNoCCCD.Location = new System.Drawing.Point(1099, 308);
             this.chkNoCCCD.Name = "chkNoCCCD";
             this.chkNoCCCD.Properties.Caption = "Không CCCD";
             this.chkNoCCCD.Size = new System.Drawing.Size(83, 19);
@@ -494,7 +500,7 @@ namespace HIS.Desktop.Plugins.Register.Run
             // 
             this.panelLayoutHosReason.Controls.Add(this.txtHosReason);
             this.panelLayoutHosReason.Controls.Add(this.cboHosReason);
-            this.panelLayoutHosReason.Location = new System.Drawing.Point(1190, 216);
+            this.panelLayoutHosReason.Location = new System.Drawing.Point(1190, 219);
             this.panelLayoutHosReason.Name = "panelLayoutHosReason";
             this.panelLayoutHosReason.Size = new System.Drawing.Size(131, 20);
             this.panelLayoutHosReason.TabIndex = 73;
@@ -539,7 +545,7 @@ namespace HIS.Desktop.Plugins.Register.Run
             // 
             // txtReasonVV
             // 
-            this.txtReasonVV.Location = new System.Drawing.Point(989, 216);
+            this.txtReasonVV.Location = new System.Drawing.Point(989, 219);
             this.txtReasonVV.Name = "txtReasonVV";
             this.txtReasonVV.Size = new System.Drawing.Size(109, 20);
             this.txtReasonVV.StyleController = this.lciRegisterEditor;
@@ -549,7 +555,7 @@ namespace HIS.Desktop.Plugins.Register.Run
             // 
             // chkSignExam
             // 
-            this.chkSignExam.Location = new System.Drawing.Point(929, 522);
+            this.chkSignExam.Location = new System.Drawing.Point(929, 517);
             this.chkSignExam.Name = "chkSignExam";
             this.chkSignExam.Properties.Caption = "Ký phiếu khám";
             this.chkSignExam.Size = new System.Drawing.Size(111, 19);
@@ -559,7 +565,7 @@ namespace HIS.Desktop.Plugins.Register.Run
             // 
             // chkWNext
             // 
-            this.chkWNext.Location = new System.Drawing.Point(1027, 331);
+            this.chkWNext.Location = new System.Drawing.Point(1027, 334);
             this.chkWNext.Name = "chkWNext";
             this.chkWNext.Properties.Caption = "Cảnh báo cho lần khám sau";
             this.chkWNext.Size = new System.Drawing.Size(153, 19);
@@ -569,7 +575,7 @@ namespace HIS.Desktop.Plugins.Register.Run
             // 
             // txtNote
             // 
-            this.txtNote.Location = new System.Drawing.Point(486, 331);
+            this.txtNote.Location = new System.Drawing.Point(486, 334);
             this.txtNote.Name = "txtNote";
             this.txtNote.Size = new System.Drawing.Size(537, 20);
             this.txtNote.StyleController = this.lciRegisterEditor;
@@ -577,7 +583,7 @@ namespace HIS.Desktop.Plugins.Register.Run
             // 
             // cboPatientClassify
             // 
-            this.cboPatientClassify.Location = new System.Drawing.Point(283, 331);
+            this.cboPatientClassify.Location = new System.Drawing.Point(283, 334);
             this.cboPatientClassify.Name = "cboPatientClassify";
             this.cboPatientClassify.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
             this.cboPatientClassify.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
@@ -602,9 +608,9 @@ namespace HIS.Desktop.Plugins.Register.Run
             // dropDownButton_Other
             // 
             this.dropDownButton_Other.Enabled = false;
-            this.dropDownButton_Other.Location = new System.Drawing.Point(571, 517);
+            this.dropDownButton_Other.Location = new System.Drawing.Point(571, 512);
             this.dropDownButton_Other.Name = "dropDownButton_Other";
-            this.dropDownButton_Other.Size = new System.Drawing.Size(66, 31);
+            this.dropDownButton_Other.Size = new System.Drawing.Size(66, 36);
             this.dropDownButton_Other.StyleController = this.lciRegisterEditor;
             this.dropDownButton_Other.TabIndex = 65;
             this.dropDownButton_Other.Text = "Khác";
@@ -612,7 +618,7 @@ namespace HIS.Desktop.Plugins.Register.Run
             // 
             // txtKskCode
             // 
-            this.txtKskCode.Location = new System.Drawing.Point(1261, 305);
+            this.txtKskCode.Location = new System.Drawing.Point(1261, 308);
             this.txtKskCode.Name = "txtKskCode";
             this.txtKskCode.Size = new System.Drawing.Size(50, 20);
             this.txtKskCode.StyleController = this.lciRegisterEditor;
@@ -621,7 +627,7 @@ namespace HIS.Desktop.Plugins.Register.Run
             // lblDescriptionForHID
             // 
             this.lblDescriptionForHID.Appearance.ForeColor = System.Drawing.Color.Blue;
-            this.lblDescriptionForHID.Location = new System.Drawing.Point(1184, 334);
+            this.lblDescriptionForHID.Location = new System.Drawing.Point(1184, 337);
             this.lblDescriptionForHID.Name = "lblDescriptionForHID";
             this.lblDescriptionForHID.Size = new System.Drawing.Size(137, 13);
             this.lblDescriptionForHID.StyleController = this.lciRegisterEditor;
@@ -629,7 +635,7 @@ namespace HIS.Desktop.Plugins.Register.Run
             // 
             // cboProvinceKS
             // 
-            this.cboProvinceKS.Location = new System.Drawing.Point(123, 331);
+            this.cboProvinceKS.Location = new System.Drawing.Point(123, 334);
             this.cboProvinceKS.Name = "cboProvinceKS";
             this.cboProvinceKS.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
@@ -650,7 +656,7 @@ namespace HIS.Desktop.Plugins.Register.Run
             // 
             // txtProvinceCodeKS
             // 
-            this.txtProvinceCodeKS.Location = new System.Drawing.Point(80, 331);
+            this.txtProvinceCodeKS.Location = new System.Drawing.Point(80, 334);
             this.txtProvinceCodeKS.Name = "txtProvinceCodeKS";
             this.txtProvinceCodeKS.Size = new System.Drawing.Size(43, 20);
             this.txtProvinceCodeKS.StyleController = this.lciRegisterEditor;
@@ -660,7 +666,7 @@ namespace HIS.Desktop.Plugins.Register.Run
             // 
             // txtRelativeCMNDNumber
             // 
-            this.txtRelativeCMNDNumber.Location = new System.Drawing.Point(878, 305);
+            this.txtRelativeCMNDNumber.Location = new System.Drawing.Point(878, 308);
             this.txtRelativeCMNDNumber.Name = "txtRelativeCMNDNumber";
             this.txtRelativeCMNDNumber.Properties.Appearance.ForeColor = System.Drawing.Color.Black;
             this.txtRelativeCMNDNumber.Properties.Appearance.Options.UseForeColor = true;
@@ -673,7 +679,7 @@ namespace HIS.Desktop.Plugins.Register.Run
             // chkIsChronic
             // 
             this.chkIsChronic.EnterMoveNextControl = true;
-            this.chkIsChronic.Location = new System.Drawing.Point(881, 216);
+            this.chkIsChronic.Location = new System.Drawing.Point(881, 219);
             this.chkIsChronic.Name = "chkIsChronic";
             this.chkIsChronic.Properties.AppearanceFocused.BackColor = System.Drawing.Color.Silver;
             this.chkIsChronic.Properties.AppearanceFocused.Options.UseBackColor = true;
@@ -686,7 +692,7 @@ namespace HIS.Desktop.Plugins.Register.Run
             // 
             // cboOweType
             // 
-            this.cboOweType.Location = new System.Drawing.Point(1189, 192);
+            this.cboOweType.Location = new System.Drawing.Point(1189, 195);
             this.cboOweType.Name = "cboOweType";
             this.cboOweType.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
@@ -698,9 +704,9 @@ namespace HIS.Desktop.Plugins.Register.Run
             // 
             // btnRecallPatient
             // 
-            this.btnRecallPatient.Location = new System.Drawing.Point(161, 517);
+            this.btnRecallPatient.Location = new System.Drawing.Point(161, 512);
             this.btnRecallPatient.Name = "btnRecallPatient";
-            this.btnRecallPatient.Size = new System.Drawing.Size(66, 31);
+            this.btnRecallPatient.Size = new System.Drawing.Size(66, 36);
             this.btnRecallPatient.StyleController = this.lciRegisterEditor;
             this.btnRecallPatient.TabIndex = 62;
             this.btnRecallPatient.Text = "Gọi lại (F7)";
@@ -708,9 +714,9 @@ namespace HIS.Desktop.Plugins.Register.Run
             // 
             // btnCallPatient
             // 
-            this.btnCallPatient.Location = new System.Drawing.Point(110, 517);
+            this.btnCallPatient.Location = new System.Drawing.Point(110, 512);
             this.btnCallPatient.Name = "btnCallPatient";
-            this.btnCallPatient.Size = new System.Drawing.Size(47, 31);
+            this.btnCallPatient.Size = new System.Drawing.Size(47, 36);
             this.btnCallPatient.StyleController = this.lciRegisterEditor;
             this.btnCallPatient.TabIndex = 61;
             this.btnCallPatient.Text = "Gọi (F6)";
@@ -718,7 +724,7 @@ namespace HIS.Desktop.Plugins.Register.Run
             // 
             // txtStepNumber
             // 
-            this.txtStepNumber.Location = new System.Drawing.Point(56, 522);
+            this.txtStepNumber.Location = new System.Drawing.Point(56, 517);
             this.txtStepNumber.Name = "txtStepNumber";
             this.txtStepNumber.Properties.Appearance.Options.UseTextOptions = true;
             this.txtStepNumber.Properties.Appearance.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
@@ -734,7 +740,7 @@ namespace HIS.Desktop.Plugins.Register.Run
             // 
             // txtGateNumber
             // 
-            this.txtGateNumber.Location = new System.Drawing.Point(2, 522);
+            this.txtGateNumber.Location = new System.Drawing.Point(2, 517);
             this.txtGateNumber.Name = "txtGateNumber";
             this.txtGateNumber.Properties.Appearance.Options.UseTextOptions = true;
             this.txtGateNumber.Properties.Appearance.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
@@ -751,10 +757,10 @@ namespace HIS.Desktop.Plugins.Register.Run
             // layoutControl1
             // 
             this.layoutControl1.Controls.Add(this.gridControlExecuteRoomInfo);
-            this.layoutControl1.Location = new System.Drawing.Point(2, 358);
+            this.layoutControl1.Location = new System.Drawing.Point(2, 361);
             this.layoutControl1.Name = "layoutControl1";
             this.layoutControl1.Root = this.grboxExecuteRoomInfo;
-            this.layoutControl1.Size = new System.Drawing.Size(1322, 155);
+            this.layoutControl1.Size = new System.Drawing.Size(1322, 147);
             this.layoutControl1.TabIndex = 58;
             this.layoutControl1.Text = "layoutControl1";
             // 
@@ -763,7 +769,7 @@ namespace HIS.Desktop.Plugins.Register.Run
             this.gridControlExecuteRoomInfo.Location = new System.Drawing.Point(1, 19);
             this.gridControlExecuteRoomInfo.MainView = this.gridViewExecuteRoomInfo;
             this.gridControlExecuteRoomInfo.Name = "gridControlExecuteRoomInfo";
-            this.gridControlExecuteRoomInfo.Size = new System.Drawing.Size(1320, 135);
+            this.gridControlExecuteRoomInfo.Size = new System.Drawing.Size(1320, 127);
             this.gridControlExecuteRoomInfo.TabIndex = 4;
             this.gridControlExecuteRoomInfo.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
             this.gridViewExecuteRoomInfo});
@@ -925,7 +931,7 @@ namespace HIS.Desktop.Plugins.Register.Run
             this.grboxExecuteRoomInfo.Location = new System.Drawing.Point(0, 0);
             this.grboxExecuteRoomInfo.Name = "grboxExecuteRoomInfo";
             this.grboxExecuteRoomInfo.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
-            this.grboxExecuteRoomInfo.Size = new System.Drawing.Size(1322, 155);
+            this.grboxExecuteRoomInfo.Size = new System.Drawing.Size(1322, 147);
             this.grboxExecuteRoomInfo.Text = "Thông tin số lượt khám theo phòng";
             // 
             // layoutControlItem11
@@ -934,13 +940,13 @@ namespace HIS.Desktop.Plugins.Register.Run
             this.layoutControlItem11.Location = new System.Drawing.Point(0, 0);
             this.layoutControlItem11.Name = "layoutControlItem11";
             this.layoutControlItem11.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
-            this.layoutControlItem11.Size = new System.Drawing.Size(1320, 135);
+            this.layoutControlItem11.Size = new System.Drawing.Size(1320, 127);
             this.layoutControlItem11.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem11.TextVisible = false;
             // 
             // cboTreatmentType
             // 
-            this.cboTreatmentType.Location = new System.Drawing.Point(989, 192);
+            this.cboTreatmentType.Location = new System.Drawing.Point(989, 195);
             this.cboTreatmentType.Name = "cboTreatmentType";
             this.cboTreatmentType.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
@@ -955,17 +961,17 @@ namespace HIS.Desktop.Plugins.Register.Run
             // btnBill
             // 
             this.btnBill.Enabled = false;
-            this.btnBill.Location = new System.Drawing.Point(718, 517);
+            this.btnBill.Location = new System.Drawing.Point(718, 512);
             this.btnBill.Name = "btnBill";
-            this.btnBill.Size = new System.Drawing.Size(86, 31);
+            this.btnBill.Size = new System.Drawing.Size(86, 36);
             this.btnBill.StyleController = this.lciRegisterEditor;
             this.btnBill.TabIndex = 51;
-            this.btnBill.Text = "Thanh toán (Ctrl B)";
+            this.btnBill.Text = "Thanh toán\r\n (Ctrl B)";
             this.btnBill.Click += new System.EventHandler(this.btnBill_Click);
             // 
             // cboCashierRoom
             // 
-            this.cboCashierRoom.Location = new System.Drawing.Point(488, 522);
+            this.cboCashierRoom.Location = new System.Drawing.Point(488, 517);
             this.cboCashierRoom.Name = "cboCashierRoom";
             this.cboCashierRoom.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
@@ -976,38 +982,38 @@ namespace HIS.Desktop.Plugins.Register.Run
             // 
             // btnSaveAndPrint
             // 
-            this.btnSaveAndPrint.Location = new System.Drawing.Point(1124, 517);
+            this.btnSaveAndPrint.Location = new System.Drawing.Point(1124, 512);
             this.btnSaveAndPrint.Name = "btnSaveAndPrint";
-            this.btnSaveAndPrint.Size = new System.Drawing.Size(73, 31);
+            this.btnSaveAndPrint.Size = new System.Drawing.Size(73, 36);
             this.btnSaveAndPrint.StyleController = this.lciRegisterEditor;
             this.btnSaveAndPrint.TabIndex = 55;
-            this.btnSaveAndPrint.Text = "Lưu in (Ctrl I)";
+            this.btnSaveAndPrint.Text = "Lưu in\r\n(Ctrl I)";
             this.btnSaveAndPrint.Click += new System.EventHandler(this.btnSaveAndPrint_Click);
             // 
             // txtMaTHX
             // 
-            this.txtMaTHX.Location = new System.Drawing.Point(80, 49);
+            this.txtMaTHX.Location = new System.Drawing.Point(134, 49);
             this.txtMaTHX.Name = "txtMaTHX";
             this.txtMaTHX.Properties.Appearance.Options.UseTextOptions = true;
             this.txtMaTHX.Properties.Appearance.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
             this.txtMaTHX.Properties.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
-            this.txtMaTHX.Size = new System.Drawing.Size(59, 20);
+            this.txtMaTHX.Size = new System.Drawing.Size(50, 20);
             this.txtMaTHX.StyleController = this.lciRegisterEditor;
             this.txtMaTHX.TabIndex = 10;
             this.txtMaTHX.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.txtMaTHX_PreviewKeyDown);
             // 
             // cboTHX
             // 
-            this.cboTHX.Location = new System.Drawing.Point(139, 49);
+            this.cboTHX.Location = new System.Drawing.Point(184, 49);
             this.cboTHX.Name = "cboTHX";
             this.cboTHX.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo),
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete, "", -1, true, false, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject1, serializableAppearanceObject2, serializableAppearanceObject3, serializableAppearanceObject4, "", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete, "", -1, true, false, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject5, serializableAppearanceObject6, serializableAppearanceObject7, serializableAppearanceObject8, "", null, null, true)});
             this.cboTHX.Properties.NullText = "";
             this.cboTHX.Properties.PopupSizeable = false;
             this.cboTHX.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.Standard;
             this.cboTHX.Properties.GetNotInListValue += new DevExpress.XtraEditors.Controls.GetNotInListValueEventHandler(this.cboTHX_Properties_GetNotInListValue);
-            this.cboTHX.Size = new System.Drawing.Size(261, 20);
+            this.cboTHX.Size = new System.Drawing.Size(216, 20);
             this.cboTHX.StyleController = this.lciRegisterEditor;
             this.cboTHX.TabIndex = 11;
             this.cboTHX.Closed += new DevExpress.XtraEditors.Controls.ClosedEventHandler(this.cboTHX_Closed);
@@ -1019,7 +1025,7 @@ namespace HIS.Desktop.Plugins.Register.Run
             this.btnPatientNew.Appearance.Options.UseForeColor = true;
             this.btnPatientNew.Appearance.Options.UseTextOptions = true;
             this.btnPatientNew.Appearance.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
-            this.btnPatientNew.Location = new System.Drawing.Point(283, 517);
+            this.btnPatientNew.Location = new System.Drawing.Point(283, 512);
             this.btnPatientNew.Name = "btnPatientNew";
             this.btnPatientNew.Size = new System.Drawing.Size(116, 31);
             this.btnPatientNew.StyleController = this.lciRegisterEditor;
@@ -1030,7 +1036,7 @@ namespace HIS.Desktop.Plugins.Register.Run
             // 
             // btnPatientExtend
             // 
-            this.btnPatientExtend.Location = new System.Drawing.Point(1027, 305);
+            this.btnPatientExtend.Location = new System.Drawing.Point(1027, 308);
             this.btnPatientExtend.Name = "btnPatientExtend";
             this.btnPatientExtend.Size = new System.Drawing.Size(68, 22);
             this.btnPatientExtend.StyleController = this.lciRegisterEditor;
@@ -1041,7 +1047,7 @@ namespace HIS.Desktop.Plugins.Register.Run
             // btnAddRow
             // 
             this.btnAddRow.Image = ((System.Drawing.Image)(resources.GetObject("btnAddRow.Image")));
-            this.btnAddRow.Location = new System.Drawing.Point(505, 192);
+            this.btnAddRow.Location = new System.Drawing.Point(505, 195);
             this.btnAddRow.Name = "btnAddRow";
             this.btnAddRow.Size = new System.Drawing.Size(24, 22);
             this.btnAddRow.StyleController = this.lciRegisterEditor;
@@ -1051,16 +1057,16 @@ namespace HIS.Desktop.Plugins.Register.Run
             // pnlUCHeinInformation
             // 
             this.pnlUCHeinInformation.BorderStyle = DevExpress.XtraEditors.Controls.BorderStyles.NoBorder;
-            this.pnlUCHeinInformation.Location = new System.Drawing.Point(5, 97);
+            this.pnlUCHeinInformation.Location = new System.Drawing.Point(5, 101);
             this.pnlUCHeinInformation.Name = "pnlUCHeinInformation";
-            this.pnlUCHeinInformation.Size = new System.Drawing.Size(1316, 67);
+            this.pnlUCHeinInformation.Size = new System.Drawing.Size(1316, 66);
             this.pnlUCHeinInformation.TabIndex = 19;
             // 
             // pnlInstructionTime
             // 
             this.pnlInstructionTime.Controls.Add(this.txtIntructionTime);
             this.pnlInstructionTime.Controls.Add(this.dtIntructionTime);
-            this.pnlInstructionTime.Location = new System.Drawing.Point(604, 192);
+            this.pnlInstructionTime.Location = new System.Drawing.Point(604, 195);
             this.pnlInstructionTime.Name = "pnlInstructionTime";
             this.pnlInstructionTime.Size = new System.Drawing.Size(100, 20);
             this.pnlInstructionTime.TabIndex = 22;
@@ -1117,7 +1123,7 @@ namespace HIS.Desktop.Plugins.Register.Run
             // cboMilitaryRank
             // 
             this.cboMilitaryRank.EnterMoveNextControl = true;
-            this.cboMilitaryRank.Location = new System.Drawing.Point(1171, 281);
+            this.cboMilitaryRank.Location = new System.Drawing.Point(1171, 284);
             this.cboMilitaryRank.Name = "cboMilitaryRank";
             this.cboMilitaryRank.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
@@ -1130,7 +1136,7 @@ namespace HIS.Desktop.Plugins.Register.Run
             // 
             // txtMilitaryRankCode
             // 
-            this.txtMilitaryRankCode.Location = new System.Drawing.Point(1102, 281);
+            this.txtMilitaryRankCode.Location = new System.Drawing.Point(1102, 284);
             this.txtMilitaryRankCode.Name = "txtMilitaryRankCode";
             this.txtMilitaryRankCode.Size = new System.Drawing.Size(69, 20);
             this.txtMilitaryRankCode.StyleController = this.lciRegisterEditor;
@@ -1139,7 +1145,7 @@ namespace HIS.Desktop.Plugins.Register.Run
             // 
             // txtRelativeAddress
             // 
-            this.txtRelativeAddress.Location = new System.Drawing.Point(689, 305);
+            this.txtRelativeAddress.Location = new System.Drawing.Point(689, 308);
             this.txtRelativeAddress.Name = "txtRelativeAddress";
             this.txtRelativeAddress.Properties.MaxLength = 200;
             this.txtRelativeAddress.Size = new System.Drawing.Size(134, 20);
@@ -1149,7 +1155,7 @@ namespace HIS.Desktop.Plugins.Register.Run
             // 
             // txtCorrelated
             // 
-            this.txtCorrelated.Location = new System.Drawing.Point(486, 305);
+            this.txtCorrelated.Location = new System.Drawing.Point(486, 308);
             this.txtCorrelated.Name = "txtCorrelated";
             this.txtCorrelated.Properties.MaxLength = 50;
             this.txtCorrelated.Size = new System.Drawing.Size(124, 20);
@@ -1159,7 +1165,7 @@ namespace HIS.Desktop.Plugins.Register.Run
             // 
             // txtHomePerson
             // 
-            this.txtHomePerson.Location = new System.Drawing.Point(283, 305);
+            this.txtHomePerson.Location = new System.Drawing.Point(283, 308);
             this.txtHomePerson.Name = "txtHomePerson";
             this.txtHomePerson.Properties.MaxLength = 100;
             this.txtHomePerson.Size = new System.Drawing.Size(124, 20);
@@ -1169,7 +1175,7 @@ namespace HIS.Desktop.Plugins.Register.Run
             // 
             // txtPhone
             // 
-            this.txtPhone.Location = new System.Drawing.Point(80, 305);
+            this.txtPhone.Location = new System.Drawing.Point(80, 308);
             this.txtPhone.Name = "txtPhone";
             this.txtPhone.Properties.MaxLength = 12;
             this.txtPhone.Size = new System.Drawing.Size(124, 20);
@@ -1181,14 +1187,14 @@ namespace HIS.Desktop.Plugins.Register.Run
             // pnlWorkPlace
             // 
             this.pnlWorkPlace.BorderStyle = DevExpress.XtraEditors.Controls.BorderStyles.NoBorder;
-            this.pnlWorkPlace.Location = new System.Drawing.Point(827, 281);
+            this.pnlWorkPlace.Location = new System.Drawing.Point(827, 284);
             this.pnlWorkPlace.Name = "pnlWorkPlace";
             this.pnlWorkPlace.Size = new System.Drawing.Size(196, 20);
             this.pnlWorkPlace.TabIndex = 37;
             // 
             // cboNational
             // 
-            this.cboNational.Location = new System.Drawing.Point(332, 281);
+            this.cboNational.Location = new System.Drawing.Point(332, 284);
             this.cboNational.Name = "cboNational";
             this.cboNational.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
@@ -1201,7 +1207,7 @@ namespace HIS.Desktop.Plugins.Register.Run
             // 
             // txtNationalCode
             // 
-            this.txtNationalCode.Location = new System.Drawing.Point(283, 281);
+            this.txtNationalCode.Location = new System.Drawing.Point(283, 284);
             this.txtNationalCode.Name = "txtNationalCode";
             this.txtNationalCode.Properties.Appearance.Options.UseTextOptions = true;
             this.txtNationalCode.Properties.Appearance.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
@@ -1213,7 +1219,7 @@ namespace HIS.Desktop.Plugins.Register.Run
             // 
             // cboEthnic
             // 
-            this.cboEthnic.Location = new System.Drawing.Point(123, 281);
+            this.cboEthnic.Location = new System.Drawing.Point(123, 284);
             this.cboEthnic.Name = "cboEthnic";
             this.cboEthnic.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
@@ -1226,7 +1232,7 @@ namespace HIS.Desktop.Plugins.Register.Run
             // 
             // txtEthnicCode
             // 
-            this.txtEthnicCode.Location = new System.Drawing.Point(80, 281);
+            this.txtEthnicCode.Location = new System.Drawing.Point(80, 284);
             this.txtEthnicCode.Name = "txtEthnicCode";
             this.txtEthnicCode.Properties.Appearance.Options.UseTextOptions = true;
             this.txtEthnicCode.Properties.Appearance.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
@@ -1237,7 +1243,7 @@ namespace HIS.Desktop.Plugins.Register.Run
             // 
             // txtCareerCode
             // 
-            this.txtCareerCode.Location = new System.Drawing.Point(486, 281);
+            this.txtCareerCode.Location = new System.Drawing.Point(486, 284);
             this.txtCareerCode.Margin = new System.Windows.Forms.Padding(2, 0, 2, 2);
             this.txtCareerCode.Name = "txtCareerCode";
             this.txtCareerCode.Properties.Appearance.Options.UseTextOptions = true;
@@ -1349,9 +1355,9 @@ namespace HIS.Desktop.Plugins.Register.Run
             this.btnSaveAndAssain.Appearance.Options.UseTextOptions = true;
             this.btnSaveAndAssain.Appearance.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
             this.btnSaveAndAssain.Enabled = false;
-            this.btnSaveAndAssain.Location = new System.Drawing.Point(879, 517);
+            this.btnSaveAndAssain.Location = new System.Drawing.Point(879, 512);
             this.btnSaveAndAssain.Name = "btnSaveAndAssain";
-            this.btnSaveAndAssain.Size = new System.Drawing.Size(46, 31);
+            this.btnSaveAndAssain.Size = new System.Drawing.Size(46, 36);
             this.btnSaveAndAssain.StyleController = this.lciRegisterEditor;
             this.btnSaveAndAssain.TabIndex = 53;
             this.btnSaveAndAssain.Text = "Chỉ định (Ctrl D)";
@@ -1360,54 +1366,54 @@ namespace HIS.Desktop.Plugins.Register.Run
             // btnDepositDetail
             // 
             this.btnDepositDetail.Enabled = false;
-            this.btnDepositDetail.Location = new System.Drawing.Point(641, 517);
+            this.btnDepositDetail.Location = new System.Drawing.Point(641, 512);
             this.btnDepositDetail.Name = "btnDepositDetail";
-            this.btnDepositDetail.Size = new System.Drawing.Size(73, 31);
+            this.btnDepositDetail.Size = new System.Drawing.Size(73, 36);
             this.btnDepositDetail.StyleController = this.lciRegisterEditor;
             this.btnDepositDetail.TabIndex = 50;
-            this.btnDepositDetail.Text = "Tạm ứng (Ctrl T)";
+            this.btnDepositDetail.Text = "Tạm ứng\r\n (Ctrl T)";
             this.btnDepositDetail.Click += new System.EventHandler(this.btnDepositDetail_Click);
             // 
             // btnTreatmentBedRoom
             // 
             this.btnTreatmentBedRoom.Enabled = false;
-            this.btnTreatmentBedRoom.Location = new System.Drawing.Point(808, 517);
+            this.btnTreatmentBedRoom.Location = new System.Drawing.Point(808, 512);
             this.btnTreatmentBedRoom.Name = "btnTreatmentBedRoom";
-            this.btnTreatmentBedRoom.Size = new System.Drawing.Size(67, 31);
+            this.btnTreatmentBedRoom.Size = new System.Drawing.Size(67, 36);
             this.btnTreatmentBedRoom.StyleController = this.lciRegisterEditor;
             this.btnTreatmentBedRoom.TabIndex = 52;
-            this.btnTreatmentBedRoom.Text = "Vào buồng (Ctrl G)";
+            this.btnTreatmentBedRoom.Text = "Vào buồng\r\n(Ctrl G)";
             this.btnTreatmentBedRoom.Click += new System.EventHandler(this.btnTreatmentBedRoom_Click);
             // 
             // btnNewContinue
             // 
-            this.btnNewContinue.Location = new System.Drawing.Point(1261, 517);
+            this.btnNewContinue.Location = new System.Drawing.Point(1261, 512);
             this.btnNewContinue.Name = "btnNewContinue";
-            this.btnNewContinue.Size = new System.Drawing.Size(63, 31);
+            this.btnNewContinue.Size = new System.Drawing.Size(63, 36);
             this.btnNewContinue.StyleController = this.lciRegisterEditor;
             this.btnNewContinue.TabIndex = 57;
-            this.btnNewContinue.Text = "Mới (Ctrl N)";
+            this.btnNewContinue.Text = "Mới \r\n(Ctrl N)";
             this.btnNewContinue.Click += new System.EventHandler(this.btnNewContinue_Click);
             // 
             // btnPrint
             // 
             this.btnPrint.Enabled = false;
-            this.btnPrint.Location = new System.Drawing.Point(1201, 517);
+            this.btnPrint.Location = new System.Drawing.Point(1201, 512);
             this.btnPrint.Name = "btnPrint";
-            this.btnPrint.Size = new System.Drawing.Size(56, 31);
+            this.btnPrint.Size = new System.Drawing.Size(56, 36);
             this.btnPrint.StyleController = this.lciRegisterEditor;
             this.btnPrint.TabIndex = 56;
-            this.btnPrint.Text = "In (Ctrl P)";
+            this.btnPrint.Text = "In\r\n(Ctrl P)";
             this.btnPrint.Click += new System.EventHandler(this.btnPrint_Click);
             // 
             // btnSave
             // 
-            this.btnSave.Location = new System.Drawing.Point(1044, 517);
+            this.btnSave.Location = new System.Drawing.Point(1044, 512);
             this.btnSave.Name = "btnSave";
-            this.btnSave.Size = new System.Drawing.Size(76, 31);
+            this.btnSave.Size = new System.Drawing.Size(76, 36);
             this.btnSave.StyleController = this.lciRegisterEditor;
             this.btnSave.TabIndex = 54;
-            this.btnSave.Text = "Lưu (Ctrl S)";
+            this.btnSave.Text = "Lưu\r\n(Ctrl S)";
             this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
             // 
             // txtPatientCode
@@ -1561,7 +1567,7 @@ namespace HIS.Desktop.Plugins.Register.Run
             // 
             // chkIsNotRequireFee
             // 
-            this.chkIsNotRequireFee.Location = new System.Drawing.Point(793, 192);
+            this.chkIsNotRequireFee.Location = new System.Drawing.Point(793, 195);
             this.chkIsNotRequireFee.Name = "chkIsNotRequireFee";
             this.chkIsNotRequireFee.Properties.AppearanceFocused.BackColor = System.Drawing.Color.Silver;
             this.chkIsNotRequireFee.Properties.AppearanceFocused.Options.UseBackColor = true;
@@ -1574,7 +1580,7 @@ namespace HIS.Desktop.Plugins.Register.Run
             // 
             // chkPriority
             // 
-            this.chkPriority.Location = new System.Drawing.Point(881, 192);
+            this.chkPriority.Location = new System.Drawing.Point(881, 195);
             this.chkPriority.Name = "chkPriority";
             this.chkPriority.Properties.Appearance.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold);
             this.chkPriority.Properties.Appearance.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
@@ -1591,7 +1597,7 @@ namespace HIS.Desktop.Plugins.Register.Run
             // 
             // chkEmergency
             // 
-            this.chkEmergency.Location = new System.Drawing.Point(604, 216);
+            this.chkEmergency.Location = new System.Drawing.Point(604, 219);
             this.chkEmergency.Name = "chkEmergency";
             this.chkEmergency.Properties.AppearanceFocused.BackColor = System.Drawing.Color.Silver;
             this.chkEmergency.Properties.AppearanceFocused.Options.UseBackColor = true;
@@ -1605,7 +1611,7 @@ namespace HIS.Desktop.Plugins.Register.Run
             // 
             // cboEmergencyTime
             // 
-            this.cboEmergencyTime.Location = new System.Drawing.Point(714, 216);
+            this.cboEmergencyTime.Location = new System.Drawing.Point(714, 219);
             this.cboEmergencyTime.Name = "cboEmergencyTime";
             this.cboEmergencyTime.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
@@ -1640,7 +1646,7 @@ namespace HIS.Desktop.Plugins.Register.Run
             // 
             // pnlServiceRoomInfomation
             // 
-            this.pnlServiceRoomInfomation.Location = new System.Drawing.Point(5, 192);
+            this.pnlServiceRoomInfomation.Location = new System.Drawing.Point(5, 195);
             this.pnlServiceRoomInfomation.MaximumSize = new System.Drawing.Size(0, 55);
             this.pnlServiceRoomInfomation.MinimumSize = new System.Drawing.Size(0, 55);
             this.pnlServiceRoomInfomation.Name = "pnlServiceRoomInfomation";
@@ -1649,7 +1655,7 @@ namespace HIS.Desktop.Plugins.Register.Run
             // 
             // cboCareer
             // 
-            this.cboCareer.Location = new System.Drawing.Point(612, 281);
+            this.cboCareer.Location = new System.Drawing.Point(612, 284);
             this.cboCareer.Margin = new System.Windows.Forms.Padding(2, 0, 2, 2);
             this.cboCareer.Name = "cboCareer";
             this.cboCareer.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
@@ -1727,11 +1733,12 @@ namespace HIS.Desktop.Plugins.Register.Run
             this.lcitxtProvince,
             this.layoutControlItem5,
             this.layoutControlItem8,
-            this.layoutControlItem9});
+            this.layoutControlItem9,
+            this.layoutControlItem18});
             this.gboxPatientInformation.Location = new System.Drawing.Point(0, 0);
             this.gboxPatientInformation.Name = "gboxPatientInformation";
             this.gboxPatientInformation.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
-            this.gboxPatientInformation.Size = new System.Drawing.Size(1326, 74);
+            this.gboxPatientInformation.Size = new System.Drawing.Size(1326, 78);
             this.gboxPatientInformation.Text = "Thông tin bệnh nhân (F2)";
             // 
             // lciPatientCode
@@ -1875,7 +1882,7 @@ namespace HIS.Desktop.Plugins.Register.Run
             this.layoutControlItem24.Location = new System.Drawing.Point(727, 24);
             this.layoutControlItem24.Name = "layoutControlItem24";
             this.layoutControlItem24.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 2, 2, 2);
-            this.layoutControlItem24.Size = new System.Drawing.Size(91, 26);
+            this.layoutControlItem24.Size = new System.Drawing.Size(91, 30);
             this.layoutControlItem24.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem24.TextVisible = false;
             // 
@@ -1886,7 +1893,7 @@ namespace HIS.Desktop.Plugins.Register.Run
             this.lciAddress.Control = this.txtAddress;
             this.lciAddress.Location = new System.Drawing.Point(1030, 24);
             this.lciAddress.Name = "lciAddress";
-            this.lciAddress.Size = new System.Drawing.Size(290, 26);
+            this.lciAddress.Size = new System.Drawing.Size(290, 30);
             this.lciAddress.Text = "Địa chỉ:";
             this.lciAddress.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lciAddress.TextSize = new System.Drawing.Size(70, 20);
@@ -1898,7 +1905,7 @@ namespace HIS.Desktop.Plugins.Register.Run
             this.layoutControlItem22.Location = new System.Drawing.Point(928, 24);
             this.layoutControlItem22.Name = "layoutControlItem22";
             this.layoutControlItem22.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 2, 2, 2);
-            this.layoutControlItem22.Size = new System.Drawing.Size(102, 26);
+            this.layoutControlItem22.Size = new System.Drawing.Size(102, 30);
             this.layoutControlItem22.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem22.TextVisible = false;
             // 
@@ -1912,7 +1919,7 @@ namespace HIS.Desktop.Plugins.Register.Run
             this.lciCommune.MinSize = new System.Drawing.Size(110, 24);
             this.lciCommune.Name = "lciCommune";
             this.lciCommune.Padding = new DevExpress.XtraLayout.Utils.Padding(2, 0, 2, 2);
-            this.lciCommune.Size = new System.Drawing.Size(110, 26);
+            this.lciCommune.Size = new System.Drawing.Size(110, 30);
             this.lciCommune.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
             this.lciCommune.Text = "Xã:";
             this.lciCommune.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
@@ -1929,7 +1936,7 @@ namespace HIS.Desktop.Plugins.Register.Run
             this.lciDistrict.MinSize = new System.Drawing.Size(110, 24);
             this.lciDistrict.Name = "lciDistrict";
             this.lciDistrict.Padding = new DevExpress.XtraLayout.Utils.Padding(2, 0, 2, 2);
-            this.lciDistrict.Size = new System.Drawing.Size(110, 26);
+            this.lciDistrict.Size = new System.Drawing.Size(110, 30);
             this.lciDistrict.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
             this.lciDistrict.Text = "Huyện:";
             this.lciDistrict.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
@@ -1942,7 +1949,7 @@ namespace HIS.Desktop.Plugins.Register.Run
             this.layoutControlItem26.Location = new System.Drawing.Point(509, 24);
             this.layoutControlItem26.Name = "layoutControlItem26";
             this.layoutControlItem26.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 2, 2, 2);
-            this.layoutControlItem26.Size = new System.Drawing.Size(108, 26);
+            this.layoutControlItem26.Size = new System.Drawing.Size(108, 30);
             this.layoutControlItem26.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem26.TextVisible = false;
             // 
@@ -1956,7 +1963,7 @@ namespace HIS.Desktop.Plugins.Register.Run
             this.lcitxtProvince.MinSize = new System.Drawing.Size(110, 24);
             this.lcitxtProvince.Name = "lcitxtProvince";
             this.lcitxtProvince.Padding = new DevExpress.XtraLayout.Utils.Padding(2, 0, 2, 2);
-            this.lcitxtProvince.Size = new System.Drawing.Size(110, 26);
+            this.lcitxtProvince.Size = new System.Drawing.Size(110, 30);
             this.lcitxtProvince.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
             this.lcitxtProvince.Text = "Tỉnh:";
             this.lcitxtProvince.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
@@ -1984,33 +1991,33 @@ namespace HIS.Desktop.Plugins.Register.Run
             this.layoutControlItem8.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem8.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem8.Control = this.txtMaTHX;
-            this.layoutControlItem8.Location = new System.Drawing.Point(0, 26);
+            this.layoutControlItem8.Location = new System.Drawing.Point(74, 26);
             this.layoutControlItem8.Name = "layoutControlItem8";
             this.layoutControlItem8.Padding = new DevExpress.XtraLayout.Utils.Padding(2, 0, 2, 2);
-            this.layoutControlItem8.Size = new System.Drawing.Size(136, 24);
+            this.layoutControlItem8.Size = new System.Drawing.Size(107, 28);
             this.layoutControlItem8.Text = "Mã tắt:";
             this.layoutControlItem8.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
-            this.layoutControlItem8.TextSize = new System.Drawing.Size(70, 20);
+            this.layoutControlItem8.TextSize = new System.Drawing.Size(50, 20);
             this.layoutControlItem8.TextToControlDistance = 5;
             // 
             // layoutControlItem9
             // 
             this.layoutControlItem9.Control = this.cboTHX;
-            this.layoutControlItem9.Location = new System.Drawing.Point(136, 26);
+            this.layoutControlItem9.Location = new System.Drawing.Point(181, 26);
             this.layoutControlItem9.Name = "layoutControlItem9";
             this.layoutControlItem9.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 2, 2, 2);
-            this.layoutControlItem9.Size = new System.Drawing.Size(263, 24);
+            this.layoutControlItem9.Size = new System.Drawing.Size(218, 28);
             this.layoutControlItem9.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem9.TextVisible = false;
             // 
             // lcibtnSave
             // 
             this.lcibtnSave.Control = this.btnSave;
-            this.lcibtnSave.Location = new System.Drawing.Point(1042, 515);
+            this.lcibtnSave.Location = new System.Drawing.Point(1042, 510);
             this.lcibtnSave.MaxSize = new System.Drawing.Size(80, 50);
             this.lcibtnSave.MinSize = new System.Drawing.Size(80, 35);
             this.lcibtnSave.Name = "lcibtnSave";
-            this.lcibtnSave.Size = new System.Drawing.Size(80, 35);
+            this.lcibtnSave.Size = new System.Drawing.Size(80, 40);
             this.lcibtnSave.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
             this.lcibtnSave.TextSize = new System.Drawing.Size(0, 0);
             this.lcibtnSave.TextVisible = false;
@@ -2018,11 +2025,11 @@ namespace HIS.Desktop.Plugins.Register.Run
             // lcibtnNew
             // 
             this.lcibtnNew.Control = this.btnNewContinue;
-            this.lcibtnNew.Location = new System.Drawing.Point(1259, 515);
+            this.lcibtnNew.Location = new System.Drawing.Point(1259, 510);
             this.lcibtnNew.MaxSize = new System.Drawing.Size(75, 0);
             this.lcibtnNew.MinSize = new System.Drawing.Size(67, 26);
             this.lcibtnNew.Name = "lcibtnNew";
-            this.lcibtnNew.Size = new System.Drawing.Size(67, 35);
+            this.lcibtnNew.Size = new System.Drawing.Size(67, 40);
             this.lcibtnNew.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
             this.lcibtnNew.TextSize = new System.Drawing.Size(0, 0);
             this.lcibtnNew.TextVisible = false;
@@ -2030,11 +2037,11 @@ namespace HIS.Desktop.Plugins.Register.Run
             // lcibtnAssignService
             // 
             this.lcibtnAssignService.Control = this.btnSaveAndAssain;
-            this.lcibtnAssignService.Location = new System.Drawing.Point(877, 515);
-            this.lcibtnAssignService.MaxSize = new System.Drawing.Size(90, 35);
-            this.lcibtnAssignService.MinSize = new System.Drawing.Size(50, 35);
+            this.lcibtnAssignService.Location = new System.Drawing.Point(877, 510);
+            this.lcibtnAssignService.MaxSize = new System.Drawing.Size(90, 40);
+            this.lcibtnAssignService.MinSize = new System.Drawing.Size(50, 40);
             this.lcibtnAssignService.Name = "lcibtnAssignService";
-            this.lcibtnAssignService.Size = new System.Drawing.Size(50, 35);
+            this.lcibtnAssignService.Size = new System.Drawing.Size(50, 40);
             this.lcibtnAssignService.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
             this.lcibtnAssignService.TextSize = new System.Drawing.Size(0, 0);
             this.lcibtnAssignService.TextVisible = false;
@@ -2042,11 +2049,11 @@ namespace HIS.Desktop.Plugins.Register.Run
             // lcibtnDeposit
             // 
             this.lcibtnDeposit.Control = this.btnDepositDetail;
-            this.lcibtnDeposit.Location = new System.Drawing.Point(639, 515);
-            this.lcibtnDeposit.MaxSize = new System.Drawing.Size(95, 35);
-            this.lcibtnDeposit.MinSize = new System.Drawing.Size(50, 35);
+            this.lcibtnDeposit.Location = new System.Drawing.Point(639, 510);
+            this.lcibtnDeposit.MaxSize = new System.Drawing.Size(95, 40);
+            this.lcibtnDeposit.MinSize = new System.Drawing.Size(50, 40);
             this.lcibtnDeposit.Name = "lcibtnDeposit";
-            this.lcibtnDeposit.Size = new System.Drawing.Size(77, 35);
+            this.lcibtnDeposit.Size = new System.Drawing.Size(77, 40);
             this.lcibtnDeposit.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
             this.lcibtnDeposit.TextSize = new System.Drawing.Size(0, 0);
             this.lcibtnDeposit.TextVisible = false;
@@ -2054,9 +2061,9 @@ namespace HIS.Desktop.Plugins.Register.Run
             // emptySpaceItem2
             // 
             this.emptySpaceItem2.AllowHotTrack = false;
-            this.emptySpaceItem2.Location = new System.Drawing.Point(229, 515);
+            this.emptySpaceItem2.Location = new System.Drawing.Point(229, 510);
             this.emptySpaceItem2.Name = "emptySpaceItem2";
-            this.emptySpaceItem2.Size = new System.Drawing.Size(52, 35);
+            this.emptySpaceItem2.Size = new System.Drawing.Size(52, 40);
             this.emptySpaceItem2.TextSize = new System.Drawing.Size(0, 0);
             // 
             // gboxHeinCardInformation
@@ -2064,10 +2071,10 @@ namespace HIS.Desktop.Plugins.Register.Run
             this.gboxHeinCardInformation.CustomizationFormText = "layoutControlGroup10";
             this.gboxHeinCardInformation.Items.AddRange(new DevExpress.XtraLayout.BaseLayoutItem[] {
             this.layoutControlItem1});
-            this.gboxHeinCardInformation.Location = new System.Drawing.Point(0, 74);
+            this.gboxHeinCardInformation.Location = new System.Drawing.Point(0, 78);
             this.gboxHeinCardInformation.Name = "gboxHeinCardInformation";
             this.gboxHeinCardInformation.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
-            this.gboxHeinCardInformation.Size = new System.Drawing.Size(1326, 95);
+            this.gboxHeinCardInformation.Size = new System.Drawing.Size(1326, 94);
             this.gboxHeinCardInformation.Text = "Thông tin đối tượng (F3)";
             // 
             // layoutControlItem1
@@ -2075,7 +2082,7 @@ namespace HIS.Desktop.Plugins.Register.Run
             this.layoutControlItem1.Control = this.pnlUCHeinInformation;
             this.layoutControlItem1.Location = new System.Drawing.Point(0, 0);
             this.layoutControlItem1.Name = "layoutControlItem1";
-            this.layoutControlItem1.Size = new System.Drawing.Size(1320, 71);
+            this.layoutControlItem1.Size = new System.Drawing.Size(1320, 70);
             this.layoutControlItem1.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem1.TextVisible = false;
             // 
@@ -2094,7 +2101,7 @@ namespace HIS.Desktop.Plugins.Register.Run
             this.layoutControlReasonVV,
             this.layoutControlItem16,
             this.emptySpaceItem3});
-            this.gboxRequestOtherInformation.Location = new System.Drawing.Point(534, 169);
+            this.gboxRequestOtherInformation.Location = new System.Drawing.Point(534, 172);
             this.gboxRequestOtherInformation.Name = "gboxRequestOtherInformation";
             this.gboxRequestOtherInformation.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
             this.gboxRequestOtherInformation.Size = new System.Drawing.Size(792, 89);
@@ -2259,7 +2266,7 @@ namespace HIS.Desktop.Plugins.Register.Run
             this.gboxServiceRoomInformation.Items.AddRange(new DevExpress.XtraLayout.BaseLayoutItem[] {
             this.layoutControlItem21,
             this.layoutControlItem2});
-            this.gboxServiceRoomInformation.Location = new System.Drawing.Point(0, 169);
+            this.gboxServiceRoomInformation.Location = new System.Drawing.Point(0, 172);
             this.gboxServiceRoomInformation.Name = "gboxServiceRoomInformation";
             this.gboxServiceRoomInformation.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
             this.gboxServiceRoomInformation.Size = new System.Drawing.Size(534, 89);
@@ -2316,7 +2323,7 @@ namespace HIS.Desktop.Plugins.Register.Run
             this.layoutControlItem6,
             this.emptySpaceItem1,
             this.layoutControlItem17});
-            this.gboxMoreInformation.Location = new System.Drawing.Point(0, 258);
+            this.gboxMoreInformation.Location = new System.Drawing.Point(0, 261);
             this.gboxMoreInformation.Name = "gboxMoreInformation";
             this.gboxMoreInformation.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
             this.gboxMoreInformation.Size = new System.Drawing.Size(1326, 98);
@@ -2626,11 +2633,11 @@ namespace HIS.Desktop.Plugins.Register.Run
             // lcibtnSaveAndPrint
             // 
             this.lcibtnSaveAndPrint.Control = this.btnSaveAndPrint;
-            this.lcibtnSaveAndPrint.Location = new System.Drawing.Point(1122, 515);
+            this.lcibtnSaveAndPrint.Location = new System.Drawing.Point(1122, 510);
             this.lcibtnSaveAndPrint.MaxSize = new System.Drawing.Size(90, 0);
             this.lcibtnSaveAndPrint.MinSize = new System.Drawing.Size(77, 26);
             this.lcibtnSaveAndPrint.Name = "lcibtnSaveAndPrint";
-            this.lcibtnSaveAndPrint.Size = new System.Drawing.Size(77, 35);
+            this.lcibtnSaveAndPrint.Size = new System.Drawing.Size(77, 40);
             this.lcibtnSaveAndPrint.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
             this.lcibtnSaveAndPrint.TextSize = new System.Drawing.Size(0, 0);
             this.lcibtnSaveAndPrint.TextVisible = false;
@@ -2640,12 +2647,12 @@ namespace HIS.Desktop.Plugins.Register.Run
             this.lcicboCashierRoom.AppearanceItemCaption.Options.UseTextOptions = true;
             this.lcicboCashierRoom.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lcicboCashierRoom.Control = this.cboCashierRoom;
-            this.lcicboCashierRoom.Location = new System.Drawing.Point(401, 515);
+            this.lcicboCashierRoom.Location = new System.Drawing.Point(401, 510);
             this.lcicboCashierRoom.MaxSize = new System.Drawing.Size(200, 29);
             this.lcicboCashierRoom.MinSize = new System.Drawing.Size(60, 29);
             this.lcicboCashierRoom.Name = "lcicboCashierRoom";
             this.lcicboCashierRoom.Padding = new DevExpress.XtraLayout.Utils.Padding(2, 2, 7, 2);
-            this.lcicboCashierRoom.Size = new System.Drawing.Size(168, 35);
+            this.lcicboCashierRoom.Size = new System.Drawing.Size(168, 40);
             this.lcicboCashierRoom.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
             this.lcicboCashierRoom.Text = "Phòng thu ngân:";
             this.lcicboCashierRoom.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
@@ -2655,11 +2662,11 @@ namespace HIS.Desktop.Plugins.Register.Run
             // lcibtnBill
             // 
             this.lcibtnBill.Control = this.btnBill;
-            this.lcibtnBill.Location = new System.Drawing.Point(716, 515);
-            this.lcibtnBill.MaxSize = new System.Drawing.Size(105, 35);
-            this.lcibtnBill.MinSize = new System.Drawing.Size(50, 35);
+            this.lcibtnBill.Location = new System.Drawing.Point(716, 510);
+            this.lcibtnBill.MaxSize = new System.Drawing.Size(105, 40);
+            this.lcibtnBill.MinSize = new System.Drawing.Size(50, 40);
             this.lcibtnBill.Name = "lcibtnBill";
-            this.lcibtnBill.Size = new System.Drawing.Size(90, 35);
+            this.lcibtnBill.Size = new System.Drawing.Size(90, 40);
             this.lcibtnBill.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
             this.lcibtnBill.TextSize = new System.Drawing.Size(0, 0);
             this.lcibtnBill.TextVisible = false;
@@ -2667,11 +2674,11 @@ namespace HIS.Desktop.Plugins.Register.Run
             // lcibtnPatientNewInfo
             // 
             this.lcibtnPatientNewInfo.Control = this.btnPatientNew;
-            this.lcibtnPatientNewInfo.Location = new System.Drawing.Point(281, 515);
+            this.lcibtnPatientNewInfo.Location = new System.Drawing.Point(281, 510);
             this.lcibtnPatientNewInfo.MaxSize = new System.Drawing.Size(120, 35);
             this.lcibtnPatientNewInfo.MinSize = new System.Drawing.Size(120, 35);
             this.lcibtnPatientNewInfo.Name = "lcibtnPatientNewInfo";
-            this.lcibtnPatientNewInfo.Size = new System.Drawing.Size(120, 35);
+            this.lcibtnPatientNewInfo.Size = new System.Drawing.Size(120, 40);
             this.lcibtnPatientNewInfo.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
             this.lcibtnPatientNewInfo.TextSize = new System.Drawing.Size(0, 0);
             this.lcibtnPatientNewInfo.TextVisible = false;
@@ -2679,11 +2686,11 @@ namespace HIS.Desktop.Plugins.Register.Run
             // lcibtnInBed
             // 
             this.lcibtnInBed.Control = this.btnTreatmentBedRoom;
-            this.lcibtnInBed.Location = new System.Drawing.Point(806, 515);
-            this.lcibtnInBed.MaxSize = new System.Drawing.Size(105, 35);
-            this.lcibtnInBed.MinSize = new System.Drawing.Size(50, 35);
+            this.lcibtnInBed.Location = new System.Drawing.Point(806, 510);
+            this.lcibtnInBed.MaxSize = new System.Drawing.Size(105, 40);
+            this.lcibtnInBed.MinSize = new System.Drawing.Size(50, 40);
             this.lcibtnInBed.Name = "lcibtnInBed";
-            this.lcibtnInBed.Size = new System.Drawing.Size(71, 35);
+            this.lcibtnInBed.Size = new System.Drawing.Size(71, 40);
             this.lcibtnInBed.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
             this.lcibtnInBed.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lcibtnInBed.TextSize = new System.Drawing.Size(0, 0);
@@ -2693,11 +2700,11 @@ namespace HIS.Desktop.Plugins.Register.Run
             // lcibtnPrint
             // 
             this.lcibtnPrint.Control = this.btnPrint;
-            this.lcibtnPrint.Location = new System.Drawing.Point(1199, 515);
+            this.lcibtnPrint.Location = new System.Drawing.Point(1199, 510);
             this.lcibtnPrint.MaxSize = new System.Drawing.Size(80, 0);
             this.lcibtnPrint.MinSize = new System.Drawing.Size(60, 26);
             this.lcibtnPrint.Name = "lcibtnPrint";
-            this.lcibtnPrint.Size = new System.Drawing.Size(60, 35);
+            this.lcibtnPrint.Size = new System.Drawing.Size(60, 40);
             this.lcibtnPrint.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
             this.lcibtnPrint.TextSize = new System.Drawing.Size(0, 0);
             this.lcibtnPrint.TextVisible = false;
@@ -2705,40 +2712,40 @@ namespace HIS.Desktop.Plugins.Register.Run
             // layoutControlItem10
             // 
             this.layoutControlItem10.Control = this.layoutControl1;
-            this.layoutControlItem10.Location = new System.Drawing.Point(0, 356);
+            this.layoutControlItem10.Location = new System.Drawing.Point(0, 359);
             this.layoutControlItem10.Name = "layoutControlItem10";
-            this.layoutControlItem10.Size = new System.Drawing.Size(1326, 159);
+            this.layoutControlItem10.Size = new System.Drawing.Size(1326, 151);
             this.layoutControlItem10.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem10.TextVisible = false;
             // 
             // lciGateNumber
             // 
             this.lciGateNumber.Control = this.txtGateNumber;
-            this.lciGateNumber.Location = new System.Drawing.Point(0, 515);
+            this.lciGateNumber.Location = new System.Drawing.Point(0, 510);
             this.lciGateNumber.Name = "lciGateNumber";
             this.lciGateNumber.Padding = new DevExpress.XtraLayout.Utils.Padding(2, 2, 7, 2);
-            this.lciGateNumber.Size = new System.Drawing.Size(54, 35);
+            this.lciGateNumber.Size = new System.Drawing.Size(54, 40);
             this.lciGateNumber.TextSize = new System.Drawing.Size(0, 0);
             this.lciGateNumber.TextVisible = false;
             // 
             // lciStepNumber
             // 
             this.lciStepNumber.Control = this.txtStepNumber;
-            this.lciStepNumber.Location = new System.Drawing.Point(54, 515);
+            this.lciStepNumber.Location = new System.Drawing.Point(54, 510);
             this.lciStepNumber.Name = "lciStepNumber";
             this.lciStepNumber.Padding = new DevExpress.XtraLayout.Utils.Padding(2, 2, 7, 2);
-            this.lciStepNumber.Size = new System.Drawing.Size(54, 35);
+            this.lciStepNumber.Size = new System.Drawing.Size(54, 40);
             this.lciStepNumber.TextSize = new System.Drawing.Size(0, 0);
             this.lciStepNumber.TextVisible = false;
             // 
             // lciBtnCallPatient
             // 
             this.lciBtnCallPatient.Control = this.btnCallPatient;
-            this.lciBtnCallPatient.Location = new System.Drawing.Point(108, 515);
-            this.lciBtnCallPatient.MaxSize = new System.Drawing.Size(0, 35);
-            this.lciBtnCallPatient.MinSize = new System.Drawing.Size(51, 35);
+            this.lciBtnCallPatient.Location = new System.Drawing.Point(108, 510);
+            this.lciBtnCallPatient.MaxSize = new System.Drawing.Size(0, 40);
+            this.lciBtnCallPatient.MinSize = new System.Drawing.Size(51, 40);
             this.lciBtnCallPatient.Name = "lciBtnCallPatient";
-            this.lciBtnCallPatient.Size = new System.Drawing.Size(51, 35);
+            this.lciBtnCallPatient.Size = new System.Drawing.Size(51, 40);
             this.lciBtnCallPatient.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
             this.lciBtnCallPatient.TextSize = new System.Drawing.Size(0, 0);
             this.lciBtnCallPatient.TextVisible = false;
@@ -2746,11 +2753,11 @@ namespace HIS.Desktop.Plugins.Register.Run
             // lciRecalPatient
             // 
             this.lciRecalPatient.Control = this.btnRecallPatient;
-            this.lciRecalPatient.Location = new System.Drawing.Point(159, 515);
-            this.lciRecalPatient.MaxSize = new System.Drawing.Size(0, 35);
-            this.lciRecalPatient.MinSize = new System.Drawing.Size(70, 35);
+            this.lciRecalPatient.Location = new System.Drawing.Point(159, 510);
+            this.lciRecalPatient.MaxSize = new System.Drawing.Size(0, 40);
+            this.lciRecalPatient.MinSize = new System.Drawing.Size(70, 40);
             this.lciRecalPatient.Name = "lciRecalPatient";
-            this.lciRecalPatient.Size = new System.Drawing.Size(70, 35);
+            this.lciRecalPatient.Size = new System.Drawing.Size(70, 40);
             this.lciRecalPatient.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
             this.lciRecalPatient.TextSize = new System.Drawing.Size(0, 0);
             this.lciRecalPatient.TextVisible = false;
@@ -2758,11 +2765,11 @@ namespace HIS.Desktop.Plugins.Register.Run
             // layoutControlItem12
             // 
             this.layoutControlItem12.Control = this.dropDownButton_Other;
-            this.layoutControlItem12.Location = new System.Drawing.Point(569, 515);
-            this.layoutControlItem12.MaxSize = new System.Drawing.Size(80, 35);
-            this.layoutControlItem12.MinSize = new System.Drawing.Size(70, 35);
+            this.layoutControlItem12.Location = new System.Drawing.Point(569, 510);
+            this.layoutControlItem12.MaxSize = new System.Drawing.Size(80, 40);
+            this.layoutControlItem12.MinSize = new System.Drawing.Size(70, 40);
             this.layoutControlItem12.Name = "layoutControlItem12";
-            this.layoutControlItem12.Size = new System.Drawing.Size(70, 35);
+            this.layoutControlItem12.Size = new System.Drawing.Size(70, 40);
             this.layoutControlItem12.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
             this.layoutControlItem12.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem12.TextVisible = false;
@@ -2770,12 +2777,12 @@ namespace HIS.Desktop.Plugins.Register.Run
             // layoutControlItem15
             // 
             this.layoutControlItem15.Control = this.chkSignExam;
-            this.layoutControlItem15.Location = new System.Drawing.Point(927, 515);
+            this.layoutControlItem15.Location = new System.Drawing.Point(927, 510);
             this.layoutControlItem15.MaxSize = new System.Drawing.Size(120, 28);
             this.layoutControlItem15.MinSize = new System.Drawing.Size(95, 28);
             this.layoutControlItem15.Name = "layoutControlItem15";
             this.layoutControlItem15.Padding = new DevExpress.XtraLayout.Utils.Padding(2, 2, 7, 2);
-            this.layoutControlItem15.Size = new System.Drawing.Size(115, 35);
+            this.layoutControlItem15.Size = new System.Drawing.Size(115, 40);
             this.layoutControlItem15.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
             this.layoutControlItem15.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem15.TextVisible = false;
@@ -2799,6 +2806,27 @@ namespace HIS.Desktop.Plugins.Register.Run
             // 
             this.dxValidationProviderPlusInfomation.ValidateHiddenControls = false;
             this.dxValidationProviderPlusInfomation.ValidationFailed += new DevExpress.XtraEditors.DXErrorProvider.ValidationFailedEventHandler(this.dxValidationProviderPlusInfomation_ValidationFailed);
+            // 
+            // togChangeStructAdress
+            // 
+            this.togChangeStructAdress.Location = new System.Drawing.Point(5, 49);
+            this.togChangeStructAdress.MaximumSize = new System.Drawing.Size(70, 0);
+            this.togChangeStructAdress.Name = "togChangeStructAdress";
+            this.togChangeStructAdress.Properties.OffText = "";
+            this.togChangeStructAdress.Properties.OnText = "";
+            this.togChangeStructAdress.Size = new System.Drawing.Size(70, 24);
+            this.togChangeStructAdress.StyleController = this.lciRegisterEditor;
+            this.togChangeStructAdress.TabIndex = 75;
+            this.togChangeStructAdress.Toggled += new System.EventHandler(this.togChangeStructAdress_Toggled);
+            // 
+            // layoutControlItem18
+            // 
+            this.layoutControlItem18.Control = this.togChangeStructAdress;
+            this.layoutControlItem18.Location = new System.Drawing.Point(0, 26);
+            this.layoutControlItem18.Name = "layoutControlItem18";
+            this.layoutControlItem18.Size = new System.Drawing.Size(74, 28);
+            this.layoutControlItem18.TextSize = new System.Drawing.Size(0, 0);
+            this.layoutControlItem18.TextVisible = false;
             // 
             // UCRegister
             // 
@@ -2968,6 +2996,8 @@ namespace HIS.Desktop.Plugins.Register.Run
             ((System.ComponentModel.ISupportInitialize)(this.dxValidationProviderControl)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxErrorProviderControl)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxValidationProviderPlusInfomation)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.togChangeStructAdress.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem18)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -3157,5 +3187,7 @@ namespace HIS.Desktop.Plugins.Register.Run
         private DevExpress.XtraLayout.EmptySpaceItem emptySpaceItem3;
         private DevExpress.XtraEditors.CheckEdit chkNoCCCD;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem17;
+        private DevExpress.XtraEditors.ToggleSwitch togChangeStructAdress;
+        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem18;
     }
 }

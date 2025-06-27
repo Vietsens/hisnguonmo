@@ -70,7 +70,7 @@ namespace HIS.UC.PlusInfo
             try
             {
                 if (this.ucDistrictNow1 != null && this.ucProvinceNow1 != null)
-                    this.ucProvinceNow1.SetDelegateLoadDistrictByProvince(this.ucDistrictNow1.SetValueFromUCAddress);
+                   this.ucProvinceNow1.SetDelegateLoadDistrictByProvince(this.ucDistrictNow1.SetValueFromUCAddress, ucCommuneNow1.SetValueFromUCAddress);
                 if (this.ucDistrictNow1 != null && this.ucCommuneNow1 != null)
                     this.ucDistrictNow1.SetDelegateLoadCommuneByDistrict(this.ucCommuneNow1.SetValueFromUCAddress);
                 if (this.ucCommuneNow1 != null)

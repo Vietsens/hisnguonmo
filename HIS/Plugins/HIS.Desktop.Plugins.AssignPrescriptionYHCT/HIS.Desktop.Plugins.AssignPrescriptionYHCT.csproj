@@ -60,6 +60,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\LIB\HIS\HIS.Common\HIS.Common.Treatment\HIS.Common.Treatment.dll</HintPath>
     </Reference>
+    <Reference Include="HIS.Desktop.LocalStorage.LocalData, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\HIS.Desktop.LocalStorage.LocalData.dll</HintPath>
+    </Reference>
     <Reference Include="HIS.Desktop.ModuleExt">
       <HintPath>..\..\..\..\lib\HIS\HIS.Desktop.ModuleExt\HIS.Desktop.ModuleExt.dll</HintPath>
     </Reference>
@@ -92,7 +96,7 @@
     </Reference>
     <Reference Include="HIS.Desktop.Utility, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\lib\HIS\HIS.Desktop.Utilities\HIS.Desktop.Utility.dll</HintPath>
+      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\HIS.Desktop.Utility.dll</HintPath>
     </Reference>
     <Reference Include="HIS.UC.DateEditor, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -117,8 +121,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\lib\HIS\HIS.UC.SecondaryIcd\HIS.UC.SecondaryIcd.dll</HintPath>
     </Reference>
-    <Reference Include="HIS.UC.TreatmentFinish">
-      <HintPath>..\..\..\..\lib\HIS\HIS.UC.TreatmentFinish\HIS.UC.TreatmentFinish.dll</HintPath>
+    <Reference Include="HIS.UC.TreatmentFinish, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\UC\HIS.UC.TreatmentFinish\bin\Debug\HIS.UC.TreatmentFinish.dll</HintPath>
     </Reference>
     <Reference Include="IMSys.DbConfig.HIS_RS, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -518,10 +523,6 @@
       <Project>{d1e5461b-8a8e-46f7-9aee-5c1b327e5f2b}</Project>
       <Name>HIS.Desktop.LocalStorage.HisConfig</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\HIS.Desktop.LocalStorage.LocalData\HIS.Desktop.LocalStorage.LocalData.csproj">
-      <Project>{e036edf5-788c-4892-8d8f-6b1c16dcbd21}</Project>
-      <Name>HIS.Desktop.LocalStorage.LocalData</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\HIS.Desktop.LocalStorage.Location\HIS.Desktop.LocalStorage.Location.csproj">
       <Project>{67e93829-79bd-407e-a4dd-b46cebb55a41}</Project>
       <Name>HIS.Desktop.LocalStorage.Location</Name>
@@ -581,7 +582,9 @@
   <ItemGroup>
     <None Include="Resources\noi-dung-mau-dis.png" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <WCFMetadata Include="Connected Services\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>

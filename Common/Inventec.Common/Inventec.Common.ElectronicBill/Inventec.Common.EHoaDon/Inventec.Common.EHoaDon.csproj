@@ -32,7 +32,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="RemoteCommand">
-      <HintPath>..\..\..\..\RELEASE\Library packages\RemoteCommand\RemoteCommand.dll</HintPath>
+      <HintPath>..\..\..\..\..\lib\Library packages\RemoteCommand\RemoteCommand.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />

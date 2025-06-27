@@ -32,6 +32,8 @@ using Inventec.Common.Controls.EditorLoader;
 using SDA.EFMODEL.DataModels;
 using HIS.Desktop.Utility;
 using HIS.Desktop.LocalStorage.BackendData.ADO;
+using DevExpress.XtraEditors.Controls;
+using DevExpress.Utils;
 
 namespace HIS.UC.AddressCombo
 {
@@ -43,6 +45,7 @@ namespace HIS.UC.AddressCombo
         {
             try
             {
+                IsChangeValueMember = true;
                 if (isReloadComboTHX)
                 {
                     this.InitComboCommonUtil(this.cboTHX, this.workingCommuneADO, "ID_RAW", "RENDERER_PDC_NAME", 650, "SEARCH_CODE_COMMUNE", 150, "RENDERER_PDC_NAME_UNSIGNED", 5, 0);
@@ -56,6 +59,7 @@ namespace HIS.UC.AddressCombo
                     this.InitComboCommon(this.cboDistrict, BackendDataWorker.Get<SDA.EFMODEL.DataModels.V_SDA_DISTRICT>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.SDA_RS.COMMON.IS_ACTIVE__TRUE).ToList(), "DISTRICT_CODE", "RENDERER_DISTRICT_NAME", "SEARCH_CODE");
                     this.InitComboCommon(this.cboCommune, BackendDataWorker.Get<SDA.EFMODEL.DataModels.V_SDA_COMMUNE>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.SDA_RS.COMMON.IS_ACTIVE__TRUE).ToList(), "COMMUNE_CODE", "RENDERER_COMMUNE_NAME", "SEARCH_CODE");
                 }
+                ChangeComponentDistrict();
             }
             catch (Exception ex)
             {
@@ -180,6 +184,11 @@ namespace HIS.UC.AddressCombo
         {
             try
             {
+                if(IsChangeStrucAdreess)
+                {
+                    LoadXaComboNoDistrict(searchCode, provinceCode, isExpand);
+                    return;
+                }    
                 List<SDA.EFMODEL.DataModels.V_SDA_DISTRICT> listResult = new List<SDA.EFMODEL.DataModels.V_SDA_DISTRICT>();
                 listResult = BackendDataWorker.Get<V_SDA_DISTRICT>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.SDA_RS.COMMON.IS_ACTIVE__TRUE).ToList().Where(o => (o.SEARCH_CODE.ToUpper().Contains(searchCode.ToUpper()) || o.DISTRICT_CODE == searchCode) && (provinceCode == "" || o.PROVINCE_CODE == provinceCode)).ToList();
 
@@ -214,7 +223,7 @@ namespace HIS.UC.AddressCombo
                 {
                     if (listResult.Count == 1)
                     {
-                        this.txtDistrictCode.Text = listResult[0].SEARCH_CODE;
+                        this.txtDistrictCode.Text = listResult[0].DISTRICT_CODE;
                         this.cboDistrict.EditValue = listResult[0].DISTRICT_CODE;
                         if (String.IsNullOrEmpty(this.cboProvince.Text))
                         {
@@ -248,10 +257,15 @@ namespace HIS.UC.AddressCombo
             }
         }
 
-        private void LoadXaCombo(string searchCode, string districtCode, bool isExpand)
+        private void LoadXaCombo(string searchCode, string districtCode, bool isExpand, bool IsNoDistrict = false)
         {
             try
             {
+                if (IsNoDistrict)
+                {
+                    LoadXaComboNoDistrict(searchCode, districtCode, isExpand);
+                    return;
+                }
                 List<SDA.EFMODEL.DataModels.V_SDA_COMMUNE> listResult = BackendDataWorker.Get<SDA.EFMODEL.DataModels.V_SDA_COMMUNE>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.SDA_RS.COMMON.IS_ACTIVE__TRUE).ToList()
                     .Where(o => ((o.SEARCH_CODE ?? "").Contains(searchCode ?? "") || o.COMMUNE_CODE == searchCode)
                         && (String.IsNullOrEmpty(districtCode) || o.DISTRICT_CODE == districtCode)).ToList();
@@ -299,6 +313,47 @@ namespace HIS.UC.AddressCombo
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void LoadXaComboNoDistrict(string searchCode, string proviceCode, bool isExpand)
+        {
+            List<SDA.EFMODEL.DataModels.V_SDA_COMMUNE> listResult = BackendDataWorker.Get<SDA.EFMODEL.DataModels.V_SDA_COMMUNE>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.SDA_RS.COMMON.IS_ACTIVE__TRUE).ToList()
+                    .Where(o => ((o.SEARCH_CODE ?? "").Contains(searchCode ?? "") || o.COMMUNE_CODE == searchCode)
+                        && (String.IsNullOrEmpty(proviceCode) || o.PROVINCE_CODE == proviceCode) && o.IS_NO_DISTRICT == 1).ToList();
+            this.InitComboCommon(this.cboDistrict, listResult, "COMMUNE_CODE", "RENDERER_COMMUNE_NAME", "SEARCH_CODE");
+            if (String.IsNullOrEmpty(searchCode) && String.IsNullOrEmpty(proviceCode) && listResult.Count > 0)
+            {
+                this.cboDistrict.EditValue = null;
+                this.txtDistrictCode.Text = "";
+                this.FocusShowpopup(this.cboDistrict, false);
+            }
+            else
+            {
+                if (listResult.Count == 1)
+                {
+                    this.txtDistrictCode.Text = listResult[0].COMMUNE_CODE;
+                    this.cboDistrict.EditValue = listResult[0].COMMUNE_CODE;
+
+                    if (this.dlgSetAddressUCProvinceOfBirth != null)
+                        this.dlgSetAddressUCProvinceOfBirth(listResult[0], true);
+                    if (String.IsNullOrEmpty(this.cboProvince.Text))
+                    {
+                        this.txtProvinceCode.Text = listResult[0].PROVINCE_CODE;
+                        this.cboProvince.EditValue = listResult[0].PROVINCE_CODE;
+                    }
+
+                    if (isExpand)
+                    {
+                        this.txtAddress.Focus();
+                        this.txtAddress.SelectAll();
+                    }
+                }
+                else if (isExpand)
+                {
+                    this.cboDistrict.EditValue = null;
+                    this.FocusShowpopup(this.cboDistrict, false);
+                }
             }
         }
 

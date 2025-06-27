@@ -97,6 +97,9 @@ namespace HIS.Desktop.Plugins.InfantInformation
         private List<CommuneADO> listCommuneTemp = new List<CommuneADO>();
         private List<HIS_EMPLOYEE> listHisEmpLoyee = new List<HIS_EMPLOYEE>();
         private List<HIS_BABY> listHisBaby = new List<HIS_BABY>();
+        bool isNotLoadWhileChangeControlStateInFirst;
+        private HIS.Desktop.Library.CacheClient.ControlStateWorker controlStateWorker;
+        private List<HIS.Desktop.Library.CacheClient.ControlStateRDO> currentControlStateRDO;
         public frmInfantInformation()
         {
             InitializeComponent();
@@ -153,7 +156,7 @@ namespace HIS.Desktop.Plugins.InfantInformation
                 ValidControls();
 
                 loadInfoMother();
-
+                InitControlState();
                 LoadInfoComplementFromTreatment(this.treatment);
 
                 //if (HisConfigCFG.IsConfigKeyExportOption == "1")
@@ -1445,7 +1448,7 @@ namespace HIS.Desktop.Plugins.InfantInformation
                 LoadMotherAddress(this.patient);
                 loadInfoMother();
                 ResetFormData();
-                LoadInfoComplementFromTreatment(this.treatment);
+                //LoadInfoComplementFromTreatment(this.treatment);
             }
             catch (Exception ex)
             {
@@ -2455,7 +2458,11 @@ namespace HIS.Desktop.Plugins.InfantInformation
                                     this.txtProvinceCode.Text = district.PROVINCE_CODE;
                                 }
                             }
-                            this.LoadComboXa("", district.DISTRICT_CODE, false);
+                            if (toggleCheck.IsOn)
+                                this.LoadComboXa("", district.PROVINCE_CODE, false);
+                            else if (!toggleCheck.IsOn)
+                                this.LoadComboXa("", district.DISTRICT_CODE, false);
+
                             this.txtDistrictCode.Text = district.SEARCH_CODE;
                             this.cboDistrictName.EditValue = district.DISTRICT_CODE;
                             this.cboCommuneName.EditValue = null;
@@ -2487,7 +2494,10 @@ namespace HIS.Desktop.Plugins.InfantInformation
                             {
                                 this.cboProvinceName.EditValue = district.PROVINCE_CODE;
                             }
-                            this.LoadComboXa("", district.DISTRICT_CODE, false);
+                            if (toggleCheck.IsOn)
+                                this.LoadComboXa("", district.PROVINCE_CODE, false);
+                            else if (!toggleCheck.IsOn)
+                                this.LoadComboXa("", district.DISTRICT_CODE, false);
                             this.txtDistrictCode.Text = district.SEARCH_CODE;
                             this.cboCommuneName.EditValue = null;
                             this.txtCommuneCode.Text = "";
@@ -2509,10 +2519,13 @@ namespace HIS.Desktop.Plugins.InfantInformation
                 if (e.KeyCode == Keys.Enter)
                 {
                     string districtCode = "";
-                    if (this.cboDistrictName.EditValue != null)
+                    if (this.cboDistrictName.EditValue != null && !toggleCheck.IsOn)
                     {
                         districtCode = this.cboDistrictName.EditValue.ToString();
                     }
+                    else if (this.cboProvinceName.EditValue != null && toggleCheck.IsOn)
+                        districtCode = this.cboProvinceName.EditValue.ToString();
+
                     this.LoadComboXa((sender as DevExpress.XtraEditors.TextEdit).Text.ToUpper(), districtCode, true);
                 }
             }
@@ -2900,9 +2913,13 @@ namespace HIS.Desktop.Plugins.InfantInformation
                 if (e.KeyCode == Keys.Enter)
                 {
                     string districtCode = "";
-                    if (this.cboHTDistrictName.EditValue != null)
+                    if (this.cboHTDistrictName.EditValue != null && !toggleCheck.IsOn)
                     {
                         districtCode = this.cboHTDistrictName.EditValue.ToString();
+                    }
+                    else if (this.cboHTProvinceName.EditValue != null && toggleCheck.IsOn)
+                    {
+                        districtCode = this.cboHTProvinceName.EditValue.ToString();
                     }
                     this.LoadComboXa_HT((sender as DevExpress.XtraEditors.TextEdit).Text.ToUpper(), districtCode, true);
                 }
@@ -2992,7 +3009,11 @@ namespace HIS.Desktop.Plugins.InfantInformation
                                     this.txtHTProvinceCode.Text = district.PROVINCE_CODE;
                                 }
                             }
-                            this.LoadComboXa_HT("", district.DISTRICT_CODE, false);
+                            if (toggleCheck.IsOn)
+                                this.LoadComboXa_HT("", district.PROVINCE_CODE, false);
+                            else if (!toggleCheck.IsOn)
+                                this.LoadComboXa_HT("", district.DISTRICT_CODE, false);
+
                             this.txtHTDistrictCode.Text = district.SEARCH_CODE;
                             this.cboHTDistrictName.EditValue = district.DISTRICT_CODE;
                             this.cboHTCommuneName.EditValue = null;
@@ -3024,7 +3045,11 @@ namespace HIS.Desktop.Plugins.InfantInformation
                             {
                                 this.cboHTProvinceName.EditValue = district.PROVINCE_CODE;
                             }
-                            this.LoadComboXa_HT("", district.DISTRICT_CODE, false);
+                            if (toggleCheck.IsOn)
+                                this.LoadComboXa_HT("", district.PROVINCE_CODE, false);
+                            else if (!toggleCheck.IsOn)
+                                this.LoadComboXa_HT("", district.DISTRICT_CODE, false);
+
                             this.txtHTDistrictCode.Text = district.SEARCH_CODE;
                             this.cboHTCommuneName.EditValue = null;
                             this.txtHTCommuneCode.Text = "";
@@ -3527,7 +3552,7 @@ namespace HIS.Desktop.Plugins.InfantInformation
                 {
                     if (this.cboProvinceNameHospital.EditValue != null)
                     {
-                        SDA.EFMODEL.DataModels.V_SDA_PROVINCE province = listProvince.SingleOrDefault(o => o.PROVINCE_CODE == this.cboProvinceNameHospital.EditValue.ToString());
+                        SDA.EFMODEL.DataModels.V_SDA_PROVINCE province = listProvince.SingleOrDefault(o => o.PROVINCE_CODE == this.cboProvinceNameHospital.EditValue.ToString() );
                         if (province != null)
                         {
                             this.LoadComboHuyen_BV("", province.PROVINCE_CODE, false);
@@ -3574,7 +3599,10 @@ namespace HIS.Desktop.Plugins.InfantInformation
                                     this.txtProvinceCodeHospital.Text = district.PROVINCE_CODE;
                                 }
                             }
-                            this.LoadComboXa_BV("", district.DISTRICT_CODE, false);
+                            if (toggleCheck.IsOn)
+                                this.LoadComboXa_BV("", district.PROVINCE_CODE, false);
+                            else if (!toggleCheck.IsOn)
+                                this.LoadComboXa_BV("", district.DISTRICT_CODE, false);
                             this.txtDistrictCodeHospital.Text = district.SEARCH_CODE;
                             this.cboDistrictNameHospital.EditValue = district.DISTRICT_CODE;
                             this.cboCommuneNameHospital.EditValue = null;
@@ -3607,7 +3635,10 @@ namespace HIS.Desktop.Plugins.InfantInformation
                             {
                                 this.cboProvinceNameHospital.EditValue = district.PROVINCE_CODE;
                             }
-                            this.LoadComboXa_BV("", district.DISTRICT_CODE, false);
+                            if (toggleCheck.IsOn)
+                                this.LoadComboXa_BV("", district.PROVINCE_CODE, false);
+                            else if (!toggleCheck.IsOn)
+                                this.LoadComboXa_BV("", district.DISTRICT_CODE, false);
                             this.txtDistrictCodeHospital.Text = district.SEARCH_CODE;
                             this.cboCommuneNameHospital.EditValue = null;
                             this.txtCommuneCodeHospital.Text = "";
@@ -3631,9 +3662,13 @@ namespace HIS.Desktop.Plugins.InfantInformation
                 if (e.KeyCode == Keys.Enter)
                 {
                     string districtCode = "";
-                    if (this.cboDistrictNameHospital.EditValue != null)
+                    if (this.cboDistrictNameHospital.EditValue != null && !toggleCheck.IsOn)
                     {
                         districtCode = this.cboDistrictNameHospital.EditValue.ToString();
+                    }
+                    else if (this.cboProvinceNameHospital.EditValue != null && toggleCheck.IsOn)
+                    {
+                        districtCode = this.cboProvinceNameHospital.EditValue.ToString();
                     }
                     this.LoadComboXa_BV((sender as DevExpress.XtraEditors.TextEdit).Text.ToUpper(), districtCode, true);
                 }
@@ -4517,6 +4552,117 @@ namespace HIS.Desktop.Plugins.InfantInformation
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
+        }
+
+        private void toggleCheck_Toggled(object sender, EventArgs e)
+        {
+            HIS.Desktop.Library.CacheClient.ControlStateRDO csAddOrUpdate;
+            if (isNotLoadWhileChangeControlStateInFirst)
+                return;
+
+            try
+            {
+                if (this.controlStateWorker == null)
+                {
+                    this.controlStateWorker = new HIS.Desktop.Library.CacheClient.ControlStateWorker();
+                }
+
+                if (this.currentControlStateRDO == null && this.Module != null)
+                {
+                    this.currentControlStateRDO = this.controlStateWorker.GetData(this.Module.ModuleLink);
+
+                    csAddOrUpdate = (this.currentControlStateRDO != null && this.currentControlStateRDO.Count > 0)
+                    ? this.currentControlStateRDO.Where(o => o.KEY == toggleCheck.Name && o.MODULE_LINK == this.Module.ModuleLink).FirstOrDefault() : null;
+
+                    if (csAddOrUpdate != null)
+                    {
+                        if (csAddOrUpdate.VALUE == "1")
+                            toggleCheck.IsOn = true;
+                        else
+                            toggleCheck.IsOn = false;
+                    }
+                    else
+                    {
+                        csAddOrUpdate = new HIS.Desktop.Library.CacheClient.ControlStateRDO();
+                        csAddOrUpdate.KEY = toggleCheck.Name;
+                        csAddOrUpdate.VALUE = (toggleCheck.IsOn ? "1" : "");
+                        csAddOrUpdate.MODULE_LINK = this.Module.ModuleLink;
+                        if (this.currentControlStateRDO == null)
+                            this.currentControlStateRDO = new List<HIS.Desktop.Library.CacheClient.ControlStateRDO>();
+                        this.currentControlStateRDO.Add(csAddOrUpdate);
+                    }
+
+                    this.controlStateWorker.SetData(this.currentControlStateRDO);
+                }
+                else
+                {
+                    csAddOrUpdate = new HIS.Desktop.Library.CacheClient.ControlStateRDO();
+                    csAddOrUpdate.KEY = toggleCheck.Name;
+                    csAddOrUpdate.VALUE = (toggleCheck.IsOn ? "1" : "");
+                    csAddOrUpdate.MODULE_LINK = this.Module.ModuleLink;
+                    if (this.currentControlStateRDO == null)
+                        this.currentControlStateRDO = new List<HIS.Desktop.Library.CacheClient.ControlStateRDO>();
+                    this.currentControlStateRDO.Add(csAddOrUpdate);
+
+                    this.controlStateWorker.SetData(this.currentControlStateRDO);
+                }
+
+                var visibility = toggleCheck.IsOn
+                                ? DevExpress.XtraLayout.Utils.LayoutVisibility.Never
+                                : DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
+
+                layoutControlItem72.Visibility = visibility;
+                layoutControlItem74.Visibility = visibility;
+                lciDistrict.Visibility = visibility;
+                lciDistrictName.Visibility = visibility;
+                lciHTDistrict.Visibility = visibility;
+                layoutControlItem68.Visibility = visibility;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void InitControlState()
+        {
+            isNotLoadWhileChangeControlStateInFirst = true;
+            try
+            {
+                this.controlStateWorker = new HIS.Desktop.Library.CacheClient.ControlStateWorker();
+                this.currentControlStateRDO = controlStateWorker.GetData(this.Module.ModuleLink);
+                if (this.currentControlStateRDO != null && this.currentControlStateRDO.Count > 0)
+                {
+                    foreach (var item in this.currentControlStateRDO)
+                    {
+                        if (item.KEY == toggleCheck.Name)
+                        {
+                            if (item.VALUE == "1")
+                            {
+                                toggleCheck.IsOn = true;
+                            }
+                            else
+                                toggleCheck.IsOn = false;
+
+                            var visibility = toggleCheck.IsOn
+                                ? DevExpress.XtraLayout.Utils.LayoutVisibility.Never
+                                : DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
+
+                            layoutControlItem72.Visibility = visibility;
+                            layoutControlItem74.Visibility = visibility;
+                            lciDistrict.Visibility = visibility;
+                            lciDistrictName.Visibility = visibility;
+                            lciHTDistrict.Visibility = visibility;
+                            layoutControlItem68.Visibility = visibility;
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+            isNotLoadWhileChangeControlStateInFirst = false;
         }
     }
 

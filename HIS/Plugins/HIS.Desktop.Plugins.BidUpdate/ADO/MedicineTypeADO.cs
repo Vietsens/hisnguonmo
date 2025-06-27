@@ -65,9 +65,10 @@ namespace HIS.Desktop.Plugins.BidUpdate.ADO
         public string BID_MATERIAL_TYPE_NAME { get; set; }
         public string JOIN_BID_MATERIAL_TYPE_CODE { get; set; }
         public string NOTE { get; set; }
+        public string BATCH_DIVISION_CODE { get; set; }
         public long? INFORMATION_BID { get; set; }
         public MedicineTypeADO() { }
-
+        public List<string> ErrorDescriptions = new List<string>();
         public bool IsNotNullRow
         {
             get

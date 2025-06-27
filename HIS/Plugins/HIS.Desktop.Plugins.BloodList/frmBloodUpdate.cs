@@ -58,12 +58,17 @@ namespace HIS.Desktop.Plugins.BloodList
         V_HIS_BLOOD currentBlood;
         HIS_BLOOD_GIVER currentBloodGiver;
         int positionHandleControl = -1;
+        bool isNotLoadWhileChangeControlStateInFirst;
+        private HIS.Desktop.Library.CacheClient.ControlStateWorker controlStateWorker;
+        private List<HIS.Desktop.Library.CacheClient.ControlStateRDO> currentControlStateRDO;
+        private Inventec.Desktop.Common.Modules.Module moduleData;
 
-        public frmBloodUpdate(V_HIS_BLOOD _blood)
+        public frmBloodUpdate(V_HIS_BLOOD _blood, Inventec.Desktop.Common.Modules.Module moduleData)
         {
             InitializeComponent();
             try
             {
+                this.moduleData = moduleData;
                 this.currentBlood = _blood;
                 SetIcon();
                 ValidationControls();
@@ -712,6 +717,7 @@ namespace HIS.Desktop.Plugins.BloodList
             {
                 SetCaptionByLanguageKey();
                 SetDefaultValue();
+                InitControlState();
                 InitCombos();
                 FillCurrentBlood(this.currentBlood);
             }
@@ -738,9 +744,18 @@ namespace HIS.Desktop.Plugins.BloodList
                     DevExpress.XtraEditors.XtraMessageBox.Show("Vui lòng chọn đơn vị", Resources.ResourceMessage.ThongBao);
                     return;
                 }
-                else if (!chkAtPermanentAddress.Checked && (cboDistrictBlood.EditValue == null || cboProvinceBlood.EditValue == null) && lcgBloodGiver.Visibility == DevExpress.XtraLayout.Utils.LayoutVisibility.Always)
+                else if (!toggleCheck.IsOn)
                 {
-                    DevExpress.XtraEditors.XtraMessageBox.Show("Vui lòng chọn Tỉnh/Huyện", Resources.ResourceMessage.ThongBao);
+                    if (!chkAtPermanentAddress.Checked && (cboDistrictBlood.EditValue == null || cboProvinceBlood.EditValue == null) && lcgBloodGiver.Visibility == DevExpress.XtraLayout.Utils.LayoutVisibility.Always)
+                    {
+                        DevExpress.XtraEditors.XtraMessageBox.Show("Vui lòng chọn Tỉnh/Huyện", Resources.ResourceMessage.ThongBao);
+                        return;
+                    }
+
+                }
+                else if (!chkAtPermanentAddress.Checked && lcgBloodGiver.Visibility == DevExpress.XtraLayout.Utils.LayoutVisibility.Always)
+                {
+                    DevExpress.XtraEditors.XtraMessageBox.Show("Vui lòng chọn Tỉnh", Resources.ResourceMessage.ThongBao);
                     return;
                 }
                 WaitingManager.Show();
@@ -1605,10 +1620,8 @@ namespace HIS.Desktop.Plugins.BloodList
 
                 if (!string.IsNullOrEmpty(provinceCode))
                 {
-                    listResult = BackendDataWorker.Get<V_SDA_DISTRICT>().Where(o => o.PROVINCE_CODE == provinceCode).ToList();
+                    listResult = BackendDataWorker.Get<V_SDA_DISTRICT>().Where(o => o.PROVINCE_CODE == provinceCode && o.IS_ACTIVE == 1).ToList();
                 }
-
-
                 List<ColumnInfo> columnInfos = new List<ColumnInfo>();
                 columnInfos.Add(new ColumnInfo("DISTRICT_CODE", "", 100, 1));
                 columnInfos.Add(new ColumnInfo("DISTRICT_NAME", "", 200, 2));
@@ -1642,7 +1655,7 @@ namespace HIS.Desktop.Plugins.BloodList
 
                 if (!string.IsNullOrEmpty(provinceCode))
                 {
-                    listResult = BackendDataWorker.Get<V_SDA_DISTRICT>().Where(o => o.PROVINCE_CODE == provinceCode).ToList();
+                    listResult = BackendDataWorker.Get<V_SDA_DISTRICT>().Where(o => o.PROVINCE_CODE == provinceCode && o.IS_ACTIVE == 1).ToList();
                 }
                 List<ColumnInfo> columnInfos = new List<ColumnInfo>();
                 columnInfos.Add(new ColumnInfo("DISTRICT_CODE", "", 100, 1));
@@ -1663,9 +1676,13 @@ namespace HIS.Desktop.Plugins.BloodList
             {
                 List<SDA.EFMODEL.DataModels.V_SDA_COMMUNE> listResult = new List<SDA.EFMODEL.DataModels.V_SDA_COMMUNE>();
 
-                if (!string.IsNullOrEmpty(districtCode))
+                if (!string.IsNullOrEmpty(districtCode) && !toggleCheck.IsOn)
                 {
-                    listResult = BackendDataWorker.Get<V_SDA_COMMUNE>().Where(o => o.DISTRICT_CODE == districtCode).ToList();
+                    listResult = BackendDataWorker.Get<V_SDA_COMMUNE>().Where(o => o.DISTRICT_CODE == districtCode && o.IS_ACTIVE == 1).ToList();
+                }
+                else if (!string.IsNullOrEmpty(districtCode) && toggleCheck.IsOn)
+                {
+                    listResult = BackendDataWorker.Get<V_SDA_COMMUNE>().Where(o => o.PROVINCE_CODE == districtCode && o.IS_ACTIVE == 1).ToList();
                 }
                 List<ColumnInfo> columnInfos = new List<ColumnInfo>();
                 columnInfos.Add(new ColumnInfo("COMMUNE_CODE", "", 100, 1));
@@ -1743,9 +1760,19 @@ namespace HIS.Desktop.Plugins.BloodList
                     }
                     InitComboPermanentAddressAddress();
                     this.cboPermanentAddress.EditValue = null;
-                    List<HIS.Desktop.LocalStorage.BackendData.ADO.CommuneADO> listResult = BackendDataWorker.Get<HIS.Desktop.LocalStorage.BackendData.ADO.CommuneADO>()
-                                                                                            .Where(o => (o.SEARCH_CODE_COMMUNE != null
-                                                                                                    && o.SEARCH_CODE_COMMUNE.ToUpper().StartsWith(maTHX.ToUpper()))).ToList();
+                    List<HIS.Desktop.LocalStorage.BackendData.ADO.CommuneADO> listResult = new List<HIS.Desktop.LocalStorage.BackendData.ADO.CommuneADO>();
+                    if (!toggleCheck.IsOn)
+                    {
+                        listResult = BackendDataWorker.Get<HIS.Desktop.LocalStorage.BackendData.ADO.CommuneADO>()
+                                                       .Where(o => (o.SEARCH_CODE_COMMUNE != null && o.IS_NO_DISTRICT != 1
+                                                        && o.SEARCH_CODE_COMMUNE.ToUpper().StartsWith(maTHX.ToUpper()))).ToList();
+                    }
+                    else if(toggleCheck.IsOn)
+                    {
+                        listResult = BackendDataWorker.Get<HIS.Desktop.LocalStorage.BackendData.ADO.CommuneADO>()
+                                                       .Where(o => (o.SEARCH_CODE_COMMUNE != null && o.IS_NO_DISTRICT == 1
+                                                        && o.SEARCH_CODE_COMMUNE.ToUpper().StartsWith(maTHX.ToUpper()))).ToList();
+                    }
                     if (listResult != null && listResult.Count >= 1)
                     {
                         var dataNoCommunes = listResult.Where(o => o.ID < 0).ToList();
@@ -1822,9 +1849,8 @@ namespace HIS.Desktop.Plugins.BloodList
         {
             try
             {
-                if (cboProvince.EditValue != null) LoadDistrictsCombo(cboProvince.EditValue.ToString());
+                if (cboProvince.EditValue != null && !toggleCheck.IsOn) LoadDistrictsCombo(cboProvince.EditValue.ToString());   
                 cboDistrict.Focus();
-
             }
             catch (Exception ex)
             {
@@ -1836,8 +1862,116 @@ namespace HIS.Desktop.Plugins.BloodList
         {
             try
             {
-                if (cboDistrict.EditValue != null) LoadCommuneCombo(cboDistrict.EditValue.ToString());
+                if (cboDistrict.EditValue != null && !toggleCheck.IsOn) LoadCommuneCombo(cboDistrict.EditValue.ToString());
+                else if (cboDistrict.EditValue != null && toggleCheck.IsOn) LoadCommuneCombo(cboProvince.EditValue.ToString());
                 cboCommune.Focus();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void InitControlState()
+        {
+            isNotLoadWhileChangeControlStateInFirst = true;
+            try
+            {
+                this.controlStateWorker = new HIS.Desktop.Library.CacheClient.ControlStateWorker();
+                this.currentControlStateRDO = controlStateWorker.GetData(this.moduleData.ModuleLink);
+                if (this.currentControlStateRDO != null && this.currentControlStateRDO.Count > 0)
+                {
+                    foreach (var item in this.currentControlStateRDO)
+                    {
+                        if (item.KEY == toggleCheck.Name)
+                        {
+                            if (item.VALUE == "1")
+                            {
+                                toggleCheck.IsOn = true;
+                            }
+                            else
+                                toggleCheck.IsOn = false;
+
+                            if (toggleCheck.IsOn)
+                            {
+                                layoutControlItem28.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+                                layoutControlItem35.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+                            }
+                            else
+                            {
+                                layoutControlItem28.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
+                                layoutControlItem35.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+            isNotLoadWhileChangeControlStateInFirst = false;
+        }
+
+        private void toggleCheck_Toggled(object sender, EventArgs e)
+        {
+            HIS.Desktop.Library.CacheClient.ControlStateRDO csAddOrUpdate;
+            if (isNotLoadWhileChangeControlStateInFirst)
+                return;
+
+            try
+            {
+                if (this.controlStateWorker == null)
+                {
+                    this.controlStateWorker = new HIS.Desktop.Library.CacheClient.ControlStateWorker();
+                }
+
+                if (this.currentControlStateRDO == null && this.moduleData != null)
+                {
+                    this.currentControlStateRDO = this.controlStateWorker.GetData(this.moduleData.ModuleLink);
+
+                    csAddOrUpdate = (this.currentControlStateRDO != null && this.currentControlStateRDO.Count > 0)
+                    ? this.currentControlStateRDO.Where(o => o.KEY == toggleCheck.Name && o.MODULE_LINK == this.moduleData.ModuleLink).FirstOrDefault() : null;
+
+                    if (csAddOrUpdate != null)
+                    {
+                        if (csAddOrUpdate.VALUE == "1")
+                            toggleCheck.IsOn = true;
+                        else
+                            toggleCheck.IsOn = false;
+                    }
+                    else
+                    {
+                        csAddOrUpdate = new HIS.Desktop.Library.CacheClient.ControlStateRDO();
+                        csAddOrUpdate.KEY = toggleCheck.Name;
+                        csAddOrUpdate.VALUE = (toggleCheck.IsOn ? "1" : "");
+                        csAddOrUpdate.MODULE_LINK = this.moduleData.ModuleLink;
+                        if (this.currentControlStateRDO == null)
+                            this.currentControlStateRDO = new List<HIS.Desktop.Library.CacheClient.ControlStateRDO>();
+                        this.currentControlStateRDO.Add(csAddOrUpdate);
+                    }
+
+                    this.controlStateWorker.SetData(this.currentControlStateRDO);
+                }
+                else
+                {
+                    csAddOrUpdate = new HIS.Desktop.Library.CacheClient.ControlStateRDO();
+                    csAddOrUpdate.KEY = toggleCheck.Name;
+                    csAddOrUpdate.VALUE = (toggleCheck.IsOn ? "1" : "");
+                    csAddOrUpdate.MODULE_LINK = this.moduleData.ModuleLink;
+                    if (this.currentControlStateRDO == null)
+                        this.currentControlStateRDO = new List<HIS.Desktop.Library.CacheClient.ControlStateRDO>();
+                    this.currentControlStateRDO.Add(csAddOrUpdate);
+
+                    this.controlStateWorker.SetData(this.currentControlStateRDO);
+                }
+
+                var visibility = toggleCheck.IsOn
+                                ? DevExpress.XtraLayout.Utils.LayoutVisibility.Never
+                                : DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
+
+                layoutControlItem28.Visibility = visibility;
+                layoutControlItem35.Visibility = visibility;
             }
             catch (Exception ex)
             {

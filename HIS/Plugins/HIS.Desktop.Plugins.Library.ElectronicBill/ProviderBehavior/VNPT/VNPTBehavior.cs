@@ -111,6 +111,9 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.VNPT
 
                     int cmdType = GetCmdType(TypeStr, CancelFunc);
 
+                    string patientCode = this.ElectronicBillDataInput.Treatment.TDL_PATIENT_CODE;
+                    string treatmentCode = this.ElectronicBillDataInput.Treatment.TREATMENT_CODE;
+
                     ElectronicBillInput electronicBillInput = new Inventec.Common.ElectronicBill.Base.ElectronicBillInput();
                     electronicBillInput.account = account;
                     electronicBillInput.acPass = acPass;
@@ -121,8 +124,6 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.VNPT
                     }
                     else
                     {
-                        string patientCode = this.ElectronicBillDataInput.Treatment.TDL_PATIENT_CODE;
-                        string treatmentCode = this.ElectronicBillDataInput.Treatment.TREATMENT_CODE;
                         string transactionCode = "";
                         if (this.ElectronicBillDataInput.Transaction != null)
                         {
@@ -152,7 +153,25 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.VNPT
                         else
                         {
                             List<Invoice> invoices = this.GetInvoiceContrVietSens(this.ElectronicBillDataInput, notShowTaxBreakdown);
-                            if (TypeStr == "1")
+                            if (ElectronicBillDataInput.Transaction != null && ElectronicBillDataInput.Transaction.ORIGINAL_TRANSACTION_ID.HasValue)
+                            {
+                                //Nếu là thay thế hóa đơn thì lấy thông tin hóa đơn cũ
+                                ReplaceInvoice replaceInvoice = new ReplaceInvoice();
+
+                                Inventec.Common.Mapper.DataObjectMapper.Map<ReplaceInvoice>(replaceInvoice, invoices.First().InvoiceDetail);
+
+                                string transactionCode = "";
+                                HisTransactionFilter ssFilter = new HisTransactionFilter();
+                                ssFilter.ID = ElectronicBillDataInput.Transaction.ORIGINAL_TRANSACTION_ID.Value;
+                                var originalTran = new Inventec.Common.Adapter.BackendAdapter(new CommonParam()).Get<List<HIS_TRANSACTION>>("api/HisTransaction/Get", ApiConsumers.MosConsumer, ssFilter, null);
+                                if (originalTran != null && originalTran.Count > 0)
+                                    transactionCode = originalTran.First().TRANSACTION_CODE;
+
+                                replaceInvoice.key = string.Format("{0}_{1}_{2}", patientCode, treatmentCode, transactionCode);
+
+                                electronicBillInput.replaceInvoices = new List<ReplaceInvoice> { replaceInvoice };
+                            }
+                            else if (TypeStr == "1")
                             {
                                 Invoice_BM invoice = new Invoice_BM();
                                 invoice.Key = invoices.First().Key;
@@ -406,6 +425,11 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.VNPT
                 {
                     case ElectronicBillType.ENUM.CREATE_INVOICE:
                         result = Inventec.Common.ElectronicBill.CmdType.ImportAndPublishInv;
+                        //thay thế hóa đơn
+                        if (ElectronicBillDataInput.Transaction != null && ElectronicBillDataInput.Transaction.ORIGINAL_TRANSACTION_ID.HasValue)
+                        {
+                            result = Inventec.Common.ElectronicBill.CmdType.ReplaceInvoiceAction;
+                        }
                         break;
                     case ElectronicBillType.ENUM.GET_INVOICE_LINK:
                         result = Inventec.Common.ElectronicBill.CmdType.downloadInvPDFFkeyNoPay;
@@ -751,7 +775,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.VNPT
                             product.ProdPrice = String.Format("{0:0.####}", item.ProdPrice ?? 0);
                         }
 
-                        product.Total = Math.Round(item.AmountWithoutTax??0, 0, MidpointRounding.AwayFromZero).ToString();
+                        product.Total = Math.Round(item.AmountWithoutTax ?? 0, 0, MidpointRounding.AwayFromZero).ToString();
                         totalAmount += item.Amount;
                         SumVATAmount += item.TaxAmount ?? 0;
 

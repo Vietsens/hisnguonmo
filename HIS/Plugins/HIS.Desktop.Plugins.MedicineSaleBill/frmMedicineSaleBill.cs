@@ -929,6 +929,10 @@ namespace HIS.Desktop.Plugins.MedicineSaleBill
             try
             {
                 this.mediStock = BackendDataWorker.Get<V_HIS_MEDI_STOCK>().FirstOrDefault(o => o.ROOM_TYPE_ID == this.roomTypeId && o.ROOM_ID == this.roomId);
+                if (this.mediStock == null)
+                {
+                    MessageBox.Show("Vui lòng truy cập kho để thực hiện chức năng này");
+                }
             }
             catch (Exception ex)
             {

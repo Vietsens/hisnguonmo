@@ -729,19 +729,25 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
 
                 if (valid)
                 {
-                    if (HisConfigCFG.IsCheckServiceFollowWhenOut == "1" && currentTreatmentWithPatientType.PATIENT_TYPE_CODE == HisConfigCFG.PatientTypeCode__BHYT)
+                    var uc = ucTreatmentFinish as HIS.UC.TreatmentFinish.Run.UCTreatmentFinish;
+                    bool isAutoFinishChecked = uc != null && uc.IsAutoTreatmentFinishChecked;
+                    if (isAutoFinishChecked)
                     {
-                        CommonParam param = new CommonParam();
-                        var result = new BackendAdapter(param).Post<bool>("api/HisTreatment/CheckServiceFollow", ApiConsumers.MosConsumer, this.treatmentId, param);
-                        if (!result)
-                        {
-                            string message = param.GetMessage();
-                            DialogResult dialogResult = MessageBox.Show(string.Format("{0}. Bạn có muốn tiếp tục?", message), "Cảnh báo", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+                            if (HisConfigCFG.IsCheckServiceFollowWhenOut == "1" && currentTreatmentWithPatientType.PATIENT_TYPE_CODE == HisConfigCFG.PatientTypeCode__BHYT)
+                            {
+                                CommonParam param = new CommonParam();
+                                var result = new BackendAdapter(param).Post<bool>("api/HisTreatment/CheckServiceFollow", ApiConsumers.MosConsumer, this.treatmentId, param);
+                                if (!result)
+                                {
+                                    string message = param.GetMessage();
+                                    DialogResult dialogResult = MessageBox.Show(string.Format("{0}. Bạn có muốn tiếp tục?", message), "Cảnh báo", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
 
-                            if (dialogResult == DialogResult.No)
-                                return;
-                        }
+                                    if (dialogResult == DialogResult.No)
+                                        return;
+                                }
+                            }
                     }
+                    
                     ProcessUpdateTutorialForSave();
                 }                
 

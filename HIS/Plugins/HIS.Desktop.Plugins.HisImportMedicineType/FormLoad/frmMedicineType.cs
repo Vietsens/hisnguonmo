@@ -53,6 +53,8 @@ namespace HIS.Desktop.Plugins.HisImportMedicineType.FormLoad
         Inventec.Desktop.Common.Modules.Module currentModule;
         List<V_HIS_MEDICINE_TYPE> listMedicin;
         List<HIS_ACTIVE_INGREDIENT> listAcin;
+        List<HIS_SOURCE_MEDICINE> listSourceMedicine;
+        List<HIS_SERVICE_UNIT> listServiceUnit;
         #endregion
 
         #region contructor
@@ -126,6 +128,11 @@ namespace HIS.Desktop.Plugins.HisImportMedicineType.FormLoad
                 acinFilter.ORDER_FIELD = "MODIFY_TIME";
                 listAcin = new List<HIS_ACTIVE_INGREDIENT>();
                 listAcin = new BackendAdapter(param).Get<List<HIS_ACTIVE_INGREDIENT>>("/api/HisActiveIngredient/Get", ApiConsumers.MosConsumer, acinFilter, param);
+
+                // load source medicine
+                listSourceMedicine = BackendDataWorker.Get<HIS_SOURCE_MEDICINE>().ToList();
+                // load service unit
+                listServiceUnit = BackendDataWorker.Get<HIS_SERVICE_UNIT>().ToList();
 
             }
             catch (Exception)
@@ -385,7 +392,7 @@ namespace HIS.Desktop.Plugins.HisImportMedicineType.FormLoad
                 var row = (MedicineTypeImportADO)gridViewMedicineType.GetFocusedRow();
                 if (row != null)
                 {
-                    DevExpress.XtraEditors.XtraMessageBox.Show(row.ERROR);
+                    DevExpress.XtraEditors.XtraMessageBox.Show(row.ERROR.Trim('|'));
                 }
             }
             catch (Exception ex)
@@ -723,24 +730,58 @@ namespace HIS.Desktop.Plugins.HisImportMedicineType.FormLoad
                             Inventec.Common.Logging.LogSystem.Warn("Loi set gia tri cho cot dung tich truyen", ex);
                         }
                     }
-                    if (e.IsGetData && e.Column.UnboundType != UnboundColumnType.Bound)
+                    else if (e.Column.FieldName == "IS__GENERIC")
                     {
-                        if (e.Column.FieldName == "SOURCE_MEDICINE_STR")
+                        try
                         {
-                            try
-                            {
-                                if (pData.SOURCE_MEDICINE == 1)
-                                    e.Value = "Thuốc bắc";
-                                else if (pData.SOURCE_MEDICINE == 2)
-                                    e.Value = "Thuốc nam";
-
-                            }
-                            catch (Exception ex)
-                            {
-
-                            }
+                            e.Value = pData.IS_GENERIC == 1 ? true : false;
+                        }
+                        catch (Exception ex)
+                        {
+                            Inventec.Common.Logging.LogSystem.Warn("Loi set gia tri cho cot IS_GENERIC", ex);
                         }
                     }
+                    else if (e.Column.FieldName == "IS__BIOLOGIC")
+                    {
+                        try
+                        {
+                            e.Value = pData.IS_BIOLOGIC == 1 ? true : false;
+                        }
+                        catch (Exception ex)
+                        {
+                            Inventec.Common.Logging.LogSystem.Warn("Loi set gia tri cho cot IS_BIOLOGIC", ex);
+                        }
+                    }
+                    else if (e.Column.FieldName == "IS__ORIGINAL_BRAND_NAME")
+                    {
+                        try
+                        {
+                            e.Value = pData.IS_ORIGINAL_BRAND_NAME == 1 ? true : false;
+                        }
+                        catch (Exception ex)
+                        {
+                            Inventec.Common.Logging.LogSystem.Warn("Loi set gia tri cho cot IS_ORIGINAL_BRAND_NAME", ex);
+                        }
+                    }
+                    //if (e.IsGetData && e.Column.UnboundType != UnboundColumnType.Bound)
+                    //{
+                    //    if (e.Column.FieldName == "SOURCE_MEDICINE_STR")
+                    //    {
+                    //        try
+                    //        {
+                    //            if (pData.SOURCE_MEDICINE == 1)
+                    //                e.Value = "Thuốc bắc";
+                    //            else if (pData.SOURCE_MEDICINE == 2)
+                    //                e.Value = "Thuốc nam";
+
+                    //        }
+                    //        catch (Exception ex)
+                    //        {
+
+                    //        }
+                    //    }
+                    //}
+
                 }
             }
             catch (Exception ex)
@@ -1018,6 +1059,27 @@ namespace HIS.Desktop.Plugins.HisImportMedicineType.FormLoad
                     string error = "";
                     var mediAdo = new MedicineTypeImportADO();
                     Inventec.Common.Mapper.DataObjectMapper.Map<MedicineTypeImportADO>(mediAdo, item);
+                    //if (!string.IsNullOrEmpty(item.PARENT_CODE))
+                    //{
+                    //    if (item.PARENT_CODE.Length > 25)
+                    //    {
+                    //        error += string.Format(Message.MessageImport.Maxlength, "Mã cha", 25);
+                    //        mediAdo.PARENT_CODE_ERROR = 1;
+                    //    }
+
+                    //    var getData = BackendDataWorker.Get<V_HIS_MEDICINE_TYPE>().FirstOrDefault(o => o.MEDICINE_TYPE_CODE == item.PARENT_CODE);
+                    //    if (getData != null)
+                    //    {
+                    //        mediAdo.PARENT_ID = getData.ID;
+                    //    }
+                    //    else
+                    //    {
+                    //        error += string.Format(Message.MessageImport.KhongHopLe, "Mã cha");
+                    //        mediAdo.PARENT_CODE_ERROR = 1;
+                    //    }
+                    //}
+
+                    // --- PARENT ---
                     if (!string.IsNullOrEmpty(item.PARENT_CODE))
                     {
                         if (item.PARENT_CODE.Length > 25)
@@ -1025,15 +1087,32 @@ namespace HIS.Desktop.Plugins.HisImportMedicineType.FormLoad
                             error += string.Format(Message.MessageImport.Maxlength, "Mã cha", 25);
                             mediAdo.PARENT_CODE_ERROR = 1;
                         }
-
-                        var getData = BackendDataWorker.Get<V_HIS_MEDICINE_TYPE>().FirstOrDefault(o => o.MEDICINE_TYPE_CODE == item.PARENT_CODE);
-                        if (getData != null)
+                        else
                         {
-                            mediAdo.PARENT_ID = getData.ID;
+                            var parent = listMedicin.FirstOrDefault(x => x.MEDICINE_TYPE_CODE == item.PARENT_CODE);
+                            if (parent != null)
+                            {
+                                mediAdo.PARENT_ID = parent.ID;
+                                mediAdo.PARENT_NAME = parent.MEDICINE_TYPE_NAME;
+                            }
+                            else
+                            {
+                                error += string.Format(Message.MessageImport.KhongHopLe, "Mã Nhóm cha");
+                                mediAdo.PARENT_CODE_ERROR = 1;
+                            }
+                        }
+                    }
+                    else if (!string.IsNullOrEmpty(item.PARENT_NAME))
+                    {
+                        var parent = listMedicin.FirstOrDefault(x => x.MEDICINE_TYPE_NAME == item.PARENT_NAME);
+                        if (parent != null)
+                        {
+                            mediAdo.PARENT_ID = parent.ID;
+                            mediAdo.PARENT_CODE = parent.MEDICINE_TYPE_CODE;
                         }
                         else
                         {
-                            error += string.Format(Message.MessageImport.KhongHopLe, "Mã cha");
+                            error += string.Format(Message.MessageImport.KhongHopLe, "Tên Nhóm cha");
                             mediAdo.PARENT_CODE_ERROR = 1;
                         }
                     }
@@ -1208,23 +1287,67 @@ namespace HIS.Desktop.Plugins.HisImportMedicineType.FormLoad
                         }
                     }
 
+                    //if (!string.IsNullOrEmpty(item.SERVICE_UNIT_CODE))
+                    //{
+                    //    if (item.SERVICE_UNIT_CODE.Length > 3)
+                    //    {
+                    //        error += string.Format(Message.MessageImport.Maxlength, "Đơn vị tính", 3);
+                    //        mediAdo.SERVICE_UNIT_CODE_ERROR = 1;
+                    //    }
+
+                    //    var getData = BackendDataWorker.Get<HIS_SERVICE_UNIT>().FirstOrDefault(o => o.SERVICE_UNIT_CODE == item.SERVICE_UNIT_CODE);
+                    //    if (getData != null)
+                    //    {
+                    //        mediAdo.SERVICE_UNIT_ID = getData.ID;
+                    //        mediAdo.SERVICE_UNIT_NAME = getData.SERVICE_UNIT_NAME;
+                    //    }
+                    //    else
+                    //    {
+                    //        error += string.Format(Message.MessageImport.KhongHopLe, "Đơn vị tính");
+                    //        mediAdo.SERVICE_UNIT_CODE_ERROR = 1;
+                    //    }
+                    //}
+                    //else
+                    //{
+                    //    error += string.Format(Message.MessageImport.ThieuTruongDL, "Đơn vị tính");
+                    //    mediAdo.SERVICE_UNIT_CODE_ERROR = 1;
+                    //}
+
+
+                    // --- SERVICE_UNIT ---
                     if (!string.IsNullOrEmpty(item.SERVICE_UNIT_CODE))
                     {
                         if (item.SERVICE_UNIT_CODE.Length > 3)
                         {
-                            error += string.Format(Message.MessageImport.Maxlength, "Đơn vị tính", 3);
+                            error += string.Format(Message.MessageImport.Maxlength, "Mã Đơn vị tính", 3);
                             mediAdo.SERVICE_UNIT_CODE_ERROR = 1;
-                        }
-
-                        var getData = BackendDataWorker.Get<HIS_SERVICE_UNIT>().FirstOrDefault(o => o.SERVICE_UNIT_CODE == item.SERVICE_UNIT_CODE);
-                        if (getData != null)
-                        {
-                            mediAdo.SERVICE_UNIT_ID = getData.ID;
-                            mediAdo.SERVICE_UNIT_NAME = getData.SERVICE_UNIT_NAME;
                         }
                         else
                         {
-                            error += string.Format(Message.MessageImport.KhongHopLe, "Đơn vị tính");
+                            var unit = listServiceUnit.FirstOrDefault(x => x.SERVICE_UNIT_CODE == item.SERVICE_UNIT_CODE);
+                            if (unit != null)
+                            {
+                                mediAdo.SERVICE_UNIT_ID = unit.ID;
+                                mediAdo.SERVICE_UNIT_NAME = unit.SERVICE_UNIT_NAME;
+                            }
+                            else
+                            {
+                                error += string.Format(Message.MessageImport.KhongHopLe, "Mã Đơn vị tính");
+                                mediAdo.SERVICE_UNIT_CODE_ERROR = 1;
+                            }
+                        }
+                    }
+                    else if (!string.IsNullOrEmpty(item.SERVICE_UNIT_NAME))
+                    {
+                        var unit = listServiceUnit.FirstOrDefault(x => x.SERVICE_UNIT_NAME == item.SERVICE_UNIT_NAME);
+                        if (unit != null)
+                        {
+                            mediAdo.SERVICE_UNIT_ID = unit.ID;
+                            mediAdo.SERVICE_UNIT_CODE = unit.SERVICE_UNIT_CODE;
+                        }
+                        else
+                        {
+                            error += string.Format(Message.MessageImport.KhongHopLe, "Tên Đơn vị tính");
                             mediAdo.SERVICE_UNIT_CODE_ERROR = 1;
                         }
                     }
@@ -1233,6 +1356,8 @@ namespace HIS.Desktop.Plugins.HisImportMedicineType.FormLoad
                         error += string.Format(Message.MessageImport.ThieuTruongDL, "Đơn vị tính");
                         mediAdo.SERVICE_UNIT_CODE_ERROR = 1;
                     }
+
+
 
                     if (!string.IsNullOrEmpty(item.HEIN_LIMIT_PRICE_IN_TIME_STR))
                     {
@@ -1724,11 +1849,59 @@ namespace HIS.Desktop.Plugins.HisImportMedicineType.FormLoad
                         }
                     }
 
-                    if (item.SOURCE_MEDICINE != null)
+                    // --- IS_GENERIC, IS_BIOLOGIC, IS_ORIGINAL_BRAND_NAME, SCIENTIFIC_NAME ---
+                    mediAdo.IS_GENERIC = (!string.IsNullOrEmpty(item.IS_GENERIC_STR) && item.IS_GENERIC_STR.Trim().ToLower() == "x") ? 1 : (short?)null;
+                    mediAdo.IS_BIOLOGIC = (!string.IsNullOrEmpty(item.IS_BIOLOGIC_STR) && item.IS_BIOLOGIC_STR.Trim().ToLower() == "x") ? 1 : (short?)null;
+                    mediAdo.IS_ORIGINAL_BRAND_NAME = (!string.IsNullOrEmpty(item.IS_ORIGINAL_BRAND_NAME_STR) && item.IS_ORIGINAL_BRAND_NAME_STR.Trim().ToLower() == "x") ? 1 : (short?)null;
+                    mediAdo.SCIENTIFIC_NAME = item.SCIENTIFIC_NAME;
+
+
+
+
+
+                    //if (item.SOURCE_MEDICINE != null)
+                    //{
+                    //    if (item.SOURCE_MEDICINE.ToString() != "1" && item.SOURCE_MEDICINE.ToString() != "2")
+                    //    {
+                    //        error += string.Format(Message.MessageImport.KhongHopLe, "Nguồn gốc");
+                    //        mediAdo.SOURCE_MEDICINE_ERROR = 1;
+                    //    }
+                    //}
+
+                    // --- SOURCE_MEDICINE ---
+                    if (!string.IsNullOrEmpty(item.SOURCE_MEDICINE_CODE))
                     {
-                        if (item.SOURCE_MEDICINE.ToString() != "1" && item.SOURCE_MEDICINE.ToString() != "2")
+                        if (item.SOURCE_MEDICINE_CODE.Length > 2)
                         {
-                            error += string.Format(Message.MessageImport.KhongHopLe, "Nguồn gốc");
+                            error += string.Format(Message.MessageImport.Maxlength, "Mã Nguồn gốc", 2);
+                            mediAdo.SOURCE_MEDICINE_ERROR = 1;
+                        }
+                        else
+                        {
+                            var src = listSourceMedicine.FirstOrDefault(x => x.SOURCE_MEDICINE_CODE == item.SOURCE_MEDICINE_CODE);
+                            if (src != null)
+                            {
+                                mediAdo.SOURCE_MEDICINE = (short?)src.ID;
+                                mediAdo.SOURCE_MEDICINE_NAME = src.SOURCE_MEDICINE_NAME;
+                            }
+                            else
+                            {
+                                error += string.Format(Message.MessageImport.KhongHopLe, "Mã Nguồn gốc");
+                                mediAdo.SOURCE_MEDICINE_ERROR = 1;
+                            }
+                        }
+                    }
+                    else if (!string.IsNullOrEmpty(item.SOURCE_MEDICINE_NAME))
+                    {
+                        var src = listSourceMedicine.FirstOrDefault(x => x.SOURCE_MEDICINE_NAME == item.SOURCE_MEDICINE_NAME);
+                        if (src != null)
+                        {
+                            mediAdo.SOURCE_MEDICINE = (short?)src.ID;
+                            mediAdo.SOURCE_MEDICINE_CODE = src.SOURCE_MEDICINE_CODE;
+                        }
+                        else
+                        {
+                            error += string.Format(Message.MessageImport.KhongHopLe, "Tên Nguồn gốc");
                             mediAdo.SOURCE_MEDICINE_ERROR = 1;
                         }
                     }
@@ -1751,47 +1924,77 @@ namespace HIS.Desktop.Plugins.HisImportMedicineType.FormLoad
                         }
                     }
 
+
+                    //if (!string.IsNullOrEmpty(item.PREPROCESSING))
+                    //{
+                    //    List<string> attachPreprocessingCodes = new List<string>();
+                    //    List<string> attachPreprocessingErrors = new List<string>();
+                    //    List<string> attachPreprocessingCodeAvaiables = new List<string>();
+                    //    List<string> attachPreprocessingNameAvaiables = new List<string>();
+                    //    if (item.PREPROCESSING.Contains(","))
+                    //    {
+                    //        attachPreprocessingCodes = item.PREPROCESSING.Split(',').ToList();
+                    //    }
+                    //    else
+                    //    {
+                    //        attachPreprocessingCodes = new List<string> { item.PREPROCESSING };
+                    //    }
+                    //    if (attachPreprocessingCodes.Count() > 0)
+                    //    {
+                    //        var _items = BackendDataWorker.Get<HIS_PROCESSING_METHOD>().Where(o => o.PROCESSING_METHOD_TYPE == 1).ToList();
+                    //        foreach (var code in attachPreprocessingCodes)
+                    //        {
+                    //            var _item = _items.FirstOrDefault(o => o.PROCESSING_METHOD_CODE == code);
+                    //            if (_item != null)
+                    //            {
+                    //                attachPreprocessingCodeAvaiables.Add(code);
+                    //                attachPreprocessingNameAvaiables.Add(_item.PROCESSING_METHOD_NAME);
+                    //            }
+                    //            else
+                    //            {
+                    //                attachPreprocessingErrors.Add(code);
+                    //            }
+                    //        }
+                    //    }
+                    //    if (attachPreprocessingCodeAvaiables.Count() > 0)
+                    //    {
+                    //        mediAdo.PREPROCESSING_NAMES = string.Join(";", attachPreprocessingNameAvaiables);
+                    //    }
+                    //    if (attachPreprocessingErrors.Count() > 0)
+                    //    {
+                    //        error += string.Format("Mã {0} không có trong danh mục Phương pháp chế biến", string.Join(";", attachPreprocessingErrors));
+                    //        mediAdo.PREPROCESSING_ERROR = 1;
+                    //    }
+
+                    //    if (Inventec.Common.String.CheckString.IsOverMaxLengthUTF8(item.PREPROCESSING, 1000))
+                    //    {
+                    //        error += string.Format(Message.MessageImport.Maxlength, "Sơ chế", 1000);
+                    //        mediAdo.PREPROCESSING_ERROR = 1;
+                    //    }
+                    //}
+
+                    // --- PREPROCESSING ---
                     if (!string.IsNullOrEmpty(item.PREPROCESSING))
                     {
-                        List<string> attachPreprocessingCodes = new List<string>();
-                        List<string> attachPreprocessingErrors = new List<string>();
-                        List<string> attachPreprocessingCodeAvaiables = new List<string>();
-                        List<string> attachPreprocessingNameAvaiables = new List<string>();
-                        if (item.PREPROCESSING.Contains(","))
+                        var names = item.PREPROCESSING.Split(',').Select(x => x.Trim()).ToList();
+                        var validNames = new List<string>();
+                        var invalidNames = new List<string>();
+                        var methods = BackendDataWorker.Get<HIS_PROCESSING_METHOD>().Where(o => o.PROCESSING_METHOD_TYPE == 1).ToList();
+                        foreach (var name in names)
                         {
-                            attachPreprocessingCodes = item.PREPROCESSING.Split(',').ToList();
+                            var found = methods.FirstOrDefault(m => m.PROCESSING_METHOD_NAME == name);
+                            if (found != null)
+                                validNames.Add(found.PROCESSING_METHOD_NAME);
+                            else
+                                invalidNames.Add(name);
                         }
-                        else
+                        if (validNames.Count > 0)
+                            mediAdo.PREPROCESSING_NAMES = string.Join(";", validNames);
+                        if (invalidNames.Count > 0)
                         {
-                            attachPreprocessingCodes = new List<string> { item.PREPROCESSING };
-                        }
-                        if (attachPreprocessingCodes.Count() > 0)
-                        {
-                            var _items = BackendDataWorker.Get<HIS_PROCESSING_METHOD>().Where(o => o.PROCESSING_METHOD_TYPE == 1).ToList();
-                            foreach (var code in attachPreprocessingCodes)
-                            {
-                                var _item = _items.FirstOrDefault(o => o.PROCESSING_METHOD_CODE == code);
-                                if (_item != null)
-                                {
-                                    attachPreprocessingCodeAvaiables.Add(code);
-                                    attachPreprocessingNameAvaiables.Add(_item.PROCESSING_METHOD_NAME);
-                                }
-                                else
-                                {
-                                    attachPreprocessingErrors.Add(code);
-                                }
-                            }
-                        }
-                        if (attachPreprocessingCodeAvaiables.Count() > 0)
-                        {
-                            mediAdo.PREPROCESSING_NAMES = string.Join(";", attachPreprocessingNameAvaiables);
-                        }
-                        if (attachPreprocessingErrors.Count() > 0)
-                        {
-                            error += string.Format("Mã {0} không có trong danh mục Phương pháp chế biến", string.Join(";", attachPreprocessingErrors));
+                            error += string.Format(Message.MessageImport.TenKhongCoTrongDanhMuc, string.Join(";", invalidNames), "Phương pháp chế biến");
                             mediAdo.PREPROCESSING_ERROR = 1;
                         }
-
                         if (Inventec.Common.String.CheckString.IsOverMaxLengthUTF8(item.PREPROCESSING, 1000))
                         {
                             error += string.Format(Message.MessageImport.Maxlength, "Sơ chế", 1000);
@@ -1799,51 +2002,80 @@ namespace HIS.Desktop.Plugins.HisImportMedicineType.FormLoad
                         }
                     }
 
+                    //if (!string.IsNullOrEmpty(item.PROCESSING))
+                    //{
+                    //    List<string> attachProcessingCodes = new List<string>();
+                    //    List<string> attachProcessingErrors = new List<string>();
+                    //    List<string> attachProcessingCodeAvaiables = new List<string>();
+                    //    List<string> attachProcessingNameAvaiables = new List<string>();
+                    //    if (item.PROCESSING.Contains(","))
+                    //    {
+                    //        attachProcessingCodes = item.PROCESSING.Split(',').ToList();
+                    //    }
+                    //    else
+                    //    {
+                    //        attachProcessingCodes = new List<string> { item.PROCESSING };
+                    //    }
+                    //    if (attachProcessingCodes.Count() > 0)
+                    //    {
+                    //        var _items = BackendDataWorker.Get<HIS_PROCESSING_METHOD>().Where(o => o.PROCESSING_METHOD_TYPE == 2).ToList();
+                    //        foreach (var code in attachProcessingCodes)
+                    //        {
+                    //            var _item = _items.FirstOrDefault(o => o.PROCESSING_METHOD_CODE == code);
+                    //            if (_item != null)
+                    //            {
+                    //                attachProcessingCodeAvaiables.Add(code);
+                    //                attachProcessingNameAvaiables.Add(_item.PROCESSING_METHOD_NAME);
+                    //            }
+                    //            else
+                    //            {
+                    //                attachProcessingErrors.Add(code);
+                    //            }
+                    //        }
+                    //    }
+                    //    if (attachProcessingCodeAvaiables.Count() > 0)
+                    //    {
+                    //        mediAdo.PREPROCESSING_NAMES = string.Join(";", attachProcessingNameAvaiables);
+                    //    }
+                    //    if (attachProcessingErrors.Count() > 0)
+                    //    {
+                    //        error += string.Format("Mã {0} không có trong danh mục Phương pháp chế biến", string.Join(";", attachProcessingErrors));
+                    //        mediAdo.PROCESSING_ERROR = 1;
+                    //    }
+
+                    //    if (Inventec.Common.String.CheckString.IsOverMaxLengthUTF8(item.PREPROCESSING, 1000))
+                    //    {
+                    //        error += string.Format(Message.MessageImport.Maxlength, "Sơ chế", 1000);
+                    //        mediAdo.PREPROCESSING_ERROR = 1;
+                    //    }
+                    //    if (Inventec.Common.String.CheckString.IsOverMaxLengthUTF8(item.PROCESSING, 1000))
+                    //    {
+                    //        error += string.Format(Message.MessageImport.Maxlength, "Phức chế", 1000);
+                    //        mediAdo.PROCESSING_ERROR = 1;
+                    //    }
+                    //}
+
+                    // --- PROCESSING ---
                     if (!string.IsNullOrEmpty(item.PROCESSING))
                     {
-                        List<string> attachProcessingCodes = new List<string>();
-                        List<string> attachProcessingErrors = new List<string>();
-                        List<string> attachProcessingCodeAvaiables = new List<string>();
-                        List<string> attachProcessingNameAvaiables = new List<string>();
-                        if (item.PROCESSING.Contains(","))
+                        var names = item.PROCESSING.Split(',').Select(x => x.Trim()).ToList();
+                        var validNames = new List<string>();
+                        var invalidNames = new List<string>();
+                        var methods = BackendDataWorker.Get<HIS_PROCESSING_METHOD>().Where(o => o.PROCESSING_METHOD_TYPE == 2).ToList();
+                        foreach (var name in names)
                         {
-                            attachProcessingCodes = item.PROCESSING.Split(',').ToList();
+                            var found = methods.FirstOrDefault(m => m.PROCESSING_METHOD_NAME == name);
+                            if (found != null)
+                                validNames.Add(found.PROCESSING_METHOD_NAME);
+                            else
+                                invalidNames.Add(name);
                         }
-                        else
+                        if (validNames.Count > 0)
+                            mediAdo.PROCESSING_NAMES = string.Join(";", validNames);
+                        if (invalidNames.Count > 0)
                         {
-                            attachProcessingCodes = new List<string> { item.PROCESSING };
-                        }
-                        if (attachProcessingCodes.Count() > 0)
-                        {
-                            var _items = BackendDataWorker.Get<HIS_PROCESSING_METHOD>().Where(o => o.PROCESSING_METHOD_TYPE == 2).ToList();
-                            foreach (var code in attachProcessingCodes)
-                            {
-                                var _item = _items.FirstOrDefault(o => o.PROCESSING_METHOD_CODE == code);
-                                if (_item != null)
-                                {
-                                    attachProcessingCodeAvaiables.Add(code);
-                                    attachProcessingNameAvaiables.Add(_item.PROCESSING_METHOD_NAME);
-                                }
-                                else
-                                {
-                                    attachProcessingErrors.Add(code);
-                                }
-                            }
-                        }
-                        if (attachProcessingCodeAvaiables.Count() > 0)
-                        {
-                            mediAdo.PREPROCESSING_NAMES = string.Join(";", attachProcessingNameAvaiables);
-                        }
-                        if (attachProcessingErrors.Count() > 0)
-                        {
-                            error += string.Format("Mã {0} không có trong danh mục Phương pháp chế biến", string.Join(";", attachProcessingErrors));
+                            error += string.Format(Message.MessageImport.TenKhongCoTrongDanhMuc, string.Join(";", invalidNames), "Phương pháp chế biến");
                             mediAdo.PROCESSING_ERROR = 1;
-                        }
-
-                        if (Inventec.Common.String.CheckString.IsOverMaxLengthUTF8(item.PREPROCESSING, 1000))
-                        {
-                            error += string.Format(Message.MessageImport.Maxlength, "Sơ chế", 1000);
-                            mediAdo.PREPROCESSING_ERROR = 1;
                         }
                         if (Inventec.Common.String.CheckString.IsOverMaxLengthUTF8(item.PROCESSING, 1000))
                         {
@@ -1851,6 +2083,9 @@ namespace HIS.Desktop.Plugins.HisImportMedicineType.FormLoad
                             mediAdo.PROCESSING_ERROR = 1;
                         }
                     }
+
+
+
                     if (!string.IsNullOrEmpty(item.USED_PART))
                     {
                         if (Inventec.Common.String.CheckString.IsOverMaxLengthUTF8(item.USED_PART, 500))
@@ -2236,10 +2471,12 @@ namespace HIS.Desktop.Plugins.HisImportMedicineType.FormLoad
                             mediAdo.ACTIVE_INGREDIENT_CODE_STR = item.ACTIVE_INGREDIENT_CODE_STR;
                         }
                         
-                    
+
 
                     }
-                    
+
+
+
                     mediAdo.ERROR = error;
                     mediAdo.ID = i;
                     mediAdo.IS_LEAF = 1;

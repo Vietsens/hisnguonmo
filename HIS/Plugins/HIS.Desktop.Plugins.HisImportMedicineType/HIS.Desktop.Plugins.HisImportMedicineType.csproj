@@ -55,9 +55,6 @@
     <Reference Include="HIS.Desktop.ModuleExt">
       <HintPath>..\..\..\..\lib\HIS\HIS.Desktop.ModuleExt\HIS.Desktop.ModuleExt.dll</HintPath>
     </Reference>
-    <Reference Include="HIS.Desktop.Utility">
-      <HintPath>..\..\..\..\lib\HIS\HIS.Desktop.Utilities\HIS.Desktop.Utility.dll</HintPath>
-    </Reference>
     <Reference Include="IMSys.DbConfig.HIS_RS">
       <HintPath>..\..\..\..\LIB\IMSys.DbConfig\IMSys.DbConfig.HIS_RS\IMSys.DbConfig.HIS_RS.dll</HintPath>
     </Reference>
@@ -72,9 +69,6 @@
     </Reference>
     <Reference Include="Inventec.Common.ExcelImport">
       <HintPath>..\..\..\..\LIB\Inventec.Common\Inventec.Common.ExcelImport\Inventec.Common.ExcelImport.dll</HintPath>
-    </Reference>
-    <Reference Include="Inventec.Common.FlexCelExport">
-      <HintPath>..\..\..\..\LIB\Inventec.Common\Inventec.Common.FlexCelExport\Inventec.Common.FlexCelExport.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Common.Logging">
       <HintPath>..\..\..\..\LIB\Inventec.Common\Inventec.Common.Logging\Inventec.Common.Logging.dll</HintPath>
@@ -153,7 +147,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\LIB\SDA\SDA.EFMODEL.dll</HintPath>
     </Reference>
-    <Reference Include="System" />
+    <Reference Include="System">
+      <HintPath>C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5\System.dll</HintPath>
+    </Reference>
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -221,6 +217,14 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\Common\Inventec.Common\Inventec.Common.FlexCelExport\Inventec.Common.FlexCelExport.csproj">
+      <Project>{3df410c6-e126-4e6b-81b6-4fef5f9e55e4}</Project>
+      <Name>Inventec.Common.FlexCelExport</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Common\Inventec.Common\Inventec.Common.FlexCelPrint\Inventec.Common.FlexCelPrint.csproj">
+      <Project>{a9e46128-5af1-4bbd-b318-854517fc26ab}</Project>
+      <Name>Inventec.Common.FlexCelPrint</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\HIS.Desktop.ApiConsumer\HIS.Desktop.ApiConsumer.csproj">
       <Project>{861bfedb-026f-4b6f-a3cf-32843ae8c03d}</Project>
       <Name>HIS.Desktop.ApiConsumer</Name>
@@ -240,6 +244,10 @@
     <ProjectReference Include="..\..\HIS.Desktop.LocalStorage.BackendData\HIS.Desktop.LocalStorage.BackendData.csproj">
       <Project>{86709a9c-a149-4ebb-a817-1bf8f4f4bc07}</Project>
       <Name>HIS.Desktop.LocalStorage.BackendData</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\HIS.Desktop.Utility\HIS.Desktop.Utilities.csproj">
+      <Project>{2aad22db-2166-4be8-ae52-335b21dc03fc}</Project>
+      <Name>HIS.Desktop.Utilities</Name>
     </ProjectReference>
     <ProjectReference Include="..\HIS.Desktop.Library.CacheClient\HIS.Desktop.Library.CacheClient.csproj">
       <Project>{64837e01-803d-4f1e-9dfc-d34b38ea78f9}</Project>

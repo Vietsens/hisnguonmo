@@ -1049,6 +1049,7 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
                     txtPatientCode.Enabled = true;
                     txtPatientPhone.Enabled = true;
                     txtEmail.Enabled = true;
+                    LoadAddressData(isNewAddressStructure);
                 }
                 else
                 {

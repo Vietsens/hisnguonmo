@@ -141,17 +141,15 @@ namespace HIS.Desktop.Plugins.Register.Run
                 var paties = BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_PATIENT_TYPE>().Where(p => p.IS_ACTIVE == 1 && p.IS_NOT_USE_FOR_PATIENT != 1).ToList();
 
                 this.InitComboCommon(this.cboPatientType, paties, "ID", "PATIENT_TYPE_NAME", "PATIENT_TYPE_CODE");
-                this.InitComboCommon(this.cboTHX, BackendDataWorker.Get<HIS.Desktop.LocalStorage.BackendData.ADO.CommuneADO>().ToList(), "ID", "RENDERER_PDC_NAME", "SEARCH_CODE_COMMUNE");
-                this.InitComboCommon(this.cboProvince, BackendDataWorker.Get<SDA.EFMODEL.DataModels.V_SDA_PROVINCE>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.SDA_RS.COMMON.IS_ACTIVE__TRUE).ToList(), "PROVINCE_CODE", "PROVINCE_NAME", "SEARCH_CODE");
-                this.InitComboCommon(this.cboDistrict, BackendDataWorker.Get<SDA.EFMODEL.DataModels.V_SDA_DISTRICT>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.SDA_RS.COMMON.IS_ACTIVE__TRUE).ToList(), "DISTRICT_CODE", "RENDERER_DISTRICT_NAME", "SEARCH_CODE");
-                this.InitComboCommon(this.cboCommune, BackendDataWorker.Get<SDA.EFMODEL.DataModels.V_SDA_COMMUNE>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.SDA_RS.COMMON.IS_ACTIVE__TRUE).ToList(), "COMMUNE_CODE", "RENDERER_COMMUNE_NAME", "SEARCH_CODE");
+                this.InitComboCommon(this.cboTHX, workingCommuneADO, "ID", "RENDERER_PDC_NAME", "SEARCH_CODE_COMMUNE");
+                this.ChangeDataSourceAddress();
                 this.InitComboCommon(this.cboCareer, BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_CAREER>().Where(o=> o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE).ToList(), "ID", "CAREER_NAME", "CAREER_CODE");
                 cboCareer.Properties.ImmediatePopup = true;
                 this.InitComboCommon(this.cboEthnic, BackendDataWorker.Get<SDA.EFMODEL.DataModels.SDA_ETHNIC>(), "ETHNIC_NAME", "ETHNIC_NAME", "ETHNIC_CODE");
                 this.InitComboCommon(this.cboNational, BackendDataWorker.Get<SDA.EFMODEL.DataModels.SDA_NATIONAL>(), "NATIONAL_NAME", "NATIONAL_NAME", "NATIONAL_CODE");
                 this.InitComboCommon(this.cboAge, BackendDataWorker.Get<HIS.Desktop.LocalStorage.BackendData.ADO.AgeADO>(), "Id", "MoTa", "");
                 this.InitComboCommon(this.cboGender, BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_GENDER>(), "ID", "GENDER_NAME", "GENDER_CODE");
-                this.InitComboCommon(this.cboProvinceKS, BackendDataWorker.Get<SDA.EFMODEL.DataModels.V_SDA_PROVINCE>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.SDA_RS.COMMON.IS_ACTIVE__TRUE), "PROVINCE_CODE", "PROVINCE_NAME", "SEARCH_CODE");
+                this.InitComboCommon(this.cboProvinceKS, SdaProvinces.Where(o => o.IS_ACTIVE == IMSys.DbConfig.SDA_RS.COMMON.IS_ACTIVE__TRUE), "PROVINCE_CODE", "PROVINCE_NAME", "SEARCH_CODE");
 
                 var classify = BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_PATIENT_CLASSIFY>().Where(p => p.IS_ACTIVE == 1).ToList();
                 this.InitComboCommon(this.cboPatientClassify, classify, "ID", "PATIENT_CLASSIFY_NAME", "PATIENT_CLASSIFY_CODE");

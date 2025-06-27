@@ -53,6 +53,7 @@ using SDA.Desktop.Plugins.SdaProvince.Validtion;
 using SDA.Desktop.Plugin.Province.Validtion;
 using SDA.Desktop.Plugins.Province.Validtion;
 using DevExpress.XtraEditors.Controls;
+using IMSys.DbConfig;
 
 namespace SDA.Desktop.Plugins.SdaProvince
 {
@@ -154,6 +155,10 @@ namespace SDA.Desktop.Plugins.SdaProvince
                 this.bar1.Text = Inventec.Common.Resource.Get.Value("frmSdaProvince.bar1.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.bbtnSearch.Caption = Inventec.Common.Resource.Get.Value("frmSdaProvince.bbtnSearch.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.bbtnEdit.Caption = Inventec.Common.Resource.Get.Value("frmSdaProvince.bbtnEdit.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+
+
+                this.chkNotDistrict.Text = Inventec.Common.Resource.Get.Value("frmSdaProvince.chkNotDistrict.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+
                 this.bbtnAdd.Caption = Inventec.Common.Resource.Get.Value("frmSdaProvince.bbtnAdd.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.bbtnReset.Caption = Inventec.Common.Resource.Get.Value("frmSdaProvince.bbtnReset.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.bbtnFocusDefault.Caption = Inventec.Common.Resource.Get.Value("frmSdaProvince.bbtnFocusDefault.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
@@ -618,7 +623,8 @@ namespace SDA.Desktop.Plugins.SdaProvince
                     cboNational.EditValue = data.NATIONAL_ID;
                     txtSearchCode.EditValue = data.SEARCH_CODE;
 
-
+                  
+                    chkNotDistrict.Checked = (data.IS_NO_DISTRICT == 1);
                 }
             }
             catch (Exception ex)
@@ -659,6 +665,8 @@ namespace SDA.Desktop.Plugins.SdaProvince
                             DevExpress.XtraEditors.BaseEdit fomatFrm = lci.Control as DevExpress.XtraEditors.BaseEdit;
 
                             fomatFrm.ResetText();
+
+                            chkNotDistrict.CheckState = CheckState.Unchecked;
                             fomatFrm.EditValue = null;
                         }
                     }
@@ -865,6 +873,11 @@ namespace SDA.Desktop.Plugins.SdaProvince
                     LoadCurrent(this.currentData.ID, ref updateDTO);
                 }
                 UpdateDTOFromDataForm(ref updateDTO);
+                Inventec.Common.Logging.LogSystem.Debug(
+           Inventec.Common.Logging.LogUtil.TraceData("SaveProcess - Input DTO:", updateDTO)
+       );
+
+
                 SDA_NATIONAL national = new SDA_NATIONAL();
                 if (cboNational.EditValue != null) national.ID = (long)cboNational.EditValue;
                 if (ActionType == GlobalVariables.ActionAdd)
@@ -877,6 +890,9 @@ namespace SDA.Desktop.Plugins.SdaProvince
                         FillDataToGridControl();
                         ResetFormData();
                     }
+                    Inventec.Common.Logging.LogSystem.Debug(
+             Inventec.Common.Logging.LogUtil.TraceData("SaveProcess - Output resultData:", resultData)
+         );
                 }
             
 
@@ -942,12 +958,13 @@ namespace SDA.Desktop.Plugins.SdaProvince
                 if(txtSearchCode.EditValue !=null)
                 {
                     currentDTO.SEARCH_CODE = txtSearchCode.Text.Trim();
-
+                      
                 }
                 else
                 {
                     currentDTO.SEARCH_CODE = null;
                 }
+                currentDTO.IS_NO_DISTRICT = (short)(chkNotDistrict.Checked ? 1 : 0);
 
             }
             catch (Exception ex)
