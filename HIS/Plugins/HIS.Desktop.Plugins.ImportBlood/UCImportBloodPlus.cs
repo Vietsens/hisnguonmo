@@ -75,7 +75,16 @@ namespace HIS.Desktop.Plugins.ImportBlood
         List<ImpMestMedicineSDODetail> impMestMedicines;
         List<V_HIS_EXP_MEST_BLOOD> listExpMestBlood { get; set; }
         List<ExpMestBloodADO> listBloodADO { get; set; }
+        //
+        //
 
+
+        private bool isUseNewStructure = false;
+        private HIS.Desktop.Library.CacheClient.ControlStateWorker controlStateWorker;
+        private List<HIS.Desktop.Library.CacheClient.ControlStateRDO> currentControlStateRDO;
+        private bool isNotLoadWhileChangeControlStateInFirst = true;
+        string moduleLink = "HIS.Desktop.Plugins.ImportBlood";
+        //qtcode
         List<V_HIS_MEDI_STOCK> listMediStock;
         List<HIS_IMP_MEST_TYPE> listImpMestType;
         HIS_IMP_MEST_TYPE currentImpMestType = null;
@@ -2115,7 +2124,10 @@ namespace HIS.Desktop.Plugins.ImportBlood
         {
             try
             {
-                InitComboDistrict();
+                if (Switch_THX.IsOn == true)
+                    InitComboCommune(); 
+                else 
+                    InitComboDistrict();
             }
             catch (Exception ex)
             {
@@ -2364,7 +2376,11 @@ namespace HIS.Desktop.Plugins.ImportBlood
                 if (this.cboVirAddress.EditValue != null)
                 {
                     this.cboVirAddress.Properties.Buttons[1].Visible = true;
-                    HIS.Desktop.LocalStorage.BackendData.ADO.CommuneADO commune = BackendDataWorker.Get<HIS.Desktop.LocalStorage.BackendData.ADO.CommuneADO>().SingleOrDefault(o => o.ID_RAW == (this.cboVirAddress.EditValue ?? "").ToString());
+                    //HIS.Desktop.LocalStorage.BackendData.ADO.CommuneADO commune = BackendDataWorker.Get<HIS.Desktop.LocalStorage.BackendData.ADO.CommuneADO>().SingleOrDefault(o => o.ID_RAW == (this.cboVirAddress.EditValue ?? "").ToString());
+                    var communeList = BackendDataWorker.Get<HIS.Desktop.LocalStorage.BackendData.ADO.CommuneADO>();
+                    Inventec.Common.Logging.LogSystem.Debug("COMMUNE LISTTTTTT: " + Inventec.Common.Logging.LogUtil.TraceData("DataA", communeList));
+                    if (communeList == null) return;
+                    var commune = communeList.SingleOrDefault(o => o.ID_RAW == (this.cboVirAddress.EditValue ?? "").ToString());
                     if (commune != null)
                     {
                         this.txtVirAddress.Text = commune.SEARCH_CODE_COMMUNE;
@@ -3005,6 +3021,153 @@ namespace HIS.Desktop.Plugins.ImportBlood
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
+        }
+        private void InitToggleSwitch()
+        {
+            try
+            {
+                // Khởi tạo controlStateWorker
+                if(this.controlStateWorker == null)
+                controlStateWorker = new HIS.Desktop.Library.CacheClient.ControlStateWorker();
+
+                currentControlStateRDO = controlStateWorker.GetData(moduleLink);
+                // Lấy trạng thái đã lưu
+                if (currentControlStateRDO != null && currentControlStateRDO.Count > 0)
+                {
+                    var cs = currentControlStateRDO.FirstOrDefault(o => o.KEY == Switch_THX.Name && o.MODULE_LINK == moduleLink);
+                    if (cs != null)
+                    {
+                        isUseNewStructure = cs.VALUE == "1";
+                        Switch_THX.IsOn = isUseNewStructure;
+                        Switch_THX.ToolTip = isUseNewStructure == true ? "Sử dụng cấu trúc địa chỉ Xã - Huyện - Tỉnh" : "Sử dụng cấu trúc địa chỉ Xã - Tỉnh(không có Huyện)";
+                    }
+                }
+                
+                // Cập nhật hiển thị control dựa trên trạng thái
+                UpdateAddressControlsVisibility();
+
+                isNotLoadWhileChangeControlStateInFirst = false;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+        //qtcode
+        private void Switch_THX_Toggled(object sender, EventArgs e)
+        {
+            try
+            {
+                isUseNewStructure = ((DevExpress.XtraEditors.ToggleSwitch)sender).IsOn;
+                Switch_THX.ToolTip = isUseNewStructure == true ? "Sử dụng cấu trúc địa chỉ Xã - Huyện - Tỉnh" : "Sử dụng cấu trúc địa chỉ Xã - Tỉnh(không có Huyện)";
+                // Cập nhật hiển thị control
+                UpdateAddressControlsVisibility();
+
+                if (isInitializing) return; 
+                // Tải lại dữ liệu cho các cbo
+                InitComboProvince();
+                InitComboDistrict();
+                InitComboCommune();
+                InitComboVirAddress();
+
+                if (isNotLoadWhileChangeControlStateInFirst)
+                {
+                    return;
+                }
+
+                //lưu trạng thái nút
+                WaitingManager.Show();
+                HIS.Desktop.Library.CacheClient.ControlStateRDO csAddOrUpdate = (currentControlStateRDO != null && currentControlStateRDO.Count > 0)
+                    ? currentControlStateRDO.FirstOrDefault(o => o.KEY == ((DevExpress.XtraEditors.ToggleSwitch)sender).Name && o.MODULE_LINK == moduleLink)
+                    : null;
+
+                if (csAddOrUpdate != null)
+                {
+                    csAddOrUpdate.VALUE = (isUseNewStructure ? "1" : "");
+                }
+                else
+                {
+                    csAddOrUpdate = new HIS.Desktop.Library.CacheClient.ControlStateRDO();
+                    csAddOrUpdate.KEY = ((DevExpress.XtraEditors.ToggleSwitch)sender).Name;
+                    csAddOrUpdate.VALUE = (isUseNewStructure ? "1" : "");
+                    csAddOrUpdate.MODULE_LINK = moduleLink;
+                    if (currentControlStateRDO == null)
+                        currentControlStateRDO = new List<HIS.Desktop.Library.CacheClient.ControlStateRDO>();
+                    currentControlStateRDO.Add(csAddOrUpdate);
+                }
+
+                controlStateWorker.SetData(currentControlStateRDO);
+                WaitingManager.Hide();
+            }
+            catch (Exception ex)
+            {
+                WaitingManager.Hide();
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void UpdateAddressControlsVisibility()
+        {
+            try
+            {
+                // Ẩn/hiện các control Huyện và Huyện lấy máu
+                lciDistrictBlood.Visibility = isUseNewStructure ? DevExpress.XtraLayout.Utils.LayoutVisibility.Never : DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
+                lciDistrict.Visibility = isUseNewStructure ? DevExpress.XtraLayout.Utils.LayoutVisibility.Never : DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void Switch_THX_EditValueChanging(object sender, ChangingEventArgs e)
+        {
+            //try
+            //{
+            //    isUseNewStructure = ((DevExpress.XtraEditors.ToggleSwitch)sender).IsOn;
+            //    Switch_THX.ToolTip = isUseNewStructure == true ? "Sử dụng cấu trúc địa chỉ Xã - Huyện - Tỉnh" : "Sử dụng cấu trúc địa chỉ Xã - Tỉnh(không có Huyện)";
+            //    // Cập nhật hiển thị control
+            //    UpdateAddressControlsVisibility();
+
+            //    // Tải lại dữ liệu cho các combobox địa chỉ
+            //    InitComboProvince();
+            //    InitComboDistrict();
+            //    InitComboCommune();
+            //    InitComboVirAddress();
+
+            //    if (isNotLoadWhileChangeControlStateInFirst)
+            //    {
+            //        return;
+            //    }
+
+            //    WaitingManager.Show();
+            //    HIS.Desktop.Library.CacheClient.ControlStateRDO csAddOrUpdate = (currentControlStateRDO != null && currentControlStateRDO.Count > 0)
+            //        ? currentControlStateRDO.FirstOrDefault(o => o.KEY == ((DevExpress.XtraEditors.ToggleSwitch)sender).Name && o.MODULE_LINK == moduleLink)
+            //        : null;
+
+            //    if (csAddOrUpdate != null)
+            //    {
+            //        csAddOrUpdate.VALUE = (isUseNewStructure ? "1" : "");
+            //    }
+            //    else
+            //    {
+            //        csAddOrUpdate = new HIS.Desktop.Library.CacheClient.ControlStateRDO();
+            //        csAddOrUpdate.KEY = ((DevExpress.XtraEditors.ToggleSwitch)sender).Name;
+            //        csAddOrUpdate.VALUE = (isUseNewStructure ? "1" : "");
+            //        csAddOrUpdate.MODULE_LINK = moduleLink;
+            //        if (currentControlStateRDO == null)
+            //            currentControlStateRDO = new List<HIS.Desktop.Library.CacheClient.ControlStateRDO>();
+            //        currentControlStateRDO.Add(csAddOrUpdate);
+            //    }
+
+            //    controlStateWorker.SetData(currentControlStateRDO);
+            //    WaitingManager.Hide();
+            //}
+            //catch (Exception ex)
+            //{
+            //    WaitingManager.Hide();
+            //    Inventec.Common.Logging.LogSystem.Warn(ex);
+            //}
         }
     }
 }
