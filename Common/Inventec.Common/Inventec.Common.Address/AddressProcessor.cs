@@ -208,11 +208,15 @@ namespace Inventec.Common.Address
                         }
                     }
 
+                    Inventec.Common.Logging.LogSystem.Debug(string.Join(", ", joinsAdd));
+
                     for (int i = 0; i < joinsAdd.Length; i++)
                     {
-                        if (joinsAdd[i].ToLower() == result.CommuneName.ToLower()
+                        if (joinsAdd[i] == null) continue;
+
+                        if ((!String.IsNullOrWhiteSpace(result.CommuneName) && joinsAdd[i].ToLower() == result.CommuneName.ToLower())
                             || (!String.IsNullOrWhiteSpace(result.DistrictName) && joinsAdd[i].ToLower() == result.DistrictName.ToLower())
-                            || joinsAdd[i].ToLower() == result.ProvinceName.ToLower())
+                            || (!String.IsNullOrWhiteSpace(result.ProvinceName) && joinsAdd[i].ToLower() == result.ProvinceName.ToLower()))
                         {
                             joinsAdd[i] = "";
                         }
@@ -225,6 +229,10 @@ namespace Inventec.Common.Address
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
                 result.Address = fullAddress;
+            }
+            finally
+            {
+                Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData("____Address_Split____", result));
             }
 
             return result;
