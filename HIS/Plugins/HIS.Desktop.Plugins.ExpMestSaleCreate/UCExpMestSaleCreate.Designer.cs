@@ -49,18 +49,19 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(UCExpMestSaleCreate));
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject9 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject10 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject11 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject12 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject1 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject2 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject3 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject4 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject5 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject6 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject7 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject8 = new DevExpress.Utils.SerializableAppearanceObject();
             this.layoutControl1 = new DevExpress.XtraLayout.LayoutControl();
             this.toggleSwitch1 = new DevExpress.XtraEditors.ToggleSwitch();
-            this.barManager1 = new DevExpress.XtraBars.BarManager();
+            this.barManager1 = new DevExpress.XtraBars.BarManager(this.components);
             this.bar1 = new DevExpress.XtraBars.Bar();
             this.btnCtrlA = new DevExpress.XtraBars.BarButtonItem();
             this.btnCtrlI = new DevExpress.XtraBars.BarButtonItem();
@@ -150,11 +151,11 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
             this.chkPrintNow = new DevExpress.XtraEditors.CheckEdit();
             this.btnNewExpMest = new DevExpress.XtraEditors.SimpleButton();
             this.btnCancelExport = new DevExpress.XtraEditors.SimpleButton();
-            this.popupControlContainerMediMaty = new DevExpress.XtraBars.PopupControlContainer();
+            this.popupControlContainerMediMaty = new DevExpress.XtraBars.PopupControlContainer(this.components);
             this.gridControlMediMaty = new Inventec.Desktop.CustomControl.CustomGridControlWithFilterMultiColumn();
             this.gridViewMediMaty = new Inventec.Desktop.CustomControl.CustomGridViewWithFilterMultiColumn();
             this.txtMediMatyForPrescription = new DevExpress.XtraEditors.ButtonEdit();
-            this.popupControlContainer1 = new DevExpress.XtraBars.PopupControlContainer();
+            this.popupControlContainer1 = new DevExpress.XtraBars.PopupControlContainer(this.components);
             this.gridControlPopupUser = new DevExpress.XtraGrid.GridControl();
             this.gridViewPopupUser = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.cboAge = new DevExpress.XtraEditors.LookUpEdit();
@@ -206,7 +207,7 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
             this.treeListColumn8 = new DevExpress.XtraTreeList.Columns.TreeListColumn();
             this.repositoryItemSpinEdit__Amount = new DevExpress.XtraEditors.Repository.RepositoryItemSpinEdit();
             this.repositoryItemBtnView = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
-            this.imageCollection1 = new DevExpress.Utils.ImageCollection();
+            this.imageCollection1 = new DevExpress.Utils.ImageCollection(this.components);
             this.cboGender = new DevExpress.XtraEditors.GridLookUpEdit();
             this.gridLookUpEdit1View = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.txtTreatmentCode = new DevExpress.XtraEditors.TextEdit();
@@ -270,9 +271,9 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
             this.layoutControlItem50 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem51 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem52 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.dxValidationProvider_Save = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider();
-            this.dxValidationProvider_Add = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider();
-            this.toolTipController1 = new DevExpress.Utils.ToolTipController();
+            this.dxValidationProvider_Save = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider(this.components);
+            this.dxValidationProvider_Add = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider(this.components);
+            this.toolTipController1 = new DevExpress.Utils.ToolTipController(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
             this.layoutControl1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.toggleSwitch1.Properties)).BeginInit();
@@ -1139,6 +1140,7 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
             this.treeListColumn_Result_ServiceUnitName,
             this.treeListColumn_Result_Concentra,
             this.treeListColumn_Result_NationalName});
+            this.treeListResult.Cursor = System.Windows.Forms.Cursors.Default;
             this.treeListResult.Location = new System.Drawing.Point(2, 348);
             this.treeListResult.Name = "treeListResult";
             this.treeListResult.OptionsView.AutoWidth = false;
@@ -1768,7 +1770,7 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
             this.cboTHX.Properties.AutoHeight = false;
             this.cboTHX.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo),
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete, "", -1, true, false, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject9, serializableAppearanceObject10, serializableAppearanceObject11, serializableAppearanceObject12, "", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete, "", -1, true, false, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject1, serializableAppearanceObject2, serializableAppearanceObject3, serializableAppearanceObject4, "", null, null, true)});
             this.cboTHX.Properties.NullText = "";
             this.cboTHX.Properties.PopupSizeable = false;
             this.cboTHX.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.Standard;
@@ -2270,6 +2272,7 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
             this.treeListColumn9,
             this.treeListColumn7,
             this.treeListColumn8});
+            this.treeListMediMate.Cursor = System.Windows.Forms.Cursors.Default;
             this.treeListMediMate.KeyFieldName = "CONCRETE_ID__IN_SETY";
             this.treeListMediMate.Location = new System.Drawing.Point(2, 204);
             this.treeListMediMate.Name = "treeListMediMate";
@@ -2420,7 +2423,7 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
             // 
             this.repositoryItemBtnView.AutoHeight = false;
             this.repositoryItemBtnView.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("repositoryItemBtnView.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject1, serializableAppearanceObject2, serializableAppearanceObject3, serializableAppearanceObject4, "", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("repositoryItemBtnView.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject5, serializableAppearanceObject6, serializableAppearanceObject7, serializableAppearanceObject8, "", null, null, true)});
             this.repositoryItemBtnView.Name = "repositoryItemBtnView";
             this.repositoryItemBtnView.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             this.repositoryItemBtnView.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.repositoryItemBtnView_ButtonClick);
