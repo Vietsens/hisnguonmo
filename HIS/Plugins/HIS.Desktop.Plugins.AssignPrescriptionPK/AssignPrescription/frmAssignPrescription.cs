@@ -87,6 +87,10 @@ using System.Configuration;
 using System.Net;
 using HIS.Desktop.Plugins.AssignPrescriptionPK.SuggestPrescriptionsInfo;
 using DevExpress.Utils.OAuth.Provider;
+using HIS.Desktop.Plugins.Library.PrintBordereau.ADO;
+using HIS.Desktop.Plugins.Library.PrintBordereau.Base;
+using HIS.Desktop.Plugins.Library.PrintBordereau;
+using Inventec.Common.SignLibrary.DTO;
 
 
 namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
@@ -152,6 +156,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
         List<MOS.EFMODEL.DataModels.HIS_PATIENT_TYPE> currentPatientTypes = null;
         HIS_MEDICINE_TYPE_TUT medicineTypeTutSelected;
         HIS_EXP_MEST_MATERIAL materialTypeTutSelected;
+        V_HIS_PATIENT patientPrint;
         List<MOS.EFMODEL.DataModels.HIS_SERE_SERV> sereServsInTreatmentRaw = new List<MOS.EFMODEL.DataModels.HIS_SERE_SERV>();
         internal List<MOS.EFMODEL.DataModels.HIS_SERE_SERV> sereServWithTreatment = new List<MOS.EFMODEL.DataModels.HIS_SERE_SERV>();
         internal List<MOS.EFMODEL.DataModels.HIS_SERE_SERV> sereServWithMultilTreatment = new List<MOS.EFMODEL.DataModels.HIS_SERE_SERV>();
@@ -242,6 +247,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
         List<MOS.EFMODEL.DataModels.HIS_SERVICE_REQ_METY> serviceReqMetys { get; set; }
         List<MOS.EFMODEL.DataModels.HIS_SERVICE_REQ_MATY> serviceReqMatys { get; set; }
         MOS.EFMODEL.DataModels.V_HIS_ROOM requestRoom;
+        HisServiceReqListResultSDO serviceReqComboResultSDO { get; set; }
         HIS_DHST currentDhst;
         bool isNotLoadMediMatyByMediStockInitForm;
         bool IsHandlerWhileOpionGroupSelectedIndexChanged;
@@ -352,6 +358,12 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
         HIS_MEDICINE_TYPE_TUT medicineTypehtu { get; set; }
         System.Windows.Forms.Timer timerInitFormAssignPrescription { get; set; }
         bool shouldAutoUpdateMemHtu = false;
+        List<HIS_CONFIG> listConfig = new List<HIS_CONFIG>();
+        private HIS_CONFIG selectedConfig = new HIS_CONFIG();
+        List<LoaiPhieuInADO> lstLoaiPhieu;
+        private bool IsActionButtonPrintBill = false;
+        Dictionary<long, List<DocumentSignedUpdateIGSysResultDTO>> dSignedList = new Dictionary<long, List<DocumentSignedUpdateIGSysResultDTO>>();
+        V_HIS_TREATMENT_FEE treatmentPrint;
         #endregion
 
         #region Construct
@@ -1124,7 +1136,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                 this.SetDefaultData();
                 LogSystem.Debug("frmAssignPrescription_Load. 7");
                 this.SetDefaultUC();
-
+                this.LoadDataForPrint();
                 LogSystem.Debug("frmAssignPrescription_Load. 8");
                 LogSystem.Debug("frmAssignPrescription_Load. 9");
                 
@@ -2015,6 +2027,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
         private void btnNew_Click(object sender, EventArgs e)
         {
             LogTheadInSessionInfo(NewClick, !GlobalStore.IsCabinet ? "NewPrescription" : "NewMedicalStore");
+            btnQR.Enabled = false;
         }
 
         private void NewClick()
@@ -2153,6 +2166,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
         {
             try
             {
+
                 this.bIsSelectMultiPatientProcessing = false;
 
                 if (this.gridViewServiceProcess.IsEditing)
@@ -2456,6 +2470,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                                 AlertLogADO ado = new AlertLogADO(sdo, mediMatyType);
                                 AlertLogsSdo.Add(ado);
                             }, minType, minOverDose.FirstOrDefault(), AmountInDay);
+                            LogSystem.Info("minType: " + minType);
                             frm.ShowDialog();
                         }
                         else
@@ -2703,6 +2718,7 @@ o.SERVICE_ID == medi.SERVICE_ID && o.TDL_INTRUCTION_TIME.ToString().Substring(0,
                                                         medi.IsNoPrescription = false;
                                                     }
                                                 }, medi, false, false, treatmentId, null, minType, minOverDose.FirstOrDefault(), AmountInDay);
+                                                LogSystem.Info("minType1: " + minType);
                                                 frm.ShowDialog();
                                             }
                                             else
@@ -2842,6 +2858,7 @@ o.SERVICE_ID == medi.SERVICE_ID && o.TDL_INTRUCTION_TIME.ToString().Substring(0,
                                                     AlertLogADO ado = new AlertLogADO(sdo, medi);
                                                     AlertLogsSdo.Add(ado);
                                                 }, minOverDose.Select(o => GetValueFromDataType(o.DATA_TYPE, ConvertToDecimal(lstSereServTein.FirstOrDefault(p => p.TEST_INDEX_ID == o.TEST_INDEX_ID).VALUE), dhst, chiSoMLCT)).Min(), minOverDose.FirstOrDefault(), AmountInDay);
+                                                LogSystem.Info("minType3: " + minOverDose.Select(o => GetValueFromDataType(o.DATA_TYPE, ConvertToDecimal(lstSereServTein.FirstOrDefault(p => p.TEST_INDEX_ID == o.TEST_INDEX_ID).VALUE), dhst, chiSoMLCT)).Min());
                                                 frm.ShowDialog();
                                             }
                                             else
@@ -3079,7 +3096,28 @@ o.SERVICE_ID == medi.SERVICE_ID && o.TDL_INTRUCTION_TIME.ToString().Substring(0,
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
-
+        private static int Age(long dob)
+        {
+            int result = -1;
+            try
+            {
+                if (dob > 0)
+                {
+                    System.DateTime? sysDob = System.DateTime.ParseExact(dob.ToString(), "yyyyMMddHHmmss",
+                                       System.Globalization.CultureInfo.InvariantCulture);
+                    if (sysDob != null)
+                    {
+                        System.DateTime today = System.DateTime.Today;
+                        result = today.Year - sysDob.Value.Year;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                result = -1;
+            }
+            return result;
+        }
 
         internal decimal GetValueFromDataType(short? type, decimal value, HIS_DHST dhst, decimal? chiSoMLCT)
         {
@@ -3092,19 +3130,20 @@ o.SERVICE_ID == medi.SERVICE_ID && o.TDL_INTRUCTION_TIME.ToString().Substring(0,
                         //Công thức eGFR 
                         if (HisConfigCFG.ASSIGNPRESCRIPTION_EGFROPTION == "1")
                         {
-                            result = 186 * (decimal)Math.Pow((double)(chiSoMLCT * value), (double)(-1.154)) * (decimal)Math.Pow(Inventec.Common.DateTime.Calculation.Age(patientDob),
+                            result = 186 * (decimal)Math.Pow((double)(chiSoMLCT * value), (double)(-1.154)) * (decimal)Math.Pow(Age(patientDob),
                                 (double)(-0.203)) * (genderName.ToLower().Equals("nữ") ? (decimal)0.742 : 1);
                         }
                         else
                         {
-                            result = 175 * (decimal)Math.Pow((double)(chiSoMLCT * value), (double)(-1.154)) * (decimal)Math.Pow(Inventec.Common.DateTime.Calculation.Age(patientDob),
+                            result = 175 * (decimal)Math.Pow((double)(chiSoMLCT * value), (double)(-1.154)) * (decimal)Math.Pow(Age(patientDob),
                                 (double)(-0.203)) * (genderName.ToLower().Equals("nữ") ? (decimal)0.742 : 1);
                         }
 
                         break;
                     case IMSys.DbConfig.HIS_RS.HIS_MEDICINE_SERVICE.DATA_TYPE__CRCL:
                         //Công thức CrCl
-                        result = ((140 - Inventec.Common.DateTime.Calculation.Age(patientDob)) * (dhst != null && dhst.ID > 0 ? dhst.WEIGHT * (genderName.ToLower().Equals("nữ") ? (decimal)0.85 : 1) : 1)) / (72 * chiSoMLCT * value) ?? 0;
+                        result = ((140 - Age(patientDob)) * (dhst != null && dhst.ID > 0 ? dhst.WEIGHT * (genderName.ToLower().Equals("nữ") ? (decimal)0.85 : 1) : 1)) / (72 * chiSoMLCT * value) ?? 0;
+                        LogSystem.Info("result; " + result);
                         break;
                     default:
                         break;
@@ -3117,6 +3156,8 @@ o.SERVICE_ID == medi.SERVICE_ID && o.TDL_INTRUCTION_TIME.ToString().Substring(0,
             Inventec.Common.Logging.LogSystem.Warn(result + "__VALUE" + value);
             return result;
         }
+
+
 
         internal decimal ConvertToDecimal(string value)
         {
@@ -3143,6 +3184,7 @@ o.SERVICE_ID == medi.SERVICE_ID && o.TDL_INTRUCTION_TIME.ToString().Substring(0,
                 //ProcessSaveForListSelect(HIS.Desktop.Plugins.AssignPrescriptionPK.SAVETYPE.SAVE);
 
                 LogTheadInSessionInfo(() => ProcessSaveForListSelect(HIS.Desktop.Plugins.AssignPrescriptionPK.SAVETYPE.SAVE), !GlobalStore.IsCabinet ? "SavePrescription" : "SaveMedicalStore");
+                CheckEnableBtnQR();
             }
             catch (Exception ex)
             {
@@ -3156,6 +3198,7 @@ o.SERVICE_ID == medi.SERVICE_ID && o.TDL_INTRUCTION_TIME.ToString().Substring(0,
             {
                 //ProcessSaveForListSelect(HIS.Desktop.Plugins.AssignPrescriptionPK.SAVETYPE.SAVE_PRINT_NOW);
                 LogTheadInSessionInfo(() => ProcessSaveForListSelect(HIS.Desktop.Plugins.AssignPrescriptionPK.SAVETYPE.SAVE_PRINT_NOW), !GlobalStore.IsCabinet ? "SaveAndPrintPrescription" : "SaveAndPrintMedicalStore");
+                CheckEnableBtnQR();
             }
             catch (Exception ex)
             {
@@ -12943,6 +12986,224 @@ o.SERVICE_ID == medi.SERVICE_ID && o.TDL_INTRUCTION_TIME.ToString().Substring(0,
                     }
                 }, requestData);
                 frmAISuggestion.ShowDialog();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+        private void CheckEnableBtnQR()
+        {
+            try
+            {
+                listConfig = BackendDataWorker.Get<HIS_CONFIG>().Where(o => o.KEY.StartsWith("HIS.Desktop.Plugins.PaymentQrCode") && !string.IsNullOrEmpty(o.VALUE)).ToList();
+
+                btnQR.Enabled = true;
+            }
+            catch (Exception ex)
+            {
+                LogSystem.Error(ex);
+            }
+        }
+        private void btnQR_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (this.requestRoom != null && !string.IsNullOrEmpty(this.requestRoom.QR_CONFIG_JSON))
+                {
+                    List<object> listArgs = new List<object>();
+                    TransReqQRADO adoqr = new TransReqQRADO();
+                    try
+                    {
+                        var json = Newtonsoft.Json.JsonConvert.DeserializeObject<BankInfo>(this.requestRoom.QR_CONFIG_JSON);
+                        if (json != null)
+                        {
+                            adoqr.ConfigValue = new HIS_CONFIG() { VALUE = json.VALUE, KEY = string.Format("HIS.Desktop.Plugins.PaymentQrCode.{0}Info", json.BANK) };
+                            adoqr.BankName = json.BANK;
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        Inventec.Common.Logging.LogSystem.Error(ex);
+                        XtraMessageBox.Show("Định dạng Qr thiết lập trong kho phòng không hợp lệ");
+                        return;
+                    }
+                    adoqr.TreatmentId = this.treatmentId;
+                    adoqr.TransReqId = 0;
+                    adoqr.DelegtePrint = this.serviceReqComboResultSDO != null ? (HIS.Desktop.Common.RefeshReference)IN_QR : null;
+                    listArgs.Add(adoqr);
+                    LogSystem.Debug("_____Load module : HIS.Desktop.Plugins.CreateTransReqQR ; KEY: " + selectedConfig.KEY);
+
+                    HIS.Desktop.ModuleExt.PluginInstanceBehavior.ShowModule("HIS.Desktop.Plugins.CreateTransReqQR", this.currentModule.RoomId, this.currentModule.RoomTypeId, listArgs);
+                }
+                else
+                {
+                    if (listConfig != null)
+                    {
+                        if (listConfig.Count > 1)
+                        {
+                            popupMenu1.ClearLinks();
+                            foreach (var item in listConfig)
+                            {
+                                string key = "";
+                                string value = item.KEY;
+                                int index = value.IndexOf("Info");
+                                if (index > 0)
+                                {
+                                    var shotkey = value.Substring(0, index);
+                                    string[] parts = shotkey.Split('.');
+                                    if (parts.Length > 0)
+                                    {
+                                        key = parts[parts.Length - 1]; // Lấy phần cuối cùng sau khi tách
+                                    }
+                                }
+                                else
+                                {
+                                    key = item.KEY;
+                                }
+
+
+                                BarButtonItem btnOption = new BarButtonItem(null, key);
+                                btnOption.ItemClick += (s, args) =>
+                                {
+
+                                    selectedConfig = item;
+                                    List<object> listArgs = new List<object>();
+                                    TransReqQRADO adoqr = new TransReqQRADO();
+                                    adoqr.TreatmentId = this.treatmentId;
+                                    adoqr.ConfigValue = selectedConfig;
+                                    adoqr.TransReqId = 0;
+                                    adoqr.DelegtePrint = this.serviceReqComboResultSDO != null ? (HIS.Desktop.Common.RefeshReference)IN_QR : null;
+                                    adoqr.BankName = key;
+                                    listArgs.Add(adoqr);
+                                    LogSystem.Debug("_____Load module : HIS.Desktop.Plugins.CreateTransReqQR ; KEY: " + selectedConfig.KEY);
+
+                                    HIS.Desktop.ModuleExt.PluginInstanceBehavior.ShowModule("HIS.Desktop.Plugins.CreateTransReqQR", this.currentModule.RoomId, this.currentModule.RoomTypeId, listArgs);
+
+                                };
+                                popupMenu1.AddItem(btnOption);
+                            }
+
+                            popupMenu1.ShowPopup(Control.MousePosition);
+                        }
+                        else
+                        {
+                            selectedConfig = listConfig[0];
+                            List<object> listArgs = new List<object>();
+                            TransReqQRADO adoqr = new TransReqQRADO();
+                            adoqr.TreatmentId = this.treatmentId;
+                            adoqr.ConfigValue = selectedConfig;
+                            adoqr.TransReqId = 0;
+                            adoqr.DelegtePrint = this.serviceReqComboResultSDO != null ? (HIS.Desktop.Common.RefeshReference)IN_QR : null;
+
+                            string key = "";
+                            string value = selectedConfig.KEY;
+                            int index = value.IndexOf("Info");
+                            if (index > 0)
+                            {
+                                var shotkey = value.Substring(0, index);
+                                string[] parts = shotkey.Split('.');
+                                if (parts.Length > 0)
+                                {
+                                    key = parts[parts.Length - 1]; // Lấy phần cuối cùng sau khi tách
+                                }
+                            }
+                            else
+                            {
+                                key = selectedConfig.KEY;
+                            }
+
+                            adoqr.BankName = key;
+                            listArgs.Add(adoqr);
+                            LogSystem.Debug("_____Load module : HIS.Desktop.Plugins.CreateTransReqQR " + selectedConfig.KEY);
+                            HIS.Desktop.ModuleExt.PluginInstanceBehavior.ShowModule("HIS.Desktop.Plugins.CreateTransReqQR", this.currentModule.RoomId, this.currentModule.RoomTypeId, listArgs);
+
+
+                        }
+
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                LogSystem.Error("Loi khi thuc hien thanh toan QR tam thu: " + ex);
+            }
+        }
+
+        private void IN_QR()
+        {
+            try
+            {
+
+                if (this.lstLoaiPhieu != null && this.lstLoaiPhieu.Count > 0)
+                {
+                    //var checkHDBN = this.lstLoaiPhieu.FirstOrDefault(o => o.Check == true && o.ID == "gridView7_2");
+
+                    //var checkYCDV = this.lstLoaiPhieu.FirstOrDefault(o => o.Check == true && o.ID == "gridView7_1");
+
+                    var checkQR = this.lstLoaiPhieu.FirstOrDefault(o => o.Check == true && o.ID == "gridView7_3");
+
+                    //if (checkHDBN != null)
+                    //{
+                    //    InPhieuHuoangDanBenhNhan(true);
+                    //}
+
+                    //if (checkYCDV != null)
+                    //{
+                    //    InPhieuYeuCauDichVu(true);
+                    //}
+
+                    if (checkQR != null)
+                    {
+                        InYeuCauThanhToanQR(chkPrint.Checked, false, true);
+                    }
+                }
+
+
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void InYeuCauThanhToanQR(bool printTH, bool isSign, bool isPrintPreview)
+        {
+            try
+            {
+
+                if (serviceReqComboResultSDO != null || IsActionButtonPrintBill)
+                {
+                    BordereauInitData data = new BordereauInitData();
+                    HIS.Desktop.Plugins.Library.PrintBordereau.PrintBordereauProcessor processor = new PrintBordereauProcessor(this.currentModule.RoomId, this.currentModule.RoomTypeId, treatmentId, patientPrint.ID, null, null, GetDocmentSigned);
+                    if (IsActionButtonPrintBill)
+                        processor.IsActionButtonPrintBill = true;
+                    if (printTH && !isSign)
+                    {
+                        Inventec.Common.Logging.LogSystem.Error("Mps000446_____ PRINT_NOW");
+                        processor.Print("Mps000446", PrintOption.Value.PRINT_NOW, null);
+                    }
+                    else if (printTH && isSign)
+                    {
+                        Inventec.Common.Logging.LogSystem.Error("Mps000446_____ PRINT_NOW_AND_EMR_SIGN_NOW");
+                        processor.Print("Mps000446", PrintOption.Value.PRINT_NOW_AND_EMR_SIGN_NOW, null);
+                    }
+                    else if (isPrintPreview && isSign)
+                    {
+                        Inventec.Common.Logging.LogSystem.Error("Mps000446_____ EMR_SIGN_AND_PRINT_PREVIEW");
+                        processor.Print("Mps000446", PrintOption.Value.EMR_SIGN_AND_PRINT_PREVIEW, null);
+                    }
+                    else if (!printTH && isSign)
+                    {
+                        Inventec.Common.Logging.LogSystem.Error("Mps000446_____ EMR_SIGN_NOW");
+                        processor.Print("Mps000446", PrintOption.Value.EMR_SIGN_NOW, null);
+                    }
+                    else if (isPrintPreview)
+                    {
+                        Inventec.Common.Logging.LogSystem.Error("Mps000446_____ NULL");
+                        processor.Print("Mps000446", null, null);
+                    }
+                }
             }
             catch (Exception ex)
             {

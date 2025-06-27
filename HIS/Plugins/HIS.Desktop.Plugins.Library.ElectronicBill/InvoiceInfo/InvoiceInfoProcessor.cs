@@ -49,7 +49,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.InvoiceInfo
                     result.Note = dataInput.Transaction.DESCRIPTION;
                     result.TransactionTime = dataInput.Transaction.TRANSACTION_TIME;
 
-                    result.BuyerEmail = dataInput.Transaction.BUYER_EMAIL;
+                    //result.BuyerEmail = dataInput.Transaction.BUYER_EMAIL;
 
                     patientCode = dataInput.Transaction.TDL_PATIENT_CODE;
                     treatmentCode = dataInput.Transaction.TDL_TREATMENT_CODE;

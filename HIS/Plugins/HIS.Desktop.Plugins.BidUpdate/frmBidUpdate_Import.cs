@@ -15,16 +15,17 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-using HIS.Desktop.LocalStorage.BackendData;
-using Inventec.Common.Logging;
-using Inventec.Desktop.Common.Message;
-using MOS.EFMODEL.DataModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using HIS.Desktop.LocalStorage.BackendData;
+using HIS.UC.MedicineType;
+using Inventec.Common.Logging;
+using Inventec.Desktop.Common.Message;
+using MOS.EFMODEL.DataModels;
 
 namespace HIS.Desktop.Plugins.BidUpdate
 {
@@ -49,10 +50,9 @@ namespace HIS.Desktop.Plugins.BidUpdate
                         {
                             this.ListAdoImport = new List<ADO.MedicineTypeADO>();
                             var listMedicine = ImpMestListProcessor.Where(o => !String.IsNullOrWhiteSpace(o.IS_MEDICINE) && o.IS_MEDICINE.Trim().ToLower() == Base.GlobalConfig.IsMedicine.ToLower()).ToList();
-                            var listMaterial = ImpMestListProcessor.Where(o => String.IsNullOrWhiteSpace(o.IS_MEDICINE)&&o.IsNotNullRow).ToList();
+                            var listMaterial = ImpMestListProcessor.Where(o => String.IsNullOrWhiteSpace(o.IS_MEDICINE) && o.IsNotNullRow).ToList();
                             addListMedicineTypeToProcessList(listMedicine);
                             addListMaterialTypeToProcessList(listMaterial);
-
                             List<ADO.MedicineTypeADO> listError = new List<ADO.MedicineTypeADO>();
                             if (ListAdoImport != null && ListAdoImport.Count > 0)
                             {
@@ -178,7 +178,10 @@ namespace HIS.Desktop.Plugins.BidUpdate
 
                     medicineType.IMP_PRICE = Inventec.Common.TypeConvert.Parse.ToDecimal(medicineTypeImport.IMP_PRICE.ToString());
                     medicineType.AMOUNT = Inventec.Common.TypeConvert.Parse.ToDecimal(medicineTypeImport.AMOUNT.ToString());
-
+                    if (!string.IsNullOrEmpty(medicineTypeImport.BATCH_DIVISION_CODE))
+                    {
+                        medicineType.BATCH_DIVISION_CODE = medicineTypeImport.BATCH_DIVISION_CODE;
+                    }
                     if (medicineTypeImport.SERVICE_UNIT_CODE != null)
                     {
                         var serrviceUnit = Base.GlobalConfig.ListServiceUnit.FirstOrDefault(o => o.SERVICE_UNIT_CODE == medicineTypeImport.SERVICE_UNIT_CODE);
@@ -446,7 +449,10 @@ namespace HIS.Desktop.Plugins.BidUpdate
                     medicineType.IdRow = setIdRow(this.ListAdoImport);
                     medicineType.IMP_PRICE = materialTypeImport.IMP_PRICE;
                     medicineType.AMOUNT = materialTypeImport.AMOUNT;
-
+                    if (!string.IsNullOrEmpty(materialTypeImport.BATCH_DIVISION_CODE))
+                    {
+                        medicineType.BATCH_DIVISION_CODE = materialTypeImport.BATCH_DIVISION_CODE;
+                    }
                     if (materialTypeImport.SERVICE_UNIT_CODE != null)
                     {
                         var serrviceUnit = Base.GlobalConfig.ListServiceUnit.FirstOrDefault(o => o.SERVICE_UNIT_CODE == materialTypeImport.SERVICE_UNIT_CODE);

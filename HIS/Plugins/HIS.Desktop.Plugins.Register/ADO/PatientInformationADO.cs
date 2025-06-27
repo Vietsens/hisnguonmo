@@ -60,5 +60,6 @@ namespace HIS.Desktop.Plugins.Register.ADO
         public bool IsPatientOld { get; set; }
         public bool IsEdited { get; set; }
         public bool IsNoCCCD { get;set; }
+        public bool IsChangeStrucAddress { get; set; }
     }
 }

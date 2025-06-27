@@ -35,6 +35,15 @@
             this.repositoryItemPictureEdit1 = new DevExpress.XtraEditors.Repository.RepositoryItemPictureEdit();
             this.tileViewColumnName = new DevExpress.XtraGrid.Columns.TileViewColumn();
             this.layoutControl1 = new DevExpress.XtraLayout.LayoutControl();
+            this.groupControl1 = new DevExpress.XtraEditors.GroupControl();
+            this.layoutControl2 = new DevExpress.XtraLayout.LayoutControl();
+            this.xtraScrollableControl1 = new DevExpress.XtraEditors.XtraScrollableControl();
+            this.layoutControl3 = new DevExpress.XtraLayout.LayoutControl();
+            this.lblYKhoa = new DevExpress.XtraEditors.LabelControl();
+            this.layoutControlGroup4 = new DevExpress.XtraLayout.LayoutControlGroup();
+            this.layoutControlItem13 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.layoutControlGroup3 = new DevExpress.XtraLayout.LayoutControlGroup();
+            this.layoutControlItem12 = new DevExpress.XtraLayout.LayoutControlItem();
             this.btnResultsAI = new DevExpress.XtraEditors.SimpleButton();
             this.btnImageAnalysis = new DevExpress.XtraEditors.SimpleButton();
             this.toggleSwitch2 = new DevExpress.XtraEditors.ToggleSwitch();
@@ -62,19 +71,22 @@
             this.layoutControlItem6 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem5 = new DevExpress.XtraLayout.LayoutControlItem();
             this.emptySpaceItem2 = new DevExpress.XtraLayout.EmptySpaceItem();
-            this.groupControl1 = new DevExpress.XtraEditors.GroupControl();
             this.layoutControlItem11 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.layoutControl2 = new DevExpress.XtraLayout.LayoutControl();
-            this.layoutControlGroup3 = new DevExpress.XtraLayout.LayoutControlGroup();
-            this.xtraScrollableControl1 = new DevExpress.XtraEditors.XtraScrollableControl();
-            this.layoutControlItem12 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.layoutControl3 = new DevExpress.XtraLayout.LayoutControl();
-            this.layoutControlGroup4 = new DevExpress.XtraLayout.LayoutControlGroup();
-            this.lblYKhoa = new DevExpress.XtraEditors.LabelControl();
-            this.layoutControlItem13 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.tileViewColumn1 = new DevExpress.XtraGrid.Columns.TileViewColumn();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemPictureEdit1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
             this.layoutControl1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.groupControl1)).BeginInit();
+            this.groupControl1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControl2)).BeginInit();
+            this.layoutControl2.SuspendLayout();
+            this.xtraScrollableControl1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControl3)).BeginInit();
+            this.layoutControl3.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup4)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem13)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup3)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem12)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.toggleSwitch2.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.CardControl)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.tileView1)).BeginInit();
@@ -93,18 +105,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem6)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem5)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem2)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.groupControl1)).BeginInit();
-            this.groupControl1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem11)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControl2)).BeginInit();
-            this.layoutControl2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup3)).BeginInit();
-            this.xtraScrollableControl1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem12)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControl3)).BeginInit();
-            this.layoutControl3.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup4)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem13)).BeginInit();
             this.SuspendLayout();
             // 
             // tileViewColumnIMG
@@ -155,6 +156,99 @@
             this.layoutControl1.TabIndex = 0;
             this.layoutControl1.Text = "layoutControl1";
             // 
+            // groupControl1
+            // 
+            this.groupControl1.Controls.Add(this.layoutControl2);
+            this.groupControl1.Location = new System.Drawing.Point(747, 2);
+            this.groupControl1.Name = "groupControl1";
+            this.groupControl1.Size = new System.Drawing.Size(520, 640);
+            this.groupControl1.TabIndex = 16;
+            this.groupControl1.Text = "Kết quả phân tích hình ảnh y khoa";
+            // 
+            // layoutControl2
+            // 
+            this.layoutControl2.Controls.Add(this.xtraScrollableControl1);
+            this.layoutControl2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.layoutControl2.Location = new System.Drawing.Point(2, 20);
+            this.layoutControl2.Name = "layoutControl2";
+            this.layoutControl2.Root = this.layoutControlGroup3;
+            this.layoutControl2.Size = new System.Drawing.Size(516, 618);
+            this.layoutControl2.TabIndex = 0;
+            this.layoutControl2.Text = "layoutControl2";
+            // 
+            // xtraScrollableControl1
+            // 
+            this.xtraScrollableControl1.Controls.Add(this.layoutControl3);
+            this.xtraScrollableControl1.Location = new System.Drawing.Point(2, 2);
+            this.xtraScrollableControl1.Name = "xtraScrollableControl1";
+            this.xtraScrollableControl1.Size = new System.Drawing.Size(512, 614);
+            this.xtraScrollableControl1.TabIndex = 4;
+            // 
+            // layoutControl3
+            // 
+            this.layoutControl3.Controls.Add(this.lblYKhoa);
+            this.layoutControl3.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.layoutControl3.Location = new System.Drawing.Point(0, 0);
+            this.layoutControl3.Name = "layoutControl3";
+            this.layoutControl3.Root = this.layoutControlGroup4;
+            this.layoutControl3.Size = new System.Drawing.Size(512, 614);
+            this.layoutControl3.TabIndex = 0;
+            this.layoutControl3.Text = "layoutControl3";
+            // 
+            // lblYKhoa
+            // 
+            this.lblYKhoa.Appearance.Font = new System.Drawing.Font("Tahoma", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblYKhoa.Appearance.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
+            this.lblYKhoa.AutoEllipsis = true;
+            this.lblYKhoa.AutoSizeMode = DevExpress.XtraEditors.LabelAutoSizeMode.Vertical;
+            this.lblYKhoa.Location = new System.Drawing.Point(12, 12);
+            this.lblYKhoa.Name = "lblYKhoa";
+            this.lblYKhoa.Size = new System.Drawing.Size(488, 18);
+            this.lblYKhoa.StyleController = this.layoutControl3;
+            this.lblYKhoa.TabIndex = 4;
+            this.lblYKhoa.Text = "Chưa có kết quả phân tích hình y khoa từ AI";
+            // 
+            // layoutControlGroup4
+            // 
+            this.layoutControlGroup4.EnableIndentsWithoutBorders = DevExpress.Utils.DefaultBoolean.True;
+            this.layoutControlGroup4.GroupBordersVisible = false;
+            this.layoutControlGroup4.Items.AddRange(new DevExpress.XtraLayout.BaseLayoutItem[] {
+            this.layoutControlItem13});
+            this.layoutControlGroup4.Location = new System.Drawing.Point(0, 0);
+            this.layoutControlGroup4.Name = "layoutControlGroup4";
+            this.layoutControlGroup4.Size = new System.Drawing.Size(512, 614);
+            this.layoutControlGroup4.TextVisible = false;
+            // 
+            // layoutControlItem13
+            // 
+            this.layoutControlItem13.Control = this.lblYKhoa;
+            this.layoutControlItem13.Location = new System.Drawing.Point(0, 0);
+            this.layoutControlItem13.Name = "layoutControlItem13";
+            this.layoutControlItem13.Size = new System.Drawing.Size(492, 594);
+            this.layoutControlItem13.TextSize = new System.Drawing.Size(0, 0);
+            this.layoutControlItem13.TextVisible = false;
+            // 
+            // layoutControlGroup3
+            // 
+            this.layoutControlGroup3.EnableIndentsWithoutBorders = DevExpress.Utils.DefaultBoolean.True;
+            this.layoutControlGroup3.GroupBordersVisible = false;
+            this.layoutControlGroup3.Items.AddRange(new DevExpress.XtraLayout.BaseLayoutItem[] {
+            this.layoutControlItem12});
+            this.layoutControlGroup3.Location = new System.Drawing.Point(0, 0);
+            this.layoutControlGroup3.Name = "layoutControlGroup3";
+            this.layoutControlGroup3.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
+            this.layoutControlGroup3.Size = new System.Drawing.Size(516, 618);
+            this.layoutControlGroup3.TextVisible = false;
+            // 
+            // layoutControlItem12
+            // 
+            this.layoutControlItem12.Control = this.xtraScrollableControl1;
+            this.layoutControlItem12.Location = new System.Drawing.Point(0, 0);
+            this.layoutControlItem12.Name = "layoutControlItem12";
+            this.layoutControlItem12.Size = new System.Drawing.Size(516, 618);
+            this.layoutControlItem12.TextSize = new System.Drawing.Size(0, 0);
+            this.layoutControlItem12.TextVisible = false;
+            // 
             // btnResultsAI
             // 
             this.btnResultsAI.Enabled = false;
@@ -202,29 +296,32 @@
             // 
             // tileView1
             // 
+            this.tileView1.Appearance.GroupText.Font = new System.Drawing.Font("Tahoma", 10F, System.Drawing.FontStyle.Bold);
+            this.tileView1.Appearance.GroupText.Options.UseFont = true;
             this.tileView1.Columns.AddRange(new DevExpress.XtraGrid.Columns.GridColumn[] {
             this.tileViewCheck,
             this.tileViewColumnIMG,
-            this.tileViewColumnName});
+            this.tileViewColumnName,
+            this.tileViewColumn1});
             this.tileView1.ColumnSet.CheckedColumn = this.tileViewCheck;
+            this.tileView1.ColumnSet.GroupColumn = this.tileViewColumn1;
             this.tileView1.GridControl = this.CardControl;
             this.tileView1.Name = "tileView1";
-            this.tileView1.OptionsTiles.ColumnCount = 4;
             this.tileView1.OptionsTiles.HorizontalContentAlignment = DevExpress.Utils.HorzAlignment.Near;
             this.tileView1.OptionsTiles.IndentBetweenGroups = 10;
             this.tileView1.OptionsTiles.ItemSize = new System.Drawing.Size(150, 200);
             this.tileView1.OptionsTiles.Orientation = System.Windows.Forms.Orientation.Vertical;
             this.tileView1.OptionsTiles.Padding = new System.Windows.Forms.Padding(5);
-            this.tileView1.OptionsTiles.ShowGroupText = false;
             this.tileView1.OptionsView.ShowFilterPanelMode = DevExpress.XtraGrid.Views.Base.ShowFilterPanelMode.Never;
             this.tileView1.SortInfo.AddRange(new DevExpress.XtraGrid.Columns.GridColumnSortInfo[] {
+            new DevExpress.XtraGrid.Columns.GridColumnSortInfo(this.tileViewColumn1, DevExpress.Data.ColumnSortOrder.Ascending),
             new DevExpress.XtraGrid.Columns.GridColumnSortInfo(this.tileViewColumnName, DevExpress.Data.ColumnSortOrder.Ascending)});
             tileViewItemElement1.Column = this.tileViewColumnIMG;
             tileViewItemElement1.Height = 20;
             tileViewItemElement1.ImageAlignment = DevExpress.XtraEditors.TileItemContentAlignment.Manual;
             tileViewItemElement1.ImageLocation = new System.Drawing.Point(-12, -8);
             tileViewItemElement1.ImageScaleMode = DevExpress.XtraEditors.TileItemImageScaleMode.Stretch;
-            tileViewItemElement1.ImageSize = new System.Drawing.Size(160, 180);
+            tileViewItemElement1.ImageSize = new System.Drawing.Size(150, 180);
             tileViewItemElement1.Text = "tileViewColumnIMG";
             tileViewItemElement2.Appearance.Normal.Options.UseTextOptions = true;
             tileViewItemElement2.Appearance.Normal.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Near;
@@ -239,6 +336,7 @@
             this.tileView1.TileTemplate.Add(tileViewItemElement2);
             this.tileView1.ItemClick += new DevExpress.XtraGrid.Views.Tile.TileViewItemClickEventHandler(this.tileView1_ItemClick);
             this.tileView1.ItemDoubleClick += new DevExpress.XtraGrid.Views.Tile.TileViewItemClickEventHandler(this.tileView1_ItemDoubleClick);
+            this.tileView1.CustomColumnDisplayText += new DevExpress.XtraGrid.Views.Base.CustomColumnDisplayTextEventHandler(this.tileView1_CustomColumnDisplayText);
             // 
             // tileViewCheck
             // 
@@ -484,15 +582,6 @@
             this.emptySpaceItem2.Size = new System.Drawing.Size(11, 28);
             this.emptySpaceItem2.TextSize = new System.Drawing.Size(0, 0);
             // 
-            // groupControl1
-            // 
-            this.groupControl1.Controls.Add(this.layoutControl2);
-            this.groupControl1.Location = new System.Drawing.Point(747, 2);
-            this.groupControl1.Name = "groupControl1";
-            this.groupControl1.Size = new System.Drawing.Size(520, 640);
-            this.groupControl1.TabIndex = 16;
-            this.groupControl1.Text = "groupControl1";
-            // 
             // layoutControlItem11
             // 
             this.layoutControlItem11.Control = this.groupControl1;
@@ -502,86 +591,13 @@
             this.layoutControlItem11.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem11.TextVisible = false;
             // 
-            // layoutControl2
+            // tileViewColumn1
             // 
-            this.layoutControl2.Controls.Add(this.xtraScrollableControl1);
-            this.layoutControl2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.layoutControl2.Location = new System.Drawing.Point(2, 20);
-            this.layoutControl2.Name = "layoutControl2";
-            this.layoutControl2.Root = this.layoutControlGroup3;
-            this.layoutControl2.Size = new System.Drawing.Size(516, 618);
-            this.layoutControl2.TabIndex = 0;
-            this.layoutControl2.Text = "layoutControl2";
-            // 
-            // layoutControlGroup3
-            // 
-            this.layoutControlGroup3.EnableIndentsWithoutBorders = DevExpress.Utils.DefaultBoolean.True;
-            this.layoutControlGroup3.GroupBordersVisible = false;
-            this.layoutControlGroup3.Items.AddRange(new DevExpress.XtraLayout.BaseLayoutItem[] {
-            this.layoutControlItem12});
-            this.layoutControlGroup3.Location = new System.Drawing.Point(0, 0);
-            this.layoutControlGroup3.Name = "layoutControlGroup3";
-            this.layoutControlGroup3.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
-            this.layoutControlGroup3.Size = new System.Drawing.Size(516, 618);
-            this.layoutControlGroup3.TextVisible = false;
-            // 
-            // xtraScrollableControl1
-            // 
-            this.xtraScrollableControl1.Controls.Add(this.layoutControl3);
-            this.xtraScrollableControl1.Location = new System.Drawing.Point(2, 2);
-            this.xtraScrollableControl1.Name = "xtraScrollableControl1";
-            this.xtraScrollableControl1.Size = new System.Drawing.Size(512, 614);
-            this.xtraScrollableControl1.TabIndex = 4;
-            // 
-            // layoutControlItem12
-            // 
-            this.layoutControlItem12.Control = this.xtraScrollableControl1;
-            this.layoutControlItem12.Location = new System.Drawing.Point(0, 0);
-            this.layoutControlItem12.Name = "layoutControlItem12";
-            this.layoutControlItem12.Size = new System.Drawing.Size(516, 618);
-            this.layoutControlItem12.TextSize = new System.Drawing.Size(0, 0);
-            this.layoutControlItem12.TextVisible = false;
-            // 
-            // layoutControl3
-            // 
-            this.layoutControl3.Controls.Add(this.lblYKhoa);
-            this.layoutControl3.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.layoutControl3.Location = new System.Drawing.Point(0, 0);
-            this.layoutControl3.Name = "layoutControl3";
-            this.layoutControl3.Root = this.layoutControlGroup4;
-            this.layoutControl3.Size = new System.Drawing.Size(512, 614);
-            this.layoutControl3.TabIndex = 0;
-            this.layoutControl3.Text = "layoutControl3";
-            // 
-            // layoutControlGroup4
-            // 
-            this.layoutControlGroup4.EnableIndentsWithoutBorders = DevExpress.Utils.DefaultBoolean.True;
-            this.layoutControlGroup4.GroupBordersVisible = false;
-            this.layoutControlGroup4.Items.AddRange(new DevExpress.XtraLayout.BaseLayoutItem[] {
-            this.layoutControlItem13});
-            this.layoutControlGroup4.Location = new System.Drawing.Point(0, 0);
-            this.layoutControlGroup4.Name = "layoutControlGroup4";
-            this.layoutControlGroup4.Size = new System.Drawing.Size(512, 614);
-            this.layoutControlGroup4.TextVisible = false;
-            // 
-            // lblYKhoa
-            // 
-            this.lblYKhoa.Appearance.Font = new System.Drawing.Font("Tahoma", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblYKhoa.Location = new System.Drawing.Point(12, 12);
-            this.lblYKhoa.Name = "lblYKhoa";
-            this.lblYKhoa.Size = new System.Drawing.Size(291, 18);
-            this.lblYKhoa.StyleController = this.layoutControl3;
-            this.lblYKhoa.TabIndex = 4;
-            this.lblYKhoa.Text = "Chưa có kết quả phân tích hình y khoa từ AI";
-            // 
-            // layoutControlItem13
-            // 
-            this.layoutControlItem13.Control = this.lblYKhoa;
-            this.layoutControlItem13.Location = new System.Drawing.Point(0, 0);
-            this.layoutControlItem13.Name = "layoutControlItem13";
-            this.layoutControlItem13.Size = new System.Drawing.Size(492, 594);
-            this.layoutControlItem13.TextSize = new System.Drawing.Size(0, 0);
-            this.layoutControlItem13.TextVisible = false;
+            this.tileViewColumn1.Caption = "KeyGroup";
+            this.tileViewColumn1.FieldName = "Key";
+            this.tileViewColumn1.Name = "tileViewColumn1";
+            this.tileViewColumn1.Visible = true;
+            this.tileViewColumn1.VisibleIndex = 3;
             // 
             // frmAnalyzeImage
             // 
@@ -600,6 +616,17 @@
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemPictureEdit1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).EndInit();
             this.layoutControl1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.groupControl1)).EndInit();
+            this.groupControl1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControl2)).EndInit();
+            this.layoutControl2.ResumeLayout(false);
+            this.xtraScrollableControl1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControl3)).EndInit();
+            this.layoutControl3.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup4)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem13)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup3)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem12)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.toggleSwitch2.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.CardControl)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.tileView1)).EndInit();
@@ -618,18 +645,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem6)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem5)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem2)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.groupControl1)).EndInit();
-            this.groupControl1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem11)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControl2)).EndInit();
-            this.layoutControl2.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup3)).EndInit();
-            this.xtraScrollableControl1.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem12)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControl3)).EndInit();
-            this.layoutControl3.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup4)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem13)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -678,5 +694,6 @@
         private DevExpress.XtraLayout.LayoutControlGroup layoutControlGroup3;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem12;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem11;
+        private DevExpress.XtraGrid.Columns.TileViewColumn tileViewColumn1;
     }
 }

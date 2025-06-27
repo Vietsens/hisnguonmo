@@ -112,6 +112,8 @@ namespace HIS.Desktop.Plugins.BidUpdate
         List<V_HIS_MATERIAL_TYPE> listHisMaterialType = new List<V_HIS_MATERIAL_TYPE>();
         List<V_HIS_BLOOD_TYPE> listHisBloodType = new List<V_HIS_BLOOD_TYPE>();
         List<V_HIS_BID_MATERIAL_TYPE> bidMaty = new List<V_HIS_BID_MATERIAL_TYPE>();
+        internal List<ADO.MedicineTypeADO> listErrorImport;
+
         #endregion
 
         #region Construct
@@ -930,6 +932,7 @@ namespace HIS.Desktop.Plugins.BidUpdate
                     }
                     //cboDosageForm.EditValue = this.medicineType.DOSAGE_FORM;
                     txtNOTE.Text = this.medicineType.NOTE;
+                    txtBatchDivisionCode.Text = this.medicineType.BATCH_DIVISION_CODE;
 
                     cboDosageForm.Enabled = true;
                     EnableLeftControl(true);
@@ -967,6 +970,7 @@ namespace HIS.Desktop.Plugins.BidUpdate
                     txtMaTT.Text = this.materialType.BID_MATERIAL_TYPE_CODE ?? "";
                     txtMaDT.Text = this.medicineType.JOIN_BID_MATERIAL_TYPE_CODE;
                     txtNOTE.Text = this.materialType.NOTE;
+                    txtBatchDivisionCode.Text = this.materialType.BATCH_DIVISION_CODE;
                     txtTenBHYT.Text = this.materialType.HEIN_SERVICE_BHYT_NAME;
                     txtPackingType.Text = this.materialType.PACKING_TYPE_NAME;
                     EnableLeftControl(true);
@@ -1017,6 +1021,7 @@ namespace HIS.Desktop.Plugins.BidUpdate
                 spinImpVat.EditValue = data.IMP_VAT_RATIO * 100;
                 spinImpMoreRatio.EditValue = data.ImpMoreRatio;
                 txtBidNumOrder.Text = data.BID_NUM_ORDER;
+                txtBatchDivisionCode.Text = data.BATCH_DIVISION_CODE;
                 if (!string.IsNullOrEmpty(data.BID_GROUP_CODE))
                 {
                     txtBidGroupCode.Text = data.BID_GROUP_CODE;
@@ -1082,6 +1087,7 @@ namespace HIS.Desktop.Plugins.BidUpdate
                 dxValidationProviderLeft.RemoveControlError(spinImpVat);
                 dxValidationProviderLeft.RemoveControlError(txtBidNumOrder);
                 dxValidationProviderLeft.RemoveControlError(cboSupplier);
+                dxValidationProviderLeft.RemoveControlError(txtBatchDivisionCode);
             }
             catch (Exception ex)
             {
@@ -1339,12 +1345,15 @@ namespace HIS.Desktop.Plugins.BidUpdate
                 spinMonthLifeSpan.EditValue = null;
                 spinDayLifeSpan.EditValue = null;
                 spinHourLifeSpan.EditValue = null;
+                txtBatchDivisionCode.Text = "";
 
                 dxValidationProviderLeft.RemoveControlError(spinImpPrice);
                 dxValidationProviderLeft.RemoveControlError(spinAmount);
                 dxValidationProviderLeft.RemoveControlError(spinImpVat);
                 dxValidationProviderLeft.RemoveControlError(txtBidNumOrder);
                 dxValidationProviderLeft.RemoveControlError(cboSupplier);
+                dxValidationProviderLeft.RemoveControlError(txtBatchDivisionCode);
+
                 //trang thai nut
                 EnableButton(this.ActionType);
                 VisibleButton(this.ActionType);
@@ -1847,6 +1856,7 @@ namespace HIS.Desktop.Plugins.BidUpdate
                 spinImpPrice.Value = 0;
                 txtBidNumOrder.Text = "";
                 txtNOTE.Text = null;
+                txtBatchDivisionCode.Text = "";
                 if (chkClearToAdd.Checked)
                 {
                     txtBidPackageCode.Text = "";
@@ -2011,6 +2021,7 @@ namespace HIS.Desktop.Plugins.BidUpdate
                 dxValidationProviderLeft.RemoveControlError(txtBidGroupCode);
                 dxValidationProviderLeft.RemoveControlError(txtTenBHYT);
                 dxValidationProviderLeft.RemoveControlError(txtTenTT);
+                dxValidationProviderLeft.RemoveControlError(txtBatchDivisionCode);
             }
             catch (Exception ex)
             {
@@ -2031,6 +2042,8 @@ namespace HIS.Desktop.Plugins.BidUpdate
                 this.medicineType.AMOUNT = spinAmount.Value;
                 this.medicineType.BID_GROUP_CODE = txtBidGroupCode.Text;
                 this.medicineType.BID_PACKAGE_CODE = txtBidPackageCode.Text;
+                this.medicineType.BATCH_DIVISION_CODE = txtBatchDivisionCode.Text;
+
                 this.medicineType.IdRow = setIdRow(this.ListMedicineTypeAdoProcess);
                 if (cboSupplier.EditValue != null)
                 {
@@ -2146,6 +2159,10 @@ namespace HIS.Desktop.Plugins.BidUpdate
                 this.materialType.BID_NUM_ORDER = txtBidNumOrder.Text;
                 this.materialType.IMP_VAT_RATIO = spinImpVat.Value / 100;
                 this.materialType.AMOUNT = spinAmount.Value;
+                if (!string.IsNullOrEmpty(txtBatchDivisionCode.Text))
+                {
+                    this.materialType.BATCH_DIVISION_CODE = txtBatchDivisionCode.Text;
+                }
                 ADO.MedicineTypeADO aMedicineSdo = new ADO.MedicineTypeADO();
                 AutoMapper.Mapper.CreateMap<ADO.MaterialTypeADO, ADO.MedicineTypeADO>();
                 aMedicineSdo = AutoMapper.Mapper.Map<ADO.MaterialTypeADO, ADO.MedicineTypeADO>(this.materialType);
@@ -2245,6 +2262,10 @@ namespace HIS.Desktop.Plugins.BidUpdate
                 this.bloodType.BID_NUM_ORDER = txtBidNumOrder.Text;
                 this.bloodType.IMP_VAT_RATIO = spinImpVat.Value / 100;
                 this.bloodType.AMOUNT = spinAmount.Value;
+                if (!string.IsNullOrEmpty(txtBatchDivisionCode.Text))
+                {
+                    this.bloodType.BATCH_DIVISION_CODE = txtBatchDivisionCode.Text;
+                }
                 ADO.MedicineTypeADO aMedicineSdo = new ADO.MedicineTypeADO();
                 AutoMapper.Mapper.CreateMap<ADO.BloodTypeADO, ADO.MedicineTypeADO>();
                 aMedicineSdo = AutoMapper.Mapper.Map<ADO.BloodTypeADO, ADO.MedicineTypeADO>(this.bloodType);
@@ -2420,6 +2441,20 @@ namespace HIS.Desktop.Plugins.BidUpdate
                 if (CheckValidDataInGridService(ref paramCommon, ListMedicineTypeAdoProcess))
                 {
                     WaitingManager.Hide();
+                    var listThuoc = ListMedicineTypeAdoProcess.Where(o => o.Type == Base.GlobalConfig.THUOC).ToList();
+                    var listVattu = ListMedicineTypeAdoProcess.Where(o => o.Type == Base.GlobalConfig.VATTU).ToList();
+                    var listMau = ListMedicineTypeAdoProcess.Where(o => o.Type == Base.GlobalConfig.MAU).ToList();
+                    if (!CheckBatchDivisionCodeLengthAfterRules(ListAdoImport))
+                    {
+                        WaitingManager.Hide();
+                    }
+                    if (!CheckBatchDivisionCodeAllRules(listThuoc, listVattu, listMau))
+                    {
+                        WaitingManager.Hide();
+                        return;
+                    }
+                    
+
                     getDataForProcess();
                     if (this.bidModel == null ||
                         this.bidModel.HIS_BID_MEDICINE_TYPE == null ||
@@ -2519,6 +2554,7 @@ namespace HIS.Desktop.Plugins.BidUpdate
                         cboNational.EditValue = null;
                         cboManufacture.EditValue = null;
                         txtNOTE.Text = "";
+                        txtBatchDivisionCode.Text = "";
                         if (refeshData != null)
                             refeshData();
                         ListMedicineTypeAdoProcess = new List<MedicineTypeADO>();
@@ -2605,6 +2641,10 @@ namespace HIS.Desktop.Plugins.BidUpdate
                         bidMedicineType.MEDICINE_TYPE_ID = item.ID;
                         bidMedicineType.BID_NUM_ORDER = item.BID_NUM_ORDER;
                         bidMedicineType.SUPPLIER_ID = (long)(item.SUPPLIER_ID ?? 0);
+                        if (!string.IsNullOrEmpty(item.BATCH_DIVISION_CODE))
+                        {
+                            bidMedicineType.BATCH_DIVISION_CODE = item.BATCH_DIVISION_CODE;
+                        }
                         string bid_group_code = null;
                         if (!string.IsNullOrEmpty(item.BID_GROUP_CODE))
                         {
@@ -2642,6 +2682,10 @@ namespace HIS.Desktop.Plugins.BidUpdate
                         bidMaterialType.ADJUST_AMOUNT = item.ADJUST_AMOUNT;
                         bidMaterialType.IMP_VAT_RATIO = item.IMP_VAT_RATIO;
                         bidMaterialType.IMP_MORE_RATIO = item.ImpMoreRatio != null ? item.ImpMoreRatio / 100 : null;
+                        if (!string.IsNullOrEmpty(item.BATCH_DIVISION_CODE))
+                        {
+                            bidMaterialType.BATCH_DIVISION_CODE = item.BATCH_DIVISION_CODE;
+                        }
                         if (item.IsMaterialTypeMap)
                         {
                             bidMaterialType.MATERIAL_TYPE_MAP_ID = item.ID;
@@ -2688,6 +2732,10 @@ namespace HIS.Desktop.Plugins.BidUpdate
                         bidBloodType.BLOOD_TYPE_ID = item.ID;
                         bidBloodType.BID_NUM_ORDER = item.BID_NUM_ORDER;
                         bidBloodType.SUPPLIER_ID = (long)(item.SUPPLIER_ID ?? 0);
+                        if (!string.IsNullOrEmpty(item.BATCH_DIVISION_CODE))
+                        {
+                            bidBloodType.BATCH_DIVISION_CODE = item.BATCH_DIVISION_CODE;
+                        }
                         this.bidModel.HIS_BID_BLOOD_TYPE.Add(bidBloodType);
                     }
                 }
@@ -2697,6 +2745,131 @@ namespace HIS.Desktop.Plugins.BidUpdate
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
+        private bool CheckBatchDivisionCodeAllRules(
+        List<MedicineTypeADO> listThuoc,
+        List<MedicineTypeADO> listVattu,
+        List<MedicineTypeADO> listMau)
+            {
+                var errorMessages = new List<string>();
+                var typeLabelMap = new Dictionary<string, string>
+        {
+            { "thuốc", "thuốc" },
+            { "vật tư", "vật tư" },
+            { "máu", "máu" }
+        };
+
+            // 1. Kiểm tra trùng trong từng loại
+            void CheckDuplicateInOneType(List<MedicineTypeADO> list, string typeKey)
+            {
+                var duplicates = list
+                    .Where(o => !string.IsNullOrWhiteSpace(o.BATCH_DIVISION_CODE))
+                    .GroupBy(o => o.BATCH_DIVISION_CODE.Trim())
+                    .Where(g => g.Count() > 1);
+
+                foreach (var dup in duplicates)
+                {
+                    string names = string.Join("; ", dup.Select(o => o.MEDICINE_TYPE_NAME).Distinct());
+                    errorMessages.Add($"Mã phần lô đã được sử dụng trong {typeKey}: {names}");
+                }
+            }
+
+            CheckDuplicateInOneType(listThuoc, "thuốc");
+            CheckDuplicateInOneType(listVattu, "vật tư");
+            CheckDuplicateInOneType(listMau, "máu");
+
+            // 2. Kiểm tra trùng mã phần lô giữa các loại
+            var allItems = new List<Tuple<List<MedicineTypeADO>, string>>
+            {
+                new Tuple<List<MedicineTypeADO>, string>(listThuoc, "thuốc"),
+                new Tuple<List<MedicineTypeADO>, string>(listVattu, "vật tư"),
+                new Tuple<List<MedicineTypeADO>, string>(listMau, "máu")
+            };
+
+            var batchCodeMap = new Dictionary<string, Dictionary<string, List<string>>>(StringComparer.OrdinalIgnoreCase);
+
+            foreach (var tuple in allItems)
+            {
+                var list = tuple.Item1;
+                var typeName = tuple.Item2;
+
+                foreach (var item in list)
+                {
+                    if (string.IsNullOrWhiteSpace(item.BATCH_DIVISION_CODE)) continue;
+
+                    string code = item.BATCH_DIVISION_CODE.Trim();
+                    if (!batchCodeMap.ContainsKey(code))
+                        batchCodeMap[code] = new Dictionary<string, List<string>>();
+
+                    if (!batchCodeMap[code].ContainsKey(typeName))
+                        batchCodeMap[code][typeName] = new List<string>();
+
+                    batchCodeMap[code][typeName].Add(item.MEDICINE_TYPE_NAME);
+                }
+            }
+
+            foreach (var kv in batchCodeMap)
+            {
+                var code = kv.Key;
+                var typeUses = kv.Value;
+
+                if (typeUses.Keys.Count > 1)
+                {
+                    var parts = typeUses
+                        .Where(k => k.Value.Count > 0)
+                        .Select(k => string.Format("{0}: {1}", typeLabelMap[k.Key], string.Join(", ", k.Value.Distinct())))
+                        .ToList();
+
+                    errorMessages.Add(string.Format("Mã phần lô đã được sử dụng bởi {0}", string.Join("; ", parts)));
+                }
+            }
+
+            if (errorMessages.Any())
+            {
+                MessageBox.Show(string.Join(Environment.NewLine, errorMessages), "Lỗi mã phần lô", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return false;
+            }
+
+            return true;
+        }
+        private bool CheckBatchDivisionCodeLengthAfterRules(List<ADO.MedicineTypeADO> listAll)
+        {
+            var listThuoc = listAll.Where(o => o.Type == Base.GlobalConfig.THUOC).ToList();
+            var listVattu = listAll.Where(o => o.Type == Base.GlobalConfig.VATTU).ToList();
+            var listMau = listAll.Where(o => o.Type == Base.GlobalConfig.MAU).ToList();
+
+            var errorMessages = new List<string>();
+
+            void CheckType(List<ADO.MedicineTypeADO> list, string typeLabel)
+            {
+                var invalids = list
+                    .Where(o => !string.IsNullOrWhiteSpace(o.BATCH_DIVISION_CODE)
+                             && Inventec.Common.String.CountVi.Count(o.BATCH_DIVISION_CODE.Trim()) > 25)
+                    .ToList();
+
+                if (invalids.Any())
+                {
+                    var names = invalids
+                        .Select(o => $"{o.MEDICINE_TYPE_NAME} ({o.BATCH_DIVISION_CODE})")
+                        .ToList();
+
+                    errorMessages.Add($"{typeLabel}: {string.Join("; ", names)}");
+                }
+            }
+
+            CheckType(listThuoc, "thuốc");
+            CheckType(listVattu, "vật tư");
+            CheckType(listMau, "máu");
+
+            if (errorMessages.Any())
+            {
+                MessageBox.Show($"Mã phần lô vượt quá 25 ký tự đã được sử dụng bởi\n{string.Join("\n", errorMessages)}",
+                                "Lỗi độ dài mã phần lô", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return false;
+            }
+
+            return true;
+        }
+
 
         private bool CheckValidDataInGridService(ref CommonParam param, List<ADO.MedicineTypeADO> MedicineCheckeds__Send)
         {
@@ -3022,6 +3195,7 @@ namespace HIS.Desktop.Plugins.BidUpdate
                 txtTenTT.Enabled = Enable;
                 txtMaDT.Enabled = Enable;
                 txtMaTT.Enabled = Enable;
+                txtBatchDivisionCode.Enabled = Enable;
             }
             catch (Exception ex)
             {
@@ -3052,7 +3226,7 @@ namespace HIS.Desktop.Plugins.BidUpdate
                 cboDosageForm.Text = "";
                 txtActiveBhyt.Text = "";
                 cboMediUseForm.EditValue = null;
-
+                txtBatchDivisionCode.Text = "";
             }
             catch (Exception ex)
             {

@@ -1170,26 +1170,57 @@ namespace HIS.Desktop.Plugins.EmrDocument
                     {
                         dem = check.Dem + 1;
                     }
-                    fileNameAttack = new AttackADO();
-                    this.fileNameAttack.FILE_NAME = "Ảnh " + dem.ToString() + ".png";
                     if (streams.Count == 1)
                     {
+                        this.imageview2.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+                        fileNameAttack = new AttackADO();
+                        this.fileNameAttack.FILE_NAME = "Ảnh " + dem.ToString() + ".png";
+
                         pteAnhChupFileDinhKem.Image = System.Drawing.Image.FromFile(streams.First().Url);
                         this.fileNameAttack.image = System.Drawing.Image.FromFile(streams.First().Url);
-
+                        this.fileNameAttack.Dem = dem;
+                        this.ListfileNameAttack.Add(this.fileNameAttack);
                     }
                     else if (streams.Count == 2)
                     {
-                        System.Drawing.Image image1 = Resize(System.Drawing.Image.FromFile(streams[0].Url), 0.5F, true);
-                        System.Drawing.Image image2 = Resize(System.Drawing.Image.FromFile(streams[1].Url), 0.5F, true);
-                        pteAnhChupFileDinhKem.Image = System.Drawing.Image.FromFile(MergeImages(image1, image2, fileName, 10));
-                        this.fileNameAttack.image = System.Drawing.Image.FromFile(fileName);
-                    }
+                        fileNameAttack = new AttackADO();
+                        pteAnhChupFileDinhKem.Image = System.Drawing.Image.FromFile(streams.First().Url);
+                        pteAnhChupFileDinhKem2.Image = System.Drawing.Image.FromFile(streams.First().Url);
+                        this.imageview2.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
+                        this.fileNameAttack.image = System.Drawing.Image.FromFile(streams.First().Url);
 
-                    this.fileNameAttack.Dem = dem;
+                        this.fileNameAttack.FILE_NAME = "Ảnh " + dem.ToString() + ".png";
+                        this.fileNameAttack.Dem = dem;
+                        this.ListfileNameAttack.Add(this.fileNameAttack);
+
+                        var fileNameAttack2 = new AttackADO();
+                        dem++;
+                        fileNameAttack2.image = System.Drawing.Image.FromFile(streams.Last().Url);
+
+                        fileNameAttack2.FILE_NAME = "Ảnh " + dem.ToString() + ".png";
+                        fileNameAttack2.Dem = dem;
+                        this.ListfileNameAttack.Add(fileNameAttack2);
+                    }
+                    //fileNameAttack = new AttackADO();
+                    //this.fileNameAttack.FILE_NAME = "Ảnh " + dem.ToString() + ".png";
+                    //if (streams.Count == 1)
+                    //{
+                    //    pteAnhChupFileDinhKem.Image = System.Drawing.Image.FromFile(streams.First().Url);
+                    //    this.fileNameAttack.image = System.Drawing.Image.FromFile(streams.First().Url);
+
+                    //}
+                    //else if (streams.Count == 2)
+                    //{
+                    //    System.Drawing.Image image1 = Resize(System.Drawing.Image.FromFile(streams[0].Url), 0.5F, true);
+                    //    System.Drawing.Image image2 = Resize(System.Drawing.Image.FromFile(streams[1].Url), 0.5F, true);
+                    //    pteAnhChupFileDinhKem.Image = System.Drawing.Image.FromFile(MergeImages(image1, image2, fileName, 10));
+                    //    this.fileNameAttack.image = System.Drawing.Image.FromFile(fileName);
+                    //}
+
+                    //this.fileNameAttack.Dem = dem;
 
                     pteAnhChupFileDinhKem.Properties.SizeMode = DevExpress.XtraEditors.Controls.PictureSizeMode.Stretch;
-                    this.ListfileNameAttack.Add(this.fileNameAttack);
+                    //this.ListfileNameAttack.Add(this.fileNameAttack);
 
                     gridView2.BeginUpdate();
                     gridView2.GridControl.DataSource = this.ListfileNameAttack;

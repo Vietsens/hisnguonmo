@@ -20,6 +20,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK
 {
     class RequestUriStore
     {
+        internal const string HIS_TREATHER__CHECKSERVICE_fOLLOW = "api/HisTreatment/CheckServiceFollow";
 
         internal const string HIS_SERVICE_CONDITION_GET = "/api/HisServiceCondition/Get";
         internal const string HIS_SERVICE_REQ_GET_DYNAMIC = "api/HisServiceReq/GetDynamic";

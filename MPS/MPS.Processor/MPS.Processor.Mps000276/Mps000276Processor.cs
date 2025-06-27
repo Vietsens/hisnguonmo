@@ -224,6 +224,10 @@ namespace MPS.Processor.Mps000276
                                 serviceNumOderAdo.SERVICE_ID = parent.ID;
                                 serviceNumOderAdo.SERVICE_NAME = parent.SERVICE_NAME;
                                 serviceNumOderAdo.SERVICE_CODE = parent.SERVICE_CODE;
+                                serviceNumOderAdo.SERVICE_TYPE_CODE = parent.SERVICE_TYPE_CODE;
+                                serviceNumOderAdo.ASSIGN_TURN_CODE = sr.ASSIGN_TURN_CODE;
+                                serviceNumOderAdo.SERVICE_REQ_CODE = sr.SERVICE_REQ_CODE;
+
                             }
                         }
 

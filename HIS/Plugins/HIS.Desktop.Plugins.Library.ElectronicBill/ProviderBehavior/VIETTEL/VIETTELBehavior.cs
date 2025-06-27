@@ -1564,14 +1564,26 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.VIETTEL
             try
             {
                 InvoiceInfo.InvoiceInfoADO adoInfo = InvoiceInfo.InvoiceInfoProcessor.GetData(electronicBillDataInput, this.TempType != TemplateEnum.TYPE.Template10);
-                result.buyerLegalName = adoInfo.BuyerOrganization;
-                result.buyerTaxCode = adoInfo.BuyerTaxCode;
-                result.buyerBankAccount = adoInfo.BuyerAccountNumber;
+                if (!String.IsNullOrWhiteSpace(adoInfo.BuyerTaxCode))
+                {
+                    result.buyerLegalName = adoInfo.BuyerOrganization;
+                    result.buyerTaxCode = adoInfo.BuyerTaxCode;
+                    result.buyerBankAccount = adoInfo.BuyerAccountNumber;
+                }
+                else
+                {
+                    result.buyerName = adoInfo.BuyerName;
+                    result.buyerCode = adoInfo.BuyerCode;
+                    result.buyerBirthDay = adoInfo.BuyerDob;
+                    if (!String.IsNullOrWhiteSpace(adoInfo.BuyerCCCD))
+                    {
+                        result.buyerIdType = "1";
+                        result.buyerIdNo = adoInfo.BuyerCCCD;
+                    }
+                }
                 result.buyerAddressLine = !String.IsNullOrWhiteSpace(adoInfo.BuyerAddress) ? adoInfo.BuyerAddress : ".";
                 result.buyerPhoneNumber = adoInfo.BuyerPhone;
-                result.buyerName = adoInfo.BuyerName;
-                result.buyerBirthDay = adoInfo.BuyerDob;
-                result.buyerCode = adoInfo.BuyerCode;
+                result.buyerEmail = adoInfo.BuyerEmail;
             }
             catch (Exception ex)
             {

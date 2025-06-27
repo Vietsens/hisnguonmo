@@ -338,7 +338,10 @@ namespace HIS.Desktop.Plugins.InfantInformation
                         chkInfantcheck.Checked = false;
 
                     chkIsSurgery.Checked = data.IS_SURGERY == 1 ? true : false;
-                    txtHeinCardTmp.Text = data.HEIN_CARD_NUMBER_TMP.ToUpper();
+                    if (data.HEIN_CARD_NUMBER_TMP == null)
+                        txtHeinCardTmp.Text = "";
+                    else
+                        txtHeinCardTmp.Text = data.HEIN_CARD_NUMBER_TMP.ToUpper();
                     txtInfantMonth.EditValue = data.MONTH_COUNT;
                     txtInfantWeek.EditValue = data.WEEK_COUNT;
                     spnInfantHeight.EditValue = data.HEIGHT;
@@ -651,7 +654,11 @@ namespace HIS.Desktop.Plugins.InfantInformation
                 else
                 {
                     List<SDA.EFMODEL.DataModels.V_SDA_PROVINCE> listResult = new List<SDA.EFMODEL.DataModels.V_SDA_PROVINCE>();
-                    listResult = listProvince.Where(o => o.SEARCH_CODE.Contains(searchCode) || o.PROVINCE_CODE == searchCode).ToList();
+                    if (!toggleCheck.IsOn)
+                        listResult = listProvince.Where(o => (o.SEARCH_CODE.Contains(searchCode) || o.PROVINCE_CODE == searchCode) && o.IS_ACTIVE == 1 && o.IS_NO_DISTRICT != 1).ToList();
+                    else if (toggleCheck.IsOn)
+                        listResult = listProvince.Where(o => (o.SEARCH_CODE.Contains(searchCode) || o.PROVINCE_CODE == searchCode) && o.IS_ACTIVE == 1 && o.IS_NO_DISTRICT == 1).ToList();
+
                     if (listResult.Count == 1)
                     {
                         bool isReLoadRef = false;
@@ -712,7 +719,11 @@ namespace HIS.Desktop.Plugins.InfantInformation
                 else
                 {
                     List<SDA.EFMODEL.DataModels.V_SDA_PROVINCE> listResult = new List<SDA.EFMODEL.DataModels.V_SDA_PROVINCE>();
-                    listResult = listProvince.Where(o => o.SEARCH_CODE.Contains(searchCode) || o.PROVINCE_CODE == searchCode).ToList();
+                    if (!toggleCheck.IsOn)
+                        listResult = listProvince.Where(o => (o.SEARCH_CODE.Contains(searchCode) || o.PROVINCE_CODE == searchCode) && o.IS_ACTIVE == 1 && o.IS_NO_DISTRICT != 1).ToList();
+                    else if (toggleCheck.IsOn)
+                        listResult = listProvince.Where(o => (o.SEARCH_CODE.Contains(searchCode) || o.PROVINCE_CODE == searchCode) && o.IS_ACTIVE == 1 && o.IS_NO_DISTRICT == 1).ToList();
+
                     if (listResult.Count == 1)
                     {
                         bool isReLoadRef = false;
@@ -772,7 +783,11 @@ namespace HIS.Desktop.Plugins.InfantInformation
                 else
                 {
                     List<SDA.EFMODEL.DataModels.V_SDA_PROVINCE> listResult = new List<SDA.EFMODEL.DataModels.V_SDA_PROVINCE>();
-                    listResult = listProvince.Where(o => o.SEARCH_CODE.Contains(searchCode) || o.PROVINCE_CODE == searchCode).ToList();
+                    if (!toggleCheck.IsOn)
+                        listResult = listProvince.Where(o => (o.SEARCH_CODE.Contains(searchCode) || o.PROVINCE_CODE == searchCode) && o.IS_ACTIVE == 1 && o.IS_NO_DISTRICT != 1).ToList();
+                    else if (toggleCheck.IsOn)
+                        listResult = listProvince.Where(o => (o.SEARCH_CODE.Contains(searchCode) || o.PROVINCE_CODE == searchCode) && o.IS_ACTIVE == 1 && o.IS_NO_DISTRICT == 1).ToList();
+
                     if (listResult.Count == 1)
                     {
                         bool isReLoadRef = false;
@@ -820,7 +835,8 @@ namespace HIS.Desktop.Plugins.InfantInformation
             try
             {
                 List<SDA.EFMODEL.DataModels.V_SDA_DISTRICT> listResult = new List<SDA.EFMODEL.DataModels.V_SDA_DISTRICT>();
-                listResult = listDistrict.Where(o => (o.SEARCH_CODE.ToUpper().Contains(searchCode.ToUpper()) || o.DISTRICT_CODE == searchCode) && (provinceCode == "" || o.PROVINCE_CODE == provinceCode)).ToList();
+
+                listResult = listDistrict.Where(o => ((o.SEARCH_CODE ?? "").Contains(searchCode ?? "") || o.DISTRICT_CODE == searchCode) && (provinceCode == "" || o.PROVINCE_CODE == provinceCode) && o.IS_ACTIVE == 1).ToList();
 
                 bool isReLoadRef = false;
                 if (listResult[0].DISTRICT_CODE != (this.cboDistrictName.EditValue ?? "").ToString())
@@ -865,7 +881,10 @@ namespace HIS.Desktop.Plugins.InfantInformation
                             this.cboProvinceName.EditValue = listResult[0].PROVINCE_CODE;
                             this.txtProvinceCode.Text = listResult[0].PROVINCE_CODE;
                         }
-                        this.LoadComboXa("", listResult[0].DISTRICT_CODE, false);
+                        if (toggleCheck.IsOn)
+                            this.LoadComboXa("", listResult[0].PROVINCE_CODE, false);
+                        else if (!toggleCheck.IsOn)
+                            this.LoadComboXa("", listResult[0].DISTRICT_CODE, false);
 
                         if (isExpand)
                         {
@@ -897,7 +916,7 @@ namespace HIS.Desktop.Plugins.InfantInformation
             try
             {
                 List<SDA.EFMODEL.DataModels.V_SDA_DISTRICT> listResult = new List<SDA.EFMODEL.DataModels.V_SDA_DISTRICT>();
-                listResult = listDistrict.Where(o => (o.SEARCH_CODE.ToUpper().Contains(searchCode.ToUpper()) || o.DISTRICT_CODE == searchCode) && (provinceCode == "" || o.PROVINCE_CODE == provinceCode)).ToList();
+                listResult = listDistrict.Where(o => ((o.SEARCH_CODE ?? "").Contains(searchCode ?? "") || o.DISTRICT_CODE == searchCode) && (provinceCode == "" || o.PROVINCE_CODE == provinceCode) && o.IS_ACTIVE == 1).ToList();
 
                 bool isReLoadRef = false;
                 if (listResult[0].DISTRICT_CODE != (this.cboHTDistrictName.EditValue ?? "").ToString())
@@ -942,7 +961,10 @@ namespace HIS.Desktop.Plugins.InfantInformation
                             this.cboHTProvinceName.EditValue = listResult[0].PROVINCE_CODE;
                             this.txtHTProvinceCode.Text = listResult[0].PROVINCE_CODE;
                         }
-                        this.LoadComboXa_HT("", listResult[0].DISTRICT_CODE, false);
+                        if (toggleCheck.IsOn)
+                            this.LoadComboXa_HT("", listResult[0].PROVINCE_CODE, false);
+                        else if (!toggleCheck.IsOn)
+                            this.LoadComboXa_HT("", listResult[0].DISTRICT_CODE, false);
 
                         if (isExpand)
                         {
@@ -973,7 +995,7 @@ namespace HIS.Desktop.Plugins.InfantInformation
             try
             {
                 List<SDA.EFMODEL.DataModels.V_SDA_DISTRICT> listResult = new List<SDA.EFMODEL.DataModels.V_SDA_DISTRICT>();
-                listResult = listDistrict.Where(o => (o.SEARCH_CODE.ToUpper().Contains(searchCode.ToUpper()) || o.DISTRICT_CODE == searchCode) && (provinceCode == "" || o.PROVINCE_CODE == provinceCode)).ToList();
+                listResult = listDistrict.Where(o => ((o.SEARCH_CODE ?? "").Contains(searchCode ?? "") || o.DISTRICT_CODE == searchCode) && (provinceCode == "" || o.PROVINCE_CODE == provinceCode) && o.IS_ACTIVE == 1).ToList();
 
                 bool isReLoadRef = false;
                 if (listResult[0].DISTRICT_CODE != (this.cboDistrictNameHospital.EditValue ?? "").ToString())
@@ -1018,7 +1040,11 @@ namespace HIS.Desktop.Plugins.InfantInformation
                             this.cboProvinceNameHospital.EditValue = listResult[0].PROVINCE_CODE;
                             this.txtProvinceCodeHospital.Text = listResult[0].PROVINCE_CODE;
                         }
-                        this.LoadComboXa_BV("", listResult[0].DISTRICT_CODE, false);
+                        if (toggleCheck.IsOn)
+                            this.LoadComboXa_BV("", listResult[0].PROVINCE_CODE, false);
+                        else if (!toggleCheck.IsOn)
+                            this.LoadComboXa_BV("", listResult[0].DISTRICT_CODE, false);
+
 
                         if (isExpand)
                         {
@@ -1049,8 +1075,14 @@ namespace HIS.Desktop.Plugins.InfantInformation
         {
             try
             {
-                List<SDA.EFMODEL.DataModels.V_SDA_COMMUNE> listResult = listCommune.Where(o => ((o.SEARCH_CODE ?? "").Contains(searchCode ?? "") || o.COMMUNE_CODE == searchCode)
-                        && (String.IsNullOrEmpty(districtCode) || o.DISTRICT_CODE == districtCode)).ToList();
+                List<SDA.EFMODEL.DataModels.V_SDA_COMMUNE> listResult = new List<SDA.EFMODEL.DataModels.V_SDA_COMMUNE>();
+                if (!toggleCheck.IsOn)
+                    listResult = listCommune.Where(o => ((o.SEARCH_CODE ?? "").Contains(searchCode ?? "") || o.COMMUNE_CODE == searchCode)
+                        && (String.IsNullOrEmpty(districtCode) || o.DISTRICT_CODE == districtCode) && o.IS_ACTIVE == 1).ToList();
+                else if (toggleCheck.IsOn)
+                    listResult = listCommune.Where(o => ((o.SEARCH_CODE ?? "").Contains(searchCode ?? "") || o.COMMUNE_CODE == searchCode)
+                        && (String.IsNullOrEmpty(districtCode) || o.PROVINCE_CODE == districtCode) && o.IS_ACTIVE == 1).ToList();
+                      
                 List<CommuneADO> lstCommuneADO = new List<CommuneADO>();
                 foreach (var item in listResult)
                 {
@@ -1088,10 +1120,13 @@ namespace HIS.Desktop.Plugins.InfantInformation
                             this.txtAddress.SelectAll();
                         }
                     }
-                    else if (isExpand)
+                    else
                     {
-                        this.cboCommuneName.EditValue = null;
-                        this.FocusShowpopup(this.cboCommuneName, false);
+                        if (isExpand)
+                        {
+                            this.cboCommuneName.EditValue = null;
+                            this.FocusShowpopup(this.cboCommuneName, false);
+                        }
                     }
                 }
             }
@@ -1105,8 +1140,14 @@ namespace HIS.Desktop.Plugins.InfantInformation
         {
             try
             {
-                List<SDA.EFMODEL.DataModels.V_SDA_COMMUNE> listResult = listCommune.Where(o => ((o.SEARCH_CODE ?? "").Contains(searchCode ?? "") || o.COMMUNE_CODE == searchCode)
-                        && (String.IsNullOrEmpty(districtCode) || o.DISTRICT_CODE == districtCode)).ToList();
+                List<SDA.EFMODEL.DataModels.V_SDA_COMMUNE> listResult = new List<SDA.EFMODEL.DataModels.V_SDA_COMMUNE>();
+                if (!toggleCheck.IsOn)
+                    listResult = listCommune.Where(o => ((o.SEARCH_CODE ?? "").Contains(searchCode ?? "") || o.COMMUNE_CODE == searchCode)
+                        && (String.IsNullOrEmpty(districtCode) || o.DISTRICT_CODE == districtCode) && o.IS_ACTIVE == 1).ToList();
+                else if (toggleCheck.IsOn)
+                    listResult = listCommune.Where(o => ((o.SEARCH_CODE ?? "").Contains(searchCode ?? "") || o.COMMUNE_CODE == searchCode)
+                        && (String.IsNullOrEmpty(districtCode) || o.PROVINCE_CODE == districtCode) && o.IS_ACTIVE == 1).ToList();
+
                 List<CommuneADO> lstCommuneADO = new List<CommuneADO>();
                 foreach (var item in listResult)
                 {
@@ -1144,10 +1185,13 @@ namespace HIS.Desktop.Plugins.InfantInformation
                             this.txtHTAddress.SelectAll();
                         }
                     }
-                    else if (isExpand)
+                    else
                     {
-                        this.cboHTCommuneName.EditValue = null;
-                        this.FocusShowpopup(this.cboHTCommuneName, false);
+                        if (isExpand)
+                        {
+                            this.cboHTCommuneName.EditValue = null;
+                            this.FocusShowpopup(this.cboHTCommuneName, false);
+                        }
                     }
                 }
             }
@@ -1160,8 +1204,15 @@ namespace HIS.Desktop.Plugins.InfantInformation
         {
             try
             {
-                List<SDA.EFMODEL.DataModels.V_SDA_COMMUNE> listResult = listCommune.Where(o => ((o.SEARCH_CODE ?? "").Contains(searchCode ?? "") || o.COMMUNE_CODE == searchCode)
-                        && (String.IsNullOrEmpty(districtCode) || o.DISTRICT_CODE == districtCode)).ToList();
+                List<SDA.EFMODEL.DataModels.V_SDA_COMMUNE> listResult = new List<SDA.EFMODEL.DataModels.V_SDA_COMMUNE>();
+                if (!toggleCheck.IsOn)
+                    listResult = listCommune.Where(o => ((o.SEARCH_CODE ?? "").Contains(searchCode ?? "") || o.COMMUNE_CODE == searchCode)
+                        && (String.IsNullOrEmpty(districtCode) || o.DISTRICT_CODE == districtCode) && o.IS_ACTIVE == 1).ToList();
+                else if (toggleCheck.IsOn)
+                    listResult = listCommune.Where(o => ((o.SEARCH_CODE ?? "").Contains(searchCode ?? "") || o.COMMUNE_CODE == searchCode)
+                        && (String.IsNullOrEmpty(districtCode) || o.PROVINCE_CODE == districtCode) && o.IS_ACTIVE == 1).ToList();
+                //List<SDA.EFMODEL.DataModels.V_SDA_COMMUNE> listResult = listCommune.Where(o => ((o.SEARCH_CODE ?? "").Contains(searchCode ?? "") || o.COMMUNE_CODE == searchCode)
+                //        && (String.IsNullOrEmpty(districtCode) || o.DISTRICT_CODE == districtCode)).ToList();
                 List<CommuneADO> lstCommuneADO = new List<CommuneADO>();
                 foreach (var item in listResult)
                 {
@@ -1199,10 +1250,13 @@ namespace HIS.Desktop.Plugins.InfantInformation
                             this.txtBirthPlace.SelectAll();
                         }
                     }
-                    else if (isExpand)
+                    else 
                     {
-                        this.cboCommuneNameHospital.EditValue = null;
-                        this.FocusShowpopup(this.cboCommuneNameHospital, false);
+                        if (isExpand)
+                        {
+                            this.cboCommuneNameHospital.EditValue = null;
+                            this.FocusShowpopup(this.cboCommuneNameHospital, false);
+                        }
                     }
                 }
             }
@@ -1257,14 +1311,21 @@ namespace HIS.Desktop.Plugins.InfantInformation
                 if (!String.IsNullOrEmpty(patient.PROVINCE_CODE))
                 {
                     SDA.EFMODEL.DataModels.V_SDA_PROVINCE province = listProvince.SingleOrDefault(o => o.PROVINCE_CODE == patient.PROVINCE_CODE);
-                    if (province != null)
+                    if (province != null && !toggleCheck.IsOn)
                     {
                         this.cboProvinceName.EditValue = province.PROVINCE_CODE;
                         this.LoadComboHuyen("", province.PROVINCE_CODE, false);
                         this.txtProvinceCode.Text = province.SEARCH_CODE;
                     }
+                    else
+                    {
+                        this.cboProvinceName.EditValue = province.PROVINCE_CODE;
+                        this.LoadComboXa("", patient.PROVINCE_CODE, false);
+                        this.txtProvinceCode.Text = province.SEARCH_CODE;
+                    }
+                        
                 }
-                if (!String.IsNullOrEmpty(patient.DISTRICT_CODE))
+                if (!String.IsNullOrEmpty(patient.DISTRICT_CODE) && !toggleCheck.IsOn)
                 {
                     SDA.EFMODEL.DataModels.V_SDA_DISTRICT district = listDistrict.SingleOrDefault(o => o.DISTRICT_CODE == patient.DISTRICT_CODE
                                && (String.IsNullOrEmpty((patient.PROVINCE_CODE ?? "").ToString()) || o.PROVINCE_CODE == (patient.PROVINCE_CODE ?? "").ToString()));
@@ -1276,13 +1337,24 @@ namespace HIS.Desktop.Plugins.InfantInformation
                             this.cboProvinceName.EditValue = district.SEARCH_CODE;
                         }
                         this.LoadComboXa("", district.DISTRICT_CODE, false);
+                        
                         this.txtDistrictCode.Text = district.SEARCH_CODE;
                     }
                 }
                 if (!String.IsNullOrEmpty(patient.COMMUNE_CODE))
                 {
-                    SDA.EFMODEL.DataModels.V_SDA_COMMUNE commune = listCommune.SingleOrDefault(o => o.COMMUNE_CODE == patient.COMMUNE_CODE.ToString()
+                    SDA.EFMODEL.DataModels.V_SDA_COMMUNE commune = new V_SDA_COMMUNE();
+                    if (!toggleCheck.IsOn)
+                    {
+                        commune = listCommune.FirstOrDefault(o => o.COMMUNE_CODE == patient.COMMUNE_CODE.ToString()
                                 && (String.IsNullOrEmpty((patient.DISTRICT_CODE ?? "").ToString()) || o.DISTRICT_CODE == (patient.DISTRICT_CODE ?? "").ToString()));
+                    }
+                    else if(toggleCheck.IsOn)
+                    {
+                        commune = listCommune.FirstOrDefault(o =>o.COMMUNE_CODE == patient.COMMUNE_CODE.ToString() &&
+                                  (string.IsNullOrEmpty(patient.PROVINCE_CODE?.ToString()) || o.PROVINCE_CODE == patient.PROVINCE_CODE.ToString()));
+                    }
+
                     if (commune != null)
                     {
                         this.cboCommuneName.EditValue = commune.COMMUNE_CODE;
@@ -1298,28 +1370,41 @@ namespace HIS.Desktop.Plugins.InfantInformation
                 SDA.EFMODEL.DataModels.V_SDA_PROVINCE provinceHT = null;
                 if (!String.IsNullOrWhiteSpace(patient.HT_PROVINCE_NAME))
                 {
-                    provinceHT = listProvince.FirstOrDefault(o => o.PROVINCE_NAME != null && o.PROVINCE_NAME.ToLower().Trim() == patient.HT_PROVINCE_NAME.ToLower().Trim());
-                    if (provinceHT != null)
+                    provinceHT = listProvince.FirstOrDefault(o => o.PROVINCE_NAME != null && o.PROVINCE_CODE == patient.PROVINCE_CODE.ToLower().Trim());
+                    if (provinceHT != null && !toggleCheck.IsOn)
                     {
                         this.cboHTProvinceName.EditValue = provinceHT.PROVINCE_CODE;
                         this.LoadComboHuyen_HT("", provinceHT.PROVINCE_CODE, false);
                         this.txtHTProvinceCode.Text = provinceHT.SEARCH_CODE;
                     }
+                    else
+                    {
+                        this.cboHTProvinceName.EditValue = provinceHT.PROVINCE_CODE;
+                        this.LoadComboXa_HT("", provinceHT.PROVINCE_CODE, false);
+                        this.txtHTProvinceCode.Text = provinceHT.SEARCH_CODE;
+                    }
                 }
                 SDA.EFMODEL.DataModels.V_SDA_DISTRICT districtHT = null;
-                if (provinceHT != null && !String.IsNullOrEmpty(patient.HT_DISTRICT_NAME))
+                if (provinceHT != null && !String.IsNullOrEmpty(patient.HT_DISTRICT_NAME) && !toggleCheck.IsOn)
                 {
-                    districtHT = listDistrict.FirstOrDefault(o => o.DISTRICT_NAME == patient.HT_DISTRICT_NAME && o.PROVINCE_ID == provinceHT.ID);
+                    districtHT = listDistrict.FirstOrDefault(o => o.DISTRICT_CODE == patient.DISTRICT_CODE && o.PROVINCE_ID == provinceHT.ID);
                     if (districtHT != null)
                     {
-                        this.cboHTDistrictName.EditValue = districtHT.DISTRICT_CODE;
+                        this.cboHTDistrictName.EditValue = districtHT.DISTRICT_CODE;    
                         this.LoadComboXa_HT("", districtHT.DISTRICT_CODE, false);
                         this.txtHTDistrictCode.Text = districtHT.SEARCH_CODE;
                     }
                 }
-                if (districtHT != null && !String.IsNullOrEmpty(patient.HT_COMMUNE_NAME))
+                if (!String.IsNullOrEmpty(patient.COMMUNE_CODE))
                 {
-                    var commune = listCommune.FirstOrDefault(o => o.COMMUNE_NAME == patient.HT_COMMUNE_NAME && o.DISTRICT_ID == districtHT.ID);
+                    V_SDA_COMMUNE commune = new V_SDA_COMMUNE();
+                    if (provinceHT != null && toggleCheck.IsOn)
+                    {
+                        commune = listCommune.FirstOrDefault(o => o.COMMUNE_CODE == patient.COMMUNE_CODE && o.PROVINCE_ID == provinceHT.ID);
+                    }
+                    else if (districtHT != null  && !toggleCheck.IsOn)
+                        commune = listCommune.FirstOrDefault(o => o.COMMUNE_CODE == patient.COMMUNE_CODE && o.DISTRICT_ID == districtHT.ID);
+
                     if (commune != null)
                     {
                         this.cboHTCommuneName.EditValue = commune.COMMUNE_CODE;

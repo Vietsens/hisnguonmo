@@ -226,10 +226,12 @@ namespace HIS.Desktop.Plugins.HisImportBid
                             var listMaterial = ImpMestListProcessor.Where(o => String.IsNullOrWhiteSpace(o.IS_MEDICINE)&&o.IsNotNullRow==true).ToList();
                             addListMedicineTypeToProcessList(listMedicine);
                             addListMaterialTypeToProcessList(listMaterial);
+                            CheckDuplicateBatchDivisionCode();
                             Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => ListDataImport), ListDataImport));
                             if (this.ListDataImport != null && this.ListDataImport.Count > 0)
                             {
                                 CheckValidData(ListDataImport);
+                                CheckErrorLine();
                                 SetDataSource(ListDataImport);
 
                                 checkClick = false;
@@ -517,6 +519,9 @@ namespace HIS.Desktop.Plugins.HisImportBid
                     if (medicineTypeNotExist == null && bloodTypeNotExist == null)
                         medicineType.ERROR = "Mã thuốc không hợp lệ. ";
 
+                    if (medicineType.BATCH_DIVISION_CODE.Length > 25)
+                        medicineType.ERROR = "Mã phần lô vượt quá ký tự cho phép, 25 ký tự. ";
+
                     if (medicineTypeNotExist != null)
                     {
                         medicineType.Type = THUOC;
@@ -698,12 +703,18 @@ namespace HIS.Desktop.Plugins.HisImportBid
                         {
                             medicineType.ERROR = "Mã vật tư không hợp lệ. ";
                         }
+
                     }
                     else
                     {
                         Inventec.Common.Mapper.DataObjectMapper.Map<ADO.ImportADO>(medicineType, materialTypeNotExist);
                         medicineType.MEDICINE_TYPE_CODE = materialTypeNotExist.MATERIAL_TYPE_CODE;
                         medicineType.MEDICINE_TYPE_NAME = materialTypeNotExist.MATERIAL_TYPE_NAME;
+                    }
+
+                    if (medicineType.BATCH_DIVISION_CODE.Length > 25) 
+                    {
+                        medicineType.ERROR = "Mã phần lô vượt quá ký tự cho phép, 25 ký tự. ";
                     }
 
                     if (!string.IsNullOrEmpty(materialTypeImport.MATERIAL_TYPE_MAP_CODE))
@@ -982,7 +993,7 @@ namespace HIS.Desktop.Plugins.HisImportBid
                 if (!String.IsNullOrWhiteSpace(item.BID_PACKAGE_CODE) && item.Type == VATTU && item.BID_PACKAGE_CODE.Length > 4)
                     messageErr.Add("mã gói thầu dài hơn 4 ký tự ");
 
-                if (!String.IsNullOrEmpty(item.BID_YEAR))
+                if (!string.IsNullOrEmpty(item.BID_YEAR))
                 {
                     bool valid = true;
                     if (item.BID_YEAR.Length > 4)
@@ -1354,6 +1365,7 @@ namespace HIS.Desktop.Plugins.HisImportBid
                                 bidMedicineType.MONTH_LIFESPAN = item.MONTH_LIFESPAN;
                                 bidMedicineType.DAY_LIFESPAN = item.DAY_LIFESPAN;
                                 bidMedicineType.HOUR_LIFESPAN = item.HOUR_LIFESPAN;
+                                bidMedicineType.BATCH_DIVISION_CODE = item.BATCH_DIVISION_CODE;
 
                                 bidModel.HIS_BID_MEDICINE_TYPE.Add(bidMedicineType);
                             }
@@ -1387,6 +1399,7 @@ namespace HIS.Desktop.Plugins.HisImportBid
                                 bidMaterialType.MONTH_LIFESPAN = item.MONTH_LIFESPAN;
                                 bidMaterialType.DAY_LIFESPAN = item.DAY_LIFESPAN;
                                 bidMaterialType.HOUR_LIFESPAN = item.HOUR_LIFESPAN;
+                                bidMaterialType.BATCH_DIVISION_CODE = item.BATCH_DIVISION_CODE;
 
                                 bidModel.HIS_BID_MATERIAL_TYPE.Add(bidMaterialType);
                             }
@@ -1399,6 +1412,7 @@ namespace HIS.Desktop.Plugins.HisImportBid
                                 bidBloodType.BLOOD_TYPE_ID = item.ID;
                                 bidBloodType.BID_NUM_ORDER = item.BID_NUM_ORDER;
                                 bidBloodType.SUPPLIER_ID = (long)(item.SUPPLIER_ID ?? 0);
+                                bidBloodType.BATCH_DIVISION_CODE = item.BATCH_DIVISION_CODE;
 
                                 bidModel.HIS_BID_BLOOD_TYPE.Add(bidBloodType);
                             }
@@ -1508,6 +1522,90 @@ namespace HIS.Desktop.Plugins.HisImportBid
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void CheckDuplicateBatchDivisionCode()
+        {
+            var duplicates = this.ListDataImport
+                .Where(o => !string.IsNullOrWhiteSpace(o.BATCH_DIVISION_CODE))
+                .GroupBy(o => o.BATCH_DIVISION_CODE)
+                .Where(g => g.Count() > 1)
+                .ToList();
+
+            if (duplicates.Count == 0) return;
+
+            List<string> errorMessages = new List<string>();
+
+            foreach (var dup in duplicates)
+            {
+                var group = dup.ToList();
+                string batchCode = dup.Key;
+
+                var typeMap = new Dictionary<string, List<string>> {
+                    { "thuốc", new List<string>() },
+                    { "vật tư", new List<string>() },
+                    { "máu", new List<string>() }
+                };
+
+                foreach (var item in group)
+                {
+                    switch (item.Type)
+                    {
+                        case var t when t == Base.GlobalConfig.THUOC:
+                            typeMap["thuốc"].Add(item.MEDICINE_TYPE_NAME);
+                            break;
+                        case var t when t == Base.GlobalConfig.VATTU:
+                            typeMap["vật tư"].Add(item.MEDICINE_TYPE_NAME);
+                            break;
+                        case var t when t == Base.GlobalConfig.MAU:
+                            typeMap["máu"].Add(item.MEDICINE_TYPE_NAME);
+                            break;
+                    }
+                }
+
+                // Check lặp khác loại
+                var usedTypes = typeMap.Where(p => p.Value.Any()).ToList();
+                if (usedTypes.Count > 1)
+                {
+                    var parts = usedTypes.Select(p => $"{p.Key}: {string.Join(", ", p.Value.Distinct())}").ToList();
+                    string errorMessage = "Mã phần lô " + batchCode + " đã được sử dụng bởi " + string.Join("; ", parts);
+                    errorMessages.Add(errorMessage);
+                    
+                    foreach (var item in group)
+                    {
+                        if (string.IsNullOrEmpty(item.ERROR))
+                            item.ERROR = errorMessage;
+                        else
+                            item.ERROR += "; " + errorMessage;
+                    }
+                }
+
+                // Check lặp cùng loại (same-type duplicates)
+                foreach (var type in usedTypes)
+                {
+                    if (type.Value.Distinct().Count() > 1)
+                    {
+                        string errorMessage = "Mã phần lô " + batchCode + " được sử dụng cho nhiều " + type.Key + " khác nhau: " + string.Join(", ", type.Value.Distinct());
+                        errorMessages.Add(errorMessage);
+                        
+                        foreach (var item in group.Where(i => 
+                            (i.Type == THUOC && type.Key == "thuốc") || 
+                            (i.Type == VATTU && type.Key == "vật tư") || 
+                            (i.Type == MAU && type.Key == "máu")))
+                        {
+                            if (string.IsNullOrEmpty(item.ERROR))
+                                item.ERROR = errorMessage;
+                            else
+                                item.ERROR += "; " + errorMessage;
+                        }
+                    }
+                }
+            }
+
+            if (errorMessages.Any())
+            {
+                MessageBox.Show(string.Join(Environment.NewLine, errorMessages), "Lỗi mã phần lô", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
         }
     }

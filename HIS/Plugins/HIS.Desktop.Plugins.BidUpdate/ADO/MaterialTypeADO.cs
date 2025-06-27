@@ -40,6 +40,7 @@ namespace HIS.Desktop.Plugins.BidUpdate.ADO
         public long? HOUR_LIFESPAN { get; set; }
 
         public string NOTE { get; set; }
+        public string BATCH_DIVISION_CODE { get; set; }
 
         public string BID_MATERIAL_TYPE_CODE { get; set; }
         public string BID_MATERIAL_TYPE_NAME { get; set; }

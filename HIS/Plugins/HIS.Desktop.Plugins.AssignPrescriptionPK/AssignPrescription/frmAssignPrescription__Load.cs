@@ -30,6 +30,7 @@ using HIS.UC.Icd.ADO;
 using HIS.UC.SecondaryIcd.ADO;
 using Inventec.Common.Adapter;
 using Inventec.Common.Logging;
+using Inventec.Common.SignLibrary.DTO;
 using Inventec.Core;
 using Inventec.Desktop.Common.LanguageManager;
 using Inventec.Desktop.Common.Message;
@@ -2308,6 +2309,50 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
+        }
+        private void LoadDataForPrint()
+        {
+            try
+            {
+                if (this.currentTreatmentWithPatientType != null)
+                {
+                    MOS.Filter.HisPatientViewFilter patientViewFilter = new MOS.Filter.HisPatientViewFilter();
+                    patientViewFilter.ID = this.currentTreatmentWithPatientType.PATIENT_ID;
+                    var patients = new BackendAdapter(null).Get<List<V_HIS_PATIENT>>("api/HisPatient/GetView", ApiConsumer.ApiConsumers.MosConsumer, patientViewFilter, null);
+                    if (patients != null && patients.Count > 0)
+                    {
+                        this.patientPrint = patients.FirstOrDefault();
+                    }
+
+                    MOS.Filter.HisTreatmentFeeViewFilter filterTreatmentFee = new MOS.Filter.HisTreatmentFeeViewFilter();
+                    filterTreatmentFee.ID = this.currentTreatmentWithPatientType.ID;
+                    var listTreatment = new BackendAdapter(null)
+                      .Get<List<MOS.EFMODEL.DataModels.V_HIS_TREATMENT_FEE>>("api/HisTreatment/GetFeeView", ApiConsumer.ApiConsumers.MosConsumer, filterTreatmentFee, null);
+                    if (listTreatment != null && listTreatment.Count > 0)
+                    {
+                        this.treatmentPrint = listTreatment.FirstOrDefault();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void GetDocmentSigned(DocumentSignedUpdateIGSysResultDTO dTO)
+        {
+            try
+            {
+                if (!dSignedList.ContainsKey(this.serviceReqComboResultSDO.ServiceReqs[0].TREATMENT_ID))
+                    dSignedList[this.serviceReqComboResultSDO.ServiceReqs[0].TREATMENT_ID] = new List<DocumentSignedUpdateIGSysResultDTO>();
+                dSignedList[this.serviceReqComboResultSDO.ServiceReqs[0].TREATMENT_ID].Add(dTO);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+
         }
     }
 }

@@ -66,7 +66,6 @@ namespace HIS.Desktop.Plugins.TransactionBillOther
         private decimal totalPrice = 0;
 
         private bool printNow = false;
-
         private V_HIS_TRANSACTION currentTransaction = null;
 
         private List<V_HIS_ACCOUNT_BOOK> ListAccountBook = new List<V_HIS_ACCOUNT_BOOK>();
@@ -176,6 +175,16 @@ namespace HIS.Desktop.Plugins.TransactionBillOther
                     btnSearch.Enabled = true;
                 else
                     btnSearch.Enabled = false;
+                gridViewBillGoods.ShowingEditor += gridViewBillGoods_ShowingEditor;
+                if (this.treatment != null)
+                {
+                    var grouped = GetGroupedNoneMediServices(this.treatment.ID);
+                    ListBillGood.RemoveAll(x => x.IsFromTreatmentNoneMediService);
+                    ListBillGood.InsertRange(0, grouped);
+                    RefreshDataGridControl();
+                    CaluTotalPrice();
+                    SetEnableButtonByTreatment();
+                }
                 WaitingManager.Hide();
             }
             catch (Exception ex)
@@ -184,6 +193,20 @@ namespace HIS.Desktop.Plugins.TransactionBillOther
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
+
+        private void gridViewBillGoods_ShowingEditor(object sender, CancelEventArgs e)
+        {
+            var view = sender as DevExpress.XtraGrid.Views.Grid.GridView;
+            if (view == null) return;
+            var data = view.GetRow(view.FocusedRowHandle) as HisBillGoodADO;
+            if (data == null) return;
+
+            if (data.IsFromTreatmentNoneMediService && view.FocusedColumn.FieldName != "DISCOUNT")
+            {
+                e.Cancel = true;
+            }
+        }
+
 
         private void LoadAccountBookToLocal()
         {
@@ -723,6 +746,7 @@ namespace HIS.Desktop.Plugins.TransactionBillOther
                 spinGoodDiscountRatio.Value = 0;
                 spinGoodPrice.Value = 0;
                 txtGoodDescription.Text = "";
+                spinVat.Value = 0;
             }
             catch (Exception ex)
             {
@@ -1174,7 +1198,6 @@ namespace HIS.Desktop.Plugins.TransactionBillOther
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
-
         private void txtExemptionReason_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
         {
             try
@@ -1196,7 +1219,7 @@ namespace HIS.Desktop.Plugins.TransactionBillOther
             try
             {
                 gridViewBillGoods.PostEditor();
-                totalPrice = ListBillGood.Sum(s => s.TOTAL_PRICE_WITH_DISCOUNT);
+                totalPrice = ListBillGood.Sum(s => s.TOTAL_PRICE_WITH_VAT);
                 if (spinExemptionRation.Value > 0)
                 {
                     spinExemption.Value = spinExemptionRation.Value * totalPrice / 100;
@@ -1225,7 +1248,9 @@ namespace HIS.Desktop.Plugins.TransactionBillOther
                 ado.GOODS_UNIT_NAME = txtGoodUnitName.Text;
                 ado.PRICE = spinGoodPrice.Value;
                 ado.TOTAL_PRICE = ado.AMOUNT * ado.PRICE;
-                ado.TOTAL_PRICE_WITH_DISCOUNT = ado.TOTAL_PRICE - (ado.DISCOUNT ?? 0);
+                ado.VAT_RATIO = spinVat.Value;
+                //ado.TOTAL_PRICE_WITH_DISCOUNT = (ado.TOTAL_PRICE) - (ado.DISCOUNT ?? 0);
+                ado.TOTAL_PRICE_WITH_VAT = (ado.TOTAL_PRICE * (1 + (ado.VAT_RATIO/100 ?? 0))) - (ado.DISCOUNT ?? 0);
                 this.ListBillGood.Add(ado);
                 this.RefreshDataGridControl();
                 this.CaluTotalPrice();
@@ -1239,7 +1264,6 @@ namespace HIS.Desktop.Plugins.TransactionBillOther
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
-
         private void btnSaveAndPrint_Click(object sender, EventArgs e)
         {
             try
@@ -1273,7 +1297,6 @@ namespace HIS.Desktop.Plugins.TransactionBillOther
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
-
         private void btnSave_Click(object sender, EventArgs e)
         {
             try
@@ -1303,7 +1326,6 @@ namespace HIS.Desktop.Plugins.TransactionBillOther
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
-
         private bool ProcessSave(ref CommonParam param)
         {
             bool result = false;
@@ -1328,7 +1350,21 @@ namespace HIS.Desktop.Plugins.TransactionBillOther
                 }
 
                 HisTransactionOtherBillSDO tranSdo = new HisTransactionOtherBillSDO();
-                tranSdo.HisBillGoods = this.ListBillGood.ToList<HIS_BILL_GOODS>();
+                tranSdo.HisBillGoods = this.ListBillGood.Select(x => new HIS_BILL_GOODS
+                {
+                    ID = x.ID,
+                    SERE_NMSE_ID = x.SERE_NMSE_ID,
+                    NONE_MEDI_SERVICE_ID = x.NONE_MEDI_SERVICE_ID,
+                    SERVICE_UNIT_ID = x.SERVICE_UNIT_ID,
+                    AMOUNT = x.AMOUNT,
+                    DESCRIPTION = x.DESCRIPTION,
+                    DISCOUNT = x.DISCOUNT,
+                    GOODS_NAME = x.GOODS_NAME,
+                    GOODS_UNIT_NAME = x.GOODS_UNIT_NAME,
+                    PRICE = x.PRICE,
+                    VAT_RATIO = x.VAT_RATIO/100
+                }).ToList();
+
                 tranSdo.HisTransaction = new HIS_TRANSACTION();
                 if (chkCheckXD.Checked == false)
                 {
@@ -1392,7 +1428,6 @@ namespace HIS.Desktop.Plugins.TransactionBillOther
                     btnSaveAndSign.Enabled = true;
                     repositoryItemButtonDelete.Buttons[0].Enabled = true;
                 }
-
                 WaitingManager.Hide();
             }
             catch (Exception ex)
@@ -1621,6 +1656,11 @@ namespace HIS.Desktop.Plugins.TransactionBillOther
                 HisBillGoodADO data = (HisBillGoodADO)gridViewBillGoods.GetFocusedRow();
                 if (data != null)
                 {
+                    if (data.IsFromTreatmentNoneMediService)
+                    {
+                        MessageBox.Show("Không được phép xóa dịch vụ ngoài khám chữa bệnh của hồ sơ.");
+                        return;
+                    }
                     this.ListBillGood.Remove(data);
                     this.RefreshDataGridControl();
                 }
@@ -1661,7 +1701,8 @@ namespace HIS.Desktop.Plugins.TransactionBillOther
                     || e.Column.FieldName == gridColumn_BillGood_Discount.FieldName
                     || e.Column.FieldName == gridColumn_BillGood_GoodName.FieldName
                     || e.Column.FieldName == gridColumn_BillGood_GoodUnitName.FieldName
-                    || e.Column.FieldName == gridColumn_BillGood_Price.FieldName)
+                    || e.Column.FieldName == gridColumn_BillGood_Price.FieldName
+                    || e.Column.FieldName == gridColumn_BillGood_VAT.FieldName)
                 {
                     HisBillGoodADO data = (HisBillGoodADO)gridViewBillGoods.GetRow(e.RowHandle);
                     if (data != null)
@@ -1677,13 +1718,14 @@ namespace HIS.Desktop.Plugins.TransactionBillOther
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
-
         private void ProcessRowChangeValue(HisBillGoodADO data, DevExpress.XtraGrid.Views.Base.CellValueChangedEventArgs e)
         {
             try
             {
                 data.TOTAL_PRICE = data.AMOUNT * data.PRICE;
-                data.TOTAL_PRICE_WITH_DISCOUNT = data.TOTAL_PRICE - (data.DISCOUNT ?? 0);
+                //data.TOTAL_PRICE_WITH_DISCOUNT = data.TOTAL_PRICE - (data.DISCOUNT ?? 0);
+                data.TOTAL_PRICE_WITH_VAT = (data.TOTAL_PRICE * (1 + (data.VAT_RATIO/100 ?? 0))) - (data.DISCOUNT ?? 0) ;
+
                 if (String.IsNullOrWhiteSpace(data.GOODS_NAME))
                 {
                     data.Error = true;
@@ -1691,14 +1733,14 @@ namespace HIS.Desktop.Plugins.TransactionBillOther
                     data.ErrorType = DevExpress.XtraEditors.DXErrorProvider.ErrorType.Warning;
                     data.ErrorColumnName = "GOODS_NAME";
                 }
-                else if (data.GOODS_NAME.Length >= 500)
+                else if (data.GOODS_NAME.Length >= 1500)
                 {
                     data.Error = true;
-                    data.ErrorText = String.Format(ResourceMessageManager.DoDaiKhongDuocVuotQua, ResourceMessageManager.TenDichVu, 500);
+                    data.ErrorText = String.Format(ResourceMessageManager.DoDaiKhongDuocVuotQua, ResourceMessageManager.TenDichVu, 1500);
                     data.ErrorType = DevExpress.XtraEditors.DXErrorProvider.ErrorType.Warning;
                     data.ErrorColumnName = "GOODS_NAME";
                 }
-                else if (!String.IsNullOrWhiteSpace(data.GOODS_UNIT_NAME) && data.GOODS_NAME.Length >= 500)
+                else if (!String.IsNullOrWhiteSpace(data.GOODS_UNIT_NAME) && data.GOODS_NAME.Length >= 1500)
                 {
                     data.Error = true;
                     data.ErrorText = String.Format(ResourceMessageManager.DoDaiKhongDuocVuotQua, ResourceMessageManager.DonViTinh, 500);
@@ -1890,6 +1932,51 @@ namespace HIS.Desktop.Plugins.TransactionBillOther
             }
         }
 
+        private List<HisBillGoodADO> GetGroupedNoneMediServices(long treatmentId)
+        {
+            var result = new List<HisBillGoodADO>();
+            try
+            {
+                if (treatmentId <= 0) return result;
+
+                CommonParam param = new CommonParam();
+                HisSereNmseFilter filter = new HisSereNmseFilter();
+                filter.TREATMENT_ID = treatmentId;
+                var listSereNmse = new BackendAdapter(param).Get<List<HIS_SERE_NMSE>>("api/HisSereNmse/Get", ApiConsumers.MosConsumer, filter, param);
+                if (listSereNmse == null || listSereNmse.Count == 0) return result;
+
+                var sereNmseIds = listSereNmse.Select(x => x.ID).ToList();
+                HisBillGoodsFilter billGoodsFilter = new HisBillGoodsFilter();
+                billGoodsFilter.SERE_NMSE_IDs = sereNmseIds;
+                var listBillGoods = new BackendAdapter(param).Get<List<HIS_BILL_GOODS>>("api/HisBillGoods/Get", ApiConsumers.MosConsumer, billGoodsFilter, param);
+                var paidSereNmseIds = (listBillGoods ?? new List<HIS_BILL_GOODS>()).Select(x => x.SERE_NMSE_ID ?? 0).Distinct().ToList();
+                var unpaidSereNmse = listSereNmse.Where(x => !paidSereNmseIds.Contains(x.ID)).ToList();
+                foreach (var nmse in unpaidSereNmse)
+                {
+                    var billGood = new HisBillGoodADO
+                    {
+                        SERE_NMSE_ID = nmse.ID,
+                        NONE_MEDI_SERVICE_ID = nmse.NONE_MEDI_SERVICE_ID,
+                        PRICE = nmse.PRICE,
+                        VAT_RATIO = nmse.VAT_RATIO*100,
+                        AMOUNT = nmse.AMOUNT,
+                        GOODS_NAME = nmse.TDL_NONE_MEDI_SERVICE_NAME,
+                        GOODS_UNIT_NAME = nmse.TDL_SERVICE_UNIT_NAME,
+                        TOTAL_PRICE = (nmse.AMOUNT) * (nmse.PRICE),
+                        TOTAL_PRICE_WITH_VAT = ((nmse.AMOUNT) * (nmse.PRICE) * (1 + (nmse.VAT_RATIO))) - (nmse.DISCOUNT ?? 0),
+                        DISCOUNT = nmse.DISCOUNT ?? 0,
+                        IsFromTreatmentNoneMediService = true
+                    };
+                    result.Add(billGood);
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+            return result;
+        }
+
         private void btnSearch_Click(object sender, EventArgs e)
         {
             try
@@ -1909,8 +1996,16 @@ namespace HIS.Desktop.Plugins.TransactionBillOther
                 this.SetDefaultAccountBook();
                 this.SetDefaultPayForm();
                 this.ResetControlValidationGood();
-                this.RefreshDataGridControl();
-                this.CaluTotalPrice();
+                if (treatment != null)
+                {
+                    var grouped = GetGroupedNoneMediServices(treatment.ID);
+                    ListBillGood.RemoveAll(x => x.IsFromTreatmentNoneMediService);
+                    ListBillGood.InsertRange(0, grouped);
+                    RefreshDataGridControl();
+                    CaluTotalPrice();
+                }
+                //this.RefreshDataGridControl();
+                //this.CaluTotalPrice();
                 this.SetEnableButtonByTreatment();
                 WaitingManager.Hide();
             }
@@ -2364,6 +2459,7 @@ namespace HIS.Desktop.Plugins.TransactionBillOther
                             txtGoodUnitName.Enabled = false;
                             txtGoodUnitName.Text = currentNoneService.SERVICE_UNIT_NAME;
                             spinGoodPrice.Value = currentNoneService.PRICE ?? 0;
+                            spinVat.Value = (currentNoneService.VAT_RATIO ?? 0)*100;
                             spinGoodAmount.Focus();
                         }
                     }
@@ -2378,7 +2474,6 @@ namespace HIS.Desktop.Plugins.TransactionBillOther
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
-
         private void btnSaveAndSign_Click(object sender, EventArgs e)
         {
             try
@@ -2514,7 +2609,6 @@ namespace HIS.Desktop.Plugins.TransactionBillOther
                     currentTreatment.ID = -1;//để các api trong thư viện không lấy được dữ liệu
                     currentTreatment.PATIENT_ID = -1;
                 }
-
                 currentTreatment.TDL_PATIENT_ACCOUNT_NUMBER = transaction.BUYER_ACCOUNT_NUMBER;
                 currentTreatment.TDL_PATIENT_ADDRESS = transaction.BUYER_ADDRESS;
                 currentTreatment.TDL_PATIENT_PHONE = transaction.BUYER_PHONE;

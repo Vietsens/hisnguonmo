@@ -171,7 +171,15 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.BKAV
                                 }
                                 else
                                 {
-                                    ElectronicBillResultUtil.Set(ref result, false, item.MessLog);
+                                    if (ElectronicBillDataInput.Transaction != null && ElectronicBillDataInput.Transaction.ORIGINAL_TRANSACTION_ID.HasValue && ElectronicBillTypeEnum == ElectronicBillType.ENUM.CREATE_INVOICE)
+                                    {
+                                        ElectronicBillResultUtil.Set(ref result, false,"Thay thế hóa đơn thất bại. " + item.MessLog);
+                                    }
+                                    else
+                                    {
+                                        ElectronicBillResultUtil.Set(ref result, false, item.MessLog);
+                                    }
+
                                     LogSystem.Error("gui thong tin hoa don dien tu that bai. " + LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => item.MessLog), item.MessLog) + LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => invoiceDataWSs), invoiceDataWSs));
                                     return result;
                                 }
@@ -197,13 +205,27 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.BKAV
                 switch (this.ElectronicBillTypeEnum)
                 {
                     case ElectronicBillType.ENUM.CREATE_INVOICE:
-                        if (cmdTypeCFG == "1")
+                        if (ElectronicBillDataInput.Transaction != null && ElectronicBillDataInput.Transaction.ORIGINAL_TRANSACTION_ID.HasValue)
                         {
-                            result = Inventec.Common.EHoaDon.CmdType.CreateInvoiceWithFormSerialReturnNo;
+                            if (cmdTypeCFG == "1")
+                            {
+                                result = Inventec.Common.EHoaDon.CmdType.CreateInvoiceReplaceReturnNo;
+                            }
+                            else
+                            {
+                                result = Inventec.Common.EHoaDon.CmdType.CreateInvoiceReplace;//mã thay thế hóa đơn
+                            }
                         }
                         else
                         {
-                            result = Inventec.Common.EHoaDon.CmdType.CreateInvoiceTR;
+                            if (cmdTypeCFG == "1")
+                            {
+                                result = Inventec.Common.EHoaDon.CmdType.CreateInvoiceWithFormSerialReturnNo;
+                            }
+                            else
+                            {
+                                result = Inventec.Common.EHoaDon.CmdType.CreateInvoiceTR;
+                            }
                         }
                         break;
                     case ElectronicBillType.ENUM.GET_INVOICE_LINK:
@@ -425,6 +447,15 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.BKAV
                 invoiceWS.UserDefine = Newtonsoft.Json.JsonConvert.SerializeObject(ado);
                 invoiceWS.Note = ado.DEPARTMENT_NAME;
             }
+
+            //thay thế hóa đơn
+            if (this.ElectronicBillDataInput.Transaction != null && this.ElectronicBillDataInput.Transaction.ORIGINAL_TRANSACTION_ID.HasValue)
+            {
+                invoiceWS.Reason = ElectronicBillDataInput.Transaction.REPLACE_REASON;
+                string numorder = long.Parse(ElectronicBillDataInput.Transaction.TDL_ORIGINAL_EI_NUM_ORDER).ToString("D7");
+                invoiceWS.OriginalInvoiceIdentify = string.Format("[{0}]_[{1}]_[{2}]", this.ElectronicBillDataInput.TemplateCode, this.ElectronicBillDataInput.SymbolCode, numorder);
+            }
+
             return invoiceWS;
         }
 

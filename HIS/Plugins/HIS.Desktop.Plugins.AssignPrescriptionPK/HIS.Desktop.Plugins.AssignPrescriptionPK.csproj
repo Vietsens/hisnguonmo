@@ -423,6 +423,7 @@
     <Compile Include="ADO\HtuADO.cs" />
     <Compile Include="ADO\IcdCheckADO.cs" />
     <Compile Include="ADO\IcdServiceADO.cs" />
+    <Compile Include="ADO\LoaiPhieuInADO.cs" />
     <Compile Include="ADO\MedicineAcinInteractiveWarnADO.cs" />
     <Compile Include="ADO\DMediStock1ADO.cs" />
     <Compile Include="ADO\ICDADO.cs" />
@@ -909,6 +910,7 @@
       <DependentUpon>frmMixedInfusion.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Include="Properties\licenses.licx" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <SubType>Designer</SubType>

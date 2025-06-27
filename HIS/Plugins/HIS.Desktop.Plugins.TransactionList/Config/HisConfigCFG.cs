@@ -55,6 +55,9 @@ namespace HIS.Desktop.Plugins.TransactionList.Config
 
         private const string ELECTRONIC_BILL__EXPORT_OPTION = "HIS.Desktop.Plugins.TransactionList.ElectronicBill.ExportOption";
 
+        private const string TRANSACTION_ALLOW_EDIT_INFO_TRANSACTION_OTHER_DAYS = "HIS.HIS_TRANSACTION.ALLOW_EDIT_INFO_TRANSACTION_OTHER_DAYS";
+
+
         /// <summary>
         /// Cấu hình chế độ tạo hóa đơn điện tử, chữ ký điện tử
         //- Đặt 1: Chỉ tạo hóa đơn điện tử trên hệ thống của vnpt, không tạo trên hệ thống HIS
@@ -68,6 +71,8 @@ namespace HIS.Desktop.Plugins.TransactionList.Config
             HCM_115 = 2,
             QBH_CUBA = 3,
         }
+
+        internal static string TRANSACTION_ALLOW_EDIT;
 
         internal static string IsEditTransactionTimeCFG;
 
@@ -96,7 +101,7 @@ namespace HIS.Desktop.Plugins.TransactionList.Config
             try
             {
                 LogSystem.Debug("LoadConfig => 1");
-
+                TRANSACTION_ALLOW_EDIT = GetValue(TRANSACTION_ALLOW_EDIT_INFO_TRANSACTION_OTHER_DAYS);
                 PatientTypeCode__BHYT = GetValue(CONFIG_KEY__PATIENT_TYPE_CODE__BHYT);
                 PatientTypeId__BHYT = GetPatientTypeByCode(PatientTypeCode__BHYT).ID;
                 PatientTypeCode__VP = GetValue(CONFIG_KEY__PATIENT_TYPE_CODE__VP);

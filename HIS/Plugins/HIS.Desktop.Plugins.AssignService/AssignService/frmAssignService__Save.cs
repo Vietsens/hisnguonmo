@@ -1362,6 +1362,8 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
             List<string> serviceErrs = new List<string>();
             try
             {
+                //qtcode
+                List<string> bhytWarnings = new List<string>();
                 List<ServiceReqDetailSDO> serviceReqDetailSDOTemp = new List<ServiceReqDetailSDO>();
                 List<V_HIS_SERVICE_FOLLOW> serviceFollows = BackendDataWorker.Get<MOS.EFMODEL.DataModels.V_HIS_SERVICE_FOLLOW>().Where(o => new List<long> { IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__MAU, IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__THUOC, IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__VT, IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__G, IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__AN }.Exists(p => p != o.FOLLOW_TYPE_ID) && (string.IsNullOrEmpty(o.TREATMENT_TYPE_IDS) || ("," + o.TREATMENT_TYPE_IDS + ",").Contains("," + currentTreatment.TDL_TREATMENT_TYPE_ID + ","))).ToList();
                 if (result.ServiceReqDetails != null && result.ServiceReqDetails.Count > 0
@@ -1372,14 +1374,31 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                     List<long> allowPatientTypeIds = this.currentPatientTypeAllows != null ? this.currentPatientTypeAllows
                         .Where(o => o.PATIENT_TYPE_ID == defaultPatientTypeId)
                         .Select(o => o.PATIENT_TYPE_ALLOW_ID).ToList() : null;
-
-                    foreach (ServiceReqDetailSDO sdo in result.ServiceReqDetails)
+                    //qtcode
+                    Dictionary<long, List<V_HIS_SERVICE_FOLLOW>> followByServiceId = new Dictionary<long, List<V_HIS_SERVICE_FOLLOW>>();
+                    foreach (ServiceReqDetailSDO sdo in result.ServiceReqDetails) // duyệt từng thằng dịch vụ mình chọn 
                     {
-                        List<V_HIS_SERVICE_FOLLOW> follows = serviceFollows.Where(o => o.SERVICE_ID == sdo.ServiceId && (o.CONDITIONED_AMOUNT == null || o.CONDITIONED_AMOUNT == sdo.Amount)).ToList();
+                        List<V_HIS_SERVICE_FOLLOW> follows = serviceFollows.Where(o => o.SERVICE_ID == sdo.ServiceId).ToList();
+                        // lọc ra các dịch vụ đi kèm có service_id = id của thằng dịch vụ mình chọn 
                         if (follows != null && follows.Count > 0)
                         {
+                            
                             foreach (V_HIS_SERVICE_FOLLOW f in follows)
                             {
+                                bool isBhyt = (defaultPatientTypeId == HisConfigCFG.PatientTypeId__BHYT);
+                                bool isDrugOrMaterial = (f.FOLLOW_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__THUOC ||
+                                                        f.FOLLOW_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__VT);
+                                //qtcode
+                                if (isBhyt && isDrugOrMaterial)
+                                {
+                                    if (!followByServiceId.ContainsKey(sdo.ServiceId))
+                                    {
+                                        followByServiceId[sdo.ServiceId] = new List<V_HIS_SERVICE_FOLLOW>();
+                                    }
+                                    followByServiceId[sdo.ServiceId].Add(f);
+                                    continue; // Bỏ qua việc thêm dịch vụ đi kèm này vào SDO
+                                }
+                                //qtcode
                                 bool hasServicePaty = BranchDataWorker.DicServicePatyInBranch.ContainsKey(f.FOLLOW_ID) ? BranchDataWorker.HasServicePatyWithListPatientType(f.FOLLOW_ID, new List<long>() { defaultPatientTypeId }) : false;
                                 long? patientTypeId = null;
                                 if (hasServicePaty)
@@ -1441,7 +1460,38 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                             }
                         }
                     }
+                    // cảnh báo BHYT
+                    if (followByServiceId.Count > 0)
+                    {//followByServiceId là dict có id là id của dịch vụ mà mình chọn và giá trị là các dịch vụ đi kèm 
+                        foreach (var serviceGroup in followByServiceId)
+                        {
+                            long serviceId = serviceGroup.Key;
+                            var follows = serviceGroup.Value; // các giá trị dịch vụ đi kèm
+                            var service = lstService.FirstOrDefault(o => o.ID == serviceId);
+                            if (service == null) continue;
 
+                            string serviceName = service.SERVICE_NAME; // tên dịch vụ chính 
+                            var followNames = follows.Select(f => string.Format("[{0}] {1}", f.AMOUNT, f.FOLLOW_NAME)).ToList(); 
+                            string warning = string.Format("{0} phải đi kèm {1}.", serviceName, string.Join(", ", followNames));
+                            bhytWarnings.Add(warning);
+                        }
+
+                        if (bhytWarnings.Count > 0)
+                        {
+                            string warningMessage = string.Format("{0}. Bạn có muốn tiếp tục không?", string.Join("; ", bhytWarnings));
+                            var rs = MessageBox.Show(
+                                warningMessage,
+                                Inventec.Desktop.Common.LibraryMessage.MessageUtil.GetMessage(
+                                    Inventec.Desktop.Common.LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaThongBao
+                                ),
+                                MessageBoxButtons.YesNo
+                            );
+                            if (rs == DialogResult.No)
+                            {
+                                return false;
+                            }
+                        }
+                    }
                     if (serviceReqDetailSDOTemp != null && serviceReqDetailSDOTemp.Count > 0)
                     {
                         result.ServiceReqDetails.AddRange(serviceReqDetailSDOTemp);
@@ -1816,7 +1866,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                 Inventec.Common.Logging.LogSystem.Info("this.serviceReqComboResultSDO: " + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => rs), rs));
 
                 if (rs != null)
-                {
+                {//qtcode
                     this.serviceReqComboResultSDO = rs;
                     dicSessionCode[serviceReqComboResultSDO.ServiceReqs[0].TREATMENT_ID] = serviceReqComboResultSDO.SessionCode;
                     dicServiceReqList[serviceReqComboResultSDO.ServiceReqs[0].TREATMENT_ID] = serviceReqComboResultSDO;
@@ -1859,7 +1909,95 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                     this.SetEnableButtonControl(this.actionType);
                     this.isSaveAndPrint = issaveandprint;
                     //this.RefeshSereServInTreatmentData();
+                    //qtcode
+                    if (chkPrintVBA.Checked && serviceReqComboResultSDO != null && serviceReqComboResultSDO.SereServs != null)
+                    {
+                        var sereServs = serviceReqComboResultSDO.SereServs;
+                        var services = BackendDataWorker.Get<V_HIS_SERVICE>()
+                            .Where(o => sereServs.Select(s => s.SERVICE_ID).Contains(o.ID))
+                            .ToList();
 
+                        // Sắp xếp theo thứ tự lưu dịch vụ
+                        var orderedSereServs = serviceReqSDO.ServiceReqDetails
+                            .Where(d => sereServs.Any(s => s.SERVICE_ID == d.ServiceId))
+                            .Select(d => sereServs.FirstOrDefault(s => s.SERVICE_ID == d.ServiceId))
+                            .Where(s => s != null)
+                            .ToList();
+
+                        var printGroups = orderedSereServs
+                            .Join(services,
+                                ss => ss.SERVICE_ID,
+                                s => s.ID,
+                                (ss, s) => new { SereServ = ss, Service = s })
+                            .Where(o => !string.IsNullOrEmpty(o.Service.ATTACH_ASSIGN_PRINT_TYPE_CODE))
+                            .GroupBy(o => o.Service.ATTACH_ASSIGN_PRINT_TYPE_CODE)
+                            .ToList();
+
+                        if (printGroups.Any())
+                        {
+                            HIS.Desktop.Plugins.Library.FormMedicalRecord.MediRecordMenuPopupProcessor processor = new HIS.Desktop.Plugins.Library.FormMedicalRecord.MediRecordMenuPopupProcessor();
+                            foreach (var group in printGroups)
+                            {
+                                var printTypeCode = group.Key;
+                                var ado = new Library.FormMedicalRecord.Base.EmrInputADO
+                                {
+                                    TreatmentId = this.treatmentId,
+                                    PatientId = this.currentHisTreatment?.PATIENT_ID ?? 0,
+                                    roomId = this.currentModule.RoomId
+                                };
+
+                                
+                                if (currentTreatment?.EMR_COVER_TYPE_ID != null)
+                                {
+                                    ado.EmrCoverTypeId = currentTreatment.EMR_COVER_TYPE_ID.Value;
+                                }
+                                else
+                                {
+                                    var data = BackendDataWorker.Get<HIS_EMR_COVER_CONFIG>()
+                                        .Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE
+                                            && o.ROOM_ID == this.currentModule.RoomId
+                                            && o.TREATMENT_TYPE_ID == (currentHisPatientTypeAlter?.TREATMENT_TYPE_ID ?? 0))
+                                        .ToList();
+                                    if (data != null && data.Count > 0)
+                                    {
+                                        if (data.Count == 1)
+                                        {
+                                            ado.EmrCoverTypeId = data.FirstOrDefault().EMR_COVER_TYPE_ID;
+                                        }
+                                        else
+                                        {
+                                            ado.lstEmrCoverTypeId = data.Select(o => o.EMR_COVER_TYPE_ID).ToList();
+                                        }
+                                    }
+                                    else
+                                    {
+                                        var departmentId = HIS.Desktop.LocalStorage.LocalData.WorkPlace.WorkPlaceSDO
+                                            .FirstOrDefault(o => o.RoomId == this.currentModule.RoomId)?.DepartmentId ?? 0;
+                                        var dataConfig = BackendDataWorker.Get<HIS_EMR_COVER_CONFIG>()
+                                            .Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE
+                                                && o.DEPARTMENT_ID == departmentId
+                                                && o.TREATMENT_TYPE_ID == (currentHisPatientTypeAlter?.TREATMENT_TYPE_ID ?? 0))
+                                            .ToList();
+                                        if (dataConfig != null && dataConfig.Count > 0)
+                                        {
+                                            if (dataConfig.Count == 1)
+                                            {
+                                                ado.EmrCoverTypeId = dataConfig.FirstOrDefault().EMR_COVER_TYPE_ID;
+                                            }
+                                            else
+                                            {
+                                                ado.lstEmrCoverTypeId = dataConfig.Select(o => o.EMR_COVER_TYPE_ID).ToList();
+                                            }
+                                        }
+                                    }
+                                }
+
+                                long emrCoverTypeId = ado.EmrCoverTypeId ?? 0;
+                                long emrCoverTypeIdSend = emrCoverTypeId <= 0 ? 0 : emrCoverTypeId;
+                                processor.FormOpenEmr(emrCoverTypeIdSend, ado, printTypeCode);
+                            }
+                        }
+                    }
                     //Nếu mở từ tiếp đón chưa có icd và có nhập icd thì cập nhật Icd để in ra
                     //Comment do code gây lỗi, không biết lý do code sử dụng hàm này
                     //this.UpdateIcdToCurrentHisTreatment();

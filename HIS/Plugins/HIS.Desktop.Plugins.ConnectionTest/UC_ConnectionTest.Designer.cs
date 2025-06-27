@@ -51,6 +51,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(UC_ConnectionTest));
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject1 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject2 = new DevExpress.Utils.SerializableAppearanceObject();
@@ -166,7 +167,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject112 = new DevExpress.Utils.SerializableAppearanceObject();
             this.layoutControl1 = new DevExpress.XtraLayout.LayoutControl();
             this.cboRoom = new DevExpress.XtraEditors.GridLookUpEdit();
-            this.barManager1 = new DevExpress.XtraBars.BarManager();
+            this.barManager1 = new DevExpress.XtraBars.BarManager(this.components);
             this.layoutControl3 = new DevExpress.XtraLayout.LayoutControl();
             this.lblRejectReason = new DevExpress.XtraEditors.LabelControl();
             this.lblCancelReason = new DevExpress.XtraEditors.LabelControl();
@@ -182,16 +183,6 @@ namespace HIS.Desktop.Plugins.ConnectionTest
             this.txtConclude = new DevExpress.XtraEditors.MemoEdit();
             this.lblGenderName = new DevExpress.XtraEditors.LabelControl();
             this.txtAdd = new System.Windows.Forms.Label();
-            this.popupControlResultDescription = new DevExpress.XtraBars.PopupControlContainer();
-            this.layoutControl4 = new DevExpress.XtraLayout.LayoutControl();
-            this.btnOKForResultDescription = new DevExpress.XtraEditors.SimpleButton();
-            this.btnCancelForResultDescription = new DevExpress.XtraEditors.SimpleButton();
-            this.txtResultDescription = new DevExpress.XtraEditors.MemoEdit();
-            this.layoutControlGroup3 = new DevExpress.XtraLayout.LayoutControlGroup();
-            this.layoutControlItem24 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.layoutControlItem27 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.layoutControlItem28 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.emptySpaceItem3 = new DevExpress.XtraLayout.EmptySpaceItem();
             this.lblICDText = new DevExpress.XtraEditors.LabelControl();
             this.lblICDName = new DevExpress.XtraEditors.LabelControl();
             this.xtraTabDocument = new DevExpress.XtraTab.XtraTabControl();
@@ -199,12 +190,6 @@ namespace HIS.Desktop.Plugins.ConnectionTest
             this.ucViewEmrDocumentReq = new HIS.UC.ViewEmrDocument.UcEmrDocument.UcViewEmrDocument();
             this.xtraTabDocumentResult = new DevExpress.XtraTab.XtraTabPage();
             this.ucViewEmrDocumentResult = new HIS.UC.ViewEmrDocument.UcEmrDocument.UcViewEmrDocument();
-            this.popupControlContainerOldValue = new DevExpress.XtraBars.PopupControlContainer();
-            this.txtOldValueIntoPopup = new DevExpress.XtraEditors.MemoEdit();
-            this.popupControlContainerNote = new DevExpress.XtraBars.PopupControlContainer();
-            this.btnOKForNote = new DevExpress.XtraEditors.SimpleButton();
-            this.btnCancelForNote = new DevExpress.XtraEditors.SimpleButton();
-            this.txtNoteIntoPopup = new DevExpress.XtraEditors.MemoEdit();
             this.treeListSereServTein = new DevExpress.XtraTreeList.TreeList();
             this.treeListColumn6 = new DevExpress.XtraTreeList.Columns.TreeListColumn();
             this.repositoryItemPictureEdit2 = new DevExpress.XtraEditors.Repository.RepositoryItemPictureEdit();
@@ -255,7 +240,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
             this.TextEditResultRange__Disable = new DevExpress.XtraEditors.Repository.RepositoryItemTextEdit();
             this.TextEditNote__Enable = new DevExpress.XtraEditors.Repository.RepositoryItemTextEdit();
             this.TextEditNote__Disable = new DevExpress.XtraEditors.Repository.RepositoryItemTextEdit();
-            this.imageList1 = new System.Windows.Forms.ImageList();
+            this.imageList1 = new System.Windows.Forms.ImageList(this.components);
             this.layoutControlGroup2 = new DevExpress.XtraLayout.LayoutControlGroup();
             this.layoutControlItem6 = new DevExpress.XtraLayout.LayoutControlItem();
             this.LciGroupEmrDocument = new DevExpress.XtraLayout.LayoutControlGroup();
@@ -283,6 +268,10 @@ namespace HIS.Desktop.Plugins.ConnectionTest
             this.chkSignProcess = new DevExpress.XtraEditors.CheckEdit();
             this.DateKQ = new DevExpress.XtraEditors.DateEdit();
             this.txtUserKQ = new DevExpress.XtraEditors.TextEdit();
+            this.popupControlContainerNote = new DevExpress.XtraBars.PopupControlContainer(this.components);
+            this.btnOKForNote = new DevExpress.XtraEditors.SimpleButton();
+            this.btnCancelForNote = new DevExpress.XtraEditors.SimpleButton();
+            this.txtNoteIntoPopup = new DevExpress.XtraEditors.MemoEdit();
             this.chkPrintPreview = new DevExpress.XtraEditors.CheckEdit();
             this.cboSttEmr = new DevExpress.XtraEditors.ComboBoxEdit();
             this.btnApproveError = new DevExpress.XtraEditors.SimpleButton();
@@ -290,12 +279,24 @@ namespace HIS.Desktop.Plugins.ConnectionTest
             this.lblApproveResultSuccess = new DevExpress.XtraEditors.LabelControl();
             this.btnApproveListResult = new DevExpress.XtraEditors.SimpleButton();
             this.chkSignApproveList = new DevExpress.XtraEditors.CheckEdit();
-            this.popupControlContainerRangeValue = new DevExpress.XtraBars.PopupControlContainer();
+            this.popupControlContainerRangeValue = new DevExpress.XtraBars.PopupControlContainer(this.components);
             this.lkbDuongTinh = new System.Windows.Forms.LinkLabel();
             this.lkbAmTinh = new System.Windows.Forms.LinkLabel();
             this.btnCancelForValueRange = new DevExpress.XtraEditors.SimpleButton();
             this.btnOKForValueRange = new DevExpress.XtraEditors.SimpleButton();
             this.txtValueRangeIntoPopup = new DevExpress.XtraEditors.MemoEdit();
+            this.popupControlContainerOldValue = new DevExpress.XtraBars.PopupControlContainer(this.components);
+            this.txtOldValueIntoPopup = new DevExpress.XtraEditors.MemoEdit();
+            this.popupControlResultDescription = new DevExpress.XtraBars.PopupControlContainer(this.components);
+            this.layoutControl4 = new DevExpress.XtraLayout.LayoutControl();
+            this.btnOKForResultDescription = new DevExpress.XtraEditors.SimpleButton();
+            this.btnCancelForResultDescription = new DevExpress.XtraEditors.SimpleButton();
+            this.txtResultDescription = new DevExpress.XtraEditors.MemoEdit();
+            this.layoutControlGroup3 = new DevExpress.XtraLayout.LayoutControlGroup();
+            this.layoutControlItem24 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.layoutControlItem27 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.layoutControlItem28 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.emptySpaceItem3 = new DevExpress.XtraLayout.EmptySpaceItem();
             this.btnCreateSigner = new DevExpress.XtraEditors.SimpleButton();
             this.chkOrderByBarcode = new DevExpress.XtraEditors.CheckEdit();
             this.chkShowSampleGroup = new DevExpress.XtraEditors.CheckEdit();
@@ -445,16 +446,16 @@ namespace HIS.Desktop.Plugins.ConnectionTest
             this.emptySpaceItem1 = new DevExpress.XtraLayout.EmptySpaceItem();
             this.layoutControlItem44 = new DevExpress.XtraLayout.LayoutControlItem();
             this.cboUserKQView = new HIS.Desktop.Utilities.Extensions.CustomGridView();
-            this.imageCollection1 = new DevExpress.Utils.ImageCollection();
-            this.imageListIcon = new System.Windows.Forms.ImageList();
-            this.toolTipControllerGrid = new DevExpress.Utils.ToolTipController();
-            this.toolTipController1 = new DevExpress.Utils.ToolTipController();
-            this.dxValidationProviderEditorInfo = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider();
-            this.timerReloadMachineCounter = new System.Windows.Forms.Timer();
-            this.timer1 = new System.Windows.Forms.Timer();
-            this.timer2 = new System.Windows.Forms.Timer();
-            this.dxErrorProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXErrorProvider();
-            this.imageCollection2 = new DevExpress.Utils.ImageCollection();
+            this.imageCollection1 = new DevExpress.Utils.ImageCollection(this.components);
+            this.imageListIcon = new System.Windows.Forms.ImageList(this.components);
+            this.toolTipControllerGrid = new DevExpress.Utils.ToolTipController(this.components);
+            this.toolTipController1 = new DevExpress.Utils.ToolTipController(this.components);
+            this.dxValidationProviderEditorInfo = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider(this.components);
+            this.timerReloadMachineCounter = new System.Windows.Forms.Timer(this.components);
+            this.timer1 = new System.Windows.Forms.Timer(this.components);
+            this.timer2 = new System.Windows.Forms.Timer(this.components);
+            this.dxErrorProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXErrorProvider(this.components);
+            this.imageCollection2 = new DevExpress.Utils.ImageCollection(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
             this.layoutControl1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.cboRoom.Properties)).BeginInit();
@@ -469,26 +470,10 @@ namespace HIS.Desktop.Plugins.ConnectionTest
             ((System.ComponentModel.ISupportInitialize)(this.txtDescription.Properties)).BeginInit();
             this.xtraTabPage3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.txtConclude.Properties)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.popupControlResultDescription)).BeginInit();
-            this.popupControlResultDescription.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControl4)).BeginInit();
-            this.layoutControl4.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.txtResultDescription.Properties)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup3)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem24)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem27)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem28)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.xtraTabDocument)).BeginInit();
             this.xtraTabDocument.SuspendLayout();
             this.xtraTabDocumentReq.SuspendLayout();
             this.xtraTabDocumentResult.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.popupControlContainerOldValue)).BeginInit();
-            this.popupControlContainerOldValue.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.txtOldValueIntoPopup.Properties)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.popupControlContainerNote)).BeginInit();
-            this.popupControlContainerNote.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.txtNoteIntoPopup.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.treeListSereServTein)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemPictureEdit2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItembtnValueRangeShow)).BeginInit();
@@ -551,12 +536,28 @@ namespace HIS.Desktop.Plugins.ConnectionTest
             ((System.ComponentModel.ISupportInitialize)(this.DateKQ.Properties.CalendarTimeProperties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.DateKQ.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtUserKQ.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.popupControlContainerNote)).BeginInit();
+            this.popupControlContainerNote.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.txtNoteIntoPopup.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.chkPrintPreview.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboSttEmr.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.chkSignApproveList.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.popupControlContainerRangeValue)).BeginInit();
             this.popupControlContainerRangeValue.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.txtValueRangeIntoPopup.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.popupControlContainerOldValue)).BeginInit();
+            this.popupControlContainerOldValue.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.txtOldValueIntoPopup.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.popupControlResultDescription)).BeginInit();
+            this.popupControlResultDescription.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControl4)).BeginInit();
+            this.layoutControl4.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.txtResultDescription.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup3)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem24)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem27)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem28)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.chkOrderByBarcode.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.chkShowSampleGroup.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboServiceResult.Properties)).BeginInit();
@@ -684,6 +685,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
             this.layoutControl1.Controls.Add(this.chkSignProcess);
             this.layoutControl1.Controls.Add(this.DateKQ);
             this.layoutControl1.Controls.Add(this.txtUserKQ);
+            this.layoutControl1.Controls.Add(this.popupControlContainerNote);
             this.layoutControl1.Controls.Add(this.chkPrintPreview);
             this.layoutControl1.Controls.Add(this.cboSttEmr);
             this.layoutControl1.Controls.Add(this.btnApproveError);
@@ -762,12 +764,9 @@ namespace HIS.Desktop.Plugins.ConnectionTest
             this.layoutControl3.Controls.Add(this.xtraTabControl);
             this.layoutControl3.Controls.Add(this.lblGenderName);
             this.layoutControl3.Controls.Add(this.txtAdd);
-            this.layoutControl3.Controls.Add(this.popupControlResultDescription);
             this.layoutControl3.Controls.Add(this.lblICDText);
             this.layoutControl3.Controls.Add(this.lblICDName);
             this.layoutControl3.Controls.Add(this.xtraTabDocument);
-            this.layoutControl3.Controls.Add(this.popupControlContainerOldValue);
-            this.layoutControl3.Controls.Add(this.popupControlContainerNote);
             this.layoutControl3.Controls.Add(this.treeListSereServTein);
             this.layoutControl3.Location = new System.Drawing.Point(0, 0);
             this.layoutControl3.Margin = new System.Windows.Forms.Padding(0);
@@ -903,110 +902,6 @@ namespace HIS.Desktop.Plugins.ConnectionTest
             this.txtAdd.TabIndex = 72;
             this.txtAdd.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
-            // popupControlResultDescription
-            // 
-            this.popupControlResultDescription.BorderStyle = DevExpress.XtraEditors.Controls.BorderStyles.NoBorder;
-            this.popupControlResultDescription.Controls.Add(this.layoutControl4);
-            this.popupControlResultDescription.Location = new System.Drawing.Point(516, 221);
-            this.popupControlResultDescription.Manager = this.barManager1;
-            this.popupControlResultDescription.Name = "popupControlResultDescription";
-            this.popupControlResultDescription.Size = new System.Drawing.Size(232, 131);
-            this.popupControlResultDescription.TabIndex = 2;
-            this.popupControlResultDescription.Visible = false;
-            // 
-            // layoutControl4
-            // 
-            this.layoutControl4.Controls.Add(this.btnOKForResultDescription);
-            this.layoutControl4.Controls.Add(this.btnCancelForResultDescription);
-            this.layoutControl4.Controls.Add(this.txtResultDescription);
-            this.layoutControl4.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.layoutControl4.Location = new System.Drawing.Point(0, 0);
-            this.layoutControl4.Name = "layoutControl4";
-            this.layoutControl4.Root = this.layoutControlGroup3;
-            this.layoutControl4.Size = new System.Drawing.Size(232, 131);
-            this.layoutControl4.TabIndex = 0;
-            this.layoutControl4.Text = "layoutControl4";
-            // 
-            // btnOKForResultDescription
-            // 
-            this.btnOKForResultDescription.Location = new System.Drawing.Point(131, 104);
-            this.btnOKForResultDescription.Name = "btnOKForResultDescription";
-            this.btnOKForResultDescription.Size = new System.Drawing.Size(44, 22);
-            this.btnOKForResultDescription.StyleController = this.layoutControl4;
-            this.btnOKForResultDescription.TabIndex = 6;
-            this.btnOKForResultDescription.Text = "Đồng ý";
-            this.btnOKForResultDescription.Click += new System.EventHandler(this.btnOKForResultDescription_Click);
-            // 
-            // btnCancelForResultDescription
-            // 
-            this.btnCancelForResultDescription.Location = new System.Drawing.Point(185, 104);
-            this.btnCancelForResultDescription.Name = "btnCancelForResultDescription";
-            this.btnCancelForResultDescription.Size = new System.Drawing.Size(42, 22);
-            this.btnCancelForResultDescription.StyleController = this.layoutControl4;
-            this.btnCancelForResultDescription.TabIndex = 5;
-            this.btnCancelForResultDescription.Text = "Bỏ qua";
-            this.btnCancelForResultDescription.Click += new System.EventHandler(this.btnCancelForResultDescription_Click);
-            // 
-            // txtResultDescription
-            // 
-            this.txtResultDescription.Location = new System.Drawing.Point(2, 2);
-            this.txtResultDescription.MenuManager = this.barManager1;
-            this.txtResultDescription.Name = "txtResultDescription";
-            this.txtResultDescription.Size = new System.Drawing.Size(228, 95);
-            this.txtResultDescription.StyleController = this.layoutControl4;
-            this.txtResultDescription.TabIndex = 4;
-            // 
-            // layoutControlGroup3
-            // 
-            this.layoutControlGroup3.EnableIndentsWithoutBorders = DevExpress.Utils.DefaultBoolean.False;
-            this.layoutControlGroup3.GroupBordersVisible = false;
-            this.layoutControlGroup3.Items.AddRange(new DevExpress.XtraLayout.BaseLayoutItem[] {
-            this.layoutControlItem24,
-            this.layoutControlItem27,
-            this.layoutControlItem28,
-            this.emptySpaceItem3});
-            this.layoutControlGroup3.Location = new System.Drawing.Point(0, 0);
-            this.layoutControlGroup3.Name = "layoutControlGroup3";
-            this.layoutControlGroup3.Size = new System.Drawing.Size(232, 131);
-            this.layoutControlGroup3.TextVisible = false;
-            // 
-            // layoutControlItem24
-            // 
-            this.layoutControlItem24.Control = this.txtResultDescription;
-            this.layoutControlItem24.Location = new System.Drawing.Point(0, 0);
-            this.layoutControlItem24.Name = "layoutControlItem24";
-            this.layoutControlItem24.Size = new System.Drawing.Size(232, 99);
-            this.layoutControlItem24.TextSize = new System.Drawing.Size(0, 0);
-            this.layoutControlItem24.TextVisible = false;
-            // 
-            // layoutControlItem27
-            // 
-            this.layoutControlItem27.Control = this.btnCancelForResultDescription;
-            this.layoutControlItem27.Location = new System.Drawing.Point(180, 99);
-            this.layoutControlItem27.Name = "layoutControlItem27";
-            this.layoutControlItem27.Padding = new DevExpress.XtraLayout.Utils.Padding(5, 5, 5, 5);
-            this.layoutControlItem27.Size = new System.Drawing.Size(52, 32);
-            this.layoutControlItem27.TextSize = new System.Drawing.Size(0, 0);
-            this.layoutControlItem27.TextVisible = false;
-            // 
-            // layoutControlItem28
-            // 
-            this.layoutControlItem28.Control = this.btnOKForResultDescription;
-            this.layoutControlItem28.Location = new System.Drawing.Point(126, 99);
-            this.layoutControlItem28.Name = "layoutControlItem28";
-            this.layoutControlItem28.Padding = new DevExpress.XtraLayout.Utils.Padding(5, 5, 5, 5);
-            this.layoutControlItem28.Size = new System.Drawing.Size(54, 32);
-            this.layoutControlItem28.TextSize = new System.Drawing.Size(0, 0);
-            this.layoutControlItem28.TextVisible = false;
-            // 
-            // emptySpaceItem3
-            // 
-            this.emptySpaceItem3.AllowHotTrack = false;
-            this.emptySpaceItem3.Location = new System.Drawing.Point(0, 99);
-            this.emptySpaceItem3.Name = "emptySpaceItem3";
-            this.emptySpaceItem3.Size = new System.Drawing.Size(126, 32);
-            this.emptySpaceItem3.TextSize = new System.Drawing.Size(0, 0);
-            // 
             // lblICDText
             // 
             this.lblICDText.AutoSizeMode = DevExpress.XtraEditors.LabelAutoSizeMode.None;
@@ -1068,64 +963,6 @@ namespace HIS.Desktop.Plugins.ConnectionTest
             this.ucViewEmrDocumentResult.Name = "ucViewEmrDocumentResult";
             this.ucViewEmrDocumentResult.Size = new System.Drawing.Size(284, 368);
             this.ucViewEmrDocumentResult.TabIndex = 0;
-            // 
-            // popupControlContainerOldValue
-            // 
-            this.popupControlContainerOldValue.BorderStyle = DevExpress.XtraEditors.Controls.BorderStyles.NoBorder;
-            this.popupControlContainerOldValue.Controls.Add(this.txtOldValueIntoPopup);
-            this.popupControlContainerOldValue.Location = new System.Drawing.Point(260, 224);
-            this.popupControlContainerOldValue.Manager = this.barManager1;
-            this.popupControlContainerOldValue.Name = "popupControlContainerOldValue";
-            this.popupControlContainerOldValue.Size = new System.Drawing.Size(250, 130);
-            this.popupControlContainerOldValue.TabIndex = 65;
-            this.popupControlContainerOldValue.Visible = false;
-            // 
-            // txtOldValueIntoPopup
-            // 
-            this.txtOldValueIntoPopup.Location = new System.Drawing.Point(3, 1);
-            this.txtOldValueIntoPopup.MenuManager = this.barManager1;
-            this.txtOldValueIntoPopup.Name = "txtOldValueIntoPopup";
-            this.txtOldValueIntoPopup.Size = new System.Drawing.Size(244, 123);
-            this.txtOldValueIntoPopup.TabIndex = 0;
-            // 
-            // popupControlContainerNote
-            // 
-            this.popupControlContainerNote.BorderStyle = DevExpress.XtraEditors.Controls.BorderStyles.NoBorder;
-            this.popupControlContainerNote.Controls.Add(this.btnOKForNote);
-            this.popupControlContainerNote.Controls.Add(this.btnCancelForNote);
-            this.popupControlContainerNote.Controls.Add(this.txtNoteIntoPopup);
-            this.popupControlContainerNote.Location = new System.Drawing.Point(9, 223);
-            this.popupControlContainerNote.Manager = this.barManager1;
-            this.popupControlContainerNote.Name = "popupControlContainerNote";
-            this.popupControlContainerNote.Size = new System.Drawing.Size(250, 130);
-            this.popupControlContainerNote.TabIndex = 60;
-            this.popupControlContainerNote.Visible = false;
-            // 
-            // btnOKForNote
-            // 
-            this.btnOKForNote.Location = new System.Drawing.Point(90, 103);
-            this.btnOKForNote.Name = "btnOKForNote";
-            this.btnOKForNote.Size = new System.Drawing.Size(75, 23);
-            this.btnOKForNote.TabIndex = 1;
-            this.btnOKForNote.Text = "Đồng ý";
-            this.btnOKForNote.Click += new System.EventHandler(this.btnOKForNote_Click);
-            // 
-            // btnCancelForNote
-            // 
-            this.btnCancelForNote.Location = new System.Drawing.Point(172, 103);
-            this.btnCancelForNote.Name = "btnCancelForNote";
-            this.btnCancelForNote.Size = new System.Drawing.Size(75, 23);
-            this.btnCancelForNote.TabIndex = 1;
-            this.btnCancelForNote.Text = "Bỏ qua";
-            this.btnCancelForNote.Click += new System.EventHandler(this.btnCancelForNote_Click);
-            // 
-            // txtNoteIntoPopup
-            // 
-            this.txtNoteIntoPopup.Location = new System.Drawing.Point(3, 1);
-            this.txtNoteIntoPopup.MenuManager = this.barManager1;
-            this.txtNoteIntoPopup.Name = "txtNoteIntoPopup";
-            this.txtNoteIntoPopup.Size = new System.Drawing.Size(244, 96);
-            this.txtNoteIntoPopup.TabIndex = 0;
             // 
             // treeListSereServTein
             // 
@@ -1207,7 +1044,9 @@ namespace HIS.Desktop.Plugins.ConnectionTest
             this.treeListSereServTein.BeforeCheckNode += new DevExpress.XtraTreeList.CheckNodeEventHandler(this.treeList1_BeforeCheckNode);
             this.treeListSereServTein.AfterCheckNode += new DevExpress.XtraTreeList.NodeEventHandler(this.treeList1_AfterCheckNode);
             this.treeListSereServTein.FocusedNodeChanged += new DevExpress.XtraTreeList.FocusedNodeChangedEventHandler(this.treeListSereServTein_FocusedNodeChanged);
+            this.treeListSereServTein.ValidatingEditor += new DevExpress.XtraEditors.Controls.BaseContainerValidateEditorEventHandler(this.treeListSereServTein_ValidatingEditor);
             this.treeListSereServTein.ShownEditor += new System.EventHandler(this.treeListSereServTein_ShownEditor);
+            this.treeListSereServTein.HiddenEditor += new System.EventHandler(this.treeListSereServTein_HiddenEditor);
             this.treeListSereServTein.CustomDrawColumnHeader += new DevExpress.XtraTreeList.CustomDrawColumnHeaderEventHandler(this.treeListSereServTein_CustomDrawColumnHeader);
             this.treeListSereServTein.CustomDrawNodeCell += new DevExpress.XtraTreeList.CustomDrawNodeCellEventHandler(this.treeList1_CustomDrawNodeCell);
             this.treeListSereServTein.PopupMenuShowing += new DevExpress.XtraTreeList.PopupMenuShowingEventHandler(this.treeListSereServTein_PopupMenuShowing);
@@ -1668,6 +1507,8 @@ namespace HIS.Desktop.Plugins.ConnectionTest
             this.imageList1.Images.SetKeyName(2, "DaTraKq.ico");
             this.imageList1.Images.SetKeyName(3, "ChayLaiXN.png");
             this.imageList1.Images.SetKeyName(4, "Xoay.png");
+            this.imageList1.Images.SetKeyName(5, "up-arrow.png");
+            this.imageList1.Images.SetKeyName(6, "down-arrow.png");
             // 
             // layoutControlGroup2
             // 
@@ -2035,6 +1876,45 @@ namespace HIS.Desktop.Plugins.ConnectionTest
             this.txtUserKQ.TabIndex = 36;
             this.txtUserKQ.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.txtUserKQ_PreviewKeyDown);
             // 
+            // popupControlContainerNote
+            // 
+            this.popupControlContainerNote.BorderStyle = DevExpress.XtraEditors.Controls.BorderStyles.NoBorder;
+            this.popupControlContainerNote.Controls.Add(this.btnOKForNote);
+            this.popupControlContainerNote.Controls.Add(this.btnCancelForNote);
+            this.popupControlContainerNote.Controls.Add(this.txtNoteIntoPopup);
+            this.popupControlContainerNote.Location = new System.Drawing.Point(400, 61);
+            this.popupControlContainerNote.Manager = this.barManager1;
+            this.popupControlContainerNote.Name = "popupControlContainerNote";
+            this.popupControlContainerNote.Size = new System.Drawing.Size(250, 130);
+            this.popupControlContainerNote.TabIndex = 60;
+            this.popupControlContainerNote.Visible = false;
+            // 
+            // btnOKForNote
+            // 
+            this.btnOKForNote.Location = new System.Drawing.Point(90, 103);
+            this.btnOKForNote.Name = "btnOKForNote";
+            this.btnOKForNote.Size = new System.Drawing.Size(75, 23);
+            this.btnOKForNote.TabIndex = 1;
+            this.btnOKForNote.Text = "Đồng ý";
+            this.btnOKForNote.Click += new System.EventHandler(this.btnOKForNote_Click);
+            // 
+            // btnCancelForNote
+            // 
+            this.btnCancelForNote.Location = new System.Drawing.Point(172, 103);
+            this.btnCancelForNote.Name = "btnCancelForNote";
+            this.btnCancelForNote.Size = new System.Drawing.Size(75, 23);
+            this.btnCancelForNote.TabIndex = 1;
+            this.btnCancelForNote.Text = "Bỏ qua";
+            this.btnCancelForNote.Click += new System.EventHandler(this.btnCancelForNote_Click);
+            // 
+            // txtNoteIntoPopup
+            // 
+            this.txtNoteIntoPopup.Location = new System.Drawing.Point(3, 1);
+            this.txtNoteIntoPopup.MenuManager = this.barManager1;
+            this.txtNoteIntoPopup.Name = "txtNoteIntoPopup";
+            this.txtNoteIntoPopup.Size = new System.Drawing.Size(244, 96);
+            this.txtNoteIntoPopup.TabIndex = 0;
+            // 
             // chkPrintPreview
             // 
             this.chkPrintPreview.Location = new System.Drawing.Point(1226, 483);
@@ -2119,7 +1999,9 @@ namespace HIS.Desktop.Plugins.ConnectionTest
             this.popupControlContainerRangeValue.Controls.Add(this.btnCancelForValueRange);
             this.popupControlContainerRangeValue.Controls.Add(this.btnOKForValueRange);
             this.popupControlContainerRangeValue.Controls.Add(this.txtValueRangeIntoPopup);
-            this.popupControlContainerRangeValue.Location = new System.Drawing.Point(479, 326);
+            this.popupControlContainerRangeValue.Controls.Add(this.popupControlContainerOldValue);
+            this.popupControlContainerRangeValue.Controls.Add(this.popupControlResultDescription);
+            this.popupControlContainerRangeValue.Location = new System.Drawing.Point(141, 180);
             this.popupControlContainerRangeValue.Manager = this.barManager1;
             this.popupControlContainerRangeValue.Name = "popupControlContainerRangeValue";
             this.popupControlContainerRangeValue.Size = new System.Drawing.Size(321, 130);
@@ -2172,6 +2054,129 @@ namespace HIS.Desktop.Plugins.ConnectionTest
             this.txtValueRangeIntoPopup.Name = "txtValueRangeIntoPopup";
             this.txtValueRangeIntoPopup.Size = new System.Drawing.Size(317, 96);
             this.txtValueRangeIntoPopup.TabIndex = 0;
+            // 
+            // popupControlContainerOldValue
+            // 
+            this.popupControlContainerOldValue.BorderStyle = DevExpress.XtraEditors.Controls.BorderStyles.NoBorder;
+            this.popupControlContainerOldValue.Controls.Add(this.txtOldValueIntoPopup);
+            this.popupControlContainerOldValue.Location = new System.Drawing.Point(20, 103);
+            this.popupControlContainerOldValue.Manager = this.barManager1;
+            this.popupControlContainerOldValue.Name = "popupControlContainerOldValue";
+            this.popupControlContainerOldValue.Size = new System.Drawing.Size(250, 130);
+            this.popupControlContainerOldValue.TabIndex = 65;
+            this.popupControlContainerOldValue.Visible = false;
+            // 
+            // txtOldValueIntoPopup
+            // 
+            this.txtOldValueIntoPopup.Location = new System.Drawing.Point(3, 1);
+            this.txtOldValueIntoPopup.MenuManager = this.barManager1;
+            this.txtOldValueIntoPopup.Name = "txtOldValueIntoPopup";
+            this.txtOldValueIntoPopup.Size = new System.Drawing.Size(244, 123);
+            this.txtOldValueIntoPopup.TabIndex = 0;
+            // 
+            // popupControlResultDescription
+            // 
+            this.popupControlResultDescription.BorderStyle = DevExpress.XtraEditors.Controls.BorderStyles.NoBorder;
+            this.popupControlResultDescription.Controls.Add(this.layoutControl4);
+            this.popupControlResultDescription.Location = new System.Drawing.Point(120, 17);
+            this.popupControlResultDescription.Manager = this.barManager1;
+            this.popupControlResultDescription.Name = "popupControlResultDescription";
+            this.popupControlResultDescription.Size = new System.Drawing.Size(232, 131);
+            this.popupControlResultDescription.TabIndex = 2;
+            this.popupControlResultDescription.Visible = false;
+            // 
+            // layoutControl4
+            // 
+            this.layoutControl4.Controls.Add(this.btnOKForResultDescription);
+            this.layoutControl4.Controls.Add(this.btnCancelForResultDescription);
+            this.layoutControl4.Controls.Add(this.txtResultDescription);
+            this.layoutControl4.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.layoutControl4.Location = new System.Drawing.Point(0, 0);
+            this.layoutControl4.Name = "layoutControl4";
+            this.layoutControl4.Root = this.layoutControlGroup3;
+            this.layoutControl4.Size = new System.Drawing.Size(232, 131);
+            this.layoutControl4.TabIndex = 0;
+            this.layoutControl4.Text = "layoutControl4";
+            // 
+            // btnOKForResultDescription
+            // 
+            this.btnOKForResultDescription.Location = new System.Drawing.Point(131, 104);
+            this.btnOKForResultDescription.Name = "btnOKForResultDescription";
+            this.btnOKForResultDescription.Size = new System.Drawing.Size(44, 22);
+            this.btnOKForResultDescription.StyleController = this.layoutControl4;
+            this.btnOKForResultDescription.TabIndex = 6;
+            this.btnOKForResultDescription.Text = "Đồng ý";
+            this.btnOKForResultDescription.Click += new System.EventHandler(this.btnOKForResultDescription_Click);
+            // 
+            // btnCancelForResultDescription
+            // 
+            this.btnCancelForResultDescription.Location = new System.Drawing.Point(185, 104);
+            this.btnCancelForResultDescription.Name = "btnCancelForResultDescription";
+            this.btnCancelForResultDescription.Size = new System.Drawing.Size(42, 22);
+            this.btnCancelForResultDescription.StyleController = this.layoutControl4;
+            this.btnCancelForResultDescription.TabIndex = 5;
+            this.btnCancelForResultDescription.Text = "Bỏ qua";
+            this.btnCancelForResultDescription.Click += new System.EventHandler(this.btnCancelForResultDescription_Click);
+            // 
+            // txtResultDescription
+            // 
+            this.txtResultDescription.Location = new System.Drawing.Point(2, 2);
+            this.txtResultDescription.MenuManager = this.barManager1;
+            this.txtResultDescription.Name = "txtResultDescription";
+            this.txtResultDescription.Size = new System.Drawing.Size(228, 95);
+            this.txtResultDescription.StyleController = this.layoutControl4;
+            this.txtResultDescription.TabIndex = 4;
+            // 
+            // layoutControlGroup3
+            // 
+            this.layoutControlGroup3.EnableIndentsWithoutBorders = DevExpress.Utils.DefaultBoolean.False;
+            this.layoutControlGroup3.GroupBordersVisible = false;
+            this.layoutControlGroup3.Items.AddRange(new DevExpress.XtraLayout.BaseLayoutItem[] {
+            this.layoutControlItem24,
+            this.layoutControlItem27,
+            this.layoutControlItem28,
+            this.emptySpaceItem3});
+            this.layoutControlGroup3.Location = new System.Drawing.Point(0, 0);
+            this.layoutControlGroup3.Name = "layoutControlGroup3";
+            this.layoutControlGroup3.Size = new System.Drawing.Size(232, 131);
+            this.layoutControlGroup3.TextVisible = false;
+            // 
+            // layoutControlItem24
+            // 
+            this.layoutControlItem24.Control = this.txtResultDescription;
+            this.layoutControlItem24.Location = new System.Drawing.Point(0, 0);
+            this.layoutControlItem24.Name = "layoutControlItem24";
+            this.layoutControlItem24.Size = new System.Drawing.Size(232, 99);
+            this.layoutControlItem24.TextSize = new System.Drawing.Size(0, 0);
+            this.layoutControlItem24.TextVisible = false;
+            // 
+            // layoutControlItem27
+            // 
+            this.layoutControlItem27.Control = this.btnCancelForResultDescription;
+            this.layoutControlItem27.Location = new System.Drawing.Point(180, 99);
+            this.layoutControlItem27.Name = "layoutControlItem27";
+            this.layoutControlItem27.Padding = new DevExpress.XtraLayout.Utils.Padding(5, 5, 5, 5);
+            this.layoutControlItem27.Size = new System.Drawing.Size(52, 32);
+            this.layoutControlItem27.TextSize = new System.Drawing.Size(0, 0);
+            this.layoutControlItem27.TextVisible = false;
+            // 
+            // layoutControlItem28
+            // 
+            this.layoutControlItem28.Control = this.btnOKForResultDescription;
+            this.layoutControlItem28.Location = new System.Drawing.Point(126, 99);
+            this.layoutControlItem28.Name = "layoutControlItem28";
+            this.layoutControlItem28.Padding = new DevExpress.XtraLayout.Utils.Padding(5, 5, 5, 5);
+            this.layoutControlItem28.Size = new System.Drawing.Size(54, 32);
+            this.layoutControlItem28.TextSize = new System.Drawing.Size(0, 0);
+            this.layoutControlItem28.TextVisible = false;
+            // 
+            // emptySpaceItem3
+            // 
+            this.emptySpaceItem3.AllowHotTrack = false;
+            this.emptySpaceItem3.Location = new System.Drawing.Point(0, 99);
+            this.emptySpaceItem3.Name = "emptySpaceItem3";
+            this.emptySpaceItem3.Size = new System.Drawing.Size(126, 32);
+            this.emptySpaceItem3.TextSize = new System.Drawing.Size(0, 0);
             // 
             // btnCreateSigner
             // 
@@ -4031,26 +4036,10 @@ namespace HIS.Desktop.Plugins.ConnectionTest
             ((System.ComponentModel.ISupportInitialize)(this.txtDescription.Properties)).EndInit();
             this.xtraTabPage3.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.txtConclude.Properties)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.popupControlResultDescription)).EndInit();
-            this.popupControlResultDescription.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControl4)).EndInit();
-            this.layoutControl4.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.txtResultDescription.Properties)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup3)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem24)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem27)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem28)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem3)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.xtraTabDocument)).EndInit();
             this.xtraTabDocument.ResumeLayout(false);
             this.xtraTabDocumentReq.ResumeLayout(false);
             this.xtraTabDocumentResult.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.popupControlContainerOldValue)).EndInit();
-            this.popupControlContainerOldValue.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.txtOldValueIntoPopup.Properties)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.popupControlContainerNote)).EndInit();
-            this.popupControlContainerNote.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.txtNoteIntoPopup.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.treeListSereServTein)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemPictureEdit2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItembtnValueRangeShow)).EndInit();
@@ -4113,6 +4102,9 @@ namespace HIS.Desktop.Plugins.ConnectionTest
             ((System.ComponentModel.ISupportInitialize)(this.DateKQ.Properties.CalendarTimeProperties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.DateKQ.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtUserKQ.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.popupControlContainerNote)).EndInit();
+            this.popupControlContainerNote.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.txtNoteIntoPopup.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.chkPrintPreview.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboSttEmr.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.chkSignApproveList.Properties)).EndInit();
@@ -4120,6 +4112,19 @@ namespace HIS.Desktop.Plugins.ConnectionTest
             this.popupControlContainerRangeValue.ResumeLayout(false);
             this.popupControlContainerRangeValue.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.txtValueRangeIntoPopup.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.popupControlContainerOldValue)).EndInit();
+            this.popupControlContainerOldValue.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.txtOldValueIntoPopup.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.popupControlResultDescription)).EndInit();
+            this.popupControlResultDescription.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControl4)).EndInit();
+            this.layoutControl4.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.txtResultDescription.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup3)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem24)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem27)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem28)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem3)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.chkOrderByBarcode.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.chkShowSampleGroup.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboServiceResult.Properties)).EndInit();
