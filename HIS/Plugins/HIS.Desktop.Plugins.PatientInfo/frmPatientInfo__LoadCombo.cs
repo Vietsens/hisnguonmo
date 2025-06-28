@@ -40,6 +40,7 @@ namespace HIS.Desktop.Plugins.PatientInfo
         {
             try
             {
+                cboEditor.Properties.DataSource = null;
                 cboEditor.Properties.DataSource = datasource;
                 cboEditor.Properties.DisplayMember = displayMember;
                 cboEditor.Properties.ValueMember = valueMember;
@@ -63,6 +64,7 @@ namespace HIS.Desktop.Plugins.PatientInfo
         {
             try
             {
+                cboEditor.Properties.DataSource = null;
                 cboEditor.Properties.DataSource = datasource;
                 cboEditor.Properties.DisplayMember = displayCodeMember;
                 cboEditor.Properties.ValueMember = valueMember;
