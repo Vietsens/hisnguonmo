@@ -519,7 +519,7 @@ namespace HIS.Desktop.Plugins.HisImportBid
                     if (medicineTypeNotExist == null && bloodTypeNotExist == null)
                         medicineType.ERROR = "Mã thuốc không hợp lệ. ";
 
-                    if (medicineType.BATCH_DIVISION_CODE.Length > 25)
+                    if (medicineType.BATCH_DIVISION_CODE.Length > 25 || Inventec.Common.String.CountVi.Count(medicineType.BATCH_DIVISION_CODE) > 25)
                         medicineType.ERROR = "Mã phần lô vượt quá ký tự cho phép, 25 ký tự. ";
 
                     if (medicineTypeNotExist != null)
