@@ -30,5 +30,6 @@ namespace HIS.Desktop.Plugins.LisSampleUpdate
         internal const string Commune = "Commune";
         internal const string SampleSender = "SampleSender";
         internal const string SpecimenOrder = "SpecimenOrder";
+        internal const string ToggleSwitchAddress = "ToggleSwitchAddress";
     }
 }

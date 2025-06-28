@@ -2444,7 +2444,7 @@ namespace HIS.Desktop.Plugins.BidUpdate
                     var listThuoc = ListMedicineTypeAdoProcess.Where(o => o.Type == Base.GlobalConfig.THUOC).ToList();
                     var listVattu = ListMedicineTypeAdoProcess.Where(o => o.Type == Base.GlobalConfig.VATTU).ToList();
                     var listMau = ListMedicineTypeAdoProcess.Where(o => o.Type == Base.GlobalConfig.MAU).ToList();
-                    if (!CheckBatchDivisionCodeLengthAfterRules(ListAdoImport))
+                    if (ListAdoImport != null && !CheckBatchDivisionCodeLengthAfterRules(ListAdoImport))
                     {
                         WaitingManager.Hide();
                     }
