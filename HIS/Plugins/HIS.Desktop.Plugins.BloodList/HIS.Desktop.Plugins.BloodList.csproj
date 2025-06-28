@@ -223,10 +223,10 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\khoa.png" />
+    <None Include="Resources\hmenu-unlock.gif" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\mo_khoa.png" />
+    <None Include="Resources\hmenu-lock.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

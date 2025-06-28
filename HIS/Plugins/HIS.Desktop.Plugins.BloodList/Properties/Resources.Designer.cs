@@ -63,9 +63,9 @@ namespace HIS.Desktop.Plugins.BloodList.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap khoa {
+        internal static System.Drawing.Bitmap hmenu_lock {
             get {
-                object obj = ResourceManager.GetObject("khoa", resourceCulture);
+                object obj = ResourceManager.GetObject("hmenu-lock", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -73,9 +73,9 @@ namespace HIS.Desktop.Plugins.BloodList.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap mo_khoa {
+        internal static System.Drawing.Bitmap hmenu_unlock {
             get {
-                object obj = ResourceManager.GetObject("mo_khoa", resourceCulture);
+                object obj = ResourceManager.GetObject("hmenu-unlock", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

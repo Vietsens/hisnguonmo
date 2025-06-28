@@ -62,7 +62,7 @@ namespace HIS.Desktop.Plugins.BloodList
         GridColumn lastColumn = null;
         ToolTipControlInfo lastInfo = null;
         #endregion
-
+            
         #region Construct
         public UCBloodList()
         {
