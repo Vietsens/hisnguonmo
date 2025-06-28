@@ -520,6 +520,7 @@ namespace HIS.UC.UCPatientRaw
                                                 dataResult.HisPatientSDO.DISTRICT_NAME = data.DistrictName;
                                                 dataResult.HisPatientSDO.COMMUNE_CODE = data.CommuneCode;
                                                 dataResult.HisPatientSDO.COMMUNE_NAME = data.CommuneName;
+                                                dataResult.IsNoDistrict = data.IsNoDistrict;
                                             }
                                         }
 

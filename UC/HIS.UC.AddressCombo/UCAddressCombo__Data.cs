@@ -43,29 +43,42 @@ namespace HIS.UC.AddressCombo
                 ClearDataAddress();
                 this.txtPhone.Text = "";
                 this.IsPressEnter = false;
-                ResetRequiredField();
                 #endregion
 
                 if (data != null)
                 {
                     if (data._FocusNextUserControl != null)
                         this.dlgFocusNextUserControl = data._FocusNextUserControl;
-                    if(string.IsNullOrEmpty(data.District_Code) && string.IsNullOrEmpty(data.District_Name) && IsChangeStrucAdreess)
+                    if ((string.IsNullOrEmpty(data.District_Code) && string.IsNullOrEmpty(data.District_Name) && IsChangeStrucAdreess) || data.IsNoDistrict)
                     {
+                        if (!togChangeStructAdress.IsOn)
+                        {
+                            IsNotCheckToggleAddress = true;
+                            togChangeStructAdress.IsOn = true;
+                            this.workingCommuneADO = workingCommuneADONoDistrict;
+                            SetDefaultDataToControl(true);
+                            IsNotCheckToggleAddress = false;
+                            if (dlgReloadData != null)
+                                dlgReloadData(IsChangeStrucAdreess);
+                        }
                         SetValueNew(data);
                         return;
                     }
                     IsNotCheckToggleAddress = true;
                     togChangeStructAdress.IsOn = false;
+                    this.workingCommuneADO = BackendDataWorker.Get<HIS.Desktop.LocalStorage.BackendData.ADO.CommuneADO>().Where(o => o.IS_NO_DISTRICT == null).ToList();
                     SetDefaultDataToControl(true);
+                    IsChangeValueMember = false;
                     IsNotCheckToggleAddress = false;
+                    if (dlgReloadData != null)
+                        dlgReloadData(IsChangeStrucAdreess);
                     var province = BackendDataWorker.Get<SDA.EFMODEL.DataModels.V_SDA_PROVINCE>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.SDA_RS.COMMON.IS_ACTIVE__TRUE).ToList().FirstOrDefault(o => o.PROVINCE_NAME == data.Province_Name);
                     if (province != null)
                     {
                         this.txtProvinceCode.Text = province.PROVINCE_CODE;
                         this.cboProvince.EditValue = province.PROVINCE_CODE;
                     }
-                    var district = BackendDataWorker.Get<SDA.EFMODEL.DataModels.V_SDA_DISTRICT>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.SDA_RS.COMMON.IS_ACTIVE__TRUE).ToList().FirstOrDefault(o => ((o.INITIAL_NAME + " " + o.DISTRICT_NAME) == data.District_Name || o.DISTRICT_NAME == data.District_Name || o.DISTRICT_CODE == data.District_Code) && o.PROVINCE_NAME == data.Province_Name);
+                    var district = BackendDataWorker.Get<SDA.EFMODEL.DataModels.V_SDA_DISTRICT>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.SDA_RS.COMMON.IS_ACTIVE__TRUE).ToList().FirstOrDefault(o => ((o.INITIAL_NAME + " " + o.DISTRICT_NAME) == data.District_Name || o.DISTRICT_NAME == data.District_Name || o.DISTRICT_CODE == data.District_Code) && o.PROVINCE_CODE == data.Province_Code);
                     if (district != null)
                     {
                         this.LoadHuyenCombo("", district.PROVINCE_CODE, false);
@@ -138,7 +151,7 @@ namespace HIS.UC.AddressCombo
         {
             try
             {
-                var province = BackendDataWorker.Get<SDA.EFMODEL.DataModels.V_SDA_PROVINCE>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.SDA_RS.COMMON.IS_ACTIVE__TRUE).ToList().FirstOrDefault(o => o.PROVINCE_NAME == data.Province_Name);
+                var province = BackendDataWorker.Get<SDA.EFMODEL.DataModels.V_SDA_PROVINCE>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.SDA_RS.COMMON.IS_ACTIVE__TRUE && o.IS_NO_DISTRICT == 1).ToList().FirstOrDefault(o => o.PROVINCE_NAME == data.Province_Name);
                 if (province != null)
                 {
                     this.txtProvinceCode.Text = province.PROVINCE_CODE;
@@ -146,7 +159,7 @@ namespace HIS.UC.AddressCombo
                 }
                 var commune = BackendDataWorker.Get<SDA.EFMODEL.DataModels.V_SDA_COMMUNE>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.SDA_RS.COMMON.IS_ACTIVE__TRUE).ToList().FirstOrDefault(o =>
                 ((o.INITIAL_NAME + " " + o.COMMUNE_NAME) == data.Commune_Name || o.COMMUNE_NAME == data.Commune_Name)
-                && o.PROVINCE_CODE == (this.cboProvince.EditValue != null ? this.cboProvince.EditValue.ToString() : ""));
+                && o.PROVINCE_CODE == (this.cboProvince.EditValue != null ? this.cboProvince.EditValue.ToString() : "") && o.IS_NO_DISTRICT == 1);
                 if (commune != null)
                 {
                     this.LoadXaCombo("",  commune.PROVINCE_CODE, false, true);
@@ -166,6 +179,10 @@ namespace HIS.UC.AddressCombo
                         this.cboTHX.EditValue = communeTHX.ID_RAW;
                         this.txtMaTHX.Text = communeTHX.SEARCH_CODE_COMMUNE;
                     }
+                }
+                else if (province != null)
+                {
+                    this.LoadXaCombo("", province.PROVINCE_CODE, false, true);
                 }
 
                 if (HIS.Desktop.Plugins.Library.RegisterConfig.AppConfigs.IsShowLineFirstAddress == 2)
@@ -244,6 +261,12 @@ namespace HIS.UC.AddressCombo
                 this.ResetRequiredField();
                 this.IsValidateAddressCombo(HIS.Desktop.Plugins.Library.RegisterConfig.HisConfigCFG.Validate__T_H_X);
                 this.SetDefaultDataToControl(true);
+                if (IsChangeStrucAdreess)
+                {
+                    this.workingCommuneADO = this.workingCommuneADONoDistrict;
+                    LoadSourceNoDistrict();
+                }
+                IsChangeValueMember = false;
             }
             catch (Exception ex)
             {

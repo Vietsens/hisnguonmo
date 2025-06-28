@@ -52,6 +52,7 @@ namespace HIS.UC.UCPatientRaw.ADO
         public string AppointmentCode { get; set; }
         public long TreatmnetIdByAppointmentCode { get; set; }
         public long? TreatmentTypeId { get; set; }
-        public bool IsReadQr { get; set; }       
+        public bool IsReadQr { get; set; }    
+        public bool IsNoDistrict { get; set; }
     }
 }

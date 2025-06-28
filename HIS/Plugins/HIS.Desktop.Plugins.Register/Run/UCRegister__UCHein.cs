@@ -20,6 +20,7 @@ using HIS.Desktop.LocalStorage.BackendData;
 using HIS.Desktop.Plugins.Library.RegisterConfig;
 using HIS.Desktop.Utility;
 using Inventec.Common.Adapter;
+using Inventec.Common.Address;
 using Inventec.Common.Logging;
 using Inventec.Common.QrCodeBHYT;
 using Inventec.Common.QrCodeCCCD;
@@ -331,12 +332,7 @@ namespace HIS.Desktop.Plugins.Register.Run
                 var data = adProc.SplitFromFullAddress(dataHein.Address);
                 if (AppConfigs.CheDoTuDongFillDuLieuDiaChiGhiTrenTheVaoODiaChiBenhNhanHayKhong == 1 || (typeCodeFind == typeCodeFind__CCCDCMND && (currentPatientSDO == null)) || (currentPatientSDO != null && data != null && (currentPatientSDO.PROVINCE_CODE != data.ProvinceCode || currentPatientSDO.DISTRICT_CODE != data.DistrictCode || currentPatientSDO.COMMUNE_CODE != data.CommuneCode)))
                 {
-                    cboProvince.EditValue = data.ProvinceCode;
-                    txtProvinceCode.EditValue = data.ProvinceCode;
-                    cboDistrict.EditValue = data.DistrictCode;
-                    txtDistrictCode.EditValue = data.DistrictCode;
-                    cboCommune.EditValue = data.CommuneCode;
-                    txtCommuneCode.EditValue = data.CommuneCode;
+                    SetDataAddress(data);
                 }
                 //Cap nhat thong tin doc tu the vao vung thong tin bhyt
                 if (this.mainHeinProcessor != null && this.ucHeinBHYT != null)
@@ -348,6 +344,51 @@ namespace HIS.Desktop.Plugins.Register.Run
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
+        }
+
+        private void SetDataAddress(AddressADO data)
+        {
+
+            try
+            {
+                IsNotCheckToggleAddress = true;
+
+                if (data.IsNoDistrict)
+                {
+                    togChangeStructAdress.IsOn = true;
+                }
+                else
+                {
+                    togChangeStructAdress.IsOn = false;
+                }
+                ChangeComponentDistrict();
+                ChangeDataSourceAddress();
+                cboProvince.EditValue = data.ProvinceCode;
+                txtProvinceCode.EditValue = data.ProvinceCode;
+                cboDistrict.EditValue = data.DistrictCode;
+                txtDistrictCode.EditValue = data.DistrictCode;
+                cboCommune.EditValue = data.CommuneCode;
+                txtCommuneCode.EditValue = data.CommuneCode;
+                if (!string.IsNullOrEmpty(data.CommuneCode))
+                {
+                    var commune = ((List<V_SDA_COMMUNE>)cboCommune.Properties.DataSource).FirstOrDefault(o => o.COMMUNE_CODE == data.CommuneCode);
+                    if (commune != null)
+                    {
+                        this.cboTHX.EditValue = commune.ID;//ID_RAW
+                        bool isSearchOrderByXHT = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>("HIS_DESKTOP_REGISTER__SEARCH_CODE__X/H/T") == "1" ? true : false;
+                        this.cboTHX.Properties.Buttons[1].Visible = true;
+                        var thx = workingCommuneADO.SingleOrDefault(o => o.ID == Inventec.Common.TypeConvert.Parse.ToInt64((this.cboTHX.EditValue ?? 0).ToString()));
+                        this.txtMaTHX.Text = thx != null ? thx.SEARCH_CODE_COMMUNE : null;
+                    }
+                }
+
+                IsNotCheckToggleAddress = false;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+
         }
 
         private async Task<object> SearchByCode(string code)
@@ -394,7 +435,7 @@ namespace HIS.Desktop.Plugins.Register.Run
                         {
                             frmPatientChoice frm = new frmPatientChoice(dataList, this.SelectOnePatientProcess);
                             frm.ShowDialog();
-                            return null; 
+                            return null;
                         }
                         return data = dataList.First();
                     }
@@ -404,7 +445,7 @@ namespace HIS.Desktop.Plugins.Register.Run
                         this.txtPatientCode.SelectAll();
                         DevExpress.XtraEditors.XtraMessageBox.Show(ResourceMessage.MaCmndCccdKhongTontai + " '" + code + "'", MessageUtil.GetMessage(Inventec.Desktop.Common.LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaThongBao));
                         return null;
-                    }    
+                    }
                 }
                 else if (code.Length > 10 && code.Contains("|"))
                 {
@@ -428,7 +469,7 @@ namespace HIS.Desktop.Plugins.Register.Run
                 if (lstTreatment != null && lstTreatment.Count > 0)
                 {
                     var treatment = lstTreatment.Where(o => o.TREATMENT_END_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_END_TYPE.ID__CHET).ToList();
-                    
+
                     //if (treatment.TREATMENT_END_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_END_TYPE.ID__CHET)
                     if (treatment != null && treatment.Count > 0)
                     {

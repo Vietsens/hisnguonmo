@@ -241,7 +241,7 @@ namespace HIS.UC.PlusInfo.Design
                     else
                     {
                         List<SDA.EFMODEL.DataModels.V_SDA_PROVINCE> listResult = new List<SDA.EFMODEL.DataModels.V_SDA_PROVINCE>();
-                        listResult = BackendDataWorker.Get<SDA.EFMODEL.DataModels.V_SDA_PROVINCE>().Where(o => o.SEARCH_CODE.Contains(searchCode)).ToList();
+                        listResult = BackendDataWorker.Get<SDA.EFMODEL.DataModels.V_SDA_PROVINCE>().Where(o => (o.SEARCH_CODE ?? "").Contains(searchCode)).ToList();
                         if (listResult.Count == 1)
                         {
                             this.cboProvinceOfBirth.EditValue = listResult[0].PROVINCE_CODE;

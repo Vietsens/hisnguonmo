@@ -146,6 +146,8 @@ namespace HIS.UC.AddressCombo
                 ValidateDistrict();
                 if (!IsChangeStrucAdreess)
                     ValidateCommune();
+                else
+                    this.dxValidationProviderControl.SetValidationRule(txtCommuneCode, null);
             }
             catch (Exception ex)
             {

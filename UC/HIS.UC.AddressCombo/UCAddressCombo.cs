@@ -599,7 +599,7 @@ namespace HIS.UC.AddressCombo
                                 this.txtProvinceCode.Text = commune.PROVINCE_CODE;
                                 this.cboProvince.EditValue = commune.PROVINCE_CODE;
 
-                                this.LoadHuyenCombo(commune.SEARCH_CODE, commune.PROVINCE_CODE, false);
+                                this.LoadHuyenCombo(IsChangeStrucAdreess ? commune.COMMUNE_CODE : commune.SEARCH_CODE, commune.PROVINCE_CODE, false);
 
                                 FocusToAddress();
                             }
@@ -636,6 +636,7 @@ namespace HIS.UC.AddressCombo
                     this.cboTHX.Properties.Buttons[1].Visible = false;
                     this.txtMaTHX.Text = "";
 
+                    this.SetSourceValueTHX(this.workingCommuneADO);
                     this.SetValueHeinAddressByAddressOfPatient();
                     this.SetValueForUCPlusInfo();
                 }
@@ -652,7 +653,7 @@ namespace HIS.UC.AddressCombo
             {
                 if (String.IsNullOrEmpty(this.txtProvinceCode.Text))
                 {
-                    this.cboProvince.Properties.DataSource = BackendDataWorker.Get<SDA.EFMODEL.DataModels.V_SDA_PROVINCE>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.SDA_RS.COMMON.IS_ACTIVE__TRUE).ToList();
+                    this.cboProvince.Properties.DataSource =  BackendDataWorker.Get<SDA.EFMODEL.DataModels.V_SDA_PROVINCE>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.SDA_RS.COMMON.IS_ACTIVE__TRUE && (IsChangeStrucAdreess? o.IS_NO_DISTRICT == 1 : o.IS_NO_DISTRICT != 1)).ToList();
                 }
             }
             catch (Exception ex)
@@ -685,7 +686,7 @@ namespace HIS.UC.AddressCombo
                     if (this.cboProvince.EditValue != null
                         && this.cboProvince.EditValue != this.cboProvince.OldEditValue)
                     {
-                        SDA.EFMODEL.DataModels.V_SDA_PROVINCE province = BackendDataWorker.Get<SDA.EFMODEL.DataModels.V_SDA_PROVINCE>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.SDA_RS.COMMON.IS_ACTIVE__TRUE).ToList().FirstOrDefault(o => o.PROVINCE_CODE == cboProvince.EditValue.ToString());
+                        SDA.EFMODEL.DataModels.V_SDA_PROVINCE province = ((List<V_SDA_PROVINCE>)cboProvince.Properties.DataSource).Where(o => o.IS_ACTIVE == IMSys.DbConfig.SDA_RS.COMMON.IS_ACTIVE__TRUE && (IsChangeStrucAdreess ? o.IS_NO_DISTRICT == 1 : o.IS_NO_DISTRICT != 1)).ToList().FirstOrDefault(o => o.PROVINCE_CODE == cboProvince.EditValue.ToString());
                         if (province != null)
                         {
                             this.LoadHuyenCombo("", province.PROVINCE_CODE, false);
@@ -825,7 +826,7 @@ namespace HIS.UC.AddressCombo
                     && this.cboDistrict.EditValue != this.cboDistrict.OldEditValue)
                 {
                     SDA.EFMODEL.DataModels.V_SDA_COMMUNE district = BackendDataWorker.Get<SDA.EFMODEL.DataModels.V_SDA_COMMUNE>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.SDA_RS.COMMON.IS_ACTIVE__TRUE).ToList()
-                        .SingleOrDefault(o => o.COMMUNE_CODE == this.cboDistrict.EditValue.ToString()
+                        .FirstOrDefault(o => o.COMMUNE_CODE == this.cboDistrict.EditValue.ToString()
                             && (String.IsNullOrEmpty((this.cboProvince.EditValue ?? "").ToString()) || o.PROVINCE_CODE == (this.cboProvince.EditValue ?? "").ToString()));
                     if (district != null)
                     {
@@ -1279,20 +1280,20 @@ namespace HIS.UC.AddressCombo
             {
                 SetToolTipTog(sender);
                 IsChangeStrucAdreess = togChangeStructAdress.IsOn;
-                if (dlgReloadData != null)
-                    dlgReloadData(IsChangeStrucAdreess);
                 if (IsNotCheckToggleAddress)
                 {
                     IsNotCheckToggleAddress = false;
                     return;
                 }
-                if (currentPatientSDO != null && currentPatientSDO.ID > 0 && (cboProvince.EditValue != null || cboDistrict.EditValue != null || cboCommune.EditValue != null) && DevExpress.XtraEditors.XtraMessageBox.Show(string.Format("Bệnh nhân có mã {0} sẽ cần lại thông tin địa chỉ theo địng dạng {1}. Nhấn \"Có\" để tiếp tục thực hiện", currentPatientSDO.PATIENT_CODE, !togChangeStructAdress.IsOn ? "Tỉnh/Huyện/Xã" : "Tỉnh/Xã"), "Thông báo", MessageBoxButtons.YesNo) == DialogResult.No)
+                if (!IsNotCheckToggleAddress && currentPatientSDO != null && currentPatientSDO.ID > 0 && (cboProvince.EditValue != null || cboDistrict.EditValue != null || cboCommune.EditValue != null) && DevExpress.XtraEditors.XtraMessageBox.Show(string.Format("Bệnh nhân có mã {0} sẽ cần nhập lại thông tin địa chỉ theo định dạng {1}. Nhấn \"Có\" để tiếp tục thực hiện", currentPatientSDO.PATIENT_CODE, !togChangeStructAdress.IsOn ? "Tỉnh/Huyện/Xã" : "Tỉnh/Xã"), "Thông báo", MessageBoxButtons.YesNo) == DialogResult.No)
                 {
-                    IsChangeStrucAdreess = togChangeStructAdress.IsOn = !togChangeStructAdress.IsOn;
                     IsNotCheckToggleAddress = true;
+                    IsChangeStrucAdreess = togChangeStructAdress.IsOn = !togChangeStructAdress.IsOn;
                     return;
                 }
-                this.workingCommuneADO = BackendDataWorker.Get<HIS.Desktop.LocalStorage.BackendData.ADO.CommuneADO>();
+                if (dlgReloadData != null)
+                    dlgReloadData(IsChangeStrucAdreess);
+                this.workingCommuneADO = BackendDataWorker.Get<HIS.Desktop.LocalStorage.BackendData.ADO.CommuneADO>().Where(o => o.IS_NO_DISTRICT == null).ToList();
                 SetDefaultDataToControl(true);
                 if (IsChangeStrucAdreess)
                 {
@@ -1301,7 +1302,7 @@ namespace HIS.UC.AddressCombo
                 }
                 ClearDataAddress();
                 ResetRequiredField();
-
+                IsNotCheckToggleAddress = false;
                 if (IsInitForm)
                     return;
                 HIS.Desktop.Library.CacheClient.ControlStateRDO csAddOrUpdate = (this.currentControlStateRDO != null && this.currentControlStateRDO.Count > 0) ? this.currentControlStateRDO.Where(o => o.KEY == togChangeStructAdress.Name && o.MODULE_LINK == this.moduleLink).FirstOrDefault() : null;
@@ -1335,9 +1336,9 @@ namespace HIS.UC.AddressCombo
                 var toggleSwitch = sender as DevExpress.XtraEditors.ToggleSwitch;
                 if (toggleSwitch != null)
                 {
-                    string tooltipText = toggleSwitch.IsOn
+                    string tooltipText = !toggleSwitch.IsOn
                         ? "Sử dụng cấu trúc địa chỉ mới Xã - Tỉnh (không có Huyện)"
-                        : "Sử dụng cấu trúc địa chỉ mới Xã - Huyện - Tỉnh";
+                        : "Sử dụng cấu trúc địa chỉ Xã - Huyện - Tỉnh";
                     toggleSwitch.ToolTip = tooltipText;
                 }
             }
@@ -1405,6 +1406,7 @@ namespace HIS.UC.AddressCombo
                     layoutControlItem5.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
                     lciAddress.Size = new Size(lciCommune.Size.Width + layoutControlItem5.Size.Width + lciAddress.Size.Width, lciAddress.Size.Height);
                     lciAddress.TextSize = new Size(69, 20);
+
                 }
                 else
                 {
@@ -1416,6 +1418,8 @@ namespace HIS.UC.AddressCombo
                     lciCommune.Size = new Size(lciProvince.Size.Width, lciCommune.Height);
                     layoutControlItem5.Size = new Size(layoutControlItem3.Size.Width, lciCommune.Height);
                 }
+                ResetRequiredField();
+                this.IsValidateAddressCombo(HIS.Desktop.Plugins.Library.RegisterConfig.HisConfigCFG.Validate__T_H_X);
             }
             catch (Exception ex)
             {
