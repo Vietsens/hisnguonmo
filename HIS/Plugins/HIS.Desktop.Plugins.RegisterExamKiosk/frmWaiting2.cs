@@ -260,7 +260,7 @@ namespace HIS.Desktop.Plugins.RegisterExamKiosk
             txtNumberInput.Location = new Point(txtNumberInput.Location.X + 25, txtNumberInput.Location.Y);
             btnConfirm.Location = new Point(btnConfirm.Location.X - 175, btnConfirm.Location.Y);
             txtNumberInput.TextHintNull = "Nhập số";
-            txtNumberInput.MaxLengthTexts = 3;
+            txtNumberInput.MaxLengthTexts = 400;
             txtNumberInput.Focus();
 
         }
@@ -270,7 +270,7 @@ namespace HIS.Desktop.Plugins.RegisterExamKiosk
             {
                 List<HomeButton> listData = new List<HomeButton>();
                 string config = HisConfigs.Get<string>("HIS.Desktop.Plugins.RegisterExamKiosk.HomeButton");
-                if (!string.IsNullOrEmpty(config))
+                if (!string.IsNullOrEmpty(config))         
                 {
                     var rs = JsonConvert.DeserializeObject<List<HomeButton>>(config);
                     listData = rs;
