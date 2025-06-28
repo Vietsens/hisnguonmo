@@ -1046,9 +1046,11 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
                     //txtDescription.Enabled = true;
                     txtMaTHX.Enabled = true;
                     cboTHX.Enabled = true;
+                    toggleSwitch1.Enabled = true;
                     txtPatientCode.Enabled = true;
                     txtPatientPhone.Enabled = true;
                     txtEmail.Enabled = true;
+                    LoadAddressData(isNewAddressStructure);
                 }
                 else
                 {
@@ -1064,6 +1066,7 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
                     //txtDescription.Enabled = false;
                     txtMaTHX.Enabled = false;
                     cboTHX.Enabled = false;
+                    toggleSwitch1.Enabled = false;
                     txtPatientCode.Enabled = false;
                     txtPatientPhone.Enabled = false;
                     txtEmail.Enabled = false;

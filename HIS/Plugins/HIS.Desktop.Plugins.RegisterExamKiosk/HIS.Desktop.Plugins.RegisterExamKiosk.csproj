@@ -103,6 +103,9 @@
     <Reference Include="HIS.Desktop.Plugins.Library.PrintServiceReqTreatment">
       <HintPath>..\..\..\..\lib\HIS\HIS.Desktop.Plugins.Library.PrintServiceReqTreatment\HIS.Desktop.Plugins.Library.PrintServiceReqTreatment.dll</HintPath>
     </Reference>
+    <Reference Include="HIS.Desktop.Utility">
+      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\HIS.Desktop.Utility.dll</HintPath>
+    </Reference>
     <Reference Include="HIS.UC.Icd">
       <HintPath>..\..\..\..\lib\HIS\His.UC.Icd\HIS.UC.Icd.dll</HintPath>
     </Reference>
@@ -489,10 +492,6 @@
     <ProjectReference Include="..\..\HIS.Desktop.Print\HIS.Desktop.Print.csproj">
       <Project>{aeeca321-fd65-407a-8d70-ba5362883b87}</Project>
       <Name>HIS.Desktop.Print</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\HIS.Desktop.Utility\HIS.Desktop.Utilities.csproj">
-      <Project>{2aad22db-2166-4be8-ae52-335b21dc03fc}</Project>
-      <Name>HIS.Desktop.Utilities</Name>
     </ProjectReference>
     <ProjectReference Include="..\HIS.Desktop.Plugins.Library.RegisterConfig\HIS.Desktop.Plugins.Library.RegisterConfig.csproj">
       <Project>{9247dd49-482c-4227-88df-616a8aaf3f38}</Project>

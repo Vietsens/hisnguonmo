@@ -32,7 +32,8 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate.ADO
             try
             {
                 Regex regex = new Regex("\\p{IsCombiningDiacriticalMarks}+");
-                string temp = s.Normalize(NormalizationForm.FormD);
+                //string temp = s.Normalize(NormalizationForm.FormD);
+                string temp = string.IsNullOrEmpty(s) ? string.Empty : s.Normalize(NormalizationForm.FormD);
                 result = regex.Replace(temp, String.Empty).Replace('\u0111', 'd').Replace('\u0110', 'D');
             }
             catch (Exception ex)

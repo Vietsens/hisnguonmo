@@ -68,7 +68,7 @@ namespace HIS.Desktop.Plugins.BidUpdate.ADO
         public string BATCH_DIVISION_CODE { get; set; }
         public long? INFORMATION_BID { get; set; }
         public MedicineTypeADO() { }
-
+        public List<string> ErrorDescriptions = new List<string>();
         public bool IsNotNullRow
         {
             get

@@ -36,6 +36,7 @@ namespace HIS.Desktop.Plugins.RegisterExamKiosk
             this.layoutControl1 = new DevExpress.XtraLayout.LayoutControl();
             this.panel2 = new System.Windows.Forms.Panel();
             this.panelControlInput = new DevExpress.XtraEditors.PanelControl();
+            this.txtNumberInput = new Inventec.CustomControls.PNTextEdit();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.pbCamera = new System.Windows.Forms.PictureBox();
             this.label7 = new System.Windows.Forms.Label();
@@ -69,7 +70,6 @@ namespace HIS.Desktop.Plugins.RegisterExamKiosk
             this.layoutControlGroup1 = new DevExpress.XtraLayout.LayoutControlGroup();
             this.layoutControlItem1 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem2 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.txtNumberInput = new Inventec.CustomControls.PNTextEdit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
             this.layoutControl1.SuspendLayout();
             this.panel2.SuspendLayout();
@@ -125,6 +125,29 @@ namespace HIS.Desktop.Plugins.RegisterExamKiosk
             this.panelControlInput.Name = "panelControlInput";
             this.panelControlInput.Size = new System.Drawing.Size(946, 697);
             this.panelControlInput.TabIndex = 12;
+            // 
+            // txtNumberInput
+            // 
+            this.txtNumberInput.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.txtNumberInput.BackColor = System.Drawing.Color.White;
+            this.txtNumberInput.BackgroundColor = System.Drawing.Color.White;
+            this.txtNumberInput.BorderColor = System.Drawing.Color.White;
+            this.txtNumberInput.BorderRadius = 20;
+            this.txtNumberInput.BorderSize = 1;
+            this.txtNumberInput.EditMaskPn = "";
+            this.txtNumberInput.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(64)))), ((int)(((byte)(0)))));
+            this.txtNumberInput.Location = new System.Drawing.Point(4, 332);
+            this.txtNumberInput.MaskTypes = DevExpress.XtraEditors.Mask.MaskType.None;
+            this.txtNumberInput.MaxLengthTexts = 400;
+            this.txtNumberInput.Name = "txtNumberInput";
+            this.txtNumberInput.Padding = new System.Windows.Forms.Padding(15);
+            this.txtNumberInput.Size = new System.Drawing.Size(568, 66);
+            this.txtNumberInput.TabIndex = 10;
+            this.txtNumberInput.TextColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(64)))), ((int)(((byte)(0)))));
+            this.txtNumberInput.TextHintNull = "Nhập số";
+            this.txtNumberInput.Texts = "";
+            this.txtNumberInput.Visible = false;
+            this.txtNumberInput.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtNumberInput_KeyPress);
             // 
             // groupBox1
             // 
@@ -528,29 +551,6 @@ namespace HIS.Desktop.Plugins.RegisterExamKiosk
             this.layoutControlItem2.Size = new System.Drawing.Size(869, 701);
             this.layoutControlItem2.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem2.TextVisible = false;
-            // 
-            // txtNumberInput
-            // 
-            this.txtNumberInput.Anchor = System.Windows.Forms.AnchorStyles.Top;
-            this.txtNumberInput.BackColor = System.Drawing.Color.White;
-            this.txtNumberInput.BackgroundColor = System.Drawing.Color.White;
-            this.txtNumberInput.BorderColor = System.Drawing.Color.White;
-            this.txtNumberInput.BorderRadius = 20;
-            this.txtNumberInput.BorderSize = 1;
-            this.txtNumberInput.EditMaskPn = "";
-            this.txtNumberInput.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(64)))), ((int)(((byte)(0)))));
-            this.txtNumberInput.Location = new System.Drawing.Point(4, 332);
-            this.txtNumberInput.MaskTypes = DevExpress.XtraEditors.Mask.MaskType.None;
-            this.txtNumberInput.MaxLengthTexts = 200;
-            this.txtNumberInput.Name = "txtNumberInput";
-            this.txtNumberInput.Padding = new System.Windows.Forms.Padding(15);
-            this.txtNumberInput.Size = new System.Drawing.Size(568, 66);
-            this.txtNumberInput.TabIndex = 10;
-            this.txtNumberInput.TextColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(64)))), ((int)(((byte)(0)))));
-            this.txtNumberInput.TextHintNull = "Nhập số";
-            this.txtNumberInput.Texts = "";
-            this.txtNumberInput.Visible = false;
-            this.txtNumberInput.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtNumberInput_KeyPress);
             // 
             // frmWaiting2
             // 

@@ -45,18 +45,13 @@ namespace HIS.Desktop.Plugins.BidUpdate
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             this.layoutControl1 = new DevExpress.XtraLayout.LayoutControl();
             this.txtBidApthauCode = new DevExpress.XtraEditors.TextEdit();
-            this.barManager1 = new DevExpress.XtraBars.BarManager(this.components);
+            this.barManager1 = new DevExpress.XtraBars.BarManager();
             this.bar2 = new DevExpress.XtraBars.Bar();
             this.barButtonItem1 = new DevExpress.XtraBars.BarButtonItem();
             this.barButtonItem2 = new DevExpress.XtraBars.BarButtonItem();
             this.barButtonItem3 = new DevExpress.XtraBars.BarButtonItem();
-            this.barDockControlTop = new DevExpress.XtraBars.BarDockControl();
-            this.barDockControlBottom = new DevExpress.XtraBars.BarDockControl();
-            this.barDockControlLeft = new DevExpress.XtraBars.BarDockControl();
-            this.barDockControlRight = new DevExpress.XtraBars.BarDockControl();
             this.cboBidForm = new DevExpress.XtraEditors.GridLookUpEdit();
             this.gridView4 = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.txtBID = new DevExpress.XtraEditors.TextEdit();
@@ -191,8 +186,12 @@ namespace HIS.Desktop.Plugins.BidUpdate
             this.layoutControlItem24 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem25 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem27 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.dxValidationProviderLeft = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider(this.components);
-            this.dxValidationProviderRight = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider(this.components);
+            this.barDockControlTop = new DevExpress.XtraBars.BarDockControl();
+            this.barDockControlBottom = new DevExpress.XtraBars.BarDockControl();
+            this.barDockControlLeft = new DevExpress.XtraBars.BarDockControl();
+            this.barDockControlRight = new DevExpress.XtraBars.BarDockControl();
+            this.dxValidationProviderLeft = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider();
+            this.dxValidationProviderRight = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider();
             this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
             this.layoutControl1.SuspendLayout();
@@ -376,10 +375,6 @@ namespace HIS.Desktop.Plugins.BidUpdate
             // 
             this.barManager1.Bars.AddRange(new DevExpress.XtraBars.Bar[] {
             this.bar2});
-            this.barManager1.DockControls.Add(this.barDockControlTop);
-            this.barManager1.DockControls.Add(this.barDockControlBottom);
-            this.barManager1.DockControls.Add(this.barDockControlLeft);
-            this.barManager1.DockControls.Add(this.barDockControlRight);
             this.barManager1.Form = this;
             this.barManager1.Items.AddRange(new DevExpress.XtraBars.BarItem[] {
             this.barButtonItem1,
@@ -426,34 +421,6 @@ namespace HIS.Desktop.Plugins.BidUpdate
             this.barButtonItem3.ItemShortcut = new DevExpress.XtraBars.BarShortcut((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.U));
             this.barButtonItem3.Name = "barButtonItem3";
             this.barButtonItem3.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.barButtonItem3_ItemClick);
-            // 
-            // barDockControlTop
-            // 
-            this.barDockControlTop.CausesValidation = false;
-            this.barDockControlTop.Dock = System.Windows.Forms.DockStyle.Top;
-            this.barDockControlTop.Location = new System.Drawing.Point(0, 0);
-            this.barDockControlTop.Size = new System.Drawing.Size(1320, 22);
-            // 
-            // barDockControlBottom
-            // 
-            this.barDockControlBottom.CausesValidation = false;
-            this.barDockControlBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.barDockControlBottom.Location = new System.Drawing.Point(0, 602);
-            this.barDockControlBottom.Size = new System.Drawing.Size(1320, 0);
-            // 
-            // barDockControlLeft
-            // 
-            this.barDockControlLeft.CausesValidation = false;
-            this.barDockControlLeft.Dock = System.Windows.Forms.DockStyle.Left;
-            this.barDockControlLeft.Location = new System.Drawing.Point(0, 22);
-            this.barDockControlLeft.Size = new System.Drawing.Size(0, 580);
-            // 
-            // barDockControlRight
-            // 
-            this.barDockControlRight.CausesValidation = false;
-            this.barDockControlRight.Dock = System.Windows.Forms.DockStyle.Right;
-            this.barDockControlRight.Location = new System.Drawing.Point(1320, 22);
-            this.barDockControlRight.Size = new System.Drawing.Size(0, 580);
             // 
             // cboBidForm
             // 
@@ -562,7 +529,7 @@ namespace HIS.Desktop.Plugins.BidUpdate
             // 
             this.xtraTabPageMaterial.Controls.Add(this.layoutControl4);
             this.xtraTabPageMaterial.Name = "xtraTabPageMaterial";
-            this.xtraTabPageMaterial.Size = new System.Drawing.Size(654, 430);
+            this.xtraTabPageMaterial.Size = new System.Drawing.Size(655, 430);
             this.xtraTabPageMaterial.Text = "Vật tư";
             // 
             // layoutControl4
@@ -572,7 +539,7 @@ namespace HIS.Desktop.Plugins.BidUpdate
             this.layoutControl4.Location = new System.Drawing.Point(0, 0);
             this.layoutControl4.Name = "layoutControl4";
             this.layoutControl4.Root = this.layoutControlGroup4;
-            this.layoutControl4.Size = new System.Drawing.Size(654, 430);
+            this.layoutControl4.Size = new System.Drawing.Size(655, 430);
             this.layoutControl4.TabIndex = 0;
             this.layoutControl4.Text = "layoutControl4";
             // 
@@ -580,7 +547,7 @@ namespace HIS.Desktop.Plugins.BidUpdate
             // 
             this.panelControl2.Location = new System.Drawing.Point(0, 0);
             this.panelControl2.Name = "panelControl2";
-            this.panelControl2.Size = new System.Drawing.Size(654, 430);
+            this.panelControl2.Size = new System.Drawing.Size(655, 430);
             this.panelControl2.TabIndex = 5;
             // 
             // layoutControlGroup4
@@ -592,7 +559,7 @@ namespace HIS.Desktop.Plugins.BidUpdate
             this.layoutControlGroup4.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup4.Name = "layoutControlGroup4";
             this.layoutControlGroup4.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
-            this.layoutControlGroup4.Size = new System.Drawing.Size(654, 430);
+            this.layoutControlGroup4.Size = new System.Drawing.Size(655, 430);
             this.layoutControlGroup4.TextVisible = false;
             // 
             // layoutControlItem15
@@ -601,7 +568,7 @@ namespace HIS.Desktop.Plugins.BidUpdate
             this.layoutControlItem15.Location = new System.Drawing.Point(0, 0);
             this.layoutControlItem15.Name = "layoutControlItem15";
             this.layoutControlItem15.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
-            this.layoutControlItem15.Size = new System.Drawing.Size(654, 430);
+            this.layoutControlItem15.Size = new System.Drawing.Size(655, 430);
             this.layoutControlItem15.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem15.TextVisible = false;
             // 
@@ -609,7 +576,7 @@ namespace HIS.Desktop.Plugins.BidUpdate
             // 
             this.xtraTabPageBlood.Controls.Add(this.layoutControl5);
             this.xtraTabPageBlood.Name = "xtraTabPageBlood";
-            this.xtraTabPageBlood.Size = new System.Drawing.Size(654, 430);
+            this.xtraTabPageBlood.Size = new System.Drawing.Size(655, 430);
             this.xtraTabPageBlood.Text = "Máu";
             // 
             // layoutControl5
@@ -619,7 +586,7 @@ namespace HIS.Desktop.Plugins.BidUpdate
             this.layoutControl5.Location = new System.Drawing.Point(0, 0);
             this.layoutControl5.Name = "layoutControl5";
             this.layoutControl5.Root = this.layoutControlGroup5;
-            this.layoutControl5.Size = new System.Drawing.Size(654, 430);
+            this.layoutControl5.Size = new System.Drawing.Size(655, 430);
             this.layoutControl5.TabIndex = 0;
             this.layoutControl5.Text = "layoutControl5";
             // 
@@ -627,7 +594,7 @@ namespace HIS.Desktop.Plugins.BidUpdate
             // 
             this.panelControl3.Location = new System.Drawing.Point(0, 0);
             this.panelControl3.Name = "panelControl3";
-            this.panelControl3.Size = new System.Drawing.Size(654, 430);
+            this.panelControl3.Size = new System.Drawing.Size(655, 430);
             this.panelControl3.TabIndex = 5;
             // 
             // layoutControlGroup5
@@ -639,7 +606,7 @@ namespace HIS.Desktop.Plugins.BidUpdate
             this.layoutControlGroup5.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup5.Name = "layoutControlGroup5";
             this.layoutControlGroup5.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
-            this.layoutControlGroup5.Size = new System.Drawing.Size(654, 430);
+            this.layoutControlGroup5.Size = new System.Drawing.Size(655, 430);
             this.layoutControlGroup5.TextVisible = false;
             // 
             // layoutControlItem13
@@ -648,7 +615,7 @@ namespace HIS.Desktop.Plugins.BidUpdate
             this.layoutControlItem13.Location = new System.Drawing.Point(0, 0);
             this.layoutControlItem13.Name = "layoutControlItem13";
             this.layoutControlItem13.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
-            this.layoutControlItem13.Size = new System.Drawing.Size(654, 430);
+            this.layoutControlItem13.Size = new System.Drawing.Size(655, 430);
             this.layoutControlItem13.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem13.TextVisible = false;
             // 
@@ -1308,7 +1275,7 @@ namespace HIS.Desktop.Plugins.BidUpdate
             // 
             this.xtraTabPage2.Controls.Add(this.pnlVatTu);
             this.xtraTabPage2.Name = "xtraTabPage2";
-            this.xtraTabPage2.Size = new System.Drawing.Size(646, 254);
+            this.xtraTabPage2.Size = new System.Drawing.Size(645, 254);
             this.xtraTabPage2.Text = "Vật tư";
             // 
             // pnlVatTu
@@ -1316,14 +1283,14 @@ namespace HIS.Desktop.Plugins.BidUpdate
             this.pnlVatTu.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pnlVatTu.Location = new System.Drawing.Point(0, 0);
             this.pnlVatTu.Name = "pnlVatTu";
-            this.pnlVatTu.Size = new System.Drawing.Size(646, 254);
+            this.pnlVatTu.Size = new System.Drawing.Size(645, 254);
             this.pnlVatTu.TabIndex = 0;
             // 
             // xtraTabPage3
             // 
             this.xtraTabPage3.Controls.Add(this.pnlMau);
             this.xtraTabPage3.Name = "xtraTabPage3";
-            this.xtraTabPage3.Size = new System.Drawing.Size(646, 254);
+            this.xtraTabPage3.Size = new System.Drawing.Size(645, 254);
             this.xtraTabPage3.Text = "Máu";
             // 
             // pnlMau
@@ -1331,7 +1298,7 @@ namespace HIS.Desktop.Plugins.BidUpdate
             this.pnlMau.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pnlMau.Location = new System.Drawing.Point(0, 0);
             this.pnlMau.Name = "pnlMau";
-            this.pnlMau.Size = new System.Drawing.Size(646, 254);
+            this.pnlMau.Size = new System.Drawing.Size(645, 254);
             this.pnlMau.TabIndex = 0;
             // 
             // txtSupplierCode
@@ -2231,6 +2198,34 @@ namespace HIS.Desktop.Plugins.BidUpdate
             this.layoutControlItem27.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem27.TextSize = new System.Drawing.Size(70, 20);
             this.layoutControlItem27.TextToControlDistance = 5;
+            // 
+            // barDockControlTop
+            // 
+            this.barDockControlTop.CausesValidation = false;
+            this.barDockControlTop.Dock = System.Windows.Forms.DockStyle.Top;
+            this.barDockControlTop.Location = new System.Drawing.Point(0, 22);
+            this.barDockControlTop.Size = new System.Drawing.Size(1320, 0);
+            // 
+            // barDockControlBottom
+            // 
+            this.barDockControlBottom.CausesValidation = false;
+            this.barDockControlBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.barDockControlBottom.Location = new System.Drawing.Point(0, 602);
+            this.barDockControlBottom.Size = new System.Drawing.Size(1320, 0);
+            // 
+            // barDockControlLeft
+            // 
+            this.barDockControlLeft.CausesValidation = false;
+            this.barDockControlLeft.Dock = System.Windows.Forms.DockStyle.Left;
+            this.barDockControlLeft.Location = new System.Drawing.Point(0, 22);
+            this.barDockControlLeft.Size = new System.Drawing.Size(0, 580);
+            // 
+            // barDockControlRight
+            // 
+            this.barDockControlRight.CausesValidation = false;
+            this.barDockControlRight.Dock = System.Windows.Forms.DockStyle.Right;
+            this.barDockControlRight.Location = new System.Drawing.Point(1320, 22);
+            this.barDockControlRight.Size = new System.Drawing.Size(0, 580);
             // 
             // dxValidationProviderLeft
             // 

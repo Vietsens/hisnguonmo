@@ -47,6 +47,7 @@ namespace Inventec.Common.ElectronicBill
             IRun iRun = null;
             try
             {
+                System.Net.ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls12 | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls;
                 if (this.Check(ref result))
                 {
                     iRun = new ElectronicBillProcessor(this.electronicBillInput);

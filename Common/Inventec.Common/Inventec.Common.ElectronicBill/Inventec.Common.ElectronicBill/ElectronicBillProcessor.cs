@@ -127,26 +127,23 @@ namespace Inventec.Common.ElectronicBill
 
                 string xmlInvData = "";
 
-                if (electronicBillInput.replaceInvoices != null && electronicBillInput.replaceInvoices.Count > 0)
+                if (electronicBillInput.replaceInvoice != null)
                 {
-                    foreach (var item in electronicBillInput.replaceInvoices)
+                    electronicBillInput.replaceInvoice.Amount = FormatReplaceStringPrice(electronicBillInput.replaceInvoice.Amount);
+                    electronicBillInput.replaceInvoice.Total = FormatReplaceStringPrice(electronicBillInput.replaceInvoice.Total);
+                    electronicBillInput.replaceInvoice.DiscountAmount = FormatReplaceStringPrice(electronicBillInput.replaceInvoice.DiscountAmount);
+                    electronicBillInput.replaceInvoice.VATAmount = FormatReplaceStringPrice(electronicBillInput.replaceInvoice.VATAmount);
+                    if (electronicBillInput.replaceInvoice.Products != null && electronicBillInput.replaceInvoice.Products.Count > 0)
                     {
-                        item.Amount = FormatReplaceStringPrice(item.Amount);
-                        item.Total = FormatReplaceStringPrice(item.Total);
-                        item.DiscountAmount = FormatReplaceStringPrice(item.DiscountAmount);
-                        item.VATAmount = FormatReplaceStringPrice(item.VATAmount);
-                        if (item.Products != null && item.Products.Count > 0)
+                        foreach (var product in electronicBillInput.replaceInvoice.Products)
                         {
-                            foreach (var product in item.Products)
-                            {
-                                product.Amount = FormatReplaceStringPrice(product.Amount);
-                                product.ProdQuantity = FormatReplaceStringPrice(product.ProdQuantity);
-                                product.ProdPrice = FormatReplaceStringPrice(product.ProdPrice);
-                            }
+                            product.Amount = FormatReplaceStringPrice(product.Amount);
+                            product.ProdQuantity = FormatReplaceStringPrice(product.ProdQuantity);
+                            product.ProdPrice = FormatReplaceStringPrice(product.ProdPrice);
                         }
                     }
 
-                    xmlInvData = ConvertListInvoiceToStringXmlFormat(electronicBillInput.invoices);
+                    xmlInvData = ConvertListInvoiceToStringXmlFormat(electronicBillInput.replaceInvoice, "ReplaceInv");
 
                     if (!String.IsNullOrWhiteSpace(electronicBillInput.DataXmlStringPlus))
                     {
@@ -190,9 +187,9 @@ namespace Inventec.Common.ElectronicBill
                     else
                     {
                         string message = strResponse;
-                        if (mapError.dicMapping.ContainsKey(strResponse))
+                        if (mapError.dicMappingReplace.ContainsKey(strResponse))
                         {
-                            message += string.Format(" ({0})", mapError.dicMapping[strResponse]);
+                            message += string.Format(" ({0})", mapError.dicMappingReplace[strResponse]);
                         }
                         result.Messages.Add(message);
                     }

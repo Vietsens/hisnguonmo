@@ -17,6 +17,7 @@
  */
 using ACS.EFMODEL.DataModels;
 using DevExpress.Data;
+using DevExpress.Utils;
 using DevExpress.XtraEditors;
 using DevExpress.XtraEditors.Controls;
 using DevExpress.XtraEditors.DXErrorProvider;
@@ -97,6 +98,10 @@ namespace HIS.Desktop.Plugins.InfantInformation
         private List<CommuneADO> listCommuneTemp = new List<CommuneADO>();
         private List<HIS_EMPLOYEE> listHisEmpLoyee = new List<HIS_EMPLOYEE>();
         private List<HIS_BABY> listHisBaby = new List<HIS_BABY>();
+        bool isNotLoadWhileChangeControlStateInFirst;
+        private HIS.Desktop.Library.CacheClient.ControlStateWorker controlStateWorker;
+        private List<HIS.Desktop.Library.CacheClient.ControlStateRDO> currentControlStateRDO;
+        private bool isInternalToggle = false;
         public frmInfantInformation()
         {
             InitializeComponent();
@@ -139,14 +144,14 @@ namespace HIS.Desktop.Plugins.InfantInformation
             try
             {
                 HisConfigCFG.LoadConfig();
-                SetIcon();
+                this.LoadTreatment();
+                SetIcon();                 
                 LoadCombo();
 
                 SetDefaultDataToControl();
 
                 SetDefaultValue();
 
-                this.LoadTreatment();
                 //Load du lieu
                 FillDataToGridControl();
 
@@ -154,13 +159,13 @@ namespace HIS.Desktop.Plugins.InfantInformation
 
                 loadInfoMother();
 
-                LoadInfoComplementFromTreatment(this.treatment);
+                LoadInfoComplementFromTreatment(this.treatment);   
 
                 //if (HisConfigCFG.IsConfigKeyExportOption == "1")
                 //{
                 ValidControlBelongConfig();
                 //}
-                //else
+                //else   
                 //{
                 //    ValidControlWithoutConfig();
                 //}
@@ -201,8 +206,12 @@ namespace HIS.Desktop.Plugins.InfantInformation
             listHisEmpLoyee = BackendDataWorker.Get<HIS_EMPLOYEE>();
             listHisBaby = BackendDataWorker.Get<HIS_BABY>();
             listHisEmpLoyee = listHisEmpLoyee.Where(o => o.IS_ACTIVE == 1).ToList();
-            listProvince = BackendDataWorker.Get<SDA.EFMODEL.DataModels.V_SDA_PROVINCE>();
-            listDistrict = BackendDataWorker.Get<SDA.EFMODEL.DataModels.V_SDA_DISTRICT>();
+            if (!toggleCheck.IsOn)
+                listProvince = BackendDataWorker.Get<SDA.EFMODEL.DataModels.V_SDA_PROVINCE>().Where(o => o.IS_NO_DISTRICT != 1 && o.IS_ACTIVE == 1).ToList();
+            else
+                listProvince = BackendDataWorker.Get<SDA.EFMODEL.DataModels.V_SDA_PROVINCE>().Where(o => o.IS_NO_DISTRICT == 1 && o.IS_ACTIVE == 1).ToList();
+
+            listDistrict = BackendDataWorker.Get<SDA.EFMODEL.DataModels.V_SDA_DISTRICT>().Where(o => o.IS_ACTIVE == 1).ToList();
             listCommune = BackendDataWorker.Get<SDA.EFMODEL.DataModels.V_SDA_COMMUNE>();
             this.hisBranch = BranchDataWorker.Branch;
             this.listHisMediOrg = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<HIS_MEDI_ORG>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE).ToList();
@@ -384,10 +393,10 @@ namespace HIS.Desktop.Plugins.InfantInformation
             ValidationSingleControl(txtNgaycap, dxValidationProviderEditorInfo);
             ValidationSingleControl(txtAddress, dxValidationProviderEditorInfo);
             ValidateGridLookupWithTextEdit(cboProvinceName, txtProvinceCode, dxValidationProviderEditorInfo);
-            ValidateGridLookupWithTextEdit(cboDistrictName, txtDistrictCode, dxValidationProviderEditorInfo);
+            //ValidateGridLookupWithTextEdit(cboDistrictName, txtDistrictCode, dxValidationProviderEditorInfo);
             ValidateGridLookupWithTextEdit(cboCommuneName, txtCommuneCode, dxValidationProviderEditorInfo);
             ValidateGridLookupWithTextEdit(cboProvinceNameHospital, txtProvinceCodeHospital, dxValidationProviderEditorInfo);
-            ValidateGridLookupWithTextEdit(cboDistrictNameHospital, txtDistrictCodeHospital, dxValidationProviderEditorInfo);
+            //ValidateGridLookupWithTextEdit(cboDistrictNameHospital, txtDistrictCodeHospital, dxValidationProviderEditorInfo);
             ValidateGridLookupWithTextEdit(cboCommuneNameHospital, txtCommuneCodeHospital, dxValidationProviderEditorInfo);
             Validate.InfantValidationRule docDateRule = new Validate.InfantValidationRule();
             docDateRule.txtInfantMidwife1 = txtInfantMidwife1;
@@ -723,6 +732,27 @@ namespace HIS.Desktop.Plugins.InfantInformation
                         pFilter.ID = this.treatment.PATIENT_ID;
                         List<HIS_PATIENT> listPatient = new BackendAdapter(new CommonParam()).Get<List<HIS_PATIENT>>("api/HisPatient/Get", ApiConsumers.MosConsumer, pFilter, null);
                         this.patient = listPatient != null ? listPatient.FirstOrDefault() : null;
+                    }
+
+                    if (this.patient != null && this.patient.PROVINCE_CODE != null)
+                    {
+                        var checkDistrict = BackendDataWorker.Get<SDA.EFMODEL.DataModels.V_SDA_PROVINCE>().Where(o => o.PROVINCE_CODE == this.patient.PROVINCE_CODE).ToList();
+                        isInternalToggle = true;
+
+                        if (checkDistrict.Count == 1 && checkDistrict.SingleOrDefault().IS_NO_DISTRICT == 1)
+                            toggleCheck.IsOn = true;
+                        else if (checkDistrict.Count == 1 && checkDistrict.SingleOrDefault().IS_NO_DISTRICT != 1)
+                            toggleCheck.IsOn = false;
+                        else if (checkDistrict.Count > 1 && this.patient.DISTRICT_CODE == null)
+                            toggleCheck.IsOn = true;
+                        else if (checkDistrict.Count > 1 && this.patient.DISTRICT_CODE != null)
+                            toggleCheck.IsOn = false;
+
+                        isInternalToggle = false;
+                    }
+                    else
+                    {
+                        InitControlState();
                     }
                 }
             }
@@ -1318,8 +1348,6 @@ namespace HIS.Desktop.Plugins.InfantInformation
                             FillDataToGridControl();
                         }
                     }
-
-
                 }
 
                 WaitingManager.Hide();
@@ -2394,7 +2422,14 @@ namespace HIS.Desktop.Plugins.InfantInformation
                         SDA.EFMODEL.DataModels.V_SDA_PROVINCE province = listProvince.SingleOrDefault(o => o.PROVINCE_CODE == cboProvinceName.EditValue.ToString());
                         if (province != null)
                         {
-                            this.LoadComboHuyen("", province.PROVINCE_CODE, false);
+                            if (!toggleCheck.IsOn)
+                                this.LoadComboHuyen("", province.PROVINCE_CODE, false);
+                            else
+                            {
+                                this.LoadComboXa("", province.PROVINCE_CODE, false);
+                                this.cboCommuneName.EditValue = null;
+                                this.txtCommuneCode.Text = "";
+                            }
                             this.txtProvinceCode.Text = province.SEARCH_CODE;
                         }
                     }
@@ -2455,7 +2490,11 @@ namespace HIS.Desktop.Plugins.InfantInformation
                                     this.txtProvinceCode.Text = district.PROVINCE_CODE;
                                 }
                             }
-                            this.LoadComboXa("", district.DISTRICT_CODE, false);
+                            if (toggleCheck.IsOn)
+                                this.LoadComboXa("", district.PROVINCE_CODE, false);
+                            else if (!toggleCheck.IsOn)
+                                this.LoadComboXa("", district.DISTRICT_CODE, false);
+
                             this.txtDistrictCode.Text = district.SEARCH_CODE;
                             this.cboDistrictName.EditValue = district.DISTRICT_CODE;
                             this.cboCommuneName.EditValue = null;
@@ -2487,7 +2526,10 @@ namespace HIS.Desktop.Plugins.InfantInformation
                             {
                                 this.cboProvinceName.EditValue = district.PROVINCE_CODE;
                             }
-                            this.LoadComboXa("", district.DISTRICT_CODE, false);
+                            if (toggleCheck.IsOn)
+                                this.LoadComboXa("", district.PROVINCE_CODE, false);
+                            else if (!toggleCheck.IsOn)
+                                this.LoadComboXa("", district.DISTRICT_CODE, false);
                             this.txtDistrictCode.Text = district.SEARCH_CODE;
                             this.cboCommuneName.EditValue = null;
                             this.txtCommuneCode.Text = "";
@@ -2509,10 +2551,13 @@ namespace HIS.Desktop.Plugins.InfantInformation
                 if (e.KeyCode == Keys.Enter)
                 {
                     string districtCode = "";
-                    if (this.cboDistrictName.EditValue != null)
+                    if (this.cboDistrictName.EditValue != null && !toggleCheck.IsOn)
                     {
                         districtCode = this.cboDistrictName.EditValue.ToString();
                     }
+                    else if (this.cboProvinceName.EditValue != null && toggleCheck.IsOn)
+                        districtCode = this.cboProvinceName.EditValue.ToString();
+
                     this.LoadComboXa((sender as DevExpress.XtraEditors.TextEdit).Text.ToUpper(), districtCode, true);
                 }
             }
@@ -2526,13 +2571,13 @@ namespace HIS.Desktop.Plugins.InfantInformation
         {
             try
             {
-                cboCommuneName.Properties.DataSource = listCommuneTemp;
+                cboCommuneName.Properties.DataSource = listCommuneTemp;     
                 if (e.CloseMode == PopupCloseMode.Normal)
                 {
                     if (this.cboCommuneName.EditValue != null
                         && this.cboCommuneName.EditValue != cboCommuneName.OldEditValue)
                     {
-                        SDA.EFMODEL.DataModels.V_SDA_COMMUNE commune = listCommune.SingleOrDefault(o => o.COMMUNE_CODE == this.cboCommuneName.EditValue.ToString()
+                        SDA.EFMODEL.DataModels.V_SDA_COMMUNE commune = listCommune.FirstOrDefault(o => o.COMMUNE_CODE == this.cboCommuneName.EditValue.ToString()
                                     && (String.IsNullOrEmpty((this.cboDistrictName.EditValue ?? "").ToString()) || o.DISTRICT_CODE == (this.cboDistrictName.EditValue ?? "").ToString())
                                 );
                         if (commune != null)
@@ -2900,9 +2945,13 @@ namespace HIS.Desktop.Plugins.InfantInformation
                 if (e.KeyCode == Keys.Enter)
                 {
                     string districtCode = "";
-                    if (this.cboHTDistrictName.EditValue != null)
+                    if (this.cboHTDistrictName.EditValue != null && !toggleCheck.IsOn)
                     {
                         districtCode = this.cboHTDistrictName.EditValue.ToString();
+                    }
+                    else if (this.cboHTProvinceName.EditValue != null && toggleCheck.IsOn)
+                    {
+                        districtCode = this.cboHTProvinceName.EditValue.ToString();
                     }
                     this.LoadComboXa_HT((sender as DevExpress.XtraEditors.TextEdit).Text.ToUpper(), districtCode, true);
                 }
@@ -2926,7 +2975,14 @@ namespace HIS.Desktop.Plugins.InfantInformation
                         SDA.EFMODEL.DataModels.V_SDA_PROVINCE province = listProvince.SingleOrDefault(o => o.PROVINCE_CODE == cboHTProvinceName.EditValue.ToString());
                         if (province != null)
                         {
-                            this.LoadComboHuyen_HT("", province.PROVINCE_CODE, false);
+                            if(!toggleCheck.IsOn)
+                                this.LoadComboHuyen_HT("", province.PROVINCE_CODE, false);
+                            else
+                            {
+                                this.LoadComboXa_HT("", province.PROVINCE_CODE, false);
+                                this.cboHTCommuneName.EditValue = null;
+                                this.txtHTCommuneCode.Text = "";
+                            }
                             this.txtHTProvinceCode.Text = province.SEARCH_CODE;
                         }
                     }
@@ -2992,7 +3048,11 @@ namespace HIS.Desktop.Plugins.InfantInformation
                                     this.txtHTProvinceCode.Text = district.PROVINCE_CODE;
                                 }
                             }
-                            this.LoadComboXa_HT("", district.DISTRICT_CODE, false);
+                            if (toggleCheck.IsOn)
+                                this.LoadComboXa_HT("", district.PROVINCE_CODE, false);
+                            else if (!toggleCheck.IsOn)
+                                this.LoadComboXa_HT("", district.DISTRICT_CODE, false);
+
                             this.txtHTDistrictCode.Text = district.SEARCH_CODE;
                             this.cboHTDistrictName.EditValue = district.DISTRICT_CODE;
                             this.cboHTCommuneName.EditValue = null;
@@ -3024,7 +3084,11 @@ namespace HIS.Desktop.Plugins.InfantInformation
                             {
                                 this.cboHTProvinceName.EditValue = district.PROVINCE_CODE;
                             }
-                            this.LoadComboXa_HT("", district.DISTRICT_CODE, false);
+                            if (toggleCheck.IsOn)
+                                this.LoadComboXa_HT("", district.PROVINCE_CODE, false);
+                            else if (!toggleCheck.IsOn)
+                                this.LoadComboXa_HT("", district.DISTRICT_CODE, false);
+
                             this.txtHTDistrictCode.Text = district.SEARCH_CODE;
                             this.cboHTCommuneName.EditValue = null;
                             this.txtHTCommuneCode.Text = "";
@@ -3049,7 +3113,7 @@ namespace HIS.Desktop.Plugins.InfantInformation
                     if (this.cboHTCommuneName.EditValue != null
                         && this.cboHTCommuneName.EditValue != cboHTCommuneName.OldEditValue)
                     {
-                        SDA.EFMODEL.DataModels.V_SDA_COMMUNE commune = listCommune.SingleOrDefault(o => o.COMMUNE_CODE == this.cboHTCommuneName.EditValue.ToString()
+                        SDA.EFMODEL.DataModels.V_SDA_COMMUNE commune = listCommune.FirstOrDefault(o => o.COMMUNE_CODE == this.cboHTCommuneName.EditValue.ToString()
                                     && (String.IsNullOrEmpty((this.cboHTDistrictName.EditValue ?? "").ToString()) || o.DISTRICT_CODE == (this.cboHTDistrictName.EditValue ?? "").ToString())
                                 );
                         if (commune != null)
@@ -3504,13 +3568,22 @@ namespace HIS.Desktop.Plugins.InfantInformation
                         SDA.EFMODEL.DataModels.V_SDA_PROVINCE province = listProvince.SingleOrDefault(o => o.PROVINCE_CODE == cboProvinceNameHospital.EditValue.ToString());
                         if (province != null)
                         {
-                            this.LoadComboHuyen_BV("", province.PROVINCE_CODE, false);
+                            if (toggleCheck.IsOn)
+                            {
+                                this.LoadComboXa_BV("", province.PROVINCE_CODE, false);
+                                this.cboCommuneNameHospital.EditValue = null;
+                                this.txtCommuneCodeHospital.Text = "";
+                            }
+                            else
+                                this.LoadComboHuyen_BV("", province.PROVINCE_CODE, false);
+
+
                             this.txtProvinceCodeHospital.Text = province.SEARCH_CODE;
                         }
                     }
-                    this.txtDistrictCodeHospital.Text = "";
-                    this.txtDistrictCodeHospital.Focus();
-                    this.txtDistrictCodeHospital.SelectAll();
+                    //this.txtDistrictCodeHospital.Text = "";
+                    //this.txtDistrictCodeHospital.Focus();
+                    //this.txtDistrictCodeHospital.SelectAll();
                 }
             }
             catch (Exception ex)
@@ -3527,7 +3600,7 @@ namespace HIS.Desktop.Plugins.InfantInformation
                 {
                     if (this.cboProvinceNameHospital.EditValue != null)
                     {
-                        SDA.EFMODEL.DataModels.V_SDA_PROVINCE province = listProvince.SingleOrDefault(o => o.PROVINCE_CODE == this.cboProvinceNameHospital.EditValue.ToString());
+                        SDA.EFMODEL.DataModels.V_SDA_PROVINCE province = listProvince.SingleOrDefault(o => o.PROVINCE_CODE == this.cboProvinceNameHospital.EditValue.ToString() );
                         if (province != null)
                         {
                             this.LoadComboHuyen_BV("", province.PROVINCE_CODE, false);
@@ -3574,7 +3647,10 @@ namespace HIS.Desktop.Plugins.InfantInformation
                                     this.txtProvinceCodeHospital.Text = district.PROVINCE_CODE;
                                 }
                             }
-                            this.LoadComboXa_BV("", district.DISTRICT_CODE, false);
+                            if (toggleCheck.IsOn)
+                                this.LoadComboXa_BV("", district.PROVINCE_CODE, false);
+                            else if (!toggleCheck.IsOn)
+                                this.LoadComboXa_BV("", district.DISTRICT_CODE, false);
                             this.txtDistrictCodeHospital.Text = district.SEARCH_CODE;
                             this.cboDistrictNameHospital.EditValue = district.DISTRICT_CODE;
                             this.cboCommuneNameHospital.EditValue = null;
@@ -3607,7 +3683,10 @@ namespace HIS.Desktop.Plugins.InfantInformation
                             {
                                 this.cboProvinceNameHospital.EditValue = district.PROVINCE_CODE;
                             }
-                            this.LoadComboXa_BV("", district.DISTRICT_CODE, false);
+                            if (toggleCheck.IsOn)
+                                this.LoadComboXa_BV("", district.PROVINCE_CODE, false);
+                            else if (!toggleCheck.IsOn)
+                                this.LoadComboXa_BV("", district.DISTRICT_CODE, false);
                             this.txtDistrictCodeHospital.Text = district.SEARCH_CODE;
                             this.cboCommuneNameHospital.EditValue = null;
                             this.txtCommuneCodeHospital.Text = "";
@@ -3631,9 +3710,13 @@ namespace HIS.Desktop.Plugins.InfantInformation
                 if (e.KeyCode == Keys.Enter)
                 {
                     string districtCode = "";
-                    if (this.cboDistrictNameHospital.EditValue != null)
+                    if (this.cboDistrictNameHospital.EditValue != null && !toggleCheck.IsOn)
                     {
                         districtCode = this.cboDistrictNameHospital.EditValue.ToString();
+                    }
+                    else if (this.cboProvinceNameHospital.EditValue != null && toggleCheck.IsOn)
+                    {
+                        districtCode = this.cboProvinceNameHospital.EditValue.ToString();
                     }
                     this.LoadComboXa_BV((sender as DevExpress.XtraEditors.TextEdit).Text.ToUpper(), districtCode, true);
                 }
@@ -3654,7 +3737,7 @@ namespace HIS.Desktop.Plugins.InfantInformation
                     if (this.cboCommuneNameHospital.EditValue != null
                         && this.cboCommuneNameHospital.EditValue != cboCommuneNameHospital.OldEditValue)
                     {
-                        SDA.EFMODEL.DataModels.V_SDA_COMMUNE commune = listCommune.SingleOrDefault(o => o.COMMUNE_CODE == this.cboCommuneNameHospital.EditValue.ToString()
+                        SDA.EFMODEL.DataModels.V_SDA_COMMUNE commune = listCommune.FirstOrDefault(o => o.COMMUNE_CODE == this.cboCommuneNameHospital.EditValue.ToString()
                                     && (String.IsNullOrEmpty((this.cboDistrictNameHospital.EditValue ?? "").ToString()) || o.DISTRICT_CODE == (this.cboDistrictNameHospital.EditValue ?? "").ToString())
                                 );
                         if (commune != null)
@@ -4033,25 +4116,25 @@ namespace HIS.Desktop.Plugins.InfantInformation
         {
             try
             {
-                if (String.IsNullOrWhiteSpace(this.txtHTDistrictCode.Text))
-                {
-                    this.cboHTDistrictName.Text = "";
-                    this.cboHTCommuneName.Text = "";
-                    this.txtHTCommuneCode.Text = "";
-                    cboHTCommuneName.Properties.DataSource = null;
-                }
-                if (isNullDistrict == true)
-                {
-                    if (String.IsNullOrWhiteSpace(cboHTProvinceName.Text) && (!String.IsNullOrWhiteSpace(cboHTDistrictName.Text) || !String.IsNullOrWhiteSpace(cboHTCommuneName.Text)))
-                    {
-                        MessageBox.Show("Vui lòng chọn thông tin tỉnh trước...");
-                        txtHTDistrictCode.Text = "";
-                        cboHTDistrictName.Text = "";
-                        txtHTCommuneCode.Text = "";
-                        cboHTCommuneName.Text = "";
-                    }
-                }
-                isNullDistrict = true;
+                //if (String.IsNullOrWhiteSpace(this.txtHTDistrictCode.Text))
+                //{
+                //    this.cboHTDistrictName.Text = "";
+                //    this.cboHTCommuneName.Text = "";
+                //    this.txtHTCommuneCode.Text = "";
+                //    cboHTCommuneName.Properties.DataSource = null;
+                //}
+                //if (isNullDistrict == true)
+                //{
+                //    if (String.IsNullOrWhiteSpace(cboHTProvinceName.Text) && !String.IsNullOrWhiteSpace(cboHTCommuneName.Text))
+                //    {
+                //        MessageBox.Show("Vui lòng chọn thông tin tỉnh trước...");
+                //        txtHTDistrictCode.Text = "";
+                //        cboHTDistrictName.Text = "";
+                //        txtHTCommuneCode.Text = "";
+                //        cboHTCommuneName.Text = "";
+                //    }
+                //}
+                //isNullDistrict = true;
             }
             catch (Exception ex)
             {
@@ -4063,20 +4146,20 @@ namespace HIS.Desktop.Plugins.InfantInformation
         {
             try
             {
-                if (String.IsNullOrWhiteSpace(this.txtHTCommuneCode.Text))
-                {
-                    this.cboHTCommuneName.Text = "";
-                }
-                if (isNullCommune == true)
-                {
-                    if (String.IsNullOrWhiteSpace(cboHTProvinceName.Text) || String.IsNullOrWhiteSpace(cboHTDistrictName.Text))
-                    {
-                        MessageBox.Show("Vui lòng chọn thông tin tỉnh và huyện trước...");
-                        txtHTCommuneCode.Text = "";
-                        cboHTCommuneName.Text = "";
-                    }
-                }
-                isNullCommune = true;
+                //if (String.IsNullOrWhiteSpace(this.txtHTCommuneCode.Text))
+                //{
+                //    this.cboHTCommuneName.Text = "";
+                //}
+                //if (isNullCommune == true)
+                //{
+                //    if (String.IsNullOrWhiteSpace(cboHTProvinceName.Text) || String.IsNullOrWhiteSpace(cboHTDistrictName.Text))
+                //    {
+                //        MessageBox.Show("Vui lòng chọn thông tin tỉnh và huyện trước...");
+                //        txtHTCommuneCode.Text = "";
+                //        cboHTCommuneName.Text = "";
+                //    }
+                //}
+                //isNullCommune = true;
             }
             catch (Exception ex)
             {
@@ -4518,6 +4601,186 @@ namespace HIS.Desktop.Plugins.InfantInformation
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
-    }
 
+        private void toggleCheck_Toggled(object sender, EventArgs e)
+        {
+            this.UpdateDistrictVisibility(); // luôn cập nhật UI
+            this.UpdateAddressControls();
+
+            if (isInternalToggle) return;
+
+
+            HIS.Desktop.Library.CacheClient.ControlStateRDO csAddOrUpdate;
+            if (isNotLoadWhileChangeControlStateInFirst)
+                return;
+
+            try
+            {
+                if (this.controlStateWorker == null)
+                {
+                    this.controlStateWorker = new HIS.Desktop.Library.CacheClient.ControlStateWorker();
+                }
+
+                if (this.currentControlStateRDO == null && this.Module != null)
+                {
+                    this.currentControlStateRDO = this.controlStateWorker.GetData(this.Module.ModuleLink);
+
+                    csAddOrUpdate = (this.currentControlStateRDO != null && this.currentControlStateRDO.Count > 0)
+                    ? this.currentControlStateRDO.Where(o => o.KEY == toggleCheck.Name && o.MODULE_LINK == this.Module.ModuleLink).FirstOrDefault() : null;
+
+                    if (csAddOrUpdate != null)
+                    {
+                        if (csAddOrUpdate.VALUE == "1")
+                            toggleCheck.IsOn = true;
+                        else
+                            toggleCheck.IsOn = false;
+                    }
+                    else
+                    {
+                        csAddOrUpdate = new HIS.Desktop.Library.CacheClient.ControlStateRDO();
+                        csAddOrUpdate.KEY = toggleCheck.Name;
+                        csAddOrUpdate.VALUE = (toggleCheck.IsOn ? "1" : "");
+                        csAddOrUpdate.MODULE_LINK = this.Module.ModuleLink;
+                        if (this.currentControlStateRDO == null)
+                            this.currentControlStateRDO = new List<HIS.Desktop.Library.CacheClient.ControlStateRDO>();
+                        this.currentControlStateRDO.Add(csAddOrUpdate);
+                    }
+
+                    this.controlStateWorker.SetData(this.currentControlStateRDO);
+                }
+                else
+                {
+                    csAddOrUpdate = new HIS.Desktop.Library.CacheClient.ControlStateRDO();
+                    csAddOrUpdate.KEY = toggleCheck.Name;
+                    csAddOrUpdate.VALUE = (toggleCheck.IsOn ? "1" : "");
+                    csAddOrUpdate.MODULE_LINK = this.Module.ModuleLink;
+                    if (this.currentControlStateRDO == null)
+                        this.currentControlStateRDO = new List<HIS.Desktop.Library.CacheClient.ControlStateRDO>();
+                    this.currentControlStateRDO.Add(csAddOrUpdate);
+
+                    this.controlStateWorker.SetData(this.currentControlStateRDO);
+                }
+
+                
+                //var visibility = toggleCheck.IsOn
+                //                ? DevExpress.XtraLayout.Utils.LayoutVisibility.Never
+                //                : DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
+
+                //layoutControlItem72.Visibility = visibility;
+                //layoutControlItem74.Visibility = visibility;
+                //lciDistrict.Visibility = visibility;
+                //lciDistrictName.Visibility = visibility;
+                //lciHTDistrict.Visibility = visibility;
+                //layoutControlItem68.Visibility = visibility;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void InitControlState()
+        {
+            isNotLoadWhileChangeControlStateInFirst = true;
+            try
+            {
+                this.controlStateWorker = new HIS.Desktop.Library.CacheClient.ControlStateWorker();
+                this.currentControlStateRDO = controlStateWorker.GetData(this.Module.ModuleLink);
+                if (this.currentControlStateRDO != null && this.currentControlStateRDO.Count > 0)
+                {
+                    foreach (var item in this.currentControlStateRDO)
+                    {
+                        if (item.KEY == toggleCheck.Name)
+                        {
+                            if (item.VALUE == "1")
+                            {
+                                toggleCheck.IsOn = true;
+                            }
+                            else
+                                toggleCheck.IsOn = false;
+
+                            //var visibility = toggleCheck.IsOn
+                            //    ? DevExpress.XtraLayout.Utils.LayoutVisibility.Never
+                            //    : DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
+
+                            //layoutControlItem72.Visibility = visibility;
+                            //layoutControlItem74.Visibility = visibility;
+                            //lciDistrict.Visibility = visibility;
+                            //lciDistrictName.Visibility = visibility;
+                            //lciHTDistrict.Visibility = visibility;
+                            //layoutControlItem68.Visibility = visibility;
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+            isNotLoadWhileChangeControlStateInFirst = false;
+        }
+
+        private void UpdateAddressControls()
+        {
+            try
+            {
+                if (toggleCheck.IsOn)
+                {
+                    toggleCheck.ToolTip = "Sử dụng cấu trúc địa chỉ Xã - Huyện - Tỉnh";
+                }
+                else
+                {
+                    toggleCheck.ToolTip = "Sử dụng cấu trúc địa chỉ Xã - Tỉnh (không có Huyện)";
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void UpdateDistrictVisibility()
+        {
+            var visibility = toggleCheck.IsOn
+                ? DevExpress.XtraLayout.Utils.LayoutVisibility.Never
+                : DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
+
+            layoutControlItem72.Visibility = visibility;
+            layoutControlItem74.Visibility = visibility;
+            lciDistrict.Visibility = visibility;
+            lciDistrictName.Visibility = visibility;
+            lciHTDistrict.Visibility = visibility;
+            layoutControlItem68.Visibility = visibility;
+        }
+
+        private void toggleCheck_EditValueChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                txtProvinceCodeHospital.Text = null;
+                cboProvinceNameHospital.Text = null;
+                txtDistrictCodeHospital.Text = null;
+                cboDistrictNameHospital.Text = null;
+                txtCommuneCodeHospital.Text = null;
+                cboCommuneNameHospital.Text = null;
+                txtProvinceCode.Text = null;
+                cboProvinceName.Text = null;
+                txtDistrictCode.Text = null;
+                cboDistrictName.Text = null;  
+                txtCommuneCode.Text = null;
+                cboCommuneName.Text = null;    
+                txtHTProvinceCode.Text = null;
+                cboHTProvinceName.Text = null;
+                txtHTDistrictCode.Text = null;
+                cboHTDistrictName.Text = null;
+                txtHTCommuneCode.Text = null;
+                cboHTCommuneName.Text = null;
+                LoadCombo();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+    }   
 }
