@@ -748,47 +748,58 @@ namespace HIS.Desktop.Plugins.HisImportPatient.Run
 							error += string.Format(Message.MessageImport.Maxlength, "Địa chỉ");
 						}
 					}
-					#endregion
+                    #endregion
 
-					#region Dân tộc
-					if (!string.IsNullOrEmpty(item.ETHNIC_CODE))
-					{
-						if (lstEthnic != null && lstEthnic.Count > 0 && lstEthnic.FirstOrDefault(o => o.ETHNIC_CODE == item.ETHNIC_CODE) != null)
-						{
-							kskAdo.ETHNIC_NAME = lstEthnic.FirstOrDefault(o => o.ETHNIC_CODE == item.ETHNIC_CODE).ETHNIC_NAME;
-						}
-						else
-						{
+                    #region Dân tộc
+                    if (!string.IsNullOrEmpty(item.ETHNIC_CODE))
+                    {
+                        var ethnicCode = item.ETHNIC_CODE.Trim();
+                        var matchingEthnic = lstEthnic != null && lstEthnic.Count > 0 ?
+                            lstEthnic.FirstOrDefault(o => string.Equals(o.ETHNIC_CODE, ethnicCode, StringComparison.OrdinalIgnoreCase)) : null;
 
-							kskAdo.ETHNIC_NAME = item.ETHNIC_CODE;
-							error += string.Format(Message.MessageImport.KhongHopLe, "Dân tộc");
-						}
-					}
-					else
-					{
-						error += string.Format(Message.MessageImport.ThieuTruongDL, "Dân tộc");
-					}
-					#endregion
+                        if (matchingEthnic != null)
+                        {
+                            kskAdo.ETHNIC_NAME = matchingEthnic.ETHNIC_NAME;
+                            kskAdo.ETHNIC_CODE = matchingEthnic.ETHNIC_CODE; // Ensure we use the correct case
+                        }
+                        else
+                        {
+                            kskAdo.ETHNIC_NAME = ethnicCode;
+                            Inventec.Common.Logging.LogSystem.Debug($"Could not find ethnic code: '{ethnicCode}' in list of {lstEthnic?.Count ?? 0} ethnic codes");
+                            error += string.Format(Message.MessageImport.KhongHopLe, "Dân tộc");
+                        }
+                    }
+                    else
+                    {
+                        error += string.Format(Message.MessageImport.ThieuTruongDL, "Dân tộc");
+                    }
+                    #endregion
 
-					#region Quốc tịch
-					if (!string.IsNullOrEmpty(item.NATIONAL_CODE))
-					{
-						if (lstNational != null && lstNational.Count > 0 && lstNational.FirstOrDefault(o => o.NATIONAL_CODE == item.NATIONAL_CODE) != null)
-						{
-							kskAdo.NATIONAL_NAME = lstNational.FirstOrDefault(o => o.NATIONAL_CODE == item.NATIONAL_CODE).NATIONAL_NAME;
-						}
-						else
-						{
-							kskAdo.NATIONAL_NAME = item.NATIONAL_CODE;
-							error += string.Format(Message.MessageImport.KhongHopLe, "Dân tộc");
-						}
-					}
-					#endregion
+                    #region Quốc tịch
+                    if (!string.IsNullOrEmpty(item.NATIONAL_CODE))
+                    {
+                        var nationalCode = item.NATIONAL_CODE.Trim();
+                        var matchingNational = lstNational != null && lstNational.Count > 0 ?
+                            lstNational.FirstOrDefault(o => string.Equals(o.NATIONAL_CODE, nationalCode, StringComparison.OrdinalIgnoreCase)) : null;
+
+                        if (matchingNational != null)
+                        {
+                            kskAdo.NATIONAL_NAME = matchingNational.NATIONAL_NAME;
+                            kskAdo.NATIONAL_CODE = matchingNational.NATIONAL_CODE; 
+                        }
+                        else
+                        {
+                            kskAdo.NATIONAL_NAME = nationalCode;
+                            Inventec.Common.Logging.LogSystem.Debug($"Could not find national code: '{nationalCode}' in list of {lstNational?.Count ?? 0} national codes");
+                            error += string.Format(Message.MessageImport.KhongHopLe, "Quốc tịch");
+                        }
+                    }
+                    #endregion
 
 
 
-					#region CMND/CCCD/HC
-					if (!string.IsNullOrEmpty(item.CMND))
+                    #region CMND/CCCD/HC
+                    if (!string.IsNullOrEmpty(item.CMND))
 					{						
 						if (Encoding.UTF8.GetBytes(item.CMND.Trim()).Count() == 9)
 						{
@@ -1086,7 +1097,6 @@ namespace HIS.Desktop.Plugins.HisImportPatient.Run
 			{
 				Inventec.Common.Logging.LogSystem.Warn(exceptionPatient + "___________________" + ex);
 			}
-
 		}
 
 		private void btnShowLineError_Click(object sender, EventArgs e)
