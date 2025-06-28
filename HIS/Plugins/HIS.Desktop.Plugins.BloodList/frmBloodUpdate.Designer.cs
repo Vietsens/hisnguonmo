@@ -45,9 +45,10 @@ namespace HIS.Desktop.Plugins.BloodList
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.layoutControl1 = new DevExpress.XtraLayout.LayoutControl();
             this.toggleCheck = new DevExpress.XtraEditors.ToggleSwitch();
-            this.barManager1 = new DevExpress.XtraBars.BarManager();
+            this.barManager1 = new DevExpress.XtraBars.BarManager(this.components);
             this.bar1 = new DevExpress.XtraBars.Bar();
             this.barButtonItem1 = new DevExpress.XtraBars.BarButtonItem();
             this.barDockControlTop = new DevExpress.XtraBars.BarDockControl();
@@ -239,7 +240,7 @@ namespace HIS.Desktop.Plugins.BloodList
             this.emptySpaceItem1 = new DevExpress.XtraLayout.EmptySpaceItem();
             this.emptySpaceItem3 = new DevExpress.XtraLayout.EmptySpaceItem();
             this.layoutControlItem7 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.dxValidationProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider();
+            this.dxValidationProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
             this.layoutControl1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.toggleCheck.Properties)).BeginInit();
@@ -525,6 +526,7 @@ namespace HIS.Desktop.Plugins.BloodList
             this.toggleCheck.StyleController = this.layoutControl1;
             this.toggleCheck.TabIndex = 89;
             this.toggleCheck.Toggled += new System.EventHandler(this.toggleCheck_Toggled);
+            this.toggleCheck.EditValueChanged += new System.EventHandler(this.toggleCheck_EditValueChanged);
             // 
             // barManager1
             // 
@@ -1298,6 +1300,7 @@ namespace HIS.Desktop.Plugins.BloodList
             this.cboProvinceBlood.Location = new System.Drawing.Point(344, 288);
             this.cboProvinceBlood.MenuManager = this.barManager1;
             this.cboProvinceBlood.Name = "cboProvinceBlood";
+            this.cboProvinceBlood.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
             this.cboProvinceBlood.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
             this.cboProvinceBlood.Properties.NullText = "";

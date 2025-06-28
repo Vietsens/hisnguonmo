@@ -50,6 +50,7 @@ using DevExpress.Utils.Win;
 using System.Text.RegularExpressions;
 using HIS.Desktop.ApiConsumer;
 using Inventec.Common.Logging;
+using DevExpress.XtraLayout;
 
 namespace HIS.Desktop.Plugins.BloodList
 {
@@ -63,6 +64,7 @@ namespace HIS.Desktop.Plugins.BloodList
         private HIS.Desktop.Library.CacheClient.ControlStateWorker controlStateWorker;
         private List<HIS.Desktop.Library.CacheClient.ControlStateRDO> currentControlStateRDO;
         private Inventec.Desktop.Common.Modules.Module moduleData;
+        private bool isInternalToggle = false;
 
         public frmBloodUpdate(V_HIS_BLOOD _blood, Inventec.Desktop.Common.Modules.Module moduleData)
         {
@@ -95,7 +97,7 @@ namespace HIS.Desktop.Plugins.BloodList
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
 
-        }
+        }   
 
         private void LcgBloodGriverCheck()
         {
@@ -201,9 +203,17 @@ namespace HIS.Desktop.Plugins.BloodList
                     {
                         InitComboDefault("PROVINCE_CODE", "PROVINCE_NAME", "PROVINCE_CODE", this.province, cboProvinceBlood);
                     }
-                }
+                }   
 
-                InitComboDefault("PROVINCE_CODE", "PROVINCE_NAME", "PROVINCE_CODE", BackendDataWorker.Get<SDA_PROVINCE>(), cboProvince);
+                if (!toggleCheck.IsOn)
+                {
+                    InitComboDefault("PROVINCE_CODE", "PROVINCE_NAME", "PROVINCE_CODE", BackendDataWorker.Get<SDA_PROVINCE>().Where(o => o.IS_ACTIVE == 1 && o.IS_NO_DISTRICT != 1).ToList(), cboProvince);
+                }
+                else
+                {
+                    InitComboDefault("PROVINCE_CODE", "PROVINCE_NAME", "PROVINCE_CODE", BackendDataWorker.Get<SDA_PROVINCE>().Where(o => o.IS_ACTIVE == 1 && o.IS_NO_DISTRICT == 1).ToList(), cboProvince);
+                }
+                //InitComboDefault("PROVINCE_CODE", "PROVINCE_NAME", "PROVINCE_CODE", BackendDataWorker.Get<SDA_PROVINCE>(), cboProvince);
                 InitComboDefault("LOGINNAME", "USERNAME", "LOGINNAME", BackendDataWorker.Get<ACS_USER>(), cboExamName);
                 InitComboExecuteName();
                 InitComboPermanentAddressAddress();
@@ -451,6 +461,27 @@ namespace HIS.Desktop.Plugins.BloodList
                         currentBloodGiver = new BackendAdapter(new CommonParam()).Get<List<HIS_BLOOD_GIVER>>("api/HisBloodGiver/Get", ApiConsumers.MosConsumer, bloodGiverFilter, null).FirstOrDefault();
                         if (currentBloodGiver != null)
                         {
+                            if (currentBloodGiver != null)
+                            {
+                                var checkDistrict = BackendDataWorker.Get<SDA.EFMODEL.DataModels.V_SDA_PROVINCE>().Where(o => o.PROVINCE_CODE == currentBloodGiver.PROVINCE_CODE).ToList();
+                                isInternalToggle = true;
+
+                                if (checkDistrict.Count == 1 && checkDistrict.SingleOrDefault().IS_NO_DISTRICT == 1)
+                                    toggleCheck.IsOn = true;
+                                else if (checkDistrict.Count == 1 && checkDistrict.SingleOrDefault().IS_NO_DISTRICT != 1)
+                                    toggleCheck.IsOn = false;
+                                else if (checkDistrict.Count > 1 && currentBloodGiver.DISTRICT_CODE == null)
+                                    toggleCheck.IsOn = true;
+                                else if (checkDistrict.Count > 1 && currentBloodGiver.DISTRICT_CODE != null)
+                                    toggleCheck.IsOn = false;
+
+                                isInternalToggle = false;
+                            }
+                            else
+                            {
+                                InitControlState();
+                            }
+
                             FillCurrentBloodGiver(currentBloodGiver);
                         }
                     }
@@ -738,9 +769,8 @@ namespace HIS.Desktop.Plugins.BloodList
             {
                 SetCaptionByLanguageKey();
                 SetDefaultValue();
-                InitControlState();
-                InitCombos();
                 FillCurrentBlood(this.currentBlood);
+                InitCombos();
             }
             catch (Exception ex)
             {
@@ -749,7 +779,7 @@ namespace HIS.Desktop.Plugins.BloodList
 
         }
 
-        private void btnSave_Click(object sender, EventArgs e)
+        private void btnSave_Click(object sender, EventArgs e)   
         {
             CommonParam param = new CommonParam();
             bool success = false;
@@ -774,7 +804,7 @@ namespace HIS.Desktop.Plugins.BloodList
                     }
 
                 }
-                else if (!chkAtPermanentAddress.Checked && lcgBloodGiver.Visibility == DevExpress.XtraLayout.Utils.LayoutVisibility.Always)
+                else if (!chkAtPermanentAddress.Checked && lcgBloodGiver.Visibility == DevExpress.XtraLayout.Utils.LayoutVisibility.Always && cboProvinceBlood.EditValue == null)
                 {
                     DevExpress.XtraEditors.XtraMessageBox.Show("Vui lòng chọn Tỉnh", Resources.ResourceMessage.ThongBao);
                     return;
@@ -854,19 +884,36 @@ namespace HIS.Desktop.Plugins.BloodList
 
                         bloodGiver.PROVINCE_CODE_BLOOD = commune != null ? commune.PROVINCE_CODE : null;
                         bloodGiver.PROVINCE_NAME_BLOOD = commune != null ? commune.PROVINCE_NAME : null;
-                        bloodGiver.DISTRICT_CODE_BLOOD = commune != null ? commune.DISTRICT_CODE : null;
-                        bloodGiver.DISTRICT_NAME_BLOOD = commune != null ? commune.DISTRICT_NAME : null;
+                        if (!toggleCheck.IsOn)
+                        {
+                            bloodGiver.DISTRICT_CODE_BLOOD = commune != null ? commune.DISTRICT_CODE : null;
+                            bloodGiver.DISTRICT_NAME_BLOOD = commune != null ? commune.DISTRICT_NAME : null;
+                        }
+                        else
+                        {
+                            bloodGiver.DISTRICT_CODE_BLOOD = null;
+                            bloodGiver.DISTRICT_NAME_BLOOD = null;
+                        }
                     }
                 }
                 else
                 {
                     var province = BackendDataWorker.Get<SDA_PROVINCE>().FirstOrDefault(o => o.PROVINCE_CODE == cboProvinceBlood.EditValue.ToString());
-                    var district = BackendDataWorker.Get<SDA_DISTRICT>().FirstOrDefault(o => o.DISTRICT_CODE == cboDistrictBlood.EditValue.ToString());
+                    if (!toggleCheck.IsOn)
+                    {
+                        var district = BackendDataWorker.Get<SDA_DISTRICT>().FirstOrDefault(o => o.DISTRICT_CODE == cboDistrictBlood.EditValue.ToString());
+                        bloodGiver.DISTRICT_CODE_BLOOD = district != null ? district.DISTRICT_CODE : null;
+                        bloodGiver.DISTRICT_NAME_BLOOD = district != null ? district.DISTRICT_NAME : null;
+                    }
+                    else
+                    {
+                        bloodGiver.DISTRICT_CODE_BLOOD = null;
+                        bloodGiver.DISTRICT_NAME_BLOOD = null;
+                    }
 
                     bloodGiver.PROVINCE_CODE_BLOOD = province != null ? province.PROVINCE_CODE : null;
                     bloodGiver.PROVINCE_NAME_BLOOD = province != null ? province.PROVINCE_NAME : null;
-                    bloodGiver.DISTRICT_CODE_BLOOD = district != null ? district.DISTRICT_CODE : null;
-                    bloodGiver.DISTRICT_NAME_BLOOD = district != null ? district.DISTRICT_NAME : null;
+                    
                 }
                 if (cboProvince.EditValue != null)
                 {
@@ -879,7 +926,7 @@ namespace HIS.Desktop.Plugins.BloodList
                     bloodGiver.PROVINCE_CODE = null;
                     bloodGiver.PROVINCE_NAME = null;
                 }
-                if (cboDistrict.EditValue != null)
+                if (cboDistrict.EditValue != null && !toggleCheck.IsOn)
                 {
                     var district = BackendDataWorker.Get<SDA_DISTRICT>().FirstOrDefault(o => o.DISTRICT_CODE == cboDistrict.EditValue.ToString());
                     bloodGiver.DISTRICT_CODE = district != null ? district.DISTRICT_CODE : null;
@@ -1699,11 +1746,11 @@ namespace HIS.Desktop.Plugins.BloodList
 
                 if (!string.IsNullOrEmpty(districtCode) && !toggleCheck.IsOn)
                 {
-                    listResult = BackendDataWorker.Get<V_SDA_COMMUNE>().Where(o => o.DISTRICT_CODE == districtCode && o.IS_ACTIVE == 1).ToList();
+                    listResult = BackendDataWorker.Get<V_SDA_COMMUNE>().Where(o => o.DISTRICT_CODE == districtCode && o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE && o.IS_NO_DISTRICT != 1).ToList();
                 }
                 else if (!string.IsNullOrEmpty(districtCode) && toggleCheck.IsOn)
                 {
-                    listResult = BackendDataWorker.Get<V_SDA_COMMUNE>().Where(o => o.PROVINCE_CODE == districtCode && o.IS_ACTIVE == 1).ToList();
+                    listResult = BackendDataWorker.Get<V_SDA_COMMUNE>().Where(o => o.PROVINCE_CODE == districtCode && o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE && o.IS_NO_DISTRICT == 1).ToList();
                 }
                 List<ColumnInfo> columnInfos = new List<ColumnInfo>();
                 columnInfos.Add(new ColumnInfo("COMMUNE_CODE", "", 100, 1));
@@ -1749,15 +1796,28 @@ namespace HIS.Desktop.Plugins.BloodList
                     if (commune != null)
                     {
                         this.txtPermanentAddress.Text = commune.SEARCH_CODE_COMMUNE;
-
-                        var district = BackendDataWorker.Get<SDA.EFMODEL.DataModels.SDA_DISTRICT>().SingleOrDefault(o => o.DISTRICT_CODE == commune.DISTRICT_CODE);
-                        if (district != null)
+                        if (!toggleCheck.IsOn)
                         {
-                            var province = BackendDataWorker.Get<SDA.EFMODEL.DataModels.SDA_PROVINCE>().SingleOrDefault(o => o.ID == district.PROVINCE_ID);
-                            cboProvince.EditValue = province != null ? province.PROVINCE_CODE : null;
-                            cboDistrict.EditValue = district.DISTRICT_CODE;
-                            cboCommune.EditValue = commune.COMMUNE_CODE;
+                            var district = BackendDataWorker.Get<SDA.EFMODEL.DataModels.SDA_DISTRICT>().SingleOrDefault(o => o.DISTRICT_CODE == commune.DISTRICT_CODE);
+                            if (district != null)
+                            {
+                                var province = BackendDataWorker.Get<SDA.EFMODEL.DataModels.SDA_PROVINCE>().SingleOrDefault(o => o.ID == district.PROVINCE_ID);
+                                cboProvince.EditValue = province != null ? province.PROVINCE_CODE : null;
+                                cboDistrict.EditValue = district.DISTRICT_CODE;
+                                cboCommune.EditValue = commune.COMMUNE_CODE;
+                            }
                         }
+                        else
+                        {
+                            var district = BackendDataWorker.Get<SDA.EFMODEL.DataModels.SDA_COMMUNE>().FirstOrDefault(o => o.COMMUNE_CODE == commune.COMMUNE_CODE);
+                            if (district != null)
+                            {
+                                var province = BackendDataWorker.Get<SDA.EFMODEL.DataModels.SDA_PROVINCE>().SingleOrDefault(o => o.ID == district.PROVINCE_ID);
+                                cboProvince.EditValue = province != null ? province.PROVINCE_CODE : null;
+                                cboCommune.EditValue = commune.COMMUNE_CODE;
+                            }
+                        }
+                        
                     }
                 }
             }
@@ -1857,13 +1917,8 @@ namespace HIS.Desktop.Plugins.BloodList
         {
             try
             {
-                if (cboProvinceBlood.EditValue != null)
-                {
-                    if (!toggleCheck.IsOn)
-                        LoadDistrictsBloodCombo(cboProvinceBlood.EditValue.ToString());
-                    else
-                        LoadCommuneCombo(cboProvinceBlood.EditValue.ToString());
-                }
+                if (cboProvinceBlood.EditValue != null && cboProvinceBlood.Text != null && !toggleCheck.IsOn)
+                    LoadDistrictsBloodCombo(cboProvinceBlood.EditValue.ToString());
                 cboDistrictBlood.Focus();
             }
             catch (Exception ex)
@@ -1876,7 +1931,8 @@ namespace HIS.Desktop.Plugins.BloodList
         {
             try
             {
-                if (cboProvince.EditValue != null && !toggleCheck.IsOn) LoadDistrictsCombo(cboProvince.EditValue.ToString());   
+                if (cboProvince.EditValue != null && !toggleCheck.IsOn) LoadDistrictsCombo(cboProvince.EditValue.ToString());
+                else if (cboProvince.EditValue != null && toggleCheck.IsOn) LoadCommuneCombo(cboProvince.EditValue.ToString());
                 cboDistrict.Focus();
             }
             catch (Exception ex)
@@ -1941,7 +1997,12 @@ namespace HIS.Desktop.Plugins.BloodList
 
         private void toggleCheck_Toggled(object sender, EventArgs e)
         {
+            this.UpdateDistrictVisibility();
             this.UpdateAddressControls();
+
+            if (isInternalToggle) return;
+
+
             HIS.Desktop.Library.CacheClient.ControlStateRDO csAddOrUpdate;
             if (isNotLoadWhileChangeControlStateInFirst)
                 return;
@@ -1993,17 +2054,32 @@ namespace HIS.Desktop.Plugins.BloodList
                     this.controlStateWorker.SetData(this.currentControlStateRDO);
                 }
 
-                var visibility = toggleCheck.IsOn
-                                ? DevExpress.XtraLayout.Utils.LayoutVisibility.Never
-                                : DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
 
-                layoutControlItem28.Visibility = visibility;
-                layoutControlItem35.Visibility = visibility;
+                //var visibility = toggleCheck.IsOn
+                //                ? DevExpress.XtraLayout.Utils.LayoutVisibility.Never
+                //                : DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
+
+                //layoutControlItem72.Visibility = visibility;
+                //layoutControlItem74.Visibility = visibility;
+                //lciDistrict.Visibility = visibility;
+                //lciDistrictName.Visibility = visibility;
+                //lciHTDistrict.Visibility = visibility;
+                //layoutControlItem68.Visibility = visibility;
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
+        }
+
+        private void UpdateDistrictVisibility()
+        {
+            var visibility = toggleCheck.IsOn
+                ? DevExpress.XtraLayout.Utils.LayoutVisibility.Never
+                : DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
+
+            layoutControlItem28.Visibility = visibility;
+            layoutControlItem35.Visibility = visibility;
         }
 
         private void UpdateAddressControls()
@@ -2034,13 +2110,36 @@ namespace HIS.Desktop.Plugins.BloodList
                     if (cboNational.EditValue != null && 
                         cboNational.EditValue != this.cboNational.OldEditValue)
                     {
-                        var national = this.province.SingleOrDefault(o => o.NATIONAL_CODE == cboNational.EditValue.ToString());
+                        var national = this.province.Where(o => o.NATIONAL_CODE == cboNational.EditValue.ToString()).ToList();
                         if(national != null)
                         {
                             InitComboDefault("PROVINCE_CODE", "PROVINCE_NAME", "PROVINCE_CODE", national, cboProvinceBlood);
                         }
                     }
                 }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void toggleCheck_EditValueChanged(object sender, EventArgs e)
+        {   
+            try
+            {
+                
+                cboProvinceBlood.Properties.DataSource = null;
+                cboProvinceBlood.Text = null;
+                cboDistrictBlood.Properties.DataSource = null;
+                txtPermanentAddress.Text = null;
+                cboPermanentAddress.Properties.DataSource = null;
+                cboProvince.Properties.DataSource = null;
+                cboProvince.Text = null;
+                cboDistrict.Properties.DataSource = null;
+                cboCommune.Properties.DataSource = null;
+                txtAddress.Text = null;
+                InitCombos();
             }
             catch (Exception ex)
             {
