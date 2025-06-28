@@ -729,45 +729,58 @@ namespace HIS.Desktop.Plugins.HisImportKsk.FormLoad
                     }
                     if (!string.IsNullOrEmpty(item.DISTRICT_CODE_STR))
                     {
-                        var lstSdaDistrict = BackendDataWorker.Get<SDA.EFMODEL.DataModels.V_SDA_DISTRICT>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.SDA_RS.COMMON.IS_ACTIVE__TRUE).ToList().FirstOrDefault(o =>
-                                        o.DISTRICT_CODE == item.DISTRICT_CODE_STR);
+                        var districtsByCode = BackendDataWorker.Get<SDA.EFMODEL.DataModels.V_SDA_DISTRICT>()
+                               .Where(o => o.IS_ACTIVE == IMSys.DbConfig.SDA_RS.COMMON.IS_ACTIVE__TRUE &&
+                                      o.DISTRICT_CODE.Trim() == item.DISTRICT_CODE_STR.Trim())
+                               .ToList();
 
-                        if (lstSdaDistrict != null)
+                        if (districtsByCode.Count > 0)
                         {
                             if (kskAdo.provinceId.HasValue)
                             {
-                                var sdaDistrict = BackendDataWorker.Get<SDA.EFMODEL.DataModels.V_SDA_DISTRICT>()
-                                    .Where(o => o.DISTRICT_CODE == item.DISTRICT_CODE_STR && o.PROVINCE_ID == kskAdo.provinceId.Value)
-                                    .FirstOrDefault();
+                                // Try to find a match with current province
+                                var matchingDistrict = districtsByCode.FirstOrDefault(d => d.PROVINCE_ID == kskAdo.provinceId.Value);
 
-                                if (sdaDistrict != null)
+                                if (matchingDistrict != null)
                                 {
-                                    kskAdo.districtId = sdaDistrict.ID;
-                                    kskAdo.DISTRICT_CODE = sdaDistrict.DISTRICT_CODE;
-                                    kskAdo.DISTRICT_NAME = sdaDistrict.DISTRICT_NAME;
+                                    // Found matching district for this province
+                                    kskAdo.districtId = matchingDistrict.ID;
+                                    kskAdo.DISTRICT_CODE = matchingDistrict.DISTRICT_CODE;
+                                    kskAdo.DISTRICT_NAME = matchingDistrict.DISTRICT_NAME;
+
+                                    // Log success for debugging
+                                    Inventec.Common.Logging.LogSystem.Info($"District mapped: {matchingDistrict.DISTRICT_NAME} to province {kskAdo.PROVINCE_NAME} (ID:{kskAdo.provinceId})");
                                 }
                                 else
                                 {
-                                    error += string.Format("Huyện {0} không thuộc tỉnh {1}|", lstSdaDistrict.DISTRICT_NAME, kskAdo.PROVINCE_NAME);
+                                    // For debugging - log which provinces are actually associated with this district
+                                    var provinceIds = string.Join(",", districtsByCode.Select(d => d.PROVINCE_ID));
+                                    Inventec.Common.Logging.LogSystem.Warn($"District {item.DISTRICT_CODE_STR} exists but not in province {kskAdo.PROVINCE_NAME} (ID:{kskAdo.provinceId}). Found in provinces: {provinceIds}");
+
+                                    // This district exists but not in our province
+                                    error += $"Huyện {districtsByCode[0].DISTRICT_NAME} không thuộc tỉnh {kskAdo.PROVINCE_NAME}. Vui lòng kiểm tra lại.|";
                                 }
                             }
                             else
                             {
-                                error += "Nhập mã huyện nhưng chưa nhập mã tỉnh|";
-                                kskAdo.districtId = lstSdaDistrict.ID;
-                                kskAdo.DISTRICT_CODE = lstSdaDistrict.DISTRICT_CODE;
-                                kskAdo.DISTRICT_NAME = lstSdaDistrict.DISTRICT_NAME;
+                                // No province specified, just take first district and warn
+                                var firstDistrict = districtsByCode[0];
+                                kskAdo.districtId = firstDistrict.ID;
+                                kskAdo.DISTRICT_CODE = firstDistrict.DISTRICT_CODE;
+                                kskAdo.DISTRICT_NAME = firstDistrict.DISTRICT_NAME;
+                                error += "Cần nhập mã tỉnh khi nhập mã huyện.|";
                             }
+
                         }
                         else
                         {
                             kskAdo.DISTRICT_CODE_STR = item.DISTRICT_CODE_STR;
-                            error += string.Format("Mã huyện {0} không có trong danh mục|", item.DISTRICT_CODE_STR);
+                            error += $"Mã huyện {item.DISTRICT_CODE_STR} không tồn tại trong danh mục.|";
                         }
                     }
                     else if (kskAdo.provinceId.HasValue)
                     {
-                        // No district code provided - find a province with IS_NO_DISTRICT = 1
+                        // No district code provided - find province with IS_NO_DISTRICT = 1
                         var noDistrictProvince = BackendDataWorker.Get<SDA.EFMODEL.DataModels.V_SDA_PROVINCE>()
                             .Where(o => o.IS_ACTIVE == IMSys.DbConfig.SDA_RS.COMMON.IS_ACTIVE__TRUE &&
                                         o.IS_NO_DISTRICT == 1 &&
@@ -776,64 +789,65 @@ namespace HIS.Desktop.Plugins.HisImportKsk.FormLoad
 
                         if (noDistrictProvince != null)
                         {
-                            // Use this province for mapping
+                            // Use this province for direct commune mapping
                             kskAdo.provinceId = noDistrictProvince.ID;
                             kskAdo.PROVINCE_CODE = noDistrictProvince.PROVINCE_CODE;
                             kskAdo.PROVINCE_NAME = noDistrictProvince.PROVINCE_NAME;
+                            Inventec.Common.Logging.LogSystem.Info($"Using province with no district: {noDistrictProvince.PROVINCE_NAME}");
                         }
                     }
 
                     if (!string.IsNullOrEmpty(item.COMMUNE_CODE_STR))
                     {
-                        var lstSdaCommune = BackendDataWorker.Get<SDA.EFMODEL.DataModels.V_SDA_COMMUNE>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.SDA_RS.COMMON.IS_ACTIVE__TRUE).ToList().FirstOrDefault(o =>
-                                        o.COMMUNE_CODE == item.COMMUNE_CODE_STR);
-                        if (lstSdaCommune != null)
+                        // Get all communes with this code
+                        var communesByCode = BackendDataWorker.Get<SDA.EFMODEL.DataModels.V_SDA_COMMUNE>()
+                            .Where(o => o.IS_ACTIVE == IMSys.DbConfig.SDA_RS.COMMON.IS_ACTIVE__TRUE &&
+                                   o.COMMUNE_CODE.Trim() == item.COMMUNE_CODE_STR.Trim())
+                            .ToList();
+
+                        if (communesByCode.Count > 0)
                         {
                             if (kskAdo.districtId.HasValue)
                             {
-                                // District is provided, validate commune belongs to district
-                                var sdaCommune = BackendDataWorker.Get<SDA.EFMODEL.DataModels.V_SDA_COMMUNE>()
-                                    .Where(o => o.COMMUNE_CODE == item.COMMUNE_CODE_STR && o.DISTRICT_ID == kskAdo.districtId.Value)
-                                    .FirstOrDefault();
+                                // Find commune belonging to this district
+                                var communeInDistrict = communesByCode.FirstOrDefault(c => c.DISTRICT_ID == kskAdo.districtId.Value);
 
-                                if (sdaCommune != null)
+                                if (communeInDistrict != null)
                                 {
-                                    kskAdo.COMMUNE_CODE = sdaCommune.COMMUNE_CODE;
-                                    kskAdo.COMMUNE_NAME = sdaCommune.COMMUNE_NAME;
+                                    kskAdo.COMMUNE_CODE = communeInDistrict.COMMUNE_CODE;
+                                    kskAdo.COMMUNE_NAME = communeInDistrict.COMMUNE_NAME;
                                 }
                                 else
                                 {
-                                    error += string.Format("Xã {0} không thuộc huyện {1}|", lstSdaCommune.COMMUNE_NAME, kskAdo.DISTRICT_NAME);
+                                    error += $"Xã {communesByCode[0].COMMUNE_NAME} không thuộc huyện {kskAdo.DISTRICT_NAME}.|";
                                 }
                             }
                             else if (kskAdo.provinceId.HasValue)
                             {
-                                // No district, check if commune belongs to province directly
-                                var sdaCommune = BackendDataWorker.Get<SDA.EFMODEL.DataModels.V_SDA_COMMUNE>()
-                                    .Where(o => o.COMMUNE_CODE == item.COMMUNE_CODE_STR && o.PROVINCE_ID == kskAdo.provinceId.Value)
-                                    .FirstOrDefault();
+                                // No district - try to find commune belonging to province directly
+                                var communeInProvince = communesByCode.FirstOrDefault(c => c.PROVINCE_ID == kskAdo.provinceId.Value);
 
-                                if (sdaCommune != null)
+                                if (communeInProvince != null)
                                 {
-                                    kskAdo.COMMUNE_CODE = sdaCommune.COMMUNE_CODE;
-                                    kskAdo.COMMUNE_NAME = sdaCommune.COMMUNE_NAME;
+                                    kskAdo.COMMUNE_CODE = communeInProvince.COMMUNE_CODE;
+                                    kskAdo.COMMUNE_NAME = communeInProvince.COMMUNE_NAME;
                                 }
                                 else
                                 {
-                                    error += string.Format("Xã {0} không thuộc tỉnh {1}|", lstSdaCommune.COMMUNE_NAME, kskAdo.PROVINCE_NAME);
+                                    error += $"Xã {communesByCode[0].COMMUNE_NAME} không thuộc tỉnh {kskAdo.PROVINCE_NAME}.|";
                                 }
                             }
                             else
                             {
-                                error += "Nhập mã xã nhưng chưa nhập mã tỉnh|";
-                                kskAdo.COMMUNE_CODE = lstSdaCommune.COMMUNE_CODE;
-                                kskAdo.COMMUNE_NAME = lstSdaCommune.COMMUNE_NAME;
+                                error += "Nhập mã xã phải kèm mã tỉnh hoặc mã huyện.|";
+                                kskAdo.COMMUNE_CODE = communesByCode[0].COMMUNE_CODE;
+                                kskAdo.COMMUNE_NAME = communesByCode[0].COMMUNE_NAME;
                             }
                         }
                         else
                         {
                             kskAdo.COMMUNE_CODE_STR = item.COMMUNE_CODE_STR;
-                            error += string.Format("Mã xã {0} không có trong danh mục|", item.COMMUNE_CODE_STR);
+                            error += $"Mã xã {item.COMMUNE_CODE_STR} không tồn tại trong danh mục.|";
                         }
                     }
 
@@ -847,7 +861,6 @@ namespace HIS.Desktop.Plugins.HisImportKsk.FormLoad
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
-
         }
 
         private void CheckHour(string input, ref string check)
