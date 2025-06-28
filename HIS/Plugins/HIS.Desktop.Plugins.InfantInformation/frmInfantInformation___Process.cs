@@ -324,16 +324,25 @@ namespace HIS.Desktop.Plugins.InfantInformation
                     currentDTO.MotherProvinceCode = null;
                     currentDTO.MotherProvinceName = null;
                 }
-                if (cboDistrictName.EditValue != null)
+                if (!toggleCheck.IsOn)
                 {
-                    currentDTO.MotherDistrictCode = cboDistrictName.EditValue.ToString();
-                    currentDTO.MotherDistrictName = cboDistrictName.Text;
+                    if (cboDistrictName.EditValue != null)
+                    {
+                        currentDTO.MotherDistrictCode = cboDistrictName.EditValue.ToString();
+                        currentDTO.MotherDistrictName = cboDistrictName.Text;
+                    }
+                    else
+                    {
+                        currentDTO.MotherDistrictCode = null;
+                        currentDTO.MotherDistrictName = null;
+                    }
                 }
                 else
                 {
                     currentDTO.MotherDistrictCode = null;
                     currentDTO.MotherDistrictName = null;
                 }
+
                 if (cboCommuneName.EditValue != null)
                 {
                     currentDTO.MotherCommuneCode = cboCommuneName.EditValue.ToString();
@@ -363,13 +372,21 @@ namespace HIS.Desktop.Plugins.InfantInformation
                     currentDTO.HtProvinceCode = null;
                 }
 
-                if (cboHTDistrictName.EditValue != null)
+                if (!toggleCheck.IsOn)
                 {
-                    var districtHT = listDistrict.FirstOrDefault(o => o.DISTRICT_CODE == cboHTDistrictName.EditValue.ToString());
-                    if (districtHT != null)
+                    if (cboHTDistrictName.EditValue != null)
                     {
-                        currentDTO.HtDistrictName = districtHT.DISTRICT_NAME;
-                        currentDTO.HtDistrictCode = districtHT.DISTRICT_CODE;
+                        var districtHT = listDistrict.FirstOrDefault(o => o.DISTRICT_CODE == cboHTDistrictName.EditValue.ToString());
+                        if (districtHT != null)
+                        {
+                            currentDTO.HtDistrictName = districtHT.DISTRICT_NAME;
+                            currentDTO.HtDistrictCode = districtHT.DISTRICT_CODE;
+                        }
+                    }
+                    else
+                    {
+                        currentDTO.HtDistrictName = null;
+                        currentDTO.HtDistrictCode = null;
                     }
                 }
                 else
@@ -377,6 +394,7 @@ namespace HIS.Desktop.Plugins.InfantInformation
                     currentDTO.HtDistrictName = null;
                     currentDTO.HtDistrictCode = null;
                 }
+
 
                 if (cboHTCommuneName.EditValue != null)
                 {
@@ -392,6 +410,7 @@ namespace HIS.Desktop.Plugins.InfantInformation
                     currentDTO.HtCommuneName = null;
                     currentDTO.HtCommuneCode = null;
                 }
+
                 if (txtNumberChildrenBirth.EditValue != null)
                     currentDTO.NumberChildrenBirth = (long)txtNumberChildrenBirth.Value;
                 else
@@ -427,16 +446,25 @@ namespace HIS.Desktop.Plugins.InfantInformation
                     currentDTO.BirthProvinceCode = null;
                     currentDTO.BirthProvinceName = null;
                 }
-                if (cboDistrictNameHospital.EditValue != null)
+                if (true)
                 {
-                    currentDTO.BirthDistrictCode = cboDistrictNameHospital.EditValue.ToString();
-                    currentDTO.BirthDistrictName = cboDistrictNameHospital.Text;
+                    if (cboDistrictNameHospital.EditValue != null)
+                    {
+                        currentDTO.BirthDistrictCode = cboDistrictNameHospital.EditValue.ToString();
+                        currentDTO.BirthDistrictName = cboDistrictNameHospital.Text;
+                    }
+                    else
+                    {
+                        currentDTO.BirthDistrictCode = null;
+                        currentDTO.BirthDistrictName = null;
+                    }
                 }
                 else
                 {
                     currentDTO.BirthDistrictCode = null;
                     currentDTO.BirthDistrictName = null;
                 }
+
                 if (cboCommuneNameHospital.EditValue != null)
                 {
                     currentDTO.BirthCommuneCode = cboCommuneNameHospital.EditValue.ToString();

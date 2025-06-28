@@ -818,7 +818,7 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
                         this.currentPatientSDO = dataResult.HisPatientSDO;
                         FillDataIntoUCPlusInfo(currentPatientSDO, dataResult.IsReadQr);
                         FillDataIntoUCRelativeInfo(currentPatientSDO);
-                        FillDataIntoUCAddressInfo(currentPatientSDO);
+                        FillDataIntoUCAddressInfo(dataResult);
                         if (dataResult.SearchTypePatient == 4 && dataResult.OldPatient == false)
                             this.FillDataIntoUCHeinInfoByPatientTypeAlter(currentPatientSDO);
                         if (dataResult.SearchTypePatient == 5 && dataResult.OldPatient == false)

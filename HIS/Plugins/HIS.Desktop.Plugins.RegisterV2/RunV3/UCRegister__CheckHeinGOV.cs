@@ -201,6 +201,7 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
                                 dataAddressPatient.District_Name = data.DistrictName;
                                 dataAddressPatient.Commune_Code = data.CommuneCode;
                                 dataAddressPatient.Commune_Name = data.CommuneName;
+                                dataAddressPatient.IsNoDistrict = data.IsNoDistrict;
                             }
                             dataAddressPatient.Address = this.ucPatientRaw1.ResultDataADO.ResultHistoryLDO.diaChi;
                             this.ucAddressCombo1.SetValue(dataAddressPatient);

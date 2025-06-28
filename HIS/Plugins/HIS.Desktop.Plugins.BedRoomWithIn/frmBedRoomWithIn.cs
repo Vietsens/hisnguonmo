@@ -2441,7 +2441,7 @@ namespace HIS.Desktop.Plugins.BedRoomWithIn
                 List<ColumnInfo> columnInfos = new List<ColumnInfo>();
                 columnInfos.Add(new ColumnInfo("LOGINNAME", "Mã", 100, 2));
                 columnInfos.Add(new ColumnInfo("TDL_USERNAME", "Tên", 200, 2));
-                ControlEditorADO controlEditorADO = new ControlEditorADO("LOGINNAME", "TDL_USERNAME", columnInfos, false, 300);
+                ControlEditorADO controlEditorADO = new ControlEditorADO("TDL_USERNAME", "LOGINNAME", columnInfos, false, 300);
                 ControlEditorLoader.Load(cbboDoctor, listDoctor, controlEditorADO);
             }
             catch (Exception)
@@ -2458,17 +2458,19 @@ namespace HIS.Desktop.Plugins.BedRoomWithIn
             {
                 if (cbboDoctor.EditValue != null)
                 {
-                    var selectedDoctor = listDoctor.Where(s => s.TDL_USERNAME == cbboDoctor.EditValue.ToString()).FirstOrDefault();
-                    updateDTO.DOCTOR_LOGINNAME = selectedDoctor.LOGINNAME;
-                    updateDTO.DOCTOR_USERNAME = selectedDoctor.TDL_USERNAME;
-                    cbbDoctor.Text = selectedDoctor.LOGINNAME;
-                    cbboDoctor.Properties.DisplayMember = "TDL_USERNAME";
+                    string selectedLoginName = cbboDoctor.EditValue.ToString();
+                    var selectedDoctor = listDoctor.FirstOrDefault(s => s.LOGINNAME == selectedLoginName);
+                    if (selectedDoctor != null)
+                    {
+                        updateDTO.DOCTOR_LOGINNAME = selectedDoctor.LOGINNAME;
+                        updateDTO.DOCTOR_USERNAME = selectedDoctor.TDL_USERNAME;
+                        cbbDoctor.Text = selectedDoctor.LOGINNAME;
+                    }
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                
-                throw;
+                Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
        
@@ -2484,24 +2486,25 @@ namespace HIS.Desktop.Plugins.BedRoomWithIn
             {
                 if (cbboDoctor.EditValue != null)
                 {
-                    var selectedDoctor = listDoctor.Where(s => s.TDL_USERNAME == cbboDoctor.EditValue.ToString()).FirstOrDefault();
+                    string selectedLoginName = cbboDoctor.EditValue.ToString();
+                    var selectedDoctor = listDoctor.FirstOrDefault(s => s.LOGINNAME == selectedLoginName);
                     if (selectedDoctor != null)
                     {
                         this.doctorLoginname = selectedDoctor.LOGINNAME;
                         this.doctorUsername = selectedDoctor.TDL_USERNAME;
                         cbbDoctor.Text = selectedDoctor.LOGINNAME;
-                        cbboDoctor.Properties.DisplayMember = "TDL_USERNAME";
-                    } 
+                    }
                 }
                 else
                 {
                     cbbDoctor.Text = "";
+                    this.doctorLoginname = "";
+                    this.doctorUsername = "";
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                
-                throw;
+                Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
        
@@ -2512,15 +2515,21 @@ namespace HIS.Desktop.Plugins.BedRoomWithIn
             {
                 if (e.KeyCode == Keys.Enter)
                 {
-                    var data = listDoctor.FirstOrDefault(s => s.LOGINNAME == cbbDoctor.Text);
+                    string searchText = cbbDoctor.Text.ToLower();
+                    var data = listDoctor.FirstOrDefault(s => s.LOGINNAME.ToLower() == searchText);
                     if (data != null)
                     {
-                        cbboDoctor.EditValue = data.TDL_USERNAME;
+                        cbboDoctor.EditValue = data.LOGINNAME;
+                        cbbDoctor.Text = data.LOGINNAME;
                     }
-                }
-                if (string.IsNullOrEmpty(cbbDoctor.Text))
-                {
-                    cbboDoctor.EditValue = null;
+                    else if (string.IsNullOrEmpty(cbbDoctor.Text))
+                    {
+                        cbboDoctor.EditValue = null;
+                    }
+                    else
+                    {
+                        cbboDoctor.ShowPopup();
+                    }
                 }
             }
             catch (Exception)
@@ -2533,21 +2542,20 @@ namespace HIS.Desktop.Plugins.BedRoomWithIn
         {
             try
             {
-                var data = listDoctor.FirstOrDefault(s => s.LOGINNAME == cbbDoctor.Text);
+                string searchText = cbbDoctor.Text;
+                var data = listDoctor.FirstOrDefault(s => s.LOGINNAME == searchText);
                 if (data != null)
                 {
-                    cbboDoctor.EditValue = data.TDL_USERNAME;
+                    cbboDoctor.EditValue = data.LOGINNAME;
                 }
-
-                if (string.IsNullOrEmpty(cbbDoctor.Text))
+                else if (string.IsNullOrEmpty(cbbDoctor.Text))
                 {
                     cbboDoctor.EditValue = null;
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-
-                throw;
+                Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
 

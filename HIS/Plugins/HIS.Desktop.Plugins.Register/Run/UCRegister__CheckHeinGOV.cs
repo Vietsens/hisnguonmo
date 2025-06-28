@@ -171,12 +171,7 @@ namespace HIS.Desktop.Plugins.Register.Run
                             var data = adProc.SplitFromFullAddress(this.ResultDataADO.ResultHistoryLDO.diaChi);
                             if ((typeCodeFind == typeCodeFind__CCCDCMND && (currentPatientSDO == null)) || (currentPatientSDO != null && data != null && (currentPatientSDO.PROVINCE_CODE != data.ProvinceCode || currentPatientSDO.DISTRICT_CODE != data.DistrictCode || currentPatientSDO.COMMUNE_CODE != data.CommuneCode)))
                             {
-                                cboProvince.EditValue = data.ProvinceCode;
-                                txtProvinceCode.EditValue = data.ProvinceCode;
-                                cboDistrict.EditValue = data.DistrictCode;
-                                txtDistrictCode.EditValue = data.DistrictCode;
-                                cboCommune.EditValue = data.CommuneCode;
-                                txtCommuneCode.EditValue = data.CommuneCode;
+                                SetDataAddress(data);
                             }
                             this.txtAddress.Text = this.ResultDataADO.ResultHistoryLDO.diaChi;
                         }

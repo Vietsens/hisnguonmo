@@ -152,7 +152,6 @@ namespace HIS.Desktop.Plugins.Register.Run
                 WaitingManager.Show();
                 this.LoadBranch();
                 LogSystem.Debug("Loaded LoadBranch");
-                InitControlState();
                 His.UC.UCHein.Base.ResouceManager.ResourceLanguageManager();
                 this.SetCaptionByLanguageKey();
                 HIS.Desktop.Plugins.Library.RegisterConfig.HisConfigCFG.LoadConfig();
@@ -202,6 +201,8 @@ namespace HIS.Desktop.Plugins.Register.Run
                 this.InitPopupMenuOther();
                 this.loadHosReason();
                 WaitingManager.Hide();
+                RegisterTimer(currentModule.ModuleLink, "timerInitForm", 500, timerInitForm_Tick);
+                StartTimer(currentModule.ModuleLink, "timerInitForm");
             }
             catch (Exception ex)
             {
@@ -209,6 +210,14 @@ namespace HIS.Desktop.Plugins.Register.Run
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
+
+        private void timerInitForm_Tick()
+        {
+            this.InitControlState();
+            this.SetToolTipTog(togChangeStructAdress);
+            StopTimer(currentModule.ModuleLink, "timerInitForm");
+        }
+
         public void IsValidateAddressCombo(string _isValidate)
         {
             try
@@ -422,7 +431,7 @@ namespace HIS.Desktop.Plugins.Register.Run
                         if (lci != null && lci.Control != null && lci.Control is BaseEdit)
                         {
                             DevExpress.XtraEditors.BaseEdit fomatFrm = lci.Control as DevExpress.XtraEditors.BaseEdit;
-                            if (lci.Name == "lciGateNumber" || lci.Name == "lciStepNumber" || lci.Name == "lcicboCashierRoom" || lci.Name == "layoutControlItem14" || lci.Name == "layoutControlItem15" || lci.Name == "layoutControlItem17")
+                            if (lci.Name == "lciGateNumber" || lci.Name == "lciStepNumber" || lci.Name == "lcicboCashierRoom" || lci.Name == "layoutControlItem14" || lci.Name == "layoutControlItem15" || lci.Name == "layoutControlItem17" || lci.Name == "layoutControlItem18")
                             {
                                 continue;
                             }
@@ -1694,7 +1703,7 @@ namespace HIS.Desktop.Plugins.Register.Run
                         {
                             this.SetSourceValueTHX(this.workingCommuneADO);
                             this.cboTHX.Properties.Buttons[1].Visible = true;
-                            this.cboTHX.EditValue = listResult[0].ID_RAW;
+                            this.cboTHX.EditValue = listResult[0].ID;
                             this.txtMaTHX.Text = listResult[0].SEARCH_CODE_COMMUNE;
                             var provinceDTO = (cboProvince.Properties.DataSource as List<SDA.EFMODEL.DataModels.V_SDA_PROVINCE>).ToList().FirstOrDefault(o => o.PROVINCE_CODE == listResult[0].PROVINCE_CODE);
                             if (provinceDTO != null)
@@ -1702,7 +1711,10 @@ namespace HIS.Desktop.Plugins.Register.Run
                                 this.txtProvinceCode.Text = provinceDTO.PROVINCE_CODE;
                                 this.cboProvince.EditValue = provinceDTO.PROVINCE_CODE;
                             }
-                            this.LoadXaCombo(listResult[0].COMMUNE_CODE, listResult[0].PROVINCE_CODE, false);
+                            this.LoadXaCombo("", listResult[0].PROVINCE_CODE, false);
+
+                            this.cboCommune.EditValue = listResult[0].COMMUNE_CODE;
+                            this.txtCommuneCode.Text = listResult[0].COMMUNE_CODE;
                         }
                         //Ngược lại gán lại datasource của combo THX bằng kết quả vừa tìm đc
                         else
@@ -1731,7 +1743,7 @@ namespace HIS.Desktop.Plugins.Register.Run
                     this.InitComboCommon(this.cboTHX, communeADOs, "ID", "RENDERER_PDC_NAME", "SEARCH_CODE_COMMUNE");
                 this.cboTHX.EditValue = null;
                 this.cboTHX.Properties.Buttons[1].Visible = false;
-                this.FocusShowpopup(this.cboTHX, false);
+                //this.FocusShowpopup(this.cboTHX, false);
             }
             catch (Exception ex)
             {
@@ -1762,7 +1774,9 @@ namespace HIS.Desktop.Plugins.Register.Run
                             }
                             if (IsChangeStrucAddress)
                             {
-                                this.LoadXaCombo(commune.SEARCH_CODE, commune.PROVINCE_CODE, false);
+                                this.LoadXaCombo("", commune.PROVINCE_CODE, false);
+                                cboCommune.EditValue = commune.COMMUNE_CODE;
+                                txtCommuneCode.Text = commune.COMMUNE_CODE;
                             }
                             else
                             {
@@ -3191,6 +3205,8 @@ namespace HIS.Desktop.Plugins.Register.Run
                 this.serviceReqDetailSDOs = null;
                 ChangeDataSourceAddress();
                 this.isNotCheckTT = true;
+                lciDistrict.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
+                layoutControlItem24.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
                 this.ResetPatientForm();
                 this.LoadConfigOweTypeDefault(BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_OWE_TYPE>());
                 this.isNotCheckTT = false;
@@ -3201,11 +3217,30 @@ namespace HIS.Desktop.Plugins.Register.Run
                 this.HospitalizeReason = "";
                 this.HospitalizeReasonCode = "";
                 this.HospitalizeReasonName = "";
+
+                RegisterTimer(currentModule.ModuleLink, "timerNewForm", 500, timerNewForm_Tick);
+                StartTimer(currentModule.ModuleLink, "timerNewForm");
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
+        }
+
+        private void timerNewForm_Tick()
+        {
+            if (IsChangeStrucAddress)
+            {
+                lciDistrict.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+                layoutControlItem24.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+
+            }
+            else
+            {
+                lciDistrict.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
+                layoutControlItem24.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
+            }
+            StopTimer(currentModule.ModuleLink, "timerNewForm");
         }
 
         private void btnSave_Click(object sender, EventArgs e)
@@ -4721,14 +4756,16 @@ namespace HIS.Desktop.Plugins.Register.Run
                     IsNotCheckToggleAddress = false;
                     return;
                 }
-                if (currentPatientSDO != null && currentPatientSDO.ID > 0 && (cboProvince.EditValue != null || cboDistrict.EditValue != null || cboCommune.EditValue != null) && DevExpress.XtraEditors.XtraMessageBox.Show(string.Format("Bệnh nhân có mã {0} sẽ cần lại thông tin địa chỉ theo địng dạng {1}. Nhấn \"Có\" để tiếp tục thực hiện", currentPatientSDO.PATIENT_CODE, !togChangeStructAdress.IsOn ? "Tỉnh/Huyện/Xã" : "Tỉnh/Xã"), "Thông báo", MessageBoxButtons.YesNo) == DialogResult.No)
+                if (currentPatientSDO != null && currentPatientSDO.ID > 0 && (cboProvince.EditValue != null || cboDistrict.EditValue != null || cboCommune.EditValue != null) && DevExpress.XtraEditors.XtraMessageBox.Show(string.Format("Bệnh nhân có mã {0} sẽ cần nhập lại thông tin địa chỉ theo định dạng {1}. Nhấn \"Có\" để tiếp tục thực hiện", currentPatientSDO.PATIENT_CODE, !togChangeStructAdress.IsOn ? "Tỉnh/Huyện/Xã" : "Tỉnh/Xã"), "Thông báo", MessageBoxButtons.YesNo) == DialogResult.No)
                 {
-                    IsChangeStrucAddress = togChangeStructAdress.IsOn = !togChangeStructAdress.IsOn;
                     IsNotCheckToggleAddress = true;
+                    IsChangeStrucAddress = togChangeStructAdress.IsOn = !togChangeStructAdress.IsOn;
                     return;
                 }
                 ChangeComponentDistrict();
                 ChangeDataSourceAddress();
+
+                IsNotCheckToggleAddress = false;
                 HIS.Desktop.Library.CacheClient.ControlStateRDO csAddOrUpdate = (this.currentControlStateRDO != null && this.currentControlStateRDO.Count > 0) ? this.currentControlStateRDO.Where(o => o.KEY == togChangeStructAdress.Name && o.MODULE_LINK == this.moduleLink).FirstOrDefault() : null;
                 if (csAddOrUpdate != null)
                 {
@@ -4759,9 +4796,9 @@ namespace HIS.Desktop.Plugins.Register.Run
                 var toggleSwitch = sender as DevExpress.XtraEditors.ToggleSwitch;
                 if (toggleSwitch != null)
                 {
-                    string tooltipText = toggleSwitch.IsOn
+                    string tooltipText = !toggleSwitch.IsOn
                         ? "Sử dụng cấu trúc địa chỉ mới Xã - Tỉnh (không có Huyện)"
-                        : "Sử dụng cấu trúc địa chỉ mới Xã - Huyện - Tỉnh";
+                        : "Sử dụng cấu trúc địa chỉ Xã - Huyện - Tỉnh";
                     toggleSwitch.ToolTip = tooltipText;
                 }
             }
@@ -4780,6 +4817,7 @@ namespace HIS.Desktop.Plugins.Register.Run
                 {
                     lciDistrict.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
                     layoutControlItem24.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+
                 }
                 else
                 {

@@ -526,6 +526,7 @@ namespace HIS.Desktop.Plugins.BloodList
             this.toggleCheck.StyleController = this.layoutControl1;
             this.toggleCheck.TabIndex = 89;
             this.toggleCheck.Toggled += new System.EventHandler(this.toggleCheck_Toggled);
+            this.toggleCheck.EditValueChanged += new System.EventHandler(this.toggleCheck_EditValueChanged);
             // 
             // barManager1
             // 
@@ -1285,6 +1286,7 @@ namespace HIS.Desktop.Plugins.BloodList
             this.cboNational.Size = new System.Drawing.Size(124, 20);
             this.cboNational.StyleController = this.layoutControl1;
             this.cboNational.TabIndex = 37;
+            this.cboNational.Closed += new DevExpress.XtraEditors.Controls.ClosedEventHandler(this.cboNational_Closed);
             // 
             // gridView5
             // 
@@ -1298,6 +1300,7 @@ namespace HIS.Desktop.Plugins.BloodList
             this.cboProvinceBlood.Location = new System.Drawing.Point(344, 288);
             this.cboProvinceBlood.MenuManager = this.barManager1;
             this.cboProvinceBlood.Name = "cboProvinceBlood";
+            this.cboProvinceBlood.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
             this.cboProvinceBlood.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
             this.cboProvinceBlood.Properties.NullText = "";

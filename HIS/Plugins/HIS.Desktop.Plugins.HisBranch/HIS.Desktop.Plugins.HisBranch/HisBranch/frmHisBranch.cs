@@ -59,6 +59,8 @@ using HIS.Desktop.Plugins.HisBranch.ADO;
 using System.Xml;
 using System.Text;
 using System.Xml.Serialization;
+using HIS.Desktop.Library.CacheClient;
+using ApiConsumers = HIS.Desktop.ApiConsumer.ApiConsumers;
 
 namespace HIS.Desktop.Plugins.HisBranch.HisBranch
 {
@@ -78,6 +80,9 @@ namespace HIS.Desktop.Plugins.HisBranch.HisBranch
         Inventec.Desktop.Common.Modules.Module moduleData;
         List<ManagerADO> ManagerADOs = new List<ManagerADO>();
         byte[] byteImgs;
+        private bool isNewAddressStructure = false;
+        private HIS.Desktop.Library.CacheClient.ControlStateWorker controlStateWorker;
+        private string moduleLink = "HIS.Desktop.Plugins.HisBranch";
         #endregion
 
         #region Construct
@@ -355,26 +360,142 @@ Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture()
         }
         private void LoadDataToCombo()
         {
+            //try
+            //{
+
+            //    List<SDA.EFMODEL.DataModels.V_SDA_PROVINCE> listResultProvince = new List<SDA.EFMODEL.DataModels.V_SDA_PROVINCE>();
+            //    FillDataToLookupedit(this.cboProvince, "PROVINCE_NAME", "PROVINCE_CODE", "PROVINCE_CODE", BackendDataWorker.Get<V_SDA_PROVINCE>());
+
+            //    List<SDA.EFMODEL.DataModels.V_SDA_DISTRICT> listResultDistricts = new List<SDA.EFMODEL.DataModels.V_SDA_DISTRICT>();
+            //    FillDataToLookupedit(this.cboDistricts, "DISTRICT_NAME", "DISTRICT_CODE", "DISTRICT_CODE", BackendDataWorker.Get<V_SDA_DISTRICT>());
+
+            //    List<SDA.EFMODEL.DataModels.V_SDA_COMMUNE> listResultCommune = new List<SDA.EFMODEL.DataModels.V_SDA_COMMUNE>();
+            //    FillDataToLookupedit(this.cboCommune, "COMMUNE_NAME", "COMMUNE_CODE", "COMMUNE_CODE", BackendDataWorker.Get<V_SDA_COMMUNE>());
+
+            //}
+            //catch (Exception ex)
+            //{
+            //    Inventec.Common.Logging.LogSystem.Warn(ex);
+            //}
             try
             {
-
-                List<SDA.EFMODEL.DataModels.V_SDA_PROVINCE> listResultProvince = new List<SDA.EFMODEL.DataModels.V_SDA_PROVINCE>();
-                FillDataToLookupedit(this.cboProvince, "PROVINCE_NAME", "PROVINCE_CODE", "PROVINCE_CODE", BackendDataWorker.Get<V_SDA_PROVINCE>());
-
-                List<SDA.EFMODEL.DataModels.V_SDA_DISTRICT> listResultDistricts = new List<SDA.EFMODEL.DataModels.V_SDA_DISTRICT>();
-                FillDataToLookupedit(this.cboDistricts, "DISTRICT_NAME", "DISTRICT_CODE", "DISTRICT_CODE", BackendDataWorker.Get<V_SDA_DISTRICT>());
-
-                List<SDA.EFMODEL.DataModels.V_SDA_COMMUNE> listResultCommune = new List<SDA.EFMODEL.DataModels.V_SDA_COMMUNE>();
-                FillDataToLookupedit(this.cboCommune, "COMMUNE_NAME", "COMMUNE_CODE", "COMMUNE_CODE", BackendDataWorker.Get<V_SDA_COMMUNE>());
-
-
-
+                if (isNewAddressStructure)
+                {
+                    // Load tỉnh có IS_NO_DISTRICT = 1
+                    var provinceData = BackendDataWorker.Get<V_SDA_PROVINCE>() 
+                        .Where(p => p.IS_ACTIVE == IMSys.DbConfig.SDA_RS.COMMON.IS_ACTIVE__TRUE && p.IS_NO_DISTRICT == 1)
+                        .ToList();
+                    FillDataToLookupedit(this.cboProvince, "PROVINCE_NAME", "PROVINCE_CODE", "PROVINCE_CODE", provinceData);
+                    // Không load huyện
+                    cboDistricts.Properties.DataSource = null;
+                    cboDistricts.EditValue = null;
+                    txtDistricts.Text = "";
+                    // Load xã theo tỉnh nếu có chọn tỉnh
+                    InitCommuneByProvince();
+                }
+                else
+                {
+                    // Load tất cả tỉnh
+                    var provinceData = BackendDataWorker.Get<V_SDA_PROVINCE>()
+                        .Where(p => p.IS_ACTIVE == IMSys.DbConfig.SDA_RS.COMMON.IS_ACTIVE__TRUE && p.IS_NO_DISTRICT != 1)   
+                        .ToList();
+                    FillDataToLookupedit(this.cboProvince, "PROVINCE_NAME", "PROVINCE_CODE", "PROVINCE_CODE", provinceData);
+                    // Load tất cả huyện
+                    var districtData = BackendDataWorker.Get<V_SDA_DISTRICT>()
+                        .Where(d => d.IS_ACTIVE == IMSys.DbConfig.SDA_RS.COMMON.IS_ACTIVE__TRUE)
+                        .ToList();
+                    FillDataToLookupedit(this.cboDistricts, "DISTRICT_NAME", "DISTRICT_CODE", "DISTRICT_CODE", districtData);
+                    // Load xã theo huyện nếu có chọn huyện
+                    if (cboDistricts.EditValue != null)
+                    {
+                        InitCommuneByDistrict();
+                    }
+                    else
+                    {
+                        cboCommune.Properties.DataSource = null;
+                        cboCommune.EditValue = null;
+                        txtCommune.Text = "";
+                    }
+                }
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
+
+        private void InitCommuneByProvince()
+        {
+            try
+            { 
+                if (cboProvince.EditValue != null)
+                {
+                    var province = BackendDataWorker.Get<V_SDA_PROVINCE>()
+                        .FirstOrDefault(p => p.PROVINCE_CODE == cboProvince.EditValue.ToString());
+                    if (province != null)
+                    {
+                        var communeData = BackendDataWorker.Get<V_SDA_COMMUNE>()
+                        .Where(c => c.IS_ACTIVE == IMSys.DbConfig.SDA_RS.COMMON.IS_ACTIVE__TRUE
+                                 && c.PROVINCE_CODE == province.PROVINCE_CODE
+                                 && (isNewAddressStructure ? c.IS_NO_DISTRICT == 1 : c.IS_NO_DISTRICT != 1))
+                        .ToList();
+                        FillDataToLookupedit(this.cboCommune, "COMMUNE_NAME", "COMMUNE_CODE", "COMMUNE_CODE", communeData);
+                    }
+                    else
+                    {
+                        cboCommune.Properties.DataSource = null;
+                        cboCommune.EditValue = null;
+                        txtCommune.Text = "";
+                        Inventec.Common.Logging.LogSystem.Warn($"Không tìm thấy tỉnh với PROVINCE_CODE = {cboProvince.EditValue}");
+                    }
+                }
+                else
+                {
+                    cboCommune.Properties.DataSource = null;
+                    cboCommune.EditValue = null;
+                    txtCommune.Text = "";
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void InitCommuneByDistrict()
+        {
+            try
+            {
+                if (cboDistricts.EditValue != null)
+                {
+                    var district = BackendDataWorker.Get<V_SDA_DISTRICT>().FirstOrDefault(d => d.DISTRICT_CODE == cboDistricts.EditValue.ToString());
+                    if (district != null)
+                    {
+                        var communeData = BackendDataWorker.Get<V_SDA_COMMUNE>()
+                            .Where(c => c.IS_ACTIVE == IMSys.DbConfig.SDA_RS.COMMON.IS_ACTIVE__TRUE && c.DISTRICT_CODE == district.DISTRICT_CODE)
+                            .ToList();
+                        FillDataToLookupedit(this.cboCommune, "COMMUNE_NAME", "COMMUNE_CODE", "COMMUNE_CODE", communeData);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        //private void FillDataToControlsForm()
+        //{
+        //    try
+        //    {
+        //        LoadDataToCombo(); // Load combobox động dựa trên trạng thái
+        //        LoadDatacboManager();
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Inventec.Common.Logging.LogSystem.Warn(ex);
+        //    }
+        //}
 
         private void LoadDatacboManager()
         {
@@ -634,6 +755,69 @@ Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture()
 
                     positionHandle = -1;
                     Inventec.Desktop.Controls.ControlWorker.ValidationProviderRemoveControlError(dxValidationProviderEditorInfo, dxErrorProvider);
+
+                    // Kiểm tra thông tin địa chỉ
+                    if (!string.IsNullOrEmpty(data.PROVINCE_CODE))
+                    {
+                        var provinces = BackendDataWorker.Get<V_SDA_PROVINCE>()
+                            .Where(p => p.PROVINCE_CODE == data.PROVINCE_CODE && p.IS_ACTIVE == IMSys.DbConfig.SDA_RS.COMMON.IS_ACTIVE__TRUE)
+                            .ToList();
+                        if (provinces.Count == 1)
+                        {
+                            var province = provinces.First();
+                            isNewAddressStructure = province.IS_NO_DISTRICT == 1; 
+                        }
+                        //else if (provinces.Count > 1)
+                        //{
+                        //    isNewAddressStructure = string.IsNullOrEmpty(data.DISTRICT_CODE);
+                        //}
+                        //else
+                        //{
+                        //    isNewAddressStructure = false;
+                        //}
+                        else
+                        {
+                            isNewAddressStructure = string.IsNullOrEmpty(data.DISTRICT_CODE);
+                        }
+                    }
+                    else
+                    {
+                        isNewAddressStructure = false;
+                    }
+                    toggleNewAddressFormat.EditValue = isNewAddressStructure;
+                    UpdateAddressControls();
+
+                    // Cập nhật control địa chỉ theo thứ tự hợp lý
+                    txtProvince.Text = data.PROVINCE_CODE ?? "";
+                    LoadProvinceCombo(data.PROVINCE_CODE ?? "", false); // Tải dữ liệu tỉnh trước
+                    cboProvince.EditValue = data.PROVINCE_CODE;
+                    if (isNewAddressStructure)
+                    {
+                        // Cấu trúc mới: không có huyện
+                        txtDistricts.Text = "";
+                        cboDistricts.EditValue = null;
+                        cboDistricts.Properties.DataSource = null;
+                        txtCommune.Text = data.COMMUNE_CODE ?? "";
+                        InitCommuneByProvince(); // Tải xã dựa trên tỉnh
+                        cboCommune.EditValue = data.COMMUNE_CODE;
+                    }
+                    else
+                    {
+                        // Cấu trúc cũ: có huyện
+                        txtDistricts.Text = data.DISTRICT_CODE ?? "";
+                        LoadDistrictsCombo(data.DISTRICT_CODE ?? "", data.PROVINCE_CODE ?? "", false); // Tải huyện dựa trên tỉnh
+                        cboDistricts.EditValue = data.DISTRICT_CODE;
+
+                        txtCommune.Text = data.COMMUNE_CODE ?? "";
+                        LoadCommuneCombo(data.COMMUNE_CODE ?? "", data.DISTRICT_CODE ?? "", false); // Tải xã dựa trên huyện
+                        cboCommune.EditValue = data.COMMUNE_CODE;
+                    }
+                    //if (isNewAddressStructure)
+                    //{
+                    //    txtDistricts.Text = "";
+                    //    cboDistricts.EditValue = null;
+                    //}
+                    //UpdateAddressControls();
                 }
             }
             catch (Exception ex)
@@ -942,8 +1126,17 @@ Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture()
                 currentDTO.SYS_MEDI_ORG_CODE = txtSYS_MEDI_ORG_CODE.Text != null ? txtSYS_MEDI_ORG_CODE.Text : null;
                 currentDTO.PROVINCE_CODE = txtProvince.Text != null ? txtProvince.Text : null;
                 currentDTO.PROVINCE_NAME = GetProvincesByCombo(cboProvince);
-                currentDTO.DISTRICT_CODE = txtDistricts.Text != null ? txtDistricts.Text : null;
-                currentDTO.DISTRICT_NAME = GetDistrictsByCombo(cboDistricts);
+                // Đảm bảo DISTRICT_CODE và DISTRICT_NAME là null khi sử dụng cấu trúc mới
+                if (isNewAddressStructure)
+                {
+                    currentDTO.DISTRICT_CODE = null;
+                    currentDTO.DISTRICT_NAME = null;
+                }
+                else
+                {
+                    currentDTO.DISTRICT_CODE = txtDistricts.Text != null ? txtDistricts.Text : null;
+                    currentDTO.DISTRICT_NAME = GetDistrictsByCombo(cboDistricts);
+                }
                 currentDTO.COMMUNE_CODE = txtCommune.Text != null ? txtCommune.Text : null;
                 currentDTO.COMMUNE_NAME = GetCommuneByCombo(cboCommune);
                 if (ManagerADOs != null && ManagerADOs.Count > 0 && cboManager.EditValue != null)
@@ -1333,11 +1526,89 @@ Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture()
 
                 //Set validate rule
                 ValidateForm();
+                UpdateValidationRules();
 
                 LoadComboManager();
-
+                InitControlState(); // Tải trạng thái từ cache
+                toggleNewAddressFormat.EditValue = isNewAddressStructure; // Thiết lập trạng thái nút toggle
+                UpdateAddressControls();
+                Inventec.Common.Logging.LogSystem.Debug("isNewAddressStructure ban đầu: " + isNewAddressStructure);
                 //Focus default
                 SetDefaultFocus();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void InitControlState()
+        {
+            try
+            {
+                if (this.controlStateWorker == null)
+                {
+                    this.controlStateWorker = new HIS.Desktop.Library.CacheClient.ControlStateWorker();
+                }
+
+                var controlState = this.controlStateWorker.GetData(moduleLink);
+                if (controlState != null && controlState.Count > 0)
+                {
+                    var newAddressState = controlState.FirstOrDefault(o => o.KEY == toggleNewAddressFormat.Name);
+                    if (newAddressState != null)
+                    {
+                        isNewAddressStructure = newAddressState.VALUE == "1";
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void UpdateAddressControls()
+        {
+            try
+            {
+                if (isNewAddressStructure)
+                {
+                    layoutControlItem12.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+                    layoutControlItem13.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+                    toggleNewAddressFormat.ToolTip = "Sử dụng cấu trúc địa chỉ Xã - Huyện - Tỉnh";
+                    LoadDataToCombo(); // Load lại dữ liệu cho tỉnh và xã
+                }
+                else
+                {
+                    layoutControlItem12.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
+                    layoutControlItem13.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
+                    toggleNewAddressFormat.ToolTip = "Sử dụng cấu trúc địa chỉ Xã - Tỉnh(không có Huyện)";
+                    LoadDataToCombo(); // Load lại dữ liệu cho tỉnh, huyện, xã
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void SaveAddressStructureState()
+        {
+            try
+            {
+                if (this.controlStateWorker != null)
+                {
+                    var data = new List<ControlStateRDO>
+            {
+                new ControlStateRDO
+                {
+                    MODULE_LINK = moduleLink,
+                    KEY = toggleNewAddressFormat.Name,
+                    VALUE = isNewAddressStructure ? "1" : "0"
+                }
+            };
+                    this.controlStateWorker.SetData(data);
+                }
             }
             catch (Exception ex)
             {
@@ -1422,6 +1693,14 @@ Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture()
         {
             try
             {
+                List<SDA.EFMODEL.DataModels.V_SDA_PROVINCE> listResult = BackendDataWorker.Get<V_SDA_PROVINCE>()
+                .Where(o => o.IS_ACTIVE == IMSys.DbConfig.SDA_RS.COMMON.IS_ACTIVE__TRUE
+                         && (isNewAddressStructure ? o.IS_NO_DISTRICT == 1 : o.IS_NO_DISTRICT != 1)
+                         && (string.IsNullOrEmpty(searchCode) || o.PROVINCE_CODE.Contains(searchCode.ToUpper())))
+                .ToList();
+
+                FillDataToLookupedit(cboProvince, "PROVINCE_NAME", "PROVINCE_CODE", "PROVINCE_CODE", listResult);
+
                 if (String.IsNullOrEmpty(searchCode))
                 {
                     cboCommune.Properties.DataSource = null;
@@ -1431,24 +1710,46 @@ Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture()
                     cboDistricts.EditValue = null;
                     txtDistricts.Text = "";
                     cboProvince.EditValue = null;
-                    FocusShowPopup(cboProvince);
+                    //FocusShowPopup(cboProvince);
+                    if (isExpand)
+                    {
+                        FocusShowPopup(cboProvince);
+                    }
                     //PopupLoader.SelectFirstRowPopup(cboProvince);
                 }
                 else
                 {
-                    List<SDA.EFMODEL.DataModels.V_SDA_PROVINCE> listResult = new List<SDA.EFMODEL.DataModels.V_SDA_PROVINCE>();
-                    listResult = BackendDataWorker.Get<V_SDA_PROVINCE>().Where(o => o.PROVINCE_CODE.Contains(searchCode)).ToList();
-                    if (listResult.Count == 1)
+                    //List<SDA.EFMODEL.DataModels.V_SDA_PROVINCE> listResult = new List<SDA.EFMODEL.DataModels.V_SDA_PROVINCE>();
+                    //listResult = BackendDataWorker.Get<V_SDA_PROVINCE>().Where(o => o.PROVINCE_CODE.Contains(searchCode)).ToList();
+                    //if (listResult.Count == 1)
+                    //{
+                    //    cboProvince.EditValue = listResult[0].PROVINCE_CODE;
+                    //    txtProvince.Text = listResult[0].PROVINCE_CODE;
+                    //    LoadDistrictsCombo("", listResult[0].PROVINCE_CODE, false);
+                    //    if (isExpand)
+                    //    {
+                    //        FocusMoveText(txtDistricts);
+                    //    }
+                    //}
+                    var province = listResult.FirstOrDefault(o => o.PROVINCE_CODE == searchCode.ToUpper());
+                    if (province != null)
                     {
-                        cboProvince.EditValue = listResult[0].PROVINCE_CODE;
-                        txtProvince.Text = listResult[0].PROVINCE_CODE;
-                        LoadDistrictsCombo("", listResult[0].PROVINCE_CODE, false);
+                        cboProvince.EditValue = province.PROVINCE_CODE;
+                        txtProvince.Text = province.PROVINCE_CODE;
+                        if (isNewAddressStructure)
+                        {
+                            InitCommuneByProvince();
+                        }
+                        else
+                        {
+                            LoadDistrictsCombo("", province.PROVINCE_CODE, false);
+                        }
                         if (isExpand)
                         {
                             FocusMoveText(txtDistricts);
                         }
                     }
-                    else if (listResult.Count > 1)
+                    else /*if (listResult.Count > 1)*/
                     {
                         cboCommune.Properties.DataSource = null;
                         cboCommune.EditValue = null;
@@ -1474,8 +1775,32 @@ Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture()
         {
             try
             {
-                List<SDA.EFMODEL.DataModels.V_SDA_DISTRICT> listResult = new List<SDA.EFMODEL.DataModels.V_SDA_DISTRICT>();
-                listResult = BackendDataWorker.Get<V_SDA_DISTRICT>().Where(o => o.DISTRICT_CODE.Contains(searchCode) && (provinceCode == "" || o.PROVINCE_CODE == provinceCode)).ToList();
+                // Nếu không có provinceCode (chưa chọn tỉnh), làm trống danh sách huyện và xã
+                if (string.IsNullOrEmpty(provinceCode))
+                {
+                    cboDistricts.Properties.DataSource = null;
+                    cboDistricts.EditValue = null;
+                    txtDistricts.Text = "";
+                    cboCommune.Properties.DataSource = null;
+                    cboCommune.EditValue = null;
+                    txtCommune.Text = "";
+                    if (isExpand)
+                    {
+                        FocusShowPopup(cboDistricts);
+                    }
+                    return;
+                }
+
+                //List<SDA.EFMODEL.DataModels.V_SDA_DISTRICT> listResult = new List<SDA.EFMODEL.DataModels.V_SDA_DISTRICT>();
+                //listResult = BackendDataWorker.Get<V_SDA_DISTRICT>().Where(o => o.DISTRICT_CODE.Contains(searchCode) && (provinceCode == "" || o.PROVINCE_CODE == provinceCode)).ToList();
+                List<SDA.EFMODEL.DataModels.V_SDA_DISTRICT> listResult = BackendDataWorker.Get<V_SDA_DISTRICT>()
+                .Where(o => o.IS_ACTIVE == IMSys.DbConfig.SDA_RS.COMMON.IS_ACTIVE__TRUE &&
+                        (string.IsNullOrEmpty(searchCode) || o.DISTRICT_CODE.Contains(searchCode.ToUpper())) &&
+                        (string.IsNullOrEmpty(provinceCode) || o.PROVINCE_CODE == provinceCode))
+                .ToList();
+
+
+                FillDataToLookupedit(cboDistricts, "RENDERER_DISTRICT_NAME", "DISTRICT_CODE", "DISTRICT_CODE", listResult);
 
                 cboDistricts.Properties.DataSource = listResult;
                 cboDistricts.Properties.DisplayMember = "RENDERER_DISTRICT_NAME";
@@ -1498,32 +1823,64 @@ Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture()
                     txtCommune.Text = "";
                     txtDistricts.Text = "";
                     cboDistricts.EditValue = null;
-                    FocusShowPopup(cboDistricts);
+                    //FocusShowPopup(cboDistricts);
+                    if (isExpand)
+                    {
+                        FocusShowPopup(cboDistricts);
+                    }
                     //PopupProcess.SelectFirstRowPopup(cboDistricts);
                 }
                 else
                 {
-                    if (listResult.Count == 1)
+                    //if (listResult.Count == 1)
+                    //{
+                    //    cboDistricts.EditValue = listResult[0].DISTRICT_CODE;
+                    //    txtDistricts.Text = listResult[0].DISTRICT_CODE;
+                    //    LoadCommuneCombo("", listResult[0].DISTRICT_CODE, false);
+                    //    if (isExpand)
+                    //    {
+                    //        FocusMoveText(txtCommune);
+                    //    }
+                    //}
+                    //else if (listResult.Count > 1)
+                    //{
+                    //    cboCommune.Properties.DataSource = null;
+                    //    cboCommune.EditValue = null;
+                    //    txtCommune.Text = "";
+                    //    txtDistricts.Text = "";
+                    //    cboDistricts.EditValue = null;
+                    //    if (isExpand)
+                    //    {
+                    //        FocusShowPopup(cboDistricts);
+                    //        //PopupProcess.SelectFirstRowPopup(cboDistricts);
+                    //    }
+                    //}
+                    var district = listResult.FirstOrDefault(o => o.DISTRICT_CODE == searchCode.ToUpper());
+                    if (district != null)
                     {
-                        cboDistricts.EditValue = listResult[0].DISTRICT_CODE;
-                        txtDistricts.Text = listResult[0].DISTRICT_CODE;
-                        LoadCommuneCombo("", listResult[0].DISTRICT_CODE, false);
+                        cboDistricts.EditValue = district.DISTRICT_CODE;
+                        txtDistricts.Text = district.DISTRICT_CODE;
+                        LoadCommuneCombo("", district.DISTRICT_CODE, false);
                         if (isExpand)
                         {
                             FocusMoveText(txtCommune);
                         }
                     }
-                    else if (listResult.Count > 1)
+                    else
                     {
+                        // Nếu không tìm thấy, làm mới danh sách với searchCode rỗng
+                        listResult = BackendDataWorker.Get<V_SDA_DISTRICT>()
+                            .Where(o => o.IS_ACTIVE == IMSys.DbConfig.SDA_RS.COMMON.IS_ACTIVE__TRUE &&
+                                        (string.IsNullOrEmpty(provinceCode) || o.PROVINCE_CODE == provinceCode))
+                            .ToList();
+                        cboDistricts.EditValue = null;
+                        txtDistricts.Text = "";
                         cboCommune.Properties.DataSource = null;
                         cboCommune.EditValue = null;
                         txtCommune.Text = "";
-                        txtDistricts.Text = "";
-                        cboDistricts.EditValue = null;
                         if (isExpand)
                         {
                             FocusShowPopup(cboDistricts);
-                            //PopupProcess.SelectFirstRowPopup(cboDistricts);
                         }
                     }
                 }
@@ -1538,8 +1895,13 @@ Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture()
         {
             try
             {
-                List<SDA.EFMODEL.DataModels.V_SDA_COMMUNE> listResult = new List<SDA.EFMODEL.DataModels.V_SDA_COMMUNE>();
-                listResult = BackendDataWorker.Get<V_SDA_COMMUNE>().Where(o => o.COMMUNE_CODE.Contains(searchCode) && (districtCode == "" || o.DISTRICT_CODE == districtCode)).ToList();
+                //List<SDA.EFMODEL.DataModels.V_SDA_COMMUNE> listResult = new List<SDA.EFMODEL.DataModels.V_SDA_COMMUNE>();
+                //listResult = BackendDataWorker.Get<V_SDA_COMMUNE>().Where(o => o.COMMUNE_CODE.Contains(searchCode) && (districtCode == "" || o.DISTRICT_CODE == districtCode)).ToList();
+                List<SDA.EFMODEL.DataModels.V_SDA_COMMUNE> listResult = BackendDataWorker.Get<V_SDA_COMMUNE>()
+                .Where(o => o.IS_ACTIVE == IMSys.DbConfig.SDA_RS.COMMON.IS_ACTIVE__TRUE
+                        && (string.IsNullOrEmpty(searchCode) || o.COMMUNE_CODE.Contains(searchCode.ToUpper()))
+                        && (string.IsNullOrEmpty(districtCode) || o.DISTRICT_CODE == districtCode))
+                .ToList();
                 cboCommune.Properties.DataSource = listResult;
                 cboCommune.Properties.DisplayMember = "RENDERER_COMMUNE_NAME";
                 cboCommune.Properties.ValueMember = "COMMUNE_CODE";
@@ -1591,6 +1953,14 @@ Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture()
         //            cboProvince.EditValue = null;
         //            txtProvince.Text = "";
         //            cboProvince.Properties.Buttons[1].Visible = false;
+
+        //            // Xóa dữ liệu huyện và xã
+        //            cboDistricts.EditValue = null;
+        //            txtDistricts.Text = "";
+        //            cboDistricts.Properties.DataSource = null;
+        //            cboCommune.EditValue = null;
+        //            txtCommune.Text = "";
+        //            cboCommune.Properties.DataSource = null;
         //        }
         //    }
         //    catch (Exception ex)
@@ -1637,13 +2007,38 @@ Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture()
             {
                 if (e.KeyCode == Keys.Enter)
                 {
-                    string strValue = (sender as DevExpress.XtraEditors.TextEdit).Text;
-                    LoadProvinceCombo(strValue.ToUpper(), true);
+                    string strValue = (sender as DevExpress.XtraEditors.TextEdit).Text.Trim().ToUpper();
+                    if (!string.IsNullOrEmpty(strValue))
+                    {
+                        LoadProvinceCombo(strValue, true);
+                        if (cboProvince.EditValue != null)
+                        {
+                            txtProvince.Text = cboProvince.EditValue.ToString();
+                        }
+                        else
+                        {
+                            txtProvince.Text = "";
+                            cboProvince.EditValue = null;
+                            LoadProvinceCombo("", false);
+                        }
+                    }
+                    else
+                    {
+                        cboProvince.EditValue = null;
+                        cboProvince.Properties.Buttons[1].Visible = false;
+                        cboDistricts.EditValue = null;
+                        txtDistricts.Text = "";
+                        cboDistricts.Properties.DataSource = null;
+                        cboCommune.EditValue = null;
+                        txtCommune.Text = "";
+                        cboCommune.Properties.DataSource = null;
+                        FocusShowPopup(cboProvince);
+                    }
                 }
             }
             catch (Exception ex)
             {
-                LogSystem.Warn(ex);
+                Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
 
@@ -1654,13 +2049,59 @@ Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture()
             {
                 if (e.KeyCode == Keys.Enter)
                 {
-                    string strValue = (sender as DevExpress.XtraEditors.TextEdit).Text;
-                    string provinceCode = "";
-                    if (cboProvince.EditValue != null)
+                    string strValue = (sender as DevExpress.XtraEditors.TextEdit).Text.Trim().ToUpper();
+                    string provinceCode = cboProvince.EditValue?.ToString() ?? "";
+                    if (!string.IsNullOrEmpty(strValue))
                     {
-                        provinceCode = cboProvince.EditValue.ToString();
+                        var districts = BackendDataWorker.Get<V_SDA_DISTRICT>()
+                            .Where(d => d.IS_ACTIVE == IMSys.DbConfig.SDA_RS.COMMON.IS_ACTIVE__TRUE &&
+                                        d.DISTRICT_CODE == strValue &&
+                                        d.PROVINCE_CODE == provinceCode)
+                            .ToList();
+
+                        if (districts.Count == 1)
+                        {
+                            LoadDistrictsCombo(strValue, provinceCode, false); // Tải dữ liệu huyện
+                            cboDistricts.EditValue = districts[0].DISTRICT_CODE;
+                            txtDistricts.Text = districts[0].DISTRICT_CODE;
+                            LoadCommuneCombo("", districts[0].DISTRICT_CODE, false); // Tải xã dựa trên huyện
+                            FocusMoveText(txtCommune);
+                        }
+                        else
+                        {
+                            cboDistricts.EditValue = null;
+                            txtDistricts.Text = "";
+                            LoadDistrictsCombo("", provinceCode, true); // Hiển thị popup nếu không tìm thấy
+                            FocusShowPopup(cboDistricts);
+                        }
                     }
-                    LoadDistrictsCombo(strValue.ToUpper(), provinceCode, true);
+                    else
+                    {
+                        cboDistricts.EditValue = null;
+                        cboDistricts.Properties.Buttons[1].Visible = false;
+                        LoadDistrictsCombo("", provinceCode, true);
+                        FocusShowPopup(cboDistricts);
+                    }
+                    //if (!string.IsNullOrEmpty(strValue))
+                    //{
+                    //    LoadCommuneCombo(strValue, districtCode, true);
+                    //    if (cboCommune.EditValue != null)
+                    //    {
+                    //        txtCommune.Text = cboCommune.EditValue.ToString();
+                    //    }
+                    //    else
+                    //    {
+                    //        txtCommune.Text = "";
+                    //        cboCommune.EditValue = null;
+                    //        LoadDistrictsCombo("", provinceCode, false);
+                    //    }
+                    //}
+                    //else
+                    //{
+                    //    cboCommune.EditValue = null;
+                    //    cboCommune.Properties.Buttons[1].Visible = false;
+                    //    FocusShowPopup(cboCommune);
+                    //}
                 }
             }
             catch (Exception ex)
@@ -1673,15 +2114,85 @@ Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture()
         {
             try
             {
+                //if (e.KeyCode == Keys.Enter)
+                //{
+                //    string strValue = (sender as DevExpress.XtraEditors.TextEdit).Text;
+                //    string districtCode = cboDistricts.EditValue?.ToString() ?? "";
+                //    if (cboDistricts.EditValue != null)
+                //    {
+                //        districtCode = cboDistricts.EditValue.ToString();
+                //    }
+                //    LoadCommuneCombo(strValue.ToUpper(), districtCode, true);
+                //}
                 if (e.KeyCode == Keys.Enter)
                 {
-                    string strValue = (sender as DevExpress.XtraEditors.TextEdit).Text;
-                    string districtCode = "";
-                    if (cboDistricts.EditValue != null)
+                    string strValue = (sender as DevExpress.XtraEditors.TextEdit).Text.Trim().ToUpper();
+                    string districtCode = cboDistricts.EditValue?.ToString() ?? "";
+                    string provinceCode = cboProvince.EditValue?.ToString() ?? "";
+
+                    if (!string.IsNullOrEmpty(strValue))
                     {
-                        districtCode = cboDistricts.EditValue.ToString();
+                        List<V_SDA_COMMUNE> communes;
+                        if (isNewAddressStructure)
+                        {
+                            communes = BackendDataWorker.Get<V_SDA_COMMUNE>()
+                                .Where(c => c.IS_ACTIVE == IMSys.DbConfig.SDA_RS.COMMON.IS_ACTIVE__TRUE &&
+                                            c.COMMUNE_CODE == strValue &&
+                                            c.PROVINCE_CODE == provinceCode)
+                                .ToList();
+                        }
+                        else
+                        {
+                            communes = BackendDataWorker.Get<V_SDA_COMMUNE>()
+                                .Where(c => c.IS_ACTIVE == IMSys.DbConfig.SDA_RS.COMMON.IS_ACTIVE__TRUE &&
+                                            c.COMMUNE_CODE == strValue &&
+                                            c.DISTRICT_CODE == districtCode)
+                                .ToList();
+                        }
+
+                        if (communes.Count == 1)
+                        {
+                            if (isNewAddressStructure)
+                            {
+                                InitCommuneByProvince(); // Tải xã dựa trên tỉnh
+                            }
+                            else
+                            {
+                                LoadCommuneCombo(strValue, districtCode, false); // Tải xã dựa trên huyện
+                            }
+                            cboCommune.EditValue = communes[0].COMMUNE_CODE;
+                            txtCommune.Text = communes[0].COMMUNE_CODE;
+                            FocusMoveText(txtAddress);
+                        }
+                        else
+                        {
+                            cboCommune.EditValue = null;
+                            txtCommune.Text = "";
+                            if (isNewAddressStructure)
+                            {
+                                InitCommuneByProvince();
+                            }
+                            else
+                            {
+                                LoadCommuneCombo("", districtCode, true);
+                            }
+                            FocusShowPopup(cboCommune);
+                        }
                     }
-                    LoadCommuneCombo(strValue.ToUpper(), districtCode, true);
+                    else
+                    {
+                        cboCommune.EditValue = null;
+                        cboCommune.Properties.Buttons[1].Visible = false;
+                        if (isNewAddressStructure)
+                        {
+                            InitCommuneByProvince();
+                        }
+                        else
+                        {
+                            LoadCommuneCombo("", districtCode, true);
+                        }
+                        FocusShowPopup(cboCommune);
+                    }
                 }
 
             }
@@ -1700,6 +2211,13 @@ Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture()
                     cboProvince.EditValue = null;
                     txtProvince.Text = "";
                     cboProvince.Properties.Buttons[1].Visible = false;
+
+                    cboDistricts.EditValue = null;
+                    txtDistricts.Text = "";
+                    cboDistricts.Properties.DataSource = null;
+                    cboCommune.EditValue = null;
+                    txtCommune.Text = "";
+                    cboCommune.Properties.DataSource = null;
                 }
             }
             catch (Exception ex)
@@ -1748,16 +2266,27 @@ Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture()
                 {
                     if (cboProvince.EditValue != null && cboProvince.EditValue != cboProvince.OldEditValue)
                     {
-                        SDA.EFMODEL.DataModels.V_SDA_PROVINCE province = BackendDataWorker.Get<SDA.EFMODEL.DataModels.V_SDA_PROVINCE>().SingleOrDefault(o => o.PROVINCE_CODE == cboProvince.EditValue.ToString());
+                        SDA.EFMODEL.DataModels.V_SDA_PROVINCE province = BackendDataWorker.Get<SDA.EFMODEL.DataModels.V_SDA_PROVINCE>().FirstOrDefault(o => o.PROVINCE_CODE == cboProvince.EditValue.ToString());
                         if (province != null)
                         {
-                            LoadDistrictsCombo("", province.PROVINCE_CODE, false);
                             txtProvince.Text = province.PROVINCE_CODE;
+                            if (isNewAddressStructure)
+                            {
+                                InitCommuneByProvince();
+                            }
+                            else
+                            {
+                                LoadDistrictsCombo("", province.PROVINCE_CODE, false);
+                            }
                         }
+                    }
+                    else
+                    {
+                        txtProvince.Text = "";
                     }
                     txtDistricts.Text = "";
                     txtDistricts.Focus();
-                }
+                } 
             }
             catch (Exception ex)
             {
@@ -1808,15 +2337,37 @@ Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture()
                 {
                     if (cboCommune.EditValue != null && cboCommune.EditValue != cboCommune.OldEditValue)
                     {
-                        SDA.EFMODEL.DataModels.V_SDA_COMMUNE commune = BackendDataWorker.Get<SDA.EFMODEL.DataModels.V_SDA_COMMUNE>()
-                            .SingleOrDefault(o =>
-                                o.COMMUNE_CODE == cboCommune.EditValue.ToString()
-                                    && (String.IsNullOrEmpty((cboDistricts.EditValue ?? "").ToString()) || o.DISTRICT_CODE == (cboDistricts.EditValue ?? "").ToString())
-                                );
+                        string communeCode = cboCommune.EditValue.ToString();
+                        string provinceCode = cboProvince.EditValue?.ToString() ?? "";
+                        string districtCode = cboDistricts.EditValue?.ToString() ?? "";
+
+                        //SDA.EFMODEL.DataModels.V_SDA_COMMUNE commune = BackendDataWorker.Get<SDA.EFMODEL.DataModels.V_SDA_COMMUNE>()
+                        //    .FirstOrDefault(o =>
+                        //        o.COMMUNE_CODE == cboCommune.EditValue.ToString()
+                        //            && (String.IsNullOrEmpty((cboDistricts.EditValue ?? "").ToString()) || o.DISTRICT_CODE == (cboDistricts.EditValue ?? "").ToString())
+                        //        );
+                        SDA.EFMODEL.DataModels.V_SDA_COMMUNE commune = null;
+                        if (isNewAddressStructure)
+                        {
+                            // Cấu trúc mới: chỉ lọc theo COMMUNE_CODE và PROVINCE_CODE
+                            commune = BackendDataWorker.Get<SDA.EFMODEL.DataModels.V_SDA_COMMUNE>()
+                        .FirstOrDefault(o => o.COMMUNE_CODE == communeCode
+                                     && o.PROVINCE_CODE == provinceCode
+                                     && o.IS_NO_DISTRICT == 1);
+                        }
+                        else
+                        {
+                            // Cấu trúc cũ: lọc thêm DISTRICT_CODE
+                            commune = BackendDataWorker.Get<SDA.EFMODEL.DataModels.V_SDA_COMMUNE>()
+                        .FirstOrDefault(o => o.COMMUNE_CODE == communeCode
+                                     && (string.IsNullOrEmpty(districtCode) || o.DISTRICT_CODE == districtCode)
+                                     && o.IS_NO_DISTRICT != 1);
+                        }
                         if (commune != null)
                         {
                             txtCommune.Text = commune.COMMUNE_CODE;
-                            if (String.IsNullOrEmpty((cboDistricts.EditValue ?? "").ToString()))
+                            cboCommune.EditValue = commune.COMMUNE_CODE;
+                            if (!isNewAddressStructure && string.IsNullOrEmpty(districtCode))
                             {
                                 txtDistricts.Text = commune.DISTRICT_CODE;
                                 cboDistricts.EditValue = commune.DISTRICT_CODE;
@@ -1825,7 +2376,7 @@ Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture()
                                 {
 
                                     txtProvince.Text = district.PROVINCE_CODE;
-                                    cboCommune.EditValue = district.PROVINCE_CODE;
+                                    cboProvince.EditValue = district.PROVINCE_CODE;
                                 }
                             }
                         }
@@ -1922,7 +2473,34 @@ Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture()
                 if (cboProvince.EditValue != null)
                 {
                     cboProvince.Properties.Buttons[1].Visible = true;
-                    LoadDistrictsCombo("", cboProvince.EditValue.ToString(), false);
+                    SDA.EFMODEL.DataModels.V_SDA_PROVINCE province = BackendDataWorker.Get<SDA.EFMODEL.DataModels.V_SDA_PROVINCE>().FirstOrDefault(o => o.PROVINCE_CODE == cboProvince.EditValue.ToString());
+                    if (province != null)
+                    {
+                        txtProvince.Text = province.PROVINCE_CODE; 
+                        if (isNewAddressStructure)
+                        {
+                            InitCommuneByProvince();
+                        }
+                        else
+                        {
+                            LoadDistrictsCombo("", cboProvince.EditValue.ToString(), false);
+                        }
+                    } 
+                    else
+                    {
+                        txtProvince.Text = ""; // Xóa nếu không tìm thấy tỉnh
+                        Inventec.Common.Logging.LogSystem.Warn($"Không tìm thấy tỉnh với PROVINCE_CODE = {province.PROVINCE_CODE}");
+                    }
+                }
+                else
+                {
+                    txtProvince.Text = "";
+                    cboDistricts.EditValue = null;
+                    txtDistricts.Text = "";
+                    cboDistricts.Properties.DataSource = null;
+                    cboCommune.EditValue = null;
+                    txtCommune.Text = "";
+                    cboCommune.Properties.DataSource = null;
                 }
 
             }
@@ -1941,6 +2519,13 @@ Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture()
                     cboDistricts.Properties.Buttons[1].Visible = true;
                     LoadCommuneCombo("", cboDistricts.EditValue.ToString(), false);
                 }
+                else
+                {
+                    txtDistricts.Text = "";
+                    cboCommune.EditValue = null;
+                    txtCommune.Text = "";
+                    cboCommune.Properties.DataSource = null;
+                }
             }
             catch (Exception ex)
             {
@@ -1955,6 +2540,10 @@ Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture()
                 if (cboCommune.EditValue != null)
                 {
                     cboCommune.Properties.Buttons[1].Visible = true;
+                }
+                else
+                {
+                    txtCommune.Text = "";
                 }
             }
             catch (Exception ex)
@@ -2868,6 +3457,111 @@ Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture()
             {
                 chkPay.Enabled = false;
                 chkPay.Checked = false;
+            }
+        }
+
+        private void toggleNewAddressFormat_EditValueChanging(object sender, ChangingEventArgs e)
+        {
+            try
+            {
+                isNewAddressStructure = e.NewValue != null && (bool)e.NewValue;
+
+                // Xóa dữ liệu trong tất cả các ô txt và cbo trước khi refresh
+                txtProvince.Text = "";
+                cboProvince.EditValue = null;
+                txtDistricts.Text = "";
+                cboDistricts.EditValue = null;
+                txtCommune.Text = "";
+                cboCommune.EditValue = null;
+
+                UpdateAddressControls();
+                SaveAddressStructureState();
+                UpdateValidationRules();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+        private void UpdateValidationRules()
+        {
+            try
+            {
+                if (isNewAddressStructure)
+                {
+                    // Khi bật toggle (ẩn huyện), xóa validate cho txtDistricts
+                    dxValidationProviderEditorInfo.SetValidationRule(txtDistricts, null);
+                }
+                else
+                {
+                    // Khi tắt toggle (hiện huyện), thiết lập lại validate cho txtDistricts
+                    ValidationControlWarnigDistricts();
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void txtProvince_TextChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(txtProvince.Text))
+                {
+                    cboProvince.EditValue = null;
+                    cboProvince.Properties.Buttons[1].Visible = false;
+                    // Xóa dữ liệu huyện và xã
+                    cboDistricts.EditValue = null;
+                    txtDistricts.Text = "";
+                    cboDistricts.Properties.DataSource = null;
+                    cboCommune.EditValue = null;
+                    txtCommune.Text = "";
+                    cboCommune.Properties.DataSource = null;
+                    // Làm mới danh sách tỉnh
+                    LoadProvinceCombo("", false);
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void txtDistricts_TextChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(txtDistricts.Text))
+                {
+                    cboDistricts.EditValue = null;
+                    cboDistricts.Properties.Buttons[1].Visible = false;
+                    // Xóa dữ liệu xã
+                    cboCommune.EditValue = null;
+                    txtCommune.Text = "";
+                    cboCommune.Properties.DataSource = null;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void txtCommune_TextChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(txtCommune.Text))
+                {
+                    cboCommune.EditValue = null;
+                    cboCommune.Properties.Buttons[1].Visible = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
     }
