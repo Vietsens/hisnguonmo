@@ -69,6 +69,9 @@ namespace HIS.Desktop.Plugins.BidCreate.ADO
         public string HOUR_LIFESPAN_STR { get; set; }
         public long? INFORMATION_BID { get; set; }
         public string BATCH_DIVISION_CODE { get; set; }
+
+        public string ErrorMessageBlock { get; set; }
+        public DevExpress.XtraEditors.DXErrorProvider.ErrorType ErrorTypeBlock { get; set; }
         public MedicineTypeADO() { }
         public bool IsNotNullRow
         {

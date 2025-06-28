@@ -15,37 +15,39 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+using DevExpress.Utils;
+using DevExpress.XtraEditors;
+using DevExpress.XtraEditors.Controls;
+using DevExpress.XtraEditors.DXErrorProvider;
+using DevExpress.XtraEditors.Repository;
+using DevExpress.XtraEditors.ViewInfo;
+using DevExpress.XtraGrid.Columns;
+using DevExpress.XtraGrid.Views.Base;
+using HIS.Desktop.Common;
+using HIS.Desktop.LocalStorage.BackendData;
+using HIS.Desktop.LocalStorage.LocalData;
+using HIS.Desktop.Plugins.BidCreate.ADO;
+using HIS.Desktop.Plugins.BidCreate.Config;
+using HIS.Desktop.Plugins.BidCreate.Validation;
+using HIS.Desktop.Plugins.HisDosageForm;
+using IMSys.DbConfig.HIS_RS;
+using Inventec.Common.Logging;
+using Inventec.Core;
+using Inventec.Desktop.Common.Message;
+using MOS.EFMODEL.DataModels;
+using SDA.EFMODEL.DataModels;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Drawing;
 using System.Data;
+using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using Inventec.Desktop.Common.Message;
-using HIS.Desktop.LocalStorage.BackendData;
-using HIS.Desktop.LocalStorage.LocalData;
-using DevExpress.XtraEditors.Controls;
-using DevExpress.XtraEditors;
-using DevExpress.XtraEditors.ViewInfo;
-using System.Collections;
-using DevExpress.XtraGrid.Views.Base;
-using DevExpress.XtraGrid.Columns;
-using MOS.EFMODEL.DataModels;
-using HIS.Desktop.Plugins.BidCreate.Config;
-using DevExpress.Utils;
-using HIS.Desktop.Plugins.BidCreate.ADO;
-using Inventec.Common.Logging;
-using System.IO;
-using SDA.EFMODEL.DataModels;
-using Inventec.Core;
-using DevExpress.XtraEditors.Repository;
-using HIS.Desktop.Common;
-using HIS.Desktop.Plugins.BidCreate.Validation;
-using HIS.Desktop.Plugins.HisDosageForm;
-       
+
 namespace HIS.Desktop.Plugins.BidCreate
 {
     public partial class UCBidCreate : HIS.Desktop.Utility.UserControlBase
@@ -568,7 +570,7 @@ namespace HIS.Desktop.Plugins.BidCreate
                 txtConcentra.Text = "";
                 txtTenTT.Text = "";
                 txtMaTT.Text = "";
-                txtBatchDivisionCode.Text = "";  
+                txtBatchDivisionCode.Text = "";
                 cboSupplier.Text = "";
                 cboSupplier.EditValue = null;
                 cboSupplier.Properties.Buttons[1].Visible = false;
@@ -632,7 +634,7 @@ namespace HIS.Desktop.Plugins.BidCreate
                         }
                     }
                 }
-               
+
                 this.medicineTypeProcessor.Reload(this.ucMedicineType, listHisMedicineType);
                 WaitingManager.Hide();
             }
@@ -1272,14 +1274,14 @@ namespace HIS.Desktop.Plugins.BidCreate
                     {
                         spinHourLifeSpan.EditValue = null;
                     }
-                  
+
                     bool isValid = !string.IsNullOrEmpty(this.medicineType.DOSAGE_FORM);
                     if (this.medicineType.MEDICINE_LINE_ID.Value != IMSys.DbConfig.HIS_RS.HIS_MEDICINE_LINE.ID__VT_YHCT)
                     {
-                        layoutControlItem21.AppearanceItemCaption.ForeColor = Color.Maroon ;
+                        layoutControlItem21.AppearanceItemCaption.ForeColor = Color.Maroon;
                         ValidDosageForm();
                     }
-                       
+
                     else
                     {
 
@@ -1641,7 +1643,7 @@ namespace HIS.Desktop.Plugins.BidCreate
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
-             
+
         private void EnableLeftControl(bool Enable)
         {
             try
@@ -1712,7 +1714,7 @@ namespace HIS.Desktop.Plugins.BidCreate
                 txtQCĐG.Enabled = true;
                 txtActiveBhyt.Enabled = true;
                 cboMediUserForm.Enabled = true;
-                
+
                 if (xtraTabControl1.SelectedTabPageIndex == 0) // thuoc
                 {
                     medicineTypeProcessor.FocusKeyword(ucMedicineType);
@@ -2012,9 +2014,44 @@ namespace HIS.Desktop.Plugins.BidCreate
         {
             try
             {
+                //MedicineTypeADO medicineType = (MedicineTypeADO)gridViewProcess.GetFocusedRow();
                 var data = (ADO.MedicineTypeADO)((IList)((BaseView)sender).DataSource)[e.RowHandle];
                 if (data != null)
                 {
+                    //if (Encoding.UTF8.GetByteCount(medicineType.BATCH_DIVISION_CODE) > 25)
+                    //{
+                    //    medicineType.ErrorMessageBlock = "Trường block đang nhập quá 25 ký tự cho phép";
+                    //    medicineType.ErrorTypeBlock = ErrorType.Warning;
+                    //}
+                    //else
+                    //{
+                    //    medicineType.ErrorMessageBlock = "";
+                    //    medicineType.ErrorTypeBlock = ErrorType.None;
+                    //}
+                    //List<MedicineTypeADO> vhisderreq = new List<MedicineTypeADO>();
+                    //var focus = (MedicineTypeADO)gridViewProcess.GetFocusedRow();
+                    //vhisderreq.Add(focus);
+                    //btnSave.Focus();
+
+                    //var lengthBATCH_DIVISION_CODE = Encoding.UTF8.GetByteCount(data.BATCH_DIVISION_CODE);
+
+                    //if (lengthBATCH_DIVISION_CODE > 25)
+                    //{
+                    //    medicineType.ErrorDescriptions.Add("Số thứ tự thầu quá độ dài cho phép (25)");
+                    //    if (medicineType.ErrorDescriptions.Count > 0)
+                    //    {
+                    //        if (listErrorImport == null)
+                    //        {
+                    //            listErrorImport = new List<ADO.MedicineTypeADO>();
+                    //        }
+                    //        listErrorImport.Add(medicineType);
+                    //    }
+                    //    else
+                    //    {
+                    //        this.ListMedicineTypeAdoProcess.Insert(0, medicineType);
+                    //    }
+                    //}
+
                     if (e.Column.FieldName == "ImpVatRatio")
                     {
                         data.IMP_VAT_RATIO = data.ImpVatRatio / 100;
@@ -3030,7 +3067,8 @@ namespace HIS.Desktop.Plugins.BidCreate
                 {
                     List<object> listArgs = new List<object>();
                     listArgs.Add(BidMedicineType.FirstOrDefault(o => o.MEDICINE_TYPE_ID == row.ID));
-                    listArgs.Add((HIS.Desktop.Common.DelegateSelectData)((data) => {
+                    listArgs.Add((HIS.Desktop.Common.DelegateSelectData)((data) =>
+                    {
                         row.ADJUST_AMOUNT = data as decimal?;
                         gridControlProcess.RefreshDataSource();
                     }));
@@ -3041,7 +3079,8 @@ namespace HIS.Desktop.Plugins.BidCreate
                 {
                     List<object> listArgs = new List<object>();
                     listArgs.Add(BidMaterialType.FirstOrDefault(o => o.MATERIAL_TYPE_ID == row.ID || o.MATERIAL_TYPE_MAP_ID == row.ID));
-                    listArgs.Add((HIS.Desktop.Common.DelegateSelectData)((data) => {
+                    listArgs.Add((HIS.Desktop.Common.DelegateSelectData)((data) =>
+                    {
                         row.ADJUST_AMOUNT = data as decimal?;
                         gridControlProcess.RefreshDataSource();
                     }));
@@ -3099,7 +3138,7 @@ namespace HIS.Desktop.Plugins.BidCreate
             {
                 LogSystem.Error(ex);
             }
-            
+
         }
 
         private void cboDosageForm_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
@@ -3209,14 +3248,114 @@ namespace HIS.Desktop.Plugins.BidCreate
 
                 cboDosageForm.Properties.View.OptionsView.ShowAutoFilterRow = true;
                 cboDosageForm.Properties.PopupFilterMode = PopupFilterMode.Contains;
-                cboDosageForm.Properties.TextEditStyle = TextEditStyles.Standard;      
+                cboDosageForm.Properties.TextEditStyle = TextEditStyles.Standard;
 
             }
             catch (Exception ex)
             {
-                LogSystem.Error(ex);           
+                LogSystem.Error(ex);
             }
         }
 
+        private void repositoryItemTextEdit1_EditValueChanging(object sender, ChangingEventArgs e)
+       {
+            if (e.NewValue == null)
+                return;
+
+            string input = e.NewValue.ToString();
+
+            if (Inventec.Common.String.CountVi.Count(input) > 25)
+            {
+                e.Cancel = true;
+            }
+        }
+
+        private bool CheckBatchDivisionCodeAllRules(
+            List<MedicineTypeADO> listThuoc,
+            List<MedicineTypeADO> listVattu,
+            List<MedicineTypeADO> listMau)
+        {
+            var errorMessages = new List<string>();
+            var typeLabelMap = new Dictionary<string, string>
+            {
+                { "thuốc", "thuốc" },
+                { "vật tư", "vật tư" },
+                { "máu", "máu" }
+            };
+
+            // 1. Kiểm tra trùng trong từng loại
+            void CheckDuplicateInOneType(List<MedicineTypeADO> list, string typeKey)
+            {
+                var duplicates = list
+                    .Where(o => !string.IsNullOrWhiteSpace(o.BATCH_DIVISION_CODE))
+                    .GroupBy(o => o.BATCH_DIVISION_CODE.Trim())
+                    .Where(g => g.Count() > 1);
+
+                foreach (var dup in duplicates)
+                {
+                    string names = string.Join("; ", dup.Select(o => o.MEDICINE_TYPE_NAME).Distinct());
+                    errorMessages.Add($"Mã phần lô đã được sử dụng trong {typeKey}: {names}");
+                }
+            }
+
+            CheckDuplicateInOneType(listThuoc, "thuốc");
+            CheckDuplicateInOneType(listVattu, "vật tư");
+            CheckDuplicateInOneType(listMau, "máu");
+
+            // 2. Kiểm tra trùng mã phần lô giữa các loại
+            var allItems = new List<Tuple<List<MedicineTypeADO>, string>>
+            {
+                new Tuple<List<MedicineTypeADO>, string>(listThuoc, "thuốc"),
+                new Tuple<List<MedicineTypeADO>, string>(listVattu, "vật tư"),
+                new Tuple<List<MedicineTypeADO>, string>(listMau, "máu")
+            };
+
+            var batchCodeMap = new Dictionary<string, Dictionary<string, List<string>>>(StringComparer.OrdinalIgnoreCase);
+
+            foreach (var tuple in allItems)
+            {
+                var list = tuple.Item1;
+                var typeName = tuple.Item2;
+
+                foreach (var item in list)
+                {
+                    if (string.IsNullOrWhiteSpace(item.BATCH_DIVISION_CODE)) continue;
+
+                    string code = item.BATCH_DIVISION_CODE.Trim();
+                    if (!batchCodeMap.ContainsKey(code))
+                        batchCodeMap[code] = new Dictionary<string, List<string>>();
+
+                    if (!batchCodeMap[code].ContainsKey(typeName))
+                        batchCodeMap[code][typeName] = new List<string>();
+
+                    batchCodeMap[code][typeName].Add(item.MEDICINE_TYPE_NAME);
+                }
+            }
+
+            foreach (var kv in batchCodeMap)
+            {
+                var code = kv.Key;
+                var typeUses = kv.Value;
+
+                if (typeUses.Keys.Count > 1)
+                {
+                    var parts = typeUses
+                        .Where(k => k.Value.Count > 0)
+                        .Select(k => string.Format("{0}: {1}", typeLabelMap[k.Key], string.Join(", ", k.Value.Distinct())))
+                        .ToList();
+
+                    errorMessages.Add(string.Format("Mã phần lô đã được sử dụng bởi {0}", string.Join("; ", parts)));
+                }
+            }
+
+            if (errorMessages.Any())
+            {
+                WaitingManager.Hide();
+                MessageBox.Show(string.Join(Environment.NewLine, errorMessages), "Lỗi mã phần lô", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return false;
+            }
+
+            return true;
+        }
     }
 }

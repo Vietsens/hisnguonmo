@@ -174,6 +174,15 @@ namespace HIS.Desktop.Plugins.BidCreate
                 if (this.ActionType == GlobalVariables.ActionAdd && CheckValidDataInGridService(ref paramCommon, ListMedicineTypeAdoProcess))
                 {
                     WaitingManager.Show();
+                    var listThuoc = ListMedicineTypeAdoProcess.Where(o => o.Type == Base.GlobalConfig.THUOC).ToList();
+                    var listVattu = ListMedicineTypeAdoProcess.Where(o => o.Type == Base.GlobalConfig.VATTU).ToList();
+                    var listMau = ListMedicineTypeAdoProcess.Where(o => o.Type == Base.GlobalConfig.MAU).ToList();
+
+                    if (!CheckBatchDivisionCodeAllRules(listThuoc, listVattu, listMau))
+                    {
+                        WaitingManager.Hide();
+                        return;
+                    }
                     if (this.bidModel == null ||
                         this.bidModel.HIS_BID_MEDICINE_TYPE == null ||
                         this.bidModel.HIS_BID_MATERIAL_TYPE == null ||

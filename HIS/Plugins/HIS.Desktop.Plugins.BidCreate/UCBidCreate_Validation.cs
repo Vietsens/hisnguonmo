@@ -28,6 +28,7 @@ using HIS.Desktop.Plugins.BidCreate.Validation;
 using Inventec.Desktop.Common.Controls.ValidationRule;
 using DevExpress.XtraEditors;
 using Inventec.Common.Logging;
+using DevExpress.XtraGrid.Views.Grid;
 
 namespace HIS.Desktop.Plugins.BidCreate
 {
@@ -69,7 +70,9 @@ namespace HIS.Desktop.Plugins.BidCreate
                 ValidBidNumber();
                 ValidYearQD();
                 ValidBID();
-       
+                //ValidBatchDivisionCodeOnGrid();
+
+
             }
             catch (Exception ex)
             {
@@ -408,6 +411,40 @@ namespace HIS.Desktop.Plugins.BidCreate
                 bidNameValidationRule.ErrorText = Resources.ResourceMessage.ThieuTruongDuLieuBatBuoc;
                 bidNameValidationRule.ErrorType = DevExpress.XtraEditors.DXErrorProvider.ErrorType.Warning;
                 dxValidationProviderRight.SetValidationRule(txtBidName, bidNameValidationRule);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        // Add this method to UCBidCreate class
+
+        private void ValidBatchDivisionCodeOnGrid(GridView gridViewProcess, string fieldName = "BATCH_DIVISION_CODE", int maxLength = 25)
+        {
+            try
+            {
+                // Remove any existing rule for this column
+                dxValidationProviderLeft.RemoveControlError(txtBatchDivisionCode); // Assuming txtBatchDivisionCode is the relevant control
+
+                // Create a custom validation rule for the grid column
+                DevExpress.XtraEditors.DXErrorProvider.ConditionValidationRule rule = new DevExpress.XtraEditors.DXErrorProvider.ConditionValidationRule();
+                rule.ConditionOperator = DevExpress.XtraEditors.DXErrorProvider.ConditionOperator.IsNotBlank;
+                rule.ErrorText = $"BATCH_DIVISION_CODE is required and must not exceed {maxLength} characters.";
+                rule.ErrorType = DevExpress.XtraEditors.DXErrorProvider.ErrorType.Warning;
+
+                gridViewProcess.ValidatingEditor += (s, e) =>
+                {
+                    if (gridViewProcess.FocusedColumn != null && gridViewProcess.FocusedColumn.FieldName == fieldName)
+                    {
+                        string value = e.Value as string;
+                        if (string.IsNullOrEmpty(value) || value.Length > maxLength)
+                        {
+                            e.Valid = false;
+                            e.ErrorText = $"BATCH_DIVISION_CODE is required and must not exceed {maxLength} characters.";
+                        }
+                    }
+                };
             }
             catch (Exception ex)
             {

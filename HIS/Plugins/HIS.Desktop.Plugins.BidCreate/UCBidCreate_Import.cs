@@ -71,7 +71,7 @@ namespace HIS.Desktop.Plugins.BidCreate
 
                             addListMedicineTypeToProcessList(listMedicine);
                             addListMaterialTypeToProcessList(listMaterial);
-                            CheckDuplicateBatchDivisionCode();
+                            //CheckDuplicateBatchDivisionCode();
                             LogSystem.Debug(LogUtil.TraceData(LogUtil.GetMemberName(() => ListMedicineTypeAdoProcess), ListMedicineTypeAdoProcess));
 
                             gridControlProcess.BeginUpdate();
