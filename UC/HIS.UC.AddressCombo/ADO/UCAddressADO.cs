@@ -37,6 +37,7 @@ namespace HIS.UC.AddressCombo.ADO
         public string Address { get; set; }
         public string Phone { get; set; }
         public string PatientId { get; set; }
+        public bool IsNoDistrict { get; set; }
 
         public DelegateFocusNextUserControl _FocusNextUserControl { get; set; }
     }

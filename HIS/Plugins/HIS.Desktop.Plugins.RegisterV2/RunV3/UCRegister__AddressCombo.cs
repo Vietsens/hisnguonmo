@@ -15,36 +15,38 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+using HIS.Desktop.Utility;
+using HIS.UC.AddressCombo.ADO;
+using HIS.UC.UCPatientRaw.ADO;
+using MOS.SDO;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Drawing;
 using System.Data;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using HIS.Desktop.Utility;
-using MOS.SDO;
-using HIS.UC.AddressCombo.ADO;
 
 namespace HIS.Desktop.Plugins.RegisterV2.Run2
 {
     public partial class UCRegister : UserControlBase
     {
-        private void FillDataIntoUCAddressInfo(HisPatientSDO data)
+        private void FillDataIntoUCAddressInfo(DataResultADO data)
         {
             try
             {
                 UCAddressADO dataAddress = new UCAddressADO();
-                dataAddress.Commune_Code = data.COMMUNE_CODE;
-                dataAddress.Commune_Name = data.COMMUNE_NAME;
-                dataAddress.District_Code = data.DISTRICT_CODE;
-                dataAddress.District_Name = data.DISTRICT_NAME;
-                dataAddress.Province_Code = data.PROVINCE_CODE;
-                dataAddress.Province_Name = data.PROVINCE_NAME;
-                dataAddress.Address = data.ADDRESS;
-                dataAddress.Phone = data.PHONE;
+                dataAddress.Commune_Code = data.HisPatientSDO.COMMUNE_CODE;
+                dataAddress.Commune_Name = data.HisPatientSDO.COMMUNE_NAME;
+                dataAddress.District_Code = data.HisPatientSDO.DISTRICT_CODE;
+                dataAddress.District_Name = data.HisPatientSDO.DISTRICT_NAME;
+                dataAddress.Province_Code = data.HisPatientSDO.PROVINCE_CODE;
+                dataAddress.Province_Name = data.HisPatientSDO.PROVINCE_NAME;
+                dataAddress.Address = data.HisPatientSDO.ADDRESS;
+                dataAddress.Phone = data.HisPatientSDO.PHONE;
+                dataAddress.IsNoDistrict = data.IsNoDistrict;
                 this.ucAddressCombo1.SetValue(dataAddress);
             }
             catch (Exception ex)

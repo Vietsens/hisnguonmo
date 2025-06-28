@@ -272,7 +272,7 @@ namespace HIS.UC.PlusInfo.Design
                     }
                     catch (Exception)
                     {
-                        listResult = BackendDataWorker.Get<SDA.EFMODEL.DataModels.V_SDA_DISTRICT>().Where(o => o.SEARCH_CODE.ToUpper().Contains(searchCode.ToUpper()) && (provinceCode == "" || o.PROVINCE_CODE == provinceCode)).ToList();
+                        listResult = BackendDataWorker.Get<SDA.EFMODEL.DataModels.V_SDA_DISTRICT>().Where(o => (o.SEARCH_CODE ?? "").ToUpper().Contains(searchCode.ToUpper()) && (provinceCode == "" || o.PROVINCE_CODE == provinceCode)).ToList();
                     }
                 }
                 //this._shareMethod.InitComboCommon(this.cboDistrictNowName, listResult, "DISTRICT_CODE", "DISTRICT_NAME", "SEARCH_CODE"); // Load district to combo
@@ -445,7 +445,7 @@ namespace HIS.UC.PlusInfo.Design
                         }
                         catch (Exception)
                         {
-                            listResult = BackendDataWorker.Get<SDA.EFMODEL.DataModels.V_SDA_DISTRICT>().Where(o => o.SEARCH_CODE.ToUpper().Contains(searchCode.ToUpper()) && (districtCode == "" || o.PROVINCE_CODE == districtCode)).ToList();
+                            listResult = BackendDataWorker.Get<SDA.EFMODEL.DataModels.V_SDA_DISTRICT>().Where(o => (o.SEARCH_CODE ?? "").ToUpper().Contains(searchCode.ToUpper()) && (districtCode == "" || o.PROVINCE_CODE == districtCode)).ToList();
                         }
                     }
                     //this._shareMethod.InitComboCommon(this.cboDistrictNowName, listResult, "DISTRICT_CODE", "DISTRICT_NAME", "SEARCH_CODE"); // Load district to combo

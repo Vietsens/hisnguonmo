@@ -391,7 +391,7 @@ namespace HIS.UC.PlusInfo.Design
                     //    }
                     //    catch (Exception)
                     //    {
-                    //        listResult = BackendDataWorker.Get<SDA.EFMODEL.DataModels.V_SDA_COMMUNE>().Where(o => o.SEARCH_CODE.ToUpper().Contains(searchCode.ToUpper()) && (districtCode == "" || o.COMMUNE_CODE == districtCode)).ToList();
+                    //        listResult = BackendDataWorker.Get<SDA.EFMODEL.DataModels.V_SDA_COMMUNE>().Where(o => (o.SEARCH_CODE ?? "").ToUpper().Contains(searchCode.ToUpper()) && (districtCode == "" || o.COMMUNE_CODE == districtCode)).ToList();
                     //    }
                     //}
                     //if (String.IsNullOrEmpty(searchCode) && String.IsNullOrEmpty(districtCode) && listResult.Count > 0)

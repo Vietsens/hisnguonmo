@@ -382,12 +382,7 @@ namespace HIS.Desktop.Plugins.Register.Run
                     var data = adProc.SplitFromFullAddress(this.ResultDataADO.ResultHistoryLDO.diaChi);
                     if (AppConfigs.CheDoTuDongFillDuLieuDiaChiGhiTrenTheVaoODiaChiBenhNhanHayKhong == 1 || (typeCodeFind == typeCodeFind__CCCDCMND && (currentPatientSDO == null)) || (currentPatientSDO != null && data != null && (currentPatientSDO.PROVINCE_CODE != data.ProvinceCode || currentPatientSDO.DISTRICT_CODE != data.DistrictCode || currentPatientSDO.COMMUNE_CODE != data.CommuneCode)))
                     {
-                        cboProvince.EditValue = data.ProvinceCode;
-                        txtProvinceCode.EditValue = data.ProvinceCode;
-                        cboDistrict.EditValue = data.DistrictCode;
-                        txtDistrictCode.EditValue = data.DistrictCode;
-                        cboCommune.EditValue = data.CommuneCode;
-                        txtCommuneCode.EditValue = data.CommuneCode;
+                        SetDataAddress(data);
                     }
                 }
 
@@ -436,13 +431,22 @@ namespace HIS.Desktop.Plugins.Register.Run
                 {
                     DevExpress.XtraEditors.XtraMessageBox.Show(patientDTO.NOTE, ResourceMessage.TieuDeCuaSoThongBaoLaThongBao, System.Windows.Forms.MessageBoxButtons.OK);
                 }
-                if (string.IsNullOrEmpty(patientDTO.DISTRICT_NAME) && string.IsNullOrEmpty(patientDTO.DISTRICT_CODE) && IsChangeStrucAddress)
+                if ((string.IsNullOrEmpty(patientDTO.DISTRICT_NAME) && string.IsNullOrEmpty(patientDTO.DISTRICT_CODE) && IsChangeStrucAddress) || (string.IsNullOrEmpty(patientDTO.DISTRICT_CODE) && !string.IsNullOrEmpty(patientDTO.COMMUNE_CODE)))
                 {
+                    if (!togChangeStructAdress.IsOn)
+                    {
+                        IsNotCheckToggleAddress = true;
+                        togChangeStructAdress.IsOn = true;
+                        ChangeComponentDistrict();
+                        IsNotCheckToggleAddress = false;
+                    }
+                    ChangeDataSourceAddress();
                     SetValueNew(patientDTO);
                     return;
                 }
                 IsNotCheckToggleAddress = true;
                 togChangeStructAdress.IsOn = false;
+                ChangeComponentDistrict();
                 ChangeDataSourceAddress();
                 IsNotCheckToggleAddress = false;
                 var province = SdaProvinces.Where(o => o.IS_ACTIVE == IMSys.DbConfig.SDA_RS.COMMON.IS_ACTIVE__TRUE).FirstOrDefault(o => o.PROVINCE_NAME == patientDTO.PROVINCE_NAME);
@@ -493,7 +497,7 @@ namespace HIS.Desktop.Plugins.Register.Run
         {
             try
             {
-                var province = BackendDataWorker.Get<SDA.EFMODEL.DataModels.V_SDA_PROVINCE>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.SDA_RS.COMMON.IS_ACTIVE__TRUE).ToList().FirstOrDefault(o => o.PROVINCE_NAME == patientDTO.PROVINCE_NAME);
+                var province = BackendDataWorker.Get<SDA.EFMODEL.DataModels.V_SDA_PROVINCE>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.SDA_RS.COMMON.IS_ACTIVE__TRUE && o.IS_NO_DISTRICT == 1).ToList().FirstOrDefault(o => o.PROVINCE_NAME == patientDTO.PROVINCE_NAME);
                 if (province != null)
                 {
                     this.txtProvinceCode.Text = province.PROVINCE_CODE;
@@ -505,9 +509,9 @@ namespace HIS.Desktop.Plugins.Register.Run
                 if (commune != null)
                 {
                     this.LoadXaCombo("", commune.PROVINCE_CODE, false);
-                    this.txtDistrictCode.Text = commune.COMMUNE_CODE;
-                    this.cboDistrict.EditValue = commune.COMMUNE_CODE;
-                    this.cboTHX.EditValue = "C" + commune.ID;//ID_RAW
+                    this.cboCommune.EditValue = commune.COMMUNE_CODE;
+                    this.txtCommuneCode.Text = commune.COMMUNE_CODE;
+                    this.cboTHX.EditValue = commune.ID;//ID_RAW
                     bool isSearchOrderByXHT = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>("HIS_DESKTOP_REGISTER__SEARCH_CODE__X/H/T") == "1" ? true : false;
 
                     this.txtMaTHX.Text = isSearchOrderByXHT ? String.Format("{0}{1}", commune.SEARCH_CODE, province != null ? province.SEARCH_CODE : null) : String.Format("{0}{1}{2}", province != null ? province.SEARCH_CODE : null, commune.SEARCH_CODE);
@@ -519,7 +523,7 @@ namespace HIS.Desktop.Plugins.Register.Run
                     && o.ID < 0);
                     if (communeTHX != null)
                     {
-                        this.cboTHX.EditValue = communeTHX.ID_RAW;
+                        this.cboTHX.EditValue = communeTHX.ID;
                         this.txtMaTHX.Text = communeTHX.SEARCH_CODE_COMMUNE;
                     }
                 }
@@ -717,7 +721,7 @@ namespace HIS.Desktop.Plugins.Register.Run
             try
             {
                 List<SDA.EFMODEL.DataModels.V_SDA_DISTRICT> listResult = new List<SDA.EFMODEL.DataModels.V_SDA_DISTRICT>();
-                listResult = BackendDataWorker.Get<SDA.EFMODEL.DataModels.V_SDA_DISTRICT>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.SDA_RS.COMMON.IS_ACTIVE__TRUE).Where(o => o.SEARCH_CODE.ToUpper().Contains(searchCode.ToUpper()) && (provinceCode == "" || o.PROVINCE_CODE == provinceCode)).ToList();
+                listResult = BackendDataWorker.Get<SDA.EFMODEL.DataModels.V_SDA_DISTRICT>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.SDA_RS.COMMON.IS_ACTIVE__TRUE).Where(o => (o.SEARCH_CODE ?? "").ToUpper().Contains(searchCode.ToUpper()) && (provinceCode == "" || o.PROVINCE_CODE == provinceCode)).ToList();
                 this.InitComboCommon(this.cboDistrict, listResult, "DISTRICT_CODE", "RENDERER_DISTRICT_NAME", "SEARCH_CODE");
                 if (String.IsNullOrEmpty(searchCode) && String.IsNullOrEmpty(provinceCode) && listResult.Count > 0)
                 {
@@ -831,8 +835,8 @@ namespace HIS.Desktop.Plugins.Register.Run
             try
             {
                 List<SDA.EFMODEL.DataModels.V_SDA_COMMUNE> listResult = SdaCommunes.Where(o => o.IS_ACTIVE == IMSys.DbConfig.SDA_RS.COMMON.IS_ACTIVE__TRUE)
-                    .Where(o => (o.SEARCH_CODE ?? "").Contains(searchCode ?? "")
-                        && (String.IsNullOrEmpty(provinceCode) || o.PROVINCE_CODE == provinceCode)).ToList();
+                    .Where(o => ((o.SEARCH_CODE ?? "").Contains(searchCode ?? "") || (o.COMMUNE_CODE == (searchCode ?? "") || string.IsNullOrEmpty(searchCode)))
+                        && (String.IsNullOrEmpty(provinceCode) || o.PROVINCE_CODE == provinceCode) && o.IS_NO_DISTRICT == 1).ToList();
                 this.InitComboCommon(this.cboCommune, listResult, "COMMUNE_CODE", "RENDERER_COMMUNE_NAME", "SEARCH_CODE");
                 if (String.IsNullOrEmpty(searchCode) && String.IsNullOrEmpty(provinceCode) && listResult.Count > 0)
                 {
@@ -845,26 +849,23 @@ namespace HIS.Desktop.Plugins.Register.Run
                     if (listResult.Count == 1)
                     {
                         this.cboCommune.EditValue = listResult[0].COMMUNE_CODE;
-                        this.txtCommuneCode.Text = listResult[0].SEARCH_CODE;
-                        if(string.IsNullOrEmpty(cboProvince.Text))
-                        {
-                            this.cboProvince.EditValue = listResult[0].PROVINCE_CODE;
-                            this.txtProvinceCode.Text = listResult[0].PROVINCE_CODE;
+                        this.txtCommuneCode.Text = listResult[0].COMMUNE_CODE;
 
-                            this.cboProvinceKS.EditValue = listResult[0].PROVINCE_CODE;
-                            this.txtProvinceCodeKS.Text = listResult[0].PROVINCE_CODE;
-                        }    
+                        this.cboProvince.EditValue = listResult[0].PROVINCE_CODE;
+                        this.txtProvinceCode.Text = listResult[0].PROVINCE_CODE;
+
+                        this.cboProvinceKS.EditValue = listResult[0].PROVINCE_CODE;
+                        this.txtProvinceCodeKS.Text = listResult[0].PROVINCE_CODE;
                         if (isExpand)
                         {
                             this.txtAddress.Focus();
                             this.txtAddress.SelectAll();
                         }
                     }
-                    else
+                    else 
                     {
                         this.cboCommune.EditValue = null;
                         this.txtCommuneCode.Text = "";
-                        this.FocusShowpopup(this.cboCommune, false);
                     }
                 }
             }

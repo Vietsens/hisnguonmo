@@ -386,7 +386,7 @@ namespace HIS.UC.PlusInfo.Design
                         }
                         catch (Exception)
                         {
-                            listResult = (cboProvinceNowName.Properties.DataSource as List<V_SDA_PROVINCE>).Where(o => o.SEARCH_CODE.Contains(strSearch)).ToList();
+                            listResult = (cboProvinceNowName.Properties.DataSource as List<V_SDA_PROVINCE>).Where(o => (o.SEARCH_CODE ?? "").Contains(strSearch)).ToList();
                         }
                         if (listResult.Count == 1)
                         {
