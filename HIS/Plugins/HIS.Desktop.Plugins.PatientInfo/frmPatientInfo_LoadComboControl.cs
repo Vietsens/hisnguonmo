@@ -352,7 +352,7 @@ namespace HIS.Desktop.Plugins.PatientInfo
                     txtHuyenHienTai.Text = "";
 
                     // Load xã theo tỉnh đã chọn
-                    LoadCommuneComboHT(txtHuyenHienTai.Text, "", false, provinceCode);
+                    LoadCommuneComboHT(txtXaHienTai.Text, "", false, provinceCode);
 
                     if (isExpand)
                     {
