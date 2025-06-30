@@ -53,7 +53,7 @@ namespace HIS.Desktop.Plugins.PatientInfo
             {
                 // Lấy danh sách tỉnh phù hợp với trạng thái toggle
                 List<SDA.EFMODEL.DataModels.V_SDA_PROVINCE> listResult = GetProvincesForCurrentToggle(searchCode);
-
+                this.cboProvince.Properties.DataSource = listResult;
                 if (string.IsNullOrEmpty(searchCode))
                 {
                     // Reset các control liên quan khi không có searchCode
@@ -64,7 +64,10 @@ namespace HIS.Desktop.Plugins.PatientInfo
                     cboDistricts.EditValue = null;
                     txtDistricts.Text = "";
                     cboProvince.EditValue = null;
-                    FocusShowPopup(cboProvince);
+                    if (isExpand)
+                    {
+                        FocusShowPopup(cboProvince);
+                    }
                 }
                 else
                 {
@@ -76,7 +79,7 @@ namespace HIS.Desktop.Plugins.PatientInfo
                         // Nếu đang ở chế độ địa chỉ cấp 2 (Tỉnh-Xã), không load huyện
                         if (!IsAddressLevel2())
                         {
-                            LoadDistrictsCombo("", listResult[0].PROVINCE_CODE, false);
+                            LoadDistrictsCombo("", listResult[0].PROVINCE_CODE, isExpand);
                         }
                         else
                         {
@@ -84,7 +87,7 @@ namespace HIS.Desktop.Plugins.PatientInfo
                             cboDistricts.Properties.DataSource = null;
                             cboDistricts.EditValue = null;
                             txtDistricts.Text = "";
-                            LoadCommuneCombo("", "", false, listResult[0].PROVINCE_CODE); // Chỉ load xã theo tỉnh đã chọn
+                            LoadCommuneCombo("", "", isExpand, listResult[0].PROVINCE_CODE); // Chỉ load xã theo tỉnh đã chọn
                         }
 
                         if (isExpand)
@@ -149,7 +152,7 @@ namespace HIS.Desktop.Plugins.PatientInfo
             {
                 // Lấy danh sách tỉnh phù hợp với trạng thái toggle
                 List<SDA.EFMODEL.DataModels.V_SDA_PROVINCE> listResult = GetProvincesForCurrentToggle(searchCode);
-
+                this.cboTinhHienTai.Properties.DataSource = listResult;
                 if (string.IsNullOrEmpty(searchCode))
                 {
                     // Reset các control liên quan khi không có searchCode
@@ -160,7 +163,10 @@ namespace HIS.Desktop.Plugins.PatientInfo
                     cboHuyenHienTai.EditValue = null;
                     txtHuyenHienTai.Text = "";
                     cboTinhHienTai.EditValue = null;
-                    FocusShowPopup(cboTinhHienTai);
+                    if (isExpand)
+                    {
+                        FocusShowPopup(cboTinhHienTai);
+                    }
                 }
                 else
                 {
@@ -225,7 +231,10 @@ namespace HIS.Desktop.Plugins.PatientInfo
                 {
                     cboTinhKhaiSinh.EditValue = null;
                     // Nếu có các control huyện/xã khai sinh thì reset ở đây (nếu có)
-                    FocusShowPopup(cboTinhKhaiSinh);
+                    if (isExpand)
+                    {
+                        FocusShowPopup(cboTinhKhaiSinh);
+                    }
                 }
                 else
                 {
@@ -271,7 +280,7 @@ namespace HIS.Desktop.Plugins.PatientInfo
                     txtDistricts.Text = "";
 
                     // Load xã theo tỉnh đã chọn
-                    LoadCommuneCombo(txtCommune.Text, "", false, provinceCode);
+                    LoadCommuneCombo(txtCommune.Text, "", isExpand, provinceCode);
 
                     if (isExpand)
                     {
@@ -352,7 +361,7 @@ namespace HIS.Desktop.Plugins.PatientInfo
                     txtHuyenHienTai.Text = "";
 
                     // Load xã theo tỉnh đã chọn
-                    LoadCommuneComboHT(txtXaHienTai.Text, "", false, provinceCode);
+                    LoadCommuneComboHT(txtXaHienTai.Text, "", isExpand, provinceCode);
 
                     if (isExpand)
                     {
@@ -435,7 +444,10 @@ namespace HIS.Desktop.Plugins.PatientInfo
                 {
                     cboCommune.EditValue = null;
                     txtCommune.Text = "";
-                    FocusShowPopup(cboCommune);
+                    if (isExpand)
+                    {
+                        FocusShowPopup(cboCommune);
+                    }
                 }
                 else
                 {
@@ -472,7 +484,10 @@ namespace HIS.Desktop.Plugins.PatientInfo
                 {
                     cboXaHienTai.EditValue = null;
                     txtXaHienTai.Text = "";
-                    FocusShowPopup(cboXaHienTai);
+                    if (isExpand)
+                    {
+                        FocusShowPopup(cboXaHienTai);
+                    }
                 }
                 else
                 {
