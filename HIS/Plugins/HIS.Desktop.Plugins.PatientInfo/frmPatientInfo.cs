@@ -520,7 +520,11 @@ namespace HIS.Desktop.Plugins.PatientInfo
                 cboXaHienTai.Properties.DropDownRows = 20;
                 cboXaHienTai.Properties.PopupWidth = 300;
                 //
-                FillDataProvinceToControlsForm();
+                FillDataToLookupedit(this.cboProvince, "PROVINCE_NAME", "PROVINCE_CODE", "PROVINCE_CODE", new List<SDA.EFMODEL.DataModels.V_SDA_PROVINCE>());
+                FillDataToLookupedit(this.cboTinhKhaiSinh, "PROVINCE_NAME", "PROVINCE_CODE", "PROVINCE_CODE", new List<SDA.EFMODEL.DataModels.V_SDA_PROVINCE>());
+                FillDataToLookupedit(this.cboTinhHienTai, "PROVINCE_NAME", "PROVINCE_CODE", "PROVINCE_CODE", new List<SDA.EFMODEL.DataModels.V_SDA_PROVINCE>());
+                //
+                LoadPDataToControlsFormByToggle();
                 //
                 FillDataToLookupedit(this.cboCareer, "CAREER_NAME", "ID", "CAREER_CODE", BackendDataWorker.Get<HIS_CAREER>());
                 FillDataToLookupedit(this.cboEthnic, "ETHNIC_NAME", "ETHNIC_CODE", "ETHNIC_CODE", BackendDataWorker.Get<SDA_ETHNIC>());
@@ -537,16 +541,16 @@ namespace HIS.Desktop.Plugins.PatientInfo
             }
         }
 
-        public void FillDataProvinceToControlsForm()
+        public void LoadPDataToControlsFormByToggle()
         {
             try
             {
-                var province = GetProvincesForCurrentToggle();
-                var tinhkhaisinh = GetProvincesForCurrentToggle();
-                var tinhhientai = GetProvincesForCurrentToggle();
-                FillDataToLookupedit(this.cboProvince, "PROVINCE_NAME", "PROVINCE_CODE", "PROVINCE_CODE", province);
-                FillDataToLookupedit(this.cboTinhKhaiSinh, "PROVINCE_NAME", "PROVINCE_CODE", "PROVINCE_CODE", tinhkhaisinh);
-                FillDataToLookupedit(this.cboTinhHienTai, "PROVINCE_NAME", "PROVINCE_CODE", "PROVINCE_CODE", tinhhientai);
+                LoadProvinceCombo(txtProvince.Text, false);
+                LoadProvinceComboHT(txtTinhHienTai.Text, false);
+                LoadDistrictsCombo(txtDistricts.Text, this.cboProvince.EditValue?.ToString(), false);
+                LoadDistrictsComboHT(txtHuyenHienTai.Text, this.cboTinhHienTai.EditValue?.ToString(), false);
+                LoadCommuneCombo(txtCommune.Text, cboDistricts.EditValue?.ToString(), false, this.cboProvince.EditValue?.ToString());
+                LoadCommuneComboHT(txtXaHienTai.Text, cboHuyenHienTai.EditValue?.ToString(), false, this.cboTinhHienTai.EditValue?.ToString());
             }
             catch (Exception ex)
             {
@@ -2341,7 +2345,7 @@ namespace HIS.Desktop.Plugins.PatientInfo
                 if (province != null)
                 {
                     this.toggleSwitch1.IsOn = province.IS_NO_DISTRICT == 1;
-                    FillDataProvinceToControlsForm();
+                    LoadPDataToControlsFormByToggle();
                     cboProvince.EditValue = province.PROVINCE_CODE;
                     txtProvince.Text = province.PROVINCE_CODE;
                     LoadDistrictsCombo("", province.PROVINCE_CODE, false);
@@ -2561,7 +2565,7 @@ namespace HIS.Desktop.Plugins.PatientInfo
 
                 }
                 // Reload province and commune combos
-                FillDataProvinceToControlsForm();
+                LoadPDataToControlsFormByToggle();
                 //LoadProvinceCombo(txtProvince.Text.Trim().ToUpper(), false);
                 //LoadProvinceComboHT(txtTinhHienTai.Text.Trim().ToUpper(), false);
                 //LoadProvinceComboKS(txtTinhKhaiSinh.Text.Trim().ToUpper(), false);
