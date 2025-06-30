@@ -1523,10 +1523,10 @@ namespace HIS.Desktop.Plugins.ImportBlood
                 {
                     case PrintType.BIEN_BAN_KIEM_NHAP_TU_NCC:
                         richEditorMain.RunPrintTemplate(PrintTypeCodeStore.PRINT_TYPE_CODE__BienBanKiemNhapTuNhaCungCap_MPS000085, DelegateRunPrinter);
-                        break;                 
+                        break;
                     case PrintType.PHIEU_NHAP_MAU_TU_NCC:
                         richEditorMain.RunPrintTemplate(PrintTypeCodeStore.PRINT_TYPE_CODE__PhieuNhapMauTuNhaCungCap_MPS000149, DelegateRunPrinter);
-                        break;                    
+                        break;
                     default:
                         break;
                 }
@@ -1590,7 +1590,7 @@ namespace HIS.Desktop.Plugins.ImportBlood
                 Inventec.Common.SignLibrary.ADO.InputADO inputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode((this.impMest != null ? this.impMest.TDL_TREATMENT_CODE : ""), printTypeCode, moduleData != null ? moduleData.RoomId : 0);
 
                 MPS.Processor.Mps000085.PDO.Mps000085PDO mps0000085RDO = new MPS.Processor.Mps000085.PDO.Mps000085PDO(
-                 this.impMest,  
+                 this.impMest,
                  null,
                  null,
                  rs,
@@ -1652,7 +1652,7 @@ namespace HIS.Desktop.Plugins.ImportBlood
                 MOS.Filter.HisImpMestBloodFilter filter = new HisImpMestBloodFilter();
                 filter.IMP_MEST_ID = impMestId;
                 filter.IS_ACTIVE = 1;
-                var impMestBloodPrint = new Inventec.Common.Adapter.BackendAdapter(param).Get<List<V_HIS_IMP_MEST_BLOOD>>("api/HisImpMestBlood/GetView", 
+                var impMestBloodPrint = new Inventec.Common.Adapter.BackendAdapter(param).Get<List<V_HIS_IMP_MEST_BLOOD>>("api/HisImpMestBlood/GetView",
                     ApiConsumer.ApiConsumers.MosConsumer, filter, param);
 
                 MPS.Processor.Mps000149.PDO.Mps000149PDO pdo = new MPS.Processor.Mps000149.PDO.Mps000149PDO(
@@ -1814,7 +1814,7 @@ namespace HIS.Desktop.Plugins.ImportBlood
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
-        }   
+        }
 
         private void cboSupplier_Closed(object sender, ClosedEventArgs e)
         {
@@ -2125,8 +2125,8 @@ namespace HIS.Desktop.Plugins.ImportBlood
             try
             {
                 if (Switch_THX.IsOn == true)
-                    InitComboCommune(); 
-                else 
+                    InitComboCommune();
+                else
                     InitComboDistrict();
             }
             catch (Exception ex)
@@ -2386,13 +2386,25 @@ namespace HIS.Desktop.Plugins.ImportBlood
                         this.txtVirAddress.Text = commune.SEARCH_CODE_COMMUNE;
 
                         var district = BackendDataWorker.Get<SDA.EFMODEL.DataModels.SDA_DISTRICT>().SingleOrDefault(o => o.DISTRICT_CODE == commune.DISTRICT_CODE);
-                        if (district != null)
+                        
+                        if (Switch_THX.IsOn == false)
                         {
-                            var province = BackendDataWorker.Get<SDA.EFMODEL.DataModels.SDA_PROVINCE>().SingleOrDefault(o => o.ID == district.PROVINCE_ID);
+                            if (district != null)
+                            {
+                                var province = BackendDataWorker.Get<SDA.EFMODEL.DataModels.SDA_PROVINCE>().SingleOrDefault(o => o.ID == district.PROVINCE_ID);
+                                cboProvince.EditValue = province != null ? (long?)province.ID : null;
+                                cboDistrict.EditValue = district.ID;
+                                cboCommune.EditValue = commune.ID;
+                            }
+                        }
+                        else
+                        {
+                            var province = BackendDataWorker.Get<SDA.EFMODEL.DataModels.SDA_PROVINCE>().SingleOrDefault(o => o.ID == commune.PROVINCE_ID);
                             cboProvince.EditValue = province != null ? (long?)province.ID : null;
-                            cboDistrict.EditValue = district.ID;
+                            //.EditValue = district.ID;
                             cboCommune.EditValue = commune.ID;
                         }
+
                     }
                 }
                 else
@@ -3004,7 +3016,7 @@ namespace HIS.Desktop.Plugins.ImportBlood
                     if (currentModule.IsPlugin && currentModule.ExtensionInfo != null)
                     {
                         List<object> listArgs = new List<object>();
-                        
+
                         listArgs.Add(LoadImpMestByID(this.impMestId));
                         listArgs.Add(this.impMest);
                         listArgs.Add(this.impMestBloods);
@@ -3027,8 +3039,8 @@ namespace HIS.Desktop.Plugins.ImportBlood
             try
             {
                 // Khởi tạo controlStateWorker
-                if(this.controlStateWorker == null)
-                controlStateWorker = new HIS.Desktop.Library.CacheClient.ControlStateWorker();
+                if (this.controlStateWorker == null)
+                    controlStateWorker = new HIS.Desktop.Library.CacheClient.ControlStateWorker();
 
                 currentControlStateRDO = controlStateWorker.GetData(moduleLink);
                 // Lấy trạng thái đã lưu
@@ -3042,7 +3054,7 @@ namespace HIS.Desktop.Plugins.ImportBlood
                         Switch_THX.ToolTip = isUseNewStructure == true ? "Sử dụng cấu trúc địa chỉ Xã - Huyện - Tỉnh" : "Sử dụng cấu trúc địa chỉ Xã - Tỉnh(không có Huyện)";
                     }
                 }
-                
+
                 // Cập nhật hiển thị control dựa trên trạng thái
                 UpdateAddressControlsVisibility();
 
@@ -3056,20 +3068,20 @@ namespace HIS.Desktop.Plugins.ImportBlood
         //qtcode
         public void ResetFieldVir()
         {
-            cboVirAddress.EditValue = null; 
-            txtVirAddress.Text = null; 
+            cboVirAddress.EditValue = null;
+            txtVirAddress.Text = null;
         }
         private void Switch_THX_Toggled(object sender, EventArgs e)
         {
             try
             {
-                ResetFieldVir(); 
+                ResetFieldVir();
                 isUseNewStructure = ((DevExpress.XtraEditors.ToggleSwitch)sender).IsOn;
                 Switch_THX.ToolTip = isUseNewStructure == true ? "Sử dụng cấu trúc địa chỉ Xã - Huyện - Tỉnh" : "Sử dụng cấu trúc địa chỉ Xã - Tỉnh(không có Huyện)";
                 // Cập nhật hiển thị control
                 UpdateAddressControlsVisibility();
 
-                if (isInitializing) return; 
+                if (isInitializing) return;
                 // Tải lại dữ liệu cho các cbo
                 InitComboProvince();
                 InitComboDistrict();
@@ -3111,7 +3123,24 @@ namespace HIS.Desktop.Plugins.ImportBlood
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
-
+        private void UpdateAddressControls()
+        {
+            try
+            {
+                if (Switch_THX.IsOn)
+                {
+                    Switch_THX.ToolTip = "Sử dụng cấu trúc địa chỉ Xã - Huyện - Tỉnh";
+                }
+                else
+                {
+                    Switch_THX.ToolTip = "Sử dụng cấu trúc địa chỉ Xã - Tỉnh (không có Huyện)";
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
         private void UpdateAddressControlsVisibility()
         {
             try

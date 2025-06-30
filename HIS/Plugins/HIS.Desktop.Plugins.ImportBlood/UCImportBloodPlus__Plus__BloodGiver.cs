@@ -922,6 +922,37 @@ namespace HIS.Desktop.Plugins.ImportBlood
                 txtWorkPlace_BloodGiver.Text = hisBloodGiverADO.WORK_PLACE;
                 cboNational_BloodGiver.EditValue = BackendDataWorker.Get<SDA_NATIONAL>().Where(o => o.NATIONAL_CODE == hisBloodGiverADO.NATIONAL_CODE).Select(o => o.ID).FirstOrDefault();
 
+                // Logic kiểm tra ToggleSwitch dựa trên PROVINCE_CODE và DISTRICT_CODE
+                bool toggleOn = false;
+                if (!string.IsNullOrWhiteSpace(hisBloodGiverADO.PROVINCE_CODE))
+                {
+                    var provinces = BackendDataWorker.Get<V_SDA_PROVINCE>()
+                        .Where(o => o.PROVINCE_CODE == hisBloodGiverADO.PROVINCE_CODE && o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE)
+                        .ToList();
+
+                    if (provinces.Count == 1)
+                    {
+                        toggleOn = provinces[0].IS_NO_DISTRICT == 1;
+                    }
+                    else if (provinces.Count > 1)
+                    {
+                        toggleOn = string.IsNullOrWhiteSpace(hisBloodGiverADO.DISTRICT_CODE);
+                    }
+                }
+                else
+                {
+                    toggleOn = true; // Mặc định bật toggle nếu không có tỉnh
+                }
+
+                Switch_THX.IsOn = toggleOn;
+                //SaveToggleState(toggleOn); // Lưu trạng thái ToggleSwitch
+
+                // Khởi tạo lại các combo địa chỉ dựa trên trạng thái ToggleSwitch
+                InitComboProvince();
+                InitComboDistrict();
+                InitComboCommune();
+                InitComboVirAddress();
+
                 cboProvinceBlood_BloodGiver.EditValue = BackendDataWorker.Get<SDA_PROVINCE>().Where(o => o.PROVINCE_CODE == hisBloodGiverADO.PROVINCE_CODE_BLOOD).Select(o => o.ID).FirstOrDefault();
 
                 cboDistrictBlood_BloodGiver.EditValue = BackendDataWorker.Get<SDA_DISTRICT>().Where(o => o.DISTRICT_CODE == hisBloodGiverADO.DISTRICT_CODE_BLOOD).Select(o => o.ID).FirstOrDefault();
