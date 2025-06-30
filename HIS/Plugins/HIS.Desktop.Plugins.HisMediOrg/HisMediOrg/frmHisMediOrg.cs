@@ -18,15 +18,12 @@
 using DevExpress.Data;
 using DevExpress.Utils;
 using DevExpress.XtraEditors;
+using DevExpress.XtraEditors.Controls;
+using DevExpress.XtraEditors.DXErrorProvider;
 using DevExpress.XtraEditors.ViewInfo;
 using DevExpress.XtraGrid.Views.Base;
+using DevExpress.XtraLayout;
 using DevExpress.XtraNavBar;
-using Inventec.Common.Adapter;
-using Inventec.Common.Controls.EditorLoader;
-using Inventec.Common.Logging;
-using Inventec.Core;
-using Inventec.Desktop.Common.Message;
-using Inventec.UC.Paging;
 using HIS.Desktop.ApiConsumer;
 using HIS.Desktop.Common;
 using HIS.Desktop.Controls.Session;
@@ -35,21 +32,25 @@ using HIS.Desktop.LocalStorage.BackendData;
 using HIS.Desktop.LocalStorage.ConfigApplication;
 using HIS.Desktop.LocalStorage.LocalData;
 using HIS.Desktop.Utilities;
+using Inventec.Common.Adapter;
+using Inventec.Common.Controls.EditorLoader;
+using Inventec.Common.Logging;
+using Inventec.Core;
+using Inventec.Desktop.Common.Controls.ValidationRule;
+using Inventec.Desktop.Common.LanguageManager;
+using Inventec.Desktop.Common.Message;
+using Inventec.UC.Paging;
 using MOS.EFMODEL.DataModels;
 using MOS.Filter;
+using SDA.EFMODEL.DataModels;
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using System.Windows.Forms;
 using System.Drawing;
-using Inventec.Desktop.Common.Controls.ValidationRule;
-using DevExpress.XtraEditors.DXErrorProvider;
-using Inventec.Desktop.Common.LanguageManager;
+using System.Linq;
 using System.Resources;
-using SDA.EFMODEL.DataModels;
-using DevExpress.XtraEditors.Controls;
-using HIS.Desktop.Plugins.HisMediOrg.HisMediOrg;
+using System.Windows.Forms;
+//using HIS.Desktop.Plugins.HisMediOrg.HisMediOrg;
 
 namespace HIS.Desktop.Plugins.HisMediOrg
 {
@@ -66,6 +67,11 @@ namespace HIS.Desktop.Plugins.HisMediOrg
         List<string> arrControlEnableNotChange = new List<string>();
         Dictionary<string, int> dicOrderTabIndexControl = new Dictionary<string, int>();
         Inventec.Desktop.Common.Modules.Module moduleData;
+       
+        bool isNewAddressStructure;
+        private HIS.Desktop.Library.CacheClient.ControlStateWorker controlStateWorker;
+        private List<HIS.Desktop.Library.CacheClient.ControlStateRDO> currentControlStateRDO;
+
         #endregion
 
         #region Construct
@@ -179,7 +185,7 @@ namespace HIS.Desktop.Plugins.HisMediOrg
             }
         }
 
-
+        
         private void SetDefaultValue()
         {
             try
@@ -1067,9 +1073,11 @@ namespace HIS.Desktop.Plugins.HisMediOrg
                 ValidationSingleControl(txtMediOrgName);
                 ValidationSingleControl(txtLevelCode);
                 //ValidationSingleControl1();
-                ValidationControlWarnigProvince();
-                ValidationControlWarnigDistricts();
-                ValidationControlWarnigCommune();
+
+
+                //ValidationControlWarnigProvince();
+                //ValidationControlWarnigDistricts();
+                //ValidationControlWarnigCommune();
 
             }
             catch (Exception ex)
@@ -1078,29 +1086,29 @@ namespace HIS.Desktop.Plugins.HisMediOrg
             }
         }
 
-        private void ValidationControlWarnigCommune()
-        {
-            ValidationWarningText validation = new ValidationWarningText();
-            validation.textEdit = txtCommune;
-            validation.cbo = cboCommune;
-            dxValidationProviderEditorInfo.SetValidationRule(txtCommune, validation);
-        }
+        //private void ValidationControlWarnigCommune()
+        //{
+        //    ValidationWarningText validation = new ValidationWarningText();
+        //    validation.textEdit = txtCommune;
+        //    validation.cbo = cboCommune;
+        //    dxValidationProviderEditorInfo.SetValidationRule(txtCommune, validation);
+        //}
 
-        private void ValidationControlWarnigDistricts()
-        {
-            ValidationWarningText validation = new ValidationWarningText();
-            validation.textEdit = txtDistricts;
-            validation.cbo = cboDistricts;
-            dxValidationProviderEditorInfo.SetValidationRule(txtDistricts, validation);
-        }
+        //private void ValidationControlWarnigDistricts()
+        //{
+        //    ValidationWarningText validation = new ValidationWarningText();
+        //    validation.textEdit = txtDistricts;
+        //    validation.cbo = cboDistricts;
+        //    dxValidationProviderEditorInfo.SetValidationRule(txtDistricts, validation);
+        //}
 
-        private void ValidationControlWarnigProvince()
-        {
-            ValidationWarningText validation = new ValidationWarningText();
-            validation.textEdit = txtProvince;
-            validation.cbo = cboProvince;
-            dxValidationProviderEditorInfo.SetValidationRule(txtProvince, validation);
-        }
+        //private void ValidationControlWarnigProvince()
+        //{
+        //    ValidationWarningText validation = new ValidationWarningText();
+        //    validation.textEdit = txtProvince;
+        //    validation.cbo = cboProvince;
+        //    dxValidationProviderEditorInfo.SetValidationRule(txtProvince, validation);
+        //}
 
         private void ValidationSingleControl1()
         {
@@ -1214,6 +1222,8 @@ namespace HIS.Desktop.Plugins.HisMediOrg
 
                 //Focus default
                 SetDefaultFocus();
+                // load status
+                InitControlState();
             }
             catch (Exception ex)
             {
@@ -1717,7 +1727,13 @@ namespace HIS.Desktop.Plugins.HisMediOrg
                                 cboDistricts.EditValue = district.PROVINCE_CODE;
                                 txtProvince.Text = district.PROVINCE_CODE;
                             }
-                            LoadCommuneCombo("", district.DISTRICT_CODE, false);
+
+
+                            // LoadCommuneCombo("", district.DISTRICT_CODE, false);
+                            if (toggleDistrict.IsOn)
+                                this.LoadCommuneCombo("", district.PROVINCE_CODE, false);
+                            else if (!toggleDistrict.IsOn)
+                                this.LoadCommuneCombo("", district.DISTRICT_CODE, false);
                             txtDistricts.Text = district.DISTRICT_CODE;
                             cboCommune.EditValue = null;
                             txtCommune.Text = "";
@@ -1975,10 +1991,15 @@ namespace HIS.Desktop.Plugins.HisMediOrg
                 {
                     string strValue = (sender as DevExpress.XtraEditors.TextEdit).Text;
                     string districtCode = "";
-                    if (cboDistricts.EditValue != null)
+
+                    if (this.cboDistricts.EditValue != null && !toggleDistrict.IsOn)
                     {
-                        districtCode = cboDistricts.EditValue.ToString();
+                        districtCode = this.cboDistricts.EditValue.ToString();
                     }
+                    else if (this.cboDistricts.EditValue != null && toggleDistrict.IsOn)
+                        districtCode = this.cboDistricts.EditValue.ToString();
+
+                    
                     LoadCommuneCombo(strValue.ToUpper(), districtCode, true);
                 }
 
@@ -1990,6 +2011,117 @@ namespace HIS.Desktop.Plugins.HisMediOrg
         }
 
         private void cboProvince_GetNotInListValue(object sender, GetNotInListValueEventArgs e)
+        {
+
+        }
+
+        private void toggleDistrict_Toggled(object sender, EventArgs e)
+        {
+            HIS.Desktop.Library.CacheClient.ControlStateRDO csAddOrUpdate;
+            if (isNewAddressStructure)
+                return;
+
+            try
+            {
+                if (this.controlStateWorker == null)
+                {
+                    this.controlStateWorker = new HIS.Desktop.Library.CacheClient.ControlStateWorker();
+                }
+
+                if (this.currentControlStateRDO == null && this.moduleData != null)
+                {
+                    this.currentControlStateRDO = this.controlStateWorker.GetData(this.moduleData.ModuleLink);
+
+                    csAddOrUpdate = (this.currentControlStateRDO != null && this.currentControlStateRDO.Count > 0)
+                    ? this.currentControlStateRDO.Where(o => o.KEY == toggleDistrict.Name && o.MODULE_LINK == this.moduleData.ModuleLink).FirstOrDefault() : null;
+
+                    if (csAddOrUpdate != null)
+                    {
+                        if (csAddOrUpdate.VALUE == "1")
+                            toggleDistrict.IsOn = true;
+                        else
+                            toggleDistrict.IsOn = false;
+                    }
+                    else
+                    {
+                        csAddOrUpdate = new HIS.Desktop.Library.CacheClient.ControlStateRDO();
+                        csAddOrUpdate.KEY = toggleDistrict.Name;
+                        csAddOrUpdate.VALUE = (toggleDistrict.IsOn ? "1" : "");
+                        csAddOrUpdate.MODULE_LINK = this.moduleData.ModuleLink;
+                        if (this.currentControlStateRDO == null)
+                            this.currentControlStateRDO = new List<HIS.Desktop.Library.CacheClient.ControlStateRDO>();
+                        this.currentControlStateRDO.Add(csAddOrUpdate);
+                    }
+
+                    this.controlStateWorker.SetData(this.currentControlStateRDO);
+                }
+                else
+                {
+                    csAddOrUpdate = new HIS.Desktop.Library.CacheClient.ControlStateRDO();
+                    csAddOrUpdate.KEY = toggleDistrict.Name;
+                    csAddOrUpdate.VALUE = (toggleDistrict.IsOn ? "1" : "");
+                    csAddOrUpdate.MODULE_LINK = this.moduleData.ModuleLink;
+                    if (this.currentControlStateRDO == null)
+                        this.currentControlStateRDO = new List<HIS.Desktop.Library.CacheClient.ControlStateRDO>();
+                    this.currentControlStateRDO.Add(csAddOrUpdate);
+
+                    this.controlStateWorker.SetData(this.currentControlStateRDO);
+                }
+
+                var visibility = toggleDistrict.IsOn
+                                ? DevExpress.XtraLayout.Utils.LayoutVisibility.Never
+                                : DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
+
+                lciDistricts.Visibility = visibility;
+                layoutControlItem20.Visibility = visibility;
+              
+             
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void InitControlState()
+        {
+            isNewAddressStructure = true;
+            try
+            {
+                this.controlStateWorker = new HIS.Desktop.Library.CacheClient.ControlStateWorker();
+                this.currentControlStateRDO = controlStateWorker.GetData(this.moduleData.ModuleLink);
+                if (this.currentControlStateRDO != null && this.currentControlStateRDO.Count > 0)
+                {
+                    foreach (var item in this.currentControlStateRDO)
+                    {
+                        if (item.KEY == toggleDistrict.Name)
+                        {
+                            if (item.VALUE == "1")
+                            {
+                                toggleDistrict.IsOn = true;
+                            }
+                            else
+                                toggleDistrict.IsOn = false;
+
+                            var visibility = toggleDistrict.IsOn
+                                ? DevExpress.XtraLayout.Utils.LayoutVisibility.Never
+                                : DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
+
+                            lciDistricts.Visibility = visibility;
+                            layoutControlItem20.Visibility = visibility;
+                            
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+            isNewAddressStructure = false;
+        }
+
+        private void txtMediOrgCode_EditValueChanged(object sender, EventArgs e)
         {
 
         }
