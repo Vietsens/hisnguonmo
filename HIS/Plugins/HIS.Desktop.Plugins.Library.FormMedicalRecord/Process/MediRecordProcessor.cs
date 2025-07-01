@@ -852,13 +852,13 @@ namespace HIS.Desktop.Plugins.Library.FormMedicalRecord.Process
                     var groupdict = emrDocumentGroups.ToDictionary(g => g.ID, g => g.MEDIA_DOC_TYPE_ID??0);
 
                     _HoSo.XQuang = emrDocuments.Count(d =>
-                        emrDocumentGroups.Any(g => g.ID == d.DOCUMENT_GROUP_ID && g.MEDIA_DOC_TYPE_ID == IMSys.DbConfig.EMR_RS.EMR_MEDIA_DOC_TYPE.XQ));
+                        checkDocument(groupdict, d.DOCUMENT_GROUP_ID, IMSys.DbConfig.EMR_RS.EMR_MEDIA_DOC_TYPE.XQ));
                     _HoSo.CTScanner = emrDocuments.Count(d =>
-                        emrDocumentGroups.Any(g => g.ID == d.DOCUMENT_GROUP_ID && g.MEDIA_DOC_TYPE_ID == IMSys.DbConfig.EMR_RS.EMR_MEDIA_DOC_TYPE.CT));
+                        checkDocument(groupdict, d.DOCUMENT_GROUP_ID, IMSys.DbConfig.EMR_RS.EMR_MEDIA_DOC_TYPE.CT));
                     _HoSo.SieuAm = emrDocuments.Count(d =>
-                        emrDocumentGroups.Any(g => g.ID == d.DOCUMENT_GROUP_ID && g.MEDIA_DOC_TYPE_ID == IMSys.DbConfig.EMR_RS.EMR_MEDIA_DOC_TYPE.SA));
+                        checkDocument(groupdict, d.DOCUMENT_GROUP_ID, IMSys.DbConfig.EMR_RS.EMR_MEDIA_DOC_TYPE.SA));
                     _HoSo.XetNghiem = emrDocuments.Count(d =>
-                        checkDocumet(groupdict, d.DOCUMENT_GROUP_ID, IMSys.DbConfig.EMR_RS.EMR_MEDIA_DOC_TYPE.XN));
+                        checkDocument(groupdict, d.DOCUMENT_GROUP_ID, IMSys.DbConfig.EMR_RS.EMR_MEDIA_DOC_TYPE.XN));
                     _HoSo.ToanBoHoSo = emrDocuments.Count;
                     _HoSo.Khac = _HoSo.ToanBoHoSo - _HoSo.XQuang - _HoSo.CTScanner - _HoSo.SieuAm - _HoSo.XetNghiem;
                     var otherDocuments = emrDocuments.Where(doc => !emrDocumentGroups.Any(group => group.ID == doc.DOCUMENT_GROUP_ID &&
@@ -1968,12 +1968,12 @@ namespace HIS.Desktop.Plugins.Library.FormMedicalRecord.Process
             return valid;
         }
 
-        bool checkDocumet(Dictionary<long, long> dicgr, long? documentroupId, long type)
+        bool checkDocument(Dictionary<long, long> dicgr, long? documentGroupId, long type)
         {
             bool result = false;
             try
             {
-                result = dicgr != null && documentroupId.HasValue && dicgr.ContainsKey(documentroupId.Value) && dicgr[documentroupId.Value] == type;
+                result = dicgr != null && documentGroupId.HasValue && dicgr.ContainsKey(documentGroupId.Value) && dicgr[documentGroupId.Value] == type;
             }
             catch (Exception ex)
             {
