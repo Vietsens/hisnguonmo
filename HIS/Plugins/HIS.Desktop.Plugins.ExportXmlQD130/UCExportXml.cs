@@ -1456,8 +1456,8 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                     ado.TotalSericeData = BackendDataWorker.Get<V_HIS_SERVICE>();
                     ado.TotalEmployeeData = BackendDataWorker.Get<HIS_EMPLOYEE>();
                     ado.serverInfo = new ServerInfo() { Username = username, Password = password, Address = address, TypeXml = typeXml, Xml130Api = xml130Api, XmlGdykApi = xmlGdykApi };
-                    if (!isNotFileSign)
-                        ado.delegateSignXml = DataSignXML;
+                    //if (!isNotFileSign)
+                    //    ado.delegateSignXml = DataSignXML;
                     if (dicTuberculosisTreat.ContainsKey(treatment.ID))
                     {
                         ado.TuberculosisTreat = dicTuberculosisTreat[treatment.ID];
@@ -1831,7 +1831,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                 ado.TotalEmployeeData = BackendDataWorker.Get<HIS_EMPLOYEE>();
                 ado.serverInfo = new ServerInfo() { Username = username, Password = password, Address = address, TypeXml = typeXml, Xml130Api = xml130Api, XmlGdykApi = xmlGdykApi };
 
-                ado.delegateSignXml = DataSignXML;
+                //ado.delegateSignXml = DataSignXML;
                 His.Bhyt.ExportXml.XML130.CreateXmlProcessor xmlProcessor = new His.Bhyt.ExportXml.XML130.CreateXmlProcessor(ado);
 
                 string errorMess = "";
@@ -4104,7 +4104,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                             ado.TotalSericeData = BackendDataWorker.Get<V_HIS_SERVICE>();
                             ado.TotalEmployeeData = BackendDataWorker.Get<HIS_EMPLOYEE>();
                             ado.serverInfo = new ServerInfo() { Username = username, Password = password, Address = address, TypeXml = typeXml, Xml130Api = xml130Api, XmlGdykApi = xmlGdykApi };
-                            ado.delegateSignXml = DataSignXML;
+                            //ado.delegateSignXml = DataSignXML;
 
                             if (dicTuberculosisTreat.ContainsKey(treatment.ID))
                             {
