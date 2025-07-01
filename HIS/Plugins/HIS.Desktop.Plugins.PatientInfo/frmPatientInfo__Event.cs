@@ -511,7 +511,7 @@ namespace HIS.Desktop.Plugins.PatientInfo
                             {
                                 txtCommune.EditValue = null;
                                 txtDistricts.EditValue = null;
-                                LoadDistrictsCombo("", province.PROVINCE_CODE, false);
+                                LoadDistrictsCombo("", province.PROVINCE_CODE, true);
                             }
                             txtProvince.Text = province.PROVINCE_CODE;
                             if (this.IsAddressLevel2())
@@ -571,7 +571,7 @@ namespace HIS.Desktop.Plugins.PatientInfo
                                 cboCommune.EditValue = null;
                                 txtCommune.Text = "";
                             }
-                            LoadCommuneCombo("", district.DISTRICT_CODE, false, "");
+                            LoadCommuneCombo("", district.DISTRICT_CODE, true, "");
                             
                         }
                     }

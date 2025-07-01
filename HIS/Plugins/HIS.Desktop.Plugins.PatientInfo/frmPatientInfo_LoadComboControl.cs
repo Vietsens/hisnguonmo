@@ -53,11 +53,11 @@ namespace HIS.Desktop.Plugins.PatientInfo
             {
                 // Lấy danh sách tỉnh phù hợp với trạng thái toggle
                 List<SDA.EFMODEL.DataModels.V_SDA_PROVINCE> listResult = GetProvincesForCurrentToggle(searchCode);
-                this.cboProvince.Properties.DataSource = listResult;
+                this.cboProvince.Properties.DataSource = GetProvincesForCurrentToggle("");
                 if (string.IsNullOrEmpty(searchCode))
                 {
                     // Reset các control liên quan khi không có searchCode
-                    cboCommune.Properties.DataSource = null;
+                    //cboCommune.Properties.DataSource = null;
                     cboCommune.EditValue = null;
                     txtCommune.Text = "";
                     cboDistricts.Properties.DataSource = null;
@@ -152,11 +152,11 @@ namespace HIS.Desktop.Plugins.PatientInfo
             {
                 // Lấy danh sách tỉnh phù hợp với trạng thái toggle
                 List<SDA.EFMODEL.DataModels.V_SDA_PROVINCE> listResult = GetProvincesForCurrentToggle(searchCode);
-                this.cboTinhHienTai.Properties.DataSource = listResult;
+                this.cboTinhHienTai.Properties.DataSource = GetProvincesForCurrentToggle("");
                 if (string.IsNullOrEmpty(searchCode))
                 {
                     // Reset các control liên quan khi không có searchCode
-                    cboXaHienTai.Properties.DataSource = null;
+                    //cboXaHienTai.Properties.DataSource = null;
                     cboXaHienTai.EditValue = null;
                     txtXaHienTai.Text = "";
                     cboHuyenHienTai.Properties.DataSource = null;
@@ -226,7 +226,7 @@ namespace HIS.Desktop.Plugins.PatientInfo
             {
                 // Lấy danh sách tỉnh phù hợp với trạng thái toggle
                 List<SDA.EFMODEL.DataModels.V_SDA_PROVINCE> listResult = GetProvincesForCurrentToggle(searchCode);
-
+                cboTinhKhaiSinh.Properties.DataSource = GetProvincesForCurrentToggle("");
                 if (string.IsNullOrEmpty(searchCode))
                 {
                     cboTinhKhaiSinh.EditValue = null;
@@ -315,7 +315,10 @@ namespace HIS.Desktop.Plugins.PatientInfo
                     txtCommune.Text = "";
                     txtDistricts.Text = "";
                     cboDistricts.EditValue = null;
-                    FocusShowPopup(cboDistricts);
+                    if (isExpand)
+                    {
+                        FocusShowPopup(cboDistricts);
+                    }
                 }
                 else
                 {
@@ -394,7 +397,10 @@ namespace HIS.Desktop.Plugins.PatientInfo
                     txtXaHienTai.Text = "";
                     txtHuyenHienTai.Text = "";
                     cboHuyenHienTai.EditValue = null;
-                    FocusShowPopup(cboHuyenHienTai);
+                    if (isExpand)
+                    {
+                        FocusShowPopup(cboHuyenHienTai);
+                    }
                     //PopupProcess.SelectFirstRowPopup(cboDistricts);
                 }
                 else

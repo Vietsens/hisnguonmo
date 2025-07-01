@@ -545,12 +545,16 @@ namespace HIS.Desktop.Plugins.PatientInfo
         {
             try
             {
-                LoadProvinceCombo(txtProvince.Text, false);
-                LoadProvinceComboHT(txtTinhHienTai.Text, false);
-                LoadDistrictsCombo(txtDistricts.Text, this.cboProvince.EditValue?.ToString(), false);
-                LoadDistrictsComboHT(txtHuyenHienTai.Text, this.cboTinhHienTai.EditValue?.ToString(), false);
-                LoadCommuneCombo(txtCommune.Text, cboDistricts.EditValue?.ToString(), false, this.cboProvince.EditValue?.ToString());
-                LoadCommuneComboHT(txtXaHienTai.Text, cboHuyenHienTai.EditValue?.ToString(), false, this.cboTinhHienTai.EditValue?.ToString());
+                txtProvince.Text = "";
+                txtTinhHienTai.Text = "";
+                txtTinhKhaiSinh.Text = "";
+                LoadProvinceCombo("", false);
+                LoadProvinceComboHT("", false);
+                LoadProvinceComboKS("", false);
+                LoadDistrictsCombo("", "", false);
+                LoadDistrictsComboHT("", "", false);
+                LoadCommuneCombo("", "", false, "");
+                LoadCommuneComboHT("", "", false, "");
             }
             catch (Exception ex)
             {
@@ -867,6 +871,7 @@ namespace HIS.Desktop.Plugins.PatientInfo
                     txtDistricts.Text = "";
                     cboCommune.EditValue = null;
                     txtCommune.Text = "";
+                    LoadProvinceCombo("", false);
                     LoadDistrictsCombo("", null, false);
                     LoadCommuneCombo("", null, false, "");
                     cboProvince.Properties.Buttons[1].Visible = false;
@@ -1442,7 +1447,7 @@ namespace HIS.Desktop.Plugins.PatientInfo
                             {
                                 txtXaHienTai.EditValue = null;
                                 txtHuyenHienTai.EditValue = null;
-                                LoadDistrictsComboHT("", province.PROVINCE_CODE, false);
+                                LoadDistrictsComboHT("", province.PROVINCE_CODE, true);
                             }
                             txtTinhHienTai.Text = province.PROVINCE_CODE;
                         }
@@ -1547,7 +1552,7 @@ namespace HIS.Desktop.Plugins.PatientInfo
                                 cboXaHienTai.EditValue = null;
                                 txtXaHienTai.Text = "";
                             }
-                            LoadCommuneComboHT("", district.DISTRICT_CODE, false, "");
+                            LoadCommuneComboHT("", district.DISTRICT_CODE, true, "");
                         }
                     }
                     FocusMoveText(this.txtXaHienTai);
@@ -1915,6 +1920,7 @@ namespace HIS.Desktop.Plugins.PatientInfo
             {
                 if (e.Button.Kind == ButtonPredefines.Delete)
                 {
+                    cboTinhKhaiSinh.Properties.DataSource = GetProvincesForCurrentToggle("");
                     cboTinhKhaiSinh.EditValue = null;
                     txtTinhKhaiSinh.Text = "";
                     cboTinhKhaiSinh.Properties.Buttons[1].Visible = false;
@@ -1957,6 +1963,7 @@ namespace HIS.Desktop.Plugins.PatientInfo
                     txtHuyenHienTai.Text = "";
                     cboXaHienTai.EditValue = null;
                     txtXaHienTai.Text = "";
+                    LoadProvinceComboHT("", false);
                     LoadDistrictsComboHT("", null, false);
                     LoadCommuneComboHT("", null, false, "");
                     cboTinhHienTai.Properties.Buttons[1].Visible = false;
