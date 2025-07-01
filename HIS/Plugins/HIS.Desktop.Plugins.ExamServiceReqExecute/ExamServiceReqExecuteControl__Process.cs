@@ -633,9 +633,9 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             bool valid = true;
             try
             {
-                if (HisConfigCFG.RequiredAddressOption && treatment != null && (String.IsNullOrEmpty(treatment.TDL_PATIENT_PROVINCE_CODE) || String.IsNullOrEmpty(treatment.TDL_PATIENT_DISTRICT_CODE) || String.IsNullOrEmpty(treatment.TDL_PATIENT_COMMUNE_CODE)))
+                if (HisConfigCFG.RequiredAddressOption && treatment != null && (String.IsNullOrEmpty(treatment.TDL_PATIENT_PROVINCE_CODE) || String.IsNullOrEmpty(treatment.TDL_PATIENT_COMMUNE_CODE)))
                 {
-                    MessageBox.Show("Bệnh nhân chưa nhập tỉnh - huyện - xã. Vui lòng bổ sung.", ResourceMessage.ThongBao, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    MessageBox.Show("Bệnh nhân chưa nhập tỉnh - xã. Vui lòng bổ sung.", ResourceMessage.ThongBao, MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     valid = false;
                 }
             }

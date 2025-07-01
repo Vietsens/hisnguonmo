@@ -154,6 +154,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\lib\HIS\HIS.UC.ExamFinish\HIS.UC.ExamFinish.dll</HintPath>
     </Reference>
+    <Reference Include="HIS.UC.ExamTreatmentFinish">
+      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\HIS.UC.ExamTreatmentFinish.dll</HintPath>
+    </Reference>
     <Reference Include="HIS.UC.Hospitalize">
       <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\HIS.UC.Hospitalize.dll</HintPath>
     </Reference>
@@ -657,10 +660,6 @@
     <ProjectReference Include="..\..\..\UC\HIS.UC.ExamServiceAdd\HIS.UC.HisExamServiceAdd.csproj">
       <Project>{7c454da4-accb-4481-aa0c-28ee90e90827}</Project>
       <Name>HIS.UC.HisExamServiceAdd</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\UC\HIS.UC.ExamTreatmentFinish\HIS.UC.ExamTreatmentFinish.csproj">
-      <Project>{28902669-4b22-4d7e-9e39-3d63a35a4814}</Project>
-      <Name>HIS.UC.ExamTreatmentFinish</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\HIS.Desktop.ADO\HIS.Desktop.ADO.csproj">
       <Project>{808c25cd-0925-417f-bbf9-caf9604da879}</Project>
