@@ -680,10 +680,15 @@ namespace HIS.Desktop.Plugins.HisImportKsk.FormLoad
                     {
                         error += "Bắt buộc nhập mã quốc gia|";
                     }
-
+                    bool isNoDistrict = true;
+                    if (!string.IsNullOrEmpty(item.DISTRICT_CODE_STR))
+                    {
+                        isNoDistrict = false;
+                    }
                     if (!string.IsNullOrEmpty(item.PROVINCE_CODE_STR))
                     {
                         var lstSdaProvince = BackendDataWorker.Get<SDA_PROVINCE>().Where(o =>
+                        (isNoDistrict ? o.IS_NO_DISTRICT == 1 : o.IS_NO_DISTRICT != 1) &&
                         o.IS_ACTIVE == 1 
                         && o.PROVINCE_CODE.ToLower() == item.PROVINCE_CODE_STR.ToLower()
                         ).ToList();
@@ -747,15 +752,15 @@ namespace HIS.Desktop.Plugins.HisImportKsk.FormLoad
                             if (kskAdo.provinceId.HasValue)
                             {
                                 // Kiểm tra huyện có thuộc tỉnh đã chọn không
-                                var matchingDistrict = districtCandidates.Where
-                                   (d => d.PROVINCE_ID == kskAdo.provinceId.Value).ToList();
+                                var matchingDistrict = districtCandidates.FirstOrDefault
+                                   (d => d.PROVINCE_ID == kskAdo.provinceId.Value);
 
-                                if (kskAdo.districtId.HasValue)
+                                if (matchingDistrict != null)
                                 {
                                     // Gán đầy đủ thông tin huyện khi tìm thấy huyện hợp lệ
-                                    kskAdo.districtId = matchingDistrict.FirstOrDefault().ID;
-                                    kskAdo.DISTRICT_CODE = matchingDistrict.FirstOrDefault().DISTRICT_CODE;
-                                    kskAdo.DISTRICT_NAME = matchingDistrict.FirstOrDefault().DISTRICT_NAME;
+                                    kskAdo.districtId = matchingDistrict.ID;
+                                    kskAdo.DISTRICT_CODE = matchingDistrict.DISTRICT_CODE;
+                                    kskAdo.DISTRICT_NAME = matchingDistrict.DISTRICT_NAME;
 
                                 }
                                 else
@@ -764,10 +769,10 @@ namespace HIS.Desktop.Plugins.HisImportKsk.FormLoad
                                         districtCandidates.Select(d => $"{d.ID}").Distinct());
 
                                     Inventec.Common.Logging.LogSystem.Debug(
-                                        $"Huyện '{matchingDistrict.FirstOrDefault().DISTRICT_NAME}' không thuộc tỉnh '{kskAdo.PROVINCE_NAME}' " +
+                                        $"Huyện '{normDistCode}' không thuộc tỉnh '{kskAdo.PROVINCE_NAME}' " +
                                         $"(ID tỉnh: {kskAdo.provinceId}). ID các huyện tìm thấy: {provinceNames}");
 
-                                    error += $"Huyện {matchingDistrict.FirstOrDefault().DISTRICT_NAME} không thuộc tỉnh {kskAdo.PROVINCE_NAME}. Vui lòng kiểm tra lại.|";
+                                    error += $"Huyện {normDistCode} không thuộc tỉnh {kskAdo.PROVINCE_NAME}. Vui lòng kiểm tra lại.|";
                                 }
                             }
                             else
@@ -792,7 +797,7 @@ namespace HIS.Desktop.Plugins.HisImportKsk.FormLoad
                         // Không có mã huyện - tìm tỉnh có IS_NO_DISTRICT = 1
                         var noDistrictProvince = BackendDataWorker.Get<SDA.EFMODEL.DataModels.SDA_PROVINCE>()
                             .Where(p => p.IS_ACTIVE == IMSys.DbConfig.SDA_RS.COMMON.IS_ACTIVE__TRUE &&
-                                       p.IS_NO_DISTRICT == 1 &&
+                                       (isNoDistrict ? p.IS_NO_DISTRICT == 1 : p.IS_NO_DISTRICT != 1) &&
                                        p.ID == kskAdo.provinceId.Value)
                             .FirstOrDefault();
 
@@ -808,14 +813,25 @@ namespace HIS.Desktop.Plugins.HisImportKsk.FormLoad
 
                     if (!string.IsNullOrEmpty(item.COMMUNE_CODE_STR))
                     {
-                        string normCommCode = item.COMMUNE_CODE_STR.Trim();
+                        string normCommCode = item.COMMUNE_CODE_STR.ToUpper().Trim();
 
-                        var communeCandidates = BackendDataWorker.Get<SDA.EFMODEL.DataModels.SDA_COMMUNE>()
-                            .Where(c => c.IS_ACTIVE == IMSys.DbConfig.SDA_RS.COMMON.IS_ACTIVE__TRUE)
-                            .ToList()
-                            .Where(c => string.Equals(c.COMMUNE_CODE.Trim(), normCommCode, StringComparison.OrdinalIgnoreCase))
+                        var communeCandidates = BackendDataWorker.Get<SDA.EFMODEL.DataModels.V_SDA_COMMUNE>()
+                            .Where(c => 
+                                    c.IS_ACTIVE == IMSys.DbConfig.SDA_RS.COMMON.IS_ACTIVE__TRUE 
+                                    &&
+                                    (isNoDistrict ? c.IS_NO_DISTRICT == 1 : c.IS_NO_DISTRICT != 1)
+                                    &&
+                                    (c.COMMUNE_CODE??"").ToUpper().Trim() == normCommCode
+                            )
                             .ToList();
-
+                        if (isNoDistrict)
+                        {
+                            communeCandidates = communeCandidates.Where(w => w.PROVINCE_CODE == kskAdo.PROVINCE_CODE).ToList();
+                        }
+                        else
+                        {
+                            communeCandidates = communeCandidates.Where(w => w.PROVINCE_CODE == kskAdo.PROVINCE_CODE && w.DISTRICT_CODE == kskAdo.DISTRICT_CODE).ToList();
+                        }
                         if (communeCandidates.Any())
                         {
                             var firstCommune = communeCandidates[0];
