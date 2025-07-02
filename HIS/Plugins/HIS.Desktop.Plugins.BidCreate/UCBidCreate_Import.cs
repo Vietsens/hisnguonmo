@@ -71,6 +71,7 @@ namespace HIS.Desktop.Plugins.BidCreate
 
                             addListMedicineTypeToProcessList(listMedicine);
                             addListMaterialTypeToProcessList(listMaterial);
+                            //CheckDuplicateBatchDivisionCode();
                             LogSystem.Debug(LogUtil.TraceData(LogUtil.GetMemberName(() => ListMedicineTypeAdoProcess), ListMedicineTypeAdoProcess));
 
                             gridControlProcess.BeginUpdate();
@@ -297,6 +298,17 @@ namespace HIS.Desktop.Plugins.BidCreate
                     else if (Encoding.UTF8.GetByteCount(medicineType.BID_NUM_ORDER) > 50)
                     {
                         medicineType.ErrorDescriptions.Add("Số thứ tự thầu quá độ dài cho phép (50)");
+                    }
+
+                    medicineType.BATCH_DIVISION_CODE = medicineTypeImport.BATCH_DIVISION_CODE;
+
+                    if (String.IsNullOrWhiteSpace(medicineType.BATCH_DIVISION_CODE))
+                    {
+                        medicineType.ErrorDescriptions.Add("Không có mã phân lô");
+                    }
+                    else if (Encoding.UTF8.GetByteCount(medicineType.BATCH_DIVISION_CODE) > 25)
+                    {
+                        medicineType.ErrorDescriptions.Add("Mã phân lô quá độ dài cho phép (25)");
                     }
 
                     medicineType.IMP_PRICE = Inventec.Common.TypeConvert.Parse.ToDecimal(medicineTypeImport.IMP_PRICE.ToString());
@@ -673,6 +685,17 @@ namespace HIS.Desktop.Plugins.BidCreate
                         medicineType.ErrorDescriptions.Add("Số thứ tự thầu quá độ dài cho phép (50)");
                     }
 
+                    medicineType.BATCH_DIVISION_CODE = materialTypeImport.BATCH_DIVISION_CODE;
+
+                    if (String.IsNullOrWhiteSpace(medicineType.BATCH_DIVISION_CODE))
+                    {
+                        medicineType.ErrorDescriptions.Add("Không có mã phân lô");
+                    }
+                    else if (Encoding.UTF8.GetByteCount(medicineType.BATCH_DIVISION_CODE) > 25)
+                    {
+                        medicineType.ErrorDescriptions.Add("Mã phân lô quá độ dài cho phép (25)");
+                    }
+
                     medicineType.IMP_PRICE = materialTypeImport.IMP_PRICE;
                     if ((medicineType.IMP_PRICE ?? 0) < 0)
                     {
@@ -901,6 +924,62 @@ namespace HIS.Desktop.Plugins.BidCreate
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void CheckDuplicateBatchDivisionCode()
+        {
+            var duplicates = this.ListMedicineTypeAdoProcess
+                .Where(o => !string.IsNullOrWhiteSpace(o.BATCH_DIVISION_CODE))
+                .GroupBy(o => o.BATCH_DIVISION_CODE)
+                .Where(g => g.Count() > 1)
+                .ToList();
+
+            if (duplicates.Count == 0) return;
+
+            List<string> errorMessages = new List<string>();
+
+            foreach (var dup in duplicates)
+            {
+                var group = dup.ToList();
+                string batchCode = dup.Key;
+
+                var typeMap = new Dictionary<string, List<string>> {
+            { "thuốc", new List<string>() },
+            { "vật tư", new List<string>() },
+            { "máu", new List<string>() }
+                };
+
+                foreach (var item in group)
+                {
+                    switch (item.Type)
+                    {
+                        case var t when t == Base.GlobalConfig.THUOC:
+                            typeMap["thuốc"].Add(item.MEDICINE_TYPE_NAME);
+                            break;
+                        case var t when t == Base.GlobalConfig.VATTU:
+                            typeMap["vật tư"].Add(item.MEDICINE_TYPE_NAME);
+                            break;
+                        case var t when t == Base.GlobalConfig.MAU:
+                            typeMap["máu"].Add(item.MEDICINE_TYPE_NAME);
+                            break;
+                    }
+                }
+
+                var parts = typeMap
+                    .Where(p => p.Value.Any())
+                    .Select(p => $"{p.Key}: {string.Join(", ", p.Value.Distinct())}")
+                    .ToList();
+
+                if (parts.Count > 1)
+                {
+                    errorMessages.Add($"Mã phần lô đã được sử dụng bởi {string.Join("; ", parts)}");
+                }
+            }
+
+            if (errorMessages.Any())
+            {
+                MessageBox.Show(string.Join(Environment.NewLine, errorMessages), "Lỗi mã phần lô", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
         }
     }
