@@ -44,7 +44,7 @@ namespace HIS.Desktop.Plugins.ImportBlood
     public partial class UCImportBloodPlus
     {
         bool _isHienMau = false;
-      //qtcode
+        //qtcode
         private bool isInitializing = true;
         private bool isFirstLoad_BloodGiverForm = true;
         Dictionary<string, List<VHisBloodADO>> dicHisBloodGiver_BloodAdo = new Dictionary<string, List<VHisBloodADO>>();
@@ -108,6 +108,8 @@ namespace HIS.Desktop.Plugins.ImportBlood
                 {
                     isInitializing = true;
                     InitToggleSwitch();
+                    bool isUseTHX = Switch_THX.IsOn; 
+                    InitComboVirAddress();
                     InitComboGender();
                     InitComboWorkPlaceID();
                     InitComboGiveType();
@@ -121,14 +123,15 @@ namespace HIS.Desktop.Plugins.ImportBlood
                     InitComboBloodABO();
                     InitComboBloodRh();
                     InitComboTestResult();
-                    InitComboVirAddress();
                     
+
                     ValidControl_BloodGiverForm();
 
                     SetDefaultDataBloodGiverForm();
                     this.bloodGiverActionType = ActionType.Add;
                     EnableControlsByActionType_BloodGiverForm();
-                    //
+                    //qtcode
+                    Switch_THX.IsOn = isUseTHX; 
                     this.cboBloodVolumeID_BloodGiver.Size = new System.Drawing.Size(cboBloodVolumeID_BloodGiver.Size.Width + (lciXuTri.Location.X - lciBSKhamHM.Location.X), cboBloodVolumeID_BloodGiver.Size.Height);
                     lciBSKhamHM.Location = new Point(lciXuTri.Location.X, lciBSKhamHM.Location.Y);
                     lciTinhTrangLS.Location = new Point(lciLanHM.Location.X, lciTinhTrangLS.Location.Y);
@@ -207,7 +210,7 @@ namespace HIS.Desktop.Plugins.ImportBlood
                             }
                         }
                     }
-                    txtDOB_BloodGiver.Text = "";
+                    txtDOB_BloodGiver.Text = null;
                     dtDOB_BloodGiver.EditValue = null;
                 }
                 catch (Exception ex)
@@ -279,6 +282,11 @@ namespace HIS.Desktop.Plugins.ImportBlood
         {
             try
             {
+                //qtcode
+                cboDistrict.EditValue = null;
+                cboDistrictBlood_BloodGiver.EditValue = null; 
+
+
                 RemoveControlErrorDXValidation3();
                 txtGiveCode_BloodGiver.Text = "";
                 txtGiveName_BloodGiver.Text = "";
@@ -320,6 +328,9 @@ namespace HIS.Desktop.Plugins.ImportBlood
                 }
                 txtGiveCode_BloodGiver.Focus();
                 this.bloodGiverActionType = ActionType.Add;
+                //qtcode
+                txtDOB_BloodGiver.Text = null;
+                //qtcode
                 EnableControlsByActionType_BloodGiverForm();
             }
             catch (Exception ex)
@@ -900,7 +911,7 @@ namespace HIS.Desktop.Plugins.ImportBlood
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
-
+        //qtcode
         private void FillDataToBloodGiverForm(HisBloodGiverADO hisBloodGiverADO)
         {
             try
@@ -941,29 +952,42 @@ namespace HIS.Desktop.Plugins.ImportBlood
                 }
                 else
                 {
-                    toggleOn = true; // Mặc định bật toggle nếu không có tỉnh
+                    toggleOn = string.IsNullOrWhiteSpace(hisBloodGiverADO.DISTRICT_CODE_BLOOD);
                 }
 
                 Switch_THX.IsOn = toggleOn;
                 //SaveToggleState(toggleOn); // Lưu trạng thái ToggleSwitch
 
                 // Khởi tạo lại các combo địa chỉ dựa trên trạng thái ToggleSwitch
-                InitComboProvince();
+                //InitComboProvince();
                 InitComboDistrict();
-                InitComboCommune();
+
                 InitComboVirAddress();
+               
 
-                cboProvinceBlood_BloodGiver.EditValue = BackendDataWorker.Get<SDA_PROVINCE>().Where(o => o.PROVINCE_CODE == hisBloodGiverADO.PROVINCE_CODE_BLOOD).Select(o => o.ID).FirstOrDefault();
 
-                cboDistrictBlood_BloodGiver.EditValue = BackendDataWorker.Get<SDA_DISTRICT>().Where(o => o.DISTRICT_CODE == hisBloodGiverADO.DISTRICT_CODE_BLOOD).Select(o => o.ID).FirstOrDefault();
+                if (Switch_THX.IsOn)
+                {
+                    cboProvince.EditValue = BackendDataWorker.Get<SDA_PROVINCE>().Where(o => o.PROVINCE_CODE == hisBloodGiverADO.PROVINCE_CODE && o.IS_NO_DISTRICT == 1).Select(o => o.ID).FirstOrDefault();
+                    cboProvinceBlood_BloodGiver.EditValue = BackendDataWorker.Get<SDA_PROVINCE>().Where(o => o.PROVINCE_CODE == hisBloodGiverADO.PROVINCE_CODE && o.IS_NO_DISTRICT == 1).Select(o => o.ID).FirstOrDefault();
+                    cboVirAddress.EditValue = hisBloodGiverADO.VirAddress_ID_RAW;
+                    InitComboCommune();
+                    cboCommune.EditValue = BackendDataWorker.Get<SDA_COMMUNE>().Where(o => o.COMMUNE_CODE == hisBloodGiverADO.COMMUNE_CODE && o.DISTRICT_ID == null).Select(o => o.ID).FirstOrDefault();
+                }
+                else
+                {
+                    cboProvince.EditValue = BackendDataWorker.Get<SDA_PROVINCE>().Where(o => o.PROVINCE_CODE == hisBloodGiverADO.PROVINCE_CODE && o.IS_NO_DISTRICT != 1).Select(o => o.ID).FirstOrDefault();
+                    cboProvinceBlood_BloodGiver.EditValue = BackendDataWorker.Get<SDA_PROVINCE>().Where(o => o.PROVINCE_CODE == hisBloodGiverADO.PROVINCE_CODE_BLOOD && o.IS_NO_DISTRICT != 1).Select(o => o.ID).FirstOrDefault();
+                    cboDistrictBlood_BloodGiver.EditValue = BackendDataWorker.Get<SDA_DISTRICT>().Where(o => o.DISTRICT_CODE == hisBloodGiverADO.DISTRICT_CODE_BLOOD).Select(o => o.ID).FirstOrDefault();
+                    cboVirAddress.EditValue = hisBloodGiverADO.VirAddress_ID_RAW;
+                    cboDistrict.EditValue = BackendDataWorker.Get<SDA_DISTRICT>().Where(o => o.DISTRICT_CODE == hisBloodGiverADO.DISTRICT_CODE).Select(o => o.ID).FirstOrDefault();
+                    InitComboCommune();
+                    cboCommune.EditValue = BackendDataWorker.Get<SDA_COMMUNE>().Where(o => o.COMMUNE_CODE == hisBloodGiverADO.COMMUNE_CODE && o.DISTRICT_ID != null).Select(o => o.ID).FirstOrDefault();
+                }
 
-                cboVirAddress.EditValue = hisBloodGiverADO.VirAddress_ID_RAW;
 
-                cboProvince.EditValue = BackendDataWorker.Get<SDA_PROVINCE>().Where(o => o.PROVINCE_CODE == hisBloodGiverADO.PROVINCE_CODE).Select(o => o.ID).FirstOrDefault();
 
-                cboDistrict.EditValue = BackendDataWorker.Get<SDA_DISTRICT>().Where(o => o.DISTRICT_CODE == hisBloodGiverADO.DISTRICT_CODE).Select(o => o.ID).FirstOrDefault();
 
-                cboCommune.EditValue = BackendDataWorker.Get<SDA_COMMUNE>().Where(o => o.COMMUNE_CODE == hisBloodGiverADO.COMMUNE_CODE).Select(o => o.ID).FirstOrDefault();
 
                 txtAddress.Text = hisBloodGiverADO.ADDRESS;
                 txtGiveCard.Text = hisBloodGiverADO.GIVE_CARD;
@@ -2012,7 +2036,7 @@ namespace HIS.Desktop.Plugins.ImportBlood
             {
                 List<HIS.Desktop.LocalStorage.BackendData.ADO.CommuneADO> communeADOs = BackendDataWorker.Get<HIS.Desktop.LocalStorage.BackendData.ADO.CommuneADO>();
 
-                Inventec.Common.Logging.LogSystem.Debug("API Create Result: " + Inventec.Common.Logging.LogUtil.TraceData("InitComboVirAddressAAAAAAAA", communeADOs));
+                Inventec.Common.Logging.LogSystem.Debug("API Create Result: " + Inventec.Common.Logging.LogUtil.TraceData("InitComboVirAddressAAAAAAAA", communeADOs.Count()));
 
                 if (communeADOs != null)
                 {
@@ -2181,9 +2205,9 @@ namespace HIS.Desktop.Plugins.ImportBlood
                 }
 
                 ControlEditorLoader.Load(cboProvinceBlood_BloodGiver, dataSource, controlEditorADO);
-                cboProvinceBlood_BloodGiver.EditValue = null;
+                //cboProvinceBlood_BloodGiver.EditValue = null;
                 ControlEditorLoader.Load(cboProvince, dataSource, controlEditorADO);
-                cboProvince.EditValue = null;
+                //cboProvince.EditValue = null;
             }
             catch (Exception ex)
             {
