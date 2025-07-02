@@ -15,6 +15,11 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+using System; 
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Windows.Forms;
 using AutoMapper;
 using DevExpress.XtraBars;
 using DevExpress.XtraGrid.Views.Base;
@@ -39,17 +44,12 @@ using Inventec.Desktop.Common.Message;
 using MOS.EFMODEL.DataModels;
 using MOS.Filter;
 using SAR.EFMODEL.DataModels;
-using System;
 using System.Collections;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Configuration;
 using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using System.Windows.Forms;
 using ACS.Filter;
 using ACS.EFMODEL.DataModels;
 using HIS.Desktop.Plugins.TransactionList.Resources;
@@ -60,7 +60,9 @@ using Inventec.Desktop.Common.LanguageManager;
 using MOS.SDO;
 using HIS.Desktop.ADO;
 using Newtonsoft.Json;
-      
+using HIS.Desktop.Plugins.Library.ElectronicBill.Base;
+
+
 namespace HIS.Desktop.Plugins.TransactionList
 {
     public partial class frmTransactionList : HIS.Desktop.Utility.FormBase
@@ -2134,7 +2136,8 @@ namespace HIS.Desktop.Plugins.TransactionList
                         }
                         else
                         {
-                            rs = new Inventec.Common.Adapter.BackendAdapter(param).Post<V_HIS_TRANSACTION>("api/HisTransaction/Unlock", ApiConsumers.MosConsumer, data.ID, param);
+                            //rs = new Inventec.Common.Adapter.BackendAdapter(param).Post<V_HIS_TRANSACTION>("api/HisTransaction/Unlock", ApiConsumers.MosConsumer, data.ID, param);
+                            rs = new Inventec.Common.Adapter.BackendAdapter(param).Post<V_HIS_TRANSACTION>("HisTransaction/RepayUnlock", ApiConsumers.MosConsumer, sdoLock, param);
                         }
 
                     }
@@ -2365,6 +2368,7 @@ namespace HIS.Desktop.Plugins.TransactionList
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
+
 
         private void repositoryItemBtnRestore_ButtonClick(V_HIS_TRANSACTION data)
         {
@@ -2685,7 +2689,8 @@ namespace HIS.Desktop.Plugins.TransactionList
                                     bool setError = true;
 
                                     string serviceConfig = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>("HIS.DESKTOP.LIBRARY.ELECTRONIC_BILL.CONFIG");
-                                    if (listTransaction[i].EINVOICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_EINVOICE_TYPE.ID__VNPT || (!listTransaction[i].EINVOICE_TYPE_ID.HasValue && serviceConfig.Contains(ProviderType.VNPT)))
+                                    if (listTransaction[i].EINVOICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_EINVOICE_TYPE.ID__VNPT || (!listTransaction[i].EINVOICE_TYPE_ID.HasValue && 
+                                        serviceConfig.Contains(ProviderType.VNPT)))
                                     {
                                         List<long> ids = listTransactionVnptError.Where(o => o == listTransaction[i].ID).ToList();
                                         if (ids.Count <= 2)
