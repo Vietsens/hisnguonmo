@@ -1719,13 +1719,26 @@ namespace HIS.Desktop.Plugins.Register.Run
                         //Ngược lại gán lại datasource của combo THX bằng kết quả vừa tìm đc
                         else
                         {
-                            this.SetSourceValueTHX(listResult);
+                            this.SetSourceValueTHX(listResult); 
+                            this.cboCommune.EditValue = null;
+                            this.txtCommuneCode.Text = null;
+                            this.cboProvince.EditValue = null;
+                            this.txtProvinceCode.Text = null;
+                            this.cboDistrict.EditValue = null;
+                            this.txtDistrictCode.Text = null;
+
                         }
                     }
                     //Nếu không tìm thấy kết quả nào -> reset giá trị combo THX
                     else
                     {
                         this.SetSourceValueTHX(null);
+                        this.cboCommune.EditValue = null;
+                        this.txtCommuneCode.Text = null;
+                        this.cboProvince.EditValue = null;
+                        this.txtProvinceCode.Text = null;
+                        this.cboDistrict.EditValue = null;
+                        this.txtDistrictCode.Text = null;
                     }
                 }
             }
@@ -1777,6 +1790,8 @@ namespace HIS.Desktop.Plugins.Register.Run
                                 this.LoadXaCombo("", commune.PROVINCE_CODE, false);
                                 cboCommune.EditValue = commune.COMMUNE_CODE;
                                 txtCommuneCode.Text = commune.COMMUNE_CODE;
+                                this.cboProvince.EditValue = commune.PROVINCE_CODE;
+                                this.txtProvinceCode.Text = commune.PROVINCE_CODE;
                             }
                             else
                             {
@@ -3203,7 +3218,6 @@ namespace HIS.Desktop.Plugins.Register.Run
                 this.currentHisExamServiceReqResultSDO = null;
                 this.resultHisPatientProfileSDO = null;
                 this.serviceReqDetailSDOs = null;
-                ChangeDataSourceAddress();
                 this.isNotCheckTT = true;
                 lciDistrict.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
                 layoutControlItem24.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
@@ -3218,6 +3232,7 @@ namespace HIS.Desktop.Plugins.Register.Run
                 this.HospitalizeReasonCode = "";
                 this.HospitalizeReasonName = "";
 
+                ChangeDataSourceAddress();
                 RegisterTimer(currentModule.ModuleLink, "timerNewForm", 500, timerNewForm_Tick);
                 StartTimer(currentModule.ModuleLink, "timerNewForm");
             }
