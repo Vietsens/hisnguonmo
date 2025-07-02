@@ -648,6 +648,9 @@ namespace HIS.Desktop.Plugins.ImportBlood
                 if (!btnNew.Enabled)
                     return;
                 WaitingManager.Show();
+                //qtcode
+                
+                var isUseNewStructureInThisFunc = Switch_THX.IsOn; 
                 ResetControlCommon();
                 this.FillDataToGridBloodType();
                 this.SetDefaultImpMestType();
@@ -661,6 +664,9 @@ namespace HIS.Desktop.Plugins.ImportBlood
                 SetDefaultDataBloodGiverForm();
                 this.dicHisBloodGiver = new Dictionary<string, HisBloodGiverADO>();
                 this.dicHisBloodGiver_BloodAdo = new Dictionary<string, List<VHisBloodADO>>();
+
+                Switch_THX.IsOn = isUseNewStructureInThisFunc; 
+                txtDOB_BloodGiver.Text = null; 
                 WaitingManager.Hide();
             }
             catch (Exception ex)

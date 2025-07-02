@@ -160,16 +160,18 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.VNPT
 
                                 Inventec.Common.Mapper.DataObjectMapper.Map<ReplaceInvoice>(replaceInvoice, invoices.First().InvoiceDetail);
 
-                                string transactionCode = "";
-                                HisTransactionFilter ssFilter = new HisTransactionFilter();
-                                ssFilter.ID = ElectronicBillDataInput.Transaction.ORIGINAL_TRANSACTION_ID.Value;
-                                var originalTran = new Inventec.Common.Adapter.BackendAdapter(new CommonParam()).Get<List<HIS_TRANSACTION>>("api/HisTransaction/Get", ApiConsumers.MosConsumer, ssFilter, null);
-                                if (originalTran != null && originalTran.Count > 0)
-                                    transactionCode = originalTran.First().TRANSACTION_CODE;
+                                //key hóa đơn gốc
+                                electronicBillInput.fKey = ElectronicBillDataInput.Transaction.TDL_ORIGINAL_EI_CODE;
+                                replaceInvoice.key = invoices.First().Key;
+                                replaceInvoice.Products = new List<Product>();
+                                foreach (var item in invoices.First().InvoiceDetail.Products)
+                                {
+                                    Product product = new Product();
+                                    Inventec.Common.Mapper.DataObjectMapper.Map<Product>(product, item);
+                                    replaceInvoice.Products.Add(product);
+                                }
 
-                                replaceInvoice.key = string.Format("{0}_{1}_{2}", patientCode, treatmentCode, transactionCode);
-
-                                electronicBillInput.replaceInvoices = new List<ReplaceInvoice> { replaceInvoice };
+                                electronicBillInput.replaceInvoice = replaceInvoice;
                             }
                             else if (TypeStr == "1")
                             {
@@ -277,6 +279,10 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.VNPT
                         {
                             result.InvoiceCode = this.ElectronicBillDataInput.InvoiceCode;
                         }
+                        else if (electronicBillInput.replaceInvoice != null)
+                        {
+                            result.InvoiceCode = electronicBillInput.replaceInvoice.key;
+                        }
 
                         result.InvoiceSys = ProviderType.VNPT;
                         result.InvoiceLink = billResult.InvoiceLink;
@@ -309,6 +315,10 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.VNPT
                                 else if (ElectronicBillTypeEnum == ElectronicBillType.ENUM.GET_INVOICE_INFO)
                                 {
                                     result.InvoiceCode = this.ElectronicBillDataInput.InvoiceCode;
+                                }
+                                else if (electronicBillInput.replaceInvoice != null)
+                                {
+                                    result.InvoiceCode = electronicBillInput.replaceInvoice.key;
                                 }
 
                                 result.InvoiceSys = ProviderType.VNPT;
@@ -384,6 +394,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.VNPT
             {
                 //Ví dụ:OK:01GTKT3/001;AA/12E-key1_1,key2_2,key3_3,key4_4,key5_5
                 //OK: pattern;serial1-key1_num1,key2_num12,key3_num3…
+                //OK:01GTKT3/001;AA/12E;0000002
                 if (!String.IsNullOrWhiteSpace(p))
                 {
                     if (p.Substring(0, 2).ToLower() == "ok")

@@ -1,6 +1,7 @@
 ﻿using DevExpress.Data;
 using DevExpress.Utils;
 using DevExpress.XtraBars.Controls;
+using DevExpress.XtraCharts.Native;
 using DevExpress.XtraEditors;
 using DevExpress.XtraEditors.Controls;
 using DevExpress.XtraEditors.DXErrorProvider;
@@ -361,40 +362,47 @@ namespace HIS.Desktop.Plugins.HisPatientBankAccount.HisPatientBankAccount
                 }
 
                 UpdateDTOFromDataForm(ref updateDTO, ref updateBank);
+                bool checkBank = this.CheckBankAccount(param, ref updateDTO);
 
-                if (ActionType == GlobalVariables.ActionAdd)
+                if (checkBank)
                 {
-                    updateDTO.IS_ACTIVE = IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE;
-                    updateDTO.PATIENT_ID = currentTreatment.PATIENT_ID;
-                    var resultData = new BackendAdapter(param).Post<MOS.EFMODEL.DataModels.HIS_PATIENT_BANK_ACCOUNT>(
-                        HisRequestUriStore.CREATE,
-                        ApiConsumers.MosConsumer,
-                        updateDTO,
-                        param
-                    );
-
-                    if (resultData != null)
+                    updateDTO.IS_CHECK = 1;
+                    updateDTO.PAYEE_NAME = this.txtReceiver.Text.Trim();
+                    if (ActionType == GlobalVariables.ActionAdd)
                     {
-                        success = true;
-                        FillDataToGridControl();
-                        ResetFormData();
+                        updateDTO.IS_ACTIVE = IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE;
+                        updateDTO.PATIENT_ID = currentTreatment.PATIENT_ID;
+                        var resultData = new BackendAdapter(param).Post<MOS.EFMODEL.DataModels.HIS_PATIENT_BANK_ACCOUNT>(
+                            HisRequestUriStore.CREATE,
+                            ApiConsumers.MosConsumer,
+                            updateDTO,
+                            param
+                        );
+
+                        if (resultData != null)
+                        {
+                            success = true;
+                            FillDataToGridControl();
+                            ResetFormData();
+                        }
+                    }
+                    else
+                    {
+                        var resultData = new BackendAdapter(param).Post<MOS.EFMODEL.DataModels.HIS_PATIENT_BANK_ACCOUNT>(
+                            HisRequestUriStore.UPDATE,
+                            ApiConsumers.MosConsumer,
+                            updateDTO,
+                            param
+                        );
+
+                        if (resultData != null)
+                        {
+                            success = true;
+                            FillDataToGridControl();
+                        }
                     }
                 }
-                else
-                {
-                    var resultData = new BackendAdapter(param).Post<MOS.EFMODEL.DataModels.HIS_PATIENT_BANK_ACCOUNT>(
-                        HisRequestUriStore.UPDATE,
-                        ApiConsumers.MosConsumer,
-                        updateDTO,
-                        param
-                    );
-
-                    if (resultData != null)
-                    {
-                        success = true;
-                        FillDataToGridControl();
-                    }
-                }
+                
 
                 if (success)
                 {
@@ -738,12 +746,23 @@ namespace HIS.Desktop.Plugins.HisPatientBankAccount.HisPatientBankAccount
         {
             try
             {
-                DevExpress.XtraGrid.Views.Grid.GridView view = sender as DevExpress.XtraGrid.Views.Grid.GridView;
-
+                GridView gridView = sender as GridView;
+                if (e.Column.FieldName == "CHECK_BANK")
+                {
+                    V_HIS_PATIENT_BANK_ACCOUNT v_HIS_PATIENT_BANK_ACCOUNT = this.gridViewFormList.GetRow(e.RowHandle) as V_HIS_PATIENT_BANK_ACCOUNT;
+                    if (v_HIS_PATIENT_BANK_ACCOUNT != null && v_HIS_PATIENT_BANK_ACCOUNT.IS_CHECK == 1)
+                    {
+                        e.RepositoryItem = this.repoDelete;
+                    }
+                    else
+                    {
+                        e.RepositoryItem = null;
+                    }
+                }
             }
             catch (Exception ex)
             {
-                Inventec.Common.Logging.LogSystem.Error(ex);
+                Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
         private void gridViewFormList_CustomUnboundColumnData(object sender, DevExpress.XtraGrid.Views.Base.CustomColumnDataEventArgs e)
@@ -1105,6 +1124,101 @@ namespace HIS.Desktop.Plugins.HisPatientBankAccount.HisPatientBankAccount
             }
 
             return base.ProcessCmdKey(ref msg, keyData);
+        }
+
+        private bool CheckBankAccount(CommonParam param, ref HIS_PATIENT_BANK_ACCOUNT currentDTO)
+        {
+            bool result;
+            try
+            {
+                BankAccountSDO bankAccountSDO = new BankAccountSDO();
+                bankAccountSDO.BankNumber = currentDTO.PAYEE_BANK_ID.ToString();
+                bankAccountSDO.AccountNumber = currentDTO.PAYEE_ACCOUNT_NUMBER;
+                BankAccountResultSDO bankAccountResultSDO = new BackendAdapter(param).Post<BankAccountResultSDO>(HisRequestUriStore.CheckBank, ApiConsumers.MosConsumer, bankAccountSDO, param);
+                bool Check = bankAccountResultSDO == null;
+                if (Check)
+                {
+                    XtraMessageBox.Show("Không thể kiểm tra tài khoản, vui lòng thử lại sau.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                    result = false;
+                }
+                else
+                {
+                    bool CheckStatusFalse = bankAccountResultSDO != null && bankAccountResultSDO.Status != "1";
+                    if (CheckStatusFalse)
+                    {
+                        XtraMessageBox.Show("Tài khoản hiện đang tạm khóa vui lòng chọn tài khoản khác.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                        result = false;
+                    }
+                    else
+                    {
+                        bool CheckStatusTrue = bankAccountResultSDO != null && bankAccountResultSDO.Status == "1";
+                        if (CheckStatusTrue)
+                        {
+                            this.txtReceiver.Text = bankAccountResultSDO.PayeeName;
+                        }
+                        result = true;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                LogSystem.Error(ex);
+                result = false;
+            }
+            return result;
+        }
+
+        private void repoCheck_ButtonClick(object sender, ButtonPressedEventArgs e)
+        {
+            try
+            {
+                CommonParam commonParam = new CommonParam();
+                BankAccountSDO bankAccountSDO = new BankAccountSDO();
+                bankAccountSDO.BankNumber = this.cboListBank.EditValue.ToString().Trim();
+                bankAccountSDO.AccountNumber = this.txtAccNumber.Text.Trim();
+                BankAccountResultSDO bankAccountResultSDO = new BackendAdapter(commonParam).Post<BankAccountResultSDO>("api/HisPatientBankAccount/CheckBankAccount", ApiConsumers.MosConsumer, bankAccountSDO, commonParam);
+                bool Check = bankAccountResultSDO == null;
+                if (Check)
+                {
+                    XtraMessageBox.Show("Không thể kiểm tra tài khoản, vui lòng thử lại sau.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                }
+                else
+                {
+                    bool CheckStatusFalse = bankAccountResultSDO != null && bankAccountResultSDO.Status != "1";
+                    if (CheckStatusFalse)
+                    {
+                        XtraMessageBox.Show("Tài khoản hiện đang tạm khóa vui lòng chọn tài khoản khác.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                    }
+                    else
+                    {
+                        bool CheckStatusTrue = bankAccountResultSDO != null && bankAccountResultSDO.Status == "1";
+                        if (CheckStatusTrue)
+                        {
+                            V_HIS_PATIENT_BANK_ACCOUNT v_HIS_PATIENT_BANK_ACCOUNT = (V_HIS_PATIENT_BANK_ACCOUNT)this.gridViewFormList.GetFocusedRow();
+                            HisPatientBankAccountFilter hisPatientBankAccountFilter = new HisPatientBankAccountFilter();
+                            hisPatientBankAccountFilter.ID = v_HIS_PATIENT_BANK_ACCOUNT.ID;
+                            HIS_PATIENT_BANK_ACCOUNT his_PATIENT_BANK_ACCOUNT = new BackendAdapter(commonParam).Get<List<HIS_PATIENT_BANK_ACCOUNT>>(HisRequestUriStore.GET, ApiConsumers.MosConsumer, hisPatientBankAccountFilter, commonParam).SingleOrDefault();
+                            if (his_PATIENT_BANK_ACCOUNT != null)
+                            {
+                                HIS_PATIENT_BANK_ACCOUNT BANK_ACCOUNT = new HIS_PATIENT_BANK_ACCOUNT();
+                                BANK_ACCOUNT = his_PATIENT_BANK_ACCOUNT;
+                                BANK_ACCOUNT.IS_CHECK = 1;
+                                BANK_ACCOUNT.PAYEE_NAME = bankAccountResultSDO.PayeeName;
+                                var resultData = new BackendAdapter(commonParam).Post<HIS_PATIENT_BANK_ACCOUNT>(HisRequestUriStore.UPDATE, ApiConsumers.MosConsumer, BANK_ACCOUNT, commonParam);
+                                
+                                if (resultData != null)
+                                {
+                                    this.FillDataToGridControl();
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                LogSystem.Error(ex);
+            }
         }
     }
 }

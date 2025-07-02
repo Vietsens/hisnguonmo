@@ -48,6 +48,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Inventec.Common.ToKhaiYTe;
+using System.Diagnostics;
 
 namespace HIS.Desktop.Plugins.LisSampleUpdate
 {
@@ -215,7 +216,7 @@ namespace HIS.Desktop.Plugins.LisSampleUpdate
 
                                         if (commune != null && district != null && province != null)
                                         {
-                                            this.LoadXaCombo("", commune.DISTRICT_CODE, false);
+                                            this.LoadXaCombo("", commune.DISTRICT_CODE, commune.PROVINCE_CODE, false);
                                             this.cboCommune.EditValue = commune.COMMUNE_CODE;
                                             this.txtCommuneCode.Text = commune.COMMUNE_CODE;
                                             this.cboTHX.EditValue = "C" + commune.ID;//ID_RAW
@@ -675,7 +676,7 @@ namespace HIS.Desktop.Plugins.LisSampleUpdate
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
-
+        
         private void txtMaTHX_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
         {
             try
@@ -683,14 +684,17 @@ namespace HIS.Desktop.Plugins.LisSampleUpdate
                 if (e.KeyCode == Keys.Enter)
                 {
                     string maTHX = (sender as DevExpress.XtraEditors.TextEdit).Text.Trim();
+                    bool isNoDistrictMode = this.toggleSwitchAddress.IsOn;
+
                     if (String.IsNullOrEmpty(maTHX))
                     {
-                        this.SetSourceValueTHX(BackendDataWorker.Get<HIS.Desktop.LocalStorage.BackendData.ADO.CommuneADO>());
+                        this.SetSourceValueTHX(this.getTHXByToggle());
                         return;
                     }
-                    this.SetSourceValueTHX(BackendDataWorker.Get<HIS.Desktop.LocalStorage.BackendData.ADO.CommuneADO>());//Load lai trong TH cbo bi set lai dataSource
+
+                    this.SetSourceValueTHX(this.getTHXByToggle()); ;//Load lai trong TH cbo bi set lai dataSource
                     this.cboTHX.EditValue = null;
-                    List<HIS.Desktop.LocalStorage.BackendData.ADO.CommuneADO> listResult = BackendDataWorker.Get<HIS.Desktop.LocalStorage.BackendData.ADO.CommuneADO>()
+                    List<HIS.Desktop.LocalStorage.BackendData.ADO.CommuneADO> listResult = this.getTHXByToggle()
                         .Where(o => (o.SEARCH_CODE_COMMUNE != null
                             && o.SEARCH_CODE_COMMUNE.ToUpper().StartsWith(maTHX.ToUpper()))).ToList();
                     if (listResult != null && listResult.Count >= 1)
@@ -714,7 +718,16 @@ namespace HIS.Desktop.Plugins.LisSampleUpdate
                                 this.txtProvinceCode.Text = districtDTO.PROVINCE_CODE;
                                 //this.dlgSetAddressUCProvinceOfBirth(districtDTO, true);
                             }
-                            this.LoadXaCombo("", dataNoCommunes[0].DISTRICT_CODE, false);
+                            else
+                            {
+                                if (toggleSwitchAddress.IsOn)
+                                {
+                                    this.cboProvince.EditValue = dataNoCommunes[0].PROVINCE_CODE;
+                                    this.txtProvinceCode.Text = dataNoCommunes[0].PROVINCE_CODE;
+                                }
+                            }
+                            
+                            this.LoadXaCombo("", dataNoCommunes[0].DISTRICT_CODE, dataNoCommunes[0].PROVINCE_CODE, false);
                             this.cboDistrict.EditValue = dataNoCommunes[0].DISTRICT_CODE;
                             this.txtDistrictCode.Text = dataNoCommunes[0].DISTRICT_CODE;
 
@@ -723,7 +736,7 @@ namespace HIS.Desktop.Plugins.LisSampleUpdate
                         }
                         else if (listResult.Count == 1)
                         {
-                            this.SetSourceValueTHX(BackendDataWorker.Get<HIS.Desktop.LocalStorage.BackendData.ADO.CommuneADO>());
+                            this.SetSourceValueTHX(this.getTHXByToggle()); ;
                             this.cboTHX.Properties.Buttons[1].Visible = true;
                             this.cboTHX.EditValue = listResult[0].ID_RAW;
                             this.txtMaTHX.Text = listResult[0].SEARCH_CODE_COMMUNE;
@@ -736,7 +749,15 @@ namespace HIS.Desktop.Plugins.LisSampleUpdate
                                 this.txtProvinceCode.Text = districtDTO.PROVINCE_CODE;
                                 //this.dlgSetAddressUCProvinceOfBirth(districtDTO, true);
                             }
-                            this.LoadXaCombo("", listResult[0].DISTRICT_CODE, false);
+                            else
+                            {
+                                if (toggleSwitchAddress.IsOn)
+                                {
+                                    this.cboProvince.EditValue = listResult[0].PROVINCE_CODE;
+                                    this.txtProvinceCode.Text = listResult[0].PROVINCE_CODE;
+                                }
+                            }
+                            this.LoadXaCombo(listResult[0].COMMUNE_CODE, listResult[0].DISTRICT_CODE, listResult[0].PROVINCE_CODE, false);
                             this.cboDistrict.EditValue = listResult[0].DISTRICT_CODE;
                             this.txtDistrictCode.Text = listResult[0].DISTRICT_CODE;
                             this.cboCommune.EditValue = listResult[0].COMMUNE_CODE;
@@ -779,7 +800,7 @@ namespace HIS.Desktop.Plugins.LisSampleUpdate
                     this.cboTHX.EditValue = null;
                     this.cboTHX.Properties.Buttons[1].Visible = false;
                     this.txtMaTHX.Text = "";
-
+                    this.cboTHX.Properties.DataSource = getTHXByToggle();
                     this.SetValueHeinAddressByAddressOfPatient();
                     //this.SetValueForUCPlusInfo();
                 }
@@ -804,6 +825,8 @@ namespace HIS.Desktop.Plugins.LisSampleUpdate
                         Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => commune), commune));
                         if (commune != null)
                         {
+                            this.cboProvince.EditValue = commune.PROVINCE_CODE;
+                            this.txtProvinceCode.Text = commune.PROVINCE_CODE;
                             //Trường hợp chọn huyện/xã sẽ tự động điền thông tin vào ô tỉnh/huyện/xã & focus xuống ô địa chỉ
                             this.txtMaTHX.Text = commune.SEARCH_CODE_COMMUNE;
                             if (!String.IsNullOrEmpty(commune.DISTRICT_CODE))
@@ -816,7 +839,7 @@ namespace HIS.Desktop.Plugins.LisSampleUpdate
                                     this.txtProvinceCode.Text = districtDTO.PROVINCE_CODE;
                                     //this.dlgSetAddressUCProvinceOfBirth(districtDTO, true);
                                 }
-                                this.LoadXaCombo("", commune.DISTRICT_CODE, false);
+                                this.LoadXaCombo("", commune.DISTRICT_CODE, commune.PROVINCE_CODE, false);
                                 this.cboDistrict.EditValue = commune.DISTRICT_CODE;
                                 this.txtDistrictCode.Text = commune.DISTRICT_CODE;
 
@@ -848,14 +871,13 @@ namespace HIS.Desktop.Plugins.LisSampleUpdate
                                     LoadXaTheoTinh(commune.PROVINCE_CODE);
                                     this.cboCommune.EditValue = commune.COMMUNE_CODE;
                                     this.txtCommuneCode.Text = commune.COMMUNE_CODE;
+                                    LogSystem.Debug("this.cboCommune.EditValue: " + this.cboCommune.EditValue);
+                                    LogSystem.Debug("this.txtCommuneCode.Text: " + this.txtCommuneCode.Text);
                                 }
                                 else
                                 {
                                     this.LoadHuyenCombo("", commune.PROVINCE_CODE, false);
                                 }
-                                this.cboProvince.EditValue = commune.PROVINCE_CODE;
-                                this.txtProvinceCode.Text = commune.PROVINCE_CODE;
-
                                 FocusToAddress();
                             }
                         }
@@ -1032,7 +1054,7 @@ namespace HIS.Desktop.Plugins.LisSampleUpdate
                                 this.cboProvince.EditValue = district.PROVINCE_CODE;
                                 this.txtProvinceCode.Text = district.PROVINCE_CODE;
                             }
-                            this.LoadXaCombo("", district.DISTRICT_CODE, false);
+                            this.LoadXaCombo("", district.DISTRICT_CODE, district.PROVINCE_CODE, false);
                             this.txtDistrictCode.Text = district.DISTRICT_CODE;
                             this.cboDistrict.EditValue = district.DISTRICT_CODE;
                             this.cboCommune.EditValue = null;
@@ -1082,7 +1104,7 @@ namespace HIS.Desktop.Plugins.LisSampleUpdate
                             {
                                 this.cboProvince.EditValue = district.PROVINCE_CODE;
                             }
-                            this.LoadXaCombo("", district.DISTRICT_CODE, false);
+                            this.LoadXaCombo("", district.DISTRICT_CODE, district.PROVINCE_CODE, false);
                             this.txtDistrictCode.Text = district.DISTRICT_CODE;
                             this.cboCommune.EditValue = null;
                             this.txtCommuneCode.Text = "";
@@ -1108,7 +1130,7 @@ namespace HIS.Desktop.Plugins.LisSampleUpdate
                     {
                         districtCode = this.cboDistrict.EditValue.ToString();
                     }
-                    this.LoadXaCombo((sender as DevExpress.XtraEditors.TextEdit).Text.ToUpper(), districtCode, true);
+                    this.LoadXaCombo((sender as DevExpress.XtraEditors.TextEdit).Text.ToUpper(), districtCode,this.cboProvince.EditValue?.ToString(), true);
                 }
             }
             catch (Exception ex)
@@ -1408,7 +1430,7 @@ namespace HIS.Desktop.Plugins.LisSampleUpdate
                             this.cboProvince.EditValue = listResult[0].PROVINCE_CODE;
                             this.txtProvinceCode.Text = listResult[0].PROVINCE_CODE;
                         }
-                        this.LoadXaCombo("", listResult[0].DISTRICT_CODE, false);
+                        this.LoadXaCombo("", listResult[0].DISTRICT_CODE, listResult[0].PROVINCE_CODE, false);
 
                         if (isExpand)
                         {
@@ -1436,14 +1458,27 @@ namespace HIS.Desktop.Plugins.LisSampleUpdate
             }
         }
 
-        private void LoadXaCombo(string searchCode, string districtCode, bool isExpand)
+        private void LoadXaCombo(string searchCode, string districtCode, string provideCode, bool isExpand)
         {
             try
             {
-                List<SDA.EFMODEL.DataModels.V_SDA_COMMUNE> listResult = getCommuneByToggle()
-                    .Where(o => (String.IsNullOrEmpty(searchCode) || (!String.IsNullOrEmpty(searchCode) && ((o.SEARCH_CODE ?? "").Contains(searchCode ?? "") || o.COMMUNE_CODE == searchCode)))
-                        && (String.IsNullOrEmpty(districtCode) || o.DISTRICT_CODE == districtCode)).ToList();
-                this.InitComboCommon(this.cboCommune, listResult, "COMMUNE_CODE", "RENDERER_COMMUNE_NAME", "SEARCH_CODE");
+                bool isNoDistrictMode = this.toggleSwitchAddress.IsOn;
+                List<SDA.EFMODEL.DataModels.V_SDA_COMMUNE> listResult = null;
+                if (isNoDistrictMode)
+                {
+                     listResult = getCommuneByToggle()
+                       .Where(o => (String.IsNullOrEmpty(searchCode) || (!String.IsNullOrEmpty(searchCode) && ((o.SEARCH_CODE ?? "").Contains(searchCode ?? "") || o.COMMUNE_CODE == searchCode)))
+                           && (String.IsNullOrEmpty(provideCode) || o.PROVINCE_CODE == provideCode)).ToList();
+                    this.InitComboCommon(this.cboCommune, listResult, "COMMUNE_CODE", "RENDERER_COMMUNE_NAME", "SEARCH_CODE");
+                }
+                else
+                {
+                     listResult = getCommuneByToggle()
+                       .Where(o => (String.IsNullOrEmpty(searchCode) || (!String.IsNullOrEmpty(searchCode) && ((o.SEARCH_CODE ?? "").Contains(searchCode ?? "") || o.COMMUNE_CODE == searchCode)))
+                           && (String.IsNullOrEmpty(districtCode) || o.DISTRICT_CODE == districtCode)).ToList();
+                    this.InitComboCommon(this.cboCommune, listResult, "COMMUNE_CODE", "RENDERER_COMMUNE_NAME", "SEARCH_CODE");
+                }
+                   
                 if (String.IsNullOrEmpty(searchCode) && String.IsNullOrEmpty(districtCode) && listResult.Count > 0)
                 {
                     this.cboCommune.EditValue = null;
@@ -1634,6 +1669,28 @@ namespace HIS.Desktop.Plugins.LisSampleUpdate
                     this.cboProvince.EditValue = null;
                 }
 
+                //if (!string.IsNullOrEmpty(provinceCode))
+                //{
+                //    // Ưu tiên chọn xã theo tỉnh nếu có mã tỉnh
+                //    var firstCommune = listCommuneTHXAll.FirstOrDefault(o => o.PROVINCE_CODE == provinceCode);
+                //    if (firstCommune != null)
+                //    {
+                //        this.cboTHX.EditValue = "C" + firstCommune.ID;
+                //        this.txtMaTHX.Text = firstCommune.SEARCH_CODE_COMMUNE;
+                //    }
+                //    else
+                //    {
+                //        this.cboTHX.EditValue = null;
+                //        this.txtMaTHX.Text = "";
+                //    }
+                //}
+                //else
+                //{
+                //    // Không chọn gì sẵn, để user tự chọn
+                //    this.cboTHX.EditValue = null;
+                //    this.txtMaTHX.Text = "";
+                //}
+
                 V_SDA_DISTRICT district = null;
                 if ((this.sample != null && !String.IsNullOrEmpty(this.sample.DISTRICT_NAME)))
                 {
@@ -1702,7 +1759,7 @@ namespace HIS.Desktop.Plugins.LisSampleUpdate
                             }
                         }
 
-                        this.LoadXaCombo("", commune.DISTRICT_CODE, false);
+                        this.LoadXaCombo("", commune.DISTRICT_CODE, commune.PROVINCE_CODE, false);
                         this.cboCommune.EditValue = commune.COMMUNE_CODE;
                         this.txtCommuneCode.Text = commune.COMMUNE_CODE;
                         this.cboTHX.EditValue = "C" + commune.ID;//ID_RAW
@@ -1734,10 +1791,54 @@ namespace HIS.Desktop.Plugins.LisSampleUpdate
                         var communeTHX = BackendDataWorker.Get<HIS.Desktop.LocalStorage.BackendData.ADO.CommuneADO>().FirstOrDefault(o =>
                         (o.SEARCH_CODE_COMMUNE) == (province.SEARCH_CODE + district.SEARCH_CODE)
                         && o.ID < 0);
+                        LogSystem.Debug("Giá trị province.SEARCH_CODE + district.SEARCH_CODE: " + province.SEARCH_CODE+ district.SEARCH_CODE);
+
+                        LogSystem.Debug("Giá trị  communeTHXcu: " + communeTHX);
+
                         if (communeTHX != null)
                         {
+                            LogSystem.Debug("Giá trị  communeTHX.ID_RAWcu: " + communeTHX.ID_RAW);
                             this.cboTHX.EditValue = communeTHX.ID_RAW;
                             this.txtMaTHX.Text = communeTHX.SEARCH_CODE_COMMUNE;
+                        }
+                    }
+                    else if (this.sample != null && this.sample.COMMUNE_CODE != null && this.sample.PROVINCE_CODE != null)
+                    {
+                        var communeTX = BackendDataWorker.Get<HIS.Desktop.LocalStorage.BackendData.ADO.CommuneADO>()
+                            .FirstOrDefault(o => o.COMMUNE_CODE == sample.COMMUNE_CODE && o.PROVINCE_CODE == sample.PROVINCE_CODE);
+
+                        var provinceTX = getProvideByToggle().FirstOrDefault(o => o.PROVINCE_CODE == sample.PROVINCE_CODE);
+
+                        if (communeTX != null && provinceTX != null)
+                        {
+
+                            var searchCodeTHX = communeTX.SEARCH_CODE + provinceTX.SEARCH_CODE  ;
+                            LogSystem.Debug("Giá trị  searchCodeTHX: " + searchCodeTHX);
+
+                            var communeTHX = BackendDataWorker.Get<HIS.Desktop.LocalStorage.BackendData.ADO.CommuneADO>()
+                                .FirstOrDefault(o => o.SEARCH_CODE_COMMUNE == searchCodeTHX );
+                            LogSystem.Debug("Giá trị  communeTHX: " + communeTHX);
+
+                            if (communeTHX != null)
+                            {
+                                LogSystem.Debug("Giá trị  communeTHX.ID_RAW " + communeTHX.ID);
+                                this.cboTHX.EditValue = "C" + communeTHX.ID;
+                                this.txtMaTHX.Text = communeTHX.SEARCH_CODE_COMMUNE;
+                                if (provinceTX != null)
+                                {
+                                    txtProvinceCode.Text = provinceTX.PROVINCE_CODE;
+                                    cboProvince.EditValue = provinceTX.PROVINCE_CODE;
+                                    if (this.toggleSwitchAddress.IsOn)
+                                    {
+                                        LoadXaTheoTinh(provinceTX.PROVINCE_CODE);
+                                        if( communeTHX != null)
+                                        {
+                                            this.cboCommune.EditValue = communeTHX.COMMUNE_CODE;
+                                            this.txtCommuneCode.Text = communeTHX.COMMUNE_CODE;
+                                        }
+                                    }
+                                }
+                            }
                         }
                     }
                 }
@@ -1770,7 +1871,7 @@ namespace HIS.Desktop.Plugins.LisSampleUpdate
                             this.txtDistrictCode.Text = district.DISTRICT_CODE;
                             this.cboDistrict.EditValue = district.DISTRICT_CODE;
 
-                            this.LoadXaCombo("", district.DISTRICT_CODE, false);
+                            this.LoadXaCombo("", district.DISTRICT_CODE, district.PROVINCE_CODE, false);
 
                             this.cboCommune.EditValue = commune.COMMUNE_CODE;
                             this.txtCommuneCode.Text = commune.COMMUNE_CODE;
@@ -3220,7 +3321,7 @@ namespace HIS.Desktop.Plugins.LisSampleUpdate
                             if (commune != null)
                             {
                                 txtCommuneCode.Text = commune.COMMUNE_CODE;
-                                this.LoadXaCombo(txtCommuneCode.Text.Trim(), cboDistrict.EditValue != null ? cboDistrict.EditValue.ToString() : "", true);
+                                this.LoadXaCombo(txtCommuneCode.Text.Trim(), cboDistrict.EditValue != null ? cboDistrict.EditValue.ToString() : "",cboProvince.EditValue?.ToString(), true);
                                 cboCommune.EditValue = commune.COMMUNE_CODE;
                             }
                             else
@@ -3439,6 +3540,13 @@ namespace HIS.Desktop.Plugins.LisSampleUpdate
                         .Where(o => o.IS_ACTIVE == 1 && (isNoDistrictMode ? o.IS_NO_DISTRICT == 1 : o.IS_NO_DISTRICT != 1))
                         .ToList();
         }
+        private List<HIS.Desktop.LocalStorage.BackendData.ADO.CommuneADO> getTHXByToggle()
+        {
+            bool isNoDistrictMode = this.toggleSwitchAddress.IsOn;
+
+            return BackendDataWorker.Get<HIS.Desktop.LocalStorage.BackendData.ADO.CommuneADO>()
+                    .Where(o => o.IS_ACTIVE == 1 && (isNoDistrictMode ? o.IS_NO_DISTRICT == 1 : o.IS_NO_DISTRICT != 1)).ToList();
+        }
         private void OnToggleSwitchAddressChanged()
         {
             bool isNoDistrictMode = this.toggleSwitchAddress.IsOn;
@@ -3448,35 +3556,10 @@ namespace HIS.Desktop.Plugins.LisSampleUpdate
             string provinceCode = this.sample != null ? this.sample.PROVINCE_CODE : null;
 
             // Nếu có mã tỉnh, lọc theo tỉnh
-            var listCommuneTHXAll = BackendDataWorker.Get<HIS.Desktop.LocalStorage.BackendData.ADO.CommuneADO>()
-            .Where(o => (isNoDistrictMode ? o.IS_NO_DISTRICT == 1 : o.IS_NO_DISTRICT != 1))
-            .ToList();
-
+            var listCommuneTHXAll = getTHXByToggle();
+            
             // Gán toàn bộ danh sách phù hợp trước
             this.cboTHX.Properties.DataSource = listCommuneTHXAll;
-
-            if (!string.IsNullOrEmpty(provinceCode))
-            {
-                // Ưu tiên chọn xã theo tỉnh nếu có mã tỉnh
-                var firstCommune = listCommuneTHXAll.FirstOrDefault(o => o.PROVINCE_CODE == provinceCode);
-                if (firstCommune != null)
-                {
-                    this.cboTHX.EditValue = "C" + firstCommune.ID;
-                    this.txtMaTHX.Text = firstCommune.SEARCH_CODE_COMMUNE;
-                }
-                else
-                {
-                    this.cboTHX.EditValue = null;
-                    this.txtMaTHX.Text = "";
-                }
-            }
-            else
-            {
-                // Không chọn gì sẵn, để user tự chọn
-                this.cboTHX.EditValue = null;
-                this.txtMaTHX.Text = "";
-            }
-
 
             // 2. Load tỉnh
             var listProvinces = getProvideByToggle();
@@ -3487,17 +3570,17 @@ namespace HIS.Desktop.Plugins.LisSampleUpdate
 
 
             // Nếu có mã tỉnh từ bệnh nhân và tồn tại trong danh sách thì chọn
-            if (!string.IsNullOrEmpty(provinceCode) && listProvinces.Any(p => p.PROVINCE_CODE == provinceCode))
-            {
-                this.cboProvince.EditValue = provinceCode;
-                this.txtProvinceCode.Text = provinceCode;
-            }
-            else
-            {
-                // Không có mã tỉnh → để người dùng chọn
-                this.cboProvince.EditValue = null;
-                this.txtProvinceCode.Text = "";
-            }
+            //if (!string.IsNullOrEmpty(provinceCode) && listProvinces.Any(p => p.PROVINCE_CODE == provinceCode))
+            //{
+            //    this.cboProvince.EditValue = provinceCode;
+            //    this.txtProvinceCode.Text = provinceCode;
+            //}
+            //else
+            //{
+            //    // Không có mã tỉnh → để người dùng chọn
+            //    this.cboProvince.EditValue = null;
+            //    this.txtProvinceCode.Text = "";
+            //}
 
             // 3. Huyện
             if (isNoDistrictMode)
@@ -3601,6 +3684,15 @@ namespace HIS.Desktop.Plugins.LisSampleUpdate
                 // Gọi xử lý thay đổi
                 setToolTipToggle();
                 OnToggleSwitchAddressChanged();
+                txtMaTHX.Text = "";
+                txtProvinceCode.Text = "";
+                cboProvince.EditValue = null;
+                txtAddress.Text = "";
+                cboTHX.EditValue = null;
+                txtDistrictCode.Text="";
+                cboDistrict.EditValue = null;
+                txtCommuneCode.Text = "";
+                cboCommune.EditValue = null;
                 //(txtBarcode.Enabled == true)
                 //{ }
                 // --- Lưu trạng thái toggle vào cache toàn cục (giống Visible) ---
@@ -3664,9 +3756,13 @@ namespace HIS.Desktop.Plugins.LisSampleUpdate
         }
         private void LoadXaTheoTinh(string provinceCode)
         {
+            LogSystem.Debug("provinceCode: " + provinceCode);
+
+
             var listCommunes = getCommuneByToggle()
                 .Where(o => o.PROVINCE_CODE == provinceCode)
                 .ToList();
+            LogSystem.Debug("listCommunes: " + listCommunes.Count());
 
             this.cboCommune.Properties.DataSource = listCommunes;
 

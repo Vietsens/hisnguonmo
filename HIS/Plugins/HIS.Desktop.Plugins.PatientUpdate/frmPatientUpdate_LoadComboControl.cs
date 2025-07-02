@@ -1,4 +1,4 @@
-/* IVT
+﻿/* IVT
  * @Project : hisnguonmo
  * Copyright (C) 2017 INVENTEC
  *  
@@ -53,6 +53,9 @@ namespace HIS.Desktop.Plugins.PatientUpdate
         {
             try
             {
+                // Lấy danh sách tỉnh phù hợp với trạng thái toggle
+                List<SDA.EFMODEL.DataModels.V_SDA_PROVINCE> listResult = GetProvincesForCurrentToggle(searchCode);
+                cboProvince.Properties.DataSource = GetProvincesForCurrentToggle("");
                 if (String.IsNullOrEmpty(searchCode))
                 {
                     cboCommune.Properties.DataSource = null;
@@ -62,21 +65,41 @@ namespace HIS.Desktop.Plugins.PatientUpdate
                     cboDistricts.EditValue = null;
                     txtDistricts.Text = "";
                     cboProvince.EditValue = null;
-                    FocusShowPopup(cboProvince, gridLookUpEdit1View);
+                    if (isExpand)
+                    {
+                        FocusShowPopup(cboProvince, gridLookUpEdit1View);
+                    }
                     //PopupLoader.SelectFirstRowPopup(cboProvince);
                 }
                 else
                 {
-                    List<SDA.EFMODEL.DataModels.V_SDA_PROVINCE> listResult = new List<SDA.EFMODEL.DataModels.V_SDA_PROVINCE>();
-                    listResult = BackendDataWorker.Get<V_SDA_PROVINCE>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.SDA_RS.COMMON.IS_ACTIVE__TRUE).ToList().Where(o => o.SEARCH_CODE.Contains(searchCode) || o.PROVINCE_NAME.Contains(searchCode)).ToList();
+                    //List<SDA.EFMODEL.DataModels.V_SDA_PROVINCE> listResult = new List<SDA.EFMODEL.DataModels.V_SDA_PROVINCE>();
+                    //listResult = BackendDataWorker.Get<V_SDA_PROVINCE>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.SDA_RS.COMMON.IS_ACTIVE__TRUE).ToList().Where(o => o.SEARCH_CODE.Contains(searchCode) || o.PROVINCE_NAME.Contains(searchCode)).ToList();
                     if (listResult.Count == 1)
                     {
                         cboProvince.EditValue = listResult[0].PROVINCE_CODE;
                         txtProvince.Text = listResult[0].SEARCH_CODE;
-                        LoadDistrictsCombo("", listResult[0].PROVINCE_CODE, false);
+
+                        // Nếu đang ở chế độ địa chỉ cấp 2 (Tỉnh-Xã), không load huyện
+                        if (!IsAddressLevel2())
+                        {
+                            LoadDistrictsCombo("", listResult[0].PROVINCE_CODE, false);
+                        }
+                        else
+                        {
+                            // Ở chế độ Tỉnh-Xã, reset huyện và chỉ load xã theo tỉnh
+                            cboDistricts.Properties.DataSource = null;
+                            cboDistricts.EditValue = null;
+                            txtDistricts.Text = "";
+                            LoadCommuneCombo("", "", false, listResult[0].PROVINCE_CODE); // Chỉ load xã theo tỉnh đã chọn
+                        }
+
                         if (isExpand)
                         {
-                            FocusMoveText(txtDistricts);
+                            if (!IsAddressLevel2())
+                                FocusMoveText(txtDistricts);
+                            else
+                                FocusMoveText(txtCommune);
                         }
                     }
                     else if (listResult.Count > 1)
@@ -90,7 +113,7 @@ namespace HIS.Desktop.Plugins.PatientUpdate
                         cboProvince.EditValue = null;
                         if (isExpand)
                         {
-                            cboProvince.Properties.DataSource = listResult;
+                            //cboProvince.Properties.DataSource = listResult;
                             FocusShowPopup(cboProvince, gridLookUpEdit1View);
                         }
                     }
@@ -134,6 +157,9 @@ namespace HIS.Desktop.Plugins.PatientUpdate
         {
             try
             {
+                // Lấy danh sách tỉnh phù hợp với trạng thái toggle
+                List<SDA.EFMODEL.DataModels.V_SDA_PROVINCE> listResult = GetProvincesForCurrentToggle(searchCode);
+                cboHTProvinceName.Properties.DataSource = GetProvincesForCurrentToggle("");
                 if (String.IsNullOrEmpty(searchCode))
                 {
                     cboHTCommuneName.Properties.DataSource = null;
@@ -143,18 +169,36 @@ namespace HIS.Desktop.Plugins.PatientUpdate
                     cboHTDistrictName.EditValue = null;
                     txtHTDistrictCode.Text = "";
                     cboHTProvinceName.EditValue = null;
-                    FocusShowPopup(cboHTProvinceName, gridView3);
+                    if (isExpand)
+                    {
+                        FocusShowPopup(cboHTProvinceName, gridView3);
+                    }
                     //PopupLoader.SelectFirstRowPopup(cboProvince);
                 }
                 else
                 {
-                    List<SDA.EFMODEL.DataModels.V_SDA_PROVINCE> listResult = new List<SDA.EFMODEL.DataModels.V_SDA_PROVINCE>();
-                    listResult = BackendDataWorker.Get<V_SDA_PROVINCE>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.SDA_RS.COMMON.IS_ACTIVE__TRUE).ToList().Where(o => o.SEARCH_CODE != null && o.SEARCH_CODE.Contains(searchCode) || (o.PROVINCE_NAME != null && o.PROVINCE_NAME.Contains(searchCode))).ToList();
+                    //List<SDA.EFMODEL.DataModels.V_SDA_PROVINCE> listResult = new List<SDA.EFMODEL.DataModels.V_SDA_PROVINCE>();
+                    //listResult = BackendDataWorker.Get<V_SDA_PROVINCE>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.SDA_RS.COMMON.IS_ACTIVE__TRUE).ToList().Where(o => o.SEARCH_CODE != null && o.SEARCH_CODE.Contains(searchCode) || (o.PROVINCE_NAME != null && o.PROVINCE_NAME.Contains(searchCode))).ToList();
                     if (listResult.Count == 1)
                     {
                         cboHTProvinceName.EditValue = listResult[0].PROVINCE_CODE;
                         txtHTProvinceCode.Text = listResult[0].SEARCH_CODE;
-                        LoadHTDistrictsCombo("", listResult[0].PROVINCE_CODE, false);
+
+                        if (!IsAddressLevel2())
+                        {
+                            // Chế độ Tỉnh-Huyện-Xã: load huyện như cũ
+                            LoadHTDistrictsCombo("", listResult[0].PROVINCE_CODE, false);
+                        }
+                        else
+                        {
+                            // Chế độ Tỉnh-Xã: reset huyện, chỉ load xã theo tỉnh
+                            cboHTDistrictName.Properties.DataSource = null;
+                            cboHTDistrictName.EditValue = null;
+                            txtHTDistrictCode.Text = "";
+                            LoadHTCommuneCombo("", "", false, listResult[0].PROVINCE_CODE); // Chỉ load xã theo tỉnh đã chọn
+                        }
+
+                        //LoadHTDistrictsCombo("", listResult[0].PROVINCE_CODE, false);
                         if (isExpand)
                         {
                             FocusMoveText(txtHTDistrictCode);
@@ -171,7 +215,7 @@ namespace HIS.Desktop.Plugins.PatientUpdate
                         cboHTProvinceName.EditValue = null;
                         if (isExpand)
                         {
-                            cboHTProvinceName.Properties.DataSource = listResult;
+                            //cboHTProvinceName.Properties.DataSource = listResult;
                             FocusShowPopup(cboHTProvinceName, gridView3);
                         }
                     }
@@ -188,6 +232,79 @@ namespace HIS.Desktop.Plugins.PatientUpdate
         }
 
         public void LoadDistrictsCombo(string searchCode, string provinceCode, bool isExpand)
+        {
+            try
+            {
+                if (IsAddressLevel2()) // Nếu đang ở chế độ Tỉnh-Xã (không có huyện)
+                {
+                    // Ẩn/reset control huyện, chỉ load xã theo tỉnh
+                    cboDistricts.Properties.DataSource = null;
+                    cboDistricts.EditValue = null;
+                    txtDistricts.Text = "";
+
+                    // Load xã theo tỉnh đã chọn
+                    LoadCommuneCombo("", "", false, provinceCode);
+
+                    if (isExpand)
+                    {
+                        FocusMoveText(txtCommune);
+                    }
+                    return;
+                }
+
+                // Chế độ Tỉnh-Huyện-Xã (mặc định)
+                List<SDA.EFMODEL.DataModels.V_SDA_DISTRICT> listResult = BackendDataWorker.Get<V_SDA_DISTRICT>()
+                    .Where(o => o.DISTRICT_CODE.Contains(searchCode) && (provinceCode == "" || o.PROVINCE_CODE == provinceCode))
+                    .ToList();
+
+                List<ColumnInfo> columnInfos = new List<ColumnInfo>();
+                columnInfos.Add(new ColumnInfo("SEARCH_CODE", "", 100, 1));
+                columnInfos.Add(new ColumnInfo("DISTRICT_NAME", "", 200, 2));
+                ControlEditorADO controlEditorADO = new ControlEditorADO("DISTRICT_NAME", "DISTRICT_CODE", columnInfos, false, 300);
+                controlEditorADO.ImmediatePopup = true;
+                ControlEditorLoader.Load(cboDistricts, listResult, controlEditorADO);
+                if (String.IsNullOrEmpty(searchCode) && String.IsNullOrEmpty(provinceCode) && listResult.Count > 0)
+                {
+                    cboCommune.Properties.DataSource = null;
+                    cboCommune.EditValue = null;
+                    txtCommune.Text = "";
+                    cboDistricts.EditValue = null;
+                    FocusShowPopup(cboDistricts, gridView1);
+                    //PopupProcess.SelectFirstRowPopup(cboDistricts);
+                }
+                else
+                {
+                    if (listResult.Count == 1)
+                    {
+                        cboDistricts.EditValue = listResult[0].DISTRICT_CODE;
+                        txtDistricts.Text = listResult[0].SEARCH_CODE;
+                        LoadCommuneCombo("", listResult[0].DISTRICT_CODE, false, listResult[0].PROVINCE_CODE);
+                        if (isExpand)
+                        {
+                            FocusMoveText(txtCommune);
+                        }
+                    }
+                    else if (listResult.Count > 1)
+                    {
+                        cboCommune.Properties.DataSource = null;
+                        cboCommune.EditValue = null;
+                        txtCommune.Text = "";
+                        cboDistricts.EditValue = null;
+                        if (isExpand)
+                        {
+                            FocusShowPopup(cboDistricts, gridView1);
+                            //PopupProcess.SelectFirstRowPopup(cboDistricts);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        public void LoadDistrictsCombo_OLD(string searchCode, string provinceCode, bool isExpand)
         {
             try
             {
@@ -216,7 +333,7 @@ namespace HIS.Desktop.Plugins.PatientUpdate
                     {
                         cboDistricts.EditValue = listResult[0].DISTRICT_CODE;
                         txtDistricts.Text = listResult[0].SEARCH_CODE;
-                        LoadCommuneCombo("", listResult[0].DISTRICT_CODE, false);
+                        LoadCommuneCombo("", listResult[0].DISTRICT_CODE, false, listResult[0].PROVINCE_CODE);
                         if (isExpand)
                         {
                             FocusMoveText(txtCommune);
@@ -246,8 +363,24 @@ namespace HIS.Desktop.Plugins.PatientUpdate
         {
             try
             {
+                if (IsAddressLevel2()) // Nếu đang ở chế độ Tỉnh-Xã (không có huyện)
+                {
+                    // Ẩn/reset control huyện, chỉ load xã theo tỉnh
+                    cboHTDistrictName.Properties.DataSource = null;
+                    cboHTDistrictName.EditValue = null;
+                    txtHTDistrictCode.Text = "";
+
+                    // Load xã theo tỉnh đã chọn
+                    LoadHTCommuneCombo("", "", false, provinceCode);
+
+                    if (isExpand)
+                    {
+                        FocusMoveText(txtHTDistrictCode);
+                    }
+                    return;
+                }
                 List<SDA.EFMODEL.DataModels.V_SDA_DISTRICT> listResult = new List<SDA.EFMODEL.DataModels.V_SDA_DISTRICT>();
-                listResult = BackendDataWorker.Get<V_SDA_DISTRICT>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.SDA_RS.COMMON.IS_ACTIVE__TRUE).ToList().Where(o => ((o.SEARCH_CODE != null && o.SEARCH_CODE.Contains(searchCode)) || (o.DISTRICT_NAME != null && o.DISTRICT_NAME.Contains(searchCode))) && (provinceCode == "" || (o.PROVINCE_CODE != null && o.PROVINCE_CODE == provinceCode))).ToList();
+                listResult = BackendDataWorker.Get<V_SDA_DISTRICT>().Where(o => o.DISTRICT_CODE.Contains(searchCode) && (provinceCode == "" || o.PROVINCE_CODE == provinceCode)).ToList();
 
                 List<ColumnInfo> columnInfos = new List<ColumnInfo>();
                 columnInfos.Add(new ColumnInfo("SEARCH_CODE", "", 100, 1));
@@ -263,7 +396,10 @@ namespace HIS.Desktop.Plugins.PatientUpdate
                     txtHTCommuneCode.Text = "";
                     txtHTDistrictCode.Text = "";
                     cboHTDistrictName.EditValue = null;
-                    FocusShowPopup(cboHTDistrictName, gridView4);
+                    if (isExpand)
+                    {
+                        FocusShowPopup(cboHTDistrictName, gridView4);
+                    }
                     //PopupProcess.SelectFirstRowPopup(cboDistricts);
                 }
                 else
@@ -272,7 +408,7 @@ namespace HIS.Desktop.Plugins.PatientUpdate
                     {
                         cboHTDistrictName.EditValue = listResult[0].DISTRICT_CODE;
                         txtHTDistrictCode.Text = listResult[0].SEARCH_CODE;
-                        LoadHTCommuneCombo("", listResult[0].DISTRICT_CODE, false);
+                        LoadHTCommuneCombo("", listResult[0].DISTRICT_CODE, false, listResult[0].PROVINCE_CODE);
                         if (isExpand)
                         {
                             FocusMoveText(txtHTCommuneCode);
@@ -294,7 +430,10 @@ namespace HIS.Desktop.Plugins.PatientUpdate
                     }
                     else
                     {
-                        FocusShowPopup(cboHTDistrictName, gridView4);
+                        if (isExpand)
+                        {
+                            FocusShowPopup(cboHTDistrictName, gridView4);
+                        }
                     }
                 }
             }
@@ -304,7 +443,49 @@ namespace HIS.Desktop.Plugins.PatientUpdate
             }
         }
 
-        private void LoadCommuneCombo(string searchCode, string districtCode, bool isExpand)
+        private void LoadCommuneCombo(string searchCode, string districtCode, bool isExpand, string provinceCode)
+        {
+            try
+            {
+                List<SDA.EFMODEL.DataModels.V_SDA_COMMUNE> communes = GetCommunesForCurrentToggle(provinceCode, districtCode, searchCode);
+                cboCommune.Properties.DataSource = communes;
+
+                if (String.IsNullOrEmpty(searchCode) && String.IsNullOrEmpty(districtCode) && communes.Count > 0)
+                {
+                    cboCommune.EditValue = null;
+                    txtCommune.Text = "";
+                    if (isExpand)
+                    {
+                        FocusShowPopup(cboCommune, gridView2);
+                    }
+                }
+                else
+                {
+                    if (communes.Count == 1)
+                    {
+                        cboCommune.EditValue = communes[0].COMMUNE_CODE;
+                        txtCommune.Text = communes[0].COMMUNE_CODE;
+                        if (isExpand)
+                        {
+                            FocusMoveText(txtNation);
+                        }
+                    }
+                    else if (isExpand && communes.Count > 1)
+                    {
+                        cboCommune.EditValue = null;
+                        if (isExpand)
+                        {
+                            FocusShowPopup(cboCommune, gridView2);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+        private void LoadCommuneCombo_OLD(string searchCode, string districtCode, bool isExpand, string provinceCode)
         {
             try
             {
@@ -359,7 +540,51 @@ namespace HIS.Desktop.Plugins.PatientUpdate
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
-        private void LoadHTCommuneCombo(string searchCode, string districtCode, bool isExpand)
+
+        private void LoadHTCommuneCombo(string searchCode, string districtCode, bool isExpand, string provinceCode)
+        {
+            try
+            {
+                List<SDA.EFMODEL.DataModels.V_SDA_COMMUNE> communes = GetCommunesForCurrentToggle(provinceCode, districtCode, searchCode);
+                cboHTCommuneName.Properties.DataSource = communes;
+
+                if (string.IsNullOrEmpty(searchCode) && string.IsNullOrEmpty(districtCode) && communes.Count > 0)
+                {
+                    cboHTCommuneName.EditValue = null;
+                    txtHTCommuneCode.Text = "";
+                    if (isExpand)
+                    {
+                        FocusShowPopup(cboHTCommuneName, gridView5);
+                    }
+                    //
+                }
+                else
+                {
+                    if (communes.Count == 1)
+                    {
+                        cboHTCommuneName.EditValue = communes[0].COMMUNE_CODE;
+                        txtHTCommuneCode.Text = communes[0].COMMUNE_CODE;
+                        if (isExpand)
+                        {
+                            FocusMoveText(txtHTCommuneCode);
+                        }
+                    }
+                    else if (isExpand && communes.Count > 1)
+                    {
+                        cboHTCommuneName.EditValue = null;
+                        if (isExpand)
+                        {
+                            FocusShowPopup(cboHTCommuneName, gridView5);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+        private void LoadHTCommuneCombo_OLD(string searchCode, string districtCode, bool isExpand)
         {
             try
             {
@@ -743,6 +968,29 @@ namespace HIS.Desktop.Plugins.PatientUpdate
                     var item = ((List<SDA.EFMODEL.DataModels.V_SDA_COMMUNE>)cbo.Properties.DataSource)[e.RecordIndex];
                     if (item != null)
                         e.Value = string.Format("{0} - {1} {2} - {3}", item.DISTRICT_INITIAL_NAME, item.DISTRICT_NAME, item.INITIAL_NAME, item.COMMUNE_NAME);
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void InitControlState()
+        {
+            try
+            {
+                this.controlStateWorker = new HIS.Desktop.Library.CacheClient.ControlStateWorker();
+                this.currentControlStateRDO = controlStateWorker.GetData("HIS.Desktop.Plugins.PatientUpdate");
+                if (this.currentControlStateRDO != null && this.currentControlStateRDO.Count > 0)
+                {
+                    foreach (var item in this.currentControlStateRDO)
+                    {
+                        if (item.KEY == toggleSwitch1.Name)
+                        {
+                            toggleSwitch1.IsOn = item.VALUE == "1";
+                        }
+                    }
                 }
             }
             catch (Exception ex)
