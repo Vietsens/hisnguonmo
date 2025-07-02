@@ -32,5 +32,6 @@ namespace HIS.Desktop.Plugins.BidCreate.ADO
         public string BID_NUM_ORDER { get; set; }
         public string BID_GROUP_CODE { get; set; }
         public string BID_PACKAGE_CODE { get; set; }
+        public string BATCH_DIVISION_CODE { get; set; }
     }
 }

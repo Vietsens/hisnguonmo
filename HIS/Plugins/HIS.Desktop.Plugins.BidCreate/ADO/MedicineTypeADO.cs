@@ -68,6 +68,10 @@ namespace HIS.Desktop.Plugins.BidCreate.ADO
         public string DAY_LIFESPAN_STR { get; set; }
         public string HOUR_LIFESPAN_STR { get; set; }
         public long? INFORMATION_BID { get; set; }
+        public string BATCH_DIVISION_CODE { get; set; }
+
+        public string ErrorMessageBlock { get; set; }
+        public DevExpress.XtraEditors.DXErrorProvider.ErrorType ErrorTypeBlock { get; set; }
         public MedicineTypeADO() { }
         public bool IsNotNullRow
         {
@@ -97,7 +101,8 @@ namespace HIS.Desktop.Plugins.BidCreate.ADO
                     string.IsNullOrEmpty(REGISTER_NUMBER) &&
                     string.IsNullOrEmpty(MANUFACTURER_CODE) &&
                     string.IsNullOrEmpty(NATIONAL_NAME) &&
-                    string.IsNullOrEmpty(BID_APTHAU_CODE)
+                    string.IsNullOrEmpty(BID_APTHAU_CODE) &&
+                    string.IsNullOrEmpty(BATCH_DIVISION_CODE) 
                     )
                     valid = false;
                 return valid;

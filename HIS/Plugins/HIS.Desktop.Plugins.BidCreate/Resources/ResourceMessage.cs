@@ -170,6 +170,21 @@ namespace HIS.Desktop.Plugins.BidCreate.Resources
                 return "";
             }
         }
+        internal static string MaPhanLoQuaDai
+        {
+            get
+            {
+                try
+                {
+                    return Inventec.Common.Resource.Get.Value("MaPhanLoQuaDai", languageMessage, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(ex);
+                }
+                return "";
+            }
+        }
 
         internal static string DangSua
         {
