@@ -8,7 +8,7 @@ namespace HIS.Desktop.Plugins.HisPatientBankAccount
 {
     internal class HisRequestUriStore
     {
-        
+        internal const string CheckBank = "api/HisPatientBankAccount/CheckBankAccount";
         internal const string CREATE = "api/HisPatientBankAccount/Create";
         internal const string DELETE = "api/HisPatientBankAccount/Delete";
         internal const string UPDATE = "api/HisPatientBankAccount/Update";

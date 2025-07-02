@@ -1648,6 +1648,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                 if (String.IsNullOrEmpty(txtLadder.Text))
                     this.txtTutorial.Text = "";
                 this.memHtu.Text = "";
+                
                 this.VisibleInputControl(true);
 
                 Inventec.Desktop.Controls.ControlWorker.ValidationProviderRemoveControlError(this.dxValidProviderBoXung, this.dxErrorProvider1);

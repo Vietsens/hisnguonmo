@@ -5631,7 +5631,7 @@ o.SERVICE_ID == medi.SERVICE_ID && o.TDL_INTRUCTION_TIME.ToString().Substring(0,
                 }
                 else if (e.Control && e.KeyCode == Keys.A)
                 {
-                    txtMediMatyForPrescription.SelectAll();
+                    txtMediMatyForPrescription.SelectAll(); 
                     e.Handled = true;
                 }
             }
@@ -5693,11 +5693,11 @@ o.SERVICE_ID == medi.SERVICE_ID && o.TDL_INTRUCTION_TIME.ToString().Substring(0,
             }
             catch (Exception ex)
             {
-                Inventec.Common.Logging.LogSystem.Error(ex);
+                Inventec.Common.Logging.LogSystem.Error(ex);   
             }
         }
 
-        private void VisibleInputControl(bool is4Control)
+        private void VisibleInputControl(bool is4Control)      
         {
             try
             {
@@ -5709,7 +5709,7 @@ o.SERVICE_ID == medi.SERVICE_ID && o.TDL_INTRUCTION_TIME.ToString().Substring(0,
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
-
+            
         private void chkPreKidneyShift_CheckedChanged(object sender, EventArgs e)
         {
             try
