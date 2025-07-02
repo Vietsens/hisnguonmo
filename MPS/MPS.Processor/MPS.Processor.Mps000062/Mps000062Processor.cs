@@ -5368,7 +5368,7 @@ namespace MPS.Processor.Mps000062
                                         List<string> serviceTts = new List<string>();
                                         foreach (var service in serviceType.ToList())
                                         {
-                                            var s1 = (service.SERVICE_NAME ?? service.TDL_SERVICE_NAME) + " ";
+                                            var s1 = (service.SERVICE_NAME ?? service.TDL_SERVICE_NAME) + (!string.IsNullOrEmpty(service.INSTRUCTION_NOTE) ? "    -     " + service.INSTRUCTION_NOTE : "");
                                             serviceTts.Add(string.Format("{0}", s1));
 
                                             lstServiceCls.Add(new ServiceCLS() { SERVICE_TYPE_NAME = namesvt.SERVICE_TYPE_NAME, SERVICE_NAME = s1, AMOUNT = service.AMOUNT, INSTRUCTION_NOTE = service.INSTRUCTION_NOTE, NUM_ORDER_SERVICE_TYPE = namesvt.NUM_ORDER ?? Int64.MinValue, IsGoupService = service.IsGoupService, USE_TIME = service.USE_TIME, TDL_INTRUCTION_TIME = service.TDL_INTRUCTION_TIME, TDL_SERVICE_UNIT_ID = service.TDL_SERVICE_UNIT_ID, SERVICE_ID = service.SERVICE_ID, serviceSplits = service.serviceSplits, TDL_SERVICE_TYPE_ID = service.TDL_SERVICE_TYPE_ID });
