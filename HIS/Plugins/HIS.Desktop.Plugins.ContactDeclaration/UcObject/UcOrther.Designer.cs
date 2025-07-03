@@ -45,7 +45,6 @@ namespace HIS.Desktop.Plugins.ContactDeclaration.UcObject
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject1 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject2 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject3 = new DevExpress.Utils.SerializableAppearanceObject();
@@ -102,7 +101,7 @@ namespace HIS.Desktop.Plugins.ContactDeclaration.UcObject
             this.layoutControlItem14 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem15 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem16 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.dxValidationProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider(this.components);
+            this.dxValidationProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
             this.layoutControl1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.toggleSwitchDataChecked.Properties)).BeginInit();
@@ -234,6 +233,7 @@ namespace HIS.Desktop.Plugins.ContactDeclaration.UcObject
             this.txtProvinceCode.Size = new System.Drawing.Size(61, 22);
             this.txtProvinceCode.StyleController = this.layoutControl1;
             this.txtProvinceCode.TabIndex = 14;
+            this.txtProvinceCode.EditValueChanged += new System.EventHandler(this.txtProvinceCode_EditValueChanged);
             this.txtProvinceCode.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.txtProvinceCode_PreviewKeyDown);
             // 
             // txtTHX
@@ -344,6 +344,7 @@ namespace HIS.Desktop.Plugins.ContactDeclaration.UcObject
             this.cboTHX.TabIndex = 10;
             this.cboTHX.Closed += new DevExpress.XtraEditors.Controls.ClosedEventHandler(this.cboTHX_Closed);
             this.cboTHX.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.cboTHX_ButtonClick);
+            this.cboTHX.EditValueChanged += new System.EventHandler(this.cboTHX_EditValueChanged);
             // 
             // cboDistrict
             // 
@@ -393,6 +394,7 @@ namespace HIS.Desktop.Plugins.ContactDeclaration.UcObject
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete, "", -1, true, false, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject17, serializableAppearanceObject18, serializableAppearanceObject19, serializableAppearanceObject20, "", null, null, true)});
             this.cboProvince.Properties.NullText = "";
             this.cboProvince.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.Standard;
+            this.cboProvince.Properties.GetNotInListValue += new DevExpress.XtraEditors.Controls.GetNotInListValueEventHandler(this.cboProvince_Properties_GetNotInListValue);
             this.cboProvince.Size = new System.Drawing.Size(136, 22);
             this.cboProvince.StyleController = this.layoutControl1;
             this.cboProvince.TabIndex = 11;

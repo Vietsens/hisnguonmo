@@ -44,6 +44,8 @@ using DevExpress.XtraEditors.ViewInfo;
 using HIS.Desktop.Plugins.ContactDeclaration.Validate;
 using DevExpress.XtraLayout;
 using HIS.Desktop.LocalStorage.BackendData.ADO;
+using DevExpress.Utils;
+using Inventec.Common.Address;
 
 namespace HIS.Desktop.Plugins.ContactDeclaration.UcObject
 {
@@ -55,9 +57,8 @@ namespace HIS.Desktop.Plugins.ContactDeclaration.UcObject
         List<HIS.Desktop.Library.CacheClient.ControlStateRDO> currentControlStateRDO;
         public UpdateVContactPoint updateVContactPoint;
         V_HIS_CONTACT_POINT CurrentContactPoint = new V_HIS_CONTACT_POINT();
-
+        private AddressADO currentAddressADO;
         HIS_CONTACT_POINT ContactPoint = new HIS_CONTACT_POINT();
-
         List<HIS_GENDER> lstGender = new List<HIS_GENDER>();
         List<HIS.Desktop.LocalStorage.BackendData.ADO.AgeADO> lstAgeADO = new List<LocalStorage.BackendData.ADO.AgeADO>();
         List<HIS.Desktop.LocalStorage.BackendData.ADO.CommuneADO> lstCommuneADO = new List<LocalStorage.BackendData.ADO.CommuneADO>();
@@ -93,14 +94,17 @@ namespace HIS.Desktop.Plugins.ContactDeclaration.UcObject
         {
             try
             {
-                InitControlState();
+                IsChangeStrucAddress = toggleSwitchDataChecked.IsOn;
+                IsNotCheckToggleAddress = false;
+
+                // Gọi lại hàm toggle như thể người dùng vừa click
+                toggleSwitchDataChecked_Toggled(toggleSwitchDataChecked, EventArgs.Empty);
                 LoadComboboxGender(this.lstGender);
                 LoadComboboxAgeName(this.lstAgeADO);
                 LoadComboboxTHX(this.lstCommuneADO);
                 LoadComboboxProvince(this.lstSdaProvince);
                 LoadComboboxDistrict(this.lstSdaDistrict);
                 LoadComboboxCommune(this.lstSdaCommune);
-
                 if (this.CurrentContactPoint != null && this.CurrentContactPoint.ID > 0)
                 {
                     check = false;
@@ -108,7 +112,7 @@ namespace HIS.Desktop.Plugins.ContactDeclaration.UcObject
 
                     SetDefautValueControl(this.ContactPoint);
                 }
-                else 
+                else
                 {
                     check = true;
                 }
@@ -120,7 +124,6 @@ namespace HIS.Desktop.Plugins.ContactDeclaration.UcObject
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
-
         private void dataContactPoint(long? dataId)
         {
             try
@@ -134,7 +137,7 @@ namespace HIS.Desktop.Plugins.ContactDeclaration.UcObject
                 {
                     ContactPoint = ContactPointdata.FirstOrDefault();
                 }
-                else 
+                else
                 {
                     ContactPoint = null;
                 }
@@ -148,7 +151,7 @@ namespace HIS.Desktop.Plugins.ContactDeclaration.UcObject
         public void SetDefautValueControl(HIS_CONTACT_POINT data)
         {
             try
-            {
+            {              
                 //this.CurrentContactPoint = data;
                 Inventec.Common.Mapper.DataObjectMapper.Map<V_HIS_CONTACT_POINT>(CurrentContactPoint, data);
                 if (data != null)
@@ -399,12 +402,17 @@ namespace HIS.Desktop.Plugins.ContactDeclaration.UcObject
                 else
                 {
                     List<SDA.EFMODEL.DataModels.V_SDA_PROVINCE> listResult = new List<SDA.EFMODEL.DataModels.V_SDA_PROVINCE>();
-                    listResult = BackendDataWorker.Get<SDA.EFMODEL.DataModels.V_SDA_PROVINCE>().Where(o => o.SEARCH_CODE.Contains(searchCode)).ToList();
+                    listResult = SdaProvinces.Where(o => o.IS_ACTIVE == IMSys.DbConfig.SDA_RS.COMMON.IS_ACTIVE__TRUE).Where(o => o.SEARCH_CODE.Contains(searchCode)).ToList();
                     if (listResult.Count == 1)
                     {
                         this.cboProvince.EditValue = listResult[0].PROVINCE_CODE;
                         this.txtProvinceCode.Text = listResult[0].SEARCH_CODE;
-                        this.LoadHuyenCombo("", listResult[0].PROVINCE_CODE, false);
+                        if (IsChangeStrucAddress)
+                        {
+                            LoadXaComboNoDistrict("", listResult[0].PROVINCE_CODE, false);
+                        }
+                        else
+                            this.LoadHuyenCombo("", listResult[0].PROVINCE_CODE, false);
                         if (isExpand)
                         {
                             this.txtDistrictCode.Focus();
@@ -439,8 +447,8 @@ namespace HIS.Desktop.Plugins.ContactDeclaration.UcObject
             try
             {
                 List<SDA.EFMODEL.DataModels.V_SDA_DISTRICT> listResult = new List<SDA.EFMODEL.DataModels.V_SDA_DISTRICT>();
-                listResult = BackendDataWorker.Get<SDA.EFMODEL.DataModels.V_SDA_DISTRICT>().Where(o => o.SEARCH_CODE.ToUpper().Contains(searchCode.ToUpper()) && (provinceCode == "" || o.PROVINCE_CODE == provinceCode)).ToList();
-                LoadComboboxDistrict(listResult);
+                listResult = BackendDataWorker.Get<SDA.EFMODEL.DataModels.V_SDA_DISTRICT>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.SDA_RS.COMMON.IS_ACTIVE__TRUE).Where(o => (o.SEARCH_CODE ?? "").ToUpper().Contains(searchCode.ToUpper()) && (provinceCode == "" || o.PROVINCE_CODE == provinceCode)).ToList();
+                this.InitComboCommon(this.cboDistrict, listResult, "DISTRICT_CODE", "RENDERER_DISTRICT_NAME", "SEARCH_CODE");
                 if (String.IsNullOrEmpty(searchCode) && String.IsNullOrEmpty(provinceCode) && listResult.Count > 0)
                 {
                     this.cboCommune.Properties.DataSource = null;
@@ -487,16 +495,61 @@ namespace HIS.Desktop.Plugins.ContactDeclaration.UcObject
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
+        private void LoadXaComboNoDistrict(string searchCode, string provinceCode, bool isExpand)
+        {
+            try
+            {
+                List<SDA.EFMODEL.DataModels.V_SDA_COMMUNE> listResult = SdaCommunes.Where(o => o.IS_ACTIVE == IMSys.DbConfig.SDA_RS.COMMON.IS_ACTIVE__TRUE)
+                    .Where(o => ((o.SEARCH_CODE ?? "").Contains(searchCode ?? "") || (o.COMMUNE_CODE == (searchCode ?? "") || string.IsNullOrEmpty(searchCode)))
+                        && (String.IsNullOrEmpty(provinceCode) || o.PROVINCE_CODE == provinceCode) && o.IS_NO_DISTRICT == 1).ToList();
+                this.InitComboCommon(this.cboCommune, listResult, "COMMUNE_CODE", "RENDERER_COMMUNE_NAME", "SEARCH_CODE");
+                if (String.IsNullOrEmpty(searchCode) && String.IsNullOrEmpty(provinceCode) && listResult.Count > 0)
+                {
+                    this.cboCommune.EditValue = null;
+                    this.txtCommuneCode.Text = "";
+                    this.FocusShowpopup(this.cboCommune, false);
+                }
+                else
+                {
+                    if (listResult.Count == 1)
+                    {
+                        this.cboCommune.EditValue = listResult[0].COMMUNE_CODE;
+                        this.txtCommuneCode.Text = listResult[0].COMMUNE_CODE;
 
+                        this.cboProvince.EditValue = listResult[0].PROVINCE_CODE;
+                        this.txtProvinceCode.Text = listResult[0].PROVINCE_CODE;
+                        if (isExpand)
+                        {
+                            this.txtAddress.Focus();
+                            this.txtAddress.SelectAll();
+                        }
+                    }
+                    else
+                    {
+                        this.cboCommune.EditValue = null;
+                        this.txtCommuneCode.Text = "";
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
         private void LoadXaCombo(string searchCode, string districtCode, bool isExpand)
         {
             try
             {
-                List<SDA.EFMODEL.DataModels.V_SDA_COMMUNE> listResult = BackendDataWorker.Get<SDA.EFMODEL.DataModels.V_SDA_COMMUNE>()
+                if (IsChangeStrucAddress)
+                {
+                    LoadXaComboNoDistrict(searchCode, districtCode, isExpand);
+                    return;
+                }
+
+                List<SDA.EFMODEL.DataModels.V_SDA_COMMUNE> listResult = SdaCommunes.Where(o => o.IS_ACTIVE == IMSys.DbConfig.SDA_RS.COMMON.IS_ACTIVE__TRUE)
                     .Where(o => (o.SEARCH_CODE ?? "").Contains(searchCode ?? "")
                         && (String.IsNullOrEmpty(districtCode) || o.DISTRICT_CODE == districtCode)).ToList();
-                LoadComboboxCommune(listResult);
-
+                this.InitComboCommon(this.cboCommune, listResult, "COMMUNE_CODE", "RENDERER_COMMUNE_NAME", "SEARCH_CODE");
                 if (String.IsNullOrEmpty(searchCode) && String.IsNullOrEmpty(districtCode) && listResult.Count > 0)
                 {
                     this.cboCommune.EditValue = null;
@@ -513,7 +566,7 @@ namespace HIS.Desktop.Plugins.ContactDeclaration.UcObject
                         this.txtDistrictCode.Text = listResult[0].DISTRICT_CODE;
                         if (String.IsNullOrEmpty(this.cboProvince.Text))
                         {
-                            SDA.EFMODEL.DataModels.V_SDA_DISTRICT district = BackendDataWorker.Get<SDA.EFMODEL.DataModels.V_SDA_DISTRICT>().Where(o => o.ID == listResult[0].DISTRICT_ID).FirstOrDefault();
+                            SDA.EFMODEL.DataModels.V_SDA_DISTRICT district = BackendDataWorker.Get<SDA.EFMODEL.DataModels.V_SDA_DISTRICT>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.SDA_RS.COMMON.IS_ACTIVE__TRUE).Where(o => o.ID == listResult[0].DISTRICT_ID).FirstOrDefault();
                             if (district != null)
                             {
                                 this.cboProvince.EditValue = district.PROVINCE_CODE;
@@ -560,10 +613,10 @@ namespace HIS.Desktop.Plugins.ContactDeclaration.UcObject
             try
             {
                 if (communeADOs != null)
-                    LoadComboboxTHX(communeADOs);
+                    this.InitComboCommon(this.cboTHX, communeADOs, "ID", "RENDERER_PDC_NAME", "SEARCH_CODE_COMMUNE");
                 this.cboTHX.EditValue = null;
                 this.cboTHX.Properties.Buttons[1].Visible = false;
-                this.FocusShowpopup(this.cboTHX, false);
+                //this.FocusShowpopup(this.cboTHX, false);
             }
             catch (Exception ex)
             {
@@ -580,18 +633,18 @@ namespace HIS.Desktop.Plugins.ContactDeclaration.UcObject
                 SDA.EFMODEL.DataModels.V_SDA_PROVINCE province = null;
                 if (cboProvince.EditValue != null)
                 {
-                    province = BackendDataWorker.Get<V_SDA_PROVINCE>().FirstOrDefault(o => o.PROVINCE_CODE == (string)this.cboProvince.EditValue);
+                    province = SdaProvinces.Where(o => o.IS_ACTIVE == IMSys.DbConfig.SDA_RS.COMMON.IS_ACTIVE__TRUE).FirstOrDefault(o => o.PROVINCE_CODE == (string)this.cboProvince.EditValue);
                     this.ChangeReplaceAddress(cboProvince.Text, "Tỉnh");
                 }
                 if (this.cboDistrict.EditValue != null)
                 {
-                    district = BackendDataWorker.Get<V_SDA_DISTRICT>().FirstOrDefault(o => o.DISTRICT_CODE == (string)this.cboDistrict.EditValue);
+                    district = BackendDataWorker.Get<V_SDA_DISTRICT>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.SDA_RS.COMMON.IS_ACTIVE__TRUE).FirstOrDefault(o => o.DISTRICT_CODE == (string)this.cboDistrict.EditValue);
                     this.ChangeReplaceAddress(cboDistrict.Text, "Huyện");
                 }
 
                 if (this.cboCommune.EditValue != null)
                 {
-                    commune = BackendDataWorker.Get<V_SDA_COMMUNE>().FirstOrDefault(o => o.COMMUNE_CODE == (string)this.cboCommune.EditValue);
+                    commune = SdaCommunes.Where(o => o.IS_ACTIVE == IMSys.DbConfig.SDA_RS.COMMON.IS_ACTIVE__TRUE).FirstOrDefault(o => o.COMMUNE_CODE == (string)this.cboCommune.EditValue);
                     this.ChangeReplaceAddress(cboCommune.Text, "Xã");
                 }
 
@@ -779,12 +832,12 @@ namespace HIS.Desktop.Plugins.ContactDeclaration.UcObject
                     string maTHX = (sender as DevExpress.XtraEditors.TextEdit).Text.Trim();
                     if (String.IsNullOrEmpty(maTHX))
                     {
-                        this.SetSourceValueTHX(BackendDataWorker.Get<HIS.Desktop.LocalStorage.BackendData.ADO.CommuneADO>());
+                        this.SetSourceValueTHX(workingCommuneADO);
                         return;
                     }
                     this.cboTHX.EditValue = null;
                     //Tìm dữ liệu xã theo startwith với mã đang tìm kiếm
-                    List<HIS.Desktop.LocalStorage.BackendData.ADO.CommuneADO> listResult = BackendDataWorker.Get<HIS.Desktop.LocalStorage.BackendData.ADO.CommuneADO>()
+                    List<HIS.Desktop.LocalStorage.BackendData.ADO.CommuneADO> listResult = workingCommuneADO
                         .Where(o => (o.SEARCH_CODE_COMMUNE != null
                             && o.SEARCH_CODE_COMMUNE.ToUpper().StartsWith(maTHX.ToUpper()))).ToList();
                     //Nếu tìm thấy nhiều hơn 1 kết quả có startwith theo mã vừa nhập
@@ -804,7 +857,7 @@ namespace HIS.Desktop.Plugins.ContactDeclaration.UcObject
                             this.cboTHX.EditValue = dataNoCommunes[0].ID;
                             this.txtTHX.Text = dataNoCommunes[0].SEARCH_CODE_COMMUNE;
 
-                            var districtDTO = BackendDataWorker.Get<SDA.EFMODEL.DataModels.V_SDA_DISTRICT>().SingleOrDefault(o => o.DISTRICT_CODE == dataNoCommunes[0].DISTRICT_CODE);
+                            var districtDTO = BackendDataWorker.Get<SDA.EFMODEL.DataModels.V_SDA_DISTRICT>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.SDA_RS.COMMON.IS_ACTIVE__TRUE).SingleOrDefault(o => o.DISTRICT_CODE == dataNoCommunes[0].DISTRICT_CODE);
                             if (districtDTO != null)
                             {
                                 this.LoadHuyenCombo("", districtDTO.PROVINCE_CODE, false);
@@ -820,14 +873,14 @@ namespace HIS.Desktop.Plugins.ContactDeclaration.UcObject
                         }
                         //Nếu kết quả tìm kiếm theo startwith tìm ra 1 dòng dữ liệu
                         //--> gán giá trị combo THX, combo Tỉnh, combo huyện, combo xã
-                        else if (listResult.Count == 1)
+                        else if (listResult.Count == 1 && !IsChangeStrucAddress)
                         {
-                            this.SetSourceValueTHX(BackendDataWorker.Get<HIS.Desktop.LocalStorage.BackendData.ADO.CommuneADO>());
+                            this.SetSourceValueTHX(workingCommuneADO);
                             this.cboTHX.Properties.Buttons[1].Visible = true;
                             this.cboTHX.EditValue = listResult[0].ID;
                             this.txtTHX.Text = listResult[0].SEARCH_CODE_COMMUNE;
 
-                            var districtDTO = BackendDataWorker.Get<SDA.EFMODEL.DataModels.V_SDA_DISTRICT>().Where(o => o.ID == listResult[0].DISTRICT_ID).SingleOrDefault();
+                            var districtDTO = BackendDataWorker.Get<SDA.EFMODEL.DataModels.V_SDA_DISTRICT>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.SDA_RS.COMMON.IS_ACTIVE__TRUE).Where(o => o.ID == listResult[0].DISTRICT_ID).SingleOrDefault();
                             if (districtDTO != null)
                             {
                                 this.LoadHuyenCombo("", districtDTO.PROVINCE_CODE, false);
@@ -852,6 +905,23 @@ namespace HIS.Desktop.Plugins.ContactDeclaration.UcObject
                                 this.txtCommuneCode.Focus();
                                 this.txtCommuneCode.SelectAll();
                             }
+                        }
+                        else if (listResult.Count == 1 && IsChangeStrucAddress)
+                        {
+                            this.SetSourceValueTHX(this.workingCommuneADO);
+                            this.cboTHX.Properties.Buttons[1].Visible = true;
+                            this.cboTHX.EditValue = listResult[0].ID;
+                            this.txtTHX.Text = listResult[0].SEARCH_CODE_COMMUNE;
+                            var provinceDTO = (cboProvince.Properties.DataSource as List<SDA.EFMODEL.DataModels.V_SDA_PROVINCE>).ToList().FirstOrDefault(o => o.PROVINCE_CODE == listResult[0].PROVINCE_CODE);
+                            if (provinceDTO != null)
+                            {
+                                this.txtProvinceCode.Text = provinceDTO.PROVINCE_CODE;
+                                this.cboProvince.EditValue = provinceDTO.PROVINCE_CODE;
+                            }
+                            this.LoadXaCombo("", listResult[0].PROVINCE_CODE, false);
+
+                            this.cboCommune.EditValue = listResult[0].COMMUNE_CODE;
+                            this.txtCommuneCode.Text = listResult[0].COMMUNE_CODE;
                         }
                         //Ngược lại gán lại datasource của combo THX bằng kết quả vừa tìm đc
                         else
@@ -881,17 +951,28 @@ namespace HIS.Desktop.Plugins.ContactDeclaration.UcObject
                     if (this.cboTHX.EditValue != null)
                     {
                         this.cboTHX.Properties.Buttons[1].Visible = true;
-                        HIS.Desktop.LocalStorage.BackendData.ADO.CommuneADO commune = BackendDataWorker.Get<HIS.Desktop.LocalStorage.BackendData.ADO.CommuneADO>().SingleOrDefault(o => o.ID == Inventec.Common.TypeConvert.Parse.ToInt64((this.cboTHX.EditValue ?? 0).ToString()));
+                        HIS.Desktop.LocalStorage.BackendData.ADO.CommuneADO commune = workingCommuneADO.SingleOrDefault(o => o.ID == Inventec.Common.TypeConvert.Parse.ToInt64((this.cboTHX.EditValue ?? 0).ToString()));
                         if (commune != null)
                         {
-                            var districtDTO = BackendDataWorker.Get<SDA.EFMODEL.DataModels.V_SDA_DISTRICT>().SingleOrDefault(o => o.DISTRICT_CODE == commune.DISTRICT_CODE);
+                            var districtDTO = BackendDataWorker.Get<SDA.EFMODEL.DataModels.V_SDA_DISTRICT>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.SDA_RS.COMMON.IS_ACTIVE__TRUE).SingleOrDefault(o => o.DISTRICT_CODE == commune.DISTRICT_CODE);
                             if (districtDTO != null)
                             {
                                 this.LoadHuyenCombo("", districtDTO.PROVINCE_CODE, false);
                                 this.cboProvince.EditValue = districtDTO.PROVINCE_CODE;
                                 this.txtProvinceCode.Text = districtDTO.PROVINCE_CODE;
                             }
-                            this.LoadXaCombo("", commune.DISTRICT_CODE, false);
+                            if (IsChangeStrucAddress)
+                            {
+                                this.LoadXaCombo("", commune.PROVINCE_CODE, false);
+                                cboCommune.EditValue = commune.COMMUNE_CODE;
+                                txtCommuneCode.Text = commune.COMMUNE_CODE;
+                                this.cboProvince.EditValue = commune.PROVINCE_CODE;
+                                this.txtProvinceCode.Text = commune.PROVINCE_CODE;
+                            }
+                            else
+                            {
+                                this.LoadXaCombo("", commune.DISTRICT_CODE, false);
+                            }
                             this.txtTHX.Text = commune.SEARCH_CODE_COMMUNE;
                             this.cboDistrict.EditValue = commune.DISTRICT_CODE;
                             this.txtDistrictCode.Text = commune.DISTRICT_CODE;
@@ -984,10 +1065,15 @@ namespace HIS.Desktop.Plugins.ContactDeclaration.UcObject
                     if (this.cboProvince.EditValue != null
                         && this.cboProvince.EditValue != this.cboProvince.OldEditValue)
                     {
-                        SDA.EFMODEL.DataModels.V_SDA_PROVINCE province = BackendDataWorker.Get<SDA.EFMODEL.DataModels.V_SDA_PROVINCE>().SingleOrDefault(o => o.PROVINCE_CODE == cboProvince.EditValue.ToString());
+                        SDA.EFMODEL.DataModels.V_SDA_PROVINCE province = SdaProvinces.Where(o => o.IS_ACTIVE == IMSys.DbConfig.SDA_RS.COMMON.IS_ACTIVE__TRUE).FirstOrDefault(o => o.PROVINCE_CODE == cboProvince.EditValue.ToString());
                         if (province != null)
                         {
-                            this.LoadHuyenCombo("", province.PROVINCE_CODE, false);
+                            if (IsChangeStrucAddress)
+                            {
+                                this.LoadXaCombo("", province.PROVINCE_CODE, false);
+                            }
+                            else
+                                this.LoadHuyenCombo("", province.PROVINCE_CODE, false);
                             this.txtProvinceCode.Text = province.SEARCH_CODE;
                         }
                     }
@@ -1006,27 +1092,37 @@ namespace HIS.Desktop.Plugins.ContactDeclaration.UcObject
             try
             {
                 this.SetValueHeinAddressByAddressOfPatient();
-                if (cboProvince.EditValue != null)
-                {
-                    SDA.EFMODEL.DataModels.V_SDA_PROVINCE province = BackendDataWorker.Get<SDA.EFMODEL.DataModels.V_SDA_PROVINCE>().SingleOrDefault(o => o.PROVINCE_CODE == cboProvince.EditValue.ToString());
-                    if (province != null)
-                    {
-                        this.txtProvinceCode.Text = province.SEARCH_CODE;
-                    }
-
-                    this.cboProvince.Properties.Buttons[1].Visible = true;
-                }
-                else
-                {
-                    this.txtProvinceCode.Text = "";
-                    this.cboProvince.Properties.Buttons[1].Visible = false;
-                }
-
+                this.SetRelativeAddress(false);
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
+            //    try
+            //    {
+            //        this.SetValueHeinAddressByAddressOfPatient();
+            //        if (cboProvince.EditValue != null)
+            //        {
+            //            SDA.EFMODEL.DataModels.V_SDA_PROVINCE province = BackendDataWorker.Get<SDA.EFMODEL.DataModels.V_SDA_PROVINCE>().SingleOrDefault(o => o.PROVINCE_CODE == cboProvince.EditValue.ToString());
+            //            if (province != null)
+            //            {
+            //                this.txtProvinceCode.Text = province.SEARCH_CODE;
+            //            }
+
+            //            this.cboProvince.Properties.Buttons[1].Visible = true;
+            //        }
+            //        else
+            //        {
+            //            this.txtProvinceCode.Text = "";
+            //            this.cboProvince.Properties.Buttons[1].Visible = false;
+            //        }
+
+            //    }
+            //    catch (Exception ex)
+            //    {
+            //        Inventec.Common.Logging.LogSystem.Error(ex);
+            //    }
+            //}
         }
 
         private void cboProvince_KeyUp(object sender, KeyEventArgs e)
@@ -1037,13 +1133,20 @@ namespace HIS.Desktop.Plugins.ContactDeclaration.UcObject
                 {
                     if (this.cboProvince.EditValue != null)
                     {
-                        SDA.EFMODEL.DataModels.V_SDA_PROVINCE province = BackendDataWorker.Get<SDA.EFMODEL.DataModels.V_SDA_PROVINCE>().SingleOrDefault(o => o.PROVINCE_CODE == this.cboProvince.EditValue.ToString());
+                        SDA.EFMODEL.DataModels.V_SDA_PROVINCE province = SdaProvinces.Where(o => o.IS_ACTIVE == IMSys.DbConfig.SDA_RS.COMMON.IS_ACTIVE__TRUE).SingleOrDefault(o => o.PROVINCE_CODE == this.cboProvince.EditValue.ToString());
                         if (province != null)
                         {
-                            this.LoadHuyenCombo("", province.PROVINCE_CODE, false);
                             this.txtProvinceCode.Text = province.SEARCH_CODE;
-                            this.txtDistrictCode.Text = "";
-                            this.txtDistrictCode.Focus();
+                            if (IsChangeStrucAddress)
+                            {
+                                LoadXaComboNoDistrict("", province.PROVINCE_CODE, false);
+                            }
+                            else
+                            {
+                                this.LoadHuyenCombo("", province.PROVINCE_CODE, false);
+                                this.txtDistrictCode.Text = "";
+                                this.txtDistrictCode.Focus();
+                            }
                         }
                     }
                 }
@@ -1053,7 +1156,56 @@ namespace HIS.Desktop.Plugins.ContactDeclaration.UcObject
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
+        private void SetRelativeAddress(bool value)
+        {
+            try
+            {
+                //value   false la tick KS
+                #region ------
+                string adress = "";
+                    if (!string.IsNullOrEmpty(this.txtAddress.Text))
+                    {
+                        adress = this.txtAddress.Text + ", ";
+                    }
+                    if (this.cboCommune.EditValue != null)
+                    {
+                        SDA.EFMODEL.DataModels.V_SDA_COMMUNE commune = SdaCommunes.Where(o => o.IS_ACTIVE == IMSys.DbConfig.SDA_RS.COMMON.IS_ACTIVE__TRUE)
+                        .SingleOrDefault(o =>
+                            o.COMMUNE_CODE == this.cboCommune.EditValue.ToString()
+                                && (String.IsNullOrEmpty((this.cboDistrict.EditValue ?? "").ToString()) || o.DISTRICT_CODE == (this.cboDistrict.EditValue ?? "").ToString())
+                            );
+                        if (commune != null)
+                        {
+                            adress += "Xã " + commune.COMMUNE_NAME + ", ";
+                        }
+                    }
 
+                    if (this.cboDistrict.EditValue != null)
+                    {
+                        SDA.EFMODEL.DataModels.V_SDA_DISTRICT district = BackendDataWorker.Get<SDA.EFMODEL.DataModels.V_SDA_DISTRICT>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.SDA_RS.COMMON.IS_ACTIVE__TRUE)
+                       .SingleOrDefault(o => o.DISTRICT_CODE == this.cboDistrict.EditValue.ToString()
+                           && (String.IsNullOrEmpty((this.cboProvince.EditValue ?? "").ToString()) || o.PROVINCE_CODE == (this.cboProvince.EditValue ?? "").ToString()));
+                        if (district != null)
+                        {
+                            adress += "Huyện " + district.DISTRICT_NAME + ", ";
+                        }
+                    }
+                    if (this.cboProvince.EditValue != null)
+                    {
+                        SDA.EFMODEL.DataModels.V_SDA_PROVINCE province = SdaProvinces.Where(o => o.IS_ACTIVE == IMSys.DbConfig.SDA_RS.COMMON.IS_ACTIVE__TRUE).SingleOrDefault(o => o.PROVINCE_CODE == cboProvince.EditValue.ToString());
+                        if (province != null)
+                        {
+                            adress += province.PROVINCE_NAME;
+                        }
+                    }
+
+                #endregion
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
         private void cboProvince_ButtonClick(object sender, ButtonPressedEventArgs e)
         {
             try
@@ -1100,7 +1252,7 @@ namespace HIS.Desktop.Plugins.ContactDeclaration.UcObject
                     if (this.cboDistrict.EditValue != null
                         && this.cboDistrict.EditValue != this.cboDistrict.OldEditValue)
                     {
-                        SDA.EFMODEL.DataModels.V_SDA_DISTRICT district = BackendDataWorker.Get<SDA.EFMODEL.DataModels.V_SDA_DISTRICT>()
+                        SDA.EFMODEL.DataModels.V_SDA_DISTRICT district = BackendDataWorker.Get<SDA.EFMODEL.DataModels.V_SDA_DISTRICT>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.SDA_RS.COMMON.IS_ACTIVE__TRUE)
                             .SingleOrDefault(o => o.DISTRICT_CODE == this.cboDistrict.EditValue.ToString()
                                 && (String.IsNullOrEmpty((this.cboProvince.EditValue ?? "").ToString()) || o.PROVINCE_CODE == (this.cboProvince.EditValue ?? "").ToString()));
                         if (district != null)
@@ -1130,31 +1282,40 @@ namespace HIS.Desktop.Plugins.ContactDeclaration.UcObject
             try
             {
                 this.SetValueHeinAddressByAddressOfPatient();
-                if (cboDistrict.EditValue != null)
-                {
-                    SDA.EFMODEL.DataModels.V_SDA_DISTRICT district = BackendDataWorker.Get<SDA.EFMODEL.DataModels.V_SDA_DISTRICT>()
-                            .SingleOrDefault(o => o.DISTRICT_CODE == this.cboDistrict.EditValue.ToString()
-                                && (String.IsNullOrEmpty((this.cboProvince.EditValue ?? "").ToString()) || o.PROVINCE_CODE == (this.cboProvince.EditValue ?? "").ToString()));
-                    if (district != null)
-                    {
-                        if (String.IsNullOrEmpty((this.cboProvince.EditValue ?? "").ToString()))
-                        {
-                            this.cboProvince.EditValue = district.PROVINCE_CODE;
-                        }
-                        this.txtDistrictCode.Text = district.SEARCH_CODE;
-                    }
-                    this.cboDistrict.Properties.Buttons[1].Visible = true;
-                }
-                else
-                {
-                    this.txtDistrictCode.Text = "";
-                    this.cboDistrict.Properties.Buttons[1].Visible = false;
-                }
+                this.SetRelativeAddress(false);
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
+            //try
+            //{
+            //    this.SetValueHeinAddressByAddressOfPatient();
+            //    if (cboDistrict.EditValue != null)
+            //    {
+            //        SDA.EFMODEL.DataModels.V_SDA_DISTRICT district = BackendDataWorker.Get<SDA.EFMODEL.DataModels.V_SDA_DISTRICT>()
+            //                .SingleOrDefault(o => o.DISTRICT_CODE == this.cboDistrict.EditValue.ToString()
+            //                    && (String.IsNullOrEmpty((this.cboProvince.EditValue ?? "").ToString()) || o.PROVINCE_CODE == (this.cboProvince.EditValue ?? "").ToString()));
+            //        if (district != null)
+            //        {
+            //            if (String.IsNullOrEmpty((this.cboProvince.EditValue ?? "").ToString()))
+            //            {
+            //                this.cboProvince.EditValue = district.PROVINCE_CODE;
+            //            }
+            //            this.txtDistrictCode.Text = district.SEARCH_CODE;
+            //        }
+            //        this.cboDistrict.Properties.Buttons[1].Visible = true;
+            //    }
+            //    else
+            //    {
+            //        this.txtDistrictCode.Text = "";
+            //        this.cboDistrict.Properties.Buttons[1].Visible = false;
+            //    }
+            //}
+            //catch (Exception ex)
+            //{
+            //    Inventec.Common.Logging.LogSystem.Error(ex);
+            //}
         }
 
         private void cboDistrict_KeyUp(object sender, KeyEventArgs e)
@@ -1165,7 +1326,7 @@ namespace HIS.Desktop.Plugins.ContactDeclaration.UcObject
                 {
                     if (this.cboDistrict.EditValue != null)
                     {
-                        SDA.EFMODEL.DataModels.V_SDA_DISTRICT district = BackendDataWorker.Get<SDA.EFMODEL.DataModels.V_SDA_DISTRICT>()
+                        SDA.EFMODEL.DataModels.V_SDA_DISTRICT district = BackendDataWorker.Get<SDA.EFMODEL.DataModels.V_SDA_DISTRICT>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.SDA_RS.COMMON.IS_ACTIVE__TRUE)
                             .SingleOrDefault(o => o.DISTRICT_CODE == this.cboDistrict.EditValue.ToString()
                                && (String.IsNullOrEmpty((this.cboProvince.EditValue ?? "").ToString()) || o.PROVINCE_CODE == (this.cboProvince.EditValue ?? "").ToString()));
                         if (district != null)
@@ -1236,7 +1397,7 @@ namespace HIS.Desktop.Plugins.ContactDeclaration.UcObject
                     if (this.cboCommune.EditValue != null
                         && this.cboCommune.EditValue != cboCommune.OldEditValue)
                     {
-                        SDA.EFMODEL.DataModels.V_SDA_COMMUNE commune = BackendDataWorker.Get<SDA.EFMODEL.DataModels.V_SDA_COMMUNE>()
+                        SDA.EFMODEL.DataModels.V_SDA_COMMUNE commune = SdaCommunes.Where(o => o.IS_ACTIVE == IMSys.DbConfig.SDA_RS.COMMON.IS_ACTIVE__TRUE)
                             .SingleOrDefault(o =>
                                 o.COMMUNE_CODE == this.cboCommune.EditValue.ToString()
                                     //&& o.PROVINCE_CODE == this.cboProvince.EditValue.ToString() 
@@ -1250,7 +1411,7 @@ namespace HIS.Desktop.Plugins.ContactDeclaration.UcObject
                             {
                                 this.cboDistrict.EditValue = commune.DISTRICT_CODE;
                                 this.txtDistrictCode.Text = commune.DISTRICT_CODE;
-                                SDA.EFMODEL.DataModels.V_SDA_DISTRICT district = BackendDataWorker.Get<SDA.EFMODEL.DataModels.V_SDA_DISTRICT>().Where(o => o.ID == commune.DISTRICT_ID).FirstOrDefault();
+                                SDA.EFMODEL.DataModels.V_SDA_DISTRICT district = BackendDataWorker.Get<SDA.EFMODEL.DataModels.V_SDA_DISTRICT>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.SDA_RS.COMMON.IS_ACTIVE__TRUE).Where(o => o.ID == commune.DISTRICT_ID).FirstOrDefault();
                                 if (district != null)
                                 {
                                     this.cboProvince.EditValue = district.PROVINCE_CODE;
@@ -1274,44 +1435,52 @@ namespace HIS.Desktop.Plugins.ContactDeclaration.UcObject
             try
             {
                 this.SetValueHeinAddressByAddressOfPatient();
-                if (cboCommune.EditValue != null)
-                {
-                    SDA.EFMODEL.DataModels.V_SDA_COMMUNE commune = BackendDataWorker.Get<SDA.EFMODEL.DataModels.V_SDA_COMMUNE>()
-                            .SingleOrDefault(o =>
-                                o.COMMUNE_CODE == this.cboCommune.EditValue.ToString()
-                                    //&& o.PROVINCE_CODE == this.cboProvince.EditValue.ToString() 
-                                    && (String.IsNullOrEmpty((this.cboDistrict.EditValue ?? "").ToString())
-                                    || o.DISTRICT_CODE == (this.cboDistrict.EditValue ?? "").ToString())
-                                );
-                    if (commune != null)
-                    {
-                        this.txtCommuneCode.Text = commune.SEARCH_CODE;
-                        if (String.IsNullOrEmpty((this.cboProvince.EditValue ?? "").ToString()) && String.IsNullOrEmpty((this.cboDistrict.EditValue ?? "").ToString()))
-                        {
-                            this.cboDistrict.EditValue = commune.DISTRICT_CODE;
-                            this.txtDistrictCode.Text = commune.DISTRICT_CODE;
-                            SDA.EFMODEL.DataModels.V_SDA_DISTRICT district = BackendDataWorker.Get<SDA.EFMODEL.DataModels.V_SDA_DISTRICT>().Where(o => o.ID == commune.DISTRICT_ID).FirstOrDefault();
-                            if (district != null)
-                            {
-                                this.cboProvince.EditValue = district.PROVINCE_CODE;
-                                this.txtProvinceCode.Text = district.PROVINCE_CODE;
-                            }
-                        }
-                    }
-                    this.cboCommune.Properties.Buttons[1].Visible = true;
-                }
-                else
-                {
-                    this.txtCommuneCode.Text = "";
-                    this.cboCommune.Properties.Buttons[1].Visible = false;
-                }
+                this.SetRelativeAddress(false);
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
+            //try
+            //{
+            //    this.SetValueHeinAddressByAddressOfPatient();
+            //    if (cboCommune.EditValue != null)
+            //    {
+            //        SDA.EFMODEL.DataModels.V_SDA_COMMUNE commune = BackendDataWorker.Get<SDA.EFMODEL.DataModels.V_SDA_COMMUNE>()
+            //                .SingleOrDefault(o =>
+            //                    o.COMMUNE_CODE == this.cboCommune.EditValue.ToString()
+            //                        //&& o.PROVINCE_CODE == this.cboProvince.EditValue.ToString() 
+            //                        && (String.IsNullOrEmpty((this.cboDistrict.EditValue ?? "").ToString())
+            //                        || o.DISTRICT_CODE == (this.cboDistrict.EditValue ?? "").ToString())
+            //                    );
+            //        if (commune != null)
+            //        {
+            //            this.txtCommuneCode.Text = commune.SEARCH_CODE;
+            //            if (String.IsNullOrEmpty((this.cboProvince.EditValue ?? "").ToString()) && String.IsNullOrEmpty((this.cboDistrict.EditValue ?? "").ToString()))
+            //            {
+            //                this.cboDistrict.EditValue = commune.DISTRICT_CODE;
+            //                this.txtDistrictCode.Text = commune.DISTRICT_CODE;
+            //                SDA.EFMODEL.DataModels.V_SDA_DISTRICT district = BackendDataWorker.Get<SDA.EFMODEL.DataModels.V_SDA_DISTRICT>().Where(o => o.ID == commune.DISTRICT_ID).FirstOrDefault();
+            //                if (district != null)
+            //                {
+            //                    this.cboProvince.EditValue = district.PROVINCE_CODE;
+            //                    this.txtProvinceCode.Text = district.PROVINCE_CODE;
+            //                }
+            //            }
+            //        }
+            //        this.cboCommune.Properties.Buttons[1].Visible = true;
+            //    }
+            //    else
+            //    {
+            //        this.txtCommuneCode.Text = "";
+            //        this.cboCommune.Properties.Buttons[1].Visible = false;
+            //    }
+            //}
+            //catch (Exception ex)
+            //{
+            //    Inventec.Common.Logging.LogSystem.Error(ex);
+            //}
         }
-
         private void cboCommune_KeyUp(object sender, KeyEventArgs e)
         {
             try
@@ -1320,10 +1489,10 @@ namespace HIS.Desktop.Plugins.ContactDeclaration.UcObject
                 {
                     if (this.cboCommune.EditValue != null)
                     {
-                        SDA.EFMODEL.DataModels.V_SDA_COMMUNE commune = BackendDataWorker.Get<SDA.EFMODEL.DataModels.V_SDA_COMMUNE>()
+                        SDA.EFMODEL.DataModels.V_SDA_COMMUNE commune = SdaCommunes.Where(o => o.IS_ACTIVE == IMSys.DbConfig.SDA_RS.COMMON.IS_ACTIVE__TRUE)
                             .SingleOrDefault(o =>
                                 o.COMMUNE_CODE == this.cboCommune.EditValue.ToString()
-                                    //&& o.PROVINCE_CODE == cboProvince.EditValue.ToString() 
+                                //&& o.PROVINCE_CODE == cboProvince.EditValue.ToString() 
                                 && (String.IsNullOrEmpty((this.cboDistrict.EditValue ?? "").ToString()) || o.DISTRICT_CODE == (this.cboDistrict.EditValue ?? "").ToString()));
                         if (commune != null)
                         {
@@ -1331,12 +1500,14 @@ namespace HIS.Desktop.Plugins.ContactDeclaration.UcObject
                             if (String.IsNullOrEmpty((this.cboProvince.EditValue ?? "").ToString()) && String.IsNullOrEmpty((this.cboDistrict.EditValue ?? "").ToString()))
                             {
                                 this.cboDistrict.EditValue = commune.DISTRICT_CODE;
-                                SDA.EFMODEL.DataModels.V_SDA_DISTRICT district = BackendDataWorker.Get<SDA.EFMODEL.DataModels.V_SDA_DISTRICT>().Where(o => o.ID == commune.DISTRICT_ID).FirstOrDefault();
+                                SDA.EFMODEL.DataModels.V_SDA_DISTRICT district = BackendDataWorker.Get<SDA.EFMODEL.DataModels.V_SDA_DISTRICT>()
+                                    .Where(o => o.IS_ACTIVE == IMSys.DbConfig.SDA_RS.COMMON.IS_ACTIVE__TRUE).Where(o => o.ID == commune.DISTRICT_ID).FirstOrDefault();
                                 if (district != null)
                                 {
                                     this.cboProvince.EditValue = district.PROVINCE_CODE;
                                     this.txtProvinceCode.Text = district.PROVINCE_CODE;
                                 }
+                                //Mô tả lỗi đi
                             }
                             this.txtAddress.Focus();
                             this.txtAddress.SelectAll();
@@ -1583,7 +1754,7 @@ namespace HIS.Desktop.Plugins.ContactDeclaration.UcObject
                     commune = BackendDataWorker.Get<SDA.EFMODEL.DataModels.V_SDA_COMMUNE>()
                                 .SingleOrDefault(o =>
                                     o.COMMUNE_CODE == this.cboCommune.EditValue.ToString()
-                                        //&& o.PROVINCE_CODE == cboProvince.EditValue.ToString() 
+                                    //&& o.PROVINCE_CODE == cboProvince.EditValue.ToString() 
                                     && (String.IsNullOrEmpty((this.cboDistrict.EditValue ?? "").ToString()) || o.DISTRICT_CODE == (this.cboDistrict.EditValue ?? "").ToString()));
                 }
                 return commune;
@@ -1700,7 +1871,7 @@ namespace HIS.Desktop.Plugins.ContactDeclaration.UcObject
 
                     Inventec.Common.Mapper.DataObjectMapper.Map<V_HIS_CONTACT_POINT>(CurrentContactPoint, data);
                     //CurrentContactPoint = data;
-
+                    this.ChangeDataSourceAddress();
                     this.cboProvince.EditValue = data.PROVINCE_CODE;
                     this.cboDistrict.EditValue = data.DISTRICT_CODE;
                     this.cboCommune.EditValue = data.COMMUNE_CODE;
@@ -1759,7 +1930,7 @@ namespace HIS.Desktop.Plugins.ContactDeclaration.UcObject
             }
             catch (Exception ex)
             {
-                Inventec.Common.Logging.LogSystem.Warn(ex);
+                Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
 
@@ -1769,7 +1940,7 @@ namespace HIS.Desktop.Plugins.ContactDeclaration.UcObject
             {
                 if (e.FieldName == "RENDERER_DISTRICT_NAME")
                 {
-                    var item = ((List<SDA.EFMODEL.DataModels.V_SDA_DISTRICT>)cboDistrict.Properties.DataSource)[e.RecordIndex];
+                    var item = ((List<SDA.EFMODEL.DataModels.V_SDA_DISTRICT>)this.cboDistrict.Properties.DataSource)[e.RecordIndex];
                     if (item != null)
                         e.Value = string.Format("{0} {1}", item.INITIAL_NAME, item.DISTRICT_NAME);
                 }
@@ -1828,7 +1999,7 @@ namespace HIS.Desktop.Plugins.ContactDeclaration.UcObject
             }
         }
 
-        public void reset() 
+        public void reset()
         {
             try
             {
@@ -1851,7 +2022,7 @@ namespace HIS.Desktop.Plugins.ContactDeclaration.UcObject
             }
             catch (Exception ex)
             {
-                Inventec.Common.Logging.LogSystem.Error(ex);                
+                Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
         private void SetToolTipTog(object sender)
@@ -1891,6 +2062,8 @@ namespace HIS.Desktop.Plugins.ContactDeclaration.UcObject
                 }
                 ChangeComponentDistrict();
                 ChangeDataSourceAddress();
+
+                IsNotCheckToggleAddress = false;
                 HIS.Desktop.Library.CacheClient.ControlStateRDO csAddOrUpdate = (this.currentControlStateRDO != null && this.currentControlStateRDO.Count > 0) ? this.currentControlStateRDO.Where(o => o.KEY == toggleSwitchDataChecked.Name && o.MODULE_LINK == this.moduleLink).FirstOrDefault() : null;
                 if (csAddOrUpdate != null)
                 {
@@ -1913,6 +2086,52 @@ namespace HIS.Desktop.Plugins.ContactDeclaration.UcObject
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
+        private void SetDataAddress(AddressADO data)
+        {
+            try
+            {
+                IsNotCheckToggleAddress = true;
+
+                if (data.IsNoDistrict)
+                {
+                    toggleSwitchDataChecked.IsOn = true;
+                }
+                else
+                {
+                    toggleSwitchDataChecked.IsOn = false;
+                }
+                ChangeComponentDistrict();
+                ChangeDataSourceAddress();
+                cboProvince.EditValue = data.ProvinceCode;
+                txtProvinceCode.EditValue = data.ProvinceCode;
+                cboDistrict.EditValue = data.DistrictCode;
+                txtDistrictCode.EditValue = data.DistrictCode;
+                cboCommune.EditValue = data.CommuneCode;
+                txtCommuneCode.EditValue = data.CommuneCode;
+                if (!string.IsNullOrEmpty(data.CommuneCode))
+                {
+                    var commune = ((List<V_SDA_COMMUNE>)cboCommune.Properties.DataSource).FirstOrDefault(o => o.COMMUNE_CODE == data.CommuneCode);
+                    if (commune != null)
+                    {
+                        this.cboTHX.EditValue = commune.ID;//ID_RAW
+                        bool isSearchOrderByXHT = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>("HIS_DESKTOP_REGISTER__SEARCH_CODE__X/H/T") == "1" ? true : false;
+                        this.cboTHX.Properties.Buttons[1].Visible = true;
+                        var thx = workingCommuneADO.SingleOrDefault(o => o.ID == Inventec.Common.TypeConvert.Parse.ToInt64((this.cboTHX.EditValue ?? 0).ToString()));
+                        this.txtTHX.Text = thx != null ? thx.SEARCH_CODE_COMMUNE : null;
+
+                        cboTHX_Closed(cboTHX, new DevExpress.XtraEditors.Controls.ClosedEventArgs(DevExpress.XtraEditors.PopupCloseMode.Normal));
+
+                    }
+                }
+
+                IsNotCheckToggleAddress = false;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+
+        }
         private void ChangeComponentDistrict()
         {
             try
@@ -1921,6 +2140,7 @@ namespace HIS.Desktop.Plugins.ContactDeclaration.UcObject
                 {
                     layoutControlItem9.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
                     layoutControlItem12.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+
                 }
                 else
                 {
@@ -1933,7 +2153,7 @@ namespace HIS.Desktop.Plugins.ContactDeclaration.UcObject
                 txtDistrictCode.Text = null;
                 cboCommune.EditValue = null;
                 txtCommuneCode.EditValue = null;
-                txtTHX.Text = null;
+                txtTHX.EditValue = null;
                 cboTHX.EditValue = null;
             }
             catch (Exception ex)
@@ -1966,7 +2186,6 @@ namespace HIS.Desktop.Plugins.ContactDeclaration.UcObject
                 this.InitComboCommon(this.cboProvince, SdaProvinces, "PROVINCE_CODE", "PROVINCE_NAME", "SEARCH_CODE");
                 this.InitComboCommon(this.cboDistrict, BackendDataWorker.Get<SDA.EFMODEL.DataModels.V_SDA_DISTRICT>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.SDA_RS.COMMON.IS_ACTIVE__TRUE).ToList(), "DISTRICT_CODE", "RENDERER_DISTRICT_NAME", "SEARCH_CODE");
                 this.InitComboCommon(this.cboCommune, SdaCommunes, "COMMUNE_CODE", "RENDERER_COMMUNE_NAME", "SEARCH_CODE");
-
                 this.SetSourceValueTHX(workingCommuneADO);
             }
             catch (Exception ex)
@@ -2010,96 +2229,6 @@ namespace HIS.Desktop.Plugins.ContactDeclaration.UcObject
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
-        //private void LoadAddressDataForPatient()
-        //{
-        //    // Lưu các giá trị đang chọn để gán lại sau khi load
-        //    var selectedProvince = cboProvince.EditValue != null ? cboProvince.EditValue.ToString() : null;
-        //    var selectedDistrict = cboDistrict.EditValue != null ? cboDistrict.EditValue.ToString() : null;
-        //    var selectedCommune = cboCommune.EditValue != null ? cboCommune.EditValue.ToString() : null;
-        //    var selectedTHX = cboTHX.EditValue != null ? cboTHX.EditValue.ToString() : null;
-
-        //    if (useNewAddressStructurePatient)
-        //    {
-        //        // --- T/H/X: load xã có IS_NO_DISTRICT = 1 ---
-        //        var thxList = lstCommuneADO
-        //            .Where(x => x.IS_NO_DISTRICT == 1 && x.IS_ACTIVE == 1)
-        //            .ToList();
-        //        LoadComboboxTHX(thxList);
-        //        if (!string.IsNullOrEmpty(selectedTHX) && thxList.Any(x => x.COMMUNE_CODE == selectedTHX))
-        //            cboTHX.EditValue = selectedTHX;
-
-        //        // --- Tỉnh: IS_NO_DISTRICT = 1 ---
-        //        var provinces = lstSdaProvince
-        //            .Where(x => x.IS_ACTIVE == 1 && x.IS_NO_DISTRICT == 1)
-        //            .ToList();
-        //        LoadComboboxProvince(provinces);
-        //        if (!string.IsNullOrEmpty(selectedProvince) && provinces.Any(x => x.PROVINCE_CODE == selectedProvince))
-        //            cboProvince.EditValue = selectedProvince;
-
-        //        // --- Ẩn huyện ---
-        //        if (cboDistrict != null)
-        //            cboDistrict.Visible = false;
-        //        layoutControlItem9.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
-        //        layoutControlItem12.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
-
-        //        // --- Xã: theo tỉnh đang chọn ---
-        //        var communes = new List<V_SDA_COMMUNE>();
-        //        if (!string.IsNullOrEmpty(selectedProvince))
-        //        {
-        //            communes = lstSdaCommune
-        //                .Where(x => x.IS_ACTIVE == 1 && x.PROVINCE_CODE == selectedProvince)
-        //                .ToList();
-        //        }
-        //        LoadComboboxCommune(communes);
-        //        if (!string.IsNullOrEmpty(selectedCommune) && communes.Any(x => x.COMMUNE_CODE == selectedCommune))
-        //            cboCommune.EditValue = selectedCommune;
-        //    }
-        //    else
-        //    {
-        //        // --- T/H/X: load xã có IS_NO_DISTRICT != 1 hoặc null ---
-        //        var thxList = lstCommuneADO
-        //            .Where(x => (x.IS_NO_DISTRICT != 1 || x.IS_NO_DISTRICT == null) && x.IS_ACTIVE == 1)
-        //            .ToList();
-        //        LoadComboboxTHX(thxList);
-        //        if (!string.IsNullOrEmpty(selectedTHX) && thxList.Any(x => x.COMMUNE_CODE == selectedTHX))
-        //            cboTHX.EditValue = selectedTHX;
-
-        //        // --- Tỉnh: IS_NO_DISTRICT != 1 hoặc null ---
-        //        var provinces = lstSdaProvince
-        //            .Where(x => x.IS_ACTIVE == 1 && (x.IS_NO_DISTRICT != 1 || x.IS_NO_DISTRICT == null))
-        //            .ToList();
-        //        LoadComboboxProvince(provinces);
-        //        if (!string.IsNullOrEmpty(selectedProvince) && provinces.Any(x => x.PROVINCE_CODE == selectedProvince))
-        //            cboProvince.EditValue = selectedProvince;
-
-        //        // --- Hiện huyện ---
-        //        if (cboDistrict != null)
-        //            cboDistrict.Visible = true;
-        //        layoutControlItem9.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
-        //        layoutControlItem12.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
-
-        //        // --- Huyện: IS_ACTIVE = 1 ---
-        //        var districts = lstSdaDistrict
-        //            .Where(x => x.IS_ACTIVE == 1)
-        //            .ToList();
-        //        LoadComboboxDistrict(districts);
-        //        if (!string.IsNullOrEmpty(selectedDistrict) && districts.Any(x => x.DISTRICT_CODE == selectedDistrict))
-        //            cboDistrict.EditValue = selectedDistrict;
-
-        //        // --- Xã: theo huyện đang chọn ---
-        //        var communes = new List<V_SDA_COMMUNE>();
-        //        if (!string.IsNullOrEmpty(selectedDistrict))
-        //        {
-        //            communes = lstSdaCommune
-        //                .Where(x => x.IS_ACTIVE == 1 && x.DISTRICT_CODE == selectedDistrict)
-        //                .ToList();
-        //        }
-        //        LoadComboboxCommune(communes);
-        //        if (!string.IsNullOrEmpty(selectedCommune) && communes.Any(x => x.COMMUNE_CODE == selectedCommune))
-        //            cboCommune.EditValue = selectedCommune;
-        //    }
-        //}
-
         bool isNotLoadWhileChangeControlStateInFirst;
         void InitControlState()
         {
@@ -2111,7 +2240,7 @@ namespace HIS.Desktop.Plugins.ContactDeclaration.UcObject
                 {
                     foreach (var item in this.currentControlStateRDO)
                     {
-                         if (item.KEY == toggleSwitchDataChecked.Name)
+                        if (item.KEY == toggleSwitchDataChecked.Name)
                         {
                             toggleSwitchDataChecked.IsOn = item.VALUE == "1";
                         }
@@ -2121,6 +2250,90 @@ namespace HIS.Desktop.Plugins.ContactDeclaration.UcObject
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void txtProvinceCode_EditValueChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                if (String.IsNullOrEmpty(this.txtProvinceCode.Text))
+                {
+                    this.cboProvince.Properties.DataSource = SdaProvinces.Where(o => o.IS_ACTIVE == IMSys.DbConfig.SDA_RS.COMMON.IS_ACTIVE__TRUE);
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void cboProvince_Properties_GetNotInListValue(object sender, GetNotInListValueEventArgs e)
+        {
+            try
+            {
+                if (e.FieldName == "RENDERER_PROVINCE_NAME")
+                {
+                    var item = ((List<SDA.EFMODEL.DataModels.V_SDA_PROVINCE>)this.cboProvince.Properties.DataSource)[e.RecordIndex];
+                    if (item != null)
+                        e.Value = string.Format("{0} {1}", "", item.PROVINCE_NAME);
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void cboTHX_EditValueChanged(object sender, EventArgs e)
+        {
+            {
+                try
+                {
+                    if (this.cboTHX.EditValue != null)
+                    {
+                        this.cboTHX.Properties.Buttons[1].Visible = true;
+                        //HIS.Desktop.LocalStorage.BackendData.ADO.CommuneADO commune = BackendDataWorker.Get<HIS.Desktop.LocalStorage.BackendData.ADO.CommuneADO>().SingleOrDefault(o => o.ID_RAW == (this.cboVirAddress.EditValue ?? "").ToString());
+                        var communeList = BackendDataWorker.Get<HIS.Desktop.LocalStorage.BackendData.ADO.CommuneADO>();
+                        //Inventec.Common.Logging.LogSystem.Debug("COMMUNE LISTTTTTT: " + Inventec.Common.Logging.LogUtil.TraceData("DataA", communeList));
+                        if (communeList == null) return;
+                        var commune = communeList.SingleOrDefault(o => o.ID_RAW == (this.cboTHX.EditValue ?? "").ToString());
+                        if (commune != null)
+                        {
+                            this.txtTHX.Text = commune.SEARCH_CODE_COMMUNE;
+
+                            var district = BackendDataWorker.Get<SDA.EFMODEL.DataModels.SDA_DISTRICT>().SingleOrDefault(o => o.DISTRICT_CODE == commune.DISTRICT_CODE);
+
+                            if (toggleSwitchDataChecked.IsOn == false)
+                            {
+                                if (district != null)
+                                {
+                                    var province = BackendDataWorker.Get<SDA.EFMODEL.DataModels.SDA_PROVINCE>().SingleOrDefault(o => o.ID == district.PROVINCE_ID);
+                                    cboProvince.EditValue = province != null ? (long?)province.ID : null;
+                                    cboDistrict.EditValue = district.ID;
+                                    cboCommune.EditValue = commune.ID;
+                                }
+                            }
+                            else
+                            {
+                                var province = BackendDataWorker.Get<SDA.EFMODEL.DataModels.SDA_PROVINCE>().SingleOrDefault(o => o.ID == commune.PROVINCE_ID);
+                                cboProvince.EditValue = province != null ? (long?)province.ID : null;
+                                //.EditValue = district.ID;
+                                cboCommune.EditValue = commune.ID;
+                            }
+                            //Cái này a k code ntn nh
+                            //Không hiểu biến Is_No_District là gì à???? Trong việc thấy ghi mà trong này k thấy sử dụng nó là không huyện còn gì a
+                        }
+                    }
+                    else
+                    {
+                        this.cboTHX.Properties.Buttons[1].Visible = false;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(ex);
+                }
             }
         }
     }
