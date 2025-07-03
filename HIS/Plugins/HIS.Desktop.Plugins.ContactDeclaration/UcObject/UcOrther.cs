@@ -94,6 +94,11 @@ namespace HIS.Desktop.Plugins.ContactDeclaration.UcObject
         {
             try
             {
+                IsChangeStrucAddress = toggleSwitchDataChecked.IsOn;
+                IsNotCheckToggleAddress = false;
+
+                // Gọi lại hàm toggle như thể người dùng vừa click
+                toggleSwitchDataChecked_Toggled(toggleSwitchDataChecked, EventArgs.Empty);
                 LoadComboboxGender(this.lstGender);
                 LoadComboboxAgeName(this.lstAgeADO);
                 LoadComboboxTHX(this.lstCommuneADO);
@@ -2148,6 +2153,7 @@ namespace HIS.Desktop.Plugins.ContactDeclaration.UcObject
                 txtDistrictCode.Text = null;
                 cboCommune.EditValue = null;
                 txtCommuneCode.EditValue = null;
+                txtTHX.EditValue = null;
                 cboTHX.EditValue = null;
             }
             catch (Exception ex)
