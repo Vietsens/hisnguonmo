@@ -33,6 +33,9 @@
     <Reference Include="FlexCel">
       <HintPath>..\..\..\..\LIB\FlexCellReport\FlexCel.dll</HintPath>
     </Reference>
+    <Reference Include="HIS.Desktop.Common.BankQrCode">
+      <HintPath>..\..\..\..\lib\HIS\HIS.Desktop.Common.BankQrCode\HIS.Desktop.Common.BankQrCode.dll</HintPath>
+    </Reference>
     <Reference Include="Inventec.Common.BarcodeLib">
       <HintPath>..\..\..\..\LIB\Inventec.Common\Inventec.Common.BarcodeLib\Inventec.Common.BarcodeLib.dll</HintPath>
     </Reference>
@@ -67,8 +70,7 @@
     <Reference Include="MOS.LibraryHein.Bhyt">
       <HintPath>..\..\..\..\LIB\MOS\MOS.LibraryHein.Bhyt.dll</HintPath>
     </Reference>
-    <Reference Include="MPS.Processor.Mps000037.PDO, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
+    <Reference Include="MPS.Processor.Mps000037.PDO">
       <HintPath>..\MPS.Processor.Mps000037.PDO\bin\Debug\MPS.Processor.Mps000037.PDO.dll</HintPath>
     </Reference>
     <Reference Include="MPS.ProcessorBase">

@@ -104,6 +104,8 @@ namespace MPS.Processor.Mps000037
             {
                 SetBarcodeKey();
                 SetSingleKey();
+                //qtcode
+                SetSingleKeyQrCode();
                 ProcessListData();
                 Inventec.Common.FlexCellExport.ProcessSingleTag singleTag = new Inventec.Common.FlexCellExport.ProcessSingleTag();
                 Inventec.Common.FlexCellExport.ProcessBarCodeTag barCodeTag = new Inventec.Common.FlexCellExport.ProcessBarCodeTag();
@@ -252,7 +254,25 @@ namespace MPS.Processor.Mps000037
 
             return result;
         }
-
+        //qtcode
+        private void SetSingleKeyQrCode()
+        {
+            try
+            {
+                if (rdo.transReq != null && rdo.lstConfig != null && rdo.lstConfig.Count > 0)
+                {
+                    var data = HIS.Desktop.Common.BankQrCode.QrCodeProcessor.CreateQrImage(rdo.transReq, rdo.lstConfig);
+                    foreach (var item in data)
+                    {
+                        SetSingleKey(new KeyValue(item.Key, item.Value));
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
         private void SetSingleKey()
         {
             try
@@ -270,7 +290,7 @@ namespace MPS.Processor.Mps000037
                 SetSingleKey(new KeyValue(Mps000037ExtendSingleKey.TOTAL_PRICE_PATIENT, Inventec.Common.Number.Convert.NumberToString(bnthanhtoan_tong, 0)));
                 SetSingleKey(new KeyValue(Mps000037ExtendSingleKey.TOTAL_PRICE_OTHER, Inventec.Common.Number.Convert.NumberToString(nguonkhac_tong, 0)));
                 SetSingleKey(new KeyValue(Mps000037ExtendSingleKey.TOTAL_PRICE_TEXT, Inventec.Common.String.Convert.CurrencyToVneseString(Math.Round(thanhtien_tong).ToString())));
-
+                
                 if (rdo.Mps000037ADO != null)
                 {
                     SetSingleKey(new KeyValue(Mps000037ExtendSingleKey.BED_ROOM_NAME, rdo.Mps000037ADO.bebRoomName));
@@ -500,7 +520,7 @@ namespace MPS.Processor.Mps000037
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
-
+ 
         public static string SetHeinCardNumberDisplayByNumber(string heinCardNumber)
         {
             string result = "";

@@ -45,6 +45,7 @@ namespace HIS.Desktop.Plugins.ServiceReqList
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject1 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject2 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject3 = new DevExpress.Utils.SerializableAppearanceObject();
@@ -144,18 +145,18 @@ namespace HIS.Desktop.Plugins.ServiceReqList
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject96 = new DevExpress.Utils.SerializableAppearanceObject();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmServiceReqList));
             this.layoutControl1 = new DevExpress.XtraLayout.LayoutControl();
-            this.popupControlContainer1 = new DevExpress.XtraBars.PopupControlContainer();
+            this.popupControlContainer1 = new DevExpress.XtraBars.PopupControlContainer(this.components);
             this.layoutControl3 = new DevExpress.XtraLayout.LayoutControl();
             this.gridConfig = new DevExpress.XtraGrid.GridControl();
             this.gvConfig = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.gridColumn9 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn10 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.repCheckConfig = new DevExpress.XtraEditors.Repository.RepositoryItemCheckEdit();
-            this.barManager1 = new DevExpress.XtraBars.BarManager();
+            this.barManager1 = new DevExpress.XtraBars.BarManager(this.components);
             this.bar1 = new DevExpress.XtraBars.Bar();
             this.bbtnRCFind = new DevExpress.XtraBars.BarButtonItem();
             this.barButtonPrintTemBarcode = new DevExpress.XtraBars.BarButtonItem();
-            this.imageCollection2 = new DevExpress.Utils.ImageCollection();
+            this.imageCollection2 = new DevExpress.Utils.ImageCollection(this.components);
             this.bbtnRCRefresh = new DevExpress.XtraBars.BarButtonItem();
             this.barDockControlTop = new DevExpress.XtraBars.BarDockControl();
             this.barDockControlBottom = new DevExpress.XtraBars.BarDockControl();
@@ -327,7 +328,7 @@ namespace HIS.Desktop.Plugins.ServiceReqList
             this.repositoryItemCheckEditMainExam = new DevExpress.XtraEditors.Repository.RepositoryItemCheckEdit();
             this.repositoryItemButtonEditAllowNotExecute_Disable = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
             this.repositoryItemButtonEditIsConfirm_Dis = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
-            this.tooltipServiceRequest = new DevExpress.Utils.ToolTipController();
+            this.tooltipServiceRequest = new DevExpress.Utils.ToolTipController(this.components);
             this.layoutControlGroup1 = new DevExpress.XtraLayout.LayoutControlGroup();
             this.layoutControlItem1 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem5 = new DevExpress.XtraLayout.LayoutControlItem();
@@ -351,10 +352,10 @@ namespace HIS.Desktop.Plugins.ServiceReqList
             this.layoutControlItem17 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem16 = new DevExpress.XtraLayout.LayoutControlItem();
             this.s = new DevExpress.XtraLayout.LayoutControlItem();
-            this.toolTipController1 = new DevExpress.Utils.ToolTipController();
-            this.imageListPriority = new System.Windows.Forms.ImageList();
-            this.imageListIcon = new System.Windows.Forms.ImageList();
-            this.imageListCheck = new System.Windows.Forms.ImageList();
+            this.toolTipController1 = new DevExpress.Utils.ToolTipController(this.components);
+            this.imageListPriority = new System.Windows.Forms.ImageList(this.components);
+            this.imageListIcon = new System.Windows.Forms.ImageList(this.components);
+            this.imageListCheck = new System.Windows.Forms.ImageList(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
             this.layoutControl1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.popupControlContainer1)).BeginInit();
@@ -2161,7 +2162,7 @@ namespace HIS.Desktop.Plugins.ServiceReqList
             this.gridColumn_ServiceReq_Edit.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumn_ServiceReq_Edit.Visible = true;
             this.gridColumn_ServiceReq_Edit.VisibleIndex = 2;
-            this.gridColumn_ServiceReq_Edit.Width = 22;
+            this.gridColumn_ServiceReq_Edit.Width = 23;
             // 
             // gridColumn_AllowNotExecute
             // 

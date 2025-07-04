@@ -71,6 +71,7 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
                 SetControlByExpMest(null);
                 treeListMediMate.DataSource = null;
                 dicMediMateAdo = new Dictionary<long, List<MediMateTypeADO>>();
+                LoadDatatoCboIdentification();
                 LoadPatientInfoFromdataExpMest(null);
                 moduleAction = GlobalDataStore.ModuleAction.ADD;
                 CommonParam param = new CommonParam();
@@ -793,7 +794,7 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
                         ProcessSetDataTrees(dataSources);
                         SetTotalPriceExpMestDetail();
                     }
-
+                    LoadDatatoCboIdentification();
                     if (serviceReq != null)
                     {
                         LoadPatientInfoFromdataServiceReq(serviceReq);
@@ -831,6 +832,27 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
                     txtVirPatientName.Text = _expMest.TDL_PATIENT_NAME;
                     txtAddress.Text = _expMest.TDL_PATIENT_ADDRESS;
                     cboGender.EditValue = _expMest.TDL_PATIENT_GENDER_ID;
+                    if (!string.IsNullOrWhiteSpace(_expMest.TDL_PATIENT_CMND_NUMBER))
+                    {
+                        txtIdentification.Text = _expMest.TDL_PATIENT_CMND_NUMBER;
+                        cboIdentification.EditValue = 1; // CMND
+                    }
+                    else if (!string.IsNullOrWhiteSpace(_expMest.TDL_PATIENT_CCCD_NUMBER))
+                    {
+                        txtIdentification.Text = _expMest.TDL_PATIENT_CCCD_NUMBER;
+                        cboIdentification.EditValue = 2; // CCCD
+                    }
+                    else if (!string.IsNullOrWhiteSpace(_expMest.TDL_PATIENT_PASSPORT_NUMBER))
+                    {
+                        txtIdentification.Text = _expMest.TDL_PATIENT_PASSPORT_NUMBER;
+                        cboIdentification.EditValue = 3; // PASSPORT
+                    }
+                    else
+                    {
+                        txtIdentification.Text = "";
+                        cboIdentification.EditValue = null;
+                    }
+
                     if (_expMest.TDL_PATIENT_IS_HAS_NOT_DAY_DOB == 1)
                     {
                         txtPatientDob.Text = _expMest.TDL_PATIENT_DOB.ToString().Substring(0, 4);
@@ -865,6 +887,8 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
                     txtVirPatientName.Text = "";
                     txtAddress.Text = "";
                     cboGender.EditValue = null;
+                    cboIdentification.EditValue = null;
+                    txtIdentification.Text = "";
                     txtPatientDob.EditValue = null;
                     txtLoginName.Text = "";
                     txtPresUser.Text = null;
@@ -906,6 +930,28 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
                     txtVirPatientName.Text = _serviceReq.TDL_PATIENT_NAME;
                     txtAddress.Text = _serviceReq.TDL_PATIENT_ADDRESS;
                     cboGender.EditValue = _serviceReq.TDL_PATIENT_GENDER_ID;
+
+                    if (!string.IsNullOrWhiteSpace(_serviceReq.TDL_PATIENT_CMND_NUMBER))
+                    {
+                        txtIdentification.Text = _serviceReq.TDL_PATIENT_CMND_NUMBER;
+                        cboIdentification.EditValue = 1; // CMND
+                    }
+                    else if (!string.IsNullOrWhiteSpace(_serviceReq.TDL_PATIENT_CCCD_NUMBER))
+                    {
+                        txtIdentification.Text = _serviceReq.TDL_PATIENT_CCCD_NUMBER;
+                        cboIdentification.EditValue = 2; // CCCD
+                    }
+                    else if (!string.IsNullOrWhiteSpace(_serviceReq.TDL_PATIENT_PASSPORT_NUMBER))
+                    {
+                        txtIdentification.Text = _serviceReq.TDL_PATIENT_PASSPORT_NUMBER;
+                        cboIdentification.EditValue = 3; // PASSPORT
+                    }
+                    else
+                    {
+                        txtIdentification.Text = "";
+                        cboIdentification.EditValue = null;
+                    }
+
                     if (_serviceReq.TDL_PATIENT_IS_HAS_NOT_DAY_DOB == 1)
                     {
                         txtPatientDob.Text = _serviceReq.TDL_PATIENT_DOB.ToString().Substring(0, 4);
@@ -938,6 +984,8 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
                     txtVirPatientName.Text = "";
                     txtAddress.Text = "";
                     cboGender.EditValue = null;
+                    cboIdentification.EditValue = null;
+                    txtIdentification.Text = "";
                     txtPatientDob.EditValue = null;
                     txtLoginName.Text = "";
                     txtPresUser.Text = null;

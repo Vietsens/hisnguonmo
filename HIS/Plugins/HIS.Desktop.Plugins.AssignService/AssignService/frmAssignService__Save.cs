@@ -82,44 +82,52 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                     isValid = isValid && subIcdYhctProcessor.GetValidate(ucSecondaryIcdYhct);
                 isValid = isValid && this.Valid(serviceCheckeds__Send);
                 isValid = isValid && this.CheckIcd(new List<V_HIS_TREATMENT_BED_ROOM> { new V_HIS_TREATMENT_BED_ROOM() { TREATMENT_ID = currentTreatment.ID, ICD_CODE = txtIcdCode.Text.Trim(), ICD_SUB_CODE = txtIcdSubCode.Text.Trim() } });
-                List<HIS_ICD_SERVICE> icdServicePhacDos = null;
-                List<HIS_ICD> icdFromUc = GetIcdCodeListFromUcIcd();
-                if (icdFromUc != null && icdFromUc.Count > 0)
+                bool isValidICD = true;
+                if (HisConfigCFG.IcdServiceHasRequireCheckPatientBHYT && !this.CheckPatientTypeBHYT(new List<V_HIS_TREATMENT_BED_ROOM> { new V_HIS_TREATMENT_BED_ROOM() { TDL_PATIENT_TYPE_ID  = currentTreatment.TDL_PATIENT_TYPE_ID } }))
                 {
-                    MOS.Filter.HisIcdServiceFilter icdServiceFilter = new HisIcdServiceFilter();
-                    icdServiceFilter.ICD_CODE__EXACTs = icdFromUc.Select(o => o.ICD_CODE).Distinct().ToList();
-                    icdServicePhacDos = new BackendAdapter(null).Get<List<HIS_ICD_SERVICE>>("api/HisIcdService/Get", ApiConsumer.ApiConsumers.MosConsumer, icdServiceFilter, null);
-
-                    //isValid = isValid && ValidServiceIcdForIcdSelected(icdServices, serviceCheckeds__Send);
-                    Inventec.Common.Logging.LogSystem.Debug("Valid3:" + isValid);
-                    isValid = isValid && ValidServiceIcdForServiceSelected(icdFromUc, icdServicePhacDos, serviceCheckeds__Send);
-                    Inventec.Common.Logging.LogSystem.Debug("Valid4:" + isValid);
-                    if (!isValid && HisConfigCFG.IcdServiceHasCheck == "4")
-                        return;
-                    if (isValid && HisConfigCFG.IcdServiceHasCheck == "5")
+                    isValidICD = false;
+                }
+                if (isValidICD)
+                {
+                    List<HIS_ICD_SERVICE> icdServicePhacDos = null;
+                    List<HIS_ICD> icdFromUc = GetIcdCodeListFromUcIcd();
+                    if (icdFromUc != null && icdFromUc.Count > 0)
                     {
-                        icdFromUc = GetIcdCodeListFromUcIcd();
-                        icdServiceFilter = new HisIcdServiceFilter();
+                        MOS.Filter.HisIcdServiceFilter icdServiceFilter = new HisIcdServiceFilter();
                         icdServiceFilter.ICD_CODE__EXACTs = icdFromUc.Select(o => o.ICD_CODE).Distinct().ToList();
                         icdServicePhacDos = new BackendAdapter(null).Get<List<HIS_ICD_SERVICE>>("api/HisIcdService/Get", ApiConsumer.ApiConsumers.MosConsumer, icdServiceFilter, null);
-                    }
-                }
-                else if (HisConfigCFG.IcdServiceHasCheck == "3" && serviceCheckeds__Send != null && serviceCheckeds__Send.Count > 0)
-                {
-                    MOS.Filter.HisIcdServiceFilter icdServiceFilter = new HisIcdServiceFilter();
-                    icdServiceFilter.SERVICE_IDs = serviceCheckeds__Send.Select(o => o.SERVICE_ID).Distinct().ToList();
-                    icdServicePhacDos = new BackendAdapter(new CommonParam()).Get<List<HIS_ICD_SERVICE>>("api/HisIcdService/Get", ApiConsumer.ApiConsumers.MosConsumer, icdServiceFilter, null);
 
-                    if (icdServicePhacDos != null && icdServicePhacDos.Count > 0 && icdFromUc != null && icdFromUc.Count > 0)
-                    {
-                        icdServicePhacDos = icdServicePhacDos.Where(o => !icdFromUc.Select(p => p.ICD_CODE).Contains(o.ICD_CODE)).ToList();
+                        //isValid = isValid && ValidServiceIcdForIcdSelected(icdServices, serviceCheckeds__Send);
+                        Inventec.Common.Logging.LogSystem.Debug("Valid3:" + isValid);
+                        isValid = isValid && ValidServiceIcdForServiceSelected(icdFromUc, icdServicePhacDos, serviceCheckeds__Send);
+                        Inventec.Common.Logging.LogSystem.Debug("Valid4:" + isValid);
+                        if (!isValid && HisConfigCFG.IcdServiceHasCheck == "4")
+                            return;
+                        if (isValid && HisConfigCFG.IcdServiceHasCheck == "5")
+                        {
+                            icdFromUc = GetIcdCodeListFromUcIcd();
+                            icdServiceFilter = new HisIcdServiceFilter();
+                            icdServiceFilter.ICD_CODE__EXACTs = icdFromUc.Select(o => o.ICD_CODE).Distinct().ToList();
+                            icdServicePhacDos = new BackendAdapter(null).Get<List<HIS_ICD_SERVICE>>("api/HisIcdService/Get", ApiConsumer.ApiConsumers.MosConsumer, icdServiceFilter, null);
+                        }
                     }
-                    if (icdServicePhacDos != null && icdServicePhacDos.Count > 0)
+                    else if (HisConfigCFG.IcdServiceHasCheck == "3" && serviceCheckeds__Send != null && serviceCheckeds__Send.Count > 0)
                     {
-                        frmMissingIcd frmWaringConfigIcdService = new frmMissingIcd(icdFromUc, serviceCheckeds__Send, this.currentModule, icdServicePhacDos, getDataFromMissingIcdDelegate);
-                        frmWaringConfigIcdService.ShowDialog();
-                        if (!isYes)
-                            isValid = false;
+                        MOS.Filter.HisIcdServiceFilter icdServiceFilter = new HisIcdServiceFilter();
+                        icdServiceFilter.SERVICE_IDs = serviceCheckeds__Send.Select(o => o.SERVICE_ID).Distinct().ToList();
+                        icdServicePhacDos = new BackendAdapter(new CommonParam()).Get<List<HIS_ICD_SERVICE>>("api/HisIcdService/Get", ApiConsumer.ApiConsumers.MosConsumer, icdServiceFilter, null);
+
+                        if (icdServicePhacDos != null && icdServicePhacDos.Count > 0 && icdFromUc != null && icdFromUc.Count > 0)
+                        {
+                            icdServicePhacDos = icdServicePhacDos.Where(o => !icdFromUc.Select(p => p.ICD_CODE).Contains(o.ICD_CODE)).ToList();
+                        }
+                        if (icdServicePhacDos != null && icdServicePhacDos.Count > 0)
+                        {
+                            frmMissingIcd frmWaringConfigIcdService = new frmMissingIcd(icdFromUc, serviceCheckeds__Send, this.currentModule, icdServicePhacDos, getDataFromMissingIcdDelegate);
+                            frmWaringConfigIcdService.ShowDialog();
+                            if (!isYes)
+                                isValid = false;
+                        }
                     }
                 }
                 List<string> lstIcd = new List<string>();

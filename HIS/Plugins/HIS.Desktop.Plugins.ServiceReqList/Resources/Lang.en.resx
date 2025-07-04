@@ -276,7 +276,8 @@
   <data name="frmServiceReqList.gridColumn_ServiceReq_Delete.Caption" xml:space="preserve">
     <value>Delete</value>
   </data>
-  <data name="frmServiceReqList.gridColumn_ServiceReq_Edit.Caption" xml:space="preserve">
+  <data name="frmServiceReqList.
+		.Caption" xml:space="preserve">
     <value>Edit</value>
   </data>
   <data name="frmServiceReqList.gridColumn_ServiceReq_EditIntructionTime.Caption" xml:space="preserve">
