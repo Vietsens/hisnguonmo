@@ -987,23 +987,74 @@ namespace HIS.Desktop.Plugins.TransactionBill
                 data.Transaction.REPLACE_REASON = txtReplaceReason.Text;
                 data.Transaction.TREATMENT_ID = this.treatmentId.Value;
                 data.Transaction.CASHIER_ROOM_ID = this.cashierRoom.ID;
-                data.Transaction.BUYER_NAME = txtBuyerName.Text.Trim();
-                if (chkOther.Checked)
+                data.Transaction.BUYER_NAME = txtBuyerName.Text.Trim();                
+
+                if (radioBuyerUser.Checked)
                 {
+                    // Cá nhân
+                    data.Transaction.BUYER_TYPE = 1;
+                    data.Transaction.BUYER_NAME = txtBuyerName.Text.Trim();
+                    data.Transaction.BUYER_IDENTITY_NUMBER = txtBuyerIdentityNumber.Text.Trim();
+                    data.Transaction.BUYER_WORK_PLACE_ID = null;
+                    data.Transaction.BUYER_ORGANIZATION = null;
+                    data.Transaction.BUYER_TAX_CODE = null;
+                    if (cboBuyerIdentity.EditValue == "CMND")
+                    {
+                        data.Transaction.BUYER_IDENTITY_TYPE = 1;
+                    }
+                    else if (cboBuyerIdentity.EditValue == "CCCD")
+                    {
+                        data.Transaction.BUYER_IDENTITY_TYPE = 2;
+                    }
+                    else if (cboBuyerIdentity.EditValue == "PASSPORT")
+                    {
+                        data.Transaction.BUYER_IDENTITY_TYPE = 3;
+                    }
+                    else
+                    {
+                        data.Transaction.BUYER_IDENTITY_TYPE = null;
+                    }
+                    data.Transaction.BUYER_PHONE = txtSDT.Text.Trim();
+                    data.Transaction.BUYER_ADDRESS = txtBuyerAddress.Text.Trim();
+                    data.Transaction.BUYER_EMAIL = txtBuyerEmail.Text.Trim();
+                    data.Transaction.BUYER_ACCOUNT_NUMBER = null;
+                }
+                else if (radioBuyerCompany.Checked)
+                {
+                    // Đơn vị
+                    data.Transaction.BUYER_TYPE = 2;
                     data.Transaction.BUYER_ORGANIZATION = txtBuyerOrganization.Text.Trim();
+                    data.Transaction.BUYER_WORK_PLACE_ID = cboBuyerOrganization.EditValue != null ? Convert.ToInt64(cboBuyerOrganization.EditValue) : (long?)null;
+                    data.Transaction.BUYER_TAX_CODE = txtBuyerTaxCode.Text.Trim();
+                    data.Transaction.BUYER_PHONE = txtSDT.Text.Trim();
+                    data.Transaction.BUYER_ADDRESS = txtBuyerAddress.Text.Trim();
+                    data.Transaction.BUYER_EMAIL = txtBuyerEmail.Text.Trim();
+                    data.Transaction.BUYER_NAME = null;
+                    data.Transaction.BUYER_IDENTITY_NUMBER = null;
+                    data.Transaction.BUYER_IDENTITY_TYPE = null;
+                    data.Transaction.BUYER_ACCOUNT_NUMBER = null;
                 }
                 else
                 {
-                    if (cboBuyerOrganization.EditValue != null)
+                    if (chkOther.Checked)
                     {
-                        data.Transaction.BUYER_WORK_PLACE_ID = Int64.Parse(cboBuyerOrganization.EditValue.ToString());
-                        data.Transaction.BUYER_ORGANIZATION = dtWorkPlace.Where(o => o.ID == data.Transaction.BUYER_WORK_PLACE_ID).First().WORK_PLACE_NAME;
+                        data.Transaction.BUYER_ORGANIZATION = txtBuyerOrganization.Text.Trim();
                     }
+                    else
+                    {
+                        if (cboBuyerOrganization.EditValue != null)
+                        {
+                            data.Transaction.BUYER_WORK_PLACE_ID = Int64.Parse(cboBuyerOrganization.EditValue.ToString());
+                            data.Transaction.BUYER_ORGANIZATION = dtWorkPlace.Where(o => o.ID == data.Transaction.BUYER_WORK_PLACE_ID).First().WORK_PLACE_NAME;
+                        }
+                    }
+                    data.Transaction.BUYER_TAX_CODE = txtBuyerTaxCode.Text.Trim();
+                    data.Transaction.BUYER_ACCOUNT_NUMBER = txtBuyerAccountNumber.Text.Trim();
+                    data.Transaction.BUYER_ADDRESS = txtBuyerAddress.Text.Trim();
+                    data.Transaction.BUYER_EMAIL = txtBuyerEmail.Text.Trim();
+                    data.Transaction.BUYER_PHONE = null;
                 }
-                data.Transaction.BUYER_TAX_CODE = txtBuyerTaxCode.Text.Trim();
-                data.Transaction.BUYER_ACCOUNT_NUMBER = txtBuyerAccountNumber.Text.Trim();
-                data.Transaction.BUYER_ADDRESS = txtBuyerAddress.Text.Trim();
-                data.Transaction.BUYER_EMAIL = txtBuyerEmail.Text.Trim();
+
                 data.RequestRoomId = this.currentModule.RoomId;
                 var accountBook = ListAccountBook.FirstOrDefault(o => o.ID == Convert.ToInt64(cboAccountBook.EditValue));
                 if (accountBook != null)

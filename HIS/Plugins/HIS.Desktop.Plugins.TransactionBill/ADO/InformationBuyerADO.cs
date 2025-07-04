@@ -1,4 +1,4 @@
-/* IVT
+﻿/* IVT
  * @Project : hisnguonmo
  * Copyright (C) 2017 INVENTEC
  *  
@@ -32,5 +32,10 @@ namespace HIS.Desktop.Plugins.TransactionBill.ADO
         public string Address { get; set; }
         public string UnitText { get; set; }
         public string checkBox { get; set; }
+        public int? BuyerType { get; set; } // 1: Cá nhân, 2: Đơn vị
+        public string Email { get; set; }
+        public string PhoneNumber { get; set; }
+        public string IdentityNumber { get; set; }
+        public int? IndentityCode { get; set; }
     }
 }

@@ -20,6 +20,7 @@ using DevExpress.XtraEditors;
 using DevExpress.XtraEditors.Controls;
 using DevExpress.XtraEditors.ViewInfo;
 using DevExpress.XtraExport;
+using DevExpress.XtraLayout.Utils;
 using DevExpress.XtraTreeList;
 using DevExpress.XtraTreeList.Nodes;
 using HIS.Desktop.ADO;
@@ -288,15 +289,31 @@ namespace HIS.Desktop.Plugins.TransactionBill
                     cboAccountBook.EditValue = currentTransaction.ACCOUNT_BOOK_ID;
                     cboAccountBook.Enabled = false;
                     txtReplaceReason.Text = currentTransaction.REPLACE_REASON;
+
                     txtBuyerName.Text = currentTransaction.BUYER_NAME;
                     txtBuyerTaxCode.Text = currentTransaction.BUYER_TAX_CODE;
                     txtBuyerAddress.Text = currentTransaction.BUYER_ADDRESS;
-                    //txtBuyEmail.Text = currentTransaction.BUYER_EMAIL;
+                    txtBuyerEmail.Text = currentTransaction.BUYER_EMAIL;
+                    txtSDT.Text = currentTransaction.BUYER_PHONE;
                     txtBuyerAccountNumber.Text = currentTransaction.BUYER_ACCOUNT_NUMBER;
-
+                    txtBuyerIdentityNumber.Text = currentTransaction.BUYER_IDENTITY_NUMBER;
+                    if (currentTransaction.BUYER_IDENTITY_TYPE == 1)
+                    {
+                        cboBuyerIdentity.EditValue = "CMND";
+                    }
+                    else if (currentTransaction.BUYER_IDENTITY_TYPE == 2)
+                    {
+                        cboBuyerIdentity.EditValue = "CCCD";
+                    }
+                    else if (currentTransaction.BUYER_IDENTITY_TYPE == 3)
+                    {
+                        cboBuyerIdentity.EditValue = "PASSPORT";
+                    }
                     cboBuyerOrganization.EditValue = null;
+                    cboBuyerOrganization2.EditValue = currentTransaction.BUYER_ORGANIZATION;
                     txtBuyerOrganization.Text = currentTransaction.BUYER_ORGANIZATION;
                     chkOther.Checked = true;
+                    chkOther1.Checked = true;
 
                     btnStateForInformationUser.Properties.Buttons[0].Visible = false;
                     btnStateForInformationUser.Properties.Buttons[1].Visible = true;
@@ -542,6 +559,7 @@ namespace HIS.Desktop.Plugins.TransactionBill
                 timerClose.Interval = 100;
                 CheckEnableBtnQR();
                 this.InitComboBuyerOrganization();
+                //this.InitComboBuyerOrganization2();
                 HisConfigCFG.LoadConfig();
                 InitControlState();
                 this.LoadKeyFrmLanguage();
@@ -1069,6 +1087,21 @@ namespace HIS.Desktop.Plugins.TransactionBill
             {
                 dtWorkPlace = BackendDataWorker.Get<HIS_WORK_PLACE>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE).ToList();
                 this.InitComboCommon(this.cboBuyerOrganization, dtWorkPlace, "ID", "WORK_PLACE_NAME", "TAX_CODE");
+                this.InitComboCommon(this.cboBuyerOrganization2, dtWorkPlace, "ID", "WORK_PLACE_NAME", "TAX_CODE");
+
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void InitComboBuyerOrganization2()
+        {
+            try
+            {
+                dtWorkPlace = BackendDataWorker.Get<HIS_WORK_PLACE>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE).ToList();
+                this.InitComboCommon(this.cboBuyerOrganization2, dtWorkPlace, "ID", "WORK_PLACE_NAME", "TAX_CODE");
 
             }
             catch (Exception ex)
@@ -1552,8 +1585,11 @@ namespace HIS.Desktop.Plugins.TransactionBill
                     txtBuyerOrganization.Text = "";
                     txtBuyerAddress.Text = "";
                     chkOther.Checked = false;
+                    chkOther1.Checked = false;
                     cboBuyerOrganization.EditValue = null;
                     cboBuyerOrganization.Properties.Buttons[1].Visible = false;
+                    cboBuyerOrganization2.EditValue = null;
+                    cboBuyerOrganization2.Properties.Buttons[1].Visible = false;
                 }
                 //
                 txtTotalAmount.Value = 0;
@@ -2428,12 +2464,52 @@ namespace HIS.Desktop.Plugins.TransactionBill
             {
                 InformationBuyerADO ado = new InformationBuyerADO();
                 ado.FullName = txtBuyerName.Text;
-                ado.TaxCode = txtBuyerTaxCode.Text;
-                ado.UnitID = cboBuyerOrganization.EditValue != null ? Int64.Parse(cboBuyerOrganization.EditValue.ToString()) : 0;
+                ado.TaxCode = txtBuyerTaxCode.Text; 
+                ado.BuyerType = radioBuyerUser.Checked ? 1 : (radioBuyerCompany.Checked ? 2 : (int?)null); // Lưu loại người mua
+                ado.Email = txtBuyerEmail.Text;
+                ado.PhoneNumber = txtBuyerEmail.Text;
+                ado.IdentityNumber = txtBuyerIdentityNumber.Text;
+                if (cboBuyerIdentity.EditValue == "CMND")
+                    ado.IndentityCode = 1;
+                if (cboBuyerIdentity.EditValue == "CCCD")
+                    ado.IndentityCode = 2;
+                if (cboBuyerIdentity.EditValue == "PASSPORT")
+                    ado.IndentityCode = 3;
+
+                if (cboBuyerOrganization.Visible)
+                {
+                    ado.UnitID = cboBuyerOrganization.EditValue != null
+                        ? Convert.ToInt64(cboBuyerOrganization.EditValue)
+                        : 0;
+                }
+                else if (cboBuyerOrganization2.Visible)
+                {
+                    ado.UnitID = cboBuyerOrganization2.EditValue != null
+                        ? Convert.ToInt64(cboBuyerOrganization2.EditValue)
+                        : 0;
+                }
+                else
+                {
+                    ado.UnitID = 0;
+                }
+
                 ado.Address = txtBuyerAddress.Text;
                 ado.AccountNumber = txtBuyerAccountNumber.Text;
-                ado.UnitText = txtBuyerOrganization.Text;
-                ado.checkBox = chkOther.Checked ? "1" : "0";
+                    ado.UnitText = txtBuyerOrganization.Text;
+
+                if (chkOther.Visible)
+                {
+                    ado.checkBox = chkOther.Checked ? "1" : "0";
+                }
+                else if (chkOther1.Visible)
+                {
+                    ado.checkBox = chkOther1.Checked ? "1" : "0";
+                }
+                else
+                {
+                    ado.checkBox = "0"; // Mặc định nếu không cái nào hiển thị
+                }
+
                 string textJson = JsonConvert.SerializeObject(ado);
 
                 HIS.Desktop.Library.CacheClient.ControlStateRDO csAddOrUpdateValue = (this.currentBySessionControlStateRDO != null && this.currentBySessionControlStateRDO.Count > 0) ? this.currentBySessionControlStateRDO.Where(o => o.KEY == "InformationBuyerADO" && o.MODULE_LINK == moduleLink).FirstOrDefault() : null;
@@ -3087,12 +3163,41 @@ namespace HIS.Desktop.Plugins.TransactionBill
                     {
                         txtBuyerName.Text = ado.FullName;
                         txtBuyerTaxCode.Text = ado.TaxCode;
-                        cboBuyerOrganization.EditValue = ado.UnitID;
+                        if (cboBuyerOrganization.Visible)
+                        {
+                            cboBuyerOrganization.EditValue = ado.UnitID;
+                            cboBuyerOrganization.Focus();
+                        }
+                        else if (cboBuyerOrganization2.Visible)
+                        {
+                            cboBuyerOrganization2.EditValue = ado.UnitID;
+                            cboBuyerOrganization2.Focus();
+                        }
                         txtBuyerAddress.Text = ado.Address;
                         txtBuyerAccountNumber.Text = ado.AccountNumber;
-                        txtBuyerOrganization.Text = ado.UnitText;
+                            txtBuyerOrganization.Text = ado.UnitText;
                         chkOther.Checked = ado.checkBox == "1" ? true : false;
-                        cboBuyerOrganization.Focus();
+                        chkOther1.Checked = ado.checkBox == "1" ? true : false;
+                        //cboBuyerOrganization.Focus();
+                        if (ado.BuyerType == 1)
+                        {
+                            radioBuyerUser.Checked = true;
+                            radioBuyerCompany.Checked = false;
+                        }
+                        else if (ado.BuyerType == 2)
+                        {
+                            radioBuyerUser.Checked = false;
+                            radioBuyerCompany.Checked = true;
+                        }
+                        txtBuyerEmail.Text = ado.Email;
+                        txtSDT.Text = ado.PhoneNumber;
+                        txtBuyerIdentityNumber.Text = ado.IdentityNumber;
+                        if (ado.IndentityCode == 1)
+                            cboBuyerIdentity.EditValue = "CMND";
+                        if (ado.IndentityCode == 2)
+                            cboBuyerIdentity.EditValue = "CCCD";
+                        if (ado.IndentityCode == 3)
+                            cboBuyerIdentity.EditValue = "PASSPORT";
                     }
                 }
                 else
@@ -3101,7 +3206,6 @@ namespace HIS.Desktop.Plugins.TransactionBill
                     btnStateForInformationUser.Properties.Buttons[1].Visible = true;
                     IsPin = false;
                 }
-
 
                 bool isBHYT = false;
                 long patientTypeIdBHYT = HisConfigCFG.PatientTypeId__BHYT;
@@ -3603,11 +3707,13 @@ namespace HIS.Desktop.Plugins.TransactionBill
                 if (cboBuyerOrganization.EditValue != null)
                 {
                     var dt = dtWorkPlace.Where(o => o.ID == Int64.Parse(cboBuyerOrganization.EditValue.ToString())).First();
-                    if (!chkAddressBhyt.Checked)
-                    {
-                        txtBuyerAddress.Text = dt.ADDRESS;
-                        txtBuyerTaxCode.Text = dt.TAX_CODE;
-                    }
+                    //if (!chkAddressBhyt.Checked)
+                    //{
+
+                    //}
+                    txtBuyerAddress.Text = dt.ADDRESS;
+                    txtBuyerTaxCode.Text = dt.TAX_CODE;
+                    cboBuyerOrganization2.EditValue = cboBuyerOrganization.EditValue;
                     cboBuyerOrganization.Properties.Buttons[1].Visible = true;
                     //HIS.Desktop.Library.CacheClient.ControlStateRDO csAddOrUpdateValue = (this.currentBySessionControlStateRDO != null && this.currentBySessionControlStateRDO.Count > 0) ? this.currentBySessionControlStateRDO.Where(o => o.KEY == cboBuyerOrganization.Name && o.MODULE_LINK == moduleLink).FirstOrDefault() : null;
                     //if (csAddOrUpdateValue != null)
@@ -3706,7 +3812,6 @@ namespace HIS.Desktop.Plugins.TransactionBill
 
         private void cboDepositBook_ButtonClick(object sender, ButtonPressedEventArgs e)
         {
-
             try
             {
                 if (e.Button.Kind == ButtonPredefines.Delete)
@@ -3901,7 +4006,6 @@ namespace HIS.Desktop.Plugins.TransactionBill
                         LogSystem.Debug("_____Load module : HIS.Desktop.Plugins.CreateTransReqQR " + selectedConfig.KEY);
                         HIS.Desktop.ModuleExt.PluginInstanceBehavior.ShowModule("HIS.Desktop.Plugins.CreateTransReqQR", this.currentModule.RoomId, this.currentModule.RoomTypeId, listArgs);
 
-
                     }
 
                 }
@@ -3922,15 +4026,22 @@ namespace HIS.Desktop.Plugins.TransactionBill
                 {
                     return;
                 }
-                if (chkAddressBhyt.Checked && resultPatientType != null && !string.IsNullOrEmpty(resultPatientType.ADDRESS))
+                if(chkAddressBhyt.Checked)
                 {
-                    txtBuyerAddress.Text = resultPatientType.ADDRESS;
-                }
-                else if (currentTransaction != null && currentTransaction.IS_CANCEL == 1)
-                {
-                    txtBuyerAddress.Text = currentTransaction.BUYER_ADDRESS;
-                }
-                else if (this.currentTreatment != null)
+                    if (resultPatientType != null && !string.IsNullOrEmpty(resultPatientType.ADDRESS))
+                    {
+                        txtBuyerAddress.Text = resultPatientType.ADDRESS;
+                    }
+                    else if (currentTransaction != null && currentTransaction.IS_CANCEL == 1)
+                    {
+                        txtBuyerAddress.Text = "";
+                    }
+                    else if (this.currentTreatment != null)
+                    {
+                        txtBuyerAddress.Text = "";
+                    }
+                }                    
+                else
                 {
                     txtBuyerAddress.Text = currentTreatment.TDL_PATIENT_ADDRESS;
                 }
@@ -3994,5 +4105,114 @@ namespace HIS.Desktop.Plugins.TransactionBill
             }
         }
 
+        private void radioBuyerUser_CheckedChanged(object sender, EventArgs e)
+        {
+            if (radioBuyerUser.Checked)
+            {
+                radioBuyerCompany.Checked = false;
+
+                // Hiện cho Cá nhân
+                layoutControlItem32.Visibility = LayoutVisibility.Always;
+                layoutControlItem56.Visibility = LayoutVisibility.Always;
+                layoutControlItem57.Visibility = LayoutVisibility.Always;
+                layoutControlItem59.Visibility = LayoutVisibility.Always;
+                cboBuyerOrganization.Visible = true;
+                cboBuyerOrganization2.Visible = false;
+                // Ẩn của Cơ quan
+                layoutControlItem44.Visibility = LayoutVisibility.Never;
+                layoutControlItem35.Visibility = LayoutVisibility.Never;
+                layoutControlItem33.Visibility = LayoutVisibility.Never;
+                layoutControlItem34.Visibility = LayoutVisibility.Never;
+                layoutControlItem58.Visibility = LayoutVisibility.Never;
+                layoutControlItem60.Visibility = LayoutVisibility.Never;
+
+            }
+        }
+
+        private void radioBuyerCompany_CheckedChanged(object sender, EventArgs e)
+        {
+            if (radioBuyerCompany.Checked)
+            {
+                radioBuyerUser.Checked = false;
+
+                // Hiện cho Cơ quan
+                layoutControlItem33.Visibility = LayoutVisibility.Always;
+                layoutControlItem34.Visibility = LayoutVisibility.Never;
+                layoutControlItem58.Visibility = LayoutVisibility.Always;
+                layoutControlItem60.Visibility = LayoutVisibility.Always;
+                cboBuyerOrganization.Visible = false;
+                cboBuyerOrganization2.Visible = true;
+                // Ẩn các item không dùng
+                layoutControlItem59.Visibility = LayoutVisibility.Always;
+                layoutControlItem56.Visibility = LayoutVisibility.Never;
+                layoutControlItem57.Visibility = LayoutVisibility.Never;
+                layoutControlItem32.Visibility = LayoutVisibility.Never;
+                layoutControlItem44.Visibility = LayoutVisibility.Never;
+                layoutControlItem35.Visibility = LayoutVisibility.Never;
+            }
+        }
+
+        private void cboBuyerOrganization2_EditValueChanged(object sender, EventArgs e)
+        {
+            try
+            {
+
+                if (cboBuyerOrganization2.EditValue != null)
+                {
+                    var dt = dtWorkPlace.Where(o => o.ID == Int64.Parse(cboBuyerOrganization2.EditValue.ToString())).First();
+                    //if (!chkAddressBhyt.Checked)
+                    //{
+                        
+                    //}
+                    txtBuyerAddress.Text = dt.ADDRESS;
+                    txtBuyerTaxCode.Text = dt.TAX_CODE;
+                    cboBuyerOrganization2.Properties.Buttons[1].Visible = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void cboBuyerOrganization2_ButtonClick(object sender, ButtonPressedEventArgs e)
+        {
+            try
+            {
+                if (e.Button.Kind == ButtonPredefines.Delete)
+                {
+                    cboBuyerOrganization2.EditValue = null;
+                    cboBuyerOrganization2.Properties.Buttons[1].Visible = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void chkOther1_CheckedChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                if (chkOther1.Checked)
+                {
+                    
+                    cboBuyerOrganization2.Visible = false;
+                    layoutControlItem58.Visibility = LayoutVisibility.Never;
+
+                    this.dxValidationProvider1.SetValidationRule(txtBuyerOrganization, null);
+                    ValidControlBuyerOrganization();
+                }
+                else
+                {
+                    cboBuyerOrganization2.Visible = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
     }
 }
