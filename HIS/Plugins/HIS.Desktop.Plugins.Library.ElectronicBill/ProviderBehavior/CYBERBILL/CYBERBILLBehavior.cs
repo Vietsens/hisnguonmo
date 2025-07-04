@@ -153,7 +153,8 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.CYBERBILL
             hd.dnmua_diachi = inv.BuyerAddress;
             hd.dnmua_sdt = inv.BuyerPhone;
             hd.dnmua_email = inv.BuyerEmail;
-            hd.dnmua_cccd =  inv.BuyerCCCD;
+            hd.dnmua_cccd = !String.IsNullOrWhiteSpace(inv.BuyerIdentityNumber) ? inv.BuyerIdentityNumber : inv.BuyerCCCD;
+            hd.dnmua_mqhns = ElectronicBillDataInput.Transaction.BUYER_TYPE == 2 ? inv.BuyerTaxCode : "";
             hd.thanhtoan_phuongthuc = 3;
             hd.thanhtoan_phuongthuc_ten = "Tiền mặt/Chuyển khoản";
             hd.thanhtoan_taikhoan = inv.BuyerAccountNumber;

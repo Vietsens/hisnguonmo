@@ -36,6 +36,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.CYBERBILL.
         public string dnmua_mst { get; set; }
         public string dnmua_ten { get; set; }
         public string dnmua_cccd { get; set; }
+        public string dnmua_mqhns { get; set; }
         public string dnmua_tennguoimua { get; set; }
         public string dnmua_diachi { get; set; }
         public string dnmua_sdt { get; set; }
