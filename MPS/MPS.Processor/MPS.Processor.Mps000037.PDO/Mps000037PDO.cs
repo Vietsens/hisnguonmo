@@ -35,11 +35,15 @@ namespace MPS.Processor.Mps000037.PDO
             Mps000037ADO mps000037ADO,
             List<V_HIS_SERVICE_REQ> listServiceReqPrint,
             List<HIS_SERE_SERV_EXT> hisSereServExt,
-            List<V_HIS_SERVICE> listService)
+            List<V_HIS_SERVICE> listService,
+            List<HIS_CONFIG> lstConfig,
+            HIS_TRANS_REQ transReq)
 
         {
             try
             {
+                this.lstConfig = lstConfig;
+                this.transReq = transReq;
                 this.SereServs_All = sereServs_All;
                 this.V_HIS_PATIENT_TYPE_ALTER = V_HIS_PATIENT_TYPE_ALTER;
                 this.lstServiceReq = lstServiceReq;
@@ -54,7 +58,7 @@ namespace MPS.Processor.Mps000037.PDO
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
-         
+
         public Mps000037PDO(
     List<V_HIS_SERE_SERV> sereServs_All,
     V_HIS_SERVICE_REQ lstServiceReq,
@@ -64,7 +68,9 @@ namespace MPS.Processor.Mps000037.PDO
     List<V_HIS_SERVICE_REQ> listServiceReqPrint,
     List<HIS_SERE_SERV_EXT> hisSereServExt,
     List<V_HIS_SERVICE> listService,
-    List<HIS_SERVICE_REQ_TYPE> lstServiceReqType) : this(sereServs_All, lstServiceReq, V_HIS_PATIENT_TYPE_ALTER, hisTreatment, mps000037ADO, listServiceReqPrint, hisSereServExt, listService)
+    List<HIS_SERVICE_REQ_TYPE> lstServiceReqType,
+    List<HIS_CONFIG> lstConfig,
+    HIS_TRANS_REQ transReq) : this(sereServs_All, lstServiceReq, V_HIS_PATIENT_TYPE_ALTER, hisTreatment, mps000037ADO, listServiceReqPrint, hisSereServExt, listService, lstConfig, transReq)
         {
             try
             {
@@ -85,8 +91,9 @@ namespace MPS.Processor.Mps000037.PDO
             List<V_HIS_SERVICE_REQ> listServiceReqPrint,
             List<HIS_SERE_SERV_EXT> hisSereServExt,
             List<V_HIS_SERVICE> listService,
-            List<HIS_SERE_NMSE> ListSereNmse)
-
+            List<HIS_SERE_NMSE> ListSereNmse,
+            List<HIS_CONFIG> lstConfig,
+            HIS_TRANS_REQ transReq)
         {
             try
             {
@@ -99,6 +106,8 @@ namespace MPS.Processor.Mps000037.PDO
                 this.SereServExt = hisSereServExt;
                 this.ListService = listService;
                 this.ListSereNmse = ListSereNmse;
+                this.lstConfig = lstConfig;
+                this.transReq = transReq;
             }
             catch (Exception ex)
             {
@@ -116,7 +125,9 @@ namespace MPS.Processor.Mps000037.PDO
     List<HIS_SERE_SERV_EXT> hisSereServExt,
     List<V_HIS_SERVICE> listService,
     List<HIS_SERVICE_REQ_TYPE> lstServiceReqType,
-    List<HIS_SERE_NMSE> ListSereNmse) : this(sereServs_All, lstServiceReq, V_HIS_PATIENT_TYPE_ALTER, hisTreatment, mps000037ADO, listServiceReqPrint, hisSereServExt, listService, ListSereNmse)
+    List<HIS_SERE_NMSE> ListSereNmse,
+    List<HIS_CONFIG> lstConfig,
+    HIS_TRANS_REQ transReq) : this(sereServs_All, lstServiceReq, V_HIS_PATIENT_TYPE_ALTER, hisTreatment, mps000037ADO, listServiceReqPrint, hisSereServExt, listService, ListSereNmse, lstConfig, transReq)
         {
             try
             {
@@ -127,5 +138,5 @@ namespace MPS.Processor.Mps000037.PDO
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
-    }     
+    }
 }
