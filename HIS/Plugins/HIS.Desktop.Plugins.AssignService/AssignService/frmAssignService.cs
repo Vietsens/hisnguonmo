@@ -10214,7 +10214,12 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                 LogSystem.Warn(ex);
             }
         }
-	}
+
+        private void pnlPrintAssignService_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+    }
     public class BankInfo
     {
         public BankInfo() { }
