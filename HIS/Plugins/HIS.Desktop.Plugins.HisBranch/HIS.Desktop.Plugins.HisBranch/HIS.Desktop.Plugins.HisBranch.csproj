@@ -65,11 +65,17 @@
     <Reference Include="DevExpress.XtraTreeList.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
     </Reference>
+    <Reference Include="HIS.Desktop.Library.CacheClient">
+      <HintPath>..\..\..\..\..\..\histest\x64\ReferencedAssemblies\HIS.Desktop.Library.CacheClient.dll</HintPath>
+    </Reference>
     <Reference Include="HIS.Desktop.LocalStorage.Location">
       <HintPath>..\..\..\..\..\LIB\Inventec.Desktop\Inventec.Desktop.Plugins.EventLog\HIS.Desktop.LocalStorage.Location.dll</HintPath>
     </Reference>
     <Reference Include="HIS.UC.WorkPlace">
       <HintPath>..\..\..\..\..\LIB\HIS\HIS.UC.PlusInfo\HIS.UC.WorkPlace.dll</HintPath>
+    </Reference>
+    <Reference Include="IMSys.DbConfig.SDA_RS">
+      <HintPath>..\..\..\..\..\lib\IMSys.DbConfig\IMSys.DbConfig.SDA_RS\IMSys.DbConfig.SDA_RS.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Common.Adapter">
       <HintPath>..\..\..\..\..\LIB\Inventec.Common\Inventec.Common.Adapter\Inventec.Common.Adapter.dll</HintPath>

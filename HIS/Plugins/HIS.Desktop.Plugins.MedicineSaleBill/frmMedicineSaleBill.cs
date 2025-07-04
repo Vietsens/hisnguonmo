@@ -58,6 +58,8 @@ using System.Resources;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
 using System.Threading.Tasks;
+using MPS.ADO.Bordereau;
+using HIS.Desktop.Plugins.Library.RegisterConfig;
 
 
 namespace HIS.Desktop.Plugins.MedicineSaleBill
@@ -164,8 +166,10 @@ namespace HIS.Desktop.Plugins.MedicineSaleBill
                     SetDefaultAccountBook();
                     SetDefaultPayForm();
                     SetBuyerInfo();
-                    LoadTreatmentFee();
+                    LoadTreatmentFee();  
                     SetDefaultCreateQR();
+                    SetDefaultLayout();
+                    InitComboIdentityType();
                 }
 
                 if (expMestIdForEdits != null && expMestIdForEdits.Count > 0)
@@ -195,6 +199,34 @@ namespace HIS.Desktop.Plugins.MedicineSaleBill
                 WaitingManager.Hide();
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
+        }
+        private void InitComboIdentityType()
+        {
+            cboIdentityType.Properties.Items.Clear();
+            cboIdentityType.Properties.Items.AddRange(new string[] { "CMND", "CCCD", "PASSPORT" });
+        }
+
+        private void SetDefaultLayout()
+        {
+            layoutControl1.BeginUpdate();
+
+            layoutControlItem15.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always; // Họ tên
+            layoutControlItem17.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always; // Mã số thuế
+            layoutControlItem18.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always; // Số tài khoản
+            layoutControlItem19.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always; // SĐT
+            layoutControlItem26.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always; // Đơn vị (Textbox)
+            layoutControlItem20.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always; // Địa chỉ
+            layoutControlItem25.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always; // Email
+
+            layoutControlItem16.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never; // Đơn vị (Combobox)
+            layoutControlItem28.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never; // TT định danh (Textbox)
+            layoutControlItem29.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never; // TT định danh (Combobox)
+            layoutControlItem30.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never; // Khác
+            layoutControlItem31.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never; // ĐC BHYT
+            layoutControlItem27.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never; // Combobox ẩn 
+
+            layoutControlGroup2.BestFit();
+            layoutControl1.EndUpdate();
         }
 
         private void SetDefaultCreateQR()
@@ -530,6 +562,20 @@ namespace HIS.Desktop.Plugins.MedicineSaleBill
                 ValidControlGridLookUp(cboPayFrom);
                 ValidControlBuyerTaxCode();
                 ValidControlBuyerAccountCode();
+
+                if (rdoCaNhan.Checked)
+                {
+                    var identityRule = new IdentityTypeValidationRule
+                    {
+                        cboIdentityType = cboIdentityType,
+                        txtIdentityType = txtIdentityType
+                    };
+                    dxValidationProviderEditorInfo.SetValidationRule(cboIdentityType, identityRule);
+                }
+                else
+                {
+                    dxValidationProviderEditorInfo.SetValidationRule(cboIdentityType, null); 
+                }
             }
             catch (Exception ex)
             {
@@ -898,30 +944,100 @@ namespace HIS.Desktop.Plugins.MedicineSaleBill
         private void SetBuyerInfo()
         {
 
+            //if (this.ExpMests != null && this.ExpMests.Count > 0)
+            //{
+
+            //    var expMest = ExpMests.FirstOrDefault();
+
+            //    txtBuyerAccountCode.Text = ExpMests.FirstOrDefault().TDL_PATIENT_ACCOUNT_NUMBER;
+            //    txtAddress.Text = ExpMests.FirstOrDefault().TDL_PATIENT_ADDRESS;
+            //    txtBuyerPhone.Text = ExpMests.FirstOrDefault().TDL_PATIENT_PHONE;
+            //    txtBuyerTaxCode.Text = ExpMests.FirstOrDefault().TDL_PATIENT_TAX_CODE;
+            //    txtBuyerOgranization.Text = ExpMests.FirstOrDefault().TDL_PATIENT_WORK_PLACE;
+            //    txtName.Text = ExpMests.FirstOrDefault().TDL_PATIENT_NAME;
+
+            //    long tdlPatientId = expMest.TDL_PATIENT_ID ?? 0;
+            //    HisPatientFilter patientFilter = new HisPatientFilter();
+            //    patientFilter.ID = tdlPatientId;
+            //    var listPatient = new Inventec.Common.Adapter.BackendAdapter(new CommonParam()).Get<List<HIS_PATIENT>>("api/HisPatient/Get",
+            //        ApiConsumers.MosConsumer, patientFilter, new CommonParam());
+            //    if (listPatient != null && listPatient.Count > 0)
+            //    {
+            //        HIS_PATIENT HisPatientResult = listPatient.FirstOrDefault();
+            //        txtEmail.Text = HisPatientResult.EMAIL;
+            //    }
+            //}
             if (this.ExpMests != null && this.ExpMests.Count > 0)
             {
-
                 var expMest = ExpMests.FirstOrDefault();
-
-                txtBuyerAccountCode.Text = ExpMests.FirstOrDefault().TDL_PATIENT_ACCOUNT_NUMBER;
-                txtAddress.Text = ExpMests.FirstOrDefault().TDL_PATIENT_ADDRESS;
-                txtBuyerPhone.Text = ExpMests.FirstOrDefault().TDL_PATIENT_PHONE;
-                txtBuyerTaxCode.Text = ExpMests.FirstOrDefault().TDL_PATIENT_TAX_CODE;
-                txtBuyerOgranization.Text = ExpMests.FirstOrDefault().TDL_PATIENT_WORK_PLACE;
-                txtName.Text = ExpMests.FirstOrDefault().TDL_PATIENT_NAME;
-
-                long tdlPatientId = expMest.TDL_PATIENT_ID ?? 0;
-                HisPatientFilter patientFilter = new HisPatientFilter();
-                patientFilter.ID = tdlPatientId;
-                var listPatient = new Inventec.Common.Adapter.BackendAdapter(new CommonParam()).Get<List<HIS_PATIENT>>("api/HisPatient/Get",
-                    ApiConsumers.MosConsumer, patientFilter, new CommonParam());
-                if (listPatient != null && listPatient.Count > 0)
+                if (rdoCaNhan.Checked)
                 {
-                    HIS_PATIENT HisPatientResult = listPatient.FirstOrDefault();
-                    txtEmail.Text = HisPatientResult.EMAIL;
+                    // Cá nhân
+                    txtName.Text = expMest.TDL_PATIENT_NAME;
+                    txtIdentityType.Text = expMest.TDL_PATIENT_CCCD_NUMBER ?? expMest.TDL_PATIENT_CMND_NUMBER ?? expMest.TDL_PATIENT_PASSPORT_NUMBER;
+                    if (!string.IsNullOrEmpty(txtIdentityType.Text))
+                    {
+                        if (!string.IsNullOrEmpty(expMest.TDL_PATIENT_CCCD_NUMBER))
+                            cboIdentityType.EditValue = "2"; // CCCD
+                        else if (!string.IsNullOrEmpty(expMest.TDL_PATIENT_CMND_NUMBER))
+                            cboIdentityType.EditValue = "1"; // CMND
+                        else if (!string.IsNullOrEmpty(expMest.TDL_PATIENT_PASSPORT_NUMBER))
+                            cboIdentityType.EditValue = "3"; // PASSPORT
+                    }
+                    txtBuyerPhone.Text = expMest.TDL_PATIENT_MOBILE ?? expMest.TDL_PATIENT_PHONE;
+                    txtAddress.Text = expMest.TDL_PATIENT_ADDRESS;
+                    if (chkBHYT.Checked)
+                    {
+                        var patientTypeAlter = GetPatientTypeAlter(expMest.TDL_PATIENT_ID ?? 0);
+                        if (patientTypeAlter != null)
+                            txtAddress.Text = patientTypeAlter.ADDRESS;
+                    }
+                    txtEmail.Text = GetPatientEmail(expMest.TDL_PATIENT_ID ?? 0); 
+                }
+                else if (rdoCoQuan.Checked)
+                {   
+                    // Cơ quan
+                    txtBuyerOgranization.Text = expMest.TDL_PATIENT_WORK_PLACE;
+                    if (cboBuyerOrgarnization.EditValue != null)
+                    {
+                        txtBuyerOgranization.Text = cboBuyerOrgarnization.Text;
+                    }
+                    txtBuyerTaxCode.Text = expMest.TDL_PATIENT_TAX_CODE;
+                    txtBuyerPhone.Text = expMest.TDL_PATIENT_MOBILE ?? expMest.TDL_PATIENT_PHONE;
+                    txtAddress.Text = expMest.TDL_PATIENT_ADDRESS;
+                    if (chkBHYT.Checked)
+                    {
+                        var patientTypeAlter = GetPatientTypeAlter(expMest.TDL_PATIENT_ID ?? 0);
+                        if (patientTypeAlter != null)
+                            txtAddress.Text = patientTypeAlter.ADDRESS;
+                    }
+                    txtEmail.Text = GetPatientEmail(expMest.TDL_PATIENT_ID ?? 0);
+                }
+                else
+                {
+                    // Mặc định
+                    txtName.Text = expMest.TDL_PATIENT_NAME;
+                    txtBuyerOgranization.Text = expMest.TDL_PATIENT_WORK_PLACE;
+                    txtBuyerTaxCode.Text = expMest.TDL_PATIENT_TAX_CODE;
+                    txtBuyerPhone.Text = expMest.TDL_PATIENT_MOBILE ?? expMest.TDL_PATIENT_PHONE;
+                    txtAddress.Text = expMest.TDL_PATIENT_ADDRESS;
+                    txtEmail.Text = GetPatientEmail(expMest.TDL_PATIENT_ID ?? 0);
                 }
             }
 
+        }
+        private string GetPatientEmail(long patientId)
+        {
+            var patientFilter = new HisPatientFilter { ID = patientId };
+            var patients = new BackendAdapter(new CommonParam()).Get<List<HIS_PATIENT>>("api/HisPatient/Get", ApiConsumers.MosConsumer, patientFilter, null);
+            return patients?.FirstOrDefault()?.EMAIL;
+        }
+
+        private HIS_PATIENT_TYPE_ALTER GetPatientTypeAlter(long patientId)
+        {
+            var filter = new HisPatientTypeAlterFilter { TDL_PATIENT_ID = patientId, PATIENT_TYPE_ID = HisConfigCFG.PatientTypeId__BHYT };
+            var alters = new BackendAdapter(new CommonParam()).Get<List<HIS_PATIENT_TYPE_ALTER>>("api/HisPatientTypeAlter/Get", ApiConsumers.MosConsumer, filter, null);
+            return alters?.FirstOrDefault();
         }
 
         private void LoadMediStockByRoomId()
@@ -1064,9 +1180,68 @@ namespace HIS.Desktop.Plugins.MedicineSaleBill
                     data.HisTransaction.DESCRIPTION = txtDescription.Text;
                 }
 
-                if (!string.IsNullOrEmpty(txtName.Text))
+                if (rdoCaNhan.Checked) // Trường hợp người mua là cá nhân
                 {
-                    data.HisTransaction.BUYER_NAME = txtName.Text;
+                    data.HisTransaction.BUYER_TYPE = 1; // Cá nhân
+                    if (!string.IsNullOrEmpty(txtName.Text))
+                    {
+                        data.HisTransaction.BUYER_NAME = txtName.Text;
+                    }
+                    data.HisTransaction.BUYER_IDENTITY_NUMBER = txtIdentityType.Text; // Lưu số định danh
+                                                                                      // Ánh xạ loại giấy tờ sang short
+                    string selectedType = cboIdentityType.EditValue as string;
+                    short? identityType = null;
+                    if (!string.IsNullOrEmpty(selectedType))
+                    {
+                        switch (selectedType)
+                        {
+                            case "CMND":
+                                identityType = 1;
+                                break;
+                            case "CCCD":
+                                identityType = 2;
+                                break;
+                            case "PASSPORT":
+                                identityType = 3;
+                                break;
+                        }
+                    }
+                    data.HisTransaction.BUYER_IDENTITY_TYPE = identityType; // Gán giá trị short?
+                
+                data.HisTransaction.BUYER_PHONE = txtBuyerPhone.Text;
+                    data.HisTransaction.BUYER_ADDRESS = txtAddress.Text;
+                    data.HisTransaction.BUYER_EMAIL = txtEmail.Text;
+                }
+                else if (rdoCoQuan.Checked) // Trường hợp người mua là cơ quan
+                {
+                    data.HisTransaction.BUYER_TYPE = 2; // Cơ quan
+                    if (!string.IsNullOrEmpty(txtName.Text))
+                    {
+                        data.HisTransaction.BUYER_NAME = txtName.Text;
+                    }
+                    data.HisTransaction.BUYER_ORGANIZATION = txtBuyerOgranization.Text;
+                    if (cboBuyerOrgarnization.EditValue != null)
+                    {
+                        data.HisTransaction.BUYER_WORK_PLACE_ID = Convert.ToInt64(cboBuyerOrgarnization.EditValue); // Lưu ID đơn vị từ danh mục
+                        data.HisTransaction.BUYER_ORGANIZATION = cboBuyerOrgarnization.Text; // Lưu tên đơn vị từ combobox
+                    }
+                    data.HisTransaction.BUYER_TAX_CODE = txtBuyerTaxCode.Text;
+                    data.HisTransaction.BUYER_PHONE = txtBuyerPhone.Text;
+                    data.HisTransaction.BUYER_ADDRESS = txtAddress.Text;
+                    data.HisTransaction.BUYER_EMAIL = txtEmail.Text;
+                }
+                else // Trường hợp mặc định (không chọn cá nhân hoặc cơ quan)
+                {
+                    if (!string.IsNullOrEmpty(txtName.Text))
+                    {
+                        data.HisTransaction.BUYER_NAME = txtName.Text;
+                    }
+                    data.HisTransaction.BUYER_ACCOUNT_NUMBER = txtBuyerAccountCode.Text;
+                    data.HisTransaction.BUYER_ADDRESS = txtAddress.Text;
+                    data.HisTransaction.BUYER_EMAIL = txtEmail.Text;
+                    data.HisTransaction.BUYER_ORGANIZATION = txtBuyerOgranization.Text;
+                    data.HisTransaction.BUYER_TAX_CODE = txtBuyerTaxCode.Text;
+                    data.HisTransaction.BUYER_PHONE = txtBuyerPhone.Text;
                 }
 
                 if (cboPayFrom.EditValue != null)
@@ -2624,6 +2799,93 @@ namespace HIS.Desktop.Plugins.MedicineSaleBill
             catch (Exception ex)
             {
                 LogSystem.Error("cboOriginalTransaction_Properties_ButtonClick: " + ex);
+            }
+        }
+
+        private void rdoCaNhan_CheckedChanged(object sender, EventArgs e)
+        {
+            if (rdoCaNhan.Checked)
+            {
+                rdoCoQuan.Checked = false;
+
+                layoutControlItem16.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+                layoutControlItem17.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+                layoutControlItem18.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+                layoutControlItem26.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+                layoutControlItem30.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+                layoutControlItem27.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+
+                layoutControlItem15.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
+                layoutControlItem28.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
+                layoutControlItem29.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
+                layoutControlItem19.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
+                layoutControlItem20.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
+                layoutControlItem31.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
+                layoutControlItem25.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
+
+                layoutControl1.BeginUpdate();
+                layoutControlGroup2.BestFit();
+                layoutControl1.EndUpdate();
+            }
+            else if (!rdoCoQuan.Checked) // Khi rdoCaNhan tắt và rdoCoQuan cũng tắt, quay về mặc định
+            {
+                SetDefaultLayout();
+            }
+        }
+
+        private void rdoCoQuan_CheckedChanged(object sender, EventArgs e)
+        {
+            if (rdoCoQuan.Checked)
+            {
+                rdoCaNhan.Checked = false;
+
+                layoutControlItem15.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+                layoutControlItem28.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+                layoutControlItem29.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+                layoutControlItem18.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+                layoutControlItem26.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+                layoutControlItem27.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+
+                layoutControlItem16.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
+                layoutControlItem30.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
+                layoutControlItem17.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
+                layoutControlItem19.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
+                layoutControlItem20.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
+                layoutControlItem31.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
+                layoutControlItem25.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
+
+                layoutControl1.BeginUpdate();
+                layoutControlGroup2.BestFit();
+                layoutControl1.EndUpdate();
+            }
+            else if (!rdoCaNhan.Checked) // Khi rdoCoQuan tắt và rdoCaNhan cũng tắt, quay về mặc định
+            {
+                SetDefaultLayout();
+            }
+        }
+
+        private void chkKhac1_CheckedChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void chkBHYT_CheckedChanged(object sender, EventArgs e)
+        {
+            if (chkBHYT.Checked)
+            {
+                var expMest = ExpMests.FirstOrDefault();
+                if (expMest != null)
+                {
+                    var patientTypeAlter = GetPatientTypeAlter(expMest.TDL_PATIENT_ID ?? 0);
+                    if (patientTypeAlter != null)
+                        txtAddress.Text = patientTypeAlter.ADDRESS;
+                }
+            }
+            else
+            {
+                var expMest = ExpMests.FirstOrDefault();
+                if (expMest != null)
+                    txtAddress.Text = expMest.TDL_PATIENT_ADDRESS;
             }
         }
     }
