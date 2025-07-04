@@ -145,11 +145,13 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
                     {
                         uriRequest = "api/HisExpMest/SaleCreateListSdo";
                         InitDataToSaleCreate(ref saleSDO);
+                        //Inventec.Common.Logging.LogSystem.Debug("API Result Of list: " + Inventec.Common.Logging.LogUtil.TraceData("dangth:", saleSDO));
                     }
                     else
                     {
                         uriRequest = "api/HisExpMest/SaleCreateBillList";
                         InitListDataToSaleCreate(ref listSaleSDO);
+                        //Inventec.Common.Logging.LogSystem.Debug("API Result Of list: " + Inventec.Common.Logging.LogUtil.TraceData("dangth:", saleSDO));
                     }
                 }
                 else if (moduleAction == GlobalDataStore.ModuleAction.EDIT)
@@ -890,6 +892,31 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
                 {
                     ado.ExpMestId = this.expMestId;
                 }
+                if (!string.IsNullOrWhiteSpace(txtIdentification.Text))
+                {
+                    if (cboIdentification.EditValue == null)
+                    {
+                        MessageBox.Show("Vui lòng chọn loại giấy tờ tùy thân.", "Thiếu thông tin", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        return;
+                    }
+
+                    int identityType = Convert.ToInt32(cboIdentification.EditValue);
+                    switch (identityType)
+                    {
+                        case 1:
+                            ado.PatientCmndNumber = txtIdentification.Text;
+                            break;
+                        case 2:
+                            ado.PatientCccdNumber = txtIdentification.Text;
+                            break;
+                        case 3:
+                            ado.PatientPassportNumber = txtIdentification.Text;
+                            break;
+                        default:
+                            // Trường hợp không hợp lệ, có thể xử lý thêm nếu cần
+                            break;
+                    }
+                }
 
                 if (!String.IsNullOrEmpty(txtLoginName.Text))
                 {
@@ -1149,6 +1176,27 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
                         ado.PatientPhone = item[0].TDL_PATIENT_PHONE;
                         ado.PatientDob = item[0].TDL_PATIENT_DOB;
                         ado.IsHasNotDayDob = item[0].TDL_PATIENT_IS_HAS_NOT_DAY_DOB == 1 ? true : false;
+
+                        if (!string.IsNullOrWhiteSpace(txtIdentification.Text))
+                        {
+                            if (cboIdentification.EditValue != null)
+                            {
+                                int identityType = Convert.ToInt32(cboIdentification.EditValue);
+                                switch (identityType)
+                                {
+                                    case 1:
+                                        ado.PatientCmndNumber = txtIdentification.Text;
+                                        break;
+                                    case 2:
+                                        ado.PatientCccdNumber = txtIdentification.Text;
+                                        break;
+                                    case 3:
+                                        ado.PatientPassportNumber = txtIdentification.Text;
+                                        break;
+                                }
+                            }
+                        }
+
                         if (cboPatientType.EditValue != null)
                             ado.PatientTypeId = Inventec.Common.TypeConvert.Parse.ToInt64(cboPatientType.EditValue.ToString());
                         if (spinDiscountRatio.EditValue != null)
@@ -1706,6 +1754,27 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
 
                     txtAddress.Text = patient.VIR_ADDRESS;
                     txtPatientPhone.Text = patient.PHONE;
+
+                    if (!string.IsNullOrWhiteSpace(patient.CMND_NUMBER))
+                    {
+                        txtIdentification.Text = patient.CMND_NUMBER;
+                        cboIdentification.EditValue = "1"; // CMND
+                    }
+                    else if (!string.IsNullOrWhiteSpace(patient.CCCD_NUMBER))
+                    {
+                        txtIdentification.Text = patient.CCCD_NUMBER;
+                        cboIdentification.EditValue = "2"; // CCCD
+                    }
+                    else if (!string.IsNullOrWhiteSpace(patient.PASSPORT_NUMBER))
+                    {
+                        txtIdentification.Text = patient.PASSPORT_NUMBER;
+                        cboIdentification.EditValue = "3"; // PASSPORT
+                    }
+                    else
+                    {
+                        txtIdentification.Text = "";
+                        cboIdentification.EditValue = null;
+                    }
                 }
             }
             catch (Exception ex)
