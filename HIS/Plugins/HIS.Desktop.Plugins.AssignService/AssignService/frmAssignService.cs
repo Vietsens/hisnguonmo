@@ -297,6 +297,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
 				this.actionType = GlobalVariables.ActionAdd;
 				Resources.ResourceLanguageManager.LanguageResource = new ResourceManager("HIS.Desktop.Plugins.AssignService.Resources.Lang", typeof(HIS.Desktop.Plugins.AssignService.AssignService.frmAssignService).Assembly);
 				HisConfigCFG.LoadConfig();
+
 				this.currentModule = module;
 				this.InitUC();
 				this.workingAssignServiceADO = dataADO;
@@ -1080,7 +1081,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
 					this.InitDefaultFocus();
 					LogSystem.Debug("frmAssignService_Load => 5");
 					this.LoadDataToGridParticipants();
-				}
+                }
 				this.gridControlServiceProcess.ToolTipController = this.tooltipService;
 				this.isNotLoadWhileChangeInstructionTimeInFirst = false;
 				this.AddBarManager(this.barManager1);
@@ -5447,7 +5448,29 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
 			}
 			return valid;
 		}
-		private void SaveWithGridpatientSelect(TypeButton type, bool isSaveAndPrint, bool printTH, bool isSaveAndShow, bool isSign = false, bool isPrintDocumentSigned = false)
+        private bool CheckPatientTypeBHYT(List<V_HIS_TREATMENT_BED_ROOM> lst)
+        {
+            bool valid = false;
+            try
+            {
+                
+                foreach (var item in lst)
+                {
+					if (item.TDL_PATIENT_TYPE_ID.HasValue && item.TDL_PATIENT_TYPE_ID.Value == HisConfigCFG.PatientTypeId__BHYT)
+                    {
+                        valid = true;
+						break;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                valid = false;
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+            return valid;
+        }
+        private void SaveWithGridpatientSelect(TypeButton type, bool isSaveAndPrint, bool printTH, bool isSaveAndShow, bool isSign = false, bool isPrintDocumentSigned = false)
 		{
 			try
 			{
@@ -5505,38 +5528,48 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
 						string MessAge = "";
 						string MessType = "";
 						#region Valid ICD
-						var icd = lstPatientSelect.Select(o => o.ICD_CODE).ToList();
-						var icdSub = lstPatientSelect.Where(o => !string.IsNullOrEmpty(o.ICD_SUB_CODE)).Select(o => o.ICD_SUB_CODE).ToList();
-						MOS.Filter.HisIcdFilter icdFilter = new HisIcdFilter();
-						icdFilter.ICD_CODEs = icd;
-						var icdData = new BackendAdapter(null).Get<List<HIS_ICD>>("api/HisIcd/Get", ApiConsumer.ApiConsumers.MosConsumer, icdFilter, null);
-						if (icdData != null && icdData.Count > 0)
+						bool isValidICD = true;
+                        if (HisConfigCFG.IcdServiceHasRequireCheckPatientBHYT &&  !this.CheckPatientTypeBHYT(lstPatientSelect))
 						{
-							MOS.Filter.HisIcdServiceFilter icdServiceFilter = new HisIcdServiceFilter();
-							icdServiceFilter.ICD_CODE__EXACTs = icd;
-							icdServicePhacDos = new BackendAdapter(null).Get<List<HIS_ICD_SERVICE>>("api/HisIcdService/Get", ApiConsumer.ApiConsumers.MosConsumer, icdServiceFilter, null);
-
-							//isValid = isValid && ValidServiceIcdForIcdSelected(icdServices, serviceCheckeds__Send);
-							isValid = isValid && ValidServiceIcdForServiceSelected(icdData, icdServicePhacDos, serviceCheckeds__Send);
-							if (!isValid && HisConfigCFG.IcdServiceHasCheck == "4")
-								isValid = false;
-						}
-						else if (HisConfigCFG.IcdServiceHasCheck == "3" && serviceCheckeds__Send != null && serviceCheckeds__Send.Count > 0)
+							isValidICD = false;
+                        }
+						if (isValidICD)
 						{
-							MOS.Filter.HisIcdServiceFilter icdServiceFilter = new HisIcdServiceFilter();
-							icdServiceFilter.SERVICE_IDs = serviceCheckeds__Send.Select(o => o.SERVICE_ID).Distinct().ToList();
-							icdServicePhacDos = new BackendAdapter(new CommonParam()).Get<List<HIS_ICD_SERVICE>>("api/HisIcdService/Get", ApiConsumer.ApiConsumers.MosConsumer, icdServiceFilter, null);
+                            var icd = lstPatientSelect.Select(o => o.ICD_CODE).ToList();
+                            var icdSub = lstPatientSelect.Where(o => !string.IsNullOrEmpty(o.ICD_SUB_CODE)).Select(o => o.ICD_SUB_CODE).ToList();
+                            MOS.Filter.HisIcdFilter icdFilter = new HisIcdFilter();
+                            icdFilter.ICD_CODEs = icd;
+                            var icdData = new BackendAdapter(null).Get<List<HIS_ICD>>("api/HisIcd/Get", ApiConsumer.ApiConsumers.MosConsumer, icdFilter, null);
+                            if (icdData != null && icdData.Count > 0)
+                            {
+                                MOS.Filter.HisIcdServiceFilter icdServiceFilter = new HisIcdServiceFilter();
+                                icdServiceFilter.ICD_CODE__EXACTs = icd;
+                                icdServicePhacDos = new BackendAdapter(null).Get<List<HIS_ICD_SERVICE>>("api/HisIcdService/Get", ApiConsumer.ApiConsumers.MosConsumer, icdServiceFilter, null);
 
-							if (icdServicePhacDos != null && icdServicePhacDos.Count > 0 && icdData != null && icdData.Count > 0)
-							{
-								icdServicePhacDos = icdServicePhacDos.Where(o => !icdData.Select(p => p.ICD_CODE).Contains(o.ICD_CODE)).ToList();
-							}
-							if (icdServicePhacDos != null && icdServicePhacDos.Count > 0)
-							{
-								frmMissingIcd frmWaringConfigIcdService = new frmMissingIcd(icdData, serviceCheckeds__Send, this.currentModule, icdServicePhacDos, getDataFromMissingIcdDelegate);
-								frmWaringConfigIcdService.ShowDialog();
-							}
-						}
+                                //isValid = isValid && ValidServiceIcdForIcdSelected(icdServices, serviceCheckeds__Send);
+
+                                isValid = isValid && ValidServiceIcdForServiceSelected(icdData, icdServicePhacDos, serviceCheckeds__Send);
+
+                                if (!isValid && HisConfigCFG.IcdServiceHasCheck == "4")
+                                    isValid = false;
+                            }
+                            else if (HisConfigCFG.IcdServiceHasCheck == "3" && serviceCheckeds__Send != null && serviceCheckeds__Send.Count > 0)
+                            {
+                                MOS.Filter.HisIcdServiceFilter icdServiceFilter = new HisIcdServiceFilter();
+                                icdServiceFilter.SERVICE_IDs = serviceCheckeds__Send.Select(o => o.SERVICE_ID).Distinct().ToList();
+                                icdServicePhacDos = new BackendAdapter(new CommonParam()).Get<List<HIS_ICD_SERVICE>>("api/HisIcdService/Get", ApiConsumer.ApiConsumers.MosConsumer, icdServiceFilter, null);
+
+                                if (icdServicePhacDos != null && icdServicePhacDos.Count > 0 && icdData != null && icdData.Count > 0)
+                                {
+                                    icdServicePhacDos = icdServicePhacDos.Where(o => !icdData.Select(p => p.ICD_CODE).Contains(o.ICD_CODE)).ToList();
+                                }
+                                if (icdServicePhacDos != null && icdServicePhacDos.Count > 0)
+                                {
+                                    frmMissingIcd frmWaringConfigIcdService = new frmMissingIcd(icdData, serviceCheckeds__Send, this.currentModule, icdServicePhacDos, getDataFromMissingIcdDelegate);
+                                    frmWaringConfigIcdService.ShowDialog();
+                                }
+                            }
+                        }
 						#endregion
 						#region Valid ServiceAllow
 						ValidGenderServiceAllowGridpatientSelect(lstPatientSelect, serviceCheckeds__Send, ref MessGender, ref MessAge, ref MessType);
