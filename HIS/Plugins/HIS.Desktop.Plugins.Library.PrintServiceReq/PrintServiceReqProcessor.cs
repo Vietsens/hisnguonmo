@@ -63,6 +63,9 @@ namespace HIS.Desktop.Plugins.Library.PrintServiceReq
         private List<Inventec.Common.FlexCelPrint.Ado.PrintMergeAdo> GroupStreamPrint;
         private List<HIS_CONFIG> lstConfig { get; set; }
         private List<HIS_TRANS_REQ> transReq { get; set; }
+        //qtcode
+        private HIS_TRANS_REQ transReqMPS37 { get; set; }
+
         /// <summary>
         /// true: lưu in. Tất cả  dữ liệu truyền từ ngoài vào.
         /// false: in từng phiếu. phiếu xét nghiệm gộp sẽ lấy thêm dữ liệu
@@ -185,7 +188,6 @@ HisTreatmentWithPatientTypeInfoSDO TreatmentWithPatientTypeInfo, List<V_HIS_BED_
         {
             try
             {
-
                 lstConfig = new List<HIS_CONFIG>();
                 var currentWorkingRoom = BackendDataWorker.Get<V_HIS_ROOM>().FirstOrDefault(o => o.ID == roomId);
                 if (currentWorkingRoom != null && !string.IsNullOrEmpty(currentWorkingRoom.QR_CONFIG_JSON))
@@ -229,7 +231,11 @@ HisTreatmentWithPatientTypeInfoSDO TreatmentWithPatientTypeInfo, List<V_HIS_BED_
                         transReq = new Inventec.Common.Adapter.BackendAdapter(param)
                           .Get<List<MOS.EFMODEL.DataModels.HIS_TRANS_REQ>>("api/HisTransReq/Get", ApiConsumer.ApiConsumers.MosConsumer, filter, param);
                         if (transReq != null && transReq.Count > 0)
+                        { 
                             transReq = transReq.Where(o => o.TRANS_REQ_TYPE == IMSys.DbConfig.HIS_RS.HIS_TRANS_REQ_TYPE.ID__BY_SERVICE).ToList();
+                            transReqMPS37 = transReq.OrderByDescending(o => o.CREATE_TIME).FirstOrDefault();
+                        }
+
                     }
                 }
             }
@@ -832,8 +838,9 @@ HisTreatmentWithPatientTypeInfoSDO TreatmentWithPatientTypeInfo, List<V_HIS_BED_
                         case PrintTypeCodeStore.IN__MPS000071__KHAM_CHUYEN_KHOA:
                             new InPhieuKhamChuyenKhoa(printTypeCode, fileName, chiDinhDichVuADO, dicServiceReqData, dicSereServData, printNow, ref result, roomId, this.PreviewType, SetDataGroup, CancelChooseTemplate, transReq, lstConfig, DlgSendResultSigned);
                             break;
+                            //qtcode
                         case PrintTypeCodeStore.IN__MPS000037__CHI_DINH_TONG_HOP:
-                            new InPhieuYeuCauChiDinhTongHop(printTypeCode, fileName, chiDinhDichVuADO, dicServiceReqData, dicSereServData, dicSereServExtData, printNow, ref result, roomId, IsView, this.PreviewType, SetDataGroup, CancelChooseTemplate, DlgSendResultSigned);
+                            new InPhieuYeuCauChiDinhTongHop(printTypeCode, fileName, chiDinhDichVuADO, dicServiceReqData, dicSereServData, dicSereServExtData, printNow, ref result, roomId, IsView, this.PreviewType, SetDataGroup, CancelChooseTemplate, transReqMPS37, lstConfig, DlgSendResultSigned);
                             break;
                         case PrintTypeCodeStore.IN__MPS000027__PHIEU_XET_NGHIEM_DOM_SOI_TRUC_TIEP:
                             new InPhieuXetNghiemDomSoi(printTypeCode, fileName, chiDinhDichVuADO, dicServiceReqData, dicSereServData, printNow, ref result, roomId, this.PreviewType, SetDataGroup, CancelChooseTemplate, DlgSendResultSigned);

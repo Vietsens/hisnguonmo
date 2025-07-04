@@ -276,7 +276,8 @@
   <data name="frmServiceReqList.gridColumn_ServiceReq_Delete.Caption" xml:space="preserve">
     <value>ဖျက်ပါ။</value>
   </data>
-  <data name="frmServiceReqList.gridColumn_ServiceReq_Edit.Caption" xml:space="preserve">
+  <data name="frmServiceReqList.
+		.Caption" xml:space="preserve">
     <value>ပြင်ပါ။</value>
   </data>
   <data name="frmServiceReqList.gridColumn_ServiceReq_EditIntructionTime.Caption" xml:space="preserve">
