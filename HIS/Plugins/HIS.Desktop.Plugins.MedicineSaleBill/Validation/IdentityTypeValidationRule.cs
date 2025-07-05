@@ -9,7 +9,7 @@ namespace HIS.Desktop.Plugins.MedicineSaleBill.Validation
 {
     class IdentityTypeValidationRule : DevExpress.XtraEditors.DXErrorProvider.ValidationRule
     {
-        internal DevExpress.XtraEditors.ComboBoxEdit cboIdentityType;
+        internal DevExpress.XtraEditors.GridLookUpEdit cboIdentityType;
         internal DevExpress.XtraEditors.TextEdit txtIdentityType;
 
         public override bool Validate(System.Windows.Forms.Control control, object value)

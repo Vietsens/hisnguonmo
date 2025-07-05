@@ -219,6 +219,7 @@
     <EmbeddedResource Include="frmMedicineSaleBill.resx">
       <DependentUpon>frmMedicineSaleBill.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Properties\licenses.licx" />
     <EmbeddedResource Include="Resources\Lang.en.resx" />
     <EmbeddedResource Include="Resources\Lang.vi.resx" />
   </ItemGroup>

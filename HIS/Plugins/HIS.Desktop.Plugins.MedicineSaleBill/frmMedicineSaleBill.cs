@@ -15,6 +15,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+using DevExpress.CodeParser;
 using DevExpress.Utils;
 using DevExpress.Utils.Menu;
 using DevExpress.XtraBars;
@@ -24,6 +25,7 @@ using DevExpress.XtraEditors.ViewInfo;
 using DevExpress.XtraGrid.Views.Base;
 using DevExpress.XtraGrid.Views.Grid;
 using DevExpress.XtraGrid.Views.Grid.ViewInfo;
+using DevExpress.XtraRichEdit.API.Word;
 using HIS.Desktop.ADO;
 using HIS.Desktop.ApiConsumer;
 using HIS.Desktop.Common;
@@ -35,6 +37,7 @@ using HIS.Desktop.LocalStorage.LocalData;
 using HIS.Desktop.LocalStorage.Location;
 using HIS.Desktop.Plugins.Library.ElectronicBill;
 using HIS.Desktop.Plugins.Library.ElectronicBill.Base;
+using HIS.Desktop.Plugins.Library.RegisterConfig;
 using HIS.Desktop.Plugins.MedicineSaleBill.ADO;
 using HIS.Desktop.Plugins.MedicineSaleBill.Validation;
 using HIS.Desktop.Print;
@@ -48,6 +51,7 @@ using Inventec.Desktop.Common.Message;
 using MOS.EFMODEL.DataModels;
 using MOS.Filter;
 using MOS.SDO;
+using MPS.ADO.Bordereau;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -56,10 +60,8 @@ using System.Drawing;
 using System.Linq;
 using System.Resources;
 using System.Runtime.InteropServices;
-using System.Windows.Forms;
 using System.Threading.Tasks;
-using MPS.ADO.Bordereau;
-using HIS.Desktop.Plugins.Library.RegisterConfig;
+using System.Windows.Forms;
 
 
 namespace HIS.Desktop.Plugins.MedicineSaleBill
@@ -170,6 +172,9 @@ namespace HIS.Desktop.Plugins.MedicineSaleBill
                     SetDefaultCreateQR();
                     SetDefaultLayout();
                     InitComboIdentityType();
+                    LoadComboBuyerOrganization();
+
+                    rdoCaNhan.Checked = true;
                 }
 
                 if (expMestIdForEdits != null && expMestIdForEdits.Count > 0)
@@ -200,10 +205,46 @@ namespace HIS.Desktop.Plugins.MedicineSaleBill
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
+        private void LoadComboBuyerOrganization()
+        {
+            try
+            {
+                var workPlaceFilter = new HisWorkPlaceFilter();
+                var workPlaces = new BackendAdapter(new CommonParam()).Get<List<HIS_WORK_PLACE>>("api/HisWorkPlace/Get", ApiConsumers.MosConsumer, workPlaceFilter, null);
+
+                List<ColumnInfo> columnInfos = new List<ColumnInfo>();
+                columnInfos.Add(new ColumnInfo("WORK_PLACE_NAME", "Tên đơn vị", 200, 1));
+                columnInfos.Add(new ColumnInfo("WORK_PLACE_CODE", "Mã đơn vị", 100, 2));
+
+                ControlEditorADO controlEditorADO = new ControlEditorADO("WORK_PLACE_NAME", "ID", columnInfos, false, 300);
+                ControlEditorLoader.Load(cboBuyerOrgarnization, workPlaces, controlEditorADO);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
         private void InitComboIdentityType()
         {
-            cboIdentityType.Properties.Items.Clear();
-            cboIdentityType.Properties.Items.AddRange(new string[] { "CMND", "CCCD", "PASSPORT" });
+            try
+            {
+                var identificationTypes = new List<dynamic>
+                {
+                    new { ID = 1, NAME = "CMND" },
+                    new { ID = 2, NAME = "CCCD" },
+                    new { ID = 3, NAME = "PASSPORT" }
+                };
+
+                List<ColumnInfo> columnInfos = new List<ColumnInfo>();
+                columnInfos.Add(new ColumnInfo("NAME", "Loại giấy tờ", 100, 1));
+
+                ControlEditorADO controlEditorADO = new ControlEditorADO("NAME", "ID", columnInfos, false, 110);
+                ControlEditorLoader.Load(cboIdentityType, identificationTypes, controlEditorADO);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
         }
 
         private void SetDefaultLayout()
@@ -227,6 +268,32 @@ namespace HIS.Desktop.Plugins.MedicineSaleBill
 
             layoutControlGroup2.BestFit();
             layoutControl1.EndUpdate();
+
+            if (this.ExpMests != null && this.ExpMests.Count > 0)
+            {
+                var expMest = ExpMests.FirstOrDefault();
+                long patientId = expMest.TDL_PATIENT_ID ?? 0;
+                var patientFilter = new HisPatientFilter { ID = patientId };
+                var patients = new BackendAdapter(new CommonParam()).Get<List<HIS_PATIENT>>("api/HisPatient/Get", ApiConsumers.MosConsumer, patientFilter, null);
+                var patient = patients?.FirstOrDefault();
+                long workPlaceId = patient.WORK_PLACE_ID.Value;
+                var workPlaceFilter = new HisWorkPlaceFilter { ID = workPlaceId };
+                var workPlaces = new BackendAdapter(new CommonParam()).Get<List<HIS_WORK_PLACE>>("api/HisWorkPlace/Get", ApiConsumers.MosConsumer, workPlaceFilter, null);
+                var workPlace = workPlaces?.FirstOrDefault();
+                if (expMest != null)
+                {
+
+
+                    txtName.Text = expMest.TDL_PATIENT_NAME;
+                    txtBuyerOgranization.Text = workPlace.WORK_PLACE_NAME;
+                    //txtBuyerTaxCode.Text = expMest.TDL_PATIENT_TAX_CODE;
+                    txtBuyerTaxCode.Text = patient?.TAX_CODE;
+                    //txtBuyerPhone.Text = expMest.TDL_PATIENT_MOBILE ?? expMest.TDL_PATIENT_PHONE;
+                    txtBuyerPhone.Text = patient?.PHONE;
+                    txtAddress.Text = expMest.TDL_PATIENT_ADDRESS;
+                    txtEmail.Text = GetPatientEmail(expMest.TDL_PATIENT_ID ?? 0);
+                }
+            }
         }
 
         private void SetDefaultCreateQR()
@@ -968,41 +1035,73 @@ namespace HIS.Desktop.Plugins.MedicineSaleBill
             //    }
             //}
             if (this.ExpMests != null && this.ExpMests.Count > 0)
-            {
+            { 
                 var expMest = ExpMests.FirstOrDefault();
+                long patientId = expMest.TDL_PATIENT_ID ?? 0;
+                var patientFilter = new HisPatientFilter { ID = patientId };
+                var patients = new BackendAdapter(new CommonParam()).Get<List<HIS_PATIENT>>("api/HisPatient/Get", ApiConsumers.MosConsumer, patientFilter, null);
+                var patient = patients?.FirstOrDefault();
+                long workPlaceId = patient.WORK_PLACE_ID.Value;
+                var workPlaceFilter = new HisWorkPlaceFilter { ID = workPlaceId };
+                var workPlaces = new BackendAdapter(new CommonParam()).Get<List<HIS_WORK_PLACE>>("api/HisWorkPlace/Get", ApiConsumers.MosConsumer, workPlaceFilter, null);
+                var workPlace = workPlaces?.FirstOrDefault();
                 if (rdoCaNhan.Checked)
                 {
-                    // Cá nhân
-                    txtName.Text = expMest.TDL_PATIENT_NAME;
-                    txtIdentityType.Text = expMest.TDL_PATIENT_CCCD_NUMBER ?? expMest.TDL_PATIENT_CMND_NUMBER ?? expMest.TDL_PATIENT_PASSPORT_NUMBER;
-                    if (!string.IsNullOrEmpty(txtIdentityType.Text))
-                    {
-                        if (!string.IsNullOrEmpty(expMest.TDL_PATIENT_CCCD_NUMBER))
-                            cboIdentityType.EditValue = "2"; // CCCD
-                        else if (!string.IsNullOrEmpty(expMest.TDL_PATIENT_CMND_NUMBER))
-                            cboIdentityType.EditValue = "1"; // CMND
-                        else if (!string.IsNullOrEmpty(expMest.TDL_PATIENT_PASSPORT_NUMBER))
-                            cboIdentityType.EditValue = "3"; // PASSPORT
-                    }
-                    txtBuyerPhone.Text = expMest.TDL_PATIENT_MOBILE ?? expMest.TDL_PATIENT_PHONE;
-                    txtAddress.Text = expMest.TDL_PATIENT_ADDRESS;
-                    if (chkBHYT.Checked)
-                    {
-                        var patientTypeAlter = GetPatientTypeAlter(expMest.TDL_PATIENT_ID ?? 0);
-                        if (patientTypeAlter != null)
-                            txtAddress.Text = patientTypeAlter.ADDRESS;
-                    }
-                    txtEmail.Text = GetPatientEmail(expMest.TDL_PATIENT_ID ?? 0); 
+                        // Cá nhân
+                        txtName.Text = expMest.TDL_PATIENT_NAME;
+                        txtIdentityType.Text = expMest.TDL_PATIENT_CCCD_NUMBER ?? expMest.TDL_PATIENT_CMND_NUMBER ?? expMest.TDL_PATIENT_PASSPORT_NUMBER;
+                        if (!string.IsNullOrWhiteSpace(expMest.TDL_PATIENT_CMND_NUMBER))
+                        {
+                            txtIdentityType.Text = expMest.TDL_PATIENT_CMND_NUMBER;
+                            cboIdentityType.EditValue = 1; // CMND
+                        }
+                        else if (!string.IsNullOrWhiteSpace(expMest.TDL_PATIENT_CCCD_NUMBER))
+                        {
+                            txtIdentityType.Text = expMest.TDL_PATIENT_CCCD_NUMBER;
+                            cboIdentityType.EditValue = 2; // CCCD
+                        }
+                        else if (!string.IsNullOrWhiteSpace(expMest.TDL_PATIENT_PASSPORT_NUMBER))
+                        {
+                            txtIdentityType.Text = expMest.TDL_PATIENT_PASSPORT_NUMBER;
+                            cboIdentityType.EditValue = 3; // PASSPORT
+                        }
+                        else
+                        {
+                            txtIdentityType.Text = "";
+                            cboIdentityType.EditValue = null;
+                        }
+                        //txtBuyerPhone.Text = expMest.TDL_PATIENT_MOBILE ?? expMest.TDL_PATIENT_PHONE;
+                        txtBuyerPhone.Text = patient?.PHONE;
+                        txtAddress.Text = expMest.TDL_PATIENT_ADDRESS;
+                        if (chkBHYT.Checked)
+                        {
+                            var patientTypeAlter = GetPatientTypeAlter(expMest.TDL_PATIENT_ID ?? 0); 
+                            if (patientTypeAlter != null)
+                                txtAddress.Text = patientTypeAlter.ADDRESS;
+                        }
+                        txtEmail.Text = GetPatientEmail(expMest.TDL_PATIENT_ID ?? 0);
                 }
                 else if (rdoCoQuan.Checked)
-                {   
-                    // Cơ quan
-                    txtBuyerOgranization.Text = expMest.TDL_PATIENT_WORK_PLACE;
-                    if (cboBuyerOrgarnization.EditValue != null)
+                {
+                    
+
+                    if (patient != null && patient.WORK_PLACE_ID.HasValue)
                     {
-                        txtBuyerOgranization.Text = cboBuyerOrgarnization.Text;
+
+                        if (workPlace != null)
+                        {
+                            txtBuyerOgranization.Text = workPlace.WORK_PLACE_NAME;
+                        }
+                        else
+                        {
+                            txtBuyerOgranization.Text = expMest.TDL_PATIENT_WORK_PLACE; // Dự phòng nếu không tìm thấy HIS_WORK_PLACE
+                        }
                     }
-                    txtBuyerTaxCode.Text = expMest.TDL_PATIENT_TAX_CODE;
+                    else
+                    {
+                        txtBuyerOgranization.Text = expMest.TDL_PATIENT_WORK_PLACE; // Hiển thị TDL_PATIENT_WORK_PLACE nếu không có WORK_PLACE_ID
+                    }
+                    txtBuyerTaxCode.Text = patient?.TAX_CODE;
                     txtBuyerPhone.Text = expMest.TDL_PATIENT_MOBILE ?? expMest.TDL_PATIENT_PHONE;
                     txtAddress.Text = expMest.TDL_PATIENT_ADDRESS;
                     if (chkBHYT.Checked)
@@ -1017,9 +1116,11 @@ namespace HIS.Desktop.Plugins.MedicineSaleBill
                 {
                     // Mặc định
                     txtName.Text = expMest.TDL_PATIENT_NAME;
-                    txtBuyerOgranization.Text = expMest.TDL_PATIENT_WORK_PLACE;
-                    txtBuyerTaxCode.Text = expMest.TDL_PATIENT_TAX_CODE;
-                    txtBuyerPhone.Text = expMest.TDL_PATIENT_MOBILE ?? expMest.TDL_PATIENT_PHONE;
+                    txtBuyerOgranization.Text = workPlace.WORK_PLACE_NAME;
+                    //txtBuyerTaxCode.Text = expMest.TDL_PATIENT_TAX_CODE;
+                    txtBuyerTaxCode.Text = patient?.TAX_CODE;
+                    //txtBuyerPhone.Text = expMest.TDL_PATIENT_MOBILE ?? expMest.TDL_PATIENT_PHONE;
+                    txtBuyerPhone.Text = patient?.PHONE;
                     txtAddress.Text = expMest.TDL_PATIENT_ADDRESS;
                     txtEmail.Text = GetPatientEmail(expMest.TDL_PATIENT_ID ?? 0);
                 }
@@ -1187,28 +1288,15 @@ namespace HIS.Desktop.Plugins.MedicineSaleBill
                     {
                         data.HisTransaction.BUYER_NAME = txtName.Text;
                     }
-                    data.HisTransaction.BUYER_IDENTITY_NUMBER = txtIdentityType.Text; // Lưu số định danh
-                                                                                      // Ánh xạ loại giấy tờ sang short
-                    string selectedType = cboIdentityType.EditValue as string;
-                    short? identityType = null;
-                    if (!string.IsNullOrEmpty(selectedType))
+                    if (!string.IsNullOrWhiteSpace(txtIdentityType.Text))
                     {
-                        switch (selectedType)
-                        {
-                            case "CMND":
-                                identityType = 1;
-                                break;
-                            case "CCCD":
-                                identityType = 2;
-                                break;
-                            case "PASSPORT":
-                                identityType = 3;
-                                break;
-                        }
+
+                        data.HisTransaction.BUYER_IDENTITY_NUMBER = txtIdentityType.Text;
+                        int identityType = Convert.ToInt32(cboIdentityType.EditValue);
+                        data.HisTransaction.BUYER_IDENTITY_TYPE = (short?)identityType;
                     }
-                    data.HisTransaction.BUYER_IDENTITY_TYPE = identityType; // Gán giá trị short?
-                
-                data.HisTransaction.BUYER_PHONE = txtBuyerPhone.Text;
+
+                    data.HisTransaction.BUYER_PHONE = txtBuyerPhone.Text;
                     data.HisTransaction.BUYER_ADDRESS = txtAddress.Text;
                     data.HisTransaction.BUYER_EMAIL = txtEmail.Text;
                 }
@@ -2826,10 +2914,57 @@ namespace HIS.Desktop.Plugins.MedicineSaleBill
                 layoutControl1.BeginUpdate();
                 layoutControlGroup2.BestFit();
                 layoutControl1.EndUpdate();
-            }
-            else if (!rdoCoQuan.Checked) // Khi rdoCaNhan tắt và rdoCoQuan cũng tắt, quay về mặc định
+
+                if (this.ExpMests != null && this.ExpMests.Count > 0)
+                {
+                    var expMest = ExpMests.FirstOrDefault();
+                    long patientId = expMest.TDL_PATIENT_ID ?? 0;
+                    var patientFilter = new HisPatientFilter { ID = patientId };
+                    var patients = new BackendAdapter(new CommonParam()).Get<List<HIS_PATIENT>>("api/HisPatient/Get", ApiConsumers.MosConsumer, patientFilter, null);
+                    var patient = patients?.FirstOrDefault();
+                    if (rdoCaNhan.Checked)
+                    {
+                        // Cá nhân
+                        txtName.Text = expMest.TDL_PATIENT_NAME;
+                        txtIdentityType.Text = expMest.TDL_PATIENT_CCCD_NUMBER ?? expMest.TDL_PATIENT_CMND_NUMBER ?? expMest.TDL_PATIENT_PASSPORT_NUMBER;
+                        if (!string.IsNullOrWhiteSpace(expMest.TDL_PATIENT_CMND_NUMBER))
+                        {
+                            txtIdentityType.Text = expMest.TDL_PATIENT_CMND_NUMBER;
+                            cboIdentityType.EditValue = 1; // CMND
+                        }
+                        else if (!string.IsNullOrWhiteSpace(expMest.TDL_PATIENT_CCCD_NUMBER))
+                        {
+                            txtIdentityType.Text = expMest.TDL_PATIENT_CCCD_NUMBER;
+                            cboIdentityType.EditValue = 2; // CCCD
+                        }
+                        else if (!string.IsNullOrWhiteSpace(expMest.TDL_PATIENT_PASSPORT_NUMBER))
+                        {
+                            txtIdentityType.Text = expMest.TDL_PATIENT_PASSPORT_NUMBER;
+                            cboIdentityType.EditValue = 3; // PASSPORT
+                        }
+                        else
+                        {
+                            txtIdentityType.Text = "";
+                            cboIdentityType.EditValue = null;
+                        }
+                        //txtBuyerPhone.Text = expMest.TDL_PATIENT_MOBILE ?? expMest.TDL_PATIENT_PHONE;
+                        txtBuyerPhone.Text = patient?.PHONE;
+                        txtAddress.Text = expMest.TDL_PATIENT_ADDRESS;
+                        if (chkBHYT.Checked)
+                        {
+                            var patientTypeAlter = GetPatientTypeAlter(expMest.TDL_PATIENT_ID ?? 0);
+                            if (patientTypeAlter != null)
+                                txtAddress.Text = patientTypeAlter.ADDRESS;
+                        }
+                        txtEmail.Text = GetPatientEmail(expMest.TDL_PATIENT_ID ?? 0);
+                    }
+                } 
+
+                }
+            else
             {
-                SetDefaultLayout();
+                // Nếu "Cá nhân" bị hủy, tự động chọn "Cơ quan"
+                rdoCoQuan.Checked = true;
             }
         }
 
@@ -2857,10 +2992,52 @@ namespace HIS.Desktop.Plugins.MedicineSaleBill
                 layoutControl1.BeginUpdate();
                 layoutControlGroup2.BestFit();
                 layoutControl1.EndUpdate();
+
+                if (this.ExpMests != null && this.ExpMests.Count > 0)
+                {
+                    var expMest = ExpMests.FirstOrDefault();
+                    // Cơ quan
+                    long patientId = expMest.TDL_PATIENT_ID ?? 0;
+                    var patientFilter = new HisPatientFilter { ID = patientId };
+                    var patients = new BackendAdapter(new CommonParam()).Get<List<HIS_PATIENT>>("api/HisPatient/Get", ApiConsumers.MosConsumer, patientFilter, null);
+                    var patient = patients?.FirstOrDefault();
+
+                    if (patient != null && patient.WORK_PLACE_ID.HasValue)
+                    {
+                        long workPlaceId = patient.WORK_PLACE_ID.Value;
+                        var workPlaceFilter = new HisWorkPlaceFilter { ID = workPlaceId };
+                        var workPlaces = new BackendAdapter(new CommonParam()).Get<List<HIS_WORK_PLACE>>("api/HisWorkPlace/Get", ApiConsumers.MosConsumer, workPlaceFilter, null);
+                        var workPlace = workPlaces?.FirstOrDefault();
+
+                        if (workPlace != null)
+                        {
+                            cboBuyerOrgarnization.EditValue = workPlace.ID; 
+                        }
+                        else
+                        {
+                            txtBuyerOgranization.Text = expMest.TDL_PATIENT_WORK_PLACE;
+                        }
+                    }
+                    else
+                    {
+                        txtBuyerOgranization.Text = expMest.TDL_PATIENT_WORK_PLACE;
+                    }
+                    txtBuyerTaxCode.Text = patient?.TAX_CODE;
+                    txtBuyerPhone.Text = patient?.PHONE;
+                    txtAddress.Text = expMest.TDL_PATIENT_ADDRESS;
+                    if (chkBHYT.Checked)
+                    {
+                        var patientTypeAlter = GetPatientTypeAlter(expMest.TDL_PATIENT_ID ?? 0);
+                        if (patientTypeAlter != null)
+                            txtAddress.Text = patientTypeAlter.ADDRESS;
+                    }
+                    txtEmail.Text = GetPatientEmail(expMest.TDL_PATIENT_ID ?? 0);
+                }
             }
-            else if (!rdoCaNhan.Checked) // Khi rdoCoQuan tắt và rdoCaNhan cũng tắt, quay về mặc định
+            else
             {
-                SetDefaultLayout();
+                // Nếu "Cơ quan" bị hủy, tự động chọn "Cá nhân"
+                rdoCaNhan.Checked = true;
             }
         }
 
