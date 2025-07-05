@@ -312,8 +312,9 @@ namespace HIS.Desktop.Plugins.TransactionBill
                     cboBuyerOrganization.EditValue = null;
                     cboBuyerOrganization2.EditValue = currentTransaction.BUYER_ORGANIZATION;
                     txtBuyerOrganization.Text = currentTransaction.BUYER_ORGANIZATION;
+                    txtBuyerOrganization2.Text = currentTransaction.BUYER_ORGANIZATION;
                     chkOther.Checked = true;
-                    chkOther1.Checked = true;
+                    //chkOther1.Checked = true;
 
                     btnStateForInformationUser.Properties.Buttons[0].Visible = false;
                     btnStateForInformationUser.Properties.Buttons[1].Visible = true;
@@ -1583,6 +1584,7 @@ namespace HIS.Desktop.Plugins.TransactionBill
                     txtBuyerTaxCode.Text = "";
                     txtBuyerAccountNumber.Text = "";
                     txtBuyerOrganization.Text = "";
+                    txtBuyerOrganization2.Text = "";
                     txtBuyerAddress.Text = "";
                     chkOther.Checked = false;
                     chkOther1.Checked = false;
@@ -2495,7 +2497,15 @@ namespace HIS.Desktop.Plugins.TransactionBill
 
                 ado.Address = txtBuyerAddress.Text;
                 ado.AccountNumber = txtBuyerAccountNumber.Text;
+                if(txtBuyerOrganization.Visible)
+                {
+
                     ado.UnitText = txtBuyerOrganization.Text;
+                }
+                else if (txtBuyerOrganization2.Visible)
+                {
+                    ado.UnitText = txtBuyerOrganization2.Text;
+                }
 
                 if (chkOther.Visible)
                 {
@@ -3138,6 +3148,7 @@ namespace HIS.Desktop.Plugins.TransactionBill
                         }
                     }
                 }
+
                 InformationBuyerADO ado = new InformationBuyerADO();
                 this.currentBySessionControlStateRDO = controlStateWorker.GetDataBySession(moduleLink);
                 if (this.currentBySessionControlStateRDO != null && this.currentBySessionControlStateRDO.Count > 0)
@@ -3175,9 +3186,10 @@ namespace HIS.Desktop.Plugins.TransactionBill
                         }
                         txtBuyerAddress.Text = ado.Address;
                         txtBuyerAccountNumber.Text = ado.AccountNumber;
-                            txtBuyerOrganization.Text = ado.UnitText;
+                        txtBuyerOrganization.Text = ado.UnitText;
+                        txtBuyerOrganization2.Text = ado.UnitText;
                         chkOther.Checked = ado.checkBox == "1" ? true : false;
-                        chkOther1.Checked = ado.checkBox == "1" ? true : false;
+                        //chkOther1.Checked = ado.checkBox == "1" ? true : false;
                         //cboBuyerOrganization.Focus();
                         if (ado.BuyerType == 1)
                         {
@@ -3205,6 +3217,10 @@ namespace HIS.Desktop.Plugins.TransactionBill
                     btnStateForInformationUser.Properties.Buttons[0].Visible = false;
                     btnStateForInformationUser.Properties.Buttons[1].Visible = true;
                     IsPin = false;
+
+                    // Nếu không phải ghim thì mặc định chọn Cá nhân
+                    radioBuyerUser.Checked = true;
+                    radioBuyerCompany.Checked = false;
                 }
 
                 bool isBHYT = false;
@@ -3527,121 +3543,6 @@ namespace HIS.Desktop.Plugins.TransactionBill
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
-
-        //private void txtBuyerName_EditValueChanged(object sender, EventArgs e)
-        //{
-        //    try
-        //    {
-
-        //        HIS.Desktop.Library.CacheClient.ControlStateRDO csAddOrUpdateValue = (this.currentBySessionControlStateRDO != null && this.currentBySessionControlStateRDO.Count > 0) ? this.currentBySessionControlStateRDO.Where(o => o.KEY == txtBuyerName.Name && o.MODULE_LINK == moduleLink).FirstOrDefault() : null;
-        //        if (csAddOrUpdateValue != null)
-        //        {
-        //            csAddOrUpdateValue.VALUE = IsPin ? txtBuyerName.Text.Trim() : "";
-        //        }
-        //        else
-        //        {
-        //            csAddOrUpdateValue = new HIS.Desktop.Library.CacheClient.ControlStateRDO();
-        //            csAddOrUpdateValue.KEY = txtBuyerName.Name;
-        //            csAddOrUpdateValue.VALUE = IsPin ? txtBuyerName.Text.Trim() : "";
-        //            csAddOrUpdateValue.MODULE_LINK = moduleLink;
-        //            if (this.currentBySessionControlStateRDO == null)
-        //                this.currentBySessionControlStateRDO = new List<HIS.Desktop.Library.CacheClient.ControlStateRDO>();
-        //            this.currentBySessionControlStateRDO.Add(csAddOrUpdateValue);
-        //        }
-        //        this.controlStateWorker.SetDataBySession(this.currentBySessionControlStateRDO);
-
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        Inventec.Common.Logging.LogSystem.Warn(ex);
-        //    }
-        //}
-
-        //private void txtBuyerTaxCode_EditValueChanged(object sender, EventArgs e)
-        //{
-        //    try
-        //    {
-
-        //        HIS.Desktop.Library.CacheClient.ControlStateRDO csAddOrUpdateValue = (this.currentBySessionControlStateRDO != null && this.currentBySessionControlStateRDO.Count > 0) ? this.currentBySessionControlStateRDO.Where(o => o.KEY == txtBuyerTaxCode.Name && o.MODULE_LINK == moduleLink).FirstOrDefault() : null;
-        //        if (csAddOrUpdateValue != null)
-        //        {
-        //            csAddOrUpdateValue.VALUE = IsPin ? txtBuyerTaxCode.Text.Trim() : "";
-        //        }
-        //        else
-        //        {
-        //            csAddOrUpdateValue = new HIS.Desktop.Library.CacheClient.ControlStateRDO();
-        //            csAddOrUpdateValue.KEY = txtBuyerTaxCode.Name;
-        //            csAddOrUpdateValue.VALUE = IsPin ? txtBuyerTaxCode.Text.Trim() : "";
-        //            csAddOrUpdateValue.MODULE_LINK = moduleLink;
-        //            if (this.currentBySessionControlStateRDO == null)
-        //                this.currentBySessionControlStateRDO = new List<HIS.Desktop.Library.CacheClient.ControlStateRDO>();
-        //            this.currentBySessionControlStateRDO.Add(csAddOrUpdateValue);
-        //        }
-        //        this.controlStateWorker.SetDataBySession(this.currentBySessionControlStateRDO);
-
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        Inventec.Common.Logging.LogSystem.Warn(ex);
-        //    }
-        //}
-
-        //private void txtBuyerAccountNumber_EditValueChanged(object sender, EventArgs e)
-        //{
-        //    try
-        //    {
-        //        HIS.Desktop.Library.CacheClient.ControlStateRDO csAddOrUpdateValue = (this.currentBySessionControlStateRDO != null && this.currentBySessionControlStateRDO.Count > 0) ? this.currentBySessionControlStateRDO.Where(o => o.KEY == txtBuyerAccountNumber.Name && o.MODULE_LINK == moduleLink).FirstOrDefault() : null;
-        //        if (csAddOrUpdateValue != null)
-        //        {
-        //            csAddOrUpdateValue.VALUE = IsPin ? txtBuyerAccountNumber.Text.Trim() : "";
-        //        }
-        //        else
-        //        {
-        //            csAddOrUpdateValue = new HIS.Desktop.Library.CacheClient.ControlStateRDO();
-        //            csAddOrUpdateValue.KEY = txtBuyerAccountNumber.Name;
-        //            csAddOrUpdateValue.VALUE = IsPin ? txtBuyerAccountNumber.Text.Trim() : "";
-        //            csAddOrUpdateValue.MODULE_LINK = moduleLink;
-        //            if (this.currentBySessionControlStateRDO == null)
-        //                this.currentBySessionControlStateRDO = new List<HIS.Desktop.Library.CacheClient.ControlStateRDO>();
-        //            this.currentBySessionControlStateRDO.Add(csAddOrUpdateValue);
-        //        }
-        //        this.controlStateWorker.SetDataBySession(this.currentBySessionControlStateRDO);
-
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        Inventec.Common.Logging.LogSystem.Warn(ex);
-        //    }
-        //}
-
-        //private void txtBuyerAddress_EditValueChanged(object sender, EventArgs e)
-        //{
-        //    try
-        //    {
-
-        //        HIS.Desktop.Library.CacheClient.ControlStateRDO csAddOrUpdateValue = (this.currentBySessionControlStateRDO != null && this.currentBySessionControlStateRDO.Count > 0) ? this.currentBySessionControlStateRDO.Where(o => o.KEY == txtBuyerAddress.Name && o.MODULE_LINK == moduleLink).FirstOrDefault() : null;
-        //        if (csAddOrUpdateValue != null)
-        //        {
-        //            csAddOrUpdateValue.VALUE = IsPin ? txtBuyerAddress.Text.Trim() : "";
-        //        }
-        //        else
-        //        {
-        //            csAddOrUpdateValue = new HIS.Desktop.Library.CacheClient.ControlStateRDO();
-        //            csAddOrUpdateValue.KEY = txtBuyerAddress.Name;
-        //            csAddOrUpdateValue.VALUE = IsPin ? txtBuyerAddress.Text.Trim() : "";
-        //            csAddOrUpdateValue.MODULE_LINK = moduleLink;
-        //            if (this.currentBySessionControlStateRDO == null)
-        //                this.currentBySessionControlStateRDO = new List<HIS.Desktop.Library.CacheClient.ControlStateRDO>();
-        //            this.currentBySessionControlStateRDO.Add(csAddOrUpdateValue);
-        //        }
-        //        this.controlStateWorker.SetDataBySession(this.currentBySessionControlStateRDO);
-
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        Inventec.Common.Logging.LogSystem.Warn(ex);
-        //    }
-        //}
 
         private void checkEdit1_CheckedChanged(object sender, EventArgs e)
         {
@@ -4116,8 +4017,6 @@ namespace HIS.Desktop.Plugins.TransactionBill
                 layoutControlItem56.Visibility = LayoutVisibility.Always;
                 layoutControlItem57.Visibility = LayoutVisibility.Always;
                 layoutControlItem59.Visibility = LayoutVisibility.Always;
-                cboBuyerOrganization.Visible = true;
-                cboBuyerOrganization2.Visible = false;
                 // Ẩn của Cơ quan
                 layoutControlItem44.Visibility = LayoutVisibility.Never;
                 layoutControlItem35.Visibility = LayoutVisibility.Never;
@@ -4125,6 +4024,8 @@ namespace HIS.Desktop.Plugins.TransactionBill
                 layoutControlItem34.Visibility = LayoutVisibility.Never;
                 layoutControlItem58.Visibility = LayoutVisibility.Never;
                 layoutControlItem60.Visibility = LayoutVisibility.Never;
+                layoutControlItem61.Visibility = LayoutVisibility.Never;
+
 
             }
         }
@@ -4140,8 +4041,6 @@ namespace HIS.Desktop.Plugins.TransactionBill
                 layoutControlItem34.Visibility = LayoutVisibility.Never;
                 layoutControlItem58.Visibility = LayoutVisibility.Always;
                 layoutControlItem60.Visibility = LayoutVisibility.Always;
-                cboBuyerOrganization.Visible = false;
-                cboBuyerOrganization2.Visible = true;
                 // Ẩn các item không dùng
                 layoutControlItem59.Visibility = LayoutVisibility.Always;
                 layoutControlItem56.Visibility = LayoutVisibility.Never;
@@ -4149,6 +4048,8 @@ namespace HIS.Desktop.Plugins.TransactionBill
                 layoutControlItem32.Visibility = LayoutVisibility.Never;
                 layoutControlItem44.Visibility = LayoutVisibility.Never;
                 layoutControlItem35.Visibility = LayoutVisibility.Never;
+                layoutControlItem61.Visibility = LayoutVisibility.Never;
+
             }
         }
 
@@ -4196,10 +4097,12 @@ namespace HIS.Desktop.Plugins.TransactionBill
             try
             {
                 if (chkOther1.Checked)
-                {
-                    
+                {                    
                     cboBuyerOrganization2.Visible = false;
+                    txtBuyerOrganization2.Visible = true;
                     layoutControlItem58.Visibility = LayoutVisibility.Never;
+                    layoutControlItem61.Visibility = LayoutVisibility.Always;
+
 
                     this.dxValidationProvider1.SetValidationRule(txtBuyerOrganization, null);
                     ValidControlBuyerOrganization();
@@ -4207,12 +4110,20 @@ namespace HIS.Desktop.Plugins.TransactionBill
                 else
                 {
                     cboBuyerOrganization2.Visible = true;
+                    txtBuyerOrganization2.Visible = false;
+                    layoutControlItem58.Visibility = LayoutVisibility.Always;
+                    layoutControlItem61.Visibility = LayoutVisibility.Never;
                 }
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
+        }
+
+        private void panelControl3_Paint(object sender, PaintEventArgs e)
+        {
+
         }
     }
 }

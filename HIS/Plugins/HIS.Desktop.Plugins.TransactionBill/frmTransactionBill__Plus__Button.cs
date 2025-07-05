@@ -1023,13 +1023,24 @@ namespace HIS.Desktop.Plugins.TransactionBill
                 {
                     // Đơn vị
                     data.Transaction.BUYER_TYPE = 2;
-                    data.Transaction.BUYER_ORGANIZATION = txtBuyerOrganization.Text.Trim();
-                    data.Transaction.BUYER_WORK_PLACE_ID = cboBuyerOrganization.EditValue != null ? Convert.ToInt64(cboBuyerOrganization.EditValue) : (long?)null;
+                    if (chkOther1.Checked)
+                    {
+                        data.Transaction.BUYER_ORGANIZATION = txtBuyerOrganization2.Text.Trim();
+                    }
+                    else
+                    {
+                        if (cboBuyerOrganization2.EditValue != null)
+                        {
+                            data.Transaction.BUYER_WORK_PLACE_ID = Int64.Parse(cboBuyerOrganization2.EditValue.ToString());
+                            data.Transaction.BUYER_ORGANIZATION = dtWorkPlace.Where(o => o.ID == data.Transaction.BUYER_WORK_PLACE_ID).First().WORK_PLACE_NAME;
+                        }
+                    }
                     data.Transaction.BUYER_TAX_CODE = txtBuyerTaxCode.Text.Trim();
                     data.Transaction.BUYER_PHONE = txtSDT.Text.Trim();
                     data.Transaction.BUYER_ADDRESS = txtBuyerAddress.Text.Trim();
                     data.Transaction.BUYER_EMAIL = txtBuyerEmail.Text.Trim();
                     data.Transaction.BUYER_NAME = null;
+
                     data.Transaction.BUYER_IDENTITY_NUMBER = null;
                     data.Transaction.BUYER_IDENTITY_TYPE = null;
                     data.Transaction.BUYER_ACCOUNT_NUMBER = null;

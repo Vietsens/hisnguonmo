@@ -68,6 +68,7 @@ namespace HIS.Desktop.Plugins.TransactionBill
 
                     if (!IsPin)
                     {
+                        radioBuyerUser.Checked = true;
                         HisPatientFilter filter = new HisPatientFilter();
                         filter.ID = data.PATIENT_ID;
                         var patient = new BackendAdapter(new CommonParam()).Get<List<MOS.EFMODEL.DataModels.HIS_PATIENT>>("api/HisPatient/Get", ApiConsumers.MosConsumer, filter, null);
@@ -110,19 +111,19 @@ namespace HIS.Desktop.Plugins.TransactionBill
                             if (data.TDL_PATIENT_WORK_PLACE_ID.HasValue)
                             {
                                 cboBuyerOrganization2.EditValue = dtWorkPlace.Where(o => o.ID == data.TDL_PATIENT_WORK_PLACE_ID).FirstOrDefault().ID;
-                                txtBuyerOrganization.Text = "";
+                                txtBuyerOrganization2.Text = "";
                                 chkOther.Checked = false;
                             }
                             else if (!string.IsNullOrEmpty(data.TDL_PATIENT_WORK_PLACE))
                             {
                                 cboBuyerOrganization2.EditValue = null;
-                                txtBuyerOrganization.Text = data.TDL_PATIENT_WORK_PLACE;
+                                txtBuyerOrganization2.Text = data.TDL_PATIENT_WORK_PLACE;
                                 chkOther.Checked = true;
                             }
                             else
                             {
                                 cboBuyerOrganization2.EditValue = null;
-                                txtBuyerOrganization.Text = "";
+                                txtBuyerOrganization2.Text = "";
                                 chkOther.Checked = false;
                             }                            
                         }
