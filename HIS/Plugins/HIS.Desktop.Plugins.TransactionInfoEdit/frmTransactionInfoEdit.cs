@@ -41,6 +41,9 @@ using DevExpress.XtraEditors.Controls;
 using MOS.Filter;
 using System.Linq;
 using Inventec.Common.Controls.EditorLoader;
+using DevExpress.XtraGrid.Columns;
+using HIS.Desktop.Utilities.Extensions;
+using HIS.Desktop.Plugins.TransactionInfoEdit.LoaiGiayToADO;
 
 namespace HIS.Desktop.Plugins.TransactionInfoEdit
 {
@@ -55,6 +58,7 @@ namespace HIS.Desktop.Plugins.TransactionInfoEdit
         List<HIS_REPAY_REASON> repayReasons = new List<HIS_REPAY_REASON>();
         int configUpdateAccountBook;
         bool MustChooseWorkingShift;
+        private List<LoaiGiayToADO.LoaiGiayToADO> listLoaiGiayTo;
         public frmTransactionInfoEdit(Inventec.Desktop.Common.Modules.Module module, V_HIS_TRANSACTION _transaction)
             : base(module)
         {
@@ -129,7 +133,8 @@ namespace HIS.Desktop.Plugins.TransactionInfoEdit
                     txtAccountBook.Enabled = false;
                     cboAccountBook.Enabled = false;
                 }
-
+                this.GetDataCombo();
+                this.InitCombo(this.cboGiayTo, this.listLoaiGiayTo, "LoaiGiayTo", "ID");
                 LoadCombo();
                 SetDataDefault();
                 SetValidate();
@@ -476,6 +481,9 @@ namespace HIS.Desktop.Plugins.TransactionInfoEdit
                     this.txtBuyerEmail.Text = this._HisTransaction.BUYER_EMAIL;
                     this.spinEditAmount.EditValue = Inventec.Common.Number.Convert.NumberToString(this._HisTransaction.AMOUNT, ConfigApplications.NumberSeperator);
                     this.cboPayForm.EditValue = this._HisTransaction.PAY_FORM_ID;
+                    this.txtSDT.Text = this._HisTransaction.BUYER_PHONE;
+                    this.txtDinhDanh.Text = this._HisTransaction.BUYER_IDENTITY_NUMBER;
+                    this.cboGiayTo.EditValue = this._HisTransaction.BUYER_IDENTITY_TYPE;
                     if (this._HisTransaction.PAY_FORM_ID == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__TMCK)
                     {
                         spinEditChuyenKhoan.Enabled = true;
@@ -1336,6 +1344,56 @@ namespace HIS.Desktop.Plugins.TransactionInfoEdit
             {
                 LogSystem.Error(ex);
             }           
+        }
+
+        private void GetDataCombo()
+        {
+            try
+            {
+                this.listLoaiGiayTo = new List<LoaiGiayToADO.LoaiGiayToADO>();
+                this.listLoaiGiayTo.Add(new LoaiGiayToADO.LoaiGiayToADO(1L, "CMND"));
+                this.listLoaiGiayTo.Add(new LoaiGiayToADO.LoaiGiayToADO(2L, "CCCD"));
+                this.listLoaiGiayTo.Add(new LoaiGiayToADO.LoaiGiayToADO(3L, "PASSPORT"));
+            }
+            catch (Exception ex)
+            {
+                LogSystem.Warn(ex);
+            }
+        }
+        private void InitCombo(GridLookUpEdit cbo, object data, string DisplayValue, string ValueMember)
+        {
+            try
+            {
+                cbo.Properties.DataSource = data;
+                cbo.Properties.DisplayMember = DisplayValue;
+                cbo.Properties.ValueMember = ValueMember;
+                cbo.Properties.ImmediatePopup = true;
+                cbo.Properties.TextEditStyle = TextEditStyles.Standard;
+
+                cbo.Properties.PopupFormWidth = 200;
+
+                var view = cbo.Properties.View;
+                view.OptionsView.ShowColumnHeaders = true;
+                view.OptionsBehavior.Editable = false;
+                view.OptionsSelection.EnableAppearanceFocusedCell = false;
+                view.FocusRectStyle = DevExpress.XtraGrid.Views.Grid.DrawFocusRectStyle.RowFocus;
+                view.OptionsSelection.MultiSelect = false;
+
+                if (cbo.Properties.Tag is GridCheckMarksSelection gridCheckMarksSelection)
+                {
+                    view.OptionsSelection.MultiSelect = true;
+                    gridCheckMarksSelection.SelectAll(data);
+                }
+            }
+            catch (Exception ex)
+            {
+                LogSystem.Warn(ex);
+            }
+        }
+
+        private void cboGiayTo_Popup(object sender, EventArgs e)
+        {
+
         }
     }
 }
