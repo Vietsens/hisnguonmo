@@ -49,7 +49,7 @@ namespace HIS.UC.AddressCombo
                 {
                     if (data._FocusNextUserControl != null)
                         this.dlgFocusNextUserControl = data._FocusNextUserControl;
-                    if ((string.IsNullOrEmpty(data.District_Code) && string.IsNullOrEmpty(data.District_Name) && IsChangeStrucAdreess) || data.IsNoDistrict)
+                    if ((string.IsNullOrEmpty(data.District_Code) && string.IsNullOrEmpty(data.District_Name) && IsChangeStrucAdreess) || data.IsNoDistrict || (string.IsNullOrEmpty(data.District_Code) && !string.IsNullOrEmpty(data.Province_Code) && !string.IsNullOrEmpty(data.Commune_Code)))
                     {
                         if (!togChangeStructAdress.IsOn)
                         {
@@ -57,6 +57,7 @@ namespace HIS.UC.AddressCombo
                             togChangeStructAdress.IsOn = true;
                             this.workingCommuneADO = workingCommuneADONoDistrict;
                             SetDefaultDataToControl(true);
+                            LoadSourceNoDistrict();
                             IsNotCheckToggleAddress = false;
                             if (dlgReloadData != null)
                                 dlgReloadData(IsChangeStrucAdreess);
@@ -87,7 +88,7 @@ namespace HIS.UC.AddressCombo
                     }
                     var commune = BackendDataWorker.Get<SDA.EFMODEL.DataModels.V_SDA_COMMUNE>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.SDA_RS.COMMON.IS_ACTIVE__TRUE).ToList().FirstOrDefault(o =>
                     ((o.INITIAL_NAME + " " + o.COMMUNE_NAME) == data.Commune_Name || o.COMMUNE_NAME == data.Commune_Name)
-                    &&  ((o.DISTRICT_INITIAL_NAME + " " + o.DISTRICT_NAME) == data.District_Name || o.DISTRICT_NAME == data.District_Name));
+                    && ((o.DISTRICT_INITIAL_NAME + " " + o.DISTRICT_NAME) == data.District_Name || o.DISTRICT_NAME == data.District_Name));
                     if (commune != null)
                     {
                         this.LoadXaCombo("", IsChangeStrucAdreess ? commune.PROVINCE_CODE : commune.DISTRICT_CODE, false);
@@ -151,7 +152,7 @@ namespace HIS.UC.AddressCombo
         {
             try
             {
-                var province = BackendDataWorker.Get<SDA.EFMODEL.DataModels.V_SDA_PROVINCE>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.SDA_RS.COMMON.IS_ACTIVE__TRUE && o.IS_NO_DISTRICT == 1).ToList().FirstOrDefault(o => o.PROVINCE_NAME == data.Province_Name);
+                var province = ((List<SDA.EFMODEL.DataModels.V_SDA_PROVINCE>)cboProvince.Properties.DataSource).FirstOrDefault(o => o.PROVINCE_NAME == data.Province_Name);
                 if (province != null)
                 {
                     this.txtProvinceCode.Text = province.PROVINCE_CODE;
@@ -159,26 +160,16 @@ namespace HIS.UC.AddressCombo
                 }
                 var commune = BackendDataWorker.Get<SDA.EFMODEL.DataModels.V_SDA_COMMUNE>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.SDA_RS.COMMON.IS_ACTIVE__TRUE).ToList().FirstOrDefault(o =>
                 ((o.INITIAL_NAME + " " + o.COMMUNE_NAME) == data.Commune_Name || o.COMMUNE_NAME == data.Commune_Name)
-                && o.PROVINCE_CODE == (this.cboProvince.EditValue != null ? this.cboProvince.EditValue.ToString() : "") && o.IS_NO_DISTRICT == 1);
+                && o.PROVINCE_CODE == (this.cboProvince.EditValue != null ? this.cboProvince.EditValue.ToString() : "") &&  o.IS_NO_DISTRICT == 1);
                 if (commune != null)
                 {
-                    this.LoadXaCombo("",  commune.PROVINCE_CODE, false, true);
+                    this.LoadXaCombo("", commune.PROVINCE_CODE, false, true);
                     this.txtDistrictCode.Text = commune.COMMUNE_CODE;
                     this.cboDistrict.EditValue = commune.COMMUNE_CODE;
                     this.cboTHX.EditValue = "C" + commune.ID;//ID_RAW
                     bool isSearchOrderByXHT = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>("HIS_DESKTOP_REGISTER__SEARCH_CODE__X/H/T") == "1" ? true : false;
 
-                    this.txtMaTHX.Text = isSearchOrderByXHT ? String.Format("{0}{1}", commune.SEARCH_CODE, province != null ? province.SEARCH_CODE : null) : String.Format("{0}{1}{2}", province != null ? province.SEARCH_CODE : null, commune.SEARCH_CODE);
-                }else if (data.Province_Code != null && data.Commune_Code != null)
-                {
-                    var communeTHX = workingCommuneADONoDistrict.FirstOrDefault(o =>
-                    (o.SEARCH_CODE_COMMUNE) == (province.SEARCH_CODE + commune.SEARCH_CODE)
-                    && o.ID < 0);
-                    if (communeTHX != null)
-                    {
-                        this.cboTHX.EditValue = communeTHX.ID_RAW;
-                        this.txtMaTHX.Text = communeTHX.SEARCH_CODE_COMMUNE;
-                    }
+                    this.txtMaTHX.Text = isSearchOrderByXHT ? String.Format("{0}{1}", commune.SEARCH_CODE, province != null ? province.SEARCH_CODE : null) : String.Format("{0}{1}{2}", province != null ? province.SEARCH_CODE : null, null, commune.SEARCH_CODE);
                 }
                 else if (province != null)
                 {

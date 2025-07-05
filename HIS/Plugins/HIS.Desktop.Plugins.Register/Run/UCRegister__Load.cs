@@ -674,19 +674,19 @@ namespace HIS.Desktop.Plugins.Register.Run
                 else
                 {
                     List<SDA.EFMODEL.DataModels.V_SDA_PROVINCE> listResult = new List<SDA.EFMODEL.DataModels.V_SDA_PROVINCE>();
-                    listResult = SdaProvinces.Where(o => o.IS_ACTIVE == IMSys.DbConfig.SDA_RS.COMMON.IS_ACTIVE__TRUE).Where(o => o.SEARCH_CODE.Contains(searchCode)).ToList();
+                    listResult = SdaProvinces.Where(o => o.IS_ACTIVE == IMSys.DbConfig.SDA_RS.COMMON.IS_ACTIVE__TRUE).Where(o => o.SEARCH_CODE.Contains(searchCode) || o.PROVINCE_CODE == searchCode).ToList();
                     if (listResult.Count == 1)
                     {
                         this.cboProvince.EditValue = listResult[0].PROVINCE_CODE;
                         this.txtProvinceCode.Text = listResult[0].SEARCH_CODE;
                         this.cboProvinceKS.EditValue = this.cboProvince.EditValue;
                         this.txtProvinceCodeKS.Text = txtProvinceCode.Text;
-                        if(IsChangeStrucAddress)
+                        if (IsChangeStrucAddress)
                         {
                             LoadXaComboNoDistrict("", listResult[0].PROVINCE_CODE, false);
                         }
-                        else    
-                        this.LoadHuyenCombo("", listResult[0].PROVINCE_CODE, false);
+                        else
+                            this.LoadHuyenCombo("", listResult[0].PROVINCE_CODE, false);
                         if (isExpand)
                         {
                             this.txtDistrictCode.Focus();
@@ -721,7 +721,7 @@ namespace HIS.Desktop.Plugins.Register.Run
             try
             {
                 List<SDA.EFMODEL.DataModels.V_SDA_DISTRICT> listResult = new List<SDA.EFMODEL.DataModels.V_SDA_DISTRICT>();
-                listResult = BackendDataWorker.Get<SDA.EFMODEL.DataModels.V_SDA_DISTRICT>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.SDA_RS.COMMON.IS_ACTIVE__TRUE).Where(o => (o.SEARCH_CODE ?? "").ToUpper().Contains(searchCode.ToUpper()) && (provinceCode == "" || o.PROVINCE_CODE == provinceCode)).ToList();
+                listResult = BackendDataWorker.Get<SDA.EFMODEL.DataModels.V_SDA_DISTRICT>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.SDA_RS.COMMON.IS_ACTIVE__TRUE).Where(o => ((o.SEARCH_CODE ?? "").ToUpper().Contains(searchCode.ToUpper()) || o.DISTRICT_CODE == (searchCode ?? "")) && (provinceCode == "" || o.PROVINCE_CODE == provinceCode)).ToList();
                 this.InitComboCommon(this.cboDistrict, listResult, "DISTRICT_CODE", "RENDERER_DISTRICT_NAME", "SEARCH_CODE");
                 if (String.IsNullOrEmpty(searchCode) && String.IsNullOrEmpty(provinceCode) && listResult.Count > 0)
                 {
@@ -774,14 +774,14 @@ namespace HIS.Desktop.Plugins.Register.Run
         {
             try
             {
-                if(IsChangeStrucAddress)
+                if (IsChangeStrucAddress)
                 {
                     LoadXaComboNoDistrict(searchCode, districtCode, isExpand);
                     return;
-                }    
+                }
 
                 List<SDA.EFMODEL.DataModels.V_SDA_COMMUNE> listResult = SdaCommunes.Where(o => o.IS_ACTIVE == IMSys.DbConfig.SDA_RS.COMMON.IS_ACTIVE__TRUE)
-                    .Where(o => (o.SEARCH_CODE ?? "").Contains(searchCode ?? "")
+                    .Where(o => ((o.SEARCH_CODE ?? "").Contains(searchCode ?? "") || o.COMMUNE_CODE == (searchCode ?? ""))
                         && (String.IsNullOrEmpty(districtCode) || o.DISTRICT_CODE == districtCode)).ToList();
                 this.InitComboCommon(this.cboCommune, listResult, "COMMUNE_CODE", "RENDERER_COMMUNE_NAME", "SEARCH_CODE");
                 if (String.IsNullOrEmpty(searchCode) && String.IsNullOrEmpty(districtCode) && listResult.Count > 0)
@@ -862,7 +862,7 @@ namespace HIS.Desktop.Plugins.Register.Run
                             this.txtAddress.SelectAll();
                         }
                     }
-                    else 
+                    else
                     {
                         this.cboCommune.EditValue = null;
                         this.txtCommuneCode.Text = "";
@@ -1002,7 +1002,7 @@ namespace HIS.Desktop.Plugins.Register.Run
                 //Neu la qrcode se doc chuoi ma hoa tra ve doi tuong heindata
                 //Neu la ma benh nhan thi goi api kiem tra co du lieu benh nhan tuong ung voi ma hay khong, co thi tra ve du lieu BN
                 var data = (await ProcessSearchByCodeAsync(searchCode).ConfigureAwait(false));
-                this.Invoke(new MethodInvoker(delegate() { ProcessPatientCodeKeydown(data); }));
+                this.Invoke(new MethodInvoker(delegate () { ProcessPatientCodeKeydown(data); }));
             }
             catch (Exception ex)
             {
@@ -1068,10 +1068,11 @@ namespace HIS.Desktop.Plugins.Register.Run
                             //xuandv
                             this._HeinCardData = (HeinCardData)data;
                             this.isReadQrCode = true;
-                           
+
                             //this.ProcessQrCodeData(this._HeinCardData);
-                        }else if(data is CccdCardData)
-						{
+                        }
+                        else if (data is CccdCardData)
+                        {
                             isReadQrCode = true;
                             cccdCard = (CccdCardData)data;
                             _HeinCardData = new HeinCardData();
@@ -1097,9 +1098,9 @@ namespace HIS.Desktop.Plugins.Register.Run
                         HeinGOVManager heinGOVManager = new HeinGOVManager(ResourceMessage.GoiSangCongBHXHTraVeMaLoi);
 
                         this.ResultDataADO = await heinGOVManager.Check(this._HeinCardData, null, false, heinAddressOfPatient, dtIntructionTime.DateTime, this.isReadQrCode);
-					}
-					else
-					{
+                    }
+                    else
+                    {
                         HeinGOVManager heinGOVManager = new HeinGOVManager(ResourceMessage.GoiSangCongBHXHTraVeMaLoi);
                         this.ResultDataADO = await heinGOVManager.CheckCccdQrCode(this._HeinCardData, null, dtIntructionTime.DateTime);
 
@@ -1375,7 +1376,7 @@ namespace HIS.Desktop.Plugins.Register.Run
                     Inventec.Common.Logging.LogSystem.Warn("___2____");
                     LogSystem.Debug("Quet the BHYT khong tim thay Bn cu => fill du lieu theo du lieu gih tren the bhyt");
                     this.currentPatientSDO = null;
-                    FillDataAfterFindQrCodeNoExistsCard(dataHein);                    
+                    FillDataAfterFindQrCodeNoExistsCard(dataHein);
                     txtPatientCode.Text = "";
                     txtPatientCode.Update();
                 }

@@ -1885,6 +1885,7 @@ namespace HIS.Desktop.Plugins.ServiceReqList
                         {
                             if (isNoExecute != Base.GlobalStore.IS_TRUE)
                             {
+                                var a = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>("MOS.HIS_SERVICE_REQ.ALLOW_MODIFYING_OF_STARTED"); 
                                 if ((reqSttId == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_STT.ID__CXL
                              || HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>("MOS.HIS_SERVICE_REQ.ALLOW_MODIFYING_OF_STARTED") == "1" ||
                              HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>("MOS.HIS_SERVICE_REQ.ALLOW_MODIFYING_OF_STARTED") == "2" && serReqTypeId == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__KH))
@@ -4707,7 +4708,6 @@ namespace HIS.Desktop.Plugins.ServiceReqList
                                 MessageManager.Show(this, param, false);
                                 return;
                             }
-
                             InPhieuYeuCauChiDinhTongHop(MPS000037);
                         }
                     }

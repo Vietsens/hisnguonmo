@@ -38,6 +38,9 @@ namespace MPS.Processor.Mps000037.PDO
         public List<HIS_SERE_SERV_EXT> SereServExt { get; set; }
         public List<HIS_SERVICE_REQ_TYPE> ListServiceReqType { get; set; }
         public List<HIS_SERE_NMSE> ListSereNmse { get; set; }
+        //qtcode
+        public List<HIS_CONFIG> lstConfig { get; set; }
+        public HIS_TRANS_REQ transReq { get; set; }
     }
 
     //public class HisServiceReqCombo : MOS.EFMODEL.DataModels.V_HIS_SERVICE_REQ
