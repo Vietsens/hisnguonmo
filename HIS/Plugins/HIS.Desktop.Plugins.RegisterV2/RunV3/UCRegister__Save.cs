@@ -266,9 +266,12 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
                                 }
                                 break;
                         }
-                        if (!success)
+                        if (!success)     
                         {
-                            if (!this.isShowMess) MessageManager.Show(this.ParentForm, param, false);
+                            if (!this.isShowMess)
+                            {
+                                MessageManager.Show(this.ParentForm, param, false);
+                            }
                         }
                         if (success)
                             this.EnableControl(false);
