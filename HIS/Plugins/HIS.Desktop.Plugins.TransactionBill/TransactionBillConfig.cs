@@ -47,7 +47,6 @@ namespace HIS.Desktop.Plugins.TransactionBill
                 invoiceTemplateCreate = value;
             }
         }
-
         /// <summary>
         /// Cấu hình chế độ tạo hóa đơn điện tử, chữ ký điện tử
         //- Đặt 1: Chỉ tạo hóa đơn điện tử trên hệ thống của vnpt, không tạo trên hệ thống HIS
