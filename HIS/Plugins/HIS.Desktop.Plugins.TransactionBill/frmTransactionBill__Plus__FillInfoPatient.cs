@@ -85,47 +85,23 @@ namespace HIS.Desktop.Plugins.TransactionBill
                         }
                         txtBuyerName.Text = data.TDL_PATIENT_NAME ?? "";
                         txtBuyerTaxCode.Text = data.TDL_PATIENT_TAX_CODE ?? "";
-                        if (cboBuyerOrganization.Visible)
+                        if (data.TDL_PATIENT_WORK_PLACE_ID.HasValue)
                         {
-                            if (data.TDL_PATIENT_WORK_PLACE_ID.HasValue)
-                            {
-                                cboBuyerOrganization.EditValue = dtWorkPlace.Where(o => o.ID == data.TDL_PATIENT_WORK_PLACE_ID).FirstOrDefault().ID;
-                                txtBuyerOrganization.Text = "";
-                                chkOther.Checked = false;
-                            }
-                            else if (!string.IsNullOrEmpty(data.TDL_PATIENT_WORK_PLACE))
-                            {
-                                cboBuyerOrganization.EditValue = null;
-                                txtBuyerOrganization.Text = data.TDL_PATIENT_WORK_PLACE;
-                                chkOther.Checked = true;
-                            }
-                            else
-                            {
-                                cboBuyerOrganization.EditValue = null;
-                                txtBuyerOrganization.Text = "";
-                                chkOther.Checked = false;
-                            }
+                            cboBuyerOrganization.EditValue = dtWorkPlace.Where(o => o.ID == data.TDL_PATIENT_WORK_PLACE_ID).FirstOrDefault().ID;
+                            txtBuyerOrganization.Text = "";
+                            chkOther.Checked = false;
                         }
-                        else if (cboBuyerOrganization2.Visible)
+                        else if (!string.IsNullOrEmpty(data.TDL_PATIENT_WORK_PLACE))
                         {
-                            if (data.TDL_PATIENT_WORK_PLACE_ID.HasValue)
-                            {
-                                cboBuyerOrganization2.EditValue = dtWorkPlace.Where(o => o.ID == data.TDL_PATIENT_WORK_PLACE_ID).FirstOrDefault().ID;
-                                txtBuyerOrganization2.Text = "";
-                                chkOther.Checked = false;
-                            }
-                            else if (!string.IsNullOrEmpty(data.TDL_PATIENT_WORK_PLACE))
-                            {
-                                cboBuyerOrganization2.EditValue = null;
-                                txtBuyerOrganization2.Text = data.TDL_PATIENT_WORK_PLACE;
-                                chkOther.Checked = true;
-                            }
-                            else
-                            {
-                                cboBuyerOrganization2.EditValue = null;
-                                txtBuyerOrganization2.Text = "";
-                                chkOther.Checked = false;
-                            }                            
+                            cboBuyerOrganization.EditValue = null;
+                            txtBuyerOrganization.Text = data.TDL_PATIENT_WORK_PLACE;
+                            chkOther.Checked = true;
+                        }
+                        else
+                        {
+                            cboBuyerOrganization.EditValue = null;
+                            txtBuyerOrganization.Text = "";
+                            chkOther.Checked = false;
                         }
                         if (!string.IsNullOrEmpty(data.TDL_PATIENT_CCCD_NUMBER))
                         {

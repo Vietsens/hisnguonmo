@@ -310,9 +310,7 @@ namespace HIS.Desktop.Plugins.TransactionBill
                         cboBuyerIdentity.EditValue = "PASSPORT";
                     }
                     cboBuyerOrganization.EditValue = null;
-                    cboBuyerOrganization2.EditValue = currentTransaction.BUYER_ORGANIZATION;
                     txtBuyerOrganization.Text = currentTransaction.BUYER_ORGANIZATION;
-                    txtBuyerOrganization2.Text = currentTransaction.BUYER_ORGANIZATION;
                     chkOther.Checked = true;
                     //chkOther1.Checked = true;
 
@@ -1088,7 +1086,6 @@ namespace HIS.Desktop.Plugins.TransactionBill
             {
                 dtWorkPlace = BackendDataWorker.Get<HIS_WORK_PLACE>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE).ToList();
                 this.InitComboCommon(this.cboBuyerOrganization, dtWorkPlace, "ID", "WORK_PLACE_NAME", "TAX_CODE");
-                this.InitComboCommon(this.cboBuyerOrganization2, dtWorkPlace, "ID", "WORK_PLACE_NAME", "TAX_CODE");
 
             }
             catch (Exception ex)
@@ -1097,19 +1094,6 @@ namespace HIS.Desktop.Plugins.TransactionBill
             }
         }
 
-        private void InitComboBuyerOrganization2()
-        {
-            try
-            {
-                dtWorkPlace = BackendDataWorker.Get<HIS_WORK_PLACE>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE).ToList();
-                this.InitComboCommon(this.cboBuyerOrganization2, dtWorkPlace, "ID", "WORK_PLACE_NAME", "TAX_CODE");
-
-            }
-            catch (Exception ex)
-            {
-                Inventec.Common.Logging.LogSystem.Warn(ex);
-            }
-        }
 
         private void InitComboCommon(Control cboEditor, object data, string valueMember, string displayMember, string displayMemberCode)
         {
@@ -1584,14 +1568,10 @@ namespace HIS.Desktop.Plugins.TransactionBill
                     txtBuyerTaxCode.Text = "";
                     txtBuyerAccountNumber.Text = "";
                     txtBuyerOrganization.Text = "";
-                    txtBuyerOrganization2.Text = "";
                     txtBuyerAddress.Text = "";
                     chkOther.Checked = false;
-                    chkOther1.Checked = false;
                     cboBuyerOrganization.EditValue = null;
                     cboBuyerOrganization.Properties.Buttons[1].Visible = false;
-                    cboBuyerOrganization2.EditValue = null;
-                    cboBuyerOrganization2.Properties.Buttons[1].Visible = false;
                 }
                 //
                 txtTotalAmount.Value = 0;
@@ -2469,7 +2449,7 @@ namespace HIS.Desktop.Plugins.TransactionBill
                 ado.TaxCode = txtBuyerTaxCode.Text; 
                 ado.BuyerType = radioBuyerUser.Checked ? 1 : (radioBuyerCompany.Checked ? 2 : (int?)null); // Lưu loại người mua
                 ado.Email = txtBuyerEmail.Text;
-                ado.PhoneNumber = txtBuyerEmail.Text;
+                ado.PhoneNumber = txtSDT.Text;
                 ado.IdentityNumber = txtBuyerIdentityNumber.Text;
                 if (cboBuyerIdentity.EditValue == "CMND")
                     ado.IndentityCode = 1;
@@ -2478,47 +2458,15 @@ namespace HIS.Desktop.Plugins.TransactionBill
                 if (cboBuyerIdentity.EditValue == "PASSPORT")
                     ado.IndentityCode = 3;
 
-                if (cboBuyerOrganization.Visible)
-                {
-                    ado.UnitID = cboBuyerOrganization.EditValue != null
+                ado.UnitID = cboBuyerOrganization.EditValue != null
                         ? Convert.ToInt64(cboBuyerOrganization.EditValue)
                         : 0;
-                }
-                else if (cboBuyerOrganization2.Visible)
-                {
-                    ado.UnitID = cboBuyerOrganization2.EditValue != null
-                        ? Convert.ToInt64(cboBuyerOrganization2.EditValue)
-                        : 0;
-                }
-                else
-                {
-                    ado.UnitID = 0;
-                }
 
                 ado.Address = txtBuyerAddress.Text;
                 ado.AccountNumber = txtBuyerAccountNumber.Text;
-                if(txtBuyerOrganization.Visible)
-                {
-
-                    ado.UnitText = txtBuyerOrganization.Text;
-                }
-                else if (txtBuyerOrganization2.Visible)
-                {
-                    ado.UnitText = txtBuyerOrganization2.Text;
-                }
-
-                if (chkOther.Visible)
-                {
-                    ado.checkBox = chkOther.Checked ? "1" : "0";
-                }
-                else if (chkOther1.Visible)
-                {
-                    ado.checkBox = chkOther1.Checked ? "1" : "0";
-                }
-                else
-                {
-                    ado.checkBox = "0"; // Mặc định nếu không cái nào hiển thị
-                }
+                ado.UnitText = txtBuyerOrganization.Text;
+                
+                ado.checkBox = chkOther.Checked ? "1" : "0";
 
                 string textJson = JsonConvert.SerializeObject(ado);
 
@@ -3171,23 +3119,13 @@ namespace HIS.Desktop.Plugins.TransactionBill
                         }
                     }
                     if (ado != null)
-                    {
+                    {//Có đây thây
                         txtBuyerName.Text = ado.FullName;
                         txtBuyerTaxCode.Text = ado.TaxCode;
-                        if (cboBuyerOrganization.Visible)
-                        {
-                            cboBuyerOrganization.EditValue = ado.UnitID;
-                            cboBuyerOrganization.Focus();
-                        }
-                        else if (cboBuyerOrganization2.Visible)
-                        {
-                            cboBuyerOrganization2.EditValue = ado.UnitID;
-                            cboBuyerOrganization2.Focus();
-                        }
+                        cboBuyerOrganization.EditValue = ado.UnitID;
                         txtBuyerAddress.Text = ado.Address;
                         txtBuyerAccountNumber.Text = ado.AccountNumber;
                         txtBuyerOrganization.Text = ado.UnitText;
-                        txtBuyerOrganization2.Text = ado.UnitText;
                         chkOther.Checked = ado.checkBox == "1" ? true : false;
                         //chkOther1.Checked = ado.checkBox == "1" ? true : false;
                         //cboBuyerOrganization.Focus();
@@ -3210,6 +3148,8 @@ namespace HIS.Desktop.Plugins.TransactionBill
                             cboBuyerIdentity.EditValue = "CCCD";
                         if (ado.IndentityCode == 3)
                             cboBuyerIdentity.EditValue = "PASSPORT";
+
+                        cboBuyerOrganization.Focus();
                     }
                 }
                 else
@@ -3608,13 +3548,16 @@ namespace HIS.Desktop.Plugins.TransactionBill
                 if (cboBuyerOrganization.EditValue != null)
                 {
                     var dt = dtWorkPlace.Where(o => o.ID == Int64.Parse(cboBuyerOrganization.EditValue.ToString())).First();
+                    txtBuyerAddress.Text = dt.ADDRESS;
+                    if(dt.TAX_CODE != null)
+                    {
+                        txtBuyerTaxCode.Text = dt.TAX_CODE;
+                    }
                     //if (!chkAddressBhyt.Checked)
                     //{
-
+                        
                     //}
-                    txtBuyerAddress.Text = dt.ADDRESS;
-                    txtBuyerTaxCode.Text = dt.TAX_CODE;
-                    cboBuyerOrganization2.EditValue = cboBuyerOrganization.EditValue;
+                    //
                     cboBuyerOrganization.Properties.Buttons[1].Visible = true;
                     //HIS.Desktop.Library.CacheClient.ControlStateRDO csAddOrUpdateValue = (this.currentBySessionControlStateRDO != null && this.currentBySessionControlStateRDO.Count > 0) ? this.currentBySessionControlStateRDO.Where(o => o.KEY == cboBuyerOrganization.Name && o.MODULE_LINK == moduleLink).FirstOrDefault() : null;
                     //if (csAddOrUpdateValue != null)
@@ -4022,10 +3965,6 @@ namespace HIS.Desktop.Plugins.TransactionBill
                 layoutControlItem35.Visibility = LayoutVisibility.Never;
                 layoutControlItem33.Visibility = LayoutVisibility.Never;
                 layoutControlItem34.Visibility = LayoutVisibility.Never;
-                layoutControlItem58.Visibility = LayoutVisibility.Never;
-                layoutControlItem60.Visibility = LayoutVisibility.Never;
-                layoutControlItem61.Visibility = LayoutVisibility.Never;
-
 
             }
         }
@@ -4039,91 +3978,16 @@ namespace HIS.Desktop.Plugins.TransactionBill
                 // Hiện cho Cơ quan
                 layoutControlItem33.Visibility = LayoutVisibility.Always;
                 layoutControlItem34.Visibility = LayoutVisibility.Never;
-                layoutControlItem58.Visibility = LayoutVisibility.Always;
-                layoutControlItem60.Visibility = LayoutVisibility.Always;
                 // Ẩn các item không dùng
                 layoutControlItem59.Visibility = LayoutVisibility.Always;
                 layoutControlItem56.Visibility = LayoutVisibility.Never;
                 layoutControlItem57.Visibility = LayoutVisibility.Never;
                 layoutControlItem32.Visibility = LayoutVisibility.Never;
-                layoutControlItem44.Visibility = LayoutVisibility.Never;
-                layoutControlItem35.Visibility = LayoutVisibility.Never;
-                layoutControlItem61.Visibility = LayoutVisibility.Never;
+                layoutControlItem44.Visibility = LayoutVisibility.Always;
+                layoutControlItem35.Visibility = LayoutVisibility.Always;
 
             }
         }
 
-        private void cboBuyerOrganization2_EditValueChanged(object sender, EventArgs e)
-        {
-            try
-            {
-
-                if (cboBuyerOrganization2.EditValue != null)
-                {
-                    var dt = dtWorkPlace.Where(o => o.ID == Int64.Parse(cboBuyerOrganization2.EditValue.ToString())).First();
-                    //if (!chkAddressBhyt.Checked)
-                    //{
-                        
-                    //}
-                    txtBuyerAddress.Text = dt.ADDRESS;
-                    txtBuyerTaxCode.Text = dt.TAX_CODE;
-                    cboBuyerOrganization2.Properties.Buttons[1].Visible = true;
-                }
-            }
-            catch (Exception ex)
-            {
-                Inventec.Common.Logging.LogSystem.Warn(ex);
-            }
-        }
-
-        private void cboBuyerOrganization2_ButtonClick(object sender, ButtonPressedEventArgs e)
-        {
-            try
-            {
-                if (e.Button.Kind == ButtonPredefines.Delete)
-                {
-                    cboBuyerOrganization2.EditValue = null;
-                    cboBuyerOrganization2.Properties.Buttons[1].Visible = false;
-                }
-            }
-            catch (Exception ex)
-            {
-                Inventec.Common.Logging.LogSystem.Warn(ex);
-            }
-        }
-
-        private void chkOther1_CheckedChanged(object sender, EventArgs e)
-        {
-            try
-            {
-                if (chkOther1.Checked)
-                {                    
-                    cboBuyerOrganization2.Visible = false;
-                    txtBuyerOrganization2.Visible = true;
-                    layoutControlItem58.Visibility = LayoutVisibility.Never;
-                    layoutControlItem61.Visibility = LayoutVisibility.Always;
-
-
-                    this.dxValidationProvider1.SetValidationRule(txtBuyerOrganization, null);
-                    ValidControlBuyerOrganization();
-                }
-                else
-                {
-                    cboBuyerOrganization2.Visible = true;
-                    txtBuyerOrganization2.Visible = false;
-                    layoutControlItem58.Visibility = LayoutVisibility.Always;
-                    layoutControlItem61.Visibility = LayoutVisibility.Never;
-                }
-            }
-            catch (Exception ex)
-            {
-                Inventec.Common.Logging.LogSystem.Warn(ex);
-            }
-        }
-
-        private void panelControl3_Paint(object sender, PaintEventArgs e)
-        {
-
-        }
     }
 }

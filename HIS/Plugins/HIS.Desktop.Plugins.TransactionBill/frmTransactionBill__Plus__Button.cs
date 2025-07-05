@@ -1023,15 +1023,15 @@ namespace HIS.Desktop.Plugins.TransactionBill
                 {
                     // Đơn vị
                     data.Transaction.BUYER_TYPE = 2;
-                    if (chkOther1.Checked)
+                    if (chkOther.Checked)
                     {
-                        data.Transaction.BUYER_ORGANIZATION = txtBuyerOrganization2.Text.Trim();
+                        data.Transaction.BUYER_ORGANIZATION = txtBuyerOrganization.Text.Trim();
                     }
                     else
                     {
-                        if (cboBuyerOrganization2.EditValue != null)
+                        if (cboBuyerOrganization.EditValue != null)
                         {
-                            data.Transaction.BUYER_WORK_PLACE_ID = Int64.Parse(cboBuyerOrganization2.EditValue.ToString());
+                            data.Transaction.BUYER_WORK_PLACE_ID = Int64.Parse(cboBuyerOrganization.EditValue.ToString());
                             data.Transaction.BUYER_ORGANIZATION = dtWorkPlace.Where(o => o.ID == data.Transaction.BUYER_WORK_PLACE_ID).First().WORK_PLACE_NAME;
                         }
                     }
@@ -1047,18 +1047,7 @@ namespace HIS.Desktop.Plugins.TransactionBill
                 }
                 else
                 {
-                    if (chkOther.Checked)
-                    {
-                        data.Transaction.BUYER_ORGANIZATION = txtBuyerOrganization.Text.Trim();
-                    }
-                    else
-                    {
-                        if (cboBuyerOrganization.EditValue != null)
-                        {
-                            data.Transaction.BUYER_WORK_PLACE_ID = Int64.Parse(cboBuyerOrganization.EditValue.ToString());
-                            data.Transaction.BUYER_ORGANIZATION = dtWorkPlace.Where(o => o.ID == data.Transaction.BUYER_WORK_PLACE_ID).First().WORK_PLACE_NAME;
-                        }
-                    }
+                    
                     data.Transaction.BUYER_TAX_CODE = txtBuyerTaxCode.Text.Trim();
                     data.Transaction.BUYER_ACCOUNT_NUMBER = txtBuyerAccountNumber.Text.Trim();
                     data.Transaction.BUYER_ADDRESS = txtBuyerAddress.Text.Trim();
