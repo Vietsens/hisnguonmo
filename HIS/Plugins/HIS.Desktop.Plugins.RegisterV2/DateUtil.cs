@@ -21,7 +21,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace HIS.Desktop.Plugins.RegisterV2
+namespace HIS.Desktop.Plugins.RegisterV2   
 {
     class DateUtil
     {

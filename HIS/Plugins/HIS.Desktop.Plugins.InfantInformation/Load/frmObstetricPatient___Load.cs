@@ -831,7 +831,7 @@ namespace HIS.Desktop.Plugins.InfantInformation
         }
 
         private void LoadComboHuyen(string searchCode, string provinceCode, bool isExpand)
-        {
+         {
             try
             {
                 List<SDA.EFMODEL.DataModels.V_SDA_DISTRICT> listResult = new List<SDA.EFMODEL.DataModels.V_SDA_DISTRICT>();
