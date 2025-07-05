@@ -648,7 +648,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                 validFolow += "valid.4=" + valid + ";";
                 if (Config.HisConfigCFG.HisIcdServiceHasRequirePatientBhyt == "1" && this.currentTreatment.TDL_PATIENT_TYPE_ID == bhyt.ID)
                 {
-                    valid = valid && this.CheckICDService();//TODO cần check với TH chọn nhiều BN kê
+                    valid = valid && this.CheckICDService();//TODO cần check với TH chọn nhiều BN kê    
                 }
                 else if(Config.HisConfigCFG.HisIcdServiceHasRequirePatientBhyt != "1")
                 {
