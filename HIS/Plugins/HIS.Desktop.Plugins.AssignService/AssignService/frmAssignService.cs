@@ -5529,7 +5529,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                         string MessType = "";
                         #region Valid ICD
                         bool isValidICD = true;
-                        if (HisConfigCFG.IcdServiceHasRequireCheckPatientBHYT && !this.CheckPatientTypeBHYT(lstPatientSelect))
+                        if (HisConfigCFG.IsIcdServiceHasRequireCheckPatientBHYT && !this.CheckPatientTypeBHYT(lstPatientSelect))
                         {
                             isValidICD = false;
                         }

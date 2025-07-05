@@ -47,7 +47,7 @@ namespace HIS.Desktop.Plugins.AssignService.Config
         private const string CONFIG_KEY__AssignServicePrintTEST = "HIS.Desktop.Plugins.AssignServicePrintTEST";
         private const string CONFIG_KEY__Icd_Service_Has_Check = "HIS.HIS_ICD_SERVICE.HAS_CHECK";
         public const string ICD_SERVICE__HAS_REQUIRE_CHECK = "HIS.HIS_ICD_SERVICE.HAS_REQUIRE_CHECK";
-        public const string ICD_SERVICE__HAS_REQUIRE_PATIENT_BHYT = "ICD_SERVICE_HAS_REQUIRE_PATIENT_BHYT";
+        public const string CONFIG_KEY__ICD_SERVICE_HAS_REQUIRE_PATIENT_BHYT = "HIS.HIS_ICD_SERVICE.HAS_REQUIRE.PATIENT.BHYT";
         private const string CONFIG_KEY__Icd_Service_Allow_Update = "HIS.HIS_ICD_SERVICE.ALLOW_UPDATE";
         private const string Key__WarningOverCeiling__Exam__Out__In = "HIS.Desktop.Plugins.WarningOverCeiling.Exam__Out__In";
         private const string CONFIG_KEY__WARNING_OVER_TOTAL_PATIENT_PRICE = "HIS.Desktop.WarningOverTotalPatientPrice";
@@ -140,7 +140,7 @@ namespace HIS.Desktop.Plugins.AssignService.Config
         internal static string AutoCheckIcd;
         internal static string IcdServiceHasCheck;
         internal static bool IcdServiceHasRequireCheck;
-        internal static bool IcdServiceHasRequireCheckPatientBHYT;
+        internal static bool IsIcdServiceHasRequireCheckPatientBHYT;
         internal static bool IsRequiredTracking;
         internal static string IcdServiceAllowUpdate;
         internal static bool IsSearchAll;
@@ -260,7 +260,7 @@ namespace HIS.Desktop.Plugins.AssignService.Config
                 PatientTypeId__VP = GetPatientTypeByCode(PatientTypeCode__VP).ID;
                 IcdServiceHasCheck = GetValue(CONFIG_KEY__Icd_Service_Has_Check);
                 IcdServiceHasRequireCheck = GetValue(ICD_SERVICE__HAS_REQUIRE_CHECK) == GlobalVariables.CommonStringTrue;
-                IcdServiceHasRequireCheckPatientBHYT = GetValue(ICD_SERVICE__HAS_REQUIRE_PATIENT_BHYT) == GlobalVariables.CommonStringTrue;
+                IsIcdServiceHasRequireCheckPatientBHYT = GetValue(CONFIG_KEY__ICD_SERVICE_HAS_REQUIRE_PATIENT_BHYT) == GlobalVariables.CommonStringTrue;
                 IsVisibleExecuteGroup = GetValue(CONFIG_KEY__IS_VISILBE_EXECUTE_GROUP_KEY);
                 AutoCheckIcd = GetValue(CONFIG_KEY__ICD_GENERA_KEY);
                 IcdServiceAllowUpdate = GetValue(CONFIG_KEY__Icd_Service_Allow_Update);
