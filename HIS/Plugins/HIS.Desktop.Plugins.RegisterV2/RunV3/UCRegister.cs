@@ -1061,16 +1061,12 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
         {
             try
             {
-                this.isResetForm = true;    
+                this.isResetForm = true;
                 this.IsReadCardTheViet = false;
                 this.isCheckSS = false;
                 this.RefreshUserControl();
                 this.ucPatientRaw1.LoadDataCboDoiTuong(roomId);
-                if (this.ucPatientRaw1.cboPatientType == null)
-                {
-                    this.ucPatientRaw1.LoadDataComboPrimaryPatientType(roomId);
-                }
-
+                this.ucPatientRaw1.LoadDataComboPrimaryPatientType(roomId);
                 var patientTypeDefault = HIS.Desktop.Plugins.Library.RegisterConfig.AppConfigs.PatientTypeDefault;
                 if (!(patientTypeDefault != null && patientTypeDefault.ID > 0) && !HIS.Desktop.Plugins.Library.RegisterConfig.HisConfigCFG.UsingPatientTypeOfPreviousPatient)
                 {
