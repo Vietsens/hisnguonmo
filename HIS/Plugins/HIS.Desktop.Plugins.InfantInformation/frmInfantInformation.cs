@@ -3397,16 +3397,20 @@ namespace HIS.Desktop.Plugins.InfantInformation
                     {
                         txtProvinceCodeHospital.Enabled = false;
                         cboProvinceNameHospital.Enabled = false;
+                        txtDistrictCodeHospital.Enabled = false;
+                        cboDistrictNameHospital.Enabled = false;
+                        txtCommuneCodeHospital.Enabled = false;
+                        cboCommuneNameHospital.Enabled = false;
                         cboProvinceNameHospital.EditValue = this.hisBranch.PROVINCE_CODE;
                         txtProvinceCodeHospital.Text = listProvince.FirstOrDefault(o => o.PROVINCE_CODE == this.hisBranch.PROVINCE_CODE).SEARCH_CODE;
 
-                        txtDistrictCodeHospital.Enabled = false;
-                        cboDistrictNameHospital.Enabled = false;
-                        cboDistrictNameHospital.EditValue = this.hisBranch.DISTRICT_CODE;
-                        txtDistrictCodeHospital.Text = lstDistrictADO.FirstOrDefault(o => o.DISTRICT_CODE == this.hisBranch.DISTRICT_CODE).SEARCH_CODE;
+                        
+                        if (this.hisBranch.DISTRICT_CODE != null)
+                        {
+                            cboDistrictNameHospital.EditValue = this.hisBranch.DISTRICT_CODE;
+                            txtDistrictCodeHospital.Text = lstDistrictADO.FirstOrDefault(o => o.DISTRICT_CODE == this.hisBranch.DISTRICT_CODE).SEARCH_CODE;
+                        }
 
-                        txtCommuneCodeHospital.Enabled = false;
-                        cboCommuneNameHospital.Enabled = false;
                         cboCommuneNameHospital.EditValue = this.hisBranch.COMMUNE_CODE;
                         txtCommuneCodeHospital.Text = lstCommuneADO.FirstOrDefault(o => o.COMMUNE_CODE == this.hisBranch.COMMUNE_CODE).SEARCH_CODE;
                     }
