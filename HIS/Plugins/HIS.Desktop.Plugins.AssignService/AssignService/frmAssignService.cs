@@ -5634,27 +5634,8 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                             }
                             else if (HisConfigCFG.IsSereServMinDurationAlert == 2)
                             {
-                                if (MessageBox.Show(string.Format(ResourceMessage.DichVuCoThoiGianChiDinhNamTrongKhoangThoiGianKhongChoPhep, sereServMinDurationStr), MessageUtil.GetMessage(LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaThongBao), MessageBoxButtons.YesNo) == DialogResult.Yes)
-                                {
-                                    if (assignMulti)
-                                    {
-                                        switch (type)
-                                        {
-                                            case TypeButton.SAVE:
-                                                LogTheadInSessionInfo(() => ProcessSaveData(chkPrint.Checked, false, false, chkSign.Checked, chkPrintDocumentSigned.Checked), "SaveAssignServiceDefault");
-                                                break;
-                                            case TypeButton.SAVE_AND_PRINT:
-                                                LogTheadInSessionInfo(() => ProcessSaveData(true, false, false), "SaveAndPrintAssignServiceDefault");
-                                                break;
-                                            case TypeButton.EDIT:
-                                                LogTheadInSessionInfo(() => ProcessSaveData(chkPrint.Checked, false, false, chkSign.Checked, chkPrintDocumentSigned.Checked), "EditAssignServiceDefault");
-                                                break;
-                                            default:
-                                                break;
-                                        }
-                                    }
-                                }
-                                else
+                                DialogResult result = MessageBox.Show(string.Format(ResourceMessage.DichVuCoThoiGianChiDinhNamTrongKhoangThoiGianKhongChoPhep, sereServMinDurationStr), MessageUtil.GetMessage(LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaThongBao), MessageBoxButtons.YesNo);
+                                if (result != DialogResult.Yes)
                                 {
                                     return;
                                 }
@@ -5663,27 +5644,8 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                             {
                                 if (HisConfigCFG.IsSereServMinDurationAlert == 0 || (HisConfigCFG.IsSereServMinDurationAlert != 1 && HisConfigCFG.IsSereServMinDurationAlert != 2))
                                 {
-                                    if (MessageBox.Show(string.Format(ResourceMessage.DichVuCoThoiGianChiDinhNamTrongKhoangThoiGianKhongChoPhep, sereServMinDurationStr), MessageUtil.GetMessage(LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaThongBao), MessageBoxButtons.YesNo) == DialogResult.Yes)
-                                    {
-                                        if (assignMulti)
-                                        {
-                                            switch (type)
-                                            {
-                                                case TypeButton.SAVE:
-                                                    LogTheadInSessionInfo(() => ProcessSaveData(chkPrint.Checked, false, false, chkSign.Checked, chkPrintDocumentSigned.Checked), "SaveAssignServiceDefault");
-                                                    break;
-                                                case TypeButton.SAVE_AND_PRINT:
-                                                    LogTheadInSessionInfo(() => ProcessSaveData(true, false, false), "SaveAndPrintAssignServiceDefault");
-                                                    break;
-                                                case TypeButton.EDIT:
-                                                    LogTheadInSessionInfo(() => ProcessSaveData(chkPrint.Checked, false, false, chkSign.Checked, chkPrintDocumentSigned.Checked), "EditAssignServiceDefault");
-                                                    break;
-                                                default:
-                                                    break;
-                                            }
-                                        }
-                                    }
-                                    else
+                                    DialogResult result = MessageBox.Show(string.Format(ResourceMessage.DichVuCoThoiGianChiDinhNamTrongKhoangThoiGianKhongChoPhep, sereServMinDurationStr), MessageUtil.GetMessage(LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaThongBao), MessageBoxButtons.YesNo);
+                                    if (result != DialogResult.Yes)
                                     {
                                         return;
                                     }
