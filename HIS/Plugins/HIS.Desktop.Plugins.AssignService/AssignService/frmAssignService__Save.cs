@@ -83,7 +83,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                 isValid = isValid && this.Valid(serviceCheckeds__Send);
                 isValid = isValid && this.CheckIcd(new List<V_HIS_TREATMENT_BED_ROOM> { new V_HIS_TREATMENT_BED_ROOM() { TREATMENT_ID = currentTreatment.ID, ICD_CODE = txtIcdCode.Text.Trim(), ICD_SUB_CODE = txtIcdSubCode.Text.Trim() } });
                 bool isValidICD = true;
-                if (HisConfigCFG.IcdServiceHasRequireCheckPatientBHYT && !this.CheckPatientTypeBHYT(new List<V_HIS_TREATMENT_BED_ROOM> { new V_HIS_TREATMENT_BED_ROOM() { TDL_PATIENT_TYPE_ID  = currentTreatment.TDL_PATIENT_TYPE_ID } }))
+                if (HisConfigCFG.IsIcdServiceHasRequireCheckPatientBHYT && !this.CheckPatientTypeBHYT(new List<V_HIS_TREATMENT_BED_ROOM> { new V_HIS_TREATMENT_BED_ROOM() { TDL_PATIENT_TYPE_ID  = currentTreatment.TDL_PATIENT_TYPE_ID } }))
                 {
                     isValidICD = false;
                 }
