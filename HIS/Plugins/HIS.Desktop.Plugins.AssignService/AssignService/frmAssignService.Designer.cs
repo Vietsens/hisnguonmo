@@ -4109,7 +4109,6 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
             this.pnlPrintAssignService.Name = "pnlPrintAssignService";
             this.pnlPrintAssignService.Size = new System.Drawing.Size(50, 36);
             this.pnlPrintAssignService.TabIndex = 76;
-            this.pnlPrintAssignService.Paint += new System.Windows.Forms.PaintEventHandler(this.pnlPrintAssignService_Paint);
             // 
             // btnNew
             // 
