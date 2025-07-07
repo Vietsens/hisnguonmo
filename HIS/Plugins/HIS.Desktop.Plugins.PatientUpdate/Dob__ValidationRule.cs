@@ -1,4 +1,4 @@
-/* IVT
+﻿/* IVT
  * @Project : hisnguonmo
  * Copyright (C) 2017 INVENTEC
  *  
@@ -36,7 +36,7 @@ namespace HIS.Desktop.Plugins.PatientUpdate
                 DateTime? dt = (DateTime)txtPeopleDob.DateTime;
                 if (dt.Value > DateTime.Now)
                 {
-                    ErrorText = Inventec.Desktop.Common.LibraryMessage.MessageUtil.GetMessage(Inventec.Desktop.Common.LibraryMessage.Message.Enum.NguoiDungNhapNgayPhaiNhoHonNgayHienTai);
+                    ErrorText = "Thời gian phải nhỏ hơn ngày hiện tại";
                     ErrorType = DevExpress.XtraEditors.DXErrorProvider.ErrorType.Warning;
                     return valid;
                 }
