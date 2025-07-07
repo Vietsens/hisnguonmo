@@ -220,7 +220,7 @@ namespace HIS.Desktop.Plugins.ContentSubclinical
                                 ssServiceType.NUM_ORDER = 2;
                             }
                             ssServiceType.TDL_SERVICE_TYPE_ID = itemSS.First().TDL_SERVICE_TYPE_ID;
-                            SereServADOs.Add(ssServiceType);
+                            SereServADOs.Add(ssServiceType);   
                             if (chkShowParentServiceGroup.Checked && listBySetyParent != null && listBySetyParent.Count > 0)
                             {
                                 foreach (var itemParent in listBySetyParent)
