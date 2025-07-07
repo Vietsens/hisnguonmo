@@ -1089,6 +1089,7 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
                 txtPresUser.Text = "";
                 txtLoginName.Text = "";
                 txtEmail.Text = "";
+                txtIdentification.Text = "";
                 treeListMediMate.DataSource = null;
                 treeListResult.DataSource = null;
                 checkIsVisitor.Enabled = true;
@@ -1109,6 +1110,7 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
                 this.discountDetailRatioFocus = false;
 
                 cboGender.EditValue = null;
+                cboIdentification.EditValue = null;
                 txtPatientDob.EditValue = null;
                 dtPatientDob.EditValue = null;
                 cboAge.EditValue = null;
@@ -1284,6 +1286,16 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
                     {
                         cboGender.Focus();
                         cboGender.ShowPopup();
+                    }
+                    else if (cboIdentification.Visible && cboIdentification.Enabled)
+                    {
+                        cboIdentification.Focus();
+                        cboIdentification.ShowPopup();
+                    }
+                    else if (txtIdentification.Visible && txtIdentification.Enabled)
+                    {
+                        txtIdentification.Focus();
+                        txtIdentification.SelectAll();
                     }
                     else if (txtPatientDob.Visible && txtPatientDob.Enabled)
                     {
@@ -2154,6 +2166,16 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
                         {
                             txtPatientPhone.Focus();
                             txtPatientPhone.SelectAll();
+                        }
+                        else if (cboIdentification.Visible && cboIdentification.Enabled)
+                        {
+                            cboIdentification.Focus();
+                            cboIdentification.ShowPopup();
+                        }
+                        else if (txtIdentification.Visible && txtIdentification.Enabled)
+                        {
+                            txtIdentification.Focus();
+                            txtIdentification.SelectAll();
                         }
                         else if (txtEmail.Visible && txtEmail.Enabled)
                         {
@@ -4023,6 +4045,16 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
                         txtPatientPhone.Focus();
                         txtPatientPhone.SelectAll();
                     }
+                    else if (cboIdentification.Visible && cboIdentification.Enabled)
+                    {
+                        cboIdentification.Focus();
+                        cboIdentification.ShowPopup();
+                    }
+                    else if (txtIdentification.Visible && txtIdentification.Enabled)
+                    {
+                        txtIdentification.Focus();
+                        txtIdentification.SelectAll();
+                    }
                     else if (txtEmail.Visible && txtEmail.Enabled)
                     {
                         txtEmail.Focus();
@@ -4641,6 +4673,16 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
                         txtPatientPhone.Focus();
                         txtPatientPhone.SelectAll();
                     }
+                    else if (cboIdentification.Visible && cboIdentification.Enabled)
+                    {
+                        cboIdentification.Focus();
+                        cboIdentification.ShowPopup();
+                    }
+                    else if (txtIdentification.Visible && txtIdentification.Enabled)
+                    {
+                        txtIdentification.Focus();
+                        txtIdentification.SelectAll();
+                    }
                     if (txtEmail.Visible && txtEmail.Enabled)
                     {
                         txtEmail.Focus();
@@ -5093,6 +5135,16 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
                         cboGender.Focus();
                         cboGender.ShowPopup();
                     }
+                    else if (cboIdentification.Visible && cboIdentification.Enabled)
+                    {
+                        cboIdentification.Focus();
+                        cboIdentification.ShowPopup();
+                    }
+                    else if (txtIdentification.Visible && txtIdentification.Enabled)
+                    {
+                        txtIdentification.Focus();
+                        txtIdentification.SelectAll();
+                    }
                     else if (txtPatientDob.Visible && txtPatientDob.Enabled)
                     {
                         txtPatientDob.Focus();
@@ -5241,6 +5293,16 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
                     {
                         cboGender.Focus();
                         cboGender.ShowPopup();
+                    }
+                    else if (cboIdentification.Visible && cboIdentification.Enabled)
+                    {
+                        cboIdentification.Focus();
+                        cboIdentification.ShowPopup();
+                    }
+                    else if (txtIdentification.Visible && txtIdentification.Enabled)
+                    {
+                        txtIdentification.Focus();
+                        txtIdentification.SelectAll();
                     }
                     else if (txtPatientDob.Visible && txtPatientDob.Enabled)
                     {
@@ -5494,6 +5556,16 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
                         cboGender.Focus();
                         cboGender.ShowPopup();
                     }
+                    else if (cboIdentification.Visible && cboIdentification.Enabled)
+                    {
+                        cboIdentification.Focus();
+                        cboIdentification.ShowPopup();
+                    }
+                    else if (txtIdentification.Visible && txtIdentification.Enabled)
+                    {
+                        txtIdentification.Focus();
+                        txtIdentification.SelectAll();
+                    }
                     else if (txtPatientDob.Visible && txtPatientDob.Enabled)
                     {
                         txtPatientDob.Focus();
@@ -5649,6 +5721,16 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
                         cboGender.Focus();
                         cboGender.ShowPopup();
                     }
+                    else if (cboIdentification.Visible && cboIdentification.Enabled)
+                    {
+                        cboIdentification.Focus();
+                        cboIdentification.ShowPopup();
+                    }
+                    else if (txtIdentification.Visible && txtIdentification.Enabled)
+                    {
+                        txtIdentification.Focus();
+                        txtIdentification.SelectAll();
+                    }
                     else if (txtPatientDob.Visible && txtPatientDob.Enabled)
                     {
                         txtPatientDob.Focus();
@@ -5794,6 +5876,16 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
                         cboGender.Focus();
                         cboGender.ShowPopup();
                     }
+                    else if (cboIdentification.Visible && cboIdentification.Enabled)
+                    {
+                        cboIdentification.Focus();
+                        cboIdentification.ShowPopup();
+                    }
+                    else if (txtIdentification.Visible && txtIdentification.Enabled)
+                    {
+                        txtIdentification.Focus();
+                        txtIdentification.SelectAll();
+                    }
                     else if (txtPatientDob.Visible && txtPatientDob.Enabled)
                     {
                         txtPatientDob.Focus();
@@ -5937,6 +6029,16 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
                     {
                         cboGender.Focus();
                         cboGender.ShowPopup();
+                    }
+                    else if (cboIdentification.Visible && cboIdentification.Enabled)
+                    {
+                        cboIdentification.Focus();
+                        cboIdentification.ShowPopup();
+                    }
+                    else if (txtIdentification.Visible && txtIdentification.Enabled)
+                    {
+                        txtIdentification.Focus();
+                        txtIdentification.SelectAll();
                     }
                     else if (txtPatientDob.Visible && txtPatientDob.Enabled)
                     {

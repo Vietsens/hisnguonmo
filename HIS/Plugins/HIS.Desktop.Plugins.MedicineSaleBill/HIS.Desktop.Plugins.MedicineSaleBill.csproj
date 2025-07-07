@@ -33,15 +33,22 @@
     <Reference Include="AutoMapper">
       <HintPath>..\..\..\..\lib\MOS\AutoMapper.dll</HintPath>
     </Reference>
+    <Reference Include="DevExpress.CodeParser.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
     <Reference Include="DevExpress.Data.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
+    <Reference Include="DevExpress.DataAccess.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
+    <Reference Include="DevExpress.DataAccess.v15.2.UI, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
     <Reference Include="DevExpress.Printing.v15.2.Core, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
+    <Reference Include="DevExpress.RichEdit.v15.2.Core, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
     <Reference Include="DevExpress.Sparkline.v15.2.Core, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
     <Reference Include="DevExpress.Utils.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
+    <Reference Include="DevExpress.Utils.v15.2.UI, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
     <Reference Include="DevExpress.XtraBars.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
     <Reference Include="DevExpress.XtraEditors.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
     <Reference Include="DevExpress.XtraGrid.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
     <Reference Include="DevExpress.XtraLayout.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
     <Reference Include="DevExpress.XtraPrinting.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
+    <Reference Include="DevExpress.XtraRichEdit.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
+    <Reference Include="DevExpress.XtraTreeList.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
     <Reference Include="HIS.Desktop.ModuleExt">
       <HintPath>..\..\..\..\lib\HIS\HIS.Desktop.ModuleExt\HIS.Desktop.ModuleExt.dll</HintPath>
     </Reference>
@@ -146,11 +153,16 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\lib\MOS\MOS.EFMODEL.dll</HintPath>
     </Reference>
-    <Reference Include="MOS.Filter">
-      <HintPath>..\..\..\..\LIB\MOS\MOS.Filter.dll</HintPath>
+    <Reference Include="MOS.Filter, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\lib\MOS\MOS.Filter.dll</HintPath>
     </Reference>
-    <Reference Include="MOS.SDO">
-      <HintPath>..\..\..\..\LIB\MOS\MOS.SDO.dll</HintPath>
+    <Reference Include="MOS.LibraryHein.Config">
+      <HintPath>..\..\..\..\..\histest\x64\ReferencedAssemblies\MOS.LibraryHein.Config.dll</HintPath>
+    </Reference>
+    <Reference Include="MOS.SDO, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\lib\MOS\MOS.SDO.dll</HintPath>
     </Reference>
     <Reference Include="MPS">
       <HintPath>..\..\..\..\lib\MPSv2\MPS\MPS.dll</HintPath>
@@ -171,6 +183,7 @@
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Design" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
@@ -200,11 +213,13 @@
     <Compile Include="Validation\BuyerOrganizationValidationRule.cs" />
     <Compile Include="Validation\BuyerTaxCodeValidationRule.cs" />
     <Compile Include="Validation\GridLookupEditValidationRule.cs" />
+    <Compile Include="Validation\IdentityTypeValidationRule.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="frmMedicineSaleBill.resx">
       <DependentUpon>frmMedicineSaleBill.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Properties\licenses.licx" />
     <EmbeddedResource Include="Resources\Lang.en.resx" />
     <EmbeddedResource Include="Resources\Lang.vi.resx" />
   </ItemGroup>
@@ -257,6 +272,10 @@
     <ProjectReference Include="..\HIS.Desktop.Library.CacheClient\HIS.Desktop.Library.CacheClient.csproj">
       <Project>{64837e01-803d-4f1e-9dfc-d34b38ea78f9}</Project>
       <Name>HIS.Desktop.Library.CacheClient</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\HIS.Desktop.Plugins.Library.RegisterConfig\HIS.Desktop.Plugins.Library.RegisterConfig.csproj">
+      <Project>{9247DD49-482C-4227-88DF-616A8AAF3F38}</Project>
+      <Name>HIS.Desktop.Plugins.Library.RegisterConfig</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

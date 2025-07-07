@@ -107,7 +107,7 @@
     </Reference>
     <Reference Include="HIS.Desktop.Plugins.Library.PrintServiceReq, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\HIS.Desktop.Plugins.Library.PrintServiceReq\bin\Debug\HIS.Desktop.Plugins.Library.PrintServiceReq.dll</HintPath>
+      <HintPath>..\..\..\..\lib\HIS\HIS.Desktop.Plugins.Library.PrintServiceReq\HIS.Desktop.Plugins.Library.PrintServiceReq.dll</HintPath>
     </Reference>
     <Reference Include="HIS.Desktop.Plugins.Library.PrintServiceReqTreatment">
       <HintPath>..\..\..\..\lib\HIS\HIS.Desktop.Plugins.Library.PrintServiceReqTreatment\HIS.Desktop.Plugins.Library.PrintServiceReqTreatment.dll</HintPath>
@@ -582,7 +582,6 @@
     <EmbeddedResource Include="frmSettingAssignOld.resx">
       <DependentUpon>frmSettingAssignOld.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Properties\licenses.licx" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>

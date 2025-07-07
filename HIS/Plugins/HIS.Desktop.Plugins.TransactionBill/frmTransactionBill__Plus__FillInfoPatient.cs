@@ -60,14 +60,7 @@ namespace HIS.Desktop.Plugins.TransactionBill
                     txtPatientName.Text = data.TDL_PATIENT_NAME;
                     txtDOB.Text = Inventec.Common.DateTime.Convert.TimeNumberToDateString(data.TDL_PATIENT_DOB);
                     txtGender.Text = data.TDL_PATIENT_GENDER_NAME;
-                    txtAddress.Text = data.TDL_PATIENT_ADDRESS;
-                    HisPatientFilter filter = new HisPatientFilter();
-                    filter.ID = data.PATIENT_ID;
-                    var patient = new BackendAdapter(new CommonParam()).Get<List<MOS.EFMODEL.DataModels.HIS_PATIENT>>("api/HisPatient/Get", ApiConsumers.MosConsumer, filter, null);
-                    if(patient != null && patient.Count > 0)
-                    {
-                        txtBuyerEmail.Text = patient.FirstOrDefault().EMAIL;
-                    }
+                    txtAddress.Text = data.TDL_PATIENT_ADDRESS;                    
                     //
                     //                    Nếu TDL_PATIENT_WORK_PLACE_ID trong V_HIS_TREATMENT_FEE có giá trị thì hiển thị bản ghi HIS_WORK_PLACE có ID tương ứng, và bỏ check checkbox “Khác”
                     //Nếu TDL_PATIENT_WORK_PLACE_ID không có thông tin và TDL_PATIENT_WORK_PLACE_NAME có thông tin thì hiển thị dữ liệu tại TDL_PATIENT_WORK_PLACE_NAME và tự động check vào checkbox “Khác”
@@ -75,8 +68,17 @@ namespace HIS.Desktop.Plugins.TransactionBill
 
                     if (!IsPin)
                     {
+                        radioBuyerUser.Checked = true;
+                        HisPatientFilter filter = new HisPatientFilter();
+                        filter.ID = data.PATIENT_ID;
+                        var patient = new BackendAdapter(new CommonParam()).Get<List<MOS.EFMODEL.DataModels.HIS_PATIENT>>("api/HisPatient/Get", ApiConsumers.MosConsumer, filter, null);
+                        if (patient != null && patient.Count > 0)
+                        {
+                            txtBuyerEmail.Text = patient.FirstOrDefault().EMAIL;
+                        }
                         txtBuyerAccountNumber.Text = data.TDL_PATIENT_ACCOUNT_NUMBER ?? "";
                         txtBuyerAddress.Text = data.TDL_PATIENT_ADDRESS ?? "";
+                        txtSDT.Text = data.TDL_PATIENT_PHONE ?? "";
                         if (chkAddressBhyt.Checked && resultPatientType != null && !string.IsNullOrEmpty(resultPatientType.ADDRESS))
                         {
                             txtBuyerAddress.Text = resultPatientType.ADDRESS;
@@ -101,7 +103,29 @@ namespace HIS.Desktop.Plugins.TransactionBill
                             txtBuyerOrganization.Text = "";
                             chkOther.Checked = false;
                         }
-                      
+                        if (!string.IsNullOrEmpty(data.TDL_PATIENT_CCCD_NUMBER))
+                        {
+                            txtBuyerIdentityNumber.Text = data.TDL_PATIENT_CCCD_NUMBER;
+                            // Giá trị ValueMember của CCCD là 2
+                            cboBuyerIdentity.EditValue = "CCCD";
+                        }
+                        else if (!string.IsNullOrEmpty(data.TDL_PATIENT_CMND_NUMBER))
+                        {
+                            txtBuyerIdentityNumber.Text = data.TDL_PATIENT_CMND_NUMBER;
+                            // Giá trị ValueMember của CMND là 1
+                            cboBuyerIdentity.EditValue = "CMND";
+                        }
+                        else if (!string.IsNullOrEmpty(data.TDL_PATIENT_PASSPORT_NUMBER))
+                        {
+                            txtBuyerIdentityNumber.Text = data.TDL_PATIENT_PASSPORT_NUMBER;
+                            // Giá trị ValueMember của PASSPORT là 3
+                            cboBuyerIdentity.EditValue = "PASSPORT";
+                        }
+                        else
+                        {
+                            txtBuyerIdentityNumber.Text = "";
+                            cboBuyerIdentity.EditValue = null;
+                        }
                     }
                     //
                     if (this.resultPatientType == null || this.resultPatientType.ID == 0)

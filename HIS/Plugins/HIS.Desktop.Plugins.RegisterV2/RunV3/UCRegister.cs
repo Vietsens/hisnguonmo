@@ -1066,7 +1066,11 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
                 this.isCheckSS = false;
                 this.RefreshUserControl();
                 this.ucPatientRaw1.LoadDataCboDoiTuong(roomId);
-                this.ucPatientRaw1.LoadDataComboPrimaryPatientType(roomId);
+                if (this.ucPatientRaw1.cboPatientType == null)
+                {
+                    this.ucPatientRaw1.LoadDataComboPrimaryPatientType(roomId);
+                }
+                
                 var patientTypeDefault = HIS.Desktop.Plugins.Library.RegisterConfig.AppConfigs.PatientTypeDefault;
                 if (!(patientTypeDefault != null && patientTypeDefault.ID > 0) && !HIS.Desktop.Plugins.Library.RegisterConfig.HisConfigCFG.UsingPatientTypeOfPreviousPatient)
                 {

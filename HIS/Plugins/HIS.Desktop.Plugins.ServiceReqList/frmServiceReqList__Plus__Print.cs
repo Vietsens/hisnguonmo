@@ -1119,8 +1119,28 @@ namespace HIS.Desktop.Plugins.ServiceReqList
                         serviceReqFilter.IDs = listServiceReq.Select(o => o.ID).ToList();
                         serviceReqFilter.IS_ACTIVE = IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE;
                         List<V_HIS_SERVICE_REQ> lstSR = new Inventec.Common.Adapter.BackendAdapter(new CommonParam()).Get<List<MOS.EFMODEL.DataModels.V_HIS_SERVICE_REQ>>(HisRequestUriStore.HIS_SERVICE_REQ_GETVIEW, ApiConsumers.MosConsumer, serviceReqFilter, HIS.Desktop.Controls.Session.SessionManager.ActionLostToken, null);
-
-                        List<HIS_SERE_NMSE> allSereNmse = new List<HIS_SERE_NMSE>();
+                    //
+                    //
+                    string autoCreateOption = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>("MOS.HIS_TRAN_REQ.AUTO_CREATE.OPTION");
+                    if (autoCreateOption == "1")
+                    {
+                        CommonParam param = new CommonParam();
+                        // Tạo yêu cầu thanh toán
+                        TransReqCreateSDO transReqSDO = new TransReqCreateSDO();
+                        transReqSDO.TreatmentId = listServiceReq.First().TREATMENT_ID;
+                        transReqSDO.TransReqType = IMSys.DbConfig.HIS_RS.HIS_TRANS_REQ_TYPE.ID__BY_SERVICE;
+                        transReqSDO.RequestRoomId = currentModule != null ? currentModule.RoomId : 0;
+                        transReqSDO.SereServIds = data.listVHisSereServ.Select(o => o.ID).ToList();
+                        var transReqResult = new Inventec.Common.Adapter.BackendAdapter(param).Post<MOS.EFMODEL.DataModels.HIS_TRANS_REQ>("api/HisTransReq/CreateSDO", ApiConsumers.MosConsumer, transReqSDO, param);
+                        if (transReqResult == null)
+                        {
+                            MessageManager.Show(this, param, false);
+                            Inventec.Common.Logging.LogSystem.Warn("Goi API tao yeu cau thanh toan that bai: " + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => transReqSDO), transReqSDO));
+                            return;
+                        }
+                    }
+                    //qtcode
+                    List<HIS_SERE_NMSE> allSereNmse = new List<HIS_SERE_NMSE>();
                         var type18Request = lstSR.Where(o => o.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__OT).ToList();
                         if (type18Request.Any())
                         {

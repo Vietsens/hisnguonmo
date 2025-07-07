@@ -39,6 +39,7 @@ using DevExpress.XtraTreeList.Columns;
 using System.ComponentModel;
 using System.Threading.Tasks;
 using HIS.Desktop.LocalStorage.BackendData;
+using Inventec.Common.Logging;
 
 namespace HIS.UC.PeriousExpMestList.Run
 {
@@ -152,7 +153,6 @@ namespace HIS.UC.PeriousExpMestList.Run
                 this.treeListServiceReq.ToolTipController = this.toolTipController1;
                 this.treeListServiceReq.KeyFieldName = "ID_NODE";
                 this.treeListServiceReq.ParentFieldName = "PARENT_ID_NODE";
-
                 this.InitComboFilter();
             }
             catch (Exception ex)
@@ -682,34 +682,48 @@ namespace HIS.UC.PeriousExpMestList.Run
             }
         }
 
-        private async Task ProcessGetDataMetyMaty()
+        private async Task ProcessGetDataMetyMaty()                      
         {
-            BindingList<PreServiceReqADO> listResult = null;
-
-            if (this.PreServiceReqADOs != null && this.PreServiceReqADOs.Count > 0)
+            try
             {
-                //this.PreServiceReqADOs.ForEach(o => o.ID_NODE = o.ID + ".");
+                BindingList<PreServiceReqADO> listResult = null;
 
-                List<long> expMestIds = this.ListServiceReqs.Where(o => o.EXP_MEST_ID.HasValue && o.EXP_MEST_TYPE_ID.HasValue).Select(o => (o.EXP_MEST_ID ?? 0)).Distinct().ToList();
-                if (expMestIds != null && expMestIds.Count > 0)
+                if (this.PreServiceReqADOs != null && this.PreServiceReqADOs.Count > 0)
                 {
-                    await GetDataMedicineAll(expMestIds, PreServiceReqADOs);
-                    await GetDataMaterialAll(expMestIds, PreServiceReqADOs);
+                    //this.PreServiceReqADOs.ForEach(o => o.ID_NODE = o.ID + ".");
+
+                    List<long> expMestIds = this.ListServiceReqs.Where(o => o.EXP_MEST_ID.HasValue && o.EXP_MEST_TYPE_ID.HasValue).Select(o => (o.EXP_MEST_ID ?? 0)).Distinct().ToList();
+                    if (expMestIds != null && expMestIds.Count > 0)
+                    {
+                        await GetDataMedicineAll(expMestIds, PreServiceReqADOs);
+                        await GetDataMaterialAll(expMestIds, PreServiceReqADOs);
+                    }
+
+                    var rooms = BackendDataWorker.Get<V_HIS_ROOM>();
+
+                    await ProcessGetServiceReqMety(PreServiceReqADOs);
+                    await ProcessGetServiceReqMaty(PreServiceReqADOs);
+
+                    this.PreServiceReqADOs.ForEach(o => SetRoomName(o, rooms));
                 }
 
-                var rooms = BackendDataWorker.Get<V_HIS_ROOM>();
 
-                await ProcessGetServiceReqMety(PreServiceReqADOs);
-                await ProcessGetServiceReqMaty(PreServiceReqADOs);
-
-                this.PreServiceReqADOs.ForEach(o => SetRoomName(o, rooms));
+                this.BeginInvoke(new MethodInvoker(() =>
+                {
+                    listResult = new BindingList<PreServiceReqADO>(this.PreServiceReqADOs.GroupBy(x => x.ID_NODE).Select(g => g.First()).ToList());
+                    treeListServiceReq.DataSource = null;
+                    //treeListServiceReq.ClearNodes();
+                    treeListServiceReq.DataSource = listResult;
+                    treeListServiceReq.RefreshDataSource();
+                    treeListServiceReq.ExpandAll();
+                }));
             }
-
-            listResult = new BindingList<PreServiceReqADO>(this.PreServiceReqADOs);
-            treeListServiceReq.DataSource = listResult;
-            treeListServiceReq.ExpandAll();
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
         }
-
+              
         private void SetRoomName(PreServiceReqADO data, List<V_HIS_ROOM> rooms)
         {
             try

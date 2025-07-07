@@ -41,11 +41,11 @@ namespace HIS.UC.PeriousExpMestList.FLoad
             this.control = data;
         }
 
-        void IFLoad.Run()
+        void IFLoad.Run()     
         {
             try
             {
-                ((HIS.UC.PeriousExpMestList.Run.UC_PeriousExpMestList)this.control).FLoad();
+                ((HIS.UC.PeriousExpMestList.Run.UC_PeriousExpMestList)this.control).FLoad();     
             }
             catch (Exception ex)
             {

@@ -37,6 +37,11 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.InvoiceInfo
 
                 if (dataInput.Transaction != null)
                 {
+                    if (dataInput.Transaction.BUYER_TYPE.HasValue)
+                    {
+                        isFillByTreatment = false;
+                    }
+
                     result.BuyerOrganization = dataInput.Transaction.BUYER_ORGANIZATION;
                     result.BuyerTaxCode = dataInput.Transaction.BUYER_TAX_CODE;
                     result.BuyerAccountNumber = dataInput.Transaction.BUYER_ACCOUNT_NUMBER;
@@ -48,12 +53,12 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.InvoiceInfo
                     result.BuyerGender = dataInput.Transaction.TDL_PATIENT_GENDER_NAME;
                     result.Note = dataInput.Transaction.DESCRIPTION;
                     result.TransactionTime = dataInput.Transaction.TRANSACTION_TIME;
-
-                    //result.BuyerEmail = dataInput.Transaction.BUYER_EMAIL;
+                    result.BuyerEmail = dataInput.Transaction.BUYER_EMAIL;
+                    result.BuyerIdentityNumber = dataInput.Transaction.BUYER_IDENTITY_NUMBER;
+                    result.BuyerIdentityType = dataInput.Transaction.BUYER_IDENTITY_TYPE + "";
 
                     patientCode = dataInput.Transaction.TDL_PATIENT_CODE;
                     treatmentCode = dataInput.Transaction.TDL_TREATMENT_CODE;
-
 
                     if (dataInput.Transaction.PAY_FORM_ID == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__CK)
                     {
@@ -184,40 +189,51 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.InvoiceInfo
                         result.BuyerCCCD = dataInput.Treatment.TDL_PATIENT_CCCD_NUMBER;
                     if (String.IsNullOrWhiteSpace(result.BuyerCCCD))
                         result.BuyerCCCD = dataInput.Treatment.TDL_PATIENT_CMND_NUMBER;
+
+                    if (String.IsNullOrWhiteSpace(result.BuyerIdentityNumber))
+                    {
+                        if (!String.IsNullOrWhiteSpace(dataInput.Treatment.TDL_PATIENT_CCCD_NUMBER))
+                        {
+                            result.BuyerIdentityNumber = dataInput.Treatment.TDL_PATIENT_CCCD_NUMBER;
+                            result.BuyerIdentityType = "1"; // 1 for CCCD
+                        }
+                        else if (!String.IsNullOrWhiteSpace(dataInput.Treatment.TDL_PATIENT_CMND_NUMBER))
+                        {
+                            result.BuyerIdentityNumber = dataInput.Treatment.TDL_PATIENT_CCCD_NUMBER;
+                            result.BuyerIdentityType = "2"; // 2 for CMND
+                        }
+                        else if (!String.IsNullOrWhiteSpace(dataInput.Treatment.TDL_PATIENT_PASSPORT_NUMBER))
+                        {
+                            result.BuyerIdentityNumber = dataInput.Treatment.TDL_PATIENT_PASSPORT_NUMBER;
+                            result.BuyerIdentityType = "3"; // 3 for Passport
+                        }
+                    }
                 }
 
                 if (!String.IsNullOrWhiteSpace(result.BuyerTaxCode))
                     result.BuyerTaxCode = result.BuyerTaxCode.Trim();
-
                 if (!String.IsNullOrWhiteSpace(result.BuyerAccountNumber))
                     result.BuyerAccountNumber = result.BuyerAccountNumber.Trim();
-
                 if (!String.IsNullOrWhiteSpace(result.BuyerAddress))
                     result.BuyerAddress = result.BuyerAddress.Trim();
-
                 if (!String.IsNullOrWhiteSpace(result.BuyerCode))
                     result.BuyerCode = result.BuyerCode.Trim();
-
                 if (!String.IsNullOrWhiteSpace(result.BuyerName))
                     result.BuyerName = result.BuyerName.Trim();
-
                 if (!String.IsNullOrWhiteSpace(result.BuyerPhone))
                     result.BuyerPhone = result.BuyerPhone.Trim();
-
                 if (!String.IsNullOrWhiteSpace(result.BuyerOrganization))
                     result.BuyerOrganization = result.BuyerOrganization.Trim();
-
                 if (!String.IsNullOrWhiteSpace(result.BuyerEmail))
                     result.BuyerEmail = result.BuyerEmail.Trim();
-
                 if (!String.IsNullOrWhiteSpace(result.Note))
                     result.Note = result.Note.Trim();
-
                 if (!String.IsNullOrWhiteSpace(result.PaymentMethod))
                     result.PaymentMethod = result.PaymentMethod.Trim();
-
                 if (!String.IsNullOrWhiteSpace(result.BuyerCCCD))
                     result.BuyerCCCD = result.BuyerCCCD.Trim();
+                if (!String.IsNullOrWhiteSpace(result.BuyerIdentityNumber))
+                    result.BuyerIdentityNumber = result.BuyerIdentityNumber.Trim();
 
                 if (Config.HisConfigCFG.BuyerCodeOption == "1")
                 {

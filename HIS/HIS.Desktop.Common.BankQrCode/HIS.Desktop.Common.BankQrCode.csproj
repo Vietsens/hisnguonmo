@@ -50,7 +50,7 @@
       <HintPath>..\..\..\Lib\Inventec.Core\Inventec.Core.dll</HintPath>
     </Reference>
     <Reference Include="IPOS.WCFService.Client">
-      <HintPath>..\..\..\..\svn\SERVICE\IPOS.Processor\IPOS.WCFService.Client\IPOS.WCFService.Client\bin\Debug\IPOS.WCFService.Client.dll</HintPath>
+      <HintPath>..\HIS.Desktop\bin\Debug\ReferencedAssemblies\IPOS.WCFService.Client.dll</HintPath>
     </Reference>
     <Reference Include="MOS.EFMODEL">
       <HintPath>..\..\..\Lib\MOS\MOS.EFMODEL.dll</HintPath>

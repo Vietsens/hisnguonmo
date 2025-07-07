@@ -78,7 +78,7 @@ namespace HIS.Desktop.Common.BankQrCode
                 #region "MBB", "VCB", "CTG"
                 else
                 {
-                    List<string> banks = new List<string>() { "MBB", "VCB", "CTG" };
+                    List<string> banks = new List<string>() { "MBB", "VCB", "CTG", "NAPAS" };
                     if (string.IsNullOrEmpty(data.QR_TEXT) && configValue != null && configValue.Count > 0 && banks.Exists(o => configValue.Exists(p => p.KEY.Replace(" ", "").IndexOf(string.Format(".{0}Info", o)) > -1)))
                     {
                         if (configValue.Count == 1)
@@ -86,15 +86,29 @@ namespace HIS.Desktop.Common.BankQrCode
                             CommonParam param = new CommonParam();
                             MOS.TDO.QrPaymentGenerateTDO tdo = new MOS.TDO.QrPaymentGenerateTDO();
                             tdo.TransReqId = data.ID;
-                            tdo.Bank = configValue[0].KEY.Contains("MBB") ? "MBB" : configValue[0].KEY.Contains("VCB") ? "VCB" : "CTG";
+
+                            if (configValue[0].KEY.Contains("MBB")) tdo.Bank = "MBB";
+                            else if (configValue[0].KEY.Contains("VCB")) tdo.Bank = "VCB";
+                            else if (configValue[0].KEY.Contains("CTG")) tdo.Bank = "CTG";
+                            else if (configValue[0].KEY.Contains("NAPAS")) tdo.Bank = "NAPAS";  
+                            else tdo.Bank = "UNKNOWN";
+
                             tdo.BankConfig = configValue[0].VALUE;
-                            data = new Inventec.Common.Adapter.BackendAdapter(param).Post<HIS_TRANS_REQ>("api/HisTransReq/QrPaymentGenerate", ApiConsumers.MosConsumer, tdo, param);
+
+                            data = new Inventec.Common.Adapter.BackendAdapter(param).Post<HIS_TRANS_REQ>(
+                                "api/HisTransReq/QrPaymentGenerate",
+                                ApiConsumers.MosConsumer,
+                                tdo,
+                                param
+                            );
+
                             if (data == null)
                             {
                                 XtraMessageBox.Show(param.GetMessage());
                                 return null;
                             }
                         }
+
                         else
                         {
                             configValue = configValue.Where(o => !banks.Exists(p => o.KEY.IndexOf(p) > -1)).ToList();

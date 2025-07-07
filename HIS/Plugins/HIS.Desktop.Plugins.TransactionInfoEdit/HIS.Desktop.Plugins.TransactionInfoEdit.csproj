@@ -146,6 +146,7 @@
     <Compile Include="frmTransactionInfoEdit.Designer.cs">
       <DependentUpon>frmTransactionInfoEdit.cs</DependentUpon>
     </Compile>
+    <Compile Include="LoaiGiayToADO\LoaiGiayToADO.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TransactionInfoEdit\ITransactionInfoEdit.cs" />
     <Compile Include="TransactionInfoEdit\TransactionInfoEditBehavior.cs" />

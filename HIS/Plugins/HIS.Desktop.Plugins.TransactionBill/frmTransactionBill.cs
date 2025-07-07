@@ -20,6 +20,7 @@ using DevExpress.XtraEditors;
 using DevExpress.XtraEditors.Controls;
 using DevExpress.XtraEditors.ViewInfo;
 using DevExpress.XtraExport;
+using DevExpress.XtraLayout.Utils;
 using DevExpress.XtraTreeList;
 using DevExpress.XtraTreeList.Nodes;
 using HIS.Desktop.ADO;
@@ -288,15 +289,30 @@ namespace HIS.Desktop.Plugins.TransactionBill
                     cboAccountBook.EditValue = currentTransaction.ACCOUNT_BOOK_ID;
                     cboAccountBook.Enabled = false;
                     txtReplaceReason.Text = currentTransaction.REPLACE_REASON;
+
                     txtBuyerName.Text = currentTransaction.BUYER_NAME;
                     txtBuyerTaxCode.Text = currentTransaction.BUYER_TAX_CODE;
                     txtBuyerAddress.Text = currentTransaction.BUYER_ADDRESS;
-                    //txtBuyEmail.Text = currentTransaction.BUYER_EMAIL;
+                    txtBuyerEmail.Text = currentTransaction.BUYER_EMAIL;
+                    txtSDT.Text = currentTransaction.BUYER_PHONE;
                     txtBuyerAccountNumber.Text = currentTransaction.BUYER_ACCOUNT_NUMBER;
-
+                    txtBuyerIdentityNumber.Text = currentTransaction.BUYER_IDENTITY_NUMBER;
+                    if (currentTransaction.BUYER_IDENTITY_TYPE == 1)
+                    {
+                        cboBuyerIdentity.EditValue = "CMND";
+                    }
+                    else if (currentTransaction.BUYER_IDENTITY_TYPE == 2)
+                    {
+                        cboBuyerIdentity.EditValue = "CCCD";
+                    }
+                    else if (currentTransaction.BUYER_IDENTITY_TYPE == 3)
+                    {
+                        cboBuyerIdentity.EditValue = "PASSPORT";
+                    }
                     cboBuyerOrganization.EditValue = null;
                     txtBuyerOrganization.Text = currentTransaction.BUYER_ORGANIZATION;
                     chkOther.Checked = true;
+                    //chkOther1.Checked = true;
 
                     btnStateForInformationUser.Properties.Buttons[0].Visible = false;
                     btnStateForInformationUser.Properties.Buttons[1].Visible = true;
@@ -542,6 +558,7 @@ namespace HIS.Desktop.Plugins.TransactionBill
                 timerClose.Interval = 100;
                 CheckEnableBtnQR();
                 this.InitComboBuyerOrganization();
+                //this.InitComboBuyerOrganization2();
                 HisConfigCFG.LoadConfig();
                 InitControlState();
                 this.LoadKeyFrmLanguage();
@@ -1076,6 +1093,7 @@ namespace HIS.Desktop.Plugins.TransactionBill
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
+
 
         private void InitComboCommon(Control cboEditor, object data, string valueMember, string displayMember, string displayMemberCode)
         {
@@ -2428,12 +2446,28 @@ namespace HIS.Desktop.Plugins.TransactionBill
             {
                 InformationBuyerADO ado = new InformationBuyerADO();
                 ado.FullName = txtBuyerName.Text;
-                ado.TaxCode = txtBuyerTaxCode.Text;
-                ado.UnitID = cboBuyerOrganization.EditValue != null ? Int64.Parse(cboBuyerOrganization.EditValue.ToString()) : 0;
+                ado.TaxCode = txtBuyerTaxCode.Text; 
+                ado.BuyerType = radioBuyerUser.Checked ? 1 : (radioBuyerCompany.Checked ? 2 : (int?)null); // Lưu loại người mua
+                ado.Email = txtBuyerEmail.Text;
+                ado.PhoneNumber = txtSDT.Text;
+                ado.IdentityNumber = txtBuyerIdentityNumber.Text;
+                if (cboBuyerIdentity.EditValue == "CMND")
+                    ado.IndentityCode = 1;
+                if (cboBuyerIdentity.EditValue == "CCCD")
+                    ado.IndentityCode = 2;
+                if (cboBuyerIdentity.EditValue == "PASSPORT")
+                    ado.IndentityCode = 3;
+
+                ado.UnitID = cboBuyerOrganization.EditValue != null
+                        ? Convert.ToInt64(cboBuyerOrganization.EditValue)
+                        : 0;
+
                 ado.Address = txtBuyerAddress.Text;
                 ado.AccountNumber = txtBuyerAccountNumber.Text;
                 ado.UnitText = txtBuyerOrganization.Text;
+                
                 ado.checkBox = chkOther.Checked ? "1" : "0";
+
                 string textJson = JsonConvert.SerializeObject(ado);
 
                 HIS.Desktop.Library.CacheClient.ControlStateRDO csAddOrUpdateValue = (this.currentBySessionControlStateRDO != null && this.currentBySessionControlStateRDO.Count > 0) ? this.currentBySessionControlStateRDO.Where(o => o.KEY == "InformationBuyerADO" && o.MODULE_LINK == moduleLink).FirstOrDefault() : null;
@@ -3062,6 +3096,7 @@ namespace HIS.Desktop.Plugins.TransactionBill
                         }
                     }
                 }
+
                 InformationBuyerADO ado = new InformationBuyerADO();
                 this.currentBySessionControlStateRDO = controlStateWorker.GetDataBySession(moduleLink);
                 if (this.currentBySessionControlStateRDO != null && this.currentBySessionControlStateRDO.Count > 0)
@@ -3084,7 +3119,7 @@ namespace HIS.Desktop.Plugins.TransactionBill
                         }
                     }
                     if (ado != null)
-                    {
+                    {//Có đây thây
                         txtBuyerName.Text = ado.FullName;
                         txtBuyerTaxCode.Text = ado.TaxCode;
                         cboBuyerOrganization.EditValue = ado.UnitID;
@@ -3092,6 +3127,28 @@ namespace HIS.Desktop.Plugins.TransactionBill
                         txtBuyerAccountNumber.Text = ado.AccountNumber;
                         txtBuyerOrganization.Text = ado.UnitText;
                         chkOther.Checked = ado.checkBox == "1" ? true : false;
+                        //chkOther1.Checked = ado.checkBox == "1" ? true : false;
+                        //cboBuyerOrganization.Focus();
+                        if (ado.BuyerType == 1)
+                        {
+                            radioBuyerUser.Checked = true;
+                            radioBuyerCompany.Checked = false;
+                        }
+                        else if (ado.BuyerType == 2)
+                        {
+                            radioBuyerUser.Checked = false;
+                            radioBuyerCompany.Checked = true;
+                        }
+                        txtBuyerEmail.Text = ado.Email;
+                        txtSDT.Text = ado.PhoneNumber;
+                        txtBuyerIdentityNumber.Text = ado.IdentityNumber;
+                        if (ado.IndentityCode == 1)
+                            cboBuyerIdentity.EditValue = "CMND";
+                        if (ado.IndentityCode == 2)
+                            cboBuyerIdentity.EditValue = "CCCD";
+                        if (ado.IndentityCode == 3)
+                            cboBuyerIdentity.EditValue = "PASSPORT";
+
                         cboBuyerOrganization.Focus();
                     }
                 }
@@ -3100,8 +3157,11 @@ namespace HIS.Desktop.Plugins.TransactionBill
                     btnStateForInformationUser.Properties.Buttons[0].Visible = false;
                     btnStateForInformationUser.Properties.Buttons[1].Visible = true;
                     IsPin = false;
-                }
 
+                    // Nếu không phải ghim thì mặc định chọn Cá nhân
+                    radioBuyerUser.Checked = true;
+                    radioBuyerCompany.Checked = false;
+                }
 
                 bool isBHYT = false;
                 long patientTypeIdBHYT = HisConfigCFG.PatientTypeId__BHYT;
@@ -3424,121 +3484,6 @@ namespace HIS.Desktop.Plugins.TransactionBill
             }
         }
 
-        //private void txtBuyerName_EditValueChanged(object sender, EventArgs e)
-        //{
-        //    try
-        //    {
-
-        //        HIS.Desktop.Library.CacheClient.ControlStateRDO csAddOrUpdateValue = (this.currentBySessionControlStateRDO != null && this.currentBySessionControlStateRDO.Count > 0) ? this.currentBySessionControlStateRDO.Where(o => o.KEY == txtBuyerName.Name && o.MODULE_LINK == moduleLink).FirstOrDefault() : null;
-        //        if (csAddOrUpdateValue != null)
-        //        {
-        //            csAddOrUpdateValue.VALUE = IsPin ? txtBuyerName.Text.Trim() : "";
-        //        }
-        //        else
-        //        {
-        //            csAddOrUpdateValue = new HIS.Desktop.Library.CacheClient.ControlStateRDO();
-        //            csAddOrUpdateValue.KEY = txtBuyerName.Name;
-        //            csAddOrUpdateValue.VALUE = IsPin ? txtBuyerName.Text.Trim() : "";
-        //            csAddOrUpdateValue.MODULE_LINK = moduleLink;
-        //            if (this.currentBySessionControlStateRDO == null)
-        //                this.currentBySessionControlStateRDO = new List<HIS.Desktop.Library.CacheClient.ControlStateRDO>();
-        //            this.currentBySessionControlStateRDO.Add(csAddOrUpdateValue);
-        //        }
-        //        this.controlStateWorker.SetDataBySession(this.currentBySessionControlStateRDO);
-
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        Inventec.Common.Logging.LogSystem.Warn(ex);
-        //    }
-        //}
-
-        //private void txtBuyerTaxCode_EditValueChanged(object sender, EventArgs e)
-        //{
-        //    try
-        //    {
-
-        //        HIS.Desktop.Library.CacheClient.ControlStateRDO csAddOrUpdateValue = (this.currentBySessionControlStateRDO != null && this.currentBySessionControlStateRDO.Count > 0) ? this.currentBySessionControlStateRDO.Where(o => o.KEY == txtBuyerTaxCode.Name && o.MODULE_LINK == moduleLink).FirstOrDefault() : null;
-        //        if (csAddOrUpdateValue != null)
-        //        {
-        //            csAddOrUpdateValue.VALUE = IsPin ? txtBuyerTaxCode.Text.Trim() : "";
-        //        }
-        //        else
-        //        {
-        //            csAddOrUpdateValue = new HIS.Desktop.Library.CacheClient.ControlStateRDO();
-        //            csAddOrUpdateValue.KEY = txtBuyerTaxCode.Name;
-        //            csAddOrUpdateValue.VALUE = IsPin ? txtBuyerTaxCode.Text.Trim() : "";
-        //            csAddOrUpdateValue.MODULE_LINK = moduleLink;
-        //            if (this.currentBySessionControlStateRDO == null)
-        //                this.currentBySessionControlStateRDO = new List<HIS.Desktop.Library.CacheClient.ControlStateRDO>();
-        //            this.currentBySessionControlStateRDO.Add(csAddOrUpdateValue);
-        //        }
-        //        this.controlStateWorker.SetDataBySession(this.currentBySessionControlStateRDO);
-
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        Inventec.Common.Logging.LogSystem.Warn(ex);
-        //    }
-        //}
-
-        //private void txtBuyerAccountNumber_EditValueChanged(object sender, EventArgs e)
-        //{
-        //    try
-        //    {
-        //        HIS.Desktop.Library.CacheClient.ControlStateRDO csAddOrUpdateValue = (this.currentBySessionControlStateRDO != null && this.currentBySessionControlStateRDO.Count > 0) ? this.currentBySessionControlStateRDO.Where(o => o.KEY == txtBuyerAccountNumber.Name && o.MODULE_LINK == moduleLink).FirstOrDefault() : null;
-        //        if (csAddOrUpdateValue != null)
-        //        {
-        //            csAddOrUpdateValue.VALUE = IsPin ? txtBuyerAccountNumber.Text.Trim() : "";
-        //        }
-        //        else
-        //        {
-        //            csAddOrUpdateValue = new HIS.Desktop.Library.CacheClient.ControlStateRDO();
-        //            csAddOrUpdateValue.KEY = txtBuyerAccountNumber.Name;
-        //            csAddOrUpdateValue.VALUE = IsPin ? txtBuyerAccountNumber.Text.Trim() : "";
-        //            csAddOrUpdateValue.MODULE_LINK = moduleLink;
-        //            if (this.currentBySessionControlStateRDO == null)
-        //                this.currentBySessionControlStateRDO = new List<HIS.Desktop.Library.CacheClient.ControlStateRDO>();
-        //            this.currentBySessionControlStateRDO.Add(csAddOrUpdateValue);
-        //        }
-        //        this.controlStateWorker.SetDataBySession(this.currentBySessionControlStateRDO);
-
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        Inventec.Common.Logging.LogSystem.Warn(ex);
-        //    }
-        //}
-
-        //private void txtBuyerAddress_EditValueChanged(object sender, EventArgs e)
-        //{
-        //    try
-        //    {
-
-        //        HIS.Desktop.Library.CacheClient.ControlStateRDO csAddOrUpdateValue = (this.currentBySessionControlStateRDO != null && this.currentBySessionControlStateRDO.Count > 0) ? this.currentBySessionControlStateRDO.Where(o => o.KEY == txtBuyerAddress.Name && o.MODULE_LINK == moduleLink).FirstOrDefault() : null;
-        //        if (csAddOrUpdateValue != null)
-        //        {
-        //            csAddOrUpdateValue.VALUE = IsPin ? txtBuyerAddress.Text.Trim() : "";
-        //        }
-        //        else
-        //        {
-        //            csAddOrUpdateValue = new HIS.Desktop.Library.CacheClient.ControlStateRDO();
-        //            csAddOrUpdateValue.KEY = txtBuyerAddress.Name;
-        //            csAddOrUpdateValue.VALUE = IsPin ? txtBuyerAddress.Text.Trim() : "";
-        //            csAddOrUpdateValue.MODULE_LINK = moduleLink;
-        //            if (this.currentBySessionControlStateRDO == null)
-        //                this.currentBySessionControlStateRDO = new List<HIS.Desktop.Library.CacheClient.ControlStateRDO>();
-        //            this.currentBySessionControlStateRDO.Add(csAddOrUpdateValue);
-        //        }
-        //        this.controlStateWorker.SetDataBySession(this.currentBySessionControlStateRDO);
-
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        Inventec.Common.Logging.LogSystem.Warn(ex);
-        //    }
-        //}
-
         private void checkEdit1_CheckedChanged(object sender, EventArgs e)
         {
             try
@@ -3603,11 +3548,16 @@ namespace HIS.Desktop.Plugins.TransactionBill
                 if (cboBuyerOrganization.EditValue != null)
                 {
                     var dt = dtWorkPlace.Where(o => o.ID == Int64.Parse(cboBuyerOrganization.EditValue.ToString())).First();
-                    if (!chkAddressBhyt.Checked)
+                    txtBuyerAddress.Text = dt.ADDRESS;
+                    if(dt.TAX_CODE != null)
                     {
-                        txtBuyerAddress.Text = dt.ADDRESS;
                         txtBuyerTaxCode.Text = dt.TAX_CODE;
                     }
+                    //if (!chkAddressBhyt.Checked)
+                    //{
+                        
+                    //}
+                    //
                     cboBuyerOrganization.Properties.Buttons[1].Visible = true;
                     //HIS.Desktop.Library.CacheClient.ControlStateRDO csAddOrUpdateValue = (this.currentBySessionControlStateRDO != null && this.currentBySessionControlStateRDO.Count > 0) ? this.currentBySessionControlStateRDO.Where(o => o.KEY == cboBuyerOrganization.Name && o.MODULE_LINK == moduleLink).FirstOrDefault() : null;
                     //if (csAddOrUpdateValue != null)
@@ -3706,7 +3656,6 @@ namespace HIS.Desktop.Plugins.TransactionBill
 
         private void cboDepositBook_ButtonClick(object sender, ButtonPressedEventArgs e)
         {
-
             try
             {
                 if (e.Button.Kind == ButtonPredefines.Delete)
@@ -3901,7 +3850,6 @@ namespace HIS.Desktop.Plugins.TransactionBill
                         LogSystem.Debug("_____Load module : HIS.Desktop.Plugins.CreateTransReqQR " + selectedConfig.KEY);
                         HIS.Desktop.ModuleExt.PluginInstanceBehavior.ShowModule("HIS.Desktop.Plugins.CreateTransReqQR", this.currentModule.RoomId, this.currentModule.RoomTypeId, listArgs);
 
-
                     }
 
                 }
@@ -3922,15 +3870,22 @@ namespace HIS.Desktop.Plugins.TransactionBill
                 {
                     return;
                 }
-                if (chkAddressBhyt.Checked && resultPatientType != null && !string.IsNullOrEmpty(resultPatientType.ADDRESS))
+                if(chkAddressBhyt.Checked)
                 {
-                    txtBuyerAddress.Text = resultPatientType.ADDRESS;
-                }
-                else if (currentTransaction != null && currentTransaction.IS_CANCEL == 1)
-                {
-                    txtBuyerAddress.Text = currentTransaction.BUYER_ADDRESS;
-                }
-                else if (this.currentTreatment != null)
+                    if (resultPatientType != null && !string.IsNullOrEmpty(resultPatientType.ADDRESS))
+                    {
+                        txtBuyerAddress.Text = resultPatientType.ADDRESS;
+                    }
+                    else if (currentTransaction != null && currentTransaction.IS_CANCEL == 1)
+                    {
+                        txtBuyerAddress.Text = "";
+                    }
+                    else if (this.currentTreatment != null)
+                    {
+                        txtBuyerAddress.Text = "";
+                    }
+                }                    
+                else
                 {
                     txtBuyerAddress.Text = currentTreatment.TDL_PATIENT_ADDRESS;
                 }
@@ -3991,6 +3946,46 @@ namespace HIS.Desktop.Plugins.TransactionBill
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void radioBuyerUser_CheckedChanged(object sender, EventArgs e)
+        {
+            if (radioBuyerUser.Checked)
+            {
+                radioBuyerCompany.Checked = false;
+
+                // Hiện cho Cá nhân
+                layoutControlItem32.Visibility = LayoutVisibility.Always;
+                layoutControlItem56.Visibility = LayoutVisibility.Always;
+                layoutControlItem57.Visibility = LayoutVisibility.Always;
+                layoutControlItem59.Visibility = LayoutVisibility.Always;
+                // Ẩn của Cơ quan
+                layoutControlItem44.Visibility = LayoutVisibility.Never;
+                layoutControlItem35.Visibility = LayoutVisibility.Never;
+                layoutControlItem33.Visibility = LayoutVisibility.Never;
+                layoutControlItem34.Visibility = LayoutVisibility.Never;
+
+            }
+        }
+
+        private void radioBuyerCompany_CheckedChanged(object sender, EventArgs e)
+        {
+            if (radioBuyerCompany.Checked)
+            {
+                radioBuyerUser.Checked = false;
+
+                // Hiện cho Cơ quan
+                layoutControlItem33.Visibility = LayoutVisibility.Always;
+                layoutControlItem34.Visibility = LayoutVisibility.Never;
+                // Ẩn các item không dùng
+                layoutControlItem59.Visibility = LayoutVisibility.Always;
+                layoutControlItem56.Visibility = LayoutVisibility.Never;
+                layoutControlItem57.Visibility = LayoutVisibility.Never;
+                layoutControlItem32.Visibility = LayoutVisibility.Never;
+                layoutControlItem44.Visibility = LayoutVisibility.Always;
+                layoutControlItem35.Visibility = LayoutVisibility.Always;
+
             }
         }
 
