@@ -45,17 +45,15 @@ namespace HIS.Desktop.Plugins.ContentSubclinical
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             this.layoutControl1 = new DevExpress.XtraLayout.LayoutControl();
-            this.chkGetInfo = new DevExpress.XtraEditors.CheckEdit();
-            this.barManager1 = new DevExpress.XtraBars.BarManager(this.components);
+            this.chkAssign = new DevExpress.XtraEditors.CheckEdit();
+            this.barManager1 = new DevExpress.XtraBars.BarManager();
             this.bar1 = new DevExpress.XtraBars.Bar();
             this.barButtonItemSave = new DevExpress.XtraBars.BarButtonItem();
             this.barButtonItemSearch = new DevExpress.XtraBars.BarButtonItem();
-            this.barDockControlTop = new DevExpress.XtraBars.BarDockControl();
-            this.barDockControlBottom = new DevExpress.XtraBars.BarDockControl();
-            this.barDockControlLeft = new DevExpress.XtraBars.BarDockControl();
-            this.barDockControlRight = new DevExpress.XtraBars.BarDockControl();
+            this.chkServiceType = new DevExpress.XtraEditors.CheckEdit();
+            this.chkLineBreak = new DevExpress.XtraEditors.CheckEdit();
+            this.chkGetInfo = new DevExpress.XtraEditors.CheckEdit();
             this.btnPrintKetQua = new DevExpress.XtraEditors.SimpleButton();
             this.chkNotSelectSurg = new DevExpress.XtraEditors.CheckEdit();
             this.chkJustSelectIndexImportant = new DevExpress.XtraEditors.CheckEdit();
@@ -110,17 +108,21 @@ namespace HIS.Desktop.Plugins.ContentSubclinical
             this.lciNotSelectSurg = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem3 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem12 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.chkLineBreak = new DevExpress.XtraEditors.CheckEdit();
             this.layoutControlItem13 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.chkServiceType = new DevExpress.XtraEditors.CheckEdit();
             this.layoutControlItem15 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.chkAssign = new DevExpress.XtraEditors.CheckEdit();
             this.layoutControlItem16 = new DevExpress.XtraLayout.LayoutControlItem();
             this.emptySpaceItem1 = new DevExpress.XtraLayout.EmptySpaceItem();
+            this.barDockControlTop = new DevExpress.XtraBars.BarDockControl();
+            this.barDockControlBottom = new DevExpress.XtraBars.BarDockControl();
+            this.barDockControlLeft = new DevExpress.XtraBars.BarDockControl();
+            this.barDockControlRight = new DevExpress.XtraBars.BarDockControl();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
             this.layoutControl1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.chkGetInfo.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chkAssign.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.barManager1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chkServiceType.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chkLineBreak.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chkGetInfo.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.chkNotSelectSurg.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.chkJustSelectIndexImportant.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl2)).BeginInit();
@@ -169,11 +171,8 @@ namespace HIS.Desktop.Plugins.ContentSubclinical
             ((System.ComponentModel.ISupportInitialize)(this.lciNotSelectSurg)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem12)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.chkLineBreak.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem13)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.chkServiceType.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem15)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.chkAssign.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem16)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem1)).BeginInit();
             this.SuspendLayout();
@@ -198,28 +197,20 @@ namespace HIS.Desktop.Plugins.ContentSubclinical
             this.layoutControl1.TabIndex = 0;
             this.layoutControl1.Text = "layoutControl1";
             // 
-            // chkGetInfo
+            // chkAssign
             // 
-            this.chkGetInfo.Location = new System.Drawing.Point(428, 586);
-            this.chkGetInfo.MenuManager = this.barManager1;
-            this.chkGetInfo.Name = "chkGetInfo";
-            this.chkGetInfo.Properties.Caption = ":Lấy cả ghi chú, nhận xét, kết luận";
-            this.chkGetInfo.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
-            this.chkGetInfo.Size = new System.Drawing.Size(198, 19);
-            this.chkGetInfo.StyleController = this.layoutControl1;
-            this.chkGetInfo.TabIndex = 32;
-            this.chkGetInfo.ToolTip = "Khi chọn sẽ lấy cả ghi chú, nhận xét, kết luận của dịch vụ xét nghiệm và giải phẫ" +
-    "u bệnh lý";
-            this.chkGetInfo.CheckedChanged += new System.EventHandler(this.chkGetInfo_CheckedChanged);
+            this.chkAssign.Location = new System.Drawing.Point(158, 586);
+            this.chkAssign.MenuManager = this.barManager1;
+            this.chkAssign.Name = "chkAssign";
+            this.chkAssign.Properties.Caption = "";
+            this.chkAssign.Size = new System.Drawing.Size(21, 19);
+            this.chkAssign.StyleController = this.layoutControl1;
+            this.chkAssign.TabIndex = 35;
             // 
             // barManager1
             // 
             this.barManager1.Bars.AddRange(new DevExpress.XtraBars.Bar[] {
             this.bar1});
-            this.barManager1.DockControls.Add(this.barDockControlTop);
-            this.barManager1.DockControls.Add(this.barDockControlBottom);
-            this.barManager1.DockControls.Add(this.barDockControlLeft);
-            this.barManager1.DockControls.Add(this.barDockControlRight);
             this.barManager1.Form = this;
             this.barManager1.Items.AddRange(new DevExpress.XtraBars.BarItem[] {
             this.barButtonItemSave,
@@ -254,33 +245,40 @@ namespace HIS.Desktop.Plugins.ContentSubclinical
             this.barButtonItemSearch.Name = "barButtonItemSearch";
             this.barButtonItemSearch.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.barButtonItemSearch_ItemClick);
             // 
-            // barDockControlTop
+            // chkServiceType
             // 
-            this.barDockControlTop.CausesValidation = false;
-            this.barDockControlTop.Dock = System.Windows.Forms.DockStyle.Top;
-            this.barDockControlTop.Location = new System.Drawing.Point(0, 0);
-            this.barDockControlTop.Size = new System.Drawing.Size(1100, 29);
+            this.chkServiceType.Location = new System.Drawing.Point(292, 586);
+            this.chkServiceType.MenuManager = this.barManager1;
+            this.chkServiceType.Name = "chkServiceType";
+            this.chkServiceType.Properties.Caption = "";
+            this.chkServiceType.Size = new System.Drawing.Size(22, 19);
+            this.chkServiceType.StyleController = this.layoutControl1;
+            this.chkServiceType.TabIndex = 34;
+            this.chkServiceType.CheckedChanged += new System.EventHandler(this.chkServiceType_CheckedChanged);
             // 
-            // barDockControlBottom
+            // chkLineBreak
             // 
-            this.barDockControlBottom.CausesValidation = false;
-            this.barDockControlBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.barDockControlBottom.Location = new System.Drawing.Point(0, 639);
-            this.barDockControlBottom.Size = new System.Drawing.Size(1100, 0);
+            this.chkLineBreak.Location = new System.Drawing.Point(403, 586);
+            this.chkLineBreak.MenuManager = this.barManager1;
+            this.chkLineBreak.Name = "chkLineBreak";
+            this.chkLineBreak.Properties.Caption = "";
+            this.chkLineBreak.Size = new System.Drawing.Size(21, 19);
+            this.chkLineBreak.StyleController = this.layoutControl1;
+            this.chkLineBreak.TabIndex = 33;
             // 
-            // barDockControlLeft
+            // chkGetInfo
             // 
-            this.barDockControlLeft.CausesValidation = false;
-            this.barDockControlLeft.Dock = System.Windows.Forms.DockStyle.Left;
-            this.barDockControlLeft.Location = new System.Drawing.Point(0, 29);
-            this.barDockControlLeft.Size = new System.Drawing.Size(0, 610);
-            // 
-            // barDockControlRight
-            // 
-            this.barDockControlRight.CausesValidation = false;
-            this.barDockControlRight.Dock = System.Windows.Forms.DockStyle.Right;
-            this.barDockControlRight.Location = new System.Drawing.Point(1100, 29);
-            this.barDockControlRight.Size = new System.Drawing.Size(0, 610);
+            this.chkGetInfo.Location = new System.Drawing.Point(428, 586);
+            this.chkGetInfo.MenuManager = this.barManager1;
+            this.chkGetInfo.Name = "chkGetInfo";
+            this.chkGetInfo.Properties.Caption = ":Lấy cả ghi chú, nhận xét, kết luận";
+            this.chkGetInfo.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
+            this.chkGetInfo.Size = new System.Drawing.Size(198, 19);
+            this.chkGetInfo.StyleController = this.layoutControl1;
+            this.chkGetInfo.TabIndex = 32;
+            this.chkGetInfo.ToolTip = "Khi chọn sẽ lấy cả ghi chú, nhận xét, kết luận của dịch vụ xét nghiệm và giải phẫ" +
+    "u bệnh lý";
+            this.chkGetInfo.CheckedChanged += new System.EventHandler(this.chkGetInfo_CheckedChanged);
             // 
             // btnPrintKetQua
             // 
@@ -926,16 +924,6 @@ namespace HIS.Desktop.Plugins.ContentSubclinical
             this.layoutControlItem12.TextToControlDistance = 0;
             this.layoutControlItem12.TextVisible = false;
             // 
-            // chkLineBreak
-            // 
-            this.chkLineBreak.Location = new System.Drawing.Point(403, 586);
-            this.chkLineBreak.MenuManager = this.barManager1;
-            this.chkLineBreak.Name = "chkLineBreak";
-            this.chkLineBreak.Properties.Caption = "";
-            this.chkLineBreak.Size = new System.Drawing.Size(21, 19);
-            this.chkLineBreak.StyleController = this.layoutControl1;
-            this.chkLineBreak.TabIndex = 33;
-            // 
             // layoutControlItem13
             // 
             this.layoutControlItem13.AppearanceItemCaption.Options.UseTextOptions = true;
@@ -952,16 +940,6 @@ namespace HIS.Desktop.Plugins.ContentSubclinical
             this.layoutControlItem13.TextSize = new System.Drawing.Size(80, 20);
             this.layoutControlItem13.TextToControlDistance = 5;
             // 
-            // chkServiceType
-            // 
-            this.chkServiceType.Location = new System.Drawing.Point(292, 586);
-            this.chkServiceType.MenuManager = this.barManager1;
-            this.chkServiceType.Name = "chkServiceType";
-            this.chkServiceType.Properties.Caption = "";
-            this.chkServiceType.Size = new System.Drawing.Size(22, 19);
-            this.chkServiceType.StyleController = this.layoutControl1;
-            this.chkServiceType.TabIndex = 34;
-            // 
             // layoutControlItem15
             // 
             this.layoutControlItem15.AppearanceItemCaption.Options.UseTextOptions = true;
@@ -972,16 +950,6 @@ namespace HIS.Desktop.Plugins.ContentSubclinical
             this.layoutControlItem15.Size = new System.Drawing.Size(135, 26);
             this.layoutControlItem15.Text = "Hiển thị loại dịch vụ:";
             this.layoutControlItem15.TextSize = new System.Drawing.Size(106, 13);
-            // 
-            // chkAssign
-            // 
-            this.chkAssign.Location = new System.Drawing.Point(158, 586);
-            this.chkAssign.MenuManager = this.barManager1;
-            this.chkAssign.Name = "chkAssign";
-            this.chkAssign.Properties.Caption = "";
-            this.chkAssign.Size = new System.Drawing.Size(21, 19);
-            this.chkAssign.StyleController = this.layoutControl1;
-            this.chkAssign.TabIndex = 35;
             // 
             // layoutControlItem16
             // 
@@ -1001,6 +969,34 @@ namespace HIS.Desktop.Plugins.ContentSubclinical
             this.emptySpaceItem1.Name = "emptySpaceItem1";
             this.emptySpaceItem1.Size = new System.Drawing.Size(47, 26);
             this.emptySpaceItem1.TextSize = new System.Drawing.Size(0, 0);
+            // 
+            // barDockControlTop
+            // 
+            this.barDockControlTop.CausesValidation = false;
+            this.barDockControlTop.Dock = System.Windows.Forms.DockStyle.Top;
+            this.barDockControlTop.Location = new System.Drawing.Point(0, 29);
+            this.barDockControlTop.Size = new System.Drawing.Size(1100, 0);
+            // 
+            // barDockControlBottom
+            // 
+            this.barDockControlBottom.CausesValidation = false;
+            this.barDockControlBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.barDockControlBottom.Location = new System.Drawing.Point(0, 639);
+            this.barDockControlBottom.Size = new System.Drawing.Size(1100, 0);
+            // 
+            // barDockControlLeft
+            // 
+            this.barDockControlLeft.CausesValidation = false;
+            this.barDockControlLeft.Dock = System.Windows.Forms.DockStyle.Left;
+            this.barDockControlLeft.Location = new System.Drawing.Point(0, 29);
+            this.barDockControlLeft.Size = new System.Drawing.Size(0, 610);
+            // 
+            // barDockControlRight
+            // 
+            this.barDockControlRight.CausesValidation = false;
+            this.barDockControlRight.Dock = System.Windows.Forms.DockStyle.Right;
+            this.barDockControlRight.Location = new System.Drawing.Point(1100, 29);
+            this.barDockControlRight.Size = new System.Drawing.Size(0, 610);
             // 
             // frmContentSubclinical
             // 
@@ -1023,8 +1019,11 @@ namespace HIS.Desktop.Plugins.ContentSubclinical
             this.Controls.SetChildIndex(this.layoutControl1, 0);
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).EndInit();
             this.layoutControl1.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.chkGetInfo.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chkAssign.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.barManager1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chkServiceType.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chkLineBreak.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chkGetInfo.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.chkNotSelectSurg.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.chkJustSelectIndexImportant.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl2)).EndInit();
@@ -1073,11 +1072,8 @@ namespace HIS.Desktop.Plugins.ContentSubclinical
             ((System.ComponentModel.ISupportInitialize)(this.lciNotSelectSurg)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem3)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem12)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.chkLineBreak.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem13)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.chkServiceType.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem15)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.chkAssign.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem16)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem1)).EndInit();
             this.ResumeLayout(false);

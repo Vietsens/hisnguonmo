@@ -830,5 +830,10 @@ namespace HIS.Desktop.Plugins.ContentSubclinical
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
+
+        private void chkServiceType_CheckedChanged(object sender, EventArgs e)
+        {
+
+        }
     }
 }
