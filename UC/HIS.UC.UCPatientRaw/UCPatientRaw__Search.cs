@@ -964,7 +964,7 @@ namespace HIS.UC.UCPatientRaw
 
         #region Search Patient by name, dob, gencer
 
-        private void SearchPatientByFilterCombo()
+        public void SearchPatientByFilterCombo()
         {
             try
             {
@@ -1021,7 +1021,7 @@ namespace HIS.UC.UCPatientRaw
                 {
                     hisPatientFilter.PATIENT_CODE__EXACT = string.Format("{0:0000000000}", Inventec.Common.TypeConvert.Parse.ToInt64(maBN));
                 }
-                hisPatientFilter.GENDER_ID = isMale;
+                hisPatientFilter.GENDER_ID = isMale;   
                 this.currentSearchedPatients = new BackendAdapter(param).Get<List<HisPatientSDO>>(RequestUriStore.HIS_PATIENT_GETSDOADVANCE, ApiConsumers.MosConsumer, hisPatientFilter, HIS.Desktop.Controls.Session.SessionManager.ActionLostToken, param);
 
                 Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => hisPatientFilter), hisPatientFilter));

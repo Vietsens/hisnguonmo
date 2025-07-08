@@ -265,6 +265,7 @@
     <EmbeddedResource Include="Design\frmPersonHome.resx">
       <DependentUpon>frmPersonHome.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Properties\licenses.licx" />
     <EmbeddedResource Include="Resources\Lang.en.resx">
       <SubType>Designer</SubType>
     </EmbeddedResource>

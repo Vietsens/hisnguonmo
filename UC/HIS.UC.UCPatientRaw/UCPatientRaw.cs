@@ -730,7 +730,6 @@ namespace HIS.UC.UCPatientRaw
                         this.txtAge.Text = this.txtPatientDob.Text;
                         this.cboAge.EditValue = 1;
                         this.txtPatientDob.Text = dateValidObject.Age.ToString();
-                        this.dlgCheckSS(dateValidObject.Age < 6);
                     }
                     else if (String.IsNullOrEmpty(dateValidObject.Message))
                     {
@@ -739,7 +738,6 @@ namespace HIS.UC.UCPatientRaw
                             this.txtPatientDob.Text = dateValidObject.OutDate;
                             this.dtPatientDob.EditValue = HIS.Desktop.Utility.DateTimeHelper.ConvertDateStringToSystemDate(dateValidObject.OutDate);
                             this.dtPatientDob.Update();
-                            this.dlgCheckSS(DateTime.Now.Year - dtPatientDob.DateTime.Year < 6);
                         }
                     }
 
@@ -791,7 +789,6 @@ namespace HIS.UC.UCPatientRaw
                     this.txtAge.Text = this.txtPatientDob.Text;
                     this.cboAge.EditValue = 1;
                     this.txtPatientDob.Text = dateValidObject.Age.ToString();
-                    this.dlgCheckSS(dateValidObject.Age < 6);
                 }
                 else if (String.IsNullOrEmpty(dateValidObject.Message))
                 {
@@ -800,7 +797,6 @@ namespace HIS.UC.UCPatientRaw
                         this.txtPatientDob.Text = dateValidObject.OutDate;
                         this.dtPatientDob.EditValue = HIS.Desktop.Utility.DateTimeHelper.ConvertDateStringToSystemDate(dateValidObject.OutDate);
                         this.dtPatientDob.Update();
-                        this.dlgCheckSS(DateTime.Now.Year - dtPatientDob.DateTime.Year < 6);
                     }
                 }
                 else
@@ -999,7 +995,7 @@ namespace HIS.UC.UCPatientRaw
                     if (this.isTemp_QN == true || (this.isTemp_QN == true && this.isGKS == true))
                         this.isEnable(null, true);
                     else if (this.isGKS == true)
-                        this.isEnable(true, null);
+                        this.isEnable(true, null);  
                     else
                     {
                         this.isEnable(null, false);

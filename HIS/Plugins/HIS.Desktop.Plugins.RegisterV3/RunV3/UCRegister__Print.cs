@@ -201,7 +201,7 @@ namespace HIS.Desktop.Plugins.RegisterV3.Run3
                 MPS.Processor.Mps000178.PDO.Mps000178PDO mps000178RDO = new MPS.Processor.Mps000178.PDO.Mps000178PDO(
                     currentPatient,
                     patientTypeAlterByPatient,
-                    treatment4
+                    treatment4,null
                     );
                 WaitingManager.Hide();
                 MPS.ProcessorBase.Core.PrintData PrintData = null;

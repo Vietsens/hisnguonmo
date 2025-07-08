@@ -135,7 +135,7 @@ namespace HIS.Desktop.Plugins.RegisterV3.Run3
 
                 //Ẩn combo patient Type với tiếp đón 3
                 this.ucPatientRaw1.SetTD3(true);
-
+                this.ucPatientRaw1.SearchPatientByFilterCombo();
                 this.ucPatientRaw1.RefreshUserControl();
                 Inventec.Common.Logging.LogSystem.Debug("UCRegister_Load => 2");
                 Inventec.Common.Logging.LogSystem.Debug("UCRegister_Load => 3");
@@ -155,7 +155,7 @@ namespace HIS.Desktop.Plugins.RegisterV3.Run3
                 this.IsObligatoryTranferMediOrg = HisConfigCFG.IsObligatoryTranferMediOrg;
                 this.PatientTypeIdBHYT = HisConfigCFG.PatientTypeId__BHYT;
                 Inventec.Common.Logging.LogSystem.Debug("UCRegister_Load => 11");
-
+                this.ucPlusInfo1.InitFieldFromAsync();
                 InitControlState();
                 this.DHSTLoadDataDefault();
                 isNotLoadWhileChangeControlStateInFirst = false;
@@ -586,7 +586,7 @@ namespace HIS.Desktop.Plugins.RegisterV3.Run3
                 Save(false);
             }
             catch (Exception ex)
-            {
+            {     
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
