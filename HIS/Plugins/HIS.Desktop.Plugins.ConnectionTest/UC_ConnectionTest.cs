@@ -264,6 +264,11 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                 EnabledLableApproveList(false);
                 DateKQ.ToolTip = ConvertStringTime(DateKQ);
                 DateLM.ToolTip = ConvertStringTime(DateLM);
+                UpdateThoiGianThucHien();
+
+                DateLM.EditValueChanged += (s, t) => UpdateThoiGianThucHien();
+                DateKQ.EditValueChanged += (s, t) => UpdateThoiGianThucHien();
+
                 GetTimeSystem();
                 EnableControlWarning();
                 RegisterTimer(currentModule.ModuleLink, "timer1", timer1.Interval, timer1_Tick);
@@ -2532,6 +2537,35 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
+        private void UpdateThoiGianThucHien()
+        {
+            if (DateLM.EditValue != null && DateKQ.EditValue != null)
+            {
+                DateTime ngayLayMau = Convert.ToDateTime(DateLM.EditValue);
+                DateTime ngayTraKQ = Convert.ToDateTime(DateKQ.EditValue);
+
+                TimeSpan thoiGian = ngayTraKQ - ngayLayMau;
+
+                if (thoiGian.TotalSeconds <= 0)
+                {
+                    lblThoiGianThucHien.Text = "00:00:00";
+                }
+                else
+                {
+                    lblThoiGianThucHien.Text = string.Format("{0:D2}:{1:D2}:{2:D2}",
+                        (int)thoiGian.TotalHours,
+                        thoiGian.Minutes,
+                        thoiGian.Seconds
+                    );
+                }
+            }
+            else
+            {
+                lblThoiGianThucHien.Text = "00:00:00";
+            }
+        }
+
+
 
         private void ProcessMaxMixValue(TestLisResultADO ti, V_HIS_TEST_INDEX_RANGE testIndexRange)
         {
