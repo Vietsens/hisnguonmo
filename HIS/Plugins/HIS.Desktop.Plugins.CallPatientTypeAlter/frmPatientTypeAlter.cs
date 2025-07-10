@@ -1204,9 +1204,7 @@ listTL, lstSereServResult, DelegateSuccess);
                      patientTypeAlterAndTranPati.PatientTypeAlter.HAS_BIRTH_CERTIFICATE
                      == MOS.LibraryHein.Bhyt.HeinHasBirthCertificate.HeinHasBirthCertificateCode.TRUE
                      )
-                    && (String.IsNullOrEmpty(currentHisTreatment.TDL_PATIENT_DISTRICT_CODE)
-                    || String.IsNullOrEmpty(currentHisTreatment.TDL_PATIENT_PROVINCE_CODE)
-                    )
+                    && String.IsNullOrEmpty(currentHisTreatment.TDL_PATIENT_PROVINCE_CODE)
                     )
                 {
                     WaitingManager.Hide();

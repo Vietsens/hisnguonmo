@@ -30,4 +30,10 @@ namespace HIS.Desktop.Plugins.HisTrackingList.ADO
         public TrackingListADO() { }
         public List<V_HIS_TRACKING> Trackings { get; set; }
     }
+    public class V_HIS_TRACKING_EXT
+    {
+        public MOS.EFMODEL.DataModels.V_HIS_TRACKING Tracking { get; set; }
+        public HIS_DRUG_USE_ANALYSIS DrugUseAnalysis { get; set; }
+        public bool HasDrugUseAnalysis => DrugUseAnalysis != null && DrugUseAnalysis.ID > 0;
+    }
 }

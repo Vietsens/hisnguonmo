@@ -45,35 +45,47 @@ namespace HIS.Desktop.Plugins.HisTrackingList.Run
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmHisTrackingList));
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject81 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject82 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject83 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject84 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject85 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject86 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject87 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject88 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject89 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject90 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject91 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject92 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject93 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject94 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject95 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject96 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject97 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject98 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject99 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject100 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject1 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject2 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject3 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject4 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject5 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject6 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject7 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject8 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject9 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject10 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject11 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject12 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject13 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject14 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject15 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject16 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject17 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject18 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject19 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject20 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject21 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject22 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject23 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject24 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject25 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject26 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject27 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject28 = new DevExpress.Utils.SerializableAppearanceObject();
             this.layoutControl1 = new DevExpress.XtraLayout.LayoutControl();
+            this.ucViewEmrDocument1 = new HIS.Desktop.Plugins.HisTrackingList.UcEmrDocument.UcViewEmrDocument();
             this.btnTemplate = new DevExpress.XtraEditors.DropDownButton();
-            this.barManager1 = new DevExpress.XtraBars.BarManager(this.components);
+            this.barManager1 = new DevExpress.XtraBars.BarManager();
             this.bar1 = new DevExpress.XtraBars.Bar();
             this.barButton__Search = new DevExpress.XtraBars.BarButtonItem();
             this.barButton__New = new DevExpress.XtraBars.BarButtonItem();
             this.barButton__Print = new DevExpress.XtraBars.BarButtonItem();
+            this.barDockControlTop = new DevExpress.XtraBars.BarDockControl();
+            this.barDockControlBottom = new DevExpress.XtraBars.BarDockControl();
+            this.barDockControlLeft = new DevExpress.XtraBars.BarDockControl();
+            this.barDockControlRight = new DevExpress.XtraBars.BarDockControl();
             this.chkPrintDocumentSigned = new DevExpress.XtraEditors.CheckEdit();
             this.chkSign = new DevExpress.XtraEditors.CheckEdit();
             this.ucPaging1 = new Inventec.UC.Paging.UcPaging();
@@ -84,6 +96,7 @@ namespace HIS.Desktop.Plugins.HisTrackingList.Run
             this.gridViewTrackings = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.gridColumn1 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn2 = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gridColumn17 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn3 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn4 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.repositoryItemButton__Pluss_ServiceReq = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
@@ -97,14 +110,14 @@ namespace HIS.Desktop.Plugins.HisTrackingList.Run
             this.gridColumn16 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn9 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn10 = new DevExpress.XtraGrid.Columns.GridColumn();
-            this.layoutControl1.Controls.Add(this.ucViewEmrDocument1);
-            this.ucViewEmrDocument1 = new HIS.Desktop.Plugins.HisTrackingList.UcEmrDocument.UcViewEmrDocument();
             this.gridColumn11 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn15 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.repositoryItemButton__Edit = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
             this.repositoryItemButton__Delete_Enable = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
             this.repositoryItemButton__Delete_Disable = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
             this.repositoryItemButton__Edit_D = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
+            this.repositoryItemButton__Analysis_Enable = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
+            this.repositoryItemButton__Analysis_Disable = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
             this.dtToTime = new DevExpress.XtraEditors.DateEdit();
             this.dtFromTime = new DevExpress.XtraEditors.DateEdit();
             this.layoutControlGroup1 = new DevExpress.XtraLayout.LayoutControlGroup();
@@ -122,10 +135,6 @@ namespace HIS.Desktop.Plugins.HisTrackingList.Run
             this.layoutControlItem11 = new DevExpress.XtraLayout.LayoutControlItem();
             this.emptySpaceItem2 = new DevExpress.XtraLayout.EmptySpaceItem();
             this.layoutControlItem7 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.barDockControlTop = new DevExpress.XtraBars.BarDockControl();
-            this.barDockControlBottom = new DevExpress.XtraBars.BarDockControl();
-            this.barDockControlLeft = new DevExpress.XtraBars.BarDockControl();
-            this.barDockControlRight = new DevExpress.XtraBars.BarDockControl();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
             this.layoutControl1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.barManager1)).BeginInit();
@@ -138,6 +147,8 @@ namespace HIS.Desktop.Plugins.HisTrackingList.Run
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemButton__Delete_Enable)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemButton__Delete_Disable)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemButton__Edit_D)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repositoryItemButton__Analysis_Enable)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repositoryItemButton__Analysis_Disable)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dtToTime.Properties.CalendarTimeProperties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dtToTime.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dtFromTime.Properties.CalendarTimeProperties)).BeginInit();
@@ -161,12 +172,8 @@ namespace HIS.Desktop.Plugins.HisTrackingList.Run
             // 
             // layoutControl1
             // 
-            this.ucViewEmrDocument1.Location = new System.Drawing.Point(671, 56);
-            this.ucViewEmrDocument1.Name = "ucViewEmrDocument1";
-            this.ucViewEmrDocument1.Size = new System.Drawing.Size(435, 549);
-            this.ucViewEmrDocument1.TabIndex = 13;
-            this.layoutControlItem10.Control = this.ucViewEmrDocument1;
-            this.layoutControl1.Controls.Add(this.btnTemplate);     
+            this.layoutControl1.Controls.Add(this.ucViewEmrDocument1);
+            this.layoutControl1.Controls.Add(this.btnTemplate);
             this.layoutControl1.Controls.Add(this.chkPrintDocumentSigned);
             this.layoutControl1.Controls.Add(this.chkSign);
             this.layoutControl1.Controls.Add(this.ucPaging1);
@@ -186,6 +193,14 @@ namespace HIS.Desktop.Plugins.HisTrackingList.Run
             this.layoutControl1.Text = "layoutControl1";
             this.layoutControl1.GroupExpandChanged += new DevExpress.XtraLayout.Utils.LayoutGroupEventHandler(this.layoutControl1_GroupExpandChanged);
             // 
+            // ucViewEmrDocument1
+            // 
+            this.ucViewEmrDocument1.frmEmr = null;
+            this.ucViewEmrDocument1.Location = new System.Drawing.Point(671, 56);
+            this.ucViewEmrDocument1.Name = "ucViewEmrDocument1";
+            this.ucViewEmrDocument1.Size = new System.Drawing.Size(435, 549);
+            this.ucViewEmrDocument1.TabIndex = 13;
+            // 
             // btnTemplate
             // 
             this.btnTemplate.Location = new System.Drawing.Point(671, 30);
@@ -201,6 +216,10 @@ namespace HIS.Desktop.Plugins.HisTrackingList.Run
             // 
             this.barManager1.Bars.AddRange(new DevExpress.XtraBars.Bar[] {
             this.bar1});
+            this.barManager1.DockControls.Add(this.barDockControlTop);
+            this.barManager1.DockControls.Add(this.barDockControlBottom);
+            this.barManager1.DockControls.Add(this.barDockControlLeft);
+            this.barManager1.DockControls.Add(this.barDockControlRight);
             this.barManager1.Form = this;
             this.barManager1.Items.AddRange(new DevExpress.XtraBars.BarItem[] {
             this.barButton__Search,
@@ -244,6 +263,34 @@ namespace HIS.Desktop.Plugins.HisTrackingList.Run
             this.barButton__Print.ItemShortcut = new DevExpress.XtraBars.BarShortcut((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.P));
             this.barButton__Print.Name = "barButton__Print";
             this.barButton__Print.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.barButton__Print_ItemClick);
+            // 
+            // barDockControlTop
+            // 
+            this.barDockControlTop.CausesValidation = false;
+            this.barDockControlTop.Dock = System.Windows.Forms.DockStyle.Top;
+            this.barDockControlTop.Location = new System.Drawing.Point(0, 0);
+            this.barDockControlTop.Size = new System.Drawing.Size(1130, 29);
+            // 
+            // barDockControlBottom
+            // 
+            this.barDockControlBottom.CausesValidation = false;
+            this.barDockControlBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.barDockControlBottom.Location = new System.Drawing.Point(0, 639);
+            this.barDockControlBottom.Size = new System.Drawing.Size(1130, 0);
+            // 
+            // barDockControlLeft
+            // 
+            this.barDockControlLeft.CausesValidation = false;
+            this.barDockControlLeft.Dock = System.Windows.Forms.DockStyle.Left;
+            this.barDockControlLeft.Location = new System.Drawing.Point(0, 29);
+            this.barDockControlLeft.Size = new System.Drawing.Size(0, 610);
+            // 
+            // barDockControlRight
+            // 
+            this.barDockControlRight.CausesValidation = false;
+            this.barDockControlRight.Dock = System.Windows.Forms.DockStyle.Right;
+            this.barDockControlRight.Location = new System.Drawing.Point(1130, 29);
+            this.barDockControlRight.Size = new System.Drawing.Size(0, 610);
             // 
             // chkPrintDocumentSigned
             // 
@@ -318,7 +365,9 @@ namespace HIS.Desktop.Plugins.HisTrackingList.Run
             this.repositoryItemButton__Delete_Enable,
             this.repositoryItemButton__Delete_Disable,
             this.repositoryItemButton__Pluss_ServiceReq,
-            this.repositoryItemButton__Edit_D});
+            this.repositoryItemButton__Edit_D,
+            this.repositoryItemButton__Analysis_Enable,
+            this.repositoryItemButton__Analysis_Disable});
             this.gridControlTrackings.Size = new System.Drawing.Size(662, 556);
             this.gridControlTrackings.TabIndex = 6;
             this.gridControlTrackings.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
@@ -329,6 +378,7 @@ namespace HIS.Desktop.Plugins.HisTrackingList.Run
             this.gridViewTrackings.Columns.AddRange(new DevExpress.XtraGrid.Columns.GridColumn[] {
             this.gridColumn1,
             this.gridColumn2,
+            this.gridColumn17,
             this.gridColumn3,
             this.gridColumn4,
             this.gridColumn5,
@@ -364,7 +414,7 @@ namespace HIS.Desktop.Plugins.HisTrackingList.Run
             // gridColumn1
             // 
             this.gridColumn1.Caption = "STT";
-            this.gridColumn1.FieldName = "STT";
+            this.gridColumn1.FieldName = "Tracking.STT";
             this.gridColumn1.Name = "gridColumn1";
             this.gridColumn1.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumn1.Visible = true;
@@ -374,30 +424,42 @@ namespace HIS.Desktop.Plugins.HisTrackingList.Run
             // gridColumn2
             // 
             this.gridColumn2.Caption = "Sửa";
-            this.gridColumn2.FieldName = "EDIT";
+            this.gridColumn2.FieldName = "Tracking.EDIT";
             this.gridColumn2.Name = "gridColumn2";
             this.gridColumn2.OptionsColumn.ShowCaption = false;
+            this.gridColumn2.ToolTip = "Sửa";
             this.gridColumn2.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumn2.Visible = true;
             this.gridColumn2.VisibleIndex = 2;
             this.gridColumn2.Width = 20;
             // 
+            // gridColumn17
+            // 
+            this.gridColumn17.Caption = "Phân tích sử dụng thuốc";
+            this.gridColumn17.FieldName = "Tracking.DRUG_ANALYSIS";
+            this.gridColumn17.Name = "gridColumn17";
+            this.gridColumn17.OptionsColumn.ShowCaption = false;
+            this.gridColumn17.UnboundType = DevExpress.Data.UnboundColumnType.Object;
+            this.gridColumn17.Visible = true;
+            this.gridColumn17.VisibleIndex = 3;
+            this.gridColumn17.Width = 20;
+            // 
             // gridColumn3
             // 
             this.gridColumn3.Caption = "Xóa";
-            this.gridColumn3.FieldName = "DELETE";
+            this.gridColumn3.FieldName = "Tracking.DELETE";
             this.gridColumn3.Name = "gridColumn3";
             this.gridColumn3.OptionsColumn.ShowCaption = false;
             this.gridColumn3.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumn3.Visible = true;
-            this.gridColumn3.VisibleIndex = 3;
+            this.gridColumn3.VisibleIndex = 4;
             this.gridColumn3.Width = 20;
             // 
             // gridColumn4
             // 
             this.gridColumn4.Caption = "Y lệnh";
             this.gridColumn4.ColumnEdit = this.repositoryItemButton__Pluss_ServiceReq;
-            this.gridColumn4.FieldName = "SERVICE_REQ";
+            this.gridColumn4.FieldName = "Tracking.SERVICE_REQ";
             this.gridColumn4.Name = "gridColumn4";
             this.gridColumn4.OptionsColumn.ShowCaption = false;
             this.gridColumn4.Width = 20;
@@ -406,137 +468,137 @@ namespace HIS.Desktop.Plugins.HisTrackingList.Run
             // 
             this.repositoryItemButton__Pluss_ServiceReq.AutoHeight = false;
             this.repositoryItemButton__Pluss_ServiceReq.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("repositoryItemButton__Pluss_ServiceReq.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject81, serializableAppearanceObject82, serializableAppearanceObject83, serializableAppearanceObject84, "Y lệnh", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("repositoryItemButton__Pluss_ServiceReq.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject1, serializableAppearanceObject2, serializableAppearanceObject3, serializableAppearanceObject4, "Y lệnh", null, null, true)});
             this.repositoryItemButton__Pluss_ServiceReq.Name = "repositoryItemButton__Pluss_ServiceReq";
             this.repositoryItemButton__Pluss_ServiceReq.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             // 
             // gridColumn5
             // 
             this.gridColumn5.Caption = "Thời gian";
-            this.gridColumn5.FieldName = "TRACKING_TIME_DISPLAY";
+            this.gridColumn5.FieldName = "Tracking.TRACKING_TIME_DISPLAY";
             this.gridColumn5.Name = "gridColumn5";
             this.gridColumn5.OptionsColumn.AllowEdit = false;
             this.gridColumn5.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumn5.Visible = true;
-            this.gridColumn5.VisibleIndex = 4;
+            this.gridColumn5.VisibleIndex = 5;
             this.gridColumn5.Width = 118;
             // 
             // gridColumn14
             // 
             this.gridColumn14.Caption = "Số phiếu";
-            this.gridColumn14.FieldName = "SHEET_ORDER";
+            this.gridColumn14.FieldName = "Tracking.SHEET_ORDER";
             this.gridColumn14.Name = "gridColumn14";
             this.gridColumn14.OptionsColumn.AllowSort = DevExpress.Utils.DefaultBoolean.False;
             this.gridColumn14.Visible = true;
-            this.gridColumn14.VisibleIndex = 5;
+            this.gridColumn14.VisibleIndex = 6;
             // 
             // gridColumn6
             // 
             this.gridColumn6.Caption = "Chẩn đoán chính";
-            this.gridColumn6.FieldName = "ICD_MAIN_DISPLAY";
+            this.gridColumn6.FieldName = "Tracking.ICD_MAIN_DISPLAY";
             this.gridColumn6.Name = "gridColumn6";
             this.gridColumn6.OptionsColumn.AllowEdit = false;
             this.gridColumn6.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumn6.Visible = true;
-            this.gridColumn6.VisibleIndex = 8;
+            this.gridColumn6.VisibleIndex = 9;
             this.gridColumn6.Width = 350;
             // 
             // gridColumn7
             // 
             this.gridColumn7.Caption = "Chẩn đoán phụ";
-            this.gridColumn7.FieldName = "ICD_TEXT";
+            this.gridColumn7.FieldName = "Tracking.ICD_TEXT";
             this.gridColumn7.Name = "gridColumn7";
             this.gridColumn7.OptionsColumn.AllowEdit = false;
             this.gridColumn7.Visible = true;
-            this.gridColumn7.VisibleIndex = 9;
+            this.gridColumn7.VisibleIndex = 10;
             this.gridColumn7.Width = 300;
             // 
             // gridColumn13
             // 
             this.gridColumn13.Caption = "Khoa";
-            this.gridColumn13.FieldName = "DEPARTMENT_NAME";
+            this.gridColumn13.FieldName = "Tracking.DEPARTMENT_NAME";
             this.gridColumn13.Name = "gridColumn13";
             this.gridColumn13.OptionsColumn.AllowEdit = false;
             this.gridColumn13.Visible = true;
-            this.gridColumn13.VisibleIndex = 10;
+            this.gridColumn13.VisibleIndex = 11;
             this.gridColumn13.Width = 150;
             // 
             // gridColumn12
             // 
             this.gridColumn12.Caption = "Phòng";
-            this.gridColumn12.FieldName = "ROOM_NAME";
+            this.gridColumn12.FieldName = "Tracking.ROOM_NAME";
             this.gridColumn12.Name = "gridColumn12";
             this.gridColumn12.OptionsColumn.AllowEdit = false;
             this.gridColumn12.Visible = true;
-            this.gridColumn12.VisibleIndex = 11;
+            this.gridColumn12.VisibleIndex = 12;
             this.gridColumn12.Width = 150;
             // 
             // gridColumn8
             // 
             this.gridColumn8.Caption = "Thời gian tạo";
-            this.gridColumn8.FieldName = "CREATE_TIME_DISPLAY";
+            this.gridColumn8.FieldName = "Tracking.CREATE_TIME_DISPLAY";
             this.gridColumn8.Name = "gridColumn8";
             this.gridColumn8.OptionsColumn.AllowEdit = false;
             this.gridColumn8.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumn8.Visible = true;
-            this.gridColumn8.VisibleIndex = 12;
+            this.gridColumn8.VisibleIndex = 13;
             this.gridColumn8.Width = 150;
             // 
             // gridColumn16
             // 
             this.gridColumn16.Caption = "Tên người tạo";
-            this.gridColumn16.FieldName = "CREATOR_NAME";
+            this.gridColumn16.FieldName = "Tracking.CREATOR_NAME";
             this.gridColumn16.Name = "gridColumn16";
             this.gridColumn16.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumn16.Visible = true;
-            this.gridColumn16.VisibleIndex = 13;
+            this.gridColumn16.VisibleIndex = 14;
             this.gridColumn16.Width = 150;
             // 
             // gridColumn9
             // 
             this.gridColumn9.Caption = "Người tạo";
-            this.gridColumn9.FieldName = "CREATOR";
+            this.gridColumn9.FieldName = "Tracking.CREATOR";
             this.gridColumn9.Name = "gridColumn9";
             this.gridColumn9.OptionsColumn.AllowEdit = false;
             this.gridColumn9.Visible = true;
-            this.gridColumn9.VisibleIndex = 14;
+            this.gridColumn9.VisibleIndex = 15;
             this.gridColumn9.Width = 80;
             // 
             // gridColumn10
             // 
             this.gridColumn10.Caption = "Thời gian sửa";
-            this.gridColumn10.FieldName = "MODIFY_TIME_DISPLAY";
+            this.gridColumn10.FieldName = "Tracking.MODIFY_TIME_DISPLAY";
             this.gridColumn10.Name = "gridColumn10";
             this.gridColumn10.OptionsColumn.AllowEdit = false;
             this.gridColumn10.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumn10.Visible = true;
-            this.gridColumn10.VisibleIndex = 7;
+            this.gridColumn10.VisibleIndex = 8;
             this.gridColumn10.Width = 150;
             // 
             // gridColumn11
             // 
             this.gridColumn11.Caption = "Người sửa";
-            this.gridColumn11.FieldName = "MODIFIER";
+            this.gridColumn11.FieldName = "Tracking.MODIFIER";
             this.gridColumn11.Name = "gridColumn11";
             this.gridColumn11.OptionsColumn.AllowEdit = false;
             this.gridColumn11.Visible = true;
-            this.gridColumn11.VisibleIndex = 15;
+            this.gridColumn11.VisibleIndex = 16;
             this.gridColumn11.Width = 90;
             // 
             // gridColumn15
             // 
             this.gridColumn15.Caption = "Trạng thái";
-            this.gridColumn15.FieldName = "EMR_DOCUMENT_STT_NAME_str";
+            this.gridColumn15.FieldName = "Tracking.EMR_DOCUMENT_STT_NAME_str";
             this.gridColumn15.Name = "gridColumn15";
             this.gridColumn15.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumn15.Visible = true;
-            this.gridColumn15.VisibleIndex = 6;
+            this.gridColumn15.VisibleIndex = 7;
             // 
             // repositoryItemButton__Edit
             // 
             this.repositoryItemButton__Edit.AutoHeight = false;
             this.repositoryItemButton__Edit.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("repositoryItemButton__Edit.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject85, serializableAppearanceObject86, serializableAppearanceObject87, serializableAppearanceObject88, "Sửa", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("repositoryItemButton__Edit.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject5, serializableAppearanceObject6, serializableAppearanceObject7, serializableAppearanceObject8, "Sửa", null, null, true)});
             this.repositoryItemButton__Edit.Name = "repositoryItemButton__Edit";
             this.repositoryItemButton__Edit.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             // 
@@ -544,7 +606,7 @@ namespace HIS.Desktop.Plugins.HisTrackingList.Run
             // 
             this.repositoryItemButton__Delete_Enable.AutoHeight = false;
             this.repositoryItemButton__Delete_Enable.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("repositoryItemButton__Delete_Enable.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject89, serializableAppearanceObject90, serializableAppearanceObject91, serializableAppearanceObject92, "Xóa", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("repositoryItemButton__Delete_Enable.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject9, serializableAppearanceObject10, serializableAppearanceObject11, serializableAppearanceObject12, "Xóa", null, null, true)});
             this.repositoryItemButton__Delete_Enable.Name = "repositoryItemButton__Delete_Enable";
             this.repositoryItemButton__Delete_Enable.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             // 
@@ -552,7 +614,7 @@ namespace HIS.Desktop.Plugins.HisTrackingList.Run
             // 
             this.repositoryItemButton__Delete_Disable.AutoHeight = false;
             this.repositoryItemButton__Delete_Disable.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, false, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("repositoryItemButton__Delete_Disable.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject93, serializableAppearanceObject94, serializableAppearanceObject95, serializableAppearanceObject96, "Xóa", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, false, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("repositoryItemButton__Delete_Disable.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject13, serializableAppearanceObject14, serializableAppearanceObject15, serializableAppearanceObject16, "Xóa", null, null, true)});
             this.repositoryItemButton__Delete_Disable.Name = "repositoryItemButton__Delete_Disable";
             this.repositoryItemButton__Delete_Disable.ReadOnly = true;
             this.repositoryItemButton__Delete_Disable.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
@@ -561,10 +623,27 @@ namespace HIS.Desktop.Plugins.HisTrackingList.Run
             // 
             this.repositoryItemButton__Edit_D.AutoHeight = false;
             this.repositoryItemButton__Edit_D.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, false, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("repositoryItemButton__Edit_D.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject97, serializableAppearanceObject98, serializableAppearanceObject99, serializableAppearanceObject100, "", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, false, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("repositoryItemButton__Edit_D.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject17, serializableAppearanceObject18, serializableAppearanceObject19, serializableAppearanceObject20, "", null, null, true)});
             this.repositoryItemButton__Edit_D.Name = "repositoryItemButton__Edit_D";
             this.repositoryItemButton__Edit_D.ReadOnly = true;
             this.repositoryItemButton__Edit_D.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
+            // 
+            // repositoryItemButton__Analysis_Enable
+            // 
+            this.repositoryItemButton__Analysis_Enable.AutoHeight = false;
+            this.repositoryItemButton__Analysis_Enable.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, global::HIS.Desktop.Plugins.HisTrackingList.Properties.Resources.thuoc, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject21, serializableAppearanceObject22, serializableAppearanceObject23, serializableAppearanceObject24, "Phân tích sử dụng thuốc", null, null, true)});
+            this.repositoryItemButton__Analysis_Enable.Name = "repositoryItemButton__Analysis_Enable";
+            this.repositoryItemButton__Analysis_Enable.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
+            // 
+            // repositoryItemButton__Analysis_Disable
+            // 
+            this.repositoryItemButton__Analysis_Disable.AutoHeight = false;
+            this.repositoryItemButton__Analysis_Disable.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, false, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, global::HIS.Desktop.Plugins.HisTrackingList.Properties.Resources.thuoc, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject25, serializableAppearanceObject26, serializableAppearanceObject27, serializableAppearanceObject28, "Phân tích sử dụng thuốc.", null, null, true)});
+            this.repositoryItemButton__Analysis_Disable.Name = "repositoryItemButton__Analysis_Disable";
+            this.repositoryItemButton__Analysis_Disable.ReadOnly = true;
+            this.repositoryItemButton__Analysis_Disable.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             // 
             // dtToTime
             // 
@@ -737,6 +816,7 @@ namespace HIS.Desktop.Plugins.HisTrackingList.Run
             // 
             // layoutControlItem10
             // 
+            this.layoutControlItem10.Control = this.ucViewEmrDocument1;
             this.layoutControlItem10.Location = new System.Drawing.Point(0, 26);
             this.layoutControlItem10.Name = "layoutControlItem10";
             this.layoutControlItem10.Size = new System.Drawing.Size(439, 553);
@@ -768,34 +848,6 @@ namespace HIS.Desktop.Plugins.HisTrackingList.Run
             this.layoutControlItem7.Size = new System.Drawing.Size(666, 24);
             this.layoutControlItem7.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem7.TextVisible = false;
-            // 
-            // barDockControlTop
-            // 
-            this.barDockControlTop.CausesValidation = false;
-            this.barDockControlTop.Dock = System.Windows.Forms.DockStyle.Top;
-            this.barDockControlTop.Location = new System.Drawing.Point(0, 29);
-            this.barDockControlTop.Size = new System.Drawing.Size(1130, 0);
-            // 
-            // barDockControlBottom
-            // 
-            this.barDockControlBottom.CausesValidation = false;
-            this.barDockControlBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.barDockControlBottom.Location = new System.Drawing.Point(0, 639);
-            this.barDockControlBottom.Size = new System.Drawing.Size(1130, 0);
-            // 
-            // barDockControlLeft
-            // 
-            this.barDockControlLeft.CausesValidation = false;
-            this.barDockControlLeft.Dock = System.Windows.Forms.DockStyle.Left;
-            this.barDockControlLeft.Location = new System.Drawing.Point(0, 29);
-            this.barDockControlLeft.Size = new System.Drawing.Size(0, 610);
-            // 
-            // barDockControlRight
-            // 
-            this.barDockControlRight.CausesValidation = false;
-            this.barDockControlRight.Dock = System.Windows.Forms.DockStyle.Right;
-            this.barDockControlRight.Location = new System.Drawing.Point(1130, 29);
-            this.barDockControlRight.Size = new System.Drawing.Size(0, 610);
             // 
             // frmHisTrackingList
             // 
@@ -829,6 +881,8 @@ namespace HIS.Desktop.Plugins.HisTrackingList.Run
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemButton__Delete_Enable)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemButton__Delete_Disable)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemButton__Edit_D)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repositoryItemButton__Analysis_Enable)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repositoryItemButton__Analysis_Disable)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dtToTime.Properties.CalendarTimeProperties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dtToTime.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dtFromTime.Properties.CalendarTimeProperties)).EndInit();
@@ -913,5 +967,8 @@ namespace HIS.Desktop.Plugins.HisTrackingList.Run
         private DevExpress.XtraLayout.EmptySpaceItem emptySpaceItem2;
         private DevExpress.XtraGrid.Columns.GridColumn gridColumn15;
         private DevExpress.XtraGrid.Columns.GridColumn gridColumn16;
+        private DevExpress.XtraGrid.Columns.GridColumn gridColumn17;
+        private DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit repositoryItemButton__Analysis_Enable;
+        private DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit repositoryItemButton__Analysis_Disable;
     }
 }
