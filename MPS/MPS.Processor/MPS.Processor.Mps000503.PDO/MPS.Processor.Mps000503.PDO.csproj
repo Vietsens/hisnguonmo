@@ -1,0 +1,140 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{36FBEC0A-A3E3-44D8-820D-7CE3AB1D88A3}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>MPS.Processor.Mps000503.PDO</RootNamespace>
+    <AssemblyName>MPS.Processor.Mps000503.PDO</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="AutoMapper">
+      <HintPath>..\..\..\..\LIB\MPSv2\MPS\AutoMapper.dll</HintPath>
+    </Reference>
+    <Reference Include="FlexCel">
+      <HintPath>..\..\..\..\LIB\FlexCellReport\FlexCel.dll</HintPath>
+    </Reference>
+    <Reference Include="IMSys.DbConfig.HIS_RS">
+      <HintPath>..\..\..\..\LIB\IMSys.DbConfig\IMSys.DbConfig.HIS_RS\IMSys.DbConfig.HIS_RS.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Common.BarcodeLib, Version=1.0.0.19, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\LIB\Inventec.Common\Inventec.Common.BarcodeLib\Inventec.Common.BarcodeLib.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Common.DateTime, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\LIB\Inventec.Common\Inventec.Common.DateTime\Inventec.Common.DateTime.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Common.FlexCelExport, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\LIB\Inventec.Common\Inventec.Common.FlexCelExport\Inventec.Common.FlexCelExport.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Common.Logging">
+      <HintPath>..\..\..\..\LIB\Inventec.Common\Inventec.Common.Logging\Inventec.Common.Logging.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Common.Mapper">
+      <HintPath>..\..\..\..\LIB\Inventec.Common\Inventec.Common.Mapper\Inventec.Common.Mapper.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Common.Number">
+      <HintPath>..\..\..\..\LIB\Inventec.Common\Inventec.Common.Number\Inventec.Common.Number.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Common.Repository">
+      <HintPath>..\..\..\..\LIB\Inventec.Common\Inventec.Common.Repository\Inventec.Common.Repository.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Common.String">
+      <HintPath>..\..\..\..\LIB\Inventec.Common\Inventec.Common.String\Inventec.Common.String.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Common.TypeConvert">
+      <HintPath>..\..\..\..\LIB\Inventec.Common\Inventec.Common.TypeConvert\Inventec.Common.TypeConvert.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Core, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\LIB\Inventec.Core\Inventec.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Token.ClientSystem, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\LIB\Inventec.Token\Inventec.Token.ClientSystem\Inventec.Token.ClientSystem.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Token.Core, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\LIB\Inventec.Token\Inventec.Token.Core\Inventec.Token.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.UC.Login, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\LIB\Inventec.UC\Inventec.UC.Login\Inventec.UC.Login.dll</HintPath>
+    </Reference>
+    <Reference Include="LIS.EFMODEL">
+      <HintPath>..\..\..\..\LIB\LIS\LIS.EFMODEL.dll</HintPath>
+    </Reference>
+    <Reference Include="MOS.EFMODEL, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\lib\MOS\MOS.EFMODEL.dll</HintPath>
+    </Reference>
+    <Reference Include="MOS.Filter">
+      <HintPath>..\..\..\..\LIB\MOS\MOS.Filter.dll</HintPath>
+    </Reference>
+    <Reference Include="MOS.LibraryHein.Bhyt">
+      <HintPath>..\..\..\..\LIB\MOS\MOS.LibraryHein.Bhyt.dll</HintPath>
+    </Reference>
+    <Reference Include="MOS.LibraryHein.Common">
+      <HintPath>..\..\..\..\LIB\MOS\MOS.LibraryHein.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="MOS.SDO">
+      <HintPath>..\..\..\..\LIB\MOS\MOS.SDO.dll</HintPath>
+    </Reference>
+    <Reference Include="MPS.ProcessorBase, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\LIB\MPSv2\MPS.ProcessorBase\MPS.ProcessorBase.dll</HintPath>
+    </Reference>
+    <Reference Include="SAR.EFMODEL, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\LIB\SAR\SAR.EFMODEL.dll</HintPath>
+    </Reference>
+    <Reference Include="SAR.SDO">
+      <HintPath>..\..\..\..\LIB\SAR\SAR.SDO.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Mps000503PDO.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
