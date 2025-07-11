@@ -43,7 +43,7 @@ namespace Inventec.Desktop.Plugins.DrugUsageAnalysisDetail.DrugUsageAnalysisDeta
             {
                 Inventec.Desktop.Common.Modules.Module moduleData = null;
                 V_HIS_TRACKING trackingData = null;
-                bool isAlowEditPharmacist = false;
+                Tuple<bool, bool> isAlowEditPharmacistOrDoctor = null;                 
                 HIS.Desktop.Common.DelegateSelectData delegateSelectData = null;
 
                 if (entity != null && entity.Count() > 0)
@@ -58,9 +58,9 @@ namespace Inventec.Desktop.Plugins.DrugUsageAnalysisDetail.DrugUsageAnalysisDeta
                         {
                             trackingData = tracking;
                         }
-                        else if (item is bool isAEP)
+                        else if (item is Tuple<bool, bool> isAEP)
                         {
-                            isAlowEditPharmacist = isAEP;
+                            isAlowEditPharmacistOrDoctor = isAEP;
                         }
                         else if (item is HIS.Desktop.Common.DelegateSelectData deleData)
                         {
@@ -70,7 +70,7 @@ namespace Inventec.Desktop.Plugins.DrugUsageAnalysisDetail.DrugUsageAnalysisDeta
                 }
                 if (moduleData != null)
                 {
-                    return new frmDrugUsageAnalysisDetail(moduleData, trackingData, isAlowEditPharmacist, delegateSelectData);
+                    return new frmDrugUsageAnalysisDetail(moduleData, trackingData, isAlowEditPharmacistOrDoctor, delegateSelectData);
                 }
                 else
                 {

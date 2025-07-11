@@ -25,12 +25,12 @@ namespace HIS.Desktop.Plugins.DrugUsageAnalysisDetail
 
         Inventec.Desktop.Common.Modules.Module current = null;
         V_HIS_TRACKING trackingData = null;
-        bool isAlowEditPharmacist = false;
+        Tuple<bool, bool> isAlowEditPharmacistOrDoctor = null;
         HIS.Desktop.Common.DelegateSelectData delegateSelectData = null;
         public frmDrugUsageAnalysisDetail(
             Inventec.Desktop.Common.Modules.Module moduleData, 
-            V_HIS_TRACKING tracking, 
-            bool isAlow, 
+            V_HIS_TRACKING tracking,
+            Tuple<bool, bool> isAlow, 
             HIS.Desktop.Common.DelegateSelectData delegateRefreshData 
             )
             :base(moduleData)
@@ -40,7 +40,7 @@ namespace HIS.Desktop.Plugins.DrugUsageAnalysisDetail
             {
                 current = moduleData;
                 trackingData = tracking;
-                isAlowEditPharmacist = isAlow;
+                isAlowEditPharmacistOrDoctor = isAlow;
                 delegateSelectData = delegateRefreshData;
             }
             catch (Exception ex)
@@ -51,6 +51,8 @@ namespace HIS.Desktop.Plugins.DrugUsageAnalysisDetail
 
         private void frmDrugUsageAnalysisDetail_Load(object sender, EventArgs e)
         {
+            Inventec.Common.Logging.LogSystem.Info("isAlowEditPharmacist: " + isAlowEditPharmacistOrDoctor.Item1);
+            Inventec.Common.Logging.LogSystem.Info("isAlowEditDoctor: " + isAlowEditPharmacistOrDoctor.Item2);
             SetRegion2EnabledState(); // Thiết lập trạng thái Enabled cho vùng 2 và 3
             SetDataCboPHARMACIST(cboPharmacist); // Combobox dược sĩ
             SetDataCboDOCTOR(cboDoctor); // Combobox bác sĩ
@@ -84,10 +86,9 @@ namespace HIS.Desktop.Plugins.DrugUsageAnalysisDetail
                     }
                     spinInterventionNumber.Value = drugUseAnalysis.INTERVENTION_NUMBER.HasValue ? drugUseAnalysis.INTERVENTION_NUMBER.Value : 0;
                     txtInterventionDrugs.Text = drugUseAnalysis.INTERVENED_DRUGS;
-                    cboDoctor.EditValue = drugUseAnalysis.PHARMACIST_LOGINNAME;
+                    cboPharmacist.EditValue = drugUseAnalysis.PHARMACIST_LOGINNAME;
                     txtPharmacistOpinion.Text = drugUseAnalysis.PHARMACIST_OPINION;
                     cboDoctor.EditValue = drugUseAnalysis.DOCTOR_LOGINNAME;
-                    // Sửa lại đoạn này trong SetDataFormcontrol()
                     radioGroup1.SelectedIndex = drugUseAnalysis.IS_AGREE.HasValue && drugUseAnalysis.IS_AGREE.Value == 1 ? 0 : 1;
                     txtDecisionReason.Text = drugUseAnalysis.DECISION_REASON;
                 }
@@ -117,10 +118,10 @@ namespace HIS.Desktop.Plugins.DrugUsageAnalysisDetail
         {
             try
             {
-                var employee = BackendDataWorker.Get<V_HIS_EMPLOYEE>().FirstOrDefault(o => o.LOGINNAME == Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName());
-                bool isDoctor = employee?.IS_DOCTOR == 1;
-                layoutControlGroupVung2.Enabled = !isDoctor && isAlowEditPharmacist;
-                layoutControlGroupVung3.Enabled = isDoctor;
+                //var employee = BackendDataWorker.Get<V_HIS_EMPLOYEE>().FirstOrDefault(o => o.LOGINNAME == Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName());
+                //bool isDoctor = employee?.IS_DOCTOR == 1;
+                layoutControlGroupVung2.Enabled = isAlowEditPharmacistOrDoctor.Item1;
+                layoutControlGroupVung3.Enabled = isAlowEditPharmacistOrDoctor.Item2;
             }
             catch (Exception ex)
             {
@@ -205,8 +206,10 @@ namespace HIS.Desktop.Plugins.DrugUsageAnalysisDetail
                 drugUseAnalysis.INTERVENTION_NUMBER = Convert.ToInt32(spinInterventionNumber.Value);
                 drugUseAnalysis.INTERVENED_DRUGS = txtInterventionDrugs.Text.Trim();
                 drugUseAnalysis.PHARMACIST_LOGINNAME = cboPharmacist.EditValue?.ToString();
+                drugUseAnalysis.PHARMACIST_USERNAME = cboPharmacist.Properties.GetDisplayText(cboPharmacist.EditValue);
                 drugUseAnalysis.PHARMACIST_OPINION = txtPharmacistOpinion.Text.Trim();
                 drugUseAnalysis.DOCTOR_LOGINNAME = cboDoctor.EditValue?.ToString();
+                drugUseAnalysis.DOCTOR_USERNAME = cboDoctor.Properties.GetDisplayText(cboDoctor.EditValue);
                 drugUseAnalysis.IS_AGREE = radioGroup1.SelectedIndex == 0 ? (short)1 : (short?)null;
                 drugUseAnalysis.DECISION_REASON = txtDecisionReason.Text.Trim();
                 Inventec.Common.Logging.LogSystem.Info("drugUseAnalysis: " + drugUseAnalysis);
@@ -277,7 +280,7 @@ namespace HIS.Desktop.Plugins.DrugUsageAnalysisDetail
         {
             try
             {
-                cboPharmacist.Properties.Buttons[0].Visible = !string.IsNullOrEmpty(cboPharmacist.Text); 
+                cboPharmacist.Properties.Buttons[1].Visible = !string.IsNullOrEmpty(cboPharmacist.Text); 
             }
             catch (Exception ex)
             {
@@ -289,7 +292,7 @@ namespace HIS.Desktop.Plugins.DrugUsageAnalysisDetail
         {
             try
             {
-                cboDoctor.Properties.Buttons[0].Visible = !string.IsNullOrEmpty(cboDoctor.Text);
+                cboDoctor.Properties.Buttons[1].Visible = !string.IsNullOrEmpty(cboDoctor.Text);
             }
             catch (Exception ex)
             {
@@ -307,6 +310,14 @@ namespace HIS.Desktop.Plugins.DrugUsageAnalysisDetail
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void spinInterventionNumber_EditValueChanged(object sender, EventArgs e)
+        {
+           if (spinInterventionNumber.Value < spinInterventionNumber.Properties.MinValue)
+            {
+                spinInterventionNumber.Value = spinInterventionNumber.Properties.MinValue;
             }
         }
     }
