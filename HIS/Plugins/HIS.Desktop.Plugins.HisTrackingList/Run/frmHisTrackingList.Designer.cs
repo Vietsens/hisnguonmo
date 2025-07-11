@@ -405,6 +405,7 @@ namespace HIS.Desktop.Plugins.HisTrackingList.Run
             this.gridViewTrackings.OptionsView.ColumnAutoWidth = false;
             this.gridViewTrackings.OptionsView.ShowGroupPanel = false;
             this.gridViewTrackings.OptionsView.ShowIndicator = false;
+            this.gridViewTrackings.RowCellStyle += new DevExpress.XtraGrid.Views.Grid.RowCellStyleEventHandler(this.gridViewTrackings_RowCellStyle);
             this.gridViewTrackings.CustomRowCellEdit += new DevExpress.XtraGrid.Views.Grid.CustomRowCellEditEventHandler(this.gridViewTrackings_CustomRowCellEdit);
             this.gridViewTrackings.SelectionChanged += new DevExpress.Data.SelectionChangedEventHandler(this.gridViewTrackings_SelectionChanged);
             this.gridViewTrackings.CellValueChanged += new DevExpress.XtraGrid.Views.Base.CellValueChangedEventHandler(this.gridViewTrackings_CellValueChanged);
@@ -640,7 +641,7 @@ namespace HIS.Desktop.Plugins.HisTrackingList.Run
             // 
             this.repositoryItemButton__Analysis_Disable.AutoHeight = false;
             this.repositoryItemButton__Analysis_Disable.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, false, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, global::HIS.Desktop.Plugins.HisTrackingList.Properties.Resources.thuoc, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject25, serializableAppearanceObject26, serializableAppearanceObject27, serializableAppearanceObject28, "Phân tích sử dụng thuốc.", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, false, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, global::HIS.Desktop.Plugins.HisTrackingList.Properties.Resources.thuoc, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject25, serializableAppearanceObject26, serializableAppearanceObject27, serializableAppearanceObject28, "Phân tích sử dụng thuốc", null, null, true)});
             this.repositoryItemButton__Analysis_Disable.Name = "repositoryItemButton__Analysis_Disable";
             this.repositoryItemButton__Analysis_Disable.ReadOnly = true;
             this.repositoryItemButton__Analysis_Disable.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;

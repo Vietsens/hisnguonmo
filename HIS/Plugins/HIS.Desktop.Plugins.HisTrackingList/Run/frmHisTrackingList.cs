@@ -99,6 +99,7 @@ namespace HIS.Desktop.Plugins.HisTrackingList.Run
         internal List<V_HIS_TRACKING_EXT> vHisTrackingListExt { get; set; } = new List<V_HIS_TRACKING_EXT>();
         List<HIS_DRUG_USE_ANALYSIS> ListDrugUseAnalysis;
         List<V_EMR_DOCUMENT> listEmrDocument = new List<V_EMR_DOCUMENT>();
+        HIS_TREATMENT TreatmentForList { get; set; }
         HisTreatmentBedRoomLViewFilter DataTransferTreatmentBedRoomFilter { get; set; }
         private bool IsFirstLoadForm { get; set; }
         private bool IsLoad { get; set; }
@@ -163,7 +164,7 @@ namespace HIS.Desktop.Plugins.HisTrackingList.Run
 
                 dtFromTime.EditValue = null;
                 dtToTime.EditValue = DateTime.Now;
-
+                LoadTreatmentForListTable();
                 LoadDataTrackingList();
                 if (lcgEmrDocument.Expanded)
                 {
@@ -627,6 +628,13 @@ namespace HIS.Desktop.Plugins.HisTrackingList.Run
                     }
                 }
             }
+            if (ListDrugUseAnalysis != null)
+            {
+                trackingIdsWithDrugAnalysis = new HashSet<long>(
+                    ListDrugUseAnalysis
+                    .Where(x => x.TRACKING_ID.HasValue)
+                    .Select(x => x.TRACKING_ID.Value));
+            }
         }
 
         private void gridViewTrackings_CustomRowCellEdit(object sender, DevExpress.XtraGrid.Views.Grid.CustomRowCellEditEventArgs e)
@@ -675,17 +683,23 @@ namespace HIS.Desktop.Plugins.HisTrackingList.Run
                     else if (e.Column.FieldName == "Tracking.DRUG_ANALYSIS")
                     {
                         var rowExt = gridViewTrackings.GetRow(e.RowHandle) as V_HIS_TRACKING_EXT;
-                        Inventec.Common.Logging.LogSystem.Info("Column : " + e.Column.FieldName );
-                        Inventec.Common.Logging.LogSystem.Info("HasDrugUseAnalysis : " + rowExt?.HasDrugUseAnalysis);
+                        Inventec.Common.Logging.LogSystem.Info("Column1 : " + e.Column.FieldName );
 
                         if (rowExt == null || rowExt.Tracking == null)
                         {
                             e.RepositoryItem = repositoryItemButton__Analysis_Disable;
                             return;
                         }
-
-                        bool isInpatient = DataTransferTreatmentBedRoomFilter != null &&
-                                           DataTransferTreatmentBedRoomFilter.TREATMENT_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__DTNOITRU;
+                        if (this.TreatmentForList != null)
+                        {
+                            Inventec.Common.Logging.LogSystem.Info("TreatmentForList.TDL_TREATMENT_TYPE_ID : " + this.TreatmentForList.TDL_TREATMENT_TYPE_ID);
+                        }
+                        else
+                        {
+                            Inventec.Common.Logging.LogSystem.Warn("TreatmentForList is null");
+                        }
+                        bool isInpatient = this.TreatmentForList != null &&
+                        this.TreatmentForList.TDL_TREATMENT_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__DTNOITRU;
 
                         var department = BackendDataWorker.Get<HIS_DEPARTMENT>()
                                             .FirstOrDefault(o => o.ID == rowExt.Tracking.DEPARTMENT_ID);
@@ -693,6 +707,9 @@ namespace HIS.Desktop.Plugins.HisTrackingList.Run
                         bool isClinicalDept = department != null && department.IS_CLINICAL == 1;
 
                         bool hasAnalysis = rowExt.HasDrugUseAnalysis;
+                        Inventec.Common.Logging.LogSystem.Info("isInpatient : " + isInpatient);
+                        Inventec.Common.Logging.LogSystem.Info("isClinicalDept : " + isClinicalDept);
+                        Inventec.Common.Logging.LogSystem.Info("HasDrugUseAnalysis : " + hasAnalysis);
 
                         bool accessEnable = isInpatient && isClinicalDept && hasAnalysis;
                         Inventec.Common.Logging.LogSystem.Info("accessEnable : " + accessEnable);
@@ -708,7 +725,25 @@ namespace HIS.Desktop.Plugins.HisTrackingList.Run
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
-
+        private void LoadTreatmentForListTable()
+        {
+            try
+            {
+                CommonParam param = new CommonParam();
+                MOS.Filter.HisTreatmentFilter hisTreatmentFilter = new MOS.Filter.HisTreatmentFilter();
+                hisTreatmentFilter.ID = treatmentId;
+                this.TreatmentForList = new HIS_TREATMENT();
+                var treatments = new BackendAdapter(param).Get<List<HIS_TREATMENT>>(HisRequestUriStore.HIS_TREATMENT_GET, ApiConsumers.MosConsumer, hisTreatmentFilter, param);
+                if (treatments != null && treatments.Count > 0)
+                {
+                    this.TreatmentForList = treatments.FirstOrDefault();
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
         private void btnSearch_Click(object sender, EventArgs e)
         {
             try
@@ -887,7 +922,8 @@ namespace HIS.Desktop.Plugins.HisTrackingList.Run
 
                             var tracking = rowExt.Tracking;
 
-                            bool isInpatient = DataTransferTreatmentBedRoomFilter?.TREATMENT_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__DTNOITRU;
+                            bool isInpatient = this.TreatmentForList != null &&
+                            this.TreatmentForList.TDL_TREATMENT_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__DTNOITRU;
 
                             var department = BackendDataWorker.Get<HIS_DEPARTMENT>()
                                                 .FirstOrDefault(o => o.ID == tracking.DEPARTMENT_ID);
@@ -906,18 +942,20 @@ namespace HIS.Desktop.Plugins.HisTrackingList.Run
                             }
                             if (moduleData?.IsPlugin == true && moduleData.ExtensionInfo != null)
                             {
+                                bool isAllowEditPharmacist = false;
+                                bool isAllowEditDoctor = true;
                                 var listArgs = new List<object>
                                 {
-                                    treatmentId,
-                                    row.ID,
-                                    false,
+                                    currentModule,
+                                    row,
+                                    Tuple.Create<bool, bool>(isAllowEditPharmacist,isAllowEditDoctor), 
                                     (DelegateSelectData)onSendDelegate
                                 };
                                 var extenceInstance = PluginInstance.GetPluginInstance(PluginInstance.GetModuleWithWorkingRoom(moduleData, this.currentModule.RoomId, this.currentModule.RoomTypeId), listArgs);
                                 ((Form)extenceInstance)?.ShowDialog();
 
-                                LoadDataTrackingList();
-                                LoadDataForPrint();
+                                //LoadDataTrackingList();
+                                //LoadDataForPrint();
                             }
                         }
                         else if (hi.Column.FieldName == "Tracking.DX$CheckboxSelectorColumn")
@@ -949,32 +987,46 @@ namespace HIS.Desktop.Plugins.HisTrackingList.Run
             {
                 var analysis = (MOS.EFMODEL.DataModels.HIS_DRUG_USE_ANALYSIS)data;
 
-                if (analysis.ID > 0 || analysis.TRACKING_ID == ID_Tracking_ClickItem)
+                if (analysis.ID > 0)
                 {
                     if (analysis.TRACKING_ID.HasValue)
                     {
-                        trackingIdsWithDrugAnalysis.Add(analysis.TRACKING_ID.Value);
+                        if (!trackingIdsWithDrugAnalysis.Contains(analysis.TRACKING_ID.Value))
+                            trackingIdsWithDrugAnalysis.Add(analysis.TRACKING_ID.Value);
                     }
                 }
-
-                gridViewTrackings.RefreshData();
+                gridViewTrackings.RefreshData(); 
             }
         }
-
         private void gridViewTrackings_RowCellStyle(object sender, RowCellStyleEventArgs e)
         {
-            GridView view = sender as GridView;
-            if (view == null) return;
+            var view = sender as GridView;
+            if (view == null)
+            {
+                Inventec.Common.Logging.LogSystem.Warn("GridView is null");
+                return;
+            }
 
             var rowExt = view.GetRow(e.RowHandle) as V_HIS_TRACKING_EXT;
-            if (rowExt == null || rowExt.Tracking == null) return;
-
-            if (rowExt.HasDrugUseAnalysis)
+            if (rowExt?.Tracking == null)
             {
-                e.Appearance.ForeColor = Color.Blue;
+                Inventec.Common.Logging.LogSystem.Info("rowExt or rowExt.Tracking is null at row " + e.RowHandle);
+                return;
+            }
+
+            long trackingId = rowExt.Tracking.ID;
+            Inventec.Common.Logging.LogSystem.Info("RowCellStyle => trackingId : " + trackingId);
+
+            bool hasAnalysisInDb = rowExt.DrugUseAnalysis != null && rowExt.DrugUseAnalysis.ID > 0;
+            bool hasAnalysisFromForm = trackingIdsWithDrugAnalysis != null && trackingIdsWithDrugAnalysis.Contains(trackingId);
+
+            Inventec.Common.Logging.LogSystem.Info($"hasAnalysisInDb: {hasAnalysisInDb}, hasAnalysisFromForm: {hasAnalysisFromForm}");
+
+            if (hasAnalysisInDb || hasAnalysisFromForm)
+            {
+                e.Appearance.ForeColor = Color.DeepSkyBlue;
             }
         }
-
 
         private void gridViewTrackings_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
