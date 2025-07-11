@@ -742,24 +742,51 @@ namespace HIS.Desktop.Plugins.PatientUpdate
                     txtCCCD_CMTNumber.Text = patientDto.CCCD_NUMBER;
                     txtCCCD_CMTPlace.Text = patientDto?.CCCD_PLACE ?? string.Empty;
                     txtCCCD_CMTDate.Text = patientDto.CCCD_DATE != null ? patientDto.CCCD_DATE.ToString().Substring(0, 4) : string.Empty;
-                    DateTime dtCccD = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(patientDto.CCCD_DATE ?? 0) ?? DateTime.MinValue;
-                    txtCCCD_CMTDate.DateTime = dtCccD;
+                    //DateTime dtCccD = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(patientDto.CCCD_DATE ?? 0) ?? DateTime.MinValue;
+
+                    DateTime dtCccD = DateTime.MinValue;
+                    if (patientDto.CCCD_DATE != null && patientDto.CCCD_DATE != 0)
+                    {
+                        var temp = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(patientDto.CCCD_DATE.Value);
+                        if (temp != null && temp != DateTime.MinValue)
+                            dtCccD = temp.Value;
+                        txtCCCD_CMTDate.DateTime = dtCccD;
+                    }
                 }
                 else if (!String.IsNullOrEmpty(patientDto.CMND_NUMBER))
                 {
                     txtCCCD_CMTNumber.Text = patientDto.CMND_NUMBER;
                     txtCCCD_CMTPlace.Text = patientDto?.CMND_PLACE ?? string.Empty;
                     txtCCCD_CMTDate.Text = patientDto.CMND_DATE != null ? patientDto.CMND_DATE.ToString().Substring(0, 4) : string.Empty;
-                    DateTime dtCMT = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(patientDto.CMND_DATE ?? 0) ?? DateTime.MinValue;
-                    txtCCCD_CMTDate.DateTime = dtCMT;
+                    // Replace this line:
+                    //DateTime dtCMT = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(patientDto.CMND_DATE ?? 0) ?? DateTime.MinValue;
+
+                    DateTime dtCMT = DateTime.MinValue;
+                    if (patientDto.CMND_DATE != null && patientDto.CMND_DATE != 0)
+                    {
+                        var temp = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(patientDto.CMND_DATE.Value);
+                        if (temp != null && temp != DateTime.MinValue)
+                            dtCMT = temp.Value;
+                        txtCCCD_CMTDate.DateTime = dtCMT;
+                    }
+
                 }
                 else if (!String.IsNullOrEmpty(patientDto.PASSPORT_NUMBER))
                 {
                     txtCCCD_CMTNumber.Text = patientDto.PASSPORT_NUMBER;
                     txtCCCD_CMTPlace.Text = patientDto?.PASSPORT_PLACE ?? string.Empty;
                     txtCCCD_CMTDate.Text = patientDto.PASSPORT_DATE != null ? patientDto.PASSPORT_DATE.ToString().Substring(0, 4) : string.Empty;
-                    DateTime dtCMT = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(patientDto.PASSPORT_DATE ?? 0) ?? DateTime.MinValue;
-                    txtCCCD_CMTDate.DateTime = dtCMT;
+                    //DateTime dtCMT = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(patientDto.PASSPORT_DATE ?? 0) ?? DateTime.MinValue;
+                    //txtCCCD_CMTDate.DateTime = dtCMT;
+
+                    DateTime dtCMT = DateTime.MinValue;
+                    if (patientDto.PASSPORT_DATE != null && patientDto.PASSPORT_DATE != 0)
+                    {
+                        var temp = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(patientDto.PASSPORT_DATE.Value);
+                        if (temp != null && temp != DateTime.MinValue)
+                            dtCMT = temp.Value;
+                        txtCCCD_CMTDate.DateTime = dtCMT;
+                    }
 
                 }
                 if (!String.IsNullOrEmpty(patientDto.RELIGION_NAME))
@@ -908,15 +935,6 @@ namespace HIS.Desktop.Plugins.PatientUpdate
                         txtHTCommuneCode.Text = communeHT.COMMUNE_CODE;
                     }
                 }
-
-
- 
-                //var sourceComuneHT = ((List<V_SDA_COMMUNE>)cboCommune.Properties.DataSource);
-                //if (sourceComuneHT != null && sourceComuneHT.Count > 0)
-                //{
-                //    cboHTCommuneName.EditValue = patientDto.HT_COMMUNE_NAME;
-                //    txtHTCommuneCode.Text = patientDto.HT_COMMUNE_NAME;
-                //}
             }
             catch (Exception ex)
             {
@@ -1375,7 +1393,7 @@ namespace HIS.Desktop.Plugins.PatientUpdate
                         bool isNumeric = Int64.TryParse(txtCCCD_CMTNumber.Text, out k);
                         if (isNumeric)
                         {
-                            if (txtCCCD_CMTDate.EditValue != null)
+                            if (!string.IsNullOrEmpty(txtCCCD_CMTDate.EditValue?.ToString()))
                                 patientDTO.CCCD_DATE = Convert.ToInt64(txtCCCD_CMTDate.DateTime.ToString("yyyyMMdd") + "000000");
                             else
                                 patientDTO.CCCD_DATE = null;
@@ -1404,8 +1422,8 @@ namespace HIS.Desktop.Plugins.PatientUpdate
                             patientDTO.PASSPORT_NUMBER = "";
                             patientDTO.PASSPORT_PLACE = "";
 
-                            if (txtCCCD_CMTDate.EditValue != null)
-                                patientDTO.CMND_DATE = Convert.ToInt64(txtCCCD_CMTDate.DateTime.ToString("yyyyMMdd") + "000000");
+                            if (!string.IsNullOrEmpty(txtCCCD_CMTDate.EditValue?.ToString()))
+                                    patientDTO.CMND_DATE = Convert.ToInt64(txtCCCD_CMTDate.DateTime.ToString("yyyyMMdd") + "000000");
                             else
                                 patientDTO.CMND_DATE = null;
                             patientDTO.CMND_NUMBER = txtCCCD_CMTNumber.Text.Trim();
@@ -1421,7 +1439,7 @@ namespace HIS.Desktop.Plugins.PatientUpdate
                             patientDTO.CMND_NUMBER = "";
                             patientDTO.CMND_PLACE = "";
 
-                            if (txtCCCD_CMTDate.EditValue != null)
+                            if (!string.IsNullOrEmpty(txtCCCD_CMTDate.EditValue?.ToString()))
                                 patientDTO.PASSPORT_DATE = Convert.ToInt64(txtCCCD_CMTDate.DateTime.ToString("yyyyMMdd") + "000000");
                             else
                                 patientDTO.PASSPORT_DATE = null;
@@ -1706,6 +1724,7 @@ namespace HIS.Desktop.Plugins.PatientUpdate
 
         private void txtCCCD_CMTDate_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
         {
+            
             try
             {
                 if (e.KeyCode == Keys.Enter)

@@ -1,4 +1,4 @@
-﻿/* IVT
+/* IVT
  * @Project : hisnguonmo
  * Copyright (C) 2017 INVENTEC
  *  
@@ -15,38 +15,39 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+using Inventec.Core;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Windows.Forms;
 
-namespace HIS.Desktop.Plugins.PatientUpdate
+namespace Inventec.Desktop.Plugins.DrugUsageAnalysisDetail.DrugUsageAnalysisDetail
 {
-    class Dob__ValidationRule : DevExpress.XtraEditors.DXErrorProvider.ValidationRule
+    class DrugUsageAnalysisDetailFactory
     {
-        internal DevExpress.XtraEditors.DateEdit txtPeopleDob;
-        public override bool Validate(Control control, object value)
+        internal static IDrugUsageAnalysisDetail MakeIDrugUsageAnalysisDetail(CommonParam param, object[] data)
         {
-            bool valid = false;
+            IDrugUsageAnalysisDetail result = null;
             try
             {
-                if (txtPeopleDob == null) return valid;
-                DateTime? dt = (DateTime)txtPeopleDob.DateTime;
-                if (dt.Value > DateTime.Now)
-                {
-                    ErrorText = "Thời gian phải nhỏ hơn ngày hiện tại";
-                    ErrorType = DevExpress.XtraEditors.DXErrorProvider.ErrorType.Warning;
-                    return valid;
-                }
-                valid = true;
+                //if (data.GetType() == typeof(HisDebateUserFilter))
+                //{
+                result = new DrugUsageAnalysisDetailBehavior(param, data);
+                //}
+                if (result == null) throw new NullReferenceException();
+            }
+            catch (NullReferenceException ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error("Factory khong khoi tao duoc doi tuong." + data.GetType().ToString() + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => data), data), ex);
+                result = null;
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
+                result = null;
             }
-            return valid;
+            return result;
         }
     }
 }
