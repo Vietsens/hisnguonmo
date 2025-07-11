@@ -696,6 +696,7 @@ namespace HIS.Desktop.Plugins.RegisterV2.Register
                 this.patientProfile.HisPatient.GENDER_ID = this.GenderId;
                 this.patientProfile.HisPatient.ADDRESS = this.address;
                 this.patientProfile.HisPatient.PROVINCE_NAME = this.provinceName;
+                this.patientProfile.HisPatient.DISTRICT_CODE = this.districtCode;
                 this.patientProfile.HisPatient.DISTRICT_NAME = this.districtName;
                 this.patientProfile.HisPatient.COMMUNE_NAME = this.communeName;
                 if (careerId.HasValue)
