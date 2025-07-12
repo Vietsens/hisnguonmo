@@ -1590,7 +1590,18 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.VIETTEL
                 result.buyerCode = adoInfo.BuyerCode;
                 result.buyerBirthDay = adoInfo.BuyerDob;
                 result.buyerIdNo = adoInfo.BuyerIdentityNumber;
-                result.buyerIdType = adoInfo.BuyerIdentityType;
+                if (adoInfo.BuyerIdentityType == "1" || adoInfo.BuyerIdentityType == "2")
+                {
+                    result.buyerIdType = "1";
+                }
+                else if (adoInfo.BuyerIdentityType == "3")
+                {
+                    result.buyerIdType = "2";
+                }
+                else
+                {
+                    result.buyerIdType = adoInfo.BuyerIdentityType;
+                }
                 if (!String.IsNullOrWhiteSpace(adoInfo.BuyerCCCD) && String.IsNullOrWhiteSpace(adoInfo.BuyerIdentityNumber))
                 {
                     result.buyerIdType = "1";

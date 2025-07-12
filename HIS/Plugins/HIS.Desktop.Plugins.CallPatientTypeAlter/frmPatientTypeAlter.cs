@@ -1204,9 +1204,7 @@ listTL, lstSereServResult, DelegateSuccess);
                      patientTypeAlterAndTranPati.PatientTypeAlter.HAS_BIRTH_CERTIFICATE
                      == MOS.LibraryHein.Bhyt.HeinHasBirthCertificate.HeinHasBirthCertificateCode.TRUE
                      )
-                    && (String.IsNullOrEmpty(currentHisTreatment.TDL_PATIENT_DISTRICT_CODE)
-                    || String.IsNullOrEmpty(currentHisTreatment.TDL_PATIENT_PROVINCE_CODE)
-                    )
+                    && String.IsNullOrEmpty(currentHisTreatment.TDL_PATIENT_PROVINCE_CODE)
                     )
                 {
                     WaitingManager.Hide();
@@ -2571,7 +2569,7 @@ listTL, lstSereServResult, DelegateSuccess);
                                         heinCardData = null;
                                         mess = ResourceMessage.TheSaiNgaySinhGov070;
                                     }
-                                    else if (string.IsNullOrEmpty(patientSDO.COMMUNE_CODE) || string.IsNullOrEmpty(patientSDO.PROVINCE_CODE))
+                                    else if (string.IsNullOrEmpty(patientSDO.COMMUNE_CODE) || string.IsNullOrEmpty(patientSDO.DISTRICT_CODE) || string.IsNullOrEmpty(patientSDO.PROVINCE_CODE))
                                     {
                                         heinCardData = null;
                                         mess = "Bệnh nhân thiếu thông tin địa chỉ";
@@ -2684,7 +2682,7 @@ listTL, lstSereServResult, DelegateSuccess);
                             Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => patientUpdateSdo), patientUpdateSdo));
                             currenPatient = new BackendAdapter(paramPatient).Post<HIS_PATIENT>("api/HisPatient/UpdateSdo", ApiConsumers.MosConsumer, patientUpdateSdo, paramPatient);
                             LoadCurrentHisTreatment();
-                            if (string.IsNullOrEmpty(currenPatient.COMMUNE_CODE) && string.IsNullOrEmpty(currenPatient.PROVINCE_CODE))
+                            if (string.IsNullOrEmpty(currenPatient.COMMUNE_CODE) && string.IsNullOrEmpty(currenPatient.DISTRICT_CODE) && string.IsNullOrEmpty(currenPatient.PROVINCE_CODE))
                             {
 
                                 DialogResult drReslt = DevExpress.XtraEditors.XtraMessageBox.Show("Bệnh nhân thiếu thông tin địa chỉ", "Thông báo!", MessageBoxButtons.OKCancel, MessageBoxIcon.Question, DevExpress.Utils.DefaultBoolean.True);

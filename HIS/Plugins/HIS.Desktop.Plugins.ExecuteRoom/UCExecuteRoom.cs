@@ -57,6 +57,11 @@ using HIS.Desktop.LocalStorage.BackendData;
 using System.Threading;
 using HIS.Desktop.Plugins.Library.FormMedicalRecord;
 using System.Resources;
+using HIS.Desktop.LocalStorage.ConfigSystem;
+using MPS.ProcessorBase.Core;
+using MPS;
+using Inventec.Common.SignLibrary.ADO;
+using HIS.Desktop.ApiConsumer; 
 
 
 namespace HIS.Desktop.Plugins.ExecuteRoom
@@ -172,6 +177,7 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
         {
             try
             {
+                btnBreakOrContinue.Visible = false; 
                 //qtcode
                 var executeRoom = BackendDataWorker.Get<V_HIS_EXECUTE_ROOM>().FirstOrDefault(o => o.ROOM_ID == this.roomId);
                 if (executeRoom != null)
@@ -3193,6 +3199,127 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+  
+        private bool DeletegatePrintTemplate(string printCode, string fileName)
+        {
+            bool result = false;
+            try
+            {
+                switch (printCode)
+                {
+                    case "Mps000503":
+                        BieuMauKhacDichVuCLS(printCode, fileName, ref result);
+                        break;
+                    default:
+                        break;
+
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+                result = false;
+            }
+            return result;
+        }
+
+        private void BieuMauKhacDichVuCLS(string printTypeCode, string fileName, ref bool result)
+        {
+            try
+            {
+                WaitingManager.Show();
+                CommonParam param = new CommonParam();
+                
+                V_HIS_TREATMENT treatment = new V_HIS_TREATMENT();
+                Inventec.Common.Mapper.DataObjectMapper.Map<V_HIS_TREATMENT>(treatment, currentTreatment4);
+
+                var service_row = (ServiceReqADO)gridViewServiceReq.GetFocusedRow();
+                V_HIS_SERVICE_REQ serviceReq = new V_HIS_SERVICE_REQ();
+                HisServiceReqViewFilter filter = new HisServiceReqViewFilter();
+                filter.ID = service_row.ID;
+                serviceReq = new BackendAdapter(param).Get<List<V_HIS_SERVICE_REQ>>("api/HisServiceReq/GetView", ApiConsumers.MosConsumer, filter, param).First(); 
+                //Inventec.Common.Mapper.DataObjectMapper.Map<V_HIS_SERVICE_REQ>(serviceReq, service_row)
+
+                var sereServ_row = (SereServ6ADO)gridViewSereServServiceReq.GetFocusedRow();
+                V_HIS_SERE_SERV sereServ = new V_HIS_SERE_SERV();
+                Inventec.Common.Mapper.DataObjectMapper.Map<V_HIS_SERE_SERV>(sereServ, sereServ_row);
+
+                MPS.Processor.Mps000503.PDO.Mps000503PDO pdo = new MPS.Processor.Mps000503.PDO.Mps000503PDO(treatment, serviceReq, sereServ);
+
+                string printerName = "";
+                if (GlobalVariables.dicPrinter.ContainsKey(printTypeCode))
+                {
+                    printerName = GlobalVariables.dicPrinter[printTypeCode];
+                }
+                Inventec.Common.SignLibrary.ADO.InputADO inputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode((this.currentTreatment4.TREATMENT_CODE ?? ""), printTypeCode, currentModuleBase.RoomId);
+                WaitingManager.Hide();
+                if (ConfigApplications.CheDoInChoCacChucNangTrongPhanMem == 2)
+                {
+
+                    result = MPS.MpsPrinter.Run(new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, pdo, MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow, printerName) { EmrInputADO = inputADO });
+                }
+                else
+                {
+                    result = MPS.MpsPrinter.Run(new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, pdo, MPS.ProcessorBase.PrintConfig.PreviewType.Show, printerName) { EmrInputADO = inputADO });
+                }
+            }
+            catch (Exception ex)
+            {
+                WaitingManager.Hide();
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+
+
+        private void repositoryItemBtnPrint_ButtonClick(object sender, DevExpress.XtraEditors.Controls.ButtonPressedEventArgs e)
+        {
+            try
+            {
+                gridView1.CloseEditor();
+                gridView1.UpdateCurrentRow();
+                Inventec.Common.RichEditor.RichEditorStore store = new Inventec.Common.RichEditor.RichEditorStore(ApiConsumers.SarConsumer, ConfigSystems.URI_API_SAR, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetLanguage(), GlobalVariables.TemnplatePathFolder);
+                store.RunPrintTemplate("Mps000503", DeletegatePrintTemplate);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+
+        private void gridViewSereServServiceReq_RowCellClick(object sender, DevExpress.XtraGrid.Views.Grid.RowCellClickEventArgs e)
+        {
+            if (e.Column.FieldName == "PRINT")
+            {
+                try
+                {
+                    Inventec.Common.RichEditor.RichEditorStore store = new Inventec.Common.RichEditor.RichEditorStore(ApiConsumers.SarConsumer, ConfigSystems.URI_API_SAR, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetLanguage(), GlobalVariables.TemnplatePathFolder);
+                    store.RunPrintTemplate("Mps000503", DeletegatePrintTemplate);
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Error(ex);
+                }
+            }
+            else if (e.Column.FieldName == "AccessionNumber")
+            {
+                try
+                {
+                    var row = (SereServ6ADO)gridViewSereServServiceReq.GetFocusedRow();
+                    if (row != null)
+                    {
+                        ImageCode.ImageCodeView view = new ImageCode.ImageCodeView(row.ID.ToString());
+                        view.ShowDialog();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Error(ex);
+                }
             }
         }
 

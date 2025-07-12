@@ -26,6 +26,7 @@ using EMR.EFMODEL.DataModels;
 using EMR.Filter;
 using EMR.SDO;
 using HIS.Desktop.ApiConsumer;
+using HIS.Desktop.Common;
 using HIS.Desktop.IsAdmin;
 using HIS.Desktop.LibraryMessage;
 using HIS.Desktop.LocalStorage.BackendData;
@@ -93,7 +94,12 @@ namespace HIS.Desktop.Plugins.HisTrackingList.Run
 
         string FullTemplateFileName;
         List<DocumentTrackingADO> documentTrackingADOs;
+        long ID_Tracking_ClickItem;
+        private HashSet<long> trackingIdsWithDrugAnalysis = new HashSet<long>();
+        internal List<V_HIS_TRACKING_EXT> vHisTrackingListExt { get; set; } = new List<V_HIS_TRACKING_EXT>();
+        List<HIS_DRUG_USE_ANALYSIS> ListDrugUseAnalysis;
         List<V_EMR_DOCUMENT> listEmrDocument = new List<V_EMR_DOCUMENT>();
+        HIS_TREATMENT TreatmentForList { get; set; }
         HisTreatmentBedRoomLViewFilter DataTransferTreatmentBedRoomFilter { get; set; }
         private bool IsFirstLoadForm { get; set; }
         private bool IsLoad { get; set; }
@@ -103,6 +109,7 @@ namespace HIS.Desktop.Plugins.HisTrackingList.Run
         public frmHisTrackingList()
         {
             InitializeComponent();
+            gridViewTrackings.RowCellStyle += gridViewTrackings_RowCellStyle;
         }
 
         public frmHisTrackingList(Inventec.Desktop.Common.Modules.Module currentModule, long treatmentId, HisTreatmentBedRoomLViewFilter dataTransferTreatmentBedRoomFilter = null)
@@ -157,7 +164,7 @@ namespace HIS.Desktop.Plugins.HisTrackingList.Run
 
                 dtFromTime.EditValue = null;
                 dtToTime.EditValue = DateTime.Now;
-
+                LoadTreatmentForListTable();
                 LoadDataTrackingList();
                 if (lcgEmrDocument.Expanded)
                 {
@@ -445,8 +452,8 @@ namespace HIS.Desktop.Plugins.HisTrackingList.Run
             {
                 string isReadOnlySheetOrder = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>("MOS.HIS_TRACKING.IS_READ_ONLY_SHEET_ORDER");
                 bool isSheetOrderReadOnly = isReadOnlySheetOrder == "1";
-                gridViewTrackings.Columns["SHEET_ORDER"].OptionsColumn.ReadOnly = isSheetOrderReadOnly;
-                gridViewTrackings.Columns["SHEET_ORDER"].OptionsColumn.AllowEdit = !isSheetOrderReadOnly;
+                gridViewTrackings.Columns["Tracking.SHEET_ORDER"].OptionsColumn.ReadOnly = isSheetOrderReadOnly;
+                gridViewTrackings.Columns["Tracking.SHEET_ORDER"].OptionsColumn.AllowEdit = !isSheetOrderReadOnly;
             }
             catch (Exception ex)
             {
@@ -516,13 +523,22 @@ namespace HIS.Desktop.Plugins.HisTrackingList.Run
                 if (result != null)
                 {
                     vHisTrackingList = (List<V_HIS_TRACKING>)result.Data;
-                    //vHisTrackingList = vHisTrackingList.OrderBy(p => p.TRACKING_TIME).ToList();
                     rowCount = (vHisTrackingList == null ? 0 : vHisTrackingList.Count);
                     dataTotal = (result.Param == null ? 0 : result.Param.Count ?? 0);
                 }
+                LoadDrugUseAnalysis();
+                vHisTrackingListExt = vHisTrackingList
+                .Select(tracking => new V_HIS_TRACKING_EXT
+                {
+                    Tracking = tracking,
+                    DrugUseAnalysis = ListDrugUseAnalysis != null
+                        ? ListDrugUseAnalysis.FirstOrDefault(a => a.TRACKING_ID == tracking.ID)
+                        : null
+                })
+                .ToList();
 
                 gridControlTrackings.BeginUpdate();
-                gridControlTrackings.DataSource = vHisTrackingList;
+                gridControlTrackings.DataSource = vHisTrackingListExt;
                 gridControlTrackings.EndUpdate();
                 gridViewTrackings.OptionsSelection.EnableAppearanceFocusedCell = false;
                 gridViewTrackings.OptionsSelection.EnableAppearanceFocusedRow = false;
@@ -536,44 +552,46 @@ namespace HIS.Desktop.Plugins.HisTrackingList.Run
             }
         }
 
-        private void gridViewTrackings_CustomUnboundColumnData(object sender, DevExpress.XtraGrid.Views.Base.CustomColumnDataEventArgs e)
+        private void gridViewTrackings_CustomUnboundColumnData(object sender, CustomColumnDataEventArgs e)
         {
             try
             {
                 if (e.IsGetData && e.Column.UnboundType != UnboundColumnType.Bound)
                 {
-                    V_HIS_TRACKING data = (V_HIS_TRACKING)((IList)((BaseView)sender).DataSource)[e.ListSourceRowIndex];
-                    if (data == null)
+                    var data = (V_HIS_TRACKING_EXT)((IList)((BaseView)sender).DataSource)[e.ListSourceRowIndex];
+                    if (data == null || data.Tracking == null)
                         return;
-                    if (e.Column.FieldName == "STT")
+
+                    var tracking = data.Tracking;
+
+                    if (e.Column.FieldName == "Tracking.STT")
                     {
                         e.Value = e.ListSourceRowIndex + 1 + start;
                     }
-                    else if (e.Column.FieldName == "TRACKING_TIME_DISPLAY")
+                    else if (e.Column.FieldName == "Tracking.TRACKING_TIME_DISPLAY")
                     {
-                        e.Value = Inventec.Common.DateTime.Convert.TimeNumberToTimeString(data.TRACKING_TIME);
+                        e.Value = Inventec.Common.DateTime.Convert.TimeNumberToTimeString(tracking.TRACKING_TIME);
                     }
-                    else if (e.Column.FieldName == "CREATE_TIME_DISPLAY")
+                    else if (e.Column.FieldName == "Tracking.CREATE_TIME_DISPLAY")
                     {
-                        e.Value = Inventec.Common.DateTime.Convert.TimeNumberToTimeString(data.CREATE_TIME.Value);
+                        e.Value = Inventec.Common.DateTime.Convert.TimeNumberToTimeString(tracking.CREATE_TIME ?? 0);
                     }
-                    else if (e.Column.FieldName == "MODIFY_TIME_DISPLAY")
+                    else if (e.Column.FieldName == "Tracking.MODIFY_TIME_DISPLAY")
                     {
-                        e.Value = Inventec.Common.DateTime.Convert.TimeNumberToTimeString(data.MODIFY_TIME.Value);
-
+                        e.Value = Inventec.Common.DateTime.Convert.TimeNumberToTimeString(tracking.MODIFY_TIME ?? 0);
                     }
-                    else if (e.Column.FieldName == "ICD_MAIN_DISPLAY")
+                    else if (e.Column.FieldName == "Tracking.ICD_MAIN_DISPLAY")
                     {
-                        e.Value = data.ICD_NAME;
+                        e.Value = tracking.ICD_NAME;
                     }
-                    else if (e.Column.FieldName == "EMR_DOCUMENT_STT_NAME_str")
+                    else if (e.Column.FieldName == "Tracking.EMR_DOCUMENT_STT_NAME_str")
                     {
-                        e.Value = data.EMR_DOCUMENT_STT_NAME;
+                        e.Value = tracking.EMR_DOCUMENT_STT_NAME;
                     }
-                    else if (e.Column.FieldName == "CREATOR_NAME")
+                    else if (e.Column.FieldName == "Tracking.CREATOR_NAME")
                     {
-                        var creator = BackendDataWorker.Get<HIS_EMPLOYEE>().Where(p => p.LOGINNAME == data.CREATOR).FirstOrDefault();
-                        e.Value = creator != null ? creator.TDL_USERNAME : "";
+                        var creator = BackendDataWorker.Get<HIS_EMPLOYEE>().FirstOrDefault(p => p.LOGINNAME == tracking.CREATOR);
+                        e.Value = creator?.TDL_USERNAME ?? "";
                     }
                 }
             }
@@ -583,13 +601,48 @@ namespace HIS.Desktop.Plugins.HisTrackingList.Run
             }
         }
 
+        private void LoadDrugUseAnalysis()
+        {
+            ListDrugUseAnalysis = new List<HIS_DRUG_USE_ANALYSIS>();
+
+            if (vHisTrackingList != null && vHisTrackingList.Any())
+            {
+                foreach (var tracking in vHisTrackingList)
+                {
+                    CommonParam paramCommon = new CommonParam();
+                    var filter = new MOS.Filter.HisDrugUseAnalysisFilter
+                    {
+                        TDL_TREATMENT_ID = this.treatmentId,
+                        TRACKING_ID = tracking.ID 
+                    };
+
+                    var result = new BackendAdapter(paramCommon).Get<List<HIS_DRUG_USE_ANALYSIS>>(
+                        "api/HisDrugUseAnalysis/Get",
+                        ApiConsumers.MosConsumer,
+                        filter,
+                        paramCommon);
+
+                    if (result != null && result.Any())
+                    {
+                        ListDrugUseAnalysis.AddRange(result);
+                    }
+                }
+            }
+            if (ListDrugUseAnalysis != null)
+            {
+                trackingIdsWithDrugAnalysis = new HashSet<long>(
+                    ListDrugUseAnalysis
+                    .Where(x => x.TRACKING_ID.HasValue)
+                    .Select(x => x.TRACKING_ID.Value));
+            }
+        }
+
         private void gridViewTrackings_CustomRowCellEdit(object sender, DevExpress.XtraGrid.Views.Grid.CustomRowCellEditEventArgs e)
         {
             try
             {
                 if (e.RowHandle >= 0)
                 {
-                    //V_HIS_TRACKING data = (V_HIS_TRACKING)gridViewTrackings.GetRow(e.RowHandle);
                     //if (data == null)
                     //    return;
                     string creator = (gridViewTrackings.GetRowCellValue(e.RowHandle, "CREATOR") ?? "").ToString().Trim();
@@ -597,7 +650,9 @@ namespace HIS.Desktop.Plugins.HisTrackingList.Run
                     string loginName = Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName();
                     long departmentId = WorkPlace.WorkPlaceSDO.FirstOrDefault(p => p.RoomId == this.currentModule.RoomId).DepartmentId;
                     long? departmentIdCreator = BackendDataWorker.Get<HIS_EMPLOYEE>().Where(p => p.LOGINNAME == loginName).FirstOrDefault().DEPARTMENT_ID;
-                    if (e.Column.FieldName == "DELETE")
+                    Console.WriteLine("Column: " + e.Column.FieldName);
+
+                    if (e.Column.FieldName == "Tracking.DELETE")
                     {
                         if (loginName == creator || CheckLoginAdmin.IsAdmin(loginName))
                         {
@@ -608,18 +663,61 @@ namespace HIS.Desktop.Plugins.HisTrackingList.Run
                             e.RepositoryItem = repositoryItemButton__Delete_Disable;
                         }
                     }
-                    else if (e.Column.FieldName == "EDIT")
+                    else if (e.Column.FieldName == "Tracking.EDIT")
                     {
-                        if (loginName == creator || CheckLoginAdmin.IsAdmin(loginName) ||
-                            (controlAcs != null && controlAcs.FirstOrDefault(o => o.CONTROL_CODE == ConfigKeyss.BtnEdit) != null && departmentId == departmentIdCreator))
+                        bool canEdit = false;
+
+                        if (loginName == creator || CheckLoginAdmin.IsAdmin(loginName))
                         {
-                            e.RepositoryItem = repositoryItemButton__Edit;
+                            canEdit = true;
+                        }
+                        else if (controlAcs != null)
+                        {
+                            var hasPermission = controlAcs.Any(o => o.CONTROL_CODE == ConfigKeyss.BtnEdit);
+                            canEdit = hasPermission && departmentId == departmentIdCreator;
+                        }
+
+                        e.RepositoryItem = canEdit ? repositoryItemButton__Edit : repositoryItemButton__Edit_D;
+                    }
+
+                    else if (e.Column.FieldName == "Tracking.DRUG_ANALYSIS")
+                    {
+                        var rowExt = gridViewTrackings.GetRow(e.RowHandle) as V_HIS_TRACKING_EXT;
+                        Inventec.Common.Logging.LogSystem.Info("Column1 : " + e.Column.FieldName );
+
+                        if (rowExt == null || rowExt.Tracking == null)
+                        {
+                            e.RepositoryItem = repositoryItemButton__Analysis_Disable;
+                            return;
+                        }
+                        if (this.TreatmentForList != null)
+                        {
+                            Inventec.Common.Logging.LogSystem.Info("TreatmentForList.TDL_TREATMENT_TYPE_ID : " + this.TreatmentForList.TDL_TREATMENT_TYPE_ID);
                         }
                         else
                         {
-                            e.RepositoryItem = repositoryItemButton__Edit_D;
+                            Inventec.Common.Logging.LogSystem.Warn("TreatmentForList is null");
                         }
+                        bool isInpatient = this.TreatmentForList != null &&
+                        this.TreatmentForList.TDL_TREATMENT_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__DTNOITRU;
+
+                        var department = BackendDataWorker.Get<HIS_DEPARTMENT>()
+                                            .FirstOrDefault(o => o.ID == rowExt.Tracking.DEPARTMENT_ID);
+
+                        bool isClinicalDept = department != null && department.IS_CLINICAL == 1;
+
+                        bool hasAnalysis = rowExt.HasDrugUseAnalysis;
+                        Inventec.Common.Logging.LogSystem.Info("isInpatient : " + isInpatient);
+                        Inventec.Common.Logging.LogSystem.Info("isClinicalDept : " + isClinicalDept);
+                        Inventec.Common.Logging.LogSystem.Info("HasDrugUseAnalysis : " + hasAnalysis);
+
+                        bool accessEnable = isInpatient && isClinicalDept && hasAnalysis;
+                        Inventec.Common.Logging.LogSystem.Info("accessEnable : " + accessEnable);
+                        e.RepositoryItem = accessEnable
+                            ? repositoryItemButton__Analysis_Enable
+                            : repositoryItemButton__Analysis_Disable;
                     }
+
                 }
             }
             catch (Exception ex)
@@ -627,7 +725,25 @@ namespace HIS.Desktop.Plugins.HisTrackingList.Run
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
-
+        private void LoadTreatmentForListTable()
+        {
+            try
+            {
+                CommonParam param = new CommonParam();
+                MOS.Filter.HisTreatmentFilter hisTreatmentFilter = new MOS.Filter.HisTreatmentFilter();
+                hisTreatmentFilter.ID = treatmentId;
+                this.TreatmentForList = new HIS_TREATMENT();
+                var treatments = new BackendAdapter(param).Get<List<HIS_TREATMENT>>(HisRequestUriStore.HIS_TREATMENT_GET, ApiConsumers.MosConsumer, hisTreatmentFilter, param);
+                if (treatments != null && treatments.Count > 0)
+                {
+                    this.TreatmentForList = treatments.FirstOrDefault();
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
         private void btnSearch_Click(object sender, EventArgs e)
         {
             try
@@ -652,218 +768,207 @@ namespace HIS.Desktop.Plugins.HisTrackingList.Run
 
                     if (hi.HitTest == GridHitTest.RowCell)
                     {
-                        long departmentId = WorkPlace.WorkPlaceSDO.FirstOrDefault(p => p.RoomId == this.currentModule.RoomId).DepartmentId;
+
                         string loginName = Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName();
                         long? departmentIdCreator = BackendDataWorker.Get<HIS_EMPLOYEE>().Where(p => p.LOGINNAME == loginName).FirstOrDefault().DEPARTMENT_ID;
-                        if (hi.Column.FieldName == "EDIT")
+
+                        if (hi.RowHandle < 0 || hi.RowHandle >= gridViewTrackings.RowCount)
+                            return;
+
+                        var rowObj = gridViewTrackings.GetRow(hi.RowHandle);
+                        if (rowObj == null) return;
+
+                        var rowExt = rowObj as V_HIS_TRACKING_EXT;
+                        if (rowExt == null || rowExt.Tracking == null) return;
+
+                        var row = rowExt.Tracking;
+
+                        if (hi.Column.FieldName == "Tracking.EDIT")
                         {
+                            var workplace = WorkPlace.WorkPlaceSDO.FirstOrDefault(p => p.RoomId == this.currentModule.RoomId);
+                            if (workplace == null) return;
+                            long departmentId = workplace.DepartmentId;
                             #region EDIT
-                            var row = (V_HIS_TRACKING)gridViewTrackings.GetRow(hi.RowHandle);
-                            if (row != null)
+                            Inventec.Common.Logging.LogSystem.Info("ConfigKeyss.BtnEdit"+ ConfigKeyss.BtnEdit);
+                            if (loginName.Trim() == row.CREATOR.Trim() || CheckLoginAdmin.IsAdmin(loginName)
+                                || (controlAcs != null && controlAcs.FirstOrDefault(o => o.CONTROL_CODE == ConfigKeyss.BtnEdit) != null && departmentId == departmentIdCreator))
                             {
-                                var creator = Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName();
-                                if (creator.Trim() == row.CREATOR.Trim() || CheckLoginAdmin.IsAdmin(loginName)
-                                    || (controlAcs != null && controlAcs.FirstOrDefault(o => o.CONTROL_CODE == ConfigKeyss.BtnEdit) != null && departmentId == departmentIdCreator))
+                                bool isShowMessage = true;
+                                if (!WarningAlreadyExistEmrDocument(row, ref isShowMessage))
+                                    return;
+
+                                var moduleData = GlobalVariables.currentModuleRaws.FirstOrDefault(o => o.ModuleLink == "HIS.Desktop.Plugins.TrackingCreate");
+                                if (moduleData?.IsPlugin == true && moduleData.ExtensionInfo != null)
                                 {
-                                    bool isShowMessage = true;
-                                    if (!WarningAlreadyExistEmrDocument(row, ref isShowMessage))
-                                        return;
-                                    Inventec.Desktop.Common.Modules.Module moduleData = GlobalVariables.currentModuleRaws.Where(o => o.ModuleLink == "HIS.Desktop.Plugins.TrackingCreate").FirstOrDefault();
-                                    if (moduleData == null) throw new Exception("khong tim thay moduleLink = HIS.Desktop.Plugins.TrackingCreate");
-                                    if (moduleData.IsPlugin && moduleData.ExtensionInfo != null)
-                                    {
-                                        HIS_TRACKING ado = new HIS_TRACKING();
-                                        Mapper.CreateMap<MOS.EFMODEL.DataModels.V_HIS_TRACKING, MOS.EFMODEL.DataModels.HIS_TRACKING>();
-                                        ado = Mapper.Map<MOS.EFMODEL.DataModels.V_HIS_TRACKING, MOS.EFMODEL.DataModels.HIS_TRACKING>(row);
-                                        List<object> listArgs = new List<object>();
-                                        listArgs.Add(ado);
-                                        if (DataTransferTreatmentBedRoomFilter != null)
-                                            listArgs.Add(DataTransferTreatmentBedRoomFilter);
+                                    Mapper.CreateMap<MOS.EFMODEL.DataModels.V_HIS_TRACKING, MOS.EFMODEL.DataModels.HIS_TRACKING>();
+                                    var ado = Mapper.Map<MOS.EFMODEL.DataModels.V_HIS_TRACKING, MOS.EFMODEL.DataModels.HIS_TRACKING>(row);
+                                    //var listArgs = new List<object> { ado };
+                                    //if (DataTransferTreatmentBedRoomFilter != null)
+                                    //    listArgs.Add(DataTransferTreatmentBedRoomFilter);
 
-                                        listArgs.Add(PluginInstance.GetModuleWithWorkingRoom(moduleData, this.currentModule.RoomId, this.currentModule.RoomTypeId));
-                                        var extenceInstance = PluginInstance.GetPluginInstance(PluginInstance.GetModuleWithWorkingRoom(moduleData, this.currentModule.RoomId, this.currentModule.RoomTypeId), listArgs);
-                                        if (extenceInstance == null) throw new ArgumentNullException("moduleData is null");
+                                    //listArgs.Add(PluginInstance.GetModuleWithWorkingRoom(moduleData, this.currentModule.RoomId, this.currentModule.RoomTypeId));
+                                    //var extenceInstance = PluginInstance.GetPluginInstance(listArgs[2] as Inventec.Desktop.Common.Modules.Module, listArgs);
 
-                                        ((Form)extenceInstance).ShowDialog();
+                                    var module = PluginInstance.GetModuleWithWorkingRoom(moduleData, this.currentModule.RoomId, this.currentModule.RoomTypeId);
+                                    var listArgs = new List<object> { ado };
+                                    if (DataTransferTreatmentBedRoomFilter != null)
+                                        listArgs.Add(DataTransferTreatmentBedRoomFilter);
+                                    listArgs.Add(module);
 
-                                        //Load lại tracking
-                                        LoadDataTrackingList();
+                                    Inventec.Common.Logging.LogSystem.Info($"[DEBUG] listArgs.Count = {listArgs.Count}");
 
-                                        LoadDataForPrint();
-                                    }
-                                }
-                            }
-                            #endregion
-                        }
-                        else if (hi.Column.FieldName == "DELETE")
-                        {
-                            #region DELETE
-                            var row = (V_HIS_TRACKING)gridViewTrackings.GetRow(hi.RowHandle);
-                            if (row != null)
-                            {
-                                var creator = Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName();
-                                if (creator.Trim() == row.CREATOR.Trim() || CheckLoginAdmin.IsAdmin(loginName))
-                                {
-                                    bool isShowMessage = true;
-                                    if (!WarningAlreadyExistEmrDocument(row, ref isShowMessage))
-                                        return;
-                                    //if (!isShowMessage || DevExpress.XtraEditors.XtraMessageBox.Show(
-                                    //MessageUtil.GetMessage(LibraryMessage.Message.Enum.HeThongTBCuaSoThongBaoBanCoMuonHuyDuLieuKhong),
-                                    //MessageUtil.GetMessage(LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaThongBao),
-                                    //MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
-                                    //{
+                                    var extenceInstance = PluginInstance.GetPluginInstance(module as Inventec.Desktop.Common.Modules.Module, listArgs);
 
-                                    //    //bool success = false;
-                                    //    //CommonParam param = new CommonParam();
-                                    //    //var rs = new BackendAdapter(param).Post<bool>(HisRequestUriStore.HIS_TRACKING_DELETE, ApiConsumers.MosConsumer, row.ID, param);
-                                    //    //if (rs)
-                                    //    //{
-                                    //    //    success = true;
-                                    //    //    //Load lại tracking
-                                    //    //    LoadDataTrackingList();
-                                    //    //}
-                                    //    //MessageManager.Show(this.ParentForm, param, success);
-                                    //}
-                                    bool success = false;
-                                    CommonParam param = new CommonParam();
-                                    if (HisConfigCFG.Config_TrackingList_CheckServiceReqWhenDeleteTracking == "1")
-                                    {
-                                        var dataTricking = (V_HIS_TRACKING)gridViewTrackings.GetRow(hi.RowHandle);
-                                        if (dataTricking != null)
-                                        {
-                                            this.vHisTrackingPrint = new List<V_HIS_TRACKING>();
-                                            this.vHisTrackingPrint.Add(row);
-                                        }
-                                        var servicereq = dicServiceReqs.Values.Where(service => vHisTrackingPrint.Any(tracking => tracking.ID == service.TRACKING_ID)
-                                        || vHisTrackingPrint.Any(tracking => tracking.ID == service.USED_FOR_TRACKING_ID)).ToList();
-                                        if (servicereq.Any())
-                                        {
+                                    ((Form)extenceInstance)?.ShowDialog();
 
-                                            string serviceCodes = string.Join(", ", servicereq.Select(s => s.SERVICE_REQ_CODE));
-
-                                            string message = $"Tờ điều trị có gắn y lệnh {serviceCodes}.";
-                                            MessageBox.Show(message, "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                                        }
-                                        else
-                                        {
-                                            var rs = new BackendAdapter(param).Post<bool>(HisRequestUriStore.HIS_TRACKING_DELETE, ApiConsumers.MosConsumer, row.ID, param);
-                                            if (rs)
-                                            {
-                                                success = true;
-                                                //Load lại tracking
-                                                LoadDataTrackingList();
-                                            }
-                                            MessageManager.Show(this.ParentForm, param, success);
-                                        }
-                                    }
-                                    else if (HisConfigCFG.Config_TrackingList_CheckServiceReqWhenDeleteTracking == "2")
-                                    {
-                                        var dataTricking = (V_HIS_TRACKING)gridViewTrackings.GetRow(hi.RowHandle);
-                                        if (dataTricking != null)     
-                                        {
-                                            this.vHisTrackingPrint = new List<V_HIS_TRACKING>();
-                                            this.vHisTrackingPrint.Add(row);
-                                        }
-
-                                        var servicereq = dicServiceReqs.Values.Where(service => vHisTrackingPrint.Any(tracking => tracking.ID == service.TRACKING_ID)
-                                        || vHisTrackingPrint.Any(tracking => tracking.ID == service.USED_FOR_TRACKING_ID)).ToList();
-                                        if (servicereq.Any())
-                                        {
-                                            string serviceCodes = string.Join(", ", servicereq.Select(s => s.SERVICE_REQ_CODE));     
-
-                                            string message = $"Tờ điều trị có gắn y lệnh {serviceCodes}. Bạn có muốn tiếp tục?";
-                                            DialogResult result = MessageBox.Show(message, "Cảnh báo", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
-
-                                            if (result == DialogResult.Yes)
-                                            {
-                                                var rs = new BackendAdapter(param).Post<bool>(HisRequestUriStore.HIS_TRACKING_DELETE, ApiConsumers.MosConsumer, row.ID, param);
-                                                if (rs)
-                                                {
-                                                    success = true;
-                                                    //Load lại tracking
-                                                    LoadDataTrackingList();
-                                                }
-                                                MessageManager.Show(this.ParentForm, param, success);
-                                            }
-                                        }
-                                        else
-                                        {
-                                            var rs = new BackendAdapter(param).Post<bool>(HisRequestUriStore.HIS_TRACKING_DELETE, ApiConsumers.MosConsumer, row.ID, param);
-                                            if (rs)
-                                            {
-                                                success = true;
-                                                //Load lại tracking
-                                                LoadDataTrackingList();
-                                            }
-                                            MessageManager.Show(this.ParentForm, param, success);
-                                        }
-                                    }
-                                    else
-                                    {
-                                        if (!isShowMessage || DevExpress.XtraEditors.XtraMessageBox.Show(
-                                            MessageUtil.GetMessage(LibraryMessage.Message.Enum.HeThongTBCuaSoThongBaoBanCoMuonHuyDuLieuKhong),
-                                            MessageUtil.GetMessage(LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaThongBao),
-                                            MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
-                                        {
-                                            
-                                            var rs = new BackendAdapter(param).Post<bool>(HisRequestUriStore.HIS_TRACKING_DELETE, ApiConsumers.MosConsumer, row.ID, param);
-                                            if (rs)
-                                            {
-                                                success = true;
-                                                //Load lại tracking
-                                                LoadDataTrackingList();
-                                            }
-                                            MessageManager.Show(this.ParentForm, param, success);
-                                        }
-                                    }
-                                }
-                            }
-                            #endregion
-                        }
-                        else if (hi.Column.FieldName == "SERVICE_REQ")
-                        {
-                            #region Add/Remove ServiceReq
-                            var row = (V_HIS_TRACKING)gridViewTrackings.GetRow(hi.RowHandle);
-                            if (row != null)
-                            {
-                                Inventec.Desktop.Common.Modules.Module moduleData = GlobalVariables.currentModuleRaws.Where(o => o.ModuleLink == "HIS.Desktop.Plugins.HisServiceReqByTracking").FirstOrDefault();
-                                if (moduleData == null) throw new Exception("khong tim thay moduleLink = HIS.Desktop.Plugins.HisServiceReqByTracking");
-                                if (moduleData.IsPlugin && moduleData.ExtensionInfo != null)
-                                {
-                                    List<object> listArgs = new List<object>();
-                                    listArgs.Add(row.ID); ;
-                                    listArgs.Add(PluginInstance.GetModuleWithWorkingRoom(moduleData, this.currentModule.RoomId, this.currentModule.RoomTypeId));
-                                    var extenceInstance = PluginInstance.GetPluginInstance(PluginInstance.GetModuleWithWorkingRoom(moduleData, this.currentModule.RoomId, this.currentModule.RoomTypeId), listArgs);
-                                    if (extenceInstance == null) throw new ArgumentNullException("moduleData is null");
-
-                                    ((Form)extenceInstance).ShowDialog();
-
-                                    //Load lại tracking
                                     LoadDataTrackingList();
-
                                     LoadDataForPrint();
                                 }
                             }
                             #endregion
                         }
-                        else if (hi.Column.FieldName == "DX$CheckboxSelectorColumn") //tên của cột check chọn
+                        else if (hi.Column.FieldName == "Tracking.DELETE")
                         {
-                            #region Emr document
-                            //Inventec.Common.Logging.LogSystem.Info("lcgEmrDocument.Expanded: " + lcgEmrDocument.Expanded);
-                            if (lcgEmrDocument.Expanded)
-                            {    
-                                var row = (V_HIS_TRACKING)gridViewTrackings.GetRow(hi.RowHandle);
-                                if (row != null)
-                                {
-                                    this.vHisTrackingPrint = new List<V_HIS_TRACKING>();
-                                    this.vHisTrackingPrint.Add(row);
+                            #region DELETE
+                            if (loginName.Trim() == row.CREATOR.Trim() || CheckLoginAdmin.IsAdmin(loginName))
+                            {
+                                bool isShowMessage = true;
+                                if (!WarningAlreadyExistEmrDocument(row, ref isShowMessage))
+                                    return;
 
-                                    LoadDataPrint(vHisTrackingPrint);
+                                bool success = false;
+                                CommonParam param = new CommonParam();
+
+                                if (HisConfigCFG.Config_TrackingList_CheckServiceReqWhenDeleteTracking == "1"
+                                    || HisConfigCFG.Config_TrackingList_CheckServiceReqWhenDeleteTracking == "2")
+                                {
+                                    var dataTricking = row; // dùng luôn row đã lấy ra ở trên
+                                    if (dataTricking != null)
+                                    {
+                                        this.vHisTrackingPrint = new List<V_HIS_TRACKING> { dataTricking };
+                                    }
+
+                                    var servicereq = dicServiceReqs.Values
+                                        .Where(service => vHisTrackingPrint.Any(tracking => tracking.ID == service.TRACKING_ID || tracking.ID == service.USED_FOR_TRACKING_ID))
+                                        .ToList();
+
+                                    if (servicereq.Any())
+                                    {
+                                        string serviceCodes = string.Join(", ", servicereq.Select(s => s.SERVICE_REQ_CODE));
+                                        string message = $"Tờ điều trị có gắn y lệnh {serviceCodes}.";
+
+                                        if (HisConfigCFG.Config_TrackingList_CheckServiceReqWhenDeleteTracking == "1")
+                                        {
+                                            MessageBox.Show(message, "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                                            return;
+                                        }
+                                        else
+                                        {
+                                            var result = MessageBox.Show(message + " Bạn có muốn tiếp tục?", "Cảnh báo", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+                                            if (result != DialogResult.Yes)
+                                                return;
+                                        }
+                                    }
+
+                                    var rs = new BackendAdapter(param).Post<bool>(HisRequestUriStore.HIS_TRACKING_DELETE, ApiConsumers.MosConsumer, row.ID, param);
+                                    if (rs)
+                                    {
+                                        success = true;
+                                        LoadDataTrackingList();
+                                    }
+                                    MessageManager.Show(this.ParentForm, param, success);
                                 }
                                 else
                                 {
-                                    this.ucViewEmrDocument1.ClearDocument();
+                                    if (!isShowMessage || DevExpress.XtraEditors.XtraMessageBox.Show(
+                                        MessageUtil.GetMessage(LibraryMessage.Message.Enum.HeThongTBCuaSoThongBaoBanCoMuonHuyDuLieuKhong),
+                                        MessageUtil.GetMessage(LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaThongBao),
+                                        MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                                    {
+                                        var rs = new BackendAdapter(param).Post<bool>(HisRequestUriStore.HIS_TRACKING_DELETE, ApiConsumers.MosConsumer, row.ID, param);
+                                        if (rs)
+                                        {
+                                            success = true;
+                                            LoadDataTrackingList();
+                                        }
+                                        MessageManager.Show(this.ParentForm, param, success);
+                                    }
                                 }
+                            }
+                            #endregion
+                        }
+                        else if (hi.Column.FieldName == "Tracking.SERVICE_REQ")
+                        {
+                            #region Add/Remove ServiceReq
+                            var moduleData = GlobalVariables.currentModuleRaws.FirstOrDefault(o => o.ModuleLink == "HIS.Desktop.Plugins.HisServiceReqByTracking");
+                            if (moduleData?.IsPlugin == true && moduleData.ExtensionInfo != null)
+                            {
+                                var listArgs = new List<object> {
+                            row.ID,
+                            PluginInstance.GetModuleWithWorkingRoom(moduleData, this.currentModule.RoomId, this.currentModule.RoomTypeId)
+                        };
+
+                                var extenceInstance = PluginInstance.GetPluginInstance(listArgs[1] as Inventec.Desktop.Common.Modules.Module, listArgs);
+                                ((Form)extenceInstance)?.ShowDialog();
+
+                                LoadDataTrackingList();
+                                LoadDataForPrint();
+                            }
+                            #endregion
+                        }
+                        else if (hi.Column.FieldName == "Tracking.DRUG_ANALYSIS")
+                        {
+                            if (rowExt == null || rowExt.Tracking == null) return;
+
+                            var tracking = rowExt.Tracking;
+
+                            bool isInpatient = this.TreatmentForList != null &&
+                            this.TreatmentForList.TDL_TREATMENT_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__DTNOITRU;
+
+                            var department = BackendDataWorker.Get<HIS_DEPARTMENT>()
+                                                .FirstOrDefault(o => o.ID == tracking.DEPARTMENT_ID);
+                            bool isClinicalDept = department?.IS_CLINICAL == 1;
+
+                            bool accessEnable = isInpatient && isClinicalDept && rowExt.HasDrugUseAnalysis;
+                            Inventec.Common.Logging.LogSystem.Info("accessEnable123 : " + accessEnable);
+
+                            if (!accessEnable) return;
+
+                            var moduleData = GlobalVariables.currentModuleRaws.FirstOrDefault(o => o.ModuleLink == "HIS.Desktop.Plugins.DrugUsageAnalysisDetail");
+                            if (moduleData == null)
+                            {
+                                MessageBox.Show("Không tìm thấy plugin DrugUsageAnalysisDetail.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                                return;
+                            }
+                            if (moduleData?.IsPlugin == true && moduleData.ExtensionInfo != null)
+                            {
+                                bool isAllowEditPharmacist = false;
+                                bool isAllowEditDoctor = true;
+                                var listArgs = new List<object>
+                                {
+                                    currentModule,
+                                    row,
+                                    Tuple.Create<bool, bool>(isAllowEditPharmacist,isAllowEditDoctor), 
+                                    (DelegateSelectData)onSendDelegate
+                                };
+                                var extenceInstance = PluginInstance.GetPluginInstance(PluginInstance.GetModuleWithWorkingRoom(moduleData, this.currentModule.RoomId, this.currentModule.RoomTypeId), listArgs);
+                                ((Form)extenceInstance)?.ShowDialog();
+
+                                //LoadDataTrackingList();
+                                //LoadDataForPrint();
+                            }
+                        }
+                        else if (hi.Column.FieldName == "Tracking.DX$CheckboxSelectorColumn")
+                        {
+                            #region Emr document
+                            if (lcgEmrDocument.Expanded)
+                            {
+                                this.vHisTrackingPrint = new List<V_HIS_TRACKING> { row };
+                                LoadDataPrint(vHisTrackingPrint);
+                            }
+                            else
+                            {
+                                this.ucViewEmrDocument1.ClearDocument();
                             }
                             #endregion
                         }
@@ -873,6 +978,53 @@ namespace HIS.Desktop.Plugins.HisTrackingList.Run
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void onSendDelegate(object data)
+        {
+            if (data != null)
+            {
+                var analysis = (MOS.EFMODEL.DataModels.HIS_DRUG_USE_ANALYSIS)data;
+
+                if (analysis.ID > 0)
+                {
+                    if (analysis.TRACKING_ID.HasValue)
+                    {
+                        if (!trackingIdsWithDrugAnalysis.Contains(analysis.TRACKING_ID.Value))
+                            trackingIdsWithDrugAnalysis.Add(analysis.TRACKING_ID.Value);
+                    }
+                }
+                gridViewTrackings.RefreshData(); 
+            }
+        }
+        private void gridViewTrackings_RowCellStyle(object sender, RowCellStyleEventArgs e)
+        {
+            var view = sender as GridView;
+            if (view == null)
+            {
+                Inventec.Common.Logging.LogSystem.Warn("GridView is null");
+                return;
+            }
+
+            var rowExt = view.GetRow(e.RowHandle) as V_HIS_TRACKING_EXT;
+            if (rowExt?.Tracking == null)
+            {
+                Inventec.Common.Logging.LogSystem.Info("rowExt or rowExt.Tracking is null at row " + e.RowHandle);
+                return;
+            }
+
+            long trackingId = rowExt.Tracking.ID;
+            Inventec.Common.Logging.LogSystem.Info("RowCellStyle => trackingId : " + trackingId);
+
+            bool hasAnalysisInDb = rowExt.DrugUseAnalysis != null && rowExt.DrugUseAnalysis.ID > 0;
+            bool hasAnalysisFromForm = trackingIdsWithDrugAnalysis != null && trackingIdsWithDrugAnalysis.Contains(trackingId);
+
+            Inventec.Common.Logging.LogSystem.Info($"hasAnalysisInDb: {hasAnalysisInDb}, hasAnalysisFromForm: {hasAnalysisFromForm}");
+
+            if (hasAnalysisInDb || hasAnalysisFromForm)
+            {
+                e.Appearance.ForeColor = Color.DeepSkyBlue;
             }
         }
 
@@ -885,11 +1037,17 @@ namespace HIS.Desktop.Plugins.HisTrackingList.Run
                     vHisTrackingPrint = new List<V_HIS_TRACKING>();
                     for (int i = 0; i < gridViewTrackings.SelectedRowsCount; i++)
                     {
-                        if (gridViewTrackings.GetSelectedRows()[i] >= 0)
+                        int rowHandle = gridViewTrackings.GetSelectedRows()[i];
+                        if (rowHandle >= 0)
                         {
-                            vHisTrackingPrint.Add((V_HIS_TRACKING)gridViewTrackings.GetRow(gridViewTrackings.GetSelectedRows()[i]));
+                            var rowExt = gridViewTrackings.GetRow(rowHandle) as V_HIS_TRACKING_EXT;
+                            if (rowExt != null && rowExt.Tracking != null)
+                            {
+                                vHisTrackingPrint.Add(rowExt.Tracking);
+                            }
                         }
                     }
+
                     Inventec.Common.Logging.LogSystem.Error("timer___STOP");
                     StopTimer(this.currentModule.ModuleLink, timer1);
                     Inventec.Common.Logging.LogSystem.Error("timer___START");
@@ -901,6 +1059,7 @@ namespace HIS.Desktop.Plugins.HisTrackingList.Run
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
+
 
         //private void LoadEmrDocument(V_HIS_TRACKING tracking)
         //{
@@ -950,194 +1109,154 @@ namespace HIS.Desktop.Plugins.HisTrackingList.Run
         //}
         private void LoadDataPrint(List<V_HIS_TRACKING> trackingSelecteds = null)
         {
-            //Thread thread = null;
             try
             {
-                trackingSelecteds = trackingSelecteds.OrderBy(o => o.TRACKING_TIME).ToList();
-                if (trackingSelecteds != null && trackingSelecteds.Count > 0)//!String.IsNullOrWhiteSpace(FullTemplateFileName) && 
+                if (trackingSelecteds == null || trackingSelecteds.Count == 0)
                 {
-                    //không get lại khi in. get lại khi tìm kiếm rồi
-                    //GetEmrDocument();
+                    ucViewEmrDocument1.ClearDocument();
+                    return;
+                }
 
-                    WaitingManager.Show();
-                    List<V_HIS_TRACKING> trackingSelectedNotHasDocument = new List<V_HIS_TRACKING>();
-                    List<V_HIS_TRACKING> trackingSelectedHasDocument = new List<V_HIS_TRACKING>();
+                trackingSelecteds = trackingSelecteds.OrderBy(o => o.TRACKING_TIME).ToList();
 
-                    DisposeMemoryStream(documentTrackingADOs);
-                    documentTrackingADOs = null;
-                    documentTrackingADOs = new List<DocumentTrackingADO>();
+                if (this.IsLoad)
+                {
+                    StopTimer(this.currentModule.ModuleLink, timer1);
+                    MessageBox.Show("Dữ liệu dịch vụ của hồ sơ chưa tải xong chưa thể xem trước nội dung vui lòng thử lại sau ít phút.");
+                    return;
+                }
 
-                    if (this.IsLoad)
+                WaitingManager.Show();
+
+                DisposeMemoryStream(documentTrackingADOs);
+                documentTrackingADOs = new List<DocumentTrackingADO>();
+
+                var trackingSelectedHasDocument = new List<V_HIS_TRACKING>();
+                var trackingSelectedNotHasDocument = new List<V_HIS_TRACKING>();
+
+                foreach (var tracking in trackingSelecteds)
+                {
+                    string hisCode = "HIS_TRACKING:" + tracking.ID;
+                    if (this.listEmrDocument != null && this.listEmrDocument.Any(o => !string.IsNullOrWhiteSpace(o.HIS_CODE) && o.HIS_CODE.Contains(hisCode)))
                     {
-                        StopTimer(this.currentModule.ModuleLink, timer1);
-                        MessageBox.Show("Dữ liệu dịch vụ của hồ sơ chưa tải xong chưa thể xem trước nội dung vui lòng thử lại sau ít phút.");
-                        return;
+                        trackingSelectedHasDocument.Add(tracking);
+                    }
+                    else
+                    {
+                        trackingSelectedNotHasDocument.Add(tracking);
+                    }
+                }
+
+                if (trackingSelectedNotHasDocument.Count > 0)
+                {
+                    List<TrackingListADO> listTrackingMps = new List<TrackingListADO>();
+                    TrackingListADO tempTrackingListADO = new TrackingListADO { Trackings = new List<V_HIS_TRACKING>() };
+
+                    for (int i = 0; i < trackingSelectedNotHasDocument.Count; i++)
+                    {
+                        var current = trackingSelectedNotHasDocument[i];
+                        bool valid = (i < trackingSelectedNotHasDocument.Count - 1 &&
+                                      (trackingSelectedHasDocument == null || !trackingSelectedHasDocument.Any(k => k.TRACKING_TIME > current.TRACKING_TIME && k.TRACKING_TIME < trackingSelectedNotHasDocument[i + 1].TRACKING_TIME)));
+
+                        tempTrackingListADO.Trackings.Add(current);
+
+                        if (!valid || i == trackingSelectedNotHasDocument.Count - 1)
+                        {
+                            AutoMapper.Mapper.CreateMap<TrackingListADO, TrackingListADO>();
+                            listTrackingMps.Add(AutoMapper.Mapper.Map<TrackingListADO>(tempTrackingListADO));
+                            tempTrackingListADO = new TrackingListADO { Trackings = new List<V_HIS_TRACKING>() };
+                        }
                     }
 
+                    var lstTrackingNoHasDocument = listTrackingMps.SelectMany(o => o.Trackings).ToList();
 
-                    //thread = new System.Threading.Thread(new System.Threading.ThreadStart(MessageThread));
-                    //thread.Start();
-                    foreach (var tracking in trackingSelecteds)
+                    if (trackingSelectedHasDocument.Count > 0)
                     {
-                        string hisCode = "HIS_TRACKING:" + tracking.ID;
-                        if (this.listEmrDocument != null
-                            && this.listEmrDocument.Count > 0
-                            && !String.IsNullOrWhiteSpace(hisCode)
-                            && this.listEmrDocument.Exists(o => !String.IsNullOrWhiteSpace(o.HIS_CODE) && o.HIS_CODE.Contains(hisCode))
-                            )
+                        long timeMin = trackingSelectedHasDocument.First().TRACKING_TIME;
+                        long timeMax = trackingSelectedHasDocument.Last().TRACKING_TIME;
+
+                        for (int i = 0; i < trackingSelectedHasDocument.Count; i++)
                         {
-                            trackingSelectedHasDocument.Add(tracking);
-                        }
-                        else
-                        {
-                            trackingSelectedNotHasDocument.Add(tracking);
-                        }
-                    }
+                            var item = trackingSelectedHasDocument[i];
+                            List<V_HIS_TRACKING> lstrs;
 
-                    if (trackingSelectedNotHasDocument != null && trackingSelectedNotHasDocument.Count > 0)
-                    {
-                        //if (this.IsLoad)
-                        //{
-                        //    StopTimer(this.currentModule.ModuleLink, timer1);
-                        //    MessageBox.Show("Dữ liệu dịch vụ của hồ sơ chưa tải xong chưa thể xem trước nội dung vui lòng thử lại sau ít phút.");
-                        //    return;
-                        //}
-
-                        //Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData("trackingSelectedNotHasDocument.Count", trackingSelectedNotHasDocument.Count));
-                        List<TrackingListADO> listTrackingMps = new List<TrackingListADO>();
-
-                        int findTracking = 0;
-                        TrackingListADO _TrackingListADO = new TrackingListADO();
-                        _TrackingListADO.Trackings = new List<V_HIS_TRACKING>();
-
-                        //sắp xếp theo thứ tự thời gian tăng dần
-                        trackingSelectedNotHasDocument = trackingSelectedNotHasDocument.OrderBy(o => o.TRACKING_TIME).ToList();
-                        foreach (var trackingNo in trackingSelectedNotHasDocument)
-                        {
-                            //Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData("findTracking", findTracking)
-                            //    + Inventec.Common.Logging.LogUtil.TraceData("listTrackingMps.count", (listTrackingMps != null ? listTrackingMps.Count : 0))
-                            //     + Inventec.Common.Logging.LogUtil.TraceData("_TrackingPrintExts.count", (_TrackingListADO.Trackings != null ? _TrackingListADO.Trackings.Count : 0))
-                            //    + Inventec.Common.Logging.LogUtil.TraceData("(trackingSelectedNotHasDocument.Count - 1)", (trackingSelectedNotHasDocument.Count - 1))
-                            //    + Inventec.Common.Logging.LogUtil.TraceData("trackingSelectedHasDocument.count", (trackingSelectedHasDocument != null ? trackingSelectedHasDocument.Count : 0))
-                            //    );
-                            bool valid = (
-                                trackingSelectedNotHasDocument.Count > 1
-                                && findTracking + 1 <= (trackingSelectedNotHasDocument.Count - 1)
-                                && (trackingSelectedHasDocument == null || trackingSelectedHasDocument.Count == 0
-                                    || !trackingSelectedHasDocument.Exists(k => k.TRACKING_TIME > trackingNo.TRACKING_TIME && k.TRACKING_TIME < trackingSelectedNotHasDocument[findTracking + 1].TRACKING_TIME)));
-                            // Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => valid), valid));
-                            if (valid)
-                            {
-                                _TrackingListADO.Trackings.Add(trackingNo);
-                                findTracking += 1;
-                                continue;
-                            }
+                            if (i == 0)
+                                lstrs = lstTrackingNoHasDocument.Where(o => o.TRACKING_TIME < timeMin).ToList();
                             else
+                                lstrs = lstTrackingNoHasDocument.Where(o => o.TRACKING_TIME > trackingSelectedHasDocument[i - 1].TRACKING_TIME && o.TRACKING_TIME < item.TRACKING_TIME).ToList();
+
+                            AddDocumentTrackingADOs(lstrs);
+                            timeMin = item.TRACKING_TIME;
+
+                            if (i == trackingSelectedHasDocument.Count - 1)
                             {
-                                _TrackingListADO.Trackings.Add(trackingNo);
-
-                                AutoMapper.Mapper.CreateMap<TrackingListADO, TrackingListADO>();
-                                TrackingListADO trackingListADO = AutoMapper.Mapper.Map<TrackingListADO>(_TrackingListADO);
-
-                                listTrackingMps.Add(trackingListADO);
-                            }
-
-                            _TrackingListADO = new TrackingListADO();
-                            _TrackingListADO.Trackings = new List<V_HIS_TRACKING>();
-                            findTracking += 1;
-                        }
-                        List<V_HIS_TRACKING> lstTrackingNoHasDocument = new List<V_HIS_TRACKING>();
-                        lstTrackingNoHasDocument = listTrackingMps.SelectMany(o => o.Trackings).ToList();
-                        if (trackingSelectedHasDocument != null && trackingSelectedHasDocument.Count > 0)
-                        {
-                            long timeMin = trackingSelectedHasDocument.First().TRACKING_TIME;
-                            long timeMax = trackingSelectedHasDocument.Last().TRACKING_TIME;
-                            int count = 0;
-                            foreach (var item in trackingSelectedHasDocument)
-                            {
-                                List<V_HIS_TRACKING> lstrs = new List<V_HIS_TRACKING>();
-                                count++;
-                                if (count == 1)
-                                    lstrs = lstTrackingNoHasDocument.Where(o => o.TRACKING_TIME < timeMin).ToList();
-                                if (item.TRACKING_TIME > timeMin)
-                                    lstrs = lstTrackingNoHasDocument.Where(o => o.TRACKING_TIME > timeMin && o.TRACKING_TIME < item.TRACKING_TIME).ToList();
-                                timeMin = item.TRACKING_TIME;
+                                lstrs = lstTrackingNoHasDocument.Where(o => o.TRACKING_TIME > timeMax).ToList();
                                 AddDocumentTrackingADOs(lstrs);
-                                if (count == trackingSelectedHasDocument.Count)
-                                {
-                                    lstrs = lstTrackingNoHasDocument.Where(o => o.TRACKING_TIME > timeMax).ToList();
-                                    AddDocumentTrackingADOs(lstrs);
-                                }
                             }
-                        }
-                        else
-                        {
-                            AddDocumentTrackingADOs(lstTrackingNoHasDocument);
-                        }
-
-                        //do trong hàm Mps000062 có hide cuối nên cần show lại khi ghép tờ điều trị
-                        WaitingManager.Show();
-                    }
-
-                    //if (thread != null)
-                    //    thread.Abort();
-                    if (trackingSelectedHasDocument != null && trackingSelectedHasDocument.Count > 0)
-                    {
-                        var listHisCodes = trackingSelectedHasDocument.Select(o => "HIS_TRACKING:" + o.ID).ToList();
-                        var listData = this.listEmrDocument.Where(o => !String.IsNullOrWhiteSpace(o.HIS_CODE) && listHisCodes.Exists(k => o.HIS_CODE.Contains(k))).ToList();
-                        if (listData != null && listData.Count > 0)
-                        {
-                            var documents = GetEmrDocumentFile(listData.Select(o=>o.ID).ToList(), false, null, null);
-                            if (documents != null && documents.Count > 0)
-                            {
-                                foreach (var item in documents)
-                                {
-                                    try
-                                    {
-                                        if (item.Extension.ToLower().Equals("pdf"))
-                                        {
-                                            var emrDocument = listData.FirstOrDefault(o => o.ID == item.DocumentId);
-                                            documentTrackingADOs.Add(new DocumentTrackingADO()
-                                            {
-                                                DocumentFile = new MemoryStream(Convert.FromBase64String(item.Base64Data)),
-                                                TRACKING_TIME = (emrDocument != null && emrDocument.DOCUMENT_TIME.HasValue ? emrDocument.DOCUMENT_TIME.Value : GetTackingTimeFromDocument(emrDocument, vHisTrackingList))
-                                            });
-                                        }
-                                    }
-                                    catch (Exception ex)
-                                    {
-                                        Inventec.Common.Logging.LogSystem.Error(ex);
-                                    }
-                                }
-                            }
-                        }
-                    }
-                    if (documentTrackingADOs != null && documentTrackingADOs.Count > 0)
-                    {
-                        this.ucViewEmrDocument1.ReloadDocument(documentTrackingADOs, documentTrackingADOs != null && documentTrackingADOs.Count > 0);
-                        if(this.ucViewEmrDocument1.frmEmr != null && Form.ActiveForm == this.ucViewEmrDocument1.frmEmr)
-                        {
-                            this.ucViewEmrDocument1.frmEmr.ucViewEmrDocument1.ReloadDocument(documentTrackingADOs, documentTrackingADOs != null && documentTrackingADOs.Count > 0);
                         }
                     }
                     else
                     {
-                        this.ucViewEmrDocument1.ClearDocument();
+                        AddDocumentTrackingADOs(lstTrackingNoHasDocument);
+                    }
+
+                    WaitingManager.Show();
+                }
+
+                if (trackingSelectedHasDocument.Count > 0)
+                {
+                    var listHisCodes = trackingSelectedHasDocument.Select(o => "HIS_TRACKING:" + o.ID).ToList();
+                    var listData = this.listEmrDocument.Where(o => !string.IsNullOrWhiteSpace(o.HIS_CODE) && listHisCodes.Any(k => o.HIS_CODE.Contains(k))).ToList();
+
+                    var documents = GetEmrDocumentFile(listData.Select(o => o.ID).ToList(), false, null, null);
+                    if (documents != null && documents.Count > 0)
+                    {
+                        foreach (var item in documents)
+                        {
+                            try
+                            {
+                                if (item.Extension.ToLower().Equals("pdf"))
+                                {
+                                    var emrDocument = listData.FirstOrDefault(o => o.ID == item.DocumentId);
+                                    documentTrackingADOs.Add(new DocumentTrackingADO
+                                    {
+                                        DocumentFile = new MemoryStream(Convert.FromBase64String(item.Base64Data)),
+                                        TRACKING_TIME = emrDocument?.DOCUMENT_TIME ?? GetTackingTimeFromDocument(emrDocument, vHisTrackingList)
+                                    });
+                                }
+                            }
+                            catch (Exception ex)
+                            {
+                                Inventec.Common.Logging.LogSystem.Error(ex);
+                            }
+                        }
+                    }
+                }
+
+                if (documentTrackingADOs.Any())
+                {
+                    ucViewEmrDocument1.ReloadDocument(documentTrackingADOs, true);
+                    if (ucViewEmrDocument1.frmEmr != null && Form.ActiveForm == ucViewEmrDocument1.frmEmr)
+                    {
+                        ucViewEmrDocument1.frmEmr.ucViewEmrDocument1.ReloadDocument(documentTrackingADOs, true);
                     }
                 }
                 else
                 {
-                    this.ucViewEmrDocument1.ClearDocument();
+                    ucViewEmrDocument1.ClearDocument();
                 }
-                WaitingManager.Hide();
             }
             catch (Exception ex)
             {
-                //thread.Abort();
                 WaitingManager.Hide();
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
+            finally
+            {
+                WaitingManager.Hide();
+            }
         }
+
         private List<EmrDocumentFileSDO> GetEmrDocumentFile(List<long> docIds, bool? IsMerge, bool? IsShowPatientSign, bool? IsShowWatermark)
         {
             CommonParam paramCommon = new CommonParam();
@@ -1149,7 +1268,7 @@ namespace HIS.Desktop.Plugins.HisTrackingList.Run
             sdo.IsShowPatientSign = IsShowPatientSign;
             sdo.IsShowWatermark = IsShowWatermark;
             sdo.IsView = true;
-            var  room = BackendDataWorker.Get<V_HIS_ROOM>().FirstOrDefault(o => o.ID == this.currentModule.RoomId);
+            var room = BackendDataWorker.Get<V_HIS_ROOM>().FirstOrDefault(o => o.ID == this.currentModule.RoomId);
             sdo.RoomCode = room != null ? room.ROOM_CODE : null;
             sdo.DepartmentCode = room != null ? room.DEPARTMENT_CODE : null;
             return new BackendAdapter(paramCommon).Post<List<EmrDocumentFileSDO>>("api/EmrDocument/DownloadFile", ApiConsumers.EmrConsumer, sdo, paramCommon);
@@ -1710,12 +1829,12 @@ namespace HIS.Desktop.Plugins.HisTrackingList.Run
                     }
 
                     btnTemplate.DropDownControl = menuTemplate;
-                        ucViewEmrDocument1.SetMenu(menuTemplate);
+                    ucViewEmrDocument1.SetMenu(menuTemplate);
                     //if (ucViewEmrDocument1 != null)
                     //{
                     //    ucViewEmrDocument1.SetMenu(menuTemplate);
                     //}
-                    
+
                 }
             }
             catch (Exception ex)
@@ -1921,18 +2040,23 @@ namespace HIS.Desktop.Plugins.HisTrackingList.Run
             {
                 HIS_TRACKING success = new HIS_TRACKING();
                 int selectedIndex = gridViewTrackings.FocusedRowHandle;
-                if (e.RowHandle >= 0 && e.Column.FieldName == "SHEET_ORDER")
+
+                if (e.RowHandle >= 0 && e.Column.FieldName == "Tracking.SHEET_ORDER")
                 {
-                    //V_HIS_TRACKING dataRow = (V_HIS_TRACKING)gridViewTrackings.GetRow(e.RowHandle);
-                    V_HIS_TRACKING dataRow = (V_HIS_TRACKING)gridViewTrackings.GetFocusedRow();
+                    var rowExt = gridViewTrackings.GetRow(e.RowHandle) as V_HIS_TRACKING_EXT;
+                    var dataRow = rowExt?.Tracking;
+
                     if (dataRow != null)
                     {
-                        UpdateTrackingInfoSDO data = new UpdateTrackingInfoSDO();
-                        // Inventec.Common.Mapper.DataObjectMapper.Map<MOS.EFMODEL.DataModels.HIS_TRACKING>(data, dataRow);
-                        data.TrackingId = dataRow.ID;
-                        data.SheetOrder = dataRow.SHEET_ORDER;
+                        UpdateTrackingInfoSDO data = new UpdateTrackingInfoSDO
+                        {
+                            TrackingId = dataRow.ID,
+                            SheetOrder = dataRow.SHEET_ORDER
+                        };
+
                         WaitingManager.Show();
-                        success = new Inventec.Common.Adapter.BackendAdapter(param).Post<HIS_TRACKING>("api/HisTracking/UpdateTrackingInfo", ApiConsumer.ApiConsumers.MosConsumer, data, param);
+                        success = new Inventec.Common.Adapter.BackendAdapter(param)
+                            .Post<HIS_TRACKING>("api/HisTracking/UpdateTrackingInfo", ApiConsumer.ApiConsumers.MosConsumer, data, param);
                         WaitingManager.Hide();
                     }
                 }
@@ -1943,5 +2067,6 @@ namespace HIS.Desktop.Plugins.HisTrackingList.Run
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
+
     }
 }
