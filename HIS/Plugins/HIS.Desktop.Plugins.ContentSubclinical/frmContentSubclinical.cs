@@ -128,6 +128,18 @@ namespace HIS.Desktop.Plugins.ContentSubclinical
                         {
                             chkGetInfo.Checked = item.VALUE == "1";
                         }
+                        else if(item.KEY == ControlStateConstant.chkAssign)
+                        {
+                            chkAssign.Checked = item.VALUE == "1";
+                        }
+                        else if (item.KEY == ControlStateConstant.chkServiceType)
+                        {
+                            chkServiceType.Checked = item.VALUE == "1";
+                        }
+                        else if (item.KEY == ControlStateConstant.chkLineBreak)
+                        {     
+                            chkLineBreak.Checked = item.VALUE == "1";
+                        }
                     }
                 }
             }
@@ -243,7 +255,7 @@ namespace HIS.Desktop.Plugins.ContentSubclinical
         {
             try
             {
-                if (this._DelegateSelectData != null)
+                if (this._DelegateSelectData != null)   
                 {
                     if (this.isReturnObject)
                     {
@@ -272,43 +284,145 @@ namespace HIS.Desktop.Plugins.ContentSubclinical
                                 ados.Add(a);
                             }
                             this._DelegateSelectData(ados);
-                        }
+                        }   
                     }
                     else
                     {
                         if (!chkShowParentServiceGroup.Checked)
-                        {
-                            List<string> _str = new List<string>();
+                        {     
+                            List<string> _str = new List<string>();   
                             var dataChecks = (List<TreeSereServADO>)this.GetListCheck();
-                            foreach (var item in dataChecks)
+                            var datagroupby = dataChecks.GroupBy(g => g.TDL_INTRUCTION_DATE).ToList();
+
+                            foreach (var groupIntructionDate in datagroupby)
                             {
-                                string dienBien = "";
-                                string value = item.VALUE_RANGE;
-                                if (item.TDL_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__XN && !string.IsNullOrEmpty(value))
+                                if (chkAssign.Checked && groupIntructionDate != null)
                                 {
-                                    dienBien = item.SERVICE_REQ_CODE + ": " + value + " " + item.TEST_INDEX_UNIT_NAME;
+                                    string INTRUCTION = "* Ngày " + Inventec.Common.DateTime.Convert.TimeNumberToDateString(groupIntructionDate.Key.ToString());
+                                    _str.Add(INTRUCTION);
                                 }
-                                else
+
+                                var serviecgroupby = groupIntructionDate.GroupBy(g => g.TDL_SERVICE_TYPE_ID).ToList();
+
+                                foreach (var groupServiceType in serviecgroupby)
                                 {
-                                    dienBien = item.SERVICE_REQ_CODE + (!string.IsNullOrEmpty(value) ? (": " + value) : "");
+                                    if (chkServiceType.Checked && groupServiceType != null)
+                                    {
+                                        var serviceType = BackendDataWorker.Get<HIS_SERVICE_TYPE>().FirstOrDefault(p => p.ID == groupServiceType.Key);
+                                        string SERVICE = "- Loại dịch vụ: " + (serviceType != null ? serviceType.SERVICE_TYPE_NAME : "");
+                                        _str.Add(SERVICE);
+                                    }
+
+                                    if (chkLineBreak.Checked)
+                                    {
+                                        foreach (var item in groupServiceType)
+                                        {
+                                            string dienBien = "";
+                                            string value = item.VALUE_RANGE;
+
+                                            if (item.TDL_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__XN && !string.IsNullOrEmpty(value))
+                                            {
+                                                dienBien = item.SERVICE_REQ_CODE + ": " + value + " " + item.TEST_INDEX_UNIT_NAME;
+                                            }
+                                            else
+                                            {
+                                                dienBien = item.SERVICE_REQ_CODE + (!string.IsNullOrEmpty(value) ? (": " + value) : "");
+                                            }
+
+                                            if (chkGetInfo.Checked && dicSereServExt != null && dicSereServExt.ContainsKey(item.ID))
+                                            {
+                                                List<string> ext = new List<string>();
+                                                if (!string.IsNullOrEmpty(dicSereServExt[item.ID].NOTE))
+                                                    ext.Add("Ghi chú: " + dicSereServExt[item.ID].NOTE);
+                                                if (!string.IsNullOrEmpty(dicSereServExt[item.ID].DESCRIPTION))
+                                                    ext.Add("Nhận xét: " + dicSereServExt[item.ID].DESCRIPTION);
+                                                if (!string.IsNullOrEmpty(dicSereServExt[item.ID].CONCLUDE))
+                                                    ext.Add("Kết luận: " + dicSereServExt[item.ID].CONCLUDE);
+                                                dienBien += " " + string.Join(" - ", ext);
+                                            }
+
+                                            if (chkServiceType.Checked && chkAssign.Checked)
+                                            {
+                                                dienBien = " " + dienBien;
+                                            }
+                                            else if (chkServiceType.Checked)
+                                            {
+                                                dienBien = "- " + dienBien;
+                                            }
+                                            else if (chkAssign.Checked)
+                                            {
+                                                dienBien = " " + dienBien;
+                                            }
+
+                                            _str.Add(dienBien);
+                                        }
+                                    }
+                                    else
+                                    {
+                                        List<string> servicesInLine = new List<string>();
+
+                                        foreach (var item in groupServiceType)
+                                        {
+                                            string dienBien = "";
+                                            string value = item.VALUE_RANGE;
+
+                                            if (item.TDL_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__XN && !string.IsNullOrEmpty(value))
+                                            {
+                                                dienBien = item.SERVICE_REQ_CODE + ": " + value + " " + item.TEST_INDEX_UNIT_NAME;
+                                            }
+                                            else
+                                            {
+                                                dienBien = item.SERVICE_REQ_CODE + (!string.IsNullOrEmpty(value) ? (": " + value) : "");
+                                            }
+
+                                            if (chkGetInfo.Checked && dicSereServExt != null && dicSereServExt.ContainsKey(item.ID))
+                                            {
+                                                List<string> ext = new List<string>();
+                                                if (!string.IsNullOrEmpty(dicSereServExt[item.ID].NOTE))
+                                                    ext.Add("Ghi chú: " + dicSereServExt[item.ID].NOTE);
+                                                if (!string.IsNullOrEmpty(dicSereServExt[item.ID].DESCRIPTION))
+                                                    ext.Add("Nhận xét: " + dicSereServExt[item.ID].DESCRIPTION);
+                                                if (!string.IsNullOrEmpty(dicSereServExt[item.ID].CONCLUDE))
+                                                    ext.Add("Kết luận: " + dicSereServExt[item.ID].CONCLUDE);
+                                                dienBien += " " + string.Join(" - ", ext);
+                                            }
+
+                                            servicesInLine.Add(dienBien);
+                                        }
+
+                                        if (servicesInLine.Count > 0)
+                                        {   
+                                            string combinedServices = "";
+
+                                            if (chkServiceType.Checked && chkAssign.Checked)
+                                            {
+                                                combinedServices = " " + string.Join(" ; ", servicesInLine);
+                                            }
+                                            else if (chkServiceType.Checked)
+                                            {
+                                                combinedServices = "- " + string.Join(" + ", servicesInLine);
+                                            }
+                                            else if (chkAssign.Checked)
+                                            {
+                                                combinedServices = " " + string.Join(" + ", servicesInLine);
+                                            }
+
+                                            _str.Add(combinedServices);
+                                        }
+                                    }
                                 }
-                                if(chkGetInfo.Checked && dicSereServExt != null && dicSereServExt.ContainsKey(item.ID))
+
+                                if (chkAssign.Checked && datagroupby.Count > 1)
                                 {
-                                    List<string> ext = new List<string>();
-                                    if (!string.IsNullOrEmpty(dicSereServExt[item.ID].NOTE))
-                                        ext.Add("Ghi chú: " + dicSereServExt[item.ID].NOTE);
-                                    if (!string.IsNullOrEmpty(dicSereServExt[item.ID].DESCRIPTION))
-                                        ext.Add("Nhận xét: " + dicSereServExt[item.ID].DESCRIPTION);
-                                    if (!string.IsNullOrEmpty(dicSereServExt[item.ID].CONCLUDE))
-                                        ext.Add("Kết luận: " + dicSereServExt[item.ID].CONCLUDE);
-                                    dienBien += " " + string.Join(" - ", ext);
-                                } 
-                                _str.Add(dienBien);
+                                    _str.Add("");
+                                }
                             }
+
                             string _strNews = "";
                             if (_str != null && _str.Count > 0)
-                                _strNews = string.Join("; ", _str);
-
+                            {
+                                _strNews = string.Join(Environment.NewLine, _str);
+                            }
                             this._DelegateSelectData(_strNews);
                         }
                         else
@@ -338,7 +452,7 @@ namespace HIS.Desktop.Plugins.ContentSubclinical
                                     {
                                         listBacterium.Add(dt);
                                     }
-                                    else if (dt.IS_ANTIBIOTIC)
+                                    else if (dt.IS_ANTIBIOTIC)   
                                     {
                                         listAntibotic.Add(dt);
                                     }
@@ -362,12 +476,13 @@ namespace HIS.Desktop.Plugins.ContentSubclinical
                                 string content = "";
                                 foreach (var date in listDate)
                                 {
-                                    content += date.SERVICE_REQ_CODE + ":\r\n";
+                                    content += "*Ngày " + date.SERVICE_REQ_CODE + ":\r\n";   
                                     var lstServiceType = listServiceType.Where(o => o.PARENT_ID__IN_SETY == date.CONCRETE_ID__IN_SETY);
-                                    foreach (var serviceType in lstServiceType)
+                                    foreach (var serviceType in lstServiceType)   
                                     {
                                         if (chkShowParentServiceGroup.Checked && serviceType.TDL_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__XN)
                                         {
+                                            content += "- Loại dịch vụ: " + serviceType.SERVICE_REQ_CODE + ":\r\n";
                                             string str = ContentSubclinicalShowParentServiceType(serviceType.CONCRETE_ID__IN_SETY, listService, listTestIndex, listSereServHasMIC, listBacterium, listAntibotic);
                                             content += !string.IsNullOrEmpty(str) ? str + "\r\n" : "";
                                             var lstParentServiceType = listParentServiceType.Where(o => o.PARENT_ID__IN_SETY == serviceType.CONCRETE_ID__IN_SETY).ToList();
@@ -385,7 +500,7 @@ namespace HIS.Desktop.Plugins.ContentSubclinical
                                         }
                                         else
                                         {
-                                            content += serviceType.SERVICE_REQ_CODE + " - ";
+                                            content += "- Loại dịch vụ: " + serviceType.SERVICE_REQ_CODE + ":\r\n";
                                             content += ContentSubclinicalShowParentServiceType(serviceType.CONCRETE_ID__IN_SETY, listService, listTestIndex, listSereServHasMIC, listBacterium, listAntibotic);
                                         }
                                         if (chkGetInfo.Checked && dicSereServExt != null && dicSereServExt.ContainsKey(date.ID))
@@ -828,6 +943,108 @@ namespace HIS.Desktop.Plugins.ContentSubclinical
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void chkServiceType_CheckedChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                if (isInit)
+                {
+                    return;
+                }
+                WaitingManager.Show();
+                ControlStateRDO csAddOrUpdate = (this.currentControlStateRDO != null && this.currentControlStateRDO.Count > 0) ? this.currentControlStateRDO.Where(o => o.KEY == ControlStateConstant.chkServiceType && o.MODULE_LINK == ControlStateConstant.MODULE_LINK).FirstOrDefault() : null;
+                if (csAddOrUpdate != null)
+                {
+                    csAddOrUpdate.VALUE = (chkServiceType.Checked ? "1" : "");
+                }
+                else
+                {
+                    csAddOrUpdate = new HIS.Desktop.Library.CacheClient.ControlStateRDO();
+                    csAddOrUpdate.KEY = ControlStateConstant.chkServiceType;
+                    csAddOrUpdate.VALUE = (chkServiceType.Checked ? "1" : "");
+                    csAddOrUpdate.MODULE_LINK = ControlStateConstant.MODULE_LINK;
+                    if (this.currentControlStateRDO == null)
+                        this.currentControlStateRDO = new List<ControlStateRDO>();
+                    this.currentControlStateRDO.Add(csAddOrUpdate);
+                }
+                this.controlStateWorker.SetData(this.currentControlStateRDO);
+                WaitingManager.Hide();
+                LoadDataSS();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void chkAssign_CheckedChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                if (isInit)
+                {
+                    return;
+                }
+                WaitingManager.Show();
+                ControlStateRDO csAddOrUpdate = (this.currentControlStateRDO != null && this.currentControlStateRDO.Count > 0) ? this.currentControlStateRDO.Where(o => o.KEY == ControlStateConstant.chkAssign && o.MODULE_LINK == ControlStateConstant.MODULE_LINK).FirstOrDefault() : null;
+                if (csAddOrUpdate != null)
+                {
+                    csAddOrUpdate.VALUE = (chkAssign.Checked ? "1" : "");
+                }
+                else
+                {
+                    csAddOrUpdate = new HIS.Desktop.Library.CacheClient.ControlStateRDO();
+                    csAddOrUpdate.KEY = ControlStateConstant.chkAssign;
+                    csAddOrUpdate.VALUE = (chkAssign.Checked ? "1" : "");
+                    csAddOrUpdate.MODULE_LINK = ControlStateConstant.MODULE_LINK;
+                    if (this.currentControlStateRDO == null)
+                        this.currentControlStateRDO = new List<ControlStateRDO>();
+                    this.currentControlStateRDO.Add(csAddOrUpdate);
+                }
+                this.controlStateWorker.SetData(this.currentControlStateRDO);
+                WaitingManager.Hide();
+                LoadDataSS();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void chkLineBreak_CheckedChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                if (isInit)
+                {
+                    return;
+                }
+                WaitingManager.Show();
+                ControlStateRDO csAddOrUpdate = (this.currentControlStateRDO != null && this.currentControlStateRDO.Count > 0) ? this.currentControlStateRDO.Where(o => o.KEY == ControlStateConstant.chkLineBreak && o.MODULE_LINK == ControlStateConstant.MODULE_LINK).FirstOrDefault() : null;
+                if (csAddOrUpdate != null)
+                {
+                    csAddOrUpdate.VALUE = (chkLineBreak.Checked ? "1" : "");
+                }
+                else
+                {
+                    csAddOrUpdate = new HIS.Desktop.Library.CacheClient.ControlStateRDO();
+                    csAddOrUpdate.KEY = ControlStateConstant.chkLineBreak;
+                    csAddOrUpdate.VALUE = (chkLineBreak.Checked ? "1" : "");
+                    csAddOrUpdate.MODULE_LINK = ControlStateConstant.MODULE_LINK;
+                    if (this.currentControlStateRDO == null)
+                        this.currentControlStateRDO = new List<ControlStateRDO>();
+                    this.currentControlStateRDO.Add(csAddOrUpdate);
+                }
+                this.controlStateWorker.SetData(this.currentControlStateRDO);
+                WaitingManager.Hide();
+                LoadDataSS();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
     }

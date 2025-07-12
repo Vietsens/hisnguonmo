@@ -31,9 +31,8 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Accessibility" />
-    <Reference Include="AutoMapper, Version=4.0.4.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\ReferencedAssemblies\AutoMapper.dll</HintPath>
+    <Reference Include="AutoMapper">
+      <HintPath>..\..\..\..\lib\Library packages\AutoMapper 4.0.4\AutoMapper.dll</HintPath>
     </Reference>
     <Reference Include="CARD.WCF.Service.TapCardService">
       <HintPath>..\..\..\..\LIB\WCF\CARD.WCF\TapCardService\4.5\CARD.WCF.Service.TapCardService.dll</HintPath>
@@ -64,13 +63,16 @@
       <HintPath>..\..\..\..\..\LIBRARY\DevLib\DevExpress.XtraTreeList.v15.2.dll</HintPath>
     </Reference>
     <Reference Include="HID.EFMODEL">
-      <HintPath>..\..\..\..\LIB\HID\HID.EFMODEL.dll</HintPath>
+      <HintPath>..\..\..\..\..\His Test\histest\x64\ReferencedAssemblies\HID.EFMODEL.dll</HintPath>
     </Reference>
     <Reference Include="HID.Filter">
-      <HintPath>..\..\..\..\LIB\HID\HID.Filter.dll</HintPath>
+      <HintPath>..\..\..\..\..\His Test\histest\x64\ReferencedAssemblies\HID.Filter.dll</HintPath>
     </Reference>
     <Reference Include="His.Bhyt.Consumer">
       <HintPath>..\..\..\..\LIB\HIS\His.Bhyt.Consumer\His.Bhyt.Consumer.dll</HintPath>
+    </Reference>
+    <Reference Include="His.Bhyt.InsuranceExpertise">
+      <HintPath>..\..\..\..\..\His Test\histest\x64\ReferencedAssemblies\His.Bhyt.InsuranceExpertise.dll</HintPath>
     </Reference>
     <Reference Include="HIS.Desktop.Plugins.Library.CheckHeinGOV, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -83,10 +85,23 @@
       <HintPath>..\..\..\..\LIB\HIS\HIS.Desktop.Plugins.Library.EmrGenerate\HIS.Desktop.Plugins.Library.EmrGenerate.dll</HintPath>
     </Reference>
     <Reference Include="HIS.Desktop.Plugins.Library.HisSyncToHid">
-      <HintPath>..\..\..\..\..\..\..\TEST_HIS\HIS\x64\ReferencedAssemblies\HIS.Desktop.Plugins.Library.HisSyncToHid.dll</HintPath>
+      <HintPath>..\..\..\..\..\His Test\histest\x64\ReferencedAssemblies\HIS.Desktop.Plugins.Library.HisSyncToHid.dll</HintPath>
     </Reference>
     <Reference Include="His.EventLog">
       <HintPath>..\..\..\..\LIB\HIS\His.EventLog\His.EventLog.dll</HintPath>
+    </Reference>
+    <Reference Include="HIS.UC.AddressCombo">
+      <HintPath>..\..\..\..\..\His Test\histest\x64\ReferencedAssemblies\HIS.UC.AddressCombo.dll</HintPath>
+    </Reference>
+    <Reference Include="HIS.UC.KskContract">
+      <HintPath>..\..\..\..\..\His Test\histest\x64\ReferencedAssemblies\HIS.UC.KskContract.dll</HintPath>
+    </Reference>
+    <Reference Include="HIS.UC.PlusInfo, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\His Test\histest\x64\ReferencedAssemblies\HIS.UC.PlusInfo.dll</HintPath>
+    </Reference>
+    <Reference Include="HIS.UC.RoomExamService">
+      <HintPath>..\..\..\..\..\His Test\histest\x64\ReferencedAssemblies\HIS.UC.RoomExamService.dll</HintPath>
     </Reference>
     <Reference Include="HIS.UC.TranPati">
       <HintPath>..\..\..\..\LIB\HIS\HIS.UC.TranPati\HIS.UC.TranPati.dll</HintPath>
@@ -94,6 +109,28 @@
     <Reference Include="His.UC.UCHein, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\LIB\HIS\His.UC.UCHein\His.UC.UCHein.dll</HintPath>
+    </Reference>
+    <Reference Include="HIS.UC.UCHeniInfo">
+      <HintPath>..\..\..\..\..\His Test\histest\x64\ReferencedAssemblies\HIS.UC.UCHeniInfo.dll</HintPath>
+    </Reference>
+    <Reference Include="HIS.UC.UCImageInfo">
+      <HintPath>..\..\..\..\..\His Test\histest\x64\ReferencedAssemblies\HIS.UC.UCImageInfo.dll</HintPath>
+    </Reference>
+    <Reference Include="HIS.UC.UCOtherServiceReqInfo">
+      <HintPath>..\..\..\..\..\His Test\histest\x64\ReferencedAssemblies\HIS.UC.UCOtherServiceReqInfo.dll</HintPath>
+    </Reference>
+    <Reference Include="HIS.UC.UCPatientRaw, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\His Test\histest\x64\ReferencedAssemblies\HIS.UC.UCPatientRaw.dll</HintPath>
+    </Reference>
+    <Reference Include="HIS.UC.UCRelativeInfo">
+      <HintPath>..\..\..\..\..\His Test\histest\x64\ReferencedAssemblies\HIS.UC.UCRelativeInfo.dll</HintPath>
+    </Reference>
+    <Reference Include="HIS.UC.UCTransPati">
+      <HintPath>..\..\..\..\..\His Test\histest\x64\ReferencedAssemblies\HIS.UC.UCTransPati.dll</HintPath>
+    </Reference>
+    <Reference Include="HIS.UC.WorkPlace">
+      <HintPath>..\..\..\..\..\His Test\histest\x64\ReferencedAssemblies\HIS.UC.WorkPlace.dll</HintPath>
     </Reference>
     <Reference Include="IMSys.DbConfig.HIS_RS">
       <HintPath>..\..\..\..\LIB\IMSys.DbConfig\IMSys.DbConfig.HIS_RS\IMSys.DbConfig.HIS_RS.dll</HintPath>
@@ -215,7 +252,7 @@
       <HintPath>..\..\..\..\LIB\MPSv2\MPS.PDO\MPS.Processor.Mps000001.PDO.dll</HintPath>
     </Reference>
     <Reference Include="MPS.Processor.Mps000178.PDO">
-      <HintPath>..\..\..\..\LIB\MPSv2\MPS.PDO\MPS.Processor.Mps000178.PDO.dll</HintPath>
+      <HintPath>..\..\..\..\..\His Test\histest\x64\ReferencedAssemblies\MPS.Processor.Mps000178.PDO.dll</HintPath>
     </Reference>
     <Reference Include="MPS.Processor.Mps000444.PDO">
       <HintPath>..\..\..\..\LIB\MPSv2\MPS.PDO\MPS.Processor.Mps000444.PDO.dll</HintPath>
@@ -442,61 +479,13 @@
     <Compile Include="ValidationRule\PatientDob__ValidationRule.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\..\..\HISUTIL\His.Bhyt\His.Bhyt.InsuranceExpertise\His.Bhyt.InsuranceExpertise.csproj">
-      <Project>{c2fa385e-f0c5-4b17-88e3-e6c3e53e2b38}</Project>
-      <Name>His.Bhyt.InsuranceExpertise</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\UC\HIS.UC\HIS.UC.AddressCombo\HIS.UC.AddressCombo.csproj">
-      <Project>{38f82de7-3ecd-442b-91d6-ca54a5b954e0}</Project>
-      <Name>HIS.UC.AddressCombo</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\UC\HIS.UC\HIS.UC.KskContract\HIS.UC.KskContract.csproj">
-      <Project>{cbd388f9-a64b-4302-acd6-d43ca07096e2}</Project>
-      <Name>HIS.UC.KskContract</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\UC\HIS.UC\HIS.UC.PlusInfo\HIS.UC.PlusInfo.csproj">
-      <Project>{38ecddb9-08e6-4697-90e5-af731792b90d}</Project>
-      <Name>HIS.UC.PlusInfo</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\UC\HIS.UC\HIS.UC.RoomExamService\HIS.UC.RoomExamService.csproj">
-      <Project>{2770fe74-96ea-4bfd-ab55-a04b07a04989}</Project>
-      <Name>HIS.UC.RoomExamService</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\UC\HIS.UC\HIS.UC.ServiceRoom\HIS.UC.ServiceRoom.csproj">
+    <ProjectReference Include="..\..\..\UC\HIS.UC.ServiceRoom\HIS.UC.ServiceRoom.csproj">
       <Project>{c02ada96-015b-4edb-b944-9183e1087224}</Project>
       <Name>HIS.UC.ServiceRoom</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\UC\HIS.UC\HIS.UC.UCHeniInfo\HIS.UC.UCHeniInfo.csproj">
-      <Project>{7e49c257-4e48-4456-9053-68ea77e46e53}</Project>
-      <Name>HIS.UC.UCHeniInfo</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\UC\HIS.UC\HIS.UC.UCImageInfo\HIS.UC.UCImageInfo.csproj">
-      <Project>{17b3d00e-ee47-4c3d-903d-68dbaf5951d7}</Project>
-      <Name>HIS.UC.UCImageInfo</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\UC\HIS.UC\HIS.UC.UCOtherServiceReqInfo\HIS.UC.UCOtherServiceReqInfo.csproj">
-      <Project>{3fe38a92-0c75-475c-aaea-f1c3a647963a}</Project>
-      <Name>HIS.UC.UCOtherServiceReqInfo</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\UC\HIS.UC\HIS.UC.UCPatientRaw\HIS.UC.UCPatientRaw.csproj">
-      <Project>{e3891201-0493-4164-b1dc-d99277ba6291}</Project>
-      <Name>HIS.UC.UCPatientRaw</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\UC\HIS.UC\HIS.UC.UCRelativeInfo\HIS.UC.UCRelativeInfo.csproj">
-      <Project>{c5a20f34-8afa-47f2-b8d5-a8eb0b3d67b0}</Project>
-      <Name>HIS.UC.UCRelativeInfo</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\UC\HIS.UC\HIS.UC.UCServiceRoomInfo\HIS.UC.UCServiceRoomInfo.csproj">
+    <ProjectReference Include="..\..\..\UC\HIS.UC.UCServiceRoomInfo\HIS.UC.UCServiceRoomInfo.csproj">
       <Project>{b4750acf-9857-4837-844a-a439e7f82571}</Project>
       <Name>HIS.UC.UCServiceRoomInfo</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\UC\HIS.UC\HIS.UC.UCTransPati\HIS.UC.UCTransPati.csproj">
-      <Project>{173bf142-9e08-494e-924e-fcb61fedcf94}</Project>
-      <Name>HIS.UC.UCTransPati</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\UC\HIS.UC\HIS.UC.WorkPlace\HIS.UC.WorkPlace.csproj">
-      <Project>{9a64eb39-e849-43d4-a47a-8c02ea5183e7}</Project>
-      <Name>HIS.UC.WorkPlace</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\HIS.Desktop.ADO\HIS.Desktop.ADO.csproj">
       <Project>{808c25cd-0925-417f-bbf9-caf9604da879}</Project>

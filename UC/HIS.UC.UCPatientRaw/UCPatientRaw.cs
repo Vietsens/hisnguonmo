@@ -999,7 +999,7 @@ namespace HIS.UC.UCPatientRaw
                     if (this.isTemp_QN == true || (this.isTemp_QN == true && this.isGKS == true))
                         this.isEnable(null, true);
                     else if (this.isGKS == true)
-                        this.isEnable(true, null);
+                        this.isEnable(true, null);  
                     else
                     {
                         this.isEnable(null, false);
