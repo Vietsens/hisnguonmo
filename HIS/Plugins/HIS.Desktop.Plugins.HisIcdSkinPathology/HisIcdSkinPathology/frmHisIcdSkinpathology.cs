@@ -852,8 +852,6 @@ namespace HIS.Desktop.Plugins.HisIcdSkinPathology.HisIcdSkinPathology
                 HIS_ICD_SKIN_PATHOLOGY data = (HIS_ICD_SKIN_PATHOLOGY)gridView1.GetFocusedRow();
                 if(MessageBox.Show(HIS.Desktop.LibraryMessage.MessageUtil.GetMessage(HIS.Desktop.LibraryMessage.Message.Enum.HeThongTBCuaSoThongBaoBanCoMuonBoKhoaDuLieuKhong), "", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
                 {
-                    HIS_ICD_SKIN_PATHOLOGY data1 = new HIS_ICD_SKIN_PATHOLOGY();
-                    data1.ID = data.ID;
                     WaitingManager.Show();
                     success = new Inventec.Common.Adapter.BackendAdapter(param).Post<HIS_ICD_SKIN_PATHOLOGY>(HisIcdSkinPathologyRequestUriStore.HIS_ICD_SKIN_PATHOLOGY_CHANGE_LOCK, ApiConsumers.MosConsumer, data.ID, param);
                     WaitingManager.Hide();
@@ -881,10 +879,6 @@ namespace HIS.Desktop.Plugins.HisIcdSkinPathology.HisIcdSkinPathology
                 HIS_ICD_SKIN_PATHOLOGY data = (HIS_ICD_SKIN_PATHOLOGY)gridView1.GetFocusedRow();
                 if (MessageBox.Show(HIS.Desktop.LibraryMessage.MessageUtil.GetMessage(HIS.Desktop.LibraryMessage.Message.Enum.HeThongTBCuaSoThongBaoBanCoMuonKhoaDuLieuKhong), "", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
                 {
-                    
-                    HIS_ICD_SKIN_PATHOLOGY data1 = new HIS_ICD_SKIN_PATHOLOGY();
-                    //HisIcdSkinPathologyFilter data1 = new HisIcdSkinPathologyFilter();
-                    data1.ID = data.ID;
                     WaitingManager.Show();
                     success = new Inventec.Common.Adapter.BackendAdapter(param).Post<HIS_ICD_SKIN_PATHOLOGY>(HisIcdSkinPathologyRequestUriStore.HIS_ICD_SKIN_PATHOLOGY_CHANGE_LOCK, ApiConsumers.MosConsumer, data.ID, param);
                     WaitingManager.Hide();
