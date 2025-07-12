@@ -335,8 +335,6 @@ namespace HIS.Desktop.Plugins.Library.PrintPrescription
                                 mediExpmestADO.IMP_PRICE = lstEMMedicine.IMP_PRICE;
                             }
 
-                            if (ServiceReq != null)
-
                                 threadMedicineADO.DicLstMediMateExpMestTypeADO[mediExpmestADO.EXP_MEST_ID ?? 0].Add(mediExpmestADO);
                         }
                     }
