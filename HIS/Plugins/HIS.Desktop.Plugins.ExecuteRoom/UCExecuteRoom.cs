@@ -61,6 +61,7 @@ using HIS.Desktop.LocalStorage.ConfigSystem;
 using MPS.ProcessorBase.Core;
 using MPS;
 using Inventec.Common.SignLibrary.ADO;
+using HIS.Desktop.ApiConsumer; 
 
 
 namespace HIS.Desktop.Plugins.ExecuteRoom
@@ -176,6 +177,7 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
         {
             try
             {
+                btnBreakOrContinue.Visible = false; 
                 //qtcode
                 var executeRoom = BackendDataWorker.Get<V_HIS_EXECUTE_ROOM>().FirstOrDefault(o => o.ROOM_ID == this.roomId);
                 if (executeRoom != null)
@@ -3200,18 +3202,7 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
             }
         }
 
-        private void repositoryItemBtnPrint_ButtonClick(object sender, DevExpress.XtraEditors.Controls.ButtonPressedEventArgs e)
-        {
-            try
-            {
-                Inventec.Common.RichEditor.RichEditorStore store = new Inventec.Common.RichEditor.RichEditorStore(ApiConsumers.SarConsumer, ConfigSystems.URI_API_SAR, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetLanguage(), GlobalVariables.TemnplatePathFolder);
-                store.RunPrintTemplate("Mps000503", DeletegatePrintTemplate);
-            }
-            catch (Exception ex)
-            {
-                Inventec.Common.Logging.LogSystem.Error(ex);
-            }
-        }
+  
         private bool DeletegatePrintTemplate(string printCode, string fileName)
         {
             bool result = false;
@@ -3247,7 +3238,10 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
 
                 var service_row = (ServiceReqADO)gridViewServiceReq.GetFocusedRow();
                 V_HIS_SERVICE_REQ serviceReq = new V_HIS_SERVICE_REQ();
-                Inventec.Common.Mapper.DataObjectMapper.Map<V_HIS_SERVICE_REQ>(serviceReq, service_row);
+                HisServiceReqViewFilter filter = new HisServiceReqViewFilter();
+                filter.ID = service_row.ID;
+                serviceReq = new BackendAdapter(param).Get<List<V_HIS_SERVICE_REQ>>("api/HisServiceReq/GetView", ApiConsumers.MosConsumer, filter, param).First(); 
+                //Inventec.Common.Mapper.DataObjectMapper.Map<V_HIS_SERVICE_REQ>(serviceReq, service_row)
 
                 var sereServ_row = (SereServ6ADO)gridViewSereServServiceReq.GetFocusedRow();
                 V_HIS_SERE_SERV sereServ = new V_HIS_SERE_SERV();
@@ -3276,6 +3270,56 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
             {
                 WaitingManager.Hide();
                 Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+
+
+        private void repositoryItemBtnPrint_ButtonClick(object sender, DevExpress.XtraEditors.Controls.ButtonPressedEventArgs e)
+        {
+            try
+            {
+                gridView1.CloseEditor();
+                gridView1.UpdateCurrentRow();
+                Inventec.Common.RichEditor.RichEditorStore store = new Inventec.Common.RichEditor.RichEditorStore(ApiConsumers.SarConsumer, ConfigSystems.URI_API_SAR, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetLanguage(), GlobalVariables.TemnplatePathFolder);
+                store.RunPrintTemplate("Mps000503", DeletegatePrintTemplate);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+
+        private void gridViewSereServServiceReq_RowCellClick(object sender, DevExpress.XtraGrid.Views.Grid.RowCellClickEventArgs e)
+        {
+            if (e.Column.FieldName == "PRINT")
+            {
+                try
+                {
+                    Inventec.Common.RichEditor.RichEditorStore store = new Inventec.Common.RichEditor.RichEditorStore(ApiConsumers.SarConsumer, ConfigSystems.URI_API_SAR, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetLanguage(), GlobalVariables.TemnplatePathFolder);
+                    store.RunPrintTemplate("Mps000503", DeletegatePrintTemplate);
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Error(ex);
+                }
+            }
+            else if (e.Column.FieldName == "AccessionNumber")
+            {
+                try
+                {
+                    var row = (SereServ6ADO)gridViewSereServServiceReq.GetFocusedRow();
+                    if (row != null)
+                    {
+                        ImageCode.ImageCodeView view = new ImageCode.ImageCodeView(row.ID.ToString());
+                        view.ShowDialog();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Error(ex);
+                }
             }
         }
 
