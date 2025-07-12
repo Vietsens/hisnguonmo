@@ -4506,6 +4506,8 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                 HisSereServExtSDO data = new HisSereServExtSDO();
                 data.HisSereServExt = this.sereServExt;
                 data.HisEkipUsers = ProcessEkipUser(sereServ);
+                data.IcdSkinPathologyCode = this.currentServiceReq.ICD_SKIN_PATHOLOGY_CODE;
+                data.IcdSkinPathologyName = this.currentServiceReq.ICD_SKIN_PATHOLOGY_NAME;
                 if (dicSereServSuin != null && dicSereServSuin.Count > 0 && dicSereServSuin.ContainsKey(sereServ.ID) && dicSereServSuin[sereServ.ID].Count > 0)
                 {
                     AutoMapper.Mapper.CreateMap<V_HIS_SERE_SERV_SUIN, HIS_SERE_SERV_SUIN>();
@@ -4857,6 +4859,8 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                     HisSereServExtSDO data = new HisSereServExtSDO();
                     data.HisSereServExt = sereServExt;
                     data.HisEkipUsers = ProcessEkipUser(sereServ);
+                    data.IcdSkinPathologyCode = this.currentServiceReq.ICD_SKIN_PATHOLOGY_CODE;
+                    data.IcdSkinPathologyName = this.currentServiceReq.ICD_SKIN_PATHOLOGY_NAME;
                     ProcessSereServPtttInfo(ref data, sereServ, currentServiceReq);
                     if (dicSereServSuin != null && dicSereServSuin.Count > 0 && dicSereServSuin.ContainsKey(sereServ.ID) && dicSereServSuin[sereServ.ID].Count > 0)
                     {
@@ -7967,6 +7971,19 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
 
+        }
+
+        private void btnICD_Click_1(object sender, EventArgs e)
+        {
+            try
+            {
+                ICD.frmIcd fm = new ICD.frmIcd(this.currentServiceReq, this.moduleData);
+                fm.ShowDialog();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
         }
 
         private void xtraTabControl1_CustomHeaderButtonClick(object sender, DevExpress.XtraTab.ViewInfo.CustomHeaderButtonEventArgs e)
