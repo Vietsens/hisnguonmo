@@ -730,6 +730,7 @@ namespace HIS.UC.UCPatientRaw
                         this.txtAge.Text = this.txtPatientDob.Text;
                         this.cboAge.EditValue = 1;
                         this.txtPatientDob.Text = dateValidObject.Age.ToString();
+                        this.dlgCheckSS(dateValidObject.Age < 6);
                     }
                     else if (String.IsNullOrEmpty(dateValidObject.Message))
                     {
@@ -738,6 +739,7 @@ namespace HIS.UC.UCPatientRaw
                             this.txtPatientDob.Text = dateValidObject.OutDate;
                             this.dtPatientDob.EditValue = HIS.Desktop.Utility.DateTimeHelper.ConvertDateStringToSystemDate(dateValidObject.OutDate);
                             this.dtPatientDob.Update();
+                            this.dlgCheckSS(DateTime.Now.Year - dtPatientDob.DateTime.Year < 6);
                         }
                     }
 
@@ -789,6 +791,7 @@ namespace HIS.UC.UCPatientRaw
                     this.txtAge.Text = this.txtPatientDob.Text;
                     this.cboAge.EditValue = 1;
                     this.txtPatientDob.Text = dateValidObject.Age.ToString();
+                    this.dlgCheckSS(dateValidObject.Age < 6);
                 }
                 else if (String.IsNullOrEmpty(dateValidObject.Message))
                 {
@@ -797,6 +800,7 @@ namespace HIS.UC.UCPatientRaw
                         this.txtPatientDob.Text = dateValidObject.OutDate;
                         this.dtPatientDob.EditValue = HIS.Desktop.Utility.DateTimeHelper.ConvertDateStringToSystemDate(dateValidObject.OutDate);
                         this.dtPatientDob.Update();
+                        this.dlgCheckSS(DateTime.Now.Year - dtPatientDob.DateTime.Year < 6);
                     }
                 }
                 else
