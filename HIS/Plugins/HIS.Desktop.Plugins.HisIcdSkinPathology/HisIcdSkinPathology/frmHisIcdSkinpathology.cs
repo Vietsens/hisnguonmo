@@ -88,6 +88,7 @@ namespace HIS.Desktop.Plugins.HisIcdSkinPathology.HisIcdSkinPathology
             InitTabIndex();
             SetResource();
             ValidateForm();
+            btnAdd.Enabled = true;
         }
 
         private void ValidateForm()
@@ -372,7 +373,8 @@ namespace HIS.Desktop.Plugins.HisIcdSkinPathology.HisIcdSkinPathology
                     //txtTen = currentData.ICD_SKIN_PATHOLOGY_NAME;
                     this.ActionType = GlobalVariables.ActionEdit;
                     EnableControlChanged(this.ActionType);
-                    btnEdit.Enabled = true;
+                    //Disable nút sửa nếu dữ liệu đã bị khóa
+                    btnEdit.Enabled = (this.currentData.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE);
                     positionHandle = -1;
                     Inventec.Desktop.Controls.ControlWorker.ValidationProviderRemoveControlError(dxValidationProvider1, dxErrorProvider1);
                 }
@@ -601,7 +603,6 @@ namespace HIS.Desktop.Plugins.HisIcdSkinPathology.HisIcdSkinPathology
                 LogSystem.Warn(ex);
             }
         }
-
         private void LoadCurrent(long currentID, ref HIS_ICD_SKIN_PATHOLOGY currentDTO)
         {
             try
@@ -768,7 +769,7 @@ namespace HIS.Desktop.Plugins.HisIcdSkinPathology.HisIcdSkinPathology
         {
             try
             {
-                if(this.ActionType == GlobalVariables.ActionAdd && btnEdit.Enabled)
+                if(this.ActionType == GlobalVariables.ActionAdd && btnAdd.Enabled)
                     btnAdd_Click(null, null);
             }
             catch (Exception ex)
@@ -789,7 +790,6 @@ namespace HIS.Desktop.Plugins.HisIcdSkinPathology.HisIcdSkinPathology
                 LogSystem.Warn(ex);
             }
         }
-
         private void bbtnReset_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
         {
             try
@@ -842,7 +842,6 @@ namespace HIS.Desktop.Plugins.HisIcdSkinPathology.HisIcdSkinPathology
                 LogSystem.Warn(ex);
             }
         }
-
         private void btnGLock_ButtonClick(object sender, DevExpress.XtraEditors.Controls.ButtonPressedEventArgs e)
         {
             CommonParam param = new CommonParam();
@@ -856,7 +855,7 @@ namespace HIS.Desktop.Plugins.HisIcdSkinPathology.HisIcdSkinPathology
                     HIS_ICD_SKIN_PATHOLOGY data1 = new HIS_ICD_SKIN_PATHOLOGY();
                     data1.ID = data.ID;
                     WaitingManager.Show();
-                    success = new Inventec.Common.Adapter.BackendAdapter(param).Post<HIS_ICD_SKIN_PATHOLOGY>(HisIcdSkinPathologyRequestUriStore.HIS_ICD_SKIN_PATHOLOGY_CHANGE_LOCK, ApiConsumers.MosConsumer, data1, param);
+                    success = new Inventec.Common.Adapter.BackendAdapter(param).Post<HIS_ICD_SKIN_PATHOLOGY>(HisIcdSkinPathologyRequestUriStore.HIS_ICD_SKIN_PATHOLOGY_CHANGE_LOCK, ApiConsumers.MosConsumer, data.ID, param);
                     WaitingManager.Hide();
                     if (success != null)
                     {
@@ -869,9 +868,9 @@ namespace HIS.Desktop.Plugins.HisIcdSkinPathology.HisIcdSkinPathology
             catch (Exception ex)
             {
                 LogSystem.Error(ex);
+
             }
         }
-
         private void btnGUnlock_ButtonClick(object sender, DevExpress.XtraEditors.Controls.ButtonPressedEventArgs e)
         {
             CommonParam param = new CommonParam();
@@ -882,10 +881,12 @@ namespace HIS.Desktop.Plugins.HisIcdSkinPathology.HisIcdSkinPathology
                 HIS_ICD_SKIN_PATHOLOGY data = (HIS_ICD_SKIN_PATHOLOGY)gridView1.GetFocusedRow();
                 if (MessageBox.Show(HIS.Desktop.LibraryMessage.MessageUtil.GetMessage(HIS.Desktop.LibraryMessage.Message.Enum.HeThongTBCuaSoThongBaoBanCoMuonKhoaDuLieuKhong), "", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
                 {
+                    
                     HIS_ICD_SKIN_PATHOLOGY data1 = new HIS_ICD_SKIN_PATHOLOGY();
+                    //HisIcdSkinPathologyFilter data1 = new HisIcdSkinPathologyFilter();
                     data1.ID = data.ID;
                     WaitingManager.Show();
-                    success = new Inventec.Common.Adapter.BackendAdapter(param).Post<HIS_ICD_SKIN_PATHOLOGY>(HisIcdSkinPathologyRequestUriStore.HIS_ICD_SKIN_PATHOLOGY_CHANGE_LOCK, ApiConsumers.MosConsumer, data1, param);
+                    success = new Inventec.Common.Adapter.BackendAdapter(param).Post<HIS_ICD_SKIN_PATHOLOGY>(HisIcdSkinPathologyRequestUriStore.HIS_ICD_SKIN_PATHOLOGY_CHANGE_LOCK, ApiConsumers.MosConsumer, data.ID, param);
                     WaitingManager.Hide();
                     if (success != null)
                     {
@@ -895,10 +896,12 @@ namespace HIS.Desktop.Plugins.HisIcdSkinPathology.HisIcdSkinPathology
                     MessageManager.Show(this, param, notHandler);
                 }
             }
+
             catch (Exception ex)
             {
                 LogSystem.Error(ex);
             }
         }
+
     }
 }
