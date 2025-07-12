@@ -148,7 +148,7 @@ namespace MPS.Processor.Mps000503
                 }
                 AddObjectKeyIntoListkey<V_HIS_TREATMENT>(rdo.Treatment);
                 AddObjectKeyIntoListkey<V_HIS_SERVICE_REQ>(rdo.ServiceReq);
-                AddObjectKeyIntoListkey<V_HIS_SERE_SERV>(rdo.Sere_serv);
+                AddObjectKeyIntoListkey<V_HIS_SERE_SERV>(rdo.Sere_serv, false);
             }
             catch (Exception ex)
             {
