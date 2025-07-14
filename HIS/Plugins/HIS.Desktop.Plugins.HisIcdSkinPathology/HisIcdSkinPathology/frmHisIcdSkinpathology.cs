@@ -50,6 +50,7 @@ namespace HIS.Desktop.Plugins.HisIcdSkinPathology.HisIcdSkinPathology
             try
             {
                 InitializeComponent();
+                this.moduleData = moduleData;
                 pagingGrid = new PagingGrid();
                 try
                 {
@@ -171,7 +172,7 @@ namespace HIS.Desktop.Plugins.HisIcdSkinPathology.HisIcdSkinPathology
                 this.txtMa.Properties.NullValuePrompt = Inventec.Common.Resource.Get.Value("frmHisIcdSkinpathology.txtMa.Properties.NullValuePrompt", Resources.ResourcesIcdSkinPathologyManager.Resource, LanguageManager.GetCulture());
                 this.txtTen.Properties.NullValuePrompt = Inventec.Common.Resource.Get.Value("frmHisIcdSkinpathology.txtTen.Properties.NullValuePrompt", Resources.ResourcesIcdSkinPathologyManager.Resource, LanguageManager.GetCulture());
                 this.txtSearch.Properties.NullValuePrompt = Inventec.Common.Resource.Get.Value("frmHisIcdSkinpathology.txtSearch.Properties.NullValuePrompt", Resources.ResourcesIcdSkinPathologyManager.Resource, LanguageManager.GetCulture());
-
+                this.Text = Inventec.Common.Resource.Get.Value("frmHisIcdSkinpathology.Text", Resources.ResourcesIcdSkinPathologyManager.Resource, LanguageManager.GetCulture());
                 if (this.moduleData != null && !String.IsNullOrEmpty(this.moduleData.text))
                 {
                     this.Text = this.moduleData.text;
