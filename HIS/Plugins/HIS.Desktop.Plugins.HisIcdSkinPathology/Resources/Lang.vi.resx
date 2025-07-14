@@ -189,4 +189,7 @@
   <data name="frmHisIcdSkinpathology.txtTen.Properties.NullValuePrompt" xml:space="preserve">
     <value />
   </data>
+  <data name="frmHisIcdSkinpathology.Text" xml:space="preserve">
+    <value>Danh mục</value>
+  </data>
 </root>

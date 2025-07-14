@@ -15,10 +15,10 @@ namespace HIS.Desktop.Plugins.HisIcdSkinPathology
     {
         [ExtensionOf(typeof(DesktopRootExtensionPoint),
             "HIS.Desktop.Plugins.HisIcdSkinPathology",
-            "Danh mục",
+            "ICD - Giải phẫu bệnh da",
             "Bussiness",
             13,
-            "icd.png",
+            "benh.png",
             "A",
             Module.MODULE_TYPE_ID__FORM,
             true,
