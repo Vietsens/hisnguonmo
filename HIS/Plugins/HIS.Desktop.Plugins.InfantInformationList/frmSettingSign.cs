@@ -16,7 +16,7 @@ using HIS.Desktop.ApiConsumer;
 namespace HIS.Desktop.Plugins.InfantInformationList
 {
     public partial class frmSettingSign : Form
-    {
+    {   
        
         private bool isNotLoadWhileChangeControlStateInFirst = false;
 
