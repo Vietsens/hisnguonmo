@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using Inventec.Common.WebApiClient;
 using HIS.Desktop.ApiConsumer;
-    
+       
 namespace HIS.Desktop.Plugins.InfantInformationList
 {
     public partial class frmSettingSign : Form
@@ -66,7 +66,7 @@ namespace HIS.Desktop.Plugins.InfantInformationList
 
                 if (chkUsb.Checked)
                 {
-                
+                     
                 }
                 else if (chkHsm.Checked)
                 {
