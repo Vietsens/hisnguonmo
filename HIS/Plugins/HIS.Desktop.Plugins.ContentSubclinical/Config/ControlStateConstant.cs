@@ -30,5 +30,8 @@ namespace HIS.Desktop.Plugins.ContentSubclinical.Config
         internal const string CHECK_NOT_SELECT_SURG = "chkNotSelectSurg";
         internal const string chkShowMicrobiological = "chkShowMicrobiological";
         internal const string chkShowParentServiceGroup = "chkShowParentServiceGroup";
+        internal const string chkServiceType = "chkServiceType";
+        internal const string chkAssign = "chkAssign";
+        internal const string chkLineBreak = "chkLineBreak";
     }
 }

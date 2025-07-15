@@ -123,6 +123,9 @@
   <data name="BanChuaChonAnh" xml:space="preserve">
     <value>Bạn chưa chọn ảnh</value>
   </data>
+	<data name="BanChuaChonPhuongPhapNao" xml:space="preserve">
+    <value>Bạn chưa chọn phương pháp nào. Nếu tiếp tục các phương pháp cũ sẽ bị mất bạn có đồng ý hay không? </value>
+  </data>
   <data name="BanChuaChonDuongDanLuuAnh" xml:space="preserve">
     <value>Bạn chưa chọn đường dẫn lưu ảnh. Bạn có muốn lưu ảnh không?</value>
   </data>

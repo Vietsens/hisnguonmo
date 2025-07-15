@@ -886,5 +886,20 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                 return "";
             }
         }
+        internal static string BanChuaChonPhuongPhapNao
+        {
+            get
+            {
+                try
+                {
+                    return Inventec.Common.Resource.Get.Value("BanChuaChonPhuongPhapNao", languageMessage, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(ex);
+                }
+                return "";
+            }
+        }
     }
 }
