@@ -943,15 +943,33 @@ namespace HIS.Desktop.Plugins.InfantInformationList
             }
             return valid;
         }
-        private void chkSignFileCertUtil_CheckedChanged(object sender, EventArgs e)
+        //private void chkSignFileCertUtil_CheckedChanged(object sender, EventArgs e)
+        //{
+        //    try
+        //    {
+        //        if (isNotLoadWhileChangeControlStateInFirst)
+        //        {
+        //            return;
+        //        }
+        //        timer1.Start();
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Inventec.Common.Logging.LogSystem.Error(ex);
+        //    }
+        //}
+
+        
+private void chkSignFileCertUtil_CheckedChanged(object sender, EventArgs e)
         {
             try
             {
-                if (isNotLoadWhileChangeControlStateInFirst)
+                if (chkSignFileCertUtil.Checked)
                 {
-                    return;
+                   
+                    frmSettingSign frm = new frmSettingSign();
+                    frm.ShowDialog(this);
                 }
-                timer1.Start();
             }
             catch (Exception ex)
             {
