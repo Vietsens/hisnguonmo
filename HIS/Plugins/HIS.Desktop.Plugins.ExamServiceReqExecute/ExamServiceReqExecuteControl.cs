@@ -3025,12 +3025,12 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                 && treatment != null
                 && treatment.TDL_TREATMENT_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__KHAM)
             {
-                var inputSDO = new
+                var inputSDO = new ServiceReqExamSDO()
                 {
                     ServiceReqId = serviceReqId,
                     ServiceReqTypes = new List<long>
 
-            {
+            {   
                 IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__CDHA,
                 IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__GPBL,
                 IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__NS,
