@@ -40,7 +40,7 @@
       <HintPath>..\..\..\..\LIB\ACS\ACS.Filter.dll</HintPath>
     </Reference>
     <Reference Include="ACS.SDO">
-      <HintPath>..\..\..\..\LIB\ACS\ACS.SDO.dll</HintPath>
+      <HintPath>..\..\..\..\..\His_test\histest\x64\ReferencedAssemblies\ACS.SDO.dll</HintPath>
     </Reference>
     <Reference Include="AutoMapper">
       <HintPath>..\..\..\..\LIB\MOS\AutoMapper.dll</HintPath>
@@ -74,8 +74,14 @@
       <HintPath>..\..\..\..\..\LIBRARY\DevLib\DevExpress.XtraRichEdit.v15.2.Extensions.dll</HintPath>
     </Reference>
     <Reference Include="DevExpress.XtraTreeList.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="EntityFramework">
+      <HintPath>..\..\..\..\..\His_test\histest\x64\ReferencedAssemblies\EntityFramework.dll</HintPath>
+    </Reference>
     <Reference Include="HIS.Common.Treatment">
       <HintPath>..\..\..\..\LIB\HIS\HIS.Common\HIS.Common.Treatment\HIS.Common.Treatment.dll</HintPath>
+    </Reference>
+    <Reference Include="HIS.Desktop.ADO">
+      <HintPath>..\..\..\..\..\His_test\histest\x64\ReferencedAssemblies\HIS.Desktop.ADO.dll</HintPath>
     </Reference>
     <Reference Include="HIS.Desktop.LocalStorage.LocalData">
       <HintPath>..\..\..\..\lib\HIS\HIS.Desktop.LocalStorage.LocalData\HIS.Desktop.LocalStorage.LocalData.dll</HintPath>
@@ -155,10 +161,13 @@
       <HintPath>..\..\..\..\lib\HIS\HIS.UC.ExamFinish\HIS.UC.ExamFinish.dll</HintPath>
     </Reference>
     <Reference Include="HIS.UC.ExamTreatmentFinish">
-      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\HIS.UC.ExamTreatmentFinish.dll</HintPath>
+      <HintPath>..\..\..\UC\HIS.UC.ExamTreatmentFinish\bin\Debug\HIS.UC.ExamTreatmentFinish.dll</HintPath>
+    </Reference>
+    <Reference Include="HIS.UC.HisExamServiceAdd">
+      <HintPath>..\..\..\..\..\His_test\histest\x64\ReferencedAssemblies\HIS.UC.HisExamServiceAdd.dll</HintPath>
     </Reference>
     <Reference Include="HIS.UC.Hospitalize">
-      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\HIS.UC.Hospitalize.dll</HintPath>
+      <HintPath>..\..\..\UC\HIS.UC.Hospitalize\bin\Debug\HIS.UC.Hospitalize.dll</HintPath>
     </Reference>
     <Reference Include="HIS.UC.Icd, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -411,9 +420,8 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\LIB\WCF\Sdc.Client\Newtonsoft.Json.dll</HintPath>
     </Reference>
-    <Reference Include="SDA.SDO, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\LIB\SDA\SDA.SDO.dll</HintPath>
+    <Reference Include="SDA.SDO">
+      <HintPath>..\..\..\..\lib\SDA\SDA.SDO.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
@@ -629,6 +637,7 @@
     <EmbeddedResource Include="Popup\frmPayment.resx">
       <DependentUpon>frmPayment.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Properties\licenses.licx" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -657,14 +666,6 @@
     <Folder Include="Image\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\UC\HIS.UC.ExamServiceAdd\HIS.UC.HisExamServiceAdd.csproj">
-      <Project>{7c454da4-accb-4481-aa0c-28ee90e90827}</Project>
-      <Name>HIS.UC.HisExamServiceAdd</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\HIS.Desktop.ADO\HIS.Desktop.ADO.csproj">
-      <Project>{808c25cd-0925-417f-bbf9-caf9604da879}</Project>
-      <Name>HIS.Desktop.ADO</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\HIS.Desktop.ApiConsumer\HIS.Desktop.ApiConsumer.csproj">
       <Project>{861bfedb-026f-4b6f-a3cf-32843ae8c03d}</Project>
       <Name>HIS.Desktop.ApiConsumer</Name>
