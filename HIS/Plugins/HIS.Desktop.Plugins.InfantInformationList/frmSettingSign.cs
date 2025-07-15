@@ -24,7 +24,7 @@ namespace HIS.Desktop.Plugins.InfantInformationList
         {
             InitializeComponent();
         }
-
+            
         private void chkUsb_CheckedChanged(object sender, EventArgs e)
         {
             if (chkHsm.Checked)
