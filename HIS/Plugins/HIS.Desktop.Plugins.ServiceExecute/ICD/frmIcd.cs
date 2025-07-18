@@ -31,6 +31,7 @@ namespace HIS.Desktop.Plugins.ServiceExecute.ICD
         List<IcdSkinPathologyADO> lsticdSkinPathologyADO = new List<IcdSkinPathologyADO>();
         HIS_SERVICE_REQ currentServiceReq = new HIS_SERVICE_REQ(); 
         private List<string> selectedICDCodes = new List<string>();
+        private bool IscheckTextIcd = false;
         public frmIcd(HIS_SERVICE_REQ serviceReq, Inventec.Desktop.Common.Modules.Module moduleData)
         {
             InitializeComponent();
@@ -105,7 +106,7 @@ namespace HIS.Desktop.Plugins.ServiceExecute.ICD
                     }
                 }
 
-                if (this.currentServiceReq.ICD_SKIN_PATHOLOGY_CODE != null)
+                if (this.currentServiceReq.ICD_SKIN_PATHOLOGY_CODE != null && IscheckTextIcd == false)
                 {
                     this.selectedICDCodes = this.currentServiceReq.ICD_SKIN_PATHOLOGY_CODE.Split(new[] { ';' }, StringSplitOptions.RemoveEmptyEntries).ToList();
 
@@ -116,8 +117,8 @@ namespace HIS.Desktop.Plugins.ServiceExecute.ICD
                             item.IS_CHECK = true;   
                         }
                     }
-                    this.currentServiceReq.ICD_SKIN_PATHOLOGY_CODE = null;
                 }
+                IscheckTextIcd = false;
 
                 UpdateCheckState();
 
@@ -143,7 +144,7 @@ namespace HIS.Desktop.Plugins.ServiceExecute.ICD
 
                 for (int i = 0; i < gridViewIcd.RowCount; i++)
                 {
-                    var row = gridViewIcd.GetRow(i) as IcdSkinPathologyADO;
+                    var row = gridViewIcd.GetRow(i) as IcdSkinPathologyADO;    
                     if (row != null && row.IS_CHECK)
                     {
                         gridViewIcd.SelectRow(i);
@@ -157,7 +158,7 @@ namespace HIS.Desktop.Plugins.ServiceExecute.ICD
         }
 
         private void txtKeyword_EditValueChanged(object sender, EventArgs e)
-        {
+       {
             try
             {
                 string strValue = (sender as DevExpress.XtraEditors.TextEdit).Text;
@@ -234,6 +235,7 @@ namespace HIS.Desktop.Plugins.ServiceExecute.ICD
             {
                 if (e.KeyCode == Keys.Enter)
                 {
+                    IscheckTextIcd = true;
                     FillDataToGrid();
                 }
             }
