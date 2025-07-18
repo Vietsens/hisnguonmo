@@ -78,7 +78,7 @@ namespace MPS.Processor.Mps000276
         public string SampleRoomCode { get; set; }
         public string SampleRoomName { get; set; }
         public string ASSIGN_TURN_CODE { get; set; }
-
+        public string Note { get; set; }
         public Mps000276ADO() { }
     }
 }
