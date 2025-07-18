@@ -211,7 +211,7 @@ namespace MPS.Processor.Mps000276
                         ado.SampleRoomCode = sr.SAMPLE_ROOM_CODE;
                         ado.SampleRoomName = sr.SAMPLE_ROOM_NAME; 
                         ado.ASSIGN_TURN_CODE = sr.ASSIGN_TURN_CODE;
-
+                        ado.Note = sr.TDL_INSTRUCTION_NOTE;
                         if (parent != null)
                         {
 
@@ -227,7 +227,6 @@ namespace MPS.Processor.Mps000276
                                 serviceNumOderAdo.SERVICE_TYPE_CODE = parent.SERVICE_TYPE_CODE;
                                 serviceNumOderAdo.ASSIGN_TURN_CODE = sr.ASSIGN_TURN_CODE;
                                 serviceNumOderAdo.SERVICE_REQ_CODE = sr.SERVICE_REQ_CODE;
-
                             }
                         }
 
