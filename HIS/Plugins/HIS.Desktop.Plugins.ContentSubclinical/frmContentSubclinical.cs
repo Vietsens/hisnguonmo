@@ -289,8 +289,8 @@ namespace HIS.Desktop.Plugins.ContentSubclinical
                     else
                     {
                         if (!chkShowParentServiceGroup.Checked)
-                        {     
-                            List<string> _str = new List<string>();   
+                        {    
+                            List<string> _str = new List<string>();
                             var dataChecks = (List<TreeSereServADO>)this.GetListCheck();
                             var datagroupby = dataChecks.GroupBy(g => g.TDL_INTRUCTION_DATE).ToList();
 
@@ -309,7 +309,7 @@ namespace HIS.Desktop.Plugins.ContentSubclinical
                                     if (chkServiceType.Checked && groupServiceType != null)
                                     {
                                         var serviceType = BackendDataWorker.Get<HIS_SERVICE_TYPE>().FirstOrDefault(p => p.ID == groupServiceType.Key);
-                                        string SERVICE = "- Loại dịch vụ: " + (serviceType != null ? serviceType.SERVICE_TYPE_NAME : "");
+                                        string SERVICE = "- " + (serviceType != null ? serviceType.SERVICE_TYPE_NAME : "");
                                         _str.Add(SERVICE);
                                     }
 
@@ -338,7 +338,7 @@ namespace HIS.Desktop.Plugins.ContentSubclinical
                                                     ext.Add("Nhận xét: " + dicSereServExt[item.ID].DESCRIPTION);
                                                 if (!string.IsNullOrEmpty(dicSereServExt[item.ID].CONCLUDE))
                                                     ext.Add("Kết luận: " + dicSereServExt[item.ID].CONCLUDE);
-                                                dienBien += " " + string.Join(" - ", ext);
+                                                dienBien += " " + string.Join("  ", ext);
                                             }
 
                                             if (chkServiceType.Checked && chkAssign.Checked)
@@ -347,7 +347,7 @@ namespace HIS.Desktop.Plugins.ContentSubclinical
                                             }
                                             else if (chkServiceType.Checked)
                                             {
-                                                dienBien = "- " + dienBien;
+                                                dienBien = " " + dienBien;
                                             }
                                             else if (chkAssign.Checked)
                                             {
@@ -361,7 +361,7 @@ namespace HIS.Desktop.Plugins.ContentSubclinical
                                     {
                                         List<string> servicesInLine = new List<string>();
 
-                                        foreach (var item in groupServiceType)
+                                        foreach (var item in groupServiceType)   
                                         {
                                             string dienBien = "";
                                             string value = item.VALUE_RANGE;
@@ -391,7 +391,7 @@ namespace HIS.Desktop.Plugins.ContentSubclinical
                                         }
 
                                         if (servicesInLine.Count > 0)
-                                        {   
+                                        {
                                             string combinedServices = "";
 
                                             if (chkServiceType.Checked && chkAssign.Checked)
@@ -400,11 +400,11 @@ namespace HIS.Desktop.Plugins.ContentSubclinical
                                             }
                                             else if (chkServiceType.Checked)
                                             {
-                                                combinedServices = "- " + string.Join(" + ", servicesInLine);
+                                                combinedServices = " " + string.Join(" ; ", servicesInLine);
                                             }
                                             else if (chkAssign.Checked)
                                             {
-                                                combinedServices = " " + string.Join(" + ", servicesInLine);
+                                                combinedServices = " " + string.Join("  ", servicesInLine);
                                             }
 
                                             _str.Add(combinedServices);
@@ -440,7 +440,7 @@ namespace HIS.Desktop.Plugins.ContentSubclinical
                                 List<TreeSereServADO> listTestIndex = new List<TreeSereServADO>();
                                 foreach (var dt in dataChecks)
                                 {
-                                    if (String.IsNullOrEmpty(dt.PARENT_ID__IN_SETY))
+                                    if (String.IsNullOrEmpty(dt.PARENT_ID__IN_SETY) )
                                     {
                                         listDate.Add(dt);
                                     }
@@ -452,7 +452,7 @@ namespace HIS.Desktop.Plugins.ContentSubclinical
                                     {
                                         listBacterium.Add(dt);
                                     }
-                                    else if (dt.IS_ANTIBIOTIC)   
+                                    else if (dt.IS_ANTIBIOTIC)
                                     {
                                         listAntibotic.Add(dt);
                                     }
@@ -474,50 +474,179 @@ namespace HIS.Desktop.Plugins.ContentSubclinical
                                     }
                                 }
                                 string content = "";
-                                foreach (var date in listDate)
+                                if (chkAssign.Checked)
                                 {
-                                    content += "*Ngày " + date.SERVICE_REQ_CODE + ":\r\n";   
-                                    var lstServiceType = listServiceType.Where(o => o.PARENT_ID__IN_SETY == date.CONCRETE_ID__IN_SETY);
-                                    foreach (var serviceType in lstServiceType)   
+                                    foreach (var date in listDate)
+                                    {
+                                        if (chkAssign.Checked)
+                                        {
+                                            content += "*Ngày " + date.SERVICE_REQ_CODE + ":\r\n";
+                                        }
+
+                                        var lstServiceType = listServiceType.Where(o => o.PARENT_ID__IN_SETY == date.CONCRETE_ID__IN_SETY);
+                                        foreach (var serviceType in lstServiceType)
+                                        {
+                                            if (chkShowParentServiceGroup.Checked && serviceType.TDL_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__XN)
+                                            {
+                                                content += "- " + serviceType.SERVICE_REQ_CODE + ":\r\n";
+
+                                                if (chkLineBreak.Checked)
+                                                {
+                                                    string str = ContentSubclinicalShowParentServiceType(serviceType.CONCRETE_ID__IN_SETY, listService, listTestIndex, listSereServHasMIC, listBacterium, listAntibotic);
+                                                    content += !string.IsNullOrEmpty(str) ? str + "\r\n" : "";
+
+                                                    var lstParentServiceType = listParentServiceType.Where(o => o.PARENT_ID__IN_SETY == serviceType.CONCRETE_ID__IN_SETY).ToList();
+                                                    if (lstParentServiceType != null && lstParentServiceType.Count > 0)
+                                                    {
+                                                        bool isFristLine = true;
+                                                        foreach (var parentServiceType in lstParentServiceType)
+                                                        {
+                                                            content += !isFristLine ? "\r\n" : "";
+                                                            content += parentServiceType.SERVICE_REQ_CODE + "\r\n";
+                                                            content += ContentSubclinicalShowParentServiceType(parentServiceType.CONCRETE_ID__IN_SETY, listService, listTestIndex, listSereServHasMIC, listBacterium, listAntibotic);
+                                                            isFristLine = false;
+                                                        }
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    string str = ContentSubclinicalShowParentServiceType(serviceType.CONCRETE_ID__IN_SETY, listService, listTestIndex, listSereServHasMIC, listBacterium, listAntibotic);
+                                                    content += !string.IsNullOrEmpty(str) ? str + "\r\n" : "";
+
+                                                    var lstParentServiceType = listParentServiceType.Where(o => o.PARENT_ID__IN_SETY == serviceType.CONCRETE_ID__IN_SETY).ToList();
+                                                    if (lstParentServiceType != null && lstParentServiceType.Count > 0)
+                                                    {
+                                                        List<string> parentServiceLines = new List<string>();
+                                                        foreach (var parentServiceType in lstParentServiceType)
+                                                        {
+                                                            string parentContent = parentServiceType.SERVICE_REQ_CODE + " " + ContentSubclinicalShowParentServiceType(parentServiceType.CONCRETE_ID__IN_SETY, listService, listTestIndex, listSereServHasMIC, listBacterium, listAntibotic);
+                                                            parentServiceLines.Add(parentContent.Trim());
+                                                        }
+                                                        if (parentServiceLines.Count > 0)
+                                                        {
+                                                            content += string.Join(" + ", parentServiceLines) + "\r\n";
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                            else
+                                            {
+                                                content += "- " + serviceType.SERVICE_REQ_CODE + ":\r\n";
+
+                                                if (chkLineBreak.Checked)
+                                                {
+                                                    content += ContentSubclinicalShowParentServiceType(serviceType.CONCRETE_ID__IN_SETY, listService, listTestIndex, listSereServHasMIC, listBacterium, listAntibotic);
+                                                }
+                                                else
+                                                {
+                                                    string serviceContent = ContentSubclinicalShowParentServiceType(serviceType.CONCRETE_ID__IN_SETY, listService, listTestIndex, listSereServHasMIC, listBacterium, listAntibotic);
+                                                    if (!string.IsNullOrEmpty(serviceContent))
+                                                    {
+                                                        serviceContent = serviceContent.Replace("\r\n", " + ").Replace("\n", " + ");
+                                                        content += serviceContent + "\r\n";
+                                                    }
+                                                }
+                                            }   
+
+                                            if (chkGetInfo.Checked && dicSereServExt != null && dicSereServExt.ContainsKey(serviceType.ID))
+                                            {
+                                                List<string> ext = new List<string>();
+                                                if (!string.IsNullOrEmpty(dicSereServExt[serviceType.ID].NOTE))
+                                                    ext.Add("Ghi chú: " + dicSereServExt[serviceType.ID].NOTE);
+                                                if (!string.IsNullOrEmpty(dicSereServExt[serviceType.ID].DESCRIPTION))
+                                                    ext.Add("Nhận xét: " + dicSereServExt[serviceType.ID].DESCRIPTION);
+                                                if (!string.IsNullOrEmpty(dicSereServExt[serviceType.ID].CONCLUDE))
+                                                    ext.Add("Kết luận: " + dicSereServExt[serviceType.ID].CONCLUDE);
+                                                content += " " + string.Join("  ", ext);
+                                            }
+                                            content += "\r\n";
+                                        }
+                                        content += "\r\n";
+                                    }
+                                }
+                                else
+                                {
+                                    //var lstServiceType = listServiceType.Where(o => o.PARENT_ID__IN_SETY == date.CONCRETE_ID__IN_SETY);
+                                    foreach (var serviceType in listServiceType)
                                     {
                                         if (chkShowParentServiceGroup.Checked && serviceType.TDL_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__XN)
                                         {
-                                            content += "- Loại dịch vụ: " + serviceType.SERVICE_REQ_CODE + ":\r\n";
-                                            string str = ContentSubclinicalShowParentServiceType(serviceType.CONCRETE_ID__IN_SETY, listService, listTestIndex, listSereServHasMIC, listBacterium, listAntibotic);
-                                            content += !string.IsNullOrEmpty(str) ? str + "\r\n" : "";
-                                            var lstParentServiceType = listParentServiceType.Where(o => o.PARENT_ID__IN_SETY == serviceType.CONCRETE_ID__IN_SETY).ToList();
-                                            if (lstParentServiceType != null && lstParentServiceType.Count > 0)
+                                            content += "- " + serviceType.SERVICE_REQ_CODE + ":\r\n";
+
+                                            if (chkLineBreak.Checked)
                                             {
-                                                bool isFristLine = true;
-                                                foreach (var parentServiceType in lstParentServiceType)
+                                                string str = ContentSubclinicalShowParentServiceType(serviceType.CONCRETE_ID__IN_SETY, listService, listTestIndex, listSereServHasMIC, listBacterium, listAntibotic);
+                                                content += !string.IsNullOrEmpty(str) ? str + "\r\n" : "";
+
+                                                var lstParentServiceType = listParentServiceType.Where(o => o.PARENT_ID__IN_SETY == serviceType.CONCRETE_ID__IN_SETY).ToList();
+                                                if (lstParentServiceType != null && lstParentServiceType.Count > 0)
                                                 {
-                                                    content += !isFristLine ? "\r\n" : "";
-                                                    content += parentServiceType.SERVICE_REQ_CODE + "\r\n";
-                                                    content += ContentSubclinicalShowParentServiceType(parentServiceType.CONCRETE_ID__IN_SETY, listService, listTestIndex, listSereServHasMIC, listBacterium, listAntibotic);
-                                                    isFristLine = false;
+                                                    bool isFristLine = true;
+                                                    foreach (var parentServiceType in lstParentServiceType)
+                                                    {
+                                                        content += !isFristLine ? "\r\n" : "";
+                                                        content += parentServiceType.SERVICE_REQ_CODE + "\r\n";
+                                                        content += ContentSubclinicalShowParentServiceType(parentServiceType.CONCRETE_ID__IN_SETY, listService, listTestIndex, listSereServHasMIC, listBacterium, listAntibotic);
+                                                        isFristLine = false;
+                                                    }
+                                                }
+                                            }
+                                            else
+                                            {
+                                                string str = ContentSubclinicalShowParentServiceType(serviceType.CONCRETE_ID__IN_SETY, listService, listTestIndex, listSereServHasMIC, listBacterium, listAntibotic);
+                                                content += !string.IsNullOrEmpty(str) ? str + "\r\n" : "";
+
+                                                var lstParentServiceType = listParentServiceType.Where(o => o.PARENT_ID__IN_SETY == serviceType.CONCRETE_ID__IN_SETY).ToList();
+                                                if (lstParentServiceType != null && lstParentServiceType.Count > 0)
+                                                {
+                                                    List<string> parentServiceLines = new List<string>();
+                                                    foreach (var parentServiceType in lstParentServiceType)
+                                                    {
+                                                        string parentContent = parentServiceType.SERVICE_REQ_CODE + " " + ContentSubclinicalShowParentServiceType(parentServiceType.CONCRETE_ID__IN_SETY, listService, listTestIndex, listSereServHasMIC, listBacterium, listAntibotic);
+                                                        parentServiceLines.Add(parentContent.Trim());
+                                                    }
+                                                    if (parentServiceLines.Count > 0)
+                                                    {
+                                                        content += string.Join(" + ", parentServiceLines) + "\r\n";
+                                                    }
                                                 }
                                             }
                                         }
                                         else
                                         {
-                                            content += "- Loại dịch vụ: " + serviceType.SERVICE_REQ_CODE + ":\r\n";
-                                            content += ContentSubclinicalShowParentServiceType(serviceType.CONCRETE_ID__IN_SETY, listService, listTestIndex, listSereServHasMIC, listBacterium, listAntibotic);
+                                            content += "- " + serviceType.SERVICE_REQ_CODE + ":\r\n";
+
+                                            if (chkLineBreak.Checked)
+                                            {
+                                                content += ContentSubclinicalShowParentServiceType(serviceType.CONCRETE_ID__IN_SETY, listService, listTestIndex, listSereServHasMIC, listBacterium, listAntibotic);
+                                            }
+                                            else
+                                            {
+                                                string serviceContent = ContentSubclinicalShowParentServiceType(serviceType.CONCRETE_ID__IN_SETY, listService, listTestIndex, listSereServHasMIC, listBacterium, listAntibotic);
+                                                if (!string.IsNullOrEmpty(serviceContent))
+                                                {
+                                                    serviceContent = serviceContent.Replace("\r\n", " + ").Replace("\n", " + ");
+                                                    content += serviceContent + "\r\n";
+                                                }
+                                            }
                                         }
-                                        if (chkGetInfo.Checked && dicSereServExt != null && dicSereServExt.ContainsKey(date.ID))
+
+                                        if (chkGetInfo.Checked && dicSereServExt != null && dicSereServExt.ContainsKey(serviceType.ID))
                                         {
                                             List<string> ext = new List<string>();
-                                            if (!string.IsNullOrEmpty(dicSereServExt[date.ID].NOTE))
-                                                ext.Add("Ghi chú: " + dicSereServExt[date.ID].NOTE);
-                                            if (!string.IsNullOrEmpty(dicSereServExt[date.ID].DESCRIPTION))
-                                                ext.Add("Nhận xét: " + dicSereServExt[date.ID].DESCRIPTION);
-                                            if (!string.IsNullOrEmpty(dicSereServExt[date.ID].CONCLUDE))
-                                                ext.Add("Kết luận: " + dicSereServExt[date.ID].CONCLUDE);
-                                            content += " " + string.Join(" - ", ext);
+                                            if (!string.IsNullOrEmpty(dicSereServExt[serviceType.ID].NOTE))
+                                                ext.Add("Ghi chú: " + dicSereServExt[serviceType.ID].NOTE);
+                                            if (!string.IsNullOrEmpty(dicSereServExt[serviceType.ID].DESCRIPTION))
+                                                ext.Add("Nhận xét: " + dicSereServExt[serviceType.ID].DESCRIPTION);
+                                            if (!string.IsNullOrEmpty(dicSereServExt[serviceType.ID].CONCLUDE))
+                                                ext.Add("Kết luận: " + dicSereServExt[serviceType.ID].CONCLUDE);
+                                            content += " " + string.Join("  ", ext);
                                         }
                                         content += "\r\n";
                                     }
                                     content += "\r\n";
                                 }
+
                                 this._DelegateSelectData(content);
                             }
                         }
@@ -569,7 +698,16 @@ namespace HIS.Desktop.Plugins.ContentSubclinical
                         _strTestIndex.Add(testIndexStr);
                     }
                     if (_strTestIndex != null && _strTestIndex.Count > 0)
-                        serivceStr += string.Join("; ", _strTestIndex);
+                    {
+                        if (chkLineBreak.Checked)
+                        {
+                            serivceStr += string.Join("\r\n", _strTestIndex);
+                        }
+                        else
+                        {
+                            serivceStr += string.Join("; ", _strTestIndex);
+                        }
+                    }
                     if (hasBracket)
                     {
                         serivceStr += ")";
@@ -577,7 +715,16 @@ namespace HIS.Desktop.Plugins.ContentSubclinical
                     _strService.Add(serivceStr);
                 }
                 if (_strService != null && _strService.Count > 0)
-                    content += string.Join("; ", _strService);
+                {
+                    if (chkLineBreak.Checked)
+                    {
+                        content += string.Join("\r\n", _strService);
+                    }
+                    else
+                    {
+                        content += string.Join("; ", _strService);
+                    }
+                }
 
                 if (!chkImportant.Checked && chkShowMicrobiological.Checked)
                 {
@@ -585,11 +732,13 @@ namespace HIS.Desktop.Plugins.ContentSubclinical
                     List<string> _strSereServHasMIC = new List<string>();
                     foreach (var sereServHasMIC in lstSereServHasMIC)
                     {
-                        content += "\r\n" + String.Format("{0}: {1}", sereServHasMIC.SERVICE_REQ_CODE, !string.IsNullOrEmpty(sereServHasMIC.VALUE_RANGE) ? string.Format("({0})", sereServHasMIC.VALUE_RANGE) : "");
+                        string micContent = String.Format("{0}: {1}", sereServHasMIC.SERVICE_REQ_CODE, !string.IsNullOrEmpty(sereServHasMIC.VALUE_RANGE) ? string.Format("({0})", sereServHasMIC.VALUE_RANGE) : "");
+
                         var lstBacterium = listBacterium.Where(o => o.PARENT_ID__IN_SETY == sereServHasMIC.CONCRETE_ID__IN_SETY).ToList();
+                        List<string> bacteriumContents = new List<string>();
                         foreach (var bacterium in lstBacterium)
                         {
-                            content += "\r\n- " + bacterium.SERVICE_REQ_CODE + ": ";
+                            string bacteriumStr = " " + bacterium.SERVICE_REQ_CODE + ": ";
                             var lstAntibiotic = listAntibotic.Where(o => o.PARENT_ID__IN_SETY == bacterium.CONCRETE_ID__IN_SETY).ToList();
                             List<string> _strAntibiotics = new List<string>();
                             foreach (var antibiotic in lstAntibiotic)
@@ -599,7 +748,43 @@ namespace HIS.Desktop.Plugins.ContentSubclinical
                                 _strAntibiotics.Add(strAnti);
                             }
                             if (_strAntibiotics != null && _strAntibiotics.Count > 0)
-                                content += string.Join(", ", _strAntibiotics);
+                            {
+                                if (chkLineBreak.Checked)
+                                {
+                                    bacteriumStr += string.Join("\r\n", _strAntibiotics);
+                                }
+                                else
+                                {
+                                    bacteriumStr += string.Join(", ", _strAntibiotics);
+                                }
+                            }
+                            bacteriumContents.Add(bacteriumStr);
+                        }
+
+                        if (bacteriumContents.Count > 0)
+                        {
+                            if (chkLineBreak.Checked)
+                            {
+                                micContent += "\r\n" + string.Join("\r\n", bacteriumContents);
+                            }
+                            else
+                            {
+                                micContent += "\r\n" + string.Join("\r\n", bacteriumContents);
+                            }
+                        }
+
+                        _strSereServHasMIC.Add(micContent);
+                    }
+
+                    if (_strSereServHasMIC.Count > 0)
+                    {
+                        if (chkLineBreak.Checked)
+                        {
+                            content += "\r\n" + string.Join("\r\n", _strSereServHasMIC);
+                        }
+                        else
+                        {
+                            content += "\r\n" + string.Join("\r\n", _strSereServHasMIC);
                         }
                     }
                 }
