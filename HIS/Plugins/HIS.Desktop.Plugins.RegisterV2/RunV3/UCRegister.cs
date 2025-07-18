@@ -1066,7 +1066,7 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
                 this.isCheckSS = false;
                 this.RefreshUserControl();
                 this.ucPatientRaw1.LoadDataCboDoiTuong(roomId);
-                if (this.ucPatientRaw1.cboPatientType == null)
+                if (this.ucPatientRaw1.cboPatientType.EditValue == null)
                 {
                     this.ucPatientRaw1.LoadDataComboPrimaryPatientType(roomId);
                 }
