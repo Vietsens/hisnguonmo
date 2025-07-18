@@ -607,25 +607,21 @@ namespace HIS.Desktop.Plugins.HisTrackingList.Run
 
             if (vHisTrackingList != null && vHisTrackingList.Any())
             {
-                foreach (var tracking in vHisTrackingList)
+                CommonParam paramCommon = new CommonParam();
+                var filter = new MOS.Filter.HisDrugUseAnalysisFilter
                 {
-                    CommonParam paramCommon = new CommonParam();
-                    var filter = new MOS.Filter.HisDrugUseAnalysisFilter
-                    {
-                        TDL_TREATMENT_ID = this.treatmentId,
-                        TRACKING_ID = tracking.ID 
-                    };
+                    TDL_TREATMENT_ID = this.treatmentId,
+                };
 
-                    var result = new BackendAdapter(paramCommon).Get<List<HIS_DRUG_USE_ANALYSIS>>(
-                        "api/HisDrugUseAnalysis/Get",
-                        ApiConsumers.MosConsumer,
-                        filter,
-                        paramCommon);
+                var result = new BackendAdapter(paramCommon).Get<List<HIS_DRUG_USE_ANALYSIS>>(
+                    "api/HisDrugUseAnalysis/Get",
+                    ApiConsumers.MosConsumer,
+                    filter,
+                    paramCommon);
 
-                    if (result != null && result.Any())
-                    {
-                        ListDrugUseAnalysis.AddRange(result);
-                    }
+                if (result != null && result.Any())
+                {
+                    ListDrugUseAnalysis.AddRange(result);
                 }
             }
             if (ListDrugUseAnalysis != null)
@@ -645,16 +641,21 @@ namespace HIS.Desktop.Plugins.HisTrackingList.Run
                 {
                     //if (data == null)
                     //    return;
-                    string creator = (gridViewTrackings.GetRowCellValue(e.RowHandle, "CREATOR") ?? "").ToString().Trim();
+                    var rowExtTemp = gridViewTrackings.GetRow(e.RowHandle) as V_HIS_TRACKING_EXT;
+                    string creator = rowExtTemp?.Tracking?.CREATOR?.Trim().ToLower() ?? "";
+                    //string creator = (gridViewTrackings.GetRowCellValue(e.RowHandle, "Tracking.CREATOR") ?? "").ToString();
                     long DEPARTMENT_ID = Inventec.Common.TypeConvert.Parse.ToInt64((gridViewTrackings.GetRowCellValue(e.RowHandle, "DEPARTMENT_ID") ?? "0").ToString());
                     string loginName = Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName();
                     long departmentId = WorkPlace.WorkPlaceSDO.FirstOrDefault(p => p.RoomId == this.currentModule.RoomId).DepartmentId;
                     long? departmentIdCreator = BackendDataWorker.Get<HIS_EMPLOYEE>().Where(p => p.LOGINNAME == loginName).FirstOrDefault().DEPARTMENT_ID;
                     Console.WriteLine("Column: " + e.Column.FieldName);
-
+                    
                     if (e.Column.FieldName == "Tracking.DELETE")
                     {
-                        if (loginName == creator || CheckLoginAdmin.IsAdmin(loginName))
+                        Inventec.Common.Logging.LogSystem.Info("loginName?.Trim().ToLower() : " + loginName?.Trim().ToLower());
+                        Inventec.Common.Logging.LogSystem.Info("creator?.Trim().ToLower() : " + creator?.Trim().ToLower());
+
+                        if (loginName?.Trim().ToLower() == creator?.Trim().ToLower() || CheckLoginAdmin.IsAdmin(loginName))
                         {
                             e.RepositoryItem = repositoryItemButton__Delete_Enable;
                         }
@@ -667,7 +668,7 @@ namespace HIS.Desktop.Plugins.HisTrackingList.Run
                     {
                         bool canEdit = false;
 
-                        if (loginName == creator || CheckLoginAdmin.IsAdmin(loginName))
+                        if (loginName?.Trim().ToLower() == creator?.Trim().ToLower() || CheckLoginAdmin.IsAdmin(loginName))
                         {
                             canEdit = true;
                         }
