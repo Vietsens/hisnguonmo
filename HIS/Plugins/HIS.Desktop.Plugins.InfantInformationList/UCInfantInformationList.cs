@@ -350,6 +350,8 @@ namespace HIS.Desktop.Plugins.InfantInformationList
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
+
+
         private void InitControlState()
         {
             isNotLoadWhileChangeControlStateInFirst = true;

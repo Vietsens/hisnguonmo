@@ -70,8 +70,9 @@
     <Reference Include="EMR.WCF.DCO">
       <HintPath>..\..\..\..\LIB\WCF\EMR.WCF\EMR.WCF.DCO\EMR.WCF.DCO.dll</HintPath>
     </Reference>
-    <Reference Include="HIS.Bhyt.Hssk">
-      <HintPath>..\..\..\..\LIB\HIS\HIS.Bhyt.Hssk\HIS.Bhyt.Hssk.dll</HintPath>
+    <Reference Include="HIS.Bhyt.Hssk, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\lib\HIS\HIS.Bhyt.Hssk\HIS.Bhyt.Hssk.dll</HintPath>
     </Reference>
     <Reference Include="HIS.Desktop.ApiConsumer, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -155,14 +156,16 @@
     <Reference Include="Inventec.UC.Paging">
       <HintPath>..\..\..\..\LIB\Inventec.UC\Inventec.UC.Paging\Inventec.UC.Paging.dll</HintPath>
     </Reference>
-    <Reference Include="MOS.EFMODEL">
-      <HintPath>..\..\..\..\LIB\MOS\MOS.EFMODEL.dll</HintPath>
+    <Reference Include="MOS.EFMODEL, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\lib\MOS\MOS.EFMODEL.dll</HintPath>
     </Reference>
     <Reference Include="MOS.Filter">
       <HintPath>..\..\..\..\LIB\MOS\MOS.Filter.dll</HintPath>
     </Reference>
-    <Reference Include="MOS.KskSignData">
-      <HintPath>..\..\..\..\LIB\MOS\MOS.KskSignData.dll</HintPath>
+    <Reference Include="MOS.KskSignData, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\lib\MOS\MOS.KskSignData.dll</HintPath>
     </Reference>
     <Reference Include="MOS.SDO">
       <HintPath>..\..\..\..\LIB\MOS\MOS.SDO.dll</HintPath>
