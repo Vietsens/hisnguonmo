@@ -75,7 +75,7 @@ namespace HIS.Desktop.Plugins.HisKskDriverList
         private HIS.Desktop.Library.CacheClient.ControlStateWorker controlStateWorker;
         private List<HIS.Desktop.Library.CacheClient.ControlStateRDO> currentControlStateRDO;
         private X509Certificate2 certificate;
-        private string SerialNumber;
+        SettingSignADO SettingSignADO { get; set; }
         #endregion
         #region ConstructorLoad
         public UCHisKskDriverList(Inventec.Desktop.Common.Modules.Module module)
@@ -177,38 +177,27 @@ namespace HIS.Desktop.Plugins.HisKskDriverList
             try
             {
                 timer.Stop();
-                SerialNumber = null;
                 if (chkSignFileCertUtil.Checked)
                 {
-                    if (VerifyServiceSignProcessorIsRunning())
+                    frmSetting frm = new frmSetting(SettingSignADO, (result) =>
                     {
-                        WcfSignDCO wcfSignDCO = new WcfSignDCO();
-                        wcfSignDCO.HwndParent = this.ParentForm.Handle;
-                        string jsonData = JsonConvert.SerializeObject(wcfSignDCO);
-                        SignProcessorClient signProcessorClient = new SignProcessorClient();
-                        var wcfSignResultDCO = signProcessorClient.GetSerialNumber(jsonData);  //EDIT
-                        if (wcfSignResultDCO != null)
-                        {
-                            SerialNumber = wcfSignResultDCO.OutputFile;
-                        }
-                    }
-                    if (string.IsNullOrEmpty(SerialNumber))
-                    {
+                        SettingSignADO = (SettingSignADO)result;
+                    });
+                    frm.ShowDialog();
+                    if (SettingSignADO == null || string.IsNullOrEmpty(SettingSignADO.SerialNumber))
                         chkSignFileCertUtil.Checked = false;
-                        XtraMessageBox.Show("Không lấy được thông tin chứng thư hoặc chứng thư không hợp lệ", "Thông báo");
-                    }
                 }
                 HIS.Desktop.Library.CacheClient.ControlStateRDO csAddOrUpdate = (this.currentControlStateRDO != null && this.currentControlStateRDO.Count > 0) ? this.currentControlStateRDO.Where(o => o.KEY == chkSignFileCertUtil.Name && o.MODULE_LINK == this.currentModule.ModuleLink).FirstOrDefault() : null;
                 Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => csAddOrUpdate), csAddOrUpdate));
                 if (csAddOrUpdate != null)
                 {
-                    csAddOrUpdate.VALUE = SerialNumber;
+                    csAddOrUpdate.VALUE = Newtonsoft.Json.JsonConvert.SerializeObject(SettingSignADO);
                 }
                 else
                 {
                     csAddOrUpdate = new HIS.Desktop.Library.CacheClient.ControlStateRDO();
                     csAddOrUpdate.KEY = chkSignFileCertUtil.Name;
-                    csAddOrUpdate.VALUE = SerialNumber;
+                    csAddOrUpdate.VALUE = Newtonsoft.Json.JsonConvert.SerializeObject(SettingSignADO);
                     csAddOrUpdate.MODULE_LINK = this.currentModule.ModuleLink;
                     if (this.currentControlStateRDO == null)
                         this.currentControlStateRDO = new List<HIS.Desktop.Library.CacheClient.ControlStateRDO>();
@@ -513,15 +502,15 @@ namespace HIS.Desktop.Plugins.HisKskDriverList
                     {
                         if (item.KEY == chkSignFileCertUtil.Name)
                         {
-                            SerialNumber = item.VALUE;
-
-                            chkSignFileCertUtil.Checked = !String.IsNullOrWhiteSpace(SerialNumber);
+                            SettingSignADO = Newtonsoft.Json.JsonConvert.DeserializeObject<SettingSignADO>(item.VALUE);
+                            chkSignFileCertUtil.Checked = SettingSignADO != null && !string.IsNullOrEmpty(SettingSignADO.SerialNumber) ? true : false;
                         }
                     }
                 }
             }
             catch (Exception ex)
             {
+                chkSignFileCertUtil.Checked = false;
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
             isNotLoadWhileChangeControlStateInFirst = false;
@@ -896,35 +885,60 @@ namespace HIS.Desktop.Plugins.HisKskDriverList
                 WaitingManager.Show();
                 if (row != null)
                 {
-                    if (chkSignFileCertUtil.Checked)
+                    if (chkSignFileCertUtil.Checked && SettingSignADO != null)
                     {
-                        if (certificate == null && !String.IsNullOrWhiteSpace(SerialNumber))
+                        if (SettingSignADO.IsHsm)
                         {
-                            certificate = Inventec.Common.SignFile.CertUtil.GetBySerial(SerialNumber, requirePrivateKey: true, validOnly: false);
-                            if (certificate == null)
+                            KskDataProcess data = new KskDataProcess();
+                            if (row != null)
                             {
-                                chkSignFileCertUtil.Checked = false;
-                                if (MessageBox.Show("Không lấy được thông tin chứng thư hoặc chứng thư không hợp lệ. Bạn có muốn tiếp tục không?", "Thông báo", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
+                                EMR.SDO.SignXmlBhytSDO signXmlBhytSDO = new EMR.SDO.SignXmlBhytSDO();
+                                signXmlBhytSDO.XmlBase64 = data.Base64XmlKsk(row);
+                                signXmlBhytSDO.TagStoreSignatureValue = null;
+                                signXmlBhytSDO.ConfigData = new EMR.SDO.XmlConfigDataSDO() { HsmSerialNumber = SettingSignADO.SerialNumber, HsmType = SettingSignADO.Id, HsmUserCode = SettingSignADO.Name, Password = SettingSignADO.Password, SecretKey = SettingSignADO.SercetKey, IdentityNumber = SettingSignADO.CccdNumber };
+                                var stringbase64 = new Inventec.Common.Adapter.BackendAdapter(param).Post<string>("api/EmrSign/SignXmlBhyt", ApiConsumer.ApiConsumers.EmrConsumer, signXmlBhytSDO, SessionManager.ActionLostToken, param);
+
+                                if (!string.IsNullOrEmpty(stringbase64))
                                 {
-                                    return;
+                                    KskDriverSyncSDO sdo = new KskDriverSyncSDO();
+                                    sdo.KskDriveId = row.ID;
+                                    var signData = data.GenXmlKskData(row);
+                                    signData.SIGNDATA = stringbase64;
+                                    sdo.SyncData = signData;
+                                    listKskDriveSync.Add(sdo);
                                 }
                             }
                         }
-
-                        KskDataProcess data = new KskDataProcess();
-                        KskDriverSyncSDO sdo = new KskDriverSyncSDO();
-                        sdo.KskDriveId = row.ID;
-                        sdo.SyncData = data.MakeData(row, certificate, (string xmlData, string element, string serialNumber) =>
+                        else
                         {
-                            if (VerifyServiceSignProcessorIsRunning())
+                            if (certificate == null && !String.IsNullOrWhiteSpace(SettingSignADO.SerialNumber))
                             {
-                                SignProcessorClient signProcessorClient = new SignProcessorClient();
-                                return signProcessorClient.StringBase64SignXml(xmlData, element, serialNumber);
+                                certificate = Inventec.Common.SignFile.CertUtil.GetBySerial(SettingSignADO.SerialNumber, requirePrivateKey: true, validOnly: false);
+                                if (certificate == null)
+                                {
+                                    chkSignFileCertUtil.Checked = false;
+                                    if (MessageBox.Show("Không lấy được thông tin chứng thư hoặc chứng thư không hợp lệ. Bạn có muốn tiếp tục không?", "Thông báo", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
+                                    {
+                                        return;
+                                    }
+                                }
                             }
-                            else
-                                return null;
-                        });
-                        listKskDriveSync.Add(sdo);
+
+                            KskDataProcess data = new KskDataProcess();
+                            KskDriverSyncSDO sdo = new KskDriverSyncSDO();
+                            sdo.KskDriveId = row.ID;
+                            sdo.SyncData = data.MakeData(row, certificate, (string xmlData, string element, string serialNumber) =>
+                            {
+                                if (VerifyServiceSignProcessorIsRunning())
+                                {
+                                    SignProcessorClient signProcessorClient = new SignProcessorClient();
+                                    return signProcessorClient.StringBase64SignXml(xmlData, element, serialNumber);
+                                }
+                                else
+                                    return null;
+                            });
+                            listKskDriveSync.Add(sdo);
+                        }
                     }
                     else
                     {
@@ -1131,40 +1145,68 @@ namespace HIS.Desktop.Plugins.HisKskDriverList
                 var rowHandles = gridView1.GetSelectedRows();
                 if (rowHandles != null && rowHandles.Count() > 0)
                 {
-                    if (chkSignFileCertUtil.Checked)
+                    if (chkSignFileCertUtil.Checked && SettingSignADO != null)
                     {
-                        if (certificate == null && !String.IsNullOrWhiteSpace(SerialNumber))
+                        if (SettingSignADO.IsHsm)
                         {
-                            certificate = Inventec.Common.SignFile.CertUtil.GetBySerial(SerialNumber, requirePrivateKey: true, validOnly: false);
-                            if (certificate == null)
+                            KskDataProcess data = new KskDataProcess();
+                            foreach (var i in rowHandles)
                             {
-                                chkSignFileCertUtil.Checked = false;
-                                if (MessageBox.Show("Không lấy được thông tin chứng thư hoặc chứng thư không hợp lệ. Bạn có muốn tiếp tục không?", "Thông báo", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
+                                var row = (V_HIS_KSK_DRIVER)gridView1.GetRow(i);
+                                if (row != null)
                                 {
-                                    return;
+                                    EMR.SDO.SignXmlBhytSDO signXmlBhytSDO = new EMR.SDO.SignXmlBhytSDO();
+                                    signXmlBhytSDO.XmlBase64 = data.Base64XmlKsk(row);
+                                    signXmlBhytSDO.TagStoreSignatureValue = null;
+                                    signXmlBhytSDO.ConfigData = new EMR.SDO.XmlConfigDataSDO() { HsmSerialNumber = SettingSignADO.SerialNumber, HsmType = SettingSignADO.Id, HsmUserCode = SettingSignADO.Name, Password = SettingSignADO.Password, SecretKey = SettingSignADO.SercetKey, IdentityNumber = SettingSignADO.CccdNumber };
+                                    var stringbase64 = new Inventec.Common.Adapter.BackendAdapter(param).Post<string>("api/EmrSign/SignXmlBhyt", ApiConsumer.ApiConsumers.EmrConsumer, signXmlBhytSDO, SessionManager.ActionLostToken, param);
+
+                                    if (!string.IsNullOrEmpty(stringbase64))
+                                    {
+                                        KskDriverSyncSDO sdo = new KskDriverSyncSDO();
+                                        sdo.KskDriveId = row.ID;
+                                        var signData = data.GenXmlKskData(row);
+                                        signData.SIGNDATA = stringbase64;
+                                        sdo.SyncData = signData;
+                                        listKskDriveSync.Add(sdo);
+                                    }
                                 }
                             }
                         }
-                        Inventec.Common.Logging.LogSystem.Debug(SerialNumber + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => certificate), certificate));
-                        KskDataProcess data = new KskDataProcess();
-                        foreach (var i in rowHandles)
+                        else
                         {
-                            var row = (V_HIS_KSK_DRIVER)gridView1.GetRow(i);
-                            if (row != null)
+                            if (certificate == null && !String.IsNullOrWhiteSpace(SettingSignADO.SerialNumber))
                             {
-                                KskDriverSyncSDO sdo = new KskDriverSyncSDO();
-                                sdo.KskDriveId = row.ID;
-                                sdo.SyncData = data.MakeData(row, certificate, (string xmlData, string element, string serialNumber) =>
+                                certificate = Inventec.Common.SignFile.CertUtil.GetBySerial(SettingSignADO.SerialNumber, requirePrivateKey: true, validOnly: false);
+                                if (certificate == null)
                                 {
-                                    if (VerifyServiceSignProcessorIsRunning())
+                                    chkSignFileCertUtil.Checked = false;
+                                    if (MessageBox.Show("Không lấy được thông tin chứng thư hoặc chứng thư không hợp lệ. Bạn có muốn tiếp tục không?", "Thông báo", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
                                     {
-                                        SignProcessorClient signProcessorClient = new SignProcessorClient();
-                                        return signProcessorClient.StringBase64SignXml(xmlData, element, serialNumber);
+                                        return;
                                     }
-                                    else
-                                        return null;
-                                });
-                                listKskDriveSync.Add(sdo);
+                                }
+                            }
+                            KskDataProcess data = new KskDataProcess();
+                            foreach (var i in rowHandles)
+                            {
+                                var row = (V_HIS_KSK_DRIVER)gridView1.GetRow(i);
+                                if (row != null)
+                                {
+                                    KskDriverSyncSDO sdo = new KskDriverSyncSDO();
+                                    sdo.KskDriveId = row.ID;
+                                    sdo.SyncData = data.MakeData(row, certificate, (string xmlData, string element, string serialNumber) =>
+                                    {
+                                        if (VerifyServiceSignProcessorIsRunning())
+                                        {
+                                            SignProcessorClient signProcessorClient = new SignProcessorClient();
+                                            return signProcessorClient.StringBase64SignXml(xmlData, element, serialNumber);
+                                        }
+                                        else
+                                            return null;
+                                    });
+                                    listKskDriveSync.Add(sdo);
+                                }
                             }
                         }
                     }
@@ -1205,7 +1247,7 @@ namespace HIS.Desktop.Plugins.HisKskDriverList
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
-        }        
+        }
 
     }
 }

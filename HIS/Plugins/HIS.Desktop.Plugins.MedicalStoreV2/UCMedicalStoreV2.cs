@@ -994,7 +994,7 @@ namespace HIS.Desktop.Plugins.MedicalStoreV2
             }
 
         }
-
+        //qtcode
         private void InitCombo(GridLookUpEdit cbo, object data, string DisplayValue, string ValueMember)
         {
             try
@@ -1006,7 +1006,8 @@ namespace HIS.Desktop.Plugins.MedicalStoreV2
                 DevExpress.XtraGrid.Columns.GridColumn col2 = cbo.Properties.View.Columns.AddField(DisplayValue);
                 col2.VisibleIndex = 1;
                 col2.Width = 300;
-                col2.Caption = ResourceMessage.TatCa;
+                col2.Caption = "All";
+                //col2.Caption = ResourceMessage.TatCa;
                 cbo.Properties.PopupFormWidth = 300;
                 cbo.Properties.View.OptionsView.ShowColumnHeaders = true;
                 cbo.Properties.View.OptionsSelection.MultiSelect = true;
@@ -1023,6 +1024,7 @@ namespace HIS.Desktop.Plugins.MedicalStoreV2
             }
 
         }
+
 
         private void LoadComboTreatmentType()
         {
@@ -1050,6 +1052,7 @@ namespace HIS.Desktop.Plugins.MedicalStoreV2
             }
         }
 
+        //qtcode
         private void LoadComboExecuteDepartment()
         {
             try
@@ -1062,6 +1065,8 @@ namespace HIS.Desktop.Plugins.MedicalStoreV2
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
+        //qtcode
+
 
         public void bbtnSEARCH()
         {
@@ -3272,6 +3277,7 @@ namespace HIS.Desktop.Plugins.MedicalStoreV2
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
+
 
         private void cboExecuteDepartment_CustomDisplayText(object sender, CustomDisplayTextEventArgs e)
         {

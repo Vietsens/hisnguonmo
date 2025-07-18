@@ -349,7 +349,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
                     }
                 }
             }
-            catch (Exception ex)
+            catch (Exception ex)   
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
