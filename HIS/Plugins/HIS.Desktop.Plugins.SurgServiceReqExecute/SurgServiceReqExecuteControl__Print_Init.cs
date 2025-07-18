@@ -895,7 +895,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
         private bool DelegateRunPrinterSurg(string printTypeCode, string fileName)
         {
             bool result = false;
-            try
+            try 
             {
                 switch (printTypeCode)
                 {
@@ -1355,9 +1355,18 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
                 {
                     PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, rdo, MPS.ProcessorBase.PrintConfig.PreviewType.EmrSignAndPrintNow, "");
                 }
-                else if (chkSign.Checked && !IsActionPrint && chkXemIn.Checked)
+                else if (chkSign.Checked && !IsActionPrint && chkXemIn.Checked)   
                 {
-                    PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, rdo, MPS.ProcessorBase.PrintConfig.PreviewType.EmrShow, "");
+                    PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, rdo, MPS.ProcessorBase.PrintConfig.PreviewType.EmrSignAndPrintPreview, "");
+                    //Inventec.Common.SignLibrary.SignLibraryGUIProcessor.SignAndShowPrintPreview(printTypeCode, fileName, rdo);
+                }
+                else if (chkSign.Checked && IsActionPrint && chkIn.Checked)
+                {
+                    PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, rdo, MPS.ProcessorBase.PrintConfig.PreviewType.EmrSignAndPrintNow, "");
+                }
+                else if (chkSign.Checked && IsActionPrint && chkXemIn.Checked)
+                {    
+                    PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, rdo, MPS.ProcessorBase.PrintConfig.PreviewType.EmrSignAndPrintPreview, "");
                     //Inventec.Common.SignLibrary.SignLibraryGUIProcessor.SignAndShowPrintPreview(printTypeCode, fileName, rdo);
                 }
                 else if (chkSign.Checked && !IsActionPrint)
