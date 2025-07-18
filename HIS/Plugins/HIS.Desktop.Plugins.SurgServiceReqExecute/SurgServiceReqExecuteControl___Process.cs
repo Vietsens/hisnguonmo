@@ -1073,7 +1073,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
                     #endregion
 
                     #region Process has exception
-                    SessionManager.ProcessTokenLost(param);
+                    SessionManager.ProcessTokenLost(param);  
                     #endregion
                 }
             }
