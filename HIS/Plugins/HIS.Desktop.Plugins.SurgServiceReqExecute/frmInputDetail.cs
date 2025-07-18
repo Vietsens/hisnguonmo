@@ -2349,7 +2349,11 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
 
                 eyeSurgDesc.MO_VAO_TP_KINH_TUYEN = textEdit1.Text;
                 //- Mo_vao_tp_kinh_tuyen: (gio)
-                eyeSurgDesc.MO_VAO_TP_KICH_THUOC = txtkichthuoc.EditValue != null ? (decimal?)txtkichthuoc.EditValue : null;
+                //qtcode
+                //eyeSurgDesc.MO_VAO_TP_KICH_THUOC = txtkichthuoc.EditValue != null ? (decimal?)txtkichthuoc.EditValue : null;
+
+
+                eyeSurgDesc.MO_VAO_TP_KICH_THUOC = string.IsNullOrWhiteSpace(txtkichthuoc.Text) ? null : (txtkichthuoc.Text);
                 //- Mo_vao_tp_kich_thuoc: (mm)
 
                 eyeSurgDesc.MO_VAO_TP_RACH_PHU = checkEdit12.Checked ? (short?)1 : (short?)0;
@@ -2397,10 +2401,11 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
                 else
                     eyeSurgDesc.CACH_DAY_NHAN = null;
                 //- Cach_day_nhan: 1: bang nuoc, 2: bang chat nhay
-
-                eyeSurgDesc.TAN_NHAN_NANG_LUONG = txtNangLuong.EditValue != null ? (decimal?)txtNangLuong.EditValue : null;
-
-                eyeSurgDesc.TAN_NHAN_LUC_HUT = txtLucHut.EditValue != null ? (decimal?)txtLucHut.EditValue : null;
+                //qtcode
+                //eyeSurgDesc.TAN_NHAN_NANG_LUONG = txtNangLuong.EditValue != null ? (decimal?)txtNangLuong.EditValue : null;
+                eyeSurgDesc.TAN_NHAN_NANG_LUONG = string.IsNullOrWhiteSpace(txtNangLuong.EditValue?.ToString()) ? null : (decimal?)Convert.ToDecimal(txtNangLuong.EditValue);
+                //eyeSurgDesc.TAN_NHAN_LUC_HUT = txtLucHut.EditValue != null ? (decimal?)txtLucHut.EditValue : null;
+                eyeSurgDesc.TAN_NHAN_LUC_HUT = string.IsNullOrWhiteSpace(txtLucHut.EditValue?.ToString()) ? null : (decimal?)Convert.ToDecimal(txtLucHut.EditValue);
                 //- Tan_nhan_luc_hut: (mmHg)
 
                 eyeSurgDesc.TAN_NHAN_TOC_DO_DC = textEdit7.Text;
@@ -2444,8 +2449,10 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
                 {
                     eyeSurgDesc.RACH_BAO_SAU = 1;
                     eyeSurgDesc.RACH_BAO_SAU_VI_TRI = txtViTriRachForraRachBaoSau.Text;
+                    //qtcode
                     //- Rach_bao_sau_vi_tri:
-                    eyeSurgDesc.RACH_BAO_SAU_KICH_THUOC = spinKichThuocRachForraRachBaoSau.EditValue != null ? (decimal?)spinKichThuocRachForraRachBaoSau.Value : null;
+                    //eyeSurgDesc.RACH_BAO_SAU_KICH_THUOC = spinKichThuocRachForraRachBaoSau.EditValue != null ? (decimal?)spinKichThuocRachForraRachBaoSau.Value : null;
+                    eyeSurgDesc.RACH_BAO_SAU_KICH_THUOC = !string.IsNullOrWhiteSpace(spinKichThuocRachForraRachBaoSau.Text)? spinKichThuocRachForraRachBaoSau.Text : null;
                     //- Rach_bao_sau_kich_thuoc:
                 }
                 //- Rach_bao_sau: 0: khong; 1: co
@@ -2455,7 +2462,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
                     eyeSurgDesc.CAT_BAO_SAU = 0;
                     eyeSurgDesc.CAT_BAO_SAU_CACH_THUC = 0;
                 }
-                    
+
                 else if (raRBSCBSCo.Checked)
                     eyeSurgDesc.CAT_BAO_SAU = 1;
                 else
@@ -7777,36 +7784,36 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             }
         }
 
-        private void spinKichThuocRachForraRachBaoSau_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar))
-            {
-                e.Handled = true; // Ngăn nhập ký tự không phải số
-            }
-        }
+        //private void spinKichThuocRachForraRachBaoSau_KeyPress(object sender, KeyPressEventArgs e)
+        //{
+        //    if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar))
+        //    {
+        //        e.Handled = true; // Ngăn nhập ký tự không phải số
+        //    }
+        //}
 
-        private void txtkichthuoc_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar))
-            {
-                e.Handled = true; // Ngăn nhập ký tự không phải số
-            }
-        }
+        //private void txtkichthuoc_KeyPress(object sender, KeyPressEventArgs e)
+        //{
+        //    if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar))
+        //    {
+        //        e.Handled = true; // Ngăn nhập ký tự không phải số
+        //    }
+        //}
 
-        private void txtNangLuong_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar))
-            {
-                e.Handled = true; // Ngăn nhập ký tự không phải số
-            }
-        }
+        //private void txtNangLuong_KeyPress(object sender, KeyPressEventArgs e)
+        //{
+        //    if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar))
+        //    {
+        //        e.Handled = true; // Ngăn nhập ký tự không phải số
+        //    }
+        //}
 
-        private void txtLucHut_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar))
-            {
-                e.Handled = true; // Ngăn nhập ký tự không phải số
-            }
-        }
+        //private void txtLucHut_KeyPress(object sender, KeyPressEventArgs e)
+        //{
+        //    if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar))
+        //    {
+        //        e.Handled = true; // Ngăn nhập ký tự không phải số
+        //    }
+        //}
     }
 }

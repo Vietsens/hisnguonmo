@@ -45,7 +45,6 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute.PtttMethod
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormPtttMethod));
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject1 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject2 = new DevExpress.Utils.SerializableAppearanceObject();
@@ -64,7 +63,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute.PtttMethod
             this.btnAdd = new DevExpress.XtraEditors.SimpleButton();
             this.panelControl1 = new DevExpress.XtraEditors.PanelControl();
             this.pictureEdit1 = new DevExpress.XtraEditors.PictureEdit();
-            this.barManager1 = new DevExpress.XtraBars.BarManager(this.components);
+            this.barManager1 = new DevExpress.XtraBars.BarManager();
             this.bar1 = new DevExpress.XtraBars.Bar();
             this.barBtnSearch = new DevExpress.XtraBars.BarButtonItem();
             this.bbtnAdd = new DevExpress.XtraBars.BarButtonItem();
@@ -97,7 +96,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute.PtttMethod
             this.barDockControlBottom = new DevExpress.XtraBars.BarDockControl();
             this.barDockControlLeft = new DevExpress.XtraBars.BarDockControl();
             this.barDockControlRight = new DevExpress.XtraBars.BarDockControl();
-            this.imageCollection1 = new DevExpress.Utils.ImageCollection(this.components);
+            this.imageCollection1 = new DevExpress.Utils.ImageCollection();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemSpinEdit2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
             this.layoutControl1.SuspendLayout();
@@ -155,9 +154,9 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute.PtttMethod
             // 
             // btnAdd
             // 
-            this.btnAdd.Location = new System.Drawing.Point(556, 2);
+            this.btnAdd.Location = new System.Drawing.Point(554, 2);
             this.btnAdd.Name = "btnAdd";
-            this.btnAdd.Size = new System.Drawing.Size(86, 22);
+            this.btnAdd.Size = new System.Drawing.Size(88, 22);
             this.btnAdd.StyleController = this.layoutControl1;
             this.btnAdd.TabIndex = 9;
             this.btnAdd.Text = "Thêm (Ctrl N)";
@@ -382,9 +381,9 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute.PtttMethod
             // 
             // btnChoose
             // 
-            this.btnChoose.Location = new System.Drawing.Point(536, 408);
+            this.btnChoose.Location = new System.Drawing.Point(534, 408);
             this.btnChoose.Name = "btnChoose";
-            this.btnChoose.Size = new System.Drawing.Size(106, 22);
+            this.btnChoose.Size = new System.Drawing.Size(108, 22);
             this.btnChoose.StyleController = this.layoutControl1;
             this.btnChoose.TabIndex = 7;
             this.btnChoose.Text = "Chọn";
@@ -392,7 +391,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute.PtttMethod
             // 
             // btnSearch
             // 
-            this.btnSearch.Location = new System.Drawing.Point(473, 2);
+            this.btnSearch.Location = new System.Drawing.Point(471, 2);
             this.btnSearch.Name = "btnSearch";
             this.btnSearch.Size = new System.Drawing.Size(79, 22);
             this.btnSearch.StyleController = this.layoutControl1;
@@ -405,7 +404,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute.PtttMethod
             this.txtKeyword.Location = new System.Drawing.Point(2, 2);
             this.txtKeyword.Name = "txtKeyword";
             this.txtKeyword.Properties.NullValuePrompt = "Từ khóa tìm kiếm";
-            this.txtKeyword.Size = new System.Drawing.Size(467, 20);
+            this.txtKeyword.Size = new System.Drawing.Size(465, 20);
             this.txtKeyword.StyleController = this.layoutControl1;
             this.txtKeyword.TabIndex = 4;
             this.txtKeyword.EditValueChanged += new System.EventHandler(this.txtKeyword_EditValueChanged);
@@ -433,14 +432,14 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute.PtttMethod
             this.layoutControlItem1.Control = this.txtKeyword;
             this.layoutControlItem1.Location = new System.Drawing.Point(0, 0);
             this.layoutControlItem1.Name = "layoutControlItem1";
-            this.layoutControlItem1.Size = new System.Drawing.Size(471, 26);
+            this.layoutControlItem1.Size = new System.Drawing.Size(469, 26);
             this.layoutControlItem1.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem1.TextVisible = false;
             // 
             // layoutControlItem2
             // 
             this.layoutControlItem2.Control = this.btnSearch;
-            this.layoutControlItem2.Location = new System.Drawing.Point(471, 0);
+            this.layoutControlItem2.Location = new System.Drawing.Point(469, 0);
             this.layoutControlItem2.Name = "layoutControlItem2";
             this.layoutControlItem2.Size = new System.Drawing.Size(83, 26);
             this.layoutControlItem2.TextSize = new System.Drawing.Size(0, 0);
@@ -451,15 +450,15 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute.PtttMethod
             this.emptySpaceItem1.AllowHotTrack = false;
             this.emptySpaceItem1.Location = new System.Drawing.Point(0, 406);
             this.emptySpaceItem1.Name = "emptySpaceItem1";
-            this.emptySpaceItem1.Size = new System.Drawing.Size(534, 26);
+            this.emptySpaceItem1.Size = new System.Drawing.Size(532, 26);
             this.emptySpaceItem1.TextSize = new System.Drawing.Size(0, 0);
             // 
             // layoutControlItem4
             // 
             this.layoutControlItem4.Control = this.btnChoose;
-            this.layoutControlItem4.Location = new System.Drawing.Point(534, 406);
+            this.layoutControlItem4.Location = new System.Drawing.Point(532, 406);
             this.layoutControlItem4.Name = "layoutControlItem4";
-            this.layoutControlItem4.Size = new System.Drawing.Size(110, 26);
+            this.layoutControlItem4.Size = new System.Drawing.Size(112, 26);
             this.layoutControlItem4.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem4.TextVisible = false;
             // 
@@ -475,9 +474,9 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute.PtttMethod
             // layoutControlItem3
             // 
             this.layoutControlItem3.Control = this.btnAdd;
-            this.layoutControlItem3.Location = new System.Drawing.Point(554, 0);
+            this.layoutControlItem3.Location = new System.Drawing.Point(552, 0);
             this.layoutControlItem3.Name = "layoutControlItem3";
-            this.layoutControlItem3.Size = new System.Drawing.Size(90, 26);
+            this.layoutControlItem3.Size = new System.Drawing.Size(92, 26);
             this.layoutControlItem3.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem3.TextVisible = false;
             // 
