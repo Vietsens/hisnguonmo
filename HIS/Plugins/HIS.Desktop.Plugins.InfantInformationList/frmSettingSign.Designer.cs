@@ -30,7 +30,7 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmSettingSign));
             this.layoutControl1 = new DevExpress.XtraLayout.LayoutControl();
-            this.simpleButton2 = new DevExpress.XtraEditors.SimpleButton();
+            this.iconEye = new DevExpress.XtraEditors.SimpleButton();
             this.labelControl1 = new DevExpress.XtraEditors.LabelControl();
             this.btnCerfi = new DevExpress.XtraEditors.SimpleButton();
             this.chkHsm = new System.Windows.Forms.RadioButton();
@@ -41,7 +41,7 @@
             this.txtAuthCode = new DevExpress.XtraEditors.TextEdit();
             this.txtSignerCode = new DevExpress.XtraEditors.TextEdit();
             this.txtPassWord = new DevExpress.XtraEditors.TextEdit();
-            this.txtSignSys = new DevExpress.XtraEditors.GridLookUpEdit();
+            this.cboSignSys = new DevExpress.XtraEditors.GridLookUpEdit();
             this.gridLookUpEdit1View = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.layoutControlGroup1 = new DevExpress.XtraLayout.LayoutControlGroup();
             this.layoutControlItem1 = new DevExpress.XtraLayout.LayoutControlItem();
@@ -61,6 +61,7 @@
             this.emptySpaceItem3 = new DevExpress.XtraLayout.EmptySpaceItem();
             this.emptySpaceItem4 = new DevExpress.XtraLayout.EmptySpaceItem();
             this.emptySpaceItem5 = new DevExpress.XtraLayout.EmptySpaceItem();
+            this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
             this.layoutControl1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.txtSerialCerti.Properties)).BeginInit();
@@ -68,7 +69,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.txtAuthCode.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtSignerCode.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtPassWord.Properties)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.txtSignSys.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cboSignSys.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridLookUpEdit1View)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem1)).BeginInit();
@@ -92,7 +93,7 @@
             // 
             // layoutControl1
             // 
-            this.layoutControl1.Controls.Add(this.simpleButton2);
+            this.layoutControl1.Controls.Add(this.iconEye);
             this.layoutControl1.Controls.Add(this.labelControl1);
             this.layoutControl1.Controls.Add(this.btnCerfi);
             this.layoutControl1.Controls.Add(this.chkHsm);
@@ -103,7 +104,7 @@
             this.layoutControl1.Controls.Add(this.txtAuthCode);
             this.layoutControl1.Controls.Add(this.txtSignerCode);
             this.layoutControl1.Controls.Add(this.txtPassWord);
-            this.layoutControl1.Controls.Add(this.txtSignSys);
+            this.layoutControl1.Controls.Add(this.cboSignSys);
             this.layoutControl1.Location = new System.Drawing.Point(3, 2);
             this.layoutControl1.Name = "layoutControl1";
             this.layoutControl1.OptionsCustomizationForm.DesignTimeCustomizationFormPositionAndSize = new System.Drawing.Rectangle(716, 226, 250, 350);
@@ -112,14 +113,15 @@
             this.layoutControl1.TabIndex = 0;
             this.layoutControl1.Text = "layoutControl1";
             // 
-            // simpleButton2
+            // iconEye
             // 
-            this.simpleButton2.Image = ((System.Drawing.Image)(resources.GetObject("simpleButton2.Image")));
-            this.simpleButton2.Location = new System.Drawing.Point(451, 89);
-            this.simpleButton2.Name = "simpleButton2";
-            this.simpleButton2.Size = new System.Drawing.Size(24, 22);
-            this.simpleButton2.StyleController = this.layoutControl1;
-            this.simpleButton2.TabIndex = 23;
+            this.iconEye.Image = ((System.Drawing.Image)(resources.GetObject("iconEye.Image")));
+            this.iconEye.Location = new System.Drawing.Point(451, 89);
+            this.iconEye.Name = "iconEye";
+            this.iconEye.Size = new System.Drawing.Size(24, 22);
+            this.iconEye.StyleController = this.layoutControl1;
+            this.iconEye.TabIndex = 23;
+            this.iconEye.Click += new System.EventHandler(this.iconEye_Click);
             // 
             // labelControl1
             // 
@@ -137,12 +139,13 @@
             this.btnCerfi.StyleController = this.layoutControl1;
             this.btnCerfi.TabIndex = 21;
             this.btnCerfi.Text = "Chọn chứng thư";
+            this.btnCerfi.Click += new System.EventHandler(this.btnCerfi_Click);
             // 
             // chkHsm
             // 
             this.chkHsm.Location = new System.Drawing.Point(101, 12);
             this.chkHsm.Name = "chkHsm";
-            this.chkHsm.Size = new System.Drawing.Size(108, 25);
+            this.chkHsm.Size = new System.Drawing.Size(160, 25);
             this.chkHsm.TabIndex = 16;
             this.chkHsm.TabStop = true;
             this.chkHsm.Text = "HSM Server";
@@ -178,9 +181,9 @@
             // 
             // chkUsb
             // 
-            this.chkUsb.Location = new System.Drawing.Point(213, 12);
+            this.chkUsb.Location = new System.Drawing.Point(265, 12);
             this.chkUsb.Name = "chkUsb";
-            this.chkUsb.Size = new System.Drawing.Size(262, 25);
+            this.chkUsb.Size = new System.Drawing.Size(210, 25);
             this.chkUsb.TabIndex = 15;
             this.chkUsb.TabStop = true;
             this.chkUsb.Text = "USB Token";
@@ -211,18 +214,18 @@
             this.txtPassWord.StyleController = this.layoutControl1;
             this.txtPassWord.TabIndex = 11;
             // 
-            // txtSignSys
+            // cboSignSys
             // 
-            this.txtSignSys.EditValue = "";
-            this.txtSignSys.Location = new System.Drawing.Point(137, 41);
-            this.txtSignSys.Name = "txtSignSys";
-            this.txtSignSys.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            this.cboSignSys.EditValue = "";
+            this.cboSignSys.Location = new System.Drawing.Point(137, 41);
+            this.cboSignSys.Name = "cboSignSys";
+            this.cboSignSys.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
-            this.txtSignSys.Properties.NullText = "";
-            this.txtSignSys.Properties.View = this.gridLookUpEdit1View;
-            this.txtSignSys.Size = new System.Drawing.Size(338, 20);
-            this.txtSignSys.StyleController = this.layoutControl1;
-            this.txtSignSys.TabIndex = 6;
+            this.cboSignSys.Properties.NullText = "";
+            this.cboSignSys.Properties.View = this.gridLookUpEdit1View;
+            this.cboSignSys.Size = new System.Drawing.Size(338, 20);
+            this.cboSignSys.StyleController = this.layoutControl1;
+            this.cboSignSys.TabIndex = 6;
             // 
             // gridLookUpEdit1View
             // 
@@ -261,9 +264,9 @@
             // layoutControlItem1
             // 
             this.layoutControlItem1.Control = this.chkUsb;
-            this.layoutControlItem1.Location = new System.Drawing.Point(201, 0);
+            this.layoutControlItem1.Location = new System.Drawing.Point(253, 0);
             this.layoutControlItem1.Name = "layoutControlItem1";
-            this.layoutControlItem1.Size = new System.Drawing.Size(266, 29);
+            this.layoutControlItem1.Size = new System.Drawing.Size(214, 29);
             this.layoutControlItem1.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem1.TextVisible = false;
             // 
@@ -272,7 +275,7 @@
             this.layoutControlItem9.Control = this.chkHsm;
             this.layoutControlItem9.Location = new System.Drawing.Point(89, 0);
             this.layoutControlItem9.Name = "layoutControlItem9";
-            this.layoutControlItem9.Size = new System.Drawing.Size(112, 29);
+            this.layoutControlItem9.Size = new System.Drawing.Size(164, 29);
             this.layoutControlItem9.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem9.TextVisible = false;
             // 
@@ -288,7 +291,7 @@
             // 
             this.layoutControlItem4.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem4.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
-            this.layoutControlItem4.Control = this.txtSignSys;
+            this.layoutControlItem4.Control = this.cboSignSys;
             this.layoutControlItem4.Location = new System.Drawing.Point(0, 29);
             this.layoutControlItem4.Name = "layoutControlItem4";
             this.layoutControlItem4.Size = new System.Drawing.Size(467, 24);
@@ -378,7 +381,7 @@
             // 
             // layoutControlItem11
             // 
-            this.layoutControlItem11.Control = this.simpleButton2;
+            this.layoutControlItem11.Control = this.iconEye;
             this.layoutControlItem11.Location = new System.Drawing.Point(439, 77);
             this.layoutControlItem11.Name = "layoutControlItem11";
             this.layoutControlItem11.Size = new System.Drawing.Size(28, 26);
@@ -444,6 +447,7 @@
             this.Controls.Add(this.layoutControl1);
             this.Name = "frmSettingSign";
             this.Text = "Thiết lập ký";
+            this.Load += new System.EventHandler(this.frmSettingSign_Load);
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).EndInit();
             this.layoutControl1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.txtSerialCerti.Properties)).EndInit();
@@ -451,7 +455,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.txtAuthCode.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtSignerCode.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtPassWord.Properties)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.txtSignSys.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cboSignSys.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridLookUpEdit1View)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem1)).EndInit();
@@ -479,7 +483,7 @@
 
         private DevExpress.XtraLayout.LayoutControl layoutControl1;
         private DevExpress.XtraLayout.LayoutControlGroup layoutControlGroup1;
-        private DevExpress.XtraEditors.GridLookUpEdit txtSignSys;
+        private DevExpress.XtraEditors.GridLookUpEdit cboSignSys;
         private DevExpress.XtraGrid.Views.Grid.GridView gridLookUpEdit1View;
         private DevExpress.XtraEditors.TextEdit txtSerialCerti;
         private DevExpress.XtraEditors.TextEdit txtPassWord;
@@ -501,7 +505,7 @@
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem10;
         private DevExpress.XtraEditors.SimpleButton btnCerfi;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem2;
-        private DevExpress.XtraEditors.SimpleButton simpleButton2;
+        private DevExpress.XtraEditors.SimpleButton iconEye;
         private DevExpress.XtraEditors.LabelControl labelControl1;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem12;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem11;
@@ -509,5 +513,6 @@
         private DevExpress.XtraLayout.EmptySpaceItem emptySpaceItem1;
         private DevExpress.XtraLayout.EmptySpaceItem emptySpaceItem3;
         private DevExpress.XtraLayout.EmptySpaceItem emptySpaceItem5;
+        private System.Windows.Forms.SaveFileDialog saveFileDialog1;
     }
 }
