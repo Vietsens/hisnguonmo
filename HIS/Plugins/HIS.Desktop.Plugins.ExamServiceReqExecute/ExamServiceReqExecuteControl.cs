@@ -3020,7 +3020,9 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
         }
         private bool CheckMustFinishAllServices(long serviceReqId)
         {
-        
+               
+               
+            CommonParam param = new CommonParam();
             if (HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<int>("MOS.HIS_SERVICE_REQ.MUST_FINISH_ALL_SERVICES_BEFORE_EXAM_ADDITION") == 2
                 && treatment != null
                 && treatment.TDL_TREATMENT_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__KHAM)
@@ -3048,7 +3050,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
     "api/HisServiceReq/GetServicesNotComplete",
     ApiConsumers.MosConsumer,
     inputSDO,
-    null
+    param
 );
 
                 Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData("allServiceReqs output:", allServiceReqs));

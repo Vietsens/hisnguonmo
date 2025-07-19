@@ -18,7 +18,10 @@
 using HIS.Desktop.LocalStorage.ConfigSystem;
 using HIS.Desktop.LocalStorage.LocalData;
 using HIS.Desktop.Plugins.Library.EmrGenerate;
+using Inventec.Common.SignLibrary.ADO;
 using Inventec.Common.SignLibrary.DTO;
+using MPS.ProcessorBase;
+using MPS.ProcessorBase.Core;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -29,7 +32,7 @@ namespace HIS.Desktop.Plugins.Library.PrintServiceReqTreatment
 {
     class Print
     {
-        internal static void PrintData(long roomId, string printTypeCode, string fileName, object data, bool printNow, ref bool result, Action<DocumentSignedUpdateIGSysResultDTO> DlgSendResultSigned)
+        internal static void PrintData(long roomId, string printTypeCode, string fileName, object data, bool printNow, ref bool result, Action<DocumentSignedUpdateIGSysResultDTO> DlgSendResultSigned, PrintConfig.PreviewType? previewType)
         {
             try
             {
@@ -38,21 +41,30 @@ namespace HIS.Desktop.Plugins.Library.PrintServiceReqTreatment
                 {
                     printerName = GlobalVariables.dicPrinter[printTypeCode];
                 }
-
-                if (printNow)
-                {
-                    result = MPS.MpsPrinter.Run(new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, data, MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow, printerName));
-                }
-                else if (HIS.Desktop.LocalStorage.ConfigApplication.ConfigApplications.CheDoInChoCacChucNangTrongPhanMem == 2)
-                {
-                    result = MPS.MpsPrinter.Run(new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, data, MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow, printerName));
-                }
-                else
+                if(previewType != null)
                 {
                     Inventec.Common.SignLibrary.ADO.InputADO inputADO = new EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode(EmrDataStore.treatmentCode, printTypeCode, roomId);
                     inputADO.DlgSendResultSigned = DlgSendResultSigned;
-                    result = MPS.MpsPrinter.Run(new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, data, MPS.ProcessorBase.PrintConfig.PreviewType.Show, printerName) { EmrInputADO = inputADO });
+                    result = MPS.MpsPrinter.Run(new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, data, (PrintConfig.PreviewType)previewType, printerName) { EmrInputADO = inputADO });
+
                 }
+                else
+                {
+                    if (printNow)
+                    {
+                        result = MPS.MpsPrinter.Run(new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, data, MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow, printerName));
+                    }
+                    else if (HIS.Desktop.LocalStorage.ConfigApplication.ConfigApplications.CheDoInChoCacChucNangTrongPhanMem == 2)
+                    {
+                        result = MPS.MpsPrinter.Run(new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, data, MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow, printerName));
+                    }
+                    else
+                    {
+                        Inventec.Common.SignLibrary.ADO.InputADO inputADO = new EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode(EmrDataStore.treatmentCode, printTypeCode, roomId);
+                        inputADO.DlgSendResultSigned = DlgSendResultSigned;
+                        result = MPS.MpsPrinter.Run(new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, data, MPS.ProcessorBase.PrintConfig.PreviewType.Show, printerName) { EmrInputADO = inputADO });
+                    }
+                }               
             }
             catch (Exception ex)
             {

@@ -2065,7 +2065,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                             if (checkHDBN != null)
                             {
                                 if (!isPrinted) InTamUng(isSaveAndShow, previewType);
-                                InPhieuHuoangDanBenhNhan(isSaveAndShow);
+                                InPhieuHuoangDanBenhNhan(isSaveAndShow, previewType);
 
                             }
 

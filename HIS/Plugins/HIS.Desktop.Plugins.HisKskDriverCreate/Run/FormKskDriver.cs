@@ -1,4 +1,4 @@
-/* IVT
+﻿/* IVT
  * @Project : hisnguonmo
  * Copyright (C) 2017 INVENTEC
  *  
@@ -19,10 +19,12 @@ using DevExpress.Data;
 using DevExpress.XtraEditors;
 using DevExpress.XtraEditors.ViewInfo;
 using DevExpress.XtraGrid.Views.Base;
+using HIS.Desktop.ADO;
 using HIS.Desktop.Common;
 using HIS.Desktop.LocalStorage.LocalData;
 using HIS.Desktop.Plugins.HisKskDriverCreate.ADO;
 using HIS.Desktop.Utility;
+using HIS.UC.SettingSignInfo;
 using Inventec.Core;
 using Inventec.Desktop.Common.Message;
 using MOS.EFMODEL.DataModels;
@@ -53,7 +55,9 @@ namespace HIS.Desktop.Plugins.HisKskDriverCreate.Run
         private HIS.Desktop.Library.CacheClient.ControlStateWorker controlStateWorker;
         private List<HIS.Desktop.Library.CacheClient.ControlStateRDO> currentControlStateRDO;
         private X509Certificate2 certificate;
-        private string SerialNumber;
+        SettingSignADO SettingSignADO { get; set; }
+
+        //private string SerialNumber;
         private HIS_SERVICE_REQ processServiceReq;
         private List<HIS_KSK_DRIVER> listKskDrivers;
         public List<HIS_LICENSE_CLASS> lstLicenseClass;
@@ -647,7 +651,7 @@ namespace HIS.Desktop.Plugins.HisKskDriverCreate.Run
                 }
                 else
                 {
-                    dxValidationProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider(); 
+                    dxValidationProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider();
                 }
                 SetValidateForm();
                 if (!dxValidationProvider1.Validate()) return;
@@ -796,30 +800,27 @@ namespace HIS.Desktop.Plugins.HisKskDriverCreate.Run
                 }
                 if (chkSignFileCertUtil.Checked)
                 {
-                    certificate = Inventec.Common.SignFile.CertUtil.GetByDialog(requirePrivateKey: true, validOnly: false);
-                    if (certificate == null)
+                    frmSetting frm = new frmSetting(SettingSignADO, (result) =>
+                    {
+                        SettingSignADO = (SettingSignADO)result;
+                    });
+                    frm.ShowDialog();
+                    if (SettingSignADO == null || string.IsNullOrEmpty(SettingSignADO.SerialNumber))
                     {
                         chkSignFileCertUtil.Checked = false;
-                        XtraMessageBox.Show(Resources.ResourceMessage.KhongLayDuocThongTinChungThu, Resources.ResourceMessage.ThongBao);
-                    }
-                    else
-                    {
-                        SerialNumber = certificate.SerialNumber;
                     }
                 }
-                else
-                    SerialNumber = null;
                 HIS.Desktop.Library.CacheClient.ControlStateRDO csAddOrUpdate = (this.currentControlStateRDO != null && this.currentControlStateRDO.Count > 0) ? this.currentControlStateRDO.Where(o => o.KEY == chkSignFileCertUtil.Name && o.MODULE_LINK == this.currentModule.ModuleLink).FirstOrDefault() : null;
                 Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => csAddOrUpdate), csAddOrUpdate));
                 if (csAddOrUpdate != null)
                 {
-                    csAddOrUpdate.VALUE = SerialNumber;
+                    csAddOrUpdate.VALUE = Newtonsoft.Json.JsonConvert.SerializeObject(this.SettingSignADO);
                 }
                 else
                 {
                     csAddOrUpdate = new HIS.Desktop.Library.CacheClient.ControlStateRDO();
                     csAddOrUpdate.KEY = chkSignFileCertUtil.Name;
-                    csAddOrUpdate.VALUE = SerialNumber;
+                    csAddOrUpdate.VALUE = Newtonsoft.Json.JsonConvert.SerializeObject(this.SettingSignADO);
                     csAddOrUpdate.MODULE_LINK = this.currentModule.ModuleLink;
                     if (this.currentControlStateRDO == null)
                         this.currentControlStateRDO = new List<HIS.Desktop.Library.CacheClient.ControlStateRDO>();

@@ -45,15 +45,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
         /// </summary>
         private void InitializeComponent()
         {
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject33 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject34 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject35 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject36 = new DevExpress.Utils.SerializableAppearanceObject();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmInputDetail));
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject37 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject38 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject39 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject40 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject1 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject2 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject3 = new DevExpress.Utils.SerializableAppearanceObject();
@@ -82,6 +74,10 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject26 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject27 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject28 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject29 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject30 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject31 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject32 = new DevExpress.Utils.SerializableAppearanceObject();
             this.lcPtDucTTT = new DevExpress.XtraLayout.LayoutControl();
             this.txtDienBienKhac = new DevExpress.XtraEditors.TextEdit();
             this.txtLoaiThuocForraTraMat = new DevExpress.XtraEditors.TextEdit();
@@ -164,7 +160,9 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.raDucT3Gia = new DevExpress.XtraEditors.CheckEdit();
             this.raDoI = new DevExpress.XtraEditors.CheckEdit();
             this.labelControl3 = new DevExpress.XtraEditors.LabelControl();
-            this.spinKichThuocRachForraRachBaoSau = new DevExpress.XtraEditors.SpinEdit();
+            this.txtkichthuoc = new DevExpress.XtraEditors.TextEdit();
+            this.txtNangLuong = new DevExpress.XtraEditors.TextEdit();
+            this.txtLucHut = new DevExpress.XtraEditors.TextEdit();
             this.layoutControlGroup1 = new DevExpress.XtraLayout.LayoutControlGroup();
             this.layoutControlItem9 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem10 = new DevExpress.XtraLayout.LayoutControlItem();
@@ -231,7 +229,6 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.layoutControlItem63 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem65 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem73 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.layoutControlItem75 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem67 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem68 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem70 = new DevExpress.XtraLayout.LayoutControlItem();
@@ -983,9 +980,8 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.layoutControlItem2 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem99 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem356 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.txtkichthuoc = new DevExpress.XtraEditors.TextEdit();
-            this.txtNangLuong = new DevExpress.XtraEditors.TextEdit();
-            this.txtLucHut = new DevExpress.XtraEditors.TextEdit();
+            this.spinKichThuocRachForraRachBaoSau = new DevExpress.XtraEditors.TextEdit();
+            this.layoutControlItem75 = new DevExpress.XtraLayout.LayoutControlItem();
             ((System.ComponentModel.ISupportInitialize)(this.lcPtDucTTT)).BeginInit();
             this.lcPtDucTTT.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.txtDienBienKhac.Properties)).BeginInit();
@@ -1061,7 +1057,9 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             ((System.ComponentModel.ISupportInitialize)(this.raLechT3.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.raDucT3Gia.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.raDoI.Properties)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.spinKichThuocRachForraRachBaoSau.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.txtkichthuoc.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.txtNangLuong.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.txtLucHut.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem9)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem10)).BeginInit();
@@ -1128,7 +1126,6 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem63)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem65)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem73)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem75)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem67)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem68)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem70)).BeginInit();
@@ -1852,13 +1849,13 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem99)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem356)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.txtkichthuoc.Properties)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.txtNangLuong.Properties)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.txtLucHut.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.spinKichThuocRachForraRachBaoSau.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem75)).BeginInit();
             this.SuspendLayout();
             // 
             // lcPtDucTTT
             // 
+            this.lcPtDucTTT.Controls.Add(this.spinKichThuocRachForraRachBaoSau);
             this.lcPtDucTTT.Controls.Add(this.txtDienBienKhac);
             this.lcPtDucTTT.Controls.Add(this.txtLoaiThuocForraTraMat);
             this.lcPtDucTTT.Controls.Add(this.raTraMatMo);
@@ -1940,7 +1937,6 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.lcPtDucTTT.Controls.Add(this.raDucT3Gia);
             this.lcPtDucTTT.Controls.Add(this.raDoI);
             this.lcPtDucTTT.Controls.Add(this.labelControl3);
-            this.lcPtDucTTT.Controls.Add(this.spinKichThuocRachForraRachBaoSau);
             this.lcPtDucTTT.Controls.Add(this.txtkichthuoc);
             this.lcPtDucTTT.Controls.Add(this.txtNangLuong);
             this.lcPtDucTTT.Controls.Add(this.txtLucHut);
@@ -1948,7 +1944,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.lcPtDucTTT.Margin = new System.Windows.Forms.Padding(2);
             this.lcPtDucTTT.Name = "lcPtDucTTT";
             this.lcPtDucTTT.Root = this.layoutControlGroup1;
-            this.lcPtDucTTT.Size = new System.Drawing.Size(611, 547);
+            this.lcPtDucTTT.Size = new System.Drawing.Size(609, 547);
             this.lcPtDucTTT.TabIndex = 0;
             this.lcPtDucTTT.Text = "layoutControl1";
             // 
@@ -1959,13 +1955,13 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.txtDienBienKhac.Name = "txtDienBienKhac";
             this.txtDienBienKhac.Properties.Appearance.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold);
             this.txtDienBienKhac.Properties.Appearance.Options.UseFont = true;
-            this.txtDienBienKhac.Size = new System.Drawing.Size(383, 20);
+            this.txtDienBienKhac.Size = new System.Drawing.Size(377, 20);
             this.txtDienBienKhac.StyleController = this.lcPtDucTTT;
             this.txtDienBienKhac.TabIndex = 94;
             // 
             // txtLoaiThuocForraTraMat
             // 
-            this.txtLoaiThuocForraTraMat.Location = new System.Drawing.Point(331, 481);
+            this.txtLoaiThuocForraTraMat.Location = new System.Drawing.Point(323, 481);
             this.txtLoaiThuocForraTraMat.Margin = new System.Windows.Forms.Padding(2);
             this.txtLoaiThuocForraTraMat.Name = "txtLoaiThuocForraTraMat";
             this.txtLoaiThuocForraTraMat.Properties.Appearance.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold);
@@ -1976,13 +1972,13 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // 
             // raTraMatMo
             // 
-            this.raTraMatMo.Location = new System.Drawing.Point(160, 481);
+            this.raTraMatMo.Location = new System.Drawing.Point(154, 481);
             this.raTraMatMo.Margin = new System.Windows.Forms.Padding(2);
             this.raTraMatMo.Name = "raTraMatMo";
             this.raTraMatMo.Properties.Caption = "Mỡ";
             this.raTraMatMo.Properties.CheckStyle = DevExpress.XtraEditors.Controls.CheckStyles.Radio;
             this.raTraMatMo.Properties.RadioGroupIndex = -20;
-            this.raTraMatMo.Size = new System.Drawing.Size(82, 19);
+            this.raTraMatMo.Size = new System.Drawing.Size(80, 19);
             this.raTraMatMo.StyleController = this.lcPtDucTTT;
             this.raTraMatMo.TabIndex = 92;
             this.raTraMatMo.TabStop = false;
@@ -1991,11 +1987,11 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // checkEdit10
             // 
             this.checkEdit10.EditValue = true;
-            this.checkEdit10.Location = new System.Drawing.Point(493, 481);
+            this.checkEdit10.Location = new System.Drawing.Point(485, 481);
             this.checkEdit10.Margin = new System.Windows.Forms.Padding(2);
             this.checkEdit10.Name = "checkEdit10";
             this.checkEdit10.Properties.Caption = "Băng ép";
-            this.checkEdit10.Size = new System.Drawing.Size(106, 19);
+            this.checkEdit10.Size = new System.Drawing.Size(112, 19);
             this.checkEdit10.StyleController = this.lcPtDucTTT;
             this.checkEdit10.TabIndex = 91;
             this.checkEdit10.TabStop = false;
@@ -2009,14 +2005,14 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.raTraMatDD.Properties.Caption = "DD";
             this.raTraMatDD.Properties.CheckStyle = DevExpress.XtraEditors.Controls.CheckStyles.Radio;
             this.raTraMatDD.Properties.RadioGroupIndex = -20;
-            this.raTraMatDD.Size = new System.Drawing.Size(79, 19);
+            this.raTraMatDD.Size = new System.Drawing.Size(73, 19);
             this.raTraMatDD.StyleController = this.lcPtDucTTT;
             this.raTraMatDD.TabIndex = 90;
             this.raTraMatDD.CheckedChanged += new System.EventHandler(this.raTraMatDD_CheckedChanged);
             // 
             // raTiemMatCNC
             // 
-            this.raTiemMatCNC.Location = new System.Drawing.Point(349, 457);
+            this.raTiemMatCNC.Location = new System.Drawing.Point(341, 457);
             this.raTiemMatCNC.Margin = new System.Windows.Forms.Padding(2);
             this.raTiemMatCNC.Name = "raTiemMatCNC";
             this.raTiemMatCNC.Properties.Caption = "CNC";
@@ -2029,7 +2025,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // 
             // raTiemMatDuoiKM
             // 
-            this.raTiemMatDuoiKM.Location = new System.Drawing.Point(284, 457);
+            this.raTiemMatDuoiKM.Location = new System.Drawing.Point(276, 457);
             this.raTiemMatDuoiKM.Margin = new System.Windows.Forms.Padding(2);
             this.raTiemMatDuoiKM.Name = "raTiemMatDuoiKM";
             this.raTiemMatDuoiKM.Properties.Caption = "Dưới KM";
@@ -2042,7 +2038,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // 
             // raTiemMatTienPhong
             // 
-            this.raTiemMatTienPhong.Location = new System.Drawing.Point(205, 457);
+            this.raTiemMatTienPhong.Location = new System.Drawing.Point(197, 457);
             this.raTiemMatTienPhong.Margin = new System.Windows.Forms.Padding(2);
             this.raTiemMatTienPhong.Name = "raTiemMatTienPhong";
             this.raTiemMatTienPhong.Properties.Caption = "Tiền phòng";
@@ -2054,13 +2050,13 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // 
             // raTiemMatCo
             // 
-            this.raTiemMatCo.Location = new System.Drawing.Point(163, 457);
+            this.raTiemMatCo.Location = new System.Drawing.Point(157, 457);
             this.raTiemMatCo.Margin = new System.Windows.Forms.Padding(2);
             this.raTiemMatCo.Name = "raTiemMatCo";
             this.raTiemMatCo.Properties.Caption = "Có";
             this.raTiemMatCo.Properties.CheckStyle = DevExpress.XtraEditors.Controls.CheckStyles.Radio;
             this.raTiemMatCo.Properties.RadioGroupIndex = -19;
-            this.raTiemMatCo.Size = new System.Drawing.Size(38, 19);
+            this.raTiemMatCo.Size = new System.Drawing.Size(36, 19);
             this.raTiemMatCo.StyleController = this.lcPtDucTTT;
             this.raTiemMatCo.TabIndex = 86;
             this.raTiemMatCo.TabStop = false;
@@ -2075,20 +2071,20 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.raTiemMatKhong.Properties.Caption = "Không";
             this.raTiemMatKhong.Properties.CheckStyle = DevExpress.XtraEditors.Controls.CheckStyles.Radio;
             this.raTiemMatKhong.Properties.RadioGroupIndex = -19;
-            this.raTiemMatKhong.Size = new System.Drawing.Size(76, 19);
+            this.raTiemMatKhong.Size = new System.Drawing.Size(70, 19);
             this.raTiemMatKhong.StyleController = this.lcPtDucTTT;
             this.raTiemMatKhong.TabIndex = 85;
             this.raTiemMatKhong.CheckedChanged += new System.EventHandler(this.raTiemMatKhong_CheckedChanged);
             // 
             // raPhucHoiVetMoKhauVat
             // 
-            this.raPhucHoiVetMoKhauVat.Location = new System.Drawing.Point(223, 434);
+            this.raPhucHoiVetMoKhauVat.Location = new System.Drawing.Point(217, 434);
             this.raPhucHoiVetMoKhauVat.Margin = new System.Windows.Forms.Padding(2);
             this.raPhucHoiVetMoKhauVat.Name = "raPhucHoiVetMoKhauVat";
             this.raPhucHoiVetMoKhauVat.Properties.Caption = "Khâu vắt";
             this.raPhucHoiVetMoKhauVat.Properties.CheckStyle = DevExpress.XtraEditors.Controls.CheckStyles.Radio;
             this.raPhucHoiVetMoKhauVat.Properties.RadioGroupIndex = -18;
-            this.raPhucHoiVetMoKhauVat.Size = new System.Drawing.Size(376, 19);
+            this.raPhucHoiVetMoKhauVat.Size = new System.Drawing.Size(380, 19);
             this.raPhucHoiVetMoKhauVat.StyleController = this.lcPtDucTTT;
             this.raPhucHoiVetMoKhauVat.TabIndex = 84;
             this.raPhucHoiVetMoKhauVat.TabStop = false;
@@ -2103,25 +2099,25 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.raPhucHoiVetMoBomPhu.Properties.Caption = "Bơm phủ";
             this.raPhucHoiVetMoBomPhu.Properties.CheckStyle = DevExpress.XtraEditors.Controls.CheckStyles.Radio;
             this.raPhucHoiVetMoBomPhu.Properties.RadioGroupIndex = -18;
-            this.raPhucHoiVetMoBomPhu.Size = new System.Drawing.Size(103, 19);
+            this.raPhucHoiVetMoBomPhu.Size = new System.Drawing.Size(97, 19);
             this.raPhucHoiVetMoBomPhu.StyleController = this.lcPtDucTTT;
             this.raPhucHoiVetMoBomPhu.TabIndex = 83;
             this.raPhucHoiVetMoBomPhu.CheckedChanged += new System.EventHandler(this.raPhucHoiVetMoBomPhu_CheckedChanged);
             // 
             // txtLoaiThuocForraTiemMat
             // 
-            this.txtLoaiThuocForraTiemMat.Location = new System.Drawing.Point(502, 457);
+            this.txtLoaiThuocForraTiemMat.Location = new System.Drawing.Point(494, 457);
             this.txtLoaiThuocForraTiemMat.Margin = new System.Windows.Forms.Padding(2);
             this.txtLoaiThuocForraTiemMat.Name = "txtLoaiThuocForraTiemMat";
             this.txtLoaiThuocForraTiemMat.Properties.Appearance.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold);
             this.txtLoaiThuocForraTiemMat.Properties.Appearance.Options.UseFont = true;
-            this.txtLoaiThuocForraTiemMat.Size = new System.Drawing.Size(97, 20);
+            this.txtLoaiThuocForraTiemMat.Size = new System.Drawing.Size(103, 20);
             this.txtLoaiThuocForraTiemMat.StyleController = this.lcPtDucTTT;
             this.txtLoaiThuocForraTiemMat.TabIndex = 82;
             // 
             // txtViTriRachForraRBSCMMNV
             // 
-            this.txtViTriRachForraRBSCMMNV.Location = new System.Drawing.Point(407, 410);
+            this.txtViTriRachForraRBSCMMNV.Location = new System.Drawing.Point(399, 410);
             this.txtViTriRachForraRBSCMMNV.Margin = new System.Windows.Forms.Padding(2);
             this.txtViTriRachForraRBSCMMNV.Name = "txtViTriRachForraRBSCMMNV";
             this.txtViTriRachForraRBSCMMNV.Properties.Appearance.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold);
@@ -2132,12 +2128,12 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // 
             // textEdit7
             // 
-            this.textEdit7.Location = new System.Drawing.Point(527, 293);
+            this.textEdit7.Location = new System.Drawing.Point(519, 293);
             this.textEdit7.Margin = new System.Windows.Forms.Padding(2);
             this.textEdit7.Name = "textEdit7";
             this.textEdit7.Properties.Appearance.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold);
             this.textEdit7.Properties.Appearance.Options.UseFont = true;
-            this.textEdit7.Size = new System.Drawing.Size(72, 20);
+            this.textEdit7.Size = new System.Drawing.Size(78, 20);
             this.textEdit7.StyleController = this.lcPtDucTTT;
             this.textEdit7.TabIndex = 80;
             // 
@@ -2147,7 +2143,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.labelControl8.Location = new System.Drawing.Point(12, 293);
             this.labelControl8.Margin = new System.Windows.Forms.Padding(2);
             this.labelControl8.Name = "labelControl8";
-            this.labelControl8.Size = new System.Drawing.Size(68, 13);
+            this.labelControl8.Size = new System.Drawing.Size(62, 13);
             this.labelControl8.StyleController = this.lcPtDucTTT;
             this.labelControl8.TabIndex = 79;
             this.labelControl8.Text = "9. Tán nhân:";
@@ -2155,10 +2151,10 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // labelControl7
             // 
             this.labelControl7.AutoSizeMode = DevExpress.XtraEditors.LabelAutoSizeMode.None;
-            this.labelControl7.Location = new System.Drawing.Point(386, 293);
+            this.labelControl7.Location = new System.Drawing.Point(380, 293);
             this.labelControl7.Margin = new System.Windows.Forms.Padding(2);
             this.labelControl7.Name = "labelControl7";
-            this.labelControl7.Size = new System.Drawing.Size(42, 13);
+            this.labelControl7.Size = new System.Drawing.Size(40, 13);
             this.labelControl7.StyleController = this.lcPtDucTTT;
             this.labelControl7.TabIndex = 78;
             this.labelControl7.Text = "mmHg";
@@ -2166,7 +2162,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // labelControl6
             // 
             this.labelControl6.AutoSizeMode = DevExpress.XtraEditors.LabelAutoSizeMode.None;
-            this.labelControl6.Location = new System.Drawing.Point(233, 293);
+            this.labelControl6.Location = new System.Drawing.Point(227, 293);
             this.labelControl6.Margin = new System.Windows.Forms.Padding(2);
             this.labelControl6.Name = "labelControl6";
             this.labelControl6.Size = new System.Drawing.Size(10, 13);
@@ -2176,24 +2172,24 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // 
             // txtViTriRachForraRachBaoSau
             // 
-            this.txtViTriRachForraRachBaoSau.Location = new System.Drawing.Point(321, 363);
+            this.txtViTriRachForraRachBaoSau.Location = new System.Drawing.Point(313, 363);
             this.txtViTriRachForraRachBaoSau.Margin = new System.Windows.Forms.Padding(2);
             this.txtViTriRachForraRachBaoSau.Name = "txtViTriRachForraRachBaoSau";
             this.txtViTriRachForraRachBaoSau.Properties.Appearance.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold);
             this.txtViTriRachForraRachBaoSau.Properties.Appearance.Options.UseFont = true;
-            this.txtViTriRachForraRachBaoSau.Size = new System.Drawing.Size(91, 20);
+            this.txtViTriRachForraRachBaoSau.Size = new System.Drawing.Size(90, 20);
             this.txtViTriRachForraRachBaoSau.StyleController = this.lcPtDucTTT;
             this.txtViTriRachForraRachBaoSau.TabIndex = 74;
             // 
             // raRBSCMMNVCo
             // 
-            this.raRBSCMMNVCo.Location = new System.Drawing.Point(240, 410);
+            this.raRBSCMMNVCo.Location = new System.Drawing.Point(234, 410);
             this.raRBSCMMNVCo.Margin = new System.Windows.Forms.Padding(2);
             this.raRBSCMMNVCo.Name = "raRBSCMMNVCo";
             this.raRBSCMMNVCo.Properties.Caption = "Có";
             this.raRBSCMMNVCo.Properties.CheckStyle = DevExpress.XtraEditors.Controls.CheckStyles.Radio;
             this.raRBSCMMNVCo.Properties.RadioGroupIndex = -17;
-            this.raRBSCMMNVCo.Size = new System.Drawing.Size(78, 19);
+            this.raRBSCMMNVCo.Size = new System.Drawing.Size(76, 19);
             this.raRBSCMMNVCo.StyleController = this.lcPtDucTTT;
             this.raRBSCMMNVCo.TabIndex = 72;
             this.raRBSCMMNVCo.TabStop = false;
@@ -2201,13 +2197,13 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // 
             // raRBSCBSCo
             // 
-            this.raRBSCBSCo.Location = new System.Drawing.Point(175, 387);
+            this.raRBSCBSCo.Location = new System.Drawing.Point(169, 387);
             this.raRBSCBSCo.Margin = new System.Windows.Forms.Padding(2);
             this.raRBSCBSCo.Name = "raRBSCBSCo";
             this.raRBSCBSCo.Properties.Caption = "Có";
             this.raRBSCBSCo.Properties.CheckStyle = DevExpress.XtraEditors.Controls.CheckStyles.Radio;
             this.raRBSCBSCo.Properties.RadioGroupIndex = -16;
-            this.raRBSCBSCo.Size = new System.Drawing.Size(93, 19);
+            this.raRBSCBSCo.Size = new System.Drawing.Size(91, 19);
             this.raRBSCBSCo.StyleController = this.lcPtDucTTT;
             this.raRBSCBSCo.TabIndex = 71;
             this.raRBSCBSCo.TabStop = false;
@@ -2221,7 +2217,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.raRBSCMMNVKhong.Properties.Caption = "Không";
             this.raRBSCMMNVKhong.Properties.CheckStyle = DevExpress.XtraEditors.Controls.CheckStyles.Radio;
             this.raRBSCMMNVKhong.Properties.RadioGroupIndex = -17;
-            this.raRBSCMMNVKhong.Size = new System.Drawing.Size(86, 19);
+            this.raRBSCMMNVKhong.Size = new System.Drawing.Size(80, 19);
             this.raRBSCMMNVKhong.StyleController = this.lcPtDucTTT;
             this.raRBSCMMNVKhong.TabIndex = 70;
             this.raRBSCMMNVKhong.TabStop = false;
@@ -2229,13 +2225,13 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // 
             // raRBSCBSMayCatDK
             // 
-            this.raRBSCBSMayCatDK.Location = new System.Drawing.Point(398, 387);
+            this.raRBSCBSMayCatDK.Location = new System.Drawing.Point(390, 387);
             this.raRBSCBSMayCatDK.Margin = new System.Windows.Forms.Padding(2);
             this.raRBSCBSMayCatDK.Name = "raRBSCBSMayCatDK";
             this.raRBSCBSMayCatDK.Properties.Caption = "Mát cắt DK";
             this.raRBSCBSMayCatDK.Properties.CheckStyle = DevExpress.XtraEditors.Controls.CheckStyles.Radio;
             this.raRBSCBSMayCatDK.Properties.RadioGroupIndex = -311;
-            this.raRBSCBSMayCatDK.Size = new System.Drawing.Size(201, 19);
+            this.raRBSCBSMayCatDK.Size = new System.Drawing.Size(207, 19);
             this.raRBSCBSMayCatDK.StyleController = this.lcPtDucTTT;
             this.raRBSCBSMayCatDK.TabIndex = 69;
             this.raRBSCBSMayCatDK.CheckedChanged += new System.EventHandler(this.raRBSCBSMayCatDK_CheckedChanged);
@@ -2249,14 +2245,14 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.raRBSCBSKhong.Properties.Caption = "Không";
             this.raRBSCBSKhong.Properties.CheckStyle = DevExpress.XtraEditors.Controls.CheckStyles.Radio;
             this.raRBSCBSKhong.Properties.RadioGroupIndex = -16;
-            this.raRBSCBSKhong.Size = new System.Drawing.Size(70, 19);
+            this.raRBSCBSKhong.Size = new System.Drawing.Size(64, 19);
             this.raRBSCBSKhong.StyleController = this.lcPtDucTTT;
             this.raRBSCBSKhong.TabIndex = 68;
             this.raRBSCBSKhong.CheckedChanged += new System.EventHandler(this.raRBSCBSKhong_CheckedChanged);
             // 
             // raRBSCBSCatBangKeo
             // 
-            this.raRBSCBSCatBangKeo.Location = new System.Drawing.Point(272, 387);
+            this.raRBSCBSCatBangKeo.Location = new System.Drawing.Point(264, 387);
             this.raRBSCBSCatBangKeo.Margin = new System.Windows.Forms.Padding(2);
             this.raRBSCBSCatBangKeo.Name = "raRBSCBSCatBangKeo";
             this.raRBSCBSCatBangKeo.Properties.Caption = "Cắt bằng kéo";
@@ -2270,13 +2266,13 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // 
             // raRachBaoSauCo
             // 
-            this.raRachBaoSauCo.Location = new System.Drawing.Point(175, 363);
+            this.raRachBaoSauCo.Location = new System.Drawing.Point(169, 363);
             this.raRachBaoSauCo.Margin = new System.Windows.Forms.Padding(2);
             this.raRachBaoSauCo.Name = "raRachBaoSauCo";
             this.raRachBaoSauCo.Properties.Caption = "Có";
             this.raRachBaoSauCo.Properties.CheckStyle = DevExpress.XtraEditors.Controls.CheckStyles.Radio;
             this.raRachBaoSauCo.Properties.RadioGroupIndex = -15;
-            this.raRachBaoSauCo.Size = new System.Drawing.Size(57, 19);
+            this.raRachBaoSauCo.Size = new System.Drawing.Size(55, 19);
             this.raRachBaoSauCo.StyleController = this.lcPtDucTTT;
             this.raRachBaoSauCo.TabIndex = 66;
             this.raRachBaoSauCo.TabStop = false;
@@ -2291,14 +2287,14 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.raRachBaoSauKhong.Properties.Caption = "Không";
             this.raRachBaoSauKhong.Properties.CheckStyle = DevExpress.XtraEditors.Controls.CheckStyles.Radio;
             this.raRachBaoSauKhong.Properties.RadioGroupIndex = -15;
-            this.raRachBaoSauKhong.Size = new System.Drawing.Size(66, 19);
+            this.raRachBaoSauKhong.Size = new System.Drawing.Size(60, 19);
             this.raRachBaoSauKhong.StyleController = this.lcPtDucTTT;
             this.raRachBaoSauKhong.TabIndex = 65;
             this.raRachBaoSauKhong.CheckedChanged += new System.EventHandler(this.raRachBaoSauKhong_CheckedChanged);
             // 
             // raDatIOLBangSung
             // 
-            this.raDatIOLBangSung.Location = new System.Drawing.Point(326, 340);
+            this.raDatIOLBangSung.Location = new System.Drawing.Point(318, 340);
             this.raDatIOLBangSung.Margin = new System.Windows.Forms.Padding(2);
             this.raDatIOLBangSung.Name = "raDatIOLBangSung";
             this.raDatIOLBangSung.Properties.Caption = "Bằng súng";
@@ -2312,13 +2308,13 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // 
             // raDatIOLCung
             // 
-            this.raDatIOLCung.Location = new System.Drawing.Point(140, 340);
+            this.raDatIOLCung.Location = new System.Drawing.Point(134, 340);
             this.raDatIOLCung.Margin = new System.Windows.Forms.Padding(2);
             this.raDatIOLCung.Name = "raDatIOLCung";
             this.raDatIOLCung.Properties.Caption = "Cứng";
             this.raDatIOLCung.Properties.CheckStyle = DevExpress.XtraEditors.Controls.CheckStyles.Radio;
             this.raDatIOLCung.Properties.RadioGroupIndex = -14;
-            this.raDatIOLCung.Size = new System.Drawing.Size(90, 19);
+            this.raDatIOLCung.Size = new System.Drawing.Size(88, 19);
             this.raDatIOLCung.StyleController = this.lcPtDucTTT;
             this.raDatIOLCung.TabIndex = 63;
             this.raDatIOLCung.TabStop = false;
@@ -2326,20 +2322,20 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // 
             // raDatIOLCoDinhCM
             // 
-            this.raDatIOLCoDinhCM.Location = new System.Drawing.Point(411, 340);
+            this.raDatIOLCoDinhCM.Location = new System.Drawing.Point(403, 340);
             this.raDatIOLCoDinhCM.Margin = new System.Windows.Forms.Padding(2);
             this.raDatIOLCoDinhCM.Name = "raDatIOLCoDinhCM";
             this.raDatIOLCoDinhCM.Properties.Caption = "Cố định CM";
             this.raDatIOLCoDinhCM.Properties.CheckStyle = DevExpress.XtraEditors.Controls.CheckStyles.Radio;
             this.raDatIOLCoDinhCM.Properties.RadioGroupIndex = -301;
-            this.raDatIOLCoDinhCM.Size = new System.Drawing.Size(188, 19);
+            this.raDatIOLCoDinhCM.Size = new System.Drawing.Size(194, 19);
             this.raDatIOLCoDinhCM.StyleController = this.lcPtDucTTT;
             this.raDatIOLCoDinhCM.TabIndex = 62;
             this.raDatIOLCoDinhCM.CheckedChanged += new System.EventHandler(this.raDatIOLCoDinhCM_CheckedChanged);
             // 
             // raDatIOLBangPince
             // 
-            this.raDatIOLBangPince.Location = new System.Drawing.Point(234, 340);
+            this.raDatIOLBangPince.Location = new System.Drawing.Point(226, 340);
             this.raDatIOLBangPince.Margin = new System.Windows.Forms.Padding(2);
             this.raDatIOLBangPince.Name = "raDatIOLBangPince";
             this.raDatIOLBangPince.Properties.Caption = "Bằng pince";
@@ -2360,7 +2356,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.raDatIOLMem.Properties.Caption = "Mềm";
             this.raDatIOLMem.Properties.CheckStyle = DevExpress.XtraEditors.Controls.CheckStyles.Radio;
             this.raDatIOLMem.Properties.RadioGroupIndex = -14;
-            this.raDatIOLMem.Size = new System.Drawing.Size(58, 19);
+            this.raDatIOLMem.Size = new System.Drawing.Size(52, 19);
             this.raDatIOLMem.StyleController = this.lcPtDucTTT;
             this.raDatIOLMem.TabIndex = 60;
             this.raDatIOLMem.CheckedChanged += new System.EventHandler(this.raDatIOLMem_CheckedChanged);
@@ -2373,7 +2369,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.raHutChatT3IA.Properties.Caption = "IA";
             this.raHutChatT3IA.Properties.CheckStyle = DevExpress.XtraEditors.Controls.CheckStyles.Radio;
             this.raHutChatT3IA.Properties.RadioGroupIndex = -13;
-            this.raHutChatT3IA.Size = new System.Drawing.Size(54, 19);
+            this.raHutChatT3IA.Size = new System.Drawing.Size(48, 19);
             this.raHutChatT3IA.StyleController = this.lcPtDucTTT;
             this.raHutChatT3IA.TabIndex = 59;
             this.raHutChatT3IA.TabStop = false;
@@ -2381,13 +2377,13 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // 
             // raHutChatT3Kim2Nong
             // 
-            this.raHutChatT3Kim2Nong.Location = new System.Drawing.Point(154, 317);
+            this.raHutChatT3Kim2Nong.Location = new System.Drawing.Point(148, 317);
             this.raHutChatT3Kim2Nong.Margin = new System.Windows.Forms.Padding(2);
             this.raHutChatT3Kim2Nong.Name = "raHutChatT3Kim2Nong";
             this.raHutChatT3Kim2Nong.Properties.Caption = "Kim hai nòng";
             this.raHutChatT3Kim2Nong.Properties.CheckStyle = DevExpress.XtraEditors.Controls.CheckStyles.Radio;
             this.raHutChatT3Kim2Nong.Properties.RadioGroupIndex = -13;
-            this.raHutChatT3Kim2Nong.Size = new System.Drawing.Size(445, 19);
+            this.raHutChatT3Kim2Nong.Size = new System.Drawing.Size(449, 19);
             this.raHutChatT3Kim2Nong.StyleController = this.lcPtDucTTT;
             this.raHutChatT3Kim2Nong.TabIndex = 58;
             this.raHutChatT3Kim2Nong.TabStop = false;
@@ -2395,13 +2391,13 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // 
             // raDayNhanBangChatNhay
             // 
-            this.raDayNhanBangChatNhay.Location = new System.Drawing.Point(308, 270);
+            this.raDayNhanBangChatNhay.Location = new System.Drawing.Point(300, 270);
             this.raDayNhanBangChatNhay.Margin = new System.Windows.Forms.Padding(2);
             this.raDayNhanBangChatNhay.Name = "raDayNhanBangChatNhay";
             this.raDayNhanBangChatNhay.Properties.Caption = "Bằng chất nhầy";
             this.raDayNhanBangChatNhay.Properties.CheckStyle = DevExpress.XtraEditors.Controls.CheckStyles.Radio;
             this.raDayNhanBangChatNhay.Properties.RadioGroupIndex = -310;
-            this.raDayNhanBangChatNhay.Size = new System.Drawing.Size(291, 19);
+            this.raDayNhanBangChatNhay.Size = new System.Drawing.Size(297, 19);
             this.raDayNhanBangChatNhay.StyleController = this.lcPtDucTTT;
             this.raDayNhanBangChatNhay.TabIndex = 57;
             this.raDayNhanBangChatNhay.TabStop = false;
@@ -2409,7 +2405,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // 
             // raDayNhanBangNuoc
             // 
-            this.raDayNhanBangNuoc.Location = new System.Drawing.Point(229, 270);
+            this.raDayNhanBangNuoc.Location = new System.Drawing.Point(221, 270);
             this.raDayNhanBangNuoc.Margin = new System.Windows.Forms.Padding(2);
             this.raDayNhanBangNuoc.Name = "raDayNhanBangNuoc";
             this.raDayNhanBangNuoc.Properties.Caption = "Bằng nước";
@@ -2423,13 +2419,13 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // 
             // raDayNhanCo
             // 
-            this.raDayNhanCo.Location = new System.Drawing.Point(175, 270);
+            this.raDayNhanCo.Location = new System.Drawing.Point(169, 270);
             this.raDayNhanCo.Margin = new System.Windows.Forms.Padding(2);
             this.raDayNhanCo.Name = "raDayNhanCo";
             this.raDayNhanCo.Properties.Caption = "Có";
             this.raDayNhanCo.Properties.CheckStyle = DevExpress.XtraEditors.Controls.CheckStyles.Radio;
             this.raDayNhanCo.Properties.RadioGroupIndex = -12;
-            this.raDayNhanCo.Size = new System.Drawing.Size(50, 19);
+            this.raDayNhanCo.Size = new System.Drawing.Size(48, 19);
             this.raDayNhanCo.StyleController = this.lcPtDucTTT;
             this.raDayNhanCo.TabIndex = 55;
             this.raDayNhanCo.TabStop = false;
@@ -2458,7 +2454,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.raDayNhanKhong.Properties.Caption = "Không";
             this.raDayNhanKhong.Properties.CheckStyle = DevExpress.XtraEditors.Controls.CheckStyles.Radio;
             this.raDayNhanKhong.Properties.RadioGroupIndex = -12;
-            this.raDayNhanKhong.Size = new System.Drawing.Size(90, 19);
+            this.raDayNhanKhong.Size = new System.Drawing.Size(84, 19);
             this.raDayNhanKhong.StyleController = this.lcPtDucTTT;
             this.raDayNhanKhong.TabIndex = 53;
             this.raDayNhanKhong.CheckedChanged += new System.EventHandler(this.raDayNhanKhong_CheckedChanged);
@@ -2483,7 +2479,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.raXoayNhanDeDang.Properties.Caption = "Dễ dàng";
             this.raXoayNhanDeDang.Properties.CheckStyle = DevExpress.XtraEditors.Controls.CheckStyles.Radio;
             this.raXoayNhanDeDang.Properties.RadioGroupIndex = -11;
-            this.raXoayNhanDeDang.Size = new System.Drawing.Size(341, 19);
+            this.raXoayNhanDeDang.Size = new System.Drawing.Size(339, 19);
             this.raXoayNhanDeDang.StyleController = this.lcPtDucTTT;
             this.raXoayNhanDeDang.TabIndex = 51;
             this.raXoayNhanDeDang.TabStop = false;
@@ -2491,13 +2487,13 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // 
             // raCatBao
             // 
-            this.raCatBao.Location = new System.Drawing.Point(267, 222);
+            this.raCatBao.Location = new System.Drawing.Point(261, 222);
             this.raCatBao.Margin = new System.Windows.Forms.Padding(2);
             this.raCatBao.Name = "raCatBao";
             this.raCatBao.Properties.Caption = "Cắt bao";
             this.raCatBao.Properties.CheckStyle = DevExpress.XtraEditors.Controls.CheckStyles.Radio;
             this.raCatBao.Properties.RadioGroupIndex = -10;
-            this.raCatBao.Size = new System.Drawing.Size(332, 19);
+            this.raCatBao.Size = new System.Drawing.Size(336, 19);
             this.raCatBao.StyleController = this.lcPtDucTTT;
             this.raCatBao.TabIndex = 50;
             this.raCatBao.TabStop = false;
@@ -2505,13 +2501,13 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // 
             // raXMoBaoHinhTemThu
             // 
-            this.raXMoBaoHinhTemThu.Location = new System.Drawing.Point(131, 222);
+            this.raXMoBaoHinhTemThu.Location = new System.Drawing.Point(130, 222);
             this.raXMoBaoHinhTemThu.Margin = new System.Windows.Forms.Padding(2);
             this.raXMoBaoHinhTemThu.Name = "raXMoBaoHinhTemThu";
             this.raXMoBaoHinhTemThu.Properties.Caption = "Mở bao hình them thư";
             this.raXMoBaoHinhTemThu.Properties.CheckStyle = DevExpress.XtraEditors.Controls.CheckStyles.Radio;
             this.raXMoBaoHinhTemThu.Properties.RadioGroupIndex = -10;
-            this.raXMoBaoHinhTemThu.Size = new System.Drawing.Size(132, 19);
+            this.raXMoBaoHinhTemThu.Size = new System.Drawing.Size(127, 19);
             this.raXMoBaoHinhTemThu.StyleController = this.lcPtDucTTT;
             this.raXMoBaoHinhTemThu.TabIndex = 49;
             this.raXMoBaoHinhTemThu.TabStop = false;
@@ -2526,20 +2522,20 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.raXeBaoTruocT3.Properties.Caption = "Xé bao trước T3";
             this.raXeBaoTruocT3.Properties.CheckStyle = DevExpress.XtraEditors.Controls.CheckStyles.Radio;
             this.raXeBaoTruocT3.Properties.RadioGroupIndex = -10;
-            this.raXeBaoTruocT3.Size = new System.Drawing.Size(100, 19);
+            this.raXeBaoTruocT3.Size = new System.Drawing.Size(99, 19);
             this.raXeBaoTruocT3.StyleController = this.lcPtDucTTT;
             this.raXeBaoTruocT3.TabIndex = 48;
             this.raXeBaoTruocT3.CheckedChanged += new System.EventHandler(this.raXeBaoTruocT3_CheckedChanged);
             // 
             // raNhuomBaoCo
             // 
-            this.raNhuomBaoCo.Location = new System.Drawing.Point(175, 199);
+            this.raNhuomBaoCo.Location = new System.Drawing.Point(169, 199);
             this.raNhuomBaoCo.Margin = new System.Windows.Forms.Padding(2);
             this.raNhuomBaoCo.Name = "raNhuomBaoCo";
             this.raNhuomBaoCo.Properties.Caption = "Có";
             this.raNhuomBaoCo.Properties.CheckStyle = DevExpress.XtraEditors.Controls.CheckStyles.Radio;
             this.raNhuomBaoCo.Properties.RadioGroupIndex = -9;
-            this.raNhuomBaoCo.Size = new System.Drawing.Size(424, 19);
+            this.raNhuomBaoCo.Size = new System.Drawing.Size(428, 19);
             this.raNhuomBaoCo.StyleController = this.lcPtDucTTT;
             this.raNhuomBaoCo.TabIndex = 47;
             this.raNhuomBaoCo.TabStop = false;
@@ -2548,7 +2544,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // labelControl5
             // 
             this.labelControl5.AutoSizeMode = DevExpress.XtraEditors.LabelAutoSizeMode.None;
-            this.labelControl5.Location = new System.Drawing.Point(416, 175);
+            this.labelControl5.Location = new System.Drawing.Point(408, 175);
             this.labelControl5.Margin = new System.Windows.Forms.Padding(2);
             this.labelControl5.Name = "labelControl5";
             this.labelControl5.Size = new System.Drawing.Size(33, 13);
@@ -2559,7 +2555,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // labelControl4
             // 
             this.labelControl4.AutoSizeMode = DevExpress.XtraEditors.LabelAutoSizeMode.None;
-            this.labelControl4.Location = new System.Drawing.Point(253, 175);
+            this.labelControl4.Location = new System.Drawing.Point(245, 175);
             this.labelControl4.Margin = new System.Windows.Forms.Padding(2);
             this.labelControl4.Name = "labelControl4";
             this.labelControl4.Size = new System.Drawing.Size(30, 13);
@@ -2569,29 +2565,29 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // 
             // textEdit1
             // 
-            this.textEdit1.Location = new System.Drawing.Point(163, 175);
+            this.textEdit1.Location = new System.Drawing.Point(157, 175);
             this.textEdit1.Margin = new System.Windows.Forms.Padding(2);
             this.textEdit1.Name = "textEdit1";
             this.textEdit1.Properties.Appearance.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold);
             this.textEdit1.Properties.Appearance.Options.UseFont = true;
-            this.textEdit1.Size = new System.Drawing.Size(86, 20);
+            this.textEdit1.Size = new System.Drawing.Size(84, 20);
             this.textEdit1.StyleController = this.lcPtDucTTT;
             this.textEdit1.TabIndex = 43;
             // 
             // labelControl2
             // 
             this.labelControl2.AutoSizeMode = DevExpress.XtraEditors.LabelAutoSizeMode.None;
-            this.labelControl2.Location = new System.Drawing.Point(332, 128);
+            this.labelControl2.Location = new System.Drawing.Point(326, 128);
             this.labelControl2.Margin = new System.Windows.Forms.Padding(2);
             this.labelControl2.Name = "labelControl2";
-            this.labelControl2.Size = new System.Drawing.Size(267, 13);
+            this.labelControl2.Size = new System.Drawing.Size(271, 13);
             this.labelControl2.StyleController = this.lcPtDucTTT;
             this.labelControl2.TabIndex = 42;
             this.labelControl2.Text = "giờ";
             // 
             // txtMoKMRiaKinhTuyen
             // 
-            this.txtMoKMRiaKinhTuyen.Location = new System.Drawing.Point(278, 128);
+            this.txtMoKMRiaKinhTuyen.Location = new System.Drawing.Point(272, 128);
             this.txtMoKMRiaKinhTuyen.Margin = new System.Windows.Forms.Padding(2);
             this.txtMoKMRiaKinhTuyen.Name = "txtMoKMRiaKinhTuyen";
             this.txtMoKMRiaKinhTuyen.Properties.Appearance.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold);
@@ -2608,7 +2604,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.raNhuomBaoKhong.Properties.Caption = "Không";
             this.raNhuomBaoKhong.Properties.CheckStyle = DevExpress.XtraEditors.Controls.CheckStyles.Radio;
             this.raNhuomBaoKhong.Properties.RadioGroupIndex = -9;
-            this.raNhuomBaoKhong.Size = new System.Drawing.Size(83, 19);
+            this.raNhuomBaoKhong.Size = new System.Drawing.Size(77, 19);
             this.raNhuomBaoKhong.StyleController = this.lcPtDucTTT;
             this.raNhuomBaoKhong.TabIndex = 40;
             this.raNhuomBaoKhong.TabStop = false;
@@ -2617,24 +2613,24 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // checkEdit12
             // 
             this.checkEdit12.EditValue = true;
-            this.checkEdit12.Location = new System.Drawing.Point(453, 175);
+            this.checkEdit12.Location = new System.Drawing.Point(445, 175);
             this.checkEdit12.Margin = new System.Windows.Forms.Padding(2);
             this.checkEdit12.Name = "checkEdit12";
             this.checkEdit12.Properties.Caption = "Đường rạch phụ";
-            this.checkEdit12.Size = new System.Drawing.Size(146, 19);
+            this.checkEdit12.Size = new System.Drawing.Size(152, 19);
             this.checkEdit12.StyleController = this.lcPtDucTTT;
             this.checkEdit12.TabIndex = 39;
             this.checkEdit12.TabStop = false;
             // 
             // raMVTPCungMac
             // 
-            this.raMVTPCungMac.Location = new System.Drawing.Point(256, 152);
+            this.raMVTPCungMac.Location = new System.Drawing.Point(250, 152);
             this.raMVTPCungMac.Margin = new System.Windows.Forms.Padding(2);
             this.raMVTPCungMac.Name = "raMVTPCungMac";
             this.raMVTPCungMac.Properties.Caption = "Củng mạc";
             this.raMVTPCungMac.Properties.CheckStyle = DevExpress.XtraEditors.Controls.CheckStyles.Radio;
             this.raMVTPCungMac.Properties.RadioGroupIndex = -8;
-            this.raMVTPCungMac.Size = new System.Drawing.Size(343, 19);
+            this.raMVTPCungMac.Size = new System.Drawing.Size(347, 19);
             this.raMVTPCungMac.StyleController = this.lcPtDucTTT;
             this.raMVTPCungMac.TabIndex = 38;
             this.raMVTPCungMac.TabStop = false;
@@ -2642,7 +2638,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // 
             // raMVTPRia
             // 
-            this.raMVTPRia.Location = new System.Drawing.Point(191, 152);
+            this.raMVTPRia.Location = new System.Drawing.Point(185, 152);
             this.raMVTPRia.Margin = new System.Windows.Forms.Padding(2);
             this.raMVTPRia.Name = "raMVTPRia";
             this.raMVTPRia.Properties.Caption = "Vùng rìa";
@@ -2663,14 +2659,14 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.raMVTPGiacMac.Properties.Caption = "Giác mạc";
             this.raMVTPGiacMac.Properties.CheckStyle = DevExpress.XtraEditors.Controls.CheckStyles.Radio;
             this.raMVTPGiacMac.Properties.RadioGroupIndex = -8;
-            this.raMVTPGiacMac.Size = new System.Drawing.Size(103, 19);
+            this.raMVTPGiacMac.Size = new System.Drawing.Size(97, 19);
             this.raMVTPGiacMac.StyleController = this.lcPtDucTTT;
             this.raMVTPGiacMac.TabIndex = 36;
             this.raMVTPGiacMac.CheckedChanged += new System.EventHandler(this.raMVTPGiacMac_CheckedChanged);
             // 
             // raMoKMRiaCo
             // 
-            this.raMoKMRiaCo.Location = new System.Drawing.Point(154, 128);
+            this.raMoKMRiaCo.Location = new System.Drawing.Point(148, 128);
             this.raMoKMRiaCo.Margin = new System.Windows.Forms.Padding(2);
             this.raMoKMRiaCo.Name = "raMoKMRiaCo";
             this.raMoKMRiaCo.Properties.Caption = "Có";
@@ -2691,20 +2687,20 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.raMoKMRiaKhong.Properties.Caption = "Không";
             this.raMoKMRiaKhong.Properties.CheckStyle = DevExpress.XtraEditors.Controls.CheckStyles.Radio;
             this.raMoKMRiaKhong.Properties.RadioGroupIndex = -7;
-            this.raMoKMRiaKhong.Size = new System.Drawing.Size(70, 19);
+            this.raMoKMRiaKhong.Size = new System.Drawing.Size(64, 19);
             this.raMoKMRiaKhong.StyleController = this.lcPtDucTTT;
             this.raMoKMRiaKhong.TabIndex = 34;
             this.raMoKMRiaKhong.CheckedChanged += new System.EventHandler(this.raMoKMRiaKhong_CheckedChanged);
             // 
             // raLechTTT
             // 
-            this.raLechTTT.Location = new System.Drawing.Point(382, 105);
+            this.raLechTTT.Location = new System.Drawing.Point(376, 105);
             this.raLechTTT.Margin = new System.Windows.Forms.Padding(2);
             this.raLechTTT.Name = "raLechTTT";
             this.raLechTTT.Properties.Caption = "Lệch TTT";
             this.raLechTTT.Properties.CheckStyle = DevExpress.XtraEditors.Controls.CheckStyles.Radio;
             this.raLechTTT.Properties.RadioGroupIndex = -6;
-            this.raLechTTT.Size = new System.Drawing.Size(217, 19);
+            this.raLechTTT.Size = new System.Drawing.Size(221, 19);
             this.raLechTTT.StyleController = this.lcPtDucTTT;
             this.raLechTTT.TabIndex = 33;
             this.raLechTTT.TabStop = false;
@@ -2712,7 +2708,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // 
             // raDoIII
             // 
-            this.raDoIII.Location = new System.Drawing.Point(225, 105);
+            this.raDoIII.Location = new System.Drawing.Point(219, 105);
             this.raDoIII.Margin = new System.Windows.Forms.Padding(2);
             this.raDoIII.Name = "raDoIII";
             this.raDoIII.Properties.Caption = "Độ III";
@@ -2726,7 +2722,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // 
             // raDoV
             // 
-            this.raDoV.Location = new System.Drawing.Point(333, 105);
+            this.raDoV.Location = new System.Drawing.Point(327, 105);
             this.raDoV.Margin = new System.Windows.Forms.Padding(2);
             this.raDoV.Name = "raDoV";
             this.raDoV.Properties.Caption = "Độ V";
@@ -2740,7 +2736,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // 
             // raDoIV
             // 
-            this.raDoIV.Location = new System.Drawing.Point(280, 105);
+            this.raDoIV.Location = new System.Drawing.Point(274, 105);
             this.raDoIV.Margin = new System.Windows.Forms.Padding(2);
             this.raDoIV.Name = "raDoIV";
             this.raDoIV.Properties.Caption = "Độ IV";
@@ -2754,7 +2750,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // 
             // raDoII
             // 
-            this.raDoII.Location = new System.Drawing.Point(174, 105);
+            this.raDoII.Location = new System.Drawing.Point(168, 105);
             this.raDoII.Margin = new System.Windows.Forms.Padding(2);
             this.raDoII.Name = "raDoII";
             this.raDoII.Properties.Caption = "Độ II";
@@ -2768,13 +2764,13 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // 
             // raChiCoTruc
             // 
-            this.raChiCoTruc.Location = new System.Drawing.Point(185, 82);
+            this.raChiCoTruc.Location = new System.Drawing.Point(180, 82);
             this.raChiCoTruc.Margin = new System.Windows.Forms.Padding(2);
             this.raChiCoTruc.Name = "raChiCoTruc";
             this.raChiCoTruc.Properties.Caption = "Chỉ cơ trực";
             this.raChiCoTruc.Properties.CheckStyle = DevExpress.XtraEditors.Controls.CheckStyles.Radio;
             this.raChiCoTruc.Properties.RadioGroupIndex = -5;
-            this.raChiCoTruc.Size = new System.Drawing.Size(414, 19);
+            this.raChiCoTruc.Size = new System.Drawing.Size(417, 19);
             this.raChiCoTruc.StyleController = this.lcPtDucTTT;
             this.raChiCoTruc.TabIndex = 28;
             this.raChiCoTruc.TabStop = false;
@@ -2789,7 +2785,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.raVanhMi.Properties.Caption = "Vành mi";
             this.raVanhMi.Properties.CheckStyle = DevExpress.XtraEditors.Controls.CheckStyles.Radio;
             this.raVanhMi.Properties.RadioGroupIndex = -5;
-            this.raVanhMi.Size = new System.Drawing.Size(64, 19);
+            this.raVanhMi.Size = new System.Drawing.Size(59, 19);
             this.raVanhMi.StyleController = this.lcPtDucTTT;
             this.raVanhMi.TabIndex = 27;
             this.raVanhMi.CheckedChanged += new System.EventHandler(this.raVanhMi_CheckedChanged);
@@ -2797,17 +2793,17 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // labelControl1
             // 
             this.labelControl1.AutoSizeMode = DevExpress.XtraEditors.LabelAutoSizeMode.None;
-            this.labelControl1.Location = new System.Drawing.Point(448, 58);
+            this.labelControl1.Location = new System.Drawing.Point(442, 58);
             this.labelControl1.Margin = new System.Windows.Forms.Padding(2);
             this.labelControl1.Name = "labelControl1";
-            this.labelControl1.Size = new System.Drawing.Size(151, 13);
+            this.labelControl1.Size = new System.Drawing.Size(155, 13);
             this.labelControl1.StyleController = this.lcPtDucTTT;
             this.labelControl1.TabIndex = 26;
             this.labelControl1.Text = "ml";
             // 
             // txtLoaiThuocTe
             // 
-            this.txtLoaiThuocTe.Location = new System.Drawing.Point(394, 58);
+            this.txtLoaiThuocTe.Location = new System.Drawing.Point(388, 58);
             this.txtLoaiThuocTe.Margin = new System.Windows.Forms.Padding(2);
             this.txtLoaiThuocTe.Name = "txtLoaiThuocTe";
             this.txtLoaiThuocTe.Properties.Appearance.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold);
@@ -2819,7 +2815,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // raTeTaiMat
             // 
             this.raTeTaiMat.EditValue = true;
-            this.raTeTaiMat.Location = new System.Drawing.Point(215, 58);
+            this.raTeTaiMat.Location = new System.Drawing.Point(209, 58);
             this.raTeTaiMat.Margin = new System.Windows.Forms.Padding(2);
             this.raTeTaiMat.Name = "raTeTaiMat";
             this.raTeTaiMat.Properties.Caption = "Tê tại mặt";
@@ -2838,7 +2834,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.raMe.Properties.Caption = "Mê";
             this.raMe.Properties.CheckStyle = DevExpress.XtraEditors.Controls.CheckStyles.Radio;
             this.raMe.Properties.RadioGroupIndex = -4;
-            this.raMe.Size = new System.Drawing.Size(78, 19);
+            this.raMe.Size = new System.Drawing.Size(72, 19);
             this.raMe.StyleController = this.lcPtDucTTT;
             this.raMe.TabIndex = 23;
             this.raMe.TabStop = false;
@@ -2846,7 +2842,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // 
             // raTrongBao
             // 
-            this.raTrongBao.Location = new System.Drawing.Point(365, 35);
+            this.raTrongBao.Location = new System.Drawing.Point(359, 35);
             this.raTrongBao.Margin = new System.Windows.Forms.Padding(2);
             this.raTrongBao.Name = "raTrongBao";
             this.raTrongBao.Properties.Caption = "Trong bao";
@@ -2861,7 +2857,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // raPhaco
             // 
             this.raPhaco.EditValue = true;
-            this.raPhaco.Location = new System.Drawing.Point(236, 35);
+            this.raPhaco.Location = new System.Drawing.Point(230, 35);
             this.raPhaco.Margin = new System.Windows.Forms.Padding(2);
             this.raPhaco.Name = "raPhaco";
             this.raPhaco.Properties.Caption = "Phaco";
@@ -2874,7 +2870,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // 
             // raMT
             // 
-            this.raMT.Location = new System.Drawing.Point(196, 35);
+            this.raMT.Location = new System.Drawing.Point(190, 35);
             this.raMT.Margin = new System.Windows.Forms.Padding(2);
             this.raMT.Name = "raMT";
             this.raMT.Properties.Caption = "MT";
@@ -2888,13 +2884,13 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // 
             // raTreoCungMac
             // 
-            this.raTreoCungMac.Location = new System.Drawing.Point(440, 35);
+            this.raTreoCungMac.Location = new System.Drawing.Point(434, 35);
             this.raTreoCungMac.Margin = new System.Windows.Forms.Padding(2);
             this.raTreoCungMac.Name = "raTreoCungMac";
             this.raTreoCungMac.Properties.Caption = "Treo củng mạc";
             this.raTreoCungMac.Properties.CheckStyle = DevExpress.XtraEditors.Controls.CheckStyles.Radio;
             this.raTreoCungMac.Properties.RadioGroupIndex = -300;
-            this.raTreoCungMac.Size = new System.Drawing.Size(159, 19);
+            this.raTreoCungMac.Size = new System.Drawing.Size(163, 19);
             this.raTreoCungMac.StyleController = this.lcPtDucTTT;
             this.raTreoCungMac.TabIndex = 19;
             this.raTreoCungMac.TabStop = false;
@@ -2902,7 +2898,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // 
             // raNgoaiBao
             // 
-            this.raNgoaiBao.Location = new System.Drawing.Point(291, 35);
+            this.raNgoaiBao.Location = new System.Drawing.Point(285, 35);
             this.raNgoaiBao.Margin = new System.Windows.Forms.Padding(2);
             this.raNgoaiBao.Name = "raNgoaiBao";
             this.raNgoaiBao.Properties.Caption = "Ngoài bao";
@@ -2923,20 +2919,20 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.raMP.Properties.Caption = "MP";
             this.raMP.Properties.CheckStyle = DevExpress.XtraEditors.Controls.CheckStyles.Radio;
             this.raMP.Properties.RadioGroupIndex = -3;
-            this.raMP.Size = new System.Drawing.Size(66, 19);
+            this.raMP.Size = new System.Drawing.Size(60, 19);
             this.raMP.StyleController = this.lcPtDucTTT;
             this.raMP.TabIndex = 17;
             this.raMP.CheckedChanged += new System.EventHandler(this.raMP_CheckedChanged);
             // 
             // raDucT3BenhLy
             // 
-            this.raDucT3BenhLy.Location = new System.Drawing.Point(175, 12);
+            this.raDucT3BenhLy.Location = new System.Drawing.Point(169, 12);
             this.raDucT3BenhLy.Margin = new System.Windows.Forms.Padding(2);
             this.raDucT3BenhLy.Name = "raDucT3BenhLy";
             this.raDucT3BenhLy.Properties.Caption = "Đục T3 bệnh lý";
             this.raDucT3BenhLy.Properties.CheckStyle = DevExpress.XtraEditors.Controls.CheckStyles.Radio;
             this.raDucT3BenhLy.Properties.RadioGroupIndex = -2;
-            this.raDucT3BenhLy.Size = new System.Drawing.Size(95, 19);
+            this.raDucT3BenhLy.Size = new System.Drawing.Size(94, 19);
             this.raDucT3BenhLy.StyleController = this.lcPtDucTTT;
             this.raDucT3BenhLy.TabIndex = 16;
             this.raDucT3BenhLy.TabStop = false;
@@ -2944,13 +2940,13 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // 
             // raDucT3BamSinh
             // 
-            this.raDucT3BamSinh.Location = new System.Drawing.Point(337, 12);
+            this.raDucT3BamSinh.Location = new System.Drawing.Point(330, 12);
             this.raDucT3BamSinh.Margin = new System.Windows.Forms.Padding(2);
             this.raDucT3BamSinh.Name = "raDucT3BamSinh";
             this.raDucT3BamSinh.Properties.Caption = "Đục T3 bẩm sinh";
             this.raDucT3BamSinh.Properties.CheckStyle = DevExpress.XtraEditors.Controls.CheckStyles.Radio;
             this.raDucT3BamSinh.Properties.RadioGroupIndex = -2;
-            this.raDucT3BamSinh.Size = new System.Drawing.Size(103, 19);
+            this.raDucT3BamSinh.Size = new System.Drawing.Size(102, 19);
             this.raDucT3BamSinh.StyleController = this.lcPtDucTTT;
             this.raDucT3BamSinh.TabIndex = 15;
             this.raDucT3BamSinh.TabStop = false;
@@ -2958,13 +2954,13 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // 
             // raKhongCoT3
             // 
-            this.raKhongCoT3.Location = new System.Drawing.Point(444, 12);
+            this.raKhongCoT3.Location = new System.Drawing.Point(436, 12);
             this.raKhongCoT3.Margin = new System.Windows.Forms.Padding(2);
             this.raKhongCoT3.Name = "raKhongCoT3";
             this.raKhongCoT3.Properties.Caption = "Không có T3";
             this.raKhongCoT3.Properties.CheckStyle = DevExpress.XtraEditors.Controls.CheckStyles.Radio;
             this.raKhongCoT3.Properties.RadioGroupIndex = -2;
-            this.raKhongCoT3.Size = new System.Drawing.Size(155, 19);
+            this.raKhongCoT3.Size = new System.Drawing.Size(161, 19);
             this.raKhongCoT3.StyleController = this.lcPtDucTTT;
             this.raKhongCoT3.TabIndex = 14;
             this.raKhongCoT3.TabStop = false;
@@ -2972,7 +2968,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // 
             // raLechT3
             // 
-            this.raLechT3.Location = new System.Drawing.Point(274, 12);
+            this.raLechT3.Location = new System.Drawing.Point(267, 12);
             this.raLechT3.Margin = new System.Windows.Forms.Padding(2);
             this.raLechT3.Name = "raLechT3";
             this.raLechT3.Properties.Caption = "Lệch T3";
@@ -2993,7 +2989,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.raDucT3Gia.Properties.Caption = "Đục T3 giả";
             this.raDucT3Gia.Properties.CheckStyle = DevExpress.XtraEditors.Controls.CheckStyles.Radio;
             this.raDucT3Gia.Properties.RadioGroupIndex = -2;
-            this.raDucT3Gia.Size = new System.Drawing.Size(87, 19);
+            this.raDucT3Gia.Size = new System.Drawing.Size(81, 19);
             this.raDucT3Gia.StyleController = this.lcPtDucTTT;
             this.raDucT3Gia.TabIndex = 12;
             this.raDucT3Gia.CheckedChanged += new System.EventHandler(this.raDucT3Gia_CheckedChanged);
@@ -3006,7 +3002,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.raDoI.Properties.Caption = "Độ I";
             this.raDoI.Properties.CheckStyle = DevExpress.XtraEditors.Controls.CheckStyles.Radio;
             this.raDoI.Properties.RadioGroupIndex = -6;
-            this.raDoI.Size = new System.Drawing.Size(73, 19);
+            this.raDoI.Size = new System.Drawing.Size(67, 19);
             this.raDoI.StyleController = this.lcPtDucTTT;
             this.raDoI.TabIndex = 27;
             this.raDoI.TabStop = false;
@@ -3018,32 +3014,49 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.labelControl3.Location = new System.Drawing.Point(12, 175);
             this.labelControl3.Margin = new System.Windows.Forms.Padding(2);
             this.labelControl3.Name = "labelControl3";
-            this.labelControl3.Size = new System.Drawing.Size(88, 13);
+            this.labelControl3.Size = new System.Drawing.Size(82, 13);
             this.labelControl3.StyleController = this.lcPtDucTTT;
             this.labelControl3.TabIndex = 42;
             this.labelControl3.Text = "Vị trí đường rạch:";
             // 
-            // spinKichThuocRachForraRachBaoSau
+            // txtkichthuoc
             // 
-            this.spinKichThuocRachForraRachBaoSau.EditValue = new decimal(new int[] {
-            0,
-            0,
-            0,
-            0});
-            this.spinKichThuocRachForraRachBaoSau.Location = new System.Drawing.Point(521, 363);
-            this.spinKichThuocRachForraRachBaoSau.Margin = new System.Windows.Forms.Padding(2);
-            this.spinKichThuocRachForraRachBaoSau.Name = "spinKichThuocRachForraRachBaoSau";
-            this.spinKichThuocRachForraRachBaoSau.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
-            this.spinKichThuocRachForraRachBaoSau.Properties.Appearance.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold);
-            this.spinKichThuocRachForraRachBaoSau.Properties.Appearance.Options.UseFont = true;
-            this.spinKichThuocRachForraRachBaoSau.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo, "", -1, true, false, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject33, serializableAppearanceObject34, serializableAppearanceObject35, serializableAppearanceObject36, "", null, null, true)});
-            this.spinKichThuocRachForraRachBaoSau.Properties.EditValueChangedFiringMode = DevExpress.XtraEditors.Controls.EditValueChangedFiringMode.Default;
-            this.spinKichThuocRachForraRachBaoSau.Properties.Mask.MaskType = DevExpress.XtraEditors.Mask.MaskType.None;
-            this.spinKichThuocRachForraRachBaoSau.Size = new System.Drawing.Size(50, 20);
-            this.spinKichThuocRachForraRachBaoSau.StyleController = this.lcPtDucTTT;
-            this.spinKichThuocRachForraRachBaoSau.TabIndex = 76;
-            this.spinKichThuocRachForraRachBaoSau.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.spinKichThuocRachForraRachBaoSau_KeyPress);
+            this.txtkichthuoc.EditValue = "";
+            this.txtkichthuoc.Location = new System.Drawing.Point(338, 175);
+            this.txtkichthuoc.Margin = new System.Windows.Forms.Padding(2);
+            this.txtkichthuoc.Name = "txtkichthuoc";
+            this.txtkichthuoc.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
+            this.txtkichthuoc.Properties.Appearance.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold);
+            this.txtkichthuoc.Properties.Appearance.Options.UseFont = true;
+            this.txtkichthuoc.Size = new System.Drawing.Size(66, 20);
+            this.txtkichthuoc.StyleController = this.lcPtDucTTT;
+            this.txtkichthuoc.TabIndex = 45;
+            // 
+            // txtNangLuong
+            // 
+            this.txtNangLuong.EditValue = "";
+            this.txtNangLuong.Location = new System.Drawing.Point(173, 293);
+            this.txtNangLuong.Margin = new System.Windows.Forms.Padding(2);
+            this.txtNangLuong.Name = "txtNangLuong";
+            this.txtNangLuong.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
+            this.txtNangLuong.Properties.Appearance.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold);
+            this.txtNangLuong.Properties.Appearance.Options.UseFont = true;
+            this.txtNangLuong.Size = new System.Drawing.Size(50, 20);
+            this.txtNangLuong.StyleController = this.lcPtDucTTT;
+            this.txtNangLuong.TabIndex = 73;
+            // 
+            // txtLucHut
+            // 
+            this.txtLucHut.EditValue = "";
+            this.txtLucHut.Location = new System.Drawing.Point(326, 293);
+            this.txtLucHut.Margin = new System.Windows.Forms.Padding(2);
+            this.txtLucHut.Name = "txtLucHut";
+            this.txtLucHut.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
+            this.txtLucHut.Properties.Appearance.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold);
+            this.txtLucHut.Properties.Appearance.Options.UseFont = true;
+            this.txtLucHut.Size = new System.Drawing.Size(50, 20);
+            this.txtLucHut.StyleController = this.lcPtDucTTT;
+            this.txtLucHut.TabIndex = 75;
             // 
             // layoutControlGroup1
             // 
@@ -3115,7 +3128,6 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.layoutControlItem63,
             this.layoutControlItem65,
             this.layoutControlItem73,
-            this.layoutControlItem75,
             this.layoutControlItem67,
             this.layoutControlItem68,
             this.layoutControlItem70,
@@ -3137,11 +3149,12 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.layoutControlItem93,
             this.emptySpaceItem4,
             this.layoutControlItem77,
-            this.emptySpaceItem31});
+            this.emptySpaceItem31,
+            this.layoutControlItem75});
             this.layoutControlGroup1.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup1.Name = "Root";
             this.layoutControlGroup1.OptionsItemText.TextToControlDistance = 4;
-            this.layoutControlGroup1.Size = new System.Drawing.Size(611, 547);
+            this.layoutControlGroup1.Size = new System.Drawing.Size(609, 547);
             this.layoutControlGroup1.TextVisible = false;
             // 
             // layoutControlItem9
@@ -3149,7 +3162,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.layoutControlItem9.Control = this.raDucT3Gia;
             this.layoutControlItem9.Location = new System.Drawing.Point(0, 0);
             this.layoutControlItem9.Name = "layoutControlItem9";
-            this.layoutControlItem9.Size = new System.Drawing.Size(163, 23);
+            this.layoutControlItem9.Size = new System.Drawing.Size(157, 23);
             this.layoutControlItem9.Text = "+ Chẩn đoán:";
             this.layoutControlItem9.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.AutoSize;
             this.layoutControlItem9.TextSize = new System.Drawing.Size(67, 13);
@@ -3158,7 +3171,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // layoutControlItem10
             // 
             this.layoutControlItem10.Control = this.raLechT3;
-            this.layoutControlItem10.Location = new System.Drawing.Point(262, 0);
+            this.layoutControlItem10.Location = new System.Drawing.Point(255, 0);
             this.layoutControlItem10.Name = "layoutControlItem10";
             this.layoutControlItem10.Size = new System.Drawing.Size(63, 23);
             this.layoutControlItem10.TextSize = new System.Drawing.Size(0, 0);
@@ -3167,27 +3180,27 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // layoutControlItem11
             // 
             this.layoutControlItem11.Control = this.raKhongCoT3;
-            this.layoutControlItem11.Location = new System.Drawing.Point(432, 0);
+            this.layoutControlItem11.Location = new System.Drawing.Point(424, 0);
             this.layoutControlItem11.Name = "layoutControlItem11";
-            this.layoutControlItem11.Size = new System.Drawing.Size(159, 23);
+            this.layoutControlItem11.Size = new System.Drawing.Size(165, 23);
             this.layoutControlItem11.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem11.TextVisible = false;
             // 
             // layoutControlItem13
             // 
             this.layoutControlItem13.Control = this.raDucT3BenhLy;
-            this.layoutControlItem13.Location = new System.Drawing.Point(163, 0);
+            this.layoutControlItem13.Location = new System.Drawing.Point(157, 0);
             this.layoutControlItem13.Name = "layoutControlItem13";
-            this.layoutControlItem13.Size = new System.Drawing.Size(99, 23);
+            this.layoutControlItem13.Size = new System.Drawing.Size(98, 23);
             this.layoutControlItem13.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem13.TextVisible = false;
             // 
             // layoutControlItem12
             // 
             this.layoutControlItem12.Control = this.raDucT3BamSinh;
-            this.layoutControlItem12.Location = new System.Drawing.Point(325, 0);
+            this.layoutControlItem12.Location = new System.Drawing.Point(318, 0);
             this.layoutControlItem12.Name = "layoutControlItem12";
-            this.layoutControlItem12.Size = new System.Drawing.Size(107, 23);
+            this.layoutControlItem12.Size = new System.Drawing.Size(106, 23);
             this.layoutControlItem12.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem12.TextVisible = false;
             // 
@@ -3196,7 +3209,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.layoutControlItem14.Control = this.raMP;
             this.layoutControlItem14.Location = new System.Drawing.Point(0, 23);
             this.layoutControlItem14.Name = "layoutControlItem14";
-            this.layoutControlItem14.Size = new System.Drawing.Size(184, 23);
+            this.layoutControlItem14.Size = new System.Drawing.Size(178, 23);
             this.layoutControlItem14.Text = "+ Chỉ định phẫu thuật:";
             this.layoutControlItem14.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.AutoSize;
             this.layoutControlItem14.TextSize = new System.Drawing.Size(109, 13);
@@ -3205,7 +3218,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // layoutControlItem15
             // 
             this.layoutControlItem15.Control = this.raNgoaiBao;
-            this.layoutControlItem15.Location = new System.Drawing.Point(279, 23);
+            this.layoutControlItem15.Location = new System.Drawing.Point(273, 23);
             this.layoutControlItem15.Name = "layoutControlItem15";
             this.layoutControlItem15.Size = new System.Drawing.Size(74, 23);
             this.layoutControlItem15.TextSize = new System.Drawing.Size(0, 0);
@@ -3214,16 +3227,16 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // layoutControlItem16
             // 
             this.layoutControlItem16.Control = this.raTreoCungMac;
-            this.layoutControlItem16.Location = new System.Drawing.Point(428, 23);
+            this.layoutControlItem16.Location = new System.Drawing.Point(422, 23);
             this.layoutControlItem16.Name = "layoutControlItem16";
-            this.layoutControlItem16.Size = new System.Drawing.Size(163, 23);
+            this.layoutControlItem16.Size = new System.Drawing.Size(167, 23);
             this.layoutControlItem16.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem16.TextVisible = false;
             // 
             // layoutControlItem17
             // 
             this.layoutControlItem17.Control = this.raMT;
-            this.layoutControlItem17.Location = new System.Drawing.Point(184, 23);
+            this.layoutControlItem17.Location = new System.Drawing.Point(178, 23);
             this.layoutControlItem17.Name = "layoutControlItem17";
             this.layoutControlItem17.Size = new System.Drawing.Size(40, 23);
             this.layoutControlItem17.TextSize = new System.Drawing.Size(0, 0);
@@ -3232,7 +3245,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // layoutControlItem18
             // 
             this.layoutControlItem18.Control = this.raPhaco;
-            this.layoutControlItem18.Location = new System.Drawing.Point(224, 23);
+            this.layoutControlItem18.Location = new System.Drawing.Point(218, 23);
             this.layoutControlItem18.Name = "layoutControlItem18";
             this.layoutControlItem18.Size = new System.Drawing.Size(55, 23);
             this.layoutControlItem18.TextSize = new System.Drawing.Size(0, 0);
@@ -3241,7 +3254,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // layoutControlItem19
             // 
             this.layoutControlItem19.Control = this.raTrongBao;
-            this.layoutControlItem19.Location = new System.Drawing.Point(353, 23);
+            this.layoutControlItem19.Location = new System.Drawing.Point(347, 23);
             this.layoutControlItem19.Name = "layoutControlItem19";
             this.layoutControlItem19.Size = new System.Drawing.Size(75, 23);
             this.layoutControlItem19.TextSize = new System.Drawing.Size(0, 0);
@@ -3252,7 +3265,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.layoutControlItem20.Control = this.raMe;
             this.layoutControlItem20.Location = new System.Drawing.Point(0, 46);
             this.layoutControlItem20.Name = "layoutControlItem20";
-            this.layoutControlItem20.Size = new System.Drawing.Size(203, 24);
+            this.layoutControlItem20.Size = new System.Drawing.Size(197, 24);
             this.layoutControlItem20.Text = "+ Phương pháp vô cảm:";
             this.layoutControlItem20.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.AutoSize;
             this.layoutControlItem20.TextSize = new System.Drawing.Size(116, 13);
@@ -3261,7 +3274,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // layoutControlItem21
             // 
             this.layoutControlItem21.Control = this.raTeTaiMat;
-            this.layoutControlItem21.Location = new System.Drawing.Point(203, 46);
+            this.layoutControlItem21.Location = new System.Drawing.Point(197, 46);
             this.layoutControlItem21.Name = "layoutControlItem21";
             this.layoutControlItem21.Size = new System.Drawing.Size(74, 24);
             this.layoutControlItem21.TextSize = new System.Drawing.Size(0, 0);
@@ -3272,7 +3285,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.layoutControlItem22.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem22.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem22.Control = this.txtLoaiThuocTe;
-            this.layoutControlItem22.Location = new System.Drawing.Point(277, 46);
+            this.layoutControlItem22.Location = new System.Drawing.Point(271, 46);
             this.layoutControlItem22.Name = "layoutControlItem22";
             this.layoutControlItem22.Size = new System.Drawing.Size(159, 24);
             this.layoutControlItem22.Text = "Loại thuốc tê:";
@@ -3283,9 +3296,9 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // layoutControlItem23
             // 
             this.layoutControlItem23.Control = this.labelControl1;
-            this.layoutControlItem23.Location = new System.Drawing.Point(436, 46);
+            this.layoutControlItem23.Location = new System.Drawing.Point(430, 46);
             this.layoutControlItem23.Name = "layoutControlItem23";
-            this.layoutControlItem23.Size = new System.Drawing.Size(155, 24);
+            this.layoutControlItem23.Size = new System.Drawing.Size(159, 24);
             this.layoutControlItem23.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem23.TextVisible = false;
             // 
@@ -3294,7 +3307,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.layoutControlItem24.Control = this.raVanhMi;
             this.layoutControlItem24.Location = new System.Drawing.Point(0, 70);
             this.layoutControlItem24.Name = "layoutControlItem24";
-            this.layoutControlItem24.Size = new System.Drawing.Size(173, 23);
+            this.layoutControlItem24.Size = new System.Drawing.Size(168, 23);
             this.layoutControlItem24.Text = "1. Cố định nhẫn cầu:";
             this.layoutControlItem24.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.AutoSize;
             this.layoutControlItem24.TextSize = new System.Drawing.Size(100, 13);
@@ -3303,9 +3316,9 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // layoutControlItem25
             // 
             this.layoutControlItem25.Control = this.raChiCoTruc;
-            this.layoutControlItem25.Location = new System.Drawing.Point(173, 70);
+            this.layoutControlItem25.Location = new System.Drawing.Point(168, 70);
             this.layoutControlItem25.Name = "layoutControlItem25";
-            this.layoutControlItem25.Size = new System.Drawing.Size(418, 23);
+            this.layoutControlItem25.Size = new System.Drawing.Size(421, 23);
             this.layoutControlItem25.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem25.TextVisible = false;
             // 
@@ -3315,7 +3328,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.layoutControlItem26.CustomizationFormText = "1. Cố định nhẫn cầu:";
             this.layoutControlItem26.Location = new System.Drawing.Point(0, 93);
             this.layoutControlItem26.Name = "layoutControlItem26";
-            this.layoutControlItem26.Size = new System.Drawing.Size(162, 23);
+            this.layoutControlItem26.Size = new System.Drawing.Size(156, 23);
             this.layoutControlItem26.Text = "2. Tình trạng T3:";
             this.layoutControlItem26.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.AutoSize;
             this.layoutControlItem26.TextSize = new System.Drawing.Size(81, 13);
@@ -3326,7 +3339,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.layoutControlItem38.Control = this.raNhuomBaoKhong;
             this.layoutControlItem38.Location = new System.Drawing.Point(0, 187);
             this.layoutControlItem38.Name = "layoutControlItem38";
-            this.layoutControlItem38.Size = new System.Drawing.Size(163, 23);
+            this.layoutControlItem38.Size = new System.Drawing.Size(157, 23);
             this.layoutControlItem38.Text = "5. Nhuộm bao:";
             this.layoutControlItem38.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.AutoSize;
             this.layoutControlItem38.TextSize = new System.Drawing.Size(71, 13);
@@ -3335,7 +3348,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // layoutControlItem27
             // 
             this.layoutControlItem27.Control = this.raDoII;
-            this.layoutControlItem27.Location = new System.Drawing.Point(162, 93);
+            this.layoutControlItem27.Location = new System.Drawing.Point(156, 93);
             this.layoutControlItem27.Name = "layoutControlItem27";
             this.layoutControlItem27.Size = new System.Drawing.Size(51, 23);
             this.layoutControlItem27.TextSize = new System.Drawing.Size(0, 0);
@@ -3344,7 +3357,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // layoutControlItem28
             // 
             this.layoutControlItem28.Control = this.raDoIV;
-            this.layoutControlItem28.Location = new System.Drawing.Point(268, 93);
+            this.layoutControlItem28.Location = new System.Drawing.Point(262, 93);
             this.layoutControlItem28.Name = "layoutControlItem28";
             this.layoutControlItem28.Size = new System.Drawing.Size(53, 23);
             this.layoutControlItem28.TextSize = new System.Drawing.Size(0, 0);
@@ -3353,7 +3366,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // layoutControlItem29
             // 
             this.layoutControlItem29.Control = this.raDoV;
-            this.layoutControlItem29.Location = new System.Drawing.Point(321, 93);
+            this.layoutControlItem29.Location = new System.Drawing.Point(315, 93);
             this.layoutControlItem29.Name = "layoutControlItem29";
             this.layoutControlItem29.Size = new System.Drawing.Size(49, 23);
             this.layoutControlItem29.TextSize = new System.Drawing.Size(0, 0);
@@ -3362,7 +3375,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // layoutControlItem30
             // 
             this.layoutControlItem30.Control = this.raDoIII;
-            this.layoutControlItem30.Location = new System.Drawing.Point(213, 93);
+            this.layoutControlItem30.Location = new System.Drawing.Point(207, 93);
             this.layoutControlItem30.Name = "layoutControlItem30";
             this.layoutControlItem30.Size = new System.Drawing.Size(55, 23);
             this.layoutControlItem30.TextSize = new System.Drawing.Size(0, 0);
@@ -3371,9 +3384,9 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // layoutControlItem31
             // 
             this.layoutControlItem31.Control = this.raLechTTT;
-            this.layoutControlItem31.Location = new System.Drawing.Point(370, 93);
+            this.layoutControlItem31.Location = new System.Drawing.Point(364, 93);
             this.layoutControlItem31.Name = "layoutControlItem31";
-            this.layoutControlItem31.Size = new System.Drawing.Size(221, 23);
+            this.layoutControlItem31.Size = new System.Drawing.Size(225, 23);
             this.layoutControlItem31.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem31.TextVisible = false;
             // 
@@ -3382,7 +3395,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.layoutControlItem32.Control = this.raMoKMRiaKhong;
             this.layoutControlItem32.Location = new System.Drawing.Point(0, 116);
             this.layoutControlItem32.Name = "layoutControlItem32";
-            this.layoutControlItem32.Size = new System.Drawing.Size(142, 24);
+            this.layoutControlItem32.Size = new System.Drawing.Size(136, 24);
             this.layoutControlItem32.Text = "3. Mở KM rìa:";
             this.layoutControlItem32.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.AutoSize;
             this.layoutControlItem32.TextSize = new System.Drawing.Size(63, 13);
@@ -3391,7 +3404,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // layoutControlItem33
             // 
             this.layoutControlItem33.Control = this.raMoKMRiaCo;
-            this.layoutControlItem33.Location = new System.Drawing.Point(142, 116);
+            this.layoutControlItem33.Location = new System.Drawing.Point(136, 116);
             this.layoutControlItem33.Name = "layoutControlItem33";
             this.layoutControlItem33.Size = new System.Drawing.Size(39, 24);
             this.layoutControlItem33.TextSize = new System.Drawing.Size(0, 0);
@@ -3402,7 +3415,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.layoutControlItem39.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem39.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem39.Control = this.txtMoKMRiaKinhTuyen;
-            this.layoutControlItem39.Location = new System.Drawing.Point(181, 116);
+            this.layoutControlItem39.Location = new System.Drawing.Point(175, 116);
             this.layoutControlItem39.Name = "layoutControlItem39";
             this.layoutControlItem39.Size = new System.Drawing.Size(139, 24);
             this.layoutControlItem39.Text = "Kinh tuyến:";
@@ -3413,9 +3426,9 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // layoutControlItem40
             // 
             this.layoutControlItem40.Control = this.labelControl2;
-            this.layoutControlItem40.Location = new System.Drawing.Point(320, 116);
+            this.layoutControlItem40.Location = new System.Drawing.Point(314, 116);
             this.layoutControlItem40.Name = "layoutControlItem40";
-            this.layoutControlItem40.Size = new System.Drawing.Size(271, 24);
+            this.layoutControlItem40.Size = new System.Drawing.Size(275, 24);
             this.layoutControlItem40.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem40.TextVisible = false;
             // 
@@ -3424,7 +3437,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.layoutControlItem34.Control = this.raMVTPGiacMac;
             this.layoutControlItem34.Location = new System.Drawing.Point(0, 140);
             this.layoutControlItem34.Name = "layoutControlItem34";
-            this.layoutControlItem34.Size = new System.Drawing.Size(179, 23);
+            this.layoutControlItem34.Size = new System.Drawing.Size(173, 23);
             this.layoutControlItem34.Text = "4. Mở vào TP:";
             this.layoutControlItem34.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.AutoSize;
             this.layoutControlItem34.TextSize = new System.Drawing.Size(67, 13);
@@ -3433,7 +3446,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // layoutControlItem35
             // 
             this.layoutControlItem35.Control = this.raMVTPRia;
-            this.layoutControlItem35.Location = new System.Drawing.Point(179, 140);
+            this.layoutControlItem35.Location = new System.Drawing.Point(173, 140);
             this.layoutControlItem35.Name = "layoutControlItem35";
             this.layoutControlItem35.Size = new System.Drawing.Size(65, 23);
             this.layoutControlItem35.TextSize = new System.Drawing.Size(0, 0);
@@ -3442,18 +3455,18 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // layoutControlItem36
             // 
             this.layoutControlItem36.Control = this.raMVTPCungMac;
-            this.layoutControlItem36.Location = new System.Drawing.Point(244, 140);
+            this.layoutControlItem36.Location = new System.Drawing.Point(238, 140);
             this.layoutControlItem36.Name = "layoutControlItem36";
-            this.layoutControlItem36.Size = new System.Drawing.Size(347, 23);
+            this.layoutControlItem36.Size = new System.Drawing.Size(351, 23);
             this.layoutControlItem36.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem36.TextVisible = false;
             // 
             // layoutControlItem41
             // 
             this.layoutControlItem41.Control = this.textEdit1;
-            this.layoutControlItem41.Location = new System.Drawing.Point(92, 163);
+            this.layoutControlItem41.Location = new System.Drawing.Point(86, 163);
             this.layoutControlItem41.Name = "layoutControlItem41";
-            this.layoutControlItem41.Size = new System.Drawing.Size(149, 24);
+            this.layoutControlItem41.Size = new System.Drawing.Size(147, 24);
             this.layoutControlItem41.Text = "Kinh tuyến:";
             this.layoutControlItem41.TextSize = new System.Drawing.Size(55, 13);
             // 
@@ -3463,7 +3476,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.layoutControlItem42.CustomizationFormText = "layoutControlItem40";
             this.layoutControlItem42.Location = new System.Drawing.Point(0, 163);
             this.layoutControlItem42.Name = "layoutControlItem42";
-            this.layoutControlItem42.Size = new System.Drawing.Size(92, 24);
+            this.layoutControlItem42.Size = new System.Drawing.Size(86, 24);
             this.layoutControlItem42.Text = "layoutControlItem40";
             this.layoutControlItem42.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem42.TextVisible = false;
@@ -3471,7 +3484,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // layoutControlItem43
             // 
             this.layoutControlItem43.Control = this.labelControl4;
-            this.layoutControlItem43.Location = new System.Drawing.Point(241, 163);
+            this.layoutControlItem43.Location = new System.Drawing.Point(233, 163);
             this.layoutControlItem43.Name = "layoutControlItem43";
             this.layoutControlItem43.Size = new System.Drawing.Size(34, 24);
             this.layoutControlItem43.TextSize = new System.Drawing.Size(0, 0);
@@ -3480,7 +3493,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // layoutControlItem44
             // 
             this.layoutControlItem44.Control = this.txtkichthuoc;
-            this.layoutControlItem44.Location = new System.Drawing.Point(275, 163);
+            this.layoutControlItem44.Location = new System.Drawing.Point(267, 163);
             this.layoutControlItem44.Name = "layoutControlItem44";
             this.layoutControlItem44.Size = new System.Drawing.Size(129, 24);
             this.layoutControlItem44.Text = "Kích thước:";
@@ -3489,7 +3502,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // layoutControlItem45
             // 
             this.layoutControlItem45.Control = this.labelControl5;
-            this.layoutControlItem45.Location = new System.Drawing.Point(404, 163);
+            this.layoutControlItem45.Location = new System.Drawing.Point(396, 163);
             this.layoutControlItem45.Name = "layoutControlItem45";
             this.layoutControlItem45.Size = new System.Drawing.Size(37, 24);
             this.layoutControlItem45.TextSize = new System.Drawing.Size(0, 0);
@@ -3498,9 +3511,9 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // layoutControlItem37
             // 
             this.layoutControlItem37.Control = this.checkEdit12;
-            this.layoutControlItem37.Location = new System.Drawing.Point(441, 163);
+            this.layoutControlItem37.Location = new System.Drawing.Point(433, 163);
             this.layoutControlItem37.Name = "layoutControlItem37";
-            this.layoutControlItem37.Size = new System.Drawing.Size(150, 24);
+            this.layoutControlItem37.Size = new System.Drawing.Size(156, 24);
             this.layoutControlItem37.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem37.TextVisible = false;
             // 
@@ -3509,7 +3522,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.layoutControlItem47.Control = this.raXeBaoTruocT3;
             this.layoutControlItem47.Location = new System.Drawing.Point(0, 210);
             this.layoutControlItem47.Name = "layoutControlItem47";
-            this.layoutControlItem47.Size = new System.Drawing.Size(119, 24);
+            this.layoutControlItem47.Size = new System.Drawing.Size(118, 24);
             this.layoutControlItem47.Text = "6. ";
             this.layoutControlItem47.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem47.TextSize = new System.Drawing.Size(10, 20);
@@ -3520,7 +3533,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.layoutControlItem50.Control = this.raXoayNhanDeDang;
             this.layoutControlItem50.Location = new System.Drawing.Point(246, 234);
             this.layoutControlItem50.Name = "layoutControlItem50";
-            this.layoutControlItem50.Size = new System.Drawing.Size(345, 24);
+            this.layoutControlItem50.Size = new System.Drawing.Size(343, 24);
             this.layoutControlItem50.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem50.TextVisible = false;
             // 
@@ -3529,7 +3542,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.layoutControlItem52.Control = this.raDayNhanKhong;
             this.layoutControlItem52.Location = new System.Drawing.Point(0, 258);
             this.layoutControlItem52.Name = "layoutControlItem52";
-            this.layoutControlItem52.Size = new System.Drawing.Size(163, 23);
+            this.layoutControlItem52.Size = new System.Drawing.Size(157, 23);
             this.layoutControlItem52.Text = "8. Đẩy nhân:";
             this.layoutControlItem52.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.AutoSize;
             this.layoutControlItem52.TextSize = new System.Drawing.Size(64, 13);
@@ -3540,7 +3553,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.layoutControlItem58.Control = this.raHutChatT3IA;
             this.layoutControlItem58.Location = new System.Drawing.Point(0, 305);
             this.layoutControlItem58.Name = "layoutControlItem58";
-            this.layoutControlItem58.Size = new System.Drawing.Size(142, 23);
+            this.layoutControlItem58.Size = new System.Drawing.Size(136, 23);
             this.layoutControlItem58.Text = "10. Hút chất T3:";
             this.layoutControlItem58.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.AutoSize;
             this.layoutControlItem58.TextSize = new System.Drawing.Size(79, 13);
@@ -3551,7 +3564,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.layoutControlItem59.Control = this.raDatIOLMem;
             this.layoutControlItem59.Location = new System.Drawing.Point(0, 328);
             this.layoutControlItem59.Name = "layoutControlItem59";
-            this.layoutControlItem59.Size = new System.Drawing.Size(128, 23);
+            this.layoutControlItem59.Size = new System.Drawing.Size(122, 23);
             this.layoutControlItem59.Text = "11. Đặt IOL:";
             this.layoutControlItem59.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.AutoSize;
             this.layoutControlItem59.TextSize = new System.Drawing.Size(61, 13);
@@ -3562,7 +3575,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.layoutControlItem64.Control = this.raRachBaoSauKhong;
             this.layoutControlItem64.Location = new System.Drawing.Point(0, 351);
             this.layoutControlItem64.Name = "layoutControlItem64";
-            this.layoutControlItem64.Size = new System.Drawing.Size(163, 24);
+            this.layoutControlItem64.Size = new System.Drawing.Size(157, 24);
             this.layoutControlItem64.Text = "12. Rách bao sau:";
             this.layoutControlItem64.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.AutoSize;
             this.layoutControlItem64.TextSize = new System.Drawing.Size(88, 13);
@@ -3571,7 +3584,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // layoutControlItem66
             // 
             this.layoutControlItem66.Control = this.raRBSCBSCatBangKeo;
-            this.layoutControlItem66.Location = new System.Drawing.Point(260, 375);
+            this.layoutControlItem66.Location = new System.Drawing.Point(252, 375);
             this.layoutControlItem66.Name = "layoutControlItem66";
             this.layoutControlItem66.Size = new System.Drawing.Size(126, 23);
             this.layoutControlItem66.TextSize = new System.Drawing.Size(0, 0);
@@ -3582,7 +3595,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.layoutControlItem69.Control = this.raRBSCMMNVKhong;
             this.layoutControlItem69.Location = new System.Drawing.Point(0, 398);
             this.layoutControlItem69.Name = "layoutControlItem69";
-            this.layoutControlItem69.Size = new System.Drawing.Size(228, 24);
+            this.layoutControlItem69.Size = new System.Drawing.Size(222, 24);
             this.layoutControlItem69.Text = "     - Cắt mống mắt ngoại vi:";
             this.layoutControlItem69.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.AutoSize;
             this.layoutControlItem69.TextSize = new System.Drawing.Size(133, 13);
@@ -3591,27 +3604,27 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // layoutControlItem46
             // 
             this.layoutControlItem46.Control = this.raNhuomBaoCo;
-            this.layoutControlItem46.Location = new System.Drawing.Point(163, 187);
+            this.layoutControlItem46.Location = new System.Drawing.Point(157, 187);
             this.layoutControlItem46.Name = "layoutControlItem46";
-            this.layoutControlItem46.Size = new System.Drawing.Size(428, 23);
+            this.layoutControlItem46.Size = new System.Drawing.Size(432, 23);
             this.layoutControlItem46.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem46.TextVisible = false;
             // 
             // layoutControlItem49
             // 
             this.layoutControlItem49.Control = this.raCatBao;
-            this.layoutControlItem49.Location = new System.Drawing.Point(255, 210);
+            this.layoutControlItem49.Location = new System.Drawing.Point(249, 210);
             this.layoutControlItem49.Name = "layoutControlItem49";
-            this.layoutControlItem49.Size = new System.Drawing.Size(336, 24);
+            this.layoutControlItem49.Size = new System.Drawing.Size(340, 24);
             this.layoutControlItem49.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem49.TextVisible = false;
             // 
             // layoutControlItem48
             // 
             this.layoutControlItem48.Control = this.raXMoBaoHinhTemThu;
-            this.layoutControlItem48.Location = new System.Drawing.Point(119, 210);
+            this.layoutControlItem48.Location = new System.Drawing.Point(118, 210);
             this.layoutControlItem48.Name = "layoutControlItem48";
-            this.layoutControlItem48.Size = new System.Drawing.Size(136, 24);
+            this.layoutControlItem48.Size = new System.Drawing.Size(131, 24);
             this.layoutControlItem48.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem48.TextVisible = false;
             // 
@@ -3640,16 +3653,16 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // layoutControlItem54
             // 
             this.layoutControlItem54.Control = this.raDayNhanCo;
-            this.layoutControlItem54.Location = new System.Drawing.Point(163, 258);
+            this.layoutControlItem54.Location = new System.Drawing.Point(157, 258);
             this.layoutControlItem54.Name = "layoutControlItem54";
-            this.layoutControlItem54.Size = new System.Drawing.Size(54, 23);
+            this.layoutControlItem54.Size = new System.Drawing.Size(52, 23);
             this.layoutControlItem54.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem54.TextVisible = false;
             // 
             // layoutControlItem55
             // 
             this.layoutControlItem55.Control = this.raDayNhanBangNuoc;
-            this.layoutControlItem55.Location = new System.Drawing.Point(217, 258);
+            this.layoutControlItem55.Location = new System.Drawing.Point(209, 258);
             this.layoutControlItem55.Name = "layoutControlItem55";
             this.layoutControlItem55.Size = new System.Drawing.Size(79, 23);
             this.layoutControlItem55.TextSize = new System.Drawing.Size(0, 0);
@@ -3658,9 +3671,9 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // layoutControlItem56
             // 
             this.layoutControlItem56.Control = this.raDayNhanBangChatNhay;
-            this.layoutControlItem56.Location = new System.Drawing.Point(296, 258);
+            this.layoutControlItem56.Location = new System.Drawing.Point(288, 258);
             this.layoutControlItem56.Name = "layoutControlItem56";
-            this.layoutControlItem56.Size = new System.Drawing.Size(295, 23);
+            this.layoutControlItem56.Size = new System.Drawing.Size(301, 23);
             this.layoutControlItem56.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem56.TextVisible = false;
             // 
@@ -3669,7 +3682,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.layoutControlItem72.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem72.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem72.Control = this.txtNangLuong;
-            this.layoutControlItem72.Location = new System.Drawing.Point(72, 281);
+            this.layoutControlItem72.Location = new System.Drawing.Point(66, 281);
             this.layoutControlItem72.Name = "layoutControlItem72";
             this.layoutControlItem72.Size = new System.Drawing.Size(149, 24);
             this.layoutControlItem72.Text = "Năng lượng:";
@@ -3682,7 +3695,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.layoutControlItem74.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem74.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem74.Control = this.txtLucHut;
-            this.layoutControlItem74.Location = new System.Drawing.Point(235, 281);
+            this.layoutControlItem74.Location = new System.Drawing.Point(229, 281);
             this.layoutControlItem74.Name = "layoutControlItem74";
             this.layoutControlItem74.Size = new System.Drawing.Size(139, 24);
             this.layoutControlItem74.Text = "Lực hút:";
@@ -3693,7 +3706,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // layoutControlItem76
             // 
             this.layoutControlItem76.Control = this.labelControl6;
-            this.layoutControlItem76.Location = new System.Drawing.Point(221, 281);
+            this.layoutControlItem76.Location = new System.Drawing.Point(215, 281);
             this.layoutControlItem76.Name = "layoutControlItem76";
             this.layoutControlItem76.Size = new System.Drawing.Size(14, 24);
             this.layoutControlItem76.TextSize = new System.Drawing.Size(0, 0);
@@ -3704,16 +3717,16 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.layoutControlItem78.Control = this.labelControl8;
             this.layoutControlItem78.Location = new System.Drawing.Point(0, 281);
             this.layoutControlItem78.Name = "layoutControlItem78";
-            this.layoutControlItem78.Size = new System.Drawing.Size(72, 24);
+            this.layoutControlItem78.Size = new System.Drawing.Size(66, 24);
             this.layoutControlItem78.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem78.TextVisible = false;
             // 
             // layoutControlItem57
             // 
             this.layoutControlItem57.Control = this.raHutChatT3Kim2Nong;
-            this.layoutControlItem57.Location = new System.Drawing.Point(142, 305);
+            this.layoutControlItem57.Location = new System.Drawing.Point(136, 305);
             this.layoutControlItem57.Name = "layoutControlItem57";
-            this.layoutControlItem57.Size = new System.Drawing.Size(449, 23);
+            this.layoutControlItem57.Size = new System.Drawing.Size(453, 23);
             this.layoutControlItem57.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem57.TextVisible = false;
             // 
@@ -3722,9 +3735,9 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.layoutControlItem79.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem79.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem79.Control = this.textEdit7;
-            this.layoutControlItem79.Location = new System.Drawing.Point(420, 281);
+            this.layoutControlItem79.Location = new System.Drawing.Point(412, 281);
             this.layoutControlItem79.Name = "layoutControlItem79";
-            this.layoutControlItem79.Size = new System.Drawing.Size(171, 24);
+            this.layoutControlItem79.Size = new System.Drawing.Size(177, 24);
             this.layoutControlItem79.Text = "Tốc độ DC:";
             this.layoutControlItem79.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem79.TextSize = new System.Drawing.Size(90, 20);
@@ -3733,7 +3746,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // layoutControlItem60
             // 
             this.layoutControlItem60.Control = this.raDatIOLBangPince;
-            this.layoutControlItem60.Location = new System.Drawing.Point(222, 328);
+            this.layoutControlItem60.Location = new System.Drawing.Point(214, 328);
             this.layoutControlItem60.Name = "layoutControlItem60";
             this.layoutControlItem60.Size = new System.Drawing.Size(92, 23);
             this.layoutControlItem60.TextSize = new System.Drawing.Size(0, 0);
@@ -3742,25 +3755,25 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // layoutControlItem61
             // 
             this.layoutControlItem61.Control = this.raDatIOLCoDinhCM;
-            this.layoutControlItem61.Location = new System.Drawing.Point(399, 328);
+            this.layoutControlItem61.Location = new System.Drawing.Point(391, 328);
             this.layoutControlItem61.Name = "layoutControlItem61";
-            this.layoutControlItem61.Size = new System.Drawing.Size(192, 23);
+            this.layoutControlItem61.Size = new System.Drawing.Size(198, 23);
             this.layoutControlItem61.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem61.TextVisible = false;
             // 
             // layoutControlItem62
             // 
             this.layoutControlItem62.Control = this.raDatIOLCung;
-            this.layoutControlItem62.Location = new System.Drawing.Point(128, 328);
+            this.layoutControlItem62.Location = new System.Drawing.Point(122, 328);
             this.layoutControlItem62.Name = "layoutControlItem62";
-            this.layoutControlItem62.Size = new System.Drawing.Size(94, 23);
+            this.layoutControlItem62.Size = new System.Drawing.Size(92, 23);
             this.layoutControlItem62.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem62.TextVisible = false;
             // 
             // layoutControlItem63
             // 
             this.layoutControlItem63.Control = this.raDatIOLBangSung;
-            this.layoutControlItem63.Location = new System.Drawing.Point(314, 328);
+            this.layoutControlItem63.Location = new System.Drawing.Point(306, 328);
             this.layoutControlItem63.Name = "layoutControlItem63";
             this.layoutControlItem63.Size = new System.Drawing.Size(85, 23);
             this.layoutControlItem63.TextSize = new System.Drawing.Size(0, 0);
@@ -3769,9 +3782,9 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // layoutControlItem65
             // 
             this.layoutControlItem65.Control = this.raRachBaoSauCo;
-            this.layoutControlItem65.Location = new System.Drawing.Point(163, 351);
+            this.layoutControlItem65.Location = new System.Drawing.Point(157, 351);
             this.layoutControlItem65.Name = "layoutControlItem65";
-            this.layoutControlItem65.Size = new System.Drawing.Size(61, 24);
+            this.layoutControlItem65.Size = new System.Drawing.Size(59, 24);
             this.layoutControlItem65.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem65.TextVisible = false;
             // 
@@ -3780,33 +3793,20 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.layoutControlItem73.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem73.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem73.Control = this.txtViTriRachForraRachBaoSau;
-            this.layoutControlItem73.Location = new System.Drawing.Point(224, 351);
+            this.layoutControlItem73.Location = new System.Drawing.Point(216, 351);
             this.layoutControlItem73.Name = "layoutControlItem73";
-            this.layoutControlItem73.Size = new System.Drawing.Size(180, 24);
+            this.layoutControlItem73.Size = new System.Drawing.Size(179, 24);
             this.layoutControlItem73.Text = "Vị trí rách:";
             this.layoutControlItem73.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem73.TextSize = new System.Drawing.Size(80, 20);
             this.layoutControlItem73.TextToControlDistance = 5;
-            // 
-            // layoutControlItem75
-            // 
-            this.layoutControlItem75.AppearanceItemCaption.Options.UseTextOptions = true;
-            this.layoutControlItem75.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
-            this.layoutControlItem75.Control = this.spinKichThuocRachForraRachBaoSau;
-            this.layoutControlItem75.Location = new System.Drawing.Point(404, 351);
-            this.layoutControlItem75.Name = "layoutControlItem75";
-            this.layoutControlItem75.Size = new System.Drawing.Size(159, 24);
-            this.layoutControlItem75.Text = "Kích thước:";
-            this.layoutControlItem75.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
-            this.layoutControlItem75.TextSize = new System.Drawing.Size(100, 20);
-            this.layoutControlItem75.TextToControlDistance = 5;
             // 
             // layoutControlItem67
             // 
             this.layoutControlItem67.Control = this.raRBSCBSKhong;
             this.layoutControlItem67.Location = new System.Drawing.Point(0, 375);
             this.layoutControlItem67.Name = "layoutControlItem67";
-            this.layoutControlItem67.Size = new System.Drawing.Size(163, 23);
+            this.layoutControlItem67.Size = new System.Drawing.Size(157, 23);
             this.layoutControlItem67.Text = "     - Cắt bao sau:";
             this.layoutControlItem67.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.AutoSize;
             this.layoutControlItem67.TextSize = new System.Drawing.Size(84, 13);
@@ -3815,27 +3815,27 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // layoutControlItem68
             // 
             this.layoutControlItem68.Control = this.raRBSCBSMayCatDK;
-            this.layoutControlItem68.Location = new System.Drawing.Point(386, 375);
+            this.layoutControlItem68.Location = new System.Drawing.Point(378, 375);
             this.layoutControlItem68.Name = "layoutControlItem68";
-            this.layoutControlItem68.Size = new System.Drawing.Size(205, 23);
+            this.layoutControlItem68.Size = new System.Drawing.Size(211, 23);
             this.layoutControlItem68.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem68.TextVisible = false;
             // 
             // layoutControlItem70
             // 
             this.layoutControlItem70.Control = this.raRBSCBSCo;
-            this.layoutControlItem70.Location = new System.Drawing.Point(163, 375);
+            this.layoutControlItem70.Location = new System.Drawing.Point(157, 375);
             this.layoutControlItem70.Name = "layoutControlItem70";
-            this.layoutControlItem70.Size = new System.Drawing.Size(97, 23);
+            this.layoutControlItem70.Size = new System.Drawing.Size(95, 23);
             this.layoutControlItem70.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem70.TextVisible = false;
             // 
             // layoutControlItem71
             // 
             this.layoutControlItem71.Control = this.raRBSCMMNVCo;
-            this.layoutControlItem71.Location = new System.Drawing.Point(228, 398);
+            this.layoutControlItem71.Location = new System.Drawing.Point(222, 398);
             this.layoutControlItem71.Name = "layoutControlItem71";
-            this.layoutControlItem71.Size = new System.Drawing.Size(82, 24);
+            this.layoutControlItem71.Size = new System.Drawing.Size(80, 24);
             this.layoutControlItem71.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem71.TextVisible = false;
             // 
@@ -3844,7 +3844,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.layoutControlItem80.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem80.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem80.Control = this.txtViTriRachForraRBSCMMNV;
-            this.layoutControlItem80.Location = new System.Drawing.Point(310, 398);
+            this.layoutControlItem80.Location = new System.Drawing.Point(302, 398);
             this.layoutControlItem80.Name = "layoutControlItem80";
             this.layoutControlItem80.Size = new System.Drawing.Size(145, 24);
             this.layoutControlItem80.Text = "Vị trí rách:";
@@ -3855,9 +3855,9 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // emptySpaceItem3
             // 
             this.emptySpaceItem3.AllowHotTrack = false;
-            this.emptySpaceItem3.Location = new System.Drawing.Point(455, 398);
+            this.emptySpaceItem3.Location = new System.Drawing.Point(447, 398);
             this.emptySpaceItem3.Name = "emptySpaceItem3";
-            this.emptySpaceItem3.Size = new System.Drawing.Size(136, 24);
+            this.emptySpaceItem3.Size = new System.Drawing.Size(142, 24);
             this.emptySpaceItem3.TextSize = new System.Drawing.Size(0, 0);
             // 
             // layoutControlItem82
@@ -3865,7 +3865,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.layoutControlItem82.Control = this.raPhucHoiVetMoBomPhu;
             this.layoutControlItem82.Location = new System.Drawing.Point(0, 422);
             this.layoutControlItem82.Name = "layoutControlItem82";
-            this.layoutControlItem82.Size = new System.Drawing.Size(211, 23);
+            this.layoutControlItem82.Size = new System.Drawing.Size(205, 23);
             this.layoutControlItem82.Text = "13. Phục hồi vết mổ:";
             this.layoutControlItem82.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.AutoSize;
             this.layoutControlItem82.TextSize = new System.Drawing.Size(99, 13);
@@ -3876,7 +3876,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.layoutControlItem84.Control = this.raTiemMatKhong;
             this.layoutControlItem84.Location = new System.Drawing.Point(0, 445);
             this.layoutControlItem84.Name = "layoutControlItem84";
-            this.layoutControlItem84.Size = new System.Drawing.Size(151, 24);
+            this.layoutControlItem84.Size = new System.Drawing.Size(145, 24);
             this.layoutControlItem84.Text = "14. Tiêm mắt:";
             this.layoutControlItem84.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.AutoSize;
             this.layoutControlItem84.TextSize = new System.Drawing.Size(66, 13);
@@ -3885,25 +3885,25 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // layoutControlItem85
             // 
             this.layoutControlItem85.Control = this.raTiemMatCo;
-            this.layoutControlItem85.Location = new System.Drawing.Point(151, 445);
+            this.layoutControlItem85.Location = new System.Drawing.Point(145, 445);
             this.layoutControlItem85.Name = "layoutControlItem85";
-            this.layoutControlItem85.Size = new System.Drawing.Size(42, 24);
+            this.layoutControlItem85.Size = new System.Drawing.Size(40, 24);
             this.layoutControlItem85.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem85.TextVisible = false;
             // 
             // layoutControlItem83
             // 
             this.layoutControlItem83.Control = this.raPhucHoiVetMoKhauVat;
-            this.layoutControlItem83.Location = new System.Drawing.Point(211, 422);
+            this.layoutControlItem83.Location = new System.Drawing.Point(205, 422);
             this.layoutControlItem83.Name = "layoutControlItem83";
-            this.layoutControlItem83.Size = new System.Drawing.Size(380, 23);
+            this.layoutControlItem83.Size = new System.Drawing.Size(384, 23);
             this.layoutControlItem83.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem83.TextVisible = false;
             // 
             // layoutControlItem88
             // 
             this.layoutControlItem88.Control = this.raTiemMatCNC;
-            this.layoutControlItem88.Location = new System.Drawing.Point(337, 445);
+            this.layoutControlItem88.Location = new System.Drawing.Point(329, 445);
             this.layoutControlItem88.Name = "layoutControlItem88";
             this.layoutControlItem88.Size = new System.Drawing.Size(58, 24);
             this.layoutControlItem88.TextSize = new System.Drawing.Size(0, 0);
@@ -3912,7 +3912,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // layoutControlItem86
             // 
             this.layoutControlItem86.Control = this.raTiemMatTienPhong;
-            this.layoutControlItem86.Location = new System.Drawing.Point(193, 445);
+            this.layoutControlItem86.Location = new System.Drawing.Point(185, 445);
             this.layoutControlItem86.Name = "layoutControlItem86";
             this.layoutControlItem86.Size = new System.Drawing.Size(79, 24);
             this.layoutControlItem86.TextSize = new System.Drawing.Size(0, 0);
@@ -3921,7 +3921,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // layoutControlItem87
             // 
             this.layoutControlItem87.Control = this.raTiemMatDuoiKM;
-            this.layoutControlItem87.Location = new System.Drawing.Point(272, 445);
+            this.layoutControlItem87.Location = new System.Drawing.Point(264, 445);
             this.layoutControlItem87.Name = "layoutControlItem87";
             this.layoutControlItem87.Size = new System.Drawing.Size(65, 24);
             this.layoutControlItem87.TextSize = new System.Drawing.Size(0, 0);
@@ -3932,9 +3932,9 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.layoutControlItem81.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem81.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem81.Control = this.txtLoaiThuocForraTiemMat;
-            this.layoutControlItem81.Location = new System.Drawing.Point(395, 445);
+            this.layoutControlItem81.Location = new System.Drawing.Point(387, 445);
             this.layoutControlItem81.Name = "layoutControlItem81";
-            this.layoutControlItem81.Size = new System.Drawing.Size(196, 24);
+            this.layoutControlItem81.Size = new System.Drawing.Size(202, 24);
             this.layoutControlItem81.Text = "Loại thuốc:";
             this.layoutControlItem81.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem81.TextSize = new System.Drawing.Size(90, 20);
@@ -3945,7 +3945,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.layoutControlItem89.Control = this.raTraMatDD;
             this.layoutControlItem89.Location = new System.Drawing.Point(0, 469);
             this.layoutControlItem89.Name = "layoutControlItem89";
-            this.layoutControlItem89.Size = new System.Drawing.Size(148, 24);
+            this.layoutControlItem89.Size = new System.Drawing.Size(142, 24);
             this.layoutControlItem89.Text = "15. Tra mắt:";
             this.layoutControlItem89.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.AutoSize;
             this.layoutControlItem89.TextSize = new System.Drawing.Size(60, 13);
@@ -3954,9 +3954,9 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // layoutControlItem91
             // 
             this.layoutControlItem91.Control = this.raTraMatMo;
-            this.layoutControlItem91.Location = new System.Drawing.Point(148, 469);
+            this.layoutControlItem91.Location = new System.Drawing.Point(142, 469);
             this.layoutControlItem91.Name = "layoutControlItem91";
-            this.layoutControlItem91.Size = new System.Drawing.Size(86, 24);
+            this.layoutControlItem91.Size = new System.Drawing.Size(84, 24);
             this.layoutControlItem91.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem91.TextVisible = false;
             // 
@@ -3965,7 +3965,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.layoutControlItem92.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem92.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem92.Control = this.txtLoaiThuocForraTraMat;
-            this.layoutControlItem92.Location = new System.Drawing.Point(234, 469);
+            this.layoutControlItem92.Location = new System.Drawing.Point(226, 469);
             this.layoutControlItem92.Name = "layoutControlItem92";
             this.layoutControlItem92.Size = new System.Drawing.Size(247, 24);
             this.layoutControlItem92.Text = "Loại thuốc:";
@@ -3976,9 +3976,9 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // raTraMatchkBangEp
             // 
             this.raTraMatchkBangEp.Control = this.checkEdit10;
-            this.raTraMatchkBangEp.Location = new System.Drawing.Point(481, 469);
+            this.raTraMatchkBangEp.Location = new System.Drawing.Point(473, 469);
             this.raTraMatchkBangEp.Name = "raTraMatchkBangEp";
-            this.raTraMatchkBangEp.Size = new System.Drawing.Size(110, 24);
+            this.raTraMatchkBangEp.Size = new System.Drawing.Size(116, 24);
             this.raTraMatchkBangEp.TextSize = new System.Drawing.Size(0, 0);
             this.raTraMatchkBangEp.TextVisible = false;
             // 
@@ -3987,7 +3987,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.layoutControlItem93.Control = this.txtDienBienKhac;
             this.layoutControlItem93.Location = new System.Drawing.Point(0, 493);
             this.layoutControlItem93.Name = "layoutControlItem93";
-            this.layoutControlItem93.Size = new System.Drawing.Size(484, 34);
+            this.layoutControlItem93.Size = new System.Drawing.Size(478, 34);
             this.layoutControlItem93.Text = "16. Diến biến khác:";
             this.layoutControlItem93.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.AutoSize;
             this.layoutControlItem93.TextSize = new System.Drawing.Size(92, 13);
@@ -3996,39 +3996,39 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // emptySpaceItem4
             // 
             this.emptySpaceItem4.AllowHotTrack = false;
-            this.emptySpaceItem4.Location = new System.Drawing.Point(484, 493);
+            this.emptySpaceItem4.Location = new System.Drawing.Point(478, 493);
             this.emptySpaceItem4.Name = "emptySpaceItem4";
-            this.emptySpaceItem4.Size = new System.Drawing.Size(107, 34);
+            this.emptySpaceItem4.Size = new System.Drawing.Size(111, 34);
             this.emptySpaceItem4.TextSize = new System.Drawing.Size(0, 0);
             // 
             // layoutControlItem77
             // 
             this.layoutControlItem77.Control = this.labelControl7;
-            this.layoutControlItem77.Location = new System.Drawing.Point(374, 281);
+            this.layoutControlItem77.Location = new System.Drawing.Point(368, 281);
             this.layoutControlItem77.Name = "layoutControlItem77";
-            this.layoutControlItem77.Size = new System.Drawing.Size(46, 24);
+            this.layoutControlItem77.Size = new System.Drawing.Size(44, 24);
             this.layoutControlItem77.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem77.TextVisible = false;
             // 
             // emptySpaceItem31
             // 
             this.emptySpaceItem31.AllowHotTrack = false;
-            this.emptySpaceItem31.Location = new System.Drawing.Point(563, 351);
+            this.emptySpaceItem31.Location = new System.Drawing.Point(553, 351);
             this.emptySpaceItem31.Name = "emptySpaceItem31";
-            this.emptySpaceItem31.Size = new System.Drawing.Size(28, 24);
+            this.emptySpaceItem31.Size = new System.Drawing.Size(36, 24);
             this.emptySpaceItem31.Text = "mm";
             this.emptySpaceItem31.TextSize = new System.Drawing.Size(55, 0);
             this.emptySpaceItem31.TextVisible = true;
             // 
             // raTTMongMat
             // 
-            this.raTTMongMat.Location = new System.Drawing.Point(380, 25);
+            this.raTTMongMat.Location = new System.Drawing.Point(376, 25);
             this.raTTMongMat.Margin = new System.Windows.Forms.Padding(2);
             this.raTTMongMat.Name = "raTTMongMat";
             this.raTTMongMat.Properties.Caption = "TT Mống mắt";
             this.raTTMongMat.Properties.CheckStyle = DevExpress.XtraEditors.Controls.CheckStyles.Radio;
             this.raTTMongMat.Properties.RadioGroupIndex = 1;
-            this.raTTMongMat.Size = new System.Drawing.Size(236, 19);
+            this.raTTMongMat.Size = new System.Drawing.Size(238, 19);
             this.raTTMongMat.StyleController = this.layoutControl24;
             this.raTTMongMat.TabIndex = 4;
             this.raTTMongMat.TabStop = false;
@@ -4057,10 +4057,10 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // 
             this.labelControl10.Appearance.Font = new System.Drawing.Font("Tahoma", 7.8F, System.Drawing.FontStyle.Bold);
             this.labelControl10.AutoSizeMode = DevExpress.XtraEditors.LabelAutoSizeMode.None;
-            this.labelControl10.Location = new System.Drawing.Point(620, 31);
+            this.labelControl10.Location = new System.Drawing.Point(618, 31);
             this.labelControl10.Margin = new System.Windows.Forms.Padding(2);
             this.labelControl10.Name = "labelControl10";
-            this.labelControl10.Size = new System.Drawing.Size(321, 13);
+            this.labelControl10.Size = new System.Drawing.Size(323, 13);
             this.labelControl10.StyleController = this.layoutControl24;
             this.labelControl10.TabIndex = 96;
             this.labelControl10.Text = "Lược đồ phẫu thuật";
@@ -4073,7 +4073,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.raPTMong.Properties.Caption = "PT Mộng";
             this.raPTMong.Properties.CheckStyle = DevExpress.XtraEditors.Controls.CheckStyles.Radio;
             this.raPTMong.Properties.RadioGroupIndex = 1;
-            this.raPTMong.Size = new System.Drawing.Size(124, 19);
+            this.raPTMong.Size = new System.Drawing.Size(122, 19);
             this.raPTMong.StyleController = this.layoutControl24;
             this.raPTMong.TabIndex = 9;
             this.raPTMong.TabStop = false;
@@ -4120,11 +4120,11 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // layoutControl4
             // 
             this.layoutControl4.Controls.Add(this.pictureEdit1);
-            this.layoutControl4.Location = new System.Drawing.Point(617, 2);
+            this.layoutControl4.Location = new System.Drawing.Point(615, 2);
             this.layoutControl4.Margin = new System.Windows.Forms.Padding(2);
             this.layoutControl4.Name = "layoutControl4";
             this.layoutControl4.Root = this.layoutControlGroup3;
-            this.layoutControl4.Size = new System.Drawing.Size(314, 547);
+            this.layoutControl4.Size = new System.Drawing.Size(316, 547);
             this.layoutControl4.TabIndex = 5;
             this.layoutControl4.Text = "layoutControl4";
             // 
@@ -4137,7 +4137,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.pictureEdit1.Properties.InitialImage = ((System.Drawing.Image)(resources.GetObject("pictureEdit1.Properties.InitialImage")));
             this.pictureEdit1.Properties.ReadOnly = true;
             this.pictureEdit1.Properties.ShowCameraMenuItem = DevExpress.XtraEditors.Controls.CameraMenuItemVisibility.Auto;
-            this.pictureEdit1.Size = new System.Drawing.Size(290, 88);
+            this.pictureEdit1.Size = new System.Drawing.Size(292, 86);
             this.pictureEdit1.StyleController = this.layoutControl4;
             this.pictureEdit1.TabIndex = 97;
             // 
@@ -4151,7 +4151,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.layoutControlGroup3.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup3.Name = "layoutControlGroup3";
             this.layoutControlGroup3.OptionsItemText.TextToControlDistance = 4;
-            this.layoutControlGroup3.Size = new System.Drawing.Size(314, 547);
+            this.layoutControlGroup3.Size = new System.Drawing.Size(316, 547);
             this.layoutControlGroup3.TextVisible = false;
             // 
             // layoutControlItem98
@@ -4159,16 +4159,16 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.layoutControlItem98.Control = this.pictureEdit1;
             this.layoutControlItem98.Location = new System.Drawing.Point(0, 0);
             this.layoutControlItem98.Name = "layoutControlItem98";
-            this.layoutControlItem98.Size = new System.Drawing.Size(294, 92);
+            this.layoutControlItem98.Size = new System.Drawing.Size(296, 90);
             this.layoutControlItem98.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem98.TextVisible = false;
             // 
             // emptySpaceItem40
             // 
             this.emptySpaceItem40.AllowHotTrack = false;
-            this.emptySpaceItem40.Location = new System.Drawing.Point(0, 92);
+            this.emptySpaceItem40.Location = new System.Drawing.Point(0, 90);
             this.emptySpaceItem40.Name = "emptySpaceItem40";
-            this.emptySpaceItem40.Size = new System.Drawing.Size(294, 435);
+            this.emptySpaceItem40.Size = new System.Drawing.Size(296, 437);
             this.emptySpaceItem40.TextSize = new System.Drawing.Size(0, 0);
             // 
             // layoutControlGroup4
@@ -4190,16 +4190,16 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.layoutControlItem90.Control = this.lcPtDucTTT;
             this.layoutControlItem90.Location = new System.Drawing.Point(0, 0);
             this.layoutControlItem90.Name = "layoutControlItem90";
-            this.layoutControlItem90.Size = new System.Drawing.Size(615, 551);
+            this.layoutControlItem90.Size = new System.Drawing.Size(613, 551);
             this.layoutControlItem90.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem90.TextVisible = false;
             // 
             // layoutControlItem95
             // 
             this.layoutControlItem95.Control = this.layoutControl4;
-            this.layoutControlItem95.Location = new System.Drawing.Point(615, 0);
+            this.layoutControlItem95.Location = new System.Drawing.Point(613, 0);
             this.layoutControlItem95.Name = "layoutControlItem95";
-            this.layoutControlItem95.Size = new System.Drawing.Size(318, 551);
+            this.layoutControlItem95.Size = new System.Drawing.Size(320, 551);
             this.layoutControlItem95.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem95.TextVisible = false;
             // 
@@ -4313,48 +4313,48 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.lcGlocom.Margin = new System.Windows.Forms.Padding(2);
             this.lcGlocom.Name = "lcGlocom";
             this.lcGlocom.Root = this.layoutControlGroup5;
-            this.lcGlocom.Size = new System.Drawing.Size(611, 572);
+            this.lcGlocom.Size = new System.Drawing.Size(609, 572);
             this.lcGlocom.TabIndex = 0;
             this.lcGlocom.Text = "layoutControl7";
             // 
             // textEdit3
             // 
-            this.textEdit3.Location = new System.Drawing.Point(292, 287);
+            this.textEdit3.Location = new System.Drawing.Point(289, 287);
             this.textEdit3.Name = "textEdit3";
-            this.textEdit3.Size = new System.Drawing.Size(88, 20);
+            this.textEdit3.Size = new System.Drawing.Size(87, 20);
             this.textEdit3.StyleController = this.lcGlocom;
             this.textEdit3.TabIndex = 104;
             // 
             // textEdit2
             // 
-            this.textEdit2.Location = new System.Drawing.Point(492, 499);
+            this.textEdit2.Location = new System.Drawing.Point(489, 499);
             this.textEdit2.Margin = new System.Windows.Forms.Padding(2);
             this.textEdit2.Name = "textEdit2";
             this.textEdit2.Properties.Appearance.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.textEdit2.Properties.Appearance.Options.UseFont = true;
-            this.textEdit2.Size = new System.Drawing.Size(107, 20);
+            this.textEdit2.Size = new System.Drawing.Size(108, 20);
             this.textEdit2.StyleController = this.lcGlocom;
             this.textEdit2.TabIndex = 103;
             // 
             // labelControl33
             // 
             this.labelControl33.AutoSizeMode = DevExpress.XtraEditors.LabelAutoSizeMode.None;
-            this.labelControl33.Location = new System.Drawing.Point(270, 427);
+            this.labelControl33.Location = new System.Drawing.Point(267, 427);
             this.labelControl33.Margin = new System.Windows.Forms.Padding(2);
             this.labelControl33.Name = "labelControl33";
-            this.labelControl33.Size = new System.Drawing.Size(38, 13);
+            this.labelControl33.Size = new System.Drawing.Size(37, 13);
             this.labelControl33.StyleController = this.lcGlocom;
             this.labelControl33.TabIndex = 102;
             this.labelControl33.Text = "mũi";
             // 
             // textEdit4
             // 
-            this.textEdit4.Location = new System.Drawing.Point(517, 216);
+            this.textEdit4.Location = new System.Drawing.Point(513, 216);
             this.textEdit4.Margin = new System.Windows.Forms.Padding(2);
             this.textEdit4.Name = "textEdit4";
             this.textEdit4.Properties.Appearance.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.textEdit4.Properties.Appearance.Options.UseFont = true;
-            this.textEdit4.Size = new System.Drawing.Size(82, 20);
+            this.textEdit4.Size = new System.Drawing.Size(84, 20);
             this.textEdit4.StyleController = this.lcGlocom;
             this.textEdit4.TabIndex = 101;
             // 
@@ -4366,7 +4366,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.checkEdit1.Properties.Caption = "Cắt bè";
             this.checkEdit1.Properties.CheckStyle = DevExpress.XtraEditors.Controls.CheckStyles.Radio;
             this.checkEdit1.Properties.RadioGroupIndex = -73;
-            this.checkEdit1.Size = new System.Drawing.Size(65, 19);
+            this.checkEdit1.Size = new System.Drawing.Size(63, 19);
             this.checkEdit1.StyleController = this.lcGlocom;
             this.checkEdit1.TabIndex = 100;
             this.checkEdit1.TabStop = false;
@@ -4374,13 +4374,13 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // 
             // checkEdit2
             // 
-            this.checkEdit2.Location = new System.Drawing.Point(314, 99);
+            this.checkEdit2.Location = new System.Drawing.Point(312, 99);
             this.checkEdit2.Margin = new System.Windows.Forms.Padding(2);
             this.checkEdit2.Name = "checkEdit2";
             this.checkEdit2.Properties.Caption = "Rạch bè";
             this.checkEdit2.Properties.CheckStyle = DevExpress.XtraEditors.Controls.CheckStyles.Radio;
             this.checkEdit2.Properties.RadioGroupIndex = -73;
-            this.checkEdit2.Size = new System.Drawing.Size(72, 19);
+            this.checkEdit2.Size = new System.Drawing.Size(71, 19);
             this.checkEdit2.StyleController = this.lcGlocom;
             this.checkEdit2.TabIndex = 99;
             this.checkEdit2.TabStop = false;
@@ -4388,13 +4388,13 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // 
             // checkEdit7
             // 
-            this.checkEdit7.Location = new System.Drawing.Point(390, 99);
+            this.checkEdit7.Location = new System.Drawing.Point(387, 99);
             this.checkEdit7.Margin = new System.Windows.Forms.Padding(2);
             this.checkEdit7.Name = "checkEdit7";
             this.checkEdit7.Properties.Caption = "Mở bè";
             this.checkEdit7.Properties.CheckStyle = DevExpress.XtraEditors.Controls.CheckStyles.Radio;
             this.checkEdit7.Properties.RadioGroupIndex = -73;
-            this.checkEdit7.Size = new System.Drawing.Size(88, 19);
+            this.checkEdit7.Size = new System.Drawing.Size(87, 19);
             this.checkEdit7.StyleController = this.lcGlocom;
             this.checkEdit7.TabIndex = 98;
             this.checkEdit7.TabStop = false;
@@ -4402,13 +4402,13 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // 
             // checkEdit8
             // 
-            this.checkEdit8.Location = new System.Drawing.Point(482, 99);
+            this.checkEdit8.Location = new System.Drawing.Point(478, 99);
             this.checkEdit8.Margin = new System.Windows.Forms.Padding(2);
             this.checkEdit8.Name = "checkEdit8";
             this.checkEdit8.Properties.Caption = "Khác";
             this.checkEdit8.Properties.CheckStyle = DevExpress.XtraEditors.Controls.CheckStyles.Radio;
             this.checkEdit8.Properties.RadioGroupIndex = -73;
-            this.checkEdit8.Size = new System.Drawing.Size(117, 19);
+            this.checkEdit8.Size = new System.Drawing.Size(119, 19);
             this.checkEdit8.StyleController = this.lcGlocom;
             this.checkEdit8.TabIndex = 97;
             this.checkEdit8.TabStop = false;
@@ -4431,19 +4431,19 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.labelControl32.Location = new System.Drawing.Point(12, 12);
             this.labelControl32.Margin = new System.Windows.Forms.Padding(2);
             this.labelControl32.Name = "labelControl32";
-            this.labelControl32.Size = new System.Drawing.Size(587, 13);
+            this.labelControl32.Size = new System.Drawing.Size(585, 13);
             this.labelControl32.StyleController = this.lcGlocom;
             this.labelControl32.TabIndex = 95;
             this.labelControl32.Text = "+ Chẩn đoán trước PT:";
             // 
             // Glocom__txtDo
             // 
-            this.Glocom__txtDo.Location = new System.Drawing.Point(278, 52);
+            this.Glocom__txtDo.Location = new System.Drawing.Point(275, 52);
             this.Glocom__txtDo.Margin = new System.Windows.Forms.Padding(2);
             this.Glocom__txtDo.Name = "Glocom__txtDo";
             this.Glocom__txtDo.Properties.Appearance.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Glocom__txtDo.Properties.Appearance.Options.UseFont = true;
-            this.Glocom__txtDo.Size = new System.Drawing.Size(239, 20);
+            this.Glocom__txtDo.Size = new System.Drawing.Size(238, 20);
             this.Glocom__txtDo.StyleController = this.lcGlocom;
             this.Glocom__txtDo.TabIndex = 94;
             // 
@@ -4454,13 +4454,13 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.textEdit6.Name = "textEdit6";
             this.textEdit6.Properties.Appearance.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.textEdit6.Properties.Appearance.Options.UseFont = true;
-            this.textEdit6.Size = new System.Drawing.Size(356, 20);
+            this.textEdit6.Size = new System.Drawing.Size(353, 20);
             this.textEdit6.StyleController = this.lcGlocom;
             this.textEdit6.TabIndex = 93;
             // 
             // checkEdit4
             // 
-            this.checkEdit4.Location = new System.Drawing.Point(260, 475);
+            this.checkEdit4.Location = new System.Drawing.Point(256, 475);
             this.checkEdit4.Margin = new System.Windows.Forms.Padding(2);
             this.checkEdit4.Name = "checkEdit4";
             this.checkEdit4.Properties.Caption = "CNC";
@@ -4474,13 +4474,13 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // 
             // checkEdit5
             // 
-            this.checkEdit5.Location = new System.Drawing.Point(189, 475);
+            this.checkEdit5.Location = new System.Drawing.Point(186, 475);
             this.checkEdit5.Margin = new System.Windows.Forms.Padding(2);
             this.checkEdit5.Name = "checkEdit5";
             this.checkEdit5.Properties.Caption = "Dưới KM";
             this.checkEdit5.Properties.CheckStyle = DevExpress.XtraEditors.Controls.CheckStyles.Radio;
             this.checkEdit5.Properties.RadioGroupIndex = -304;
-            this.checkEdit5.Size = new System.Drawing.Size(67, 19);
+            this.checkEdit5.Size = new System.Drawing.Size(66, 19);
             this.checkEdit5.StyleController = this.lcGlocom;
             this.checkEdit5.TabIndex = 88;
             this.checkEdit5.TabStop = false;
@@ -4488,7 +4488,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // 
             // checkEdit11
             // 
-            this.checkEdit11.Location = new System.Drawing.Point(467, 216);
+            this.checkEdit11.Location = new System.Drawing.Point(463, 216);
             this.checkEdit11.Margin = new System.Windows.Forms.Padding(2);
             this.checkEdit11.Name = "checkEdit11";
             this.checkEdit11.Properties.Caption = "Khác";
@@ -4508,7 +4508,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.checkEdit13.Properties.Caption = "Không";
             this.checkEdit13.Properties.CheckStyle = DevExpress.XtraEditors.Controls.CheckStyles.Radio;
             this.checkEdit13.Properties.RadioGroupIndex = -36;
-            this.checkEdit13.Size = new System.Drawing.Size(60, 19);
+            this.checkEdit13.Size = new System.Drawing.Size(58, 19);
             this.checkEdit13.StyleController = this.lcGlocom;
             this.checkEdit13.TabIndex = 83;
             this.checkEdit13.TabStop = false;
@@ -4516,12 +4516,12 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // 
             // textEdit8
             // 
-            this.textEdit8.Location = new System.Drawing.Point(349, 475);
+            this.textEdit8.Location = new System.Drawing.Point(345, 475);
             this.textEdit8.Margin = new System.Windows.Forms.Padding(2);
             this.textEdit8.Name = "textEdit8";
             this.textEdit8.Properties.Appearance.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.textEdit8.Properties.Appearance.Options.UseFont = true;
-            this.textEdit8.Size = new System.Drawing.Size(250, 20);
+            this.textEdit8.Size = new System.Drawing.Size(252, 20);
             this.textEdit8.StyleController = this.lcGlocom;
             this.textEdit8.TabIndex = 82;
             // 
@@ -4532,18 +4532,18 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.textEdit9.Name = "textEdit9";
             this.textEdit9.Properties.Appearance.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.textEdit9.Properties.Appearance.Options.UseFont = true;
-            this.textEdit9.Size = new System.Drawing.Size(379, 20);
+            this.textEdit9.Size = new System.Drawing.Size(377, 20);
             this.textEdit9.StyleController = this.lcGlocom;
             this.textEdit9.TabIndex = 81;
             // 
             // textEdit10
             // 
-            this.textEdit10.Location = new System.Drawing.Point(431, 427);
+            this.textEdit10.Location = new System.Drawing.Point(427, 427);
             this.textEdit10.Margin = new System.Windows.Forms.Padding(2);
             this.textEdit10.Name = "textEdit10";
             this.textEdit10.Properties.Appearance.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.textEdit10.Properties.Appearance.Options.UseFont = true;
-            this.textEdit10.Size = new System.Drawing.Size(168, 20);
+            this.textEdit10.Size = new System.Drawing.Size(170, 20);
             this.textEdit10.StyleController = this.lcGlocom;
             this.textEdit10.TabIndex = 80;
             // 
@@ -4553,7 +4553,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.labelControl11.Location = new System.Drawing.Point(12, 287);
             this.labelControl11.Margin = new System.Windows.Forms.Padding(2);
             this.labelControl11.Name = "labelControl11";
-            this.labelControl11.Size = new System.Drawing.Size(53, 13);
+            this.labelControl11.Size = new System.Drawing.Size(51, 13);
             this.labelControl11.StyleController = this.lcGlocom;
             this.labelControl11.TabIndex = 79;
             this.labelControl11.Text = "+ Vạt CM:";
@@ -4564,36 +4564,36 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.labelControl12.Location = new System.Drawing.Point(12, 380);
             this.labelControl12.Margin = new System.Windows.Forms.Padding(2);
             this.labelControl12.Name = "labelControl12";
-            this.labelControl12.Size = new System.Drawing.Size(80, 13);
+            this.labelControl12.Size = new System.Drawing.Size(78, 13);
             this.labelControl12.StyleController = this.lcGlocom;
             this.labelControl12.TabIndex = 78;
             this.labelControl12.Text = "+ Khâu nắp CM:";
             // 
             // textEdit13
             // 
-            this.textEdit13.Location = new System.Drawing.Point(439, 380);
+            this.textEdit13.Location = new System.Drawing.Point(435, 380);
             this.textEdit13.Margin = new System.Windows.Forms.Padding(2);
             this.textEdit13.Name = "textEdit13";
             this.textEdit13.Properties.Appearance.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.textEdit13.Properties.Appearance.Options.UseFont = true;
-            this.textEdit13.Size = new System.Drawing.Size(160, 20);
+            this.textEdit13.Size = new System.Drawing.Size(162, 20);
             this.textEdit13.StyleController = this.lcGlocom;
             this.textEdit13.TabIndex = 74;
             // 
             // textEdit14
             // 
-            this.textEdit14.Location = new System.Drawing.Point(164, 287);
+            this.textEdit14.Location = new System.Drawing.Point(162, 287);
             this.textEdit14.Margin = new System.Windows.Forms.Padding(2);
             this.textEdit14.Name = "textEdit14";
             this.textEdit14.Properties.Appearance.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.textEdit14.Properties.Appearance.Options.UseFont = true;
-            this.textEdit14.Size = new System.Drawing.Size(59, 20);
+            this.textEdit14.Size = new System.Drawing.Size(58, 20);
             this.textEdit14.StyleController = this.lcGlocom;
             this.textEdit14.TabIndex = 73;
             // 
             // checkEdit15
             // 
-            this.checkEdit15.Location = new System.Drawing.Point(151, 427);
+            this.checkEdit15.Location = new System.Drawing.Point(149, 427);
             this.checkEdit15.Margin = new System.Windows.Forms.Padding(2);
             this.checkEdit15.Name = "checkEdit15";
             this.checkEdit15.Properties.Caption = "Mũi rời";
@@ -4613,7 +4613,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.checkEdit18.Properties.Caption = "Khâu vắt";
             this.checkEdit18.Properties.CheckStyle = DevExpress.XtraEditors.Controls.CheckStyles.Radio;
             this.checkEdit18.Properties.RadioGroupIndex = -35;
-            this.checkEdit18.Size = new System.Drawing.Size(74, 19);
+            this.checkEdit18.Size = new System.Drawing.Size(72, 19);
             this.checkEdit18.StyleController = this.lcGlocom;
             this.checkEdit18.TabIndex = 68;
             this.checkEdit18.TabStop = false;
@@ -4621,13 +4621,13 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // 
             // checkEdit20
             // 
-            this.checkEdit20.Location = new System.Drawing.Point(338, 380);
+            this.checkEdit20.Location = new System.Drawing.Point(335, 380);
             this.checkEdit20.Margin = new System.Windows.Forms.Padding(2);
             this.checkEdit20.Name = "checkEdit20";
             this.checkEdit20.Properties.Caption = "Có";
             this.checkEdit20.Properties.CheckStyle = DevExpress.XtraEditors.Controls.CheckStyles.Radio;
             this.checkEdit20.Properties.RadioGroupIndex = -33;
-            this.checkEdit20.Size = new System.Drawing.Size(53, 19);
+            this.checkEdit20.Size = new System.Drawing.Size(52, 19);
             this.checkEdit20.StyleController = this.lcGlocom;
             this.checkEdit20.TabIndex = 66;
             this.checkEdit20.TabStop = false;
@@ -4635,7 +4635,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // 
             // checkEdit21
             // 
-            this.checkEdit21.Location = new System.Drawing.Point(282, 380);
+            this.checkEdit21.Location = new System.Drawing.Point(279, 380);
             this.checkEdit21.Margin = new System.Windows.Forms.Padding(2);
             this.checkEdit21.Name = "checkEdit21";
             this.checkEdit21.Properties.Caption = "Không";
@@ -4649,7 +4649,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // 
             // checkEdit22
             // 
-            this.checkEdit22.Location = new System.Drawing.Point(380, 427);
+            this.checkEdit22.Location = new System.Drawing.Point(376, 427);
             this.checkEdit22.Margin = new System.Windows.Forms.Padding(2);
             this.checkEdit22.Name = "checkEdit22";
             this.checkEdit22.Properties.Caption = "Vicryl";
@@ -4663,7 +4663,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // 
             // checkEdit23
             // 
-            this.checkEdit23.Location = new System.Drawing.Point(153, 404);
+            this.checkEdit23.Location = new System.Drawing.Point(151, 404);
             this.checkEdit23.Margin = new System.Windows.Forms.Padding(2);
             this.checkEdit23.Name = "checkEdit23";
             this.checkEdit23.Properties.Caption = "Hơi";
@@ -4677,7 +4677,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // 
             // checkEdit24
             // 
-            this.checkEdit24.Location = new System.Drawing.Point(312, 427);
+            this.checkEdit24.Location = new System.Drawing.Point(308, 427);
             this.checkEdit24.Margin = new System.Windows.Forms.Padding(2);
             this.checkEdit24.Name = "checkEdit24";
             this.checkEdit24.Properties.Caption = "Nylon";
@@ -4691,13 +4691,13 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // 
             // checkEdit25
             // 
-            this.checkEdit25.Location = new System.Drawing.Point(139, 475);
+            this.checkEdit25.Location = new System.Drawing.Point(137, 475);
             this.checkEdit25.Margin = new System.Windows.Forms.Padding(2);
             this.checkEdit25.Name = "checkEdit25";
             this.checkEdit25.Properties.Caption = "Có";
             this.checkEdit25.Properties.CheckStyle = DevExpress.XtraEditors.Controls.CheckStyles.Radio;
             this.checkEdit25.Properties.RadioGroupIndex = -36;
-            this.checkEdit25.Size = new System.Drawing.Size(46, 19);
+            this.checkEdit25.Size = new System.Drawing.Size(45, 19);
             this.checkEdit25.StyleController = this.lcGlocom;
             this.checkEdit25.TabIndex = 61;
             this.checkEdit25.TabStop = false;
@@ -4711,7 +4711,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.checkEdit26.Properties.Caption = "Nước";
             this.checkEdit26.Properties.CheckStyle = DevExpress.XtraEditors.Controls.CheckStyles.Radio;
             this.checkEdit26.Properties.RadioGroupIndex = -34;
-            this.checkEdit26.Size = new System.Drawing.Size(69, 19);
+            this.checkEdit26.Size = new System.Drawing.Size(67, 19);
             this.checkEdit26.StyleController = this.lcGlocom;
             this.checkEdit26.TabIndex = 60;
             this.checkEdit26.TabStop = false;
@@ -4725,7 +4725,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.checkEdit27.Properties.Caption = "Không";
             this.checkEdit27.Properties.CheckStyle = DevExpress.XtraEditors.Controls.CheckStyles.Radio;
             this.checkEdit27.Properties.RadioGroupIndex = -32;
-            this.checkEdit27.Size = new System.Drawing.Size(61, 19);
+            this.checkEdit27.Size = new System.Drawing.Size(59, 19);
             this.checkEdit27.StyleController = this.lcGlocom;
             this.checkEdit27.TabIndex = 59;
             this.checkEdit27.TabStop = false;
@@ -4733,7 +4733,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // 
             // checkEdit28
             // 
-            this.checkEdit28.Location = new System.Drawing.Point(164, 357);
+            this.checkEdit28.Location = new System.Drawing.Point(162, 357);
             this.checkEdit28.Margin = new System.Windows.Forms.Padding(2);
             this.checkEdit28.Name = "checkEdit28";
             this.checkEdit28.Properties.Caption = "Có";
@@ -4747,7 +4747,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // 
             // checkEdit29
             // 
-            this.checkEdit29.Location = new System.Drawing.Point(269, 240);
+            this.checkEdit29.Location = new System.Drawing.Point(265, 240);
             this.checkEdit29.Margin = new System.Windows.Forms.Padding(2);
             this.checkEdit29.Name = "checkEdit29";
             this.checkEdit29.Properties.Caption = "Cả hai vị trí";
@@ -4761,13 +4761,13 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // 
             // checkEdit30
             // 
-            this.checkEdit30.Location = new System.Drawing.Point(161, 240);
+            this.checkEdit30.Location = new System.Drawing.Point(158, 240);
             this.checkEdit30.Margin = new System.Windows.Forms.Padding(2);
             this.checkEdit30.Name = "checkEdit30";
             this.checkEdit30.Properties.Caption = "Dưới nắp CM";
             this.checkEdit30.Properties.CheckStyle = DevExpress.XtraEditors.Controls.CheckStyles.Radio;
             this.checkEdit30.Properties.RadioGroupIndex = -28;
-            this.checkEdit30.Size = new System.Drawing.Size(104, 19);
+            this.checkEdit30.Size = new System.Drawing.Size(103, 19);
             this.checkEdit30.StyleController = this.lcGlocom;
             this.checkEdit30.TabIndex = 56;
             this.checkEdit30.TabStop = false;
@@ -4775,13 +4775,13 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // 
             // checkEdit31
             // 
-            this.checkEdit31.Location = new System.Drawing.Point(55, 240);
+            this.checkEdit31.Location = new System.Drawing.Point(53, 240);
             this.checkEdit31.Margin = new System.Windows.Forms.Padding(2);
             this.checkEdit31.Name = "checkEdit31";
             this.checkEdit31.Properties.Caption = "Trên nắp CM";
             this.checkEdit31.Properties.CheckStyle = DevExpress.XtraEditors.Controls.CheckStyles.Radio;
             this.checkEdit31.Properties.RadioGroupIndex = -28;
-            this.checkEdit31.Size = new System.Drawing.Size(102, 19);
+            this.checkEdit31.Size = new System.Drawing.Size(101, 19);
             this.checkEdit31.StyleController = this.lcGlocom;
             this.checkEdit31.TabIndex = 55;
             this.checkEdit31.TabStop = false;
@@ -4795,7 +4795,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.checkEdit32.Properties.Caption = "Không";
             this.checkEdit32.Properties.CheckStyle = DevExpress.XtraEditors.Controls.CheckStyles.Radio;
             this.checkEdit32.Properties.RadioGroupIndex = -30;
-            this.checkEdit32.Size = new System.Drawing.Size(65, 19);
+            this.checkEdit32.Size = new System.Drawing.Size(63, 19);
             this.checkEdit32.StyleController = this.lcGlocom;
             this.checkEdit32.TabIndex = 54;
             this.checkEdit32.TabStop = false;
@@ -4809,7 +4809,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.checkEdit33.Properties.Caption = "Vị trí vùng bè";
             this.checkEdit33.Properties.CheckStyle = DevExpress.XtraEditors.Controls.CheckStyles.Radio;
             this.checkEdit33.Properties.RadioGroupIndex = -31;
-            this.checkEdit33.Size = new System.Drawing.Size(98, 19);
+            this.checkEdit33.Size = new System.Drawing.Size(96, 19);
             this.checkEdit33.StyleController = this.lcGlocom;
             this.checkEdit33.TabIndex = 53;
             this.checkEdit33.TabStop = false;
@@ -4817,7 +4817,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // 
             // checkEdit34
             // 
-            this.checkEdit34.Location = new System.Drawing.Point(258, 334);
+            this.checkEdit34.Location = new System.Drawing.Point(256, 334);
             this.checkEdit34.Margin = new System.Windows.Forms.Padding(2);
             this.checkEdit34.Name = "checkEdit34";
             this.checkEdit34.Properties.Caption = "Rạch bè";
@@ -4831,7 +4831,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // 
             // checkEdit35
             // 
-            this.checkEdit35.Location = new System.Drawing.Point(140, 311);
+            this.checkEdit35.Location = new System.Drawing.Point(138, 311);
             this.checkEdit35.Margin = new System.Windows.Forms.Padding(2);
             this.checkEdit35.Name = "checkEdit35";
             this.checkEdit35.Properties.Caption = "Có";
@@ -4845,7 +4845,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // 
             // checkEdit36
             // 
-            this.checkEdit36.Location = new System.Drawing.Point(392, 216);
+            this.checkEdit36.Location = new System.Drawing.Point(388, 216);
             this.checkEdit36.Margin = new System.Windows.Forms.Padding(2);
             this.checkEdit36.Name = "checkEdit36";
             this.checkEdit36.Properties.Caption = "Màng ối";
@@ -4859,7 +4859,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // 
             // checkEdit37
             // 
-            this.checkEdit37.Location = new System.Drawing.Point(319, 216);
+            this.checkEdit37.Location = new System.Drawing.Point(315, 216);
             this.checkEdit37.Margin = new System.Windows.Forms.Padding(2);
             this.checkEdit37.Name = "checkEdit37";
             this.checkEdit37.Properties.Caption = "Olcogen";
@@ -4873,13 +4873,13 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // 
             // checkEdit38
             // 
-            this.checkEdit38.Location = new System.Drawing.Point(255, 216);
+            this.checkEdit38.Location = new System.Drawing.Point(252, 216);
             this.checkEdit38.Margin = new System.Windows.Forms.Padding(2);
             this.checkEdit38.Name = "checkEdit38";
             this.checkEdit38.Properties.Caption = "MMC";
             this.checkEdit38.Properties.CheckStyle = DevExpress.XtraEditors.Controls.CheckStyles.Radio;
             this.checkEdit38.Properties.RadioGroupIndex = -303;
-            this.checkEdit38.Size = new System.Drawing.Size(60, 19);
+            this.checkEdit38.Size = new System.Drawing.Size(59, 19);
             this.checkEdit38.StyleController = this.lcGlocom;
             this.checkEdit38.TabIndex = 48;
             this.checkEdit38.TabStop = false;
@@ -4893,7 +4893,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.checkEdit39.Properties.Caption = "Có";
             this.checkEdit39.Properties.CheckStyle = DevExpress.XtraEditors.Controls.CheckStyles.Radio;
             this.checkEdit39.Properties.RadioGroupIndex = -29;
-            this.checkEdit39.Size = new System.Drawing.Size(418, 19);
+            this.checkEdit39.Size = new System.Drawing.Size(416, 19);
             this.checkEdit39.StyleController = this.lcGlocom;
             this.checkEdit39.TabIndex = 47;
             this.checkEdit39.TabStop = false;
@@ -4902,7 +4902,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // labelControl14
             // 
             this.labelControl14.AutoSizeMode = DevExpress.XtraEditors.LabelAutoSizeMode.None;
-            this.labelControl14.Location = new System.Drawing.Point(384, 287);
+            this.labelControl14.Location = new System.Drawing.Point(380, 287);
             this.labelControl14.Margin = new System.Windows.Forms.Padding(2);
             this.labelControl14.Name = "labelControl14";
             this.labelControl14.Size = new System.Drawing.Size(78, 13);
@@ -4913,17 +4913,17 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // labelControl15
             // 
             this.labelControl15.AutoSizeMode = DevExpress.XtraEditors.LabelAutoSizeMode.None;
-            this.labelControl15.Location = new System.Drawing.Point(509, 240);
+            this.labelControl15.Location = new System.Drawing.Point(505, 240);
             this.labelControl15.Margin = new System.Windows.Forms.Padding(2);
             this.labelControl15.Name = "labelControl15";
-            this.labelControl15.Size = new System.Drawing.Size(90, 13);
+            this.labelControl15.Size = new System.Drawing.Size(92, 13);
             this.labelControl15.StyleController = this.lcGlocom;
             this.labelControl15.TabIndex = 44;
             this.labelControl15.Text = "giờ";
             // 
             // textEdit16
             // 
-            this.textEdit16.Location = new System.Drawing.Point(420, 240);
+            this.textEdit16.Location = new System.Drawing.Point(416, 240);
             this.textEdit16.Margin = new System.Windows.Forms.Padding(2);
             this.textEdit16.Name = "textEdit16";
             this.textEdit16.Properties.Appearance.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -4938,7 +4938,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.labelControl16.Location = new System.Drawing.Point(190, 169);
             this.labelControl16.Margin = new System.Windows.Forms.Padding(2);
             this.labelControl16.Name = "labelControl16";
-            this.labelControl16.Size = new System.Drawing.Size(32, 13);
+            this.labelControl16.Size = new System.Drawing.Size(30, 13);
             this.labelControl16.StyleController = this.lcGlocom;
             this.labelControl16.TabIndex = 42;
             this.labelControl16.Text = "giờ";
@@ -4970,7 +4970,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // 
             // checkEdit41
             // 
-            this.checkEdit41.Location = new System.Drawing.Point(189, 334);
+            this.checkEdit41.Location = new System.Drawing.Point(187, 334);
             this.checkEdit41.Margin = new System.Windows.Forms.Padding(2);
             this.checkEdit41.Name = "checkEdit41";
             this.checkEdit41.Properties.Caption = "Trước bè";
@@ -4984,13 +4984,13 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // 
             // checkEdit42
             // 
-            this.checkEdit42.Location = new System.Drawing.Point(202, 216);
+            this.checkEdit42.Location = new System.Drawing.Point(200, 216);
             this.checkEdit42.Margin = new System.Windows.Forms.Padding(2);
             this.checkEdit42.Name = "checkEdit42";
             this.checkEdit42.Properties.Caption = "5FU";
             this.checkEdit42.Properties.CheckStyle = DevExpress.XtraEditors.Controls.CheckStyles.Radio;
             this.checkEdit42.Properties.RadioGroupIndex = -303;
-            this.checkEdit42.Size = new System.Drawing.Size(49, 19);
+            this.checkEdit42.Size = new System.Drawing.Size(48, 19);
             this.checkEdit42.StyleController = this.lcGlocom;
             this.checkEdit42.TabIndex = 38;
             this.checkEdit42.TabStop = false;
@@ -5004,7 +5004,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.checkEdit43.Properties.Caption = "Có";
             this.checkEdit43.Properties.CheckStyle = DevExpress.XtraEditors.Controls.CheckStyles.Radio;
             this.checkEdit43.Properties.RadioGroupIndex = -27;
-            this.checkEdit43.Size = new System.Drawing.Size(44, 19);
+            this.checkEdit43.Size = new System.Drawing.Size(42, 19);
             this.checkEdit43.StyleController = this.lcGlocom;
             this.checkEdit43.TabIndex = 37;
             this.checkEdit43.TabStop = false;
@@ -5026,7 +5026,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // 
             // Glocom__raCoDinhNhanCauDayVungRia
             // 
-            this.Glocom__raCoDinhNhanCauDayVungRia.Location = new System.Drawing.Point(313, 169);
+            this.Glocom__raCoDinhNhanCauDayVungRia.Location = new System.Drawing.Point(311, 169);
             this.Glocom__raCoDinhNhanCauDayVungRia.Margin = new System.Windows.Forms.Padding(2);
             this.Glocom__raCoDinhNhanCauDayVungRia.Name = "Glocom__raCoDinhNhanCauDayVungRia";
             this.Glocom__raCoDinhNhanCauDayVungRia.Properties.Caption = "Đáy vùng rìa";
@@ -5040,7 +5040,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // 
             // Glocom__raCoDinhNhanCauDayCungDo
             // 
-            this.Glocom__raCoDinhNhanCauDayCungDo.Location = new System.Drawing.Point(226, 169);
+            this.Glocom__raCoDinhNhanCauDayCungDo.Location = new System.Drawing.Point(224, 169);
             this.Glocom__raCoDinhNhanCauDayCungDo.Margin = new System.Windows.Forms.Padding(2);
             this.Glocom__raCoDinhNhanCauDayCungDo.Name = "Glocom__raCoDinhNhanCauDayCungDo";
             this.Glocom__raCoDinhNhanCauDayCungDo.Properties.Caption = "Đáy cùng đồ";
@@ -5054,13 +5054,13 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // 
             // Glocom__raTinhTrangBaoTenonGay
             // 
-            this.Glocom__raTinhTrangBaoTenonGay.Location = new System.Drawing.Point(219, 193);
+            this.Glocom__raTinhTrangBaoTenonGay.Location = new System.Drawing.Point(217, 193);
             this.Glocom__raTinhTrangBaoTenonGay.Margin = new System.Windows.Forms.Padding(2);
             this.Glocom__raTinhTrangBaoTenonGay.Name = "Glocom__raTinhTrangBaoTenonGay";
             this.Glocom__raTinhTrangBaoTenonGay.Properties.Caption = "Dày";
             this.Glocom__raTinhTrangBaoTenonGay.Properties.CheckStyle = DevExpress.XtraEditors.Controls.CheckStyles.Radio;
             this.Glocom__raTinhTrangBaoTenonGay.Properties.RadioGroupIndex = -26;
-            this.Glocom__raTinhTrangBaoTenonGay.Size = new System.Drawing.Size(60, 19);
+            this.Glocom__raTinhTrangBaoTenonGay.Size = new System.Drawing.Size(59, 19);
             this.Glocom__raTinhTrangBaoTenonGay.StyleController = this.lcGlocom;
             this.Glocom__raTinhTrangBaoTenonGay.TabIndex = 33;
             this.Glocom__raTinhTrangBaoTenonGay.TabStop = false;
@@ -5082,13 +5082,13 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // 
             // Glocom__raCoDinhNhanCauChiGiacMac
             // 
-            this.Glocom__raCoDinhNhanCauChiGiacMac.Location = new System.Drawing.Point(279, 146);
+            this.Glocom__raCoDinhNhanCauChiGiacMac.Location = new System.Drawing.Point(276, 146);
             this.Glocom__raCoDinhNhanCauChiGiacMac.Margin = new System.Windows.Forms.Padding(2);
             this.Glocom__raCoDinhNhanCauChiGiacMac.Name = "Glocom__raCoDinhNhanCauChiGiacMac";
             this.Glocom__raCoDinhNhanCauChiGiacMac.Properties.Caption = "Chỉ giác mạc";
             this.Glocom__raCoDinhNhanCauChiGiacMac.Properties.CheckStyle = DevExpress.XtraEditors.Controls.CheckStyles.Radio;
             this.Glocom__raCoDinhNhanCauChiGiacMac.Properties.RadioGroupIndex = -24;
-            this.Glocom__raCoDinhNhanCauChiGiacMac.Size = new System.Drawing.Size(320, 19);
+            this.Glocom__raCoDinhNhanCauChiGiacMac.Size = new System.Drawing.Size(321, 19);
             this.Glocom__raCoDinhNhanCauChiGiacMac.StyleController = this.lcGlocom;
             this.Glocom__raCoDinhNhanCauChiGiacMac.TabIndex = 31;
             this.Glocom__raCoDinhNhanCauChiGiacMac.TabStop = false;
@@ -5096,13 +5096,13 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // 
             // Glocom__raTinhTrangBaoTenonSo
             // 
-            this.Glocom__raTinhTrangBaoTenonSo.Location = new System.Drawing.Point(283, 193);
+            this.Glocom__raTinhTrangBaoTenonSo.Location = new System.Drawing.Point(280, 193);
             this.Glocom__raTinhTrangBaoTenonSo.Margin = new System.Windows.Forms.Padding(2);
             this.Glocom__raTinhTrangBaoTenonSo.Name = "Glocom__raTinhTrangBaoTenonSo";
             this.Glocom__raTinhTrangBaoTenonSo.Properties.Caption = "Sơ";
             this.Glocom__raTinhTrangBaoTenonSo.Properties.CheckStyle = DevExpress.XtraEditors.Controls.CheckStyles.Radio;
             this.Glocom__raTinhTrangBaoTenonSo.Properties.RadioGroupIndex = -26;
-            this.Glocom__raTinhTrangBaoTenonSo.Size = new System.Drawing.Size(316, 19);
+            this.Glocom__raTinhTrangBaoTenonSo.Size = new System.Drawing.Size(317, 19);
             this.Glocom__raTinhTrangBaoTenonSo.StyleController = this.lcGlocom;
             this.Glocom__raTinhTrangBaoTenonSo.TabIndex = 30;
             this.Glocom__raTinhTrangBaoTenonSo.TabStop = false;
@@ -5124,13 +5124,13 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // 
             // Glocom__raCoDinhNhanCauCoTruc
             // 
-            this.Glocom__raCoDinhNhanCauCoTruc.Location = new System.Drawing.Point(189, 146);
+            this.Glocom__raCoDinhNhanCauCoTruc.Location = new System.Drawing.Point(187, 146);
             this.Glocom__raCoDinhNhanCauCoTruc.Margin = new System.Windows.Forms.Padding(2);
             this.Glocom__raCoDinhNhanCauCoTruc.Name = "Glocom__raCoDinhNhanCauCoTruc";
             this.Glocom__raCoDinhNhanCauCoTruc.Properties.Caption = "Chỉ cơ trực";
             this.Glocom__raCoDinhNhanCauCoTruc.Properties.CheckStyle = DevExpress.XtraEditors.Controls.CheckStyles.Radio;
             this.Glocom__raCoDinhNhanCauCoTruc.Properties.RadioGroupIndex = -24;
-            this.Glocom__raCoDinhNhanCauCoTruc.Size = new System.Drawing.Size(86, 19);
+            this.Glocom__raCoDinhNhanCauCoTruc.Size = new System.Drawing.Size(85, 19);
             this.Glocom__raCoDinhNhanCauCoTruc.StyleController = this.lcGlocom;
             this.Glocom__raCoDinhNhanCauCoTruc.TabIndex = 28;
             this.Glocom__raCoDinhNhanCauCoTruc.TabStop = false;
@@ -5144,7 +5144,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.Glocom__raCoDinhNhanCauVanhMi.Properties.Caption = "Vành mi";
             this.Glocom__raCoDinhNhanCauVanhMi.Properties.CheckStyle = DevExpress.XtraEditors.Controls.CheckStyles.Radio;
             this.Glocom__raCoDinhNhanCauVanhMi.Properties.RadioGroupIndex = -24;
-            this.Glocom__raCoDinhNhanCauVanhMi.Size = new System.Drawing.Size(70, 19);
+            this.Glocom__raCoDinhNhanCauVanhMi.Size = new System.Drawing.Size(68, 19);
             this.Glocom__raCoDinhNhanCauVanhMi.StyleController = this.lcGlocom;
             this.Glocom__raCoDinhNhanCauVanhMi.TabIndex = 27;
             this.Glocom__raCoDinhNhanCauVanhMi.TabStop = false;
@@ -5153,10 +5153,10 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // labelControl17
             // 
             this.labelControl17.AutoSizeMode = DevExpress.XtraEditors.LabelAutoSizeMode.None;
-            this.labelControl17.Location = new System.Drawing.Point(587, 122);
+            this.labelControl17.Location = new System.Drawing.Point(584, 122);
             this.labelControl17.Margin = new System.Windows.Forms.Padding(2);
             this.labelControl17.Name = "labelControl17";
-            this.labelControl17.Size = new System.Drawing.Size(12, 13);
+            this.labelControl17.Size = new System.Drawing.Size(13, 13);
             this.labelControl17.StyleController = this.lcGlocom;
             this.labelControl17.TabIndex = 26;
             this.labelControl17.Text = "ml";
@@ -5168,7 +5168,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.Glocom__txtPPVoCamLoaiThuoc.Name = "Glocom__txtPPVoCamLoaiThuoc";
             this.Glocom__txtPPVoCamLoaiThuoc.Properties.Appearance.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Glocom__txtPPVoCamLoaiThuoc.Properties.Appearance.Options.UseFont = true;
-            this.Glocom__txtPPVoCamLoaiThuoc.Size = new System.Drawing.Size(118, 20);
+            this.Glocom__txtPPVoCamLoaiThuoc.Size = new System.Drawing.Size(115, 20);
             this.Glocom__txtPPVoCamLoaiThuoc.StyleController = this.lcGlocom;
             this.Glocom__txtPPVoCamLoaiThuoc.TabIndex = 25;
             // 
@@ -5202,7 +5202,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // 
             // Glocom__raGiaDoanBenhGanTuyet
             // 
-            this.Glocom__raGiaDoanBenhGanTuyet.Location = new System.Drawing.Point(413, 76);
+            this.Glocom__raGiaDoanBenhGanTuyet.Location = new System.Drawing.Point(409, 76);
             this.Glocom__raGiaDoanBenhGanTuyet.Margin = new System.Windows.Forms.Padding(2);
             this.Glocom__raGiaDoanBenhGanTuyet.Name = "Glocom__raGiaDoanBenhGanTuyet";
             this.Glocom__raGiaDoanBenhGanTuyet.Properties.Caption = "Gần tuyệt";
@@ -5216,13 +5216,13 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // 
             // Glocom__raGiaDoanBenhTienTrien
             // 
-            this.Glocom__raGiaDoanBenhTienTrien.Location = new System.Drawing.Point(254, 76);
+            this.Glocom__raGiaDoanBenhTienTrien.Location = new System.Drawing.Point(251, 76);
             this.Glocom__raGiaDoanBenhTienTrien.Margin = new System.Windows.Forms.Padding(2);
             this.Glocom__raGiaDoanBenhTienTrien.Name = "Glocom__raGiaDoanBenhTienTrien";
             this.Glocom__raGiaDoanBenhTienTrien.Properties.Caption = "Tiến triển";
             this.Glocom__raGiaDoanBenhTienTrien.Properties.CheckStyle = DevExpress.XtraEditors.Controls.CheckStyles.Radio;
             this.Glocom__raGiaDoanBenhTienTrien.Properties.RadioGroupIndex = -22;
-            this.Glocom__raGiaDoanBenhTienTrien.Size = new System.Drawing.Size(75, 19);
+            this.Glocom__raGiaDoanBenhTienTrien.Size = new System.Drawing.Size(74, 19);
             this.Glocom__raGiaDoanBenhTienTrien.StyleController = this.lcGlocom;
             this.Glocom__raGiaDoanBenhTienTrien.TabIndex = 21;
             this.Glocom__raGiaDoanBenhTienTrien.TabStop = false;
@@ -5230,13 +5230,13 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // 
             // Glocom__raGiaDoanBenhSoPhat
             // 
-            this.Glocom__raGiaDoanBenhSoPhat.Location = new System.Drawing.Point(187, 76);
+            this.Glocom__raGiaDoanBenhSoPhat.Location = new System.Drawing.Point(185, 76);
             this.Glocom__raGiaDoanBenhSoPhat.Margin = new System.Windows.Forms.Padding(2);
             this.Glocom__raGiaDoanBenhSoPhat.Name = "Glocom__raGiaDoanBenhSoPhat";
             this.Glocom__raGiaDoanBenhSoPhat.Properties.Caption = "Sơ phát";
             this.Glocom__raGiaDoanBenhSoPhat.Properties.CheckStyle = DevExpress.XtraEditors.Controls.CheckStyles.Radio;
             this.Glocom__raGiaDoanBenhSoPhat.Properties.RadioGroupIndex = -22;
-            this.Glocom__raGiaDoanBenhSoPhat.Size = new System.Drawing.Size(63, 19);
+            this.Glocom__raGiaDoanBenhSoPhat.Size = new System.Drawing.Size(62, 19);
             this.Glocom__raGiaDoanBenhSoPhat.StyleController = this.lcGlocom;
             this.Glocom__raGiaDoanBenhSoPhat.TabIndex = 20;
             this.Glocom__raGiaDoanBenhSoPhat.TabStop = false;
@@ -5244,13 +5244,13 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // 
             // Glocom__raGiaDoanBenhTuyetDoi
             // 
-            this.Glocom__raGiaDoanBenhTuyetDoi.Location = new System.Drawing.Point(487, 76);
+            this.Glocom__raGiaDoanBenhTuyetDoi.Location = new System.Drawing.Point(483, 76);
             this.Glocom__raGiaDoanBenhTuyetDoi.Margin = new System.Windows.Forms.Padding(2);
             this.Glocom__raGiaDoanBenhTuyetDoi.Name = "Glocom__raGiaDoanBenhTuyetDoi";
             this.Glocom__raGiaDoanBenhTuyetDoi.Properties.Caption = "Tuyệt đối";
             this.Glocom__raGiaDoanBenhTuyetDoi.Properties.CheckStyle = DevExpress.XtraEditors.Controls.CheckStyles.Radio;
             this.Glocom__raGiaDoanBenhTuyetDoi.Properties.RadioGroupIndex = -22;
-            this.Glocom__raGiaDoanBenhTuyetDoi.Size = new System.Drawing.Size(112, 19);
+            this.Glocom__raGiaDoanBenhTuyetDoi.Size = new System.Drawing.Size(114, 19);
             this.Glocom__raGiaDoanBenhTuyetDoi.StyleController = this.lcGlocom;
             this.Glocom__raGiaDoanBenhTuyetDoi.TabIndex = 19;
             this.Glocom__raGiaDoanBenhTuyetDoi.TabStop = false;
@@ -5258,7 +5258,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // 
             // Glocom__raGiaDoanBenhTranTrong
             // 
-            this.Glocom__raGiaDoanBenhTranTrong.Location = new System.Drawing.Point(333, 76);
+            this.Glocom__raGiaDoanBenhTranTrong.Location = new System.Drawing.Point(329, 76);
             this.Glocom__raGiaDoanBenhTranTrong.Margin = new System.Windows.Forms.Padding(2);
             this.Glocom__raGiaDoanBenhTranTrong.Name = "Glocom__raGiaDoanBenhTranTrong";
             this.Glocom__raGiaDoanBenhTranTrong.Properties.Caption = "Trầm trọng";
@@ -5278,7 +5278,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.Glocom__raGiaDoanBenhTiemTang.Properties.Caption = "Tiềm tàng";
             this.Glocom__raGiaDoanBenhTiemTang.Properties.CheckStyle = DevExpress.XtraEditors.Controls.CheckStyles.Radio;
             this.Glocom__raGiaDoanBenhTiemTang.Properties.RadioGroupIndex = -22;
-            this.Glocom__raGiaDoanBenhTiemTang.Size = new System.Drawing.Size(80, 19);
+            this.Glocom__raGiaDoanBenhTiemTang.Size = new System.Drawing.Size(78, 19);
             this.Glocom__raGiaDoanBenhTiemTang.StyleController = this.lcGlocom;
             this.Glocom__raGiaDoanBenhTiemTang.TabIndex = 17;
             this.Glocom__raGiaDoanBenhTiemTang.TabStop = false;
@@ -5286,7 +5286,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // 
             // Glocom__raGloocomGocMo
             // 
-            this.Glocom__raGloocomGocMo.Location = new System.Drawing.Point(127, 29);
+            this.Glocom__raGloocomGocMo.Location = new System.Drawing.Point(125, 29);
             this.Glocom__raGloocomGocMo.Margin = new System.Windows.Forms.Padding(2);
             this.Glocom__raGloocomGocMo.Name = "Glocom__raGloocomGocMo";
             this.Glocom__raGloocomGocMo.Properties.Caption = "Glôcôm góc mở";
@@ -5300,13 +5300,13 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // 
             // Glocom__raGloocomThuPhat
             // 
-            this.Glocom__raGloocomThuPhat.Location = new System.Drawing.Point(127, 52);
+            this.Glocom__raGloocomThuPhat.Location = new System.Drawing.Point(125, 52);
             this.Glocom__raGloocomThuPhat.Margin = new System.Windows.Forms.Padding(2);
             this.Glocom__raGloocomThuPhat.Name = "Glocom__raGloocomThuPhat";
             this.Glocom__raGloocomThuPhat.Properties.Caption = "Glôcôm thứ phát";
             this.Glocom__raGloocomThuPhat.Properties.CheckStyle = DevExpress.XtraEditors.Controls.CheckStyles.Radio;
             this.Glocom__raGloocomThuPhat.Properties.RadioGroupIndex = -21;
-            this.Glocom__raGloocomThuPhat.Size = new System.Drawing.Size(125, 19);
+            this.Glocom__raGloocomThuPhat.Size = new System.Drawing.Size(124, 19);
             this.Glocom__raGloocomThuPhat.StyleController = this.lcGlocom;
             this.Glocom__raGloocomThuPhat.TabIndex = 15;
             this.Glocom__raGloocomThuPhat.TabStop = false;
@@ -5320,7 +5320,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.Glocom__raGloocomBamSinh.Properties.Caption = "Glôcôm bẩm sinh";
             this.Glocom__raGloocomBamSinh.Properties.CheckStyle = DevExpress.XtraEditors.Controls.CheckStyles.Radio;
             this.Glocom__raGloocomBamSinh.Properties.RadioGroupIndex = -21;
-            this.Glocom__raGloocomBamSinh.Size = new System.Drawing.Size(111, 19);
+            this.Glocom__raGloocomBamSinh.Size = new System.Drawing.Size(109, 19);
             this.Glocom__raGloocomBamSinh.StyleController = this.lcGlocom;
             this.Glocom__raGloocomBamSinh.TabIndex = 13;
             this.Glocom__raGloocomBamSinh.TabStop = false;
@@ -5334,7 +5334,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.Glocom__raGloocomGocDong.Properties.Caption = "Glôcôm góc đóng";
             this.Glocom__raGloocomGocDong.Properties.CheckStyle = DevExpress.XtraEditors.Controls.CheckStyles.Radio;
             this.Glocom__raGloocomGocDong.Properties.RadioGroupIndex = -21;
-            this.Glocom__raGloocomGocDong.Size = new System.Drawing.Size(111, 19);
+            this.Glocom__raGloocomGocDong.Size = new System.Drawing.Size(109, 19);
             this.Glocom__raGloocomGocDong.StyleController = this.lcGlocom;
             this.Glocom__raGloocomGocDong.TabIndex = 12;
             this.Glocom__raGloocomGocDong.TabStop = false;
@@ -5348,7 +5348,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.Glocom__raTinhTrangBaoTenonBT.Properties.Caption = "Bình thường";
             this.Glocom__raTinhTrangBaoTenonBT.Properties.CheckStyle = DevExpress.XtraEditors.Controls.CheckStyles.Radio;
             this.Glocom__raTinhTrangBaoTenonBT.Properties.RadioGroupIndex = -26;
-            this.Glocom__raTinhTrangBaoTenonBT.Size = new System.Drawing.Size(83, 19);
+            this.Glocom__raTinhTrangBaoTenonBT.Size = new System.Drawing.Size(81, 19);
             this.Glocom__raTinhTrangBaoTenonBT.StyleController = this.lcGlocom;
             this.Glocom__raTinhTrangBaoTenonBT.TabIndex = 27;
             this.Glocom__raTinhTrangBaoTenonBT.TabStop = false;
@@ -5360,7 +5360,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.labelControl18.Location = new System.Drawing.Point(12, 240);
             this.labelControl18.Margin = new System.Windows.Forms.Padding(2);
             this.labelControl18.Name = "labelControl18";
-            this.labelControl18.Size = new System.Drawing.Size(39, 13);
+            this.labelControl18.Size = new System.Drawing.Size(37, 13);
             this.labelControl18.StyleController = this.lcGlocom;
             this.labelControl18.TabIndex = 42;
             this.labelControl18.Text = "+ Vị trí:";
@@ -5372,17 +5372,17 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             0,
             0,
             0});
-            this.spinEdit15.Location = new System.Drawing.Point(525, 287);
+            this.spinEdit15.Location = new System.Drawing.Point(521, 287);
             this.spinEdit15.Margin = new System.Windows.Forms.Padding(2);
             this.spinEdit15.Name = "spinEdit15";
             this.spinEdit15.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
             this.spinEdit15.Properties.Appearance.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.spinEdit15.Properties.Appearance.Options.UseFont = true;
             this.spinEdit15.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo, "", -1, true, false, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject37, serializableAppearanceObject38, serializableAppearanceObject39, serializableAppearanceObject40, "", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo, "", -1, true, false, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject1, serializableAppearanceObject2, serializableAppearanceObject3, serializableAppearanceObject4, "", null, null, true)});
             this.spinEdit15.Properties.EditValueChangedFiringMode = DevExpress.XtraEditors.Controls.EditValueChangedFiringMode.Default;
             this.spinEdit15.Properties.Mask.MaskType = DevExpress.XtraEditors.Mask.MaskType.None;
-            this.spinEdit15.Size = new System.Drawing.Size(74, 20);
+            this.spinEdit15.Size = new System.Drawing.Size(76, 20);
             this.spinEdit15.StyleController = this.lcGlocom;
             this.spinEdit15.TabIndex = 45;
             // 
@@ -5393,17 +5393,17 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             0,
             0,
             0});
-            this.spinEdit12.Location = new System.Drawing.Point(181, 380);
+            this.spinEdit12.Location = new System.Drawing.Point(179, 380);
             this.spinEdit12.Margin = new System.Windows.Forms.Padding(2);
             this.spinEdit12.Name = "spinEdit12";
             this.spinEdit12.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
             this.spinEdit12.Properties.Appearance.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.spinEdit12.Properties.Appearance.Options.UseFont = true;
             this.spinEdit12.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo, "", -1, true, false, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject1, serializableAppearanceObject2, serializableAppearanceObject3, serializableAppearanceObject4, "", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo, "", -1, true, false, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject5, serializableAppearanceObject6, serializableAppearanceObject7, serializableAppearanceObject8, "", null, null, true)});
             this.spinEdit12.Properties.EditValueChangedFiringMode = DevExpress.XtraEditors.Controls.EditValueChangedFiringMode.Default;
             this.spinEdit12.Properties.Mask.MaskType = DevExpress.XtraEditors.Mask.MaskType.None;
-            this.spinEdit12.Size = new System.Drawing.Size(56, 20);
+            this.spinEdit12.Size = new System.Drawing.Size(55, 20);
             this.spinEdit12.StyleController = this.lcGlocom;
             this.spinEdit12.TabIndex = 75;
             // 
@@ -5414,17 +5414,17 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             0,
             0,
             0});
-            this.spinEdit11.Location = new System.Drawing.Point(208, 427);
+            this.spinEdit11.Location = new System.Drawing.Point(206, 427);
             this.spinEdit11.Margin = new System.Windows.Forms.Padding(2);
             this.spinEdit11.Name = "spinEdit11";
             this.spinEdit11.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
             this.spinEdit11.Properties.Appearance.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.spinEdit11.Properties.Appearance.Options.UseFont = true;
             this.spinEdit11.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo, "", -1, true, false, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject5, serializableAppearanceObject6, serializableAppearanceObject7, serializableAppearanceObject8, "", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo, "", -1, true, false, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject9, serializableAppearanceObject10, serializableAppearanceObject11, serializableAppearanceObject12, "", null, null, true)});
             this.spinEdit11.Properties.EditValueChangedFiringMode = DevExpress.XtraEditors.Controls.EditValueChangedFiringMode.Default;
             this.spinEdit11.Properties.Mask.MaskType = DevExpress.XtraEditors.Mask.MaskType.None;
-            this.spinEdit11.Size = new System.Drawing.Size(58, 20);
+            this.spinEdit11.Size = new System.Drawing.Size(57, 20);
             this.spinEdit11.StyleController = this.lcGlocom;
             this.spinEdit11.TabIndex = 76;
             // 
@@ -5521,7 +5521,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.layoutControlGroup5.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup5.Name = "Root";
             this.layoutControlGroup5.OptionsItemText.TextToControlDistance = 4;
-            this.layoutControlGroup5.Size = new System.Drawing.Size(611, 572);
+            this.layoutControlGroup5.Size = new System.Drawing.Size(609, 572);
             this.layoutControlGroup5.TextVisible = false;
             // 
             // layoutControlItem104
@@ -5531,7 +5531,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.layoutControlItem104.Control = this.Glocom__raGloocomGocDong;
             this.layoutControlItem104.Location = new System.Drawing.Point(0, 17);
             this.layoutControlItem104.Name = "layoutControlItem9";
-            this.layoutControlItem104.Size = new System.Drawing.Size(115, 23);
+            this.layoutControlItem104.Size = new System.Drawing.Size(113, 23);
             this.layoutControlItem104.Text = "+ Chẩn đoán trước PT:";
             this.layoutControlItem104.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem104.TextSize = new System.Drawing.Size(0, 0);
@@ -5541,7 +5541,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // layoutControlItem107
             // 
             this.layoutControlItem107.Control = this.Glocom__raGloocomGocMo;
-            this.layoutControlItem107.Location = new System.Drawing.Point(115, 17);
+            this.layoutControlItem107.Location = new System.Drawing.Point(113, 17);
             this.layoutControlItem107.Name = "layoutControlItem13";
             this.layoutControlItem107.Size = new System.Drawing.Size(476, 23);
             this.layoutControlItem107.TextSize = new System.Drawing.Size(0, 0);
@@ -5552,7 +5552,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.layoutControlItem109.Control = this.Glocom__raGiaDoanBenhTiemTang;
             this.layoutControlItem109.Location = new System.Drawing.Point(0, 64);
             this.layoutControlItem109.Name = "layoutControlItem14";
-            this.layoutControlItem109.Size = new System.Drawing.Size(175, 23);
+            this.layoutControlItem109.Size = new System.Drawing.Size(173, 23);
             this.layoutControlItem109.Text = "+ Giai đoạn bệnh:";
             this.layoutControlItem109.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.AutoSize;
             this.layoutControlItem109.TextSize = new System.Drawing.Size(86, 13);
@@ -5561,7 +5561,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // layoutControlItem110
             // 
             this.layoutControlItem110.Control = this.Glocom__raGiaDoanBenhTranTrong;
-            this.layoutControlItem110.Location = new System.Drawing.Point(321, 64);
+            this.layoutControlItem110.Location = new System.Drawing.Point(317, 64);
             this.layoutControlItem110.Name = "layoutControlItem15";
             this.layoutControlItem110.Size = new System.Drawing.Size(80, 23);
             this.layoutControlItem110.TextSize = new System.Drawing.Size(0, 0);
@@ -5570,34 +5570,34 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // layoutControlItem111
             // 
             this.layoutControlItem111.Control = this.Glocom__raGiaDoanBenhTuyetDoi;
-            this.layoutControlItem111.Location = new System.Drawing.Point(475, 64);
+            this.layoutControlItem111.Location = new System.Drawing.Point(471, 64);
             this.layoutControlItem111.Name = "layoutControlItem16";
-            this.layoutControlItem111.Size = new System.Drawing.Size(116, 23);
+            this.layoutControlItem111.Size = new System.Drawing.Size(118, 23);
             this.layoutControlItem111.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem111.TextVisible = false;
             // 
             // layoutControlItem112
             // 
             this.layoutControlItem112.Control = this.Glocom__raGiaDoanBenhSoPhat;
-            this.layoutControlItem112.Location = new System.Drawing.Point(175, 64);
+            this.layoutControlItem112.Location = new System.Drawing.Point(173, 64);
             this.layoutControlItem112.Name = "layoutControlItem17";
-            this.layoutControlItem112.Size = new System.Drawing.Size(67, 23);
+            this.layoutControlItem112.Size = new System.Drawing.Size(66, 23);
             this.layoutControlItem112.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem112.TextVisible = false;
             // 
             // layoutControlItem113
             // 
             this.layoutControlItem113.Control = this.Glocom__raGiaDoanBenhTienTrien;
-            this.layoutControlItem113.Location = new System.Drawing.Point(242, 64);
+            this.layoutControlItem113.Location = new System.Drawing.Point(239, 64);
             this.layoutControlItem113.Name = "layoutControlItem18";
-            this.layoutControlItem113.Size = new System.Drawing.Size(79, 23);
+            this.layoutControlItem113.Size = new System.Drawing.Size(78, 23);
             this.layoutControlItem113.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem113.TextVisible = false;
             // 
             // layoutControlItem114
             // 
             this.layoutControlItem114.Control = this.Glocom__raGiaDoanBenhGanTuyet;
-            this.layoutControlItem114.Location = new System.Drawing.Point(401, 64);
+            this.layoutControlItem114.Location = new System.Drawing.Point(397, 64);
             this.layoutControlItem114.Name = "layoutControlItem19";
             this.layoutControlItem114.Size = new System.Drawing.Size(74, 23);
             this.layoutControlItem114.TextSize = new System.Drawing.Size(0, 0);
@@ -5630,7 +5630,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.layoutControlItem117.Control = this.Glocom__txtPPVoCamLoaiThuoc;
             this.layoutControlItem117.Location = new System.Drawing.Point(382, 110);
             this.layoutControlItem117.Name = "layoutControlItem22";
-            this.layoutControlItem117.Size = new System.Drawing.Size(193, 24);
+            this.layoutControlItem117.Size = new System.Drawing.Size(190, 24);
             this.layoutControlItem117.Text = "Loại thuốc tê:";
             this.layoutControlItem117.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.AutoSize;
             this.layoutControlItem117.TextSize = new System.Drawing.Size(66, 13);
@@ -5641,7 +5641,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.layoutControlItem119.Control = this.Glocom__raCoDinhNhanCauVanhMi;
             this.layoutControlItem119.Location = new System.Drawing.Point(0, 134);
             this.layoutControlItem119.Name = "layoutControlItem24";
-            this.layoutControlItem119.Size = new System.Drawing.Size(177, 23);
+            this.layoutControlItem119.Size = new System.Drawing.Size(175, 23);
             this.layoutControlItem119.Text = "+ Cố định nhẫn cầu:";
             this.layoutControlItem119.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.AutoSize;
             this.layoutControlItem119.TextSize = new System.Drawing.Size(98, 13);
@@ -5650,9 +5650,9 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // layoutControlItem120
             // 
             this.layoutControlItem120.Control = this.Glocom__raCoDinhNhanCauCoTruc;
-            this.layoutControlItem120.Location = new System.Drawing.Point(177, 134);
+            this.layoutControlItem120.Location = new System.Drawing.Point(175, 134);
             this.layoutControlItem120.Name = "layoutControlItem25";
-            this.layoutControlItem120.Size = new System.Drawing.Size(90, 23);
+            this.layoutControlItem120.Size = new System.Drawing.Size(89, 23);
             this.layoutControlItem120.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem120.TextVisible = false;
             // 
@@ -5668,7 +5668,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // layoutControlItem128
             // 
             this.layoutControlItem128.Control = this.Glocom__raCoDinhNhanCauDayCungDo;
-            this.layoutControlItem128.Location = new System.Drawing.Point(214, 157);
+            this.layoutControlItem128.Location = new System.Drawing.Point(212, 157);
             this.layoutControlItem128.Name = "layoutControlItem32";
             this.layoutControlItem128.Size = new System.Drawing.Size(87, 24);
             this.layoutControlItem128.Text = "3. Mở KM rìa:";
@@ -5680,7 +5680,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // layoutControlItem129
             // 
             this.layoutControlItem129.Control = this.Glocom__raCoDinhNhanCauDayVungRia;
-            this.layoutControlItem129.Location = new System.Drawing.Point(301, 157);
+            this.layoutControlItem129.Location = new System.Drawing.Point(299, 157);
             this.layoutControlItem129.Name = "layoutControlItem33";
             this.layoutControlItem129.Size = new System.Drawing.Size(290, 24);
             this.layoutControlItem129.TextSize = new System.Drawing.Size(0, 0);
@@ -5702,23 +5702,23 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.layoutControlItem133.Control = this.checkEdit43;
             this.layoutControlItem133.Location = new System.Drawing.Point(142, 204);
             this.layoutControlItem133.Name = "layoutControlItem35";
-            this.layoutControlItem133.Size = new System.Drawing.Size(48, 24);
+            this.layoutControlItem133.Size = new System.Drawing.Size(46, 24);
             this.layoutControlItem133.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem133.TextVisible = false;
             // 
             // layoutControlItem134
             // 
             this.layoutControlItem134.Control = this.checkEdit42;
-            this.layoutControlItem134.Location = new System.Drawing.Point(190, 204);
+            this.layoutControlItem134.Location = new System.Drawing.Point(188, 204);
             this.layoutControlItem134.Name = "layoutControlItem36";
-            this.layoutControlItem134.Size = new System.Drawing.Size(53, 24);
+            this.layoutControlItem134.Size = new System.Drawing.Size(52, 24);
             this.layoutControlItem134.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem134.TextVisible = false;
             // 
             // layoutControlItem135
             // 
             this.layoutControlItem135.Control = this.textEdit16;
-            this.layoutControlItem135.Location = new System.Drawing.Point(356, 228);
+            this.layoutControlItem135.Location = new System.Drawing.Point(352, 228);
             this.layoutControlItem135.Name = "layoutControlItem41";
             this.layoutControlItem135.Size = new System.Drawing.Size(141, 24);
             this.layoutControlItem135.Text = "Thời gian:";
@@ -5732,7 +5732,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.layoutControlItem136.CustomizationFormText = "layoutControlItem40";
             this.layoutControlItem136.Location = new System.Drawing.Point(0, 228);
             this.layoutControlItem136.Name = "layoutControlItem42";
-            this.layoutControlItem136.Size = new System.Drawing.Size(43, 24);
+            this.layoutControlItem136.Size = new System.Drawing.Size(41, 24);
             this.layoutControlItem136.Text = "layoutControlItem40";
             this.layoutControlItem136.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.AutoSize;
             this.layoutControlItem136.TextSize = new System.Drawing.Size(0, 0);
@@ -5742,16 +5742,16 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // layoutControlItem137
             // 
             this.layoutControlItem137.Control = this.labelControl15;
-            this.layoutControlItem137.Location = new System.Drawing.Point(497, 228);
+            this.layoutControlItem137.Location = new System.Drawing.Point(493, 228);
             this.layoutControlItem137.Name = "layoutControlItem43";
-            this.layoutControlItem137.Size = new System.Drawing.Size(94, 24);
+            this.layoutControlItem137.Size = new System.Drawing.Size(96, 24);
             this.layoutControlItem137.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem137.TextVisible = false;
             // 
             // layoutControlItem142
             // 
             this.layoutControlItem142.Control = this.checkEdit35;
-            this.layoutControlItem142.Location = new System.Drawing.Point(128, 299);
+            this.layoutControlItem142.Location = new System.Drawing.Point(126, 299);
             this.layoutControlItem142.Name = "layoutControlItem50";
             this.layoutControlItem142.Size = new System.Drawing.Size(463, 23);
             this.layoutControlItem142.TextSize = new System.Drawing.Size(0, 0);
@@ -5762,7 +5762,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.layoutControlItem143.Control = this.checkEdit33;
             this.layoutControlItem143.Location = new System.Drawing.Point(0, 322);
             this.layoutControlItem143.Name = "layoutControlItem52";
-            this.layoutControlItem143.Size = new System.Drawing.Size(177, 23);
+            this.layoutControlItem143.Size = new System.Drawing.Size(175, 23);
             this.layoutControlItem143.Text = "+ Cắt mẩu bè:";
             this.layoutControlItem143.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.AutoSize;
             this.layoutControlItem143.TextSize = new System.Drawing.Size(70, 13);
@@ -5773,7 +5773,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.layoutControlItem144.Control = this.checkEdit27;
             this.layoutControlItem144.Location = new System.Drawing.Point(0, 345);
             this.layoutControlItem144.Name = "layoutControlItem58";
-            this.layoutControlItem144.Size = new System.Drawing.Size(152, 23);
+            this.layoutControlItem144.Size = new System.Drawing.Size(150, 23);
             this.layoutControlItem144.Text = "+ Cắt mống mắt:";
             this.layoutControlItem144.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.AutoSize;
             this.layoutControlItem144.TextSize = new System.Drawing.Size(82, 13);
@@ -5784,7 +5784,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.layoutControlItem145.Control = this.checkEdit26;
             this.layoutControlItem145.Location = new System.Drawing.Point(0, 392);
             this.layoutControlItem145.Name = "layoutControlItem59";
-            this.layoutControlItem145.Size = new System.Drawing.Size(141, 23);
+            this.layoutControlItem145.Size = new System.Drawing.Size(139, 23);
             this.layoutControlItem145.Text = "+ Tái tạo TP:";
             this.layoutControlItem145.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.AutoSize;
             this.layoutControlItem145.TextSize = new System.Drawing.Size(63, 13);
@@ -5795,7 +5795,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.layoutControlItem149.Control = this.checkEdit39;
             this.layoutControlItem149.Location = new System.Drawing.Point(169, 252);
             this.layoutControlItem149.Name = "layoutControlItem46";
-            this.layoutControlItem149.Size = new System.Drawing.Size(422, 23);
+            this.layoutControlItem149.Size = new System.Drawing.Size(420, 23);
             this.layoutControlItem149.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem149.TextVisible = false;
             // 
@@ -5804,7 +5804,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.layoutControlItem153.Control = this.checkEdit32;
             this.layoutControlItem153.Location = new System.Drawing.Point(0, 299);
             this.layoutControlItem153.Name = "layoutControlItem53";
-            this.layoutControlItem153.Size = new System.Drawing.Size(128, 23);
+            this.layoutControlItem153.Size = new System.Drawing.Size(126, 23);
             this.layoutControlItem153.Text = "+ Chọc TP:";
             this.layoutControlItem153.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.AutoSize;
             this.layoutControlItem153.TextSize = new System.Drawing.Size(54, 13);
@@ -5813,7 +5813,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // layoutControlItem161
             // 
             this.layoutControlItem161.Control = this.checkEdit28;
-            this.layoutControlItem161.Location = new System.Drawing.Point(152, 345);
+            this.layoutControlItem161.Location = new System.Drawing.Point(150, 345);
             this.layoutControlItem161.Name = "layoutControlItem57";
             this.layoutControlItem161.Size = new System.Drawing.Size(439, 23);
             this.layoutControlItem161.TextSize = new System.Drawing.Size(0, 0);
@@ -5822,7 +5822,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // layoutControlItem165
             // 
             this.layoutControlItem165.Control = this.checkEdit23;
-            this.layoutControlItem165.Location = new System.Drawing.Point(141, 392);
+            this.layoutControlItem165.Location = new System.Drawing.Point(139, 392);
             this.layoutControlItem165.Name = "layoutControlItem62";
             this.layoutControlItem165.Size = new System.Drawing.Size(450, 23);
             this.layoutControlItem165.TextSize = new System.Drawing.Size(0, 0);
@@ -5833,9 +5833,9 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.layoutControlItem169.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem169.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem169.Control = this.spinEdit11;
-            this.layoutControlItem169.Location = new System.Drawing.Point(196, 415);
+            this.layoutControlItem169.Location = new System.Drawing.Point(194, 415);
             this.layoutControlItem169.Name = "layoutControlItem75";
-            this.layoutControlItem169.Size = new System.Drawing.Size(62, 24);
+            this.layoutControlItem169.Size = new System.Drawing.Size(61, 24);
             this.layoutControlItem169.Text = "Kích thước:";
             this.layoutControlItem169.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem169.TextSize = new System.Drawing.Size(0, 0);
@@ -5846,7 +5846,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.emptySpaceItem9.AllowHotTrack = false;
             this.emptySpaceItem9.Location = new System.Drawing.Point(0, 511);
             this.emptySpaceItem9.Name = "emptySpaceItem3";
-            this.emptySpaceItem9.Size = new System.Drawing.Size(591, 41);
+            this.emptySpaceItem9.Size = new System.Drawing.Size(589, 41);
             this.emptySpaceItem9.TextSize = new System.Drawing.Size(0, 0);
             // 
             // layoutControlItem105
@@ -5854,25 +5854,25 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.layoutControlItem105.Control = this.Glocom__raGloocomBamSinh;
             this.layoutControlItem105.Location = new System.Drawing.Point(0, 40);
             this.layoutControlItem105.Name = "layoutControlItem10";
-            this.layoutControlItem105.Size = new System.Drawing.Size(115, 24);
+            this.layoutControlItem105.Size = new System.Drawing.Size(113, 24);
             this.layoutControlItem105.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem105.TextVisible = false;
             // 
             // layoutControlItem108
             // 
             this.layoutControlItem108.Control = this.Glocom__raGloocomThuPhat;
-            this.layoutControlItem108.Location = new System.Drawing.Point(115, 40);
+            this.layoutControlItem108.Location = new System.Drawing.Point(113, 40);
             this.layoutControlItem108.Name = "layoutControlItem12";
-            this.layoutControlItem108.Size = new System.Drawing.Size(129, 24);
+            this.layoutControlItem108.Size = new System.Drawing.Size(128, 24);
             this.layoutControlItem108.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem108.TextVisible = false;
             // 
             // layoutControlItem187
             // 
             this.layoutControlItem187.Control = this.Glocom__txtDo;
-            this.layoutControlItem187.Location = new System.Drawing.Point(244, 40);
+            this.layoutControlItem187.Location = new System.Drawing.Point(241, 40);
             this.layoutControlItem187.Name = "layoutControlItem93";
-            this.layoutControlItem187.Size = new System.Drawing.Size(265, 24);
+            this.layoutControlItem187.Size = new System.Drawing.Size(264, 24);
             this.layoutControlItem187.Text = "Do:";
             this.layoutControlItem187.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.AutoSize;
             this.layoutControlItem187.TextSize = new System.Drawing.Size(17, 13);
@@ -5881,9 +5881,9 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // emptySpaceItem8
             // 
             this.emptySpaceItem8.AllowHotTrack = false;
-            this.emptySpaceItem8.Location = new System.Drawing.Point(509, 40);
+            this.emptySpaceItem8.Location = new System.Drawing.Point(505, 40);
             this.emptySpaceItem8.Name = "emptySpaceItem1";
-            this.emptySpaceItem8.Size = new System.Drawing.Size(82, 24);
+            this.emptySpaceItem8.Size = new System.Drawing.Size(84, 24);
             this.emptySpaceItem8.TextSize = new System.Drawing.Size(0, 0);
             // 
             // layoutControlItem123
@@ -5907,9 +5907,9 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // layoutControlItem125
             // 
             this.layoutControlItem125.Control = this.Glocom__raCoDinhNhanCauChiGiacMac;
-            this.layoutControlItem125.Location = new System.Drawing.Point(267, 134);
+            this.layoutControlItem125.Location = new System.Drawing.Point(264, 134);
             this.layoutControlItem125.Name = "layoutControlItem29";
-            this.layoutControlItem125.Size = new System.Drawing.Size(324, 23);
+            this.layoutControlItem125.Size = new System.Drawing.Size(325, 23);
             this.layoutControlItem125.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem125.TextVisible = false;
             // 
@@ -5919,7 +5919,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.layoutControlItem121.CustomizationFormText = "1. Cố định nhẫn cầu:";
             this.layoutControlItem121.Location = new System.Drawing.Point(0, 181);
             this.layoutControlItem121.Name = "layoutControlItem26";
-            this.layoutControlItem121.Size = new System.Drawing.Size(207, 23);
+            this.layoutControlItem121.Size = new System.Drawing.Size(205, 23);
             this.layoutControlItem121.Text = "+ Tình trạng bao tenon:";
             this.layoutControlItem121.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.AutoSize;
             this.layoutControlItem121.TextSize = new System.Drawing.Size(116, 13);
@@ -5928,18 +5928,18 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // layoutControlItem124
             // 
             this.layoutControlItem124.Control = this.Glocom__raTinhTrangBaoTenonSo;
-            this.layoutControlItem124.Location = new System.Drawing.Point(271, 181);
+            this.layoutControlItem124.Location = new System.Drawing.Point(268, 181);
             this.layoutControlItem124.Name = "layoutControlItem28";
-            this.layoutControlItem124.Size = new System.Drawing.Size(320, 23);
+            this.layoutControlItem124.Size = new System.Drawing.Size(321, 23);
             this.layoutControlItem124.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem124.TextVisible = false;
             // 
             // layoutControlItem127
             // 
             this.layoutControlItem127.Control = this.Glocom__raTinhTrangBaoTenonGay;
-            this.layoutControlItem127.Location = new System.Drawing.Point(207, 181);
+            this.layoutControlItem127.Location = new System.Drawing.Point(205, 181);
             this.layoutControlItem127.Name = "layoutControlItem31";
-            this.layoutControlItem127.Size = new System.Drawing.Size(64, 23);
+            this.layoutControlItem127.Size = new System.Drawing.Size(63, 23);
             this.layoutControlItem127.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem127.TextVisible = false;
             // 
@@ -5961,16 +5961,16 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.layoutControlItem131.Control = this.labelControl16;
             this.layoutControlItem131.Location = new System.Drawing.Point(178, 157);
             this.layoutControlItem131.Name = "layoutControlItem40";
-            this.layoutControlItem131.Size = new System.Drawing.Size(36, 24);
+            this.layoutControlItem131.Size = new System.Drawing.Size(34, 24);
             this.layoutControlItem131.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem131.TextVisible = false;
             // 
             // layoutControlItem141
             // 
             this.layoutControlItem141.Control = this.checkEdit38;
-            this.layoutControlItem141.Location = new System.Drawing.Point(243, 204);
+            this.layoutControlItem141.Location = new System.Drawing.Point(240, 204);
             this.layoutControlItem141.Name = "layoutControlItem47";
-            this.layoutControlItem141.Size = new System.Drawing.Size(64, 24);
+            this.layoutControlItem141.Size = new System.Drawing.Size(63, 24);
             this.layoutControlItem141.Text = "6. ";
             this.layoutControlItem141.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem141.TextSize = new System.Drawing.Size(0, 0);
@@ -5980,7 +5980,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // layoutControlItem151
             // 
             this.layoutControlItem151.Control = this.checkEdit37;
-            this.layoutControlItem151.Location = new System.Drawing.Point(307, 204);
+            this.layoutControlItem151.Location = new System.Drawing.Point(303, 204);
             this.layoutControlItem151.Name = "layoutControlItem48";
             this.layoutControlItem151.Size = new System.Drawing.Size(73, 24);
             this.layoutControlItem151.TextSize = new System.Drawing.Size(0, 0);
@@ -5989,7 +5989,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // layoutControlItem150
             // 
             this.layoutControlItem150.Control = this.checkEdit36;
-            this.layoutControlItem150.Location = new System.Drawing.Point(380, 204);
+            this.layoutControlItem150.Location = new System.Drawing.Point(376, 204);
             this.layoutControlItem150.Name = "layoutControlItem49";
             this.layoutControlItem150.Size = new System.Drawing.Size(75, 24);
             this.layoutControlItem150.TextSize = new System.Drawing.Size(0, 0);
@@ -5998,7 +5998,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // layoutControlItem178
             // 
             this.layoutControlItem178.Control = this.checkEdit11;
-            this.layoutControlItem178.Location = new System.Drawing.Point(455, 204);
+            this.layoutControlItem178.Location = new System.Drawing.Point(451, 204);
             this.layoutControlItem178.Name = "layoutControlItem83";
             this.layoutControlItem178.Size = new System.Drawing.Size(50, 24);
             this.layoutControlItem178.TextSize = new System.Drawing.Size(0, 0);
@@ -6007,25 +6007,25 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // layoutControlItem154
             // 
             this.layoutControlItem154.Control = this.checkEdit31;
-            this.layoutControlItem154.Location = new System.Drawing.Point(43, 228);
+            this.layoutControlItem154.Location = new System.Drawing.Point(41, 228);
             this.layoutControlItem154.Name = "layoutControlItem54";
-            this.layoutControlItem154.Size = new System.Drawing.Size(106, 24);
+            this.layoutControlItem154.Size = new System.Drawing.Size(105, 24);
             this.layoutControlItem154.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem154.TextVisible = false;
             // 
             // layoutControlItem155
             // 
             this.layoutControlItem155.Control = this.checkEdit30;
-            this.layoutControlItem155.Location = new System.Drawing.Point(149, 228);
+            this.layoutControlItem155.Location = new System.Drawing.Point(146, 228);
             this.layoutControlItem155.Name = "layoutControlItem55";
-            this.layoutControlItem155.Size = new System.Drawing.Size(108, 24);
+            this.layoutControlItem155.Size = new System.Drawing.Size(107, 24);
             this.layoutControlItem155.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem155.TextVisible = false;
             // 
             // layoutControlItem156
             // 
             this.layoutControlItem156.Control = this.checkEdit29;
-            this.layoutControlItem156.Location = new System.Drawing.Point(257, 228);
+            this.layoutControlItem156.Location = new System.Drawing.Point(253, 228);
             this.layoutControlItem156.Name = "layoutControlItem56";
             this.layoutControlItem156.Size = new System.Drawing.Size(99, 24);
             this.layoutControlItem156.TextSize = new System.Drawing.Size(0, 0);
@@ -6034,7 +6034,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // layoutControlItem140
             // 
             this.layoutControlItem140.Control = this.checkEdit41;
-            this.layoutControlItem140.Location = new System.Drawing.Point(177, 322);
+            this.layoutControlItem140.Location = new System.Drawing.Point(175, 322);
             this.layoutControlItem140.Name = "layoutControlItem37";
             this.layoutControlItem140.Size = new System.Drawing.Size(69, 23);
             this.layoutControlItem140.TextSize = new System.Drawing.Size(0, 0);
@@ -6045,7 +6045,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.layoutControlItem160.Control = this.labelControl11;
             this.layoutControlItem160.Location = new System.Drawing.Point(0, 275);
             this.layoutControlItem160.Name = "layoutControlItem78";
-            this.layoutControlItem160.Size = new System.Drawing.Size(57, 24);
+            this.layoutControlItem160.Size = new System.Drawing.Size(55, 24);
             this.layoutControlItem160.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem160.TextVisible = false;
             // 
@@ -6054,9 +6054,9 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.layoutControlItem157.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem157.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem157.Control = this.textEdit14;
-            this.layoutControlItem157.Location = new System.Drawing.Point(57, 275);
+            this.layoutControlItem157.Location = new System.Drawing.Point(55, 275);
             this.layoutControlItem157.Name = "layoutControlItem72";
-            this.layoutControlItem157.Size = new System.Drawing.Size(158, 24);
+            this.layoutControlItem157.Size = new System.Drawing.Size(157, 24);
             this.layoutControlItem157.Text = "Hình dạng:";
             this.layoutControlItem157.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem157.TextSize = new System.Drawing.Size(90, 20);
@@ -6065,9 +6065,9 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // layoutControlItem138
             // 
             this.layoutControlItem138.Control = this.spinEdit15;
-            this.layoutControlItem138.Location = new System.Drawing.Point(454, 275);
+            this.layoutControlItem138.Location = new System.Drawing.Point(450, 275);
             this.layoutControlItem138.Name = "layoutControlItem44";
-            this.layoutControlItem138.Size = new System.Drawing.Size(137, 24);
+            this.layoutControlItem138.Size = new System.Drawing.Size(139, 24);
             this.layoutControlItem138.Text = "Kích thước:";
             this.layoutControlItem138.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.AutoSize;
             this.layoutControlItem138.TextSize = new System.Drawing.Size(54, 13);
@@ -6077,7 +6077,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // layoutControlItem152
             // 
             this.layoutControlItem152.Control = this.checkEdit34;
-            this.layoutControlItem152.Location = new System.Drawing.Point(246, 322);
+            this.layoutControlItem152.Location = new System.Drawing.Point(244, 322);
             this.layoutControlItem152.Name = "layoutControlItem51";
             this.layoutControlItem152.Size = new System.Drawing.Size(345, 23);
             this.layoutControlItem152.Text = "7. ";
@@ -6091,9 +6091,9 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.layoutControlItem158.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem158.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem158.Control = this.spinEdit12;
-            this.layoutControlItem158.Location = new System.Drawing.Point(84, 368);
+            this.layoutControlItem158.Location = new System.Drawing.Point(82, 368);
             this.layoutControlItem158.Name = "layoutControlItem74";
-            this.layoutControlItem158.Size = new System.Drawing.Size(145, 24);
+            this.layoutControlItem158.Size = new System.Drawing.Size(144, 24);
             this.layoutControlItem158.Text = "Sống mũi:";
             this.layoutControlItem158.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem158.TextSize = new System.Drawing.Size(80, 20);
@@ -6104,14 +6104,14 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.layoutControlItem188.Control = this.labelControl12;
             this.layoutControlItem188.Location = new System.Drawing.Point(0, 368);
             this.layoutControlItem188.Name = "layoutControlItem77";
-            this.layoutControlItem188.Size = new System.Drawing.Size(84, 24);
+            this.layoutControlItem188.Size = new System.Drawing.Size(82, 24);
             this.layoutControlItem188.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem188.TextVisible = false;
             // 
             // layoutControlItem146
             // 
             this.layoutControlItem146.Control = this.checkEdit21;
-            this.layoutControlItem146.Location = new System.Drawing.Point(229, 368);
+            this.layoutControlItem146.Location = new System.Drawing.Point(226, 368);
             this.layoutControlItem146.Name = "layoutControlItem64";
             this.layoutControlItem146.Size = new System.Drawing.Size(97, 24);
             this.layoutControlItem146.Text = "Chỉ rút:";
@@ -6122,9 +6122,9 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // layoutControlItem167
             // 
             this.layoutControlItem167.Control = this.checkEdit20;
-            this.layoutControlItem167.Location = new System.Drawing.Point(326, 368);
+            this.layoutControlItem167.Location = new System.Drawing.Point(323, 368);
             this.layoutControlItem167.Name = "layoutControlItem65";
-            this.layoutControlItem167.Size = new System.Drawing.Size(57, 24);
+            this.layoutControlItem167.Size = new System.Drawing.Size(56, 24);
             this.layoutControlItem167.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem167.TextVisible = false;
             // 
@@ -6133,9 +6133,9 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.layoutControlItem168.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem168.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem168.Control = this.textEdit13;
-            this.layoutControlItem168.Location = new System.Drawing.Point(383, 368);
+            this.layoutControlItem168.Location = new System.Drawing.Point(379, 368);
             this.layoutControlItem168.Name = "layoutControlItem73";
-            this.layoutControlItem168.Size = new System.Drawing.Size(208, 24);
+            this.layoutControlItem168.Size = new System.Drawing.Size(210, 24);
             this.layoutControlItem168.Text = "Loại chỉ:";
             this.layoutControlItem168.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.AutoSize;
             this.layoutControlItem168.TextSize = new System.Drawing.Size(39, 13);
@@ -6144,7 +6144,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // layoutControlItem166
             // 
             this.layoutControlItem166.Control = this.checkEdit22;
-            this.layoutControlItem166.Location = new System.Drawing.Point(368, 415);
+            this.layoutControlItem166.Location = new System.Drawing.Point(364, 415);
             this.layoutControlItem166.Name = "layoutControlItem63";
             this.layoutControlItem166.Size = new System.Drawing.Size(51, 24);
             this.layoutControlItem166.TextSize = new System.Drawing.Size(0, 0);
@@ -6153,7 +6153,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // layoutControlItem164
             // 
             this.layoutControlItem164.Control = this.checkEdit24;
-            this.layoutControlItem164.Location = new System.Drawing.Point(300, 415);
+            this.layoutControlItem164.Location = new System.Drawing.Point(296, 415);
             this.layoutControlItem164.Name = "layoutControlItem61";
             this.layoutControlItem164.Size = new System.Drawing.Size(68, 24);
             this.layoutControlItem164.TextSize = new System.Drawing.Size(0, 0);
@@ -6164,7 +6164,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.layoutControlItem170.Control = this.checkEdit18;
             this.layoutControlItem170.Location = new System.Drawing.Point(0, 415);
             this.layoutControlItem170.Name = "layoutControlItem67";
-            this.layoutControlItem170.Size = new System.Drawing.Size(139, 24);
+            this.layoutControlItem170.Size = new System.Drawing.Size(137, 24);
             this.layoutControlItem170.Text = "+ Khâu KM:";
             this.layoutControlItem170.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.AutoSize;
             this.layoutControlItem170.TextSize = new System.Drawing.Size(56, 13);
@@ -6173,7 +6173,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // layoutControlItem172
             // 
             this.layoutControlItem172.Control = this.checkEdit15;
-            this.layoutControlItem172.Location = new System.Drawing.Point(139, 415);
+            this.layoutControlItem172.Location = new System.Drawing.Point(137, 415);
             this.layoutControlItem172.Name = "layoutControlItem70";
             this.layoutControlItem172.Size = new System.Drawing.Size(57, 24);
             this.layoutControlItem172.TextSize = new System.Drawing.Size(0, 0);
@@ -6182,9 +6182,9 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // layoutControlItem163
             // 
             this.layoutControlItem163.Control = this.checkEdit25;
-            this.layoutControlItem163.Location = new System.Drawing.Point(127, 463);
+            this.layoutControlItem163.Location = new System.Drawing.Point(125, 463);
             this.layoutControlItem163.Name = "layoutControlItem60";
-            this.layoutControlItem163.Size = new System.Drawing.Size(50, 24);
+            this.layoutControlItem163.Size = new System.Drawing.Size(49, 24);
             this.layoutControlItem163.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem163.TextVisible = false;
             // 
@@ -6193,9 +6193,9 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.layoutControlItem162.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem162.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem162.Control = this.textEdit10;
-            this.layoutControlItem162.Location = new System.Drawing.Point(419, 415);
+            this.layoutControlItem162.Location = new System.Drawing.Point(415, 415);
             this.layoutControlItem162.Name = "layoutControlItem79";
-            this.layoutControlItem162.Size = new System.Drawing.Size(172, 24);
+            this.layoutControlItem162.Size = new System.Drawing.Size(174, 24);
             this.layoutControlItem162.Text = "Tốc độ DC:";
             this.layoutControlItem162.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem162.TextSize = new System.Drawing.Size(0, 0);
@@ -6209,7 +6209,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.layoutControlItem174.Control = this.textEdit9;
             this.layoutControlItem174.Location = new System.Drawing.Point(0, 439);
             this.layoutControlItem174.Name = "layoutControlItem80";
-            this.layoutControlItem174.Size = new System.Drawing.Size(591, 24);
+            this.layoutControlItem174.Size = new System.Drawing.Size(589, 24);
             this.layoutControlItem174.Text = "+ Diễn biến khác xảy ra trong phẫu thuật:";
             this.layoutControlItem174.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.AutoSize;
             this.layoutControlItem174.TextSize = new System.Drawing.Size(203, 13);
@@ -6220,7 +6220,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.layoutControlItem175.Control = this.checkEdit13;
             this.layoutControlItem175.Location = new System.Drawing.Point(0, 463);
             this.layoutControlItem175.Name = "layoutControlItem82";
-            this.layoutControlItem175.Size = new System.Drawing.Size(127, 24);
+            this.layoutControlItem175.Size = new System.Drawing.Size(125, 24);
             this.layoutControlItem175.Text = "+ Tiêm mắt:";
             this.layoutControlItem175.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.AutoSize;
             this.layoutControlItem175.TextSize = new System.Drawing.Size(58, 13);
@@ -6231,9 +6231,9 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.layoutControlItem182.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem182.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem182.Control = this.textEdit8;
-            this.layoutControlItem182.Location = new System.Drawing.Point(299, 463);
+            this.layoutControlItem182.Location = new System.Drawing.Point(295, 463);
             this.layoutControlItem182.Name = "layoutControlItem81";
-            this.layoutControlItem182.Size = new System.Drawing.Size(292, 24);
+            this.layoutControlItem182.Size = new System.Drawing.Size(294, 24);
             this.layoutControlItem182.Text = "Thuốc:";
             this.layoutControlItem182.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.AutoSize;
             this.layoutControlItem182.TextSize = new System.Drawing.Size(33, 13);
@@ -6242,16 +6242,16 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // layoutControlItem181
             // 
             this.layoutControlItem181.Control = this.checkEdit5;
-            this.layoutControlItem181.Location = new System.Drawing.Point(177, 463);
+            this.layoutControlItem181.Location = new System.Drawing.Point(174, 463);
             this.layoutControlItem181.Name = "layoutControlItem87";
-            this.layoutControlItem181.Size = new System.Drawing.Size(71, 24);
+            this.layoutControlItem181.Size = new System.Drawing.Size(70, 24);
             this.layoutControlItem181.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem181.TextVisible = false;
             // 
             // layoutControlItem179
             // 
             this.layoutControlItem179.Control = this.checkEdit4;
-            this.layoutControlItem179.Location = new System.Drawing.Point(248, 463);
+            this.layoutControlItem179.Location = new System.Drawing.Point(244, 463);
             this.layoutControlItem179.Name = "layoutControlItem88";
             this.layoutControlItem179.Size = new System.Drawing.Size(51, 24);
             this.layoutControlItem179.TextSize = new System.Drawing.Size(0, 0);
@@ -6264,7 +6264,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.layoutControlItem185.Control = this.textEdit6;
             this.layoutControlItem185.Location = new System.Drawing.Point(0, 487);
             this.layoutControlItem185.Name = "layoutControlItem92";
-            this.layoutControlItem185.Size = new System.Drawing.Size(447, 24);
+            this.layoutControlItem185.Size = new System.Drawing.Size(444, 24);
             this.layoutControlItem185.Text = "+ Thuốc tra mắt:";
             this.layoutControlItem185.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.AutoSize;
             this.layoutControlItem185.TextSize = new System.Drawing.Size(82, 13);
@@ -6275,7 +6275,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.layoutControlItem255.Control = this.labelControl32;
             this.layoutControlItem255.Location = new System.Drawing.Point(0, 0);
             this.layoutControlItem255.Name = "layoutControlItem255";
-            this.layoutControlItem255.Size = new System.Drawing.Size(591, 17);
+            this.layoutControlItem255.Size = new System.Drawing.Size(589, 17);
             this.layoutControlItem255.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem255.TextVisible = false;
             // 
@@ -6295,70 +6295,70 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.layoutControlItem256.Control = this.checkEdit1;
             this.layoutControlItem256.Location = new System.Drawing.Point(233, 87);
             this.layoutControlItem256.Name = "layoutControlItem256";
-            this.layoutControlItem256.Size = new System.Drawing.Size(69, 23);
+            this.layoutControlItem256.Size = new System.Drawing.Size(67, 23);
             this.layoutControlItem256.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem256.TextVisible = false;
             // 
             // layoutControlItem257
             // 
             this.layoutControlItem257.Control = this.checkEdit2;
-            this.layoutControlItem257.Location = new System.Drawing.Point(302, 87);
+            this.layoutControlItem257.Location = new System.Drawing.Point(300, 87);
             this.layoutControlItem257.Name = "layoutControlItem257";
-            this.layoutControlItem257.Size = new System.Drawing.Size(76, 23);
+            this.layoutControlItem257.Size = new System.Drawing.Size(75, 23);
             this.layoutControlItem257.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem257.TextVisible = false;
             // 
             // layoutControlItem273
             // 
             this.layoutControlItem273.Control = this.checkEdit7;
-            this.layoutControlItem273.Location = new System.Drawing.Point(378, 87);
+            this.layoutControlItem273.Location = new System.Drawing.Point(375, 87);
             this.layoutControlItem273.Name = "layoutControlItem273";
-            this.layoutControlItem273.Size = new System.Drawing.Size(92, 23);
+            this.layoutControlItem273.Size = new System.Drawing.Size(91, 23);
             this.layoutControlItem273.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem273.TextVisible = false;
             // 
             // layoutControlItem118
             // 
             this.layoutControlItem118.Control = this.labelControl17;
-            this.layoutControlItem118.Location = new System.Drawing.Point(575, 110);
+            this.layoutControlItem118.Location = new System.Drawing.Point(572, 110);
             this.layoutControlItem118.Name = "layoutControlItem23";
-            this.layoutControlItem118.Size = new System.Drawing.Size(16, 24);
+            this.layoutControlItem118.Size = new System.Drawing.Size(17, 24);
             this.layoutControlItem118.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem118.TextVisible = false;
             // 
             // layoutControlItem279
             // 
             this.layoutControlItem279.Control = this.checkEdit8;
-            this.layoutControlItem279.Location = new System.Drawing.Point(470, 87);
+            this.layoutControlItem279.Location = new System.Drawing.Point(466, 87);
             this.layoutControlItem279.Name = "layoutControlItem279";
-            this.layoutControlItem279.Size = new System.Drawing.Size(121, 23);
+            this.layoutControlItem279.Size = new System.Drawing.Size(123, 23);
             this.layoutControlItem279.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem279.TextVisible = false;
             // 
             // layoutControlItem282
             // 
             this.layoutControlItem282.Control = this.textEdit4;
-            this.layoutControlItem282.Location = new System.Drawing.Point(505, 204);
+            this.layoutControlItem282.Location = new System.Drawing.Point(501, 204);
             this.layoutControlItem282.Name = "layoutControlItem282";
-            this.layoutControlItem282.Size = new System.Drawing.Size(86, 24);
+            this.layoutControlItem282.Size = new System.Drawing.Size(88, 24);
             this.layoutControlItem282.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem282.TextVisible = false;
             // 
             // layoutControlItem283
             // 
             this.layoutControlItem283.Control = this.labelControl33;
-            this.layoutControlItem283.Location = new System.Drawing.Point(258, 415);
+            this.layoutControlItem283.Location = new System.Drawing.Point(255, 415);
             this.layoutControlItem283.Name = "layoutControlItem283";
-            this.layoutControlItem283.Size = new System.Drawing.Size(42, 24);
+            this.layoutControlItem283.Size = new System.Drawing.Size(41, 24);
             this.layoutControlItem283.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem283.TextVisible = false;
             // 
             // layoutControlItem96
             // 
             this.layoutControlItem96.Control = this.textEdit2;
-            this.layoutControlItem96.Location = new System.Drawing.Point(447, 487);
+            this.layoutControlItem96.Location = new System.Drawing.Point(444, 487);
             this.layoutControlItem96.Name = "layoutControlItem96";
-            this.layoutControlItem96.Size = new System.Drawing.Size(144, 24);
+            this.layoutControlItem96.Size = new System.Drawing.Size(145, 24);
             this.layoutControlItem96.Text = "Băng:";
             this.layoutControlItem96.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.AutoSize;
             this.layoutControlItem96.TextSize = new System.Drawing.Size(28, 13);
@@ -6367,9 +6367,9 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // layoutControlItem285
             // 
             this.layoutControlItem285.Control = this.textEdit3;
-            this.layoutControlItem285.Location = new System.Drawing.Point(215, 275);
+            this.layoutControlItem285.Location = new System.Drawing.Point(212, 275);
             this.layoutControlItem285.Name = "layoutControlItem285";
-            this.layoutControlItem285.Size = new System.Drawing.Size(157, 24);
+            this.layoutControlItem285.Size = new System.Drawing.Size(156, 24);
             this.layoutControlItem285.Text = "Kích thước:";
             this.layoutControlItem285.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem285.TextSize = new System.Drawing.Size(60, 20);
@@ -6378,7 +6378,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // layoutControlItem139
             // 
             this.layoutControlItem139.Control = this.labelControl14;
-            this.layoutControlItem139.Location = new System.Drawing.Point(372, 275);
+            this.layoutControlItem139.Location = new System.Drawing.Point(368, 275);
             this.layoutControlItem139.Name = "layoutControlItem45";
             this.layoutControlItem139.Size = new System.Drawing.Size(82, 24);
             this.layoutControlItem139.TextSize = new System.Drawing.Size(0, 0);
@@ -6387,11 +6387,11 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // layoutControl8
             // 
             this.layoutControl8.Controls.Add(this.pictureEdit4);
-            this.layoutControl8.Location = new System.Drawing.Point(617, 2);
+            this.layoutControl8.Location = new System.Drawing.Point(615, 2);
             this.layoutControl8.Margin = new System.Windows.Forms.Padding(2);
             this.layoutControl8.Name = "layoutControl8";
             this.layoutControl8.Root = this.layoutControlGroup6;
-            this.layoutControl8.Size = new System.Drawing.Size(314, 572);
+            this.layoutControl8.Size = new System.Drawing.Size(316, 572);
             this.layoutControl8.TabIndex = 5;
             this.layoutControl8.Text = "layoutControl8";
             // 
@@ -6403,7 +6403,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.pictureEdit4.Name = "pictureEdit4";
             this.pictureEdit4.Properties.ReadOnly = true;
             this.pictureEdit4.Properties.ShowCameraMenuItem = DevExpress.XtraEditors.Controls.CameraMenuItemVisibility.Auto;
-            this.pictureEdit4.Size = new System.Drawing.Size(290, 102);
+            this.pictureEdit4.Size = new System.Drawing.Size(292, 100);
             this.pictureEdit4.StyleController = this.layoutControl8;
             this.pictureEdit4.TabIndex = 97;
             // 
@@ -6417,7 +6417,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.layoutControlGroup6.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup6.Name = "layoutControlGroup3";
             this.layoutControlGroup6.OptionsItemText.TextToControlDistance = 4;
-            this.layoutControlGroup6.Size = new System.Drawing.Size(314, 572);
+            this.layoutControlGroup6.Size = new System.Drawing.Size(316, 572);
             this.layoutControlGroup6.TextVisible = false;
             // 
             // layoutControlItem189
@@ -6425,16 +6425,16 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.layoutControlItem189.Control = this.pictureEdit4;
             this.layoutControlItem189.Location = new System.Drawing.Point(0, 0);
             this.layoutControlItem189.Name = "layoutControlItem98";
-            this.layoutControlItem189.Size = new System.Drawing.Size(294, 106);
+            this.layoutControlItem189.Size = new System.Drawing.Size(296, 104);
             this.layoutControlItem189.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem189.TextVisible = false;
             // 
             // emptySpaceItem18
             // 
             this.emptySpaceItem18.AllowHotTrack = false;
-            this.emptySpaceItem18.Location = new System.Drawing.Point(0, 106);
+            this.emptySpaceItem18.Location = new System.Drawing.Point(0, 104);
             this.emptySpaceItem18.Name = "emptySpaceItem18";
-            this.emptySpaceItem18.Size = new System.Drawing.Size(294, 446);
+            this.emptySpaceItem18.Size = new System.Drawing.Size(296, 448);
             this.emptySpaceItem18.TextSize = new System.Drawing.Size(0, 0);
             // 
             // layoutControlGroup7
@@ -6456,16 +6456,16 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.layoutControlItem191.Control = this.lcGlocom;
             this.layoutControlItem191.Location = new System.Drawing.Point(0, 0);
             this.layoutControlItem191.Name = "layoutControlItem90";
-            this.layoutControlItem191.Size = new System.Drawing.Size(615, 576);
+            this.layoutControlItem191.Size = new System.Drawing.Size(613, 576);
             this.layoutControlItem191.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem191.TextVisible = false;
             // 
             // layoutControlItem192
             // 
             this.layoutControlItem192.Control = this.layoutControl8;
-            this.layoutControlItem192.Location = new System.Drawing.Point(615, 0);
+            this.layoutControlItem192.Location = new System.Drawing.Point(613, 0);
             this.layoutControlItem192.Name = "layoutControlItem95";
-            this.layoutControlItem192.Size = new System.Drawing.Size(318, 576);
+            this.layoutControlItem192.Size = new System.Drawing.Size(320, 576);
             this.layoutControlItem192.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem192.TextVisible = false;
             // 
@@ -6528,7 +6528,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.lcPtMong.Margin = new System.Windows.Forms.Padding(2);
             this.lcPtMong.Name = "lcPtMong";
             this.lcPtMong.Root = this.layoutControlGroup8;
-            this.lcPtMong.Size = new System.Drawing.Size(612, 604);
+            this.lcPtMong.Size = new System.Drawing.Size(610, 604);
             this.lcPtMong.TabIndex = 0;
             this.lcPtMong.Text = "layoutControl10";
             // 
@@ -6549,7 +6549,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.checkEdit108.Margin = new System.Windows.Forms.Padding(2);
             this.checkEdit108.Name = "checkEdit108";
             this.checkEdit108.Properties.Caption = "";
-            this.checkEdit108.Size = new System.Drawing.Size(376, 19);
+            this.checkEdit108.Size = new System.Drawing.Size(374, 19);
             this.checkEdit108.StyleController = this.lcPtMong;
             this.checkEdit108.TabIndex = 104;
             this.checkEdit108.TabStop = false;
@@ -6560,14 +6560,14 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.labelControl20.Location = new System.Drawing.Point(12, 151);
             this.labelControl20.Margin = new System.Windows.Forms.Padding(2);
             this.labelControl20.Name = "labelControl20";
-            this.labelControl20.Size = new System.Drawing.Size(106, 13);
+            this.labelControl20.Size = new System.Drawing.Size(104, 13);
             this.labelControl20.StyleController = this.lcPtMong;
             this.labelControl20.TabIndex = 100;
             this.labelControl20.Text = "+ Lấy mảnh KM sát rìa:";
             // 
             // checkEdit71
             // 
-            this.checkEdit71.Location = new System.Drawing.Point(153, 12);
+            this.checkEdit71.Location = new System.Drawing.Point(151, 12);
             this.checkEdit71.Margin = new System.Windows.Forms.Padding(2);
             this.checkEdit71.Name = "checkEdit71";
             this.checkEdit71.Properties.Caption = "MT";
@@ -6581,13 +6581,13 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // 
             // checkEdit70
             // 
-            this.checkEdit70.Location = new System.Drawing.Point(181, 151);
+            this.checkEdit70.Location = new System.Drawing.Point(178, 151);
             this.checkEdit70.Margin = new System.Windows.Forms.Padding(2);
             this.checkEdit70.Name = "checkEdit70";
             this.checkEdit70.Properties.Caption = "Dưới";
             this.checkEdit70.Properties.CheckStyle = DevExpress.XtraEditors.Controls.CheckStyles.Radio;
             this.checkEdit70.Properties.RadioGroupIndex = -39;
-            this.checkEdit70.Size = new System.Drawing.Size(68, 19);
+            this.checkEdit70.Size = new System.Drawing.Size(67, 19);
             this.checkEdit70.StyleController = this.lcPtMong;
             this.checkEdit70.TabIndex = 97;
             this.checkEdit70.TabStop = false;
@@ -6595,13 +6595,13 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // 
             // checkEdit69
             // 
-            this.checkEdit69.Location = new System.Drawing.Point(122, 151);
+            this.checkEdit69.Location = new System.Drawing.Point(120, 151);
             this.checkEdit69.Margin = new System.Windows.Forms.Padding(2);
             this.checkEdit69.Name = "checkEdit69";
             this.checkEdit69.Properties.Caption = "Trên";
             this.checkEdit69.Properties.CheckStyle = DevExpress.XtraEditors.Controls.CheckStyles.Radio;
             this.checkEdit69.Properties.RadioGroupIndex = -39;
-            this.checkEdit69.Size = new System.Drawing.Size(55, 19);
+            this.checkEdit69.Size = new System.Drawing.Size(54, 19);
             this.checkEdit69.StyleController = this.lcPtMong;
             this.checkEdit69.TabIndex = 96;
             this.checkEdit69.TabStop = false;
@@ -6615,7 +6615,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.checkEdit3.Properties.Caption = "Mỡ";
             this.checkEdit3.Properties.CheckStyle = DevExpress.XtraEditors.Controls.CheckStyles.Radio;
             this.checkEdit3.Properties.RadioGroupIndex = -42;
-            this.checkEdit3.Size = new System.Drawing.Size(73, 19);
+            this.checkEdit3.Size = new System.Drawing.Size(71, 19);
             this.checkEdit3.StyleController = this.lcPtMong;
             this.checkEdit3.TabIndex = 84;
             this.checkEdit3.TabStop = false;
@@ -6623,7 +6623,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // 
             // textEdit27
             // 
-            this.textEdit27.Location = new System.Drawing.Point(315, 318);
+            this.textEdit27.Location = new System.Drawing.Point(313, 318);
             this.textEdit27.Margin = new System.Windows.Forms.Padding(2);
             this.textEdit27.Name = "textEdit27";
             this.textEdit27.Properties.Appearance.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold);
@@ -6639,7 +6639,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.textEdit29.Name = "textEdit29";
             this.textEdit29.Properties.Appearance.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold);
             this.textEdit29.Properties.Appearance.Options.UseFont = true;
-            this.textEdit29.Size = new System.Drawing.Size(515, 20);
+            this.textEdit29.Size = new System.Drawing.Size(513, 20);
             this.textEdit29.StyleController = this.lcPtMong;
             this.textEdit29.TabIndex = 73;
             // 
@@ -6650,7 +6650,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.textEdit30.Name = "textEdit30";
             this.textEdit30.Properties.Appearance.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold);
             this.textEdit30.Properties.Appearance.Options.UseFont = true;
-            this.textEdit30.Size = new System.Drawing.Size(499, 20);
+            this.textEdit30.Size = new System.Drawing.Size(497, 20);
             this.textEdit30.StyleController = this.lcPtMong;
             this.textEdit30.TabIndex = 45;
             // 
@@ -6660,20 +6660,20 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.checkEdit93.Margin = new System.Windows.Forms.Padding(2);
             this.checkEdit93.Name = "checkEdit93";
             this.checkEdit93.Properties.Caption = "";
-            this.checkEdit93.Size = new System.Drawing.Size(529, 19);
+            this.checkEdit93.Size = new System.Drawing.Size(527, 19);
             this.checkEdit93.StyleController = this.lcPtMong;
             this.checkEdit93.TabIndex = 36;
             this.checkEdit93.TabStop = false;
             // 
             // checkEdit96
             // 
-            this.checkEdit96.Location = new System.Drawing.Point(224, 199);
+            this.checkEdit96.Location = new System.Drawing.Point(222, 199);
             this.checkEdit96.Margin = new System.Windows.Forms.Padding(2);
             this.checkEdit96.Name = "checkEdit96";
             this.checkEdit96.Properties.Caption = "Vycryl7-O";
             this.checkEdit96.Properties.CheckStyle = DevExpress.XtraEditors.Controls.CheckStyles.Radio;
             this.checkEdit96.Properties.RadioGroupIndex = -40;
-            this.checkEdit96.Size = new System.Drawing.Size(71, 19);
+            this.checkEdit96.Size = new System.Drawing.Size(70, 19);
             this.checkEdit96.StyleController = this.lcPtMong;
             this.checkEdit96.TabIndex = 33;
             this.checkEdit96.TabStop = false;
@@ -6685,29 +6685,29 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.checkEdit97.Margin = new System.Windows.Forms.Padding(2);
             this.checkEdit97.Name = "checkEdit97";
             this.checkEdit97.Properties.Caption = "";
-            this.checkEdit97.Size = new System.Drawing.Size(28, 19);
+            this.checkEdit97.Size = new System.Drawing.Size(26, 19);
             this.checkEdit97.StyleController = this.lcPtMong;
             this.checkEdit97.TabIndex = 32;
             this.checkEdit97.TabStop = false;
             // 
             // checkEdit100
             // 
-            this.checkEdit100.Location = new System.Drawing.Point(146, 105);
+            this.checkEdit100.Location = new System.Drawing.Point(144, 105);
             this.checkEdit100.Margin = new System.Windows.Forms.Padding(2);
             this.checkEdit100.Name = "checkEdit100";
             this.checkEdit100.Properties.Caption = "Phân tích thân mộng";
-            this.checkEdit100.Size = new System.Drawing.Size(138, 19);
+            this.checkEdit100.Size = new System.Drawing.Size(137, 19);
             this.checkEdit100.StyleController = this.lcPtMong;
             this.checkEdit100.TabIndex = 29;
             this.checkEdit100.TabStop = false;
             // 
             // checkEdit101
             // 
-            this.checkEdit101.Location = new System.Drawing.Point(288, 105);
+            this.checkEdit101.Location = new System.Drawing.Point(285, 105);
             this.checkEdit101.Margin = new System.Windows.Forms.Padding(2);
             this.checkEdit101.Name = "checkEdit101";
             this.checkEdit101.Properties.Caption = "Đốt cầm máu";
-            this.checkEdit101.Size = new System.Drawing.Size(312, 19);
+            this.checkEdit101.Size = new System.Drawing.Size(313, 19);
             this.checkEdit101.StyleController = this.lcPtMong;
             this.checkEdit101.TabIndex = 28;
             this.checkEdit101.TabStop = false;
@@ -6715,22 +6715,22 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // labelControl26
             // 
             this.labelControl26.AutoSizeMode = DevExpress.XtraEditors.LabelAutoSizeMode.None;
-            this.labelControl26.Location = new System.Drawing.Point(492, 35);
+            this.labelControl26.Location = new System.Drawing.Point(489, 35);
             this.labelControl26.Margin = new System.Windows.Forms.Padding(2);
             this.labelControl26.Name = "labelControl26";
-            this.labelControl26.Size = new System.Drawing.Size(108, 13);
+            this.labelControl26.Size = new System.Drawing.Size(109, 13);
             this.labelControl26.StyleController = this.lcPtMong;
             this.labelControl26.TabIndex = 26;
             this.labelControl26.Text = "ml";
             // 
             // textEdit33
             // 
-            this.textEdit33.Location = new System.Drawing.Point(355, 35);
+            this.textEdit33.Location = new System.Drawing.Point(353, 35);
             this.textEdit33.Margin = new System.Windows.Forms.Padding(2);
             this.textEdit33.Name = "textEdit33";
             this.textEdit33.Properties.Appearance.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold);
             this.textEdit33.Properties.Appearance.Options.UseFont = true;
-            this.textEdit33.Size = new System.Drawing.Size(133, 20);
+            this.textEdit33.Size = new System.Drawing.Size(132, 20);
             this.textEdit33.StyleController = this.lcPtMong;
             this.textEdit33.TabIndex = 25;
             // 
@@ -6742,7 +6742,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.checkEdit103.Properties.Caption = "Tê tại mặt";
             this.checkEdit103.Properties.CheckStyle = DevExpress.XtraEditors.Controls.CheckStyles.Radio;
             this.checkEdit103.Properties.RadioGroupIndex = -38;
-            this.checkEdit103.Size = new System.Drawing.Size(73, 19);
+            this.checkEdit103.Size = new System.Drawing.Size(71, 19);
             this.checkEdit103.StyleController = this.lcPtMong;
             this.checkEdit103.TabIndex = 24;
             this.checkEdit103.TabStop = false;
@@ -6790,7 +6790,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // 
             // checkEdit109
             // 
-            this.checkEdit109.Location = new System.Drawing.Point(265, 247);
+            this.checkEdit109.Location = new System.Drawing.Point(263, 247);
             this.checkEdit109.Margin = new System.Windows.Forms.Padding(2);
             this.checkEdit109.Name = "checkEdit109";
             this.checkEdit109.Properties.Caption = "Cắt vào cở trực";
@@ -6822,7 +6822,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.checkEdit112.Margin = new System.Windows.Forms.Padding(2);
             this.checkEdit112.Name = "checkEdit112";
             this.checkEdit112.Properties.Caption = "";
-            this.checkEdit112.Size = new System.Drawing.Size(510, 19);
+            this.checkEdit112.Size = new System.Drawing.Size(508, 19);
             this.checkEdit112.StyleController = this.lcPtMong;
             this.checkEdit112.TabIndex = 15;
             this.checkEdit112.TabStop = false;
@@ -6835,7 +6835,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.checkEdit113.Properties.Caption = "Giác mạc";
             this.checkEdit113.Properties.CheckStyle = DevExpress.XtraEditors.Controls.CheckStyles.Radio;
             this.checkEdit113.Properties.RadioGroupIndex = -41;
-            this.checkEdit113.Size = new System.Drawing.Size(72, 19);
+            this.checkEdit113.Size = new System.Drawing.Size(70, 19);
             this.checkEdit113.StyleController = this.lcPtMong;
             this.checkEdit113.TabIndex = 13;
             this.checkEdit113.TabStop = false;
@@ -6849,7 +6849,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.checkEdit115.Properties.Caption = "Nylon 10-O";
             this.checkEdit115.Properties.CheckStyle = DevExpress.XtraEditors.Controls.CheckStyles.Radio;
             this.checkEdit115.Properties.RadioGroupIndex = -40;
-            this.checkEdit115.Size = new System.Drawing.Size(93, 19);
+            this.checkEdit115.Size = new System.Drawing.Size(91, 19);
             this.checkEdit115.StyleController = this.lcPtMong;
             this.checkEdit115.TabIndex = 27;
             this.checkEdit115.TabStop = false;
@@ -6863,7 +6863,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.checkEdit64.Properties.Caption = "MP";
             this.checkEdit64.Properties.CheckStyle = DevExpress.XtraEditors.Controls.CheckStyles.Radio;
             this.checkEdit64.Properties.RadioGroupIndex = -37;
-            this.checkEdit64.Size = new System.Drawing.Size(64, 19);
+            this.checkEdit64.Size = new System.Drawing.Size(62, 19);
             this.checkEdit64.StyleController = this.lcPtMong;
             this.checkEdit64.TabIndex = 23;
             this.checkEdit64.TabStop = false;
@@ -6875,7 +6875,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.checkEdit68.Margin = new System.Windows.Forms.Padding(2);
             this.checkEdit68.Name = "checkEdit68";
             this.checkEdit68.Properties.Caption = "";
-            this.checkEdit68.Size = new System.Drawing.Size(457, 19);
+            this.checkEdit68.Size = new System.Drawing.Size(455, 19);
             this.checkEdit68.StyleController = this.lcPtMong;
             this.checkEdit68.TabIndex = 32;
             this.checkEdit68.TabStop = false;
@@ -6887,17 +6887,17 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             0,
             0,
             0});
-            this.spinEdit19.Location = new System.Drawing.Point(339, 199);
+            this.spinEdit19.Location = new System.Drawing.Point(336, 199);
             this.spinEdit19.Margin = new System.Windows.Forms.Padding(2);
             this.spinEdit19.Name = "spinEdit19";
             this.spinEdit19.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
             this.spinEdit19.Properties.Appearance.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold);
             this.spinEdit19.Properties.Appearance.Options.UseFont = true;
             this.spinEdit19.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo, "", -1, true, false, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject9, serializableAppearanceObject10, serializableAppearanceObject11, serializableAppearanceObject12, "", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo, "", -1, true, false, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject13, serializableAppearanceObject14, serializableAppearanceObject15, serializableAppearanceObject16, "", null, null, true)});
             this.spinEdit19.Properties.EditValueChangedFiringMode = DevExpress.XtraEditors.Controls.EditValueChangedFiringMode.Default;
             this.spinEdit19.Properties.Mask.MaskType = DevExpress.XtraEditors.Mask.MaskType.None;
-            this.spinEdit19.Size = new System.Drawing.Size(108, 20);
+            this.spinEdit19.Size = new System.Drawing.Size(107, 20);
             this.spinEdit19.StyleController = this.lcPtMong;
             this.spinEdit19.TabIndex = 101;
             // 
@@ -6915,17 +6915,17 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.spinEdit31.Properties.Appearance.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold);
             this.spinEdit31.Properties.Appearance.Options.UseFont = true;
             this.spinEdit31.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo, "", -1, true, false, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject13, serializableAppearanceObject14, serializableAppearanceObject15, serializableAppearanceObject16, "", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo, "", -1, true, false, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject17, serializableAppearanceObject18, serializableAppearanceObject19, serializableAppearanceObject20, "", null, null, true)});
             this.spinEdit31.Properties.EditValueChangedFiringMode = DevExpress.XtraEditors.Controls.EditValueChangedFiringMode.Default;
             this.spinEdit31.Properties.Mask.MaskType = DevExpress.XtraEditors.Mask.MaskType.None;
-            this.spinEdit31.Size = new System.Drawing.Size(149, 20);
+            this.spinEdit31.Size = new System.Drawing.Size(147, 20);
             this.spinEdit31.StyleController = this.lcPtMong;
             this.spinEdit31.TabIndex = 43;
             // 
             // txtEdit32
             // 
             this.txtEdit32.EditValue = "";
-            this.txtEdit32.Location = new System.Drawing.Point(338, 151);
+            this.txtEdit32.Location = new System.Drawing.Point(334, 151);
             this.txtEdit32.Margin = new System.Windows.Forms.Padding(2);
             this.txtEdit32.Name = "txtEdit32";
             this.txtEdit32.Properties.Appearance.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold);
@@ -6942,7 +6942,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.txtEdit21.Name = "txtEdit21";
             this.txtEdit21.Properties.Appearance.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold);
             this.txtEdit21.Properties.Appearance.Options.UseFont = true;
-            this.txtEdit21.Size = new System.Drawing.Size(114, 20);
+            this.txtEdit21.Size = new System.Drawing.Size(112, 20);
             this.txtEdit21.StyleController = this.lcPtMong;
             this.txtEdit21.TabIndex = 94;
             // 
@@ -6991,7 +6991,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.layoutControlGroup8.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup8.Name = "Root";
             this.layoutControlGroup8.OptionsItemText.TextToControlDistance = 4;
-            this.layoutControlGroup8.Size = new System.Drawing.Size(612, 604);
+            this.layoutControlGroup8.Size = new System.Drawing.Size(610, 604);
             this.layoutControlGroup8.TextVisible = false;
             // 
             // layoutControlItem184
@@ -7010,16 +7010,16 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.layoutControlItem186.Control = this.checkEdit103;
             this.layoutControlItem186.Location = new System.Drawing.Point(161, 23);
             this.layoutControlItem186.Name = "layoutControlItem21";
-            this.layoutControlItem186.Size = new System.Drawing.Size(77, 24);
+            this.layoutControlItem186.Size = new System.Drawing.Size(75, 24);
             this.layoutControlItem186.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem186.TextVisible = false;
             // 
             // layoutControlItem205
             // 
             this.layoutControlItem205.Control = this.checkEdit101;
-            this.layoutControlItem205.Location = new System.Drawing.Point(276, 93);
+            this.layoutControlItem205.Location = new System.Drawing.Point(273, 93);
             this.layoutControlItem205.Name = "layoutControlItem25";
-            this.layoutControlItem205.Size = new System.Drawing.Size(316, 23);
+            this.layoutControlItem205.Size = new System.Drawing.Size(317, 23);
             this.layoutControlItem205.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem205.TextVisible = false;
             // 
@@ -7028,7 +7028,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.layoutControlItem209.Control = this.checkEdit93;
             this.layoutControlItem209.Location = new System.Drawing.Point(0, 330);
             this.layoutControlItem209.Name = "layoutControlItem34";
-            this.layoutControlItem209.Size = new System.Drawing.Size(592, 23);
+            this.layoutControlItem209.Size = new System.Drawing.Size(590, 23);
             this.layoutControlItem209.Text = "+ Băng ép:";
             this.layoutControlItem209.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.AutoSize;
             this.layoutControlItem209.TextSize = new System.Drawing.Size(54, 13);
@@ -7040,7 +7040,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.layoutControlItem106.CustomizationFormText = "+ Phương pháp vô cảm:";
             this.layoutControlItem106.Location = new System.Drawing.Point(0, 0);
             this.layoutControlItem106.Name = "layoutControlItem106";
-            this.layoutControlItem106.Size = new System.Drawing.Size(141, 23);
+            this.layoutControlItem106.Size = new System.Drawing.Size(139, 23);
             this.layoutControlItem106.Text = "+ Phẫu thuật:";
             this.layoutControlItem106.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.AutoSize;
             this.layoutControlItem106.TextSize = new System.Drawing.Size(68, 13);
@@ -7052,7 +7052,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.layoutControlItem230.CustomizationFormText = "1. Cố định nhẫn cầu:";
             this.layoutControlItem230.Location = new System.Drawing.Point(0, 187);
             this.layoutControlItem230.Name = "layoutControlItem26";
-            this.layoutControlItem230.Size = new System.Drawing.Size(212, 24);
+            this.layoutControlItem230.Size = new System.Drawing.Size(210, 24);
             this.layoutControlItem230.Text = "+ Khâu mảnh ghép chỉ:";
             this.layoutControlItem230.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.AutoSize;
             this.layoutControlItem230.TextSize = new System.Drawing.Size(111, 13);
@@ -7061,9 +7061,9 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // layoutControlItem232
             // 
             this.layoutControlItem232.Control = this.checkEdit96;
-            this.layoutControlItem232.Location = new System.Drawing.Point(212, 187);
+            this.layoutControlItem232.Location = new System.Drawing.Point(210, 187);
             this.layoutControlItem232.Name = "layoutControlItem31";
-            this.layoutControlItem232.Size = new System.Drawing.Size(75, 24);
+            this.layoutControlItem232.Size = new System.Drawing.Size(74, 24);
             this.layoutControlItem232.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem232.TextVisible = false;
             // 
@@ -7072,7 +7072,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.layoutControlItem228.Control = this.checkEdit97;
             this.layoutControlItem228.Location = new System.Drawing.Point(0, 93);
             this.layoutControlItem228.Name = "layoutControlItem30";
-            this.layoutControlItem228.Size = new System.Drawing.Size(134, 23);
+            this.layoutControlItem228.Size = new System.Drawing.Size(132, 23);
             this.layoutControlItem228.Text = "+ Cắt rời đầu mộng:";
             this.layoutControlItem228.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.AutoSize;
             this.layoutControlItem228.TextSize = new System.Drawing.Size(97, 13);
@@ -7083,9 +7083,9 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.layoutControlItem202.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem202.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem202.Control = this.textEdit33;
-            this.layoutControlItem202.Location = new System.Drawing.Point(238, 23);
+            this.layoutControlItem202.Location = new System.Drawing.Point(236, 23);
             this.layoutControlItem202.Name = "layoutControlItem22";
-            this.layoutControlItem202.Size = new System.Drawing.Size(242, 24);
+            this.layoutControlItem202.Size = new System.Drawing.Size(241, 24);
             this.layoutControlItem202.Text = "Loại thuốc tê:";
             this.layoutControlItem202.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem202.TextSize = new System.Drawing.Size(100, 20);
@@ -7094,25 +7094,25 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // layoutControlItem203
             // 
             this.layoutControlItem203.Control = this.labelControl26;
-            this.layoutControlItem203.Location = new System.Drawing.Point(480, 23);
+            this.layoutControlItem203.Location = new System.Drawing.Point(477, 23);
             this.layoutControlItem203.Name = "layoutControlItem23";
-            this.layoutControlItem203.Size = new System.Drawing.Size(112, 24);
+            this.layoutControlItem203.Size = new System.Drawing.Size(113, 24);
             this.layoutControlItem203.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem203.TextVisible = false;
             // 
             // layoutControlItem227
             // 
             this.layoutControlItem227.Control = this.checkEdit100;
-            this.layoutControlItem227.Location = new System.Drawing.Point(134, 93);
+            this.layoutControlItem227.Location = new System.Drawing.Point(132, 93);
             this.layoutControlItem227.Name = "layoutControlItem27";
-            this.layoutControlItem227.Size = new System.Drawing.Size(142, 23);
+            this.layoutControlItem227.Size = new System.Drawing.Size(141, 23);
             this.layoutControlItem227.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem227.TextVisible = false;
             // 
             // layoutControlItem196
             // 
             this.layoutControlItem196.Control = this.checkEdit71;
-            this.layoutControlItem196.Location = new System.Drawing.Point(141, 0);
+            this.layoutControlItem196.Location = new System.Drawing.Point(139, 0);
             this.layoutControlItem196.Name = "layoutControlItem196";
             this.layoutControlItem196.Size = new System.Drawing.Size(451, 23);
             this.layoutControlItem196.TextSize = new System.Drawing.Size(0, 0);
@@ -7145,14 +7145,14 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.layoutControlItem224.Control = this.checkEdit113;
             this.layoutControlItem224.Location = new System.Drawing.Point(177, 235);
             this.layoutControlItem224.Name = "layoutControlItem10";
-            this.layoutControlItem224.Size = new System.Drawing.Size(76, 23);
+            this.layoutControlItem224.Size = new System.Drawing.Size(74, 23);
             this.layoutControlItem224.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem224.TextVisible = false;
             // 
             // layoutControlItem171
             // 
             this.layoutControlItem171.Control = this.checkEdit109;
-            this.layoutControlItem171.Location = new System.Drawing.Point(253, 235);
+            this.layoutControlItem171.Location = new System.Drawing.Point(251, 235);
             this.layoutControlItem171.Name = "layoutControlItem15";
             this.layoutControlItem171.Size = new System.Drawing.Size(339, 23);
             this.layoutControlItem171.TextSize = new System.Drawing.Size(0, 0);
@@ -7161,18 +7161,18 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // layoutControlItem195
             // 
             this.layoutControlItem195.Control = this.checkEdit70;
-            this.layoutControlItem195.Location = new System.Drawing.Point(169, 139);
+            this.layoutControlItem195.Location = new System.Drawing.Point(166, 139);
             this.layoutControlItem195.Name = "layoutControlItem195";
-            this.layoutControlItem195.Size = new System.Drawing.Size(72, 24);
+            this.layoutControlItem195.Size = new System.Drawing.Size(71, 24);
             this.layoutControlItem195.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem195.TextVisible = false;
             // 
             // layoutControlItem194
             // 
             this.layoutControlItem194.Control = this.checkEdit69;
-            this.layoutControlItem194.Location = new System.Drawing.Point(110, 139);
+            this.layoutControlItem194.Location = new System.Drawing.Point(108, 139);
             this.layoutControlItem194.Name = "layoutControlItem194";
-            this.layoutControlItem194.Size = new System.Drawing.Size(59, 24);
+            this.layoutControlItem194.Size = new System.Drawing.Size(58, 24);
             this.layoutControlItem194.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem194.TextVisible = false;
             // 
@@ -7181,7 +7181,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.layoutControlItem225.Control = this.checkEdit112;
             this.layoutControlItem225.Location = new System.Drawing.Point(0, 47);
             this.layoutControlItem225.Name = "layoutControlItem12";
-            this.layoutControlItem225.Size = new System.Drawing.Size(592, 23);
+            this.layoutControlItem225.Size = new System.Drawing.Size(590, 23);
             this.layoutControlItem225.Text = "+ Đặt vành mi:";
             this.layoutControlItem225.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.AutoSize;
             this.layoutControlItem225.TextSize = new System.Drawing.Size(73, 13);
@@ -7192,7 +7192,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.layoutControlItem147.Control = this.checkEdit108;
             this.layoutControlItem147.Location = new System.Drawing.Point(0, 70);
             this.layoutControlItem147.Name = "layoutControlItem147";
-            this.layoutControlItem147.Size = new System.Drawing.Size(592, 23);
+            this.layoutControlItem147.Size = new System.Drawing.Size(590, 23);
             this.layoutControlItem147.Text = "+ Tiêm thuốc tê Lidocaine vùng thân mộng:";
             this.layoutControlItem147.TextSize = new System.Drawing.Size(208, 13);
             // 
@@ -7201,7 +7201,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.layoutControlItem198.Control = this.labelControl20;
             this.layoutControlItem198.Location = new System.Drawing.Point(0, 139);
             this.layoutControlItem198.Name = "layoutControlItem198";
-            this.layoutControlItem198.Size = new System.Drawing.Size(110, 24);
+            this.layoutControlItem198.Size = new System.Drawing.Size(108, 24);
             this.layoutControlItem198.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem198.TextVisible = false;
             // 
@@ -7211,7 +7211,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.layoutControlItem148.CustomizationFormText = "+ Cắt rời đầu mộng:";
             this.layoutControlItem148.Location = new System.Drawing.Point(0, 116);
             this.layoutControlItem148.Name = "layoutControlItem148";
-            this.layoutControlItem148.Size = new System.Drawing.Size(592, 23);
+            this.layoutControlItem148.Size = new System.Drawing.Size(590, 23);
             this.layoutControlItem148.Text = "+ Gọt giác mạc đầu mộng:";
             this.layoutControlItem148.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.AutoSize;
             this.layoutControlItem148.TextSize = new System.Drawing.Size(126, 13);
@@ -7222,7 +7222,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.layoutControlItem233.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem233.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem233.Control = this.txtEdit32;
-            this.layoutControlItem233.Location = new System.Drawing.Point(241, 139);
+            this.layoutControlItem233.Location = new System.Drawing.Point(237, 139);
             this.layoutControlItem233.Name = "layoutControlItem39";
             this.layoutControlItem233.Size = new System.Drawing.Size(192, 24);
             this.layoutControlItem233.Text = "Kích thước:";
@@ -7233,9 +7233,9 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // emptySpaceItem10
             // 
             this.emptySpaceItem10.AllowHotTrack = false;
-            this.emptySpaceItem10.Location = new System.Drawing.Point(433, 139);
+            this.emptySpaceItem10.Location = new System.Drawing.Point(429, 139);
             this.emptySpaceItem10.Name = "emptySpaceItem2";
-            this.emptySpaceItem10.Size = new System.Drawing.Size(159, 24);
+            this.emptySpaceItem10.Size = new System.Drawing.Size(161, 24);
             this.emptySpaceItem10.TextSize = new System.Drawing.Size(0, 0);
             // 
             // emptySpaceItem14
@@ -7243,7 +7243,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.emptySpaceItem14.AllowHotTrack = false;
             this.emptySpaceItem14.Location = new System.Drawing.Point(0, 353);
             this.emptySpaceItem14.Name = "emptySpaceItem14";
-            this.emptySpaceItem14.Size = new System.Drawing.Size(592, 231);
+            this.emptySpaceItem14.Size = new System.Drawing.Size(590, 231);
             this.emptySpaceItem14.TextSize = new System.Drawing.Size(0, 0);
             // 
             // layoutControlItem177
@@ -7262,7 +7262,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.layoutControlItem226.Control = this.txtEdit21;
             this.layoutControlItem226.Location = new System.Drawing.Point(129, 163);
             this.layoutControlItem226.Name = "layoutControlItem93";
-            this.layoutControlItem226.Size = new System.Drawing.Size(177, 24);
+            this.layoutControlItem226.Size = new System.Drawing.Size(175, 24);
             this.layoutControlItem226.Text = "Kích thước:";
             this.layoutControlItem226.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.AutoSize;
             this.layoutControlItem226.TextSize = new System.Drawing.Size(54, 13);
@@ -7271,9 +7271,9 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // layoutControlItem199
             // 
             this.layoutControlItem199.Control = this.spinEdit19;
-            this.layoutControlItem199.Location = new System.Drawing.Point(287, 187);
+            this.layoutControlItem199.Location = new System.Drawing.Point(284, 187);
             this.layoutControlItem199.Name = "layoutControlItem199";
-            this.layoutControlItem199.Size = new System.Drawing.Size(152, 24);
+            this.layoutControlItem199.Size = new System.Drawing.Size(151, 24);
             this.layoutControlItem199.Text = "Số mũi:";
             this.layoutControlItem199.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.AutoSize;
             this.layoutControlItem199.TextSize = new System.Drawing.Size(35, 13);
@@ -7295,7 +7295,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.layoutControlItem212.Control = this.spinEdit31;
             this.layoutControlItem212.Location = new System.Drawing.Point(204, 211);
             this.layoutControlItem212.Name = "layoutControlItem41";
-            this.layoutControlItem212.Size = new System.Drawing.Size(193, 24);
+            this.layoutControlItem212.Size = new System.Drawing.Size(191, 24);
             this.layoutControlItem212.Text = "Số mũi:";
             this.layoutControlItem212.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.AutoSize;
             this.layoutControlItem212.TextSize = new System.Drawing.Size(35, 13);
@@ -7308,7 +7308,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.layoutControlItem244.Control = this.textEdit29;
             this.layoutControlItem244.Location = new System.Drawing.Point(0, 258);
             this.layoutControlItem244.Name = "layoutControlItem72";
-            this.layoutControlItem244.Size = new System.Drawing.Size(592, 24);
+            this.layoutControlItem244.Size = new System.Drawing.Size(590, 24);
             this.layoutControlItem244.Text = "+ Cách xử trí:";
             this.layoutControlItem244.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.AutoSize;
             this.layoutControlItem244.TextSize = new System.Drawing.Size(68, 13);
@@ -7319,7 +7319,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.layoutControlItem245.Control = this.textEdit30;
             this.layoutControlItem245.Location = new System.Drawing.Point(0, 282);
             this.layoutControlItem245.Name = "layoutControlItem44";
-            this.layoutControlItem245.Size = new System.Drawing.Size(592, 24);
+            this.layoutControlItem245.Size = new System.Drawing.Size(590, 24);
             this.layoutControlItem245.Text = "+ Diễn biến khác:";
             this.layoutControlItem245.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.AutoSize;
             this.layoutControlItem245.TextSize = new System.Drawing.Size(84, 13);
@@ -7330,7 +7330,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.layoutControlItem248.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem248.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem248.Control = this.textEdit27;
-            this.layoutControlItem248.Location = new System.Drawing.Point(218, 306);
+            this.layoutControlItem248.Location = new System.Drawing.Point(216, 306);
             this.layoutControlItem248.Name = "layoutControlItem74";
             this.layoutControlItem248.Size = new System.Drawing.Size(374, 24);
             this.layoutControlItem248.Text = "Loại thuốc:";
@@ -7343,14 +7343,14 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.layoutControlItem238.Control = this.checkEdit3;
             this.layoutControlItem238.Location = new System.Drawing.Point(141, 306);
             this.layoutControlItem238.Name = "layoutControlItem83";
-            this.layoutControlItem238.Size = new System.Drawing.Size(77, 24);
+            this.layoutControlItem238.Size = new System.Drawing.Size(75, 24);
             this.layoutControlItem238.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem238.TextVisible = false;
             // 
             // emptySpaceItem7
             // 
             this.emptySpaceItem7.AllowHotTrack = false;
-            this.emptySpaceItem7.Location = new System.Drawing.Point(306, 163);
+            this.emptySpaceItem7.Location = new System.Drawing.Point(304, 163);
             this.emptySpaceItem7.Name = "emptySpaceItem7";
             this.emptySpaceItem7.Size = new System.Drawing.Size(286, 24);
             this.emptySpaceItem7.TextSize = new System.Drawing.Size(0, 0);
@@ -7358,15 +7358,15 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // emptySpaceItem15
             // 
             this.emptySpaceItem15.AllowHotTrack = false;
-            this.emptySpaceItem15.Location = new System.Drawing.Point(439, 187);
+            this.emptySpaceItem15.Location = new System.Drawing.Point(435, 187);
             this.emptySpaceItem15.Name = "emptySpaceItem15";
-            this.emptySpaceItem15.Size = new System.Drawing.Size(153, 24);
+            this.emptySpaceItem15.Size = new System.Drawing.Size(155, 24);
             this.emptySpaceItem15.TextSize = new System.Drawing.Size(0, 0);
             // 
             // emptySpaceItem16
             // 
             this.emptySpaceItem16.AllowHotTrack = false;
-            this.emptySpaceItem16.Location = new System.Drawing.Point(397, 211);
+            this.emptySpaceItem16.Location = new System.Drawing.Point(395, 211);
             this.emptySpaceItem16.Name = "emptySpaceItem16";
             this.emptySpaceItem16.Size = new System.Drawing.Size(195, 24);
             this.emptySpaceItem16.TextSize = new System.Drawing.Size(0, 0);
@@ -7374,11 +7374,11 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // layoutControl11
             // 
             this.layoutControl11.Controls.Add(this.pictureEdit6);
-            this.layoutControl11.Location = new System.Drawing.Point(618, 2);
+            this.layoutControl11.Location = new System.Drawing.Point(616, 2);
             this.layoutControl11.Margin = new System.Windows.Forms.Padding(2);
             this.layoutControl11.Name = "layoutControl11";
             this.layoutControl11.Root = this.layoutControlGroup9;
-            this.layoutControl11.Size = new System.Drawing.Size(313, 604);
+            this.layoutControl11.Size = new System.Drawing.Size(315, 604);
             this.layoutControl11.TabIndex = 5;
             this.layoutControl11.Text = "layoutControl11";
             // 
@@ -7390,7 +7390,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.pictureEdit6.Name = "pictureEdit6";
             this.pictureEdit6.Properties.ReadOnly = true;
             this.pictureEdit6.Properties.ShowCameraMenuItem = DevExpress.XtraEditors.Controls.CameraMenuItemVisibility.Auto;
-            this.pictureEdit6.Size = new System.Drawing.Size(289, 144);
+            this.pictureEdit6.Size = new System.Drawing.Size(291, 142);
             this.pictureEdit6.StyleController = this.layoutControl11;
             this.pictureEdit6.TabIndex = 97;
             // 
@@ -7404,7 +7404,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.layoutControlGroup9.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup9.Name = "layoutControlGroup3";
             this.layoutControlGroup9.OptionsItemText.TextToControlDistance = 4;
-            this.layoutControlGroup9.Size = new System.Drawing.Size(313, 604);
+            this.layoutControlGroup9.Size = new System.Drawing.Size(315, 604);
             this.layoutControlGroup9.TextVisible = false;
             // 
             // layoutControlItem265
@@ -7412,16 +7412,16 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.layoutControlItem265.Control = this.pictureEdit6;
             this.layoutControlItem265.Location = new System.Drawing.Point(0, 0);
             this.layoutControlItem265.Name = "layoutControlItem98";
-            this.layoutControlItem265.Size = new System.Drawing.Size(293, 148);
+            this.layoutControlItem265.Size = new System.Drawing.Size(295, 146);
             this.layoutControlItem265.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem265.TextVisible = false;
             // 
             // emptySpaceItem21
             // 
             this.emptySpaceItem21.AllowHotTrack = false;
-            this.emptySpaceItem21.Location = new System.Drawing.Point(0, 148);
+            this.emptySpaceItem21.Location = new System.Drawing.Point(0, 146);
             this.emptySpaceItem21.Name = "emptySpaceItem21";
-            this.emptySpaceItem21.Size = new System.Drawing.Size(293, 436);
+            this.emptySpaceItem21.Size = new System.Drawing.Size(295, 438);
             this.emptySpaceItem21.TextSize = new System.Drawing.Size(0, 0);
             // 
             // layoutControlGroup10
@@ -7443,16 +7443,16 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.layoutControlItem267.Control = this.lcPtMong;
             this.layoutControlItem267.Location = new System.Drawing.Point(0, 0);
             this.layoutControlItem267.Name = "layoutControlItem90";
-            this.layoutControlItem267.Size = new System.Drawing.Size(616, 608);
+            this.layoutControlItem267.Size = new System.Drawing.Size(614, 608);
             this.layoutControlItem267.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem267.TextVisible = false;
             // 
             // layoutControlItem268
             // 
             this.layoutControlItem268.Control = this.layoutControl11;
-            this.layoutControlItem268.Location = new System.Drawing.Point(616, 0);
+            this.layoutControlItem268.Location = new System.Drawing.Point(614, 0);
             this.layoutControlItem268.Name = "layoutControlItem95";
-            this.layoutControlItem268.Size = new System.Drawing.Size(317, 608);
+            this.layoutControlItem268.Size = new System.Drawing.Size(319, 608);
             this.layoutControlItem268.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem268.TextVisible = false;
             // 
@@ -7540,7 +7540,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.lcPtSupMi.Margin = new System.Windows.Forms.Padding(2);
             this.lcPtSupMi.Name = "lcPtSupMi";
             this.lcPtSupMi.Root = this.layoutControlGroup11;
-            this.lcPtSupMi.Size = new System.Drawing.Size(615, 604);
+            this.lcPtSupMi.Size = new System.Drawing.Size(613, 604);
             this.lcPtSupMi.TabIndex = 0;
             this.lcPtSupMi.Text = "layoutControl13";
             // 
@@ -7550,7 +7550,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.labelControl53.Location = new System.Drawing.Point(12, 289);
             this.labelControl53.Margin = new System.Windows.Forms.Padding(2);
             this.labelControl53.Name = "labelControl53";
-            this.labelControl53.Size = new System.Drawing.Size(591, 13);
+            this.labelControl53.Size = new System.Drawing.Size(589, 13);
             this.labelControl53.StyleController = this.lcPtSupMi;
             this.labelControl53.TabIndex = 95;
             this.labelControl53.Text = "+ Bộc lộ sụn mi trên:";
@@ -7562,7 +7562,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.textEdit24.Name = "textEdit24";
             this.textEdit24.Properties.Appearance.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold);
             this.textEdit24.Properties.Appearance.Options.UseFont = true;
-            this.textEdit24.Size = new System.Drawing.Size(403, 20);
+            this.textEdit24.Size = new System.Drawing.Size(401, 20);
             this.textEdit24.StyleController = this.lcPtSupMi;
             this.textEdit24.TabIndex = 81;
             // 
@@ -7573,14 +7573,14 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.textEdit25.Name = "textEdit25";
             this.textEdit25.Properties.Appearance.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold);
             this.textEdit25.Properties.Appearance.Options.UseFont = true;
-            this.textEdit25.Size = new System.Drawing.Size(174, 20);
+            this.textEdit25.Size = new System.Drawing.Size(172, 20);
             this.textEdit25.StyleController = this.lcPtSupMi;
             this.textEdit25.TabIndex = 80;
             // 
             // labelControl19
             // 
             this.labelControl19.AutoSizeMode = DevExpress.XtraEditors.LabelAutoSizeMode.None;
-            this.labelControl19.Location = new System.Drawing.Point(242, 493);
+            this.labelControl19.Location = new System.Drawing.Point(240, 493);
             this.labelControl19.Margin = new System.Windows.Forms.Padding(2);
             this.labelControl19.Name = "labelControl19";
             this.labelControl19.Size = new System.Drawing.Size(361, 13);
@@ -7591,7 +7591,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // labelControl21
             // 
             this.labelControl21.AutoSizeMode = DevExpress.XtraEditors.LabelAutoSizeMode.None;
-            this.labelControl21.Location = new System.Drawing.Point(377, 352);
+            this.labelControl21.Location = new System.Drawing.Point(373, 352);
             this.labelControl21.Margin = new System.Windows.Forms.Padding(2);
             this.labelControl21.Name = "labelControl21";
             this.labelControl21.Size = new System.Drawing.Size(37, 13);
@@ -7612,7 +7612,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // 
             // checkEdit80
             // 
-            this.checkEdit80.Location = new System.Drawing.Point(285, 446);
+            this.checkEdit80.Location = new System.Drawing.Point(283, 446);
             this.checkEdit80.Margin = new System.Windows.Forms.Padding(2);
             this.checkEdit80.Name = "checkEdit80";
             this.checkEdit80.Properties.Caption = "Có";
@@ -7640,13 +7640,13 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // 
             // checkEdit84
             // 
-            this.checkEdit84.Location = new System.Drawing.Point(145, 399);
+            this.checkEdit84.Location = new System.Drawing.Point(142, 399);
             this.checkEdit84.Margin = new System.Windows.Forms.Padding(2);
             this.checkEdit84.Name = "checkEdit84";
             this.checkEdit84.Properties.Caption = "Bằng chỉ";
             this.checkEdit84.Properties.CheckStyle = DevExpress.XtraEditors.Controls.CheckStyles.Radio;
             this.checkEdit84.Properties.RadioGroupIndex = -54;
-            this.checkEdit84.Size = new System.Drawing.Size(93, 19);
+            this.checkEdit84.Size = new System.Drawing.Size(92, 19);
             this.checkEdit84.StyleController = this.lcPtSupMi;
             this.checkEdit84.TabIndex = 62;
             this.checkEdit84.TabStop = false;
@@ -7660,7 +7660,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.checkEdit85.Properties.Caption = "Có";
             this.checkEdit85.Properties.CheckStyle = DevExpress.XtraEditors.Controls.CheckStyles.Radio;
             this.checkEdit85.Properties.RadioGroupIndex = -55;
-            this.checkEdit85.Size = new System.Drawing.Size(82, 19);
+            this.checkEdit85.Size = new System.Drawing.Size(80, 19);
             this.checkEdit85.StyleController = this.lcPtSupMi;
             this.checkEdit85.TabIndex = 61;
             this.checkEdit85.TabStop = false;
@@ -7674,7 +7674,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.checkEdit86.Properties.Caption = "Không";
             this.checkEdit86.Properties.CheckStyle = DevExpress.XtraEditors.Controls.CheckStyles.Radio;
             this.checkEdit86.Properties.RadioGroupIndex = -56;
-            this.checkEdit86.Size = new System.Drawing.Size(61, 19);
+            this.checkEdit86.Size = new System.Drawing.Size(59, 19);
             this.checkEdit86.StyleController = this.lcPtSupMi;
             this.checkEdit86.TabIndex = 60;
             this.checkEdit86.TabStop = false;
@@ -7682,13 +7682,13 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // 
             // checkEdit87
             // 
-            this.checkEdit87.Location = new System.Drawing.Point(25, 399);
+            this.checkEdit87.Location = new System.Drawing.Point(23, 399);
             this.checkEdit87.Margin = new System.Windows.Forms.Padding(2);
             this.checkEdit87.Name = "checkEdit87";
             this.checkEdit87.Properties.Caption = "Cân cơ đùi";
             this.checkEdit87.Properties.CheckStyle = DevExpress.XtraEditors.Controls.CheckStyles.Radio;
             this.checkEdit87.Properties.RadioGroupIndex = -54;
-            this.checkEdit87.Size = new System.Drawing.Size(116, 19);
+            this.checkEdit87.Size = new System.Drawing.Size(115, 19);
             this.checkEdit87.StyleController = this.lcPtSupMi;
             this.checkEdit87.TabIndex = 59;
             this.checkEdit87.TabStop = false;
@@ -7696,13 +7696,13 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // 
             // checkEdit88
             // 
-            this.checkEdit88.Location = new System.Drawing.Point(242, 399);
+            this.checkEdit88.Location = new System.Drawing.Point(238, 399);
             this.checkEdit88.Margin = new System.Windows.Forms.Padding(2);
             this.checkEdit88.Name = "checkEdit88";
             this.checkEdit88.Properties.Caption = "Bằng silicon";
             this.checkEdit88.Properties.CheckStyle = DevExpress.XtraEditors.Controls.CheckStyles.Radio;
             this.checkEdit88.Properties.RadioGroupIndex = -54;
-            this.checkEdit88.Size = new System.Drawing.Size(361, 19);
+            this.checkEdit88.Size = new System.Drawing.Size(363, 19);
             this.checkEdit88.StyleController = this.lcPtSupMi;
             this.checkEdit88.TabIndex = 58;
             this.checkEdit88.TabStop = false;
@@ -7716,7 +7716,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.checkEdit89.Properties.Caption = "Có";
             this.checkEdit89.Properties.CheckStyle = DevExpress.XtraEditors.Controls.CheckStyles.Radio;
             this.checkEdit89.Properties.RadioGroupIndex = -53;
-            this.checkEdit89.Size = new System.Drawing.Size(443, 19);
+            this.checkEdit89.Size = new System.Drawing.Size(441, 19);
             this.checkEdit89.StyleController = this.lcPtSupMi;
             this.checkEdit89.TabIndex = 57;
             this.checkEdit89.TabStop = false;
@@ -7724,13 +7724,13 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // 
             // checkEdit90
             // 
-            this.checkEdit90.Location = new System.Drawing.Point(203, 352);
+            this.checkEdit90.Location = new System.Drawing.Point(201, 352);
             this.checkEdit90.Margin = new System.Windows.Forms.Padding(2);
             this.checkEdit90.Name = "checkEdit90";
             this.checkEdit90.Properties.Caption = "Có";
             this.checkEdit90.Properties.CheckStyle = DevExpress.XtraEditors.Controls.CheckStyles.Radio;
             this.checkEdit90.Properties.RadioGroupIndex = -52;
-            this.checkEdit90.Size = new System.Drawing.Size(53, 19);
+            this.checkEdit90.Size = new System.Drawing.Size(52, 19);
             this.checkEdit90.StyleController = this.lcPtSupMi;
             this.checkEdit90.TabIndex = 56;
             this.checkEdit90.TabStop = false;
@@ -7738,13 +7738,13 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // 
             // checkEdit91
             // 
-            this.checkEdit91.Location = new System.Drawing.Point(260, 329);
+            this.checkEdit91.Location = new System.Drawing.Point(258, 329);
             this.checkEdit91.Margin = new System.Windows.Forms.Padding(2);
             this.checkEdit91.Name = "checkEdit91";
             this.checkEdit91.Properties.Caption = "18-24mm";
             this.checkEdit91.Properties.CheckStyle = DevExpress.XtraEditors.Controls.CheckStyles.Radio;
             this.checkEdit91.Properties.RadioGroupIndex = -51;
-            this.checkEdit91.Size = new System.Drawing.Size(79, 19);
+            this.checkEdit91.Size = new System.Drawing.Size(78, 19);
             this.checkEdit91.StyleController = this.lcPtSupMi;
             this.checkEdit91.TabIndex = 55;
             this.checkEdit91.TabStop = false;
@@ -7758,7 +7758,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.checkEdit92.Properties.Caption = "Không";
             this.checkEdit92.Properties.CheckStyle = DevExpress.XtraEditors.Controls.CheckStyles.Radio;
             this.checkEdit92.Properties.RadioGroupIndex = -52;
-            this.checkEdit92.Size = new System.Drawing.Size(56, 19);
+            this.checkEdit92.Size = new System.Drawing.Size(54, 19);
             this.checkEdit92.StyleController = this.lcPtSupMi;
             this.checkEdit92.TabIndex = 54;
             this.checkEdit92.TabStop = false;
@@ -7780,13 +7780,13 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // 
             // checkEdit98
             // 
-            this.checkEdit98.Location = new System.Drawing.Point(343, 329);
+            this.checkEdit98.Location = new System.Drawing.Point(340, 329);
             this.checkEdit98.Margin = new System.Windows.Forms.Padding(2);
             this.checkEdit98.Name = "checkEdit98";
             this.checkEdit98.Properties.Caption = ">24mm";
             this.checkEdit98.Properties.CheckStyle = DevExpress.XtraEditors.Controls.CheckStyles.Radio;
             this.checkEdit98.Properties.RadioGroupIndex = -51;
-            this.checkEdit98.Size = new System.Drawing.Size(260, 19);
+            this.checkEdit98.Size = new System.Drawing.Size(261, 19);
             this.checkEdit98.StyleController = this.lcPtSupMi;
             this.checkEdit98.TabIndex = 51;
             this.checkEdit98.TabStop = false;
@@ -7800,7 +7800,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.checkEdit99.Properties.Caption = "Có";
             this.checkEdit99.Properties.CheckStyle = DevExpress.XtraEditors.Controls.CheckStyles.Radio;
             this.checkEdit99.Properties.RadioGroupIndex = -50;
-            this.checkEdit99.Size = new System.Drawing.Size(131, 19);
+            this.checkEdit99.Size = new System.Drawing.Size(129, 19);
             this.checkEdit99.StyleController = this.lcPtSupMi;
             this.checkEdit99.TabIndex = 50;
             this.checkEdit99.TabStop = false;
@@ -7828,7 +7828,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.checkEdit105.Properties.Caption = "10-12mm";
             this.checkEdit105.Properties.CheckStyle = DevExpress.XtraEditors.Controls.CheckStyles.Radio;
             this.checkEdit105.Properties.RadioGroupIndex = -51;
-            this.checkEdit105.Size = new System.Drawing.Size(88, 19);
+            this.checkEdit105.Size = new System.Drawing.Size(86, 19);
             this.checkEdit105.StyleController = this.lcPtSupMi;
             this.checkEdit105.TabIndex = 48;
             this.checkEdit105.TabStop = false;
@@ -7836,7 +7836,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // 
             // checkEdit111
             // 
-            this.checkEdit111.Location = new System.Drawing.Point(169, 249);
+            this.checkEdit111.Location = new System.Drawing.Point(167, 249);
             this.checkEdit111.Margin = new System.Windows.Forms.Padding(2);
             this.checkEdit111.Name = "checkEdit111";
             this.checkEdit111.Properties.Caption = "Có";
@@ -7854,7 +7854,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.labelControl22.Location = new System.Drawing.Point(12, 209);
             this.labelControl22.Margin = new System.Windows.Forms.Padding(2);
             this.labelControl22.Name = "labelControl22";
-            this.labelControl22.Size = new System.Drawing.Size(591, 13);
+            this.labelControl22.Size = new System.Drawing.Size(589, 13);
             this.labelControl22.StyleController = this.lcPtSupMi;
             this.labelControl22.TabIndex = 46;
             this.labelControl22.Text = "+ Rạch ra mi theo đường vẽ:";
@@ -7865,7 +7865,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.labelControl23.Location = new System.Drawing.Point(12, 272);
             this.labelControl23.Margin = new System.Windows.Forms.Padding(2);
             this.labelControl23.Name = "labelControl23";
-            this.labelControl23.Size = new System.Drawing.Size(591, 13);
+            this.labelControl23.Size = new System.Drawing.Size(589, 13);
             this.labelControl23.StyleController = this.lcPtSupMi;
             this.labelControl23.TabIndex = 44;
             this.labelControl23.Text = "+ Cầm máu kĩ:";
@@ -7876,7 +7876,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.labelControl24.Location = new System.Drawing.Point(12, 75);
             this.labelControl24.Margin = new System.Windows.Forms.Padding(2);
             this.labelControl24.Name = "labelControl24";
-            this.labelControl24.Size = new System.Drawing.Size(591, 13);
+            this.labelControl24.Size = new System.Drawing.Size(589, 13);
             this.labelControl24.StyleController = this.lcPtSupMi;
             this.labelControl24.TabIndex = 42;
             this.labelControl24.Text = "+ Phương pháp phẫu thuật:";
@@ -7888,7 +7888,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.textEdit38.Name = "textEdit38";
             this.textEdit38.Properties.Appearance.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold);
             this.textEdit38.Properties.Appearance.Options.UseFont = true;
-            this.textEdit38.Size = new System.Drawing.Size(398, 20);
+            this.textEdit38.Size = new System.Drawing.Size(395, 20);
             this.textEdit38.StyleController = this.lcPtSupMi;
             this.textEdit38.TabIndex = 41;
             // 
@@ -7900,7 +7900,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.checkEdit114.Properties.Caption = "Không";
             this.checkEdit114.Properties.CheckStyle = DevExpress.XtraEditors.Controls.CheckStyles.Radio;
             this.checkEdit114.Properties.RadioGroupIndex = -49;
-            this.checkEdit114.Size = new System.Drawing.Size(61, 19);
+            this.checkEdit114.Size = new System.Drawing.Size(59, 19);
             this.checkEdit114.StyleController = this.lcPtSupMi;
             this.checkEdit114.TabIndex = 40;
             this.checkEdit114.TabStop = false;
@@ -7908,13 +7908,13 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // 
             // checkEdit117
             // 
-            this.checkEdit117.Location = new System.Drawing.Point(295, 162);
+            this.checkEdit117.Location = new System.Drawing.Point(293, 162);
             this.checkEdit117.Margin = new System.Windows.Forms.Padding(2);
             this.checkEdit117.Name = "checkEdit117";
             this.checkEdit117.Properties.Caption = "5mm";
             this.checkEdit117.Properties.CheckStyle = DevExpress.XtraEditors.Controls.CheckStyles.Radio;
             this.checkEdit117.Properties.RadioGroupIndex = -47;
-            this.checkEdit117.Size = new System.Drawing.Size(68, 19);
+            this.checkEdit117.Size = new System.Drawing.Size(67, 19);
             this.checkEdit117.StyleController = this.lcPtSupMi;
             this.checkEdit117.TabIndex = 38;
             this.checkEdit117.TabStop = false;
@@ -7922,13 +7922,13 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // 
             // checkEdit118
             // 
-            this.checkEdit118.Location = new System.Drawing.Point(192, 226);
+            this.checkEdit118.Location = new System.Drawing.Point(191, 226);
             this.checkEdit118.Margin = new System.Windows.Forms.Padding(2);
             this.checkEdit118.Name = "checkEdit118";
             this.checkEdit118.Properties.Caption = "Có";
             this.checkEdit118.Properties.CheckStyle = DevExpress.XtraEditors.Controls.CheckStyles.Radio;
             this.checkEdit118.Properties.RadioGroupIndex = -48;
-            this.checkEdit118.Size = new System.Drawing.Size(411, 19);
+            this.checkEdit118.Size = new System.Drawing.Size(410, 19);
             this.checkEdit118.StyleController = this.lcPtSupMi;
             this.checkEdit118.TabIndex = 37;
             this.checkEdit118.TabStop = false;
@@ -7942,7 +7942,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.checkEdit119.Properties.Caption = "Không";
             this.checkEdit119.Properties.CheckStyle = DevExpress.XtraEditors.Controls.CheckStyles.Radio;
             this.checkEdit119.Properties.RadioGroupIndex = -48;
-            this.checkEdit119.Size = new System.Drawing.Size(53, 19);
+            this.checkEdit119.Size = new System.Drawing.Size(52, 19);
             this.checkEdit119.StyleController = this.lcPtSupMi;
             this.checkEdit119.TabIndex = 36;
             this.checkEdit119.TabStop = false;
@@ -7950,7 +7950,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // 
             // checkEdit120
             // 
-            this.checkEdit120.Location = new System.Drawing.Point(449, 162);
+            this.checkEdit120.Location = new System.Drawing.Point(445, 162);
             this.checkEdit120.Margin = new System.Windows.Forms.Padding(2);
             this.checkEdit120.Name = "checkEdit120";
             this.checkEdit120.Properties.Caption = "7mm";
@@ -7964,13 +7964,13 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // 
             // checkEdit122
             // 
-            this.checkEdit122.Location = new System.Drawing.Point(530, 162);
+            this.checkEdit122.Location = new System.Drawing.Point(526, 162);
             this.checkEdit122.Margin = new System.Windows.Forms.Padding(2);
             this.checkEdit122.Name = "checkEdit122";
             this.checkEdit122.Properties.Caption = "8mm";
             this.checkEdit122.Properties.CheckStyle = DevExpress.XtraEditors.Controls.CheckStyles.Radio;
             this.checkEdit122.Properties.RadioGroupIndex = -47;
-            this.checkEdit122.Size = new System.Drawing.Size(73, 19);
+            this.checkEdit122.Size = new System.Drawing.Size(75, 19);
             this.checkEdit122.StyleController = this.lcPtSupMi;
             this.checkEdit122.TabIndex = 33;
             this.checkEdit122.TabStop = false;
@@ -7978,13 +7978,13 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // 
             // checkEdit123
             // 
-            this.checkEdit123.Location = new System.Drawing.Point(399, 115);
+            this.checkEdit123.Location = new System.Drawing.Point(396, 115);
             this.checkEdit123.Margin = new System.Windows.Forms.Padding(2);
             this.checkEdit123.Name = "checkEdit123";
             this.checkEdit123.Properties.Caption = "Treo mi cơ trán bằng silicon";
             this.checkEdit123.Properties.CheckStyle = DevExpress.XtraEditors.Controls.CheckStyles.Radio;
             this.checkEdit123.Properties.RadioGroupIndex = -45;
-            this.checkEdit123.Size = new System.Drawing.Size(204, 19);
+            this.checkEdit123.Size = new System.Drawing.Size(205, 19);
             this.checkEdit123.StyleController = this.lcPtSupMi;
             this.checkEdit123.TabIndex = 32;
             this.checkEdit123.TabStop = false;
@@ -7992,13 +7992,13 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // 
             // checkEdit124
             // 
-            this.checkEdit124.Location = new System.Drawing.Point(367, 162);
+            this.checkEdit124.Location = new System.Drawing.Point(364, 162);
             this.checkEdit124.Margin = new System.Windows.Forms.Padding(2);
             this.checkEdit124.Name = "checkEdit124";
             this.checkEdit124.Properties.Caption = "6mm";
             this.checkEdit124.Properties.CheckStyle = DevExpress.XtraEditors.Controls.CheckStyles.Radio;
             this.checkEdit124.Properties.RadioGroupIndex = -47;
-            this.checkEdit124.Size = new System.Drawing.Size(78, 19);
+            this.checkEdit124.Size = new System.Drawing.Size(77, 19);
             this.checkEdit124.StyleController = this.lcPtSupMi;
             this.checkEdit124.TabIndex = 31;
             this.checkEdit124.TabStop = false;
@@ -8012,7 +8012,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.checkEdit125.Properties.Caption = "Treo mi cơ trán bằng chỉ";
             this.checkEdit125.Properties.CheckStyle = DevExpress.XtraEditors.Controls.CheckStyles.Radio;
             this.checkEdit125.Properties.RadioGroupIndex = -45;
-            this.checkEdit125.Size = new System.Drawing.Size(207, 19);
+            this.checkEdit125.Size = new System.Drawing.Size(204, 19);
             this.checkEdit125.StyleController = this.lcPtSupMi;
             this.checkEdit125.TabIndex = 30;
             this.checkEdit125.TabStop = false;
@@ -8034,7 +8034,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // 
             // checkEdit127
             // 
-            this.checkEdit127.Location = new System.Drawing.Point(270, 92);
+            this.checkEdit127.Location = new System.Drawing.Point(268, 92);
             this.checkEdit127.Margin = new System.Windows.Forms.Padding(2);
             this.checkEdit127.Name = "checkEdit127";
             this.checkEdit127.Properties.Caption = "Gấp cân cơ nâng mi";
@@ -8054,7 +8054,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.checkEdit128.Properties.Caption = "Cắt ngắn cơ nâng mi";
             this.checkEdit128.Properties.CheckStyle = DevExpress.XtraEditors.Controls.CheckStyles.Radio;
             this.checkEdit128.Properties.RadioGroupIndex = -45;
-            this.checkEdit128.Size = new System.Drawing.Size(254, 19);
+            this.checkEdit128.Size = new System.Drawing.Size(252, 19);
             this.checkEdit128.StyleController = this.lcPtSupMi;
             this.checkEdit128.TabIndex = 27;
             this.checkEdit128.TabStop = false;
@@ -8063,34 +8063,34 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // labelControl25
             // 
             this.labelControl25.AutoSizeMode = DevExpress.XtraEditors.LabelAutoSizeMode.None;
-            this.labelControl25.Location = new System.Drawing.Point(560, 138);
+            this.labelControl25.Location = new System.Drawing.Point(556, 138);
             this.labelControl25.Margin = new System.Windows.Forms.Padding(2);
             this.labelControl25.Name = "labelControl25";
-            this.labelControl25.Size = new System.Drawing.Size(43, 13);
+            this.labelControl25.Size = new System.Drawing.Size(45, 13);
             this.labelControl25.StyleController = this.lcPtSupMi;
             this.labelControl25.TabIndex = 26;
             this.labelControl25.Text = "ml";
             // 
             // textEdit39
             // 
-            this.textEdit39.Location = new System.Drawing.Point(422, 138);
+            this.textEdit39.Location = new System.Drawing.Point(419, 138);
             this.textEdit39.Margin = new System.Windows.Forms.Padding(2);
             this.textEdit39.Name = "textEdit39";
             this.textEdit39.Properties.Appearance.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold);
             this.textEdit39.Properties.Appearance.Options.UseFont = true;
-            this.textEdit39.Size = new System.Drawing.Size(134, 20);
+            this.textEdit39.Size = new System.Drawing.Size(133, 20);
             this.textEdit39.StyleController = this.lcPtSupMi;
             this.textEdit39.TabIndex = 25;
             // 
             // checkEdit129
             // 
-            this.checkEdit129.Location = new System.Drawing.Point(219, 138);
+            this.checkEdit129.Location = new System.Drawing.Point(217, 138);
             this.checkEdit129.Margin = new System.Windows.Forms.Padding(2);
             this.checkEdit129.Name = "checkEdit129";
             this.checkEdit129.Properties.Caption = "Tê tại chỗ";
             this.checkEdit129.Properties.CheckStyle = DevExpress.XtraEditors.Controls.CheckStyles.Radio;
             this.checkEdit129.Properties.RadioGroupIndex = -46;
-            this.checkEdit129.Size = new System.Drawing.Size(94, 19);
+            this.checkEdit129.Size = new System.Drawing.Size(93, 19);
             this.checkEdit129.StyleController = this.lcPtSupMi;
             this.checkEdit129.TabIndex = 24;
             this.checkEdit129.TabStop = false;
@@ -8104,7 +8104,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.checkEdit130.Properties.Caption = "Gây mê";
             this.checkEdit130.Properties.CheckStyle = DevExpress.XtraEditors.Controls.CheckStyles.Radio;
             this.checkEdit130.Properties.RadioGroupIndex = -46;
-            this.checkEdit130.Size = new System.Drawing.Size(82, 19);
+            this.checkEdit130.Size = new System.Drawing.Size(80, 19);
             this.checkEdit130.StyleController = this.lcPtSupMi;
             this.checkEdit130.TabIndex = 23;
             this.checkEdit130.TabStop = false;
@@ -8112,13 +8112,13 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // 
             // checkEdit131
             // 
-            this.checkEdit131.Location = new System.Drawing.Point(464, 52);
+            this.checkEdit131.Location = new System.Drawing.Point(460, 52);
             this.checkEdit131.Margin = new System.Windows.Forms.Padding(2);
             this.checkEdit131.Name = "checkEdit131";
             this.checkEdit131.Properties.Caption = "Sụp độ IV";
             this.checkEdit131.Properties.CheckStyle = DevExpress.XtraEditors.Controls.CheckStyles.Radio;
             this.checkEdit131.Properties.RadioGroupIndex = -44;
-            this.checkEdit131.Size = new System.Drawing.Size(139, 19);
+            this.checkEdit131.Size = new System.Drawing.Size(141, 19);
             this.checkEdit131.StyleController = this.lcPtSupMi;
             this.checkEdit131.TabIndex = 22;
             this.checkEdit131.TabStop = false;
@@ -8126,13 +8126,13 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // 
             // checkEdit132
             // 
-            this.checkEdit132.Location = new System.Drawing.Point(269, 52);
+            this.checkEdit132.Location = new System.Drawing.Point(266, 52);
             this.checkEdit132.Margin = new System.Windows.Forms.Padding(2);
             this.checkEdit132.Name = "checkEdit132";
             this.checkEdit132.Properties.Caption = "Sụp độ II";
             this.checkEdit132.Properties.CheckStyle = DevExpress.XtraEditors.Controls.CheckStyles.Radio;
             this.checkEdit132.Properties.RadioGroupIndex = -44;
-            this.checkEdit132.Size = new System.Drawing.Size(87, 19);
+            this.checkEdit132.Size = new System.Drawing.Size(86, 19);
             this.checkEdit132.StyleController = this.lcPtSupMi;
             this.checkEdit132.TabIndex = 21;
             this.checkEdit132.TabStop = false;
@@ -8140,13 +8140,13 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // 
             // checkEdit133
             // 
-            this.checkEdit133.Location = new System.Drawing.Point(154, 52);
+            this.checkEdit133.Location = new System.Drawing.Point(152, 52);
             this.checkEdit133.Margin = new System.Windows.Forms.Padding(2);
             this.checkEdit133.Name = "checkEdit133";
             this.checkEdit133.Properties.Caption = "Sụp độ I";
             this.checkEdit133.Properties.CheckStyle = DevExpress.XtraEditors.Controls.CheckStyles.Radio;
             this.checkEdit133.Properties.RadioGroupIndex = -44;
-            this.checkEdit133.Size = new System.Drawing.Size(111, 19);
+            this.checkEdit133.Size = new System.Drawing.Size(110, 19);
             this.checkEdit133.StyleController = this.lcPtSupMi;
             this.checkEdit133.TabIndex = 20;
             this.checkEdit133.TabStop = false;
@@ -8154,7 +8154,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // 
             // checkEdit135
             // 
-            this.checkEdit135.Location = new System.Drawing.Point(360, 52);
+            this.checkEdit135.Location = new System.Drawing.Point(356, 52);
             this.checkEdit135.Margin = new System.Windows.Forms.Padding(2);
             this.checkEdit135.Name = "checkEdit135";
             this.checkEdit135.Properties.Caption = "Sụp độ III";
@@ -8172,7 +8172,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.checkEdit136.Margin = new System.Windows.Forms.Padding(2);
             this.checkEdit136.Name = "checkEdit136";
             this.checkEdit136.Properties.Caption = "Sụp mi";
-            this.checkEdit136.Size = new System.Drawing.Size(104, 19);
+            this.checkEdit136.Size = new System.Drawing.Size(102, 19);
             this.checkEdit136.StyleController = this.lcPtSupMi;
             this.checkEdit136.TabIndex = 17;
             this.checkEdit136.TabStop = false;
@@ -8180,13 +8180,13 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // 
             // checkEdit137
             // 
-            this.checkEdit137.Location = new System.Drawing.Point(154, 29);
+            this.checkEdit137.Location = new System.Drawing.Point(152, 29);
             this.checkEdit137.Margin = new System.Windows.Forms.Padding(2);
             this.checkEdit137.Name = "checkEdit137";
             this.checkEdit137.Properties.Caption = "Sụp độ I";
             this.checkEdit137.Properties.CheckStyle = DevExpress.XtraEditors.Controls.CheckStyles.Radio;
             this.checkEdit137.Properties.RadioGroupIndex = -43;
-            this.checkEdit137.Size = new System.Drawing.Size(111, 19);
+            this.checkEdit137.Size = new System.Drawing.Size(110, 19);
             this.checkEdit137.StyleController = this.lcPtSupMi;
             this.checkEdit137.TabIndex = 16;
             this.checkEdit137.TabStop = false;
@@ -8194,7 +8194,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // 
             // checkEdit138
             // 
-            this.checkEdit138.Location = new System.Drawing.Point(360, 29);
+            this.checkEdit138.Location = new System.Drawing.Point(356, 29);
             this.checkEdit138.Margin = new System.Windows.Forms.Padding(2);
             this.checkEdit138.Name = "checkEdit138";
             this.checkEdit138.Properties.Caption = "Sụp độ III";
@@ -8208,13 +8208,13 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // 
             // checkEdit139
             // 
-            this.checkEdit139.Location = new System.Drawing.Point(464, 29);
+            this.checkEdit139.Location = new System.Drawing.Point(460, 29);
             this.checkEdit139.Margin = new System.Windows.Forms.Padding(2);
             this.checkEdit139.Name = "checkEdit139";
             this.checkEdit139.Properties.Caption = "Sụp độ IV";
             this.checkEdit139.Properties.CheckStyle = DevExpress.XtraEditors.Controls.CheckStyles.Radio;
             this.checkEdit139.Properties.RadioGroupIndex = -43;
-            this.checkEdit139.Size = new System.Drawing.Size(139, 19);
+            this.checkEdit139.Size = new System.Drawing.Size(141, 19);
             this.checkEdit139.StyleController = this.lcPtSupMi;
             this.checkEdit139.TabIndex = 14;
             this.checkEdit139.TabStop = false;
@@ -8222,13 +8222,13 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // 
             // checkEdit140
             // 
-            this.checkEdit140.Location = new System.Drawing.Point(269, 29);
+            this.checkEdit140.Location = new System.Drawing.Point(266, 29);
             this.checkEdit140.Margin = new System.Windows.Forms.Padding(2);
             this.checkEdit140.Name = "checkEdit140";
             this.checkEdit140.Properties.Caption = "Sụp độ II";
             this.checkEdit140.Properties.CheckStyle = DevExpress.XtraEditors.Controls.CheckStyles.Radio;
             this.checkEdit140.Properties.RadioGroupIndex = -43;
-            this.checkEdit140.Size = new System.Drawing.Size(87, 19);
+            this.checkEdit140.Size = new System.Drawing.Size(86, 19);
             this.checkEdit140.StyleController = this.lcPtSupMi;
             this.checkEdit140.TabIndex = 13;
             this.checkEdit140.TabStop = false;
@@ -8240,7 +8240,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.checkEdit141.Margin = new System.Windows.Forms.Padding(2);
             this.checkEdit141.Name = "checkEdit141";
             this.checkEdit141.Properties.Caption = "Sụp mi";
-            this.checkEdit141.Size = new System.Drawing.Size(104, 19);
+            this.checkEdit141.Size = new System.Drawing.Size(102, 19);
             this.checkEdit141.StyleController = this.lcPtSupMi;
             this.checkEdit141.TabIndex = 12;
             this.checkEdit141.TabStop = false;
@@ -8254,7 +8254,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.checkEdit142.Properties.Caption = "3mm";
             this.checkEdit142.Properties.CheckStyle = DevExpress.XtraEditors.Controls.CheckStyles.Radio;
             this.checkEdit142.Properties.RadioGroupIndex = -47;
-            this.checkEdit142.Size = new System.Drawing.Size(65, 19);
+            this.checkEdit142.Size = new System.Drawing.Size(63, 19);
             this.checkEdit142.StyleController = this.lcPtSupMi;
             this.checkEdit142.TabIndex = 27;
             this.checkEdit142.TabStop = false;
@@ -8263,10 +8263,10 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // labelControl27
             // 
             this.labelControl27.AutoSizeMode = DevExpress.XtraEditors.LabelAutoSizeMode.None;
-            this.labelControl27.Location = new System.Drawing.Point(543, 185);
+            this.labelControl27.Location = new System.Drawing.Point(540, 185);
             this.labelControl27.Margin = new System.Windows.Forms.Padding(2);
             this.labelControl27.Name = "labelControl27";
-            this.labelControl27.Size = new System.Drawing.Size(60, 13);
+            this.labelControl27.Size = new System.Drawing.Size(61, 13);
             this.labelControl27.StyleController = this.lcPtSupMi;
             this.labelControl27.TabIndex = 42;
             this.labelControl27.Text = "2.5ml";
@@ -8277,7 +8277,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.labelControl52.Location = new System.Drawing.Point(12, 12);
             this.labelControl52.Margin = new System.Windows.Forms.Padding(2);
             this.labelControl52.Name = "labelControl52";
-            this.labelControl52.Size = new System.Drawing.Size(591, 13);
+            this.labelControl52.Size = new System.Drawing.Size(589, 13);
             this.labelControl52.StyleController = this.lcPtSupMi;
             this.labelControl52.TabIndex = 26;
             this.labelControl52.Text = "Chẩn đoán trước PT:";
@@ -8289,17 +8289,17 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             0,
             0,
             0});
-            this.textEdit35.Location = new System.Drawing.Point(260, 352);
+            this.textEdit35.Location = new System.Drawing.Point(257, 352);
             this.textEdit35.Margin = new System.Windows.Forms.Padding(2);
             this.textEdit35.Name = "textEdit35";
             this.textEdit35.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
             this.textEdit35.Properties.Appearance.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold);
             this.textEdit35.Properties.Appearance.Options.UseFont = true;
             this.textEdit35.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo, "", -1, true, false, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject17, serializableAppearanceObject18, serializableAppearanceObject19, serializableAppearanceObject20, "", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo, "", -1, true, false, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject21, serializableAppearanceObject22, serializableAppearanceObject23, serializableAppearanceObject24, "", null, null, true)});
             this.textEdit35.Properties.EditValueChangedFiringMode = DevExpress.XtraEditors.Controls.EditValueChangedFiringMode.Default;
             this.textEdit35.Properties.Mask.MaskType = DevExpress.XtraEditors.Mask.MaskType.None;
-            this.textEdit35.Size = new System.Drawing.Size(113, 20);
+            this.textEdit35.Size = new System.Drawing.Size(112, 20);
             this.textEdit35.StyleController = this.lcPtSupMi;
             this.textEdit35.TabIndex = 73;
             // 
@@ -8371,7 +8371,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.layoutControlGroup11.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup11.Name = "Root";
             this.layoutControlGroup11.OptionsItemText.TextToControlDistance = 4;
-            this.layoutControlGroup11.Size = new System.Drawing.Size(615, 604);
+            this.layoutControlGroup11.Size = new System.Drawing.Size(613, 604);
             this.layoutControlGroup11.TextVisible = false;
             // 
             // layoutControlItem180
@@ -8379,7 +8379,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.layoutControlItem180.Control = this.checkEdit141;
             this.layoutControlItem180.Location = new System.Drawing.Point(0, 17);
             this.layoutControlItem180.Name = "layoutControlItem9";
-            this.layoutControlItem180.Size = new System.Drawing.Size(142, 23);
+            this.layoutControlItem180.Size = new System.Drawing.Size(140, 23);
             this.layoutControlItem180.Text = "+ MP:";
             this.layoutControlItem180.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.AutoSize;
             this.layoutControlItem180.TextSize = new System.Drawing.Size(29, 13);
@@ -8388,34 +8388,34 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // layoutControlItem183
             // 
             this.layoutControlItem183.Control = this.checkEdit140;
-            this.layoutControlItem183.Location = new System.Drawing.Point(257, 17);
+            this.layoutControlItem183.Location = new System.Drawing.Point(254, 17);
             this.layoutControlItem183.Name = "layoutControlItem10";
-            this.layoutControlItem183.Size = new System.Drawing.Size(91, 23);
+            this.layoutControlItem183.Size = new System.Drawing.Size(90, 23);
             this.layoutControlItem183.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem183.TextVisible = false;
             // 
             // layoutControlItem193
             // 
             this.layoutControlItem193.Control = this.checkEdit139;
-            this.layoutControlItem193.Location = new System.Drawing.Point(452, 17);
+            this.layoutControlItem193.Location = new System.Drawing.Point(448, 17);
             this.layoutControlItem193.Name = "layoutControlItem11";
-            this.layoutControlItem193.Size = new System.Drawing.Size(143, 23);
+            this.layoutControlItem193.Size = new System.Drawing.Size(145, 23);
             this.layoutControlItem193.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem193.TextVisible = false;
             // 
             // layoutControlItem197
             // 
             this.layoutControlItem197.Control = this.checkEdit137;
-            this.layoutControlItem197.Location = new System.Drawing.Point(142, 17);
+            this.layoutControlItem197.Location = new System.Drawing.Point(140, 17);
             this.layoutControlItem197.Name = "layoutControlItem13";
-            this.layoutControlItem197.Size = new System.Drawing.Size(115, 23);
+            this.layoutControlItem197.Size = new System.Drawing.Size(114, 23);
             this.layoutControlItem197.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem197.TextVisible = false;
             // 
             // layoutControlItem200
             // 
             this.layoutControlItem200.Control = this.checkEdit138;
-            this.layoutControlItem200.Location = new System.Drawing.Point(348, 17);
+            this.layoutControlItem200.Location = new System.Drawing.Point(344, 17);
             this.layoutControlItem200.Name = "layoutControlItem12";
             this.layoutControlItem200.Size = new System.Drawing.Size(104, 23);
             this.layoutControlItem200.TextSize = new System.Drawing.Size(0, 0);
@@ -8426,7 +8426,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.layoutControlItem201.Control = this.checkEdit136;
             this.layoutControlItem201.Location = new System.Drawing.Point(0, 40);
             this.layoutControlItem201.Name = "layoutControlItem14";
-            this.layoutControlItem201.Size = new System.Drawing.Size(142, 23);
+            this.layoutControlItem201.Size = new System.Drawing.Size(140, 23);
             this.layoutControlItem201.Text = "+ MT:";
             this.layoutControlItem201.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.AutoSize;
             this.layoutControlItem201.TextSize = new System.Drawing.Size(29, 13);
@@ -8435,7 +8435,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // layoutControlItem204
             // 
             this.layoutControlItem204.Control = this.checkEdit135;
-            this.layoutControlItem204.Location = new System.Drawing.Point(348, 40);
+            this.layoutControlItem204.Location = new System.Drawing.Point(344, 40);
             this.layoutControlItem204.Name = "layoutControlItem15";
             this.layoutControlItem204.Size = new System.Drawing.Size(104, 23);
             this.layoutControlItem204.TextSize = new System.Drawing.Size(0, 0);
@@ -8444,27 +8444,27 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // layoutControlItem207
             // 
             this.layoutControlItem207.Control = this.checkEdit133;
-            this.layoutControlItem207.Location = new System.Drawing.Point(142, 40);
+            this.layoutControlItem207.Location = new System.Drawing.Point(140, 40);
             this.layoutControlItem207.Name = "layoutControlItem17";
-            this.layoutControlItem207.Size = new System.Drawing.Size(115, 23);
+            this.layoutControlItem207.Size = new System.Drawing.Size(114, 23);
             this.layoutControlItem207.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem207.TextVisible = false;
             // 
             // layoutControlItem208
             // 
             this.layoutControlItem208.Control = this.checkEdit132;
-            this.layoutControlItem208.Location = new System.Drawing.Point(257, 40);
+            this.layoutControlItem208.Location = new System.Drawing.Point(254, 40);
             this.layoutControlItem208.Name = "layoutControlItem18";
-            this.layoutControlItem208.Size = new System.Drawing.Size(91, 23);
+            this.layoutControlItem208.Size = new System.Drawing.Size(90, 23);
             this.layoutControlItem208.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem208.TextVisible = false;
             // 
             // layoutControlItem210
             // 
             this.layoutControlItem210.Control = this.checkEdit131;
-            this.layoutControlItem210.Location = new System.Drawing.Point(452, 40);
+            this.layoutControlItem210.Location = new System.Drawing.Point(448, 40);
             this.layoutControlItem210.Name = "layoutControlItem19";
-            this.layoutControlItem210.Size = new System.Drawing.Size(143, 23);
+            this.layoutControlItem210.Size = new System.Drawing.Size(145, 23);
             this.layoutControlItem210.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem210.TextVisible = false;
             // 
@@ -8473,7 +8473,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.layoutControlItem211.Control = this.checkEdit130;
             this.layoutControlItem211.Location = new System.Drawing.Point(0, 126);
             this.layoutControlItem211.Name = "layoutControlItem20";
-            this.layoutControlItem211.Size = new System.Drawing.Size(207, 24);
+            this.layoutControlItem211.Size = new System.Drawing.Size(205, 24);
             this.layoutControlItem211.Text = "+ Phương pháp vô cảm:";
             this.layoutControlItem211.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.AutoSize;
             this.layoutControlItem211.TextSize = new System.Drawing.Size(116, 13);
@@ -8482,9 +8482,9 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // layoutControlItem213
             // 
             this.layoutControlItem213.Control = this.checkEdit129;
-            this.layoutControlItem213.Location = new System.Drawing.Point(207, 126);
+            this.layoutControlItem213.Location = new System.Drawing.Point(205, 126);
             this.layoutControlItem213.Name = "layoutControlItem21";
-            this.layoutControlItem213.Size = new System.Drawing.Size(98, 24);
+            this.layoutControlItem213.Size = new System.Drawing.Size(97, 24);
             this.layoutControlItem213.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem213.TextVisible = false;
             // 
@@ -8493,9 +8493,9 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.layoutControlItem214.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem214.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem214.Control = this.textEdit39;
-            this.layoutControlItem214.Location = new System.Drawing.Point(305, 126);
+            this.layoutControlItem214.Location = new System.Drawing.Point(302, 126);
             this.layoutControlItem214.Name = "layoutControlItem22";
-            this.layoutControlItem214.Size = new System.Drawing.Size(243, 24);
+            this.layoutControlItem214.Size = new System.Drawing.Size(242, 24);
             this.layoutControlItem214.Text = "Loại thuốc tê:";
             this.layoutControlItem214.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem214.TextSize = new System.Drawing.Size(100, 20);
@@ -8504,9 +8504,9 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // layoutControlItem215
             // 
             this.layoutControlItem215.Control = this.labelControl25;
-            this.layoutControlItem215.Location = new System.Drawing.Point(548, 126);
+            this.layoutControlItem215.Location = new System.Drawing.Point(544, 126);
             this.layoutControlItem215.Name = "layoutControlItem23";
-            this.layoutControlItem215.Size = new System.Drawing.Size(47, 24);
+            this.layoutControlItem215.Size = new System.Drawing.Size(49, 24);
             this.layoutControlItem215.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem215.TextVisible = false;
             // 
@@ -8516,7 +8516,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.layoutControlItem218.CustomizationFormText = "1. Cố định nhẫn cầu:";
             this.layoutControlItem218.Location = new System.Drawing.Point(0, 150);
             this.layoutControlItem218.Name = "layoutControlItem26";
-            this.layoutControlItem218.Size = new System.Drawing.Size(283, 23);
+            this.layoutControlItem218.Size = new System.Drawing.Size(281, 23);
             this.layoutControlItem218.Text = "+ Đo và vẽ vị trí đường rạch cách bờ tự do:";
             this.layoutControlItem218.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.AutoSize;
             this.layoutControlItem218.TextSize = new System.Drawing.Size(210, 13);
@@ -8527,7 +8527,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.layoutControlItem219.Control = this.checkEdit114;
             this.layoutControlItem219.Location = new System.Drawing.Point(0, 237);
             this.layoutControlItem219.Name = "layoutControlItem38";
-            this.layoutControlItem219.Size = new System.Drawing.Size(157, 23);
+            this.layoutControlItem219.Size = new System.Drawing.Size(155, 23);
             this.layoutControlItem219.Text = "    Cắt cơ vòng mi:";
             this.layoutControlItem219.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.AutoSize;
             this.layoutControlItem219.TextSize = new System.Drawing.Size(87, 13);
@@ -8536,18 +8536,18 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // layoutControlItem222
             // 
             this.layoutControlItem222.Control = this.checkEdit124;
-            this.layoutControlItem222.Location = new System.Drawing.Point(355, 150);
+            this.layoutControlItem222.Location = new System.Drawing.Point(352, 150);
             this.layoutControlItem222.Name = "layoutControlItem29";
-            this.layoutControlItem222.Size = new System.Drawing.Size(82, 23);
+            this.layoutControlItem222.Size = new System.Drawing.Size(81, 23);
             this.layoutControlItem222.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem222.TextVisible = false;
             // 
             // layoutControlItem229
             // 
             this.layoutControlItem229.Control = this.checkEdit122;
-            this.layoutControlItem229.Location = new System.Drawing.Point(518, 150);
+            this.layoutControlItem229.Location = new System.Drawing.Point(514, 150);
             this.layoutControlItem229.Name = "layoutControlItem31";
-            this.layoutControlItem229.Size = new System.Drawing.Size(77, 23);
+            this.layoutControlItem229.Size = new System.Drawing.Size(79, 23);
             this.layoutControlItem229.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem229.TextVisible = false;
             // 
@@ -8556,7 +8556,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.layoutControlItem237.Control = this.checkEdit119;
             this.layoutControlItem237.Location = new System.Drawing.Point(0, 214);
             this.layoutControlItem237.Name = "layoutControlItem34";
-            this.layoutControlItem237.Size = new System.Drawing.Size(180, 23);
+            this.layoutControlItem237.Size = new System.Drawing.Size(179, 23);
             this.layoutControlItem237.Text = "    Phân tích phần da dư:";
             this.layoutControlItem237.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.AutoSize;
             this.layoutControlItem237.TextSize = new System.Drawing.Size(118, 13);
@@ -8565,9 +8565,9 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // layoutControlItem239
             // 
             this.layoutControlItem239.Control = this.checkEdit118;
-            this.layoutControlItem239.Location = new System.Drawing.Point(180, 214);
+            this.layoutControlItem239.Location = new System.Drawing.Point(179, 214);
             this.layoutControlItem239.Name = "layoutControlItem35";
-            this.layoutControlItem239.Size = new System.Drawing.Size(415, 23);
+            this.layoutControlItem239.Size = new System.Drawing.Size(414, 23);
             this.layoutControlItem239.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem239.TextVisible = false;
             // 
@@ -8576,7 +8576,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.layoutControlItem250.Control = this.checkEdit105;
             this.layoutControlItem250.Location = new System.Drawing.Point(0, 317);
             this.layoutControlItem250.Name = "layoutControlItem47";
-            this.layoutControlItem250.Size = new System.Drawing.Size(248, 23);
+            this.layoutControlItem250.Size = new System.Drawing.Size(246, 23);
             this.layoutControlItem250.Text = "+ Cắt ngắn cơ nâng mi khoảng:";
             this.layoutControlItem250.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.AutoSize;
             this.layoutControlItem250.TextSize = new System.Drawing.Size(151, 13);
@@ -8587,7 +8587,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.layoutControlItem254.Control = this.checkEdit86;
             this.layoutControlItem254.Location = new System.Drawing.Point(0, 434);
             this.layoutControlItem254.Name = "layoutControlItem59";
-            this.layoutControlItem254.Size = new System.Drawing.Size(273, 23);
+            this.layoutControlItem254.Size = new System.Drawing.Size(271, 23);
             this.layoutControlItem254.Text = "+ Luồn chỉ hoặc Silicon theo hình ngũ giác:";
             this.layoutControlItem254.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.AutoSize;
             this.layoutControlItem254.TextSize = new System.Drawing.Size(203, 13);
@@ -8596,7 +8596,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // layoutControlItem258
             // 
             this.layoutControlItem258.Control = this.checkEdit111;
-            this.layoutControlItem258.Location = new System.Drawing.Point(157, 237);
+            this.layoutControlItem258.Location = new System.Drawing.Point(155, 237);
             this.layoutControlItem258.Name = "layoutControlItem46";
             this.layoutControlItem258.Size = new System.Drawing.Size(438, 23);
             this.layoutControlItem258.TextSize = new System.Drawing.Size(0, 0);
@@ -8607,7 +8607,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.emptySpaceItem2.AllowHotTrack = false;
             this.emptySpaceItem2.Location = new System.Drawing.Point(0, 505);
             this.emptySpaceItem2.Name = "emptySpaceItem1";
-            this.emptySpaceItem2.Size = new System.Drawing.Size(595, 79);
+            this.emptySpaceItem2.Size = new System.Drawing.Size(593, 79);
             this.emptySpaceItem2.TextSize = new System.Drawing.Size(0, 0);
             // 
             // layoutControlItem262
@@ -8615,7 +8615,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.layoutControlItem262.Control = this.checkEdit92;
             this.layoutControlItem262.Location = new System.Drawing.Point(0, 340);
             this.layoutControlItem262.Name = "layoutControlItem53";
-            this.layoutControlItem262.Size = new System.Drawing.Size(191, 24);
+            this.layoutControlItem262.Size = new System.Drawing.Size(189, 24);
             this.layoutControlItem262.Text = "+ Gấp cơ nâng mi khoảng:";
             this.layoutControlItem262.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.AutoSize;
             this.layoutControlItem262.TextSize = new System.Drawing.Size(126, 13);
@@ -8626,7 +8626,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.layoutControlItem269.Control = this.checkEdit89;
             this.layoutControlItem269.Location = new System.Drawing.Point(148, 364);
             this.layoutControlItem269.Name = "layoutControlItem56";
-            this.layoutControlItem269.Size = new System.Drawing.Size(447, 23);
+            this.layoutControlItem269.Size = new System.Drawing.Size(445, 23);
             this.layoutControlItem269.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem269.TextVisible = false;
             // 
@@ -8636,7 +8636,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.layoutControlItem573.CustomizationFormText = "layoutControlItem23";
             this.layoutControlItem573.Location = new System.Drawing.Point(0, 0);
             this.layoutControlItem573.Name = "layoutControlItem573";
-            this.layoutControlItem573.Size = new System.Drawing.Size(595, 17);
+            this.layoutControlItem573.Size = new System.Drawing.Size(593, 17);
             this.layoutControlItem573.Text = "layoutControlItem23";
             this.layoutControlItem573.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem573.TextVisible = false;
@@ -8646,7 +8646,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.layoutControlItem216.Control = this.checkEdit128;
             this.layoutControlItem216.Location = new System.Drawing.Point(0, 80);
             this.layoutControlItem216.Name = "layoutControlItem24";
-            this.layoutControlItem216.Size = new System.Drawing.Size(258, 23);
+            this.layoutControlItem216.Size = new System.Drawing.Size(256, 23);
             this.layoutControlItem216.Text = "1. Cố định nhẫn cầu:";
             this.layoutControlItem216.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem216.TextVisible = false;
@@ -8654,7 +8654,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // layoutControlItem217
             // 
             this.layoutControlItem217.Control = this.checkEdit127;
-            this.layoutControlItem217.Location = new System.Drawing.Point(258, 80);
+            this.layoutControlItem217.Location = new System.Drawing.Point(256, 80);
             this.layoutControlItem217.Name = "layoutControlItem25";
             this.layoutControlItem217.Size = new System.Drawing.Size(337, 23);
             this.layoutControlItem217.TextSize = new System.Drawing.Size(0, 0);
@@ -8665,7 +8665,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.layoutControlItem236.Control = this.labelControl24;
             this.layoutControlItem236.Location = new System.Drawing.Point(0, 63);
             this.layoutControlItem236.Name = "layoutControlItem40";
-            this.layoutControlItem236.Size = new System.Drawing.Size(595, 17);
+            this.layoutControlItem236.Size = new System.Drawing.Size(593, 17);
             this.layoutControlItem236.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem236.TextVisible = false;
             // 
@@ -8681,9 +8681,9 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // layoutControlItem223
             // 
             this.layoutControlItem223.Control = this.checkEdit123;
-            this.layoutControlItem223.Location = new System.Drawing.Point(387, 103);
+            this.layoutControlItem223.Location = new System.Drawing.Point(384, 103);
             this.layoutControlItem223.Name = "layoutControlItem30";
-            this.layoutControlItem223.Size = new System.Drawing.Size(208, 23);
+            this.layoutControlItem223.Size = new System.Drawing.Size(209, 23);
             this.layoutControlItem223.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem223.TextVisible = false;
             // 
@@ -8692,7 +8692,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.layoutControlItem221.Control = this.checkEdit125;
             this.layoutControlItem221.Location = new System.Drawing.Point(176, 103);
             this.layoutControlItem221.Name = "layoutControlItem28";
-            this.layoutControlItem221.Size = new System.Drawing.Size(211, 23);
+            this.layoutControlItem221.Size = new System.Drawing.Size(208, 23);
             this.layoutControlItem221.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem221.TextVisible = false;
             // 
@@ -8703,7 +8703,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.layoutControlItem235.Control = this.textEdit38;
             this.layoutControlItem235.Location = new System.Drawing.Point(0, 173);
             this.layoutControlItem235.Name = "layoutControlItem39";
-            this.layoutControlItem235.Size = new System.Drawing.Size(531, 24);
+            this.layoutControlItem235.Size = new System.Drawing.Size(528, 24);
             this.layoutControlItem235.Text = "+ Tê tại chỗ loại thuốc tê:";
             this.layoutControlItem235.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.AutoSize;
             this.layoutControlItem235.TextSize = new System.Drawing.Size(124, 13);
@@ -8712,7 +8712,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // layoutControlItem234
             // 
             this.layoutControlItem234.Control = this.checkEdit120;
-            this.layoutControlItem234.Location = new System.Drawing.Point(437, 150);
+            this.layoutControlItem234.Location = new System.Drawing.Point(433, 150);
             this.layoutControlItem234.Name = "layoutControlItem33";
             this.layoutControlItem234.Size = new System.Drawing.Size(81, 23);
             this.layoutControlItem234.TextSize = new System.Drawing.Size(0, 0);
@@ -8721,9 +8721,9 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // layoutControlItem240
             // 
             this.layoutControlItem240.Control = this.checkEdit117;
-            this.layoutControlItem240.Location = new System.Drawing.Point(283, 150);
+            this.layoutControlItem240.Location = new System.Drawing.Point(281, 150);
             this.layoutControlItem240.Name = "layoutControlItem36";
-            this.layoutControlItem240.Size = new System.Drawing.Size(72, 23);
+            this.layoutControlItem240.Size = new System.Drawing.Size(71, 23);
             this.layoutControlItem240.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem240.TextVisible = false;
             // 
@@ -8731,9 +8731,9 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // 
             this.layoutControlItem242.Control = this.labelControl27;
             this.layoutControlItem242.CustomizationFormText = "layoutControlItem40";
-            this.layoutControlItem242.Location = new System.Drawing.Point(531, 173);
+            this.layoutControlItem242.Location = new System.Drawing.Point(528, 173);
             this.layoutControlItem242.Name = "layoutControlItem42";
-            this.layoutControlItem242.Size = new System.Drawing.Size(64, 24);
+            this.layoutControlItem242.Size = new System.Drawing.Size(65, 24);
             this.layoutControlItem242.Text = "layoutControlItem40";
             this.layoutControlItem242.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem242.TextVisible = false;
@@ -8743,7 +8743,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.layoutControlItem247.Control = this.labelControl22;
             this.layoutControlItem247.Location = new System.Drawing.Point(0, 197);
             this.layoutControlItem247.Name = "layoutControlItem45";
-            this.layoutControlItem247.Size = new System.Drawing.Size(595, 17);
+            this.layoutControlItem247.Size = new System.Drawing.Size(593, 17);
             this.layoutControlItem247.Text = "+ Rạch ra mi theo đường vẽ:";
             this.layoutControlItem247.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.AutoSize;
             this.layoutControlItem247.TextSize = new System.Drawing.Size(0, 0);
@@ -8755,7 +8755,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.layoutControlItem243.Control = this.labelControl23;
             this.layoutControlItem243.Location = new System.Drawing.Point(0, 260);
             this.layoutControlItem243.Name = "layoutControlItem43";
-            this.layoutControlItem243.Size = new System.Drawing.Size(595, 17);
+            this.layoutControlItem243.Size = new System.Drawing.Size(593, 17);
             this.layoutControlItem243.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem243.TextVisible = false;
             // 
@@ -8764,7 +8764,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.layoutControlItem206.Control = this.labelControl53;
             this.layoutControlItem206.Location = new System.Drawing.Point(0, 277);
             this.layoutControlItem206.Name = "layoutControlItem206";
-            this.layoutControlItem206.Size = new System.Drawing.Size(595, 17);
+            this.layoutControlItem206.Size = new System.Drawing.Size(593, 17);
             this.layoutControlItem206.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem206.TextVisible = false;
             // 
@@ -8783,16 +8783,16 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.layoutControlItem259.Control = this.checkEdit99;
             this.layoutControlItem259.Location = new System.Drawing.Point(460, 294);
             this.layoutControlItem259.Name = "layoutControlItem49";
-            this.layoutControlItem259.Size = new System.Drawing.Size(135, 23);
+            this.layoutControlItem259.Size = new System.Drawing.Size(133, 23);
             this.layoutControlItem259.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem259.TextVisible = false;
             // 
             // layoutControlItem251
             // 
             this.layoutControlItem251.Control = this.checkEdit98;
-            this.layoutControlItem251.Location = new System.Drawing.Point(331, 317);
+            this.layoutControlItem251.Location = new System.Drawing.Point(328, 317);
             this.layoutControlItem251.Name = "layoutControlItem50";
-            this.layoutControlItem251.Size = new System.Drawing.Size(264, 23);
+            this.layoutControlItem251.Size = new System.Drawing.Size(265, 23);
             this.layoutControlItem251.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem251.TextVisible = false;
             // 
@@ -8810,18 +8810,18 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // layoutControlItem263
             // 
             this.layoutControlItem263.Control = this.checkEdit91;
-            this.layoutControlItem263.Location = new System.Drawing.Point(248, 317);
+            this.layoutControlItem263.Location = new System.Drawing.Point(246, 317);
             this.layoutControlItem263.Name = "layoutControlItem54";
-            this.layoutControlItem263.Size = new System.Drawing.Size(83, 23);
+            this.layoutControlItem263.Size = new System.Drawing.Size(82, 23);
             this.layoutControlItem263.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem263.TextVisible = false;
             // 
             // layoutControlItem264
             // 
             this.layoutControlItem264.Control = this.checkEdit90;
-            this.layoutControlItem264.Location = new System.Drawing.Point(191, 340);
+            this.layoutControlItem264.Location = new System.Drawing.Point(189, 340);
             this.layoutControlItem264.Name = "layoutControlItem55";
-            this.layoutControlItem264.Size = new System.Drawing.Size(57, 24);
+            this.layoutControlItem264.Size = new System.Drawing.Size(56, 24);
             this.layoutControlItem264.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem264.TextVisible = false;
             // 
@@ -8830,9 +8830,9 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.layoutControlItem270.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem270.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem270.Control = this.textEdit35;
-            this.layoutControlItem270.Location = new System.Drawing.Point(248, 340);
+            this.layoutControlItem270.Location = new System.Drawing.Point(245, 340);
             this.layoutControlItem270.Name = "layoutControlItem72";
-            this.layoutControlItem270.Size = new System.Drawing.Size(117, 24);
+            this.layoutControlItem270.Size = new System.Drawing.Size(116, 24);
             this.layoutControlItem270.Text = "Năng lượng:";
             this.layoutControlItem270.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem270.TextSize = new System.Drawing.Size(0, 0);
@@ -8841,7 +8841,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // layoutControlItem272
             // 
             this.layoutControlItem272.Control = this.labelControl21;
-            this.layoutControlItem272.Location = new System.Drawing.Point(365, 340);
+            this.layoutControlItem272.Location = new System.Drawing.Point(361, 340);
             this.layoutControlItem272.Name = "layoutControlItem76";
             this.layoutControlItem272.Size = new System.Drawing.Size(41, 24);
             this.layoutControlItem272.TextSize = new System.Drawing.Size(0, 0);
@@ -8850,17 +8850,17 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // emptySpaceItem11
             // 
             this.emptySpaceItem11.AllowHotTrack = false;
-            this.emptySpaceItem11.Location = new System.Drawing.Point(406, 340);
+            this.emptySpaceItem11.Location = new System.Drawing.Point(402, 340);
             this.emptySpaceItem11.Name = "emptySpaceItem3";
-            this.emptySpaceItem11.Size = new System.Drawing.Size(189, 24);
+            this.emptySpaceItem11.Size = new System.Drawing.Size(191, 24);
             this.emptySpaceItem11.TextSize = new System.Drawing.Size(0, 0);
             // 
             // layoutControlItem253
             // 
             this.layoutControlItem253.Control = this.checkEdit87;
-            this.layoutControlItem253.Location = new System.Drawing.Point(13, 387);
+            this.layoutControlItem253.Location = new System.Drawing.Point(11, 387);
             this.layoutControlItem253.Name = "layoutControlItem58";
-            this.layoutControlItem253.Size = new System.Drawing.Size(120, 23);
+            this.layoutControlItem253.Size = new System.Drawing.Size(119, 23);
             this.layoutControlItem253.Text = "10. Hút chất T3:";
             this.layoutControlItem253.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem253.TextVisible = false;
@@ -8868,18 +8868,18 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // layoutControlItem274
             // 
             this.layoutControlItem274.Control = this.checkEdit88;
-            this.layoutControlItem274.Location = new System.Drawing.Point(230, 387);
+            this.layoutControlItem274.Location = new System.Drawing.Point(226, 387);
             this.layoutControlItem274.Name = "layoutControlItem57";
-            this.layoutControlItem274.Size = new System.Drawing.Size(365, 23);
+            this.layoutControlItem274.Size = new System.Drawing.Size(367, 23);
             this.layoutControlItem274.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem274.TextVisible = false;
             // 
             // layoutControlItem277
             // 
             this.layoutControlItem277.Control = this.checkEdit84;
-            this.layoutControlItem277.Location = new System.Drawing.Point(133, 387);
+            this.layoutControlItem277.Location = new System.Drawing.Point(130, 387);
             this.layoutControlItem277.Name = "layoutControlItem61";
-            this.layoutControlItem277.Size = new System.Drawing.Size(97, 23);
+            this.layoutControlItem277.Size = new System.Drawing.Size(96, 23);
             this.layoutControlItem277.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem277.TextVisible = false;
             // 
@@ -8911,7 +8911,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.layoutControlItem276.Control = this.checkEdit85;
             this.layoutControlItem276.Location = new System.Drawing.Point(509, 410);
             this.layoutControlItem276.Name = "layoutControlItem60";
-            this.layoutControlItem276.Size = new System.Drawing.Size(86, 24);
+            this.layoutControlItem276.Size = new System.Drawing.Size(84, 24);
             this.layoutControlItem276.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem276.TextVisible = false;
             // 
@@ -8920,13 +8920,13 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.emptySpaceItem12.AllowHotTrack = false;
             this.emptySpaceItem12.Location = new System.Drawing.Point(0, 387);
             this.emptySpaceItem12.Name = "emptySpaceItem4";
-            this.emptySpaceItem12.Size = new System.Drawing.Size(13, 23);
+            this.emptySpaceItem12.Size = new System.Drawing.Size(11, 23);
             this.emptySpaceItem12.TextSize = new System.Drawing.Size(0, 0);
             // 
             // layoutControlItem301
             // 
             this.layoutControlItem301.Control = this.labelControl19;
-            this.layoutControlItem301.Location = new System.Drawing.Point(230, 481);
+            this.layoutControlItem301.Location = new System.Drawing.Point(228, 481);
             this.layoutControlItem301.Name = "layoutControlItem77";
             this.layoutControlItem301.Size = new System.Drawing.Size(365, 24);
             this.layoutControlItem301.TextSize = new System.Drawing.Size(0, 0);
@@ -8939,7 +8939,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.layoutControlItem275.Control = this.textEdit25;
             this.layoutControlItem275.Location = new System.Drawing.Point(0, 481);
             this.layoutControlItem275.Name = "layoutControlItem79";
-            this.layoutControlItem275.Size = new System.Drawing.Size(230, 24);
+            this.layoutControlItem275.Size = new System.Drawing.Size(228, 24);
             this.layoutControlItem275.Text = "+ Tra PD:";
             this.layoutControlItem275.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.AutoSize;
             this.layoutControlItem275.TextSize = new System.Drawing.Size(47, 13);
@@ -8948,7 +8948,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // layoutControlItem280
             // 
             this.layoutControlItem280.Control = this.checkEdit80;
-            this.layoutControlItem280.Location = new System.Drawing.Point(273, 434);
+            this.layoutControlItem280.Location = new System.Drawing.Point(271, 434);
             this.layoutControlItem280.Name = "layoutControlItem65";
             this.layoutControlItem280.Size = new System.Drawing.Size(322, 23);
             this.layoutControlItem280.TextSize = new System.Drawing.Size(0, 0);
@@ -8961,7 +8961,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.layoutControlItem287.Control = this.textEdit24;
             this.layoutControlItem287.Location = new System.Drawing.Point(0, 457);
             this.layoutControlItem287.Name = "layoutControlItem80";
-            this.layoutControlItem287.Size = new System.Drawing.Size(595, 24);
+            this.layoutControlItem287.Size = new System.Drawing.Size(593, 24);
             this.layoutControlItem287.Text = "+ Khâu da mi 2 lớp và tạo mi bằng chỉ:";
             this.layoutControlItem287.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.AutoSize;
             this.layoutControlItem287.TextSize = new System.Drawing.Size(183, 13);
@@ -8970,11 +8970,11 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // layoutControl14
             // 
             this.layoutControl14.Controls.Add(this.pictureEdit8);
-            this.layoutControl14.Location = new System.Drawing.Point(621, 2);
+            this.layoutControl14.Location = new System.Drawing.Point(619, 2);
             this.layoutControl14.Margin = new System.Windows.Forms.Padding(2);
             this.layoutControl14.Name = "layoutControl14";
             this.layoutControl14.Root = this.layoutControlGroup12;
-            this.layoutControl14.Size = new System.Drawing.Size(310, 604);
+            this.layoutControl14.Size = new System.Drawing.Size(312, 604);
             this.layoutControl14.TabIndex = 5;
             this.layoutControl14.Text = "layoutControl14";
             // 
@@ -8986,7 +8986,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.pictureEdit8.Name = "pictureEdit8";
             this.pictureEdit8.Properties.ReadOnly = true;
             this.pictureEdit8.Properties.ShowCameraMenuItem = DevExpress.XtraEditors.Controls.CameraMenuItemVisibility.Auto;
-            this.pictureEdit8.Size = new System.Drawing.Size(286, 144);
+            this.pictureEdit8.Size = new System.Drawing.Size(288, 142);
             this.pictureEdit8.StyleController = this.layoutControl14;
             this.pictureEdit8.TabIndex = 97;
             // 
@@ -9000,7 +9000,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.layoutControlGroup12.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup12.Name = "layoutControlGroup3";
             this.layoutControlGroup12.OptionsItemText.TextToControlDistance = 4;
-            this.layoutControlGroup12.Size = new System.Drawing.Size(310, 604);
+            this.layoutControlGroup12.Size = new System.Drawing.Size(312, 604);
             this.layoutControlGroup12.TextVisible = false;
             // 
             // layoutControlItem302
@@ -9008,16 +9008,16 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.layoutControlItem302.Control = this.pictureEdit8;
             this.layoutControlItem302.Location = new System.Drawing.Point(0, 0);
             this.layoutControlItem302.Name = "layoutControlItem98";
-            this.layoutControlItem302.Size = new System.Drawing.Size(290, 148);
+            this.layoutControlItem302.Size = new System.Drawing.Size(292, 146);
             this.layoutControlItem302.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem302.TextVisible = false;
             // 
             // emptySpaceItem22
             // 
             this.emptySpaceItem22.AllowHotTrack = false;
-            this.emptySpaceItem22.Location = new System.Drawing.Point(0, 148);
+            this.emptySpaceItem22.Location = new System.Drawing.Point(0, 146);
             this.emptySpaceItem22.Name = "emptySpaceItem22";
-            this.emptySpaceItem22.Size = new System.Drawing.Size(290, 436);
+            this.emptySpaceItem22.Size = new System.Drawing.Size(292, 438);
             this.emptySpaceItem22.TextSize = new System.Drawing.Size(0, 0);
             // 
             // layoutControlGroup13
@@ -9039,16 +9039,16 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.layoutControlItem304.Control = this.lcPtSupMi;
             this.layoutControlItem304.Location = new System.Drawing.Point(0, 0);
             this.layoutControlItem304.Name = "layoutControlItem90";
-            this.layoutControlItem304.Size = new System.Drawing.Size(619, 608);
+            this.layoutControlItem304.Size = new System.Drawing.Size(617, 608);
             this.layoutControlItem304.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem304.TextVisible = false;
             // 
             // layoutControlItem305
             // 
             this.layoutControlItem305.Control = this.layoutControl14;
-            this.layoutControlItem305.Location = new System.Drawing.Point(619, 0);
+            this.layoutControlItem305.Location = new System.Drawing.Point(617, 0);
             this.layoutControlItem305.Name = "layoutControlItem95";
-            this.layoutControlItem305.Size = new System.Drawing.Size(314, 608);
+            this.layoutControlItem305.Size = new System.Drawing.Size(316, 608);
             this.layoutControlItem305.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem305.TextVisible = false;
             // 
@@ -9117,7 +9117,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.lcTaiTaoLeQuan.Margin = new System.Windows.Forms.Padding(2);
             this.lcTaiTaoLeQuan.Name = "lcTaiTaoLeQuan";
             this.lcTaiTaoLeQuan.Root = this.lcgTaiTaoLaiLeQuan;
-            this.lcTaiTaoLeQuan.Size = new System.Drawing.Size(615, 604);
+            this.lcTaiTaoLeQuan.Size = new System.Drawing.Size(613, 604);
             this.lcTaiTaoLeQuan.TabIndex = 0;
             this.lcTaiTaoLeQuan.Text = "layoutControl16";
             // 
@@ -9128,14 +9128,14 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.textEdit41.Name = "textEdit41";
             this.textEdit41.Properties.Appearance.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold);
             this.textEdit41.Properties.Appearance.Options.UseFont = true;
-            this.textEdit41.Size = new System.Drawing.Size(202, 20);
+            this.textEdit41.Size = new System.Drawing.Size(200, 20);
             this.textEdit41.StyleController = this.lcTaiTaoLeQuan;
             this.textEdit41.TabIndex = 93;
             // 
             // checkEdit144
             // 
             this.checkEdit144.EditValue = true;
-            this.checkEdit144.Location = new System.Drawing.Point(308, 340);
+            this.checkEdit144.Location = new System.Drawing.Point(306, 340);
             this.checkEdit144.Margin = new System.Windows.Forms.Padding(2);
             this.checkEdit144.Name = "checkEdit144";
             this.checkEdit144.Properties.Caption = "Băng ép";
@@ -9146,12 +9146,12 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // 
             // textEdit44
             // 
-            this.textEdit44.Location = new System.Drawing.Point(463, 292);
+            this.textEdit44.Location = new System.Drawing.Point(459, 292);
             this.textEdit44.Margin = new System.Windows.Forms.Padding(2);
             this.textEdit44.Name = "textEdit44";
             this.textEdit44.Properties.Appearance.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold);
             this.textEdit44.Properties.Appearance.Options.UseFont = true;
-            this.textEdit44.Size = new System.Drawing.Size(140, 20);
+            this.textEdit44.Size = new System.Drawing.Size(142, 20);
             this.textEdit44.StyleController = this.lcTaiTaoLeQuan;
             this.textEdit44.TabIndex = 80;
             // 
@@ -9162,19 +9162,19 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.textEdit48.Name = "textEdit48";
             this.textEdit48.Properties.Appearance.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold);
             this.textEdit48.Properties.Appearance.Options.UseFont = true;
-            this.textEdit48.Size = new System.Drawing.Size(502, 20);
+            this.textEdit48.Size = new System.Drawing.Size(500, 20);
             this.textEdit48.StyleController = this.lcTaiTaoLeQuan;
             this.textEdit48.TabIndex = 73;
             // 
             // checkEdit171
             // 
-            this.checkEdit171.Location = new System.Drawing.Point(186, 292);
+            this.checkEdit171.Location = new System.Drawing.Point(184, 292);
             this.checkEdit171.Margin = new System.Windows.Forms.Padding(2);
             this.checkEdit171.Name = "checkEdit171";
             this.checkEdit171.Properties.Caption = "da mi";
             this.checkEdit171.Properties.CheckStyle = DevExpress.XtraEditors.Controls.CheckStyles.Radio;
             this.checkEdit171.Properties.RadioGroupIndex = -64;
-            this.checkEdit171.Size = new System.Drawing.Size(77, 19);
+            this.checkEdit171.Size = new System.Drawing.Size(76, 19);
             this.checkEdit171.StyleController = this.lcTaiTaoLeQuan;
             this.checkEdit171.TabIndex = 54;
             this.checkEdit171.TabStop = false;
@@ -9186,20 +9186,20 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.checkEdit173.Margin = new System.Windows.Forms.Padding(2);
             this.checkEdit173.Name = "checkEdit173";
             this.checkEdit173.Properties.Caption = "Kết mạc";
-            this.checkEdit173.Size = new System.Drawing.Size(65, 19);
+            this.checkEdit173.Size = new System.Drawing.Size(63, 19);
             this.checkEdit173.StyleController = this.lcTaiTaoLeQuan;
             this.checkEdit173.TabIndex = 52;
             this.checkEdit173.TabStop = false;
             // 
             // checkEdit174
             // 
-            this.checkEdit174.Location = new System.Drawing.Point(267, 292);
+            this.checkEdit174.Location = new System.Drawing.Point(264, 292);
             this.checkEdit174.Margin = new System.Windows.Forms.Padding(2);
             this.checkEdit174.Name = "checkEdit174";
             this.checkEdit174.Properties.Caption = "nút điểm lệ";
             this.checkEdit174.Properties.CheckStyle = DevExpress.XtraEditors.Controls.CheckStyles.Radio;
             this.checkEdit174.Properties.RadioGroupIndex = -64;
-            this.checkEdit174.Size = new System.Drawing.Size(97, 19);
+            this.checkEdit174.Size = new System.Drawing.Size(96, 19);
             this.checkEdit174.StyleController = this.lcTaiTaoLeQuan;
             this.checkEdit174.TabIndex = 51;
             this.checkEdit174.TabStop = false;
@@ -9207,7 +9207,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // 
             // checkEdit175
             // 
-            this.checkEdit175.Location = new System.Drawing.Point(278, 153);
+            this.checkEdit175.Location = new System.Drawing.Point(276, 153);
             this.checkEdit175.Margin = new System.Windows.Forms.Padding(2);
             this.checkEdit175.Name = "checkEdit175";
             this.checkEdit175.Properties.Caption = "Có đứt";
@@ -9222,11 +9222,11 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // checkEdit176
             // 
             this.checkEdit176.EditValue = true;
-            this.checkEdit176.Location = new System.Drawing.Point(222, 269);
+            this.checkEdit176.Location = new System.Drawing.Point(220, 269);
             this.checkEdit176.Margin = new System.Windows.Forms.Padding(2);
             this.checkEdit176.Name = "checkEdit176";
             this.checkEdit176.Properties.Caption = "Mô dưới da";
-            this.checkEdit176.Size = new System.Drawing.Size(83, 19);
+            this.checkEdit176.Size = new System.Drawing.Size(82, 19);
             this.checkEdit176.StyleController = this.lcTaiTaoLeQuan;
             this.checkEdit176.TabIndex = 49;
             this.checkEdit176.TabStop = false;
@@ -9234,24 +9234,24 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // checkEdit177
             // 
             this.checkEdit177.EditValue = true;
-            this.checkEdit177.Location = new System.Drawing.Point(309, 269);
+            this.checkEdit177.Location = new System.Drawing.Point(306, 269);
             this.checkEdit177.Margin = new System.Windows.Forms.Padding(2);
             this.checkEdit177.Name = "checkEdit177";
             this.checkEdit177.Properties.Caption = "Da";
-            this.checkEdit177.Size = new System.Drawing.Size(294, 19);
+            this.checkEdit177.Size = new System.Drawing.Size(295, 19);
             this.checkEdit177.StyleController = this.lcTaiTaoLeQuan;
             this.checkEdit177.TabIndex = 48;
             this.checkEdit177.TabStop = false;
             // 
             // checkEdit178
             // 
-            this.checkEdit178.Location = new System.Drawing.Point(171, 222);
+            this.checkEdit178.Location = new System.Drawing.Point(169, 222);
             this.checkEdit178.Margin = new System.Windows.Forms.Padding(2);
             this.checkEdit178.Name = "checkEdit178";
             this.checkEdit178.Properties.Caption = "Hình nhẫn";
             this.checkEdit178.Properties.CheckStyle = DevExpress.XtraEditors.Controls.CheckStyles.Radio;
             this.checkEdit178.Properties.RadioGroupIndex = -63;
-            this.checkEdit178.Size = new System.Drawing.Size(110, 19);
+            this.checkEdit178.Size = new System.Drawing.Size(109, 19);
             this.checkEdit178.StyleController = this.lcTaiTaoLeQuan;
             this.checkEdit178.TabIndex = 47;
             this.checkEdit178.TabStop = false;
@@ -9259,12 +9259,12 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // 
             // textEdit49
             // 
-            this.textEdit49.Location = new System.Drawing.Point(98, 106);
+            this.textEdit49.Location = new System.Drawing.Point(96, 106);
             this.textEdit49.Margin = new System.Windows.Forms.Padding(2);
             this.textEdit49.Name = "textEdit49";
             this.textEdit49.Properties.Appearance.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold);
             this.textEdit49.Properties.Appearance.Options.UseFont = true;
-            this.textEdit49.Size = new System.Drawing.Size(294, 20);
+            this.textEdit49.Size = new System.Drawing.Size(293, 20);
             this.textEdit49.StyleController = this.lcTaiTaoLeQuan;
             this.textEdit49.TabIndex = 45;
             // 
@@ -9275,7 +9275,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.textEdit50.Name = "textEdit50";
             this.textEdit50.Properties.Appearance.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold);
             this.textEdit50.Properties.Appearance.Options.UseFont = true;
-            this.textEdit50.Size = new System.Drawing.Size(299, 20);
+            this.textEdit50.Size = new System.Drawing.Size(297, 20);
             this.textEdit50.StyleController = this.lcTaiTaoLeQuan;
             this.textEdit50.TabIndex = 43;
             // 
@@ -9287,7 +9287,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.checkEdit179.Properties.Caption = "hình nhẫn";
             this.checkEdit179.Properties.CheckStyle = DevExpress.XtraEditors.Controls.CheckStyles.Radio;
             this.checkEdit179.Properties.RadioGroupIndex = -64;
-            this.checkEdit179.Size = new System.Drawing.Size(82, 19);
+            this.checkEdit179.Size = new System.Drawing.Size(80, 19);
             this.checkEdit179.StyleController = this.lcTaiTaoLeQuan;
             this.checkEdit179.TabIndex = 40;
             this.checkEdit179.TabStop = false;
@@ -9299,14 +9299,14 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.checkEdit180.Margin = new System.Windows.Forms.Padding(2);
             this.checkEdit180.Name = "checkEdit180";
             this.checkEdit180.Properties.Caption = "Có";
-            this.checkEdit180.Size = new System.Drawing.Size(485, 19);
+            this.checkEdit180.Size = new System.Drawing.Size(483, 19);
             this.checkEdit180.StyleController = this.lcTaiTaoLeQuan;
             this.checkEdit180.TabIndex = 39;
             this.checkEdit180.TabStop = false;
             // 
             // checkEdit181
             // 
-            this.checkEdit181.Location = new System.Drawing.Point(278, 130);
+            this.checkEdit181.Location = new System.Drawing.Point(276, 130);
             this.checkEdit181.Margin = new System.Windows.Forms.Padding(2);
             this.checkEdit181.Name = "checkEdit181";
             this.checkEdit181.Properties.Caption = "Có";
@@ -9326,7 +9326,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.checkEdit182.Properties.Caption = "Không đứt";
             this.checkEdit182.Properties.CheckStyle = DevExpress.XtraEditors.Controls.CheckStyles.Radio;
             this.checkEdit182.Properties.RadioGroupIndex = -61;
-            this.checkEdit182.Size = new System.Drawing.Size(100, 19);
+            this.checkEdit182.Size = new System.Drawing.Size(98, 19);
             this.checkEdit182.StyleController = this.lcTaiTaoLeQuan;
             this.checkEdit182.TabIndex = 37;
             this.checkEdit182.TabStop = false;
@@ -9334,7 +9334,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // 
             // checkEdit183
             // 
-            this.checkEdit183.Location = new System.Drawing.Point(259, 83);
+            this.checkEdit183.Location = new System.Drawing.Point(255, 83);
             this.checkEdit183.Margin = new System.Windows.Forms.Padding(2);
             this.checkEdit183.Name = "checkEdit183";
             this.checkEdit183.Properties.Caption = "Vùng túi lệ";
@@ -9351,7 +9351,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.checkEdit184.Properties.Caption = "Không";
             this.checkEdit184.Properties.CheckStyle = DevExpress.XtraEditors.Controls.CheckStyles.Radio;
             this.checkEdit184.Properties.RadioGroupIndex = -60;
-            this.checkEdit184.Size = new System.Drawing.Size(100, 19);
+            this.checkEdit184.Size = new System.Drawing.Size(98, 19);
             this.checkEdit184.StyleController = this.lcTaiTaoLeQuan;
             this.checkEdit184.TabIndex = 35;
             this.checkEdit184.TabStop = false;
@@ -9359,24 +9359,24 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // 
             // checkEdit185
             // 
-            this.checkEdit185.Location = new System.Drawing.Point(398, 83);
+            this.checkEdit185.Location = new System.Drawing.Point(394, 83);
             this.checkEdit185.Margin = new System.Windows.Forms.Padding(2);
             this.checkEdit185.Name = "checkEdit185";
             this.checkEdit185.Properties.Caption = "Dọc theo vết rách mi";
-            this.checkEdit185.Size = new System.Drawing.Size(205, 19);
+            this.checkEdit185.Size = new System.Drawing.Size(207, 19);
             this.checkEdit185.StyleController = this.lcTaiTaoLeQuan;
             this.checkEdit185.TabIndex = 34;
             this.checkEdit185.TabStop = false;
             // 
             // checkEdit186
             // 
-            this.checkEdit186.Location = new System.Drawing.Point(285, 222);
+            this.checkEdit186.Location = new System.Drawing.Point(282, 222);
             this.checkEdit186.Margin = new System.Windows.Forms.Padding(2);
             this.checkEdit186.Name = "checkEdit186";
             this.checkEdit186.Properties.Caption = "mini Monoka";
             this.checkEdit186.Properties.CheckStyle = DevExpress.XtraEditors.Controls.CheckStyles.Radio;
             this.checkEdit186.Properties.RadioGroupIndex = -63;
-            this.checkEdit186.Size = new System.Drawing.Size(318, 19);
+            this.checkEdit186.Size = new System.Drawing.Size(319, 19);
             this.checkEdit186.StyleController = this.lcTaiTaoLeQuan;
             this.checkEdit186.TabIndex = 33;
             this.checkEdit186.TabStop = false;
@@ -9384,7 +9384,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // 
             // checkEdit187
             // 
-            this.checkEdit187.Location = new System.Drawing.Point(272, 199);
+            this.checkEdit187.Location = new System.Drawing.Point(270, 199);
             this.checkEdit187.Margin = new System.Windows.Forms.Padding(2);
             this.checkEdit187.Name = "checkEdit187";
             this.checkEdit187.Properties.Caption = "1/3 giữa";
@@ -9404,7 +9404,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.checkEdit188.Properties.Caption = "1 lệ quản";
             this.checkEdit188.Properties.CheckStyle = DevExpress.XtraEditors.Controls.CheckStyles.Radio;
             this.checkEdit188.Properties.RadioGroupIndex = -63;
-            this.checkEdit188.Size = new System.Drawing.Size(79, 19);
+            this.checkEdit188.Size = new System.Drawing.Size(77, 19);
             this.checkEdit188.StyleController = this.lcTaiTaoLeQuan;
             this.checkEdit188.TabIndex = 31;
             this.checkEdit188.TabStop = false;
@@ -9412,7 +9412,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // 
             // checkEdit189
             // 
-            this.checkEdit189.Location = new System.Drawing.Point(338, 199);
+            this.checkEdit189.Location = new System.Drawing.Point(336, 199);
             this.checkEdit189.Margin = new System.Windows.Forms.Padding(2);
             this.checkEdit189.Name = "checkEdit189";
             this.checkEdit189.Properties.Caption = "1/3 trong";
@@ -9426,7 +9426,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // 
             // checkEdit190
             // 
-            this.checkEdit190.Location = new System.Drawing.Point(201, 199);
+            this.checkEdit190.Location = new System.Drawing.Point(199, 199);
             this.checkEdit190.Margin = new System.Windows.Forms.Padding(2);
             this.checkEdit190.Name = "checkEdit190";
             this.checkEdit190.Properties.Caption = "1/3 ngoài";
@@ -9440,22 +9440,22 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // 
             // checkEdit191
             // 
-            this.checkEdit191.Location = new System.Drawing.Point(165, 83);
+            this.checkEdit191.Location = new System.Drawing.Point(162, 83);
             this.checkEdit191.Margin = new System.Windows.Forms.Padding(2);
             this.checkEdit191.Name = "checkEdit191";
             this.checkEdit191.Properties.Caption = "Mũi";
-            this.checkEdit191.Size = new System.Drawing.Size(90, 19);
+            this.checkEdit191.Size = new System.Drawing.Size(89, 19);
             this.checkEdit191.StyleController = this.lcTaiTaoLeQuan;
             this.checkEdit191.TabIndex = 28;
             this.checkEdit191.TabStop = false;
             // 
             // checkEdit192
             // 
-            this.checkEdit192.Location = new System.Drawing.Point(27, 83);
+            this.checkEdit192.Location = new System.Drawing.Point(25, 83);
             this.checkEdit192.Margin = new System.Windows.Forms.Padding(2);
             this.checkEdit192.Name = "checkEdit192";
             this.checkEdit192.Properties.Caption = "Dưới hốc";
-            this.checkEdit192.Size = new System.Drawing.Size(134, 19);
+            this.checkEdit192.Size = new System.Drawing.Size(133, 19);
             this.checkEdit192.StyleController = this.lcTaiTaoLeQuan;
             this.checkEdit192.TabIndex = 27;
             this.checkEdit192.TabStop = false;
@@ -9463,17 +9463,17 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // labelControl34
             // 
             this.labelControl34.AutoSizeMode = DevExpress.XtraEditors.LabelAutoSizeMode.None;
-            this.labelControl34.Location = new System.Drawing.Point(396, 106);
+            this.labelControl34.Location = new System.Drawing.Point(393, 106);
             this.labelControl34.Margin = new System.Windows.Forms.Padding(2);
             this.labelControl34.Name = "labelControl34";
-            this.labelControl34.Size = new System.Drawing.Size(207, 13);
+            this.labelControl34.Size = new System.Drawing.Size(208, 13);
             this.labelControl34.StyleController = this.lcTaiTaoLeQuan;
             this.labelControl34.TabIndex = 26;
             this.labelControl34.Text = "ml";
             // 
             // checkEdit193
             // 
-            this.checkEdit193.Location = new System.Drawing.Point(194, 60);
+            this.checkEdit193.Location = new System.Drawing.Point(192, 60);
             this.checkEdit193.Margin = new System.Windows.Forms.Padding(2);
             this.checkEdit193.Name = "checkEdit193";
             this.checkEdit193.Properties.Caption = "Tê tại mặt";
@@ -9493,7 +9493,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.checkEdit194.Properties.Caption = "Mê";
             this.checkEdit194.Properties.CheckStyle = DevExpress.XtraEditors.Controls.CheckStyles.Radio;
             this.checkEdit194.Properties.RadioGroupIndex = -59;
-            this.checkEdit194.Size = new System.Drawing.Size(57, 19);
+            this.checkEdit194.Size = new System.Drawing.Size(55, 19);
             this.checkEdit194.StyleController = this.lcTaiTaoLeQuan;
             this.checkEdit194.TabIndex = 23;
             this.checkEdit194.TabStop = false;
@@ -9575,7 +9575,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.checkEdit206.Margin = new System.Windows.Forms.Padding(2);
             this.checkEdit206.Name = "checkEdit206";
             this.checkEdit206.Properties.Caption = "Có";
-            this.checkEdit206.Size = new System.Drawing.Size(50, 19);
+            this.checkEdit206.Size = new System.Drawing.Size(48, 19);
             this.checkEdit206.StyleController = this.lcTaiTaoLeQuan;
             this.checkEdit206.TabIndex = 27;
             this.checkEdit206.TabStop = false;
@@ -9594,10 +9594,10 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.spinEdit51.Properties.Appearance.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold);
             this.spinEdit51.Properties.Appearance.Options.UseFont = true;
             this.spinEdit51.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo, "", -1, true, false, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject21, serializableAppearanceObject22, serializableAppearanceObject23, serializableAppearanceObject24, "", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo, "", -1, true, false, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject25, serializableAppearanceObject26, serializableAppearanceObject27, serializableAppearanceObject28, "", null, null, true)});
             this.spinEdit51.Properties.EditValueChangedFiringMode = DevExpress.XtraEditors.Controls.EditValueChangedFiringMode.Default;
             this.spinEdit51.Properties.Mask.MaskType = DevExpress.XtraEditors.Mask.MaskType.None;
-            this.spinEdit51.Size = new System.Drawing.Size(67, 20);
+            this.spinEdit51.Size = new System.Drawing.Size(65, 20);
             this.spinEdit51.StyleController = this.lcTaiTaoLeQuan;
             this.spinEdit51.TabIndex = 41;
             // 
@@ -9615,10 +9615,10 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.spinEdit52.Properties.Appearance.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold);
             this.spinEdit52.Properties.Appearance.Options.UseFont = true;
             this.spinEdit52.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo, "", -1, true, false, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject25, serializableAppearanceObject26, serializableAppearanceObject27, serializableAppearanceObject28, "", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo, "", -1, true, false, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject29, serializableAppearanceObject30, serializableAppearanceObject31, serializableAppearanceObject32, "", null, null, true)});
             this.spinEdit52.Properties.EditValueChangedFiringMode = DevExpress.XtraEditors.Controls.EditValueChangedFiringMode.Default;
             this.spinEdit52.Properties.Mask.MaskType = DevExpress.XtraEditors.Mask.MaskType.None;
-            this.spinEdit52.Size = new System.Drawing.Size(105, 20);
+            this.spinEdit52.Size = new System.Drawing.Size(103, 20);
             this.spinEdit52.StyleController = this.lcTaiTaoLeQuan;
             this.spinEdit52.TabIndex = 25;
             // 
@@ -9671,7 +9671,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.lcgTaiTaoLaiLeQuan.Location = new System.Drawing.Point(0, 0);
             this.lcgTaiTaoLaiLeQuan.Name = "lcgTaiTaoLaiLeQuan";
             this.lcgTaiTaoLaiLeQuan.OptionsItemText.TextToControlDistance = 4;
-            this.lcgTaiTaoLaiLeQuan.Size = new System.Drawing.Size(615, 604);
+            this.lcgTaiTaoLaiLeQuan.Size = new System.Drawing.Size(613, 604);
             this.lcgTaiTaoLaiLeQuan.TextVisible = false;
             // 
             // layoutControlItem306
@@ -9728,7 +9728,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.layoutControlItem317.Control = this.checkEdit194;
             this.layoutControlItem317.Location = new System.Drawing.Point(0, 48);
             this.layoutControlItem317.Name = "layoutControlItem20";
-            this.layoutControlItem317.Size = new System.Drawing.Size(182, 23);
+            this.layoutControlItem317.Size = new System.Drawing.Size(180, 23);
             this.layoutControlItem317.Text = "+ Phương pháp vô cảm:";
             this.layoutControlItem317.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.AutoSize;
             this.layoutControlItem317.TextSize = new System.Drawing.Size(116, 13);
@@ -9737,7 +9737,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // layoutControlItem318
             // 
             this.layoutControlItem318.Control = this.checkEdit193;
-            this.layoutControlItem318.Location = new System.Drawing.Point(182, 48);
+            this.layoutControlItem318.Location = new System.Drawing.Point(180, 48);
             this.layoutControlItem318.Name = "layoutControlItem21";
             this.layoutControlItem318.Size = new System.Drawing.Size(413, 23);
             this.layoutControlItem318.TextSize = new System.Drawing.Size(0, 0);
@@ -9746,9 +9746,9 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // layoutControlItem321
             // 
             this.layoutControlItem321.Control = this.checkEdit192;
-            this.layoutControlItem321.Location = new System.Drawing.Point(15, 71);
+            this.layoutControlItem321.Location = new System.Drawing.Point(13, 71);
             this.layoutControlItem321.Name = "layoutControlItem24";
-            this.layoutControlItem321.Size = new System.Drawing.Size(138, 23);
+            this.layoutControlItem321.Size = new System.Drawing.Size(137, 23);
             this.layoutControlItem321.Text = "1. Cố định nhẫn cầu:";
             this.layoutControlItem321.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem321.TextVisible = false;
@@ -9756,9 +9756,9 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // layoutControlItem322
             // 
             this.layoutControlItem322.Control = this.checkEdit191;
-            this.layoutControlItem322.Location = new System.Drawing.Point(153, 71);
+            this.layoutControlItem322.Location = new System.Drawing.Point(150, 71);
             this.layoutControlItem322.Name = "layoutControlItem25";
-            this.layoutControlItem322.Size = new System.Drawing.Size(94, 23);
+            this.layoutControlItem322.Size = new System.Drawing.Size(93, 23);
             this.layoutControlItem322.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem322.TextVisible = false;
             // 
@@ -9768,7 +9768,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.layoutControlItem323.CustomizationFormText = "1. Cố định nhẫn cầu:";
             this.layoutControlItem323.Location = new System.Drawing.Point(0, 187);
             this.layoutControlItem323.Name = "layoutControlItem26";
-            this.layoutControlItem323.Size = new System.Drawing.Size(159, 23);
+            this.layoutControlItem323.Size = new System.Drawing.Size(157, 23);
             this.layoutControlItem323.Text = "+ Tìm đầu đứt trong:";
             this.layoutControlItem323.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.AutoSize;
             this.layoutControlItem323.TextSize = new System.Drawing.Size(101, 13);
@@ -9777,7 +9777,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // layoutControlItem325
             // 
             this.layoutControlItem325.Control = this.checkEdit190;
-            this.layoutControlItem325.Location = new System.Drawing.Point(159, 187);
+            this.layoutControlItem325.Location = new System.Drawing.Point(157, 187);
             this.layoutControlItem325.Name = "layoutControlItem27";
             this.layoutControlItem325.Size = new System.Drawing.Size(101, 23);
             this.layoutControlItem325.Text = "Vị trí:";
@@ -9788,7 +9788,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // layoutControlItem326
             // 
             this.layoutControlItem326.Control = this.checkEdit189;
-            this.layoutControlItem326.Location = new System.Drawing.Point(326, 187);
+            this.layoutControlItem326.Location = new System.Drawing.Point(324, 187);
             this.layoutControlItem326.Name = "layoutControlItem28";
             this.layoutControlItem326.Size = new System.Drawing.Size(269, 23);
             this.layoutControlItem326.TextSize = new System.Drawing.Size(0, 0);
@@ -9797,7 +9797,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // layoutControlItem328
             // 
             this.layoutControlItem328.Control = this.checkEdit187;
-            this.layoutControlItem328.Location = new System.Drawing.Point(260, 187);
+            this.layoutControlItem328.Location = new System.Drawing.Point(258, 187);
             this.layoutControlItem328.Name = "layoutControlItem30";
             this.layoutControlItem328.Size = new System.Drawing.Size(66, 23);
             this.layoutControlItem328.TextSize = new System.Drawing.Size(0, 0);
@@ -9810,7 +9810,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.layoutControlItem332.Control = this.spinEdit51;
             this.layoutControlItem332.Location = new System.Drawing.Point(459, 0);
             this.layoutControlItem332.Name = "layoutControlItem39";
-            this.layoutControlItem332.Size = new System.Drawing.Size(136, 24);
+            this.layoutControlItem332.Size = new System.Drawing.Size(134, 24);
             this.layoutControlItem332.Text = "Giờ thứ:";
             this.layoutControlItem332.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem332.TextSize = new System.Drawing.Size(60, 20);
@@ -9823,7 +9823,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.layoutControlItem319.Control = this.spinEdit52;
             this.layoutControlItem319.Location = new System.Drawing.Point(431, 24);
             this.layoutControlItem319.Name = "layoutControlItem22";
-            this.layoutControlItem319.Size = new System.Drawing.Size(164, 24);
+            this.layoutControlItem319.Size = new System.Drawing.Size(162, 24);
             this.layoutControlItem319.Text = "PT lần:";
             this.layoutControlItem319.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem319.TextSize = new System.Drawing.Size(50, 20);
@@ -9832,9 +9832,9 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // layoutControlItem340
             // 
             this.layoutControlItem340.Control = this.textEdit49;
-            this.layoutControlItem340.Location = new System.Drawing.Point(15, 94);
+            this.layoutControlItem340.Location = new System.Drawing.Point(13, 94);
             this.layoutControlItem340.Name = "layoutControlItem44";
-            this.layoutControlItem340.Size = new System.Drawing.Size(369, 24);
+            this.layoutControlItem340.Size = new System.Drawing.Size(368, 24);
             this.layoutControlItem340.Text = "Loại thuốc tê:";
             this.layoutControlItem340.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.AutoSize;
             this.layoutControlItem340.TextSize = new System.Drawing.Size(66, 13);
@@ -9843,18 +9843,18 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // layoutControlItem320
             // 
             this.layoutControlItem320.Control = this.labelControl34;
-            this.layoutControlItem320.Location = new System.Drawing.Point(384, 94);
+            this.layoutControlItem320.Location = new System.Drawing.Point(381, 94);
             this.layoutControlItem320.Name = "layoutControlItem23";
-            this.layoutControlItem320.Size = new System.Drawing.Size(211, 24);
+            this.layoutControlItem320.Size = new System.Drawing.Size(212, 24);
             this.layoutControlItem320.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem320.TextVisible = false;
             // 
             // layoutControlItem330
             // 
             this.layoutControlItem330.Control = this.checkEdit185;
-            this.layoutControlItem330.Location = new System.Drawing.Point(386, 71);
+            this.layoutControlItem330.Location = new System.Drawing.Point(382, 71);
             this.layoutControlItem330.Name = "layoutControlItem32";
-            this.layoutControlItem330.Size = new System.Drawing.Size(209, 23);
+            this.layoutControlItem330.Size = new System.Drawing.Size(211, 23);
             this.layoutControlItem330.Text = "3. Mở KM rìa:";
             this.layoutControlItem330.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem330.TextSize = new System.Drawing.Size(0, 0);
@@ -9864,7 +9864,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // layoutControlItem334
             // 
             this.layoutControlItem334.Control = this.checkEdit183;
-            this.layoutControlItem334.Location = new System.Drawing.Point(247, 71);
+            this.layoutControlItem334.Location = new System.Drawing.Point(243, 71);
             this.layoutControlItem334.Name = "layoutControlItem34";
             this.layoutControlItem334.Size = new System.Drawing.Size(139, 23);
             this.layoutControlItem334.Text = "4. Mở vào TP:";
@@ -9876,7 +9876,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.emptySpaceItem24.AllowHotTrack = false;
             this.emptySpaceItem24.Location = new System.Drawing.Point(0, 352);
             this.emptySpaceItem24.Name = "emptySpaceItem24";
-            this.emptySpaceItem24.Size = new System.Drawing.Size(595, 232);
+            this.emptySpaceItem24.Size = new System.Drawing.Size(593, 232);
             this.emptySpaceItem24.TextSize = new System.Drawing.Size(0, 0);
             // 
             // emptySpaceItem13
@@ -9884,7 +9884,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.emptySpaceItem13.AllowHotTrack = false;
             this.emptySpaceItem13.Location = new System.Drawing.Point(0, 94);
             this.emptySpaceItem13.Name = "emptySpaceItem1";
-            this.emptySpaceItem13.Size = new System.Drawing.Size(15, 24);
+            this.emptySpaceItem13.Size = new System.Drawing.Size(13, 24);
             this.emptySpaceItem13.TextSize = new System.Drawing.Size(0, 0);
             // 
             // emptySpaceItem23
@@ -9892,7 +9892,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.emptySpaceItem23.AllowHotTrack = false;
             this.emptySpaceItem23.Location = new System.Drawing.Point(0, 71);
             this.emptySpaceItem23.Name = "emptySpaceItem23";
-            this.emptySpaceItem23.Size = new System.Drawing.Size(15, 23);
+            this.emptySpaceItem23.Size = new System.Drawing.Size(13, 23);
             this.emptySpaceItem23.TextSize = new System.Drawing.Size(0, 0);
             // 
             // layoutControlItem331
@@ -9900,14 +9900,14 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.layoutControlItem331.Control = this.checkEdit184;
             this.layoutControlItem331.Location = new System.Drawing.Point(0, 118);
             this.layoutControlItem331.Name = "layoutControlItem33";
-            this.layoutControlItem331.Size = new System.Drawing.Size(266, 23);
+            this.layoutControlItem331.Size = new System.Drawing.Size(264, 23);
             this.layoutControlItem331.Text = "+ Kiểm tra vết thương lấy dị vật:";
             this.layoutControlItem331.TextSize = new System.Drawing.Size(158, 13);
             // 
             // layoutControlItem336
             // 
             this.layoutControlItem336.Control = this.checkEdit181;
-            this.layoutControlItem336.Location = new System.Drawing.Point(266, 118);
+            this.layoutControlItem336.Location = new System.Drawing.Point(264, 118);
             this.layoutControlItem336.Name = "layoutControlItem36";
             this.layoutControlItem336.Size = new System.Drawing.Size(329, 23);
             this.layoutControlItem336.TextSize = new System.Drawing.Size(0, 0);
@@ -9918,14 +9918,14 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.layoutControlItem335.Control = this.checkEdit182;
             this.layoutControlItem335.Location = new System.Drawing.Point(0, 141);
             this.layoutControlItem335.Name = "layoutControlItem35";
-            this.layoutControlItem335.Size = new System.Drawing.Size(266, 23);
+            this.layoutControlItem335.Size = new System.Drawing.Size(264, 23);
             this.layoutControlItem335.Text = "+ Kiểm tra lệ quản lành:";
             this.layoutControlItem335.TextSize = new System.Drawing.Size(158, 13);
             // 
             // layoutControlItem352
             // 
             this.layoutControlItem352.Control = this.checkEdit175;
-            this.layoutControlItem352.Location = new System.Drawing.Point(266, 141);
+            this.layoutControlItem352.Location = new System.Drawing.Point(264, 141);
             this.layoutControlItem352.Name = "layoutControlItem49";
             this.layoutControlItem352.Size = new System.Drawing.Size(329, 23);
             this.layoutControlItem352.TextSize = new System.Drawing.Size(0, 0);
@@ -9936,7 +9936,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.layoutControlItem342.Control = this.checkEdit180;
             this.layoutControlItem342.Location = new System.Drawing.Point(0, 164);
             this.layoutControlItem342.Name = "layoutControlItem37";
-            this.layoutControlItem342.Size = new System.Drawing.Size(595, 23);
+            this.layoutControlItem342.Size = new System.Drawing.Size(593, 23);
             this.layoutControlItem342.Text = "+ Tìm đầu đứt ngoài:";
             this.layoutControlItem342.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.AutoSize;
             this.layoutControlItem342.TextSize = new System.Drawing.Size(101, 13);
@@ -9947,7 +9947,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.layoutControlItem327.Control = this.checkEdit188;
             this.layoutControlItem327.Location = new System.Drawing.Point(0, 210);
             this.layoutControlItem327.Name = "layoutControlItem29";
-            this.layoutControlItem327.Size = new System.Drawing.Size(159, 23);
+            this.layoutControlItem327.Size = new System.Drawing.Size(157, 23);
             this.layoutControlItem327.Text = "+ Đặt lệ quản:";
             this.layoutControlItem327.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.AutoSize;
             this.layoutControlItem327.TextSize = new System.Drawing.Size(71, 13);
@@ -9956,18 +9956,18 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // layoutControlItem329
             // 
             this.layoutControlItem329.Control = this.checkEdit186;
-            this.layoutControlItem329.Location = new System.Drawing.Point(273, 210);
+            this.layoutControlItem329.Location = new System.Drawing.Point(270, 210);
             this.layoutControlItem329.Name = "layoutControlItem31";
-            this.layoutControlItem329.Size = new System.Drawing.Size(322, 23);
+            this.layoutControlItem329.Size = new System.Drawing.Size(323, 23);
             this.layoutControlItem329.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem329.TextVisible = false;
             // 
             // layoutControlItem351
             // 
             this.layoutControlItem351.Control = this.checkEdit178;
-            this.layoutControlItem351.Location = new System.Drawing.Point(159, 210);
+            this.layoutControlItem351.Location = new System.Drawing.Point(157, 210);
             this.layoutControlItem351.Name = "layoutControlItem46";
-            this.layoutControlItem351.Size = new System.Drawing.Size(114, 23);
+            this.layoutControlItem351.Size = new System.Drawing.Size(113, 23);
             this.layoutControlItem351.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem351.TextVisible = false;
             // 
@@ -9976,7 +9976,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.layoutControlItem337.Control = this.textEdit50;
             this.layoutControlItem337.Location = new System.Drawing.Point(0, 233);
             this.layoutControlItem337.Name = "layoutControlItem41";
-            this.layoutControlItem337.Size = new System.Drawing.Size(595, 24);
+            this.layoutControlItem337.Size = new System.Drawing.Size(593, 24);
             this.layoutControlItem337.Text = "+ Nối tận 2 đầu lệ quản đứt: trên, dưới, sau bằng chỉ vicryl:";
             this.layoutControlItem337.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.AutoSize;
             this.layoutControlItem337.TextSize = new System.Drawing.Size(287, 13);
@@ -9985,9 +9985,9 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // layoutControlItem343
             // 
             this.layoutControlItem343.Control = this.checkEdit177;
-            this.layoutControlItem343.Location = new System.Drawing.Point(297, 257);
+            this.layoutControlItem343.Location = new System.Drawing.Point(294, 257);
             this.layoutControlItem343.Name = "layoutControlItem47";
-            this.layoutControlItem343.Size = new System.Drawing.Size(298, 23);
+            this.layoutControlItem343.Size = new System.Drawing.Size(299, 23);
             this.layoutControlItem343.Text = "6. ";
             this.layoutControlItem343.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem343.TextSize = new System.Drawing.Size(0, 0);
@@ -9999,7 +9999,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.layoutControlItem354.Control = this.checkEdit173;
             this.layoutControlItem354.Location = new System.Drawing.Point(0, 257);
             this.layoutControlItem354.Name = "layoutControlItem51";
-            this.layoutControlItem354.Size = new System.Drawing.Size(210, 23);
+            this.layoutControlItem354.Size = new System.Drawing.Size(208, 23);
             this.layoutControlItem354.Text = "+ Tái tạo mi góc trong 3 lớp:";
             this.layoutControlItem354.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.AutoSize;
             this.layoutControlItem354.TextSize = new System.Drawing.Size(136, 13);
@@ -10008,9 +10008,9 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // layoutControlItem353
             // 
             this.layoutControlItem353.Control = this.checkEdit176;
-            this.layoutControlItem353.Location = new System.Drawing.Point(210, 257);
+            this.layoutControlItem353.Location = new System.Drawing.Point(208, 257);
             this.layoutControlItem353.Name = "layoutControlItem48";
-            this.layoutControlItem353.Size = new System.Drawing.Size(87, 23);
+            this.layoutControlItem353.Size = new System.Drawing.Size(86, 23);
             this.layoutControlItem353.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem353.TextVisible = false;
             // 
@@ -10019,7 +10019,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.layoutControlItem324.Control = this.checkEdit179;
             this.layoutControlItem324.Location = new System.Drawing.Point(0, 280);
             this.layoutControlItem324.Name = "layoutControlItem38";
-            this.layoutControlItem324.Size = new System.Drawing.Size(174, 24);
+            this.layoutControlItem324.Size = new System.Drawing.Size(172, 24);
             this.layoutControlItem324.Text = "+ Cố định Silicon:";
             this.layoutControlItem324.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.AutoSize;
             this.layoutControlItem324.TextSize = new System.Drawing.Size(83, 13);
@@ -10028,9 +10028,9 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // layoutControlItem355
             // 
             this.layoutControlItem355.Control = this.checkEdit171;
-            this.layoutControlItem355.Location = new System.Drawing.Point(174, 280);
+            this.layoutControlItem355.Location = new System.Drawing.Point(172, 280);
             this.layoutControlItem355.Name = "layoutControlItem53";
-            this.layoutControlItem355.Size = new System.Drawing.Size(81, 24);
+            this.layoutControlItem355.Size = new System.Drawing.Size(80, 24);
             this.layoutControlItem355.Text = "Xoay nhân:";
             this.layoutControlItem355.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem355.TextSize = new System.Drawing.Size(0, 0);
@@ -10040,9 +10040,9 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // layoutControlItem344
             // 
             this.layoutControlItem344.Control = this.checkEdit174;
-            this.layoutControlItem344.Location = new System.Drawing.Point(255, 280);
+            this.layoutControlItem344.Location = new System.Drawing.Point(252, 280);
             this.layoutControlItem344.Name = "layoutControlItem50";
-            this.layoutControlItem344.Size = new System.Drawing.Size(101, 24);
+            this.layoutControlItem344.Size = new System.Drawing.Size(100, 24);
             this.layoutControlItem344.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem344.TextVisible = false;
             // 
@@ -10051,9 +10051,9 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.layoutControlItem364.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem364.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem364.Control = this.textEdit44;
-            this.layoutControlItem364.Location = new System.Drawing.Point(356, 280);
+            this.layoutControlItem364.Location = new System.Drawing.Point(352, 280);
             this.layoutControlItem364.Name = "layoutControlItem79";
-            this.layoutControlItem364.Size = new System.Drawing.Size(239, 24);
+            this.layoutControlItem364.Size = new System.Drawing.Size(241, 24);
             this.layoutControlItem364.Text = "Bằng chỉ nylon:";
             this.layoutControlItem364.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem364.TextSize = new System.Drawing.Size(90, 20);
@@ -10066,7 +10066,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.layoutControlItem359.Control = this.textEdit48;
             this.layoutControlItem359.Location = new System.Drawing.Point(0, 304);
             this.layoutControlItem359.Name = "layoutControlItem72";
-            this.layoutControlItem359.Size = new System.Drawing.Size(595, 24);
+            this.layoutControlItem359.Size = new System.Drawing.Size(593, 24);
             this.layoutControlItem359.Text = "+ Diễn biến khác:";
             this.layoutControlItem359.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.AutoSize;
             this.layoutControlItem359.TextSize = new System.Drawing.Size(84, 13);
@@ -10079,7 +10079,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.layoutControlItem387.Control = this.textEdit41;
             this.layoutControlItem387.Location = new System.Drawing.Point(0, 328);
             this.layoutControlItem387.Name = "layoutControlItem92";
-            this.layoutControlItem387.Size = new System.Drawing.Size(296, 24);
+            this.layoutControlItem387.Size = new System.Drawing.Size(294, 24);
             this.layoutControlItem387.Text = "+ Tra kháng sinh:";
             this.layoutControlItem387.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.AutoSize;
             this.layoutControlItem387.TextSize = new System.Drawing.Size(85, 13);
@@ -10088,7 +10088,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // layoutControlItem388
             // 
             this.layoutControlItem388.Control = this.checkEdit144;
-            this.layoutControlItem388.Location = new System.Drawing.Point(296, 328);
+            this.layoutControlItem388.Location = new System.Drawing.Point(294, 328);
             this.layoutControlItem388.Name = "raTraMatchkBangEp";
             this.layoutControlItem388.Size = new System.Drawing.Size(299, 24);
             this.layoutControlItem388.TextSize = new System.Drawing.Size(0, 0);
@@ -10097,11 +10097,11 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // layoutControl17
             // 
             this.layoutControl17.Controls.Add(this.pictureEdit10);
-            this.layoutControl17.Location = new System.Drawing.Point(621, 2);
+            this.layoutControl17.Location = new System.Drawing.Point(619, 2);
             this.layoutControl17.Margin = new System.Windows.Forms.Padding(2);
             this.layoutControl17.Name = "layoutControl17";
             this.layoutControl17.Root = this.layoutControlGroup15;
-            this.layoutControl17.Size = new System.Drawing.Size(310, 604);
+            this.layoutControl17.Size = new System.Drawing.Size(312, 604);
             this.layoutControl17.TabIndex = 5;
             this.layoutControl17.Text = "layoutControl17";
             // 
@@ -10113,7 +10113,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.pictureEdit10.Name = "pictureEdit10";
             this.pictureEdit10.Properties.ReadOnly = true;
             this.pictureEdit10.Properties.ShowCameraMenuItem = DevExpress.XtraEditors.Controls.CameraMenuItemVisibility.Auto;
-            this.pictureEdit10.Size = new System.Drawing.Size(286, 110);
+            this.pictureEdit10.Size = new System.Drawing.Size(288, 108);
             this.pictureEdit10.StyleController = this.layoutControl17;
             this.pictureEdit10.TabIndex = 97;
             // 
@@ -10127,7 +10127,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.layoutControlGroup15.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup15.Name = "layoutControlGroup3";
             this.layoutControlGroup15.OptionsItemText.TextToControlDistance = 4;
-            this.layoutControlGroup15.Size = new System.Drawing.Size(310, 604);
+            this.layoutControlGroup15.Size = new System.Drawing.Size(312, 604);
             this.layoutControlGroup15.TextVisible = false;
             // 
             // layoutControlItem391
@@ -10135,16 +10135,16 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.layoutControlItem391.Control = this.pictureEdit10;
             this.layoutControlItem391.Location = new System.Drawing.Point(0, 0);
             this.layoutControlItem391.Name = "layoutControlItem98";
-            this.layoutControlItem391.Size = new System.Drawing.Size(290, 114);
+            this.layoutControlItem391.Size = new System.Drawing.Size(292, 112);
             this.layoutControlItem391.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem391.TextVisible = false;
             // 
             // emptySpaceItem25
             // 
             this.emptySpaceItem25.AllowHotTrack = false;
-            this.emptySpaceItem25.Location = new System.Drawing.Point(0, 114);
+            this.emptySpaceItem25.Location = new System.Drawing.Point(0, 112);
             this.emptySpaceItem25.Name = "emptySpaceItem25";
-            this.emptySpaceItem25.Size = new System.Drawing.Size(290, 470);
+            this.emptySpaceItem25.Size = new System.Drawing.Size(292, 472);
             this.emptySpaceItem25.TextSize = new System.Drawing.Size(0, 0);
             // 
             // layoutControlGroup16
@@ -10166,16 +10166,16 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.layoutControlItem393.Control = this.lcTaiTaoLeQuan;
             this.layoutControlItem393.Location = new System.Drawing.Point(0, 0);
             this.layoutControlItem393.Name = "layoutControlItem90";
-            this.layoutControlItem393.Size = new System.Drawing.Size(619, 608);
+            this.layoutControlItem393.Size = new System.Drawing.Size(617, 608);
             this.layoutControlItem393.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem393.TextVisible = false;
             // 
             // layoutControlItem394
             // 
             this.layoutControlItem394.Control = this.layoutControl17;
-            this.layoutControlItem394.Location = new System.Drawing.Point(619, 0);
+            this.layoutControlItem394.Location = new System.Drawing.Point(617, 0);
             this.layoutControlItem394.Name = "layoutControlItem95";
-            this.layoutControlItem394.Size = new System.Drawing.Size(314, 608);
+            this.layoutControlItem394.Size = new System.Drawing.Size(316, 608);
             this.layoutControlItem394.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem394.TextVisible = false;
             // 
@@ -10225,7 +10225,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.lcTTMongMat.Margin = new System.Windows.Forms.Padding(2);
             this.lcTTMongMat.Name = "lcTTMongMat";
             this.lcTTMongMat.Root = this.layoutControlGroup17;
-            this.lcTTMongMat.Size = new System.Drawing.Size(611, 604);
+            this.lcTTMongMat.Size = new System.Drawing.Size(609, 604);
             this.lcTTMongMat.TabIndex = 0;
             this.lcTTMongMat.Text = "layoutControl19";
             // 
@@ -10235,7 +10235,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.labelControl28.Location = new System.Drawing.Point(12, 260);
             this.labelControl28.Margin = new System.Windows.Forms.Padding(2);
             this.labelControl28.Name = "labelControl28";
-            this.labelControl28.Size = new System.Drawing.Size(587, 13);
+            this.labelControl28.Size = new System.Drawing.Size(585, 13);
             this.labelControl28.StyleController = this.lcTTMongMat;
             this.labelControl28.TabIndex = 82;
             this.labelControl28.Text = "Rửa cùng đồ";
@@ -10246,7 +10246,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.labelControl37.Location = new System.Drawing.Point(12, 121);
             this.labelControl37.Margin = new System.Windows.Forms.Padding(2);
             this.labelControl37.Name = "labelControl37";
-            this.labelControl37.Size = new System.Drawing.Size(587, 13);
+            this.labelControl37.Size = new System.Drawing.Size(585, 13);
             this.labelControl37.StyleController = this.lcTTMongMat;
             this.labelControl37.TabIndex = 78;
             this.labelControl37.Text = "Bệnh nhân ngồi và cố định đầu vào máy Laser Yag";
@@ -10257,7 +10257,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.labelControl38.Location = new System.Drawing.Point(12, 202);
             this.labelControl38.Margin = new System.Windows.Forms.Padding(2);
             this.labelControl38.Name = "labelControl38";
-            this.labelControl38.Size = new System.Drawing.Size(587, 13);
+            this.labelControl38.Size = new System.Drawing.Size(585, 13);
             this.labelControl38.StyleController = this.lcTTMongMat;
             this.labelControl38.TabIndex = 77;
             this.labelControl38.Text = "Điều chỉnh tiêu điểm phù hợp";
@@ -10268,7 +10268,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.labelControl39.Location = new System.Drawing.Point(12, 243);
             this.labelControl39.Margin = new System.Windows.Forms.Padding(2);
             this.labelControl39.Name = "labelControl39";
-            this.labelControl39.Size = new System.Drawing.Size(587, 13);
+            this.labelControl39.Size = new System.Drawing.Size(585, 13);
             this.labelControl39.StyleController = this.lcTTMongMat;
             this.labelControl39.TabIndex = 46;
             this.labelControl39.Text = "Mở cố định đầu và mắt bệnh nhân";
@@ -10279,7 +10279,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.labelControl40.Location = new System.Drawing.Point(12, 185);
             this.labelControl40.Margin = new System.Windows.Forms.Padding(2);
             this.labelControl40.Name = "labelControl40";
-            this.labelControl40.Size = new System.Drawing.Size(587, 13);
+            this.labelControl40.Size = new System.Drawing.Size(585, 13);
             this.labelControl40.StyleController = this.lcTTMongMat;
             this.labelControl40.TabIndex = 44;
             this.labelControl40.Text = "Cố định nhãn cầu bằng kính ABRAHAM";
@@ -10290,19 +10290,19 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.labelControl41.Location = new System.Drawing.Point(12, 12);
             this.labelControl41.Margin = new System.Windows.Forms.Padding(2);
             this.labelControl41.Name = "labelControl41";
-            this.labelControl41.Size = new System.Drawing.Size(587, 13);
+            this.labelControl41.Size = new System.Drawing.Size(585, 13);
             this.labelControl41.StyleController = this.lcTTMongMat;
             this.labelControl41.TabIndex = 42;
             this.labelControl41.Text = "+ Chẩn đoán trước PT:";
             // 
             // textEdit64
             // 
-            this.textEdit64.Location = new System.Drawing.Point(328, 138);
+            this.textEdit64.Location = new System.Drawing.Point(325, 138);
             this.textEdit64.Margin = new System.Windows.Forms.Padding(2);
             this.textEdit64.Name = "textEdit64";
             this.textEdit64.Properties.Appearance.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold);
             this.textEdit64.Properties.Appearance.Options.UseFont = true;
-            this.textEdit64.Size = new System.Drawing.Size(271, 20);
+            this.textEdit64.Size = new System.Drawing.Size(272, 20);
             this.textEdit64.StyleController = this.lcTTMongMat;
             this.textEdit64.TabIndex = 41;
             this.textEdit64.EditValueChanged += new System.EventHandler(this.textEdit64_EditValueChanged);
@@ -10310,13 +10310,13 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // 
             // checkEdit255
             // 
-            this.checkEdit255.Location = new System.Drawing.Point(185, 219);
+            this.checkEdit255.Location = new System.Drawing.Point(183, 219);
             this.checkEdit255.Margin = new System.Windows.Forms.Padding(2);
             this.checkEdit255.Name = "checkEdit255";
             this.checkEdit255.Properties.Caption = "13h";
             this.checkEdit255.Properties.CheckStyle = DevExpress.XtraEditors.Controls.CheckStyles.Radio;
             this.checkEdit255.Properties.RadioGroupIndex = -68;
-            this.checkEdit255.Size = new System.Drawing.Size(71, 19);
+            this.checkEdit255.Size = new System.Drawing.Size(70, 19);
             this.checkEdit255.StyleController = this.lcTTMongMat;
             this.checkEdit255.TabIndex = 28;
             this.checkEdit255.TabStop = false;
@@ -10330,7 +10330,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.checkEdit256.Properties.Caption = "11h";
             this.checkEdit256.Properties.CheckStyle = DevExpress.XtraEditors.Controls.CheckStyles.Radio;
             this.checkEdit256.Properties.RadioGroupIndex = -68;
-            this.checkEdit256.Size = new System.Drawing.Size(49, 19);
+            this.checkEdit256.Size = new System.Drawing.Size(47, 19);
             this.checkEdit256.StyleController = this.lcTTMongMat;
             this.checkEdit256.TabIndex = 27;
             this.checkEdit256.TabStop = false;
@@ -10339,23 +10339,23 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // labelControl42
             // 
             this.labelControl42.AutoSizeMode = DevExpress.XtraEditors.LabelAutoSizeMode.None;
-            this.labelControl42.Location = new System.Drawing.Point(255, 165);
+            this.labelControl42.Location = new System.Drawing.Point(252, 165);
             this.labelControl42.Margin = new System.Windows.Forms.Padding(2);
             this.labelControl42.Name = "labelControl42";
-            this.labelControl42.Size = new System.Drawing.Size(344, 13);
+            this.labelControl42.Size = new System.Drawing.Size(345, 13);
             this.labelControl42.StyleController = this.lcTTMongMat;
             this.labelControl42.TabIndex = 26;
             this.labelControl42.Text = "tiêu điểm";
             // 
             // checkEdit257
             // 
-            this.checkEdit257.Location = new System.Drawing.Point(179, 162);
+            this.checkEdit257.Location = new System.Drawing.Point(177, 162);
             this.checkEdit257.Margin = new System.Windows.Forms.Padding(2);
             this.checkEdit257.Name = "checkEdit257";
             this.checkEdit257.Properties.Caption = "Sau";
             this.checkEdit257.Properties.CheckStyle = DevExpress.XtraEditors.Controls.CheckStyles.Radio;
             this.checkEdit257.Properties.RadioGroupIndex = -67;
-            this.checkEdit257.Size = new System.Drawing.Size(72, 19);
+            this.checkEdit257.Size = new System.Drawing.Size(71, 19);
             this.checkEdit257.StyleController = this.lcTTMongMat;
             this.checkEdit257.TabIndex = 24;
             this.checkEdit257.TabStop = false;
@@ -10369,7 +10369,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.checkEdit258.Properties.Caption = "Trước";
             this.checkEdit258.Properties.CheckStyle = DevExpress.XtraEditors.Controls.CheckStyles.Radio;
             this.checkEdit258.Properties.RadioGroupIndex = -67;
-            this.checkEdit258.Size = new System.Drawing.Size(87, 19);
+            this.checkEdit258.Size = new System.Drawing.Size(85, 19);
             this.checkEdit258.StyleController = this.lcTTMongMat;
             this.checkEdit258.TabIndex = 23;
             this.checkEdit258.TabStop = false;
@@ -10377,13 +10377,13 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // 
             // checkEdit261
             // 
-            this.checkEdit261.Location = new System.Drawing.Point(185, 138);
+            this.checkEdit261.Location = new System.Drawing.Point(183, 138);
             this.checkEdit261.Margin = new System.Windows.Forms.Padding(2);
             this.checkEdit261.Name = "checkEdit261";
             this.checkEdit261.Properties.Caption = "5mj";
             this.checkEdit261.Properties.CheckStyle = DevExpress.XtraEditors.Controls.CheckStyles.Radio;
             this.checkEdit261.Properties.RadioGroupIndex = -66;
-            this.checkEdit261.Size = new System.Drawing.Size(54, 19);
+            this.checkEdit261.Size = new System.Drawing.Size(53, 19);
             this.checkEdit261.StyleController = this.lcTTMongMat;
             this.checkEdit261.TabIndex = 20;
             this.checkEdit261.TabStop = false;
@@ -10397,7 +10397,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.checkEdit264.Properties.Caption = "4mj";
             this.checkEdit264.Properties.CheckStyle = DevExpress.XtraEditors.Controls.CheckStyles.Radio;
             this.checkEdit264.Properties.RadioGroupIndex = -66;
-            this.checkEdit264.Size = new System.Drawing.Size(76, 19);
+            this.checkEdit264.Size = new System.Drawing.Size(74, 19);
             this.checkEdit264.StyleController = this.lcTTMongMat;
             this.checkEdit264.TabIndex = 17;
             this.checkEdit264.TabStop = false;
@@ -10411,7 +10411,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.checkEdit266.Properties.Caption = "MP Glôcôm, Tiền phòng góc hẹp";
             this.checkEdit266.Properties.CheckStyle = DevExpress.XtraEditors.Controls.CheckStyles.Radio;
             this.checkEdit266.Properties.RadioGroupIndex = -306;
-            this.checkEdit266.Size = new System.Drawing.Size(587, 19);
+            this.checkEdit266.Size = new System.Drawing.Size(585, 19);
             this.checkEdit266.StyleController = this.lcTTMongMat;
             this.checkEdit266.TabIndex = 15;
             this.checkEdit266.TabStop = false;
@@ -10425,7 +10425,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.checkEdit267.Properties.Caption = "MT nghi ngờ Glôcôm, Tiền phòng góc hẹp";
             this.checkEdit267.Properties.CheckStyle = DevExpress.XtraEditors.Controls.CheckStyles.Radio;
             this.checkEdit267.Properties.RadioGroupIndex = -65;
-            this.checkEdit267.Size = new System.Drawing.Size(587, 19);
+            this.checkEdit267.Size = new System.Drawing.Size(585, 19);
             this.checkEdit267.StyleController = this.lcTTMongMat;
             this.checkEdit267.TabIndex = 14;
             this.checkEdit267.TabStop = false;
@@ -10439,7 +10439,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.checkEdit268.Properties.Caption = "MT Glôcôm, Tiền phòng góc hẹp";
             this.checkEdit268.Properties.CheckStyle = DevExpress.XtraEditors.Controls.CheckStyles.Radio;
             this.checkEdit268.Properties.RadioGroupIndex = -306;
-            this.checkEdit268.Size = new System.Drawing.Size(587, 19);
+            this.checkEdit268.Size = new System.Drawing.Size(585, 19);
             this.checkEdit268.StyleController = this.lcTTMongMat;
             this.checkEdit268.TabIndex = 13;
             this.checkEdit268.TabStop = false;
@@ -10453,7 +10453,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.checkEdit269.Properties.Caption = "MP nghi ngờ Glôcôm, Tiền phòng góc hẹp";
             this.checkEdit269.Properties.CheckStyle = DevExpress.XtraEditors.Controls.CheckStyles.Radio;
             this.checkEdit269.Properties.RadioGroupIndex = -65;
-            this.checkEdit269.Size = new System.Drawing.Size(587, 19);
+            this.checkEdit269.Size = new System.Drawing.Size(585, 19);
             this.checkEdit269.StyleController = this.lcTTMongMat;
             this.checkEdit269.TabIndex = 12;
             this.checkEdit269.TabStop = false;
@@ -10462,7 +10462,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // spinEdit63
             // 
             this.spinEdit63.EditValue = "";
-            this.spinEdit63.Location = new System.Drawing.Point(292, 219);
+            this.spinEdit63.Location = new System.Drawing.Point(289, 219);
             this.spinEdit63.Margin = new System.Windows.Forms.Padding(2);
             this.spinEdit63.Name = "spinEdit63";
             this.spinEdit63.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
@@ -10470,7 +10470,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.spinEdit63.Properties.Appearance.Options.UseFont = true;
             this.spinEdit63.Properties.Appearance.Options.UseTextOptions = true;
             this.spinEdit63.Properties.Appearance.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Near;
-            this.spinEdit63.Size = new System.Drawing.Size(307, 20);
+            this.spinEdit63.Size = new System.Drawing.Size(308, 20);
             this.spinEdit63.StyleController = this.lcTTMongMat;
             this.spinEdit63.TabIndex = 43;
             this.spinEdit63.TextChanged += new System.EventHandler(this.spinEdit63_TextChanged);
@@ -10504,7 +10504,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.layoutControlGroup17.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup17.Name = "Root";
             this.layoutControlGroup17.OptionsItemText.TextToControlDistance = 4;
-            this.layoutControlGroup17.Size = new System.Drawing.Size(611, 604);
+            this.layoutControlGroup17.Size = new System.Drawing.Size(609, 604);
             this.layoutControlGroup17.TextVisible = false;
             // 
             // layoutControlItem395
@@ -10512,7 +10512,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.layoutControlItem395.Control = this.checkEdit269;
             this.layoutControlItem395.Location = new System.Drawing.Point(0, 17);
             this.layoutControlItem395.Name = "layoutControlItem9";
-            this.layoutControlItem395.Size = new System.Drawing.Size(591, 23);
+            this.layoutControlItem395.Size = new System.Drawing.Size(589, 23);
             this.layoutControlItem395.Text = "+ Chẩn đoán:";
             this.layoutControlItem395.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem395.TextSize = new System.Drawing.Size(0, 0);
@@ -10524,7 +10524,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.layoutControlItem400.Control = this.checkEdit264;
             this.layoutControlItem400.Location = new System.Drawing.Point(0, 126);
             this.layoutControlItem400.Name = "layoutControlItem14";
-            this.layoutControlItem400.Size = new System.Drawing.Size(173, 24);
+            this.layoutControlItem400.Size = new System.Drawing.Size(171, 24);
             this.layoutControlItem400.Text = "Chỉnh năng lượng:";
             this.layoutControlItem400.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.AutoSize;
             this.layoutControlItem400.TextSize = new System.Drawing.Size(88, 13);
@@ -10533,9 +10533,9 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // layoutControlItem403
             // 
             this.layoutControlItem403.Control = this.checkEdit261;
-            this.layoutControlItem403.Location = new System.Drawing.Point(173, 126);
+            this.layoutControlItem403.Location = new System.Drawing.Point(171, 126);
             this.layoutControlItem403.Name = "layoutControlItem17";
-            this.layoutControlItem403.Size = new System.Drawing.Size(58, 24);
+            this.layoutControlItem403.Size = new System.Drawing.Size(57, 24);
             this.layoutControlItem403.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem403.TextVisible = false;
             // 
@@ -10544,7 +10544,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.layoutControlItem406.Control = this.checkEdit258;
             this.layoutControlItem406.Location = new System.Drawing.Point(0, 150);
             this.layoutControlItem406.Name = "layoutControlItem20";
-            this.layoutControlItem406.Size = new System.Drawing.Size(167, 23);
+            this.layoutControlItem406.Size = new System.Drawing.Size(165, 23);
             this.layoutControlItem406.Text = "Chỉnh điểm nổ:";
             this.layoutControlItem406.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.AutoSize;
             this.layoutControlItem406.TextSize = new System.Drawing.Size(71, 13);
@@ -10553,19 +10553,19 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // layoutControlItem407
             // 
             this.layoutControlItem407.Control = this.checkEdit257;
-            this.layoutControlItem407.Location = new System.Drawing.Point(167, 150);
+            this.layoutControlItem407.Location = new System.Drawing.Point(165, 150);
             this.layoutControlItem407.Name = "layoutControlItem21";
-            this.layoutControlItem407.Size = new System.Drawing.Size(76, 23);
+            this.layoutControlItem407.Size = new System.Drawing.Size(75, 23);
             this.layoutControlItem407.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem407.TextVisible = false;
             // 
             // layoutControlItem409
             // 
             this.layoutControlItem409.Control = this.labelControl42;
-            this.layoutControlItem409.Location = new System.Drawing.Point(243, 150);
+            this.layoutControlItem409.Location = new System.Drawing.Point(240, 150);
             this.layoutControlItem409.Name = "layoutControlItem23";
             this.layoutControlItem409.Padding = new DevExpress.XtraLayout.Utils.Padding(2, 2, 5, 2);
-            this.layoutControlItem409.Size = new System.Drawing.Size(348, 23);
+            this.layoutControlItem409.Size = new System.Drawing.Size(349, 23);
             this.layoutControlItem409.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem409.TextVisible = false;
             // 
@@ -10574,7 +10574,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.layoutControlItem410.Control = this.checkEdit256;
             this.layoutControlItem410.Location = new System.Drawing.Point(0, 207);
             this.layoutControlItem410.Name = "layoutControlItem24";
-            this.layoutControlItem410.Size = new System.Drawing.Size(173, 24);
+            this.layoutControlItem410.Size = new System.Drawing.Size(171, 24);
             this.layoutControlItem410.Text = "Vị trí cắt mống chu biên:";
             this.layoutControlItem410.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.AutoSize;
             this.layoutControlItem410.TextSize = new System.Drawing.Size(115, 13);
@@ -10583,9 +10583,9 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // layoutControlItem411
             // 
             this.layoutControlItem411.Control = this.checkEdit255;
-            this.layoutControlItem411.Location = new System.Drawing.Point(173, 207);
+            this.layoutControlItem411.Location = new System.Drawing.Point(171, 207);
             this.layoutControlItem411.Name = "layoutControlItem25";
-            this.layoutControlItem411.Size = new System.Drawing.Size(75, 24);
+            this.layoutControlItem411.Size = new System.Drawing.Size(74, 24);
             this.layoutControlItem411.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem411.TextVisible = false;
             // 
@@ -10594,7 +10594,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.emptySpaceItem19.AllowHotTrack = false;
             this.emptySpaceItem19.Location = new System.Drawing.Point(0, 265);
             this.emptySpaceItem19.Name = "emptySpaceItem4";
-            this.emptySpaceItem19.Size = new System.Drawing.Size(591, 319);
+            this.emptySpaceItem19.Size = new System.Drawing.Size(589, 319);
             this.emptySpaceItem19.TextSize = new System.Drawing.Size(0, 0);
             // 
             // layoutControlItem422
@@ -10602,7 +10602,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.layoutControlItem422.Control = this.labelControl41;
             this.layoutControlItem422.Location = new System.Drawing.Point(0, 0);
             this.layoutControlItem422.Name = "layoutControlItem40";
-            this.layoutControlItem422.Size = new System.Drawing.Size(591, 17);
+            this.layoutControlItem422.Size = new System.Drawing.Size(589, 17);
             this.layoutControlItem422.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem422.TextVisible = false;
             // 
@@ -10611,7 +10611,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.layoutControlItem396.Control = this.checkEdit268;
             this.layoutControlItem396.Location = new System.Drawing.Point(0, 86);
             this.layoutControlItem396.Name = "layoutControlItem10";
-            this.layoutControlItem396.Size = new System.Drawing.Size(591, 23);
+            this.layoutControlItem396.Size = new System.Drawing.Size(589, 23);
             this.layoutControlItem396.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem396.TextVisible = false;
             // 
@@ -10620,7 +10620,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.layoutControlItem399.Control = this.checkEdit266;
             this.layoutControlItem399.Location = new System.Drawing.Point(0, 63);
             this.layoutControlItem399.Name = "layoutControlItem12";
-            this.layoutControlItem399.Size = new System.Drawing.Size(591, 23);
+            this.layoutControlItem399.Size = new System.Drawing.Size(589, 23);
             this.layoutControlItem399.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem399.TextVisible = false;
             // 
@@ -10629,7 +10629,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.layoutControlItem397.Control = this.checkEdit267;
             this.layoutControlItem397.Location = new System.Drawing.Point(0, 40);
             this.layoutControlItem397.Name = "layoutControlItem11";
-            this.layoutControlItem397.Size = new System.Drawing.Size(591, 23);
+            this.layoutControlItem397.Size = new System.Drawing.Size(589, 23);
             this.layoutControlItem397.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem397.TextVisible = false;
             // 
@@ -10638,7 +10638,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.layoutControlItem479.Control = this.labelControl37;
             this.layoutControlItem479.Location = new System.Drawing.Point(0, 109);
             this.layoutControlItem479.Name = "layoutControlItem77";
-            this.layoutControlItem479.Size = new System.Drawing.Size(591, 17);
+            this.layoutControlItem479.Size = new System.Drawing.Size(589, 17);
             this.layoutControlItem479.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem479.TextVisible = false;
             // 
@@ -10647,9 +10647,9 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.layoutControlItem421.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem421.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem421.Control = this.textEdit64;
-            this.layoutControlItem421.Location = new System.Drawing.Point(231, 126);
+            this.layoutControlItem421.Location = new System.Drawing.Point(228, 126);
             this.layoutControlItem421.Name = "layoutControlItem39";
-            this.layoutControlItem421.Size = new System.Drawing.Size(360, 24);
+            this.layoutControlItem421.Size = new System.Drawing.Size(361, 24);
             this.layoutControlItem421.Text = "Khác:";
             this.layoutControlItem421.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem421.TextSize = new System.Drawing.Size(80, 20);
@@ -10660,16 +10660,16 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.layoutControlItem428.Control = this.labelControl40;
             this.layoutControlItem428.Location = new System.Drawing.Point(0, 173);
             this.layoutControlItem428.Name = "layoutControlItem43";
-            this.layoutControlItem428.Size = new System.Drawing.Size(591, 17);
+            this.layoutControlItem428.Size = new System.Drawing.Size(589, 17);
             this.layoutControlItem428.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem428.TextVisible = false;
             // 
             // layoutControlItem426
             // 
             this.layoutControlItem426.Control = this.spinEdit63;
-            this.layoutControlItem426.Location = new System.Drawing.Point(248, 207);
+            this.layoutControlItem426.Location = new System.Drawing.Point(245, 207);
             this.layoutControlItem426.Name = "layoutControlItem41";
-            this.layoutControlItem426.Size = new System.Drawing.Size(343, 24);
+            this.layoutControlItem426.Size = new System.Drawing.Size(344, 24);
             this.layoutControlItem426.Text = "Khác:";
             this.layoutControlItem426.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.AutoSize;
             this.layoutControlItem426.TextSize = new System.Drawing.Size(27, 13);
@@ -10680,7 +10680,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.layoutControlItem450.Control = this.labelControl38;
             this.layoutControlItem450.Location = new System.Drawing.Point(0, 190);
             this.layoutControlItem450.Name = "layoutControlItem76";
-            this.layoutControlItem450.Size = new System.Drawing.Size(591, 17);
+            this.layoutControlItem450.Size = new System.Drawing.Size(589, 17);
             this.layoutControlItem450.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem450.TextVisible = false;
             // 
@@ -10689,7 +10689,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.layoutControlItem430.Control = this.labelControl39;
             this.layoutControlItem430.Location = new System.Drawing.Point(0, 231);
             this.layoutControlItem430.Name = "layoutControlItem45";
-            this.layoutControlItem430.Size = new System.Drawing.Size(591, 17);
+            this.layoutControlItem430.Size = new System.Drawing.Size(589, 17);
             this.layoutControlItem430.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem430.TextVisible = false;
             // 
@@ -10698,18 +10698,18 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.layoutControlItem241.Control = this.labelControl28;
             this.layoutControlItem241.Location = new System.Drawing.Point(0, 248);
             this.layoutControlItem241.Name = "layoutControlItem241";
-            this.layoutControlItem241.Size = new System.Drawing.Size(591, 17);
+            this.layoutControlItem241.Size = new System.Drawing.Size(589, 17);
             this.layoutControlItem241.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem241.TextVisible = false;
             // 
             // layoutControl20
             // 
             this.layoutControl20.Controls.Add(this.pictureEdit12);
-            this.layoutControl20.Location = new System.Drawing.Point(617, 2);
+            this.layoutControl20.Location = new System.Drawing.Point(615, 2);
             this.layoutControl20.Margin = new System.Windows.Forms.Padding(2);
             this.layoutControl20.Name = "layoutControl20";
             this.layoutControl20.Root = this.layoutControlGroup18;
-            this.layoutControl20.Size = new System.Drawing.Size(314, 604);
+            this.layoutControl20.Size = new System.Drawing.Size(316, 604);
             this.layoutControl20.TabIndex = 5;
             this.layoutControl20.Text = "layoutControl20";
             // 
@@ -10721,7 +10721,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.pictureEdit12.Name = "pictureEdit12";
             this.pictureEdit12.Properties.ReadOnly = true;
             this.pictureEdit12.Properties.ShowCameraMenuItem = DevExpress.XtraEditors.Controls.CameraMenuItemVisibility.Auto;
-            this.pictureEdit12.Size = new System.Drawing.Size(290, 144);
+            this.pictureEdit12.Size = new System.Drawing.Size(292, 142);
             this.pictureEdit12.StyleController = this.layoutControl20;
             this.pictureEdit12.TabIndex = 97;
             // 
@@ -10735,7 +10735,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.layoutControlGroup18.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup18.Name = "layoutControlGroup3";
             this.layoutControlGroup18.OptionsItemText.TextToControlDistance = 4;
-            this.layoutControlGroup18.Size = new System.Drawing.Size(314, 604);
+            this.layoutControlGroup18.Size = new System.Drawing.Size(316, 604);
             this.layoutControlGroup18.TextVisible = false;
             // 
             // layoutControlItem480
@@ -10743,16 +10743,16 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.layoutControlItem480.Control = this.pictureEdit12;
             this.layoutControlItem480.Location = new System.Drawing.Point(0, 0);
             this.layoutControlItem480.Name = "layoutControlItem98";
-            this.layoutControlItem480.Size = new System.Drawing.Size(294, 148);
+            this.layoutControlItem480.Size = new System.Drawing.Size(296, 146);
             this.layoutControlItem480.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem480.TextVisible = false;
             // 
             // emptySpaceItem27
             // 
             this.emptySpaceItem27.AllowHotTrack = false;
-            this.emptySpaceItem27.Location = new System.Drawing.Point(0, 148);
+            this.emptySpaceItem27.Location = new System.Drawing.Point(0, 146);
             this.emptySpaceItem27.Name = "emptySpaceItem27";
-            this.emptySpaceItem27.Size = new System.Drawing.Size(294, 436);
+            this.emptySpaceItem27.Size = new System.Drawing.Size(296, 438);
             this.emptySpaceItem27.TextSize = new System.Drawing.Size(0, 0);
             // 
             // layoutControlGroup19
@@ -10774,16 +10774,16 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.layoutControlItem482.Control = this.lcTTMongMat;
             this.layoutControlItem482.Location = new System.Drawing.Point(0, 0);
             this.layoutControlItem482.Name = "layoutControlItem90";
-            this.layoutControlItem482.Size = new System.Drawing.Size(615, 608);
+            this.layoutControlItem482.Size = new System.Drawing.Size(613, 608);
             this.layoutControlItem482.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem482.TextVisible = false;
             // 
             // layoutControlItem483
             // 
             this.layoutControlItem483.Control = this.layoutControl20;
-            this.layoutControlItem483.Location = new System.Drawing.Point(615, 0);
+            this.layoutControlItem483.Location = new System.Drawing.Point(613, 0);
             this.layoutControlItem483.Name = "layoutControlItem95";
-            this.layoutControlItem483.Size = new System.Drawing.Size(318, 608);
+            this.layoutControlItem483.Size = new System.Drawing.Size(320, 608);
             this.layoutControlItem483.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem483.TextVisible = false;
             // 
@@ -10828,7 +10828,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.lcTTTLaser.Margin = new System.Windows.Forms.Padding(2);
             this.lcTTTLaser.Name = "lcTTTLaser";
             this.lcTTTLaser.Root = this.layoutControlGroup20;
-            this.lcTTTLaser.Size = new System.Drawing.Size(611, 604);
+            this.lcTTTLaser.Size = new System.Drawing.Size(609, 604);
             this.lcTTTLaser.TabIndex = 0;
             this.lcTTTLaser.Text = "layoutControl22";
             // 
@@ -10838,7 +10838,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.labelControl31.Location = new System.Drawing.Point(12, 156);
             this.labelControl31.Margin = new System.Windows.Forms.Padding(2);
             this.labelControl31.Name = "labelControl31";
-            this.labelControl31.Size = new System.Drawing.Size(587, 13);
+            this.labelControl31.Size = new System.Drawing.Size(585, 13);
             this.labelControl31.StyleController = this.lcTTTLaser;
             this.labelControl31.TabIndex = 98;
             this.labelControl31.Text = "Rửa cùng đồ";
@@ -10849,7 +10849,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.labelControl29.Location = new System.Drawing.Point(12, 139);
             this.labelControl29.Margin = new System.Windows.Forms.Padding(2);
             this.labelControl29.Name = "labelControl29";
-            this.labelControl29.Size = new System.Drawing.Size(587, 13);
+            this.labelControl29.Size = new System.Drawing.Size(585, 13);
             this.labelControl29.StyleController = this.lcTTTLaser;
             this.labelControl29.TabIndex = 97;
             this.labelControl29.Text = "Mở cố định đầu và mắt bệnh nhân";
@@ -10860,7 +10860,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.labelControl30.Location = new System.Drawing.Point(12, 99);
             this.labelControl30.Margin = new System.Windows.Forms.Padding(2);
             this.labelControl30.Name = "labelControl30";
-            this.labelControl30.Size = new System.Drawing.Size(587, 13);
+            this.labelControl30.Size = new System.Drawing.Size(585, 13);
             this.labelControl30.StyleController = this.lcTTTLaser;
             this.labelControl30.TabIndex = 96;
             this.labelControl30.Text = "Cố định nhãn cầu bằng kính ABRAHAM";
@@ -10871,19 +10871,19 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.labelControl13.Location = new System.Drawing.Point(12, 35);
             this.labelControl13.Margin = new System.Windows.Forms.Padding(2);
             this.labelControl13.Name = "labelControl13";
-            this.labelControl13.Size = new System.Drawing.Size(587, 13);
+            this.labelControl13.Size = new System.Drawing.Size(585, 13);
             this.labelControl13.StyleController = this.lcTTTLaser;
             this.labelControl13.TabIndex = 95;
             this.labelControl13.Text = "Bệnh nhân ngồi và cố định đầu vào máy Laser Yag";
             // 
             // textEdit75
             // 
-            this.textEdit75.Location = new System.Drawing.Point(305, 52);
+            this.textEdit75.Location = new System.Drawing.Point(302, 52);
             this.textEdit75.Margin = new System.Windows.Forms.Padding(2);
             this.textEdit75.Name = "textEdit75";
             this.textEdit75.Properties.Appearance.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold);
             this.textEdit75.Properties.Appearance.Options.UseFont = true;
-            this.textEdit75.Size = new System.Drawing.Size(294, 20);
+            this.textEdit75.Size = new System.Drawing.Size(295, 20);
             this.textEdit75.StyleController = this.lcTTTLaser;
             this.textEdit75.TabIndex = 45;
             this.textEdit75.EditValueChanged += new System.EventHandler(this.textEdit75_EditValueChanged);
@@ -10897,7 +10897,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.checkEdit319.Properties.Caption = "Hình chữ thập";
             this.checkEdit319.Properties.CheckStyle = DevExpress.XtraEditors.Controls.CheckStyles.Radio;
             this.checkEdit319.Properties.RadioGroupIndex = -72;
-            this.checkEdit319.Size = new System.Drawing.Size(367, 19);
+            this.checkEdit319.Size = new System.Drawing.Size(365, 19);
             this.checkEdit319.StyleController = this.lcTTTLaser;
             this.checkEdit319.TabIndex = 28;
             this.checkEdit319.TabStop = false;
@@ -10920,23 +10920,23 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // labelControl50
             // 
             this.labelControl50.AutoSizeMode = DevExpress.XtraEditors.LabelAutoSizeMode.None;
-            this.labelControl50.Location = new System.Drawing.Point(239, 79);
+            this.labelControl50.Location = new System.Drawing.Point(236, 79);
             this.labelControl50.Margin = new System.Windows.Forms.Padding(2);
             this.labelControl50.Name = "labelControl50";
-            this.labelControl50.Size = new System.Drawing.Size(360, 13);
+            this.labelControl50.Size = new System.Drawing.Size(361, 13);
             this.labelControl50.StyleController = this.lcTTTLaser;
             this.labelControl50.TabIndex = 26;
             this.labelControl50.Text = "tiêu điểm";
             // 
             // checkEdit321
             // 
-            this.checkEdit321.Location = new System.Drawing.Point(174, 76);
+            this.checkEdit321.Location = new System.Drawing.Point(172, 76);
             this.checkEdit321.Margin = new System.Windows.Forms.Padding(2);
             this.checkEdit321.Name = "checkEdit321";
             this.checkEdit321.Properties.Caption = "Sau";
             this.checkEdit321.Properties.CheckStyle = DevExpress.XtraEditors.Controls.CheckStyles.Radio;
             this.checkEdit321.Properties.RadioGroupIndex = -71;
-            this.checkEdit321.Size = new System.Drawing.Size(61, 19);
+            this.checkEdit321.Size = new System.Drawing.Size(60, 19);
             this.checkEdit321.StyleController = this.lcTTTLaser;
             this.checkEdit321.TabIndex = 24;
             this.checkEdit321.TabStop = false;
@@ -10950,7 +10950,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.checkEdit322.Properties.Caption = "Trước";
             this.checkEdit322.Properties.CheckStyle = DevExpress.XtraEditors.Controls.CheckStyles.Radio;
             this.checkEdit322.Properties.RadioGroupIndex = -71;
-            this.checkEdit322.Size = new System.Drawing.Size(71, 19);
+            this.checkEdit322.Size = new System.Drawing.Size(69, 19);
             this.checkEdit322.StyleController = this.lcTTTLaser;
             this.checkEdit322.TabIndex = 23;
             this.checkEdit322.TabStop = false;
@@ -10958,13 +10958,13 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // 
             // checkEdit325
             // 
-            this.checkEdit325.Location = new System.Drawing.Point(191, 52);
+            this.checkEdit325.Location = new System.Drawing.Point(189, 52);
             this.checkEdit325.Margin = new System.Windows.Forms.Padding(2);
             this.checkEdit325.Name = "checkEdit325";
             this.checkEdit325.Properties.Caption = "2mj";
             this.checkEdit325.Properties.CheckStyle = DevExpress.XtraEditors.Controls.CheckStyles.Radio;
             this.checkEdit325.Properties.RadioGroupIndex = -70;
-            this.checkEdit325.Size = new System.Drawing.Size(78, 19);
+            this.checkEdit325.Size = new System.Drawing.Size(77, 19);
             this.checkEdit325.StyleController = this.lcTTTLaser;
             this.checkEdit325.TabIndex = 20;
             this.checkEdit325.TabStop = false;
@@ -10978,7 +10978,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.checkEdit328.Properties.Caption = "1.5mj";
             this.checkEdit328.Properties.CheckStyle = DevExpress.XtraEditors.Controls.CheckStyles.Radio;
             this.checkEdit328.Properties.RadioGroupIndex = -70;
-            this.checkEdit328.Size = new System.Drawing.Size(71, 19);
+            this.checkEdit328.Size = new System.Drawing.Size(69, 19);
             this.checkEdit328.StyleController = this.lcTTTLaser;
             this.checkEdit328.TabIndex = 17;
             this.checkEdit328.TabStop = false;
@@ -10992,7 +10992,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.checkEdit329.Properties.Caption = "MT đục bao sau sau mổ TTT";
             this.checkEdit329.Properties.CheckStyle = DevExpress.XtraEditors.Controls.CheckStyles.Radio;
             this.checkEdit329.Properties.RadioGroupIndex = -69;
-            this.checkEdit329.Size = new System.Drawing.Size(312, 19);
+            this.checkEdit329.Size = new System.Drawing.Size(310, 19);
             this.checkEdit329.StyleController = this.lcTTTLaser;
             this.checkEdit329.TabIndex = 16;
             this.checkEdit329.TabStop = false;
@@ -11035,7 +11035,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.layoutControlGroup20.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup20.Name = "Root";
             this.layoutControlGroup20.OptionsItemText.TextToControlDistance = 4;
-            this.layoutControlGroup20.Size = new System.Drawing.Size(611, 604);
+            this.layoutControlGroup20.Size = new System.Drawing.Size(609, 604);
             this.layoutControlGroup20.TextVisible = false;
             // 
             // layoutControlItem484
@@ -11054,7 +11054,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.layoutControlItem487.Control = this.checkEdit329;
             this.layoutControlItem487.Location = new System.Drawing.Point(275, 0);
             this.layoutControlItem487.Name = "layoutControlItem13";
-            this.layoutControlItem487.Size = new System.Drawing.Size(316, 23);
+            this.layoutControlItem487.Size = new System.Drawing.Size(314, 23);
             this.layoutControlItem487.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem487.TextVisible = false;
             // 
@@ -11063,7 +11063,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.layoutControlItem489.Control = this.checkEdit328;
             this.layoutControlItem489.Location = new System.Drawing.Point(0, 40);
             this.layoutControlItem489.Name = "layoutControlItem14";
-            this.layoutControlItem489.Size = new System.Drawing.Size(179, 24);
+            this.layoutControlItem489.Size = new System.Drawing.Size(177, 24);
             this.layoutControlItem489.Text = "+ Chỉnh năng lượng:";
             this.layoutControlItem489.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.AutoSize;
             this.layoutControlItem489.TextSize = new System.Drawing.Size(99, 13);
@@ -11072,9 +11072,9 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // layoutControlItem492
             // 
             this.layoutControlItem492.Control = this.checkEdit325;
-            this.layoutControlItem492.Location = new System.Drawing.Point(179, 40);
+            this.layoutControlItem492.Location = new System.Drawing.Point(177, 40);
             this.layoutControlItem492.Name = "layoutControlItem17";
-            this.layoutControlItem492.Size = new System.Drawing.Size(82, 24);
+            this.layoutControlItem492.Size = new System.Drawing.Size(81, 24);
             this.layoutControlItem492.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem492.TextVisible = false;
             // 
@@ -11083,7 +11083,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.layoutControlItem495.Control = this.checkEdit322;
             this.layoutControlItem495.Location = new System.Drawing.Point(0, 64);
             this.layoutControlItem495.Name = "layoutControlItem20";
-            this.layoutControlItem495.Size = new System.Drawing.Size(162, 23);
+            this.layoutControlItem495.Size = new System.Drawing.Size(160, 23);
             this.layoutControlItem495.Text = "+ Chỉnh điểm nổ:";
             this.layoutControlItem495.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.AutoSize;
             this.layoutControlItem495.TextSize = new System.Drawing.Size(82, 13);
@@ -11092,19 +11092,19 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // layoutControlItem496
             // 
             this.layoutControlItem496.Control = this.checkEdit321;
-            this.layoutControlItem496.Location = new System.Drawing.Point(162, 64);
+            this.layoutControlItem496.Location = new System.Drawing.Point(160, 64);
             this.layoutControlItem496.Name = "layoutControlItem21";
-            this.layoutControlItem496.Size = new System.Drawing.Size(65, 23);
+            this.layoutControlItem496.Size = new System.Drawing.Size(64, 23);
             this.layoutControlItem496.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem496.TextVisible = false;
             // 
             // layoutControlItem498
             // 
             this.layoutControlItem498.Control = this.labelControl50;
-            this.layoutControlItem498.Location = new System.Drawing.Point(227, 64);
+            this.layoutControlItem498.Location = new System.Drawing.Point(224, 64);
             this.layoutControlItem498.Name = "layoutControlItem23";
             this.layoutControlItem498.Padding = new DevExpress.XtraLayout.Utils.Padding(2, 2, 5, 2);
-            this.layoutControlItem498.Size = new System.Drawing.Size(364, 23);
+            this.layoutControlItem498.Size = new System.Drawing.Size(365, 23);
             this.layoutControlItem498.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem498.TextVisible = false;
             // 
@@ -11124,7 +11124,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.layoutControlItem500.Control = this.checkEdit319;
             this.layoutControlItem500.Location = new System.Drawing.Point(220, 104);
             this.layoutControlItem500.Name = "layoutControlItem25";
-            this.layoutControlItem500.Size = new System.Drawing.Size(371, 23);
+            this.layoutControlItem500.Size = new System.Drawing.Size(369, 23);
             this.layoutControlItem500.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem500.TextVisible = false;
             // 
@@ -11133,7 +11133,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.emptySpaceItem20.AllowHotTrack = false;
             this.emptySpaceItem20.Location = new System.Drawing.Point(0, 161);
             this.emptySpaceItem20.Name = "emptySpaceItem1";
-            this.emptySpaceItem20.Size = new System.Drawing.Size(591, 423);
+            this.emptySpaceItem20.Size = new System.Drawing.Size(589, 423);
             this.emptySpaceItem20.TextSize = new System.Drawing.Size(0, 0);
             // 
             // layoutControlItem231
@@ -11141,16 +11141,16 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.layoutControlItem231.Control = this.labelControl13;
             this.layoutControlItem231.Location = new System.Drawing.Point(0, 23);
             this.layoutControlItem231.Name = "layoutControlItem231";
-            this.layoutControlItem231.Size = new System.Drawing.Size(591, 17);
+            this.layoutControlItem231.Size = new System.Drawing.Size(589, 17);
             this.layoutControlItem231.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem231.TextVisible = false;
             // 
             // layoutControlItem518
             // 
             this.layoutControlItem518.Control = this.textEdit75;
-            this.layoutControlItem518.Location = new System.Drawing.Point(261, 40);
+            this.layoutControlItem518.Location = new System.Drawing.Point(258, 40);
             this.layoutControlItem518.Name = "layoutControlItem44";
-            this.layoutControlItem518.Size = new System.Drawing.Size(330, 24);
+            this.layoutControlItem518.Size = new System.Drawing.Size(331, 24);
             this.layoutControlItem518.Text = "Khác:";
             this.layoutControlItem518.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.AutoSize;
             this.layoutControlItem518.TextSize = new System.Drawing.Size(27, 13);
@@ -11161,7 +11161,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.layoutControlItem249.Control = this.labelControl30;
             this.layoutControlItem249.Location = new System.Drawing.Point(0, 87);
             this.layoutControlItem249.Name = "layoutControlItem249";
-            this.layoutControlItem249.Size = new System.Drawing.Size(591, 17);
+            this.layoutControlItem249.Size = new System.Drawing.Size(589, 17);
             this.layoutControlItem249.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem249.TextVisible = false;
             // 
@@ -11170,7 +11170,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.layoutControlItem246.Control = this.labelControl29;
             this.layoutControlItem246.Location = new System.Drawing.Point(0, 127);
             this.layoutControlItem246.Name = "layoutControlItem246";
-            this.layoutControlItem246.Size = new System.Drawing.Size(591, 17);
+            this.layoutControlItem246.Size = new System.Drawing.Size(589, 17);
             this.layoutControlItem246.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem246.TextVisible = false;
             // 
@@ -11179,18 +11179,18 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.layoutControlItem252.Control = this.labelControl31;
             this.layoutControlItem252.Location = new System.Drawing.Point(0, 144);
             this.layoutControlItem252.Name = "layoutControlItem252";
-            this.layoutControlItem252.Size = new System.Drawing.Size(591, 17);
+            this.layoutControlItem252.Size = new System.Drawing.Size(589, 17);
             this.layoutControlItem252.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem252.TextVisible = false;
             // 
             // layoutControl23
             // 
             this.layoutControl23.Controls.Add(this.pictureEdit14);
-            this.layoutControl23.Location = new System.Drawing.Point(617, 2);
+            this.layoutControl23.Location = new System.Drawing.Point(615, 2);
             this.layoutControl23.Margin = new System.Windows.Forms.Padding(2);
             this.layoutControl23.Name = "layoutControl23";
             this.layoutControl23.Root = this.layoutControlGroup21;
-            this.layoutControl23.Size = new System.Drawing.Size(314, 604);
+            this.layoutControl23.Size = new System.Drawing.Size(316, 604);
             this.layoutControl23.TabIndex = 5;
             this.layoutControl23.Text = "layoutControl23";
             // 
@@ -11202,7 +11202,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.pictureEdit14.Name = "pictureEdit14";
             this.pictureEdit14.Properties.ReadOnly = true;
             this.pictureEdit14.Properties.ShowCameraMenuItem = DevExpress.XtraEditors.Controls.CameraMenuItemVisibility.Auto;
-            this.pictureEdit14.Size = new System.Drawing.Size(290, 144);
+            this.pictureEdit14.Size = new System.Drawing.Size(292, 142);
             this.pictureEdit14.StyleController = this.layoutControl23;
             this.pictureEdit14.TabIndex = 97;
             // 
@@ -11216,7 +11216,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.layoutControlGroup21.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup21.Name = "layoutControlGroup3";
             this.layoutControlGroup21.OptionsItemText.TextToControlDistance = 4;
-            this.layoutControlGroup21.Size = new System.Drawing.Size(314, 604);
+            this.layoutControlGroup21.Size = new System.Drawing.Size(316, 604);
             this.layoutControlGroup21.TextVisible = false;
             // 
             // layoutControlItem569
@@ -11224,16 +11224,16 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.layoutControlItem569.Control = this.pictureEdit14;
             this.layoutControlItem569.Location = new System.Drawing.Point(0, 0);
             this.layoutControlItem569.Name = "layoutControlItem98";
-            this.layoutControlItem569.Size = new System.Drawing.Size(294, 148);
+            this.layoutControlItem569.Size = new System.Drawing.Size(296, 146);
             this.layoutControlItem569.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem569.TextVisible = false;
             // 
             // emptySpaceItem26
             // 
             this.emptySpaceItem26.AllowHotTrack = false;
-            this.emptySpaceItem26.Location = new System.Drawing.Point(0, 148);
+            this.emptySpaceItem26.Location = new System.Drawing.Point(0, 146);
             this.emptySpaceItem26.Name = "emptySpaceItem26";
-            this.emptySpaceItem26.Size = new System.Drawing.Size(294, 436);
+            this.emptySpaceItem26.Size = new System.Drawing.Size(296, 438);
             this.emptySpaceItem26.TextSize = new System.Drawing.Size(0, 0);
             // 
             // layoutControlGroup22
@@ -11255,22 +11255,22 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.layoutControlItem571.Control = this.lcTTTLaser;
             this.layoutControlItem571.Location = new System.Drawing.Point(0, 0);
             this.layoutControlItem571.Name = "layoutControlItem90";
-            this.layoutControlItem571.Size = new System.Drawing.Size(615, 608);
+            this.layoutControlItem571.Size = new System.Drawing.Size(613, 608);
             this.layoutControlItem571.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem571.TextVisible = false;
             // 
             // layoutControlItem572
             // 
             this.layoutControlItem572.Control = this.layoutControl23;
-            this.layoutControlItem572.Location = new System.Drawing.Point(615, 0);
+            this.layoutControlItem572.Location = new System.Drawing.Point(613, 0);
             this.layoutControlItem572.Name = "layoutControlItem95";
-            this.layoutControlItem572.Size = new System.Drawing.Size(318, 608);
+            this.layoutControlItem572.Size = new System.Drawing.Size(320, 608);
             this.layoutControlItem572.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem572.TextVisible = false;
             // 
             // raPTDucThuyTInhThe
             // 
-            this.raPTDucThuyTInhThe.Location = new System.Drawing.Point(130, 2);
+            this.raPTDucThuyTInhThe.Location = new System.Drawing.Point(128, 2);
             this.raPTDucThuyTInhThe.Margin = new System.Windows.Forms.Padding(2);
             this.raPTDucThuyTInhThe.Name = "raPTDucThuyTInhThe";
             this.raPTDucThuyTInhThe.Properties.Caption = "PT Đục Thủy tinh thể";
@@ -11284,13 +11284,13 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // 
             // raTTLaser
             // 
-            this.raTTLaser.Location = new System.Drawing.Point(264, 25);
+            this.raTTLaser.Location = new System.Drawing.Point(262, 25);
             this.raTTLaser.Margin = new System.Windows.Forms.Padding(2);
             this.raTTLaser.Name = "raTTLaser";
             this.raTTLaser.Properties.Caption = "TT LASER YAG";
             this.raTTLaser.Properties.CheckStyle = DevExpress.XtraEditors.Controls.CheckStyles.Radio;
             this.raTTLaser.Properties.RadioGroupIndex = 1;
-            this.raTTLaser.Size = new System.Drawing.Size(112, 19);
+            this.raTTLaser.Size = new System.Drawing.Size(110, 19);
             this.raTTLaser.StyleController = this.layoutControl24;
             this.raTTLaser.TabIndex = 11;
             this.raTTLaser.TabStop = false;
@@ -11298,7 +11298,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // 
             // raPTGlocom
             // 
-            this.raPTGlocom.Location = new System.Drawing.Point(264, 2);
+            this.raPTGlocom.Location = new System.Drawing.Point(262, 2);
             this.raPTGlocom.Margin = new System.Windows.Forms.Padding(2);
             this.raPTGlocom.Name = "raPTGlocom";
             this.raPTGlocom.Properties.Caption = "PT Glôcôm";
@@ -11312,7 +11312,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // 
             // raPTSupMi
             // 
-            this.raPTSupMi.Location = new System.Drawing.Point(130, 25);
+            this.raPTSupMi.Location = new System.Drawing.Point(128, 25);
             this.raPTSupMi.Margin = new System.Windows.Forms.Padding(2);
             this.raPTSupMi.Name = "raPTSupMi";
             this.raPTSupMi.Properties.Caption = "PT sụp mi";
@@ -11332,7 +11332,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.raPTTaiTaoLeQuan.Properties.Caption = "PT Tái tạo lệ quản";
             this.raPTTaiTaoLeQuan.Properties.CheckStyle = DevExpress.XtraEditors.Controls.CheckStyles.Radio;
             this.raPTTaiTaoLeQuan.Properties.RadioGroupIndex = 1;
-            this.raPTTaiTaoLeQuan.Size = new System.Drawing.Size(124, 19);
+            this.raPTTaiTaoLeQuan.Size = new System.Drawing.Size(122, 19);
             this.raPTTaiTaoLeQuan.StyleController = this.layoutControl24;
             this.raPTTaiTaoLeQuan.TabIndex = 10;
             this.raPTTaiTaoLeQuan.TabStop = false;
@@ -11364,7 +11364,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.layoutControlItem6.Control = this.raPTMong;
             this.layoutControlItem6.Location = new System.Drawing.Point(0, 0);
             this.layoutControlItem6.Name = "layoutControlItem6";
-            this.layoutControlItem6.Size = new System.Drawing.Size(128, 23);
+            this.layoutControlItem6.Size = new System.Drawing.Size(126, 23);
             this.layoutControlItem6.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem6.TextVisible = false;
             // 
@@ -11373,14 +11373,14 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.layoutControlItem7.Control = this.raPTTaiTaoLeQuan;
             this.layoutControlItem7.Location = new System.Drawing.Point(0, 23);
             this.layoutControlItem7.Name = "layoutControlItem7";
-            this.layoutControlItem7.Size = new System.Drawing.Size(128, 23);
+            this.layoutControlItem7.Size = new System.Drawing.Size(126, 23);
             this.layoutControlItem7.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem7.TextVisible = false;
             // 
             // layoutControlItem4
             // 
             this.layoutControlItem4.Control = this.raPTSupMi;
-            this.layoutControlItem4.Location = new System.Drawing.Point(128, 23);
+            this.layoutControlItem4.Location = new System.Drawing.Point(126, 23);
             this.layoutControlItem4.Name = "layoutControlItem4";
             this.layoutControlItem4.Size = new System.Drawing.Size(134, 23);
             this.layoutControlItem4.TextSize = new System.Drawing.Size(0, 0);
@@ -11389,25 +11389,25 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // layoutControlItem8
             // 
             this.layoutControlItem8.Control = this.raTTLaser;
-            this.layoutControlItem8.Location = new System.Drawing.Point(262, 23);
+            this.layoutControlItem8.Location = new System.Drawing.Point(260, 23);
             this.layoutControlItem8.Name = "layoutControlItem8";
-            this.layoutControlItem8.Size = new System.Drawing.Size(116, 23);
+            this.layoutControlItem8.Size = new System.Drawing.Size(114, 23);
             this.layoutControlItem8.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem8.TextVisible = false;
             // 
             // layoutControlItem1
             // 
             this.layoutControlItem1.Control = this.raTTMongMat;
-            this.layoutControlItem1.Location = new System.Drawing.Point(378, 23);
+            this.layoutControlItem1.Location = new System.Drawing.Point(374, 23);
             this.layoutControlItem1.Name = "layoutControlItem1";
-            this.layoutControlItem1.Size = new System.Drawing.Size(240, 23);
+            this.layoutControlItem1.Size = new System.Drawing.Size(242, 23);
             this.layoutControlItem1.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem1.TextVisible = false;
             // 
             // layoutControlItem5
             // 
             this.layoutControlItem5.Control = this.raPTDucThuyTInhThe;
-            this.layoutControlItem5.Location = new System.Drawing.Point(128, 0);
+            this.layoutControlItem5.Location = new System.Drawing.Point(126, 0);
             this.layoutControlItem5.Name = "layoutControlItem5";
             this.layoutControlItem5.Size = new System.Drawing.Size(134, 23);
             this.layoutControlItem5.TextSize = new System.Drawing.Size(0, 0);
@@ -11416,7 +11416,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // layoutControlItem3
             // 
             this.layoutControlItem3.Control = this.raPTGlocom;
-            this.layoutControlItem3.Location = new System.Drawing.Point(262, 0);
+            this.layoutControlItem3.Location = new System.Drawing.Point(260, 0);
             this.layoutControlItem3.Name = "layoutControlItem3";
             this.layoutControlItem3.Size = new System.Drawing.Size(356, 23);
             this.layoutControlItem3.TextSize = new System.Drawing.Size(0, 0);
@@ -11425,18 +11425,18 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // layoutControlItem97
             // 
             this.layoutControlItem97.Control = this.labelControl10;
-            this.layoutControlItem97.Location = new System.Drawing.Point(618, 29);
+            this.layoutControlItem97.Location = new System.Drawing.Point(616, 29);
             this.layoutControlItem97.Name = "layoutControlItem97";
-            this.layoutControlItem97.Size = new System.Drawing.Size(325, 17);
+            this.layoutControlItem97.Size = new System.Drawing.Size(327, 17);
             this.layoutControlItem97.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem97.TextVisible = false;
             // 
             // emptySpaceItem17
             // 
             this.emptySpaceItem17.AllowHotTrack = false;
-            this.emptySpaceItem17.Location = new System.Drawing.Point(618, 0);
+            this.emptySpaceItem17.Location = new System.Drawing.Point(616, 0);
             this.emptySpaceItem17.Name = "emptySpaceItem17";
-            this.emptySpaceItem17.Size = new System.Drawing.Size(325, 29);
+            this.emptySpaceItem17.Size = new System.Drawing.Size(327, 29);
             this.emptySpaceItem17.TextSize = new System.Drawing.Size(0, 0);
             // 
             // layoutControlItem100
@@ -11465,7 +11465,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // 
             // btnReset
             // 
-            this.btnReset.Location = new System.Drawing.Point(204, 663);
+            this.btnReset.Location = new System.Drawing.Point(202, 663);
             this.btnReset.Name = "btnReset";
             this.btnReset.Size = new System.Drawing.Size(97, 22);
             this.btnReset.StyleController = this.layoutControl2;
@@ -11533,7 +11533,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.labelControl44.AutoSizeMode = DevExpress.XtraEditors.LabelAutoSizeMode.None;
             this.labelControl44.Location = new System.Drawing.Point(12, 237);
             this.labelControl44.Name = "labelControl44";
-            this.labelControl44.Size = new System.Drawing.Size(615, 13);
+            this.labelControl44.Size = new System.Drawing.Size(613, 13);
             this.labelControl44.StyleController = this.lcDaLieu;
             this.labelControl44.TabIndex = 21;
             this.labelControl44.Text = "5. Làm sạch, sát trùng, băng tổn thương.";
@@ -11543,7 +11543,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.labelControl43.AutoSizeMode = DevExpress.XtraEditors.LabelAutoSizeMode.None;
             this.labelControl43.Location = new System.Drawing.Point(12, 254);
             this.labelControl43.Name = "labelControl43";
-            this.labelControl43.Size = new System.Drawing.Size(615, 13);
+            this.labelControl43.Size = new System.Drawing.Size(613, 13);
             this.labelControl43.StyleController = this.lcDaLieu;
             this.labelControl43.TabIndex = 20;
             this.labelControl43.Text = "6. Phẫu thuật an toàn, chuyển theo dõi.";
@@ -11552,7 +11552,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // 
             this.txtTreatSkinOther.Location = new System.Drawing.Point(137, 213);
             this.txtTreatSkinOther.Name = "txtTreatSkinOther";
-            this.txtTreatSkinOther.Size = new System.Drawing.Size(490, 20);
+            this.txtTreatSkinOther.Size = new System.Drawing.Size(488, 20);
             this.txtTreatSkinOther.StyleController = this.lcDaLieu;
             this.txtTreatSkinOther.TabIndex = 19;
             // 
@@ -11561,7 +11561,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.chkDiscloseSkin.Location = new System.Drawing.Point(214, 189);
             this.chkDiscloseSkin.Name = "chkDiscloseSkin";
             this.chkDiscloseSkin.Properties.Caption = "Để hở";
-            this.chkDiscloseSkin.Size = new System.Drawing.Size(413, 19);
+            this.chkDiscloseSkin.Size = new System.Drawing.Size(411, 19);
             this.chkDiscloseSkin.StyleController = this.lcDaLieu;
             this.chkDiscloseSkin.TabIndex = 18;
             this.chkDiscloseSkin.CheckedChanged += new System.EventHandler(this.chkDiscloseSkin_CheckedChanged);
@@ -11581,7 +11581,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.chkShapingSkinOther.Location = new System.Drawing.Point(214, 165);
             this.chkShapingSkinOther.Name = "chkShapingSkinOther";
             this.chkShapingSkinOther.Properties.Caption = "Khác";
-            this.chkShapingSkinOther.Size = new System.Drawing.Size(413, 19);
+            this.chkShapingSkinOther.Size = new System.Drawing.Size(411, 19);
             this.chkShapingSkinOther.StyleController = this.lcDaLieu;
             this.chkShapingSkinOther.TabIndex = 16;
             this.chkShapingSkinOther.CheckedChanged += new System.EventHandler(this.chkShapingSkinOther_CheckedChanged);
@@ -11601,7 +11601,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.chkDamageTypePart.Location = new System.Drawing.Point(214, 141);
             this.chkDamageTypePart.Name = "chkDamageTypePart";
             this.chkDamageTypePart.Properties.Caption = "Một phần làm sạch";
-            this.chkDamageTypePart.Size = new System.Drawing.Size(413, 19);
+            this.chkDamageTypePart.Size = new System.Drawing.Size(411, 19);
             this.chkDamageTypePart.StyleController = this.lcDaLieu;
             this.chkDamageTypePart.TabIndex = 14;
             this.chkDamageTypePart.CheckedChanged += new System.EventHandler(this.chkDamageTypePart_CheckedChanged);
@@ -11638,7 +11638,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.spSkinDamageAmount.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
             this.spSkinDamageAmount.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
-            this.spSkinDamageAmount.Size = new System.Drawing.Size(284, 20);
+            this.spSkinDamageAmount.Size = new System.Drawing.Size(282, 20);
             this.spSkinDamageAmount.StyleController = this.lcDaLieu;
             this.spSkinDamageAmount.TabIndex = 11;
             // 
@@ -11646,7 +11646,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // 
             this.txtSkinDamagePosition.Location = new System.Drawing.Point(137, 76);
             this.txtSkinDamagePosition.Name = "txtSkinDamagePosition";
-            this.txtSkinDamagePosition.Size = new System.Drawing.Size(284, 20);
+            this.txtSkinDamagePosition.Size = new System.Drawing.Size(282, 20);
             this.txtSkinDamagePosition.StyleController = this.lcDaLieu;
             this.txtSkinDamagePosition.TabIndex = 10;
             // 
@@ -11654,7 +11654,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // 
             this.txtSkinDamage.Location = new System.Drawing.Point(137, 52);
             this.txtSkinDamage.Name = "txtSkinDamage";
-            this.txtSkinDamage.Size = new System.Drawing.Size(284, 20);
+            this.txtSkinDamage.Size = new System.Drawing.Size(282, 20);
             this.txtSkinDamage.StyleController = this.lcDaLieu;
             this.txtSkinDamage.TabIndex = 9;
             // 
@@ -11663,7 +11663,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.labelControl35.AutoSizeMode = DevExpress.XtraEditors.LabelAutoSizeMode.Vertical;
             this.labelControl35.Location = new System.Drawing.Point(12, 12);
             this.labelControl35.Name = "labelControl35";
-            this.labelControl35.Size = new System.Drawing.Size(116, 13);
+            this.labelControl35.Size = new System.Drawing.Size(114, 13);
             this.labelControl35.StyleController = this.lcDaLieu;
             this.labelControl35.TabIndex = 8;
             this.labelControl35.Text = "1. Tư thế nằm:";
@@ -11680,17 +11680,17 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // 
             // chkPostureTummy
             // 
-            this.chkPostureTummy.Location = new System.Drawing.Point(299, 12);
+            this.chkPostureTummy.Location = new System.Drawing.Point(297, 12);
             this.chkPostureTummy.Name = "chkPostureTummy";
             this.chkPostureTummy.Properties.Caption = "Sấp";
-            this.chkPostureTummy.Size = new System.Drawing.Size(632, 19);
+            this.chkPostureTummy.Size = new System.Drawing.Size(634, 19);
             this.chkPostureTummy.StyleController = this.lcDaLieu;
             this.chkPostureTummy.TabIndex = 6;
             this.chkPostureTummy.CheckedChanged += new System.EventHandler(this.chkPostureTummy_CheckedChanged);
             // 
             // chkPostureSide
             // 
-            this.chkPostureSide.Location = new System.Drawing.Point(205, 12);
+            this.chkPostureSide.Location = new System.Drawing.Point(203, 12);
             this.chkPostureSide.Name = "chkPostureSide";
             this.chkPostureSide.Properties.Caption = "Nghiêng";
             this.chkPostureSide.Size = new System.Drawing.Size(90, 19);
@@ -11700,7 +11700,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // 
             // chkPostureUp
             // 
-            this.chkPostureUp.Location = new System.Drawing.Point(132, 12);
+            this.chkPostureUp.Location = new System.Drawing.Point(130, 12);
             this.chkPostureUp.Name = "chkPostureUp";
             this.chkPostureUp.Properties.Caption = "Ngửa";
             this.chkPostureUp.Size = new System.Drawing.Size(69, 19);
@@ -11741,7 +11741,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // lciPosture
             // 
             this.lciPosture.Control = this.chkPostureUp;
-            this.lciPosture.Location = new System.Drawing.Point(120, 0);
+            this.lciPosture.Location = new System.Drawing.Point(118, 0);
             this.lciPosture.Name = "lciPosture";
             this.lciPosture.Size = new System.Drawing.Size(73, 23);
             this.lciPosture.Text = "1. Tư thế nằm:";
@@ -11753,7 +11753,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // layoutControlItem94
             // 
             this.layoutControlItem94.Control = this.chkPostureSide;
-            this.layoutControlItem94.Location = new System.Drawing.Point(193, 0);
+            this.layoutControlItem94.Location = new System.Drawing.Point(191, 0);
             this.layoutControlItem94.Name = "layoutControlItem94";
             this.layoutControlItem94.Size = new System.Drawing.Size(94, 23);
             this.layoutControlItem94.TextSize = new System.Drawing.Size(0, 0);
@@ -11762,9 +11762,9 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // layoutControlItem101
             // 
             this.layoutControlItem101.Control = this.chkPostureTummy;
-            this.layoutControlItem101.Location = new System.Drawing.Point(287, 0);
+            this.layoutControlItem101.Location = new System.Drawing.Point(285, 0);
             this.layoutControlItem101.Name = "layoutControlItem101";
-            this.layoutControlItem101.Size = new System.Drawing.Size(636, 23);
+            this.layoutControlItem101.Size = new System.Drawing.Size(638, 23);
             this.layoutControlItem101.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem101.TextVisible = false;
             // 
@@ -11782,7 +11782,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.layoutControlItem190.Control = this.labelControl35;
             this.layoutControlItem190.Location = new System.Drawing.Point(0, 0);
             this.layoutControlItem190.Name = "layoutControlItem190";
-            this.layoutControlItem190.Size = new System.Drawing.Size(120, 23);
+            this.layoutControlItem190.Size = new System.Drawing.Size(118, 23);
             this.layoutControlItem190.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem190.TextVisible = false;
             // 
@@ -11793,7 +11793,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.lciSkinDamage.Control = this.txtSkinDamage;
             this.lciSkinDamage.Location = new System.Drawing.Point(0, 40);
             this.lciSkinDamage.Name = "lciSkinDamage";
-            this.lciSkinDamage.Size = new System.Drawing.Size(413, 24);
+            this.lciSkinDamage.Size = new System.Drawing.Size(411, 24);
             this.lciSkinDamage.Text = "Thương tổn:";
             this.lciSkinDamage.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lciSkinDamage.TextSize = new System.Drawing.Size(120, 20);
@@ -11802,9 +11802,9 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // emptySpaceItem5
             // 
             this.emptySpaceItem5.AllowHotTrack = false;
-            this.emptySpaceItem5.Location = new System.Drawing.Point(413, 40);
+            this.emptySpaceItem5.Location = new System.Drawing.Point(411, 40);
             this.emptySpaceItem5.Name = "emptySpaceItem5";
-            this.emptySpaceItem5.Size = new System.Drawing.Size(510, 72);
+            this.emptySpaceItem5.Size = new System.Drawing.Size(512, 72);
             this.emptySpaceItem5.TextSize = new System.Drawing.Size(0, 0);
             // 
             // lciSkinDamagePosition
@@ -11814,7 +11814,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.lciSkinDamagePosition.Control = this.txtSkinDamagePosition;
             this.lciSkinDamagePosition.Location = new System.Drawing.Point(0, 64);
             this.lciSkinDamagePosition.Name = "lciSkinDamagePosition";
-            this.lciSkinDamagePosition.Size = new System.Drawing.Size(413, 24);
+            this.lciSkinDamagePosition.Size = new System.Drawing.Size(411, 24);
             this.lciSkinDamagePosition.Text = "Vị trí:";
             this.lciSkinDamagePosition.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lciSkinDamagePosition.TextSize = new System.Drawing.Size(120, 20);
@@ -11827,7 +11827,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.lciSkinDamageAmount.Control = this.spSkinDamageAmount;
             this.lciSkinDamageAmount.Location = new System.Drawing.Point(0, 88);
             this.lciSkinDamageAmount.Name = "lciSkinDamageAmount";
-            this.lciSkinDamageAmount.Size = new System.Drawing.Size(413, 24);
+            this.lciSkinDamageAmount.Size = new System.Drawing.Size(411, 24);
             this.lciSkinDamageAmount.Text = "Số lượng:";
             this.lciSkinDamageAmount.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lciSkinDamageAmount.TextSize = new System.Drawing.Size(120, 20);
@@ -11860,7 +11860,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.layoutControlItem290.Control = this.chkDamageTypePart;
             this.layoutControlItem290.Location = new System.Drawing.Point(202, 129);
             this.layoutControlItem290.Name = "layoutControlItem290";
-            this.layoutControlItem290.Size = new System.Drawing.Size(417, 24);
+            this.layoutControlItem290.Size = new System.Drawing.Size(415, 24);
             this.layoutControlItem290.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem290.TextVisible = false;
             // 
@@ -11882,7 +11882,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.layoutControlItem292.Control = this.chkShapingSkinOther;
             this.layoutControlItem292.Location = new System.Drawing.Point(202, 153);
             this.layoutControlItem292.Name = "layoutControlItem292";
-            this.layoutControlItem292.Size = new System.Drawing.Size(417, 24);
+            this.layoutControlItem292.Size = new System.Drawing.Size(415, 24);
             this.layoutControlItem292.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem292.TextVisible = false;
             // 
@@ -11904,16 +11904,16 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.layoutControlItem294.Control = this.chkDiscloseSkin;
             this.layoutControlItem294.Location = new System.Drawing.Point(202, 177);
             this.layoutControlItem294.Name = "layoutControlItem294";
-            this.layoutControlItem294.Size = new System.Drawing.Size(417, 24);
+            this.layoutControlItem294.Size = new System.Drawing.Size(415, 24);
             this.layoutControlItem294.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem294.TextVisible = false;
             // 
             // emptySpaceItem28
             // 
             this.emptySpaceItem28.AllowHotTrack = false;
-            this.emptySpaceItem28.Location = new System.Drawing.Point(619, 129);
+            this.emptySpaceItem28.Location = new System.Drawing.Point(617, 129);
             this.emptySpaceItem28.Name = "emptySpaceItem28";
-            this.emptySpaceItem28.Size = new System.Drawing.Size(304, 480);
+            this.emptySpaceItem28.Size = new System.Drawing.Size(306, 480);
             this.emptySpaceItem28.TextSize = new System.Drawing.Size(0, 0);
             // 
             // lciTreatSkinOther
@@ -11923,7 +11923,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.lciTreatSkinOther.Control = this.txtTreatSkinOther;
             this.lciTreatSkinOther.Location = new System.Drawing.Point(0, 201);
             this.lciTreatSkinOther.Name = "lciTreatSkinOther";
-            this.lciTreatSkinOther.Size = new System.Drawing.Size(619, 24);
+            this.lciTreatSkinOther.Size = new System.Drawing.Size(617, 24);
             this.lciTreatSkinOther.Text = "Khác:";
             this.lciTreatSkinOther.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lciTreatSkinOther.TextSize = new System.Drawing.Size(120, 20);
@@ -11934,7 +11934,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.layoutControlItem266.Control = this.labelControl43;
             this.layoutControlItem266.Location = new System.Drawing.Point(0, 242);
             this.layoutControlItem266.Name = "layoutControlItem266";
-            this.layoutControlItem266.Size = new System.Drawing.Size(619, 367);
+            this.layoutControlItem266.Size = new System.Drawing.Size(617, 367);
             this.layoutControlItem266.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem266.TextVisible = false;
             // 
@@ -11943,7 +11943,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.layoutControlItem284.Control = this.labelControl44;
             this.layoutControlItem284.Location = new System.Drawing.Point(0, 225);
             this.layoutControlItem284.Name = "layoutControlItem284";
-            this.layoutControlItem284.Size = new System.Drawing.Size(619, 17);
+            this.layoutControlItem284.Size = new System.Drawing.Size(617, 17);
             this.layoutControlItem284.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem284.TextVisible = false;
             // 
@@ -11988,17 +11988,17 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // 
             // memStentNote
             // 
-            this.memStentNote.Location = new System.Drawing.Point(137, 480);
+            this.memStentNote.Location = new System.Drawing.Point(137, 478);
             this.memStentNote.Name = "memStentNote";
-            this.memStentNote.Size = new System.Drawing.Size(794, 137);
+            this.memStentNote.Size = new System.Drawing.Size(794, 139);
             this.memStentNote.StyleController = this.lcDieuTriCanThiepDMV;
             this.memStentNote.TabIndex = 31;
             // 
             // btnContrastAgent
             // 
-            this.btnContrastAgent.Location = new System.Drawing.Point(910, 160);
+            this.btnContrastAgent.Location = new System.Drawing.Point(909, 160);
             this.btnContrastAgent.Name = "btnContrastAgent";
-            this.btnContrastAgent.Size = new System.Drawing.Size(21, 22);
+            this.btnContrastAgent.Size = new System.Drawing.Size(22, 22);
             this.btnContrastAgent.StyleController = this.lcDieuTriCanThiepDMV;
             this.btnContrastAgent.TabIndex = 30;
             this.btnContrastAgent.Text = "...";
@@ -12006,9 +12006,9 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // 
             // btnBallon
             // 
-            this.btnBallon.Location = new System.Drawing.Point(910, 134);
+            this.btnBallon.Location = new System.Drawing.Point(909, 134);
             this.btnBallon.Name = "btnBallon";
-            this.btnBallon.Size = new System.Drawing.Size(21, 22);
+            this.btnBallon.Size = new System.Drawing.Size(22, 22);
             this.btnBallon.StyleController = this.lcDieuTriCanThiepDMV;
             this.btnBallon.TabIndex = 29;
             this.btnBallon.Text = "...";
@@ -12016,9 +12016,9 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // 
             // btnGuidingCatheter
             // 
-            this.btnGuidingCatheter.Location = new System.Drawing.Point(910, 108);
+            this.btnGuidingCatheter.Location = new System.Drawing.Point(909, 108);
             this.btnGuidingCatheter.Name = "btnGuidingCatheter";
-            this.btnGuidingCatheter.Size = new System.Drawing.Size(21, 22);
+            this.btnGuidingCatheter.Size = new System.Drawing.Size(22, 22);
             this.btnGuidingCatheter.StyleController = this.lcDieuTriCanThiepDMV;
             this.btnGuidingCatheter.TabIndex = 28;
             this.btnGuidingCatheter.Text = "...";
@@ -12026,7 +12026,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // 
             // btnStent
             // 
-            this.btnStent.Location = new System.Drawing.Point(453, 160);
+            this.btnStent.Location = new System.Drawing.Point(451, 160);
             this.btnStent.Name = "btnStent";
             this.btnStent.Size = new System.Drawing.Size(21, 22);
             this.btnStent.StyleController = this.lcDieuTriCanThiepDMV;
@@ -12036,7 +12036,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // 
             // btnGuiteWire
             // 
-            this.btnGuiteWire.Location = new System.Drawing.Point(453, 134);
+            this.btnGuiteWire.Location = new System.Drawing.Point(451, 134);
             this.btnGuiteWire.Name = "btnGuiteWire";
             this.btnGuiteWire.Size = new System.Drawing.Size(21, 22);
             this.btnGuiteWire.StyleController = this.lcDieuTriCanThiepDMV;
@@ -12046,7 +12046,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // 
             // btnIntroducer
             // 
-            this.btnIntroducer.Location = new System.Drawing.Point(453, 108);
+            this.btnIntroducer.Location = new System.Drawing.Point(451, 108);
             this.btnIntroducer.Name = "btnIntroducer";
             this.btnIntroducer.Size = new System.Drawing.Size(21, 22);
             this.btnIntroducer.StyleController = this.lcDieuTriCanThiepDMV;
@@ -12070,7 +12070,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.gridControl1.RepositoryItems.AddRange(new DevExpress.XtraEditors.Repository.RepositoryItem[] {
             this.repPlus,
             this.repMinus});
-            this.gridControl1.Size = new System.Drawing.Size(794, 242);
+            this.gridControl1.Size = new System.Drawing.Size(794, 240);
             this.gridControl1.TabIndex = 23;
             this.gridControl1.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
             this.gridView1});
@@ -12197,9 +12197,9 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // 
             // txtContrastAgent
             // 
-            this.txtContrastAgent.Location = new System.Drawing.Point(603, 160);
+            this.txtContrastAgent.Location = new System.Drawing.Point(601, 160);
             this.txtContrastAgent.Name = "txtContrastAgent";
-            this.txtContrastAgent.Size = new System.Drawing.Size(303, 20);
+            this.txtContrastAgent.Size = new System.Drawing.Size(304, 20);
             this.txtContrastAgent.StyleController = this.lcDieuTriCanThiepDMV;
             this.txtContrastAgent.TabIndex = 15;
             // 
@@ -12207,15 +12207,15 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // 
             this.txtStent.Location = new System.Drawing.Point(137, 160);
             this.txtStent.Name = "txtStent";
-            this.txtStent.Size = new System.Drawing.Size(312, 20);
+            this.txtStent.Size = new System.Drawing.Size(310, 20);
             this.txtStent.StyleController = this.lcDieuTriCanThiepDMV;
             this.txtStent.TabIndex = 14;
             // 
             // txtBallon
             // 
-            this.txtBallon.Location = new System.Drawing.Point(603, 134);
+            this.txtBallon.Location = new System.Drawing.Point(601, 134);
             this.txtBallon.Name = "txtBallon";
-            this.txtBallon.Size = new System.Drawing.Size(303, 20);
+            this.txtBallon.Size = new System.Drawing.Size(304, 20);
             this.txtBallon.StyleController = this.lcDieuTriCanThiepDMV;
             this.txtBallon.TabIndex = 13;
             // 
@@ -12223,15 +12223,15 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // 
             this.txtGuiteWire.Location = new System.Drawing.Point(137, 134);
             this.txtGuiteWire.Name = "txtGuiteWire";
-            this.txtGuiteWire.Size = new System.Drawing.Size(312, 20);
+            this.txtGuiteWire.Size = new System.Drawing.Size(310, 20);
             this.txtGuiteWire.StyleController = this.lcDieuTriCanThiepDMV;
             this.txtGuiteWire.TabIndex = 12;
             // 
             // txtGuidingCatheter
             // 
-            this.txtGuidingCatheter.Location = new System.Drawing.Point(603, 108);
+            this.txtGuidingCatheter.Location = new System.Drawing.Point(601, 108);
             this.txtGuidingCatheter.Name = "txtGuidingCatheter";
-            this.txtGuidingCatheter.Size = new System.Drawing.Size(303, 20);
+            this.txtGuidingCatheter.Size = new System.Drawing.Size(304, 20);
             this.txtGuidingCatheter.StyleController = this.lcDieuTriCanThiepDMV;
             this.txtGuidingCatheter.TabIndex = 11;
             // 
@@ -12239,7 +12239,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // 
             this.txtIntroducer.Location = new System.Drawing.Point(137, 108);
             this.txtIntroducer.Name = "txtIntroducer";
-            this.txtIntroducer.Size = new System.Drawing.Size(312, 20);
+            this.txtIntroducer.Size = new System.Drawing.Size(310, 20);
             this.txtIntroducer.StyleController = this.lcDieuTriCanThiepDMV;
             this.txtIntroducer.TabIndex = 10;
             // 
@@ -12254,9 +12254,9 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // 
             // txtReason
             // 
-            this.txtReason.Location = new System.Drawing.Point(605, 60);
+            this.txtReason.Location = new System.Drawing.Point(603, 60);
             this.txtReason.Name = "txtReason";
-            this.txtReason.Size = new System.Drawing.Size(326, 20);
+            this.txtReason.Size = new System.Drawing.Size(328, 20);
             this.txtReason.StyleController = this.lcDieuTriCanThiepDMV;
             this.txtReason.TabIndex = 8;
             // 
@@ -12264,15 +12264,15 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // 
             this.txtLocation.Location = new System.Drawing.Point(137, 60);
             this.txtLocation.Name = "txtLocation";
-            this.txtLocation.Size = new System.Drawing.Size(339, 20);
+            this.txtLocation.Size = new System.Drawing.Size(337, 20);
             this.txtLocation.StyleController = this.lcDieuTriCanThiepDMV;
             this.txtLocation.TabIndex = 7;
             // 
             // txtStenting
             // 
-            this.txtStenting.Location = new System.Drawing.Point(605, 36);
+            this.txtStenting.Location = new System.Drawing.Point(603, 36);
             this.txtStenting.Name = "txtStenting";
-            this.txtStenting.Size = new System.Drawing.Size(326, 20);
+            this.txtStenting.Size = new System.Drawing.Size(328, 20);
             this.txtStenting.StyleController = this.lcDieuTriCanThiepDMV;
             this.txtStenting.TabIndex = 6;
             // 
@@ -12280,7 +12280,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // 
             this.txtPci.Location = new System.Drawing.Point(137, 36);
             this.txtPci.Name = "txtPci";
-            this.txtPci.Size = new System.Drawing.Size(339, 20);
+            this.txtPci.Size = new System.Drawing.Size(337, 20);
             this.txtPci.StyleController = this.lcDieuTriCanThiepDMV;
             this.txtPci.TabIndex = 5;
             // 
@@ -12344,7 +12344,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.layoutControlItem297.Location = new System.Drawing.Point(0, 24);
             this.layoutControlItem297.Name = "layoutControlItem297";
             this.layoutControlItem297.OptionsToolTip.ToolTip = "Nong động mạch vành";
-            this.layoutControlItem297.Size = new System.Drawing.Size(468, 24);
+            this.layoutControlItem297.Size = new System.Drawing.Size(466, 24);
             this.layoutControlItem297.Text = "Nong ĐMV:";
             this.layoutControlItem297.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem297.TextSize = new System.Drawing.Size(120, 20);
@@ -12355,10 +12355,10 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.layoutControlItem298.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem298.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem298.Control = this.txtStenting;
-            this.layoutControlItem298.Location = new System.Drawing.Point(468, 24);
+            this.layoutControlItem298.Location = new System.Drawing.Point(466, 24);
             this.layoutControlItem298.Name = "layoutControlItem298";
             this.layoutControlItem298.OptionsToolTip.ToolTip = "Đặt giá đỡ động mạch vành";
-            this.layoutControlItem298.Size = new System.Drawing.Size(455, 24);
+            this.layoutControlItem298.Size = new System.Drawing.Size(457, 24);
             this.layoutControlItem298.Text = "Đặt giá đỡ ĐMV:";
             this.layoutControlItem298.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem298.TextSize = new System.Drawing.Size(120, 20);
@@ -12371,7 +12371,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.layoutControlItem299.Control = this.txtLocation;
             this.layoutControlItem299.Location = new System.Drawing.Point(0, 48);
             this.layoutControlItem299.Name = "layoutControlItem299";
-            this.layoutControlItem299.Size = new System.Drawing.Size(468, 24);
+            this.layoutControlItem299.Size = new System.Drawing.Size(466, 24);
             this.layoutControlItem299.Text = "Vị trí can thiệp:";
             this.layoutControlItem299.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem299.TextSize = new System.Drawing.Size(120, 20);
@@ -12382,9 +12382,9 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.layoutControlItem300.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem300.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem300.Control = this.txtReason;
-            this.layoutControlItem300.Location = new System.Drawing.Point(468, 48);
+            this.layoutControlItem300.Location = new System.Drawing.Point(466, 48);
             this.layoutControlItem300.Name = "layoutControlItem300";
-            this.layoutControlItem300.Size = new System.Drawing.Size(455, 24);
+            this.layoutControlItem300.Size = new System.Drawing.Size(457, 24);
             this.layoutControlItem300.Text = "Lý do can thiệp:";
             this.layoutControlItem300.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem300.TextSize = new System.Drawing.Size(120, 20);
@@ -12408,7 +12408,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.layoutControlItem308.Control = this.txtIntroducer;
             this.layoutControlItem308.Location = new System.Drawing.Point(0, 96);
             this.layoutControlItem308.Name = "layoutControlItem308";
-            this.layoutControlItem308.Size = new System.Drawing.Size(441, 26);
+            this.layoutControlItem308.Size = new System.Drawing.Size(439, 26);
             this.layoutControlItem308.Text = "Introducer:";
             this.layoutControlItem308.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem308.TextSize = new System.Drawing.Size(120, 20);
@@ -12419,9 +12419,9 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.layoutControlItem310.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem310.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem310.Control = this.txtGuidingCatheter;
-            this.layoutControlItem310.Location = new System.Drawing.Point(466, 96);
+            this.layoutControlItem310.Location = new System.Drawing.Point(464, 96);
             this.layoutControlItem310.Name = "layoutControlItem310";
-            this.layoutControlItem310.Size = new System.Drawing.Size(432, 26);
+            this.layoutControlItem310.Size = new System.Drawing.Size(433, 26);
             this.layoutControlItem310.Text = "Guiding catheter:";
             this.layoutControlItem310.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem310.TextSize = new System.Drawing.Size(120, 20);
@@ -12434,7 +12434,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.layoutControlItem312.Control = this.txtGuiteWire;
             this.layoutControlItem312.Location = new System.Drawing.Point(0, 122);
             this.layoutControlItem312.Name = "layoutControlItem312";
-            this.layoutControlItem312.Size = new System.Drawing.Size(441, 26);
+            this.layoutControlItem312.Size = new System.Drawing.Size(439, 26);
             this.layoutControlItem312.Text = "Guite wire:";
             this.layoutControlItem312.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem312.TextSize = new System.Drawing.Size(120, 20);
@@ -12445,9 +12445,9 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.layoutControlItem313.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem313.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem313.Control = this.txtBallon;
-            this.layoutControlItem313.Location = new System.Drawing.Point(466, 122);
+            this.layoutControlItem313.Location = new System.Drawing.Point(464, 122);
             this.layoutControlItem313.Name = "layoutControlItem313";
-            this.layoutControlItem313.Size = new System.Drawing.Size(432, 26);
+            this.layoutControlItem313.Size = new System.Drawing.Size(433, 26);
             this.layoutControlItem313.Text = "Bóng (ballon):";
             this.layoutControlItem313.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem313.TextSize = new System.Drawing.Size(120, 20);
@@ -12460,7 +12460,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.layoutControlItem315.Control = this.txtStent;
             this.layoutControlItem315.Location = new System.Drawing.Point(0, 148);
             this.layoutControlItem315.Name = "layoutControlItem315";
-            this.layoutControlItem315.Size = new System.Drawing.Size(441, 26);
+            this.layoutControlItem315.Size = new System.Drawing.Size(439, 26);
             this.layoutControlItem315.Text = "Stent:";
             this.layoutControlItem315.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem315.TextSize = new System.Drawing.Size(120, 20);
@@ -12471,9 +12471,9 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.layoutControlItem316.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem316.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem316.Control = this.txtContrastAgent;
-            this.layoutControlItem316.Location = new System.Drawing.Point(466, 148);
+            this.layoutControlItem316.Location = new System.Drawing.Point(464, 148);
             this.layoutControlItem316.Name = "layoutControlItem316";
-            this.layoutControlItem316.Size = new System.Drawing.Size(432, 26);
+            this.layoutControlItem316.Size = new System.Drawing.Size(433, 26);
             this.layoutControlItem316.Text = "Thuốc cản quang:";
             this.layoutControlItem316.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem316.TextSize = new System.Drawing.Size(120, 20);
@@ -12497,7 +12497,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.layoutControlItem348.Control = this.gridControl1;
             this.layoutControlItem348.Location = new System.Drawing.Point(0, 222);
             this.layoutControlItem348.Name = "layoutControlItem348";
-            this.layoutControlItem348.Size = new System.Drawing.Size(923, 246);
+            this.layoutControlItem348.Size = new System.Drawing.Size(923, 244);
             this.layoutControlItem348.Text = " ";
             this.layoutControlItem348.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem348.TextSize = new System.Drawing.Size(120, 20);
@@ -12519,7 +12519,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // layoutControlItem333
             // 
             this.layoutControlItem333.Control = this.btnIntroducer;
-            this.layoutControlItem333.Location = new System.Drawing.Point(441, 96);
+            this.layoutControlItem333.Location = new System.Drawing.Point(439, 96);
             this.layoutControlItem333.MaxSize = new System.Drawing.Size(26, 26);
             this.layoutControlItem333.MinSize = new System.Drawing.Size(25, 26);
             this.layoutControlItem333.Name = "layoutControlItem333";
@@ -12531,7 +12531,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // layoutControlItem338
             // 
             this.layoutControlItem338.Control = this.btnGuiteWire;
-            this.layoutControlItem338.Location = new System.Drawing.Point(441, 122);
+            this.layoutControlItem338.Location = new System.Drawing.Point(439, 122);
             this.layoutControlItem338.MaxSize = new System.Drawing.Size(26, 26);
             this.layoutControlItem338.MinSize = new System.Drawing.Size(25, 26);
             this.layoutControlItem338.Name = "layoutControlItem338";
@@ -12543,7 +12543,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // layoutControlItem339
             // 
             this.layoutControlItem339.Control = this.btnStent;
-            this.layoutControlItem339.Location = new System.Drawing.Point(441, 148);
+            this.layoutControlItem339.Location = new System.Drawing.Point(439, 148);
             this.layoutControlItem339.MaxSize = new System.Drawing.Size(26, 26);
             this.layoutControlItem339.MinSize = new System.Drawing.Size(25, 26);
             this.layoutControlItem339.Name = "layoutControlItem339";
@@ -12555,11 +12555,11 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // layoutControlItem341
             // 
             this.layoutControlItem341.Control = this.btnGuidingCatheter;
-            this.layoutControlItem341.Location = new System.Drawing.Point(898, 96);
+            this.layoutControlItem341.Location = new System.Drawing.Point(897, 96);
             this.layoutControlItem341.MaxSize = new System.Drawing.Size(26, 26);
             this.layoutControlItem341.MinSize = new System.Drawing.Size(25, 26);
             this.layoutControlItem341.Name = "layoutControlItem341";
-            this.layoutControlItem341.Size = new System.Drawing.Size(25, 26);
+            this.layoutControlItem341.Size = new System.Drawing.Size(26, 26);
             this.layoutControlItem341.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
             this.layoutControlItem341.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem341.TextVisible = false;
@@ -12567,11 +12567,11 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // layoutControlItem345
             // 
             this.layoutControlItem345.Control = this.btnBallon;
-            this.layoutControlItem345.Location = new System.Drawing.Point(898, 122);
+            this.layoutControlItem345.Location = new System.Drawing.Point(897, 122);
             this.layoutControlItem345.MaxSize = new System.Drawing.Size(26, 26);
             this.layoutControlItem345.MinSize = new System.Drawing.Size(25, 26);
             this.layoutControlItem345.Name = "layoutControlItem345";
-            this.layoutControlItem345.Size = new System.Drawing.Size(25, 26);
+            this.layoutControlItem345.Size = new System.Drawing.Size(26, 26);
             this.layoutControlItem345.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
             this.layoutControlItem345.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem345.TextVisible = false;
@@ -12579,11 +12579,11 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // layoutControlItem346
             // 
             this.layoutControlItem346.Control = this.btnContrastAgent;
-            this.layoutControlItem346.Location = new System.Drawing.Point(898, 148);
+            this.layoutControlItem346.Location = new System.Drawing.Point(897, 148);
             this.layoutControlItem346.MaxSize = new System.Drawing.Size(26, 26);
             this.layoutControlItem346.MinSize = new System.Drawing.Size(25, 26);
             this.layoutControlItem346.Name = "layoutControlItem346";
-            this.layoutControlItem346.Size = new System.Drawing.Size(25, 26);
+            this.layoutControlItem346.Size = new System.Drawing.Size(26, 26);
             this.layoutControlItem346.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
             this.layoutControlItem346.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem346.TextVisible = false;
@@ -12593,9 +12593,9 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.layoutControlItem350.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem350.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem350.Control = this.memStentNote;
-            this.layoutControlItem350.Location = new System.Drawing.Point(0, 468);
+            this.layoutControlItem350.Location = new System.Drawing.Point(0, 466);
             this.layoutControlItem350.Name = "layoutControlItem350";
-            this.layoutControlItem350.Size = new System.Drawing.Size(923, 141);
+            this.layoutControlItem350.Size = new System.Drawing.Size(923, 143);
             this.layoutControlItem350.Text = "Ghi chú:";
             this.layoutControlItem350.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem350.TextSize = new System.Drawing.Size(120, 20);
@@ -12627,7 +12627,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // dtSewingDate
             // 
             this.dtSewingDate.EditValue = null;
-            this.dtSewingDate.Location = new System.Drawing.Point(107, 218);
+            this.dtSewingDate.Location = new System.Drawing.Point(107, 216);
             this.dtSewingDate.Name = "dtSewingDate";
             this.dtSewingDate.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
             this.dtSewingDate.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
@@ -12640,7 +12640,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.dtSewingDate.Properties.EditFormat.FormatString = "dd/MM/yyyy HH:mm";
             this.dtSewingDate.Properties.EditFormat.FormatType = DevExpress.Utils.FormatType.Custom;
             this.dtSewingDate.Properties.Mask.EditMask = "dd/MM/yyyy HH:mm";
-            this.dtSewingDate.Size = new System.Drawing.Size(269, 20);
+            this.dtSewingDate.Size = new System.Drawing.Size(267, 20);
             this.dtSewingDate.StyleController = this.layoutControl_TabOther;
             this.dtSewingDate.TabIndex = 8;
             this.dtSewingDate.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.dtSewingDate_ButtonClick);
@@ -12649,7 +12649,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // dtDrawDate
             // 
             this.dtDrawDate.EditValue = null;
-            this.dtDrawDate.Location = new System.Drawing.Point(107, 194);
+            this.dtDrawDate.Location = new System.Drawing.Point(107, 192);
             this.dtDrawDate.Name = "dtDrawDate";
             this.dtDrawDate.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
             this.dtDrawDate.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
@@ -12662,7 +12662,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.dtDrawDate.Properties.EditFormat.FormatString = "dd/MM/yyyy HH:mm";
             this.dtDrawDate.Properties.EditFormat.FormatType = DevExpress.Utils.FormatType.Custom;
             this.dtDrawDate.Properties.Mask.EditMask = "dd/MM/yyyy HH:mm";
-            this.dtDrawDate.Size = new System.Drawing.Size(269, 20);
+            this.dtDrawDate.Size = new System.Drawing.Size(267, 20);
             this.dtDrawDate.StyleController = this.layoutControl_TabOther;
             this.dtDrawDate.TabIndex = 7;
             this.dtDrawDate.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.dtDrawDate_ButtonClick);
@@ -12670,7 +12670,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // 
             // txtOther
             // 
-            this.txtOther.Location = new System.Drawing.Point(107, 242);
+            this.txtOther.Location = new System.Drawing.Point(107, 240);
             this.txtOther.Name = "txtOther";
             this.txtOther.Size = new System.Drawing.Size(824, 113);
             this.txtOther.StyleController = this.layoutControl_TabOther;
@@ -12678,7 +12678,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // 
             // txtWick
             // 
-            this.txtWick.Location = new System.Drawing.Point(107, 100);
+            this.txtWick.Location = new System.Drawing.Point(107, 98);
             this.txtWick.Name = "txtWick";
             this.txtWick.Size = new System.Drawing.Size(824, 90);
             this.txtWick.StyleController = this.layoutControl_TabOther;
@@ -12688,7 +12688,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // 
             this.txtDrainage.Location = new System.Drawing.Point(107, 12);
             this.txtDrainage.Name = "txtDrainage";
-            this.txtDrainage.Size = new System.Drawing.Size(824, 84);
+            this.txtDrainage.Size = new System.Drawing.Size(824, 82);
             this.txtDrainage.StyleController = this.layoutControl_TabOther;
             this.txtDrainage.TabIndex = 4;
             // 
@@ -12717,7 +12717,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.layoutControlItem286.Control = this.txtDrainage;
             this.layoutControlItem286.Location = new System.Drawing.Point(0, 0);
             this.layoutControlItem286.Name = "layoutControlItem286";
-            this.layoutControlItem286.Size = new System.Drawing.Size(923, 88);
+            this.layoutControlItem286.Size = new System.Drawing.Size(923, 86);
             this.layoutControlItem286.Text = "Dẫn lưu:";
             this.layoutControlItem286.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem286.TextSize = new System.Drawing.Size(90, 20);
@@ -12726,9 +12726,9 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // emptySpaceItem1
             // 
             this.emptySpaceItem1.AllowHotTrack = false;
-            this.emptySpaceItem1.Location = new System.Drawing.Point(0, 347);
+            this.emptySpaceItem1.Location = new System.Drawing.Point(0, 345);
             this.emptySpaceItem1.Name = "emptySpaceItem1";
-            this.emptySpaceItem1.Size = new System.Drawing.Size(923, 262);
+            this.emptySpaceItem1.Size = new System.Drawing.Size(923, 264);
             this.emptySpaceItem1.TextSize = new System.Drawing.Size(0, 0);
             // 
             // layoutControlItem289
@@ -12736,7 +12736,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.layoutControlItem289.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem289.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem289.Control = this.txtWick;
-            this.layoutControlItem289.Location = new System.Drawing.Point(0, 88);
+            this.layoutControlItem289.Location = new System.Drawing.Point(0, 86);
             this.layoutControlItem289.Name = "layoutControlItem289";
             this.layoutControlItem289.Size = new System.Drawing.Size(923, 94);
             this.layoutControlItem289.Text = "Bấc:";
@@ -12749,7 +12749,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.layoutControlItem291.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem291.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem291.Control = this.txtOther;
-            this.layoutControlItem291.Location = new System.Drawing.Point(0, 230);
+            this.layoutControlItem291.Location = new System.Drawing.Point(0, 228);
             this.layoutControlItem291.Name = "layoutControlItem291";
             this.layoutControlItem291.Size = new System.Drawing.Size(923, 117);
             this.layoutControlItem291.Text = "Khác:";
@@ -12762,9 +12762,9 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.layoutControlItem293.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem293.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem293.Control = this.dtDrawDate;
-            this.layoutControlItem293.Location = new System.Drawing.Point(0, 182);
+            this.layoutControlItem293.Location = new System.Drawing.Point(0, 180);
             this.layoutControlItem293.Name = "layoutControlItem293";
-            this.layoutControlItem293.Size = new System.Drawing.Size(368, 24);
+            this.layoutControlItem293.Size = new System.Drawing.Size(366, 24);
             this.layoutControlItem293.Text = "Ngày rút:";
             this.layoutControlItem293.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem293.TextSize = new System.Drawing.Size(90, 20);
@@ -12775,10 +12775,10 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.layoutControlItem295.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem295.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem295.Control = this.dtSewingDate;
-            this.layoutControlItem295.Location = new System.Drawing.Point(0, 206);
+            this.layoutControlItem295.Location = new System.Drawing.Point(0, 204);
             this.layoutControlItem295.Name = "layoutControlItem295";
             this.layoutControlItem295.OptionsToolTip.ToolTip = "Ngày cắt chỉ";
-            this.layoutControlItem295.Size = new System.Drawing.Size(368, 24);
+            this.layoutControlItem295.Size = new System.Drawing.Size(366, 24);
             this.layoutControlItem295.Text = "Ngày CC:";
             this.layoutControlItem295.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem295.TextSize = new System.Drawing.Size(90, 20);
@@ -12787,24 +12787,24 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // emptySpaceItem29
             // 
             this.emptySpaceItem29.AllowHotTrack = false;
-            this.emptySpaceItem29.Location = new System.Drawing.Point(368, 206);
+            this.emptySpaceItem29.Location = new System.Drawing.Point(366, 204);
             this.emptySpaceItem29.Name = "emptySpaceItem29";
-            this.emptySpaceItem29.Size = new System.Drawing.Size(555, 24);
+            this.emptySpaceItem29.Size = new System.Drawing.Size(557, 24);
             this.emptySpaceItem29.TextSize = new System.Drawing.Size(0, 0);
             // 
             // emptySpaceItem30
             // 
             this.emptySpaceItem30.AllowHotTrack = false;
-            this.emptySpaceItem30.Location = new System.Drawing.Point(368, 182);
+            this.emptySpaceItem30.Location = new System.Drawing.Point(366, 180);
             this.emptySpaceItem30.Name = "emptySpaceItem30";
-            this.emptySpaceItem30.Size = new System.Drawing.Size(555, 24);
+            this.emptySpaceItem30.Size = new System.Drawing.Size(557, 24);
             this.emptySpaceItem30.TextSize = new System.Drawing.Size(0, 0);
             // 
             // btnDelete
             // 
             this.btnDelete.Location = new System.Drawing.Point(2, 663);
             this.btnDelete.Name = "btnDelete";
-            this.btnDelete.Size = new System.Drawing.Size(97, 22);
+            this.btnDelete.Size = new System.Drawing.Size(95, 22);
             this.btnDelete.StyleController = this.layoutControl2;
             this.btnDelete.TabIndex = 8;
             this.btnDelete.Text = "Xóa";
@@ -12812,7 +12812,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // 
             // simpleButton2
             // 
-            this.simpleButton2.Location = new System.Drawing.Point(103, 663);
+            this.simpleButton2.Location = new System.Drawing.Point(101, 663);
             this.simpleButton2.Margin = new System.Windows.Forms.Padding(2);
             this.simpleButton2.Name = "simpleButton2";
             this.simpleButton2.Size = new System.Drawing.Size(97, 22);
@@ -12841,7 +12841,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // layoutControlItem102
             // 
             this.layoutControlItem102.Control = this.simpleButton2;
-            this.layoutControlItem102.Location = new System.Drawing.Point(101, 661);
+            this.layoutControlItem102.Location = new System.Drawing.Point(99, 661);
             this.layoutControlItem102.Name = "layoutControlItem102";
             this.layoutControlItem102.Size = new System.Drawing.Size(101, 26);
             this.layoutControlItem102.TextSize = new System.Drawing.Size(0, 0);
@@ -12850,9 +12850,9 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // emptySpaceItem6
             // 
             this.emptySpaceItem6.AllowHotTrack = false;
-            this.emptySpaceItem6.Location = new System.Drawing.Point(303, 661);
+            this.emptySpaceItem6.Location = new System.Drawing.Point(301, 661);
             this.emptySpaceItem6.Name = "emptySpaceItem6";
-            this.emptySpaceItem6.Size = new System.Drawing.Size(650, 26);
+            this.emptySpaceItem6.Size = new System.Drawing.Size(652, 26);
             this.emptySpaceItem6.TextSize = new System.Drawing.Size(0, 0);
             // 
             // layoutControlItem2
@@ -12860,7 +12860,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.layoutControlItem2.Control = this.btnDelete;
             this.layoutControlItem2.Location = new System.Drawing.Point(0, 661);
             this.layoutControlItem2.Name = "layoutControlItem2";
-            this.layoutControlItem2.Size = new System.Drawing.Size(101, 26);
+            this.layoutControlItem2.Size = new System.Drawing.Size(99, 26);
             this.layoutControlItem2.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem2.TextVisible = false;
             // 
@@ -12876,53 +12876,32 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // layoutControlItem356
             // 
             this.layoutControlItem356.Control = this.btnReset;
-            this.layoutControlItem356.Location = new System.Drawing.Point(202, 661);
+            this.layoutControlItem356.Location = new System.Drawing.Point(200, 661);
             this.layoutControlItem356.Name = "layoutControlItem356";
             this.layoutControlItem356.Size = new System.Drawing.Size(101, 26);
             this.layoutControlItem356.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem356.TextVisible = false;
             // 
-            // txtkichthuoc
+            // spinKichThuocRachForraRachBaoSau
             // 
-            this.txtkichthuoc.EditValue = "";
-            this.txtkichthuoc.Location = new System.Drawing.Point(346, 175);
-            this.txtkichthuoc.Margin = new System.Windows.Forms.Padding(2);
-            this.txtkichthuoc.Name = "txtkichthuoc";
-            this.txtkichthuoc.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
-            this.txtkichthuoc.Properties.Appearance.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold);
-            this.txtkichthuoc.Properties.Appearance.Options.UseFont = true;
-            this.txtkichthuoc.Size = new System.Drawing.Size(66, 20);
-            this.txtkichthuoc.StyleController = this.lcPtDucTTT;
-            this.txtkichthuoc.TabIndex = 45;
-            this.txtkichthuoc.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtkichthuoc_KeyPress);
+            this.spinKichThuocRachForraRachBaoSau.Location = new System.Drawing.Point(482, 363);
+            this.spinKichThuocRachForraRachBaoSau.Name = "spinKichThuocRachForraRachBaoSau";
+            this.spinKichThuocRachForraRachBaoSau.Size = new System.Drawing.Size(79, 20);
+            this.spinKichThuocRachForraRachBaoSau.StyleController = this.lcPtDucTTT;
+            this.spinKichThuocRachForraRachBaoSau.TabIndex = 95;
             // 
-            // txtNangLuong
+            // layoutControlItem75
             // 
-            this.txtNangLuong.EditValue = "";
-            this.txtNangLuong.Location = new System.Drawing.Point(179, 293);
-            this.txtNangLuong.Margin = new System.Windows.Forms.Padding(2);
-            this.txtNangLuong.Name = "txtNangLuong";
-            this.txtNangLuong.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
-            this.txtNangLuong.Properties.Appearance.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold);
-            this.txtNangLuong.Properties.Appearance.Options.UseFont = true;
-            this.txtNangLuong.Size = new System.Drawing.Size(50, 20);
-            this.txtNangLuong.StyleController = this.lcPtDucTTT;
-            this.txtNangLuong.TabIndex = 73;
-            this.txtNangLuong.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtNangLuong_KeyPress);
-            // 
-            // txtLucHut
-            // 
-            this.txtLucHut.EditValue = "";
-            this.txtLucHut.Location = new System.Drawing.Point(332, 293);
-            this.txtLucHut.Margin = new System.Windows.Forms.Padding(2);
-            this.txtLucHut.Name = "txtLucHut";
-            this.txtLucHut.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
-            this.txtLucHut.Properties.Appearance.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold);
-            this.txtLucHut.Properties.Appearance.Options.UseFont = true;
-            this.txtLucHut.Size = new System.Drawing.Size(50, 20);
-            this.txtLucHut.StyleController = this.lcPtDucTTT;
-            this.txtLucHut.TabIndex = 75;
-            this.txtLucHut.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtLucHut_KeyPress);
+            this.layoutControlItem75.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.layoutControlItem75.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.layoutControlItem75.Control = this.spinKichThuocRachForraRachBaoSau;
+            this.layoutControlItem75.Location = new System.Drawing.Point(395, 351);
+            this.layoutControlItem75.Name = "layoutControlItem75";
+            this.layoutControlItem75.Size = new System.Drawing.Size(158, 24);
+            this.layoutControlItem75.Text = "Kích thước:";
+            this.layoutControlItem75.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.layoutControlItem75.TextSize = new System.Drawing.Size(70, 20);
+            this.layoutControlItem75.TextToControlDistance = 5;
             // 
             // frmInputDetail
             // 
@@ -13010,7 +12989,9 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             ((System.ComponentModel.ISupportInitialize)(this.raLechT3.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.raDucT3Gia.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.raDoI.Properties)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.spinKichThuocRachForraRachBaoSau.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.txtkichthuoc.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.txtNangLuong.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.txtLucHut.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem9)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem10)).EndInit();
@@ -13077,7 +13058,6 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem63)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem65)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem73)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem75)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem67)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem68)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem70)).EndInit();
@@ -13801,9 +13781,8 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem99)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem356)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.txtkichthuoc.Properties)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.txtNangLuong.Properties)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.txtLucHut.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.spinKichThuocRachForraRachBaoSau.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem75)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -13950,7 +13929,6 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
         private DevExpress.XtraEditors.LabelControl labelControl6;
         private DevExpress.XtraEditors.TextEdit txtViTriRachForraRachBaoSau;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem73;
-        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem75;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem72;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem74;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem76;
@@ -14560,7 +14538,6 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
         private DevExpress.XtraLayout.EmptySpaceItem emptySpaceItem15;
         private DevExpress.XtraEditors.SpinEdit spinEdit31;
         private DevExpress.XtraLayout.EmptySpaceItem emptySpaceItem16;
-        private DevExpress.XtraEditors.SpinEdit spinKichThuocRachForraRachBaoSau;
         private DevExpress.XtraEditors.TextEdit textEdit2;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem96;
         private DevExpress.XtraEditors.TextEdit txtEdit32;
@@ -14714,5 +14691,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
         private DevExpress.XtraEditors.TextEdit txtkichthuoc;
         private DevExpress.XtraEditors.TextEdit txtNangLuong;
         private DevExpress.XtraEditors.TextEdit txtLucHut;
+        private DevExpress.XtraEditors.TextEdit spinKichThuocRachForraRachBaoSau;
+        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem75;
     }
 }

@@ -178,7 +178,7 @@
             // 
             // btnChooseSer
             // 
-            this.btnChooseSer.Location = new System.Drawing.Point(120, 272);
+            this.btnChooseSer.Location = new System.Drawing.Point(120, 147);
             this.btnChooseSer.Name = "btnChooseSer";
             this.btnChooseSer.Size = new System.Drawing.Size(162, 22);
             this.btnChooseSer.StyleController = this.layoutControl1;
@@ -190,7 +190,7 @@
             // 
             this.lblSerial.AutoSizeMode = DevExpress.XtraEditors.LabelAutoSizeMode.Vertical;
             this.lblSerial.LineVisible = true;
-            this.lblSerial.Location = new System.Drawing.Point(107, 172);
+            this.lblSerial.Location = new System.Drawing.Point(107, 47);
             this.lblSerial.Name = "lblSerial";
             this.lblSerial.Size = new System.Drawing.Size(293, 96);
             this.lblSerial.StyleController = this.layoutControl1;
@@ -198,7 +198,7 @@
             // 
             // btnSave
             // 
-            this.btnSave.Location = new System.Drawing.Point(307, 308);
+            this.btnSave.Location = new System.Drawing.Point(307, 183);
             this.btnSave.Name = "btnSave";
             this.btnSave.Size = new System.Drawing.Size(93, 22);
             this.btnSave.StyleController = this.layoutControl1;
@@ -210,7 +210,7 @@
             // 
             this.btnViewPw.Image = ((System.Drawing.Image)(resources.GetObject("btnViewPw.Image")));
             this.btnViewPw.ImageLocation = DevExpress.XtraEditors.ImageLocation.MiddleCenter;
-            this.btnViewPw.Location = new System.Drawing.Point(376, 74);
+            this.btnViewPw.Location = new System.Drawing.Point(376, -51);
             this.btnViewPw.Name = "btnViewPw";
             this.btnViewPw.Size = new System.Drawing.Size(24, 22);
             this.btnViewPw.StyleController = this.layoutControl1;
@@ -221,7 +221,7 @@
             // 
             // txtSerial
             // 
-            this.txtSerial.Location = new System.Drawing.Point(107, 148);
+            this.txtSerial.Location = new System.Drawing.Point(107, 23);
             this.txtSerial.MenuManager = this.barManager1;
             this.txtSerial.Name = "txtSerial";
             this.txtSerial.Size = new System.Drawing.Size(293, 20);
@@ -230,7 +230,7 @@
             // 
             // txtCccd
             // 
-            this.txtCccd.Location = new System.Drawing.Point(107, 124);
+            this.txtCccd.Location = new System.Drawing.Point(107, -1);
             this.txtCccd.MenuManager = this.barManager1;
             this.txtCccd.Name = "txtCccd";
             this.txtCccd.Size = new System.Drawing.Size(293, 20);
@@ -239,7 +239,7 @@
             // 
             // txtSecretKey
             // 
-            this.txtSecretKey.Location = new System.Drawing.Point(107, 100);
+            this.txtSecretKey.Location = new System.Drawing.Point(107, -25);
             this.txtSecretKey.MenuManager = this.barManager1;
             this.txtSecretKey.Name = "txtSecretKey";
             this.txtSecretKey.Size = new System.Drawing.Size(293, 20);
@@ -248,7 +248,7 @@
             // 
             // txtPassword
             // 
-            this.txtPassword.Location = new System.Drawing.Point(107, 74);
+            this.txtPassword.Location = new System.Drawing.Point(107, -51);
             this.txtPassword.MenuManager = this.barManager1;
             this.txtPassword.Name = "txtPassword";
             this.txtPassword.Properties.PasswordChar = '*';
@@ -259,7 +259,7 @@
             // 
             // txtSignerCode
             // 
-            this.txtSignerCode.Location = new System.Drawing.Point(107, 50);
+            this.txtSignerCode.Location = new System.Drawing.Point(107, -75);
             this.txtSignerCode.MenuManager = this.barManager1;
             this.txtSignerCode.Name = "txtSignerCode";
             this.txtSignerCode.Size = new System.Drawing.Size(293, 20);
@@ -268,7 +268,7 @@
             // 
             // cboSystem
             // 
-            this.cboSystem.Location = new System.Drawing.Point(107, 26);
+            this.cboSystem.Location = new System.Drawing.Point(107, -99);
             this.cboSystem.MenuManager = this.barManager1;
             this.cboSystem.Name = "cboSystem";
             this.cboSystem.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
@@ -288,7 +288,7 @@
             // 
             // chkUsb
             // 
-            this.chkUsb.Location = new System.Drawing.Point(238, 2);
+            this.chkUsb.Location = new System.Drawing.Point(238, -123);
             this.chkUsb.MenuManager = this.barManager1;
             this.chkUsb.Name = "chkUsb";
             this.chkUsb.Properties.Caption = "USB token";
@@ -303,7 +303,7 @@
             // 
             // chkHsm
             // 
-            this.chkHsm.Location = new System.Drawing.Point(97, 2);
+            this.chkHsm.Location = new System.Drawing.Point(97, -123);
             this.chkHsm.MenuManager = this.barManager1;
             this.chkHsm.Name = "chkHsm";
             this.chkHsm.Properties.Caption = "HSM server";
@@ -335,7 +335,7 @@
             this.emptySpaceItem2,
             this.layoutControlItem11,
             this.layoutControlItem12});
-            this.layoutControlGroup1.Location = new System.Drawing.Point(0, 0);
+            this.layoutControlGroup1.Location = new System.Drawing.Point(0, -125);
             this.layoutControlGroup1.Name = "layoutControlGroup1";
             this.layoutControlGroup1.Size = new System.Drawing.Size(402, 332);
             this.layoutControlGroup1.TextVisible = false;

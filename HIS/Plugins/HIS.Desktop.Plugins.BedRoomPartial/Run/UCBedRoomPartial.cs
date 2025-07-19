@@ -1032,14 +1032,14 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
             {
                 List<HIS_TRACKING> ListTracking = null;
                 CommonParam param = new CommonParam();
-                var rs = new BackendAdapter(param).Get<List<HisServiceReqGroupByDateSDO>>(HisRequestUriStore.HIS_SERVICE_REQ_GET_GROUP_BY_DATE, ApiConsumers.MosConsumer, treatmentId, param).OrderByDescending(p => p.InstructionDate).SingleOrDefault();
+                var rs = new BackendAdapter(param).Get<List<HisServiceReqGroupByDateSDO>>(HisRequestUriStore.HIS_SERVICE_REQ_GET_GROUP_BY_DATE, ApiConsumers.MosConsumer, treatmentId, param).OrderByDescending(p => p.InstructionDate).Distinct().ToList();
                 treeListDateTime.DataSource = null;
                 this.rowClickByDate = new ServiceReqGroupByDateADO();
                 this.IsLoadTreeListDateTime = false;
                 if (rs != null)
                 {
                     HisTrackingFilter filter = new HisTrackingFilter();
-                    filter.TREATMENT_ID = rs.TreatmentId;
+                    filter.TREATMENT_ID = rs.FirstOrDefault().TreatmentId;
                     ListTracking = new BackendAdapter(param).Get<List<HIS_TRACKING>>("api/HisTracking/Get", ApiConsumers.MosConsumer, filter, param);
                     if (ListTracking != null && ListTracking.Count > 0)
                     {
@@ -1048,29 +1048,32 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
                     List<long> listTreeListIDs = new List<long>();
 
                     List<ServiceReqGroupByDateADO> Result = new List<ADO.ServiceReqGroupByDateADO>();
-
-                    ServiceReqGroupByDateADO adoParent = new ADO.ServiceReqGroupByDateADO(rs);
-                    listTreeListIDs.Add(adoParent.TREELIST_ID);
-                    if (adoParent.TREELIST_ID > 0)
-                        Result.Add(adoParent);
-
-                    if (ListTracking != null)
+                    foreach (var item in rs)
                     {
-                        foreach (var tracking in ListTracking)
+                        ServiceReqGroupByDateADO adoParent = new ADO.ServiceReqGroupByDateADO(item);
+                        listTreeListIDs.Add(adoParent.TREELIST_ID);
+                        if (adoParent.TREELIST_ID > 0)
+                            Result.Add(adoParent);
+
+                        if (ListTracking != null)
                         {
-                            if (adoParent.InstructionDate.ToString().Substring(0, 8) == tracking.TRACKING_TIME.ToString().Substring(0, 8))
+                            foreach (var tracking in ListTracking)    
                             {
-                                ServiceReqGroupByDateADO adoChild = new ADO.ServiceReqGroupByDateADO(rs, true, tracking.TRACKING_TIME, listTreeListIDs);
-                                listTreeListIDs.Add(adoChild.TREELIST_ID);
-                                adoChild.isParent = false;
-                                adoChild.InstructionDate = tracking.TRACKING_TIME;
-                                adoChild.TRACKING_ID = tracking.ID;
-                                adoChild.TRACKING_TIME = tracking.TRACKING_TIME;
-                                if (adoChild.TREELIST_ID > 0)
-                                    Result.Add(adoChild);
+                                if (adoParent.InstructionDate.ToString().Substring(0, 8) == tracking.TRACKING_TIME.ToString().Substring(0, 8))
+                                {
+                                    ServiceReqGroupByDateADO adoChild = new ADO.ServiceReqGroupByDateADO(item, true, tracking.TRACKING_TIME, listTreeListIDs);
+                                    listTreeListIDs.Add(adoChild.TREELIST_ID);
+                                    adoChild.isParent = false;
+                                    adoChild.InstructionDate = tracking.TRACKING_TIME;
+                                    adoChild.TRACKING_ID = tracking.ID;
+                                    adoChild.TRACKING_TIME = tracking.TRACKING_TIME;
+                                    if (adoChild.TREELIST_ID > 0)
+                                        Result.Add(adoChild);
+                                }
                             }
                         }
                     }
+
                     IsLoadTreeListDateTime = true;
                     treeListDateTime.DataSource = Result.OrderByDescending(o => o.InstructionDate).ToList();
                     treeListDateTime.BestFitColumns();

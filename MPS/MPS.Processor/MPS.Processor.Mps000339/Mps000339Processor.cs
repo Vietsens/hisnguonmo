@@ -205,6 +205,7 @@ namespace MPS.Processor.Mps000339
                     if (expMest != null)
                     {
                         AddObjectKeyIntoListkey(expMest, false);
+                        SetSingleKey(new KeyValue(Mps000339ExtendSingleKey.EXP_MEST_CODE, expMest.EXP_MEST_CODE)); 
                     }
                 }
             }
