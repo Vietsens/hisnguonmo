@@ -41,5 +41,7 @@ namespace MPS.Processor.Mps000339
         internal static string TDL_PATIENT_ADDRESS = "TDL_PATIENT_ADDRESS";
 
         internal static string MOBA_IMP_MEST_COUNT = "MOBA_IMP_MEST_COUNT";
+
+        internal static string EXP_MEST_CODE = "EXP_MEST_CODE"; 
     }
 }
