@@ -124,23 +124,23 @@ namespace HIS.UC.SettingSignInfo
             }
 
         }
-        public static List<HsmConfigADO> ParseHsmConfigs(string input)
+        public List<HsmConfigADO> ParseHsmConfigs(string input)
         {
             var result = new List<HsmConfigADO>();
             try
             {
                 if (string.IsNullOrEmpty(input))
                     return result;
-                var regex = new System.Text.RegularExpressions.Regex(
-                    @"- (\d+):\s*([^\n\.]+)\.?\s*(.*?)(?=(?:\n- \d+:)|\z)",
-                    System.Text.RegularExpressions.RegexOptions.Singleline);
+                var regex = new System.Text.RegularExpressions.Regex(@"- (\d+):(.+?)(?=(?:\r\n- \d+:)|$)", System.Text.RegularExpressions.RegexOptions.Singleline);
 
                 var matches = regex.Matches(input);
                 foreach (System.Text.RegularExpressions.Match match in matches)
                 {
                     int id = int.Parse(match.Groups[1].Value.Trim());
-                    string name = match.Groups[2].Value.Trim();
-                    string desc = match.Groups[3].Value.Trim();
+                    var arr = match.Groups[2].Value.Trim().Split(new[] { '.' }, 2);
+                    string name = arr[0].Trim();
+                    string desc = arr.Count() > 1 ? arr[1].Trim() : null;
+                    // Lấy vế trước dấu . nếu có, nếu không thì lấy toàn bộ
                     result.Add(new HsmConfigADO
                     {
                         ID = id,
@@ -272,11 +272,11 @@ namespace HIS.UC.SettingSignInfo
             var sb = new StringBuilder();
             sb.AppendLine(string.Format("Subject: {0}", cert.Subject));
             sb.AppendLine(string.Format("Issuer: {0}",cert.Issuer));
-            sb.AppendLine(string.Format("Serial Number: {0}",cert.SerialNumber));
+            //sb.AppendLine(string.Format("Serial Number: {0}",cert.SerialNumber));
             sb.AppendLine(string.Format("Valid From: {0}",cert.NotBefore));
             sb.AppendLine(string.Format("Valid To: {0}",cert.NotAfter));
-            sb.AppendLine(string.Format("Thumbprint: {0}",cert.Thumbprint));
-            sb.AppendLine(string.Format("Has Private Key: {0}",cert.HasPrivateKey));
+            //sb.AppendLine(string.Format("Thumbprint: {0}",cert.Thumbprint));
+            //sb.AppendLine(string.Format("Has Private Key: {0}",cert.HasPrivateKey));
             return sb.ToString();
         }
 
@@ -358,6 +358,11 @@ namespace HIS.UC.SettingSignInfo
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
+        }
+
+        private void barButtonItem1_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
+        {
+            btnSave.PerformClick();
         }
     }
 }
