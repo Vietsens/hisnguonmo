@@ -217,7 +217,7 @@
     <value>Perform digital signing using USB token when syncing data</value>
   </data>
   <data name="FormKskDriver.layoutControlItem5.Text" xml:space="preserve">
-    <value>Digitally sign using USB token</value>
+    <value>Digitally sign</value>
   </data>
   <data name="FormKskDriver.lciAddress.Text" xml:space="preserve">
     <value>Address:</value>

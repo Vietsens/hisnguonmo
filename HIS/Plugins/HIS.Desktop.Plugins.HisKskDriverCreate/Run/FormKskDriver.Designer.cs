@@ -63,6 +63,10 @@ namespace HIS.Desktop.Plugins.HisKskDriverCreate.Run
             this.barBtnCtrlS = new DevExpress.XtraBars.BarButtonItem();
             this.bbtnCtrlR = new DevExpress.XtraBars.BarButtonItem();
             this.barBtnF2 = new DevExpress.XtraBars.BarButtonItem();
+            this.barDockControlTop = new DevExpress.XtraBars.BarDockControl();
+            this.barDockControlBottom = new DevExpress.XtraBars.BarDockControl();
+            this.barDockControlLeft = new DevExpress.XtraBars.BarDockControl();
+            this.barDockControlRight = new DevExpress.XtraBars.BarDockControl();
             this.btnReset = new DevExpress.XtraEditors.SimpleButton();
             this.gridControlKskDriver = new DevExpress.XtraGrid.GridControl();
             this.gridViewKskDriver = new DevExpress.XtraGrid.Views.Grid.GridView();
@@ -148,10 +152,6 @@ namespace HIS.Desktop.Plugins.HisKskDriverCreate.Run
             this.layoutControlItem7 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem6 = new DevExpress.XtraLayout.LayoutControlItem();
             this.lciPatient = new DevExpress.XtraLayout.LayoutControlItem();
-            this.barDockControlTop = new DevExpress.XtraBars.BarDockControl();
-            this.barDockControlBottom = new DevExpress.XtraBars.BarDockControl();
-            this.barDockControlLeft = new DevExpress.XtraBars.BarDockControl();
-            this.barDockControlRight = new DevExpress.XtraBars.BarDockControl();
             this.dxValidationProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider();
             this.dxErrorProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXErrorProvider();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
@@ -272,6 +272,10 @@ namespace HIS.Desktop.Plugins.HisKskDriverCreate.Run
             // 
             this.barManager1.Bars.AddRange(new DevExpress.XtraBars.Bar[] {
             this.bar1});
+            this.barManager1.DockControls.Add(this.barDockControlTop);
+            this.barManager1.DockControls.Add(this.barDockControlBottom);
+            this.barManager1.DockControls.Add(this.barDockControlLeft);
+            this.barManager1.DockControls.Add(this.barDockControlRight);
             this.barManager1.Form = this;
             this.barManager1.Items.AddRange(new DevExpress.XtraBars.BarItem[] {
             this.barBtnF3,
@@ -345,6 +349,34 @@ namespace HIS.Desktop.Plugins.HisKskDriverCreate.Run
             this.barBtnF2.ItemShortcut = new DevExpress.XtraBars.BarShortcut(System.Windows.Forms.Keys.F2);
             this.barBtnF2.Name = "barBtnF2";
             this.barBtnF2.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.barBtnF2_ItemClick);
+            // 
+            // barDockControlTop
+            // 
+            this.barDockControlTop.CausesValidation = false;
+            this.barDockControlTop.Dock = System.Windows.Forms.DockStyle.Top;
+            this.barDockControlTop.Location = new System.Drawing.Point(0, 0);
+            this.barDockControlTop.Size = new System.Drawing.Size(990, 29);
+            // 
+            // barDockControlBottom
+            // 
+            this.barDockControlBottom.CausesValidation = false;
+            this.barDockControlBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.barDockControlBottom.Location = new System.Drawing.Point(0, 510);
+            this.barDockControlBottom.Size = new System.Drawing.Size(990, 0);
+            // 
+            // barDockControlLeft
+            // 
+            this.barDockControlLeft.CausesValidation = false;
+            this.barDockControlLeft.Dock = System.Windows.Forms.DockStyle.Left;
+            this.barDockControlLeft.Location = new System.Drawing.Point(0, 29);
+            this.barDockControlLeft.Size = new System.Drawing.Size(0, 481);
+            // 
+            // barDockControlRight
+            // 
+            this.barDockControlRight.CausesValidation = false;
+            this.barDockControlRight.Dock = System.Windows.Forms.DockStyle.Right;
+            this.barDockControlRight.Location = new System.Drawing.Point(990, 29);
+            this.barDockControlRight.Size = new System.Drawing.Size(0, 481);
             // 
             // btnReset
             // 
@@ -495,11 +527,11 @@ namespace HIS.Desktop.Plugins.HisKskDriverCreate.Run
             // 
             // chkSignFileCertUtil
             // 
-            this.chkSignFileCertUtil.Location = new System.Drawing.Point(670, 457);
+            this.chkSignFileCertUtil.Location = new System.Drawing.Point(614, 457);
             this.chkSignFileCertUtil.MenuManager = this.barManager1;
             this.chkSignFileCertUtil.Name = "chkSignFileCertUtil";
             this.chkSignFileCertUtil.Properties.Caption = "";
-            this.chkSignFileCertUtil.Size = new System.Drawing.Size(19, 19);
+            this.chkSignFileCertUtil.Size = new System.Drawing.Size(40, 19);
             this.chkSignFileCertUtil.StyleController = this.layoutControl1;
             this.chkSignFileCertUtil.TabIndex = 16;
             this.chkSignFileCertUtil.ToolTip = "Thực hiện ký số sử dụng USB token khi đồng bộ dữ liệu";
@@ -518,10 +550,10 @@ namespace HIS.Desktop.Plugins.HisKskDriverCreate.Run
             // 
             // chkAutoPush
             // 
-            this.chkAutoPush.Location = new System.Drawing.Point(818, 457);
+            this.chkAutoPush.Location = new System.Drawing.Point(783, 457);
             this.chkAutoPush.Name = "chkAutoPush";
             this.chkAutoPush.Properties.Caption = "";
-            this.chkAutoPush.Size = new System.Drawing.Size(19, 19);
+            this.chkAutoPush.Size = new System.Drawing.Size(54, 19);
             this.chkAutoPush.StyleController = this.layoutControl1;
             this.chkAutoPush.TabIndex = 14;
             this.chkAutoPush.ToolTip = "Tự động đẩy cổng sau khi lưu thành công";
@@ -1349,7 +1381,7 @@ namespace HIS.Desktop.Plugins.HisKskDriverCreate.Run
             this.emptySpaceItem2.AllowHotTrack = false;
             this.emptySpaceItem2.Location = new System.Drawing.Point(0, 455);
             this.emptySpaceItem2.Name = "emptySpaceItem2";
-            this.emptySpaceItem2.Size = new System.Drawing.Size(560, 26);
+            this.emptySpaceItem2.Size = new System.Drawing.Size(583, 26);
             this.emptySpaceItem2.TextSize = new System.Drawing.Size(0, 0);
             // 
             // lciAutoPush
@@ -1357,10 +1389,10 @@ namespace HIS.Desktop.Plugins.HisKskDriverCreate.Run
             this.lciAutoPush.AppearanceItemCaption.Options.UseTextOptions = true;
             this.lciAutoPush.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lciAutoPush.Control = this.chkAutoPush;
-            this.lciAutoPush.Location = new System.Drawing.Point(691, 455);
+            this.lciAutoPush.Location = new System.Drawing.Point(656, 455);
             this.lciAutoPush.Name = "lciAutoPush";
             this.lciAutoPush.OptionsToolTip.ToolTip = "Tự động đẩy cổng sau khi lưu thành công";
-            this.lciAutoPush.Size = new System.Drawing.Size(148, 26);
+            this.lciAutoPush.Size = new System.Drawing.Size(183, 26);
             this.lciAutoPush.Text = "Tự động đẩy cổng";
             this.lciAutoPush.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lciAutoPush.TextSize = new System.Drawing.Size(120, 20);
@@ -1378,12 +1410,12 @@ namespace HIS.Desktop.Plugins.HisKskDriverCreate.Run
             // layoutControlItem5
             // 
             this.layoutControlItem5.Control = this.chkSignFileCertUtil;
-            this.layoutControlItem5.Location = new System.Drawing.Point(560, 455);
+            this.layoutControlItem5.Location = new System.Drawing.Point(583, 455);
             this.layoutControlItem5.Name = "layoutControlItem5";
             this.layoutControlItem5.OptionsToolTip.ToolTip = "Thực hiện ký số sử dụng USB token khi đồng bộ dữ liệu";
-            this.layoutControlItem5.Size = new System.Drawing.Size(131, 26);
-            this.layoutControlItem5.Text = "Ký số dùng USB token";
-            this.layoutControlItem5.TextSize = new System.Drawing.Size(105, 13);
+            this.layoutControlItem5.Size = new System.Drawing.Size(73, 26);
+            this.layoutControlItem5.Text = "Ký số";
+            this.layoutControlItem5.TextSize = new System.Drawing.Size(26, 13);
             // 
             // layoutControlItem7
             // 
@@ -1411,34 +1443,6 @@ namespace HIS.Desktop.Plugins.HisKskDriverCreate.Run
             this.lciPatient.Size = new System.Drawing.Size(137, 26);
             this.lciPatient.TextSize = new System.Drawing.Size(0, 0);
             this.lciPatient.TextVisible = false;
-            // 
-            // barDockControlTop
-            // 
-            this.barDockControlTop.CausesValidation = false;
-            this.barDockControlTop.Dock = System.Windows.Forms.DockStyle.Top;
-            this.barDockControlTop.Location = new System.Drawing.Point(0, 29);
-            this.barDockControlTop.Size = new System.Drawing.Size(990, 0);
-            // 
-            // barDockControlBottom
-            // 
-            this.barDockControlBottom.CausesValidation = false;
-            this.barDockControlBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.barDockControlBottom.Location = new System.Drawing.Point(0, 510);
-            this.barDockControlBottom.Size = new System.Drawing.Size(990, 0);
-            // 
-            // barDockControlLeft
-            // 
-            this.barDockControlLeft.CausesValidation = false;
-            this.barDockControlLeft.Dock = System.Windows.Forms.DockStyle.Left;
-            this.barDockControlLeft.Location = new System.Drawing.Point(0, 29);
-            this.barDockControlLeft.Size = new System.Drawing.Size(0, 481);
-            // 
-            // barDockControlRight
-            // 
-            this.barDockControlRight.CausesValidation = false;
-            this.barDockControlRight.Dock = System.Windows.Forms.DockStyle.Right;
-            this.barDockControlRight.Location = new System.Drawing.Point(990, 29);
-            this.barDockControlRight.Size = new System.Drawing.Size(0, 481);
             // 
             // dxValidationProvider1
             // 
