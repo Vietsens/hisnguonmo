@@ -90,9 +90,9 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute.FormSurgAssignAndCopy
             // 
             // btnChoose
             // 
-            this.btnChoose.Location = new System.Drawing.Point(251, 267);
+            this.btnChoose.Location = new System.Drawing.Point(250, 267);
             this.btnChoose.Name = "btnChoose";
-            this.btnChoose.Size = new System.Drawing.Size(85, 22);
+            this.btnChoose.Size = new System.Drawing.Size(86, 22);
             this.btnChoose.StyleController = this.layoutControl1;
             this.btnChoose.TabIndex = 10;
             this.btnChoose.Text = "Chọn";
@@ -218,9 +218,9 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute.FormSurgAssignAndCopy
             // layoutControlItem5
             // 
             this.layoutControlItem5.Control = this.btnChoose;
-            this.layoutControlItem5.Location = new System.Drawing.Point(239, 255);
+            this.layoutControlItem5.Location = new System.Drawing.Point(238, 255);
             this.layoutControlItem5.Name = "layoutControlItem5";
-            this.layoutControlItem5.Size = new System.Drawing.Size(89, 51);
+            this.layoutControlItem5.Size = new System.Drawing.Size(90, 51);
             this.layoutControlItem5.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem5.TextVisible = false;
             // 
@@ -229,7 +229,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute.FormSurgAssignAndCopy
             this.emptySpaceItem1.AllowHotTrack = false;
             this.emptySpaceItem1.Location = new System.Drawing.Point(0, 255);
             this.emptySpaceItem1.Name = "emptySpaceItem1";
-            this.emptySpaceItem1.Size = new System.Drawing.Size(239, 51);
+            this.emptySpaceItem1.Size = new System.Drawing.Size(238, 51);
             this.emptySpaceItem1.TextSize = new System.Drawing.Size(0, 0);
             // 
             // frmMultiIntructonTime

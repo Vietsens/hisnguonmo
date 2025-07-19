@@ -25,6 +25,7 @@ using Inventec.Desktop.Common.Message;
 using MOS.EFMODEL.DataModels;
 using MOS.Filter;
 using MOS.SDO;
+using MPS.ProcessorBase;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -48,6 +49,7 @@ namespace HIS.Desktop.Plugins.Library.PrintServiceReqTreatment
         private List<HIS_SERE_SERV> _SereServs { get; set; }
         private List<HIS_CONFIG> lstConfig { get; set; }
         private HIS_TRANS_REQ transReq { get; set; }
+        MPS.ProcessorBase.PrintConfig.PreviewType? previewType { get; set; }
         public PrintServiceReqTreatmentProcessor(List<V_HIS_SERVICE_REQ> _vhisServiceReqs, long roomId)
         {
             try
@@ -65,13 +67,32 @@ namespace HIS.Desktop.Plugins.Library.PrintServiceReqTreatment
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
-
         public PrintServiceReqTreatmentProcessor(List<HIS_TREATMENT> _listTreatment, long roomId)
         {
             try
             {
                 this._ListTreatment = _listTreatment;
                 this._vHisRoom = BackendDataWorker.Get<V_HIS_ROOM>().FirstOrDefault(p => p.ID == roomId);
+                Config.LoadConfig();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+
+        public PrintServiceReqTreatmentProcessor(List<V_HIS_SERVICE_REQ> _vhisServiceReqs, long roomId, PrintConfig.PreviewType? previewType)
+        {
+            try
+            {
+                this._vHisServiceReqs = _vhisServiceReqs;
+                if (_vhisServiceReqs != null && _vhisServiceReqs.Count > 0)
+                {
+                    this._TreatmentId = _vhisServiceReqs.FirstOrDefault().TREATMENT_ID;
+                }
+                this._vHisRoom = BackendDataWorker.Get<V_HIS_ROOM>().FirstOrDefault(p => p.ID == roomId);
+                this.previewType = previewType;
                 Config.LoadConfig();
             }
             catch (Exception ex)
@@ -175,7 +196,7 @@ namespace HIS.Desktop.Plugins.Library.PrintServiceReqTreatment
                     switch (printTypeCode)
                     {
                         case PrintTypeCodeStore.IN__HUONG_DAN_CLS__KHAM:
-                            new InCacPhieuChiDinh(printTypeCode, fileName, this._ServiceReqs, this._SereServs, this._ListTreatment, this._PatientTypeAlter, this._vHisRoom, printNow, ref result, lstConfig, transReq, DlgSendResultSigned);
+                            new InCacPhieuChiDinh(printTypeCode, fileName, this._ServiceReqs, this._SereServs, this._ListTreatment, this._PatientTypeAlter, this._vHisRoom, printNow, ref result, lstConfig, transReq, DlgSendResultSigned, this.previewType);
                             break;
 
                         default:
@@ -192,7 +213,6 @@ namespace HIS.Desktop.Plugins.Library.PrintServiceReqTreatment
             }
             return result;
         }
-
         private bool ProcessDataBeforePrint()
         {
             bool result = false;
@@ -228,7 +248,7 @@ namespace HIS.Desktop.Plugins.Library.PrintServiceReqTreatment
                             && p.SERVICE_REQ_TYPE_ID != IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__DONK
                             && p.SERVICE_REQ_TYPE_ID != IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__DONM
                             && p.SERVICE_REQ_TYPE_ID != IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__DONTT
-                            && p.START_TIME == null).ToList();
+                            ).ToList();
                         GetDataPrintQrCode();
                         if (this._ServiceReqs != null && this._ServiceReqs.Count > 0)
                         {
@@ -285,7 +305,7 @@ namespace HIS.Desktop.Plugins.Library.PrintServiceReqTreatment
                            && p.SERVICE_REQ_TYPE_ID != IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__DONK
                            && p.SERVICE_REQ_TYPE_ID != IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__DONM
                            && p.SERVICE_REQ_TYPE_ID != IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__DONTT
-                           && p.START_TIME == null).ToList();
+                           ).ToList();
                 }
 
                 if (this._ServiceReqs != null && this._ServiceReqs.Count > 0)

@@ -139,7 +139,7 @@
     <value>Find (Ctrl F)</value>
   </data>
   <data name="UCInfantInformationList.chkSignFileCertUtil.Properties.Caption" xml:space="preserve">
-    <value>Digitally sign using USB token</value>
+    <value>Digitally sign</value>
   </data>
   <data name="UCInfantInformationList.gridColumn1.Caption" xml:space="preserve">
     <value>STT</value>
