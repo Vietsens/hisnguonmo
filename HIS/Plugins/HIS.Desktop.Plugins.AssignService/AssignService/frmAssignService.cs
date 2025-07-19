@@ -6061,8 +6061,16 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
         {
             try
             {
-                var PrintServiceReqProcessor = new HIS.Desktop.Plugins.Library.PrintServiceReqTreatment.PrintServiceReqTreatmentProcessor(this.serviceReqComboResultSDO.ServiceReqs, currentModule != null ? this.currentModule.RoomId : 0);
-
+                MPS.ProcessorBase.PrintConfig.PreviewType? previewType = null;
+                if (chkSign.Checked && chkPrintDocumentSigned.Checked)
+                {
+                    previewType = MPS.ProcessorBase.PrintConfig.PreviewType.EmrSignAndPrintPreview;
+                }
+                if (chkSign.Checked && chkPrint.Checked)
+                {
+                    previewType = PreviewType.EmrSignAndPrintNow;
+                }
+                var PrintServiceReqProcessor = new HIS.Desktop.Plugins.Library.PrintServiceReqTreatment.PrintServiceReqTreatmentProcessor(this.serviceReqComboResultSDO.ServiceReqs, currentModule != null ? this.currentModule.RoomId : 0, previewType);      
                 LogTheadInSessionInfo(() => PrintServiceReqProcessor.Print("Mps000276", false), "btnPrintPhieuHuongDanBN_Click");
                 //PrintServiceReqProcessor.Print("Mps000276", false);
             }
@@ -6071,7 +6079,6 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
-
         private void btnCreateBill_Click(object sender, EventArgs e)
         {
             try

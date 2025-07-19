@@ -29,6 +29,7 @@ using Inventec.Core;
 using Inventec.Desktop.Common.LanguageManager;
 using Inventec.Desktop.Common.Message;
 using MOS.EFMODEL.DataModels;
+using MPS.ProcessorBase;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -226,12 +227,11 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
             return result;
         }
 
-        private void InPhieuHuoangDanBenhNhan(bool isSaveAndShow)
+        private void InPhieuHuoangDanBenhNhan(bool isSaveAndShow, PrintConfig.PreviewType? preview = null)
         {
             try
-            {
-                
-                var PrintServiceReqProcessor = new HIS.Desktop.Plugins.Library.PrintServiceReqTreatment.PrintServiceReqTreatmentProcessor(this.serviceReqComboResultSDO.ServiceReqs, currentModule != null ? this.currentModule.RoomId : 0);
+            {                
+                var PrintServiceReqProcessor = new HIS.Desktop.Plugins.Library.PrintServiceReqTreatment.PrintServiceReqTreatmentProcessor(this.serviceReqComboResultSDO.ServiceReqs, currentModule != null ? this.currentModule.RoomId : 0, preview);
                 PrintServiceReqProcessor.DlgSendResultSigned = GetDocmentSigned;
                 PrintServiceReqProcessor.Print("Mps000276", true);
             }
