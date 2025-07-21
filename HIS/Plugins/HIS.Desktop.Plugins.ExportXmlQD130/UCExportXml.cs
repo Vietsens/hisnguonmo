@@ -1084,7 +1084,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                         {
                             if (SettingSignADO != null && string.IsNullOrEmpty(SettingSignADO.SerialNumber) || SettingSignADO == null)
                             {
-                                if (XtraMessageBox.Show("Không có thông tin Usb Token ký số. Bạn có muốn tiếp tục xuất xml?", Resources.ResourceMessageLang.ThongBao, MessageBoxButtons.YesNo) == DialogResult.No)
+                                if (XtraMessageBox.Show("Không có thông tin Serial chứng thư ký số. Bạn có muốn tiếp tục xuất xml?", Resources.ResourceMessageLang.ThongBao, MessageBoxButtons.YesNo) == DialogResult.No)
                                 {
                                     message = "";
                                 }
@@ -5107,26 +5107,29 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                     });
                     frm.ShowDialog();
                     if (SettingSignADO == null || string.IsNullOrEmpty(SettingSignADO.SerialNumber))
-                        chkSignFileCertUtil.Checked = false;
-
-                    HIS.Desktop.Library.CacheClient.ControlStateRDO csAddOrUpdate = (this.currentControlStateRDO != null && this.currentControlStateRDO.Count > 0) ? this.currentControlStateRDO.Where(o => o.KEY == chkSignFileCertUtil.Name && o.MODULE_LINK == this.currentModule.ModuleLink).FirstOrDefault() : null;
-                    Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => csAddOrUpdate), csAddOrUpdate));
-                    if (csAddOrUpdate != null)
-                    {
-                        csAddOrUpdate.VALUE = Newtonsoft.Json.JsonConvert.SerializeObject(SettingSignADO);
-                    }
-                    else
-                    {
-                        csAddOrUpdate = new HIS.Desktop.Library.CacheClient.ControlStateRDO();
-                        csAddOrUpdate.KEY = chkSignFileCertUtil.Name;
-                        csAddOrUpdate.VALUE = Newtonsoft.Json.JsonConvert.SerializeObject(SettingSignADO);
-                        csAddOrUpdate.MODULE_LINK = this.currentModule.ModuleLink;
-                        if (this.currentControlStateRDO == null)
-                            this.currentControlStateRDO = new List<HIS.Desktop.Library.CacheClient.ControlStateRDO>();
-                        this.currentControlStateRDO.Add(csAddOrUpdate);
-                    }
-                    this.controlStateWorker.SetData(this.currentControlStateRDO);
+                        chkSignFileCertUtil.Checked = false;                    
                 }
+                else
+                {
+                    SettingSignADO = null;
+                }
+                    HIS.Desktop.Library.CacheClient.ControlStateRDO csAddOrUpdate = (this.currentControlStateRDO != null && this.currentControlStateRDO.Count > 0) ? this.currentControlStateRDO.Where(o => o.KEY == chkSignFileCertUtil.Name && o.MODULE_LINK == this.currentModule.ModuleLink).FirstOrDefault() : null;
+                Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => csAddOrUpdate), csAddOrUpdate));
+                if (csAddOrUpdate != null)
+                {
+                    csAddOrUpdate.VALUE = Newtonsoft.Json.JsonConvert.SerializeObject(SettingSignADO);
+                }
+                else
+                {
+                    csAddOrUpdate = new HIS.Desktop.Library.CacheClient.ControlStateRDO();
+                    csAddOrUpdate.KEY = chkSignFileCertUtil.Name;
+                    csAddOrUpdate.VALUE = Newtonsoft.Json.JsonConvert.SerializeObject(SettingSignADO);
+                    csAddOrUpdate.MODULE_LINK = this.currentModule.ModuleLink;
+                    if (this.currentControlStateRDO == null)
+                        this.currentControlStateRDO = new List<HIS.Desktop.Library.CacheClient.ControlStateRDO>();
+                    this.currentControlStateRDO.Add(csAddOrUpdate);
+                }
+                this.controlStateWorker.SetData(this.currentControlStateRDO);
             }
             catch (Exception ex)
             {
