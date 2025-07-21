@@ -29,6 +29,8 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.Config
 {
     class HisConfigCFG
     {
+        private const string CONFIG_KEY__HIS_ICD_SERVICE__HAS_REQUIRE__PATIENT_BHYT = "HIS.HIS_ICD_SERVICE.HAS_REQUIRE.PATIENT.BHYT";
+        private const string CONFIG_KEY__IsCheckServiceFollwWhenOut = "HIS.Desktop.Plugins.IsCheckServiceFollowWhenOut";
         private const string CONFIG_KEY__SuggestPrescriptionsInfo = "HIS.Desktop.AI.SuggestPrescriptionsInfo";
         private const string IS_ALLOW_SIGNATURE_PRINT_MODULELINKS = "HIS.Desktop.Plugins.IsAllowSignaturePrint.ModuleLinks";
         private const string CONFIG_KEY__ASSIGNPRESCRIPTION_EGFROPTION = "HIS.Desktop.Plugins.AssignPrescription.EgfrOption";   
@@ -172,6 +174,8 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.Config
         internal static string MODULELINKS;
         internal static string ASSIGNPRESCRIPTION_EGFROPTION;
         internal static string SuggestPrescriptionsInfo;
+        internal static string IsCheckServiceFollowWhenOut;
+        internal static string HisIcdServiceHasRequirePatientBhyt;
 
         /// <summary>
         /// :Có tự động focus vào ô lời dặn không. 1-có, 0-không
@@ -449,6 +453,8 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.Config
         {
             try
             {
+                HisIcdServiceHasRequirePatientBhyt = GetValue(CONFIG_KEY__HIS_ICD_SERVICE__HAS_REQUIRE__PATIENT_BHYT);
+                IsCheckServiceFollowWhenOut = GetValue(CONFIG_KEY__IsCheckServiceFollwWhenOut);    
                 SuggestPrescriptionsInfo = GetValue(CONFIG_KEY__SuggestPrescriptionsInfo);
                 ASSIGNPRESCRIPTION_EGFROPTION = GetValue(CONFIG_KEY__ASSIGNPRESCRIPTION_EGFROPTION);
                 MODULELINKS = GetValue(IS_ALLOW_SIGNATURE_PRINT_MODULELINKS);

@@ -104,6 +104,8 @@ namespace MPS.Processor.Mps000037
             {
                 SetBarcodeKey();
                 SetSingleKey();
+                //qtcode
+                SetSingleKeyQrCode();
                 ProcessListData();
                 Inventec.Common.FlexCellExport.ProcessSingleTag singleTag = new Inventec.Common.FlexCellExport.ProcessSingleTag();
                 Inventec.Common.FlexCellExport.ProcessBarCodeTag barCodeTag = new Inventec.Common.FlexCellExport.ProcessBarCodeTag();
@@ -112,6 +114,18 @@ namespace MPS.Processor.Mps000037
                 store.ReadTemplate(System.IO.Path.GetFullPath(fileName));
                 singleTag.ProcessData(store, singleValueDictionary);
                 barCodeTag.ProcessData(store, dicImage);
+
+                if(rdo.ListSereNmse != null && rdo.ListSereNmse.Count > 0)
+                {
+                    objectTag.AddObjectData(store, "ListSereNmse", rdo.ListSereNmse);
+                   
+                }
+                else
+                {
+                  
+                    objectTag.AddObjectData(store, "ListSereNmse", new List<object>());
+                   
+                }
 
                 var ExecuteRoomGroups = new List<SereServGroupPlusADO>();
 
@@ -240,7 +254,25 @@ namespace MPS.Processor.Mps000037
 
             return result;
         }
-
+        //qtcode
+        private void SetSingleKeyQrCode()
+        {
+            try
+            {
+                if (rdo.transReq != null && rdo.lstConfig != null && rdo.lstConfig.Count > 0)
+                {
+                    var data = HIS.Desktop.Common.BankQrCode.QrCodeProcessor.CreateQrImage(rdo.transReq, rdo.lstConfig);
+                    foreach (var item in data)
+                    {
+                        SetSingleKey(new KeyValue(item.Key, item.Value));
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
         private void SetSingleKey()
         {
             try
@@ -258,7 +290,7 @@ namespace MPS.Processor.Mps000037
                 SetSingleKey(new KeyValue(Mps000037ExtendSingleKey.TOTAL_PRICE_PATIENT, Inventec.Common.Number.Convert.NumberToString(bnthanhtoan_tong, 0)));
                 SetSingleKey(new KeyValue(Mps000037ExtendSingleKey.TOTAL_PRICE_OTHER, Inventec.Common.Number.Convert.NumberToString(nguonkhac_tong, 0)));
                 SetSingleKey(new KeyValue(Mps000037ExtendSingleKey.TOTAL_PRICE_TEXT, Inventec.Common.String.Convert.CurrencyToVneseString(Math.Round(thanhtien_tong).ToString())));
-
+                
                 if (rdo.Mps000037ADO != null)
                 {
                     SetSingleKey(new KeyValue(Mps000037ExtendSingleKey.BED_ROOM_NAME, rdo.Mps000037ADO.bebRoomName));
@@ -480,13 +512,15 @@ namespace MPS.Processor.Mps000037
                 AddObjectKeyIntoListkey<V_HIS_PATIENT_TYPE_ALTER>(rdo.V_HIS_PATIENT_TYPE_ALTER, false);
                 AddObjectKeyIntoListkey<V_HIS_SERVICE_REQ>(rdo.lstServiceReq);
                 AddObjectKeyIntoListkey<HIS_TREATMENT>(rdo.currentHisTreatment, true);
+
+                
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
-
+ 
         public static string SetHeinCardNumberDisplayByNumber(string heinCardNumber)
         {
             string result = "";
@@ -551,6 +585,7 @@ namespace MPS.Processor.Mps000037
 
                     ListAdo.Add(sereServ_service37);
                 }
+               
             }
             catch (Exception ex)
             {

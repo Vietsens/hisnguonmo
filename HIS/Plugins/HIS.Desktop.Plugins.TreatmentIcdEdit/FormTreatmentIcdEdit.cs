@@ -1169,7 +1169,7 @@ namespace HIS.Desktop.Plugins.TreatmentIcdEdit
                 {
                     txtSubclinical.Text = "";
                     txtPathologicalProcess.Text = "";
-                    XtraMessageBox.Show(string.Format("Không có dữ liệu thông tin bệnh nhân (Mã điều trị: {0}).", currentVHisTreatment.TREATMENT_CODE), "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    //XtraMessageBox.Show(string.Format("Không có dữ liệu thông tin bệnh nhân (Mã điều trị: {0}).", currentVHisTreatment.TREATMENT_CODE), "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
                 //else
                 //{
@@ -1670,7 +1670,7 @@ namespace HIS.Desktop.Plugins.TreatmentIcdEdit
                         Inventec.Common.Logging.LogSystem.Info("TreatmentCause:" + (data.IcdCauseCode ?? "") + (data.IcdCauseName ?? ""));
                     }
                 }
-                if (this.ucInIcd != null)
+                if (this.ucInIcd != null)    
                 {
                     var icdValue = this.inIcdProcessor.GetValue(this.ucInIcd);
                     if (icdValue != null && icdValue is UC.Icd.ADO.IcdInputADO)

@@ -317,6 +317,10 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
                 Inventec.Common.Logging.LogSystem.Debug("timer1_Tick .6");
                 this.GATE();
 
+
+                this.ucAddressCombo1.SetDelegateSendCardSDO(SendCardSDO, SendStateStrucAddress);
+                this.ucPlusInfo1.SetDelegateInitTHX(result => { if (result) this.ucAddressCombo1.InitControlState(); });
+                this.ucPlusInfo1.InitFieldFromAsync();
                 this.ucOtherServiceReqInfo1.InitFieldFromAsync();
                 this.ucRelativeInfo1.InitFieldFromAsync();
                 this.ucPatientRaw1.FocusUserControl();
@@ -814,7 +818,7 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
                         this.currentPatientSDO = dataResult.HisPatientSDO;
                         FillDataIntoUCPlusInfo(currentPatientSDO, dataResult.IsReadQr);
                         FillDataIntoUCRelativeInfo(currentPatientSDO);
-                        FillDataIntoUCAddressInfo(currentPatientSDO);
+                        FillDataIntoUCAddressInfo(dataResult);
                         if (dataResult.SearchTypePatient == 4 && dataResult.OldPatient == false)
                             this.FillDataIntoUCHeinInfoByPatientTypeAlter(currentPatientSDO);
                         if (dataResult.SearchTypePatient == 5 && dataResult.OldPatient == false)
@@ -1062,7 +1066,11 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
                 this.isCheckSS = false;
                 this.RefreshUserControl();
                 this.ucPatientRaw1.LoadDataCboDoiTuong(roomId);
-                this.ucPatientRaw1.LoadDataComboPrimaryPatientType(roomId);
+                if (this.ucPatientRaw1.cboPatientType.EditValue == null)
+                {
+                    this.ucPatientRaw1.LoadDataComboPrimaryPatientType(roomId);
+                }
+                
                 var patientTypeDefault = HIS.Desktop.Plugins.Library.RegisterConfig.AppConfigs.PatientTypeDefault;
                 if (!(patientTypeDefault != null && patientTypeDefault.ID > 0) && !HIS.Desktop.Plugins.Library.RegisterConfig.HisConfigCFG.UsingPatientTypeOfPreviousPatient)
                 {

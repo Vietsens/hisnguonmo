@@ -128,6 +128,18 @@ namespace HIS.Desktop.Plugins.ContentSubclinical
                         {
                             chkGetInfo.Checked = item.VALUE == "1";
                         }
+                        else if(item.KEY == ControlStateConstant.chkAssign)
+                        {
+                            chkAssign.Checked = item.VALUE == "1";
+                        }
+                        else if (item.KEY == ControlStateConstant.chkServiceType)
+                        {
+                            chkServiceType.Checked = item.VALUE == "1";
+                        }
+                        else if (item.KEY == ControlStateConstant.chkLineBreak)
+                        {     
+                            chkLineBreak.Checked = item.VALUE == "1";
+                        }
                     }
                 }
             }
@@ -243,7 +255,7 @@ namespace HIS.Desktop.Plugins.ContentSubclinical
         {
             try
             {
-                if (this._DelegateSelectData != null)
+                if (this._DelegateSelectData != null)   
                 {
                     if (this.isReturnObject)
                     {
@@ -272,43 +284,145 @@ namespace HIS.Desktop.Plugins.ContentSubclinical
                                 ados.Add(a);
                             }
                             this._DelegateSelectData(ados);
-                        }
+                        }   
                     }
                     else
                     {
                         if (!chkShowParentServiceGroup.Checked)
-                        {
+                        {    
                             List<string> _str = new List<string>();
                             var dataChecks = (List<TreeSereServADO>)this.GetListCheck();
-                            foreach (var item in dataChecks)
+                            var datagroupby = dataChecks.GroupBy(g => g.TDL_INTRUCTION_DATE).ToList();
+
+                            foreach (var groupIntructionDate in datagroupby)
                             {
-                                string dienBien = "";
-                                string value = item.VALUE_RANGE;
-                                if (item.TDL_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__XN && !string.IsNullOrEmpty(value))
+                                if (chkAssign.Checked && groupIntructionDate != null)
                                 {
-                                    dienBien = item.SERVICE_REQ_CODE + ": " + value + " " + item.TEST_INDEX_UNIT_NAME;
+                                    string INTRUCTION = "* Ngày " + Inventec.Common.DateTime.Convert.TimeNumberToDateString(groupIntructionDate.Key.ToString());
+                                    _str.Add(INTRUCTION);
                                 }
-                                else
+
+                                var serviecgroupby = groupIntructionDate.GroupBy(g => g.TDL_SERVICE_TYPE_ID).ToList();
+
+                                foreach (var groupServiceType in serviecgroupby)
                                 {
-                                    dienBien = item.SERVICE_REQ_CODE + (!string.IsNullOrEmpty(value) ? (": " + value) : "");
+                                    if (chkServiceType.Checked && groupServiceType != null)
+                                    {
+                                        var serviceType = BackendDataWorker.Get<HIS_SERVICE_TYPE>().FirstOrDefault(p => p.ID == groupServiceType.Key);
+                                        string SERVICE = "- " + (serviceType != null ? serviceType.SERVICE_TYPE_NAME : "");
+                                        _str.Add(SERVICE);
+                                    }
+
+                                    if (chkLineBreak.Checked)
+                                    {
+                                        foreach (var item in groupServiceType)
+                                        {
+                                            string dienBien = "";
+                                            string value = item.VALUE_RANGE;
+
+                                            if (item.TDL_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__XN && !string.IsNullOrEmpty(value))
+                                            {
+                                                dienBien = item.SERVICE_REQ_CODE + ": " + value + " " + item.TEST_INDEX_UNIT_NAME;
+                                            }
+                                            else
+                                            {
+                                                dienBien = item.SERVICE_REQ_CODE + (!string.IsNullOrEmpty(value) ? (": " + value) : "");
+                                            }
+
+                                            if (chkGetInfo.Checked && dicSereServExt != null && dicSereServExt.ContainsKey(item.ID))
+                                            {
+                                                List<string> ext = new List<string>();
+                                                if (!string.IsNullOrEmpty(dicSereServExt[item.ID].NOTE))
+                                                    ext.Add("Ghi chú: " + dicSereServExt[item.ID].NOTE);
+                                                if (!string.IsNullOrEmpty(dicSereServExt[item.ID].DESCRIPTION))
+                                                    ext.Add("Nhận xét: " + dicSereServExt[item.ID].DESCRIPTION);
+                                                if (!string.IsNullOrEmpty(dicSereServExt[item.ID].CONCLUDE))
+                                                    ext.Add("Kết luận: " + dicSereServExt[item.ID].CONCLUDE);
+                                                dienBien += " " + string.Join("  ", ext);
+                                            }
+
+                                            if (chkServiceType.Checked && chkAssign.Checked)
+                                            {
+                                                dienBien = " " + dienBien;
+                                            }
+                                            else if (chkServiceType.Checked)
+                                            {
+                                                dienBien = " " + dienBien;
+                                            }
+                                            else if (chkAssign.Checked)
+                                            {
+                                                dienBien = " " + dienBien;
+                                            }
+
+                                            _str.Add(dienBien);
+                                        }
+                                    }
+                                    else
+                                    {
+                                        List<string> servicesInLine = new List<string>();
+
+                                        foreach (var item in groupServiceType)   
+                                        {
+                                            string dienBien = "";
+                                            string value = item.VALUE_RANGE;
+
+                                            if (item.TDL_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__XN && !string.IsNullOrEmpty(value))
+                                            {
+                                                dienBien = item.SERVICE_REQ_CODE + ": " + value + " " + item.TEST_INDEX_UNIT_NAME;
+                                            }
+                                            else
+                                            {
+                                                dienBien = item.SERVICE_REQ_CODE + (!string.IsNullOrEmpty(value) ? (": " + value) : "");
+                                            }
+
+                                            if (chkGetInfo.Checked && dicSereServExt != null && dicSereServExt.ContainsKey(item.ID))
+                                            {
+                                                List<string> ext = new List<string>();
+                                                if (!string.IsNullOrEmpty(dicSereServExt[item.ID].NOTE))
+                                                    ext.Add("Ghi chú: " + dicSereServExt[item.ID].NOTE);
+                                                if (!string.IsNullOrEmpty(dicSereServExt[item.ID].DESCRIPTION))
+                                                    ext.Add("Nhận xét: " + dicSereServExt[item.ID].DESCRIPTION);
+                                                if (!string.IsNullOrEmpty(dicSereServExt[item.ID].CONCLUDE))
+                                                    ext.Add("Kết luận: " + dicSereServExt[item.ID].CONCLUDE);
+                                                dienBien += " " + string.Join(" - ", ext);
+                                            }
+
+                                            servicesInLine.Add(dienBien);
+                                        }
+
+                                        if (servicesInLine.Count > 0)
+                                        {
+                                            string combinedServices = "";
+
+                                            if (chkServiceType.Checked && chkAssign.Checked)
+                                            {
+                                                combinedServices = " " + string.Join(" ; ", servicesInLine);
+                                            }
+                                            else if (chkServiceType.Checked)
+                                            {
+                                                combinedServices = " " + string.Join(" ; ", servicesInLine);
+                                            }
+                                            else if (chkAssign.Checked)
+                                            {
+                                                combinedServices = " " + string.Join("  ", servicesInLine);
+                                            }
+
+                                            _str.Add(combinedServices);
+                                        }
+                                    }
                                 }
-                                if(chkGetInfo.Checked && dicSereServExt != null && dicSereServExt.ContainsKey(item.ID))
+
+                                if (chkAssign.Checked && datagroupby.Count > 1)
                                 {
-                                    List<string> ext = new List<string>();
-                                    if (!string.IsNullOrEmpty(dicSereServExt[item.ID].NOTE))
-                                        ext.Add("Ghi chú: " + dicSereServExt[item.ID].NOTE);
-                                    if (!string.IsNullOrEmpty(dicSereServExt[item.ID].DESCRIPTION))
-                                        ext.Add("Nhận xét: " + dicSereServExt[item.ID].DESCRIPTION);
-                                    if (!string.IsNullOrEmpty(dicSereServExt[item.ID].CONCLUDE))
-                                        ext.Add("Kết luận: " + dicSereServExt[item.ID].CONCLUDE);
-                                    dienBien += " " + string.Join(" - ", ext);
-                                } 
-                                _str.Add(dienBien);
+                                    _str.Add("");
+                                }
                             }
+
                             string _strNews = "";
                             if (_str != null && _str.Count > 0)
-                                _strNews = string.Join("; ", _str);
-
+                            {
+                                _strNews = string.Join(Environment.NewLine, _str);
+                            }
                             this._DelegateSelectData(_strNews);
                         }
                         else
@@ -326,7 +440,7 @@ namespace HIS.Desktop.Plugins.ContentSubclinical
                                 List<TreeSereServADO> listTestIndex = new List<TreeSereServADO>();
                                 foreach (var dt in dataChecks)
                                 {
-                                    if (String.IsNullOrEmpty(dt.PARENT_ID__IN_SETY))
+                                    if (String.IsNullOrEmpty(dt.PARENT_ID__IN_SETY) )
                                     {
                                         listDate.Add(dt);
                                     }
@@ -360,49 +474,179 @@ namespace HIS.Desktop.Plugins.ContentSubclinical
                                     }
                                 }
                                 string content = "";
-                                foreach (var date in listDate)
+                                if (chkAssign.Checked)
                                 {
-                                    content += date.SERVICE_REQ_CODE + ":\r\n";
-                                    var lstServiceType = listServiceType.Where(o => o.PARENT_ID__IN_SETY == date.CONCRETE_ID__IN_SETY);
-                                    foreach (var serviceType in lstServiceType)
+                                    foreach (var date in listDate)
+                                    {
+                                        if (chkAssign.Checked)
+                                        {
+                                            content += "*Ngày " + date.SERVICE_REQ_CODE + ":\r\n";
+                                        }
+
+                                        var lstServiceType = listServiceType.Where(o => o.PARENT_ID__IN_SETY == date.CONCRETE_ID__IN_SETY);
+                                        foreach (var serviceType in lstServiceType)
+                                        {
+                                            if (chkShowParentServiceGroup.Checked && serviceType.TDL_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__XN)
+                                            {
+                                                content += "- " + serviceType.SERVICE_REQ_CODE + ":\r\n";
+
+                                                if (chkLineBreak.Checked)
+                                                {
+                                                    string str = ContentSubclinicalShowParentServiceType(serviceType.CONCRETE_ID__IN_SETY, listService, listTestIndex, listSereServHasMIC, listBacterium, listAntibotic);
+                                                    content += !string.IsNullOrEmpty(str) ? str + "\r\n" : "";
+
+                                                    var lstParentServiceType = listParentServiceType.Where(o => o.PARENT_ID__IN_SETY == serviceType.CONCRETE_ID__IN_SETY).ToList();
+                                                    if (lstParentServiceType != null && lstParentServiceType.Count > 0)
+                                                    {
+                                                        bool isFristLine = true;
+                                                        foreach (var parentServiceType in lstParentServiceType)
+                                                        {
+                                                            content += !isFristLine ? "\r\n" : "";
+                                                            content += parentServiceType.SERVICE_REQ_CODE + "\r\n";
+                                                            content += ContentSubclinicalShowParentServiceType(parentServiceType.CONCRETE_ID__IN_SETY, listService, listTestIndex, listSereServHasMIC, listBacterium, listAntibotic);
+                                                            isFristLine = false;
+                                                        }
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    string str = ContentSubclinicalShowParentServiceType(serviceType.CONCRETE_ID__IN_SETY, listService, listTestIndex, listSereServHasMIC, listBacterium, listAntibotic);
+                                                    content += !string.IsNullOrEmpty(str) ? str + "\r\n" : "";
+
+                                                    var lstParentServiceType = listParentServiceType.Where(o => o.PARENT_ID__IN_SETY == serviceType.CONCRETE_ID__IN_SETY).ToList();
+                                                    if (lstParentServiceType != null && lstParentServiceType.Count > 0)
+                                                    {
+                                                        List<string> parentServiceLines = new List<string>();
+                                                        foreach (var parentServiceType in lstParentServiceType)
+                                                        {
+                                                            string parentContent = parentServiceType.SERVICE_REQ_CODE + " " + ContentSubclinicalShowParentServiceType(parentServiceType.CONCRETE_ID__IN_SETY, listService, listTestIndex, listSereServHasMIC, listBacterium, listAntibotic);
+                                                            parentServiceLines.Add(parentContent.Trim());
+                                                        }
+                                                        if (parentServiceLines.Count > 0)
+                                                        {
+                                                            content += string.Join(" + ", parentServiceLines) + "\r\n";
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                            else
+                                            {
+                                                content += "- " + serviceType.SERVICE_REQ_CODE + ":\r\n";
+
+                                                if (chkLineBreak.Checked)
+                                                {
+                                                    content += ContentSubclinicalShowParentServiceType(serviceType.CONCRETE_ID__IN_SETY, listService, listTestIndex, listSereServHasMIC, listBacterium, listAntibotic);
+                                                }
+                                                else
+                                                {
+                                                    string serviceContent = ContentSubclinicalShowParentServiceType(serviceType.CONCRETE_ID__IN_SETY, listService, listTestIndex, listSereServHasMIC, listBacterium, listAntibotic);
+                                                    if (!string.IsNullOrEmpty(serviceContent))
+                                                    {
+                                                        serviceContent = serviceContent.Replace("\r\n", " + ").Replace("\n", " + ");
+                                                        content += serviceContent + "\r\n";
+                                                    }
+                                                }
+                                            }   
+
+                                            if (chkGetInfo.Checked && dicSereServExt != null && dicSereServExt.ContainsKey(serviceType.ID))
+                                            {
+                                                List<string> ext = new List<string>();
+                                                if (!string.IsNullOrEmpty(dicSereServExt[serviceType.ID].NOTE))
+                                                    ext.Add("Ghi chú: " + dicSereServExt[serviceType.ID].NOTE);
+                                                if (!string.IsNullOrEmpty(dicSereServExt[serviceType.ID].DESCRIPTION))
+                                                    ext.Add("Nhận xét: " + dicSereServExt[serviceType.ID].DESCRIPTION);
+                                                if (!string.IsNullOrEmpty(dicSereServExt[serviceType.ID].CONCLUDE))
+                                                    ext.Add("Kết luận: " + dicSereServExt[serviceType.ID].CONCLUDE);
+                                                content += " " + string.Join("  ", ext);
+                                            }
+                                            content += "\r\n";
+                                        }
+                                        content += "\r\n";
+                                    }
+                                }
+                                else
+                                {
+                                    //var lstServiceType = listServiceType.Where(o => o.PARENT_ID__IN_SETY == date.CONCRETE_ID__IN_SETY);
+                                    foreach (var serviceType in listServiceType)
                                     {
                                         if (chkShowParentServiceGroup.Checked && serviceType.TDL_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__XN)
                                         {
-                                            string str = ContentSubclinicalShowParentServiceType(serviceType.CONCRETE_ID__IN_SETY, listService, listTestIndex, listSereServHasMIC, listBacterium, listAntibotic);
-                                            content += !string.IsNullOrEmpty(str) ? str + "\r\n" : "";
-                                            var lstParentServiceType = listParentServiceType.Where(o => o.PARENT_ID__IN_SETY == serviceType.CONCRETE_ID__IN_SETY).ToList();
-                                            if (lstParentServiceType != null && lstParentServiceType.Count > 0)
+                                            content += "- " + serviceType.SERVICE_REQ_CODE + ":\r\n";
+
+                                            if (chkLineBreak.Checked)
                                             {
-                                                bool isFristLine = true;
-                                                foreach (var parentServiceType in lstParentServiceType)
+                                                string str = ContentSubclinicalShowParentServiceType(serviceType.CONCRETE_ID__IN_SETY, listService, listTestIndex, listSereServHasMIC, listBacterium, listAntibotic);
+                                                content += !string.IsNullOrEmpty(str) ? str + "\r\n" : "";
+
+                                                var lstParentServiceType = listParentServiceType.Where(o => o.PARENT_ID__IN_SETY == serviceType.CONCRETE_ID__IN_SETY).ToList();
+                                                if (lstParentServiceType != null && lstParentServiceType.Count > 0)
                                                 {
-                                                    content += !isFristLine ? "\r\n" : "";
-                                                    content += parentServiceType.SERVICE_REQ_CODE + "\r\n";
-                                                    content += ContentSubclinicalShowParentServiceType(parentServiceType.CONCRETE_ID__IN_SETY, listService, listTestIndex, listSereServHasMIC, listBacterium, listAntibotic);
-                                                    isFristLine = false;
+                                                    bool isFristLine = true;
+                                                    foreach (var parentServiceType in lstParentServiceType)
+                                                    {
+                                                        content += !isFristLine ? "\r\n" : "";
+                                                        content += parentServiceType.SERVICE_REQ_CODE + "\r\n";
+                                                        content += ContentSubclinicalShowParentServiceType(parentServiceType.CONCRETE_ID__IN_SETY, listService, listTestIndex, listSereServHasMIC, listBacterium, listAntibotic);
+                                                        isFristLine = false;
+                                                    }
+                                                }
+                                            }
+                                            else
+                                            {
+                                                string str = ContentSubclinicalShowParentServiceType(serviceType.CONCRETE_ID__IN_SETY, listService, listTestIndex, listSereServHasMIC, listBacterium, listAntibotic);
+                                                content += !string.IsNullOrEmpty(str) ? str + "\r\n" : "";
+
+                                                var lstParentServiceType = listParentServiceType.Where(o => o.PARENT_ID__IN_SETY == serviceType.CONCRETE_ID__IN_SETY).ToList();
+                                                if (lstParentServiceType != null && lstParentServiceType.Count > 0)
+                                                {
+                                                    List<string> parentServiceLines = new List<string>();
+                                                    foreach (var parentServiceType in lstParentServiceType)
+                                                    {
+                                                        string parentContent = parentServiceType.SERVICE_REQ_CODE + " " + ContentSubclinicalShowParentServiceType(parentServiceType.CONCRETE_ID__IN_SETY, listService, listTestIndex, listSereServHasMIC, listBacterium, listAntibotic);
+                                                        parentServiceLines.Add(parentContent.Trim());
+                                                    }
+                                                    if (parentServiceLines.Count > 0)
+                                                    {
+                                                        content += string.Join(" + ", parentServiceLines) + "\r\n";
+                                                    }
                                                 }
                                             }
                                         }
                                         else
                                         {
-                                            content += serviceType.SERVICE_REQ_CODE + " - ";
-                                            content += ContentSubclinicalShowParentServiceType(serviceType.CONCRETE_ID__IN_SETY, listService, listTestIndex, listSereServHasMIC, listBacterium, listAntibotic);
+                                            content += "- " + serviceType.SERVICE_REQ_CODE + ":\r\n";
+
+                                            if (chkLineBreak.Checked)
+                                            {
+                                                content += ContentSubclinicalShowParentServiceType(serviceType.CONCRETE_ID__IN_SETY, listService, listTestIndex, listSereServHasMIC, listBacterium, listAntibotic);
+                                            }
+                                            else
+                                            {
+                                                string serviceContent = ContentSubclinicalShowParentServiceType(serviceType.CONCRETE_ID__IN_SETY, listService, listTestIndex, listSereServHasMIC, listBacterium, listAntibotic);
+                                                if (!string.IsNullOrEmpty(serviceContent))
+                                                {
+                                                    serviceContent = serviceContent.Replace("\r\n", " + ").Replace("\n", " + ");
+                                                    content += serviceContent + "\r\n";
+                                                }
+                                            }
                                         }
-                                        if (chkGetInfo.Checked && dicSereServExt != null && dicSereServExt.ContainsKey(date.ID))
+
+                                        if (chkGetInfo.Checked && dicSereServExt != null && dicSereServExt.ContainsKey(serviceType.ID))
                                         {
                                             List<string> ext = new List<string>();
-                                            if (!string.IsNullOrEmpty(dicSereServExt[date.ID].NOTE))
-                                                ext.Add("Ghi chú: " + dicSereServExt[date.ID].NOTE);
-                                            if (!string.IsNullOrEmpty(dicSereServExt[date.ID].DESCRIPTION))
-                                                ext.Add("Nhận xét: " + dicSereServExt[date.ID].DESCRIPTION);
-                                            if (!string.IsNullOrEmpty(dicSereServExt[date.ID].CONCLUDE))
-                                                ext.Add("Kết luận: " + dicSereServExt[date.ID].CONCLUDE);
-                                            content += " " + string.Join(" - ", ext);
+                                            if (!string.IsNullOrEmpty(dicSereServExt[serviceType.ID].NOTE))
+                                                ext.Add("Ghi chú: " + dicSereServExt[serviceType.ID].NOTE);
+                                            if (!string.IsNullOrEmpty(dicSereServExt[serviceType.ID].DESCRIPTION))
+                                                ext.Add("Nhận xét: " + dicSereServExt[serviceType.ID].DESCRIPTION);
+                                            if (!string.IsNullOrEmpty(dicSereServExt[serviceType.ID].CONCLUDE))
+                                                ext.Add("Kết luận: " + dicSereServExt[serviceType.ID].CONCLUDE);
+                                            content += " " + string.Join("  ", ext);
                                         }
                                         content += "\r\n";
                                     }
                                     content += "\r\n";
                                 }
+
                                 this._DelegateSelectData(content);
                             }
                         }
@@ -454,7 +698,16 @@ namespace HIS.Desktop.Plugins.ContentSubclinical
                         _strTestIndex.Add(testIndexStr);
                     }
                     if (_strTestIndex != null && _strTestIndex.Count > 0)
-                        serivceStr += string.Join("; ", _strTestIndex);
+                    {
+                        if (chkLineBreak.Checked)
+                        {
+                            serivceStr += string.Join("\r\n", _strTestIndex);
+                        }
+                        else
+                        {
+                            serivceStr += string.Join("; ", _strTestIndex);
+                        }
+                    }
                     if (hasBracket)
                     {
                         serivceStr += ")";
@@ -462,7 +715,16 @@ namespace HIS.Desktop.Plugins.ContentSubclinical
                     _strService.Add(serivceStr);
                 }
                 if (_strService != null && _strService.Count > 0)
-                    content += string.Join("; ", _strService);
+                {
+                    if (chkLineBreak.Checked)
+                    {
+                        content += string.Join("\r\n", _strService);
+                    }
+                    else
+                    {
+                        content += string.Join("; ", _strService);
+                    }
+                }
 
                 if (!chkImportant.Checked && chkShowMicrobiological.Checked)
                 {
@@ -470,11 +732,13 @@ namespace HIS.Desktop.Plugins.ContentSubclinical
                     List<string> _strSereServHasMIC = new List<string>();
                     foreach (var sereServHasMIC in lstSereServHasMIC)
                     {
-                        content += "\r\n" + String.Format("{0}: {1}", sereServHasMIC.SERVICE_REQ_CODE, !string.IsNullOrEmpty(sereServHasMIC.VALUE_RANGE) ? string.Format("({0})", sereServHasMIC.VALUE_RANGE) : "");
+                        string micContent = String.Format("{0}: {1}", sereServHasMIC.SERVICE_REQ_CODE, !string.IsNullOrEmpty(sereServHasMIC.VALUE_RANGE) ? string.Format("({0})", sereServHasMIC.VALUE_RANGE) : "");
+
                         var lstBacterium = listBacterium.Where(o => o.PARENT_ID__IN_SETY == sereServHasMIC.CONCRETE_ID__IN_SETY).ToList();
+                        List<string> bacteriumContents = new List<string>();
                         foreach (var bacterium in lstBacterium)
                         {
-                            content += "\r\n- " + bacterium.SERVICE_REQ_CODE + ": ";
+                            string bacteriumStr = " " + bacterium.SERVICE_REQ_CODE + ": ";
                             var lstAntibiotic = listAntibotic.Where(o => o.PARENT_ID__IN_SETY == bacterium.CONCRETE_ID__IN_SETY).ToList();
                             List<string> _strAntibiotics = new List<string>();
                             foreach (var antibiotic in lstAntibiotic)
@@ -484,7 +748,43 @@ namespace HIS.Desktop.Plugins.ContentSubclinical
                                 _strAntibiotics.Add(strAnti);
                             }
                             if (_strAntibiotics != null && _strAntibiotics.Count > 0)
-                                content += string.Join(", ", _strAntibiotics);
+                            {
+                                if (chkLineBreak.Checked)
+                                {
+                                    bacteriumStr += string.Join("\r\n", _strAntibiotics);
+                                }
+                                else
+                                {
+                                    bacteriumStr += string.Join(", ", _strAntibiotics);
+                                }
+                            }
+                            bacteriumContents.Add(bacteriumStr);
+                        }
+
+                        if (bacteriumContents.Count > 0)
+                        {
+                            if (chkLineBreak.Checked)
+                            {
+                                micContent += "\r\n" + string.Join("\r\n", bacteriumContents);
+                            }
+                            else
+                            {
+                                micContent += "\r\n" + string.Join("\r\n", bacteriumContents);
+                            }
+                        }
+
+                        _strSereServHasMIC.Add(micContent);
+                    }
+
+                    if (_strSereServHasMIC.Count > 0)
+                    {
+                        if (chkLineBreak.Checked)
+                        {
+                            content += "\r\n" + string.Join("\r\n", _strSereServHasMIC);
+                        }
+                        else
+                        {
+                            content += "\r\n" + string.Join("\r\n", _strSereServHasMIC);
                         }
                     }
                 }
@@ -828,6 +1128,108 @@ namespace HIS.Desktop.Plugins.ContentSubclinical
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void chkServiceType_CheckedChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                if (isInit)
+                {
+                    return;
+                }
+                WaitingManager.Show();
+                ControlStateRDO csAddOrUpdate = (this.currentControlStateRDO != null && this.currentControlStateRDO.Count > 0) ? this.currentControlStateRDO.Where(o => o.KEY == ControlStateConstant.chkServiceType && o.MODULE_LINK == ControlStateConstant.MODULE_LINK).FirstOrDefault() : null;
+                if (csAddOrUpdate != null)
+                {
+                    csAddOrUpdate.VALUE = (chkServiceType.Checked ? "1" : "");
+                }
+                else
+                {
+                    csAddOrUpdate = new HIS.Desktop.Library.CacheClient.ControlStateRDO();
+                    csAddOrUpdate.KEY = ControlStateConstant.chkServiceType;
+                    csAddOrUpdate.VALUE = (chkServiceType.Checked ? "1" : "");
+                    csAddOrUpdate.MODULE_LINK = ControlStateConstant.MODULE_LINK;
+                    if (this.currentControlStateRDO == null)
+                        this.currentControlStateRDO = new List<ControlStateRDO>();
+                    this.currentControlStateRDO.Add(csAddOrUpdate);
+                }
+                this.controlStateWorker.SetData(this.currentControlStateRDO);
+                WaitingManager.Hide();
+                LoadDataSS();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void chkAssign_CheckedChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                if (isInit)
+                {
+                    return;
+                }
+                WaitingManager.Show();
+                ControlStateRDO csAddOrUpdate = (this.currentControlStateRDO != null && this.currentControlStateRDO.Count > 0) ? this.currentControlStateRDO.Where(o => o.KEY == ControlStateConstant.chkAssign && o.MODULE_LINK == ControlStateConstant.MODULE_LINK).FirstOrDefault() : null;
+                if (csAddOrUpdate != null)
+                {
+                    csAddOrUpdate.VALUE = (chkAssign.Checked ? "1" : "");
+                }
+                else
+                {
+                    csAddOrUpdate = new HIS.Desktop.Library.CacheClient.ControlStateRDO();
+                    csAddOrUpdate.KEY = ControlStateConstant.chkAssign;
+                    csAddOrUpdate.VALUE = (chkAssign.Checked ? "1" : "");
+                    csAddOrUpdate.MODULE_LINK = ControlStateConstant.MODULE_LINK;
+                    if (this.currentControlStateRDO == null)
+                        this.currentControlStateRDO = new List<ControlStateRDO>();
+                    this.currentControlStateRDO.Add(csAddOrUpdate);
+                }
+                this.controlStateWorker.SetData(this.currentControlStateRDO);
+                WaitingManager.Hide();
+                LoadDataSS();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void chkLineBreak_CheckedChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                if (isInit)
+                {
+                    return;
+                }
+                WaitingManager.Show();
+                ControlStateRDO csAddOrUpdate = (this.currentControlStateRDO != null && this.currentControlStateRDO.Count > 0) ? this.currentControlStateRDO.Where(o => o.KEY == ControlStateConstant.chkLineBreak && o.MODULE_LINK == ControlStateConstant.MODULE_LINK).FirstOrDefault() : null;
+                if (csAddOrUpdate != null)
+                {
+                    csAddOrUpdate.VALUE = (chkLineBreak.Checked ? "1" : "");
+                }
+                else
+                {
+                    csAddOrUpdate = new HIS.Desktop.Library.CacheClient.ControlStateRDO();
+                    csAddOrUpdate.KEY = ControlStateConstant.chkLineBreak;
+                    csAddOrUpdate.VALUE = (chkLineBreak.Checked ? "1" : "");
+                    csAddOrUpdate.MODULE_LINK = ControlStateConstant.MODULE_LINK;
+                    if (this.currentControlStateRDO == null)
+                        this.currentControlStateRDO = new List<ControlStateRDO>();
+                    this.currentControlStateRDO.Add(csAddOrUpdate);
+                }
+                this.controlStateWorker.SetData(this.currentControlStateRDO);
+                WaitingManager.Hide();
+                LoadDataSS();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
     }

@@ -39,5 +39,6 @@ namespace HIS.Desktop.Plugins.Library.PrintServiceReq.ADO
         public HIS_WORK_PLACE _WORK_PLACE { get; set; }
         public string Gate { get; set; }
         public List<HIS_CARD> ListCard { get; set; }
+        public List<HIS_SERE_NMSE> SereNmses { get; set; }
     }
 }

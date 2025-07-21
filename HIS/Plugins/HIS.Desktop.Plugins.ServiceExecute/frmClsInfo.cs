@@ -1851,6 +1851,7 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                 HisSereServExtSDO data = new HisSereServExtSDO();
                 data.HisSereServExt = this.sereServExt;
                 data.HisEkipUsers = new List<HIS_EKIP_USER>();
+
                 var ekipUserCheck = ProcessEkipUser(ref data);
                 if (!ekipUserCheck)
                 {

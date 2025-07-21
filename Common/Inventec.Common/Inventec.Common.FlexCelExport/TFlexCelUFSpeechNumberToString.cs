@@ -42,19 +42,21 @@ namespace Inventec.Common.FlexCellExport
                 string uiDSep = System.Threading.Thread.CurrentThread.CurrentCulture.NumberFormat.NumberDecimalSeparator;
                 string vString = parameters[0].ToString();
                 vString = vString.Replace(uiGSep, "");
-                string temp = vString.Split(new System.String[] { uiDSep }, StringSplitOptions.None)[0];
-                result = Inventec.Common.String.Convert.CurrencyToVneseString(temp);
-                //decimal value = 0;
-                //if (parameters[0] is string)
-                //{
-                //    temp = temp.Replace(uiGSep, "");
-                //    value = Convert.ToDecimal(temp);
-                //}
-                //else
-                //{
-                //    value = Convert.ToDecimal(parameters[0]);
-                //}
-                //result = Inventec.Common.String.Convert.CurrencyToVneseString(Inventec.Common.Number.Convert.NumberToString(value).Replace(uiGSep, ""));
+                string speechFull = "";
+                if (parameters.Length > 1)
+                {
+                    speechFull = parameters[1].ToString();
+                }
+
+                if (speechFull=="1")
+                {
+                    result = Inventec.Common.String.Convert.CurrencyToVneseString(vString);
+                }
+                else
+                {
+                    string temp = vString.Split(new System.String[] { uiDSep }, StringSplitOptions.None)[0];
+                    result = Inventec.Common.String.Convert.CurrencyToVneseString(temp);
+                }
             }
             catch (Exception ex)
             {

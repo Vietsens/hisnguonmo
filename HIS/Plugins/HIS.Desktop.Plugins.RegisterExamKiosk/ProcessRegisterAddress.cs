@@ -22,8 +22,8 @@ namespace HIS.Desktop.Plugins.RegisterExamKiosk
             {
                 if (hisPatient != null)
                 {
-                    bool address = !String.IsNullOrWhiteSpace(hisPatient.DISTRICT_CODE) && !String.IsNullOrWhiteSpace(hisPatient.PROVINCE_CODE) && !String.IsNullOrWhiteSpace(hisPatient.COMMUNE_NAME);
-                    bool htAddress = !String.IsNullOrWhiteSpace(hisPatient.HT_DISTRICT_CODE) && !String.IsNullOrWhiteSpace(hisPatient.HT_PROVINCE_CODE) && !String.IsNullOrWhiteSpace(hisPatient.HT_COMMUNE_NAME);
+                    bool address = !String.IsNullOrWhiteSpace(hisPatient.PROVINCE_CODE) && !String.IsNullOrWhiteSpace(hisPatient.COMMUNE_NAME);
+                    bool htAddress = !String.IsNullOrWhiteSpace(hisPatient.HT_PROVINCE_CODE) && !String.IsNullOrWhiteSpace(hisPatient.HT_COMMUNE_NAME);
                     result = (htAddress || address);
                 }
             }
@@ -45,7 +45,7 @@ namespace HIS.Desktop.Plugins.RegisterExamKiosk
                     if (!String.IsNullOrWhiteSpace(cardsdo.Address) && (String.IsNullOrWhiteSpace(cardsdo.DistrictCode) || String.IsNullOrWhiteSpace(cardsdo.ProvinceCode) || String.IsNullOrWhiteSpace(cardsdo.CommuneName)))
                     {
                         Inventec.Common.Address.AddressADO splitAdress = adProc.SplitFromFullAddress(cardsdo.Address);
-                        if (splitAdress != null && !string.IsNullOrEmpty(splitAdress.ProvinceName) && !string.IsNullOrEmpty(splitAdress.DistrictName) && !string.IsNullOrEmpty(splitAdress.CommuneName))
+                        if (splitAdress != null && (!string.IsNullOrEmpty(splitAdress.ProvinceName) || !string.IsNullOrEmpty(splitAdress.DistrictName) || !string.IsNullOrEmpty(splitAdress.CommuneName)))
                         {
                             cardsdo.DistrictCode = splitAdress.DistrictCode;
                             cardsdo.DistrictName = splitAdress.DistrictName;
@@ -60,7 +60,7 @@ namespace HIS.Desktop.Plugins.RegisterExamKiosk
                     if (!String.IsNullOrWhiteSpace(cardsdo.HtAddress) && (String.IsNullOrWhiteSpace(cardsdo.HtDistrictCode) || String.IsNullOrWhiteSpace(cardsdo.HtProvinceCode) || String.IsNullOrWhiteSpace(cardsdo.HtCommuneName)))
                     {
                         Inventec.Common.Address.AddressADO splitAdress = adProc.SplitFromFullAddress(cardsdo.HtAddress);
-                        if (splitAdress != null && !string.IsNullOrEmpty(splitAdress.ProvinceName) && !string.IsNullOrEmpty(splitAdress.DistrictName) && !string.IsNullOrEmpty(splitAdress.CommuneName))
+                        if (splitAdress != null && (!string.IsNullOrEmpty(splitAdress.ProvinceName) || !string.IsNullOrEmpty(splitAdress.DistrictName) || !string.IsNullOrEmpty(splitAdress.CommuneName)))
                         {
                             cardsdo.HtDistrictCode = splitAdress.DistrictCode;
                             cardsdo.HtDistrictName = splitAdress.DistrictName;

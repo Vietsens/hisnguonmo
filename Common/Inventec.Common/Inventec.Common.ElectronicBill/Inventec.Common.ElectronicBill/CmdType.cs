@@ -37,5 +37,6 @@ namespace Inventec.Common.ElectronicBill
         public const int CancelInvNoPay = 107;
         public const int listInvByCusFkey = 108;
         public const int GetInvErrorViewFkey = 109;
+        public const int ReplaceInvoiceAction = 110;
     }
 }

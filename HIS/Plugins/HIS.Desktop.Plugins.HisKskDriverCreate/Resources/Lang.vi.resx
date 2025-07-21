@@ -163,7 +163,7 @@
     <value>Dương tính</value>
   </data>
   <data name="FormKskDriver.chkSignFileCertUtil.ToolTip" xml:space="preserve">
-    <value>Thực hiện ký số sử dụng USB token khi đồng bộ dữ liệu</value>
+    <value>Thực hiện ký số sử dụng HSM hoặc USB token khi đồng bộ dữ liệu</value>
   </data>
   <data name="FormKskDriver.gridColumn1.Caption" xml:space="preserve">
     <value>STT</value>
@@ -214,10 +214,10 @@
     <value>Ngày khám lại:</value>
   </data>
   <data name="FormKskDriver.layoutControlItem5.OptionsToolTip.ToolTip" xml:space="preserve">
-    <value>Thực hiện ký số sử dụng USB token khi đồng bộ dữ liệu</value>
+    <value>Thực hiện ký số sử dụng HSM hoặc USB token khi đồng bộ dữ liệu</value>
   </data>
   <data name="FormKskDriver.layoutControlItem5.Text" xml:space="preserve">
-    <value>Ký số dùng USB token</value>
+    <value>Ký số</value>
   </data>
   <data name="FormKskDriver.lciAddress.Text" xml:space="preserve">
     <value>Địa chỉ:</value>

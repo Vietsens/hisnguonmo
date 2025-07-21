@@ -348,7 +348,7 @@ namespace HIS.Desktop.Plugins.Library.CheckIcd
                         }
                     }
                 }
-                MessageError = MessageError.Trim();
+                MessageError = MessageError??"".Trim();
                 if (MessageError.EndsWith("."))
                 {
                     MessageError = MessageError.TrimEnd('.');

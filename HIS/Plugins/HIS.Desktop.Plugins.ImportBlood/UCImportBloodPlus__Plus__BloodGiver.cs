@@ -44,6 +44,8 @@ namespace HIS.Desktop.Plugins.ImportBlood
     public partial class UCImportBloodPlus
     {
         bool _isHienMau = false;
+        //qtcode
+        private bool isInitializing = true;
         private bool isFirstLoad_BloodGiverForm = true;
         Dictionary<string, List<VHisBloodADO>> dicHisBloodGiver_BloodAdo = new Dictionary<string, List<VHisBloodADO>>();
         Dictionary<string, HisBloodGiverADO> dicHisBloodGiver = new Dictionary<string, HisBloodGiverADO>();
@@ -104,6 +106,10 @@ namespace HIS.Desktop.Plugins.ImportBlood
 
                 Invoke(new Action(() =>
                 {
+                    isInitializing = true;
+                    InitToggleSwitch();
+                    bool isUseTHX = Switch_THX.IsOn; 
+                    InitComboVirAddress();
                     InitComboGender();
                     InitComboWorkPlaceID();
                     InitComboGiveType();
@@ -117,17 +123,19 @@ namespace HIS.Desktop.Plugins.ImportBlood
                     InitComboBloodABO();
                     InitComboBloodRh();
                     InitComboTestResult();
-                    InitComboVirAddress();
+                    
 
                     ValidControl_BloodGiverForm();
 
                     SetDefaultDataBloodGiverForm();
                     this.bloodGiverActionType = ActionType.Add;
                     EnableControlsByActionType_BloodGiverForm();
-                    //
+                    //qtcode
+                    Switch_THX.IsOn = isUseTHX; 
                     this.cboBloodVolumeID_BloodGiver.Size = new System.Drawing.Size(cboBloodVolumeID_BloodGiver.Size.Width + (lciXuTri.Location.X - lciBSKhamHM.Location.X), cboBloodVolumeID_BloodGiver.Size.Height);
                     lciBSKhamHM.Location = new Point(lciXuTri.Location.X, lciBSKhamHM.Location.Y);
                     lciTinhTrangLS.Location = new Point(lciLanHM.Location.X, lciTinhTrangLS.Location.Y);
+                    isInitializing = false;
                     WaitingManager.Hide();
                 }));
             }
@@ -202,7 +210,7 @@ namespace HIS.Desktop.Plugins.ImportBlood
                             }
                         }
                     }
-                    txtDOB_BloodGiver.Text = "";
+                    txtDOB_BloodGiver.Text = null;
                     dtDOB_BloodGiver.EditValue = null;
                 }
                 catch (Exception ex)
@@ -274,6 +282,11 @@ namespace HIS.Desktop.Plugins.ImportBlood
         {
             try
             {
+                //qtcode
+                cboDistrict.EditValue = null;
+                cboDistrictBlood_BloodGiver.EditValue = null; 
+
+
                 RemoveControlErrorDXValidation3();
                 txtGiveCode_BloodGiver.Text = "";
                 txtGiveName_BloodGiver.Text = "";
@@ -315,6 +328,9 @@ namespace HIS.Desktop.Plugins.ImportBlood
                 }
                 txtGiveCode_BloodGiver.Focus();
                 this.bloodGiverActionType = ActionType.Add;
+                //qtcode
+                txtDOB_BloodGiver.Text = null;
+                //qtcode
                 EnableControlsByActionType_BloodGiverForm();
             }
             catch (Exception ex)
@@ -895,7 +911,7 @@ namespace HIS.Desktop.Plugins.ImportBlood
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
-
+        //qtcode
         private void FillDataToBloodGiverForm(HisBloodGiverADO hisBloodGiverADO)
         {
             try
@@ -917,17 +933,61 @@ namespace HIS.Desktop.Plugins.ImportBlood
                 txtWorkPlace_BloodGiver.Text = hisBloodGiverADO.WORK_PLACE;
                 cboNational_BloodGiver.EditValue = BackendDataWorker.Get<SDA_NATIONAL>().Where(o => o.NATIONAL_CODE == hisBloodGiverADO.NATIONAL_CODE).Select(o => o.ID).FirstOrDefault();
 
-                cboProvinceBlood_BloodGiver.EditValue = BackendDataWorker.Get<SDA_PROVINCE>().Where(o => o.PROVINCE_CODE == hisBloodGiverADO.PROVINCE_CODE_BLOOD).Select(o => o.ID).FirstOrDefault();
+                // Logic kiểm tra ToggleSwitch dựa trên PROVINCE_CODE và DISTRICT_CODE
+                bool toggleOn = false;
+                if (!string.IsNullOrWhiteSpace(hisBloodGiverADO.PROVINCE_CODE))
+                {
+                    var provinces = BackendDataWorker.Get<V_SDA_PROVINCE>()
+                        .Where(o => o.PROVINCE_CODE == hisBloodGiverADO.PROVINCE_CODE && o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE)
+                        .ToList();
 
-                cboDistrictBlood_BloodGiver.EditValue = BackendDataWorker.Get<SDA_DISTRICT>().Where(o => o.DISTRICT_CODE == hisBloodGiverADO.DISTRICT_CODE_BLOOD).Select(o => o.ID).FirstOrDefault();
+                    if (provinces.Count == 1)
+                    {
+                        toggleOn = provinces[0].IS_NO_DISTRICT == 1;
+                    }
+                    else if (provinces.Count > 1)
+                    {
+                        toggleOn = string.IsNullOrWhiteSpace(hisBloodGiverADO.DISTRICT_CODE);
+                    }
+                }
+                else
+                {
+                    toggleOn = string.IsNullOrWhiteSpace(hisBloodGiverADO.DISTRICT_CODE_BLOOD);
+                }
 
-                cboVirAddress.EditValue = hisBloodGiverADO.VirAddress_ID_RAW;
+                Switch_THX.IsOn = toggleOn;
+                //SaveToggleState(toggleOn); // Lưu trạng thái ToggleSwitch
 
-                cboProvince.EditValue = BackendDataWorker.Get<SDA_PROVINCE>().Where(o => o.PROVINCE_CODE == hisBloodGiverADO.PROVINCE_CODE).Select(o => o.ID).FirstOrDefault();
+                // Khởi tạo lại các combo địa chỉ dựa trên trạng thái ToggleSwitch
+                //InitComboProvince();
+                InitComboDistrict();
 
-                cboDistrict.EditValue = BackendDataWorker.Get<SDA_DISTRICT>().Where(o => o.DISTRICT_CODE == hisBloodGiverADO.DISTRICT_CODE).Select(o => o.ID).FirstOrDefault();
+                InitComboVirAddress();
+               
 
-                cboCommune.EditValue = BackendDataWorker.Get<SDA_COMMUNE>().Where(o => o.COMMUNE_CODE == hisBloodGiverADO.COMMUNE_CODE).Select(o => o.ID).FirstOrDefault();
+
+                if (Switch_THX.IsOn)
+                {
+                    cboProvince.EditValue = BackendDataWorker.Get<SDA_PROVINCE>().Where(o => o.PROVINCE_CODE == hisBloodGiverADO.PROVINCE_CODE && o.IS_NO_DISTRICT == 1).Select(o => o.ID).FirstOrDefault();
+                    cboProvinceBlood_BloodGiver.EditValue = BackendDataWorker.Get<SDA_PROVINCE>().Where(o => o.PROVINCE_CODE == hisBloodGiverADO.PROVINCE_CODE && o.IS_NO_DISTRICT == 1).Select(o => o.ID).FirstOrDefault();
+                    cboVirAddress.EditValue = hisBloodGiverADO.VirAddress_ID_RAW;
+                    InitComboCommune();
+                    cboCommune.EditValue = BackendDataWorker.Get<SDA_COMMUNE>().Where(o => o.COMMUNE_CODE == hisBloodGiverADO.COMMUNE_CODE && o.DISTRICT_ID == null).Select(o => o.ID).FirstOrDefault();
+                }
+                else
+                {
+                    cboProvince.EditValue = BackendDataWorker.Get<SDA_PROVINCE>().Where(o => o.PROVINCE_CODE == hisBloodGiverADO.PROVINCE_CODE && o.IS_NO_DISTRICT != 1).Select(o => o.ID).FirstOrDefault();
+                    cboProvinceBlood_BloodGiver.EditValue = BackendDataWorker.Get<SDA_PROVINCE>().Where(o => o.PROVINCE_CODE == hisBloodGiverADO.PROVINCE_CODE_BLOOD && o.IS_NO_DISTRICT != 1).Select(o => o.ID).FirstOrDefault();
+                    cboDistrictBlood_BloodGiver.EditValue = BackendDataWorker.Get<SDA_DISTRICT>().Where(o => o.DISTRICT_CODE == hisBloodGiverADO.DISTRICT_CODE_BLOOD).Select(o => o.ID).FirstOrDefault();
+                    cboVirAddress.EditValue = hisBloodGiverADO.VirAddress_ID_RAW;
+                    cboDistrict.EditValue = BackendDataWorker.Get<SDA_DISTRICT>().Where(o => o.DISTRICT_CODE == hisBloodGiverADO.DISTRICT_CODE).Select(o => o.ID).FirstOrDefault();
+                    InitComboCommune();
+                    cboCommune.EditValue = BackendDataWorker.Get<SDA_COMMUNE>().Where(o => o.COMMUNE_CODE == hisBloodGiverADO.COMMUNE_CODE && o.DISTRICT_ID != null).Select(o => o.ID).FirstOrDefault();
+                }
+
+
+
+
 
                 txtAddress.Text = hisBloodGiverADO.ADDRESS;
                 txtGiveCard.Text = hisBloodGiverADO.GIVE_CARD;
@@ -1269,7 +1329,10 @@ namespace HIS.Desktop.Plugins.ImportBlood
                     if (!string.IsNullOrWhiteSpace(bloodGiverImport.DISTRICT_CODE_BLOOD))
                     {
                         bloodGiverImport.DISTRICT_CODE_BLOOD = bloodGiverImport.DISTRICT_CODE_BLOOD.Trim();
-                        var districtBlood = BackendDataWorker.Get<SDA_DISTRICT>().FirstOrDefault(o => o.DISTRICT_CODE != null && o.DISTRICT_CODE.ToUpper() == (bloodGiverImport.DISTRICT_CODE_BLOOD ?? "").ToUpper());
+                        var districtBlood1 = BackendDataWorker.Get<SDA_DISTRICT>().FirstOrDefault(o => o.DISTRICT_CODE != null && o.DISTRICT_CODE.ToUpper() == (bloodGiverImport.DISTRICT_CODE_BLOOD ?? "").ToUpper());
+                        //qtcode
+                        var districtBlood = BackendDataWorker.Get<SDA_DISTRICT>().FirstOrDefault(o => o.DISTRICT_CODE != null && o.DISTRICT_CODE.ToUpper() == (bloodGiverImport.DISTRICT_CODE_BLOOD ?? "").ToUpper() && o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE);
+
                         if (districtBlood != null)
                         {
                             bloodGiverImport.DISTRICT_CODE_BLOOD = districtBlood.DISTRICT_CODE;
@@ -1278,6 +1341,21 @@ namespace HIS.Desktop.Plugins.ImportBlood
                         else
                         {
                             bloodGiverImport.ErrorDescriptions.Add("Thông tin 'Quận/Huyện' không chính xác");
+                        }
+                    }
+                    //qtcode
+                    else
+                    {
+                        // Nếu không nhập DISTRICT_CODE_BLOOD, lấy tỉnh không có huyện
+                        var provinceBloodNoDistrict = BackendDataWorker.Get<SDA_PROVINCE>().FirstOrDefault(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE && o.IS_NO_DISTRICT == 1);
+                        if (provinceBloodNoDistrict != null)
+                        {
+                            bloodGiverImport.PROVINCE_CODE_BLOOD = provinceBloodNoDistrict.PROVINCE_CODE;
+                            bloodGiverImport.PROVINCE_NAME_BLOOD = provinceBloodNoDistrict.PROVINCE_NAME;
+                        }
+                        else
+                        {
+                            bloodGiverImport.ErrorDescriptions.Add("Không tìm thấy tỉnh không có huyện trong danh sách tỉnh");
                         }
                     }
 
@@ -1333,19 +1411,69 @@ namespace HIS.Desktop.Plugins.ImportBlood
                             bloodGiverImport.ErrorDescriptions.Add("Thông tin 'Mã huyện' không chính xác");
                         }
                     }
+                    //qtcode
+                    else
+                    {
+                        // Nếu không nhập DISTRICT_CODE, lấy tỉnh không có huyện
+                        var provinceNoDistrict = BackendDataWorker.Get<SDA_PROVINCE>().FirstOrDefault(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE && o.IS_NO_DISTRICT == 1);
+                        if (provinceNoDistrict != null)
+                        {
+                            bloodGiverImport.PROVINCE_CODE = provinceNoDistrict.PROVINCE_CODE;
+                            bloodGiverImport.PROVINCE_NAME = provinceNoDistrict.PROVINCE_NAME;
+                            if (isVirAddress)
+                            {
+                                bloodGiverImport.PROVINCE_CODE_BLOOD = provinceNoDistrict.PROVINCE_CODE;
+                                bloodGiverImport.PROVINCE_NAME_BLOOD = provinceNoDistrict.PROVINCE_NAME;
+                            }
+                        }
+                        else
+                        {
+                            bloodGiverImport.ErrorDescriptions.Add("Không tìm thấy tỉnh không có huyện trong danh sách tỉnh");
+                        }
+                    }
                     //COMMUNE_CODE
-                    bloodGiverImport.COMMUNE_CODE = bloodGiverImport.COMMUNE_CODE != null ? bloodGiverImport.COMMUNE_CODE.Trim() : "";
-                    var commune = BackendDataWorker.Get<SDA_COMMUNE>().FirstOrDefault(o => o.COMMUNE_CODE != null && o.COMMUNE_CODE.ToUpper() == (bloodGiverImport.COMMUNE_CODE ?? "").ToUpper());
+                    bloodGiverImport.COMMUNE_CODE = bloodGiverImport.COMMUNE_CODE != null ? bloodGiverImport.COMMUNE_CODE.Trim() : ""; // trong file excel
+                    var commune = BackendDataWorker.Get<SDA_COMMUNE>().FirstOrDefault(o => o.COMMUNE_CODE != null && o.COMMUNE_CODE.ToUpper() == (bloodGiverImport.COMMUNE_CODE ?? "").ToUpper()); // lấy ở db 
                     if (!String.IsNullOrWhiteSpace(bloodGiverImport.COMMUNE_CODE))
                     {
                         if (commune != null)
                         {
                             bloodGiverImport.COMMUNE_CODE = commune.COMMUNE_CODE;
                             bloodGiverImport.COMMUNE_NAME = commune.COMMUNE_NAME;
+                            //qtcode
+                            // Kiểm tra xã thuộc huyện (nếu có DISTRICT_CODE)
+                            //if (!string.IsNullOrWhiteSpace(bloodGiverImport.DISTRICT_CODE) && commune.SDA_DISTRICT.DISTRICT_CODE != bloodGiverImport.DISTRICT_CODE)
+                            //{
+                            //    bloodGiverImport.ErrorDescriptions.Add("Mã xã không thuộc huyện đang nhập");
+                            //}
+                            //// Kiểm tra xã thuộc tỉnh
+                            //else if (commune.SDA_PROVINCE.PROVINCE_CODE != bloodGiverImport.PROVINCE_CODE)
+                            //{
+                            //    bloodGiverImport.ErrorDescriptions.Add("Mã xã không thuộc tỉnh đang nhập");
+                            //}
+                            //else
+                            //{
+                            //    bloodGiverImport.COMMUNE_CODE = commune.COMMUNE_CODE;
+                            //    bloodGiverImport.COMMUNE_NAME = commune.COMMUNE_NAME;
+                            //}
                         }
                         else
                         {
                             bloodGiverImport.ErrorDescriptions.Add("Thông tin 'Mã xã' không chính xác");
+                        }
+                    }
+                    else if (string.IsNullOrWhiteSpace(bloodGiverImport.DISTRICT_CODE))
+                    {
+                        // Không nhập DISTRICT_CODE, lấy xã thuộc tỉnh
+                        var communeNoDistrict = BackendDataWorker.Get<SDA_COMMUNE>().FirstOrDefault(o => o.SDA_PROVINCE.PROVINCE_CODE == bloodGiverImport.PROVINCE_CODE && o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE);
+                        if (communeNoDistrict != null)
+                        {
+                            bloodGiverImport.COMMUNE_CODE = communeNoDistrict.COMMUNE_CODE;
+                            bloodGiverImport.COMMUNE_NAME = communeNoDistrict.COMMUNE_NAME;
+                        }
+                        else
+                        {
+                            bloodGiverImport.ErrorDescriptions.Add("Không tìm thấy xã thuộc tỉnh đang nhập");
                         }
                     }
 
@@ -1366,7 +1494,25 @@ namespace HIS.Desktop.Plugins.ImportBlood
                     }
                     else
                     {
-                        var communeADO = BackendDataWorker.Get<HIS.Desktop.LocalStorage.BackendData.ADO.CommuneADO>().SingleOrDefault(o => o.COMMUNE_CODE != null && o.COMMUNE_CODE == commune.COMMUNE_CODE);
+                        //qtcode
+                        HIS.Desktop.LocalStorage.BackendData.ADO.CommuneADO communeADO = null;
+                        //var communeADO = BackendDataWorker.Get<HIS.Desktop.LocalStorage.BackendData.ADO.CommuneADO>().SingleOrDefault(o => o.COMMUNE_CODE != null && o.COMMUNE_CODE == commune.COMMUNE_CODE);
+                        // Trường hợp có nhập DISTRICT_CODE (xã có huyện)
+                        if (!string.IsNullOrWhiteSpace(bloodGiverImport.DISTRICT_CODE))
+                        {
+                            communeADO = BackendDataWorker.Get<HIS.Desktop.LocalStorage.BackendData.ADO.CommuneADO>()
+                                .SingleOrDefault(o => o.COMMUNE_CODE != null
+                                    && o.COMMUNE_CODE == commune.COMMUNE_CODE
+                                    && o.DISTRICT_CODE == bloodGiverImport.DISTRICT_CODE);
+                        }
+                        // Trường hợp không nhập DISTRICT_CODE (xã không có huyện)
+                        else
+                        {
+                            communeADO = BackendDataWorker.Get<HIS.Desktop.LocalStorage.BackendData.ADO.CommuneADO>()
+                                .SingleOrDefault(o => o.COMMUNE_CODE != null
+                                    && o.COMMUNE_CODE == commune.COMMUNE_CODE
+                                    && o.DISTRICT_CODE == null);
+                        }
                         if (communeADO != null)
                         {
                             bloodGiverImport.VirAddress_ID_RAW = communeADO.ID_RAW;
@@ -1726,7 +1872,8 @@ namespace HIS.Desktop.Plugins.ImportBlood
                 ValidationSingleControl3(txtWorkPlace_BloodGiver);
                 ValidationSingleControl3(cboNational_BloodGiver);
                 ValidationSingleControl3(cboProvinceBlood_BloodGiver);
-                ValidationSingleControl3(cboDistrictBlood_BloodGiver);
+                //qtcode
+                //ValidationSingleControl3(cboDistrictBlood_BloodGiver);
                 //
                 //ValidationVIRAddress();
                 ValidationCMNDNumber();
@@ -1888,9 +2035,17 @@ namespace HIS.Desktop.Plugins.ImportBlood
             try
             {
                 List<HIS.Desktop.LocalStorage.BackendData.ADO.CommuneADO> communeADOs = BackendDataWorker.Get<HIS.Desktop.LocalStorage.BackendData.ADO.CommuneADO>();
+
+                Inventec.Common.Logging.LogSystem.Debug("API Create Result: " + Inventec.Common.Logging.LogUtil.TraceData("InitComboVirAddressAAAAAAAA", communeADOs.Count()));
+
                 if (communeADOs != null)
                 {
-                    this.InitComboCommonUtil(this.cboVirAddress, communeADOs, "ID_RAW", "RENDERER_PDC_NAME", 650, "SEARCH_CODE_COMMUNE", 150, "RENDERER_PDC_NAME_UNSIGNED", 5, 0);
+                    List<HIS.Desktop.LocalStorage.BackendData.ADO.CommuneADO> communeADOsFilter;
+                    if (Switch_THX.IsOn == true)
+                        communeADOsFilter = communeADOs.Where(o => o.IS_NO_DISTRICT == 1).ToList();
+                    else
+                        communeADOsFilter = communeADOs.Where(o => o.IS_NO_DISTRICT != 1).ToList();
+                    this.InitComboCommonUtil(this.cboVirAddress, communeADOsFilter, "ID_RAW", "RENDERER_PDC_NAME", 650, "SEARCH_CODE_COMMUNE", 150, "RENDERER_PDC_NAME_UNSIGNED", 5, 0);
                 }
             }
             catch (Exception ex)
@@ -2005,6 +2160,7 @@ namespace HIS.Desktop.Plugins.ImportBlood
             }
         }
 
+
         private void InitComboProvince()
         {
             try
@@ -2013,17 +2169,45 @@ namespace HIS.Desktop.Plugins.ImportBlood
                 columnInfos.Add(new ColumnInfo("PROVINCE_CODE", "", 50, 1));
                 columnInfos.Add(new ColumnInfo("PROVINCE_NAME", "", 150, 2));
                 ControlEditorADO controlEditorADO = new ControlEditorADO("PROVINCE_NAME", "ID", columnInfos, false, 200);
-                List<SDA_PROVINCE> dataSource = null;
+                List<V_SDA_PROVINCE> dataSource = null;
+
+                //if (cboNational_BloodGiver.EditValue != null)
+                //{
+                //    dataSource = BackendDataWorker.Get<SDA_PROVINCE>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE
+                //                                                            && o.NATIONAL_ID == Inventec.Common.TypeConvert.Parse.ToInt64(cboNational_BloodGiver.EditValue.ToString())).ToList();
+                //}
+                //qtcode
                 if (cboNational_BloodGiver.EditValue != null)
                 {
-                    dataSource = BackendDataWorker.Get<SDA_PROVINCE>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE
-                                                                            && o.NATIONAL_ID == Inventec.Common.TypeConvert.Parse.ToInt64(cboNational_BloodGiver.EditValue.ToString())).ToList();
+                    string nationalCode = BackendDataWorker.Get<SDA_NATIONAL>()
+                       .Where(o => o.ID == Inventec.Common.TypeConvert.Parse.ToInt64(cboNational_BloodGiver.EditValue.ToString()))
+                       .Select(o => o.NATIONAL_CODE)
+                       .FirstOrDefault();
+
+                    if (Switch_THX.IsOn == true)
+                    {
+                        // Load tỉnh khai báo Không có huyện
+                        dataSource = BackendDataWorker.Get<V_SDA_PROVINCE>()
+                            .Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE
+                                    && o.IS_NO_DISTRICT == 1
+                                    && o.NATIONAL_CODE == nationalCode)
+                            .ToList();
+                    }
+                    else
+                    {
+                        // Load tỉnh không khai báo Không có huyện
+                        dataSource = BackendDataWorker.Get<V_SDA_PROVINCE>()
+                            .Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE
+                                    && o.IS_NO_DISTRICT != 1
+                                    && o.NATIONAL_CODE == nationalCode)
+                            .ToList();
+                    }
                 }
 
                 ControlEditorLoader.Load(cboProvinceBlood_BloodGiver, dataSource, controlEditorADO);
-                cboProvinceBlood_BloodGiver.EditValue = null;
+                //cboProvinceBlood_BloodGiver.EditValue = null;
                 ControlEditorLoader.Load(cboProvince, dataSource, controlEditorADO);
-                cboProvince.EditValue = null;
+                //cboProvince.EditValue = null;
             }
             catch (Exception ex)
             {
@@ -2050,7 +2234,6 @@ namespace HIS.Desktop.Plugins.ImportBlood
                 {
                     cboDistrictBlood_BloodGiver.EditValue = null;
                 }
-                //
                 dataSource = null;
                 if (cboProvince.EditValue != null)
                 {
@@ -2077,12 +2260,44 @@ namespace HIS.Desktop.Plugins.ImportBlood
                 columnInfos.Add(new ColumnInfo("COMMUNE_CODE", "", 50, 1));
                 columnInfos.Add(new ColumnInfo("COMMUNE_NAME", "", 150, 2));
                 ControlEditorADO controlEditorADO = new ControlEditorADO("COMMUNE_NAME", "ID", columnInfos, false, 200);
-                List<SDA_COMMUNE> dataSource = null;
-                if (cboDistrict.EditValue != null)
+                List<V_SDA_COMMUNE> dataSource = null;
+                //if (cboDistrict.EditValue != null)
+                //{
+                //    dataSource = BackendDataWorker.Get<SDA_COMMUNE>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE
+                //                                                            && o.DISTRICT_ID == Inventec.Common.TypeConvert.Parse.ToInt64(cboDistrict.EditValue.ToString())).ToList();
+                //}
+                if (Switch_THX.IsOn == true)
                 {
-                    dataSource = BackendDataWorker.Get<SDA_COMMUNE>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE
-                                                                            && o.DISTRICT_ID == Inventec.Common.TypeConvert.Parse.ToInt64(cboDistrict.EditValue.ToString())).ToList();
+                    if (cboProvince.EditValue != null)
+                    {
+                        string provinceCode = BackendDataWorker.Get<V_SDA_PROVINCE>()
+                            .Where(o => o.ID == Inventec.Common.TypeConvert.Parse.ToInt64(cboProvince.EditValue.ToString()))
+                            .Select(o => o.PROVINCE_CODE)
+                            .FirstOrDefault();
+
+                        dataSource = BackendDataWorker.Get<V_SDA_COMMUNE>()
+                            .Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE
+                                    && o.PROVINCE_CODE == provinceCode
+                                    && o.IS_NO_DISTRICT == 1)
+                            .ToList();
+                    }
                 }
+                else
+                {
+                    if (cboDistrict.EditValue != null)
+                    {
+                        string districtCode = BackendDataWorker.Get<SDA_DISTRICT>()
+                            .Where(o => o.ID == Inventec.Common.TypeConvert.Parse.ToInt64(cboDistrict.EditValue.ToString()))
+                            .Select(o => o.DISTRICT_CODE)
+                            .FirstOrDefault();
+
+                        dataSource = BackendDataWorker.Get<V_SDA_COMMUNE>()
+                            .Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE
+                                    && o.DISTRICT_CODE == districtCode)
+                            .ToList();
+                    }
+                }
+
 
                 ControlEditorLoader.Load(cboCommune, dataSource, controlEditorADO);
                 if (dataSource == null || (cboCommune.EditValue != null && !dataSource.Select(o => o.ID).Contains(Inventec.Common.TypeConvert.Parse.ToInt64(cboCommune.EditValue.ToString()))))

@@ -51,7 +51,6 @@ using HIS.Desktop.LocalStorage.HisConfig;
 using EMR.EFMODEL.DataModels;
 using EMR.Filter;
 using EMR.SDO;
-using RefeshReference = HIS.Desktop.Common.RefeshReference;
 
 namespace HIS.Desktop.Plugins.TransDepartment
 {
@@ -80,7 +79,6 @@ namespace HIS.Desktop.Plugins.TransDepartment
         public long WarningOptionInCaseOfUnassignTrackingServiceReq;
         public long IsNotShowOutMediAndMate;
         public long IsShowUnsignedDocument;
-        private Inventec.Desktop.Common.Modules.Module emrDocumentModule;
         public frmDepartmentTran(Inventec.Desktop.Common.Modules.Module moduleData, TransDepartmentADO data, HIS.Desktop.Common.RefeshReference RefeshReference, DelegateReturnSuccess DelegateReturnSuccess)
             : base(moduleData)
         {
@@ -140,7 +138,6 @@ namespace HIS.Desktop.Plugins.TransDepartment
                     WarningOptionInCaseOfUnassignTrackingServiceReq = Inventec.Common.TypeConvert.Parse.ToInt64(HisConfigs.Get<string>("HIS.Desktop.Plugins.TransDepartment.WarningOptionInCaseOfUnassignTrackingServiceReq"));
                     IsNotShowOutMediAndMate = Inventec.Common.TypeConvert.Parse.ToInt64(HisConfigs.Get<string>("HIS.Desktop.Plugins.TrackingPrint.IsNotShowOutMediAndMate"));
                     IsShowUnsignedDocument = Inventec.Common.TypeConvert.Parse.ToInt64(HisConfigs.Get<string>("HIS.Desktop.Plugins.TransDepartment.IsShowUnsignedDocument"));
-                    emrDocumentModule = GlobalVariables.currentModuleRaws.FirstOrDefault(o => o.ModuleLink == "HIS.Desktop.Plugins.EmrDocument");
                 }
                 catch (Exception ex)
                 {
@@ -150,10 +147,6 @@ namespace HIS.Desktop.Plugins.TransDepartment
                 btnSave.Enabled = isView;
 
                 ValidControl();
-                //if (IcdGeneraCFG.AutoCheckIcd == "1")
-                //{
-                //    chkIcds.Checked = true;
-                //}
                 LoadCboChuanDoanDT();
                 InitUcSecondaryIcd();
                 if (this.departmentTran == null)
@@ -171,8 +164,6 @@ namespace HIS.Desktop.Plugins.TransDepartment
                     InitControl(false);
                     cboDepartment.Enabled = false;
                     txtDepartmentCode.Enabled = false;
-                    //if (!string.IsNullOrEmpty(this.departmentTran.ICD_CODE))
-                    //{
                     HIS.UC.Icd.ADO.IcdInputADO inputAdo = new HIS.UC.Icd.ADO.IcdInputADO();
                     inputAdo.ICD_CODE = this.departmentTran.ICD_CODE;
                     inputAdo.ICD_NAME = this.departmentTran.ICD_NAME;
@@ -181,7 +172,7 @@ namespace HIS.Desktop.Plugins.TransDepartment
                     {
                         icdProcessor.Reload(ucIcd, inputAdo);
                     }
-                    //}
+
                     HIS.UC.SecondaryIcd.ADO.SecondaryIcdDataADO subAdo = new HIS.UC.SecondaryIcd.ADO.SecondaryIcdDataADO();
                     subAdo.ICD_SUB_CODE = this.departmentTran.ICD_SUB_CODE;
                     subAdo.ICD_TEXT = this.departmentTran.ICD_TEXT;
@@ -206,7 +197,6 @@ namespace HIS.Desktop.Plugins.TransDepartment
                         dtLogTime.Enabled = false;
                         lciDTLogTime.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
                         this.Size = new Size(this.Size.Width, this.Size.Height - 24);
-                        //dtLogTime.EditValue = null;
                     }
                 }
                 LoadDefault();
@@ -920,7 +910,7 @@ namespace HIS.Desktop.Plugins.TransDepartment
             }
         }
 
-      
+
         private void btnSave_Click(object sender, EventArgs e)
         {
             bool success = false;
@@ -969,7 +959,7 @@ namespace HIS.Desktop.Plugins.TransDepartment
                     if (documentCheckResult != null && documentCheckResult.SignatureMissingDocuments != null && documentCheckResult.SignatureMissingDocuments.Any())
                     {
                         var warningDocuments = documentCheckResult.SignatureMissingDocuments
-                            .Where(d => d.IS_WARNING_CHANGE_DEPARTMENT == 1) 
+                            .Where(d => d.IS_WARNING_CHANGE_DEPARTMENT == 1)
                             .ToList();
 
                         if (warningDocuments.Any())
@@ -998,68 +988,66 @@ namespace HIS.Desktop.Plugins.TransDepartment
                                 message += "Bạn có muốn thực hiện ký không?";
                                 if (MessageBox.Show(message, "Thông báo", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
                                 {
-                                    if (emrDocumentModule != null)
+                                    Inventec.Desktop.Common.Modules.Module moduleData = GlobalVariables.currentModuleRaws.Where(o => o.ModuleLink == "HIS.Desktop.Plugins.EmrDocument").FirstOrDefault();
+                                    if (moduleData == null) Inventec.Common.Logging.LogSystem.Error("khong tim thay moduleLink = HIS.Desktop.Plugins.EmrDocument");
+                                    if (moduleData.IsPlugin && moduleData.ExtensionInfo != null)
                                     {
-                                        try
-                                        {
-                                            var workingRoomModule = HIS.Desktop.Utility.PluginInstance.GetModuleWithWorkingRoom(emrDocumentModule, this.roomId, this.currentModule.RoomTypeId);
-                                            List<object> listArgs = new List<object> { treatmentCode };
-                                            LogSystem.Info("workingRoomModule : " + Inventec.Common.Logging.LogUtil.TraceData("workingRoomModule :", workingRoomModule));
-                                            LogSystem.Info("list args" + Inventec.Common.Logging.LogUtil.TraceData("listArgs :", listArgs));
-                                            var extenceInstance = HIS.Desktop.Utility.PluginInstance.GetPluginInstance(workingRoomModule, listArgs);
-                                            LogSystem.Info("Goi module"+ Inventec.Common.Logging.LogUtil.TraceData("extenceInstance :", extenceInstance));
+                                        List<object> listArgs = new List<object> { treatmentCode };
+                                        listArgs.Add(Utility.PluginInstance.GetModuleWithWorkingRoom(moduleData, this.currentModule.RoomId, this.currentModule.RoomTypeId));
+                                        var extenceInstance = Utility.PluginInstance.GetPluginInstance(Utility.PluginInstance.GetModuleWithWorkingRoom(moduleData, this.currentModule.RoomId, this.currentModule.RoomTypeId), listArgs);
+                                        if (extenceInstance == null) throw new ArgumentNullException("moduleData is null");
 
-                                            if (extenceInstance != null)
-                                            {
-                                                ((Form)extenceInstance).ShowDialog();
-                                                return;
-                                            }
-                                        }
-                                        catch (Exception ex)
-                                        {
-                                            Inventec.Common.Logging.LogSystem.Error("Lỗi khi gọi module HIS.Desktop.Plugins.EmrDocument: " + ex.Message, ex);
-                                        }
-                                    }
-                                    else
-                                    {
-                                        Inventec.Common.Logging.LogSystem.Error("Không tìm thấy module HIS.Desktop.Plugins.EmrDocument trong GlobalVariables.currentModuleRaws");
-                                    }
-                                }
-                                else
-                                {
-                                    WaitingManager.Show();
-                                    if (WarningOptionInCaseOfUnassignTrackingServiceReq == 0 || (WarningOptionInCaseOfUnassignTrackingServiceReq != 1 && WarningOptionInCaseOfUnassignTrackingServiceReq != 2 && WarningOptionInCaseOfUnassignTrackingServiceReq != 3))
-                                    {
-                                        ConditionA(ref success, ref param);
-                                    }
-                                    else if (WarningOptionInCaseOfUnassignTrackingServiceReq == 1 || WarningOptionInCaseOfUnassignTrackingServiceReq == 2 || WarningOptionInCaseOfUnassignTrackingServiceReq == 3)
-                                    {
-                                        var checkDepartment = listDepartments.FirstOrDefault(o => o.ID == Int64.Parse(cboDepartment.EditValue.ToString()));
-
-                                        Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => checkDepartment), checkDepartment));
-                                        ConditionB(ref success, ref param, checkDepartment != null && checkDepartment.WARNING_WHEN_IS_NO_SURG == 1);
+                                        ((Form)extenceInstance).ShowDialog();
+                                        return;
                                     }
                                 }
                             }
                         }
+                        else
+                        {
+                            WaitingManager.Show();
+                            if (WarningOptionInCaseOfUnassignTrackingServiceReq == 0 || (WarningOptionInCaseOfUnassignTrackingServiceReq != 1 && WarningOptionInCaseOfUnassignTrackingServiceReq != 2 && WarningOptionInCaseOfUnassignTrackingServiceReq != 3))
+                            {
+                                ConditionA(ref success, ref param);
+                            }
+                            else if (WarningOptionInCaseOfUnassignTrackingServiceReq == 1 || WarningOptionInCaseOfUnassignTrackingServiceReq == 2 || WarningOptionInCaseOfUnassignTrackingServiceReq == 3)
+                            {
+                                var checkDepartment = listDepartments.FirstOrDefault(o => o.ID == Int64.Parse(cboDepartment.EditValue.ToString()));
+
+                                Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => checkDepartment), checkDepartment));
+                                ConditionB(ref success, ref param, checkDepartment != null && checkDepartment.WARNING_WHEN_IS_NO_SURG == 1);
+                            }
+                        }    
+                    }
+                    else
+                    {
+                        WaitingManager.Show();
+                        if (WarningOptionInCaseOfUnassignTrackingServiceReq == 0 || (WarningOptionInCaseOfUnassignTrackingServiceReq != 1 && WarningOptionInCaseOfUnassignTrackingServiceReq != 2 && WarningOptionInCaseOfUnassignTrackingServiceReq != 3))
+                        {
+                            ConditionA(ref success, ref param);
+                        }
+                        else if (WarningOptionInCaseOfUnassignTrackingServiceReq == 1 || WarningOptionInCaseOfUnassignTrackingServiceReq == 2 || WarningOptionInCaseOfUnassignTrackingServiceReq == 3)
+                        {
+                            var checkDepartment = listDepartments.FirstOrDefault(o => o.ID == Int64.Parse(cboDepartment.EditValue.ToString()));
+
+                            Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => checkDepartment), checkDepartment));
+                            ConditionB(ref success, ref param, checkDepartment != null && checkDepartment.WARNING_WHEN_IS_NO_SURG == 1);
+                        }
                     }
                 }
-                else
+
+                WaitingManager.Show();
+                if (WarningOptionInCaseOfUnassignTrackingServiceReq == 0 || (WarningOptionInCaseOfUnassignTrackingServiceReq != 1 && WarningOptionInCaseOfUnassignTrackingServiceReq != 2 && WarningOptionInCaseOfUnassignTrackingServiceReq != 3))
                 {
-                    WaitingManager.Show();
-                    if (WarningOptionInCaseOfUnassignTrackingServiceReq == 0 || (WarningOptionInCaseOfUnassignTrackingServiceReq != 1 && WarningOptionInCaseOfUnassignTrackingServiceReq != 2 && WarningOptionInCaseOfUnassignTrackingServiceReq != 3))
-                    {
-                        ConditionA(ref success, ref param);
-                    }
-                    else if (WarningOptionInCaseOfUnassignTrackingServiceReq == 1 || WarningOptionInCaseOfUnassignTrackingServiceReq == 2 || WarningOptionInCaseOfUnassignTrackingServiceReq == 3)
-                    {
-                        var checkDepartment = listDepartments.FirstOrDefault(o => o.ID == Int64.Parse(cboDepartment.EditValue.ToString()));
-
-                        Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => checkDepartment), checkDepartment));
-                        ConditionB(ref success, ref param, checkDepartment != null && checkDepartment.WARNING_WHEN_IS_NO_SURG == 1);
-                    }
+                    ConditionA(ref success, ref param);
                 }
+                else if (WarningOptionInCaseOfUnassignTrackingServiceReq == 1 || WarningOptionInCaseOfUnassignTrackingServiceReq == 2 || WarningOptionInCaseOfUnassignTrackingServiceReq == 3)
+                {
+                    var checkDepartment = listDepartments.FirstOrDefault(o => o.ID == Int64.Parse(cboDepartment.EditValue.ToString()));
 
+                    Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => checkDepartment), checkDepartment));
+                    ConditionB(ref success, ref param, checkDepartment != null && checkDepartment.WARNING_WHEN_IS_NO_SURG == 1);
+                }
             }
             catch (Exception ex)
             {

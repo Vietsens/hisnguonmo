@@ -400,6 +400,11 @@ namespace HIS.Desktop.Plugins.TransactionBill
                         + " - " + dt.PAYEE_NAME
                         + (string.IsNullOrEmpty(dt.RELATION_NAME) ? "" : " ("+dt.RELATION_NAME+")");
                 }
+                else
+                {
+                    this.repayPatientBankAccount = null;
+                    this.lblPatientBankAccount.Text = string.Empty;
+                }
             }
             catch (Exception ex)
             {

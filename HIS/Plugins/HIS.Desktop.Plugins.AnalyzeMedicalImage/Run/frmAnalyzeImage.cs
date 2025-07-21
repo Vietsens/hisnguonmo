@@ -1,4 +1,5 @@
-﻿using DevExpress.Utils.OAuth.Provider;
+﻿using DevExpress.Office.Utils;
+using DevExpress.Utils.OAuth.Provider;
 using DevExpress.XtraEditors;
 using DevExpress.XtraExport;
 using DevExpress.XtraGrid.Views.Tile;
@@ -33,6 +34,7 @@ using System.Net.Http;
 using System.Reflection.Emit;
 using System.Runtime.InteropServices.ComTypes;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using static DevExpress.Utils.Drawing.Helpers.NativeMethods;
@@ -55,6 +57,7 @@ namespace HIS.Desktop.Plugins.AnalyzeMedicalImage.Run
         List<EMR.EFMODEL.DataModels.EMR_TREATMENT> lstEmrTreatment = new List<EMR.EFMODEL.DataModels.EMR_TREATMENT>();   
         private SereServFileADO currentDataClick;
         AIResponse aiResponse = new AIResponse();
+        private CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
         public frmAnalyzeImage(long TreatmentId, TimeSpan? TimeOut, DelegateSelectData DelSelectData, List<MOS.EFMODEL.DataModels.HIS_SERE_SERV> SereServs)
         {
             InitializeComponent();
@@ -89,11 +92,11 @@ namespace HIS.Desktop.Plugins.AnalyzeMedicalImage.Run
                 if (this.TreatmentId != null && this.TreatmentId > 0)
                 {
                     CommonParam param = new CommonParam();
-                    MOS.Filter.HisTreatmentFilter filter = new HisTreatmentFilter();
+                    MOS.Filter.HisTreatmentFilter filter = new HisTreatmentFilter();  
                     filter.ID = this.TreatmentId;
-                    LogSystem.Info("HisTreatmentFilter " + LogUtil.TraceData("HisTreatmentFilter ", filter));
+
                     lsthisTreatment = new Inventec.Common.Adapter.BackendAdapter(param).Get<List<MOS.EFMODEL.DataModels.HIS_TREATMENT>>("api/HisTreatment/Get", ApiConsumers.MosConsumer, filter, param);
-                    LogSystem.Info("lsthisTreatment " + LogUtil.TraceData("lsthisTreatment ", lsthisTreatment));
+
                     MOS.EFMODEL.DataModels.HIS_TREATMENT hisTreatment = lsthisTreatment.FirstOrDefault();
                     if (hisTreatment != null)
                     {
@@ -124,34 +127,27 @@ namespace HIS.Desktop.Plugins.AnalyzeMedicalImage.Run
             try
             {
                 Inventec.Desktop.Common.Message.WaitingManager.Show();
-                if (this.TreatmentId != null && this.TreatmentId > 0)
+                if (this.TreatmentId > 0)
                 {
-                    FillDataSereServ(this.TreatmentId, this.SereServs);
+                    FillDataSereServ(this.TreatmentId, this.SereServs, lstSereServFileADOs);
                     
-                    foreach (var sereServ in lstHisSereSerrv)
-                    {
-                        var sereServAdo = new SereServFileADO();
-                        CopyProperties(sereServ, sereServAdo);
-                        lstSereServFileADOs.Add(sereServAdo);
-                    }
-
                     if (lstHisSereSerrv != null && lstHisSereSerrv.Count > 0)
                     {
                         FillDataSarPrint(lstHisSereSerrv, lstSereServFileADOs, this.TreatmentId);
+                                     
+                        FillDataAttachedFilesFss(lstHisSereSerrv, lstSereServFileADOs);
                     }
 
                     if (HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>("MOS.HAS_CONNECTION_EMR") == "1")
                     {
                         FillDataEmrDocuments(lstSereServFileADOs, lstHisSereSerrv);
                     }
-                }   
 
-                FillDataAttachedFilesFss(lstHisSereSerrv, lstSereServFileADOs);
-                LogSystem.Info("lstHisSereSerrv___1 " + LogUtil.TraceData("lstHisSereSerrv___1 ", lstHisSereSerrv));
-                lstSereServFileADO = lstSereServFileADOs.Where(o => (o.URL != null && o.URL_NAME != null) || o.FileContent != null).GroupBy(o => o.SERVICE_ID).Select(g => g.First()).ToList();//.OrderBy(o => o.Key).ToList();
+                }
+               
+                lstSereServFileADO = lstSereServFileADOs;
 
-                LogSystem.Info("lstHisSereSerrv___2 " + LogUtil.TraceData("lstHisSereSerrv___2 ", lstHisSereSerrv));
-                CardControl.DataSource = lstSereServFileADO;
+                CardControl.DataSource = lstSereServFileADO.OrderBy(o => o.Key).ToList();
 
                 Inventec.Desktop.Common.Message.WaitingManager.Hide();
                 return lstSereServFileADO;
@@ -171,7 +167,7 @@ namespace HIS.Desktop.Plugins.AnalyzeMedicalImage.Run
                 CommonParam param = new CommonParam();
                 HisSereServFileFilter filter = new HisSereServFileFilter();
                 filter.SERE_SERV_IDs = lstsereServ.Select(o => o.ID).ToList();
-                LogSystem.Info("filter.SERE_SERV_IDs " + LogUtil.TraceData("filter.SERE_SERV_IDs ", lstsereServ.Select(o => o.ID).ToList()));
+
                 lstSereServFile = new Inventec.Common.Adapter.BackendAdapter(param)
                     .Get<List<MOS.EFMODEL.DataModels.HIS_SERE_SERV_FILE>>("api/HisSereServFile/Get", ApiConsumers.MosConsumer, filter, param).ToList();
 
@@ -180,7 +176,7 @@ namespace HIS.Desktop.Plugins.AnalyzeMedicalImage.Run
                     string[] validExtensions = new[] { ".png", ".jpg", ".jpeg" };
                     foreach (var file in lstSereServFile)
                     {
-                        var sereServAdo = lstSereServFileADOs.FirstOrDefault(x => x.ID == file.SERE_SERV_ID);
+                        var sereServAdo = lstsereServ.FirstOrDefault(x => x.ID == file.SERE_SERV_ID);
                         if (sereServAdo != null)
                         {
                             string ext = Path.GetExtension(file.URL)?.ToLower();
@@ -197,7 +193,7 @@ namespace HIS.Desktop.Plugins.AnalyzeMedicalImage.Run
                                 CREATE_TIME = file.CREATE_TIME,
                                 URL_NAME = file.SERE_SERV_FILE_NAME,
                                 URL = finalUrl,
-                                IsFss = false,
+                                IsFss = true,
                                 IsChecked = true,
                                 Key = string.Format("{0}_{1}_{2}", sereServAdo.TDL_INTRUCTION_TIME, sereServAdo.ID, sereServAdo.TDL_SERVICE_NAME)
                             };
@@ -253,12 +249,9 @@ namespace HIS.Desktop.Plugins.AnalyzeMedicalImage.Run
                 filter.TREATMENT_CODE__EXACT = lblTreatmentCode.Text;
                 filter.DOCUMENT_TYPE_ID = IMSys.DbConfig.EMR_RS.EMR_DOCUMENT_TYPE.ID__SERVICE_RESULT;
                 filter.IS_DELETE = false;
-                LogSystem.Info("EmrDocumentViewFilter " + LogUtil.TraceData("EmrDocumentViewFilter ", filter));
 
                 lstvEmrDocument = new Inventec.Common.Adapter.BackendAdapter(common)
                     .Get<List<EMR.EFMODEL.DataModels.V_EMR_DOCUMENT>>("api/EmrDocument/GetView", ApiConsumers.EmrConsumer, filter, common).ToList();
-                
-                LogSystem.Info("lstvEmrDocument " + LogUtil.TraceData("lstvEmrDocument ", lstvEmrDocument));
                 
                 if (lstvEmrDocument != null && lstvEmrDocument.Count > 0)
                 {
@@ -270,30 +263,26 @@ namespace HIS.Desktop.Plugins.AnalyzeMedicalImage.Run
 
                         if (emrDocs.Any())
                         {
-                            var sereServAdo = lstSereServFileADOs.FirstOrDefault(x => x.ID == item.ID);   
-                            if (sereServAdo != null)
+                            foreach (var emrDoc in emrDocs)
                             {
-                                foreach (var emrDoc in emrDocs)
+                                var newSereServAdo = new SereServFileADO
                                 {
-                                    var newSereServAdo = new SereServFileADO
-                                    {
-                                        ID = sereServAdo.ID,
-                                        SERVICE_ID = sereServAdo.SERVICE_ID,
-                                        ServiceName = sereServAdo.TDL_SERVICE_NAME,
-                                        TDL_EXECUTE_BRANCH_ID = sereServAdo.TDL_EXECUTE_BRANCH_ID,
-                                        TDL_SERVICE_NAME = sereServAdo.TDL_SERVICE_NAME,
-                                        TDL_INTRUCTION_TIME = sereServAdo.TDL_INTRUCTION_TIME,
-                                        URL_NAME = emrDoc.DOCUMENT_NAME,
-                                        Extension = "pdf",
-                                        IsChecked = true,
-                                        IsFss = false,
-                                        URL = emrDoc.LAST_VERSION_URL,
-                                        Key = string.Format("{0}_{1}_{2}", sereServAdo.TDL_INTRUCTION_TIME, sereServAdo.ID, sereServAdo.TDL_SERVICE_NAME),
-                                        image = System.Drawing.Image.FromFile(pathDefault)
-                                    };
+                                    ID = item.ID,
+                                    SERVICE_ID = item.SERVICE_ID,
+                                    ServiceName = item.TDL_SERVICE_NAME,
+                                    TDL_EXECUTE_BRANCH_ID = item.TDL_EXECUTE_BRANCH_ID,
+                                    TDL_SERVICE_NAME = item.TDL_SERVICE_NAME,
+                                    TDL_INTRUCTION_TIME = item.TDL_INTRUCTION_TIME,
+                                    URL_NAME = emrDoc.DOCUMENT_NAME + "_" + Inventec.Common.DateTime.Convert.TimeNumberToDateString(item.TDL_INTRUCTION_TIME),
+                                    Extension = "pdf",
+                                    IsChecked = true,
+                                    IsFss = true,
+                                    URL = emrDoc.LAST_VERSION_URL,
+                                    Key = string.Format("{0}_{1}_{2}", item.TDL_INTRUCTION_TIME, item.ID, item.TDL_SERVICE_NAME),
+                                    image = System.Drawing.Image.FromFile(pathDefault)
+                                };
 
-                                    lstSereServFileADOs.Add(newSereServAdo);
-                                }
+                                lstSereServFileADOs.Add(newSereServAdo);
                             }
                         }
                     };
@@ -309,99 +298,141 @@ namespace HIS.Desktop.Plugins.AnalyzeMedicalImage.Run
             try
             {
                 Inventec.Desktop.Common.Message.WaitingManager.Show();
-                CommonParam param = new CommonParam();
-                HisSereServExtFilter filter = new HisSereServExtFilter();
-                filter.TDL_TREATMENT_ID = TreatmentId;
-                filter.SERE_SERV_IDs  = lstsereServ.Select(o => o.ID).ToList();
-                LogSystem.Info("HisSereServExtFilter " + LogUtil.TraceData("HisSereServExtFilter ", filter));
-                lstSereServExt = new Inventec.Common.Adapter.BackendAdapter(param)
-                    .Get<List<MOS.EFMODEL.DataModels.HIS_SERE_SERV_EXT>>("api/HisSereServExt/Get", ApiConsumers.MosConsumer, filter, param).ToList();
-                LogSystem.Info("lstSereServExt " + LogUtil.TraceData("lstSereServExt ", lstSereServExt));
-                if (lstSereServExt != null && lstSereServExt.Count > 0)
+
+                if (lstsereServ != null && lstsereServ.Count > 0)
                 {
-                    foreach (var ext in lstSereServExt)
+                    lstSereServExt = GetSereServExt(lstsereServ.Select(o => o.ID).ToList());
+                    if (lstSereServExt != null && lstSereServExt.Count > 0)
                     {
-                        var sereServAdo = lstSereServFileADOs.FirstOrDefault(x => x.ID == ext.SERE_SERV_ID);
-                        if (sereServAdo != null)
+                        lstsarPrint = GetSarPrint(lstSereServExt);
+                    }
+
+                    foreach (var item in lstsereServ)
+                    {
+                        var ext = lstSereServExt.FirstOrDefault(x => x.SERE_SERV_ID == item.ID);
+                        if (ext != null && !string.IsNullOrEmpty(ext.DESCRIPTION_SAR_PRINT_ID))
                         {
-                            if (ext.DESCRIPTION_SAR_PRINT_ID != null)
-                            {
-                                lstSereServFileADOs.Add(ProcessSarPrint(ext.DESCRIPTION_SAR_PRINT_ID, sereServAdo));
-                            }
-                            else if (!string.IsNullOrEmpty(ext.DESCRIPTION))
+                            var prints = GetListPrintIdBySereServ(new List<HIS_SERE_SERV_EXT>() { ext });
+                            var SarPrints = lstsarPrint.Where(o => prints.Contains(o.ID));
+                            foreach (var sar in SarPrints)
                             {
                                 SereServFileADO newSereServAdo = new SereServFileADO();
-                                newSereServAdo.ID = sereServAdo.ID;
-                                newSereServAdo.SERVICE_ID = sereServAdo.SERVICE_ID;
-                                newSereServAdo.ServiceName = sereServAdo.TDL_SERVICE_NAME;
-                                newSereServAdo.TDL_EXECUTE_BRANCH_ID = sereServAdo.TDL_EXECUTE_BRANCH_ID;
-                                newSereServAdo.TDL_SERVICE_NAME = sereServAdo.TDL_SERVICE_NAME;
-                                newSereServAdo.TDL_INTRUCTION_TIME = sereServAdo.TDL_INTRUCTION_TIME;
-                                newSereServAdo.URL_NAME = "Mô tả";
-                                newSereServAdo.Content = ext.DESCRIPTION;
-                                newSereServAdo.Key = string.Format("{0}_{1}_{2}", sereServAdo.TDL_INTRUCTION_TIME, sereServAdo.ID, sereServAdo.TDL_SERVICE_NAME);
-                                string pathLocal = GetPathDefault();
-                                newSereServAdo.image = System.Drawing.Image.FromFile(pathLocal);
+                                newSereServAdo.ID = item.ID;
+                                newSereServAdo.SERVICE_ID = item.SERVICE_ID;
+                                newSereServAdo.ServiceName = item.TDL_SERVICE_NAME;
+                                newSereServAdo.TDL_EXECUTE_BRANCH_ID = item.TDL_EXECUTE_BRANCH_ID;
+                                newSereServAdo.TDL_SERVICE_NAME = item.TDL_SERVICE_NAME;
+                                newSereServAdo.TDL_INTRUCTION_TIME = item.TDL_INTRUCTION_TIME;
+                                newSereServAdo.URL_NAME = sar.TITLE + "_" + Inventec.Common.DateTime.Convert.TimeNumberToDateString(newSereServAdo.TDL_INTRUCTION_TIME);
+                                newSereServAdo.Key = string.Format("{0}_{1}_{2}", item.TDL_INTRUCTION_TIME, item.ID, item.TDL_SERVICE_NAME);
+                                newSereServAdo.FileContent = sar.CONTENT;
                                 newSereServAdo.IsChecked = true;
                                 newSereServAdo.IsFss = false;
-                                lstSereServFileADOs.Add(newSereServAdo);
+                                string pathLocal = GetPathDefault();
+                                newSereServAdo.image = System.Drawing.Image.FromFile(pathLocal);
+                                newSereServAdo.Content = Utility.TextLibHelper.BytesToString(sar.CONTENT);
+                                if (!string.IsNullOrEmpty(newSereServAdo.Content))
+                                    lstSereServFileADOs.Add(newSereServAdo);
                             }
                         }
-                    } 
+                        else if(ext != null && !string.IsNullOrEmpty(ext.DESCRIPTION))
+                        {
+                            SereServFileADO newSereServAdo = new SereServFileADO();
+                            newSereServAdo.ID = item.ID;
+                            newSereServAdo.SERVICE_ID = item.SERVICE_ID;
+                            newSereServAdo.ServiceName = item.TDL_SERVICE_NAME;
+                            newSereServAdo.TDL_EXECUTE_BRANCH_ID = item.TDL_EXECUTE_BRANCH_ID;
+                            newSereServAdo.TDL_SERVICE_NAME = item.TDL_SERVICE_NAME;
+                            newSereServAdo.TDL_INTRUCTION_TIME = item.TDL_INTRUCTION_TIME;
+                            newSereServAdo.URL_NAME = "Mô tả" + "_" + Inventec.Common.DateTime.Convert.TimeNumberToDateString(newSereServAdo.TDL_INTRUCTION_TIME);
+                            newSereServAdo.Content = ext.DESCRIPTION;
+                            newSereServAdo.Key = string.Format("{0}_{1}_{2}", item.TDL_INTRUCTION_TIME, item.ID, item.TDL_SERVICE_NAME);
+                            string pathLocal = GetPathDefault();
+                            newSereServAdo.image = System.Drawing.Image.FromFile(pathLocal);
+                            newSereServAdo.IsChecked = true;
+                            newSereServAdo.IsFss = false;
+                            lstSereServFileADOs.Add(newSereServAdo);
+                        }
+                    }
                 }
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
-        }        
-        private SereServFileADO ProcessSarPrint(string sarPrintId, SereServFileADO lstSereServFileADOs)
+        }
+        private List<long> GetListPrintIdBySereServ(List<MOS.EFMODEL.DataModels.HIS_SERE_SERV_EXT> ext)
         {
+            List<long> result = new List<long>();
+            try
+            {
+                foreach (var item in ext)
+                {
+                    if (!String.IsNullOrEmpty(item.DESCRIPTION_SAR_PRINT_ID))
+                    {
+                        var arrIds = item.DESCRIPTION_SAR_PRINT_ID.Split(',', ';');
+                        if (arrIds != null && arrIds.Length > 0)
+                        {
+                            foreach (var id in arrIds)
+                            {
+                                long printId = Inventec.Common.TypeConvert.Parse.ToInt64(id);
+                                if (printId > 0)
+                                {
+                                    result.Add(printId);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+            return result;
+        }
+        private List<SAR.EFMODEL.DataModels.SAR_PRINT> GetSarPrint(List<MOS.EFMODEL.DataModels.HIS_SERE_SERV_EXT> sereServExts)
+        {
+            List<SAR.EFMODEL.DataModels.SAR_PRINT> result = null;
+            try
+            {
+                List<long> printIds = GetListPrintIdBySereServ(sereServExts);
+                if (printIds != null && printIds.Count > 0)
+                {
+                    CommonParam param = new CommonParam();
+                    SAR.Filter.SarPrintFilter filter = new SAR.Filter.SarPrintFilter();
+                    filter.IS_ACTIVE = IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE;
+                    filter.IDs = printIds;
+                    result = new Inventec.Common.Adapter.BackendAdapter(param).Get<List<SAR.EFMODEL.DataModels.SAR_PRINT>>(ApiConsumer.SarRequestUriStore.SAR_PRINT_GET, ApiConsumer.ApiConsumers.SarConsumer, filter, param);
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+
+            return result;
+        }
+        private List<MOS.EFMODEL.DataModels.HIS_SERE_SERV_EXT> GetSereServExt(List<long> sereServId)
+        {
+            List<MOS.EFMODEL.DataModels.HIS_SERE_SERV_EXT> result = null;
             try
             {
                 CommonParam param = new CommonParam();
-                SereServFileADO newSereServAdo = new SereServFileADO();
-                SAR.Filter.SarPrintFilter printFilter = new SAR.Filter.SarPrintFilter();
-                printFilter.IS_ACTIVE = IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE;
-                printFilter.ID = long.Parse(sarPrintId);
-                
-                lstsarPrint = new Inventec.Common.Adapter.BackendAdapter(param)
-                    .Get<List<SAR.EFMODEL.DataModels.SAR_PRINT>>("api/SarPrint/Get", ApiConsumers.SarConsumer, printFilter, param).ToList();
-                
-                if (lstsarPrint != null && lstsarPrint.Count > 0)
-                {
-                    var firstPrint = lstsarPrint.First();
-                    newSereServAdo.ID = lstSereServFileADOs.ID;
-                    newSereServAdo.SERVICE_ID = lstSereServFileADOs.SERVICE_ID;
-                    newSereServAdo.ServiceName = lstSereServFileADOs.TDL_SERVICE_NAME;
-                    newSereServAdo.TDL_EXECUTE_BRANCH_ID = lstSereServFileADOs.TDL_EXECUTE_BRANCH_ID;
-                    newSereServAdo.TDL_SERVICE_NAME = lstSereServFileADOs.TDL_SERVICE_NAME;
-                    newSereServAdo.TDL_INTRUCTION_TIME = lstSereServFileADOs.TDL_INTRUCTION_TIME;
-                    newSereServAdo.URL_NAME = firstPrint.TITLE;
-                    newSereServAdo.Key = string.Format("{0}_{1}_{2}", lstSereServFileADOs.TDL_INTRUCTION_TIME, lstSereServFileADOs.ID, lstSereServFileADOs.TDL_SERVICE_NAME);
-                    newSereServAdo.FileContent = firstPrint.CONTENT;
-                    if (Utility.TextLibHelper.BytesToString(firstPrint.CONTENT) != null)
-                    {
-                        newSereServAdo.Content = Utility.TextLibHelper.BytesToString(firstPrint.CONTENT);
-                    }
-                    newSereServAdo.IsChecked = true;
-                    newSereServAdo.IsFss = false;
-                    string pathLocal = GetPathDefault();
-                    newSereServAdo.image = System.Drawing.Image.FromFile(pathLocal);
-                }
-
-                string text = Utility.TextLibHelper.BytesToString(newSereServAdo.FileContent);
-                if (!string.IsNullOrEmpty(text))
-                    return newSereServAdo;
-                return null;
+                MOS.Filter.HisSereServExtFilter filter = new MOS.Filter.HisSereServExtFilter();
+                filter.SERE_SERV_IDs = sereServId;
+                filter.TDL_TREATMENT_ID = this.TreatmentId;
+                filter.IS_ACTIVE = IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE;
+                result = new Inventec.Common.Adapter.BackendAdapter(param).Get<List<MOS.EFMODEL.DataModels.HIS_SERE_SERV_EXT>>("api/HisSereServExt/Get", ApiConsumer.ApiConsumers.MosConsumer, filter, param);
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
-                return null;
             }
+
+            return result;
         }
-        private void FillDataSereServ(long TreatmentId, List<MOS.EFMODEL.DataModels.HIS_SERE_SERV> ServiceReqs)
+        private void FillDataSereServ(long TreatmentId, List<MOS.EFMODEL.DataModels.HIS_SERE_SERV> ServiceReqs, List<SereServFileADO> lstSereServFileADOs)
         {
             try
             {
@@ -432,40 +463,68 @@ namespace HIS.Desktop.Plugins.AnalyzeMedicalImage.Run
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
-        private void CopyProperties(HIS_SERE_SERV source, SereServFileADO target)
-        {
-            try
-            {
-                var sourceProperties = typeof(HIS_SERE_SERV).GetProperties();
-                foreach (var prop in sourceProperties)
-                {
-                    if (prop.CanRead && prop.CanWrite)
-                    {
-                        var value = prop.GetValue(source);
-                        prop.SetValue(target, value);
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                Inventec.Common.Logging.LogSystem.Error(ex);
-            }
-        }
         private void btnImageAnalysis_Click(object sender, EventArgs e)
         {
             try
             {
+                List<string> FileContent = new List<string>();
+                List<string> Base64Images = new List<string>();
+
+                var lstData = CardControl.DataSource as List<SereServFileADO>;
+                lstData = lstData.Where(o => o.IsChecked).ToList();
+                if (lstData == null || lstData.Count == 0)
+                    return;
                 string loginName = Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName();
-                List<long> branhid= GetBranchCode(lstSereServFileADO);
+
+                List<long> branhid= GetBranchCode(lstData);
                 var branchCode = BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_BRANCH>().FirstOrDefault(p => branhid.Contains(p.ID));
-                AIResponse data = new AIResponse();
+
+                var lstdataFss = lstData.Where(o => o.IsFss).ToList();
+                if (lstdataFss != null && lstdataFss.Count > 0)
+                {
+                    foreach (var item in lstdataFss)
+                    {
+                        using (MemoryStream memoryStream = new MemoryStream())
+                        {
+                            var tmp = Inventec.Fss.Client.FileDownload.GetFile(item.URL);
+                            tmp.Seek(0, SeekOrigin.Begin);
+                            tmp.CopyTo(memoryStream);
+                            Base64Images.Add(GetBase64Images(memoryStream, item));
+                        }
+                    }
+                }
+
+                var lstdataNotFss = lstData.Where(o => !o.IsFss).ToList();
+                foreach (var item in lstdataNotFss)
+                {
+                    if (item.FileContent != null && item.FileContent.Count() > 0)
+                    {
+                        string text = Utility.TextLibHelper.BytesToString(item.FileContent);
+                        if (!string.IsNullOrEmpty(text))
+                            FileContent.Add(text);
+                    }
+                    else
+                    {
+                        string tempDescription = "";
+                        if (item.Content.Trim().Contains("<br/>"))
+                        {
+                            tempDescription = item.Content.Replace("<br/>", "\r\n");
+                            FileContent.Add(tempDescription);
+                        }
+                        else
+                        {
+                            FileContent.Add(item.Content);
+                        }
+                    }
+                }
+
                 if (!string.IsNullOrEmpty(AppConfigKeys.AIConnectionInfo))
                 {
                     var requestData = new
                     {
                         AppCode = "HIS",
-                        FileContents = GetFileContents(lstSereServFileADO),
-                        Base64Imagess = GetBase64Images(lstSereServFileADO),
+                        FileContents = FileContent,
+                        Base64Imagess = Base64Images,
                         LoginName = branchCode.BRANCH_CODE + "." + loginName,
                         Prompt = "Phân tích nội dung hình ảnh y tế được cung cấp. Mô tả chi tiết các đặc điểm bất thường (nếu có) như màu sắc, hình dạng, kích thước, mật độ, hoặc các dấu hiệu lạ. Đưa ra các giả thuyết hoặc khả năng y tế có thể liên quan đến những đặc điểm đó. Gợi ý bệnh nhân nên khám tại chuyên khoa nào để được chẩn đoán chính xác hơn. Đưa ra các lời khuyên ban đầu về cách giảm đau hoặc tự theo dõi trước khi đi khám. Lưu ý: Bạn chỉ mô tả và gợi ý một cách tham khảo, không đưa ra chẩn đoán y khoa chính thức. Hãy trả lời hoàn toàn bằng tiếng Việt, chính xác, chi tiết và dễ hiểu"
                     };
@@ -487,9 +546,7 @@ namespace HIS.Desktop.Plugins.AnalyzeMedicalImage.Run
                         HttpResponseMessage resp = null;
                         try
                         {
-                            Inventec.Common.Logging.LogSystem.Debug("_____sendJsonData : " + stringPayload);
                             resp = client.PostAsync(fullrequestUri, content).Result;
-                            Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => resp), resp));
                         }
                         catch (HttpRequestException ex)
                         {
@@ -507,7 +564,6 @@ namespace HIS.Desktop.Plugins.AnalyzeMedicalImage.Run
                             if (resp.Content != null)
                             {
                                 string errorData = resp.Content.ReadAsStringAsync().Result;
-                                Inventec.Common.Logging.LogSystem.Error("errorData: " + errorData);
                             }
 
                             throw new Exception(string.Format(" trả về thông tin lỗi. Mã lỗi: {0}", statusCode));
@@ -516,20 +572,21 @@ namespace HIS.Desktop.Plugins.AnalyzeMedicalImage.Run
                         Inventec.Desktop.Common.Message.WaitingManager.Hide();
                         string responseData = resp.Content.ReadAsStringAsync().Result;
                         Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => responseData), responseData));
-                        data = JsonConvert.DeserializeObject<AIResponse>(responseData);
-                        aiResponse = data;
+                        this.aiResponse = JsonConvert.DeserializeObject<AIResponse>(responseData);
 
-                        if (this.DelSelectData != null && data != null && !string.IsNullOrEmpty(data.Results))
+                        if (this.DelSelectData != null && this.aiResponse != null && !string.IsNullOrEmpty(this.aiResponse.Results))
                         {
                             btnResultsAI.Enabled = true;
-                            lblYKhoa.Text = data.Results;
+                            lblYKhoa.Text = this.aiResponse.Results;
+                            lblYKhoa.Appearance.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Default;
                         }
-                        else if (data != null && !string.IsNullOrEmpty(data.Results))
+                        else if (this.aiResponse != null && !string.IsNullOrEmpty(this.aiResponse.Results))
                         {
-                            lblYKhoa.Text = data.Results;
+                            lblYKhoa.Text = this.aiResponse.Results;
+                            lblYKhoa.Appearance.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Default;
                         }
 
-                        if (data == null)
+                        if (this.aiResponse == null)
                         {
                             throw new Exception("Dữ liệu trả về không đúng");
                         }
@@ -562,40 +619,12 @@ namespace HIS.Desktop.Plugins.AnalyzeMedicalImage.Run
                 return null;
             }
         }
-        private List<string> GetFileContents(List<SereServFileADO> selectedFiles)
+        private string GetBase64Images(MemoryStream stream, SereServFileADO ado)
         {
             try
             {
-                var fileContents = new List<string>();
-                foreach (var item in selectedFiles)
-                {
-                    if (!string.IsNullOrEmpty(item.Content))
-                    {
-                        fileContents.Add(item.Content);
-                    }
-                }
-                return fileContents;
-            }
-            catch (Exception ex)
-            {
-                Inventec.Common.Logging.LogSystem.Error(ex);
-                return null;
-            }
-        }
-        private List<string> GetBase64Images(List<SereServFileADO> selectedFiles)
-        {
-            try
-            {
-                var base64Images = new List<string>();
-                MemoryStream stream = new MemoryStream();
-                foreach (var item in selectedFiles )
-                {
-                    byte[] bytes = stream.ToArray();
-                    string dataUrl = string.Format("data:{0};base64,{1}", item.Extension == "pdf" ? "pdf" : ("image/" + item.Extension), Convert.ToBase64String(bytes));
-
-                    base64Images.Add(dataUrl);
-                }
-                return base64Images;
+                byte[] bytes = stream.ToArray();
+                return string.Format("data:{0};base64,{1}", ado.Extension == "pdf" ? "pdf" : ("image/" + ado.Extension), Convert.ToBase64String(bytes));
             }
             catch (Exception ex)
             {
@@ -663,28 +692,15 @@ namespace HIS.Desktop.Plugins.AnalyzeMedicalImage.Run
             {
                 TileView tileView = sender as TileView;
                 this.currentDataClick = (SereServFileADO)tileView.GetRow(e.Item.RowHandle);
-                this.currentDataClick.IsFss = true;
-                foreach (var item in lstSereServFileADO)
-                {
-                    if (item == currentDataClick)
-                    {
-                        item.IsFss = true;
-                        break;
-                    }
-                }
 
-                if (lstSereServFileADO != null && lstSereServFileADO.Count > 0)
-                {
-                    var frmImg = new frmImage(lstSereServFileADO);
-                    frmImg.ShowDialog();
-                }
+                var frmImg = new frmImage(this.currentDataClick);
+                frmImg.ShowDialog();
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
-
         private void btnResultsAI_Click(object sender, EventArgs e)
         {
             try
@@ -701,10 +717,24 @@ namespace HIS.Desktop.Plugins.AnalyzeMedicalImage.Run
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
-
         private void lblYKhoa_Click(object sender, EventArgs e)
         {
 
+        }
+        private void tileView1_CustomColumnDisplayText(object sender, DevExpress.XtraGrid.Views.Base.CustomColumnDisplayTextEventArgs e)
+        {
+            try
+            {
+                if (e.IsForGroupRow)
+                {
+                    var service = e.DisplayText.Split('_').Last();
+                    e.DisplayText = string.Format("{0}", service);
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
         }
     }
 }

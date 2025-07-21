@@ -106,147 +106,17 @@ namespace MPS.Processor.Mps000131
         {
             try
             {
-                List<MOS.SDO.HisMedicineInStockSDO> medicineInStockSdos = new List<MOS.SDO.HisMedicineInStockSDO>();
-                //List<MOS.SDO.HisMaterialInStockSDO> materialInStockSdos = new List<MOS.SDO.HisMaterialInStockSDO>();
-                List<MOS.SDO.HisMedicineInStockSDO> instockMedicines = new List<MOS.SDO.HisMedicineInStockSDO>();
-                List<MOS.SDO.HisMaterialInStockSDO> instockMaterials = new List<MOS.SDO.HisMaterialInStockSDO>();
-                List<MOS.SDO.HisMedicineInStockSDO> listRootMedicines = new List<MOS.SDO.HisMedicineInStockSDO>();
-                List<MOS.SDO.HisMaterialInStockSDO> listRootMaterials = new List<MOS.SDO.HisMaterialInStockSDO>();
                 medicineInStockSdoPrints = new List<HisMediMateBloodInStock_Print>();
 
                 if (rdo.isCheckMedicine)
                 {
-                    List<MOS.SDO.HisMedicineInStockSDO> instockMedicineSdos = new List<MOS.SDO.HisMedicineInStockSDO>();
-                    instockMedicineSdos = rdo.lstMedicineInStockSDO;
-                    var selectedMedicines = instockMedicineSdos.Where(o => !o.isTypeNode).ToList();
-                    // var datatest = instockMedicineSdos.Where(o => o.MEDICINE_TYPE_NAME == "Thuốc truyền 1").ToList();
-                    var selectedRootMedicines = instockMedicineSdos.Where(o => o.isTypeNode).ToList();
-
-                    //var dataGoups = selectedMedicines.GroupBy(p => p.MEDICINE_TYPE_ID).Select(p => p.ToList()).ToList();
-
-                    Mapper.CreateMap<HisMedicineInStockSDO, HisMedicineInStockSDO>();
-                    instockMedicines = Mapper.Map<List<HisMedicineInStockSDO>>(selectedMedicines);
-                    listRootMedicines = Mapper.Map<List<HisMedicineInStockSDO>>(selectedRootMedicines);
-                    var dataGoups = instockMedicines.GroupBy(p => p.ParentNodeId).ToList();
-
-                    int dem = 1;
-
-                    foreach (var gRoot in selectedRootMedicines)
-                    {
-                        HisMediMateBloodInStock_Print root = new HisMediMateBloodInStock_Print(gRoot, true);
-                        var grByNode = dataGoups.FirstOrDefault(o => o.Key == gRoot.NodeId);
-                        if (grByNode != null && grByNode.Count() > 0)
-                        {
-
-                            var childs = grByNode.ToList();
-                            root.AvailableAmount = childs.Sum(s => (s.AvailableAmount ?? 0));
-                            root.TotalAmount = childs.Sum(s => (s.TotalAmount ?? 0));
-                            root.MEDICINE_TYPE_NAME = dem + "." + root.MEDICINE_TYPE_NAME.ToUpper();
-                            var gByPrice = childs.GroupBy(g => new { g.REGISTER_NUMBER, g.PACKAGE_NUMBER, g.EXPIRED_DATE, g.MEDICINE_TYPE_NAME, g.MEDICINE_TYPE_CODE }).ToList();
-
-                            medicineInStockSdoPrints.Add(root);
-                            var checkMedicine = gByPrice.FirstOrDefault(o => o.FirstOrDefault().MEDICINE_TYPE_CODE == "PER011");
-                            if (checkMedicine != null)
-                            {
-                                var a = 0;
-                            }
-                            foreach (var medicineInStock in gByPrice)
-                            {
-                                HisMediMateBloodInStock_Print ado = new HisMediMateBloodInStock_Print(medicineInStock.FirstOrDefault(), false);
-
-                                ado.MEDICINE_TYPE_NAME = "     " + ado.MEDICINE_TYPE_NAME;
-                                ado.AvailableAmount = medicineInStock.Sum(p => (p.AvailableAmount ?? 0));
-                                ado.TotalAmount = medicineInStock.Sum(s => (s.TotalAmount ?? 0));
-                                medicineInStockSdoPrints.Add(ado);
-                            }
-                            dem++;
-                        }
-                    }
-
-                    //foreach (var item in medicineInStockSdos)
-                    //{
-
-                    //    HisMediMateBloodInStock_Print medicine = new HisMediMateBloodInStock_Print();
-                    //    Inventec.Common.Mapper.DataObjectMapper.Map<HisMediMateBloodInStock_Print>(medicine, item);
-                    //    medicine.EXPIRED_DATE_STR = Inventec.Common.DateTime.Convert.TimeNumberToDateString(Convert.ToInt64
-                    //    (item.EXPIRED_DATE ?? 0));
-                    //    medicineInStockSdoPrints.Add(medicine);
-                    //}
+                    ProcessHierarchicalData<HisMedicineInStockSDO>(rdo.lstMedicineInStockSDO, true); 
                 }
                 else if (rdo.isCheckMaterial)
                 {
-                    List<MOS.SDO.HisMaterialInStockSDO> materialInstocks = new List<MOS.SDO.HisMaterialInStockSDO>();
-                    materialInstocks = rdo.lstMaterialInStockSDO;
-                    //var selectedMaterials = materialInstocks.Where(o => !String.IsNullOrEmpty(o.ParentNodeId)).ToList();
-                    var selectedMaterials = materialInstocks.Where(o => !o.isTypeNode).ToList();
-                    var selectedRootMedicines = materialInstocks.Where(o => o.isTypeNode).ToList();
-                    var selectedRootMaterials = materialInstocks.Where(o => String.IsNullOrEmpty(o.ParentNodeId)).ToList();
-                    Mapper.CreateMap<HisMaterialInStockSDO, HisMaterialInStockSDO>();
-                    instockMaterials = Mapper.Map<List<HisMaterialInStockSDO>>(selectedMaterials);
-                    //listRootMaterials = Mapper.Map<List<HisMaterialInStockSDO>>(selectedRootMaterials);
-                    //instockMaterials = materialInstocks.Where(o => !String.IsNullOrEmpty(o.ParentNodeId)).ToList();
-                    //listRootMaterials = materialInstocks.Where(o => String.IsNullOrEmpty(o.ParentNodeId)).ToList();
-
-                    var dataGoups = instockMaterials.GroupBy(p => p.ParentNodeId).ToList();
-
-                    int dem = 1;
-
-                    foreach (var gRoot in selectedRootMedicines)
-                    {
-                        HisMediMateBloodInStock_Print root = new HisMediMateBloodInStock_Print(gRoot, true);
-                        var grByNode = dataGoups.FirstOrDefault(o => o.Key == gRoot.NodeId);
-                        if (grByNode != null && grByNode.Count() > 0)
-                        {
-                            var childs = grByNode.ToList();
-                            root.AvailableAmount = childs.Sum(s => (s.AvailableAmount ?? 0));
-                            root.TotalAmount = childs.Sum(s => (s.TotalAmount ?? 0));
-                            root.MEDICINE_TYPE_NAME = dem + "." + root.MEDICINE_TYPE_NAME.ToUpper();
-                            var gByPrice = childs.GroupBy(g => new { g.REGISTER_NUMBER, g.PACKAGE_NUMBER, g.EXPIRED_DATE, g.MATERIAL_TYPE_NAME, g.MATERIAL_TYPE_CODE }).ToList();
-
-                            medicineInStockSdoPrints.Add(root);
-                            foreach (var medicineInStock in gByPrice)
-                            {
-                                HisMediMateBloodInStock_Print ado = new HisMediMateBloodInStock_Print(medicineInStock.FirstOrDefault(), false);
-
-                                ado.MEDICINE_TYPE_NAME = "     " + ado.MEDICINE_TYPE_NAME;
-                                ado.AvailableAmount = medicineInStock.Sum(p => (p.AvailableAmount ?? 0));
-                                ado.TotalAmount = medicineInStock.Sum(s => (s.TotalAmount ?? 0));
-                                medicineInStockSdoPrints.Add(ado);
-                            }
-                            dem++;
-                        }
-                    }
-                    //int dem = 1;
-                    //foreach (var root in listRootMaterials)
-                    //{
-                    //    MOS.SDO.HisMedicineInStockSDO rootMaterial = new MOS.SDO.HisMedicineInStockSDO();
-                    //    Inventec.Common.Mapper.DataObjectMapper.Map<MOS.SDO.HisMedicineInStockSDO>(rootMaterial, root);
-                    //    rootMaterial.MEDICINE_TYPE_NAME = dem + "." + root.MATERIAL_TYPE_NAME.ToUpper();
-                    //    rootMaterial.MEDICINE_TYPE_CODE = root.MATERIAL_TYPE_CODE;
-                    //    medicineInStockSdos.Add(rootMaterial);
-                    //    foreach (var materialInStock in instockMaterials)
-                    //    {
-                    //        if (materialInStock.ParentNodeId == root.NodeId)
-                    //        {
-                    //            MOS.SDO.HisMedicineInStockSDO rootMaterialChild = new MOS.SDO.HisMedicineInStockSDO();
-                    //            Inventec.Common.Mapper.DataObjectMapper.Map<MOS.SDO.HisMedicineInStockSDO>(rootMaterialChild, materialInStock);
-                    //            rootMaterialChild.MEDICINE_TYPE_NAME = "     " + materialInStock.MATERIAL_TYPE_NAME;
-                    //            rootMaterialChild.MEDICINE_TYPE_CODE = materialInStock.MATERIAL_TYPE_CODE;
-                    //            medicineInStockSdos.Add(rootMaterialChild);
-                    //        }
-                    //    }
-                    //    dem++;
-                    //}
-                    //foreach (var item in medicineInStockSdos)
-                    //{
-                    //    HisMediMateBloodInStock_Print medicine = new HisMediMateBloodInStock_Print();
-                    //    Inventec.Common.Mapper.DataObjectMapper.Map<HisMediMateBloodInStock_Print>(medicine, item);
-                    //    medicine.EXPIRED_DATE_STR = Inventec.Common.DateTime.Convert.TimeNumberToDateString(Convert.ToInt64
-                    //    (item.EXPIRED_DATE ?? 0));
-                    //    medicineInStockSdoPrints.Add(medicine);
-                    //}
+                    ProcessHierarchicalData<HisMaterialInStockSDO>(rdo.lstMaterialInStockSDO, false);
                 }
-                else
+                else // Blood
                 {
                     List<HisBloodTypeInStockSDO> lstBlood = new List<HisBloodTypeInStockSDO>();
                     lstBlood = rdo.lstBloodInStockSDO;
@@ -268,6 +138,117 @@ namespace MPS.Processor.Mps000131
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
+        }
+
+        private void ProcessHierarchicalData<T>(List<T> data, bool isMedicine) where T : class
+        {
+            // Lọc các node gốc (ParentNodeId = null và isTypeNode = true mà không có cha)
+            var rootNodes = data.Where(o => GetParentNodeId(o) == null && GetIsTypeNode(o)).ToList(); //danh sách các node gốc 
+            int rootIndex = 1;
+
+            foreach (var root in rootNodes)// duyệt qua từng node gốc trong danh sách
+            {
+                ProcessNode(root, data, "", rootIndex, isMedicine, 0); // xử lý từng node trong root gốc
+                rootIndex++;
+            }
+        }
+
+        private void ProcessNode<T>(T node, List<T> data, string prefix, int rootIndex, bool isMedicine, int level) where T : class
+        {
+            //node là từng node gốc hiện tại đang xử lý, data là danh sách dữ liệu ban đầu 
+            HisMediMateBloodInStock_Print rootAdo = isMedicine //khai báo 
+                ? new HisMediMateBloodInStock_Print(node as HisMedicineInStockSDO, true)
+                : new HisMediMateBloodInStock_Print(node as HisMaterialInStockSDO, true);
+
+            // Định dạng tên node gốc
+            rootAdo.MEDICINE_TYPE_NAME = string.Format("{0}{1}{2}.{3}", new string(' ', level * 5), prefix, rootIndex, rootAdo.MEDICINE_TYPE_NAME.ToUpper());
+            // Lấy các node con hoặc leaf thuộc node hiện tại
+            var children = data.Where(o => GetParentNodeId(o) == GetNodeId(node)).ToList();
+            var leafChildren = children.Where(o => !GetIsTypeNode(o)).ToList(); //những leaf con là thuốc cụ thể
+            var nodeChildren = children.Where(o => GetIsTypeNode(o)).ToList();//những leaf con mà còn là node
+
+            // Tính tổng số lượng từ các leaf con
+            rootAdo.AvailableAmount = leafChildren.Sum(o => GetAvailableAmount(o) ?? 0);
+            rootAdo.TotalAmount = leafChildren.Sum(o => GetTotalAmount(o) ?? 0);
+
+            // Thêm node gốc vào danh sách
+            medicineInStockSdoPrints.Add(rootAdo);
+
+            // Xử lý các leaf con trực tiếp
+            var groupedLeaves = leafChildren
+                .GroupBy(o => new { RegisterNumber = GetRegisterNumber(o), PackageNumber = GetPackageNumber(o), ExpiredDate = GetExpiredDate(o), TypeName = GetTypeName(o, isMedicine), TypeCode = GetTypeCode(o, isMedicine) })
+                .ToList();
+
+            foreach (var leafGroup in groupedLeaves)
+            {
+                var firstLeaf = leafGroup.First();
+                HisMediMateBloodInStock_Print leafAdo = isMedicine
+                    ? new HisMediMateBloodInStock_Print(firstLeaf as HisMedicineInStockSDO, false)
+                    : new HisMediMateBloodInStock_Print(firstLeaf as HisMaterialInStockSDO, false);
+                leafAdo.MEDICINE_TYPE_NAME = string.Format("{1}{0}", leafAdo.MEDICINE_TYPE_NAME, new string(' ', (level+1)*5));
+                leafAdo.AvailableAmount = leafGroup.Sum(p => GetAvailableAmount(p) ?? 0);
+                leafAdo.TotalAmount = leafGroup.Sum(p => GetTotalAmount(p) ?? 0);
+                leafAdo.EXPIRED_DATE_STR = Inventec.Common.DateTime.Convert.TimeNumberToDateString(Convert.ToInt64(leafAdo.EXPIRED_DATE ?? 0));
+                medicineInStockSdoPrints.Add(leafAdo);
+            }
+
+            // Xử lý các node con
+            int childIndex = 1;
+            foreach (var childNode in nodeChildren)
+            {
+                ProcessNode(childNode, data, string.Format("{0}{1}.", prefix, rootIndex), childIndex, isMedicine, level + 1);
+                childIndex++;
+            }
+        }
+
+        private string GetNodeId<T>(T item)
+        {
+            return item.GetType().GetProperty("NodeId")?.GetValue(item)?.ToString();
+        }
+
+        private string GetParentNodeId<T>(T item)
+        {
+            return item.GetType().GetProperty("ParentNodeId")?.GetValue(item)?.ToString();
+        }
+
+        private bool GetIsTypeNode<T>(T item)
+        {
+            return (bool)(item.GetType().GetProperty("isTypeNode")?.GetValue(item) ?? false);
+        }
+
+        private decimal? GetAvailableAmount<T>(T item)
+        {
+            return (decimal?)item.GetType().GetProperty("AvailableAmount")?.GetValue(item);
+        }
+
+        private decimal? GetTotalAmount<T>(T item)
+        {
+            return (decimal?)item.GetType().GetProperty("TotalAmount")?.GetValue(item);
+        }
+
+        private string GetRegisterNumber<T>(T item)
+        {
+            return item.GetType().GetProperty("REGISTER_NUMBER")?.GetValue(item)?.ToString();
+        }
+
+        private string GetPackageNumber<T>(T item)
+        {
+            return item.GetType().GetProperty("PACKAGE_NUMBER")?.GetValue(item)?.ToString();
+        }
+
+        private decimal? GetExpiredDate<T>(T item)
+        {
+            return (decimal?)item.GetType().GetProperty("EXPIRED_DATE")?.GetValue(item);
+        }
+
+        private string GetTypeName<T>(T item, bool isMedicine)
+        {
+            return item.GetType().GetProperty(isMedicine ? "MEDICINE_TYPE_NAME" : "MATERIAL_TYPE_NAME")?.GetValue(item)?.ToString();
+        }
+
+        private string GetTypeCode<T>(T item, bool isMedicine)
+        {
+            return item.GetType().GetProperty(isMedicine ? "MEDICINE_TYPE_CODE" : "MATERIAL_TYPE_CODE")?.GetValue(item)?.ToString();
         }
 
     }

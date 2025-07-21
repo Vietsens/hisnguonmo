@@ -169,7 +169,7 @@
     <value>Thất bại</value>
   </data>
   <data name="UcDeathInformationList.chkSignFileCertUtil.Properties.Caption" xml:space="preserve">
-    <value>Ký số USB token</value>
+    <value>Ký số</value>
   </data>
   <data name="UcDeathInformationList.gridColumn1.Caption" xml:space="preserve">
     <value>STT</value>

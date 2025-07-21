@@ -139,7 +139,7 @@
     <value>Tìm (Ctrl F)</value>
   </data>
   <data name="UCInfantInformationList.chkSignFileCertUtil.Properties.Caption" xml:space="preserve">
-    <value>Ký số dùng USB token</value>
+    <value>Ký số </value>
   </data>
   <data name="UCInfantInformationList.gridColumn1.Caption" xml:space="preserve">
     <value>STT</value>

@@ -27,13 +27,14 @@ namespace HIS.Desktop.Plugins.Library.PrintServiceReq
 {
     class InPhieuYeuCauChiDinhTongHop
     {
+        //qtcode
         public InPhieuYeuCauChiDinhTongHop(string printTypeCode, string fileName, ADO.ChiDinhDichVuADO chiDinhDichVuADO,
             Dictionary<long, List<MOS.EFMODEL.DataModels.V_HIS_SERVICE_REQ>> dicServiceReqData,
             Dictionary<long, List<MOS.EFMODEL.DataModels.V_HIS_SERE_SERV>> dicSereServData,
             Dictionary<long, HIS_SERE_SERV_EXT> dicSereServExtData, bool printNow,
             ref bool result, long? roomId, bool isView, MPS.ProcessorBase.PrintConfig.PreviewType? PreviewType,
-            Action<int, Inventec.Common.FlexCelPrint.Ado.PrintMergeAdo> savedData,
-            Action<string> cancelPrint, Action<Inventec.Common.SignLibrary.DTO.DocumentSignedUpdateIGSysResultDTO> DlgSendResultSigned)
+            Action<int, Inventec.Common.FlexCelPrint.Ado.PrintMergeAdo> savedData, 
+            Action<string> cancelPrint, HIS_TRANS_REQ transReq, List<HIS_CONFIG> lstConfig, Action<Inventec.Common.SignLibrary.DTO.DocumentSignedUpdateIGSysResultDTO> DlgSendResultSigned)
         {
             try
             {
@@ -76,7 +77,10 @@ namespace HIS.Desktop.Plugins.Library.PrintServiceReq
                     req,
                     lstExt,
                     BackendDataWorker.Get<V_HIS_SERVICE>(),
-                    BackendDataWorker.Get<HIS_SERVICE_REQ_TYPE>());
+                    BackendDataWorker.Get<HIS_SERVICE_REQ_TYPE>(),
+                    chiDinhDichVuADO.SereNmses, 
+                    lstConfig, 
+                    transReq);
 
                 Print.PrintData(printTypeCode, fileName, mps000037PDO, printNow, ref result, roomId, isView, PreviewType, lstSereServ.Count, savedData, dicServiceReqData.FirstOrDefault().Value.FirstOrDefault().TREATMENT_CODE, DlgSendResultSigned);
             }

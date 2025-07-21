@@ -1,0 +1,300 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="_BanCoMuonChiDinhGiuong" xml:space="preserve">
+    <value>.</value>
+  </data>
+  <data name="_VuiLongChonDVKhac" xml:space="preserve">
+    <value>]</value>
+  </data>
+  <data name="BenhNhanDangNoTienKhogChoPhepChiDinhDV" xml:space="preserve">
+    <value>လူနာသည် အကြွေးတင်နေသဖြင့် ဝန်ဆောင်မှုကို ခွင့်မပြုပါ။</value>
+  </data>
+  <data name="CacDichVuTrongGoiChuaDuocThietLapChinhSachGiaHoacPhongThucHien" xml:space="preserve">
+    <value>ပက်ကေ့ဂျ်ရှိ ဝန်ဆောင်မှုများသည် စျေးနှုန်းမူဝါဒ ({0}) သို့မဟုတ် စီမံဆောင်ရွက်ခန်းကို မသတ်မှတ်ရသေးပါ- {1}</value>
+  </data>
+  <data name="DichVuCLSCoGioiHanChiDinhThanhToanBHYT_DeNghiBSXemXetTruocKhiChiDinh" xml:space="preserve">
+    <value>ကုသမှုဆိုင်ရာ ဝန်ဆောင်မှုများသည် ကျန်းမာရေးအာမခံငွေပေးချေမှုအတွက် ကန့်သတ်ချက်များရှိသည်။</value>
+  </data>
+  <data name="DienDieuTriCuaBNLa" xml:space="preserve">
+    <value>လူနာ၏လက်ရှိကုသမှုဧရိယာမှာ-</value>
+  </data>
+  <data name="DoTuoiCuaBNKhongPhuHopVoiDieuKienCuaDV_" xml:space="preserve">
+    <value>လူနာ၏အသက်သည် ဝန်ဆောင်မှု၏အခြေအနေများအတွက် မသင့်လျော်ပါ- [</value>
+  </data>
+  <data name="GiuongDaCoBenhNhanNam" xml:space="preserve">
+    <value>ကုတင်ကို လူနာက နေရာယူနေပြီ။</value>
+  </data>
+  <data name="GiuongDaVuotQuaSucChua" xml:space="preserve">
+    <value>လူနာသည် ကုတင်၏အမြင့်ဆုံးစွမ်းရည်ထက် ပိုအိပ်ရန်မဖြစ်နိုင်ပါ။</value>
+  </data>
+  <data name="GoiDichVuChuaDuocThietLapDichVu" xml:space="preserve">
+    <value>Service Pack ကို ဝန်ဆောင်မှု မသတ်မှတ်ရသေးပါ။</value>
+  </data>
+  <data name="IcdKhongDung" xml:space="preserve">
+    <value>သင်သည် မှားယွင်းသော ရောဂါရှာဖွေရေးကုဒ်ကို ထည့်သွင်းခဲ့သည်။</value>
+  </data>
+  <data name="KhoaChiDinhChuaTaoBienBanHoiChuan" xml:space="preserve">
+    <value>ခန့်အပ်ထားသောဌာနသည် ဝန်ဆောင်မှု(များ) အတွက် တိုင်ပင်ဆွေးနွေးမှု မိနစ်များကို မဖန်တီးရသေးပါ- {0}။</value>
+  </data>
+  <data name="KhongChoPhepChiDInhDVVuotQuaSoTienCOnThua" xml:space="preserve">
+    <value>လက်ကျန်ပမာဏထက် ဝန်ဆောင်မှုများကို သတ်မှတ်ခွင့်မပြုပါ။</value>
+  </data>
+  <data name="KhongTimThayDVChuaDuocCauHinh" xml:space="preserve">
+    <value>သတ်မှတ်မထားသော ဝန်ဆောင်မှုကို ရှာမတွေ့ပါ။</value>
+  </data>
+  <data name="KhongTimThayIcdTuongUngVoiCacMaSau" xml:space="preserve">
+    <value>ရောဂါကုဒ် {0} စာရင်းတွင် မပါဝင်ပါ၊ ကျေးဇူးပြု၍ ထပ်မံစစ်ဆေးပါ။</value>
+  </data>
+  <data name="KhongTimThayThongTinICD" xml:space="preserve">
+    <value>ICD အချက်အလက်ကို ရှာမတွေ့ပါ။</value>
+  </data>
+  <data name="KhongTimThayThuocVatTuDuocCauHinhChanDoanICD" xml:space="preserve">
+    <value>မည်သည့်ဆေးဝါးမျှ မတွေ့ပါ၊ ပြုပြင်မထားသော ICD ရောဂါရှာဖွေရေး အထောက်အပံ့များ</value>
+  </data>
+  <data name="MabenhPhuDaDuocSuDungChoMaBenhChinh" xml:space="preserve">
+    <value>နံပါတ်ခွဲကုဒ် {0} ကို အဓိကကုဒ်အတွက် အသုံးပြုထားပြီး၊ ကျေးဇူးပြု၍ ထပ်မံစစ်ဆေးပါ။</value>
+  </data>
+  <data name="NhapQuaKyTuBenhPhu" xml:space="preserve">
+    <value>စာလုံးခွဲကုဒ် သို့မဟုတ် စာလုံးခွဲအမည်သည် ရှည်လွန်းသည် (အက္ခရာ 500 လုံး)</value>
+  </data>
+  <data name="Plugin_AssignService__BanCoMuonTiepTuc" xml:space="preserve">
+    <value>ဆက်လိုပါသလား။</value>
+  </data>
+  <data name="Plugin_AssignService__BenhNhanDangThieuVienPhi" xml:space="preserve">
+    <value>လူနာသည် ဆေးရုံစရိတ် ({0} VND) ပျက်နေသည်။</value>
+  </data>
+  <data name="Plugin_AssignService__BenhNhanDangThieuVienPhi_0D" xml:space="preserve">
+    <value>လူနာသည် ဆေးရုံစရိတ် ({0} VND) ပျက်နေသည်။</value>
+  </data>
+  <data name="Plugin_AssignService__CacDichVuKhongCoChinhSachGiaHoacKhongCoCauHinhSeKhongDuocChon" xml:space="preserve">
+    <value>မှတ်ချက်- အခန်းအတွင်းအသုံးပြုသည့်နှုန်းထားမူဝါဒ သို့မဟုတ် ဖွဲ့စည်းမှုပုံစံမရှိဘဲ ဝန်ဆောင်မှုများကို ရွေးချယ်မည်မဟုတ်ပါ။</value>
+  </data>
+  <data name="Plugin_AssignService__CanhBao" xml:space="preserve">
+    <value>သတိပေးချက်</value>
+  </data>
+  <data name="Plugin_AssignService__CanhBaoDichVu" xml:space="preserve">
+    <value>ဝန်ဆောင်မှု {0}</value>
+  </data>
+  <data name="Plugin_AssignService__CanhBaoDichVuCungCoChe" xml:space="preserve">
+    <value>တူညီသော ယန္တရားဖြင့် ဝန်ဆောင်မှု- {0}</value>
+  </data>
+  <data name="Plugin_AssignService__CanhBaoDichVuCungCoCheDaChiDinhTrongNgay" xml:space="preserve">
+    <value>တူညီသော ယန္တရား၏ ဝန်ဆောင်မှုကို တစ်နေ့တာအတွက် သတ်မှတ်ထားသည်- {0}</value>
+  </data>
+  <data name="Plugin_AssignService__CanhBaoDichVuDaChiDinhTrongNgay" xml:space="preserve">
+    <value>နေ့စဥ်သတ်မှတ်ထားသော ဝန်ဆောင်မှု</value>
+  </data>
+  <data name="Plugin_AssignService__CanhBaoDichVuVaDichVuCungCoCheDaChiDinhTrongNgay" xml:space="preserve">
+    <value>တူညီသော ယန္တရား ({0}) ဖြင့် ဝန်ဆောင်မှုနှင့် ဝန်ဆောင်မှုကို နေ့အတွက် သတ်မှတ်ထားပါသည်။</value>
+  </data>
+  <data name="Plugin_AssignService__ChuaChonNgayChiDinh" xml:space="preserve">
+    <value>သတ်မှတ်ထားသောရက်စွဲကို မရွေးချယ်ရသေးပါ။</value>
+  </data>
+  <data name="Plugin_AssignService__ChuaChonPhongThuNgan" xml:space="preserve">
+    <value>ငွေရှင်းခန်းကို မရွေးချယ်ရသေးဘူး။</value>
+  </data>
+  <data name="Plugin_AssignService__ChuaNhapChanDoanChinhVaChanDoanSoBo" xml:space="preserve">
+    <value>ပင်မရောဂါရှာဖွေခြင်းနှင့် ပဏာမရောဂါရှာဖွေခြင်းတို့ကို သင်မ၀င်ရောက်ပါ။</value>
+  </data>
+  <data name="Plugin_AssignService__DichVuADaDuocTietLapDinhKemDichVuB" xml:space="preserve">
+    <value>ဝန်ဆောင်မှု {0} ကို ဝန်ဆောင်မှု {1} တွင် ပူးတွဲထည့်သွင်းထားပါသည်။</value>
+  </data>
+  <data name="Plugin_AssignService__DichVuChuaDuocCauHinhICDDichVu" xml:space="preserve">
+    <value>ICD Unconfigured Service - ဝန်ဆောင်မှု- {0}</value>
+  </data>
+  <data name="Plugin_AssignService__DichVuCoDTPTBatBuocNhungKhongCoChinhSachGia" xml:space="preserve">
+    <value>ဝန်ဆောင်မှုတွင် မဖြစ်မနေ အပိုပိုကြေး {0} ရှိသော်လည်း သက်ဆိုင်ရာ စျေးနှုန်းမူဝါဒ မရှိပါ။</value>
+  </data>
+  <data name="Plugin_AssignService__DichVuCoDTTTBatBuocNhungKhongCoChinhSachGia" xml:space="preserve">
+    <value>ဝန်ဆောင်မှုတွင် မဖြစ်မနေငွေပေးချေသူ {0} ရှိသော်လည်း သက်ဆိုင်သောစျေးနှုန်းမူဝါဒမရှိပါ။</value>
+  </data>
+  <data name="Plugin_AssignService__DichVuCoThoiGianChiDinhNamTrongKhoangThoiGianKhongChoPhep" xml:space="preserve">
+    <value>အောက်ပါဝန်ဆောင်မှုများသည် ခွင့်မပြုသောကာလအတွင်း သတ်မှတ်ထားသောအချိန်ရှိသည်- {0}.ဆက်လက်လုပ်ဆောင်လိုပါသလား။</value>
+  </data>
+  <data name="Plugin_AssignService__DichVuKhongChiDinhChoGioiTinh" xml:space="preserve">
+    <value>ဝန်ဆောင်မှုသည် ကျား/မ များအတွက်သာဖြစ်သည်။</value>
+  </data>
+  <data name="Plugin_AssignService__HSDTKhongCoHoacDaThanhToanDichVu" xml:space="preserve">
+    <value>ကုသမှုမှတ်တမ်းများ မရရှိနိုင်ပါ သို့မဟုတ် ဝန်ဆောင်မှုများအတွက် ပေးချေထားပါသည်။</value>
+  </data>
+  <data name="Plugin_AssignService__KhongCoDoiTuongThanhToan" xml:space="preserve">
+    <value>ငွေပေးသူကို မရွေးချယ်ပါနှင့်</value>
+  </data>
+  <data name="Plugin_AssignService__KhongNhapSoLuong" xml:space="preserve">
+    <value>ပမာဏ မထည့်ပါနဲ့။</value>
+  </data>
+  <data name="Plugin_AssignService__KhongTimThayDoiTuongThanhToanTrongThoiGianYLenh" xml:space="preserve">
+    <value>အရာဝတ္ထုကို ရှာမတွေ့ပါ၊ အကူအညီအတွက် စနစ်စီမံခန့်ခွဲသူကို ဆက်သွယ်ပါ။</value>
+  </data>
+  <data name="Plugin_AssignService__KhongTimThayIcdTuongUngVoiCacMaSau" xml:space="preserve">
+    <value>အောက်ပါ ICD ကုဒ် မရှိပါ သို့မဟုတ် ဖော်မတ်မှားယွင်းနေသည်- {0}။ ဆော့ဖ်ဝဲလ်သည် ICD ကုဒ်များစာရင်းကို ပိုင်းခြားထားသော semicolon တစ်ခုကိုသာ လက်ခံသည်။ ထပ်မံစစ်ဆေးပါ။</value>
+  </data>
+  <data name="Plugin_AssignService__NguoiChiDinhKhongCoThongTinHoTen" xml:space="preserve">
+    <value>အကောင့် {0} ရှိသည့် ဒီဇိုင်းရေးဆွဲသူတွင် အမည်အချက်အလက် မရှိပါ။</value>
+  </data>
+  <data name="Plugin_AssignService__NhomDichVuChiTiet" xml:space="preserve">
+    <value>{0} (ကုဒ်ပါသော ဝန်ဆောင်မှုများ- {1})</value>
+  </data>
+  <data name="Plugin_AssignService__NhomDichVuCoDichVuDuocCauHinhTrongNhomNhungKhongCoCauHinhChinhSach" xml:space="preserve">
+    <value>အဖွဲ့တွင် ဝန်ဆောင်မှုများပါရှိသော ဝန်ဆောင်မှုအုပ်စုတစ်ခုရှိသော်လည်း စျေးနှုန်းမူဝါဒမရှိပါ သို့မဟုတ် အခန်းဝန်ဆောင်မှုကို သီးသန့်စီစဉ်ထားခြင်း မရှိပါ သို့မဟုတ် ဝန်ဆောင်မှုမရှိသော ဝန်ဆောင်မှုအဖွဲ့တစ်ခုရှိပါသည်။</value>
+  </data>
+  <data name="Plugin_AssignService__NhomDichVuCoDichVuKhongCoCauHinh" xml:space="preserve">
+    <value>ဝန်ဆောင်မှုအဖွဲ့တွင် သတ်မှတ်မထားသော ဝန်ဆောင်မှု၊ မူဝါဒ- {0} ရှိသည်။</value>
+  </data>
+  <data name="Plugin_AssignService__NhomDichVuKhongCoDichVu" xml:space="preserve">
+    <value>ဝန်ဆောင်မှုမပါဘဲ ဝန်ဆောင်မှုအဖွဲ့- {0}။</value>
+  </data>
+  <data name="Plugin_AssignService__SoLuongXuatLonHonSpoLuongKhadungTrongKho" xml:space="preserve">
+    <value>ပို့ကုန်ပမာဏသည် စတော့တွင်ရရှိနိုင်သော ပမာဏထက် ပိုများသည်။</value>
+  </data>
+  <data name="Plugin_AssignService__ThoiGianYLenhKhongThuocKhoangThoiGianTrongKhoa" xml:space="preserve">
+    <value>မှာယူသည့်အချိန်သည် လူနာဌာနတွင် ရှိနေသည့်အချိန်အတွင်း မဟုတ်ပါ ({0})</value>
+  </data>
+  <data name="Plugin_AssignService__TongTienChoBHYTDaVuotquaMucGioiHan" xml:space="preserve">
+    <value>ကျန်းမာရေးအာမခံအတွက် သတ်မှတ်ထားသော ဝန်ဆောင်မှု {0} စုစုပေါင်းပမာဏသည် ကန့်သတ်ချက်ထက်ကျော်လွန်နေပါသည် {1}</value>
+  </data>
+  <data name="Plugin_AssignService__TongTienHaoPhiVuotQuaDinhMucHaoPhiKhongTheChonDichVuNay" xml:space="preserve">
+    <value>စုစုပေါင်း အမှိုက်ပမာဏ {0} သည် {2} ဝန်ဆောင်မှု၏ အမှိုက် {1} ကို ကျော်လွန်သွားပါသည်။</value>
+  </data>
+  <data name="Plugin_AssignService__TongTienTheoDoiTuongDieuTriChoBHYTDaVuotquaMucGioiHan" xml:space="preserve">
+    <value>ကျန်းမာရေးအာမခံဖြင့် အကျုံးဝင်သော လူနာ၏ ဝန်ဆောင်မှုများ {0} စုစုပေါင်းပမာဏသည် {1} ကန့်သတ်ချက်ထက် {2} ကျော်လွန်သွားသည်</value>
+  </data>
+  <data name="Plugin_AssignService__VuotQuaSoLuongKhaDungTrongKho__CoMuonTiepTuc" xml:space="preserve">
+    <value>ရနိုင်သောပမာဏထက်ကျော်လွန်သည် သို့မဟုတ် စတော့တွင်မပါဝင်ပါ။</value>
+  </data>
+  <data name="SereServConditionAlert__DVChuaDuocNhapDieuKien" xml:space="preserve">
+    <value>ဝန်ဆောင်မှု {0} သည် အခြေအနေကို ထည့်သွင်းမထားပါ။</value>
+  </data>
+  <data name="SereServMinDurationAlert__BanCoMuonChuyenDoiDTTTSangVienPhi" xml:space="preserve">
+    <value>အောက်ပါဝန်ဆောင်မှုများသည် ခွင့်မပြုသောကာလအတွင်း သတ်မှတ်ထားသောအချိန်ရှိသည်- {0}.သင့်ငွေပေးချေသည့်ဖုန်းကို VP သို့ ပြောင်းလိုပါသလား။</value>
+  </data>
+  <data name="SereServOtherpaySourceAlert__DVChuaDuocNhapNguonChiTra" xml:space="preserve">
+    <value>သင်သည် {0} ဝန်ဆောင်မှုအတွက် \</value>
+  </data>
+  <data name="SereServWithBed_DichVuCoThongTinGiuongChiDuocChiDinhTrongNgay" xml:space="preserve">
+    <value>အိပ်ရာအချက်အလက်ပါသောဝန်ဆောင်မှုသည် 1 ရက်သတ်မှတ်ရန်ခွင့်ပြုသည်။</value>
+  </data>
+  <data name="SereServWithBed_DichVuThieuThongTinGiuong" xml:space="preserve">
+    <value>အိပ်ရာဝန်ဆောင်မှု {0} တွင် အိပ်ရာအချက်အလက် မရှိသေးပါ။</value>
+  </data>
+  <data name="VuiLongChonDichVu" xml:space="preserve">
+    <value>ကျေးဇူးပြု၍ ဝန်ဆောင်မှုကို ရွေးချယ်ပါ။</value>
+  </data>
+</root>

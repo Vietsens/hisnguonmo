@@ -92,5 +92,8 @@ namespace MPS.Processor.Mps000037
         internal const string ESTIMATE_TIME_ORDER = "ESTIMATE_TIME_ORDER";
         internal const string REQ_PROVISIONAL_DIAGNOSIS = "REQ_PROVISIONAL_DIAGNOSIS";
         internal const string MIN_ASSIGN_TURN_CODE = "MIN_ASSIGN_TURN_CODE";
+
+        internal const string PAYMENT_QR_CODE_DYNAMIC = "PAYMENT_QR_CODE_DYNAMIC";
+        internal const string PAYMENT_QR_AMOUNT = "PAYMENT_QR_AMOUNT";
     }
 }

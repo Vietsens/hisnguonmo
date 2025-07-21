@@ -379,6 +379,7 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
 
                 apiResult = new Inventec.Common.Adapter.BackendAdapter(paramCommon)
                     .GetRO<List<L_HIS_SERVICE_REQ>>("api/HisServiceReq/GetLView", ApiConsumers.MosConsumer, hisServiceReqFilter, paramCommon);
+                Inventec.Common.Logging.LogSystem.Debug("API Create Result: " + Inventec.Common.Logging.LogUtil.TraceData("dangth", apiResult));
 
                 gridControlServiceReq.DataSource = null;
 
@@ -1705,6 +1706,8 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
         {
             try
             {
+                gridColumnPrint.Visible = false;
+                gridColumnPrint.VisibleIndex = -1;
                 gridColumn12.VisibleIndex = -1;
                 gridColumn13.VisibleIndex = -1;
                 if (sereServ6s != null && sereServ6s.Count > 0)
@@ -1714,8 +1717,10 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
                     || o.TDL_SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__TDCN
                     || o.TDL_SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__CDHA))
                     {
+                        gridColumnPrint.Visible = true;
                         gridColumn13.VisibleIndex = 1;
                         gridColumn12.VisibleIndex = 2;
+                        gridColumnPrint.VisibleIndex = 3;
                     }
                 }
             }

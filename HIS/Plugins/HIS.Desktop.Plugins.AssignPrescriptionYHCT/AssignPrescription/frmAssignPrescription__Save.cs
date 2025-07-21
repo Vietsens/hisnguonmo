@@ -728,7 +728,28 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
                 valid = valid && isValid;
 
                 if (valid)
+                {
+                    var uc = ucTreatmentFinish as HIS.UC.TreatmentFinish.Run.UCTreatmentFinish;
+                    bool isAutoFinishChecked = uc != null && uc.IsAutoTreatmentFinishChecked;
+                    if (isAutoFinishChecked)
+                    {
+                            if (HisConfigCFG.IsCheckServiceFollowWhenOut == "1" && currentTreatmentWithPatientType.PATIENT_TYPE_CODE == HisConfigCFG.PatientTypeCode__BHYT)
+                            {
+                                CommonParam param = new CommonParam();
+                                var result = new BackendAdapter(param).Post<bool>("api/HisTreatment/CheckServiceFollow", ApiConsumers.MosConsumer, this.treatmentId, param);
+                                if (!result)
+                                {
+                                    string message = param.GetMessage();
+                                    DialogResult dialogResult = MessageBox.Show(string.Format("{0}. Bạn có muốn tiếp tục?", message), "Cảnh báo", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+
+                                    if (dialogResult == DialogResult.No)
+                                        return;
+                                }
+                            }
+                    }
+                    
                     ProcessUpdateTutorialForSave();
+                }                
 
                 if (!valid)
                     return;
@@ -1133,6 +1154,87 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
             }
             return result;
         }
+        private void ProcessOpenVoBenhAn(List<V_HIS_SERE_SERV> sereServs)
+        {
+            try
+            {
+                var emrFormsCodes = lstService.Where(o => sereServs.Exists(p => p.SERVICE_ID == o.ID) && !string.IsNullOrEmpty(o.EMR_FORM_CODES)).Select(o => o.EMR_FORM_CODES).ToList();
+                if (emrFormsCodes != null && emrFormsCodes.Count > 0 && serviceReqComboResultSDO != null)
+                {
+                    HIS.Desktop.Plugins.Library.FormMedicalRecord.Base.EmrInputADO emrInputAdo = new Library.FormMedicalRecord.Base.EmrInputADO();
+                    emrInputAdo.TreatmentId = serviceReqComboResultSDO.ServiceReqs.FirstOrDefault().TREATMENT_ID;
+                    emrInputAdo.PatientId = serviceReqComboResultSDO.ServiceReqs.FirstOrDefault().TDL_PATIENT_ID;
+                    emrInputAdo.roomId = this.currentModule.RoomId;
+                    if (Histreatment.EMR_COVER_TYPE_ID != null)
+                    {
+                        emrInputAdo.EmrCoverTypeId = Histreatment.EMR_COVER_TYPE_ID;
+                    }
+                    else
+                    {
+                        var data = BackendDataWorker.Get<HIS_EMR_COVER_CONFIG>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE
+                            && o.ROOM_ID == this.currentModule.RoomId
+                        && o.TREATMENT_TYPE_ID == Histreatment.TDL_TREATMENT_TYPE_ID
+                        ).ToList();
+                        if (data != null && data.Count > 0)
+                        {
+                            if (data.Count == 1)
+                            {
+                                emrInputAdo.EmrCoverTypeId = data.FirstOrDefault().EMR_COVER_TYPE_ID;
 
+                            }
+                            else
+                            {
+                                emrInputAdo.lstEmrCoverTypeId = new List<long>();
+                                emrInputAdo.lstEmrCoverTypeId = data.Select(o => o.EMR_COVER_TYPE_ID).ToList();
+                            }
+                        }
+                        else
+                        {
+                            var DepartmentID = HIS.Desktop.LocalStorage.LocalData.WorkPlace.WorkPlaceSDO.FirstOrDefault(o => o.RoomId == this.currentModule.RoomId).DepartmentId;
+
+                            var DataConfig = BackendDataWorker.Get<HIS_EMR_COVER_CONFIG>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE
+                        && o.DEPARTMENT_ID == DepartmentID && o.TREATMENT_TYPE_ID == Histreatment.TDL_TREATMENT_TYPE_ID).ToList();
+
+                            if (DataConfig != null && DataConfig.Count > 0)
+                            {
+                                if (DataConfig.Count == 1)
+                                {
+                                    emrInputAdo.EmrCoverTypeId = DataConfig.FirstOrDefault().EMR_COVER_TYPE_ID;
+                                }
+                                else
+                                {
+                                    emrInputAdo.lstEmrCoverTypeId = new List<long>();
+                                    emrInputAdo.lstEmrCoverTypeId = DataConfig.Select(o => o.EMR_COVER_TYPE_ID).ToList();
+                                }
+                            }
+                        }
+                    }
+
+                    HIS.Desktop.Plugins.Library.FormMedicalRecord.MediRecordMenuPopupProcessor processor = new Library.FormMedicalRecord.MediRecordMenuPopupProcessor();
+
+                    long EmrCoverTypeId_ = emrInputAdo.EmrCoverTypeId ?? 0;
+                    long EmrCoverTypeId_Send;
+
+                    if (EmrCoverTypeId_ <= 0)
+                    {
+                        EmrCoverTypeId_Send = 0;
+                    }
+                    else
+                    {
+                        EmrCoverTypeId_Send = EmrCoverTypeId_;
+                    }
+
+                    Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => emrInputAdo), emrInputAdo));
+
+                    Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => emrFormsCodes), emrFormsCodes));
+                    processor.FormOpenEmr(EmrCoverTypeId_Send, emrInputAdo, string.Join(",", emrFormsCodes));
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+
+        }
     }
 }

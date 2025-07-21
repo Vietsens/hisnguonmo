@@ -52,6 +52,7 @@ namespace HIS.Desktop.Plugins.MedicineSaleBill.MedicineSaleBill
                 long? expMestId = null;
                 List<long> expMestIds = null;
                 DelegateSelectData delegateSelectData = null;
+                MOS.EFMODEL.DataModels.V_HIS_TRANSACTION transaction = null;
                 if (entity != null && entity.Count() > 0)
                 {
                     for (int i = 0; i < entity.Count(); i++)
@@ -72,24 +73,19 @@ namespace HIS.Desktop.Plugins.MedicineSaleBill.MedicineSaleBill
                         {
                             delegateSelectData = (DelegateSelectData)entity[i];
                         }
+                        else if (entity[i] is MOS.EFMODEL.DataModels.V_HIS_TRANSACTION)
+                        {
+                            transaction = (MOS.EFMODEL.DataModels.V_HIS_TRANSACTION)entity[i];
+                        }
                     }
                 }
-                if (moduleData != null && expMestId.HasValue)
+
+                if (expMestIds == null && expMestId.HasValue)
                 {
-                    return new frmMedicineSaleBill(moduleData, expMestId.Value, delegateSelectData);
+                    expMestIds = new List<long> { expMestId.Value };
                 }
-                else if (moduleData != null && expMestIds != null && expMestIds.Count > 0)
-                {
-                    return new frmMedicineSaleBill(moduleData, expMestIds, delegateSelectData);
-                }
-                else if (moduleData != null)
-                {
-                    return new frmMedicineSaleBill(moduleData);
-                }
-                else
-                {
-                    return null;
-                }
+
+                return new frmMedicineSaleBill(moduleData, expMestIds, delegateSelectData, transaction);
             }
             catch (Exception ex)
             {

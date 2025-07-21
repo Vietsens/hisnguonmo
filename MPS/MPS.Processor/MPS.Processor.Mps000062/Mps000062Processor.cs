@@ -2693,7 +2693,6 @@ namespace MPS.Processor.Mps000062
 
                             PreviousUseDay = PreviousUseDay != null ? PreviousUseDay : 0;
 
-                            Inventec.Common.Logging.LogSystem.Warn("PreviousUseDay: " + PreviousUseDay + "__ count: " + count + " item2.TDL_MEDICINE_TYPE_ID: " + item2.TDL_MEDICINE_TYPE_ID + " item2.INTRUCTION_TIME: " + item2.INTRUCTION_TIME);
                             item2.USING_COUNT_NUMBER = PreviousUseDay + count;
                         }
 
@@ -2949,7 +2948,6 @@ namespace MPS.Processor.Mps000062
 
                             PreviousUseDay = PreviousUseDay != null ? PreviousUseDay : 0;
 
-                            Inventec.Common.Logging.LogSystem.Warn("PreviousUseDay: " + PreviousUseDay + "__ count: " + count + Inventec.Common.Logging.LogUtil.TraceData(" item2", item2));
                             item2.USING_COUNT_NUMBER = PreviousUseDay + count;
                         }
 
@@ -3195,7 +3193,6 @@ namespace MPS.Processor.Mps000062
 
                             PreviousUseDay = PreviousUseDay != null ? PreviousUseDay : 0;
 
-                            Inventec.Common.Logging.LogSystem.Warn("PreviousUseDay: " + PreviousUseDay + "__ count: " + count + " item2.TDL_MEDICINE_TYPE_ID: " + item2.TDL_MEDICINE_TYPE_ID + " item2.INTRUCTION_TIME: " + item2.INTRUCTION_TIME);
                             item2.USING_COUNT_NUMBER = PreviousUseDay + count;
                         }
 
@@ -4511,6 +4508,7 @@ namespace MPS.Processor.Mps000062
                         item.MEDICINES_MERGE___DATA = "";
                         item.MEDICINES_MERGE_HTU___DATA = "";
                         item.MEDICINES_MERGE_DATE___DATA = "";
+                        item.MEDICINES_MERGE_DATE_HTU___DATA = "";
                         int dem = 0;
                         long IntructionTime = 0;
 
@@ -4601,7 +4599,7 @@ namespace MPS.Processor.Mps000062
                                     item.MEDICINES_MERGE_HTU___DATA += Inventec.Desktop.Common.HtmlString.ProcessorString.InsertSpacialTag("", Inventec.Desktop.Common.HtmlString.SpacialTag.Tag.Br);
                                 }
                             }
-                            MMDataSort.Add(new ExpMestMetyReqADO() { INTRUCTION_DATE = medi.INTRUCTION_DATE, MEDICINE_GROUP_NUM_ORDER = medi.MEDICINE_GROUP_NUM_ORDER, NUM_ORDER_BY_USE_FORM = medi.NUM_ORDER_BY_USE_FORM, TDL_SERVICE_REQ_ID = medi.TDL_SERVICE_REQ_ID, NUM_ORDER = medi.NUM_ORDER, NUMBER_H_N = medi.NUMBER_H_N, USING_COUNT_NUMBER = medi.USING_COUNT_NUMBER, TDL_MEDICINE_TYPE_ID = medi.TDL_MEDICINE_TYPE_ID, DATA_REPX = dataRepx });
+                            MMDataSort.Add(new ExpMestMetyReqADO() { INTRUCTION_DATE = medi.INTRUCTION_DATE, MEDICINE_GROUP_NUM_ORDER = medi.MEDICINE_GROUP_NUM_ORDER, NUM_ORDER_BY_USE_FORM = medi.NUM_ORDER_BY_USE_FORM, TDL_SERVICE_REQ_ID = medi.TDL_SERVICE_REQ_ID, NUM_ORDER = medi.NUM_ORDER, NUMBER_H_N = medi.NUMBER_H_N, USING_COUNT_NUMBER = medi.USING_COUNT_NUMBER, TDL_MEDICINE_TYPE_ID = medi.TDL_MEDICINE_TYPE_ID, DATA_REPX = dataRepx, HTU_TEXT = medi.HTU_TEXT });
                             dem++;
                         }
                         var MMDataSortDes = new List<ExpMestMetyReqADO>();
@@ -4610,10 +4608,17 @@ namespace MPS.Processor.Mps000062
                         foreach (var gut in groupIntructionDate)
                         {
                             if (gut.Key != null)
+                            {
                                 item.MEDICINES_MERGE_DATE___DATA += Inventec.Desktop.Common.HtmlString.ProcessorString.InsertFontStyle("Ngày sử dụng: " + gut.Key, FontStyle.Bold);
+                                item.MEDICINES_MERGE_DATE_HTU___DATA += Inventec.Desktop.Common.HtmlString.ProcessorString.InsertFontStyle("Ngày sử dụng: " + gut.Key, FontStyle.Bold);
+                            }
                             else
+                            {
                                 item.MEDICINES_MERGE_DATE___DATA += "";
+                                item.MEDICINES_MERGE_DATE_HTU___DATA += "";
+                            }
                             item.MEDICINES_MERGE_DATE___DATA += string.Join("", gut.ToList().Select(o => o.DATA_REPX));
+                            item.MEDICINES_MERGE_DATE_HTU___DATA += string.Join("", gut.ToList().Select(o => o.DATA_REPX + (string.IsNullOrEmpty(o.HTU_TEXT) ? "" : (o.HTU_TEXT + Inventec.Desktop.Common.HtmlString.ProcessorString.InsertSpacialTag("", Inventec.Desktop.Common.HtmlString.SpacialTag.Tag.Br)))));
                         }
                     }
 
@@ -4849,7 +4854,7 @@ namespace MPS.Processor.Mps000062
                             item.MEDICINE_TYPE_ID = medi.TDL_MEDICINE_TYPE_ID;
                             dem++;
 
-                            lstExpMestMety.Add(new ExpMestMetyReqADO() { INTRUCTION_DATE = medi.INTRUCTION_DATE, INTRUCTION_TIME = medi.INTRUCTION_TIME, INTRUCTION_TIME_STR = medi.INTRUCTION_TIME_STR, MEDICINE_GROUP_NUM_ORDER = medi.MEDICINE_GROUP_NUM_ORDER, NUM_ORDER_BY_USE_FORM = medi.MEDICINE_GROUP_NUM_ORDER ?? -1, TDL_SERVICE_REQ_ID = medi.TDL_SERVICE_REQ_ID, NUM_ORDER = medi.NUM_ORDER, NUMBER_H_N = medi.NUMBER_H_N, TDL_MEDICINE_TYPE_ID = medi.TDL_MEDICINE_TYPE_ID, REMEDY_COUNT = medi.REMEDY_COUNT, USE_TIME = medi.USE_TIME, USE_TIME_TO = medi.USE_TIME_TO, ADVISE = medi.ADVISE, HTU_TEXT = medi.HTU_TEXT, ASSIGN_TIME_TO = medi.ASSIGN_TIME_TO, DAY_COUNT = medi.DAY_COUNT, DATA_REPX = dataRepx, DATA_DAY_REPX = dataRepx, DATA_DAY_HTU_REPX = dataHtuRepx });
+                            lstExpMestMety.Add(new ExpMestMetyReqADO() { INTRUCTION_DATE = medi.INTRUCTION_DATE, INTRUCTION_TIME = medi.INTRUCTION_TIME, INTRUCTION_TIME_STR = medi.INTRUCTION_TIME_STR, MEDICINE_GROUP_NUM_ORDER = medi.MEDICINE_GROUP_NUM_ORDER, NUM_ORDER_BY_USE_FORM = medi.MEDICINE_GROUP_NUM_ORDER ?? -1, TDL_SERVICE_REQ_ID = medi.TDL_SERVICE_REQ_ID, NUM_ORDER = medi.NUM_ORDER, NUMBER_H_N = medi.NUMBER_H_N, TDL_MEDICINE_TYPE_ID = medi.TDL_MEDICINE_TYPE_ID, REMEDY_COUNT = medi.REMEDY_COUNT, USE_TIME = medi.USE_TIME, USE_TIME_TO = medi.USE_TIME_TO, ADVISE = medi.ADVISE, HTU_TEXT = medi.HTU_TEXT, ASSIGN_TIME_TO = medi.ASSIGN_TIME_TO, DAY_COUNT = medi.DAY_COUNT, DATA_REPX = dataRepx, DATA_DAY_REPX = dataRepx, DATA_DAY_HTU_REPX = dataHtuRepx, MEDICINE_TYPE_CODE = medi.MEDICINE_TYPE_CODE });
                         }
                     }
 
@@ -5020,7 +5025,7 @@ namespace MPS.Processor.Mps000062
                                     }
 
                                     item.MEDICINE_TYPE_ID = medi.TDL_MEDICINE_TYPE_ID;
-                                    MMDuTruDataSort.Add(new ExpMestMetyReqADO() { USE_TIME = ReqDT.USE_TIME, MEDICINE_GROUP_NUM_ORDER = medi.MEDICINE_GROUP_NUM_ORDER, NUM_ORDER_BY_USE_FORM = medi.NUM_ORDER_BY_USE_FORM, TDL_SERVICE_REQ_ID = medi.TDL_SERVICE_REQ_ID, NUM_ORDER = medi.NUM_ORDER, NUMBER_H_N = medi.NUMBER_H_N, USING_COUNT_NUMBER = medi.USING_COUNT_NUMBER, TDL_MEDICINE_TYPE_ID = medi.TDL_MEDICINE_TYPE_ID, DATA_REPX = dataRepx });
+                                    MMDuTruDataSort.Add(new ExpMestMetyReqADO() { USE_TIME = ReqDT.USE_TIME, MEDICINE_GROUP_NUM_ORDER = medi.MEDICINE_GROUP_NUM_ORDER, NUM_ORDER_BY_USE_FORM = medi.NUM_ORDER_BY_USE_FORM, TDL_SERVICE_REQ_ID = medi.TDL_SERVICE_REQ_ID, NUM_ORDER = medi.NUM_ORDER, NUMBER_H_N = medi.NUMBER_H_N, USING_COUNT_NUMBER = medi.USING_COUNT_NUMBER, TDL_MEDICINE_TYPE_ID = medi.TDL_MEDICINE_TYPE_ID, DATA_REPX = dataRepx, HTU_TEXT = medi.HTU_TEXT });
                                     dem++;
                                 }
                             }
@@ -5126,7 +5131,7 @@ namespace MPS.Processor.Mps000062
 
                                     item.MEDICINE_TYPE_ID = medi.TDL_MEDICINE_TYPE_ID;
                                     dem++;
-                                    lstExpMestMety.Add(new ExpMestMetyReqADO() { INTRUCTION_DATE = medi.INTRUCTION_DATE, INTRUCTION_TIME = medi.INTRUCTION_TIME, INTRUCTION_TIME_STR = medi.INTRUCTION_TIME_STR, MEDICINE_GROUP_NUM_ORDER = medi.MEDICINE_GROUP_NUM_ORDER, NUM_ORDER_BY_USE_FORM = medi.MEDICINE_GROUP_NUM_ORDER ?? -1, TDL_SERVICE_REQ_ID = medi.TDL_SERVICE_REQ_ID, NUM_ORDER = medi.NUM_ORDER, NUMBER_H_N = medi.NUMBER_H_N, TDL_MEDICINE_TYPE_ID = medi.TDL_MEDICINE_TYPE_ID, REMEDY_COUNT = medi.REMEDY_COUNT, ASSIGN_TIME_TO = medi.ASSIGN_TIME_TO, USE_TIME = ReqDT.USE_TIME, USE_TIME_TO = medi.USE_TIME_TO, ADVISE = medi.ADVISE, HTU_TEXT = medi.HTU_TEXT, DAY_COUNT = medi.DAY_COUNT, DATA_REPX = dataRepx, DATA_DAY_REPX = dataRepx, DATA_DAY_HTU_REPX = dataHtuRepx });
+                                    lstExpMestMety.Add(new ExpMestMetyReqADO() { INTRUCTION_DATE = medi.INTRUCTION_DATE, INTRUCTION_TIME = medi.INTRUCTION_TIME, INTRUCTION_TIME_STR = medi.INTRUCTION_TIME_STR, MEDICINE_GROUP_NUM_ORDER = medi.MEDICINE_GROUP_NUM_ORDER, NUM_ORDER_BY_USE_FORM = medi.MEDICINE_GROUP_NUM_ORDER ?? -1, TDL_SERVICE_REQ_ID = medi.TDL_SERVICE_REQ_ID, NUM_ORDER = medi.NUM_ORDER, NUMBER_H_N = medi.NUMBER_H_N, TDL_MEDICINE_TYPE_ID = medi.TDL_MEDICINE_TYPE_ID, REMEDY_COUNT = medi.REMEDY_COUNT, ASSIGN_TIME_TO = medi.ASSIGN_TIME_TO, USE_TIME = ReqDT.USE_TIME, USE_TIME_TO = medi.USE_TIME_TO, ADVISE = medi.ADVISE, HTU_TEXT = medi.HTU_TEXT, DAY_COUNT = medi.DAY_COUNT, DATA_REPX = dataRepx, DATA_DAY_REPX = dataRepx, DATA_DAY_HTU_REPX = dataHtuRepx, MEDICINE_TYPE_CODE = medi.MEDICINE_TYPE_CODE });
                                 }
                             }
                             #endregion
@@ -5259,13 +5264,22 @@ namespace MPS.Processor.Mps000062
                     MMDuTruDataSort = DataMedicineGroupByUseTime_Merge(MMDuTruDataSort);
                     var groupUseTime = MMDuTruDataSort.GroupBy(o => Inventec.Common.DateTime.Convert.TimeNumberToDateString(o.USE_TIME ?? 0)).ToList();
                     item.MEDICINES_MERGE_DATE_DUTRU___DATA = "";
+                    item.MEDICINES_MERGE_DATE_DUTRU_HTU___DATA = "";
                     foreach (var gut in groupUseTime)
                     {
                         if (gut.Key != null)
+                        {
                             item.MEDICINES_MERGE_DATE_DUTRU___DATA += Inventec.Desktop.Common.HtmlString.ProcessorString.InsertFontStyle("Đơn thuốc dự trù ngày " + gut.Key, FontStyle.Bold);
+                            item.MEDICINES_MERGE_DATE_DUTRU_HTU___DATA += Inventec.Desktop.Common.HtmlString.ProcessorString.InsertFontStyle("Đơn thuốc dự trù ngày " + gut.Key, FontStyle.Bold);
+                        }
                         else
+                        {
                             item.MEDICINES_MERGE_DATE_DUTRU___DATA += "";
+                            item.MEDICINES_MERGE_DATE_DUTRU_HTU___DATA += "";
+                        }
                         item.MEDICINES_MERGE_DATE_DUTRU___DATA += string.Join("", DataMedicineGroupByUseTime_Merge(gut.ToList()).Select(o => o.DATA_REPX));
+                        item.MEDICINES_MERGE_DATE_DUTRU_HTU___DATA += string.Join("", DataMedicineGroupByUseTime_Merge(gut.ToList()).Select(o => o.DATA_REPX + (string.IsNullOrEmpty(o.HTU_TEXT) ? "" : (o.HTU_TEXT + Inventec.Desktop.Common.HtmlString.ProcessorString.InsertSpacialTag("", Inventec.Desktop.Common.HtmlString.SpacialTag.Tag.Br)))));
+
                     }
                     #endregion
                     #endregion
@@ -5351,7 +5365,7 @@ namespace MPS.Processor.Mps000062
                                         List<string> serviceTts = new List<string>();
                                         foreach (var service in serviceType.ToList())
                                         {
-                                            var s1 = (service.SERVICE_NAME ?? service.TDL_SERVICE_NAME) + " ";
+                                            var s1 = (service.SERVICE_NAME ?? service.TDL_SERVICE_NAME) + (!string.IsNullOrEmpty(service.INSTRUCTION_NOTE) ? "    -     " + service.INSTRUCTION_NOTE : "");
                                             serviceTts.Add(string.Format("{0}", s1));
 
                                             lstServiceCls.Add(new ServiceCLS() { SERVICE_TYPE_NAME = namesvt.SERVICE_TYPE_NAME, SERVICE_NAME = s1, AMOUNT = service.AMOUNT, INSTRUCTION_NOTE = service.INSTRUCTION_NOTE, NUM_ORDER_SERVICE_TYPE = namesvt.NUM_ORDER ?? Int64.MinValue, IsGoupService = service.IsGoupService, USE_TIME = service.USE_TIME, TDL_INTRUCTION_TIME = service.TDL_INTRUCTION_TIME, TDL_SERVICE_UNIT_ID = service.TDL_SERVICE_UNIT_ID, SERVICE_ID = service.SERVICE_ID, serviceSplits = service.serviceSplits, TDL_SERVICE_TYPE_ID = service.TDL_SERVICE_TYPE_ID });
@@ -5535,9 +5549,9 @@ namespace MPS.Processor.Mps000062
                                     item.MEDICINE_TYPE_ID = medi.TDL_MEDICINE_TYPE_ID;
                                     dem++;
 
-                                    lstExpMestMety.Add(new ExpMestMetyReqADO() { INTRUCTION_DATE = medi.INTRUCTION_DATE, INTRUCTION_TIME = medi.INTRUCTION_TIME, INTRUCTION_TIME_STR = medi.INTRUCTION_TIME_STR, MEDICINE_GROUP_NUM_ORDER = medi.MEDICINE_GROUP_NUM_ORDER, NUM_ORDER_BY_USE_FORM = medi.MEDICINE_GROUP_NUM_ORDER ?? -1, TDL_SERVICE_REQ_ID = medi.TDL_SERVICE_REQ_ID, NUM_ORDER = medi.NUM_ORDER, NUMBER_H_N = medi.NUMBER_H_N, TDL_MEDICINE_TYPE_ID = medi.TDL_MEDICINE_TYPE_ID, REMEDY_COUNT = medi.REMEDY_COUNT, ASSIGN_TIME_TO = medi.ASSIGN_TIME_TO, USE_TIME = ReqTHDT.USE_TIME, USE_TIME_TO = medi.USE_TIME_TO, ADVISE = medi.ADVISE, HTU_TEXT = medi.HTU_TEXT, DAY_COUNT = medi.DAY_COUNT, DATA_REPX = dataRepx, DATA_DAY_REPX = dataRepx, DATA_DAY_HTU_REPX = dataHtuRepx });
+                                    lstExpMestMety.Add(new ExpMestMetyReqADO() { INTRUCTION_DATE = medi.INTRUCTION_DATE, INTRUCTION_TIME = medi.INTRUCTION_TIME, INTRUCTION_TIME_STR = medi.INTRUCTION_TIME_STR, MEDICINE_GROUP_NUM_ORDER = medi.MEDICINE_GROUP_NUM_ORDER, NUM_ORDER_BY_USE_FORM = medi.MEDICINE_GROUP_NUM_ORDER ?? -1, TDL_SERVICE_REQ_ID = medi.TDL_SERVICE_REQ_ID, NUM_ORDER = medi.NUM_ORDER, NUMBER_H_N = medi.NUMBER_H_N, TDL_MEDICINE_TYPE_ID = medi.TDL_MEDICINE_TYPE_ID, REMEDY_COUNT = medi.REMEDY_COUNT, ASSIGN_TIME_TO = medi.ASSIGN_TIME_TO, USE_TIME = ReqTHDT.USE_TIME, USE_TIME_TO = medi.USE_TIME_TO, ADVISE = medi.ADVISE, HTU_TEXT = medi.HTU_TEXT, DAY_COUNT = medi.DAY_COUNT, DATA_REPX = dataRepx, DATA_DAY_REPX = dataRepx, DATA_DAY_HTU_REPX = dataHtuRepx, MEDICINE_TYPE_CODE = medi.MEDICINE_TYPE_CODE });
 
-                                    MMThdt.Add(new ExpMestMetyReqADO() { USE_TIME = ReqTHDT.USE_TIME, MEDICINE_GROUP_NUM_ORDER = medi.MEDICINE_GROUP_NUM_ORDER, NUM_ORDER_BY_USE_FORM = medi.NUM_ORDER_BY_USE_FORM, TDL_SERVICE_REQ_ID = medi.TDL_SERVICE_REQ_ID, NUM_ORDER = medi.NUM_ORDER, NUMBER_H_N = medi.NUMBER_H_N, USING_COUNT_NUMBER = medi.USING_COUNT_NUMBER, TDL_MEDICINE_TYPE_ID = medi.TDL_MEDICINE_TYPE_ID, DATA_REPX = dataRepx });
+                                    MMThdt.Add(new ExpMestMetyReqADO() { USE_TIME = ReqTHDT.USE_TIME, MEDICINE_GROUP_NUM_ORDER = medi.MEDICINE_GROUP_NUM_ORDER, NUM_ORDER_BY_USE_FORM = medi.NUM_ORDER_BY_USE_FORM, TDL_SERVICE_REQ_ID = medi.TDL_SERVICE_REQ_ID, NUM_ORDER = medi.NUM_ORDER, NUMBER_H_N = medi.NUMBER_H_N, USING_COUNT_NUMBER = medi.USING_COUNT_NUMBER, TDL_MEDICINE_TYPE_ID = medi.TDL_MEDICINE_TYPE_ID, DATA_REPX = dataRepx, HTU_TEXT = medi.HTU_TEXT });
                                 }
 
                             }
@@ -5597,7 +5611,7 @@ namespace MPS.Processor.Mps000062
                                         }
 
                                         item.MEDICINE_TYPE_ID = MediIns.TDL_MEDICINE_TYPE_ID;
-                                        MMThdt.Add(new ExpMestMetyReqADO() { USE_TIME = ReqTHDT.USE_TIME, MEDICINE_GROUP_NUM_ORDER = MediIns.MEDICINE_GROUP_NUM_ORDER, NUM_ORDER_BY_USE_FORM = MediIns.NUM_ORDER_BY_USE_FORM, TDL_SERVICE_REQ_ID = MediIns.TDL_SERVICE_REQ_ID, NUM_ORDER = MediIns.NUM_ORDER, NUMBER_H_N = MediIns.NUMBER_H_N, USING_COUNT_NUMBER = MediIns.USING_COUNT_NUMBER, TDL_MEDICINE_TYPE_ID = MediIns.TDL_MEDICINE_TYPE_ID, DATA_REPX = dataRepx });
+                                        MMThdt.Add(new ExpMestMetyReqADO() { USE_TIME = ReqTHDT.USE_TIME, MEDICINE_GROUP_NUM_ORDER = MediIns.MEDICINE_GROUP_NUM_ORDER, NUM_ORDER_BY_USE_FORM = MediIns.NUM_ORDER_BY_USE_FORM, TDL_SERVICE_REQ_ID = MediIns.TDL_SERVICE_REQ_ID, NUM_ORDER = MediIns.NUM_ORDER, NUMBER_H_N = MediIns.NUMBER_H_N, USING_COUNT_NUMBER = MediIns.USING_COUNT_NUMBER, TDL_MEDICINE_TYPE_ID = MediIns.TDL_MEDICINE_TYPE_ID, DATA_REPX = dataRepx, HTU_TEXT = MediIns.HTU_TEXT });
                                         checkdem++;
                                     }
                                     item.MEDICINES_INFUSION_THDT___DATA += Inventec.Desktop.Common.HtmlString.ProcessorString.InsertSpacialTag("", Inventec.Desktop.Common.HtmlString.SpacialTag.Tag.Br);
@@ -5660,7 +5674,7 @@ namespace MPS.Processor.Mps000062
 
                                     item.MEDICINE_TYPE_ID = medi.MEDICINE_TYPE_ID;
 
-                                    MMThdt.Add(new ExpMestMetyReqADO() { USE_TIME = ReqTHDT.USE_TIME, MEDICINE_GROUP_NUM_ORDER = medi.NUM_ORDER_MEDICINE_GROUP, NUM_ORDER_BY_USE_FORM = medi.NUM_ORDER_MEDICINE_USE_FORM ?? 0, TDL_SERVICE_REQ_ID = medi.SERVICE_REQ_ID, NUM_ORDER = medi.NUM_ORDER, NUMBER_H_N = medi.NUMBER_BY_GROUP, USING_COUNT_NUMBER = null, TDL_MEDICINE_TYPE_ID = medi.MEDICINE_TYPE_ID, DATA_REPX = dataRepx });
+                                    MMThdt.Add(new ExpMestMetyReqADO() { USE_TIME = ReqTHDT.USE_TIME, MEDICINE_GROUP_NUM_ORDER = medi.NUM_ORDER_MEDICINE_GROUP, NUM_ORDER_BY_USE_FORM = medi.NUM_ORDER_MEDICINE_USE_FORM ?? 0, TDL_SERVICE_REQ_ID = medi.SERVICE_REQ_ID, NUM_ORDER = medi.NUM_ORDER, NUMBER_H_N = medi.NUMBER_BY_GROUP, USING_COUNT_NUMBER = null, TDL_MEDICINE_TYPE_ID = medi.MEDICINE_TYPE_ID, DATA_REPX = dataRepx, HTU_TEXT = medi.HTU_TEXT });
                                     dem++;
                                 }
 
@@ -5673,13 +5687,21 @@ namespace MPS.Processor.Mps000062
                     MMThdt = DataMedicineGroupByUseTime_Merge(MMThdt);
                     var groupTHDTUseTime = MMThdt.GroupBy(o => Inventec.Common.DateTime.Convert.TimeNumberToDateString(o.USE_TIME ?? 0)).ToList();
                     item.MEDICINES_MERGE_DATE_THDT___DATA = "";
+                    item.MEDICINES_MERGE_DATE_THDT_HTU___DATA = "";
                     foreach (var gut in groupTHDTUseTime)
                     {
                         if (gut.Key != null)
+                        {
                             item.MEDICINES_MERGE_DATE_THDT___DATA += Inventec.Desktop.Common.HtmlString.ProcessorString.InsertFontStyle("Thực hiện đơn thuốc dự trù ngày " + gut.Key, FontStyle.Bold);
+                            item.MEDICINES_MERGE_DATE_THDT_HTU___DATA += Inventec.Desktop.Common.HtmlString.ProcessorString.InsertFontStyle("Thực hiện đơn thuốc dự trù ngày " + gut.Key, FontStyle.Bold);
+                        }
                         else
+                        {
                             item.MEDICINES_MERGE_DATE_THDT___DATA += "";
+                            item.MEDICINES_MERGE_DATE_THDT_HTU___DATA += "";
+                        }
                         item.MEDICINES_MERGE_DATE_THDT___DATA += string.Join("", DataMedicineGroupByUseTime_Merge(gut.ToList()).Select(o => o.DATA_REPX));
+                        item.MEDICINES_MERGE_DATE_THDT_HTU___DATA += string.Join("", DataMedicineGroupByUseTime_Merge(gut.ToList()).Select(o => o.DATA_REPX + (string.IsNullOrEmpty(o.HTU_TEXT) ? "" : (o.HTU_TEXT + Inventec.Desktop.Common.HtmlString.ProcessorString.InsertSpacialTag("", Inventec.Desktop.Common.HtmlString.SpacialTag.Tag.Br)))));
                     }
                     #region 
 
@@ -5852,46 +5874,22 @@ namespace MPS.Processor.Mps000062
                             foreach (var IMedi in impMestMedicine_S)
                             {
                                 string s1 = "", s2 = "";
-
-                                //if (IMedi.USE_TIME_OLD != null && UseTime != IMedi.USE_TIME_OLD)
-                                //{
-                                //    UseTime = IMedi.USE_TIME_OLD;
-                                //    item.MOBA_IMP_MEST_MEDICINE__DATA += Inventec.Desktop.Common.HtmlString.ProcessorString.InsertFontStyle("Hoàn trả thuốc dự trù ngày " + Inventec.Common.DateTime.Convert.TimeNumberToDateString(UseTime ?? 0), FontStyle.Bold);
-                                //}
-                                //else if (IMedi.INTRUCTION_TIME_OLD != null && IntructionTime != IMedi.INTRUCTION_TIME_OLD)
-                                //{
-                                //    IntructionTime = IMedi.INTRUCTION_TIME_OLD;
-                                //    item.MOBA_IMP_MEST_MEDICINE__DATA += Inventec.Desktop.Common.HtmlString.ProcessorString.InsertFontStyle("Hoàn trả thuốc sử dụng ngày " + Inventec.Common.DateTime.Convert.TimeNumberToDateString(IntructionTime ?? 0), FontStyle.Bold);
-                                //}
-                                if (IMedi.INTRUCTION_TIME_OLD != null && IMedi.USE_TIME_OLD != null)
+                                if (IMedi.USE_TIME_OLD != null)
                                 {
-                                    var instructionDateString = Inventec.Common.DateTime.Convert.TimeNumberToDateString(IMedi.INTRUCTION_TIME_OLD.Value);
-                                    DateTime instructionDate = DateTime.Parse(instructionDateString).Date;
-                                    var useDateString = Inventec.Common.DateTime.Convert.TimeNumberToDateString(IMedi.USE_TIME_OLD.Value);
-                                    DateTime useDate = DateTime.Parse(useDateString).Date;
-
-                                    if (instructionDate != useDate)
+                                    if (UseTime == null || UseTime != IMedi.USE_TIME_OLD)
                                     {
-                                        if (UseTime != IMedi.USE_TIME_OLD)
-                                        {
-                                            UseTime = IMedi.USE_TIME_OLD;
-                                            item.MOBA_IMP_MEST_MEDICINE__DATA += Inventec.Desktop.Common.HtmlString.ProcessorString.InsertFontStyle(
-                                                "Hoàn trả thuốc dự trù ngày " + Inventec.Common.DateTime.Convert.TimeNumberToDateString(UseTime ?? 0),
-                                                FontStyle.Bold);
-                                        }
-                                    }
-                                    else
-                                    {
-                                        if (IntructionTime != IMedi.INTRUCTION_TIME_OLD)
-                                        {
-                                            IntructionTime = IMedi.INTRUCTION_TIME_OLD;
-                                            item.MOBA_IMP_MEST_MEDICINE__DATA += Inventec.Desktop.Common.HtmlString.ProcessorString.InsertFontStyle(
-                                                "Hoàn trả thuốc sử dụng ngày " + Inventec.Common.DateTime.Convert.TimeNumberToDateString(IntructionTime ?? 0),
-                                                FontStyle.Bold);
-                                        }
+                                        UseTime = IMedi.USE_TIME_OLD;
+                                        item.MOBA_IMP_MEST_MEDICINE__DATA += Inventec.Desktop.Common.HtmlString.ProcessorString.InsertFontStyle("Hoàn trả thuốc dự trù ngày " + Inventec.Common.DateTime.Convert.TimeNumberToDateString(UseTime ?? 0), FontStyle.Bold);
                                     }
                                 }
-
+                                else if (IMedi.INTRUCTION_TIME_OLD != null)
+                                {
+                                    if (IntructionTime == null || IntructionTime != IMedi.INTRUCTION_TIME_OLD)
+                                    {
+                                        IntructionTime = IMedi.INTRUCTION_TIME_OLD;
+                                        item.MOBA_IMP_MEST_MEDICINE__DATA += Inventec.Desktop.Common.HtmlString.ProcessorString.InsertFontStyle("Hoàn trả thuốc sử dụng ngày " + Inventec.Common.DateTime.Convert.TimeNumberToDateString(IntructionTime ?? 0), FontStyle.Bold);
+                                    }
+                                }
                                 s1 = IMedi.MEDICINE_TYPE_NAME;
                                 s1 += " " + IMedi.CONCENTRA;
                                 s2 = Inventec.Common.Number.Convert.NumberToStringRoundMax4(IMedi.AMOUNT) + " " + IMedi.SERVICE_UNIT_NAME;
@@ -5914,36 +5912,22 @@ namespace MPS.Processor.Mps000062
                             foreach (var IMate in impMestMaterial_S)
                             {
                                 string s1 = "", s2 = "";
-
-                                if (IMate.INTRUCTION_TIME_OLD != null && IMate.USE_TIME_OLD != null)
+                                if (IMate.USE_TIME_OLD != null)
                                 {
-                                    var instructionDateString = Inventec.Common.DateTime.Convert.TimeNumberToDateString(IMate.INTRUCTION_TIME_OLD.Value);
-                                    DateTime instructionDate = DateTime.Parse(instructionDateString).Date;
-                                    var useDateString = Inventec.Common.DateTime.Convert.TimeNumberToDateString(IMate.USE_TIME_OLD.Value);
-                                    DateTime useDate = DateTime.Parse(useDateString).Date;
-
-                                    if (instructionDate != useDate)
+                                    if (UseTime == null || UseTime != IMate.USE_TIME_OLD)
                                     {
-                                        if (UseTime != IMate.USE_TIME_OLD)
-                                        {
-                                            UseTime = IMate.USE_TIME_OLD;
-                                            item.MOBA_IMP_MEST_MATERIAL__DATA += Inventec.Desktop.Common.HtmlString.ProcessorString.InsertFontStyle(
-                                                "Hoàn trả vật tư dự trù ngày " + Inventec.Common.DateTime.Convert.TimeNumberToDateString(UseTime ?? 0),
-                                                FontStyle.Bold);
-                                        }
-                                    }
-                                    else
-                                    {
-                                        if (IntructionTime != IMate.INTRUCTION_TIME_OLD)
-                                        {
-                                            IntructionTime = IMate.INTRUCTION_TIME_OLD;
-                                            item.MOBA_IMP_MEST_MATERIAL__DATA += Inventec.Desktop.Common.HtmlString.ProcessorString.InsertFontStyle(
-                                                "Hoàn trả vật tư sử dụng ngày " + Inventec.Common.DateTime.Convert.TimeNumberToDateString(IntructionTime ?? 0),
-                                                FontStyle.Bold);
-                                        }
+                                        UseTime = IMate.USE_TIME_OLD;
+                                        item.MOBA_IMP_MEST_MATERIAL__DATA += Inventec.Desktop.Common.HtmlString.ProcessorString.InsertFontStyle("Hoàn trả vật tư dự trù ngày " + Inventec.Common.DateTime.Convert.TimeNumberToDateString(UseTime ?? 0), FontStyle.Bold);
                                     }
                                 }
-
+                                else if (IMate.INTRUCTION_TIME_OLD != null)
+                                {
+                                    if (IntructionTime == null || IntructionTime != IMate.INTRUCTION_TIME_OLD)
+                                    {
+                                        IntructionTime = IMate.INTRUCTION_TIME_OLD;
+                                        item.MOBA_IMP_MEST_MATERIAL__DATA += Inventec.Desktop.Common.HtmlString.ProcessorString.InsertFontStyle("Hoàn trả vật tư sử dụng ngày " + Inventec.Common.DateTime.Convert.TimeNumberToDateString(IntructionTime ?? 0), FontStyle.Bold);
+                                    }
+                                }
                                 s1 = IMate.MATERIAL_TYPE_NAME;
                                 s2 = Inventec.Common.Number.Convert.NumberToStringRoundMax4(IMate.AMOUNT) + " " + IMate.SERVICE_UNIT_NAME;
                                 item.MOBA_IMP_MEST_MATERIAL__DATA += String.Format("<table><tr><td width=\"650\" text-align=\"left\" align=\"left\">{0}</td></span><td text-align=\"right\" align=\"right\" width=\"150\">{1}</td></tr></table>", s1, s2);
@@ -5958,15 +5942,26 @@ namespace MPS.Processor.Mps000062
                         foreach (var impMestBlood in ImpMestBloodAPIs_G)
                         {
                             long? IntructionTime = 0;
-                            var impMestBlood_S = impMestBlood.OrderBy(o => o.INTRUCTION_TIME ?? 99999999999999).ToList();
+                            long? UseTime = null;
+                            var impMestBlood_S = impMestBlood.OrderBy(p => p.USE_TIME_OLD ?? 99999999999999).ThenBy(o => o.INTRUCTION_TIME_OLD ?? 99999999999999).ToList();
                             foreach (var IBlood in impMestBlood_S)
                             {
                                 string s1 = "", s2 = "";
-
-                                if (IBlood.INTRUCTION_TIME_OLD != null && IntructionTime != IBlood.INTRUCTION_TIME_OLD)
+                                if (IBlood.USE_TIME_OLD != null)
                                 {
-                                    IntructionTime = IBlood.INTRUCTION_TIME_OLD;
-                                    item.MOBA_IMP_MEST_BLOOD__DATA += Inventec.Desktop.Common.HtmlString.ProcessorString.InsertFontStyle("Hoàn trả máu sử dụng ngày " + Inventec.Common.DateTime.Convert.TimeNumberToDateString(IntructionTime ?? 0), FontStyle.Bold);
+                                    if (UseTime == null || UseTime != IBlood.USE_TIME_OLD)
+                                    {
+                                        UseTime = IBlood.USE_TIME_OLD;
+                                        item.MOBA_IMP_MEST_BLOOD__DATA += Inventec.Desktop.Common.HtmlString.ProcessorString.InsertFontStyle("Hoàn trả máu dự trù ngày " + Inventec.Common.DateTime.Convert.TimeNumberToDateString(UseTime ?? 0), FontStyle.Bold);
+                                    }
+                                }
+                                else if (IBlood.INTRUCTION_TIME_OLD != null)
+                                {
+                                    if (IntructionTime == null || IntructionTime != IBlood.INTRUCTION_TIME_OLD)
+                                    {
+                                        IntructionTime = IBlood.INTRUCTION_TIME_OLD;
+                                        item.MOBA_IMP_MEST_BLOOD__DATA += Inventec.Desktop.Common.HtmlString.ProcessorString.InsertFontStyle("Hoàn trả máu sử dụng ngày " + Inventec.Common.DateTime.Convert.TimeNumberToDateString(IntructionTime ?? 0), FontStyle.Bold);
+                                    }
                                 }
                                 s1 = IBlood.BLOOD_TYPE_NAME;
                                 s2 = Inventec.Common.Number.Convert.NumberToStringRoundMax4(IBlood.VOLUME) + " " + IBlood.SERVICE_UNIT_NAME;
@@ -5987,6 +5982,7 @@ namespace MPS.Processor.Mps000062
                     //Bôi da ngày 3 - 4 lần                 
 
                     item.PRE_MEDICINE = "";
+                    item.PRE_MEDICINE_OUT_TRACKING = "";
 
                     var dtTrackingDate = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(item.TRACKING_TIME).Value;
 
@@ -6009,7 +6005,7 @@ namespace MPS.Processor.Mps000062
                         {
                             var itemExpMest = rdo._DicHisExpMests.ContainsKey(itemByServiceReq.ID) ? rdo._DicHisExpMests[itemByServiceReq.ID] : null;
 
-                            if (itemExpMest == null)
+                            if (itemExpMest == null)       
                                 continue;
 
                             List<ExpMestMedicineADO> _expMestMedicines = new List<ExpMestMedicineADO>();
@@ -6038,8 +6034,18 @@ namespace MPS.Processor.Mps000062
                                         s1 += " " + medicineTypeName.CONCENTRA;
                                         s2 = emmedi.TUTORIAL;
                                         item.PRE_MEDICINE += String.Format("<table><tr><td width=\"650\" text-align=\"left\" align=\"left\">- {0}</td></span></tr><tr><td text-align=\"right\" align=\"left\" width=\"650\">{1}</td></tr></table>", s1, s2);
-
+                                        
+                                        if (itemByServiceReq.TRACKING_ID != _tracking.ID &&
+                                            itemByServiceReq.USED_FOR_TRACKING_ID == _tracking.ID &&
+                                            itemByServiceReq.USED_FOR_TRACKING_ID == _tracking.ID &&
+                                            itemByServiceReq.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__DONDT &&
+                                            itemByServiceReq.SERVICE_REQ_STT_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_STT.ID__HT)
+                                        {
+                                            item.PRE_MEDICINE_OUT_TRACKING += String.Format("<table><tr><td width=\"650\" text-align=\"left\" align=\"left\">- {0}</td></span></tr><tr><td text-align=\"right\" align=\"left\" width=\"650\">{1}</td></tr></table>", s1, s2);
+                                        }
                                     }
+
+                                    
                                     item.MEDICINE_TYPE_ID = emmedi.TDL_MEDICINE_TYPE_ID;
                                 }
                             }
@@ -6621,6 +6627,8 @@ namespace MPS.Processor.Mps000062
                         item.MEDICINES_MERGE_DETAIL_HTU___DATA = "";
                         foreach (var ml in groupByMedicineLine)
                         {
+
+                            Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => ml.Key.MEDICINE_LINE_NAME), ml.Key.MEDICINE_LINE_NAME));
                             item.MEDICINES_MERGE_DETAIL___DATA += Inventec.Desktop.Common.HtmlString.ProcessorString.InsertFontStyle("- " + ml.Key.MEDICINE_LINE_NAME, FontStyle.Bold);
                             item.MEDICINES_MERGE_DETAIL___DATA += Inventec.Desktop.Common.HtmlString.ProcessorString.InsertSpacialTag("", Inventec.Desktop.Common.HtmlString.SpacialTag.Tag.Br);
                             item.MEDICINES_MERGE_DAY___DATA += Inventec.Desktop.Common.HtmlString.ProcessorString.InsertFontStyle("- " + ml.Key.MEDICINE_LINE_NAME, FontStyle.Bold);
@@ -6699,42 +6707,13 @@ namespace MPS.Processor.Mps000062
                             }
 
 
-                            var SortIntructionTime = ml.ToList().OrderBy(o => o.INTRUCTION_TIME);
-                            var groupIntructionTime = SortIntructionTime.GroupBy(o => o.INTRUCTION_TIME);
-                            foreach (var it in groupIntructionTime)
-                            {
-                                List<string> dtTimes = it.ToList().OrderBy(o => o.USE_TIME ?? o.INTRUCTION_TIME).Select(o => Inventec.Common.DateTime.Convert.TimeNumberToDateString(o.USE_TIME ?? o.INTRUCTION_TIME)).ToList();
-                                item.MEDICINES_MERGE_DAY___DATA += BuildDateString(dtTimes);
-                                item.MEDICINES_MERGE_DAY___DATA += Inventec.Desktop.Common.HtmlString.ProcessorString.InsertSpacialTag("", Inventec.Desktop.Common.HtmlString.SpacialTag.Tag.Br);
-                                item.MEDICINES_MERGE_DAY_HTU___DATA += BuildDateString(dtTimes);
-                                item.MEDICINES_MERGE_DAY_HTU___DATA += Inventec.Desktop.Common.HtmlString.ProcessorString.InsertSpacialTag("", Inventec.Desktop.Common.HtmlString.SpacialTag.Tag.Br);
+                            var SortIntructionTime = ml.ToList()
+                                .OrderBy(o => o.INTRUCTION_TIME)
+                                .GroupBy(o => new { o.USE_TIME, o.INTRUCTION_TIME, o.MEDICINE_TYPE_CODE, o.TDL_SERVICE_REQ_ID })
+                                .Select(g => g.First())
+                                .ToList();
 
-                                var itServiceReq = it.ToList().OrderBy(o => o.TDL_SERVICE_REQ_ID).Select(o => o.TDL_SERVICE_REQ_ID).Distinct().ToList()[0];
-
-                                item.MEDICINES_MERGE_DAY___DATA += string.Join("", it.Where(o => o.TDL_SERVICE_REQ_ID == itServiceReq).Select(o => o.DATA_DAY_REPX));
-                                item.MEDICINES_MERGE_DAY_HTU___DATA += string.Join("", it.Where(o => o.TDL_SERVICE_REQ_ID == itServiceReq).Select(o => o.DATA_DAY_HTU_REPX));
-
-                                long? sthang = it.GroupBy(o => new { o.TDL_SERVICE_REQ_ID, o.REMEDY_COUNT }).Sum(o => o.Key.REMEDY_COUNT ?? 0);
-                                if (sthang > 0)
-                                {
-                                    item.MEDICINES_MERGE_DAY___DATA += string.Format("x {0} thang", sthang < 10 ? "0" + sthang : sthang.ToString());
-                                    item.MEDICINES_MERGE_DAY___DATA += Inventec.Desktop.Common.HtmlString.ProcessorString.InsertSpacialTag("", Inventec.Desktop.Common.HtmlString.SpacialTag.Tag.Br);
-
-                                    item.MEDICINES_MERGE_DAY_HTU___DATA += string.Format("x {0} thang", sthang < 10 ? "0" + sthang : sthang.ToString());
-                                    item.MEDICINES_MERGE_DAY_HTU___DATA += Inventec.Desktop.Common.HtmlString.ProcessorString.InsertSpacialTag("", Inventec.Desktop.Common.HtmlString.SpacialTag.Tag.Br);
-                                }
-
-                                if (rdo._DicServiceReqs != null && rdo._DicServiceReqs.Count > 0 && rdo._DicServiceReqs.ContainsKey(it.ToList().OrderBy(o => o.TDL_SERVICE_REQ_ID ?? 0).FirstOrDefault().TDL_SERVICE_REQ_ID ?? 0) && !string.IsNullOrEmpty(rdo._DicServiceReqs[it.ToList().OrderBy(o => o.TDL_SERVICE_REQ_ID ?? 0).FirstOrDefault().TDL_SERVICE_REQ_ID ?? 0].ADVISE))
-                                {
-                                    item.MEDICINES_MERGE_DAY___DATA += Inventec.Desktop.Common.HtmlString.ProcessorString.InsertFontStyle(" " + rdo._DicServiceReqs[it.ToList().OrderBy(o => o.TDL_SERVICE_REQ_ID ?? 0).FirstOrDefault().TDL_SERVICE_REQ_ID ?? 0].ADVISE, FontStyle.Italic);
-                                    item.MEDICINES_MERGE_DAY___DATA += Inventec.Desktop.Common.HtmlString.ProcessorString.InsertSpacialTag("", Inventec.Desktop.Common.HtmlString.SpacialTag.Tag.Br);
-
-                                    item.MEDICINES_MERGE_DAY_HTU___DATA += Inventec.Desktop.Common.HtmlString.ProcessorString.InsertFontStyle(" " + rdo._DicServiceReqs[it.ToList().OrderBy(o => o.TDL_SERVICE_REQ_ID ?? 0).FirstOrDefault().TDL_SERVICE_REQ_ID ?? 0].ADVISE, FontStyle.Italic);
-                                    item.MEDICINES_MERGE_DAY_HTU___DATA += Inventec.Desktop.Common.HtmlString.ProcessorString.InsertSpacialTag("", Inventec.Desktop.Common.HtmlString.SpacialTag.Tag.Br);
-                                }
-
-
-                            }
+                            ProcessAddKeyMergeDay(SortIntructionTime.ToList(), item);
 
                         }
                     }
@@ -6988,6 +6967,59 @@ namespace MPS.Processor.Mps000062
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
             return success;
+        }
+        private void ProcessAddKeyMergeDay(List<ExpMestMetyReqADO> SortIntructionTime, Mps000062ExtADO item)
+        {
+            try
+            {
+                var groupIntructionTime = SortIntructionTime.GroupBy(o => new { o.INTRUCTION_TIME });
+
+                Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => SortIntructionTime.Select(o => o.TDL_SERVICE_REQ_ID)), SortIntructionTime.Select(o => o.TDL_SERVICE_REQ_ID)));
+                foreach (var it in groupIntructionTime)
+                {
+                    List<string> dtTimes = it.ToList().OrderBy(o => o.USE_TIME ?? o.INTRUCTION_TIME).Select(o => Inventec.Common.DateTime.Convert.TimeNumberToDateString(o.USE_TIME ?? o.INTRUCTION_TIME)).ToList();
+                    var inStrTime = it.GroupBy(o => string.Format("{0}", o.MEDICINE_TYPE_CODE)).Where(o => dtTimes.Distinct().Count() > 1 ? o.Count() == dtTimes.Distinct().Count() : true).SelectMany(g => g).Select(x => x.TDL_SERVICE_REQ_ID).Distinct().ToList();
+                    var plusStrTime = it.GroupBy(o => string.Format("{0}", o.MEDICINE_TYPE_CODE)).Where(o => o.Count() != dtTimes.Distinct().Count()).SelectMany(g => g).Select(x => x.TDL_SERVICE_REQ_ID ?? 0).Distinct().ToList();
+                    if (plusStrTime != null && plusStrTime.Count > 0 && dtTimes.Distinct().Count() > 1)
+                    {
+                        ProcessAddKeyMergeDay(SortIntructionTime.ToList().Where(o => plusStrTime.Exists(p => p == o.TDL_SERVICE_REQ_ID)).ToList(), item);
+                    }
+                    var itServiceReq = it.ToList().OrderBy(o => o.TDL_SERVICE_REQ_ID).Where(o => inStrTime.Exists(p => p == o.TDL_SERVICE_REQ_ID)).Select(o => o.TDL_SERVICE_REQ_ID).Distinct().ToList();
+
+                    item.MEDICINES_MERGE_DAY___DATA += BuildDateString(dtTimes);
+                    item.MEDICINES_MERGE_DAY___DATA += Inventec.Desktop.Common.HtmlString.ProcessorString.InsertSpacialTag("", Inventec.Desktop.Common.HtmlString.SpacialTag.Tag.Br);
+                    item.MEDICINES_MERGE_DAY_HTU___DATA += BuildDateString(dtTimes);
+                    item.MEDICINES_MERGE_DAY_HTU___DATA += Inventec.Desktop.Common.HtmlString.ProcessorString.InsertSpacialTag("", Inventec.Desktop.Common.HtmlString.SpacialTag.Tag.Br);
+                    item.MEDICINES_MERGE_DAY___DATA += string.Join("", it.Where(o => itServiceReq.Exists(p => p == o.TDL_SERVICE_REQ_ID)).Select(o => o.DATA_DAY_REPX).Distinct());
+                    item.MEDICINES_MERGE_DAY_HTU___DATA += string.Join("", it.Where(o => itServiceReq.Exists(p => p == o.TDL_SERVICE_REQ_ID)).Select(o => o.DATA_DAY_HTU_REPX).Distinct());
+
+                    long? sthang = it.GroupBy(o => new { o.TDL_SERVICE_REQ_ID, o.REMEDY_COUNT }).Sum(o => o.Key.REMEDY_COUNT ?? 0);
+                    if (sthang > 0)
+                    {
+                        item.MEDICINES_MERGE_DAY___DATA += string.Format("x {0} thang", sthang < 10 ? "0" + sthang : sthang.ToString());
+                        item.MEDICINES_MERGE_DAY___DATA += Inventec.Desktop.Common.HtmlString.ProcessorString.InsertSpacialTag("", Inventec.Desktop.Common.HtmlString.SpacialTag.Tag.Br);
+
+                        item.MEDICINES_MERGE_DAY_HTU___DATA += string.Format("x {0} thang", sthang < 10 ? "0" + sthang : sthang.ToString());
+                        item.MEDICINES_MERGE_DAY_HTU___DATA += Inventec.Desktop.Common.HtmlString.ProcessorString.InsertSpacialTag("", Inventec.Desktop.Common.HtmlString.SpacialTag.Tag.Br);
+                    }
+
+                    if (rdo._DicServiceReqs != null && rdo._DicServiceReqs.Count > 0 && rdo._DicServiceReqs.ContainsKey(it.ToList().OrderBy(o => o.TDL_SERVICE_REQ_ID ?? 0).FirstOrDefault().TDL_SERVICE_REQ_ID ?? 0) && !string.IsNullOrEmpty(rdo._DicServiceReqs[it.ToList().OrderBy(o => o.TDL_SERVICE_REQ_ID ?? 0).FirstOrDefault().TDL_SERVICE_REQ_ID ?? 0].ADVISE))
+                    {
+                        item.MEDICINES_MERGE_DAY___DATA += Inventec.Desktop.Common.HtmlString.ProcessorString.InsertFontStyle(" " + rdo._DicServiceReqs[it.ToList().OrderBy(o => o.TDL_SERVICE_REQ_ID ?? 0).FirstOrDefault().TDL_SERVICE_REQ_ID ?? 0].ADVISE, FontStyle.Italic);
+                        item.MEDICINES_MERGE_DAY___DATA += Inventec.Desktop.Common.HtmlString.ProcessorString.InsertSpacialTag("", Inventec.Desktop.Common.HtmlString.SpacialTag.Tag.Br);
+
+                        item.MEDICINES_MERGE_DAY_HTU___DATA += Inventec.Desktop.Common.HtmlString.ProcessorString.InsertFontStyle(" " + rdo._DicServiceReqs[it.ToList().OrderBy(o => o.TDL_SERVICE_REQ_ID ?? 0).FirstOrDefault().TDL_SERVICE_REQ_ID ?? 0].ADVISE, FontStyle.Italic);
+                        item.MEDICINES_MERGE_DAY_HTU___DATA += Inventec.Desktop.Common.HtmlString.ProcessorString.InsertSpacialTag("", Inventec.Desktop.Common.HtmlString.SpacialTag.Tag.Br);
+                    }
+
+                    Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => item.MEDICINES_MERGE_DAY___DATA), item.MEDICINES_MERGE_DAY___DATA));
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+
         }
         static string BuildDateString(List<string> dateList)
         {

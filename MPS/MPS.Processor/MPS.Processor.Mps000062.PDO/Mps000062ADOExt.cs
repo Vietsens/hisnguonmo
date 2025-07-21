@@ -262,6 +262,7 @@ namespace MPS.Processor.Mps000062.PDO
         /// hiển thị thuốc và HDSD của các thuốc kê trước đó nhưng có ngày dùng chứa ngày của tờ điều trị
         /// </summary>
         public string PRE_MEDICINE { get; set; }
+        public string PRE_MEDICINE_OUT_TRACKING { get; set; }
         public string TRACKING_USERNAME { get; set; }
         public string SERVICE_REQ_METY___DATA { get; set; }
         public string SERVICE_REQ_MATY___DATA { get; set; }
@@ -287,12 +288,15 @@ namespace MPS.Processor.Mps000062.PDO
 
         public string MEDICINES_MERGE___DATA { get; set; } // thuốc pha truyền và thuốc không pha truyền
         public string MEDICINES_MERGE_DATE___DATA { get; set; }
+        public string MEDICINES_MERGE_DATE_HTU___DATA { get; set; }
         public string MEDICINES_MERGE_HTU___DATA { get; set; } 
         public string MEDICINES_MERGE_DUTRU___DATA { get; set; } // thuốc dự trù pha truyền và thuốc dự trù không pha truyền
         public string MEDICINES_MERGE_DUTRU_HTU___DATA { get; set; }
 
         public string MEDICINES_MERGE_DATE_DUTRU___DATA { get; set; }
+        public string MEDICINES_MERGE_DATE_DUTRU_HTU___DATA { get; set; }
         public string MEDICINES_MERGE_DATE_THDT___DATA { get; set; }
+        public string MEDICINES_MERGE_DATE_THDT_HTU___DATA { get; set; }
         public string SERVICE_MERGE_X01___DATA1 { get; set; }
         /// <summary>
         /// Tổng hợp chi tiết của MEDICINES___DATA, MEDICINES_DuTru___DATA,  MEDICINES_THDT___DATA

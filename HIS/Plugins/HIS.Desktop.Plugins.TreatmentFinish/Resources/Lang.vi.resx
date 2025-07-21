@@ -999,6 +999,9 @@
   <data name="IVT_LANGUAGE_KEY__FORM_TREATMENT_FINISH__PRINT_BANG_KE_THANH_TOAN" xml:space="preserve">
     <value>Bảng kê thanh toán</value>
   </data>
+	<data name="IVT_LANGUAGE_KEY__FORM_TREATMENT_FINISH__CREATE_QR" xml:space="preserve">
+    <value>Tạo QR thanh toán (In phiếu thu)</value>
+  </data>
   <data name="IVT_LANGUAGE_KEY__FORM_TREATMENT_FINISH__PRINT_BIEU_MAU_KHAC" xml:space="preserve">
     <value>In bệnh án</value>
   </data>

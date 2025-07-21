@@ -25,6 +25,11 @@ namespace HIS.Desktop.ApiConsumer
 {
     public partial class HisRequestUriStore
     {
+        public const string HIS_ICD_SKIN_PATHOLOGY_CREATE = "api/HisIcdSkinPathology/Create";
+        public const string HIS_ICD_SKIN_PATHOLOGY_DELETE = "api/HisIcdSkinPathology/Delete";
+        public const string HIS_ICD_SKIN_PATHOLOGY_UPDATE = "api/HisIcdSkinPathology/Update";
+        public const string HIS_ICD_SKIN_PATHOLOGY_GET = "api/HisIcdSkinPathology/Get";
+
         public const string HIS_CACHE_MONITOR_CREATE = "api/HisCacheMonitor/Create";
         public const string HIS_CACHE_MONITOR_DELETE = "api/HisCacheMonitor/Delete";
         public const string HIS_CACHE_MONITOR_UPDATE = "api/HisCacheMonitor/Update";

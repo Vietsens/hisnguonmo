@@ -15,46 +15,47 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+using DevExpress.XtraEditors;
+using DevExpress.XtraEditors.Controls;
+using DevExpress.XtraEditors.DXErrorProvider;
+using DevExpress.XtraEditors.ViewInfo;
+using DevExpress.XtraGrid.Columns;
+using DevExpress.XtraLayout;
+using HID.EFMODEL.DataModels;
+using HID.Filter;
 using HIS.Desktop.ApiConsumer;
+using HIS.Desktop.Common;
+using HIS.Desktop.LibraryMessage;
 using HIS.Desktop.LocalStorage.BackendData;
+using HIS.Desktop.LocalStorage.ConfigApplication;
+using HIS.Desktop.LocalStorage.HisConfig;
+using HIS.Desktop.LocalStorage.LocalData;
+using HIS.Desktop.Plugins.PatientInfo;
+using HIS.Desktop.Plugins.PatientInfo.MoRong;
+using HIS.Desktop.Plugins.PatientInfo.Resources;
+using HIS.Desktop.Utility;
+using HIS.UC.WorkPlace;
 using Inventec.Common.Adapter;
+using Inventec.Common.Logging;
 using Inventec.Core;
+using Inventec.Desktop.Common.Controls.ValidationRule;
+using Inventec.Desktop.Common.LanguageManager;
+using Inventec.Desktop.Common.LocalStorage.Location;
+using Inventec.Desktop.Common.Message;
+using MOS.EFMODEL.DataModels;
 using MOS.SDO;
+using SDA.EFMODEL.DataModels;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Configuration;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Resources;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using HIS.Desktop.LocalStorage.LocalData;
-using HIS.Desktop.Plugins.PatientInfo;
-using DevExpress.XtraEditors.Controls;
-using DevExpress.XtraGrid.Columns;
-using HIS.UC.WorkPlace;
-using Inventec.Desktop.Common.Message;
-using Inventec.Common.Logging;
-using MOS.EFMODEL.DataModels;
-using DevExpress.XtraEditors;
-using DevExpress.XtraEditors.ViewInfo;
-using Inventec.Desktop.Common.LocalStorage.Location;
-using System.Configuration;
-using System.Resources;
-using Inventec.Desktop.Common.LanguageManager;
-using HIS.Desktop.Plugins.PatientInfo.Resources;
-using HIS.Desktop.Common;
-using SDA.EFMODEL.DataModels;
-using DevExpress.XtraEditors.DXErrorProvider;
-using Inventec.Desktop.Common.Controls.ValidationRule;
-using HIS.Desktop.LibraryMessage;
-using HIS.Desktop.Utility;
-using HIS.Desktop.LocalStorage.ConfigApplication;
-using HIS.Desktop.LocalStorage.HisConfig;
-using HIS.Desktop.Plugins.PatientInfo.MoRong;
-using HID.EFMODEL.DataModels;
-using HID.Filter;
 
 namespace HIS.Desktop.Plugins.PatientInfo
 {
@@ -67,7 +68,6 @@ namespace HIS.Desktop.Plugins.PatientInfo
         internal int ActionType = 0;// No action    
         V_HIS_PATIENT currentPatient;
         V_HIS_PATIENT delegatePatient;
-        HisTreatmentPatientInfoSDO treatmentPatientInfoSdo;
         internal MOS.EFMODEL.DataModels.V_HIS_PATIENT currentVHisPatientDTO = null;
         internal int PatientRowCount = 0;
         int positionHandleControlPatientInfo = -1;
@@ -80,6 +80,17 @@ namespace HIS.Desktop.Plugins.PatientInfo
         List<HisPatientSDO> currentSearchedPatients;
         List<HID_HOUSEHOLD_RELATION> houseHoldRelation;
         //bool validate;
+        List<HIS.Desktop.Library.CacheClient.ControlStateRDO> currentControlStateRDO;
+        HIS.Desktop.Library.CacheClient.ControlStateWorker controlStateWorker;
+        /// <summary>
+        /// Tất cả tỉnh bao gồm có huyện và không huyện
+        /// </summary>
+        List<SDA.EFMODEL.DataModels.V_SDA_PROVINCE> vSdaProvince;
+        /// <summary>
+        /// Tất cả xã bao gồm có huyện và không huyện
+        /// </summary>
+        List<SDA.EFMODEL.DataModels.V_SDA_COMMUNE> vSdaCommune;
+
         #endregion
 
         #region Load
@@ -88,11 +99,14 @@ namespace HIS.Desktop.Plugins.PatientInfo
         {
             try
             {
+                vSdaProvince = BackendDataWorker.Get<SDA.EFMODEL.DataModels.V_SDA_PROVINCE>();
+                vSdaCommune = BackendDataWorker.Get<SDA.EFMODEL.DataModels.V_SDA_COMMUNE>();
                 InitializeComponent();
                 this.CheDoHienThiNoiLamViecManHinhDangKyTiepDon = ConfigApplicationWorker.Get<long>("CONFIG_KEY__HIEN_THI_NOI_LAM_VIEC_THEO_DINH_DANG_MAN_HINH_DANG_KY");
                 this.currentPatient = _currentPatient;
                 this.currentVHisPatientDTO = _currentPatient;
                 this.refeshReference = _refeshReference;
+                InitControlState();
                 InitWorkPlaceControl();
             }
             catch (Exception ex)
@@ -105,8 +119,11 @@ namespace HIS.Desktop.Plugins.PatientInfo
         {
             try
             {
+                vSdaProvince = BackendDataWorker.Get<SDA.EFMODEL.DataModels.V_SDA_PROVINCE>();
+                vSdaCommune = BackendDataWorker.Get<SDA.EFMODEL.DataModels.V_SDA_COMMUNE>();
                 InitializeComponent();
                 this.CheDoHienThiNoiLamViecManHinhDangKyTiepDon = ConfigApplicationWorker.Get<long>("CONFIG_KEY__HIEN_THI_NOI_LAM_VIEC_THEO_DINH_DANG_MAN_HINH_DANG_KY");
+                InitControlState();
                 InitWorkPlaceControl();
             }
             catch (Exception ex)
@@ -239,6 +256,10 @@ namespace HIS.Desktop.Plugins.PatientInfo
         {
             try
             {
+                if (patientDto == null)
+                {
+                    patientDto = new V_HIS_PATIENT();
+                }
                 txtCMNDRelative.Text = patientDto.RELATIVE_CMND_NUMBER;
                 txtPatientName.Text = patientDto.VIR_PATIENT_NAME;
                 if (patientDto.DOB > 0)
@@ -279,7 +300,7 @@ namespace HIS.Desktop.Plugins.PatientInfo
                     txtCareer.Text = career.CAREER_CODE;
                 }
 
-                var province = BackendDataWorker.Get<SDA.EFMODEL.DataModels.V_SDA_PROVINCE>().FirstOrDefault(o => o.PROVINCE_NAME == patientDto.PROVINCE_NAME);
+                var province = this.vSdaProvince.FirstOrDefault(o => o.PROVINCE_NAME == patientDto.PROVINCE_NAME);
                 if (province != null)
                 {
                     cboProvince.EditValue = province.PROVINCE_CODE;
@@ -291,16 +312,16 @@ namespace HIS.Desktop.Plugins.PatientInfo
                 {
                     cboDistricts.EditValue = district.DISTRICT_CODE;
                     txtDistricts.Text = district.DISTRICT_CODE;
-                    LoadCommuneCombo("", district.DISTRICT_CODE, false);
+                    LoadCommuneCombo("", district.DISTRICT_CODE, false, txtProvince.Text);
                 }
-                var commune = BackendDataWorker.Get<SDA.EFMODEL.DataModels.V_SDA_COMMUNE>().FirstOrDefault(o => (o.INITIAL_NAME + " " + o.COMMUNE_NAME) == patientDto.COMMUNE_NAME && (o.DISTRICT_INITIAL_NAME + " " + o.DISTRICT_NAME) == patientDto.DISTRICT_NAME);
+                var commune = vSdaCommune.FirstOrDefault(o => (o.INITIAL_NAME + " " + o.COMMUNE_NAME) == patientDto.COMMUNE_NAME && (o.DISTRICT_INITIAL_NAME + " " + o.DISTRICT_NAME) == patientDto.DISTRICT_NAME);
                 if (commune != null)
                 {
                     cboCommune.EditValue = commune.COMMUNE_CODE;
                     txtCommune.Text = commune.COMMUNE_CODE;
                 }
 
-                var provinceKS = BackendDataWorker.Get<SDA.EFMODEL.DataModels.V_SDA_PROVINCE>().FirstOrDefault(o => o.PROVINCE_NAME == patientDto.BORN_PROVINCE_NAME);
+                var provinceKS = this.vSdaProvince.FirstOrDefault(o => o.PROVINCE_NAME == patientDto.BORN_PROVINCE_NAME);
                 if (provinceKS != null)
                 {
                     cboTinhKhaiSinh.EditValue = provinceKS.PROVINCE_CODE;
@@ -308,21 +329,21 @@ namespace HIS.Desktop.Plugins.PatientInfo
                     //LoadDistrictsCombo("", province.PROVINCE_CODE, false);
                 }
 
-                var provinceHT = BackendDataWorker.Get<SDA.EFMODEL.DataModels.V_SDA_PROVINCE>().FirstOrDefault(o => o.PROVINCE_NAME == patientDto.HT_PROVINCE_NAME);
+                var provinceHT = this.vSdaProvince.FirstOrDefault(o => o.PROVINCE_NAME == patientDto.HT_PROVINCE_NAME);
                 if (provinceHT != null)
                 {
-                    cboTinhHienTai.EditValue = provinceHT.PROVINCE_NAME;
+                    cboTinhHienTai.EditValue = provinceHT.PROVINCE_CODE;
                     txtTinhHienTai.Text = provinceHT.PROVINCE_CODE;
                     LoadDistrictsComboHT("", provinceHT.PROVINCE_CODE, false);
                 }
                 var districtHT = BackendDataWorker.Get<SDA.EFMODEL.DataModels.V_SDA_DISTRICT>().FirstOrDefault(o => o.DISTRICT_NAME == patientDto.HT_DISTRICT_NAME && provinceHT != null && o.PROVINCE_CODE == provinceHT.PROVINCE_CODE);
                 if (districtHT != null)
                 {
-                    cboHuyenHienTai.EditValue = districtHT.DISTRICT_NAME;
+                    cboHuyenHienTai.EditValue = districtHT.DISTRICT_CODE;
                     txtHuyenHienTai.Text = districtHT.DISTRICT_CODE;
-                    LoadCommuneComboHT("", districtHT.DISTRICT_CODE, false);
+                    LoadCommuneComboHT("", districtHT.DISTRICT_CODE, false, txtTinhHienTai.Text);
                 }
-                var communeHT = BackendDataWorker.Get<SDA.EFMODEL.DataModels.V_SDA_COMMUNE>().FirstOrDefault(o => o.COMMUNE_NAME == patientDto.HT_COMMUNE_NAME && districtHT != null && o.DISTRICT_CODE == districtHT.DISTRICT_CODE);
+                var communeHT = vSdaCommune.FirstOrDefault(o => o.COMMUNE_NAME == patientDto.HT_COMMUNE_NAME && districtHT != null && o.DISTRICT_CODE == districtHT.DISTRICT_CODE);
                 if (communeHT != null)
                 {
                     cboXaHienTai.EditValue = communeHT.COMMUNE_CODE;
@@ -410,15 +431,101 @@ namespace HIS.Desktop.Plugins.PatientInfo
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
+        private bool IsAddressLevel2()
+        {
+            return toggleSwitch1 != null && toggleSwitch1.IsOn;
+        }
+        private List<SDA.EFMODEL.DataModels.V_SDA_PROVINCE> GetProvincesForCurrentToggle(string searchCode = null)
+        {
+            //var allProvinces = BackendDataWorker.Get<SDA.EFMODEL.DataModels.V_SDA_PROVINCE>();
+            //if (IsAddressLevel2())
+            //{
+            //    var filtered = allProvinces
+            //        .Where(p => p.IS_NO_DISTRICT == 1 && p.IS_ACTIVE == 1)
+            //        .ToList();
+            //    if (!string.IsNullOrEmpty(searchCode))
+            //        filtered = filtered.Where(p => (p.PROVINCE_CODE ?? "").Contains(searchCode)).ToList();
+            //    return filtered;
+            //}
+            //else
+            //{
+            //    if (!string.IsNullOrEmpty(searchCode))
+            //    {
+            //        return allProvinces.Where(p => (p.PROVINCE_CODE ?? "").Contains(searchCode)).ToList();
+            //    }
+            //    else
+            //    {
+            //        return allProvinces;
+            //    }
+            //}
+            var filtered = this.vSdaProvince
+                    .Where(p => (IsAddressLevel2() ? p.IS_NO_DISTRICT == 1 : p.IS_NO_DISTRICT != 1) && p.IS_ACTIVE == 1)
+                    .ToList();
+            if (!string.IsNullOrEmpty(searchCode))
+                filtered = filtered.Where(p => (p.PROVINCE_CODE ?? "").ToUpper().Contains(searchCode)).ToList();
+            return filtered;
+        }
+        private List<SDA.EFMODEL.DataModels.V_SDA_COMMUNE> GetCommunesForCurrentToggle(string provinceCode, string districtCode, string searchCode)
+        {
+            var filtered = vSdaCommune.Where(c => c.IS_ACTIVE == 1 && (IsAddressLevel2() ? c.IS_NO_DISTRICT == 1 : c.IS_NO_DISTRICT != 1)).ToList();
+            if (!string.IsNullOrEmpty(searchCode))
+            {
+                filtered = filtered.Where(c => (c.COMMUNE_CODE ?? "").Contains(searchCode)).ToList();
+
+            }
+            if (IsAddressLevel2())
+            {
+                if (!string.IsNullOrEmpty(provinceCode))
+                {
+                    filtered = filtered.Where(c => c.PROVINCE_CODE == provinceCode || c.PROVINCE_CODE == provinceCode).ToList();
+                }
+            }
+            else
+            {
+                filtered = filtered.Where(o => (string.IsNullOrEmpty(districtCode) || o.DISTRICT_CODE == districtCode)).ToList() ;
+            }
+            return filtered.ToList();
+        }
 
         public void FillDataToControlsForm()
         {
             try
             {
                 FillDataToLookupedit(this.cboGender1, "GENDER_NAME", "ID", "GENDER_CODE", BackendDataWorker.Get<HIS_GENDER>());
-                FillDataToLookupedit(this.cboProvince, "PROVINCE_NAME", "PROVINCE_CODE", "PROVINCE_CODE", BackendDataWorker.Get<V_SDA_PROVINCE>());
-                FillDataToLookupedit(this.cboTinhKhaiSinh, "PROVINCE_NAME", "PROVINCE_CODE", "PROVINCE_CODE", BackendDataWorker.Get<V_SDA_PROVINCE>());
-                FillDataToLookupedit(this.cboTinhHienTai, "PROVINCE_NAME", "PROVINCE_NAME", "PROVINCE_CODE", BackendDataWorker.Get<V_SDA_PROVINCE>());
+                //
+                cboCommune.Properties.DisplayMember = "RENDERER_COMMUNE_NAME";
+                cboCommune.Properties.ValueMember = "COMMUNE_CODE";
+                cboCommune.Properties.ForceInitialize();
+
+                cboCommune.Properties.Columns.Clear();
+                cboCommune.Properties.Columns.Add(new LookUpColumnInfo("COMMUNE_CODE", "", 100));
+                cboCommune.Properties.Columns.Add(new LookUpColumnInfo("INITIAL_NAME", "", 100));
+                cboCommune.Properties.Columns.Add(new LookUpColumnInfo("RENDERER_COMMUNE_NAME", "", 200));
+
+                cboCommune.Properties.ShowHeader = false;
+                cboCommune.Properties.ImmediatePopup = true;
+                cboCommune.Properties.DropDownRows = 20;
+                cboCommune.Properties.PopupWidth = 300;
+                //
+                cboXaHienTai.Properties.DisplayMember = "COMMUNE_NAME";
+                cboXaHienTai.Properties.ValueMember = "COMMUNE_CODE";
+                cboXaHienTai.Properties.ForceInitialize();
+
+                cboXaHienTai.Properties.Columns.Clear();
+                cboXaHienTai.Properties.Columns.Add(new LookUpColumnInfo("COMMUNE_CODE", "", 100));
+                cboXaHienTai.Properties.Columns.Add(new LookUpColumnInfo("COMMUNE_NAME", "", 200));
+
+                cboXaHienTai.Properties.ShowHeader = false;
+                cboXaHienTai.Properties.ImmediatePopup = true;
+                cboXaHienTai.Properties.DropDownRows = 20;
+                cboXaHienTai.Properties.PopupWidth = 300;
+                //
+                FillDataToLookupedit(this.cboProvince, "PROVINCE_NAME", "PROVINCE_CODE", "PROVINCE_CODE", new List<SDA.EFMODEL.DataModels.V_SDA_PROVINCE>());
+                FillDataToLookupedit(this.cboTinhKhaiSinh, "PROVINCE_NAME", "PROVINCE_CODE", "PROVINCE_CODE", new List<SDA.EFMODEL.DataModels.V_SDA_PROVINCE>());
+                FillDataToLookupedit(this.cboTinhHienTai, "PROVINCE_NAME", "PROVINCE_CODE", "PROVINCE_CODE", new List<SDA.EFMODEL.DataModels.V_SDA_PROVINCE>());
+                //
+                LoadPDataToControlsFormByToggle();
+                //
                 FillDataToLookupedit(this.cboCareer, "CAREER_NAME", "ID", "CAREER_CODE", BackendDataWorker.Get<HIS_CAREER>());
                 FillDataToLookupedit(this.cboEthnic, "ETHNIC_NAME", "ETHNIC_CODE", "ETHNIC_CODE", BackendDataWorker.Get<SDA_ETHNIC>());
                 FillDataToLookupedit(this.cboNation, "NATIONAL_NAME", "NATIONAL_CODE", "NATIONAL_CODE", BackendDataWorker.Get<SDA_NATIONAL>());
@@ -427,6 +534,27 @@ namespace HIS.Desktop.Plugins.PatientInfo
                 FillDataToLookupedit1(this.cboNhomMau, "BLOOD_ABO_CODE", "BLOOD_ABO_CODE", BackendDataWorker.Get<HIS_BLOOD_ABO>());
                 FillDataToLookupedit1(this.cboRh, "BLOOD_RH_CODE", "BLOOD_RH_CODE", BackendDataWorker.Get<HIS_BLOOD_RH>());
 
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        public void LoadPDataToControlsFormByToggle()
+        {
+            try
+            {
+                txtProvince.Text = "";
+                txtTinhHienTai.Text = "";
+                txtTinhKhaiSinh.Text = "";
+                LoadProvinceCombo("", false);
+                LoadProvinceComboHT("", false);
+                LoadProvinceComboKS("", false);
+                LoadDistrictsCombo("", "", false);
+                LoadDistrictsComboHT("", "", false);
+                LoadCommuneCombo("", "", false, "");
+                LoadCommuneComboHT("", "", false, "");
             }
             catch (Exception ex)
             {
@@ -743,8 +871,9 @@ namespace HIS.Desktop.Plugins.PatientInfo
                     txtDistricts.Text = "";
                     cboCommune.EditValue = null;
                     txtCommune.Text = "";
+                    LoadProvinceCombo("", false);
                     LoadDistrictsCombo("", null, false);
-                    LoadCommuneCombo("", null, false);
+                    LoadCommuneCombo("", null, false, "");
                     cboProvince.Properties.Buttons[1].Visible = false;
 
                 }
@@ -765,7 +894,7 @@ namespace HIS.Desktop.Plugins.PatientInfo
                     txtDistricts.Text = "";
                     cboCommune.EditValue = null;
                     txtCommune.Text = "";
-                    LoadCommuneCombo("", null, false);
+                    LoadCommuneCombo("", null, false, "");
                     cboDistricts.Properties.Buttons[1].Visible = false;
                 }
             }
@@ -832,7 +961,7 @@ namespace HIS.Desktop.Plugins.PatientInfo
                 {
                     cboDistricts.Properties.Buttons[1].Visible = true;
                 }
-                
+
             }
             catch (Exception ex)
             {
@@ -1216,7 +1345,9 @@ namespace HIS.Desktop.Plugins.PatientInfo
                 {
                     if (cboTinhKhaiSinh.EditValue != null && cboTinhKhaiSinh.EditValue != cboTinhKhaiSinh.OldEditValue)
                     {
-                        SDA.EFMODEL.DataModels.V_SDA_PROVINCE province = BackendDataWorker.Get<SDA.EFMODEL.DataModels.V_SDA_PROVINCE>().SingleOrDefault(o => o.PROVINCE_CODE == cboTinhKhaiSinh.EditValue.ToString());
+                        //SDA.EFMODEL.DataModels.V_SDA_PROVINCE province = BackendDataWorker.Get<SDA.EFMODEL.DataModels.V_SDA_PROVINCE>().SingleOrDefault(o => o.PROVINCE_CODE == cboTinhKhaiSinh.EditValue.ToString());
+                        var cbo = (sender as DevExpress.XtraEditors.LookUpEdit);
+                        SDA.EFMODEL.DataModels.V_SDA_PROVINCE province = GetProvincesForCurrentToggle(cbo.EditValue.ToString()).FirstOrDefault();
                         if (province != null)
                         {
                             //LoadDistrictsCombo("", province.PROVINCE_CODE, false);
@@ -1305,17 +1436,35 @@ namespace HIS.Desktop.Plugins.PatientInfo
             {
                 if (e.CloseMode == PopupCloseMode.Normal)
                 {
-                    if (cboTinhHienTai.EditValue != null && cboTinhHienTai.EditValue != cboProvince.OldEditValue)
+                    if (cboTinhHienTai.EditValue != null)
                     {
-                        SDA.EFMODEL.DataModels.V_SDA_PROVINCE province = BackendDataWorker.Get<SDA.EFMODEL.DataModels.V_SDA_PROVINCE>().SingleOrDefault(o => o.PROVINCE_NAME == cboTinhHienTai.EditValue.ToString());
+                        //SDA.EFMODEL.DataModels.V_SDA_PROVINCE province = BackendDataWorker.Get<SDA.EFMODEL.DataModels.V_SDA_PROVINCE>().SingleOrDefault(o => o.PROVINCE_NAME == cboTinhHienTai.EditValue.ToString());
+                        var cbo = (sender as DevExpress.XtraEditors.LookUpEdit);
+                        SDA.EFMODEL.DataModels.V_SDA_PROVINCE province = GetProvincesForCurrentToggle(cbo.EditValue.ToString()).FirstOrDefault();
                         if (province != null)
                         {
-                            LoadDistrictsComboHT("", province.PROVINCE_CODE, false);
+                            if (province.PROVINCE_CODE != txtTinhHienTai.Text)
+                            {
+                                txtXaHienTai.EditValue = null;
+                                txtHuyenHienTai.EditValue = null;
+                                LoadDistrictsComboHT("", province.PROVINCE_CODE, true);
+                            }
                             txtTinhHienTai.Text = province.PROVINCE_CODE;
                         }
                     }
-                    txtHuyenHienTai.Text = "";
-                    txtHuyenHienTai.Focus();
+                    else
+                    {
+                        txtXaHienTai.EditValue = null;
+                        txtHuyenHienTai.EditValue = null;
+                        if (this.IsAddressLevel2())
+                        {
+                            txtXaHienTai.Focus();
+                        }
+                        else
+                        {
+                            txtHuyenHienTai.Focus();
+                        }
+                    }
                 }
             }
             catch (Exception ex)
@@ -1352,17 +1501,18 @@ namespace HIS.Desktop.Plugins.PatientInfo
                         string provinceCode = "";
                         if (cboTinhHienTai.EditValue != null)
                         {
-                            SDA.EFMODEL.DataModels.V_SDA_PROVINCE province = BackendDataWorker.Get<SDA.EFMODEL.DataModels.V_SDA_PROVINCE>().SingleOrDefault(o => o.PROVINCE_NAME == cboTinhHienTai.EditValue.ToString());
+                            SDA.EFMODEL.DataModels.V_SDA_PROVINCE province = this.GetProvincesForCurrentToggle(cboTinhHienTai.EditValue.ToString()).FirstOrDefault();
                             if (province != null)
                             {
                                 provinceCode = province.PROVINCE_CODE;
                                 LoadDistrictsComboHT(strValue.ToUpper(), provinceCode, true);
                             }
-                            else {
+                            else
+                            {
                                 DevExpress.XtraEditors.XtraMessageBox.Show("Không có thông tin tỉnh hiện tại", "Thông báo");
                             }
                         }
-                        
+
                     }
                     else
                     {
@@ -1383,22 +1533,26 @@ namespace HIS.Desktop.Plugins.PatientInfo
             {
                 if (e.CloseMode == PopupCloseMode.Normal)
                 {
-                    if (cboHuyenHienTai.EditValue != null && cboHuyenHienTai.EditValue != cboDistricts.OldEditValue)
+                    if (cboHuyenHienTai.EditValue != null)
                     {
                         //string str = cboDistricts.EditValue.ToString();
                         SDA.EFMODEL.DataModels.V_SDA_DISTRICT district = BackendDataWorker.Get<SDA.EFMODEL.DataModels.V_SDA_DISTRICT>()
-                            .FirstOrDefault(o => o.DISTRICT_NAME == cboHuyenHienTai.EditValue.ToString()
-                                && (String.IsNullOrEmpty((cboTinhHienTai.EditValue ?? "").ToString()) || o.PROVINCE_NAME == (cboTinhHienTai.EditValue ?? "").ToString()));
+                            .FirstOrDefault(o => o.DISTRICT_CODE == cboHuyenHienTai.EditValue.ToString()
+                                && (String.IsNullOrEmpty((cboTinhHienTai.EditValue ?? "").ToString()) || o.PROVINCE_CODE == (cboTinhHienTai.EditValue ?? "").ToString()));
                         if (district != null)
                         {
                             if (String.IsNullOrEmpty((cboTinhHienTai.EditValue ?? "").ToString()))
                             {
                                 cboTinhHienTai.EditValue = district.PROVINCE_CODE;
                             }
-                            LoadCommuneComboHT("", district.DISTRICT_CODE, false);
                             txtHuyenHienTai.Text = district.DISTRICT_CODE;
-                            cboXaHienTai.EditValue = null;
-                            txtXaHienTai.Text = "";
+                            List<SDA.EFMODEL.DataModels.V_SDA_COMMUNE> communes = GetCommunesForCurrentToggle(district.PROVINCE_CODE, district.DISTRICT_CODE, txtXaHienTai.Text);
+                            if (communes == null || communes.Count == 0)
+                            {
+                                cboXaHienTai.EditValue = null;
+                                txtXaHienTai.Text = "";
+                            }
+                            LoadCommuneComboHT("", district.DISTRICT_CODE, true, "");
                         }
                     }
                     FocusMoveText(this.txtXaHienTai);
@@ -1435,17 +1589,28 @@ namespace HIS.Desktop.Plugins.PatientInfo
                     if (!string.IsNullOrEmpty(txtXaHienTai.Text))
                     {
                         string strValue = (sender as DevExpress.XtraEditors.TextEdit).Text;
-                        string districtCode = "";
-                        if (cboHuyenHienTai.EditValue != null)
+                        //string districtCode = "";
+                        //if (cboHuyenHienTai.EditValue != null)
+                        //{
+                        //    SDA.EFMODEL.DataModels.V_SDA_DISTRICT district = BackendDataWorker.Get<SDA.EFMODEL.DataModels.V_SDA_DISTRICT>()
+                        //    .SingleOrDefault(o => o.DISTRICT_NAME == cboHuyenHienTai.EditValue.ToString());
+                        //    districtCode = district.DISTRICT_CODE;
+                        //    LoadCommuneComboHT(strValue.ToUpper(), districtCode, true, cboTinhHienTai.EditValue?.ToString());
+                        //}
+                        //else
+                        //{
+                        //    DevExpress.XtraEditors.XtraMessageBox.Show("Không có thông tin huyện hiện tại", "Thông báo");
+                        //}
+                        SDA.EFMODEL.DataModels.V_SDA_COMMUNE commune = GetCommunesForCurrentToggle(cboTinhHienTai.EditValue?.ToString(), cboHuyenHienTai.EditValue?.ToString(), strValue).FirstOrDefault();
+                        if (commune != null)
                         {
-                            SDA.EFMODEL.DataModels.V_SDA_DISTRICT district = BackendDataWorker.Get<SDA.EFMODEL.DataModels.V_SDA_DISTRICT>()
-                            .SingleOrDefault(o => o.DISTRICT_NAME == cboHuyenHienTai.EditValue.ToString());
-                            districtCode = district.DISTRICT_CODE;
-                            LoadCommuneComboHT(strValue.ToUpper(), districtCode, true);
+                            cboXaHienTai.EditValue = commune.COMMUNE_CODE;
+                            this.XaHienTaiRevert(commune);
                         }
                         else
                         {
-                            DevExpress.XtraEditors.XtraMessageBox.Show("Không có thông tin huyện hiện tại", "Thông báo");
+                            cboXaHienTai.EditValue = null;
+                            DevExpress.XtraEditors.XtraMessageBox.Show("Mã xã không tìm thấy", "Thông báo");
                         }
                         //string strValue = (sender as DevExpress.XtraEditors.TextEdit).Text;
                         //string districtCode = "";
@@ -1464,7 +1629,7 @@ namespace HIS.Desktop.Plugins.PatientInfo
                         //        DevExpress.XtraEditors.XtraMessageBox.Show("Không có thông tin huyện hiện tại", "Thông báo");
                         //    }
                         //}
-                        
+
                     }
                     else
                     {
@@ -1487,23 +1652,16 @@ namespace HIS.Desktop.Plugins.PatientInfo
                 {
                     if (cboXaHienTai.EditValue != null)
                     {
-                        SDA.EFMODEL.DataModels.V_SDA_COMMUNE commune = BackendDataWorker.Get<SDA.EFMODEL.DataModels.V_SDA_COMMUNE>()
-                            .FirstOrDefault(o =>
-                                o.COMMUNE_CODE == cboXaHienTai.EditValue.ToString()
-                                    && (String.IsNullOrEmpty((cboHuyenHienTai.EditValue ?? "").ToString()) || o.DISTRICT_NAME == (cboHuyenHienTai.EditValue ?? "").ToString())
-                                );
+                        //SDA.EFMODEL.DataModels.V_SDA_COMMUNE commune = BackendDataWorker.Get<SDA.EFMODEL.DataModels.V_SDA_COMMUNE>()
+                        //    .FirstOrDefault(o =>
+                        //        o.COMMUNE_CODE == cboXaHienTai.EditValue.ToString()
+                        //            && (String.IsNullOrEmpty((cboHuyenHienTai.EditValue ?? "").ToString()) || o.DISTRICT_NAME == (cboHuyenHienTai.EditValue ?? "").ToString())
+                        //        );
+                        SDA.EFMODEL.DataModels.V_SDA_COMMUNE commune = GetCommunesForCurrentToggle("", "", cboXaHienTai.EditValue.ToString()).FirstOrDefault();
                         if (commune != null)
                         {
                             txtXaHienTai.Text = commune.COMMUNE_CODE;
-                            if (String.IsNullOrEmpty((cboTinhHienTai.EditValue ?? "").ToString()) && String.IsNullOrEmpty((cboHuyenHienTai.EditValue ?? "").ToString()))
-                            {
-                                cboHuyenHienTai.EditValue = commune.DISTRICT_CODE;
-                                SDA.EFMODEL.DataModels.V_SDA_DISTRICT district = BackendDataWorker.Get<SDA.EFMODEL.DataModels.V_SDA_DISTRICT>().Where(o => o.ID == commune.DISTRICT_ID).FirstOrDefault();
-                                if (district != null)
-                                {
-                                    cboTinhHienTai.EditValue = district.PROVINCE_CODE;
-                                }
-                            }
+                            this.XaHienTaiRevert(commune);
                         }
                     }
                     FocusMoveText(this.txtDiaChiHienTai);
@@ -1762,6 +1920,7 @@ namespace HIS.Desktop.Plugins.PatientInfo
             {
                 if (e.Button.Kind == ButtonPredefines.Delete)
                 {
+                    cboTinhKhaiSinh.Properties.DataSource = GetProvincesForCurrentToggle("");
                     cboTinhKhaiSinh.EditValue = null;
                     txtTinhKhaiSinh.Text = "";
                     cboTinhKhaiSinh.Properties.Buttons[1].Visible = false;
@@ -1804,8 +1963,9 @@ namespace HIS.Desktop.Plugins.PatientInfo
                     txtHuyenHienTai.Text = "";
                     cboXaHienTai.EditValue = null;
                     txtXaHienTai.Text = "";
+                    LoadProvinceComboHT("", false);
                     LoadDistrictsComboHT("", null, false);
-                    LoadCommuneComboHT("", null, false);
+                    LoadCommuneComboHT("", null, false, "");
                     cboTinhHienTai.Properties.Buttons[1].Visible = false;
                 }
             }
@@ -1826,7 +1986,7 @@ namespace HIS.Desktop.Plugins.PatientInfo
                     txtHuyenHienTai.Text = "";
                     cboXaHienTai.EditValue = null;
                     txtXaHienTai.Text = "";
-                    LoadCommuneComboHT("", null, false);
+                    LoadCommuneComboHT("", null, false, "");
                     cboHuyenHienTai.Properties.Buttons[1].Visible = false;
                 }
             }
@@ -2188,9 +2348,11 @@ namespace HIS.Desktop.Plugins.PatientInfo
                     txtCareer.Text = career.CAREER_CODE;
                 }
 
-                var province = BackendDataWorker.Get<SDA.EFMODEL.DataModels.V_SDA_PROVINCE>().FirstOrDefault(o => o.PROVINCE_NAME == patientDto.PROVINCE_NAME);
+                var province = this.vSdaProvince.FirstOrDefault(o => o.PROVINCE_NAME == patientDto.PROVINCE_NAME);
                 if (province != null)
                 {
+                    this.toggleSwitch1.IsOn = province.IS_NO_DISTRICT == 1;
+                    LoadPDataToControlsFormByToggle();
                     cboProvince.EditValue = province.PROVINCE_CODE;
                     txtProvince.Text = province.PROVINCE_CODE;
                     LoadDistrictsCombo("", province.PROVINCE_CODE, false);
@@ -2200,9 +2362,9 @@ namespace HIS.Desktop.Plugins.PatientInfo
                 {
                     cboDistricts.EditValue = district.DISTRICT_CODE;
                     txtDistricts.Text = district.DISTRICT_CODE;
-                    LoadCommuneCombo("", district.DISTRICT_CODE, false);
+                    LoadCommuneCombo("", district.DISTRICT_CODE, false, txtProvince.Text);
                 }
-                var commune = BackendDataWorker.Get<SDA.EFMODEL.DataModels.V_SDA_COMMUNE>().FirstOrDefault(o => (o.INITIAL_NAME + " " + o.COMMUNE_NAME) == patientDto.COMMUNE_NAME && (o.DISTRICT_INITIAL_NAME + " " + o.DISTRICT_NAME) == patientDto.DISTRICT_NAME);
+                var commune = vSdaCommune.FirstOrDefault(o => (o.INITIAL_NAME + " " + o.COMMUNE_NAME) == patientDto.COMMUNE_NAME && (o.DISTRICT_INITIAL_NAME + " " + o.DISTRICT_NAME) == patientDto.DISTRICT_NAME);
                 if (commune != null)
                 {
                     cboCommune.EditValue = commune.COMMUNE_CODE;
@@ -2239,7 +2401,14 @@ namespace HIS.Desktop.Plugins.PatientInfo
                 {
                     workPlaceProcessor.SetValue(ucWorkPlace, patientDto.WORK_PLACE);
                 }
-
+                if (patientDto.BORN_PROVINCE_CODE != null)
+                {
+                    var provinceKS = this.vSdaProvince.FirstOrDefault(o => o.PROVINCE_NAME == patientDto.BORN_PROVINCE_CODE);
+                    if (provinceKS != null)
+                    {
+                        this.toggleSwitch1.IsOn = provinceKS.IS_NO_DISTRICT == 1;
+                    }
+                }
                 txtTinhKhaiSinh.Text = patientDto.BORN_PROVINCE_CODE;
                 cboTinhKhaiSinh.EditValue = patientDto.BORN_PROVINCE_CODE;
 
@@ -2256,6 +2425,7 @@ namespace HIS.Desktop.Plugins.PatientInfo
                 var provineHt = BackendDataWorker.Get<V_SDA_PROVINCE>().FirstOrDefault(o => o.PROVINCE_NAME == patientDto.HT_PROVINCE_NAME);
                 if (provineHt != null)
                 {
+                    this.toggleSwitch1.IsOn = provineHt.IS_NO_DISTRICT == 1;
                     txtTinhHienTai.Text = provineHt.PROVINCE_CODE;
                     cboTinhHienTai.EditValue = provineHt.PROVINCE_CODE;
                 }
@@ -2345,9 +2515,100 @@ namespace HIS.Desktop.Plugins.PatientInfo
             }
         }
 
-        
+        private void toggleSwitch1_Toggled(object sender, EventArgs e)
+        {
+            var toggleSwitch = sender as DevExpress.XtraEditors.ToggleSwitch;
+            if (toggleSwitch != null)
+            {
+                ////var width = emptySpaceItem_add.Width;
+                //// Xã
+                //{
+                //    lciCommune.SizeConstraintsType = SizeConstraintsType.Custom;
+                //    layoutControlItem16.MinSize = layoutControlItem9.Size;
+                //    layoutControlItem16.MaxSize = layoutControlItem9.Size;
+                //    layoutControlItem16.SizeConstraintsType = SizeConstraintsType.Default;
+                //    //
+                //    lciCommune.SizeConstraintsType = SizeConstraintsType.Custom;
+                //    lciCommune.MinSize = lciCareer.Size;
+                //    lciCommune.MaxSize = lciCareer.Size;
+                //    lciCommune.SizeConstraintsType = SizeConstraintsType.Default;
 
-        
+                //}
+                ////
+                if (toggleSwitch.IsOn)
+                {
+                    toggleSwitch.ToolTip = "Sử dụng cấu trúc địa chỉ Xã - Huyện - Tỉnh";
+                    //
+                    lciDistricts.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+                    lciDistricts2.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+
+                    lciHuyenHT1.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+                    lciHuyenHT2.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+                    //// địa chỉ
+                    //lciAdress.Width = layoutControlItem19.Width;
+                    //// tỉnh
+                    //{
+                    //        layoutControlItem14.Size = layoutControlItem2.Size;
+                    //    //layoutControlItem14.MaxSize = layoutControlItem2.Size;
+                    //    lciProvince.Size = lciEthnic.Size;
+                    //    //lciProvince.MaxSize = lciEthnic.Size;
+                    //}
+
+                }
+                else
+                {
+                    toggleSwitch.ToolTip = "Sử dụng cấu trúc địa chỉ Xã - Tỉnh (không có Huyện)";
+                    //
+                    lciDistricts.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
+                    lciDistricts2.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
+                    //
+                    lciHuyenHT1.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
+                    lciHuyenHT2.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
+                    //
+                    //// địa chỉ
+                    //lciAdress.Width = layoutControlItem19.Width - toggleSwitch.Width;
+                    //layoutControlItem33.Width = layoutControlItem19.Width - lciAdress.Width;
+
+
+                }
+                // Reload province and commune combos
+                LoadPDataToControlsFormByToggle();
+                //LoadProvinceCombo(txtProvince.Text.Trim().ToUpper(), false);
+                //LoadProvinceComboHT(txtTinhHienTai.Text.Trim().ToUpper(), false);
+                //LoadProvinceComboKS(txtTinhKhaiSinh.Text.Trim().ToUpper(), false);
+                // Save state as before...
+                try
+                {
+                    WaitingManager.Show();
+                    HIS.Desktop.Library.CacheClient.ControlStateRDO csAddOrUpdate = (this.currentControlStateRDO != null && this.currentControlStateRDO.Count > 0) ? this.currentControlStateRDO.Where(o => o.KEY == toggleSwitch.Name && o.MODULE_LINK == "HIS.Desktop.Plugins.PatientInfo").FirstOrDefault() : null;
+                    if (csAddOrUpdate != null)
+                    {
+                        csAddOrUpdate.VALUE = (toggleSwitch.IsOn ? "1" : "");
+                    }
+                    else
+                    {
+                        csAddOrUpdate = new HIS.Desktop.Library.CacheClient.ControlStateRDO();
+                        csAddOrUpdate.MODULE_LINK = "HIS.Desktop.Plugins.PatientInfo";
+                        csAddOrUpdate.KEY = toggleSwitch.Name;
+                        csAddOrUpdate.VALUE = (toggleSwitch.IsOn ? "1" : "");
+                        if (this.currentControlStateRDO == null)
+                            this.currentControlStateRDO = new List<HIS.Desktop.Library.CacheClient.ControlStateRDO>();
+                        this.currentControlStateRDO.Add(csAddOrUpdate);
+                    }
+                    this.controlStateWorker.SetData(this.currentControlStateRDO);
+                    WaitingManager.Hide();
+                }
+                catch (Exception ex)
+                {
+                    WaitingManager.Hide();
+                    Inventec.Common.Logging.LogSystem.Warn(ex);
+                }
+            }
+        }
+
+
+
+
 
         //private void ResetFormData1()
         //{

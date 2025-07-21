@@ -680,10 +680,18 @@ namespace HIS.Desktop.Plugins.HisImportKsk.FormLoad
                     {
                         error += "Bắt buộc nhập mã quốc gia|";
                     }
-
+                    bool isNoDistrict = true;
+                    if (!string.IsNullOrEmpty(item.DISTRICT_CODE_STR))
+                    {
+                        isNoDistrict = false;
+                    }
                     if (!string.IsNullOrEmpty(item.PROVINCE_CODE_STR))
                     {
-                        var lstSdaProvince = BackendDataWorker.Get<SDA_PROVINCE>().Where(o => o.IS_ACTIVE == 1 && o.PROVINCE_CODE.ToLower() == item.PROVINCE_CODE_STR.ToLower()).ToList();
+                        var lstSdaProvince = BackendDataWorker.Get<SDA_PROVINCE>().Where(o =>
+                        (isNoDistrict ? o.IS_NO_DISTRICT == 1 : o.IS_NO_DISTRICT != 1) &&
+                        o.IS_ACTIVE == 1 
+                        && o.PROVINCE_CODE.ToLower() == item.PROVINCE_CODE_STR.ToLower()
+                        ).ToList();
 
                         if (lstSdaProvince != null && lstSdaProvince.Count > 0)
                         {
@@ -729,69 +737,165 @@ namespace HIS.Desktop.Plugins.HisImportKsk.FormLoad
                     }
                     if (!string.IsNullOrEmpty(item.DISTRICT_CODE_STR))
                     {
-                        var lstSdaDistrict = BackendDataWorker.Get<SDA_DISTRICT>().Where(o => o.IS_ACTIVE == 1 && o.DISTRICT_CODE.ToLower() == item.DISTRICT_CODE_STR.ToLower()).ToList();
+                        // Chuẩn hóa mã huyện trước khi tìm kiếm
+                        string normDistCode = item.DISTRICT_CODE_STR.Trim();
 
-                        if (lstSdaDistrict != null && lstSdaDistrict.Count > 0)
+                        // Tìm tất cả huyện có mã trùng khớp (không phân biệt chữ hoa/thường)
+                        var districtCandidates = BackendDataWorker.Get<SDA.EFMODEL.DataModels.SDA_DISTRICT>()
+                            .Where(d => d.IS_ACTIVE == IMSys.DbConfig.SDA_RS.COMMON.IS_ACTIVE__TRUE)
+                            .ToList()
+                            .Where(d => string.Equals(d.DISTRICT_CODE.Trim(), normDistCode, StringComparison.OrdinalIgnoreCase))
+                            .ToList();
+
+                        if (districtCandidates.Any())
                         {
                             if (kskAdo.provinceId.HasValue)
                             {
-                                kskAdo.districtId = lstSdaDistrict.FirstOrDefault().ID;
-                                var sdaDistrict = lstSdaDistrict.Where(o => o.PROVINCE_ID == kskAdo.provinceId.Value).ToList();
-                                if (sdaDistrict != null && sdaDistrict.Count > 0)
+                                // Kiểm tra huyện có thuộc tỉnh đã chọn không
+                                var matchingDistrict = districtCandidates.FirstOrDefault
+                                   (d => d.PROVINCE_ID == kskAdo.provinceId.Value);
+
+                                if (matchingDistrict != null)
                                 {
-                                    kskAdo.districtId = sdaDistrict.FirstOrDefault().ID;
-                                    kskAdo.DISTRICT_CODE = sdaDistrict.FirstOrDefault().DISTRICT_CODE;
-                                    kskAdo.DISTRICT_NAME = sdaDistrict.FirstOrDefault().DISTRICT_NAME;
+                                    // Gán đầy đủ thông tin huyện khi tìm thấy huyện hợp lệ
+                                    kskAdo.districtId = matchingDistrict.ID;
+                                    kskAdo.DISTRICT_CODE = matchingDistrict.DISTRICT_CODE;
+                                    kskAdo.DISTRICT_NAME = matchingDistrict.DISTRICT_NAME;
+
                                 }
                                 else
                                 {
-                                    error += string.Format("Huyện {0} có mã {1} không thuộc tỉnh {2}|", lstSdaDistrict.FirstOrDefault().DISTRICT_NAME, lstSdaDistrict.FirstOrDefault().DISTRICT_CODE, kskAdo.PROVINCE_NAME);
+                                    var provinceNames = string.Join(", ",
+                                        districtCandidates.Select(d => $"{d.ID}").Distinct());
+
+                                    Inventec.Common.Logging.LogSystem.Debug(
+                                        $"Huyện '{normDistCode}' không thuộc tỉnh '{kskAdo.PROVINCE_NAME}' " +
+                                        $"(ID tỉnh: {kskAdo.provinceId}). ID các huyện tìm thấy: {provinceNames}");
+
+                                    error += $"Huyện {normDistCode} không thuộc tỉnh {kskAdo.PROVINCE_NAME}. Vui lòng kiểm tra lại.|";
                                 }
                             }
                             else
                             {
-                                error += "Nhập mã huyện nhưng chưa nhập mã tỉnh|";
-                                kskAdo.districtId = lstSdaDistrict.FirstOrDefault().ID;
-                                kskAdo.DISTRICT_CODE = lstSdaDistrict.FirstOrDefault().DISTRICT_CODE;
-                                kskAdo.DISTRICT_NAME = lstSdaDistrict.FirstOrDefault().DISTRICT_NAME;
+                                // Khi chưa có tỉnh, vẫn gán huyện và yêu cầu chọn tỉnh
+                                var firstDistrict = districtCandidates[0];
+                                kskAdo.districtId = firstDistrict.ID;
+                                kskAdo.DISTRICT_CODE = firstDistrict.DISTRICT_CODE;
+                                kskAdo.DISTRICT_NAME = firstDistrict.DISTRICT_NAME;
+                                error += "Vui lòng nhập mã tỉnh khi nhập mã huyện.|";
                             }
                         }
                         else
                         {
-                            kskAdo.DISTRICT_CODE_STR = item.DISTRICT_CODE_STR;
-                            error += string.Format("Mã huyện {0} không có trong danh mục|", item.DISTRICT_CODE_STR);
+                            // Huyện không tồn tại
+                            kskAdo.DISTRICT_CODE_STR = normDistCode;
+                            error += $"Mã huyện '{normDistCode}' không tồn tại trong danh mục.|";
                         }
                     }
+                    else if (kskAdo.provinceId.HasValue)
+                    {
+                        // Không có mã huyện - tìm tỉnh có IS_NO_DISTRICT = 1
+                        var noDistrictProvince = BackendDataWorker.Get<SDA.EFMODEL.DataModels.SDA_PROVINCE>()
+                            .Where(p => p.IS_ACTIVE == IMSys.DbConfig.SDA_RS.COMMON.IS_ACTIVE__TRUE &&
+                                       (isNoDistrict ? p.IS_NO_DISTRICT == 1 : p.IS_NO_DISTRICT != 1) &&
+                                       p.ID == kskAdo.provinceId.Value)
+                            .FirstOrDefault();
+
+                        if (noDistrictProvince != null)
+                        {
+                            // Sử dụng tỉnh không có huyện
+                            kskAdo.provinceId = noDistrictProvince.ID;
+                            kskAdo.PROVINCE_CODE = noDistrictProvince.PROVINCE_CODE;
+                            kskAdo.PROVINCE_NAME = noDistrictProvince.PROVINCE_NAME;
+                            Inventec.Common.Logging.LogSystem.Debug($"Sử dụng tỉnh không có huyện: {noDistrictProvince.PROVINCE_NAME}");
+                        }
+                    }
+
                     if (!string.IsNullOrEmpty(item.COMMUNE_CODE_STR))
                     {
-                        var lstSdaCommune = BackendDataWorker.Get<SDA_COMMUNE>().Where(o => o.IS_ACTIVE == 1 && o.COMMUNE_CODE.ToLower() == item.COMMUNE_CODE_STR.ToLower()).ToList();
+                        string normCommCode = item.COMMUNE_CODE_STR.ToUpper().Trim();
 
-                        if (lstSdaCommune != null && lstSdaCommune.Count > 0)
+                        var communeCandidates = BackendDataWorker.Get<SDA.EFMODEL.DataModels.V_SDA_COMMUNE>()
+                            .Where(c => 
+                                    c.IS_ACTIVE == IMSys.DbConfig.SDA_RS.COMMON.IS_ACTIVE__TRUE 
+                                    &&
+                                    (isNoDistrict ? c.IS_NO_DISTRICT == 1 : c.IS_NO_DISTRICT != 1)
+                                    &&
+                                    (c.COMMUNE_CODE??"").ToUpper().Trim() == normCommCode
+                            )
+                            .ToList();
+                        if (isNoDistrict)
                         {
+                            communeCandidates = communeCandidates.Where(w => w.PROVINCE_CODE == kskAdo.PROVINCE_CODE).ToList();
+                        }
+                        else
+                        {
+                            communeCandidates = communeCandidates.Where(w => w.PROVINCE_CODE == kskAdo.PROVINCE_CODE && w.DISTRICT_CODE == kskAdo.DISTRICT_CODE).ToList();
+                        }
+                        if (communeCandidates.Any())
+                        {
+                            var firstCommune = communeCandidates[0];
+                            bool communeFound = false;
+
+                            // Kiểm tra xã thuộc huyện
                             if (kskAdo.districtId.HasValue)
                             {
-                                var sdaCommune = lstSdaCommune.Where(o => o.DISTRICT_ID == kskAdo.districtId.Value).ToList();
-                                if (sdaCommune != null && sdaCommune.Count > 0)
+                                var communeInDistrict = communeCandidates
+                                    .FirstOrDefault(c => c.DISTRICT_ID == kskAdo.districtId.Value);
+
+                                if (communeInDistrict != null)
                                 {
-                                    kskAdo.COMMUNE_CODE = sdaCommune.FirstOrDefault().COMMUNE_CODE;
-                                    kskAdo.COMMUNE_NAME = sdaCommune.FirstOrDefault().COMMUNE_NAME;
+                                    // Xã thuộc huyện đã chọn
+                                    kskAdo.COMMUNE_CODE = communeInDistrict.COMMUNE_CODE;
+                                    kskAdo.COMMUNE_NAME = communeInDistrict.COMMUNE_NAME;
+                                    communeFound = true;
                                 }
                                 else
                                 {
-                                    error += string.Format("Xã {0} có mã {1} không thuộc huyện {2}|", lstSdaCommune.FirstOrDefault().COMMUNE_NAME, lstSdaCommune.FirstOrDefault().COMMUNE_CODE, kskAdo.DISTRICT_NAME);
+                                    // Xã không thuộc huyện đã chọn
+                                    kskAdo.COMMUNE_CODE = firstCommune.COMMUNE_CODE;
+                                    kskAdo.COMMUNE_NAME = firstCommune.COMMUNE_NAME;
+
+                                    var distNames = string.Join(", ",
+                                        communeCandidates.Select(c => $"{c.DISTRICT_ID}").Distinct());
+                                    Inventec.Common.Logging.LogSystem.Debug(
+                                        $"Xã '{firstCommune.COMMUNE_NAME}' không thuộc huyện " +
+                                        $"ID:{kskAdo.districtId}. Xã thuộc các huyện: {distNames}");
+
+                                    error += $"Xã {firstCommune.COMMUNE_NAME} không thuộc huyện {kskAdo.DISTRICT_NAME}.|";
+                                }
+                            }
+                            // Kiểm tra xã thuộc trực tiếp tỉnh (khi không có huyện)
+                            else if (kskAdo.provinceId.HasValue)
+                            {
+                                var communeInProvince = communeCandidates
+                                    .FirstOrDefault(c => c.PROVINCE_ID == kskAdo.provinceId.Value);
+
+                                if (communeInProvince != null)
+                                {
+                                    kskAdo.COMMUNE_CODE = communeInProvince.COMMUNE_CODE;
+                                    kskAdo.COMMUNE_NAME = communeInProvince.COMMUNE_NAME;
+                                    communeFound = true;
+                                }
+                                else
+                                {
+                                    kskAdo.COMMUNE_CODE = firstCommune.COMMUNE_CODE;
+                                    kskAdo.COMMUNE_NAME = firstCommune.COMMUNE_NAME;
+                                    error += $"Xã {firstCommune.COMMUNE_NAME} không thuộc tỉnh {kskAdo.PROVINCE_NAME}.|";
                                 }
                             }
                             else
                             {
-                                error += "Nhập mã xã nhưng chưa nhập mã huyện|";
-                                kskAdo.COMMUNE_CODE = lstSdaCommune.FirstOrDefault().COMMUNE_CODE;
-                                kskAdo.COMMUNE_NAME = lstSdaCommune.FirstOrDefault().COMMUNE_NAME;
+                                // Không có thông tin tỉnh/huyện
+                                kskAdo.COMMUNE_CODE = firstCommune.COMMUNE_CODE;
+                                kskAdo.COMMUNE_NAME = firstCommune.COMMUNE_NAME;
+                                error += "Cần nhập mã tỉnh hoặc mã huyện khi nhập mã xã.|";
                             }
                         }
                         else
                         {
-                            kskAdo.COMMUNE_CODE_STR = item.COMMUNE_CODE_STR;
-                            error += string.Format("Mã xã {0} không có trong danh mục|", item.COMMUNE_CODE_STR);
+                            kskAdo.COMMUNE_CODE_STR = normCommCode;
+                            error += $"Mã xã '{normCommCode}' không tồn tại trong danh mục.|";
                         }
                     }
 
@@ -805,7 +909,6 @@ namespace HIS.Desktop.Plugins.HisImportKsk.FormLoad
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
-
         }
 
         private void CheckHour(string input, ref string check)

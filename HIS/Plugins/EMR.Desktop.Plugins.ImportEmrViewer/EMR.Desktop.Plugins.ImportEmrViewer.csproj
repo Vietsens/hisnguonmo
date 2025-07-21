@@ -138,8 +138,9 @@
     <Reference Include="Inventec.Desktop.Common.Message">
       <HintPath>..\..\..\..\..\his_push\histest\x64\ReferencedAssemblies\Inventec.Desktop.Common.Message.dll</HintPath>
     </Reference>
-    <Reference Include="Inventec.Desktop.Common.Modules">
-      <HintPath>..\..\..\..\..\his_push\histest\x64\ReferencedAssemblies\Inventec.Desktop.Common.Modules.dll</HintPath>
+    <Reference Include="Inventec.Desktop.Common.Modules, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\lib\Inventec.Desktop\Inventec.Desktop.Common.Module\Inventec.Desktop.Common.Modules.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Desktop.Core">
       <HintPath>..\..\..\..\lib\Inventec.Desktop\Inventec.Desktop.Core\Inventec.Desktop.Core.dll</HintPath>

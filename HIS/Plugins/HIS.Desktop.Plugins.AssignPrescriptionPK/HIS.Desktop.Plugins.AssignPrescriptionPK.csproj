@@ -423,6 +423,7 @@
     <Compile Include="ADO\HtuADO.cs" />
     <Compile Include="ADO\IcdCheckADO.cs" />
     <Compile Include="ADO\IcdServiceADO.cs" />
+    <Compile Include="ADO\LoaiPhieuInADO.cs" />
     <Compile Include="ADO\MedicineAcinInteractiveWarnADO.cs" />
     <Compile Include="ADO\DMediStock1ADO.cs" />
     <Compile Include="ADO\ICDADO.cs" />

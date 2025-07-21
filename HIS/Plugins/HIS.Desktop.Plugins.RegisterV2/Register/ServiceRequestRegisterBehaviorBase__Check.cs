@@ -114,7 +114,8 @@ namespace HIS.Desktop.Plugins.RegisterV2.Register
                 inValid = inValid && (patientProfile.HisPatientTypeAlter != null);
                 inValid = inValid && (this.IsChild());
                 inValid = inValid && (patientProfile.HisPatientTypeAlter.HAS_BIRTH_CERTIFICATE == MOS.LibraryHein.Bhyt.HeinHasBirthCertificate.HeinHasBirthCertificateCode.TRUE);
-                inValid = inValid && (String.IsNullOrEmpty(patientProfile.DistrictCode) || String.IsNullOrEmpty(patientProfile.ProvinceCode));
+                inValid = inValid && (
+                    (String.IsNullOrEmpty(patientProfile.DistrictCode) && String.IsNullOrEmpty(patientProfile.HisPatient.COMMUNE_CODE)) || String.IsNullOrEmpty(patientProfile.ProvinceCode));
             }
             catch (Exception ex)
             {
@@ -306,7 +307,8 @@ namespace HIS.Desktop.Plugins.RegisterV2.Register
                 inValidChild = inValidChild && (patientProfile.HisPatientTypeAlter != null);
                 inValidChild = inValidChild && (this.IsChild());
                 inValidChild = inValidChild && (patientProfile.HisPatientTypeAlter.HAS_BIRTH_CERTIFICATE == MOS.LibraryHein.Bhyt.HeinHasBirthCertificate.HeinHasBirthCertificateCode.TRUE);
-                inValidChild = inValidChild && (String.IsNullOrEmpty(patientProfile.DistrictCode) || String.IsNullOrEmpty(patientProfile.ProvinceCode));
+                inValidChild = inValidChild && (
+                    (String.IsNullOrEmpty(patientProfile.DistrictCode) && String.IsNullOrEmpty(patientProfile.HisPatient.COMMUNE_CODE)) || String.IsNullOrEmpty(patientProfile.ProvinceCode));
                 if (inValidChild)
                 {
                     param.Messages.Add(ResourceMessage.TreEmCoGiayKhaiSinhPhaiNhapThongTinHanhChinh);

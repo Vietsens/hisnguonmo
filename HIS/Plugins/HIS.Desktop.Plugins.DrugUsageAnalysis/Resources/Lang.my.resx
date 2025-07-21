@@ -1,0 +1,312 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="btnRefresh.Text" xml:space="preserve">
+    <value>RedO (Ctrl R)</value>
+  </data>
+  <data name="btnSearch.Text" xml:space="preserve">
+    <value>ရှာပါ (Ctrl F)</value>
+  </data>
+  <data name="gridColumn1.Caption" xml:space="preserve">
+    <value>စဆဲတီ</value>
+  </data>
+  <data name="gridColumn10.Caption" xml:space="preserve">
+    <value>ကိုယ်ရေးရာဇ 0 င်နံပါတ်</value>
+  </data>
+  <data name="gridColumn11.Caption" xml:space="preserve">
+    <value>နိဂုံးရက်စွဲ</value>
+  </data>
+  <data name="gridColumn12.Caption" xml:space="preserve">
+    <value>အထူးဆေးကုဌါန</value>
+  </data>
+  <data name="gridColumn13.Caption" xml:space="preserve">
+    <value>ကောက်ချက်ချ</value>
+  </data>
+  <data name="gridColumn14.Caption" xml:space="preserve">
+    <value>အခွင့်</value>
+  </data>
+  <data name="gridColumn15.Caption" xml:space="preserve">
+    <value>ဆရာဝန်ကနိဂုံးချုပ်</value>
+  </data>
+  <data name="gridColumn16.Caption" xml:space="preserve">
+    <value>Ma y command ကို</value>
+  </data>
+  <data name="gridColumn17.Caption" xml:space="preserve">
+    <value>အရက်အကြောင်းအရာ</value>
+  </data>
+  <data name="gridColumn18.Caption" xml:space="preserve">
+    <value>ဆေး</value>
+  </data>
+  <data name="gridColumn19.Caption" xml:space="preserve">
+    <value>ထပ်တူပြုခြင်းအချိန်</value>
+  </data>
+  <data name="gridColumn20.Caption" xml:space="preserve">
+    <value>ထပ်တူပြုခြင်း၏အကြောင်းပြချက်</value>
+  </data>
+  <data name="gridColumn4.Caption" xml:space="preserve">
+    <value>အခေြအနေ</value>
+  </data>
+  <data name="gridColumn5.Caption" xml:space="preserve">
+    <value>ကုသမှုကုဒ်</value>
+  </data>
+  <data name="gridColumn6.Caption" xml:space="preserve">
+    <value>လူနာကုဒ်</value>
+  </data>
+  <data name="gridColumn7.Caption" xml:space="preserve">
+    <value>လူနာအမည်</value>
+  </data>
+  <data name="gridColumn8.Caption" xml:space="preserve">
+    <value>မွေးနေ့</value>
+  </data>
+  <data name="gridColumn9.Caption" xml:space="preserve">
+    <value>လိင်</value>
+  </data>
+  <data name="layoutControlItem8.Text" xml:space="preserve">
+    <value>မှ:</value>
+  </data>
+  <data name="layoutControlItem9.Text" xml:space="preserve">
+    <value>ရောက်လာ:</value>
+  </data>
+  <data name="navBarGroup1.Caption" xml:space="preserve">
+    <value>နိဂုံးရက်စွဲ</value>
+  </data>
+  <data name="navBarGroup2.Caption" xml:space="preserve">
+    <value>အခေြအနေ</value>
+  </data>
+  <data name="navBarGroup3.Caption" xml:space="preserve">
+    <value>အထူးဆေးကုဌါန</value>
+  </data>
+  <data name="txtKeyWord.Properties.NullValuePrompt" xml:space="preserve">
+    <value>သော့ချက်စာလုံးများကိုရှာပါ</value>
+  </data>
+  <data name="txtKskDriverCode.Properties.NullValuePrompt" xml:space="preserve">
+    <value>ကိုယ်ရေးရာဇ 0 င်နံပါတ်</value>
+  </data>
+  <data name="txtPatientCode.Properties.NullValuePrompt" xml:space="preserve">
+    <value>လူနာကုဒ်</value>
+  </data>
+  <data name="txtServiceReqCode.Properties.NullValuePrompt" xml:space="preserve">
+    <value>Ma y command ကို</value>
+  </data>
+  <data name="txtTreatmentCode.Properties.NullValuePrompt" xml:space="preserve">
+    <value>ကုသမှုကုဒ်</value>
+  </data>
+  <data name="UCDrugUsageAnalysis.bar1.Text" xml:space="preserve">
+    <value>ကိရိယာများ</value>
+  </data>
+  <data name="UCDrugUsageAnalysis.bbtnRefresh.Caption" xml:space="preserve">
+    <value>RedO (Ctrl R)</value>
+  </data>
+  <data name="UCDrugUsageAnalysis.bbtnSearch.Caption" xml:space="preserve">
+    <value>ရှာပါ (Ctrl F)</value>
+  </data>
+  <data name="UCDrugUsageAnalysis.btnRefresh.Text" xml:space="preserve">
+    <value>RedO (Ctrl R)</value>
+  </data>
+  <data name="UCDrugUsageAnalysis.btnSearch.Text" xml:space="preserve">
+    <value>ရှာပါ (Ctrl F)</value>
+  </data>
+  <data name="UCDrugUsageAnalysis.gridColumn1.Caption" xml:space="preserve">
+    <value>စဆဲတီ</value>
+  </data>
+  <data name="UCDrugUsageAnalysis.gridColumn11.Caption" xml:space="preserve">
+    <value>အင်စတီကျု၏နေ့စွဲ</value>
+  </data>
+  <data name="UCDrugUsageAnalysis.gridColumn12.Caption" xml:space="preserve">
+    <value>ဌါန</value>
+  </data>
+  <data name="UCDrugUsageAnalysis.gridColumn13.Caption" xml:space="preserve">
+    <value>ကိုင်တွယ်ခြင်း</value>
+  </data>
+  <data name="UCDrugUsageAnalysis.gridColumn5.Caption" xml:space="preserve">
+    <value>ကုသမှုကုဒ်</value>
+  </data>
+  <data name="UCDrugUsageAnalysis.gridColumn6.Caption" xml:space="preserve">
+    <value>လူနာကုဒ်</value>
+  </data>
+  <data name="UCDrugUsageAnalysis.gridColumn7.Caption" xml:space="preserve">
+    <value>လူနာအမည်</value>
+  </data>
+  <data name="UCDrugUsageAnalysis.gridColumn8.Caption" xml:space="preserve">
+    <value>မွေးနေ့</value>
+  </data>
+  <data name="UCDrugUsageAnalysis.gridColumn9.Caption" xml:space="preserve">
+    <value>လိင်</value>
+  </data>
+  <data name="UCDrugUsageAnalysis.label1.Text" xml:space="preserve">
+    <value>ချိန်ညှိချက် -</value>
+  </data>
+  <data name="UCDrugUsageAnalysis.layoutControl1.Text" xml:space="preserve">
+    <value>layoutcontrol1</value>
+  </data>
+  <data name="UCDrugUsageAnalysis.layoutControlGroup2.Text" xml:space="preserve">
+    <value>စာရင်း</value>
+  </data>
+  <data name="UCDrugUsageAnalysis.layoutControlGroup3.Text" xml:space="preserve">
+    <value>အမိန့်</value>
+  </data>
+  <data name="UCDrugUsageAnalysis.layoutControlGroup4.Text" xml:space="preserve">
+    <value>ရှာဖေှခြင်း</value>
+  </data>
+  <data name="UCDrugUsageAnalysis.layoutControlItem10.Text" xml:space="preserve">
+    <value>လူနာအရာဝတ်ထု:</value>
+  </data>
+  <data name="UCDrugUsageAnalysis.layoutControlItem11.Text" xml:space="preserve">
+    <value>နတ်ဆိုးများ</value>
+  </data>
+  <data name="UCDrugUsageAnalysis.layoutControlItem13.Text" xml:space="preserve">
+    <value>ကုသမှုဌာန:</value>
+  </data>
+  <data name="UCDrugUsageAnalysis.layoutControlItem5.Text" xml:space="preserve">
+    <value>မှ:</value>
+  </data>
+  <data name="UCDrugUsageAnalysis.layoutControlItem6.Text" xml:space="preserve">
+    <value>ရောက်လာ:</value>
+  </data>
+  <data name="UCDrugUsageAnalysis.treeColDateTime.Caption" xml:space="preserve">
+    <value>အချိန်</value>
+  </data>
+  <data name="UCDrugUsageAnalysis.treeListColumn1.Caption" xml:space="preserve">
+    <value>စဆဲတီ</value>
+  </data>
+  <data name="UCDrugUsageAnalysis.treeListColumn2.Caption" xml:space="preserve">
+    <value>မဲ</value>
+  </data>
+  <data name="UCDrugUsageAnalysis.treeListColumn3.Caption" xml:space="preserve">
+    <value>အခေြအနေ</value>
+  </data>
+  <data name="UCDrugUsageAnalysis.treeListColumn4.Caption" xml:space="preserve">
+    <value>အဓိကရောဂါ</value>
+  </data>
+  <data name="UCDrugUsageAnalysis.treeListColumn5.Caption" xml:space="preserve">
+    <value>အရန်ရောဂါရှာဖွေတွေ့ရှိ</value>
+  </data>
+  <data name="UCDrugUsageAnalysis.treeListColumn6.Caption" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="UCDrugUsageAnalysis.txtKeyWord.Properties.NullValuePrompt" xml:space="preserve">
+    <value>သော့ချက်စာလုံးများကိုရှာပါ</value>
+  </data>
+  <data name="UCDrugUsageAnalysis.txtPatientCode.Properties.NullValuePrompt" xml:space="preserve">
+    <value>လူနာကုဒ်</value>
+  </data>
+  <data name="UCDrugUsageAnalysis.txtTreatmentCode.Properties.NullValuePrompt" xml:space="preserve">
+    <value>ကုသမှုကုဒ်</value>
+  </data>
+</root>

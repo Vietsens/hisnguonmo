@@ -570,6 +570,33 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
             return valid;
         }
 
+        private bool CheckIsCheckServiceFollowWhenOut()
+        {
+            bool valid = true;
+            try
+            {
+                if (ConfigKey.IsCheckServiceFollowWhenOut == "1" && this.currentHisTreatment.TDL_PATIENT_TYPE_ID == Config.ConfigKey.PatientTypeId__BHYT)
+                {
+                    CommonParam param = new CommonParam();
+                    var result = new BackendAdapter(param).Post<bool>("api/HisTreatment/CheckServiceFollow", ApiConsumers.MosConsumer, currentHisTreatment.ID, param);
+                    
+                    if (result == false)
+                    {
+                        if (XtraMessageBox.Show(String.Format(ResourceMessage.BanCoMuonTiepTuc, param.GetMessage()), ResourceMessage.ThongBao, MessageBoxButtons.YesNo, DevExpress.Utils.DefaultBoolean.True) != System.Windows.Forms.DialogResult.Yes)
+                        {
+                            return false;
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+                valid = false;
+            }
+            return valid;
+        }
+
         private bool CheckUnassignTrackingServiceReq_ForSave(ValidationDataType validationDataType, ref List<WarningADO> listWarningADO)
         {
             bool valid = true;

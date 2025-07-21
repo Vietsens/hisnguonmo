@@ -1979,18 +1979,8 @@ namespace HIS.Desktop.Plugins.TransactionRepay
                 List<object> listArgs = new List<object>();
                 var Histreatment = new HIS_TREATMENT();
                 Inventec.Common.Mapper.DataObjectMapper.Map<HIS_TREATMENT>(Histreatment, this.Treatment);
-                //try
-                //{
-                //    CommonParam param = new CommonParam();
-                //    HisTreatmentFilter filter = new HisTreatmentFilter();
-                    //filter.ID = this.treatmentId;
-                //    Histreatment = new BackendAdapter(param).Get<List<HIS_TREATMENT>>("api/HisTreatment/Get", ApiConsumers.MosConsumer, filter, param).FirstOrDefault();
-                //}
-                //catch (Exception ex)
-                //{
-                //    Inventec.Common.Logging.LogSystem.Error(ex);
-                //}
                 listArgs.Add(Histreatment);
+                listArgs.Add(this.currentPatientBankAccount);
                 listArgs.Add((DelegateSelectData)onSendDelegate);
                 var extenceInstance = HIS.Desktop.Utility.PluginInstance.GetPluginInstance(PluginInstance.GetModuleWithWorkingRoom(moduleData, this.currentModule.RoomId, this.currentModule.RoomTypeId), listArgs);
                 if (extenceInstance == null) throw new ArgumentNullException("Khoi tao moduleData that bai. extenceInstance = null");

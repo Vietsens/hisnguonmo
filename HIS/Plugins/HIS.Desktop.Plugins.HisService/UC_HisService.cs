@@ -91,6 +91,7 @@ namespace HIS.Desktop.Plugins.HisService
         List<V_HIS_SERVICE_PATY> listVServicePatyExport = new List<V_HIS_SERVICE_PATY>();
         List<V_HIS_SERVICE> listParentService;
         List<SAR.EFMODEL.DataModels.SAR_PRINT_TYPE> ListPrintType;
+        List<MOS.EFMODEL.DataModels.HIS_EMR_FORM> listEmrType;
         private System.Windows.Forms.SaveFileDialog SaveFileExportExcel = new SaveFileDialog();
         #endregion
 
@@ -1884,16 +1885,35 @@ namespace HIS.Desktop.Plugins.HisService
             }
         }
 
+        //private void InitComboPrintType()
+        //{
+        //    try
+        //    {
+        //        var data = BackendDataWorker.Get<SAR.EFMODEL.DataModels.SAR_PRINT_TYPE>().Where(o => o.IS_ACTIVE == 1 && o.IS_ALLOW_ATTACH_PRINT == 1).OrderBy(o => o.PRINT_TYPE_CODE).ToList();
+        //        ListPrintType = data;
+        //        List<ColumnInfo> columnInfos = new List<ColumnInfo>();
+        //        columnInfos.Add(new ColumnInfo("PRINT_TYPE_CODE", "", 100, 1));
+        //        columnInfos.Add(new ColumnInfo("PRINT_TYPE_NAME", "", 250, 2));
+        //        ControlEditorADO controlEditorADO = new ControlEditorADO("PRINT_TYPE_NAME", "PRINT_TYPE_CODE", columnInfos, false, 350);
+        //        controlEditorADO.ImmediatePopup = true;
+        //        ControlEditorLoader.Load(cboAttachAssignPrintTypeCode, data, controlEditorADO);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Inventec.Common.Logging.LogSystem.Warn(ex);
+        //    }
+        //}
+
         private void InitComboPrintType()
         {
             try
             {
-                var data = BackendDataWorker.Get<SAR.EFMODEL.DataModels.SAR_PRINT_TYPE>().Where(o => o.IS_ACTIVE == 1 && o.IS_ALLOW_ATTACH_PRINT == 1).OrderBy(o => o.PRINT_TYPE_CODE).ToList();
-                ListPrintType = data;
+                var data = BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_EMR_FORM>().Where(o => o.IS_ACTIVE == 1 ).OrderBy(o => o.EMR_FORM_CODE).ToList();
+                listEmrType = data;
                 List<ColumnInfo> columnInfos = new List<ColumnInfo>();
-                columnInfos.Add(new ColumnInfo("PRINT_TYPE_CODE", "", 100, 1));
-                columnInfos.Add(new ColumnInfo("PRINT_TYPE_NAME", "", 250, 2));
-                ControlEditorADO controlEditorADO = new ControlEditorADO("PRINT_TYPE_NAME", "PRINT_TYPE_CODE", columnInfos, false, 350);
+                columnInfos.Add(new ColumnInfo("EMR_FORM_CODE", "", 100, 1));
+                columnInfos.Add(new ColumnInfo("EMR_FORM_NAME", "", 250, 2));
+                ControlEditorADO controlEditorADO = new ControlEditorADO("EMR_FORM_NAME", "EMR_FORM_CODE", columnInfos, false, 350);
                 controlEditorADO.ImmediatePopup = true;
                 ControlEditorLoader.Load(cboAttachAssignPrintTypeCode, data, controlEditorADO);
             }
@@ -1902,7 +1922,6 @@ namespace HIS.Desktop.Plugins.HisService
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
-
         private void InitComboPetroleum()
         {
             try

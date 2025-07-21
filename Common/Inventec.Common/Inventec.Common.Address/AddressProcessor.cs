@@ -59,8 +59,8 @@ namespace Inventec.Common.Address
                 if (!String.IsNullOrWhiteSpace(fullAddress))
                 {
                     result.Address = fullAddress.Trim(',', '-', ' ');
-                    V_SDA_PROVINCE province = null;
-                    V_SDA_DISTRICT district = null;
+                    List<V_SDA_PROVINCE> provinces = null;
+                    List<V_SDA_DISTRICT> district = null;
                     V_SDA_COMMUNE commune = null;
                     string[] splitA = result.Address.Split(',', '-');
                     string[] joinsAdd = new string[splitA.Length];
@@ -68,16 +68,14 @@ namespace Inventec.Common.Address
                     {
                         string path = splitA[i];
                         string checkData = string.Join(" ", path.Split(' ').Where(o => !String.IsNullOrWhiteSpace(o)));
-                        if (province == null)
+                        if (provinces == null)
                         {
                             //tỉnh không thêm dấu phẩy ở 2 đầu để so sánh dữ liệu
                             string lowerPath = checkData.ToLower();
-                            province = VSdaProvince.FirstOrDefault(o => lowerPath.Contains(o.PROVINCE_NAME.ToLower()));
+                            provinces = VSdaProvince.Where(o => lowerPath.Contains(o.PROVINCE_NAME.ToLower())).ToList();
 
-                            if (province != null)
+                            if (provinces != null && provinces.Count > 0)
                             {
-                                result.ProvinceCode = province.PROVINCE_CODE;
-                                result.ProvinceName = province.PROVINCE_NAME;
                                 continue;
                             }
                         }
@@ -87,64 +85,62 @@ namespace Inventec.Common.Address
                             string lowerPath = string.Format(formatCheck, checkData.ToLower());
                             List<V_SDA_DISTRICT> districts = new List<V_SDA_DISTRICT>();
                             districts.AddRange(VSdaDistrict);
-                            if (province != null)
+                            if (provinces != null)
                             {
-                                districts = districts.Where(o => o.PROVINCE_ID == province.ID).ToList();
+                                List<long> provinceIds = provinces.Select(s => s.ID).ToList();
+                                districts = districts.Where(o => provinceIds.Contains(o.PROVINCE_ID)).ToList();
                             }
 
-                            //Lấy ra tất cả các trường hợp
+                            //Lấy ra tất cả các trường hợp chính xác theo đơn vị hành chính
                             List<V_SDA_DISTRICT> existDistrict = districts.Where(o => lowerPath.Contains(string.Format(formatCheck, o.DISTRICT_NAME.ToLower())) || lowerPath.Contains(string.Format(formatCheck, (o.INITIAL_NAME ?? "").ToLower() + " " + o.DISTRICT_NAME.ToLower()))).ToList();
 
-                            //khác đơn vị hành chính sẽ không lấy được.
+                            //nếu tìm được luôn 1 huyện thì bỏ qua kiểm tra xã ở dưới vì có thể là địa chỉ 3 cấp
+                            if (existDistrict.Count == 1)
+                            {
+                                district = existDistrict;
+                                continue;
+                            }
+
+                            //Khác đơn vị hành chính sẽ không lấy được huyện nên lấy huyện có phần tên tương ứng từ khóa tìm kiếm
                             if (existDistrict == null || existDistrict.Count <= 0)
                             {
-                                Inventec.Common.Logging.LogSystem.Debug("Có sai khác đơn vị hành chính: "+ lowerPath);
+                                Inventec.Common.Logging.LogSystem.Debug("Có sai khác đơn vị hành chính huyện: " + lowerPath);
                                 existDistrict = districts.Where(o => lowerPath.Contains(o.DISTRICT_NAME.ToLower())).ToList();
                             }
 
+                            //Nếu là lượt kiểm tra xã theo 2 cấp thì sẽ không tìm được huyện
                             if (existDistrict.Count > 0)
                             {
-                                //Nếu có 1 huyện thỏa mãn thì lấy luôn huyện tương ứng
-                                if (existDistrict.Count == 1)
-                                {
-                                    district = existDistrict.First();
-                                }
-                                else
-                                {
-                                    //Nếu có nhiều hơn 1 huyện thỏa mãn thì vẫn lấy tạm ra 1 huyện bất kỳ.
-                                    district = existDistrict.OrderByDescending(o => o.ID).First();
-                                }
-                            }
-
-                            if (district != null)
-                            {
-                                result.DistrictCode = district.DISTRICT_CODE;
-                                result.DistrictName = string.Format(formatAddress, district.INITIAL_NAME, district.DISTRICT_NAME).Trim();
-                                if (province == null)
-                                {
-                                    //gán lại thông tin tỉnh nếu chưa có
-                                    province = VSdaProvince.FirstOrDefault(o => o.ID == district.PROVINCE_ID);
-                                    result.ProvinceCode = district.PROVINCE_CODE;
-                                    result.ProvinceName = district.PROVINCE_NAME;
-                                }
-                                continue;
+                                district = existDistrict;
                             }
                         }
 
                         if (commune == null)
                         {
                             string lowerPath = string.Format(formatCheck, checkData.ToLower());
+                            //lấy ra tất cả các xã ứng với huyện và tỉnh thay vì lọc lại theo tỉnh, huyện tìm được
                             List<V_SDA_COMMUNE> communes = new List<V_SDA_COMMUNE>();
-                            communes.AddRange(VSdaCommune);
 
                             if (district != null)
                             {
-                                communes = communes.Where(o => o.DISTRICT_ID == district.ID).ToList();
+                                List<long> districtIds = district.Select(s => s.ID).ToList();
+                                var dCommunes = VSdaCommune.Where(o => districtIds.Contains(o.DISTRICT_ID ?? 0)).ToList();
+                                if (dCommunes.Count > 0)
+                                {
+                                    communes.AddRange(dCommunes);
+                                }
                             }
-                            else if (province != null)
+
+                            if (provinces != null)
                             {
-                                List<V_SDA_DISTRICT> districts = VSdaDistrict.Where(o => o.PROVINCE_ID == province.ID).ToList();
-                                communes = communes.Where(o => districts.Exists(e => e.ID == o.DISTRICT_ID)).ToList();
+                                List<long> provinceIds = provinces.Select(s => s.ID).ToList();
+                                List<long> districtIds = VSdaDistrict.Where(o => provinceIds.Contains(o.PROVINCE_ID)).Select(s => s.ID).ToList();
+                                List<long> notInIds = communes.Select(s => s.ID).ToList();
+                                var dCommunes = VSdaCommune.Where(o => (districtIds.Contains(o.DISTRICT_ID ?? 0) || provinceIds.Contains(o.PROVINCE_ID ?? 0)) && !notInIds.Contains(o.ID)).ToList();
+                                if (dCommunes.Count > 0)
+                                {
+                                    communes.AddRange(dCommunes);
+                                }
                             }
 
                             //Lấy ra tất cả các trường hợp
@@ -153,28 +149,63 @@ namespace Inventec.Common.Address
                             //khác đơn vị hành chính sẽ không lấy được.
                             if (existCommunes == null || existCommunes.Count <= 0)
                             {
-                                Inventec.Common.Logging.LogSystem.Debug("Có sai khác đơn vị hành chính: " + lowerPath);
+                                Inventec.Common.Logging.LogSystem.Debug("Có sai khác đơn vị hành chính xã: " + lowerPath);
                                 existCommunes = communes.Where(o => lowerPath.Contains(o.COMMUNE_NAME.ToLower())).ToList();
                             }
 
                             if (existCommunes.Count > 0)
                             {
-                                //Nếu có 1 huyện thỏa mãn thì lấy luôn huyện tương ứng
+                                //Nếu có 1 xã thỏa mãn thì lấy luôn xã tương ứng
                                 if (existCommunes.Count == 1)
                                 {
                                     commune = existCommunes.First();
                                 }
                                 else
                                 {
-                                    //Nếu có nhiều hơn 1 huyện thỏa mãn thì vẫn lấy tạm ra 1 huyện bất kỳ.
-                                    commune = existCommunes.OrderByDescending(o => o.ID).First();
+                                    //ghép thông tin T/H/X đầy đủ so sánh với địa chỉ gốc để đảm bảo không lấy nhầm xã cũ
+                                    string checkaddress = string.Join(" - ", splitA);
+                                    foreach (var item in existCommunes)
+                                    {
+                                        List<string> addr = new List<string>();
+                                        addr.Add(string.Format(formatAddress, item.INITIAL_NAME, item.COMMUNE_NAME).Trim());
+                                        addr.Add(string.Format(formatAddress, item.DISTRICT_INITIAL_NAME, item.DISTRICT_NAME).Trim());
+                                        addr.Add(item.PROVINCE_NAME);
+
+                                        string address = string.Join(" - ", addr);
+                                        if (checkaddress.Contains(address))
+                                        {
+                                            commune = item;
+                                            break;
+                                        }
+                                    }
+
+                                    if (commune == null)
+                                    {
+                                        //Nếu có nhiều hơn 1 huyện thỏa mãn thì vẫn lấy tạm ra 1 huyện bất kỳ.
+                                        commune = existCommunes.OrderByDescending(o => o.ID).First();
+                                    }
                                 }
                             }
 
                             if (commune != null)
                             {
                                 result.CommuneCode = commune.COMMUNE_CODE;
-                                result.CommuneName = string.Format(formatAddress, commune.INITIAL_NAME, commune.COMMUNE_NAME).Trim(); ;
+                                result.CommuneName = string.Format(formatAddress, commune.INITIAL_NAME, commune.COMMUNE_NAME).Trim();
+                                result.IsNoDistrict = commune.IS_NO_DISTRICT == 1;
+
+                                if (commune.DISTRICT_ID.HasValue)
+                                {
+                                    //gán lại thông tin tỉnh nếu chưa có
+                                    district = VSdaDistrict.Where(o => o.ID == commune.DISTRICT_ID).ToList();
+                                    result.DistrictCode = commune.DISTRICT_CODE;
+                                    result.DistrictName = string.Format(formatAddress, commune.DISTRICT_INITIAL_NAME, commune.DISTRICT_NAME).Trim();
+                                }
+
+                                //gán lại thông tin tỉnh nếu chưa có
+                                provinces = VSdaProvince.Where(o => o.ID == commune.PROVINCE_ID).ToList();
+                                result.ProvinceCode = commune.PROVINCE_CODE;
+                                result.ProvinceName = commune.PROVINCE_NAME;
+
                                 continue;
                             }
                         }
@@ -185,6 +216,18 @@ namespace Inventec.Common.Address
                         }
                     }
 
+                    for (int i = 0; i < joinsAdd.Length; i++)
+                    {
+                        if (joinsAdd[i] == null) continue;
+
+                        if ((!String.IsNullOrWhiteSpace(result.CommuneName) && joinsAdd[i].ToLower() == result.CommuneName.ToLower())
+                            || (!String.IsNullOrWhiteSpace(result.DistrictName) && joinsAdd[i].ToLower() == result.DistrictName.ToLower())
+                            || (!String.IsNullOrWhiteSpace(result.ProvinceName) && joinsAdd[i].ToLower() == result.ProvinceName.ToLower()))
+                        {
+                            joinsAdd[i] = "";
+                        }
+                    }
+
                     result.Address = string.Join(", ", joinsAdd.Where(o => !String.IsNullOrWhiteSpace(o)));
                 }
             }
@@ -192,6 +235,10 @@ namespace Inventec.Common.Address
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
                 result.Address = fullAddress;
+            }
+            finally
+            {
+                Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData("____Address_Split____", result));
             }
 
             return result;

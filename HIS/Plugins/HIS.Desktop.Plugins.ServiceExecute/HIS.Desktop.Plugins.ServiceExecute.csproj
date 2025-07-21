@@ -313,6 +313,7 @@
     <Compile Include="ADO\ComboADO.cs" />
     <Compile Include="ADO\EmrColumnMappingADO.cs" />
     <Compile Include="ADO\IcdADO.cs" />
+    <Compile Include="ADO\IcdSkinPathologyADO.cs" />
     <Compile Include="ADO\IcdUtil.cs" />
     <Compile Include="ADO\ImageADO.cs" />
     <Compile Include="ADO\InformationADO.cs" />
@@ -383,6 +384,12 @@
     </Compile>
     <Compile Include="frmSTTNumber.Designer.cs">
       <DependentUpon>frmSTTNumber.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ICD\frmIcd.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ICD\frmIcd.Designer.cs">
+      <DependentUpon>frmIcd.cs</DependentUpon>
     </Compile>
     <Compile Include="KeyboardWorker.cs" />
     <Compile Include="PACS\ApiConsumerRaw.cs" />
@@ -535,6 +542,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="frmSTTNumber.resx">
       <DependentUpon>frmSTTNumber.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ICD\frmIcd.resx">
+      <DependentUpon>frmIcd.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\licenses.licx" />
     <EmbeddedResource Include="Properties\Resources.resx">

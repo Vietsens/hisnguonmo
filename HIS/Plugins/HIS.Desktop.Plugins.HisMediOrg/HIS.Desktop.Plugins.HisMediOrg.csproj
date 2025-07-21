@@ -44,8 +44,14 @@
     <Reference Include="DevExpress.XtraNavBar.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
     <Reference Include="DevExpress.XtraRichEdit.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
     <Reference Include="DevExpress.XtraTreeList.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
+    <Reference Include="HIS.Desktop.Library.CacheClient">
+      <HintPath>..\..\..\..\..\His_test\histest\x64\ReferencedAssemblies\HIS.Desktop.Library.CacheClient.dll</HintPath>
+    </Reference>
     <Reference Include="IMSys.DbConfig.HIS_RS">
       <HintPath>..\..\..\..\LIB\IMSys.DbConfig\IMSys.DbConfig.HIS_RS\IMSys.DbConfig.HIS_RS.dll</HintPath>
+    </Reference>
+    <Reference Include="IMSys.DbConfig.SDA_RS">
+      <HintPath>..\..\..\..\..\His_test\histest\x64\ReferencedAssemblies\IMSys.DbConfig.SDA_RS.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Common.Adapter">
       <HintPath>..\..\..\..\LIB\Inventec.Common\Inventec.Common.Adapter\Inventec.Common.Adapter.dll</HintPath>
@@ -138,7 +144,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Base\ResourceMessageLang.cs" />
     <Compile Include="HisMediOrgProcessor.cs" />
     <Compile Include="HisMediOrg\frmHisMediOrg.cs">
       <SubType>Form</SubType>
@@ -149,7 +154,6 @@
     <Compile Include="HisMediOrg\HisMediOrgBehavior.cs" />
     <Compile Include="HisMediOrg\HisMediOrgFactory.cs" />
     <Compile Include="HisMediOrg\IHisMediOrg.cs" />
-    <Compile Include="HisMediOrg\ValidationWarningText.cs" />
     <Compile Include="HisRequestUriStore.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Resources\ResourceLanguageManager.cs" />
@@ -236,6 +240,9 @@
       <Project>{2aad22db-2166-4be8-ae52-335b21dc03fc}</Project>
       <Name>HIS.Desktop.Utilities</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Base\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

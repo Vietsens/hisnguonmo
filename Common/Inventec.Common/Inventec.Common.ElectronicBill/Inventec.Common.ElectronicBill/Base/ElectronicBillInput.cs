@@ -32,6 +32,7 @@ namespace Inventec.Common.ElectronicBill.Base
         public string acPass { get; set; }
         public List<Invoice> invoices { get; set; }
         public List<Invoice_BM> invoicesBm { get; set; }
+        public ReplaceInvoice replaceInvoice { get; set; }
         public string pattern { get; set; }
         public string serial { get; set; }
         public string userName { get; set; }

@@ -19,6 +19,7 @@ using HIS.Desktop.Common;
 using HIS.Desktop.Plugins.HisPatientBankAccount.HisPatientBankAccount;
 using Inventec.Core;
 using Inventec.Desktop.Common;
+using MOS.EFMODEL.DataModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -31,6 +32,7 @@ namespace HIS.Desktop.Plugins.HisPatientBankAccount.HisPatientBankAccount
     class HisPatientBankAccountBehavior : BusinessBase, IHisPatientBankAccount
     {
         object[] entity;
+        HIS_TREATMENT _currentTreatment = new HIS_TREATMENT();
         internal HisPatientBankAccountBehavior(CommonParam param, object[] filter)
             : base()
         {
@@ -42,7 +44,10 @@ namespace HIS.Desktop.Plugins.HisPatientBankAccount.HisPatientBankAccount
             try
             {
                 Inventec.Desktop.Common.Modules.Module moduleData = null;
-
+                long treatmentID = 0;
+                HIS_TREATMENT obj = null;
+                V_HIS_PATIENT_BANK_ACCOUNT ptba = null;
+                DelegateSelectData dlg = null;
                 if (entity.GetType() == typeof(object[]))
                 {
                     if (entity != null && entity.Count() > 0)
@@ -53,11 +58,27 @@ namespace HIS.Desktop.Plugins.HisPatientBankAccount.HisPatientBankAccount
                             {
                                 moduleData = (Inventec.Desktop.Common.Modules.Module)entity[i];
                             }
+                            else if (entity[i] is long)
+                            {
+                                treatmentID = (long)entity[i];
+                            }
+                            else if (entity[i] is HIS_TREATMENT)
+                            {
+                                obj = (HIS_TREATMENT)entity[i];
+                            }
+                            else if (entity[i] is DelegateSelectData)
+                            {
+                                dlg = (DelegateSelectData)entity[i];
+                            }
+                            else if (entity[i] is V_HIS_PATIENT_BANK_ACCOUNT)
+                            {
+                                ptba = (V_HIS_PATIENT_BANK_ACCOUNT)entity[i];
+                            }
                         }
                     }
                 }
 
-                return new frmHisPatientBankAccount(moduleData);
+                return new frmHisPatientBankAccount(moduleData, obj, dlg, ptba) ;
             }
             catch (Exception ex)
             {

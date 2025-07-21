@@ -40,6 +40,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Xml;
 using System.Xml.Serialization;
+using static Telerik.WinControls.UI.ValueMapper;
 
 namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.VNPT
 {
@@ -110,6 +111,9 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.VNPT
 
                     int cmdType = GetCmdType(TypeStr, CancelFunc);
 
+                    string patientCode = this.ElectronicBillDataInput.Treatment.TDL_PATIENT_CODE;
+                    string treatmentCode = this.ElectronicBillDataInput.Treatment.TREATMENT_CODE;
+
                     ElectronicBillInput electronicBillInput = new Inventec.Common.ElectronicBill.Base.ElectronicBillInput();
                     electronicBillInput.account = account;
                     electronicBillInput.acPass = acPass;
@@ -120,8 +124,6 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.VNPT
                     }
                     else
                     {
-                        string patientCode = this.ElectronicBillDataInput.Treatment.TDL_PATIENT_CODE;
-                        string treatmentCode = this.ElectronicBillDataInput.Treatment.TREATMENT_CODE;
                         string transactionCode = "";
                         if (this.ElectronicBillDataInput.Transaction != null)
                         {
@@ -151,7 +153,27 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.VNPT
                         else
                         {
                             List<Invoice> invoices = this.GetInvoiceContrVietSens(this.ElectronicBillDataInput, notShowTaxBreakdown);
-                            if (TypeStr == "1")
+                            if (ElectronicBillDataInput.Transaction != null && ElectronicBillDataInput.Transaction.ORIGINAL_TRANSACTION_ID.HasValue)
+                            {
+                                //Nếu là thay thế hóa đơn thì lấy thông tin hóa đơn cũ
+                                ReplaceInvoice replaceInvoice = new ReplaceInvoice();
+
+                                Inventec.Common.Mapper.DataObjectMapper.Map<ReplaceInvoice>(replaceInvoice, invoices.First().InvoiceDetail);
+
+                                //key hóa đơn gốc
+                                electronicBillInput.fKey = ElectronicBillDataInput.Transaction.TDL_ORIGINAL_EI_CODE;
+                                replaceInvoice.key = invoices.First().Key;
+                                replaceInvoice.Products = new List<Product>();
+                                foreach (var item in invoices.First().InvoiceDetail.Products)
+                                {
+                                    Product product = new Product();
+                                    Inventec.Common.Mapper.DataObjectMapper.Map<Product>(product, item);
+                                    replaceInvoice.Products.Add(product);
+                                }
+
+                                electronicBillInput.replaceInvoice = replaceInvoice;
+                            }
+                            else if (TypeStr == "1")
                             {
                                 Invoice_BM invoice = new Invoice_BM();
                                 invoice.Key = invoices.First().Key;
@@ -169,12 +191,12 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.VNPT
                                     count++;
                                 }
 
-                                if (notShowTaxBreakdown)
-                                {
-                                    nvoiceDetail.VATAmount = "";
-                                    nvoiceDetail.VATRate = "-4";
-                                }
-                                else
+                                //if (notShowTaxBreakdown)
+                                //{
+                                //    nvoiceDetail.VATAmount = "";
+                                //    nvoiceDetail.VATRate = "-4";
+                                //}
+                                //else
                                 {
                                     nvoiceDetail.VATAmount = "";
                                     nvoiceDetail.VATRate = "-1";
@@ -221,8 +243,12 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.VNPT
                         {
                             foreach (var item in pi)
                             {
-                                if (dataReplate.ContainsKey(item.Name))
+                                if (dataReplate.ContainsKey(item.Name) && !string.IsNullOrWhiteSpace(dataReplate[item.Name]))
                                 {
+                                    if (dataReplate[item.Name].StartsWith("<![CDATA[") && dataReplate[item.Name].EndsWith("]]>"))
+                                    {
+                                        dataReplate[item.Name] = dataReplate[item.Name].Substring(9, dataReplate[item.Name].Length - 12);
+                                    }
                                     item.SetValue(inv.InvoiceDetail, dataReplate[item.Name]);
                                 }
                             }
@@ -252,6 +278,10 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.VNPT
                         else if (ElectronicBillTypeEnum == ElectronicBillType.ENUM.GET_INVOICE_INFO)
                         {
                             result.InvoiceCode = this.ElectronicBillDataInput.InvoiceCode;
+                        }
+                        else if (electronicBillInput.replaceInvoice != null)
+                        {
+                            result.InvoiceCode = electronicBillInput.replaceInvoice.key;
                         }
 
                         result.InvoiceSys = ProviderType.VNPT;
@@ -285,6 +315,10 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.VNPT
                                 else if (ElectronicBillTypeEnum == ElectronicBillType.ENUM.GET_INVOICE_INFO)
                                 {
                                     result.InvoiceCode = this.ElectronicBillDataInput.InvoiceCode;
+                                }
+                                else if (electronicBillInput.replaceInvoice != null)
+                                {
+                                    result.InvoiceCode = electronicBillInput.replaceInvoice.key;
                                 }
 
                                 result.InvoiceSys = ProviderType.VNPT;
@@ -360,6 +394,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.VNPT
             {
                 //Ví dụ:OK:01GTKT3/001;AA/12E-key1_1,key2_2,key3_3,key4_4,key5_5
                 //OK: pattern;serial1-key1_num1,key2_num12,key3_num3…
+                //OK:01GTKT3/001;AA/12E;0000002
                 if (!String.IsNullOrWhiteSpace(p))
                 {
                     if (p.Substring(0, 2).ToLower() == "ok")
@@ -401,6 +436,11 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.VNPT
                 {
                     case ElectronicBillType.ENUM.CREATE_INVOICE:
                         result = Inventec.Common.ElectronicBill.CmdType.ImportAndPublishInv;
+                        //thay thế hóa đơn
+                        if (ElectronicBillDataInput.Transaction != null && ElectronicBillDataInput.Transaction.ORIGINAL_TRANSACTION_ID.HasValue)
+                        {
+                            result = Inventec.Common.ElectronicBill.CmdType.ReplaceInvoiceAction;
+                        }
                         break;
                     case ElectronicBillType.ENUM.GET_INVOICE_LINK:
                         result = Inventec.Common.ElectronicBill.CmdType.downloadInvPDFFkeyNoPay;
@@ -588,7 +628,8 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.VNPT
                 if (notShowTaxBreakdown)
                 {
                     invoice.InvoiceDetail.VATAmount = "";
-                    invoice.InvoiceDetail.VATRate = "-4";
+                    //invoice.InvoiceDetail.VATRate = "-4";
+                    invoice.InvoiceDetail.VATRate = "-1";
                 }
                 else
                 {
@@ -608,12 +649,12 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.VNPT
                     pd.ProdQuantity = "0";
                     pd.Amount = String.Format("{0:0.####}", electronicBillDataInput.Discount.Value);
                     pd.Total = Math.Round(electronicBillDataInput.Discount.Value, 0).ToString();
-                    if (notShowTaxBreakdown)
-                    {
-                        pd.VATAmount = "";
-                        pd.VATRate = "-4";
-                    }
-                    else
+                    //if (notShowTaxBreakdown)
+                    //{
+                    //    pd.VATAmount = "";
+                    //    pd.VATRate = "-4";
+                    //}
+                    //else
                     {
                         pd.VATAmount = "";
                         pd.VATRate = "-1";
@@ -673,12 +714,12 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.VNPT
                         product.ProdUnit = !String.IsNullOrWhiteSpace(item.ProdUnit) ? item.ProdUnit : "";
                         product.ProdQuantity = (item.ProdQuantity ?? 0).ToString();
                         product.Amount = Math.Round(item.Amount, 0, MidpointRounding.AwayFromZero).ToString();// String.Format("{0:0.####}", item.Amount);
-                        if (notShowTaxBreakdown)
-                        {
-                            product.VATAmount = "";
-                            product.VATRate = "-4";
-                        }
-                        else
+                        //if (notShowTaxBreakdown)
+                        //{
+                        //    product.VATAmount = "";
+                        //    product.VATRate = "-4";
+                        //}
+                        //else
                         {
                             product.VATAmount = "";
                             product.VATRate = "-1";
@@ -710,7 +751,8 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.VNPT
                         {
                             product.ProdPrice = String.Format("{0:0.####}", Math.Round((item.ProdPrice ?? 0) + (item.ProdQuantity.HasValue && item.ProdQuantity.Value > 0 ? (item.TaxAmount ?? 0) / (item.ProdQuantity ?? 0) : 0), 4) + "");
                             product.VATAmount = "";
-                            product.VATRate = "-4";
+                            //product.VATRate = "-4";
+                            product.VATRate = "-1";
                         }
                         else
                         {
@@ -746,7 +788,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.VNPT
                             product.ProdPrice = String.Format("{0:0.####}", item.ProdPrice ?? 0);
                         }
 
-                        product.Total = Math.Round(item.AmountWithoutTax??0, 0, MidpointRounding.AwayFromZero).ToString();
+                        product.Total = Math.Round(item.AmountWithoutTax ?? 0, 0, MidpointRounding.AwayFromZero).ToString();
                         totalAmount += item.Amount;
                         SumVATAmount += item.TaxAmount ?? 0;
 
@@ -775,7 +817,8 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.VNPT
                     {
                         product.ProdPrice = String.Format("{0:0.####}", Math.Round((item.ProdPrice ?? 0) + (item.ProdQuantity.HasValue && item.ProdQuantity.Value > 0 ? (item.TaxAmount ?? 0) / (item.ProdQuantity ?? 0) : 0), 4) + "");
                         product.VATAmount = "";
-                        product.VATRate = "-4";
+                        //product.VATRate = "-4";
+                        product.VATRate = "-1";
                     }
                     else
                     {
@@ -898,7 +941,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.VNPT
                 //invoice.dLHDon.nDHDon.nMua.Ten = adoInfo.BuyerOrganization;
                 //invoice.dLHDon.nDHDon.nMua.HVTNMHang = adoInfo.BuyerName;
                 invoice.dLHDon.nDHDon.nMua.DChi = adoInfo.BuyerAddress;
-                invoice.dLHDon.nDHDon.nMua.DCTDTu = adoInfo.BuyerEmail;
+                //invoice.dLHDon.nDHDon.nMua.DCTDTu = adoInfo.BuyerEmail;
                 invoice.dLHDon.nDHDon.nMua.MKHang = adoInfo.BuyerCode;
                 invoice.dLHDon.nDHDon.nMua.MST = adoInfo.BuyerTaxCode;
                 invoice.dLHDon.nDHDon.nMua.SDThoai = adoInfo.BuyerPhone;

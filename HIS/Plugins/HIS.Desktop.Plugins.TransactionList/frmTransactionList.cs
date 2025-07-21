@@ -15,6 +15,11 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+using System; 
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Windows.Forms;
 using AutoMapper;
 using DevExpress.XtraBars;
 using DevExpress.XtraGrid.Views.Base;
@@ -39,17 +44,12 @@ using Inventec.Desktop.Common.Message;
 using MOS.EFMODEL.DataModels;
 using MOS.Filter;
 using SAR.EFMODEL.DataModels;
-using System;
 using System.Collections;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Configuration;
 using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using System.Windows.Forms;
 using ACS.Filter;
 using ACS.EFMODEL.DataModels;
 using HIS.Desktop.Plugins.TransactionList.Resources;
@@ -60,7 +60,9 @@ using Inventec.Desktop.Common.LanguageManager;
 using MOS.SDO;
 using HIS.Desktop.ADO;
 using Newtonsoft.Json;
-      
+using HIS.Desktop.Plugins.Library.ElectronicBill.Base;
+
+
 namespace HIS.Desktop.Plugins.TransactionList
 {
     public partial class frmTransactionList : HIS.Desktop.Utility.FormBase
@@ -1540,6 +1542,31 @@ namespace HIS.Desktop.Plugins.TransactionList
                         //        e.RepositoryItem = repositoryItemButtonEdit__D;
                         //    }
                         //}
+                        //else if (e.Column.FieldName == "EDIT_INFO_DISPLAY")
+                        //{
+                        //    bool isActive = data.IS_ACTIVE == 1;
+                        //    bool isNotCancelled = data.IS_CANCEL != 1;
+                        //    bool hasControlPermission = controlAcs != null && controlAcs.Any(o => o.CONTROL_CODE == "HIS000017");
+                        //    bool isAdmin = HIS.Desktop.IsAdmin.CheckLoginAdmin.IsAdmin(this.loginName);
+                        //    bool isSameDay = data.TRANSACTION_DATE == Inventec.Common.TypeConvert.Parse.ToInt64(DateTime.Now.ToString("yyyyMMdd") + "000000");
+                        //    bool isCashierOrAdmin = data.CASHIER_LOGINNAME == this.loginName || isAdmin;
+
+                        //    bool isPermission = hasPermission;
+
+
+
+                        //    bool canEdit =
+                        //        isActive &&
+                        //        isNotCancelled &&
+                        //        (
+                        //            (isSameDay && isCashierOrAdmin && hasControlPermission) ||
+                        //            (!isSameDay && isPermission)
+                        //        );
+
+                        //    e.RepositoryItem = canEdit ? repositoryItemButtonEdit__E : repositoryItemButtonEdit__D;
+                        //}
+
+                        //qtcode
                         else if (e.Column.FieldName == "EDIT_INFO_DISPLAY")
                         {
                             bool isActive = data.IS_ACTIVE == 1;
@@ -1549,20 +1576,32 @@ namespace HIS.Desktop.Plugins.TransactionList
                             bool isSameDay = data.TRANSACTION_DATE == Inventec.Common.TypeConvert.Parse.ToInt64(DateTime.Now.ToString("yyyyMMdd") + "000000");
                             bool isCashierOrAdmin = data.CASHIER_LOGINNAME == this.loginName || isAdmin;
 
-                            bool isPermission = hasPermission;
+                            var allowEditOtherDays = HisConfigCFG.TRANSACTION_ALLOW_EDIT == "1";
+                            bool canEdit = false;
 
-
-
-                            bool canEdit =
-                                isActive &&
-                                isNotCancelled &&
-                                (
-                                    (isSameDay && isCashierOrAdmin && hasControlPermission) ||
-                                    (!isSameDay && isPermission)
-                                );
+                            if (allowEditOtherDays)
+                            {
+                                bool isPermission = hasPermission;
+                                canEdit =
+                                    isActive &&
+                                    isNotCancelled &&
+                                    (
+                                        (isSameDay && isCashierOrAdmin && hasControlPermission) ||
+                                        (!isSameDay && isPermission)
+                                    );
+                            }
+                            else
+                            {
+                                canEdit =
+                                    isActive &&
+                                    isNotCancelled &&
+                                    isCashierOrAdmin &&
+                                    hasControlPermission;
+                            }
 
                             e.RepositoryItem = canEdit ? repositoryItemButtonEdit__E : repositoryItemButtonEdit__D;
                         }
+
 
 
                         else if (e.Column.FieldName == "NUM_ORDER")
@@ -2097,7 +2136,8 @@ namespace HIS.Desktop.Plugins.TransactionList
                         }
                         else
                         {
-                            rs = new Inventec.Common.Adapter.BackendAdapter(param).Post<V_HIS_TRANSACTION>("api/HisTransaction/Unlock", ApiConsumers.MosConsumer, data.ID, param);
+                            //rs = new Inventec.Common.Adapter.BackendAdapter(param).Post<V_HIS_TRANSACTION>("api/HisTransaction/Unlock", ApiConsumers.MosConsumer, data.ID, param);
+                            rs = new Inventec.Common.Adapter.BackendAdapter(param).Post<V_HIS_TRANSACTION>("HisTransaction/RepayUnlock", ApiConsumers.MosConsumer, sdoLock, param);
                         }
 
                     }
@@ -2328,6 +2368,7 @@ namespace HIS.Desktop.Plugins.TransactionList
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
+
 
         private void repositoryItemBtnRestore_ButtonClick(V_HIS_TRANSACTION data)
         {
@@ -2648,7 +2689,8 @@ namespace HIS.Desktop.Plugins.TransactionList
                                     bool setError = true;
 
                                     string serviceConfig = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>("HIS.DESKTOP.LIBRARY.ELECTRONIC_BILL.CONFIG");
-                                    if (listTransaction[i].EINVOICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_EINVOICE_TYPE.ID__VNPT || (!listTransaction[i].EINVOICE_TYPE_ID.HasValue && serviceConfig.Contains(ProviderType.VNPT)))
+                                    if (listTransaction[i].EINVOICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_EINVOICE_TYPE.ID__VNPT || (!listTransaction[i].EINVOICE_TYPE_ID.HasValue && 
+                                        serviceConfig.Contains(ProviderType.VNPT)))
                                     {
                                         List<long> ids = listTransactionVnptError.Where(o => o == listTransaction[i].ID).ToList();
                                         if (ids.Count <= 2)
@@ -2878,7 +2920,7 @@ namespace HIS.Desktop.Plugins.TransactionList
                                     //    isPremission = null;
                                     //}
 
-
+                                    
                                     if (HisConfigCFG.ALLOW_OTHER_LOGINNAME == "2")
                                     {
                                         if (transactionData.IS_ACTIVE == 1
@@ -2963,28 +3005,58 @@ namespace HIS.Desktop.Plugins.TransactionList
                                 }
                             }
 
+                            //else if (hi.Column.FieldName == "EDIT_INFO_DISPLAY")
+                            //{
+                            //    bool isActive = transactionData.IS_ACTIVE == 1;
+                            //    bool isNotCancelled = transactionData.IS_CANCEL != 1;
+                            //    //bool hasControlPermission = controlAcs != null && controlAcs.Exists(o => o.CONTROL_CODE == "HIS000017");
+                            //    bool hasControlPermission = controlAcs != null && controlAcs.FirstOrDefault(o => o.CONTROL_CODE == "HIS000017") != null;
+                            //    bool isAdmin = HIS.Desktop.IsAdmin.CheckLoginAdmin.IsAdmin(this.loginName);
+                            //    bool isCashierOrAdmin = transactionData.CASHIER_LOGINNAME == this.loginName || isAdmin;
+
+                            //    bool isSameDay = transactionData.TRANSACTION_DATE == Inventec.Common.TypeConvert.Parse.ToInt64(DateTime.Now.ToString("yyyyMMdd") + "000000");
+                            //    bool isPermission = await GetHisPermission();
+
+                            //    bool canExecute = isActive && isNotCancelled &&((isSameDay && isCashierOrAdmin && hasControlPermission) ||(!isSameDay && isPermission));
+
+                            //    if (canExecute)
+                            //    {
+                            //        repositoryItemButtonEdit__E_ButtonClick(transactionData);
+                            //    }
+
+
+                            //}
+                            //qtcode
                             else if (hi.Column.FieldName == "EDIT_INFO_DISPLAY")
                             {
                                 bool isActive = transactionData.IS_ACTIVE == 1;
                                 bool isNotCancelled = transactionData.IS_CANCEL != 1;
-                                //bool hasControlPermission = controlAcs != null && controlAcs.Exists(o => o.CONTROL_CODE == "HIS000017");
-                                bool hasControlPermission = controlAcs != null && controlAcs.FirstOrDefault(o => o.CONTROL_CODE == "HIS000017") != null;
                                 bool isAdmin = HIS.Desktop.IsAdmin.CheckLoginAdmin.IsAdmin(this.loginName);
                                 bool isCashierOrAdmin = transactionData.CASHIER_LOGINNAME == this.loginName || isAdmin;
-
+                                bool hasControlPermission = controlAcs != null && controlAcs.Exists(o => o.CONTROL_CODE == "HIS000017");
                                 bool isSameDay = transactionData.TRANSACTION_DATE == Inventec.Common.TypeConvert.Parse.ToInt64(DateTime.Now.ToString("yyyyMMdd") + "000000");
-                                bool isPermission = await GetHisPermission();
+                                var allowEditOtherDays = HisConfigCFG.TRANSACTION_ALLOW_EDIT == "1";
+                                bool canExecute = false;
 
-                                bool canExecute = isActive && isNotCancelled &&((isSameDay && isCashierOrAdmin && hasControlPermission) ||(!isSameDay && isPermission));
+                                if (allowEditOtherDays)
+                                {
+                                    bool isPermission = await GetHisPermission();
+                                    canExecute = isActive && isNotCancelled &&
+                                        (
+                                            (isSameDay && isCashierOrAdmin && hasControlPermission) ||
+                                            (!isSameDay && isPermission)
+                                        );
+                                }
+                                else
+                                {
+                                    canExecute = isActive && isNotCancelled && isCashierOrAdmin && hasControlPermission;
+                                }
 
                                 if (canExecute)
                                 {
                                     repositoryItemButtonEdit__E_ButtonClick(transactionData);
                                 }
-
-                                
                             }
-
                             //else if (hi.Column.FieldName == "NUM_ORDER")
                             //{
                             //    if (HisConfigCFG.ALLOW_EDIT_NUM_ORDER == "1"

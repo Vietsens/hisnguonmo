@@ -355,6 +355,27 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
                         cboGender.EditValue = expMest.TDL_PATIENT_GENDER_ID.Value;
                     }
 
+                    if (!string.IsNullOrWhiteSpace(expMest.TDL_PATIENT_CMND_NUMBER))
+                    {
+                        txtIdentification.Text = expMest.TDL_PATIENT_CMND_NUMBER;
+                        cboIdentification.EditValue = "CMND"; // CMND
+                    }
+                    else if (!string.IsNullOrWhiteSpace(expMest.TDL_PATIENT_CCCD_NUMBER))
+                    {
+                        txtIdentification.Text = expMest.TDL_PATIENT_CCCD_NUMBER;
+                        cboIdentification.EditValue = "CCCD"; // CCCD
+                    }
+                    else if (!string.IsNullOrWhiteSpace(expMest.TDL_PATIENT_PASSPORT_NUMBER))
+                    {
+                        txtIdentification.Text = expMest.TDL_PATIENT_PASSPORT_NUMBER;
+                        cboIdentification.EditValue = "PASSPORT"; // PASSPORT
+                    }
+                    else
+                    {
+                        txtIdentification.Text = "";
+                        cboIdentification.EditValue = null;
+                    }
+
                     if (expMest.TDL_PATIENT_DOB.HasValue)
                     {
                         //dtPatientDob.DateTime = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(expMest.TDL_PATIENT_DOB.Value) ?? DateTime.Now;
@@ -582,6 +603,7 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
                 LoadDataToCboPatientType();
                 LoadDataToCboGender();
                 LoadDataToComboPayForm();
+                LoadDatatoCboIdentification();
 
                 //Load patient from cfg
                 string patientTypeCode = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(SdaConfigKey.PatientTypeCodeDefault);
@@ -658,7 +680,28 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
+        private void LoadDatatoCboIdentification()
+        {
+            try
+            {
+                var identificationTypes = new List<dynamic>
+                {
+                    new { ID = 1, NAME = "CMND" },
+                    new { ID = 2, NAME = "CCCD" },
+                    new { ID = 3, NAME = "PASSPORT" }
+                };
 
+                List<ColumnInfo> columnInfos = new List<ColumnInfo>();
+                columnInfos.Add(new ColumnInfo("NAME", "Loại giấy tờ", 100, 1));
+
+                ControlEditorADO controlEditorADO = new ControlEditorADO("NAME", "ID", columnInfos, false, 110);
+                ControlEditorLoader.Load(cboIdentification, identificationTypes, controlEditorADO);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
         private void LoadDataToCboCashierRoom()
         {
             try
@@ -958,6 +1001,8 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
                 txtTreatmentCode.Text = "";
                 txtVirPatientName.Text = "";
                 cboGender.EditValue = null;
+                cboIdentification.EditValue = null;
+                txtIdentification.Text = "";
                 txtMediMatyForPrescription.Text = "";
                 txtPatientDob.EditValue = null;
                 dtPatientDob.EditValue = null;
@@ -1046,9 +1091,11 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
                     //txtDescription.Enabled = true;
                     txtMaTHX.Enabled = true;
                     cboTHX.Enabled = true;
+                    toggleSwitch1.Enabled = true;
                     txtPatientCode.Enabled = true;
                     txtPatientPhone.Enabled = true;
                     txtEmail.Enabled = true;
+                    LoadAddressData(isNewAddressStructure);
                 }
                 else
                 {
@@ -1064,6 +1111,7 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
                     //txtDescription.Enabled = false;
                     txtMaTHX.Enabled = false;
                     cboTHX.Enabled = false;
+                    toggleSwitch1.Enabled = false;
                     txtPatientCode.Enabled = false;
                     txtPatientPhone.Enabled = false;
                     txtEmail.Enabled = false;

@@ -28,6 +28,9 @@ namespace HIS.Desktop.Plugins.TransactionBillOther.ADO
     {
         public decimal TOTAL_PRICE { get; set; }
         public decimal TOTAL_PRICE_WITH_DISCOUNT { get; set; }
+        public decimal TOTAL_PRICE_WITH_VAT { get; set; }
+
+        public bool IsFromTreatmentNoneMediService { get; set; }
 
         public string ErrorText { get; set; }
         public bool Error { get; set; }

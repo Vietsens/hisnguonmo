@@ -129,6 +129,7 @@ namespace HIS.Desktop.Plugins.BloodList
             this.Gc_ImpVatRatio = new DevExpress.XtraGrid.Columns.GridColumn();
             this.Gc_ExpriedDate = new DevExpress.XtraGrid.Columns.GridColumn();
             this.Gc_PackgeNumber = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gridColumn16 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn15 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn14 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.Gc_BidNumOrder = new DevExpress.XtraGrid.Columns.GridColumn();
@@ -162,7 +163,6 @@ namespace HIS.Desktop.Plugins.BloodList
             this.layoutControlItem2 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem3 = new DevExpress.XtraLayout.LayoutControlItem();
             this.imageListStatus = new System.Windows.Forms.ImageList(this.components);
-            this.gridColumn16 = new DevExpress.XtraGrid.Columns.GridColumn();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
             this.layoutControl1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl2)).BeginInit();
@@ -932,6 +932,15 @@ namespace HIS.Desktop.Plugins.BloodList
             this.Gc_PackgeNumber.VisibleIndex = 10;
             this.Gc_PackgeNumber.Width = 60;
             // 
+            // gridColumn16
+            // 
+            this.gridColumn16.Caption = "Mã phiếu nhập";
+            this.gridColumn16.FieldName = "TDL_IMP_MEST_CODE";
+            this.gridColumn16.Name = "gridColumn16";
+            this.gridColumn16.Visible = true;
+            this.gridColumn16.VisibleIndex = 11;
+            this.gridColumn16.Width = 100;
+            // 
             // gridColumn15
             // 
             this.gridColumn15.Caption = "Mã phiếu xuất";
@@ -1131,7 +1140,7 @@ namespace HIS.Desktop.Plugins.BloodList
             // 
             this.ButtonLock.AutoHeight = false;
             this.ButtonLock.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, global::HIS.Desktop.Plugins.BloodList.Properties.Resources.hmenu_unlock, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject5, serializableAppearanceObject6, serializableAppearanceObject7, serializableAppearanceObject8, "Khóa", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("ButtonLock.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject5, serializableAppearanceObject6, serializableAppearanceObject7, serializableAppearanceObject8, "", null, null, true)});
             this.ButtonLock.Name = "ButtonLock";
             this.ButtonLock.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             this.ButtonLock.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.ButtonLock_ButtonClick);
@@ -1140,7 +1149,7 @@ namespace HIS.Desktop.Plugins.BloodList
             // 
             this.ButtonUnlock.AutoHeight = false;
             this.ButtonUnlock.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, global::HIS.Desktop.Plugins.BloodList.Properties.Resources.hmenu_lock, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject9, serializableAppearanceObject10, serializableAppearanceObject11, serializableAppearanceObject12, "Mở khóa", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, global::HIS.Desktop.Plugins.BloodList.Properties.Resources.hmenu_lock, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject9, serializableAppearanceObject10, serializableAppearanceObject11, serializableAppearanceObject12, "", null, null, true)});
             this.ButtonUnlock.Name = "ButtonUnlock";
             this.ButtonUnlock.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             this.ButtonUnlock.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.ButtonUnlock_ButtonClick);
@@ -1228,15 +1237,6 @@ namespace HIS.Desktop.Plugins.BloodList
             this.imageListStatus.Images.SetKeyName(3, "04.png");
             this.imageListStatus.Images.SetKeyName(4, "05.png");
             this.imageListStatus.Images.SetKeyName(5, "06.png");
-            // 
-            // gridColumn16
-            // 
-            this.gridColumn16.Caption = "Mã phiếu nhập";
-            this.gridColumn16.FieldName = "TDL_IMP_MEST_CODE";
-            this.gridColumn16.Name = "gridColumn16";
-            this.gridColumn16.Visible = true;
-            this.gridColumn16.VisibleIndex = 11;
-            this.gridColumn16.Width = 100;
             // 
             // UCBloodList
             // 

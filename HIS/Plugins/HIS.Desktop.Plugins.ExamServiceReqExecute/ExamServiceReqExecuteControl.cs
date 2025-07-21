@@ -25,7 +25,6 @@ using DevExpress.XtraEditors.ViewInfo;
 using DevExpress.XtraGrid.Views.Base;
 using DevExpress.XtraGrid.Views.Grid;
 using DevExpress.XtraGrid.Views.Grid.ViewInfo;
-using DevExpress.XtraLayout;
 using DevExpress.XtraTab;
 using HIS.Desktop.ADO;
 using HIS.Desktop.ApiConsumer;
@@ -42,7 +41,6 @@ using HIS.Desktop.Plugins.ExamServiceReqExecute.Config;
 using HIS.Desktop.Plugins.ExamServiceReqExecute.ConnectCOM;
 using HIS.Desktop.Plugins.ExamServiceReqExecute.Popup;
 using HIS.Desktop.Plugins.ExamServiceReqExecute.Resources;
-using HIS.Desktop.Plugins.ExamServiceReqExecute.Sda.SdaEventLogCreate;
 using HIS.Desktop.Plugins.Library.CheckIcd;
 using HIS.Desktop.Plugins.Library.FormMedicalRecord;
 using HIS.Desktop.Plugins.Library.OtherTreatmentHistory;
@@ -63,9 +61,7 @@ using HIS.UC.Icd;
 using HIS.UC.SecondaryIcd;
 using HIS.UC.SecondaryIcd.ADO;
 using Inventec.Common.Adapter;
-using Inventec.Common.CardReader;
 using Inventec.Common.Logging;
-using Inventec.Common.ThreadCustom;
 using Inventec.Core;
 using Inventec.Desktop.Common.Controls.ValidationRule;
 using Inventec.Desktop.Common.LanguageManager;
@@ -83,7 +79,7 @@ using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-
+         
 namespace HIS.Desktop.Plugins.ExamServiceReqExecute
 {
     public partial class ExamServiceReqExecuteControl : UserControlBase
@@ -2846,7 +2842,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                     if (extenceInstance == null) throw new ArgumentNullException("moduleData is null");
                     ((Form)extenceInstance).ShowDialog();
                 }
-            }
+            }    
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
@@ -2857,7 +2853,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
         {
             try
             {
-
+                  
                 LogTheadInSessionInfo(() => btnSaveFinish_Click_Action(sender, e), "btnSaveFinish_Click");
             }
             catch (Exception ex)
@@ -2946,7 +2942,10 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                     if (!hisServiceReqSDO.FinishTime.HasValue)
                         hisServiceReqSDO.FinishTime = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(DateTime.Now);
                 }
-
+                if (!this.IsCheckServiceFollowWhenOut())
+                {
+                    return;
+                }
 
                 bool valid = true;
 
@@ -2984,15 +2983,32 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                     //}
 
                     Inventec.Common.Logging.LogSystem.Debug("Du lieu gui len:" + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => hisServiceReqSDO), hisServiceReqSDO));
+
+                    //hh cmt
+
+                    //if (hisServiceReqSDO.ExamAdditionSDO != null && hisServiceReqSDO.ExamAdditionSDO.IsNotUseBhyt)
+                    //{
+                    //    if (MessageBox.Show("Bệnh nhân không được hưởng bhyt các chi phí phát sinh tại phòng khám thêm. Bạn có muốn tiếp tục?", "Thông báo", MessageBoxButtons.YesNo) == DialogResult.Yes)
+                    //    {
+                    //        SaveExamServiceReq(hisServiceReqSDO);
+                    //    }
+                    //}
+                    //else
+                    //{
+                    //    SaveExamServiceReq(hisServiceReqSDO);
+                    //}
                     if (hisServiceReqSDO.ExamAdditionSDO != null && hisServiceReqSDO.ExamAdditionSDO.IsNotUseBhyt)
                     {
-                        if (MessageBox.Show("Bệnh nhân không được hưởng bhyt các chi phí phát sinh tại phòng khám thêm. Bạn có muốn tiếp tục?", "Thông báo", MessageBoxButtons.YesNo) == DialogResult.Yes)
+                        if (MessageBox.Show("Bệnh nhân không được hưởng BHYT các chi phí phát sinh tại phòng khám thêm. Bạn có muốn tiếp tục?",
+                                            "Thông báo", MessageBoxButtons.YesNo) == DialogResult.Yes)
                         {
+                            if (!CheckMustFinishAllServices(HisServiceReqView.ID)) return;
                             SaveExamServiceReq(hisServiceReqSDO);
                         }
                     }
                     else
                     {
+                        if (!CheckMustFinishAllServices(HisServiceReqView.ID)) return;
                         SaveExamServiceReq(hisServiceReqSDO);
                     }
                 }
@@ -3002,7 +3018,97 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
+        private bool CheckMustFinishAllServices(long serviceReqId)
+        {
+               
+               
+            CommonParam param = new CommonParam();
+            if (HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<int>("MOS.HIS_SERVICE_REQ.MUST_FINISH_ALL_SERVICES_BEFORE_EXAM_ADDITION") == 2
+                && treatment != null
+                && treatment.TDL_TREATMENT_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__KHAM)
+            {
+                var inputSDO = new ServiceReqExamSDO()
+                {
+                    ServiceReqId = serviceReqId,
+                    ServiceReqTypes = new List<long>
 
+            {   
+                IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__CDHA,
+                IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__GPBL,
+                IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__NS,
+                IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__SA,
+                IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__TDCN,
+                IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__XN,
+                IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__KH,
+                IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__PHCN,
+                IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__PT,
+                IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__TT
+            }
+                };
+                Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData("inputSDO:", inputSDO));
+                List<HIS_SERVICE_REQ> allServiceReqs = new BackendAdapter(new CommonParam()).Get<List<HIS_SERVICE_REQ>>(
+    "api/HisServiceReq/GetServicesNotComplete",
+    ApiConsumers.MosConsumer,
+    inputSDO,
+    param
+);
+
+                Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData("allServiceReqs output:", allServiceReqs));
+
+
+
+
+
+                if (allServiceReqs != null && allServiceReqs.Count > 0)
+                {
+                    
+                    var warningText = string.Join(", ", allServiceReqs.Select(s =>
+                    {
+                        var room = BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_EXECUTE_ROOM>()
+                                        .FirstOrDefault(o => o.ROOM_ID == s.EXECUTE_ROOM_ID);
+                        var roomName = room != null ? room.EXECUTE_ROOM_NAME : "";
+                        return s.SERVICE_REQ_CODE + " (" + roomName + ")";
+                    }));
+
+                    var result = MessageBox.Show(
+                        "Các phiếu chỉ định sau chưa kết thúc. " + warningText + ". Bạn có muốn tiếp tục không?",
+                        "Cảnh báo", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+
+                    if (result == DialogResult.No)
+                    {
+                        return false;
+                    }
+                }
+
+            }
+
+            return true;
+        }
+        private bool IsCheckServiceFollowWhenOut()
+        {
+            bool valid = true;
+            try
+            {
+                if (HisConfigCFG.IsCheckServiceFollowWhenOut && this.treatment.TDL_PATIENT_TYPE_ID == HisPatientTypeCFG.PATIENT_TYPE_ID__BHYT)
+                {
+                    CommonParam param = new CommonParam();
+                    var result = new BackendAdapter(param).Post<bool>("api/HisTreatment/CheckServiceFollow", ApiConsumers.MosConsumer, this.treatment.ID, param);
+                    if (result == false)
+                    {
+                        if (XtraMessageBox.Show(param.GetMessage() + Environment.NewLine + "Bạn có muốn tiếp tục xử lý không?", ResourceMessage.ThongBao, MessageBoxButtons.YesNo, DevExpress.Utils.DefaultBoolean.True) != System.Windows.Forms.DialogResult.Yes)
+                        {
+                            return false;
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+                valid = false;
+            }
+            return valid;
+        }
         private bool CheckIcd(HisTreatmentFinishSDO TreatmentFinishSDO = null)
         {
             bool valid = true;

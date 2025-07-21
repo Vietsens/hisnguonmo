@@ -831,7 +831,6 @@ namespace HIS.Desktop.Plugins.Library.FormMedicalRecord.Process
                 //+ Tên các loại dịch vụ: Tên các loại dịch vụ cận lâm sàn khác các dịch vụ trên cách nhau bởi dấu ,: Nội soi, Thủ thuật, ...
                 //- Chú y không tính các dịch vụ được đánh dấu "Không thực hiện".
                 HoSo _HoSo = new HoSo();
-
                 if (_Treatment != null)
                 {
                     EmrTreatmentFilter emrfilter = new EmrTreatmentFilter();
@@ -842,23 +841,24 @@ namespace HIS.Desktop.Plugins.Library.FormMedicalRecord.Process
                     {
                         documentFilter.TREATMENT_ID = treatment.ID;
                     }
-
                     var apiData = new BackendAdapter(new CommonParam()).Get<List<V_EMR_DOCUMENT>>("api/EmrDocument/GetView", ApiConsumers.EmrConsumer, documentFilter, null);
                     var emrDocuments = apiData
                         .Where(d => !string.IsNullOrEmpty(d.SIGNERS) && d.IS_DELETE != 1)
                         .ToList();
+
                     var emrDocumentGroups = BackendDataWorker.Get<EMR_DOCUMENT_GROUP>()
                         .Where(g => g.IS_ACTIVE == 1)
                         .ToList();
+                    var groupdict = emrDocumentGroups.ToDictionary(g => g.ID, g => g.MEDIA_DOC_TYPE_ID??0);
 
                     _HoSo.XQuang = emrDocuments.Count(d =>
-                        emrDocumentGroups.Any(g => g.ID == d.DOCUMENT_GROUP_ID && g.MEDIA_DOC_TYPE_ID == IMSys.DbConfig.EMR_RS.EMR_MEDIA_DOC_TYPE.XQ));
+                        checkDocument(groupdict, d.DOCUMENT_GROUP_ID, IMSys.DbConfig.EMR_RS.EMR_MEDIA_DOC_TYPE.XQ));
                     _HoSo.CTScanner = emrDocuments.Count(d =>
-                        emrDocumentGroups.Any(g => g.ID == d.DOCUMENT_GROUP_ID && g.MEDIA_DOC_TYPE_ID == IMSys.DbConfig.EMR_RS.EMR_MEDIA_DOC_TYPE.CT));
+                        checkDocument(groupdict, d.DOCUMENT_GROUP_ID, IMSys.DbConfig.EMR_RS.EMR_MEDIA_DOC_TYPE.CT));
                     _HoSo.SieuAm = emrDocuments.Count(d =>
-                        emrDocumentGroups.Any(g => g.ID == d.DOCUMENT_GROUP_ID && g.MEDIA_DOC_TYPE_ID == IMSys.DbConfig.EMR_RS.EMR_MEDIA_DOC_TYPE.SA));
+                        checkDocument(groupdict, d.DOCUMENT_GROUP_ID, IMSys.DbConfig.EMR_RS.EMR_MEDIA_DOC_TYPE.SA));
                     _HoSo.XetNghiem = emrDocuments.Count(d =>
-                        emrDocumentGroups.Any(g => g.ID == d.DOCUMENT_GROUP_ID && g.MEDIA_DOC_TYPE_ID == IMSys.DbConfig.EMR_RS.EMR_MEDIA_DOC_TYPE.XN));
+                        checkDocument(groupdict, d.DOCUMENT_GROUP_ID, IMSys.DbConfig.EMR_RS.EMR_MEDIA_DOC_TYPE.XN));
                     _HoSo.ToanBoHoSo = emrDocuments.Count;
                     _HoSo.Khac = _HoSo.ToanBoHoSo - _HoSo.XQuang - _HoSo.CTScanner - _HoSo.SieuAm - _HoSo.XetNghiem;
                     var otherDocuments = emrDocuments.Where(doc => !emrDocumentGroups.Any(group => group.ID == doc.DOCUMENT_GROUP_ID &&
@@ -1968,6 +1968,19 @@ namespace HIS.Desktop.Plugins.Library.FormMedicalRecord.Process
             return valid;
         }
 
+        bool checkDocument(Dictionary<long, long> dicgr, long? documentGroupId, long type)
+        {
+            bool result = false;
+            try
+            {
+                result = dicgr != null && documentGroupId.HasValue && dicgr.ContainsKey(documentGroupId.Value) && dicgr[documentGroupId.Value] == type;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+            return result;
+        }
         ChuyenVien GetChuyenVienFromTranspatiForm(string levelCode1, string levelCode2)
         {
             ChuyenVien cv;

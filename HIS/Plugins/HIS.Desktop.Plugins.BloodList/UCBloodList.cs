@@ -42,6 +42,7 @@ using MOS.Filter;
 using DevExpress.XtraGrid.Views.Grid.ViewInfo;
 using DevExpress.XtraGrid.Columns;
 using DevExpress.Utils;
+using Inventec.Common.Logging;
 
 namespace HIS.Desktop.Plugins.BloodList
 {
@@ -61,7 +62,7 @@ namespace HIS.Desktop.Plugins.BloodList
         GridColumn lastColumn = null;
         ToolTipControlInfo lastInfo = null;
         #endregion
-
+            
         #region Construct
         public UCBloodList()
         {
@@ -84,6 +85,7 @@ namespace HIS.Desktop.Plugins.BloodList
                 cultureLang = Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture();
                 this.roomId = moduleData.RoomId;
                 this.roomTypeId = moduleData.RoomTypeId;
+                this.currentModule = moduleData;
             }
             catch (Exception ex)
             {
@@ -657,7 +659,8 @@ namespace HIS.Desktop.Plugins.BloodList
 
                 if (ExpMestData != null)
                 {
-                    frmBloodUpdate frm = new frmBloodUpdate(ExpMestData);
+                    LogSystem.Info("currentModule " + currentModule);
+                    frmBloodUpdate frm = new frmBloodUpdate(ExpMestData, currentModule);
                     frm.ShowDialog();
                     FillDataToGrid();
                 }

@@ -27,9 +27,6 @@ namespace HIS.Desktop.LocalStorage.BackendData.ADO
     {
         public string RENDERER_PDC_NAME { get; set; }
         public string RENDERER_PDC_NAME_UNSIGNED { get; set; }
-        public string PROVINCE_CODE { get; set; }
-        public long PROVINCE_ID { get; set; }
-        public string PROVINCE_NAME { get; set; }
         public string SEARCH_CODE_COMMUNE { get; set; }
         public string ID_RAW { get; set; }
 
@@ -81,16 +78,27 @@ namespace HIS.Desktop.LocalStorage.BackendData.ADO
                 this.ID_PATH = data.ID_PATH;
                 this.INITIAL_NAME = data.INITIAL_NAME;
                 this.SEARCH_CODE = data.SEARCH_CODE;
-
+                this.PROVINCE_ID = data.PROVINCE_ID;
+                this.PROVINCE_CODE = data.PROVINCE_CODE;
+                this.PROVINCE_NAME = data.PROVINCE_NAME;
                 this.SEARCH_CODE_COMMUNE += data.SEARCH_CODE;
+                this.IS_NO_DISTRICT = data.IS_NO_DISTRICT;
                 var districtOne = districts.FirstOrDefault(o => o.ID == data.DISTRICT_ID);
-                if (districtOne != null)
+                if (districtOne != null && this.IS_NO_DISTRICT == null)
                 {
                     this.PROVINCE_ID = districtOne.PROVINCE_ID;
                     this.PROVINCE_CODE = districtOne.PROVINCE_CODE;
                     this.PROVINCE_NAME = districtOne.PROVINCE_NAME;
                     this.SEARCH_CODE_COMMUNE += districtOne.SEARCH_CODE;
                     var provinceOne = provinces.FirstOrDefault(o => o.ID == districtOne.PROVINCE_ID);
+                    if (provinceOne != null)
+                    {
+                        this.SEARCH_CODE_COMMUNE += provinceOne.SEARCH_CODE;
+                    }
+                }
+                else if (this.PROVINCE_ID.HasValue)
+                {
+                    var provinceOne = provinces.FirstOrDefault(o => o.ID == this.PROVINCE_ID);
                     if (provinceOne != null)
                     {
                         this.SEARCH_CODE_COMMUNE += provinceOne.SEARCH_CODE;
@@ -124,9 +132,12 @@ namespace HIS.Desktop.LocalStorage.BackendData.ADO
                 this.ID_PATH = data.ID_PATH;
                 this.INITIAL_NAME = data.INITIAL_NAME;
                 this.SEARCH_CODE = data.SEARCH_CODE;
-
+                this.PROVINCE_ID = data.PROVINCE_ID;
+                this.PROVINCE_CODE = data.PROVINCE_CODE;
+                this.PROVINCE_NAME = data.PROVINCE_NAME;
+                this.IS_NO_DISTRICT = data.IS_NO_DISTRICT;
                 var districtOne = districts.FirstOrDefault(o => o.ID == data.DISTRICT_ID);
-                if (districtOne != null)
+                if (districtOne != null && this.IS_NO_DISTRICT == null)
                 {
                     this.PROVINCE_ID = districtOne.PROVINCE_ID;
                     this.PROVINCE_CODE = districtOne.PROVINCE_CODE;
@@ -138,6 +149,14 @@ namespace HIS.Desktop.LocalStorage.BackendData.ADO
                         this.SEARCH_CODE_COMMUNE += provinceOne.SEARCH_CODE;
                     }
                     this.SEARCH_CODE_COMMUNE += districtOne.SEARCH_CODE;
+                }
+                else if (this.PROVINCE_ID.HasValue)
+                {
+                    var provinceOne = provinces.FirstOrDefault(o => o.ID == this.PROVINCE_ID);
+                    if (provinceOne != null)
+                    {
+                        this.SEARCH_CODE_COMMUNE += provinceOne.SEARCH_CODE;
+                    }
                 }
                 this.SEARCH_CODE_COMMUNE += data.SEARCH_CODE;
             }

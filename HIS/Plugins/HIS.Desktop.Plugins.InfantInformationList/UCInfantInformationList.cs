@@ -57,6 +57,8 @@ using Inventec.Common.SignLibrary.ServiceSign;
 using EMR.WCF.DCO;
 using Newtonsoft.Json;
 using System.Text.RegularExpressions;
+using HIS.Desktop.ADO;
+using HIS.UC.SettingSignInfo;
 
 namespace HIS.Desktop.Plugins.InfantInformationList
 {
@@ -76,7 +78,7 @@ namespace HIS.Desktop.Plugins.InfantInformationList
         private HIS.Desktop.Library.CacheClient.ControlStateWorker controlStateWorker;
         private List<HIS.Desktop.Library.CacheClient.ControlStateRDO> currentControlStateRDO;
         private X509Certificate2 certificate;
-        private string SerialNumber;
+        private HIS.Desktop.ADO.SettingSignADO settingSignADO = new HIS.Desktop.ADO.SettingSignADO();
         #endregion
         #region ConstructorLoad
         public UCInfantInformationList(Inventec.Desktop.Common.Modules.Module module)
@@ -350,6 +352,8 @@ namespace HIS.Desktop.Plugins.InfantInformationList
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
+
+
         private void InitControlState()
         {
             isNotLoadWhileChangeControlStateInFirst = true;
@@ -363,15 +367,15 @@ namespace HIS.Desktop.Plugins.InfantInformationList
                     {
                         if (item.KEY == chkSignFileCertUtil.Name)
                         {
-                            SerialNumber = item.VALUE;
-
-                            chkSignFileCertUtil.Checked = !String.IsNullOrWhiteSpace(SerialNumber);
+                            settingSignADO = Newtonsoft.Json.JsonConvert.DeserializeObject<HIS.Desktop.ADO.SettingSignADO>(item.VALUE);
+                            chkSignFileCertUtil.Checked = settingSignADO != null && !String.IsNullOrWhiteSpace(settingSignADO.SerialNumber);
                         }
                     }
                 }
             }
             catch (Exception ex)
             {
+                chkSignFileCertUtil.Checked = false;
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
             isNotLoadWhileChangeControlStateInFirst = false;
@@ -958,6 +962,7 @@ namespace HIS.Desktop.Plugins.InfantInformationList
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
+
         private List<ConnectionInfoADO> GetConnectionInfo()
         {
             List<ConnectionInfoADO> listInfo = new List<ConnectionInfoADO>();
@@ -1004,72 +1009,135 @@ namespace HIS.Desktop.Plugins.InfantInformationList
             {
                 CommonParam param = new CommonParam();
                 bool rs = false;
+               // bool isError = false;
                 WaitingManager.Show();
                 var rowHandles = gridView1.GetSelectedRows();
+
                 if (rowHandles != null && rowHandles.Count() > 0)
                 {
+                    List<ConnectionInfoADO> listConnectionInfo = GetConnectionInfo();
                     List<BabySyncSDO> listSyncData = new List<BabySyncSDO>();
-                    if (chkSignFileCertUtil.Checked)
+
+                    if (chkSignFileCertUtil.Checked && settingSignADO != null)
                     {
-                        if (certificate == null && !String.IsNullOrWhiteSpace(SerialNumber))
-                        {
-                            certificate = Inventec.Common.SignFile.CertUtil.GetBySerial(SerialNumber, requirePrivateKey: true, validOnly: false);
-                            if (certificate == null)
-                            {
-                                WaitingManager.Hide();
-                                chkSignFileCertUtil.Checked = false;
-                                if (XtraMessageBox.Show(Resources.ResourceMessage.TiepTucHSM, Resources.ResourceMessage.ThongBao, MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
-                                {
-                                    return;
-                                }
-                            }
-                        }
-                        List<ConnectionInfoADO> listConnectionInfo = GetConnectionInfo();
-                        if (listConnectionInfo != null && listConnectionInfo.Count > 0)
+                        if (settingSignADO.IsHsm)
                         {
                             foreach (var item in listConnectionInfo)
                             {
-                                HIS.Bhyt.Hssk.SyncDataProcess data = new Bhyt.Hssk.SyncDataProcess(HisConfigs.Get<string>("HIS.CHECK_HEIN_CARD.BHXH__ADDRESS"), item.UserName, item.Password, (string xmlData, string element, string serialNumber) =>
-                                {
-                                    if (VerifyServiceSignProcessorIsRunning())
-                                    {
-                                        SignProcessorClient signProcessorClient = new SignProcessorClient();
-                                        return signProcessorClient.StringBase64SignXml(xmlData, element, serialNumber);
-                                    }else
-                                        return null;
-                                });
+                                HIS.Bhyt.Hssk.SyncDataProcess data = new Bhyt.Hssk.SyncDataProcess(HisConfigs.Get<string>("HIS.CHECK_HEIN_CARD.BHXH__ADDRESS"), item.UserName, item.Password);
                                 foreach (var i in rowHandles)
                                 {
                                     var row = (V_HIS_BABY)gridView1.GetRow(i);
                                     if (row != null)
                                     {
+                                        HIS_BRANCH branch = listBranchs.FirstOrDefault(o => o.ID == row.BRANCH_ID);
+                                        var treatment = GetTreatment_ByID(row.TREATMENT_ID);
+
+                                        EMR.SDO.SignXmlBhytSDO signXmlBhytSDO = new EMR.SDO.SignXmlBhytSDO();
                                         string messageError = null;
+                                        signXmlBhytSDO.XmlBase64 = data.Base64XmlGCS(branch, row, treatment, ref messageError);
+
+                                        if (!String.IsNullOrEmpty(messageError))
+                                        {
+                                            WaitingManager.Hide();
+                                            XtraMessageBox.Show(String.Format("{0}: {1}", row.TREATMENT_CODE, messageError), Resources.ResourceMessage.ThongBao);
+                                           
+                                        }
+
+                                        signXmlBhytSDO.TagStoreSignatureValue = "CHUKYDONVI";
+                                        signXmlBhytSDO.ConfigData = new EMR.SDO.XmlConfigDataSDO()
+                                        {
+                                            HsmSerialNumber = settingSignADO.SerialNumber,
+                                            HsmType = settingSignADO.Id,
+                                            HsmUserCode = settingSignADO.Name,
+                                            Password = settingSignADO.Password,
+                                            SecretKey = settingSignADO.SercetKey,
+                                            IdentityNumber = settingSignADO.CccdNumber
+                                        };
+
+                                        var stringbase64 = new Inventec.Common.Adapter.BackendAdapter(param)
+                                            .Post<string>("api/EmrSign/SignXmlBhyt", ApiConsumer.ApiConsumers.EmrConsumer, signXmlBhytSDO, SessionManager.ActionLostToken, param);
+
                                         BabySyncSDO sdo = new BabySyncSDO();
                                         sdo.BabyID = row.ID;
-                                        HIS_BRANCH branch = listBranchs.FirstOrDefault(o => o.ID == row.BRANCH_ID);
-                                        if (certificate != null)
+                                        if (!string.IsNullOrEmpty(stringbase64))
                                         {
-                                            var treatment = GetTreatment_ByID(row.TREATMENT_ID);
-                                            sdo.FileBase64Str = data.ProcessBornInfo(branch, row, treatment, certificate, ref messageError);
-                                            if (!String.IsNullOrEmpty(messageError))
-                                            {
-                                                WaitingManager.Hide();
-                                                XtraMessageBox.Show(String.Format("{0}: {1}", row.TREATMENT_CODE, messageError), Resources.ResourceMessage.ThongBao);
-                                            }
+                                            sdo.FileBase64Str = stringbase64;
                                         }
+
                                         listSyncData.Add(sdo);
                                     }
                                 }
+                               
                             }
                         }
-                        else
+                        else 
                         {
-                            WaitingManager.Hide();
-                            XtraMessageBox.Show(Resources.ResourceMessage.CauHinhKhaiBaoSaiDinhDang, Resources.ResourceMessage.ThongBao);
-                            return;
+                            if (certificate == null && !String.IsNullOrWhiteSpace(settingSignADO.SerialNumber))
+                            {
+                                certificate = Inventec.Common.SignFile.CertUtil.GetBySerial(settingSignADO.SerialNumber, requirePrivateKey: true, validOnly: false);
+                                if (certificate == null)
+                                {
+                                    WaitingManager.Hide();
+                                    chkSignFileCertUtil.Checked = false;
+                                    if (XtraMessageBox.Show(Resources.ResourceMessage.TiepTucHSM, Resources.ResourceMessage.ThongBao, MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
+                                    {
+                                       
+                                    }
+                                }
+                            }
+
+                            if (listConnectionInfo != null && listConnectionInfo.Count > 0)
+                            {
+                                foreach (var item in listConnectionInfo)
+                                {
+                                    HIS.Bhyt.Hssk.SyncDataProcess data = new Bhyt.Hssk.SyncDataProcess(HisConfigs.Get<string>("HIS.CHECK_HEIN_CARD.BHXH__ADDRESS"), item.UserName, item.Password,
+                                        (string xmlData, string element, string serialNumber) =>
+                                        {
+                                            if (VerifyServiceSignProcessorIsRunning())
+                                            {
+                                                SignProcessorClient signProcessorClient = new SignProcessorClient();
+                                                return signProcessorClient.StringBase64SignXml(xmlData, element, serialNumber);
+                                            }
+                                            else
+                                                return null;
+                                        });
+
+                                    foreach (var i in rowHandles)
+                                    {
+                                        var row = (V_HIS_BABY)gridView1.GetRow(i);
+                                        if (row != null)
+                                        {
+                                            string messageError = null;
+                                            BabySyncSDO sdo = new BabySyncSDO();
+                                            sdo.BabyID = row.ID;
+                                            HIS_BRANCH branch = listBranchs.FirstOrDefault(o => o.ID == row.BRANCH_ID);
+                                            if (certificate != null)
+                                            {
+                                                var treatment = GetTreatment_ByID(row.TREATMENT_ID);
+                                                sdo.FileBase64Str = data.ProcessBornInfo(branch, row, treatment, certificate, ref messageError);
+                                                if (!String.IsNullOrEmpty(messageError))
+                                                {
+                                                    WaitingManager.Hide();
+                                                    XtraMessageBox.Show(String.Format("{0}: {1}", row.TREATMENT_CODE, messageError), Resources.ResourceMessage.ThongBao);
+                                                   
+                                                }
+                                            }
+                                            listSyncData.Add(sdo);
+                                        }
+                                    }
+                                      
+                                }
+                            }
+                            else
+                            {
+                                WaitingManager.Hide();
+                                XtraMessageBox.Show(Resources.ResourceMessage.CauHinhKhaiBaoSaiDinhDang, Resources.ResourceMessage.ThongBao);
+                               
+                            }
                         }
                     }
-                    else
+                    else 
                     {
                         foreach (var i in rowHandles)
                         {
@@ -1082,12 +1150,24 @@ namespace HIS.Desktop.Plugins.InfantInformationList
                             }
                         }
                     }
-                    rs = new Inventec.Common.Adapter.BackendAdapter(param).Post<bool>("api/HisBaby/Sync", ApiConsumer.ApiConsumers.MosConsumer, listSyncData, SessionManager.ActionLostToken, param);
-                    if (rs)
-                    {
-                        FillDataToGrid();
-                    }
+
+                   
+                   
+                        rs = new Inventec.Common.Adapter.BackendAdapter(param).Post<bool>(
+                            "api/HisBaby/Sync",
+                            ApiConsumer.ApiConsumers.MosConsumer,
+                            listSyncData,
+                            SessionManager.ActionLostToken,
+                            param
+                        );
+
+                        if (rs)
+                        {
+                            FillDataToGrid();
+                        }
+                    
                 }
+
                 WaitingManager.Hide();
 
                 #region Show message
@@ -1098,12 +1178,12 @@ namespace HIS.Desktop.Plugins.InfantInformationList
                 HIS.Desktop.Controls.Session.SessionManager.ProcessTokenLost(param);
                 #endregion
             }
-
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
+
         private V_HIS_TREATMENT GetTreatment_ByID(long treatmentId)
         {
             V_HIS_TREATMENT result = null;
@@ -1130,38 +1210,27 @@ namespace HIS.Desktop.Plugins.InfantInformationList
             try
             {
                 timer1.Stop();
-                SerialNumber = null;
                 if (chkSignFileCertUtil.Checked)
                 {
-                    if (VerifyServiceSignProcessorIsRunning())
+                    frmSetting frm = new frmSetting(settingSignADO, (result) =>
                     {
-                        WcfSignDCO wcfSignDCO = new WcfSignDCO();
-                        wcfSignDCO.HwndParent = this.ParentForm.Handle;
-                        string jsonData = JsonConvert.SerializeObject(wcfSignDCO);
-                        SignProcessorClient signProcessorClient = new SignProcessorClient();
-                        var wcfSignResultDCO = signProcessorClient.GetSerialNumber(jsonData);  //EDIT
-                        if (wcfSignResultDCO != null)
-                        {
-                            SerialNumber = wcfSignResultDCO.OutputFile;
-                        }
-                    }
-                    if (string.IsNullOrEmpty(SerialNumber))
-                    {
+                        settingSignADO = (SettingSignADO)result;
+                    });
+                    frm.ShowDialog();
+                    if (settingSignADO == null || string.IsNullOrEmpty(settingSignADO.SerialNumber))
                         chkSignFileCertUtil.Checked = false;
-                        XtraMessageBox.Show(Resources.ResourceMessage.KhongLayDuocThongTinChungThuHoacChungThuKhongHopLe, Resources.ResourceMessage.ThongBao);
-                    }
                 }
                 HIS.Desktop.Library.CacheClient.ControlStateRDO csAddOrUpdate = (this.currentControlStateRDO != null && this.currentControlStateRDO.Count > 0) ? this.currentControlStateRDO.Where(o => o.KEY == chkSignFileCertUtil.Name && o.MODULE_LINK == this.currentModule.ModuleLink).FirstOrDefault() : null;
                 Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => csAddOrUpdate), csAddOrUpdate));
                 if (csAddOrUpdate != null)
                 {
-                    csAddOrUpdate.VALUE = SerialNumber;
+                    csAddOrUpdate.VALUE = Newtonsoft.Json.JsonConvert.SerializeObject(settingSignADO);
                 }
                 else
                 {
                     csAddOrUpdate = new HIS.Desktop.Library.CacheClient.ControlStateRDO();
                     csAddOrUpdate.KEY = chkSignFileCertUtil.Name;
-                    csAddOrUpdate.VALUE = SerialNumber;
+                    csAddOrUpdate.VALUE = Newtonsoft.Json.JsonConvert.SerializeObject(settingSignADO);
                     csAddOrUpdate.MODULE_LINK = this.currentModule.ModuleLink;
                     if (this.currentControlStateRDO == null)
                         this.currentControlStateRDO = new List<HIS.Desktop.Library.CacheClient.ControlStateRDO>();

@@ -30,5 +30,8 @@ namespace MPS.Processor.Mps000276
         public string SERVICE_NAME { get; set; }
         public long NUM_ORDER { get; set; }
         public string SEQUENCE { get; set; }
+        public string ASSIGN_TURN_CODE { get; set; }
+        public string SERVICE_REQ_CODE { get; set; }
+        public string SERVICE_TYPE_CODE { get; set; }
     }
 }

@@ -43,10 +43,10 @@
     <Reference Include="DevExpress.XtraScheduler.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
     <Reference Include="DevExpress.XtraScheduler.v15.2.Core, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
     <Reference Include="HID.EFMODEL">
-      <HintPath>..\..\..\..\LIB\HID\HID.EFMODEL.dll</HintPath>
+      <HintPath>..\..\..\..\lib\HIS\HIS.UC.PlusInfo\HID.EFMODEL.dll</HintPath>
     </Reference>
     <Reference Include="HID.Filter">
-      <HintPath>..\..\..\..\LIB\HID\HID.Filter.dll</HintPath>
+      <HintPath>..\..\..\..\lib\HIS\HIS.UC.PlusInfo\HID.Filter.dll</HintPath>
     </Reference>
     <Reference Include="His.EventLog">
       <HintPath>..\..\..\..\LIB\HIS\His.EventLog\His.EventLog.dll</HintPath>
@@ -152,7 +152,7 @@
       <HintPath>..\..\..\..\LIB\MOS\MOS.SDO.dll</HintPath>
     </Reference>
     <Reference Include="MPS">
-      <HintPath>..\..\..\..\LIB\MPS\MPS.dll</HintPath>
+      <HintPath>..\..\..\..\lib\MPSv2\MPS\MPS.dll</HintPath>
     </Reference>
     <Reference Include="SDA.EFMODEL, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -248,7 +248,6 @@
     <EmbeddedResource Include="MoRong\frmMoRong.resx">
       <DependentUpon>frmMoRong.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Properties\licenses.licx" />
     <EmbeddedResource Include="Properties\Resources.resx" />
     <EmbeddedResource Include="Resources\Lang.en.resx">
       <SubType>Designer</SubType>
@@ -309,6 +308,10 @@
     <ProjectReference Include="..\..\HIS.Desktop.Utility\HIS.Desktop.Utilities.csproj">
       <Project>{2aad22db-2166-4be8-ae52-335b21dc03fc}</Project>
       <Name>HIS.Desktop.Utilities</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\HIS.Desktop.Library.CacheClient\HIS.Desktop.Library.CacheClient.csproj">
+      <Project>{64837e01-803d-4f1e-9dfc-d34b38ea78f9}</Project>
+      <Name>HIS.Desktop.Library.CacheClient</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

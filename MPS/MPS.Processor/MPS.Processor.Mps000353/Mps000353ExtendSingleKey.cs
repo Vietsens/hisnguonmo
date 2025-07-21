@@ -85,5 +85,7 @@ namespace MPS.Processor.Mps000353
 
         internal const string TT_SERVICE_NAME = "TT_SERVICE_NAMES";
         internal const string CLS_SERVICE_NAME = "CLS_SERVICE_NAMES";
+        internal const string ELECTRONIC_EXP_MEST_CODE = "ELECTRONIC_EXP_MEST_CODE";
+        
     }
 }

@@ -34,8 +34,23 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
         public string PrintTypeName { get; set; }
         public bool Visible { get; set; }
         public bool IsAutoPrint { get; set; }
+        public object Tag { get; set; }
         public PrintConfigADO()
         {
+        }
+
+    }
+    public class ItemConfig
+    {
+        public string BANK
+        {
+            get;
+            set;
+        }
+        public string VALUE
+        {
+            get;
+            set;
         }
     }
 }

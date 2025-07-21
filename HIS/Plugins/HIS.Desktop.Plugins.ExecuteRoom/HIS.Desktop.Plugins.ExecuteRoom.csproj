@@ -245,8 +245,9 @@
     <Reference Include="MOS.EFMODEL">
       <HintPath>..\..\..\..\lib\MOS\MOS.EFMODEL.dll</HintPath>
     </Reference>
-    <Reference Include="MOS.Filter">
-      <HintPath>..\..\..\..\lib\MOS\MOS.Filter.dll</HintPath>
+    <Reference Include="MOS.Filter, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\HISTEST\histest\x64\ReferencedAssemblies\MOS.Filter.dll</HintPath>
     </Reference>
     <Reference Include="MOS.LibraryHein.Bhyt, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -274,6 +275,12 @@
     </Reference>
     <Reference Include="MPS.Processor.Mps000433.PDO">
       <HintPath>..\..\..\..\LIB\MPSv2\MPS.PDO\MPS.Processor.Mps000433.PDO.dll</HintPath>
+    </Reference>
+    <Reference Include="MPS.Processor.Mps000503">
+      <HintPath>..\..\..\MPS\MPS.Processor\MPS.Processor.Mps000503\bin\Debug\MPS.Processor.Mps000503.dll</HintPath>
+    </Reference>
+    <Reference Include="MPS.Processor.Mps000503.PDO">
+      <HintPath>..\..\..\MPS\MPS.Processor\MPS.Processor.Mps000503.PDO\bin\Debug\MPS.Processor.Mps000503.PDO.dll</HintPath>
     </Reference>
     <Reference Include="MPS.ProcessorBase, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -412,7 +419,6 @@
       <DependentUpon>ImageCodeView.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Properties\licenses.licx" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <SubType>Designer</SubType>
