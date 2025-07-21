@@ -77,6 +77,7 @@ namespace His.UC.CreateReport.Design.CreateReport
                             txtReportName.Text = reportTemplate.REPORT_TEMPLATE_NAME;
                             txtReportName.Focus();
                             txtReportName.SelectAll();
+                            CreateReportControl();
                         }
                     }
                     else

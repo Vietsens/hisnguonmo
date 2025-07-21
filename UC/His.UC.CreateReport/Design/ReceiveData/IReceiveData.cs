@@ -15,21 +15,13 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-using SAR.EFMODEL.DataModels;
-using System;
+using MOS.EFMODEL.DataModels;
 using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 
-namespace His.UC.CreateReport
+namespace DCV.APP.Report.ReceiveData
 {
-    public delegate bool ProcessCreateReport(object data);
-    public delegate SAR_REPORT ProcessCreateReportViewAway(object data);
-
-    public delegate SAR_REPORT StatusReport(long Id);
-    public delegate void InitDesignReportTemplate(Size sizeNew);
-    public delegate void CalHeightDesignReportTemplate(UserControl frm);
+    interface IReceiveData
+    {
+        object Run();
+    }
 }

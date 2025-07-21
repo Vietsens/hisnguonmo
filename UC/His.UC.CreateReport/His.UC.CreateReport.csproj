@@ -38,14 +38,29 @@
     <Reference Include="DevExpress.XtraGrid.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
     <Reference Include="DevExpress.XtraLayout.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
     <Reference Include="DevExpress.XtraPrinting.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
-    <Reference Include="HIS.UC.FormType">
-      <HintPath>..\HIS.UC.FormType\bin\Debug\HIS.UC.FormType.dll</HintPath>
+    <Reference Include="HID.EFMODEL">
+      <HintPath>..\..\..\..\..\GitLab\histest\x64\ReferencedAssemblies\HID.EFMODEL.dll</HintPath>
+    </Reference>
+    <Reference Include="HIS.Desktop.ApiConsumer, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\histest\x64\ReferencedAssemblies\HIS.Desktop.ApiConsumer.dll</HintPath>
+    </Reference>
+    <Reference Include="HIS.Desktop.Common, Version=1.1.0.0, Culture=neutral, PublicKeyToken=null" />
+    <Reference Include="HIS.Desktop.LocalStorage.ConfigSystem">
+      <HintPath>..\..\..\..\..\GitLab\histest\x64\ReferencedAssemblies\HIS.Desktop.LocalStorage.ConfigSystem.dll</HintPath>
+    </Reference>
+    <Reference Include="HIS.Desktop.LocalStorage.HisConfig">
+      <HintPath>..\..\..\..\..\GitLab\histest\x64\ReferencedAssemblies\HIS.Desktop.LocalStorage.HisConfig.dll</HintPath>
     </Reference>
     <Reference Include="IMSys.DbConfig.HIS_RS">
       <HintPath>..\..\..\RELEASE\IMSys.DbConfig\IMSys.DbConfig.HIS_RS\IMSys.DbConfig.HIS_RS.dll</HintPath>
     </Reference>
     <Reference Include="IMSys.DbConfig.SAR_RS">
       <HintPath>..\..\..\RELEASE\IMSys.DbConfig\IMSys.DbConfig.SAR_RS\IMSys.DbConfig.SAR_RS.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Common.Adapter, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\lib\Inventec.Common\Inventec.Common.Adapter\Inventec.Common.Adapter.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Common.DateTime">
       <HintPath>..\..\..\RELEASE\Inventec.Common\Inventec.Common.DateTime\Inventec.Common.DateTime.dll</HintPath>
@@ -63,6 +78,7 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\RELEASE\Inventec.Common\Inventec.Common.Resource\Inventec.Common.Resource.dll</HintPath>
     </Reference>
+    <Reference Include="Inventec.Common.WebApiClient, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
     <Reference Include="Inventec.Core">
       <HintPath>..\..\..\RELEASE\Inventec.Core\Inventec.Core.dll</HintPath>
     </Reference>
@@ -78,7 +94,7 @@
     </Reference>
     <Reference Include="MRS.SDO, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\RELEASE\HIS\His.UC.CreateReport\MRS.SDO.dll</HintPath>
+      <HintPath>..\..\..\mrs\LIB\MRSv3\MRS.SDO.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -240,6 +256,9 @@
     <Compile Include="Design\JsonOutput\JsonOutputTrueOrFalseBehavior.cs" />
     <Compile Include="Design\JsonOutput\JsonOutputUserNameComboBehavior.cs" />
     <Compile Include="Design\JsonOutput\OutputMediStockComboFilterByDepartmentComboBehavior.cs" />
+    <Compile Include="Design\ReceiveData\ReceiveData.cs" />
+    <Compile Include="Design\ReceiveData\ReceiveDataBehaviorFactory.cs" />
+    <Compile Include="Design\ReceiveData\IReceiveData.cs" />
     <Compile Include="Design\Validation\ReportTemplateValidationRule.cs" />
     <Compile Include="Generate1\CreateReportGenerate1.cs">
       <SubType>Code</SubType>
@@ -298,6 +317,7 @@
     </EmbeddedResource>
     <EmbeddedResource Include="MessageLang\MessageEnResource.resx" />
     <EmbeddedResource Include="MessageLang\MessageViResource.resx" />
+    <EmbeddedResource Include="Properties\licenses.licx" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -317,15 +337,12 @@
     <None Include="His.UC.CreateReport.v11.suo" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\FE\YTE\DESKTOP\HIS\HIS.Desktop.LocalStorage.ConfigSystem\HIS.Desktop.LocalStorage.ConfigSystem.csproj">
-      <Project>{48d25a6a-11bc-4f0f-8dd7-15e03a2bcada}</Project>
-      <Name>HIS.Desktop.LocalStorage.ConfigSystem</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\FE\YTE\DESKTOP\HIS\HIS.Desktop.LocalStorage.HisConfig\HIS.Desktop.LocalStorage.HisConfig.csproj">
-      <Project>{d1e5461b-8a8e-46f7-9aee-5c1b327e5f2b}</Project>
-      <Name>HIS.Desktop.LocalStorage.HisConfig</Name>
+    <ProjectReference Include="..\HIS.UC.FormType\HIS.UC.FormType.csproj">
+      <Project>{a61418d7-2d72-4c4d-9e99-e0adf913fc4e}</Project>
+      <Name>HIS.UC.FormType</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

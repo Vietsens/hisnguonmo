@@ -46,7 +46,9 @@ namespace His.UC.CreateReport.Design.CreateReport
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.layoutControl1 = new DevExpress.XtraLayout.LayoutControl();
+            this.btnTutorial = new DevExpress.XtraEditors.SimpleButton();
             this.lbMessage = new System.Windows.Forms.Label();
             this.chkViewAway = new System.Windows.Forms.CheckBox();
             this.xtraScrollTabContainerReportControl = new DevExpress.XtraEditors.XtraScrollableControl();
@@ -69,17 +71,16 @@ namespace His.UC.CreateReport.Design.CreateReport
             this.layoutControlItem1 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem2 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem3 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.barManager1 = new DevExpress.XtraBars.BarManager();
+            this.layoutControlItem5 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.barManager1 = new DevExpress.XtraBars.BarManager(this.components);
             this.barDockControlTop = new DevExpress.XtraBars.BarDockControl();
             this.barDockControlBottom = new DevExpress.XtraBars.BarDockControl();
             this.barDockControlLeft = new DevExpress.XtraBars.BarDockControl();
             this.barDockControlRight = new DevExpress.XtraBars.BarDockControl();
             this.barButtonItem1 = new DevExpress.XtraBars.BarButtonItem();
             this.bbtRCSave = new DevExpress.XtraBars.BarButtonItem();
-            this.dxValidationProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider();
-            this.tmViewAway = new System.Windows.Forms.Timer();
-            this.btnTutorial = new DevExpress.XtraEditors.SimpleButton();
-            this.layoutControlItem5 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.dxValidationProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider(this.components);
+            this.tmViewAway = new System.Windows.Forms.Timer(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
             this.layoutControl1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.txtDescription.Properties)).BeginInit();
@@ -98,9 +99,9 @@ namespace His.UC.CreateReport.Design.CreateReport
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem3)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem5)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.barManager1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxValidationProvider1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem5)).BeginInit();
             this.SuspendLayout();
             // 
             // layoutControl1
@@ -125,6 +126,16 @@ namespace His.UC.CreateReport.Design.CreateReport
             this.layoutControl1.Size = new System.Drawing.Size(660, 380);
             this.layoutControl1.TabIndex = 0;
             this.layoutControl1.Text = "layoutControl1";
+            // 
+            // btnTutorial
+            // 
+            this.btnTutorial.Location = new System.Drawing.Point(596, 356);
+            this.btnTutorial.Name = "btnTutorial";
+            this.btnTutorial.Size = new System.Drawing.Size(62, 22);
+            this.btnTutorial.StyleController = this.layoutControl1;
+            this.btnTutorial.TabIndex = 12;
+            this.btnTutorial.Text = "Hướng dẫn";
+            this.btnTutorial.Click += new System.EventHandler(this.btnTutorial_Click);
             // 
             // lbMessage
             // 
@@ -224,6 +235,7 @@ namespace His.UC.CreateReport.Design.CreateReport
             this.cboReportTemplate.StyleController = this.layoutControl1;
             this.cboReportTemplate.TabIndex = 7;
             this.cboReportTemplate.Closed += new DevExpress.XtraEditors.Controls.ClosedEventHandler(this.cboReportTemplate_Closed);
+            this.cboReportTemplate.EditValueChanged += new System.EventHandler(this.cboReportTemplate_EditValueChanged);
             // 
             // gridLookUpEdit1View
             // 
@@ -375,6 +387,15 @@ namespace His.UC.CreateReport.Design.CreateReport
             this.layoutControlItem3.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem3.TextVisible = false;
             // 
+            // layoutControlItem5
+            // 
+            this.layoutControlItem5.Control = this.btnTutorial;
+            this.layoutControlItem5.Location = new System.Drawing.Point(594, 354);
+            this.layoutControlItem5.Name = "layoutControlItem5";
+            this.layoutControlItem5.Size = new System.Drawing.Size(66, 26);
+            this.layoutControlItem5.TextSize = new System.Drawing.Size(0, 0);
+            this.layoutControlItem5.TextVisible = false;
+            // 
             // barManager1
             // 
             this.barManager1.DockControls.Add(this.barDockControlTop);
@@ -438,25 +459,6 @@ namespace His.UC.CreateReport.Design.CreateReport
             this.tmViewAway.Interval = 2000;
             this.tmViewAway.Tick += new System.EventHandler(this.tmViewAway_Tick);
             // 
-            // btnTutorial
-            // 
-            this.btnTutorial.Location = new System.Drawing.Point(596, 356);
-            this.btnTutorial.Name = "btnTutorial";
-            this.btnTutorial.Size = new System.Drawing.Size(62, 22);
-            this.btnTutorial.StyleController = this.layoutControl1;
-            this.btnTutorial.TabIndex = 12;
-            this.btnTutorial.Text = "Hướng dẫn";
-            this.btnTutorial.Click += new System.EventHandler(this.btnTutorial_Click);
-            // 
-            // layoutControlItem5
-            // 
-            this.layoutControlItem5.Control = this.btnTutorial;
-            this.layoutControlItem5.Location = new System.Drawing.Point(594, 354);
-            this.layoutControlItem5.Name = "layoutControlItem5";
-            this.layoutControlItem5.Size = new System.Drawing.Size(66, 26);
-            this.layoutControlItem5.TextSize = new System.Drawing.Size(0, 0);
-            this.layoutControlItem5.TextVisible = false;
-            // 
             // CreateReport
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -487,9 +489,9 @@ namespace His.UC.CreateReport.Design.CreateReport
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem3)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem5)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.barManager1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxValidationProvider1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem5)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
