@@ -5982,6 +5982,7 @@ namespace MPS.Processor.Mps000062
                     //Bôi da ngày 3 - 4 lần                 
 
                     item.PRE_MEDICINE = "";
+                    item.PRE_MEDICINE_OUT_TRACKING = "";
 
                     var dtTrackingDate = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(item.TRACKING_TIME).Value;
 
@@ -6004,7 +6005,7 @@ namespace MPS.Processor.Mps000062
                         {
                             var itemExpMest = rdo._DicHisExpMests.ContainsKey(itemByServiceReq.ID) ? rdo._DicHisExpMests[itemByServiceReq.ID] : null;
 
-                            if (itemExpMest == null)
+                            if (itemExpMest == null)       
                                 continue;
 
                             List<ExpMestMedicineADO> _expMestMedicines = new List<ExpMestMedicineADO>();
@@ -6033,8 +6034,18 @@ namespace MPS.Processor.Mps000062
                                         s1 += " " + medicineTypeName.CONCENTRA;
                                         s2 = emmedi.TUTORIAL;
                                         item.PRE_MEDICINE += String.Format("<table><tr><td width=\"650\" text-align=\"left\" align=\"left\">- {0}</td></span></tr><tr><td text-align=\"right\" align=\"left\" width=\"650\">{1}</td></tr></table>", s1, s2);
-
+                                        
+                                        if (itemByServiceReq.TRACKING_ID != _tracking.ID &&
+                                            itemByServiceReq.USED_FOR_TRACKING_ID == _tracking.ID &&
+                                            itemByServiceReq.USED_FOR_TRACKING_ID == _tracking.ID &&
+                                            itemByServiceReq.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__DONDT &&
+                                            itemByServiceReq.SERVICE_REQ_STT_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_STT.ID__HT)
+                                        {
+                                            item.PRE_MEDICINE_OUT_TRACKING += String.Format("<table><tr><td width=\"650\" text-align=\"left\" align=\"left\">- {0}</td></span></tr><tr><td text-align=\"right\" align=\"left\" width=\"650\">{1}</td></tr></table>", s1, s2);
+                                        }
                                     }
+
+                                    
                                     item.MEDICINE_TYPE_ID = emmedi.TDL_MEDICINE_TYPE_ID;
                                 }
                             }

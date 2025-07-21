@@ -54,6 +54,7 @@ namespace MPS.Processor.Mps000062.PDO
         public const string Y_LENH_4 = "Y_LENH_4";
 
         public const string PRE_MEDICINE = "PRE_MEDICINE";
+        public const string PRE_MEDICINE_OUT_TRACKING = "PRE_MEDICINE_OUT_TRACKING"; // vc 13981: IVT - [Code] - T? ?i?u tr? Mps000062 bi?u m?u Repx b? sung key m?i Thu?c s? d?ng nhi?u ngày
 
         public const string EXECUTE_TIME_DHST = "EXECUTE_TIME_DHST";
 
