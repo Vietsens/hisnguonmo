@@ -32,12 +32,13 @@ using DevExpress.XtraGrid.Columns;
 using His.UC.LibraryMessage;
 using HIS.UC.FormType.HisMultiGetString;
 using DevExpress.XtraEditors.Controls;
+using HIS.UC.FormType.Base;
 
 namespace HIS.UC.FormType.DepartmentCombo
 {
     public partial class UCDepartmentCombo : DevExpress.XtraEditors.XtraUserControl
     {
-        DepartmentComboFDO generateRDO;
+        GenerateRDO generateRDO;
         SAR.EFMODEL.DataModels.V_SAR_RETY_FOFI config;
         int positionHandleControl = -1;
         string FDO = null;
@@ -55,6 +56,7 @@ namespace HIS.UC.FormType.DepartmentCombo
                 if (paramRDO is GenerateRDO)
                 {
                     this.report = (paramRDO as GenerateRDO).Report;
+                    this.generateRDO = paramRDO as GenerateRDO;
                 }
                 this.config = config;
                 Init();
@@ -121,12 +123,32 @@ namespace HIS.UC.FormType.DepartmentCombo
                 FilterConfig.GetValueOutput0(this.config.JSON_OUTPUT, ref Output0);
                 JsonOutput = this.config.JSON_OUTPUT;
                 FilterConfig.RemoveStrOutput0(ref JsonOutput);
-                //this.config.JSON_OUTPUT = JsonOutput;
 
-                FDO = FilterConfig.HisFilterTypes(this.config.JSON_OUTPUT);
+                string ValueMember = "ID";
+                string DisplayCodeMember = "CODE";
+                string DisplayNameMember = "NAME";
                 limitCodes = FilterConfig.GetLimitCodes(this.config.JSON_OUTPUT);
+                if (generateRDO != null && !String.IsNullOrEmpty(generateRDO.Sql) && generateRDO.Sql.StartsWith("[["))
+                {
+                    FDO = generateRDO.Sql.Split(new[] { "[[", "]]" }, StringSplitOptions.RemoveEmptyEntries).FirstOrDefault();
+                    string jsonConfig = generateRDO.Sql.Split(new[] { "____" }, StringSplitOptions.RemoveEmptyEntries).Skip(1).FirstOrDefault();
+
+                    FieldConfigFDO fieldConfigFDO = Newtonsoft.Json.JsonConvert.DeserializeObject<FieldConfigFDO>(jsonConfig);
+                    ValueMember = fieldConfigFDO.ValueMember;
+                    DisplayCodeMember = fieldConfigFDO.DisplayCodeMember;
+                    DisplayNameMember = fieldConfigFDO.DisplayNameMember;
+                    LogSystem.Debug("FDO: " + FDO + ", ValueMember: " + ValueMember + ", DisplayCodeMember: " + DisplayCodeMember + ", DisplayNameMember: " + DisplayNameMember);
+                }
+                else
+                {
+                    FDO = FilterConfig.HisFilterTypes(this.config.JSON_OUTPUT);
+                    ValueMember = "ID";
+                    DisplayCodeMember = "CODE";
+                    DisplayNameMember = "NAME";
+                }
                 cboDepartment.Properties.DataSource = HisMultiGetByString.GetByStringLimit(FDO, limitCodes, ref Output0);
-                cboDepartment.Properties.DisplayMember = "NAME";
+                cboDepartment.Properties.DisplayMember = DisplayNameMember;
+
                 var dataCombo = HisMultiGetByString.GetByStringLimit(FDO, limitCodes, ref Output0);
                 var defaultValue = new DataGet();
                 if (!string.IsNullOrWhiteSpace(Output0) && dataCombo != null)
@@ -137,7 +159,7 @@ namespace HIS.UC.FormType.DepartmentCombo
                 FilterConfig.GetListfilter(this.config.JSON_OUTPUT, ref Filters);
                 if (!(Filters != null && Filters.Length > 0 && FilterConfig.IsCodeField(Filters[0])))
                 {
-                    cboDepartment.Properties.ValueMember = "ID";
+                    cboDepartment.Properties.ValueMember = ValueMember;
                     if (defaultValue != null && defaultValue.ID > 0)
                     {
                         cboDepartment.EditValue = defaultValue.ID;
@@ -146,7 +168,7 @@ namespace HIS.UC.FormType.DepartmentCombo
                 }
                 else
                 {
-                    cboDepartment.Properties.ValueMember = "CODE";
+                    cboDepartment.Properties.ValueMember = DisplayCodeMember;
                     if (defaultValue != null)
                     {
                         cboDepartment.EditValue = defaultValue.CODE;
@@ -161,13 +183,13 @@ namespace HIS.UC.FormType.DepartmentCombo
                 cboDepartment.Properties.View.Columns.Clear();
                 cboDepartment.Properties.View.OptionsView.ShowColumnHeaders = false;
 
-                GridColumn aColumnCode = cboDepartment.Properties.View.Columns.AddField("CODE");
+                GridColumn aColumnCode = cboDepartment.Properties.View.Columns.AddField(DisplayCodeMember);
                 aColumnCode.Caption = "Mã";
                 aColumnCode.Visible = false;
                 aColumnCode.VisibleIndex = 1;
                 aColumnCode.Width = 50;
 
-                GridColumn aColumnName = cboDepartment.Properties.View.Columns.AddField("NAME");
+                GridColumn aColumnName = cboDepartment.Properties.View.Columns.AddField(DisplayNameMember);
                 aColumnName.Caption = "Tên";
                 aColumnName.Visible = false;
                 aColumnName.VisibleIndex = 2;
@@ -184,7 +206,6 @@ namespace HIS.UC.FormType.DepartmentCombo
                     Validation();
                     lciTitleName.AppearanceItemCaption.ForeColor = Color.Maroon;
                 }
-
             }
             catch (Exception ex)
             {
@@ -192,7 +213,7 @@ namespace HIS.UC.FormType.DepartmentCombo
             }
         }
 
-       
+
 
         void SetTitle()
         {
@@ -243,18 +264,28 @@ namespace HIS.UC.FormType.DepartmentCombo
                             }
                             else
                                 cboDepartment.EditValue = result.First().CODE;
+
+                            LoadReferenceAction();
                         }
-                    }
-                    if (showCbo)
-                    {
-                        cboDepartment.Focus();
-                        cboDepartment.ShowPopup();
+                        if (showCbo)
+                        {
+                            cboDepartment.Focus();
+                            cboDepartment.ShowPopup();
+                        }
                     }
                 }
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void LoadReferenceAction()
+        {
+            if (generateRDO != null && generateRDO.DelegateForChangeValue != null)
+            {
+                generateRDO.DelegateForChangeValue(cboDepartment.EditValue, config.FORM_FIELD_CODE);
             }
         }
 
@@ -280,6 +311,7 @@ namespace HIS.UC.FormType.DepartmentCombo
                         if (department != null)
                         {
                             txtDepartmentCode.Text = department.CODE;
+                            LoadReferenceAction();
                         }
                         if (this.config != null && this.config.IS_REQUIRE != IMSys.DbConfig.SAR_RS.COMMON.IS_ACTIVE__TRUE)
                         {
@@ -312,6 +344,7 @@ namespace HIS.UC.FormType.DepartmentCombo
                         if (department != null)
                         {
                             txtDepartmentCode.Text = department.CODE;
+                            LoadReferenceAction();
                         }
                         System.Windows.Forms.SendKeys.Send("{TAB}");
                     }
@@ -366,17 +399,19 @@ namespace HIS.UC.FormType.DepartmentCombo
 
                     string[] Filters = null;
                     FilterConfig.GetListfilter(this.config.JSON_OUTPUT, ref Filters);
-                    
+
                     if (Filters != null && Filters.Length > 0 && FilterConfig.IsCodeField(Filters[0]) && value != null && value != "null")
                     {
                         txtDepartmentCode.Text = value.Replace("\"", "");
                         cboDepartment.EditValue = (HisMultiGetByString.GetByStringLimit(FDO, limitCodes, ref Output0).FirstOrDefault(f => f.CODE == txtDepartmentCode.Text) ?? new DataGet()).CODE;
+                        LoadReferenceAction();
                     }
                     else if (value != null && value != "null" && Inventec.Common.TypeConvert.Parse.ToInt64(value) > 0)
                     {
                         //cboDepartment.Properties.DataSource = HisMultiGetByString.GetByStringLimit(FDO, limitCodes);
                         txtDepartmentCode.Text = (HisMultiGetByString.GetByStringLimit(FDO, limitCodes, ref Output0).FirstOrDefault(f => f.ID == Inventec.Common.TypeConvert.Parse.ToInt64(value)) ?? new DataGet()).CODE;
                         cboDepartment.EditValue = Inventec.Common.TypeConvert.Parse.ToInt64(value);
+                        LoadReferenceAction();
                     }
                 }
             }

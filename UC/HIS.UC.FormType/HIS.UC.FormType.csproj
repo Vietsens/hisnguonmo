@@ -68,7 +68,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>Lib\DevExpress.Printing.v15.2.Core.dll</HintPath>
     </Reference>
-    <Reference Include="DevExpress.Sparkline.v15.2.Core, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.Sparkline.v15.2.Core">
+      <HintPath>..\..\..\lib\DEVEXPRESS\DevExpress.Sparkline.v15.2.Core.dll</HintPath>
+    </Reference>
     <Reference Include="DevExpress.Spreadsheet.v15.2.Core, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>Lib\DevExpress.Spreadsheet.v15.2.Core.dll</HintPath>
@@ -198,8 +200,8 @@
       <HintPath>..\..\..\lib\MOS\MOS.SDO.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.6.0.6\lib\net45\Newtonsoft.Json.dll</HintPath>
-      <Private>True</Private>
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\lib\Library packages\Newtonsoft.Json.6.0.8\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="SAR.EFMODEL">
       <HintPath>..\..\..\lib\SAR\SAR.EFMODEL.dll</HintPath>
@@ -289,6 +291,7 @@
     </Compile>
     <Compile Include="Core\ComboBoxAtComboBox_F4__\Validation\ComboBoxAtComboBoxServiceTypeValidationRule.cs" />
     <Compile Include="Core\ComboBoxAtComboBox_F4__\Validation\ComboBoxAtComboBoxServiceValidationRule.cs" />
+    <Compile Include="Base\FieldConfigFDO.cs" />
     <Compile Include="Core\DepartmentCombo_F9__\UCDepartmentCombo.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -782,7 +785,6 @@
     <EmbeddedResource Include="Core\F21__\UCF21.resx">
       <DependentUpon>UCF21.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Properties\licenses.licx" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -803,30 +805,6 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Lib\AutoMapper.dll" />
-    <Content Include="Lib\DevExpress.Charts.v15.2.Core.dll" />
-    <Content Include="Lib\DevExpress.Data.v15.2.dll" />
-    <Content Include="Lib\DevExpress.Docs.v15.2.dll" />
-    <Content Include="Lib\DevExpress.Office.v15.2.Core.dll" />
-    <Content Include="Lib\DevExpress.Printing.v15.2.Core.dll" />
-    <Content Include="Lib\DevExpress.Spreadsheet.v15.2.Core.dll" />
-    <Content Include="Lib\DevExpress.Utils.v15.2.dll" />
-    <Content Include="Lib\DevExpress.XtraBars.v15.2.dll" />
-    <Content Include="Lib\DevExpress.XtraCharts.v15.2.dll" />
-    <Content Include="Lib\DevExpress.XtraEditors.v15.2.dll" />
-    <Content Include="Lib\DevExpress.XtraGrid.v15.2.dll" />
-    <Content Include="Lib\DevExpress.XtraLayout.v15.2.dll" />
-    <Content Include="Lib\DevExpress.XtraNavBar.v15.2.dll" />
-    <Content Include="Lib\DevExpress.XtraPrinting.v15.2.dll" />
-    <Content Include="Lib\DevExpress.XtraReports.v15.2.dll" />
-    <Content Include="Lib\DevExpress.XtraRichEdit.v15.2.dll" />
-    <Content Include="Lib\DevExpress.XtraSpreadsheet.v15.2.dll" />
-    <Content Include="Lib\DevExpress.XtraTreeList.v15.2.dll" />
-    <Content Include="Lib\DevExpress.XtraVerticalGrid.v15.2.dll" />
-    <Content Include="Lib\log4net.dll" />
-    <Content Include="Lib\Newtonsoft.Json.dll" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Core\RoleUserGrid_F36__\Validation\" />

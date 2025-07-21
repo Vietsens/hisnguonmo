@@ -19,13 +19,17 @@ using DevExpress.XtraEditors;
 using DevExpress.XtraEditors.Controls;
 using DevExpress.XtraEditors.ViewInfo;
 using DevExpress.XtraLayout;
+using His.UC.CreateReport.Base;
 using His.UC.CreateReport.Data;
 using His.UC.CreateReport.Design.CreateReport.Validation;
 using HIS.UC.CreateReport.Loader;
 using Inventec.Common.Logging;
+using Inventec.Fss.Client;
+using Newtonsoft.Json;
 using SAR.EFMODEL.DataModels;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -35,6 +39,9 @@ namespace His.UC.CreateReport.Design.CreateReport1
     internal partial class CreateReport1
     {
         List<V_SAR_RETY_FOFI> currentFormFields;
+        ExcelWorker excelWorker;
+        List<DynamicFilterConfigADO> dynamicFilterConfigs;
+        List<System.Windows.Forms.UserControl> userControlFormFields = new List<System.Windows.Forms.UserControl>();
         private void CreateReport_Load()
         {
             try
@@ -184,6 +191,7 @@ namespace His.UC.CreateReport.Design.CreateReport1
                         {
                             if (this.generateRDO.Report.REPORT_TEMPLATE_CODE == rt.REPORT_TEMPLATE_CODE)
                             {
+                                this.reportTemplate = listReportTemplateADO.FirstOrDefault(o => o.ID == this.generateRDO.Report.REPORT_TEMPLATE_ID);
                                 rt.IsChecked = true;
                             }
                             else
@@ -197,7 +205,9 @@ namespace His.UC.CreateReport.Design.CreateReport1
                     {
                         listReportTemplateADO.ForEach(o => o.IsChecked = false);
                         listReportTemplateADO[0].IsChecked = true;
+                        this.reportTemplate = listReportTemplateADO[0];
                         this.txtReportName.Text = listReportTemplateADO[0].REPORT_TEMPLATE_NAME;
+
                     }
 
                     grdReportTemplate.BeginUpdate();
@@ -221,7 +231,33 @@ namespace His.UC.CreateReport.Design.CreateReport1
                 this.currentFormFields = CreateReportConfig.RetyFofis.Where(o => o.REPORT_TYPE_ID == reportType.ID).OrderBy(o => o.NUM_ORDER).ToList();
                 //this.currentFormFields = CreateReportConfig.RetyFofis.Where(o => o.REPORT_TYPE_ID == reportType.ID).OrderBy(o => o.NUM_ORDER).ToList();
                 //nếu là tự khai báo sẽ tạo ra retyfofi để gen control.
-                if (reportType.REPORT_TYPE_CODE.ToUpper().StartsWith("TKB") && reportType.SQL != null && this.currentFormFields.Count == 0)
+                if (reportType.REPORT_TYPE_CODE.ToUpper().StartsWith("TKB2") && this.currentFormFields.Count == 0)
+                {
+                    ReportTemplateFile reportTemplateFile = JsonConvert.DeserializeObject<ReportTemplateFile>(reportTemplate.REPORT_TEMPLATE_URL);
+                    MemoryStream file = FileDownload.GetFile(reportTemplateFile.URL);
+                    excelWorker = new ExcelWorker();
+                    excelWorker.InitData(reportTemplate.REPORT_TEMPLATE_URL);
+                    dynamicFilterConfigs = excelWorker.InitDynamicFilterConfig();
+                    LogSystem.Info("DynamicFilterConfig count: " + dynamicFilterConfigs.Count);
+                    LogSystem.Info("DynamicFilterConfig: " + JsonConvert.SerializeObject(dynamicFilterConfigs));
+                    foreach (var item in dynamicFilterConfigs)
+                    {
+                        V_SAR_RETY_FOFI fofi = new V_SAR_RETY_FOFI
+                        {
+                            REPORT_TYPE_ID = reportType.ID,
+                            REPORT_TYPE_CODE = reportType.REPORT_TYPE_CODE,
+                            REPORT_TYPE_NAME = reportType.REPORT_TYPE_NAME,
+                            NUM_ORDER = item.NUM_ORDER,
+                            IS_REQUIRE = item.IS_REQUIRE.HasValue ? (short?)(item.IS_REQUIRE.Value ? 1 : 0) : null,
+                            FORM_FIELD_CODE = item.FormType,
+                            DESCRIPTION = item.Title,
+                            JSON_OUTPUT = item.JSON_OUTPUT
+                        };
+                        if (currentFormFields == null) currentFormFields = new List<V_SAR_RETY_FOFI>();
+                        currentFormFields.Add(fofi);
+                    }
+                }
+                else if (reportType.REPORT_TYPE_CODE.ToUpper().StartsWith("TKB") && reportType.SQL != null && this.currentFormFields.Count == 0)
                 {
                     var querry = System.Text.Encoding.UTF8.GetString(reportType.SQL);
                     querry = querry.Replace(":", " :").Replace("&", " :");

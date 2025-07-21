@@ -17,21 +17,24 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace HIS.UC.FormType
+namespace HIS.UC.FormType.Base
 {
-    public class GenerateRDO
+    /// <summary>
+    /// Doi tuong dung de tra du lieu ve
+    /// </summary>
+    public class FieldConfigFDO
     {
-        public GenerateRDO() { }
-
-        public object DetailData { get; set; }
-        public Action<object,string> DelegateForChangeValue { get; set; }
-        public object PropetiesConfig { get; set; }
-        public string ControlId { get; set; }
-        public string Sql { get; set; }
-        public SAR.EFMODEL.DataModels.V_SAR_REPORT Report { get; set; }
+        public FieldConfigFDO()
+        {
+        }
+        public string ValueMember { get; set; }
+        public string DisplayCodeMember { get; set; }
+        public string DisplayNameMember { get; set; }
     }
 }

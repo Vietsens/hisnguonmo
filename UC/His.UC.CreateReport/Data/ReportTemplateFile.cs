@@ -15,23 +15,21 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+using SAR.EFMODEL.DataModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace HIS.UC.FormType
+namespace His.UC.CreateReport.Data
 {
-    public class GenerateRDO
+    internal class ReportTemplateFile
     {
-        public GenerateRDO() { }
-
-        public object DetailData { get; set; }
-        public Action<object,string> DelegateForChangeValue { get; set; }
-        public object PropetiesConfig { get; set; }
-        public string ControlId { get; set; }
-        public string Sql { get; set; }
-        public SAR.EFMODEL.DataModels.V_SAR_REPORT Report { get; set; }
+        public string URL { get; set; }
+        public string FILE_NAME { get; set; }
+        public string EXTENSION { get; set; }
+        public ReportTemplateFile()
+            : base() { }
     }
 }

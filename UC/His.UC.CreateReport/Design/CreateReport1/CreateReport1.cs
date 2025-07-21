@@ -43,6 +43,7 @@ namespace His.UC.CreateReport.Design.CreateReport1
         int positionHandleControl = -1;
         HIS.UC.FormType.GenerateRDO generateRDO;
         SAR_REPORT_TYPE reportType = new SAR_REPORT_TYPE();
+        ReportTemplateADO reportTemplate = new ReportTemplateADO();
         SAR_REPORT sarReportCreate = new SAR_REPORT();
         List<ReportTemplateADO> listReportTemplateADO;
         List<BaseLayoutItem> layoutControlItemAll = new List<BaseLayoutItem>();

@@ -15,23 +15,32 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+using SAR.EFMODEL.DataModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace HIS.UC.FormType
+namespace His.UC.CreateReport.Data
 {
-    public class GenerateRDO
+    internal class DynamicFilterConfigADO
     {
-        public GenerateRDO() { }
-
-        public object DetailData { get; set; }
-        public Action<object,string> DelegateForChangeValue { get; set; }
-        public object PropetiesConfig { get; set; }
-        public string ControlId { get; set; }
-        public string Sql { get; set; }
-        public SAR.EFMODEL.DataModels.V_SAR_REPORT Report { get; set; }
+        public int? ID { get; set; }
+        public string SQL { get; set; }
+        public string FormType { get; set; }
+        public string DelegateForChangeValueConfig { get; set; }
+        public string PropetiesConfig { get; set; }
+        public string Title { get; set; }
+        public string JSON_OUTPUT { get; set; }
+        public bool? IS_REQUIRE { get; set; }
+        public long? NUM_ORDER { get; set; }
+        public long? HEIGHT { get; set; }
+        public short? WIDTH_RATIO { get; set; }
+        public long? ROW_COUNT { get; set; }
+        public long? COLUMN_COUNT { get; set; }
+        public long? ROW_INDEX { get; set; }
+        public DynamicFilterConfigADO()
+            : base() { }
     }
 }
