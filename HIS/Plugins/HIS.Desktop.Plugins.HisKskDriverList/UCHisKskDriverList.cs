@@ -55,6 +55,7 @@ using Newtonsoft.Json;
 using System.IO;
 using System.Security.Cryptography.Xml;
 using System.Xml;
+using HIS.UC.SettingSignInfo;
 
 namespace HIS.Desktop.Plugins.HisKskDriverList
 {
@@ -1159,6 +1160,7 @@ namespace HIS.Desktop.Plugins.HisKskDriverList
                                     signXmlBhytSDO.XmlBase64 = data.Base64XmlKsk(row);
                                     signXmlBhytSDO.TagStoreSignatureValue = null;
                                     signXmlBhytSDO.ConfigData = new EMR.SDO.XmlConfigDataSDO() { HsmSerialNumber = SettingSignADO.SerialNumber, HsmType = SettingSignADO.Id, HsmUserCode = SettingSignADO.Name, Password = SettingSignADO.Password, SecretKey = SettingSignADO.SercetKey, IdentityNumber = SettingSignADO.CccdNumber };
+                                    Inventec.Common.Logging.LogSystem.Info("signXmlBhytSDO: " + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => signXmlBhytSDO), signXmlBhytSDO));
                                     var stringbase64 = new Inventec.Common.Adapter.BackendAdapter(param).Post<string>("api/EmrSign/SignXmlBhyt", ApiConsumer.ApiConsumers.EmrConsumer, signXmlBhytSDO, SessionManager.ActionLostToken, param);
 
                                     if (!string.IsNullOrEmpty(stringbase64))
