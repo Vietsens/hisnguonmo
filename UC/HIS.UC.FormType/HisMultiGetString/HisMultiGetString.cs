@@ -180,6 +180,7 @@ namespace HIS.UC.FormType.HisMultiGetString
         public string CODE { get; set; }
         public string NAME { get; set; }
         public long PARENT { get; set; }
+        public string PARENT_CODE { get; set; }
         public long GRAND_PARENT { get; set; }
         public bool? IS_OUTPUT0 { get; set; }
     }

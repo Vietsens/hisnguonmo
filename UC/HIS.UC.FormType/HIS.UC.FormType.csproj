@@ -127,6 +127,12 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>Lib\DevExpress.XtraVerticalGrid.v15.2.dll</HintPath>
     </Reference>
+    <Reference Include="HIS.Desktop.Common">
+      <HintPath>..\..\..\lib\HIS\HIS.Desktop.Common\HIS.Desktop.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="HIS.Desktop.LocalStorage.BackendData">
+      <HintPath>..\..\..\histest\x64\ReferencedAssemblies\HIS.Desktop.LocalStorage.BackendData.dll</HintPath>
+    </Reference>
     <Reference Include="His.UC.LibraryMessage">
       <HintPath>..\..\..\lib\HIS\His.UC.LibraryMessage\His.UC.LibraryMessage.dll</HintPath>
     </Reference>

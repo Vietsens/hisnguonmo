@@ -18,17 +18,17 @@
 using DevExpress.XtraEditors;
 using DevExpress.XtraEditors.Controls;
 using DevExpress.XtraEditors.ViewInfo;
-using His.UC.CreateReport.Base;
-using His.UC.CreateReport.Data;
 using His.UC.CreateReport.Design.CreateReport.Validation;
+using HIS.Desktop.ApiConsumer;
 using HIS.UC.CreateReport.Loader;
+using IMSys.DbConfig.SAR_RS;
+using Inventec.Common.Adapter;
 using Inventec.Common.Logging;
-using Inventec.Fss.Client;
-using Newtonsoft.Json;
+using Inventec.Core;
+using MRS.SDO;
 using SAR.EFMODEL.DataModels;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -38,9 +38,6 @@ namespace His.UC.CreateReport.Design.CreateReport
     internal partial class CreateReport
     {
         List<V_SAR_RETY_FOFI> currentFormFields;
-        ExcelWorker excelWorker;
-        List<DynamicFilterConfigADO> dynamicFilterConfigs;
-        List<System.Windows.Forms.UserControl> userControlFormFields = new List<System.Windows.Forms.UserControl>();
         private void CreateReport_Load()
         {
             try
@@ -48,8 +45,8 @@ namespace His.UC.CreateReport.Design.CreateReport
                 language();
                 ReportTemplateLoader.LoadDataToCombo(cboReportTemplate, null);
                 LoadDataToForm();
-                CreateReportControlByReportType();
                 Validation();
+                CreateReportControl();
                 txtReportTemplateCode.Focus();
                 txtReportTemplateCode.SelectAll();
             }
@@ -57,6 +54,117 @@ namespace His.UC.CreateReport.Design.CreateReport
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
+        }
+
+        private void CreateReportControl()
+        {
+            ClearControl();
+            if (!GenDynamicFilterConfig())
+                CreateReportControlByReportType();
+            else
+                CreateReportControlByDynamicFilterSheet();
+        }
+        private void ClearControl()
+        {
+            int totalHeight = 0;
+            foreach (System.Windows.Forms.Control ctrl in xtraScrollTabContainerReportControl.Controls)
+            {
+                totalHeight += ctrl.Height;
+            }
+            xtraScrollTabContainerReportControl.Size = new System.Drawing.Size(xtraScrollTabContainerReportControl.Size.Width, xtraScrollTabContainerReportControl.Size.Height - totalHeight);
+            xtraScrollTabContainerReportControl.Controls.Clear();
+            if (CreateReportDelegate.DelegateInitDesignReportTemplate != null)
+                CreateReportDelegate.DelegateInitDesignReportTemplate(new System.Drawing.Size(this.Width, this.Height - xtraScrollTabContainerReportControl.Size.Height + 50));
+        }
+
+        private void CreateReportControlByDynamicFilterSheet()
+        {
+            try
+            {
+                if (dynamicFilterConfigSDOs == null || dynamicFilterConfigSDOs.Count == 0)
+                {
+                    return;
+                }
+                currentFormFields = new List<V_SAR_RETY_FOFI>();
+                foreach (var item in dynamicFilterConfigSDOs)
+                {
+                    V_SAR_RETY_FOFI fofi = new V_SAR_RETY_FOFI();
+                    fofi.REPORT_TYPE_ID = reportType.ID;
+                    fofi.REPORT_TYPE_CODE = reportType.REPORT_TYPE_CODE;
+                    fofi.FORM_FIELD_CODE = item.FORM_FIELD_CODE;
+                    fofi.JSON_OUTPUT = item.JSON_OUTPUT;
+                    fofi.DESCRIPTION = item.DESCRIPTION;
+                    fofi.IS_REQUIRE = item.IS_REQUIRE;
+                    fofi.NUM_ORDER = item.NUM_ORDER;
+                    fofi.WIDTH_RATIO = item.WIDTH_RATIO;
+                    fofi.HEIGHT = item.HEIGHT;
+                    fofi.ROW_COUNT = item.ROW_COUNT;
+                    fofi.COLUMN_COUNT = item.COLUMN_COUNT;
+                    fofi.COLUMN_COUNT = item.COLUMN_COUNT;
+                    fofi.ROW_INDEX = item.ROW_INDEX;
+                    currentFormFields.Add(fofi);
+
+                    var generateRDO = this.generateRDO;
+                    generateRDO.DynamicFilter = new HIS.UC.FormType.DynamicFilterRDO()
+                    {
+                        ID = item.ID,
+                        DATA_CACHE = item.DATA_CACHE,
+                        DATA_TABLE = item.DATA_TABLE,
+                        Propeties = Newtonsoft.Json.JsonConvert.DeserializeObject<HIS.UC.FormType.PropetiesRDO>(item.JSON_PROPETIES),
+                        Fofi = fofi
+
+                    };
+                    System.Windows.Forms.UserControl control = GenerateControl(fofi, generateRDO);
+                    control.Name = (item.DESCRIPTION ?? "XtraUserControl" + DateTime.Now.ToString("yyyyMMddHHmmss"));
+                    //control.Tag = item;
+                    control.Tag = item.ID;
+                    control.Dock = System.Windows.Forms.DockStyle.Bottom;
+                    control.AutoSize = false;
+                    xtraScrollTabContainerReportControl.Controls.Add(control);
+                }
+                if (CreateReportDelegate.DelegateCalHeightDesignReportTemplate != null)
+                    CreateReportDelegate.DelegateCalHeightDesignReportTemplate(this);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+
+        }
+
+        private bool GenDynamicFilterConfig()
+        {
+            bool state = false;
+            try
+            {
+                if (cboReportTemplate.EditValue == null)
+                    return false;
+                var reportTemplate = CreateReportConfig.ReportTemplates.Where(o => o.ID == Int64.Parse(cboReportTemplate.EditValue.ToString())).FirstOrDefault();
+                if (reportTemplate == null || !reportTemplate.REPORT_TEMPLATE_CODE.ToUpper().StartsWith("TKB2"))
+                {
+                    return false;
+                }
+                MRS.SDO.CreateReportSDO data = new MRS.SDO.CreateReportSDO();
+                data.Loginname = CreateReportConfig.LoginName;
+                data.Username = CreateReportConfig.UserName;
+                data.BranchId = CreateReportConfig.BranchId;
+                data.ReportTypeCode = (reportType != null) ? reportType.REPORT_TYPE_CODE : null;
+                data.ReportTemplateCode = CreateReportConfig.ReportTemplates.FirstOrDefault(f => f.ID == long.Parse(cboReportTemplate.EditValue.ToString())).REPORT_TEMPLATE_CODE;
+                CommonParam param = new CommonParam();
+                dynamicFilterConfigSDOs = new BackendAdapter(param).Post<List<DynamicFilterConfigSDO>>("api/MrsReport/GetDynamicFilterConfig", ApiConsumers.MrsConsumer, data, param);
+                Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => dynamicFilterConfigSDOs), dynamicFilterConfigSDOs));
+                state = dynamicFilterConfigSDOs != null && dynamicFilterConfigSDOs.Count > 0;
+                if (state)
+                {
+                    dynamicFilterConfigSDOs = dynamicFilterConfigSDOs.OrderBy(o => o.NUM_ORDER ?? 0).ThenBy(o => o.ID ?? 0).ToList();
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+            return state;
+
         }
 
         private void CheckTimeCreate()
@@ -153,7 +261,6 @@ namespace His.UC.CreateReport.Design.CreateReport
                     cboReportTemplate.Properties.DataSource = listReportTemplate;
                     if (this.generateRDO != null && this.generateRDO.Report != null)
                     {
-                        this.reportTemplate = listReportTemplate.FirstOrDefault(o => o.ID == this.generateRDO.Report.REPORT_TEMPLATE_ID);
                         this.txtReportTemplateCode.Text = this.generateRDO.Report.REPORT_TEMPLATE_CODE;
                         this.cboReportTemplate.EditValue = this.generateRDO.Report.REPORT_TEMPLATE_ID;
                         this.txtReportName.Text = this.generateRDO.Report.REPORT_NAME;
@@ -161,7 +268,6 @@ namespace His.UC.CreateReport.Design.CreateReport
                     }
                     else
                     {
-                        this.reportTemplate = listReportTemplate.First();
                         txtReportTemplateCode.Text = listReportTemplate.First().REPORT_TEMPLATE_CODE;
                         cboReportTemplate.EditValue = listReportTemplate.First().ID;
                         this.txtReportName.Text = listReportTemplate.First().REPORT_TEMPLATE_NAME;
@@ -182,33 +288,7 @@ namespace His.UC.CreateReport.Design.CreateReport
             {
                 this.currentFormFields = CreateReportConfig.RetyFofis.Where(o => o.REPORT_TYPE_ID == reportType.ID).OrderBy(o => o.NUM_ORDER).ToList();
                 //nếu là tự khai báo sẽ tạo ra retyfofi để gen control.
-                if (reportType.REPORT_TYPE_CODE.ToUpper().StartsWith("TKB2") && this.currentFormFields.Count == 0)
-                {
-                    ReportTemplateFile reportTemplateFile = JsonConvert.DeserializeObject<ReportTemplateFile>(reportTemplate.REPORT_TEMPLATE_URL);
-                    MemoryStream file = FileDownload.GetFile(reportTemplateFile.URL);
-                    excelWorker = new ExcelWorker();
-                    excelWorker.InitData(reportTemplate.REPORT_TEMPLATE_URL);
-                    dynamicFilterConfigs = excelWorker.InitDynamicFilterConfig();
-                    LogSystem.Info("DynamicFilterConfig count: " + dynamicFilterConfigs.Count);
-                    LogSystem.Info("DynamicFilterConfig: " + JsonConvert.SerializeObject(dynamicFilterConfigs));
-                    foreach (var item in dynamicFilterConfigs)
-                    {
-                        V_SAR_RETY_FOFI fofi = new V_SAR_RETY_FOFI
-                        {
-                            REPORT_TYPE_ID = reportType.ID,
-                            REPORT_TYPE_CODE = reportType.REPORT_TYPE_CODE,
-                            REPORT_TYPE_NAME = reportType.REPORT_TYPE_NAME,
-                            NUM_ORDER = item.NUM_ORDER,
-                            IS_REQUIRE = item.IS_REQUIRE.HasValue ? (short?)(item.IS_REQUIRE.Value ? 1 : 0) : null,
-                            FORM_FIELD_CODE = item.FormType,
-                            DESCRIPTION = item.Title,
-                            JSON_OUTPUT = item.JSON_OUTPUT
-                        };
-                        if (currentFormFields == null) currentFormFields = new List<V_SAR_RETY_FOFI>();
-                        currentFormFields.Add(fofi);
-                    }
-                }
-                else if (reportType.REPORT_TYPE_CODE.ToUpper().StartsWith("TKB") && reportType.SQL != null && this.currentFormFields.Count == 0)
+                if (reportType.REPORT_TYPE_CODE.ToUpper().StartsWith("TKB") && reportType.SQL != null && this.currentFormFields.Count == 0)
                 {
                     var querry = System.Text.Encoding.UTF8.GetString(reportType.SQL);
                     querry = querry.Replace(":", " :").Replace("&", " :");
@@ -265,7 +345,6 @@ namespace His.UC.CreateReport.Design.CreateReport
 
                 if (this.currentFormFields != null && this.currentFormFields.Count > 0)
                 {
-                    this.currentFormFields = this.currentFormFields.OrderByDescending(o => o.NUM_ORDER).ToList();
                     foreach (var item in this.currentFormFields)
                     {
                         System.Windows.Forms.UserControl control = GenerateControl(item);
@@ -276,6 +355,8 @@ namespace His.UC.CreateReport.Design.CreateReport
                         xtraScrollTabContainerReportControl.Controls.Add(control);
                     }
                 }
+                if (CreateReportDelegate.DelegateCalHeightDesignReportTemplate != null)
+                    CreateReportDelegate.DelegateCalHeightDesignReportTemplate(this);
             }
             catch (Exception ex)
             {
@@ -298,37 +379,12 @@ namespace His.UC.CreateReport.Design.CreateReport
             return result;
         }
 
-        System.Windows.Forms.UserControl GenerateControl(V_SAR_RETY_FOFI data)
+        System.Windows.Forms.UserControl GenerateControl(V_SAR_RETY_FOFI data, HIS.UC.FormType.GenerateRDO generate = null)
         {
             System.Windows.Forms.UserControl result = null;
             try
             {
-                var dynamicConfig = dynamicFilterConfigs.Where(o => o.FormType == data.FORM_FIELD_CODE).FirstOrDefault();
-
-                HIS.UC.FormType.GenerateRDO objGenerateRDO = new HIS.UC.FormType.GenerateRDO
-                {
-                    DetailData = this.generateRDO.DetailData,
-                    Report = this.generateRDO != null ? this.generateRDO.Report : null,
-                    ControlId = String.Format("{0}.{1}", data.FORM_FIELD_CODE, data.NUM_ORDER),
-                    Sql = this.generateRDO.Sql,
-                    PropetiesConfig = this.generateRDO.PropetiesConfig
-                };
-                if (dynamicConfig != null && !String.IsNullOrEmpty(dynamicConfig.DelegateForChangeValueConfig))
-                {
-                    objGenerateRDO.DelegateForChangeValue = ActionHandlerForChangeValueReferenceControl;
-                }
-                else
-                {
-                    objGenerateRDO.DelegateForChangeValue = NoHandlerForChangeValueReferenceControl;
-                }
-
-                result = HIS.UC.FormType.FormTypeMain.Run(data, objGenerateRDO) as System.Windows.Forms.UserControl;
-                if (result != null)
-                {
-                    result.Tag = objGenerateRDO.ControlId;
-                    userControlFormFields.Add(result);
-                }
-
+                result = HIS.UC.FormType.FormTypeMain.RunDynamic(data, generate != null ? generate : this.generateRDO, TransferDataToControl) as System.Windows.Forms.UserControl;
             }
             catch (Exception ex)
             {
@@ -338,51 +394,39 @@ namespace His.UC.CreateReport.Design.CreateReport
             return result;
         }
 
-        private void ActionHandlerForChangeValueReferenceControl(object editValue, string formFieldCode)
+        private void TransferDataToControl(object IdControl, object ValueTransfer)
         {
             try
             {
-                LogSystem.Info("ActionHandlerForChangeValueReferenceControl: editValue=" + editValue + ",formFieldCode=" + formFieldCode);
-                var dynamicConfig = dynamicFilterConfigs.Where(o => o.FormType == formFieldCode).FirstOrDefault();
-                if (dynamicConfig != null && !String.IsNullOrEmpty(dynamicConfig.DelegateForChangeValueConfig))
+                if (IdControl == null)
+                    return;
+                foreach (System.Windows.Forms.Control item in xtraScrollTabContainerReportControl.Controls)
                 {
-                    LogSystem.Info("DelegateForChangeValueConfig: " + dynamicConfig.DelegateForChangeValueConfig);
-                    List<ReferenceControlADO> referenceControlADOs = Newtonsoft.Json.JsonConvert.DeserializeObject<List<ReferenceControlADO>>(dynamicConfig.DelegateForChangeValueConfig);
-                    foreach (var referenceControlADO in referenceControlADOs)
+                    if (item != null && (item is System.Windows.Forms.UserControl || item is DevExpress.XtraEditors.XtraUserControl) && item.Tag != null)
                     {
-                        LogSystem.Info("ReferenceControlID: " + referenceControlADO.ReferenceControlID + ", ReferenceFieldName: " + referenceControlADO.ReferenceFieldName);
-                        if (referenceControlADO != null && referenceControlADO.ReferenceControlID > 0)
+                        var IdRe = item.Tag as long?;
+                        if (IdRe != null && IdControl != null)
                         {
-                            var dynamicConfigReference = dynamicFilterConfigs.Where(o => o.ID == referenceControlADO.ReferenceControlID).FirstOrDefault();
-
-                            var action = String.Format("{0}.{1}", dynamicConfigReference != null ? dynamicConfigReference.FormType : "", referenceControlADO.ReferenceControlID);
-                            LogSystem.Info("action: " + action);
-                            if (!string.IsNullOrEmpty(action))
+                            long idReValue;
+                            long idControlValue;
+                            if (long.TryParse(IdRe.ToString(), out idReValue) && long.TryParse(IdControl.ToString(), out idControlValue))
                             {
-                                var userControl = userControlFormFields.FirstOrDefault(o => o.Tag?.ToString() == action); // Fix: Cast 'o.Tag' to string for value comparison
-                                if (userControl != null)
+                                if (idReValue == idControlValue)
                                 {
-                                    LogSystem.Info("userControl.Tag: " + userControl.Tag?.ToString());
-                                    //Invoke the method on the user control  
-                                    var method = userControl.GetType().GetMethod("ChangeValueForReferenceActionHandler", System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance);
-                                    if (method != null)
+                                    if (!ReceiveData(item, ValueTransfer))
                                     {
-                                        method.Invoke(userControl, new object[] { referenceControlADO.ReferenceFieldName, editValue });
+                                        Inventec.Common.Logging.LogSystem.Error("Khong gui duoc du lieu sang Id Control" + IdRe + " gia tri " + ValueTransfer);
                                     }
                                 }
                             }
                         }
-                    }                    
+                    }
                 }
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
-        }
-
-        private void NoHandlerForChangeValueReferenceControl(object editValue, string formFieldCode)
-        {
 
         }
 

@@ -15,31 +15,35 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-using SAR.EFMODEL.DataModels;
+using HIS.UC.CreateReport.Base;
+using Inventec.Core;
+using MOS.EFMODEL.DataModels;
 using System;
 using System.Collections.Generic;
-using System.Drawing;
-using System.IO;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace HIS.UC.FormType.TreatmentTypeGridCheckBox
+namespace DCV.APP.Report.ReceiveData
 {
-    class TreatmentTypeGridCheckBoxProcessor : ProcessorBase, IProcessorGenerate
+    public class ReceiveData : BussinessBase, IDelegacy
     {
-        HIS.Desktop.Common.DelegateSelectDatas delegateSelectDatas;
-        object generateRDO;
-        internal TreatmentTypeGridCheckBoxProcessor(V_SAR_RETY_FOFI config, object generateRDO, HIS.Desktop.Common.DelegateSelectDatas delegateSelectDatas)
-            : base(config)
+        object entity;
+        object valueRe;
+
+        internal ReceiveData(CommonParam param, object item, object value)
+            : base(param)
         {
-            this.generateRDO = generateRDO;
-            this.delegateSelectDatas = delegateSelectDatas;
+            entity = item;
+            valueRe = value;
         }
 
-        object IProcessorGenerate.Run()
+        object IDelegacy.Execute()
         {
             object result = null;
             try
             {
-                result = new UCTreatmentTypeGridCheckBox(config, generateRDO, delegateSelectDatas);
+                result = ReceiveDataBehaviorFactory.MakeIGetListV(param, entity, valueRe);
             }
             catch (Exception ex)
             {
@@ -47,6 +51,6 @@ namespace HIS.UC.FormType.TreatmentTypeGridCheckBox
                 result = null;
             }
             return result;
-        }       
+        }
     }
 }

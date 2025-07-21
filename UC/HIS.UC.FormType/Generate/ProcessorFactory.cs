@@ -26,7 +26,7 @@ namespace HIS.UC.FormType
 {
     public class ProcessorFactory
     {
-        internal static IProcessorGenerate MakeProcessorBase(V_SAR_RETY_FOFI data, object generateRDO)
+        internal static IProcessorGenerate MakeProcessorBase(V_SAR_RETY_FOFI data, object generateRDO, HIS.Desktop.Common.DelegateSelectDatas delegateSelectDatas = null)
         {
             IProcessorGenerate result = null;
             try
@@ -81,7 +81,7 @@ namespace HIS.UC.FormType
                             result = new HIS.UC.FormType.MultipleRoomComboCheckFilterByDepartmentComboCheck.MultipleRoomComboCheckFilterByDepartmentComboCheckProcessor(data, generateRDO);
                             break;
                         case "FTHIS000009":
-                            result = new HIS.UC.FormType.DepartmentCombo.DepartmentComboProcessor(data, generateRDO);
+                            result = new HIS.UC.FormType.DepartmentCombo.DepartmentComboProcessor(data, generateRDO, delegateSelectDatas);
                             break;
                         case "FTHIS000010":
                             result = new HIS.UC.FormType.DateMonthYear.DateMonthYearProcessor(data, generateRDO);
@@ -102,7 +102,7 @@ namespace HIS.UC.FormType
                             result = new HIS.UC.FormType.TreatmentTypeComboCheck.TreatmentTypeComboCheckProcessor(data, generateRDO);
                             break;
                         case "FTHIS000016":
-                            result = new HIS.UC.FormType.TreatmentTypeGridCheckBox.TreatmentTypeGridCheckBoxProcessor(data, generateRDO);
+                            result = new HIS.UC.FormType.TreatmentTypeGridCheckBox.TreatmentTypeGridCheckBoxProcessor(data, generateRDO, delegateSelectDatas);
                             break;
                         case "FTHIS000017":
                             result = new HIS.UC.FormType.Mounth.MounthProcessor(data, generateRDO);

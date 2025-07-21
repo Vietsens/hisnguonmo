@@ -15,6 +15,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+using HIS.Desktop.Common;
 using SAR.EFMODEL.DataModels;
 using System;
 using System.Collections.Generic;
@@ -27,11 +28,12 @@ namespace HIS.UC.FormType.DepartmentCombo
     {
         UCDepartmentCombo ucDepartmentCombo;
         object generateRDO;
-
-        internal DepartmentComboProcessor(V_SAR_RETY_FOFI config, object paramRDO)
+        HIS.Desktop.Common.DelegateSelectDatas delegateSelectDatas;
+        internal DepartmentComboProcessor(V_SAR_RETY_FOFI config, object paramRDO, HIS.Desktop.Common.DelegateSelectDatas delegateSelectDatas)
             : base(config)
         {
             this.generateRDO = paramRDO;
+            this.delegateSelectDatas = delegateSelectDatas;
         }
 
         object IProcessorGenerate.Run()
@@ -39,7 +41,7 @@ namespace HIS.UC.FormType.DepartmentCombo
             object result = null;
             try
             {
-                result = new UCDepartmentCombo(config, generateRDO);
+                result = new UCDepartmentCombo(config, generateRDO, delegateSelectDatas);
             }
             catch (Exception ex)
             {
