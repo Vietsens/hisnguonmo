@@ -62,5 +62,29 @@ namespace His.UC.CreateReport
                 delegateStatusReport = value;
             }
         }
+        private static InitDesignReportTemplate delegateInitDesignReportTemplate;
+        public static InitDesignReportTemplate DelegateInitDesignReportTemplate
+        {
+            get
+            {
+                return delegateInitDesignReportTemplate;
+            }
+            set
+            {
+                delegateInitDesignReportTemplate = value;
+            }
+        }
+        private static CalHeightDesignReportTemplate delegateCalHeightDesignReportTemplate;
+        public static CalHeightDesignReportTemplate DelegateCalHeightDesignReportTemplate
+        {
+            get
+            {
+                return delegateCalHeightDesignReportTemplate;
+            }
+            set
+            {
+                delegateCalHeightDesignReportTemplate = value;
+            }
+        }
     }
 }
