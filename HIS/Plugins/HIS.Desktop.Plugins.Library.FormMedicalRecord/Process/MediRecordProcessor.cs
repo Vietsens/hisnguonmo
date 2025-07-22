@@ -842,9 +842,16 @@ namespace HIS.Desktop.Plugins.Library.FormMedicalRecord.Process
                         documentFilter.TREATMENT_ID = treatment.ID;
                     }
                     var apiData = new BackendAdapter(new CommonParam()).Get<List<V_EMR_DOCUMENT>>("api/EmrDocument/GetView", ApiConsumers.EmrConsumer, documentFilter, null);
-                    var emrDocuments = apiData
-                        .Where(d => !string.IsNullOrEmpty(d.SIGNERS) && d.IS_DELETE != 1)
-                        .ToList();
+                    List<V_EMR_DOCUMENT> emrDocuments = new List<V_EMR_DOCUMENT>();
+                    if (apiData != null)
+                    {
+                        emrDocuments = apiData
+                            .Where(d => !string.IsNullOrEmpty(d.SIGNERS) && d.IS_DELETE != 1)
+                            .ToList();
+                    }
+                    //var emrDocuments = apiData
+                    //    .Where(d => !string.IsNullOrEmpty(d.SIGNERS) && d.IS_DELETE != 1)
+                    //    .ToList();
 
                     var emrDocumentGroups = BackendDataWorker.Get<EMR_DOCUMENT_GROUP>()
                         .Where(g => g.IS_ACTIVE == 1)
