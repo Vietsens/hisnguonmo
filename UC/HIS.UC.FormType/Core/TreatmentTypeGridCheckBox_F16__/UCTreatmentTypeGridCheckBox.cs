@@ -164,17 +164,22 @@ namespace HIS.UC.FormType.TreatmentTypeGridCheckBox
                                 else
 
                                     tableName = "V_" + tableName;
-                                TableValid = IsTableInMOSEFModel(tableName);
+                                var TableValidCv = IsTableInMOSEFModel(tableName);
                                 backendType = typeof(HIS.Desktop.LocalStorage.BackendData.BackendDataWorker);
                                 method = backendType.GetMethod("IsExistsKey", System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.Public);
                                 if (method != null)
                                 {
-                                    genericMethod = method.MakeGenericMethod(TableValid);
-                                    isExists = genericMethod.Invoke(null, null);
+                                    if (TableValidCv != null)
+                                    {
+                                        genericMethod = method.MakeGenericMethod(TableValidCv);
+                                        isExists = genericMethod.Invoke(null, null);
+                                    }
+                                    else
+                                        isExists = false;
                                     if ((bool)isExists)
                                     {
-                                        var dicObject = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.GetAll()[TableValid];
-                                        result = ConvertDataTableToDataGet(AddListDataCache(TableValid, dicObject, valueMember, displayCodeMember, displayNameMember, parentId, parentCode));
+                                        var dicObject = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.GetAll()[TableValidCv];
+                                        result = ConvertDataTableToDataGet(AddListDataCache(TableValidCv, dicObject, valueMember, displayCodeMember, displayNameMember, parentId, parentCode));
                                     }
                                     else
                                     {
