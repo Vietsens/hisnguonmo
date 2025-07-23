@@ -93,11 +93,6 @@ namespace HIS.UC.FormType
         /// Dữ liệu liên kết truyền:
         /// Đặt là ValueMember, DisplayCodeMember, DisplayNameMember
         /// </summary>
-        public string ValueTransfer { get; set; }
-        /// <summary>
-        /// Dữ liệu liên kết nhận:
-        /// Trường dữ liệu này so với ValueTransfer sẽ nhận giá trị cha - con từ ParentId, ParentCode, DisplayCodeMember, DisplayNameMember
-        /// </summary>
-        public string ValueReceive { get; set; }
+        public object[] ValueTransfer { get; set; }
     }
 }

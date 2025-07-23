@@ -21,7 +21,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace HIS.UC.FormType.DepartmentCombo.Validation
+namespace HIS.UC.FormType.GridLookUpTextEdit.Validation
 {
     class DepartmentValidationRule : DevExpress.XtraEditors.DXErrorProvider.ValidationRule
     {
