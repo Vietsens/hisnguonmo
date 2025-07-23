@@ -15,22 +15,24 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+using HIS.Desktop.Common;
 using SAR.EFMODEL.DataModels;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 
-namespace HIS.UC.FormType.TreatmentTypeGridCheckBox
+namespace HIS.UC.FormType.GridLookUpTextEdit
 {
-    class TreatmentTypeGridCheckBoxProcessor : ProcessorBase, IProcessorGenerate
+    class GridLookUpTextEditProcessor : ProcessorBase, IProcessorGenerate
     {
-        HIS.Desktop.Common.DelegateSelectDatas delegateSelectDatas;
+        UCGridLookUpTextEdit ucDepartmentCombo;
         object generateRDO;
-        internal TreatmentTypeGridCheckBoxProcessor(V_SAR_RETY_FOFI config, object generateRDO, HIS.Desktop.Common.DelegateSelectDatas delegateSelectDatas)
+        HIS.Desktop.Common.DelegateSelectDatas delegateSelectDatas;
+        internal GridLookUpTextEditProcessor(V_SAR_RETY_FOFI config, object paramRDO, HIS.Desktop.Common.DelegateSelectDatas delegateSelectDatas)
             : base(config)
         {
-            this.generateRDO = generateRDO;
+            this.generateRDO = paramRDO;
             this.delegateSelectDatas = delegateSelectDatas;
         }
 
@@ -39,7 +41,7 @@ namespace HIS.UC.FormType.TreatmentTypeGridCheckBox
             object result = null;
             try
             {
-                result = new UCTreatmentTypeGridCheckBox(config, generateRDO, delegateSelectDatas);
+                result = new UCGridLookUpTextEdit(config, generateRDO, delegateSelectDatas);
             }
             catch (Exception ex)
             {
@@ -47,6 +49,6 @@ namespace HIS.UC.FormType.TreatmentTypeGridCheckBox
                 result = null;
             }
             return result;
-        }       
+        }
     }
 }

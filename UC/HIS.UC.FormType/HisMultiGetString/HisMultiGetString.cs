@@ -183,5 +183,10 @@ namespace HIS.UC.FormType.HisMultiGetString
         public string PARENT_CODE { get; set; }
         public long GRAND_PARENT { get; set; }
         public bool? IS_OUTPUT0 { get; set; }
+        public object REF_FILTER_1 { get; set; }
+        public object REF_FILTER_2 { get; set; }
+        public object REF_FILTER_3 { get; set; }
+        public object REF_FILTER_4 { get; set; }
+        public object REF_FILTER_5 { get; set; }
     }
 }

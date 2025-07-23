@@ -15,9 +15,9 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-namespace HIS.UC.FormType.DepartmentCombo
+namespace HIS.UC.FormType.GridLookUpTextEdit
 {
-    public partial class UCDepartmentCombo
+    public partial class UCGridLookUpTextEdit
     {
         /// <summary> 
         /// Required designer variable.

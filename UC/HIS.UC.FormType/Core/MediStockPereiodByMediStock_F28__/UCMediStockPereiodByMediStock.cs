@@ -86,7 +86,7 @@ namespace HIS.UC.FormType.MediStockPereiodByMediStock
         {
             try
             {
-                HIS.UC.FormType.DepartmentCombo.Validation.DepartmentValidationRule validRule = new HIS.UC.FormType.DepartmentCombo.Validation.DepartmentValidationRule();
+                HIS.UC.FormType.GridLookUpTextEdit.Validation.DepartmentValidationRule validRule = new HIS.UC.FormType.GridLookUpTextEdit.Validation.DepartmentValidationRule();
                 validRule.cboDepartment = comboBoxEdit3;
                 validRule.txtDepartmentCode = textEdit3;
                 validRule.ErrorText = HIS.UC.FormType.Base.MessageUtil.GetMessage(Message.Enum.ThieuTruongDuLieuBatBuoc);

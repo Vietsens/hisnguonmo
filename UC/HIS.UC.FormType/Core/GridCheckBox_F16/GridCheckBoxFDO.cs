@@ -23,14 +23,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace HIS.UC.FormType.TreatmentTypeGridCheckBox
+namespace HIS.UC.FormType.GridCheckBox
 {
     /// <summary>
     /// Doi tuong dung de tra du lieu ve
     /// </summary>
-    public class TreatmentTypeGridCheckBoxFDO
+    public class GridCheckBoxFDO
     {
-        public TreatmentTypeGridCheckBoxFDO()
+        public GridCheckBoxFDO()
         {
         }
     }
