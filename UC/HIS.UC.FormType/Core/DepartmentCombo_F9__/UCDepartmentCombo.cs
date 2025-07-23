@@ -43,6 +43,11 @@ namespace HIS.UC.FormType.DepartmentCombo
         private const string DISPLAY_NAME_MEMBER = "DISPLAYNAMEMEMBER";
         private const string PARENT_ID_MEMBER = "PARENTID";
         private const string PARENT_CODE_MEMBER = "PARENTCODE";
+        private const string REF_FILTER_1ID = "REFFILTER1ID";
+        private const string REF_FILTER_2ID = "REFFILTER2ID";
+        private const string REF_FILTER_3ID = "REFFILTER3ID";
+        private const string REF_FILTER_4ID = "REFFILTER4ID";
+        private const string REF_FILTER_5ID = "REFFILTER5ID";
         DepartmentComboFDO generateRDO;
         SAR.EFMODEL.DataModels.V_SAR_RETY_FOFI config;
         int positionHandleControl = -1;
@@ -85,6 +90,7 @@ namespace HIS.UC.FormType.DepartmentCombo
                 LogSystem.Warn(ex);
             }
         }
+        List<DataGet> dataSource = null;
         private void InitPropeties()
         {
             try
@@ -94,7 +100,8 @@ namespace HIS.UC.FormType.DepartmentCombo
                 PropetiesFilter = DynamicFilter.Propeties;
                 limitCodes = PropetiesFilter != null && !string.IsNullOrEmpty(PropetiesFilter.LimitCode) ? PropetiesFilter.LimitCode.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries) : null;
                 Output0 = PropetiesFilter != null ? (PropetiesFilter.DefaultValue as string) : null;
-                cboDepartment.Properties.DataSource = ProcessDataSource();
+                dataSource = ProcessDataSource();
+                cboDepartment.Properties.DataSource = dataSource;
                 cboDepartment.Properties.DisplayMember = "NAME";
 
                 var listData = cboDepartment.Properties.DataSource as List<DataGet>;
@@ -309,6 +316,16 @@ namespace HIS.UC.FormType.DepartmentCombo
                             dataGett.PARENT = Convert.ToInt64(row[PARENT_ID_MEMBER]);
                         if (table.Columns.Contains(PARENT_CODE_MEMBER) && row[PARENT_CODE_MEMBER] != DBNull.Value)
                             dataGett.PARENT_CODE = row[PARENT_CODE_MEMBER].ToString();
+                        if (table.Columns.Contains(REF_FILTER_1ID) && row[REF_FILTER_1ID] != DBNull.Value)
+                            dataGett.REF_FILTER_1ID = row[REF_FILTER_1ID].ToString();
+                        if (table.Columns.Contains(REF_FILTER_2ID) && row[REF_FILTER_2ID] != DBNull.Value)
+                            dataGett.REF_FILTER_2ID = row[REF_FILTER_2ID].ToString();
+                        if (table.Columns.Contains(REF_FILTER_3ID) && row[REF_FILTER_3ID] != DBNull.Value)
+                            dataGett.REF_FILTER_3ID = row[REF_FILTER_3ID].ToString();
+                        if (table.Columns.Contains(REF_FILTER_4ID) && row[REF_FILTER_4ID] != DBNull.Value)
+                            dataGett.REF_FILTER_4ID = row[REF_FILTER_4ID].ToString();
+                        if (table.Columns.Contains(REF_FILTER_5ID) && row[REF_FILTER_5ID] != DBNull.Value)
+                            dataGett.REF_FILTER_5ID = row[REF_FILTER_5ID].ToString();
                         result.Add(dataGett);
                     }
                 }
@@ -886,25 +903,27 @@ namespace HIS.UC.FormType.DepartmentCombo
                 {
                     obj = lst.FirstOrDefault(o => cboDepartment.Properties.ValueMember == "ID" ? o.ID == Int64.Parse(cboDepartment.EditValue.ToString()) : o.CODE == cboDepartment.EditValue.ToString());
                 }
-                if (delegateSelectDatas != null && PropetiesFilter != null && !string.IsNullOrEmpty(PropetiesFilter.ValueTransfer) && PropetiesFilter.IdReference > 0)
+                if (delegateSelectDatas != null && PropetiesFilter != null && PropetiesFilter.ValueTransfer != null && PropetiesFilter.ValueTransfer.Length > 0 && PropetiesFilter.IdReference > 0)
                 {
-                    string content = null;
+                    var arrGoc = PropetiesFilter.ValueTransfer.ToArray();
                     if (obj != null)
                     {
-                        if (PropetiesFilter.ValueTransfer.ToUpper().Contains(VALUE_MEMBER))
+                        if (PropetiesFilter.ValueTransfer.ToList().Exists(o => o.ToUpper() == VALUE_MEMBER))
                         {
-                            content = obj.ID.ToString();
+                            arrGoc = ReplaceValueMember(arrGoc, VALUE_MEMBER, obj.ID.ToString());
                         }
-                        else if (PropetiesFilter.ValueTransfer.ToUpper().Contains(DISPLAY_CODE_MEMBER))
+                        if (PropetiesFilter.ValueTransfer.ToList().Exists(o => o.ToUpper() == DISPLAY_CODE_MEMBER))
                         {
-                            content = obj.CODE.ToString();
+                            arrGoc = ReplaceValueMember(arrGoc, DISPLAY_CODE_MEMBER, obj.CODE.ToString());
                         }
-                        else if (PropetiesFilter.ValueTransfer.ToUpper().Contains(DISPLAY_NAME_MEMBER))
+                        if (PropetiesFilter.ValueTransfer.ToList().Exists(o => o.ToUpper() == DISPLAY_NAME_MEMBER))
                         {
-                            content = obj.NAME.ToString();
+                            arrGoc = ReplaceValueMember(arrGoc, DISPLAY_NAME_MEMBER, obj.NAME.ToString());
                         }
                     }
-                    delegateSelectDatas(PropetiesFilter.IdReference, content);
+                    else
+                        arrGoc = null;
+                        delegateSelectDatas(PropetiesFilter.IdReference, arrGoc);
                 }
             }
             catch (Exception ex)
@@ -914,30 +933,59 @@ namespace HIS.UC.FormType.DepartmentCombo
 
         }
 
+        public string[] ReplaceValueMember(string[] arr, string member, string value)
+        {
+            if (arr == null || arr.Length == 0 || string.IsNullOrEmpty(member))
+                return arr;
+
+            var result = arr.ToArray();
+            for (int i = 0; i < result.Length; i++)
+            {
+                if (string.Equals(result[i].ToUpper(), member, StringComparison.OrdinalIgnoreCase))
+                {
+                    result[i] = value;
+                }
+            }
+            return result;
+        }
         public bool GetValueReceive(object data)
         {
             bool result = false;
             try
             {
-                var dataSource = cboDepartment.Properties.DataSource as List<DataGet>;
-                if (data != null && PropetiesFilter != null && !string.IsNullOrEmpty(PropetiesFilter.ValueReceive) && data != null && !string.IsNullOrEmpty(data.ToString()))
+                var dataSource = this.dataSource;
+                if (data != null)
                 {
-                    var convertData = data.ToString();
-                    if (PropetiesFilter.ValueReceive.ToUpper().Contains(PARENT_ID_MEMBER))
+                    var arrStr = data as string[];
+                    if (arrStr != null && arrStr.Length > 0)
                     {
-                        dataSource = dataSource.Where(o => convertData.Contains(o.PARENT.ToString())).ToList();
-                    }
-                    else if (PropetiesFilter.ValueReceive.ToUpper().Contains(PARENT_CODE_MEMBER))
-                    {
-                        dataSource = dataSource.Where(o => convertData.Contains(o.PARENT_CODE)).ToList();
-                    }
-                    else if (PropetiesFilter.ValueReceive.ToUpper().Contains(DISPLAY_CODE_MEMBER))
-                    {
-                        dataSource = dataSource.Where(o => convertData.Contains(o.CODE)).ToList();
-                    }
-                    else if (PropetiesFilter.ValueReceive.ToUpper().Contains(DISPLAY_NAME_MEMBER))
-                    {
-                        dataSource = dataSource.Where(o => convertData.Contains(o.NAME)).ToList();
+                        var filteredData = dataSource;
+                        for (int i = 0; i < arrStr.Length; i++)
+                        {
+                            string filterValue = arrStr[i];
+                            if (!string.IsNullOrEmpty(filterValue))
+                            {
+                                switch (i)
+                                {
+                                    case 0:
+                                        filteredData = filteredData.Where(o => o.REF_FILTER_1ID != null && o.REF_FILTER_1ID.Contains(filterValue)).ToList();
+                                        break;
+                                    case 1:
+                                        filteredData = filteredData.Where(o => o.REF_FILTER_2ID != null && o.REF_FILTER_2ID.Contains(filterValue)).ToList();
+                                        break;
+                                    case 2:
+                                        filteredData = filteredData.Where(o => o.REF_FILTER_3ID != null && o.REF_FILTER_3ID.Contains(filterValue)).ToList();
+                                        break;
+                                    case 3:
+                                        filteredData = filteredData.Where(o => o.REF_FILTER_4ID != null && o.REF_FILTER_4ID.Contains(filterValue)).ToList();
+                                        break;
+                                    case 4:
+                                        filteredData = filteredData.Where(o => o.REF_FILTER_5ID != null && o.REF_FILTER_5ID.Contains(filterValue)).ToList();
+                                        break;
+                                }
+                            }
+                        }
+                        dataSource = filteredData;
                     }
                     result = true;
                 }
