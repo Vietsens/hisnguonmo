@@ -6973,26 +6973,38 @@ namespace MPS.Processor.Mps000062
         {
             try
             {
-                var groupIntructionTime = SortIntructionTime.GroupBy(o => new { o.INTRUCTION_TIME });
+                var groupIntructionTime = SortIntructionTime.GroupBy(o => o.INTRUCTION_TIME);
 
                 Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => SortIntructionTime.Select(o => o.TDL_SERVICE_REQ_ID)), SortIntructionTime.Select(o => o.TDL_SERVICE_REQ_ID)));
                 foreach (var it in groupIntructionTime)
                 {
                     List<string> dtTimes = it.ToList().OrderBy(o => o.USE_TIME ?? o.INTRUCTION_TIME).Select(o => Inventec.Common.DateTime.Convert.TimeNumberToDateString(o.USE_TIME ?? o.INTRUCTION_TIME)).ToList();
-                    var inStrTime = it.GroupBy(o => string.Format("{0}", o.MEDICINE_TYPE_CODE)).Where(o => dtTimes.Distinct().Count() > 1 ? o.Count() == dtTimes.Distinct().Count() : true).SelectMany(g => g).Select(x => x.TDL_SERVICE_REQ_ID).Distinct().ToList();
+                    var inStrTime = it.GroupBy(o => string.Format("{0}", o.MEDICINE_TYPE_CODE)).Where(o => o.Count() == dtTimes.Distinct().Count()).SelectMany(g => g).ToList();
                     var plusStrTime = it.GroupBy(o => string.Format("{0}", o.MEDICINE_TYPE_CODE)).Where(o => o.Count() != dtTimes.Distinct().Count()).SelectMany(g => g).Select(x => x.TDL_SERVICE_REQ_ID ?? 0).Distinct().ToList();
-                    if (plusStrTime != null && plusStrTime.Count > 0 && dtTimes.Distinct().Count() > 1)
+                    if (plusStrTime != null && plusStrTime.Count > 0)
                     {
-                        ProcessAddKeyMergeDay(SortIntructionTime.ToList().Where(o => plusStrTime.Exists(p => p == o.TDL_SERVICE_REQ_ID)).ToList(), item);
+                        if (plusStrTime.Count == dtTimes.Distinct().Count())
+                        {
+                            foreach (var date in dtTimes)
+                            {
+                                var srl = it.Where(o => Inventec.Common.DateTime.Convert.TimeNumberToDateString(o.USE_TIME ?? o.INTRUCTION_TIME) == date && plusStrTime.Exists(p => p == o.TDL_SERVICE_REQ_ID)).ToList();
+                                ProcessAddKeyMergeDay(SortIntructionTime.ToList().Where(o => srl.Exists(p => p.TDL_SERVICE_REQ_ID == o.TDL_SERVICE_REQ_ID)).ToList(), item);
+                            }
+                        }
+                        else if (dtTimes.Distinct().Count() > 1)
+                        {
+                            ProcessAddKeyMergeDay(SortIntructionTime.ToList().Where(o => plusStrTime.Exists(p => p == o.TDL_SERVICE_REQ_ID)).ToList(), item);
+                        }
                     }
-                    var itServiceReq = it.ToList().OrderBy(o => o.TDL_SERVICE_REQ_ID).Where(o => inStrTime.Exists(p => p == o.TDL_SERVICE_REQ_ID)).Select(o => o.TDL_SERVICE_REQ_ID).Distinct().ToList();
-
+                    var itServiceReq = it.ToList().OrderBy(o => o.TDL_SERVICE_REQ_ID).Where(o => inStrTime.Select(x => x.TDL_SERVICE_REQ_ID).Distinct().ToList().Exists(p => p == o.TDL_SERVICE_REQ_ID)).Select(o => o.TDL_SERVICE_REQ_ID).Distinct().ToList();
+                    if (itServiceReq == null || itServiceReq.Count == 0)
+                        continue;
                     item.MEDICINES_MERGE_DAY___DATA += BuildDateString(dtTimes);
                     item.MEDICINES_MERGE_DAY___DATA += Inventec.Desktop.Common.HtmlString.ProcessorString.InsertSpacialTag("", Inventec.Desktop.Common.HtmlString.SpacialTag.Tag.Br);
                     item.MEDICINES_MERGE_DAY_HTU___DATA += BuildDateString(dtTimes);
                     item.MEDICINES_MERGE_DAY_HTU___DATA += Inventec.Desktop.Common.HtmlString.ProcessorString.InsertSpacialTag("", Inventec.Desktop.Common.HtmlString.SpacialTag.Tag.Br);
-                    item.MEDICINES_MERGE_DAY___DATA += string.Join("", it.Where(o => itServiceReq.Exists(p => p == o.TDL_SERVICE_REQ_ID)).Select(o => o.DATA_DAY_REPX).Distinct());
-                    item.MEDICINES_MERGE_DAY_HTU___DATA += string.Join("", it.Where(o => itServiceReq.Exists(p => p == o.TDL_SERVICE_REQ_ID)).Select(o => o.DATA_DAY_HTU_REPX).Distinct());
+                    item.MEDICINES_MERGE_DAY___DATA += string.Join("", inStrTime.Select(o => o.DATA_DAY_REPX).Distinct());
+                    item.MEDICINES_MERGE_DAY_HTU___DATA += string.Join("", inStrTime.Select(o => o.DATA_DAY_REPX).Distinct());
 
                     long? sthang = it.GroupBy(o => new { o.TDL_SERVICE_REQ_ID, o.REMEDY_COUNT }).Sum(o => o.Key.REMEDY_COUNT ?? 0);
                     if (sthang > 0)
