@@ -81,7 +81,7 @@ namespace HIS.UC.FormType
                             result = new HIS.UC.FormType.MultipleRoomComboCheckFilterByDepartmentComboCheck.MultipleRoomComboCheckFilterByDepartmentComboCheckProcessor(data, generateRDO);
                             break;
                         case "FTHIS000009":
-                            result = new HIS.UC.FormType.DepartmentCombo.DepartmentComboProcessor(data, generateRDO, delegateSelectDatas);
+                            result = new HIS.UC.FormType.GridLookUpTextEdit.GridLookUpTextEditProcessor(data, generateRDO, delegateSelectDatas);
                             break;
                         case "FTHIS000010":
                             result = new HIS.UC.FormType.DateMonthYear.DateMonthYearProcessor(data, generateRDO);
@@ -102,7 +102,7 @@ namespace HIS.UC.FormType
                             result = new HIS.UC.FormType.TreatmentTypeComboCheck.TreatmentTypeComboCheckProcessor(data, generateRDO);
                             break;
                         case "FTHIS000016":
-                            result = new HIS.UC.FormType.TreatmentTypeGridCheckBox.TreatmentTypeGridCheckBoxProcessor(data, generateRDO, delegateSelectDatas);
+                            result = new HIS.UC.FormType.GridCheckBox.GridCheckBoxProcessor(data, generateRDO, delegateSelectDatas);
                             break;
                         case "FTHIS000017":
                             result = new HIS.UC.FormType.Mounth.MounthProcessor(data, generateRDO);

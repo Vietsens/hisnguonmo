@@ -37,20 +37,20 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
-namespace HIS.UC.FormType.TreatmentTypeGridCheckBox
+namespace HIS.UC.FormType.GridCheckBox
 {
-    public partial class UCTreatmentTypeGridCheckBox : DevExpress.XtraEditors.XtraUserControl
+    public partial class UCGridCheckBox : DevExpress.XtraEditors.XtraUserControl
     {
         private const string VALUE_MEMBER = "VALUEMEMBER";
         private const string DISPLAY_CODE_MEMBER = "DISPLAYCODEMEMBER";
         private const string DISPLAY_NAME_MEMBER = "DISPLAYNAMEMEMBER";
         private const string PARENT_ID_MEMBER = "PARENTID";
         private const string PARENT_CODE_MEMBER = "PARENTCODE";
-        private const string REF_FILTER_1ID = "REFFILTER1ID";
-        private const string REF_FILTER_2ID = "REFFILTER2ID";
-        private const string REF_FILTER_3ID = "REFFILTER3ID";
-        private const string REF_FILTER_4ID = "REFFILTER4ID";
-        private const string REF_FILTER_5ID = "REFFILTER5ID";
+        private const string REF_FILTER_1 = "REFFILTER1";
+        private const string REF_FILTER_2 = "REFFILTER2";
+        private const string REF_FILTER_3 = "REFFILTER3";
+        private const string REF_FILTER_4 = "REFFILTER4";
+        private const string REF_FILTER_5 = "REFFILTER5";
         string FDO = null;
         string[] limitCodes = null;
         string valueSend = "";
@@ -59,7 +59,7 @@ namespace HIS.UC.FormType.TreatmentTypeGridCheckBox
         private List<string> DEPARTMENT_CODEs = new List<string>();
         private List<DataGet> selectedFilters = new List<DataGet>();
         private List<DataGet> dataSource = new List<DataGet>();
-        TreatmentTypeGridCheckBoxFDO generateRDO;
+        GridCheckBoxFDO generateRDO;
         SAR.EFMODEL.DataModels.V_SAR_RETY_FOFI config;
         bool isValidData = true;
         int positionHandleControl = -1;
@@ -69,7 +69,7 @@ namespace HIS.UC.FormType.TreatmentTypeGridCheckBox
         string Output0 = "";
         string JsonOutput = "";
         HIS.Desktop.Common.DelegateSelectDatas delegateSelectDatas;
-        public UCTreatmentTypeGridCheckBox(SAR.EFMODEL.DataModels.V_SAR_RETY_FOFI config, object paramRDO, HIS.Desktop.Common.DelegateSelectDatas delegateSelectDatas)
+        public UCGridCheckBox(SAR.EFMODEL.DataModels.V_SAR_RETY_FOFI config, object paramRDO, HIS.Desktop.Common.DelegateSelectDatas delegateSelectDatas)
         {
             try
             {
@@ -284,16 +284,16 @@ namespace HIS.UC.FormType.TreatmentTypeGridCheckBox
                             dataGett.PARENT = Convert.ToInt64(row[PARENT_ID_MEMBER]);
                         if (table.Columns.Contains(PARENT_CODE_MEMBER) && row[PARENT_CODE_MEMBER] != DBNull.Value)
                             dataGett.PARENT_CODE = row[PARENT_CODE_MEMBER].ToString();
-                        if (table.Columns.Contains(REF_FILTER_1ID) && row[REF_FILTER_1ID] != DBNull.Value)
-                            dataGett.REF_FILTER_1ID = row[REF_FILTER_1ID].ToString();
-                        if (table.Columns.Contains(REF_FILTER_2ID) && row[REF_FILTER_2ID] != DBNull.Value)
-                            dataGett.REF_FILTER_2ID = row[REF_FILTER_2ID].ToString();
-                        if (table.Columns.Contains(REF_FILTER_3ID) && row[REF_FILTER_3ID] != DBNull.Value)
-                            dataGett.REF_FILTER_3ID = row[REF_FILTER_3ID].ToString();
-                        if (table.Columns.Contains(REF_FILTER_4ID) && row[REF_FILTER_4ID] != DBNull.Value)
-                            dataGett.REF_FILTER_4ID = row[REF_FILTER_4ID].ToString();
-                        if (table.Columns.Contains(REF_FILTER_5ID) && row[REF_FILTER_5ID] != DBNull.Value)
-                            dataGett.REF_FILTER_5ID = row[REF_FILTER_5ID].ToString();
+                        if (table.Columns.Contains(REF_FILTER_1) && row[REF_FILTER_1] != DBNull.Value)
+                            dataGett.REF_FILTER_1 = row[REF_FILTER_1];
+                        if (table.Columns.Contains(REF_FILTER_2) && row[REF_FILTER_2] != DBNull.Value)
+                            dataGett.REF_FILTER_2 = row[REF_FILTER_2];
+                        if (table.Columns.Contains(REF_FILTER_3) && row[REF_FILTER_3] != DBNull.Value)
+                            dataGett.REF_FILTER_3 = row[REF_FILTER_3];
+                        if (table.Columns.Contains(REF_FILTER_4) && row[REF_FILTER_4] != DBNull.Value)
+                            dataGett.REF_FILTER_4 = row[REF_FILTER_4];
+                        if (table.Columns.Contains(REF_FILTER_5) && row[REF_FILTER_5] != DBNull.Value)
+                            dataGett.REF_FILTER_5 = row[REF_FILTER_5];
                         result.Add(dataGett);
                     }
                 }
@@ -518,15 +518,15 @@ namespace HIS.UC.FormType.TreatmentTypeGridCheckBox
                 if (delegateSelectDatas != null && PropetiesFilter != null && PropetiesFilter.ValueTransfer != null && PropetiesFilter.ValueTransfer.Length > 0 && PropetiesFilter.IdReference > 0)
                 {
                     var arrGoc = PropetiesFilter.ValueTransfer.ToArray();
-                    if (PropetiesFilter.ValueTransfer.ToList().Exists(o => o.ToUpper() == VALUE_MEMBER))
+                    if (PropetiesFilter.ValueTransfer.ToList().Exists(o => o.ToString().ToUpper() == VALUE_MEMBER))
                     {
                         arrGoc = ReplaceValueMember(arrGoc, VALUE_MEMBER, string.Join(",", selectedFilters.Select(o => o.ID)));
                     }
-                    if (PropetiesFilter.ValueTransfer.ToList().Exists(o => o.ToUpper() == DISPLAY_CODE_MEMBER))
+                    if (PropetiesFilter.ValueTransfer.ToList().Exists(o => o.ToString().ToUpper() == DISPLAY_CODE_MEMBER))
                     {
                         arrGoc = ReplaceValueMember(arrGoc, DISPLAY_CODE_MEMBER, string.Join(",", selectedFilters.Select(o => o.CODE)));
                     }
-                    if (PropetiesFilter.ValueTransfer.ToList().Exists(o => o.ToUpper() == DISPLAY_NAME_MEMBER))
+                    if (PropetiesFilter.ValueTransfer.ToList().Exists(o => o.ToString().ToUpper() == DISPLAY_NAME_MEMBER))
                     {
                         arrGoc = ReplaceValueMember(arrGoc, DISPLAY_NAME_MEMBER, string.Join(",", selectedFilters.Select(o => o.NAME)));
                     }
@@ -538,7 +538,7 @@ namespace HIS.UC.FormType.TreatmentTypeGridCheckBox
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
-        public string[] ReplaceValueMember(string[] arr, string member, string value)
+        public object[] ReplaceValueMember(object[] arr, string member, string value)
         {
             if (arr == null || arr.Length == 0 || string.IsNullOrEmpty(member))
                 return arr;
@@ -546,7 +546,7 @@ namespace HIS.UC.FormType.TreatmentTypeGridCheckBox
             var result = arr.ToArray();
             for (int i = 0; i < result.Length; i++)
             {
-                if (string.Equals(result[i].ToUpper(), member, StringComparison.OrdinalIgnoreCase))
+                if (string.Equals(result[i].ToString().ToUpper(), member, StringComparison.OrdinalIgnoreCase))
                 {
                     result[i] = value;
                 }
@@ -731,7 +731,7 @@ namespace HIS.UC.FormType.TreatmentTypeGridCheckBox
 
                 if (data != null)
                 {
-                    var arrStr = data as string[];
+                    var arrStr = data as object[];
                     if (arrStr != null && arrStr.Length > 0)
                     {
                         var filteredData = dataSource;
@@ -743,19 +743,19 @@ namespace HIS.UC.FormType.TreatmentTypeGridCheckBox
                                 switch (i)
                                 {
                                     case 0:
-                                        filteredData = filteredData.Where(o => o.REF_FILTER_1ID != null && filterValue.Contains(o.REF_FILTER_1ID)).ToList();
+                                        filteredData = filteredData.Where(o => o.REF_FILTER_1 != null && filterValue.Contains(o.REF_FILTER_1.ToString())).ToList();
                                         break;
                                     case 1:
-                                        filteredData = filteredData.Where(o => o.REF_FILTER_2ID != null && filterValue.Contains(o.REF_FILTER_2ID)).ToList();
+                                        filteredData = filteredData.Where(o => o.REF_FILTER_2 != null && filterValue.Contains(o.REF_FILTER_2.ToString())).ToList();
                                         break;
                                     case 2:
-                                        filteredData = filteredData.Where(o => o.REF_FILTER_3ID != null && filterValue.Contains(o.REF_FILTER_3ID)).ToList();
+                                        filteredData = filteredData.Where(o => o.REF_FILTER_3 != null && filterValue.Contains(o.REF_FILTER_3.ToString())).ToList();
                                         break;
                                     case 3:
-                                        filteredData = filteredData.Where(o => o.REF_FILTER_4ID != null && filterValue.Contains(o.REF_FILTER_4ID)).ToList();
+                                        filteredData = filteredData.Where(o => o.REF_FILTER_4 != null && filterValue.Contains(o.REF_FILTER_4.ToString())).ToList();
                                         break;
                                     case 4:
-                                        filteredData = filteredData.Where(o => o.REF_FILTER_5ID != null && filterValue.Contains(o.REF_FILTER_5ID)).ToList();
+                                        filteredData = filteredData.Where(o => o.REF_FILTER_5 != null && filterValue.Contains(o.REF_FILTER_5.ToString())).ToList();
                                         break;
                                 }
                             }

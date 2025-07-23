@@ -15,24 +15,22 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-using HIS.Desktop.Common;
 using SAR.EFMODEL.DataModels;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 
-namespace HIS.UC.FormType.DepartmentCombo
+namespace HIS.UC.FormType.GridCheckBox
 {
-    class DepartmentComboProcessor : ProcessorBase, IProcessorGenerate
+    class GridCheckBoxProcessor : ProcessorBase, IProcessorGenerate
     {
-        UCDepartmentCombo ucDepartmentCombo;
-        object generateRDO;
         HIS.Desktop.Common.DelegateSelectDatas delegateSelectDatas;
-        internal DepartmentComboProcessor(V_SAR_RETY_FOFI config, object paramRDO, HIS.Desktop.Common.DelegateSelectDatas delegateSelectDatas)
+        object generateRDO;
+        internal GridCheckBoxProcessor(V_SAR_RETY_FOFI config, object generateRDO, HIS.Desktop.Common.DelegateSelectDatas delegateSelectDatas)
             : base(config)
         {
-            this.generateRDO = paramRDO;
+            this.generateRDO = generateRDO;
             this.delegateSelectDatas = delegateSelectDatas;
         }
 
@@ -41,7 +39,7 @@ namespace HIS.UC.FormType.DepartmentCombo
             object result = null;
             try
             {
-                result = new UCDepartmentCombo(config, generateRDO, delegateSelectDatas);
+                result = new UCGridCheckBox(config, generateRDO, delegateSelectDatas);
             }
             catch (Exception ex)
             {
@@ -49,6 +47,6 @@ namespace HIS.UC.FormType.DepartmentCombo
                 result = null;
             }
             return result;
-        }
+        }       
     }
 }

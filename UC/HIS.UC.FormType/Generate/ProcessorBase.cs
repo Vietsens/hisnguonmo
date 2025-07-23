@@ -15,7 +15,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-using HIS.UC.FormType.DepartmentCombo;
+using HIS.UC.FormType.GridLookUpTextEdit;
 using SAR.EFMODEL.DataModels;
 using System;
 using System.Collections.Generic;

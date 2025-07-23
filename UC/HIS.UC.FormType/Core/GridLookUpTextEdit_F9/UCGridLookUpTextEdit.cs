@@ -34,21 +34,21 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace HIS.UC.FormType.DepartmentCombo
+namespace HIS.UC.FormType.GridLookUpTextEdit
 {
-    public partial class UCDepartmentCombo : DevExpress.XtraEditors.XtraUserControl
+    public partial class UCGridLookUpTextEdit : DevExpress.XtraEditors.XtraUserControl
     {
         private const string VALUE_MEMBER = "VALUEMEMBER";
         private const string DISPLAY_CODE_MEMBER = "DISPLAYCODEMEMBER";
         private const string DISPLAY_NAME_MEMBER = "DISPLAYNAMEMEMBER";
         private const string PARENT_ID_MEMBER = "PARENTID";
         private const string PARENT_CODE_MEMBER = "PARENTCODE";
-        private const string REF_FILTER_1ID = "REFFILTER1ID";
-        private const string REF_FILTER_2ID = "REFFILTER2ID";
-        private const string REF_FILTER_3ID = "REFFILTER3ID";
-        private const string REF_FILTER_4ID = "REFFILTER4ID";
-        private const string REF_FILTER_5ID = "REFFILTER5ID";
-        DepartmentComboFDO generateRDO;
+        private const string REF_FILTER_1 = "REFFILTER1";
+        private const string REF_FILTER_2 = "REFFILTER2";
+        private const string REF_FILTER_3 = "REFFILTER3";
+        private const string REF_FILTER_4 = "REFFILTER4";
+        private const string REF_FILTER_5 = "REFFILTER5";
+        GridLookUpTextEditFDO generateRDO;
         SAR.EFMODEL.DataModels.V_SAR_RETY_FOFI config;
         int positionHandleControl = -1;
         string FDO = null;
@@ -59,7 +59,7 @@ namespace HIS.UC.FormType.DepartmentCombo
         string Output0 = "";
         string JsonOutput = "";
         HIS.Desktop.Common.DelegateSelectDatas delegateSelectDatas;
-        public UCDepartmentCombo(SAR.EFMODEL.DataModels.V_SAR_RETY_FOFI config, object paramRDO, HIS.Desktop.Common.DelegateSelectDatas delegateSelectDatas)
+        public UCGridLookUpTextEdit(SAR.EFMODEL.DataModels.V_SAR_RETY_FOFI config, object paramRDO, HIS.Desktop.Common.DelegateSelectDatas delegateSelectDatas)
         {
             try
             {
@@ -316,16 +316,16 @@ namespace HIS.UC.FormType.DepartmentCombo
                             dataGett.PARENT = Convert.ToInt64(row[PARENT_ID_MEMBER]);
                         if (table.Columns.Contains(PARENT_CODE_MEMBER) && row[PARENT_CODE_MEMBER] != DBNull.Value)
                             dataGett.PARENT_CODE = row[PARENT_CODE_MEMBER].ToString();
-                        if (table.Columns.Contains(REF_FILTER_1ID) && row[REF_FILTER_1ID] != DBNull.Value)
-                            dataGett.REF_FILTER_1ID = row[REF_FILTER_1ID].ToString();
-                        if (table.Columns.Contains(REF_FILTER_2ID) && row[REF_FILTER_2ID] != DBNull.Value)
-                            dataGett.REF_FILTER_2ID = row[REF_FILTER_2ID].ToString();
-                        if (table.Columns.Contains(REF_FILTER_3ID) && row[REF_FILTER_3ID] != DBNull.Value)
-                            dataGett.REF_FILTER_3ID = row[REF_FILTER_3ID].ToString();
-                        if (table.Columns.Contains(REF_FILTER_4ID) && row[REF_FILTER_4ID] != DBNull.Value)
-                            dataGett.REF_FILTER_4ID = row[REF_FILTER_4ID].ToString();
-                        if (table.Columns.Contains(REF_FILTER_5ID) && row[REF_FILTER_5ID] != DBNull.Value)
-                            dataGett.REF_FILTER_5ID = row[REF_FILTER_5ID].ToString();
+                        if (table.Columns.Contains(REF_FILTER_1) && row[REF_FILTER_1] != DBNull.Value)
+                            dataGett.REF_FILTER_1 = row[REF_FILTER_1];
+                        if (table.Columns.Contains(REF_FILTER_2) && row[REF_FILTER_2] != DBNull.Value)
+                            dataGett.REF_FILTER_2 = row[REF_FILTER_2];
+                        if (table.Columns.Contains(REF_FILTER_3) && row[REF_FILTER_3] != DBNull.Value)
+                            dataGett.REF_FILTER_3 = row[REF_FILTER_3];
+                        if (table.Columns.Contains(REF_FILTER_4) && row[REF_FILTER_4] != DBNull.Value)
+                            dataGett.REF_FILTER_4 = row[REF_FILTER_4];
+                        if (table.Columns.Contains(REF_FILTER_5) && row[REF_FILTER_5] != DBNull.Value)
+                            dataGett.REF_FILTER_5 = row[REF_FILTER_5];
                         result.Add(dataGett);
                     }
                 }
@@ -768,7 +768,7 @@ namespace HIS.UC.FormType.DepartmentCombo
         {
             try
             {
-                HIS.UC.FormType.DepartmentCombo.Validation.DepartmentValidationRule validRule = new HIS.UC.FormType.DepartmentCombo.Validation.DepartmentValidationRule();
+                HIS.UC.FormType.GridLookUpTextEdit.Validation.DepartmentValidationRule validRule = new HIS.UC.FormType.GridLookUpTextEdit.Validation.DepartmentValidationRule();
                 validRule.cboDepartment = cboDepartment;
                 validRule.txtDepartmentCode = txtDepartmentCode;
                 validRule.ErrorText = HIS.UC.FormType.Base.MessageUtil.GetMessage(Message.Enum.ThieuTruongDuLieuBatBuoc);
@@ -908,15 +908,15 @@ namespace HIS.UC.FormType.DepartmentCombo
                     var arrGoc = PropetiesFilter.ValueTransfer.ToArray();
                     if (obj != null)
                     {
-                        if (PropetiesFilter.ValueTransfer.ToList().Exists(o => o.ToUpper() == VALUE_MEMBER))
+                        if (PropetiesFilter.ValueTransfer.ToList().Exists(o => o.ToString().ToUpper() == VALUE_MEMBER))
                         {
                             arrGoc = ReplaceValueMember(arrGoc, VALUE_MEMBER, obj.ID.ToString());
                         }
-                        if (PropetiesFilter.ValueTransfer.ToList().Exists(o => o.ToUpper() == DISPLAY_CODE_MEMBER))
+                        if (PropetiesFilter.ValueTransfer.ToList().Exists(o => o.ToString().ToUpper() == DISPLAY_CODE_MEMBER))
                         {
                             arrGoc = ReplaceValueMember(arrGoc, DISPLAY_CODE_MEMBER, obj.CODE.ToString());
                         }
-                        if (PropetiesFilter.ValueTransfer.ToList().Exists(o => o.ToUpper() == DISPLAY_NAME_MEMBER))
+                        if (PropetiesFilter.ValueTransfer.ToList().Exists(o => o.ToString().ToUpper() == DISPLAY_NAME_MEMBER))
                         {
                             arrGoc = ReplaceValueMember(arrGoc, DISPLAY_NAME_MEMBER, obj.NAME.ToString());
                         }
@@ -933,7 +933,7 @@ namespace HIS.UC.FormType.DepartmentCombo
 
         }
 
-        public string[] ReplaceValueMember(string[] arr, string member, string value)
+        public object[] ReplaceValueMember(object[] arr, string member, string value)
         {
             if (arr == null || arr.Length == 0 || string.IsNullOrEmpty(member))
                 return arr;
@@ -941,7 +941,7 @@ namespace HIS.UC.FormType.DepartmentCombo
             var result = arr.ToArray();
             for (int i = 0; i < result.Length; i++)
             {
-                if (string.Equals(result[i].ToUpper(), member, StringComparison.OrdinalIgnoreCase))
+                if (string.Equals(result[i].ToString().ToUpper(), member, StringComparison.OrdinalIgnoreCase))
                 {
                     result[i] = value;
                 }
@@ -956,31 +956,31 @@ namespace HIS.UC.FormType.DepartmentCombo
                 var dataSource = this.dataSource;
                 if (data != null)
                 {
-                    var arrStr = data as string[];
+                    var arrStr = data as object[];
                     if (arrStr != null && arrStr.Length > 0)
                     {
                         var filteredData = dataSource;
                         for (int i = 0; i < arrStr.Length; i++)
                         {
-                            string filterValue = arrStr[i];
-                            if (!string.IsNullOrEmpty(filterValue))
+                            object filterValue = arrStr[i];
+                            if (filterValue != null)
                             {
                                 switch (i)
                                 {
                                     case 0:
-                                        filteredData = filteredData.Where(o => o.REF_FILTER_1ID != null && o.REF_FILTER_1ID.Contains(filterValue)).ToList();
+                                        filteredData = filteredData.Where(o => o.REF_FILTER_1 != null && o.REF_FILTER_1 == filterValue).ToList();
                                         break;
                                     case 1:
-                                        filteredData = filteredData.Where(o => o.REF_FILTER_2ID != null && o.REF_FILTER_2ID.Contains(filterValue)).ToList();
+                                        filteredData = filteredData.Where(o => o.REF_FILTER_2 != null && o.REF_FILTER_2 == filterValue).ToList();
                                         break;
                                     case 2:
-                                        filteredData = filteredData.Where(o => o.REF_FILTER_3ID != null && o.REF_FILTER_3ID.Contains(filterValue)).ToList();
+                                        filteredData = filteredData.Where(o => o.REF_FILTER_3 != null && o.REF_FILTER_3 == filterValue).ToList();
                                         break;
                                     case 3:
-                                        filteredData = filteredData.Where(o => o.REF_FILTER_4ID != null && o.REF_FILTER_4ID.Contains(filterValue)).ToList();
+                                        filteredData = filteredData.Where(o => o.REF_FILTER_4 != null && o.REF_FILTER_4 == filterValue).ToList();
                                         break;
                                     case 4:
-                                        filteredData = filteredData.Where(o => o.REF_FILTER_5ID != null && o.REF_FILTER_5ID.Contains(filterValue)).ToList();
+                                        filteredData = filteredData.Where(o => o.REF_FILTER_5 != null && o.REF_FILTER_5 == filterValue).ToList();
                                         break;
                                 }
                             }

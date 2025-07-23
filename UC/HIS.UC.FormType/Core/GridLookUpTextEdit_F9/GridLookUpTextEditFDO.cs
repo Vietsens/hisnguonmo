@@ -23,14 +23,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace HIS.UC.FormType.DepartmentCombo
+namespace HIS.UC.FormType.GridLookUpTextEdit
 {
     /// <summary>
     /// Doi tuong dung de tra du lieu ve
     /// </summary>
-    public class DepartmentComboFDO
+    public class GridLookUpTextEditFDO
     {
-        public DepartmentComboFDO()
+        public GridLookUpTextEditFDO()
         {
         }
     }

@@ -15,9 +15,9 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-namespace HIS.UC.FormType.TreatmentTypeGridCheckBox
+namespace HIS.UC.FormType.GridCheckBox
 {
-    public partial class UCTreatmentTypeGridCheckBox
+    public partial class UCGridCheckBox
     {
         /// <summary> 
         /// Required designer variable.
@@ -203,12 +203,12 @@ namespace HIS.UC.FormType.TreatmentTypeGridCheckBox
             this.layoutControlItem1.TextSize = new System.Drawing.Size(90, 3);
             this.layoutControlItem1.TextToControlDistance = 5;
             // 
-            // UCTreatmentTypeGridCheckBox
+            // GridCheckBox
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.layoutControl1);
-            this.Name = "UCTreatmentTypeGridCheckBox";
+            this.Name = "UCGridCheckBox";
             this.Size = new System.Drawing.Size(660, 144);
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).EndInit();
             this.layoutControl1.ResumeLayout(false);
