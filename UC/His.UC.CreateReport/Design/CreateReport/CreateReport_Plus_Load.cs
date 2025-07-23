@@ -110,7 +110,7 @@ namespace His.UC.CreateReport.Design.CreateReport
                         ID = item.ID,
                         DATA_CACHE = item.DATA_CACHE,
                         DATA_TABLE = item.DATA_TABLE,
-                        Propeties = !string.IsNullOrEmpty(item.JSON_PROPETIES) ? Newtonsoft.Json.JsonConvert.DeserializeObject<HIS.UC.FormType.PropetiesRDO>(item.JSON_PROPETIES) : null,
+                        Propeties = TryDeserializePropeties(item.JSON_PROPETIES),
                         Fofi = fofi
 
                     };
@@ -132,6 +132,19 @@ namespace His.UC.CreateReport.Design.CreateReport
 
         }
 
+        private HIS.UC.FormType.PropetiesRDO TryDeserializePropeties(string json)
+        {
+            if (string.IsNullOrEmpty(json))
+                return null;
+            try
+            {
+                return Newtonsoft.Json.JsonConvert.DeserializeObject<HIS.UC.FormType.PropetiesRDO>(json);
+            }
+            catch
+            {
+                return null;
+            }
+        }
         private bool GenDynamicFilterConfig()
         {
             bool state = false;
