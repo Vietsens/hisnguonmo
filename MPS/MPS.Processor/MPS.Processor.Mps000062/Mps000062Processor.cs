@@ -19,6 +19,7 @@ using AutoMapper;
 using FlexCel.Report;
 using HIS.Desktop.LocalStorage.BackendData;
 using Inventec.Common.Adapter;
+using Inventec.Common.Logging;
 using Inventec.Core;
 using MOS.EFMODEL.DataModels;
 using MPS.Processor.Mps000062.PDO;
@@ -4500,7 +4501,7 @@ namespace MPS.Processor.Mps000062
                                 TDL_MEDICINE_TYPE_ID = item1.MEDICINE_TYPE_ID,
                                 HTU_TEXT = item1.HTU_TEXT
                             });
-                        }
+                        }   
                     }
 
                     if (medicine_Merges != null && medicine_Merges.Count > 0)
@@ -5991,6 +5992,7 @@ namespace MPS.Processor.Mps000062
                            && o.INTRUCTION_DATE < Inventec.Common.TypeConvert.Parse.ToInt64(dtTrackingDate.ToString("yyyyMMdd") + "000000")
                            && o.SERVICE_REQ_STT_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_STT.ID__HT).ToList()
                        : null;
+                    LogSystem.Info("serviceReqDDTs: " + LogUtil.TraceData("serviceReqDDTs: ", serviceReqDDTs));
 
                     //var serviceReqDDTs = (_ServiceReqs != null && _ServiceReqs.Count > 0) ?
                     //    _ServiceReqs.Where(o => o.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__DONDT
@@ -6036,8 +6038,7 @@ namespace MPS.Processor.Mps000062
                                         item.PRE_MEDICINE += String.Format("<table><tr><td width=\"650\" text-align=\"left\" align=\"left\">- {0}</td></span></tr><tr><td text-align=\"right\" align=\"left\" width=\"650\">{1}</td></tr></table>", s1, s2);
                                         
                                         if (itemByServiceReq.TRACKING_ID != _tracking.ID &&
-                                            itemByServiceReq.USED_FOR_TRACKING_ID == _tracking.ID &&
-                                            itemByServiceReq.USED_FOR_TRACKING_ID == _tracking.ID &&
+                                            itemByServiceReq.USED_FOR_TRACKING_ID != _tracking.ID &&
                                             itemByServiceReq.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__DONDT &&
                                             itemByServiceReq.SERVICE_REQ_STT_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_STT.ID__HT)
                                         {
