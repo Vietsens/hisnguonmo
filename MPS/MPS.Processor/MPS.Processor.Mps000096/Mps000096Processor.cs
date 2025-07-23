@@ -16,6 +16,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 using HIS.Desktop.ApiConsumer;
+using Inventec.Common.Logging;
 using Inventec.Core;
 using Inventec.Desktop.Common.LanguageManager;
 using LIS.EFMODEL.DataModels;
@@ -733,11 +734,15 @@ namespace MPS.Processor.Mps000096
                     Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData("rdo.lstLisResult: ", rdo.lstLisResult));
                     testIndexs = new List<V_HIS_TEST_INDEX>();
                     var serviceCodes = rdo.lstLisResult.Select(o => o.SERVICE_CODE).Distinct().ToList();
+                    Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData("serviceCodes: ", serviceCodes));
                     testIndexs = rdo.lstTestIndex.Where(o => serviceCodes.Contains(o.SERVICE_CODE)).ToList();
+                    Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData("testIndexs: ", testIndexs));
                     if (testIndexs != null && testIndexs.Count > 0 && rdo.lstTestIndex != null && rdo.lstTestIndex.Count > 0)
                     {
                         var testIndexCodes = testIndexs.Select(o => o.TEST_INDEX_CODE).Distinct().ToList();
+                        Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData("testIndexCodes: ", testIndexCodes));
                         testIndexRanges = rdo.testIndexRangeAll.Where(o => testIndexCodes.Contains(o.TEST_INDEX_CODE)).ToList();
+                        Inventec.Common.Logging.LogSystem.Debug("testIndexRanges count: " + testIndexRanges.Count);
                     }
                 }
 
@@ -746,6 +751,7 @@ namespace MPS.Processor.Mps000096
                     rdo.lstLisResult = rdo.lstLisResult.OrderBy(o => o.ID).ThenBy(o => o.TEST_INDEX_NAME).ToList();
 
                     var groupListResult = rdo.lstLisResult.GroupBy(o => new { o.SERVICE_CODE, o.MACHINE_ID }).ToList();
+                    Inventec.Common.Logging.LogSystem.Debug("groupListResult count: " + groupListResult.Count);
 
                     foreach (var group in groupListResult)
                     {
@@ -758,11 +764,14 @@ namespace MPS.Processor.Mps000096
                         hisSereServTeinSDO.SERVICE_NAME = firstItem.SERVICE_NAME;
                         hisSereServTeinSDO.SERVICE_CODE = firstItem.SERVICE_CODE;
                         hisSereServTeinSDO.TEST_INDEX_RANGE = "";
+                        hisSereServTeinSDO.VALUE_STR = null;
+                        hisSereServTeinSDO.HIGH_OR_LOW = null;
                         hisSereServTeinSDO.TEST_INDEX_UNIT_NAME = "";
-                        hisSereServTeinSDO.VALUE = null;
+                        hisSereServTeinSDO.VALUE_HL = null;
+                        hisSereServTeinSDO.VALUE_HL_NEW = null;
                         hisSereServTeinSDO.PARENT_ID = ".";
                         hisSereServTeinSDO.MODIFIER = "";
-                        hisSereServTeinSDO.CHILD_ID = firstItem.ID + ".";
+                        hisSereServTeinSDO.CHILD_ID = firstItem.ID + "."; 
                         hisSereServTeinSDO.SERVICE_NUM_ORDER = firstItem.SERVICE_NUM_ORDER;
                         hisSereServTeinSDO.RESULT_DESCRIPTION = firstItem.RESULT_DESCRIPTION;
                         hisSereServTeinSDO.ISO_PROCESS_CODE = firstItem.TDL_ISO_PROCESS_CODE;
@@ -816,9 +825,11 @@ namespace MPS.Processor.Mps000096
                         //Lay machine_id
                         var lstResultItem = group.ToList();
                         lstResultItem = lstResultItem.OrderBy(o => o.ID).ThenBy(p => p.SERVICE_NAME).ToList();
+                        Inventec.Common.Logging.LogSystem.Debug("lstResultItem count: " + lstResultItem.Count + ", First item: " + Inventec.Common.Logging.LogUtil.TraceData("", lstResultItem[0]));
                         if (rdo.lstLisResult != null && rdo.lstLisResult.Count > 0 && lstResultItem != null && lstResultItem.Count > 0)
                         {
                             var machineByLisResult = rdo.lstLisResult.FirstOrDefault(p => p.TEST_INDEX_CODE == lstResultItem[0].TEST_INDEX_CODE && p.SERVICE_CODE == lstResultItem[0].SERVICE_CODE);
+                            Inventec.Common.Logging.LogSystem.Debug("machineByLisResult: " + (machineByLisResult != null ? machineByLisResult.MACHINE_NAME : "null"));
                             if (machineByLisResult != null)
                             {
                                 hisSereServTeinSDO.MACHINE_ID = machineByLisResult.MACHINE_ID;
@@ -828,28 +839,37 @@ namespace MPS.Processor.Mps000096
 
                         //SERVICE_PARENT_ID luôn có giá trị để gom nhóm.
                         var testIndFist = testIndexs.FirstOrDefault(o => o.TEST_INDEX_CODE == lstResultItem[0].TEST_INDEX_CODE);
+                        Inventec.Common.Logging.LogSystem.Info("testIndFist: " + LogUtil.TraceData("testIndFist : ", testIndFist));
                         if (testIndFist != null && rdo.ListTestService != null)
                         {
                             var parentService = rdo.ListTestService.FirstOrDefault(o => testIndFist.TEST_SERVICE_TYPE_ID == o.ID);
                             hisSereServTeinSDO.SERVICE_PARENT_ID = parentService != null ? parentService.PARENT_ID ?? 0 : 0;
                         }
-
+                        Inventec.Common.Logging.LogSystem.Debug("Số lượng bản ghi trong rdo.lstLisResult: " + (rdo.lstLisResult?.Count ?? 0));
+                        Inventec.Common.Logging.LogSystem.Debug("Danh sách test index: " + Inventec.Common.Logging.LogUtil.TraceData("", rdo.lstTestIndex));
                         if (lstResultItem != null && lstResultItem.Count == 1 && testIndFist != null && testIndFist.IS_NOT_SHOW_SERVICE == 1)
                         {
 
                             Inventec.Common.Logging.LogSystem.Debug("SetListData2__ 2");
 
+
                             Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData("lstResultItem[0]: ", lstResultItem[0]));
-                            hisSereServTeinSDO.MODIFIER = lstResultItem[0].MODIFIER;
-                            hisSereServTeinSDO.TEST_INDEX_CODE = lstResultItem[0].TEST_INDEX_CODE;
-                            hisSereServTeinSDO.TEST_INDEX_NAME = lstResultItem[0].TEST_INDEX_NAME;
-                            hisSereServTeinSDO.IS_NO_EXECUTE = lstResultItem[0].IS_NO_EXECUTE;
-                            hisSereServTeinSDO.TEST_INDEX_UNIT_NAME = testIndFist.TEST_INDEX_UNIT_NAME;
-                            hisSereServTeinSDO.IS_IMPORTANT = testIndFist.IS_IMPORTANT;
-                            hisSereServTeinSDO.VALUE_STR = lstResultItem[0].VALUE;
-                            hisSereServTeinSDO.VALUE_HL = lstResultItem[0].VALUE;
-                            hisSereServTeinSDO.ID = lstResultItem[0].ID;
-                            hisSereServTeinSDO.NOTE = lstResultItem[0].DESCRIPTION;
+                            //hisSereServTeinSDO.MODIFIER = lstResultItem[0].MODIFIER;
+                            //hisSereServTeinSDO.TEST_INDEX_CODE = lstResultItem[0].TEST_INDEX_CODE;
+                            //hisSereServTeinSDO.TEST_INDEX_NAME = lstResultItem[0].TEST_INDEX_NAME;
+                            //hisSereServTeinSDO.IS_NO_EXECUTE = lstResultItem[0].IS_NO_EXECUTE;
+                            //hisSereServTeinSDO.TEST_INDEX_UNIT_NAME = testIndFist.TEST_INDEX_UNIT_NAME;
+                            //hisSereServTeinSDO.IS_IMPORTANT = testIndFist.IS_IMPORTANT;
+                            //hisSereServTeinSDO.VALUE_STR = lstResultItem[0].VALUE;
+                            //hisSereServTeinSDO.VALUE_HL = lstResultItem[0].VALUE;
+                            //hisSereServTeinSDO.ID = lstResultItem[0].ID;
+                            //hisSereServTeinSDO.NOTE = lstResultItem[0].DESCRIPTION;
+                            hisSereServTeinSDO.TEST_INDEX_CODE = null; 
+                            hisSereServTeinSDO.TEST_INDEX_NAME = null; 
+                            hisSereServTeinSDO.MODIFIER = null;
+                            hisSereServTeinSDO.IS_NO_EXECUTE = null;
+                            hisSereServTeinSDO.IS_IMPORTANT = null;
+                            hisSereServTeinSDO.NOTE = null;
 
                             // them con 
                             TestLisResultADO hisSereServTeinSDOChild = new TestLisResultADO();
@@ -861,6 +881,16 @@ namespace MPS.Processor.Mps000096
                             hisSereServTeinSDOChild.SERVICE_NUM_ORDER = hisSereServTeinSDO.SERVICE_NUM_ORDER;
                             hisSereServTeinSDOChild.SERVICE_ORDER = hisSereServTeinSDO.SERVICE_ORDER;
                             hisSereServTeinSDOChild.SERVICE_PARENT_ORDER = hisSereServTeinSDO.SERVICE_PARENT_ORDER;
+                            hisSereServTeinSDOChild.MODIFIER = hisSereServTeinSDO.MODIFIER;
+                            hisSereServTeinSDOChild.TEST_INDEX_CODE = hisSereServTeinSDO.TEST_INDEX_CODE;
+                            hisSereServTeinSDOChild.TEST_INDEX_NAME = hisSereServTeinSDO.TEST_INDEX_NAME;
+                            hisSereServTeinSDOChild.IS_NO_EXECUTE = hisSereServTeinSDO.IS_NO_EXECUTE;
+                            hisSereServTeinSDOChild.TEST_INDEX_UNIT_NAME = hisSereServTeinSDO.TEST_INDEX_UNIT_NAME;
+                            hisSereServTeinSDOChild.IS_IMPORTANT = hisSereServTeinSDO.IS_IMPORTANT;
+                            hisSereServTeinSDOChild.VALUE_STR = hisSereServTeinSDO.VALUE_STR;
+                            hisSereServTeinSDOChild.VALUE_HL = hisSereServTeinSDO.VALUE_HL;
+                            hisSereServTeinSDOChild.ID = hisSereServTeinSDO.ID;
+                            hisSereServTeinSDOChild.NOTE = hisSereServTeinSDO.DESCRIPTION;
 
                             this.ListTestChild.Add(hisSereServTeinSDOChild);
                         }
@@ -888,7 +918,11 @@ namespace MPS.Processor.Mps000096
                                 {
                                     hisSereServTein.NUM_ORDER = null;
                                 }
-
+                                if (testIndFist != null && rdo.ListTestService != null)
+                                {
+                                    var parentService = rdo.ListTestService.FirstOrDefault(o => testIndFist.TEST_SERVICE_TYPE_ID == o.ID);
+                                    hisSereServTein.SERVICE_PARENT_ID = parentService != null ? parentService.PARENT_ID ?? 0 : 0;
+                                }
                                 hisSereServTein.IS_HAS_ONE_CHILD = 0;
                                 hisSereServTein.CHILD_ID = ssTein.ID + "." + ssTein.ID;
                                 hisSereServTein.ID = ssTein.ID;
@@ -937,6 +971,7 @@ namespace MPS.Processor.Mps000096
                     if (ListTestParent != null && ListTestParent.Count > 0 && rdo.ListTestService != null)
                     {
                         var grServiceParent = ListTestParent.GroupBy(o => o.SERVICE_PARENT_ID).ToList();
+                        Inventec.Common.Logging.LogSystem.Debug("grServiceParent count: " + grServiceParent.Count);
                         foreach (var item in grServiceParent)
                         {
                             var parent = rdo.ListTestService.FirstOrDefault(o => item.Key == o.ID);
@@ -953,6 +988,7 @@ namespace MPS.Processor.Mps000096
                 }
 
                 var testIndexRangeAll = rdo.testIndexRangeAll;
+                Inventec.Common.Logging.LogSystem.Debug("testIndexRangeAll count: " + testIndexRangeAll.Count);
                 foreach (var hisSereServTeinSDO in this.ListTestChild)
                 {
                     V_HIS_TEST_INDEX_RANGE testIndexRange = new V_HIS_TEST_INDEX_RANGE();
@@ -979,17 +1015,21 @@ namespace MPS.Processor.Mps000096
                 this.ListTestParent = this.ListTestParent != null && this.ListTestParent.Count > 0
                     ? this.ListTestParent.OrderByDescending(o => o.SERVICE_PARENT_ORDER).ThenByDescending(o => o.SERVICE_ORDER).ThenBy(o => o.SERVICE_NUM_ORDER).ThenBy(p => p.SERVICE_NAME).ToList()
                     : this.ListTestParent;
-
-                this.ListTestParentService = this.ListTestParent.GroupBy(o => o.SERVICE_CODE).Select(s => s.First()).ToList();
+                Inventec.Common.Logging.LogSystem.Debug("ListTestParent count: " + ListTestParent.Count + ", Data: " + Inventec.Common.Logging.LogUtil.TraceData("", ListTestParent));
+                    this.ListTestParentService = this.ListTestChild.GroupBy(o => o.SERVICE_CODE).Select(s => s.First()).ToList();
+                
+                Inventec.Common.Logging.LogSystem.Debug("ListTestParentService count: " + ListTestParentService.Count + ", Data: " + Inventec.Common.Logging.LogUtil.TraceData("", ListTestParentService));
 
                 this.ListTestChild = this.ListTestChild != null && this.ListTestChild.Count > 0
                     ? this.ListTestChild.OrderByDescending(o => o.NUM_ORDER)
                     .ThenBy(p => p.TEST_INDEX_NAME).ToList()
                     : this.ListTestChild;
+                Inventec.Common.Logging.LogSystem.Debug("ListTestChild count: " + ListTestChild.Count + ", Data: " + Inventec.Common.Logging.LogUtil.TraceData("", ListTestChild));
 
                 this.ListServiceParent = ListServiceParent != null && ListServiceParent.Count() > 0
                     ? this.ListServiceParent.OrderByDescending(o => o.NUM_ORDER).ThenBy(p => p.SERVICE_NAME).ToList()
                     : this.ListServiceParent;
+                Inventec.Common.Logging.LogSystem.Debug("ListServiceParent count: " + ListServiceParent.Count + ", Data: " + Inventec.Common.Logging.LogUtil.TraceData("", ListServiceParent));
 
             }
             catch (Exception ex)

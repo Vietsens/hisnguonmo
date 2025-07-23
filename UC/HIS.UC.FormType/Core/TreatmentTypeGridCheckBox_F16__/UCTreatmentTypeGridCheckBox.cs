@@ -46,6 +46,11 @@ namespace HIS.UC.FormType.TreatmentTypeGridCheckBox
         private const string DISPLAY_NAME_MEMBER = "DISPLAYNAMEMEMBER";
         private const string PARENT_ID_MEMBER = "PARENTID";
         private const string PARENT_CODE_MEMBER = "PARENTCODE";
+        private const string REF_FILTER_1ID = "REFFILTER1ID";
+        private const string REF_FILTER_2ID = "REFFILTER2ID";
+        private const string REF_FILTER_3ID = "REFFILTER3ID";
+        private const string REF_FILTER_4ID = "REFFILTER4ID";
+        private const string REF_FILTER_5ID = "REFFILTER5ID";
         string FDO = null;
         string[] limitCodes = null;
         string valueSend = "";
@@ -164,17 +169,22 @@ namespace HIS.UC.FormType.TreatmentTypeGridCheckBox
                                 else
 
                                     tableName = "V_" + tableName;
-                                TableValid = IsTableInMOSEFModel(tableName);
+                                var TableValidCv = IsTableInMOSEFModel(tableName);
                                 backendType = typeof(HIS.Desktop.LocalStorage.BackendData.BackendDataWorker);
                                 method = backendType.GetMethod("IsExistsKey", System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.Public);
                                 if (method != null)
                                 {
-                                    genericMethod = method.MakeGenericMethod(TableValid);
-                                    isExists = genericMethod.Invoke(null, null);
+                                    if (TableValidCv != null)
+                                    {
+                                        genericMethod = method.MakeGenericMethod(TableValidCv);
+                                        isExists = genericMethod.Invoke(null, null);
+                                    }
+                                    else
+                                        isExists = false;
                                     if ((bool)isExists)
                                     {
-                                        var dicObject = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.GetAll()[TableValid];
-                                        result = ConvertDataTableToDataGet(AddListDataCache(TableValid, dicObject, valueMember, displayCodeMember, displayNameMember, parentId, parentCode));
+                                        var dicObject = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.GetAll()[TableValidCv];
+                                        result = ConvertDataTableToDataGet(AddListDataCache(TableValidCv, dicObject, valueMember, displayCodeMember, displayNameMember, parentId, parentCode));
                                     }
                                     else
                                     {
@@ -204,7 +214,7 @@ namespace HIS.UC.FormType.TreatmentTypeGridCheckBox
         }
         private List<DataTable> AddListDataCache(Type TableValid, object dicObject, string valueMember, string displayCodeMember, string displayNameMember, string parentId, string parentCode)
         {
-            List < DataTable > dataTables = new List<DataTable>();
+            List<DataTable> dataTables = new List<DataTable>();
             try
             {
                 DataTable table = new DataTable();
@@ -274,6 +284,16 @@ namespace HIS.UC.FormType.TreatmentTypeGridCheckBox
                             dataGett.PARENT = Convert.ToInt64(row[PARENT_ID_MEMBER]);
                         if (table.Columns.Contains(PARENT_CODE_MEMBER) && row[PARENT_CODE_MEMBER] != DBNull.Value)
                             dataGett.PARENT_CODE = row[PARENT_CODE_MEMBER].ToString();
+                        if (table.Columns.Contains(REF_FILTER_1ID) && row[REF_FILTER_1ID] != DBNull.Value)
+                            dataGett.REF_FILTER_1ID = row[REF_FILTER_1ID].ToString();
+                        if (table.Columns.Contains(REF_FILTER_2ID) && row[REF_FILTER_2ID] != DBNull.Value)
+                            dataGett.REF_FILTER_2ID = row[REF_FILTER_2ID].ToString();
+                        if (table.Columns.Contains(REF_FILTER_3ID) && row[REF_FILTER_3ID] != DBNull.Value)
+                            dataGett.REF_FILTER_3ID = row[REF_FILTER_3ID].ToString();
+                        if (table.Columns.Contains(REF_FILTER_4ID) && row[REF_FILTER_4ID] != DBNull.Value)
+                            dataGett.REF_FILTER_4ID = row[REF_FILTER_4ID].ToString();
+                        if (table.Columns.Contains(REF_FILTER_5ID) && row[REF_FILTER_5ID] != DBNull.Value)
+                            dataGett.REF_FILTER_5ID = row[REF_FILTER_5ID].ToString();
                         result.Add(dataGett);
                     }
                 }
@@ -495,28 +515,43 @@ namespace HIS.UC.FormType.TreatmentTypeGridCheckBox
                 {
                     selectedFilters.Add(rv);
                 }
-                if (delegateSelectDatas != null && PropetiesFilter != null && !string.IsNullOrEmpty(PropetiesFilter.ValueTransfer) && PropetiesFilter.IdReference > 0)
+                if (delegateSelectDatas != null && PropetiesFilter != null && PropetiesFilter.ValueTransfer != null && PropetiesFilter.ValueTransfer.Length > 0 && PropetiesFilter.IdReference > 0)
                 {
-                    string content = null;
-                    if (PropetiesFilter.ValueTransfer.ToUpper().Contains(VALUE_MEMBER))
+                    var arrGoc = PropetiesFilter.ValueTransfer.ToArray();
+                    if (PropetiesFilter.ValueTransfer.ToList().Exists(o => o.ToUpper() == VALUE_MEMBER))
                     {
-                        content = string.Join(",", selectedFilters.Select(o => o.ID));
+                        arrGoc = ReplaceValueMember(arrGoc, VALUE_MEMBER, string.Join(",", selectedFilters.Select(o => o.ID)));
                     }
-                    else if (PropetiesFilter.ValueTransfer.ToUpper().Contains(DISPLAY_CODE_MEMBER))
+                    if (PropetiesFilter.ValueTransfer.ToList().Exists(o => o.ToUpper() == DISPLAY_CODE_MEMBER))
                     {
-                        content = string.Join(",", selectedFilters.Select(o => o.CODE));
+                        arrGoc = ReplaceValueMember(arrGoc, DISPLAY_CODE_MEMBER, string.Join(",", selectedFilters.Select(o => o.CODE)));
                     }
-                    else if (PropetiesFilter.ValueTransfer.ToUpper().Contains(DISPLAY_NAME_MEMBER))
+                    if (PropetiesFilter.ValueTransfer.ToList().Exists(o => o.ToUpper() == DISPLAY_NAME_MEMBER))
                     {
-                        content = string.Join(",", selectedFilters.Select(o => o.NAME));
+                        arrGoc = ReplaceValueMember(arrGoc, DISPLAY_NAME_MEMBER, string.Join(",", selectedFilters.Select(o => o.NAME)));
                     }
-                    delegateSelectDatas(PropetiesFilter.IdReference, string.Join(",", selectedFilters.Select(o => o.ID)));
+                    delegateSelectDatas(PropetiesFilter.IdReference, arrGoc);
                 }
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
+        }
+        public string[] ReplaceValueMember(string[] arr, string member, string value)
+        {
+            if (arr == null || arr.Length == 0 || string.IsNullOrEmpty(member))
+                return arr;
+
+            var result = arr.ToArray();
+            for (int i = 0; i < result.Length; i++)
+            {
+                if (string.Equals(result[i].ToUpper(), member, StringComparison.OrdinalIgnoreCase))
+                {
+                    result[i] = value;
+                }
+            }
+            return result;
         }
         void SetTitle()
         {
@@ -674,7 +709,7 @@ namespace HIS.UC.FormType.TreatmentTypeGridCheckBox
                             FDO = FilterConfig.HisFilterTypes(this.JsonOutput);
                             ReSelectGridView(Ids);
                         }
-                            //gridViewTreatmentTypes.GridControl.DataSource = null;
+                        //gridViewTreatmentTypes.GridControl.DataSource = null;
 
                     }
 
@@ -693,24 +728,39 @@ namespace HIS.UC.FormType.TreatmentTypeGridCheckBox
             try
             {
                 var dataSource = this.dataSource;
-                if (data != null && PropetiesFilter != null && !string.IsNullOrEmpty(PropetiesFilter.ValueReceive) && data != null && !string.IsNullOrEmpty(data.ToString()))
+
+                if (data != null)
                 {
-                    var convertData = data.ToString().Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries);
-                    if (PropetiesFilter.ValueReceive.ToUpper().Contains(PARENT_ID_MEMBER))
+                    var arrStr = data as string[];
+                    if (arrStr != null && arrStr.Length > 0)
                     {
-                        dataSource = dataSource.Where(o => convertData.Contains(o.PARENT.ToString())).ToList();
-                    }
-                    else if (PropetiesFilter.ValueReceive.ToUpper().Contains(PARENT_CODE_MEMBER))
-                    {
-                        dataSource = dataSource.Where(o => convertData.Contains(o.PARENT_CODE)).ToList();
-                    }
-                    else if (PropetiesFilter.ValueReceive.ToUpper().Contains(DISPLAY_CODE_MEMBER))
-                    {
-                        dataSource = dataSource.Where(o => convertData.Contains(o.CODE)).ToList();
-                    }
-                    else if (PropetiesFilter.ValueReceive.ToUpper().Contains(DISPLAY_NAME_MEMBER))
-                    {
-                        dataSource = dataSource.Where(o => convertData.Contains(o.NAME)).ToList();
+                        var filteredData = dataSource;
+                        for (int i = 0; i < arrStr.Length; i++)
+                        {
+                            var filterValue = arrStr[i].ToString().Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries);
+                            if (filterValue != null && filterValue.Length > 0)
+                            {
+                                switch (i)
+                                {
+                                    case 0:
+                                        filteredData = filteredData.Where(o => o.REF_FILTER_1ID != null && filterValue.Contains(o.REF_FILTER_1ID)).ToList();
+                                        break;
+                                    case 1:
+                                        filteredData = filteredData.Where(o => o.REF_FILTER_2ID != null && filterValue.Contains(o.REF_FILTER_2ID)).ToList();
+                                        break;
+                                    case 2:
+                                        filteredData = filteredData.Where(o => o.REF_FILTER_3ID != null && filterValue.Contains(o.REF_FILTER_3ID)).ToList();
+                                        break;
+                                    case 3:
+                                        filteredData = filteredData.Where(o => o.REF_FILTER_4ID != null && filterValue.Contains(o.REF_FILTER_4ID)).ToList();
+                                        break;
+                                    case 4:
+                                        filteredData = filteredData.Where(o => o.REF_FILTER_5ID != null && filterValue.Contains(o.REF_FILTER_5ID)).ToList();
+                                        break;
+                                }
+                            }
+                        }
+                        dataSource = filteredData;
                     }
                     result = true;
                 }
