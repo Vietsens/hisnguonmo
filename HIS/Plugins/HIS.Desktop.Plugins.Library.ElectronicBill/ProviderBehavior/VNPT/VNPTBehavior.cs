@@ -191,12 +191,12 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.VNPT
                                     count++;
                                 }
 
-                                if (notShowTaxBreakdown)
-                                {
-                                    nvoiceDetail.VATAmount = "";
-                                    nvoiceDetail.VATRate = "-4";
-                                }
-                                else
+                                //if (notShowTaxBreakdown)
+                                //{
+                                //    nvoiceDetail.VATAmount = "";
+                                //    nvoiceDetail.VATRate = "-4";
+                                //}
+                                //else
                                 {
                                     nvoiceDetail.VATAmount = "";
                                     nvoiceDetail.VATRate = "-1";
@@ -628,7 +628,8 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.VNPT
                 if (notShowTaxBreakdown)
                 {
                     invoice.InvoiceDetail.VATAmount = "";
-                    invoice.InvoiceDetail.VATRate = "-4";
+                    //invoice.InvoiceDetail.VATRate = "-4";
+                    invoice.InvoiceDetail.VATRate = "-1";
                 }
                 else
                 {
@@ -648,12 +649,12 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.VNPT
                     pd.ProdQuantity = "0";
                     pd.Amount = String.Format("{0:0.####}", electronicBillDataInput.Discount.Value);
                     pd.Total = Math.Round(electronicBillDataInput.Discount.Value, 0).ToString();
-                    if (notShowTaxBreakdown)
-                    {
-                        pd.VATAmount = "";
-                        pd.VATRate = "-4";
-                    }
-                    else
+                    //if (notShowTaxBreakdown)
+                    //{
+                    //    pd.VATAmount = "";
+                    //    pd.VATRate = "-4";
+                    //}
+                    //else
                     {
                         pd.VATAmount = "";
                         pd.VATRate = "-1";
@@ -713,12 +714,12 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.VNPT
                         product.ProdUnit = !String.IsNullOrWhiteSpace(item.ProdUnit) ? item.ProdUnit : "";
                         product.ProdQuantity = (item.ProdQuantity ?? 0).ToString();
                         product.Amount = Math.Round(item.Amount, 0, MidpointRounding.AwayFromZero).ToString();// String.Format("{0:0.####}", item.Amount);
-                        if (notShowTaxBreakdown)
-                        {
-                            product.VATAmount = "";
-                            product.VATRate = "-4";
-                        }
-                        else
+                        //if (notShowTaxBreakdown)
+                        //{
+                        //    product.VATAmount = "";
+                        //    product.VATRate = "-4";
+                        //}
+                        //else
                         {
                             product.VATAmount = "";
                             product.VATRate = "-1";
@@ -750,7 +751,8 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.VNPT
                         {
                             product.ProdPrice = String.Format("{0:0.####}", Math.Round((item.ProdPrice ?? 0) + (item.ProdQuantity.HasValue && item.ProdQuantity.Value > 0 ? (item.TaxAmount ?? 0) / (item.ProdQuantity ?? 0) : 0), 4) + "");
                             product.VATAmount = "";
-                            product.VATRate = "-4";
+                            //product.VATRate = "-4";
+                            product.VATRate = "-1";
                         }
                         else
                         {
@@ -815,7 +817,8 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.VNPT
                     {
                         product.ProdPrice = String.Format("{0:0.####}", Math.Round((item.ProdPrice ?? 0) + (item.ProdQuantity.HasValue && item.ProdQuantity.Value > 0 ? (item.TaxAmount ?? 0) / (item.ProdQuantity ?? 0) : 0), 4) + "");
                         product.VATAmount = "";
-                        product.VATRate = "-4";
+                        //product.VATRate = "-4";
+                        product.VATRate = "-1";
                     }
                     else
                     {

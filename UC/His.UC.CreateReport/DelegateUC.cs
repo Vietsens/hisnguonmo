@@ -18,9 +18,11 @@
 using SAR.EFMODEL.DataModels;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace His.UC.CreateReport
 {
@@ -28,4 +30,6 @@ namespace His.UC.CreateReport
     public delegate SAR_REPORT ProcessCreateReportViewAway(object data);
 
     public delegate SAR_REPORT StatusReport(long Id);
+    public delegate void InitDesignReportTemplate(Size sizeNew);
+    public delegate void CalHeightDesignReportTemplate(UserControl frm);
 }

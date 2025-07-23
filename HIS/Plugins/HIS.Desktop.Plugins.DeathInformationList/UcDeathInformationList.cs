@@ -16,48 +16,52 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Drawing;
 using System.Data;
+using System.Diagnostics;
+using System.Drawing;
+using System.IO;
 using System.Linq;
+using System.Resources;
+using System.Security.Cryptography;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using DevExpress.XtraEditors;
+using DevExpress.XtraGrid.Views.Base;
+using EMR.SDO;
+using EMR.WCF.DCO;
 using HIS.Desktop.ADO;
 using HIS.Desktop.ApiConsumer;
 using HIS.Desktop.Common;
 using HIS.Desktop.Controls.Session;
+using HIS.Desktop.LocalStorage.BackendData;
 using HIS.Desktop.LocalStorage.ConfigApplication;
 using HIS.Desktop.LocalStorage.ConfigSystem;
-using HIS.Desktop.LocalStorage.LocalData;
-using HIS.Desktop.Utility;
-using MOS.EFMODEL.DataModels;
-using DevExpress.XtraGrid.Views.Base;
-using System.Collections;
-using Inventec.Desktop.Common.Message;
-using Inventec.Core;
-using MOS.Filter;
-using Inventec.Common.Adapter;
-using Inventec.Desktop.Common.LanguageManager;
-using HIS.Desktop.Utilities.Extensions;
-using DevExpress.XtraEditors;
-using MOS.SDO;
-using System.Security.Cryptography.X509Certificates;
-using System.Security.Cryptography;
-using MOS.KskSignData;
-using HIS.Desktop.LocalStorage.BackendData;
-using System.Resources;
-using HIS.Desktop.Plugins.DeathInformationList.Resources;
 using HIS.Desktop.LocalStorage.HisConfig;
-using System.IO;
-using System.Diagnostics;
-using System.Threading;
-using Inventec.Common.SignLibrary.ServiceSign;
-using EMR.WCF.DCO;
-using Newtonsoft.Json;
+using HIS.Desktop.LocalStorage.LocalData;
+using HIS.Desktop.Plugins.DeathInformationList.Popup;
+using HIS.Desktop.Plugins.DeathInformationList.Resources;
+using HIS.Desktop.Utilities.Extensions;
+using HIS.Desktop.Utility;
+using Inventec.Common.Adapter;
+using Inventec.Common.Logging;
 using Inventec.Common.Mapper; 
-
+using Inventec.Common.SignLibrary.ServiceSign;
+using Inventec.Core;
+using Inventec.Desktop.Common.LanguageManager;
+using Inventec.Desktop.Common.Message;
+using MOS.EFMODEL.DataModels;
+using MOS.Filter;
+using MOS.SDO;
+using HIS.Bhyt.Hssk;
+using Newtonsoft.Json;
+using MOS.KskSignData;
+using HIS.UC.SettingSignInfo;
 namespace HIS.Desktop.Plugins.DeathInformationList
 {
     public partial class UcDeathInformationList : UserControlBase
@@ -76,7 +80,6 @@ namespace HIS.Desktop.Plugins.DeathInformationList
         private HIS.Desktop.Library.CacheClient.ControlStateWorker controlStateWorker;
         private List<HIS.Desktop.Library.CacheClient.ControlStateRDO> currentControlStateRDO;
         private X509Certificate2 certificate;
-        private string SerialNumber;
         private List<HIS_BRANCH> lstBranch { get; set; }
         #endregion
         #region ConstructorLoad
@@ -448,9 +451,8 @@ namespace HIS.Desktop.Plugins.DeathInformationList
                     {
                         if (item.KEY == chkSignFileCertUtil.Name)
                         {
-                            SerialNumber = item.VALUE;
-
-                            chkSignFileCertUtil.Checked = !String.IsNullOrWhiteSpace(SerialNumber);
+                            SettingSignADO = Newtonsoft.Json.JsonConvert.DeserializeObject<SettingSignADO>(item.VALUE);
+                            chkSignFileCertUtil.Checked = SettingSignADO != null && !string.IsNullOrEmpty(SettingSignADO.SerialNumber) ? true : false;
                         }
                         else if (item.KEY == chkTreatmentResult.Name)
                         {
@@ -1093,6 +1095,8 @@ namespace HIS.Desktop.Plugins.DeathInformationList
             }
             return valid;
         }
+        SettingSignADO SettingSignADO { get; set; }
+
         private void chkSignFileCertUtil_CheckedChanged(object sender, EventArgs e)
         {
             try
@@ -1108,7 +1112,6 @@ namespace HIS.Desktop.Plugins.DeathInformationList
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
-
         private void btnDongBo_Click(object sender, EventArgs e)
         {
             try
@@ -1120,7 +1123,7 @@ namespace HIS.Desktop.Plugins.DeathInformationList
                 var rowHandles = gridView1.GetSelectedRows();
                 if (rowHandles != null && rowHandles.Count() > 0)
                 {
-                    if (chkSignFileCertUtil.Checked)
+                    if (chkSignFileCertUtil.Checked && SettingSignADO != null)
                     {
                         var ConnectionInfo = HisConfigs.Get<string>("MOS.HIS_DEATH.CONNECTION_INFO");
                         if (string.IsNullOrEmpty(ConnectionInfo))
@@ -1129,9 +1132,9 @@ namespace HIS.Desktop.Plugins.DeathInformationList
                             XtraMessageBox.Show(ResourceMessage.SaiDiaChi, "Thông báo", MessageBoxButtons.OK);
                             return;
                         }
-                        if (certificate == null && !String.IsNullOrWhiteSpace(SerialNumber))
+                        if (SettingSignADO.IsHsm==false && certificate == null && !String.IsNullOrWhiteSpace(SettingSignADO.SerialNumber))
                         {
-                            certificate = Inventec.Common.SignFile.CertUtil.GetBySerial(SerialNumber, requirePrivateKey: true, validOnly: false);
+                            certificate = Inventec.Common.SignFile.CertUtil.GetBySerial(SettingSignADO.SerialNumber, requirePrivateKey: true, validOnly: false);
                             if (certificate == null)
                             {
                                 chkSignFileCertUtil.Checked = false;
@@ -1177,9 +1180,10 @@ namespace HIS.Desktop.Plugins.DeathInformationList
                                             sdo.PatientData = GetPatient(row.PATIENT_ID);
                                             sdo.DeathData = GetIllnessInfo(row.ID);
                                             sdo.TreatmentData = row;
-                                            if (certificate != null)
+                                            if (SettingSignADO.IsHsm == false && certificate != null)
                                             {
-                                                string MessageError = null;
+                                                string MessageError = null;                                          
+
                                                 sdo.FileBase64Str = data.ProcessDeathInfo(lstBranch.FirstOrDefault(o => o.ID == row.BRANCH_ID), sdo.PatientData, row, sdo.DeathData, certificate, ref MessageError);
                                                 if (!String.IsNullOrEmpty(MessageError))
                                                 {
@@ -1188,6 +1192,22 @@ namespace HIS.Desktop.Plugins.DeathInformationList
                                                 }
                                                 WaitingManager.Show();
                                             }
+
+                                            if (SettingSignADO.IsHsm == true)
+                                            {
+                                                string message = "";
+                                                SignXmlBhytSDO signXML = new SignXmlBhytSDO();
+                                                signXML.XmlBase64 = new HIS.Bhyt.Hssk.SyncDataProcess(url, user, pass).Base64XmlGBT(lstBranch.FirstOrDefault(o => o.ID == row.BRANCH_ID), sdo.PatientData, sdo.TreatmentData, sdo.DeathData,ref message);
+                                                signXML.ConfigData = new EMR.SDO.XmlConfigDataSDO() { HsmSerialNumber = SettingSignADO.SerialNumber, HsmType = SettingSignADO.Id, HsmUserCode = SettingSignADO.Name, Password = SettingSignADO.Password, SecretKey = SettingSignADO.SercetKey, IdentityNumber = SettingSignADO.CccdNumber };
+                                                signXML.TagStoreSignatureValue = "CHUKYDONVI";
+
+                                                CommonParam paramSign = new CommonParam();
+
+                                                Inventec.Common.Logging.LogSystem.Info("patientUpdateSdo: " + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => signXML), signXML));
+                                                var emrSignBase64 = new BackendAdapter(paramSign).Post<string>("api/EmrSign/SignXmlBhyt", ApiConsumers.EmrConsumer, signXML, SessionManager.ActionLostToken, paramSign);
+                                                sdo.FileBase64Str = emrSignBase64;
+                                            }
+
                                             listDeathSyncSDO.Add(sdo);
                                         }
                                     }
@@ -1276,28 +1296,40 @@ namespace HIS.Desktop.Plugins.DeathInformationList
             }
             return obj;
         }
-
+       
         private void timer1_Tick(object sender, EventArgs e)
         {
             try
             {
                 timer1.Stop();
-                SerialNumber = null;
+                
                 if (chkSignFileCertUtil.Checked)
                 {
-                    if (VerifyServiceSignProcessorIsRunning())
-                    {
-                        WcfSignDCO wcfSignDCO = new WcfSignDCO();
-                        wcfSignDCO.HwndParent = this.ParentForm.Handle;
-                        string jsonData = JsonConvert.SerializeObject(wcfSignDCO);
-                        SignProcessorClient signProcessorClient = new SignProcessorClient();
-                        var wcfSignResultDCO = signProcessorClient.GetSerialNumber(jsonData);
-                        if (wcfSignResultDCO != null)
+                    //if (VerifyServiceSignProcessorIsRunning())
+                    //{
+                        frmSetting frm = new frmSetting(SettingSignADO, (result) =>
                         {
-                            SerialNumber = wcfSignResultDCO.OutputFile;
-                        }
-                    }
-                    if (string.IsNullOrEmpty(SerialNumber))
+                            SettingSignADO = (SettingSignADO)result;
+                        });
+                        frm.ShowDialog();
+                        if (SettingSignADO == null || string.IsNullOrEmpty(SettingSignADO.SerialNumber))
+                            chkSignFileCertUtil.Checked = false;
+                        //SettingSignADO.SerialNumber = null;
+                        //WcfSignDCO wcfSignDCO = new WcfSignDCO();
+                        //wcfSignDCO.HwndParent = this.ParentForm.Handle;
+                        //string jsonData = JsonConvert.SerializeObject(wcfSignDCO);
+                        //LogSystem.Debug($"Selected value changed to: {jsonData}");
+
+                        //SignProcessorClient signProcessorClient = new SignProcessorClient();
+                        //var wcfSignResultDCO = signProcessorClient.GetSerialNumber(jsonData);
+                        //if (wcfSignResultDCO != null)
+                        //{
+                        //    SettingSignADO.SerialNumber = wcfSignResultDCO.OutputFile;
+                        //}
+                        //LogSystem.Debug($"SerialNumber : {SettingSignADO.SerialNumber}");
+
+                    //}
+                    if (string.IsNullOrEmpty(SettingSignADO.SerialNumber))
                     {
                         chkSignFileCertUtil.Checked = false;
                         XtraMessageBox.Show(ResourceMessage.KhongLayDuocChungThu2, "Thông báo");
@@ -1307,13 +1339,13 @@ namespace HIS.Desktop.Plugins.DeathInformationList
                 Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => csAddOrUpdate), csAddOrUpdate));
                 if (csAddOrUpdate != null)
                 {
-                    csAddOrUpdate.VALUE = SerialNumber;
+                    csAddOrUpdate.VALUE = Newtonsoft.Json.JsonConvert.SerializeObject(SettingSignADO);
                 }
                 else
                 {
                     csAddOrUpdate = new HIS.Desktop.Library.CacheClient.ControlStateRDO();
                     csAddOrUpdate.KEY = chkSignFileCertUtil.Name;
-                    csAddOrUpdate.VALUE = SerialNumber;
+                    csAddOrUpdate.VALUE = Newtonsoft.Json.JsonConvert.SerializeObject(SettingSignADO);
                     csAddOrUpdate.MODULE_LINK = this.currentModule.ModuleLink;
                     if (this.currentControlStateRDO == null)
                         this.currentControlStateRDO = new List<HIS.Desktop.Library.CacheClient.ControlStateRDO>();
@@ -1336,7 +1368,7 @@ namespace HIS.Desktop.Plugins.DeathInformationList
                     return;
                 }
                 HIS.Desktop.Library.CacheClient.ControlStateRDO csAddOrUpdate = (this.currentControlStateRDO != null && this.currentControlStateRDO.Count > 0) ? this.currentControlStateRDO.Where(o => o.KEY == chkTreatmentResult.Name && o.MODULE_LINK == this.currentModule.ModuleLink).FirstOrDefault() : null;
-                if (csAddOrUpdate != null)
+                if (csAddOrUpdate != null )
                 {
                     csAddOrUpdate.VALUE = chkTreatmentResult.Checked ? "1" : "0";
                 }

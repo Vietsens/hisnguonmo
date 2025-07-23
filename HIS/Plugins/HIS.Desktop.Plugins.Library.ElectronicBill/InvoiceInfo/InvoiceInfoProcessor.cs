@@ -54,8 +54,8 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.InvoiceInfo
                     result.Note = dataInput.Transaction.DESCRIPTION;
                     result.TransactionTime = dataInput.Transaction.TRANSACTION_TIME;
                     result.BuyerEmail = dataInput.Transaction.BUYER_EMAIL;
-                    result.BuyerIdentityNumber = dataInput.Transaction.BUYER_IDENTITY_NUMBER;
-                    result.BuyerIdentityType = dataInput.Transaction.BUYER_IDENTITY_TYPE + "";
+                    //result.BuyerIdentityNumber = dataInput.Transaction.BUYER_IDENTITY_NUMBER;
+                    //result.BuyerIdentityType = dataInput.Transaction.BUYER_IDENTITY_TYPE + "";
 
                     patientCode = dataInput.Transaction.TDL_PATIENT_CODE;
                     treatmentCode = dataInput.Transaction.TDL_TREATMENT_CODE;
@@ -190,24 +190,24 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.InvoiceInfo
                     if (String.IsNullOrWhiteSpace(result.BuyerCCCD))
                         result.BuyerCCCD = dataInput.Treatment.TDL_PATIENT_CMND_NUMBER;
 
-                    if (String.IsNullOrWhiteSpace(result.BuyerIdentityNumber))
-                    {
-                        if (!String.IsNullOrWhiteSpace(dataInput.Treatment.TDL_PATIENT_CCCD_NUMBER))
-                        {
-                            result.BuyerIdentityNumber = dataInput.Treatment.TDL_PATIENT_CCCD_NUMBER;
-                            result.BuyerIdentityType = "1"; // 1 for CCCD
-                        }
-                        else if (!String.IsNullOrWhiteSpace(dataInput.Treatment.TDL_PATIENT_CMND_NUMBER))
-                        {
-                            result.BuyerIdentityNumber = dataInput.Treatment.TDL_PATIENT_CCCD_NUMBER;
-                            result.BuyerIdentityType = "2"; // 2 for CMND
-                        }
-                        else if (!String.IsNullOrWhiteSpace(dataInput.Treatment.TDL_PATIENT_PASSPORT_NUMBER))
-                        {
-                            result.BuyerIdentityNumber = dataInput.Treatment.TDL_PATIENT_PASSPORT_NUMBER;
-                            result.BuyerIdentityType = "3"; // 3 for Passport
-                        }
-                    }
+                    //if (String.IsNullOrWhiteSpace(result.BuyerIdentityNumber))
+                    //{
+                    //    if (!String.IsNullOrWhiteSpace(dataInput.Treatment.TDL_PATIENT_CCCD_NUMBER))
+                    //    {
+                    //        result.BuyerIdentityNumber = dataInput.Treatment.TDL_PATIENT_CCCD_NUMBER;
+                    //        result.BuyerIdentityType = "1"; // 1 for CCCD
+                    //    }
+                    //    else if (!String.IsNullOrWhiteSpace(dataInput.Treatment.TDL_PATIENT_CMND_NUMBER))
+                    //    {
+                    //        result.BuyerIdentityNumber = dataInput.Treatment.TDL_PATIENT_CCCD_NUMBER;
+                    //        result.BuyerIdentityType = "2"; // 2 for CMND
+                    //    }
+                    //    else if (!String.IsNullOrWhiteSpace(dataInput.Treatment.TDL_PATIENT_PASSPORT_NUMBER))
+                    //    {
+                    //        result.BuyerIdentityNumber = dataInput.Treatment.TDL_PATIENT_PASSPORT_NUMBER;
+                    //        result.BuyerIdentityType = "3"; // 3 for Passport
+                    //    }
+                    //}
                 }
 
                 if (!String.IsNullOrWhiteSpace(result.BuyerTaxCode))
@@ -232,8 +232,8 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.InvoiceInfo
                     result.PaymentMethod = result.PaymentMethod.Trim();
                 if (!String.IsNullOrWhiteSpace(result.BuyerCCCD))
                     result.BuyerCCCD = result.BuyerCCCD.Trim();
-                if (!String.IsNullOrWhiteSpace(result.BuyerIdentityNumber))
-                    result.BuyerIdentityNumber = result.BuyerIdentityNumber.Trim();
+                //if (!String.IsNullOrWhiteSpace(result.BuyerIdentityNumber))
+                //    result.BuyerIdentityNumber = result.BuyerIdentityNumber.Trim();
 
                 if (Config.HisConfigCFG.BuyerCodeOption == "1")
                 {

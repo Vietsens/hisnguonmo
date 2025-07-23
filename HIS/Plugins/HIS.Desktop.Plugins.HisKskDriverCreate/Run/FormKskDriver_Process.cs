@@ -16,6 +16,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 using DevExpress.XtraEditors;
+using HIS.Desktop.ADO;
 using HIS.Desktop.ApiConsumer;
 using HIS.Desktop.Controls.Session;
 using HIS.Desktop.LocalStorage.BackendData;
@@ -32,6 +33,7 @@ using MOS.EFMODEL.DataModels;
 using MOS.Filter;
 using MOS.KskSignData;
 using MOS.SDO;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -247,9 +249,11 @@ namespace HIS.Desktop.Plugins.HisKskDriverCreate.Run
                         }
                         if (item.KEY == chkSignFileCertUtil.Name)
                         {
-                            SerialNumber = item.VALUE;
-
-                            chkSignFileCertUtil.Checked = !String.IsNullOrWhiteSpace(SerialNumber);
+                            SettingSignADO = Newtonsoft.Json.JsonConvert.DeserializeObject<SettingSignADO>(item.VALUE);
+                            if (SettingSignADO != null)
+                            {
+                                chkSignFileCertUtil.Checked = SettingSignADO != null && !string.IsNullOrEmpty(SettingSignADO.SerialNumber) ? true : false;
+                            }
                         }
                     }
                 }
@@ -646,18 +650,21 @@ namespace HIS.Desktop.Plugins.HisKskDriverCreate.Run
                 if (rs != null)
                 {
                     success = true;
-                    if (chkSignFileCertUtil.Checked)
+                    if (chkSignFileCertUtil.Checked && this.SettingSignADO != null)
                     {
                         List<KskDriverSyncSDO> listKskDriveSync = new List<KskDriverSyncSDO>();
-                        if (certificate == null && !String.IsNullOrWhiteSpace(SerialNumber))
+                        if (this.SettingSignADO != null && !this.SettingSignADO.IsHsm)
                         {
-                            certificate = Inventec.Common.SignFile.CertUtil.GetBySerial(SerialNumber, requirePrivateKey: true, validOnly: false);
-                            if (certificate == null)
+                            if (this.certificate == null && !String.IsNullOrWhiteSpace(this.SettingSignADO.SerialNumber))
                             {
-                                chkSignFileCertUtil.Checked = false;
-                                if (MessageBox.Show(Resources.ResourceMessage.KhongLayDuocThongTinChungThuBanCoMuonTiepTuc, ResourceMessage.ThongBao, MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
+                                this.certificate = Inventec.Common.SignFile.CertUtil.GetBySerial(this.SettingSignADO.SerialNumber, requirePrivateKey: true, validOnly: false);
+                                if (this.certificate == null)
                                 {
-                                    return false;
+                                    chkSignFileCertUtil.Checked = false;
+                                    if (MessageBox.Show(Resources.ResourceMessage.KhongLayDuocThongTinChungThuBanCoMuonTiepTuc, ResourceMessage.ThongBao, MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
+                                    {
+                                        return false;
+                                    }
                                 }
                             }
                         }
@@ -670,7 +677,27 @@ namespace HIS.Desktop.Plugins.HisKskDriverCreate.Run
                             KskDataProcess data = new KskDataProcess();
                             KskDriverSyncSDO kskSdo = new KskDriverSyncSDO();
                             kskSdo.KskDriveId = driver.ID;
-                            kskSdo.SyncData = data.MakeData(driver, certificate);
+                            kskSdo.SyncData = data.MakeData(driver, this.SettingSignADO.IsHsm ? null : this.certificate);
+                            if (this.SettingSignADO.IsHsm)
+                            {
+                                var signInput = new EMR.SDO.SignXmlBhytSDO
+                                {
+                                    XmlBase64 = new MOS.KskSignData.KskDataProcess().Base64XmlKsk(driver),
+                                    TagStoreSignatureValue = "",
+                                    ConfigData = new EMR.SDO.XmlConfigDataSDO()
+                                    {
+                                        HsmType = this.SettingSignADO.Id,
+                                        HsmUserCode = this.SettingSignADO.Name,
+                                        Password = this.SettingSignADO.Password,
+                                        SecretKey = this.SettingSignADO.SercetKey,
+                                        IdentityNumber = this.SettingSignADO.CccdNumber,
+                                        HsmSerialNumber = this.SettingSignADO.SerialNumber
+                                    }
+                                };
+                                //Inventec.Common.Logging.LogSystem.Info("EMR.SDO.SignXmlBhytSDO:" + Environment.NewLine + Newtonsoft.Json.JsonConvert.SerializeObject(signInput));
+                                string signedXmlBase64 = new BackendAdapter(param).Post<string>("api/EmrSign/SignXmlBhyt", ApiConsumers.EmrConsumer, signInput, param);
+                                kskSdo.SyncData.SIGNDATA = signedXmlBase64;
+                            }
                             listKskDriveSync.Add(kskSdo);
                             if (listKskDriveSync != null && listKskDriveSync.Count > 0)
                             {
@@ -685,6 +712,7 @@ namespace HIS.Desktop.Plugins.HisKskDriverCreate.Run
             }
             catch (Exception ex)
             {
+                WaitingManager.Hide();
                 Inventec.Common.Logging.LogSystem.Error(ex);
                 return success;
             }

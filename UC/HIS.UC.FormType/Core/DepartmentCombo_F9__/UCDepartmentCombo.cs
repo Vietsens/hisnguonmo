@@ -15,56 +15,401 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+//using System.Windows.Forms;
+using DevExpress.XtraEditors;
+using DevExpress.XtraEditors.Controls;
+using DevExpress.XtraEditors.ViewInfo;
+using DevExpress.XtraGrid.Columns;
+using DevExpress.XtraTreeList.Data;
+using His.UC.LibraryMessage;
+using HIS.UC.FormType.HisMultiGetString;
+using HIS.UC.FormType.Loader;
+using Inventec.Common.Logging;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Drawing;
 using System.Data;
-using System.Text;
+using System.Drawing;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
-//using System.Windows.Forms;
-using DevExpress.XtraEditors;
-using Inventec.Common.Logging;
-using HIS.UC.FormType.Loader;
-using DevExpress.XtraEditors.ViewInfo;
-using DevExpress.XtraGrid.Columns;
-using His.UC.LibraryMessage;
-using HIS.UC.FormType.HisMultiGetString;
-using DevExpress.XtraEditors.Controls;
 
 namespace HIS.UC.FormType.DepartmentCombo
 {
     public partial class UCDepartmentCombo : DevExpress.XtraEditors.XtraUserControl
     {
+        private const string VALUE_MEMBER = "VALUEMEMBER";
+        private const string DISPLAY_CODE_MEMBER = "DISPLAYCODEMEMBER";
+        private const string DISPLAY_NAME_MEMBER = "DISPLAYNAMEMEMBER";
+        private const string PARENT_ID_MEMBER = "PARENTID";
+        private const string PARENT_CODE_MEMBER = "PARENTCODE";
         DepartmentComboFDO generateRDO;
         SAR.EFMODEL.DataModels.V_SAR_RETY_FOFI config;
         int positionHandleControl = -1;
         string FDO = null;
         string[] limitCodes = null;
         SAR.EFMODEL.DataModels.V_SAR_REPORT report;
+        DynamicFilterRDO DynamicFilter;
+        PropetiesRDO PropetiesFilter;
         string Output0 = "";
         string JsonOutput = "";
-        public UCDepartmentCombo(SAR.EFMODEL.DataModels.V_SAR_RETY_FOFI config, object paramRDO)
+        HIS.Desktop.Common.DelegateSelectDatas delegateSelectDatas;
+        public UCDepartmentCombo(SAR.EFMODEL.DataModels.V_SAR_RETY_FOFI config, object paramRDO, HIS.Desktop.Common.DelegateSelectDatas delegateSelectDatas)
         {
             try
             {
                 InitializeComponent();
                 //FormTypeConfig.ReportHight += 25;
 
+                this.config = config;
                 if (paramRDO is GenerateRDO)
                 {
                     this.report = (paramRDO as GenerateRDO).Report;
+                    this.DynamicFilter = (paramRDO as GenerateRDO).DynamicFilter;
+                    if (this.DynamicFilter != null)
+                    {
+                        this.config = this.DynamicFilter.Fofi;
+                    }
                 }
-                this.config = config;
-                Init();
+                this.delegateSelectDatas = delegateSelectDatas;
+                cboDepartment.Properties.Buttons[1].Visible = true;
+                if (this.DynamicFilter != null)
+                {
+                    InitPropeties();
+                }
+                else
+                    Init();
             }
             catch (Exception ex)
             {
                 LogSystem.Warn(ex);
             }
         }
+        private void InitPropeties()
+        {
+            try
+            {
+                FormTypeConfig.ReportTypeCode = this.config.REPORT_TYPE_CODE;
+                JsonOutput = this.config.JSON_OUTPUT;
+                PropetiesFilter = DynamicFilter.Propeties;
+                limitCodes = PropetiesFilter != null && !string.IsNullOrEmpty(PropetiesFilter.LimitCode) ? PropetiesFilter.LimitCode.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries) : null;
+                Output0 = PropetiesFilter != null ? (PropetiesFilter.DefaultValue as string) : null;
+                cboDepartment.Properties.DataSource = ProcessDataSource();
+                cboDepartment.Properties.DisplayMember = "NAME";
 
+                var listData = cboDepartment.Properties.DataSource as List<DataGet>;
+                DataGet defaultValue = null;
+                if (!string.IsNullOrWhiteSpace(Output0) && listData != null)
+                {
+                    defaultValue = listData.FirstOrDefault(o => o.CODE == Output0);
+                }
+                string[] Filters = null;
+                FilterConfig.GetListfilter(this.config.JSON_OUTPUT, ref Filters);
+                if (!(Filters != null && Filters.Length > 0 && FilterConfig.IsCodeField(Filters[0])))
+                {
+                    cboDepartment.Properties.ValueMember = "ID";
+                    if (defaultValue != null && defaultValue.ID > 0)
+                    {
+                        cboDepartment.EditValue = defaultValue.ID;
+                        txtDepartmentCode.Text = defaultValue.CODE;
+                    }
+                }
+                else
+                {
+                    cboDepartment.Properties.ValueMember = "CODE";
+                    if (defaultValue != null)
+                    {
+                        cboDepartment.EditValue = defaultValue.CODE;
+                        txtDepartmentCode.Text = defaultValue.CODE;
+                    }
+                }
+                cboDepartment.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.Standard;
+                cboDepartment.Properties.PopupFilterMode = DevExpress.XtraEditors.PopupFilterMode.Contains;
+                cboDepartment.Properties.ImmediatePopup = true;
+                cboDepartment.ForceInitialize();
+                cboDepartment.Properties.View.Columns.Clear();
+                cboDepartment.Properties.View.OptionsView.ShowColumnHeaders = false;
+
+                GridColumn aColumnCode = cboDepartment.Properties.View.Columns.AddField("CODE");
+                aColumnCode.Caption = "Mã";
+                aColumnCode.Visible = false;
+                aColumnCode.VisibleIndex = 1;
+                aColumnCode.Width = 50;
+
+                GridColumn aColumnName = cboDepartment.Properties.View.Columns.AddField("NAME");
+                aColumnName.Caption = "Tên";
+                aColumnName.Visible = false;
+                aColumnName.VisibleIndex = 2;
+                aColumnName.Width = 100;
+                aColumnCode.Visible = true;
+                aColumnName.Visible = true;
+                if (this.config != null && this.config.IS_REQUIRE == IMSys.DbConfig.SAR_RS.COMMON.IS_ACTIVE__TRUE)
+                {
+                    Validation();
+                    lciTitleName.AppearanceItemCaption.ForeColor = Color.Maroon;
+                }
+
+                if (defaultValue == null && cboDepartment.Properties.DataSource != null && (cboDepartment.Properties.DataSource as List<DataGet>).Count > 0)
+                {
+                    if (listData.Count == 1)
+                    {
+                        txtDepartmentCode.Text = listData.First().CODE;
+                        cboDepartment.EditValue = listData.First().ID;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+        private List<DataGet> ProcessDataSource()
+        {
+            List<DataGet> result = new List<DataGet>();
+
+            try
+            {
+                if (DynamicFilter.DATA_TABLE != null && DynamicFilter.DATA_TABLE.Count > 0)
+                {
+                    result = ConvertDataTableToDataGet(DynamicFilter.DATA_TABLE);
+                }
+                else if (DynamicFilter.DATA_CACHE != null && DynamicFilter.DATA_CACHE.Length > 0)
+                {
+                    string tableName, valueMember, displayCodeMember, displayNameMember, parentId, parentCode;
+                    ParseTableConfigString(DynamicFilter.DATA_CACHE, out tableName, out valueMember, out displayCodeMember, out displayNameMember, out parentId, out parentCode);
+                    Type TableValid = IsTableInMOSEFModel(tableName);
+                    if (TableValid != null)
+                    {
+                        Type backendType = typeof(HIS.Desktop.LocalStorage.BackendData.BackendDataWorker);
+                        var method = backendType.GetMethod("IsExistsKey", System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.Public);
+                        if (method != null)
+                        {
+                            var genericMethod = method.MakeGenericMethod(TableValid);
+                            var isExists = genericMethod.Invoke(null, null);
+                            if ((bool)isExists)
+                            {
+                                var dicObject = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.GetAll()[TableValid];
+                                result = ConvertDataTableToDataGet(AddListDataCache(TableValid, dicObject, valueMember, displayCodeMember, displayNameMember, parentId, parentCode));
+                            }
+                            else
+                            {
+                                //Trường hợp không sử dụng bảng, kiểm tra có sử dụng V_ không
+                                if (tableName.ToUpper().StartsWith("V_"))
+                                    tableName = tableName.Replace("V_", "");
+                                else
+
+                                    tableName = "V_" + tableName;
+                                TableValid = IsTableInMOSEFModel(tableName);
+                                backendType = typeof(HIS.Desktop.LocalStorage.BackendData.BackendDataWorker);
+                                method = backendType.GetMethod("IsExistsKey", System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.Public);
+                                if (method != null)
+                                {
+                                    genericMethod = method.MakeGenericMethod(TableValid);
+                                    isExists = genericMethod.Invoke(null, null);
+                                    if ((bool)isExists)
+                                    {
+                                        var dicObject = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.GetAll()[TableValid];
+                                        result = ConvertDataTableToDataGet(AddListDataCache(TableValid, dicObject, valueMember, displayCodeMember, displayNameMember, parentId, parentCode));
+                                    }
+                                    else
+                                    {
+                                        var methodGet = typeof(HIS.Desktop.LocalStorage.BackendData.BackendDataWorker)
+                                    .GetMethods(System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.Public)
+                                    .FirstOrDefault(m => m.Name == "Get" && m.IsGenericMethod && m.GetParameters().Length == 0);
+                                        object dicObject = null;
+                                        if (methodGet != null)
+                                        {
+                                            var genericGet = methodGet.MakeGenericMethod(TableValid);
+                                            dicObject = genericGet.Invoke(null, null);
+                                            result = ConvertDataTableToDataGet(AddListDataCache(TableValid, dicObject, valueMember, displayCodeMember, displayNameMember, parentId, parentCode));
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+
+            return result;
+        }
+        private List<DataTable> AddListDataCache(Type TableValid, object dicObject, string valueMember, string displayCodeMember, string displayNameMember, string parentId, string parentCode)
+        {
+            List<DataTable> dataTables = new List<DataTable>();
+            try
+            {
+                DataTable table = new DataTable();
+                if (!string.IsNullOrEmpty(valueMember)) table.Columns.Add(VALUE_MEMBER, typeof(object));
+                if (!string.IsNullOrEmpty(displayCodeMember)) table.Columns.Add(DISPLAY_CODE_MEMBER, typeof(object));
+                if (!string.IsNullOrEmpty(displayNameMember)) table.Columns.Add(DISPLAY_NAME_MEMBER, typeof(object));
+                if (!string.IsNullOrEmpty(parentId)) table.Columns.Add(PARENT_ID_MEMBER, typeof(object));
+                if (!string.IsNullOrEmpty(parentCode)) table.Columns.Add(PARENT_CODE_MEMBER, typeof(object));
+
+                var props = TableValid.GetProperties(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance);
+                foreach (var item in (IEnumerable<object>)dicObject)
+                {
+                    DataRow row = table.NewRow();
+                    if (!string.IsNullOrEmpty(valueMember))
+                    {
+                        var prop = props.FirstOrDefault(p => p.Name == valueMember);
+                        row[VALUE_MEMBER] = prop != null ? prop.GetValue(item) ?? DBNull.Value : DBNull.Value;
+                    }
+                    if (!string.IsNullOrEmpty(displayCodeMember))
+                    {
+                        var prop = props.FirstOrDefault(p => p.Name == displayCodeMember);
+                        row[DISPLAY_CODE_MEMBER] = prop != null ? prop.GetValue(item) ?? DBNull.Value : DBNull.Value;
+                    }
+                    if (!string.IsNullOrEmpty(displayNameMember))
+                    {
+                        var prop = props.FirstOrDefault(p => p.Name == displayNameMember);
+                        row[DISPLAY_NAME_MEMBER] = prop != null ? prop.GetValue(item) ?? DBNull.Value : DBNull.Value;
+                    }
+                    if (!string.IsNullOrEmpty(parentId))
+                    {
+                        var prop = props.FirstOrDefault(p => p.Name == parentId);
+                        row[PARENT_ID_MEMBER] = prop != null ? prop.GetValue(item) ?? DBNull.Value : DBNull.Value;
+                    }
+                    if (!string.IsNullOrEmpty(parentCode))
+                    {
+                        var prop = props.FirstOrDefault(p => p.Name == parentCode);
+                        row[PARENT_CODE_MEMBER] = prop != null ? prop.GetValue(item) ?? DBNull.Value : DBNull.Value;
+                    }
+                    table.Rows.Add(row);
+                }
+                dataTables.Add(table);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+            return dataTables;
+
+        }
+        private List<DataGet> ConvertDataTableToDataGet(List<DataTable> dt)
+        {
+            List<DataGet> result = new List<DataGet>();
+            try
+            {
+                foreach (var table in dt)
+                {
+                    foreach (DataRow row in table.Rows)
+                    {
+                        DataGet dataGett = new DataGet();
+                        if (table.Columns.Contains(VALUE_MEMBER) && row[VALUE_MEMBER] != DBNull.Value)
+                            dataGett.ID = Convert.ToInt64(row[VALUE_MEMBER]);
+                        if (table.Columns.Contains(DISPLAY_CODE_MEMBER) && row[DISPLAY_CODE_MEMBER] != DBNull.Value)
+                            dataGett.CODE = row[DISPLAY_CODE_MEMBER].ToString();
+                        if (table.Columns.Contains(DISPLAY_NAME_MEMBER) && row[DISPLAY_NAME_MEMBER] != DBNull.Value)
+                            dataGett.NAME = row[DISPLAY_NAME_MEMBER].ToString();
+                        if (table.Columns.Contains(PARENT_ID_MEMBER) && row[PARENT_ID_MEMBER] != DBNull.Value)
+                            dataGett.PARENT = Convert.ToInt64(row[PARENT_ID_MEMBER]);
+                        if (table.Columns.Contains(PARENT_CODE_MEMBER) && row[PARENT_CODE_MEMBER] != DBNull.Value)
+                            dataGett.PARENT_CODE = row[PARENT_CODE_MEMBER].ToString();
+                        result.Add(dataGett);
+                    }
+                }
+                result = result.Where(o => limitCodes != null && limitCodes.Count() > 0 ? limitCodes.Contains(o.CODE) : true).ToList();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+
+            return result;
+        }
+        Type IsTableInMOSEFModel(string tableName)
+        {
+            // Pseudocode plan:
+            // 1. Get all types in MOS.EFMODEL.DataModels namespace that are classes.
+            // 2. For each type, get its public properties' names (case-insensitive).
+            // 3. Exclude types that have any property named "TREATMENT_ID", "PATIENT_ID", "SERVICE_REQ_ID", or "EXP_MEST_ID".
+            // 4. Return or process the filtered list as needed.
+
+            var mosAssembly = typeof(MOS.EFMODEL.DataModels.HIS_BRANCH).Assembly;
+            var types = mosAssembly.GetTypes()
+                .Where(t => t.Namespace == "MOS.EFMODEL.DataModels" && t.IsClass)
+                .Where(t =>
+                {
+                    var propNames = t.GetProperties(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance)
+                                     .Select(p => p.Name.ToUpperInvariant())
+                                     .ToList();
+                    return !propNames.Contains("TREATMENT_ID")
+                        && !propNames.Contains("PATIENT_ID")
+                        && !propNames.Contains("SERVICE_REQ_ID")
+                        && !propNames.Contains("EXP_MEST_ID");
+                })
+                .ToList();
+
+            return types.FirstOrDefault(o => o.Name == tableName);
+        }
+        private void ParseTableConfigString(string input, out string tableName, out string valueMember, out string displayCodeMember, out string displayNameMember, out string parentId, out string parentCode)
+        {
+            tableName = null;
+            valueMember = null;
+            displayCodeMember = null;
+            displayNameMember = null;
+            parentId = null;
+            parentCode = null;
+            try
+            {
+                int startBracket = input.IndexOf('[');
+                int endBracket = input.IndexOf(']');
+                if (startBracket >= 0 && endBracket > startBracket)
+                {
+                    tableName = input.Substring(startBracket + 1, endBracket - startBracket - 1).ToUpper();
+                }
+
+                int jsonStart = input.IndexOf('{', endBracket);
+                int jsonEnd = input.LastIndexOf('}');
+                if (jsonStart >= 0 && jsonEnd > jsonStart)
+                {
+                    string json = input.Substring(jsonStart, jsonEnd - jsonStart + 1);
+                    string[] pairs = json.Trim('{', '}').Split(',');
+                    foreach (var pair in pairs)
+                    {
+                        var kv = pair.Split(':');
+                        if (kv.Length == 2)
+                        {
+                            string key = kv[0].Trim(' ', '"');
+                            string value = kv[1].Trim(' ', '"');
+                            switch (key.ToUpper())
+                            {
+                                case VALUE_MEMBER:
+                                    valueMember = value;
+                                    break;
+                                case DISPLAY_CODE_MEMBER:
+                                    displayCodeMember = value;
+                                    break;
+                                case DISPLAY_NAME_MEMBER:
+                                    displayNameMember = value;
+                                    break;
+                                case PARENT_ID_MEMBER:
+                                    parentId = value;
+                                    break;
+                                case PARENT_CODE_MEMBER:
+                                    parentCode = value;
+                                    break;
+                            }
+                        }
+                    }
+                }
+            }
+            catch
+            {
+                tableName = null;
+                valueMember = null;
+                displayCodeMember = null;
+                displayNameMember = null;
+                parentId = null;
+                parentCode = null;
+
+                Inventec.Common.Logging.LogSystem.Error("Input loi " + input);
+            }
+        }
         private void LoadDefault(List<DataGet> listData)
         {
             try
@@ -192,7 +537,7 @@ namespace HIS.UC.FormType.DepartmentCombo
             }
         }
 
-       
+
 
         void SetTitle()
         {
@@ -267,19 +612,15 @@ namespace HIS.UC.FormType.DepartmentCombo
                     if (cboDepartment.EditValue != null)
                     {
                         var department = new DataGet();
-                        string[] Filters = null;
-                        FilterConfig.GetListfilter(this.config.JSON_OUTPUT, ref Filters);
-                        if (!(Filters != null && Filters.Length > 0 && FilterConfig.IsCodeField(Filters[0])))
+                        var lst = cboDepartment.Properties.DataSource as List<DataGet>;
+                        DataGet obj = null;
+                        if (lst != null && lst.Count > 0 && cboDepartment.EditValue != null)
                         {
-                            department = HisMultiGetByString.GetByStringLimit(FDO, limitCodes, ref Output0).FirstOrDefault(f => f.ID == long.Parse(cboDepartment.EditValue.ToString()));
+                            obj = lst.FirstOrDefault(o => cboDepartment.Properties.ValueMember == "ID" ? o.ID == Int64.Parse(cboDepartment.EditValue.ToString()) : o.CODE == cboDepartment.EditValue.ToString());
                         }
-                        else
+                        if (obj != null)
                         {
-                            department = HisMultiGetByString.GetByStringLimit(FDO, limitCodes, ref Output0).FirstOrDefault(f => f.CODE == cboDepartment.EditValue.ToString());
-                        }
-                        if (department != null)
-                        {
-                            txtDepartmentCode.Text = department.CODE;
+                            txtDepartmentCode.Text = obj.CODE;
                         }
                         if (this.config != null && this.config.IS_REQUIRE != IMSys.DbConfig.SAR_RS.COMMON.IS_ACTIVE__TRUE)
                         {
@@ -366,7 +707,7 @@ namespace HIS.UC.FormType.DepartmentCombo
 
                     string[] Filters = null;
                     FilterConfig.GetListfilter(this.config.JSON_OUTPUT, ref Filters);
-                    
+
                     if (Filters != null && Filters.Length > 0 && FilterConfig.IsCodeField(Filters[0]) && value != null && value != "null")
                     {
                         txtDepartmentCode.Text = value.Replace("\"", "");
@@ -533,6 +874,96 @@ namespace HIS.UC.FormType.DepartmentCombo
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
+        }
+
+        private void cboDepartment_EditValueChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                var lst = cboDepartment.Properties.DataSource as List<DataGet>;
+                DataGet obj = null;
+                if (lst != null && lst.Count > 0 && cboDepartment.EditValue != null)
+                {
+                    obj = lst.FirstOrDefault(o => cboDepartment.Properties.ValueMember == "ID" ? o.ID == Int64.Parse(cboDepartment.EditValue.ToString()) : o.CODE == cboDepartment.EditValue.ToString());
+                }
+                if (delegateSelectDatas != null && PropetiesFilter != null && !string.IsNullOrEmpty(PropetiesFilter.ValueTransfer) && PropetiesFilter.IdReference > 0)
+                {
+                    string content = null;
+                    if (obj != null)
+                    {
+                        if (PropetiesFilter.ValueTransfer.ToUpper().Contains(VALUE_MEMBER))
+                        {
+                            content = obj.ID.ToString();
+                        }
+                        else if (PropetiesFilter.ValueTransfer.ToUpper().Contains(DISPLAY_CODE_MEMBER))
+                        {
+                            content = obj.CODE.ToString();
+                        }
+                        else if (PropetiesFilter.ValueTransfer.ToUpper().Contains(DISPLAY_NAME_MEMBER))
+                        {
+                            content = obj.NAME.ToString();
+                        }
+                    }
+                    delegateSelectDatas(PropetiesFilter.IdReference, content);
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+
+        }
+
+        public bool GetValueReceive(object data)
+        {
+            bool result = false;
+            try
+            {
+                var dataSource = cboDepartment.Properties.DataSource as List<DataGet>;
+                if (data != null && PropetiesFilter != null && !string.IsNullOrEmpty(PropetiesFilter.ValueReceive) && data != null && !string.IsNullOrEmpty(data.ToString()))
+                {
+                    var convertData = data.ToString();
+                    if (PropetiesFilter.ValueReceive.ToUpper().Contains(PARENT_ID_MEMBER))
+                    {
+                        dataSource = dataSource.Where(o => convertData.Contains(o.PARENT.ToString())).ToList();
+                    }
+                    else if (PropetiesFilter.ValueReceive.ToUpper().Contains(PARENT_CODE_MEMBER))
+                    {
+                        dataSource = dataSource.Where(o => convertData.Contains(o.PARENT_CODE)).ToList();
+                    }
+                    else if (PropetiesFilter.ValueReceive.ToUpper().Contains(DISPLAY_CODE_MEMBER))
+                    {
+                        dataSource = dataSource.Where(o => convertData.Contains(o.CODE)).ToList();
+                    }
+                    else if (PropetiesFilter.ValueReceive.ToUpper().Contains(DISPLAY_NAME_MEMBER))
+                    {
+                        dataSource = dataSource.Where(o => convertData.Contains(o.NAME)).ToList();
+                    }
+                    result = true;
+                }
+                cboDepartment.Properties.DataSource = dataSource;
+                if (cboDepartment.Properties.DataSource != null && (cboDepartment.Properties.DataSource as List<DataGet>).Count > 0)
+                {
+                    if (dataSource.Count == 1)
+                    {
+                        if (cboDepartment.Properties.ValueMember == "ID")
+                        {
+                            txtDepartmentCode.Text = dataSource.First().CODE;
+                            cboDepartment.EditValue = dataSource.First().ID;
+                        }
+                        else
+                        {
+                            txtDepartmentCode.Text = dataSource.First().CODE;
+                            cboDepartment.EditValue = dataSource.First().CODE;
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+            return result;
         }
     }
 }

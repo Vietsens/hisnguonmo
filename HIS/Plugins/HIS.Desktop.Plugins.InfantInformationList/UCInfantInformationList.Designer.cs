@@ -50,6 +50,7 @@ namespace HIS.Desktop.Plugins.InfantInformationList
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject1 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject2 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject3 = new DevExpress.Utils.SerializableAppearanceObject();
@@ -78,7 +79,7 @@ namespace HIS.Desktop.Plugins.InfantInformationList
             this.gridColumn15 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn19 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn20 = new DevExpress.XtraGrid.Columns.GridColumn();
-            this.barManager1 = new DevExpress.XtraBars.BarManager();
+            this.barManager1 = new DevExpress.XtraBars.BarManager(this.components);
             this.bar1 = new DevExpress.XtraBars.Bar();
             this.bbtnSearch = new DevExpress.XtraBars.BarButtonItem();
             this.bbtnRefresh = new DevExpress.XtraBars.BarButtonItem();
@@ -139,8 +140,8 @@ namespace HIS.Desktop.Plugins.InfantInformationList
             this.layoutControlGroup1 = new DevExpress.XtraLayout.LayoutControlGroup();
             this.layoutControlItem1 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem2 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.timerRefreshForm = new System.Windows.Forms.Timer();
-            this.timer1 = new System.Windows.Forms.Timer();
+            this.timerRefreshForm = new System.Windows.Forms.Timer(this.components);
+            this.timer1 = new System.Windows.Forms.Timer(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
             this.layoutControl1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl3)).BeginInit();
@@ -615,7 +616,7 @@ namespace HIS.Desktop.Plugins.InfantInformationList
             this.chkSignFileCertUtil.Location = new System.Drawing.Point(91, 528);
             this.chkSignFileCertUtil.MenuManager = this.barManager1;
             this.chkSignFileCertUtil.Name = "chkSignFileCertUtil";
-            this.chkSignFileCertUtil.Properties.Caption = "Ký số dùng USB token";
+            this.chkSignFileCertUtil.Properties.Caption = "Ký số";
             this.chkSignFileCertUtil.Size = new System.Drawing.Size(127, 19);
             this.chkSignFileCertUtil.StyleController = this.layoutControl2;
             this.chkSignFileCertUtil.TabIndex = 13;

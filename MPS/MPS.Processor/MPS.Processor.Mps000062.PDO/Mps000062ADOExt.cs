@@ -262,6 +262,7 @@ namespace MPS.Processor.Mps000062.PDO
         /// hiển thị thuốc và HDSD của các thuốc kê trước đó nhưng có ngày dùng chứa ngày của tờ điều trị
         /// </summary>
         public string PRE_MEDICINE { get; set; }
+        public string PRE_MEDICINE_OUT_TRACKING { get; set; }
         public string TRACKING_USERNAME { get; set; }
         public string SERVICE_REQ_METY___DATA { get; set; }
         public string SERVICE_REQ_MATY___DATA { get; set; }

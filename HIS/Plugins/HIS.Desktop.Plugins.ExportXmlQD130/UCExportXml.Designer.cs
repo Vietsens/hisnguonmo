@@ -45,6 +45,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(UCExportXml));
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject1 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject2 = new DevExpress.Utils.SerializableAppearanceObject();
@@ -181,7 +182,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
             this.layoutControlItem9 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem27 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem28 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.autoSync = new System.Windows.Forms.Timer();
+            this.autoSync = new System.Windows.Forms.Timer(this.components);
             this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
             this.layoutControl1.SuspendLayout();
@@ -311,7 +312,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
             // 
             this.chkSignFileCertUtil.Location = new System.Drawing.Point(301, 646);
             this.chkSignFileCertUtil.Name = "chkSignFileCertUtil";
-            this.chkSignFileCertUtil.Properties.Caption = "Ký số USB Token";
+            this.chkSignFileCertUtil.Properties.Caption = "Ký số";
             this.chkSignFileCertUtil.Size = new System.Drawing.Size(102, 19);
             this.chkSignFileCertUtil.StyleController = this.layoutControl1;
             this.chkSignFileCertUtil.TabIndex = 56;

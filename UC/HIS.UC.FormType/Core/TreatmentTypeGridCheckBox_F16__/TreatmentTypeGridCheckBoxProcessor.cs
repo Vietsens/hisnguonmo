@@ -25,11 +25,13 @@ namespace HIS.UC.FormType.TreatmentTypeGridCheckBox
 {
     class TreatmentTypeGridCheckBoxProcessor : ProcessorBase, IProcessorGenerate
     {
+        HIS.Desktop.Common.DelegateSelectDatas delegateSelectDatas;
         object generateRDO;
-        internal TreatmentTypeGridCheckBoxProcessor(V_SAR_RETY_FOFI config, object generateRDO)
+        internal TreatmentTypeGridCheckBoxProcessor(V_SAR_RETY_FOFI config, object generateRDO, HIS.Desktop.Common.DelegateSelectDatas delegateSelectDatas)
             : base(config)
         {
             this.generateRDO = generateRDO;
+            this.delegateSelectDatas = delegateSelectDatas;
         }
 
         object IProcessorGenerate.Run()
@@ -37,7 +39,7 @@ namespace HIS.UC.FormType.TreatmentTypeGridCheckBox
             object result = null;
             try
             {
-                result = new UCTreatmentTypeGridCheckBox(config, generateRDO);
+                result = new UCTreatmentTypeGridCheckBox(config, generateRDO, delegateSelectDatas);
             }
             catch (Exception ex)
             {

@@ -100,9 +100,9 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute.PtttMethod
             // 
             // btnSave
             // 
-            this.btnSave.Location = new System.Drawing.Point(531, 172);
+            this.btnSave.Location = new System.Drawing.Point(530, 172);
             this.btnSave.Name = "btnSave";
-            this.btnSave.Size = new System.Drawing.Size(121, 22);
+            this.btnSave.Size = new System.Drawing.Size(122, 22);
             this.btnSave.StyleController = this.layoutControl1;
             this.btnSave.TabIndex = 6;
             this.btnSave.Text = "Lưu";
@@ -295,9 +295,9 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute.PtttMethod
             // layoutControlItem3
             // 
             this.layoutControlItem3.Control = this.btnSave;
-            this.layoutControlItem3.Location = new System.Drawing.Point(529, 170);
+            this.layoutControlItem3.Location = new System.Drawing.Point(528, 170);
             this.layoutControlItem3.Name = "layoutControlItem3";
-            this.layoutControlItem3.Size = new System.Drawing.Size(125, 26);
+            this.layoutControlItem3.Size = new System.Drawing.Size(126, 26);
             this.layoutControlItem3.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem3.TextVisible = false;
             // 
@@ -306,7 +306,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute.PtttMethod
             this.emptySpaceItem2.AllowHotTrack = false;
             this.emptySpaceItem2.Location = new System.Drawing.Point(0, 170);
             this.emptySpaceItem2.Name = "emptySpaceItem2";
-            this.emptySpaceItem2.Size = new System.Drawing.Size(529, 26);
+            this.emptySpaceItem2.Size = new System.Drawing.Size(528, 26);
             this.emptySpaceItem2.TextSize = new System.Drawing.Size(0, 0);
             // 
             // FormEkipUser

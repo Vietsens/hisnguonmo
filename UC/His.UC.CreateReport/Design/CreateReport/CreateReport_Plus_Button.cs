@@ -145,6 +145,20 @@ namespace His.UC.CreateReport.Design.CreateReport
             }
             return result;
         }
+        bool ReceiveData(object item, object data)
+        {
+            try
+            {
+                CommonParam param = new CommonParam();
+                IDelegacy delegacy = new DCV.APP.Report.ReceiveData.ReceiveData(param, item, data);
+                return (bool)delegacy.Execute();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+            return false;
+        }
 
         private void bbtRCSave_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
         {

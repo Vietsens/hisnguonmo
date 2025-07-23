@@ -1036,10 +1036,10 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
                 treeListDateTime.DataSource = null;
                 this.rowClickByDate = new ServiceReqGroupByDateADO();
                 this.IsLoadTreeListDateTime = false;
-                if (rs != null && rs.Count > 0)
+                if (rs != null)
                 {
                     HisTrackingFilter filter = new HisTrackingFilter();
-                    filter.TREATMENT_IDs = rs.Select(o => o.TreatmentId).ToList();
+                    filter.TREATMENT_ID = rs.FirstOrDefault().TreatmentId;
                     ListTracking = new BackendAdapter(param).Get<List<HIS_TRACKING>>("api/HisTracking/Get", ApiConsumers.MosConsumer, filter, param);
                     if (ListTracking != null && ListTracking.Count > 0)
                     {
@@ -1048,7 +1048,6 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
                     List<long> listTreeListIDs = new List<long>();
 
                     List<ServiceReqGroupByDateADO> Result = new List<ADO.ServiceReqGroupByDateADO>();
-
                     foreach (var item in rs)
                     {
                         ServiceReqGroupByDateADO adoParent = new ADO.ServiceReqGroupByDateADO(item);
@@ -1058,7 +1057,7 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
 
                         if (ListTracking != null)
                         {
-                            foreach (var tracking in ListTracking)
+                            foreach (var tracking in ListTracking)    
                             {
                                 if (adoParent.InstructionDate.ToString().Substring(0, 8) == tracking.TRACKING_TIME.ToString().Substring(0, 8))
                                 {
@@ -1073,8 +1072,8 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
                                 }
                             }
                         }
-
                     }
+
                     IsLoadTreeListDateTime = true;
                     treeListDateTime.DataSource = Result.OrderByDescending(o => o.InstructionDate).ToList();
                     treeListDateTime.BestFitColumns();

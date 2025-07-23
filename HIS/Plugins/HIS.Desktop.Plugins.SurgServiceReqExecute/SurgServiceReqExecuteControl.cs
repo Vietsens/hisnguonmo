@@ -349,7 +349,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
                     }
                 }
             }
-            catch (Exception ex)
+            catch (Exception ex)   
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
@@ -694,7 +694,10 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             bool valid = true;
             try
             {
-
+                if (!CheckRequiredMachine())
+                {
+                    return false;
+                }
                 if (HisConfigCFG.IS_NOT_REQUIRED_PTTT_EXECUTE_ROLE != "1" && sereServ.IS_SENT_EXT != 1 && !CheckCountEkipUser() && !IsReadOnlyGridViewEkipUser)
                 {
                     MessageBox.Show(ResourceMessage.VuiLongNhapThongTinkipThucHien, ResourceMessage.ThongBao, MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -5410,5 +5413,72 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
         //        PrintProcess(PrintTypeSurg.PHIEU_THU_THUAT_PHAU_THUAT);
         //    }
         //}
+
+        private bool CheckRequiredMachine()
+        {
+            try
+            {
+                if (cboMachine.EditValue != null)
+                    return true;
+
+                string requiredMachineOption = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>("HIS.Desktop.Plugins.SurgServiceReqExecute.RequiredMachineOption");
+                if (requiredMachineOption != "1" && requiredMachineOption != "2" && requiredMachineOption != "3" && requiredMachineOption != "4")
+                    return true;
+
+                List<V_HIS_SERE_SERV_5> servicesToCheck = new List<V_HIS_SERE_SERV_5>();
+                if (chkSaveGroup.Checked)
+                {
+                    if (requiredMachineOption == "1" || requiredMachineOption == "2")
+                        servicesToCheck = sereServbyServiceReqs?.ToList() ?? new List<V_HIS_SERE_SERV_5>();
+                    else if (requiredMachineOption == "3" || requiredMachineOption == "4")
+                        servicesToCheck = sereServbyServiceReqs?.Where(s => s.PATIENT_TYPE_ID == HisConfigCFG.PatientTypeId__BHYT).ToList() ?? new List<V_HIS_SERE_SERV_5>();
+                }
+                else
+                {
+                    if (requiredMachineOption == "1" || requiredMachineOption == "2")
+                        servicesToCheck.Add(sereServ);
+                    else if (requiredMachineOption == "3" || requiredMachineOption == "4")
+                    {
+                        if (sereServ.PATIENT_TYPE_ID == HisConfigCFG.PatientTypeId__BHYT)
+                            servicesToCheck.Add(sereServ);
+                    }
+                }
+
+                foreach (var service in servicesToCheck)
+                {
+                    // Dịch vụ - Máy (list A)
+                    var listServiceMachine = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<HIS_SERVICE_MACHINE>()
+                        .Where(o => o.SERVICE_ID == service.SERVICE_ID).ToList();
+
+                    // Máy cận lâm sàng thuộc phòng (list B)
+                    var listMachine = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<HIS_MACHINE>()
+                        .Where(o => o.IS_ACTIVE == 1 && o.ROOM_IDS != null && o.ROOM_IDS.Contains(Module.RoomId.ToString())).ToList();
+
+                    bool hasValidMachine = listServiceMachine.Any(sm => listMachine.Any(m => m.ID == sm.MACHINE_ID));
+
+                    if (hasValidMachine)
+                    {
+                        string serviceName = service.TDL_SERVICE_NAME;
+                        string message = $"Dịch vụ {serviceName} chưa có thông tin máy cận lâm sàng.";
+
+                        if (requiredMachineOption == "1" || requiredMachineOption == "3")
+                        {
+                            if (XtraMessageBox.Show($"{message} Bạn có muốn tiếp tục không?", "Thông báo", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.No)
+                                return false;
+                        }
+                        else if (requiredMachineOption == "2" || requiredMachineOption == "4")
+                        {
+                            XtraMessageBox.Show(message, "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                            return false;
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+            return true;
+        }
     }
 }

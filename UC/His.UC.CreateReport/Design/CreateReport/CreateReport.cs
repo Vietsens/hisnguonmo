@@ -28,6 +28,7 @@ using DevExpress.Utils;
 using Inventec.Desktop.Common.Message;
 using SAR.EFMODEL.DataModels;
 using System.IO;
+using MRS.SDO;
 
 namespace His.UC.CreateReport.Design.CreateReport
 {
@@ -40,6 +41,7 @@ namespace His.UC.CreateReport.Design.CreateReport
         HIS.UC.FormType.GenerateRDO generateRDO;
         SAR_REPORT_TYPE reportType = new SAR_REPORT_TYPE();
         SAR_REPORT sarReportCreate = new SAR_REPORT();
+        List<DynamicFilterConfigSDO> dynamicFilterConfigSDOs = new List<DynamicFilterConfigSDO>();
 
         public CreateReport(HIS.UC.FormType.GenerateRDO paramData)
         {
@@ -182,6 +184,10 @@ namespace His.UC.CreateReport.Design.CreateReport
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
+        }
+
+        private void cboReportTemplate_EditValueChanged(object sender, EventArgs e)
+        {
         }
     }
 }
