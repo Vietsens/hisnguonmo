@@ -147,7 +147,7 @@ namespace Inventec.Common.ElectronicBill
 
                     if (!String.IsNullOrWhiteSpace(electronicBillInput.DataXmlStringPlus))
                     {
-                        xmlInvData = xmlInvData.Replace("</Invoice>", electronicBillInput.DataXmlStringPlus + "</Invoice>");
+                        xmlInvData = xmlInvData.Replace("</ReplaceInv>", electronicBillInput.DataXmlStringPlus + "</ReplaceInv>");
                         Inventec.Common.Logging.LogSystem.Info(Inventec.Common.Logging.LogUtil.TraceData("xmlInvData", xmlInvData));
                     }
                     else
