@@ -431,7 +431,7 @@ namespace HIS.UC.FormType.GridLookUpTextEdit
         {
             try
             {
-                if (listData.Count == 1 && this.config != null && this.config.IS_REQUIRE == IMSys.DbConfig.SAR_RS.COMMON.IS_ACTIVE__TRUE)
+                if (listData != null && listData.Count == 1 && this.config != null && this.config.IS_REQUIRE == IMSys.DbConfig.SAR_RS.COMMON.IS_ACTIVE__TRUE)
                 {
                     txtDepartmentCode.Text = listData.First().CODE;
                     cboDepartment.EditValue = listData.First().ID;

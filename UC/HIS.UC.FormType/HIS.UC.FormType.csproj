@@ -497,6 +497,15 @@
       <DependentUpon>UCNumeric.cs</DependentUpon>
     </Compile>
     <Compile Include="Core\Numericft_F30__\Validation\NumericValidationRule.cs" />
+    <Compile Include="Core\Numeric_F39_\NumericftFDO.cs" />
+    <Compile Include="Core\Numeric_F39_\NumericProcessor.cs" />
+    <Compile Include="Core\Numeric_F39_\UCNumeric.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Core\Numeric_F39_\UCNumeric.Designer.cs">
+      <DependentUpon>UCNumeric.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Core\Numeric_F39_\Validation\NumericValidationRule.cs" />
     <Compile Include="Core\PatientTypeCombo_F13__\PatientTypeComboFDO.cs" />
     <Compile Include="Core\PatientTypeCombo_F13__\PatientTypeComboProcessor.cs" />
     <Compile Include="Core\PatientTypeCombo_F13__\UCPatientTypeCombo.cs">
@@ -744,6 +753,9 @@
       <DependentUpon>UCMultipleRoomComboCheckFilterByDepartmentComboCheck.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Core\Numericft_F30__\UCNumeric.resx">
+      <DependentUpon>UCNumeric.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Core\Numeric_F39_\UCNumeric.resx">
       <DependentUpon>UCNumeric.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Core\PatientTypeCombo_F13__\UCPatientTypeCombo.resx">

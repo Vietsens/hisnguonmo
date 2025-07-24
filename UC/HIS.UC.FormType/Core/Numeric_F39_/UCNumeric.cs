@@ -24,18 +24,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 //using System.Windows.Forms;
-using HIS.UC.FormType.Core.Numericft;
 using His.UC.LibraryMessage;
 
-namespace HIS.UC.FormType.Numericft
+namespace HIS.UC.FormType.Numeric
 {
     public partial class UCNumeric : DevExpress.XtraEditors.XtraUserControl
     {
-    
         int positionHandleControl = -1;
         bool isValidData = false;
         SAR.EFMODEL.DataModels.V_SAR_RETY_FOFI config;
-        // public static bool exitclick = false;
         SAR.EFMODEL.DataModels.V_SAR_REPORT report;
         DynamicFilterRDO DynamicFilter;
 
@@ -43,9 +40,7 @@ namespace HIS.UC.FormType.Numericft
         {
             try
             { 
-                InitializeComponent();
-                //FormTypeConfig.ReportHight += 25;
-                
+                InitializeComponent();               
                 this.config = config;
                 if (paramRDO is GenerateRDO generateRDO)
                 {
@@ -78,14 +73,11 @@ namespace HIS.UC.FormType.Numericft
                 {
                     Validation();
                     layoutControlItem1.AppearanceItemCaption.ForeColor = Color.Maroon;
-                    layoutControlItem2.AppearanceItemCaption.ForeColor = Color.Maroon;
                     numericUpDown1.EditValue = 0;
-                    numericUpDown2.EditValue = 0;
                 }
                 else
                 {
                     numericUpDown1.EditValue = null;
-                    numericUpDown2.EditValue = null;
                 }
                 }
             catch (Exception ex)
@@ -118,9 +110,7 @@ namespace HIS.UC.FormType.Numericft
             {
                 long? fromnum=null;
                 if (numericUpDown1.EditValue != null) fromnum = Inventec.Common.TypeConvert.Parse.ToInt64(numericUpDown1.Value.ToString());
-                long? tonum=null;
-                if (numericUpDown2.EditValue != null) tonum = Inventec.Common.TypeConvert.Parse.ToInt64(numericUpDown2.Value.ToString());
-                value = String.Format(this.config.JSON_OUTPUT, ConvertUtils.ConvertToObjectFilter(fromnum), ConvertUtils.ConvertToObjectFilter(tonum));
+                value = String.Format(this.config.JSON_OUTPUT, ConvertUtils.ConvertToObjectFilter(fromnum));
             }
             catch (Exception ex)
             {
@@ -142,13 +132,6 @@ namespace HIS.UC.FormType.Numericft
                     string value = HIS.UC.FormType.CopyFilter.CopyFilter.CopyFilterProcess(this.config,jsOutputSub[0], this.report.JSON_FILTER);
                     if (value != null && value != "null" && Inventec.Common.TypeConvert.Parse.ToInt64(value) > 0)
                         numericUpDown1.EditValue = Inventec.Common.TypeConvert.Parse.ToInt64(value);
-
-                    if (jsOutputSub.Count() > 1)
-                    {
-                        value = HIS.UC.FormType.CopyFilter.CopyFilter.CopyFilterProcess(this.config,jsOutputSub[1], this.report.JSON_FILTER);
-                        if (value != null && value != "null" && Inventec.Common.TypeConvert.Parse.ToInt64(value) > 0)
-                            numericUpDown2.EditValue = Inventec.Common.TypeConvert.Parse.ToInt64(value);
-                    }
                 }
             }
             catch (Exception ex)

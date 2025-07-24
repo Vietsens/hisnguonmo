@@ -22,7 +22,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 
-namespace HIS.UC.FormType.Numeric
+namespace HIS.UC.FormType.Numericft
 {
     class NumericProcessor : ProcessorBase, IProcessorGenerate
     {

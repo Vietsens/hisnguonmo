@@ -21,7 +21,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace HIS.UC.FormType.Numericft
+namespace HIS.UC.FormType.Numeric
 {
     class NumericValidationRule : DevExpress.XtraEditors.DXErrorProvider.ValidationRule
     {

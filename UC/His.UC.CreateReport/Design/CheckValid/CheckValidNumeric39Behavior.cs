@@ -15,30 +15,38 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+using HIS.UC.CreateReport.Base;
+using Inventec.Core;
+using MOS.EFMODEL.DataModels;
+//using MOS.Filter;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace HIS.UC.FormType.Numericft
+
+namespace DCV.APP.Report.CheckValid
 {
-    class NumericValidationRule : DevExpress.XtraEditors.DXErrorProvider.ValidationRule
+    class CheckValidNumeric39Behavior : BussinessBase, ICheckValid
     {
-        //internal DevExpress.XtraEditors.GridLookUpEdit cboTreatmentType;
-        public DevExpress.XtraEditors.SpinEdit numericUpDown1;
-        public override bool Validate(System.Windows.Forms.Control control, object value)
+        HIS.UC.FormType.Numeric.UCNumeric entity;
+        internal CheckValidNumeric39Behavior(CommonParam param, HIS.UC.FormType.Numeric.UCNumeric filter)
+            : base(param)
+        {
+            this.entity = filter;
+        }
+
+        bool ICheckValid.Run()
         {
             bool result = false;
             try
             {
-                if (numericUpDown1 == null) return result;
-                if (numericUpDown1.EditValue == null) return result;
-                result = true;
+                result = entity.Valid();
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
+                param.HasException = true;
+                result = false;
             }
             return result;
         }

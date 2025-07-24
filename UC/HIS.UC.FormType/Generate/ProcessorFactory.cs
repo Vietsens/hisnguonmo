@@ -144,7 +144,7 @@ namespace HIS.UC.FormType
                             result = new HIS.UC.FormType.Medicin.MedicinProcessor(data, generateRDO);
                             break;
                         case "FTHIS000030":
-                            result = new HIS.UC.FormType.Numeric.NumericProcessor(data, generateRDO);
+                            result = new HIS.UC.FormType.Numericft.NumericProcessor(data, generateRDO);
                             break;
                         case "FTHIS000031":
                             result = new HIS.UC.FormType.Core.HeinTreatmentTypeRadio.HeinTreatmentTypeRadioProcessor(data, generateRDO);
@@ -169,6 +169,9 @@ namespace HIS.UC.FormType
                             break;
                         case "FTHIS000038":
                             result = new HIS.UC.FormType.F38.F38Processor(data, generateRDO);
+                            break;
+                        case "FTHIS000039":
+                            result = new HIS.UC.FormType.Numeric.NumericProcessor(data, generateRDO);
                             break;
                         default:
                             break;
