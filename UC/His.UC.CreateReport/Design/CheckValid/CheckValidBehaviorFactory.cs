@@ -51,9 +51,9 @@ namespace DCV.APP.Report.CheckValid
                 {
                     result = new CheckValidHourFromToBehavior(param, (HIS.UC.FormType.HourFromTo.UCHourFromTo)dataItem);
                 }
-                else if (dataItem is HIS.UC.FormType.DepartmentCombo.UCDepartmentCombo)
+                else if (dataItem is HIS.UC.FormType.GridLookUpTextEdit.UCGridLookUpTextEdit)
                 {
-                    result = new CheckValidDepartmentComboBehavior(param, (HIS.UC.FormType.DepartmentCombo.UCDepartmentCombo)dataItem);
+                    result = new CheckValidDepartmentComboBehavior(param, (HIS.UC.FormType.GridLookUpTextEdit.UCGridLookUpTextEdit)dataItem);
                 }
                 else if (dataItem is HIS.UC.FormType.MediStockSttFilterCheckBoxGroup.UCMediStockSttFilterCheckBoxGroup)
                 {
@@ -91,9 +91,9 @@ namespace DCV.APP.Report.CheckValid
                 {
                     result = new CheckValidTreatmentTypeComboCheckBehavior(param, (HIS.UC.FormType.TreatmentTypeComboCheck.UCTreatmentTypeComboCheck)dataItem);
                 }
-                else if (dataItem is HIS.UC.FormType.TreatmentTypeGridCheckBox.UCTreatmentTypeGridCheckBox)
+                else if (dataItem is HIS.UC.FormType.GridCheckBox.UCGridCheckBox )
                 {
-                    result = new CheckValidTreatmentTypeGridCheckBoxBehavior(param, (HIS.UC.FormType.TreatmentTypeGridCheckBox.UCTreatmentTypeGridCheckBox)dataItem);
+                    result = new CheckValidTreatmentTypeGridCheckBoxBehavior(param, (HIS.UC.FormType.GridCheckBox.UCGridCheckBox )dataItem);
                 }
                 else if (dataItem is HIS.UC.FormType.DateTime.UCDateTime)
                 {

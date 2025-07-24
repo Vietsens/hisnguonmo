@@ -210,6 +210,7 @@ namespace His.UC.CreateReport.Design.CreateReport1
                     dataRow.IsChecked = true;
 
                     grdReportTemplate.RefreshDataSource();
+                    CreateReportControl();
                 }
             }
             catch (Exception ex)

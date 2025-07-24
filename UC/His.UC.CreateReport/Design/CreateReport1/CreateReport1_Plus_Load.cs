@@ -21,8 +21,14 @@ using DevExpress.XtraEditors.ViewInfo;
 using DevExpress.XtraLayout;
 using His.UC.CreateReport.Data;
 using His.UC.CreateReport.Design.CreateReport.Validation;
+using HIS.Desktop.ApiConsumer;
+using HIS.UC.CreateReport.Base;
 using HIS.UC.CreateReport.Loader;
+using HIS.UC.FormType;
+using Inventec.Common.Adapter;
 using Inventec.Common.Logging;
+using Inventec.Core;
+using MRS.SDO;
 using SAR.EFMODEL.DataModels;
 using System;
 using System.Collections.Generic;
@@ -32,9 +38,16 @@ using System.Threading.Tasks;
 
 namespace His.UC.CreateReport.Design.CreateReport1
 {
+    public class GenerateReport
+    {
+        public GenerateRDO GenerateRDO { get; set; }
+        public int Id { get; set; }
+    }
     internal partial class CreateReport1
     {
         List<V_SAR_RETY_FOFI> currentFormFields;
+        private List<DynamicFilterConfigSDO> dynamicFilterConfigSDOs;
+        List<GenerateReport> generateReports = new List<GenerateReport>();
         private void CreateReport_Load()
         {
             try
@@ -42,9 +55,9 @@ namespace His.UC.CreateReport.Design.CreateReport1
                 language();
 
                 //ReportTemplateLoader.LoadDataToCombo(cboReportTemplate, null);
-                LoadReportTemplate();
+                LoadReportTemplate(); 
                 LoadDataToForm();
-                CreateReportControlByReportType();
+                CreateReportControl();
                 Validation();
                 grdReportTemplate.Focus();
             }
@@ -213,6 +226,130 @@ namespace His.UC.CreateReport.Design.CreateReport1
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
+        private void CreateReportControl()
+        {
+            ClearControl();
+            if (!GenDynamicFilterConfig())
+                CreateReportControlByReportType();
+            else
+                CreateReportControlByDynamicFilterSheet();
+            InitFthisLayout();
+        }
+
+        private void CreateReportControlByDynamicFilterSheet()
+        {
+            try
+            {
+                if (dynamicFilterConfigSDOs == null || dynamicFilterConfigSDOs.Count == 0)
+                {
+                    return;
+                }
+                currentFormFields = new List<V_SAR_RETY_FOFI>();
+                int index = 0;
+                foreach (var item in dynamicFilterConfigSDOs)
+                {
+                    V_SAR_RETY_FOFI fofi = new V_SAR_RETY_FOFI();
+                    fofi.REPORT_TYPE_ID = reportType.ID;
+                    fofi.REPORT_TYPE_CODE = reportType.REPORT_TYPE_CODE;
+                    fofi.FORM_FIELD_CODE = item.FORM_FIELD_CODE;
+                    fofi.JSON_OUTPUT = item.JSON_OUTPUT;
+                    fofi.DESCRIPTION = item.DESCRIPTION;
+                    fofi.IS_REQUIRE = item.IS_REQUIRE;
+                    fofi.NUM_ORDER = item.NUM_ORDER;
+                    fofi.WIDTH_RATIO = item.WIDTH_RATIO;
+                    fofi.HEIGHT = item.HEIGHT;
+                    fofi.ROW_COUNT = item.ROW_COUNT;
+                    fofi.COLUMN_COUNT = item.COLUMN_COUNT;
+                    fofi.COLUMN_COUNT = item.COLUMN_COUNT;
+                    fofi.ROW_INDEX = item.ROW_INDEX;
+                    fofi.ID = index;
+                    currentFormFields.Add(fofi);
+
+                    var generateRDO = new HIS.UC.FormType.GenerateRDO();
+                    generateRDO.Report = this.generateRDO.Report;
+                    generateRDO.DetailData = this.generateRDO.DetailData;
+                    generateRDO.DynamicFilter = new HIS.UC.FormType.DynamicFilterRDO()
+                    {
+                        ID = item.ID,
+                        DATA_CACHE = item.DATA_CACHE,
+                        DATA_TABLE = item.DATA_TABLE,
+                        Propeties = TryDeserializePropeties(item.JSON_PROPETIES),
+                        Fofi = fofi
+
+                    };
+                    generateReports.Add(new GenerateReport() { GenerateRDO = generateRDO, Id = index });
+                    index++;
+                }
+                if (CreateReportDelegate.DelegateCalHeightDesignReportTemplate != null)
+                    CreateReportDelegate.DelegateCalHeightDesignReportTemplate(this);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+
+        }
+        private HIS.UC.FormType.PropetiesRDO TryDeserializePropeties(string json)
+        {
+            if (string.IsNullOrEmpty(json))
+                return null;
+            try
+            {
+                return Newtonsoft.Json.JsonConvert.DeserializeObject<HIS.UC.FormType.PropetiesRDO>(json);
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
+        private bool GenDynamicFilterConfig()
+        {
+            bool state = false;
+            try
+            {
+                var reportTemplate = this.listReportTemplateADO.Where(o => o.IsChecked).FirstOrDefault();
+              
+                if (reportTemplate == null)
+                    return false;
+                if (reportTemplate == null || !reportTemplate.REPORT_TEMPLATE_CODE.ToUpper().StartsWith("BCM"))
+                {
+                    return false;
+                }
+                MRS.SDO.CreateReportSDO data = new MRS.SDO.CreateReportSDO();
+                data.Loginname = CreateReportConfig.LoginName;
+                data.Username = CreateReportConfig.UserName;
+                data.BranchId = CreateReportConfig.BranchId;
+                data.ReportTypeCode = (reportType != null) ? reportType.REPORT_TYPE_CODE : null;
+                data.ReportTemplateCode = reportTemplate.REPORT_TEMPLATE_CODE;
+                CommonParam param = new CommonParam();
+                dynamicFilterConfigSDOs = new BackendAdapter(param).Post<List<DynamicFilterConfigSDO>>("api/MrsReport/GetDynamicFilterConfig", ApiConsumers.MrsConsumer, data, param);
+                Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => dynamicFilterConfigSDOs), dynamicFilterConfigSDOs));
+                state = dynamicFilterConfigSDOs != null && dynamicFilterConfigSDOs.Count > 0;
+                if (state)
+                {
+                    dynamicFilterConfigSDOs = dynamicFilterConfigSDOs.OrderBy(o => o.NUM_ORDER ?? 0).ThenBy(o => o.ID ?? 0).ToList();
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+            return state;
+
+        }
+
+
+        private void ClearControl()
+        {
+            int totalHeight = 0;
+            foreach (LayoutControlItem ctrl in layoutControlItemAll)
+            {
+                totalHeight += ctrl.Height;
+            }
+            layoutControlGroupGenerateReportField.Clear();
+        }
+
 
         private void CreateReportControlByReportType()
         {
@@ -273,7 +410,17 @@ namespace His.UC.CreateReport.Design.CreateReport1
                         currentFormFields.Add(fofi);
                     }
                 }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+        private void InitFthisLayout()
+        {
 
+            try
+            {
                 Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData("lcGenerateReportField.Width___runtime size:", ("[" + lcGenerateReportField.Width
                     + ", " + lcGenerateReportField.Height + "],ClientSize=" + lcGenerateReportField.ClientSize
                     + ", MaximumSize=" + lcGenerateReportField.MaximumSize
@@ -330,8 +477,11 @@ namespace His.UC.CreateReport.Design.CreateReport1
                                     List<BaseLayoutItem> layoutControlItemAdds = new List<BaseLayoutItem>();
                                     foreach (var item in formFieldInRows)
                                     {
-                                        System.Windows.Forms.UserControl control = GenerateControl(item);
+                                        HIS.UC.FormType.GenerateRDO generate = (generateReports.FirstOrDefault(o => o.Id == item.ID) ?? new GenerateReport()).GenerateRDO;
+                                        System.Windows.Forms.UserControl control = GenerateControl(item, generate);
 
+                                        if (control == null)
+                                            continue;
                                         Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => item.FORM_FIELD_CODE), item.FORM_FIELD_CODE)
                                             + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => item.REPORT_TYPE_CODE), item.REPORT_TYPE_CODE)
                                             + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => item.WIDTH_RATIO), item.WIDTH_RATIO)
@@ -354,7 +504,7 @@ namespace His.UC.CreateReport.Design.CreateReport1
                                         item1.TextVisible = false;
                                         item1.Name = Guid.NewGuid().ToString();// String.Format("lciForItemControlTemp{0}", (item.DESCRIPTION ?? "XtraUserControl" + DateTime.Now.ToString("yyyyMMddHHmmss")));
                                         item1.SizeConstraintsType = SizeConstraintsType.Custom;
-
+                                        item1.Tag = generate != null ? generate.DynamicFilter != null ? generate.DynamicFilter.ID : null : null;
                                         item1.Height = realH;
                                         item1.MaxSize = new System.Drawing.Size(0, realH);
                                         item1.MinSize = new System.Drawing.Size(w, realH);
@@ -428,8 +578,10 @@ namespace His.UC.CreateReport.Design.CreateReport1
                         List<BaseLayoutItem> layoutControlItemAdds = new List<BaseLayoutItem>();
                         foreach (var item in this.currentFormFields)
                         {
-                            System.Windows.Forms.UserControl control = GenerateControl(item);
-
+                            HIS.UC.FormType.GenerateRDO generate = (generateReports.FirstOrDefault(o => o.Id == item.ID) ?? new GenerateReport()).GenerateRDO;
+                            System.Windows.Forms.UserControl control = GenerateControl(item, generate);
+                            if (control == null)
+                                continue;
                             Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => item.FORM_FIELD_CODE), item.FORM_FIELD_CODE)
                                 + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => item.REPORT_TYPE_CODE), item.REPORT_TYPE_CODE)
                                 + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => item.WIDTH_RATIO), item.WIDTH_RATIO)
@@ -444,7 +596,7 @@ namespace His.UC.CreateReport.Design.CreateReport1
                             // Bind a control to the layout item.
 
 
-
+                            item1.Tag = generate != null ? generate.DynamicFilter != null ? generate.DynamicFilter.ID : null : null;
                             item1.Control = control;
                             item1.TextVisible = false;
                             item1.Name = Guid.NewGuid().ToString();// String.Format("lciForItemControlTemp{0}", (item.DESCRIPTION ?? "XtraUserControl" + DateTime.Now.ToString("yyyyMMddHHmmss")));
@@ -484,6 +636,7 @@ namespace His.UC.CreateReport.Design.CreateReport1
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
+
         }
 
         private string[] statementsSeperate(string sql)
@@ -502,12 +655,12 @@ namespace His.UC.CreateReport.Design.CreateReport1
             return result;
         }
 
-        System.Windows.Forms.UserControl GenerateControl(V_SAR_RETY_FOFI data)
+        System.Windows.Forms.UserControl GenerateControl(V_SAR_RETY_FOFI data, HIS.UC.FormType.GenerateRDO generate = null)
         {
             System.Windows.Forms.UserControl result = null;
             try
             {
-                result = HIS.UC.FormType.FormTypeMain.Run(data, this.generateRDO) as System.Windows.Forms.UserControl;
+                result = HIS.UC.FormType.FormTypeMain.RunDynamic(data, generate != null ? generate : this.generateRDO, TransferDataToControl) as System.Windows.Forms.UserControl;
             }
             catch (Exception ex)
             {
@@ -515,6 +668,55 @@ namespace His.UC.CreateReport.Design.CreateReport1
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
             return result;
+        }
+        private void TransferDataToControl(object IdControl, object ValueTransfer)
+        {
+            try
+            {
+                if (IdControl == null)
+                    return;
+                foreach (System.Windows.Forms.Control item in lcGenerateReportField.Controls)
+                {
+                    if (item != null && (item is System.Windows.Forms.UserControl || item is DevExpress.XtraEditors.XtraUserControl) && item.Tag != null)
+                    {
+                        var IdRe = item.Tag as long?;
+                        if (IdRe != null && IdControl != null)
+                        {
+                            long idReValue;
+                            long idControlValue;
+                            if (long.TryParse(IdRe.ToString(), out idReValue) && long.TryParse(IdControl.ToString(), out idControlValue))
+                            {
+                                if (idReValue == idControlValue)
+                                {
+                                    if (!ReceiveData(item, ValueTransfer))
+                                    {
+                                        Inventec.Common.Logging.LogSystem.Error("Khong gui duoc du lieu sang Id Control" + IdRe + " gia tri " + ValueTransfer);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+
+        }
+        bool ReceiveData(object item, object data)
+        {
+            try
+            {
+                CommonParam param = new CommonParam();
+                IDelegacy delegacy = new DCV.APP.Report.ReceiveData.ReceiveData(param, item, data);
+                return (bool)delegacy.Execute();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+            return false;
         }
 
         private void ValidateReportTemplate()

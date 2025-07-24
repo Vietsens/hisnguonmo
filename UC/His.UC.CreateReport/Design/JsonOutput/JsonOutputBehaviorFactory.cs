@@ -51,9 +51,9 @@ namespace DCV.APP.Report.JsonOutput
                 {
                     result = new JsonOutputHourFromToBehavior(param, (HIS.UC.FormType.HourFromTo.UCHourFromTo)dataItem);
                 }
-                else if (dataItem is HIS.UC.FormType.DepartmentCombo.UCDepartmentCombo)
+                else if (dataItem is HIS.UC.FormType.GridLookUpTextEdit.UCGridLookUpTextEdit)
                 {
-                    result = new JsonOutputDepartmentComboBehavior(param, (HIS.UC.FormType.DepartmentCombo.UCDepartmentCombo)dataItem);
+                    result = new JsonOutputDepartmentComboBehavior(param, (HIS.UC.FormType.GridLookUpTextEdit.UCGridLookUpTextEdit)dataItem);
                 }
                 else if (dataItem is HIS.UC.FormType.MediStockSttFilterCheckBoxGroup.UCMediStockSttFilterCheckBoxGroup)
                 {
@@ -87,9 +87,9 @@ namespace DCV.APP.Report.JsonOutput
                 {
                     result = new JsonOutputTreatmentTypeComboCheckBehavior(param, (HIS.UC.FormType.TreatmentTypeComboCheck.UCTreatmentTypeComboCheck)dataItem);
                 }
-                else if (dataItem is HIS.UC.FormType.TreatmentTypeGridCheckBox.UCTreatmentTypeGridCheckBox)
+                else if (dataItem is HIS.UC.FormType.GridCheckBox.UCGridCheckBox )
                 {
-                    result = new JsonOutputTreatmentTypeGridCheckBoxBehavior(param, (HIS.UC.FormType.TreatmentTypeGridCheckBox.UCTreatmentTypeGridCheckBox)dataItem);
+                    result = new JsonOutputTreatmentTypeGridCheckBoxBehavior(param, (HIS.UC.FormType.GridCheckBox.UCGridCheckBox )dataItem);
                 }
                 else if (dataItem is HIS.UC.FormType.DateTime.UCDateTime)
                 {
